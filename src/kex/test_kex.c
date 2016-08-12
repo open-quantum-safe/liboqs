@@ -36,15 +36,21 @@ int main(void) {
 
 	/* setup RAND */
 	rand = OQS_RAND_new();
-	if (rand == NULL) goto err;
+	if (rand == NULL) {
+		goto err;
+	}
 
 	/* setup KEX */
 	kex = OQS_KEX_new(rand, NULL, 0);
-	if (kex == NULL) goto err;
+	if (kex == NULL) {
+		goto err;
+	}
 
 	/* Alice's initial message */
 	rc = OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
-	if (rc != 1) goto err;
+	if (rc != 1) {
+		goto err;
+	}
 
 #ifdef DEBUG
 	PRINT_HEX_STRING("Alice message", alice_msg, alice_msg_len)
@@ -52,7 +58,9 @@ int main(void) {
 
 	/* Bob's response */
 	rc = OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
-	if (rc != 1) goto err;
+	if (rc != 1) {
+		goto err;
+	}
 
 #ifdef DEBUG
 	PRINT_HEX_STRING("Bob message", bob_msg, bob_msg_len)
@@ -61,7 +69,9 @@ int main(void) {
 
 	/* Alice processes Bob's response */
 	rc = OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len);
-	if (rc != 1) goto err;
+	if (rc != 1) {
+		goto err;
+	}
 
 #ifdef DEBUG
 	PRINT_HEX_STRING("Alice session key", alice_key, alice_key_len)

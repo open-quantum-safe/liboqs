@@ -16,12 +16,18 @@
 OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand, UNUSED const uint8_t *seed, UNUSED const size_t seed_len) {
 
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
-	if (k == NULL) return NULL;
+	if (k == NULL) {
+		return NULL;
+	}
 
 	k->ctx = malloc(sizeof(struct oqs_kex_rlwe_bcns15_fft_ctx));
-	if (NULL == k->ctx) return NULL;
+	if (NULL == k->ctx) {
+		return NULL;
+	}
 	int ok = oqs_kex_rlwe_bcns15_fft_ctx_init(k->ctx);
-	if (ok != 1) return NULL;
+	if (ok != 1) {
+		return NULL;
+	}
 
 	k->method_name = strdup("RLWE BCNS15");
 	k->estimated_classical_security = 163;
@@ -47,9 +53,13 @@ int OQS_KEX_rlwe_bcns15_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_m
 
 	/* allocate public/private key pair */
 	*alice_msg = malloc(1024 * sizeof(uint32_t));
-	if (*alice_msg == NULL) goto err;
+	if (*alice_msg == NULL) {
+		goto err;
+	}
 	*alice_priv = malloc(1024 * sizeof(uint32_t));
-	if (*alice_priv == NULL) goto err;
+	if (*alice_priv == NULL) {
+		goto err;
+	}
 
 	/* generate public/private key pair */
 	oqs_kex_rlwe_bcns15_generate_keypair(oqs_kex_rlwe_bcns15_a, (uint32_t *) *alice_priv, (uint32_t *) *alice_msg, k->ctx, k->rand);
@@ -76,15 +86,23 @@ int OQS_KEX_rlwe_bcns15_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t a
 	*bob_msg = NULL;
 	*key = NULL;
 
-	if (alice_msg_len != 1024 * sizeof(uint32_t)) goto err;
+	if (alice_msg_len != 1024 * sizeof(uint32_t)) {
+		goto err;
+	}
 
 	bob_priv = malloc(1024 * sizeof(uint32_t));
-	if (bob_priv == NULL) goto err;
+	if (bob_priv == NULL) {
+		goto err;
+	}
 	/* allocate message and session key */
 	*bob_msg = malloc(1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t));
-	if (*bob_msg == NULL) goto err;
+	if (*bob_msg == NULL) {
+		goto err;
+	}
 	*key = malloc(16 * sizeof(uint64_t));
-	if (*key == NULL) goto err;
+	if (*key == NULL) {
+		goto err;
+	}
 
 	/* generate public/private key pair */
 	oqs_kex_rlwe_bcns15_generate_keypair(oqs_kex_rlwe_bcns15_a, (uint32_t *) bob_priv, (uint32_t *) *bob_msg, k->ctx, k->rand);
@@ -116,11 +134,15 @@ int OQS_KEX_rlwe_bcns15_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_
 
 	*key = NULL;
 
-	if (bob_msg_len != 1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t)) goto err;
+	if (bob_msg_len != 1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t)) {
+		goto err;
+	}
 
 	/* allocate session key */
 	*key = malloc(16 * sizeof(uint64_t));
-	if (*key == NULL) goto err;
+	if (*key == NULL) {
+		goto err;
+	}
 
 	/* generate Alice's session key */
 	const uint8_t *bob_rec = bob_msg + 1024 * sizeof(uint32_t);
@@ -141,11 +163,15 @@ cleanup:
 }
 
 void OQS_KEX_rlwe_bcns15_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
-	if (alice_priv) free(alice_priv);
+	if (alice_priv) {
+		free(alice_priv);
+	}
 }
 
 void OQS_KEX_rlwe_bcns15_free(OQS_KEX *k) {
-	if (!k) return;
+	if (!k) {
+		return;
+	}
 	free(k->method_name);
 	k->method_name = NULL;
 	free(k->ctx);

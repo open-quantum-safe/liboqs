@@ -25,7 +25,9 @@ static void OQS_RAND_urandom_chacha20_ctx_free(void *rand_ctx);
 
 OQS_RAND *OQS_RAND_urandom_chacha20_new() {
 	OQS_RAND *r = malloc(sizeof(OQS_RAND));
-	if (r == NULL) return NULL;
+	if (r == NULL) {
+		return NULL;
+	}
 	r->method_name = strdup("urandom_chacha20");
 	r->estimated_classical_security = 256;
 	r->estimated_quantum_security = 128; // Grover search
@@ -46,18 +48,28 @@ static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 	int fd = 0;
 	OQS_RAND_urandom_chacha20_ctx *rand_ctx = NULL;
 	rand_ctx = (OQS_RAND_urandom_chacha20_ctx *) malloc(sizeof(OQS_RAND_urandom_chacha20_ctx));
-	if (rand_ctx == NULL) goto err;
+	if (rand_ctx == NULL) {
+		goto err;
+	}
 	fd = open("/dev/urandom", O_RDONLY);
-	if (fd == 0) goto err;
+	if (fd == 0) {
+		goto err;
+	}
 	int r = read(fd, rand_ctx->key, 32);
-	if (r != 32) goto err;
+	if (r != 32) {
+		goto err;
+	}
 	bzero(rand_ctx->nonce, 12);
 	rand_ctx->counter = 0U;
 	rand_ctx->cache_next_byte = 64; // cache is empty
 	goto okay;
 err:
-	if (rand_ctx) free(rand_ctx);
-	if (fd) close(fd);
+	if (rand_ctx) {
+		free(rand_ctx);
+	}
+	if (fd) {
+		close(fd);
+	}
 	return NULL;
 okay:
 	close(fd);
@@ -122,7 +134,11 @@ static void OQS_RAND_urandom_chacha20_ctx_free(void *rand_ctx) {
 }
 
 void OQS_RAND_urandom_chacha20_free(OQS_RAND *r) {
-	if (r) OQS_RAND_urandom_chacha20_ctx_free(r->ctx);
-	if (r) free(r->method_name);
+	if (r) {
+		OQS_RAND_urandom_chacha20_ctx_free(r->ctx);
+	}
+	if (r) {
+		free(r->method_name);
+	}
 	free(r);
 }

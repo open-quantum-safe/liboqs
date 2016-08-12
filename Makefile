@@ -62,3 +62,6 @@ clean:
 	rm -f test_kex
 	rm -f liboqs.a
 	rm -f .DS_Store */.DS_Store */*/.DS_Store */*/*/.DS_Store
+
+prettyprint:
+	astyle --style=java --indent=tab --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*/*.h src/*/*.c
