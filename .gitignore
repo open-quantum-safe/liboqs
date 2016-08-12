@@ -27,7 +27,12 @@
 *.i*86
 *.x86_64
 *.hex
+test_kex
+test_rand
 
 # Debug files
 *.dSYM/
 *.su
+
+# Generated documentation
+docs
