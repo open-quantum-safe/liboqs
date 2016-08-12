@@ -85,7 +85,7 @@ In the long term, we are also interested in including post-quantum signature sch
 
 ## Team
 
-The Open Quantum Safe project is lead by Michele Mosca (University of Waterloo) and Douglas Stebila (McMaster University).
+The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) (University of Waterloo) and [Douglas Stebila](https://www.douglas.stebila.ca/research/) (McMaster University).
 
 ### Contributors
 
@@ -93,4 +93,4 @@ The Open Quantum Safe project is lead by Michele Mosca (University of Waterloo) 
 
 ### Support
 
-Development of OQS has been supported in part by the Tutte Institute for Mathematics and Communication.  Research projects which developed specific components of OQS have been supported by various research grants; see the source papers for funding acknowledgements.
+Development of OQS has been supported in part by the Tutte Institute for Mathematics and Computing.  Research projects which developed specific components of OQS have been supported by various research grants; see the source papers for funding acknowledgements.
