@@ -10,7 +10,7 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 
 OQS will also include integrations into application-level protocols to provide easy prototyping of quantum-resistant cryptography.  Our first integration will be in OpenSSL.
 
-More information on OQS can be found in slides 63–66 of [this presentation](https://www.douglas.stebila.ca/files/research/presentations/20160812-SAC.pdf) by Douglas Stebila.
+More information on OQS can be found in slides 64–67 of [this presentation](https://www.douglas.stebila.ca/files/research/presentations/20160812-SAC.pdf) by Douglas Stebila.
 
 ## Contents
 
