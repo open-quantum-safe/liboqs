@@ -1,1 +1,0 @@
-../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h

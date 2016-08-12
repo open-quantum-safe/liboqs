@@ -1,3 +1,6 @@
+# Linked headers
+include
+
 # Object files
 *.o
 *.ko
