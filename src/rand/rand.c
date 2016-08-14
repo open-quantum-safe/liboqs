@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include <oqs/rand.h>
 
 #if defined(OQS_RAND_DEFAULT_URANDOM_CHACHA20)
@@ -36,3 +38,27 @@ void OQS_RAND_free(OQS_RAND *r) {
 	}
 }
 
+inline void OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]) {
+	occurrences[b] += 1;
+}
+
+double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occurrences[256]) {
+
+	// compute total number of samples
+	unsigned long total = 0;
+	for (int i = 0; i < 256; i++) {
+		total += occurrences[i];
+	}
+
+	// compute statistical distance from uniform
+	// SD(X,Y) = 1/2 \sum_z | Pr[X=z] - Pr[Y=z] |
+	//         = 1/2 \sum_z | 1/256   - Pr[Y=z] |
+	double distance = 0.0;
+	for (int i = 0; i < 256; i++) {
+		distance += fabs(1.0/256.0 - (double) occurrences[i] / (double) total);
+	}
+	distance /= 2.0;
+
+	return distance;
+
+}
