@@ -124,11 +124,11 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX *(*new_method)(O
 		occurrences[i] = 0;
 	}
 
-	ret = kex_test_correctness(rand, &OQS_KEX_new, 1, occurrences);
+	ret = kex_test_correctness(rand, new_method, 1, occurrences);
 	if (ret != 1) goto err;
 
 	/* setup KEX */
-	kex = OQS_KEX_new(rand, NULL, 0);
+	kex = new_method(rand, NULL, 0);
 	if (kex == NULL) {
 		goto err;
 	}
@@ -137,7 +137,7 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX *(*new_method)(O
 	printf("Testing correctness and randomness of key exchange method %s for %d iterations\n", kex->method_name, iterations);
 	printf("================================================================================\n");
 	for (int i = 0; i < iterations; i++) {
-		ret = kex_test_correctness(rand, &OQS_KEX_new, 0, occurrences);
+		ret = kex_test_correctness(rand, new_method, 0, occurrences);
 		if (ret != 1) goto err;
 	}
 	printf("All session keys matched.\n");
