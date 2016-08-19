@@ -80,4 +80,7 @@ void OQS_RAND_n(OQS_RAND *r, uint8_t *out, size_t n);
 
 void OQS_RAND_free(OQS_RAND *r);
 
+void OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]);
+double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occurrences[256]);
+
 #endif

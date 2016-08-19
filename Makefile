@@ -6,6 +6,7 @@ LN=ln -s
 
 DEFAULTS=-DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
 CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
+LDFLAGS=-lm
 INCLUDES=-Iinclude
 
 all: links objdir rand_urandom_chacha20 rand kex_rlwe_bcns15 kex lib tests
@@ -48,8 +49,8 @@ lib:
 	$(RANLIB) liboqs.a
 
 tests: lib src/rand/test_rand.c src/kex/test_kex.c
-	$(CC) $(CFLAGS) $(INCLUDES) -L. src/rand/test_rand.c -loqs -o test_rand 
-	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs -o test_kex
+	$(CC) $(CFLAGS) $(INCLUDES) -L. src/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
+	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
 
 docs: links
 	doxygen
