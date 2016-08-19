@@ -4,7 +4,7 @@ liboqs is a C library for quantum-safe cryptographic algorithms.
 
 ## Overview
 
-The **Open Quantum Safe (OQS) project** has the goal of developing and prototyping quantum-resistant cryptography.  
+The **Open Quantum Safe (OQS) project** has the goal of developing and prototyping quantum-resistant cryptography.
 
 **liboqs** is an open source C library for quantum-safe cryptographic algorithms.  liboqs initially focuses on key exchange algorithms.  liboqs provides a common API suitable for post-quantum key exchange algorithms, and will collect together various implementations.  liboqs will also include a test harness and benchmarking routines to compare performance of post-quantum implementations.
 
@@ -21,7 +21,7 @@ OQS currently contains:
 
 ## Building and Running
 
-Builds have been tested on Mac OS X 10.11.6 and Ubuntu 16.04.1.  
+Builds have been tested on Mac OS X 10.11.6 and Ubuntu 16.04.1.
 
 To build, clone or download the source from Github, then simply type:
 
@@ -30,8 +30,8 @@ To build, clone or download the source from Github, then simply type:
 This will generate:
 
 - `liboqs.a`: A static library with implementations for the algorithms listed in "Contents" above.
-- `test_rand`: A simple test harness for the random number generator.  This will output some bytes from the PRNG.
-- `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages, and indicate whether the parties agree on the session key or not.
+- `test_rand`: A simple test harness for the random number generator.  This will test the distance of PRNG output from uniform using statistical distance.
+- `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
 
 ## Documentation
 
@@ -43,7 +43,7 @@ This will generate the `docs/html` directory.
 
 ## Contributing and using 
 
-We hope OQS will provide a framework for many post-quantum implementations.  
+We hope OQS will provide a framework for many post-quantum implementations.
 
 In the immediate term, if you have feedback on our API ([kex.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/kex/kex.h) or [rand.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/rand/rand.h)), please contact us so we can ensure our API covers a wide range of implementation needs.
 
