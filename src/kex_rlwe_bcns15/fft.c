@@ -236,11 +236,15 @@ void oqs_kex_rlwe_bcns15_fft_add(uint32_t *z, const uint32_t *x, const uint32_t 
 }
 
 int oqs_kex_rlwe_bcns15_fft_ctx_init(struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
-	ctx->x1 = (uint32_t **) malloc(64 * sizeof(uint32_t *));
-	ctx->y1 = (uint32_t **) malloc(64 * sizeof(uint32_t *));
-	ctx->z1 = (uint32_t **) malloc(64 * sizeof(uint32_t *));
-	ctx->t1 = (uint32_t *) malloc(64 * sizeof(uint32_t));
+	ctx->x1 = (uint32_t **) calloc(64, sizeof(uint32_t *));
+	ctx->y1 = (uint32_t **) calloc(64, sizeof(uint32_t *));
+	ctx->z1 = (uint32_t **) calloc(64, sizeof(uint32_t *));
+	ctx->t1 = (uint32_t *) calloc(64, sizeof(uint32_t));
 	if (ctx->x1 == NULL || ctx->y1 == NULL || ctx->z1 == NULL || ctx->t1 == NULL) {
+		free(ctx->x1);
+		free(ctx->y1);
+		free(ctx->z1);
+		free(ctx->t1);
 		return 0;
 	}
 	for (int i = 0; i < 64; i++) {
@@ -248,6 +252,7 @@ int oqs_kex_rlwe_bcns15_fft_ctx_init(struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
 		ctx->y1[i] = (uint32_t *) malloc(64 * sizeof(uint32_t));
 		ctx->z1[i] = (uint32_t *) malloc(64 * sizeof(uint32_t));
 		if (ctx->x1[i] == NULL || ctx->y1[i] == NULL || ctx->z1[i] == NULL) {
+			oqs_kex_rlwe_bcns15_fft_ctx_free(ctx);
 			return 0;
 		}
 	}
