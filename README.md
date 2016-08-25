@@ -8,15 +8,15 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 
 **liboqs** is an open source C library for quantum-safe cryptographic algorithms.  liboqs initially focuses on key exchange algorithms.  liboqs provides a common API suitable for post-quantum key exchange algorithms, and will collect together various implementations.  liboqs will also include a test harness and benchmarking routines to compare performance of post-quantum implementations.
 
-OQS will also include integrations into application-level protocols to provide easy prototyping of quantum-resistant cryptography.  Our first integration will be in OpenSSL.
+OQS will also include integrations into application-level protocols to provide easy prototyping of quantum-resistant cryptography.  Our first integration is in OpenSSL:
 
-**open-quantum-safe/openssl** is an integration of liboqs into OpenSSL 1.0.2.  The goal of this integration is to provide easy prototyping of quantum-resistant cryptography.  The integration should not be considered "production quality".  See more about this integration in its Github repository [open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/).
+- **open-quantum-safe/openssl** is an integration of liboqs into OpenSSL 1.0.2.  The goal of this integration is to provide easy prototyping of quantum-resistant cryptography.  The integration should not be considered "production quality".  See more about this integration in its Github repository [open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/).
 
 More information on OQS can be found in slides 64–67 of [this presentation](https://www.douglas.stebila.ca/files/research/presentations/20160812-SAC.pdf) by Douglas Stebila.
 
 ## Contents
 
-OQS currently contains:
+liboqs currently contains:
 
 - `rand_urandom_chacha20`: pseudorandom number generator seeded from /dev/urandom and expanded using the ChaCha20 stream cipher
 - `kex_rlwe_bcns15`: key exchange from the ring learning with errors problem (Bos, Costello, Naehrig, Stebila, *IEEE Symposium on Security & Privacy 2015*, [https://eprint.iacr.org/2014/599](https://eprint.iacr.org/2014/599))
