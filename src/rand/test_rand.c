@@ -20,7 +20,7 @@ static void rand_test_distribution_32(OQS_RAND *rand, unsigned long occurrences[
 	for (int i = 0; i < iterations; i++) {
 		x = OQS_RAND_32(rand);
 		uint8_t b;
-		for (int j = 0; j < sizeof(uint32_t); j++) {
+		for (size_t j = 0; j < sizeof(uint32_t); j++) {
 			b = (x >> j) & 0xFF;
 			OQS_RAND_test_record_occurrence(b, occurrences);
 		}
@@ -32,7 +32,7 @@ static void rand_test_distribution_64(OQS_RAND *rand, unsigned long occurrences[
 	for (int i = 0; i < iterations; i++) {
 		x = OQS_RAND_64(rand);
 		uint8_t b;
-		for (int j = 0; j < sizeof(uint64_t); j++) {
+		for (size_t j = 0; j < sizeof(uint64_t); j++) {
 			b = (x >> j) & 0xFF;
 			OQS_RAND_test_record_occurrence(b, occurrences);
 		}

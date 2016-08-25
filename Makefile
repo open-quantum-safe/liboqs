@@ -4,16 +4,16 @@ CURL=curl
 RANLIB=ranlib
 LN=ln -s
 
-DEFAULTS=-DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
+DEFAULTS= -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
 CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
 
-all: links objdir rand_urandom_chacha20 rand kex_rlwe_bcns15 kex lib tests
+all: links lib tests
 
-objdir:
-	mkdir -p objs
-	rm -f liboqs.a
+objs/%.o: src/%.c
+	@mkdir -p $(@D)
+	$(CC) -c  $(CFLAGS) $(INCLUDES) $< -o $@
 
 links:
 	rm -rf include/oqs
@@ -23,29 +23,36 @@ links:
 	$(LN) ../../src/rand/rand.h include/oqs
 	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 
-rand_urandom_chacha20: src/rand_urandom_chacha20/rand_urandom_chacha20.h src/rand_urandom_chacha20/rand_urandom_chacha20.c src/rand_urandom_chacha20/chacha20.c
-	$(CC) -c $(CFLAGS) $(INCLUDES) src/rand_urandom_chacha20/rand_urandom_chacha20.c -o objs/rand_urandom_chacha20.o
-	$(AR) liboqs.a objs/rand_urandom_chacha20.o
+# CHACHA
 
-rand: src/rand/rand.h src/rand/rand.c
-	$(CC) -c $(CFLAGS) $(INCLUDES) src/rand/rand.c -o objs/rand.o
-	$(AR) liboqs.a objs/rand.o
+CHACHA_OBJS :=  $(addprefix objs/rand_urandom_chacha20/, \
+                rand_urandom_chacha20.o)
 
-kex_rlwe_bcns15: src/kex_rlwe_bcns15/fft.c src/kex_rlwe_bcns15/kex_rlwe_bcns15.c src/kex_rlwe_bcns15/kex_rlwe_bcns15.h src/kex_rlwe_bcns15/local.h src/kex_rlwe_bcns15/rlwe.c src/kex_rlwe_bcns15/rlwe_a.h src/kex_rlwe_bcns15/rlwe_kex.c src/kex_rlwe_bcns15/rlwe_table.h
-	$(CC) -c $(CFLAGS) $(INCLUDES) src/kex_rlwe_bcns15/fft.c -o objs/kex_rlwe_bcns15_fft.o
-	$(CC) -c $(CFLAGS) $(INCLUDES) src/kex_rlwe_bcns15/rlwe.c -o objs/kex_rlwe_bcns15_rlwe.o
-	$(CC) -c $(CFLAGS) $(INCLUDES) src/kex_rlwe_bcns15/rlwe_kex.c -o objs/kex_rlwe_bcns15_rlwe_kex.o
-	$(CC) -c $(CFLAGS) $(INCLUDES) src/kex_rlwe_bcns15/kex_rlwe_bcns15.c -o objs/kex_rlwe_bcns15.o
-	$(AR) liboqs.a objs/kex_rlwe_bcns15_fft.o
-	$(AR) liboqs.a objs/kex_rlwe_bcns15_rlwe.o
-	$(AR) liboqs.a objs/kex_rlwe_bcns15_rlwe_kex.o
-	$(AR) liboqs.a objs/kex_rlwe_bcns15.o
+$(CHACHA_OBJS): src/rand_urandom_chacha20/rand_urandom_chacha20.h src/rand_urandom_chacha20/chacha20.c
 
-kex: src/kex/kex.h src/kex/kex.c
-	$(CC) -c $(CFLAGS) $(INCLUDES) src/kex/kex.c -o objs/kex.o
-	$(AR) liboqs.a objs/kex.o
+# RAND
 
-lib:
+objs/rand/rand.o: src/rand/rand.h
+
+# BCNS
+
+BCNS_OBJS := $(addprefix objs/kex_rlwe_bcns15/, \
+             fft.o kex_rlwe_bcns15.o rlwe.o rlwe_kex.o)
+
+BCNS_HEADERS := $(addprefix src/kex_rlwe_bcns15/, \
+                kex_rlwe_bcns15.h local.h rlwe_a.h rlwe_table.h)
+
+$(BCNS_OBJS): $(BCNS_HEADERS)
+
+# KEX
+
+objs/kex/kex.o: src/kex/kex.h
+
+#LIB
+
+lib: $(CHACHA_OBJS) $(BCNS_OBJS) objs/rand/rand.o objs/kex/kex.o
+	rm -f liboqs.a
+	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
 
 tests: lib src/rand/test_rand.c src/kex/test_kex.c
@@ -56,13 +63,9 @@ docs: links
 	doxygen
 
 clean:
-	rm -rf docs
-	rm -rf objs
-	rm -rf include
-	rm -f test_rand
-	rm -f test_kex
-	rm -f liboqs.a
-	rm -f .DS_Store */.DS_Store */*/.DS_Store */*/*/.DS_Store
+	rm -rf docs objs include
+	rm -f test_rand test_kex liboqs.a
+	find . -name .DS_Store -type f -delete
 
 prettyprint:
 	astyle --style=java --indent=tab --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*/*.h src/*/*.c

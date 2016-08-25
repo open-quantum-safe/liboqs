@@ -29,13 +29,13 @@ OQS_RAND *OQS_RAND_urandom_chacha20_new() {
 		return NULL;
 	}
 	r->method_name = strdup("urandom_chacha20");
-	r->estimated_classical_security = 256;
-	r->estimated_quantum_security = 128; // Grover search
 	r->ctx = OQS_RAND_urandom_chacha20_ctx_new();
-	if (r->ctx == NULL) {
-		free(r);
+	if (r->ctx == NULL || r->method_name == NULL) {
+		OQS_RAND_urandom_chacha20_free(r);
 		return NULL;
 	}
+	r->estimated_classical_security = 256;
+	r->estimated_quantum_security = 128; // Grover search
 	r->rand_8 = &OQS_RAND_urandom_chacha20_8;
 	r->rand_32 = &OQS_RAND_urandom_chacha20_32;
 	r->rand_64 = &OQS_RAND_urandom_chacha20_64;
