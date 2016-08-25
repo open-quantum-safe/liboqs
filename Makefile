@@ -23,34 +23,31 @@ links:
 	$(LN) ../../src/rand/rand.h include/oqs
 	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 
-# CHACHA
+# RAND_URANDOM_CHACHA
 
-CHACHA_OBJS :=  $(addprefix objs/rand_urandom_chacha20/, \
-                rand_urandom_chacha20.o)
+RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/rand_urandom_chacha20/, rand_urandom_chacha20.o)
 
-$(CHACHA_OBJS): src/rand_urandom_chacha20/rand_urandom_chacha20.h src/rand_urandom_chacha20/chacha20.c
+$(RAND_URANDOM_CHACHA_OBJS): src/rand_urandom_chacha20/rand_urandom_chacha20.h src/rand_urandom_chacha20/chacha20.c
 
 # RAND
 
 objs/rand/rand.o: src/rand/rand.h
 
-# BCNS
+# KEX_RLWE_BCNS15
 
-BCNS_OBJS := $(addprefix objs/kex_rlwe_bcns15/, \
-             fft.o kex_rlwe_bcns15.o rlwe.o rlwe_kex.o)
+KEX_RLWE_BCNS15_OBJS := $(addprefix objs/kex_rlwe_bcns15/, fft.o kex_rlwe_bcns15.o rlwe.o rlwe_kex.o)
 
-BCNS_HEADERS := $(addprefix src/kex_rlwe_bcns15/, \
-                kex_rlwe_bcns15.h local.h rlwe_a.h rlwe_table.h)
+KEX_RLWE_BCNS15_HEADERS := $(addprefix src/kex_rlwe_bcns15/, kex_rlwe_bcns15.h local.h rlwe_a.h rlwe_table.h)
 
-$(BCNS_OBJS): $(BCNS_HEADERS)
+$(KEX_RLWE_BCNS15_OBJS): $(KEX_RLWE_BCNS15_HEADERS)
 
 # KEX
 
 objs/kex/kex.o: src/kex/kex.h
 
-#LIB
+# LIB
 
-lib: $(CHACHA_OBJS) $(BCNS_OBJS) objs/rand/rand.o objs/kex/kex.o
+lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) objs/rand/rand.o objs/kex/kex.o
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
