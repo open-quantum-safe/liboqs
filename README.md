@@ -10,6 +10,8 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 
 OQS will also include integrations into application-level protocols to provide easy prototyping of quantum-resistant cryptography.  Our first integration will be in OpenSSL.
 
+**open-quantum-safe/openssl** is an integration of liboqs into OpenSSL 1.0.2.  The goal of this integration is to provide easy prototyping of quantum-resistant cryptography.  The integration should not be considered "production quality".  See more about this integration in its Github repository [open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/).
+
 More information on OQS can be found in slides 64–67 of [this presentation](https://www.douglas.stebila.ca/files/research/presentations/20160812-SAC.pdf) by Douglas Stebila.
 
 ## Contents
@@ -56,20 +58,25 @@ We are also interested in assistance from code reviewers.
 Please contact Douglas Stebila <[stebilad@mcmaster.ca](mailto:stebilad@mcmaster.ca)>.
 
 
-## Current status and plans (2016/08/11)
+## Current status and plans
 
-Our initial launch was on August 11, 2016, containing a single key exchange algorithm (`kex_rlwe_bcns15`) with a basic test harness.  We plan to be making the following updates over the next month:
+Our initial launch was on August 11, 2016, containing a single key exchange algorithm (`kex_rlwe_bcns15`) with a basic test harness.  
+
+Since our initial launch, we have made the following updates:
+
+- Test harness for key exchange algorithms ([pr/2](https://github.com/open-quantum-safe/liboqs/pull/2))
+- Test harness for random number generator ([pr/2](https://github.com/open-quantum-safe/liboqs/pull/2))
+- Integration of liboqs into OpenSSL to enable testing of post-quantum algorithms in TLS connections ([open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/))
+
+We plan to be making the following updates over the next month:
 
 - `kex_lwe_frodo` implementation ([https://eprint.iacr.org/2016/659](https://eprint.iacr.org/2016/659))
 - `kex_rlwe_bcns15` generalization to multiple security levels
 - `kex_ntru_ees743p1` wrapper around NTRU open source public key encryption ([https://github.com/NTRUOpenSourceProject/ntru-crypto](https://github.com/NTRUOpenSourceProject/ntru-crypto))
 - `kex_rlwe_newhope` wrapper around "NewHope" ring-LWE key exchange ([https://eprint.iacr.org/2015/1092](https://eprint.iacr.org/2015/1092))
 - Benchmarking scripts for key exchange algorithms
-- Rigourous test harness for key exchange algorithms
-- Rigourous test harness for random number generator
 - Detailed Doxygen documentation for existing API and public functions
 - Modular build system
-- Integration of liboqs into OpenSSL to enable testing of post-quantum algorithms in TLS connections
 - Finalize open source license for liboqs
 - Coding guidelines
 
@@ -90,7 +97,8 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 ### Contributors
 
 - Shravan Mishra (University of Waterloo)
+- Alex Parent (University of Waterloo)
 
 ### Support
 
-Development of OQS has been supported in part by the Tutte Institute for Mathematics and Computing.  Research projects which developed specific components of OQS have been supported by various research grants; see the source papers for funding acknowledgements.
+Development of Open Quantum Safe has been supported in part by the Tutte Institute for Mathematics and Computing.  Research projects which developed specific components of Open Quantum Safe have been supported by various research grants; see the source papers for funding acknowledgements.
