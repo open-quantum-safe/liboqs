@@ -55,7 +55,7 @@ double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occur
 	//         = 1/2 \sum_z | 1/256   - Pr[Y=z] |
 	double distance = 0.0;
 	for (int i = 0; i < 256; i++) {
-		distance += fabs(1.0/256.0 - (double) occurrences[i] / (double) total);
+		distance += fabs(1.0 / 256.0 - (double) occurrences[i] / (double) total);
 	}
 	distance /= 2.0;
 
