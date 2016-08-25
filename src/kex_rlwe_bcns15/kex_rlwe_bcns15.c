@@ -24,10 +24,6 @@ OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand, UNUSED const uint8_t *seed, UNU
 	if (NULL == k->ctx) {
 		return NULL;
 	}
-	int ok = oqs_kex_rlwe_bcns15_fft_ctx_init(k->ctx);
-	if (ok != 1) {
-		return NULL;
-	}
 
 	k->method_name = strdup("RLWE BCNS15");
 	k->estimated_classical_security = 163;

@@ -65,8 +65,6 @@ do { \
 #define normalize(c,a) c = (a) + ((a) == 0xFFFFFFFF)
 
 /* Define the basic building blocks for the FFT. */
-#define DATATYPE uint32_t
-
 #define SET_ZERO(x) (x)=0
 #define add(c,a,b) modadd(c,a,b)
 #define sub(c,a,b) modsub(c,a,b)
@@ -96,9 +94,9 @@ static uint32_t reverse(uint32_t x) {
  * Exercise Exercise 4.6.4.59.
  */
 
-static void naive(DATATYPE *z, const DATATYPE *x, const DATATYPE *y, unsigned int n) {
+static void naive(uint32_t *z, const uint32_t *x, const uint32_t *y, unsigned int n) {
 	unsigned int i, j, k;
-	DATATYPE A, B;
+	uint32_t A, B;
 
 	for (i = 0; i < n; i++) {
 		SET_ZERO(B);
@@ -116,16 +114,13 @@ static void naive(DATATYPE *z, const DATATYPE *x, const DATATYPE *y, unsigned in
 	}
 }
 
-static void nussbaumer_fft(DATATYPE *z, const DATATYPE *x, const DATATYPE *y, struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
-	DATATYPE **X1;
-	DATATYPE **Y1;
-	DATATYPE **Z1;
-	DATATYPE *T1;
+static void nussbaumer_fft(uint32_t z[1024], const uint32_t x[1024], const uint32_t y[1024], struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
+	uint32_t (*X1)[64] = ctx->x1;
+	uint32_t (*Y1)[64] = ctx->y1;
+	uint32_t (*Z1)[64] = ctx->z1;
+	uint32_t *T1 = ctx->t1;
 	unsigned int i;
 	int j;
-
-	X1 = (DATATYPE **) ctx->x1;
-	Y1 = (DATATYPE **) ctx->y1;
 
 	for (i = 0; i < 32; i++) {
 		for (j = 0; j < 32; j++) {
@@ -136,9 +131,6 @@ static void nussbaumer_fft(DATATYPE *z, const DATATYPE *x, const DATATYPE *y, st
 			set(Y1[i + 32][j], y[32 * j + i]);
 		}
 	}
-
-	Z1 = (DATATYPE **) ctx->z1;
-	T1 = (DATATYPE *) ctx->t1;
 
 	for (j = 4; j >= 0; j--) {
 		for (i = 0; i < (1U << (5 - j)); i++) {
@@ -224,34 +216,15 @@ static void nussbaumer_fft(DATATYPE *z, const DATATYPE *x, const DATATYPE *y, st
 	}
 }
 
-void oqs_kex_rlwe_bcns15_fft_mul(uint32_t *z, const uint32_t *x, const uint32_t *y, struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
+void oqs_kex_rlwe_bcns15_fft_mul(uint32_t z[1024], const uint32_t x[1024], const uint32_t y[1024], struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
 	nussbaumer_fft(z, x, y, ctx);
 }
 
-void oqs_kex_rlwe_bcns15_fft_add(uint32_t *z, const uint32_t *x, const uint32_t *y) {
+void oqs_kex_rlwe_bcns15_fft_add(uint32_t z[1024], const uint32_t x[1024], const uint32_t y[1024]) {
 	int i;
 	for (i = 0; i < 1024; i++) {
 		add(z[i], x[i], y[i]);
 	}
-}
-
-int oqs_kex_rlwe_bcns15_fft_ctx_init(struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
-	ctx->x1 = (uint32_t **) malloc(64 * sizeof(uint32_t *));
-	ctx->y1 = (uint32_t **) malloc(64 * sizeof(uint32_t *));
-	ctx->z1 = (uint32_t **) malloc(64 * sizeof(uint32_t *));
-	ctx->t1 = (uint32_t *) malloc(64 * sizeof(uint32_t));
-	if (ctx->x1 == NULL || ctx->y1 == NULL || ctx->z1 == NULL || ctx->t1 == NULL) {
-		return 0;
-	}
-	for (int i = 0; i < 64; i++) {
-		ctx->x1[i] = (uint32_t *) malloc(64 * sizeof(uint32_t));
-		ctx->y1[i] = (uint32_t *) malloc(64 * sizeof(uint32_t));
-		ctx->z1[i] = (uint32_t *) malloc(64 * sizeof(uint32_t));
-		if (ctx->x1[i] == NULL || ctx->y1[i] == NULL || ctx->z1[i] == NULL) {
-			return 0;
-		}
-	}
-	return 1;
 }
 
 void oqs_kex_rlwe_bcns15_fft_ctx_clear(struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
@@ -264,19 +237,4 @@ void oqs_kex_rlwe_bcns15_fft_ctx_clear(struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) 
 		rlwe_memset_volatile(ctx->z1[i], 0, 64 * sizeof(uint32_t));
 	}
 	rlwe_memset_volatile(ctx->t1, 0, 64 * sizeof(uint32_t));
-}
-
-void oqs_kex_rlwe_bcns15_fft_ctx_free(struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
-	if (ctx == NULL) {
-		return;
-	}
-	for (int i = 0; i < 64; i++) {
-		free(ctx->x1[i]);
-		free(ctx->y1[i]);
-		free(ctx->z1[i]);
-	}
-	free(ctx->x1);
-	free(ctx->y1);
-	free(ctx->z1);
-	free(ctx->t1);
 }

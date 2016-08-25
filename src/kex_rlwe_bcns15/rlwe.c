@@ -149,7 +149,7 @@ static uint32_t single_sample_ct(uint64_t *in) {
 	return index;
 }
 
-void oqs_kex_rlwe_bcns15_sample_ct(uint32_t *s, OQS_RAND *rand) {
+void oqs_kex_rlwe_bcns15_sample_ct(uint32_t s[1024], OQS_RAND *rand) {
 	int i, j;
 	for (i = 0; i < 16; i++) {
 		uint64_t r = rand->rand_64(rand);
@@ -170,7 +170,7 @@ void oqs_kex_rlwe_bcns15_sample_ct(uint32_t *s, OQS_RAND *rand) {
 	}
 }
 
-void oqs_kex_rlwe_bcns15_round2_ct(uint64_t *out, const uint32_t *in) {
+void oqs_kex_rlwe_bcns15_round2_ct(uint64_t out[16], const uint32_t in[1024]) {
 	int i;
 	memset(out, 0, 128);
 	for (i = 0; i < 1024; i++) {
@@ -180,7 +180,7 @@ void oqs_kex_rlwe_bcns15_round2_ct(uint64_t *out, const uint32_t *in) {
 	}
 }
 
-void oqs_kex_rlwe_bcns15_crossround2_ct(uint64_t *out, const uint32_t *in, OQS_RAND *rand) {
+void oqs_kex_rlwe_bcns15_crossround2_ct(uint64_t out[16], const uint32_t in[1024], OQS_RAND *rand) {
 	int i, j;
 	memset(out, 0, 128);
 	for (i = 0; i < 64; i++) {
@@ -197,7 +197,7 @@ void oqs_kex_rlwe_bcns15_crossround2_ct(uint64_t *out, const uint32_t *in, OQS_R
 	}
 }
 
-void oqs_kex_rlwe_bcns15_rec_ct(uint64_t *out, const uint32_t *w, const uint64_t *b) {
+void oqs_kex_rlwe_bcns15_rec_ct(uint64_t out[16], const uint32_t w[1024], const uint64_t b[16]) {
 	int i;
 	memset(out, 0, 128);
 	for (i = 0; i < 1024; i++) {
@@ -212,7 +212,7 @@ void oqs_kex_rlwe_bcns15_rec_ct(uint64_t *out, const uint32_t *w, const uint64_t
 	}
 }
 
-void oqs_kex_rlwe_bcns15_sample(uint32_t *s, OQS_RAND *rand) {
+void oqs_kex_rlwe_bcns15_sample(uint32_t s[1024], OQS_RAND *rand) {
 	int i, j;
 	for (i = 0; i < 16; i++) {
 		uint64_t r = rand->rand_64(rand);
@@ -232,7 +232,7 @@ void oqs_kex_rlwe_bcns15_sample(uint32_t *s, OQS_RAND *rand) {
 	}
 }
 
-void oqs_kex_rlwe_bcns15_round2(uint64_t *out, const uint32_t *in) {
+void oqs_kex_rlwe_bcns15_round2(uint64_t out[16], const uint32_t in[1024]) {
 	int i;
 
 	// out should have enough space for 1024-bits
@@ -246,7 +246,7 @@ void oqs_kex_rlwe_bcns15_round2(uint64_t *out, const uint32_t *in) {
 	}
 }
 
-void oqs_kex_rlwe_bcns15_crossround2(uint64_t *out, const uint32_t *in, OQS_RAND *rand) {
+void oqs_kex_rlwe_bcns15_crossround2(uint64_t out[16], const uint32_t in[1024], OQS_RAND *rand) {
 	int i, j;
 	// out should have enough space for 1024-bits
 	memset(out, 0, 128);
@@ -264,7 +264,7 @@ void oqs_kex_rlwe_bcns15_crossround2(uint64_t *out, const uint32_t *in, OQS_RAND
 	}
 }
 
-void oqs_kex_rlwe_bcns15_rec(uint64_t *out, const uint32_t *w, const uint64_t *b) {
+void oqs_kex_rlwe_bcns15_rec(uint64_t out[16], const uint32_t w[1024], const uint64_t b[16]) {
 	int i;
 
 	// out should have enough space for 1024 bits
@@ -286,7 +286,7 @@ void oqs_kex_rlwe_bcns15_rec(uint64_t *out, const uint32_t *w, const uint64_t *b
 	}
 }
 
-void oqs_kex_rlwe_bcns15_a_times_s_plus_e(uint32_t *out, const uint32_t *a, const uint32_t *s, const uint32_t *e, struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
+void oqs_kex_rlwe_bcns15_a_times_s_plus_e(uint32_t out[1024], const uint32_t a[1024], const uint32_t s[1024], const uint32_t e[1024], struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
 	oqs_kex_rlwe_bcns15_fft_mul(out, a, s, ctx);
 	oqs_kex_rlwe_bcns15_fft_add(out, out, e);
 }
