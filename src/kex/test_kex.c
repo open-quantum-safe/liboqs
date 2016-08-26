@@ -15,7 +15,7 @@
 	printf("\n"); \
 }
 
-static int kex_test_correctness(OQS_RAND *rand, OQS_KEX *(*new_method)(OQS_RAND *, const uint8_t *, const size_t), int print, unsigned long occurrences[256]) {
+static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t), int print, unsigned long occurrences[256]) {
 
 	OQS_KEX *kex = NULL;
 	int rc;
@@ -110,11 +110,11 @@ cleanup:
 	OQS_KEX_alice_priv_free(kex, alice_priv);
 	OQS_KEX_free(kex);
 
-	return rc;	
+	return rc;
 
 }
 
-static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX *(*new_method)(OQS_RAND *, const uint8_t *, const size_t), int iterations) {
+static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t), int iterations) {
 
 	OQS_KEX *kex = NULL;
 	int ret;
@@ -152,7 +152,7 @@ err:
 cleanup:
 	OQS_KEX_free(kex);
 
-	return ret;	
+	return ret;
 
 }
 
