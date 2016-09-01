@@ -50,6 +50,14 @@ static int rand_test_distribution_n(OQS_RAND *rand, unsigned long occurrences[25
 	return 1;
 }
 
+#define PRINT_HEX_STRING(label, str, len) { \
+	printf("%-20s (%4zu bytes):  ", (label), (size_t) (len)); \
+	for (size_t i = 0; i < (len); i++) { \
+		printf("%02X", ((unsigned char *) (str)) [i]); \
+	} \
+	printf("\n"); \
+}
+
 static int rand_test_distribution_wrapper(OQS_RAND * (*new_method)(), int iterations) {
 
 	OQS_RAND *rand = new_method();
@@ -57,6 +65,32 @@ static int rand_test_distribution_wrapper(OQS_RAND * (*new_method)(), int iterat
 		fprintf(stderr, "rand is NULL\n");
 		return 0;
 	}
+
+	printf("================================================================================\n");
+	printf("Sample outputs of PRNG %s\n", rand->method_name);
+	printf("================================================================================\n");
+
+	uint8_t x[256];
+	OQS_RAND_n(rand, x, 256);
+	PRINT_HEX_STRING("OQS_RAND_n, n = 256", x, 256)
+
+	uint8_t y8 = OQS_RAND_8(rand);
+	PRINT_HEX_STRING("OQS_RAND_8", (uint8_t *) &y8, sizeof(y8));
+	y8 = OQS_RAND_8(rand);
+	PRINT_HEX_STRING("OQS_RAND_8", (uint8_t *) &y8, sizeof(y8));
+
+	uint32_t y32 = OQS_RAND_32(rand);
+	PRINT_HEX_STRING("OQS_RAND_32", (uint8_t *) &y32, sizeof(y32));
+	y32 = OQS_RAND_32(rand);
+	PRINT_HEX_STRING("OQS_RAND_32", (uint8_t *) &y32, sizeof(y32));
+
+	uint64_t y64 = OQS_RAND_64(rand);
+	PRINT_HEX_STRING("OQS_RAND_64", (uint8_t *) &y64, sizeof(y64));
+	y64 = OQS_RAND_64(rand);
+	PRINT_HEX_STRING("OQS_RAND_64", (uint8_t *) &y64, sizeof(y64));
+
+	OQS_RAND_n(rand, x, 256);
+	PRINT_HEX_STRING("OQS_RAND_n, n = 256", x, 256)
 
 	printf("================================================================================\n");
 	printf("Testing distribution of PRNG %s\n", rand->method_name);
