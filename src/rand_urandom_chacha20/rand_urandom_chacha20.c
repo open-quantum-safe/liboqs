@@ -9,14 +9,14 @@
 #include <oqs/rand.h>
 #include <oqs/rand_urandom_chacha20.h>
 
-#include "chacha20.c"
+#include "external/chacha20.c"
 
 typedef struct OQS_RAND_urandom_chacha20_ctx {
 	uint8_t key[32];
-	uint32_t nonce[3];
-	uint32_t counter;
+	uint32_t nonce[2];
 	uint8_t cache[64];
 	size_t cache_next_byte;
+	uint32_t chacha20_input[16];
 } OQS_RAND_urandom_chacha20_ctx;
 
 static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new();
@@ -59,9 +59,9 @@ static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 	if (r != 32) {
 		goto err;
 	}
-	bzero(rand_ctx->nonce, 12);
-	rand_ctx->counter = 0U;
+	bzero(rand_ctx->nonce, 8);
 	rand_ctx->cache_next_byte = 64; // cache is empty
+	ECRYPT_keysetup(rand_ctx->chacha20_input,rand_ctx->key);
 	goto okay;
 err:
 	if (rand_ctx) {
@@ -116,17 +116,12 @@ uint64_t OQS_RAND_urandom_chacha20_64(OQS_RAND *r) {
 
 void OQS_RAND_urandom_chacha20_n(OQS_RAND *r, uint8_t *out, size_t n) {
 	OQS_RAND_urandom_chacha20_ctx *rand_ctx = (OQS_RAND_urandom_chacha20_ctx *) r->ctx;
-	rand_ctx->counter++;
-	if (rand_ctx->counter == 0) {
-		rand_ctx->nonce[0]++;
-		if (rand_ctx->nonce[0] == 0) {
-			rand_ctx->nonce[1]++;
-			if (rand_ctx->nonce[1] == 0) {
-				rand_ctx->nonce[2]++;
-			}
-		}
+	rand_ctx->nonce[0]++;
+	if (rand_ctx->nonce[0] == 0) {
+		rand_ctx->nonce[1]++;
 	}
-	CRYPTO_chacha_20(out, out, n, rand_ctx->key, (uint8_t *)rand_ctx->nonce, rand_ctx->counter);
+	ECRYPT_ivsetup(rand_ctx->chacha20_input, (u8 *) rand_ctx->nonce);
+	ECRYPT_keystream_bytes(rand_ctx->chacha20_input, out, n);
 }
 
 static void OQS_RAND_urandom_chacha20_ctx_free(void *rand_ctx) {
