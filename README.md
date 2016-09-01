@@ -67,6 +67,7 @@ Since our initial launch, we have made the following updates:
 - Test harness for key exchange algorithms ([pr/2](https://github.com/open-quantum-safe/liboqs/pull/2))
 - Test harness for random number generator ([pr/2](https://github.com/open-quantum-safe/liboqs/pull/2))
 - Integration of liboqs into OpenSSL to enable testing of post-quantum algorithms in TLS connections ([open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/))
+- Licensing liboqs under the MIT license (see below)
 
 We plan to be making the following updates over the next month:
 
@@ -77,7 +78,6 @@ We plan to be making the following updates over the next month:
 - Benchmarking scripts for key exchange algorithms
 - Detailed Doxygen documentation for existing API and public functions
 - Modular build system
-- Finalize open source license for liboqs
 - Coding guidelines
 
 Over the next few months, we plan to be making the following updates:
@@ -89,6 +89,13 @@ Over the next few months, we plan to be making the following updates:
 - Integration of liboqs into additional application-level protocols.
 
 In the long term, we are also interested in including post-quantum signature schemes.
+
+## License
+
+liboqs is licensed under the MIT License; see [https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt](LICENSE.txt) for details.  liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
+
+- `src/kex_rlwe_bcns15`: public domain ([http://unlicense.org](http://unlicense.org))
+- `src/rand_urandom_chacha20/external`: public domain
 
 ## Team
 
