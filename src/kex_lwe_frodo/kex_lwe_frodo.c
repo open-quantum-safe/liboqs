@@ -63,6 +63,7 @@ OQS_KEX *OQS_KEX_lwe_frodo_new_recommended(OQS_RAND *rand, const uint8_t *seed, 
 	params->key_bits = 256;
 	params->rec_hint_len = LWE_DIV_ROUNDUP(params->nbar * params->nbar, 8);
 	params->pub_len = LWE_DIV_ROUNDUP(params->nbar * params->nbar * params->log2_q, 8);
+	params->stripe_step = 8;
 	params->sampler_num = 12;
 	params->cdf_table_len = 6;
 	params->cdf_table = malloc(params->cdf_table_len * sizeof(uint16_t));

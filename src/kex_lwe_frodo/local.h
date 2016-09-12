@@ -17,6 +17,7 @@ struct oqs_kex_lwe_frodo_params {
 	uint16_t key_bits;
 	uint16_t rec_hint_len;
 	uint32_t pub_len;
+	uint16_t stripe_step;
 	int sampler_num;
 	uint16_t *cdf_table;
 	size_t cdf_table_len;

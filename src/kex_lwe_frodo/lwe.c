@@ -43,6 +43,89 @@ void oqs_kex_lwe_frodo_reconcile(unsigned char *out, uint16_t *w, const unsigned
 	oqs_kex_lwe_frodo_pack(out, params->key_bits / 8, w, params->nbar * params->nbar, params->extracted_bits);
 }
 
+#include "external/aes.c"
+
+// Generate-and-multiply: generate A column-wise, multiply by s' on the left.
+int oqs_kex_lwe_frodo_key_gen_client_gen_a(unsigned char *out, const uint16_t *s, const uint16_t *e, struct oqs_kex_lwe_frodo_params *params) {
+	// a (N x N)
+	// s',e' (N_BAR x N)
+	// out = s'a + e' (N_BAR x N)
+
+	int i, j, k, kk;
+	int ret = 0;
+	uint16_t *out_unpacked = NULL;
+	uint16_t *a_cols = NULL;
+	uint16_t *a_cols_t = NULL;
+
+	out_unpacked = (uint16_t *) malloc(params->nbar * params->n * sizeof(int16_t));
+	if (out_unpacked == NULL) {
+		goto err;
+	}
+
+	for (i = 0; i < params->nbar; i++) {
+		for (j = 0; j < params->n; j++) {
+			out_unpacked[i * params->n + j] = e[i * params->n + j];
+		}
+	}
+
+	size_t a_colslen = params->n * params->stripe_step * sizeof(int16_t);
+	// a_cols stores 8 columns of A at a time.
+	a_cols = (uint16_t *) malloc(a_colslen);
+	a_cols_t = (uint16_t *) malloc(a_colslen);  // a_cols transposed (stored in the column-major order).
+	if ((a_cols == NULL) || (a_cols_t == NULL)) {
+		goto err;
+	}
+
+	for (kk = 0; kk < params->n; kk += params->stripe_step) {
+		// Go through A's columns, 8 (== params->stripe_step) columns at a time.
+		memset(a_cols, 0, a_colslen);
+		for (i = 0; i < params->n; i++) {
+			// Loading values in the little-endian order!
+			a_cols[i * params->stripe_step] = i;
+			a_cols[i * params->stripe_step + 1] = kk;
+		}
+
+		assert(params->seed_len == 16);
+		EncryptAES_ECB((uint8_t *) a_cols, a_colslen, params->seed, (uint8_t *) a_cols);
+
+		// transpose a_cols to have access to it in the column-major order.
+		for (i = 0; i < params->n; i++)
+			for (k = 0; k < params->stripe_step; k++)
+				a_cols_t[k * params->n + i] = a_cols[i * params->stripe_step + k];
+
+		for (i = 0; i < params->nbar; i++)
+			for (k = 0; k < params->stripe_step; k++) {
+				uint16_t sum = 0;
+				for (j = 0; j < params->n; j++)
+					sum += s[i * params->n + j] * a_cols_t[k * params->n + j];
+				out_unpacked[i * params->n + kk + k] += sum;
+				out_unpacked[i * params->n + kk + k] %= params->q;
+			}
+	}
+
+	oqs_kex_lwe_frodo_pack(out, params->pub_len, out_unpacked, params->n * params->nbar, params->log2_q);
+
+	ret = 1;
+
+err:
+	if (out_unpacked != NULL) {
+		bzero(out_unpacked, params->nbar * params->n * sizeof(uint16_t));
+		free(out_unpacked);
+	}
+
+	if (a_cols != NULL) {
+		bzero(a_cols, a_colslen);
+		free(a_cols);
+	}
+
+	if (a_cols_t != NULL) {
+		bzero(a_cols_t, a_colslen);
+		free(a_cols_t);
+	}
+
+	return ret;
+}
+
 // multiply by s on the right
 void oqs_kex_lwe_frodo_key_derive_server(uint16_t *out, const uint16_t *b, const uint16_t *s, struct oqs_kex_lwe_frodo_params *params) {
 	// b (N_BAR x N)
