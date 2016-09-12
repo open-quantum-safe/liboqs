@@ -22,7 +22,7 @@ void oqs_kex_lwe_frodo_round2(unsigned char *out, uint16_t *in, struct oqs_kex_l
 void oqs_kex_lwe_frodo_crossround2(unsigned char *out, const uint16_t *in, struct oqs_kex_lwe_frodo_params *params) {
 	int i;
 	// out should have enough space for N_BAR * N_BAR bits
-	memset((unsigned char *)out, 0, params->rec_hint_length);
+	memset((unsigned char *)out, 0, params->rec_hint_len);
 
 	uint16_t whole = 1 << (params->log2_q - params->extracted_bits);
 	uint16_t half = whole >> 1;

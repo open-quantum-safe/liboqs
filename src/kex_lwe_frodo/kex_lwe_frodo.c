@@ -61,15 +61,23 @@ OQS_KEX *OQS_KEX_lwe_frodo_new_recommended(OQS_RAND *rand, const uint8_t *seed, 
 	params->extracted_bits = 4;
 	params->nbar = 8;
 	params->key_bits = 256;
-	params->noise_dist = 3;
-	params->rec_hint_length = LWE_DIV_ROUNDUP(params->nbar * params->nbar, 8);
-	params->pub_length = LWE_DIV_ROUNDUP(params->nbar * params->nbar * params->log2_q, 8);
+	params->rec_hint_len = LWE_DIV_ROUNDUP(params->nbar * params->nbar, 8);
+	params->pub_len = LWE_DIV_ROUNDUP(params->nbar * params->nbar * params->log2_q, 8);
+	params->sampler_num = 12;
+	params->cdf_table_len = 6;
+	params->cdf_table = malloc(params->cdf_table_len * sizeof(uint16_t));
+	if (NULL == params->cdf_table) {
+		goto err;
+	}
+	uint16_t cdf_table_tmp[6] = {602, 1521, 1927, 2031, 2046, 2047};
+	memcpy(params->cdf_table, cdf_table_tmp, 6);
 
 	return k;
 
 err:
 	if (k) {
 		if (k->params) {
+			free(params->cdf_table);
 			free(params->seed);
 			free(params->param_name);
 			free(k->params);
@@ -91,7 +99,7 @@ int OQS_KEX_lwe_frodo_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg
 	*alice_msg = NULL;
 
 	/* allocate public/private key pair */
-	*alice_msg = malloc(params->pub_length);
+	*alice_msg = malloc(params->pub_len);
 	if (*alice_msg == NULL) {
 		goto err;
 	}
@@ -105,13 +113,13 @@ int OQS_KEX_lwe_frodo_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg
 		goto err;
 	}
 
-	oqs_kex_lwe_frodo_sample_n(*alice_priv, params->n * params->nbar, params);
-	oqs_kex_lwe_frodo_sample_n(e, params->n * params->nbar, params);
+	oqs_kex_lwe_frodo_sample_n(*alice_priv, params->n * params->nbar, params, k->rand);
+	oqs_kex_lwe_frodo_sample_n(e, params->n * params->nbar, params, k->rand);
 	if (!oqs_kex_lwe_frodo_key_gen_client_gen_a(*alice_msg, params->seed, *alice_priv, e, params)) {
 		goto err;
 	}
 
-	*alice_msg_len = params->pub_length;
+	*alice_msg_len = params->pub_len;
 
 	ret = 1;
 	goto cleanup;
@@ -225,6 +233,8 @@ void OQS_KEX_lwe_frodo_free(OQS_KEX *k) {
 	}
 	if (k->params) {
 		struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
+		free(params->cdf_table);
+		params->cdf_table = NULL;
 		free(params->seed);
 		params->seed = NULL;
 		free(params->param_name);
