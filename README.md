@@ -49,7 +49,7 @@ We hope OQS will provide a framework for many post-quantum implementations.
 
 In the immediate term, if you have feedback on our API ([kex.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/kex/kex.h) or [rand.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/rand/rand.h)), please contact us so we can ensure our API covers a wide range of implementation needs.
 
-If you have or are writing an implementation of a post-quantum key exchange algorithm, we hope you will consider making an implementation that meets our API so that others may use it and would be happy to discuss including it directly in liboqs.
+If you have or are writing an implementation of a post-quantum key exchange algorithm, we hope you will consider making an implementation that meets our API so that others may use it and would be happy to discuss including it directly in liboqs.  Please take a look at our [coding conventions](https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions).
 
 If you would like to use liboqs in an application-level protocol, please get in touch and we can provide some guidance on options for using liboqs.
 
@@ -78,7 +78,6 @@ We plan to be making the following updates over the next month:
 - Benchmarking scripts for key exchange algorithms
 - Detailed Doxygen documentation for existing API and public functions
 - Modular build system
-- Coding guidelines
 
 Over the next few months, we plan to be making the following updates:
 
