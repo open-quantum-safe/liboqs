@@ -20,6 +20,7 @@ liboqs currently contains:
 
 - `rand_urandom_chacha20`: pseudorandom number generator seeded from /dev/urandom and expanded using the ChaCha20 stream cipher
 - `kex_rlwe_bcns15`: key exchange from the ring learning with errors problem (Bos, Costello, Naehrig, Stebila, *IEEE Symposium on Security & Privacy 2015*, [https://eprint.iacr.org/2014/599](https://eprint.iacr.org/2014/599))
+- `kex_lwe_frodo`: key exchange from the learning with errors problem (Bos, Costello, Ducas, Mironov, Naehrig, Nikolaenko, Raghunathan, Stebila, *ACM Conference on Computer and Communications Security 2016*, [http://eprint.iacr.org/2016/659](http://eprint.iacr.org/2016/659))
 
 ## Building and Running
 
@@ -68,10 +69,10 @@ Since our initial launch, we have made the following updates:
 - Test harness for random number generator ([pr/2](https://github.com/open-quantum-safe/liboqs/pull/2))
 - Integration of liboqs into OpenSSL to enable testing of post-quantum algorithms in TLS connections ([open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/))
 - Licensing liboqs under the MIT license (see below)
+- `kex_lwe_frodo` implementation ([https://eprint.iacr.org/2016/659](https://eprint.iacr.org/2016/659))
 
 We plan to be making the following updates over the next month:
 
-- `kex_lwe_frodo` implementation ([https://eprint.iacr.org/2016/659](https://eprint.iacr.org/2016/659))
 - `kex_rlwe_bcns15` generalization to multiple security levels
 - `kex_ntru_ees743p1` wrapper around NTRU open source public key encryption ([https://github.com/NTRUOpenSourceProject/ntru-crypto](https://github.com/NTRUOpenSourceProject/ntru-crypto))
 - `kex_rlwe_newhope` wrapper around "NewHope" ring-LWE key exchange ([https://eprint.iacr.org/2015/1092](https://eprint.iacr.org/2015/1092))
