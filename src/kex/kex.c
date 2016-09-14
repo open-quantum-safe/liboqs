@@ -5,9 +5,9 @@
 #include <oqs/kex_rlwe_bcns15.h>
 #endif
 
-OQS_KEX *OQS_KEX_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len) {
+OQS_KEX *OQS_KEX_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 #if defined(OQS_KEX_DEFAULT_BCNS15)
-	return OQS_KEX_rlwe_bcns15_new(rand, seed, seed_len);
+	return OQS_KEX_rlwe_bcns15_new(rand, seed, seed_len, named_parameters);
 #else
 #error "No default KEX method defined."
 #endif
