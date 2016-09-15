@@ -15,7 +15,7 @@
 	printf("\n"); \
 }
 
-static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t), int print, unsigned long occurrences[256]) {
+static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *), const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int print, unsigned long occurrences[256]) {
 
 	OQS_KEX *kex = NULL;
 	int rc;
@@ -32,7 +32,7 @@ static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND
 	size_t bob_key_len;
 
 	/* setup KEX */
-	kex = new_method(rand, NULL, 0);
+	kex = new_method(rand, seed, seed_len, named_parameters);
 	if (kex == NULL) {
 		goto err;
 	}
@@ -114,7 +114,7 @@ cleanup:
 
 }
 
-static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t), int iterations) {
+static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *), const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations) {
 
 	OQS_KEX *kex = NULL;
 	int ret;
@@ -124,20 +124,20 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX * (*new_method)(
 		occurrences[i] = 0;
 	}
 
-	ret = kex_test_correctness(rand, new_method, 1, occurrences);
+	ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters, 1, occurrences);
 	if (ret != 1) goto err;
 
 	/* setup KEX */
-	kex = new_method(rand, NULL, 0);
+	kex = new_method(rand, seed, seed_len, named_parameters);
 	if (kex == NULL) {
 		goto err;
 	}
 
 	printf("================================================================================\n");
-	printf("Testing correctness and randomness of key exchange method %s for %d iterations\n", kex->method_name, iterations);
+	printf("Testing correctness and randomness of key exchange method %s (params=%s) for %d iterations\n", kex->method_name, named_parameters, iterations);
 	printf("================================================================================\n");
 	for (int i = 0; i < iterations; i++) {
-		ret = kex_test_correctness(rand, new_method, 0, occurrences);
+		ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters, 0, occurrences);
 		if (ret != 1) goto err;
 	}
 	printf("All session keys matched.\n");
@@ -167,7 +167,7 @@ int main() {
 		goto err;
 	}
 
-	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_new, KEX_TEST_ITERATIONS);
+	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_new, NULL, 0, NULL, KEX_TEST_ITERATIONS);
 	if (ret != 1) {
 		goto err;
 	}
