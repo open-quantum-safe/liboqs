@@ -1,9 +1,16 @@
+#if defined(WINDOWS)
+#define UNUSED
+// FIXME: __attribute__ fails in VS, is there something else I should define?
+#else
 #define UNUSED __attribute__ ((unused))
+#endif
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#if !defined(WINDOWS)
+#include <unistd.h>
 #include <strings.h>
+#endif
 
 #include <oqs/kex.h>
 #include <oqs/rand.h>
@@ -12,6 +19,10 @@
 #include "local.h"
 
 #include "rlwe_a.h"
+
+#if defined(WINDOWS)
+#define strdup _strdup 
+#endif
 
 OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand, UNUSED const uint8_t *seed, UNUSED const size_t seed_len, UNUSED const char *named_parameters) {
 

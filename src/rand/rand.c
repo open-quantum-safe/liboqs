@@ -38,7 +38,11 @@ void OQS_RAND_free(OQS_RAND *r) {
 	}
 }
 
-inline void OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]) {
+#if !defined(WINDOWS)
+/* For some reason specifying inline results in a build error */
+inline
+#endif
+void OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]) {
 	occurrences[b] += 1;
 }
 

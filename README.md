@@ -23,7 +23,7 @@ liboqs currently contains:
 
 ## Building and Running
 
-Builds have been tested on Mac OS X 10.11.6 and Ubuntu 16.04.1.
+Builds have been tested on Mac OS X 10.11.6, Ubuntu 16.04.1, and Windows 10.
 
 To build, clone or download the source from Github, then simply type:
 
@@ -34,6 +34,8 @@ This will generate:
 - `liboqs.a`: A static library with implementations for the algorithms listed in "Contents" above.
 - `test_rand`: A simple test harness for the random number generator.  This will test the distance of PRNG output from uniform using statistical distance.
 - `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
+
+Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder.
 
 ## Documentation
 
