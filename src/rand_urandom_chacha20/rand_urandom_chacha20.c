@@ -17,7 +17,7 @@
 #include "external/chacha20.c"
 
 #if defined(WINDOWS)
-#define strdup _strdup 
+#define strdup _strdup
 #endif
 
 typedef struct OQS_RAND_urandom_chacha20_ctx {
@@ -64,9 +64,9 @@ static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 	if (rand_ctx == NULL) {
 		goto err;
 	}
-#if defined(WINDOWS)	
+#if defined(WINDOWS)
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, 0) ||
-		!CryptGenRandom(hCryptProv, 32, rand_ctx->key)) {
+	        !CryptGenRandom(hCryptProv, 32, rand_ctx->key)) {
 		goto err;
 	}
 #else
@@ -81,13 +81,13 @@ static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 #endif
 	memset(rand_ctx->nonce, 0, 8);
 	rand_ctx->cache_next_byte = 64; // cache is empty
-	ECRYPT_keysetup(rand_ctx->chacha20_input,rand_ctx->key);
+	ECRYPT_keysetup(rand_ctx->chacha20_input, rand_ctx->key);
 	goto okay;
 err:
 	if (rand_ctx) {
 		free(rand_ctx);
 	}
-#if defined(WINDOWS)	
+#if defined(WINDOWS)
 #else
 	if (fd) {
 		close(fd);
@@ -95,7 +95,7 @@ err:
 #endif
 	return NULL;
 okay:
-#if defined(WINDOWS)	
+#if defined(WINDOWS)
 #else
 	close(fd);
 #endif

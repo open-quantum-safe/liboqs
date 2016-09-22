@@ -21,7 +21,7 @@
 #include "rlwe_a.h"
 
 #if defined(WINDOWS)
-#define strdup _strdup 
+#define strdup _strdup
 #endif
 
 OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand, UNUSED const uint8_t *seed, UNUSED const size_t seed_len, UNUSED const char *named_parameters) {
