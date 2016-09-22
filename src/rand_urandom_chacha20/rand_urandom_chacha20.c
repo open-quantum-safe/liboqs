@@ -1,8 +1,13 @@
 #include <sys/types.h>
+#if defined(WINDOWS)
+#include <windows.h>
+#include <Wincrypt.h>
+#else
 #include <sys/uio.h>
 #include <unistd.h>
-#include <stdint.h>
 #include <strings.h>
+#endif
+#include <stdint.h>
 #include <stdlib.h>
 #include <fcntl.h>
 
@@ -10,6 +15,10 @@
 #include <oqs/rand_urandom_chacha20.h>
 
 #include "external/chacha20.c"
+
+#if defined(WINDOWS)
+#define strdup _strdup 
+#endif
 
 typedef struct OQS_RAND_urandom_chacha20_ctx {
 	uint8_t key[32];
@@ -45,12 +54,22 @@ OQS_RAND *OQS_RAND_urandom_chacha20_new() {
 }
 
 static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
+#if defined(WINDOWS)
+	HCRYPTPROV   hCryptProv;
+#else
 	int fd = 0;
+#endif
 	OQS_RAND_urandom_chacha20_ctx *rand_ctx = NULL;
 	rand_ctx = (OQS_RAND_urandom_chacha20_ctx *) malloc(sizeof(OQS_RAND_urandom_chacha20_ctx));
 	if (rand_ctx == NULL) {
 		goto err;
 	}
+#if defined(WINDOWS)	
+	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, 0) ||
+		!CryptGenRandom(hCryptProv, 32, rand_ctx->key)) {
+		goto err;
+	}
+#else
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd == 0) {
 		goto err;
@@ -59,7 +78,8 @@ static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 	if (r != 32) {
 		goto err;
 	}
-	bzero(rand_ctx->nonce, 8);
+#endif
+	memset(rand_ctx->nonce, 0, 8);
 	rand_ctx->cache_next_byte = 64; // cache is empty
 	ECRYPT_keysetup(rand_ctx->chacha20_input,rand_ctx->key);
 	goto okay;
@@ -67,12 +87,18 @@ err:
 	if (rand_ctx) {
 		free(rand_ctx);
 	}
+#if defined(WINDOWS)	
+#else
 	if (fd) {
 		close(fd);
 	}
+#endif
 	return NULL;
 okay:
+#if defined(WINDOWS)	
+#else
 	close(fd);
+#endif
 	return rand_ctx;
 }
 
