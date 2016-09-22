@@ -70,6 +70,7 @@ Since our initial launch, we have made the following updates:
 - Test harness for random number generator ([pr/2](https://github.com/open-quantum-safe/liboqs/pull/2))
 - Integration of liboqs into OpenSSL to enable testing of post-quantum algorithms in TLS connections ([open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/))
 - Licensing liboqs under the MIT license (see below)
+- Building on Windows
 
 We plan to be making the following updates over the next month:
 
@@ -106,6 +107,7 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 
 - Shravan Mishra (University of Waterloo)
 - Alex Parent (University of Waterloo)
+- Christian Paquin (Microsoft Research)
 
 ### Support
 
