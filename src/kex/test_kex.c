@@ -4,6 +4,8 @@
 
 #include <oqs/rand.h>
 #include <oqs/kex.h>
+#include <oqs/kex_rlwe_bcns15.h>
+#include <oqs/kex_lwe_frodo.h>
 
 #define KEX_TEST_ITERATIONS 500
 
@@ -34,6 +36,7 @@ static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND
 	/* setup KEX */
 	kex = new_method(rand, seed, seed_len, named_parameters);
 	if (kex == NULL) {
+		fprintf(stderr, "new_method failed\n");
 		goto err;
 	}
 
@@ -46,6 +49,7 @@ static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND
 	/* Alice's initial message */
 	rc = OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
 	if (rc != 1) {
+		fprintf(stderr, "OQS_KEX_alice_0 failed\n");
 		goto err;
 	}
 
@@ -56,6 +60,7 @@ static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND
 	/* Bob's response */
 	rc = OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
 	if (rc != 1) {
+		fprintf(stderr, "OQS_KEX_bob failed\n");
 		goto err;
 	}
 
@@ -67,6 +72,7 @@ static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND
 	/* Alice processes Bob's response */
 	rc = OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len);
 	if (rc != 1) {
+		fprintf(stderr, "OQS_KEX_alice_1 failed\n");
 		goto err;
 	}
 
@@ -167,7 +173,11 @@ int main() {
 		goto err;
 	}
 
-	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_new, NULL, 0, NULL, KEX_TEST_ITERATIONS);
+	// ret = kex_test_correctness_wrapper(rand, &OQS_KEX_rlwe_bcns15_new, NULL, 0, NULL, KEX_TEST_ITERATIONS);
+	// if (ret != 1) {
+		// goto err;
+	// }
+	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_lwe_frodo_new, (uint8_t *) "\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F", 16, "recommended", KEX_TEST_ITERATIONS);
 	if (ret != 1) {
 		goto err;
 	}

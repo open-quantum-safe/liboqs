@@ -45,26 +45,98 @@ void oqs_kex_lwe_frodo_reconcile(unsigned char *out, uint16_t *w, const unsigned
 
 #include "external/aes.c"
 
+// Generate-and-multiply: generate A row-wise, multiply by s on the right.
+int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t *s, const uint16_t *e, struct oqs_kex_lwe_frodo_params *params) {
+	// A (N x N)
+	// s,e (N x N_BAR)
+	// out = A * s + e (N x N_BAR)
+
+	int i, j, k;
+	int ret = 0;
+	uint16_t *a_row = NULL;
+	uint16_t *s_transpose = NULL;
+
+	for (i = 0; i < params->n; i++) {
+		for (j = 0; j < params->nbar; j++) {
+			out[i * params->nbar + j] = e[i * params->nbar + j];
+		}
+	}
+
+	size_t a_rowlen = params->n * sizeof(int16_t);
+	a_row = (uint16_t *) malloc(a_rowlen);
+	if (a_row == NULL) {
+		goto err;
+	}
+
+	// transpose s to store it in the column-major order
+	s_transpose = (uint16_t *) malloc(params->nbar * params->n * sizeof(int16_t));
+	if (s_transpose == NULL) {
+		goto err;
+	}
+
+	for (j = 0; j < params->n; j++) {
+		for (k = 0; k < params->nbar; k++) {
+			s_transpose[k * params->n + j] = s[j * params->nbar + k];
+		}
+	}
+
+	for (i = 0; i < params->n; i++) {
+		// go through A's rows
+		memset(a_row, 0, a_rowlen);
+		for (j = 0; j < params->n; j += params->stripe_step) {
+			// Loading values in the little-endian order!
+			a_row[j] = i;
+			a_row[j + 1] = j;
+		}
+
+		assert(params->seed_len == 16);
+		EncryptAES_ECB((uint8_t *) a_row, a_rowlen, params->seed, (uint8_t *) a_row);
+
+		for (k = 0; k < params->nbar; k++) {
+			uint16_t sum = 0;
+			for (j = 0; j < params->n; j++) {
+				// matrix-vector multiplication happens here
+				sum += a_row[j] * s_transpose[k * params->n + j];
+			}
+			out[i * params->nbar + k] += sum;
+			out[i * params->nbar + k] %= params->q;
+		}
+	}
+
+	ret = 1;
+	goto cleanup;
+
+err:
+	bzero(out, params->nbar * params->n * sizeof(uint16_t));
+
+cleanup:
+	if (a_row != NULL) {
+		bzero(a_row, a_rowlen);
+		free(a_row);
+	}
+
+	if (s_transpose != NULL) {
+		bzero(s_transpose, params->nbar * params->n * sizeof(int16_t));
+		free(s_transpose);
+	}
+
+	return ret;
+}
+
 // Generate-and-multiply: generate A column-wise, multiply by s' on the left.
-int oqs_kex_lwe_frodo_key_gen_client_gen_a(unsigned char *out, const uint16_t *s, const uint16_t *e, struct oqs_kex_lwe_frodo_params *params) {
+int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t *s, const uint16_t *e, struct oqs_kex_lwe_frodo_params *params) {
 	// a (N x N)
 	// s',e' (N_BAR x N)
 	// out = s'a + e' (N_BAR x N)
 
 	int i, j, k, kk;
 	int ret = 0;
-	uint16_t *out_unpacked = NULL;
 	uint16_t *a_cols = NULL;
 	uint16_t *a_cols_t = NULL;
 
-	out_unpacked = (uint16_t *) malloc(params->nbar * params->n * sizeof(int16_t));
-	if (out_unpacked == NULL) {
-		goto err;
-	}
-
 	for (i = 0; i < params->nbar; i++) {
 		for (j = 0; j < params->n; j++) {
-			out_unpacked[i * params->n + j] = e[i * params->n + j];
+			out[i * params->n + j] = e[i * params->n + j];
 		}
 	}
 
@@ -98,21 +170,18 @@ int oqs_kex_lwe_frodo_key_gen_client_gen_a(unsigned char *out, const uint16_t *s
 				uint16_t sum = 0;
 				for (j = 0; j < params->n; j++)
 					sum += s[i * params->n + j] * a_cols_t[k * params->n + j];
-				out_unpacked[i * params->n + kk + k] += sum;
-				out_unpacked[i * params->n + kk + k] %= params->q;
+				out[i * params->n + kk + k] += sum;
+				out[i * params->n + kk + k] %= params->q;
 			}
 	}
 
-	oqs_kex_lwe_frodo_pack(out, params->pub_len, out_unpacked, params->n * params->nbar, params->log2_q);
-
 	ret = 1;
+	goto cleanup;
 
 err:
-	if (out_unpacked != NULL) {
-		bzero(out_unpacked, params->nbar * params->n * sizeof(uint16_t));
-		free(out_unpacked);
-	}
+	bzero(out, params->nbar * params->n * sizeof(uint16_t));
 
+cleanup:
 	if (a_cols != NULL) {
 		bzero(a_cols, a_colslen);
 		free(a_cols);
@@ -127,7 +196,7 @@ err:
 }
 
 // multiply by s on the right
-void oqs_kex_lwe_frodo_key_derive_server(uint16_t *out, const uint16_t *b, const uint16_t *s, struct oqs_kex_lwe_frodo_params *params) {
+void oqs_kex_lwe_frodo_mul_bs(uint16_t *out, const uint16_t *b, const uint16_t *s, struct oqs_kex_lwe_frodo_params *params) {
 	// b (N_BAR x N)
 	// s (N x N_BAR)
 	// out = bs
@@ -139,6 +208,24 @@ void oqs_kex_lwe_frodo_key_derive_server(uint16_t *out, const uint16_t *b, const
 				out[i * params->nbar + j] += b[i * params->n + k] * s[k * params->nbar + j];
 			}
 			out[i * params->nbar + j] %= params->q;  // not really necessary since LWE_Q is a power of 2.
+		}
+	}
+}
+
+// multiply by s on the left
+void oqs_kex_lwe_frodo_mul_add_sb_plus_e(uint16_t *out, const uint16_t *b, const uint16_t *s, const uint16_t *e, struct oqs_kex_lwe_frodo_params *params) {
+	// b (N x N_BAR)
+	// s (N_BAR x N)
+	// e (N_BAR x N_BAR)
+	// out = sb + e
+	int i, j, k;
+	for (k = 0; k < params->nbar; k++) {
+		for (i = 0; i < params->nbar; i++) {
+			out[k * params->nbar + i] = e[k * params->nbar + i];
+			for (j = 0; j < params->n; j++) {
+				out[k * params->nbar + i] += s[k * params->n + j] * b[j * params->nbar + i];
+			}
+			out[k * params->nbar + i] %= params->q;  // not really necessary since LWE_Q is a power of 2.
 		}
 	}
 }
@@ -179,7 +266,7 @@ void oqs_kex_lwe_frodo_key_round_hints(uint16_t *vec, const size_t length, const
 // from each input element. If inlen * lsb / 8 > outlen, only outlen * 8 bits
 // are copied.
 void oqs_kex_lwe_frodo_pack(unsigned char *out, const size_t outlen, const uint16_t *in, const size_t inlen, const unsigned char lsb) {
-	memset((unsigned char *)out, 0, outlen);
+	memset(out, 0, outlen);
 
 	size_t i = 0;            // whole bytes already filled in
 	size_t j = 0;            // whole uint16_t already copied

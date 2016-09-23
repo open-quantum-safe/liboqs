@@ -13,7 +13,16 @@
 
 #define LWE_DIV_ROUNDUP(x, y) (((x) + (y)-1) / y)
 
-OQS_KEX *OQS_KEX_lwe_frodo_new_recommended(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len) {
+#include <stdio.h>
+#define PRINT_HEX_STRING(label, str, len) { \
+	printf("%-20s (%4zu bytes):  ", (label), (size_t) (len)); \
+	for (size_t i = 0; i < (len); i++) { \
+		printf("%02X", ((unsigned char *) (str)) [i]); \
+	} \
+	printf("\n"); \
+}
+
+OQS_KEX *OQS_KEX_lwe_frodo_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 
 	OQS_KEX *k;
 	struct oqs_kex_lwe_frodo_params *params;
@@ -30,13 +39,6 @@ OQS_KEX *OQS_KEX_lwe_frodo_new_recommended(OQS_RAND *rand, const uint8_t *seed, 
 		goto err;
 	}
 	params = (struct oqs_kex_lwe_frodo_params *) k->params;
-
-	k->method_name = strdup("LWE Frodo recommended");
-	if (NULL == k->method_name) {
-		goto err;
-	}
-	k->estimated_classical_security = 144;
-	k->estimated_quantum_security = 130;
 	k->rand = rand;
 	k->ctx = NULL;
 	k->alice_0 = &OQS_KEX_lwe_frodo_alice_0;
@@ -45,33 +47,48 @@ OQS_KEX *OQS_KEX_lwe_frodo_new_recommended(OQS_RAND *rand, const uint8_t *seed, 
 	k->alice_priv_free = &OQS_KEX_lwe_frodo_alice_priv_free;
 	k->free = &OQS_KEX_lwe_frodo_free;
 
-	params->seed = malloc(seed_len);
-	if (NULL == params->seed) {
+	if (strcmp(named_parameters, "recommended") == 0) {
+
+		k->method_name = strdup("LWE Frodo recommended");
+		if (NULL == k->method_name) {
+			goto err;
+		}
+		k->estimated_classical_security = 144;
+		k->estimated_quantum_security = 130;
+
+		params->seed = malloc(seed_len);
+		if (NULL == params->seed) {
+			goto err;
+		}
+		memcpy(params->seed, seed, seed_len);
+		params->seed_len = seed_len;
+		params->param_name = strdup("recommended");
+		if (NULL == params->param_name) {
+			goto err;
+		}
+		params->log2_q = 15;
+		params->q = 1 << params->log2_q;
+		params->n = 752;
+		params->extracted_bits = 4;
+		params->nbar = 8;
+		params->key_bits = 256;
+		params->rec_hint_len = LWE_DIV_ROUNDUP(params->nbar * params->nbar, 8);
+		params->pub_len = LWE_DIV_ROUNDUP(params->n * params->nbar * params->log2_q, 8);
+		params->stripe_step = 8;
+		params->sampler_num = 12;
+		params->cdf_table_len = 6;
+		params->cdf_table = malloc(params->cdf_table_len * sizeof(uint16_t));
+		if (NULL == params->cdf_table) {
+			goto err;
+		}
+		uint16_t cdf_table_tmp[6] = {602, 1521, 1927, 2031, 2046, 2047};
+		memcpy(params->cdf_table, cdf_table_tmp, 6);
+
+	} else {
+
 		goto err;
+
 	}
-	memcpy(params->seed, seed, seed_len);
-	params->seed_len = seed_len;
-	params->param_name = strdup("recommended");
-	if (NULL == params->param_name) {
-		goto err;
-	}
-	params->log2_q = 15;
-	params->q = 1 << params->log2_q;
-	params->n = 752;
-	params->extracted_bits = 4;
-	params->nbar = 8;
-	params->key_bits = 256;
-	params->rec_hint_len = LWE_DIV_ROUNDUP(params->nbar * params->nbar, 8);
-	params->pub_len = LWE_DIV_ROUNDUP(params->nbar * params->nbar * params->log2_q, 8);
-	params->stripe_step = 8;
-	params->sampler_num = 12;
-	params->cdf_table_len = 6;
-	params->cdf_table = malloc(params->cdf_table_len * sizeof(uint16_t));
-	if (NULL == params->cdf_table) {
-		goto err;
-	}
-	uint16_t cdf_table_tmp[6] = {602, 1521, 1927, 2031, 2046, 2047};
-	memcpy(params->cdf_table, cdf_table_tmp, 6);
 
 	return k;
 
@@ -94,33 +111,44 @@ int OQS_KEX_lwe_frodo_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg
 	int ret;
 
 	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
-	uint16_t *e = NULL;
+	uint16_t *b = NULL, *e = NULL;
 
 	*alice_priv = NULL;
 	*alice_msg = NULL;
 
-	/* allocate public/private key pair */
-	*alice_msg = malloc(params->pub_len);
-	if (*alice_msg == NULL) {
-		goto err;
-	}
+	/* allocate private key, error, and outgoing message */
 	*alice_priv = malloc(params->n * params->nbar * sizeof(uint16_t));
 	if (*alice_priv == NULL) {
 		goto err;
 	}
-
+	b = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
+	if (b == NULL) {
+		goto err;
+	}
 	e = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
 	if (e == NULL) {
 		goto err;
 	}
-
-	oqs_kex_lwe_frodo_sample_n(*alice_priv, params->n * params->nbar, params, k->rand);
-	oqs_kex_lwe_frodo_sample_n(e, params->n * params->nbar, params, k->rand);
-	if (!oqs_kex_lwe_frodo_key_gen_client_gen_a(*alice_msg, params->seed, *alice_priv, e, params)) {
+	*alice_msg = malloc(params->pub_len);
+	if (*alice_msg == NULL) {
 		goto err;
 	}
 
+	/* generate S and E */
+	oqs_kex_lwe_frodo_sample_n(*alice_priv, params->n * params->nbar, params, k->rand);
+	// PRINT_HEX_STRING("S", *alice_priv, params->n * params->nbar * sizeof(uint16_t));
+	oqs_kex_lwe_frodo_sample_n(e, params->n * params->nbar, params, k->rand);
+	// PRINT_HEX_STRING("E", e, params->n * params->nbar * sizeof(uint16_t));
+
+	/* compute B = AS + E */
+	if (!oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(b, *alice_priv, e, params)) {
+		goto err;
+	}
+	PRINT_HEX_STRING("B", b, params->n * params->nbar * sizeof(uint16_t));
+	oqs_kex_lwe_frodo_pack(*alice_msg, params->pub_len, b, params->n * params->nbar * sizeof(uint16_t), params->log2_q);
+
 	*alice_msg_len = params->pub_len;
+	PRINT_HEX_STRING("B packed", *alice_msg, params->pub_len);
 
 	ret = 1;
 	goto cleanup;
@@ -131,96 +159,195 @@ err:
 	*alice_msg = NULL;
 	free(*alice_priv);
 	*alice_priv = NULL;
-	free(e);
 
 cleanup:
+	free(e);
 	return ret;
 
 }
 
-// int OQS_KEX_lwe_frodo_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
+int OQS_KEX_lwe_frodo_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
 
-// 	int ret;
+	int ret;
 
-// 	uint8_t *bob_priv = NULL;
-// 	*bob_msg = NULL;
-// 	*key = NULL;
+	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
+	
+	uint16_t *bob_priv = NULL;
+	uint8_t *bob_rec = NULL;
+	uint16_t *b = NULL, *bprime = NULL, *eprime = NULL, *eprimeprime = NULL;
+	uint16_t *v = NULL;
+	*bob_msg = NULL;
+	*key = NULL;
 
-// 	if (alice_msg_len != 1024 * sizeof(uint32_t)) {
-// 		goto err;
-// 	}
+	/* check length of other party's public key */
+	if (alice_msg_len != params->pub_len) {
+		goto err;
+	}
 
-// 	bob_priv = malloc(1024 * sizeof(uint32_t));
-// 	if (bob_priv == NULL) {
-// 		goto err;
-// 	}
-// 	/* allocate message and session key */
-// 	*bob_msg = malloc(1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t));
-// 	if (*bob_msg == NULL) {
-// 		goto err;
-// 	}
-// 	*key = malloc(16 * sizeof(uint64_t));
-// 	if (*key == NULL) {
-// 		goto err;
-// 	}
+	/* allocate private key, errors, outgoing message, and key */
+	bob_priv = malloc(params->n * params->nbar * sizeof(uint16_t));
+	if (bob_priv == NULL) {
+		goto err;
+	}
+	bprime = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
+	if (bprime == NULL) {
+		goto err;
+	}
+	eprime = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
+	if (eprime == NULL) {
+		goto err;
+	}
+	eprimeprime = (uint16_t *) malloc(params->nbar * params->nbar * sizeof(uint16_t));
+	if (eprimeprime == NULL) {
+		goto err;
+	}
+	b = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
+	if (b == NULL) {
+		goto err;
+	}
+	v = (uint16_t *) malloc(params->nbar * params->nbar * sizeof(uint16_t));
+	if (v == NULL) {
+		goto err;
+	}
+	*bob_msg = malloc(params->pub_len + params->rec_hint_len);
+	if (*bob_msg == NULL) {
+		goto err;
+	}
+	bob_rec = *bob_msg + params->pub_len;
+	*key = malloc(params->key_bits >> 3);
+	if (*key == NULL) {
+		goto err;
+	}
 
-// 	/* generate public/private key pair */
-// 	oqs_kex_lwe_frodo_generate_keypair(oqs_kex_lwe_frodo_a, (uint32_t *) bob_priv, (uint32_t *) *bob_msg, k->ctx, k->rand);
+	/* generate S' and E' */
+	oqs_kex_lwe_frodo_sample_n(bob_priv, params->n * params->nbar, params, k->rand);
+	// PRINT_HEX_STRING("S'", bob_priv, params->n * params->nbar * sizeof(uint16_t));
+	oqs_kex_lwe_frodo_sample_n(eprime, params->n * params->nbar, params, k->rand);
+	// PRINT_HEX_STRING("E'", eprime, params->n * params->nbar * sizeof(uint16_t));
 
-// 	/* generate Bob's response */
-// 	uint8_t *bob_rec = *bob_msg + 1024 * sizeof(uint32_t);
-// 	oqs_kex_lwe_frodo_compute_key_bob((uint32_t *) alice_msg, (uint32_t *) bob_priv, (uint64_t *) bob_rec, (uint64_t *) *key, k->ctx, k->rand);
-// 	*bob_msg_len = 1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t);
-// 	*key_len = 16 * sizeof(uint64_t);
+	/* compute B' = S'A + E' */
+	ret = oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(bprime, bob_priv, eprime, params);
+	PRINT_HEX_STRING("B'", bprime, params->pub_len);
+	oqs_kex_lwe_frodo_pack(*bob_msg, params->pub_len, bprime, params->n * params->nbar * sizeof(uint16_t), params->log2_q);
+	PRINT_HEX_STRING("B' packed", *bob_msg, params->pub_len);
 
-// 	ret = 1;
-// 	goto cleanup;
+	/* generate E'' */
+	oqs_kex_lwe_frodo_sample_n(eprimeprime, params->nbar * params->nbar, params, k->rand);
+	// PRINT_HEX_STRING("E''", eprimeprime, params->nbar * params->nbar * sizeof(uint16_t));
 
-// err:
-// 	ret = 0;
-// 	free(*bob_msg);
-// 	free(*key);
+	/* unpack B */
+	oqs_kex_lwe_frodo_unpack(b, params->n * params->nbar, alice_msg, alice_msg_len, params->log2_q);
+	PRINT_HEX_STRING("B unpacked", b, params->n * params->nbar * sizeof(uint16_t));
 
-// cleanup:
-// 	free(bob_priv);
+	/* compute V = S'B + E'' */
+	oqs_kex_lwe_frodo_mul_add_sb_plus_e(v, b, bob_priv, eprimeprime, params);
+	PRINT_HEX_STRING("V", v, params->nbar * params->nbar * sizeof(uint16_t));
 
-// 	return ret;
+	/* compute C = <V>_{2^B} */
+	oqs_kex_lwe_frodo_crossround2(bob_rec, v, params);
+	PRINT_HEX_STRING("C", bob_rec, params->rec_hint_len);
 
-// }
+	/* compute K = round(V)_{2^B} */
+	oqs_kex_lwe_frodo_round2(*key, v, params);
+	PRINT_HEX_STRING("K (Bob)", *key, params->key_bits / 8);
 
-// int OQS_KEX_lwe_frodo_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
+	*bob_msg_len = params->pub_len + params->rec_hint_len;
+	*key_len = params->key_bits >> 3;
 
-// 	int ret;
+	ret = 1;
+	goto cleanup;
 
-// 	*key = NULL;
+err:
+	ret = 0;
+	free(*bob_msg);
+	*bob_msg = NULL;
+	if (*key != NULL) {
+		bzero(*key, params->key_bits >> 3);
+	}
+	free(*key);
+	*key = NULL;
 
-// 	if (bob_msg_len != 1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t)) {
-// 		goto err;
-// 	}
+cleanup:
+	free(bob_priv);
+	if (eprime != NULL) {
+		bzero(eprime, params->n * params->nbar * sizeof(uint16_t));
+	}
+	free(bprime);
+	free(eprime);
+	if (eprimeprime != NULL) {
+		bzero(eprimeprime, params->nbar * params->nbar * sizeof(uint16_t));
+	}
+	free(eprimeprime);
+	free(b);
+	if (v != NULL) {
+		bzero(v, params->nbar * params->nbar * sizeof(uint16_t));
+	}
+	free(v);
 
-// 	/* allocate session key */
-// 	*key = malloc(16 * sizeof(uint64_t));
-// 	if (*key == NULL) {
-// 		goto err;
-// 	}
+	return ret;
 
-// 	/* generate Alice's session key */
-// 	const uint8_t *bob_rec = bob_msg + 1024 * sizeof(uint32_t);
-// 	oqs_kex_lwe_frodo_compute_key_alice((uint32_t *)bob_msg, (uint32_t *)alice_priv, (uint64_t *) bob_rec, (uint64_t *) *key, k->ctx);
-// 	*key_len = 16 * sizeof(uint64_t);
+}
 
-// 	ret = 1;
-// 	goto cleanup;
+int OQS_KEX_lwe_frodo_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
 
-// err:
-// 	ret = 0;
-// 	free(*key);
+	int ret;
 
-// cleanup:
+	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
+	
+	uint16_t *bprime = NULL, *w = NULL;
+	*key = NULL;
 
-// 	return ret;
+	/* check length of other party's public key */
+	if (bob_msg_len != params->pub_len + params->rec_hint_len) {
+		goto err;
+	}
 
-// }
+	/* allocate working values and session key */
+	bprime = malloc(params->n * params->nbar * sizeof(uint16_t));
+	if (bprime == NULL) {
+		goto err;
+	}
+	w = malloc(params->nbar * params->nbar * sizeof(uint16_t));
+	if (w == NULL) {
+		goto err;
+	}
+	*key = malloc(params->key_bits >> 3);
+	if (*key == NULL) {
+		goto err;
+	}
+
+	/* unpack B' */
+	oqs_kex_lwe_frodo_unpack(bprime, params->n * params->nbar, bob_msg, bob_msg_len, params->log2_q);
+	PRINT_HEX_STRING("B' (unpacked)", bprime, params->pub_len);
+
+	/* compute W = B'S */
+	oqs_kex_lwe_frodo_mul_bs(w, bprime, (uint16_t *) alice_priv, params);
+	PRINT_HEX_STRING("W", w, params->nbar * params->nbar * sizeof(uint16_t));
+
+	/* compute K = rec(B'S, C) */
+	const uint8_t *bob_rec = bob_msg + params->pub_len;
+	PRINT_HEX_STRING("C (Alice)", bob_rec, params->rec_hint_len);
+
+	oqs_kex_lwe_frodo_reconcile(*key, w, bob_rec, params);
+	PRINT_HEX_STRING("K (Alice)", *key, params->key_bits / 8);
+
+	*key_len = params->key_bits >> 3;
+
+	ret = 1;
+	goto cleanup;
+
+err:
+	ret = 0;
+	bzero(key, params->key_bits >> 3);
+	free(*key);
+	*key = NULL;
+
+cleanup:
+	free(w);
+	free(bprime);
+	return ret;
+
+}
 
 void OQS_KEX_lwe_frodo_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 	if (alice_priv) {
