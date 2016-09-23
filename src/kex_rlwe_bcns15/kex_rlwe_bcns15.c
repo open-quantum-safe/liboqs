@@ -1,9 +1,16 @@
+#if defined(WINDOWS)
+#define UNUSED
+// FIXME: __attribute__ fails in VS, is there something else I should define?
+#else
 #define UNUSED __attribute__ ((unused))
+#endif
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#if !defined(WINDOWS)
+#include <unistd.h>
 #include <strings.h>
+#endif
 
 #include <oqs/kex.h>
 #include <oqs/rand.h>
@@ -13,7 +20,11 @@
 
 #include "rlwe_a.h"
 
-OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand, UNUSED const uint8_t *seed, UNUSED const size_t seed_len) {
+#if defined(WINDOWS)
+#define strdup _strdup
+#endif
+
+OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand, UNUSED const uint8_t *seed, UNUSED const size_t seed_len, UNUSED const char *named_parameters) {
 
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
 	if (k == NULL) {
@@ -28,6 +39,9 @@ OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand, UNUSED const uint8_t *seed, UNU
 	k->method_name = strdup("RLWE BCNS15");
 	k->estimated_classical_security = 163;
 	k->estimated_quantum_security = 76;
+	k->seed = NULL;
+	k->seed_len = 0;
+	k->named_parameters = NULL;
 	k->rand = rand;
 	k->params = NULL;
 	k->alice_0 = &OQS_KEX_rlwe_bcns15_alice_0;

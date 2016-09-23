@@ -8,6 +8,11 @@
  * See LICENSE for complete information.
  */
 
+#if defined(WINDOWS)
+/* Disable error/warning for unary minus operator used in this file */
+#pragma warning (disable: 4146)
+#endif
+
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
