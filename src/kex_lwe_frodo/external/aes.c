@@ -177,18 +177,12 @@ static void xor_round_key(byte *state, const byte *keys, int round) {
     xor(state,keys+round*16,16);
 }
 
-// Apply and reverse the rijndael s-box to all elements in an array
+// Apply the rijndael s-box to all elements in an array
 // http://en.wikipedia.org/wiki/Rijndael_S-box
 static void sub_bytes(byte *a,int n) {
     int i;
     for (i=0; i<n; i++) {
         a[i] = lookup_sbox[a[i]];
-    }
-}
-static void sub_bytes_inv(byte *a,int n) {
-    int i;
-    for (i=0; i<n; i++) {
-        a[i] = lookup_sbox_inv[a[i]];
     }
 }
 
@@ -232,7 +226,7 @@ static void expand_key(const byte *key, byte *keys) {
     }
 }
 
-// Apply / reverse the shift rows step on the 16 byte cipher state
+// Apply the shift rows step on the 16 byte cipher state
 // http://en.wikipedia.org/wiki/Advanced_Encryption_Standard#The_ShiftRows_step
 static void shift_rows(byte *state) {
     int i;
@@ -240,14 +234,6 @@ static void shift_rows(byte *state) {
     memcpy(temp,state,16);
     for (i=0; i<16; i++) {
         state[i]=temp[shift_rows_table[i]];
-    }
-}
-static void shift_rows_inv(byte *state) {
-    int i;
-    byte temp[16];
-    memcpy(temp,state,16);
-    for (i=0; i<16; i++) {
-        state[i]=temp[shift_rows_table_inv[i]];
     }
 }
 
@@ -270,27 +256,6 @@ static void mix_cols (byte *state) {
     mix_col(state+4);
     mix_col(state+8);
     mix_col(state+12);
-}
-
-// Perform the inverse mix columns matrix on one column of 4 bytes
-// http://en.wikipedia.org/wiki/Rijndael_mix_columns
-static void mix_col_inv (byte *state) {
-    byte a0 = state[0];
-    byte a1 = state[1];
-    byte a2 = state[2];
-    byte a3 = state[3];
-    state[0] = lookup_g14[a0] ^ lookup_g9[a3] ^ lookup_g13[a2] ^ lookup_g11[a1];
-    state[1] = lookup_g14[a1] ^ lookup_g9[a0] ^ lookup_g13[a3] ^ lookup_g11[a2];
-    state[2] = lookup_g14[a2] ^ lookup_g9[a1] ^ lookup_g13[a0] ^ lookup_g11[a3];
-    state[3] = lookup_g14[a3] ^ lookup_g9[a2] ^ lookup_g13[a1] ^ lookup_g11[a0];
-}
-
-// Perform the inverse mix columns matrix on each column of the 16 bytes
-static void mix_cols_inv (byte *state) {
-    mix_col_inv(state);
-    mix_col_inv(state+4);
-    mix_col_inv(state+8);
-    mix_col_inv(state+12);
 }
 
 // Encrypt a single 128 bit block by a 128 bit key using AES
