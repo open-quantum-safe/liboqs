@@ -148,6 +148,7 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX * (*new_method)(
 	}
 	printf("All session keys matched.\n");
 	printf("Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
+	printf("\n\n");
 
 	ret = 1;
 	goto cleanup;
@@ -173,11 +174,11 @@ int main() {
 		goto err;
 	}
 
-	// ret = kex_test_correctness_wrapper(rand, &OQS_KEX_rlwe_bcns15_new, NULL, 0, NULL, KEX_TEST_ITERATIONS);
-	// if (ret != 1) {
-		// goto err;
-	// }
-	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_lwe_frodo_new, (uint8_t *) "\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F", 16, "recommended", KEX_TEST_ITERATIONS);
+	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_rlwe_bcns15_new, NULL, 0, NULL, KEX_TEST_ITERATIONS);
+	if (ret != 1) {
+		goto err;
+	}
+	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_lwe_frodo_new, (uint8_t *) "\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0A\x0B\x0C\x0D\x0E\x0F\x10", 16, "recommended", KEX_TEST_ITERATIONS);
 	if (ret != 1) {
 		goto err;
 	}

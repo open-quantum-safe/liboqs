@@ -14,13 +14,6 @@
 #define LWE_DIV_ROUNDUP(x, y) (((x) + (y)-1) / y)
 
 #include <stdio.h>
-#define PRINT_HEX_STRING(label, str, len) { \
-	printf("%-20s (%4zu bytes):  ", (label), (size_t) (len)); \
-	for (size_t i = 0; i < (len); i++) { \
-		printf("%02X", ((unsigned char *) (str)) [i]); \
-	} \
-	printf("\n"); \
-}
 
 OQS_KEX *OQS_KEX_lwe_frodo_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 
@@ -82,7 +75,7 @@ OQS_KEX *OQS_KEX_lwe_frodo_new(OQS_RAND *rand, const uint8_t *seed, const size_t
 			goto err;
 		}
 		uint16_t cdf_table_tmp[6] = {602, 1521, 1927, 2031, 2046, 2047};
-		memcpy(params->cdf_table, cdf_table_tmp, 6);
+		memcpy(params->cdf_table, cdf_table_tmp, sizeof(cdf_table_tmp));
 
 	} else {
 
@@ -135,20 +128,23 @@ int OQS_KEX_lwe_frodo_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg
 	}
 
 	/* generate S and E */
-	oqs_kex_lwe_frodo_sample_n(*alice_priv, params->n * params->nbar, params, k->rand);
-	// PRINT_HEX_STRING("S", *alice_priv, params->n * params->nbar * sizeof(uint16_t));
-	oqs_kex_lwe_frodo_sample_n(e, params->n * params->nbar, params, k->rand);
-	// PRINT_HEX_STRING("E", e, params->n * params->nbar * sizeof(uint16_t));
-
-	/* compute B = AS + E */
-	if (!oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(b, *alice_priv, e, params)) {
+	ret = oqs_kex_lwe_frodo_sample_n(*alice_priv, params->n * params->nbar, params, k->rand);
+	if (ret != 1) {
 		goto err;
 	}
-	PRINT_HEX_STRING("B", b, params->n * params->nbar * sizeof(uint16_t));
+	ret = oqs_kex_lwe_frodo_sample_n(e, params->n * params->nbar, params, k->rand);
+	if (ret != 1) {
+		goto err;
+	}
+
+	/* compute B = AS + E */
+	ret = oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(b, *alice_priv, e, params);
+	if (ret != 1) {
+		goto err;
+	}
 	oqs_kex_lwe_frodo_pack(*alice_msg, params->pub_len, b, params->n * params->nbar * sizeof(uint16_t), params->log2_q);
 
 	*alice_msg_len = params->pub_len;
-	PRINT_HEX_STRING("B packed", *alice_msg, params->pub_len);
 
 	ret = 1;
 	goto cleanup;
@@ -220,36 +216,39 @@ int OQS_KEX_lwe_frodo_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t ali
 	}
 
 	/* generate S' and E' */
-	oqs_kex_lwe_frodo_sample_n(bob_priv, params->n * params->nbar, params, k->rand);
-	// PRINT_HEX_STRING("S'", bob_priv, params->n * params->nbar * sizeof(uint16_t));
-	oqs_kex_lwe_frodo_sample_n(eprime, params->n * params->nbar, params, k->rand);
-	// PRINT_HEX_STRING("E'", eprime, params->n * params->nbar * sizeof(uint16_t));
+	ret = oqs_kex_lwe_frodo_sample_n(bob_priv, params->n * params->nbar, params, k->rand);
+	if (ret != 1) {
+		goto err;
+	}
+	ret = oqs_kex_lwe_frodo_sample_n(eprime, params->n * params->nbar, params, k->rand);
+	if (ret != 1) {
+		goto err;
+	}
 
 	/* compute B' = S'A + E' */
 	ret = oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(bprime, bob_priv, eprime, params);
-	PRINT_HEX_STRING("B'", bprime, params->pub_len);
+	if (ret != 1) {
+		goto err;
+	}
 	oqs_kex_lwe_frodo_pack(*bob_msg, params->pub_len, bprime, params->n * params->nbar * sizeof(uint16_t), params->log2_q);
-	PRINT_HEX_STRING("B' packed", *bob_msg, params->pub_len);
 
 	/* generate E'' */
-	oqs_kex_lwe_frodo_sample_n(eprimeprime, params->nbar * params->nbar, params, k->rand);
-	// PRINT_HEX_STRING("E''", eprimeprime, params->nbar * params->nbar * sizeof(uint16_t));
+	ret = oqs_kex_lwe_frodo_sample_n(eprimeprime, params->nbar * params->nbar, params, k->rand);
+	if (ret != 1) {
+		goto err;
+	}
 
 	/* unpack B */
 	oqs_kex_lwe_frodo_unpack(b, params->n * params->nbar, alice_msg, alice_msg_len, params->log2_q);
-	PRINT_HEX_STRING("B unpacked", b, params->n * params->nbar * sizeof(uint16_t));
 
 	/* compute V = S'B + E'' */
 	oqs_kex_lwe_frodo_mul_add_sb_plus_e(v, b, bob_priv, eprimeprime, params);
-	PRINT_HEX_STRING("V", v, params->nbar * params->nbar * sizeof(uint16_t));
 
 	/* compute C = <V>_{2^B} */
 	oqs_kex_lwe_frodo_crossround2(bob_rec, v, params);
-	PRINT_HEX_STRING("C", bob_rec, params->rec_hint_len);
 
 	/* compute K = round(V)_{2^B} */
 	oqs_kex_lwe_frodo_round2(*key, v, params);
-	PRINT_HEX_STRING("K (Bob)", *key, params->key_bits / 8);
 
 	*bob_msg_len = params->pub_len + params->rec_hint_len;
 	*key_len = params->key_bits >> 3;
@@ -317,19 +316,14 @@ int OQS_KEX_lwe_frodo_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t 
 	}
 
 	/* unpack B' */
-	oqs_kex_lwe_frodo_unpack(bprime, params->n * params->nbar, bob_msg, bob_msg_len, params->log2_q);
-	PRINT_HEX_STRING("B' (unpacked)", bprime, params->pub_len);
+	oqs_kex_lwe_frodo_unpack(bprime, params->n * params->nbar, bob_msg, params->pub_len, params->log2_q);
 
 	/* compute W = B'S */
 	oqs_kex_lwe_frodo_mul_bs(w, bprime, (uint16_t *) alice_priv, params);
-	PRINT_HEX_STRING("W", w, params->nbar * params->nbar * sizeof(uint16_t));
 
 	/* compute K = rec(B'S, C) */
 	const uint8_t *bob_rec = bob_msg + params->pub_len;
-	PRINT_HEX_STRING("C (Alice)", bob_rec, params->rec_hint_len);
-
 	oqs_kex_lwe_frodo_reconcile(*key, w, bob_rec, params);
-	PRINT_HEX_STRING("K (Alice)", *key, params->key_bits / 8);
 
 	*key_len = params->key_bits >> 3;
 
