@@ -131,7 +131,9 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX * (*new_method)(
 	}
 
 	ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters, 1, occurrences);
-	if (ret != 1) goto err;
+	if (ret != 1) {
+		goto err;
+	}
 
 	/* setup KEX */
 	kex = new_method(rand, seed, seed_len, named_parameters);
@@ -144,7 +146,9 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX * (*new_method)(
 	printf("================================================================================\n");
 	for (int i = 0; i < iterations; i++) {
 		ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters, 0, occurrences);
-		if (ret != 1) goto err;
+		if (ret != 1) {
+			goto err;
+		}
 	}
 	printf("All session keys matched.\n");
 	printf("Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));

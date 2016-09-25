@@ -95,7 +95,9 @@ static int lwe_sample_n_inverse_12(uint16_t *s, const size_t n, const uint16_t *
 		// Assuming that sign1 is either 0 or 1, flips sample1 iff sign1 = 1
 		s[i] = ((-sign1) ^ sample1) + sign1;
 
-		if (i + 1 < n) s[i + 1] = ((-sign2) ^ sample2) + sign2;
+		if (i + 1 < n) {
+			s[i + 1] = ((-sign2) ^ sample2) + sign2;
+		}
 	}
 
 	bzero(rnd, rndlen);
@@ -135,31 +137,31 @@ static int lwe_sample_n_inverse_16(uint16_t *s, const size_t n, const uint16_t *
 
 	bzero(rndvec, rndlen);
 	free(rndvec);
-	return 1;	
+	return 1;
 }
 
 int oqs_kex_lwe_frodo_sample_n(uint16_t *s, const size_t n, struct oqs_kex_lwe_frodo_params *params, OQS_RAND *rand) {
 
 	switch (params->sampler_num) {
-		case 8: {
-			// have to copy cdf_table from uint16_t to uint8_t
-			uint8_t *cdf_table_8 = malloc(params->cdf_table_len * sizeof(uint8_t));
-			if (NULL == cdf_table_8) {
-				return 0;
-			}
-			for (size_t i = 0; i < params->cdf_table_len; i++) {
-				cdf_table_8[i] = (uint8_t) params->cdf_table[i];
-			}
-			int ret = lwe_sample_n_inverse_8(s, n, cdf_table_8, params->cdf_table_len, rand);
-			free(cdf_table_8);
-			return ret;
-		}
-		case 12:
-			return lwe_sample_n_inverse_12(s, n, params->cdf_table, params->cdf_table_len, rand);
-		case 16:
-			return lwe_sample_n_inverse_16(s, n, params->cdf_table, params->cdf_table_len, rand);
-		default:
+	case 8: {
+		// have to copy cdf_table from uint16_t to uint8_t
+		uint8_t *cdf_table_8 = malloc(params->cdf_table_len * sizeof(uint8_t));
+		if (NULL == cdf_table_8) {
 			return 0;
+		}
+		for (size_t i = 0; i < params->cdf_table_len; i++) {
+			cdf_table_8[i] = (uint8_t) params->cdf_table[i];
+		}
+		int ret = lwe_sample_n_inverse_8(s, n, cdf_table_8, params->cdf_table_len, rand);
+		free(cdf_table_8);
+		return ret;
+	}
+	case 12:
+		return lwe_sample_n_inverse_12(s, n, params->cdf_table, params->cdf_table_len, rand);
+	case 16:
+		return lwe_sample_n_inverse_16(s, n, params->cdf_table, params->cdf_table_len, rand);
+	default:
+		return 0;
 	}
 
 }

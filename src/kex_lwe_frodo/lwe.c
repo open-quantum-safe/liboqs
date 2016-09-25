@@ -162,14 +162,16 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 
 		// transpose a_cols to have access to it in the column-major order.
 		for (i = 0; i < params->n; i++)
-			for (k = 0; k < params->stripe_step; k++)
+			for (k = 0; k < params->stripe_step; k++) {
 				a_cols_t[k * params->n + i] = a_cols[i * params->stripe_step + k];
+			}
 
 		for (i = 0; i < params->nbar; i++)
 			for (k = 0; k < params->stripe_step; k++) {
 				uint16_t sum = 0;
-				for (j = 0; j < params->n; j++)
+				for (j = 0; j < params->n; j++) {
 					sum += s[i * params->n + j] * a_cols_t[k * params->n + j];
+				}
 				out[i * params->n + kk + k] += sum;
 				out[i * params->n + kk + k] %= params->q;
 			}
@@ -235,7 +237,9 @@ void oqs_kex_lwe_frodo_key_round(uint16_t *vec, const size_t length, const int b
 	size_t i;
 	uint16_t negmask = ~((1 << b) - 1);
 	uint16_t half = b > 0 ? 1 << (b - 1) : 0;
-	for (i = 0; i < length; i++) vec[i] = (vec[i] + half) & negmask;
+	for (i = 0; i < length; i++) {
+		vec[i] = (vec[i] + half) & negmask;
+	}
 }
 
 // Round all elements of a vector to the multiple of 2^b, with a hint for the

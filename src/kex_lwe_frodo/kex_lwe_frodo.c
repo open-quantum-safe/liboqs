@@ -20,7 +20,9 @@ OQS_KEX *OQS_KEX_lwe_frodo_new(OQS_RAND *rand, const uint8_t *seed, const size_t
 	OQS_KEX *k;
 	struct oqs_kex_lwe_frodo_params *params;
 
-	if ((seed_len == 0) || (seed == NULL)) return NULL;
+	if ((seed_len == 0) || (seed == NULL)) {
+		return NULL;
+	}
 
 	k = malloc(sizeof(OQS_KEX));
 	if (k == NULL) {
@@ -167,7 +169,7 @@ int OQS_KEX_lwe_frodo_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t ali
 	int ret;
 
 	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
-	
+
 	uint16_t *bob_priv = NULL;
 	uint8_t *bob_rec = NULL;
 	uint16_t *b = NULL, *bprime = NULL, *eprime = NULL, *eprimeprime = NULL;
@@ -292,7 +294,7 @@ int OQS_KEX_lwe_frodo_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t 
 	int ret;
 
 	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
-	
+
 	uint16_t *bprime = NULL, *w = NULL;
 	*key = NULL;
 
