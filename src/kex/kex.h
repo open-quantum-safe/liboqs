@@ -68,7 +68,7 @@ typedef struct OQS_KEX {
 	/**
 	 * Pointer to a function for public and private key generation by Alice.
 	 *
-	 * @param k                Key exchange strucure
+	 * @param k                Key exchange structure
 	 * @param alice_priv       Alice's private key
 	 * @param alice_msg        Alice's public key
 	 * @param alice_msg_len    Alice's public key length
@@ -79,7 +79,7 @@ typedef struct OQS_KEX {
 	/**
 	 * Pointer to a function for public, private and shared key generation by Bob.
 	 *
-	 * @param k                Key exchange strucure
+	 * @param k                Key exchange structure
 	 * @param alice_msg        Alice's public key
 	 * @param alice_msg_len    Alice's public key length
 	 * @param bob_msg          Bob's public key
@@ -93,7 +93,7 @@ typedef struct OQS_KEX {
 	/**
 	 * Pointer to a function for shared key generation by Alice.
 	 *
-	 * @param k                Key exchange strucure
+	 * @param k                Key exchange structure
 	 * @param alice_priv       Alice's private key
 	 * @param bob_msg          Bob's public key
 	 * @param bob_msg_len      Bob's public key length
@@ -106,7 +106,7 @@ typedef struct OQS_KEX {
 	/**
 	 * Pointer to a function for freeing Alice's private key
 	 *
-	 * @param k                Key exchange strucure
+	 * @param k                Key exchange structure
 	 * @param alice_priv       Alice's private key
 	 */
 	void (*alice_priv_free)(OQS_KEX *k, void *alice_priv);
@@ -114,7 +114,7 @@ typedef struct OQS_KEX {
 	/**
 	 * Pointer to a function for freeing the allocated key exchange structure
 	 *
-	 * @param k                Key exchange strucure
+	 * @param k                Key exchange structure
 	 */
 	void (*free)(OQS_KEX *k);
 
