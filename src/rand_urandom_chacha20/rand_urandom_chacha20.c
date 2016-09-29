@@ -64,9 +64,9 @@ static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 	if (rand_ctx == NULL) {
 		goto err;
 	}
-#if defined(WINDOWS)	
+#if defined(WINDOWS)
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-		!CryptGenRandom(hCryptProv, 32, rand_ctx->key)) {
+	    !CryptGenRandom(hCryptProv, 32, rand_ctx->key)) {
 		goto err;
 	}
 #else
