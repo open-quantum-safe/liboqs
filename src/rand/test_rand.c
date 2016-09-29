@@ -151,6 +151,6 @@ err:
 
 cleanup:
 
-	return ret;
+	return ret == 0;
 
 }

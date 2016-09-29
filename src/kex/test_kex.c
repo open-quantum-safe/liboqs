@@ -182,6 +182,6 @@ err:
 cleanup:
 	OQS_RAND_free(rand);
 
-	return ret;
+	return ret == 0;
 
 }

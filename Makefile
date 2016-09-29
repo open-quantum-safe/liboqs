@@ -1,4 +1,9 @@
-CC=cc
+ifdef CC_OQS
+	CC=$(CC_OQS)
+else
+	CC=cc
+endif
+
 AR=ar rcs
 CURL=curl
 RANLIB=ranlib
@@ -8,6 +13,8 @@ DEFAULTS= -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA2
 CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
+
+.PHONY: all check clean prettyprint
 
 all: links lib tests
 
@@ -58,6 +65,10 @@ tests: lib src/rand/test_rand.c src/kex/test_kex.c
 
 docs: links
 	doxygen
+
+check: links tests
+	./test_kex
+	./test_rand
 
 clean:
 	rm -rf docs objs include
