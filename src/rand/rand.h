@@ -1,6 +1,6 @@
 /**
  * \file rand.h
- * \brief Header defining the generic OQS PRGN
+ * \brief Header defining the generic OQS PRNG
  */
 
 #ifndef __OQS_RAND_H
