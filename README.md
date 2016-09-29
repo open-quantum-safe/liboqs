@@ -10,7 +10,7 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 
 OQS will also include integrations into application-level protocols to provide easy prototyping of quantum-resistant cryptography.  Our first integration is in OpenSSL:
 
-- **open-quantum-safe/openssl** is an integration of liboqs into OpenSSL 1.0.2.  The goal of this integration is to provide easy prototyping of quantum-resistant cryptography.  The integration should not be considered "production quality".  See more about this integration in its Github repository [open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/).
+- **open-quantum-safe/openssl** is an integration of liboqs into OpenSSL 1.0.2.  The goal of this integration is to provide easy prototyping of quantum-resistant cryptography.  The integration should not be considered "production quality".  See more about this integration in its GitHub repository [open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/).
 
 More information on OQS can be found in slides 64–67 of [this presentation](https://www.douglas.stebila.ca/files/research/presentations/20160812-SAC.pdf) by Douglas Stebila.
 
@@ -25,7 +25,7 @@ liboqs currently contains:
 
 Builds have been tested on Mac OS X 10.11.6, Ubuntu 16.04.1, and Windows 10.
 
-To build, clone or download the source from Github, then simply type:
+To build, clone or download the source from GitHub, then simply type:
 
 	make
 
@@ -34,6 +34,10 @@ This will generate:
 - `liboqs.a`: A static library with implementations for the algorithms listed in "Contents" above.
 - `test_rand`: A simple test harness for the random number generator.  This will test the distance of PRNG output from uniform using statistical distance.
 - `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
+
+To run the tests, simply type:
+
+	make check
 
 Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder.
 
