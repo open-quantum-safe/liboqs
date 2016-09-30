@@ -104,6 +104,7 @@
       <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -126,6 +127,7 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
       <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -150,6 +152,7 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
       <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -176,6 +179,7 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
       <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
