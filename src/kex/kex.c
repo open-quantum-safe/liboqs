@@ -1,19 +1,13 @@
-#include <oqs/rand.h>
-#include <oqs/kex.h>
+#include "oqs/kex.h"
+#include "oqs/kex_rlwe_bcns15.h"
 
-#if defined(OQS_KEX_DEFAULT_BCNS15)
-#include <oqs/kex_rlwe_bcns15.h>
-#endif
-
-OQS_KEX *OQS_KEX_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
-#if defined(OQS_KEX_DEFAULT_BCNS15)
+OQS_KEX *OQS_KEX_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len,
+  const char *named_parameters, enum KEX_ALGO_NAMES alg_name) {
 	return OQS_KEX_rlwe_bcns15_new(rand, seed, seed_len, named_parameters);
-#else
-#error "No default KEX method defined."
-#endif
 }
 
-int OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
+int OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg,
+  size_t *alice_msg_len) {
 	if (k == NULL) {
 		return 0;
 	} else {
@@ -21,7 +15,8 @@ int OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *
 	}
 }
 
-int OQS_KEX_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
+int OQS_KEX_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len,
+  uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
 	if (k == NULL) {
 		return 0;
 	} else {
@@ -29,7 +24,8 @@ int OQS_KEX_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len
 	}
 }
 
-int OQS_KEX_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
+int OQS_KEX_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg,
+  const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
 	if (k == NULL) {
 		return 0;
 	} else {
@@ -48,3 +44,5 @@ void OQS_KEX_free(OQS_KEX *k) {
 		k->free(k);
 	}
 }
+
+

@@ -1,19 +1,10 @@
 #include <math.h>
 
 #include <oqs/rand.h>
-
-#if defined(OQS_RAND_DEFAULT_URANDOM_CHACHA20)
 #include <oqs/rand_urandom_chacha20.h>
-#else
-#error "No default RAND method defined."
-#endif
 
-OQS_RAND *OQS_RAND_new() {
-#if defined(OQS_RAND_DEFAULT_URANDOM_CHACHA20)
+OQS_RAND *OQS_RAND_new(enum RAND_GEN_ALGO_NAMES rand_algo_name) {
 	return OQS_RAND_urandom_chacha20_new();
-#else
-#error "No default RAND method defined."
-#endif
 }
 
 uint8_t OQS_RAND_8(OQS_RAND *r) {

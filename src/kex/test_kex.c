@@ -15,7 +15,10 @@
 	printf("\n"); \
 }
 
-static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *), const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int print, unsigned long occurrences[256]) {
+static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(
+  OQS_RAND *, const uint8_t *, const size_t, const char *, enum KEX_ALGO_NAMES),
+  const uint8_t *seed, const size_t seed_len, const char *named_parameters,
+  const int print, unsigned long occurrences[256], enum KEX_ALGO_NAMES kex_algo) {
 
 	OQS_KEX *kex = NULL;
 	int rc;
@@ -32,7 +35,7 @@ static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND
 	size_t bob_key_len;
 
 	/* setup KEX */
-	kex = new_method(rand, seed, seed_len, named_parameters);
+	kex = new_method(rand, seed, seed_len, named_parameters, kex_algo);
 	if (kex == NULL) {
 		goto err;
 	}
@@ -76,12 +79,14 @@ static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND
 
 	/* compare session key lengths and values */
 	if (alice_key_len != bob_key_len) {
-		fprintf(stderr, "ERROR: Alice's session key and Bob's session key are different lengths (%zu vs %zu)\n", alice_key_len, bob_key_len);
+		fprintf(stderr, 
+      "ERROR: Alice's session key and Bob's session key are different lengths (%zu vs %zu)\n",
+      alice_key_len, bob_key_len);
 		goto err;
 	}
 	rc = memcmp(alice_key, bob_key, alice_key_len);
 	if (rc != 0) {
-		fprintf(stderr, "ERROR: Alice's session key and Bob's session key are not equal\n");
+	  fprintf(stderr, "ERROR: Alice's session key and Bob's session key are not equal\n");
 		PRINT_HEX_STRING("Alice session key", alice_key, alice_key_len)
 		PRINT_HEX_STRING("Bob session key", bob_key, bob_key_len)
 		goto err;
@@ -114,7 +119,11 @@ cleanup:
 
 }
 
-static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *), const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations) {
+static int kex_test_correctness_wrapper(OQS_RAND *rand, 
+  OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, 
+  const char *, enum KEX_ALGO_NAMES),
+  const uint8_t *seed, const size_t seed_len, const char *named_parameters,
+  int iterations, enum KEX_ALGO_NAMES kex_algo) {
 
 	OQS_KEX *kex = NULL;
 	int ret;
@@ -124,24 +133,28 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, OQS_KEX * (*new_method)(
 		occurrences[i] = 0;
 	}
 
-	ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters, 1, occurrences);
+	ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters,
+  1, occurrences, kex_algo);
 	if (ret != 1) goto err;
 
 	/* setup KEX */
-	kex = new_method(rand, seed, seed_len, named_parameters);
+	kex = new_method(rand, seed, seed_len, named_parameters, kex_algo);
 	if (kex == NULL) {
 		goto err;
 	}
 
 	printf("================================================================================\n");
-	printf("Testing correctness and randomness of key exchange method %s (params=%s) for %d iterations\n", kex->method_name, named_parameters, iterations);
+	printf("Testing correctness and randomness of key exchange method %s (params=%s) for %d iterations\n", 
+    kex->method_name, named_parameters, iterations);
 	printf("================================================================================\n");
 	for (int i = 0; i < iterations; i++) {
-		ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters, 0, occurrences);
+		ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters,
+      0, occurrences, kex_algo);
 		if (ret != 1) goto err;
 	}
 	printf("All session keys matched.\n");
-	printf("Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
+	printf("Statistical distance from uniform: %12.10f\n",
+    OQS_RAND_test_statistical_distance_from_uniform(occurrences));
 
 	ret = 1;
 	goto cleanup;
@@ -162,12 +175,13 @@ int main() {
 
 	/* setup RAND */
 	OQS_RAND *rand = NULL;
-	rand = OQS_RAND_new();
+	rand = OQS_RAND_new(URANDOM_CHACHA20);
 	if (rand == NULL) {
 		goto err;
 	}
 
-	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_new, NULL, 0, NULL, KEX_TEST_ITERATIONS);
+	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_new, NULL, 0, NULL,
+    KEX_TEST_ITERATIONS, RLWE_BCNS15);
 	if (ret != 1) {
 		goto err;
 	}

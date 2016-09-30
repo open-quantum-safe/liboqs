@@ -9,7 +9,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <oqs/rand.h>
+#include "oqs/rand.h"
+
+enum KEX_ALGO_NAMES {
+  RLWE_BCNS15,
+
+};
 
 typedef struct OQS_KEX OQS_KEX;
 
@@ -88,7 +93,8 @@ typedef struct OQS_KEX {
 	 * @param key_len          Shared key length
 	 * @return                 1 on success, or 0 on failure
 	 */
-	int (*bob)(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
+	int (*bob)(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, 
+    uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
 
 	/**
 	 * Pointer to a function for shared key generation by Alice.
@@ -101,7 +107,8 @@ typedef struct OQS_KEX {
 	 * @param key_len          Shared key length
 	 * @return                 1 on success, or 0 on failure
 	 */
-	int (*alice_1)(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len);
+	int (*alice_1)(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, 
+    const size_t bob_msg_len, uint8_t **key, size_t *key_len);
 
 	/**
 	 * Pointer to a function for freeing Alice's private key
@@ -126,16 +133,26 @@ typedef struct OQS_KEX {
  * @param rand               Random number generator.
  * @param seed               An instance-specific seed, if any, or NULL.
  * @param seed_len           The length of seed, or 0.
- * @param named_parameters   Name or description of method-specific parameters to use for this instance (as a NULL-terminated C string), if any, or NULL.
+ * @param named_parameters   Name or description of method-specific parameters
+ *                           to use for this instance (as a NULL-terminated C string),
+ *                           if any, or NULL.
+ * @param algorithm_name     kex algorithm to be instantiated
  * @return                   The object on success, or NULL on failure.
  */
-OQS_KEX *OQS_KEX_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters);
+OQS_KEX *OQS_KEX_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, 
+  const char *named_parameters, enum KEX_ALGO_NAMES algorithm_name);
 
-int OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len);
-int OQS_KEX_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
-int OQS_KEX_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len);
+int OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg,
+  size_t *alice_msg_len);
+
+int OQS_KEX_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len,
+  uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
+
+int OQS_KEX_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg,
+  const size_t bob_msg_len, uint8_t **key, size_t *key_len);
 
 void OQS_KEX_alice_priv_free(OQS_KEX *k, void *alice_priv);
+
 void OQS_KEX_free(OQS_KEX *k);
 
 #endif
