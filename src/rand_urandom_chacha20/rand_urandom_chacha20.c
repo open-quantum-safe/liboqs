@@ -16,10 +16,6 @@
 
 #include "external/chacha20.c"
 
-#if defined(WINDOWS)
-#define strdup _strdup
-#endif
-
 typedef struct OQS_RAND_urandom_chacha20_ctx {
 	uint8_t key[32];
 	uint32_t nonce[2];
