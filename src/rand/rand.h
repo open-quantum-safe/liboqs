@@ -10,7 +10,7 @@
 #include <stdint.h>
 
 enum RAND_GEN_ALGO_NAMES {
-  URANDOM_CHACHA20,
+    URANDOM_CHACHA20,
 
 };
 
@@ -64,7 +64,8 @@ typedef struct OQS_RAND {
 	 * @param out : pointer to an array large enough to store the output integers (\f$\text{size} \geq n\f$)
 	 * @param n : number of integers to generate
 	 */
-	void (*rand_n)(OQS_RAND *r, uint8_t *out, size_t n);
+	void (*rand_n)(OQS_RAND *r, uint8_t *out,
+	               size_t n);
 
 	/**
 	 * Pointer to a function for freeing the allocated key exchange structure
@@ -81,11 +82,16 @@ OQS_RAND *OQS_RAND_new(enum RAND_GEN_ALGO_NAMES);
 uint8_t OQS_RAND_8(OQS_RAND *r);
 uint32_t OQS_RAND_32(OQS_RAND *r);
 uint64_t OQS_RAND_64(OQS_RAND *r);
-void OQS_RAND_n(OQS_RAND *r, uint8_t *out, size_t n);
+void OQS_RAND_n(OQS_RAND *r, uint8_t *out,
+                size_t n);
 
 void OQS_RAND_free(OQS_RAND *r);
 
-void OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]);
-double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occurrences[256]);
+void OQS_RAND_test_record_occurrence(
+    const unsigned char b,
+    unsigned long occurrences[256]);
+double OQS_RAND_test_statistical_distance_from_uniform(
+    const unsigned long
+    occurrences[256]);
 
 #endif

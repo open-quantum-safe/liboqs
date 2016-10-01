@@ -65,4 +65,4 @@ clean:
 	find . -name .DS_Store -type f -delete
 
 prettyprint:
-	astyle --style=java --indent=tab --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*/*.h src/*/*.c
+	astyle --style=java --indent=tab --max-code-length=60 --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*/*.h src/*/*.c

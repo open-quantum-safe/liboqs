@@ -15,9 +15,12 @@
 OQS_RAND *OQS_RAND_urandom_chacha20_new();
 
 uint8_t OQS_RAND_urandom_chacha20_8(OQS_RAND *r);
-uint32_t OQS_RAND_urandom_chacha20_32(OQS_RAND *r);
-uint64_t OQS_RAND_urandom_chacha20_64(OQS_RAND *r);
-void OQS_RAND_urandom_chacha20_n(OQS_RAND *r, uint8_t *out, size_t n);
+uint32_t OQS_RAND_urandom_chacha20_32(
+    OQS_RAND *r);
+uint64_t OQS_RAND_urandom_chacha20_64(
+    OQS_RAND *r);
+void OQS_RAND_urandom_chacha20_n(OQS_RAND *r,
+                                 uint8_t *out, size_t n);
 
 void OQS_RAND_urandom_chacha20_free(OQS_RAND *r);
 
