@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)](https://travis-ci.org/open-quantum-safe/liboqs)
+
 # liboqs
 
 liboqs is a C library for quantum-safe cryptographic algorithms.
