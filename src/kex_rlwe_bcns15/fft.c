@@ -14,8 +14,7 @@
 
 #include "local.h"
 
-static void *(*volatile rlwe_memset_volatile)(
-    void *, int, size_t) = memset;
+static void *(*volatile rlwe_memset_volatile)(void *, int, size_t) = memset;
 
 /* Reduction modulo p = 2^32 - 1.
  * This is not a prime since 2^32-1 = (2^1+1)*(2^2+1)*(2^4+1)*(2^8+1)*(2^16+1).
@@ -79,14 +78,10 @@ do { \
  * See: https://graphics.stanford.edu/~seander/bithacks.html
  */
 static uint32_t reverse(uint32_t x) {
-	x = (((x & 0xaaaaaaaa) >> 1) | ((x & 0x55555555)
-	                                << 1));
-	x = (((x & 0xcccccccc) >> 2) | ((x & 0x33333333)
-	                                << 2));
-	x = (((x & 0xf0f0f0f0) >> 4) | ((x & 0x0f0f0f0f)
-	                                << 4));
-	x = (((x & 0xff00ff00) >> 8) | ((x & 0x00ff00ff)
-	                                << 8));
+	x = (((x & 0xaaaaaaaa) >> 1) | ((x & 0x55555555) << 1));
+	x = (((x & 0xcccccccc) >> 2) | ((x & 0x33333333) << 2));
+	x = (((x & 0xf0f0f0f0) >> 4) | ((x & 0x0f0f0f0f) << 4));
+	x = (((x & 0xff00ff00) >> 8) | ((x & 0x00ff00ff) << 8));
 	return ((x >> 16) | (x << 16));
 }
 
@@ -99,9 +94,7 @@ static uint32_t reverse(uint32_t x) {
  * Exercise Exercise 4.6.4.59.
  */
 
-static void naive(uint32_t *z, const uint32_t *x,
-                  const uint32_t *y,
-                  unsigned int n) {
+static void naive(uint32_t *z, const uint32_t *x, const uint32_t *y, unsigned int n) {
 	unsigned int i, j, k;
 	uint32_t A, B;
 
@@ -121,10 +114,7 @@ static void naive(uint32_t *z, const uint32_t *x,
 	}
 }
 
-static void nussbaumer_fft(uint32_t z[1024],
-                           const uint32_t x[1024],
-                           const uint32_t y[1024],
-                           struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
+static void nussbaumer_fft(uint32_t z[1024], const uint32_t x[1024], const uint32_t y[1024], struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
 	uint32_t (*X1)[64] = ctx->x1;
 	uint32_t (*Y1)[64] = ctx->y1;
 	uint32_t (*Z1)[64] = ctx->z1;
@@ -226,36 +216,25 @@ static void nussbaumer_fft(uint32_t z[1024],
 	}
 }
 
-void oqs_kex_rlwe_bcns15_fft_mul(uint32_t z[1024],
-                                 const uint32_t x[1024],
-                                 const uint32_t y[1024],
-                                 struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
+void oqs_kex_rlwe_bcns15_fft_mul(uint32_t z[1024], const uint32_t x[1024], const uint32_t y[1024], struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
 	nussbaumer_fft(z, x, y, ctx);
 }
 
-void oqs_kex_rlwe_bcns15_fft_add(uint32_t z[1024],
-                                 const uint32_t x[1024],
-                                 const uint32_t y[1024]) {
+void oqs_kex_rlwe_bcns15_fft_add(uint32_t z[1024], const uint32_t x[1024], const uint32_t y[1024]) {
 	int i;
 	for (i = 0; i < 1024; i++) {
 		add(z[i], x[i], y[i]);
 	}
 }
 
-void oqs_kex_rlwe_bcns15_fft_ctx_clear(
-    struct oqs_kex_rlwe_bcns15_fft_ctx
-    *ctx) {
+void oqs_kex_rlwe_bcns15_fft_ctx_clear(struct oqs_kex_rlwe_bcns15_fft_ctx *ctx) {
 	if (ctx == NULL) {
 		return;
 	}
 	for (int i = 0; i < 64; i++) {
-		rlwe_memset_volatile(ctx->x1[i], 0,
-		                     64 * sizeof(uint32_t));
-		rlwe_memset_volatile(ctx->y1[i], 0,
-		                     64 * sizeof(uint32_t));
-		rlwe_memset_volatile(ctx->z1[i], 0,
-		                     64 * sizeof(uint32_t));
+		rlwe_memset_volatile(ctx->x1[i], 0, 64 * sizeof(uint32_t));
+		rlwe_memset_volatile(ctx->y1[i], 0, 64 * sizeof(uint32_t));
+		rlwe_memset_volatile(ctx->z1[i], 0, 64 * sizeof(uint32_t));
 	}
-	rlwe_memset_volatile(ctx->t1, 0,
-	                     64 * sizeof(uint32_t));
+	rlwe_memset_volatile(ctx->t1, 0, 64 * sizeof(uint32_t));
 }

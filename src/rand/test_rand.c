@@ -7,9 +7,7 @@
 
 #define RAND_TEST_ITERATIONS 10000000L
 
-static void rand_test_distribution_8(
-    OQS_RAND *rand,
-    unsigned long occurrences[256], int iterations) {
+static void rand_test_distribution_8(OQS_RAND *rand, unsigned long occurrences[256], int iterations) {
 	uint8_t b;
 	for (int i = 0; i < iterations; i++) {
 		b = OQS_RAND_8(rand);
@@ -17,9 +15,7 @@ static void rand_test_distribution_8(
 	}
 }
 
-static void rand_test_distribution_32(
-    OQS_RAND *rand,
-    unsigned long occurrences[256], int iterations) {
+static void rand_test_distribution_32(OQS_RAND *rand, unsigned long occurrences[256], int iterations) {
 	uint32_t x;
 	for (int i = 0; i < iterations; i++) {
 		x = OQS_RAND_32(rand);
@@ -31,9 +27,7 @@ static void rand_test_distribution_32(
 	}
 }
 
-static void rand_test_distribution_64(
-    OQS_RAND *rand,
-    unsigned long occurrences[256], int iterations) {
+static void rand_test_distribution_64(OQS_RAND *rand, unsigned long occurrences[256], int iterations) {
 	uint64_t x;
 	for (int i = 0; i < iterations; i++) {
 		x = OQS_RAND_64(rand);
@@ -45,15 +39,12 @@ static void rand_test_distribution_64(
 	}
 }
 
-static int rand_test_distribution_n(
-    OQS_RAND *rand,
-    unsigned long occurrences[256], int len) {
+static int rand_test_distribution_n(OQS_RAND *rand, unsigned long occurrences[256], int len) {
 	uint8_t *x = malloc(len);
 	if (x == NULL) return 0;
 	OQS_RAND_n(rand, x, len);
 	for (int i = 0; i < len; i++) {
-		OQS_RAND_test_record_occurrence(x[i],
-		                                occurrences);
+		OQS_RAND_test_record_occurrence(x[i], occurrences);
 	}
 	free(x);
 	return 1;
@@ -67,9 +58,7 @@ static int rand_test_distribution_n(
 	printf("\n"); \
 }
 
-static int rand_test_distribution_wrapper(
-    OQS_RAND * (*new_method)(),
-    int iterations) {
+static int rand_test_distribution_wrapper(OQS_RAND * (*new_method)(), int iterations) {
 
 	OQS_RAND *rand = new_method();
 	if (rand == NULL) {
@@ -78,8 +67,7 @@ static int rand_test_distribution_wrapper(
 	}
 
 	printf("================================================================================\n");
-	printf("Sample outputs of PRNG %s\n",
-	       rand->method_name);
+	printf("Sample outputs of PRNG %s\n", rand->method_name);
 	printf("================================================================================\n");
 
 	uint8_t x[256];
@@ -87,32 +75,25 @@ static int rand_test_distribution_wrapper(
 	PRINT_HEX_STRING("OQS_RAND_n, n = 256", x, 256)
 
 	uint8_t y8 = OQS_RAND_8(rand);
-	PRINT_HEX_STRING("OQS_RAND_8", (uint8_t *) &y8,
-	                 sizeof(y8));
+	PRINT_HEX_STRING("OQS_RAND_8", (uint8_t *) &y8, sizeof(y8));
 	y8 = OQS_RAND_8(rand);
-	PRINT_HEX_STRING("OQS_RAND_8", (uint8_t *) &y8,
-	                 sizeof(y8));
+	PRINT_HEX_STRING("OQS_RAND_8", (uint8_t *) &y8, sizeof(y8));
 
 	uint32_t y32 = OQS_RAND_32(rand);
-	PRINT_HEX_STRING("OQS_RAND_32", (uint8_t *) &y32,
-	                 sizeof(y32));
+	PRINT_HEX_STRING("OQS_RAND_32", (uint8_t *) &y32, sizeof(y32));
 	y32 = OQS_RAND_32(rand);
-	PRINT_HEX_STRING("OQS_RAND_32", (uint8_t *) &y32,
-	                 sizeof(y32));
+	PRINT_HEX_STRING("OQS_RAND_32", (uint8_t *) &y32, sizeof(y32));
 
 	uint64_t y64 = OQS_RAND_64(rand);
-	PRINT_HEX_STRING("OQS_RAND_64", (uint8_t *) &y64,
-	                 sizeof(y64));
+	PRINT_HEX_STRING("OQS_RAND_64", (uint8_t *) &y64, sizeof(y64));
 	y64 = OQS_RAND_64(rand);
-	PRINT_HEX_STRING("OQS_RAND_64", (uint8_t *) &y64,
-	                 sizeof(y64));
+	PRINT_HEX_STRING("OQS_RAND_64", (uint8_t *) &y64, sizeof(y64));
 
 	OQS_RAND_n(rand, x, 256);
 	PRINT_HEX_STRING("OQS_RAND_n, n = 256", x, 256)
 
 	printf("================================================================================\n");
-	printf("Testing distribution of PRNG %s\n",
-	       rand->method_name);
+	printf("Testing distribution of PRNG %s\n", rand->method_name);
 	printf("================================================================================\n");
 
 	unsigned long occurrences[256];
@@ -120,49 +101,33 @@ static int rand_test_distribution_wrapper(
 		occurrences[i] = 0;
 	}
 
-	printf("1-byte mode for %d iterations\n",
-	       8 * iterations);
-	rand_test_distribution_8(rand, occurrences,
-	                         8 * iterations);
-	printf("    Statistical distance from uniform: %12.10f\n",
-	       OQS_RAND_test_statistical_distance_from_uniform(
-	           occurrences));
+	printf("1-byte mode for %d iterations\n", 8 * iterations);
+	rand_test_distribution_8(rand, occurrences, 8 * iterations);
+	printf("    Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
 
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
 	}
 
-	printf("4-byte mode for %d iterations\n",
-	       2 * iterations);
-	rand_test_distribution_32(rand, occurrences,
-	                          2 * iterations);
-	printf("    Statistical distance from uniform: %12.10f\n",
-	       OQS_RAND_test_statistical_distance_from_uniform(
-	           occurrences));
+	printf("4-byte mode for %d iterations\n", 2 * iterations);
+	rand_test_distribution_32(rand, occurrences, 2 * iterations);
+	printf("    Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
 
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
 	}
 
-	printf("8-byte mode for %d iterations\n",
-	       iterations);
-	rand_test_distribution_64(rand, occurrences,
-	                          iterations);
-	printf("    Statistical distance from uniform: %12.10f\n",
-	       OQS_RAND_test_statistical_distance_from_uniform(
-	           occurrences));
+	printf("8-byte mode for %d iterations\n", iterations);
+	rand_test_distribution_64(rand, occurrences, iterations);
+	printf("    Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
 
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
 	}
 
-	printf("n-byte mode for %d bytes\n",
-	       8 * iterations);
-	rand_test_distribution_n(rand, occurrences,
-	                         8 * iterations);
-	printf("    Statistical distance from uniform: %12.10f\n",
-	       OQS_RAND_test_statistical_distance_from_uniform(
-	           occurrences));
+	printf("n-byte mode for %d bytes\n", 8 * iterations);
+	rand_test_distribution_n(rand, occurrences, 8 * iterations);
+	printf("    Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
 
 	OQS_RAND_free(rand);
 
@@ -174,8 +139,7 @@ int main() {
 
 	int ret;
 
-	ret = rand_test_distribution_wrapper(
-	          &OQS_RAND_new, RAND_TEST_ITERATIONS);
+	ret = rand_test_distribution_wrapper(&OQS_RAND_new, RAND_TEST_ITERATIONS);
 	if (ret != 1) goto err;
 
 	ret = 1;
