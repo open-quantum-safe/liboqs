@@ -158,7 +158,7 @@ cleanup:
 
 int main() {
 
-	int ret;
+	int success;
 
 	/* setup RAND */
 	OQS_RAND *rand = NULL;
@@ -167,21 +167,21 @@ int main() {
 		goto err;
 	}
 
-	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_new, NULL, 0, NULL, KEX_TEST_ITERATIONS);
-	if (ret != 1) {
+	success = kex_test_correctness_wrapper(rand, &OQS_KEX_new, NULL, 0, NULL, KEX_TEST_ITERATIONS);
+	if (success != 1) {
 		goto err;
 	}
 
-	ret = 1;
+	success = 1;
 	goto cleanup;
 
 err:
-	ret = 0;
+	success = 0;
 	fprintf(stderr, "ERROR!\n");
 
 cleanup:
 	OQS_RAND_free(rand);
 
-	return ret;
+	return (success == 1) ? EXIT_SUCCESS : EXIT_FAILURE;
 
 }

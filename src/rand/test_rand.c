@@ -137,20 +137,20 @@ static int rand_test_distribution_wrapper(OQS_RAND * (*new_method)(), int iterat
 
 int main() {
 
-	int ret;
+	int success;
 
-	ret = rand_test_distribution_wrapper(&OQS_RAND_new, RAND_TEST_ITERATIONS);
-	if (ret != 1) goto err;
+	success = rand_test_distribution_wrapper(&OQS_RAND_new, RAND_TEST_ITERATIONS);
+	if (success != 1) goto err;
 
-	ret = 1;
+	success = 1;
 	goto cleanup;
 
 err:
-	ret = 0;
+	success = 0;
 	fprintf(stderr, "ERROR!\n");
 
 cleanup:
 
-	return ret;
+	return (success == 1) ? EXIT_SUCCESS : EXIT_FAILURE;
 
 }
