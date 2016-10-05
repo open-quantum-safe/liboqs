@@ -12,7 +12,7 @@
 #include "oqs/rand.h"
 
 enum OQS_KEX_alg_name {
-    OQS_KEX_alg_rlwe_bcns15,
+	OQS_KEX_alg_rlwe_bcns15,
 };
 
 typedef struct OQS_KEX OQS_KEX;

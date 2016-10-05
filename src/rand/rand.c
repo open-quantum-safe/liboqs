@@ -5,9 +5,9 @@
 
 OQS_RAND *OQS_RAND_new(enum OQS_RAND_alg_name alg_name) {
 	switch (alg_name) {
-		case OQS_RAND_alg_urandom_chacha20:
-		default:
-			return OQS_RAND_urandom_chacha20_new();
+	case OQS_RAND_alg_urandom_chacha20:
+	default:
+		return OQS_RAND_urandom_chacha20_new();
 	}
 }
 

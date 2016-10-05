@@ -124,7 +124,9 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 	}
 
 	ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 1, occurrences);
-	if (ret != 1) goto err;
+	if (ret != 1) {
+		goto err;
+	}
 
 	/* setup KEX */
 	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
@@ -138,7 +140,9 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 	printf("================================================================================\n");
 	for (int i = 0; i < iterations; i++) {
 		ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 0, occurrences);
-		if (ret != 1) goto err;
+		if (ret != 1) {
+			goto err;
+		}
 	}
 	printf("All session keys matched.\n");
 	printf("Statistical distance from uniform: %12.10f\n",

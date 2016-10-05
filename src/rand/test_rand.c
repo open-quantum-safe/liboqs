@@ -41,7 +41,9 @@ static void rand_test_distribution_64(OQS_RAND *rand, unsigned long occurrences[
 
 static int rand_test_distribution_n(OQS_RAND *rand, unsigned long occurrences[256], int len) {
 	uint8_t *x = malloc(len);
-	if (x == NULL) return 0;
+	if (x == NULL) {
+		return 0;
+	}
 	OQS_RAND_n(rand, x, len);
 	for (int i = 0; i < len; i++) {
 		OQS_RAND_test_record_occurrence(x[i], occurrences);
@@ -140,7 +142,9 @@ int main() {
 	int success;
 
 	success = rand_test_distribution_wrapper(OQS_RAND_alg_urandom_chacha20, RAND_TEST_ITERATIONS);
-	if (success != 1) goto err;
+	if (success != 1) {
+		goto err;
+	}
 
 	success = 1;
 	goto cleanup;
