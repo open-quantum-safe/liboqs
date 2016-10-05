@@ -9,9 +9,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
-enum RAND_GEN_ALGO_NAMES {
-    URANDOM_CHACHA20,
-
+enum OQS_RAND_alg_name {
+    OQS_RAND_alg_urandom_chacha20,
 };
 
 typedef struct OQS_RAND OQS_RAND;

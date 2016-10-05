@@ -3,8 +3,12 @@
 #include <oqs/rand.h>
 #include <oqs/rand_urandom_chacha20.h>
 
-OQS_RAND *OQS_RAND_new(enum RAND_GEN_ALGO_NAMES rand_algo_name) {
-	return OQS_RAND_urandom_chacha20_new();
+OQS_RAND *OQS_RAND_new(enum OQS_RAND_alg_name alg_name) {
+	switch (alg_name) {
+		case OQS_RAND_alg_urandom_chacha20:
+		default:
+			return OQS_RAND_urandom_chacha20_new();
+	}
 }
 
 uint8_t OQS_RAND_8(OQS_RAND *r) {

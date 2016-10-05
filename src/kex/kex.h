@@ -11,9 +11,8 @@
 
 #include "oqs/rand.h"
 
-enum KEX_ALGO_NAMES {
-    RLWE_BCNS15,
-
+enum OQS_KEX_alg_name {
+    OQS_KEX_alg_rlwe_bcns15,
 };
 
 typedef struct OQS_KEX OQS_KEX;
@@ -129,15 +128,15 @@ typedef struct OQS_KEX {
  * Allocate a new key exchange object.
  *
  * @param rand               Random number generator.
+ * @param alg_name           Algorithm to be instantiated
  * @param seed               An instance-specific seed, if any, or NULL.
  * @param seed_len           The length of seed, or 0.
  * @param named_parameters   Name or description of method-specific parameters
  *                           to use for this instance (as a NULL-terminated C string),
  *                           if any, or NULL.
- * @param algorithm_name     kex algorithm to be instantiated
  * @return                   The object on success, or NULL on failure.
  */
-OQS_KEX *OQS_KEX_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters, enum KEX_ALGO_NAMES algorithm_name);
+OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters);
 
 int OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len);
 int OQS_KEX_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);

@@ -58,9 +58,9 @@ static int rand_test_distribution_n(OQS_RAND *rand, unsigned long occurrences[25
 	printf("\n"); \
 }
 
-static int rand_test_distribution_wrapper(OQS_RAND * (*new_method)(), int iterations) {
+static int rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int iterations) {
 
-	OQS_RAND *rand = new_method();
+	OQS_RAND *rand = OQS_RAND_new(alg_name);
 	if (rand == NULL) {
 		fprintf(stderr, "rand is NULL\n");
 		return 0;
@@ -139,7 +139,7 @@ int main() {
 
 	int success;
 
-	success = rand_test_distribution_wrapper(&OQS_RAND_new, RAND_TEST_ITERATIONS);
+	success = rand_test_distribution_wrapper(OQS_RAND_alg_urandom_chacha20, RAND_TEST_ITERATIONS);
 	if (success != 1) goto err;
 
 	success = 1;

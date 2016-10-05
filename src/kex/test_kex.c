@@ -15,7 +15,7 @@
 	printf("\n"); \
 }
 
-static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *), const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int print, unsigned long occurrences[256], enum KEX_ALGO_NAMES kex_algo) {
+static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int print, unsigned long occurrences[256]) {
 
 	OQS_KEX *kex = NULL;
 	int rc;
@@ -32,7 +32,7 @@ static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND
 	size_t bob_key_len;
 
 	/* setup KEX */
-	kex = new_method(rand, seed, seed_len, named_parameters, kex_algo);
+	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
 	if (kex == NULL) {
 		goto err;
 	}
@@ -114,7 +114,7 @@ cleanup:
 
 }
 
-static int kex_test_correctness_wrapper( OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *, enum KEX_ALGO_NAMES), const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations, enum KEX_ALGO_NAMES kex_algo) {
+static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations) {
 	OQS_KEX *kex = NULL;
 	int ret;
 
@@ -123,11 +123,11 @@ static int kex_test_correctness_wrapper( OQS_RAND *rand, OQS_KEX * (*new_method)
 		occurrences[i] = 0;
 	}
 
-	ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters, 1, occurrences, kex_algo);
+	ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 1, occurrences);
 	if (ret != 1) goto err;
 
 	/* setup KEX */
-	kex = new_method(rand, seed, seed_len, named_parameters, kex_algo);
+	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
 	if (kex == NULL) {
 		goto err;
 	}
@@ -137,7 +137,7 @@ static int kex_test_correctness_wrapper( OQS_RAND *rand, OQS_KEX * (*new_method)
 	       kex->method_name, named_parameters, iterations);
 	printf("================================================================================\n");
 	for (int i = 0; i < iterations; i++) {
-		ret = kex_test_correctness(rand, new_method, seed, seed_len, named_parameters, 0, occurrences, kex_algo);
+		ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 0, occurrences);
 		if (ret != 1) goto err;
 	}
 	printf("All session keys matched.\n");
@@ -163,13 +163,12 @@ int main() {
 	int success;
 
 	/* setup RAND */
-	OQS_RAND *rand = NULL;
-	rand = OQS_RAND_new(URANDOM_CHACHA20);
+	OQS_RAND *rand = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
 	if (rand == NULL) {
 		goto err;
 	}
 
-	success = kex_test_correctness_wrapper(rand, &OQS_KEX_new, NULL, 0, NULL, KEX_TEST_ITERATIONS, RLWE_BCNS15);
+	success = kex_test_correctness_wrapper(rand, OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, KEX_TEST_ITERATIONS);
 	if (success != 1) {
 		goto err;
 	}
