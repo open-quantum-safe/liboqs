@@ -5,6 +5,18 @@
 #include <oqs/rand.h>
 #include <oqs/kex.h>
 
+struct kex_testcase {
+	enum OQS_KEX_alg_name alg_name;
+	unsigned char *seed;
+	size_t seed_len;
+	char *named_parameters;
+};
+
+/* Add new testcases here */
+struct kex_testcase kex_testcases[] = {
+	{ OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL },
+};
+
 #define KEX_TEST_ITERATIONS 500
 
 #define PRINT_HEX_STRING(label, str, len) { \
@@ -172,9 +184,12 @@ int main() {
 		goto err;
 	}
 
-	success = kex_test_correctness_wrapper(rand, OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, KEX_TEST_ITERATIONS);
-	if (success != 1) {
-		goto err;
+	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
+	for (size_t i = 0; i < kex_testcases_len; i++) {
+		success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_TEST_ITERATIONS);
+		if (success != 1) {
+			goto err;
+		}
 	}
 
 	success = 1;

@@ -5,6 +5,15 @@
 
 #include <oqs/rand.h>
 
+struct rand_testcase {
+	enum OQS_RAND_alg_name alg_name;
+};
+
+/* Add new testcases here */
+struct rand_testcase rand_testcases[] = {
+	{ OQS_RAND_alg_urandom_chacha20 },
+};
+
 #define RAND_TEST_ITERATIONS 10000000L
 
 static void rand_test_distribution_8(OQS_RAND *rand, unsigned long occurrences[256], int iterations) {
@@ -141,9 +150,12 @@ int main() {
 
 	int success;
 
-	success = rand_test_distribution_wrapper(OQS_RAND_alg_urandom_chacha20, RAND_TEST_ITERATIONS);
-	if (success != 1) {
-		goto err;
+	size_t rand_testcases_len = sizeof(rand_testcases) / sizeof(struct rand_testcase);
+	for (size_t i = 0; i < rand_testcases_len; i++) {
+		success = rand_test_distribution_wrapper(rand_testcases[i].alg_name, RAND_TEST_ITERATIONS);
+		if (success != 1) {
+			goto err;
+		}
 	}
 
 	success = 1;
