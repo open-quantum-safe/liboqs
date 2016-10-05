@@ -114,7 +114,7 @@ cleanup:
 
 }
 
-static int kex_test_correctness_wrapper( OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *, enum KEX_ALGO_NAMES), const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations, enum KEX_ALGO_NAMES kex_algo) { 
+static int kex_test_correctness_wrapper( OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *, enum KEX_ALGO_NAMES), const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations, enum KEX_ALGO_NAMES kex_algo) {
 	OQS_KEX *kex = NULL;
 	int ret;
 
@@ -160,7 +160,7 @@ cleanup:
 
 int main() {
 
-	int ret;
+	int success;
 
 	/* setup RAND */
 	OQS_RAND *rand = NULL;
@@ -169,21 +169,21 @@ int main() {
 		goto err;
 	}
 
-	ret = kex_test_correctness_wrapper(rand, &OQS_KEX_new, NULL, 0, NULL, KEX_TEST_ITERATIONS, RLWE_BCNS15);
-	if (ret != 1) {
+	success = kex_test_correctness_wrapper(rand, &OQS_KEX_new, NULL, 0, NULL, KEX_TEST_ITERATIONS, RLWE_BCNS15);
+	if (success != 1) {
 		goto err;
 	}
 
-	ret = 1;
+	success = 1;
 	goto cleanup;
 
 err:
-	ret = 0;
+	success = 0;
 	fprintf(stderr, "ERROR!\n");
 
 cleanup:
 	OQS_RAND_free(rand);
 
-	return ret;
+	return (success == 1) ? EXIT_SUCCESS : EXIT_FAILURE;
 
 }
