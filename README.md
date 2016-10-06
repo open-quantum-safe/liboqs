@@ -16,7 +16,7 @@ OQS will also include integrations into application-level protocols to provide e
 
 - **open-quantum-safe/openssl** is an integration of liboqs into OpenSSL 1.0.2.  The goal of this integration is to provide easy prototyping of quantum-resistant cryptography.  The integration should not be considered "production quality".  See more about this integration in its GitHub repository [open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/).
 
-More information on OQS can be found on our website: [http://openquantumsafe.org/](http://openquantumsafe.org/).
+More information on OQS can be found on our website: [https://openquantumsafe.org/](https://openquantumsafe.org/).
 
 Contents
 --------
