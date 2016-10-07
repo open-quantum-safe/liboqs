@@ -15,7 +15,7 @@
 	printf("\n"); \
 }
 
-static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *), const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int print, unsigned long occurrences[256], enum KEX_ALGO_NAMES kex_algo) {
+static int kex_test_correctness(OQS_RAND *rand, OQS_KEX * (*new_method)(OQS_RAND *, const uint8_t *, const size_t, const char *, enum KEX_ALGO_NAMES), const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int print, unsigned long occurrences[256], enum KEX_ALGO_NAMES kex_algo) {
 
 	OQS_KEX *kex = NULL;
 	int rc;
