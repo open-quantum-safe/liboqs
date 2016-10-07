@@ -9,8 +9,12 @@ CURL=curl
 RANLIB=ranlib
 LN=ln -s
 
-DEFAULTS= -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
-CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
+# Defaults algorithms
+DEFAULTS_ALGORITHMS= -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
+# Defaults flags
+DEFAULTS= -std=gnu11 -Wpedantic -Wall -Wextra
+
+CFLAGS=$(DEFAULTS) $(DEFAULTS_ALGORITHMS) -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
 
@@ -29,6 +33,7 @@ links:
 	$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN) ../../src/rand/rand.h include/oqs
 	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
+	$(LN) ../../src/sign/sign.h include/oqs
 
 # RAND_URANDOM_CHACHA
 
@@ -52,9 +57,13 @@ $(KEX_RLWE_BCNS15_OBJS): $(KEX_RLWE_BCNS15_HEADERS)
 
 objs/kex/kex.o: src/kex/kex.h
 
+# SIGN
+
+objs/sign/sign.o: src/sign/sign.h
+
 # LIB
 
-lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) objs/rand/rand.o objs/kex/kex.o
+lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) objs/rand/rand.o objs/kex/kex.o # objs/sign/sign.o
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
