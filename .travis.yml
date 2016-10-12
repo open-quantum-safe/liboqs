@@ -45,5 +45,6 @@ matrix:
   
 
 script:
-  - make
-  - make check
+  - ./configure
+  - make 
+  - make test
