@@ -328,7 +328,6 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 noinst_LTLIBRARIES = libkex.la
-BUILT_SOURCES = link
 libkex_la_SOURCES = kex.c ../rand/rand.c \
 	../rand_urandom_chacha20/rand_urandom_chacha20.c
 libkex_la_CPPFLAGS = -I../../include
@@ -336,8 +335,7 @@ noinst_bindir = $(prefix)/tests
 test_kex_SOURCES = test_kex.c
 test_kex_CPPFLAGS = -I../../include
 test_kex_LDADD = libkex.la ../kex_rlwe_bcns15/libbcns15.la
-all: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) all-am
+all: all-am
 
 .SUFFIXES:
 .SUFFIXES: .c .lo .o .obj
@@ -620,15 +618,13 @@ distdir: $(DISTFILES)
 	  fi; \
 	done
 check-am: all-am
-check: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) check-am
+check: check-am
 all-am: Makefile $(LTLIBRARIES) $(PROGRAMS)
 installdirs:
 	for dir in "$(DESTDIR)$(noinst_bindir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: $(BUILT_SOURCES)
-	$(MAKE) $(AM_MAKEFLAGS) install-am
+install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
 uninstall: uninstall-am
@@ -662,7 +658,6 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
-	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-am
 
 clean-am: clean-generic clean-libtool clean-noinstLTLIBRARIES \
@@ -734,7 +729,7 @@ ps-am:
 
 uninstall-am: uninstall-noinst_binPROGRAMS
 
-.MAKE: all check install install-am install-strip
+.MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
 	clean-libtool clean-noinstLTLIBRARIES clean-noinst_binPROGRAMS \
@@ -754,13 +749,6 @@ uninstall-am: uninstall-noinst_binPROGRAMS
 
 .PRECIOUS: Makefile
 
-
-link:
-	$(MKDIR_P) ../../include/oqs
-	$(LN_S) -f ../../src/kex/kex.h ../../include/oqs
-	$(LN_S) -f ../../src/rand/rand.h ../../include/oqs
-	$(LN_S) -f ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h ../../include/oqs
-	$(LN_S) -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h ../../include/oqs
 
 test:
 	$(foreach tp,$(noinst_bin_PROGRAMS),./$(tp) || exit;)

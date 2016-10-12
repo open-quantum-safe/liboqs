@@ -468,10 +468,12 @@ ACLOCAL_AMFLAGS = -I config
 # ensure the distribution of the doxygen configuration file
 EXTRA_DIST = doxygen.cfg
 SUBDIRS = ${SRCDIR}
+BUILT_SOURCES = link
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES = 
 liboqs_la_LIBADD = ${WANTEDLIBS}
-all: all-recursive
+all: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) all-recursive
 
 .SUFFIXES:
 am--refresh: Makefile
@@ -857,14 +859,16 @@ distcleancheck: distclean
 	       $(distcleancheck_listfiles) ; \
 	       exit 1; } >&2
 check-am: all-am
-check: check-recursive
+check: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) check-recursive
 all-am: Makefile $(LTLIBRARIES)
 installdirs: installdirs-recursive
 installdirs-am:
 	for dir in "$(DESTDIR)$(libdir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
-install: install-recursive
+install: $(BUILT_SOURCES)
+	$(MAKE) $(AM_MAKEFLAGS) install-recursive
 install-exec: install-exec-recursive
 install-data: install-data-recursive
 uninstall: uninstall-recursive
@@ -894,6 +898,7 @@ distclean-generic:
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
 	@echo "it deletes files that may require special tools to rebuild."
+	-test -z "$(BUILT_SOURCES)" || rm -f $(BUILT_SOURCES)
 clean: clean-recursive
 
 clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
@@ -966,7 +971,8 @@ ps-am:
 
 uninstall-am: uninstall-libLTLIBRARIES
 
-.MAKE: $(am__recursive_targets) install-am install-strip
+.MAKE: $(am__recursive_targets) all check install install-am \
+	install-strip
 
 .PHONY: $(am__recursive_targets) CTAGS GTAGS TAGS all all-am \
 	am--refresh check check-am clean clean-cscope clean-generic \
@@ -1037,6 +1043,13 @@ uninstall-am: uninstall-libLTLIBRARIES
 
 test:
 	$(foreach s,$(SUBDIRS),make test -s -C $(s);)
+
+link:
+	$(MKDIR_P) include/oqs
+	$(LN_S) -f ../../src/kex/kex.h include/oqs
+	$(LN_S) -f ../../src/rand/rand.h include/oqs
+	$(LN_S) -f ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
+	$(LN_S) -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
