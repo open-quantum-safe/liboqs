@@ -46,5 +46,6 @@ matrix:
 
 script:
   - ./configure
+  - ./update_timestamp  
   - make 
   - make test
