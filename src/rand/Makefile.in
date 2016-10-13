@@ -181,6 +181,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
+AM_CPPFLAGS = @AM_CPPFLAGS@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
@@ -331,7 +332,7 @@ top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
 noinst_bindir = $(prefix)/tests
 test_rand_SOURCES = test_rand.c rand.c ../rand_urandom_chacha20/rand_urandom_chacha20.c
-test_rand_CPPFLAGS = -I../../include
+test_rand_CPPFLAGS = -I../../include $(AM_CPPFLAGS)
 all: all-am
 
 .SUFFIXES:

@@ -185,6 +185,7 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(top_srcdir)/depcomp
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
+AM_CPPFLAGS = @AM_CPPFLAGS@
 AM_DEFAULT_VERBOSITY = @AM_DEFAULT_VERBOSITY@
 AR = @AR@
 AUTOCONF = @AUTOCONF@
@@ -336,10 +337,10 @@ AUTOMAKE_OPTIONS = foreign
 noinst_LTLIBRARIES = libkex.la
 libkex_la_SOURCES = kex.c ../rand/rand.c \
 	../rand_urandom_chacha20/rand_urandom_chacha20.c
-libkex_la_CPPFLAGS = -I../../include
+libkex_la_CPPFLAGS = -I../../include $(AM_CPPFLAGS)
 noinst_bindir = $(prefix)/tests
 test_kex_SOURCES = test_kex.c
-test_kex_CPPFLAGS = -I../../include
+test_kex_CPPFLAGS = -I../../include $(AM_CPPFLAGS)
 test_kex_LDADD = libkex.la ../kex_rlwe_bcns15/libbcns15.la
 all: all-am
 
