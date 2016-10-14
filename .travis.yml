@@ -9,7 +9,7 @@ matrix:
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
-      - sudo apt-get install -y autoconf 
+      - sudo apt-get install --only-upgrade -y autoconf 
     addons:
       apt:
         sources:
@@ -22,7 +22,7 @@ matrix:
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
-      - sudo apt-get install -y autoconf 
+      - sudo apt-get install --only-upgrade -y autoconf 
     addons:
       apt:
         sources:
@@ -35,7 +35,7 @@ matrix:
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
-      - sudo apt-get install -y autoconf 
+      - sudo apt-get install --only-upgrade -y autoconf 
     addons:
       apt:
         sources:
@@ -50,7 +50,7 @@ matrix:
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
-      - sudo apt-get install -y autoconf 
+      - sudo apt-get install --only-upgrade -y autoconf 
     addons:
       apt:
         sources:
