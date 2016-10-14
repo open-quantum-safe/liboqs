@@ -1,7 +1,7 @@
-#include "poly.h"
-#include "error_correction.h"
-#include "fips202.h"
-#include "newhope.h"
+#include <stdint.h>
+#include "precomp.c"
+#include "fips202.c"
+#include "poly.c"
 
 static void encode_a(unsigned char *r, const poly *pk, const unsigned char *seed) {
 	int i;
@@ -42,7 +42,7 @@ static void gen_a(poly *a, const unsigned char *seed) {
 
 // API FUNCTIONS
 
-void OQS_KEX_rlwe_newhope_keygen(unsigned char *send, poly *sk, OQS_RAND *rand) {
+static void keygen(unsigned char *send, poly *sk, OQS_RAND *rand) {
 	poly a, e, r, pk;
 	unsigned char seed[NEWHOPE_SEEDBYTES];
 
@@ -63,7 +63,7 @@ void OQS_KEX_rlwe_newhope_keygen(unsigned char *send, poly *sk, OQS_RAND *rand) 
 }
 
 
-void OQS_KEX_rlwe_newhope_sharedb(unsigned char *sharedkey, unsigned char *send, const unsigned char *received, OQS_RAND *rand) {
+static void sharedb(unsigned char *sharedkey, unsigned char *send, const unsigned char *received, OQS_RAND *rand) {
 	poly sp, ep, v, a, pka, c, epp, bp;
 	unsigned char seed[NEWHOPE_SEEDBYTES];
 
@@ -96,7 +96,7 @@ void OQS_KEX_rlwe_newhope_sharedb(unsigned char *sharedkey, unsigned char *send,
 }
 
 
-void OQS_KEX_rlwe_newhope_shareda(unsigned char *sharedkey, const poly *sk, const unsigned char *received) {
+static void shareda(unsigned char *sharedkey, const poly *sk, const unsigned char *received) {
 	poly v, bp, c;
 
 	decode_b(&bp, &c, received);

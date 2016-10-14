@@ -52,10 +52,10 @@ $(KEX_RLWE_BCNS15_OBJS): $(KEX_RLWE_BCNS15_HEADERS)
 # KEX_NEWHOPE
 
 KEX_RLWE_NEWHOPE_OBJS := $(addprefix objs/kex_rlwe_newhope/, \
-  kex_rlwe_newhope.o newhope.o fips202.o error_correction.o poly.o reduce.o ntt.o precomp.o )
+  kex_rlwe_newhope.o)
 
 KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, \
-  kex_rlwe_newhope.h newhope.h fips202.h error_correction.h poly.h reduce.h ntt.h )
+  kex_rlwe_newhope.h)
 
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 

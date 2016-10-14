@@ -7,8 +7,9 @@
 
 #include <stdint.h>
 #include <assert.h>
-#include "fips202.h"
 
+#define SHAKE128_RATE 168
+#define SHA3_256_RATE 136
 #define NROUNDS 24
 #define ROL(a, offset) ((a << offset) ^ (a >> (64-offset)))
 
@@ -57,7 +58,7 @@ static const uint64_t KeccakF_RoundConstants[NROUNDS] = {
 	(uint64_t)0x8000000080008008ULL
 };
 
-void KeccakF1600_StatePermute(uint64_t *state) {
+static void KeccakF1600_StatePermute(uint64_t *state) {
 	int round;
 
 	uint64_t Aba, Abe, Abi, Abo, Abu;
@@ -370,26 +371,15 @@ static void keccak_squeezeblocks(unsigned char *h, unsigned long long int nblock
 	}
 }
 
-
 void shake128_absorb(uint64_t *s, const unsigned char *input, unsigned int inputByteLen) {
 	keccak_absorb(s, SHAKE128_RATE, input, inputByteLen, 0x1F);
 }
 
-
-void shake128_squeezeblocks(unsigned char *output, unsigned long long nblocks, uint64_t *s) {
+static void shake128_squeezeblocks(unsigned char *output, unsigned long long nblocks, uint64_t *s) {
 	keccak_squeezeblocks(output, nblocks, s, SHAKE128_RATE);
 }
 
-
-void shake128(unsigned char *output, unsigned int outputByteLen, const unsigned char *input, unsigned int inputByteLen) {
-	uint64_t s[25];
-	assert(!(outputByteLen % SHAKE128_RATE));
-	shake128_absorb(s, input, inputByteLen);
-	shake128_squeezeblocks(output, outputByteLen / SHAKE128_RATE, s);
-}
-
-
-void sha3256(unsigned char *output, const unsigned char *input, unsigned int inputByteLen) {
+static void sha3256(unsigned char *output, const unsigned char *input, unsigned int inputByteLen) {
 	uint64_t s[25];
 	unsigned char t[SHA3_256_RATE];
 	int i;

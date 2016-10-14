@@ -8,8 +8,9 @@
 #include <oqs/kex.h>
 #include <oqs/rand.h>
 
+#include "params.h"
 #include "kex_rlwe_newhope.h"
-#include "newhope.h"
+#include "newhope.c"
 
 OQS_KEX *OQS_KEX_rlwe_newhope_new(OQS_RAND *rand) {
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
@@ -41,7 +42,7 @@ int OQS_KEX_rlwe_newhope_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t *
 	if (*alice_priv == NULL) goto err;
 
 	/* generate public/private key pair */
-	OQS_KEX_rlwe_newhope_keygen(*alice_msg, (poly *) (*alice_priv), k->rand);
+	keygen(*alice_msg, (poly *) (*alice_priv), k->rand);
 	*alice_msg_len = NEWHOPE_SENDABYTES;
 
 	ret = 1;
@@ -73,7 +74,7 @@ int OQS_KEX_rlwe_newhope_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, const 
 	if (*key == NULL) goto err;
 
 	/* generate Bob's response */
-	OQS_KEX_rlwe_newhope_sharedb(*key, *bob_msg, alice_msg, k->rand);
+	sharedb(*key, *bob_msg, alice_msg, k->rand);
 	*bob_msg_len = NEWHOPE_SENDBBYTES;
 	*key_len = 32;
 
@@ -103,7 +104,7 @@ int OQS_KEX_rlwe_newhope_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, cons
 	if (*key == NULL) goto err;
 
 	/* generate Alice's session key */
-	OQS_KEX_rlwe_newhope_shareda(*key, (poly *) alice_priv, bob_msg);
+	shareda(*key, (poly *) alice_priv, bob_msg);
 	*key_len = 32;
 
 	ret = 1;
