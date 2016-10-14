@@ -1,51 +1,63 @@
 language: c
-sudo: require 
+sudo: require
 
 matrix:
   include:
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.8
+    before_install:
+      - sudo apt-get -qq update
+      - sudo apt-get install -y autotools-dev
+      - sudo apt-get install -y autoconf 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
-        - automake
-        - autoconf
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.9
+    before_install:
+      - sudo apt-get -qq update
+      - sudo apt-get install -y autotools-dev
+      - sudo apt-get install -y autoconf 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
-        - automake
-        - autoconf
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-5
+    before_install:
+      - sudo apt-get -qq update
+      - sudo apt-get install -y autotools-dev
+      - sudo apt-get install -y autoconf 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
-        - automake
+        - autotools-dev
         - autoconf
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-6
+    before_install:
+      - sudo apt-get -qq update
+      - sudo apt-get install -y autotools-dev
+      - sudo apt-get install -y autoconf 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-6
-        - automake
+        - autotools-dev
         - autoconf
   - os: osx
     compiler: clang
