@@ -6,58 +6,46 @@ matrix:
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.8
-    before_install:
-      - apt-get -qq update
-      - apt-get install -y autotools-dev
-      - apt-get install -y autoconf 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
+        - automake
+        - autoconf
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.9
-    before_install:
-      - apt-get -qq update
-      - apt-get install -y autotools-dev
-      - apt-get install -y autoconf 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
+        - automake
+        - autoconf
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-5
-    before_install:
-      - apt-get -qq update
-      - apt-get install -y autotools-dev
-      - apt-get install -y autoconf 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
-        - autotools-dev
+        - automake
         - autoconf
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-6
-    before_install:
-      - apt-get -qq update
-      - apt-get install -y autotools-dev
-      - apt-get install -y autoconf 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-6
-        - autotools-dev
+        - automake
         - autoconf
   - os: osx
     compiler: clang
