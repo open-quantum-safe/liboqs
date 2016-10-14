@@ -16,6 +16,7 @@ struct kex_testcase {
 struct kex_testcase kex_testcases[] = {
 	{ OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL },
 	{ OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL },
+	{ OQS_KEX_alg_code_nrqcmdpc, NULL, 0, NULL },
 };
 
 #define KEX_TEST_ITERATIONS 500

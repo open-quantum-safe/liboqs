@@ -375,9 +375,11 @@ static void shake128_absorb(uint64_t *s, const unsigned char *input, unsigned in
 	keccak_absorb(s, SHAKE128_RATE, input, inputByteLen, 0x1F);
 }
 
+/*
 static void shake128_squeezeblocks(unsigned char *output, unsigned long long nblocks, uint64_t *s) {
 	keccak_squeezeblocks(output, nblocks, s, SHAKE128_RATE);
 }
+*/
 
 static void sha3256(unsigned char *output, const unsigned char *input, unsigned int inputByteLen) {
 	uint64_t s[25];

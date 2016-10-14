@@ -28,6 +28,7 @@ links:
 	$(LN) ../../src/kex/kex.h include/oqs
 	$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
+	$(LN) ../../src/kex_code_nrqcmdpc/kex_code_nrqcmdpc.h include/oqs
 	$(LN) ../../src/rand/rand.h include/oqs
 	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 
@@ -59,6 +60,13 @@ KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, \
 
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 
+# KEX_CODE_NRQCMDPC
+
+KEX_CODE_NRQCMDPC_OBJS := $(addprefix objs/kex_code_nrqcmdpc/, kex_code_nrqcmdpc.o nrqcmdpc.o)
+
+KEX_CODE_NRQCMDPC_HEADERS := $(addprefix src/kex_code_qr/, kex_code_nrqcmdpc.h, nrqcmdpc.h types.h config.h)
+
+$(KEX_CODE_NRQCMDPC_OBJS): $(KEX_COD_NRQCMDPC_HEADERS)
 
 # KEX
 
@@ -66,7 +74,11 @@ objs/kex/kex.o: src/kex/kex.h
 
 # LIB
 
-lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) objs/rand/rand.o objs/kex/kex.o
+lib: $(RAND_URANDOM_CHACHA_OBJS) \
+$(KEX_RLWE_BCNS15_OBJS) \
+$(KEX_RLWE_NEWHOPE_OBJS) \
+$(KEX_CODE_NRQCMDPC_OBJS) \
+objs/rand/rand.o objs/kex/kex.o
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a

@@ -10,6 +10,7 @@
 #include <oqs/kex.h>
 #include <oqs/kex_rlwe_bcns15.h>
 #include <oqs/kex_rlwe_newhope.h>
+#include <oqs/kex_code_nrqcmdpc.h>
 
 OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, UNUSED const uint8_t *seed, UNUSED const UNUSED size_t seed_len, UNUSED const char *named_parameters) {
 	switch (alg_name) {
@@ -19,6 +20,8 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, UNUSED cons
 		return OQS_KEX_rlwe_bcns15_new(rand);
 	case OQS_KEX_alg_rlwe_newhope:
 		return OQS_KEX_rlwe_newhope_new(rand);
+	case OQS_KEX_alg_code_nrqcmdpc:
+		return OQS_KEX_code_nrqcmdpc_new(rand);
 	default:
 		assert(0);
 	}
