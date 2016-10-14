@@ -7,9 +7,9 @@ matrix:
     compiler: gcc
     env: CC_OQS=gcc-4.8
     before_install:
-      - sudo apt-get -qq update
-      - sudo apt-get install -y autotools-dev
-      - sudo apt-get install -y autoconf 
+      - apt-get -qq update
+      - apt-get install -y autotools-dev
+      - apt-get install -y autoconf 
     addons:
       apt:
         sources:
@@ -20,9 +20,9 @@ matrix:
     compiler: gcc
     env: CC_OQS=gcc-4.9
     before_install:
-      - sudo apt-get -qq update
-      - sudo apt-get install -y autotools-dev
-      - sudo apt-get install -y autoconf 
+      - apt-get -qq update
+      - apt-get install -y autotools-dev
+      - apt-get install -y autoconf 
     addons:
       apt:
         sources:
@@ -33,9 +33,9 @@ matrix:
     compiler: gcc
     env: CC_OQS=gcc-5
     before_install:
-      - sudo apt-get -qq update
-      - sudo apt-get install -y autotools-dev
-      - sudo apt-get install -y autoconf 
+      - apt-get -qq update
+      - apt-get install -y autotools-dev
+      - apt-get install -y autoconf 
     addons:
       apt:
         sources:
@@ -48,9 +48,9 @@ matrix:
     compiler: gcc
     env: CC_OQS=gcc-6
     before_install:
-      - sudo apt-get -qq update
-      - sudo apt-get install -y autotools-dev
-      - sudo apt-get install -y autoconf 
+      - apt-get -qq update
+      - apt-get install -y autotools-dev
+      - apt-get install -y autoconf 
     addons:
       apt:
         sources:
