@@ -24,6 +24,7 @@ struct kex_testcase kex_testcases[] = {
 	{ OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0 },
 	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0 },
 	{ OQS_KEX_alg_sidh_cln16, NULL, 0, NULL, "sidh_cln16", 0 },
+	{ OQS_KEX_alg_code_nrqcmdpc, NULL, 0, NULL, "code_nrqcmdpc",0},
 };
 
 #define KEX_TEST_ITERATIONS 100
