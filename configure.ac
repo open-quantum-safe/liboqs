@@ -65,7 +65,7 @@ AM_COND_IF([bcns15_1024], [WANTEDLIBS=src/kex_rlwe_bcns15/libbcns15.la])
 WANTEDLIBS=${WANTEDLIBS}" src/kex/libkex.la"
 SRCDIR=${SRCDIR}" src/kex src/rand"
 
-AM_CPPFLAGS="-std=gnu99"
+AM_CPPFLAGS="-std=c11"
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(WANTEDLIBS)
 AC_SUBST(SRCDIR)

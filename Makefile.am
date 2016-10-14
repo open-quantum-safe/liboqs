@@ -24,3 +24,7 @@ link:
 	$(LN_S) -f ../../src/rand/rand.h include/oqs
 	$(LN_S) -f ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	$(LN_S) -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
+
+prettyprint:
+	astyle --style=java --indent=tab --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*/*.h src/*/*.c
+

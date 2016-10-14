@@ -12,6 +12,8 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
+        - autotools-dev
+        - autoconf
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.9
@@ -21,6 +23,8 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
+        - autotools-dev
+        - autoconf
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-5
@@ -30,6 +34,8 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
+        - autotools-dev
+        - autoconf
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-6
@@ -39,13 +45,17 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-6
+        - autotools-dev
+        - autoconf
   - os: osx
     compiler: clang
     env: CC_OQS=clang
+    before_install:
+      -  brew install autoconf
+      -  brew install automake
   
-
 script:
-  - ./configure
-  - ./update_timestamp  
+  - autoreconf -i 
+  - ./configure  
   - make 
   - make test

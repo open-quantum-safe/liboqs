@@ -1,4 +1,0 @@
-touch  aclocal.m4
-touch configure
-touch `find . -name Makefile.in -print`
-touch config.h.in

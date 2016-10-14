@@ -12,7 +12,7 @@
 #include "oqs/rand.h"
 
 enum KEX_ALGO_NAMES {
-    RLWE_BCNS15,
+	RLWE_BCNS15,
 
 };
 
