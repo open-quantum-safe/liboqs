@@ -5,7 +5,7 @@ matrix:
   include:
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-4.8
+    env: CC=gcc-4.8
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
@@ -18,7 +18,7 @@ matrix:
         - gcc-4.8
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-4.9
+    env: CC=gcc-4.9
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
@@ -31,7 +31,7 @@ matrix:
         - gcc-4.9
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-5
+    env: CC=gcc-5
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
@@ -46,7 +46,7 @@ matrix:
         - autoconf
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-6
+    env: CC=gcc-6
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
@@ -61,7 +61,7 @@ matrix:
         - autoconf
   - os: osx
     compiler: clang
-    env: CC_OQS=clang
+    env: CC=clang
     before_install:
       -  brew install autoconf
       -  brew install automake
