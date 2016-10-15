@@ -23,10 +23,6 @@ matrix:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
-      - sudo apt-get install build-essential
-      - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-      - sudo apt-get update
-      - sudo apt-get install gcc-4.9 g++-4.9
     addons:
       apt:
         sources:
@@ -34,16 +30,12 @@ matrix:
         packages:
         - gcc-4.9
   - os: linux
-    compiler: gcc
+    compiler: gcc-5
     env: CC=gcc-5
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
-      - sudo apt-get install build-essential
-      - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-      - sudo apt-get update
-      - sudo apt-get install gcc-5 g++-5
     addons:
       apt:
         sources:
@@ -53,16 +45,12 @@ matrix:
         - autotools-dev
         - autoconf
   - os: linux
-    compiler: gcc
+    compiler: gcc-6
     env: CC=gcc-6
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
-      - sudo apt-get install build-essential
-      - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-      - sudo apt-get update
-      - sudo apt-get install gcc-6 g++-6
     addons:
       apt:
         sources:
