@@ -85,10 +85,10 @@ typedef struct OQS_KEX {
 	 * Pointer to a function for shared key generation by Bob.
 	 *
 	 * @param k                Key exchange structure
-	 * @param alice_msg        Alice's public key
-	 * @param alice_msg_len    Alice's public key length
-	 * @param bob_msg          Bob's public key
-	 * @param bob_msg_len      Bob's public key length
+	 * @param alice_msg        Alice's message (public key + optional additional data)
+	 * @param alice_msg_len    Alice's message length
+	 * @param bob_msg          Bob's message (public key / encryption of shared key + optional additional data)
+	 * @param bob_msg_len      Bob's message length
 	 * @param key              Shared key
 	 * @param key_len          Shared key length
 	 * @return                 1 on success, or 0 on failure
@@ -100,7 +100,7 @@ typedef struct OQS_KEX {
 	 *
 	 * @param k                Key exchange structure
 	 * @param alice_priv       Alice's private key
-	 * @param bob_msg          Bob's message (encryption of shared key + optional additional data)
+	 * @param bob_msg          Bob's message (public key / encryption of shared key + optional additional data)
 	 * @param bob_msg_len      Bob's message length
 	 * @param key              Shared key
 	 * @param key_len          Shared key length
