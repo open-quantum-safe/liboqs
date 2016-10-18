@@ -64,4 +64,5 @@ matrix:
 script:
   - make
   - make check
-  - bash .travis-style-check.sh 
+  - bash .travis-style-check.sh
+  - bash .travis-global-namespace-check.sh
