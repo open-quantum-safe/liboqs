@@ -51,11 +51,9 @@ $(KEX_RLWE_BCNS15_OBJS): $(KEX_RLWE_BCNS15_HEADERS)
 
 # KEX_NEWHOPE
 
-KEX_RLWE_NEWHOPE_OBJS := $(addprefix objs/kex_rlwe_newhope/, \
-  kex_rlwe_newhope.o)
+KEX_RLWE_NEWHOPE_OBJS := $(addprefix objs/kex_rlwe_newhope/, kex_rlwe_newhope.o)
 
-KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, \
-  kex_rlwe_newhope.h)
+KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.h fips202.c newhope.c params.h poly.c precomp.c)
 
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 
