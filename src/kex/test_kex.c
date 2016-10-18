@@ -158,9 +158,8 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 		}
 	}
 	printf("All session keys matched.\n");
-	printf("Statistical distance from uniform: %12.10f\n",
-	       OQS_RAND_test_statistical_distance_from_uniform(
-	           occurrences));
+	printf("Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
+	printf("\n\n");
 
 	ret = 1;
 	goto cleanup;
