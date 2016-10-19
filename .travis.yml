@@ -71,3 +71,6 @@ script:
   - ./configure  
   - make 
   - make test
+  - ./configure --disable-bcns15-1024  
+  - make clean;make 
+  - make test
