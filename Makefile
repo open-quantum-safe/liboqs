@@ -105,6 +105,7 @@ objs/kex/kex.o: src/kex/kex.h
 
 # LIB
 
+
 RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS)
 
 lib: $(RAND_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_RLWE_LATTICECRYPTO_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS)
