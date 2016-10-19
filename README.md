@@ -26,6 +26,7 @@ liboqs currently contains:
 - `rand_urandom_chacha20`: pseudorandom number generator seeded from /dev/urandom and expanded using the ChaCha20 stream cipher
 - `kex_rlwe_bcns15`: key exchange from the ring learning with errors problem (Bos, Costello, Naehrig, Stebila, *IEEE Symposium on Security & Privacy 2015*, [https://eprint.iacr.org/2014/599](https://eprint.iacr.org/2014/599))
 - `kex_rlwe_newhope`: "NewHope": key exchange from the ring learning with errors problem (Alkim, Ducas, Pöppelmann, Schwabe, *USENIX Security 2016*, [https://eprint.iacr.org/2015/1092](https://eprint.iacr.org/2015/1092)) (using the reference C implementation of NewHope from [https://github.com/tpoeppelmann/newhope](https://github.com/tpoeppelmann/newhope))
+- `kex_rlwe_latticecrypto`: MSR implementation of Peikert's RLWE key exchange, based on the implementation of Alkim, Ducas, Pöppelmann, and Schwabe, [https://www.microsoft.com/en-us/research/project/lattice-cryptography-library/](https://www.microsoft.com/en-us/research/project/lattice-cryptography-library/)
 - `kex_lwe_frodo`: key exchange from the learning with errors problem (Bos, Costello, Ducas, Mironov, Naehrig, Nikolaenko, Raghunathan, Stebila, *ACM Conference on Computer and Communications Security 2016*, [http://eprint.iacr.org/2016/659](http://eprint.iacr.org/2016/659))
 
 Building and Running
@@ -105,7 +106,7 @@ Over the next few months, we plan to be making the following updates:
 
 - Building on more systems, including building of assembly code / optimizations
 - Inclusion of a McEliece-based key exchange method
-- Inclusion of a supersingular isogeny Diffie–Hellman key exchange method
+- Inclusion of a supersingular isogeny DiffieâHellman key exchange method
 - Code reviews including static analysis
 - Integration of liboqs into additional application-level protocols.
 
@@ -117,6 +118,7 @@ License
 liboqs is licensed under the MIT License; see [https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt](LICENSE.txt) for details.  liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
 - `src/kex_rlwe_bcns15`: public domain ([http://unlicense.org](http://unlicense.org))
+- `src/kex_rlwe_latticecrypto`: MIT License
 - `src/rand_urandom_chacha20/external`: public domain
 - `src/kex_rlwe_newhope`: public domain
 
@@ -127,7 +129,7 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 
 ### Contributors
 
-- Tancrède Lepoint (SRI)
+- TancrÃ¨de Lepoint (SRI)
 - Shravan Mishra (University of Waterloo)
 - Christian Paquin (Microsoft Research)
 - Alex Parent (University of Waterloo)

@@ -29,6 +29,9 @@
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\rlwe_table.h" />
     <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" />
     <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h" />
+    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" />
+    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto.h" />
+    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_priv.h" />
     <ClInclude Include="..\..\src\rand\rand.h" />
     <ClInclude Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.h" />
     <ClInclude Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" />
@@ -47,6 +50,9 @@
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe_kex.c" />
     <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c" />
     <ClCompile Include="..\..\src\kex_rlwe_newhope\newhope.c" />
+    <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.c" />
+    <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_kex.c" />
+    <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\ntt_constants.c" />
     <ClCompile Include="..\..\src\rand\rand.c" />
     <ClCompile Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.c" />
     <ClCompile Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.c" />
@@ -134,6 +140,7 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"</Command>
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -161,6 +168,7 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"</Command>
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -192,6 +200,7 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"</Command>
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -223,6 +232,7 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"</Command>
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>

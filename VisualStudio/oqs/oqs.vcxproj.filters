@@ -16,6 +16,9 @@
     <Filter Include="Source Files\BCNS15">
       <UniqueIdentifier>{178cf83e-52eb-4ead-a1ca-33558ffd988e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\LatticeCrypto">
+      <UniqueIdentifier>{bf897da8-45b8-4bee-bb71-c17cce045d07}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Source Files\rand">
       <UniqueIdentifier>{15505124-034e-4100-a6cb-a32309738b25}</UniqueIdentifier>
     </Filter>
@@ -43,10 +46,16 @@
     <Filter Include="Source Files\AES">
       <UniqueIdentifier>{379cec65-7e0e-4eb2-9be1-414b154a911f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\LatticeCrypto">
+      <UniqueIdentifier>{4c6b9b0d-05ab-439a-8d16-7001330e16bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kex\kex.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h">
+      <Filter>Header Files\LatticeCrypto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h">
       <Filter>Header Files\BCNS15</Filter>
@@ -83,6 +92,11 @@
     </ClInclude>
     <ClInclude Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.h">
       <Filter>Header Files\rand</Filter>
+    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto.h">
+      <Filter>Header Files\LatticeCrypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_priv.h">
+      <Filter>Header Files\LatticeCrypto</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -94,6 +108,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.c">
       <Filter>Source Files\BCNS15</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.c">
+      <Filter>Source Files\LatticeCrypto</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rand\rand.c">
       <Filter>Source Files\rand</Filter>
@@ -133,6 +150,11 @@
     </ClCompile>
     <ClCompile Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.c">
       <Filter>Source Files\rand</Filter>
+    <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_kex.c">
+      <Filter>Source Files\LatticeCrypto</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\ntt_constants.c">
+      <Filter>Source Files\LatticeCrypto</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
