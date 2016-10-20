@@ -13,9 +13,11 @@ static __m128i key_expand(__m128i key, __m128i keygened) {
 
 //This is needed since the rcon argument to _mm_aeskeygenassist_si128
 //must be a compile time constaint
+
 #define key_exp(k, rcon) key_expand(k, _mm_aeskeygenassist_si128(k, rcon))
 
-void OQS_AES128_load_schedule(uint8_t *key, __m128i *schedule) {
+void OQS_AES128_load_schedule(uint8_t *key, uint8_t *sch) {
+	__m128i *schedule = (__m128i * )sch;
 	schedule[0]  = _mm_loadu_si128((const __m128i *) key);
 	schedule[1]  = key_exp(schedule[0], 0x01);
 	schedule[2]  = key_exp(schedule[1], 0x02);
@@ -34,7 +36,8 @@ void OQS_AES128_load_schedule(uint8_t *key, __m128i *schedule) {
 		schedule[11 + i] = _mm_aesimc_si128(schedule[9 - i]);
 }
 
-void OQS_AES128_enc(uint8_t *plainText, __m128i *schedule, uint8_t *cipher_text) {
+void OQS_AES128_enc(uint8_t *plainText, uint8_t *sch, uint8_t *cipher_text) {
+	__m128i *schedule = (__m128i * )sch;
 	__m128i m = _mm_loadu_si128((__m128i *) plainText);
 
 	m = _mm_xor_si128(m, schedule[0]);
@@ -46,7 +49,8 @@ void OQS_AES128_enc(uint8_t *plainText, __m128i *schedule, uint8_t *cipher_text)
 	_mm_storeu_si128((__m128i *) cipher_text, m);
 }
 
-void OQS_AES128_dec(uint8_t *cipher_text, __m128i *schedule, uint8_t *plain_text) {
+void OQS_AES128_dec(uint8_t *cipher_text, uint8_t *sch, uint8_t *plain_text) {
+	__m128i *schedule = (__m128i * )sch;
 	__m128i m = _mm_loadu_si128((__m128i *) cipher_text);
 
 	m = _mm_xor_si128(m, schedule[10]);

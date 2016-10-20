@@ -75,6 +75,7 @@ lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS
 tests: lib src/rand/test_rand.c src/kex/test_kex.c
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
+	$(CC) $(CFLAGS) $(INCLUDES) -L. src/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
 
 docs: links
 	doxygen
@@ -82,6 +83,7 @@ docs: links
 check: links tests
 	./test_kex
 	./test_rand
+	./test_aes
 
 clean:
 	rm -rf docs objs include
