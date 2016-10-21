@@ -9,6 +9,11 @@
 #include <stddef.h>
 #include <stdint.h>
 
+enum OQS_RAND_alg_name {
+	OQS_RAND_alg_default,
+	OQS_RAND_alg_urandom_chacha20,
+};
+
 typedef struct OQS_RAND OQS_RAND;
 
 /**
@@ -71,7 +76,7 @@ typedef struct OQS_RAND {
 
 } OQS_RAND;
 
-OQS_RAND *OQS_RAND_new();
+OQS_RAND *OQS_RAND_new(enum OQS_RAND_alg_name alg_name);
 
 uint8_t OQS_RAND_8(OQS_RAND *r);
 uint32_t OQS_RAND_32(OQS_RAND *r);
