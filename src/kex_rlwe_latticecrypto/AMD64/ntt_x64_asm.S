@@ -25,8 +25,8 @@
 //             [reg_p2] points to table and 
 //             reg_p3 contains parameter n
 //*********************************************************************** 
-.global NTT_CT_std2rev_12289_asm
-NTT_CT_std2rev_12289_asm:
+.global oqs_rlwe_latticecrypto_NTT_CT_std2rev_12289_asm
+oqs_rlwe_latticecrypto_NTT_CT_std2rev_12289_asm:
   push       r12
   push       r13
   push       r14
@@ -355,8 +355,8 @@ loop8:
 //             reg_p3 and reg_p4 point to constants for scaling and
 //             reg_p5 contains parameter n
 //*********************************************************************** 
-.global INTT_GS_rev2std_12289_asm
-INTT_GS_rev2std_12289_asm:
+.global oqs_rlwe_latticecrypto_INTT_GS_rev2std_12289_asm
+oqs_rlwe_latticecrypto_INTT_GS_rev2std_12289_asm:
   push       r12
   push       r13
   push       r14
@@ -776,8 +776,8 @@ loop9b:
 //  Operation: d [reg_p4] <- a [reg_p1] * b [reg_p2] + c [reg_p3]
 //             reg_p5 contains parameter n
 //*********************************************************************** 
-.global pmuladd_asm
-pmuladd_asm:
+.global oqs_rlwe_latticecrypto_pmuladd_asm
+oqs_rlwe_latticecrypto_pmuladd_asm:
   vmovdqu    ymm5, PERM0246
   vmovdqu    ymm6, MASK12x8 
   xor        rax, rax
@@ -817,8 +817,8 @@ lazo2:
 //  Operation: c [reg_p3] <- a [reg_p1] * b [reg_p2]
 //             reg_p4 contains parameter n
 //*********************************************************************** 
-.global pmul_asm
-pmul_asm: 
+.global oqs_rlwe_latticecrypto_pmul_asm
+oqs_rlwe_latticecrypto_pmul_asm: 
   vmovdqu    ymm5, PERM0246
   vmovdqu    ymm6, MASK12x8 
   xor        rax, rax
@@ -856,8 +856,8 @@ lazo3:
 //  Operation: c [reg_p1] <- a [reg_p1]
 //             reg_p2 contains parameter n
 //*********************************************************************** 
-.global two_reduce12289_asm
-two_reduce12289_asm: 
+.global oqs_rlwe_latticecrypto_two_reduce12289_asm
+oqs_rlwe_latticecrypto_two_reduce12289_asm: 
   vmovdqu    ymm6, MASK12x8 
   vmovdqu    ymm7, PRIME8x
   xor        rax, rax
@@ -900,8 +900,8 @@ lazo4:
 //  Encoding
 //  Operation: c [reg_p2] <- a [reg_p1]
 //*********************************************************************** 
-.global encode_asm
-encode_asm: 
+.global oqs_rlwe_latticecrypto_encode_asm
+oqs_rlwe_latticecrypto_encode_asm: 
   vmovdqu    ymm6, MASK32 
   vmovdqu    ymm7, MASK42
   mov        r9, 1024
@@ -939,8 +939,8 @@ lazo5:
 //  Decoding
 //  Operation: c [reg_p2] <- a [reg_p1]
 //*********************************************************************** 
-.global decode_asm
-decode_asm: 
+.global oqs_rlwe_latticecrypto_decode_asm
+oqs_rlwe_latticecrypto_decode_asm: 
   vmovdqu    ymm6, MASK14_1 
   vmovdqu    ymm7, MASK14_2
   vmovdqu    ymm8, MASK14_3

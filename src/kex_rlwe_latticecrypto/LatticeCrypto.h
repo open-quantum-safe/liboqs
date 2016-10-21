@@ -52,31 +52,15 @@ typedef enum {
 
 #define CRYPTO_STATUS_TYPE_SIZE (CRYPTO_ERROR_END_OF_LIST)       
 
-// Definitions of the error messages
-// NOTE: they must match the error codes above
-
-#define CRYPTO_MSG_SUCCESS                                "CRYPTO_SUCCESS"
-#define CRYPTO_MSG_ERROR                                  "CRYPTO_ERROR"
-#define CRYPTO_MSG_ERROR_DURING_TEST                      "CRYPTO_ERROR_DURING_TEST"
-#define CRYPTO_MSG_ERROR_UNKNOWN                          "CRYPTO_ERROR_UNKNOWN"
-#define CRYPTO_MSG_ERROR_NOT_IMPLEMENTED                  "CRYPTO_ERROR_NOT_IMPLEMENTED"
-#define CRYPTO_MSG_ERROR_NO_MEMORY                        "CRYPTO_ERROR_NO_MEMORY"
-#define CRYPTO_MSG_ERROR_INVALID_PARAMETER                "CRYPTO_ERROR_INVALID_PARAMETER"
-#define CRYPTO_MSG_ERROR_SHARED_KEY                       "CRYPTO_ERROR_SHARED_KEY"
-#define CRYPTO_MSG_ERROR_TOO_MANY_ITERATIONS              "CRYPTO_ERROR_TOO_MANY_ITERATIONS"                                                            
-
 // Basic key-exchange constants  
-#define PKA_BYTES           1824      // Alice's public key size 
-#define PKB_BYTES           2048      // Bob's public key size 
-#define SHAREDKEY_BYTES     32        // Shared key size 
+#define OQS_RLWE_LATTICECRYPTO_PKA_BYTES           1824      // Alice's public key size 
+#define OQS_RLWE_LATTICECRYPTO_PKB_BYTES           2048      // Bob's public key size 
+#define OQS_RLWE_LATTICECRYPTO_SHAREDKEY_BYTES     32        // Shared key size 
 
 /******************** Function prototypes *******************/
 
 // Clear digits from memory. "nwords" indicates the number of digits to be zeroed.
-extern void clear_words(void* mem, digit_t nwords);
-
-// Output error/success message for a given CRYPTO_STATUS
-const char* LatticeCrypt_get_error_message(CRYPTO_STATUS Status);
+extern void oqs_rlwe_latticecrypto_clear_words(void* mem, digit_t nwords);
 
 /*********************** Key exchange API ***********************/ 
 
@@ -84,7 +68,7 @@ const char* LatticeCrypt_get_error_message(CRYPTO_STATUS Status);
 // It produces a private key SecretKeyA and computes the public key PublicKeyA.
 // Outputs: the private key SecretKeyA that consists of a 32-bit signed 1024-element array (4096 bytes in total)
 //          the public key PublicKeyA that occupies 1824 bytes
-CRYPTO_STATUS KeyGeneration_A(int32_t* SecretKeyA, unsigned char* PublicKeyA, OQS_RAND* rand);
+CRYPTO_STATUS oqs_rlwe_latticecrypto_KeyGeneration_A(int32_t* SecretKeyA, unsigned char* PublicKeyA, OQS_RAND* rand);
 
 // Bob's key generation and shared secret computation
 // It produces a private key and computes the public key PublicKeyB. In combination with Alice's public key PublicKeyA, it computes 
@@ -92,14 +76,14 @@ CRYPTO_STATUS KeyGeneration_A(int32_t* SecretKeyA, unsigned char* PublicKeyA, OQ
 // Input:   Alice's public key PublicKeyA that consists of 1824 bytes
 // Outputs: the public key PublicKeyB that occupies 2048 bytes.
 //          the 256-bit shared secret SharedSecretB.
-CRYPTO_STATUS SecretAgreement_B(unsigned char* PublicKeyA, unsigned char* SharedSecretB, unsigned char* PublicKeyB, OQS_RAND* rand);
+CRYPTO_STATUS oqs_rlwe_latticecrypto_SecretAgreement_B(unsigned char* PublicKeyA, unsigned char* SharedSecretB, unsigned char* PublicKeyB, OQS_RAND* rand);
 
 // Alice's shared secret computation 
 // It computes the shared secret SharedSecretA using Bob's public key PublicKeyB and Alice's private key SecretKeyA.
 // Inputs: Bob's public key PublicKeyB that consists of 2048 bytes
 //         the private key SecretKeyA that consists of a 32-bit signed 1024-element array (4096 bytes in total)
 // Output: the 256-bit shared secret SharedSecretA.
-CRYPTO_STATUS SecretAgreement_A(unsigned char* PublicKeyB, int32_t* SecretKeyA, unsigned char* SharedSecretA);
+CRYPTO_STATUS oqs_rlwe_latticecrypto_SecretAgreement_A(unsigned char* PublicKeyB, int32_t* SecretKeyA, unsigned char* SharedSecretA);
 
 
 #ifdef __cplusplus

@@ -13,7 +13,7 @@
 const uint32_t mask12 = ((uint64_t)1 << 12) - 1;
 
     
-int32_t reduce12289(int64_t a)
+int32_t oqs_rlwe_latticecrypto_reduce12289(int64_t a)
 { // Reduction modulo q
     int32_t c0, c1;
    
@@ -24,7 +24,7 @@ int32_t reduce12289(int64_t a)
 }
 
     
-int32_t reduce12289_2x(int64_t a)
+int32_t oqs_rlwe_latticecrypto_reduce12289_2x(int64_t a)
 { // Two merged reductions modulo q
     int32_t c0, c1, c2;
    
@@ -36,7 +36,7 @@ int32_t reduce12289_2x(int64_t a)
 }
 
 
-void NTT_CT_std2rev_12289(int32_t* a, const int32_t* psi_rev, unsigned int N)
+void oqs_rlwe_latticecrypto_NTT_CT_std2rev_12289(int32_t* a, const int32_t* psi_rev, unsigned int N)
 { // Forward NTT
     unsigned int m, i, j, j1, j2, k = N;
     int32_t S, U, V;
@@ -49,7 +49,7 @@ void NTT_CT_std2rev_12289(int32_t* a, const int32_t* psi_rev, unsigned int N)
             S = psi_rev[m+i];
             for (j = j1; j <= j2; j++) { 
                 U = a[j]; 
-                V = reduce12289((int64_t)a[j+k]*S);
+                V = oqs_rlwe_latticecrypto_reduce12289((int64_t)a[j+k]*S);
                 a[j] = U+V;
                 a[j+k] = U-V;
             }
@@ -62,8 +62,8 @@ void NTT_CT_std2rev_12289(int32_t* a, const int32_t* psi_rev, unsigned int N)
         j2 = j1+3;
         S = psi_rev[i+128];
         for (j = j1; j <= j2; j++) {
-            U = reduce12289((int64_t)a[j]);
-            V = reduce12289_2x((int64_t)a[j+4]*S);
+            U = oqs_rlwe_latticecrypto_reduce12289((int64_t)a[j]);
+            V = oqs_rlwe_latticecrypto_reduce12289_2x((int64_t)a[j+4]*S);
             a[j] = U+V;
             a[j+4] = U-V;
         }
@@ -77,7 +77,7 @@ void NTT_CT_std2rev_12289(int32_t* a, const int32_t* psi_rev, unsigned int N)
             S = psi_rev[m+i];
             for (j = j1; j <= j2; j++) { 
                 U = a[j]; 
-                V = reduce12289((int64_t)a[j+k]*S); 
+                V = oqs_rlwe_latticecrypto_reduce12289((int64_t)a[j+k]*S); 
                 a[j] = U+V;
                 a[j+k] = U-V;
             }
@@ -87,7 +87,7 @@ void NTT_CT_std2rev_12289(int32_t* a, const int32_t* psi_rev, unsigned int N)
 }
 
 
-void INTT_GS_rev2std_12289(int32_t* a, const int32_t* omegainv_rev, const int32_t omegainv1N_rev, const int32_t Ninv, unsigned int N)
+void oqs_rlwe_latticecrypto_INTT_GS_rev2std_12289(int32_t* a, const int32_t* omegainv_rev, const int32_t omegainv1N_rev, const int32_t Ninv, unsigned int N)
 { // Inverse NTT
     unsigned int m, h, i, j, j1, j2, k = 1;
     int32_t S, U, V;
@@ -105,10 +105,10 @@ void INTT_GS_rev2std_12289(int32_t* a, const int32_t* omegainv_rev, const int32_
                 a[j] = U+V;
                 temp = (int64_t)(U-V)*S;
                 if (m == 32) {
-                    a[j] = reduce12289((int64_t)a[j]);
-                    a[j+k] = reduce12289_2x(temp);
+                    a[j] = oqs_rlwe_latticecrypto_reduce12289((int64_t)a[j]);
+                    a[j+k] = oqs_rlwe_latticecrypto_reduce12289_2x(temp);
                 } else {
-                    a[j+k] = reduce12289(temp);
+                    a[j+k] = oqs_rlwe_latticecrypto_reduce12289(temp);
                 }
              }
              j1 = j1+2*k;
@@ -118,47 +118,47 @@ void INTT_GS_rev2std_12289(int32_t* a, const int32_t* omegainv_rev, const int32_
     for (j = 0; j < k; j++) {
         U = a[j];
         V = a[j+k];
-        a[j] = reduce12289((int64_t)(U+V)*Ninv);
-        a[j+k] = reduce12289((int64_t)(U-V)*omegainv1N_rev);
+        a[j] = oqs_rlwe_latticecrypto_reduce12289((int64_t)(U+V)*Ninv);
+        a[j+k] = oqs_rlwe_latticecrypto_reduce12289((int64_t)(U-V)*omegainv1N_rev);
     }
     return;
 }
 
 
-void two_reduce12289(int32_t* a, unsigned int N)
+void oqs_rlwe_latticecrypto_two_reduce12289(int32_t* a, unsigned int N)
 { // Two consecutive reductions modulo q
     unsigned int i; 
 
     for (i = 0; i < N; i++) {
-        a[i] = reduce12289((int64_t)a[i]);
-        a[i] = reduce12289((int64_t)a[i]);
+        a[i] = oqs_rlwe_latticecrypto_reduce12289((int64_t)a[i]);
+        a[i] = oqs_rlwe_latticecrypto_reduce12289((int64_t)a[i]);
     }
 }
 
 
-void pmul(int32_t* a, int32_t* b, int32_t* c, unsigned int N)
+void oqs_rlwe_latticecrypto_pmul(int32_t* a, int32_t* b, int32_t* c, unsigned int N)
 { // Component-wise multiplication
     unsigned int i; 
 
     for (i = 0; i < N; i++) {
-        c[i] = reduce12289((int64_t)a[i]*b[i]);
-        c[i] = reduce12289((int64_t)c[i]);
+        c[i] = oqs_rlwe_latticecrypto_reduce12289((int64_t)a[i]*b[i]);
+        c[i] = oqs_rlwe_latticecrypto_reduce12289((int64_t)c[i]);
     }
 }
 
 
-void pmuladd(int32_t* a, int32_t* b, int32_t* c, int32_t* d, unsigned int N)
+void oqs_rlwe_latticecrypto_pmuladd(int32_t* a, int32_t* b, int32_t* c, int32_t* d, unsigned int N)
 { // Component-wise multiplication and addition
     unsigned int i; 
 
     for (i = 0; i < N; i++) {
-        d[i] = reduce12289((int64_t)a[i]*b[i] + c[i]);
-        d[i] = reduce12289((int64_t)d[i]);
+        d[i] = oqs_rlwe_latticecrypto_reduce12289((int64_t)a[i]*b[i] + c[i]);
+        d[i] = oqs_rlwe_latticecrypto_reduce12289((int64_t)d[i]);
     }
 }
 
 
-void smul(int32_t* a, int32_t scalar, unsigned int N)
+void oqs_rlwe_latticecrypto_smul(int32_t* a, int32_t scalar, unsigned int N)
 { // Component-wise multiplication with scalar
     unsigned int i; 
 
@@ -168,7 +168,7 @@ void smul(int32_t* a, int32_t scalar, unsigned int N)
 }
 
 
-void correction(int32_t* a, int32_t p, unsigned int N)
+void oqs_rlwe_latticecrypto_correction(int32_t* a, int32_t p, unsigned int N)
 { // Correction modulo q 
     unsigned int i; 
     int32_t mask;

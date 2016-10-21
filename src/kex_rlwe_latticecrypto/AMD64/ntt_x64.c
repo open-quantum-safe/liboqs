@@ -11,37 +11,37 @@
 #include "../LatticeCrypto_priv.h"
     
 
-void NTT_CT_std2rev_12289(int32_t* a, const int32_t* psi_rev, unsigned int N)
+void oqs_rlwe_latticecrypto_NTT_CT_std2rev_12289(int32_t* a, const int32_t* psi_rev, unsigned int N)
 {
-    NTT_CT_std2rev_12289_asm(a, psi_rev, N);
+    oqs_rlwe_latticecrypto_NTT_CT_std2rev_12289_asm(a, psi_rev, N);
 }
 
 
-void INTT_GS_rev2std_12289(int32_t* a, const int32_t* omegainv_rev, const int32_t omegainv1N_rev, const int32_t Ninv, unsigned int N)
+void oqs_rlwe_latticecrypto_INTT_GS_rev2std_12289(int32_t* a, const int32_t* omegainv_rev, const int32_t omegainv1N_rev, const int32_t Ninv, unsigned int N)
 {
-    INTT_GS_rev2std_12289_asm(a, omegainv_rev, omegainv1N_rev, Ninv, N);
+    oqs_rlwe_latticecrypto_INTT_GS_rev2std_12289_asm(a, omegainv_rev, omegainv1N_rev, Ninv, N);
 }
 
 
-void two_reduce12289(int32_t* a, unsigned int N)
+void oqs_rlwe_latticecrypto_two_reduce12289(int32_t* a, unsigned int N)
 {
-    two_reduce12289_asm(a, N);
+    oqs_rlwe_latticecrypto_two_reduce12289_asm(a, N);
 }
 
 
-void pmul(int32_t* a, int32_t* b, int32_t* c, unsigned int N)
+void oqs_rlwe_latticecrypto_pmul(int32_t* a, int32_t* b, int32_t* c, unsigned int N)
 {
-    pmul_asm(a, b, c, N);
+    oqs_rlwe_latticecrypto_pmul_asm(a, b, c, N);
 }
 
 
-void pmuladd(int32_t* a, int32_t* b, int32_t* c, int32_t* d, unsigned int N)
+void oqs_rlwe_latticecrypto_pmuladd(int32_t* a, int32_t* b, int32_t* c, int32_t* d, unsigned int N)
 {
-    pmuladd_asm(a, b, c, d, N);
+    oqs_rlwe_latticecrypto_pmuladd_asm(a, b, c, d, N);
 }
 
 
-void smul(int32_t* a, int32_t scalar, unsigned int N)
+void oqs_rlwe_latticecrypto_smul(int32_t* a, int32_t scalar, unsigned int N)
 {
     unsigned int i; 
 
@@ -51,7 +51,7 @@ void smul(int32_t* a, int32_t scalar, unsigned int N)
 }
 
 
-void correction(int32_t* a, int32_t p, unsigned int N)
+void oqs_rlwe_latticecrypto_correction(int32_t* a, int32_t p, unsigned int N)
 {  
     unsigned int i; 
     int32_t mask;

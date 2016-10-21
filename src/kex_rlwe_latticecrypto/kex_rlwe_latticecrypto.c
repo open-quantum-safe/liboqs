@@ -52,7 +52,7 @@ int OQS_KEX_rlwe_latticecrypto_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **
 	/* alice_msg is alice's public key */
 	*alice_msg = NULL;
 
-	*alice_msg = malloc(PKA_BYTES);
+	*alice_msg = malloc(OQS_RLWE_LATTICECRYPTO_PKA_BYTES);
 	if (*alice_msg == NULL) {
 		goto err;
 	}
@@ -61,10 +61,10 @@ int OQS_KEX_rlwe_latticecrypto_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **
 		goto err;
 	}
 
-	if (KeyGeneration_A((int32_t*) *alice_priv, (unsigned char*) *alice_msg, k->rand) != CRYPTO_SUCCESS) {
+	if (oqs_rlwe_latticecrypto_KeyGeneration_A((int32_t*) *alice_priv, (unsigned char*) *alice_msg, k->rand) != CRYPTO_SUCCESS) {
 		goto err;
 	}
-	*alice_msg_len = PKA_BYTES;
+	*alice_msg_len = OQS_RLWE_LATTICECRYPTO_PKA_BYTES;
 
 	ret = 1;
 	goto cleanup;
@@ -85,24 +85,24 @@ int OQS_KEX_rlwe_latticecrypto_bob(OQS_KEX *k, const uint8_t *alice_msg, const s
 	*bob_msg = NULL;
 	*key = NULL;
 
-	if (alice_msg_len != PKA_BYTES) {
+	if (alice_msg_len != OQS_RLWE_LATTICECRYPTO_PKA_BYTES) {
 		goto err;
 	}
-	*bob_msg = malloc(PKB_BYTES);
+	*bob_msg = malloc(OQS_RLWE_LATTICECRYPTO_PKB_BYTES);
 	if (*bob_msg == NULL) {
 		goto err;
 	}
-	*key = malloc(SHAREDKEY_BYTES);
+	*key = malloc(OQS_RLWE_LATTICECRYPTO_SHAREDKEY_BYTES);
 	if (*key == NULL) {
 		goto err;
 	}
 
-	if (SecretAgreement_B((unsigned char*) alice_msg, (unsigned char*) *key, (unsigned char*) *bob_msg, k->rand) != CRYPTO_SUCCESS) {
+	if (oqs_rlwe_latticecrypto_SecretAgreement_B((unsigned char*) alice_msg, (unsigned char*) *key, (unsigned char*) *bob_msg, k->rand) != CRYPTO_SUCCESS) {
 		goto err;
 	}
 
-	*key_len = SHAREDKEY_BYTES;
-	*bob_msg_len = PKB_BYTES;
+	*key_len = OQS_RLWE_LATTICECRYPTO_SHAREDKEY_BYTES;
+	*bob_msg_len = OQS_RLWE_LATTICECRYPTO_PKB_BYTES;
 
 	ret = 1;
 	goto cleanup;
@@ -123,20 +123,20 @@ int OQS_KEX_rlwe_latticecrypto_alice_1(OQS_KEX *k, const void *alice_priv, const
 
 	*key = NULL;
 
-	if (bob_msg_len != PKB_BYTES) {
+	if (bob_msg_len != OQS_RLWE_LATTICECRYPTO_PKB_BYTES) {
 		goto err;
 	}
 
-	*key = malloc(SHAREDKEY_BYTES);
+	*key = malloc(OQS_RLWE_LATTICECRYPTO_SHAREDKEY_BYTES);
 	if (*key == NULL) {
 		goto err;
 	}
 
-	if (SecretAgreement_A((unsigned char*) bob_msg, (int32_t*) alice_priv, (unsigned char*) *key) != CRYPTO_SUCCESS) {
+	if (oqs_rlwe_latticecrypto_SecretAgreement_A((unsigned char*) bob_msg, (int32_t*) alice_priv, (unsigned char*) *key) != CRYPTO_SUCCESS) {
 		goto err;
 	}
 
-	*key_len = SHAREDKEY_BYTES;
+	*key_len = OQS_RLWE_LATTICECRYPTO_SHAREDKEY_BYTES;
 
 	ret = 1;
 	goto cleanup;
