@@ -1,9 +1,16 @@
+#if defined(WINDOWS)
+#define UNUSED
+// FIXME: __attribute__ fails in VS, is there something else I should define?
+#else
 #define UNUSED __attribute__ ((unused))
+#endif
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#if !defined(WINDOWS)
 #include <strings.h>
+#include <unistd.h>
+#endif
 
 #include <oqs/kex.h>
 #include <oqs/rand.h>

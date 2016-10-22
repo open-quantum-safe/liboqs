@@ -3,7 +3,12 @@
 
 typedef struct {
 	uint16_t coeffs[PARAM_N];
-} poly __attribute__ ((aligned (32)));
+#if defined(WINDOWS)
+} poly;
+#else
+} poly __attribute__((aligned(32)));
+#endif
+
 
 static const uint32_t qinv = 12287; // -inverse_mod(p,2^18)
 static const uint32_t rlog = 18;
@@ -138,7 +143,7 @@ static void poly_uniform(poly *a, const unsigned char *seed) {
 	uint16_t val;
 	uint64_t state[25];
 	unsigned int nblocks = 16;
-	uint8_t buf[SHAKE128_RATE * nblocks];
+	uint8_t buf[2688]; // SHAKE128_RATE * nblocks
 
 	shake128_absorb(state, seed, NEWHOPE_SEEDBYTES);
 
