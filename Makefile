@@ -9,8 +9,15 @@ CURL=curl
 RANLIB=ranlib
 LN=ln -s
 
-DEFAULTS= -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15 -maes -msse2
+AES_NI=1
+
+DEFAULTS= -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
 CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
+ifeq ($(AES_NI),1)
+CFLAGS += -maes -msse2
+else
+CFLAGS += -DAES_DISABLE_NI
+endif
 LDFLAGS=-lm
 INCLUDES=-Iinclude
 

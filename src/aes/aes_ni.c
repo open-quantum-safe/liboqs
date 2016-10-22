@@ -1,5 +1,26 @@
+#if defined(WINDOWS)
+#define UNUSED
+// FIXME: __attribute__ fails in VS, is there something else I should define?
+#else
+#define UNUSED __attribute__ ((unused))
+#endif
+
 #include <stdint.h>
 #include <stdio.h>
+
+#ifdef AES_DISABLE_NI
+#include <assert.h>
+void OQS_AES128_load_schedule_ni(UNUSED const uint8_t *key, UNUSED uint8_t *_schedule) {
+	assert(0);
+}
+void OQS_AES128_enc_ni(UNUSED const uint8_t *plaintext, UNUSED const uint8_t *_schedule, UNUSED uint8_t *ciphertext) {
+	assert(0);
+}
+void OQS_AES128_dec_ni(UNUSED const uint8_t *ciphertext, UNUSED const uint8_t *_schedule, UNUSED uint8_t *plaintext) {
+	assert(0);
+}
+#else
+
 #include <wmmintrin.h>
 
 static __m128i key_expand(__m128i key, __m128i keygened) {
@@ -41,7 +62,7 @@ void OQS_AES128_load_schedule_ni(const uint8_t *key, uint8_t *_schedule) {
 void OQS_AES128_enc_ni(const uint8_t *plaintext, const uint8_t *_schedule, uint8_t *ciphertext) {
 	__m128i *schedule = (__m128i * )_schedule;
 	__m128i m = _mm_loadu_si128((__m128i *) plaintext);
-	
+
 	m = _mm_xor_si128(m, schedule[0]);
 	for (size_t i = 1; i < 10; i++) {
 		m = _mm_aesenc_si128(m, schedule[i]);
@@ -63,3 +84,5 @@ void OQS_AES128_dec_ni(const uint8_t *ciphertext, const uint8_t *_schedule, uint
 
 	_mm_storeu_si128((__m128i *) plaintext, m);
 }
+
+#endif

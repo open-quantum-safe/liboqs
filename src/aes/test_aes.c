@@ -45,6 +45,7 @@ static int test_aes128_correctness_c(OQS_RAND *rand) {
 	}
 }
 
+#ifndef AES_DISABLE_NI
 static int test_aes128_correctness_ni(OQS_RAND *rand) {
 	uint8_t key[16], schedule[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[16], ciphertext[16], decrypted[16];
 	OQS_RAND_n(rand, key, 16);
@@ -81,6 +82,7 @@ static int test_aes128_c_equals_ni(OQS_RAND *rand) {
 		return EXIT_FAILURE;
 	}
 }
+#endif
 
 static void speed_aes128_c(OQS_RAND *rand) {
 	uint8_t key[16], schedule[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[16], ciphertext[16], decrypted[16];
@@ -91,6 +93,7 @@ static void speed_aes128_c(OQS_RAND *rand) {
 	TIME_OPERATION_SECONDS(OQS_AES128_dec_c(ciphertext, schedule, decrypted), "OQS_AES128_dec_c", BENCH_DURATION);
 }
 
+#ifndef AES_DISABLE_NI
 static void speed_aes128_ni(OQS_RAND *rand) {
 	uint8_t key[16], schedule[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[16], ciphertext[16], decrypted[16];
 	OQS_RAND_n(rand, key, 16);
@@ -99,6 +102,7 @@ static void speed_aes128_ni(OQS_RAND *rand) {
 	TIME_OPERATION_SECONDS(OQS_AES128_enc_ni(plaintext, schedule, ciphertext), "OQS_AES128_enc_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(OQS_AES128_dec_ni(ciphertext, schedule, decrypted), "OQS_AES128_dec_ni", BENCH_DURATION);
 }
+#endif
 
 int main() {
 	int ret;
@@ -109,13 +113,17 @@ int main() {
 		goto err;
 	}
 	TEST_REPEATEDLY(test_aes128_correctness_c(rand));
+#ifndef AES_DISABLE_NI
 	TEST_REPEATEDLY(test_aes128_correctness_ni(rand));
 	TEST_REPEATEDLY(test_aes128_c_equals_ni(rand));
+#endif
 	printf("Tests passed.\n\n");
 	printf("=== test_aes performance ===\n");
 	PRINT_TIMER_HEADER
 	speed_aes128_c(rand);
+#ifndef AES_DISABLE_NI
 	speed_aes128_ni(rand);
+#endif
 	PRINT_TIMER_FOOTER
 	ret = EXIT_SUCCESS;
 	goto cleanup;
