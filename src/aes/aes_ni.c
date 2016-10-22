@@ -41,8 +41,7 @@ void OQS_AES128_load_schedule_ni(const uint8_t *key, uint8_t *_schedule) {
 void OQS_AES128_enc_ni(const uint8_t *plaintext, const uint8_t *_schedule, uint8_t *ciphertext) {
 	__m128i *schedule = (__m128i * )_schedule;
 	__m128i m = _mm_loadu_si128((__m128i *) plaintext);
-	uint8_t tmp[16];
-
+	
 	m = _mm_xor_si128(m, schedule[0]);
 	for (size_t i = 1; i < 10; i++) {
 		m = _mm_aesenc_si128(m, schedule[i]);

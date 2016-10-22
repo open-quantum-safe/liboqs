@@ -47,6 +47,7 @@ PRINT_TIMER_FOOTER
 #include <stdlib.h>
 #include <inttypes.h>
 #include <sys/time.h>
+#include <time.h>
 #include <math.h>
 
 // Mean and population standard deviation are calculated in an online way using the algorithm in
