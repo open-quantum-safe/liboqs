@@ -9,7 +9,7 @@ CURL=curl
 RANLIB=ranlib
 LN=ln -s
 
-DEFAULTS= -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
+DEFAULTS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
 CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
@@ -40,6 +40,7 @@ links:
 	$(LN) ../../src/kex/kex.h include/oqs
 	$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
+	$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	$(LN) ../../src/rand/rand.h include/oqs
 	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 
@@ -60,6 +61,11 @@ KEX_RLWE_NEWHOPE_OBJS := $(addprefix objs/kex_rlwe_newhope/, kex_rlwe_newhope.o)
 KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.h fips202.c newhope.c params.h poly.c precomp.c)
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 
+# KEX_LWE_FRODO
+KEX_LWE_FRODO_OBJS := $(addprefix objs/kex_lwe_frodo/, lwe.o kex_lwe_frodo.o lwe_noise.o)
+KEX_LWE_FRODO_HEADERS := $(addprefix src/kex_lwe_frodo/, kex_lwe_frodo.h local.h)
+$(KEX_LWE_FRODO_OBJS): $(KEX_LWE_FRODO_HEADERS)
+
 # AES
 AES_OBJS := $(addprefix objs/aes/, aes.o aes_c.o aes_ni.o)
 AES_HEADERS := $(addprefix src/aes/, aes.h)
@@ -70,7 +76,7 @@ objs/kex/kex.o: src/kex/kex.h
 
 # LIB
 
-lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS)
+lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_LWE_FRODO_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS)
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
