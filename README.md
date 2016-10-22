@@ -1,5 +1,3 @@
-liboqs
-======
 [![Build Status](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)](https://travis-ci.org/open-quantum-safe/liboqs)
 
 liboqs
