@@ -1,19 +1,18 @@
+#include <assert.h>
 #include <math.h>
 
 #include <oqs/rand.h>
-
-#if defined(OQS_RAND_DEFAULT_URANDOM_CHACHA20)
 #include <oqs/rand_urandom_chacha20.h>
-#else
-#error "No default RAND method defined."
-#endif
 
-OQS_RAND *OQS_RAND_new() {
-#if defined(OQS_RAND_DEFAULT_URANDOM_CHACHA20)
-	return OQS_RAND_urandom_chacha20_new();
-#else
-#error "No default RAND method defined."
-#endif
+OQS_RAND *OQS_RAND_new(enum OQS_RAND_alg_name alg_name) {
+	switch (alg_name) {
+	case OQS_RAND_alg_default:
+	case OQS_RAND_alg_urandom_chacha20:
+		return OQS_RAND_urandom_chacha20_new();
+	default:
+		assert(0);
+		return NULL; // avoid the warning of potentialy uninitialized variable in VS
+	}
 }
 
 uint8_t OQS_RAND_8(OQS_RAND *r) {

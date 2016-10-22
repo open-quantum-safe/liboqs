@@ -1,20 +1,24 @@
 liboqs
 ======
+[![Build Status](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)](https://travis-ci.org/open-quantum-safe/liboqs)
 
-liboqs is a C library for quantum-safe cryptographic algorithms.
+liboqs
+======
+
+liboqs is a C library for quantum-resistant cryptographic algorithms.
 
 Overview
 --------
 
 The **Open Quantum Safe (OQS) project** has the goal of developing and prototyping quantum-resistant cryptography.
 
-**liboqs** is an open source C library for quantum-safe cryptographic algorithms.  liboqs initially focuses on key exchange algorithms.  liboqs provides a common API suitable for post-quantum key exchange algorithms, and will collect together various implementations.  liboqs will also include a test harness and benchmarking routines to compare performance of post-quantum implementations.
+**liboqs** is an open source C library for quantum-resistant cryptographic algorithms.  liboqs initially focuses on key exchange algorithms.  liboqs provides a common API suitable for post-quantum key exchange algorithms, and will collect together various implementations.  liboqs will also include a test harness and benchmarking routines to compare performance of post-quantum implementations.
 
 OQS will also include integrations into application-level protocols to provide easy prototyping of quantum-resistant cryptography.  Our first integration is in OpenSSL:
 
-- **open-quantum-safe/openssl** is an integration of liboqs into OpenSSL 1.0.2.  The goal of this integration is to provide easy prototyping of quantum-resistant cryptography.  The integration should not be considered "production quality".  See more about this integration in its Github repository [open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/).
+- **open-quantum-safe/openssl** is an integration of liboqs into OpenSSL 1.0.2.  The goal of this integration is to provide easy prototyping of quantum-resistant cryptography.  The integration should not be considered "production quality".  See more about this integration in its GitHub repository [open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/).
 
-More information on OQS can be found in slides 64–67 of [this presentation](https://www.douglas.stebila.ca/files/research/presentations/20160812-SAC.pdf) by Douglas Stebila.
+More information on OQS can be found on our website: [https://openquantumsafe.org/](https://openquantumsafe.org/).
 
 Contents
 --------
@@ -23,14 +27,17 @@ liboqs currently contains:
 
 - `rand_urandom_chacha20`: pseudorandom number generator seeded from /dev/urandom and expanded using the ChaCha20 stream cipher
 - `kex_rlwe_bcns15`: key exchange from the ring learning with errors problem (Bos, Costello, Naehrig, Stebila, *IEEE Symposium on Security & Privacy 2015*, [https://eprint.iacr.org/2014/599](https://eprint.iacr.org/2014/599))
+- `kex_rlwe_newhope`: "NewHope": key exchange from the ring learning with errors problem (Alkim, Ducas, Pöppelmann, Schwabe, *USENIX Security 2016*, [https://eprint.iacr.org/2015/1092](https://eprint.iacr.org/2015/1092)) (using the reference C implementation of NewHope from [https://github.com/tpoeppelmann/newhope](https://github.com/tpoeppelmann/newhope))
 - `kex_lwe_frodo`: key exchange from the learning with errors problem (Bos, Costello, Ducas, Mironov, Naehrig, Nikolaenko, Raghunathan, Stebila, *ACM Conference on Computer and Communications Security 2016*, [http://eprint.iacr.org/2016/659](http://eprint.iacr.org/2016/659))
 
 Building and Running
 --------------------
 
-Builds have been tested on Mac OS X 10.11.6, Ubuntu 16.04.1, and Windows 10.
+Builds have been tested on Mac OS X 10.11.6, macOS 10.12, Ubuntu 16.04.1, and Windows 10.
 
-To build, clone or download the source from Github, then simply type:
+### Linux and macOS
+
+To build, clone or download the source from GitHub, then simply type:
 
 	make
 
@@ -39,6 +46,12 @@ This will generate:
 - `liboqs.a`: A static library with implementations for the algorithms listed in "Contents" above.
 - `test_rand`: A simple test harness for the random number generator.  This will test the distance of PRNG output from uniform using statistical distance.
 - `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
+
+To run the tests, simply type:
+
+	make check
+
+### Windows
 
 Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder.
 
@@ -66,7 +79,6 @@ We are also interested in assistance from code reviewers.
 
 Please contact Douglas Stebila <[stebilad@mcmaster.ca](mailto:stebilad@mcmaster.ca)>.
 
-
 Current status and plans
 ------------------------
 
@@ -80,12 +92,13 @@ Since our initial launch, we have made the following updates:
 - Licensing liboqs under the MIT license (see below)
 - `kex_lwe_frodo` implementation ([https://eprint.iacr.org/2016/659](https://eprint.iacr.org/2016/659))
 - Building on Windows
+- Use of travis continuous integration system for testing
+- `kex_rlwe_newhope` wrapper around "NewHope" ring-LWE key exchange ([https://eprint.iacr.org/2015/1092](https://eprint.iacr.org/2015/1092))
 
 We plan to be making the following updates over the next month:
 
 - `kex_rlwe_bcns15` generalization to multiple security levels
 - `kex_ntru_ees743p1` wrapper around NTRU open source public key encryption ([https://github.com/NTRUOpenSourceProject/ntru-crypto](https://github.com/NTRUOpenSourceProject/ntru-crypto))
-- `kex_rlwe_newhope` wrapper around "NewHope" ring-LWE key exchange ([https://eprint.iacr.org/2015/1092](https://eprint.iacr.org/2015/1092))
 - Benchmarking scripts for key exchange algorithms
 - Detailed Doxygen documentation for existing API and public functions
 - Modular build system
@@ -107,6 +120,7 @@ liboqs is licensed under the MIT License; see [https://github.com/open-quantum-s
 
 - `src/kex_rlwe_bcns15`: public domain ([http://unlicense.org](http://unlicense.org))
 - `src/rand_urandom_chacha20/external`: public domain
+- `src/kex_rlwe_newhope`: public domain
 
 Team
 ----
@@ -115,10 +129,11 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 
 ### Contributors
 
+- Tancrède Lepoint (SRI)
 - Shravan Mishra (University of Waterloo)
-- Alex Parent (University of Waterloo)
 - Christian Paquin (Microsoft Research)
+- Alex Parent (University of Waterloo)
 
 ### Support
 
-Development of Open Quantum Safe has been supported in part by the Tutte Institute for Mathematics and Computing.  Research projects which developed specific components of Open Quantum Safe have been supported by various research grants; see the source papers for funding acknowledgements.
+Development of Open Quantum Safe has been supported in part by the Tutte Institute for Mathematics and Computing.  Research projects which developed specific components of Open Quantum Safe have been supported by various research grants; see the source papers for funding acknowledgments.

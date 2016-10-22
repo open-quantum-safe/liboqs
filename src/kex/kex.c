@@ -1,16 +1,27 @@
-#include <oqs/rand.h>
-#include <oqs/kex.h>
-
-#if defined(OQS_KEX_DEFAULT_BCNS15)
-#include <oqs/kex_rlwe_bcns15.h>
-#endif
-
-OQS_KEX *OQS_KEX_new(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
-#if defined(OQS_KEX_DEFAULT_BCNS15)
-	return OQS_KEX_rlwe_bcns15_new(rand, seed, seed_len, named_parameters);
+#if defined(WINDOWS)
+#define UNUSED
+// FIXME: __attribute__ fails in VS, is there something else I should define?
 #else
-#error "No default KEX method defined."
+#define UNUSED __attribute__ ((unused))
 #endif
+
+#include <assert.h>
+
+#include <oqs/kex.h>
+#include <oqs/kex_rlwe_bcns15.h>
+#include <oqs/kex_rlwe_newhope.h>
+
+OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, UNUSED const uint8_t *seed, UNUSED const UNUSED size_t seed_len, UNUSED const char *named_parameters) {
+	switch (alg_name) {
+	case OQS_KEX_alg_default:
+		return OQS_KEX_rlwe_bcns15_new(rand);
+	case OQS_KEX_alg_rlwe_bcns15:
+		return OQS_KEX_rlwe_bcns15_new(rand);
+	case OQS_KEX_alg_rlwe_newhope:
+		return OQS_KEX_rlwe_newhope_new(rand);
+	default:
+		assert(0);
+	}
 }
 
 int OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {

@@ -24,6 +24,8 @@
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\local.h" />
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\rlwe_a.h" />
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\rlwe_table.h" />
+    <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" />
+    <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h" />
     <ClInclude Include="..\..\src\rand\rand.h" />
     <ClInclude Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" />
   </ItemGroup>
@@ -33,6 +35,8 @@
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.c" />
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe.c" />
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe_kex.c" />
+    <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c" />
+    <ClCompile Include="..\..\src\kex_rlwe_newhope\newhope.c" />
     <ClCompile Include="..\..\src\rand\rand.c" />
     <ClCompile Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.c" />
   </ItemGroup>
@@ -102,8 +106,9 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -114,7 +119,8 @@ del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)..\src\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -124,8 +130,9 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -136,7 +143,8 @@ del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)..\src\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -148,8 +156,9 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -162,7 +171,8 @@ del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)..\src\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -174,8 +184,9 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -188,7 +199,8 @@ del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)..\src\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

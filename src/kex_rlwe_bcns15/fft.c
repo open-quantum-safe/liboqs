@@ -25,7 +25,7 @@ static void *(*volatile rlwe_memset_volatile)(void *, int, size_t) = memset;
 /* Caution:
  * We use a redundant representation where the integer 0 is represented both
  * by 0 and 2^32-1.
- * This approach follows the describtion from the paper:
+ * This approach follows the description from the paper:
  * Joppe W. Bos, Craig Costello, Huseyin Hisil, and Kristin Lauter: Fast Cryptography in Genus 2
  * EUROCRYPT 2013, Lecture Notes in Computer Science 7881, pp. 194-210, Springer, 2013.
  * More specifically see: Section 3 related to Modular Addition/Subtraction.
@@ -88,7 +88,7 @@ static uint32_t reverse(uint32_t x) {
 /* Nussbaumer approach, see:
  * H. J. Nussbaumer. Fast polynomial transform algorithms for digital convolution. Acoustics, Speech and
  * Signal Processing, IEEE Transactions on, 28(2):205{215, 1980
- * We followed the describtion from Knuth:
+ * We followed the description from Knuth:
  * D. E. Knuth. Seminumerical Algorithms. The Art of Computer Programming. Addison-Wesley, Reading,
  * Massachusetts, USA, 3rd edition, 1997
  * Exercise Exercise 4.6.4.59.
