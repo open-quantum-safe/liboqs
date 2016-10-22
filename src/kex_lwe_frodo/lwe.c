@@ -1,9 +1,12 @@
+#include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "local.h"
+
+#include <oqs/aes.h>
 
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 
@@ -43,8 +46,6 @@ void oqs_kex_lwe_frodo_reconcile(unsigned char *out, uint16_t *w, const unsigned
 	oqs_kex_lwe_frodo_pack(out, params->key_bits / 8, w, params->nbar * params->nbar, params->extracted_bits);
 }
 
-#include "external/aes.c"
-
 // Generate-and-multiply: generate A row-wise, multiply by s on the right.
 int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t *s, const uint16_t *e, struct oqs_kex_lwe_frodo_params *params) {
 	// A (N x N)
@@ -80,6 +81,10 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 		}
 	}
 
+	assert(params->seed_len == 16);
+	uint8_t aes_key_schedule[OQS_AES128_SCHEDULE_NUMBYTES];
+	OQS_AES128_load_schedule(params->seed, aes_key_schedule);
+
 	for (i = 0; i < params->n; i++) {
 		// go through A's rows
 		memset(a_row, 0, a_rowlen);
@@ -89,8 +94,7 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 			a_row[j + 1] = j;
 		}
 
-		assert(params->seed_len == 16);
-		EncryptAES_ECB((uint8_t *) a_row, a_rowlen, params->seed, (uint8_t *) a_row);
+		OQS_AES128_ECB_enc((uint8_t *) a_row, a_rowlen, aes_key_schedule, (uint8_t *) a_row);
 
 		for (k = 0; k < params->nbar; k++) {
 			uint16_t sum = 0;
@@ -148,6 +152,10 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 		goto err;
 	}
 
+	assert(params->seed_len == 16);
+	uint8_t aes_key_schedule[OQS_AES128_SCHEDULE_NUMBYTES];
+	OQS_AES128_load_schedule(params->seed, aes_key_schedule);
+
 	for (kk = 0; kk < params->n; kk += params->stripe_step) {
 		// Go through A's columns, 8 (== params->stripe_step) columns at a time.
 		memset(a_cols, 0, a_colslen);
@@ -158,7 +166,7 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 		}
 
 		assert(params->seed_len == 16);
-		EncryptAES_ECB((uint8_t *) a_cols, a_colslen, params->seed, (uint8_t *) a_cols);
+		OQS_AES128_ECB_enc((uint8_t *) a_cols, a_colslen, aes_key_schedule, (uint8_t *) a_cols);
 
 		// transpose a_cols to have access to it in the column-major order.
 		for (i = 0; i < params->n; i++)
