@@ -57,9 +57,13 @@ KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.
 
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 
-#AES
+# AES
 
-objs/aes/aes.o: src/aes/aes.h
+AES_OBJS := $(addprefix objs/aes/, aes.o aes_c.o aes_ni.o)
+
+AES_HEADERS := $(addprefix src/aes/, aes.h)
+
+$(AES_OBJS): $(AES_HEADERS)
 
 # KEX
 
@@ -67,7 +71,7 @@ objs/kex/kex.o: src/kex/kex.h
 
 # LIB
 
-lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) objs/rand/rand.o objs/kex/kex.o objs/aes/aes.o
+lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS)
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a

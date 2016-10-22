@@ -1,22 +1,24 @@
-#include "aes.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-uint8_t mtc_enc_key[] = {0x13, 0x9a, 0x35, 0x42, 0x2f, 0x1d, 0x61, 0xde, 0x3c, 0x91, 0x78, 0x7f, 0xe0, 0x50, 0x7a, 0xfd};
-uint8_t mtc_enc_plain[] = {0xb9, 0x14, 0x5a, 0x76, 0x8b, 0x7d, 0xc4, 0x89, 0xa0, 0x96, 0xb5, 0x46, 0xf4, 0x3b, 0x23, 0x1f};
+#include <oqs/rand.h>
 
-uint8_t mtc_dec_key[] =
-{0x0c, 0x60, 0xe7, 0xbf, 0x20, 0xad, 0xa9, 0xba, 0xa9, 0xe1, 0xdd, 0xf0, 0xd1, 0x54, 0x07, 0x26};
-uint8_t mtc_dec_cipher[] =
-{0xb0, 0x8a, 0x29, 0xb1, 0x1a, 0x50, 0x0e, 0xa3, 0xac, 0xa4, 0x2c, 0x36, 0x67, 0x5b, 0x97, 0x85};
+#include "aes.h"
+#include "ds_benchmark.h"
 
-static void xor_bytes(uint8_t *a, uint8_t *b) {
-	for (size_t i = 0; i < 16; i++) {
-		a[i] ^= b[i];
+#define BENCH_DURATION 1
+
+#define TEST_ITERATIONS 100
+
+#define TEST_REPEATEDLY(x) \
+	for (int i = 0; i < TEST_ITERATIONS; i++) { \
+		int ok = (x); \
+		if (ok != EXIT_SUCCESS) { \
+			fprintf(stderr, "Failure in %s (iteration %d)\n", #x, i); \
+			return EXIT_FAILURE; \
+		} \
 	}
-}
-
 
 static void print_bytes(uint8_t *bytes, size_t num_bytes) {
 	for (size_t i = 0; i < num_bytes; i++) {
@@ -24,52 +26,102 @@ static void print_bytes(uint8_t *bytes, size_t num_bytes) {
 	}
 }
 
-void monte_test_encrypt(uint8_t *plain_text, uint8_t *key) {
-	uint8_t schedule[20 * 16];
-	uint8_t cipher_text[16];
-	for (size_t i = 0; i < 100; i++) {
-		printf ("\nCOUNT = %d", (int)i );
-		printf ("\nKEY = ");
-		print_bytes(key, 16);
-		printf ("\nPLAINTEXT = ");
-		print_bytes(plain_text, 16);
-		OQS_AES128_load_schedule(key, schedule);
-		for (size_t i = 0; i < 1000; i++) {
-			OQS_AES128_enc(plain_text, schedule, cipher_text);
-			memcpy(plain_text, cipher_text, sizeof(cipher_text));
-		}
-		printf ("\nCIPHERTEXT = ");
-		print_bytes(cipher_text, 16);
-		printf ("\n");
-		xor_bytes(key, cipher_text);
+static int test_aes128_correctness_c(OQS_RAND *rand) {
+	uint8_t key[16], schedule[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[16], ciphertext[16], decrypted[16];
+	OQS_RAND_n(rand, key, 16);
+	OQS_RAND_n(rand, plaintext, 16);
+	OQS_AES128_load_schedule_c(key, schedule);
+	OQS_AES128_enc_c(plaintext, schedule, ciphertext);
+	OQS_AES128_dec_c(ciphertext, schedule, decrypted);
+	if (memcmp(plaintext, decrypted, 16) == 0) {
+		return EXIT_SUCCESS;
+	} else {
+		print_bytes(plaintext, 16);
+		printf("\n");
+		print_bytes(decrypted, 16);
+		printf("\n");
+		return EXIT_FAILURE;
+		return EXIT_FAILURE;
 	}
 }
 
-void monte_test_decrypt(uint8_t *cipher_text, uint8_t *key) {
-	uint8_t schedule[20 * 16];
-	uint8_t plain_text[16];
-	for (size_t i = 0; i < 100; i++) {
-		printf ("\nCOUNT = %d", (int)i );
-		printf ("\nKEY = ");
-		print_bytes(key, 16);
-		printf ("\nCIPHERTEXT = ");
-		print_bytes(cipher_text, 16);
-		OQS_AES128_load_schedule(key, schedule);
-		for (size_t i = 0; i < 1000; i++) {
-			OQS_AES128_dec(cipher_text, schedule, plain_text);
-			memcpy(cipher_text, plain_text, sizeof(plain_text));
-		}
-		printf ("\nPLAINTEXT = ");
-		print_bytes(plain_text, 16);
-		printf ("\n");
-		xor_bytes(key, cipher_text);
+static int test_aes128_correctness_ni(OQS_RAND *rand) {
+	uint8_t key[16], schedule[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[16], ciphertext[16], decrypted[16];
+	OQS_RAND_n(rand, key, 16);
+	OQS_RAND_n(rand, plaintext, 16);
+	OQS_AES128_load_schedule_ni(key, schedule);
+	OQS_AES128_enc_ni(plaintext, schedule, ciphertext);
+	OQS_AES128_dec_ni(ciphertext, schedule, decrypted);
+	if (memcmp(plaintext, decrypted, 16) == 0) {
+		return EXIT_SUCCESS;
+	} else {
+		print_bytes(plaintext, 16);
+		printf("\n");
+		print_bytes(decrypted, 16);
+		printf("\n");
+		return EXIT_FAILURE;
 	}
+}
+
+static int test_aes128_c_equals_ni(OQS_RAND *rand) {
+	uint8_t key[16], schedule_c[OQS_AES128_SCHEDULE_NUMBYTES], schedule_ni[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[16], ciphertext_c[16], ciphertext_ni[16];
+	OQS_RAND_n(rand, key, 16);
+	OQS_RAND_n(rand, plaintext, 16);
+	OQS_AES128_load_schedule_c(key, schedule_c);
+	OQS_AES128_load_schedule_ni(key, schedule_ni);
+	OQS_AES128_enc_c(plaintext, schedule_c, ciphertext_c);
+	OQS_AES128_enc_ni(plaintext, schedule_ni, ciphertext_ni);
+	if (memcmp(ciphertext_c, ciphertext_ni, 16) == 0) {
+		return EXIT_SUCCESS;
+	} else {
+		print_bytes(ciphertext_c, 16);
+		printf("\n");
+		print_bytes(ciphertext_ni, 16);
+		printf("\n");
+		return EXIT_FAILURE;
+	}
+}
+
+static void speed_aes128_c(OQS_RAND *rand) {
+	uint8_t key[16], schedule[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[16], ciphertext[16], decrypted[16];
+	OQS_RAND_n(rand, key, 16);
+	OQS_RAND_n(rand, plaintext, 16);
+	TIME_OPERATION_SECONDS(OQS_AES128_load_schedule_c(key, schedule), "OQS_AES128_load_schedule_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_enc_c(plaintext, schedule, ciphertext), "OQS_AES128_enc_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_dec_c(ciphertext, schedule, decrypted), "OQS_AES128_dec_c", BENCH_DURATION);
+}
+
+static void speed_aes128_ni(OQS_RAND *rand) {
+	uint8_t key[16], schedule[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[16], ciphertext[16], decrypted[16];
+	OQS_RAND_n(rand, key, 16);
+	OQS_RAND_n(rand, plaintext, 16);
+	TIME_OPERATION_SECONDS(OQS_AES128_load_schedule_ni(key, schedule), "OQS_AES128_load_schedule_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_enc_ni(plaintext, schedule, ciphertext), "OQS_AES128_enc_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(OQS_AES128_dec_ni(ciphertext, schedule, decrypted), "OQS_AES128_dec_ni", BENCH_DURATION);
 }
 
 int main() {
-	printf("\n[ENCRYPT]\n");
-	monte_test_encrypt(mtc_enc_plain, mtc_enc_key);
-	printf("\n[DECRYPT]\n");
-	monte_test_decrypt(mtc_dec_cipher, mtc_dec_key);
-	return 0;
+	int ret;
+	printf("=== test_aes correctness ===\n");
+	OQS_RAND *rand = OQS_RAND_new(OQS_RAND_alg_default);
+	if (rand == NULL) {
+		fprintf(stderr, "OQS_RAND_new() failed\n");
+		goto err;
+	}
+	TEST_REPEATEDLY(test_aes128_correctness_c(rand));
+	TEST_REPEATEDLY(test_aes128_correctness_ni(rand));
+	TEST_REPEATEDLY(test_aes128_c_equals_ni(rand));
+	printf("Tests passed.\n\n");
+	printf("=== test_aes performance ===\n");
+	PRINT_TIMER_HEADER
+	speed_aes128_c(rand);
+	speed_aes128_ni(rand);
+	PRINT_TIMER_FOOTER
+	ret = EXIT_SUCCESS;
+	goto cleanup;
+err:
+	ret = EXIT_FAILURE;
+cleanup:
+	OQS_RAND_free(rand);
+	return ret;
 }
