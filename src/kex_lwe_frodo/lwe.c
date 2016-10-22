@@ -94,7 +94,7 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 			a_row[j + 1] = j;
 		}
 
-		OQS_AES128_ECB_enc((uint8_t *) a_row, a_rowlen, aes_key_schedule, (uint8_t *) a_row);
+		OQS_AES128_ECB_enc_sch((uint8_t *) a_row, a_rowlen, aes_key_schedule, (uint8_t *) a_row);
 
 		for (k = 0; k < params->nbar; k++) {
 			uint16_t sum = 0;
@@ -166,7 +166,7 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 		}
 
 		assert(params->seed_len == 16);
-		OQS_AES128_ECB_enc((uint8_t *) a_cols, a_colslen, aes_key_schedule, (uint8_t *) a_cols);
+		OQS_AES128_ECB_enc_sch((uint8_t *) a_cols, a_colslen, aes_key_schedule, (uint8_t *) a_cols);
 
 		// transpose a_cols to have access to it in the column-major order.
 		for (i = 0; i < params->n; i++)
