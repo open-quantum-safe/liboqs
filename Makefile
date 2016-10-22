@@ -9,7 +9,7 @@ CURL=curl
 RANLIB=ranlib
 LN=ln -s
 
-DEFAULTS= -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
+DEFAULTS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
 CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
@@ -62,11 +62,8 @@ KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 
 # KEX_LWE_FRODO
-
 KEX_LWE_FRODO_OBJS := $(addprefix objs/kex_lwe_frodo/, lwe.o kex_lwe_frodo.o lwe_noise.o)
-
 KEX_LWE_FRODO_HEADERS := $(addprefix src/kex_lwe_frodo/, kex_lwe_frodo.h local.h)
-
 $(KEX_LWE_FRODO_OBJS): $(KEX_LWE_FRODO_HEADERS)
 
 # AES

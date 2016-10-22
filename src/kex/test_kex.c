@@ -4,8 +4,8 @@
 
 #include <oqs/rand.h>
 #include <oqs/kex.h>
-#include <oqs/kex_rlwe_bcns15.h>
-#include <oqs/kex_lwe_frodo.h>
+
+#include "ds_benchmark.h"
 
 struct kex_testcase {
 	enum OQS_KEX_alg_name alg_name;
@@ -21,7 +21,8 @@ struct kex_testcase kex_testcases[] = {
 	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended" },
 };
 
-#define KEX_TEST_ITERATIONS 500
+#define KEX_TEST_ITERATIONS 100
+#define KEX_BENCH_SECONDS 1
 
 #define PRINT_HEX_STRING(label, str, len) { \
 	printf("%-20s (%4zu bytes):  ", (label), (size_t) (len)); \
@@ -181,6 +182,52 @@ cleanup:
 
 }
 
+static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int seconds) {
+
+	OQS_KEX *kex = NULL;
+	int rc;
+
+	void *alice_priv = NULL;
+	uint8_t *alice_msg = NULL;
+	size_t alice_msg_len;
+	uint8_t *alice_key = NULL;
+	size_t alice_key_len;
+
+	uint8_t *bob_msg = NULL;
+	size_t bob_msg_len;
+	uint8_t *bob_key = NULL;
+	size_t bob_key_len;
+
+	/* setup KEX */
+	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
+	if (kex == NULL) {
+		fprintf(stderr, "new_method failed\n");
+		goto err;
+	}
+	printf("%s\n", kex->method_name);
+
+	TIME_OPERATION_SECONDS(OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len), "alice 0", seconds);
+	TIME_OPERATION_SECONDS(OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len), "bob", seconds);
+	TIME_OPERATION_SECONDS(OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len), "alice 1", seconds);
+
+	rc = 1;
+	goto cleanup;
+
+err:
+	rc = 0;
+
+cleanup:
+	free(alice_msg);
+	free(alice_key);
+	free(bob_msg);
+	free(bob_key);
+	OQS_KEX_alice_priv_free(kex, alice_priv);
+	OQS_KEX_free(kex);
+
+	return rc;
+
+}
+
 int main() {
 
 	int success;
@@ -198,6 +245,12 @@ int main() {
 			goto err;
 		}
 	}
+
+	PRINT_TIMER_HEADER
+	for (size_t i = 0; i < kex_testcases_len; i++) {
+		kex_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_BENCH_SECONDS);
+	}
+	PRINT_TIMER_FOOTER
 
 	success = 1;
 	goto cleanup;

@@ -50,6 +50,10 @@ OQS_KEX *OQS_KEX_lwe_frodo_new(OQS_RAND *rand, const uint8_t *seed, const size_t
 		}
 		k->estimated_classical_security = 144;
 		k->estimated_quantum_security = 130;
+		k->named_parameters = strdup(named_parameters);
+		if (k->named_parameters == NULL) {
+			goto err;
+		}
 
 		params->seed = malloc(seed_len);
 		if (NULL == params->seed) {
@@ -95,6 +99,7 @@ err:
 			free(params->param_name);
 			free(k->params);
 		}
+		free(k->named_parameters);
 		free(k->method_name);
 	}
 	return NULL;
