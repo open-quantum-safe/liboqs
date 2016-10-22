@@ -102,7 +102,7 @@ check: links tests
 
 clean:
 	rm -rf docs objs include
-	rm -f test_rand test_kex liboqs.a
+	rm -f test_rand test_kex test_aes liboqs.a
 	find . -name .DS_Store -type f -delete
 
 prettyprint:
