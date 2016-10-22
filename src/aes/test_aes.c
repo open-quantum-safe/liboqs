@@ -5,7 +5,7 @@
 #include <oqs/rand.h>
 
 #include "aes.h"
-#include "ds_benchmark.h"
+#include "../ds_benchmark.h"
 
 #define BENCH_DURATION 1
 

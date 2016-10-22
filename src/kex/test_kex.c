@@ -5,7 +5,7 @@
 #include <oqs/rand.h>
 #include <oqs/kex.h>
 
-#include "ds_benchmark.h"
+#include "../ds_benchmark.h"
 
 struct kex_testcase {
 	enum OQS_KEX_alg_name alg_name;

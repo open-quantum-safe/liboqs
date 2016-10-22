@@ -54,13 +54,15 @@ PRINT_TIMER_FOOTER
 //     http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm
 
 static uint64_t rdtsc(void) {
-	unsigned long long int x;
+	uint64_t x;
 	__asm__ volatile (".byte 0x0f, 0x31" : "=A" (x));
 	return x;
 }
 
 #define DEFINE_TIMER_VARIABLES \
-	uint64_t _bench_cycles_start, _bench_cycles_end; \
+	volatile uint64_t _bench_cycles_start, _bench_cycles_end; \
+	uint64_t _bench_cycles_cumulative = 0; \
+	int64_t _bench_cycles_diff; \
 	struct timeval _bench_timeval_start, _bench_timeval_end; \
 	uint64_t _bench_iterations, _bench_time_cumulative; \
 	double _bench_cycles_x, _bench_cycles_mean, _bench_cycles_delta, _bench_cycles_M2, _bench_cycles_stdev; \
@@ -83,7 +85,10 @@ static uint64_t rdtsc(void) {
 	gettimeofday(&_bench_timeval_end, NULL); \
 	_bench_iterations += 1; \
 	if (_bench_cycles_end < _bench_cycles_start) { _bench_cycles_end += 1UL << 32; } \
-	_bench_cycles_x = (double) (_bench_cycles_end - _bench_cycles_start); \
+	_bench_cycles_diff = _bench_cycles_end; \
+	_bench_cycles_diff -= _bench_cycles_start; \
+	_bench_cycles_cumulative += _bench_cycles_diff; \
+	_bench_cycles_x = (double) (_bench_cycles_diff); \
 	_bench_cycles_delta = _bench_cycles_x - _bench_cycles_mean; \
 	_bench_cycles_mean += _bench_cycles_delta / (double) _bench_iterations; \
 	_bench_cycles_M2 += _bench_cycles_delta * (_bench_cycles_x - _bench_cycles_mean); \
@@ -119,7 +124,7 @@ static uint64_t rdtsc(void) {
 	printf("\n");
 
 #define PRINT_TIMER_AVG(op_name) \
-	printf("%-30s %15" PRIu64 " %15.3f %15.3f %15.3f %15.0f %15.0f\n", (op_name), _bench_iterations, ((double) _bench_time_cumulative) / 1000000.0, _bench_time_mean, _bench_time_stdev, _bench_cycles_mean, _bench_cycles_stdev);
+	printf("%-30s %15" PRIu64 " %15.3f %15.3f %15.3f %15.0f %15.0f\n", (op_name), _bench_iterations, ((double) _bench_time_cumulative) / 1000000.0, _bench_time_mean, _bench_time_stdev, ((double) _bench_cycles_cumulative) / (double) _bench_iterations, _bench_cycles_stdev);
 
 #define TIME_OPERATION_ITERATIONS(op, op_name, it) \
 	{ \

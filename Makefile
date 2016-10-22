@@ -9,10 +9,16 @@ CURL=curl
 RANLIB=ranlib
 LN=ln -s
 
-DEFAULTS= -arch x86_64 -O3 -std=c11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
+DEFAULTS= -O3 -std=c11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
 CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
+
+ifdef ARCH
+	CFLAGS += $(ARCH)
+else
+	CFLAGS += -march=x86-64
+endif
 
 ifdef AES_NI
 	AES_NI_LOCAL=$(AES_NI)
@@ -81,7 +87,7 @@ lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
 
-tests: lib src/rand/test_rand.c src/kex/test_kex.c
+tests: lib src/rand/test_rand.c src/kex/test_kex.c src/aes/test_aes.c src/ds_benchmark.h
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
@@ -100,4 +106,4 @@ clean:
 	find . -name .DS_Store -type f -delete
 
 prettyprint:
-	astyle --style=java --indent=tab --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*/*.h src/*/*.c
+	astyle --style=java --indent=tab --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*.h src/*/*.h src/*/*.c
