@@ -84,6 +84,24 @@ static int test_aes128_c_equals_ni(OQS_RAND *rand) {
 }
 #endif
 
+static int test_aes128_ecb_correctness(OQS_RAND *rand) {
+	uint8_t key[16], schedule[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[320], ciphertext[320], decrypted[320];
+	OQS_RAND_n(rand, key, 16);
+	OQS_RAND_n(rand, plaintext, 320);
+	OQS_AES128_load_schedule(key, schedule);
+	OQS_AES128_ECB_enc(plaintext, 320, schedule, ciphertext);
+	OQS_AES128_ECB_dec(ciphertext, 320, schedule, decrypted);
+	if (memcmp(plaintext, decrypted, 320) == 0) {
+		return EXIT_SUCCESS;
+	} else {
+		print_bytes(plaintext, 320);
+		printf("\n");
+		print_bytes(decrypted, 320);
+		printf("\n");
+		return EXIT_FAILURE;
+	}
+}
+
 static void speed_aes128_c(OQS_RAND *rand) {
 	uint8_t key[16], schedule[OQS_AES128_SCHEDULE_NUMBYTES], plaintext[16], ciphertext[16], decrypted[16];
 	OQS_RAND_n(rand, key, 16);
@@ -117,6 +135,7 @@ int main() {
 	TEST_REPEATEDLY(test_aes128_correctness_ni(rand));
 	TEST_REPEATEDLY(test_aes128_c_equals_ni(rand));
 #endif
+	TEST_REPEATEDLY(test_aes128_ecb_correctness(rand));
 	printf("Tests passed.\n\n");
 	printf("=== test_aes performance ===\n");
 	PRINT_TIMER_HEADER

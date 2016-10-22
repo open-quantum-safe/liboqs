@@ -26,7 +26,7 @@ void OQS_AES128_dec(const uint8_t *ciphertext, const uint8_t *schedule, uint8_t 
 }
 
 void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
-	uint8_t schedule[16 * 11];
+	uint8_t schedule[OQS_AES128_SCHEDULE_NUMBYTES];
 	OQS_AES128_load_schedule(key, schedule);
 	assert(plaintext_len % 16 == 0);
 	for (size_t block = 0; block < plaintext_len / 16; block++) {
@@ -35,7 +35,7 @@ void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
 }
 
 void OQS_AES128_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext) {
-	uint8_t schedule[16 * 11];
+	uint8_t schedule[OQS_AES128_SCHEDULE_NUMBYTES];
 	OQS_AES128_load_schedule(key, schedule);
 	assert(ciphertext_len % 16 == 0);
 	for (size_t block = 0; block < ciphertext_len / 16; block++) {

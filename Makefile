@@ -36,6 +36,7 @@ objs/%.o: src/%.c
 links:
 	rm -rf include/oqs
 	mkdir -p include/oqs
+	$(LN) ../../src/aes/aes.h include/oqs
 	$(LN) ../../src/kex/kex.h include/oqs
 	$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
@@ -44,29 +45,20 @@ links:
 	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 
 # RAND_URANDOM_CHACHA
-
 RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/rand_urandom_chacha20/, rand_urandom_chacha20.o)
-
 $(RAND_URANDOM_CHACHA_OBJS): src/rand_urandom_chacha20/rand_urandom_chacha20.h
 
 # RAND
-
 objs/rand/rand.o: src/rand/rand.h
 
 # KEX_RLWE_BCNS15
-
 KEX_RLWE_BCNS15_OBJS := $(addprefix objs/kex_rlwe_bcns15/, fft.o kex_rlwe_bcns15.o rlwe.o rlwe_kex.o)
-
 KEX_RLWE_BCNS15_HEADERS := $(addprefix src/kex_rlwe_bcns15/, kex_rlwe_bcns15.h local.h rlwe_a.h rlwe_table.h)
-
 $(KEX_RLWE_BCNS15_OBJS): $(KEX_RLWE_BCNS15_HEADERS)
 
 # KEX_NEWHOPE
-
 KEX_RLWE_NEWHOPE_OBJS := $(addprefix objs/kex_rlwe_newhope/, kex_rlwe_newhope.o)
-
 KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.h fips202.c newhope.c params.h poly.c precomp.c)
-
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 
 # KEX_LWE_FRODO
@@ -78,15 +70,11 @@ KEX_LWE_FRODO_HEADERS := $(addprefix src/kex_lwe_frodo/, kex_lwe_frodo.h local.h
 $(KEX_LWE_FRODO_OBJS): $(KEX_LWE_FRODO_HEADERS)
 
 # AES
-
 AES_OBJS := $(addprefix objs/aes/, aes.o aes_c.o aes_ni.o)
-
 AES_HEADERS := $(addprefix src/aes/, aes.h)
-
 $(AES_OBJS): $(AES_HEADERS)
 
 # KEX
-
 objs/kex/kex.o: src/kex/kex.h
 
 # LIB
