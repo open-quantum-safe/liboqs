@@ -99,7 +99,7 @@ static int test_aes128_ecb_correctness(OQS_RAND *rand) {
 		print_bytes(decrypted, 320);
 		printf("\n");
 		return EXIT_FAILURE;
-	}	
+	}
 }
 
 static void speed_aes128_c(OQS_RAND *rand) {
