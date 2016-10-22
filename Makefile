@@ -14,6 +14,17 @@ CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
 
+ifdef AES_NI
+	AES_NI_LOCAL=$(AES_NI)
+else
+	AES_NI_LOCAL=1
+endif
+ifeq ($(AES_NI_LOCAL),1)
+CFLAGS += -maes -msse2
+else
+CFLAGS += -DAES_DISABLE_NI
+endif
+
 .PHONY: all check clean prettyprint
 
 all: links lib tests
@@ -57,6 +68,13 @@ KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.
 
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 
+# AES
+
+AES_OBJS := $(addprefix objs/aes/, aes.o aes_c.o aes_ni.o)
+
+AES_HEADERS := $(addprefix src/aes/, aes.h)
+
+$(AES_OBJS): $(AES_HEADERS)
 
 # KEX
 
@@ -64,7 +82,7 @@ objs/kex/kex.o: src/kex/kex.h
 
 # LIB
 
-lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) objs/rand/rand.o objs/kex/kex.o
+lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS)
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
@@ -72,6 +90,7 @@ lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS
 tests: lib src/rand/test_rand.c src/kex/test_kex.c
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
+	$(CC) $(CFLAGS) $(INCLUDES) -L. src/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
 
 docs: links
 	doxygen
@@ -79,6 +98,7 @@ docs: links
 check: links tests
 	./test_kex
 	./test_rand
+	./test_aes
 
 clean:
 	rm -rf docs objs include
