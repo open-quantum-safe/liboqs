@@ -14,8 +14,12 @@ CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
 
-AES_NI=1
-ifeq ($(AES_NI),1)
+ifdef AES_NI
+	AES_NI_LOCAL=$(AES_NI)
+else
+	AES_NI_LOCAL=1
+endif
+ifeq ($(AES_NI_LOCAL),1)
 CFLAGS += -maes -msse2
 else
 CFLAGS += -DAES_DISABLE_NI
