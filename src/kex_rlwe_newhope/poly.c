@@ -49,8 +49,9 @@ static void bitrev_vector(uint16_t *poly) {
 static void mul_coefficients(uint16_t *poly, const uint16_t *factors) {
 	unsigned int i;
 
-	for (i = 0; i < PARAM_N; i++)
+	for (i = 0; i < PARAM_N; i++) {
 		poly[i] = montgomery_reduce((poly[i] * factors[i]));
+	}
 }
 
 
@@ -151,8 +152,9 @@ static void poly_uniform(poly *a, const unsigned char *seed) {
 
 	while (ctr < PARAM_N) {
 		val = (buf[pos] | ((uint16_t) buf[pos + 1] << 8)) & 0x3fff; // Specialized for q = 12889
-		if (val < PARAM_Q)
+		if (val < PARAM_Q) {
 			a->coeffs[ctr++] = val;
+		}
 		pos += 2;
 		if (pos > SHAKE128_RATE * nblocks - 2) {
 			nblocks = 1;
@@ -179,8 +181,9 @@ static void poly_getnoise(poly *r, OQS_RAND *rand) {
 	for (i = 0; i < PARAM_N; i++) {
 		t = tp[i];
 		d = 0;
-		for (j = 0; j < 8; j++)
+		for (j = 0; j < 8; j++) {
 			d += (t >> j) & 0x01010101;
+		}
 		a = ((d >> 8) & 0xff) + (d & 0xff);
 		b = (d >> 24) + ((d >> 16) & 0xff);
 		r->coeffs[i] = a + PARAM_Q - b;
@@ -198,8 +201,9 @@ static void poly_pointwise(poly *r, const poly *a, const poly *b) {
 
 static void poly_add(poly *r, const poly *a, const poly *b) {
 	int i;
-	for (i = 0; i < PARAM_N; i++)
+	for (i = 0; i < PARAM_N; i++) {
 		r->coeffs[i] = barrett_reduce(a->coeffs[i] + b->coeffs[i]);
+	}
 }
 
 static void poly_ntt(poly *r) {
@@ -313,8 +317,9 @@ static void rec(unsigned char *key, const poly *v, const poly *c) {
 	int i;
 	int32_t tmp[4];
 
-	for (i = 0; i < 32; i++)
+	for (i = 0; i < 32; i++) {
 		key[i] = 0;
+	}
 
 	for (i = 0; i < 256; i++) {
 		tmp[0] = 16 * PARAM_Q + 8 * (int32_t)v->coeffs[  0 + i] - PARAM_Q * (2 * c->coeffs[  0 + i] + c->coeffs[768 + i]);
