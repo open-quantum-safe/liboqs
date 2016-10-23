@@ -28,12 +28,18 @@ OQS_KEX *OQS_KEX_lwe_frodo_new(OQS_RAND *rand, const uint8_t *seed, const size_t
 	if (k == NULL) {
 		goto err;
 	}
+	k->named_parameters = NULL;
+	k->method_name = NULL;
 
 	k->params = malloc(sizeof(struct oqs_kex_lwe_frodo_params));
 	if (NULL == k->params) {
 		goto err;
 	}
 	params = (struct oqs_kex_lwe_frodo_params *) k->params;
+	params->cdf_table = NULL;
+	params->seed = NULL;
+	params->param_name = NULL;
+
 	k->rand = rand;
 	k->ctx = NULL;
 	k->alice_0 = &OQS_KEX_lwe_frodo_alice_0;
