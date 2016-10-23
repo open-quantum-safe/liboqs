@@ -101,6 +101,7 @@ err:
 		}
 		free(k->named_parameters);
 		free(k->method_name);
+		free(k);
 	}
 	return NULL;
 
@@ -165,6 +166,7 @@ err:
 
 cleanup:
 	free(e);
+	free(b);
 	return ret;
 
 }
