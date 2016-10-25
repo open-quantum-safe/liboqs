@@ -9,6 +9,11 @@
 
 #include "../ds_benchmark.h"
 
+#if defined(WINDOWS)
+// remove warning for using localtime (vs. localtime_s) in the timer macros
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 struct kex_testcase {
 	enum OQS_KEX_alg_name alg_name;
 	unsigned char *seed;

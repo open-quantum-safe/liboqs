@@ -45,12 +45,28 @@ static int lwe_sample_n_inverse_8(uint16_t *s, const size_t n, const uint8_t *cd
 	return 1;
 }
 
+#if defined(WINDOWS)
+__pragma(pack(push, 1))
+#endif
+typedef struct {
+	uint16_t rnd1 : 11;
+	uint8_t sign1 : 1;
+	uint16_t rnd2 : 11;
+	uint8_t sign2 : 1;
+#if defined(WINDOWS)
+} three_bytes_packed;
+__pragma(pack(pop))
+#else
+} __attribute__((__packed__)) three_bytes_packed;
+#endif
+
 static int lwe_sample_n_inverse_12(uint16_t *s, const size_t n, const uint16_t *cdf_table, const size_t cdf_table_len, OQS_RAND *rand) {
 	/* Fills vector s with n samples from the noise distribution which requires
 	 * 12 bits to sample. The distribution is specified by its CDF. Super-constant
 	 * timing: the CDF table is ingested for every sample.
 	 */
 
+	assert(sizeof(three_bytes_packed) == 3);
 	size_t rndlen = 3 * ((n + 1) / 2);  // 12 bits of unif randomness per output element
 
 	uint8_t *rnd = (uint8_t *)malloc(rndlen);
