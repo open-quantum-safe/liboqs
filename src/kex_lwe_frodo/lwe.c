@@ -111,16 +111,16 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	goto cleanup;
 
 err:
-	bzero(out, params->nbar * params->n * sizeof(uint16_t));
+	memset(out, 0, params->nbar * params->n * sizeof(uint16_t));
 
 cleanup:
 	if (a_row != NULL) {
-		bzero(a_row, a_rowlen);
+		memset(a_row, 0, a_rowlen);
 		free(a_row);
 	}
 
 	if (s_transpose != NULL) {
-		bzero(s_transpose, params->nbar * params->n * sizeof(int16_t));
+		memset(s_transpose, 0, params->nbar * params->n * sizeof(int16_t));
 		free(s_transpose);
 	}
 
@@ -189,16 +189,16 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	goto cleanup;
 
 err:
-	bzero(out, params->nbar * params->n * sizeof(uint16_t));
+	memset(out, 0, params->nbar * params->n * sizeof(uint16_t));
 
 cleanup:
 	if (a_cols != NULL) {
-		bzero(a_cols, a_colslen);
+		memset(a_cols, 0, a_colslen);
 		free(a_cols);
 	}
 
 	if (a_cols_t != NULL) {
-		bzero(a_cols_t, a_colslen);
+		memset(a_cols_t, 0, a_colslen);
 		free(a_cols_t);
 	}
 
