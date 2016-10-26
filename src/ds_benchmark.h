@@ -55,13 +55,6 @@ PRINT_TIMER_FOOTER
 #if defined(WINDOWS)
 #include <Windows.h>
 
- // timeval is defined in <sys/time.h>, but that's not available on Windows
-// defining the struct here
-//struct timeval {
-//	long tv_sec; /* seconds */
-//	long tv_usec; /* and microseconds */
-//};
-
 int gettimeofday(struct timeval * tp, struct timezone * tzp)
 {
 	// Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
