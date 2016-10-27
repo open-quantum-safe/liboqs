@@ -114,7 +114,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -168,7 +168,7 @@ copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_BCNS15;CONSTANT_TIME;WINDOWS;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
