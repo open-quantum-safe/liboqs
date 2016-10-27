@@ -27,6 +27,7 @@ typedef struct OQS_RAND_urandom_aesctr_ctx {
 } OQS_RAND_urandom_aesctr_ctx;
 
 static OQS_RAND_urandom_aesctr_ctx *OQS_RAND_urandom_aesctr_ctx_new() {
+	int fd = 0;
 	OQS_RAND_urandom_aesctr_ctx *rand_ctx = NULL;
 	rand_ctx = (OQS_RAND_urandom_aesctr_ctx *) malloc(sizeof(OQS_RAND_urandom_aesctr_ctx));
 	if (rand_ctx == NULL) {
@@ -41,8 +42,8 @@ static OQS_RAND_urandom_aesctr_ctx *OQS_RAND_urandom_aesctr_ctx_new() {
 		goto err;
 	}
 #else
-	int fd = open("/dev/urandom", O_RDONLY);
-	if (fd == 0) {
+	fd = open("/dev/urandom", O_RDONLY);
+	if (fd <= 0) {
 		goto err;
 	}
 	int r = read(fd, key, 16);
@@ -62,7 +63,7 @@ err:
 		free(rand_ctx);
 	}
 #if !defined(WINDOWS)
-	if (fd) {
+	if (fd > 0) {
 		close(fd);
 	}
 #endif
