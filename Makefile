@@ -9,8 +9,7 @@ CURL=curl
 RANLIB=ranlib
 LN=ln -s
 
-DEFAULTS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
-CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
+CFLAGS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
 
@@ -29,6 +28,19 @@ ifeq ($(AES_NI_LOCAL),1)
 CFLAGS += -maes -msse2
 else
 CFLAGS += -DAES_DISABLE_NI
+endif
+
+ifdef USE_OPENSSL
+	CFLAGS += -DUSE_OPENSSL
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		OPENSSL_DIR=/usr
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		OPENSSL_DIR=/usr/local/opt/openssl
+	endif
+	INCLUDES += -I$(OPENSSL_DIR)/include
+	LDFLAGS += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
 .PHONY: all check clean prettyprint
