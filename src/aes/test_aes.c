@@ -90,7 +90,6 @@ static int test_aes128_c_equals_ni(OQS_RAND *rand) {
 		return EXIT_FAILURE;
 	}
 }
-#endif
 
 static int test_aes128_ecb_correctness_ni(OQS_RAND *rand) {
 	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
@@ -111,6 +110,7 @@ static int test_aes128_ecb_correctness_ni(OQS_RAND *rand) {
 		return EXIT_FAILURE;
 	}
 }
+#endif
 
 static int test_aes128_ecb_correctness_c(OQS_RAND *rand) {
 	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
@@ -132,6 +132,30 @@ static int test_aes128_ecb_correctness_c(OQS_RAND *rand) {
 	}
 }
 
+#ifdef USE_OPENSSL
+static int test_aes128_ecb_correctness_ossl(OQS_RAND *rand) {
+	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
+	void *schedule = NULL;
+	OQS_RAND_n(rand, key, 16);
+	OQS_RAND_n(rand, plaintext, 320);
+	oqs_aes128_load_schedule_ossl(key, &schedule, 1);
+	oqs_aes128_ecb_enc_ossl(plaintext, 320, schedule, ciphertext);
+	oqs_aes128_free_schedule_ossl(schedule);
+	oqs_aes128_load_schedule_ossl(key, &schedule, 0);
+	oqs_aes128_ecb_dec_ossl(ciphertext, 320, schedule, decrypted);
+	oqs_aes128_free_schedule_ossl(schedule);
+	if (memcmp(plaintext, decrypted, 320) == 0) {
+		return EXIT_SUCCESS;
+	} else {
+		print_bytes(plaintext, 320);
+		printf("\n");
+		print_bytes(decrypted, 320);
+		printf("\n");
+		return EXIT_FAILURE;
+	}
+}
+#endif
+
 static void speed_aes128_c(OQS_RAND *rand) {
 	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
 	void *schedule = NULL;
@@ -141,9 +165,9 @@ static void speed_aes128_c(OQS_RAND *rand) {
 	TIME_OPERATION_SECONDS(oqs_aes128_enc_c(plaintext, schedule, ciphertext), "oqs_aes128_enc_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_dec_c(ciphertext, schedule, decrypted), "oqs_aes128_dec_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_c(plaintext, 320, key, ciphertext), "oqs_aes128_ecb_enc_c", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_c(ciphertext, 320, key, plaintext), "oqs_aes128_ecb_dec_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_c(ciphertext, 320, key, decrypted), "oqs_aes128_ecb_dec_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_sch_c(plaintext, 320, schedule, ciphertext), "oqs_aes128_ecb_enc_sch_c", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_sch_c(ciphertext, 320, schedule, plaintext), "oqs_aes128_ecb_dec_sch_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_sch_c(ciphertext, 320, schedule, decrypted), "oqs_aes128_ecb_dec_sch_c", BENCH_DURATION);
 }
 
 #ifndef AES_DISABLE_NI
@@ -156,9 +180,26 @@ static void speed_aes128_ni(OQS_RAND *rand) {
 	TIME_OPERATION_SECONDS(oqs_aes128_enc_ni(plaintext, schedule, ciphertext), "oqs_aes128_enc_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_dec_ni(ciphertext, schedule, decrypted), "oqs_aes128_dec_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_ni(plaintext, 320, key, ciphertext), "oqs_aes128_ecb_enc_ni", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_ni(ciphertext, 320, key, plaintext), "oqs_aes128_ecb_dec_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_ni(ciphertext, 320, key, decrypted), "oqs_aes128_ecb_dec_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_sch_ni(plaintext, 320, schedule, ciphertext), "oqs_aes128_ecb_enc_sch_ni", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_sch_ni(ciphertext, 320, schedule, plaintext), "oqs_aes128_ecb_dec_sch_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_sch_ni(ciphertext, 320, schedule, decrypted), "oqs_aes128_ecb_dec_sch_ni", BENCH_DURATION);
+}
+#endif
+
+#ifdef USE_OPENSSL
+static void speed_aes128_ossl(OQS_RAND *rand) {
+	uint8_t key[16], plaintext[320], ciphertext[320];
+	void *schedule = NULL;
+	OQS_RAND_n(rand, key, 16);
+	OQS_RAND_n(rand, plaintext, 320);
+	TIME_OPERATION_SECONDS(oqs_aes128_load_schedule_ossl(key, &schedule, 1), "oqs_aes128_load_schedule_ossl 1", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_load_schedule_ossl(key, &schedule, 0), "oqs_aes128_load_schedule_ossl 0", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_ossl(plaintext, 320, key, ciphertext), "oqs_aes128_ecb_enc_ossl", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_ossl(ciphertext, 320, key, plaintext), "oqs_aes128_ecb_dec_ossl", BENCH_DURATION);
+	oqs_aes128_load_schedule_ossl(key, &schedule, 1);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_sch_ossl(plaintext, 320, schedule, ciphertext), "oqs_aes128_ecb_enc_sch_ossl", BENCH_DURATION);
+	oqs_aes128_load_schedule_ossl(key, &schedule, 0);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_sch_ossl(ciphertext, 320, schedule, plaintext), "oqs_aes128_ecb_dec_sch_ossl", BENCH_DURATION);
 }
 #endif
 
@@ -179,12 +220,18 @@ int main() {
 #ifndef AES_DISABLE_NI
 	TEST_REPEATEDLY(test_aes128_ecb_correctness_ni(rand));
 #endif
+#ifdef USE_OPENSSL
+	TEST_REPEATEDLY(test_aes128_ecb_correctness_ossl(rand));
+#endif
 	printf("Tests passed.\n\n");
 	printf("=== test_aes performance ===\n");
 	PRINT_TIMER_HEADER
 	speed_aes128_c(rand);
 #ifndef AES_DISABLE_NI
 	speed_aes128_ni(rand);
+#endif
+#ifdef USE_OPENSSL
+	speed_aes128_ossl(rand);
 #endif
 	PRINT_TIMER_FOOTER
 	ret = EXIT_SUCCESS;

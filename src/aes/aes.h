@@ -15,8 +15,9 @@
  *
  * @param key            Initial Key
  * @param schedule       Abstract data structure for a key schedule
+ * @param forEncryption  1 if key schedule is for encryption, 0 if for decryption
  */
-void OQS_AES128_load_schedule(const uint8_t *key, void **schedule);
+void OQS_AES128_load_schedule(const uint8_t *key, void **schedule, int for_encryption);
 
 /**
  * Function to free a key schedule

@@ -83,7 +83,7 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 
 	assert(params->seed_len == 16);
 	void *aes_key_schedule = NULL;
-	OQS_AES128_load_schedule(params->seed, &aes_key_schedule);
+	OQS_AES128_load_schedule(params->seed, &aes_key_schedule, 1);
 
 	for (i = 0; i < params->n; i++) {
 		// go through A's rows
@@ -156,7 +156,7 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 
 	assert(params->seed_len == 16);
 	void *aes_key_schedule = NULL;
-	OQS_AES128_load_schedule(params->seed, &aes_key_schedule);
+	OQS_AES128_load_schedule(params->seed, &aes_key_schedule, 1);
 
 	for (kk = 0; kk < params->n; kk += params->stripe_step) {
 		// Go through A's columns, 8 (== params->stripe_step) columns at a time.

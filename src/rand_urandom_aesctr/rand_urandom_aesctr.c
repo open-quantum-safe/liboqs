@@ -49,7 +49,7 @@ static oqs_rand_urandom_aesctr_ctx *oqs_rand_urandom_aesctr_ctx_new() {
 		goto err;
 	}
 #endif
-	OQS_AES128_load_schedule(key, &rand_ctx->schedule);
+	OQS_AES128_load_schedule(key, &rand_ctx->schedule, 1);
 	rand_ctx->cache_next_byte = 64; // cache is empty
 	rand_ctx->ctr = 0;
 	goto okay;
