@@ -139,7 +139,9 @@ static uint64_t rdtsc(void) {
 		PRINT_TIMER_AVG(op_name) \
 	}
 
-#define TIME_OPERATION_SECONDS(op, op_name, secs) \
+#define TIME_OPERATION_SECONDS(op, op_name, secs) TIME_OPERATION_SECONDS_CLEANUP(op, op_name, secs, NULL)
+
+#define TIME_OPERATION_SECONDS_CLEANUP(op, op_name, secs, cleanop) \
 	{ \
 		DEFINE_TIMER_VARIABLES \
 		INITIALIZE_TIMER \
@@ -148,6 +150,7 @@ static uint64_t rdtsc(void) {
 			START_TIMER \
 			(op); \
 			STOP_TIMER \
+			((void)cleanop); \
 		} \
 		FINALIZE_TIMER \
 		PRINT_TIMER_AVG(op_name) \
