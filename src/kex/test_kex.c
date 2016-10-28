@@ -182,16 +182,44 @@ cleanup:
 
 }
 
-static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int seconds) {
+static void test_alice_0(OQS_KEX *kex) {
+	void *alice_priv = NULL;
+	uint8_t *alice_msg = NULL;
+	size_t alice_msg_len;
 
+	OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
+
+	free(alice_msg);
+	OQS_KEX_alice_priv_free(kex, alice_priv);
+}
+
+static void test_bob(OQS_KEX *kex, uint8_t *alice_msg, size_t alice_msg_len) {
+	uint8_t *bob_msg = NULL;
+	size_t bob_msg_len;
+	uint8_t *bob_key = NULL;
+	size_t bob_key_len;
+
+	OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
+	free(bob_msg);
+	free(bob_key);
+}
+
+static void test_alice_1(OQS_KEX *kex, void *alice_priv, uint8_t *bob_msg, size_t bob_msg_len) {
+	uint8_t *alice_key = NULL;
+	size_t alice_key_len;
+
+	OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len);
+
+	free(alice_key);
+}
+
+static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int seconds) {
 	OQS_KEX *kex = NULL;
 	int rc;
 
 	void *alice_priv = NULL;
 	uint8_t *alice_msg = NULL;
 	size_t alice_msg_len;
-	uint8_t *alice_key = NULL;
-	size_t alice_key_len;
 
 	uint8_t *bob_msg = NULL;
 	size_t bob_msg_len;
@@ -206,9 +234,13 @@ static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 	}
 	printf("%s\n", kex->method_name);
 
-	TIME_OPERATION_SECONDS(OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len), "alice 0", seconds);
-	TIME_OPERATION_SECONDS(OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len), "bob", seconds);
-	TIME_OPERATION_SECONDS(OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len), "alice 1", seconds);
+	TIME_OPERATION_SECONDS(test_alice_0(kex), "alice 0", seconds);
+
+	OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
+	TIME_OPERATION_SECONDS(test_bob(kex, alice_msg, alice_msg_len), "bob", seconds);
+
+	OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
+	TIME_OPERATION_SECONDS(test_alice_1(kex, alice_priv, bob_msg, bob_msg_len), "alice 1", seconds);
 
 	rc = 1;
 	goto cleanup;
@@ -218,7 +250,6 @@ err:
 
 cleanup:
 	free(alice_msg);
-	free(alice_key);
 	free(bob_msg);
 	free(bob_key);
 	OQS_KEX_alice_priv_free(kex, alice_priv);
