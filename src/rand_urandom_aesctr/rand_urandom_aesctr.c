@@ -78,7 +78,7 @@ okay:
 static void OQS_RAND_urandom_aesctr_fill_cache(OQS_RAND *r) {
 	OQS_RAND_urandom_aesctr_ctx *rand_ctx = (OQS_RAND_urandom_aesctr_ctx *) r->ctx;
 	for (int i = 0; i < 4; i++) {
-		OQS_AES128_enc(rand_ctx->ctr.ba, rand_ctx->schedule, &rand_ctx->cache[i * 16]);
+		OQS_AES128_ECB_enc_sch(rand_ctx->ctr.ba, 16, rand_ctx->schedule, &rand_ctx->cache[i * 16]);
 		rand_ctx->ctr.ui[0]++;
 	}
 	rand_ctx->cache_next_byte = 0;

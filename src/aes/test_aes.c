@@ -5,6 +5,7 @@
 #include <oqs/rand.h>
 
 #include "aes.h"
+#include "aes_local.h"
 #include "../ds_benchmark.h"
 
 #define BENCH_DURATION 1
@@ -31,10 +32,10 @@ static int test_aes128_correctness_c(OQS_RAND *rand) {
 	void *schedule = NULL;
 	OQS_RAND_n(rand, key, 16);
 	OQS_RAND_n(rand, plaintext, 16);
-	OQS_AES128_load_schedule_c(key, &schedule);
-	OQS_AES128_enc_c(plaintext, schedule, ciphertext);
-	OQS_AES128_dec_c(ciphertext, schedule, decrypted);
-	OQS_AES128_free_schedule_c(schedule);
+	oqs_aes128_load_schedule_c(key, &schedule);
+	oqs_aes128_enc_c(plaintext, schedule, ciphertext);
+	oqs_aes128_dec_c(ciphertext, schedule, decrypted);
+	oqs_aes128_free_schedule_c(schedule);
 	if (memcmp(plaintext, decrypted, 16) == 0) {
 		return EXIT_SUCCESS;
 	} else {
@@ -53,10 +54,10 @@ static int test_aes128_correctness_ni(OQS_RAND *rand) {
 	void *schedule = NULL;
 	OQS_RAND_n(rand, key, 16);
 	OQS_RAND_n(rand, plaintext, 16);
-	OQS_AES128_load_schedule_ni(key, &schedule);
-	OQS_AES128_enc_ni(plaintext, schedule, ciphertext);
-	OQS_AES128_dec_ni(ciphertext, schedule, decrypted);
-	OQS_AES128_free_schedule_ni(schedule);
+	oqs_aes128_load_schedule_ni(key, &schedule);
+	oqs_aes128_enc_ni(plaintext, schedule, ciphertext);
+	oqs_aes128_dec_ni(ciphertext, schedule, decrypted);
+	oqs_aes128_free_schedule_ni(schedule);
 	if (memcmp(plaintext, decrypted, 16) == 0) {
 		return EXIT_SUCCESS;
 	} else {
@@ -73,12 +74,12 @@ static int test_aes128_c_equals_ni(OQS_RAND *rand) {
 	void *schedule_c = NULL, *schedule_ni = NULL;
 	OQS_RAND_n(rand, key, 16);
 	OQS_RAND_n(rand, plaintext, 16);
-	OQS_AES128_load_schedule_c(key, &schedule_c);
-	OQS_AES128_load_schedule_ni(key, &schedule_ni);
-	OQS_AES128_enc_c(plaintext, schedule_c, ciphertext_c);
-	OQS_AES128_enc_ni(plaintext, schedule_ni, ciphertext_ni);
-	OQS_AES128_free_schedule_c(schedule_c);
-	OQS_AES128_free_schedule_ni(schedule_ni);
+	oqs_aes128_load_schedule_c(key, &schedule_c);
+	oqs_aes128_load_schedule_ni(key, &schedule_ni);
+	oqs_aes128_enc_c(plaintext, schedule_c, ciphertext_c);
+	oqs_aes128_enc_ni(plaintext, schedule_ni, ciphertext_ni);
+	oqs_aes128_free_schedule_c(schedule_c);
+	oqs_aes128_free_schedule_ni(schedule_ni);
 	if (memcmp(ciphertext_c, ciphertext_ni, 16) == 0) {
 		return EXIT_SUCCESS;
 	} else {
@@ -116,9 +117,9 @@ static void speed_aes128_c(OQS_RAND *rand) {
 	void *schedule = NULL;
 	OQS_RAND_n(rand, key, 16);
 	OQS_RAND_n(rand, plaintext, 16);
-	TIME_OPERATION_SECONDS(OQS_AES128_load_schedule_c(key, &schedule), "OQS_AES128_load_schedule_c", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES128_enc_c(plaintext, schedule, ciphertext), "OQS_AES128_enc_c", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES128_dec_c(ciphertext, schedule, decrypted), "OQS_AES128_dec_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_load_schedule_c(key, &schedule), "oqs_aes128_load_schedule_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_enc_c(plaintext, schedule, ciphertext), "oqs_aes128_enc_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_dec_c(ciphertext, schedule, decrypted), "oqs_aes128_dec_c", BENCH_DURATION);
 }
 
 #ifndef AES_DISABLE_NI
@@ -127,9 +128,9 @@ static void speed_aes128_ni(OQS_RAND *rand) {
 	void *schedule = NULL;
 	OQS_RAND_n(rand, key, 16);
 	OQS_RAND_n(rand, plaintext, 16);
-	TIME_OPERATION_SECONDS(OQS_AES128_load_schedule_ni(key, &schedule), "OQS_AES128_load_schedule_ni", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES128_enc_ni(plaintext, schedule, ciphertext), "OQS_AES128_enc_ni", BENCH_DURATION);
-	TIME_OPERATION_SECONDS(OQS_AES128_dec_ni(ciphertext, schedule, decrypted), "OQS_AES128_dec_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_load_schedule_ni(key, &schedule), "oqs_aes128_load_schedule_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_enc_ni(plaintext, schedule, ciphertext), "oqs_aes128_enc_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_dec_ni(ciphertext, schedule, decrypted), "oqs_aes128_dec_ni", BENCH_DURATION);
 }
 #endif
 
