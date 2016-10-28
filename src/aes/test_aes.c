@@ -156,33 +156,51 @@ static int test_aes128_ecb_correctness_ossl(OQS_RAND *rand) {
 }
 #endif
 
+static void test_oqs_aes128_load_schedule_c(const uint8_t *key) {
+	void *schedule = NULL;
+	oqs_aes128_load_schedule_c(key, &schedule);
+	oqs_aes128_free_schedule_c(schedule);
+}
+
 static void speed_aes128_c(OQS_RAND *rand) {
 	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
 	void *schedule = NULL;
 	OQS_RAND_n(rand, key, 16);
 	OQS_RAND_n(rand, plaintext, 320);
-	TIME_OPERATION_SECONDS(oqs_aes128_load_schedule_c(key, &schedule), "oqs_aes128_load_schedule_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(test_oqs_aes128_load_schedule_c(key), "oqs_aes128_load_schedule_c", BENCH_DURATION);
+
+	oqs_aes128_load_schedule_c(key, &schedule);	
 	TIME_OPERATION_SECONDS(oqs_aes128_enc_c(plaintext, schedule, ciphertext), "oqs_aes128_enc_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_dec_c(ciphertext, schedule, decrypted), "oqs_aes128_dec_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_c(plaintext, 320, key, ciphertext), "oqs_aes128_ecb_enc_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_c(ciphertext, 320, key, decrypted), "oqs_aes128_ecb_dec_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_sch_c(plaintext, 320, schedule, ciphertext), "oqs_aes128_ecb_enc_sch_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_sch_c(ciphertext, 320, schedule, decrypted), "oqs_aes128_ecb_dec_sch_c", BENCH_DURATION);
+	oqs_aes128_free_schedule_c(schedule);
 }
 
 #ifndef AES_DISABLE_NI
+static void oqs_aes128_test_load_schedule_ni(const uint8_t *key) {
+	void *schedule = NULL;
+	oqs_aes128_load_schedule_ni(key, &schedule);
+	oqs_aes128_free_schedule_ni(schedule);
+}
+
 static void speed_aes128_ni(OQS_RAND *rand) {
 	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
 	void *schedule = NULL;
 	OQS_RAND_n(rand, key, 16);
 	OQS_RAND_n(rand, plaintext, 320);
-	TIME_OPERATION_SECONDS(oqs_aes128_load_schedule_ni(key, &schedule), "oqs_aes128_load_schedule_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_test_load_schedule_ni(key), "oqs_aes128_test_load_schedule_ni", BENCH_DURATION);
+
+	oqs_aes128_load_schedule_ni(key, &schedule);
 	TIME_OPERATION_SECONDS(oqs_aes128_enc_ni(plaintext, schedule, ciphertext), "oqs_aes128_enc_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_dec_ni(ciphertext, schedule, decrypted), "oqs_aes128_dec_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_ni(plaintext, 320, key, ciphertext), "oqs_aes128_ecb_enc_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_ni(ciphertext, 320, key, decrypted), "oqs_aes128_ecb_dec_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_sch_ni(plaintext, 320, schedule, ciphertext), "oqs_aes128_ecb_enc_sch_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_sch_ni(ciphertext, 320, schedule, decrypted), "oqs_aes128_ecb_dec_sch_ni", BENCH_DURATION);
+	oqs_aes128_free_schedule_ni(schedule);
 }
 #endif
 
