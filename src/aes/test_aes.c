@@ -92,15 +92,35 @@ static int test_aes128_c_equals_ni(OQS_RAND *rand) {
 }
 #endif
 
-static int test_aes128_ecb_correctness(OQS_RAND *rand) {
+static int test_aes128_ecb_correctness_ni(OQS_RAND *rand) {
 	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
 	void *schedule = NULL;
 	OQS_RAND_n(rand, key, 16);
 	OQS_RAND_n(rand, plaintext, 320);
-	OQS_AES128_load_schedule(key, &schedule);
-	OQS_AES128_ECB_enc(plaintext, 320, schedule, ciphertext);
-	OQS_AES128_ECB_dec(ciphertext, 320, schedule, decrypted);
-	OQS_AES128_free_schedule(schedule);
+	oqs_aes128_load_schedule_ni(key, &schedule);
+	oqs_aes128_ecb_enc_ni(plaintext, 320, schedule, ciphertext);
+	oqs_aes128_ecb_dec_ni(ciphertext, 320, schedule, decrypted);
+	oqs_aes128_free_schedule_ni(schedule);
+	if (memcmp(plaintext, decrypted, 320) == 0) {
+		return EXIT_SUCCESS;
+	} else {
+		print_bytes(plaintext, 320);
+		printf("\n");
+		print_bytes(decrypted, 320);
+		printf("\n");
+		return EXIT_FAILURE;
+	}
+}
+
+static int test_aes128_ecb_correctness_c(OQS_RAND *rand) {
+	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
+	void *schedule = NULL;
+	OQS_RAND_n(rand, key, 16);
+	OQS_RAND_n(rand, plaintext, 320);
+	oqs_aes128_load_schedule_c(key, &schedule);
+	oqs_aes128_ecb_enc_c(plaintext, 320, schedule, ciphertext);
+	oqs_aes128_ecb_dec_c(ciphertext, 320, schedule, decrypted);
+	oqs_aes128_free_schedule_c(schedule);
 	if (memcmp(plaintext, decrypted, 320) == 0) {
 		return EXIT_SUCCESS;
 	} else {
@@ -113,24 +133,32 @@ static int test_aes128_ecb_correctness(OQS_RAND *rand) {
 }
 
 static void speed_aes128_c(OQS_RAND *rand) {
-	uint8_t key[16], plaintext[16], ciphertext[16], decrypted[16];
+	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
 	void *schedule = NULL;
 	OQS_RAND_n(rand, key, 16);
-	OQS_RAND_n(rand, plaintext, 16);
+	OQS_RAND_n(rand, plaintext, 320);
 	TIME_OPERATION_SECONDS(oqs_aes128_load_schedule_c(key, &schedule), "oqs_aes128_load_schedule_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_enc_c(plaintext, schedule, ciphertext), "oqs_aes128_enc_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_dec_c(ciphertext, schedule, decrypted), "oqs_aes128_dec_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_c(plaintext, 320, key, ciphertext), "oqs_aes128_ecb_enc_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_c(ciphertext, 320, key, plaintext), "oqs_aes128_ecb_dec_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_sch_c(plaintext, 320, schedule, ciphertext), "oqs_aes128_ecb_enc_sch_c", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_sch_c(ciphertext, 320, schedule, plaintext), "oqs_aes128_ecb_dec_sch_c", BENCH_DURATION);
 }
 
 #ifndef AES_DISABLE_NI
 static void speed_aes128_ni(OQS_RAND *rand) {
-	uint8_t key[16], plaintext[16], ciphertext[16], decrypted[16];
+	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
 	void *schedule = NULL;
 	OQS_RAND_n(rand, key, 16);
-	OQS_RAND_n(rand, plaintext, 16);
+	OQS_RAND_n(rand, plaintext, 320);
 	TIME_OPERATION_SECONDS(oqs_aes128_load_schedule_ni(key, &schedule), "oqs_aes128_load_schedule_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_enc_ni(plaintext, schedule, ciphertext), "oqs_aes128_enc_ni", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_dec_ni(ciphertext, schedule, decrypted), "oqs_aes128_dec_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_ni(plaintext, 320, key, ciphertext), "oqs_aes128_ecb_enc_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_ni(ciphertext, 320, key, plaintext), "oqs_aes128_ecb_dec_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_sch_ni(plaintext, 320, schedule, ciphertext), "oqs_aes128_ecb_enc_sch_ni", BENCH_DURATION);
+	TIME_OPERATION_SECONDS(oqs_aes128_ecb_dec_sch_ni(ciphertext, 320, schedule, plaintext), "oqs_aes128_ecb_dec_sch_ni", BENCH_DURATION);
 }
 #endif
 
@@ -147,7 +175,10 @@ int main() {
 	TEST_REPEATEDLY(test_aes128_correctness_ni(rand));
 	TEST_REPEATEDLY(test_aes128_c_equals_ni(rand));
 #endif
-	TEST_REPEATEDLY(test_aes128_ecb_correctness(rand));
+	TEST_REPEATEDLY(test_aes128_ecb_correctness_c(rand));
+#ifndef AES_DISABLE_NI
+	TEST_REPEATEDLY(test_aes128_ecb_correctness_ni(rand));
+#endif
 	printf("Tests passed.\n\n");
 	printf("=== test_aes performance ===\n");
 	PRINT_TIMER_HEADER
