@@ -379,6 +379,8 @@ void OQS_KEX_lwe_frodo_free(OQS_KEX *k) {
 		free(k->params);
 		k->params = NULL;
 	}
+	free(k->named_parameters);
+	k->named_parameters = NULL;
 	free(k->method_name);
 	k->method_name = NULL;
 	free(k);
