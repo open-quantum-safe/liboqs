@@ -21,7 +21,7 @@ typedef struct OQS_RAND_urandom_aesctr_ctx {
 		uint8_t ba[16];
 		uint64_t ui[2];
 	} ctr;
-	uint8_t schedule[20 * 16];
+	void *schedule;
 	uint8_t cache[64];
 	size_t cache_next_byte;
 } OQS_RAND_urandom_aesctr_ctx;
@@ -55,7 +55,7 @@ static OQS_RAND_urandom_aesctr_ctx *OQS_RAND_urandom_aesctr_ctx_new() {
 		goto err;
 	}
 #endif
-	OQS_AES128_load_schedule(key, rand_ctx->schedule);
+	OQS_AES128_load_schedule(key, &rand_ctx->schedule);
 	rand_ctx->cache_next_byte = 64; // cache is empty
 	goto okay;
 err:
@@ -122,6 +122,10 @@ uint64_t OQS_RAND_urandom_aesctr_64(OQS_RAND *r) {
 
 void OQS_RAND_urandom_aesctr_free(OQS_RAND *r) {
 	if (r) {
+		OQS_RAND_urandom_aesctr_ctx *rand_ctx = (OQS_RAND_urandom_aesctr_ctx *) r->ctx;
+		if (rand_ctx) {
+			OQS_AES128_free_schedule(rand_ctx->schedule);
+		}
 		free(r->ctx);
 		free(r->method_name);
 	}

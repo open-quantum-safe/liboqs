@@ -82,8 +82,8 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	}
 
 	assert(params->seed_len == 16);
-	uint8_t aes_key_schedule[OQS_AES128_SCHEDULE_NUMBYTES];
-	OQS_AES128_load_schedule(params->seed, aes_key_schedule);
+	void *aes_key_schedule = NULL;
+	OQS_AES128_load_schedule(params->seed, &aes_key_schedule);
 
 	for (i = 0; i < params->n; i++) {
 		// go through A's rows
@@ -106,6 +106,8 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 			out[i * params->nbar + k] %= params->q;
 		}
 	}
+
+	OQS_AES128_free_schedule(aes_key_schedule);
 
 	ret = 1;
 	goto cleanup;
@@ -153,8 +155,8 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	}
 
 	assert(params->seed_len == 16);
-	uint8_t aes_key_schedule[OQS_AES128_SCHEDULE_NUMBYTES];
-	OQS_AES128_load_schedule(params->seed, aes_key_schedule);
+	void *aes_key_schedule = NULL;
+	OQS_AES128_load_schedule(params->seed, &aes_key_schedule);
 
 	for (kk = 0; kk < params->n; kk += params->stripe_step) {
 		// Go through A's columns, 8 (== params->stripe_step) columns at a time.
@@ -165,7 +167,6 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 			a_cols[i * params->stripe_step + 1] = kk;
 		}
 
-		assert(params->seed_len == 16);
 		OQS_AES128_ECB_enc_sch((uint8_t *) a_cols, a_colslen, aes_key_schedule, (uint8_t *) a_cols);
 
 		// transpose a_cols to have access to it in the column-major order.
@@ -184,6 +185,8 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 				out[i * params->n + kk + k] %= params->q;
 			}
 	}
+
+	OQS_AES128_free_schedule(aes_key_schedule);
 
 	ret = 1;
 	goto cleanup;
