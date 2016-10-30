@@ -163,7 +163,7 @@ static void speed_aes128_c(OQS_RAND *rand) {
 	OQS_RAND_n(rand, plaintext, 320);
 	TIME_OPERATION_SECONDS_CLEANUP(oqs_aes128_load_schedule_c(key, &schedule), "oqs_aes128_load_schedule_c", BENCH_DURATION, oqs_aes128_free_schedule_c(schedule));
 
-	oqs_aes128_load_schedule_c(key, &schedule);	
+	oqs_aes128_load_schedule_c(key, &schedule);
 	TIME_OPERATION_SECONDS(oqs_aes128_enc_c(plaintext, schedule, ciphertext), "oqs_aes128_enc_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_dec_c(ciphertext, schedule, decrypted), "oqs_aes128_dec_c", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(oqs_aes128_ecb_enc_c(plaintext, 320, key, ciphertext), "oqs_aes128_ecb_enc_c", BENCH_DURATION);
