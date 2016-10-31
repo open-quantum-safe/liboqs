@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include <oqs/rand.h>
 #include <oqs/kex.h>
@@ -12,13 +13,14 @@ struct kex_testcase {
 	unsigned char *seed;
 	size_t seed_len;
 	char *named_parameters;
+	char *id;
 };
 
 /* Add new testcases here */
 struct kex_testcase kex_testcases[] = {
-	{ OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL },
-	{ OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL },
-	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended" },
+	{ OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "bcns15" },
+	{ OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "newhope" },
+	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "frodo" },
 };
 
 #define KEX_TEST_ITERATIONS 100
@@ -228,9 +230,24 @@ cleanup:
 
 }
 
-int main() {
+int main(int argc, char **argv) {
 
 	int success;
+	bool run_all = true;
+	char *alg_to_run = NULL;
+	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
+
+	if (argc > 1) {
+		if (strcmp(argv[1], "-ls") == 0) {
+			printf("Options:\n");
+			for (size_t i = 0; i < kex_testcases_len; i++) {
+				printf("%s\n", kex_testcases[i].id);
+			}
+			return EXIT_SUCCESS;
+		}
+		run_all = false;
+		alg_to_run = argv[1];
+	}
 
 	/* setup RAND */
 	OQS_RAND *rand = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
@@ -238,9 +255,12 @@ int main() {
 		goto err;
 	}
 
-	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
 	for (size_t i = 0; i < kex_testcases_len; i++) {
-		success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_TEST_ITERATIONS);
+		if (run_all || strcmp(kex_testcases[i].id, alg_to_run) == 0) {
+			success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_TEST_ITERATIONS);
+		} else {
+			success = 1;
+		}
 		if (success != 1) {
 			goto err;
 		}
@@ -248,7 +268,9 @@ int main() {
 
 	PRINT_TIMER_HEADER
 	for (size_t i = 0; i < kex_testcases_len; i++) {
-		kex_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_BENCH_SECONDS);
+		if (run_all || strcmp(kex_testcases[i].id, alg_to_run) == 0) {
+			kex_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_BENCH_SECONDS);
+		}
 	}
 	PRINT_TIMER_FOOTER
 
