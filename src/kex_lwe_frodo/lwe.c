@@ -52,14 +52,19 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	// s,e (N x N_BAR)
 	// out = A * s + e (N x N_BAR)
 
+	const uint16_t n = params->n;
+	const uint16_t nbar = params->nbar;
+	const uint16_t stripe_step = params->stripe_step;
+	const uint16_t q = params->q;
 	int i, j, k;
 	int ret = 0;
 	uint16_t *a_row = NULL;
 	uint16_t *s_transpose = NULL;
 
-	for (i = 0; i < params->n; i++) {
-		for (j = 0; j < params->nbar; j++) {
-			out[i * params->nbar + j] = e[i * params->nbar + j];
+
+	for (i = 0; i < n; i++) {
+		for (j = 0; j < nbar; j++) {
+			out[i * nbar + j] = e[i * nbar + j];
 		}
 	}
 
@@ -70,14 +75,14 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	}
 
 	// transpose s to store it in the column-major order
-	s_transpose = (uint16_t *) malloc(params->nbar * params->n * sizeof(int16_t));
+	s_transpose = (uint16_t *) malloc(nbar * n * sizeof(int16_t));
 	if (s_transpose == NULL) {
 		goto err;
 	}
 
-	for (j = 0; j < params->n; j++) {
-		for (k = 0; k < params->nbar; k++) {
-			s_transpose[k * params->n + j] = s[j * params->nbar + k];
+	for (j = 0; j < n; j++) {
+		for (k = 0; k < nbar; k++) {
+			s_transpose[k * n + j] = s[j * nbar + k];
 		}
 	}
 
@@ -85,10 +90,10 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	void *aes_key_schedule = NULL;
 	OQS_AES128_load_schedule(params->seed, &aes_key_schedule, 1);
 
-	for (i = 0; i < params->n; i++) {
+	for (i = 0; i < n; i++) {
 		// go through A's rows
 		memset(a_row, 0, a_rowlen);
-		for (j = 0; j < params->n; j += params->stripe_step) {
+		for (j = 0; j < n; j += stripe_step) {
 			// Loading values in the little-endian order!
 			a_row[j] = i;
 			a_row[j + 1] = j;
@@ -96,14 +101,14 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 
 		OQS_AES128_ECB_enc_sch((uint8_t *) a_row, a_rowlen, aes_key_schedule, (uint8_t *) a_row);
 
-		for (k = 0; k < params->nbar; k++) {
+		for (k = 0; k < nbar; k++) {
 			uint16_t sum = 0;
-			for (j = 0; j < params->n; j++) {
+			for (j = 0; j < n; j++) {
 				// matrix-vector multiplication happens here
-				sum += a_row[j] * s_transpose[k * params->n + j];
+				sum += a_row[j] * s_transpose[k * n + j];
 			}
-			out[i * params->nbar + k] += sum;
-			out[i * params->nbar + k] %= params->q;
+			out[i * nbar + k] += sum;
+			out[i * nbar + k] %= q;
 		}
 	}
 
@@ -113,7 +118,7 @@ int oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	goto cleanup;
 
 err:
-	bzero(out, params->nbar * params->n * sizeof(uint16_t));
+	bzero(out, nbar * n * sizeof(uint16_t));
 
 cleanup:
 	if (a_row != NULL) {
@@ -135,18 +140,23 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	// s',e' (N_BAR x N)
 	// out = s'a + e' (N_BAR x N)
 
+	const uint16_t n = params->n;
+	const uint16_t nbar = params->nbar;
+	const uint16_t stripe_step = params->stripe_step;
+	const uint16_t q = params->q;
+
 	int i, j, k, kk;
 	int ret = 0;
 	uint16_t *a_cols = NULL;
 	uint16_t *a_cols_t = NULL;
 
-	for (i = 0; i < params->nbar; i++) {
-		for (j = 0; j < params->n; j++) {
-			out[i * params->n + j] = e[i * params->n + j];
+	for (i = 0; i < nbar; i++) {
+		for (j = 0; j < n; j++) {
+			out[i * n + j] = e[i * n + j];
 		}
 	}
 
-	size_t a_colslen = params->n * params->stripe_step * sizeof(int16_t);
+	size_t a_colslen = n * stripe_step * sizeof(int16_t);
 	// a_cols stores 8 columns of A at a time.
 	a_cols = (uint16_t *) malloc(a_colslen);
 	a_cols_t = (uint16_t *) malloc(a_colslen);  // a_cols transposed (stored in the column-major order).
@@ -158,31 +168,31 @@ int oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly(uint16_t *out, const uint16_t
 	void *aes_key_schedule = NULL;
 	OQS_AES128_load_schedule(params->seed, &aes_key_schedule, 1);
 
-	for (kk = 0; kk < params->n; kk += params->stripe_step) {
+	for (kk = 0; kk < n; kk += stripe_step) {
 		// Go through A's columns, 8 (== params->stripe_step) columns at a time.
 		memset(a_cols, 0, a_colslen);
-		for (i = 0; i < params->n; i++) {
+		for (i = 0; i < n; i++) {
 			// Loading values in the little-endian order!
-			a_cols[i * params->stripe_step] = i;
-			a_cols[i * params->stripe_step + 1] = kk;
+			a_cols[i * stripe_step] = i;
+			a_cols[i * stripe_step + 1] = kk;
 		}
 
 		OQS_AES128_ECB_enc_sch((uint8_t *) a_cols, a_colslen, aes_key_schedule, (uint8_t *) a_cols);
 
 		// transpose a_cols to have access to it in the column-major order.
-		for (i = 0; i < params->n; i++)
-			for (k = 0; k < params->stripe_step; k++) {
-				a_cols_t[k * params->n + i] = a_cols[i * params->stripe_step + k];
+		for (i = 0; i < n; i++)
+			for (k = 0; k < stripe_step; k++) {
+				a_cols_t[k * n + i] = a_cols[i * stripe_step + k];
 			}
 
-		for (i = 0; i < params->nbar; i++)
-			for (k = 0; k < params->stripe_step; k++) {
+		for (i = 0; i < nbar; i++)
+			for (k = 0; k < stripe_step; k++) {
 				uint16_t sum = 0;
-				for (j = 0; j < params->n; j++) {
-					sum += s[i * params->n + j] * a_cols_t[k * params->n + j];
+				for (j = 0; j < n; j++) {
+					sum += s[i * n + j] * a_cols_t[k * n + j];
 				}
-				out[i * params->n + kk + k] += sum;
-				out[i * params->n + kk + k] %= params->q;
+				out[i * n + kk + k] += sum;
+				out[i * n + kk + k] %= q;
 			}
 	}
 
@@ -213,14 +223,17 @@ void oqs_kex_lwe_frodo_mul_bs(uint16_t *out, const uint16_t *b, const uint16_t *
 	// b (N_BAR x N)
 	// s (N x N_BAR)
 	// out = bs
+	const uint16_t nbar = params->nbar;
+	const uint16_t n = params->n;
+	const uint16_t q = params->q;
 	int i, j, k;
-	for (i = 0; i < params->nbar; i++) {
-		for (j = 0; j < params->nbar; j++) {
-			out[i * params->nbar + j] = 0;
-			for (k = 0; k < params->n; k++) {
-				out[i * params->nbar + j] += b[i * params->n + k] * s[k * params->nbar + j];
+	for (i = 0; i < nbar; i++) {
+		for (j = 0; j < nbar; j++) {
+			out[i * nbar + j] = 0;
+			for (k = 0; k < n; k++) {
+				out[i * nbar + j] += b[i * n + k] * s[k * nbar + j];
 			}
-			out[i * params->nbar + j] %= params->q;  // not really necessary since LWE_Q is a power of 2.
+			out[i * nbar + j] %= q;  // not really necessary since LWE_Q is a power of 2.
 		}
 	}
 }
@@ -231,14 +244,18 @@ void oqs_kex_lwe_frodo_mul_add_sb_plus_e(uint16_t *out, const uint16_t *b, const
 	// s (N_BAR x N)
 	// e (N_BAR x N_BAR)
 	// out = sb + e
+	const uint16_t nbar = params->nbar;
+	const uint16_t n = params->n;
+	const uint16_t q = params->q;
+
 	int i, j, k;
-	for (k = 0; k < params->nbar; k++) {
-		for (i = 0; i < params->nbar; i++) {
-			out[k * params->nbar + i] = e[k * params->nbar + i];
-			for (j = 0; j < params->n; j++) {
-				out[k * params->nbar + i] += s[k * params->n + j] * b[j * params->nbar + i];
+	for (k = 0; k < nbar; k++) {
+		for (i = 0; i < nbar; i++) {
+			out[k * nbar + i] = e[k * nbar + i];
+			for (j = 0; j < n; j++) {
+				out[k * nbar + i] += s[k * n + j] * b[j * nbar + i];
 			}
-			out[k * params->nbar + i] %= params->q;  // not really necessary since LWE_Q is a power of 2.
+			out[k * nbar + i] %= q;  // not really necessary since LWE_Q is a power of 2.
 		}
 	}
 }
