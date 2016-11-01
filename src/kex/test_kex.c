@@ -14,13 +14,14 @@ struct kex_testcase {
 	size_t seed_len;
 	char *named_parameters;
 	char *id;
+	int run;
 };
 
 /* Add new testcases here */
 struct kex_testcase kex_testcases[] = {
-	{ OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "bcns15" },
-	{ OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "newhope" },
-	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "frodo" },
+	{ OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "rlwe_bcns15", 0 },
+	{ OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0 },
+	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0 },
 };
 
 #define KEX_TEST_ITERATIONS 100
@@ -232,21 +233,27 @@ cleanup:
 
 int main(int argc, char **argv) {
 
-	int success;
+	int success = 1;
 	bool run_all = true;
-	char *alg_to_run = NULL;
 	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
 
 	if (argc > 1) {
-		if (strcmp(argv[1], "-ls") == 0) {
-			printf("Options:\n");
+		if ((strcmp(argv[1], "-h") == 0) || (strcmp(argv[1], "-help") == 0) || (strcmp(argv[1], "--help") == 0)) {
+			printf("Usage: ./test_kex [algorithms]\n\n");
+			printf("algorithms:\n");
 			for (size_t i = 0; i < kex_testcases_len; i++) {
-				printf("%s\n", kex_testcases[i].id);
+				printf("  %s\n", kex_testcases[i].id);
 			}
 			return EXIT_SUCCESS;
 		}
 		run_all = false;
-		alg_to_run = argv[1];
+		for (int i = 1; i < argc; i++) {
+			for (size_t j = 0; j < kex_testcases_len; j++) {
+				if (strcmp(argv[i], kex_testcases[j].id) == 0) {
+					kex_testcases[j].run = 1;
+				}
+			}
+		}
 	}
 
 	/* setup RAND */
@@ -256,10 +263,8 @@ int main(int argc, char **argv) {
 	}
 
 	for (size_t i = 0; i < kex_testcases_len; i++) {
-		if (run_all || strcmp(kex_testcases[i].id, alg_to_run) == 0) {
+		if (run_all || kex_testcases[i].run == 1) {
 			success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_TEST_ITERATIONS);
-		} else {
-			success = 1;
 		}
 		if (success != 1) {
 			goto err;
@@ -268,7 +273,7 @@ int main(int argc, char **argv) {
 
 	PRINT_TIMER_HEADER
 	for (size_t i = 0; i < kex_testcases_len; i++) {
-		if (run_all || strcmp(kex_testcases[i].id, alg_to_run) == 0) {
+		if (run_all || kex_testcases[i].run == 1) {
 			kex_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_BENCH_SECONDS);
 		}
 	}
