@@ -1,6 +1,43 @@
+/********************************************************************************************
+ * ds_benchmark.h: Macros for simple benchmarking of C code.
+ *
+ * See instructions for usage below.
+ * Software originally developed by Douglas Stebila.
+ * Most recent version at https://gist.github.com/dstebila/6980008ec98209ef6075
+ *
+ * This is free and unencumbered software released into the public domain.
+ *
+ * Anyone is free to copy, modify, publish, use, compile, sell, or
+ * distribute this software, either in source code form or as a compiled
+ * binary, for any purpose, commercial or non-commercial, and by any
+ * means.
+ *
+ * In jurisdictions that recognize copyright laws, the author or authors
+ * of this software dedicate any and all copyright interest in the
+ * software to the public domain. We make this dedication for the benefit
+ * of the public at large and to the detriment of our heirs and
+ * successors. We intend this dedication to be an overt act of
+ * relinquishment in perpetuity of all present and future rights to this
+ * software under copyright law.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * For more information, please refer to <http://unlicense.org>
+ ********************************************************************************************/
+
+/** \file ds_benchmark.h
+ * Macros for simple benchmarking of C code.
+ */
+
 #if 0
 /* example code: timing two operations */
-#include <ds_benchmark_cycles.h>
+#include "ds_benchmark.h"
 ...
 DEFINE_TIMER_VARIABLES
 INITIALIZE_TIMER
@@ -16,7 +53,7 @@ PRINT_TIMER_AVG("my operation")
 PRINT_TIMER_FOOTER
 
 /* example code: average multiple runs, run for e.g. 30 seconds */
-#include <ds_benchmark_cycles.h>
+#include "ds_benchmark.h"
 ...
 PRINT_TIMER_HEADER
 TIME_OPERATION_SECONDS(MyFunction(myarg1, myarg2, ...), "my operation", 30)
@@ -24,7 +61,7 @@ TIME_OPERATION_SECONDS(MyOtherFunction(myarg3), "my other operation", 30)
 PRINT_TIMER_FOOTER
 
 /* example code: average multiple runs, run for e.g. 100 iterations */
-#include <ds_benchmark_cycles.h>
+#include "ds_benchmark.h"
 ...
 PRINT_TIMER_HEADER
 TIME_OPERATION_ITERATIONS(MyFunction(myarg1, myarg2, ...), "my operation", 1000)
@@ -34,14 +71,17 @@ PRINT_TIMER_FOOTER
 /* For most accurate results:
  *  - disable hyperthreading a.k.a. hardware multithreading
  *    (Linux instructions: http://bench.cr.yp.to/supercop.html)
- *    (Mac OS X instructions: Instruments -> Preferences -> CPUs -> uncheck "Hardware Multi-Threading" http://forums.macrumors.com/showthread.php?t=1484684)
+ *    (Mac OS X instructions: Instruments -> Preferences -> CPUs -> uncheck "Hardware Multi-Threading"
+ *     http://forums.macrumors.com/showthread.php?t=1484684)
  *  - disable TurboBoost
  *    (Linux instructions: http://bench.cr.yp.to/supercop.html)
  *    (Max OS X: use http://www.rugarciap.com/turbo-boost-switcher-for-os-x/)
  *  - run when the computer is idle (e.g., shut down all other applications, disable network access if possible, ...)
  */
-
 #endif
+
+#ifndef _DS_BENCHMARK_H
+#define _DS_BENCHMARK_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -74,10 +114,6 @@ int gettimeofday(struct timeval *tp, struct timezone *tzp) {
 }
 #endif
 
-
-// Mean and population standard deviation are calculated in an online way using the algorithm in
-//     http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm
-
 static uint64_t rdtsc(void) {
 #if defined(WINDOWS)
 	return __rdtsc();
@@ -108,6 +144,9 @@ static uint64_t rdtsc(void) {
 #define START_TIMER \
 	gettimeofday(&_bench_timeval_start, NULL); \
 	_bench_cycles_start = rdtsc();
+
+// Mean and population standard deviation are calculated in an online way using the algorithm in
+//     http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm
 
 #define STOP_TIMER \
 	_bench_cycles_end = rdtsc(); \
@@ -181,3 +220,5 @@ static uint64_t rdtsc(void) {
 		FINALIZE_TIMER \
 		PRINT_TIMER_AVG(op_name) \
 	}
+
+#endif
