@@ -156,7 +156,7 @@ int OQS_KEX_lwe_frodo_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg
 	if (ret != 1) {
 		goto err;
 	}
-	oqs_kex_lwe_frodo_pack(*alice_msg, params->pub_len, b, params->n * params->nbar * sizeof(uint16_t), params->log2_q);
+	oqs_kex_lwe_frodo_pack(*alice_msg, params->pub_len, b, params->n * params->nbar, params->log2_q);
 
 	*alice_msg_len = params->pub_len;
 
@@ -245,7 +245,7 @@ int OQS_KEX_lwe_frodo_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t ali
 	if (ret != 1) {
 		goto err;
 	}
-	oqs_kex_lwe_frodo_pack(*bob_msg, params->pub_len, bprime, params->n * params->nbar * sizeof(uint16_t), params->log2_q);
+	oqs_kex_lwe_frodo_pack(*bob_msg, params->pub_len, bprime, params->n * params->nbar, params->log2_q);
 
 	/* generate E'' */
 	ret = oqs_kex_lwe_frodo_sample_n(eprimeprime, params->nbar * params->nbar, params, k->rand);
@@ -379,6 +379,8 @@ void OQS_KEX_lwe_frodo_free(OQS_KEX *k) {
 		free(k->params);
 		k->params = NULL;
 	}
+	free(k->named_parameters);
+	k->named_parameters = NULL;
 	free(k->method_name);
 	k->method_name = NULL;
 	free(k);

@@ -132,7 +132,7 @@ static uint64_t rdtsc(void) {
 		INITIALIZE_TIMER \
 		for (int i = 0; i < (it); i++) { \
 			START_TIMER \
-			(op); \
+			{ op ; } \
 			STOP_TIMER \
 		} \
 		FINALIZE_TIMER \
@@ -146,7 +146,7 @@ static uint64_t rdtsc(void) {
 		uint64_t _bench_time_goal_usecs = 1000000 * secs; \
 		while (_bench_time_cumulative < _bench_time_goal_usecs) { \
 			START_TIMER \
-			(op); \
+			{ op ; } \
 			STOP_TIMER \
 		} \
 		FINALIZE_TIMER \
