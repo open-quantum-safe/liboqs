@@ -1,9 +1,15 @@
+#if defined(WINDOWS)
+#define UNUSED
+#else
 #define UNUSED __attribute__ ((unused))
+#endif
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#if !defined(WINDOWS)
 #include <strings.h>
+#include <unistd.h>
+#endif
 
 #include <oqs/kex.h>
 #include <oqs/rand.h>
@@ -276,7 +282,7 @@ err:
 	free(*bob_msg);
 	*bob_msg = NULL;
 	if (*key != NULL) {
-		bzero(*key, params->key_bits >> 3);
+		memset(*key, 0, params->key_bits >> 3);
 	}
 	free(*key);
 	*key = NULL;
@@ -284,17 +290,17 @@ err:
 cleanup:
 	free(bob_priv);
 	if (eprime != NULL) {
-		bzero(eprime, params->n * params->nbar * sizeof(uint16_t));
+		memset(eprime, 0, params->n * params->nbar * sizeof(uint16_t));
 	}
 	free(bprime);
 	free(eprime);
 	if (eprimeprime != NULL) {
-		bzero(eprimeprime, params->nbar * params->nbar * sizeof(uint16_t));
+		memset(eprimeprime, 0, params->nbar * params->nbar * sizeof(uint16_t));
 	}
 	free(eprimeprime);
 	free(b);
 	if (v != NULL) {
-		bzero(v, params->nbar * params->nbar * sizeof(uint16_t));
+		memset(v, 0, params->nbar * params->nbar * sizeof(uint16_t));
 	}
 	free(v);
 
@@ -347,7 +353,7 @@ int OQS_KEX_lwe_frodo_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t 
 
 err:
 	ret = 0;
-	bzero(key, params->key_bits >> 3);
+	memset(key, 0, params->key_bits >> 3);
 	free(*key);
 	*key = NULL;
 
