@@ -55,8 +55,7 @@ PRINT_TIMER_FOOTER
 #if defined(WINDOWS)
 #include <Windows.h>
 
-int gettimeofday(struct timeval * tp, struct timezone * tzp)
-{
+int gettimeofday(struct timeval *tp, struct timezone *tzp) {
 	// Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
 	static const uint64_t EPOCH = ((uint64_t)116444736000000000ULL);
 
