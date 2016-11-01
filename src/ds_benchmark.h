@@ -132,25 +132,22 @@ static uint64_t rdtsc(void) {
 		INITIALIZE_TIMER \
 		for (int i = 0; i < (it); i++) { \
 			START_TIMER \
-			(op); \
+			{ op ; } \
 			STOP_TIMER \
 		} \
 		FINALIZE_TIMER \
 		PRINT_TIMER_AVG(op_name) \
 	}
 
-#define TIME_OPERATION_SECONDS(op, op_name, secs) TIME_OPERATION_SECONDS_CLEANUP(op, op_name, secs, NULL)
-
-#define TIME_OPERATION_SECONDS_CLEANUP(op, op_name, secs, cleanop) \
+#define TIME_OPERATION_SECONDS(op, op_name, secs) \
 	{ \
 		DEFINE_TIMER_VARIABLES \
 		INITIALIZE_TIMER \
 		uint64_t _bench_time_goal_usecs = 1000000 * secs; \
 		while (_bench_time_cumulative < _bench_time_goal_usecs) { \
 			START_TIMER \
-			(op); \
+			{ op ; } \
 			STOP_TIMER \
-			((void)cleanop); \
 		} \
 		FINALIZE_TIMER \
 		PRINT_TIMER_AVG(op_name) \
