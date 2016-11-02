@@ -1,9 +1,15 @@
+#if defined(WINDOWS)
+#define UNUSED
+#else
 #define UNUSED __attribute__ ((unused))
+#endif
 
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
+#if !defined(WINDOWS)
 #include <strings.h>
+#include <unistd.h>
+#endif
 
 #include <oqs/kex.h>
 #include <oqs/rand.h>
@@ -156,7 +162,7 @@ int OQS_KEX_lwe_frodo_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg
 	if (ret != 1) {
 		goto err;
 	}
-	oqs_kex_lwe_frodo_pack(*alice_msg, params->pub_len, b, params->n * params->nbar * sizeof(uint16_t), params->log2_q);
+	oqs_kex_lwe_frodo_pack(*alice_msg, params->pub_len, b, params->n * params->nbar, params->log2_q);
 
 	*alice_msg_len = params->pub_len;
 
@@ -245,7 +251,7 @@ int OQS_KEX_lwe_frodo_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t ali
 	if (ret != 1) {
 		goto err;
 	}
-	oqs_kex_lwe_frodo_pack(*bob_msg, params->pub_len, bprime, params->n * params->nbar * sizeof(uint16_t), params->log2_q);
+	oqs_kex_lwe_frodo_pack(*bob_msg, params->pub_len, bprime, params->n * params->nbar, params->log2_q);
 
 	/* generate E'' */
 	ret = oqs_kex_lwe_frodo_sample_n(eprimeprime, params->nbar * params->nbar, params, k->rand);
@@ -276,7 +282,7 @@ err:
 	free(*bob_msg);
 	*bob_msg = NULL;
 	if (*key != NULL) {
-		bzero(*key, params->key_bits >> 3);
+		memset(*key, 0, params->key_bits >> 3);
 	}
 	free(*key);
 	*key = NULL;
@@ -284,17 +290,17 @@ err:
 cleanup:
 	free(bob_priv);
 	if (eprime != NULL) {
-		bzero(eprime, params->n * params->nbar * sizeof(uint16_t));
+		memset(eprime, 0, params->n * params->nbar * sizeof(uint16_t));
 	}
 	free(bprime);
 	free(eprime);
 	if (eprimeprime != NULL) {
-		bzero(eprimeprime, params->nbar * params->nbar * sizeof(uint16_t));
+		memset(eprimeprime, 0, params->nbar * params->nbar * sizeof(uint16_t));
 	}
 	free(eprimeprime);
 	free(b);
 	if (v != NULL) {
-		bzero(v, params->nbar * params->nbar * sizeof(uint16_t));
+		memset(v, 0, params->nbar * params->nbar * sizeof(uint16_t));
 	}
 	free(v);
 
@@ -347,7 +353,7 @@ int OQS_KEX_lwe_frodo_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t 
 
 err:
 	ret = 0;
-	bzero(key, params->key_bits >> 3);
+	memset(key, 0, params->key_bits >> 3);
 	free(*key);
 	*key = NULL;
 
@@ -379,6 +385,8 @@ void OQS_KEX_lwe_frodo_free(OQS_KEX *k) {
 		free(k->params);
 		k->params = NULL;
 	}
+	free(k->named_parameters);
+	k->named_parameters = NULL;
 	free(k->method_name);
 	k->method_name = NULL;
 	free(k);
