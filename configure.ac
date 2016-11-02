@@ -53,23 +53,6 @@ DX_PS_FEATURE(OFF)
 DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
 ######################################################################
 
-#ARG_DISBL_SET([bcns15-1024], [disable bcns15 with 1024 bits (default).])
-#AM_CONDITIONAL(bcns15_1024, [test "x$bcns15_1024" = xtrue])
-#AM_COND_IF([bcns15_1024], [SRCDIR=src/kex_rlwe_bcns15/])
-#AM_COND_IF([bcns15_1024], [WANTEDLIBS=src/kex_rlwe_bcns15/libbcns15.la])
-
-#ARG_DISBL_SET([lwe-frodo], [disable LWE Frodo.])
-#AM_CONDITIONAL([lwe_frodo], [test "x$lwe_frodo" = xtrue])
-#AM_CONDITIONAL([USE_LWE_FRODO], [test "x$lwe_frodo" = xtrue])
-#AM_COND_IF([lwe_frodo], [SRCDIR=${SRCDIR}" src/kex_lwe_frodo/"])
-#AM_COND_IF([lwe_frodo], [WANTEDLIBS=${WANTEDLIBS}" src/kex_lwe_frodo/liblwefrodo.la"])
-
-#ARG_DISBL_SET([lwe-newhope], [disable LWE NewHope.])
-#AM_CONDITIONAL([lwe_newhope], [test "x$lwe_newhope" = xtrue])
-#AM_CONDITIONAL([USE_LWE_NEWHOPE], [test "x$lwe_newhope" = xtrue])
-#AM_COND_IF([lwe_newhope], [SRCDIR=${SRCDIR}" src/kex_rlwe_newhope/"])
-#AM_COND_IF([lwe_newhope], [WANTEDLIBS=${WANTEDLIBS}" src/kex_rlwe_newhope/librlwenewhope.la"])
-
 ARG_DISBL_SET([aes-ni], [disable AES-NI.])
 AM_CONDITIONAL([aes_ni], [test "x$aes_ni" = xtrue])
 AM_CONDITIONAL([USE_AES_NI], [test "x$aes_ni" = xtrue])

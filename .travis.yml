@@ -19,6 +19,7 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
+        - openssl
   - os: linux
     compiler: gcc-4.9
     env: CC=gcc-4.9
@@ -35,6 +36,7 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
+        - openssl
   - os: linux
     compiler: gcc-5
     env: CC=gcc-5
@@ -51,6 +53,7 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
+        - openssl
   - os: linux
     compiler: gcc-6
     env: CC=gcc-6 USE_OPENSSL=1
@@ -78,12 +81,9 @@ matrix:
 
 script:
   - autoreconf -i 
-  - ./configure  
-  - make 
-  - make test
-  - ./configure --disable-bcns15-1024  
-  - make clean;make 
-  - make test
+  - ./configure; make; make test
+  - ./configure --disable-aes-ni; make clean; make; make test  
+  - ./configure --enable-openssl; make clean; make; make test  
   - bash .travis-style-check.sh
   - bash .travis-global-namespace-check.sh
 
