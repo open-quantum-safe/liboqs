@@ -477,7 +477,7 @@ static void kem_gen_par_ch(
 static void kem_to_systematic(
     sys_par_ch_t pub_key,
     const poly_t inv,
-    const par_ch_t priv_key) {
+    par_ch_t priv_key) {
 	poly_t priv_poly;
 
 	for (size_t i = 0; i < POLY_COUNT - 1; ++i) {
@@ -521,7 +521,7 @@ static void kem_error(
 static void kem_encrypt(
     syn_t pub_syn,
     error_t error,
-    const sys_par_ch_t pub_key) {
+    sys_par_ch_t pub_key) {
 	syn_t buf;
 	size_t i;
 
@@ -640,7 +640,7 @@ static void unpack_poly(poly_t dest, const byte_t *src) {
 	}
 }
 
-static void pack_pubkey(byte_t *dest, const sys_par_ch_t src) {
+static void pack_pubkey(byte_t *dest, sys_par_ch_t src) {
 	byte_t *dest_poly = dest;
 	for (size_t i = 0; i < POLY_COUNT - 1; ++i) {
 		pack_poly(dest_poly, src[i]);
@@ -656,7 +656,7 @@ static void unpack_pubkey(sys_par_ch_t dest, const byte_t *src) {
 	}
 }
 
-static void pack_error(byte_t *dest, const limb_t (*src)[POLY_LIMBS]) {
+static void pack_error(byte_t *dest, limb_t (*src)[POLY_LIMBS]) {
 	byte_t *dest_poly = dest;
 	for (size_t i = 0; i < POLY_COUNT; ++i) {
 		pack_poly(dest_poly, src[i]);

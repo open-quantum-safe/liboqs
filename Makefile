@@ -61,11 +61,8 @@ links:
 	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 	$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
-<<<<<<< fcbc38097078415e429878ced74b2a2ea2b48933
 	$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
-=======
 	$(LN) ../../src/kex_code_nrqcmdpc/kex_code_nrqcmdpc.h include/oqs
->>>>>>> Adding the Niederreiter cryptosystem (using QC-MDPC codes).
 	$(LN) ../../src/rand/rand.h include/oqs
 	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	$(LN) ../../src/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
@@ -134,7 +131,7 @@ objs/kex/kex.o: src/kex/kex.h
 
 RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS) objs/rand/rand.o
 
-KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_CODE_NRQCMDPC_OBJS) $(KEX_SIDH_CLN16_OBJS) oobjs/kex/kex.o
+KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_CODE_NRQCMDPC_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/kex/kex.o
 
 lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
 	rm -f liboqs.a

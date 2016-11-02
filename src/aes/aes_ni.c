@@ -45,7 +45,7 @@ static __m128i key_expand(__m128i key, __m128i keygened) {
 void oqs_aes128_load_schedule_ni(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(20 * 16);
 	assert(*_schedule != NULL);
-	__m128i *schedule = (__m128i * )*_schedule;
+	__m128i *schedule = (__m128i *)*_schedule;
 	schedule[0]  = _mm_loadu_si128((const __m128i *) key);
 	schedule[1]  = key_exp(schedule[0], 0x01);
 	schedule[2]  = key_exp(schedule[1], 0x02);
@@ -72,7 +72,7 @@ void oqs_aes128_free_schedule_ni(void *schedule) {
 }
 
 void oqs_aes128_enc_ni(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
-	__m128i *schedule = (__m128i * )_schedule;
+	__m128i *schedule = (__m128i *)_schedule;
 	__m128i m = _mm_loadu_si128((__m128i *) plaintext);
 
 	m = _mm_xor_si128(m, schedule[0]);
@@ -85,7 +85,7 @@ void oqs_aes128_enc_ni(const uint8_t *plaintext, const void *_schedule, uint8_t 
 }
 
 void oqs_aes128_dec_ni(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext) {
-	__m128i *schedule = (__m128i * )_schedule;
+	__m128i *schedule = (__m128i *)_schedule;
 	__m128i m = _mm_loadu_si128((__m128i *) ciphertext);
 
 	m = _mm_xor_si128(m, schedule[10]);
