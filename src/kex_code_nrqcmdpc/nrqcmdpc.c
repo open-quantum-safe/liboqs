@@ -58,16 +58,16 @@ static void sp_poly_rand(sp_poly_t f, OQS_RAND *rand) {
 static void sp_poly_to_poly(poly_t f, const sp_poly_t g) {
 	static const index_t LIMB_INDEX_MASK = (1 << LIMB_INDEX_BITS) - 1;
 
-	size_t i, j, limb_index[POLY_WEIGHT];
+	size_t limb_index[POLY_WEIGHT];
 	limb_t mask, bit[POLY_WEIGHT];
 
-	for (j = 0; j < POLY_WEIGHT; ++j) {
+	for (size_t j = 0; j < POLY_WEIGHT; ++j) {
 		limb_index[j] = g[j] >> LIMB_INDEX_BITS;
 		bit[j] = (limb_t)(1) << (g[j] & LIMB_INDEX_MASK);
 	}
-	for (i = 0; i < POLY_LIMBS; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS; ++i) {
 		f[i] = 0;
-		for (j = 0; j < POLY_WEIGHT; ++j) {
+		for (size_t j = 0; j < POLY_WEIGHT; ++j) {
 			mask = limb_index[j] ^ i;
 			mask = -((mask - 1) >> (LIMB_BITS - 1));
 			f[i] |= bit[j] & mask;
@@ -76,30 +76,27 @@ static void sp_poly_to_poly(poly_t f, const sp_poly_t g) {
 }
 
 static void poly_zero(poly_t f) {
-	size_t i;
-	for (i = 0; i < POLY_LIMBS; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS; ++i) {
 		f[i] = 0;
 	}
 }
 
 static void poly_copy(poly_t f, const poly_t g) {
-	size_t i;
-	for (i = 0; i < POLY_LIMBS; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS; ++i) {
 		f[i] = g[i];
 	}
 }
 
 static int poly_is_zero(const poly_t f) {
-	size_t i, shift;
 	byte_t nonzero_bits = 0;
 
-	for (i = 0; i < POLY_LIMBS - 1; ++i) {
-		for (shift = 0; shift < LIMB_BYTES; shift += 8) {
+	for ( size_t i = 0; i < POLY_LIMBS - 1; ++i) {
+		for ( size_t shift = 0; shift < LIMB_BYTES; shift += 8) {
 			nonzero_bits |= f[i] >> shift;
 		}
 	}
-	for (shift = 0; shift < TAIL_BYTES; shift += 8) {
-		nonzero_bits |= f[i] >> shift;
+	for ( size_t shift = 0; shift < TAIL_BYTES; shift += 8) {
+		nonzero_bits |= f[POLY_LIMBS - 1] >> shift;
 	}
 	return ((nonzero_bits - 1) >> 8) & 1;
 }
@@ -110,11 +107,10 @@ static int poly_is_zero(const poly_t f) {
  * \warning Not in constant time.
  */
 static int poly_verify_one(const poly_t f) {
-	size_t i;
 	if (f[0] != 1) {
 		return -1;
 	}
-	for (i = 1; i < POLY_LIMBS; ++i) {
+	for (size_t i = 1; i < POLY_LIMBS; ++i) {
 		if (f[i] != 0) {
 			return -1;
 		}
@@ -130,8 +126,7 @@ static limb_t poly_hamming_weight(const poly_t f) {
 	static const limb_t MASK2 = (limb_t)(~0) / 255 * 15;
 	static const limb_t MULT  = (limb_t)(~0) / 255;
 	limb_t wc, total = 0;
-	size_t i;
-	for (i = 0; i < POLY_LIMBS; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS; ++i) {
 		wc   = f[i];
 		wc  -= (wc >> 1) & MASK0;
 		wc   = (wc & MASK1) + ((wc >> 2) & MASK1);
@@ -151,15 +146,13 @@ static limb_t poly_hamming_weight(const poly_t f) {
  * overlap in memory leads to erroneous behaviour.
  */
 static void poly_add(poly_t f, const poly_t g, const poly_t h) {
-	size_t i;
-	for (i = 0; i < POLY_LIMBS; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS; ++i) {
 		f[i] = g[i] ^ h[i];
 	}
 }
 
 static void poly_mask(poly_t f, const poly_t g, const poly_t mask) {
-	size_t i;
-	for (i = 0; i < POLY_LIMBS; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS; ++i) {
 		f[i] = g[i] & mask[i];
 	}
 }
@@ -170,54 +163,50 @@ static void poly_mask(poly_t f, const poly_t g, const poly_t mask) {
  * Mask is extended to the length of \p g by repeating.
  */
 static void poly_inplace_add_masked(poly_t f, const poly_t g, limb_t mask) {
-	size_t i;
-	for (i = 0; i < POLY_LIMBS; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS; ++i) {
 		f[i] ^= g[i] & mask;
 	}
 }
 
 /* TODO: multiple carry chains? */
 static void poly_inplace_mulx_modG(poly_t f) {
-	size_t i;
 	limb_t carry, tmp;
 	carry = f[POLY_LIMBS - 1] >> (TAIL_BITS - 1);
-	for (i = 0; i < POLY_LIMBS - 1; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS - 1; ++i) {
 		tmp = f[i] >> (LIMB_BITS - 1);
 		f[i] <<= 1;
 		f[i] |= carry;
 		carry = tmp;
 	}
 #if TAIL_BITS == 1
-	f[i] = carry;
+	f[POLY_LIMBS - 1] = carry;
 #else
-	f[i] <<= 1;
-	f[i] |= carry;
-	f[i] &= TAIL_MASK;
+	f[POLY_LIMBS - 1] <<= 1;
+	f[POLY_LIMBS - 1] |= carry;
+	f[POLY_LIMBS - 1] &= TAIL_MASK;
 #endif
 }
 
 /* TODO: multiple carry chains? */
 static void poly_divx(poly_t f, const poly_t g) {
-	size_t i;
-	for (i = 0; i < POLY_LIMBS - 1; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS - 1; ++i) {
 		f[i] = (g[i] >> 1) | (g[i + 1] << (LIMB_BITS - 1));
 	}
-	f[i] = g[i] >> 1;
+	f[POLY_LIMBS - 1] = g[POLY_LIMBS - 1] >> 1;
 }
 
 /* TODO: multiple carry chains? */
 static void poly_divx_modG(poly_t f, const poly_t g) {
-	size_t i;
 	limb_t carry;
 	carry = (g[0] & 1) << (TAIL_BITS - 1);
-	for (i = 0; i < POLY_LIMBS - 1; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS - 1; ++i) {
 		f[i] = (g[i] >> 1) | (g[i + 1] << (LIMB_BITS - 1));
 	}
 #if TAIL_BITS == 1
-	f[i] = carry;
+	f[POLY_LIMBS - 1] = carry;
 #else
-	f[i] = g[i] >> 1;
-	f[i] |= carry;
+	f[POLY_LIMBS - 1] = g[POLY_LIMBS - 1] >> 1;
+	f[POLY_LIMBS - 1] |= carry;
 #endif
 }
 
@@ -228,13 +217,12 @@ static void poly_divx_modG(poly_t f, const poly_t g) {
  * have 2*`POLY_LIMBS`-1 words.
  */
 static void poly_reduce(poly_t f, const limb_t *g) {
-	size_t i;
-	for (i = 0; i < POLY_LIMBS - 1; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS - 1; ++i) {
 		f[i] = g[i];
 		f[i] ^= g[i + POLY_LIMBS - 1] >> TAIL_BITS;
 		f[i] ^= g[i + POLY_LIMBS] << (LIMB_BITS - TAIL_BITS);
 	}
-	f[i] = g[i] & TAIL_MASK;
+	f[POLY_LIMBS - 1] = g[POLY_LIMBS - 1] & TAIL_MASK;
 }
 
 /* This function implements schoolbook multiplication, with reduction
@@ -245,19 +233,17 @@ static void poly_reduce(poly_t f, const limb_t *g) {
  * portable).
  */
 static void poly_mul(poly_t f, const poly_t g, const poly_t h) {
-	byte_t bit_index;
-	size_t i;
 	limb_t mask, res[2 * POLY_LIMBS - 1] = {0};
 	poly_t lhs;
 
 	poly_copy(lhs, g);
-	for (i = 0; i < POLY_LIMBS; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS; ++i) {
 		mask = -(h[i] & 1);
 		poly_inplace_add_masked(res + i, lhs, mask);
 	}
-	for (bit_index = 1; bit_index < LIMB_BITS; ++bit_index) {
+	for (byte_t bit_index = 1; bit_index < LIMB_BITS; ++bit_index) {
 		poly_inplace_mulx_modG(lhs);
-		for (i = 0; i < POLY_LIMBS; ++i) {
+		for (size_t i = 0; i < POLY_LIMBS; ++i) {
 			mask = -((h[i] >> bit_index) & 1);
 			poly_inplace_add_masked(res + i, lhs, mask);
 		}
@@ -304,7 +290,6 @@ static void poly_compare(poly_t eq, poly_t lt, const poly_t f, const poly_t g) {
 }
 
 static void poly_xgcd(poly_t f, poly_t a) {
-	size_t i, j;
 	poly_t g = {1}, b = {0};
 	g[POLY_LIMBS - 1] = 1 << TAIL_BITS; /* g := G */
 
@@ -314,7 +299,7 @@ static void poly_xgcd(poly_t f, poly_t a) {
 	 * else if (f > g)   { f = fg_div_x; a = ab_div_x; }
 	 * else              { g = fg_div_x; b = ab_div_x; }
 	 */
-	for (i = 0; i < 2 * POLY_BITS - 1; ++i) {
+	for (size_t i = 0; i < 2 * POLY_BITS - 1; ++i) {
 		poly_t f_divx, g_divx, a_divx, b_divx, fg_divx, ab_divx;
 		limb_t done, f_odd, g_odd, f_lt_g;
 		limb_t f2f, f2fx, f2fgx, g2g, g2gx, g2fgx;
@@ -346,7 +331,7 @@ static void poly_xgcd(poly_t f, poly_t a) {
 		g2fgx = ~(g2g | g2gx);
 # endif
 
-		for (j = 0; j < POLY_LIMBS; ++j) {
+		for (size_t j = 0; j < POLY_LIMBS; ++j) {
 			f[j] = (f[j] & f2f) | (f_divx[j] & f2fx) | (fg_divx[j] & f2fgx);
 			a[j] = (a[j] & f2f) | (a_divx[j] & f2fx) | (ab_divx[j] & f2fgx);
 			g[j] = (g[j] & g2g) | (g_divx[j] & g2gx) | (fg_divx[j] & g2fgx);
@@ -387,16 +372,17 @@ static void sp_error_rand(sp_error_t error, OQS_RAND *rand) {
 	static const index_t MASK = ((1 << ERROR_INDEX_BITS) - 1);
 
 	index_t cand, buf[3 * ERROR_WEIGHT];
-	size_t i, j, weight = 0;
+	size_t weight = 0;
 
 	do {
 		OQS_RAND_n(rand, (byte_t *)buf, 3 * ERROR_WEIGHT * INDEX_BYTES);
-		for (i = 0; i < 2 * ERROR_WEIGHT && weight < ERROR_WEIGHT; ++i) {
+		for (size_t i = 0; i < 2 * ERROR_WEIGHT && weight < ERROR_WEIGHT; ++i) {
 			cand = buf[i] & MASK;
 			if (cand >= ERROR_BITS) {
 				continue;
 			}
-			for (j = 0; j < weight; ++j) {
+			size_t j = 0;
+			for (; j < weight; ++j) {
 				if (cand == error[j]) {
 					break;
 				}
@@ -410,9 +396,8 @@ static void sp_error_rand(sp_error_t error, OQS_RAND *rand) {
 }
 
 static void sp_error_copy(sp_error_t f, const sp_error_t g) {
-	size_t i;
 
-	for (i = 0; i < ERROR_WEIGHT; ++i) {
+	for (size_t i = 0; i < ERROR_WEIGHT; ++i) {
 		f[i] = g[i];
 	}
 }
@@ -422,10 +407,9 @@ static void sp_error_copy(sp_error_t f, const sp_error_t g) {
  * Subtraction saturates to -1.
  */
 static void sp_error_align(sp_error_t error) {
-	size_t i;
 	index_t mask;
 
-	for (i = 0; i < ERROR_WEIGHT; ++i) {
+	for (size_t i = 0; i < ERROR_WEIGHT; ++i) {
 		error[i] -= POLY_BITS;
 		mask = -(error[i] >> (INDEX_BITS - 1));
 		error[i] |= mask;
@@ -454,12 +438,11 @@ static void sp_error_to_poly(poly_t f, const sp_error_t g) {
 }
 
 static void sp_error_to_error(error_t f, const sp_error_t g) {
-	size_t i;
 	sp_error_t g_copy;
 
 	sp_error_copy(g_copy, g);
 	sp_error_to_poly(f[0], g_copy);
-	for (i = 1; i < POLY_COUNT; ++i) {
+	for (size_t i = 1; i < POLY_COUNT; ++i) {
 		sp_error_align(g_copy);
 		sp_error_to_poly(f[i], g_copy);
 	}
@@ -478,9 +461,8 @@ static void kem_gen_par_ch(
     poly_t inv,
     par_ch_t priv_key,
     OQS_RAND *rand) {
-	size_t i;
 
-	for (i = 0; i < POLY_COUNT - 1; ++i) {
+	for (size_t i = 0; i < POLY_COUNT - 1; ++i) {
 		sp_poly_rand(priv_key[i], rand);
 	}
 	do {
@@ -497,10 +479,9 @@ static void kem_to_systematic(
     sys_par_ch_t pub_key,
     const poly_t inv,
     const par_ch_t priv_key) {
-	size_t i;
 	poly_t priv_poly;
 
-	for (i = 0; i < POLY_COUNT - 1; ++i) {
+	for (size_t i = 0; i < POLY_COUNT - 1; ++i) {
 		sp_poly_to_poly(priv_poly, priv_key[i]);
 		poly_mul(pub_key[i], inv, priv_poly);
 	}
@@ -570,23 +551,22 @@ static void kem_decode(
 	static const limb_t threshold[] = THRESHOLDS;
 	static const size_t ITERATIONS = sizeof(threshold) / sizeof(threshold[0]);
 
-	size_t i, p, l;
 	limb_t bit, mask, count;
 	syn_t syn_update, masked;
 	dense_par_ch_t priv_key_dense;
 
-	for (p = 0; p < POLY_COUNT; ++p) {
-		for (l = 0; l < POLY_LIMBS; ++l) {
+	for (size_t p = 0; p < POLY_COUNT; ++p) {
+		for (size_t l = 0; l < POLY_LIMBS; ++l) {
 			error[p][l] = 0;
 		}
 	}
-	for (p = 0; p < POLY_COUNT; ++p) {
+	for (size_t p = 0; p < POLY_COUNT; ++p) {
 		sp_poly_to_poly(priv_key_dense[p], priv_key[p]);
 	}
-	for (i = 0; i < ITERATIONS; ++i) {
+	for (size_t i = 0; i < ITERATIONS; ++i) {
 		poly_zero(syn_update);
-		for (p = 0; p < POLY_COUNT; ++p) {
-			for (l = 0; l < POLY_LIMBS - 1; ++l) {
+		for (size_t p = 0; p < POLY_COUNT; ++p) {
+			for (size_t l = 0; l < POLY_LIMBS - 1; ++l) {
 				for (bit = 1; bit != 0; bit <<= 1) {
 					poly_mask(masked, priv_key_dense[p], priv_syn);
 					count = poly_hamming_weight(masked);
@@ -637,55 +617,49 @@ static int kem_decrypt(
  */
 
 static void pack_poly(byte_t *dest, const poly_t src) {
-	size_t i, j;
 
-	for (i = 0; i < POLY_LIMBS - 1; ++i) {
-		for (j = 0; j < LIMB_BYTES; ++j) {
+	for (size_t i = 0; i < POLY_LIMBS - 1; ++i) {
+		for (size_t j = 0; j < LIMB_BYTES; ++j) {
 			dest[i * LIMB_BYTES + j] = (byte_t)(src[i] >> (8 * j));
 		}
 	}
-	for (j = 0; j < TAIL_BYTES; ++j) {
-		dest[i * LIMB_BYTES + j] = (byte_t)(src[i] >> (8 * j));
+	for (size_t j = 0; j < TAIL_BYTES; ++j) {
+		dest[(POLY_LIMBS - 1)* LIMB_BYTES + j] = (byte_t)(src[POLY_LIMBS - 1] >> (8 * j));
 	}
 }
 
 static void unpack_poly(poly_t dest, const byte_t *src) {
-	size_t i, j;
-
-	for (i = 0; i < POLY_LIMBS - 1; ++i) {
+	for (size_t i = 0; i < POLY_LIMBS - 1; ++i) {
 		dest[i] = src[i * LIMB_BYTES];
-		for (j = 1; j < LIMB_BYTES; ++j) {
+		for (size_t j = 1; j < LIMB_BYTES; ++j) {
 			dest[i] |= ((limb_t)src[i * LIMB_BYTES + j]) << (8 * j);
 		}
 	}
-	dest[i] = src[i * LIMB_BYTES];
-	for (j = 1; j < TAIL_BYTES; ++j) {
-		dest[i] |= ((limb_t)src[i * LIMB_BYTES + j]) << (8 * j);
+	dest[POLY_LIMBS - 1] = src[(POLY_LIMBS - 1) * LIMB_BYTES];
+	for (size_t j = 1; j < TAIL_BYTES; ++j) {
+		dest[POLY_LIMBS - 1] |= ((limb_t)src[(POLY_LIMBS - 1) * LIMB_BYTES + j]) << (8 * j);
 	}
 }
 
 static void pack_pubkey(byte_t *dest, const sys_par_ch_t src) {
-	size_t i;
 	byte_t *dest_poly = dest;
-	for (i = 0; i < POLY_COUNT - 1; ++i) {
+	for (size_t i = 0; i < POLY_COUNT - 1; ++i) {
 		pack_poly(dest_poly, src[i]);
 		dest_poly += POLY_BYTES;
 	}
 }
 
 static void unpack_pubkey(sys_par_ch_t dest, const byte_t *src) {
-	size_t i;
 	const byte_t *src_poly = src;
-	for (i = 0; i < POLY_COUNT - 1; ++i) {
+	for (size_t i = 0; i < POLY_COUNT - 1; ++i) {
 		unpack_poly(dest[i], src_poly);
 		src_poly += POLY_BYTES;
 	}
 }
 
 static void pack_error(byte_t *dest, const limb_t (*src)[POLY_LIMBS]) {
-	size_t i;
 	byte_t *dest_poly = dest;
-	for (i = 0; i < POLY_COUNT; ++i) {
+	for (size_t i = 0; i < POLY_COUNT; ++i) {
 		pack_poly(dest_poly, src[i]);
 		dest_poly += POLY_BYTES;
 	}
