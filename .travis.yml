@@ -10,6 +10,9 @@ matrix:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
+      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
+      - tar xzf astyle_2.05.1_linux.tar.gz
+      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
     addons:
       apt:
         sources:
@@ -23,6 +26,9 @@ matrix:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
+      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
+      - tar xzf astyle_2.05.1_linux.tar.gz
+      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
     addons:
       apt:
         sources:
@@ -36,36 +42,40 @@ matrix:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
+      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
+      - tar xzf astyle_2.05.1_linux.tar.gz
+      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
-        - autotools-dev
-        - autoconf
   - os: linux
     compiler: gcc-6
-    env: CC=gcc-6
+    env: CC=gcc-6 USE_OPENSSL=1
     before_install:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
+      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
+      - tar xzf astyle_2.05.1_linux.tar.gz
+      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-6
-        - autotools-dev
-        - autoconf
+        - libssl-dev
   - os: osx
     compiler: clang
-    env: CC=clang
+    env: CC=clang AES_NI=0 USE_OPENSSL=1
     before_install:
       -  brew install autoconf
       -  brew install automake
-  
+      -  brew install astyle openssl
+
 script:
   - autoreconf -i 
   - ./configure  
@@ -74,3 +84,6 @@ script:
   - ./configure --disable-bcns15-1024  
   - make clean;make 
   - make test
+  - bash .travis-style-check.sh
+  - bash .travis-global-namespace-check.sh
+

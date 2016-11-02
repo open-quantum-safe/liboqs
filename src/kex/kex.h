@@ -19,6 +19,8 @@ enum KEX_ALGO_NAMES {
 enum OQS_KEX_alg_name {
 	OQS_KEX_alg_default,
 	OQS_KEX_alg_rlwe_bcns15,
+	OQS_KEX_alg_rlwe_newhope,
+	OQS_KEX_alg_lwe_frodo,
 };
 
 typedef struct OQS_KEX OQS_KEX;
@@ -53,7 +55,7 @@ typedef struct OQS_KEX {
 	/**
 	 * An instance-specific seed, if any.
 	 */
-	const uint8_t *seed;
+	uint8_t *seed;
 
 	/**
 	 * Size of instance-specific seed, if any.
@@ -63,7 +65,7 @@ typedef struct OQS_KEX {
 	/**
 	 * Named parameters for this key exchange method instance, if any.
 	 */
-	const char *named_parameters;
+	char *named_parameters;
 
 	/**
 	 * Opaque pointer for passing around instance-specific data
@@ -80,20 +82,20 @@ typedef struct OQS_KEX {
 	 *
 	 * @param k                Key exchange structure
 	 * @param alice_priv       Alice's private key
-	 * @param alice_msg        Alice's public key
-	 * @param alice_msg_len    Alice's public key length
+	 * @param alice_msg        Alice's message (public key + optional additional data)
+	 * @param alice_msg_len    Alice's message length
 	 * @return                 1 on success, or 0 on failure
 	 */
 	int (*alice_0)(OQS_KEX *k, void **alive_priv, uint8_t **alice_msg, size_t *alice_msg_len);
 
 	/**
-	 * Pointer to a function for public, private and shared key generation by Bob.
+	 * Pointer to a function for shared key generation by Bob.
 	 *
 	 * @param k                Key exchange structure
-	 * @param alice_msg        Alice's public key
-	 * @param alice_msg_len    Alice's public key length
-	 * @param bob_msg          Bob's public key
-	 * @param bob_msg_len      Bob's public key length
+	 * @param alice_msg        Alice's message (public key + optional additional data)
+	 * @param alice_msg_len    Alice's message length
+	 * @param bob_msg          Bob's message (public key / encryption of shared key + optional additional data)
+	 * @param bob_msg_len      Bob's message length
 	 * @param key              Shared key
 	 * @param key_len          Shared key length
 	 * @return                 1 on success, or 0 on failure
@@ -105,8 +107,8 @@ typedef struct OQS_KEX {
 	 *
 	 * @param k                Key exchange structure
 	 * @param alice_priv       Alice's private key
-	 * @param bob_msg          Bob's public key
-	 * @param bob_msg_len      Bob's public key length
+	 * @param bob_msg          Bob's message (public key / encryption of shared key + optional additional data)
+	 * @param bob_msg_len      Bob's message length
 	 * @param key              Shared key
 	 * @param key_len          Shared key length
 	 * @return                 1 on success, or 0 on failure

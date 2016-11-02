@@ -53,28 +53,76 @@ DX_PS_FEATURE(OFF)
 DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
 ######################################################################
 
+#ARG_DISBL_SET([bcns15-1024], [disable bcns15 with 1024 bits (default).])
+#AM_CONDITIONAL(bcns15_1024, [test "x$bcns15_1024" = xtrue])
+#AM_COND_IF([bcns15_1024], [SRCDIR=src/kex_rlwe_bcns15/])
+#AM_COND_IF([bcns15_1024], [WANTEDLIBS=src/kex_rlwe_bcns15/libbcns15.la])
 
-ARG_DISBL_SET([bcns15-1024], [disable bcns15 with 1024 bits (default).])
+#ARG_DISBL_SET([lwe-frodo], [disable LWE Frodo.])
+#AM_CONDITIONAL([lwe_frodo], [test "x$lwe_frodo" = xtrue])
+#AM_CONDITIONAL([USE_LWE_FRODO], [test "x$lwe_frodo" = xtrue])
+#AM_COND_IF([lwe_frodo], [SRCDIR=${SRCDIR}" src/kex_lwe_frodo/"])
+#AM_COND_IF([lwe_frodo], [WANTEDLIBS=${WANTEDLIBS}" src/kex_lwe_frodo/liblwefrodo.la"])
 
-AM_CONDITIONAL(bcns15_1024, [test "x$bcns15_1024" = xtrue])
+#ARG_DISBL_SET([lwe-newhope], [disable LWE NewHope.])
+#AM_CONDITIONAL([lwe_newhope], [test "x$lwe_newhope" = xtrue])
+#AM_CONDITIONAL([USE_LWE_NEWHOPE], [test "x$lwe_newhope" = xtrue])
+#AM_COND_IF([lwe_newhope], [SRCDIR=${SRCDIR}" src/kex_rlwe_newhope/"])
+#AM_COND_IF([lwe_newhope], [WANTEDLIBS=${WANTEDLIBS}" src/kex_rlwe_newhope/librlwenewhope.la"])
 
-AM_COND_IF([bcns15_1024], [SRCDIR=src/kex_rlwe_bcns15/])
+ARG_DISBL_SET([aes-ni], [disable AES-NI.])
+AM_CONDITIONAL([aes_ni], [test "x$aes_ni" = xtrue])
+AM_CONDITIONAL([USE_AES_NI], [test "x$aes_ni" = xtrue])
 
-AM_COND_IF([bcns15_1024], [WANTEDLIBS=src/kex_rlwe_bcns15/libbcns15.la])
+ARG_ENABL_SET([openssl], [enable OPENSSL.])
+AM_CONDITIONAL([openssl], [test "x$openssl" = xtrue])
+AM_CONDITIONAL([USE_OPENSSL], [test "x$openssl" = xtrue])
 
-WANTEDLIBS=${WANTEDLIBS}" src/kex/libkex.la"
-SRCDIR=${SRCDIR}" src/kex src/rand"
+AC_CANONICAL_HOST
+# Check for which host we are on and setup a few things
+# specifically based on the host
+case $host_os in
+  darwin* )
+        OPENSSL_DIR=/usr/local/opt/openssl
+        ;;
+  linux*)
+        OPENSSL_DIR=/usr
+        ;;
+    *)
+        #Default Case
+        AC_MSG_ERROR([Your platform is not currently supported])
+        ;;
+esac
+
+
+WANTEDLIBS=" src/aes/libaes.la src/kex/libkex.la"
+WANTEDLIBS=${WANTEDLIBS}" src/rand/librand.la"
+WANTEDLIBS=${WANTEDLIBS}" src/rand_urandom_aesctr/librandaesctr.la"
+WANTEDLIBS=${WANTEDLIBS}" src/rand_urandom_chacha20/librandchacha20.la"
+WANTEDLIBS=${WANTEDLIBS}" src/kex_rlwe_bcns15/libbcns15.la"
+WANTEDLIBS=${WANTEDLIBS}" src/kex_rlwe_newhope/libnewhope.la"
+WANTEDLIBS=${WANTEDLIBS}" src/kex_lwe_frodo/libfrodo.la"
+
+SRCDIR=" src/aes src/kex src/rand src/rand_urandom_aesctr src/rand_urandom_chacha20"
+SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15/"
+SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
+SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 
 AM_CPPFLAGS="-std=c11"
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(WANTEDLIBS)
 AC_SUBST(SRCDIR)
-
-
-
+AC_SUBST(OPENSSL_DIR)
+AC_SUBST(USE_OPENSSL)
 
 AC_CONFIG_FILES([Makefile
                  src/kex/Makefile
+                 src/rand/Makefile
+                 src/rand_urandom_chacha20/Makefile
+                 src/rand_urandom_aesctr/Makefile
+                 src/aes/Makefile
                  src/kex_rlwe_bcns15/Makefile
-                 src/rand/Makefile])
+                 src/kex_rlwe_newhope/Makefile
+                 src/kex_lwe_frodo/Makefile])
+
 AC_OUTPUT
