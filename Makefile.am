@@ -45,7 +45,9 @@ test_rand_CPPFLAGS += -Iinclude -Isrc/rand_urandom_aesctr/
 test_rand_CPPFLAGS += $(AM_CPPFLAGS)
 
 test:
-	$(foreach s,$(SUBDIRS),make test -s -C $(s);)
+	$(foreach s,$(ALLDIRS),make test -s -C $(s);)
+	./test_kex
+	./test_rand
 
 link:
 	$(MKDIR_P) include/oqs

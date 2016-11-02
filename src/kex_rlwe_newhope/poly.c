@@ -9,8 +9,8 @@ typedef struct {
 } poly __attribute__((aligned(32)));
 #endif
 
-extern uint16_t bitrev_table[]; 
-extern uint16_t omegas_montgomery[]; 
+extern uint16_t bitrev_table[];
+extern uint16_t omegas_montgomery[];
 extern uint16_t psis_bitrev_montgomery[];
 extern uint16_t omegas_inv_montgomery[];
 extern uint16_t psis_inv_montgomery[];
