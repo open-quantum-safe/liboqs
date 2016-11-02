@@ -9,12 +9,11 @@
 #include <stdlib.h>
 
 #include <oqs/rand.h>
+#include <oqs/sha3.h>
 
 #include "nrqcmdpc.h"
 #include "config.h"
 #include "types.h"
-
-#include "external/fips202.c"
 
 
 /**
@@ -700,7 +699,7 @@ void oqs_kex_code_nrqcmdpc_encrypt(
 	pack_poly(ct, pub_syn);
 
 	pack_error(error_packed, error);
-	sha3256(sec_key, error_packed, ERROR_BYTES);
+	OQS_SHA3_sha3256(sec_key, error_packed, ERROR_BYTES);
 }
 
 int oqs_kex_code_nrqcmdpc_decrypt(
@@ -717,7 +716,7 @@ int oqs_kex_code_nrqcmdpc_decrypt(
 	ret = kem_decrypt(error, pub_syn, priv_key);
 
 	pack_error(error_packed, error);
-	sha3256(sec_key, error_packed, ERROR_BYTES);
+	OQS_SHA3_sha3256(sec_key, error_packed, ERROR_BYTES);
 
 	return ret;
 }
