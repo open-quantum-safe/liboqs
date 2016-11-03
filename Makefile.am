@@ -10,12 +10,13 @@ EXTRA_DIST = doxygen.cfg
 SUBDIRS = ${SRCDIR}
 
 BUILT_SOURCES = link
-
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
-liboqs_la_LIBADD = ${WANTEDLIBS}
-
-
+liboqs_la_LIBADD = src/kex/libkex.la src/rand/librand.la
+liboqs_la_LIBADD += src/aes/libaes.la src/rand_urandom_aesctr/librandaesctr.la
+liboqs_la_LIBADD += src/rand_urandom_chacha20/librandchacha20.la
+liboqs_la_LIBADD += src/kex_rlwe_bcns15/libbcns15.la src/kex_rlwe_newhope/libnewhope.la
+liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la
 
 noinst_bin_PROGRAMS = test_rand test_kex
 noinst_bindir=$(prefix)/tests

@@ -77,15 +77,6 @@ case $host_os in
         ;;
 esac
 
-
-WANTEDLIBS=" src/aes/libaes.la src/kex/libkex.la"
-WANTEDLIBS=${WANTEDLIBS}" src/rand/librand.la"
-WANTEDLIBS=${WANTEDLIBS}" src/rand_urandom_aesctr/librandaesctr.la"
-WANTEDLIBS=${WANTEDLIBS}" src/rand_urandom_chacha20/librandchacha20.la"
-WANTEDLIBS=${WANTEDLIBS}" src/kex_rlwe_bcns15/libbcns15.la"
-WANTEDLIBS=${WANTEDLIBS}" src/kex_rlwe_newhope/libnewhope.la"
-WANTEDLIBS=${WANTEDLIBS}" src/kex_lwe_frodo/libfrodo.la"
-
 SRCDIR=" src/aes src/kex src/rand src/rand_urandom_aesctr src/rand_urandom_chacha20"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15/"
 SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
@@ -93,7 +84,6 @@ SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 
 AM_CPPFLAGS="-std=c11"
 AC_SUBST(AM_CPPFLAGS)
-AC_SUBST(WANTEDLIBS)
 AC_SUBST(SRCDIR)
 AC_SUBST(OPENSSL_DIR)
 AC_SUBST(USE_OPENSSL)
