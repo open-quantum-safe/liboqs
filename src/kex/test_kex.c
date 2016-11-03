@@ -5,7 +5,6 @@
 
 #include <oqs/rand.h>
 #include <oqs/kex.h>
-#include <oqs/kex_rlwe_latticecrypto.h>
 
 #include "../ds_benchmark.h"
 
