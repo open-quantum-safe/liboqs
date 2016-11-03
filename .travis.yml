@@ -80,10 +80,5 @@ matrix:
       -  brew install astyle openssl
 
 script:
-  - autoreconf -i 
-  - ./configure; make; make test
-  - ./configure --disable-aes-ni; make clean; make; make test  
-  - ./configure --enable-openssl; make clean; make; make test  
-  - bash .travis-style-check.sh
-  - bash .travis-global-namespace-check.sh
+  - ./travis_test 
 
