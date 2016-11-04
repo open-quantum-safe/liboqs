@@ -156,3 +156,13 @@ void oqs_kex_lwe_frodo_unpack(uint16_t *out, const size_t outlen, const unsigned
 // pre-process code to obtain "recommended" functions
 #define MACRIFY(NAME) NAME ## _recommended
 #include "lwe_macrify.c"
+// undefine macros to avoid any confusion later
+#undef PARAMS_N
+#undef PARAMS_NBAR
+#undef PARAMS_LOG2Q
+#undef PARAMS_Q
+#undef PARAMS_EXTRACTED_BITS
+#undef PARAMS_KEY_BITS
+#undef PARAMS_STRIPE_STEP
+#undef PARAMS_REC_HINT_LENGTH
+#undef MACRIFY

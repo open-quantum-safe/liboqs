@@ -123,6 +123,8 @@ err:
 // pre-process code to obtain "recommended" functions
 #define MACRIFY(NAME) NAME ## _recommended
 #include "kex_lwe_frodo_macrify.c"
+// undefine macros to avoid any confusion later
+#undef MACRIFY
 
 void OQS_KEX_lwe_frodo_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 	if (alice_priv) {
