@@ -28,7 +28,7 @@ if USE_OPENSSL
 test_kex_LDADD += -lcrypto
 endif
 
-oqs_bench_kex_LDADD =  liboqs.la
+oqs_bench_kex_LDADD =  liboqs.la -lm
 oqs_bench_kex_SOURCES = src/tests/oqs_bench_kex.c
 oqs_bench_kex_CPPFLAGS = -I./include
 oqs_bench_kex_CPPFLAGS +=  $(AM_CPPFLAGS) 
