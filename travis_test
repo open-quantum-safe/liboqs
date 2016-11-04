@@ -8,6 +8,6 @@ else
   ./configure --enable-openssl; make clean; make; make test  
 fi
 
-#bash .travis-style-check.sh
-#bash .travis-global-namespace-check.sh
+bash .travis-style-check.sh
+bash .travis-global-namespace-check.sh
 
