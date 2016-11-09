@@ -55,6 +55,9 @@
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe_kex.c">
       <Filter>BCNS15</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.c">
+      <Filter>Rand</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\aes\aes.h">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_priv.h">
       <Filter>Header Files\LatticeCrypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.h">
+      <Filter>Rand</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

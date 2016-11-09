@@ -168,7 +168,7 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -200,7 +200,7 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -232,7 +232,7 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
