@@ -9,8 +9,7 @@ CURL=curl
 RANLIB=ranlib
 LN=ln -s
 
-DEFAULTS= -O3 -std=c11 -Wpedantic -Wall -Wextra -DOQS_RAND_DEFAULT_URANDOM_CHACHA20 -DOQS_KEX_DEFAULT_BCNS15
-CFLAGS=$(DEFAULTS) -DCONSTANT_TIME
+CFLAGS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
 
@@ -31,6 +30,19 @@ else
 CFLAGS += -DAES_DISABLE_NI
 endif
 
+ifdef USE_OPENSSL
+	CFLAGS += -DUSE_OPENSSL
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Linux)
+		OPENSSL_DIR=/usr
+	endif
+	ifeq ($(UNAME_S),Darwin)
+		OPENSSL_DIR=/usr/local/opt/openssl
+	endif
+	INCLUDES += -I$(OPENSSL_DIR)/include
+	LDFLAGS += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
 .PHONY: all check clean prettyprint
 
 all: links lib tests
@@ -49,10 +61,15 @@ links:
 	$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	$(LN) ../../src/rand/rand.h include/oqs
 	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
+	$(LN) ../../src/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 
 # RAND_URANDOM_CHACHA
 RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/rand_urandom_chacha20/, rand_urandom_chacha20.o)
 $(RAND_URANDOM_CHACHA_OBJS): src/rand_urandom_chacha20/rand_urandom_chacha20.h
+
+# RAND_URANDOM_AESCTR
+RAND_URANDOM_AESCTR_OBJS :=  $(addprefix objs/rand_urandom_aesctr/, rand_urandom_aesctr.o)
+$(RAND_URANDOM_AESCTR_OBJS): src/rand_urandom_aesctr/rand_urandom_aesctr.h
 
 # RAND
 objs/rand/rand.o: src/rand/rand.h
@@ -82,7 +99,9 @@ objs/kex/kex.o: src/kex/kex.h
 
 # LIB
 
-lib: $(RAND_URANDOM_CHACHA_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_LWE_FRODO_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS)
+RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS)
+
+lib: $(RAND_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_LWE_FRODO_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS)
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a

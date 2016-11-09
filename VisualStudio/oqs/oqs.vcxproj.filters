@@ -31,6 +31,18 @@
     <Filter Include="Source Files\Newhope">
       <UniqueIdentifier>{9445c3c6-bd2e-4448-8cba-a986ef929d45}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Frodo">
+      <UniqueIdentifier>{9e41843f-5671-4bbf-916a-2688ac3ceaff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Frodo">
+      <UniqueIdentifier>{fb1ab057-5f38-445f-9bfa-2486aa8200e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AES">
+      <UniqueIdentifier>{a6bb776b-ac51-4243-aec8-396a52ed9560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AES">
+      <UniqueIdentifier>{379cec65-7e0e-4eb2-9be1-414b154a911f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kex\kex.h">
@@ -60,6 +72,15 @@
     <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h">
       <Filter>Header Files\Newhope</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
+      <Filter>Header Files\Frodo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_lwe_frodo\local.h">
+      <Filter>Header Files\Frodo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\aes\aes.h">
+      <Filter>Header Files\AES</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\kex\kex.c">
@@ -88,6 +109,24 @@
     </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_newhope\newhope.c">
       <Filter>Source Files\Newhope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.c">
+      <Filter>Source Files\Frodo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_lwe_frodo\lwe.c">
+      <Filter>Source Files\Frodo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_lwe_frodo\lwe_noise.c">
+      <Filter>Source Files\Frodo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\aes\aes.c">
+      <Filter>Source Files\AES</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\aes\aes_c.c">
+      <Filter>Source Files\AES</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\aes\aes_ni.c">
+      <Filter>Source Files\AES</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
