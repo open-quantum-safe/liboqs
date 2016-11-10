@@ -25,7 +25,11 @@ typedef struct oqs_rand_urandom_aesctr_ctx {
 } oqs_rand_urandom_aesctr_ctx;
 
 static oqs_rand_urandom_aesctr_ctx *oqs_rand_urandom_aesctr_ctx_new() {
+#if defined(WINDOWS)
+	HCRYPTPROV   hCryptProv;
+#else
 	int fd = 0;
+#endif
 	oqs_rand_urandom_aesctr_ctx *rand_ctx = NULL;
 	rand_ctx = (oqs_rand_urandom_aesctr_ctx *) malloc(sizeof(oqs_rand_urandom_aesctr_ctx));
 	if (rand_ctx == NULL) {
@@ -33,10 +37,8 @@ static oqs_rand_urandom_aesctr_ctx *oqs_rand_urandom_aesctr_ctx_new() {
 	}
 	uint8_t key[16];
 #if defined(WINDOWS)
-	HCRYPTPROV   hCryptProv;
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	        !cryptgenrandom(hcryptprov, 16, key) ||
-	        !cryptgenrandom(hcryptprov, 8, &rand_ctx->ctr[8]) ) {
+	        !CryptGenRandom(hCryptProv, 16, key)) {
 		goto err;
 	}
 #else
