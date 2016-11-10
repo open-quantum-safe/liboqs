@@ -30,6 +30,7 @@
     <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" />
     <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h" />
     <ClInclude Include="..\..\src\rand\rand.h" />
+    <ClInclude Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.h" />
     <ClInclude Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" />
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +48,7 @@
     <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c" />
     <ClCompile Include="..\..\src\kex_rlwe_newhope\newhope.c" />
     <ClCompile Include="..\..\src\rand\rand.c" />
+    <ClCompile Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.c" />
     <ClCompile Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -127,6 +129,7 @@
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)..\src\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
@@ -153,6 +156,7 @@ copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)..\src\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
@@ -183,6 +187,7 @@ copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)..\src\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
@@ -213,6 +218,7 @@ copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)..\src\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
