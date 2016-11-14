@@ -9,6 +9,12 @@ typedef struct {
 } poly __attribute__((aligned(32)));
 #endif
 
+extern uint16_t bitrev_table[];
+extern uint16_t omegas_montgomery[];
+extern uint16_t psis_bitrev_montgomery[];
+extern uint16_t omegas_inv_montgomery[];
+extern uint16_t psis_inv_montgomery[];
+#define SHAKE128_RATE 168
 
 static const uint32_t qinv = 12287; // -inverse_mod(p,2^18)
 static const uint32_t rlog = 18;

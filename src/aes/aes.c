@@ -76,6 +76,9 @@ void OQS_AES128_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 #endif
 }
 
+#ifndef USE_OPENSSL
+#ifndef AES_DISABLE_NI
+
 inline void oqs_aes128_ecb_enc_ni(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
 	oqs_aes128_load_schedule_ni(key, &schedule);
@@ -83,24 +86,10 @@ inline void oqs_aes128_ecb_enc_ni(const uint8_t *plaintext, const size_t plainte
 	oqs_aes128_free_schedule_ni(schedule);
 }
 
-inline void oqs_aes128_ecb_enc_c(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
-	void *schedule = NULL;
-	oqs_aes128_load_schedule_c(key, &schedule);
-	oqs_aes128_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext);
-	oqs_aes128_free_schedule_c(schedule);
-}
-
 inline void oqs_aes128_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
 	for (size_t block = 0; block < plaintext_len / 16; block++) {
 		oqs_aes128_enc_ni(plaintext + (16 * block), schedule, ciphertext + (16 * block));
-	}
-}
-
-inline void oqs_aes128_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
-	assert(plaintext_len % 16 == 0);
-	for (size_t block = 0; block < plaintext_len / 16; block++) {
-		oqs_aes128_enc_c(plaintext + (16 * block), schedule, ciphertext + (16 * block));
 	}
 }
 
@@ -111,6 +100,29 @@ inline void oqs_aes128_ecb_dec_ni(const uint8_t *ciphertext, const size_t cipher
 	oqs_aes128_free_schedule_ni(schedule);
 }
 
+inline void oqs_aes128_ecb_dec_sch_ni(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
+	assert(ciphertext_len % 16 == 0);
+	for (size_t block = 0; block < ciphertext_len / 16; block++) {
+		oqs_aes128_dec_ni(ciphertext + (16 * block), schedule, plaintext + (16 * block));
+	}
+}
+
+#else
+
+inline void oqs_aes128_ecb_enc_c(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
+	void *schedule = NULL;
+	oqs_aes128_load_schedule_c(key, &schedule);
+	oqs_aes128_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext);
+	oqs_aes128_free_schedule_c(schedule);
+}
+
+inline void oqs_aes128_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
+	assert(plaintext_len % 16 == 0);
+	for (size_t block = 0; block < plaintext_len / 16; block++) {
+		oqs_aes128_enc_c(plaintext + (16 * block), schedule, ciphertext + (16 * block));
+	}
+}
+
 inline void oqs_aes128_ecb_dec_c(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext) {
 	void *schedule = NULL;
 	oqs_aes128_load_schedule_c(key, &schedule);
@@ -118,12 +130,6 @@ inline void oqs_aes128_ecb_dec_c(const uint8_t *ciphertext, const size_t ciphert
 	oqs_aes128_free_schedule_c(schedule);
 }
 
-inline void oqs_aes128_ecb_dec_sch_ni(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
-	assert(ciphertext_len % 16 == 0);
-	for (size_t block = 0; block < ciphertext_len / 16; block++) {
-		oqs_aes128_dec_ni(ciphertext + (16 * block), schedule, plaintext + (16 * block));
-	}
-}
 
 inline void oqs_aes128_ecb_dec_sch_c(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
 	assert(ciphertext_len % 16 == 0);
@@ -132,7 +138,8 @@ inline void oqs_aes128_ecb_dec_sch_c(const uint8_t *ciphertext, const size_t cip
 	}
 }
 
-#ifdef USE_OPENSSL
+#endif
+#else
 #include <openssl/evp.h>
 
 inline void oqs_aes128_load_schedule_ossl(const uint8_t *key, void **schedule, int for_encryption) {

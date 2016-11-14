@@ -1,50 +1,61 @@
 language: c
-sudo: false
+sudo: require
 
 matrix:
   include:
   - os: linux
-    compiler: gcc
-    env: CC_OQS=gcc-4.8
+    compiler: gcc-4.8
+    env: CC=gcc-4.8
+    before_install:
+      - sudo apt-get -qq update
+      - sudo apt-get install -y autotools-dev
+      - sudo apt-get install --only-upgrade -y autoconf 
+      - sudo apt-get install -y astyle 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
-    before_install:
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+        - openssl
   - os: linux
-    compiler: gcc
-    env: CC_OQS=gcc-4.9
+    compiler: gcc-4.9
+    env: CC=gcc-4.9
+    before_install:
+      - sudo apt-get -qq update
+      - sudo apt-get install -y autotools-dev
+      - sudo apt-get install --only-upgrade -y autoconf 
+      - sudo apt-get install -y astyle 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
-    before_install:
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+        - openssl
   - os: linux
-    compiler: gcc
-    env: CC_OQS=gcc-5
+    compiler: gcc-5
+    env: CC=gcc-5
+    before_install:
+      - sudo apt-get -qq update
+      - sudo apt-get install -y autotools-dev
+      - sudo apt-get install --only-upgrade -y autoconf 
+      - sudo apt-get install -y astyle 
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
-    before_install:
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+        - openssl
   - os: linux
-    compiler: gcc
-    env: CC_OQS=gcc-6 USE_OPENSSL=1
+    compiler: gcc-6
+    env: CC=gcc-6 USE_OPENSSL=1
+    before_install:
+      - sudo apt-get -qq update
+      - sudo apt-get install -y autotools-dev
+      - sudo apt-get install --only-upgrade -y autoconf 
+      - sudo apt-get install -y astyle 
     addons:
       apt:
         sources:
@@ -52,19 +63,14 @@ matrix:
         packages:
         - gcc-6
         - libssl-dev
-    before_install:
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
   - os: osx
     compiler: clang
-    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1
+    env: CC=clang AES_NI=0 USE_OPENSSL=1
     before_install:
-      - brew install astyle openssl
+      -  brew install autoconf
+      -  brew install automake
+      -  brew install astyle openssl
 
 script:
-  - make
-  - make check
-  - bash .travis-style-check.sh
-  - bash .travis-global-namespace-check.sh
-  - bash .travis-banned-functions-check.sh
+  - ./travis_test 
+

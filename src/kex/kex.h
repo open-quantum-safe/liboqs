@@ -9,7 +9,12 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <oqs/rand.h>
+#include "oqs/rand.h"
+
+enum KEX_ALGO_NAMES {
+	RLWE_BCNS15,
+
+};
 
 enum OQS_KEX_alg_name {
 	OQS_KEX_alg_default,
