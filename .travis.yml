@@ -10,9 +10,7 @@ matrix:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+      - sudo apt-get install -y astyle 
     addons:
       apt:
         sources:
@@ -27,9 +25,7 @@ matrix:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+      - sudo apt-get install -y astyle 
     addons:
       apt:
         sources:
@@ -44,9 +40,7 @@ matrix:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+      - sudo apt-get install -y astyle 
     addons:
       apt:
         sources:
@@ -61,9 +55,7 @@ matrix:
       - sudo apt-get -qq update
       - sudo apt-get install -y autotools-dev
       - sudo apt-get install --only-upgrade -y autoconf 
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+      - sudo apt-get install -y astyle 
     addons:
       apt:
         sources:
