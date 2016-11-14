@@ -10,4 +10,5 @@ fi
 
 bash .travis-style-check.sh
 bash .travis-global-namespace-check.sh
+bash .travis-banned-functions-check.sh
 
