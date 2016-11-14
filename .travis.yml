@@ -12,7 +12,10 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
-        - astyle
+    before_install:
+      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
+      - tar xzf astyle_2.05.1_linux.tar.gz
+      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.9
@@ -22,7 +25,10 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
-        - astyle
+    before_install:
+      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
+      - tar xzf astyle_2.05.1_linux.tar.gz
+      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-5
@@ -32,7 +38,10 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
-        - astyle
+    before_install:
+      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
+      - tar xzf astyle_2.05.1_linux.tar.gz
+      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-6 USE_OPENSSL=1
@@ -42,8 +51,11 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-6
-        - astyle
         - libssl-dev
+    before_install:
+      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
+      - tar xzf astyle_2.05.1_linux.tar.gz
+      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
   - os: osx
     compiler: clang
     env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1
