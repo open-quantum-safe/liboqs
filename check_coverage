@@ -1,0 +1,6 @@
+find . -name "*.info" -or   -name "*.gcda" -or -name "*.gcno" | xargs rm -f
+./configure CFLAGS="--coverage -g -O0" LDFLAGS="--coverage"
+make clean;make; make test
+mkdir lcov-output
+geninfo --compat-libtool --no-checksum .
+genhtml -o lcov-output/ $(find -iname '*\.gcda\.info')

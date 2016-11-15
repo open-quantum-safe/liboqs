@@ -81,4 +81,8 @@ ltmain.sh
 missing
 stamp-h1
 
+#gcov : coverage files
+*.gcda
+*.gcno
+*.info
 
