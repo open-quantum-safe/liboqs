@@ -2,7 +2,7 @@
 
 retvalue=0
 
-if [[ $(find -E . -name '*.[ch]' -exec grep -H bzero {} \;) ]]; 
+if [[ $(find . -name '*.[ch]' -exec grep -H bzero {} \;) ]];
 then 
 	tput setaf 1;
 	echo "Code uses banned functions (bzero).";
