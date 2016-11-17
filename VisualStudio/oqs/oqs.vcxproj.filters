@@ -81,6 +81,9 @@
     <ClInclude Include="..\..\src\aes\aes.h">
       <Filter>Header Files\AES</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.h">
+      <Filter>Header Files\rand</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\kex\kex.c">
@@ -127,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\aes\aes_ni.c">
       <Filter>Source Files\AES</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.c">
+      <Filter>Source Files\rand</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
