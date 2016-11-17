@@ -9,7 +9,7 @@ then
 	exit 1;
 else 
 	tput setaf 2;
-	echo "Code adheres to the project standards.";
+	echo "Code adheres to the project standards (global namespace).";
 	tput sgr 0
 	exit 0;
 fi;
