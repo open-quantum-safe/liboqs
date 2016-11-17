@@ -18,7 +18,6 @@
 #include "LatticeCrypto_priv.h"
 #include "oqs/rand.h"
 #include "external/shake128.h"
-#include "external/crypto_stream_chacha20.h" // TODO: reuse rand's implementation of chacha20?
 
 extern const int32_t psi_rev_ntt1024_12289[1024];           
 extern const int32_t omegainv_rev_ntt1024_12289[1024];
@@ -26,7 +25,6 @@ extern const int32_t omegainv10N_rev_ntt1024_12289;
 extern const int32_t Ninv11_ntt1024_12289;
 
 // import external code 
-#include "external/crypto_stream_chacha20.c"
 #include "external/shake128.c"
 #ifdef RLWE_ASM_AVX2
 #include "AMD64/consts.c"
@@ -159,14 +157,13 @@ static __inline uint32_t Abs(int32_t value)
 }
 
 
-CRYPTO_STATUS oqs_rlwe_latticecrypto_HelpRec(const uint32_t* x, uint32_t* rvec, const unsigned char* seed, unsigned int nonce)
+CRYPTO_STATUS oqs_rlwe_latticecrypto_HelpRec(const uint32_t* x, uint32_t* rvec, OQS_RAND* rand)
 { // Reconciliation helper
     unsigned int i, j, norm;
-    unsigned char bit, random_bits[32], nonce_bytes[8] = {0};
+    unsigned char bit, random_bits[32];
     uint32_t v0[4], v1[4];
-	nonce_bytes[1] = (unsigned char)nonce;
-	// OQS integration note: call to aux API replaced with direct call to chacha20
-	crypto_stream_chacha20(&random_bits, 32, &nonce_bytes, seed);
+	// OQS integration note: call to aux API replaced with direct call to OQS_RAND
+	rand->rand_n(rand, &random_bits, 32);
 
 #if defined(RLWE_ASM_AVX2)
     oqs_rlwe_latticecrypto_helprec_asm(x, rvec, random_bits);
@@ -251,17 +248,16 @@ void oqs_rlwe_latticecrypto_Rec(const uint32_t *x, const uint32_t* rvec, unsigne
 }
 
 
-CRYPTO_STATUS oqs_rlwe_latticecrypto_get_error(int32_t* e, unsigned char* seed, unsigned int nonce)              
+CRYPTO_STATUS oqs_rlwe_latticecrypto_get_error(int32_t* e, OQS_RAND* rand)              
 { // Error sampling
-    unsigned char stream[3*OQS_RLWE_LATTICECRYPTO_PARAMETER_N], nonce_bytes[8] = { 0 };
+    unsigned char stream[3*OQS_RLWE_LATTICECRYPTO_PARAMETER_N];
     uint32_t* pstream = (uint32_t*)&stream;   
     uint32_t acc1, acc2, temp;  
     uint8_t *pacc1 = (uint8_t*)&acc1, *pacc2 = (uint8_t*)&acc2;
     unsigned int i, j;
-	nonce_bytes[1] = (unsigned char)nonce;
 
-	// OQS integration note: call to aux API replaced with direct call to chacha20
-	crypto_stream_chacha20(&stream, 3 * OQS_RLWE_LATTICECRYPTO_PARAMETER_N, nonce_bytes, seed);
+	// OQS integration note: call to aux API replaced with direct call to OQS_RAND
+	rand->rand_n(rand, &stream, 3 * OQS_RLWE_LATTICECRYPTO_PARAMETER_N);
 
 #if defined(RLWE_ASM_AVX2)
     oqs_rlwe_latticecrypto_error_sampling_asm(stream, e);
@@ -326,21 +322,20 @@ CRYPTO_STATUS oqs_rlwe_latticecrypto_KeyGeneration_A(int32_t* SecretKeyA, unsign
   // pLatticeCrypto must be set up in advance using LatticeCrypto_initialize().
     uint32_t a[OQS_RLWE_LATTICECRYPTO_PARAMETER_N];
     int32_t e[OQS_RLWE_LATTICECRYPTO_PARAMETER_N];
-    unsigned char seed[OQS_RLWE_LATTICECRYPTO_SEED_BYTES], error_seed[OQS_RLWE_LATTICECRYPTO_ERROR_SEED_BYTES];
+    unsigned char seed[OQS_RLWE_LATTICECRYPTO_SEED_BYTES];
     CRYPTO_STATUS Status = CRYPTO_ERROR_UNKNOWN;
 
     rand->rand_n(rand, &seed, OQS_RLWE_LATTICECRYPTO_SEED_BYTES);
-    rand->rand_n(rand, &error_seed, OQS_RLWE_LATTICECRYPTO_ERROR_SEED_BYTES);
     Status = oqs_rlwe_latticecrypto_generate_a(a, seed);
     if (Status != CRYPTO_SUCCESS) {
         goto cleanup;
     }
 
-    Status = oqs_rlwe_latticecrypto_get_error(SecretKeyA, error_seed, 0);
+    Status = oqs_rlwe_latticecrypto_get_error(SecretKeyA, rand);
     if (Status != CRYPTO_SUCCESS) {
         goto cleanup;
     }
-    Status = oqs_rlwe_latticecrypto_get_error(e, error_seed, 1);
+    Status = oqs_rlwe_latticecrypto_get_error(e, rand);
     if (Status != CRYPTO_SUCCESS) {
         goto cleanup;
     }
@@ -354,7 +349,6 @@ CRYPTO_STATUS oqs_rlwe_latticecrypto_KeyGeneration_A(int32_t* SecretKeyA, unsign
     
 cleanup:
     oqs_rlwe_latticecrypto_clear_words((void*)e, OQS_RLWE_LATTICECRYPTO_NBYTES_TO_NWORDS(4*OQS_RLWE_LATTICECRYPTO_PARAMETER_N));
-    oqs_rlwe_latticecrypto_clear_words((void*)error_seed, OQS_RLWE_LATTICECRYPTO_NBYTES_TO_NWORDS(OQS_RLWE_LATTICECRYPTO_ERROR_SEED_BYTES));
 
     return Status;
 }
@@ -370,21 +364,20 @@ CRYPTO_STATUS oqs_rlwe_latticecrypto_SecretAgreement_B(unsigned char* PublicKeyA
   // pLatticeCrypto must be set up in advance using LatticeCrypto_initialize().
     uint32_t pk_A[OQS_RLWE_LATTICECRYPTO_PARAMETER_N], a[OQS_RLWE_LATTICECRYPTO_PARAMETER_N], v[OQS_RLWE_LATTICECRYPTO_PARAMETER_N], r[OQS_RLWE_LATTICECRYPTO_PARAMETER_N];
     int32_t sk_B[OQS_RLWE_LATTICECRYPTO_PARAMETER_N], e[OQS_RLWE_LATTICECRYPTO_PARAMETER_N];
-    unsigned char seed[OQS_RLWE_LATTICECRYPTO_SEED_BYTES], error_seed[OQS_RLWE_LATTICECRYPTO_ERROR_SEED_BYTES];
+    unsigned char seed[OQS_RLWE_LATTICECRYPTO_SEED_BYTES];
     CRYPTO_STATUS Status = CRYPTO_ERROR_UNKNOWN;
 
     oqs_rlwe_latticecrypto_decode_A(PublicKeyA, pk_A, seed);
-	rand->rand_n(rand, &error_seed, OQS_RLWE_LATTICECRYPTO_ERROR_SEED_BYTES);
     Status = oqs_rlwe_latticecrypto_generate_a(a, seed);
     if (Status != CRYPTO_SUCCESS) {
         goto cleanup;
     }
 
-    Status = oqs_rlwe_latticecrypto_get_error(sk_B, error_seed, 0);  
+    Status = oqs_rlwe_latticecrypto_get_error(sk_B, rand);  
     if (Status != CRYPTO_SUCCESS) {
         goto cleanup;
     }
-    Status = oqs_rlwe_latticecrypto_get_error(e, error_seed, 1);
+    Status = oqs_rlwe_latticecrypto_get_error(e, rand);
     if (Status != CRYPTO_SUCCESS) {
         goto cleanup;
     }   
@@ -395,7 +388,7 @@ CRYPTO_STATUS oqs_rlwe_latticecrypto_SecretAgreement_B(unsigned char* PublicKeyA
     oqs_rlwe_latticecrypto_pmuladd((int32_t*)a, sk_B, e, (int32_t*)a, OQS_RLWE_LATTICECRYPTO_PARAMETER_N); 
     oqs_rlwe_latticecrypto_correction((int32_t*)a, OQS_RLWE_LATTICECRYPTO_PARAMETER_Q, OQS_RLWE_LATTICECRYPTO_PARAMETER_N);
      
-    Status = oqs_rlwe_latticecrypto_get_error(e, error_seed, 2);  
+    Status = oqs_rlwe_latticecrypto_get_error(e, rand);  
     if (Status != CRYPTO_SUCCESS) {
         goto cleanup;
     }   
@@ -409,7 +402,7 @@ CRYPTO_STATUS oqs_rlwe_latticecrypto_SecretAgreement_B(unsigned char* PublicKeyA
     oqs_rlwe_latticecrypto_correction((int32_t*)v, OQS_RLWE_LATTICECRYPTO_PARAMETER_Q, OQS_RLWE_LATTICECRYPTO_PARAMETER_N); 
 #endif
 
-    Status = oqs_rlwe_latticecrypto_HelpRec(v, r, error_seed, 3); 
+    Status = oqs_rlwe_latticecrypto_HelpRec(v, r, rand); 
     if (Status != CRYPTO_SUCCESS) {
         goto cleanup;
     }   
@@ -419,7 +412,6 @@ CRYPTO_STATUS oqs_rlwe_latticecrypto_SecretAgreement_B(unsigned char* PublicKeyA
 cleanup:
     oqs_rlwe_latticecrypto_clear_words((void*)sk_B, OQS_RLWE_LATTICECRYPTO_NBYTES_TO_NWORDS(4*OQS_RLWE_LATTICECRYPTO_PARAMETER_N));
     oqs_rlwe_latticecrypto_clear_words((void*)e, OQS_RLWE_LATTICECRYPTO_NBYTES_TO_NWORDS(4*OQS_RLWE_LATTICECRYPTO_PARAMETER_N));
-    oqs_rlwe_latticecrypto_clear_words((void*)error_seed, OQS_RLWE_LATTICECRYPTO_NBYTES_TO_NWORDS(OQS_RLWE_LATTICECRYPTO_ERROR_SEED_BYTES));
     oqs_rlwe_latticecrypto_clear_words((void*)a, OQS_RLWE_LATTICECRYPTO_NBYTES_TO_NWORDS(4*OQS_RLWE_LATTICECRYPTO_PARAMETER_N));
     oqs_rlwe_latticecrypto_clear_words((void*)v, OQS_RLWE_LATTICECRYPTO_NBYTES_TO_NWORDS(4*OQS_RLWE_LATTICECRYPTO_PARAMETER_N));
     oqs_rlwe_latticecrypto_clear_words((void*)r, OQS_RLWE_LATTICECRYPTO_NBYTES_TO_NWORDS(4*OQS_RLWE_LATTICECRYPTO_PARAMETER_N));

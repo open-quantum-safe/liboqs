@@ -17,7 +17,7 @@
 extern "C" {
 #endif
 
-
+#include <oqs/rand.h>
 #include "LatticeCrypto.h"
 
 
@@ -25,8 +25,6 @@ extern "C" {
 #define OQS_RLWE_LATTICECRYPTO_PARAMETER_N         1024 
 #define OQS_RLWE_LATTICECRYPTO_PARAMETER_Q         12289 
 #define OQS_RLWE_LATTICECRYPTO_SEED_BYTES          256/8
-#define OQS_RLWE_LATTICECRYPTO_ERROR_SEED_BYTES    256/8
-#define OQS_RLWE_LATTICECRYPTO_NONCE_SEED_BYTES    256/8
 #define OQS_RLWE_LATTICECRYPTO_PARAMETER_Q4        3073 
 #define OQS_RLWE_LATTICECRYPTO_PARAMETER_3Q4       9217 
 #define OQS_RLWE_LATTICECRYPTO_PARAMETER_5Q4       15362 
@@ -98,7 +96,7 @@ void oqs_rlwe_latticecrypto_encode_asm(const uint32_t* pk, unsigned char* m);
 void oqs_rlwe_latticecrypto_decode_asm(const unsigned char* m, uint32_t *pk);
 
 // Reconciliation helper
-CRYPTO_STATUS oqs_rlwe_latticecrypto_HelpRec(const uint32_t* x, uint32_t* rvec, const unsigned char* seed, unsigned int nonce);
+CRYPTO_STATUS oqs_rlwe_latticecrypto_HelpRec(const uint32_t* x, uint32_t* rvec, OQS_RAND* rand);
 
 // Partial reconciliation helper (assembly optimized)        
 void oqs_rlwe_latticecrypto_helprec_asm(const uint32_t* x, uint32_t* rvec, unsigned char* random_bits);
@@ -108,7 +106,7 @@ void oqs_rlwe_latticecrypto_Rec(const uint32_t *x, const uint32_t* rvec, unsigne
 void oqs_rlwe_latticecrypto_rec_asm(const uint32_t *x, const uint32_t* rvec, unsigned char *key);
 
 // Error sampling
-CRYPTO_STATUS oqs_rlwe_latticecrypto_get_error(int32_t* e, unsigned char* seed, unsigned int nonce);
+CRYPTO_STATUS oqs_rlwe_latticecrypto_get_error(int32_t* e, OQS_RAND* rand);
 
 // Partial error sampling (assembly optimized)        
 void oqs_rlwe_latticecrypto_error_sampling_asm(unsigned char* stream, int32_t* e);

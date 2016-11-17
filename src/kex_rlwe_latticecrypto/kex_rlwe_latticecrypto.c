@@ -1,6 +1,5 @@
 #if defined(WINDOWS)
 #define UNUSED
-// FIXME: __attribute__ fails in VS, is there something else I should define?
 #else
 #define UNUSED __attribute__ ((unused))
 #endif
