@@ -1,23 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\src\aes\aes_ni.c">
-      <Filter>AES</Filter>
-    </ClCompile>
+    <ClCompile Include="..\..\src\kex\kex.c" />
     <ClCompile Include="..\..\src\aes\aes.c">
       <Filter>AES</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\aes\aes_c.c">
       <Filter>AES</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\aes\aes_ni.c">
+      <Filter>AES</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_rlwe_bcns15\fft.c">
+      <Filter>BCNS15</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.c">
       <Filter>Frodo</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.c">
       <Filter>BCNS15</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex\kex.c">
-      <Filter>Kex</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.c">
       <Filter>LatticeCrypto</Filter>
@@ -28,26 +29,26 @@
     <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_kex.c">
       <Filter>LatticeCrypto</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_newhope\newhope.c">
-      <Filter>NewHope</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.c">
-      <Filter>Rand</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\rand\rand.c">
-      <Filter>Rand</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\kex_lwe_frodo\lwe.c">
       <Filter>Frodo</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_lwe_frodo\lwe_noise.c">
       <Filter>Frodo</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kex_rlwe_newhope\newhope.c">
+      <Filter>NewHope</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\ntt_constants.c">
       <Filter>LatticeCrypto</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_bcns15\fft.c">
-      <Filter>BCNS15</Filter>
+    <ClCompile Include="..\..\src\rand\rand.c">
+      <Filter>Rand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.c">
+      <Filter>Rand</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.c">
+      <Filter>Rand</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe.c">
       <Filter>BCNS15</Filter>
@@ -55,11 +56,9 @@
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe_kex.c">
       <Filter>BCNS15</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.c">
-      <Filter>Rand</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\kex\kex.h" />
     <ClInclude Include="..\..\src\aes\aes.h">
       <Filter>AES</Filter>
     </ClInclude>
@@ -67,12 +66,6 @@
       <Filter>Frodo</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h">
-      <Filter>BCNS15</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex\kex.h">
-      <Filter>Kex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_bcns15\local.h">
       <Filter>BCNS15</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h">
@@ -87,17 +80,23 @@
     <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_priv.h">
       <Filter>LatticeCrypto</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.h">
-      <Filter>Rand</Filter>
+    <ClInclude Include="..\..\src\kex_rlwe_bcns15\local.h">
+      <Filter>BCNS15</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\rand\rand.h">
-      <Filter>Rand</Filter>
+    <ClInclude Include="..\..\src\kex_lwe_frodo\local.h">
+      <Filter>Frodo</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h">
       <Filter>NewHope</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_lwe_frodo\local.h">
-      <Filter>Frodo</Filter>
+    <ClInclude Include="..\..\src\rand\rand.h">
+      <Filter>Rand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.h">
+      <Filter>Rand</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.h">
+      <Filter>Rand</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\rlwe_table.h">
       <Filter>BCNS15</Filter>
@@ -105,39 +104,25 @@
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\rlwe_a.h">
       <Filter>BCNS15</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.h">
-      <Filter>Header Files\rand</Filter>
-    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto.h">
-      <Filter>Header Files\LatticeCrypto</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_priv.h">
-      <Filter>Header Files\LatticeCrypto</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.h">
-      <Filter>Rand</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="AES">
-      <UniqueIdentifier>{71097ea2-6ff1-4cd5-8a69-d08fee52fe96}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="BCNS15">
-      <UniqueIdentifier>{e20bc11e-5611-4360-9b4d-d833199e0b38}</UniqueIdentifier>
+      <UniqueIdentifier>{71c917ec-9181-4b88-bdfc-9611ee1abe9a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Frodo">
-      <UniqueIdentifier>{5416b82d-cce0-44b7-916d-ede9392df0b5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="LatticeCrypto">
-      <UniqueIdentifier>{98d9003c-9806-43af-824d-f01ab8ee1146}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Kex">
-      <UniqueIdentifier>{34444b90-0590-4e27-945a-cd51c2fc75cf}</UniqueIdentifier>
+      <UniqueIdentifier>{6bfff158-3e78-402f-ba16-e8d315089de8}</UniqueIdentifier>
     </Filter>
     <Filter Include="NewHope">
-      <UniqueIdentifier>{7b6e016d-b4fb-4c01-8770-11964aa062e4}</UniqueIdentifier>
+      <UniqueIdentifier>{d0291785-4232-4264-b1bd-08b7e3f8df5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LatticeCrypto">
+      <UniqueIdentifier>{9f5ed87f-ed1e-47b4-b7e7-1d6648cb88fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BCNS15">
+      <UniqueIdentifier>{ab581356-2a96-4211-99e3-f5cecd92eda3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Rand">
-      <UniqueIdentifier>{a12fc900-189d-4122-8fc4-057e46f6b1fd}</UniqueIdentifier>
+      <UniqueIdentifier>{fd44eb34-2f81-411e-a55f-f279c4b101de}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
