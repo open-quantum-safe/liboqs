@@ -4,6 +4,7 @@
 
 #include <oqs/kex.h>
 #include <oqs/rand.h>
+#include <oqs/common.h>
 
 #include "kex_code_nrqcmdpc.h"
 #include "nrqcmdpc.h"
@@ -116,8 +117,7 @@ int OQS_KEX_code_nrqcmdpc_alice_1(
 	}
 
 	if (!oqs_kex_code_nrqcmdpc_decrypt(*key, bob_msg, alice_priv)) {
-		/* TODO: clear key memory? */
-		free(*key);
+		OQS_MEM_secure_free(*key, *key_len);
 		*key = NULL;
 		return 0;
 	}
