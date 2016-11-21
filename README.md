@@ -106,7 +106,7 @@ Over the next few months, we plan to be making the following updates:
 
 - Building on more systems, including building of assembly code / optimizations
 - Inclusion of a McEliece-based key exchange method
-- Inclusion of a supersingular isogeny DiffieâHellman key exchange method
+- Inclusion of a supersingular isogeny Diffie-Hellman key exchange method
 - Code reviews including static analysis
 - Integration of liboqs into additional application-level protocols.
 
@@ -129,7 +129,7 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 
 ### Contributors
 
-- TancrÃ¨de Lepoint (SRI)
+- Tancr�de Lepoint (SRI)
 - Shravan Mishra (University of Waterloo)
 - Christian Paquin (Microsoft Research)
 - Alex Parent (University of Waterloo)
