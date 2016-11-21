@@ -60,7 +60,7 @@ int OQS_KEX_rlwe_latticecrypto_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **
 		goto err;
 	}
 
-	if (oqs_rlwe_latticecrypto_KeyGeneration_A((int32_t*) *alice_priv, (unsigned char*) *alice_msg, k->rand) != CRYPTO_SUCCESS) {
+	if (oqs_rlwe_latticecrypto_KeyGeneration_A((int32_t *) *alice_priv, (unsigned char *) *alice_msg, k->rand) != CRYPTO_SUCCESS) {
 		goto err;
 	}
 	*alice_msg_len = OQS_RLWE_LATTICECRYPTO_PKA_BYTES;
@@ -96,7 +96,7 @@ int OQS_KEX_rlwe_latticecrypto_bob(OQS_KEX *k, const uint8_t *alice_msg, const s
 		goto err;
 	}
 
-	if (oqs_rlwe_latticecrypto_SecretAgreement_B((unsigned char*) alice_msg, (unsigned char*) *key, (unsigned char*) *bob_msg, k->rand) != CRYPTO_SUCCESS) {
+	if (oqs_rlwe_latticecrypto_SecretAgreement_B((unsigned char *) alice_msg, (unsigned char *) *key, (unsigned char *) *bob_msg, k->rand) != CRYPTO_SUCCESS) {
 		goto err;
 	}
 
@@ -131,7 +131,7 @@ int OQS_KEX_rlwe_latticecrypto_alice_1(OQS_KEX *k, const void *alice_priv, const
 		goto err;
 	}
 
-	if (oqs_rlwe_latticecrypto_SecretAgreement_A((unsigned char*) bob_msg, (int32_t*) alice_priv, (unsigned char*) *key) != CRYPTO_SUCCESS) {
+	if (oqs_rlwe_latticecrypto_SecretAgreement_A((unsigned char *) bob_msg, (int32_t *) alice_priv, (unsigned char *) *key) != CRYPTO_SUCCESS) {
 		goto err;
 	}
 
