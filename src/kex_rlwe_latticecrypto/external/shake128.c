@@ -76,31 +76,31 @@ This file uses UTF-8 encoding, as some comments use Greek letters.
   * @param  outputByteLen   The number of output bytes desired.
   * @pre    One must have r+c=1600 and the rate a multiple of 8 bits in this implementation.
   */ 
-void Keccak(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char *output, unsigned long long int outputByteLen);
+static void Keccak(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char *output, unsigned long long int outputByteLen);
 
 /*
  * Performs the Keccak absorb phase. Same parameters as the Keccak function, but a SHAKE128_STATE_SIZE-byte state must also be provided.
  * The Keccak_squeeze function can be called successively to generate output.
  */
-void Keccak_absorb(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char* state);
+static void Keccak_absorb(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char* state);
 
 /*
  * Performs the Keccak squeeze phase. Same parameters as the Keccak function, but a SHAKE128_STATE_SIZE-byte state must also be provided.
  * The Keccak_absorb function must be called first.
  */
-void Keccak_squeeze(unsigned int rate, unsigned int capacity, unsigned char* state, unsigned char *output, unsigned long long int outputByteLen);
+static void Keccak_squeeze(unsigned int rate, unsigned int capacity, unsigned char* state, unsigned char *output, unsigned long long int outputByteLen);
 
-void FIPS202_SHAKE128_Absorb(const unsigned char *input, unsigned int inputByteLen, unsigned char* state)
+static void FIPS202_SHAKE128_Absorb(const unsigned char *input, unsigned int inputByteLen, unsigned char* state)
 {
 	Keccak_absorb(1344, 256, input, inputByteLen, 0x1F, state);
 }
 
-void FIPS202_SHAKE128_Squeeze(unsigned char* state, unsigned char *output, int outputByteLen)
+static void FIPS202_SHAKE128_Squeeze(unsigned char* state, unsigned char *output, int outputByteLen)
 {
 	Keccak_squeeze(1344, 256, state, output, outputByteLen);
 }
 
-void FIPS202_SHAKE128(const unsigned char *input, unsigned int inputByteLen, unsigned char *output, int outputByteLen)
+static void FIPS202_SHAKE128(const unsigned char *input, unsigned int inputByteLen, unsigned char *output, int outputByteLen)
 {
 	unsigned char state[200] = { 0 };
 	FIPS202_SHAKE128_Absorb(input, inputByteLen, state);
@@ -183,7 +183,7 @@ A readable and compact implementation of the Keccak-f[1600] permutation.
   * Function that computes the linear feedback shift register (LFSR) used to
   * define the round constants (see [Keccak Reference, Section 1.2]).
   */
-int LFSR86540(UINT8 *LFSR)
+static int LFSR86540(UINT8 *LFSR)
 {
     int result = ((*LFSR) & 0x01) != 0;
     if (((*LFSR) & 0x80) != 0)
@@ -197,7 +197,7 @@ int LFSR86540(UINT8 *LFSR)
 /**
  * Function that computes the Keccak-f[1600] permutation on the given state.
  */
-void KeccakF1600_StatePermute(void *state)
+static void KeccakF1600_StatePermute(void *state)
 {
     unsigned int round, x, y, j, t;
     UINT8 LFSRstate = 0x01;
