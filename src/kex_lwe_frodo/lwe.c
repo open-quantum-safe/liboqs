@@ -88,7 +88,6 @@ void oqs_kex_lwe_frodo_pack(unsigned char *out, const size_t outlen, const uint1
 		}
 		if (b == 8) {  // out[i] is filled in
 			i++;
-			b = 0;
 		}
 	}
 }
@@ -137,7 +136,6 @@ void oqs_kex_lwe_frodo_unpack(uint16_t *out, const size_t outlen, const unsigned
 		}
 		if (b == lsb) {  // out[i] is filled in
 			i++;
-			b = 0;
 		}
 	}
 }
