@@ -20,14 +20,14 @@
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.c">
       <Filter>BCNS15</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.c">
-      <Filter>LatticeCrypto</Filter>
+    <ClCompile Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.c">
+      <Filter>MSR LN16</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c">
       <Filter>NewHope</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_kex.c">
-      <Filter>LatticeCrypto</Filter>
+    <ClCompile Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_kex.c">
+      <Filter>MSR LN16</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_lwe_frodo\lwe.c">
       <Filter>Frodo</Filter>
@@ -38,8 +38,8 @@
     <ClCompile Include="..\..\src\kex_rlwe_newhope\newhope.c">
       <Filter>NewHope</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_latticecrypto\ntt_constants.c">
-      <Filter>LatticeCrypto</Filter>
+    <ClCompile Include="..\..\src\kex_rlwe_msrln16\ntt_constants.c">
+      <Filter>MSR LN16</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\rand\rand.c">
       <Filter>Rand</Filter>
@@ -68,17 +68,17 @@
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h">
       <Filter>BCNS15</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\kex_rlwe_latticecrypto.h">
-      <Filter>LatticeCrypto</Filter>
+    <ClInclude Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h">
+      <Filter>MSR LN16</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h">
       <Filter>NewHope</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto.h">
-      <Filter>LatticeCrypto</Filter>
+    <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto.h">
+      <Filter>MSR LN16</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_latticecrypto\LatticeCrypto_priv.h">
-      <Filter>LatticeCrypto</Filter>
+    <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_priv.h">
+      <Filter>MSR LN16</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\local.h">
       <Filter>BCNS15</Filter>
@@ -115,14 +115,14 @@
     <Filter Include="NewHope">
       <UniqueIdentifier>{d0291785-4232-4264-b1bd-08b7e3f8df5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LatticeCrypto">
-      <UniqueIdentifier>{9f5ed87f-ed1e-47b4-b7e7-1d6648cb88fd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="BCNS15">
       <UniqueIdentifier>{ab581356-2a96-4211-99e3-f5cecd92eda3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Rand">
       <UniqueIdentifier>{fd44eb34-2f81-411e-a55f-f279c4b101de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MSR LN16">
+      <UniqueIdentifier>{9f5ed87f-ed1e-47b4-b7e7-1d6648cb88fd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
