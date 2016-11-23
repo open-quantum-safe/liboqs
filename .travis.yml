@@ -72,5 +72,5 @@ matrix:
       -  brew install astyle openssl
 
 script:
-  - ./.travis_tests.sh
+  - ./.travis-tests.sh
 
