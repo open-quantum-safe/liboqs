@@ -163,7 +163,7 @@ CRYPTO_STATUS oqs_rlwe_msrln16_HelpRec(const uint32_t *x, uint32_t *rvec, OQS_RA
 	unsigned char bit, random_bits[32];
 	uint32_t v0[4], v1[4];
 	// OQS integration note: call to aux API replaced with direct call to OQS_RAND
-	rand->rand_n(rand, &random_bits, 32);
+	rand->rand_n(rand, random_bits, 32);
 
 #if defined(RLWE_ASM_AVX2)
 	oqs_rlwe_msrln16_helprec_asm(x, rvec, random_bits);
@@ -263,7 +263,7 @@ CRYPTO_STATUS oqs_rlwe_msrln16_get_error(int32_t *e, OQS_RAND *rand) {
 	unsigned int i, j;
 
 	// OQS integration note: call to aux API replaced with direct call to OQS_RAND
-	rand->rand_n(rand, &stream, 3 * OQS_RLWE_MSRLN16_PARAMETER_N);
+	rand->rand_n(rand, stream, 3 * OQS_RLWE_MSRLN16_PARAMETER_N);
 
 #if defined(RLWE_ASM_AVX2)
 	oqs_rlwe_msrln16_error_sampling_asm(stream, e);
@@ -298,7 +298,7 @@ CRYPTO_STATUS oqs_rlwe_msrln16_generate_a(uint32_t *a, const unsigned char *seed
 	unsigned int nblocks = 16;
 	uint8_t buf[SHAKE128_RATE * 16];
 	unsigned char state[SHAKE128_STATE_SIZE] = { 0 };
-	FIPS202_SHAKE128_Absorb(seed, OQS_RLWE_MSRLN16_SEED_BYTES, state);
+	FIPS202_SHAKE128_Absorb(seed, OQS_RLWE_MSRLN16_SEED_BYTES, state, sizeof(state));
 	FIPS202_SHAKE128_Squeeze(state, (unsigned char *)buf, nblocks * SHAKE128_RATE);
 
 	while (ctr < OQS_RLWE_MSRLN16_PARAMETER_N) {
@@ -329,7 +329,7 @@ CRYPTO_STATUS oqs_rlwe_msrln16_KeyGeneration_A(int32_t *SecretKeyA, unsigned cha
 	unsigned char seed[OQS_RLWE_MSRLN16_SEED_BYTES];
 	CRYPTO_STATUS Status = CRYPTO_ERROR_UNKNOWN;
 
-	rand->rand_n(rand, &seed, OQS_RLWE_MSRLN16_SEED_BYTES);
+	rand->rand_n(rand, seed, OQS_RLWE_MSRLN16_SEED_BYTES);
 	Status = oqs_rlwe_msrln16_generate_a(a, seed);
 	if (Status != CRYPTO_SUCCESS) {
 		goto cleanup;

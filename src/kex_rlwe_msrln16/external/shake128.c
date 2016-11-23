@@ -1,3 +1,9 @@
+#if defined(WINDOWS)
+#define UNUSED
+#else
+#define UNUSED __attribute__ ((unused))
+#endif
+
 /*
 Original implementation modified to allow spliting the absorb and squeeze 
 phases of Keccak.
@@ -76,13 +82,13 @@ This file uses UTF-8 encoding, as some comments use Greek letters.
   * @param  outputByteLen   The number of output bytes desired.
   * @pre    One must have r+c=1600 and the rate a multiple of 8 bits in this implementation.
   */ 
-static void Keccak(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char *output, unsigned long long int outputByteLen);
+UNUSED static void Keccak(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char *output, unsigned long long int outputByteLen);
 
 /*
  * Performs the Keccak absorb phase. Same parameters as the Keccak function, but a SHAKE128_STATE_SIZE-byte state must also be provided.
  * The Keccak_squeeze function can be called successively to generate output.
  */
-static void Keccak_absorb(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char* state);
+static void Keccak_absorb(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char* state, unsigned int stateLen);
 
 /*
  * Performs the Keccak squeeze phase. Same parameters as the Keccak function, but a SHAKE128_STATE_SIZE-byte state must also be provided.
@@ -90,9 +96,9 @@ static void Keccak_absorb(unsigned int rate, unsigned int capacity, const unsign
  */
 static void Keccak_squeeze(unsigned int rate, unsigned int capacity, unsigned char* state, unsigned char *output, unsigned long long int outputByteLen);
 
-static void FIPS202_SHAKE128_Absorb(const unsigned char *input, unsigned int inputByteLen, unsigned char* state)
+static void FIPS202_SHAKE128_Absorb(const unsigned char *input, unsigned int inputByteLen, unsigned char* state, unsigned int stateLen)
 {
-	Keccak_absorb(1344, 256, input, inputByteLen, 0x1F, state);
+	Keccak_absorb(1344, 256, input, inputByteLen, 0x1F, state, stateLen);
 }
 
 static void FIPS202_SHAKE128_Squeeze(unsigned char* state, unsigned char *output, int outputByteLen)
@@ -100,10 +106,10 @@ static void FIPS202_SHAKE128_Squeeze(unsigned char* state, unsigned char *output
 	Keccak_squeeze(1344, 256, state, output, outputByteLen);
 }
 
-static void FIPS202_SHAKE128(const unsigned char *input, unsigned int inputByteLen, unsigned char *output, int outputByteLen)
+UNUSED static void FIPS202_SHAKE128(const unsigned char *input, unsigned int inputByteLen, unsigned char *output, int outputByteLen, unsigned int stateLen)
 {
 	unsigned char state[200] = { 0 };
-	FIPS202_SHAKE128_Absorb(input, inputByteLen, state);
+	FIPS202_SHAKE128_Absorb(input, inputByteLen, state, stateLen);
 	FIPS202_SHAKE128_Squeeze(state, output, outputByteLen);
 }
 
@@ -268,7 +274,7 @@ that use the Keccak-f[1600] permutation.
 #include <string.h>
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 
-void Keccak_absorb(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char* state)
+void Keccak_absorb(unsigned int rate, unsigned int capacity, const unsigned char *input, unsigned long long int inputByteLen, unsigned char delimitedSuffix, unsigned char* state, unsigned int stateLen)
 {
     unsigned int rateInBytes = rate/8;
     unsigned int blockSize = 0;
@@ -278,7 +284,7 @@ void Keccak_absorb(unsigned int rate, unsigned int capacity, const unsigned char
         return;
 
     // === Initialize the state ===
-    memset(state, 0, sizeof(state));
+    memset(state, 0, stateLen);
 
     // === Absorb all the input blocks ===
     while(inputByteLen > 0) {
@@ -305,7 +311,7 @@ void Keccak_absorb(unsigned int rate, unsigned int capacity, const unsigned char
 }
 
 
-void Keccak_squeeze(unsigned int rate, unsigned int capacity, unsigned char* state, unsigned char *output, unsigned long long int outputByteLen)
+void Keccak_squeeze(unsigned int rate, UNUSED unsigned int capacity, unsigned char* state, unsigned char *output, unsigned long long int outputByteLen)
 {
   unsigned int blockSize = 0;
   unsigned int rateInBytes = rate / 8;
