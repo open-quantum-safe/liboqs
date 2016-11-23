@@ -3,7 +3,7 @@
 
 LatticeCrypto is a post-quantum secure cryptography library based on the Ring-Learning with Errors (R-LWE) 
 problem. The version 1.0 of the library implements the instantiation of Peikert's key exchange [1] due to 
-Alkim, Ducas, Pöppelmann and Schwabe [2], and incorporates novel techniques to provide higher performance.
+Alkim, Ducas, PÃ¶ppelmann and Schwabe [2], and incorporates novel techniques to provide higher performance.
 
 The library [3] was developed by Microsoft Research for experimentation purposes. 
 
@@ -37,7 +37,6 @@ REFERENCES
 
 [1] C. Peikert, "Lattice cryptography for the internet", in Post-Quantum Cryptography - 6th International 
     Workshop (PQCrypto 2014), LNCS 8772, pp. 197-219. Springer, 2014.
-[2] E. Alkim, L. Ducas, T. Pöppelmann and P. Schwabe, "Post-quantum key exchange - a new hope", IACR Cryp-
+[2] E. Alkim, L. Ducas, T. PÃ¶ppelmann and P. Schwabe, "Post-quantum key exchange - a new hope", IACR Cryp-
     tology ePrint Archive, Report 2015/1092, 2015.
 [3] https://www.microsoft.com/en-us/research/project/lattice-cryptography-library/
-
