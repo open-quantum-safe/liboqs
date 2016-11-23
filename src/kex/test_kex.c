@@ -281,12 +281,12 @@ int main(int argc, char **argv) {
 
 	for (size_t i = 0; i < kex_testcases_len; i++) {
 		if (run_all || kex_testcases[i].run == 1) {
-		  int num_iter = KEX_TEST_ITERATIONS;
-		  if (kex_testcases[i].alg_name == OQS_KEX_alg_sidh_cln16) {
-		    // SIDH is slower than the other schemes, so we reduce the number of runs
-		    num_iter = KEX_TEST_ITERATIONS / 10;
-		  }
-		  success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, num_iter);
+			int num_iter = KEX_TEST_ITERATIONS;
+			if (kex_testcases[i].alg_name == OQS_KEX_alg_sidh_cln16) {
+				// SIDH is slower than the other schemes, so we reduce the number of runs
+				num_iter = KEX_TEST_ITERATIONS / 10;
+			}
+			success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, num_iter);
 		}
 		if (success != 1) {
 			goto err;
