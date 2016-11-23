@@ -28,6 +28,7 @@ liboqs currently contains:
 - `kex_rlwe_newhope`: "NewHope": key exchange from the ring learning with errors problem (Alkim, Ducas, Pöppelmann, Schwabe, *USENIX Security 2016*, [https://eprint.iacr.org/2015/1092](https://eprint.iacr.org/2015/1092)) (using the reference C implementation of NewHope from [https://github.com/tpoeppelmann/newhope](https://github.com/tpoeppelmann/newhope))
 - `kex_rlwe_msrln16`: Microsoft Research implementation of Peikert's ring-LWE key exchange (Longa, Naehrig, *CANS 2016*, [https://eprint.iacr.org/2016/504](https://eprint.iacr.org/2016/504)) (based on the implementation of Alkim, Ducas, Pöppelmann, and Schwabe, with improvements from Longa and Naehrig, see [https://www.microsoft.com/en-us/research/project/lattice-cryptography-library/](https://www.microsoft.com/en-us/research/project/lattice-cryptography-library/))
 - `kex_lwe_frodo`: key exchange from the learning with errors problem (Bos, Costello, Ducas, Mironov, Naehrig, Nikolaenko, Raghunathan, Stebila, *ACM Conference on Computer and Communications Security 2016*, [http://eprint.iacr.org/2016/659](http://eprint.iacr.org/2016/659))
+- `kex_sidh_cln16`: key exchange from the supersingular isogeny Diffie-Hellman problem, by Costello, Naehrig, and Longa, using the implementation of MSR  [https://www.microsoft.com/en-us/research/project/sidh-library/](https://www.microsoft.com/en-us/research/project/sidh-library/)
 
 Building and Running
 --------------------
@@ -93,6 +94,7 @@ Since our initial launch, we have made the following updates:
 - Use of travis continuous integration system for testing
 - `kex_rlwe_newhope` wrapper
 - `kex_rlwe_msrln16` implementation contributed by Christian Paquin (Microsoft Research)
+- `kex_sidh_cln16` implementation contributed by Christian Paquin (Microsoft Research)
 
 Our plans for the next few months can be found in [Milestone 1 - Key exchange](https://github.com/open-quantum-safe/liboqs/projects/2).
 
@@ -107,6 +109,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 - `src/kex_rlwe_msrln16`: MIT License
 - `src/kex_rlwe_msrln16/external`: public domain ([CC0](http://creativecommons.org/publicdomain/zero/1.0/))
 - `src/kex_rlwe_newhope`: public domain
+- `src/kex_sidh_cln16`: MIT License
 - `src/rand_urandom_chacha20/external`: public domain
 
 Team

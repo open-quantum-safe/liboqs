@@ -23,6 +23,7 @@ struct kex_testcase kex_testcases[] = {
 	{ OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0 },
 	{ OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0 },
 	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0 },
+	{ OQS_KEX_alg_sidh_cln16, NULL, 0, NULL, "sidh_cln16", 0 },
 };
 
 #define KEX_TEST_ITERATIONS 100
@@ -280,7 +281,12 @@ int main(int argc, char **argv) {
 
 	for (size_t i = 0; i < kex_testcases_len; i++) {
 		if (run_all || kex_testcases[i].run == 1) {
-			success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_TEST_ITERATIONS);
+		  int num_iter = KEX_TEST_ITERATIONS;
+		  if (kex_testcases[i].alg_name == OQS_KEX_alg_sidh_cln16) {
+		    // SIDH is slower than the other schemes, so we reduce the number of runs
+		    num_iter = KEX_TEST_ITERATIONS / 10;
+		  }
+		  success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, num_iter);
 		}
 		if (success != 1) {
 			goto err;
