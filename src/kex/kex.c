@@ -9,7 +9,7 @@
 OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 	switch (alg_name) {
 	case OQS_KEX_alg_default:
-			return OQS_KEX_rlwe_bcns15_new(rand);
+		return OQS_KEX_rlwe_bcns15_new(rand);
 	case OQS_KEX_alg_rlwe_bcns15:
 		return OQS_KEX_rlwe_bcns15_new(rand);
 	case OQS_KEX_alg_rlwe_msrln16:

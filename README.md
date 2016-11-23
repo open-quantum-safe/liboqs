@@ -106,7 +106,7 @@ Over the next few months, we plan to be making the following updates:
 
 - Building on more systems, including building of assembly code / optimizations
 - Inclusion of a McEliece-based key exchange method
-- Inclusion of a supersingular isogeny Diffie-Hellman key exchange method
+- Inclusion of a supersingular isogeny Diffie–Hellman key exchange method
 - Code reviews including static analysis
 - Integration of liboqs into additional application-level protocols.
 
@@ -118,7 +118,6 @@ License
 liboqs is licensed under the MIT License; see [https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt](LICENSE.txt) for details.  liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
 - `src/kex_rlwe_bcns15`: public domain ([http://unlicense.org](http://unlicense.org))
-- `src/kex_rlwe_msrln16`: MIT License
 - `src/rand_urandom_chacha20/external`: public domain
 - `src/kex_rlwe_newhope`: public domain
 
