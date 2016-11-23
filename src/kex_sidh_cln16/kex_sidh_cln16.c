@@ -111,7 +111,7 @@ int OQS_KEX_sidh_cln16_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t al
 	if (SIDH_KeyGeneration_B((unsigned char*) bob_priv, (unsigned char*) *bob_msg, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
 		goto err;
 	}
-	if (SIDH_SecretAgreement_B((unsigned char*) bob_priv, (unsigned char*) alice_msg, (unsigned char*) *key, 0, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) { // TODO: should I set validate=1?
+	if (SIDH_SecretAgreement_B((unsigned char*) bob_priv, (unsigned char*) alice_msg, (unsigned char*) *key, 0, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
 		goto err;
 	}
 
