@@ -103,6 +103,7 @@ License
 
 liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for details.  liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
+- `src/aes/aes.c`: public domain
 - `src/kex_rlwe_bcns15`: public domain ([Unlicense](http://unlicense.org))
 - `src/kex_rlwe_msrln16`: MIT License
 - `src/kex_rlwe_msrln16/external`: public domain ([CC0](http://creativecommons.org/publicdomain/zero/1.0/))
