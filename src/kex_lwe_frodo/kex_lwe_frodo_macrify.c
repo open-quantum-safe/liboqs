@@ -27,20 +27,12 @@ int MACRIFY(OQS_KEX_lwe_frodo_alice_0)(OQS_KEX *k, void **alice_priv, uint8_t **
 	}
 
 	/* generate S and E */
-	ret = oqs_kex_lwe_frodo_sample_n(*alice_priv, params->n * params->nbar, params, k->rand);
-	if (ret != 1) {
-		goto err;
-	}
-	ret = oqs_kex_lwe_frodo_sample_n(e, params->n * params->nbar, params, k->rand);
-	if (ret != 1) {
-		goto err;
-	}
+	oqs_kex_lwe_frodo_sample_n(*alice_priv, params->n * params->nbar, params, k->rand);
+	oqs_kex_lwe_frodo_sample_n(e, params->n * params->nbar, params, k->rand);
 
 	/* compute B = AS + E */
-	ret = MACRIFY(oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly)(b, *alice_priv, e, params);
-	if (ret != 1) {
-		goto err;
-	}
+	MACRIFY(oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly)(b, *alice_priv, e, params);
+
 	oqs_kex_lwe_frodo_pack(*alice_msg, params->pub_len, b, params->n * params->nbar, params->log2_q);
 
 	*alice_msg_len = params->pub_len;
@@ -116,27 +108,16 @@ int MACRIFY(OQS_KEX_lwe_frodo_bob)(OQS_KEX *k, const uint8_t *alice_msg, const s
 	}
 
 	/* generate S' and E' */
-	ret = oqs_kex_lwe_frodo_sample_n(bob_priv, params->n * params->nbar, params, k->rand);
-	if (ret != 1) {
-		goto err;
-	}
-	ret = oqs_kex_lwe_frodo_sample_n(eprime, params->n * params->nbar, params, k->rand);
-	if (ret != 1) {
-		goto err;
-	}
+	oqs_kex_lwe_frodo_sample_n(bob_priv, params->n * params->nbar, params, k->rand);
+	oqs_kex_lwe_frodo_sample_n(eprime, params->n * params->nbar, params, k->rand);
 
 	/* compute B' = S'A + E' */
-	ret = MACRIFY(oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly)(bprime, bob_priv, eprime, params);
-	if (ret != 1) {
-		goto err;
-	}
+	MACRIFY(oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly)(bprime, bob_priv, eprime, params);
+
 	oqs_kex_lwe_frodo_pack(*bob_msg, params->pub_len, bprime, params->n * params->nbar, params->log2_q);
 
 	/* generate E'' */
-	ret = oqs_kex_lwe_frodo_sample_n(eprimeprime, params->nbar * params->nbar, params, k->rand);
-	if (ret != 1) {
-		goto err;
-	}
+	oqs_kex_lwe_frodo_sample_n(eprimeprime, params->nbar * params->nbar, params, k->rand);
 
 	/* unpack B */
 	oqs_kex_lwe_frodo_unpack(b, params->n * params->nbar, alice_msg, alice_msg_len, params->log2_q);

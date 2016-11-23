@@ -71,7 +71,7 @@ void oqs_kex_lwe_frodo_pack(unsigned char *out, const size_t outlen, const uint1
 			int nbits = min(8 - b, bits);
 			uint16_t mask = (1 << nbits) - 1;
 			unsigned char t = (w >> (bits - nbits)) & mask;  // the bits to copy from w to out
-			out[i] = out[i] + (t << (8 - b - nbits));
+			out[i] += t << (8 - b - nbits);
 			b += nbits;
 			bits -= nbits;
 			w &= ~(mask << bits);  // not strictly necessary; mostly for debugging
@@ -119,7 +119,7 @@ void oqs_kex_lwe_frodo_unpack(uint16_t *out, const size_t outlen, const unsigned
 			int nbits = min(lsb - b, bits);
 			uint16_t mask = (1 << nbits) - 1;
 			unsigned char t = (w >> (bits - nbits)) & mask;  // the bits to copy from w to out
-			out[i] = out[i] + (t << (lsb - b - nbits));
+			out[i] += t << (lsb - b - nbits);
 			b += nbits;
 			bits -= nbits;
 			w &= ~(mask << bits);  // not strictly necessary; mostly for debugging

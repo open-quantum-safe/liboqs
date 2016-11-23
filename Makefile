@@ -47,7 +47,7 @@ endif
 
 all: links lib tests
 
-objs/%.o: src/%.c
+objs/%.o: src/%.c | links
 	@mkdir -p $(@D)
 	$(CC) -c  $(CFLAGS) $(INCLUDES) $< -o $@
 
@@ -95,7 +95,7 @@ $(KEX_RLWE_MSRLN16_OBJS): $(KEX_RLWE_MSRLN16_HEADERS)
 
 # KEX_LWE_FRODO
 KEX_LWE_FRODO_OBJS := $(addprefix objs/kex_lwe_frodo/, lwe.o kex_lwe_frodo.o lwe_noise.o)
-KEX_LWE_FRODO_HEADERS := $(addprefix src/kex_lwe_frodo/, kex_lwe_frodo.h local.h)
+KEX_LWE_FRODO_HEADERS := $(addprefix src/kex_lwe_frodo/, kex_lwe_frodo.h local.h lwe_macrify.c)
 $(KEX_LWE_FRODO_OBJS): $(KEX_LWE_FRODO_HEADERS)
 
 # KEX_SIDH_CLN16
