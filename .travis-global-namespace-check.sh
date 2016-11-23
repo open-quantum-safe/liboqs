@@ -8,6 +8,6 @@ then
 	exit 1;
 else 
 	tput setaf 2;
-	echo "Code adheres to the project standards.";
+	echo "Code adheres to the project standards for naming conventions.";
 	exit 0;
 fi;
