@@ -316,10 +316,10 @@ void fp2zero751(f2elm_t a);
 void fp2neg751(f2elm_t a);
 
 // GF(p751^2) addition, c = a+b in GF(p751^2)
-void fp2add751(f2elm_t a, f2elm_t b, f2elm_t c);
+extern void fp2add751(f2elm_t a, f2elm_t b, f2elm_t c);
 
 // GF(p751^2) subtraction, c = a-b in GF(p751^2)
-void fp2sub751(f2elm_t a, f2elm_t b, f2elm_t c);
+extern void fp2sub751(f2elm_t a, f2elm_t b, f2elm_t c);
 
 // GF(p751^2) division by two, c = a/2  in GF(p751^2)
 void fp2div2_751(f2elm_t a, f2elm_t c);
