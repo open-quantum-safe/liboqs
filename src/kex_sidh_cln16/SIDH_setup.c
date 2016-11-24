@@ -83,28 +83,39 @@ void oqs_sidh_cln16_curve_free(PCurveIsogenyStruct pCurveIsogeny) {
 	// Free memory for curve isogeny structure
 
 	if (pCurveIsogeny != NULL) {
-		if (pCurveIsogeny->prime != NULL)
+		if (pCurveIsogeny->prime != NULL) {
 			free(pCurveIsogeny->prime);
-		if (pCurveIsogeny->A != NULL)
+		}
+		if (pCurveIsogeny->A != NULL) {
 			free(pCurveIsogeny->A);
-		if (pCurveIsogeny->C != NULL)
+		}
+		if (pCurveIsogeny->C != NULL) {
 			free(pCurveIsogeny->C);
-		if (pCurveIsogeny->Aorder != NULL)
+		}
+		if (pCurveIsogeny->Aorder != NULL) {
 			free(pCurveIsogeny->Aorder);
-		if (pCurveIsogeny->Border != NULL)
+		}
+		if (pCurveIsogeny->Border != NULL) {
 			free(pCurveIsogeny->Border);
-		if (pCurveIsogeny->PA != NULL)
+		}
+		if (pCurveIsogeny->PA != NULL) {
 			free(pCurveIsogeny->PA);
-		if (pCurveIsogeny->PB != NULL)
+		}
+		if (pCurveIsogeny->PB != NULL) {
 			free(pCurveIsogeny->PB);
-		if (pCurveIsogeny->BigMont_order != NULL)
+		}
+		if (pCurveIsogeny->BigMont_order != NULL) {
 			free(pCurveIsogeny->BigMont_order);
-		if (pCurveIsogeny->Montgomery_R2 != NULL)
+		}
+		if (pCurveIsogeny->Montgomery_R2 != NULL) {
 			free(pCurveIsogeny->Montgomery_R2);
-		if (pCurveIsogeny->Montgomery_pp != NULL)
+		}
+		if (pCurveIsogeny->Montgomery_pp != NULL) {
 			free(pCurveIsogeny->Montgomery_pp);
-		if (pCurveIsogeny->Montgomery_one != NULL)
+		}
+		if (pCurveIsogeny->Montgomery_one != NULL) {
 			free(pCurveIsogeny->Montgomery_one);
+		}
 
 		free(pCurveIsogeny);
 	}

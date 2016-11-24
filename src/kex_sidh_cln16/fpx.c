@@ -34,8 +34,9 @@ __inline void oqs_sidh_cln16_fpcopy751(oqs_sidh_cln16_felm_t a, oqs_sidh_cln16_f
 	// Copy of a field element, c = a
 	unsigned int i;
 
-	for (i = 0; i < NWORDS_FIELD; i++)
+	for (i = 0; i < NWORDS_FIELD; i++) {
 		c[i] = a[i];
+	}
 }
 
 
@@ -43,8 +44,9 @@ __inline void oqs_sidh_cln16_fpzero751(oqs_sidh_cln16_felm_t a) {
 	// Zeroing a field element, a = 0
 	unsigned int i;
 
-	for (i = 0; i < NWORDS_FIELD; i++)
+	for (i = 0; i < NWORDS_FIELD; i++) {
 		a[i] = 0;
+	}
 }
 
 
@@ -75,7 +77,9 @@ static __inline unsigned int is_felm_zero(oqs_sidh_cln16_felm_t x) {
 	unsigned int i;
 
 	for (i = 0; i < NWORDS_FIELD; i++) {
-		if (x[i] != 0) return false;
+		if (x[i] != 0) {
+			return false;
+		}
 	}
 	return true;
 }
@@ -190,127 +194,245 @@ void oqs_sidh_cln16_fpinv751_mont(oqs_sidh_cln16_felm_t a) {
 	oqs_sidh_cln16_fpmul751_mont(t[1], tt, t[2]);
 	oqs_sidh_cln16_fpmul751_mont(t[2], tt, t[3]);
 	oqs_sidh_cln16_fpmul751_mont(t[3], tt, t[3]);
-	for (i = 3; i <= 8; i++) oqs_sidh_cln16_fpmul751_mont(t[i], tt, t[i + 1]);
+	for (i = 3; i <= 8; i++) {
+		oqs_sidh_cln16_fpmul751_mont(t[i], tt, t[i + 1]);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[9], tt, t[9]);
-	for (i = 9; i <= 20; i++) oqs_sidh_cln16_fpmul751_mont(t[i], tt, t[i + 1]);
+	for (i = 9; i <= 20; i++) {
+		oqs_sidh_cln16_fpmul751_mont(t[i], tt, t[i + 1]);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[21], tt, t[21]);
-	for (i = 21; i <= 24; i++) oqs_sidh_cln16_fpmul751_mont(t[i], tt, t[i + 1]);
+	for (i = 21; i <= 24; i++) {
+		oqs_sidh_cln16_fpmul751_mont(t[i], tt, t[i + 1]);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[25], tt, t[25]);
 	oqs_sidh_cln16_fpmul751_mont(t[25], tt, t[26]);
 
 	oqs_sidh_cln16_fpcopy751(a, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[20], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[24], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[11], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[8], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[2], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[23], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[2], tt, tt);
-	for (i = 0; i < 9; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 9; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[2], tt, tt);
-	for (i = 0; i < 10; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 10; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[15], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[13], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[26], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[20], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[11], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[10], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[14], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[4], tt, tt);
-	for (i = 0; i < 10; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 10; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[18], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[1], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[22], tt, tt);
-	for (i = 0; i < 10; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 10; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[6], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[24], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[9], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[18], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[17], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(a, tt, tt);
-	for (i = 0; i < 10; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 10; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[16], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[7], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[0], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[12], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[19], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[22], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[25], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[2], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[10], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[22], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[18], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[4], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[14], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[13], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[5], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[23], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[21], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[2], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[23], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[12], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[9], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[3], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[13], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[17], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[26], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[5], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[8], tt, tt);
-	for (i = 0; i < 8; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 8; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[11], tt, tt);
-	for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 6; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	oqs_sidh_cln16_fpmul751_mont(t[22], tt, tt);
-	for (i = 0; i < 7; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	for (i = 0; i < 7; i++) {
+		oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+	}
 	for (j = 0; j < 61; j++) {
 		oqs_sidh_cln16_fpmul751_mont(t[26], tt, tt);
-		for (i = 0; i < 6; i++) oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+		for (i = 0; i < 6; i++) {
+			oqs_sidh_cln16_fpsqr751_mont(tt, tt);
+		}
 	}
 	oqs_sidh_cln16_fpmul751_mont(t[25], tt, a);
 }
