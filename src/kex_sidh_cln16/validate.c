@@ -82,7 +82,7 @@ static bool test_curve(oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_f2elm_t rvalue, 
 	// Inputs: the curve constant A, corresponding to E_A: y^2=x^3+A*x^2+x,
 	//         a random value "rvalue" in Fp2.
 	// Output: returns "true" if curve is valid, "false" otherwise.
-	oqs_sidh_cln16_f2elm_t t0, t1, one = {0}, zero = {0};
+	oqs_sidh_cln16_f2elm_t t0, t1, one = { {0} }, zero = { {0} };
 	oqs_sidh_cln16_point_proj_t rP, P1;
 	bool valid_curve;
 
@@ -126,8 +126,8 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKA(oqs_sidh_cln16_f2elm_t A, oqs_sid
 	// Output: valid = "true" if key is valid, "false" otherwise.
 	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int eB1 = CurveIsogeny->eB - 1;    // eB1 = eB-1
-	oqs_sidh_cln16_f2elm_t t0, t1, rvalue, one = {0}, zero = {0};
-	oqs_sidh_cln16_point_proj_t P = {0}, Q = {0};
+	oqs_sidh_cln16_f2elm_t t0, t1, rvalue, one = { {0} }, zero = { {0} };
+	oqs_sidh_cln16_point_proj_t P = oqs_sidh_cln16_point_proj_t_EMPTY, Q = oqs_sidh_cln16_point_proj_t_EMPTY;
 	SIDH_CRYPTO_STATUS Status;
 
 	// Choose a random element in GF(p751^2) for Sutherland's algorithm. Assume that it is in Montgomery representation
@@ -172,8 +172,8 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKB(oqs_sidh_cln16_f2elm_t A, oqs_sid
 	// Output: valid = "true" if key is valid, "false" otherwise.
 	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int oAbits2 = CurveIsogeny->oAbits - 2;    // oAbits2 = oAbits-2
-	oqs_sidh_cln16_f2elm_t t0, t1, two, four, rvalue, one = {0}, zero = {0};
-	oqs_sidh_cln16_point_proj_t P = {0}, Q = {0};
+	oqs_sidh_cln16_f2elm_t t0, t1, two, four, rvalue, one = { {0} }, zero = { {0} };
+	oqs_sidh_cln16_point_proj_t P = oqs_sidh_cln16_point_proj_t_EMPTY, Q = oqs_sidh_cln16_point_proj_t_EMPTY;
 	SIDH_CRYPTO_STATUS Status;
 
 	// Choose a random element in GF(p751^2) for Sutherland's algorithm. Assume that it is in Montgomery representation

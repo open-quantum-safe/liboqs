@@ -18,6 +18,11 @@
 extern "C" {
 #endif
 
+#if defined(WINDOWS)
+#define UNUSED
+#else
+#define UNUSED __attribute__ ((unused))
+#endif
 
 #include "SIDH.h"
 
@@ -51,6 +56,7 @@ typedef struct {
 	oqs_sidh_cln16_f2elm_t Z;
 } oqs_sidh_cln16_point_proj;              // Point representation in projective XZ Montgomery coordinates.
 typedef oqs_sidh_cln16_point_proj oqs_sidh_cln16_point_proj_t[1];
+#define oqs_sidh_cln16_point_proj_t_EMPTY { { { {0}, {0} }, { {0}, {0} } } }
 
 typedef struct {
 	oqs_sidh_cln16_felm_t x;
@@ -79,20 +85,17 @@ typedef oqs_sidh_cln16_point_basefield_proj oqs_sidh_cln16_point_basefield_proj_
 
 // The following functions return 1 (TRUE) if condition is true, 0 (FALSE) otherwise
 
-static __inline unsigned int is_digit_nonzero_ct(digit_t x) {
-	// Is x != 0?
-	return (unsigned int)((x | (0 - x)) >> (RADIX - 1));
-}
+// Is x != 0?
+#define is_digit_nonzero_ct(x) \
+	((unsigned int)(((x) | (0 - (x))) >> (RADIX - 1)))
 
-static __inline unsigned int is_digit_zero_ct(digit_t x) {
-	// Is x = 0?
-	return (unsigned int)(1 ^ is_digit_nonzero_ct(x));
-}
+// Is x = 0?
+#define is_digit_zero_ct(x) \
+	((unsigned int)(1 ^ is_digit_nonzero_ct((x))))
 
-static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) {
-	// Is x < y?
-	return (unsigned int)((x ^ ((x ^ y) | ((x - y) ^ y))) >> (RADIX - 1));
-}
+// Is x < y?
+#define is_digit_lessthan_ct(x, y) \
+	((unsigned int)(((x) ^ (((x) ^ (y)) | (((x) - (y)) ^ (y)))) >> (RADIX - 1)))
 
 
 /********************** Macros for platform-dependent operations **********************/

@@ -14,7 +14,7 @@
 #include "SIDH_internal.h"
 
 
-SIDH_CRYPTO_STATUS oqs_sidh_cln16_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand, PCurveIsogenyStaticData pCurveIsogenyData) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, UNUSED OQS_RAND *rand, PCurveIsogenyStaticData pCurveIsogenyData) {
 	// Initialize curve isogeny structure pCurveIsogeny with static data extracted from pCurveIsogenyData.
 	// This needs to be called after allocating memory for "pCurveIsogeny" using oqs_sidh_cln16_curve_allocate().
 	unsigned int i, pwords, owords;

@@ -70,7 +70,7 @@ void oqs_sidh_cln16_from_mont(oqs_sidh_cln16_felm_t ma, oqs_sidh_cln16_felm_t c)
 }
 
 
-static __inline unsigned int is_felm_zero(oqs_sidh_cln16_felm_t x) {
+UNUSED static __inline unsigned int is_felm_zero(oqs_sidh_cln16_felm_t x) {
 	// Is x = 0? return 1 (TRUE) if condition is true, 0 (FALSE) otherwise
 	// NOTE: this function does not run in constant-time so it can only be used in functions
 	//       incorporating countermeasures such as projective randomization.
@@ -85,13 +85,13 @@ static __inline unsigned int is_felm_zero(oqs_sidh_cln16_felm_t x) {
 }
 
 
-static __inline unsigned int is_felm_even(oqs_sidh_cln16_felm_t x) {
+UNUSED static __inline unsigned int is_felm_even(oqs_sidh_cln16_felm_t x) {
 	// Is x even? return 1 (TRUE) if condition is true, 0 (FALSE) otherwise
 	return (unsigned int)((x[0] & 1) ^ 1);
 }
 
 
-static __inline unsigned int is_felm_lt(oqs_sidh_cln16_felm_t x, oqs_sidh_cln16_felm_t y) {
+UNUSED static __inline unsigned int is_felm_lt(oqs_sidh_cln16_felm_t x, oqs_sidh_cln16_felm_t y) {
 	// Is x < y? return 1 (TRUE) if condition is true, 0 (FALSE) otherwise
 	// NOTE: this function does not run in constant-time so it can only be used in functions
 	//       incorporating countermeasures such as projective randomization.

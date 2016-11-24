@@ -28,10 +28,10 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_KeyGeneration_A(unsigned char *pPrivateKeyA, u
 	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int owords = NBITS_TO_NWORDS(CurveIsogeny->owordbits), pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
 	oqs_sidh_cln16_point_basefield_t P;
-	oqs_sidh_cln16_point_proj_t R, phiP = {0}, phiQ = {0}, phiD = {0}, pts[SIDH_MAX_INT_POINTS_ALICE];
+	oqs_sidh_cln16_point_proj_t R, phiP = oqs_sidh_cln16_point_proj_t_EMPTY, phiQ = oqs_sidh_cln16_point_proj_t_EMPTY, phiD = oqs_sidh_cln16_point_proj_t_EMPTY, pts[SIDH_MAX_INT_POINTS_ALICE];
 	oqs_sidh_cln16_publickey_t *PublicKeyA = (oqs_sidh_cln16_publickey_t *)pPublicKeyA;
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_ALICE], npts = 0;
-	oqs_sidh_cln16_f2elm_t coeff[5], A = {0}, C = {0}, Aout, Cout;
+	oqs_sidh_cln16_f2elm_t coeff[5], A = { {0} }, C = { {0} }, Aout, Cout;
 	SIDH_CRYPTO_STATUS Status;
 
 	if (pPrivateKeyA == NULL || pPublicKeyA == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(CurveIsogeny)) {
@@ -134,10 +134,10 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_KeyGeneration_B(unsigned char *pPrivateKeyB, u
 	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int owords = NBITS_TO_NWORDS(CurveIsogeny->owordbits), pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
 	oqs_sidh_cln16_point_basefield_t P;
-	oqs_sidh_cln16_point_proj_t R, phiP = {0}, phiQ = {0}, phiD = {0}, pts[SIDH_MAX_INT_POINTS_BOB];
+	oqs_sidh_cln16_point_proj_t R, phiP = oqs_sidh_cln16_point_proj_t_EMPTY, phiQ = oqs_sidh_cln16_point_proj_t_EMPTY, phiD = oqs_sidh_cln16_point_proj_t_EMPTY, pts[SIDH_MAX_INT_POINTS_BOB];
 	oqs_sidh_cln16_publickey_t *PublicKeyB = (oqs_sidh_cln16_publickey_t *)pPublicKeyB;
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_BOB], npts = 0;
-	oqs_sidh_cln16_f2elm_t A = {0}, C = {0};
+	oqs_sidh_cln16_f2elm_t A = { {0} }, C = { {0} };
 	SIDH_CRYPTO_STATUS Status;
 
 	if (pPrivateKeyB == NULL || pPublicKeyB == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(CurveIsogeny)) {
@@ -238,7 +238,7 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_SecretAgreement_A(unsigned char *pPrivateKeyA,
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_ALICE], npts = 0;
 	oqs_sidh_cln16_point_proj_t R, pts[SIDH_MAX_INT_POINTS_ALICE];
 	oqs_sidh_cln16_publickey_t *PublicKeyB = (oqs_sidh_cln16_publickey_t *)pPublicKeyB;
-	oqs_sidh_cln16_f2elm_t jinv, coeff[5], PKB[3], A, C = {0};
+	oqs_sidh_cln16_f2elm_t jinv, coeff[5], PKB[3], A, C = { {0} };
 	bool valid_PublicKey = false;
 	SIDH_CRYPTO_STATUS Status;
 
@@ -322,7 +322,7 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_SecretAgreement_B(unsigned char *pPrivateKeyB,
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_BOB], npts = 0;
 	oqs_sidh_cln16_point_proj_t R, pts[SIDH_MAX_INT_POINTS_BOB];
 	oqs_sidh_cln16_publickey_t *PublicKeyA = (oqs_sidh_cln16_publickey_t *)pPublicKeyA;
-	oqs_sidh_cln16_f2elm_t jinv, A, PKA[3], C = {0};
+	oqs_sidh_cln16_f2elm_t jinv, A, PKA[3], C = { {0} };
 	bool valid_PublicKey = false;
 	SIDH_CRYPTO_STATUS Status;
 

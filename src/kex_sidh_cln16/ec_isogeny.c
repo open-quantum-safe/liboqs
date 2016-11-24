@@ -314,8 +314,8 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_ladder_3_pt(oqs_sidh_cln16_f2elm_t xP, oqs_sid
 	// Computes P+[m]Q via x-only arithmetic. Algorithm by De Feo, Jao and Plut.
 	// Input:  three affine points xP,xQ,xPQ and Montgomery constant A.
 	// Output: projective Montgomery x-coordinates of x(P+[m]Q)=WX/WZ
-	oqs_sidh_cln16_point_proj_t U = {0}, V = {0};
-	oqs_sidh_cln16_f2elm_t A24, A24num, constant1 = {0}, constant2;
+	oqs_sidh_cln16_point_proj_t U = oqs_sidh_cln16_point_proj_t_EMPTY, V = oqs_sidh_cln16_point_proj_t_EMPTY;
+	oqs_sidh_cln16_f2elm_t A24, A24num, constant1 = { {0} }, constant2;
 	oqs_sidh_cln16_felm_t temp_scalar;
 	unsigned int bit = 0, nbits, fullbits = CurveIsogeny->owordbits;
 	digit_t mask;
@@ -419,7 +419,7 @@ void oqs_sidh_cln16_first_4_isog(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_f
 	// Computes first 4-isogeny computed by Alice.
 	// Inputs: projective point P = (X4:Z4) and curve constant A.
 	// Output: the projective point P = (X4:Z4) in the codomain and isogenous curve constant Aout/Cout.
-	oqs_sidh_cln16_f2elm_t t0 = {0}, t1, t2;
+	oqs_sidh_cln16_f2elm_t t0 = { {0} }, t1, t2;
 
 	oqs_sidh_cln16_fpcopy751(CurveIsogeny->Montgomery_one, t0[0]);
 	oqs_sidh_cln16_fpadd751(t0[0], t0[0], t0[0]);                     // t0 = 2 (in Montgomery domain)
@@ -567,7 +567,7 @@ void oqs_sidh_cln16_get_A(oqs_sidh_cln16_f2elm_t xP, oqs_sidh_cln16_f2elm_t xQ, 
 	// Given the x-coordinates of P, Q, and R, returns the value A corresponding to the Montgomery curve E_A: y^2=x^3+A*x^2+x such that R=Q-P on E_A.
 	// Input:  the x-coordinates xP, xQ, and xR of the points P, Q and R.
 	// Output: the coefficient A corresponding to the curve E_A: y^2=x^3+A*x^2+x.
-	oqs_sidh_cln16_f2elm_t t0, t1, one = {0};
+	oqs_sidh_cln16_f2elm_t t0, t1, one = { {0} };
 
 	oqs_sidh_cln16_fpcopy751(CurveIsogeny->Montgomery_one, one[0]);
 	oqs_sidh_cln16_fp2add751(xP, xQ, t1);                           // t1 = xP+xQ
