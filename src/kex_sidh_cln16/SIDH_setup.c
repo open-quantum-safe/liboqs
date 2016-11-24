@@ -14,9 +14,9 @@
 #include "SIDH_internal.h"
 
 
-SIDH_CRYPTO_STATUS SIDH_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand, PCurveIsogenyStaticData pCurveIsogenyData) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand, PCurveIsogenyStaticData pCurveIsogenyData) {
 	// Initialize curve isogeny structure pCurveIsogeny with static data extracted from pCurveIsogenyData.
-	// This needs to be called after allocating memory for "pCurveIsogeny" using SIDH_curve_allocate().
+	// This needs to be called after allocating memory for "pCurveIsogeny" using oqs_sidh_cln16_curve_allocate().
 	unsigned int i, pwords, owords;
 
 	if (oqs_sidh_cln16_is_CurveIsogenyStruct_null(pCurveIsogeny)) {
@@ -52,7 +52,7 @@ SIDH_CRYPTO_STATUS SIDH_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, OQS_
 }
 
 
-PCurveIsogenyStruct SIDH_curve_allocate(PCurveIsogenyStaticData CurveData) {
+PCurveIsogenyStruct oqs_sidh_cln16_curve_allocate(PCurveIsogenyStaticData CurveData) {
 	// Dynamic allocation of memory for curve isogeny structure.
 	// Returns NULL on error.
 	digit_t pbytes = (CurveData->pwordbits + 7) / 8;
@@ -79,7 +79,7 @@ PCurveIsogenyStruct SIDH_curve_allocate(PCurveIsogenyStaticData CurveData) {
 }
 
 
-void SIDH_curve_free(PCurveIsogenyStruct pCurveIsogeny) {
+void oqs_sidh_cln16_curve_free(PCurveIsogenyStruct pCurveIsogeny) {
 	// Free memory for curve isogeny structure
 
 	if (pCurveIsogeny != NULL) {
@@ -125,7 +125,7 @@ bool oqs_sidh_cln16_is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny
 const uint64_t Border_div3[SIDH_NWORDS_ORDER] = { 0xEDCD718A828384F9, 0x733B35BFD4427A14, 0xF88229CF94D7CF38, 0x63C56C990C7C2AD6, 0xB858A87E8F4222C7, 0x254C9C6B525EAF5 };
 
 
-SIDH_CRYPTO_STATUS SIDH_random_mod_order(digit_t *random_digits, unsigned int AliceOrBob, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_mod_order(digit_t *random_digits, unsigned int AliceOrBob, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) {
 	// Output random values in the range [1, order-1] in little endian format that can be used as private keys.
 	// It makes requests of random values with length "oAbits" (when AliceOrBob = 0) or "oBbits" (when AliceOrBob = 1).
 	// The process repeats until random value is in [0, Aorder-2]  ([0, Border-2], resp.).
@@ -139,7 +139,7 @@ SIDH_CRYPTO_STATUS SIDH_random_mod_order(digit_t *random_digits, unsigned int Al
 		return SIDH_CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
-	SIDH_clear_words((void *)random_digits, SIDH_MAXWORDS_ORDER);
+	oqs_sidh_cln16_clear_words((void *)random_digits, SIDH_MAXWORDS_ORDER);
 	t1[0] = 2;
 	if (AliceOrBob == SIDH_ALICE) {
 		nbytes = (pCurveIsogeny->oAbits + 7) / 8;              // Number of random bytes to be requested
@@ -165,7 +165,7 @@ SIDH_CRYPTO_STATUS SIDH_random_mod_order(digit_t *random_digits, unsigned int Al
 		((unsigned char *)random_digits)[nbytes - 1] &= mask;  // Masking last byte
 	} while (oqs_sidh_cln16_mp_sub(order2, random_digits, t1, nwords) == 1);
 
-	SIDH_clear_words((void *)t1, SIDH_MAXWORDS_ORDER);
+	oqs_sidh_cln16_clear_words((void *)t1, SIDH_MAXWORDS_ORDER);
 	t1[0] = 1;
 	oqs_sidh_cln16_mp_add(random_digits, t1, random_digits, nwords);
 	oqs_sidh_cln16_copy_words(random_digits, t1, nwords);
@@ -178,7 +178,7 @@ SIDH_CRYPTO_STATUS SIDH_random_mod_order(digit_t *random_digits, unsigned int Al
 }
 
 
-SIDH_CRYPTO_STATUS SIDH_random_BigMont_mod_order(digit_t *random_digits, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_BigMont_mod_order(digit_t *random_digits, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) {
 	// Output random values in the range [1, BigMont_order-1] in little endian format that can be used as private keys to compute scalar multiplications
 	// using the elliptic curve BigMont.
 	// It makes requests of random values with length "BIGMONT_NBITS_ORDER".
@@ -193,7 +193,7 @@ SIDH_CRYPTO_STATUS SIDH_random_BigMont_mod_order(digit_t *random_digits, PCurveI
 		return SIDH_CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
-	SIDH_clear_words((void *)random_digits, BIGMONT_MAXWORDS_ORDER);
+	oqs_sidh_cln16_clear_words((void *)random_digits, BIGMONT_MAXWORDS_ORDER);
 	t1[0] = 2;
 	mask = (unsigned char)(8 * nbytes - BIGMONT_NBITS_ORDER);
 	oqs_sidh_cln16_mp_sub(pCurveIsogeny->BigMont_order, t1, order2, nwords);  // order2 = order-2
@@ -208,7 +208,7 @@ SIDH_CRYPTO_STATUS SIDH_random_BigMont_mod_order(digit_t *random_digits, PCurveI
 		((unsigned char *)random_digits)[nbytes - 1] &= mask;  // Masking last byte
 	} while (oqs_sidh_cln16_mp_sub(order2, random_digits, t1, nwords) == 1);
 
-	SIDH_clear_words((void *)t1, BIGMONT_MAXWORDS_ORDER);
+	oqs_sidh_cln16_clear_words((void *)t1, BIGMONT_MAXWORDS_ORDER);
 	t1[0] = 1;
 	oqs_sidh_cln16_mp_add(random_digits, t1, random_digits, nwords);          // Output in the range [1, order-1]
 
@@ -216,7 +216,7 @@ SIDH_CRYPTO_STATUS SIDH_random_BigMont_mod_order(digit_t *random_digits, PCurveI
 }
 
 
-void SIDH_clear_words(void *mem, digit_t nwords) {
+void oqs_sidh_cln16_clear_words(void *mem, digit_t nwords) {
 	// Clear digits from memory. "nwords" indicates the number of digits to be zeroed.
 	// This function uses the volatile type qualifier to inform the compiler not to optimize out the memory clearing.
 	unsigned int i;

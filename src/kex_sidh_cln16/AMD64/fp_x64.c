@@ -121,7 +121,7 @@ void oqs_sidh_cln16_fpcorrection751(digit_t* a)
 }
 
 
-void mp_mul(digit_t* a, digit_t* b, digit_t* c, unsigned int nwords)
+void oqs_sidh_cln16_mp_mul(digit_t* a, digit_t* b, digit_t* c, unsigned int nwords)
 { // Multiprecision multiply, c = a*b, where lng(a) = lng(b) = nwords.
         
     UNREFERENCED_PARAMETER(nwords);

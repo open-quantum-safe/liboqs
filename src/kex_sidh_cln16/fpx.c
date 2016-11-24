@@ -164,7 +164,7 @@ void oqs_sidh_cln16_fpmul751_mont(oqs_sidh_cln16_felm_t ma, oqs_sidh_cln16_felm_
 	// 751-bit Comba multi-precision multiplication, c = a*b mod p751
 	oqs_sidh_cln16_dfelm_t temp = {0};
 
-	mp_mul(ma, mb, temp, NWORDS_FIELD);
+	oqs_sidh_cln16_mp_mul(ma, mb, temp, NWORDS_FIELD);
 	oqs_sidh_cln16_rdc_mont(temp, mc);
 }
 
@@ -173,7 +173,7 @@ void oqs_sidh_cln16_fpsqr751_mont(oqs_sidh_cln16_felm_t ma, oqs_sidh_cln16_felm_
 	// 751-bit Comba multi-precision squaring, c = a^2 mod p751
 	oqs_sidh_cln16_dfelm_t temp = {0};
 
-	mp_mul(ma, ma, temp, NWORDS_FIELD);
+	oqs_sidh_cln16_mp_mul(ma, ma, temp, NWORDS_FIELD);
 	oqs_sidh_cln16_rdc_mont(temp, mc);
 }
 
@@ -387,8 +387,8 @@ void oqs_sidh_cln16_fp2mul751_mont(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2el
 	digit_t mask;
 	unsigned int i, borrow;
 
-	mp_mul(a[0], b[0], tt1, NWORDS_FIELD);           // tt1 = a0*b0
-	mp_mul(a[1], b[1], tt2, NWORDS_FIELD);           // tt2 = a1*b1
+	oqs_sidh_cln16_mp_mul(a[0], b[0], tt1, NWORDS_FIELD);           // tt1 = a0*b0
+	oqs_sidh_cln16_mp_mul(a[1], b[1], tt2, NWORDS_FIELD);           // tt2 = a1*b1
 	oqs_sidh_cln16_mp_add(a[0], a[1], t1, NWORDS_FIELD);            // t1 = a0+a1
 	oqs_sidh_cln16_mp_add(b[0], b[1], t2, NWORDS_FIELD);            // t2 = b0+b1
 	borrow = oqs_sidh_cln16_mp_sub(tt1, tt2, tt3, 2 * NWORDS_FIELD); // tt3 = a0*b0 - a1*b1
@@ -399,7 +399,7 @@ void oqs_sidh_cln16_fp2mul751_mont(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2el
 	}
 	oqs_sidh_cln16_rdc_mont(tt3, c[0]);                             // c[0] = a0*b0 - a1*b1
 	oqs_sidh_cln16_mp_add(tt1, tt2, tt1, 2 * NWORDS_FIELD);         // tt1 = a0*b0 + a1*b1
-	mp_mul(t1, t2, tt2, NWORDS_FIELD);               // tt2 = (a0+a1)*(b0+b1)
+	oqs_sidh_cln16_mp_mul(t1, t2, tt2, NWORDS_FIELD);               // tt2 = (a0+a1)*(b0+b1)
 	oqs_sidh_cln16_mp_sub(tt2, tt1, tt2, 2 * NWORDS_FIELD);         // tt2 = (a0+a1)*(b0+b1) - a0*b0 - a1*b1
 	oqs_sidh_cln16_rdc_mont(tt2, c[1]);                             // c[1] = (a0+a1)*(b0+b1) - a0*b0 - a1*b1
 }

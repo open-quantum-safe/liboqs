@@ -36,13 +36,13 @@ static bool is_equal_fp2(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2elm_t b) {
 }
 
 
-SIDH_CRYPTO_STATUS random_fp2(oqs_sidh_cln16_f2elm_t f2value, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_fp2(oqs_sidh_cln16_f2elm_t f2value, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) {
 	// Output random value in GF(p751). It makes requests of random values to the "random_bytes" function.
 	// If successful, the output is given in "f2value".
 	unsigned int ntry = 0, nbytes;
 	oqs_sidh_cln16_felm_t t1, p751;
 	unsigned char mask;
-	SIDH_clear_words((void *)f2value, 2 * NWORDS_FIELD);
+	oqs_sidh_cln16_clear_words((void *)f2value, 2 * NWORDS_FIELD);
 	oqs_sidh_cln16_fpcopy751(pCurveIsogeny->prime, p751);
 	nbytes = (pCurveIsogeny->pbits + 7) / 8;                   // Number of random bytes to be requested
 	mask = (unsigned char)(8 * nbytes - pCurveIsogeny->pbits);
@@ -70,7 +70,7 @@ SIDH_CRYPTO_STATUS random_fp2(oqs_sidh_cln16_f2elm_t f2value, PCurveIsogenyStruc
 	} while (oqs_sidh_cln16_mp_sub(p751, f2value[1], t1, NWORDS_FIELD) == 1);
 
 // Cleanup
-	SIDH_clear_words((void *)t1, NWORDS_FIELD);
+	oqs_sidh_cln16_clear_words((void *)t1, NWORDS_FIELD);
 
 	return SIDH_CRYPTO_SUCCESS;
 }
@@ -124,16 +124,16 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKA(oqs_sidh_cln16_f2elm_t A, oqs_sid
 	// Inputs: Alice's public key [A,xP,xQ,xQP], where xP,xQ and xQP are contained in PKA,
 	//         the exponent eB (=239 for our curve) for Miller's algorithm.
 	// Output: valid = "true" if key is valid, "false" otherwise.
-	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int eB1 = CurveIsogeny->eB - 1;    // eB1 = eB-1
 	oqs_sidh_cln16_f2elm_t t0, t1, rvalue, one = {0}, zero = {0};
 	oqs_sidh_cln16_point_proj_t P = {0}, Q = {0};
 	SIDH_CRYPTO_STATUS Status;
 
 	// Choose a random element in GF(p751^2) for Sutherland's algorithm. Assume that it is in Montgomery representation
-	Status = random_fp2(rvalue, CurveIsogeny, rand);
+	Status = oqs_sidh_cln16_random_fp2(rvalue, CurveIsogeny, rand);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
-		SIDH_clear_words((void *)rvalue, 2 * NWORDS_FIELD);
+		oqs_sidh_cln16_clear_words((void *)rvalue, 2 * NWORDS_FIELD);
 		return Status;
 	}
 
@@ -170,16 +170,16 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKB(oqs_sidh_cln16_f2elm_t A, oqs_sid
 	// Inputs: Bob's public key [A,xP,xQ,xQP], where xP,xQ and xQP are contained in PKB,
 	//         the exponent eA (=372 for our curve) for Miller's algorithm.
 	// Output: valid = "true" if key is valid, "false" otherwise.
-	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int oAbits2 = CurveIsogeny->oAbits - 2;    // oAbits2 = oAbits-2
 	oqs_sidh_cln16_f2elm_t t0, t1, two, four, rvalue, one = {0}, zero = {0};
 	oqs_sidh_cln16_point_proj_t P = {0}, Q = {0};
 	SIDH_CRYPTO_STATUS Status;
 
 	// Choose a random element in GF(p751^2) for Sutherland's algorithm. Assume that it is in Montgomery representation
-	Status = random_fp2(rvalue, CurveIsogeny, rand);
+	Status = oqs_sidh_cln16_random_fp2(rvalue, CurveIsogeny, rand);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
-		SIDH_clear_words((void *)rvalue, 2 * NWORDS_FIELD);
+		oqs_sidh_cln16_clear_words((void *)rvalue, 2 * NWORDS_FIELD);
 		return Status;
 	}
 

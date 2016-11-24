@@ -160,24 +160,24 @@ extern CurveIsogenyStaticData CurveIsogeny_SIDHp751;
 
 // Dynamic allocation of memory for curve isogeny structure.
 // Returns NULL on error.
-PCurveIsogenyStruct SIDH_curve_allocate(PCurveIsogenyStaticData CurveData);
+PCurveIsogenyStruct oqs_sidh_cln16_curve_allocate(PCurveIsogenyStaticData CurveData);
 
 // Initialize curve isogeny structure pCurveIsogeny with static data extracted from pCurveIsogenyData.
-// This needs to be called after allocating memory for "pCurveIsogeny" using SIDH_curve_allocate().
-SIDH_CRYPTO_STATUS SIDH_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand, PCurveIsogenyStaticData pCurveIsogenyData);
+// This needs to be called after allocating memory for "pCurveIsogeny" using oqs_sidh_cln16_curve_allocate().
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand, PCurveIsogenyStaticData pCurveIsogenyData);
 
 // Free memory for curve isogeny structure
-void SIDH_curve_free(PCurveIsogenyStruct pCurveIsogeny);
+void oqs_sidh_cln16_curve_free(PCurveIsogenyStruct pCurveIsogeny);
 
 // Output random values in the range [1, order-1] in little endian format that can be used as private keys.
-SIDH_CRYPTO_STATUS SIDH_random_mod_order(digit_t *random_digits, unsigned int AliceOrBob, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand);
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_mod_order(digit_t *random_digits, unsigned int AliceOrBob, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand);
 
 // Output random values in the range [1, BigMont_order-1] in little endian format that can be used as private keys
 // to compute scalar multiplications using the elliptic curve BigMont.
-SIDH_CRYPTO_STATUS SIDH_random_BigMont_mod_order(digit_t *random_digits, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand);
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_BigMont_mod_order(digit_t *random_digits, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand);
 
 // Clear "nwords" digits from memory
-void SIDH_clear_words(void *mem, digit_t nwords);
+void oqs_sidh_cln16_clear_words(void *mem, digit_t nwords);
 
 /*********************** Key exchange API ***********************/
 
@@ -185,15 +185,15 @@ void SIDH_clear_words(void *mem, digit_t nwords);
 // It produces a private key pPrivateKeyA and computes the public key pPublicKeyA.
 // The private key is an even integer in the range [2, oA-2], where oA = 2^372 (i.e., 372 bits in total).
 // The public key consists of 3 elements in GF(p751^2), i.e., 564 bytes.
-// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
-SIDH_CRYPTO_STATUS SIDH_KeyGeneration_A(unsigned char *pPrivateKeyA, unsigned char *pPublicKeyA, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
+// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_KeyGeneration_A(unsigned char *pPrivateKeyA, unsigned char *pPublicKeyA, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
 
 // Bob's key-pair generation
 // It produces a private key pPrivateKeyB and computes the public key pPublicKeyB.
 // The private key is an integer in the range [1, oB-1], where oA = 3^239 (i.e., 379 bits in total).
 // The public key consists of 3 elements in GF(p751^2), i.e., 564 bytes.
-// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
-SIDH_CRYPTO_STATUS SIDH_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned char *pPublicKeyB, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
+// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned char *pPublicKeyB, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
 
 // Alice's shared secret generation
 // It produces a shared secret key pSharedSecretA using her secret key pPrivateKeyA and Bob's public key pPublicKeyB
@@ -201,8 +201,8 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned ch
 //         Bob's pPublicKeyB consists of 3 elements in GF(p751^2), i.e., 564 bytes.
 //         "validate" flag that indicates if Alice must validate Bob's public key.
 // Output: a shared secret pSharedSecretA that consists of one element in GF(p751^2), i.e., 1502 bits in total.
-// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
-SIDH_CRYPTO_STATUS SIDH_SecretAgreement_A(unsigned char *pPrivateKeyA, unsigned char *pPublicKeyB, unsigned char *pSharedSecretA, bool validate, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
+// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_SecretAgreement_A(unsigned char *pPrivateKeyA, unsigned char *pPublicKeyB, unsigned char *pSharedSecretA, bool validate, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
 
 // Bob's shared secret generation
 // It produces a shared secret key pSharedSecretB using his secret key pPrivateKeyB and Alice's public key pPublicKeyA
@@ -210,8 +210,8 @@ SIDH_CRYPTO_STATUS SIDH_SecretAgreement_A(unsigned char *pPrivateKeyA, unsigned 
 //         Alice's pPublicKeyA consists of 3 elements in GF(p751^2), i.e., 564 bytes.
 //         "validate" flag that indicates if Bob must validate Alice's public key.
 // Output: a shared secret pSharedSecretB that consists of one element in GF(p751^2), i.e., 1502 bits in total.
-// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
-SIDH_CRYPTO_STATUS SIDH_SecretAgreement_B(unsigned char *pPrivateKeyB, unsigned char *pPublicKeyA, unsigned char *pSharedSecretB, bool validate, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
+// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_SecretAgreement_B(unsigned char *pPrivateKeyB, unsigned char *pPublicKeyA, unsigned char *pSharedSecretB, bool validate, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
 
 /*********************** Scalar multiplication API using BigMont ***********************/
 
@@ -219,8 +219,8 @@ SIDH_CRYPTO_STATUS SIDH_SecretAgreement_B(unsigned char *pPrivateKeyB, unsigned 
 // Inputs: x, the affine x-coordinate of a point P on BigMont: y^2=x^3+A*x^2+x,
 //         scalar m.
 // Output: xout, the affine x-coordinate of m*(x:1)
-// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
-SIDH_CRYPTO_STATUS BigMont_ladder(unsigned char *x, digit_t *m, unsigned char *xout, PCurveIsogenyStruct CurveIsogeny);
+// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_BigMont_ladder(unsigned char *x, digit_t *m, unsigned char *xout, PCurveIsogenyStruct CurveIsogeny);
 
 
 // Encoding of keys for isogeny system "SIDHp751" (wire format):

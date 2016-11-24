@@ -20,12 +20,12 @@ extern const unsigned int splits_Bob[SIDH_MAX_Bob];
 #include "generic/fp_generic.c"
 #endif
 
-SIDH_CRYPTO_STATUS SIDH_KeyGeneration_A(unsigned char *pPrivateKeyA, unsigned char *pPublicKeyA, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_KeyGeneration_A(unsigned char *pPrivateKeyA, unsigned char *pPublicKeyA, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand) {
 	// Alice's key-pair generation
 	// It produces a private key pPrivateKeyA and computes the public key pPublicKeyA.
 	// The private key is an even integer in the range [2, oA-2], where oA = 2^372 (i.e., 372 bits in total).
 	// The public key consists of 3 elements in GF(p751^2), i.e., 564 bytes.
-	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int owords = NBITS_TO_NWORDS(CurveIsogeny->owordbits), pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
 	oqs_sidh_cln16_point_basefield_t P;
 	oqs_sidh_cln16_point_proj_t R, phiP = {0}, phiQ = {0}, phiD = {0}, pts[SIDH_MAX_INT_POINTS_ALICE];
@@ -39,9 +39,9 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_A(unsigned char *pPrivateKeyA, unsigned ch
 	}
 
 	// Choose a random even number in the range [2, oA-2] as secret key for Alice
-	Status = SIDH_random_mod_order((digit_t *)pPrivateKeyA, SIDH_ALICE, CurveIsogeny, rand);
+	Status = oqs_sidh_cln16_random_mod_order((digit_t *)pPrivateKeyA, SIDH_ALICE, CurveIsogeny, rand);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
-		SIDH_clear_words((void *)pPrivateKeyA, owords);
+		oqs_sidh_cln16_clear_words((void *)pPrivateKeyA, owords);
 		return Status;
 	}
 
@@ -50,7 +50,7 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_A(unsigned char *pPrivateKeyA, unsigned ch
 
 	Status = oqs_sidh_cln16_secret_pt(P, (digit_t *)pPrivateKeyA, SIDH_ALICE, R, CurveIsogeny);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
-		SIDH_clear_words((void *)pPrivateKeyA, owords);
+		oqs_sidh_cln16_clear_words((void *)pPrivateKeyA, owords);
 		return Status;
 	}
 
@@ -113,25 +113,25 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_A(unsigned char *pPrivateKeyA, unsigned ch
 	oqs_sidh_cln16_from_fp2mont(phiD->X, ((oqs_sidh_cln16_f2elm_t *)PublicKeyA)[2]);
 
 // Cleanup:
-	SIDH_clear_words((void *)R, 2 * 2 * pwords);
-	SIDH_clear_words((void *)phiP, 2 * 2 * pwords);
-	SIDH_clear_words((void *)phiQ, 2 * 2 * pwords);
-	SIDH_clear_words((void *)phiD, 2 * 2 * pwords);
-	SIDH_clear_words((void *)pts, SIDH_MAX_INT_POINTS_ALICE * 2 * 2 * pwords);
-	SIDH_clear_words((void *)A, 2 * pwords);
-	SIDH_clear_words((void *)C, 2 * pwords);
-	SIDH_clear_words((void *)coeff, 5 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)R, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)phiP, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)phiQ, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)phiD, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)pts, SIDH_MAX_INT_POINTS_ALICE * 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)A, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)C, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)coeff, 5 * 2 * pwords);
 
 	return Status;
 }
 
 
-SIDH_CRYPTO_STATUS SIDH_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned char *pPublicKeyB, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned char *pPublicKeyB, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand) {
 	// Bob's key-pair generation
 	// It produces a private key pPrivateKeyB and computes the public key pPublicKeyB.
 	// The private key is an integer in the range [1, oB-1], where oA = 3^239 (i.e., 379 bits in total).
 	// The public key consists of 3 elements in GF(p751^2), i.e., 564 bytes.
-	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int owords = NBITS_TO_NWORDS(CurveIsogeny->owordbits), pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
 	oqs_sidh_cln16_point_basefield_t P;
 	oqs_sidh_cln16_point_proj_t R, phiP = {0}, phiQ = {0}, phiD = {0}, pts[SIDH_MAX_INT_POINTS_BOB];
@@ -145,9 +145,9 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned ch
 	}
 
 	// Choose a random number equivalent to 0 (mod 3) in the range [3, oB-3] as secret key for Bob
-	Status = SIDH_random_mod_order((digit_t *)pPrivateKeyB, SIDH_BOB, CurveIsogeny, rand);
+	Status = oqs_sidh_cln16_random_mod_order((digit_t *)pPrivateKeyB, SIDH_BOB, CurveIsogeny, rand);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
-		SIDH_clear_words((void *)pPrivateKeyB, owords);
+		oqs_sidh_cln16_clear_words((void *)pPrivateKeyB, owords);
 		return Status;
 	}
 
@@ -156,7 +156,7 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned ch
 
 	Status = oqs_sidh_cln16_secret_pt(P, (digit_t *)pPrivateKeyB, SIDH_BOB, R, CurveIsogeny);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
-		SIDH_clear_words((void *)pPrivateKeyB, owords);
+		oqs_sidh_cln16_clear_words((void *)pPrivateKeyB, owords);
 		return Status;
 	}
 
@@ -214,26 +214,26 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned ch
 	oqs_sidh_cln16_from_fp2mont(phiD->X, ((oqs_sidh_cln16_f2elm_t *)PublicKeyB)[2]);
 
 // Cleanup:
-	SIDH_clear_words((void *)R, 2 * 2 * pwords);
-	SIDH_clear_words((void *)phiP, 2 * 2 * pwords);
-	SIDH_clear_words((void *)phiQ, 2 * 2 * pwords);
-	SIDH_clear_words((void *)phiD, 2 * 2 * pwords);
-	SIDH_clear_words((void *)pts, SIDH_MAX_INT_POINTS_BOB * 2 * 2 * pwords);
-	SIDH_clear_words((void *)A, 2 * pwords);
-	SIDH_clear_words((void *)C, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)R, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)phiP, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)phiQ, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)phiD, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)pts, SIDH_MAX_INT_POINTS_BOB * 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)A, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)C, 2 * pwords);
 
 	return Status;
 }
 
 
-SIDH_CRYPTO_STATUS SIDH_SecretAgreement_A(unsigned char *pPrivateKeyA, unsigned char *pPublicKeyB, unsigned char *pSharedSecretA, bool validate, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_SecretAgreement_A(unsigned char *pPrivateKeyA, unsigned char *pPublicKeyB, unsigned char *pSharedSecretA, bool validate, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand) {
 	// Alice's shared secret generation
 	// It produces a shared secret key pSharedSecretA using her secret key pPrivateKeyA and Bob's public key pPublicKeyB
 	// Inputs: Alice's pPrivateKeyA is an even integer in the range [2, oA-2], where oA = 2^372 (i.e., 372 bits in total).
 	//         Bob's pPublicKeyB consists of 3 elements in GF(p751^2), i.e., 564 bytes.
 	//         "validate" flag that indicates if Alice must validate Bob's public key.
 	// Output: a shared secret pSharedSecretA that consists of one element in GF(p751^2), i.e., 1502 bits in total.
-	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_ALICE], npts = 0;
 	oqs_sidh_cln16_point_proj_t R, pts[SIDH_MAX_INT_POINTS_ALICE];
@@ -299,25 +299,25 @@ SIDH_CRYPTO_STATUS SIDH_SecretAgreement_A(unsigned char *pPrivateKeyA, unsigned 
 	oqs_sidh_cln16_from_fp2mont(jinv, (oqs_sidh_cln16_felm_t *)pSharedSecretA);     // Converting back to standard representation
 
 // Cleanup:
-	SIDH_clear_words((void *)R, 2 * 2 * pwords);
-	SIDH_clear_words((void *)pts, SIDH_MAX_INT_POINTS_ALICE * 2 * 2 * pwords);
-	SIDH_clear_words((void *)A, 2 * pwords);
-	SIDH_clear_words((void *)C, 2 * pwords);
-	SIDH_clear_words((void *)jinv, 2 * pwords);
-	SIDH_clear_words((void *)coeff, 5 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)R, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)pts, SIDH_MAX_INT_POINTS_ALICE * 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)A, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)C, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)jinv, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)coeff, 5 * 2 * pwords);
 
 	return Status;
 }
 
 
-SIDH_CRYPTO_STATUS SIDH_SecretAgreement_B(unsigned char *pPrivateKeyB, unsigned char *pPublicKeyA, unsigned char *pSharedSecretB, bool validate, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_SecretAgreement_B(unsigned char *pPrivateKeyB, unsigned char *pPublicKeyA, unsigned char *pSharedSecretB, bool validate, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand) {
 	// Bob's shared secret generation
 	// It produces a shared secret key pSharedSecretB using his secret key pPrivateKeyB and Alice's public key pPublicKeyA
 	// Inputs: Bob's pPrivateKeyB is an integer in the range [1, oB-1], where oA = 3^239 (i.e., 379 bits in total).
 	//         Alice's pPublicKeyA consists of 3 elements in GF(p751^2), i.e., 564 bytes.
 	//         "validate" flag that indicates if Bob must validate Alice's public key.
 	// Output: a shared secret pSharedSecretB that consists of one element in GF(p751^2), i.e., 1502 bits in total.
-	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_BOB], npts = 0;
 	oqs_sidh_cln16_point_proj_t R, pts[SIDH_MAX_INT_POINTS_BOB];
@@ -382,11 +382,11 @@ SIDH_CRYPTO_STATUS SIDH_SecretAgreement_B(unsigned char *pPrivateKeyB, unsigned 
 	oqs_sidh_cln16_from_fp2mont(jinv, (oqs_sidh_cln16_felm_t *)pSharedSecretB);     // Converting back to standard representation
 
 // Cleanup:
-	SIDH_clear_words((void *)R, 2 * 2 * pwords);
-	SIDH_clear_words((void *)pts, SIDH_MAX_INT_POINTS_BOB * 2 * 2 * pwords);
-	SIDH_clear_words((void *)A, 2 * pwords);
-	SIDH_clear_words((void *)C, 2 * pwords);
-	SIDH_clear_words((void *)jinv, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)R, 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)pts, SIDH_MAX_INT_POINTS_BOB * 2 * 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)A, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)C, 2 * pwords);
+	oqs_sidh_cln16_clear_words((void *)jinv, 2 * pwords);
 
 	return Status;
 }

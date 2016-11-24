@@ -186,7 +186,7 @@ void oqs_sidh_cln16_ladder(oqs_sidh_cln16_felm_t x, digit_t *m, oqs_sidh_cln16_p
 	//         order_bits = subgroup order bitlength
 	//         order_fullbits = smallest multiple of 32 larger than the order bitlength
 	// Output: Q = m*(x:1)
-	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	unsigned int bit = 0, owords = NBITS_TO_NWORDS(order_fullbits);
 	digit_t mask;
 	int i;
@@ -213,12 +213,12 @@ void oqs_sidh_cln16_ladder(oqs_sidh_cln16_felm_t x, digit_t *m, oqs_sidh_cln16_p
 }
 
 
-SIDH_CRYPTO_STATUS BigMont_ladder(unsigned char *x, digit_t *m, unsigned char *xout, PCurveIsogenyStruct CurveIsogeny) {
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_BigMont_ladder(unsigned char *x, digit_t *m, unsigned char *xout, PCurveIsogenyStruct CurveIsogeny) {
 	// BigMont's scalar multiplication using the Montgomery ladder
 	// Inputs: x, the affine x-coordinate of a point P on BigMont: y^2=x^3+A*x^2+x,
 	//         scalar m.
 	// Output: xout, the affine x-coordinate of m*(x:1)
-	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+	// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 	oqs_sidh_cln16_point_basefield_proj_t P1, P2;
 	digit_t scalar[BIGMONT_NWORDS_ORDER];
 	oqs_sidh_cln16_felm_t X, A24 = {0};

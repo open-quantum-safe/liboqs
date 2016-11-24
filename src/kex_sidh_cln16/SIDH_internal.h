@@ -126,7 +126,7 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) {
 
 // 64x64-bit multiplication
 #define MUL128(multiplier, multiplicand, product)                                                 \
-    mp_mul((digit_t*)&(multiplier), (digit_t*)&(multiplicand), (digit_t*)&(product), NWORDS_FIELD/2);
+    oqs_sidh_cln16_mp_mul((digit_t*)&(multiplier), (digit_t*)&(multiplicand), (digit_t*)&(product), NWORDS_FIELD/2);
 
 // 128-bit addition, inputs < 2^127
 #define ADD128(addend1, addend2, addition)                                                        \
@@ -225,9 +225,9 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) {
 
 // Multiprecision multiplication selection
 #if !defined(SIDH_ASM) && (TARGET == TARGET_AMD64)
-#define oqs_sidh_cln16_mp_mul_comba         mp_mul
+#define oqs_sidh_cln16_mp_mul_comba         oqs_sidh_cln16_mp_mul
 #else
-#define oqs_sidh_cln16_mp_mul_schoolbook    mp_mul
+#define oqs_sidh_cln16_mp_mul_schoolbook    oqs_sidh_cln16_mp_mul
 #endif
 
 
@@ -425,11 +425,11 @@ void oqs_sidh_cln16_get_A(oqs_sidh_cln16_f2elm_t xP, oqs_sidh_cln16_f2elm_t xQ, 
 /************ Public key validation functions *************/
 
 // Validation of Alice's public key (ran by Bob)
-// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKA(oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_publickey_t PKA, bool *valid, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
 
 // Validation of Bob's public key (ran by Alice)
-// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
+// CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKB(oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_publickey_t PKB, bool *valid, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
 
 

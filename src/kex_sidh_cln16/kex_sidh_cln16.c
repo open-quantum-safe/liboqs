@@ -25,12 +25,12 @@ OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand) {
 	}
 
 	// Curve isogeny system initialization
-	PCurveIsogenyStruct curveIsogeny = SIDH_curve_allocate(&CurveIsogeny_SIDHp751);
+	PCurveIsogenyStruct curveIsogeny = oqs_sidh_cln16_curve_allocate(&CurveIsogeny_SIDHp751);
 	if (curveIsogeny == NULL) {
 		return NULL;
 	}
-	if (SIDH_curve_initialize(curveIsogeny, rand, &CurveIsogeny_SIDHp751) != SIDH_CRYPTO_SUCCESS) {
-		SIDH_curve_free(curveIsogeny);
+	if (oqs_sidh_cln16_curve_initialize(curveIsogeny, rand, &CurveIsogeny_SIDHp751) != SIDH_CRYPTO_SUCCESS) {
+		oqs_sidh_cln16_curve_free(curveIsogeny);
 		return NULL;
 	}
 	k->ctx = curveIsogeny;
@@ -68,7 +68,7 @@ int OQS_KEX_sidh_cln16_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_ms
 		goto err;
 	}
 
-	if (SIDH_KeyGeneration_A((unsigned char *) *alice_priv, (unsigned char *) *alice_msg, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
+	if (oqs_sidh_cln16_KeyGeneration_A((unsigned char *) *alice_priv, (unsigned char *) *alice_msg, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
 		goto err;
 	}
 	*alice_msg_len = SIDH_PUBKEY_LEN;
@@ -108,10 +108,10 @@ int OQS_KEX_sidh_cln16_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t al
 		goto err;
 	}
 
-	if (SIDH_KeyGeneration_B((unsigned char *) bob_priv, (unsigned char *) *bob_msg, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
+	if (oqs_sidh_cln16_KeyGeneration_B((unsigned char *) bob_priv, (unsigned char *) *bob_msg, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
 		goto err;
 	}
-	if (SIDH_SecretAgreement_B((unsigned char *) bob_priv, (unsigned char *) alice_msg, (unsigned char *) *key, 0, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
+	if (oqs_sidh_cln16_SecretAgreement_B((unsigned char *) bob_priv, (unsigned char *) alice_msg, (unsigned char *) *key, 0, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
 		goto err;
 	}
 
@@ -147,7 +147,7 @@ int OQS_KEX_sidh_cln16_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t
 		goto err;
 	}
 
-	if (SIDH_SecretAgreement_A((unsigned char *) alice_priv, (unsigned char *) bob_msg, (unsigned char *) *key, false, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
+	if (oqs_sidh_cln16_SecretAgreement_A((unsigned char *) alice_priv, (unsigned char *) bob_msg, (unsigned char *) *key, false, k->ctx, k->rand) != SIDH_CRYPTO_SUCCESS) {
 		goto err;
 	}
 
@@ -175,7 +175,7 @@ void OQS_KEX_sidh_cln16_free(OQS_KEX *k) {
 	if (!k) {
 		return;
 	}
-	SIDH_curve_free((PCurveIsogenyStruct) k->ctx);
+	oqs_sidh_cln16_curve_free((PCurveIsogenyStruct) k->ctx);
 	k->ctx = NULL;
 	free(k->method_name);
 	k->method_name = NULL;
