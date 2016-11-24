@@ -35,34 +35,34 @@ extern "C" {
 
 // SIDH's basic element definitions and point representations
 
-typedef digit_t felm_t[NWORDS_FIELD];                             // Datatype for representing 751-bit field elements (768-bit max.)
-typedef digit_t dfelm_t[2 * NWORDS_FIELD];                        // Datatype for representing double-precision 2x751-bit field elements (2x768-bit max.)
-typedef felm_t  f2elm_t[2];                                       // Datatype for representing quadratic extension field elements GF(p751^2)
-typedef f2elm_t publickey_t[3];                                   // Datatype for representing public keys equivalent to three GF(p751^2) elements
+typedef digit_t oqs_sidh_cln16_felm_t[NWORDS_FIELD];                             // Datatype for representing 751-bit field elements (768-bit max.)
+typedef digit_t oqs_sidh_cln16_dfelm_t[2 * NWORDS_FIELD];                        // Datatype for representing double-precision 2x751-bit field elements (2x768-bit max.)
+typedef oqs_sidh_cln16_felm_t  oqs_sidh_cln16_f2elm_t[2];                        // Datatype for representing quadratic extension field elements GF(p751^2)
+typedef oqs_sidh_cln16_f2elm_t oqs_sidh_cln16_publickey_t[3];                    // Datatype for representing public keys equivalent to three GF(p751^2) elements
 
 typedef struct {
-	f2elm_t x;
-	f2elm_t y;
-} point_affine;            // Point representation in affine coordinates on Montgomery curve.
-typedef point_affine point_t[1];
+	oqs_sidh_cln16_f2elm_t x;
+	oqs_sidh_cln16_f2elm_t y;
+} oqs_sidh_cln16_point_affine;            // Point representation in affine coordinates on Montgomery curve.
+typedef oqs_sidh_cln16_point_affine oqs_sidh_cln16_point_t[1];
 
 typedef struct {
-	f2elm_t X;
-	f2elm_t Z;
-} point_proj;              // Point representation in projective XZ Montgomery coordinates.
-typedef point_proj point_proj_t[1];
+	oqs_sidh_cln16_f2elm_t X;
+	oqs_sidh_cln16_f2elm_t Z;
+} oqs_sidh_cln16_point_proj;              // Point representation in projective XZ Montgomery coordinates.
+typedef oqs_sidh_cln16_point_proj oqs_sidh_cln16_point_proj_t[1];
 
 typedef struct {
-	felm_t x;
-	felm_t y;
-} point_basefield_affine;    // Point representation in affine coordinates on Montgomery curve over the base field.
-typedef point_basefield_affine point_basefield_t[1];
+	oqs_sidh_cln16_felm_t x;
+	oqs_sidh_cln16_felm_t y;
+} oqs_sidh_cln16_point_basefield_affine;    // Point representation in affine coordinates on Montgomery curve over the base field.
+typedef oqs_sidh_cln16_point_basefield_affine oqs_sidh_cln16_point_basefield_t[1];
 
 typedef struct {
-	felm_t X;
-	felm_t Z;
-} point_basefield_proj;      // Point representation in projective XZ Montgomery coordinates over the base field.
-typedef point_basefield_proj point_basefield_proj_t[1];
+	oqs_sidh_cln16_felm_t X;
+	oqs_sidh_cln16_felm_t Z;
+} oqs_sidh_cln16_point_basefield_proj;      // Point representation in projective XZ Montgomery coordinates over the base field.
+typedef oqs_sidh_cln16_point_basefield_proj oqs_sidh_cln16_point_basefield_proj_t[1];
 
 
 // Macro definitions
@@ -101,7 +101,7 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) {
 
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo)                                                     \
-    digit_x_digit((multiplier), (multiplicand), &(lo));
+    oqs_sidh_cln16_digit_x_digit((multiplier), (multiplicand), &(lo));
 
 // Digit addition with carry
 #define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                         \
@@ -130,13 +130,13 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) {
 
 // 128-bit addition, inputs < 2^127
 #define ADD128(addend1, addend2, addition)                                                        \
-    mp_add((digit_t*)(addend1), (digit_t*)(addend2), (digit_t*)(addition), NWORDS_FIELD);
+    oqs_sidh_cln16_mp_add((digit_t*)(addend1), (digit_t*)(addend2), (digit_t*)(addition), NWORDS_FIELD);
 
 // 128-bit addition with output carry
 #define ADC128(addend1, addend2, carry, addition)                                                 \
-    (carry) = mp_add((digit_t*)(addend1), (digit_t*)(addend2), (digit_t*)(addition), NWORDS_FIELD);
+    (carry) = oqs_sidh_cln16_mp_add((digit_t*)(addend1), (digit_t*)(addend2), (digit_t*)(addition), NWORDS_FIELD);
 
-#elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_WIN)
+#elif (TARGET == TARGET_AMD64 && defined(WINDOWS))
 
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo)                                                     \
@@ -192,7 +192,7 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) {
       MUL128(multiplier, multiplicand, product);                       \
       ADC128(addend, product, carry, result); }
 
-#elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_LINUX)
+#elif (TARGET == TARGET_AMD64)
 
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo)                                                     \
@@ -225,9 +225,9 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) {
 
 // Multiprecision multiplication selection
 #if !defined(SIDH_ASM) && (TARGET == TARGET_AMD64)
-#define mp_mul_comba         mp_mul
+#define oqs_sidh_cln16_mp_mul_comba         mp_mul
 #else
-#define mp_mul_schoolbook    mp_mul
+#define oqs_sidh_cln16_mp_mul_schoolbook    mp_mul
 #endif
 
 
@@ -236,201 +236,201 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) {
 /************* Multiprecision functions **************/
 
 // Copy wordsize digits, c = a, where lng(a) = nwords
-void copy_words(digit_t *a, digit_t *c, unsigned int nwords);
+void oqs_sidh_cln16_copy_words(digit_t *a, digit_t *c, unsigned int nwords);
 
 // Multiprecision addition, c = a+b, where lng(a) = lng(b) = nwords. Returns the carry bit
-extern unsigned int mp_add(digit_t *a, digit_t *b, digit_t *c, unsigned int nwords);
+extern unsigned int oqs_sidh_cln16_mp_add(digit_t *a, digit_t *b, digit_t *c, unsigned int nwords);
 
 // Multiprecision subtraction, c = a-b, where lng(a) = lng(b) = nwords. Returns the borrow bit
-extern unsigned int mp_sub(digit_t *a, digit_t *b, digit_t *c, unsigned int nwords);
+extern unsigned int oqs_sidh_cln16_mp_sub(digit_t *a, digit_t *b, digit_t *c, unsigned int nwords);
 
 // Multiprecision right shift by one
-void mp_shiftr1(digit_t *x, unsigned int nwords);
+void oqs_sidh_cln16_mp_shiftr1(digit_t *x, unsigned int nwords);
 
 // Multiprecision left right shift by one
-void mp_shiftl1(digit_t *x, unsigned int nwords);
+void oqs_sidh_cln16_mp_shiftl1(digit_t *x, unsigned int nwords);
 
 // Digit multiplication, digit * digit -> 2-digit result
-void digit_x_digit(digit_t a, digit_t b, digit_t *c);
+void oqs_sidh_cln16_digit_x_digit(digit_t a, digit_t b, digit_t *c);
 
 // Multiprecision schoolbook multiply, c = a*b, where lng(a) = lng(b) = nwords.
-void mp_mul_schoolbook(digit_t *a, digit_t *b, digit_t *c, unsigned int nwords);
+void oqs_sidh_cln16_mp_mul_schoolbook(digit_t *a, digit_t *b, digit_t *c, unsigned int nwords);
 
 // Multiprecision comba multiply, c = a*b, where lng(a) = lng(b) = nwords.
-void mp_mul_comba(digit_t *a, digit_t *b, digit_t *c, unsigned int nwords);
+void oqs_sidh_cln16_mp_mul_comba(digit_t *a, digit_t *b, digit_t *c, unsigned int nwords);
 
 /************ Field arithmetic functions *************/
 
 // Copy of a field element, c = a
-void fpcopy751(felm_t a, felm_t c);
+void oqs_sidh_cln16_fpcopy751(oqs_sidh_cln16_felm_t a, oqs_sidh_cln16_felm_t c);
 
 // Zeroing a field element, a = 0
-void fpzero751(felm_t a);
+void oqs_sidh_cln16_fpzero751(oqs_sidh_cln16_felm_t a);
 
 // Modular addition, c = a+b mod p751
-extern void fpadd751(digit_t *a, digit_t *b, digit_t *c);
-extern void fpadd751_asm(digit_t *a, digit_t *b, digit_t *c);
+extern void oqs_sidh_cln16_fpadd751(digit_t *a, digit_t *b, digit_t *c);
+extern void oqs_sidh_cln16_fpadd751_asm(digit_t *a, digit_t *b, digit_t *c);
 
 // Modular subtraction, c = a-b mod p751
-extern void fpsub751(digit_t *a, digit_t *b, digit_t *c);
-extern void fpsub751_asm(digit_t *a, digit_t *b, digit_t *c);
+extern void oqs_sidh_cln16_fpsub751(digit_t *a, digit_t *b, digit_t *c);
+extern void oqs_sidh_cln16_fpsub751_asm(digit_t *a, digit_t *b, digit_t *c);
 
 // Modular negation, a = -a mod p751
-extern void fpneg751(digit_t *a);
+extern void oqs_sidh_cln16_fpneg751(digit_t *a);
 
 // Modular division by two, c = a/2 mod p751.
-void fpdiv2_751(digit_t *a, digit_t *c);
+void oqs_sidh_cln16_fpdiv2_751(digit_t *a, digit_t *c);
 
 // Modular correction to reduce field element a in [0, 2*p751-1] to [0, p751-1].
-void fpcorrection751(digit_t *a);
+void oqs_sidh_cln16_fpcorrection751(digit_t *a);
 
 // 751-bit Montgomery reduction, c = a mod p
-void rdc_mont(digit_t *a, digit_t *c);
+void oqs_sidh_cln16_rdc_mont(digit_t *a, digit_t *c);
 
 // Field multiplication using Montgomery arithmetic, c = a*b*R^-1 mod p751, where R=2^768
-void fpmul751_mont(felm_t a, felm_t b, felm_t c);
-void mul751_asm(felm_t a, felm_t b, dfelm_t c);
-void rdc751_asm(dfelm_t ma, dfelm_t mc);
+void oqs_sidh_cln16_fpmul751_mont(oqs_sidh_cln16_felm_t a, oqs_sidh_cln16_felm_t b, oqs_sidh_cln16_felm_t c);
+void oqs_sidh_cln16_mul751_asm(oqs_sidh_cln16_felm_t a, oqs_sidh_cln16_felm_t b, oqs_sidh_cln16_dfelm_t c);
+void oqs_sidh_cln16_rdc751_asm(oqs_sidh_cln16_dfelm_t ma, oqs_sidh_cln16_dfelm_t mc);
 
 // Field squaring using Montgomery arithmetic, c = a*b*R^-1 mod p751, where R=2^768
-void fpsqr751_mont(felm_t ma, felm_t mc);
+void oqs_sidh_cln16_fpsqr751_mont(oqs_sidh_cln16_felm_t ma, oqs_sidh_cln16_felm_t mc);
 
 // Conversion to Montgomery representation
-void to_mont(felm_t a, felm_t mc);
+void oqs_sidh_cln16_to_mont(oqs_sidh_cln16_felm_t a, oqs_sidh_cln16_felm_t mc);
 
 // Conversion from Montgomery representation to standard representation
-void from_mont(felm_t ma, felm_t c);
+void oqs_sidh_cln16_from_mont(oqs_sidh_cln16_felm_t ma, oqs_sidh_cln16_felm_t c);
 
 // Field inversion, a = a^-1 in GF(p751)
-void fpinv751_mont(felm_t a);
+void oqs_sidh_cln16_fpinv751_mont(oqs_sidh_cln16_felm_t a);
 
 /************ GF(p^2) arithmetic functions *************/
 
 // Copy of a GF(p751^2) element, c = a
-void fp2copy751(f2elm_t a, f2elm_t c);
+void oqs_sidh_cln16_fp2copy751(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2elm_t c);
 
 // Zeroing a GF(p751^2) element, a = 0
-void fp2zero751(f2elm_t a);
+void oqs_sidh_cln16_fp2zero751(oqs_sidh_cln16_f2elm_t a);
 
 // GF(p751^2) negation, a = -a in GF(p751^2)
-void fp2neg751(f2elm_t a);
+void oqs_sidh_cln16_fp2neg751(oqs_sidh_cln16_f2elm_t a);
 
 // GF(p751^2) addition, c = a+b in GF(p751^2)
-extern void fp2add751(f2elm_t a, f2elm_t b, f2elm_t c);
+extern void oqs_sidh_cln16_fp2add751(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2elm_t b, oqs_sidh_cln16_f2elm_t c);
 
 // GF(p751^2) subtraction, c = a-b in GF(p751^2)
-extern void fp2sub751(f2elm_t a, f2elm_t b, f2elm_t c);
+extern void oqs_sidh_cln16_fp2sub751(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2elm_t b, oqs_sidh_cln16_f2elm_t c);
 
 // GF(p751^2) division by two, c = a/2  in GF(p751^2)
-void fp2div2_751(f2elm_t a, f2elm_t c);
+void oqs_sidh_cln16_fp2div2_751(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2elm_t c);
 
 // Modular correction, a = a in GF(p751^2)
-void fp2correction751(f2elm_t a);
+void oqs_sidh_cln16_fp2correction751(oqs_sidh_cln16_f2elm_t a);
 
 // GF(p751^2) squaring using Montgomery arithmetic, c = a^2 in GF(p751^2)
-void fp2sqr751_mont(f2elm_t a, f2elm_t c);
+void oqs_sidh_cln16_fp2sqr751_mont(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2elm_t c);
 
 // GF(p751^2) multiplication using Montgomery arithmetic, c = a*b in GF(p751^2)
-void fp2mul751_mont(f2elm_t a, f2elm_t b, f2elm_t c);
+void oqs_sidh_cln16_fp2mul751_mont(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2elm_t b, oqs_sidh_cln16_f2elm_t c);
 
 // Conversion of a GF(p751^2) element to Montgomery representation
-void to_fp2mont(f2elm_t a, f2elm_t mc);
+void oqs_sidh_cln16_to_fp2mont(oqs_sidh_cln16_f2elm_t a, oqs_sidh_cln16_f2elm_t mc);
 
 // Conversion of a GF(p751^2) element from Montgomery representation to standard representation
-void from_fp2mont(f2elm_t ma, f2elm_t c);
+void oqs_sidh_cln16_from_fp2mont(oqs_sidh_cln16_f2elm_t ma, oqs_sidh_cln16_f2elm_t c);
 
 // GF(p751^2) inversion using Montgomery arithmetic, a = (a0-i*a1)/(a0^2+a1^2)
-void fp2inv751_mont(f2elm_t a);
+void oqs_sidh_cln16_fp2inv751_mont(oqs_sidh_cln16_f2elm_t a);
 
 // Select either x or y depending on value of option
-void select_f2elm(f2elm_t x, f2elm_t y, f2elm_t z, digit_t option);
+void oqs_sidh_cln16_select_f2elm(oqs_sidh_cln16_f2elm_t x, oqs_sidh_cln16_f2elm_t y, oqs_sidh_cln16_f2elm_t z, digit_t option);
 
 /************ Elliptic curve and isogeny functions *************/
 
 // Check if curve isogeny structure is NULL
-bool is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny);
+bool oqs_sidh_cln16_is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny);
 
 // Swap points over the base field
-void swap_points_basefield(point_basefield_proj_t P, point_basefield_proj_t Q, digit_t option);
+void oqs_sidh_cln16_swap_points_basefield(oqs_sidh_cln16_point_basefield_proj_t P, oqs_sidh_cln16_point_basefield_proj_t Q, digit_t option);
 
 // Swap points
-void swap_points(point_proj_t P, point_proj_t Q, digit_t option);
+void oqs_sidh_cln16_swap_points(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q, digit_t option);
 
 // Computes the j-invariant of a Montgomery curve with projective constant.
-void j_inv(f2elm_t A, f2elm_t C, f2elm_t jinv);
+void oqs_sidh_cln16_j_inv(oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_f2elm_t C, oqs_sidh_cln16_f2elm_t jinv);
 
 // Simultaneous doubling and differential addition.
-void xDBLADD(point_proj_t P, point_proj_t Q, f2elm_t xPQ, f2elm_t A24);
+void oqs_sidh_cln16_xDBLADD(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q, oqs_sidh_cln16_f2elm_t xPQ, oqs_sidh_cln16_f2elm_t A24);
 
 // Doubling of a Montgomery point in projective coordinates (X:Z).
-void xDBL(point_proj_t P, point_proj_t Q, f2elm_t A24, f2elm_t C24);
+void oqs_sidh_cln16_xDBL(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q, oqs_sidh_cln16_f2elm_t A24, oqs_sidh_cln16_f2elm_t C24);
 
 // Computes [2^e](X:Z) on Montgomery curve with projective constant via e repeated doublings.
-void xDBLe(point_proj_t P, point_proj_t Q, f2elm_t A, f2elm_t C, int e);
+void oqs_sidh_cln16_xDBLe(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q, oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_f2elm_t C, int e);
 
 // Computes [2^e](X:Z) on Montgomery curve with projective constant via e repeated doublings and collects a few intermediate multiples.
-void xDBLe_collect(point_proj_t P, point_proj_t Q, f2elm_t A, f2elm_t C, unsigned int left_bound, const unsigned int right_bound, const unsigned int *col, point_proj_t *pts, unsigned int *pts_index, unsigned int *npts);
+void oqs_sidh_cln16_xDBLe_collect(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q, oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_f2elm_t C, unsigned int left_bound, const unsigned int right_bound, const unsigned int *col, oqs_sidh_cln16_point_proj_t *pts, unsigned int *pts_index, unsigned int *npts);
 
 // Differential addition.
-void xADD(point_proj_t P, point_proj_t Q, f2elm_t xPQ);
+void oqs_sidh_cln16_xADD(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q, oqs_sidh_cln16_f2elm_t xPQ);
 
 // Doubling of a Montgomery point in projective coordinates (X:Z) over the base field.
-void xDBL_basefield(point_basefield_proj_t P, point_basefield_proj_t Q);
+void oqs_sidh_cln16_xDBL_basefield(oqs_sidh_cln16_point_basefield_proj_t P, oqs_sidh_cln16_point_basefield_proj_t Q);
 
 // Simultaneous doubling and differential addition over the base field.
-void xDBLADD_basefield(point_basefield_proj_t P, point_basefield_proj_t Q, felm_t xPQ, felm_t A24);
+void oqs_sidh_cln16_xDBLADD_basefield(oqs_sidh_cln16_point_basefield_proj_t P, oqs_sidh_cln16_point_basefield_proj_t Q, oqs_sidh_cln16_felm_t xPQ, oqs_sidh_cln16_felm_t A24);
 
 // The Montgomery ladder
-void ladder(felm_t x, digit_t *m, point_basefield_proj_t P, point_basefield_proj_t Q, felm_t A24, unsigned int order_bits, unsigned int order_fullbits, PCurveIsogenyStruct CurveIsogeny);
+void oqs_sidh_cln16_ladder(oqs_sidh_cln16_felm_t x, digit_t *m, oqs_sidh_cln16_point_basefield_proj_t P, oqs_sidh_cln16_point_basefield_proj_t Q, oqs_sidh_cln16_felm_t A24, unsigned int order_bits, unsigned int order_fullbits, PCurveIsogenyStruct CurveIsogeny);
 
 // Computes key generation entirely in the base field
-SIDH_CRYPTO_STATUS secret_pt(point_basefield_t P, digit_t *m, unsigned int AliceOrBob, point_proj_t R, PCurveIsogenyStruct CurveIsogeny);
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_secret_pt(oqs_sidh_cln16_point_basefield_t P, digit_t *m, unsigned int AliceOrBob, oqs_sidh_cln16_point_proj_t R, PCurveIsogenyStruct CurveIsogeny);
 
 // Computes P+[m]Q via x-only arithmetic.
-SIDH_CRYPTO_STATUS ladder_3_pt(f2elm_t xP, f2elm_t xQ, f2elm_t xPQ, digit_t *m, unsigned int AliceOrBob, point_proj_t W, f2elm_t A, PCurveIsogenyStruct CurveIsogeny);
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_ladder_3_pt(oqs_sidh_cln16_f2elm_t xP, oqs_sidh_cln16_f2elm_t xQ, oqs_sidh_cln16_f2elm_t xPQ, digit_t *m, unsigned int AliceOrBob, oqs_sidh_cln16_point_proj_t W, oqs_sidh_cln16_f2elm_t A, PCurveIsogenyStruct CurveIsogeny);
 
 // Computes the corresponding 4-isogeny of a projective Montgomery point (X4:Z4) of order 4.
-void get_4_isog(point_proj_t P, f2elm_t A, f2elm_t C, f2elm_t *coeff);
+void oqs_sidh_cln16_get_4_isog(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_f2elm_t C, oqs_sidh_cln16_f2elm_t *coeff);
 
 // Evaluates the isogeny at the point (X:Z) in the domain of the isogeny
-void eval_4_isog(point_proj_t P, f2elm_t *coeff);
+void oqs_sidh_cln16_eval_4_isog(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_f2elm_t *coeff);
 
 // Computes first 4-isogeny computed by Alice.
-void first_4_isog(point_proj_t P, f2elm_t A, f2elm_t Aout, f2elm_t Cout, PCurveIsogenyStruct CurveIsogeny);
+void oqs_sidh_cln16_first_4_isog(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_f2elm_t Aout, oqs_sidh_cln16_f2elm_t Cout, PCurveIsogenyStruct CurveIsogeny);
 
 // Tripling of a Montgomery point in projective coordinates (X:Z).
-void xTPL(point_proj_t P, point_proj_t Q, f2elm_t A24, f2elm_t C24);
+void oqs_sidh_cln16_xTPL(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q, oqs_sidh_cln16_f2elm_t A24, oqs_sidh_cln16_f2elm_t C24);
 
 // Computes [3^e](X:Z) on Montgomery curve with projective constant via e repeated triplings.
-void xTPLe(point_proj_t P, point_proj_t Q, f2elm_t A, f2elm_t C, int e);
+void oqs_sidh_cln16_xTPLe(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q, oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_f2elm_t C, int e);
 
 // Computes [3^e](X:Z) on Montgomery curve with projective constant via e repeated triplings and collects a few intermediate multiples.
-void xTPLe_collect(point_proj_t P, point_proj_t Q, f2elm_t A, f2elm_t C, unsigned int left_bound, const unsigned int right_bound, const unsigned int *col, point_proj_t *pts, unsigned int *pts_index, unsigned int *npts);
+void oqs_sidh_cln16_xTPLe_collect(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q, oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_f2elm_t C, unsigned int left_bound, const unsigned int right_bound, const unsigned int *col, oqs_sidh_cln16_point_proj_t *pts, unsigned int *pts_index, unsigned int *npts);
 
 // Computes the corresponding 3-isogeny of a projective Montgomery point (X3:Z3) of order 3.
-void get_3_isog(point_proj_t P, f2elm_t A, f2elm_t C);
+void oqs_sidh_cln16_get_3_isog(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_f2elm_t C);
 
 // Computes the 3-isogeny R=phi(X:Z), given projective point (X3:Z3) of order 3 on a Montgomery curve and a point P = (X:Z).
-void eval_3_isog(point_proj_t P, point_proj_t Q);
+void oqs_sidh_cln16_eval_3_isog(oqs_sidh_cln16_point_proj_t P, oqs_sidh_cln16_point_proj_t Q);
 
 // 3-way simultaneous inversion
-void inv_3_way(f2elm_t z1, f2elm_t z2, f2elm_t z3);
+void oqs_sidh_cln16_inv_3_way(oqs_sidh_cln16_f2elm_t z1, oqs_sidh_cln16_f2elm_t z2, oqs_sidh_cln16_f2elm_t z3);
 
 // Computing the point D = (x(Q-P),z(Q-P))
-void distort_and_diff(felm_t xP, point_proj_t d, PCurveIsogenyStruct CurveIsogeny);
+void oqs_sidh_cln16_distort_and_diff(oqs_sidh_cln16_felm_t xP, oqs_sidh_cln16_point_proj_t d, PCurveIsogenyStruct CurveIsogeny);
 
 // Given the x-coordinates of P, Q, and R, returns the value A corresponding to the Montgomery curve E_A: y^2=x^3+A*x^2+x such that R=Q-P on E_A.
-void get_A(f2elm_t xP, f2elm_t xQ, f2elm_t xR, f2elm_t A, PCurveIsogenyStruct CurveIsogeny);
+void oqs_sidh_cln16_get_A(oqs_sidh_cln16_f2elm_t xP, oqs_sidh_cln16_f2elm_t xQ, oqs_sidh_cln16_f2elm_t xR, oqs_sidh_cln16_f2elm_t A, PCurveIsogenyStruct CurveIsogeny);
 
 /************ Public key validation functions *************/
 
 // Validation of Alice's public key (ran by Bob)
 // CurveIsogeny must be set up in advance using SIDH_curve_initialize().
-SIDH_CRYPTO_STATUS Validate_PKA(f2elm_t A, publickey_t PKA, bool *valid, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKA(oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_publickey_t PKA, bool *valid, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
 
 // Validation of Bob's public key (ran by Alice)
 // CurveIsogeny must be set up in advance using SIDH_curve_initialize().
-SIDH_CRYPTO_STATUS Validate_PKB(f2elm_t A, publickey_t PKB, bool *valid, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKB(oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_publickey_t PKB, bool *valid, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
 
 
 #ifdef __cplusplus

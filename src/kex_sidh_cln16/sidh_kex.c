@@ -27,14 +27,14 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_A(unsigned char *pPrivateKeyA, unsigned ch
 	// The public key consists of 3 elements in GF(p751^2), i.e., 564 bytes.
 	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
 	unsigned int owords = NBITS_TO_NWORDS(CurveIsogeny->owordbits), pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
-	point_basefield_t P;
-	point_proj_t R, phiP = {0}, phiQ = {0}, phiD = {0}, pts[SIDH_MAX_INT_POINTS_ALICE];
-	publickey_t *PublicKeyA = (publickey_t *)pPublicKeyA;
+	oqs_sidh_cln16_point_basefield_t P;
+	oqs_sidh_cln16_point_proj_t R, phiP = {0}, phiQ = {0}, phiD = {0}, pts[SIDH_MAX_INT_POINTS_ALICE];
+	oqs_sidh_cln16_publickey_t *PublicKeyA = (oqs_sidh_cln16_publickey_t *)pPublicKeyA;
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_ALICE], npts = 0;
-	f2elm_t coeff[5], A = {0}, C = {0}, Aout, Cout;
+	oqs_sidh_cln16_f2elm_t coeff[5], A = {0}, C = {0}, Aout, Cout;
 	SIDH_CRYPTO_STATUS Status;
 
-	if (pPrivateKeyA == NULL || pPublicKeyA == NULL || is_CurveIsogenyStruct_null(CurveIsogeny)) {
+	if (pPrivateKeyA == NULL || pPublicKeyA == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(CurveIsogeny)) {
 		return SIDH_CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
@@ -45,72 +45,72 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_A(unsigned char *pPrivateKeyA, unsigned ch
 		return Status;
 	}
 
-	to_mont((digit_t *)CurveIsogeny->PA, (digit_t *)P);                             // Conversion of Alice's generators to Montgomery representation
-	to_mont(((digit_t *)CurveIsogeny->PA) + NWORDS_FIELD, ((digit_t *)P) + NWORDS_FIELD);
+	oqs_sidh_cln16_to_mont((digit_t *)CurveIsogeny->PA, (digit_t *)P);                             // Conversion of Alice's generators to Montgomery representation
+	oqs_sidh_cln16_to_mont(((digit_t *)CurveIsogeny->PA) + NWORDS_FIELD, ((digit_t *)P) + NWORDS_FIELD);
 
-	Status = secret_pt(P, (digit_t *)pPrivateKeyA, SIDH_ALICE, R, CurveIsogeny);
+	Status = oqs_sidh_cln16_secret_pt(P, (digit_t *)pPrivateKeyA, SIDH_ALICE, R, CurveIsogeny);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
 		SIDH_clear_words((void *)pPrivateKeyA, owords);
 		return Status;
 	}
 
-	copy_words((digit_t *)CurveIsogeny->PB, (digit_t *)phiP, pwords);               // Copy X-coordinates from Bob's public parameters, set Z <- 1
-	fpcopy751((digit_t *)CurveIsogeny->Montgomery_one, (digit_t *)phiP->Z);
-	to_mont((digit_t *)phiP, (digit_t *)phiP);
-	copy_words((digit_t *)phiP, (digit_t *)phiQ, pwords);                           // QB = (-XPB:1)
-	fpneg751(phiQ->X[0]);
-	fpcopy751((digit_t *)CurveIsogeny->Montgomery_one, (digit_t *)phiQ->Z);
-	distort_and_diff(phiP->X[0], phiD, CurveIsogeny);                               // DB = (x(QB-PB),z(QB-PB))
+	oqs_sidh_cln16_copy_words((digit_t *)CurveIsogeny->PB, (digit_t *)phiP, pwords);               // Copy X-coordinates from Bob's public parameters, set Z <- 1
+	oqs_sidh_cln16_fpcopy751((digit_t *)CurveIsogeny->Montgomery_one, (digit_t *)phiP->Z);
+	oqs_sidh_cln16_to_mont((digit_t *)phiP, (digit_t *)phiP);
+	oqs_sidh_cln16_copy_words((digit_t *)phiP, (digit_t *)phiQ, pwords);                           // QB = (-XPB:1)
+	oqs_sidh_cln16_fpneg751(phiQ->X[0]);
+	oqs_sidh_cln16_fpcopy751((digit_t *)CurveIsogeny->Montgomery_one, (digit_t *)phiQ->Z);
+	oqs_sidh_cln16_distort_and_diff(phiP->X[0], phiD, CurveIsogeny);                               // DB = (x(QB-PB),z(QB-PB))
 
-	fpcopy751(CurveIsogeny->A, A[0]);                                               // Extracting curve parameters A and C
-	fpcopy751(CurveIsogeny->C, C[0]);
-	to_mont(A[0], A[0]);
-	to_mont(C[0], C[0]);
+	oqs_sidh_cln16_fpcopy751(CurveIsogeny->A, A[0]);                                               // Extracting curve parameters A and C
+	oqs_sidh_cln16_fpcopy751(CurveIsogeny->C, C[0]);
+	oqs_sidh_cln16_to_mont(A[0], A[0]);
+	oqs_sidh_cln16_to_mont(C[0], C[0]);
 
-	first_4_isog(phiP, A, Aout, Cout, CurveIsogeny);
-	first_4_isog(phiQ, A, Aout, Cout, CurveIsogeny);
-	first_4_isog(phiD, A, Aout, Cout, CurveIsogeny);
-	first_4_isog(R, A, A, C, CurveIsogeny);
+	oqs_sidh_cln16_first_4_isog(phiP, A, Aout, Cout, CurveIsogeny);
+	oqs_sidh_cln16_first_4_isog(phiQ, A, Aout, Cout, CurveIsogeny);
+	oqs_sidh_cln16_first_4_isog(phiD, A, Aout, Cout, CurveIsogeny);
+	oqs_sidh_cln16_first_4_isog(R, A, A, C, CurveIsogeny);
 
 	index = 0;
 	for (row = 1; row < SIDH_MAX_Alice; row++) {
 		while (index < SIDH_MAX_Alice - row) {
-			fp2copy751(R->X, pts[npts]->X);
-			fp2copy751(R->Z, pts[npts]->Z);
+			oqs_sidh_cln16_fp2copy751(R->X, pts[npts]->X);
+			oqs_sidh_cln16_fp2copy751(R->Z, pts[npts]->Z);
 			pts_index[npts] = index;
 			npts += 1;
 			m = splits_Alice[SIDH_MAX_Alice - index - row];
-			xDBLe(R, R, A, C, (int)(2 * m));
+			oqs_sidh_cln16_xDBLe(R, R, A, C, (int)(2 * m));
 			index += m;
 		}
-		get_4_isog(R, A, C, coeff);
+		oqs_sidh_cln16_get_4_isog(R, A, C, coeff);
 
 		for (i = 0; i < npts; i++) {
-			eval_4_isog(pts[i], coeff);
+			oqs_sidh_cln16_eval_4_isog(pts[i], coeff);
 		}
-		eval_4_isog(phiP, coeff);
-		eval_4_isog(phiQ, coeff);
-		eval_4_isog(phiD, coeff);
+		oqs_sidh_cln16_eval_4_isog(phiP, coeff);
+		oqs_sidh_cln16_eval_4_isog(phiQ, coeff);
+		oqs_sidh_cln16_eval_4_isog(phiD, coeff);
 
-		fp2copy751(pts[npts - 1]->X, R->X);
-		fp2copy751(pts[npts - 1]->Z, R->Z);
+		oqs_sidh_cln16_fp2copy751(pts[npts - 1]->X, R->X);
+		oqs_sidh_cln16_fp2copy751(pts[npts - 1]->Z, R->Z);
 		index = pts_index[npts - 1];
 		npts -= 1;
 	}
 
-	get_4_isog(R, A, C, coeff);
-	eval_4_isog(phiP, coeff);
-	eval_4_isog(phiQ, coeff);
-	eval_4_isog(phiD, coeff);
+	oqs_sidh_cln16_get_4_isog(R, A, C, coeff);
+	oqs_sidh_cln16_eval_4_isog(phiP, coeff);
+	oqs_sidh_cln16_eval_4_isog(phiQ, coeff);
+	oqs_sidh_cln16_eval_4_isog(phiD, coeff);
 
-	inv_3_way(phiP->Z, phiQ->Z, phiD->Z);
-	fp2mul751_mont(phiP->X, phiP->Z, phiP->X);
-	fp2mul751_mont(phiQ->X, phiQ->Z, phiQ->X);
-	fp2mul751_mont(phiD->X, phiD->Z, phiD->X);
+	oqs_sidh_cln16_inv_3_way(phiP->Z, phiQ->Z, phiD->Z);
+	oqs_sidh_cln16_fp2mul751_mont(phiP->X, phiP->Z, phiP->X);
+	oqs_sidh_cln16_fp2mul751_mont(phiQ->X, phiQ->Z, phiQ->X);
+	oqs_sidh_cln16_fp2mul751_mont(phiD->X, phiD->Z, phiD->X);
 
-	from_fp2mont(phiP->X, ((f2elm_t *)PublicKeyA)[0]);                              // Converting back to standard representation
-	from_fp2mont(phiQ->X, ((f2elm_t *)PublicKeyA)[1]);
-	from_fp2mont(phiD->X, ((f2elm_t *)PublicKeyA)[2]);
+	oqs_sidh_cln16_from_fp2mont(phiP->X, ((oqs_sidh_cln16_f2elm_t *)PublicKeyA)[0]);                              // Converting back to standard representation
+	oqs_sidh_cln16_from_fp2mont(phiQ->X, ((oqs_sidh_cln16_f2elm_t *)PublicKeyA)[1]);
+	oqs_sidh_cln16_from_fp2mont(phiD->X, ((oqs_sidh_cln16_f2elm_t *)PublicKeyA)[2]);
 
 // Cleanup:
 	SIDH_clear_words((void *)R, 2 * 2 * pwords);
@@ -133,14 +133,14 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned ch
 	// The public key consists of 3 elements in GF(p751^2), i.e., 564 bytes.
 	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
 	unsigned int owords = NBITS_TO_NWORDS(CurveIsogeny->owordbits), pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
-	point_basefield_t P;
-	point_proj_t R, phiP = {0}, phiQ = {0}, phiD = {0}, pts[SIDH_MAX_INT_POINTS_BOB];
-	publickey_t *PublicKeyB = (publickey_t *)pPublicKeyB;
+	oqs_sidh_cln16_point_basefield_t P;
+	oqs_sidh_cln16_point_proj_t R, phiP = {0}, phiQ = {0}, phiD = {0}, pts[SIDH_MAX_INT_POINTS_BOB];
+	oqs_sidh_cln16_publickey_t *PublicKeyB = (oqs_sidh_cln16_publickey_t *)pPublicKeyB;
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_BOB], npts = 0;
-	f2elm_t A = {0}, C = {0};
+	oqs_sidh_cln16_f2elm_t A = {0}, C = {0};
 	SIDH_CRYPTO_STATUS Status;
 
-	if (pPrivateKeyB == NULL || pPublicKeyB == NULL || is_CurveIsogenyStruct_null(CurveIsogeny)) {
+	if (pPrivateKeyB == NULL || pPublicKeyB == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(CurveIsogeny)) {
 		return SIDH_CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
@@ -151,67 +151,67 @@ SIDH_CRYPTO_STATUS SIDH_KeyGeneration_B(unsigned char *pPrivateKeyB, unsigned ch
 		return Status;
 	}
 
-	to_mont((digit_t *)CurveIsogeny->PB, (digit_t *)P);                             // Conversion of Bob's generators to Montgomery representation
-	to_mont(((digit_t *)CurveIsogeny->PB) + NWORDS_FIELD, ((digit_t *)P) + NWORDS_FIELD);
+	oqs_sidh_cln16_to_mont((digit_t *)CurveIsogeny->PB, (digit_t *)P);                             // Conversion of Bob's generators to Montgomery representation
+	oqs_sidh_cln16_to_mont(((digit_t *)CurveIsogeny->PB) + NWORDS_FIELD, ((digit_t *)P) + NWORDS_FIELD);
 
-	Status = secret_pt(P, (digit_t *)pPrivateKeyB, SIDH_BOB, R, CurveIsogeny);
+	Status = oqs_sidh_cln16_secret_pt(P, (digit_t *)pPrivateKeyB, SIDH_BOB, R, CurveIsogeny);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
 		SIDH_clear_words((void *)pPrivateKeyB, owords);
 		return Status;
 	}
 
-	copy_words((digit_t *)CurveIsogeny->PA, (digit_t *)phiP, pwords);               // Copy X-coordinates from Alice's public parameters, set Z <- 1
-	fpcopy751((digit_t *)CurveIsogeny->Montgomery_one, (digit_t *)phiP->Z);
-	to_mont((digit_t *)phiP, (digit_t *)phiP);                                      // Conversion to Montgomery representation
-	copy_words((digit_t *)phiP, (digit_t *)phiQ, pwords);                           // QA = (-XPA:1)
-	fpneg751(phiQ->X[0]);
-	fpcopy751((digit_t *)CurveIsogeny->Montgomery_one, (digit_t *)phiQ->Z);
-	distort_and_diff(phiP->X[0], phiD, CurveIsogeny);                               // DA = (x(QA-PA),z(QA-PA))
+	oqs_sidh_cln16_copy_words((digit_t *)CurveIsogeny->PA, (digit_t *)phiP, pwords);               // Copy X-coordinates from Alice's public parameters, set Z <- 1
+	oqs_sidh_cln16_fpcopy751((digit_t *)CurveIsogeny->Montgomery_one, (digit_t *)phiP->Z);
+	oqs_sidh_cln16_to_mont((digit_t *)phiP, (digit_t *)phiP);                                      // Conversion to Montgomery representation
+	oqs_sidh_cln16_copy_words((digit_t *)phiP, (digit_t *)phiQ, pwords);                           // QA = (-XPA:1)
+	oqs_sidh_cln16_fpneg751(phiQ->X[0]);
+	oqs_sidh_cln16_fpcopy751((digit_t *)CurveIsogeny->Montgomery_one, (digit_t *)phiQ->Z);
+	oqs_sidh_cln16_distort_and_diff(phiP->X[0], phiD, CurveIsogeny);                               // DA = (x(QA-PA),z(QA-PA))
 
-	fpcopy751(CurveIsogeny->A, A[0]);                                               // Extracting curve parameters A and C
-	fpcopy751(CurveIsogeny->C, C[0]);
-	to_mont(A[0], A[0]);
-	to_mont(C[0], C[0]);
+	oqs_sidh_cln16_fpcopy751(CurveIsogeny->A, A[0]);                                               // Extracting curve parameters A and C
+	oqs_sidh_cln16_fpcopy751(CurveIsogeny->C, C[0]);
+	oqs_sidh_cln16_to_mont(A[0], A[0]);
+	oqs_sidh_cln16_to_mont(C[0], C[0]);
 
 	index = 0;
 	for (row = 1; row < SIDH_MAX_Bob; row++) {
 		while (index < SIDH_MAX_Bob - row) {
-			fp2copy751(R->X, pts[npts]->X);
-			fp2copy751(R->Z, pts[npts]->Z);
+			oqs_sidh_cln16_fp2copy751(R->X, pts[npts]->X);
+			oqs_sidh_cln16_fp2copy751(R->Z, pts[npts]->Z);
 			pts_index[npts] = index;
 			npts += 1;
 			m = splits_Bob[SIDH_MAX_Bob - index - row];
-			xTPLe(R, R, A, C, (int)m);
+			oqs_sidh_cln16_xTPLe(R, R, A, C, (int)m);
 			index += m;
 		}
-		get_3_isog(R, A, C);
+		oqs_sidh_cln16_get_3_isog(R, A, C);
 
 		for (i = 0; i < npts; i++) {
-			eval_3_isog(R, pts[i]);
+			oqs_sidh_cln16_eval_3_isog(R, pts[i]);
 		}
-		eval_3_isog(R, phiP);
-		eval_3_isog(R, phiQ);
-		eval_3_isog(R, phiD);
+		oqs_sidh_cln16_eval_3_isog(R, phiP);
+		oqs_sidh_cln16_eval_3_isog(R, phiQ);
+		oqs_sidh_cln16_eval_3_isog(R, phiD);
 
-		fp2copy751(pts[npts - 1]->X, R->X);
-		fp2copy751(pts[npts - 1]->Z, R->Z);
+		oqs_sidh_cln16_fp2copy751(pts[npts - 1]->X, R->X);
+		oqs_sidh_cln16_fp2copy751(pts[npts - 1]->Z, R->Z);
 		index = pts_index[npts - 1];
 		npts -= 1;
 	}
 
-	get_3_isog(R, A, C);
-	eval_3_isog(R, phiP);
-	eval_3_isog(R, phiQ);
-	eval_3_isog(R, phiD);
+	oqs_sidh_cln16_get_3_isog(R, A, C);
+	oqs_sidh_cln16_eval_3_isog(R, phiP);
+	oqs_sidh_cln16_eval_3_isog(R, phiQ);
+	oqs_sidh_cln16_eval_3_isog(R, phiD);
 
-	inv_3_way(phiP->Z, phiQ->Z, phiD->Z);
-	fp2mul751_mont(phiP->X, phiP->Z, phiP->X);
-	fp2mul751_mont(phiQ->X, phiQ->Z, phiQ->X);
-	fp2mul751_mont(phiD->X, phiD->Z, phiD->X);
+	oqs_sidh_cln16_inv_3_way(phiP->Z, phiQ->Z, phiD->Z);
+	oqs_sidh_cln16_fp2mul751_mont(phiP->X, phiP->Z, phiP->X);
+	oqs_sidh_cln16_fp2mul751_mont(phiQ->X, phiQ->Z, phiQ->X);
+	oqs_sidh_cln16_fp2mul751_mont(phiD->X, phiD->Z, phiD->X);
 
-	from_fp2mont(phiP->X, ((f2elm_t *)PublicKeyB)[0]);                              // Converting back to standard representation
-	from_fp2mont(phiQ->X, ((f2elm_t *)PublicKeyB)[1]);
-	from_fp2mont(phiD->X, ((f2elm_t *)PublicKeyB)[2]);
+	oqs_sidh_cln16_from_fp2mont(phiP->X, ((oqs_sidh_cln16_f2elm_t *)PublicKeyB)[0]);                              // Converting back to standard representation
+	oqs_sidh_cln16_from_fp2mont(phiQ->X, ((oqs_sidh_cln16_f2elm_t *)PublicKeyB)[1]);
+	oqs_sidh_cln16_from_fp2mont(phiD->X, ((oqs_sidh_cln16_f2elm_t *)PublicKeyB)[2]);
 
 // Cleanup:
 	SIDH_clear_words((void *)R, 2 * 2 * pwords);
@@ -236,26 +236,26 @@ SIDH_CRYPTO_STATUS SIDH_SecretAgreement_A(unsigned char *pPrivateKeyA, unsigned 
 	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
 	unsigned int pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_ALICE], npts = 0;
-	point_proj_t R, pts[SIDH_MAX_INT_POINTS_ALICE];
-	publickey_t *PublicKeyB = (publickey_t *)pPublicKeyB;
-	f2elm_t jinv, coeff[5], PKB[3], A, C = {0};
+	oqs_sidh_cln16_point_proj_t R, pts[SIDH_MAX_INT_POINTS_ALICE];
+	oqs_sidh_cln16_publickey_t *PublicKeyB = (oqs_sidh_cln16_publickey_t *)pPublicKeyB;
+	oqs_sidh_cln16_f2elm_t jinv, coeff[5], PKB[3], A, C = {0};
 	bool valid_PublicKey = false;
 	SIDH_CRYPTO_STATUS Status;
 
-	if (pPrivateKeyA == NULL || pPublicKeyB == NULL || pSharedSecretA == NULL || is_CurveIsogenyStruct_null(CurveIsogeny)) {
+	if (pPrivateKeyA == NULL || pPublicKeyB == NULL || pSharedSecretA == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(CurveIsogeny)) {
 		return SIDH_CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
-	to_fp2mont(((f2elm_t *)PublicKeyB)[0], PKB[0]);   // Extracting and converting Bob's public curve parameters to Montgomery representation
-	to_fp2mont(((f2elm_t *)PublicKeyB)[1], PKB[1]);
-	to_fp2mont(((f2elm_t *)PublicKeyB)[2], PKB[2]);
+	oqs_sidh_cln16_to_fp2mont(((oqs_sidh_cln16_f2elm_t *)PublicKeyB)[0], PKB[0]);   // Extracting and converting Bob's public curve parameters to Montgomery representation
+	oqs_sidh_cln16_to_fp2mont(((oqs_sidh_cln16_f2elm_t *)PublicKeyB)[1], PKB[1]);
+	oqs_sidh_cln16_to_fp2mont(((oqs_sidh_cln16_f2elm_t *)PublicKeyB)[2], PKB[2]);
 
-	get_A(PKB[0], PKB[1], PKB[2], A, CurveIsogeny);
-	fpcopy751(CurveIsogeny->C, C[0]);
-	to_mont(C[0], C[0]);
+	oqs_sidh_cln16_get_A(PKB[0], PKB[1], PKB[2], A, CurveIsogeny);
+	oqs_sidh_cln16_fpcopy751(CurveIsogeny->C, C[0]);
+	oqs_sidh_cln16_to_mont(C[0], C[0]);
 
 	if (validate == true) {                           // Alice validating Bob's public key
-		Status = Validate_PKB(A, &PKB[0], &valid_PublicKey, CurveIsogeny, rand);
+		Status = oqs_sidh_cln16_Validate_PKB(A, &PKB[0], &valid_PublicKey, CurveIsogeny, rand);
 		if (Status != SIDH_CRYPTO_SUCCESS) {
 			return Status;
 		}
@@ -265,38 +265,38 @@ SIDH_CRYPTO_STATUS SIDH_SecretAgreement_A(unsigned char *pPrivateKeyA, unsigned 
 		}
 	}
 
-	Status = ladder_3_pt(PKB[0], PKB[1], PKB[2], (digit_t *)pPrivateKeyA, SIDH_ALICE, R, A, CurveIsogeny);
+	Status = oqs_sidh_cln16_ladder_3_pt(PKB[0], PKB[1], PKB[2], (digit_t *)pPrivateKeyA, SIDH_ALICE, R, A, CurveIsogeny);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
 		return Status;
 	}
-	first_4_isog(R, A, A, C, CurveIsogeny);
+	oqs_sidh_cln16_first_4_isog(R, A, A, C, CurveIsogeny);
 
 	index = 0;
 	for (row = 1; row < SIDH_MAX_Alice; row++) {
 		while (index < SIDH_MAX_Alice - row) {
-			fp2copy751(R->X, pts[npts]->X);
-			fp2copy751(R->Z, pts[npts]->Z);
+			oqs_sidh_cln16_fp2copy751(R->X, pts[npts]->X);
+			oqs_sidh_cln16_fp2copy751(R->Z, pts[npts]->Z);
 			pts_index[npts] = index;
 			npts += 1;
 			m = splits_Alice[SIDH_MAX_Alice - index - row];
-			xDBLe(R, R, A, C, (int)(2 * m));
+			oqs_sidh_cln16_xDBLe(R, R, A, C, (int)(2 * m));
 			index += m;
 		}
-		get_4_isog(R, A, C, coeff);
+		oqs_sidh_cln16_get_4_isog(R, A, C, coeff);
 
 		for (i = 0; i < npts; i++) {
-			eval_4_isog(pts[i], coeff);
+			oqs_sidh_cln16_eval_4_isog(pts[i], coeff);
 		}
 
-		fp2copy751(pts[npts - 1]->X, R->X);
-		fp2copy751(pts[npts - 1]->Z, R->Z);
+		oqs_sidh_cln16_fp2copy751(pts[npts - 1]->X, R->X);
+		oqs_sidh_cln16_fp2copy751(pts[npts - 1]->Z, R->Z);
 		index = pts_index[npts - 1];
 		npts -= 1;
 	}
 
-	get_4_isog(R, A, C, coeff);
-	j_inv(A, C, jinv);
-	from_fp2mont(jinv, (felm_t *)pSharedSecretA);     // Converting back to standard representation
+	oqs_sidh_cln16_get_4_isog(R, A, C, coeff);
+	oqs_sidh_cln16_j_inv(A, C, jinv);
+	oqs_sidh_cln16_from_fp2mont(jinv, (oqs_sidh_cln16_felm_t *)pSharedSecretA);     // Converting back to standard representation
 
 // Cleanup:
 	SIDH_clear_words((void *)R, 2 * 2 * pwords);
@@ -320,26 +320,26 @@ SIDH_CRYPTO_STATUS SIDH_SecretAgreement_B(unsigned char *pPrivateKeyB, unsigned 
 	// CurveIsogeny must be set up in advance using SIDH_curve_initialize().
 	unsigned int pwords = NBITS_TO_NWORDS(CurveIsogeny->pwordbits);
 	unsigned int i, row, m, index = 0, pts_index[SIDH_MAX_INT_POINTS_BOB], npts = 0;
-	point_proj_t R, pts[SIDH_MAX_INT_POINTS_BOB];
-	publickey_t *PublicKeyA = (publickey_t *)pPublicKeyA;
-	f2elm_t jinv, A, PKA[3], C = {0};
+	oqs_sidh_cln16_point_proj_t R, pts[SIDH_MAX_INT_POINTS_BOB];
+	oqs_sidh_cln16_publickey_t *PublicKeyA = (oqs_sidh_cln16_publickey_t *)pPublicKeyA;
+	oqs_sidh_cln16_f2elm_t jinv, A, PKA[3], C = {0};
 	bool valid_PublicKey = false;
 	SIDH_CRYPTO_STATUS Status;
 
-	if (pPrivateKeyB == NULL || pPublicKeyA == NULL || pSharedSecretB == NULL || is_CurveIsogenyStruct_null(CurveIsogeny)) {
+	if (pPrivateKeyB == NULL || pPublicKeyA == NULL || pSharedSecretB == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(CurveIsogeny)) {
 		return SIDH_CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
-	to_fp2mont(((f2elm_t *)PublicKeyA)[0], PKA[0]);   // Extracting and converting Alice's public curve parameters to Montgomery representation
-	to_fp2mont(((f2elm_t *)PublicKeyA)[1], PKA[1]);
-	to_fp2mont(((f2elm_t *)PublicKeyA)[2], PKA[2]);
+	oqs_sidh_cln16_to_fp2mont(((oqs_sidh_cln16_f2elm_t *)PublicKeyA)[0], PKA[0]);   // Extracting and converting Alice's public curve parameters to Montgomery representation
+	oqs_sidh_cln16_to_fp2mont(((oqs_sidh_cln16_f2elm_t *)PublicKeyA)[1], PKA[1]);
+	oqs_sidh_cln16_to_fp2mont(((oqs_sidh_cln16_f2elm_t *)PublicKeyA)[2], PKA[2]);
 
-	get_A(PKA[0], PKA[1], PKA[2], A, CurveIsogeny);
-	fpcopy751(CurveIsogeny->C, C[0]);
-	to_mont(C[0], C[0]);
+	oqs_sidh_cln16_get_A(PKA[0], PKA[1], PKA[2], A, CurveIsogeny);
+	oqs_sidh_cln16_fpcopy751(CurveIsogeny->C, C[0]);
+	oqs_sidh_cln16_to_mont(C[0], C[0]);
 
 	if (validate == true) {                           // Bob validating Alice's public key
-		Status = Validate_PKA(A, &PKA[0], &valid_PublicKey, CurveIsogeny, rand);
+		Status = oqs_sidh_cln16_Validate_PKA(A, &PKA[0], &valid_PublicKey, CurveIsogeny, rand);
 		if (Status != SIDH_CRYPTO_SUCCESS) {
 			return Status;
 		}
@@ -349,7 +349,7 @@ SIDH_CRYPTO_STATUS SIDH_SecretAgreement_B(unsigned char *pPrivateKeyB, unsigned 
 		}
 	}
 
-	Status = ladder_3_pt(PKA[0], PKA[1], PKA[2], (digit_t *)pPrivateKeyB, SIDH_BOB, R, A, CurveIsogeny);
+	Status = oqs_sidh_cln16_ladder_3_pt(PKA[0], PKA[1], PKA[2], (digit_t *)pPrivateKeyB, SIDH_BOB, R, A, CurveIsogeny);
 	if (Status != SIDH_CRYPTO_SUCCESS) {
 		return Status;
 	}
@@ -357,29 +357,29 @@ SIDH_CRYPTO_STATUS SIDH_SecretAgreement_B(unsigned char *pPrivateKeyB, unsigned 
 	index = 0;
 	for (row = 1; row < SIDH_MAX_Bob; row++) {
 		while (index < SIDH_MAX_Bob - row) {
-			fp2copy751(R->X, pts[npts]->X);
-			fp2copy751(R->Z, pts[npts]->Z);
+			oqs_sidh_cln16_fp2copy751(R->X, pts[npts]->X);
+			oqs_sidh_cln16_fp2copy751(R->Z, pts[npts]->Z);
 			pts_index[npts] = index;
 			npts += 1;
 			m = splits_Bob[SIDH_MAX_Bob - index - row];
-			xTPLe(R, R, A, C, (int)m);
+			oqs_sidh_cln16_xTPLe(R, R, A, C, (int)m);
 			index += m;
 		}
-		get_3_isog(R, A, C);
+		oqs_sidh_cln16_get_3_isog(R, A, C);
 
 		for (i = 0; i < npts; i++) {
-			eval_3_isog(R, pts[i]);
+			oqs_sidh_cln16_eval_3_isog(R, pts[i]);
 		}
 
-		fp2copy751(pts[npts - 1]->X, R->X);
-		fp2copy751(pts[npts - 1]->Z, R->Z);
+		oqs_sidh_cln16_fp2copy751(pts[npts - 1]->X, R->X);
+		oqs_sidh_cln16_fp2copy751(pts[npts - 1]->Z, R->Z);
 		index = pts_index[npts - 1];
 		npts -= 1;
 	}
 
-	get_3_isog(R, A, C);
-	j_inv(A, C, jinv);
-	from_fp2mont(jinv, (felm_t *)pSharedSecretB);     // Converting back to standard representation
+	oqs_sidh_cln16_get_3_isog(R, A, C);
+	oqs_sidh_cln16_j_inv(A, C, jinv);
+	oqs_sidh_cln16_from_fp2mont(jinv, (oqs_sidh_cln16_felm_t *)pSharedSecretB);     // Converting back to standard representation
 
 // Cleanup:
 	SIDH_clear_words((void *)R, 2 * 2 * pwords);

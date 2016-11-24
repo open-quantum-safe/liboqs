@@ -18,7 +18,7 @@ extern const uint64_t p751p1[NWORDS_FIELD];
 extern const uint64_t p751x2[NWORDS_FIELD]; 
 
 
-__inline void fpadd751(digit_t* a, digit_t* b, digit_t* c)
+__inline void oqs_sidh_cln16_fpadd751(digit_t* a, digit_t* b, digit_t* c)
 { // Modular addition, c = a+b mod p751.
   // Inputs: a, b in [0, 2*p751-1] 
   // Output: c in [0, 2*p751-1] 
@@ -44,13 +44,13 @@ __inline void fpadd751(digit_t* a, digit_t* b, digit_t* c)
     
 #elif (OS_TARGET == OS_LINUX)                 
     
-    fpadd751_asm(a, b, c);    
+    oqs_sidh_cln16_fpadd751_asm(a, b, c);    
 
 #endif
 } 
 
 
-__inline void fpsub751(digit_t* a, digit_t* b, digit_t* c)
+__inline void oqs_sidh_cln16_fpsub751(digit_t* a, digit_t* b, digit_t* c)
 { // Modular subtraction, c = a-b mod p751.
   // Inputs: a, b in [0, 2*p751-1] 
   // Output: c in [0, 2*p751-1] 
@@ -71,13 +71,13 @@ __inline void fpsub751(digit_t* a, digit_t* b, digit_t* c)
     
 #elif (OS_TARGET == OS_LINUX)                 
     
-    fpsub751_asm(a, b, c);    
+    oqs_sidh_cln16_fpsub751_asm(a, b, c);    
 
 #endif
 }
 
 
-__inline void fpneg751(digit_t* a)
+__inline void oqs_sidh_cln16_fpneg751(digit_t* a)
 { // Modular negation, a = -a mod p751.
   // Input/output: a in [0, 2*p751-1] 
     unsigned int i, borrow = 0;
@@ -88,7 +88,7 @@ __inline void fpneg751(digit_t* a)
 }
 
 
-void fpdiv2_751(digit_t* a, digit_t* c)
+void oqs_sidh_cln16_fpdiv2_751(digit_t* a, digit_t* c)
 { // Modular division by two, c = a/2 mod p751.
   // Input : a in [0, 2*p751-1] 
   // Output: c in [0, 2*p751-1] 
@@ -100,11 +100,11 @@ void fpdiv2_751(digit_t* a, digit_t* c)
         ADDC(carry, a[i], ((digit_t*)p751)[i] & mask, carry, c[i]); 
     }
 
-    mp_shiftr1(c, NWORDS_FIELD);
+    oqs_sidh_cln16_mp_shiftr1(c, NWORDS_FIELD);
 }  
 
 
-void fpcorrection751(digit_t* a)
+void oqs_sidh_cln16_fpcorrection751(digit_t* a)
 { // Modular correction to reduce field element a in [0, 2*p751-1] to [0, p751-1].
     unsigned int i, borrow = 0;
     digit_t mask;
@@ -532,13 +532,13 @@ void mp_mul(digit_t* a, digit_t* b, digit_t* c, unsigned int nwords)
 
 #elif (OS_TARGET == OS_LINUX)
     
-    mul751_asm(a, b, c);
+    oqs_sidh_cln16_mul751_asm(a, b, c);
 
 #endif
 }
 
 
-void rdc_mont(dfelm_t ma, felm_t mc)
+void oqs_sidh_cln16_rdc_mont(oqs_sidh_cln16_dfelm_t ma, oqs_sidh_cln16_felm_t mc)
 { // Optimized Montgomery reduction using comba and exploiting the special form of the prime p751.
   // mc = ma*mb*R^-1 mod p751, where ma,mb,mc in [0, 2*p751-1] and R = 2^768.
   // ma and mb are assumed to be in Montgomery representation.
@@ -859,7 +859,7 @@ void rdc_mont(dfelm_t ma, felm_t mc)
     
 #elif (OS_TARGET == OS_LINUX)                 
     
-    rdc751_asm(ma, mc);    
+    oqs_sidh_cln16_rdc751_asm(ma, mc);    
 
 #endif
 }

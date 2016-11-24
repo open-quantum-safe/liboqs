@@ -19,7 +19,7 @@ SIDH_CRYPTO_STATUS SIDH_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, OQS_
 	// This needs to be called after allocating memory for "pCurveIsogeny" using SIDH_curve_allocate().
 	unsigned int i, pwords, owords;
 
-	if (is_CurveIsogenyStruct_null(pCurveIsogeny)) {
+	if (oqs_sidh_cln16_is_CurveIsogenyStruct_null(pCurveIsogeny)) {
 		return SIDH_CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
@@ -36,17 +36,17 @@ SIDH_CRYPTO_STATUS SIDH_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, OQS_
 
 	pwords = (pCurveIsogeny->pwordbits + RADIX - 1) / RADIX;
 	owords = (pCurveIsogeny->owordbits + RADIX - 1) / RADIX;
-	copy_words((digit_t *)pCurveIsogenyData->prime, pCurveIsogeny->prime, pwords);
-	copy_words((digit_t *)pCurveIsogenyData->A, pCurveIsogeny->A, pwords);
-	copy_words((digit_t *)pCurveIsogenyData->C, pCurveIsogeny->C, pwords);
-	copy_words((digit_t *)pCurveIsogenyData->Aorder, pCurveIsogeny->Aorder, owords);
-	copy_words((digit_t *)pCurveIsogenyData->Border, pCurveIsogeny->Border, owords);
-	copy_words((digit_t *)pCurveIsogenyData->PA, pCurveIsogeny->PA, 2 * pwords);
-	copy_words((digit_t *)pCurveIsogenyData->PB, pCurveIsogeny->PB, 2 * pwords);
-	copy_words((digit_t *)pCurveIsogenyData->BigMont_order, pCurveIsogeny->BigMont_order, pwords);
-	copy_words((digit_t *)pCurveIsogenyData->Montgomery_R2, pCurveIsogeny->Montgomery_R2, pwords);
-	copy_words((digit_t *)pCurveIsogenyData->Montgomery_pp, pCurveIsogeny->Montgomery_pp, pwords);
-	copy_words((digit_t *)pCurveIsogenyData->Montgomery_one, pCurveIsogeny->Montgomery_one, pwords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->prime, pCurveIsogeny->prime, pwords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->A, pCurveIsogeny->A, pwords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->C, pCurveIsogeny->C, pwords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->Aorder, pCurveIsogeny->Aorder, owords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->Border, pCurveIsogeny->Border, owords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->PA, pCurveIsogeny->PA, 2 * pwords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->PB, pCurveIsogeny->PB, 2 * pwords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->BigMont_order, pCurveIsogeny->BigMont_order, pwords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->Montgomery_R2, pCurveIsogeny->Montgomery_R2, pwords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->Montgomery_pp, pCurveIsogeny->Montgomery_pp, pwords);
+	oqs_sidh_cln16_copy_words((digit_t *)pCurveIsogenyData->Montgomery_one, pCurveIsogeny->Montgomery_one, pwords);
 
 	return SIDH_CRYPTO_SUCCESS;
 }
@@ -72,7 +72,7 @@ PCurveIsogenyStruct SIDH_curve_allocate(PCurveIsogenyStaticData CurveData) {
 	pCurveIsogeny->Montgomery_R2 = (digit_t *)calloc(1, pbytes);
 	pCurveIsogeny->Montgomery_pp = (digit_t *)calloc(1, pbytes);
 	pCurveIsogeny->Montgomery_one = (digit_t *)calloc(1, pbytes);
-	if (is_CurveIsogenyStruct_null(pCurveIsogeny)) {
+	if (oqs_sidh_cln16_is_CurveIsogenyStruct_null(pCurveIsogeny)) {
 		return NULL;
 	}
 	return pCurveIsogeny;
@@ -111,7 +111,7 @@ void SIDH_curve_free(PCurveIsogenyStruct pCurveIsogeny) {
 }
 
 
-bool is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny) {
+bool oqs_sidh_cln16_is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny) {
 	// Check if curve isogeny structure is NULL
 
 	if (pCurveIsogeny == NULL || pCurveIsogeny->prime == NULL || pCurveIsogeny->A == NULL || pCurveIsogeny->C == NULL || pCurveIsogeny->Aorder == NULL || pCurveIsogeny->Border == NULL ||
@@ -135,7 +135,7 @@ SIDH_CRYPTO_STATUS SIDH_random_mod_order(digit_t *random_digits, unsigned int Al
 	unsigned char mask;
 	SIDH_CRYPTO_STATUS Status = SIDH_CRYPTO_SUCCESS;
 
-	if (random_digits == NULL || is_CurveIsogenyStruct_null(pCurveIsogeny) || AliceOrBob > 1) {
+	if (random_digits == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(pCurveIsogeny) || AliceOrBob > 1) {
 		return SIDH_CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
@@ -145,14 +145,14 @@ SIDH_CRYPTO_STATUS SIDH_random_mod_order(digit_t *random_digits, unsigned int Al
 		nbytes = (pCurveIsogeny->oAbits + 7) / 8;              // Number of random bytes to be requested
 		nwords = NBITS_TO_NWORDS(pCurveIsogeny->oAbits);
 		mask = 0x07;                                           // Value for masking last random byte
-		copy_words(pCurveIsogeny->Aorder, order2, nwords);
-		mp_shiftr1(order2, nwords);                            // order/2
-		mp_sub(order2, t1, order2, nwords);                    // order2 = order/2-2
+		oqs_sidh_cln16_copy_words(pCurveIsogeny->Aorder, order2, nwords);
+		oqs_sidh_cln16_mp_shiftr1(order2, nwords);                            // order/2
+		oqs_sidh_cln16_mp_sub(order2, t1, order2, nwords);                    // order2 = order/2-2
 	} else {
 		nbytes = (pCurveIsogeny->oBbits + 7) / 8;
 		nwords = NBITS_TO_NWORDS(pCurveIsogeny->oBbits);
 		mask = 0x03;                                           // Value for masking last random byte
-		mp_sub((digit_t *)Border_div3, t1, order2, nwords);    // order2 = order/3-2
+		oqs_sidh_cln16_mp_sub((digit_t *)Border_div3, t1, order2, nwords);    // order2 = order/3-2
 	}
 
 	do {
@@ -163,15 +163,15 @@ SIDH_CRYPTO_STATUS SIDH_random_mod_order(digit_t *random_digits, unsigned int Al
 
 		rand->rand_n(rand, (uint8_t *) random_digits, nbytes);
 		((unsigned char *)random_digits)[nbytes - 1] &= mask;  // Masking last byte
-	} while (mp_sub(order2, random_digits, t1, nwords) == 1);
+	} while (oqs_sidh_cln16_mp_sub(order2, random_digits, t1, nwords) == 1);
 
 	SIDH_clear_words((void *)t1, SIDH_MAXWORDS_ORDER);
 	t1[0] = 1;
-	mp_add(random_digits, t1, random_digits, nwords);
-	copy_words(random_digits, t1, nwords);
-	mp_shiftl1(random_digits, nwords);                         // Alice's output in the range [2, order-2]
+	oqs_sidh_cln16_mp_add(random_digits, t1, random_digits, nwords);
+	oqs_sidh_cln16_copy_words(random_digits, t1, nwords);
+	oqs_sidh_cln16_mp_shiftl1(random_digits, nwords);                         // Alice's output in the range [2, order-2]
 	if (AliceOrBob == SIDH_BOB) {
-		mp_add(random_digits, t1, random_digits, nwords);      // Bob's output in the range [3, order-3]
+		oqs_sidh_cln16_mp_add(random_digits, t1, random_digits, nwords);      // Bob's output in the range [3, order-3]
 	}
 
 	return Status;
@@ -189,14 +189,14 @@ SIDH_CRYPTO_STATUS SIDH_random_BigMont_mod_order(digit_t *random_digits, PCurveI
 	unsigned char mask;
 	SIDH_CRYPTO_STATUS Status = SIDH_CRYPTO_SUCCESS;
 
-	if (random_digits == NULL || is_CurveIsogenyStruct_null(pCurveIsogeny)) {
+	if (random_digits == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(pCurveIsogeny)) {
 		return SIDH_CRYPTO_ERROR_INVALID_PARAMETER;
 	}
 
 	SIDH_clear_words((void *)random_digits, BIGMONT_MAXWORDS_ORDER);
 	t1[0] = 2;
 	mask = (unsigned char)(8 * nbytes - BIGMONT_NBITS_ORDER);
-	mp_sub(pCurveIsogeny->BigMont_order, t1, order2, nwords);  // order2 = order-2
+	oqs_sidh_cln16_mp_sub(pCurveIsogeny->BigMont_order, t1, order2, nwords);  // order2 = order-2
 	mask = ((unsigned char) - 1 >> mask);                      // Value for masking last random byte
 
 	do {
@@ -206,11 +206,11 @@ SIDH_CRYPTO_STATUS SIDH_random_BigMont_mod_order(digit_t *random_digits, PCurveI
 		}
 		rand->rand_n(rand, (uint8_t *)random_digits, nbytes);
 		((unsigned char *)random_digits)[nbytes - 1] &= mask;  // Masking last byte
-	} while (mp_sub(order2, random_digits, t1, nwords) == 1);
+	} while (oqs_sidh_cln16_mp_sub(order2, random_digits, t1, nwords) == 1);
 
 	SIDH_clear_words((void *)t1, BIGMONT_MAXWORDS_ORDER);
 	t1[0] = 1;
-	mp_add(random_digits, t1, random_digits, nwords);          // Output in the range [1, order-1]
+	oqs_sidh_cln16_mp_add(random_digits, t1, random_digits, nwords);          // Output in the range [1, order-1]
 
 	return Status;
 }

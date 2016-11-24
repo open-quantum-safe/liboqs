@@ -18,7 +18,7 @@ extern const uint64_t p751p1[NWORDS_FIELD];
 extern const uint64_t p751x2[NWORDS_FIELD]; 
 
 
-__inline void fpadd751(digit_t* a, digit_t* b, digit_t* c)
+__inline void oqs_sidh_cln16_fpadd751(digit_t* a, digit_t* b, digit_t* c)
 { // Modular addition, c = a+b mod p751.
   // Inputs: a, b in [0, 2*p751-1] 
   // Output: c in [0, 2*p751-1] 
@@ -42,7 +42,7 @@ __inline void fpadd751(digit_t* a, digit_t* b, digit_t* c)
 } 
 
 
-__inline void fpsub751(digit_t* a, digit_t* b, digit_t* c)
+__inline void oqs_sidh_cln16_fpsub751(digit_t* a, digit_t* b, digit_t* c)
 { // Modular subtraction, c = a-b mod p751.
   // Inputs: a, b in [0, 2*p751-1] 
   // Output: c in [0, 2*p751-1] 
@@ -61,7 +61,7 @@ __inline void fpsub751(digit_t* a, digit_t* b, digit_t* c)
 }
 
 
-__inline void fpneg751(digit_t* a)
+__inline void oqs_sidh_cln16_fpneg751(digit_t* a)
 { // Modular negation, a = -a mod p751.
   // Input/output: a in [0, 2*p751-1] 
     unsigned int i, borrow = 0;
@@ -72,7 +72,7 @@ __inline void fpneg751(digit_t* a)
 }
 
 
-void fpdiv2_751(digit_t* a, digit_t* c)
+void oqs_sidh_cln16_fpdiv2_751(digit_t* a, digit_t* c)
 { // Modular division by two, c = a/2 mod p751.
   // Input : a in [0, 2*p751-1] 
   // Output: c in [0, 2*p751-1] 
@@ -84,11 +84,11 @@ void fpdiv2_751(digit_t* a, digit_t* c)
         ADDC(carry, a[i], ((digit_t*)p751)[i] & mask, carry, c[i]); 
     }
 
-    mp_shiftr1(c, NWORDS_FIELD);
+    oqs_sidh_cln16_mp_shiftr1(c, NWORDS_FIELD);
 } 
 
 
-void fpcorrection751(digit_t* a)
+void oqs_sidh_cln16_fpcorrection751(digit_t* a)
 { // Modular correction to reduce field element a in [0, 2*p751-1] to [0, p751-1].
     unsigned int i, borrow = 0;
     digit_t mask;
@@ -105,7 +105,7 @@ void fpcorrection751(digit_t* a)
 }
 
 
-void digit_x_digit(digit_t a, digit_t b, digit_t* c)
+void oqs_sidh_cln16_digit_x_digit(digit_t a, digit_t b, digit_t* c)
 { // Digit multiplication, digit * digit -> 2-digit result    
     register digit_t al, ah, bl, bh, temp;
     digit_t albl, albh, ahbl, ahbh, res1, res2, res3, carry;
@@ -139,7 +139,7 @@ void digit_x_digit(digit_t a, digit_t b, digit_t* c)
 }
 
  
-void mp_mul_schoolbook(digit_t* a, digit_t* b, digit_t* c, unsigned int nwords)
+void oqs_sidh_cln16_mp_mul_schoolbook(digit_t* a, digit_t* b, digit_t* c, unsigned int nwords)
 { // Multiprecision schoolbook multiply, c = a*b, where lng(a) = lng(b) = nwords.   
     unsigned int i, j;
     digit_t u, v, UV[2];
@@ -162,7 +162,7 @@ void mp_mul_schoolbook(digit_t* a, digit_t* b, digit_t* c, unsigned int nwords)
 }
 
 
-void mp_mul_comba(digit_t* a, digit_t* b, digit_t* c, unsigned int nwords)
+void oqs_sidh_cln16_mp_mul_comba(digit_t* a, digit_t* b, digit_t* c, unsigned int nwords)
 { // Multiprecision comba multiply, c = a*b, where lng(a) = lng(b) = nwords.   
     unsigned int i, j;
     digit_t t = 0, u = 0, v = 0, UV[2];
@@ -197,7 +197,7 @@ void mp_mul_comba(digit_t* a, digit_t* b, digit_t* c, unsigned int nwords)
 }
 
 
-void rdc_mont(dfelm_t ma, felm_t mc)
+void oqs_sidh_cln16_rdc_mont(oqs_sidh_cln16_dfelm_t ma, oqs_sidh_cln16_felm_t mc)
 { // Optimized Montgomery reduction using comba and exploiting the special form of the prime p751.
   // mc = ma*mb*R^-1 mod p751, where ma,mb,mc in [0, p751-1] and R = 2^768.
   // ma and mb are assumed to be in Montgomery representation.
