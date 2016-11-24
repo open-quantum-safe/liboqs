@@ -60,6 +60,7 @@ links:
 	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 	$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
+	$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	$(LN) ../../src/rand/rand.h include/oqs
 	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	$(LN) ../../src/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
@@ -96,6 +97,11 @@ KEX_LWE_FRODO_OBJS := $(addprefix objs/kex_lwe_frodo/, lwe.o kex_lwe_frodo.o lwe
 KEX_LWE_FRODO_HEADERS := $(addprefix src/kex_lwe_frodo/, kex_lwe_frodo.h local.h)
 $(KEX_LWE_FRODO_OBJS): $(KEX_LWE_FRODO_HEADERS)
 
+# KEX_SIDH_CLN16
+KEX_SIDH_CLN16_OBJS := $(addprefix objs/kex_sidh_cln16/, ec_isogeny.o fpx.o kex_sidh_cln16.o SIDH.o sidh_kex.o SIDH_setup.o validate.o)
+KEX_SIDH_CLN16_HEADERS := $(addprefix src/kex_sidh_cln16/, kex_sidh_cln16.h SIDH.h)
+$(KEX_SIDH_CLN16_OBJS): $(KEX_SIDH_CLN16_HEADERS)
+
 # AES
 AES_OBJS := $(addprefix objs/aes/, aes.o aes_c.o aes_ni.o)
 AES_HEADERS := $(addprefix src/aes/, aes.h)
@@ -115,7 +121,7 @@ objs/kex/kex.o: src/kex/kex.h
 
 RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS)
 
-lib: $(RAND_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_RLWE_MSRLN16_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS) $(COMMON_OBJS)
+lib: $(RAND_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS) $(COMMON_OBJS)
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
