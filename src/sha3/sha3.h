@@ -6,6 +6,7 @@
 #ifndef __OQS_SHA3_H
 #define __OQS_SHA3_H
 
+#define OQS_SHA3_STATESIZE 25
 #define OQS_SHA3_SHAKE128_RATE 168
 #define OQS_SHA3_SHA3_256_RATE 136
 

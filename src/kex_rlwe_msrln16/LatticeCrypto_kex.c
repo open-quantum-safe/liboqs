@@ -17,7 +17,7 @@
 
 #include "LatticeCrypto_priv.h"
 #include "oqs/rand.h"
-#include "external/shake128.h"
+#include <oqs/sha3.h>
 
 extern const int32_t psi_rev_ntt1024_12289[1024];
 extern const int32_t omegainv_rev_ntt1024_12289[1024];
@@ -25,7 +25,6 @@ extern const int32_t omegainv10N_rev_ntt1024_12289;
 extern const int32_t Ninv11_ntt1024_12289;
 
 // import external code
-#include "external/shake128.c"
 #ifdef RLWE_ASM_AVX2
 #include "AMD64/consts.c"
 #include "AMD64/ntt_x64.c"
@@ -296,10 +295,10 @@ CRYPTO_STATUS oqs_rlwe_msrln16_generate_a(uint32_t *a, const unsigned char *seed
 	unsigned int pos = 0, ctr = 0;
 	uint16_t val;
 	unsigned int nblocks = 16;
-	uint8_t buf[SHAKE128_RATE * 16];
-	unsigned char state[SHAKE128_STATE_SIZE] = { 0 };
-	FIPS202_SHAKE128_Absorb(seed, OQS_RLWE_MSRLN16_SEED_BYTES, state, sizeof(state));
-	FIPS202_SHAKE128_Squeeze(state, (unsigned char *)buf, nblocks * SHAKE128_RATE);
+	uint8_t buf[OQS_SHA3_SHAKE128_RATE * 16];
+	uint64_t state[OQS_SHA3_STATESIZE];
+	OQS_SHA3_shake128_absorb(state, seed, OQS_RLWE_MSRLN16_SEED_BYTES);
+	OQS_SHA3_shake128_squeezeblocks((unsigned char *)buf, nblocks, state);
 
 	while (ctr < OQS_RLWE_MSRLN16_PARAMETER_N) {
 		val = (buf[pos] | ((uint16_t)buf[pos + 1] << 8)) & 0x3fff;
@@ -307,9 +306,9 @@ CRYPTO_STATUS oqs_rlwe_msrln16_generate_a(uint32_t *a, const unsigned char *seed
 			a[ctr++] = val;
 		}
 		pos += 2;
-		if (pos > SHAKE128_RATE * nblocks - 2) {
+		if (pos > OQS_SHA3_SHAKE128_RATE * nblocks - 2) {
 			nblocks = 1;
-			FIPS202_SHAKE128_Squeeze(state, (unsigned char *)buf, nblocks * SHAKE128_RATE);
+			OQS_SHA3_shake128_squeezeblocks((unsigned char *)buf, nblocks, state);
 			pos = 0;
 		}
 	}
