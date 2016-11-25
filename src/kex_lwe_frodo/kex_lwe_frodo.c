@@ -13,6 +13,7 @@
 
 #include <oqs/kex.h>
 #include <oqs/rand.h>
+#include <oqs/common.h>
 
 #include "kex_lwe_frodo.h"
 #include "local.h"
@@ -121,9 +122,11 @@ err:
 }
 
 // pre-process code to obtain "recommended" functions
+#include "recommended.h"
 #define MACRIFY(NAME) NAME ## _recommended
 #include "kex_lwe_frodo_macrify.c"
 // undefine macros to avoid any confusion later
+#include "recommended.h"
 #undef MACRIFY
 
 void OQS_KEX_lwe_frodo_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {

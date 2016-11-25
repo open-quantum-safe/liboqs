@@ -3,37 +3,30 @@ int MACRIFY(OQS_KEX_lwe_frodo_alice_0)(OQS_KEX *k, void **alice_priv, uint8_t **
 	int ret;
 
 	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
-	uint16_t *b = NULL, *e = NULL;
 
 	*alice_priv = NULL;
 	*alice_msg = NULL;
 
 	/* allocate private key, error, and outgoing message */
-	*alice_priv = malloc(params->n * params->nbar * sizeof(uint16_t));
+	*alice_priv = malloc(PARAMS_N * PARAMS_NBAR * sizeof(uint16_t));
 	if (*alice_priv == NULL) {
 		goto err;
 	}
-	b = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
-	if (b == NULL) {
-		goto err;
-	}
-	e = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
-	if (e == NULL) {
-		goto err;
-	}
+	uint16_t b[PARAMS_N * PARAMS_NBAR];
+	uint16_t e[PARAMS_N * PARAMS_NBAR];
 	*alice_msg = malloc(params->pub_len);
 	if (*alice_msg == NULL) {
 		goto err;
 	}
 
 	/* generate S and E */
-	oqs_kex_lwe_frodo_sample_n(*alice_priv, params->n * params->nbar, params, k->rand);
-	oqs_kex_lwe_frodo_sample_n(e, params->n * params->nbar, params, k->rand);
+	oqs_kex_lwe_frodo_sample_n(*alice_priv, PARAMS_N * PARAMS_NBAR, params, k->rand);
+	oqs_kex_lwe_frodo_sample_n(e, PARAMS_N * PARAMS_NBAR, params, k->rand);
 
 	/* compute B = AS + E */
 	MACRIFY(oqs_kex_lwe_frodo_mul_add_as_plus_e_on_the_fly)(b, *alice_priv, e, params);
 
-	oqs_kex_lwe_frodo_pack(*alice_msg, params->pub_len, b, params->n * params->nbar, params->log2_q);
+	oqs_kex_lwe_frodo_pack(*alice_msg, params->pub_len, b, PARAMS_N * PARAMS_NBAR, params->log2_q);
 
 	*alice_msg_len = params->pub_len;
 
@@ -48,10 +41,7 @@ err:
 	*alice_priv = NULL;
 
 cleanup:
-	free(e);
-	free(b);
 	return ret;
-
 }
 
 int MACRIFY(OQS_KEX_lwe_frodo_bob)(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
@@ -60,10 +50,7 @@ int MACRIFY(OQS_KEX_lwe_frodo_bob)(OQS_KEX *k, const uint8_t *alice_msg, const s
 
 	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
 
-	uint16_t *bob_priv = NULL;
 	uint8_t *bob_rec = NULL;
-	uint16_t *b = NULL, *bprime = NULL, *eprime = NULL, *eprimeprime = NULL;
-	uint16_t *v = NULL;
 	*bob_msg = NULL;
 	*key = NULL;
 
@@ -73,36 +60,18 @@ int MACRIFY(OQS_KEX_lwe_frodo_bob)(OQS_KEX *k, const uint8_t *alice_msg, const s
 	}
 
 	/* allocate private key, errors, outgoing message, and key */
-	bob_priv = malloc(params->n * params->nbar * sizeof(uint16_t));
-	if (bob_priv == NULL) {
-		goto err;
-	}
-	bprime = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
-	if (bprime == NULL) {
-		goto err;
-	}
-	eprime = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
-	if (eprime == NULL) {
-		goto err;
-	}
-	eprimeprime = (uint16_t *) malloc(params->nbar * params->nbar * sizeof(uint16_t));
-	if (eprimeprime == NULL) {
-		goto err;
-	}
-	b = (uint16_t *) malloc(params->n * params->nbar * sizeof(uint16_t));
-	if (b == NULL) {
-		goto err;
-	}
-	v = (uint16_t *) malloc(params->nbar * params->nbar * sizeof(uint16_t));
-	if (v == NULL) {
-		goto err;
-	}
+	uint16_t bob_priv[PARAMS_N * PARAMS_NBAR];
+	uint16_t bprime[PARAMS_N * PARAMS_NBAR];
+	uint16_t eprime[PARAMS_N * PARAMS_NBAR];
+	uint16_t eprimeprime[PARAMS_N * PARAMS_NBAR];
+	uint16_t b[PARAMS_N * PARAMS_NBAR];
+	uint16_t v[PARAMS_N * PARAMS_NBAR];
 	*bob_msg = malloc(params->pub_len + params->rec_hint_len);
 	if (*bob_msg == NULL) {
 		goto err;
 	}
 	bob_rec = *bob_msg + params->pub_len;
-	*key = malloc(params->key_bits >> 3);
+	*key = malloc(PARAMS_KEY_BYTES);
 	if (*key == NULL) {
 		goto err;
 	}
@@ -132,7 +101,7 @@ int MACRIFY(OQS_KEX_lwe_frodo_bob)(OQS_KEX *k, const uint8_t *alice_msg, const s
 	MACRIFY(oqs_kex_lwe_frodo_round2)(*key, v);
 
 	*bob_msg_len = params->pub_len + params->rec_hint_len;
-	*key_len = params->key_bits >> 3;
+	*key_len = PARAMS_KEY_BYTES;
 
 	ret = 1;
 	goto cleanup;
@@ -141,28 +110,13 @@ err:
 	ret = 0;
 	free(*bob_msg);
 	*bob_msg = NULL;
-	if (*key != NULL) {
-		memset(*key, 0, params->key_bits >> 3);
-	}
-	free(*key);
+	OQS_MEM_secure_free(*key, PARAMS_KEY_BYTES);
 	*key = NULL;
 
 cleanup:
-	free(bob_priv);
-	if (eprime != NULL) {
-		memset(eprime, 0, params->n * params->nbar * sizeof(uint16_t));
-	}
-	free(bprime);
-	free(eprime);
-	if (eprimeprime != NULL) {
-		memset(eprimeprime, 0, params->nbar * params->nbar * sizeof(uint16_t));
-	}
-	free(eprimeprime);
-	free(b);
-	if (v != NULL) {
-		memset(v, 0, params->nbar * params->nbar * sizeof(uint16_t));
-	}
-	free(v);
+	OQS_MEM_cleanse(eprime, sizeof(eprime));
+	OQS_MEM_cleanse(eprimeprime, sizeof(eprimeprime));
+	OQS_MEM_cleanse(v, sizeof(v));
 
 	return ret;
 
@@ -174,7 +128,6 @@ int MACRIFY(OQS_KEX_lwe_frodo_alice_1)(OQS_KEX *k, const void *alice_priv, const
 
 	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
 
-	uint16_t *bprime = NULL, *w = NULL;
 	*key = NULL;
 
 	/* check length of other party's public key */
@@ -183,21 +136,16 @@ int MACRIFY(OQS_KEX_lwe_frodo_alice_1)(OQS_KEX *k, const void *alice_priv, const
 	}
 
 	/* allocate working values and session key */
-	bprime = malloc(params->n * params->nbar * sizeof(uint16_t));
-	if (bprime == NULL) {
-		goto err;
-	}
-	w = malloc(params->nbar * params->nbar * sizeof(uint16_t));
-	if (w == NULL) {
-		goto err;
-	}
-	*key = malloc(params->key_bits >> 3);
+	uint16_t bprime[PARAMS_N * PARAMS_NBAR];
+	uint16_t w[PARAMS_N * PARAMS_NBAR];
+
+	*key = malloc(PARAMS_KEY_BYTES);
 	if (*key == NULL) {
 		goto err;
 	}
 
 	/* unpack B' */
-	oqs_kex_lwe_frodo_unpack(bprime, params->n * params->nbar, bob_msg, params->pub_len, params->log2_q);
+	oqs_kex_lwe_frodo_unpack(bprime, PARAMS_N * PARAMS_NBAR, bob_msg, params->pub_len, params->log2_q);
 
 	/* compute W = B'S */
 	MACRIFY(oqs_kex_lwe_frodo_mul_bs)(w, bprime, (uint16_t *) alice_priv);
@@ -206,20 +154,17 @@ int MACRIFY(OQS_KEX_lwe_frodo_alice_1)(OQS_KEX *k, const void *alice_priv, const
 	const uint8_t *bob_rec = bob_msg + params->pub_len;
 	MACRIFY(oqs_kex_lwe_frodo_reconcile)(*key, w, bob_rec);
 
-	*key_len = params->key_bits >> 3;
+	*key_len = PARAMS_KEY_BYTES;
 
 	ret = 1;
 	goto cleanup;
 
 err:
 	ret = 0;
-	memset(key, 0, params->key_bits >> 3);
-	free(*key);
+	OQS_MEM_secure_free(*key, PARAMS_KEY_BYTES);
 	*key = NULL;
 
 cleanup:
-	free(w);
-	free(bprime);
 	return ret;
 
 }
