@@ -1,5 +1,5 @@
 /**
- * \file aes.h
+ * \file sha3.h
  * \brief Header defining the API for OQS SHA3
  */
 
