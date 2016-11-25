@@ -27,9 +27,11 @@ OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand) {
 	// Curve isogeny system initialization
 	PCurveIsogenyStruct curveIsogeny = oqs_sidh_cln16_curve_allocate(&CurveIsogeny_SIDHp751);
 	if (curveIsogeny == NULL) {
+		free(k);
 		return NULL;
 	}
 	if (oqs_sidh_cln16_curve_initialize(curveIsogeny, rand, &CurveIsogeny_SIDHp751) != SIDH_CRYPTO_SUCCESS) {
+		free(k);
 		oqs_sidh_cln16_curve_free(curveIsogeny);
 		return NULL;
 	}
