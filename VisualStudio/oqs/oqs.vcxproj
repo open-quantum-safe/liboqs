@@ -32,6 +32,9 @@
     <ClInclude Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" />
     <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto.h" />
     <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_priv.h" />
+    <ClInclude Include="..\..\src\kex_sidh_cln16\kex_sidh_cln16.h" />
+    <ClInclude Include="..\..\src\kex_sidh_cln16\SIDH.h" />
+    <ClInclude Include="..\..\src\kex_sidh_cln16\SIDH_internal.h" />
     <ClInclude Include="..\..\src\rand\rand.h" />
     <ClInclude Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.h" />
     <ClInclude Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.h" />
@@ -53,6 +56,13 @@
     <ClCompile Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.c" />
     <ClCompile Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_kex.c" />
     <ClCompile Include="..\..\src\kex_rlwe_msrln16\ntt_constants.c" />
+    <ClCompile Include="..\..\src\kex_sidh_cln16\ec_isogeny.c" />
+    <ClCompile Include="..\..\src\kex_sidh_cln16\fpx.c" />
+    <ClCompile Include="..\..\src\kex_sidh_cln16\kex_sidh_cln16.c" />
+    <ClCompile Include="..\..\src\kex_sidh_cln16\SIDH.c" />
+    <ClCompile Include="..\..\src\kex_sidh_cln16\sidh_kex.c" />
+    <ClCompile Include="..\..\src\kex_sidh_cln16\SIDH_setup.c" />
+    <ClCompile Include="..\..\src\kex_sidh_cln16\validate.c" />
     <ClCompile Include="..\..\src\rand\rand.c" />
     <ClCompile Include="..\..\src\rand_urandom_aesctr\rand_urandom_aesctr.c" />
     <ClCompile Include="..\..\src\rand_urandom_chacha20\rand_urandom_chacha20.c" />
@@ -141,7 +151,8 @@ copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -169,7 +180,8 @@ copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -201,7 +213,8 @@ copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -233,7 +246,8 @@ copy "$(SolutionDir)..\src\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
