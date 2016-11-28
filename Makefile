@@ -55,6 +55,7 @@ links:
 	rm -rf include/oqs
 	mkdir -p include/oqs
 	$(LN) ../../src/aes/aes.h include/oqs
+	$(LN) ../../src/sha3/sha3.h include/oqs
 	$(LN) ../../src/kex/kex.h include/oqs
 	$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
@@ -84,7 +85,7 @@ $(KEX_RLWE_BCNS15_OBJS): $(KEX_RLWE_BCNS15_HEADERS)
 
 # KEX_NEWHOPE
 KEX_RLWE_NEWHOPE_OBJS := $(addprefix objs/kex_rlwe_newhope/, kex_rlwe_newhope.o)
-KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.h fips202.c newhope.c params.h poly.c precomp.c)
+KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.h newhope.c params.h poly.c precomp.c)
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 
 # KEX_RLWE_MSRLN16
@@ -112,6 +113,10 @@ COMMON_OBJS := $(addprefix objs/common/, common.o)
 COMMON_HEADERS := $(addprefix src/common/, common.h)
 $(COMMON_OBJS): $(COMMON_HEADERS)
 
+# SHA3
+SHA3_OBJS := $(addprefix objs/sha3/, sha3.o)
+SHA3_HEADERS := $(addprefix src/sha3/, sha3.h)
+$(SHA3_OBJS): $(SHA3_HEADERS)
 
 # KEX
 objs/kex/kex.o: src/kex/kex.h
@@ -119,9 +124,11 @@ objs/kex/kex.o: src/kex/kex.h
 # LIB
 
 
-RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS)
+RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS) objs/rand/rand.o
 
-lib: $(RAND_OBJS) $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/rand/rand.o objs/kex/kex.o $(AES_OBJS) $(COMMON_OBJS)
+KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/kex/kex.o
+
+lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
