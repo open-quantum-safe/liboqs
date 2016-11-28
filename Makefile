@@ -54,29 +54,29 @@ objs/%.o: src/%.c
 links:
 	rm -rf include/oqs
 	mkdir -p include/oqs
-	$(LN) ../../src/aes/aes.h include/oqs
-	$(LN) ../../src/sha3/sha3.h include/oqs
+	$(LN) ../../src/crypto/aes/aes.h include/oqs
+	$(LN) ../../src/crypto/sha3/sha3.h include/oqs
 	$(LN) ../../src/kex/kex.h include/oqs
 	$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 	$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
-	$(LN) ../../src/rand/rand.h include/oqs
-	$(LN) ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
-	$(LN) ../../src/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
+	$(LN) ../../src/crypto/rand/rand.h include/oqs
+	$(LN) ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
+	$(LN) ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 	$(LN) ../../src/common/common.h include/oqs
 
 # RAND_URANDOM_CHACHA
-RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/rand_urandom_chacha20/, rand_urandom_chacha20.o)
-$(RAND_URANDOM_CHACHA_OBJS): src/rand_urandom_chacha20/rand_urandom_chacha20.h
+RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/crypto/rand_urandom_chacha20/, rand_urandom_chacha20.o)
+$(RAND_URANDOM_CHACHA_OBJS): src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h
 
 # RAND_URANDOM_AESCTR
-RAND_URANDOM_AESCTR_OBJS :=  $(addprefix objs/rand_urandom_aesctr/, rand_urandom_aesctr.o)
-$(RAND_URANDOM_AESCTR_OBJS): src/rand_urandom_aesctr/rand_urandom_aesctr.h
+RAND_URANDOM_AESCTR_OBJS :=  $(addprefix objs/crypto/rand_urandom_aesctr/, rand_urandom_aesctr.o)
+$(RAND_URANDOM_AESCTR_OBJS): src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h
 
 # RAND
-objs/rand/rand.o: src/rand/rand.h
+objs/crypto/rand/rand.o: src/crypto/rand/rand.h
 
 # KEX_RLWE_BCNS15
 KEX_RLWE_BCNS15_OBJS := $(addprefix objs/kex_rlwe_bcns15/, fft.o kex_rlwe_bcns15.o rlwe.o rlwe_kex.o)
@@ -104,8 +104,8 @@ KEX_SIDH_CLN16_HEADERS := $(addprefix src/kex_sidh_cln16/, kex_sidh_cln16.h SIDH
 $(KEX_SIDH_CLN16_OBJS): $(KEX_SIDH_CLN16_HEADERS)
 
 # AES
-AES_OBJS := $(addprefix objs/aes/, aes.o aes_c.o aes_ni.o)
-AES_HEADERS := $(addprefix src/aes/, aes.h)
+AES_OBJS := $(addprefix objs/crypto/aes/, aes.o aes_c.o aes_ni.o)
+AES_HEADERS := $(addprefix src/crypto/aes/, aes.h)
 $(AES_OBJS): $(AES_HEADERS)
 
 #COMMON
@@ -114,8 +114,8 @@ COMMON_HEADERS := $(addprefix src/common/, common.h)
 $(COMMON_OBJS): $(COMMON_HEADERS)
 
 # SHA3
-SHA3_OBJS := $(addprefix objs/sha3/, sha3.o)
-SHA3_HEADERS := $(addprefix src/sha3/, sha3.h)
+SHA3_OBJS := $(addprefix objs/crypto/sha3/, sha3.o)
+SHA3_HEADERS := $(addprefix src/crypto/sha3/, sha3.h)
 $(SHA3_OBJS): $(SHA3_HEADERS)
 
 # KEX
@@ -124,7 +124,7 @@ objs/kex/kex.o: src/kex/kex.h
 # LIB
 
 
-RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS) objs/rand/rand.o
+RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS) objs/crypto/rand/rand.o
 
 KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/kex/kex.o
 
@@ -133,10 +133,10 @@ lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
 
-tests: lib src/rand/test_rand.c src/kex/test_kex.c src/aes/test_aes.c src/ds_benchmark.h
-	$(CC) $(CFLAGS) $(INCLUDES) -L. src/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
+tests: lib src/crypto/rand/test_rand.c src/kex/test_kex.c src/crypto/aes/test_aes.c src/ds_benchmark.h
+	$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
-	$(CC) $(CFLAGS) $(INCLUDES) -L. src/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
+	$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
 
 docs: links
 	doxygen
