@@ -9,9 +9,9 @@ CURL=curl
 RANLIB=ranlib
 LN=ln -s
 
-CFLAGS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME
-LDFLAGS=-lm
-INCLUDES=-Iinclude
+CFLAGS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME 
+LDFLAGS= -lm 
+INCLUDES= -Iinclude
 
 ifdef ARCH
 	CFLAGS += $(ARCH)
@@ -60,6 +60,7 @@ links:
 	$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 	$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
+	$(LN) ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 	$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	$(LN) ../../src/crypto/rand/rand.h include/oqs
@@ -103,6 +104,15 @@ KEX_SIDH_CLN16_OBJS := $(addprefix objs/kex_sidh_cln16/, ec_isogeny.o fpx.o kex_
 KEX_SIDH_CLN16_HEADERS := $(addprefix src/kex_sidh_cln16/, kex_sidh_cln16.h SIDH.h)
 $(KEX_SIDH_CLN16_OBJS): $(KEX_SIDH_CLN16_HEADERS)
 
+# KEX_CODE_MCBITS
+KEX_CODE_MCBITS_SRC := $(wildcard src/kex_code_mcbits/external/*.c)
+KEX_CODE_MCBITS_SRC += $(wildcard src/kex_code_mcbits/*.c)
+KEX_CODE_MCBITS_OBJS := $(patsubst src/%.c, objs/%.o, $(KEX_CODE_MCBITS_SRC))
+KEX_CODE_MCBITS_HEADERS := $(wildcard src/kex_code_mcbits/external/*.h)
+KEX_CODE_MCBITS_HEADERS += $(wildcard src/kex_code_mcbits/*.h)
+$(KEX_CODE_MCBITS_OBJS): $(KEX_CODE_MCBITS_HEADERS)
+
+
 # AES
 AES_OBJS := $(addprefix objs/crypto/aes/, aes.o aes_c.o aes_ni.o)
 AES_HEADERS := $(addprefix src/crypto/aes/, aes.h)
@@ -126,7 +136,7 @@ objs/kex/kex.o: src/kex/kex.h
 
 RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS) objs/crypto/rand/rand.o
 
-KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/kex/kex.o
+KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) $(KEX_CODE_MCBITS_OBJS) objs/kex/kex.o
 
 lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
 	rm -f liboqs.a
@@ -135,7 +145,7 @@ lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
 
 tests: lib src/crypto/rand/test_rand.c src/kex/test_kex.c src/crypto/aes/test_aes.c src/ds_benchmark.h
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
-	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
+	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs -lnacl $(LDFLAGS) -o test_kex
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
 
 docs: links

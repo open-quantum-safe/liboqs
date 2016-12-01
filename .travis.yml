@@ -12,6 +12,7 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
+        - libnacl-dev
     before_install:
       - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
       - tar xzf astyle_2.05.1_linux.tar.gz
@@ -25,6 +26,7 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
+        - libnacl-dev
     before_install:
       - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
       - tar xzf astyle_2.05.1_linux.tar.gz
@@ -38,6 +40,7 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
+        - libnacl-dev
     before_install:
       - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
       - tar xzf astyle_2.05.1_linux.tar.gz
@@ -52,6 +55,7 @@ matrix:
         packages:
         - gcc-6
         - libssl-dev
+        - libnacl-dev
     before_install:
       - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
       - tar xzf astyle_2.05.1_linux.tar.gz
@@ -60,7 +64,7 @@ matrix:
     compiler: clang
     env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1
     before_install:
-      - brew install astyle openssl
+      - brew install astyle openssl nacl
 
 script:
   - make
