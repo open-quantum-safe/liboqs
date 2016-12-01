@@ -6,7 +6,7 @@
 
 #include "aes.h"
 #include "aes_local.h"
-#include "../ds_benchmark.h"
+#include "../../ds_benchmark.h"
 
 #define BENCH_DURATION 1
 
