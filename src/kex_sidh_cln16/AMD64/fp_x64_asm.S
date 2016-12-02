@@ -50,8 +50,8 @@
 //  Field addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global fpadd751_asm
-fpadd751_asm:
+.global oqs_sidh_cln16_fpadd751_asm
+oqs_sidh_cln16_fpadd751_asm:
   push   r12
   push   r13
   push   r14
@@ -191,8 +191,8 @@ fpadd751_asm:
 //  Field subtraction
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global fpsub751_asm
-fpsub751_asm:
+.global oqs_sidh_cln16_fpsub751_asm
+oqs_sidh_cln16_fpsub751_asm:
   push   r12
   push   r13
   push   r14
@@ -306,8 +306,8 @@ fpsub751_asm:
 //  Operation: c [reg_p3] = a [reg_p1] * b [reg_p2]
 //  NOTE: a=c or b=c are not allowed
 //***********************************************************************
-.global mul751_asm
-mul751_asm:
+.global oqs_sidh_cln16_mul751_asm
+oqs_sidh_cln16_mul751_asm:
   push   r12
   push   r13
   push   r14
@@ -1249,8 +1249,8 @@ mul751_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //*********************************************************************** 
-.global rdc751_asm
-rdc751_asm:
+.global oqs_sidh_cln16_rdc751_asm
+oqs_sidh_cln16_rdc751_asm:
   push   r12
   push   r13 
   push   r14 

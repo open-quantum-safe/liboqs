@@ -16,7 +16,7 @@ INCLUDES=-Iinclude
 ifdef ARCH
 	CFLAGS += $(ARCH)
 else
-	CFLAGS += -march=x86-64
+	CFLAGS += -march=x86-64 -DSIDH_ASM
 endif
 
 ifdef AES_NI
@@ -99,7 +99,12 @@ KEX_LWE_FRODO_HEADERS := $(addprefix src/kex_lwe_frodo/, kex_lwe_frodo.h local.h
 $(KEX_LWE_FRODO_OBJS): $(KEX_LWE_FRODO_HEADERS)
 
 # KEX_SIDH_CLN16
-KEX_SIDH_CLN16_OBJS := $(addprefix objs/kex_sidh_cln16/, ec_isogeny.o fpx.o kex_sidh_cln16.o SIDH.o sidh_kex.o SIDH_setup.o validate.o)
+#ifneq (,$(findstring SIDH_ASM,$(CFLAGS)))
+objs/kex_sidh_cln16/fp_x64_asm.o: src/kex_sidh_cln16/AMD64/fp_x64_asm.S
+	$(CC) $(CFLAGS) -c -o $@ src/kex_sidh_cln16/AMD64/fp_x64_asm.S
+KEX_SIDH_CLN16_ASM_OBJS = fp_x64_asm.o
+#endif
+KEX_SIDH_CLN16_OBJS := $(addprefix objs/kex_sidh_cln16/, ec_isogeny.o fpx.o kex_sidh_cln16.o SIDH.o sidh_kex.o SIDH_setup.o validate.o $(KEX_SIDH_CLN16_ASM_OBJS))
 KEX_SIDH_CLN16_HEADERS := $(addprefix src/kex_sidh_cln16/, kex_sidh_cln16.h SIDH.h)
 $(KEX_SIDH_CLN16_OBJS): $(KEX_SIDH_CLN16_HEADERS)
 
@@ -108,7 +113,7 @@ AES_OBJS := $(addprefix objs/crypto/aes/, aes.o aes_c.o aes_ni.o)
 AES_HEADERS := $(addprefix src/crypto/aes/, aes.h)
 $(AES_OBJS): $(AES_HEADERS)
 
-#COMMON
+# COMMON
 COMMON_OBJS := $(addprefix objs/common/, common.o)
 COMMON_HEADERS := $(addprefix src/common/, common.h)
 $(COMMON_OBJS): $(COMMON_HEADERS)

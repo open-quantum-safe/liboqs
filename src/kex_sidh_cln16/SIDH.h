@@ -26,6 +26,15 @@ extern "C" {
 
 // Definition of operating system
 
+#define OS_WIN       1
+#define OS_LINUX     2
+
+#if defined(WINDOWS)        // Microsoft Windows OS
+#define OS_TARGET OS_WIN
+#else
+#define OS_TARGET OS_LINUX
+#endif
+
 #if (defined(__x86_64__) || defined(__x86_64) || defined(__arch64__) || defined(_M_AMD64) || defined(_M_X64) || defined(_WIN64) || !defined(__LP64__))
 #define TARGET TARGET_AMD64
 #define RADIX           64
@@ -87,12 +96,12 @@ typedef uint64_t uint128_t[2];
 // Definitions of the error-handling type and error codes
 
 typedef enum {
-	SIDH_CRYPTO_SUCCESS,                          // 0x00
-	SIDH_CRYPTO_ERROR,                            // 0x01
-	SIDH_CRYPTO_ERROR_INVALID_PARAMETER,          // 0x02
-	SIDH_CRYPTO_ERROR_PUBLIC_KEY_VALIDATION,      // 0x03
-	SIDH_CRYPTO_ERROR_TOO_MANY_ITERATIONS,        // 0x04
-	SIDH_CRYPTO_ERROR_END_OF_LIST
+    SIDH_CRYPTO_SUCCESS,                          // 0x00
+    SIDH_CRYPTO_ERROR,                            // 0x01
+    SIDH_CRYPTO_ERROR_INVALID_PARAMETER,          // 0x02
+    SIDH_CRYPTO_ERROR_PUBLIC_KEY_VALIDATION,      // 0x03
+    SIDH_CRYPTO_ERROR_TOO_MANY_ITERATIONS,        // 0x04
+    SIDH_CRYPTO_ERROR_END_OF_LIST
 } SIDH_CRYPTO_STATUS;
 
 // Definition of type for curve isogeny system identifiers. Currently valid value is "SIDHp751" (see SIDH.h)
