@@ -8,7 +8,7 @@
 
 void OQS_MEM_cleanse(void *ptr, size_t len) {
 #if defined(WINDOWS)
-	SecureZeroMemory(pnt, len);
+	SecureZeroMemory(ptr, len);
 #elif defined(HAVE_MEMSET_S)
 	if (0U < len && memset_s(pnt, (rsize_t) len, 0, (rsize_t) len) != 0) {
 		abort();
