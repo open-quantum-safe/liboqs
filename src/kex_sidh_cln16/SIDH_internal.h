@@ -77,9 +77,6 @@ typedef oqs_sidh_cln16_point_basefield_proj oqs_sidh_cln16_point_basefield_proj_
 #define NBITS_TO_NWORDS(nbits)      (((nbits)+(sizeof(digit_t)*8)-1)/(sizeof(digit_t)*8))    // Conversion macro from number of bits to number of computer words
 #define NBYTES_TO_NWORDS(nbytes)    (((nbytes)+sizeof(digit_t)-1)/sizeof(digit_t))           // Conversion macro from number of bytes to number of computer words
 
-// Macro to avoid compiler warnings when detecting unreferenced parameters
-#define UNREFERENCED_PARAMETER(PAR) (PAR)
-
 
 /********************** Constant-time unsigned comparisons ***********************/
 
