@@ -34,11 +34,12 @@ int MACRIFY(OQS_KEX_lwe_frodo_alice_0)(OQS_KEX *k, void **alice_priv, uint8_t **
 	goto cleanup;
 
 err:
-	ret = 0;
+	OQS_MEM_cleanse(e, sizeof(e));
 	free(*alice_msg);
 	*alice_msg = NULL;
 	free(*alice_priv);
 	*alice_priv = NULL;
+	ret = 0;
 
 cleanup:
 	return ret;
