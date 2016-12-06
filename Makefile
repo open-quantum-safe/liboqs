@@ -13,10 +13,15 @@ CFLAGS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME
 LDFLAGS=-lm
 INCLUDES=-Iinclude
 
+UNAME_S := $(shell uname -s)
+
 ifdef ARCH
 	CFLAGS += $(ARCH)
 else
-	CFLAGS += -march=x86-64 -DSIDH_ASM
+	CFLAGS += -march=x86-64
+	ifeq ($(UNAME_S),Linux)
+		CFLAGS += -DSIDH_ASM
+	endif
 endif
 
 ifdef AES_NI
@@ -32,7 +37,6 @@ endif
 
 ifdef USE_OPENSSL
 	CFLAGS += -DUSE_OPENSSL
-	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		OPENSSL_DIR=/usr
 	endif
