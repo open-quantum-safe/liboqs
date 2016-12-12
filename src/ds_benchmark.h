@@ -186,7 +186,7 @@ static uint64_t rdtsc(void) {
 	printf("\n"); \
 	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n",  "Operation                     ", "Iterations", "Total time (s)", "Time (us): mean", "pop. stdev", "CPU cycles: mean", "pop. stdev"); \
 	printf("%-30s | %10s:| %14s:| %15s:| %10s:| %16s:| %10s:\n", "------------------------------", "----------", "--------------", "---------------", "----------", "----------------", "----------");
-	/* colons are used in above to right-align cell contents in Markdown */
+/* colons are used in above to right-align cell contents in Markdown */
 
 #define PRINT_TIMER_FOOTER \
 	printf("Ended at "); \
