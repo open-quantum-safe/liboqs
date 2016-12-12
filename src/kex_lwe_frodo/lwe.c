@@ -71,7 +71,7 @@ void oqs_kex_lwe_frodo_pack(unsigned char *out, const size_t outlen, const uint1
 			int nbits = min(8 - b, bits);
 			uint16_t mask = (1 << nbits) - 1;
 			unsigned char t = (w >> (bits - nbits)) & mask;  // the bits to copy from w to out
-			out[i] = out[i] + (t << (8 - b - nbits));
+			out[i] += t << (8 - b - nbits);
 			b += nbits;
 			bits -= nbits;
 			w &= ~(mask << bits);  // not strictly necessary; mostly for debugging
@@ -119,7 +119,7 @@ void oqs_kex_lwe_frodo_unpack(uint16_t *out, const size_t outlen, const unsigned
 			int nbits = min(lsb - b, bits);
 			uint16_t mask = (1 << nbits) - 1;
 			unsigned char t = (w >> (bits - nbits)) & mask;  // the bits to copy from w to out
-			out[i] = out[i] + (t << (lsb - b - nbits));
+			out[i] += t << (lsb - b - nbits);
 			b += nbits;
 			bits -= nbits;
 			w &= ~(mask << bits);  // not strictly necessary; mostly for debugging
@@ -140,27 +140,11 @@ void oqs_kex_lwe_frodo_unpack(uint16_t *out, const size_t outlen, const unsigned
 	}
 }
 
-#define LWE_DIV_ROUNDUP(x, y) (((x) + (y)-1) / y)
-
 // define parameters for "recommended" parameter set
-#define PARAMS_N 752
-#define PARAMS_NBAR 8
-#define PARAMS_LOG2Q 15
-#define PARAMS_Q (1 << PARAMS_LOG2Q)
-#define PARAMS_EXTRACTED_BITS 4
-#define PARAMS_KEY_BITS 256
-#define PARAMS_STRIPE_STEP 8
-#define PARAMS_REC_HINT_LENGTH LWE_DIV_ROUNDUP(PARAMS_NBAR * PARAMS_NBAR, 8)
+#include "recommended.h"
 // pre-process code to obtain "recommended" functions
 #define MACRIFY(NAME) NAME ## _recommended
 #include "lwe_macrify.c"
 // undefine macros to avoid any confusion later
-#undef PARAMS_N
-#undef PARAMS_NBAR
-#undef PARAMS_LOG2Q
-#undef PARAMS_Q
-#undef PARAMS_EXTRACTED_BITS
-#undef PARAMS_KEY_BITS
-#undef PARAMS_STRIPE_STEP
-#undef PARAMS_REC_HINT_LENGTH
+#include "recommended.h"
 #undef MACRIFY
