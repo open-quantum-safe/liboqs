@@ -53,13 +53,11 @@ OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand) {
 
 int OQS_KEX_rlwe_bcns15_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
 
-	int ret;
-
 	*alice_priv = NULL;
 	*alice_msg = NULL;
 
 	/* allocate public/private key pair */
-	*alice_msg = malloc(1024 * sizeof(uint32_t));
+	*alice_msg = malloc(1024 * 4 * sizeof(uint8_t)); //1024 32-bit ints
 	if (*alice_msg == NULL) {
 		goto err;
 	}
@@ -72,24 +70,17 @@ int OQS_KEX_rlwe_bcns15_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_m
 	oqs_kex_rlwe_bcns15_generate_keypair(oqs_kex_rlwe_bcns15_a, (uint32_t *) *alice_priv, (uint32_t *) *alice_msg, k->ctx, k->rand);
 	*alice_msg_len = 1024 * sizeof(uint32_t);
 
-	ret = 1;
-	goto cleanup;
+	return 1;
 
 err:
-	ret = 0;
 	free(*alice_msg);
 	free(*alice_priv);
 
-cleanup:
-	return ret;
-
+	return 0;
 }
 
 int OQS_KEX_rlwe_bcns15_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
 
-	int ret;
-
-	uint8_t *bob_priv = NULL;
 	*bob_msg = NULL;
 	*key = NULL;
 
@@ -97,47 +88,37 @@ int OQS_KEX_rlwe_bcns15_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t a
 		goto err;
 	}
 
-	bob_priv = malloc(1024 * sizeof(uint32_t));
-	if (bob_priv == NULL) {
-		goto err;
-	}
 	/* allocate message and session key */
 	*bob_msg = malloc(1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t));
 	if (*bob_msg == NULL) {
 		goto err;
 	}
-	*key = malloc(16 * sizeof(uint64_t));
+	*key = malloc(16 * 8 * sizeof(uint8_t)); //16 64-bit ints
 	if (*key == NULL) {
 		goto err;
 	}
 
+	uint32_t bob_priv[1024];
+
 	/* generate public/private key pair */
-	oqs_kex_rlwe_bcns15_generate_keypair(oqs_kex_rlwe_bcns15_a, (uint32_t *) bob_priv, (uint32_t *) *bob_msg, k->ctx, k->rand);
+	oqs_kex_rlwe_bcns15_generate_keypair(oqs_kex_rlwe_bcns15_a, bob_priv, (uint32_t *) *bob_msg, k->ctx, k->rand);
 
 	/* generate Bob's response */
 	uint8_t *bob_rec = *bob_msg + 1024 * sizeof(uint32_t);
-	oqs_kex_rlwe_bcns15_compute_key_bob((uint32_t *) alice_msg, (uint32_t *) bob_priv, (uint64_t *) bob_rec, (uint64_t *) *key, k->ctx, k->rand);
+	oqs_kex_rlwe_bcns15_compute_key_bob((uint32_t *) alice_msg, bob_priv, (uint64_t *) bob_rec, (uint64_t *) *key, k->ctx, k->rand);
 	*bob_msg_len = 1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t);
 	*key_len = 16 * sizeof(uint64_t);
 
-	ret = 1;
-	goto cleanup;
+	return 1;
 
 err:
-	ret = 0;
 	free(*bob_msg);
 	free(*key);
 
-cleanup:
-	free(bob_priv);
-
-	return ret;
-
+	return 0;
 }
 
 int OQS_KEX_rlwe_bcns15_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
-
-	int ret;
 
 	*key = NULL;
 
@@ -146,7 +127,7 @@ int OQS_KEX_rlwe_bcns15_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_
 	}
 
 	/* allocate session key */
-	*key = malloc(16 * sizeof(uint64_t));
+	*key = malloc(16 * 8 * sizeof(uint8_t)); //16 64-bit ints
 	if (*key == NULL) {
 		goto err;
 	}
@@ -156,17 +137,12 @@ int OQS_KEX_rlwe_bcns15_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_
 	oqs_kex_rlwe_bcns15_compute_key_alice((uint32_t *)bob_msg, (uint32_t *)alice_priv, (uint64_t *) bob_rec, (uint64_t *) *key, k->ctx);
 	*key_len = 16 * sizeof(uint64_t);
 
-	ret = 1;
-	goto cleanup;
+	return 1;
 
 err:
-	ret = 0;
 	free(*key);
 
-cleanup:
-
-	return ret;
-
+	return 0;
 }
 
 void OQS_KEX_rlwe_bcns15_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
