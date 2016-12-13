@@ -30,9 +30,9 @@ else
 CFLAGS += -DAES_DISABLE_NI
 endif
 
+UNAME_S := $(shell uname -s)
 ifdef USE_OPENSSL
 	CFLAGS += -DUSE_OPENSSL
-	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
 		OPENSSL_DIR=/usr
 	endif
@@ -41,6 +41,10 @@ ifdef USE_OPENSSL
 	endif
 	INCLUDES += -I$(OPENSSL_DIR)/include
 	LDFLAGS += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
+ifeq ($(UNAME_S),Darwin)
+	INCLUDES += -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
 endif
 
 .PHONY: all check clean prettyprint
