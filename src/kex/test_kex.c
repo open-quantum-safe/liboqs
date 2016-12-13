@@ -219,7 +219,7 @@ static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 		fprintf(stderr, "new_method failed\n");
 		goto err;
 	}
-	printf("%s\n", kex->method_name);
+	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n",  kex->method_name, "", "", "", "", "", "");
 
 	TIME_OPERATION_SECONDS({ OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len); cleanup_alice_0(kex, alice_priv, alice_msg); }, "alice 0", seconds);
 
