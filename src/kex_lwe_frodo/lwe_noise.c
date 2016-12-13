@@ -14,7 +14,7 @@
 #if defined(WINDOWS)
 // VS complains about arrays initialized with const param. On Windows,
 // we use directly the recommended value passed down from calling functions.
-// Currently there is only one set of params, so that works. Need to fix this 
+// Currently there is only one set of params, so that works. Need to fix this
 // in a more general setting (TODO).
 #define IS_WINDOWS(windows, nix) (windows)
 #else
@@ -27,7 +27,7 @@ static void lwe_sample_n_inverse_8(uint16_t *s, const size_t n, const uint8_t *c
 	 * timing: the CDF table is ingested for every sample.
 	 */
 
-	uint8_t rndvec[ IS_WINDOWS(RECOMMENDED_N_ARRAY_SIZE, n) ];
+	uint8_t rndvec[IS_WINDOWS(RECOMMENDED_N_ARRAY_SIZE, n)];
 	OQS_RAND_n(rand, rndvec, sizeof(rndvec));
 
 	for (size_t i = 0; i < n; ++i) {
