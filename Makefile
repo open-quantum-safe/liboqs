@@ -151,7 +151,7 @@ check: links tests
 	./test_aes
 
 clean:
-	rm -rf docs objs include
+	rm -rf docs/doxygen objs include
 	rm -f test_rand test_kex test_aes liboqs.a
 	find . -name .DS_Store -type f -delete
 
