@@ -60,7 +60,8 @@ Implementation
 - Correctness: covered by test harness `test_kex`
 - Statistics of shared secrets: covered by test harness `test_kex`
 	- statistical distance from uniform over 100 iterations: 0.0561185025
-- Static analysis: none
+- Static analysis:
+	- `scan_build`
 
 **Runtime:**
 
