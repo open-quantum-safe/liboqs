@@ -9,13 +9,28 @@
 
 #include "local.h"
 
+#if defined(WINDOWS)
+// "const size_t n" is used as param in the following functions, but VS complains 
+// about arrays being initialized as such.
+// n is always passed as PARAMS_N * PARAMS_NBAR 8 (in kex_lwe_frodo_macrify.c)
+// so we define it as such here. FIXME: something better to fix this?
+#define N_ARRAY_SIZE (752 * 8)
+#define CDF_TABLE_LEN 6
+#endif
+
 static void lwe_sample_n_inverse_8(uint16_t *s, const size_t n, const uint8_t *cdf_table, const size_t cdf_table_len, OQS_RAND *rand) {
 	/* Fills vector s with n samples from the noise distribution which requires
 	 * 8 bits to sample. The distribution is specified by its CDF. Super-constant
 	 * timing: the CDF table is ingested for every sample.
 	 */
 
-	uint8_t rndvec[n];
+	uint8_t rndvec[
+#if defined(WINDOWS)
+		N_ARRAY_SIZE
+#else
+	n
+#endif
+	];
 	OQS_RAND_n(rand, rndvec, sizeof(rndvec));
 
 	for (size_t i = 0; i < n; ++i) {
@@ -40,8 +55,13 @@ static void lwe_sample_n_inverse_12(uint16_t *s, const size_t n, const uint16_t 
 	 * 12 bits to sample. The distribution is specified by its CDF. Super-constant
 	 * timing: the CDF table is ingested for every sample.
 	 */
-
-	uint8_t rnd[3 * ((n + 1) / 2)]; // 12 bits of unif randomness per output element
+	uint8_t rnd[
+#if defined(WINDOWS)
+	3 * ((N_ARRAY_SIZE + 1) / 2)
+#else
+	3 * ((n + 1) / 2)	
+#endif
+]; // 12 bits of unif randomness per output element
 	OQS_RAND_n(rand, rnd, sizeof(rnd));
 
 	for (size_t i = 0; i < n; i += 2) {  // two output elements at a time
@@ -80,7 +100,13 @@ static void lwe_sample_n_inverse_16(uint16_t *s, const size_t n, const uint16_t 
 	 * timing: the CDF table is ingested for every sample.
 	 */
 
-	uint16_t rndvec[ n ];
+	uint16_t rndvec[
+#if defined(WINDOWS)
+		N_ARRAY_SIZE
+#else
+	n
+#endif
+	];
 	OQS_RAND_n(rand, (uint8_t *) rndvec, sizeof(rndvec));
 
 	for (size_t i = 0; i < n; ++i) {
@@ -101,11 +127,17 @@ static void lwe_sample_n_inverse_16(uint16_t *s, const size_t n, const uint16_t 
 }
 
 void oqs_kex_lwe_frodo_sample_n(uint16_t *s, const size_t n, struct oqs_kex_lwe_frodo_params *params, OQS_RAND *rand) {
-
 	switch (params->sampler_num) {
 	case 8: {
 		// have to copy cdf_table from uint16_t to uint8_t
-		uint8_t cdf_table_8[params->cdf_table_len * sizeof(uint8_t)];
+		uint8_t cdf_table_8[
+#if defined(WINDOWS)
+			CDF_TABLE_LEN
+#else
+			params->cdf_table_len
+#endif
+			* sizeof(uint8_t)];
+
 		for (size_t i = 0; i < params->cdf_table_len; i++) {
 			cdf_table_8[i] = (uint8_t) params->cdf_table[i];
 		}
@@ -122,5 +154,4 @@ void oqs_kex_lwe_frodo_sample_n(uint16_t *s, const size_t n, struct oqs_kex_lwe_
 		assert(0); //ERROR
 		break;
 	}
-
 }
