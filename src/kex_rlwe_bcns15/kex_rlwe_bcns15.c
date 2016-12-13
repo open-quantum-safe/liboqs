@@ -14,6 +14,7 @@
 
 #include <oqs/kex.h>
 #include <oqs/rand.h>
+#include <oqs/common.h>
 
 #include "kex_rlwe_bcns15.h"
 #include "local.h"
@@ -53,12 +54,15 @@ OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand) {
 
 int OQS_KEX_rlwe_bcns15_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
 
+	int ret;
+	uint32_t *alice_msg_32 = NULL;
+
 	*alice_priv = NULL;
 	*alice_msg = NULL;
 
 	/* allocate public/private key pair */
-	*alice_msg = malloc(1024 * 4 * sizeof(uint8_t)); //1024 32-bit ints
-	if (*alice_msg == NULL) {
+	alice_msg_32 = malloc(1024 * sizeof(uint32_t));
+	if (alice_msg_32 == NULL) {
 		goto err;
 	}
 	*alice_priv = malloc(1024 * sizeof(uint32_t));
@@ -67,19 +71,29 @@ int OQS_KEX_rlwe_bcns15_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_m
 	}
 
 	/* generate public/private key pair */
-	oqs_kex_rlwe_bcns15_generate_keypair(oqs_kex_rlwe_bcns15_a, (uint32_t *) *alice_priv, (uint32_t *) *alice_msg, k->ctx, k->rand);
+	oqs_kex_rlwe_bcns15_generate_keypair(oqs_kex_rlwe_bcns15_a, (uint32_t *) *alice_priv, alice_msg_32, k->ctx, k->rand);
+	*alice_msg = (uint8_t *) alice_msg_32;
 	*alice_msg_len = 1024 * sizeof(uint32_t);
 
-	return 1;
+	ret = 1;
+	goto cleanup;
 
 err:
-	free(*alice_msg);
-	free(*alice_priv);
+	ret = 0;
+	free(alice_msg_32);
+	OQS_MEM_secure_free(*alice_priv, 1024 * sizeof(uint32_t));
 
-	return 0;
+cleanup:
+	return ret;
+
 }
 
 int OQS_KEX_rlwe_bcns15_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
+
+	int ret;
+
+	uint32_t *bob_priv = NULL;
+	uint64_t *key_64 = NULL;
 
 	*bob_msg = NULL;
 	*key = NULL;
@@ -88,37 +102,50 @@ int OQS_KEX_rlwe_bcns15_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t a
 		goto err;
 	}
 
+	bob_priv = malloc(1024 * sizeof(uint32_t));
+	if (bob_priv == NULL) {
+		goto err;
+	}
 	/* allocate message and session key */
 	*bob_msg = malloc(1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t));
 	if (*bob_msg == NULL) {
 		goto err;
 	}
-	*key = malloc(16 * 8 * sizeof(uint8_t)); //16 64-bit ints
-	if (*key == NULL) {
+	key_64 = malloc(16 * sizeof(uint64_t));
+	if (key_64 == NULL) {
 		goto err;
 	}
-
-	uint32_t bob_priv[1024];
 
 	/* generate public/private key pair */
 	oqs_kex_rlwe_bcns15_generate_keypair(oqs_kex_rlwe_bcns15_a, bob_priv, (uint32_t *) *bob_msg, k->ctx, k->rand);
 
 	/* generate Bob's response */
 	uint8_t *bob_rec = *bob_msg + 1024 * sizeof(uint32_t);
-	oqs_kex_rlwe_bcns15_compute_key_bob((uint32_t *) alice_msg, bob_priv, (uint64_t *) bob_rec, (uint64_t *) *key, k->ctx, k->rand);
+	oqs_kex_rlwe_bcns15_compute_key_bob((uint32_t *) alice_msg, bob_priv, (uint64_t *) bob_rec, key_64, k->ctx, k->rand);
 	*bob_msg_len = 1024 * sizeof(uint32_t) + 16 * sizeof(uint64_t);
+	*key = (uint8_t *) key_64;
 	*key_len = 16 * sizeof(uint64_t);
 
-	return 1;
+	ret = 1;
+	goto cleanup;
 
 err:
+	ret = 0;
 	free(*bob_msg);
-	free(*key);
+	OQS_MEM_secure_free(key_64, 16 * sizeof(uint64_t));
 
-	return 0;
+cleanup:
+	OQS_MEM_secure_free(bob_priv, 1024 * sizeof(uint32_t));
+
+	return ret;
+
 }
 
 int OQS_KEX_rlwe_bcns15_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
+
+	int ret;
+
+	uint64_t *key_64 = NULL;
 
 	*key = NULL;
 
@@ -127,22 +154,28 @@ int OQS_KEX_rlwe_bcns15_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_
 	}
 
 	/* allocate session key */
-	*key = malloc(16 * 8 * sizeof(uint8_t)); //16 64-bit ints
-	if (*key == NULL) {
+	key_64 = malloc(16 * sizeof(uint64_t));
+	if (key_64 == NULL) {
 		goto err;
 	}
 
 	/* generate Alice's session key */
 	const uint8_t *bob_rec = bob_msg + 1024 * sizeof(uint32_t);
-	oqs_kex_rlwe_bcns15_compute_key_alice((uint32_t *)bob_msg, (uint32_t *)alice_priv, (uint64_t *) bob_rec, (uint64_t *) *key, k->ctx);
+	oqs_kex_rlwe_bcns15_compute_key_alice((uint32_t *)bob_msg, (uint32_t *)alice_priv, (uint64_t *) bob_rec, key_64, k->ctx);
+	*key = (uint8_t *) key_64;
 	*key_len = 16 * sizeof(uint64_t);
 
-	return 1;
+	ret = 1;
+	goto cleanup;
 
 err:
-	free(*key);
+	ret = 0;
+	OQS_MEM_secure_free(key_64, 16 * sizeof(uint64_t));
 
-	return 0;
+cleanup:
+
+	return ret;
+
 }
 
 void OQS_KEX_rlwe_bcns15_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
