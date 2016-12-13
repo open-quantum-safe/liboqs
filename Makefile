@@ -146,7 +146,7 @@ docs: links
 	doxygen
 
 check: links tests
-	./test_kex
+	./test_kex --quiet
 	./test_rand
 	./test_aes
 
