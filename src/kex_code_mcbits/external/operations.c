@@ -1,11 +1,11 @@
-//#include <nacl/crypto_encrypt.h>
-//#include <nacl/crypto_hash_keccakc1024.h> TODO: this is not in NaCl
+//#include <crypto_encrypt.h>
+//#include <crypto_hash_keccakc1024.h> TODO: this is not in NaCl
 #include <oqs/sha3.h>
 
 
 #include <oqs/rand.h>
-#include <nacl/crypto_stream_salsa20.h>
-#include <nacl/crypto_onetimeauth_poly1305.h>
+#include <crypto_stream_salsa20.h>
+#include <crypto_onetimeauth_poly1305.h>
 
 #include "sk_gen.h"
 #include "pk_gen.h"

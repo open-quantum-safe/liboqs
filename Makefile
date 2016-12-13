@@ -45,6 +45,15 @@ endif
 
 ifeq ($(UNAME_S),Darwin)
 	INCLUDES += -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include
+	ifdef ENABLE_CODE_MCBITS
+		INCLUDES += -I/usr/local/include
+		LDFLAGS += -L/usr/local/lib
+	endif
+endif
+
+ifdef ENABLE_CODE_MCBITS
+	CFLAGS += -DENABLE_CODE_MCBITS
+	LDFLAGS += -lnacl
 endif
 
 .PHONY: all check clean prettyprint
@@ -169,7 +178,7 @@ check: links tests
 	./test_aes
 
 clean:
-	rm -rf docs objs include
+	rm -rf docs/doxygen objs include
 	rm -f test_rand test_kex test_aes liboqs.a
 	find . -name .DS_Store -type f -delete
 

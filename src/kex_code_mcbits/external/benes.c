@@ -1,5 +1,5 @@
 #include "benes.h"
-#include <nacl/randombytes.h>
+#include <randombytes.h>
 #include "transpose.h"
 
 #include <stdio.h>

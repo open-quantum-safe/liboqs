@@ -1,6 +1,6 @@
 #include "sk_gen.h"
 
-#include <nacl/randombytes.h>
+#include <randombytes.h>
 #include "params.h"
 #include "gf.h"
 #include "util.h"
