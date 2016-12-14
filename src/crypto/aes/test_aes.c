@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -43,7 +44,6 @@ static int test_aes128_correctness_c(OQS_RAND *rand) {
 		printf("\n");
 		print_bytes(decrypted, 16);
 		printf("\n");
-		return EXIT_FAILURE;
 		return EXIT_FAILURE;
 	}
 }
@@ -210,8 +210,28 @@ static void speed_aes128_ossl(OQS_RAND *rand) {
 }
 #endif
 
-int main() {
+int main(int argc, char **argv) {
 	int ret;
+	bool bench = false;
+
+	for (int i = 1; i < argc; i++) {
+		if (argv[i][0] == '-') {
+			if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0  ) {
+				bench = true;
+			} else {
+				printf("Usage: ./test_rand [options]\n");
+				printf("\nOptions:\n");
+				printf("  --bench, -b\n");
+				printf("    Run benchmarks\n");
+				if ((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "-help") == 0) || (strcmp(argv[i], "--help") == 0)) {
+					return EXIT_SUCCESS;
+				} else {
+					return EXIT_FAILURE;
+				}
+			}
+		}
+	}
+
 	printf("=== test_aes correctness ===\n");
 	OQS_RAND *rand = OQS_RAND_new(OQS_RAND_alg_default);
 	if (rand == NULL) {
@@ -231,16 +251,20 @@ int main() {
 	TEST_REPEATEDLY(test_aes128_ecb_correctness_ossl(rand));
 #endif
 	printf("Tests passed.\n\n");
-	printf("=== test_aes performance ===\n");
-	PRINT_TIMER_HEADER
-	speed_aes128_c(rand);
+
+	if (bench) {
+		printf("=== test_aes performance ===\n");
+		PRINT_TIMER_HEADER
+		speed_aes128_c(rand);
 #ifndef AES_DISABLE_NI
-	speed_aes128_ni(rand);
+		speed_aes128_ni(rand);
 #endif
 #ifdef USE_OPENSSL
-	speed_aes128_ossl(rand);
+		speed_aes128_ossl(rand);
 #endif
-	PRINT_TIMER_FOOTER
+		PRINT_TIMER_FOOTER
+	}
+	
 	ret = EXIT_SUCCESS;
 	goto cleanup;
 err:
