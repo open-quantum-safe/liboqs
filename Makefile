@@ -53,7 +53,7 @@ endif
 
 ifdef ENABLE_CODE_MCBITS
 	CFLAGS += -DENABLE_CODE_MCBITS
-	LDFLAGS += -lnacl
+	LDFLAGS += -lsodium
 endif
 
 .PHONY: all check clean prettyprint
@@ -162,11 +162,7 @@ lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
 
 tests: lib src/crypto/rand/test_rand.c src/kex/test_kex.c src/crypto/aes/test_aes.c src/ds_benchmark.h
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
-ifdef ENABLE_CODE_MCBITS
-	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs -lnacl $(LDFLAGS) -o test_kex
-else
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
-endif
 	$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
 
 docs: links
