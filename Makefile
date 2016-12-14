@@ -169,8 +169,8 @@ docs: links
 	doxygen
 
 check: links tests
-	./test_kex
-	./test_rand
+	./test_kex --quiet
+	./test_rand --quiet
 	./test_aes
 
 clean:

@@ -144,7 +144,7 @@ cleanup:
 
 }
 
-static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations) {
+static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations, bool quiet) {
 	OQS_KEX *kex = NULL;
 	int ret;
 
@@ -152,8 +152,11 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
 	}
-
-	ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 1, occurrences);
+	if (quiet) {
+		ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 0, occurrences);
+	} else {
+		ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 1, occurrences);
+	}
 	if (ret != 1) {
 		goto err;
 	}
@@ -256,19 +259,35 @@ int main(int argc, char **argv) {
 
 	int success = 1;
 	bool run_all = true;
+	bool quiet = false;
+	bool bench = false;
 	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
-
-	if (argc > 1) {
-		if ((strcmp(argv[1], "-h") == 0) || (strcmp(argv[1], "-help") == 0) || (strcmp(argv[1], "--help") == 0)) {
-			printf("Usage: ./test_kex [algorithms]\n\n");
-			printf("algorithms:\n");
-			for (size_t i = 0; i < kex_testcases_len; i++) {
-				printf("  %s\n", kex_testcases[i].id);
+	for (int i = 1; i < argc; i++) {
+		if (argv[i][0] == '-') {
+			if ((strcmp(argv[i], "-h") == 0)
+			        || (strcmp(argv[i], "-help") == 0)
+			        || (strcmp(argv[i], "--help") == 0)) {
+				printf("Usage: ./test_kex [options] [algorithms]\n");
+				printf("\nOptions:\n");
+				printf("  --quiet, -q\n");
+				printf("    Less verbose output\n");
+				printf("  --bench, -b\n");
+				printf("    Run benchmarks\n");
+				printf("\nalgorithms:\n");
+				for (size_t i = 0; i < kex_testcases_len; i++) {
+					printf("  %s\n", kex_testcases[i].id);
+				}
+				return EXIT_SUCCESS;
+			} else if ( strcmp(argv[i], "--quiet") == 0
+			            || strcmp(argv[i], "-q") == 0  ) {
+				quiet = true;
+			} else if ( strcmp(argv[i], "--bench") == 0
+			            || strcmp(argv[i], "-b") == 0  ) {
+				bench = true;
 			}
-			return EXIT_SUCCESS;
-		}
-		run_all = false;
-		for (int i = 1; i < argc; i++) {
+
+		} else {
+			run_all = false;
 			for (size_t j = 0; j < kex_testcases_len; j++) {
 				if (strcmp(argv[i], kex_testcases[j].id) == 0) {
 					kex_testcases[j].run = 1;
@@ -286,20 +305,22 @@ int main(int argc, char **argv) {
 	for (size_t i = 0; i < kex_testcases_len; i++) {
 		if (run_all || kex_testcases[i].run == 1) {
 			int num_iter = kex_testcases[i].iter;
-			success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, num_iter);
+			success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, num_iter, quiet);
 		}
 		if (success != 1) {
 			goto err;
 		}
 	}
 
-	PRINT_TIMER_HEADER
-	for (size_t i = 0; i < kex_testcases_len; i++) {
-		if (run_all || kex_testcases[i].run == 1) {
-			kex_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_BENCH_SECONDS);
+	if (bench) {
+		PRINT_TIMER_HEADER
+		for (size_t i = 0; i < kex_testcases_len; i++) {
+			if (run_all || kex_testcases[i].run == 1) {
+				kex_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_BENCH_SECONDS);
+			}
 		}
+		PRINT_TIMER_FOOTER
 	}
-	PRINT_TIMER_FOOTER
 
 	success = 1;
 	goto cleanup;
