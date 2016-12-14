@@ -147,7 +147,7 @@ docs: links
 
 check: links tests
 	./test_kex --quiet
-	./test_rand
+	./test_rand --quiet
 	./test_aes
 
 clean:
