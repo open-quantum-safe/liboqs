@@ -316,7 +316,7 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_ladder_3_pt(oqs_sidh_cln16_f2elm_t xP, oqs_sid
 	// Output: projective Montgomery x-coordinates of x(P+[m]Q)=WX/WZ
 	oqs_sidh_cln16_point_proj_t U = oqs_sidh_cln16_point_proj_t_EMPTY, V = oqs_sidh_cln16_point_proj_t_EMPTY;
 	oqs_sidh_cln16_f2elm_t A24, A24num, constant1 = { {0} }, constant2;
-	oqs_sidh_cln16_felm_t temp_scalar;
+	digit_t temp_scalar[SIDH_NWORDS_ORDER];
 	unsigned int bit = 0, nbits, fullbits = CurveIsogeny->owordbits;
 	digit_t mask;
 	int i;
@@ -342,7 +342,7 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_ladder_3_pt(oqs_sidh_cln16_f2elm_t xP, oqs_sid
 	oqs_sidh_cln16_fp2copy751(xP, W->X);
 	oqs_sidh_cln16_fpcopy751((digit_t *)CurveIsogeny->Montgomery_one, (digit_t *)W->Z);
 	oqs_sidh_cln16_fpzero751(W->Z[1]);
-	oqs_sidh_cln16_fpcopy751(m, temp_scalar);
+	oqs_sidh_cln16_copy_words(m, temp_scalar, SIDH_NWORDS_ORDER);
 
 	for (i = fullbits - nbits; i > 0; i--) {
 		oqs_sidh_cln16_mp_shiftl1(temp_scalar, SIDH_NWORDS_ORDER);

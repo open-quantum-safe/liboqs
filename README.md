@@ -50,6 +50,10 @@ To run the tests, simply type:
 
 	make check
 
+To run benchmarks, run
+
+	./test_kex --bench
+
 ### Windows
 
 Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder.

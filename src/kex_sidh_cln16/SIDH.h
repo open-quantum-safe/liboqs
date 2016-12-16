@@ -26,6 +26,15 @@ extern "C" {
 
 // Definition of operating system
 
+#define OS_WIN       1
+#define OS_LINUX     2
+
+#if defined(WINDOWS)        // Microsoft Windows OS
+#define OS_TARGET OS_WIN
+#else
+#define OS_TARGET OS_LINUX
+#endif
+
 #if (defined(__x86_64__) || defined(__x86_64) || defined(__arch64__) || defined(_M_AMD64) || defined(_M_X64) || defined(_WIN64) || !defined(__LP64__))
 #define TARGET TARGET_AMD64
 #define RADIX           64
