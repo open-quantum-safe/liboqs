@@ -1,17 +1,30 @@
+#include <stdint.h>
+#include <string.h>
+#include <assert.h>
+
 #include <oqs/sha3.h>
 
 #include <oqs/rand.h>
 #include <sodium/crypto_stream_salsa20.h>
 #include <sodium/crypto_onetimeauth_poly1305.h>
-
-#include "sk_gen.h"
-#include "pk_gen.h"
+#include <sodium/randombytes.h>
 
 #include "params.h"
-#include "encrypt.h"
-#include "decrypt.h"
+#include "util.c"
+#include "transpose.c"
+#include "benes.c"
+#include "gf.c"
+#include "vec.c"
+#include "bm.c"
+#include "fft.c"
+#include "fft_tr.c"
+#include "sk_gen.c"
+#include "pk_gen.c"
 
-int crypto_encrypt(
+#include "encrypt.c"
+#include "decrypt.c"
+
+int oqs_kex_mcbits_encrypt(
     unsigned char *c, size_t *clen,
     const unsigned char *m, unsigned long long mlen,
     const unsigned char *pk,
@@ -42,7 +55,7 @@ int crypto_encrypt(
 	return 0;
 }
 
-int crypto_encrypt_open(
+int oqs_kex_mcbits_decrypt(
     unsigned char *m, size_t * mlen,
     const unsigned char *c, unsigned long long clen,
     const unsigned char *sk
@@ -79,7 +92,7 @@ int crypto_encrypt_open(
 	return ret;
 }
 
-int crypto_encrypt_keypair
+int oqs_kex_mcbits_gen_keypair
 (
     unsigned char *pk,
     unsigned char *sk,

@@ -1,6 +1,4 @@
-#include "transpose.h"
-
-void transpose_64x64_compact(uint64_t *out, uint64_t *in) {
+static void transpose_64x64_compact(uint64_t *out, uint64_t *in) {
 	int i, j, s, p, idx0, idx1;
 	uint64_t x, y;
 
@@ -36,7 +34,7 @@ void transpose_64x64_compact(uint64_t *out, uint64_t *in) {
 	}
 }
 
-void transpose_8x64(uint64_t *in) {
+static void transpose_8x64(uint64_t *in) {
 	const uint64_t mask[3][2] = {
 		{0X5555555555555555, 0XAAAAAAAAAAAAAAAA},
 		{0X3333333333333333, 0XCCCCCCCCCCCCCCCC},

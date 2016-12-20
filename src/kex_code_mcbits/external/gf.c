@@ -1,7 +1,6 @@
-#include "gf.h"
-#include "params.h"
+typedef uint16_t gf;
 
-gf gf_mul(gf in0, gf in1) {
+static gf gf_mul(gf in0, gf in1) {
 	int i;
 
 	uint32_t tmp;
@@ -28,7 +27,7 @@ gf gf_mul(gf in0, gf in1) {
 	return tmp & ((1 << GFBITS) - 1);
 }
 
-gf gf_sq(gf in) {
+static gf gf_sq(gf in) {
 	const uint32_t B[] = {0x55555555, 0x33333333, 0x0F0F0F0F, 0x00FF00FF};
 
 	uint32_t x = in;
@@ -50,7 +49,7 @@ gf gf_sq(gf in) {
 	return x & ((1 << GFBITS) - 1);
 }
 
-gf gf_inv(gf in) {
+static gf gf_inv(gf in) {
 	gf tmp_11;
 	gf tmp_1111;
 
@@ -79,7 +78,7 @@ gf gf_inv(gf in) {
 	return gf_sq(out); // 111111111110
 }
 
-gf gf_diff(gf a, gf b) {
+static gf gf_diff(gf a, gf b) {
 	uint32_t t = (uint32_t) (a ^ b);
 
 	t = ((t - 1) >> 20) ^ 0xFFF;
@@ -89,7 +88,7 @@ gf gf_diff(gf a, gf b) {
 
 ///////////////////////////////////////////////////////////
 
-void GF_mul(gf *out, gf *in0, gf *in1) {
+static void GF_mul(gf *out, gf *in0, gf *in1) {
 	int i, j;
 
 	gf tmp[123];

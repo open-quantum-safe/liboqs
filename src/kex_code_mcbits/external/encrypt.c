@@ -1,12 +1,4 @@
-#include "encrypt.h"
-#include "params.h"
-#include "util.h"
-#include "transpose.h"
-
-#include <stdint.h>
-#include <string.h>
-
-void gen_e(unsigned char *e,OQS_RAND * r) {
+static void gen_e(unsigned char *e,OQS_RAND * r) {
 	int i, j, eq;
 
 	uint16_t ind[ SYS_T ];
@@ -53,7 +45,7 @@ void gen_e(unsigned char *e,OQS_RAND * r) {
 
 #define C ((PK_NCOLS + 63) / 64)
 
-void syndrome(unsigned char *s, const unsigned char *pk, const unsigned char *e) {
+static void syndrome(unsigned char *s, const unsigned char *pk, const unsigned char *e) {
 	int i, j, t;
 
 	const unsigned char *e_ptr = e + SYND_BYTES;
@@ -96,7 +88,7 @@ void syndrome(unsigned char *s, const unsigned char *pk, const unsigned char *e)
 	}
 }
 
-void encrypt(unsigned char *s, unsigned char *e, const unsigned char *pk, OQS_RAND *r) {
+static void encrypt(unsigned char *s, unsigned char *e, const unsigned char *pk, OQS_RAND *r) {
 	gen_e(e,r);
 	syndrome(s, pk, e);
 }

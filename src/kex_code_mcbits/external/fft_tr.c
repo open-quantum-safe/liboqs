@@ -1,13 +1,6 @@
-#include "fft_tr.h"
-
-#include "vec.h"
-#include "transpose.h"
-
-#include <stdint.h>
-
 #define vec_add(z, x, y) for (b = 0; b < GFBITS; b++) { z[b] = x[b]^y[b]; }
 
-void radix_conversions_tr(uint64_t in[][ GFBITS ]) {
+static void radix_conversions_tr(uint64_t in[][ GFBITS ]) {
 	int i, j, k;
 
 	const uint64_t mask[6][2] = {
@@ -47,7 +40,7 @@ void radix_conversions_tr(uint64_t in[][ GFBITS ]) {
 	}
 }
 
-void butterflies_tr(uint64_t out[][ GFBITS ], uint64_t in[][ GFBITS ]) {
+static void butterflies_tr(uint64_t out[][ GFBITS ], uint64_t in[][ GFBITS ]) {
 	int i, j, k, s, b;
 
 	uint64_t tmp[ GFBITS ];
@@ -249,7 +242,7 @@ void butterflies_tr(uint64_t out[][ GFBITS ], uint64_t in[][ GFBITS ]) {
 	}
 }
 
-void fft_tr(uint64_t out[][GFBITS], uint64_t in[][ GFBITS ]) {
+static void fft_tr(uint64_t out[][GFBITS], uint64_t in[][ GFBITS ]) {
 	butterflies_tr(out, in);
 	radix_conversions_tr(out);
 }

@@ -1,13 +1,4 @@
-#include "sk_gen.h"
-
-#include <sodium/randombytes.h>
-#include "params.h"
-#include "gf.h"
-#include "util.h"
-
-#include <stdint.h>
-
-int irr_gen(gf *out, gf *f) {
+static int irr_gen(gf *out, gf *f) {
 	int i, j, k, c;
 
 	gf mat[ SYS_T + 1 ][ SYS_T ];
@@ -69,7 +60,7 @@ int irr_gen(gf *out, gf *f) {
 
 }
 
-void sk_gen(unsigned char *sk,OQS_RAND * r) {
+static void sk_gen(unsigned char *sk,OQS_RAND * r) {
 	uint64_t cond[ COND_BYTES / 8 ];
 	uint64_t sk_int[ GFBITS ];
 

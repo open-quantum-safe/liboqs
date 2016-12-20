@@ -1,8 +1,4 @@
-#include "util.h"
-
-#include <stdio.h>
-
-void store8(unsigned char *out, uint64_t in) {
+static void store8(unsigned char *out, uint64_t in) {
 	out[0] = (in >> 0x00) & 0xFF;
 	out[1] = (in >> 0x08) & 0xFF;
 	out[2] = (in >> 0x10) & 0xFF;
@@ -13,7 +9,7 @@ void store8(unsigned char *out, uint64_t in) {
 	out[7] = (in >> 0x38) & 0xFF;
 }
 
-uint64_t load8(const unsigned char *in) {
+static uint64_t load8(const unsigned char *in) {
 	int i;
 	uint64_t ret = in[7];
 

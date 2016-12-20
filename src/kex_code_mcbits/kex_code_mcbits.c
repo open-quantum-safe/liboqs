@@ -55,8 +55,8 @@ int OQS_KEX_code_mcbits_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t **
 	}
 
 	/* generate public/private key pair */
-	crypto_encrypt_keypair(*alice_msg, *alice_priv, k->rand);
 
+	oqs_kex_mcbits_gen_keypair(*alice_msg, *alice_priv, k->rand);
 
 	ret = 1;
 	goto cleanup;
@@ -88,7 +88,7 @@ int OQS_KEX_code_mcbits_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, UNUSED 
 		goto err;
 	}
 	OQS_RAND_n(k->rand, *key, 32);
-	crypto_encrypt(*bob_msg, bob_msg_len, *key, 32, alice_msg, k->rand);
+	oqs_kex_mcbits_encrypt(*bob_msg, bob_msg_len, *key, 32, alice_msg, k->rand);
 	*key_len = 32;
 
 	ret = 1;
@@ -114,7 +114,7 @@ int OQS_KEX_code_mcbits_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const
 	if (*key == NULL) {
 		goto err;
 	}
-	crypto_encrypt_open(*key, key_len , bob_msg, CRYPTO_BYTES + 32 , alice_priv);
+	oqs_kex_mcbits_decrypt(*key, key_len , bob_msg, CRYPTO_BYTES + 32 , alice_priv);
 
 	ret = 1;
 	goto cleanup;

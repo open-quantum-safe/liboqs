@@ -1,13 +1,4 @@
-#include <stdint.h>
-
-#include "pk_gen.h"
-#include "vec.h"
-#include "params.h"
-#include "util.h"
-#include "fft.h"
-#include "benes.h"
-
-int pk_gen(unsigned char *pk, const unsigned char *sk) {
+static int pk_gen(unsigned char *pk, const unsigned char *sk) {
 	unsigned char *pk_ptr = pk;
 
 	int i, j, k;

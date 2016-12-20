@@ -1,4 +1,5 @@
 language: c
+dist: trusty
 sudo: false
 
 matrix:
@@ -12,7 +13,6 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
-        - libsodium-dev
     before_install:
       - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
       - tar xzf astyle_2.05.1_linux.tar.gz
@@ -26,7 +26,6 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
-        - libsodium-dev
     before_install:
       - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
       - tar xzf astyle_2.05.1_linux.tar.gz
@@ -40,7 +39,6 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
-        - libsodium-dev
     before_install:
       - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
       - tar xzf astyle_2.05.1_linux.tar.gz
@@ -55,7 +53,6 @@ matrix:
         packages:
         - gcc-6
         - libssl-dev
-        - libsodium-dev
     before_install:
       - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
       - tar xzf astyle_2.05.1_linux.tar.gz

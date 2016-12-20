@@ -1,9 +1,4 @@
-#include "vec.h"
-#include "params.h"
-
-#include <stdio.h>
-
-void vec_mul(uint64_t *h, uint64_t *f, const uint64_t *g) {
+static void vec_mul(uint64_t *h, uint64_t *f, const uint64_t *g) {
 	int i;
 	uint64_t result[2 * GFBITS - 1];
 
@@ -255,7 +250,7 @@ void vec_mul(uint64_t *h, uint64_t *f, const uint64_t *g) {
 		h[i] = result[i];
 }
 
-void vec_sq(uint64_t *out, uint64_t *in) {
+static void vec_sq(uint64_t *out, uint64_t *in) {
 	int i;
 	uint64_t result[GFBITS];
 
@@ -280,14 +275,14 @@ void vec_sq(uint64_t *out, uint64_t *in) {
 		out[i] = result[i];
 }
 
-void vec_copy(uint64_t *out, const uint64_t *in) {
+static void vec_copy(uint64_t *out, const uint64_t *in) {
 	int i;
 
 	for (i = 0; i < GFBITS; i++)
 		out[i] = in[i];
 }
 
-uint64_t vec_or(const uint64_t *in) {
+static uint64_t vec_or(const uint64_t *in) {
 	int i;
 	uint64_t ret = in[0];
 
@@ -297,7 +292,7 @@ uint64_t vec_or(const uint64_t *in) {
 	return ret;
 }
 
-void vec_inv(uint64_t *out, const uint64_t *in) {
+static void vec_inv(uint64_t *out, const uint64_t *in) {
 	uint64_t tmp_11[GFBITS];
 	uint64_t tmp_1111[GFBITS];
 

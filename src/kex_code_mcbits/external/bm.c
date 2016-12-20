@@ -1,14 +1,6 @@
-#include "bm.h"
-
-#include "util.h"
-#include "vec.h"
-#include "gf.h"
-
-#include <stdint.h>
-
 typedef uint16_t gf;
 
-void into_vec(uint64_t *out, gf in) {
+static void into_vec(uint64_t *out, gf in) {
 	int i;
 
 	for (i = 0; i < GFBITS; i++) {
@@ -17,7 +9,7 @@ void into_vec(uint64_t *out, gf in) {
 	}
 }
 
-gf vec_reduce(uint64_t *prod) {
+static gf vec_reduce(uint64_t *prod) {
 	int i;
 
 	uint64_t tmp[ GFBITS ];
@@ -39,7 +31,7 @@ gf vec_reduce(uint64_t *prod) {
 	return ret;
 }
 
-uint64_t mask_nonzero_64bit(gf a) {
+static uint64_t mask_nonzero_64bit(gf a) {
 	uint64_t ret = a;
 
 	ret -= 1;
@@ -49,7 +41,7 @@ uint64_t mask_nonzero_64bit(gf a) {
 	return ret;
 }
 
-uint64_t mask_leq_64bit(uint16_t a, uint16_t b) {
+static uint64_t mask_leq_64bit(uint16_t a, uint16_t b) {
 	uint64_t a_tmp = a;
 	uint64_t b_tmp = b;
 	uint64_t ret = b_tmp - a_tmp;
@@ -60,14 +52,14 @@ uint64_t mask_leq_64bit(uint16_t a, uint16_t b) {
 	return ret;
 }
 
-void vec_cmov(uint64_t *out, uint64_t *in, uint64_t mask) {
+static void vec_cmov(uint64_t *out, uint64_t *in, uint64_t mask) {
 	int i;
 
 	for (i = 0; i < GFBITS; i++)
 		out[i] = (in[i] & mask) | (out[i] & ~mask);
 }
 
-void bm(uint64_t out[ GFBITS ], uint64_t in[][ GFBITS ]) {
+static void bm(uint64_t out[ GFBITS ], uint64_t in[][ GFBITS ]) {
 	uint16_t i;
 	uint16_t N, L;
 

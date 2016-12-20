@@ -1,17 +1,3 @@
-#include "decrypt.h"
-
-#include "vec.h"
-#include "util.h"
-#include "params.h"
-#include "fft.h"
-#include "fft_tr.h"
-#include "bm.h"
-#include "benes.h"
-#include "transpose.h"
-
-#include <stdint.h>
-#include <stdio.h>
-
 static void scaling(uint64_t out[][GFBITS], uint64_t inv[][GFBITS], const unsigned char *sk, uint64_t *recv) {
 	int i, j;
 	uint64_t sk_int[ GFBITS ];
@@ -75,7 +61,7 @@ static void preprocess(uint64_t *recv, const unsigned char *s) {
 
 //
 
-void acc(uint64_t *c, uint64_t v) {
+static void acc(uint64_t *c, uint64_t v) {
 	int i;
 
 	uint64_t carry = v;
@@ -89,7 +75,7 @@ void acc(uint64_t *c, uint64_t v) {
 	}
 }
 
-int weight(uint64_t *v) {
+static int weight(uint64_t *v) {
 	int i;
 	int w;
 
@@ -119,7 +105,7 @@ int weight(uint64_t *v) {
 
 //
 
-void syndrome_adjust(uint64_t in[][ GFBITS ]) {
+static void syndrome_adjust(uint64_t in[][ GFBITS ]) {
 	int i;
 
 	for (i = 0; i < GFBITS; i++) {
@@ -128,7 +114,7 @@ void syndrome_adjust(uint64_t in[][ GFBITS ]) {
 	}
 }
 
-int decrypt(unsigned char *e, const unsigned char *sk, const unsigned char *s) {
+static int decrypt(unsigned char *e, const unsigned char *sk, const unsigned char *s) {
 	int i, j;
 
 	uint64_t t;

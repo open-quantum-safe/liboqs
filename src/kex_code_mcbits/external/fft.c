@@ -1,7 +1,4 @@
-#include "fft.h"
-#include "vec.h"
-
-void radix_conversions(uint64_t *in) {
+static void radix_conversions(uint64_t *in) {
 	int i, j, k;
 
 	const uint64_t mask[5][2] = {
@@ -29,7 +26,7 @@ void radix_conversions(uint64_t *in) {
 	}
 }
 
-void butterflies(uint64_t out[][ GFBITS ], uint64_t *in) {
+static void butterflies(uint64_t out[][ GFBITS ], uint64_t *in) {
 	int i, j, k, s, b;
 
 	uint64_t tmp[ GFBITS ];
@@ -77,7 +74,7 @@ void butterflies(uint64_t out[][ GFBITS ], uint64_t *in) {
 
 }
 
-void fft(uint64_t out[][ GFBITS ], uint64_t *in) {
+static void fft(uint64_t out[][ GFBITS ], uint64_t *in) {
 	radix_conversions(in);
 	butterflies(out, in);
 }

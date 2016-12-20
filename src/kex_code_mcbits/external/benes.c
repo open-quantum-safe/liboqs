@@ -1,12 +1,3 @@
-#include "benes.h"
-#include <sodium/randombytes.h>
-#include "transpose.h"
-
-#include <stdio.h>
-#include <stdint.h>
-#include <string.h>
-#include <assert.h>
-
 static void func(uint64_t *bs, uint64_t *cond_ptr, int low) {
 	int i, j, x, y;
 
@@ -32,7 +23,7 @@ static void func(uint64_t *bs, uint64_t *cond_ptr, int low) {
 	}
 }
 
-void benes_compact(uint64_t *bs, uint64_t *cond, int rev) {
+static void benes_compact(uint64_t *bs, uint64_t *cond, int rev) {
 	uint64_t *cond_ptr;
 	int inc, low;
 

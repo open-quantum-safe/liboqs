@@ -118,7 +118,7 @@ KEX_SIDH_CLN16_HEADERS := $(addprefix src/kex_sidh_cln16/, kex_sidh_cln16.h SIDH
 $(KEX_SIDH_CLN16_OBJS): $(KEX_SIDH_CLN16_HEADERS)
 
 # KEX_CODE_MCBITS
-KEX_CODE_MCBITS_SRC := $(wildcard src/kex_code_mcbits/external/*.c)
+KEX_CODE_MCBITS_SRC := src/kex_code_mcbits/external/operations.c
 KEX_CODE_MCBITS_SRC += $(wildcard src/kex_code_mcbits/*.c)
 KEX_CODE_MCBITS_OBJS := $(patsubst src/%.c, objs/%.o, $(KEX_CODE_MCBITS_SRC))
 KEX_CODE_MCBITS_HEADERS := $(wildcard src/kex_code_mcbits/external/*.h)
