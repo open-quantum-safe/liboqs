@@ -1,4 +1,5 @@
 language: c
+dist: trusty
 sudo: false
 
 matrix:
@@ -58,9 +59,9 @@ matrix:
       - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
   - os: osx
     compiler: clang
-    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1
+    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1
     before_install:
-      - brew install astyle openssl
+      - brew install astyle openssl libsodium
 
 script:
   - make

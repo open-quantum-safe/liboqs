@@ -11,6 +11,7 @@
 
 #define SHAKE128_RATE OQS_SHA3_SHAKE128_RATE
 #define SHA3_256_RATE OQS_SHA3_SHA3_256_RATE
+#define SHA3_512_RATE OQS_SHA3_SHA3_512_RATE
 #define NROUNDS 24
 #define ROL(a, offset) ((a << offset) ^ (a >> (64-offset)))
 
@@ -388,5 +389,16 @@ void OQS_SHA3_sha3256(unsigned char *output, const unsigned char *input, unsigne
 	keccak_absorb(s, SHA3_256_RATE, input, inputByteLen, 0x06);
 	OQS_SHA3_keccak_squeezeblocks(t, 1, s, SHA3_256_RATE);
 	for (i = 0; i < 32; i++)
+		output[i] = t[i];
+}
+
+void OQS_SHA3_sha3512(unsigned char *output, const unsigned char *input, unsigned int inputByteLen) {
+	uint64_t s[25];
+	unsigned char t[SHA3_512_RATE];
+	int i;
+    //TODO: not sure about 0x80
+	keccak_absorb(s, SHA3_512_RATE, input, inputByteLen, 0x80);
+	OQS_SHA3_keccak_squeezeblocks(t, 1, s, SHA3_512_RATE);
+	for (i = 0; i < 64; i++)
 		output[i] = t[i];
 }
