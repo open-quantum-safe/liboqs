@@ -1,0 +1,137 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include "assert.h"
+
+#include "vscrypto_defs.h"
+
+static int initialised = 0;
+
+static struct {
+  FFTSHORT minvq;
+  FFTSHORT W[MODULUS_M];
+  FFTSHORT W_rev[MODULUS_M];
+  FFTSHORT W_sqrt[MODULUS_M/2];
+  FFTSHORT W_sqrt_rev[MODULUS_M/2];
+} precomp;
+
+static FFTSHORT modpow_q(FFTSHORT x, FFTSHORT r) {
+  FFTLONG y = 1;
+  for (; r; r>>=1) {
+    if (r&1) y = (y*x)%PRIME_Q;
+    x = (x*(FFTLONG)x)%PRIME_Q;
+  }
+  return (FFTSHORT)y;
+}
+
+static void init() {
+  FFTSHORT omega;
+  FFTSHORT sqroot;
+  unsigned i;
+
+  assert(!initialised++);
+
+  precomp.minvq = modpow_q(MODULUS_M,PRIME_Q-2);
+
+  for (omega=2; modpow_q(omega,MODULUS_M/2)!=PRIME_Q-1; omega++) ;
+  for (i=0; i<MODULUS_M; i++) {
+    precomp.W[i] = precomp.W_rev[(MODULUS_M-i)%MODULUS_M] = modpow_q(omega,i);
+  }
+
+  for (sqroot=0; modpow_q(sqroot,2)!=omega; sqroot++) ;
+  if (MODULUS_M != 1024) sqroot = PRIME_Q - sqroot;   // don't know why 256,512 are like this
+  for (i=0; i<MODULUS_M/2; i++) {
+    precomp.W_sqrt[i] = modpow_q(sqroot,2*i+1);
+    precomp.W_sqrt_rev[i] = modpow_q(sqroot,2*MODULUS_M-2*i-1);
+  }
+
+  return;
+}
+
+/*
+We use Gentleman-Sande, decimation-in-frequency fft, for the forward fft.
+We premultiply x by the 2n'th roots of unity to affect a Discrete Weighted Fourier Transform,
+so when we apply pointwise multiplication we obtain the negacyclic convolution, i.e. multiplication
+modulo x^n+1.
+Note that we will not perform the usual scambling / bit-reversal procedure here because we will invert
+the fourier transform using decimation-in-time.
+*/
+static void fft_twisted_forward(FFTSHORT *x) {
+  FFTSHORT index, step;
+  FFTSHORT i,j,m;
+  FFTSHORT t0,t1;
+
+  //Pre multiplication for twisted fft
+  j = 0;
+  for (i = 0; i < MODULUS_M>>1; ++i) {
+    MUL_MOD(x[j], x[j], precomp.W[i], PRIME_Q);
+    j++;
+    MUL_MOD(x[j], x[j], precomp.W_sqrt[i], PRIME_Q);
+    j++;
+  }
+
+  step = 1;
+  for (m = MODULUS_M>>1; m >= 1; m=m>>1) {
+    index = 0;
+    for (j = 0 ; j < m; ++j) {
+      for (i = j; i < MODULUS_M; i += (m<<1)) {
+        ADD_MOD(t0, x[i], x[i+m], PRIME_Q);
+        t1 = x[i] + PRIME_Q - x[i+m];
+        x[i+m] = (t1*precomp.W[index]) % PRIME_Q;
+        x[i] = t0;
+      }
+      SUB_MOD(index, index, step, MODULUS_M);
+    }
+    step = step << 1;
+  }
+}
+
+/*
+We use Cooley-Tukey, decimation-in-time fft, for the inverse fft.
+We postmultiply x by the inverse of the 2n'th roots of unity * n^-1 to affect a Discrete Weighted Fourier Transform,
+so when we apply pointwise multiplication we obtain the negacyclic convolution, i.e. multiplication
+modulo x^n+1.
+Note that we will not perform the usual scambling / bit-reversal procedure here because we will the forward
+fourier transform is using decimation-in-frequency.
+*/
+static void fft_twisted_backward(FFTSHORT *x) {
+  FFTSHORT index, step;
+  FFTSHORT i,j,m;
+  FFTSHORT t0,t1;
+
+  step = MODULUS_M>>1;
+  for (m = 1; m < MODULUS_M; m=m<<1) {
+    index = 0;
+    for (j = 0 ; j < m; ++j) {
+      for (i = j; i < MODULUS_M; i += (m<<1)) {
+        t0 = x[i];
+        t0 -= (t0 >= PRIME_Q) ? PRIME_Q : 0;
+        MUL_MOD(t1, x[i+m], precomp.W_rev[index], PRIME_Q);
+        x[i] = t0 + t1;
+        x[i+m] = t0 + PRIME_Q - t1;
+      }
+      SUB_MOD(index, index, step, MODULUS_M);
+    }
+    step = step >> 1;
+  }
+
+  //Post multiplication for twisted fft
+  j = 0;
+  for (i = 0; i < MODULUS_M>>1; ++i) {
+    MUL_MOD(x[j], x[j], precomp.W_rev[i], PRIME_Q);
+    MUL_MOD(x[j], x[j], precomp.minvq, PRIME_Q);
+    j++;
+    MUL_MOD(x[j], x[j], precomp.W_sqrt_rev[i], PRIME_Q);
+    MUL_MOD(x[j], x[j], precomp.minvq, PRIME_Q);
+    j++;
+  }
+
+}
+
+// static because we're #include'ing this file
+static void FUN_MQ(fft,MODULUS_M,PRIME_Q)(int direction, FFTSHORT *x) {
+  if (!initialised) init();
+  if (direction == FFT_FWD) fft_twisted_forward(x);
+  else                      fft_twisted_backward(x);
+}
+

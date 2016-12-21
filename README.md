@@ -29,6 +29,7 @@ liboqs currently contains:
 - `kex_lwe_frodo`: "Frodo": key exchange from the learning with errors problem (Bos, Costello, Ducas, Mironov, Naehrig, Nikolaenko, Raghunathan, Stebila, *ACM Conference on Computer and Communications Security 2016*, [http://eprint.iacr.org/2016/659](http://eprint.iacr.org/2016/659))
 - `kex_sidh_cln16`: key exchange from the supersingular isogeny Diffie-Hellman problem (Costello, Naehrig, Longa, *CRYPTO 2016*, [https://eprint.iacr.org/2016/413](https://eprint.iacr.org/2016/413)), using the implementation of Microsoft Research [https://www.microsoft.com/en-us/research/project/sidh-library/](https://www.microsoft.com/en-us/research/project/sidh-library/)
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
+- `kex_rlwe_vscrypto`: Singh & Chopra's "Even More Practical Key Exchanges": a ring-LWE scheme.  See [https://eprint.iacr.org/2015/1120](https://eprint.iacr.org/2015/1120).  Code based on Singh's github project [https://github.com/vscrypto/ringlwe](https://github.com/vscrypto/ringlwe).
 
 
 Building and Running
@@ -101,6 +102,7 @@ Since our initial launch, we have made the following updates:
 - `kex_rlwe_msrln16` implementation contributed by Christian Paquin (Microsoft Research)
 - `kex_sidh_cln16` implementation contributed by Christian Paquin (Microsoft Research)
 - `kex_code_mcbits` wrapper
+- `kex_rlwe_vscrypto` wrapper + code cleanups
 
 Our plans for the next few months can be found in [Milestone 1 - Key exchange](https://github.com/open-quantum-safe/liboqs/projects/2).
 
@@ -118,6 +120,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 - `src/kex_rlwe_newhope`: public domain
 - `src/kex_sidh_cln16`: MIT License
 - `src/kex_code_mcbits`: public domain
+- `src/kex_rlwe_vscrypto`: public domain
 - `src/rand_urandom_chacha20/external`: public domain
 
 Team

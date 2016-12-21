@@ -81,6 +81,7 @@ links:
 ifdef ENABLE_CODE_MCBITS
 	$(LN) ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
+	$(LN) ../../src/kex_rlwe_vscrypto/kex_rlwe_vscrypto.h include/oqs
 	$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	$(LN) ../../src/crypto/rand/rand.h include/oqs
@@ -108,6 +109,11 @@ $(KEX_RLWE_BCNS15_OBJS): $(KEX_RLWE_BCNS15_HEADERS)
 KEX_RLWE_NEWHOPE_OBJS := $(addprefix objs/kex_rlwe_newhope/, kex_rlwe_newhope.o)
 KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.h newhope.c params.h poly.c precomp.c)
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
+
+# KEX_RLWE_VSCRYPTO
+KEX_RLWE_VSCRYPTO_DIR = src/kex_rlwe_vscrypto
+kex_rlwe_vscrypto:
+	( cd $(KEX_RLWE_VSCRYPTO_DIR); make )
 
 # KEX_RLWE_MSRLN16
 KEX_RLWE_MSRLN16_OBJS := $(addprefix objs/kex_rlwe_msrln16/, kex_rlwe_msrln16.o LatticeCrypto_kex.o ntt_constants.o)
@@ -158,7 +164,6 @@ objs/kex/kex.o: src/kex/kex.h
 
 # LIB
 
-
 RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS) objs/crypto/rand/rand.o
 
 KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/kex/kex.o
@@ -167,9 +172,10 @@ ifdef ENABLE_CODE_MCBITS
 KEX_OBJS += $(KEX_CODE_MCBITS_OBJS)
 endif
 
-lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
+LIB_OBJS := $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
+lib: $(LIB_OBJS) kex_rlwe_vscrypto
 	rm -f liboqs.a
-	$(AR) liboqs.a $^
+	$(AR) liboqs.a $(LIB_OBJS) $(wildcard $(KEX_RLWE_VSCRYPTO_DIR)/*.o)
 	$(RANLIB) liboqs.a
 
 tests: lib src/crypto/rand/test_rand.c src/kex/test_kex.c src/crypto/aes/test_aes.c src/ds_benchmark.h
@@ -189,6 +195,7 @@ clean:
 	rm -rf docs/doxygen objs include
 	rm -f test_rand test_kex test_aes liboqs.a
 	find . -name .DS_Store -type f -delete
+	find . -name '*.o' -type f -delete
 
 prettyprint:
 	astyle --style=java --indent=tab --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*.h src/*/*.h src/*/*.c

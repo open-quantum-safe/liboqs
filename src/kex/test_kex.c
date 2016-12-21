@@ -28,6 +28,12 @@ struct kex_testcase kex_testcases[] = {
 #ifdef ENABLE_CODE_MCBITS
 	{ OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
 #endif
+	{ OQS_KEX_alg_rlwe_vscrypto, NULL, 0, "EMP_I", "rlwe_vscrypto_EMP_I", 0, 100 },
+	{ OQS_KEX_alg_rlwe_vscrypto, NULL, 0, "EMP_II", "rlwe_vscrypto_EMP_II", 0, 100 },
+	{ OQS_KEX_alg_rlwe_vscrypto, NULL, 0, "EMP_III", "rlwe_vscrypto_EMP_III", 0, 100 },
+	{ OQS_KEX_alg_rlwe_vscrypto, NULL, 0, "EMP_IV", "rlwe_vscrypto_EMP_IV", 0, 100 },
+	{ OQS_KEX_alg_rlwe_vscrypto, NULL, 0, "EMP_V", "rlwe_vscrypto_EMP_V", 0, 100 },
+	{ OQS_KEX_alg_rlwe_vscrypto, NULL, 0, "EMP_VI", "rlwe_vscrypto_EMP_VI", 0, 100 },
 };
 
 #define KEX_TEST_ITERATIONS 100
