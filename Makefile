@@ -73,7 +73,9 @@ links:
 	$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 	$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
+ifdef ENABLE_CODE_MCBITS
 	$(LN) ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
+endif
 	$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	$(LN) ../../src/crypto/rand/rand.h include/oqs

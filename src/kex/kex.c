@@ -6,7 +6,9 @@
 #include <oqs/kex_rlwe_msrln16.h>
 #include <oqs/kex_lwe_frodo.h>
 #include <oqs/kex_sidh_cln16.h>
+#ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
+#endif
 
 OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 	switch (alg_name) {
