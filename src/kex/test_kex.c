@@ -15,15 +15,19 @@ struct kex_testcase {
 	char *named_parameters;
 	char *id;
 	int run;
+	int iter;
 };
 
 /* Add new testcases here */
 struct kex_testcase kex_testcases[] = {
-	{ OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "rlwe_bcns15", 0 },
-	{ OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0 },
-	{ OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0 },
-	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0 },
-	{ OQS_KEX_alg_sidh_cln16, NULL, 0, NULL, "sidh_cln16", 0 },
+	{ OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "rlwe_bcns15", 0, 100 },
+	{ OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100 },
+	{ OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0, 100 },
+	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0, 100 },
+	{ OQS_KEX_alg_sidh_cln16, NULL, 0, NULL, "sidh_cln16", 0 , 10},
+#ifdef ENABLE_CODE_MCBITS
+	{ OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
+#endif
 };
 
 #define KEX_TEST_ITERATIONS 100
@@ -300,11 +304,7 @@ int main(int argc, char **argv) {
 
 	for (size_t i = 0; i < kex_testcases_len; i++) {
 		if (run_all || kex_testcases[i].run == 1) {
-			int num_iter = KEX_TEST_ITERATIONS;
-			if (kex_testcases[i].alg_name == OQS_KEX_alg_sidh_cln16) {
-				// SIDH is slower than the other schemes, so we reduce the number of runs
-				num_iter = KEX_TEST_ITERATIONS / 10;
-			}
+			int num_iter = kex_testcases[i].iter;
 			success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, num_iter, quiet);
 		}
 		if (success != 1) {
