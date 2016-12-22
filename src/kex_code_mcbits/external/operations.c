@@ -1,3 +1,4 @@
+#ifdef ENABLE_CODE_MCBITS // don't want this file in Visual Studio if libsodium is not present
 #include <stdint.h>
 #include <string.h>
 #include <assert.h>
@@ -8,7 +9,6 @@
 #include <sodium/crypto_stream_salsa20.h>
 #include <sodium/crypto_onetimeauth_poly1305.h>
 #include <sodium/randombytes.h>
-
 #include "params.h"
 #include "util.c"
 #include "transpose.c"
@@ -109,3 +109,4 @@ int oqs_kex_mcbits_gen_keypair
 	return 0;
 }
 
+#endif

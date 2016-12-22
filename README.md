@@ -58,7 +58,11 @@ To run benchmarks, run
 
 ### Windows
 
-Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder.
+Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder. McBits is disabled by default; follow these steps to enable it:
+- Obtain the ([libsodium library](https://libsodium.org)); compile the static library from the Visual Studio projects.
+- Add ENABLE_CODE_MCBITS and SODIUM_STATIC to the preprocessor definitions of the oqs and test_kex projects.
+- Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
+- Add the libsodium library to the "Additional Depencies" in the test_kex project Linker properties.
 
 Documentation
 -------------
