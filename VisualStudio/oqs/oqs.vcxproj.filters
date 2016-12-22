@@ -85,6 +85,12 @@
     <ClCompile Include="..\..\src\kex\kex.c">
       <Filter>KEX</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kex_code_mcbits\kex_code_mcbits.c">
+      <Filter>KEX_McBits</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_code_mcbits\external\operations.c">
+      <Filter>KEX_McBits</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
@@ -153,6 +159,12 @@
     <ClInclude Include="..\..\src\kex\kex.h">
       <Filter>KEX</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kex_code_mcbits\kex_code_mcbits.h">
+      <Filter>KEX_McBits</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_code_mcbits\mcbits.h">
+      <Filter>KEX_McBits</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -187,6 +199,9 @@
     </Filter>
     <Filter Include="Crypto\SHA3">
       <UniqueIdentifier>{a9a0db92-1388-4ea2-b0d5-d61a51581993}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KEX_McBits">
+      <UniqueIdentifier>{9c91a128-d5a0-4eec-998e-a7bc85b3691e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
