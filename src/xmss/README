@@ -1,0 +1,25 @@
+Currently this package contains a reference implementation for the
+IETF Internet-Draft:
+"XMSS: Extended Hash-Based Signatures"
+draft-irtf-cfrg-xmss-hash-based-signatures-07
+as of October 2016.
+
+The reference implementation in this package was written by Stefan-Lukas Gazdag
+and Denis Butin. It is a very basic implementation simply showing the internals
+of XMSS and XMSS^MT as described by the Internet-Draft.
+
+The code is available via www.pqsignatures.org
+
+Tests can be found in xmss/test/
+
+Running 'make' in the code directory builds the reference implementation.
+
+A more practical and efficient implementation using more advanced algorithms was
+published by Andreas Huelsing and Joost Rijneveld independently.
+The code is available at www.huelsing.net
+
+An easy to read Keccak implementation from the KeccakCodePackage
+(https://github.com/gvanas/KeccakCodePackage) was included to offer support
+for SHAKE128 and SHAKE256. To switch between SHA2 and SHA3 please use the
+"SHA" directive in <hash_draft.h>. For performance reasons one may want to use
+an optimized implementation from that package.

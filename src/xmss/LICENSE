@@ -1,0 +1,16 @@
+Please note the license used for this code.
+
+Code delivered in this package by Stefan-Lukas Gazdag and Denis Butin is
+published under BSD (2-clause) license.
+
+The (shortened) Keccak code is taken from the KeccakCodePackage
+(https://github.com/gvanas/KeccakCodePackage) and includes the files align.h,
+brg_endian.h, KeccakP-1600-reference.c, KeccakP-1600-reference.h,
+KeccakP-1600-SnP.h, KeccakSponge.c, KeccakSponge.h, KeccakSponge.inc,
+SimpleFIPS202.c and SimpleFIPS202.h
+This code was released under public domain.
+brg_endian.h is copyrighted by Brian Gladman and released with a BSD 3-clause
+license.
+
+Actual information about the specific license is to be found in each
+source code file.

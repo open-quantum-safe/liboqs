@@ -75,6 +75,16 @@ links:
 	$(LN) ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	$(LN) ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 	$(LN) ../../src/common/common.h include/oqs
+	$(LN) ../../src/xmss/KeccakP-1600-SnP.h include/oqs
+	$(LN) ../../src/xmss/align.h include/oqs
+	$(LN) ../../src/xmss/KeccakSponge.h include/oqs
+	$(LN) ../../src/xmss/SimpleFIPS202.h include/oqs
+	$(LN) ../../src/xmss/hfas_draft.h include/oqs
+	$(LN) ../../src/xmss/hash_draft.h include/oqs
+	$(LN) ../../src/xmss/prf_draft.h include/oqs
+	$(LN) ../../src/xmss/wots_draft.h include/oqs	
+	$(LN) ../../src/xmss/xmss_draft.h include/oqs
+	$(LN) ../../src/xmss/xmss.h include/oqs
 
 # RAND_URANDOM_CHACHA
 RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/crypto/rand_urandom_chacha20/, rand_urandom_chacha20.o)
@@ -122,6 +132,11 @@ AES_OBJS := $(addprefix objs/crypto/aes/, aes.o aes_c.o aes_ni.o)
 AES_HEADERS := $(addprefix src/crypto/aes/, aes.h)
 $(AES_OBJS): $(AES_HEADERS)
 
+# XMSS
+XMSS_OBJS := $(addprefix objs/xmss/, hash_draft.o hfas_draft.o KeccakP-1600-reference.o KeccakSponge.o prf_draft.o SimpleFIPS202.o wots_draft.o xmss_draft.o xmssmt_draft.o xmss.o)
+XMSS_HEADERS := $(addprefix src/xmss/, xmss.h)
+$(XMSS_OBJS): $(XMSS_HEADERS)
+
 # COMMON
 COMMON_OBJS := $(addprefix objs/common/, common.o)
 COMMON_HEADERS := $(addprefix src/common/, common.h)
@@ -142,7 +157,7 @@ RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS) objs/crypto
 
 KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/kex/kex.o
 
-lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
+lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS) $(XMSS_OBJ)
 	rm -f liboqs.a
 	$(AR) liboqs.a $^
 	$(RANLIB) liboqs.a
@@ -164,6 +179,7 @@ clean:
 	rm -rf docs/doxygen objs include
 	rm -f test_rand test_kex test_aes liboqs.a
 	find . -name .DS_Store -type f -delete
+	cd src/xmss && $(MAKE) clean
 
 prettyprint:
 	astyle --style=java --indent=tab --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*.h src/*/*.h src/*/*.c
