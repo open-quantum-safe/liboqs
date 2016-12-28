@@ -184,8 +184,8 @@ check: links tests
 	./test_aes
 
 clean:
-	rm -rf docs/doxygen objs include
-	rm -f test_rand test_kex test_aes liboqs.a
+	$(RM) -r docs/doxygen objs include
+	$(RM) -r test_rand{,.dSYM} test_kex{,.dSYM} test_aes{,.dSYM} liboqs.a
 	find . -name .DS_Store -type f -delete
 
 prettyprint:
