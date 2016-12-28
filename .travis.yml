@@ -14,7 +14,7 @@ matrix:
         packages:
         - gcc-4.8
     before_install:
-      - bash .travis/get_astyle_path-linux.sh
+      - bash .travis/get-astyle-path-linux.sh
       - export PATH=$(get_astyle_path):$PATH
   - os: linux
     compiler: gcc
@@ -26,7 +26,7 @@ matrix:
         packages:
         - gcc-4.9
     before_install:
-      - bash .travis/get_astyle_path-linux.sh
+      - bash .travis/get-astyle-path-linux.sh
       - export PATH=$(get_astyle_path):$PATH
   - os: linux
     compiler: gcc
@@ -38,7 +38,7 @@ matrix:
         packages:
         - gcc-5
     before_install:
-      - bash .travis/get_astyle_path-linux.sh
+      - bash .travis/get-astyle-path-linux.sh
       - export PATH=$(get_astyle_path):$PATH
   - os: linux
     compiler: gcc
@@ -51,7 +51,7 @@ matrix:
         - gcc-6
         - libssl-dev
     before_install:
-      - bash .travis/get_astyle_path-linux.sh
+      - bash .travis/get-astyle-path-linux.sh
       - export PATH=$(get_astyle_path):$PATH
   - os: osx
     compiler: clang
