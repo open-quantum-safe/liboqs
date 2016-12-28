@@ -9,6 +9,4 @@ if [ ! -x "$(which astyle)" ]; then
 	tar xzf astyle_2.05.1_linux.tar.gz
 	cd astyle/build/gcc
 	make
-	# return astyle bin directory
-	return $(pwd)/bin
 fi;
