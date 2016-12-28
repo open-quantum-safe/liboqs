@@ -1,6 +1,4 @@
-ifdef CC_OQS
-	CC=$(CC_OQS)
-else
+ifndef CC
 	CC=cc
 endif
 

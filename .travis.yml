@@ -64,8 +64,6 @@ matrix:
       - brew install astyle openssl libsodium
 
 script:
-  - make
-  - make check
-  - bash .travis-style-check.sh
-  - bash .travis-global-namespace-check.sh
-  - bash .travis-banned-functions-check.sh
+  - CC=$CC_OQS make
+  - CC=$CC_OQS make check
+  - for f in $(ls .travis/*-check.sh); do bash $f; done
