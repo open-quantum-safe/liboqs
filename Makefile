@@ -1,6 +1,4 @@
-ifdef CC_OQS
-	CC=$(CC_OQS)
-else
+ifndef CC
 	CC=cc
 endif
 
@@ -67,26 +65,27 @@ all: links lib tests
 
 objs/%.o: src/%.c | links
 	@mkdir -p $(@D)
-	$(CC) -c  $(CFLAGS) $(INCLUDES) $< -o $@
+	@$(CC) -c  $(CFLAGS) $(INCLUDES) $< -o $@
+	@echo "CC \t$<"
 
 links:
-	rm -rf include/oqs
-	mkdir -p include/oqs
-	$(LN) ../../src/crypto/aes/aes.h include/oqs
-	$(LN) ../../src/crypto/sha3/sha3.h include/oqs
-	$(LN) ../../src/kex/kex.h include/oqs
-	$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
-	$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
-	$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
+	@$(RM) -r include/oqs
+	@mkdir -p include/oqs
+	@$(LN) ../../src/crypto/aes/aes.h include/oqs
+	@$(LN) ../../src/crypto/sha3/sha3.h include/oqs
+	@$(LN) ../../src/kex/kex.h include/oqs
+	@$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
+	@$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
+	@$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 ifdef ENABLE_CODE_MCBITS
-	$(LN) ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
+	@$(LN) ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
-	$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
-	$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
-	$(LN) ../../src/crypto/rand/rand.h include/oqs
-	$(LN) ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
-	$(LN) ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
-	$(LN) ../../src/common/common.h include/oqs
+	@$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
+	@$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
+	@$(LN) ../../src/crypto/rand/rand.h include/oqs
+	@$(LN) ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
+	@$(LN) ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
+	@$(LN) ../../src/common/common.h include/oqs
 
 # RAND_URANDOM_CHACHA
 RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/crypto/rand_urandom_chacha20/, rand_urandom_chacha20.o)
@@ -122,7 +121,8 @@ $(KEX_LWE_FRODO_OBJS): $(KEX_LWE_FRODO_HEADERS)
 # KEX_SIDH_CLN16
 #ifneq (,$(findstring SIDH_ASM,$(CFLAGS)))
 objs/kex_sidh_cln16/fp_x64_asm.o: src/kex_sidh_cln16/AMD64/fp_x64_asm.S
-	$(CC) $(CFLAGS) -c -o $@ src/kex_sidh_cln16/AMD64/fp_x64_asm.S
+	@$(CC) $(CFLAGS) -c -o $@ src/kex_sidh_cln16/AMD64/fp_x64_asm.S
+	@echo "CC \t$<"
 KEX_SIDH_CLN16_ASM_OBJS = fp_x64_asm.o
 #endif
 KEX_SIDH_CLN16_OBJS := $(addprefix objs/kex_sidh_cln16/, ec_isogeny.o fpx.o kex_sidh_cln16.o SIDH.o sidh_kex.o SIDH_setup.o validate.o $(KEX_SIDH_CLN16_ASM_OBJS))
@@ -168,14 +168,19 @@ KEX_OBJS += $(KEX_CODE_MCBITS_OBJS)
 endif
 
 lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
-	rm -f liboqs.a
-	$(AR) liboqs.a $^
-	$(RANLIB) liboqs.a
+	@rm -f liboqs.a
+	@$(AR) liboqs.a $^
+	@echo "AR \tliboqs.a"
+	@$(RANLIB) liboqs.a
+	@echo "RANLIB \tliboqs.a"
 
 tests: lib src/crypto/rand/test_rand.c src/kex/test_kex.c src/crypto/aes/test_aes.c src/ds_benchmark.h
-	$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
-	$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
-	$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
+	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
+	@echo "CC \tsrc/crypto/rand/test_rand.c"
+	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
+	@echo "CC \tsrc/kex/test_kex.c"
+	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
+	@echo "CC \tsrc/crypto/aes/test_aes.c"
 
 docs: links
 	doxygen
@@ -186,8 +191,8 @@ check: links tests
 	./test_aes
 
 clean:
-	rm -rf docs/doxygen objs include
-	rm -f test_rand test_kex test_aes liboqs.a
+	$(RM) -r docs/doxygen objs include
+	$(RM) -r test_rand{,.dSYM} test_kex{,.dSYM} test_aes{,.dSYM} liboqs.a
 	find . -name .DS_Store -type f -delete
 
 prettyprint:
