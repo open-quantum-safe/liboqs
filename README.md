@@ -46,6 +46,7 @@ This will generate:
 
 - `liboqs.a`: A static library with implementations for the algorithms listed in "Contents" above.
 - `test_rand`: A simple test harness for the random number generator.  This will test the distance of PRNG output from uniform using statistical distance.
+- `test_aes`: A simple test harness for AES.  This will test the correctness of the C implementation (and of the AES-NI implementation, if not disabled) of AES, and will compare the speed of these implementations against OpenSSL's AES implementation.
 - `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
 
 To run the tests, simply type:
@@ -55,6 +56,10 @@ To run the tests, simply type:
 To run benchmarks, run
 
 	./test_kex --bench
+
+and 
+
+	./test_aes --bench
 
 ### Windows
 
