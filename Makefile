@@ -6,6 +6,7 @@ AR=ar rcs
 CURL=curl
 RANLIB=ranlib
 LN=ln -s
+ECHO=echo
 
 CFLAGS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME 
 LDFLAGS= -lm 
@@ -66,7 +67,7 @@ all: links lib tests
 objs/%.o: src/%.c | links
 	@mkdir -p $(@D)
 	@$(CC) -c  $(CFLAGS) $(INCLUDES) $< -o $@
-	@echo "CC \t$<"
+	@$(ECHO) "CC $<"
 
 links:
 	@$(RM) -r include/oqs
@@ -121,8 +122,9 @@ $(KEX_LWE_FRODO_OBJS): $(KEX_LWE_FRODO_HEADERS)
 # KEX_SIDH_CLN16
 #ifneq (,$(findstring SIDH_ASM,$(CFLAGS)))
 objs/kex_sidh_cln16/fp_x64_asm.o: src/kex_sidh_cln16/AMD64/fp_x64_asm.S
+	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c -o $@ src/kex_sidh_cln16/AMD64/fp_x64_asm.S
-	@echo "CC \t$<"
+	@$(ECHO) "CC $<"
 KEX_SIDH_CLN16_ASM_OBJS = fp_x64_asm.o
 #endif
 KEX_SIDH_CLN16_OBJS := $(addprefix objs/kex_sidh_cln16/, ec_isogeny.o fpx.o kex_sidh_cln16.o SIDH.o sidh_kex.o SIDH_setup.o validate.o $(KEX_SIDH_CLN16_ASM_OBJS))
@@ -170,17 +172,17 @@ endif
 lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
 	@rm -f liboqs.a
 	@$(AR) liboqs.a $^
-	@echo "AR \tliboqs.a"
+	@$(ECHO) "AR liboqs.a"
 	@$(RANLIB) liboqs.a
-	@echo "RANLIB \tliboqs.a"
+	@$(ECHO) "RANLIB liboqs.a"
 
 tests: lib src/crypto/rand/test_rand.c src/kex/test_kex.c src/crypto/aes/test_aes.c src/ds_benchmark.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
-	@echo "CC \tsrc/crypto/rand/test_rand.c"
+	@$(ECHO) "CC src/crypto/rand/test_rand.c"
 	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
-	@echo "CC \tsrc/kex/test_kex.c"
+	@$(ECHO) "CC src/kex/test_kex.c"
 	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
-	@echo "CC \tsrc/crypto/aes/test_aes.c"
+	@$(ECHO) "CC src/crypto/aes/test_aes.c"
 
 docs: links
 	doxygen
