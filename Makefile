@@ -60,6 +60,11 @@ ifdef ENABLE_CODE_MCBITS
 	LDFLAGS += -lsodium
 endif
 
+ifdef ENABLE_NTRU
+	CFLAGS += -DENABLE_NTRU
+	LDFLAGS += -lntruencrypt
+endif
+
 .PHONY: all check clean prettyprint
 
 all: links lib tests
@@ -78,10 +83,13 @@ links:
 	@$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	@$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 	@$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
+	@$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 ifdef ENABLE_CODE_MCBITS
 	@$(LN) ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
-	@$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
+ifdef ENABLE_NTRU
+	@$(LN) ../../src/kex_ntru/kex_ntru.h include/oqs
+endif
 	@$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	@$(LN) ../../src/crypto/rand/rand.h include/oqs
 	@$(LN) ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
@@ -139,6 +147,11 @@ KEX_CODE_MCBITS_HEADERS := $(wildcard src/kex_code_mcbits/external/*.h)
 KEX_CODE_MCBITS_HEADERS += $(wildcard src/kex_code_mcbits/*.h)
 $(KEX_CODE_MCBITS_OBJS): $(KEX_CODE_MCBITS_HEADERS)
 
+# KEX_NTRU
+KEX_NTRU_SRC := src/kex_ntru/kex_ntru.c
+KEX_NTRU_OBJS := objs/kex_ntru/kex_ntru.o
+KEX_NTRU_HEADERS := src/kex_ntru/kex_ntru.h
+$(KEX_NTRU_OBJS): $(KEX_NTRU_HEADERS)
 
 # AES
 AES_OBJS := $(addprefix objs/crypto/aes/, aes.o aes_c.o aes_ni.o)
@@ -167,6 +180,10 @@ KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_
 
 ifdef ENABLE_CODE_MCBITS
 KEX_OBJS += $(KEX_CODE_MCBITS_OBJS)
+endif
+
+ifdef ENABLE_NTRU
+KEX_OBJS += $(KEX_NTRU_OBJS)
 endif
 
 lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
