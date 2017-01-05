@@ -7,7 +7,7 @@
 #include <oqs/kex_ntru.h>
 #include <oqs/rand.h>
 
-#include <libntruencrypt/ntru_crypto.h>
+#include <ntru_crypto.h>
 
 #define NTRU_PARAMETER_SELECTION NTRU_EES743EP1
 #define NTRU_PARAMETER_SELECTION_NAME "EES743EP1"

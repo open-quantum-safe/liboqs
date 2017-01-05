@@ -42,7 +42,7 @@ matrix:
       - export PATH=$(pwd)/astyle/build/gcc/bin:$PATH
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-6 USE_OPENSSL=1
+    env: CC_OQS=gcc-6 USE_OPENSSL=1 ENABLE_NTRU=1
     addons:
       apt:
         sources:
@@ -53,6 +53,7 @@ matrix:
     before_install:
       - bash .travis/install-astyle-linux.sh
       - export PATH=$(pwd)/astyle/build/gcc/bin:$PATH
+      - bash install-ntru
   - os: osx
     compiler: clang
     env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1
