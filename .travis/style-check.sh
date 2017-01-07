@@ -1,14 +1,13 @@
 #!/bin/bash
 
-# Verify that clang-format is installed
+CLANGFORMAT=clang-format-3.9
+
 if [ ! -x "$(which clang-format-3.9)" ]; then 
-	tput setaf 1;
-	echo "clang-format is not installed.";
-	tput sgr 0;
-	exit 1;
+	# If clang-format is not version -3.9, just use clang-format
+	CLANGFORMAT=clang-format
 fi;
 
-CLANGFORMAT=clang-format-3.9 make prettyprint
+make prettyprint
 modified=$(git status -s)
 
 if [ "$modified" ]; then
