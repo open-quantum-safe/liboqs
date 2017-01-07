@@ -32,7 +32,7 @@ BraceWrapping:
   BeforeCatch:     false
   BeforeElse:      false
   IndentBraces:    false
-BreakBeforeBinaryOperators: None
+BreakBeforeBinaryOperators: false
 BreakBeforeBraces: Attach
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializersBeforeComma: false

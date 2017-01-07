@@ -1,30 +1,30 @@
 #include <stdbool.h>
-#include <string.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include <oqs/rand.h>
 
+#include "../../ds_benchmark.h"
 #include "aes.h"
 #include "aes_local.h"
-#include "../../ds_benchmark.h"
 
 #define BENCH_DURATION 1
 
 #define TEST_ITERATIONS 100
 
-#define TEST_REPEATEDLY(x) \
-	for (int i = 0; i < TEST_ITERATIONS; i++) { \
-		int ok = (x); \
-		if (ok != EXIT_SUCCESS) { \
+#define TEST_REPEATEDLY(x)                                            \
+	for (int i = 0; i < TEST_ITERATIONS; i++) {                       \
+		int ok = (x);                                                 \
+		if (ok != EXIT_SUCCESS) {                                     \
 			fprintf(stderr, "Failure in %s (iteration %d)\n", #x, i); \
-			return EXIT_FAILURE; \
-		} \
+			return EXIT_FAILURE;                                      \
+		}                                                             \
 	}
 
 static void print_bytes(uint8_t *bytes, size_t num_bytes) {
 	for (size_t i = 0; i < num_bytes; i++) {
-		printf("%02x", (unsigned)bytes[i]);
+		printf("%02x", (unsigned) bytes[i]);
 	}
 }
 
@@ -216,7 +216,7 @@ int main(int argc, char **argv) {
 
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
-			if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0  ) {
+			if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0) {
 				bench = true;
 			} else {
 				printf("Usage: ./test_rand [options]\n");
@@ -264,7 +264,7 @@ int main(int argc, char **argv) {
 #endif
 		PRINT_TIMER_FOOTER
 	}
-	
+
 	ret = EXIT_SUCCESS;
 	goto cleanup;
 err:

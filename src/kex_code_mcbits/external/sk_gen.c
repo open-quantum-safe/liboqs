@@ -1,7 +1,7 @@
 static int irr_gen(gf *out, gf *f) {
 	int i, j, k, c;
 
-	gf mat[ SYS_T + 1 ][ SYS_T ];
+	gf mat[SYS_T + 1][SYS_T];
 	gf mask, inv, t;
 
 	// fill matrix
@@ -20,31 +20,31 @@ static int irr_gen(gf *out, gf *f) {
 
 	for (j = 0; j < SYS_T; j++) {
 		for (k = j + 1; k < SYS_T; k++) {
-			mask = gf_diff(mat[ j ][ j ], mat[ j ][ k ]);
+			mask = gf_diff(mat[j][j], mat[j][k]);
 
 			for (c = 0; c < SYS_T + 1; c++)
-				mat[ c ][ j ] ^= mat[ c ][ k ] & mask;
+				mat[c][j] ^= mat[c][k] & mask;
 		}
 
-		if ( mat[ j ][ j ] == 0 ) { // return if not invertible
+		if (mat[j][j] == 0) { // return if not invertible
 			return -1;
 		}
 
 		// compute inverse
 
-		inv = gf_inv(mat[ j ][ j ]);
+		inv = gf_inv(mat[j][j]);
 
 		for (c = 0; c < SYS_T + 1; c++)
-			mat[ c ][ j ] = gf_mul(mat[ c ][ j ], inv) ;
+			mat[c][j] = gf_mul(mat[c][j], inv);
 
 		//
 
 		for (k = 0; k < SYS_T; k++) {
-			t = mat[ j ][ k ];
+			t = mat[j][k];
 
 			if (k != j) {
 				for (c = 0; c < SYS_T + 1; c++)
-					mat[ c ][ k ] ^= gf_mul(mat[ c ][ j ], t);
+					mat[c][k] ^= gf_mul(mat[c][j], t);
 			}
 		}
 	}
@@ -52,29 +52,30 @@ static int irr_gen(gf *out, gf *f) {
 	//
 
 	for (i = 0; i < SYS_T; i++)
-		out[i] = mat[ SYS_T ][ i ];
+		out[i] = mat[SYS_T][i];
 
-	out[ SYS_T ] = 1;
+	out[SYS_T] = 1;
 
 	return 0;
-
 }
 
-static void sk_gen(unsigned char *sk,OQS_RAND * r) {
-	uint64_t cond[ COND_BYTES / 8 ];
-	uint64_t sk_int[ GFBITS ];
+static void sk_gen(unsigned char *sk, OQS_RAND *r) {
+	uint64_t cond[COND_BYTES / 8];
+	uint64_t sk_int[GFBITS];
 
 	int i, j;
 
-	gf irr[ SYS_T + 1 ];
-	gf f[ SYS_T ];
+	gf irr[SYS_T + 1];
+	gf f[SYS_T];
 
 	while (1) {
-        OQS_RAND_n(r, (uint8_t *)f, sizeof(f));
+		OQS_RAND_n(r, (uint8_t *) f, sizeof(f));
 
-		for (i = 0; i < SYS_T; i++) f[i] &= (1 << GFBITS) - 1;
+		for (i = 0; i < SYS_T; i++)
+			f[i] &= (1 << GFBITS) - 1;
 
-		if ( irr_gen(irr, f) == 0 ) break;
+		if (irr_gen(irr, f) == 0)
+			break;
 	}
 
 	for (i = 0; i < GFBITS; i++) {
@@ -90,9 +91,8 @@ static void sk_gen(unsigned char *sk,OQS_RAND * r) {
 
 	//
 
-    OQS_RAND_n(r, (uint8_t *)cond, sizeof(cond));
+	OQS_RAND_n(r, (uint8_t *) cond, sizeof(cond));
 
 	for (i = 0; i < COND_BYTES / 8; i++)
 		store8(sk + IRR_BYTES + i * 8, cond[i]);
 }
-

@@ -1,10 +1,10 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <stdbool.h>
 
-#include <oqs/rand.h>
 #include <oqs/kex.h>
+#include <oqs/rand.h>
 
 #include "../ds_benchmark.h"
 
@@ -20,26 +20,27 @@ struct kex_testcase {
 
 /* Add new testcases here */
 struct kex_testcase kex_testcases[] = {
-	{ OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "rlwe_bcns15", 0, 100 },
-	{ OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100 },
-	{ OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0, 100 },
-	{ OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0, 100 },
-	{ OQS_KEX_alg_sidh_cln16, NULL, 0, NULL, "sidh_cln16", 0 , 10},
+    {OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "rlwe_bcns15", 0, 100},
+    {OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100},
+    {OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0, 100},
+    {OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0, 100},
+    {OQS_KEX_alg_sidh_cln16, NULL, 0, NULL, "sidh_cln16", 0, 10},
 #ifdef ENABLE_CODE_MCBITS
-	{ OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
+    {OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
 #endif
 };
 
 #define KEX_TEST_ITERATIONS 100
 #define KEX_BENCH_SECONDS 1
 
-#define PRINT_HEX_STRING(label, str, len) { \
-	printf("%-20s (%4zu bytes):  ", (label), (size_t) (len)); \
-	for (size_t i = 0; i < (len); i++) { \
-		printf("%02X", ((unsigned char *) (str)) [i]); \
-	} \
-	printf("\n"); \
-}
+#define PRINT_HEX_STRING(label, str, len)                        \
+	{                                                            \
+		printf("%-20s (%4zu bytes):  ", (label), (size_t)(len)); \
+		for (size_t i = 0; i < (len); i++) {                     \
+			printf("%02X", ((unsigned char *) (str))[i]);        \
+		}                                                        \
+		printf("\n");                                            \
+	}
 
 static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int print, unsigned long occurrences[256]) {
 
@@ -141,7 +142,6 @@ cleanup:
 	OQS_KEX_free(kex);
 
 	return rc;
-
 }
 
 static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations, bool quiet) {
@@ -191,7 +191,6 @@ cleanup:
 	OQS_KEX_free(kex);
 
 	return ret;
-
 }
 
 static void cleanup_alice_0(OQS_KEX *kex, void *alice_priv, uint8_t *alice_msg) {
@@ -226,7 +225,7 @@ static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 		fprintf(stderr, "new_method failed\n");
 		goto err;
 	}
-	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n",  kex->method_name, "", "", "", "", "", "");
+	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n", kex->method_name, "", "", "", "", "", "");
 
 	TIME_OPERATION_SECONDS({ OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len); cleanup_alice_0(kex, alice_priv, alice_msg); }, "alice 0", seconds);
 
@@ -252,7 +251,6 @@ cleanup:
 	OQS_KEX_free(kex);
 
 	return rc;
-
 }
 
 int main(int argc, char **argv) {
@@ -264,9 +262,7 @@ int main(int argc, char **argv) {
 	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
-			if ((strcmp(argv[i], "-h") == 0)
-			        || (strcmp(argv[i], "-help") == 0)
-			        || (strcmp(argv[i], "--help") == 0)) {
+			if ((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "-help") == 0) || (strcmp(argv[i], "--help") == 0)) {
 				printf("Usage: ./test_kex [options] [algorithms]\n");
 				printf("\nOptions:\n");
 				printf("  --quiet, -q\n");
@@ -278,11 +274,9 @@ int main(int argc, char **argv) {
 					printf("  %s\n", kex_testcases[i].id);
 				}
 				return EXIT_SUCCESS;
-			} else if ( strcmp(argv[i], "--quiet") == 0
-			            || strcmp(argv[i], "-q") == 0  ) {
+			} else if (strcmp(argv[i], "--quiet") == 0 || strcmp(argv[i], "-q") == 0) {
 				quiet = true;
-			} else if ( strcmp(argv[i], "--bench") == 0
-			            || strcmp(argv[i], "-b") == 0  ) {
+			} else if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0) {
 				bench = true;
 			}
 
@@ -333,5 +327,4 @@ cleanup:
 	OQS_RAND_free(rand);
 
 	return (success == 1) ? EXIT_SUCCESS : EXIT_FAILURE;
-
 }

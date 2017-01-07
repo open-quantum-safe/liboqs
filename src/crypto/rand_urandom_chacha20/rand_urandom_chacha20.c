@@ -1,16 +1,16 @@
 #include <sys/types.h>
 #if defined(WINDOWS)
-#include <windows.h>
 #include <Wincrypt.h>
+#include <windows.h>
 #else
+#include <strings.h>
 #include <sys/uio.h>
 #include <unistd.h>
-#include <strings.h>
 #endif
-#include <string.h>
+#include <fcntl.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <fcntl.h>
+#include <string.h>
 
 #include <oqs/rand.h>
 #include <oqs/rand_urandom_chacha20.h>
@@ -52,7 +52,7 @@ OQS_RAND *OQS_RAND_urandom_chacha20_new() {
 
 static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 #if defined(WINDOWS)
-	HCRYPTPROV   hCryptProv;
+	HCRYPTPROV hCryptProv;
 #else
 	int fd = 0;
 #endif
@@ -63,7 +63,7 @@ static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 	}
 #if defined(WINDOWS)
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	        !CryptGenRandom(hCryptProv, 32, rand_ctx->key)) {
+	    !CryptGenRandom(hCryptProv, 32, rand_ctx->key)) {
 		goto err;
 	}
 #else

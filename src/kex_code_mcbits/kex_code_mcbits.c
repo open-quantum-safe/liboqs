@@ -2,7 +2,7 @@
 #define UNUSED
 // __attribute__ not supported in VS, is there something else I should define?
 #else
-#define UNUSED __attribute__ ((unused))
+#define UNUSED __attribute__((unused))
 #endif
 
 #include <stdlib.h>
@@ -24,7 +24,7 @@ OQS_KEX *OQS_KEX_code_mcbits_new(OQS_RAND *rand) {
 		return NULL;
 	}
 	k->method_name = strdup("Code Mcbits");
-	k->estimated_classical_security = 0;//TODO : Add these
+	k->estimated_classical_security = 0; //TODO : Add these
 	k->estimated_quantum_security = 0;
 	k->seed = NULL;
 	k->seed_len = 0;
@@ -71,7 +71,6 @@ err:
 cleanup:
 
 	return ret;
-
 }
 
 int OQS_KEX_code_mcbits_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, UNUSED const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
@@ -102,7 +101,6 @@ err:
 
 cleanup:
 	return ret;
-
 }
 
 int OQS_KEX_code_mcbits_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, UNUSED const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
@@ -114,7 +112,7 @@ int OQS_KEX_code_mcbits_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const
 	if (*key == NULL) {
 		goto err;
 	}
-	oqs_kex_mcbits_decrypt(*key, key_len , bob_msg, CRYPTO_BYTES + 32 , alice_priv);
+	oqs_kex_mcbits_decrypt(*key, key_len, bob_msg, CRYPTO_BYTES + 32, alice_priv);
 
 	ret = 1;
 	goto cleanup;
@@ -127,7 +125,6 @@ err:
 cleanup:
 
 	return ret;
-
 }
 
 void OQS_KEX_code_mcbits_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {

@@ -2,8 +2,8 @@
 
 #include <oqs/sha3.h>
 
-#include "precomp.c"
 #include "poly.c"
+#include "precomp.c"
 
 static void encode_a(unsigned char *r, const poly *pk, const unsigned char *seed) {
 	int i;
@@ -33,7 +33,7 @@ static void decode_b(poly *b, poly *c, const unsigned char *r) {
 	int i;
 	poly_frombytes(b, r);
 	for (i = 0; i < PARAM_N / 4; i++) {
-		c->coeffs[4 * i + 0] =  r[POLY_BYTES + i]       & 0x03;
+		c->coeffs[4 * i + 0] = r[POLY_BYTES + i] & 0x03;
 		c->coeffs[4 * i + 1] = (r[POLY_BYTES + i] >> 2) & 0x03;
 		c->coeffs[4 * i + 2] = (r[POLY_BYTES + i] >> 4) & 0x03;
 		c->coeffs[4 * i + 3] = (r[POLY_BYTES + i] >> 6);
@@ -43,7 +43,6 @@ static void decode_b(poly *b, poly *c, const unsigned char *r) {
 static void gen_a(poly *a, const unsigned char *seed) {
 	poly_uniform(a, seed);
 }
-
 
 // API FUNCTIONS
 
@@ -66,7 +65,6 @@ static void keygen(unsigned char *send, poly *sk, OQS_RAND *rand) {
 
 	encode_a(send, &pk, seed);
 }
-
 
 static void sharedb(unsigned char *sharedkey, unsigned char *send, const unsigned char *received, OQS_RAND *rand) {
 	poly sp, ep, v, a, pka, c, epp, bp;
@@ -99,7 +97,6 @@ static void sharedb(unsigned char *sharedkey, unsigned char *send, const unsigne
 	OQS_SHA3_sha3256(sharedkey, sharedkey, 32);
 #endif
 }
-
 
 static void shareda(unsigned char *sharedkey, const poly *sk, const unsigned char *received) {
 	poly v, bp, c;

@@ -1,43 +1,42 @@
 #ifdef ENABLE_CODE_MCBITS // don't want this file in Visual Studio if libsodium is not present
+#include <assert.h>
 #include <stdint.h>
 #include <string.h>
-#include <assert.h>
 
 #include <oqs/sha3.h>
 
-#include <oqs/rand.h>
-#include <sodium/crypto_stream_salsa20.h>
-#include <sodium/crypto_onetimeauth_poly1305.h>
-#include <sodium/randombytes.h>
-#include "params.h"
-#include "util.c"
-#include "transpose.c"
 #include "benes.c"
-#include "gf.c"
-#include "vec.c"
 #include "bm.c"
 #include "fft.c"
 #include "fft_tr.c"
-#include "sk_gen.c"
+#include "gf.c"
+#include "params.h"
 #include "pk_gen.c"
+#include "sk_gen.c"
+#include "transpose.c"
+#include "util.c"
+#include "vec.c"
+#include <oqs/rand.h>
+#include <sodium/crypto_onetimeauth_poly1305.h>
+#include <sodium/crypto_stream_salsa20.h>
+#include <sodium/randombytes.h>
 
-#include "encrypt.c"
 #include "decrypt.c"
+#include "encrypt.c"
 
 int oqs_kex_mcbits_encrypt(
     unsigned char *c, size_t *clen,
     const unsigned char *m, unsigned long long mlen,
     const unsigned char *pk,
-    OQS_RAND * r
-) {
-	unsigned char e[ 1 << (GFBITS - 3) ];
+    OQS_RAND *r) {
+	unsigned char e[1 << (GFBITS - 3)];
 	unsigned char key[64];
 	unsigned char nonce[8] = {0};
 
-	//
+//
 
-#define	ct (c + SYND_BYTES)
-#define	tag (ct + mlen)
+#define ct (c + SYND_BYTES)
+#define tag (ct + mlen)
 
 	encrypt(c, e, pk, r);
 
@@ -56,25 +55,26 @@ int oqs_kex_mcbits_encrypt(
 }
 
 int oqs_kex_mcbits_decrypt(
-    unsigned char *m, size_t * mlen,
+    unsigned char *m, size_t *mlen,
     const unsigned char *c, unsigned long long clen,
-    const unsigned char *sk
-) {
+    const unsigned char *sk) {
 	int ret;
 	int ret_verify;
 	int ret_decrypt;
 
 	unsigned char key[64];
 	unsigned char nonce[8] = {0};
-	unsigned char e[ 1 << (GFBITS - 3) ];
+	unsigned char e[1 << (GFBITS - 3)];
 
 	//
 
-	if (clen < SYND_BYTES + 16) return -1;
-	else *mlen = clen - SYND_BYTES - 16;
+	if (clen < SYND_BYTES + 16)
+		return -1;
+	else
+		*mlen = clen - SYND_BYTES - 16;
 
-#define	ct (c + SYND_BYTES)
-#define	tag (ct + *mlen)
+#define ct (c + SYND_BYTES)
+#define tag (ct + *mlen)
 
 	ret_decrypt = decrypt(e, sk, c);
 
@@ -92,15 +92,14 @@ int oqs_kex_mcbits_decrypt(
 	return ret;
 }
 
-int oqs_kex_mcbits_gen_keypair
-(
+int oqs_kex_mcbits_gen_keypair(
     unsigned char *pk,
     unsigned char *sk,
-    OQS_RAND * r
+    OQS_RAND *r
 
-) {
+    ) {
 	while (1) {
-		sk_gen(sk,r);
+		sk_gen(sk, r);
 
 		if (pk_gen(pk, sk) == 0)
 			break;

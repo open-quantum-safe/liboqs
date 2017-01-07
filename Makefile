@@ -198,4 +198,4 @@ clean:
 	find . -name .DS_Store -type f -delete
 
 prettyprint:
-	clang-format -style=file -i src/*.h src/*/*.{h,c}
+	find src -name '*.c' -o -name '*.h' | xargs clang-format -style=file -i 

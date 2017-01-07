@@ -20,4 +20,3 @@ static uint64_t load8(const unsigned char *in) {
 
 	return ret;
 }
-
