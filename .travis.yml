@@ -1,6 +1,6 @@
 language: c
 dist: trusty
-sudo: false
+sudo: true
 
 matrix:
   include:
