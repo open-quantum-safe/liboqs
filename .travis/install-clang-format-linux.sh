@@ -8,6 +8,4 @@ if [ ! -x "$(which clang-format-3.9)" ]; then
 	wget -O - http://llvm.org/apt/llvm-snapshot.gpg.key | sudo apt-key add -
 	sudo apt-get update -qq 
 	sudo apt-get install -qq -y clang-format-3.9
-	# Create symbolic link
-	sudo ln -s /usr/bin/clang-format-3.9 /usr/bin/clang-format
 fi;
