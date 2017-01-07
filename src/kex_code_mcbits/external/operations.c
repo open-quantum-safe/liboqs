@@ -3,9 +3,12 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <oqs/sha3.h>
-
 #include "params.h"
+#include <oqs/rand.h>
+#include <oqs/sha3.h>
+#include <sodium/crypto_onetimeauth_poly1305.h>
+#include <sodium/crypto_stream_salsa20.h>
+#include <sodium/randombytes.h>
 
 #include "benes.c"
 #include "bm.c"
@@ -17,10 +20,6 @@
 #include "transpose.c"
 #include "util.c"
 #include "vec.c"
-#include <oqs/rand.h>
-#include <sodium/crypto_onetimeauth_poly1305.h>
-#include <sodium/crypto_stream_salsa20.h>
-#include <sodium/randombytes.h>
 
 #include "decrypt.c"
 #include "encrypt.c"
