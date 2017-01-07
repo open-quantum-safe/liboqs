@@ -2,8 +2,11 @@
 
 #include <oqs/sha3.h>
 
-#include "poly.c"
+// clang-format off
+// (order of include matters)
 #include "precomp.c"
+#include "poly.c"
+// clang-format on
 
 static void encode_a(unsigned char *r, const poly *pk, const unsigned char *seed) {
 	int i;
