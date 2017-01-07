@@ -10,19 +10,22 @@
 #include <sodium/crypto_stream_salsa20.h>
 #include <sodium/randombytes.h>
 
+// clang-format off
+// (order of include matters)
+#include "util.c"
+#include "transpose.c"
 #include "benes.c"
+#include "gf.c"
+#include "vec.c"
 #include "bm.c"
 #include "fft.c"
 #include "fft_tr.c"
-#include "gf.c"
-#include "pk_gen.c"
 #include "sk_gen.c"
-#include "transpose.c"
-#include "util.c"
-#include "vec.c"
+#include "pk_gen.c"
 
-#include "decrypt.c"
 #include "encrypt.c"
+#include "decrypt.c"
+// clang-format on
 
 int oqs_kex_mcbits_encrypt(
     unsigned char *c, size_t *clen,
