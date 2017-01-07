@@ -14,7 +14,7 @@ matrix:
         packages:
         - gcc-4.8
     before_install:
-      - bash .travis/install-clang-format-linux.sh
+      - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.9
@@ -25,7 +25,7 @@ matrix:
         packages:
         - gcc-4.9
     before_install:
-      - bash .travis/install-clang-format-linux.sh
+      - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-5
@@ -36,7 +36,7 @@ matrix:
         packages:
         - gcc-5
     before_install:
-      - bash .travis/install-clang-format-linux.sh
+      - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-6 USE_OPENSSL=1
@@ -48,7 +48,7 @@ matrix:
         - gcc-6
         - libssl-dev
     before_install:
-      - bash .travis/install-clang-format-linux.sh
+      - sh .travis/install-clang-format-linux.sh
   - os: osx
     compiler: clang
     env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1
