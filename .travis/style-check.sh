@@ -1,13 +1,13 @@
 #!/bin/bash
 
-CLANGFORMAT=clang-format-3.9
+CLANG_FORMAT=clang-format-3.9
 
 if [ ! -x "$(which clang-format-3.9)" ]; then 
 	# If clang-format is not version -3.9, just use clang-format
-	CLANGFORMAT=clang-format
+	CLANG_FORMAT=clang-format
 fi;
 
-make prettyprint
+CLANGFORMAT=$(CLANG_FORMAT) make prettyprint
 modified=$(git status -s)
 
 if [ "$modified" ]; then
