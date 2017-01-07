@@ -5,12 +5,13 @@
 
 #include <oqs/sha3.h>
 
+#include "params.h"
+
 #include "benes.c"
 #include "bm.c"
 #include "fft.c"
 #include "fft_tr.c"
 #include "gf.c"
-#include "params.h"
 #include "pk_gen.c"
 #include "sk_gen.c"
 #include "transpose.c"
