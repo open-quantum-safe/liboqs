@@ -1,10 +1,10 @@
 CC ?= cc
 
-AR ?= ar rcs
-CURL ?= curl
-RANLIB ?= ranlib
-LN ?= ln -s
-ECHO ?= echo
+AR = ar rcs
+CURL = curl
+RANLIB = ranlib
+LN = ln -s
+ECHO = echo
 CLANGFORMAT ?= clang-format
 
 CFLAGS = -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME 
