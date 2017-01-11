@@ -4,21 +4,21 @@ static int pk_gen(unsigned char *pk, const unsigned char *sk) {
 	int i, j, k;
 	int row, c, tail;
 
-	uint64_t mat[ GFBITS * SYS_T ][ 64 ];
+	uint64_t mat[GFBITS * SYS_T][64];
 	uint64_t mask;
 	uint64_t u;
 
-	uint64_t points[64][ GFBITS ] = {
+	uint64_t points[64][GFBITS] = {
 #include "points.data"
 	};
 
-	uint64_t sk_int[ GFBITS ];
+	uint64_t sk_int[GFBITS];
 
-	uint64_t eval[64][ GFBITS ];
-	uint64_t inv[64][ GFBITS ];
-	uint64_t tmp[ GFBITS ];
+	uint64_t eval[64][GFBITS];
+	uint64_t inv[64][GFBITS];
+	uint64_t tmp[GFBITS];
 
-	uint64_t cond[ COND_BYTES / 8 ];
+	uint64_t cond[COND_BYTES / 8];
 
 	// compute the inverses
 
@@ -43,16 +43,16 @@ static int pk_gen(unsigned char *pk, const unsigned char *sk) {
 
 	// fill matrix
 
-	for (j = 0; j < 64;     j++)
+	for (j = 0; j < 64; j++)
 		for (k = 0; k < GFBITS; k++)
-			mat[ k ][ j ] = inv[ j ][ k ];
+			mat[k][j] = inv[j][k];
 
 	for (i = 1; i < SYS_T; i++)
-		for (j = 0; j < 64;    j++) {
+		for (j = 0; j < 64; j++) {
 			vec_mul(inv[j], inv[j], points[j]);
 
 			for (k = 0; k < GFBITS; k++)
-				mat[ i * GFBITS + k ][ j ] = inv[ j ][ k ];
+				mat[i * GFBITS + k][j] = inv[j][k];
 		}
 
 	// permute
@@ -61,7 +61,7 @@ static int pk_gen(unsigned char *pk, const unsigned char *sk) {
 		cond[i] = load8(sk + IRR_BYTES + i * 8);
 
 	for (i = 0; i < GFBITS * SYS_T; i++)
-		benes_compact(mat[ i ], cond, 0);
+		benes_compact(mat[i], cond, 0);
 
 	// gaussian elimination
 
@@ -73,27 +73,27 @@ static int pk_gen(unsigned char *pk, const unsigned char *sk) {
 				break;
 
 			for (k = row + 1; k < GFBITS * SYS_T; k++) {
-				mask = mat[ row ][ i ] ^ mat[ k ][ i ];
+				mask = mat[row][i] ^ mat[k][i];
 				mask >>= j;
 				mask &= 1;
 				mask = -mask;
 
 				for (c = 0; c < 64; c++)
-					mat[ row ][ c ] ^= mat[ k ][ c ] & mask;
+					mat[row][c] ^= mat[k][c] & mask;
 			}
 
-			if ( ((mat[ row ][ i ] >> j) & 1) == 0 ) { // return if not invertible
+			if (((mat[row][i] >> j) & 1) == 0) { // return if not invertible
 				return -1;
 			}
 
 			for (k = 0; k < GFBITS * SYS_T; k++) {
 				if (k != row) {
-					mask = mat[ k ][ i ] >> j;
+					mask = mat[k][i] >> j;
 					mask &= 1;
 					mask = -mask;
 
 					for (c = 0; c < 64; c++)
-						mat[ k ][ c ] ^= mat[ row ][ c ] & mask;
+						mat[k][c] ^= mat[row][c] & mask;
 				}
 			}
 		}
@@ -103,10 +103,10 @@ static int pk_gen(unsigned char *pk, const unsigned char *sk) {
 	tail = ((GFBITS * SYS_T) & 63) >> 3;
 
 	for (i = 0; i < GFBITS * SYS_T; i++) {
-		u = mat[i][ (GFBITS * SYS_T + 63) / 64 - 1 ];
+		u = mat[i][(GFBITS * SYS_T + 63) / 64 - 1];
 
 		for (k = tail; k < 8; k++)
-			pk_ptr[ k - tail ] = (u >> (8 * k)) & 0xFF;
+			pk_ptr[k - tail] = (u >> (8 * k)) & 0xFF;
 
 		pk_ptr += 8 - tail;
 
@@ -119,4 +119,3 @@ static int pk_gen(unsigned char *pk, const unsigned char *sk) {
 
 	return 0;
 }
-

@@ -12,10 +12,10 @@ static void func(uint64_t *bs, uint64_t *cond_ptr, int low) {
 		y = (1 << low) + j;
 
 		for (i = 0; i < (1 << high); i++) {
-			diff = bs[ x ] ^ bs[ y ];
+			diff = bs[x] ^ bs[y];
 			diff &= (*cond_ptr++);
-			bs[ x ] ^= diff;
-			bs[ y ] ^= diff;
+			bs[x] ^= diff;
+			bs[y] ^= diff;
 
 			x += (1 << (low + 1));
 			y += (1 << (low + 1));
@@ -62,4 +62,3 @@ static void benes_compact(uint64_t *bs, uint64_t *cond, int rev) {
 		cond_ptr += inc;
 	}
 }
-

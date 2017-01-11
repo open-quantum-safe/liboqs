@@ -1,21 +1,21 @@
 #if defined(WINDOWS)
 #define UNUSED
 #else
-#define UNUSED __attribute__ ((unused))
+#define UNUSED __attribute__((unused))
 #endif
 
 #include <stdlib.h>
 #include <string.h>
 #if !defined(WINDOWS)
-#include <unistd.h>
 #include <strings.h>
+#include <unistd.h>
 #endif
 
 #include <oqs/kex.h>
 #include <oqs/rand.h>
 
-#include "kex_sidh_cln16.h"
 #include "SIDH.h"
+#include "kex_sidh_cln16.h"
 
 OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand) {
 

@@ -1,16 +1,15 @@
-ifndef CC
-	CC=cc
-endif
+CC ?= cc
 
-AR=ar rcs
-CURL=curl
-RANLIB=ranlib
-LN=ln -s
-ECHO=echo
+AR = ar rcs
+CURL = curl
+RANLIB = ranlib
+LN = ln -s
+ECHO = echo
+CLANGFORMAT ?= clang-format
 
-CFLAGS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME 
-LDFLAGS= -lm 
-INCLUDES= -Iinclude
+CFLAGS = -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME 
+LDFLAGS = -lm 
+INCLUDES = -Iinclude
 
 UNAME_S := $(shell uname -s)
 
@@ -88,39 +87,39 @@ endif
 	@$(LN) ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 	@$(LN) ../../src/common/common.h include/oqs
 
-# RAND_URANDOM_CHACHA
+#RAND_URANDOM_CHACHA
 RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/crypto/rand_urandom_chacha20/, rand_urandom_chacha20.o)
 $(RAND_URANDOM_CHACHA_OBJS): src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h
 
-# RAND_URANDOM_AESCTR
+#RAND_URANDOM_AESCTR
 RAND_URANDOM_AESCTR_OBJS :=  $(addprefix objs/crypto/rand_urandom_aesctr/, rand_urandom_aesctr.o)
 $(RAND_URANDOM_AESCTR_OBJS): src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h
 
-# RAND
+#RAND
 objs/crypto/rand/rand.o: src/crypto/rand/rand.h
 
-# KEX_RLWE_BCNS15
+#KEX_RLWE_BCNS15
 KEX_RLWE_BCNS15_OBJS := $(addprefix objs/kex_rlwe_bcns15/, fft.o kex_rlwe_bcns15.o rlwe.o rlwe_kex.o)
 KEX_RLWE_BCNS15_HEADERS := $(addprefix src/kex_rlwe_bcns15/, kex_rlwe_bcns15.h local.h rlwe_a.h rlwe_table.h)
 $(KEX_RLWE_BCNS15_OBJS): $(KEX_RLWE_BCNS15_HEADERS)
 
-# KEX_NEWHOPE
+#KEX_NEWHOPE
 KEX_RLWE_NEWHOPE_OBJS := $(addprefix objs/kex_rlwe_newhope/, kex_rlwe_newhope.o)
 KEX_RLWE_NEWHOPE_HEADERS := $(addprefix src/kex_rlwe_newhope/, kex_rlwe_newhope.h newhope.c params.h poly.c precomp.c)
 $(KEX_RLWE_NEWHOPE_OBJS): $(KEX_RLWE_NEWHOPE_HEADERS)
 
-# KEX_RLWE_MSRLN16
+#KEX_RLWE_MSRLN16
 KEX_RLWE_MSRLN16_OBJS := $(addprefix objs/kex_rlwe_msrln16/, kex_rlwe_msrln16.o LatticeCrypto_kex.o ntt_constants.o)
 KEX_RLWE_MSRLN16_HEADERS := $(addprefix src/kex_rlwe_msrln16/, LatticeCrypto.h LatticeCrypto_priv.h kex_rlwe_msrln16.h )
 $(KEX_RLWE_MSRLN16_OBJS): $(KEX_RLWE_MSRLN16_HEADERS)
 
-# KEX_LWE_FRODO
+#KEX_LWE_FRODO
 KEX_LWE_FRODO_OBJS := $(addprefix objs/kex_lwe_frodo/, lwe.o kex_lwe_frodo.o lwe_noise.o)
 KEX_LWE_FRODO_HEADERS := $(addprefix src/kex_lwe_frodo/, kex_lwe_frodo.h local.h kex_lwe_frodo_macrify.c lwe_macrify.c)
 $(KEX_LWE_FRODO_OBJS): $(KEX_LWE_FRODO_HEADERS)
 
-# KEX_SIDH_CLN16
-#ifneq (,$(findstring SIDH_ASM,$(CFLAGS)))
+#KEX_SIDH_CLN16
+#ifneq(, $(findstring SIDH_ASM, $(CFLAGS)))
 objs/kex_sidh_cln16/fp_x64_asm.o: src/kex_sidh_cln16/AMD64/fp_x64_asm.S
 	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -c -o $@ src/kex_sidh_cln16/AMD64/fp_x64_asm.S
@@ -131,7 +130,7 @@ KEX_SIDH_CLN16_OBJS := $(addprefix objs/kex_sidh_cln16/, ec_isogeny.o fpx.o kex_
 KEX_SIDH_CLN16_HEADERS := $(addprefix src/kex_sidh_cln16/, kex_sidh_cln16.h SIDH.h)
 $(KEX_SIDH_CLN16_OBJS): $(KEX_SIDH_CLN16_HEADERS)
 
-# KEX_CODE_MCBITS
+#KEX_CODE_MCBITS
 KEX_CODE_MCBITS_SRC := src/kex_code_mcbits/external/operations.c
 KEX_CODE_MCBITS_SRC += $(wildcard src/kex_code_mcbits/*.c)
 KEX_CODE_MCBITS_OBJS := $(patsubst src/%.c, objs/%.o, $(KEX_CODE_MCBITS_SRC))
@@ -198,4 +197,4 @@ clean:
 	find . -name .DS_Store -type f -delete
 
 prettyprint:
-	astyle --style=java --indent=tab --pad-header --pad-oper --align-pointer=name --align-reference=name --suffix=none src/*.h src/*/*.h src/*/*.c
+	find src -name '*.c' -o -name '*.h' | xargs $(CLANGFORMAT) -style=file -i 

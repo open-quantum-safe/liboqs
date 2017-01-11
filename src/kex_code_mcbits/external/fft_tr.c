@@ -1,16 +1,18 @@
-#define vec_add(z, x, y) for (b = 0; b < GFBITS; b++) { z[b] = x[b]^y[b]; }
+#define vec_add(z, x, y)           \
+	for (b = 0; b < GFBITS; b++) { \
+		z[b] = x[b] ^ y[b];        \
+	}
 
-static void radix_conversions_tr(uint64_t in[][ GFBITS ]) {
+static void radix_conversions_tr(uint64_t in[][GFBITS]) {
 	int i, j, k;
 
 	const uint64_t mask[6][2] = {
-		{0x2222222222222222, 0x4444444444444444},
-		{0x0C0C0C0C0C0C0C0C, 0x3030303030303030},
-		{0x00F000F000F000F0, 0x0F000F000F000F00},
-		{0x0000FF000000FF00, 0x00FF000000FF0000},
-		{0x00000000FFFF0000, 0x0000FFFF00000000},
-		{0xFFFFFFFF00000000, 0x00000000FFFFFFFF}
-	};
+	    {0x2222222222222222, 0x4444444444444444},
+	    {0x0C0C0C0C0C0C0C0C, 0x3030303030303030},
+	    {0x00F000F000F000F0, 0x0F000F000F000F00},
+	    {0x0000FF000000FF00, 0x00FF000000FF0000},
+	    {0x00000000FFFF0000, 0x0000FFFF00000000},
+	    {0xFFFFFFFF00000000, 0x00000000FFFFFFFF}};
 
 	const uint64_t s[5][2][GFBITS] = {
 #include "scalars_2x.data"
@@ -40,29 +42,28 @@ static void radix_conversions_tr(uint64_t in[][ GFBITS ]) {
 	}
 }
 
-static void butterflies_tr(uint64_t out[][ GFBITS ], uint64_t in[][ GFBITS ]) {
+static void butterflies_tr(uint64_t out[][GFBITS], uint64_t in[][GFBITS]) {
 	int i, j, k, s, b;
 
-	uint64_t tmp[ GFBITS ];
-	uint64_t pre[6][ GFBITS ];
+	uint64_t tmp[GFBITS];
+	uint64_t pre[6][GFBITS];
 	uint64_t buf[64];
 
-	const uint64_t consts[ 63 ][ GFBITS ] = {
+	const uint64_t consts[63][GFBITS] = {
 #include "consts.data"
 	};
 
 	uint64_t consts_ptr = 63;
 
 	const unsigned char reversal[64] = {
-		0, 32, 16, 48,  8, 40, 24, 56,
-		4, 36, 20, 52, 12, 44, 28, 60,
-		2, 34, 18, 50, 10, 42, 26, 58,
-		6, 38, 22, 54, 14, 46, 30, 62,
-		1, 33, 17, 49,  9, 41, 25, 57,
-		5, 37, 21, 53, 13, 45, 29, 61,
-		3, 35, 19, 51, 11, 43, 27, 59,
-		7, 39, 23, 55, 15, 47, 31, 63
-	};
+	    0, 32, 16, 48, 8, 40, 24, 56,
+	    4, 36, 20, 52, 12, 44, 28, 60,
+	    2, 34, 18, 50, 10, 42, 26, 58,
+	    6, 38, 22, 54, 14, 46, 30, 62,
+	    1, 33, 17, 49, 9, 41, 25, 57,
+	    5, 37, 21, 53, 13, 45, 29, 61,
+	    3, 35, 19, 51, 11, 43, 27, 59,
+	    7, 39, 23, 55, 15, 47, 31, 63};
 
 	const uint16_t beta[6] = {8, 1300, 3408, 1354, 2341, 1154};
 
@@ -75,7 +76,7 @@ static void butterflies_tr(uint64_t out[][ GFBITS ], uint64_t in[][ GFBITS ]) {
 		for (j = 0; j < 64; j += 2 * s)
 			for (k = j; k < j + s; k++) {
 				vec_add(in[k], in[k], in[k + s]);
-				vec_mul(tmp, in[k], consts[ consts_ptr + (k - j) ]);
+				vec_mul(tmp, in[k], consts[consts_ptr + (k - j)]);
 				vec_add(in[k + s], in[k + s], tmp);
 			}
 	}
@@ -84,12 +85,12 @@ static void butterflies_tr(uint64_t out[][ GFBITS ], uint64_t in[][ GFBITS ]) {
 
 	for (i = 0; i < GFBITS; i++) {
 		for (j = 0; j < 64; j++)
-			buf[ reversal[j] ] = in[j][i];
+			buf[reversal[j]] = in[j][i];
 
 		transpose_64x64_compact(buf, buf);
 
 		for (j = 0; j < 64; j++)
-			in[j][i] = buf[ j ];
+			in[j][i] = buf[j];
 	}
 
 	// boradcast
@@ -242,8 +243,7 @@ static void butterflies_tr(uint64_t out[][ GFBITS ], uint64_t in[][ GFBITS ]) {
 	}
 }
 
-static void fft_tr(uint64_t out[][GFBITS], uint64_t in[][ GFBITS ]) {
+static void fft_tr(uint64_t out[][GFBITS], uint64_t in[][GFBITS]) {
 	butterflies_tr(out, in);
 	radix_conversions_tr(out);
 }
-

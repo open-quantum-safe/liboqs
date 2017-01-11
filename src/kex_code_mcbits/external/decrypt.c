@@ -1,9 +1,9 @@
 static void scaling(uint64_t out[][GFBITS], uint64_t inv[][GFBITS], const unsigned char *sk, uint64_t *recv) {
 	int i, j;
-	uint64_t sk_int[ GFBITS ];
+	uint64_t sk_int[GFBITS];
 
-	uint64_t eval[64][ GFBITS ];
-	uint64_t tmp[ GFBITS ];
+	uint64_t eval[64][GFBITS];
+	uint64_t tmp[GFBITS];
 
 	// computing inverses
 
@@ -50,12 +50,12 @@ static void preprocess(uint64_t *recv, const unsigned char *s) {
 	for (i = 0; i < 64; i++)
 		recv[i] = 0;
 
-	for (i = 0; i < SYND_BYTES / 8 ; i++)
+	for (i = 0; i < SYND_BYTES / 8; i++)
 		recv[i] = load8(s + i * 8);
 
 	for (i = SYND_BYTES % 8 - 1; i >= 0; i--) {
-		recv[ SYND_BYTES / 8 ] <<= 8;
-		recv[ SYND_BYTES / 8 ] |= s[ SYND_BYTES / 8 * 8 + i ];
+		recv[SYND_BYTES / 8] <<= 8;
+		recv[SYND_BYTES / 8] |= s[SYND_BYTES / 8 * 8 + i];
 	}
 }
 
@@ -80,8 +80,8 @@ static int weight(uint64_t *v) {
 	int w;
 
 	union {
-		uint64_t data_64[ 8 ];
-		uint8_t data_8[ 64 ];
+		uint64_t data_64[8];
+		uint8_t data_8[64];
 	} counter;
 
 	//
@@ -105,7 +105,7 @@ static int weight(uint64_t *v) {
 
 //
 
-static void syndrome_adjust(uint64_t in[][ GFBITS ]) {
+static void syndrome_adjust(uint64_t in[][GFBITS]) {
 	int i;
 
 	for (i = 0; i < GFBITS; i++) {
@@ -121,18 +121,18 @@ static int decrypt(unsigned char *e, const unsigned char *sk, const unsigned cha
 
 	uint64_t diff;
 
-	uint64_t inv[ 64 ][ GFBITS ];
-	uint64_t scaled[ 64 ][ GFBITS ];
-	uint64_t eval[ 64 ][ GFBITS ];
+	uint64_t inv[64][GFBITS];
+	uint64_t scaled[64][GFBITS];
+	uint64_t eval[64][GFBITS];
 
-	uint64_t error[ 64 ];
+	uint64_t error[64];
 
-	uint64_t s_priv[ 2 ][ GFBITS ];
-	uint64_t s_priv_cmp[ 2 ][ GFBITS ];
-	uint64_t locator[ GFBITS ];
+	uint64_t s_priv[2][GFBITS];
+	uint64_t s_priv_cmp[2][GFBITS];
+	uint64_t locator[GFBITS];
 
-	uint64_t recv[ 64 ];
-	uint64_t cond[ COND_BYTES / 8 ];
+	uint64_t recv[64];
+	uint64_t cond[COND_BYTES / 8];
 
 	//
 
@@ -142,16 +142,15 @@ static int decrypt(unsigned char *e, const unsigned char *sk, const unsigned cha
 	preprocess(recv, s);
 	benes_compact(recv, cond, 1);
 	scaling(scaled, inv, sk, recv); // scaling
-	fft_tr(s_priv, scaled); // transposed FFT
+	fft_tr(s_priv, scaled);         // transposed FFT
 	syndrome_adjust(s_priv);
 	bm(locator, s_priv); // Berlekamp Massey
-	fft(eval, locator); // FFT
+	fft(eval, locator);  // FFT
 
 	for (i = 0; i < 64; i++) {
 		error[i] = vec_or(eval[i]);
 		error[i] = ~error[i];
 	}
-
 
 	{
 		// reencrypt
@@ -184,4 +183,3 @@ static int decrypt(unsigned char *e, const unsigned char *sk, const unsigned cha
 
 	return (t - 1);
 }
-

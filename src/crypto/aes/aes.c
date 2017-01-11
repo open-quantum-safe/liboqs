@@ -181,8 +181,6 @@ inline void oqs_aes128_ecb_dec_sch_ossl(const uint8_t *ciphertext, const size_t 
 	assert(1 == EVP_DecryptUpdate((EVP_CIPHER_CTX *) schedule, plaintext, &outlen, ciphertext, ciphertext_len));
 	assert((size_t) outlen == ciphertext_len);
 	assert(1 == EVP_DecryptFinal_ex((EVP_CIPHER_CTX *) schedule, plaintext, &outlen));
-
 }
 
 #endif
-

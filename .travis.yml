@@ -1,6 +1,6 @@
 language: c
 dist: trusty
-sudo: false
+sudo: true
 
 matrix:
   include:
@@ -14,8 +14,7 @@ matrix:
         packages:
         - gcc-4.8
     before_install:
-      - bash .travis/install-astyle-linux.sh
-      - export PATH=$(pwd)/astyle/build/gcc/bin:$PATH
+      - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.9
@@ -26,8 +25,7 @@ matrix:
         packages:
         - gcc-4.9
     before_install:
-      - bash .travis/install-astyle-linux.sh
-      - export PATH=$(pwd)/astyle/build/gcc/bin:$PATH
+      - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-5
@@ -38,8 +36,7 @@ matrix:
         packages:
         - gcc-5
     before_install:
-      - bash .travis/install-astyle-linux.sh
-      - export PATH=$(pwd)/astyle/build/gcc/bin:$PATH
+      - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-6 USE_OPENSSL=1
@@ -51,13 +48,12 @@ matrix:
         - gcc-6
         - libssl-dev
     before_install:
-      - bash .travis/install-astyle-linux.sh
-      - export PATH=$(pwd)/astyle/build/gcc/bin:$PATH
+      - sh .travis/install-clang-format-linux.sh
   - os: osx
     compiler: clang
     env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1
     before_install:
-      - brew install astyle openssl libsodium
+      - brew install clang-format openssl libsodium
 
 script:
   - CC=$CC_OQS make

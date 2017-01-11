@@ -1,21 +1,21 @@
 #include <sys/types.h>
 #if defined(WINDOWS)
-#include <windows.h>
 #include <Wincrypt.h>
+#include <windows.h>
 #else
+#include <strings.h>
 #include <sys/uio.h>
 #include <unistd.h>
-#include <strings.h>
 #endif
-#include <string.h> //memcpy
+#include <fcntl.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <fcntl.h>
+#include <string.h> //memcpy
 
+#include <assert.h>
+#include <oqs/aes.h>
 #include <oqs/rand.h>
 #include <oqs/rand_urandom_aesctr.h>
-#include <oqs/aes.h>
-#include <assert.h>
 
 typedef struct oqs_rand_urandom_aesctr_ctx {
 	uint64_t ctr;
@@ -26,7 +26,7 @@ typedef struct oqs_rand_urandom_aesctr_ctx {
 
 static oqs_rand_urandom_aesctr_ctx *oqs_rand_urandom_aesctr_ctx_new() {
 #if defined(WINDOWS)
-	HCRYPTPROV   hCryptProv;
+	HCRYPTPROV hCryptProv;
 #else
 	int fd = 0;
 #endif
@@ -38,7 +38,7 @@ static oqs_rand_urandom_aesctr_ctx *oqs_rand_urandom_aesctr_ctx_new() {
 	uint8_t key[16];
 #if defined(WINDOWS)
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	        !CryptGenRandom(hCryptProv, 16, key)) {
+	    !CryptGenRandom(hCryptProv, 16, key)) {
 		goto err;
 	}
 #else
@@ -100,7 +100,6 @@ uint8_t OQS_RAND_urandom_aesctr_8(OQS_RAND *r) {
 	rand_ctx->cache_next_byte += 1;
 	return out;
 }
-
 
 uint32_t OQS_RAND_urandom_aesctr_32(OQS_RAND *r) {
 	oqs_rand_urandom_aesctr_ctx *rand_ctx = (oqs_rand_urandom_aesctr_ctx *) r->ctx;
