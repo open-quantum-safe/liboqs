@@ -240,7 +240,7 @@ static void vec_mul(uint64_t *h, uint64_t *f, const uint64_t *g) {
 	//
 
 	for (i = 2 * GFBITS - 2; i >= GFBITS; i--) {
-		result[i - 9]      ^= result[i];
+		result[i - 9] ^= result[i];
 		result[i - GFBITS] ^= result[i];
 	}
 
@@ -320,4 +320,3 @@ static void vec_inv(uint64_t *out, const uint64_t *in) {
 
 	vec_sq(out, out); // 111111111110
 }
-

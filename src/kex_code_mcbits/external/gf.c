@@ -79,7 +79,7 @@ static gf gf_inv(gf in) {
 }
 
 static gf gf_diff(gf a, gf b) {
-	uint32_t t = (uint32_t) (a ^ b);
+	uint32_t t = (uint32_t)(a ^ b);
 
 	t = ((t - 1) >> 20) ^ 0xFFF;
 
@@ -111,4 +111,3 @@ static void GF_mul(gf *out, gf *in0, gf *in1) {
 	for (i = 0; i < 62; i++)
 		out[i] = tmp[i];
 }
-

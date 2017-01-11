@@ -1,10 +1,10 @@
 #include <assert.h>
 
 #include <oqs/kex.h>
-#include <oqs/kex_rlwe_bcns15.h>
-#include <oqs/kex_rlwe_newhope.h>
-#include <oqs/kex_rlwe_msrln16.h>
 #include <oqs/kex_lwe_frodo.h>
+#include <oqs/kex_rlwe_bcns15.h>
+#include <oqs/kex_rlwe_msrln16.h>
+#include <oqs/kex_rlwe_newhope.h>
 #include <oqs/kex_sidh_cln16.h>
 
 #ifdef ENABLE_CODE_MCBITS
