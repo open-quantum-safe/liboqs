@@ -49,12 +49,13 @@ matrix:
         - libssl-dev
     before_install:
       - sh .travis/install-clang-format-linux.sh
-      - bash install-ntru
+      - bash download-and-build-ntru.sh
   - os: osx
     compiler: clang
     env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1 ENABLE_NTRU=1
     before_install:
       - brew install clang-format openssl libsodium
+      - bash download-and-build-ntru.sh
 
 script:
   - CC=$CC_OQS make
