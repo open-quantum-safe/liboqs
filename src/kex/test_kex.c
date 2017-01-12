@@ -28,6 +28,9 @@ struct kex_testcase kex_testcases[] = {
 #ifdef ENABLE_CODE_MCBITS
     {OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
 #endif
+#ifdef ENABLE_NTRU
+    {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},
+#endif
 };
 
 #define KEX_TEST_ITERATIONS 100
