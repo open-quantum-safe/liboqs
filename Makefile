@@ -62,7 +62,7 @@ endif
 ifdef ENABLE_NTRU
 	CFLAGS += -DENABLE_NTRU
 	INCLUDES += -Iexternal/NTRUEncrypt-master/include
-	LDFLAGS += -Lexternal/NTRUEncrypt-master/.libs/ -l:libntruencrypt.a
+	LDFLAGS += external/NTRUEncrypt-master/.libs/libntruencrypt.a
 endif
 
 .PHONY: all check clean prettyprint
