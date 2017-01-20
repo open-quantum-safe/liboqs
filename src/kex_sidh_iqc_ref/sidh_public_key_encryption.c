@@ -135,6 +135,8 @@ void oqs_sidh_iqc_ref_public_key_decrypt(plaintext_t plaintext,
     free(hash);
 }
 
+const mp_limb_t * mpz_limbs_read (const mpz_t x);
+
 char *oqs_sidh_iqc_ref_public_key_encryption_hash(const fp2_element_t value,
                                                   long size) {
     // compute the size of value in chars

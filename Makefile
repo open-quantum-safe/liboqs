@@ -87,6 +87,7 @@ endif
 	@$(LN) ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	@$(LN) ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 	@$(LN) ../../src/common/common.h include/oqs
+	@$(LN) ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
 
 # RAND_URANDOM_CHACHA
 RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/crypto/rand_urandom_chacha20/, rand_urandom_chacha20.o)
@@ -139,6 +140,10 @@ KEX_CODE_MCBITS_HEADERS := $(wildcard src/kex_code_mcbits/external/*.h)
 KEX_CODE_MCBITS_HEADERS += $(wildcard src/kex_code_mcbits/*.h)
 $(KEX_CODE_MCBITS_OBJS): $(KEX_CODE_MCBITS_HEADERS)
 
+# KEX_SIDH_IQC_REF
+KEX_SIDH_IQC_REF_OBJS := $(addprefix objs/kex_sidh_iqc_ref/, kex_sidh_iqc_ref.o sidh_elliptic_curve.o sidh_elliptic_curve_dlp.o sidh_isogeny.o sidh_private_key.o sidh_public_key.o sidh_public_key_encryption.o sidh_public_key_validation.o sidh_public_param.o sidh_quadratic_ext.o sidh_shared_key.o sidh_util.o)
+KEX_SIDH_IQC_REF_HEADERS := $(addprefix src/kex_sidh_iqc_ref/, kex_sidh_iqc_ref.h sidh_elliptic_curve.h sidh_elliptic_curve_dlp.h sidh_isogeny.h sidh_private_key.h sidh_public_key.h sidh_public_key_encryption.h sidh_public_key_validation.h sidh_public_param.h sidh_quadratic_ext.h sidh_shared_key.h sidh_util.h)
+$(KEX_SIDH_IQC_REF_OBJS): $(KEX_SIDH_IQC_REF_HEADERS)
 
 # AES
 AES_OBJS := $(addprefix objs/crypto/aes/, aes.o aes_c.o aes_ni.o)
@@ -163,7 +168,8 @@ objs/kex/kex.o: src/kex/kex.h
 
 RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS) objs/crypto/rand/rand.o
 
-KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/kex/kex.o
+KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) $(KEX_SIDH_IQC_REF_OBJS) objs/kex/kex.o
+#KEX_OBJS := $(KEX_SIDH_IQC_REF_OBJS) objs/kex/kex.o
 
 ifdef ENABLE_CODE_MCBITS
 KEX_OBJS += $(KEX_CODE_MCBITS_OBJS)
