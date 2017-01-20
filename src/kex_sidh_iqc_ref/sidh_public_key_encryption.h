@@ -30,23 +30,23 @@ extern "C" {
  * Representation of ciphertext in oqs_sidh_iqc_ref
  */
 typedef struct {
-    elliptic_curve_t E;
-    point_t P;
-    point_t Q;
-    char *content;
+	elliptic_curve_t E;
+	point_t P;
+	point_t Q;
+	char *content;
 
-    // size of the content field
-    long size;
+	// size of the content field
+	long size;
 } ciphertext_struct;
 
 /**
  * Representation of plaintext in oqs_sidh_iqc_ref
  */
 typedef struct {
-    char *content;
+	char *content;
 
-    // size of the content field
-    long size;
+	// size of the content field
+	long size;
 } plaintext_struct;
 
 typedef ciphertext_struct ciphertext_t[1];
@@ -83,7 +83,7 @@ void oqs_sidh_iqc_ref_public_key_plaintext_clear(plaintext_t plaintext);
  * @return 1 if successful, and -1 otherwise
  */
 int oqs_sidh_iqc_ref_public_key_pad_plaintext(plaintext_t result,
-                                              const plaintext_t raw);
+        const plaintext_t raw);
 
 /**
  * Encrypts the {@code plaintext} using {@code public_key}.
@@ -94,23 +94,23 @@ int oqs_sidh_iqc_ref_public_key_pad_plaintext(plaintext_t result,
  * @param paramsB own pubic params
  */
 void oqs_sidh_iqc_ref_public_key_encrypt(ciphertext_t ciphertext,
-                                         const plaintext_t plaintext,
-                                         const public_key_t public_keyA,
-                                         const public_params_t paramsA,
-                                         const public_params_t paramsB);
+        const plaintext_t plaintext,
+        const public_key_t public_keyA,
+        const public_params_t paramsA,
+        const public_params_t paramsB);
 
 /**
  * Decrypts the {@code ciphertext} using {@code private_key}.
  * @param plaintext the result
  * @param ciphertext the given ciphertext
- * @param private_keyA 
- * @param paramsA the public parameters associated to the owner of 
+ * @param private_keyA
+ * @param paramsA the public parameters associated to the owner of
  * the private-key
  */
 void oqs_sidh_iqc_ref_public_key_decrypt(plaintext_t plaintext,
-                                         const ciphertext_t ciphertext,
-                                         const private_key_t private_keyA,
-                                         const public_params_t paramsA);
+        const ciphertext_t ciphertext,
+        const private_key_t private_keyA,
+        const public_params_t paramsA);
 
 /**
  * Computes the hash of {@code value}
@@ -119,7 +119,7 @@ void oqs_sidh_iqc_ref_public_key_decrypt(plaintext_t plaintext,
  * @return the hash
  */
 char *oqs_sidh_iqc_ref_public_key_encryption_hash(const fp2_element_t value,
-                                                  long size);
+        long size);
 
 /**
  * @return the key-size in bytes

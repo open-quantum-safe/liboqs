@@ -6,6 +6,9 @@
 #include <oqs/kex_rlwe_msrln16.h>
 #include <oqs/kex_lwe_frodo.h>
 #include <oqs/kex_sidh_cln16.h>
+#ifdef ENABLE_SIDH_IQC_REF
+#include <oqs/kex_sidh_iqc_ref.h>
+#endif
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
 #endif
@@ -13,7 +16,7 @@
 OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 	switch (alg_name) {
 	case OQS_KEX_alg_default:
-		return OQS_KEX_rlwe_bcns15_new(rand);
+			return OQS_KEX_rlwe_bcns15_new(rand);
 	case OQS_KEX_alg_rlwe_bcns15:
 		return OQS_KEX_rlwe_bcns15_new(rand);
 	case OQS_KEX_alg_rlwe_msrln16:
@@ -27,6 +30,10 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #ifdef ENABLE_CODE_MCBITS
 	case OQS_KEX_alg_code_mcbits:
 		return OQS_KEX_code_mcbits_new(rand);
+#endif
+#ifdef ENABLE_SIDH_IQC_REF
+	case OQS_KEX_alg_sidh_iqc_ref:
+		return OQS_KEX_sidh_iqc_ref_new(rand);
 #endif
 	default:
 		assert(0);

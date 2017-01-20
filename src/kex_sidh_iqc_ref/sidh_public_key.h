@@ -30,9 +30,9 @@ extern "C" {
  * Representation of the public key in oqs_sidh_iqc_ref
  */
 typedef struct {
-    elliptic_curve_t E;
-    point_t P;
-    point_t Q;
+	elliptic_curve_t E;
+	point_t P;
+	point_t Q;
 } public_key_struct;
 
 typedef public_key_struct public_key_t[1];
@@ -57,9 +57,9 @@ void oqs_sidh_iqc_ref_public_key_clear(public_key_t public_key);
  * @param paramsB other's params
  */
 void oqs_sidh_iqc_ref_public_key_generate(public_key_t public_key,
-                                          const point_t kernel_gen,
-                                          const public_params_t paramsA,
-                                          const public_params_t paramsB);
+        const point_t kernel_gen,
+        const public_params_t paramsA,
+        const public_params_t paramsB);
 
 /**
  * Prints {@code public_key} to the standard output.
@@ -74,8 +74,8 @@ void oqs_sidh_iqc_ref_public_key_print(const public_key_t public_key);
  * @param prime_size
  */
 void oqs_sidh_iqc_ref_public_key_to_bytes(uint8_t *bytes,
-                                          const public_key_t public_key,
-                                          long prime_size);
+        const public_key_t public_key,
+        long prime_size);
 
 
 /**
@@ -85,8 +85,8 @@ void oqs_sidh_iqc_ref_public_key_to_bytes(uint8_t *bytes,
  * @param prime_size
  */
 void oqs_sidh_iqc_ref_bytes_to_public_key(public_key_t public_key,
-                                          const uint8_t *bytes,
-                                          long prime_size);
+        const uint8_t *bytes,
+        long prime_size);
 
 #ifdef __cplusplus
 }

@@ -29,13 +29,13 @@ mpz_t characteristic;
 
 /**
  * Representation of elements of the quadratic extension F_(p^2)
- * of F_p. We assume F_(p^2) is represented by the quotient 
+ * of F_p. We assume F_(p^2) is represented by the quotient
  * F_p[X] / (X^2 + 1) which requires X^2 + 1 to be irreducible over F_p.
  * The elements are therefore of the form a * i + b where i^2 = -1.
  */
 typedef struct {
-    mpz_t a;
-    mpz_t b;
+	mpz_t a;
+	mpz_t b;
 } fp2_element_struct;
 
 typedef fp2_element_struct fp2_element_t[1];
@@ -128,7 +128,7 @@ void oqs_sidh_iqc_ref_fp_mul_si(mpz_t x,
                                 long b);
 
 /**
- * Sets {@code x = 1 / a}. This is possible only if {@code a} is 
+ * Sets {@code x = 1 / a}. This is possible only if {@code a} is
  * prime to the characteristic.
  * @param x
  * @param a
@@ -325,7 +325,7 @@ void oqs_sidh_iqc_ref_fp2_div(fp2_element_t x,
                               const fp2_element_t b);
 
 /**
- * Sets {@code x = -u * i + v} where {@code a = u * i + v}. 
+ * Sets {@code x = -u * i + v} where {@code a = u * i + v}.
  * @param x
  * @param a
  */
@@ -393,10 +393,10 @@ void oqs_sidh_iqc_ref_fp2_random(fp2_element_t x,
 
 /**
  * Computes the square root of {@code a}.
- * The algorithm is based on 
+ * The algorithm is based on
  * Doliskani & Schost, Taking Roots over High Extensions of Finite Fields, 2011.
- * It works for any characteristic, but since it uses {@link oqs_sidh_iqc_ref_fp_sqrt} for 
- * base-case square root, it is limited to p = 3 mod 4. 
+ * It works for any characteristic, but since it uses {@link oqs_sidh_iqc_ref_fp_sqrt} for
+ * base-case square root, it is limited to p = 3 mod 4.
  * @param x the square root
  * @param a
  */

@@ -8,7 +8,8 @@ RANLIB=ranlib
 LN=ln -s
 ECHO=echo
 
-CFLAGS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME 
+#CFLAGS= -O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME 
+CFLAGS= -g -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME
 LDFLAGS= -lm 
 INCLUDES= -Iinclude
 
@@ -60,6 +61,12 @@ ifdef ENABLE_CODE_MCBITS
 	LDFLAGS += -lsodium
 endif
 
+ifdef ENABLE_SIDH_IQC_REF
+	CFLAGS += -DENABLE_SIDH_IQC_REF
+	LDFLAGS += -lgmp
+endif
+
+
 .PHONY: all check clean prettyprint
 
 all: links lib tests
@@ -78,6 +85,10 @@ links:
 	@$(LN) ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	@$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 	@$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
+ifdef ENABLE_SIDH_IQC_REF
+	@$(LN) ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
+	@$(LN) src/kex_sidh_iqc_ref/sample_params
+endif
 ifdef ENABLE_CODE_MCBITS
 	@$(LN) ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
@@ -87,7 +98,6 @@ endif
 	@$(LN) ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	@$(LN) ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 	@$(LN) ../../src/common/common.h include/oqs
-	@$(LN) ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
 
 # RAND_URANDOM_CHACHA
 RAND_URANDOM_CHACHA_OBJS :=  $(addprefix objs/crypto/rand_urandom_chacha20/, rand_urandom_chacha20.o)
@@ -168,11 +178,14 @@ objs/kex/kex.o: src/kex/kex.h
 
 RAND_OBJS := $(RAND_URANDOM_AESCTR_OBJS) $(RAND_URANDOM_CHACHA_OBJS) objs/crypto/rand/rand.o
 
-KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) $(KEX_SIDH_IQC_REF_OBJS) objs/kex/kex.o
-#KEX_OBJS := $(KEX_SIDH_IQC_REF_OBJS) objs/kex/kex.o
+KEX_OBJS := $(KEX_RLWE_BCNS15_OBJS) $(KEX_RLWE_NEWHOPE_OBJS) $(KEX_RLWE_MSRLN16_OBJS) $(KEX_LWE_FRODO_OBJS) $(KEX_SIDH_CLN16_OBJS) objs/kex/kex.o
 
 ifdef ENABLE_CODE_MCBITS
 KEX_OBJS += $(KEX_CODE_MCBITS_OBJS)
+endif
+
+ifdef ENABLE_SIDH_IQC_REF
+KEX_OBJS += $(KEX_SIDH_IQC_REF_OBJS)
 endif
 
 lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
@@ -201,6 +214,7 @@ check: links tests
 clean:
 	$(RM) -r docs/doxygen objs include
 	$(RM) -r test_rand{,.dSYM} test_kex{,.dSYM} test_aes{,.dSYM} liboqs.a
+	$(RM) -f sample_params
 	find . -name .DS_Store -type f -delete
 
 prettyprint:

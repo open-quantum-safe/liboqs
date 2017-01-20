@@ -33,9 +33,9 @@ extern "C" {
  * @param params own parameters
  */
 void oqs_sidh_iqc_ref_shared_key_generate(fp2_element_t shared_key,
-                                          const public_key_t public_key,
-                                          const private_key_t private_key,
-                                          const public_params_t params);
+        const public_key_t public_key,
+        const private_key_t private_key,
+        const public_params_t params);
 
 #ifdef __cplusplus
 }
