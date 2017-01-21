@@ -36,16 +36,16 @@ typedef int32_t sdigit_t; // Signed 32-bit digit
 // Definitions of the error-handling type and error codes
 
 typedef enum {
-	CRYPTO_SUCCESS,                   // 0x00
-	CRYPTO_ERROR,                     // 0x01
-	CRYPTO_ERROR_DURING_TEST,         // 0x02
-	CRYPTO_ERROR_UNKNOWN,             // 0x03
-	CRYPTO_ERROR_NOT_IMPLEMENTED,     // 0x04
-	CRYPTO_ERROR_NO_MEMORY,           // 0x05
-	CRYPTO_ERROR_INVALID_PARAMETER,   // 0x06
-	CRYPTO_ERROR_SHARED_KEY,          // 0x07
-	CRYPTO_ERROR_TOO_MANY_ITERATIONS, // 0x08
-	CRYPTO_ERROR_END_OF_LIST
+    CRYPTO_SUCCESS,                          // 0x00
+    CRYPTO_ERROR,                            // 0x01
+    CRYPTO_ERROR_DURING_TEST,                // 0x02
+    CRYPTO_ERROR_UNKNOWN,                    // 0x03
+    CRYPTO_ERROR_NOT_IMPLEMENTED,            // 0x04
+    CRYPTO_ERROR_NO_MEMORY,                  // 0x05
+    CRYPTO_ERROR_INVALID_PARAMETER,          // 0x06
+    CRYPTO_ERROR_SHARED_KEY,                 // 0x07
+    CRYPTO_ERROR_TOO_MANY_ITERATIONS,        // 0x08
+    CRYPTO_ERROR_END_OF_LIST
 } CRYPTO_STATUS;
 
 #define CRYPTO_STATUS_TYPE_SIZE (CRYPTO_ERROR_END_OF_LIST)

@@ -65,6 +65,11 @@ ifdef ENABLE_NTRU
 	LDFLAGS += external/NTRUEncrypt-master/.libs/libntruencrypt.a
 endif
 
+ifdef ENABLE_SIDH_IQC_REF
+	CFLAGS += -DENABLE_SIDH_IQC_REF
+	LDFLAGS += -lgmp
+endif
+
 .PHONY: all check clean prettyprint
 
 all: links lib tests
@@ -84,6 +89,10 @@ links:
 	@$(LN) ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 	@$(LN) ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	@$(LN) ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
+ifdef ENABLE_SIDH_IQC_REF
+	@$(LN) ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
+	@$(LN) src/kex_sidh_iqc_ref/sample_params
+endif
 ifdef ENABLE_CODE_MCBITS
 	@$(LN) ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
@@ -152,6 +161,11 @@ KEX_NTRU_SRC := src/kex_ntru/kex_ntru.c
 KEX_NTRU_OBJS := objs/kex_ntru/kex_ntru.o
 KEX_NTRU_HEADERS := src/kex_ntru/kex_ntru.h
 $(KEX_NTRU_OBJS): $(KEX_NTRU_HEADERS)
+	#
+# KEX_SIDH_IQC_REF
+KEX_SIDH_IQC_REF_OBJS := $(addprefix objs/kex_sidh_iqc_ref/, kex_sidh_iqc_ref.o sidh_elliptic_curve.o sidh_elliptic_curve_dlp.o sidh_isogeny.o sidh_private_key.o sidh_public_key.o sidh_public_key_encryption.o sidh_public_key_validation.o sidh_public_param.o sidh_quadratic_ext.o sidh_shared_key.o sidh_util.o)
+KEX_SIDH_IQC_REF_HEADERS := $(addprefix src/kex_sidh_iqc_ref/, kex_sidh_iqc_ref.h sidh_elliptic_curve.h sidh_elliptic_curve_dlp.h sidh_isogeny.h sidh_private_key.h sidh_public_key.h sidh_public_key_encryption.h sidh_public_key_validation.h sidh_public_param.h sidh_quadratic_ext.h sidh_shared_key.h sidh_util.h)
+$(KEX_SIDH_IQC_REF_OBJS): $(KEX_SIDH_IQC_REF_HEADERS)
 
 # AES
 AES_OBJS := $(addprefix objs/crypto/aes/, aes.o aes_c.o aes_ni.o)
@@ -186,6 +200,10 @@ ifdef ENABLE_NTRU
 KEX_OBJS += $(KEX_NTRU_OBJS)
 endif
 
+ifdef ENABLE_SIDH_IQC_REF
+KEX_OBJS += $(KEX_SIDH_IQC_REF_OBJS)
+endif
+
 lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
 	@rm -f liboqs.a
 	@$(AR) liboqs.a $^
@@ -212,6 +230,7 @@ check: links tests
 clean:
 	$(RM) -r docs/doxygen objs include
 	$(RM) -r test_rand{,.dSYM} test_kex{,.dSYM} test_aes{,.dSYM} liboqs.a
+	$(RM) -f sample_params
 	find . -name .DS_Store -type f -delete
 
 prettyprint:

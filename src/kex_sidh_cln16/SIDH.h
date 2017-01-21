@@ -94,12 +94,12 @@ typedef uint64_t uint128_t[2];
 // Definitions of the error-handling type and error codes
 
 typedef enum {
-	SIDH_CRYPTO_SUCCESS,                     // 0x00
-	SIDH_CRYPTO_ERROR,                       // 0x01
-	SIDH_CRYPTO_ERROR_INVALID_PARAMETER,     // 0x02
-	SIDH_CRYPTO_ERROR_PUBLIC_KEY_VALIDATION, // 0x03
-	SIDH_CRYPTO_ERROR_TOO_MANY_ITERATIONS,   // 0x04
-	SIDH_CRYPTO_ERROR_END_OF_LIST
+    SIDH_CRYPTO_SUCCESS,                          // 0x00
+    SIDH_CRYPTO_ERROR,                            // 0x01
+    SIDH_CRYPTO_ERROR_INVALID_PARAMETER,          // 0x02
+    SIDH_CRYPTO_ERROR_PUBLIC_KEY_VALIDATION,      // 0x03
+    SIDH_CRYPTO_ERROR_TOO_MANY_ITERATIONS,        // 0x04
+    SIDH_CRYPTO_ERROR_END_OF_LIST
 } SIDH_CRYPTO_STATUS;
 
 // Definition of type for curve isogeny system identifiers. Currently valid value is "SIDHp751" (see SIDH.h)
