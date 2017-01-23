@@ -29,6 +29,7 @@ liboqs currently contains:
 - `kex_lwe_frodo`: "Frodo": key exchange from the learning with errors problem (Bos, Costello, Ducas, Mironov, Naehrig, Nikolaenko, Raghunathan, Stebila, *ACM Conference on Computer and Communications Security 2016*, [http://eprint.iacr.org/2016/659](http://eprint.iacr.org/2016/659))
 - `kex_sidh_cln16`: key exchange from the supersingular isogeny Diffie-Hellman problem (Costello, Naehrig, Longa, *CRYPTO 2016*, [https://eprint.iacr.org/2016/413](https://eprint.iacr.org/2016/413)), using the implementation of Microsoft Research [https://www.microsoft.com/en-us/research/project/sidh-library/](https://www.microsoft.com/en-us/research/project/sidh-library/)
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
+- `kex_ntru`: NTRU: key transport using NTRU public key encryption (Hoffstein, Pipher, Silverman, *ANTS 1998*) with the EES743EP1 parameter set, wrapper around the implementation from the NTRU Open Source project [https://github.com/NTRUOpenSourceProject/NTRUEncrypt](https://github.com/NTRUOpenSourceProject/NTRUEncrypt))
 
 
 Building and Running
@@ -63,11 +64,42 @@ and
 
 ### Windows
 
-Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder. McBits is disabled by default; follow these steps to enable it:
-- Obtain the ([libsodium library](https://libsodium.org)); compile the static library from the Visual Studio projects.
-- Add ENABLE_CODE_MCBITS and SODIUM_STATIC to the preprocessor definitions of the oqs and test_kex projects.
+Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder. 
+
+McBits is disabled by default in the Visual Studio build; follow these steps to enable it:
+
+- Obtain the [libsodium library](https://libsodium.org); compile the static library from the Visual Studio projects.
+- Add `ENABLE_CODE_MCBITS` and `SODIUM_STATIC` to the preprocessor definitions of the `oqs` and `test_kex` projects.
 - Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
-- Add the libsodium library to the "Additional Depencies" in the test_kex project Linker properties.
+- Add the libsodium library to the "Additional Depencies" in the `test_kex` project Linker properties.
+
+Build options on Linux and macOS
+--------------------------------
+
+### Building with `kex_code_mcbits` enabled
+
+The `kex_code_mcbits` key exchange method is not enabled by default.  In order to enable it, you need to carry out the following steps:
+
+1. Install the [libsodium library](https://libsodium.org) and put it in your build path.  Your operating system may make this easy for you:
+	- On macOS with brew: `brew install libsodium`
+2. Build liboqs with the following option:
+
+~~~
+make clean
+make ENABLE_CODE_MCBITS=1
+~~~
+
+### Building with `kex_ntru` enabled
+
+The `kex_ntru` key exchange method is not enabled by default.  In order to enable it, you need to carry out the following steps:
+
+1. Download and build the NTRUEncrypt library from the NTRU Open Source project.  You can do this by running the script `download-and-build-ntru.sh`.
+2. Build liboqs with the following option:
+
+~~~
+make clean
+make ENABLE_NTRU=1
+~~~
 
 Documentation
 -------------
@@ -110,6 +142,7 @@ Since our initial launch, we have made the following updates:
 - `kex_rlwe_msrln16` implementation contributed by Christian Paquin (Microsoft Research)
 - `kex_sidh_cln16` implementation contributed by Christian Paquin (Microsoft Research)
 - `kex_code_mcbits` wrapper
+- `kex_ntru` wrapper
 
 Our plans for the next few months can be found in [Milestone 1 - Key exchange](https://github.com/open-quantum-safe/liboqs/projects/2).
 

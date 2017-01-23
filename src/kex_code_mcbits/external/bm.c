@@ -12,17 +12,21 @@ static void into_vec(uint64_t *out, gf in) {
 static gf vec_reduce(uint64_t *prod) {
 	int i;
 
-	uint64_t tmp[ GFBITS ];
+	uint64_t tmp[GFBITS];
 	gf ret = 0;
 
 	for (i = 0; i < GFBITS; i++) {
 		tmp[i] = prod[i];
 	}
 
-	for (i = GFBITS - 1; i >= 0; i--) tmp[i] ^= (tmp[i] >> 32);
-	for (i = GFBITS - 1; i >= 0; i--) tmp[i] ^= (tmp[i] >> 16);
-	for (i = GFBITS - 1; i >= 0; i--) tmp[i] ^= (tmp[i] >> 8);
-	for (i = GFBITS - 1; i >= 0; i--) tmp[i] ^= (tmp[i] >> 4);
+	for (i = GFBITS - 1; i >= 0; i--)
+		tmp[i] ^= (tmp[i] >> 32);
+	for (i = GFBITS - 1; i >= 0; i--)
+		tmp[i] ^= (tmp[i] >> 16);
+	for (i = GFBITS - 1; i >= 0; i--)
+		tmp[i] ^= (tmp[i] >> 8);
+	for (i = GFBITS - 1; i >= 0; i--)
+		tmp[i] ^= (tmp[i] >> 4);
 	for (i = GFBITS - 1; i >= 0; i--) {
 		ret <<= 1;
 		ret |= (0x6996 >> (tmp[i] & 0xF)) & 1;
@@ -59,12 +63,12 @@ static void vec_cmov(uint64_t *out, uint64_t *in, uint64_t mask) {
 		out[i] = (in[i] & mask) | (out[i] & ~mask);
 }
 
-static void bm(uint64_t out[ GFBITS ], uint64_t in[][ GFBITS ]) {
+static void bm(uint64_t out[GFBITS], uint64_t in[][GFBITS]) {
 	uint16_t i;
 	uint16_t N, L;
 
-	uint64_t C[ GFBITS ], B[ GFBITS ], prod[ GFBITS ];
-	uint64_t in_tmp[ GFBITS ], r_vec[ GFBITS ], C_tmp[ GFBITS ];
+	uint64_t C[GFBITS], B[GFBITS], prod[GFBITS];
+	uint64_t in_tmp[GFBITS], r_vec[GFBITS], C_tmp[GFBITS];
 
 	uint64_t mask_nz, mask_leq;
 	uint16_t mask_16b;
@@ -107,7 +111,8 @@ static void bm(uint64_t out[ GFBITS ], uint64_t in[][ GFBITS ]) {
 		into_vec(r_vec, r);
 		vec_mul(C_tmp, r_vec, B);
 
-		for (i = 0; i < GFBITS; i++) C_tmp[i] ^= C[i];
+		for (i = 0; i < GFBITS; i++)
+			C_tmp[i] ^= C[i];
 
 		mask_nz = mask_nonzero_64bit(d);
 		mask_leq = mask_leq_64bit(L * 2, N);
@@ -128,4 +133,3 @@ static void bm(uint64_t out[ GFBITS ], uint64_t in[][ GFBITS ]) {
 	for (i = 0; i < GFBITS; i++)
 		out[i] >>= 64 - (SYS_T + 1);
 }
-

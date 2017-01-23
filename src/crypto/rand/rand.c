@@ -2,8 +2,8 @@
 #include <math.h>
 
 #include <oqs/rand.h>
-#include <oqs/rand_urandom_chacha20.h>
 #include <oqs/rand_urandom_aesctr.h>
+#include <oqs/rand_urandom_chacha20.h>
 
 OQS_RAND *OQS_RAND_new(enum OQS_RAND_alg_name alg_name) {
 	switch (alg_name) {
@@ -44,7 +44,8 @@ void OQS_RAND_free(OQS_RAND *r) {
 /* For some reason specifying inline results in a build error */
 inline
 #endif
-void OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]) {
+    void
+    OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]) {
 	occurrences[b] += 1;
 }
 
@@ -66,5 +67,4 @@ double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occur
 	distance /= 2.0;
 
 	return distance;
-
 }

@@ -12,7 +12,6 @@
 #ifndef __SIDH_INTERNAL_H__
 #define __SIDH_INTERNAL_H__
 
-
 // For C++
 #ifdef __cplusplus
 extern "C" {
@@ -21,62 +20,65 @@ extern "C" {
 #if defined(WINDOWS)
 #define UNUSED
 #else
-#define UNUSED __attribute__ ((unused))
+#define UNUSED __attribute__((unused))
 #endif
 
 #include "SIDH.h"
 
-
 // Basic constants
 
-#define SIDH_ALICE                 0
-#define SIDH_BOB                   1
-#define SIDH_MAX_INT_POINTS_ALICE  8
+#define SIDH_ALICE 0
+#define SIDH_BOB 1
+#define SIDH_MAX_INT_POINTS_ALICE 8
 // Fixed parameters for isogeny tree computation
-#define SIDH_MAX_INT_POINTS_BOB    10
-#define SIDH_MAX_Alice             185
-#define SIDH_MAX_Bob               239
-
+#define SIDH_MAX_INT_POINTS_BOB 10
+#define SIDH_MAX_Alice 185
+#define SIDH_MAX_Bob 239
 
 // SIDH's basic element definitions and point representations
 
-typedef digit_t oqs_sidh_cln16_felm_t[NWORDS_FIELD];                             // Datatype for representing 751-bit field elements (768-bit max.)
-typedef digit_t oqs_sidh_cln16_dfelm_t[2 * NWORDS_FIELD];                        // Datatype for representing double-precision 2x751-bit field elements (2x768-bit max.)
-typedef oqs_sidh_cln16_felm_t  oqs_sidh_cln16_f2elm_t[2];                        // Datatype for representing quadratic extension field elements GF(p751^2)
-typedef oqs_sidh_cln16_f2elm_t oqs_sidh_cln16_publickey_t[3];                    // Datatype for representing public keys equivalent to three GF(p751^2) elements
+typedef digit_t oqs_sidh_cln16_felm_t[NWORDS_FIELD];          // Datatype for representing 751-bit field elements (768-bit max.)
+typedef digit_t oqs_sidh_cln16_dfelm_t[2 * NWORDS_FIELD];     // Datatype for representing double-precision 2x751-bit field elements (2x768-bit max.)
+typedef oqs_sidh_cln16_felm_t oqs_sidh_cln16_f2elm_t[2];      // Datatype for representing quadratic extension field elements GF(p751^2)
+typedef oqs_sidh_cln16_f2elm_t oqs_sidh_cln16_publickey_t[3]; // Datatype for representing public keys equivalent to three GF(p751^2) elements
 
 typedef struct {
 	oqs_sidh_cln16_f2elm_t x;
 	oqs_sidh_cln16_f2elm_t y;
-} oqs_sidh_cln16_point_affine;            // Point representation in affine coordinates on Montgomery curve.
+} oqs_sidh_cln16_point_affine; // Point representation in affine coordinates on Montgomery curve.
 typedef oqs_sidh_cln16_point_affine oqs_sidh_cln16_point_t[1];
 
 typedef struct {
 	oqs_sidh_cln16_f2elm_t X;
 	oqs_sidh_cln16_f2elm_t Z;
-} oqs_sidh_cln16_point_proj;              // Point representation in projective XZ Montgomery coordinates.
+} oqs_sidh_cln16_point_proj; // Point representation in projective XZ Montgomery coordinates.
 typedef oqs_sidh_cln16_point_proj oqs_sidh_cln16_point_proj_t[1];
-#define oqs_sidh_cln16_point_proj_t_EMPTY { { { {0}, {0} }, { {0}, {0} } } }
+#define oqs_sidh_cln16_point_proj_t_EMPTY \
+	{                                     \
+		{                                 \
+			{{0}, {0}}, {                 \
+				{0}, { 0 }                \
+			}                             \
+		}                                 \
+	}
 
 typedef struct {
 	oqs_sidh_cln16_felm_t x;
 	oqs_sidh_cln16_felm_t y;
-} oqs_sidh_cln16_point_basefield_affine;    // Point representation in affine coordinates on Montgomery curve over the base field.
+} oqs_sidh_cln16_point_basefield_affine; // Point representation in affine coordinates on Montgomery curve over the base field.
 typedef oqs_sidh_cln16_point_basefield_affine oqs_sidh_cln16_point_basefield_t[1];
 
 typedef struct {
 	oqs_sidh_cln16_felm_t X;
 	oqs_sidh_cln16_felm_t Z;
-} oqs_sidh_cln16_point_basefield_proj;      // Point representation in projective XZ Montgomery coordinates over the base field.
+} oqs_sidh_cln16_point_basefield_proj; // Point representation in projective XZ Montgomery coordinates over the base field.
 typedef oqs_sidh_cln16_point_basefield_proj oqs_sidh_cln16_point_basefield_proj_t[1];
-
 
 // Macro definitions
 
-#define NBITS_TO_NBYTES(nbits)      (((nbits)+7)/8)                                          // Conversion macro from number of bits to number of bytes
-#define NBITS_TO_NWORDS(nbits)      (((nbits)+(sizeof(digit_t)*8)-1)/(sizeof(digit_t)*8))    // Conversion macro from number of bits to number of computer words
-#define NBYTES_TO_NWORDS(nbytes)    (((nbytes)+sizeof(digit_t)-1)/sizeof(digit_t))           // Conversion macro from number of bytes to number of computer words
-
+#define NBITS_TO_NBYTES(nbits) (((nbits) + 7) / 8)                                             // Conversion macro from number of bits to number of bytes
+#define NBITS_TO_NWORDS(nbits) (((nbits) + (sizeof(digit_t) * 8) - 1) / (sizeof(digit_t) * 8)) // Conversion macro from number of bits to number of computer words
+#define NBYTES_TO_NWORDS(nbytes) (((nbytes) + sizeof(digit_t) - 1) / sizeof(digit_t))          // Conversion macro from number of bytes to number of computer words
 
 /********************** Constant-time unsigned comparisons ***********************/
 
@@ -84,153 +86,166 @@ typedef oqs_sidh_cln16_point_basefield_proj oqs_sidh_cln16_point_basefield_proj_
 
 // Is x != 0?
 #define is_digit_nonzero_ct(x) \
-	((unsigned int)(((x) | (0 - (x))) >> (RADIX - 1)))
+	((unsigned int) (((x) | (0 - (x))) >> (RADIX - 1)))
 
 // Is x = 0?
 #define is_digit_zero_ct(x) \
-	((unsigned int)(1 ^ is_digit_nonzero_ct((x))))
+	((unsigned int) (1 ^ is_digit_nonzero_ct((x))))
 
 // Is x < y?
 #define is_digit_lessthan_ct(x, y) \
-	((unsigned int)(((x) ^ (((x) ^ (y)) | (((x) - (y)) ^ (y)))) >> (RADIX - 1)))
-
+	((unsigned int) (((x) ^ (((x) ^ (y)) | (((x) - (y)) ^ (y)))) >> (RADIX - 1)))
 
 /********************** Macros for platform-dependent operations **********************/
 
 #if !defined(SIDH_ASM)
 
 // Digit multiplication
-#define MUL(multiplier, multiplicand, hi, lo)                                                     \
-    oqs_sidh_cln16_digit_x_digit((multiplier), (multiplicand), &(lo));
+#define MUL(multiplier, multiplicand, hi, lo) \
+	oqs_sidh_cln16_digit_x_digit((multiplier), (multiplicand), &(lo));
 
 // Digit addition with carry
-#define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                         \
-    { digit_t tempReg = (addend1) + (digit_t)(carryIn);                                           \
-    (sumOut) = (addend2) + tempReg;                                                               \
-    (carryOut) = (is_digit_lessthan_ct(tempReg, (digit_t)(carryIn)) | is_digit_lessthan_ct((sumOut), tempReg)); }
+#define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                                           \
+	{                                                                                                               \
+		digit_t tempReg = (addend1) + (digit_t)(carryIn);                                                           \
+		(sumOut) = (addend2) + tempReg;                                                                             \
+		(carryOut) = (is_digit_lessthan_ct(tempReg, (digit_t)(carryIn)) | is_digit_lessthan_ct((sumOut), tempReg)); \
+	}
 
 // Digit subtraction with borrow
-#define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut)                             \
-    { digit_t tempReg = (minuend) - (subtrahend);                                                 \
-    unsigned int borrowReg = (is_digit_lessthan_ct((minuend), (subtrahend)) | ((borrowIn) & is_digit_zero_ct(tempReg)));  \
-    (differenceOut) = tempReg - (digit_t)(borrowIn);                                              \
-    (borrowOut) = borrowReg; }
+#define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut)                                                       \
+	{                                                                                                                       \
+		digit_t tempReg = (minuend) - (subtrahend);                                                                         \
+		unsigned int borrowReg = (is_digit_lessthan_ct((minuend), (subtrahend)) | ((borrowIn) &is_digit_zero_ct(tempReg))); \
+		(differenceOut) = tempReg - (digit_t)(borrowIn);                                                                    \
+		(borrowOut) = borrowReg;                                                                                            \
+	}
 
 // Shift right with flexible datatype
-#define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize)                                         \
-    (shiftOut) = ((lowIn) >> (shift)) ^ ((highIn) << (DigitSize - (shift)));
+#define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize) \
+	(shiftOut) = ((lowIn) >> (shift)) ^ ((highIn) << (DigitSize - (shift)));
 
 // Shift left with flexible datatype
-#define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize)                                         \
-    (shiftOut) = ((highIn) << (shift)) ^ ((lowIn) >> (DigitSize - (shift)));
+#define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize) \
+	(shiftOut) = ((highIn) << (shift)) ^ ((lowIn) >> (DigitSize - (shift)));
 
 // 64x64-bit multiplication
-#define MUL128(multiplier, multiplicand, product)                                                 \
-    oqs_sidh_cln16_mp_mul((digit_t*)&(multiplier), (digit_t*)&(multiplicand), (digit_t*)&(product), NWORDS_FIELD/2);
+#define MUL128(multiplier, multiplicand, product) \
+	oqs_sidh_cln16_mp_mul((digit_t *) &(multiplier), (digit_t *) &(multiplicand), (digit_t *) &(product), NWORDS_FIELD / 2);
 
 // 128-bit addition, inputs < 2^127
-#define ADD128(addend1, addend2, addition)                                                        \
-    oqs_sidh_cln16_mp_add((digit_t*)(addend1), (digit_t*)(addend2), (digit_t*)(addition), NWORDS_FIELD);
+#define ADD128(addend1, addend2, addition) \
+	oqs_sidh_cln16_mp_add((digit_t *) (addend1), (digit_t *) (addend2), (digit_t *) (addition), NWORDS_FIELD);
 
 // 128-bit addition with output carry
-#define ADC128(addend1, addend2, carry, addition)                                                 \
-    (carry) = oqs_sidh_cln16_mp_add((digit_t*)(addend1), (digit_t*)(addend2), (digit_t*)(addition), NWORDS_FIELD);
+#define ADC128(addend1, addend2, carry, addition) \
+	(carry) = oqs_sidh_cln16_mp_add((digit_t *) (addend1), (digit_t *) (addend2), (digit_t *) (addition), NWORDS_FIELD);
 
 #elif (TARGET == TARGET_AMD64 && defined(WINDOWS))
 
 // Digit multiplication
-#define MUL(multiplier, multiplicand, hi, lo)                                                     \
-    (lo) = _umul128((multiplier), (multiplicand), (hi));
+#define MUL(multiplier, multiplicand, hi, lo) \
+	(lo) = _umul128((multiplier), (multiplicand), (hi));
 
 // Digit addition with carry
-#define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                         \
-    (carryOut) = _addcarry_u64((carryIn), (addend1), (addend2), &(sumOut));
+#define ADDC(carryIn, addend1, addend2, carryOut, sumOut) \
+	(carryOut) = _addcarry_u64((carryIn), (addend1), (addend2), &(sumOut));
 
 // Digit subtraction with borrow
-#define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut)                             \
-    (borrowOut) = _subborrow_u64((borrowIn), (minuend), (subtrahend), &(differenceOut));
+#define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut) \
+	(borrowOut) = _subborrow_u64((borrowIn), (minuend), (subtrahend), &(differenceOut));
 
 // Digit shift right
-#define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize)                                         \
-    (shiftOut) = __shiftright128((lowIn), (highIn), (shift));
+#define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize) \
+	(shiftOut) = __shiftright128((lowIn), (highIn), (shift));
 
 // Digit shift left
-#define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize)                                         \
-    (shiftOut) = __shiftleft128((lowIn), (highIn), (shift));
+#define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize) \
+	(shiftOut) = __shiftleft128((lowIn), (highIn), (shift));
 
 // 64x64-bit multiplication
-#define MUL128(multiplier, multiplicand, product)                                                 \
-    (product)[0] = _umul128((multiplier), (multiplicand), &(product)[1]);
+#define MUL128(multiplier, multiplicand, product) \
+	(product)[0] = _umul128((multiplier), (multiplicand), &(product)[1]);
 
 // 128-bit addition, inputs < 2^127
-#define ADD128(addend1, addend2, addition)                                                        \
-    { unsigned char carry = _addcarry_u64(0, (addend1)[0], (addend2)[0], &(addition)[0]);         \
-    _addcarry_u64(carry, (addend1)[1], (addend2)[1], &(addition)[1]); }
+#define ADD128(addend1, addend2, addition)                                                  \
+	{                                                                                       \
+		unsigned char carry = _addcarry_u64(0, (addend1)[0], (addend2)[0], &(addition)[0]); \
+		_addcarry_u64(carry, (addend1)[1], (addend2)[1], &(addition)[1]);                   \
+	}
 
 // 128-bit addition with output carry
-#define ADC128(addend1, addend2, carry, addition)                                                 \
-    (carry) = _addcarry_u64(0, (addend1)[0], (addend2)[0], &(addition)[0]);                       \
-    (carry) = _addcarry_u64((carry), (addend1)[1], (addend2)[1], &(addition)[1]);
+#define ADC128(addend1, addend2, carry, addition)                           \
+	(carry) = _addcarry_u64(0, (addend1)[0], (addend2)[0], &(addition)[0]); \
+	(carry) = _addcarry_u64((carry), (addend1)[1], (addend2)[1], &(addition)[1]);
 
 // 128-bit subtraction, subtrahend < 2^127
-#define SUB128(minuend, subtrahend, difference)                                                   \
-    { unsigned char borrow = _subborrow_u64(0, (minuend)[0], (subtrahend)[0], &(difference)[0]);  \
-    _subborrow_u64(borrow, (minuend)[1], (subtrahend)[1], &(difference)[1]); }
+#define SUB128(minuend, subtrahend, difference)                                                    \
+	{                                                                                              \
+		unsigned char borrow = _subborrow_u64(0, (minuend)[0], (subtrahend)[0], &(difference)[0]); \
+		_subborrow_u64(borrow, (minuend)[1], (subtrahend)[1], &(difference)[1]);                   \
+	}
 
 // 128-bit right shift, max. shift value is 64
-#define SHIFTR128(Input, shift, shiftOut)                                                         \
-    (shiftOut)[0]  = __shiftright128((Input)[0], (Input)[1], (shift));                            \
-    (shiftOut)[1] = (Input)[1] >> (shift);
+#define SHIFTR128(Input, shift, shiftOut)                             \
+	(shiftOut)[0] = __shiftright128((Input)[0], (Input)[1], (shift)); \
+	(shiftOut)[1] = (Input)[1] >> (shift);
 
 // 128-bit left shift, max. shift value is 64
-#define SHIFTL128(Input, shift, shiftOut)                                                         \
-    (shiftOut)[1]  = __shiftleft128((Input)[0], (Input)[1], (shift));                             \
-    (shiftOut)[0] = (Input)[0] << (shift);
+#define SHIFTL128(Input, shift, shiftOut)                            \
+	(shiftOut)[1] = __shiftleft128((Input)[0], (Input)[1], (shift)); \
+	(shiftOut)[0] = (Input)[0] << (shift);
 
-#define MULADD128(multiplier, multiplicand, addend, carry, result);    \
-    { uint128_t product;                                               \
-      MUL128(multiplier, multiplicand, product);                       \
-      ADC128(addend, product, carry, result); }
+#define MULADD128(multiplier, multiplicand, addend, carry, result) \
+	;                                                              \
+	{                                                              \
+		uint128_t product;                                         \
+		MUL128(multiplier, multiplicand, product);                 \
+		ADC128(addend, product, carry, result);                    \
+	}
 
 #elif (TARGET == TARGET_AMD64)
 
 // Digit multiplication
-#define MUL(multiplier, multiplicand, hi, lo)                                                     \
-    { uint128_t tempReg = (uint128_t)(multiplier) * (uint128_t)(multiplicand);                    \
-    *(hi) = (digit_t)(tempReg >> RADIX);                                                          \
-    (lo) = (digit_t)tempReg; }
+#define MUL(multiplier, multiplicand, hi, lo)                                    \
+	{                                                                            \
+		uint128_t tempReg = (uint128_t)(multiplier) * (uint128_t)(multiplicand); \
+		*(hi) = (digit_t)(tempReg >> RADIX);                                     \
+		(lo) = (digit_t) tempReg;                                                \
+	}
 
 // Digit addition with carry
-#define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                         \
-    { uint128_t tempReg = (uint128_t)(addend1) + (uint128_t)(addend2) + (uint128_t)(carryIn);     \
-    (carryOut) = (digit_t)(tempReg >> RADIX);                                                     \
-    (sumOut) = (digit_t)tempReg; }
+#define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                       \
+	{                                                                                           \
+		uint128_t tempReg = (uint128_t)(addend1) + (uint128_t)(addend2) + (uint128_t)(carryIn); \
+		(carryOut) = (digit_t)(tempReg >> RADIX);                                               \
+		(sumOut) = (digit_t) tempReg;                                                           \
+	}
 
 // Digit subtraction with borrow
-#define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut)                             \
-    { uint128_t tempReg = (uint128_t)(minuend) - (uint128_t)(subtrahend) - (uint128_t)(borrowIn); \
-    (borrowOut) = (digit_t)(tempReg >> (sizeof(uint128_t)*8 - 1));                                \
-    (differenceOut) = (digit_t)tempReg; }
+#define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut)                               \
+	{                                                                                               \
+		uint128_t tempReg = (uint128_t)(minuend) - (uint128_t)(subtrahend) - (uint128_t)(borrowIn); \
+		(borrowOut) = (digit_t)(tempReg >> (sizeof(uint128_t) * 8 - 1));                            \
+		(differenceOut) = (digit_t) tempReg;                                                        \
+	}
 
 // Digit shift right
-#define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize)                                         \
-    (shiftOut) = ((lowIn) >> (shift)) ^ ((highIn) << (RADIX - (shift)));
+#define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize) \
+	(shiftOut) = ((lowIn) >> (shift)) ^ ((highIn) << (RADIX - (shift)));
 
 // Digit shift left
-#define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize)                                         \
-    (shiftOut) = ((highIn) << (shift)) ^ ((lowIn) >> (RADIX - (shift)));
+#define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize) \
+	(shiftOut) = ((highIn) << (shift)) ^ ((lowIn) >> (RADIX - (shift)));
 
 #endif
-
 
 // Multiprecision multiplication selection
 #if !defined(SIDH_ASM) && (TARGET == TARGET_AMD64)
-#define oqs_sidh_cln16_mp_mul_comba         oqs_sidh_cln16_mp_mul
+#define oqs_sidh_cln16_mp_mul_comba oqs_sidh_cln16_mp_mul
 #else
-#define oqs_sidh_cln16_mp_mul_schoolbook    oqs_sidh_cln16_mp_mul
+#define oqs_sidh_cln16_mp_mul_schoolbook oqs_sidh_cln16_mp_mul
 #endif
-
-
 
 /**************** Function prototypes ****************/
 /************* Multiprecision functions **************/
@@ -432,10 +447,8 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKA(oqs_sidh_cln16_f2elm_t A, oqs_sid
 // CurveIsogeny must be set up in advance using oqs_sidh_cln16_curve_initialize().
 SIDH_CRYPTO_STATUS oqs_sidh_cln16_Validate_PKB(oqs_sidh_cln16_f2elm_t A, oqs_sidh_cln16_publickey_t PKB, bool *valid, PCurveIsogenyStruct CurveIsogeny, OQS_RAND *rand);
 
-
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif

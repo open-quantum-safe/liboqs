@@ -1,19 +1,20 @@
 #!/bin/bash
 
-make prettyprint | grep -q Formatted
-STATUS=(${PIPESTATUS[*]})
+if [ ! -x "$(which clang-format-3.9)" ]; then 
+	# If clang-format is not version -3.9, just use clang-format
+	CLANGFORMAT=clang-format make prettyprint
+else
+	CLANGFORMAT=clang-format-3.9 make prettyprint
+fi;
 
-if [ ${STATUS[1]} == 0 ]; then 
+modified=$(git status -s)
+
+if [ "$modified" ]; then
 	tput setaf 1;
 	echo "Code does not adhere to the project standards. Run \"make prettyprint\".";
 	tput sgr 0;
 	exit 1;
-elif [ ${STATUS[0]} != 0 ];  then
-	tput setaf 1;
-	echo "prettyprint failed.";
-	tput sgr 0;
-	exit 1;
-else 
+else
 	tput setaf 2;
 	echo "Code adheres to the project standards (prettyprint).";
 	tput sgr 0;
