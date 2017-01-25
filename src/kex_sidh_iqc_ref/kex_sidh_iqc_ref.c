@@ -34,7 +34,7 @@ OQS_KEX *OQS_KEX_sidh_iqc_ref_new(OQS_RAND *rand) {
 	oqs_sidh_iqc_ref_fp_init_chararacteristic(params[0]->characteristic);
 
 	k->rand = rand;
-	k->method_name = "sidh_iqc_ref";
+	k->method_name = "SIDH IQC REFERENCE";
 	k->estimated_classical_security = 192;
 	k->estimated_quantum_security = 128;
 	k->seed = NULL;
@@ -210,7 +210,6 @@ void OQS_KEX_sidh_iqc_ref_free(OQS_KEX *k) {
 	oqs_sidh_iqc_ref_public_params_clear(((public_params_t *)(k->params))[1]);
 	free(k->params);
 	k->ctx = NULL;
-	free(k->method_name);
 	k->method_name = NULL;
 	free(k);
 }

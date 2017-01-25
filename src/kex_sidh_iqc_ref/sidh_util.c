@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <gmp.h>
 #include <time.h>
+#include <oqs/rand.h>
 
 #include "sidh_util.h"
 
@@ -32,6 +33,8 @@ char *oqs_sidh_iqc_ref_concat(char *str1,
 
 char *oqs_sidh_iqc_ref_get_random_str(int num_bytes) {
 	char *rand_value = (char *) malloc(num_bytes);
+	OQS_RAND *rand = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
+	OQS_RAND_n(rand, (uint8_t *) rand_value, num_bytes);
 
 	return rand_value;
 }
