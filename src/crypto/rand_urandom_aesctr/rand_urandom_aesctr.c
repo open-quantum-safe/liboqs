@@ -1,7 +1,7 @@
 #include <sys/types.h>
 #if defined(WINDOWS)
-#include <Wincrypt.h>
 #include <windows.h>
+#include <Wincrypt.h>
 #else
 #include <strings.h>
 #include <sys/uio.h>
