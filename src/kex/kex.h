@@ -9,18 +9,17 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "oqs/rand.h"
-
-enum KEX_ALGO_NAMES {
-	RLWE_BCNS15,
-
-};
+#include <oqs/rand.h>
 
 enum OQS_KEX_alg_name {
 	OQS_KEX_alg_default,
 	OQS_KEX_alg_rlwe_bcns15,
 	OQS_KEX_alg_rlwe_newhope,
+	OQS_KEX_alg_rlwe_msrln16,
 	OQS_KEX_alg_lwe_frodo,
+	OQS_KEX_alg_sidh_cln16,
+	OQS_KEX_alg_code_mcbits,
+	OQS_KEX_alg_ntru,
 };
 
 typedef struct OQS_KEX OQS_KEX;

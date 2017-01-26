@@ -77,10 +77,13 @@ case $host_os in
         ;;
 esac
 
-SRCDIR=" src/aes src/kex src/rand src/rand_urandom_aesctr src/rand_urandom_chacha20"
+#SRCDIR=" src/aes src/kex src/rand src/rand_urandom_aesctr src/rand_urandom_chacha20"
+SRCDIR=" src/common src/crypto/aes src/kex src/crypto/rand src/crypto/sha3"
+SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15/"
 SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
 SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
+SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
 
 AM_CPPFLAGS="-std=c11"
 AC_SUBST(AM_CPPFLAGS)
@@ -88,14 +91,18 @@ AC_SUBST(SRCDIR)
 AC_SUBST(OPENSSL_DIR)
 AC_SUBST(USE_OPENSSL)
 
+
 AC_CONFIG_FILES([Makefile
+                 src/common/Makefile
                  src/kex/Makefile
-                 src/rand/Makefile
-                 src/rand_urandom_chacha20/Makefile
-                 src/rand_urandom_aesctr/Makefile
-                 src/aes/Makefile
+                 src/crypto/sha3/Makefile
+                 src/crypto/rand/Makefile
+                 src/crypto/rand_urandom_chacha20/Makefile
+                 src/crypto/rand_urandom_aesctr/Makefile
+                 src/crypto/aes/Makefile
                  src/kex_rlwe_bcns15/Makefile
                  src/kex_rlwe_newhope/Makefile
+                 src/kex_rlwe_msrln16/Makefile
                  src/kex_lwe_frodo/Makefile])
 
 AC_OUTPUT

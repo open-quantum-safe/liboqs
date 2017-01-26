@@ -12,11 +12,11 @@ SUBDIRS = ${SRCDIR}
 BUILT_SOURCES = link
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
-liboqs_la_LIBADD = src/kex/libkex.la src/rand/librand.la
-liboqs_la_LIBADD += src/aes/libaes.la src/rand_urandom_aesctr/librandaesctr.la
-liboqs_la_LIBADD += src/rand_urandom_chacha20/librandchacha20.la
+liboqs_la_LIBADD = src/common/libcommon.la src/kex/libkex.la src/crypto/rand/librand.la src/crypto/aes/libaes.la
+liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la src/crypto/sha3/libsha3.la
+liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/kex_rlwe_bcns15/libbcns15.la src/kex_rlwe_newhope/libnewhope.la
-liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la
+liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la src/kex_rlwe_msrln16/libmsrln16.la
 
 noinst_bin_PROGRAMS = test_rand test_kex oqs_bench_kex
 noinst_bindir=$(prefix)/tests
@@ -61,16 +61,18 @@ test:
 
 link:
 	$(MKDIR_P) include/oqs
-	$(LN_S) -f ../../src/aes/aes.h include/oqs
+	$(LN_S) -f ../../src/common/common.h include/oqs
+	$(LN_S) -f ../../src/crypto/aes/aes.h include/oqs
+	$(LN_S) -f ../../src/crypto/sha3/sha3.h include/oqs
 	$(LN_S) -f ../../src/kex/kex.h include/oqs
-	$(LN_S) -f ../../src/rand/rand.h include/oqs
-	$(LN_S) -f ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
-	$(LN_S) -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
+	$(LN_S) -f ../../src/crypto/rand/rand.h include/oqs
+	$(LN_S) -f ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
+	$(LN_S) -f ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 	$(LN_S) -f ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
+	$(LN_S) -f ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	$(LN_S) -f ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
-	$(LN_S) -f ../../src/rand/rand.h include/oqs
-	$(LN_S) -f ../../src/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
-	$(LN_S) -f ../../src/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
+	$(LN_S) -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
+	$(LN_S) -f ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 
 
 prettyprint:
