@@ -1,7 +1,20 @@
+#ifdef ENABLE_NTRU
+
+#if defined(WINDOWS)
+#define UNUSED
+// __attribute__ not supported in VS
+#else
 #define UNUSED __attribute__((unused))
+#endif
 
 #include <fcntl.h>
+#if defined(WINDOWS)
+#include <windows.h>
+#include <Wincrypt.h>
+#else
 #include <unistd.h>
+#endif
+
 
 #include <oqs/kex.h>
 #include <oqs/kex_ntru.h>
@@ -41,11 +54,23 @@ static uint8_t get_entropy_from_dev_urandom(ENTROPY_CMD cmd, uint8_t *out) {
 		return 1;
 	}
 	if (cmd == GET_BYTE_OF_ENTROPY) {
+#if defined(WINDOWS)
+		// NOTE (Christian Paquin): I added this so it works on Windows. 1st, I think this
+		// should be part of OQS's rand lib, and 2nd why are the entropy bytes obtained 
+		// one by one?
+		HCRYPTPROV hCryptProv;
+		int r = 1;
+		if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
+			!CryptGenRandom(hCryptProv, r, out)) {
+			r = 0;
+		}
+#else
 		int fd = open("/dev/urandom", O_RDONLY);
 		if (fd <= 0)
 			return 0;
 		int r = read(fd, out, 1);
 		close(fd);
+#endif
 		if (r != 1)
 			return 0;
 		return 1;
@@ -216,3 +241,5 @@ void OQS_KEX_ntru_free(OQS_KEX *k) {
 		free(k->method_name);
 	free(k);
 }
+
+#endif

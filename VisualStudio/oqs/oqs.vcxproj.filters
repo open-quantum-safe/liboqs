@@ -91,6 +91,9 @@
     <ClCompile Include="..\..\src\kex_code_mcbits\external\operations.c">
       <Filter>KEX_McBits</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kex_ntru\kex_ntru.c">
+      <Filter>KEX_NTRU</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
@@ -165,6 +168,9 @@
     <ClInclude Include="..\..\src\kex_code_mcbits\mcbits.h">
       <Filter>KEX_McBits</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kex_ntru\kex_ntru.h">
+      <Filter>KEX_NTRU</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -202,6 +208,9 @@
     </Filter>
     <Filter Include="KEX_McBits">
       <UniqueIdentifier>{9c91a128-d5a0-4eec-998e-a7bc85b3691e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KEX_NTRU">
+      <UniqueIdentifier>{f2432c4a-5195-4990-af30-65a61bf36897}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
