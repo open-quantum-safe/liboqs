@@ -77,7 +77,7 @@ double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occur
 	return distance;
 }
 
-int OQS_RAND_get_system_entropy(uint8_t* buf, size_t n) {
+int OQS_RAND_get_system_entropy(uint8_t *buf, size_t n) {
 	int result = 0;
 	if (!buf) {
 		goto err;
@@ -86,7 +86,7 @@ int OQS_RAND_get_system_entropy(uint8_t* buf, size_t n) {
 #if defined(WINDOWS)
 	HCRYPTPROV hCryptProv;
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-		!CryptGenRandom(hCryptProv, n, buf)) {
+	    !CryptGenRandom(hCryptProv, n, buf)) {
 		goto err;
 	}
 #else
