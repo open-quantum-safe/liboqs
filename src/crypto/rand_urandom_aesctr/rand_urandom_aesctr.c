@@ -25,32 +25,15 @@ typedef struct oqs_rand_urandom_aesctr_ctx {
 } oqs_rand_urandom_aesctr_ctx;
 
 static oqs_rand_urandom_aesctr_ctx *oqs_rand_urandom_aesctr_ctx_new() {
-#if defined(WINDOWS)
-	HCRYPTPROV hCryptProv;
-#else
-	int fd = 0;
-#endif
 	oqs_rand_urandom_aesctr_ctx *rand_ctx = NULL;
 	rand_ctx = (oqs_rand_urandom_aesctr_ctx *) malloc(sizeof(oqs_rand_urandom_aesctr_ctx));
 	if (rand_ctx == NULL) {
 		goto err;
 	}
 	uint8_t key[16];
-#if defined(WINDOWS)
-	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	    !CryptGenRandom(hCryptProv, 16, key)) {
+	if (!OQS_RAND_get_system_entropy(key, 16)) {
 		goto err;
 	}
-#else
-	fd = open("/dev/urandom", O_RDONLY);
-	if (fd <= 0) {
-		goto err;
-	}
-	int r = read(fd, key, 16);
-	if (r != 16) {
-		goto err;
-	}
-#endif
 	OQS_AES128_load_schedule(key, &rand_ctx->schedule, 1);
 	rand_ctx->cache_next_byte = 64; // cache is empty
 	rand_ctx->ctr = 0;
@@ -59,16 +42,8 @@ err:
 	if (rand_ctx) {
 		free(rand_ctx);
 	}
-#if !defined(WINDOWS)
-	if (fd > 0) {
-		close(fd);
-	}
-#endif
 	return NULL;
 okay:
-#if !defined(WINDOWS)
-	close(fd);
-#endif
 	return rand_ctx;
 }
 
