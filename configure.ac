@@ -53,7 +53,7 @@ DX_PS_FEATURE(OFF)
 DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
 ######################################################################
 
-ARG_DISBL_SET([aes-ni], [disable AES-NI.])
+ARG_ENABL_SET([aes-ni], [enable AES-NI.])
 AM_CONDITIONAL([aes_ni], [test "x$aes_ni" = xtrue])
 AM_CONDITIONAL([USE_AES_NI], [test "x$aes_ni" = xtrue])
 
@@ -77,19 +77,20 @@ case $host_os in
         ;;
 esac
 
-#SRCDIR=" src/aes src/kex src/rand src/rand_urandom_aesctr src/rand_urandom_chacha20"
 SRCDIR=" src/common src/crypto/aes src/kex src/crypto/rand src/crypto/sha3"
 SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15/"
 SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
 SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
+SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
 
 AM_CPPFLAGS="-std=c11"
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
 AC_SUBST(OPENSSL_DIR)
 AC_SUBST(USE_OPENSSL)
+AC_SUBST(USE_AES_NI)
 
 
 AC_CONFIG_FILES([Makefile
@@ -103,6 +104,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_rlwe_bcns15/Makefile
                  src/kex_rlwe_newhope/Makefile
                  src/kex_rlwe_msrln16/Makefile
+                 src/kex_sidh_cln16/Makefile
                  src/kex_lwe_frodo/Makefile])
 
 AC_OUTPUT
