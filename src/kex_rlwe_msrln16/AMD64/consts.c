@@ -1,5 +1,6 @@
 /****************************************************************************************
-* LatticeCrypto: an efficient post-quantum Ring-Learning With Errors cryptography library
+* LatticeCrypto: an efficient post-quantum Ring-Learning With Errors
+*cryptography library
 *
 *    Copyright (c) Microsoft Corporation. All rights reserved.
 *
@@ -11,8 +12,13 @@
 #include "../LatticeCrypto_priv.h"
 #include <stdint.h>
 
-uint32_t PRIME8x[8] = {OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q};
-uint8_t ONE32x[32] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+uint32_t PRIME8x[8] = {
+    OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q,
+    OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q,
+    OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q,
+    OQS_RLWE_MSRLN16_PARAMETER_Q, OQS_RLWE_MSRLN16_PARAMETER_Q};
+uint8_t ONE32x[32] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                      1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 uint32_t MASK12x8[8] = {0xfff, 0xfff, 0xfff, 0xfff, 0xfff, 0xfff, 0xfff, 0xfff};
 uint32_t PERM0246[4] = {0, 2, 4, 6};
 uint32_t PERM00224466[8] = {0, 0, 2, 2, 4, 4, 6, 6};
@@ -32,7 +38,10 @@ uint32_t THREE8x[8] = {3, 3, 3, 3, 3, 3, 3, 3};
 uint32_t FOUR8x[8] = {4, 4, 4, 4, 4, 4, 4, 4};
 uint32_t PARAM_Q4x8[8] = {3073, 3073, 3073, 3073, 3073, 3073, 3073, 3073};
 uint32_t PARAM_3Q4x8[8] = {9217, 9217, 9217, 9217, 9217, 9217, 9217, 9217};
-uint32_t PARAM_5Q4x8[8] = {15362, 15362, 15362, 15362, 15362, 15362, 15362, 15362};
-uint32_t PARAM_7Q4x8[8] = {21506, 21506, 21506, 21506, 21506, 21506, 21506, 21506};
+uint32_t PARAM_5Q4x8[8] = {15362, 15362, 15362, 15362,
+                           15362, 15362, 15362, 15362};
+uint32_t PARAM_7Q4x8[8] = {21506, 21506, 21506, 21506,
+                           21506, 21506, 21506, 21506};
 uint32_t PARAM_Q2x8[8] = {6145, 6145, 6145, 6145, 6145, 6145, 6145, 6145};
-uint32_t PARAM_3Q2x8[8] = {18434, 18434, 18434, 18434, 18434, 18434, 18434, 18434};
+uint32_t PARAM_3Q2x8[8] = {18434, 18434, 18434, 18434,
+                           18434, 18434, 18434, 18434};

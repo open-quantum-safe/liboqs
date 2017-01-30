@@ -53,13 +53,22 @@ DX_PS_FEATURE(OFF)
 DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
 ######################################################################
 
-ARG_ENABL_SET([aes-ni], [enable AES-NI.])
+ARG_DISBL_SET([aes-ni], [enable AES-NI.])
 AM_CONDITIONAL([aes_ni], [test "x$aes_ni" = xtrue])
 AM_CONDITIONAL([USE_AES_NI], [test "x$aes_ni" = xtrue])
 
 ARG_ENABL_SET([openssl], [enable OPENSSL.])
 AM_CONDITIONAL([openssl], [test "x$openssl" = xtrue])
 AM_CONDITIONAL([USE_OPENSSL], [test "x$openssl" = xtrue])
+
+ARG_ENABL_SET([mcbits], [enable CODE-MCBITS.])
+AM_CONDITIONAL([mcbits], [test "x$mcbits" = xtrue])
+AM_CONDITIONAL([USE_MCBITS], [test "x$mcbits" = xtrue])
+
+ARG_ENABL_SET([ntru], [enable NTRU.])
+AM_CONDITIONAL([ntru], [test "x$ntru" = xtrue])
+AM_CONDITIONAL([USE_NTRU], [test "x$ntru" = xtrue])
+
 
 AC_CANONICAL_HOST
 # Check for which host we are on and setup a few things
@@ -91,7 +100,8 @@ AC_SUBST(SRCDIR)
 AC_SUBST(OPENSSL_DIR)
 AC_SUBST(USE_OPENSSL)
 AC_SUBST(USE_AES_NI)
-
+AC_SUBST(USE_NTRU)
+AC_SUBST(USE_MCBITS)
 
 AC_CONFIG_FILES([Makefile
                  src/common/Makefile
@@ -105,6 +115,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_rlwe_newhope/Makefile
                  src/kex_rlwe_msrln16/Makefile
                  src/kex_sidh_cln16/Makefile
+                 src/kex_code_mcbits/Makefile
                  src/kex_lwe_frodo/Makefile])
 
 AC_OUTPUT

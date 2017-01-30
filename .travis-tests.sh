@@ -26,10 +26,18 @@ if [[ ${AES_NI} == 0 ]];then
   enable_disable_str=${enable_disable_str}" --disable-aes-ni"
 fi
 
+if [[ ${ENABLE_CODE_MCBITS} == 1 ]];then
+  enable_disable_str="--enable-mcbits"
+fi
 
-./configure ${enable_disable_str}; make clean; make; make test
+if [[ ${ENABLE_NTRU} == 1 ]];then
+  enable_disable_str="--enable-ntru"
+fi
 
-bash .travis-style-check.sh
-bash .travis-global-namespace-check.sh
-bash .travis-banned-functions-check.sh
-bash .travis-character-encoding-check.sh
+./configure ${enable_disable_str}
+make clean
+make
+make test
+for f in $(ls .travis/*-check.sh); do bash $f; done
+
+

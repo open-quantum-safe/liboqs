@@ -1,61 +1,45 @@
 language: c
-sudo: require
+dist: trusty
+sudo: true
 
 matrix:
   include:
   - os: linux
-    compiler: gcc-4.8
-    env: CC=gcc-4.8
-    before_install:
-      - sudo apt-get -qq update
-      - sudo apt-get install -y autotools-dev
-      - sudo apt-get install --only-upgrade -y autoconf 
-      - sudo apt-get install -y astyle 
+    compiler: gcc
+    env: CC_OQS=gcc-4.8
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
-        - openssl
-  - os: linux
-    compiler: gcc-4.9
-    env: CC=gcc-4.9
     before_install:
-      - sudo apt-get -qq update
-      - sudo apt-get install -y autotools-dev
-      - sudo apt-get install --only-upgrade -y autoconf 
-      - sudo apt-get install -y astyle 
+      - sh .travis/install-clang-format-linux.sh
+  - os: linux
+    compiler: gcc
+    env: CC_OQS=gcc-4.9
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
-        - openssl
-  - os: linux
-    compiler: gcc-5
-    env: CC=gcc-5
     before_install:
-      - sudo apt-get -qq update
-      - sudo apt-get install -y autotools-dev
-      - sudo apt-get install --only-upgrade -y autoconf 
-      - sudo apt-get install -y astyle 
+      - sh .travis/install-clang-format-linux.sh
+  - os: linux
+    compiler: gcc
+    env: CC_OQS=gcc-5
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
-        - openssl
-  - os: linux
-    compiler: gcc-6
-    env: CC=gcc-6 USE_OPENSSL=1
     before_install:
-      - sudo apt-get -qq update
-      - sudo apt-get install -y autotools-dev
-      - sudo apt-get install --only-upgrade -y autoconf 
-      - sudo apt-get install -y astyle 
+      - sh .travis/install-clang-format-linux.sh
+  - os: linux
+    compiler: gcc
+    env: CC_OQS=gcc-6 USE_OPENSSL=1 ENABLE_NTRU=1
     addons:
       apt:
         sources:
@@ -63,14 +47,17 @@ matrix:
         packages:
         - gcc-6
         - libssl-dev
+    before_install:
+      - sh .travis/install-clang-format-linux.sh
+      - bash download-and-build-ntru.sh
   - os: osx
     compiler: clang
-    env: CC=clang AES_NI=0 USE_OPENSSL=1
+    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1 ENABLE_NTRU=1
     before_install:
-      -  brew install autoconf
-      -  brew install automake
-      -  brew install astyle openssl
+      - brew install clang-format openssl libsodium
+      - bash download-and-build-ntru.sh
 
 script:
-  - ./.travis-tests.sh
-
+  - CC=$CC_OQS make
+  - CC=$CC_OQS make check
+  - for f in $(ls .travis/*-check.sh); do bash $f; done

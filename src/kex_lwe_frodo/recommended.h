@@ -1,4 +1,4 @@
-//Recommended parameter set. Include twice to undefine
+// Recommended parameter set. Include twice to undefine
 
 #ifndef OQS_LWE_FRODO_RECOMMENDED_H
 #define OQS_LWE_FRODO_RECOMMENDED_H
@@ -10,9 +10,10 @@
 #define PARAMS_KEY_BITS 256
 #define PARAMS_KEY_BYTES (PARAMS_KEY_BITS >> 3)
 #define PARAMS_STRIPE_STEP 8
-#define LWE_DIV_ROUNDUP(x, y) (((x) + (y) -1) / y)
+#define LWE_DIV_ROUNDUP(x, y) (((x) + (y)-1) / y)
 #define PARAMS_REC_HINT_LENGTH LWE_DIV_ROUNDUP(PARAMS_NBAR *PARAMS_NBAR, 8)
-#define PARAMS_REC_PUB_LENGTH LWE_DIV_ROUNDUP(PARAMS_N *PARAMS_NBAR *PARAMS_LOG2Q, 8)
+#define PARAMS_REC_PUB_LENGTH                                                  \
+  LWE_DIV_ROUNDUP(PARAMS_N *PARAMS_NBAR *PARAMS_LOG2Q, 8)
 
 #else
 
