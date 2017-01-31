@@ -58,6 +58,4 @@ matrix:
       - bash download-and-build-ntru.sh
 
 script:
-  - CC=$CC_OQS make
-  - CC=$CC_OQS make check
-  - for f in $(ls .travis/*-check.sh); do bash $f; done
+  - CC=$CC_OQS ./.travis-tests.sh
