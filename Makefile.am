@@ -7,7 +7,7 @@ include aminclude.am
 # ensure the distribution of the doxygen configuration file
 EXTRA_DIST = doxygen.cfg
 
-CLANGFORMAT ?= clang-format-3.7
+CLANGFORMAT ?= clang-format
 
 SUBDIRS = ${SRCDIR}
 
@@ -90,12 +90,14 @@ links:
 	$(LN_S) -f ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	$(LN_S) -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN_S) -f ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
+	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	$(LN_S) -f ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
 
 clean-local:
 	rm -rf docs
+	rm -f liboqs.a
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | xargs $(CLANGFORMAT) -style=file -i
