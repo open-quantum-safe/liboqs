@@ -1,7 +1,19 @@
+#ifdef ENABLE_NTRU
+
+#if defined(WINDOWS)
+#define UNUSED
+// __attribute__ not supported in VS
+#else
 #define UNUSED __attribute__((unused))
+#endif
 
 #include <fcntl.h>
+#if defined(WINDOWS)
+#include <windows.h>
+#include <Wincrypt.h>
+#else
 #include <unistd.h>
+#endif
 
 #include <oqs/kex.h>
 #include <oqs/kex_ntru.h>
@@ -41,13 +53,10 @@ static uint8_t get_entropy_from_dev_urandom(ENTROPY_CMD cmd, uint8_t *out) {
 		return 1;
 	}
 	if (cmd == GET_BYTE_OF_ENTROPY) {
-		int fd = open("/dev/urandom", O_RDONLY);
-		if (fd <= 0)
+		// TODO: why is this called to get entropy bytes one by one?
+		if (!OQS_RAND_get_system_entropy(out, 1)) {
 			return 0;
-		int r = read(fd, out, 1);
-		close(fd);
-		if (r != 1)
-			return 0;
+		}
 		return 1;
 	}
 	return 0;
@@ -216,3 +225,5 @@ void OQS_KEX_ntru_free(OQS_KEX *k) {
 		free(k->method_name);
 	free(k);
 }
+
+#endif

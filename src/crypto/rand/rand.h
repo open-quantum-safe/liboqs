@@ -89,4 +89,5 @@ void OQS_RAND_free(OQS_RAND *r);
 void OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]);
 double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occurrences[256]);
 
+int OQS_RAND_get_system_entropy(uint8_t *buf, size_t n);
 #endif
