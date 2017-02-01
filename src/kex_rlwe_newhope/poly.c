@@ -1,5 +1,6 @@
 #include "params.h"
 #include <oqs/rand.h>
+#include <oqs/sha3.h>
 
 typedef struct {
 	uint16_t coeffs[PARAM_N];
