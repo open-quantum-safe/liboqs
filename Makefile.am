@@ -11,10 +11,6 @@ CLANGFORMAT ?= clang-format
 
 SUBDIRS = ${SRCDIR}
 
-if USE_MCBITS
-SUBDIRS += src/kex_code_mcbits/ 
-endif
-
 BUILT_SOURCES = links
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
@@ -29,24 +25,28 @@ if USE_MCBITS
 liboqs_la_LIBADD += src/kex_code_mcbits/libmcbits.la
 endif
 
+if USE_NTRU
+liboqs_la_LIBADD += src/kex_ntru/libntru.la
+liboqs_la_LIBADD += external/NTRUEncrypt-master/.libs/libntruencrypt.la
+endif
+
 noinst_bin_PROGRAMS = test_rand test_kex test_aes
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
 test_kex_SOURCES = src/kex/test_kex.c
 test_kex_CPPFLAGS = -I./include
-test_kex_CPPFLAGS +=  $(AM_CPPFLAGS) 
+test_kex_CPPFLAGS += $(AM_CPPFLAGS) 
 if USE_OPENSSL
 test_kex_LDADD += -lcrypto
+endif
+if USE_MCBITS
+test_kex_LDADD += -lsodium
 endif
 
 test_aes_LDADD =  liboqs.la -lm
 test_aes_SOURCES = src/crypto/aes/test_aes.c
 test_aes_CPPFLAGS = -I./include
 test_aes_CPPFLAGS += $(AM_CPPFLAGS)
-
-if USE_AES_NI
-test_aes_CPPFLAGS += -DAES_ENABLE_NI
-endif
 
 
 if USE_OPENSSL
@@ -55,20 +55,17 @@ endif
 
 test_rand_SOURCES = src/crypto/rand/test_rand.c
 
+test_rand_CPPFLAGS = -Iinclude -Isrc/crypto/rand_urandom_aesctr/
+test_rand_CPPFLAGS += $(AM_CPPFLAGS)
 test_rand_LDADD = liboqs.la
 if USE_OPENSSL
-test_rand_CPPFLAGS = -DUSE_OPENSSL
 test_rand_LDADD += -lcrypto
 else
 if USE_AES_NI
-test_rand_CPPFLAGS = -maes -msse2 -DAES_ENABLE_NI
-else
-test_rand_CPPFLAGS = -DAES_DISABLE_NI
+test_rand_CPPFLAGS += -maes -msse2
 endif
 endif
 
-test_rand_CPPFLAGS += -Iinclude -Isrc/crypto/rand_urandom_aesctr/
-test_rand_CPPFLAGS += $(AM_CPPFLAGS)
 
 test:
 	$(foreach s,$(ALLDIRS),make test -s -C $(s);)
@@ -93,6 +90,9 @@ links:
 	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	$(LN_S) -f ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
+endif
+if USE_NTRU
+	$(LN_S) -f ../../src/kex_ntru/kex_ntru.h include/oqs
 endif
 
 clean-local:

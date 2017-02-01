@@ -94,7 +94,26 @@ SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
 SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
 
-AM_CPPFLAGS="-std=c11"
+AM_CPPFLAGS="-O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
+
+if test x"$ntru" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_NTRU"
+  SRCDIR=${SRCDIR}" src/kex_ntru"
+fi
+
+if test x"$mcbits" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_CODE_MCBITS"
+  SRCDIR=${SRCDIR}" src/kex_code_mcbits"
+fi
+
+if test x"$aes_ni" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DAES_ENABLE_NI"
+fi
+
+if test x"$openssl" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DUSE_OPENSSL"
+fi
+
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
 AC_SUBST(OPENSSL_DIR)
@@ -116,6 +135,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_rlwe_msrln16/Makefile
                  src/kex_sidh_cln16/Makefile
                  src/kex_code_mcbits/Makefile
+                 src/kex_ntru/Makefile
                  src/kex_lwe_frodo/Makefile])
 
 AC_OUTPUT
