@@ -18,7 +18,7 @@ AM_PROG_AS
 AM_INIT_AUTOMAKE([subdir-objects])
 m4_include(m4/macros/enable-disable.m4)
 LT_INIT([disable-shared])
-
+AC_CHECK_SIZEOF([size_t])
 # Checks for libraries.
 
 # Checks for header files.
@@ -70,6 +70,7 @@ AM_CONDITIONAL([ntru], [test "x$ntru" = xtrue])
 AM_CONDITIONAL([USE_NTRU], [test "x$ntru" = xtrue])
 
 
+AM_CPPFLAGS="-O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 AC_CANONICAL_HOST
 # Check for which host we are on and setup a few things
 # specifically based on the host
@@ -79,12 +80,16 @@ case $host_os in
         ;;
   linux*)
         OPENSSL_DIR=/usr
+        if test x"${ac_cv_sizeof_size_t}" = x"8";then
+          AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
+        fi
         ;;
     *)
         #Default Case
         AC_MSG_ERROR([Your platform is not currently supported])
         ;;
 esac
+
 
 SRCDIR=" src/common src/crypto/aes src/kex src/crypto/rand src/crypto/sha3"
 SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
@@ -94,7 +99,7 @@ SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
 SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
 
-AM_CPPFLAGS="-O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
+
 
 if test x"$ntru" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_NTRU"
