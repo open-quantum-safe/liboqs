@@ -6,7 +6,7 @@
 #ifndef __OQS_SHA3_H
 #define __OQS_SHA3_H
 
-#include<stdint.h>
+#include <stdint.h>
 
 #define OQS_SHA3_STATESIZE 25
 #define OQS_SHA3_SHAKE128_RATE 168
@@ -20,5 +20,3 @@ void OQS_SHA3_sha3512(unsigned char *output, const unsigned char *input, unsigne
 void OQS_SHA3_shake128_squeezeblocks(unsigned char *output, unsigned long long nblocks, uint64_t *s);
 
 #endif
-
-

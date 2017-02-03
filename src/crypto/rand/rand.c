@@ -1,9 +1,17 @@
 #include <assert.h>
 #include <math.h>
+#if defined(WINDOWS)
+#include <windows.h>
+#include <Wincrypt.h>
+#else
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#endif
 
 #include <oqs/rand.h>
-#include <oqs/rand_urandom_chacha20.h>
 #include <oqs/rand_urandom_aesctr.h>
+#include <oqs/rand_urandom_chacha20.h>
 
 OQS_RAND *OQS_RAND_new(enum OQS_RAND_alg_name alg_name) {
 	switch (alg_name) {
@@ -44,7 +52,8 @@ void OQS_RAND_free(OQS_RAND *r) {
 /* For some reason specifying inline results in a build error */
 inline
 #endif
-void OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]) {
+    void
+    OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]) {
 	occurrences[b] += 1;
 }
 
@@ -66,5 +75,39 @@ double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occur
 	distance /= 2.0;
 
 	return distance;
+}
 
+int OQS_RAND_get_system_entropy(uint8_t *buf, size_t n) {
+	int result = 0;
+	if (!buf) {
+		goto err;
+	}
+
+#if defined(WINDOWS)
+	HCRYPTPROV hCryptProv;
+	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
+	    !CryptGenRandom(hCryptProv, n, buf)) {
+		goto err;
+	}
+#else
+	int fd = 0;
+	fd = open("/dev/urandom", O_RDONLY);
+	if (fd <= 0) {
+		goto err;
+	}
+	size_t r = read(fd, buf, n);
+	if (r != n) {
+		goto err;
+	}
+#endif
+	result = 1;
+
+err:
+#if !defined(WINDOWS)
+	if (fd > 0) {
+		close(fd);
+	}
+#endif
+
+	return result;
 }

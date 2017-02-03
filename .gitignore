@@ -54,3 +54,6 @@ VisualStudio/**/Win32/
 VisualStudio/**/x64/
 VisualStudio/include/
 VisualStudio/**/*.user
+
+# External sources
+external

@@ -1,6 +1,6 @@
 language: c
 dist: trusty
-sudo: false
+sudo: true
 
 matrix:
   include:
@@ -14,9 +14,7 @@ matrix:
         packages:
         - gcc-4.8
     before_install:
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+      - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.9
@@ -27,9 +25,7 @@ matrix:
         packages:
         - gcc-4.9
     before_install:
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+      - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-5
@@ -40,12 +36,10 @@ matrix:
         packages:
         - gcc-5
     before_install:
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+      - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-6 USE_OPENSSL=1
+    env: CC_OQS=gcc-6 USE_OPENSSL=1 ENABLE_NTRU=1
     addons:
       apt:
         sources:
@@ -54,18 +48,16 @@ matrix:
         - gcc-6
         - libssl-dev
     before_install:
-      - wget http://downloads.sourceforge.net/project/astyle/astyle/astyle%202.05.1/astyle_2.05.1_linux.tar.gz
-      - tar xzf astyle_2.05.1_linux.tar.gz
-      - cd astyle/build/gcc && make && export PATH=$(pwd)/bin:$PATH && cd ../../../
+      - sh .travis/install-clang-format-linux.sh
+      - bash download-and-build-ntru.sh
   - os: osx
     compiler: clang
-    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1
+    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1 ENABLE_NTRU=1
     before_install:
-      - brew install astyle openssl libsodium
+      - brew install clang-format openssl libsodium
+      - bash download-and-build-ntru.sh
 
 script:
-  - make
-  - make check
-  - bash .travis-style-check.sh
-  - bash .travis-global-namespace-check.sh
-  - bash .travis-banned-functions-check.sh
+  - CC=$CC_OQS make
+  - CC=$CC_OQS make check
+  - for f in $(ls .travis/*-check.sh); do bash $f; done
