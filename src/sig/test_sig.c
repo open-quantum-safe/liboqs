@@ -9,16 +9,15 @@
 #include "../ds_benchmark.h"
 
 struct sig_testcase {
-	enum OQS_SIG_alg_name alg_name;
-	char *named_parameters;
-	char *id;
-	int run;
-	int iter;
+  enum OQS_SIG_scheme_id scheme_id;
+  char* scheme_id_name;
+  int run;
+  int iter;
 };
 
 /* Add new testcases here */
 struct sig_testcase sig_testcases[] = {
-  {OQS_SIG_alg_default, NULL, "scheme_name", 0, 100}, // TODO: replace with an actual scheme (FIXME)
+  {OQS_SIG_scheme_id_default, "default", 0, 100}, // TODO: replace with an actual scheme (FIXME)
 };
 
 #define SIG_TEST_ITERATIONS 100
@@ -33,7 +32,7 @@ struct sig_testcase sig_testcases[] = {
 		printf("\n");                                            \
 	}
 
-static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_alg_name alg_name, const char *named_parameters, const int print, unsigned long occurrences[256]) {
+static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_scheme_id scheme_id, const int print, unsigned long occurrences[256]) {
 
 	OQS_SIG *s = NULL;
 	int rc;
@@ -46,20 +45,31 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_alg_name alg_name, 
 	size_t sig_len;
 
 	/* setup signature object */
-	s = OQS_SIG_new(rand, alg_name, named_parameters);
+	s = OQS_SIG_get(scheme_id);
 	if (s == NULL) {
-		fprintf(stderr, "new_method failed\n");
+		fprintf(stderr, "get_method failed\n");
 		goto err;
 	}
 
 	if (print) {
 		printf("================================================================================\n");
-		printf("Sample computation for signature method %s\n", s->method_name);
+		printf("Sample computation for signature method %s\n", s->scheme_id);
 		printf("================================================================================\n");
 	}
 
 	/* key generation */
-	rc = OQS_SIG_keygen(s, &priv, &pub);
+	priv = malloc(s->priv_key_len);
+	if (priv == NULL) {
+	  fprintf(stderr, "priv malloc failed\n");
+	  goto err;
+	}
+	pub = malloc(s->pub_key_len);
+	if (pub == NULL) {
+	  fprintf(stderr, "pub malloc failed\n");
+	  goto err;
+	}
+
+	rc = OQS_SIG_keygen(s, rand, priv, pub);
 	if (rc != 1) {
 		fprintf(stderr, "OQS_SIG_keygen failed\n");
 		goto err;
@@ -83,7 +93,14 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_alg_name alg_name, 
 	}
 
 	/* Signature */
-	rc = OQS_SIG_sign(s, priv, msg, msg_len, &sig, &sig_len);
+	sig_len = s->max_sig_len;
+	sig = malloc(sig_len);
+	if (sig == NULL) {
+	  fprintf(stderr, "sig malloc failed\n");
+	  goto err;
+	}
+	
+	rc = OQS_SIG_sign(s, rand, priv, msg, msg_len, sig, &sig_len);
 	if (rc != 1) {
 		fprintf(stderr, "OQS_SIG_sign failed\n");
 		goto err;
@@ -120,16 +137,15 @@ err:
 	rc = 0;
 
 cleanup:
-	free(msg);
-	free(sig);
-	free(pub);
-	free(priv);
-	OQS_SIG_free(s);
+	if (msg != NULL) { free(msg); }
+	if (sig != NULL) { free(sig); }
+	if (pub != NULL) { free(pub); }
+	if (priv != NULL) { free(priv); }
 
 	return rc;
 }
 
-static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_alg_name alg_name, const char *named_parameters, int iterations, bool quiet) {
+static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_scheme_id scheme_id, int iterations, bool quiet) {
 	OQS_SIG *s = NULL;
 	int ret;
 
@@ -137,23 +153,23 @@ static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_alg_name al
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
 	}
-	ret = sig_test_correctness(rand, alg_name, named_parameters, !quiet, occurrences);
+	ret = sig_test_correctness(rand, scheme_id, !quiet, occurrences);
 	if (ret != 1) {
 		goto err;
 	}
 
 	/* setup signature object */
-	s = OQS_SIG_new(rand, alg_name, named_parameters);
+	s = OQS_SIG_get(scheme_id);
 	if (s == NULL) {
 		goto err;
 	}
 
 	printf("================================================================================\n");
-	printf("Testing correctness and randomness of signature method %s (params=%s) for %d iterations\n",
-	       s->method_name, named_parameters, iterations);
+	printf("Testing correctness and randomness of signature method %s for %d iterations\n",
+	       s->scheme_id, iterations);
 	printf("================================================================================\n");
 	for (int i = 0; i < iterations; i++) {
-		ret = sig_test_correctness(rand, alg_name, named_parameters, 0, occurrences);
+		ret = sig_test_correctness(rand, scheme_id, 0, occurrences);
 		if (ret != 1) {
 			goto err;
 		}
@@ -164,20 +180,13 @@ static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_alg_name al
 #endif
 	printf("\n\n");
 
-	ret = 1;
-	goto cleanup;
-
-err:
-	ret = 0;
-
-cleanup:
-	OQS_SIG_free(s);
-
+	return 1;
+ err:
 	return ret;
 }
 
 
-static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_alg_name alg_name, const char *named_parameters, const int seconds) {
+static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_scheme_id scheme_id, const int seconds) {
 
 	OQS_SIG *s = NULL;
 	int rc;
@@ -190,16 +199,28 @@ static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_alg_name alg_name, con
 	size_t sig_len;
 
 	/* setup signature object */
-	s = OQS_SIG_new(rand, alg_name, named_parameters);
+	s = OQS_SIG_get(scheme_id);
 	if (s == NULL) {
-		fprintf(stderr, "new_method failed\n");
+		fprintf(stderr, "get_method failed\n");
 		goto err;
 	}
-	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n", s->method_name, "", "", "", "", "", "");
+	/* key generation */
+	priv = malloc(s->priv_key_len);
+	if (priv == NULL) {
+	  fprintf(stderr, "priv malloc failed\n");
+	  goto err;
+	}
+	pub = malloc(s->pub_key_len);
+	if (pub == NULL) {
+	  fprintf(stderr, "pub malloc failed\n");
+	  goto err;
+	}
 
-	TIME_OPERATION_SECONDS({ OQS_SIG_keygen(s, &priv, &pub); free(priv); free(pub); }, "keygen", seconds);
+	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n", s->scheme_id, "", "", "", "", "", "");
 
-	OQS_SIG_keygen(s, &priv, &pub);
+	TIME_OPERATION_SECONDS({ OQS_SIG_keygen(s, rand, priv, pub); }, "keygen", seconds);
+
+	OQS_SIG_keygen(s, rand, priv, pub);
 	/* Generate message to sign */
 	msg_len = 100; // FIXME TODO: randomize based on scheme's max length
 	msg = malloc(msg_len);
@@ -207,9 +228,16 @@ static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_alg_name alg_name, con
 	  fprintf(stderr, "msg malloc failed\n");
 	  goto err;
 	}
-	TIME_OPERATION_SECONDS({ OQS_SIG_sign(s, priv, msg, msg_len, &sig, &sig_len); free(sig); }, "sign", seconds);
+	sig_len = s->max_sig_len;
+	sig = malloc(sig_len);
+	if (sig == NULL) {
+	  fprintf(stderr, "sig malloc failed\n");
+	  goto err;
+	}
 
-	OQS_SIG_sign(s, priv, msg, msg_len, &sig, &sig_len);
+	TIME_OPERATION_SECONDS({ OQS_SIG_sign(s, rand, priv, msg, msg_len, sig, &sig_len); sig_len = s->max_sig_len; }, "sign", seconds);
+
+	OQS_SIG_sign(s, rand, priv, msg, msg_len, sig, &sig_len);
 	TIME_OPERATION_SECONDS({ OQS_SIG_verify(s, pub, msg, msg_len, sig, sig_len); }, "verify", seconds);
 	
 	rc = 1;
@@ -223,7 +251,6 @@ cleanup:
 	free(pub);
 	free(msg);
 	free(sig);
-	OQS_SIG_free(s);
 
 	return rc;
 }
@@ -238,15 +265,15 @@ int main(int argc, char **argv) {
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			if ((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "-help") == 0) || (strcmp(argv[i], "--help") == 0)) {
-				printf("Usage: ./test_sig [options] [algorithms]\n");
+				printf("Usage: ./test_sig [options] [schemes]\n");
 				printf("\nOptions:\n");
 				printf("  --quiet, -q\n");
 				printf("    Less verbose output\n");
 				printf("  --bench, -b\n");
 				printf("    Run benchmarks\n");
-				printf("\nalgorithms:\n");
+				printf("\nschemes:\n");
 				for (size_t i = 0; i < sig_testcases_len; i++) {
-					printf("  %s\n", sig_testcases[i].id);
+					printf("  %s\n", sig_testcases[i].scheme_id_name);
 				}
 				return EXIT_SUCCESS;
 			} else if (strcmp(argv[i], "--quiet") == 0 || strcmp(argv[i], "-q") == 0) {
@@ -258,7 +285,7 @@ int main(int argc, char **argv) {
 		} else {
 			run_all = false;
 			for (size_t j = 0; j < sig_testcases_len; j++) {
-				if (strcmp(argv[i], sig_testcases[j].id) == 0) {
+				if (strcmp(argv[i], sig_testcases[j].scheme_id_name) == 0) {
 					sig_testcases[j].run = 1;
 				}
 			}
@@ -274,7 +301,7 @@ int main(int argc, char **argv) {
 	for (size_t i = 0; i < sig_testcases_len; i++) {
 		if (run_all || sig_testcases[i].run == 1) {
 			int num_iter = sig_testcases[i].iter;
-			success = sig_test_correctness_wrapper(rand, sig_testcases[i].alg_name, sig_testcases[i].named_parameters, num_iter, quiet);
+			success = sig_test_correctness_wrapper(rand, sig_testcases[i].scheme_id, num_iter, quiet);
 		}
 		if (success != 1) {
 			goto err;
@@ -285,7 +312,7 @@ int main(int argc, char **argv) {
 		PRINT_TIMER_HEADER
 		for (size_t i = 0; i < sig_testcases_len; i++) {
 			if (run_all || sig_testcases[i].run == 1) {
-				sig_bench_wrapper(rand, sig_testcases[i].alg_name, sig_testcases[i].named_parameters, SIG_BENCH_SECONDS);
+				sig_bench_wrapper(rand, sig_testcases[i].scheme_id, SIG_BENCH_SECONDS);
 			}
 		}
 		PRINT_TIMER_FOOTER
