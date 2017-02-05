@@ -79,6 +79,11 @@ double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occur
 
 int OQS_RAND_get_system_entropy(uint8_t *buf, size_t n) {
 	int result = 0;
+
+#if !defined(WINDOWS)
+	int fd = 0;
+#endif
+
 	if (!buf) {
 		goto err;
 	}
@@ -90,7 +95,6 @@ int OQS_RAND_get_system_entropy(uint8_t *buf, size_t n) {
 		goto err;
 	}
 #else
-	int fd = 0;
 	fd = open("/dev/urandom", O_RDONLY);
 	if (fd <= 0) {
 		goto err;
