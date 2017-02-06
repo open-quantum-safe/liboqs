@@ -10,7 +10,7 @@ Overview
 
 The **Open Quantum Safe (OQS) project** has the goal of developing and prototyping quantum-resistant cryptography.
 
-**liboqs** is an open source C library for quantum-resistant cryptographic algorithms.  liboqs initially focuses on key exchange algorithms.  liboqs provides a common API suitable for post-quantum key exchange algorithms, and will collect together various implementations.  liboqs will also include a test harness and benchmarking routines to compare performance of post-quantum implementations.
+**liboqs** is an open source C library for quantum-resistant cryptographic algorithms.  liboqs provides a common API suitable for post-quantum key exchange and signature algorithms, and will collect together various implementations.  liboqs will also include a test harness and benchmarking routines to compare performance of post-quantum implementations.
 
 OQS will also include integrations into application-level protocols to provide easy prototyping of quantum-resistant cryptography.  Our first integration is in OpenSSL:
 
@@ -49,6 +49,7 @@ This will generate:
 - `test_rand`: A simple test harness for the random number generator.  This will test the distance of PRNG output from uniform using statistical distance.
 - `test_aes`: A simple test harness for AES.  This will test the correctness of the C implementation (and of the AES-NI implementation, if not disabled) of AES, and will compare the speed of these implementations against OpenSSL's AES implementation.
 - `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
+- `test_sig`: A simple test harness for the signature algorithms. FIXME: contiune description.
 
 To run the tests, simply type:
 
@@ -123,7 +124,7 @@ Contributing and using
 
 We hope OQS will provide a framework for many post-quantum implementations.
 
-In the immediate term, if you have feedback on our API ([kex.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/kex/kex.h) or [rand.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/rand/rand.h)), please contact us so we can ensure our API covers a wide range of implementation needs.
+In the immediate term, if you have feedback on our API ([kex.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/kex/kex.h), [sig.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/sig/sig.h), or [rand.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/rand/rand.h)), please contact us so we can ensure our API covers a wide range of implementation needs.
 
 If you have or are writing an implementation of a post-quantum key exchange algorithm, we hope you will consider making an implementation that meets our API so that others may use it and would be happy to discuss including it directly in liboqs.  Please take a look at our [coding conventions](https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions).
 
@@ -151,6 +152,7 @@ Since our initial launch, we have made the following updates:
 - `kex_sidh_cln16` implementation contributed by Christian Paquin (Microsoft Research)
 - `kex_code_mcbits` wrapper
 - `kex_ntru` wrapper
+- Signature API
 
 Our plans for the next few months can be found in [Milestone 1 - Key exchange](https://github.com/open-quantum-safe/liboqs/projects/2).
 

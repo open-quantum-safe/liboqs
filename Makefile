@@ -91,6 +91,7 @@ ifdef ENABLE_NTRU
 	@$(LN) ../../src/kex_ntru/kex_ntru.h include/oqs
 endif
 	@$(LN) ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
+	@$(LN) ../../src/sig/sig.h include/oqs
 	@$(LN) ../../src/crypto/rand/rand.h include/oqs
 	@$(LN) ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	@$(LN) ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
@@ -171,6 +172,9 @@ $(SHA3_OBJS): $(SHA3_HEADERS)
 # KEX
 objs/kex/kex.o: src/kex/kex.h
 
+# SIG
+objs/sig/sig.o: src/sig/sig.h
+
 # LIB
 
 
@@ -186,18 +190,22 @@ ifdef ENABLE_NTRU
 KEX_OBJS += $(KEX_NTRU_OBJS)
 endif
 
-lib: $(RAND_OBJS) $(KEX_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
+SIG_OBJS := objs/sig/sig.o
+
+lib: $(RAND_OBJS) $(KEX_OBJS) $(SIG_OBJS) $(AES_OBJS) $(COMMON_OBJS) $(SHA3_OBJS)
 	@rm -f liboqs.a
 	@$(AR) liboqs.a $^
 	@$(ECHO) "AR liboqs.a"
 	@$(RANLIB) liboqs.a
 	@$(ECHO) "RANLIB liboqs.a"
 
-tests: lib src/crypto/rand/test_rand.c src/kex/test_kex.c src/crypto/aes/test_aes.c src/ds_benchmark.h
+tests: lib src/crypto/rand/test_rand.c src/kex/test_kex.c src/sig/test_sig.c src/crypto/aes/test_aes.c src/ds_benchmark.h
 	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/rand/test_rand.c -loqs $(LDFLAGS) -o test_rand 
 	@$(ECHO) "CC src/crypto/rand/test_rand.c"
 	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/kex/test_kex.c -loqs $(LDFLAGS) -o test_kex
 	@$(ECHO) "CC src/kex/test_kex.c"
+	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/sig/test_sig.c -loqs $(LDFLAGS) -o test_sig
+	@$(ECHO) "CC src/sig/test_sig.c"
 	@$(CC) $(CFLAGS) $(INCLUDES) -L. src/crypto/aes/test_aes.c -loqs $(LDFLAGS) -o test_aes
 	@$(ECHO) "CC src/crypto/aes/test_aes.c"
 
@@ -206,12 +214,13 @@ docs: links
 
 check: links tests
 	./test_kex --quiet
+	./test_sig --quiet
 	./test_rand --quiet
 	./test_aes
 
 clean:
 	$(RM) -r docs/doxygen objs include
-	$(RM) -r test_rand{,.dSYM} test_kex{,.dSYM} test_aes{,.dSYM} liboqs.a
+	$(RM) -r test_rand{,.dSYM} test_kex{,.dSYM} test_sig{,.dSYM} test_aes{,.dSYM} liboqs.a
 	find . -name .DS_Store -type f -delete
 
 prettyprint:

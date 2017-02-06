@@ -33,6 +33,7 @@ include
 *.x86_64
 *.hex
 /test_kex
+/test_sig
 /test_rand
 /test_aes
 
