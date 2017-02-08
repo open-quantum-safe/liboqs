@@ -6,7 +6,3 @@ librandchacha20_la_SOURCES = rand_urandom_chacha20.c
 librandchacha20_la_CPPFLAGS = -I../../../include -I.
 librandchacha20_la_CPPFLAGS += $(AM_CPPFLAGS)
 
-#liboqs_la_LDFLAGS = -version-info 0:0:0
-
-test:
-	$(foreach tp,$(noinst_bin_PROGRAMS),./$(tp) || exit;)

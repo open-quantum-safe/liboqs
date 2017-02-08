@@ -6,5 +6,3 @@ libcln16_la_SOURCES = ec_isogeny.c fpx.c kex_sidh_cln16.c SIDH.c sidh_kex.c SIDH
 libcln16_la_CPPFLAGS = -I../../include -I.-fPIC
 libcln16_la_CPPFLAGS += $(AM_CPPFLAGS) 
 
-test:
-	$(foreach tp,$(noinst_bin_PROGRAMS),./$(tp) || exit;)

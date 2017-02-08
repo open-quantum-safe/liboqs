@@ -6,6 +6,3 @@ libnewhope_la_SOURCES = kex_rlwe_newhope.c newhope.c poly.c precomp.c
 libnewhope_la_CPPFLAGS = -I../../include -I.
 libnewhope_la_CPPFLAGS += $(AM_CPPFLAGS)
 
-#liboqs_la_LDFLAGS = -version-info 0:0:0
-
-test:

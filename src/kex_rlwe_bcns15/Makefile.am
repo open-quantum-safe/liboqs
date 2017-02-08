@@ -7,5 +7,3 @@ libbcns15_la_SOURCES = fft.c kex_rlwe_bcns15.c rlwe.c rlwe_kex.c
 libbcns15_la_CPPFLAGS = -I../../include
 libbcns15_la_CPPFLAGS += $(AM_CPPFLAGS) 
 
-test:
-	$(foreach tp,$(noinst_bin_PROGRAMS),./$(tp) || exit;)
