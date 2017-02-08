@@ -41,10 +41,10 @@ Builds have been tested on Mac OS X 10.11.6, macOS 10.12, Ubuntu 16.04.1, and Wi
 
 To build, clone or download the source from GitHub, then simply type:
 
-  autoreconf -i
-  ./configure
-  make clean
-  make
+	autoreconf -i
+	./configure
+	make clean
+	make
 
 This will generate:
 
