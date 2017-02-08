@@ -41,6 +41,9 @@ Builds have been tested on Mac OS X 10.11.6, macOS 10.12, Ubuntu 16.04.1, and Wi
 
 To build, clone or download the source from GitHub, then simply type:
 
+	autoreconf -i
+	./configure
+	make clean
 	make
 
 This will generate:
@@ -52,7 +55,7 @@ This will generate:
 
 To run the tests, simply type:
 
-	make check
+	make test
 
 To run benchmarks, run
 
@@ -93,8 +96,9 @@ The `kex_code_mcbits` key exchange method is not enabled by default.  In order t
 2. Build liboqs with the following option:
 
 ~~~
+./configure --enable-mcbits
 make clean
-make ENABLE_CODE_MCBITS=1
+make
 ~~~
 
 ### Building with `kex_ntru` enabled
@@ -105,8 +109,9 @@ The `kex_ntru` key exchange method is not enabled by default.  In order to enabl
 2. Build liboqs with the following option:
 
 ~~~
+./configure --enable-ntru
 make clean
-make ENABLE_NTRU=1
+make
 ~~~
 
 Documentation
