@@ -181,7 +181,7 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 		}
 	}
 	printf("All session keys matched.\n");
-	OQS_RAND_report_statistics(occurrences,"");
+	OQS_RAND_report_statistics(occurrences, "");
 	printf("\n\n");
 
 	ret = 1;
