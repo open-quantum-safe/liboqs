@@ -77,6 +77,7 @@ AC_CANONICAL_HOST
 case $host_os in
   darwin* )
         OPENSSL_DIR=/usr/local/opt/openssl
+        AM_CONDITIONAL([ON_DARWIN], [test xtrue = xtrue])
         ;;
   linux*)
         OPENSSL_DIR=/usr
@@ -126,6 +127,8 @@ AC_SUBST(USE_OPENSSL)
 AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_NTRU)
 AC_SUBST(USE_MCBITS)
+AC_SUBST(ON_DARWIN)
+
 
 AC_CONFIG_FILES([Makefile
                  src/common/Makefile

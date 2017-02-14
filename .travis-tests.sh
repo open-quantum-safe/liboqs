@@ -3,22 +3,23 @@
 autoreconf -i
 enable_disable_str=
 if [[ ${USE_OPENSSL} == 1 ]];then
-  enable_disable_str="--enable-openssl"
+  enable_disable_str=" --enable-openssl"
 fi
 
 if [[ ${AES_NI} == 0 ]];then
-  enable_disable_str=${enable_disable_str}" --disable-aes-ni"
+  enable_disable_str+=" --disable-aes-ni"
 fi
 
 if [[ ${ENABLE_CODE_MCBITS} == 1 ]];then
-  enable_disable_str="--enable-mcbits"
+  enable_disable_str+=" --enable-mcbits"
 fi
 
 if [[ ${ENABLE_NTRU} == 1 ]];then
-  enable_disable_str="--enable-ntru"
+  enable_disable_str+=" --enable-ntru"
+  ./download-and-build-ntru.sh
 fi
 
-./configure ${enable_disable_str}
+./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make
 make test
