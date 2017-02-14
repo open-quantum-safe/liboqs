@@ -16,7 +16,6 @@ fi
 
 if [[ ${ENABLE_NTRU} == 1 ]];then
   enable_disable_str+=" --enable-ntru"
-  ./download-and-build-ntru.sh
 fi
 
 ./configure --enable-silent-rules ${enable_disable_str}
