@@ -120,7 +120,7 @@ static int rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int i
 
 	printf("1-byte mode for %d iterations\n", 8 * iterations);
 	rand_test_distribution_8(rand, occurrences, 8 * iterations);
-	printf("    Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
+	OQS_RAND_report_statistics(occurrences, "    ");
 
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
@@ -128,7 +128,7 @@ static int rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int i
 
 	printf("4-byte mode for %d iterations\n", 2 * iterations);
 	rand_test_distribution_32(rand, occurrences, 2 * iterations);
-	printf("    Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
+	OQS_RAND_report_statistics(occurrences, "    ");
 
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
@@ -136,7 +136,7 @@ static int rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int i
 
 	printf("8-byte mode for %d iterations\n", iterations);
 	rand_test_distribution_64(rand, occurrences, iterations);
-	printf("    Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
+	OQS_RAND_report_statistics(occurrences, "    ");
 
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
@@ -144,7 +144,7 @@ static int rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int i
 
 	printf("n-byte mode for %d bytes\n", 8 * iterations);
 	rand_test_distribution_n(rand, occurrences, 8 * iterations);
-	printf("    Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
+	OQS_RAND_report_statistics(occurrences, "    ");
 
 	OQS_RAND_free(rand);
 

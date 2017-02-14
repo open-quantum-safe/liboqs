@@ -48,7 +48,7 @@ static int test_aes128_correctness_c(OQS_RAND *rand) {
 	}
 }
 
-#ifndef AES_DISABLE_NI
+#ifdef AES_ENABLE_NI
 static int test_aes128_correctness_ni(OQS_RAND *rand) {
 	uint8_t key[16], plaintext[16], ciphertext[16], decrypted[16];
 	void *schedule = NULL;
@@ -173,7 +173,7 @@ static void speed_aes128_c(OQS_RAND *rand) {
 	oqs_aes128_free_schedule_c(schedule);
 }
 
-#ifndef AES_DISABLE_NI
+#ifdef AES_ENABLE_NI
 
 static void speed_aes128_ni(OQS_RAND *rand) {
 	uint8_t key[16], plaintext[320], ciphertext[320], decrypted[320];
@@ -239,12 +239,12 @@ int main(int argc, char **argv) {
 		goto err;
 	}
 	TEST_REPEATEDLY(test_aes128_correctness_c(rand));
-#ifndef AES_DISABLE_NI
+#ifdef AES_ENABLE_NI
 	TEST_REPEATEDLY(test_aes128_correctness_ni(rand));
 	TEST_REPEATEDLY(test_aes128_c_equals_ni(rand));
 #endif
 	TEST_REPEATEDLY(test_aes128_ecb_correctness_c(rand));
-#ifndef AES_DISABLE_NI
+#ifdef AES_ENABLE_NI
 	TEST_REPEATEDLY(test_aes128_ecb_correctness_ni(rand));
 #endif
 #ifdef USE_OPENSSL
@@ -256,7 +256,7 @@ int main(int argc, char **argv) {
 		printf("=== test_aes performance ===\n");
 		PRINT_TIMER_HEADER
 		speed_aes128_c(rand);
-#ifndef AES_DISABLE_NI
+#ifdef AES_ENABLE_NI
 		speed_aes128_ni(rand);
 #endif
 #ifdef USE_OPENSSL

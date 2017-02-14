@@ -181,7 +181,7 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 		}
 	}
 	printf("All session keys matched.\n");
-	printf("Statistical distance from uniform: %12.10f\n", OQS_RAND_test_statistical_distance_from_uniform(occurrences));
+	OQS_RAND_report_statistics(occurrences, "");
 	printf("\n\n");
 
 	ret = 1;
@@ -238,6 +238,8 @@ static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 	OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
 	TIME_OPERATION_SECONDS({ OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len); free(alice_key); }, "alice 1", seconds);
 	alice_key = NULL;
+
+	printf("Communication (bytes): A->B: %zu, B->A: %zu, total: %zu\n", alice_msg_len, bob_msg_len, alice_msg_len + bob_msg_len);
 
 	rc = 1;
 	goto cleanup;
