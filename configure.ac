@@ -84,6 +84,7 @@ case $host_os in
         if test x"${ac_cv_sizeof_size_t}" = x"8";then
           AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
         fi
+        AM_CONDITIONAL([ON_DARWIN], [test xtrue = xfalse])
         ;;
     *)
         #Default Case
