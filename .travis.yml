@@ -55,7 +55,7 @@ matrix:
     compiler: clang
     env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1 ENABLE_NTRU=1 ENABLE_SIDH_IQC_REF=1
 before_install:
-      - brew install clang-format openssl libsodium gmp
+      - brew install clang-format openssl libsodium
       - bash download-and-build-ntru.sh
 
 script:
