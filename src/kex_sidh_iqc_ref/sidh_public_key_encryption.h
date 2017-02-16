@@ -123,7 +123,7 @@ char *oqs_sidh_iqc_ref_public_key_encryption_hash(const fp2_element_t value,
 /**
  * @return the key-size in bytes
  */
-long public_key_get_key_size();
+long oqs_sidh_iqc_ref_public_key_get_key_size();
 
 #ifdef __cplusplus
 }

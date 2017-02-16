@@ -48,7 +48,7 @@ void oqs_sidh_iqc_ref_public_key_plaintext_clear(plaintext_t plaintext) {
 
 int oqs_sidh_iqc_ref_public_key_pad_plaintext(plaintext_t result,
                                               const plaintext_t raw) {
-	long key_size = public_key_get_key_size();
+	long key_size = oqs_sidh_iqc_ref_public_key_get_key_size();
 	long max_msg_size = key_size - 1;
 
 	if (raw->size > key_size) {
@@ -151,7 +151,7 @@ char *oqs_sidh_iqc_ref_public_key_encryption_hash(const fp2_element_t value,
 	return hash;
 }
 
-long public_key_get_key_size() {
+long oqs_sidh_iqc_ref_public_key_get_key_size() {
 	// the key size is twice as large as the base prime.
 	long key_size = 2 * labs(mpz_size(characteristic)) * sizeof(mp_limb_t);
 	return key_size;
