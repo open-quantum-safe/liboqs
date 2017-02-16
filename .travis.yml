@@ -13,7 +13,7 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
-				- libgmp-dev
+        - libgmp-dev
     before_install:
       - sh .travis/install-clang-format-linux.sh
   - os: linux
