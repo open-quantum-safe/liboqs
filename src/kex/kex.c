@@ -14,6 +14,7 @@
 #ifdef ENABLE_NTRU
 #include <oqs/kex_ntru.h>
 #endif
+#include <oqs/kex_sidh_iqc_ref.h>
 
 OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 	switch (alg_name) {
@@ -40,6 +41,12 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 	case OQS_KEX_alg_ntru:
 #ifdef ENABLE_NTRU
 		return OQS_KEX_ntru_new(rand);
+#else
+		assert(0);
+#endif
+	case OQS_KEX_alg_sidh_iqc_ref:
+#ifdef ENABLE_SIDH_IQC_REF
+		return OQS_KEX_sidh_iqc_ref_new(rand);
 #else
 		assert(0);
 #endif

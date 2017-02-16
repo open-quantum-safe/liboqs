@@ -30,6 +30,10 @@ liboqs_la_LIBADD += src/kex_ntru/libntru.la
 liboqs_la_LIBADD += external/NTRUEncrypt-master/.libs/libntruencrypt.la
 endif
 
+if USE_SIDH_IQC
+liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
+endif
+
 noinst_bin_PROGRAMS = test_rand test_kex test_aes
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
@@ -41,6 +45,9 @@ test_kex_LDADD += -lcrypto
 endif
 if USE_MCBITS
 test_kex_LDADD += -lsodium
+endif
+if USE_SIDH_IQC
+test_kex_LDADD += -lgmp
 endif
 
 test_aes_LDADD =  liboqs.la -lm
@@ -100,6 +107,10 @@ if USE_MCBITS
 endif
 if USE_NTRU
 	$(LN_S) -f ../../src/kex_ntru/kex_ntru.h include/oqs
+endif
+if USE_SIDH_IQC
+	$(LN_S) -f ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
+	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
 endif
 
 clean-local:
