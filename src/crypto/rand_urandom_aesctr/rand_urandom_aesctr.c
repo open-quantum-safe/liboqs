@@ -49,14 +49,15 @@ okay:
 
 void OQS_RAND_urandom_aesctr_n(OQS_RAND *r, uint8_t *out, size_t n) {
 	oqs_rand_urandom_aesctr_ctx *rand_ctx = (oqs_rand_urandom_aesctr_ctx *) r->ctx;
-	uint64_t *out_64 = (uint64_t *) out;
-	for (size_t i = 0; i < n / 16; i++) {
-		out_64[i] = rand_ctx->ctr;
-		rand_ctx->ctr++;
+        const uint64_t num_full_blocks = n / 16;
+	uint64_t *half_blocks = (uint64_t *) out;
+	for (size_t i = 0; i < num_full_blocks; i++) {
+		half_blocks[2*i] = rand_ctx->ctr++;
+		half_blocks[2*i+1] = 0;
 	}
-	OQS_AES128_ECB_enc_sch(out, n, rand_ctx->schedule, out);
-	for (size_t i = 0; i < n % 16; i++) {
-		out[16 * (n / 16) + i] = OQS_RAND_urandom_aesctr_8(r);
+	OQS_AES128_ECB_enc_sch(out, 16*num_full_blocks, rand_ctx->schedule, out);
+	for (size_t i = 16*num_full_blocks; i < n; i++) {
+		out[i] = OQS_RAND_urandom_aesctr_8(r);
 	}
 }
 
