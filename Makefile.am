@@ -78,9 +78,9 @@ test: clean-tests
 	make
 if USE_NTRU
 if ON_DARWIN
-	install_name_tool -change `otool -L ./test_kex | grep "/usr/local" | awk -F ' ' '{ print $$1 }'` external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_kex
-	install_name_tool -change `otool -L ./test_aes | grep "/usr/local" | awk -F ' ' '{ print $$1 }'`  external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_aes
-	install_name_tool -change `otool -L ./test_rand | grep "/usr/local" | awk -F ' ' '{ print $$1 }'` external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_rand
+	install_name_tool -change `otool -L ./test_kex | grep "ntru" | awk -F ' ' '{ print $$1 }'` external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_kex
+	install_name_tool -change `otool -L ./test_aes | grep "ntru" | awk -F ' ' '{ print $$1 }'`  external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_aes
+	install_name_tool -change `otool -L ./test_rand | grep "ntru" | awk -F ' ' '{ print $$1 }'` external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_rand
 endif
 endif
 	./test_kex
