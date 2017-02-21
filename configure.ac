@@ -81,7 +81,7 @@ AC_CANONICAL_HOST
 case $host_os in
   darwin* )
         OPENSSL_DIR=/usr/local/opt/openssl
-        GMP_DIR=/usr/local/opt/include
+        GMP_DIR=/usr/local/opt/
         AM_CONDITIONAL([ON_DARWIN], [test xtrue = xtrue])
         ;;
   linux*)

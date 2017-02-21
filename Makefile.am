@@ -107,6 +107,7 @@ if USE_MCBITS
 endif
 if USE_NTRU
 	$(LN_S) -f ../../src/kex_ntru/kex_ntru.h include/oqs
+	test -d "external/NTRUEncrypt-master" || ./download-and-build-ntru.sh
 endif
 if USE_SIDH_IQC
 	$(LN_S) -f ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
