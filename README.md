@@ -78,14 +78,14 @@ McBits is disabled by default in the Visual Studio build; follow these steps to 
 - Obtain the [libsodium library](https://libsodium.org); compile the static library from the Visual Studio projects.
 - Add `ENABLE_CODE_MCBITS` and `SODIUM_STATIC` to the preprocessor definitions of the `oqs` and `test_kex` projects.
 - Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
-- Add the libsodium library to the "Additional Depencies" in the `test_kex` project Linker properties.
+- Add the libsodium library to the "Additional Dependencies" in the `test_kex` project Linker properties.
 
 NTRU is disabled by default in the Visual Studio build; follow these steps to enable it:
 
 - Obtain the [NTRU library](https://github.com/NTRUOpenSourceProject/NTRUEncrypt); compile the NtruEncrypt_DLL from the Visual Studio projects.
 - Add `ENABLE_NTRU` to the preprocessor definitions of the `oqs` and `test_kex` projects.
 - Add the "NTRUEncrypt-master/include" location to the "Additional Include Directories" in the oqs project C properties.
-- Add the NtruEncrypt_DLL.lib library to the "Additional Depencies" in the `test_kex` project Linker properties.
+- Add the NtruEncrypt_DLL.lib library to the "Additional Dependencies" in the `test_kex` project Linker properties.
 
 
 Build options on Linux and macOS
