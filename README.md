@@ -39,9 +39,9 @@ Builds have been tested on Mac OS X 10.11.6, macOS 10.12, Ubuntu 16.04.1, and Wi
 
 ### Linux and macOS
 
-On macOS, you need to install autoconf and automake:
+On macOS, you need to install autoconf, automake and libtool:
 
-	brew install autoconf automake
+	brew install autoconf automake libtool
 
 To build, clone or download the source from GitHub, then simply type:
 
