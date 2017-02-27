@@ -49,7 +49,7 @@ okay:
 
 void OQS_RAND_urandom_aesctr_n(OQS_RAND *r, uint8_t *out, size_t n) {
 	oqs_rand_urandom_aesctr_ctx *rand_ctx = (oqs_rand_urandom_aesctr_ctx *) r->ctx;
-    const uint64_t num_full_blocks = n / 16;
+	const uint64_t num_full_blocks = n / 16;
 	uint64_t *half_blocks = (uint64_t *) out;
 	for (size_t i = 0; i < num_full_blocks; i++) {
 		half_blocks[2 * i] = rand_ctx->ctr++;
