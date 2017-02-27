@@ -6,5 +6,5 @@ libsidhiqc_la_SOURCES = kex_sidh_iqc_ref.c sidh_elliptic_curve.c sidh_elliptic_c
 libsidhiqc_la_SOURCES += sidh_private_key.c sidh_public_key.c sidh_public_key_encryption.c sidh_public_key_validation.c
 libsidhiqc_la_SOURCES += sidh_public_param.c sidh_quadratic_ext.c sidh_shared_key.c sidh_util.c
 libsidhiqc_la_CPPFLAGS = -I../../include -I.-fPIC
-libsidhiqc_la_CPPFLAGS += $(AM_CPPFLAGS) -I$(GMP_DIR) 
+libsidhiqc_la_CPPFLAGS += $(AM_CPPFLAGS) -I$(GMP_DIR)/include 
 
