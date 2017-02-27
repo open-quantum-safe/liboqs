@@ -17,8 +17,8 @@ extern const uint64_t p751p1[NWORDS_FIELD];
 extern const uint64_t p751x2[NWORDS_FIELD];
 
 __inline void oqs_sidh_cln16_fpadd751(digit_t *a, digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p751.
-	                                                                        // Inputs: a, b in [0, 2*p751-1]
-	                                                                        // Output: c in [0, 2*p751-1]
+                                                                            // Inputs: a, b in [0, 2*p751-1]
+                                                                            // Output: c in [0, 2*p751-1]
 
 #if (OS_TARGET == OS_WIN)
 	unsigned int i, carry = 0;
@@ -47,8 +47,8 @@ __inline void oqs_sidh_cln16_fpadd751(digit_t *a, digit_t *b, digit_t *c) { // M
 }
 
 __inline void oqs_sidh_cln16_fpsub751(digit_t *a, digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p751.
-	                                                                        // Inputs: a, b in [0, 2*p751-1]
-	                                                                        // Output: c in [0, 2*p751-1]
+                                                                            // Inputs: a, b in [0, 2*p751-1]
+                                                                            // Output: c in [0, 2*p751-1]
 
 #if (OS_TARGET == OS_WIN)
 	unsigned int i, borrow = 0;
@@ -523,8 +523,8 @@ void oqs_sidh_cln16_mp_mul(digit_t *a, digit_t *b, digit_t *c, UNUSED unsigned i
 }
 
 void oqs_sidh_cln16_rdc_mont(oqs_sidh_cln16_dfelm_t ma, oqs_sidh_cln16_felm_t mc) { // Optimized Montgomery reduction using comba and exploiting the special form of the prime p751.
-	                                                                                // mc = ma*mb*R^-1 mod p751, where ma,mb,mc in [0, 2*p751-1] and R = 2^768.
-	                                                                                // ma and mb are assumed to be in Montgomery representation.
+                                                                                    // mc = ma*mb*R^-1 mod p751, where ma,mb,mc in [0, 2*p751-1] and R = 2^768.
+                                                                                    // ma and mb are assumed to be in Montgomery representation.
 
 #if (OS_TARGET == OS_WIN)
 	unsigned int carry;
