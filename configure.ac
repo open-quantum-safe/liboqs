@@ -94,7 +94,7 @@ case $host_os in
           AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr/local/opt/).]),
           [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
            AC_SUBST(GMP_DIR, [$withval])],
-          [AC_SUBST(GMP_DIR, /usr/local/opt/)]
+          [AC_SUBST(GMP_DIR, /usr/local)]
         )
         AM_CONDITIONAL([ON_DARWIN], [test xtrue = xtrue])
         ;;

@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = foreign 
+AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I config
 
 # DOXYGEN SUPPORT
@@ -39,7 +39,7 @@ noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
 test_kex_SOURCES = src/kex/test_kex.c
 test_kex_CPPFLAGS = -I./include
-test_kex_CPPFLAGS += $(AM_CPPFLAGS) 
+test_kex_CPPFLAGS += $(AM_CPPFLAGS)
 if USE_OPENSSL
 test_kex_LDADD += -lcrypto
 endif
@@ -125,4 +125,3 @@ prettyprint:
 
 docs: links
 	doxygen
-
