@@ -25,6 +25,9 @@ struct kex_testcase kex_testcases[] = {
     {OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0, 100},
     {OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0, 100},
     {OQS_KEX_alg_sidh_cln16, NULL, 0, NULL, "sidh_cln16", 0, 10},
+#ifdef ENABLE_SIDH_IQC_REF
+    {OQS_KEX_alg_sidh_iqc_ref, NULL, 0, NULL, "sidh_iqc_ref", 0, 10},
+#endif
 #ifdef ENABLE_CODE_MCBITS
     {OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
 #endif

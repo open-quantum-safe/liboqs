@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir external 
+mkdir -p external 
 cd external 
 wget https://github.com/NTRUOpenSourceProject/NTRUEncrypt/archive/master.zip
 unzip master

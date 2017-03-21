@@ -18,6 +18,10 @@ if [[ ${ENABLE_NTRU} == 1 ]];then
   enable_disable_str+=" --enable-ntru"
 fi
 
+if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
+  enable_disable_str+=" --enable-sidhiqc"
+fi
+
 ./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make

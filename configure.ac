@@ -17,6 +17,7 @@ AC_PROG_MKDIR_P
 AM_PROG_AS
 AM_INIT_AUTOMAKE([subdir-objects])
 m4_include(m4/macros/enable-disable.m4)
+m4_include(m4/macros/with.m4)
 LT_INIT([disable-shared])
 AC_CHECK_SIZEOF([size_t])
 # Checks for libraries.
@@ -69,18 +70,49 @@ ARG_ENABL_SET([ntru], [enable NTRU.])
 AM_CONDITIONAL([ntru], [test "x$ntru" = xtrue])
 AM_CONDITIONAL([USE_NTRU], [test "x$ntru" = xtrue])
 
+ARG_ENABL_SET([sidhiqc], [enable SIDH-IQC.])
+AM_CONDITIONAL([sidhiqc], [test "x$sidhiqc" = xtrue])
+AM_CONDITIONAL([USE_SIDH_IQC], [test "x$sidhiqc" = xtrue])
 
-AM_CPPFLAGS="-O3 -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
+
+
+AM_CPPFLAGS="-g -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 AC_CANONICAL_HOST
 # Check for which host we are on and setup a few things
 # specifically based on the host
 case $host_os in
   darwin* )
-        OPENSSL_DIR=/usr/local/opt/openssl
+        AC_ARG_WITH(
+          [openssl-dir],
+          AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr/local/opt/openssl).]),
+          [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
+           AC_SUBST(OPENSSL_DIR, [$withval])],
+          [AC_SUBST(OPENSSL_DIR, /usr/local/opt/openssl)]
+        )
+        AC_ARG_WITH(
+          [gmp-dir],
+          AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr/local/opt/).]),
+          [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
+           AC_SUBST(GMP_DIR, [$withval])],
+          [AC_SUBST(GMP_DIR, /usr/local)]
+        )
         AM_CONDITIONAL([ON_DARWIN], [test xtrue = xtrue])
         ;;
   linux*)
-        OPENSSL_DIR=/usr
+        AC_ARG_WITH(
+          [openssl-dir],
+          AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr).]),
+          [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
+           AC_SUBST(OPENSSL_DIR, [$withval])],
+          [AC_SUBST(OPENSSL_DIR, /usr)]
+        )
+        AC_ARG_WITH(
+          [gmp-dir],
+          AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr).]),
+          [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
+           AC_SUBST(GMP_DIR, [$withval])],
+          [AC_SUBST(GMP_DIR, /usr)]
+        )
         if test x"${ac_cv_sizeof_size_t}" = x"8";then
           AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
         fi
@@ -92,7 +124,6 @@ case $host_os in
         ;;
 esac
 
-
 SRCDIR=" src/common src/crypto/aes src/kex src/crypto/rand src/crypto/sha3"
 SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15/"
@@ -100,8 +131,6 @@ SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
 SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
 SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
-
-
 
 if test x"$ntru" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_NTRU"
@@ -121,6 +150,12 @@ if test x"$openssl" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DUSE_OPENSSL"
 fi
 
+if test x"$sidhiqc" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIDH_IQC_REF"
+  SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
+fi
+
+
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
 AC_SUBST(OPENSSL_DIR)
@@ -128,7 +163,9 @@ AC_SUBST(USE_OPENSSL)
 AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_NTRU)
 AC_SUBST(USE_MCBITS)
+AC_SUBST(USE_SIDH_IQC)
 AC_SUBST(ON_DARWIN)
+AC_SUBST(GMP_DIR)
 
 
 AC_CONFIG_FILES([Makefile
@@ -145,6 +182,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_sidh_cln16/Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
+                 src/kex_sidh_iqc_ref/Makefile
                  src/kex_lwe_frodo/Makefile])
 
 AC_OUTPUT
