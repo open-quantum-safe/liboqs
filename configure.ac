@@ -17,6 +17,7 @@ AC_PROG_MKDIR_P
 AM_PROG_AS
 AM_INIT_AUTOMAKE([subdir-objects])
 m4_include(m4/macros/enable-disable.m4)
+m4_include(m4/macros/with.m4)
 LT_INIT([disable-shared])
 AC_CHECK_SIZEOF([size_t])
 # Checks for libraries.
@@ -74,18 +75,44 @@ AM_CONDITIONAL([sidhiqc], [test "x$sidhiqc" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$sidhiqc" = xtrue])
 
 
+
 AM_CPPFLAGS="-g -std=gnu11 -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 AC_CANONICAL_HOST
 # Check for which host we are on and setup a few things
 # specifically based on the host
 case $host_os in
   darwin* )
-        OPENSSL_DIR=/usr/local/opt/openssl
-        GMP_DIR=/usr/local/opt/include
+        AC_ARG_WITH(
+          [openssl-dir],
+          AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr/local/opt/openssl).]),
+          [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
+           AC_SUBST(OPENSSL_DIR, [$withval])],
+          [AC_SUBST(OPENSSL_DIR, /usr/local/opt/openssl)]
+        )
+        AC_ARG_WITH(
+          [gmp-dir],
+          AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr/local/opt/).]),
+          [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
+           AC_SUBST(GMP_DIR, [$withval])],
+          [AC_SUBST(GMP_DIR, /usr/local)]
+        )
         AM_CONDITIONAL([ON_DARWIN], [test xtrue = xtrue])
         ;;
   linux*)
-        OPENSSL_DIR=/usr
+        AC_ARG_WITH(
+          [openssl-dir],
+          AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr).]),
+          [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
+           AC_SUBST(OPENSSL_DIR, [$withval])],
+          [AC_SUBST(OPENSSL_DIR, /usr)]
+        )
+        AC_ARG_WITH(
+          [gmp-dir],
+          AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr).]),
+          [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
+           AC_SUBST(GMP_DIR, [$withval])],
+          [AC_SUBST(GMP_DIR, /usr)]
+        )
         if test x"${ac_cv_sizeof_size_t}" = x"8";then
           AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
         fi

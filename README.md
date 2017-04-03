@@ -28,20 +28,22 @@ liboqs currently contains:
 - `kex_rlwe_msrln16`: Microsoft Research implementation of Peikert's ring-LWE key exchange (Longa, Naehrig, *CANS 2016*, [https://eprint.iacr.org/2016/504](https://eprint.iacr.org/2016/504)) (based on the implementation of Alkim, Ducas, Pöppelmann, and Schwabe, with improvements from Longa and Naehrig, see [https://www.microsoft.com/en-us/research/project/lattice-cryptography-library/](https://www.microsoft.com/en-us/research/project/lattice-cryptography-library/))
 - `kex_lwe_frodo`: "Frodo": key exchange from the learning with errors problem (Bos, Costello, Ducas, Mironov, Naehrig, Nikolaenko, Raghunathan, Stebila, *ACM Conference on Computer and Communications Security 2016*, [http://eprint.iacr.org/2016/659](http://eprint.iacr.org/2016/659))
 - `kex_sidh_cln16`: key exchange from the supersingular isogeny Diffie-Hellman problem (Costello, Naehrig, Longa, *CRYPTO 2016*, [https://eprint.iacr.org/2016/413](https://eprint.iacr.org/2016/413)), using the implementation of Microsoft Research [https://www.microsoft.com/en-us/research/project/sidh-library/](https://www.microsoft.com/en-us/research/project/sidh-library/)
+- `kex_sidh_iqc_ref`: key exchange from the supersingular isogeny Diffie-Hellman problem (De Feo, Jao, Plût, *J. Math. Cryptol.* 8(3):209, 2014, [https://eprint.iacr.org/2011/506](https://eprint.iacr.org/2011/506)), using a reference implementation by Javad Doliskani
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
 - `kex_ntru`: NTRU: key transport using NTRU public key encryption (Hoffstein, Pipher, Silverman, *ANTS 1998*) with the EES743EP1 parameter set, wrapper around the implementation from the NTRU Open Source project [https://github.com/NTRUOpenSourceProject/NTRUEncrypt](https://github.com/NTRUOpenSourceProject/NTRUEncrypt))
 
+Building and Running on Linux and macOS
+---------------------------------------
 
-Building and Running
---------------------
+Builds have been tested on Mac OS X 10.11.6, macOS 10.12, Ubuntu 16.04.1.
 
-Builds have been tested on Mac OS X 10.11.6, macOS 10.12, Ubuntu 16.04.1, and Windows 10.
+### Install dependencies for macOS
 
-### Linux and macOS
+You need to install autoconf, automake and libtool:
 
-On macOS, you need to install autoconf and automake:
-
-	brew install autoconf automake
+	brew install autoconf automake libtool
+	
+### Building	
 
 To build, clone or download the source from GitHub, then simply type:
 
@@ -57,6 +59,8 @@ This will generate:
 - `test_aes`: A simple test harness for AES.  This will test the correctness of the C implementation (and of the AES-NI implementation, if not disabled) of AES, and will compare the speed of these implementations against OpenSSL's AES implementation.
 - `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
 
+### Running
+
 To run the tests, simply type:
 
 	make test
@@ -64,68 +68,110 @@ To run the tests, simply type:
 To run benchmarks, run
 
 	./test_kex --bench
+	
+### Additional build options
 
-and
+#### Building with OpenSSL algorithms enabled:
 
-	./test_aes --bench
+OpenSSL can be used for some symmetric crypto algorithms, which may result in better performance.
 
-### Windows
+To build with OpenSSL enabled:
 
-Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder.
+	./configure --enable-openssl
+	make clean
+	make
+
+You may need to specify the path to your OpenSSL directory:
+
+	./configure --enable-openssl --with-openssl-dir=/path/to/openssl/directory
+	make clean
+	make
+	
+### Building with `kex_sidh_iqc_ref` enabled
+
+The `kex_sidh_iqc_ref ` key exchange method is not enabled by default since it requires an external library (libgmp).
+
+To install the library on macOS:
+
+	brew install gmp
+
+To build with `kex_sidh_iqc_ref ` enabled:
+
+	./configure --enable-sidhiqc
+	make clean
+	make
+	
+You may need to specify the path to your libgmp directory:
+
+	./configure --enable-sidhiqc --with-gmp-dir=/path/to/gmp/directory
+	make clean
+	make
+
+### Building with `kex_code_mcbits` enabled
+
+The `kex_code_mcbits` key exchange method is not enabled by default since it requires an external library (libsodium).
+
+To install the library on macOS:
+
+	brew install libsodium
+
+To build with `kex_code_mcbits ` enabled:
+
+	./configure --enable-libsodium
+	make clean
+	make
+	
+### Building with `kex_ntru` enabled
+
+The `kex_ntru` key exchange method is not enabled by default since the NTRU source code is not distributed with liboqs.  
+
+To download and build the NTRU source code:
+
+	./download-and-build-ntru.sh
+
+To build with `kex_ntru` enabled:
+
+	./configure --enable-ntru
+	make clean
+	make
+
+Building and running on Windows
+-------------------------------
+
+Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder.  Builds have been tested on Windows 10.
 
 McBits is disabled by default in the Visual Studio build; follow these steps to enable it:
 
 - Obtain the [libsodium library](https://libsodium.org); compile the static library from the Visual Studio projects.
 - Add `ENABLE_CODE_MCBITS` and `SODIUM_STATIC` to the preprocessor definitions of the `oqs` and `test_kex` projects.
 - Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
-- Add the libsodium library to the "Additional Depencies" in the `test_kex` project Linker properties.
+- Add the libsodium library to the "Additional Dependencies" in the `test_kex` project Linker properties.
 
 NTRU is disabled by default in the Visual Studio build; follow these steps to enable it:
 
 - Obtain the [NTRU library](https://github.com/NTRUOpenSourceProject/NTRUEncrypt); compile the NtruEncrypt_DLL from the Visual Studio projects.
 - Add `ENABLE_NTRU` to the preprocessor definitions of the `oqs` and `test_kex` projects.
 - Add the "NTRUEncrypt-master/include" location to the "Additional Include Directories" in the oqs project C properties.
-- Add the NtruEncrypt_DLL.lib library to the "Additional Depencies" in the `test_kex` project Linker properties.
-
-
-Build options on Linux and macOS
---------------------------------
-
-### Building with `kex_code_mcbits` enabled
-
-The `kex_code_mcbits` key exchange method is not enabled by default.  In order to enable it, you need to carry out the following steps:
-
-1. Install the [libsodium library](https://libsodium.org) and put it in your build path.  Your operating system may make this easy for you:
-	- On macOS with brew: `brew install libsodium`
-2. Build liboqs with the following option:
-
-~~~
-./configure --enable-mcbits
-make clean
-make
-~~~
-
-### Building with `kex_ntru` enabled
-
-The `kex_ntru` key exchange method is not enabled by default.  In order to enable it, you need to carry out the following steps:
-
-1. Download and build the NTRUEncrypt library from the NTRU Open Source project.  You can do this by running the script `download-and-build-ntru.sh`.
-2. Build liboqs with the following option:
-
-~~~
-./configure --enable-ntru
-make clean
-make
-~~~
+- Add the NtruEncrypt_DLL.lib library to the "Additional Dependencies" in the `test_kex` project Linker properties.
 
 Documentation
 -------------
 
-Some source files contain inline Doxygen-formatted documentation.  The documentation can be generated by running:
+The director `docs/Algorithm data sheets` contains information about some of the algorithms supported by liboqs.
 
-	doxygen
+### Doxygen documentation
 
-This will generate the `docs/html` directory.
+Some source files contain inline Doxygen-formatted comments which can be used to generate additional documentation.
+
+On macOS, you may need to install several dependencies first:
+
+	brew install doxygen graphviz
+
+The documentation can be generated by running:
+
+	make docs
+
+This will generate the `docs/doxygen/html` directory.  Check `./configure --help` for generating other formats.
 
 Contributing and using
 ----------------------
@@ -142,42 +188,20 @@ We are also interested in assistance from code reviewers.
 
 Please contact Douglas Stebila <[stebilad@mcmaster.ca](mailto:stebilad@mcmaster.ca)>.
 
-Current status and plans
-------------------------
-
-Our initial launch was on August 11, 2016, containing a single key exchange algorithm (`kex_rlwe_bcns15`) with a basic test harness.
-
-Since our initial launch, we have made the following updates:
-
-- Test harness for key exchange algorithms and random number generator
-- Integration of liboqs into OpenSSL ([open-quantum-safe/openssl/](https://github.com/open-quantum-safe/openssl/))
-- Licensing liboqs under the MIT license (see below)
-- `kex_lwe_frodo` implementation
-- Building on Windows
-- Use of travis continuous integration system for testing
-- `kex_rlwe_newhope` wrapper
-- `kex_rlwe_msrln16` implementation contributed by Christian Paquin (Microsoft Research)
-- `kex_sidh_cln16` implementation contributed by Christian Paquin (Microsoft Research)
-- `kex_code_mcbits` wrapper
-- `kex_ntru` wrapper
-
-Our plans for the next few months can be found in [Milestone 1 - Key exchange](https://github.com/open-quantum-safe/liboqs/projects/2).
-
-In the long term, we are also interested in including post-quantum signature schemes.
-
 License
 -------
 
 liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for details.  liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
-- `src/aes/aes.c`: public domain
+- `src/crypto/aes/aes_c.c`: public domain
 - `src/kex_rlwe_bcns15`: public domain ([Unlicense](http://unlicense.org))
 - `src/kex_rlwe_msrln16`: MIT License
 - `src/kex_rlwe_msrln16/external`: public domain ([CC0](http://creativecommons.org/publicdomain/zero/1.0/))
 - `src/kex_rlwe_newhope`: public domain
 - `src/kex_sidh_cln16`: MIT License
+- `src/kex_sidh_iqc_ref`: MIT License
 - `src/kex_code_mcbits`: public domain
-- `src/rand_urandom_chacha20/external`: public domain
+- `src/crypto/rand_urandom_chacha20/external`: public domain
 
 Team
 ----
@@ -186,6 +210,7 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 
 ### Contributors
 
+- Javad Doliskani (University of Waterloo)
 - Tancrède Lepoint (SRI)
 - Shravan Mishra (University of Waterloo)
 - Christian Paquin (Microsoft Research)

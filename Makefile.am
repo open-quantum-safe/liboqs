@@ -1,4 +1,4 @@
-AUTOMAKE_OPTIONS = foreign 
+AUTOMAKE_OPTIONS = foreign
 ACLOCAL_AMFLAGS = -I config
 
 # DOXYGEN SUPPORT
@@ -39,7 +39,7 @@ noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
 test_kex_SOURCES = src/kex/test_kex.c
 test_kex_CPPFLAGS = -I./include
-test_kex_CPPFLAGS += $(AM_CPPFLAGS) 
+test_kex_CPPFLAGS += $(AM_CPPFLAGS)
 if USE_OPENSSL
 test_kex_LDADD += -lcrypto
 endif
@@ -78,9 +78,9 @@ test: clean-tests
 	make
 if USE_NTRU
 if ON_DARWIN
-	install_name_tool -change `otool -L ./test_kex | grep "/usr/local" | awk -F ' ' '{ print $$1 }'` external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_kex
-	install_name_tool -change `otool -L ./test_aes | grep "/usr/local" | awk -F ' ' '{ print $$1 }'`  external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_aes
-	install_name_tool -change `otool -L ./test_rand | grep "/usr/local" | awk -F ' ' '{ print $$1 }'` external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_rand
+	install_name_tool -change `otool -L ./test_kex | grep "ntru" | awk -F ' ' '{ print $$1 }'` external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_kex
+	install_name_tool -change `otool -L ./test_aes | grep "ntru" | awk -F ' ' '{ print $$1 }'`  external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_aes
+	install_name_tool -change `otool -L ./test_rand | grep "ntru" | awk -F ' ' '{ print $$1 }'` external/NTRUEncrypt-master/.libs/libntruencrypt.0.dylib ./test_rand
 endif
 endif
 	./test_kex
@@ -107,6 +107,7 @@ if USE_MCBITS
 endif
 if USE_NTRU
 	$(LN_S) -f ../../src/kex_ntru/kex_ntru.h include/oqs
+	test -d "external/NTRUEncrypt-master" || ./download-and-build-ntru.sh
 endif
 if USE_SIDH_IQC
 	$(LN_S) -f ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
@@ -124,4 +125,3 @@ prettyprint:
 
 docs: links
 	doxygen
-
