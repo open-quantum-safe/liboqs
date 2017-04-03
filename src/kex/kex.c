@@ -10,10 +10,17 @@
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
 #endif
-#include <oqs/kex_rlwe_vscrypto.h>
 
 #ifdef ENABLE_NTRU
 #include <oqs/kex_ntru.h>
+#endif
+
+#ifdef ENABLE_SIDH_IQC_REF
+#include <oqs/kex_sidh_iqc_ref.h>
+#endif
+
+#ifdef ENABLE_VSCRYPTO
+#include <oqs/kex_rlwe_vscrypto.h>
 #endif
 
 OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
@@ -26,8 +33,6 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 		return OQS_KEX_rlwe_msrln16_new(rand);
 	case OQS_KEX_alg_rlwe_newhope:
 		return OQS_KEX_rlwe_newhope_new(rand);
-	case OQS_KEX_alg_rlwe_vscrypto:
-		return OQS_KEX_rlwe_vscrypto_new(rand,named_parameters);
 	case OQS_KEX_alg_lwe_frodo:
 		return OQS_KEX_lwe_frodo_new_recommended(rand, seed, seed_len, named_parameters);
 	case OQS_KEX_alg_sidh_cln16:
@@ -46,7 +51,18 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #else
 		assert(0);
 #endif
-
+	case OQS_KEX_alg_sidh_iqc_ref:
+#ifdef ENABLE_SIDH_IQC_REF
+		return OQS_KEX_sidh_iqc_ref_new(rand);
+#else
+		assert(0);
+#endif
+	case OQS_KEX_alg_rlwe_vscrypto:
+#ifdef ENABLE_VSCRYPTO
+		return OQS_KEX_rlwe_vscrypto_new(rand,named_parameters);
+#else
+		assert(0);
+#endif
 	default:
 		assert(0);
 		return NULL;

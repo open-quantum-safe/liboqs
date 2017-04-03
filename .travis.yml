@@ -6,13 +6,14 @@ matrix:
   include:
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-4.8
+    env: CC_OQS=gcc-4.8 ENABLE_SIDH_IQC_REF=1
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.8
+        - libgmp-dev
     before_install:
       - sh .travis/install-clang-format-linux.sh
   - os: linux
@@ -52,12 +53,10 @@ matrix:
       - bash download-and-build-ntru.sh
   - os: osx
     compiler: clang
-    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1 ENABLE_NTRU=1
-    before_install:
+    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1 ENABLE_NTRU=1 ENABLE_SIDH_IQC_REF=1
+before_install:
       - brew install clang-format openssl libsodium
       - bash download-and-build-ntru.sh
 
 script:
-  - CC=$CC_OQS make
-  - CC=$CC_OQS make check
-  - for f in $(ls .travis/*-check.sh); do bash $f; done
+  - CC=$CC_OQS ./.travis-tests.sh

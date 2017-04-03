@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#ifdef AES_DISABLE_NI
+#ifndef AES_ENABLE_NI
 #include <assert.h>
 void oqs_aes128_load_schedule_ni(UNUSED const uint8_t *key, UNUSED void **_schedule) {
 	assert(0);
