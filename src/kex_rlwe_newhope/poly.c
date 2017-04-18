@@ -86,7 +86,7 @@ static void ntt(uint16_t *a, const uint16_t *omega) {
 	}
 }
 
-static void poly_frombytes(poly *r, const unsigned char *a) {
+void poly_frombytes(poly *r, const unsigned char *a) {
 	int i;
 	for (i = 0; i < PARAM_N / 4; i++) {
 		r->coeffs[4 * i + 0] = a[7 * i + 0] | (((uint16_t) a[7 * i + 1] & 0x3f) << 8);
@@ -96,7 +96,7 @@ static void poly_frombytes(poly *r, const unsigned char *a) {
 	}
 }
 
-static void poly_tobytes(unsigned char *r, const poly *p) {
+void poly_tobytes(unsigned char *r, const poly *p) {
 	int i;
 	uint16_t t0, t1, t2, t3, m;
 	int16_t c;
@@ -136,7 +136,7 @@ static void poly_tobytes(unsigned char *r, const poly *p) {
 	}
 }
 
-static void poly_uniform(poly *a, const unsigned char *seed) {
+void poly_uniform(poly *a, const unsigned char *seed) {
 	unsigned int pos = 0, ctr = 0;
 	uint16_t val;
 	uint64_t state[OQS_SHA3_STATESIZE];
@@ -161,7 +161,7 @@ static void poly_uniform(poly *a, const unsigned char *seed) {
 	}
 }
 
-static void poly_getnoise(poly *r, OQS_RAND *rand) {
+void poly_getnoise(poly *r, OQS_RAND *rand) {
 #if PARAM_K != 16
 #error "poly_getnoise in poly.c only supports k=16"
 #endif
@@ -186,7 +186,7 @@ static void poly_getnoise(poly *r, OQS_RAND *rand) {
 	}
 }
 
-static void poly_pointwise(poly *r, const poly *a, const poly *b) {
+void poly_pointwise(poly *r, const poly *a, const poly *b) {
 	int i;
 	uint16_t t;
 	for (i = 0; i < PARAM_N; i++) {
@@ -195,19 +195,19 @@ static void poly_pointwise(poly *r, const poly *a, const poly *b) {
 	}
 }
 
-static void poly_add(poly *r, const poly *a, const poly *b) {
+void poly_add(poly *r, const poly *a, const poly *b) {
 	int i;
 	for (i = 0; i < PARAM_N; i++) {
 		r->coeffs[i] = barrett_reduce(a->coeffs[i] + b->coeffs[i]);
 	}
 }
 
-static void poly_ntt(poly *r) {
+void poly_ntt(poly *r) {
 	mul_coefficients(r->coeffs, psis_bitrev_montgomery);
 	ntt((uint16_t *) r->coeffs, omegas_montgomery);
 }
 
-static void poly_invntt(poly *r) {
+void poly_invntt(poly *r) {
 	bitrev_vector(r->coeffs);
 	ntt((uint16_t *) r->coeffs, omegas_inv_montgomery);
 	mul_coefficients(r->coeffs, psis_inv_montgomery);
@@ -274,7 +274,7 @@ static int16_t LDDecode(int32_t xi0, int32_t xi1, int32_t xi2, int32_t xi3) {
 	return t & 1;
 }
 
-static void helprec(poly *c, const poly *v, OQS_RAND *oqs_rand) {
+void helprec(poly *c, const poly *v, OQS_RAND *oqs_rand) {
 	int32_t v0[4], v1[4], v_tmp[4], k;
 	unsigned char rbit;
 	unsigned char rand[32];
@@ -304,7 +304,7 @@ static void helprec(poly *c, const poly *v, OQS_RAND *oqs_rand) {
 	}
 }
 
-static void rec(unsigned char *key, const poly *v, const poly *c) {
+void rec(unsigned char *key, const poly *v, const poly *c) {
 	int i;
 	int32_t tmp[4];
 

@@ -49,7 +49,7 @@ static void gen_a(poly *a, const unsigned char *seed) {
 
 // API FUNCTIONS
 
-static void keygen(unsigned char *send, poly *sk, OQS_RAND *rand) {
+void keygen(unsigned char *send, poly *sk, OQS_RAND *rand) {
 	poly a, e, r, pk;
 	unsigned char seed[NEWHOPE_SEEDBYTES];
 
@@ -69,7 +69,7 @@ static void keygen(unsigned char *send, poly *sk, OQS_RAND *rand) {
 	encode_a(send, &pk, seed);
 }
 
-static void sharedb(unsigned char *sharedkey, unsigned char *send, const unsigned char *received, OQS_RAND *rand) {
+void sharedb(unsigned char *sharedkey, unsigned char *send, const unsigned char *received, OQS_RAND *rand) {
 	poly sp, ep, v, a, pka, c, epp, bp;
 	unsigned char seed[NEWHOPE_SEEDBYTES];
 
@@ -101,7 +101,7 @@ static void sharedb(unsigned char *sharedkey, unsigned char *send, const unsigne
 #endif
 }
 
-static void shareda(unsigned char *sharedkey, const poly *sk, const unsigned char *received) {
+void shareda(unsigned char *sharedkey, const poly *sk, const unsigned char *received) {
 	poly v, bp, c;
 
 	decode_b(&bp, &c, received);
@@ -115,3 +115,4 @@ static void shareda(unsigned char *sharedkey, const poly *sk, const unsigned cha
 	OQS_SHA3_sha3256(sharedkey, sharedkey, 32);
 #endif
 }
+
