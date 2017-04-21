@@ -76,7 +76,7 @@ AM_CONDITIONAL([USE_SIDH_IQC], [test "x$sidhiqc" = xtrue])
 
 
 
-AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
+AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 AC_CANONICAL_HOST
 # Check for which host we are on and setup a few things
 # specifically based on the host
