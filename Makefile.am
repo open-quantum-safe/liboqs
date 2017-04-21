@@ -11,7 +11,7 @@ CLANGFORMAT ?= clang-format
 
 SUBDIRS = ${SRCDIR}
 
-BUILT_SOURCES = links
+BUILT_SOURCES = links ntru
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD = src/common/libcommon.la src/kex/libkex.la src/crypto/rand/librand.la src/crypto/aes/libaes.la
@@ -75,6 +75,9 @@ endif
 
 
 test: clean-tests
+if USE_NTRU
+	make -C external/NTRUEncrypt-master/
+endif
 	make
 if USE_NTRU
 if ON_DARWIN
@@ -87,7 +90,12 @@ endif
 	./test_rand
 	./test_aes
 
-links:
+ntru:
+if USE_NTRU
+	make -C external/NTRUEncrypt-master/
+endif 
+
+links: 
 	$(MKDIR_P) include/oqs
 	$(LN_S) -f ../../src/common/common.h include/oqs
 	$(LN_S) -f ../../src/crypto/aes/aes.h include/oqs
@@ -116,6 +124,13 @@ endif
 
 clean-local:
 	rm -f liboqs.a
+	rm -rf include
+if USE_SIDH_IQC
+	rm -f sample_params
+endif
+if USE_NTRU
+	make -C external/NTRUEncrypt-master/ clean
+endif
 
 clean-tests:
 	rm -f test_kex test_rand test_aes

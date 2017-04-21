@@ -68,7 +68,8 @@ static void ntt(uint16_t *a, const uint16_t *omega) {
 				W = omega[jTwiddle++];
 				temp = a[j];
 				a[j] = (temp + a[j + distance]); // Omit reduction (be lazy)
-				a[j + distance] = montgomery_reduce((W * ((uint32_t) temp + 3 * PARAM_Q - a[j + distance])));
+				a[j + distance] = montgomery_reduce(
+				    (W * ((uint32_t) temp + 3 * PARAM_Q - a[j + distance])));
 			}
 		}
 
@@ -80,7 +81,8 @@ static void ntt(uint16_t *a, const uint16_t *omega) {
 				W = omega[jTwiddle++];
 				temp = a[j];
 				a[j] = barrett_reduce((temp + a[j + distance]));
-				a[j + distance] = montgomery_reduce((W * ((uint32_t) temp + 3 * PARAM_Q - a[j + distance])));
+				a[j + distance] = montgomery_reduce(
+				    (W * ((uint32_t) temp + 3 * PARAM_Q - a[j + distance])));
 			}
 		}
 	}
@@ -89,10 +91,16 @@ static void ntt(uint16_t *a, const uint16_t *omega) {
 static void poly_frombytes(poly *r, const unsigned char *a) {
 	int i;
 	for (i = 0; i < PARAM_N / 4; i++) {
-		r->coeffs[4 * i + 0] = a[7 * i + 0] | (((uint16_t) a[7 * i + 1] & 0x3f) << 8);
-		r->coeffs[4 * i + 1] = (a[7 * i + 1] >> 6) | (((uint16_t) a[7 * i + 2]) << 2) | (((uint16_t) a[7 * i + 3] & 0x0f) << 10);
-		r->coeffs[4 * i + 2] = (a[7 * i + 3] >> 4) | (((uint16_t) a[7 * i + 4]) << 4) | (((uint16_t) a[7 * i + 5] & 0x03) << 12);
-		r->coeffs[4 * i + 3] = (a[7 * i + 5] >> 2) | (((uint16_t) a[7 * i + 6]) << 6);
+		r->coeffs[4 * i + 0] =
+		    a[7 * i + 0] | (((uint16_t) a[7 * i + 1] & 0x3f) << 8);
+		r->coeffs[4 * i + 1] = (a[7 * i + 1] >> 6) |
+		                       (((uint16_t) a[7 * i + 2]) << 2) |
+		                       (((uint16_t) a[7 * i + 3] & 0x0f) << 10);
+		r->coeffs[4 * i + 2] = (a[7 * i + 3] >> 4) |
+		                       (((uint16_t) a[7 * i + 4]) << 4) |
+		                       (((uint16_t) a[7 * i + 5] & 0x03) << 12);
+		r->coeffs[4 * i + 3] =
+		    (a[7 * i + 5] >> 2) | (((uint16_t) a[7 * i + 6]) << 6);
 	}
 }
 
@@ -101,7 +109,8 @@ static void poly_tobytes(unsigned char *r, const poly *p) {
 	uint16_t t0, t1, t2, t3, m;
 	int16_t c;
 	for (i = 0; i < PARAM_N / 4; i++) {
-		t0 = barrett_reduce(p->coeffs[4 * i + 0]); //Make sure that coefficients have only 14 bits
+		t0 = barrett_reduce(
+		    p->coeffs[4 * i + 0]); // Make sure that coefficients have only 14 bits
 		t1 = barrett_reduce(p->coeffs[4 * i + 1]);
 		t2 = barrett_reduce(p->coeffs[4 * i + 2]);
 		t3 = barrett_reduce(p->coeffs[4 * i + 3]);
@@ -148,7 +157,8 @@ static void poly_uniform(poly *a, const unsigned char *seed) {
 	OQS_SHA3_shake128_squeezeblocks((unsigned char *) buf, nblocks, state);
 
 	while (ctr < PARAM_N) {
-		val = (buf[pos] | ((uint16_t) buf[pos + 1] << 8)) & 0x3fff; // Specialized for q = 12889
+		val = (buf[pos] | ((uint16_t) buf[pos + 1] << 8)) &
+		      0x3fff; // Specialized for q = 12889
 		if (val < PARAM_Q) {
 			a->coeffs[ctr++] = val;
 		}
@@ -190,8 +200,10 @@ static void poly_pointwise(poly *r, const poly *a, const poly *b) {
 	int i;
 	uint16_t t;
 	for (i = 0; i < PARAM_N; i++) {
-		t = montgomery_reduce(3186 * b->coeffs[i]);         /* t is now in Montgomery domain */
-		r->coeffs[i] = montgomery_reduce(a->coeffs[i] * t); /* r->coeffs[i] is back in normal domain */
+		t = montgomery_reduce(3186 *
+		                      b->coeffs[i]); /* t is now in Montgomery domain */
+		r->coeffs[i] = montgomery_reduce(
+		    a->coeffs[i] * t); /* r->coeffs[i] is back in normal domain */
 	}
 }
 
@@ -213,7 +225,7 @@ static void poly_invntt(poly *r) {
 	mul_coefficients(r->coeffs, psis_inv_montgomery);
 }
 
-//Error Correction:
+// Error Correction:
 
 static int32_t nh_abs(int32_t v) {
 	int32_t mask = v >> 31;
@@ -313,10 +325,14 @@ static void rec(unsigned char *key, const poly *v, const poly *c) {
 	}
 
 	for (i = 0; i < 256; i++) {
-		tmp[0] = 16 * PARAM_Q + 8 * (int32_t) v->coeffs[0 + i] - PARAM_Q * (2 * c->coeffs[0 + i] + c->coeffs[768 + i]);
-		tmp[1] = 16 * PARAM_Q + 8 * (int32_t) v->coeffs[256 + i] - PARAM_Q * (2 * c->coeffs[256 + i] + c->coeffs[768 + i]);
-		tmp[2] = 16 * PARAM_Q + 8 * (int32_t) v->coeffs[512 + i] - PARAM_Q * (2 * c->coeffs[512 + i] + c->coeffs[768 + i]);
-		tmp[3] = 16 * PARAM_Q + 8 * (int32_t) v->coeffs[768 + i] - PARAM_Q * (c->coeffs[768 + i]);
+		tmp[0] = 16 * PARAM_Q + 8 * (int32_t) v->coeffs[0 + i] -
+		         PARAM_Q * (2 * c->coeffs[0 + i] + c->coeffs[768 + i]);
+		tmp[1] = 16 * PARAM_Q + 8 * (int32_t) v->coeffs[256 + i] -
+		         PARAM_Q * (2 * c->coeffs[256 + i] + c->coeffs[768 + i]);
+		tmp[2] = 16 * PARAM_Q + 8 * (int32_t) v->coeffs[512 + i] -
+		         PARAM_Q * (2 * c->coeffs[512 + i] + c->coeffs[768 + i]);
+		tmp[3] = 16 * PARAM_Q + 8 * (int32_t) v->coeffs[768 + i] -
+		         PARAM_Q * (c->coeffs[768 + i]);
 
 		key[i >> 3] |= LDDecode(tmp[0], tmp[1], tmp[2], tmp[3]) << (i & 7);
 	}

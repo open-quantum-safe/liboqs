@@ -123,8 +123,8 @@ const mp_limb_t *mpz_limbs_read(const mpz_t x);
 char *oqs_sidh_iqc_ref_public_key_encryption_hash(const fp2_element_t value,
                                                   long size) {
 	// compute the size of value in chars
-	long size_a = labs(mpz_size(value->a)) * sizeof(mp_limb_t);
-	long size_b = labs(mpz_size(value->b)) * sizeof(mp_limb_t);
+	long size_a = mpz_size(value->a) * sizeof(mp_limb_t);
+	long size_b = mpz_size(value->b) * sizeof(mp_limb_t);
 
 	char *hash = (char *) malloc(size);
 
@@ -136,6 +136,6 @@ char *oqs_sidh_iqc_ref_public_key_encryption_hash(const fp2_element_t value,
 
 long oqs_sidh_iqc_ref_public_key_get_key_size() {
 	// the key size is twice as large as the base prime.
-	long key_size = 2 * labs(mpz_size(characteristic)) * sizeof(mp_limb_t);
+	long key_size = 2 * mpz_size(characteristic) * sizeof(mp_limb_t);
 	return key_size;
 }

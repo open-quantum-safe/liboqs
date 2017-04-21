@@ -8,7 +8,8 @@
 #include "poly.c"
 // clang-format on
 
-static void encode_a(unsigned char *r, const poly *pk, const unsigned char *seed) {
+static void encode_a(unsigned char *r, const poly *pk,
+                     const unsigned char *seed) {
 	int i;
 	poly_tobytes(r, pk);
 	for (i = 0; i < NEWHOPE_SEEDBYTES; i++) {
@@ -28,7 +29,9 @@ static void encode_b(unsigned char *r, const poly *b, const poly *c) {
 	int i;
 	poly_tobytes(r, b);
 	for (i = 0; i < PARAM_N / 4; i++) {
-		r[POLY_BYTES + i] = c->coeffs[4 * i] | (c->coeffs[4 * i + 1] << 2) | (c->coeffs[4 * i + 2] << 4) | (c->coeffs[4 * i + 3] << 6);
+		r[POLY_BYTES + i] = c->coeffs[4 * i] | (c->coeffs[4 * i + 1] << 2) |
+		                    (c->coeffs[4 * i + 2] << 4) |
+		                    (c->coeffs[4 * i + 3] << 6);
 	}
 }
 
@@ -43,9 +46,7 @@ static void decode_b(poly *b, poly *c, const unsigned char *r) {
 	}
 }
 
-static void gen_a(poly *a, const unsigned char *seed) {
-	poly_uniform(a, seed);
-}
+static void gen_a(poly *a, const unsigned char *seed) { poly_uniform(a, seed); }
 
 // API FUNCTIONS
 
@@ -69,7 +70,8 @@ static void keygen(unsigned char *send, poly *sk, OQS_RAND *rand) {
 	encode_a(send, &pk, seed);
 }
 
-static void sharedb(unsigned char *sharedkey, unsigned char *send, const unsigned char *received, OQS_RAND *rand) {
+static void sharedb(unsigned char *sharedkey, unsigned char *send,
+                    const unsigned char *received, OQS_RAND *rand) {
 	poly sp, ep, v, a, pka, c, epp, bp;
 	unsigned char seed[NEWHOPE_SEEDBYTES];
 
@@ -101,7 +103,8 @@ static void sharedb(unsigned char *sharedkey, unsigned char *send, const unsigne
 #endif
 }
 
-static void shareda(unsigned char *sharedkey, const poly *sk, const unsigned char *received) {
+static void shareda(unsigned char *sharedkey, const poly *sk,
+                    const unsigned char *received) {
 	poly v, bp, c;
 
 	decode_b(&bp, &c, received);
