@@ -74,6 +74,9 @@ ARG_ENABL_SET([sidhiqc], [enable SIDH-IQC.])
 AM_CONDITIONAL([sidhiqc], [test "x$sidhiqc" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$sidhiqc" = xtrue])
 
+ARG_ENABL_SET([picnic], [enable PICNIC.])
+AM_CONDITIONAL([picnic], [test "x$picnic" = xtrue])
+AM_CONDITIONAL([USE_PICNIC], [test "x$picnic" = xtrue])
 
 
 AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
@@ -124,7 +127,7 @@ case $host_os in
         ;;
 esac
 
-SRCDIR=" src/common src/crypto/aes src/kex src/crypto/rand src/crypto/sha3"
+SRCDIR=" src/common src/crypto/aes src/kex src/sig src/crypto/rand src/crypto/sha3"
 SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15/"
 SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
@@ -155,6 +158,10 @@ if test x"$sidhiqc" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
 fi
 
+if test x"$picnic" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_PICNIC"
+  SRCDIR=${SRCDIR}" src/sig_picnic"
+fi
 
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
@@ -164,6 +171,7 @@ AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_NTRU)
 AC_SUBST(USE_MCBITS)
 AC_SUBST(USE_SIDH_IQC)
+AC_SUBST(USE_PICNIC)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(GMP_DIR)
 
@@ -183,6 +191,8 @@ AC_CONFIG_FILES([Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
                  src/kex_sidh_iqc_ref/Makefile
+		 src/sig/Makefile
+		 src/sig_picnic/Makefile
                  src/kex_lwe_frodo/Makefile])
 
 AC_OUTPUT
