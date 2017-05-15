@@ -31,7 +31,7 @@ liboqs currently contains:
 - `kex_sidh_iqc_ref`: key exchange from the supersingular isogeny Diffie-Hellman problem (De Feo, Jao, Plût, *J. Math. Cryptol.* 8(3):209, 2014, [https://eprint.iacr.org/2011/506](https://eprint.iacr.org/2011/506)), using a reference implementation by Javad Doliskani
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
 - `kex_ntru`: NTRU: key transport using NTRU public key encryption (Hoffstein, Pipher, Silverman, *ANTS 1998*) with the EES743EP1 parameter set, wrapper around the implementation from the NTRU Open Source project [https://github.com/NTRUOpenSourceProject/NTRUEncrypt](https://github.com/NTRUOpenSourceProject/NTRUEncrypt))
-- `sig_picnic`: signature based on zero-knowledge proof (Goldfeder, Chase, Zaverucha, [http://eprint.iacr.org/2016/1110.pdf](http://eprint.iacr.org/2016/1110.pdf))
+- `sig_picnic`: signature based on zero-knowledge proof as specified in Post-Quantum Zero-Knowledge and Signatures from Symmetric-Key Primitives (Melissa Chase and David Derler and Steven Goldfeder and Claudio Orlandi and Sebastian Ramacher and Christian Rechberger and Daniel Slamanig and Greg Zaverucha, [http://eprint.iacr.org/2017/279.pdf](http://eprint.iacr.org/2017/279.pdf))
 
 Building and Running on Linux and macOS
 ---------------------------------------
@@ -139,7 +139,7 @@ To build with `kex_ntru` enabled:
 
 ### Building with sig_picnic enabled
 
-The `kex_picnic` signature algorithm is not enabled by default since it requires external libraries (libssl-dev and libm4ri-dev) and a parameters generation preprocessing step.
+The `sig_picnic` signature algorithm is not enabled by default since it requires external libraries (libssl-dev and libm4ri-dev) and a parameters generation preprocessing step.
 
 To download and setup (pregenerate parameters) the Picnic source code:
 

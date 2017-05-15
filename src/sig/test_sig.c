@@ -9,6 +9,8 @@
 
 #include "../ds_benchmark.h"
 
+TODO: add signature size to benchmark
+
 struct sig_testcase {
   enum OQS_SIG_algid algid;
   char* algid_name;
