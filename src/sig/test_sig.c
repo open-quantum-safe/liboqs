@@ -9,7 +9,7 @@
 
 #include "../ds_benchmark.h"
 
-TODO: add signature size to benchmark
+// TODO: add signature size to benchmark
 
 struct sig_testcase {
   enum OQS_SIG_algid algid;
@@ -41,6 +41,20 @@ struct sig_testcase sig_testcases[] = {
   }                                                        \
   printf("\n");                                            \
 }
+
+#define PRINT_PARTIAL_HEX_STRING(label, str, len, sublen)  \
+{                                                          \
+  printf("%-20s (%4zu bytes):  ", (label), (size_t)(len)); \
+  for (size_t i = 0; i < (sublen); i++) {                  \
+   printf("%02X", ((unsigned char *) (str))[i]);           \
+  }                                                        \
+  printf("...");                                           \
+  for (size_t i = 0; i < (sublen); i++) {                  \
+   printf("%02X", ((unsigned char *) (str))[len-sublen+i]);\
+  }                                                        \
+  printf("\n");                                            \
+}
+
 
 static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const int print) {
 
@@ -96,7 +110,7 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const 
     fprintf(stderr, "msg malloc failed\n");
     goto err;
   }
-
+  OQS_RAND_n(rand, msg, msg_len);
   if (print) {
     PRINT_HEX_STRING("Message", msg, msg_len)
       }
@@ -116,8 +130,11 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const 
   }
 
   if (print) {
-    PRINT_HEX_STRING("Signature", sig, sig_len)
-      }
+      if (sig_len > 40) {
+	// only print the parts of the sig if too long
+	PRINT_PARTIAL_HEX_STRING("Signature", sig, sig_len, 20);
+    }
+  }
 
   /* Verification */
   rc = OQS_SIG_verify(s, pub, msg, msg_len, sig, sig_len);
@@ -142,6 +159,7 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const 
   if (sig != NULL) { free(sig); }
   if (pub != NULL) { free(pub); }
   if (priv != NULL) { free(priv); }
+  if (s != NULL) { OQS_SIG_free(s); }
 
   return rc;
 }
@@ -153,17 +171,7 @@ static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid
     goto err;
   }
 
-  /* setup signature object */
-  OQS_SIG* s = OQS_SIG_new(rand, algid);
-  if (s == NULL) {
-    fprintf(stderr, "sig new failed\n");
-    goto err;
-  }
-
-  printf("================================================================================\n");
-  printf("Testing correctness and randomness of signature method %s for %d iterations\n",
-	 s->method_name, iterations);
-  printf("================================================================================\n");
+  printf("Testing correctness and randomness of signature for %d iterations\n", iterations);
   for (int i = 0; i < iterations; i++) {
     ret = sig_test_correctness(rand, algid, 0);
     if (ret != 1) {
@@ -242,6 +250,7 @@ static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int
   free(pub);
   free(msg);
   free(sig);
+  OQS_SIG_free(s);
 
   return rc;
 }

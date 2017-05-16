@@ -168,8 +168,7 @@ int OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, con
  * Frees the signature object, de-initializing the underlying library code.
  * Does NOT free the rand object passed to OQS_SIG_new.
  * @param s          The signature object.
- * @return           OQS_SUCCESS on success, or OQS_ERROR on failure
  */
-int OQS_SIG_free(OQS_SIG *s);
+void OQS_SIG_free(OQS_SIG *s);
 
 #endif

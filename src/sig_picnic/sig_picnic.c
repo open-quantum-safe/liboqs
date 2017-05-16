@@ -8,7 +8,6 @@
 #include <oqs/common.h>
 #include <oqs/sig.h>
 #include <oqs/rand.h>
-
 #include "sig_picnic.h"
 #include "picnic.h"
 
@@ -119,7 +118,8 @@ int OQS_SIG_picnic_keygen(const OQS_SIG* s, uint8_t *priv, uint8_t *pub) {
   if (picnic_write_private_key(&sk, priv+SERIALIZED_PUB_KEY_LEN, SERIALIZED_PRIV_KEY_LEN) != (PICNIC_MAX_PRIVATEKEY_SIZE + 1)) {
     return OQS_ERROR;
   }
-
+  // wipe the private key
+  OQS_MEM_cleanse(&sk, sizeof(picnic_privatekey_t));
   return OQS_SUCCESS;
 }
 
@@ -138,8 +138,7 @@ int OQS_SIG_picnic_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *ms
   if (picnic_read_private_key(&sk, priv+SERIALIZED_PUB_KEY_LEN, SERIALIZED_PRIV_KEY_LEN, &pk) != 0) {
     return OQS_ERROR;
   }
-  int ret = picnic_sign(&sk, msg, msg_len, sig, sig_len);
-  if (ret != 0) {
+  if (picnic_sign(&sk, msg, msg_len, sig, sig_len) != 0) {
     return OQS_ERROR;
   }
   return OQS_SUCCESS;

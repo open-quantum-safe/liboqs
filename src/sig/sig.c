@@ -63,13 +63,10 @@ int OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, con
   }
 }
 
-int OQS_SIG_free(OQS_SIG* s) {
+void OQS_SIG_free(OQS_SIG* s) {
   if (s == NULL) {
-    return OQS_ERROR;
+    return;
   } 
-  if (!s->shutdown(s)) {
-    return OQS_ERROR;
-  }
+  s->shutdown(s);
   free(s);
-  return OQS_SUCCESS;
 }
