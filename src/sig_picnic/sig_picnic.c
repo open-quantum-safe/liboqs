@@ -131,14 +131,14 @@ int OQS_SIG_picnic_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *ms
   picnic_publickey_t pk;
   // deserialize the private key
   // 1. read the prepended public key
-  if (picnic_read_public_key(&pk, (uint8_t*)priv, SERIALIZED_PUB_KEY_LEN) != 0) {
+  if (picnic_read_public_key(&pk, priv, SERIALIZED_PUB_KEY_LEN) != 0) {
     return OQS_ERROR;
   }
   // 2. read the private key
-  if (picnic_read_private_key(&sk, (uint8_t*)(priv+SERIALIZED_PUB_KEY_LEN), SERIALIZED_PRIV_KEY_LEN, &pk) != 0) {
+  if (picnic_read_private_key(&sk, priv+SERIALIZED_PUB_KEY_LEN, SERIALIZED_PRIV_KEY_LEN, &pk) != 0) {
     return OQS_ERROR;
   }
-  int ret = picnic_sign(&sk, (uint8_t*) msg, msg_len, (uint8_t*) sig, sig_len);
+  int ret = picnic_sign(&sk, msg, msg_len, sig, sig_len);
   if (ret != 0) {
     return OQS_ERROR;
   }
@@ -151,10 +151,10 @@ int OQS_SIG_picnic_verify(UNUSED const OQS_SIG *s, const uint8_t *pub, const uin
   }
   picnic_publickey_t pk;     
   // deserialize the private key
-  if (picnic_read_public_key(&pk, (uint8_t*) pub, SERIALIZED_PUB_KEY_LEN) != 0) {
+  if (picnic_read_public_key(&pk, pub, SERIALIZED_PUB_KEY_LEN) != 0) {
     return OQS_ERROR;
   }
-  if (picnic_verify(&pk, (uint8_t*) msg, msg_len, (uint8_t*) sig, sig_len) != 0) {
+  if (picnic_verify(&pk, msg, msg_len, sig, sig_len) != 0) {
     return OQS_ERROR;
   }
   return OQS_SUCCESS;
