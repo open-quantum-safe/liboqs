@@ -43,6 +43,12 @@ You need to install autoconf, automake and libtool:
 
 	brew install autoconf automake libtool
 	
+### Install dependencies for Ubuntu
+
+You need to install autoconf, automake and libtool:
+
+	sudo apt install autoconf automake libtool
+	
 ### Building	
 
 To build, clone or download the source from GitHub, then simply type:
@@ -68,6 +74,14 @@ To run the tests, simply type:
 To run benchmarks, run
 
 	./test_kex --bench
+	
+To run benchmark only on some ciphers, run
+
+	./test_kex --help
+	
+to list the availanle ciphers and then run e.g.
+	
+	./test_kex --bench code_mcbits ntru
 	
 ### Additional build options
 
@@ -115,9 +129,13 @@ To install the library on macOS:
 
 	brew install libsodium
 
+To install the library on Ubuntu:
+
+	sudo apt install libsodium-dev
+
 To build with `kex_code_mcbits ` enabled:
 
-	./configure --enable-libsodium
+	./configure --enable-mcbits
 	make clean
 	make
 	
