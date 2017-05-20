@@ -79,9 +79,10 @@ To run benchmark only on some ciphers, run
 
 	./test_kex --help
 	
-to list the availanle ciphers and then run e.g.
+to list the available ciphers and then run e.g.
 	
-	./test_kex --bench code_mcbits ntru
+	./test_kex --bench rlwe_bcns15 rlwe_newhope
+
 	
 ### Additional build options
 
