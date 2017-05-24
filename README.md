@@ -141,9 +141,10 @@ To build with `kex_ntru` enabled:
 
 The `sig_picnic` signature algorithm is not enabled by default since it requires external libraries (libssl-dev and libm4ri-dev) and a parameters generation preprocessing step.
 
-To download and setup (pregenerate parameters) the Picnic source code:
+To download and setup (pregenerate parameters and set their path as an env variable) the Picnic source code:
 
 	./download-and-setup-picnic.sh
+        source set-picnic-var.sh
 
 To build with `kex_picnic` enabled:
 

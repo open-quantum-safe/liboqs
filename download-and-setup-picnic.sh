@@ -7,7 +7,5 @@ unzip master
 cd Picnic-master 
 make matrices
 ./preprocessMatrices
-cd ../../../..
-cp -r src/sig_picnic/external/Picnic-master/data/ .
 
 

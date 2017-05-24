@@ -76,7 +76,10 @@ int OQS_SIG_picnic_get(OQS_SIG* s, enum OQS_SIG_algid algid) {
     return OQS_ERROR;
   }
   pctx->params = params;
-  if (picnic_init(params, USES_OPENSSL) != 0) {
+  // read the path to the picnic params (if undefined, NULL is 
+  // returned and passed to picnic_init, and the default is used).
+  const char* params_path = getenv("PICNIC_PARAMS_PATH");
+  if (picnic_init(params, params_path, USES_OPENSSL) != 0) {
     free(pctx);
     return OQS_ERROR;
   }
