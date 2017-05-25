@@ -38,6 +38,9 @@ AC_TYPE_UINT8_T
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([memset strdup])
 
+# Silent rules
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+
 ######################################################################
 # DOXYGEN SUPPORT
 ######################################################################
