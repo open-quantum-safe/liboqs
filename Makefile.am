@@ -7,7 +7,7 @@ include aminclude.am
 # ensure the distribution of the doxygen configuration file
 EXTRA_DIST = doxygen.cfg
 
-CLANGFORMAT ?= clang-format
+CLANGFORMAT ?= clang-format-3.9
 
 SUBDIRS = ${SRCDIR}
 
@@ -27,7 +27,6 @@ endif
 
 if USE_NTRU
 liboqs_la_LIBADD += src/kex_ntru/libntru.la
-liboqs_la_LIBADD += external/NTRUEncrypt-master/.libs/libntruencrypt.la
 endif
 
 if USE_SIDH_IQC
@@ -75,9 +74,6 @@ endif
 
 
 test: clean-tests
-if USE_NTRU
-	make -C external/NTRUEncrypt-master/
-endif
 	make
 if USE_NTRU
 if ON_DARWIN
@@ -91,9 +87,6 @@ endif
 	./test_aes
 
 ntru:
-if USE_NTRU
-	make -C external/NTRUEncrypt-master/
-endif 
 
 links: 
 	$(MKDIR_P) include/oqs
@@ -115,7 +108,6 @@ if USE_MCBITS
 endif
 if USE_NTRU
 	$(LN_S) -f ../../src/kex_ntru/kex_ntru.h include/oqs
-	test -d "external/NTRUEncrypt-master" || ./download-and-build-ntru.sh
 endif
 if USE_SIDH_IQC
 	$(LN_S) -f ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
@@ -127,9 +119,6 @@ clean-local:
 	rm -rf include
 if USE_SIDH_IQC
 	rm -f sample_params
-endif
-if USE_NTRU
-	make -C external/NTRUEncrypt-master/ clean
 endif
 
 clean-tests:

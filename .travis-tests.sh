@@ -1,6 +1,7 @@
 #!/bin/bash
 
 autoreconf -i
+ENABLE_NTRU=1
 enable_disable_str=
 if [[ ${USE_OPENSSL} == 1 ]];then
   enable_disable_str=" --enable-openssl"
