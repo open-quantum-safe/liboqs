@@ -15,7 +15,7 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_MKDIR_P
 AM_PROG_AS
-AM_INIT_AUTOMAKE([subdir-objects])
+AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 m4_include(m4/macros/enable-disable.m4)
 m4_include(m4/macros/with.m4)
 LT_INIT([disable-shared])
