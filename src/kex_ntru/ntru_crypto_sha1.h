@@ -37,12 +37,9 @@
  * macros needed for generic hash objects * 
  ******************************************/
 
-#define SHA_1_CTX_LEN sizeof(SHA1_CTX)           /* no. bytes in SHA-1 \
-                                                    ctx */
-#define SHA_1_BLK_LEN 64                         /* 64 bytes in input \
-                                                    block */
-#define SHA_1_MD_LEN 20                          /* 20 bytes in msg \
-                                                    digest */
+#define SHA_1_CTX_LEN sizeof(SHA1_CTX)           /* no. bytes in SHA-1 ctx */
+#define SHA_1_BLK_LEN 64                         /* 64 bytes in input block */
+#define SHA_1_MD_LEN 20                          /* 20 bytes in msg digest */
 #define SHA_1_INIT_FN &ntru_crypto_sha1_init     /* init function */
 #define SHA_1_UPDATE_FN &ntru_crypto_sha1_update /* update function */
 #define SHA_1_FINAL_FN &ntru_crypto_sha1_final   /* final function */

@@ -7,7 +7,7 @@ include aminclude.am
 # ensure the distribution of the doxygen configuration file
 EXTRA_DIST = doxygen.cfg
 
-CLANGFORMAT ?= clang-format-3.9
+CLANGFORMAT ?= clang-format
 
 SUBDIRS = ${SRCDIR}
 
