@@ -38,12 +38,9 @@
  ******************************************/
 
 #define SHA_256_CTX_LEN sizeof(NTRU_CRYPTO_SHA2_CTX)
-/* no. bytes in SHA-2
-                                                          ctx */
-#define SHA_256_BLK_LEN 64                           /* 64 bytes in input \
-                                                        block */
-#define SHA_256_MD_LEN 32                            /* 32 bytes in msg \
-                                                        digest */
+/* no. bytes in SHA-2 ctx */
+#define SHA_256_BLK_LEN 64                           /* 64 bytes in input  block */
+#define SHA_256_MD_LEN 32                            /* 32 bytes in msg digest */
 #define SHA_256_INIT_FN &ntru_crypto_sha256_init     /* init function */
 #define SHA_256_UPDATE_FN &ntru_crypto_sha256_update /* update function */
 #define SHA_256_FINAL_FN &ntru_crypto_sha256_final   /* final function */
