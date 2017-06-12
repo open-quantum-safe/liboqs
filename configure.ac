@@ -65,17 +65,17 @@ ARG_ENABL_SET([openssl], [enable OPENSSL.])
 AM_CONDITIONAL([openssl], [test "x$openssl" = xtrue])
 AM_CONDITIONAL([USE_OPENSSL], [test "x$openssl" = xtrue])
 
-ARG_ENABL_SET([mcbits], [enable CODE-MCBITS.])
-AM_CONDITIONAL([mcbits], [test "x$mcbits" = xtrue])
-AM_CONDITIONAL([USE_MCBITS], [test "x$mcbits" = xtrue])
+ARG_ENABL_SET([kex-code-mcbits], [enable KEX-CODE-MCBITS.])
+AM_CONDITIONAL([kex_code_mcbits], [test "x$kex_code_mcbits" = xtrue])
+AM_CONDITIONAL([USE_MCBITS], [test "x$kex_code_mcbits" = xtrue])
 
-ARG_ENABL_SET([ntru], [enable NTRU.])
-AM_CONDITIONAL([ntru], [test "x$ntru" = xtrue])
-AM_CONDITIONAL([USE_NTRU], [test "x$ntru" = xtrue])
+ARG_ENABL_SET([kex-ntru], [enable KEX-NTRU.])
+AM_CONDITIONAL([ntru], [test "x$kex_ntru" = xtrue])
+AM_CONDITIONAL([USE_NTRU], [test "x$kex_ntru" = xtrue])
 
-ARG_ENABL_SET([sidhiqc], [enable SIDH-IQC.])
-AM_CONDITIONAL([sidhiqc], [test "x$sidhiqc" = xtrue])
-AM_CONDITIONAL([USE_SIDH_IQC], [test "x$sidhiqc" = xtrue])
+ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
+AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
+AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
 
 
 
@@ -135,12 +135,12 @@ SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
 SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
 
-if test x"$ntru" = x"true"; then
+if test x"$kex_ntru" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_NTRU"
   SRCDIR=${SRCDIR}" src/kex_ntru"
 fi
 
-if test x"$mcbits" = x"true"; then
+if test x"$kex_code_mcbits" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_CODE_MCBITS"
   SRCDIR=${SRCDIR}" src/kex_code_mcbits"
 fi
@@ -153,7 +153,7 @@ if test x"$openssl" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DUSE_OPENSSL"
 fi
 
-if test x"$sidhiqc" = x"true"; then
+if test x"$kex_sidh_iqc_ref" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIDH_IQC_REF"
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
 fi
