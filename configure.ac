@@ -85,37 +85,9 @@ AC_CANONICAL_HOST
 # specifically based on the host
 case $host_os in
   darwin* )
-        AC_ARG_WITH(
-          [openssl-dir],
-          AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr/local/opt/openssl).]),
-          [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
-           AC_SUBST(OPENSSL_DIR, [$withval])],
-          [AC_SUBST(OPENSSL_DIR, /usr/local/opt/openssl)]
-        )
-        AC_ARG_WITH(
-          [gmp-dir],
-          AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr/local/opt/).]),
-          [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
-           AC_SUBST(GMP_DIR, [$withval])],
-          [AC_SUBST(GMP_DIR, /usr/local)]
-        )
         AM_CONDITIONAL([ON_DARWIN], [test xtrue = xtrue])
         ;;
   linux*)
-        AC_ARG_WITH(
-          [openssl-dir],
-          AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr).]),
-          [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
-           AC_SUBST(OPENSSL_DIR, [$withval])],
-          [AC_SUBST(OPENSSL_DIR, /usr)]
-        )
-        AC_ARG_WITH(
-          [gmp-dir],
-          AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr).]),
-          [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
-           AC_SUBST(GMP_DIR, [$withval])],
-          [AC_SUBST(GMP_DIR, /usr)]
-        )
         if test x"${ac_cv_sizeof_size_t}" = x"8";then
           AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
         fi
@@ -126,6 +98,28 @@ case $host_os in
         AC_MSG_ERROR([Your platform is not currently supported])
         ;;
 esac
+
+AC_ARG_WITH(
+  [openssl-dir],
+  AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
+   AC_SUBST(OPENSSL_DIR, [$withval])],
+  [AC_SUBST(OPENSSL_DIR, /usr)]
+)
+AC_ARG_WITH(
+  [gmp-dir],
+  AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
+   AC_SUBST(GMP_DIR, [$withval])],
+  [AC_SUBST(GMP_DIR, /usr)]
+)
+AC_ARG_WITH(
+  [sodium-dir],
+  AS_HELP_STRING([--with-sodium-dir=dir],[sodium dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(SODIUMDIR, [$withval], [SODIUM DIR used locally])
+   AC_SUBST(SODIUM_DIR, [$withval])],
+  [AC_SUBST(SODIUM_DIR, /usr)]
+)
 
 SRCDIR=" src/common src/crypto/aes src/kex src/crypto/rand src/crypto/sha3"
 SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
@@ -161,14 +155,12 @@ fi
 
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
-AC_SUBST(OPENSSL_DIR)
 AC_SUBST(USE_OPENSSL)
 AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_NTRU)
 AC_SUBST(USE_MCBITS)
 AC_SUBST(USE_SIDH_IQC)
 AC_SUBST(ON_DARWIN)
-AC_SUBST(GMP_DIR)
 
 
 AC_CONFIG_FILES([Makefile

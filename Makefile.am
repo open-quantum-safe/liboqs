@@ -40,13 +40,13 @@ test_kex_SOURCES = src/kex/test_kex.c
 test_kex_CPPFLAGS = -I./include
 test_kex_CPPFLAGS += $(AM_CPPFLAGS)
 if USE_OPENSSL
-test_kex_LDADD += -lcrypto
+test_kex_LDADD += -L$(OPENSSL_DIR)/lib  -lcrypto
 endif
 if USE_MCBITS
-test_kex_LDADD += -lsodium
+test_kex_LDADD += -L${SODIUM_DIR}/lib -lsodium
 endif
 if USE_SIDH_IQC
-test_kex_LDADD += -lgmp
+test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
 endif
 
 test_aes_LDADD =  liboqs.la -lm
@@ -56,7 +56,7 @@ test_aes_CPPFLAGS += $(AM_CPPFLAGS)
 
 
 if USE_OPENSSL
-test_aes_LDADD += -lcrypto
+test_aes_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
 test_rand_SOURCES = src/crypto/rand/test_rand.c
@@ -65,7 +65,7 @@ test_rand_CPPFLAGS = -Iinclude -Isrc/crypto/rand_urandom_aesctr/
 test_rand_CPPFLAGS += $(AM_CPPFLAGS)
 test_rand_LDADD = liboqs.la
 if USE_OPENSSL
-test_rand_LDADD += -lcrypto
+test_rand_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 else
 if USE_AES_NI
 test_rand_CPPFLAGS += -maes -msse2
