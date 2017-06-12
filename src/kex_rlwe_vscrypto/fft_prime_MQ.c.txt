@@ -1,0 +1,129 @@
+
+#include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "vscrypto_defs.h"
+#include "fft_crt_MQ.h"
+
+#if (512<2*MODULUS_M && 2*MODULUS_M<=1024)
+#define BIGMODULUS 1024
+#elif (1024<2*MODULUS_M && 2*MODULUS_M<=2048)
+#define BIGMODULUS 2048
+#endif
+
+#define Q0 8816641
+#define Q1 17633281
+#define Q0Q1 ((FFTLONG)155466308229121)
+
+#define H0 ((FFTLONG)17633282)
+#define H1 ((FFTLONG)17633281)
+
+static int initialised = 0;
+
+static struct {
+  FFTSHORT minvq;
+  FFTSHORT NinvQ0;
+  FFTSHORT NinvQ1;
+  FFTSHORT bs_mul[MODULUS_M];
+  FFTSHORT bs_roots_fft_8816641[BIGMODULUS];
+  FFTSHORT bs_roots_fft_17633281[BIGMODULUS];
+  FFTSHORT bs_mul_inv[MODULUS_M];
+  FFTSHORT bs_roots_inv_fft_8816641[BIGMODULUS];
+  FFTSHORT bs_roots_inv_fft_17633281[BIGMODULUS];
+} precomp;
+
+static FFTSHORT modpow(FFTSHORT x, FFTSHORT r, FFTSHORT p) {
+  FFTLONG y = 1;
+  for (; r; r>>=1) {
+    if (r&1) y = (y*x)%p;
+    x = (x*(FFTLONG)x)%p;
+  }
+  return (FFTSHORT)y;
+}
+
+static void init() {
+  FFTSHORT omega;
+  FFTLONG mul, term;
+  int i, j;
+
+  assert(!initialised++);
+
+  precomp.minvq = modpow(MODULUS_M,PRIME_Q-2,PRIME_Q);
+  precomp.NinvQ0 = modpow(BIGMODULUS,Q0-2,Q0);
+  precomp.NinvQ1 = modpow(BIGMODULUS,Q1-2,Q1);
+
+  for (omega=2; modpow(omega,MODULUS_M,PRIME_Q)!=1; omega++) ;
+  for (i=0,mul=1,term=omega; (FFTSHORT)i<MODULUS_M; i++) {
+    precomp.bs_mul[i] = mul;
+    precomp.bs_mul_inv[i] = modpow(mul,PRIME_Q-2,PRIME_Q);
+    mul = (mul*term)%PRIME_Q;
+    term = (term*omega)%PRIME_Q;
+  }
+
+  for (i=0; (FFTSHORT)i<BIGMODULUS; i++) {
+    j = MODULUS_M - BIGMODULUS%MODULUS_M;
+    j = ( i + (j+(j&1)*MODULUS_M)/2 ) % MODULUS_M;
+    precomp.bs_roots_fft_8816641[i] = precomp.bs_roots_fft_17633281[i] = precomp.bs_mul_inv[j];
+    precomp.bs_roots_inv_fft_8816641[i] = precomp.bs_roots_inv_fft_17633281[i] = precomp.bs_mul[j];
+  }
+  FUN_MQ(GLOBAL(fft_forward),BIGMODULUS,Q0)(precomp.bs_roots_fft_8816641);
+  FUN_MQ(GLOBAL(fft_forward),BIGMODULUS,Q1)(precomp.bs_roots_fft_17633281);
+  FUN_MQ(GLOBAL(fft_forward),BIGMODULUS,Q0)(precomp.bs_roots_inv_fft_8816641);
+  FUN_MQ(GLOBAL(fft_forward),BIGMODULUS,Q1)(precomp.bs_roots_inv_fft_17633281);
+
+  return;
+}
+
+// static because we're #include'ing this file
+static void FUN_MQ(fft,MODULUS_M,PRIME_Q)(int direction, FFTSHORT *x) {
+  FFTSHORT *roots_fft_8816641 = ( direction==FFT_FWD ? precomp.bs_roots_fft_8816641 : precomp.bs_roots_inv_fft_8816641 );
+  FFTSHORT *roots_fft_17633281 = ( direction==FFT_FWD ? precomp.bs_roots_fft_17633281 : precomp.bs_roots_inv_fft_17633281 );
+  FFTSHORT *mul = ( direction==FFT_FWD ? precomp.bs_mul : precomp.bs_mul_inv );
+  FFTSHORT x0[BIGMODULUS], x1[BIGMODULUS];
+  FFTLONG  x_crt[BIGMODULUS];
+  FFTSHORT i;
+
+  if (!initialised) init();
+
+  for (i = 0; i < MODULUS_M; ++i) MUL_MOD(x0[i], x[i], mul[i], PRIME_Q);
+  memset((void *) (x0+MODULUS_M), 0, (BIGMODULUS-MODULUS_M)*sizeof(FFTSHORT)); /*Pad with 0's*/
+  memcpy((void *) x1, (void *) x0, BIGMODULUS*sizeof(FFTSHORT)); /*Copy x0 into x1*/
+
+  // Cyclic convolution
+  FUN_MQ(GLOBAL(fft_forward),BIGMODULUS,Q0)(x0);
+  FUN_MQ(GLOBAL(fft_forward),BIGMODULUS,Q1)(x1);
+  for (i = 0; i < BIGMODULUS; ++i) {
+    MUL_MOD(x0[i], x0[i], roots_fft_8816641[i], Q0);
+    MUL_MOD(x1[i], x1[i], roots_fft_17633281[i], Q1);
+  }
+  FUN_MQ(GLOBAL(fft_backward),BIGMODULUS,Q0)(x0);
+  FUN_MQ(GLOBAL(fft_backward),BIGMODULUS,Q1)(x1);
+
+  /*Apply the CRT*/
+  for (i = 0; i < BIGMODULUS; ++i) {
+    MUL_MOD(x0[i], x0[i], precomp.NinvQ0, Q0); /*Scaling for the convolution*/
+    MUL_MOD(x1[i], x1[i], precomp.NinvQ1, Q1); /*Scaling for the convolution*/
+    x_crt[i] = H1*x0[i] % Q0Q1;
+    x_crt[i] = Q0Q1 - x_crt[i];
+    x_crt[i] += H0*x1[i];
+    x_crt[i] = x_crt[i] % Q0Q1; //Will now be the integer convolution
+    x_crt[i] = x_crt[i] % PRIME_Q;
+  }
+
+  /*Complete Bluestein's trick*/
+  x[0] = (FFTSHORT) x_crt[(BIGMODULUS>>1)-1];
+  for (i = 0; i < MODULUS_M-1; ++i) {
+    MUL_MOD(x[i+1], x_crt[(BIGMODULUS>>1)+i], mul[i], PRIME_Q);
+  }
+
+  // caller always wants * m^{-1} mod q at the end
+  if (direction == FFT_REV) {
+    const FFTSHORT minvq = precomp.minvq;
+    for (i=0; i<MODULUS_M; i++) MUL_MOD(x[i],x[i],minvq,PRIME_Q);
+  }
+
+  return;
+}
+

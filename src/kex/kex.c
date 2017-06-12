@@ -19,6 +19,10 @@
 #include <oqs/kex_sidh_iqc_ref.h>
 #endif
 
+#ifdef ENABLE_VSCRYPTO
+#include <oqs/kex_rlwe_vscrypto.h>
+#endif
+
 OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 	switch (alg_name) {
 	case OQS_KEX_alg_default:
@@ -53,7 +57,12 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #else
 		assert(0);
 #endif
-
+	case OQS_KEX_alg_rlwe_vscrypto:
+#ifdef ENABLE_VSCRYPTO
+		return OQS_KEX_rlwe_vscrypto_new(rand,named_parameters);
+#else
+		assert(0);
+#endif
 	default:
 		assert(0);
 		return NULL;

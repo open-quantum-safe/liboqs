@@ -77,6 +77,10 @@ ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
 AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
 
+ARG_ENABL_SET([vscrypto], [enable VSCRYPTO.])
+AM_CONDITIONAL([vscrypto], [test "x$vscrypto" = xtrue])
+AM_CONDITIONAL([USE_VSCRYPTO], [test "x$vscrypto" = xtrue])
+
 
 
 AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
@@ -152,6 +156,11 @@ if test x"$kex_sidh_iqc_ref" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
 fi
 
+if test x"$vscrypto" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_VSCRYPTO"
+  SRCDIR=${SRCDIR}" src/kex_rlwe_vscrypto"
+fi
+
 
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
@@ -160,6 +169,7 @@ AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_NTRU)
 AC_SUBST(USE_MCBITS)
 AC_SUBST(USE_SIDH_IQC)
+AC_SUBST(USE_VSCRYPTO)
 AC_SUBST(ON_DARWIN)
 
 
@@ -178,6 +188,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
                  src/kex_sidh_iqc_ref/Makefile
+                 src/kex_rlwe_vscrypto/Makefile
                  src/kex_lwe_frodo/Makefile])
 
 AC_OUTPUT

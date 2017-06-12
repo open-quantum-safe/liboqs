@@ -33,6 +33,10 @@ if USE_SIDH_IQC
 liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
 endif
 
+if USE_VSCRYPTO
+liboqs_la_LIBADD += src/kex_rlwe_vscrypto/libvscrypto.la
+endif
+
 noinst_bin_PROGRAMS = test_rand test_kex test_aes
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
@@ -105,6 +109,9 @@ endif
 if USE_SIDH_IQC
 	$(LN_S) -f ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
 	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
+endif
+if USE_VSCRYPTO
+	$(LN_S) -f ../../src/kex_rlwe_vscrypto/kex_rlwe_vscrypto.h include/oqs
 endif
 
 clean-local:

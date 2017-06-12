@@ -21,6 +21,7 @@ enum OQS_KEX_alg_name {
 	OQS_KEX_alg_code_mcbits,
 	OQS_KEX_alg_ntru,
 	OQS_KEX_alg_sidh_iqc_ref,
+	OQS_KEX_alg_rlwe_vscrypto,
 };
 
 typedef struct OQS_KEX OQS_KEX;

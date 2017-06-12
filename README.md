@@ -31,6 +31,7 @@ liboqs currently contains:
 - `kex_sidh_iqc_ref`: key exchange from the supersingular isogeny Diffie-Hellman problem (De Feo, Jao, Plût, *J. Math. Cryptol.* 8(3):209, 2014, [https://eprint.iacr.org/2011/506](https://eprint.iacr.org/2011/506)), using a reference implementation by Javad Doliskani
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
 - `kex_ntru`: NTRU: key transport using NTRU public key encryption (Hoffstein, Pipher, Silverman, *ANTS 1998*) with the EES743EP1 parameter set, wrapper around the implementation from the NTRU Open Source project [https://github.com/NTRUOpenSourceProject/NTRUEncrypt](https://github.com/NTRUOpenSourceProject/NTRUEncrypt))
+- `kex_rlwe_vscrypto`: Singh & Chopra's "Even More Practical Key Exchanges": a ring-LWE scheme.  See [https://eprint.iacr.org/2015/1120](https://eprint.iacr.org/2015/1120).  Code based on Singh's github project [https://github.com/vscrypto/ringlwe](https://github.com/vscrypto/ringlwe).
 
 Building and Running on Linux and macOS
 ---------------------------------------
@@ -140,6 +141,16 @@ To build with `kex_code_mcbits ` enabled:
 	make clean
 	make
 	
+### Building with `kex_rlwe_vscrypto` enabled
+
+The `kex_rlwe_vscrypto` key exchange method is not enabled by default.
+
+To build with `kex_rlwe_vscrypto ` enabled:
+
+	./configure --enable-vscrypto
+	make clean
+	make
+	
 ### Building with `kex_ntru` enabled
 
 The `kex_ntru` key exchange method is not enabled by default since the NTRU source code is not distributed with liboqs.  
@@ -220,6 +231,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 - `src/kex_sidh_cln16`: MIT License
 - `src/kex_sidh_iqc_ref`: MIT License
 - `src/kex_code_mcbits`: public domain
+- `src/kex_rlwe_vscrypto`: public domain
 - `src/crypto/rand_urandom_chacha20/external`: public domain
 
 Team
