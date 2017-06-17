@@ -35,6 +35,9 @@ include
 /test_kex
 /test_rand
 /test_aes
+benchmark_lowmc
+pp_Matrices
+precomputed_data
 
 # Debug files
 *.dSYM/
