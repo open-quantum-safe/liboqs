@@ -32,8 +32,9 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 	case OQS_KEX_alg_lwe_frodo:
 		return OQS_KEX_lwe_frodo_new_recommended(rand, seed, seed_len, named_parameters);
 	case OQS_KEX_alg_sidh_cln16:
-		return OQS_KEX_sidh_cln16_new(rand);
-
+		return OQS_KEX_sidh_cln16_new(rand, named_parameters);
+	case OQS_KEX_alg_sidh_cln16_compressed:
+		return OQS_KEX_sidh_cln16_new(rand, named_parameters);
 	case OQS_KEX_alg_code_mcbits:
 #ifdef ENABLE_CODE_MCBITS
 		return OQS_KEX_code_mcbits_new(rand);
