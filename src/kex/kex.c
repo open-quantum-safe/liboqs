@@ -6,6 +6,7 @@
 #include <oqs/kex_rlwe_msrln16.h>
 #include <oqs/kex_rlwe_newhope.h>
 #include <oqs/kex_sidh_cln16.h>
+#include <oqs/kex_mlwe_kyber.h>
 
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
@@ -40,7 +41,6 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #else
 		assert(0);
 #endif
-
 	case OQS_KEX_alg_ntru:
 #ifdef ENABLE_NTRU
 		return OQS_KEX_ntru_new(rand);
@@ -53,7 +53,8 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #else
 		assert(0);
 #endif
-
+	case OQS_KEX_alg_mlwe_kyber:
+		return OQS_KEX_mlwe_kyber_new(rand);
 	default:
 		assert(0);
 		return NULL;

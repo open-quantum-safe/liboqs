@@ -20,6 +20,7 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/kex_rlwe_bcns15/libbcns15.la src/kex_rlwe_newhope/libnewhope.la
 liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la src/kex_rlwe_msrln16/libmsrln16.la
 liboqs_la_LIBADD += src/kex_sidh_cln16/libcln16.la
+liboqs_la_LIBADD += src/kex_mlwe_kyber/libkyber.la
 
 if USE_MCBITS
 liboqs_la_LIBADD += src/kex_code_mcbits/libmcbits.la
@@ -95,6 +96,7 @@ links:
 	$(LN_S) -f ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	$(LN_S) -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN_S) -f ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
+	$(LN_S) -f ../../src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	$(LN_S) -f ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
