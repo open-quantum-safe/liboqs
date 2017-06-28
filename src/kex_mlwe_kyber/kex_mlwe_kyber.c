@@ -126,7 +126,7 @@ int OQS_KEX_mlwe_kyber_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const 
 	}
 
 	/* generate Alice's session key */
-	shareda(*key, (unsigned char*) alice_priv, bob_msg);
+	shareda(*key, (unsigned char *) alice_priv, bob_msg);
 	*key_len = 32;
 
 	ret = 1;

@@ -20,17 +20,16 @@ void OQS_SHA3_sha3512(unsigned char *output, const unsigned char *input, unsigne
 // SHAKE128
 void OQS_SHA3_shake128_absorb(uint64_t *s, const unsigned char *input, unsigned int inputByteLen);
 void OQS_SHA3_shake128_squeezeblocks(unsigned char *output, unsigned long long nblocks, uint64_t *s);
-void OQS_SHA3_shake128(unsigned char *output, unsigned long long outlen, 
-              const unsigned char *input,  unsigned long long inlen);
+void OQS_SHA3_shake128(unsigned char *output, unsigned long long outlen,
+                       const unsigned char *input, unsigned long long inlen);
 
 // cSHAKE128
-void OQS_SHA3_cshake128_simple_absorb(uint64_t* s,
-                             uint16_t cstm, // 2-byte domain separator
-                             const unsigned char *in, unsigned long long inlen);
+void OQS_SHA3_cshake128_simple_absorb(uint64_t *s,
+                                      uint16_t cstm, // 2-byte domain separator
+                                      const unsigned char *in, unsigned long long inlen);
 void OQS_SHA3_cshake128_simple_squeezeblocks(unsigned char *output, unsigned long long nblocks, uint64_t *s);
-void OQS_SHA3_cshake128_simple(unsigned char *output, unsigned long long outlen, 
-                      uint16_t cstm, // 2-byte domain separator
-                      const unsigned char *in, unsigned long long inlen);
-
+void OQS_SHA3_cshake128_simple(unsigned char *output, unsigned long long outlen,
+                               uint16_t cstm, // 2-byte domain separator
+                               const unsigned char *in, unsigned long long inlen);
 
 #endif
