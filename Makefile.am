@@ -20,7 +20,6 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/kex_rlwe_bcns15/libbcns15.la src/kex_rlwe_newhope/libnewhope.la
 liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la src/kex_rlwe_msrln16/libmsrln16.la
 liboqs_la_LIBADD += src/kex_sidh_cln16/libcln16.la
-liboqs_la_LIBADD += src/sig_picnic_msr/libpicnicmsr.la
 
 if USE_MCBITS
 liboqs_la_LIBADD += src/kex_code_mcbits/libmcbits.la
@@ -34,7 +33,7 @@ if USE_SIDH_IQC
 liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
 endif
 
-noinst_bin_PROGRAMS = test_rand test_kex test_aes pp_Matrices benchmark_lowmc
+noinst_bin_PROGRAMS = test_rand test_kex test_aes
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
 test_kex_SOURCES = src/kex/test_kex.c
@@ -73,24 +72,12 @@ test_rand_CPPFLAGS += -maes -msse2
 endif
 endif
 
-pp_Matrices_LDADD = liboqs.la -lm4ri -lcrypto
-pp_Matrices_SOURCES = src/sig_picnic_msr/preprocessMatrices.c
-pp_Matrices_CPPFLAGS = -Isrc/sig_picnic_msr/ -I/usr/include/m4ri/
-pp_Matrices_CPPFLAGS += $(AM_CPPFLAGS)
-
-benchmark_lowmc_LDADD = liboqs.la -lcrypto -lm4ri
-benchmark_lowmc_SOURCES = src/sig_picnic_msr/benchmark_lowmc.c src/sig_picnic_msr/test_util.c 
-benchmark_lowmc_CPPFLAGS = -Isrc/sig_picnic_msr/
-benchmark_lowmc_CPPFLAGS += $(AM_CPPFLAGS)
-
 
 test: clean-tests
 	make
 	./test_kex
 	./test_rand
 	./test_aes
-	mkdir ./precomputed_data;./pp_Matrices
-	./benchmark_lowmc
 
 ntru:
 
@@ -123,14 +110,12 @@ endif
 clean-local:
 	rm -f liboqs.a
 	rm -rf include
-	rm -rf precomputed_data
 if USE_SIDH_IQC
 	rm -f sample_params
 endif
 
 clean-tests:
-	rm -f test_kex test_rand test_aes pp_Matrices benchmark_lowmc
-	rm -rf precomputed_data
+	rm -f test_kex test_rand test_aes
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | xargs $(CLANGFORMAT) -style=file -i
