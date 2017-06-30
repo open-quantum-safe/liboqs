@@ -36,15 +36,15 @@ liboqs currently contains:
 Building and Running on Linux and macOS
 ---------------------------------------
 
-Builds have been tested on Mac OS X 10.11.6, macOS 10.12, Ubuntu 16.04.1.
+Builds have been tested on Mac OS X 10.11.6, macOS 10.12.5, Ubuntu 16.04.1.
 
 ### Install dependencies for macOS
 
 You need to install autoconf, automake and libtool:
 
 	brew install autoconf automake libtool
-	
-### Building	
+
+### Building
 
 To build, clone or download the source from GitHub, then simply type:
 
@@ -70,7 +70,7 @@ To run the tests, simply type:
 To run benchmarks, run
 
 	./test_kex --bench
-	
+
 ### Additional build options
 
 #### Building with OpenSSL algorithms enabled:
@@ -88,7 +88,7 @@ You may need to specify the path to your OpenSSL directory:
 	./configure --enable-openssl --with-openssl-dir=/path/to/openssl/directory
 	make clean
 	make
-	
+
 ### Building with `kex_sidh_iqc_ref` enabled
 
 The `kex_sidh_iqc_ref ` key exchange method is not enabled by default since it requires an external library (libgmp).
@@ -102,7 +102,7 @@ To build with `kex_sidh_iqc_ref ` enabled:
 	./configure --enable-sidhiqc
 	make clean
 	make
-	
+
 You may need to specify the path to your libgmp directory:
 
 	./configure --enable-sidhiqc --with-gmp-dir=/path/to/gmp/directory
@@ -122,7 +122,7 @@ To build with `kex_code_mcbits ` enabled:
 	./configure --enable-libsodium
 	make clean
 	make
-	
+
 ### Building with `kex_ntru` enabled
 
 The `kex_ntru` key exchange method is not enabled by default since the NTRU source code is not distributed with liboqs.  
