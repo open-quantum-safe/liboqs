@@ -52,9 +52,16 @@ matrix:
       - sh .travis/install-clang-format-linux.sh
   - os: osx
     compiler: clang
-    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1 ENABLE_NTRU=1 ENABLE_SIDH_IQC_REF=1
+    env: 
+      - CC_OQS=clang 
+      - AES_NI=0 
+      - USE_OPENSSL=1 
+      - OPENSSL_DIR=/usr/local/opt/openssl
+      - ENABLE_CODE_MCBITS=1 
+      - ENABLE_NTRU=1 
+      - ENABLE_SIDH_IQC_REF=1
 before_install:
-      - brew install clang-format openssl libsodium
+      - brew install clang-format libsodium
 
 script:
   - CC=$CC_OQS ./.travis-tests.sh
