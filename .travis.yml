@@ -11,7 +11,7 @@ matrix:
     - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
-    env: CC=gcc-4.9
+    env: CC_OQS=gcc-4.9
     addons:
       apt:
         sources:
@@ -22,7 +22,7 @@ matrix:
     - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
-    env: CC=gcc-5
+    env: CC_OQS=gcc-5
     addons:
       apt:
         sources:
@@ -34,7 +34,7 @@ matrix:
   - os: linux
     compiler: gcc
     env: 
-    - CC=gcc-6 
+    - CC_OQS=gcc-6 
     - USE_OPENSSL=1 
     - ENABLE_NTRU=1
     addons:
@@ -48,13 +48,13 @@ matrix:
     - sh .travis/install-clang-format-linux.sh
   - os: osx
     compiler: clang
-    env: CC=clang
+    env: CC_OQS=clang
     before_install:
     - brew install clang-format
   - os: osx
     compiler: clang
     env: 
-    - CC=clang 
+    - CC_OQS=clang 
     - AES_NI=0 
     - USE_OPENSSL=1 
     - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package

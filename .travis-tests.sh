@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export CC=$CC_OQS
+
 autoreconf -i
 enable_disable_str=
 if [[ ${USE_OPENSSL} == 1 ]];then
