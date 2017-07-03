@@ -6,44 +6,37 @@ matrix:
   include:
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-4.8 ENABLE_SIDH_IQC_REF=1
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - gcc-4.8
-        - libgmp-dev
-        - libm4ri-dev
+    env: ENABLE_SIDH_IQC_REF=1
     before_install:
-      - sh .travis/install-clang-format-linux.sh
+    - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-4.9
+    env: CC=gcc-4.9
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-4.9
-        - libm4ri-dev
     before_install:
-      - sh .travis/install-clang-format-linux.sh
+    - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-5
+    env: CC=gcc-5
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
         packages:
         - gcc-5
-        - libm4ri-dev
     before_install:
-      - sh .travis/install-clang-format-linux.sh
+    - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-6 USE_OPENSSL=1 ENABLE_NTRU=1
+    env: 
+    - CC=gcc-6 
+    - USE_OPENSSL=1 
+    - ENABLE_NTRU=1
     addons:
       apt:
         sources:
@@ -51,19 +44,25 @@ matrix:
         packages:
         - gcc-6
         - libssl-dev
-        - libm4ri-dev
     before_install:
-      - sh .travis/install-clang-format-linux.sh
+    - sh .travis/install-clang-format-linux.sh
   - os: osx
     compiler: clang
-    env: CC_OQS=clang
+    env: CC=clang
     before_install:
-      - brew install clang-format
+    - brew install clang-format
   - os: osx
     compiler: clang
-    env: CC_OQS=clang AES_NI=0 USE_OPENSSL=1 ENABLE_CODE_MCBITS=1 ENABLE_NTRU=1 ENABLE_SIDH_IQC_REF=1
+    env: 
+    - CC=clang 
+    - AES_NI=0 
+    - USE_OPENSSL=1 
+    - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package
+    - ENABLE_CODE_MCBITS=1 
+    - ENABLE_NTRU=1 
+    - ENABLE_SIDH_IQC_REF=1
     before_install:
-      - brew install clang-format openssl libsodium libm4ri-dev
+    - brew install clang-format libsodium
 
 script:
-  - CC=$CC_OQS ./.travis-tests.sh
+  - ./.travis-tests.sh
