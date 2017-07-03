@@ -77,11 +77,6 @@ ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
 AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
 
-ARG_ENABL_SET([avx-sig-picnic-msr], [enable AVX-SIG-PICNIC-MSR])
-AM_CONDITIONAL([avx_sig_picnic_msr], [test "x$avx_sig_picnic_msr" = xtrue])
-AM_CONDITIONAL([USE_AVX_PICNIC_MSR], [test "x$avx_sig_picnic_msr" = xtrue])
-
-
 AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 AC_CANONICAL_HOST
 # Check for which host we are on and setup a few things
@@ -131,7 +126,6 @@ SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
 SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
 SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
-SRCDIR=${SRCDIR}" src/sig_picnic_msr"
 
 if test x"$kex_ntru" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_NTRU"
@@ -154,10 +148,6 @@ fi
 if test x"$kex_sidh_iqc_ref" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIDH_IQC_REF"
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
-fi
-
-if test x"avx_sig_picnic_msr" = x"true"; then
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DWITH_AVX -mavx2" 
 fi
 
 
@@ -186,7 +176,6 @@ AC_CONFIG_FILES([Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
                  src/kex_sidh_iqc_ref/Makefile
-                 src/kex_lwe_frodo/Makefile
-                 src/sig_picnic_msr/Makefile])
+                 src/kex_lwe_frodo/Makefile])
 
 AC_OUTPUT

@@ -16,9 +16,10 @@ extern const uint64_t p751[NWORDS_FIELD];
 extern const uint64_t p751p1[NWORDS_FIELD];
 extern const uint64_t p751x2[NWORDS_FIELD];
 
-__inline void oqs_sidh_cln16_fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p751.
-                                                                                        // Inputs: a, b in [0, 2*p751-1]
-                                                                                        // Output: c in [0, 2*p751-1]
+// Modular addition, c = a+b mod p751.
+// Inputs: a, b in [0, 2*p751-1]
+// Output: c in [0, 2*p751-1]
+__inline void oqs_sidh_cln16_fpadd751(const digit_t *a, const digit_t *b, digit_t *c) {
 
 #if (OS_TARGET == OS_WIN)
 	unsigned int i, carry = 0;
@@ -46,9 +47,10 @@ __inline void oqs_sidh_cln16_fpadd751(const digit_t *a, const digit_t *b, digit_
 #endif
 }
 
-__inline void oqs_sidh_cln16_fpsub751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p751.
-                                                                                        // Inputs: a, b in [0, 2*p751-1]
-                                                                                        // Output: c in [0, 2*p751-1]
+// Modular subtraction, c = a-b mod p751.
+// Inputs: a, b in [0, 2*p751-1]
+// Output: c in [0, 2*p751-1]
+__inline void oqs_sidh_cln16_fpsub751(const digit_t *a, const digit_t *b, digit_t *c) {
 
 #if (OS_TARGET == OS_WIN)
 	unsigned int i, borrow = 0;
@@ -71,8 +73,9 @@ __inline void oqs_sidh_cln16_fpsub751(const digit_t *a, const digit_t *b, digit_
 #endif
 }
 
-__inline void oqs_sidh_cln16_fpneg751(digit_t *a) { // Modular negation, a = -a mod p751.
-	                                                // Input/output: a in [0, 2*p751-1]
+// Modular negation, a = -a mod p751.
+// Input/output: a in [0, 2*p751-1]
+__inline void oqs_sidh_cln16_fpneg751(digit_t *a) {
 	unsigned int i, borrow = 0;
 
 	for (i = 0; i < NWORDS_FIELD; i++) {
@@ -80,9 +83,10 @@ __inline void oqs_sidh_cln16_fpneg751(digit_t *a) { // Modular negation, a = -a 
 	}
 }
 
-void oqs_sidh_cln16_fpdiv2_751(const digit_t *a, digit_t *c) { // Modular division by two, c = a/2 mod p751.
-	                                                           // Input : a in [0, 2*p751-1]
-	                                                           // Output: c in [0, 2*p751-1]
+// Modular division by two, c = a/2 mod p751.
+// Input : a in [0, 2*p751-1]
+// Output: c in [0, 2*p751-1]
+void oqs_sidh_cln16_fpdiv2_751(const digit_t *a, digit_t *c) {
 	unsigned int i, carry = 0;
 	digit_t mask;
 
@@ -94,7 +98,8 @@ void oqs_sidh_cln16_fpdiv2_751(const digit_t *a, digit_t *c) { // Modular divisi
 	oqs_sidh_cln16_mp_shiftr1(c, NWORDS_FIELD);
 }
 
-void oqs_sidh_cln16_fpcorrection751(digit_t *a) { // Modular correction to reduce field element a in [0, 2*p751-1] to [0, p751-1].
+// Modular correction to reduce field element a in [0, 2*p751-1] to [0, p751-1].
+void oqs_sidh_cln16_fpcorrection751(digit_t *a) {
 	unsigned int i, borrow = 0;
 	digit_t mask;
 
@@ -109,7 +114,8 @@ void oqs_sidh_cln16_fpcorrection751(digit_t *a) { // Modular correction to reduc
 	}
 }
 
-void oqs_sidh_cln16_mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords) { // Multiprecision multiply, c = a*b, where lng(a) = lng(b) = nwords.
+// Multiprecision multiply, c = a*b, where lng(a) = lng(b) = nwords.
+void oqs_sidh_cln16_mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords) {
 
 	UNREFERENCED_PARAMETER(nwords);
 
@@ -524,11 +530,11 @@ void oqs_sidh_cln16_mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const
 #endif
 }
 
-void oqs_sidh_cln16_rdc_mont(const oqs_sidh_cln16_dfelm_t ma, oqs_sidh_cln16_felm_t mc) { // Efficient Montgomery reduction using comba and exploiting the special form of the prime p751.
-                                                                                          // mc = ma*R^-1 mod p751x2, where R = 2^768.
-                                                                                          // If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
-                                                                                          // ma is assumed to be in Montgomery representation.
-
+// Efficient Montgomery reduction using comba and exploiting the special form of the prime p751.
+// mc = ma*R^-1 mod p751x2, where R = 2^768.
+// If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
+// ma is assumed to be in Montgomery representation.
+void oqs_sidh_cln16_rdc_mont(const oqs_sidh_cln16_dfelm_t ma, oqs_sidh_cln16_felm_t mc) {
 #if (OS_TARGET == OS_WIN)
 	unsigned int carry;
 	digit_t t = 0;
