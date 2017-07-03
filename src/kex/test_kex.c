@@ -35,6 +35,7 @@ struct kex_testcase kex_testcases[] = {
 #ifdef ENABLE_NTRU
     {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},
 #endif
+    {OQS_KEX_alg_mlwe_kyber, NULL, 0, NULL, "mlwe_kyber", 0, 100},
 };
 
 #define KEX_TEST_ITERATIONS 100

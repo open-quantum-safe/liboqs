@@ -37,7 +37,7 @@ static void bitrev_vector(uint16_t *poly) {
 	uint16_t tmp;
 
 	for (i = 0; i < PARAM_N; i++) {
-		r = bitrev_table[i];
+		r = oqs_kex_rlwe_newhope_bitrev_table[i];
 		if (i < r) {
 			tmp = poly[i];
 			poly[i] = poly[r];
@@ -215,14 +215,14 @@ static void poly_add(poly *r, const poly *a, const poly *b) {
 }
 
 static void poly_ntt(poly *r) {
-	mul_coefficients(r->coeffs, psis_bitrev_montgomery);
-	ntt((uint16_t *) r->coeffs, omegas_montgomery);
+	mul_coefficients(r->coeffs, oqs_kex_rlwe_newhope_psis_bitrev_montgomery);
+	ntt((uint16_t *) r->coeffs, oqs_kex_rlwe_newhope_omegas_montgomery);
 }
 
 static void poly_invntt(poly *r) {
 	bitrev_vector(r->coeffs);
-	ntt((uint16_t *) r->coeffs, omegas_inv_montgomery);
-	mul_coefficients(r->coeffs, psis_inv_montgomery);
+	ntt((uint16_t *) r->coeffs, oqs_kex_rlwe_newhope_omegas_inv_montgomery);
+	mul_coefficients(r->coeffs, oqs_kex_rlwe_newhope_psis_inv_montgomery);
 }
 
 // Error Correction:

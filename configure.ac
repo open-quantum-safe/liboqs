@@ -126,6 +126,7 @@ SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
 SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
 SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
+SRCDIR=${SRCDIR}" src/kex_mlwe_kyber"
 
 if test x"$kex_ntru" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_NTRU"
@@ -176,6 +177,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
                  src/kex_sidh_iqc_ref/Makefile
-                 src/kex_lwe_frodo/Makefile])
+                 src/kex_lwe_frodo/Makefile
+                 src/kex_mlwe_kyber/Makefile])
 
 AC_OUTPUT
