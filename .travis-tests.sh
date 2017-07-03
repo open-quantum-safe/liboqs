@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export CC=$CC_OQS
+
 autoreconf -i
 enable_disable_str=
 if [[ ${USE_OPENSSL} == 1 ]];then
@@ -31,7 +33,7 @@ if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
   fi
 fi
 
-./configure --enable-silent-rules ${enable_disable_str}
+./configure --enable-silent-rules ${enable_disable_str} 
 make clean
 make
 make test
