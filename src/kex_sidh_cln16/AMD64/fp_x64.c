@@ -530,11 +530,11 @@ void oqs_sidh_cln16_mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const
 #endif
 }
 
-void oqs_sidh_cln16_rdc_mont(const oqs_sidh_cln16_dfelm_t ma, oqs_sidh_cln16_felm_t mc) { // Efficient Montgomery reduction using comba and exploiting the special form of the prime p751.
-	                                                                                      // mc = ma*R^-1 mod p751x2, where R = 2^768.
-	                                                                                      // If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
-	                                                                                      // ma is assumed to be in Montgomery representation.
-
+// Efficient Montgomery reduction using comba and exploiting the special form of the prime p751.
+// mc = ma*R^-1 mod p751x2, where R = 2^768.
+// If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
+// ma is assumed to be in Montgomery representation.
+void oqs_sidh_cln16_rdc_mont(const oqs_sidh_cln16_dfelm_t ma, oqs_sidh_cln16_felm_t mc) {
 #if (OS_TARGET == OS_WIN)
 	unsigned int carry;
 	digit_t t = 0;
