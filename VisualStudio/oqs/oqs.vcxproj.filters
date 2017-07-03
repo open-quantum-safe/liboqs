@@ -55,9 +55,6 @@
     <ClCompile Include="..\..\src\kex_sidh_cln16\SIDH_setup.c">
       <Filter>KEX_SIDH_CLN16</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_sidh_cln16\validate.c">
-      <Filter>KEX_SIDH_CLN16</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\common\common.c">
       <Filter>Common</Filter>
     </ClCompile>
@@ -93,6 +90,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\kex_ntru\kex_ntru.c">
       <Filter>KEX_NTRU</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_sidh_cln16\generic\fp_generic.c">
+      <Filter>KEX_SIDH_CLN16</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

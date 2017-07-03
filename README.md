@@ -176,7 +176,7 @@ NTRU is disabled by default in the Visual Studio build; follow these steps to en
 Documentation
 -------------
 
-The director `docs/Algorithm data sheets` contains information about some of the algorithms supported by liboqs.
+The directory `docs/Algorithm data sheets` contains information about some of the algorithms supported by liboqs.
 
 ### Doxygen documentation
 

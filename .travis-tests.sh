@@ -26,7 +26,7 @@ fi
 
 if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
   enable_disable_str+=" --enable-kex-sidh-iqc-ref"
-    if [[ ! -z "${GNP_DIR// }" ]];then
+    if [[ ! -z "${GMP_DIR// }" ]];then
      enable_disable_str+=" --with-gmp-dir=${GMP_DIR}"
   fi
 fi
