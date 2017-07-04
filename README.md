@@ -31,25 +31,20 @@ liboqs currently contains:
 - `kex_sidh_iqc_ref`: key exchange from the supersingular isogeny Diffie-Hellman problem (De Feo, Jao, Plût, *J. Math. Cryptol.* 8(3):209, 2014, [https://eprint.iacr.org/2011/506](https://eprint.iacr.org/2011/506)), using a reference implementation by Javad Doliskani
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
 - `kex_ntru`: NTRU: key transport using NTRU public key encryption (Hoffstein, Pipher, Silverman, *ANTS 1998*) with the EES743EP1 parameter set, wrapper around the implementation from the NTRU Open Source project [https://github.com/NTRUOpenSourceProject/NTRUEncrypt](https://github.com/NTRUOpenSourceProject/NTRUEncrypt))
+- `sig_picnic`: signature based on zero-knowledge proof as specified in Post-Quantum Zero-Knowledge and Signatures from Symmetric-Key Primitives (Melissa Chase and David Derler and Steven Goldfeder and Claudio Orlandi and Sebastian Ramacher and Christian Rechberger and Daniel Slamanig and Greg Zaverucha, [http://eprint.iacr.org/2017/279.pdf](http://eprint.iacr.org/2017/279.pdf))
 
 Building and Running on Linux and macOS
 ---------------------------------------
 
-Builds have been tested on Mac OS X 10.11.6, macOS 10.12, Ubuntu 16.04.1.
+Builds have been tested on Mac OS X 10.11.6, macOS 10.12.5, Ubuntu 16.04.1.
 
 ### Install dependencies for macOS
 
 You need to install autoconf, automake and libtool:
 
 	brew install autoconf automake libtool
-	
-### Install dependencies for Ubuntu
 
-You need to install autoconf, automake and libtool:
-
-	sudo apt install autoconf automake libtool
-	
-### Building	
+### Building
 
 To build, clone or download the source from GitHub, then simply type:
 
@@ -64,6 +59,7 @@ This will generate:
 - `test_rand`: A simple test harness for the random number generator.  This will test the distance of PRNG output from uniform using statistical distance.
 - `test_aes`: A simple test harness for AES.  This will test the correctness of the C implementation (and of the AES-NI implementation, if not disabled) of AES, and will compare the speed of these implementations against OpenSSL's AES implementation.
 - `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
+- `test_sig`: A simple test harness for the signature algorithms.
 
 ### Running
 
@@ -74,16 +70,7 @@ To run the tests, simply type:
 To run benchmarks, run
 
 	./test_kex --bench
-	
-To run benchmark only on some ciphers, run
 
-	./test_kex --help
-	
-to list the available ciphers and then run e.g.
-	
-	./test_kex --bench rlwe_bcns15 rlwe_newhope
-
-	
 ### Additional build options
 
 #### Building with OpenSSL algorithms enabled:
@@ -101,7 +88,7 @@ You may need to specify the path to your OpenSSL directory:
 	./configure --enable-openssl --with-openssl-dir=/path/to/openssl/directory
 	make clean
 	make
-	
+
 ### Building with `kex_sidh_iqc_ref` enabled
 
 The `kex_sidh_iqc_ref ` key exchange method is not enabled by default since it requires an external library (libgmp).
@@ -115,7 +102,7 @@ To build with `kex_sidh_iqc_ref ` enabled:
 	./configure --enable-sidhiqc
 	make clean
 	make
-	
+
 You may need to specify the path to your libgmp directory:
 
 	./configure --enable-sidhiqc --with-gmp-dir=/path/to/gmp/directory
@@ -139,7 +126,7 @@ To build with `kex_code_mcbits ` enabled:
 	./configure --enable-mcbits
 	make clean
 	make
-	
+
 ### Building with `kex_ntru` enabled
 
 The `kex_ntru` key exchange method is not enabled by default since the NTRU source code is not distributed with liboqs.  
@@ -151,6 +138,20 @@ To download and build the NTRU source code:
 To build with `kex_ntru` enabled:
 
 	./configure --enable-ntru
+	make clean
+	make
+
+### Building with sig_picnic enabled
+
+The `sig_picnic` signature algorithm is not enabled by default since it requires external libraries (libssl-dev and libm4ri-dev) and a parameters generation preprocessing step.
+
+To download and setup (pregenerate parameters and set their path as an env variable) the Picnic source code:
+
+	./download-and-setup-picnic.sh
+
+To build with `kex_picnic` enabled:
+
+	./configure --enable-openssl --enable-picnic [--with-openssl-dir=<..> --with-m4r-dir=<..>]
 	make clean
 	make
 
@@ -172,6 +173,8 @@ NTRU is disabled by default in the Visual Studio build; follow these steps to en
 - Add `ENABLE_NTRU` to the preprocessor definitions of the `oqs` and `test_kex` projects.
 - Add the "NTRUEncrypt-master/include" location to the "Additional Include Directories" in the oqs project C properties.
 - Add the NtruEncrypt_DLL.lib library to the "Additional Dependencies" in the `test_kex` project Linker properties.
+
+TODO: enable support for Picnic on Windows
 
 Documentation
 -------------
@@ -197,7 +200,7 @@ Contributing and using
 
 We hope OQS will provide a framework for many post-quantum implementations.
 
-In the immediate term, if you have feedback on our API ([kex.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/kex/kex.h) or [rand.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/crypto/rand/rand.h)), please contact us so we can ensure our API covers a wide range of implementation needs.
+In the immediate term, if you have feedback on our API ([kex.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/kex/kex.h), [sig.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/sig/sig.h) or [rand.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/rand/rand.h)), please contact us so we can ensure our API covers a wide range of implementation needs.
 
 If you have or are writing an implementation of a post-quantum key exchange algorithm, we hope you will consider making an implementation that meets our API so that others may use it and would be happy to discuss including it directly in liboqs.  Please take a look at our [coding conventions](https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions).
 
@@ -220,6 +223,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 - `src/kex_sidh_cln16`: MIT License
 - `src/kex_sidh_iqc_ref`: MIT License
 - `src/kex_code_mcbits`: public domain
+- `src/sig_picnic`: MIT License
 - `src/crypto/rand_urandom_chacha20/external`: public domain
 
 Team
