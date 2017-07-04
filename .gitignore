@@ -33,6 +33,7 @@ include
 *.x86_64
 *.hex
 /test_kex
+/test_sig
 /test_rand
 /test_aes
 benchmark_lowmc
@@ -60,6 +61,7 @@ VisualStudio/**/*.user
 
 # External sources
 external
+src/sig_picnic/external
 
 #Autotools
 autom4te.cache
@@ -89,5 +91,6 @@ stamp-h1
 .libs
 .dirstamp
 
+#params
 sample_params
-
+data/

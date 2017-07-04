@@ -73,6 +73,10 @@ ARG_ENABL_SET([kex-ntru], [enable KEX-NTRU.])
 AM_CONDITIONAL([ntru], [test "x$kex_ntru" = xtrue])
 AM_CONDITIONAL([USE_NTRU], [test "x$kex_ntru" = xtrue])
 
+ARG_ENABL_SET([picnic], [enable PICNIC.])
+AM_CONDITIONAL([picnic], [test "x$picnic" = xtrue])
+AM_CONDITIONAL([USE_PICNIC], [test "x$picnic" = xtrue])
+
 ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
 AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
@@ -118,8 +122,16 @@ AC_ARG_WITH(
    AC_SUBST(SODIUM_DIR, [$withval])],
   [AC_SUBST(SODIUM_DIR, /usr)]
 )
+AC_ARG_WITH(
+  [m4ri-dir],
+  AS_HELP_STRING([--with-m4ri-dir=dir],[m4ri dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(M4RIDIR, [$withval], [M4RI DIR used locally])
+   AC_SUBST(M4RI_DIR, [$withval])],
+  [AC_SUBST(M4RI_DIR, /usr)]
+)
 
-SRCDIR=" src/common src/crypto/aes src/kex src/crypto/rand src/crypto/sha3"
+
+SRCDIR=" src/common src/crypto/aes src/kex src/sig src/crypto/rand src/crypto/sha3"
 SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15/"
 SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
@@ -151,6 +163,10 @@ if test x"$kex_sidh_iqc_ref" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
 fi
 
+if test x"$picnic" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_PICNIC"
+  SRCDIR=${SRCDIR}" src/sig_picnic"
+fi
 
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
@@ -159,6 +175,7 @@ AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_NTRU)
 AC_SUBST(USE_MCBITS)
 AC_SUBST(USE_SIDH_IQC)
+AC_SUBST(USE_PICNIC)
 AC_SUBST(ON_DARWIN)
 
 
@@ -178,6 +195,8 @@ AC_CONFIG_FILES([Makefile
                  src/kex_ntru/Makefile
                  src/kex_sidh_iqc_ref/Makefile
                  src/kex_lwe_frodo/Makefile
+		             src/sig/Makefile
+		             src/sig_picnic/Makefile
                  src/kex_mlwe_kyber/Makefile])
 
 AC_OUTPUT
