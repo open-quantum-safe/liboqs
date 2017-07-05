@@ -9,7 +9,7 @@ typedef struct {
 #endif
 
 #if (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_D * 352))
-void polyvec_compress(unsigned char *r, const polyvec *a) {
+static void polyvec_compress(unsigned char *r, const polyvec *a) {
 	int i, j, k;
 	uint16_t t[8];
 	for (i = 0; i < KYBER_D; i++) {
@@ -33,7 +33,7 @@ void polyvec_compress(unsigned char *r, const polyvec *a) {
 	}
 }
 
-void polyvec_decompress(polyvec *r, const unsigned char *a) {
+static void polyvec_decompress(polyvec *r, const unsigned char *a) {
 	int i, j;
 	for (i = 0; i < KYBER_D; i++) {
 		for (j = 0; j < KYBER_N / 8; j++) {
@@ -52,7 +52,7 @@ void polyvec_decompress(polyvec *r, const unsigned char *a) {
 
 #elif (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_D * 320))
 
-void polyvec_compress(unsigned char *r, const polyvec *a) {
+static void polyvec_compress(unsigned char *r, const polyvec *a) {
 	int i, j, k;
 	uint16_t t[4];
 	for (i = 0; i < KYBER_D; i++) {
@@ -70,7 +70,7 @@ void polyvec_compress(unsigned char *r, const polyvec *a) {
 	}
 }
 
-void polyvec_decompress(polyvec *r, const unsigned char *a) {
+static void polyvec_decompress(polyvec *r, const unsigned char *a) {
 	int i, j;
 	for (i = 0; i < KYBER_D; i++) {
 		for (j = 0; j < KYBER_N / 4; j++) {
@@ -85,7 +85,7 @@ void polyvec_decompress(polyvec *r, const unsigned char *a) {
 
 #elif (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_D * 288))
 
-void polyvec_compress(unsigned char *r, const polyvec *a) {
+static void polyvec_compress(unsigned char *r, const polyvec *a) {
 	int i, j, k;
 	uint16_t t[8];
 	for (i = 0; i < KYBER_D; i++) {
@@ -107,7 +107,7 @@ void polyvec_compress(unsigned char *r, const polyvec *a) {
 	}
 }
 
-void polyvec_decompress(polyvec *r, const unsigned char *a) {
+static void polyvec_decompress(polyvec *r, const unsigned char *a) {
 	int i, j;
 	for (i = 0; i < KYBER_D; i++) {
 		for (j = 0; j < KYBER_N / 8; j++) {
@@ -126,7 +126,7 @@ void polyvec_decompress(polyvec *r, const unsigned char *a) {
 
 #elif (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_D * 256))
 
-void polyvec_compress(unsigned char *r, const polyvec *a) {
+static void polyvec_compress(unsigned char *r, const polyvec *a) {
 	int i, j, k;
 	uint16_t t;
 	for (i = 0; i < KYBER_D; i++) {
@@ -137,7 +137,7 @@ void polyvec_compress(unsigned char *r, const polyvec *a) {
 	}
 }
 
-void polyvec_decompress(polyvec *r, const unsigned char *a) {
+static void polyvec_decompress(polyvec *r, const unsigned char *a) {
 	int i, j;
 	for (i = 0; i < KYBER_D; i++) {
 		for (j = 0; j < KYBER_N; j++) {
@@ -151,31 +151,31 @@ void polyvec_decompress(polyvec *r, const unsigned char *a) {
 #error "Unsupported compression of polyvec"
 #endif
 
-void polyvec_tobytes(unsigned char *r, const polyvec *a) {
+static void polyvec_tobytes(unsigned char *r, const polyvec *a) {
 	int i;
 	for (i = 0; i < KYBER_D; i++)
 		poly_tobytes(r + i * KYBER_POLYBYTES, &a->vec[i]);
 }
 
-void polyvec_frombytes(polyvec *r, const unsigned char *a) {
+static void polyvec_frombytes(polyvec *r, const unsigned char *a) {
 	int i;
 	for (i = 0; i < KYBER_D; i++)
 		poly_frombytes(&r->vec[i], a + i * KYBER_POLYBYTES);
 }
 
-void polyvec_ntt(polyvec *r) {
+static void polyvec_ntt(polyvec *r) {
 	int i;
 	for (i = 0; i < KYBER_D; i++)
 		poly_ntt(&r->vec[i]);
 }
 
-void polyvec_invntt(polyvec *r) {
+static void polyvec_invntt(polyvec *r) {
 	int i;
 	for (i = 0; i < KYBER_D; i++)
 		poly_invntt(&r->vec[i]);
 }
 
-void polyvec_pointwise_acc(poly *r, const polyvec *a, const polyvec *b) {
+static void polyvec_pointwise_acc(poly *r, const polyvec *a, const polyvec *b) {
 	int i, j;
 	uint16_t t;
 	for (j = 0; j < KYBER_N; j++) {
@@ -189,7 +189,7 @@ void polyvec_pointwise_acc(poly *r, const polyvec *a, const polyvec *b) {
 	}
 }
 
-void polyvec_add(polyvec *r, const polyvec *a, const polyvec *b) {
+static void polyvec_add(polyvec *r, const polyvec *a, const polyvec *b) {
 	int i;
 	for (i = 0; i < KYBER_D; i++)
 		poly_add(&r->vec[i], &a->vec[i], &b->vec[i]);

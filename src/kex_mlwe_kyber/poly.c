@@ -14,7 +14,7 @@ static uint32_t load_littleendian(const unsigned char *x) {
 	return x[0] | (((uint32_t) x[1]) << 8) | (((uint32_t) x[2]) << 16) | (((uint32_t) x[3]) << 24);
 }
 
-void cbd(poly *r, const unsigned char *buf) {
+static void cbd(poly *r, const unsigned char *buf) {
 #if KYBER_K != 4
 #error "poly_getnoise in poly.c only supports k=4"
 #endif
@@ -45,7 +45,7 @@ void cbd(poly *r, const unsigned char *buf) {
 }
 /* end cbd.c */
 
-void poly_compress(unsigned char *r, const poly *a) {
+static void poly_compress(unsigned char *r, const poly *a) {
 	uint32_t t[8];
 	unsigned int i, j, k = 0;
 
@@ -60,7 +60,7 @@ void poly_compress(unsigned char *r, const poly *a) {
 	}
 }
 
-void poly_decompress(poly *r, const unsigned char *a) {
+static void poly_decompress(poly *r, const unsigned char *a) {
 	unsigned int i;
 	for (i = 0; i < KYBER_N; i += 8) {
 		r->coeffs[i + 0] = (((a[0] & 7) * KYBER_Q) + 4) >> 3;
@@ -75,7 +75,7 @@ void poly_decompress(poly *r, const unsigned char *a) {
 	}
 }
 
-void poly_tobytes(unsigned char *r, const poly *a) {
+static void poly_tobytes(unsigned char *r, const poly *a) {
 	int i, j;
 	uint16_t t[8];
 
@@ -99,7 +99,7 @@ void poly_tobytes(unsigned char *r, const poly *a) {
 	}
 }
 
-void poly_frombytes(poly *r, const unsigned char *a) {
+static void poly_frombytes(poly *r, const unsigned char *a) {
 	int i;
 	for (i = 0; i < KYBER_N / 8; i++) {
 		r->coeffs[8 * i + 0] = a[13 * i + 0] | (((uint16_t) a[13 * i + 1] & 0x1f) << 8);
@@ -113,7 +113,7 @@ void poly_frombytes(poly *r, const unsigned char *a) {
 	}
 }
 
-void poly_getnoise(poly *r, const unsigned char *seed, unsigned char nonce) {
+static void poly_getnoise(poly *r, const unsigned char *seed, unsigned char nonce) {
 	unsigned char buf[KYBER_N];
 
 	OQS_SHA3_cshake128_simple(buf, KYBER_N, nonce, seed, KYBER_NOISESEEDBYTES);
@@ -121,30 +121,30 @@ void poly_getnoise(poly *r, const unsigned char *seed, unsigned char nonce) {
 	cbd(r, buf);
 }
 
-void poly_ntt(poly *r) {
+static void poly_ntt(poly *r) {
 	mul_coefficients(r->coeffs, oqs_kex_mlwe_kyber_psis_bitrev_montgomery);
 	ntt(r->coeffs, oqs_kex_mlwe_kyber_omegas_montgomery);
 }
 
-void poly_invntt(poly *r) {
+static void poly_invntt(poly *r) {
 	bitrev_vector(r->coeffs);
 	ntt(r->coeffs, oqs_kex_mlwe_kyber_omegas_inv_bitrev_montgomery);
 	mul_coefficients(r->coeffs, oqs_kex_mlwe_kyber_psis_inv_montgomery);
 }
 
-void poly_add(poly *r, const poly *a, const poly *b) {
+static void poly_add(poly *r, const poly *a, const poly *b) {
 	int i;
 	for (i = 0; i < KYBER_N; i++)
 		r->coeffs[i] = barrett_reduce(a->coeffs[i] + b->coeffs[i]);
 }
 
-void poly_sub(poly *r, const poly *a, const poly *b) {
+static void poly_sub(poly *r, const poly *a, const poly *b) {
 	int i;
 	for (i = 0; i < KYBER_N; i++)
 		r->coeffs[i] = barrett_reduce(a->coeffs[i] + 3 * KYBER_Q - b->coeffs[i]);
 }
 
-void poly_frommsg(poly *r, const unsigned char msg[KYBER_SHAREDKEYBYTES]) {
+static void poly_frommsg(poly *r, const unsigned char msg[KYBER_SHAREDKEYBYTES]) {
 	uint16_t i, j, mask;
 
 	for (i = 0; i < KYBER_SHAREDKEYBYTES; i++) {
@@ -155,7 +155,7 @@ void poly_frommsg(poly *r, const unsigned char msg[KYBER_SHAREDKEYBYTES]) {
 	}
 }
 
-void poly_tomsg(unsigned char msg[KYBER_SHAREDKEYBYTES], const poly *a) {
+static void poly_tomsg(unsigned char msg[KYBER_SHAREDKEYBYTES], const poly *a) {
 	uint16_t t;
 	int i, j;
 
