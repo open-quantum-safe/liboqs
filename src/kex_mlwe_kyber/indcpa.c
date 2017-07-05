@@ -78,7 +78,7 @@ static void gen_matrix(polyvec *a, const unsigned char *seed, int transposed) //
 }
 
 static void indcpa_keypair(unsigned char *pk,
-                    unsigned char *sk, OQS_RAND *rand) {
+                           unsigned char *sk, OQS_RAND *rand) {
 	polyvec a[KYBER_D], e, pkpv, skpv;
 	unsigned char seed[KYBER_SEEDBYTES];
 	unsigned char noiseseed[KYBER_COINBYTES];
@@ -111,9 +111,9 @@ static void indcpa_keypair(unsigned char *pk,
 }
 
 static void indcpa_enc(unsigned char *c,
-                const unsigned char *m,
-                const unsigned char *pk,
-                const unsigned char *coins) {
+                       const unsigned char *m,
+                       const unsigned char *pk,
+                       const unsigned char *coins) {
 	polyvec sp, pkpv, ep, at[KYBER_D], bp;
 	poly v, k, epp;
 	unsigned char seed[KYBER_SEEDBYTES];
@@ -157,8 +157,8 @@ static void indcpa_enc(unsigned char *c,
 }
 
 static void indcpa_dec(unsigned char *m,
-                const unsigned char *c,
-                const unsigned char *sk) {
+                       const unsigned char *c,
+                       const unsigned char *sk) {
 	polyvec bp, skpv;
 	poly v, mp;
 	size_t i;
