@@ -19,7 +19,7 @@ static uint16_t bitrev_table[KYBER_N] = {
     15, 143, 79, 207, 47, 175, 111, 239, 31, 159, 95, 223, 63, 191, 127, 255,
 };
 
-void bitrev_vector(uint16_t *poly) {
+static void bitrev_vector(uint16_t *poly) {
 	unsigned int i, r;
 	uint16_t tmp;
 
@@ -33,7 +33,7 @@ void bitrev_vector(uint16_t *poly) {
 	}
 }
 
-void mul_coefficients(uint16_t *poly, const uint16_t *factors) {
+static void mul_coefficients(uint16_t *poly, const uint16_t *factors) {
 	unsigned int i;
 
 	for (i = 0; i < KYBER_N; i++)
@@ -41,7 +41,7 @@ void mul_coefficients(uint16_t *poly, const uint16_t *factors) {
 }
 
 /* GS_bo_to_no; omegas need to be in Montgomery domain */
-void ntt(uint16_t *a, const uint16_t *omega) {
+static void ntt(uint16_t *a, const uint16_t *omega) {
 	int start, j, jTwiddle, level;
 	uint16_t temp, W;
 	uint32_t t;

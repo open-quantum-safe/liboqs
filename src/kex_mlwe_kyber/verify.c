@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 /* returns 0 for equal strings, 1 for non-equal strings */
-int verify(const unsigned char *a, const unsigned char *b, size_t len) {
+static int verify(const unsigned char *a, const unsigned char *b, size_t len) {
 	uint64_t r;
 	size_t i;
 	r = 0;
@@ -15,7 +15,7 @@ int verify(const unsigned char *a, const unsigned char *b, size_t len) {
 }
 
 /* b = 1 means mov, b = 0 means don't mov*/
-void cmov(unsigned char *r, const unsigned char *x, size_t len, unsigned char b) {
+static void cmov(unsigned char *r, const unsigned char *x, size_t len, unsigned char b) {
 	size_t i;
 
 	b = -b;

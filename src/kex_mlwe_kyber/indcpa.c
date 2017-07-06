@@ -39,7 +39,7 @@ static void unpack_sk(polyvec *sk, const unsigned char *packedsk) {
 #define gen_at(A, B) gen_matrix(A, B, 1)
 
 /* Generate entry a_{i,j} of matrix A as Parse(SHAKE128(seed|i|j)) */
-void gen_matrix(polyvec *a, const unsigned char *seed, int transposed) //XXX: Not static for benchmarking
+static void gen_matrix(polyvec *a, const unsigned char *seed, int transposed) //XXX: Not static for benchmarking
 {
 	unsigned int pos = 0, ctr;
 	uint16_t val;
@@ -77,8 +77,8 @@ void gen_matrix(polyvec *a, const unsigned char *seed, int transposed) //XXX: No
 	}
 }
 
-void indcpa_keypair(unsigned char *pk,
-                    unsigned char *sk, OQS_RAND *rand) {
+static void indcpa_keypair(unsigned char *pk,
+                           unsigned char *sk, OQS_RAND *rand) {
 	polyvec a[KYBER_D], e, pkpv, skpv;
 	unsigned char seed[KYBER_SEEDBYTES];
 	unsigned char noiseseed[KYBER_COINBYTES];
@@ -110,10 +110,10 @@ void indcpa_keypair(unsigned char *pk,
 	pack_pk(pk, &pkpv, seed);
 }
 
-void indcpa_enc(unsigned char *c,
-                const unsigned char *m,
-                const unsigned char *pk,
-                const unsigned char *coins) {
+static void indcpa_enc(unsigned char *c,
+                       const unsigned char *m,
+                       const unsigned char *pk,
+                       const unsigned char *coins) {
 	polyvec sp, pkpv, ep, at[KYBER_D], bp;
 	poly v, k, epp;
 	unsigned char seed[KYBER_SEEDBYTES];
@@ -156,9 +156,9 @@ void indcpa_enc(unsigned char *c,
 	pack_ciphertext(c, &bp, &v);
 }
 
-void indcpa_dec(unsigned char *m,
-                const unsigned char *c,
-                const unsigned char *sk) {
+static void indcpa_dec(unsigned char *m,
+                       const unsigned char *c,
+                       const unsigned char *sk) {
 	polyvec bp, skpv;
 	poly v, mp;
 	size_t i;
