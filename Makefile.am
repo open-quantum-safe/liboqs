@@ -71,7 +71,7 @@ test_sig_LDADD += -L${OPENSSL_DIR}/lib -lssl -lcrypto
 
 pp_matrices_LDADD =  liboqs.la -lm
 pp_matrices_SOURCES = src/sig_picnic/external/Picnic-master/preprocessMatrices.c
-pp_matrices_CPPFLAGS = -I${OPENSSL_DIR}/include -I${M4RI_DIR}/include/m4ri -I./include
+pp_matrices_CPPFLAGS = -std=c99 -I${OPENSSL_DIR}/include -I${M4RI_DIR}/include/m4ri -I./include
 #pp_matrices_CPPFLAGS += $(AM_CPPFLAGS)
 pp_matrices_LDADD += -L${OPENSSL_DIR}/lib -L${M4RI_DIR}/lib -lssl -lcrypto -lm4ri
 endif
