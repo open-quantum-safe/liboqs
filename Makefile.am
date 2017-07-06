@@ -132,6 +132,11 @@ links:
 	$(LN_S) -f ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	$(LN_S) -f ../../src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	$(LN_S) -f ../../src/sig/sig.h include/oqs
+if USE_PICNIC
+if USE_OPENSSL
+	$(LN_S) -f ../../src/sig_picnic/external/Picnic-master/picnic.h include/oqs
+endif
+endif
 	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	$(LN_S) -f ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
