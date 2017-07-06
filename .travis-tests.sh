@@ -37,7 +37,9 @@ fi
 
 if [[ ${USE_PICNIC} == 1 ]];then
   enable_disable_str=" --enable-picnic"
+  ./download-and-setup-picnic.sh
 fi
+
 
 ./configure --enable-silent-rules ${enable_disable_str} 
 make clean
