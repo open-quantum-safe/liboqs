@@ -36,7 +36,7 @@ if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
 fi
 
 if [[ ${USE_PICNIC} == 1 ]];then
-  enable_disable_str=" --enable-picnic"
+  enable_disable_str+=" --enable-picnic"
   ./download-and-setup-picnic.sh
 fi
 
