@@ -45,7 +45,7 @@ if USE_MCBITS
 test_kex_LDADD += -L${SODIUM_DIR}/lib -lsodium
 endif
 if USE_OPENSSL
-test_kex_LDADD += -L$(OPENSSL_DIR)/lib  -lcrypto
+test_kex_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 if USE_SIDH_IQC
 test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
