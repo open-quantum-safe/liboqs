@@ -6,7 +6,8 @@ matrix:
   include:
   - os: linux
     compiler: gcc
-    env: ENABLE_SIDH_IQC_REF=1
+    env: 
+    - ENABLE_SIDH_IQC_REF=1
     - USE_PICNIC=1
     - USE_OPENSSL=1
     addons:
