@@ -11,6 +11,8 @@ matrix:
     - USE_OPENSSL=1
     addons:
       apt:
+        sources:
+        - ubuntu-toolchain-r-test
         packages:
         - libm4ri
     before_install:
