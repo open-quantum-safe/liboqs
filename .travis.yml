@@ -15,7 +15,7 @@ matrix:
         sources:
         - ubuntu-toolchain-r-test
         packages:
-        - libm4ri
+          - libm4ri-dev
     before_install:
     - sh .travis/install-clang-format-linux.sh
   - os: linux
