@@ -22,10 +22,6 @@ if [[ ${ENABLE_CODE_MCBITS} == 1 ]];then
   fi
 fi
 
-if [[ ${ENABLE_NTRU} == 1 ]];then
-  enable_disable_str+=" --enable-kex-ntru"
-fi
-
 if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
   enable_disable_str+=" --enable-kex-sidh-iqc-ref"
     if [[ ! -z "${GMP_DIR// }" ]];then

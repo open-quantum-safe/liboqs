@@ -20,22 +20,20 @@ struct kex_testcase {
 
 /* Add new testcases here */
 struct kex_testcase kex_testcases[] = {
+	{OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0, 100},
+#ifdef ENABLE_CODE_MCBITS
+    {OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
+#endif
+    {OQS_KEX_alg_mlwe_kyber, NULL, 0, NULL, "mlwe_kyber", 0, 100},
+    {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},
     {OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "rlwe_bcns15", 0, 100},
-    {OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100},
     {OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0, 100},
-    {OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0, 100},
+    {OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100},
     {OQS_KEX_alg_sidh_cln16, NULL, 0, "p751", "sidh_cln16", 0, 10},
     {OQS_KEX_alg_sidh_cln16_compressed, NULL, 0, "compressedp751", "sidh_cln16_compressed", 0, 10},
 #ifdef ENABLE_SIDH_IQC_REF
     {OQS_KEX_alg_sidh_iqc_ref, NULL, 0, NULL, "sidh_iqc_ref", 0, 10},
 #endif
-#ifdef ENABLE_CODE_MCBITS
-    {OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
-#endif
-#ifdef ENABLE_NTRU
-    {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},
-#endif
-    {OQS_KEX_alg_mlwe_kyber, NULL, 0, NULL, "mlwe_kyber", 0, 100},
 };
 
 #define KEX_TEST_ITERATIONS 100
