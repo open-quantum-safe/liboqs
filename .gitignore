@@ -37,7 +37,7 @@ include
 /test_rand
 /test_aes
 benchmark_lowmc
-pp_Matrices
+pp_matrices
 precomputed_data
 
 # Debug files
