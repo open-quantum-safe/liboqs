@@ -4,30 +4,33 @@
 #AC_PREREQ([2.69])
 AC_INIT([liboqs], [1.0.0], [])
 AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_SRCDIR([src/ds_benchmark.h])
+AC_CONFIG_MACRO_DIRS([config])
 
 # Checks for programs.
 AC_PROG_CXX
-AC_PROG_AWK
 AC_PROG_CC
-AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_MKDIR_P
 AM_PROG_AS
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
-m4_include(m4/macros/enable-disable.m4)
-m4_include(m4/macros/with.m4)
+#m4_include(m4/macros/enable-disable.m4)
+#m4_include(m4/macros/with.m4)
 LT_INIT([disable-shared])
 AC_CHECK_SIZEOF([size_t])
 # Checks for libraries.
 
 # Checks for header files.
-AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h stddef.h stdint.h stdlib.h string.h strings.h unistd.h])
+AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h stddef.h stdint.h stdlib.h string.h strings.h sys/time.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
+AC_CHECK_HEADER_STDBOOL
 AC_C_INLINE
+AC_TYPE_INT16_T
 AC_TYPE_INT32_T
+AC_TYPE_INT64_T
+AC_TYPE_INT8_T
 AC_TYPE_SIZE_T
 AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
@@ -36,7 +39,7 @@ AC_TYPE_UINT8_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([memset strdup])
+AC_CHECK_FUNCS([gettimeofday memmove memset pow sqrt strdup])
 
 # Silent rules
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
@@ -44,7 +47,6 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 ######################################################################
 # DOXYGEN SUPPORT
 ######################################################################
-
 DX_HTML_FEATURE(ON)
 DX_CHM_FEATURE(OFF)
 DX_CHI_FEATURE(OFF)
@@ -53,7 +55,6 @@ DX_RTF_FEATURE(OFF)
 DX_XML_FEATURE(OFF)
 DX_PDF_FEATURE(OFF)
 DX_PS_FEATURE(OFF)
-
 DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
 ######################################################################
 
