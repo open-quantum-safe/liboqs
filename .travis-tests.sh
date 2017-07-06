@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 export CC=$CC_OQS
 
 autoreconf -i
