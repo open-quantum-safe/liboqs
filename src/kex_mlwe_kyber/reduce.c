@@ -3,7 +3,7 @@
 static const uint32_t qinv = 7679; // -inverse_mod(q,2^18)
 static const uint32_t rlog = 18;
 
-uint16_t montgomery_reduce(uint32_t a) {
+static uint16_t montgomery_reduce(uint32_t a) {
 	uint32_t u;
 
 	u = (a * qinv);
@@ -13,7 +13,7 @@ uint16_t montgomery_reduce(uint32_t a) {
 	return a >> rlog;
 }
 
-uint16_t barrett_reduce(uint16_t a) {
+static uint16_t barrett_reduce(uint16_t a) {
 	uint32_t u;
 
 	u = a >> 13;
@@ -22,7 +22,7 @@ uint16_t barrett_reduce(uint16_t a) {
 	return a;
 }
 
-uint16_t freeze(uint16_t x) {
+static uint16_t freeze(uint16_t x) {
 	uint16_t m, r;
 	int16_t c;
 	r = barrett_reduce(x);
