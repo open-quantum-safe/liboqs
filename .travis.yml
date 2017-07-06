@@ -7,6 +7,12 @@ matrix:
   - os: linux
     compiler: gcc
     env: ENABLE_SIDH_IQC_REF=1
+    - USE_PICNIC=1
+    - USE_OPENSSL=1
+    addons:
+      apt:
+        packages:
+        - libm4ri
     before_install:
     - sh .travis/install-clang-format-linux.sh
   - os: linux
