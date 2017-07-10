@@ -1,57 +1,33 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-# Init
+#AC_PREREQ([2.69])
 AC_INIT([liboqs], [1.0.0], [])
-LT_INIT([disable-shared])
-AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
-
-# Configure
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SRCDIR([src/ds_benchmark.h])
-AC_CONFIG_MACRO_DIRS([config])
 
 # Checks for programs.
 AC_PROG_CXX
+AC_PROG_AWK
 AC_PROG_CC
+AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
+AC_PROG_MKDIR_P
 AM_PROG_AS
-
+AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
+m4_include(m4/macros/enable-disable.m4)
+m4_include(m4/macros/with.m4)
+LT_INIT([disable-shared])
+AC_CHECK_SIZEOF([size_t])
 # Checks for libraries.
-AC_ARG_WITH(
-  [openssl-dir],
-  AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr).]),
-  [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
-   AC_SUBST(OPENSSL_DIR, [$withval])],
-  [AC_SUBST(OPENSSL_DIR, /usr)]
-)
-AC_ARG_WITH(
-  [gmp-dir],
-  AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr).]),
-  [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
-   AC_SUBST(GMP_DIR, [$withval])],
-  [AC_SUBST(GMP_DIR, /usr)]
-)
-AC_ARG_WITH(
-  [sodium-dir],
-  AS_HELP_STRING([--with-sodium-dir=dir],[sodium dir used locally (default /usr).]),
-  [AC_DEFINE_UNQUOTED(SODIUMDIR, [$withval], [SODIUM DIR used locally])
-   AC_SUBST(SODIUM_DIR, [$withval])],
-  [AC_SUBST(SODIUM_DIR, /usr)]
-)
 
 # Checks for header files.
-AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h stddef.h stdint.h stdlib.h string.h strings.h sys/time.h unistd.h])
+AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h stddef.h stdint.h stdlib.h string.h strings.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_CHECK_HEADER_STDBOOL
 AC_C_INLINE
-AC_TYPE_INT16_T
 AC_TYPE_INT32_T
-AC_TYPE_INT64_T
-AC_TYPE_INT8_T
 AC_TYPE_SIZE_T
 AC_TYPE_UINT16_T
 AC_TYPE_UINT32_T
@@ -60,8 +36,7 @@ AC_TYPE_UINT8_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([gettimeofday memmove memset pow sqrt strdup])
-AC_CHECK_SIZEOF([size_t])
+AC_CHECK_FUNCS([memset strdup])
 
 # Silent rules
 m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
@@ -69,6 +44,7 @@ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 ######################################################################
 # DOXYGEN SUPPORT
 ######################################################################
+
 DX_HTML_FEATURE(ON)
 DX_CHM_FEATURE(OFF)
 DX_CHI_FEATURE(OFF)
@@ -77,6 +53,7 @@ DX_RTF_FEATURE(OFF)
 DX_XML_FEATURE(OFF)
 DX_PDF_FEATURE(OFF)
 DX_PS_FEATURE(OFF)
+
 DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
 ######################################################################
 
@@ -100,8 +77,8 @@ ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
 AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
 
+AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 AC_CANONICAL_HOST
-
 # Check for which host we are on and setup a few things
 # specifically based on the host
 case $host_os in
@@ -120,45 +97,60 @@ case $host_os in
         ;;
 esac
 
+AC_ARG_WITH(
+  [openssl-dir],
+  AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
+   AC_SUBST(OPENSSL_DIR, [$withval])],
+  [AC_SUBST(OPENSSL_DIR, /usr)]
+)
+AC_ARG_WITH(
+  [gmp-dir],
+  AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
+   AC_SUBST(GMP_DIR, [$withval])],
+  [AC_SUBST(GMP_DIR, /usr)]
+)
+AC_ARG_WITH(
+  [sodium-dir],
+  AS_HELP_STRING([--with-sodium-dir=dir],[sodium dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(SODIUMDIR, [$withval], [SODIUM DIR used locally])
+   AC_SUBST(SODIUM_DIR, [$withval])],
+  [AC_SUBST(SODIUM_DIR, /usr)]
+)
 
-# Common sources
-SRCDIR=" src/common"
-
-# Crypto sources
-SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/rand src/crypto/sha3 src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
-
-# KEX
-SRCDIR=${SRCDIR}" src/kex"
-SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
-SRCDIR=${SRCDIR}" src/kex_mlwe_kyber"
-SRCDIR=${SRCDIR}" src/kex_ntru"
-SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15"
-SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
+SRCDIR=" src/common src/crypto/aes src/kex src/crypto/rand src/crypto/sha3"
+SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
+SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15/"
 SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
+SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
+SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
 SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
+SRCDIR=${SRCDIR}" src/kex_mlwe_kyber"
 
-# Conditional KEX
+if test x"$kex_ntru" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_NTRU"
+  SRCDIR=${SRCDIR}" src/kex_ntru"
+fi
+
 if test x"$kex_code_mcbits" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_CODE_MCBITS"
   SRCDIR=${SRCDIR}" src/kex_code_mcbits"
 fi
-if test x"$kex_sidh_iqc_ref" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
-fi
 
-# Flags
-AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 if test x"$aes_ni" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DAES_ENABLE_NI"
 fi
+
 if test x"$openssl" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DUSE_OPENSSL"
 fi
-if test x"$kex_code_mcbits" = x"true"; then
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_CODE_MCBITS"
-fi
+
 if test x"$kex_sidh_iqc_ref" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIDH_IQC_REF"
+  SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
 fi
+
 
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
