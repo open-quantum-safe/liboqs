@@ -11,7 +11,7 @@ CLANGFORMAT ?= clang-format
 
 SUBDIRS = ${SRCDIR}
 
-BUILT_SOURCES = links 
+BUILT_SOURCES = links
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
@@ -76,11 +76,11 @@ endif
 
 test: clean-tests
 	make
-	./test_kex
-	./test_rand
+	./test_kex --quiet
+	./test_rand --quiet
 	./test_aes
 
-links: 
+links:
 	$(MKDIR_P) include/oqs
 	$(LN_S) -f ../../src/common/common.h include/oqs
 	$(LN_S) -f ../../src/crypto/aes/aes.h include/oqs
