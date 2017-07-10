@@ -1,17 +1,19 @@
 #include <assert.h>
 
 #include <oqs/kex.h>
-
 #include <oqs/kex_lwe_frodo.h>
-#include <oqs/kex_mlwe_kyber.h>
-#include <oqs/kex_ntru.h>
 #include <oqs/kex_rlwe_bcns15.h>
 #include <oqs/kex_rlwe_msrln16.h>
 #include <oqs/kex_rlwe_newhope.h>
 #include <oqs/kex_sidh_cln16.h>
+#include <oqs/kex_mlwe_kyber.h>
 
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
+#endif
+
+#ifdef ENABLE_NTRU
+#include <oqs/kex_ntru.h>
 #endif
 
 #ifdef ENABLE_SIDH_IQC_REF
@@ -22,34 +24,38 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 	switch (alg_name) {
 	case OQS_KEX_alg_default:
 		return OQS_KEX_rlwe_bcns15_new(rand);
-	case OQS_KEX_alg_lwe_frodo:
-		return OQS_KEX_lwe_frodo_new_recommended(rand, seed, seed_len, named_parameters);
-	case OQS_KEX_alg_code_mcbits:
-#ifdef ENABLE_CODE_MCBITS
-		return OQS_KEX_code_mcbits_new(rand);
-#else
-		assert(0);
-#endif
-	case OQS_KEX_alg_mlwe_kyber:
-		return OQS_KEX_mlwe_kyber_new(rand);
-	case OQS_KEX_alg_ntru:
-		return OQS_KEX_ntru_new(rand);
 	case OQS_KEX_alg_rlwe_bcns15:
 		return OQS_KEX_rlwe_bcns15_new(rand);
 	case OQS_KEX_alg_rlwe_msrln16:
 		return OQS_KEX_rlwe_msrln16_new(rand);
 	case OQS_KEX_alg_rlwe_newhope:
 		return OQS_KEX_rlwe_newhope_new(rand);
+	case OQS_KEX_alg_lwe_frodo:
+		return OQS_KEX_lwe_frodo_new_recommended(rand, seed, seed_len, named_parameters);
 	case OQS_KEX_alg_sidh_cln16:
 		return OQS_KEX_sidh_cln16_new(rand, named_parameters);
 	case OQS_KEX_alg_sidh_cln16_compressed:
 		return OQS_KEX_sidh_cln16_new(rand, named_parameters);
+	case OQS_KEX_alg_code_mcbits:
+#ifdef ENABLE_CODE_MCBITS
+		return OQS_KEX_code_mcbits_new(rand);
+#else
+		assert(0);
+#endif
+	case OQS_KEX_alg_ntru:
+#ifdef ENABLE_NTRU
+		return OQS_KEX_ntru_new(rand);
+#else
+		assert(0);
+#endif
 	case OQS_KEX_alg_sidh_iqc_ref:
 #ifdef ENABLE_SIDH_IQC_REF
 		return OQS_KEX_sidh_iqc_ref_new(rand);
 #else
 		assert(0);
 #endif
+	case OQS_KEX_alg_mlwe_kyber:
+		return OQS_KEX_mlwe_kyber_new(rand);
 	default:
 		assert(0);
 		return NULL;

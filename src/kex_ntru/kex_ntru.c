@@ -1,3 +1,5 @@
+#ifdef ENABLE_NTRU
+
 #if defined(WINDOWS)
 #define UNUSED
 // __attribute__ not supported in VS
@@ -223,3 +225,5 @@ void OQS_KEX_ntru_free(OQS_KEX *k) {
 		free(k->method_name);
 	free(k);
 }
+
+#endif

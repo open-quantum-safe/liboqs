@@ -36,6 +36,7 @@ matrix:
     env: 
     - CC_OQS=gcc-6 
     - USE_OPENSSL=1 
+    - ENABLE_NTRU=1
     addons:
       apt:
         sources:
@@ -58,6 +59,7 @@ matrix:
     - USE_OPENSSL=1 
     - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package
     - ENABLE_CODE_MCBITS=1 
+    - ENABLE_NTRU=1 
     - ENABLE_SIDH_IQC_REF=1
     before_install:
     - brew install clang-format libsodium
