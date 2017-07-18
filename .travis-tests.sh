@@ -34,6 +34,9 @@ fi
 if [[ ${USE_PICNIC} == 1 ]];then
   enable_disable_str+=" --enable-picnic"
   ./download-and-setup-picnic.sh
+  if [[ ! -z "${M4RI_DIR// }" ]];then
+     enable_disable_str+=" --with-m4ri-dir=${M4RI_DIR}"
+  fi
 fi
 
 

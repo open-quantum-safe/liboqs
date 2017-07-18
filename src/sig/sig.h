@@ -30,7 +30,7 @@ enum OQS_SIG_algid {
  * OQS signature object
  */
 typedef struct OQS_SIG OQS_SIG; // so the code below compiles...
-typedef struct OQS_SIG {
+struct OQS_SIG {
 
 	/**
 	 * PRNG
@@ -118,7 +118,7 @@ typedef struct OQS_SIG {
 	 */
 	int (*shutdown)(OQS_SIG *s);
 
-} OQS_SIG;
+};
 
 /**
  * Instantiate a new signature object.
