@@ -42,8 +42,11 @@ liboqs_la_LIBADD += src/sig_picnic/libpicnic.la
 endif
 
 noinst_bin_PROGRAMS = test_rand test_kex test_aes
+
 if USE_PICNIC
-noinst_bin_PROGRAMS += test_sig
+if USE_OPENSSL
+noinst_bin_PROGRAMS += pp_matrices test_sig
+endif
 endif
 
 noinst_bindir=$(prefix)/tests
@@ -62,11 +65,19 @@ test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
 endif
 
 if USE_PICNIC
+if USE_OPENSSL
 test_sig_LDADD =  liboqs.la -lm
 test_sig_SOURCES = src/sig/test_sig.c
-test_sig_CPPFLAGS = -I./include
+test_sig_CPPFLAGS = -I${OPENSSL_DIR}/include -I./include
 test_sig_CPPFLAGS += $(AM_CPPFLAGS)
-test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lssl -lcrypto
+test_sig_LDADD += -L${OPENSSL_DIR}/lib -lssl -lcrypto
+
+pp_matrices_LDADD =  liboqs.la -lm
+pp_matrices_SOURCES = src/sig_picnic/external/Picnic-master/preprocessMatrices.c
+pp_matrices_CPPFLAGS = -std=c99 -I${OPENSSL_DIR}/include -I${M4RI_DIR}/include/m4ri -I./include
+#pp_matrices_CPPFLAGS += $(AM_CPPFLAGS)
+pp_matrices_LDADD += -L${OPENSSL_DIR}/lib -L${M4RI_DIR}/lib -lssl -lcrypto -lm4ri
+endif
 endif
 
 test_aes_LDADD =  liboqs.la -lm
@@ -98,7 +109,8 @@ test: clean-tests
 	./test_aes
 if USE_PICNIC
 if USE_OPENSSL
-	ln -sf src/sig_picnic/external/Picnic-master/precomputed_data/ precomputed_data
+	mkdir -p precomputed_data
+	./pp_matrices
 	./test_sig
 endif
 endif
@@ -120,7 +132,13 @@ links:
 	$(LN_S) -f ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	$(LN_S) -f ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 	$(LN_S) -f ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
+	$(LN_S) -f ../../src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	$(LN_S) -f ../../src/sig/sig.h include/oqs
+if USE_PICNIC
+if USE_OPENSSL
+	$(LN_S) -f ../../src/sig_picnic/external/Picnic-master/picnic.h include/oqs
+endif
+endif
 	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	$(LN_S) -f ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
@@ -142,7 +160,11 @@ endif
 clean-tests:
 	rm -f test_kex test_rand test_aes
 if USE_PICNIC
+if USE_OPENSSL
 	rm -f test_sig
+	rm -f pp_matrices
+	rm -rf precomputed_data
+endif
 endif
 
 prettyprint:

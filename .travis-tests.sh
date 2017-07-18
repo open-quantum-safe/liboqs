@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 export CC=$CC_OQS
 
 autoreconf -i
@@ -31,14 +33,23 @@ fi
 
 if [[ ${USE_PICNIC} == 1 ]];then
   enable_disable_str+=" --enable-picnic"
+  ./download-and-setup-picnic.sh
 fi
 
 
-
-./configure --enable-silent-rules ${enable_disable_str}
+./configure --enable-silent-rules ${enable_disable_str} 
 make clean
 make
 make test
-for f in $(ls .travis/*-check.sh); do bash $f; done
+
+for f in $(ls .travis/*-check.sh); do 
+  if [[ ${USE_PICNIC} == 1 ]];then
+  if [[ ! "$f" == ".travis/global-namespace-check.sh" ]];then
+    bash $f;
+  fi  
+else
+  bash $f;
+fi
+done
 
 

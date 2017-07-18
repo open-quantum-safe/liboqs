@@ -96,13 +96,13 @@ ARG_ENABL_SET([kex-ntru], [enable KEX-NTRU.])
 AM_CONDITIONAL([ntru], [test "x$kex_ntru" = xtrue])
 AM_CONDITIONAL([USE_NTRU], [test "x$kex_ntru" = xtrue])
 
-ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
-AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
-AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
-
 ARG_ENABL_SET([picnic], [enable PICNIC.])
 AM_CONDITIONAL([picnic], [test "x$picnic" = xtrue])
 AM_CONDITIONAL([USE_PICNIC], [test "x$picnic" = xtrue])
+
+ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
+AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
+AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
 
 
 AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
@@ -126,6 +126,35 @@ case $host_os in
         ;;
 esac
 
+AC_ARG_WITH(
+  [openssl-dir],
+  AS_HELP_STRING([--with-openssl-dir=dir],[openssl dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
+   AC_SUBST(OPENSSL_DIR, [$withval])],
+  [AC_SUBST(OPENSSL_DIR, /usr)]
+)
+AC_ARG_WITH(
+  [gmp-dir],
+  AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
+   AC_SUBST(GMP_DIR, [$withval])],
+  [AC_SUBST(GMP_DIR, /usr)]
+)
+AC_ARG_WITH(
+  [sodium-dir],
+  AS_HELP_STRING([--with-sodium-dir=dir],[sodium dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(SODIUMDIR, [$withval], [SODIUM DIR used locally])
+   AC_SUBST(SODIUM_DIR, [$withval])],
+  [AC_SUBST(SODIUM_DIR, /usr)]
+)
+AC_ARG_WITH(
+  [m4ri-dir],
+  AS_HELP_STRING([--with-m4ri-dir=dir],[m4ri dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(M4RIDIR, [$withval], [M4RI DIR used locally])
+   AC_SUBST(M4RI_DIR, [$withval])],
+  [AC_SUBST(M4RI_DIR, /usr)]
+)
+
 
 # Common sources
 SRCDIR=" src/common"
@@ -135,6 +164,8 @@ SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/rand src/crypto/sha3 src/crypto/rand
 
 # KEX
 SRCDIR=${SRCDIR}" src/kex"
+SRCDIR=" src/common src/crypto/aes src/kex src/sig src/crypto/rand src/crypto/sha3"
+SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 SRCDIR=${SRCDIR}" src/kex_mlwe_kyber"
 SRCDIR=${SRCDIR}" src/kex_ntru"
@@ -203,9 +234,9 @@ AC_CONFIG_FILES([Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
                  src/kex_sidh_iqc_ref/Makefile
-            		 src/sig/Makefile
-		             src/sig_picnic/Makefile
                  src/kex_lwe_frodo/Makefile
+		             src/sig/Makefile
+		             src/sig_picnic/Makefile
                  src/kex_mlwe_kyber/Makefile])
 
 AC_OUTPUT
