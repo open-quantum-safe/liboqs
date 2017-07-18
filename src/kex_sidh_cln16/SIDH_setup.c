@@ -1,6 +1,6 @@
 /********************************************************************************************
-* SIDH: an efficient supersingular isogeny-based cryptography library for Diffie-Hellman key
-*       exchange providing 128 bits of quantum security and 192 bits of classical security.
+* SIDH: an efficient supersingular isogeny-based cryptography library for ephemeral 
+*       Diffie-Hellman key exchange.
 *
 *    Copyright (c) Microsoft Corporation. All rights reserved.
 *
@@ -10,12 +10,10 @@
 *********************************************************************************************/
 
 #include "SIDH_internal.h"
-#include <oqs/rand.h>
-#include <stdlib.h>
+// #include <malloc.h>
 
-SIDH_CRYPTO_STATUS oqs_sidh_cln16_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, UNUSED OQS_RAND *rand, PCurveIsogenyStaticData pCurveIsogenyData) {
-	// Initialize curve isogeny structure pCurveIsogeny with static data extracted from pCurveIsogenyData.
-	// This needs to be called after allocating memory for "pCurveIsogeny" using oqs_sidh_cln16_curve_allocate().
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, PCurveIsogenyStaticData pCurveIsogenyData) { // Initialize curve isogeny structure pCurveIsogeny with static data extracted from pCurveIsogenyData.
+	                                                                                                                               // This needs to be called after allocating memory for "pCurveIsogeny" using SIDH_curve_allocate().
 	unsigned int i, pwords, owords;
 
 	if (oqs_sidh_cln16_is_CurveIsogenyStruct_null(pCurveIsogeny)) {
@@ -50,15 +48,13 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_curve_initialize(PCurveIsogenyStruct pCurveIso
 	return SIDH_CRYPTO_SUCCESS;
 }
 
-PCurveIsogenyStruct oqs_sidh_cln16_curve_allocate(PCurveIsogenyStaticData CurveData) {
-	// Dynamic allocation of memory for curve isogeny structure.
-	// Returns NULL on error.
+PCurveIsogenyStruct oqs_sidh_cln16_curve_allocate(PCurveIsogenyStaticData CurveData) { // Dynamic allocation of memory for curve isogeny structure.
+	                                                                                   // Returns NULL on error.
 	digit_t pbytes = (CurveData->pwordbits + 7) / 8;
 	digit_t obytes = (CurveData->owordbits + 7) / 8;
-	PCurveIsogenyStruct pCurveIsogeny = (PCurveIsogenyStruct) calloc(1, sizeof(CurveIsogenyStruct));
-	if (!pCurveIsogeny) {
-		return NULL;
-	}
+	PCurveIsogenyStruct pCurveIsogeny = NULL;
+
+	pCurveIsogeny = (PCurveIsogenyStruct) calloc(1, sizeof(CurveIsogenyStruct));
 	pCurveIsogeny->prime = (digit_t *) calloc(1, pbytes);
 	pCurveIsogeny->A = (digit_t *) calloc(1, pbytes);
 	pCurveIsogeny->C = (digit_t *) calloc(1, pbytes);
@@ -70,57 +66,44 @@ PCurveIsogenyStruct oqs_sidh_cln16_curve_allocate(PCurveIsogenyStaticData CurveD
 	pCurveIsogeny->Montgomery_R2 = (digit_t *) calloc(1, pbytes);
 	pCurveIsogeny->Montgomery_pp = (digit_t *) calloc(1, pbytes);
 	pCurveIsogeny->Montgomery_one = (digit_t *) calloc(1, pbytes);
+
 	if (oqs_sidh_cln16_is_CurveIsogenyStruct_null(pCurveIsogeny)) {
-		oqs_sidh_cln16_curve_free(pCurveIsogeny);
 		return NULL;
 	}
 	return pCurveIsogeny;
 }
 
-void oqs_sidh_cln16_curve_free(PCurveIsogenyStruct pCurveIsogeny) {
-	// Free memory for curve isogeny structure
+void oqs_sidh_cln16_curve_free(PCurveIsogenyStruct pCurveIsogeny) { // Free memory for curve isogeny structure
 
 	if (pCurveIsogeny != NULL) {
-		if (pCurveIsogeny->prime != NULL) {
+		if (pCurveIsogeny->prime != NULL)
 			free(pCurveIsogeny->prime);
-		}
-		if (pCurveIsogeny->A != NULL) {
+		if (pCurveIsogeny->A != NULL)
 			free(pCurveIsogeny->A);
-		}
-		if (pCurveIsogeny->C != NULL) {
+		if (pCurveIsogeny->C != NULL)
 			free(pCurveIsogeny->C);
-		}
-		if (pCurveIsogeny->Aorder != NULL) {
+		if (pCurveIsogeny->Aorder != NULL)
 			free(pCurveIsogeny->Aorder);
-		}
-		if (pCurveIsogeny->Border != NULL) {
+		if (pCurveIsogeny->Border != NULL)
 			free(pCurveIsogeny->Border);
-		}
-		if (pCurveIsogeny->PA != NULL) {
+		if (pCurveIsogeny->PA != NULL)
 			free(pCurveIsogeny->PA);
-		}
-		if (pCurveIsogeny->PB != NULL) {
+		if (pCurveIsogeny->PB != NULL)
 			free(pCurveIsogeny->PB);
-		}
-		if (pCurveIsogeny->BigMont_order != NULL) {
+		if (pCurveIsogeny->BigMont_order != NULL)
 			free(pCurveIsogeny->BigMont_order);
-		}
-		if (pCurveIsogeny->Montgomery_R2 != NULL) {
+		if (pCurveIsogeny->Montgomery_R2 != NULL)
 			free(pCurveIsogeny->Montgomery_R2);
-		}
-		if (pCurveIsogeny->Montgomery_pp != NULL) {
+		if (pCurveIsogeny->Montgomery_pp != NULL)
 			free(pCurveIsogeny->Montgomery_pp);
-		}
-		if (pCurveIsogeny->Montgomery_one != NULL) {
+		if (pCurveIsogeny->Montgomery_one != NULL)
 			free(pCurveIsogeny->Montgomery_one);
-		}
 
 		free(pCurveIsogeny);
 	}
 }
 
-bool oqs_sidh_cln16_is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny) {
-	// Check if curve isogeny structure is NULL
+bool oqs_sidh_cln16_is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny) { // Check if curve isogeny structure is NULL
 
 	if (pCurveIsogeny == NULL || pCurveIsogeny->prime == NULL || pCurveIsogeny->A == NULL || pCurveIsogeny->C == NULL || pCurveIsogeny->Aorder == NULL || pCurveIsogeny->Border == NULL ||
 	    pCurveIsogeny->PA == NULL || pCurveIsogeny->PB == NULL || pCurveIsogeny->BigMont_order == NULL || pCurveIsogeny->Montgomery_R2 == NULL || pCurveIsogeny->Montgomery_pp == NULL ||
@@ -132,11 +115,10 @@ bool oqs_sidh_cln16_is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny
 
 const uint64_t Border_div3[SIDH_NWORDS_ORDER] = {0xEDCD718A828384F9, 0x733B35BFD4427A14, 0xF88229CF94D7CF38, 0x63C56C990C7C2AD6, 0xB858A87E8F4222C7, 0x254C9C6B525EAF5};
 
-SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_mod_order(digit_t *random_digits, unsigned int AliceOrBob, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) {
-	// Output random values in the range [1, order-1] in little endian format that can be used as private keys.
-	// It makes requests of random values with length "oAbits" (when AliceOrBob = 0) or "oBbits" (when AliceOrBob = 1).
-	// The process repeats until random value is in [0, Aorder-2]  ([0, Border-2], resp.).
-	// If successful, the output is given in "random_digits" in the range [1, Aorder-1] ([1, Border-1], resp.).
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_mod_order(digit_t *random_digits, unsigned int AliceOrBob, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) { // Output random values in the range [1, order-1] in little endian format that can be used as private keys.
+	                                                                                                                                                     // It makes requests of random values with length "oAbits" (when AliceOrBob = 0) or "oBbits" (when AliceOrBob = 1) to the "random_bytes" function.
+	                                                                                                                                                     // The process repeats until random value is in [0, Aorder-2]  ([0, Border-2], resp.).
+	                                                                                                                                                     // If successful, the output is given in "random_digits" in the range [1, Aorder-1] ([1, Border-1], resp.).
 	unsigned int ntry = 0, nbytes, nwords;
 	digit_t t1[SIDH_MAXWORDS_ORDER] = {0}, order2[SIDH_MAXWORDS_ORDER] = {0};
 	unsigned char mask;
@@ -167,7 +149,6 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_mod_order(digit_t *random_digits, unsig
 		if (ntry > 100) { // Max. 100 iterations to obtain random value in [0, order-2]
 			return SIDH_CRYPTO_ERROR_TOO_MANY_ITERATIONS;
 		}
-
 		rand->rand_n(rand, (uint8_t *) random_digits, nbytes);
 		((unsigned char *) random_digits)[nbytes - 1] &= mask; // Masking last byte
 	} while (oqs_sidh_cln16_mp_sub(order2, random_digits, t1, nwords) == 1);
@@ -184,13 +165,14 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_mod_order(digit_t *random_digits, unsig
 	return Status;
 }
 
-SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_BigMont_mod_order(digit_t *random_digits, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) {
-	// Output random values in the range [1, BigMont_order-1] in little endian format that can be used as private keys to compute scalar multiplications
-	// using the elliptic curve BigMont.
-	// It makes requests of random values with length "BIGMONT_NBITS_ORDER".
-	// The process repeats until random value is in [0, BigMont_order-2]
-	// If successful, the output is given in "random_digits" in the range [1, BigMont_order-1].
-	unsigned int ntry = 0, nbytes = (BIGMONT_NBITS_ORDER + 7) / 8, nwords = NBITS_TO_NWORDS(BIGMONT_NBITS_ORDER);
+SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_BigMont_mod_order(digit_t *random_digits, PCurveIsogenyStruct pCurveIsogeny, OQS_RAND *rand) { // Output random values in the range [1, BigMont_order-1] in little endian format that can be used as private keys to compute scalar multiplications
+	                                                                                                                                    // using the elliptic curve BigMont.
+	                                                                                                                                    // It makes requests of random values with length "BIGMONT_SIDH_SIDH_NBITS_ORDER" to the "random_bytes" function.
+	                                                                                                                                    // The process repeats until random value is in [0, BigMont_order-2]
+	                                                                                                                                    // If successful, the output is given in "random_digits" in the range [1, BigMont_order-1].
+	                                                                                                                                    // The "random_bytes" function, which is passed through the curve isogeny structure PCurveIsogeny, should be set up in advance using SIDH_curve_initialize().
+	                                                                                                                                    // The caller is responsible of providing the "random_bytes" function passing random values as octets.
+	unsigned int ntry = 0, nbytes = (BIGMONT_SIDH_SIDH_NBITS_ORDER + 7) / 8, nwords = NBITS_TO_NWORDS(BIGMONT_SIDH_SIDH_NBITS_ORDER);
 	digit_t t1[BIGMONT_MAXWORDS_ORDER] = {0}, order2[BIGMONT_MAXWORDS_ORDER] = {0};
 	unsigned char mask;
 	SIDH_CRYPTO_STATUS Status = SIDH_CRYPTO_SUCCESS;
@@ -201,7 +183,7 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_BigMont_mod_order(digit_t *random_digit
 
 	oqs_sidh_cln16_clear_words((void *) random_digits, BIGMONT_MAXWORDS_ORDER);
 	t1[0] = 2;
-	mask = (unsigned char) (8 * nbytes - BIGMONT_NBITS_ORDER);
+	mask = (unsigned char) (8 * nbytes - BIGMONT_SIDH_SIDH_NBITS_ORDER);
 	oqs_sidh_cln16_mp_sub(pCurveIsogeny->BigMont_order, t1, order2, nwords); // order2 = order-2
 	mask = ((unsigned char) -1 >> mask);                                     // Value for masking last random byte
 
@@ -221,9 +203,8 @@ SIDH_CRYPTO_STATUS oqs_sidh_cln16_random_BigMont_mod_order(digit_t *random_digit
 	return Status;
 }
 
-void oqs_sidh_cln16_clear_words(void *mem, digit_t nwords) {
-	// Clear digits from memory. "nwords" indicates the number of digits to be zeroed.
-	// This function uses the volatile type qualifier to inform the compiler not to optimize out the memory clearing.
+void oqs_sidh_cln16_clear_words(void *mem, digit_t nwords) { // Clear digits from memory. "nwords" indicates the number of digits to be zeroed.
+	                                                         // This function uses the volatile type qualifier to inform the compiler not to optimize out the memory clearing.
 	unsigned int i;
 	volatile digit_t *v = mem;
 
