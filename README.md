@@ -134,19 +134,20 @@ To build with `kex_ntru` enabled:
 	make clean
 	make
 
-### Building with sig_picnic enabled
+### Building with `sig_picnic` enabled
 
 The `sig_picnic` signature algorithm is not enabled by default since it requires external libraries (libssl-dev and libm4ri-dev) and a parameters generation preprocessing step.
 
-To download and setup (pregenerate parameters and set their path as an env variable) the Picnic source code:
+To download the Picnic source code:
 
 	./download-and-setup-picnic.sh
 
-To build with `kex_picnic` enabled:
+To build with `sig_picnic` enabled:
 
 	./configure --enable-openssl --enable-picnic [--with-openssl-dir=<..> --with-m4r-dir=<..>]
 	make clean
 	make
+	make test   (this generates data needed by the Picnic library)
 
 Building and running on Windows
 -------------------------------
