@@ -41,7 +41,7 @@ Builds have been tested on Mac OS X 10.11.6, macOS 10.12.5, Ubuntu 16.04.1.
 
 ### Install dependencies for macOS
 
-You need to install autoconf, automake and libtool:
+You need to install `autoconf`, `automake` and `libtool`:
 
 	brew install autoconf automake libtool
 
@@ -80,13 +80,7 @@ OpenSSL can be used for some symmetric crypto algorithms, which may result in be
 
 To build with OpenSSL enabled:
 
-	./configure --enable-openssl
-	make clean
-	make
-
-You may need to specify the path to your OpenSSL directory:
-
-	./configure --enable-openssl --with-openssl-dir=/path/to/openssl/directory
+	./configure --enable-openssl [--with-openssl-dir=<..>]
 	make clean
 	make
 
@@ -100,13 +94,7 @@ To install the library on macOS:
 
 To build with `kex_sidh_iqc_ref ` enabled:
 
-	./configure --enable-sidhiqc
-	make clean
-	make
-
-You may need to specify the path to your libgmp directory:
-
-	./configure --enable-sidhiqc --with-gmp-dir=/path/to/gmp/directory
+	./configure --enable-sidhiqc [--with-gmp-dir=<..>]
 	make clean
 	make
 
@@ -124,19 +112,24 @@ To install the library on Ubuntu:
 
 To build with `kex_code_mcbits ` enabled:
 
-	./configure --enable-mcbits
-	make clean
-	make
-
-To build with `kex_ntru` enabled:
-
-	./configure --enable-ntru
+	./configure --enable-mcbits [--with-sodium-dir=<..>]
 	make clean
 	make
 
 ### Building with `sig_picnic` enabled
 
-The `sig_picnic` signature algorithm is not enabled by default since it requires external libraries (libssl-dev and libm4ri-dev) and a parameters generation preprocessing step.
+The `sig_picnic` signature algorithm is not enabled by default since it requires:
+- external libraries (`openssl` and `m4ri`);
+- to download and setup `picnic`;
+- a parameters generation preprocessing step.
+
+To install the library on macOS:
+
+	brew install openssl homebrew/science/m4ri
+
+To install the library on Ubuntu:
+
+	sudo apt install libssl-dev libm4ri-dev
 
 To download the Picnic source code:
 
@@ -144,7 +137,7 @@ To download the Picnic source code:
 
 To build with `sig_picnic` enabled:
 
-	./configure --enable-openssl --enable-picnic [--with-openssl-dir=<..> --with-m4r-dir=<..>]
+	./configure --enable-picnic --enable-openssl [--with-openssl-dir=<..> --with-m4r-dir=<..>]
 	make clean
 	make
 	make test   (this generates data needed by the Picnic library)
@@ -201,16 +194,16 @@ License
 liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for details.  liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
 - `src/crypto/aes/aes_c.c`: public domain
+- `src/crypto/rand_urandom_chacha20/external`: public domain
+- `src/kex_code_mcbits`: public domain
+- `src/kex_mlwe_kyber`: public domain
 - `src/kex_rlwe_bcns15`: public domain ([Unlicense](http://unlicense.org))
 - `src/kex_rlwe_msrln16`: MIT License
 - `src/kex_rlwe_msrln16/external`: public domain ([CC0](http://creativecommons.org/publicdomain/zero/1.0/))
 - `src/kex_rlwe_newhope`: public domain
 - `src/kex_sidh_cln16`: MIT License
 - `src/kex_sidh_iqc_ref`: MIT License
-- `src/kex_code_mcbits`: public domain
 - `src/sig_picnic`: MIT License
-- `src/kex_mlwe_kyber`: public domain
-- `src/crypto/rand_urandom_chacha20/external`: public domain
 
 Team
 ----
