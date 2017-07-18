@@ -32,8 +32,10 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #endif
 	case OQS_KEX_alg_mlwe_kyber:
 		return OQS_KEX_mlwe_kyber_new(rand);
+#ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
 	case OQS_KEX_alg_ntru:
 		return OQS_KEX_ntru_new(rand);
+#endif
 	case OQS_KEX_alg_rlwe_bcns15:
 		return OQS_KEX_rlwe_bcns15_new(rand);
 	case OQS_KEX_alg_rlwe_msrln16:

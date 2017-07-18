@@ -44,7 +44,7 @@ static void gen_matrix(polyvec *a, const unsigned char *seed, int transposed) //
 	unsigned int pos = 0, ctr;
 	uint16_t val;
 	unsigned int nblocks = 4;
-	uint8_t buf[OQS_SHA3_SHAKE128_RATE * nblocks];
+	uint8_t buf[OQS_SHA3_SHAKE128_RATE * 4]; // was * nblocks, but VS doesn't like this buf init
 	int i, j;
 	uint16_t dsep;
 	uint64_t state[25]; // CSHAKE state

@@ -52,9 +52,10 @@ PCurveIsogenyStruct oqs_sidh_cln16_curve_allocate(PCurveIsogenyStaticData CurveD
 	                                                                                   // Returns NULL on error.
 	digit_t pbytes = (CurveData->pwordbits + 7) / 8;
 	digit_t obytes = (CurveData->owordbits + 7) / 8;
-	PCurveIsogenyStruct pCurveIsogeny = NULL;
-
-	pCurveIsogeny = (PCurveIsogenyStruct) calloc(1, sizeof(CurveIsogenyStruct));
+	PCurveIsogenyStruct pCurveIsogeny = pCurveIsogeny = (PCurveIsogenyStruct) calloc(1, sizeof(CurveIsogenyStruct));
+	if (!pCurveIsogeny) {
+		return NULL;
+	}
 	pCurveIsogeny->prime = (digit_t *) calloc(1, pbytes);
 	pCurveIsogeny->A = (digit_t *) calloc(1, pbytes);
 	pCurveIsogeny->C = (digit_t *) calloc(1, pbytes);

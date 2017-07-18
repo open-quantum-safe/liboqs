@@ -6,6 +6,8 @@
 #ifndef __OQS_KEX_NTRU_H
 #define __OQS_KEX_NTRU_H
 
+#ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
+
 #include <stddef.h>
 #include <stdint.h>
 
@@ -20,5 +22,7 @@ int OQS_KEX_ntru_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_
 
 void OQS_KEX_ntru_alice_priv_free(OQS_KEX *k, void *alice_priv);
 void OQS_KEX_ntru_free(OQS_KEX *k);
+
+#endif
 
 #endif
