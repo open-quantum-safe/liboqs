@@ -117,7 +117,6 @@ struct OQS_SIG {
 	 @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
 	 */
 	int (*shutdown)(OQS_SIG *s);
-
 };
 
 /**

@@ -74,7 +74,6 @@ struct OQS_RAND {
 	 *
 	 */
 	void (*free)(OQS_RAND *r);
-
 };
 
 OQS_RAND *OQS_RAND_new(enum OQS_RAND_alg_name alg_name);
