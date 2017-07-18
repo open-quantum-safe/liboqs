@@ -14,13 +14,12 @@ SUBDIRS = ${SRCDIR}
 BUILT_SOURCES = links ntru
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
-liboqs_la_LIBADD = src/common/libcommon.la src/kex/libkex.la src/crypto/rand/librand.la src/crypto/aes/libaes.la
+liboqs_la_LIBADD = src/common/libcommon.la src/kex/libkex.la src/sig/libsig.la src/crypto/rand/librand.la src/crypto/aes/libaes.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/kex_rlwe_bcns15/libbcns15.la src/kex_rlwe_newhope/libnewhope.la
 liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la src/kex_rlwe_msrln16/libmsrln16.la
 liboqs_la_LIBADD += src/kex_sidh_cln16/libcln16.la
-liboqs_la_LIBADD += src/sig_picnic_msr/libpicnicmsr.la
 
 if USE_MCBITS
 liboqs_la_LIBADD += src/kex_code_mcbits/libmcbits.la
@@ -34,7 +33,15 @@ if USE_SIDH_IQC
 liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
 endif
 
-noinst_bin_PROGRAMS = test_rand test_kex test_aes pp_Matrices benchmark_lowmc
+if USE_PICNIC
+liboqs_la_LIBADD += src/sig_picnic/libpicnic.la
+endif
+
+noinst_bin_PROGRAMS = test_rand test_kex test_aes
+if USE_PICNIC
+noinst_bin_PROGRAMS += test_sig
+endif
+
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
 test_kex_SOURCES = src/kex/test_kex.c
@@ -50,11 +57,18 @@ if USE_SIDH_IQC
 test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
 endif
 
+if USE_PICNIC
+test_sig_LDADD =  liboqs.la -lm
+test_sig_SOURCES = src/sig/test_sig.c
+test_sig_CPPFLAGS = -I./include
+test_sig_CPPFLAGS += $(AM_CPPFLAGS)
+test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lssl -lcrypto
+endif
+
 test_aes_LDADD =  liboqs.la -lm
 test_aes_SOURCES = src/crypto/aes/test_aes.c
 test_aes_CPPFLAGS = -I./include
 test_aes_CPPFLAGS += $(AM_CPPFLAGS)
-
 
 if USE_OPENSSL
 test_aes_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
@@ -73,24 +87,17 @@ test_rand_CPPFLAGS += -maes -msse2
 endif
 endif
 
-pp_Matrices_LDADD = liboqs.la -lm4ri -lcrypto
-pp_Matrices_SOURCES = src/sig_picnic_msr/preprocessMatrices.c
-pp_Matrices_CPPFLAGS = -Isrc/sig_picnic_msr/ -I/usr/include/m4ri/
-pp_Matrices_CPPFLAGS += $(AM_CPPFLAGS)
-
-benchmark_lowmc_LDADD = liboqs.la -lcrypto -lm4ri
-benchmark_lowmc_SOURCES = src/sig_picnic_msr/benchmark_lowmc.c src/sig_picnic_msr/test_util.c 
-benchmark_lowmc_CPPFLAGS = -Isrc/sig_picnic_msr/
-benchmark_lowmc_CPPFLAGS += $(AM_CPPFLAGS)
-
-
 test: clean-tests
 	make
 	./test_kex
 	./test_rand
 	./test_aes
-	mkdir ./precomputed_data;./pp_Matrices
-	./benchmark_lowmc
+if USE_PICNIC
+if USE_OPENSSL
+	ln -sf src/sig_picnic/external/Picnic-master/precomputed_data/ precomputed_data
+	./test_sig
+endif
+endif
 
 ntru:
 
@@ -108,6 +115,7 @@ links:
 	$(LN_S) -f ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	$(LN_S) -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	$(LN_S) -f ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
+	$(LN_S) -f ../../src/sig/sig.h include/oqs
 	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	$(LN_S) -f ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
@@ -119,21 +127,24 @@ if USE_SIDH_IQC
 	$(LN_S) -f ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
 	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
 endif
+if USE_PICNIC
+	$(LN_S) -f ../../src/sig_picnic/sig_picnic.h include/oqs
+endif
 
 clean-local:
 	rm -f liboqs.a
 	rm -rf include
-	rm -rf precomputed_data
 if USE_SIDH_IQC
 	rm -f sample_params
 endif
-
 clean-tests:
-	rm -f test_kex test_rand test_aes pp_Matrices benchmark_lowmc
-	rm -rf precomputed_data
+	rm -f test_kex test_rand test_aes
+if USE_PICNIC
+	rm -f test_sig
+endif
 
 prettyprint:
-	find src -name '*.c' -o -name '*.h' | xargs $(CLANGFORMAT) -style=file -i
+	find src -name '*.c' -o -name '*.h' | grep -v Picnic*| xargs $(CLANGFORMAT) -style=file -i
 
 docs: links
 	doxygen

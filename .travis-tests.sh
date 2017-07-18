@@ -31,6 +31,12 @@ if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
   fi
 fi
 
+if [[ ${USE_PICNIC} == 1 ]];then
+  enable_disable_str+=" --enable-picnic"
+fi
+
+
+
 ./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make

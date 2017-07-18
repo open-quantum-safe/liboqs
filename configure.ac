@@ -77,9 +77,9 @@ ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
 AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
 
-ARG_ENABL_SET([avx-sig-picnic-msr], [enable AVX-SIG-PICNIC-MSR])
-AM_CONDITIONAL([avx_sig_picnic_msr], [test "x$avx_sig_picnic_msr" = xtrue])
-AM_CONDITIONAL([USE_AVX_PICNIC_MSR], [test "x$avx_sig_picnic_msr" = xtrue])
+ARG_ENABL_SET([picnic], [enable PICNIC.])
+AM_CONDITIONAL([picnic], [test "x$picnic" = xtrue])
+AM_CONDITIONAL([USE_PICNIC], [test "x$picnic" = xtrue])
 
 
 AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
@@ -124,14 +124,13 @@ AC_ARG_WITH(
   [AC_SUBST(SODIUM_DIR, /usr)]
 )
 
-SRCDIR=" src/common src/crypto/aes src/kex src/crypto/rand src/crypto/sha3"
+SRCDIR=" src/common src/crypto/aes src/kex src/sig src/crypto/rand src/crypto/sha3"
 SRCDIR=${SRCDIR}" src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15/"
 SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
 SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
 SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
 SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
-SRCDIR=${SRCDIR}" src/sig_picnic_msr"
 
 if test x"$kex_ntru" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_NTRU"
@@ -156,10 +155,10 @@ if test x"$kex_sidh_iqc_ref" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
 fi
 
-if test x"avx_sig_picnic_msr" = x"true"; then
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DWITH_AVX -mavx2" 
+if test x"$picnic" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_PICNIC"
+  SRCDIR=${SRCDIR}" src/sig_picnic"
 fi
-
 
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
@@ -168,6 +167,7 @@ AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_NTRU)
 AC_SUBST(USE_MCBITS)
 AC_SUBST(USE_SIDH_IQC)
+AC_SUBST(USE_PICNIC)
 AC_SUBST(ON_DARWIN)
 
 
@@ -186,7 +186,8 @@ AC_CONFIG_FILES([Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
                  src/kex_sidh_iqc_ref/Makefile
-                 src/kex_lwe_frodo/Makefile
-                 src/sig_picnic_msr/Makefile])
+            		 src/sig/Makefile
+		             src/sig_picnic/Makefile
+                 src/kex_lwe_frodo/Makefile])
 
 AC_OUTPUT
