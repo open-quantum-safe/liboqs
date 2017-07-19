@@ -10,7 +10,7 @@
 *********************************************************************************************/
 
 #include "SIDH_internal.h"
-// #include <malloc.h>
+#include <malloc.h>
 
 SIDH_CRYPTO_STATUS oqs_sidh_cln16_curve_initialize(PCurveIsogenyStruct pCurveIsogeny, PCurveIsogenyStaticData pCurveIsogenyData) { // Initialize curve isogeny structure pCurveIsogeny with static data extracted from pCurveIsogenyData.
 	                                                                                                                               // This needs to be called after allocating memory for "pCurveIsogeny" using SIDH_curve_allocate().
@@ -52,10 +52,9 @@ PCurveIsogenyStruct oqs_sidh_cln16_curve_allocate(PCurveIsogenyStaticData CurveD
 	                                                                                   // Returns NULL on error.
 	digit_t pbytes = (CurveData->pwordbits + 7) / 8;
 	digit_t obytes = (CurveData->owordbits + 7) / 8;
-	PCurveIsogenyStruct pCurveIsogeny = (PCurveIsogenyStruct) calloc(1, sizeof(CurveIsogenyStruct));
-	if (!pCurveIsogeny) {
-		return NULL;
-	}
+	PCurveIsogenyStruct pCurveIsogeny = NULL;
+
+	pCurveIsogeny = (PCurveIsogenyStruct)calloc(1, sizeof(CurveIsogenyStruct));
 	pCurveIsogeny->prime = (digit_t *) calloc(1, pbytes);
 	pCurveIsogeny->A = (digit_t *) calloc(1, pbytes);
 	pCurveIsogeny->C = (digit_t *) calloc(1, pbytes);
