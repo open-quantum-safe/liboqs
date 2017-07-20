@@ -48,7 +48,9 @@ matrix:
   - os: osx
     osx_image: xcode8.3 # https://docs.travis-ci.com/user/reference/osx/
     compiler: clang
-    env: CC_OQS=clang
+    env:
+    - CC_OQS=clang
+    - AES_NI=0
     before_install:
     - brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/0c4314c499576b28e4c082b591228a8f940954c0/Formula/clang-format.rb
   - os: osx
@@ -59,10 +61,8 @@ matrix:
     - AES_NI=0
     - USE_OPENSSL=1
     - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package
-    - ENABLE_CODE_MCBITS=1
     - ENABLE_SIDH_IQC_REF=1
     before_install:
-    - brew install libsodium
     - brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/0c4314c499576b28e4c082b591228a8f940954c0/Formula/clang-format.rb
 
 script:
