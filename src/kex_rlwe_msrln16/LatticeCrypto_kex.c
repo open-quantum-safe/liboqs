@@ -285,7 +285,7 @@ CRYPTO_STATUS oqs_rlwe_msrln16_generate_a(uint32_t *a, const unsigned char *seed
 	unsigned int pos = 0, ctr = 0;
 	uint16_t val;
 	unsigned int nblocks = 16;
-	uint8_t buf[OQS_SHA3_SHAKE128_RATE * 16];
+	uint8_t buf[OQS_SHA3_SHAKE128_RATE * 16]; // was * nblocks, but VS doesn't like this buf init
 	uint64_t state[OQS_SHA3_STATESIZE];
 	OQS_SHA3_shake128_absorb(state, seed, OQS_RLWE_MSRLN16_SEED_BYTES);
 	OQS_SHA3_shake128_squeezeblocks((unsigned char *) buf, nblocks, state);
