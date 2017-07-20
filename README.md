@@ -44,7 +44,7 @@ You need to install autoconf, automake and libtool:
 
 	brew install autoconf automake libtool
 	
-In case `openssl` is not installed:
+In case OpenSSL is not installed:
     
 	brew install openssl
 	cd /usr/local/include
