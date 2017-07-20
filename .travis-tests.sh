@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 export CC=$CC_OQS
 
 autoreconf -i
@@ -29,10 +31,8 @@ if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
   fi
 fi
 
-./configure --enable-silent-rules ${enable_disable_str} 
+./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make
 make test
 for f in $(ls .travis/*-check.sh); do bash $f; done
-
-
