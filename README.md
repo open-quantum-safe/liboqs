@@ -142,6 +142,12 @@ To build with `kex_code_mcbits ` enabled:
 	make clean
 	make
 
+### Building with the following KEX algorithms disabled
+
+  ./configure --disable-kex-ntru --disable-kex-lwe-frodo --disable-kex-mlwe-kyber --disable-kex-rlwe-msrln16  --disable-kex-rlwe-newhope --disable-kex-sidh-cln16
+  make clean
+  make
+
 Building and running on Windows
 -------------------------------
 

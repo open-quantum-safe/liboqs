@@ -7,7 +7,7 @@ include aminclude.am
 # ensure the distribution of the doxygen configuration file
 EXTRA_DIST = doxygen.cfg
 
-CLANGFORMAT ?= clang-format
+CLANGFORMAT ?= clang-format-3.9
 
 SUBDIRS = ${SRCDIR}
 
@@ -21,13 +21,25 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kex/libkex.la
+if USE_KEX_LWE_FRODO
 liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la
+endif
+if USE_KEX_MLWE_KYBER
 liboqs_la_LIBADD += src/kex_mlwe_kyber/libkyber.la
+endif
+if USE_KEX_NTRU
 liboqs_la_LIBADD += src/kex_ntru/libntru.la
+endif
 liboqs_la_LIBADD += src/kex_rlwe_bcns15/libbcns15.la
+if USE_KEX_RLWE_MSRLN16
 liboqs_la_LIBADD += src/kex_rlwe_msrln16/libmsrln16.la
+endif
+if USE_KEX_RLWE_NEWHOPE
 liboqs_la_LIBADD += src/kex_rlwe_newhope/libnewhope.la
+endif
+if USE_KEX_SIDH_CLN16
 liboqs_la_LIBADD += src/kex_sidh_cln16/libcln16.la
+endif
 if USE_MCBITS
 liboqs_la_LIBADD += src/kex_code_mcbits/libmcbits.la
 endif

@@ -92,13 +92,34 @@ ARG_ENABL_SET([kex-code-mcbits], [enable KEX-CODE-MCBITS.])
 AM_CONDITIONAL([kex_code_mcbits], [test "x$kex_code_mcbits" = xtrue])
 AM_CONDITIONAL([USE_MCBITS], [test "x$kex_code_mcbits" = xtrue])
 
-ARG_ENABL_SET([kex-ntru], [enable KEX-NTRU.])
-AM_CONDITIONAL([ntru], [test "x$kex_ntru" = xtrue])
-AM_CONDITIONAL([USE_NTRU], [test "x$kex_ntru" = xtrue])
-
 ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
 AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
+
+ARG_DISBL_SET([kex-lwe-frodo], [disable KEX-LWE-FRODO.])
+AM_CONDITIONAL([kex_lwe_frodo], [test "x$kex_lwe_frodo" = xtrue])
+AM_CONDITIONAL([USE_KEX_LWE_FRODO], [test "x$kex_lwe_frodo" = xtrue])
+
+ARG_DISBL_SET([kex-mlwe-kyber], [disable KEX-MLWE-KYBER.])
+AM_CONDITIONAL([kex_mlwe_kyber], [test "x$kex_mlwe_kyber" = xtrue])
+AM_CONDITIONAL([USE_KEX_MLWE_KYBER], [test "x$kex_mlwe_kyber" = xtrue])
+
+ARG_DISBL_SET([kex-ntru], [disable KEX-NTRU.])
+AM_CONDITIONAL([kex_ntru], [test "x$kex_ntru" = xtrue])
+AM_CONDITIONAL([USE_KEX_NTRU], [test "x$kex_ntru" = xtrue])
+
+ARG_DISBL_SET([kex-rlwe-msrln16], [disable KEX-RLWE-MSRLN16.])
+AM_CONDITIONAL([kex_rlwe_msrln16], [test "x$kex_rlwe_msrln16" = xtrue])
+AM_CONDITIONAL([USE_KEX_RLWE_MSRLN16], [test "x$kex_rlwe_msrln16" = xtrue])
+
+ARG_DISBL_SET([kex-rlwe-newhope], [disable KEX-RLWE-NEWHOPE.])
+AM_CONDITIONAL([kex_rlwe_newhope], [test "x$kex_rlwe_newhope" = xtrue])
+AM_CONDITIONAL([USE_KEX_RLWE_NEWHOPE], [test "x$kex_rlwe_newhope" = xtrue])
+
+ARG_DISBL_SET([kex-sidh-cln16], [disable KEX-SIDH-CLN16.])
+AM_CONDITIONAL([kex_sidh_cln16], [test "x$kex_sidh_cln16" = xtrue])
+AM_CONDITIONAL([USE_KEX_SIDH_CLN16], [test "x$kex_sidh_cln16" = xtrue])
+
 
 AC_CANONICAL_HOST
 
@@ -120,7 +141,6 @@ case $host_os in
         ;;
 esac
 
-
 # Common sources
 SRCDIR=" src/common"
 
@@ -129,13 +149,37 @@ SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/rand src/crypto/sha3 src/crypto/rand
 
 # KEX
 SRCDIR=${SRCDIR}" src/kex"
-SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
-SRCDIR=${SRCDIR}" src/kex_mlwe_kyber"
-SRCDIR=${SRCDIR}" src/kex_ntru"
 SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15"
-SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
-SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
-SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
+
+if test x"$kex_lwe_frodo" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_LWE_FRODO"
+fi
+
+if test x"$kex_mlwe_kyber" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kex_mlwe_kyber"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_MLWE_KYBER"
+fi
+
+if test x"$kex_ntru" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kex_ntru"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_NTRU"
+fi
+
+if test x"$kex_rlwe_msrln16" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLWE_MSRLN16"
+fi
+
+if test x"$kex_rlwe_newhope" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLWE_NEWHOPE"
+fi
+
+if test x"$kex_sidh_cln16" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_SIDH_CLN16"
+fi
 
 # Conditional KEX
 if test x"$kex_code_mcbits" = x"true"; then
@@ -164,9 +208,14 @@ AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(SRCDIR)
 AC_SUBST(USE_OPENSSL)
 AC_SUBST(USE_AES_NI)
-AC_SUBST(USE_NTRU)
+AC_SUBST(USE_KEX_NTRU)
 AC_SUBST(USE_MCBITS)
 AC_SUBST(USE_SIDH_IQC)
+AC_SUBST(USE_KEX_LWE_FRODO)
+AC_SUBST(USE_KEX_MLWE_KYBER)
+AC_SUBST(USE_KEX_RLWE_MSRLN16)
+AC_SUBST(USE_KEX_RLWE_NEWHOPE)
+AC_SUBST(USE_KEX_SIDH_CLN16)
 AC_SUBST(ON_DARWIN)
 
 
