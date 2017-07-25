@@ -25,7 +25,9 @@ struct kex_testcase kex_testcases[] = {
     {OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
 #endif
     {OQS_KEX_alg_mlwe_kyber, NULL, 0, NULL, "mlwe_kyber", 0, 100},
+#ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
     {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},
+#endif
     {OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "rlwe_bcns15", 0, 100},
     {OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0, 100},
     {OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100},

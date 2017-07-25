@@ -94,6 +94,9 @@
     <ClCompile Include="..\..\src\kex_sidh_cln16\generic\fp_generic.c">
       <Filter>KEX_SIDH_CLN16</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kex_mlwe_kyber\kex_mlwe_kyber.c">
+      <Filter>KEX_Kyber</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
@@ -171,6 +174,9 @@
     <ClInclude Include="..\..\src\kex_ntru\kex_ntru.h">
       <Filter>KEX_NTRU</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kex_mlwe_kyber\kex_mlwe_kyber.h">
+      <Filter>KEX_Kyber</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -211,6 +217,9 @@
     </Filter>
     <Filter Include="KEX_NTRU">
       <UniqueIdentifier>{f2432c4a-5195-4990-af30-65a61bf36897}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KEX_Kyber">
+      <UniqueIdentifier>{c95ab174-03e5-4e85-a903-ccef78182c4f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

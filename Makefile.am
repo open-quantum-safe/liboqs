@@ -118,33 +118,33 @@ endif
 
 links:
 	$(MKDIR_P) include/oqs
-	$(LN_S) -f ../../src/common/common.h include/oqs
-	$(LN_S) -f ../../src/crypto/aes/aes.h include/oqs
-	$(LN_S) -f ../../src/crypto/rand/rand.h include/oqs
-	$(LN_S) -f ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
-	$(LN_S) -f ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
-	$(LN_S) -f ../../src/crypto/sha3/sha3.h include/oqs
-	$(LN_S) -f ../../src/kex/kex.h include/oqs
-	$(LN_S) -f ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
-	$(LN_S) -f ../../src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
-	$(LN_S) -f ../../src/kex_ntru/kex_ntru.h include/oqs
-	$(LN_S) -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
-	$(LN_S) -f ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
-	$(LN_S) -f ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
-	$(LN_S) -f ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
-	$(LN_S) -f ../../src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
-	$(LN_S) -f ../../src/sig/sig.h include/oqs
+	cp -f ../../src/common/common.h include/oqs
+	cp -f ../../src/crypto/aes/aes.h include/oqs
+	cp -f ../../src/crypto/rand/rand.h include/oqs
+	cp -f ../../src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
+	cp -f ../../src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
+	cp -f ../../src/crypto/sha3/sha3.h include/oqs
+	cp -f ../../src/kex/kex.h include/oqs
+	cp -f ../../src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
+	cp -f ../../src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
+	cp -f ../../src/kex_ntru/kex_ntru.h include/oqs
+	cp -f ../../src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
+	cp -f ../../src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
+	cp -f ../../src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
+	cp -f ../../src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
+	cp -f ../../src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
+	cp -f ../../src/sig/sig.h include/oqs
 if USE_PICNIC
 if USE_OPENSSL
-	$(LN_S) -f ../../src/sig_picnic/external/Picnic-master/picnic.h include/oqs
+	cp -f ../../src/sig_picnic/external/Picnic-master/picnic.h include/oqs
 endif
 endif
 	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
-	$(LN_S) -f ../../src/kex_code_mcbits/kex_code_mcbits.h include/oqs
+	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
 if USE_SIDH_IQC
-	$(LN_S) -f ../../src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
+	cp -f src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
 	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
 endif
 if USE_PICNIC

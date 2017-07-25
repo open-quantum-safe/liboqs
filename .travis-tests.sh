@@ -40,19 +40,17 @@ if [[ ${USE_PICNIC} == 1 ]];then
 fi
 
 
-./configure --enable-silent-rules ${enable_disable_str} 
+./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make
 make test
 
-for f in $(ls .travis/*-check.sh); do 
+for f in $(ls .travis/*-check.sh); do
   if [[ ${USE_PICNIC} == 1 ]];then
   if [[ ! "$f" == ".travis/global-namespace-check.sh" ]];then
     bash $f;
-  fi  
+  fi
 else
   bash $f;
 fi
 done
-
-
