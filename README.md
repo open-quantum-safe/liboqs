@@ -45,11 +45,17 @@ You need to install autoconf, automake and libtool:
 
 	brew install autoconf automake libtool
 	
+In case OpenSSL is not installed:
+    
+	brew install openssl
+	cd /usr/local/include
+	ln -s ../opt/openssl/include/openssl .
+	
 ### Install dependencies for Ubuntu
 
-You need to install autoconf, automake and libtool:
+You need to install autoconf, automake, libtool and libssl-dev:
 
-	sudo apt install autoconf automake libtool
+	sudo apt install autoconf automake libtool libssl-dev
 	
 ### Building	
 
