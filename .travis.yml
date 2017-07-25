@@ -6,7 +6,11 @@ matrix:
   include:
   - os: linux
     compiler: gcc
-    env: ENABLE_SIDH_IQC_REF=1
+    env:
+    - ENABLE_SIDH_IQC_REF=1
+    - ENABLE_KEX_LWE_FRODO=0
+    - ENABLE_KEX_MLWE_KYBER=0
+    - ENABLE_KEX_SIDH_CLN16=0
     before_install:
     - sh .travis/install-clang-format-linux.sh
   - os: linux

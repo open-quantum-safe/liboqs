@@ -31,6 +31,30 @@ if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
   fi
 fi
 
+if [[ ${ENABLE_KEX_LWE_FRODO} == 0 ]];then
+  enable_disable_str+=" --disable-kex-lwe-frodo"
+fi
+
+if [[ ${ENABLE_KEX_MLWE_KYBER} == 0 ]];then
+  enable_disable_str+=" --disable-kex-mlwe-kyber"
+fi
+
+if [[ ${ENABLE_KEX_NTRU} == 0 ]];then
+  enable_disable_str+=" --disable-kex-ntru"
+fi
+
+if [[ ${ENABLE_KEX_RLWE_MSRLN16} == 0 ]];then
+  enable_disable_str+=" --disable-kex-rlwe-msrln16"
+fi
+
+if [[ ${ENABLE_KEX_RLWE_NEWHOPE} == 0 ]];then
+  enable_disable_str+=" --disable-kex-rlwe-newhope"
+fi
+
+if [[ ${ENABLE_KEX_SIDH_CLN16} == 0 ]];then
+  enable_disable_str+=" --disable-kex-sidh-cln16"
+fi
+
 ./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make

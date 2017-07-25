@@ -18,9 +18,19 @@
 #include <oqs/kex_sidh_iqc_ref.h>
 #endif
 
-#define UNUSED __attribute__((unused))
+#define UNUSED(expr)   \
+	do {               \
+		(void) (expr); \
+	} while (0)
 
-OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, UNUSED const uint8_t *seed, UNUSED const size_t seed_len, UNUSED const char *named_parameters) {
+OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
+
+	//To disable warnings when the function arguments are not being used depending
+	//on which algorithm has been disabled
+	UNUSED(seed);
+	UNUSED(seed_len);
+	UNUSED(named_parameters);
+
 	switch (alg_name) {
 	case OQS_KEX_alg_default:
 		return OQS_KEX_rlwe_bcns15_new(rand);
