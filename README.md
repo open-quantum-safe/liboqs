@@ -46,6 +46,12 @@ You need to install `autoconf`, `automake` and `libtool`:
 
 	brew install autoconf automake libtool
 
+### Install dependencies for Ubuntu
+
+You need to install autoconf, automake and libtool:
+
+	sudo apt install autoconf automake libtool
+
 ### Building
 
 To build, clone or download the source from GitHub, then simply type:
@@ -73,6 +79,14 @@ To run benchmarks, run
 
 	./test_kex --bench
 
+To run benchmark only on some ciphers, run
+
+	./test_kex --help
+
+to list the available ciphers and then run e.g.
+
+	./test_kex --bench rlwe_bcns15 rlwe_newhope
+
 ### Additional build options
 
 #### Building with OpenSSL algorithms enabled:
@@ -81,7 +95,13 @@ OpenSSL can be used for some symmetric crypto algorithms, which may result in be
 
 To build with OpenSSL enabled:
 
-	./configure --enable-openssl [--with-openssl-dir=<..>]
+	./configure --enable-openssl
+	make clean
+	make
+
+You may need to specify the path to your OpenSSL directory:
+
+	./configure --enable-openssl --with-openssl-dir=/path/to/openssl/directory
 	make clean
 	make
 
@@ -95,7 +115,13 @@ To install the library on macOS:
 
 To build with `kex_sidh_iqc_ref ` enabled:
 
-	./configure --enable-sidhiqc [--with-gmp-dir=<..>]
+	./configure --enable-sidhiqc
+	make clean
+	make
+
+You may need to specify the path to your libgmp directory:
+
+	./configure --enable-sidhiqc --with-gmp-dir=/path/to/gmp/directory
 	make clean
 	make
 
@@ -113,13 +139,14 @@ To install the library on Ubuntu:
 
 To build with `kex_code_mcbits ` enabled:
 
-	./configure --enable-mcbits [--with-sodium-dir=<..>]
+	./configure --enable-mcbits
 	make clean
 	make
 
 ### Building with `sig_picnic` enabled
 
 The `sig_picnic` signature algorithm is not enabled by default since it requires:
+
 - external libraries (`openssl` and `m4ri`);
 - to download and setup Picnic;
 - a parameters generation preprocessing step.
