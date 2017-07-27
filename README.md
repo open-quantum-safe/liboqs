@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)](https://travis-ci.org/open-quantum-safe/liboqs)
-[![Build status](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs)
+[![Build status](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs/branch/master)
 
 liboqs
 ======
