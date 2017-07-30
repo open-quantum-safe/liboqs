@@ -17,7 +17,8 @@
 	for (int i = 0; i < TEST_ITERATIONS; i++) {                       \
 		int ok = (x);                                                 \
 		if (ok != EXIT_SUCCESS) {                                     \
-			fprintf(stderr, "Failure in %s (iteration %d)\n", #x, i); \
+			/*printf(stderr, "Failure in %s (iteration %d)\n", #x, i);*/ \
+			printf("Failure in %s (iteration %d)\n", #x, i); \
 			return EXIT_FAILURE;                                      \
 		}                                                             \
 	}
@@ -235,7 +236,8 @@ int main(int argc, char **argv) {
 	printf("=== test_aes correctness ===\n");
 	OQS_RAND *rand = OQS_RAND_new(OQS_RAND_alg_default);
 	if (rand == NULL) {
-		fprintf(stderr, "OQS_RAND_new() failed\n");
+		//fprintf(stderr, "OQS_RAND_new() failed\n");
+		printf("OQS_RAND_new() failed\n");
 		goto err;
 	}
 	TEST_REPEATEDLY(test_aes128_correctness_c(rand));

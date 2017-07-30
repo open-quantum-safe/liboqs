@@ -77,7 +77,8 @@ static int rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int i
 
 	OQS_RAND *rand = OQS_RAND_new(alg_name);
 	if (rand == NULL) {
-		fprintf(stderr, "rand is NULL\n");
+		//fprintf(stderr, "rand is NULL\n");
+		printf("rand is NULL\n");
 		return 0;
 	}
 
@@ -187,7 +188,8 @@ int main(int argc, char **argv) {
 
 err:
 	success = 0;
-	fprintf(stderr, "ERROR!\n");
+	//fprintf(stderr, "ERROR!\n");
+	printf("ERROR!\n");
 
 cleanup:
 
