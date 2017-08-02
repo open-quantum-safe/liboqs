@@ -41,6 +41,13 @@ AC_ARG_WITH(
    AC_SUBST(SODIUM_DIR, [$withval])],
   [AC_SUBST(SODIUM_DIR, /usr)]
 )
+AC_ARG_WITH(
+  [m4ri-dir],
+  AS_HELP_STRING([--with-m4ri-dir=dir],[m4ri dir used locally (default /usr).]),
+  [AC_DEFINE_UNQUOTED(M4RIDIR, [$withval], [M4RI DIR used locally])
+   AC_SUBST(M4RI_DIR, [$withval])],
+  [AC_SUBST(M4RI_DIR, /usr)]
+)
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h stddef.h stdint.h stdlib.h string.h strings.h sys/time.h unistd.h])
@@ -64,7 +71,7 @@ AC_CHECK_FUNCS([gettimeofday memmove memset pow sqrt strdup])
 AC_CHECK_SIZEOF([size_t])
 
 # Silent rules
-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+#m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 ######################################################################
 # DOXYGEN SUPPORT
@@ -91,6 +98,10 @@ AM_CONDITIONAL([USE_OPENSSL], [test "x$openssl" = xtrue])
 ARG_ENABL_SET([kex-code-mcbits], [enable KEX-CODE-MCBITS.])
 AM_CONDITIONAL([kex_code_mcbits], [test "x$kex_code_mcbits" = xtrue])
 AM_CONDITIONAL([USE_MCBITS], [test "x$kex_code_mcbits" = xtrue])
+
+ARG_ENABL_SET([picnic], [enable PICNIC.])
+AM_CONDITIONAL([picnic], [test "x$picnic" = xtrue])
+AM_CONDITIONAL([USE_PICNIC], [test "x$picnic" = xtrue])
 
 ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
 AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
@@ -181,6 +192,8 @@ if test x"$kex_sidh_cln16" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_SIDH_CLN16"
 fi
 
+SRCDIR=${SRCDIR}" src/sig"
+
 # Conditional KEX
 if test x"$kex_code_mcbits" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_code_mcbits"
@@ -190,7 +203,7 @@ if test x"$kex_sidh_iqc_ref" = x"true"; then
 fi
 
 # Flags
-AM_CPPFLAGS="-g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
+AM_CPPFLAGS=${AM_CPPFLAGS}" -g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 if test x"$aes_ni" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DAES_ENABLE_NI"
 fi
@@ -202,6 +215,12 @@ if test x"$kex_code_mcbits" = x"true"; then
 fi
 if test x"$kex_sidh_iqc_ref" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIDH_IQC_REF"
+  SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
+fi
+
+if test x"$picnic" = x"true"; then
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_PICNIC"
+  SRCDIR=${SRCDIR}" src/sig_picnic"
 fi
 
 AC_SUBST(AM_CPPFLAGS)
@@ -216,6 +235,7 @@ AC_SUBST(USE_KEX_MLWE_KYBER)
 AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_CLN16)
+AC_SUBST(USE_PICNIC)
 AC_SUBST(ON_DARWIN)
 
 
@@ -235,6 +255,8 @@ AC_CONFIG_FILES([Makefile
                  src/kex_ntru/Makefile
                  src/kex_sidh_iqc_ref/Makefile
                  src/kex_lwe_frodo/Makefile
+                 src/sig/Makefile
+                 src/sig_picnic/Makefile
                  src/kex_mlwe_kyber/Makefile])
 
 AC_OUTPUT
