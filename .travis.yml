@@ -6,8 +6,11 @@ matrix:
   include:
   - os: linux
     compiler: gcc
-    env: 
+    env:
     - ENABLE_SIDH_IQC_REF=1
+    - ENABLE_KEX_LWE_FRODO=0
+    - ENABLE_KEX_MLWE_KYBER=0
+    - ENABLE_KEX_SIDH_CLN16=0
     - USE_PICNIC=1
     - USE_OPENSSL=1
     addons:
