@@ -21,8 +21,7 @@ do
 
   export PATH="${ANDROID_NDK_BIN}:${OLD_PATH}"
 
-  export CFLAGS="--sysroot=${ANDROID_SYSROOT_DIR} -pie -O3 -lm"
-  export CXXFLAGS="--sysroot=${ANDROID_SYSROOT_DIR}"
+  export CFLAGS="-pie -O3 -lm"
 
   case ${ARCH} in
     "arm64" )
@@ -42,8 +41,8 @@ do
 
   echo "---- Compiling for ${ARCH}"
 
-  ./configure --host="${COMPILER_PREFIX}" --disable-aes-ni
-  #make clean
+  #make distclean
+  ./configure --host="${COMPILER_PREFIX}" --disable-aes-ni --with-sysroot=${ANDROID_SYSROOT_DIR}
   #make
 
 done
