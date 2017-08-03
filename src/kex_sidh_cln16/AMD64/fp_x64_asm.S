@@ -50,7 +50,7 @@
 //  Field addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global oqs_sidh_cln16_fpadd751_asm
+.globl oqs_sidh_cln16_fpadd751_asm
 oqs_sidh_cln16_fpadd751_asm:
   push   r12
   push   r13
@@ -191,7 +191,7 @@ oqs_sidh_cln16_fpadd751_asm:
 //  Field subtraction
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global oqs_sidh_cln16_fpsub751_asm
+.globl oqs_sidh_cln16_fpsub751_asm
 oqs_sidh_cln16_fpsub751_asm:
   push   r12
   push   r13
@@ -306,7 +306,7 @@ oqs_sidh_cln16_fpsub751_asm:
 //  Operation: c [reg_p3] = a [reg_p1] * b [reg_p2]
 //  NOTE: a=c or b=c are not allowed
 //***********************************************************************
-.global oqs_sidh_cln16_mul751_asm
+.globl oqs_sidh_cln16_mul751_asm
 oqs_sidh_cln16_mul751_asm:
   push   r12
   push   r13
@@ -1249,7 +1249,7 @@ oqs_sidh_cln16_mul751_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //*********************************************************************** 
-.global oqs_sidh_cln16_rdc751_asm
+.globl oqs_sidh_cln16_rdc751_asm
 oqs_sidh_cln16_rdc751_asm:
   push   r12
   push   r13 
@@ -1868,7 +1868,7 @@ oqs_sidh_cln16_rdc751_asm:
 //  751-bit multiprecision addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global oqs_sidh_cln16_mp_add751_asm
+.globl oqs_sidh_cln16_mp_add751_asm
 oqs_sidh_cln16_mp_add751_asm:
   push   r12
   push   r13
@@ -1927,7 +1927,7 @@ oqs_sidh_cln16_mp_add751_asm:
 //  2x751-bit multiprecision addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global oqs_sidh_cln16_mp_add751x2_asm
+.globl oqs_sidh_cln16_mp_add751x2_asm
 oqs_sidh_cln16_mp_add751x2_asm:
   push   r12
   push   r13

@@ -20,7 +20,7 @@ typedef struct OQS_RAND OQS_RAND;
 /**
  * OQS PRNG object
  */
-typedef struct OQS_RAND {
+struct OQS_RAND {
 
 	/**
 	 * Specifies the name of the random number function
@@ -74,8 +74,7 @@ typedef struct OQS_RAND {
 	 *
 	 */
 	void (*free)(OQS_RAND *r);
-
-} OQS_RAND;
+};
 
 OQS_RAND *OQS_RAND_new(enum OQS_RAND_alg_name alg_name);
 
