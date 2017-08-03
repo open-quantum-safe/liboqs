@@ -141,7 +141,6 @@ case $host_os in
         darwin=true
         ;;
   linux-android*)
-        echo " ~~~ linux android"
         AM_CPPFLAGS=${AM_CPPFLAGS}" -pie"
         ;;
   linux*)
@@ -160,7 +159,6 @@ case $host_cpu in
         AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
         ;;
   aarch64* )
-        echo " ~~~ aarch64"
         ;;
 esac
 

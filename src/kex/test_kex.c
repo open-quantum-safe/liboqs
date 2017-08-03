@@ -7,6 +7,7 @@
 #include <oqs/rand.h>
 
 #include "../ds_benchmark.h"
+#include "../common/common.h"
 
 struct kex_testcase {
 	enum OQS_KEX_alg_name alg_name;
@@ -81,8 +82,7 @@ static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, 
 	/* setup KEX */
 	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
 	if (kex == NULL) {
-		//fprintf(stderr, "new_method failed\n");
-		printf("new_method failed\n");
+		eprintf("new_method failed\n");
 		goto err;
 	}
 
@@ -95,8 +95,7 @@ static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, 
 	/* Alice's initial message */
 	rc = OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
 	if (rc != 1) {
-		//fprintf(stderr, "OQS_KEX_alice_0 failed\n");
-		printf("OQS_KEX_alice_0 failed\n");
+		eprintf("OQS_KEX_alice_0 failed\n");
 		goto err;
 	}
 
@@ -107,8 +106,7 @@ static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, 
 	/* Bob's response */
 	rc = OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
 	if (rc != 1) {
-		//fprintf(stderr, "OQS_KEX_bob failed\n");
-		printf("OQS_KEX_bob failed\n");
+		eprintf("OQS_KEX_bob failed\n");
 		goto err;
 	}
 
@@ -120,8 +118,7 @@ static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, 
 	/* Alice processes Bob's response */
 	rc = OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len);
 	if (rc != 1) {
-		//fprintf(stderr, "OQS_KEX_alice_1 failed\n");
-		printf("OQS_KEX_alice_1 failed\n");
+		eprintf("OQS_KEX_alice_1 failed\n");
 		goto err;
 	}
 
@@ -131,14 +128,12 @@ static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, 
 
 	/* compare session key lengths and values */
 	if (alice_key_len != bob_key_len) {
-		//fprintf(stderr, "ERROR: Alice's session key and Bob's session key are different lengths (%zu vs %zu)\n", alice_key_len, bob_key_len);
-		printf("ERROR: Alice's session key and Bob's session key are different lengths (%zu vs %zu)\n", alice_key_len, bob_key_len);
+		eprintf("ERROR: Alice's session key and Bob's session key are different lengths (%zu vs %zu)\n", alice_key_len, bob_key_len);
 		goto err;
 	}
 	rc = memcmp(alice_key, bob_key, alice_key_len);
 	if (rc != 0) {
-		//fprintf(stderr, "ERROR: Alice's session key and Bob's session key are not equal\n");
-		printf("ERROR: Alice's session key and Bob's session key are not equal\n");
+		eprintf("ERROR: Alice's session key and Bob's session key are not equal\n");
 		PRINT_HEX_STRING("Alice session key", alice_key, alice_key_len)
 		PRINT_HEX_STRING("Bob session key", bob_key, bob_key_len)
 		goto err;
@@ -248,8 +243,7 @@ static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 	/* setup KEX */
 	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
 	if (kex == NULL) {
-		//fprintf(stderr, "new_method failed\n");
-		printf("new_method failed\n");
+		eprintf("new_method failed\n");
 		goto err;
 	}
 	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n", kex->method_name, "", "", "", "", "", "");
@@ -350,8 +344,7 @@ int main(int argc, char **argv) {
 
 err:
 	success = 0;
-	//fprintf(stderr, "ERROR!\n");
-	printf("ERROR!\n");
+	eprintf("ERROR!\n");
 
 cleanup:
 	OQS_RAND_free(rand);
