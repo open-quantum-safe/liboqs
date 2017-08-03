@@ -48,24 +48,6 @@ AC_ARG_WITH(
    AC_SUBST(M4RI_DIR, [$withval])],
   [AC_SUBST(M4RI_DIR, /usr)]
 )
-AC_ARG_WITH(
-  [android-ndk-dir],
-  AS_HELP_STRING([--with-android-ndk-dir=dir],[android ndk dir used locally (default "${HOME}/Android/Sdk/ndk-bundle").]),
-  [AC_DEFINE_UNQUOTED(ANDROIDNDKDIR, [$withval], [ ANDROID NDK DIR used locally])
-   AC_SUBST(ANDROID_NDK_DIR, [$withval])],
-  [AC_SUBST(ANDROID_NDK_DIR, "${HOME}/Android/Sdk/ndk-bundle")]
-)
-AC_ARG_WITH(
-  [android-ndk-toolchain-dir],
-  AS_HELP_STRING([--with-android-ndk-toolchain-dir=dir],[android ndk standalone toolchain dir used locally (default "/ram/arm").]),
-  [AC_DEFINE_UNQUOTED(ANDROIDNDKTOOLCHAINDIR, [$withval], [ANDROID NDK TOOLCHAIN DIR used locally])
-   AC_SUBST(ANDROID_NDK_TOOLCHAIN_DIR, [$withval])],
-  [AC_SUBST(ANDROID_NDK_TOOLCHAIN_DIR, "/ram/arm")]
-)
-
-echo " ~~~ openssl dir : $OPENSSL_DIR"
-echo " ~~~ ndk dir : $ANDROID_NDK_DIR"
-echo " ~~~ ndk toolchain dir : $ANDROID_NDK_TOOLCHAIN_DIR"
 
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h inttypes.h limits.h stddef.h stdint.h stdlib.h string.h strings.h sys/time.h unistd.h])
@@ -159,16 +141,8 @@ case $host_os in
         darwin=true
         ;;
   linux-android*)
-        echo "~~~ linux android"
+        echo " ~~~ linux android"
         AM_CPPFLAGS=${AM_CPPFLAGS}" -pie"
-        ANDROID_ROOT_DIR=${ANDROID_NDK_TOOLCHAIN_DIR};
-        ANDROID_BIN_DIR=${ANDROID_ROOT_DIR}/bin
-        echo "android bin : $ANDROID_BIN_DIR"
-        COMPILER_PREFIX=${host_cpu}-$host_os
-        echo "compiler_prefix : $COMPILER_PREFIX"
-        #AC_PROG_CC([${ANDROID_BIN_DIR}/${COMPILER_PREFIX}-gcc])
-
-
         ;;
   linux*)
         ;;
@@ -180,7 +154,7 @@ esac
 
 AM_CONDITIONAL([ON_DARWIN], [test "x$darwin" = xtrue])
 
-# enable optimizations
+# enable assembly optimizations here
 case $host_cpu in
   x86-64* )
         AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
