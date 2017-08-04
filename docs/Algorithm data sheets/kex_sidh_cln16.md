@@ -18,7 +18,7 @@ Diffie-Hellman. In *CRYPTO 2016*, volume 9814 of LNCS, pp 572-601. Springer, 201
 Security
 --------
 
-**Security model:** Authenticated-links adversarial model
+**Security model:** Unauthenticated key exchange / passive (IND-CPA) key encapsulation mechanism
 
 **Underlying hard problem(s):** Supersingular Decision Diffie-Hellman problem
 
