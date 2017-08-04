@@ -1,9 +1,45 @@
 #!/bin/bash
 
-ANDROID_NDK_DIR=/ram/arm
 HOST="aarch64-linux-android"
+ANDROID_NDK_TOOLCHAIN_DIR=""
 
-ANDROID_NDK_ROOT=${ANDROID_NDK_DIR}
+#parse arguments
+for arg in "$@"
+do
+  case $arg in
+    -h=*|--host=*)
+      HOST="${arg#*=}"
+      shift
+      ;;
+    -t=*|--toolchain=*)
+      ANDROID_NDK_TOOLCHAIN_DIR="${arg#*=}"
+      shift
+      ;;
+  esac
+done
+
+#validate arguments
+
+function print_help {
+cat << EOF
+Usage: $0 [OPTION]... [VAR=VALUE]...
+
+  --host=HOST         cross-compile to build programs to run on HOST [default: aarch64-linux-android]
+  --toolchain=DIR     Android NDK standalone toolchain
+
+Example usage: $0 --host=aarch64-linux-android --toolchain=/ram/arm
+
+EOF
+  exit 0
+}
+
+if [[ ! -d $ANDROID_NDK_TOOLCHAIN_DIR ]]; then
+  print_help
+fi
+
+# configure
+
+ANDROID_NDK_ROOT=${ANDROID_NDK_TOOLCHAIN_DIR}
 ANDROID_NDK_BIN="${ANDROID_NDK_ROOT}/bin"
 ANDROID_SYSROOT_DIR="${ANDROID_NDK_ROOT}/sysroot"
 
@@ -17,6 +53,4 @@ export RANLIB=${ANDROID_NDK_BIN}/${COMPILER_PREFIX}-ranlib
 export STRIP=${ANDROID_NDK_BIN}/${COMPILER_PREFIX}-strip
 
 ./configure --host="${COMPILER_PREFIX}" --disable-aes-ni --with-sysroot="${ANDROID_SYSROOT_DIR}"
-#make clean
-#make
 

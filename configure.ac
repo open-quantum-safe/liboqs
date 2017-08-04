@@ -154,13 +154,17 @@ esac
 AM_CONDITIONAL([ON_DARWIN], [test "x$darwin" = xtrue])
 
 # enable assembly optimizations here
+
 case $host_cpu in
-  x86-64* )
+  x86_64* )
         AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
+        x86_64=true
         ;;
   aarch64* )
         ;;
 esac
+
+AM_CONDITIONAL([X86_64], [test "x$x86_64" = xtrue])
 
 # Common sources
 SRCDIR=" src/common"
@@ -247,6 +251,7 @@ AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_CLN16)
 AC_SUBST(USE_PICNIC)
 AC_SUBST(ON_DARWIN)
+AC_SUBST(X86_64)
 
 
 AC_CONFIG_FILES([Makefile
