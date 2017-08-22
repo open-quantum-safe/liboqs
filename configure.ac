@@ -141,7 +141,7 @@ case $host_os in
         darwin=true
         ;;
   linux-android*)
-        AM_CPPFLAGS=${AM_CPPFLAGS}" -pie"
+        AM_CFLAGS=${AM_CFLAGS}" -pie "
         ;;
   linux*)
         ;;
@@ -238,6 +238,7 @@ if test x"$picnic" = x"true"; then
 fi
 
 AC_SUBST(AM_CPPFLAGS)
+AC_SUBST(AM_CFLAGS)
 AC_SUBST(SRCDIR)
 AC_SUBST(USE_OPENSSL)
 AC_SUBST(USE_AES_NI)
