@@ -1,3 +1,7 @@
+#if defined(WINDOWS)
+#pragma warning(disable : 4244 4293)
+#endif
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>

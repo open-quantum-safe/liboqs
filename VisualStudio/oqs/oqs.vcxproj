@@ -45,6 +45,8 @@
     <ClInclude Include="..\..\src\kex_sidh_cln16\kex_sidh_cln16.h" />
     <ClInclude Include="..\..\src\kex_sidh_cln16\SIDH.h" />
     <ClInclude Include="..\..\src\kex_sidh_cln16\SIDH_internal.h" />
+    <ClInclude Include="..\..\src\sig\sig.h" />
+    <ClInclude Include="..\..\src\sig_picnic\sig_picnic.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\common\common.c" />
@@ -79,6 +81,8 @@
     <ClCompile Include="..\..\src\kex_sidh_cln16\SIDH.c" />
     <ClCompile Include="..\..\src\kex_sidh_cln16\sidh_kex.c" />
     <ClCompile Include="..\..\src\kex_sidh_cln16\SIDH_setup.c" />
+    <ClCompile Include="..\..\src\sig\sig.c" />
+    <ClCompile Include="..\..\src\sig_picnic\sig_picnic.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{DCFEFB81-4696-45D2-9FCA-351CCFC13C74}</ProjectGuid>
@@ -171,6 +175,8 @@ copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)inclu
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -206,6 +212,8 @@ copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)inclu
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -245,6 +253,8 @@ copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)inclu
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -284,6 +294,8 @@ copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)inclu
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
