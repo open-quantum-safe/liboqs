@@ -161,10 +161,13 @@ case $host_cpu in
         x86_64=true
         ;;
   aarch64* )
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc"
+        arm64=true
         ;;
 esac
 
 AM_CONDITIONAL([X86_64], [test "x$x86_64" = xtrue])
+AM_CONDITIONAL([ARM64], [test "x$arm64" = xtrue])
 
 # Common sources
 SRCDIR=" src/common"
