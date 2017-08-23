@@ -173,11 +173,9 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
 	}
-	if (quiet) {
-		ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 0, occurrences);
-	} else {
-		ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 1, occurrences);
-	}
+	
+	ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, quiet ? 0 : 1, occurrences);
+	
 	if (ret != 1) {
 		goto err;
 	}
@@ -276,6 +274,58 @@ cleanup:
 	return rc;
 }
 
+
+static int kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters){
+
+	
+	OQS_KEX *kex = NULL;
+	int rc;
+
+	void *alice_priv = NULL;
+	uint8_t *alice_msg = NULL;
+	size_t alice_msg_len;
+	uint8_t *alice_key = NULL;
+	size_t alice_key_len;
+
+	uint8_t *bob_msg = NULL;
+	size_t bob_msg_len;
+	uint8_t *bob_key = NULL;
+	size_t bob_key_len;
+
+	//TODO: sleep between operations?
+	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
+	if (kex == NULL) {
+		fprintf(stderr, "new_method failed\n");
+		goto err;
+	}
+
+	printf("running %s..\n", kex->method_name);
+
+	OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
+	OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
+	OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len);
+
+
+
+	rc = 1;
+	goto cleanup;
+
+err:
+	rc = 0;
+
+cleanup:
+	free(alice_msg);
+	free(alice_key);
+	free(bob_msg);
+	free(bob_key);
+	OQS_KEX_alice_priv_free(kex, alice_priv);
+	OQS_KEX_free(kex);
+
+	return rc;
+
+
+}
+
 void print_help(){
 	printf("Usage: ./test_kex [options] [algorithms]\n");
 	printf("\nOptions:\n");
@@ -285,6 +335,8 @@ void print_help(){
 	printf("		Run benchmarks\n");
 	printf("	--seconds -s [SECONDS]\n");
 	printf("		Number of seconds to run benchmarks (default==%d)\n", KEX_BENCH_SECONDS_DEFAULT);
+  printf("  --mem-bench\n");
+  printf("    Run memory benchmarks (run once and allocate only what is required)\n");
 	printf("\nalgorithms:\n");
 	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
 	for (size_t i = 0; i < kex_testcases_len; i++) {
@@ -298,6 +350,7 @@ int main(int argc, char **argv) {
 	bool run_all = true;
 	bool quiet = false;
 	bool bench = false;
+	bool mem_bench = false;
 	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
 	size_t kex_bench_seconds = KEX_BENCH_SECONDS_DEFAULT;
 	for (int i = 1; i < argc; i++) {
@@ -321,6 +374,8 @@ int main(int argc, char **argv) {
 					return EXIT_SUCCESS;
 				}
 				kex_bench_seconds = kex_bench_seconds_input;
+			} else if((strcmp(argv[i], "--mem-bench") == 0 || strcmp(argv[i], "-m") == 0)){
+				mem_bench = true;
 			}
 		} else {
 			run_all = false;
@@ -332,10 +387,25 @@ int main(int argc, char **argv) {
 		}
 	}
 
+
 	/* setup RAND */
 	OQS_RAND *rand = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
 	if (rand == NULL) {
 		goto err;
+	}
+
+	if(mem_bench){
+		for (size_t i = 0; i < kex_testcases_len; i++) {
+			if (run_all || kex_testcases[i].run == 1) {
+				success = kex_mem_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters);
+			}
+			if(success != 1){
+				goto err;
+			}
+		}
+		printf("memory benchmarks done, exiting..\n");
+		success = 1;
+		goto cleanup;
 	}
 
 	for (size_t i = 0; i < kex_testcases_len; i++) {
