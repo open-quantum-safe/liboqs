@@ -51,8 +51,8 @@ p751x2:
 //  Field addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global fpadd751_asm
-fpadd751_asm:
+.global oqs_sidh_cln16_fpadd751_asm
+oqs_sidh_cln16_fpadd751_asm:
     // Arguments are 3 pointers of type digit_t*, where the first two arguments are summands and the third is the result register. 
 	// These arguments are stored in x0, x1, and x2 respectively.
 
@@ -159,8 +159,8 @@ fpadd751_asm:
 //  Field subtraction
 //  Operation: c [x2] = a [x0] - b [x1]
 //*********************************************************************** 
-.global fpsub751_asm
-fpsub751_asm:
+.global oqs_sidh_cln16_fpsub751_asm
+oqs_sidh_cln16_fpsub751_asm:
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -239,8 +239,8 @@ fpsub751_asm:
 //  Integer multiplication using Comba method
 //  Operation: c [x2] = a [x0] * b [x1]
 //***********************************************************************
-.global mul751_asm
-mul751_asm:
+.global oqs_sidh_cln16_mul751_asm
+oqs_sidh_cln16_mul751_asm:
     sub sp, sp, #80
     stp x19, x20, [sp]
     stp x21, x22, [sp, #16]
@@ -1514,8 +1514,8 @@ mul751_asm:
 //  Operation: mc [x1] = ma [x0]
 //  NOTE: ma=mc is not allowed
 //*********************************************************************** 
-.global rdc751_asm
-rdc751_asm:
+.global oqs_sidh_cln16_rdc751_asm
+oqs_sidh_cln16_rdc751_asm:
     //  ma is in x0
     //  mc is in x1
 
@@ -2204,8 +2204,8 @@ rdc751_asm:
 //  751-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global mp_add751_asm
-mp_add751_asm:
+.global oqs_sidh_cln16_mp_add751_asm
+oqs_sidh_cln16_mp_add751_asm:
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -2245,8 +2245,8 @@ mp_add751_asm:
 //  2x751-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global mp_add751x2_asm
-mp_add751x2_asm:
+.global oqs_sidh_cln16_mp_add751x2_asm
+oqs_sidh_cln16_mp_add751x2_asm:
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
