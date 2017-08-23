@@ -51,7 +51,8 @@ struct kex_testcase kex_testcases[] = {
 };
 
 #define KEX_TEST_ITERATIONS 100
-#define KEX_BENCH_SECONDS 1
+#define KEX_BENCH_SECONDS_DEFAULT 1
+
 
 #define PRINT_HEX_STRING(label, str, len)                        \
 	{                                                            \
@@ -256,7 +257,7 @@ static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 	TIME_OPERATION_SECONDS({ OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len); free(alice_key); }, "alice 1", seconds);
 	alice_key = NULL;
 
-	printf("Communication (bytes): A->B: %zu, B->A: %zu, total: %zu\n", alice_msg_len, bob_msg_len, alice_msg_len + bob_msg_len);
+	printf("Communication (bytes): A->B: %zu, B->A: %zu, total: %zu; classical/quantum security bits [%u:%u] \n", alice_msg_len, bob_msg_len, alice_msg_len + bob_msg_len, kex->estimated_classical_security, kex->estimated_quantum_security);
 
 	rc = 1;
 	goto cleanup;
@@ -275,6 +276,22 @@ cleanup:
 	return rc;
 }
 
+void print_help(){
+	printf("Usage: ./test_kex [options] [algorithms]\n");
+	printf("\nOptions:\n");
+	printf("	--quiet, -q\n");
+	printf("		Less verbose output\n");
+	printf("	--bench, -b\n");
+	printf("		Run benchmarks\n");
+	printf("	--seconds -s [SECONDS]\n");
+	printf("		Number of seconds to run benchmarks (default==%d)\n", KEX_BENCH_SECONDS_DEFAULT);
+	printf("\nalgorithms:\n");
+	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
+	for (size_t i = 0; i < kex_testcases_len; i++) {
+		printf("	%s\n", kex_testcases[i].id);
+	}
+}
+
 int main(int argc, char **argv) {
 
 	int success = 1;
@@ -282,26 +299,29 @@ int main(int argc, char **argv) {
 	bool quiet = false;
 	bool bench = false;
 	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
+	size_t kex_bench_seconds = KEX_BENCH_SECONDS_DEFAULT;
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			if ((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "-help") == 0) || (strcmp(argv[i], "--help") == 0)) {
-				printf("Usage: ./test_kex [options] [algorithms]\n");
-				printf("\nOptions:\n");
-				printf("  --quiet, -q\n");
-				printf("    Less verbose output\n");
-				printf("  --bench, -b\n");
-				printf("    Run benchmarks\n");
-				printf("\nalgorithms:\n");
-				for (size_t i = 0; i < kex_testcases_len; i++) {
-					printf("  %s\n", kex_testcases[i].id);
-				}
+				print_help();
 				return EXIT_SUCCESS;
 			} else if (strcmp(argv[i], "--quiet") == 0 || strcmp(argv[i], "-q") == 0) {
 				quiet = true;
 			} else if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0) {
 				bench = true;
+			} else if (strcmp(argv[i], "--seconds") == 0 || strcmp(argv[i], "-s") == 0) {
+				if(++i == argc) {
+					print_help();
+					return EXIT_SUCCESS;
+				}
+				char* end;
+				int kex_bench_seconds_input = strtol(argv[i], &end, 10);
+				if(kex_bench_seconds_input < 1){
+					print_help();
+					return EXIT_SUCCESS;
+				}
+				kex_bench_seconds = kex_bench_seconds_input;
 			}
-
 		} else {
 			run_all = false;
 			for (size_t j = 0; j < kex_testcases_len; j++) {
@@ -332,7 +352,7 @@ int main(int argc, char **argv) {
 		PRINT_TIMER_HEADER
 		for (size_t i = 0; i < kex_testcases_len; i++) {
 			if (run_all || kex_testcases[i].run == 1) {
-				kex_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, KEX_BENCH_SECONDS);
+				kex_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, kex_bench_seconds);
 			}
 		}
 		PRINT_TIMER_FOOTER
