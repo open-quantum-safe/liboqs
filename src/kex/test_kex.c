@@ -274,7 +274,6 @@ cleanup:
 	return rc;
 }
 
-
 static int kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters){
 
 	
@@ -292,7 +291,6 @@ static int kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name,
 	uint8_t *bob_key = NULL;
 	size_t bob_key_len;
 
-	//TODO: sleep between operations?
 	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
 	if (kex == NULL) {
 		fprintf(stderr, "new_method failed\n");
@@ -304,8 +302,6 @@ static int kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name,
 	OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
 	OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
 	OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len);
-
-
 
 	rc = 1;
 	goto cleanup;
