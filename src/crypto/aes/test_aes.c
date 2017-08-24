@@ -14,13 +14,13 @@
 
 #define TEST_ITERATIONS 100
 
-#define TEST_REPEATEDLY(x)                                            \
-	for (int i = 0; i < TEST_ITERATIONS; i++) {                       \
-		int ok = (x);                                                 \
-		if (ok != EXIT_SUCCESS) {                                     \
+#define TEST_REPEATEDLY(x)                                    \
+	for (int i = 0; i < TEST_ITERATIONS; i++) {               \
+		int ok = (x);                                         \
+		if (ok != EXIT_SUCCESS) {                             \
 			eprintf("Failure in %s (iteration %d)\n", #x, i); \
-			return EXIT_FAILURE;                                      \
-		}                                                             \
+			return EXIT_FAILURE;                              \
+		}                                                     \
 	}
 
 static void print_bytes(uint8_t *bytes, size_t num_bytes) {

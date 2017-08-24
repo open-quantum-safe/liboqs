@@ -119,8 +119,9 @@ static uint64_t rdtsc(void) {
 	return __rdtsc();
 #elif defined(__aarch64__)
 	uint64_t x;
-  asm volatile ("isb; mrs %0, cntvct_el0" : "=r" (x));
-  return x;
+	asm volatile("isb; mrs %0, cntvct_el0"
+	             : "=r"(x));
+	return x;
 #else
 	uint64_t x;
 	__asm__ volatile(".byte 0x0f, 0x31"
