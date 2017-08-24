@@ -142,8 +142,10 @@ case $host_os in
         ;;
   linux-android*)
         AM_CFLAGS=${AM_CFLAGS}" -pie "
+        linux=true
         ;;
   linux*)
+        linux=true
         ;;
     *)
         #Default Case
@@ -153,18 +155,20 @@ esac
 
 AM_CONDITIONAL([ON_DARWIN], [test "x$darwin" = xtrue])
 
-# enable assembly optimizations here
-
-case $host_cpu in
-  x86_64* )
+# Enable assembly optimizations here
+# Appearenly asm optimizations do not work well with darwin
+if test x"$linux" = x"true"; then
+  case $host_cpu in
+    x86_64* )
         AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
         x86_64=true
         ;;
-  aarch64* )
+    aarch64* )
         AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc"
         arm64=true
         ;;
-esac
+  esac
+fi
 
 AM_CONDITIONAL([X86_64], [test "x$x86_64" = xtrue])
 AM_CONDITIONAL([ARM64], [test "x$arm64" = xtrue])
