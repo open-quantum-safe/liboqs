@@ -188,6 +188,28 @@ McBits is disabled by default in the Visual Studio build; follow these steps to 
 - Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
 - Add the libsodium library to the "Additional Dependencies" in the `test_kex` project Linker properties.
 
+Building for Android
+--------------------
+
+Install Android NDK
+
+Create a standalone toolchain for the platform that you wish to cross compile for (e.g. NDK_BUNDLE="~/Android/Sdk/ndk-bundle" ARCH=arm64 INSTALL_DIR="/tmp/ndk-toolchain"):
+
+	$NDK_BUNDLE/build/tools/make_standalone_toolchain.py --arch $ARCH --install-dir $INSTALL_DIR
+
+Configure and build for Android after running `autoreconf -i` (e.g. HOST=aarch64-linux-android TOOLCHAIN_DIR=$INSTALL_DIR):
+
+	./configure-android --host=$HOST --toolchain=$TOOLCHAIN_DIR
+	make
+
+Run it from your Android device:
+
+	adb push test_kex  /data/local/tmp/
+	adb shell "/data/local/tmp/test_kex"
+
+Tested on SM-930F
+
+
 Documentation
 -------------
 
