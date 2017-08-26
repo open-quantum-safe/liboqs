@@ -88,8 +88,7 @@ to list the available ciphers and then run e.g.
 	./test_kex --bench rlwe_bcns15 rlwe_newhope
 
 
-Memory benchmarks
------------------
+#### Memory benchmarks
 
 To run one or more ciphers only once use `--mem-bench`, which is suitable for memory usage profiling:
 
