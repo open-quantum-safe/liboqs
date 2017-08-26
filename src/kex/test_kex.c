@@ -53,7 +53,6 @@ struct kex_testcase kex_testcases[] = {
 #define KEX_TEST_ITERATIONS 100
 #define KEX_BENCH_SECONDS_DEFAULT 1
 
-
 #define PRINT_HEX_STRING(label, str, len)                        \
 	{                                                            \
 		printf("%-20s (%4zu bytes):  ", (label), (size_t)(len)); \
@@ -173,9 +172,9 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 	for (int i = 0; i < 256; i++) {
 		occurrences[i] = 0;
 	}
-	
+
 	ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, quiet ? 0 : 1, occurrences);
-	
+
 	if (ret != 1) {
 		goto err;
 	}
@@ -274,9 +273,8 @@ cleanup:
 	return rc;
 }
 
-static int kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters){
+static int kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 
-	
 	OQS_KEX *kex = NULL;
 	int rc;
 
@@ -318,11 +316,9 @@ cleanup:
 	OQS_KEX_free(kex);
 
 	return rc;
-
-
 }
 
-void print_help(){
+void print_help() {
 	printf("Usage: ./test_kex [options] [algorithms]\n");
 	printf("\nOptions:\n");
 	printf("	--quiet, -q\n");
@@ -331,8 +327,8 @@ void print_help(){
 	printf("		Run benchmarks\n");
 	printf("	--seconds -s [SECONDS]\n");
 	printf("		Number of seconds to run benchmarks (default==%d)\n", KEX_BENCH_SECONDS_DEFAULT);
-  printf("  --mem-bench\n");
-  printf("    Run memory benchmarks (run once and allocate only what is required)\n");
+	printf("  --mem-bench\n");
+	printf("    Run memory benchmarks (run once and allocate only what is required)\n");
 	printf("\nalgorithms:\n");
 	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
 	for (size_t i = 0; i < kex_testcases_len; i++) {
@@ -359,18 +355,18 @@ int main(int argc, char **argv) {
 			} else if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0) {
 				bench = true;
 			} else if (strcmp(argv[i], "--seconds") == 0 || strcmp(argv[i], "-s") == 0) {
-				if(++i == argc) {
+				if (++i == argc) {
 					print_help();
 					return EXIT_SUCCESS;
 				}
-				char* end;
+				char *end;
 				int kex_bench_seconds_input = strtol(argv[i], &end, 10);
-				if(kex_bench_seconds_input < 1){
+				if (kex_bench_seconds_input < 1) {
 					print_help();
 					return EXIT_SUCCESS;
 				}
 				kex_bench_seconds = kex_bench_seconds_input;
-			} else if((strcmp(argv[i], "--mem-bench") == 0 || strcmp(argv[i], "-m") == 0)){
+			} else if ((strcmp(argv[i], "--mem-bench") == 0 || strcmp(argv[i], "-m") == 0)) {
 				mem_bench = true;
 			}
 		} else {
@@ -383,19 +379,18 @@ int main(int argc, char **argv) {
 		}
 	}
 
-
 	/* setup RAND */
 	OQS_RAND *rand = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
 	if (rand == NULL) {
 		goto err;
 	}
 
-	if(mem_bench){
+	if (mem_bench) {
 		for (size_t i = 0; i < kex_testcases_len; i++) {
 			if (run_all || kex_testcases[i].run == 1) {
 				success = kex_mem_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters);
 			}
-			if(success != 1){
+			if (success != 1) {
 				goto err;
 			}
 		}
