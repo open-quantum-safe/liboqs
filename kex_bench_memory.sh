@@ -1,9 +1,19 @@
 #!/bin/bash
 
+# This script outputs kex memory benchmarks using valgrind
+
 DEFAULT_TMP_DIR=/tmp
 TMP_DIR=$DEFAULT_TMP_DIR
 ALGORITHMS=""
 ROOT_DIR=`dirname $0`
+TEST_KEX_CMD=$ROOT_DIR/test_kex
+
+#check for installed programs
+for prog in valgrind ms_print $TEST_KEX_CMD
+do
+  command -v $prog >/dev/null 2>&1 || { echo >&2 "Command $prog was not found.  Aborting."; exit 1; }
+done
+
 
 #parse arguments
 for arg in "$@"
@@ -41,7 +51,7 @@ TMP_FILE_NAME="oqs_mem_bench"
 TMP_FILE_PATH=$TMP_DIR/$TMP_FILE_NAME
 
 rm -f $TMP_FILE_PATH
-valgrind --tool=massif --massif-out-file=$TMP_FILE_PATH $ROOT_DIR/test_kex -m $ALGORITHMS
+valgrind --tool=massif --massif-out-file=$TMP_FILE_PATH $TEST_KEX_CMD -m $ALGORITHMS
 ms_print $TMP_FILE_PATH
 rm -f $TMP_FILE_PATH
 
