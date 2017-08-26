@@ -321,18 +321,18 @@ cleanup:
 void print_help() {
 	printf("Usage: ./test_kex [options] [algorithms]\n");
 	printf("\nOptions:\n");
-	printf("	--quiet, -q\n");
-	printf("		Less verbose output\n");
-	printf("	--bench, -b\n");
-	printf("		Run benchmarks\n");
-	printf("	--seconds -s [SECONDS]\n");
-	printf("		Number of seconds to run benchmarks (default==%d)\n", KEX_BENCH_SECONDS_DEFAULT);
+	printf("  --quiet, -q\n");
+	printf("    Less verbose output\n");
+	printf("  --bench, -b\n");
+	printf("    Run benchmarks\n");
+	printf("  --seconds -s [SECONDS]\n");
+	printf("    Number of seconds to run benchmarks (default==%d)\n", KEX_BENCH_SECONDS_DEFAULT);
 	printf("  --mem-bench\n");
 	printf("    Run memory benchmarks (run once and allocate only what is required)\n");
 	printf("\nalgorithms:\n");
 	size_t kex_testcases_len = sizeof(kex_testcases) / sizeof(struct kex_testcase);
 	for (size_t i = 0; i < kex_testcases_len; i++) {
-		printf("	%s\n", kex_testcases[i].id);
+		printf("  %s\n", kex_testcases[i].id);
 	}
 }
 
