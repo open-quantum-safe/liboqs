@@ -12,7 +12,7 @@ CLANGFORMAT ?= clang-format-3.9
 SUBDIRS = ${SRCDIR}
 
 BUILT_SOURCES = links
-lib_LTLIBRARIES = liboqs.la
+lib_LTLIBRARIES = liboqs.la liboqs_opt.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
 liboqs_la_LIBADD += src/crypto/aes/libaes.la
@@ -54,6 +54,12 @@ if USE_PICNIC
 liboqs_la_LIBADD += src/sig_picnic/libpicnic.la
 endif
 
+liboqs_opt_la_SOURCES=
+if USE_KEX_RLWE_NEWHOPE_AVX2
+liboqs_opt_la_LIBADD = src/kex_rlwe_newhope/avx2/libnewhope_avx2.la
+endif
+
+
 noinst_bin_PROGRAMS = test_rand test_kex test_aes
 
 if USE_PICNIC
@@ -63,7 +69,7 @@ endif
 endif
 
 noinst_bindir=$(prefix)/tests
-test_kex_LDADD =  liboqs.la -lm
+test_kex_LDADD =  liboqs.la liboqs_opt.la -lm
 test_kex_SOURCES = src/kex/test_kex.c
 test_kex_CPPFLAGS = -I./include
 test_kex_CPPFLAGS += $(AM_CPPFLAGS)
@@ -79,7 +85,7 @@ endif
 
 if USE_PICNIC
 if USE_OPENSSL
-test_sig_LDADD =  liboqs.la -lm
+test_sig_LDADD =  liboqs.la liboqs_opt.la -lm
 test_sig_SOURCES = src/sig/test_sig.c
 test_sig_CPPFLAGS = -I${OPENSSL_DIR}/include -I./include
 test_sig_CPPFLAGS += $(AM_CPPFLAGS)
@@ -93,7 +99,7 @@ pp_matrices_LDADD += -L${OPENSSL_DIR}/lib -L${M4RI_DIR}/lib -lssl -lcrypto -lm4r
 endif
 endif
 
-test_aes_LDADD =  liboqs.la -lm
+test_aes_LDADD =  liboqs.la liboqs_opt.la -lm
 test_aes_SOURCES = src/crypto/aes/test_aes.c
 test_aes_CPPFLAGS = -I./include
 test_aes_CPPFLAGS += $(AM_CPPFLAGS)
@@ -106,7 +112,7 @@ test_rand_SOURCES = src/crypto/rand/test_rand.c
 
 test_rand_CPPFLAGS = -Iinclude -Isrc/crypto/rand_urandom_aesctr/
 test_rand_CPPFLAGS += $(AM_CPPFLAGS)
-test_rand_LDADD = liboqs.la
+test_rand_LDADD = liboqs.la liboqs_opt.la
 if USE_OPENSSL
 test_rand_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 else
@@ -144,6 +150,7 @@ links:
 	cp -f src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	cp -f src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
+	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
 	cp -f src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	cp -f src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	cp -f src/sig/sig.h include/oqs
@@ -153,6 +160,7 @@ if USE_OPENSSL
 endif
 endif
 	$(LN_S) -f .libs/liboqs.a
+	$(LN_S) -f .libs/liboqs_opt.a
 if USE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
@@ -166,6 +174,7 @@ endif
 
 clean-local:
 	rm -f liboqs.a
+	rm -f liboqs_opt.a
 	rm -rf include
 if USE_SIDH_IQC
 	rm -f sample_params

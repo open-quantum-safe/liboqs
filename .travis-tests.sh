@@ -63,6 +63,10 @@ if [[ ${USE_PICNIC} == 1 ]];then
   fi
 fi
 
+if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
+  enable_disable_str+=" --enable-kex-rlwe-newhope-avx2"
+fi
+
 ./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make
