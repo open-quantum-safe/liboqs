@@ -17,8 +17,9 @@
 #ifdef ENABLE_SIDH_IQC_REF
 #include <oqs/kex_sidh_iqc_ref.h>
 #endif
-
+#ifdef ENABLE_KEX_RLWE_NEWHOPE_AVX2
 #include <oqs/kex_rlwe_newhope_avx2.h>
+#endif
 
 #define UNUSED(expr)   \
 	do {               \
