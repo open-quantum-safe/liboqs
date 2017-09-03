@@ -165,31 +165,37 @@ SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15"
 if test x"$kex_lwe_frodo" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_LWE_FRODO"
+  AC_DEFINE(ENABLE_KEX_LWE_FRODO, 1, "Define to 1 when FRODO enabled")
 fi
 
 if test x"$kex_mlwe_kyber" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_mlwe_kyber"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_MLWE_KYBER"
+  AC_DEFINE(ENABLE_KEX_MLWE_KYBER, 1, "Define to 1 when KYBER enabled")
 fi
 
 if test x"$kex_ntru" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_ntru"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_NTRU"
+  AC_DEFINE(ENABLE_KEX_NTRU, 1, "Define to 1 when NTRU enabled")
 fi
 
 if test x"$kex_rlwe_msrln16" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLWE_MSRLN16"
+  AC_DEFINE(ENABLE_KEX_RLWE_MSRLN16, 1, "Define to 1 when RLWE MSRLN16 enabled")
 fi
 
 if test x"$kex_rlwe_newhope" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLWE_NEWHOPE"
+  AC_DEFINE(ENABLE_KEX_RLWE_NEWHOPE, 1, "Define to 1 when RLWE NEWHOPE enabled")
 fi
 
 if test x"$kex_sidh_cln16" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_SIDH_CLN16"
+  AC_DEFINE(ENABLE_KEX_SIDH_CLN16, 1, "Define to 1 when SIDH CLN16 enabled")
 fi
 
 SRCDIR=${SRCDIR}" src/sig"
@@ -212,15 +218,18 @@ if test x"$openssl" = x"true"; then
 fi
 if test x"$kex_code_mcbits" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_CODE_MCBITS"
+  AC_DEFINE(ENABLE_CODE_MCBITS, 1, "Define to 1 when MCBITS enabled")
 fi
 if test x"$kex_sidh_iqc_ref" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIDH_IQC_REF"
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
+  AC_DEFINE(ENABLE_SIDH_IQC_REF, 1, "Define to 1 when SIDH IQC enabled")
 fi
 
 if test x"$picnic" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_PICNIC"
   SRCDIR=${SRCDIR}" src/sig_picnic"
+  AC_DEFINE(ENABLE_PICNIC, 1, "Define to 1 when PICNIC enabled")
 fi
 
 AC_SUBST(AM_CPPFLAGS)
