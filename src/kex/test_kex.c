@@ -48,6 +48,10 @@ struct kex_testcase kex_testcases[] = {
 #ifdef ENABLE_SIDH_IQC_REF
     {OQS_KEX_alg_sidh_iqc_ref, NULL, 0, NULL, "sidh_iqc_ref", 0, 10},
 #endif
+#ifdef ENABLE_KEX_RLWE_NEWHOPE_AVX2
+    {OQS_KEX_alg_rlwe_newhope_avx2, NULL, 0, NULL, "rlwe_newhope_avx2", 0, 100},
+#endif
+
 };
 
 #define KEX_TEST_ITERATIONS 100
