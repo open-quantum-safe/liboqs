@@ -1,5 +1,6 @@
 #include <sys/types.h>
 #if defined(WINDOWS)
+#define _CRT_NONSTDC_NO_DEPRECATE
 #include <windows.h>
 #include <Wincrypt.h>
 #else
