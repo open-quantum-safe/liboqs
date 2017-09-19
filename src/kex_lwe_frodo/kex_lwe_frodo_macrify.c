@@ -1,7 +1,8 @@
-OQS_KEX *MACRIFY(OQS_KEX_lwe_frodo_new)(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 #if defined(WINDOWS)
-#define _CRT_NONSTDC_NO_DEPRECATE
+#define _CRT_NONSTDC_NO_DEPRECATE 1
+#define _CRT_SECURE_NO_DEPRECATE 1
 #endif
+OQS_KEX *MACRIFY(OQS_KEX_lwe_frodo_new)(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 	OQS_KEX *k;
 	struct oqs_kex_lwe_frodo_params *params;
 
