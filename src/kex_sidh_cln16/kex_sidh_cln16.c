@@ -1,5 +1,6 @@
 #if defined(WINDOWS)
 #define UNUSED
+#define _CRT_NONSTDC_NO_DEPRECATE
 #else
 #define UNUSED __attribute__((unused))
 #endif

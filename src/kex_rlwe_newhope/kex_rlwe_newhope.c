@@ -1,5 +1,6 @@
 #if defined(WINDOWS)
 #define UNUSED
+#define _CRT_NONSTDC_NO_DEPRECATE
 // __attribute__ not supported in VS, is there something else I should define?
 #else
 #define UNUSED __attribute__((unused))
