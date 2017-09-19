@@ -1,5 +1,6 @@
 #if defined(WINDOWS)
 #define UNUSED
+#define strdup _strdup
 // __attribute__ not supported in VS, is there something else I should define?
 #else
 #define UNUSED __attribute__((unused))
