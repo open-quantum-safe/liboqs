@@ -2,8 +2,6 @@
 #if defined(WINDOWS)
 #include <windows.h>
 #include <Wincrypt.h>
-#define _CRT_NONSTDC_NO_DEPRECATE 1
-#define _CRT_SECURE_NO_DEPRECATE 1
 #else
 #include <strings.h>
 #include <sys/uio.h>
