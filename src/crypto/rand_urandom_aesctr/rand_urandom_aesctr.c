@@ -1,5 +1,6 @@
 #include <sys/types.h>
 #if defined(WINDOWS)
+#define strdup _strdup
 #include <windows.h>
 #include <Wincrypt.h>
 #else

@@ -1,5 +1,6 @@
 #if defined(WINDOWS)
 #define UNUSED
+#define strdup _strdup
 #else
 #define UNUSED __attribute__((unused))
 #endif

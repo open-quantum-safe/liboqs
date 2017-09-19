@@ -2,6 +2,7 @@
 #if defined(WINDOWS)
 #include <windows.h>
 #include <Wincrypt.h>
+#define strdup _strdup
 #else
 #include <strings.h>
 #include <sys/uio.h>
