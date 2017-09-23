@@ -1,0 +1,8 @@
+for dir in $1;
+do
+  patchfiles=`find ./patches/$dir -type f -name "*.patch"`
+  for patchfile in $patchfiles;
+  do
+    git -c core.whitespace=cr-at-eol apply $patchfile >/dev/null 2>&1 
+  done
+done
