@@ -131,6 +131,9 @@ ARG_DISBL_SET([kex-sidh-cln16], [disable KEX-SIDH-CLN16.])
 AM_CONDITIONAL([kex_sidh_cln16], [test "x$kex_sidh_cln16" = xtrue])
 AM_CONDITIONAL([USE_KEX_SIDH_CLN16], [test "x$kex_sidh_cln16" = xtrue])
 
+ARG_ENABL_SET([kex-rlwe-newhope-avx2], [enable KEX-RLWE-NEWHOPE-AVX2.])
+AM_CONDITIONAL([kex_rlwe_newhope_avx2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
+AM_CONDITIONAL([USE_KEX_RLWE_NEWHOPE_AVX2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
 
 AC_CANONICAL_HOST
 
@@ -244,6 +247,10 @@ if test x"$picnic" = x"true"; then
   SRCDIR=${SRCDIR}" src/sig_picnic"
 fi
 
+if test x"$kex_rlwe_newhope_avx2" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kex_rlwe_newhope/avx2"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLWE_NEWHOPE_AVX2"
+fi
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CFLAGS)
 AC_SUBST(SRCDIR)
@@ -260,6 +267,7 @@ AC_SUBST(USE_KEX_SIDH_CLN16)
 AC_SUBST(USE_PICNIC)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)
+AC_SUBST(USE_KEX_RLWE_NEWHOPE_AVX2)
 
 
 AC_CONFIG_FILES([Makefile
@@ -280,6 +288,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_lwe_frodo/Makefile
                  src/sig/Makefile
                  src/sig_picnic/Makefile
-                 src/kex_mlwe_kyber/Makefile])
+                 src/kex_mlwe_kyber/Makefile
+                 src/kex_rlwe_newhope/avx2/Makefile])
 
 AC_OUTPUT
