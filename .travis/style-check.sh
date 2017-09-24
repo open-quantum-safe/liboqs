@@ -10,7 +10,9 @@ fi;
 modified=$(git status -s)
 
 if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
-  modified=$(echo $modified | grep -v "kex_rlwe_newhope/avx2" | grep -v "Makefile.am")
+  modified=$(echo $modified | grep -v "kex_rlwe_newhope/avx2" | grep -v "Makefile.am" | grep -v "avx2/kex*")
+else
+  modified=$(echo $modified | grep -v "Makefile.am")
 fi
 
 if [ "$modified" ]; then

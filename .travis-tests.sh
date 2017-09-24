@@ -64,10 +64,10 @@ if [[ ${USE_PICNIC} == 1 ]];then
   fi
 fi
 
+patch_dir_str="kex_rlwe_newhope_avx2"
+recover_from_patch_dirs_str+=" kex_rlwe_newhope/avx2"
 if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
   enable_disable_str+=" --enable-kex-rlwe-newhope-avx2"
-  patch_dir_str="kex_rlwe_newhope_avx2"
-  recover_from_patch_dirs_str+=" kex_rlwe_newhope/avx2"
   ./patches/apply-patch ${patch_dir_str}
 else
   ./patches/apply-patch ${patch_dir_str} 0
