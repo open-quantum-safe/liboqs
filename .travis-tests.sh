@@ -5,8 +5,8 @@ set -e
 export CC=$CC_OQS
 
 enable_disable_str=
-patch_dirs_str=
-recover_from_patch_dirs=
+patch_dir_str=
+recover_from_patch_dirs_str=
 if [[ ${USE_OPENSSL} == 1 ]];then
   enable_disable_str=" --enable-openssl"
   if [[ ! -z "${OPENSSL_DIR// }" ]];then
@@ -66,11 +66,13 @@ fi
 
 if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
   enable_disable_str+=" --enable-kex-rlwe-newhope-avx2"
-  patch_dirs_str+=" kex_rlwe_newhope_avx2"
-  recover_from_patch_dirs+=" kex_rlwe_newhope/avx2"
+  patch_dir_str="kex_rlwe_newhope_avx2"
+  recover_from_patch_dirs_str+=" kex_rlwe_newhope/avx2"
+  ./patches/apply-patch ${patch_dir_str}
+else
+  ./patches/apply-patch ${patch_dir_str} 0
 fi
 
-./patches/apply-patch ${patch_dirs_str}
 autoreconf -i
 ./configure --enable-silent-rules ${enable_disable_str}
 make clean
@@ -86,4 +88,6 @@ else
   bash $f;
 fi
 done
-./patches/cleanup-patch ${recover_from_patch_dirs}
+
+./patches/cleanup-patch ${recover_from_patch_dirs_str}
+
