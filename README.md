@@ -56,7 +56,7 @@ You need to install autoconf, automake and libtool:
 
 ### Building
 
-To build, clone or download the source from GitHub, then simply type:
+To build, first clone or download the source from GitHub, then simply type:
 
 	autoreconf -i
 	./configure
