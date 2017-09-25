@@ -283,6 +283,7 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 ### Contributors
 
 - Javad Doliskani (University of Waterloo)
+- Vlad Gheorghiu (evolutionQ / University of Waterloo)
 - Tancrède Lepoint (SRI International)
 - Shravan Mishra (University of Waterloo)
 - Christian Paquin (Microsoft Research)
