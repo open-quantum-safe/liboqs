@@ -82,7 +82,7 @@ PRINT_TIMER_FOOTER
 
 #ifndef _DS_BENCHMARK_H
 #define _DS_BENCHMARK_H
-
+  
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -91,6 +91,8 @@ PRINT_TIMER_FOOTER
 #endif
 #include <math.h>
 #include <time.h>
+
+#define ARM // FIXME: don't hardcode!
 
 #if defined(WINDOWS)
 #include <Windows.h>
@@ -107,7 +109,6 @@ int gettimeofday(struct timeval *tp, struct timezone *tzp) {
 	SystemTimeToFileTime(&system_time, &file_time);
 	time = ((uint64_t) file_time.dwLowDateTime);
 	time += ((uint64_t) file_time.dwHighDateTime) << 32;
-
 	tp->tv_sec = (long) ((time - EPOCH) / 10000000L);
 	tp->tv_usec = (long) (system_time.wMilliseconds * 1000);
 	return 0;
@@ -122,6 +123,10 @@ static uint64_t rdtsc(void) {
 	asm volatile("isb; mrs %0, cntvct_el0"
 	             : "=r"(x));
 	return x;
+#elif defined(ARM)
+	struct timespec time;
+	clock_gettime(CLOCK_REALTIME, &time);
+	return (int64_t)(time.tv_sec*1e9 + time.tv_nsec);
 #else
 	uint64_t x;
 	__asm__ volatile(".byte 0x0f, 0x31"
@@ -153,13 +158,12 @@ static uint64_t rdtsc(void) {
 
 // Mean and population standard deviation are calculated in an online way using the algorithm in
 //     http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm
-
-#define STOP_TIMER                                                                                                                                                          \
+#define STOP_TIMER                                                                                                                                                              \
 	_bench_cycles_end = rdtsc();                                                                                                                                            \
 	gettimeofday(&_bench_timeval_end, NULL);                                                                                                                                \
 	_bench_iterations += 1;                                                                                                                                                 \
 	if (_bench_cycles_end < _bench_cycles_start) {                                                                                                                          \
-		_bench_cycles_end += 1UL << 32;                                                                                                                                     \
+	  _bench_cycles_end += (uint64_t)1<<32;                                                                                                                         	\
 	}                                                                                                                                                                       \
 	_bench_cycles_diff = _bench_cycles_end;                                                                                                                                 \
 	_bench_cycles_diff -= _bench_cycles_start;                                                                                                                              \
