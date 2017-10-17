@@ -1,4 +1,4 @@
-#if ENABLE_PICNIC
+#if defined(ENABLE_PICNIC)
 #if defined(WINDOWS)
 #define UNUSED
 #else
