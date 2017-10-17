@@ -2,7 +2,7 @@
 #include <stdint.h>
 
 #if defined(WINDOWS)
-#pragma warning( disable : 4146 4244 )
+#pragma warning(disable : 4146 4244)
 #endif
 
 /* returns 0 for equal strings, 1 for non-equal strings */

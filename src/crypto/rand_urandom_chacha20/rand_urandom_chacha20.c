@@ -1,5 +1,5 @@
 #if defined(WINDOWS)
-#pragma warning( disable : 4267 )
+#pragma warning(disable : 4267)
 #endif
 
 #include <sys/types.h>

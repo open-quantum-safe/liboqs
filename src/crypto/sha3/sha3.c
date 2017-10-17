@@ -6,7 +6,7 @@
  * by Gilles Van Assche, Daniel J. Bernstein, and Peter Schwabe */
 
 #if defined(WINDOWS)
-#pragma warning( disable : 4244 )
+#pragma warning(disable : 4244)
 #endif
 
 #include <assert.h>
