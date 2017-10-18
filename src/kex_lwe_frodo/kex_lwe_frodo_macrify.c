@@ -1,3 +1,7 @@
+#if defined(WINDOWS)
+#define strdup _strdup // for strdup deprecation warning
+#endif
+
 OQS_KEX *MACRIFY(OQS_KEX_lwe_frodo_new)(OQS_RAND *rand, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 
 	OQS_KEX *k;

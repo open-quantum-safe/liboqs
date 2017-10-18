@@ -18,6 +18,10 @@
 #include "kex_code_mcbits.h"
 #include "mcbits.h"
 
+#if defined(WINDOWS)
+#define strdup _strdup // for strdup deprecation warning
+#endif
+
 OQS_KEX *OQS_KEX_code_mcbits_new(OQS_RAND *rand) {
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
 	if (k == NULL) {

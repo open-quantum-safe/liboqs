@@ -21,6 +21,10 @@
 
 #include <ntru_crypto.h>
 
+#if defined(WINDOWS)
+#define strdup _strdup // for strdup deprecation warning
+#endif
+
 #define NTRU_PARAMETER_SELECTION NTRU_EES743EP1
 #define NTRU_PARAMETER_SELECTION_NAME "EES743EP1"
 

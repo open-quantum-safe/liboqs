@@ -18,6 +18,10 @@
 #include "LatticeCrypto_priv.h"
 #include "kex_rlwe_msrln16.h"
 
+#if defined(WINDOWS)
+#define strdup _strdup // for strdup deprecation warning
+#endif
+
 OQS_KEX *OQS_KEX_rlwe_msrln16_new(OQS_RAND *rand) {
 
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));

@@ -97,6 +97,12 @@
     <ClCompile Include="..\..\src\kex_mlwe_kyber\kex_mlwe_kyber.c">
       <Filter>KEX_Kyber</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sig\sig.c">
+      <Filter>Sig</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\sig_picnic.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
@@ -177,6 +183,12 @@
     <ClInclude Include="..\..\src\kex_mlwe_kyber\kex_mlwe_kyber.h">
       <Filter>KEX_Kyber</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\sig\sig.h">
+      <Filter>Sig</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\sig_picnic.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -220,6 +232,12 @@
     </Filter>
     <Filter Include="KEX_Kyber">
       <UniqueIdentifier>{c95ab174-03e5-4e85-a903-ccef78182c4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sig">
+      <UniqueIdentifier>{d8958465-5fd0-4d0f-8acf-f20d79c4a490}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sig_Picnic">
+      <UniqueIdentifier>{18dd9adb-41b8-4058-a714-0a0d49db26ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

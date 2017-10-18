@@ -1,3 +1,7 @@
+#if defined(WINDOWS)
+#pragma warning(disable : 4244 4293)
+#endif
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -222,7 +226,7 @@ static void cleanup_bob(uint8_t *bob_msg, uint8_t *bob_key) {
 	free(bob_key);
 }
 
-static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int seconds) {
+static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const size_t seconds) {
 
 	OQS_KEX *kex = NULL;
 	int rc;
