@@ -17,18 +17,16 @@
 #include "SIDH.h"
 #include "kex_sidh_cln16.h"
 
-static char *P751 = "p751";
-static char *CompressedP751 = "compressedp751";
+static const char *P751 = "p751";
+static const char *CompressedP751 = "compressedp751";
 
 static int isCompressed(const char *named_parameters) {
-	int compressed = 0; // defaults to non-compressed
-	if (named_parameters == NULL ||
-	    strncmp(P751, named_parameters, strlen(P751)) == 0) {
-		compressed = 0;
-	} else if (strncmp(CompressedP751, named_parameters, strlen(CompressedP751)) == 0) {
-		compressed = 1;
+	if (named_parameters != NULL
+		&& strcmp(named_parameters, CompressedP751) == 0) {
+			return 1;
 	}
-	return compressed;
+
+	return 0;
 }
 
 OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand, const char *named_parameters) {
