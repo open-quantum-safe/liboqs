@@ -21,9 +21,8 @@ static const char *P751 = "p751";
 static const char *CompressedP751 = "compressedp751";
 
 static int isCompressed(const char *named_parameters) {
-	if (named_parameters != NULL
-		&& strcmp(named_parameters, CompressedP751) == 0) {
-			return 1;
+	if (named_parameters != NULL && strcmp(named_parameters, CompressedP751) == 0) {
+		return 1;
 	}
 
 	return 0;
