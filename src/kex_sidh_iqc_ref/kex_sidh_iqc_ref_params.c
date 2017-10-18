@@ -3,10 +3,11 @@
 #include "kex_sidh_iqc_ref_params.h"
 
 typedef struct {
-    const char *name;
-    const char *params[10];
+	const char *name;
+	const char *params[10];
 } params_def;
 
+// clang-format off
 const params_def all_params[] = {
     {
         "params46",
@@ -69,16 +70,16 @@ const params_def all_params[] = {
         }
     }
 };
+// clang-format on
 
-const char **oqs_sidh_iqc_ref_params_from_name(const char *named_parameters)
-{
-    static const size_t elements = sizeof(all_params) / sizeof(all_params[0]);
+const char **oqs_sidh_iqc_ref_params_from_name(const char *named_parameters) {
+	static const size_t elements = sizeof(all_params) / sizeof(all_params[0]);
 
-    for (unsigned int i = 0; i < elements; ++i) {
-        if (0 == strcmp(all_params[i].name, named_parameters)) {
-            return (const char **)all_params[i].params;
-        }
-    }
+	for (unsigned int i = 0; i < elements; ++i) {
+		if (0 == strcmp(all_params[i].name, named_parameters)) {
+			return (const char **) all_params[i].params;
+		}
+	}
 
-    return NULL;
+	return NULL;
 }
