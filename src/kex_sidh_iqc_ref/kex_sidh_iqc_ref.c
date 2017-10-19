@@ -18,6 +18,10 @@
 
 OQS_KEX *OQS_KEX_sidh_iqc_ref_new(OQS_RAND *rand, const char *named_parameters) {
 
+	if (named_parameters == NULL) {
+		named_parameters = "params771";
+	}
+
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
 	if (k == NULL) {
 		return NULL;
