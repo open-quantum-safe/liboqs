@@ -1,3 +1,5 @@
+#ifdef ENABLE_CODE_MCBITS
+
 #if defined(WINDOWS)
 #define UNUSED
 // __attribute__ not supported in VS, is there something else I should define?
@@ -146,3 +148,5 @@ void OQS_KEX_code_mcbits_free(OQS_KEX *k) {
 	}
 	free(k);
 }
+
+#endif
