@@ -12,7 +12,7 @@ extern "C" {
 #include <oqs/kex.h>
 #include <oqs/rand.h>
 
-OQS_KEX *OQS_KEX_sidh_iqc_ref_new(OQS_RAND *rand);
+OQS_KEX *OQS_KEX_sidh_iqc_ref_new(OQS_RAND *rand, const char *named_parameters);
 
 int OQS_KEX_sidh_iqc_ref_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len);
 int OQS_KEX_sidh_iqc_ref_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
