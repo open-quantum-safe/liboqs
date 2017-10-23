@@ -85,7 +85,7 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 
 	case OQS_KEX_alg_sidh_iqc_ref:
 #ifdef ENABLE_SIDH_IQC_REF
-		return OQS_KEX_sidh_iqc_ref_new(rand);
+		return OQS_KEX_sidh_iqc_ref_new(rand, named_parameters);
 #else
 		assert(0);
 #endif

@@ -1,4 +1,8 @@
 #if defined(WINDOWS)
+#pragma warning(disable : 4047)
+#endif
+
+#if defined(WINDOWS)
 #define UNUSED
 #else
 #define UNUSED __attribute__((unused))
@@ -16,6 +20,10 @@
 
 #include "SIDH.h"
 #include "kex_sidh_cln16.h"
+
+#if defined(WINDOWS)
+#define strdup _strdup // for strdup deprecation warning
+#endif
 
 static const char *P751 = "p751";
 static const char *CompressedP751 = "compressedp751";
