@@ -92,8 +92,6 @@ PRINT_TIMER_FOOTER
 #include <math.h>
 #include <time.h>
 
-#define ARM // FIXME: don't hardcode!
-
 #if defined(WINDOWS)
 #include <Windows.h>
 
@@ -123,7 +121,7 @@ static uint64_t rdtsc(void) {
 	asm volatile("isb; mrs %0, cntvct_el0"
 	             : "=r"(x));
 	return x;
-#elif defined(ARM)
+#elif defined(__arm__)
 	struct timespec time;
 	clock_gettime(CLOCK_REALTIME, &time);
 	return (int64_t)(time.tv_sec*1e9 + time.tv_nsec);

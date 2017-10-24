@@ -228,7 +228,7 @@ Building for ARM
 
 To build on ARM (such as a Raspberry Pi), certain ciphers must be disabled when running configure:
 
-   	 ./configure --disable-kex-lwe-frodo --disable-kex-mlwe-kyber --disable-kex-ntru --disable-aes-ni
+	./configure --disable-aes-ni
 
 Documentation
 -------------
