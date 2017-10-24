@@ -25,9 +25,6 @@
     <ClCompile Include="..\..\src\kex_lwe_frodo\lwe_noise.c">
       <Filter>KEX_Frodo</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_newhope\newhope.c">
-      <Filter>KEX_NewHope</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_msrln16\ntt_constants.c">
       <Filter>KEX_MSR_LN16</Filter>
     </ClCompile>
@@ -239,5 +236,8 @@
     <Filter Include="Sig_Picnic">
       <UniqueIdentifier>{18dd9adb-41b8-4058-a714-0a0d49db26ad}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dll.def" />
   </ItemGroup>
 </Project>
