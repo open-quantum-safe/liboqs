@@ -1,5 +1,5 @@
 #if defined(WINDOWS)
-#pragma warning(disable : 4047)
+#pragma warning(disable : 4047 4090)
 #endif
 
 #if defined(WINDOWS)
