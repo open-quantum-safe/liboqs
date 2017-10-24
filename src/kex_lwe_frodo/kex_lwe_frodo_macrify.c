@@ -13,7 +13,7 @@ OQS_KEX *MACRIFY(OQS_KEX_lwe_frodo_new)(OQS_RAND *rand, const uint8_t *seed, con
 
 	k = malloc(sizeof(OQS_KEX));
 	if (k == NULL) {
-		goto err;
+		return NULL;
 	}
 	k->named_parameters = NULL;
 	k->method_name = NULL;
