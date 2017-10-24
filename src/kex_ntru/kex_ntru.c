@@ -120,7 +120,7 @@ int OQS_KEX_ntru_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t **alice_m
 err:
 	ret = 0;
 	if (ntru_alice_priv != NULL && ntru_alice_priv->priv_key != NULL)
-		 free(ntru_alice_priv->priv_key);
+		free(ntru_alice_priv->priv_key);
 	free(ntru_alice_priv);
 	*alice_priv = NULL;
 	free(*alice_msg);
