@@ -49,6 +49,9 @@ int OQS_KEX_code_mcbits_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t **
 
 	int ret;
 
+	*alice_priv = NULL;
+	*alice_msg = NULL;
+
 	/* allocate public/private key pair */
 	*alice_msg = malloc(CRYPTO_PUBLICKEYBYTES);
 	*alice_msg_len = CRYPTO_PUBLICKEYBYTES;
@@ -83,6 +86,9 @@ int OQS_KEX_code_mcbits_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, UNUSED 
 
 	int ret;
 
+	*bob_msg = NULL;
+	*key = NULL;
+
 	/* allocate message and session key */
 	*bob_msg = malloc(CRYPTO_BYTES + 32);
 	if (*bob_msg == NULL) {
@@ -112,6 +118,8 @@ cleanup:
 int OQS_KEX_code_mcbits_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, UNUSED const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
 
 	int ret;
+
+	*key = NULL;
 
 	/* allocate session key */
 	*key = malloc(32);
