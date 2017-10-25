@@ -47,8 +47,8 @@ struct kex_testcase kex_testcases[] = {
     {OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100},
 #endif
 #ifdef ENABLE_KEX_SIDH_CLN16
-    {OQS_KEX_alg_sidh_cln16, NULL, 0, "p751", "sidh_cln16", 0, 10},
-    {OQS_KEX_alg_sidh_cln16_compressed, NULL, 0, "compressedp751", "sidh_cln16_compressed", 0, 10},
+    {OQS_KEX_alg_sidh_cln16, NULL, 0, NULL, "sidh_cln16", 0, 10},
+    {OQS_KEX_alg_sidh_cln16_compressed, NULL, 0, NULL, "sidh_cln16_compressed", 0, 10},
 #endif
 #ifdef ENABLE_SIDH_IQC_REF
     {OQS_KEX_alg_sidh_iqc_ref, NULL, 0, "params771", "sidh_iqc_ref", 0, 10},
