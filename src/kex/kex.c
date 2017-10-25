@@ -76,16 +76,16 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #endif
 #ifdef ENABLE_KEX_SIDH_CLN16
 	case OQS_KEX_alg_sidh_cln16:
-		return OQS_KEX_sidh_cln16_new(rand, named_parameters);
+		return OQS_KEX_sidh_cln16_new(rand, NULL);
 	case OQS_KEX_alg_sidh_cln16_compressed:
-		return OQS_KEX_sidh_cln16_new(rand, named_parameters);
+		return OQS_KEX_sidh_cln16_new(rand, "compressedp751");
 #else
 		assert(0);
 #endif
 
 	case OQS_KEX_alg_sidh_iqc_ref:
 #ifdef ENABLE_SIDH_IQC_REF
-		return OQS_KEX_sidh_iqc_ref_new(rand);
+		return OQS_KEX_sidh_iqc_ref_new(rand, named_parameters);
 #else
 		assert(0);
 #endif

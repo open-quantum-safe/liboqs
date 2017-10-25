@@ -202,6 +202,16 @@ McBits is disabled by default in the Visual Studio build; follow these steps to 
 - Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
 - Add the libsodium library to the "Additional Dependencies" in the `test_kex` project Linker properties.
 
+Picnic is disabled by default in the Visual Studio build; follow these steps to enable it:
+- Download the [Picnic library](https://github.com/Microsoft/Picnic/archive/master.zip), unzip it into src\sig\sig_picnic\external.
+- Open src\sig_picnic\external\Picnic-master\VisualStudio\picnic.sln, build the library for the desired target.
+- Add "ENABLE_PICNIC" the oqs and test_picnic projects' C/C++ Preprocessor Definitions.
+- Add "libeay32.lib" and "picnic.lib" to the test_picnic project's Linker Input.
+Picnic requires pre-generated parameters to run. They cannot be generated on Windows due to some lib dependencies. They must therefore
+be generated externally and imported on the Windows machine; see the Picnic library documentation. Once this is done, before running
+the OQS unit tests or other programs using OQS with Picnic enabled, follow this step:
+- Add an environment variable PICNIC_PARAMS_PATH containing the path of the pregenerated parameters.
+
 Building for Android
 --------------------
 

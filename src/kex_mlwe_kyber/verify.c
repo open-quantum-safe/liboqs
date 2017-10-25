@@ -1,6 +1,10 @@
 #include <string.h>
 #include <stdint.h>
 
+#if defined(WINDOWS)
+#pragma warning(disable : 4146 4244)
+#endif
+
 /* returns 0 for equal strings, 1 for non-equal strings */
 static int verify(const unsigned char *a, const unsigned char *b, size_t len) {
 	uint64_t r;

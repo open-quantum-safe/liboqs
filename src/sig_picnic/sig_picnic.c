@@ -1,3 +1,4 @@
+#if defined(ENABLE_PICNIC)
 #if defined(WINDOWS)
 #define UNUSED
 #else
@@ -170,3 +171,4 @@ int OQS_SIG_picnic_shutdown(OQS_SIG *s) {
 	free(s->ctx);
 	return OQS_SUCCESS;
 }
+#endif // ENABLE_PICNIC

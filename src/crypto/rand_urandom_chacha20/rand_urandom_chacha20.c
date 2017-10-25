@@ -1,3 +1,7 @@
+#if defined(WINDOWS)
+#pragma warning(disable : 4267)
+#endif
+
 #include <sys/types.h>
 #if defined(WINDOWS)
 #include <windows.h>
@@ -16,6 +20,10 @@
 #include <oqs/rand_urandom_chacha20.h>
 
 #include "external/chacha20.c"
+
+#if defined(WINDOWS)
+#define strdup _strdup // for strdup deprecation warning
+#endif
 
 typedef struct OQS_RAND_urandom_chacha20_ctx {
 	uint8_t key[32];
