@@ -157,7 +157,7 @@ int OQS_RAND_get_system_entropy(uint8_t *buf, size_t n) {
 #if defined(WINDOWS)
 	HCRYPTPROV hCryptProv;
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	    !CryptGenRandom(hCryptProv, n, buf)) {
+	    !CryptGenRandom(hCryptProv, (DWORD) n, buf)) {
 		goto err;
 	}
 #else
