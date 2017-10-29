@@ -45,7 +45,8 @@ OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand, const char *named_parameters) {
 
 	// Curve isogeny system initialization
 	PCurveIsogenyStruct curveIsogeny = oqs_sidh_cln16_curve_allocate(&CurveIsogeny_SIDHp751);
-	if (curveIsogeny == NULL) {
+
+	if (curveIsogeny == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(curveIsogeny)) {
 		free(k);
 		return NULL;
 	}
