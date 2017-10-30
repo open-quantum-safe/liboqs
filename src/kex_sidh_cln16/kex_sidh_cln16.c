@@ -48,7 +48,7 @@ OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand, const char *named_parameters) {
 
 	if (curveIsogeny == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(curveIsogeny)) {
 		free(k);
-    oqs_sidh_cln16_curve_free(curveIsogeny);
+		oqs_sidh_cln16_curve_free(curveIsogeny);
 		return NULL;
 	}
 	if (oqs_sidh_cln16_curve_initialize(curveIsogeny, &CurveIsogeny_SIDHp751) != SIDH_CRYPTO_SUCCESS) {
