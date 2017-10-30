@@ -1,7 +1,13 @@
 version: 1.0.{build}
+
 image: Visual Studio 2017
+
 build:
   verbosity: minimal
+
+configuration:
+  - Release
+
 test_script:
 - cmd: >-
     C:\projects\liboqs\VisualStudio\x64\Debug\test_rand.exe
