@@ -50,17 +50,11 @@ if USE_SIDH_IQC
 liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
 endif
 
-if USE_PICNIC
+if USE_SIG_PICNIC
 liboqs_la_LIBADD += src/sig_picnic/libpicnic.la
 endif
 
-noinst_bin_PROGRAMS = test_rand test_kex test_aes
-
-if USE_PICNIC
-if USE_OPENSSL
-noinst_bin_PROGRAMS += pp_matrices test_sig
-endif
-endif
+noinst_bin_PROGRAMS = test_rand test_kex test_aes test_sig
 
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
@@ -77,21 +71,11 @@ if USE_SIDH_IQC
 test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
 endif
 
-if USE_PICNIC
-if USE_OPENSSL
 test_sig_LDADD =  liboqs.la -lm
 test_sig_SOURCES = src/sig/test_sig.c
-test_sig_CPPFLAGS = -I${OPENSSL_DIR}/include -I./include
+test_sig_CPPFLAGS = -I./include
 test_sig_CPPFLAGS += $(AM_CPPFLAGS)
-test_sig_LDADD += -L${OPENSSL_DIR}/lib -lssl -lcrypto
-
-pp_matrices_LDADD =  liboqs.la -lm
-pp_matrices_SOURCES = src/sig_picnic/external/Picnic-master/preprocessMatrices.c
-pp_matrices_CPPFLAGS = -std=c99 -I${OPENSSL_DIR}/include -I${M4RI_DIR}/include/m4ri -I./include
-#pp_matrices_CPPFLAGS += $(AM_CPPFLAGS)
-pp_matrices_LDADD += -L${OPENSSL_DIR}/lib -L${M4RI_DIR}/lib -lssl -lcrypto -lm4ri
-endif
-endif
+test_sig_LDADD += -Lsrc/sig_picnic/external/build/ -lpicnic
 
 test_aes_LDADD =  liboqs.la -lm
 test_aes_SOURCES = src/crypto/aes/test_aes.c
@@ -120,14 +104,7 @@ test: clean-tests
 	./test_kex --quiet
 	./test_rand --quiet
 	./test_aes
-if USE_PICNIC
-if USE_OPENSSL
-	mkdir -p precomputed_data
-	./pp_matrices
 	./test_sig
-endif
-endif
-
 
 links:
 	$(MKDIR_P) include/oqs
@@ -147,11 +124,7 @@ links:
 	cp -f src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	cp -f src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	cp -f src/sig/sig.h include/oqs
-if USE_PICNIC
-if USE_OPENSSL
-	cp -f src/sig_picnic/external/Picnic-master/picnic.h include/oqs
-endif
-endif
+	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
@@ -159,9 +132,6 @@ endif
 if USE_SIDH_IQC
 	cp -f src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
 	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
-endif
-if USE_PICNIC
-	$(LN_S) -f ../../src/sig_picnic/sig_picnic.h include/oqs
 endif
 
 clean-local:
@@ -171,14 +141,7 @@ if USE_SIDH_IQC
 	rm -f sample_params
 endif
 clean-tests:
-	rm -f test_kex test_rand test_aes
-if USE_PICNIC
-if USE_OPENSSL
-	rm -f test_sig
-	rm -f pp_matrices
-	rm -rf precomputed_data
-endif
-endif
+	rm -f test_kex test_rand test_aes test_sig
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v Picnic*| xargs $(CLANGFORMAT) -style=file -i

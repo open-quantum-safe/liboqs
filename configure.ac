@@ -99,10 +99,6 @@ ARG_ENABL_SET([kex-code-mcbits], [enable KEX-CODE-MCBITS.])
 AM_CONDITIONAL([kex_code_mcbits], [test "x$kex_code_mcbits" = xtrue])
 AM_CONDITIONAL([USE_MCBITS], [test "x$kex_code_mcbits" = xtrue])
 
-ARG_ENABL_SET([picnic], [enable PICNIC.])
-AM_CONDITIONAL([picnic], [test "x$picnic" = xtrue])
-AM_CONDITIONAL([USE_PICNIC], [test "x$picnic" = xtrue])
-
 ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
 AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
@@ -131,6 +127,9 @@ ARG_DISBL_SET([kex-sidh-cln16], [disable KEX-SIDH-CLN16.])
 AM_CONDITIONAL([kex_sidh_cln16], [test "x$kex_sidh_cln16" = xtrue])
 AM_CONDITIONAL([USE_KEX_SIDH_CLN16], [test "x$kex_sidh_cln16" = xtrue])
 
+ARG_DISBL_SET([sig-picnic], [disable SIG-PICNIC.])
+AM_CONDITIONAL([sig_picnic], [test "x$sig_picnic" = xtrue])
+AM_CONDITIONAL([USE_SIG_PICNIC], [test "x$sig_picnic" = xtrue])
 
 AC_CANONICAL_HOST
 
@@ -213,14 +212,20 @@ if test x"$kex_sidh_cln16" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_SIDH_CLN16"
 fi
 
-SRCDIR=${SRCDIR}" src/sig"
-
 # Conditional KEX
 if test x"$kex_code_mcbits" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_code_mcbits"
 fi
 if test x"$kex_sidh_iqc_ref" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
+fi
+
+# SIG
+SRCDIR=${SRCDIR}" src/sig"
+
+if test x"$sig_picnic" = x"true"; then
+  SRCDIR=${SRCDIR}" src/sig_picnic"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIG_PICNIC"
 fi
 
 # Flags
@@ -239,11 +244,6 @@ if test x"$kex_sidh_iqc_ref" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
 fi
 
-if test x"$picnic" = x"true"; then
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_PICNIC"
-  SRCDIR=${SRCDIR}" src/sig_picnic"
-fi
-
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CFLAGS)
 AC_SUBST(SRCDIR)
@@ -257,7 +257,7 @@ AC_SUBST(USE_KEX_MLWE_KYBER)
 AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_CLN16)
-AC_SUBST(USE_PICNIC)
+AC_SUBST(USE_SIG_PICNIC)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)
 

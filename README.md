@@ -33,7 +33,7 @@ liboqs currently contains:
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
 - `kex_ntru`: NTRU: key transport using NTRU public key encryption (Hoffstein, Pipher, Silverman, *ANTS 1998*) with the EES743EP1 parameter set, wrapper around the implementation from the NTRU Open Source project [https://github.com/NTRUOpenSourceProject/NTRUEncrypt](https://github.com/NTRUOpenSourceProject/NTRUEncrypt))
 - `kex_mlwe_kyber`: Kyber: a CCA-secure module-lattice-based key exchange mechanism (Bos, Ducas, Kiltz, Lepoint, Lyubashevsky, Schwabe, Shanck, Stehlé, *Real World Crypto 2017*, [https://eprint.iacr.org/2017/634](https://eprint.iacr.org/2017/634)), using the reference C implementation of Kyber from [pq-crystals/kyber](https://github.com/pq-crystals/kyber)
-- `sig_picnic`: signature based on zero-knowledge proof as specified in Post-Quantum Zero-Knowledge and Signatures from Symmetric-Key Primitives (Melissa Chase and David Derler and Steven Goldfeder and Claudio Orlandi and Sebastian Ramacher and Christian Rechberger and Daniel Slamanig and Greg Zaverucha, [https://eprint.iacr.org/2017/279.pdf](https://eprint.iacr.org/2017/279.pdf))
+- `sig_picnic`: signature based on zero-knowledge proof as specified in Post-Quantum Zero-Knowledge and Signatures from Symmetric-Key Primitives (Melissa Chase and David Derler and Steven Goldfeder and Claudio Orlandi and Sebastian Ramacher and Christian Rechberger and Daniel Slamanig and Greg Zaverucha, [https://eprint.iacr.org/2017/279.pdf](https://eprint.iacr.org/2017/279.pdf)), using the optimized implemenation from [https://github.com/IAIK/Picnic](https://github.com/IAIK/Picnic)
 
 Detailed information about each algorithm and implementations can be found in the [docs/Algorithm data sheets](https://github.com/open-quantum-safe/liboqs/tree/master/docs/Algorithm%20data%20sheets) directory.
 
@@ -44,15 +44,15 @@ Builds have been tested on Mac OS X 10.11.6, macOS 10.12.5, Ubuntu 16.04.1.
 
 ### Install dependencies for macOS
 
-You need to install `autoconf`, `automake` and `libtool`:
+You need to install autoconf, automake, cmake, and libtool:
 
-	brew install autoconf automake libtool
+	brew install autoconf automake cmake libtool
 
 ### Install dependencies for Ubuntu
 
-You need to install autoconf, automake and libtool:
+You need to install autoconf, automake, cmake, and libtool:
 
-	sudo apt install autoconf automake libtool
+	sudo apt install autoconf automake cmake libtool
 
 ### Building
 
@@ -80,6 +80,7 @@ To run the tests, simply type:
 To run benchmarks, run
 
 	./test_kex --bench
+	./test_sig --bench
 
 To run benchmark only on some ciphers, run
 
@@ -163,33 +164,6 @@ To build with `kex_code_mcbits ` enabled:
   make clean
   make
 
-### Building with `sig_picnic` enabled
-
-The `sig_picnic` signature algorithm is not enabled by default since it requires:
-
-- external libraries (`openssl` and `m4ri`);
-- to download and setup Picnic;
-- a parameters generation preprocessing step.
-
-To install the libraries on macOS:
-
-	brew install openssl homebrew/science/m4ri
-
-To install the libraries on Ubuntu:
-
-	sudo apt install libssl-dev libm4ri-dev
-
-To download the Picnic source code:
-
-	./download-and-setup-picnic.sh
-
-To build with `sig_picnic` enabled:
-
-	./configure --enable-picnic --enable-openssl [--with-openssl-dir=<..> --with-m4r-dir=<..>]
-	make clean
-	make
-	make test   (this generates data needed by the Picnic library)
-
 Building and running on Windows
 -------------------------------
 
@@ -202,15 +176,7 @@ McBits is disabled by default in the Visual Studio build; follow these steps to 
 - Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
 - Add the libsodium library to the "Additional Dependencies" in the `test_kex` project Linker properties.
 
-Picnic is disabled by default in the Visual Studio build; follow these steps to enable it:
-- Download the [Picnic library](https://github.com/Microsoft/Picnic/archive/master.zip), unzip it into src\sig\sig_picnic\external.
-- Open src\sig_picnic\external\Picnic-master\VisualStudio\picnic.sln, build the library for the desired target.
-- Add "ENABLE_PICNIC" the oqs and test_picnic projects' C/C++ Preprocessor Definitions.
-- Add "libeay32.lib" and "picnic.lib" to the test_picnic project's Linker Input.
-Picnic requires pre-generated parameters to run. They cannot be generated on Windows due to some lib dependencies. They must therefore
-be generated externally and imported on the Windows machine; see the Picnic library documentation. Once this is done, before running
-the OQS unit tests or other programs using OQS with Picnic enabled, follow this step:
-- Add an environment variable PICNIC_PARAMS_PATH containing the path of the pregenerated parameters.
+Picnic is not currently supported in the Visual Studio build.
 
 Building for Android
 --------------------

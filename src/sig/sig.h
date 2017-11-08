@@ -12,18 +12,19 @@
 
 /**
  * Supported signature algorithms.
- * Note: the Picnic algs are not wrapped with a ENABLE_PICNIC
+ * Note: the Picnic algs are not wrapped with a ENABLE_SIG_PICNIC
  *       to avoid forcing calling apps to define the macro. The library
  *       compiled without the macro fails if these algid are requested.
  */
 enum OQS_SIG_algid {
-	OQS_SIG_picnic_default,  // equivalent to OQS_SIG_picnic_10_38_FS
-	OQS_SIG_picnic_42_14_FS, // LowMC with Fiat-Shamir balanced number of s-boxes (42) and rounds (14).
-	OQS_SIG_picnic_42_14_UR, // LowMC with Unruh balanced number of s-boxes (42) and rounds (14). */
-	OQS_SIG_picnic_1_316_FS, // LowMC with Fiat-Shamir and a small number of s-boxes (1) with a large number of rounds (316). */
-	OQS_SIG_picnic_1_316_UR, // LowMC with Unruh and a small number of s-boxes (1) with a large number of rounds (316). */
-	OQS_SIG_picnic_10_38_FS, // LowMC with Fiat-Shamir balanced number of s-boxes (10) and rounds (38). */
-	OQS_SIG_picnic_10_38_UR, // LowMC with Unruh balanced number of s-boxes (10) and rounds (38). */
+       /* Picnic sig algs */
+       OQS_SIG_picnic_default,  // equivalent to OQS_SIG_picnic_L1_FS
+       OQS_SIG_picnic_L1_FS,
+       OQS_SIG_picnic_L1_UR,
+       OQS_SIG_picnic_L3_FS,
+       OQS_SIG_picnic_L3_UR,
+       OQS_SIG_picnic_L5_FS,
+       OQS_SIG_picnic_L5_UR,
 };
 
 /**
@@ -109,14 +110,6 @@ struct OQS_SIG {
 	 @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
 	 */
 	int (*verify)(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
-
-	/**
-	 * Shuts down the algorithm library.
-	 *
-	 * @param s                The signature structure.
-	 @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
-	 */
-	int (*shutdown)(OQS_SIG *s);
 };
 
 /**
