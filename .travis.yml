@@ -16,8 +16,6 @@ matrix:
       apt:
         sources:
         - ubuntu-toolchain-r-test
-        packages:
-          - libm4ri-dev
     before_install:
     - sh .travis/install-clang-format-linux.sh
   - os: linux
@@ -73,12 +71,10 @@ matrix:
     - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package
     - ENABLE_CODE_MCBITS=1
     - ENABLE_SIDH_IQC_REF=1
-    - M4RI_DIR=/usr/local/
     before_install:
     - brew update
     - brew install libsodium
     - brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/0c4314c499576b28e4c082b591228a8f940954c0/Formula/clang-format.rb
-    - brew install homebrew/science/m4ri
 
 script:
   - ./.travis-tests.sh
