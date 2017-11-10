@@ -11,7 +11,6 @@ matrix:
     - ENABLE_KEX_LWE_FRODO=0
     - ENABLE_KEX_MLWE_KYBER=0
     - ENABLE_KEX_SIDH_CLN16=0
-    - USE_PICNIC=1
     - USE_OPENSSL=1
     addons:
       apt:
@@ -74,7 +73,6 @@ matrix:
     - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package
     - ENABLE_CODE_MCBITS=1
     - ENABLE_SIDH_IQC_REF=1
-    - USE_PICNIC=1
     - M4RI_DIR=/usr/local/
     before_install:
     - brew update
