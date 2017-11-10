@@ -226,6 +226,10 @@ SRCDIR=${SRCDIR}" src/sig"
 if test x"$sig_picnic" = x"true"; then
   SRCDIR=${SRCDIR}" src/sig_picnic"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIG_PICNIC"
+  AC_CONFIG_COMMANDS_POST([echo Building Picnic library])
+  AC_CONFIG_COMMANDS_POST([cd src/sig_picnic])
+  AC_CONFIG_COMMANDS_POST([./build_picnic.sh])
+  AC_CONFIG_COMMANDS_POST([cd ../..])
 fi
 
 # Flags
