@@ -58,7 +58,7 @@ fi
 if [[ ${ENABLE_SIG_PICNIC} == 0 ]];then
   enable_disable_str+=" --disable-sig-picnic"
 else
-  cd src/sig_picnic;./build_picnic.sh;cd ../..;
+  cd src/sig_picnic;sh ./build_picnic.sh;cd ../..;
 fi
 
 ./configure --enable-silent-rules ${enable_disable_str}
