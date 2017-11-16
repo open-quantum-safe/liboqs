@@ -76,6 +76,9 @@ test_sig_SOURCES = src/sig/test_sig.c
 test_sig_CPPFLAGS = -I./include
 test_sig_CPPFLAGS += $(AM_CPPFLAGS)
 test_sig_LDADD += -Lsrc/sig_picnic/external/build/ -lpicnic
+if USE_OPENSSL
+test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
 
 test_aes_LDADD =  liboqs.la -lm
 test_aes_SOURCES = src/crypto/aes/test_aes.c
