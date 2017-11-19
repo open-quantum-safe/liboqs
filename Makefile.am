@@ -148,6 +148,7 @@ links:
 	cp -f src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 if USE_KEX_RLWE_NEWHOPE_AVX2
+	./patches/apply-patch kex_rlwe_newhope_avx2
 	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
 endif
 	cp -f src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs

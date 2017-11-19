@@ -5,8 +5,6 @@ set -e
 export CC=$CC_OQS
 
 enable_disable_str=
-patch_dir_str=
-recover_from_patch_dirs_str=
 if [[ ${USE_OPENSSL} == 1 ]];then
   enable_disable_str=" --enable-openssl"
   if [[ ! -z "${OPENSSL_DIR// }" ]];then
@@ -64,13 +62,8 @@ if [[ ${USE_PICNIC} == 1 ]];then
   fi
 fi
 
-patch_dir_str="kex_rlwe_newhope_avx2"
-recover_from_patch_dirs_str+=" kex_rlwe_newhope/avx2"
 if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
   enable_disable_str+=" --enable-kex-rlwe-newhope-avx2"
-  ./patches/apply-patch ${patch_dir_str}
-else
-  ./patches/apply-patch ${patch_dir_str} 0
 fi
 
 autoreconf -i
@@ -89,5 +82,4 @@ else
 fi
 done
 
-./patches/cleanup-patch ${recover_from_patch_dirs_str}
 

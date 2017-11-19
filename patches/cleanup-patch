@@ -1,5 +1,5 @@
 for dir in $1;
 do
-  rm -rf src/$dir
+  git clean -f src/$dir
   git checkout src/$dir
 done
