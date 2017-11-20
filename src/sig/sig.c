@@ -18,12 +18,12 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
 
 	switch (algid) {
 #ifdef ENABLE_SIG_PICNIC
-        case OQS_SIG_picnic_L1_FS:
-        case OQS_SIG_picnic_L1_UR:
-        case OQS_SIG_picnic_L3_FS:
-        case OQS_SIG_picnic_L3_UR:
-        case OQS_SIG_picnic_L5_FS:
-        case OQS_SIG_picnic_L5_UR:
+	case OQS_SIG_picnic_L1_FS:
+	case OQS_SIG_picnic_L1_UR:
+	case OQS_SIG_picnic_L3_FS:
+	case OQS_SIG_picnic_L3_UR:
+	case OQS_SIG_picnic_L5_FS:
+	case OQS_SIG_picnic_L5_UR:
 	case OQS_SIG_picnic_default:
 		if (OQS_SIG_picnic_get(s, algid) != OQS_SUCCESS) {
 			free(s);

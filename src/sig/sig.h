@@ -17,14 +17,14 @@
  *       compiled without the macro fails if these algid are requested.
  */
 enum OQS_SIG_algid {
-       /* Picnic sig algs */
-       OQS_SIG_picnic_default,  // equivalent to OQS_SIG_picnic_L1_FS
-       OQS_SIG_picnic_L1_FS,
-       OQS_SIG_picnic_L1_UR,
-       OQS_SIG_picnic_L3_FS,
-       OQS_SIG_picnic_L3_UR,
-       OQS_SIG_picnic_L5_FS,
-       OQS_SIG_picnic_L5_UR,
+	/* Picnic sig algs */
+	OQS_SIG_picnic_default, // equivalent to OQS_SIG_picnic_L1_FS
+	OQS_SIG_picnic_L1_FS,
+	OQS_SIG_picnic_L1_UR,
+	OQS_SIG_picnic_L3_FS,
+	OQS_SIG_picnic_L3_UR,
+	OQS_SIG_picnic_L5_FS,
+	OQS_SIG_picnic_L5_UR,
 };
 
 /**
