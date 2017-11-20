@@ -22,6 +22,7 @@ matrix:
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-4.9
+    - ENABLE_SIG_PICNIC=0
     addons:
       apt:
         sources:
