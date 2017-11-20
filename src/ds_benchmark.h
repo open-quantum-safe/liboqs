@@ -82,7 +82,7 @@ PRINT_TIMER_FOOTER
 
 #ifndef _DS_BENCHMARK_H
 #define _DS_BENCHMARK_H
-  
+
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -124,7 +124,7 @@ static uint64_t rdtsc(void) {
 #elif defined(__arm__)
 	struct timespec time;
 	clock_gettime(CLOCK_REALTIME, &time);
-	return (int64_t)(time.tv_sec*1e9 + time.tv_nsec);
+	return (int64_t)(time.tv_sec * 1e9 + time.tv_nsec);
 #else
 	uint64_t x;
 	__asm__ volatile(".byte 0x0f, 0x31"
@@ -156,12 +156,12 @@ static uint64_t rdtsc(void) {
 
 // Mean and population standard deviation are calculated in an online way using the algorithm in
 //     http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm
-#define STOP_TIMER                                                                                                                                                              \
+#define STOP_TIMER                                                                                                                                                          \
 	_bench_cycles_end = rdtsc();                                                                                                                                            \
 	gettimeofday(&_bench_timeval_end, NULL);                                                                                                                                \
 	_bench_iterations += 1;                                                                                                                                                 \
 	if (_bench_cycles_end < _bench_cycles_start) {                                                                                                                          \
-	  _bench_cycles_end += (uint64_t)1<<32;                                                                                                                         	\
+		_bench_cycles_end += (uint64_t) 1 << 32;                                                                                                                            \
 	}                                                                                                                                                                       \
 	_bench_cycles_diff = _bench_cycles_end;                                                                                                                                 \
 	_bench_cycles_diff -= _bench_cycles_start;                                                                                                                              \
