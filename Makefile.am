@@ -12,7 +12,7 @@ CLANGFORMAT ?= clang-format-3.9
 SUBDIRS = ${SRCDIR}
 
 BUILT_SOURCES = links
-lib_LTLIBRARIES = liboqs.la
+lib_LTLIBRARIES = liboqs.la libmerge_external.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
 liboqs_la_LIBADD += src/crypto/aes/libaes.la
@@ -51,8 +51,16 @@ liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
 endif
 
 if USE_SIG_PICNIC
-liboqs_la_LIBADD += src/sig_picnic/libpicnic.la
+liboqs_la_LIBADD += src/sig_picnic/libpicnic_i.la
 endif
+
+libmerge_external.la:
+if USE_SIG_PICNIC
+	mkdir -p temp && cp liboqs.a temp/ && cp src/sig_picnic/external/build/libpicnic.a temp/
+	cd temp && ar x liboqs.a && ar x libpicnic.a && ar cr liboqs.a *.o && ranlib liboqs.a && mv liboqs.a ../.libs
+	cd .. && rm -rf temp
+endif
+
 
 noinst_bin_PROGRAMS = test_rand test_kex test_aes test_sig
 
@@ -75,7 +83,6 @@ test_sig_LDADD =  liboqs.la -lm
 test_sig_SOURCES = src/sig/test_sig.c
 test_sig_CPPFLAGS = -I./include
 test_sig_CPPFLAGS += $(AM_CPPFLAGS)
-test_sig_LDADD += -Lsrc/sig_picnic/external/build/ -lpicnic
 if USE_OPENSSL
 test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
@@ -136,6 +143,9 @@ if USE_SIDH_IQC
 	cp -f src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
 	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
 endif
+if USE_SIG_PICNIC
+	[ -d  src/sig_picnic/external/build ] && rm -rf src/sig_picnic/external/build
+endif
 
 clean-local:
 	rm -f liboqs.a
@@ -143,6 +153,8 @@ clean-local:
 if USE_SIDH_IQC
 	rm -f sample_params
 endif
+
+
 clean-tests:
 	rm -f test_kex test_rand test_aes test_sig
 
