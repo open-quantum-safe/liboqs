@@ -147,7 +147,7 @@ clean-tests:
 	rm -f test_kex test_rand test_aes test_sig
 
 prettyprint:
-	find src -name '*.c' -o -name '*.h' | grep -v Picnic*| xargs $(CLANGFORMAT) -style=file -i
+	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external*  | xargs $(CLANGFORMAT) -style=file -i
 
 docs: links
 	doxygen
