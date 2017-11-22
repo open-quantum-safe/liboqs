@@ -2,6 +2,6 @@
 
 mkdir -p external/build
 cd external/build
-cmake ..
+cmake -UWITH_LTO -DWITH_LTO:BOOL=OFF ..
 make
 
