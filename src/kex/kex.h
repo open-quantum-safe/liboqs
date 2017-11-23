@@ -10,7 +10,10 @@
 #include <stdint.h>
 
 #include <oqs/rand.h>
+
+#if !defined(WINDOWS)
 #include <oqs/config.h>
+#endif
 
 enum OQS_KEX_alg_name {
 	OQS_KEX_alg_default,
