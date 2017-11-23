@@ -65,7 +65,13 @@ fi
 
 ./configure --enable-silent-rules ${enable_disable_str}
 make clean
-make
+
+if [[ ${RUN_SCAN_BUILD} == 1 ]]; then
+  scan-build -analyze-headers --status-bugs make
+else
+  make
+fi
+
 make test
 
 for f in $(ls .travis/*-check.sh); do

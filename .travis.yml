@@ -5,6 +5,12 @@ sudo: true
 matrix:
   include:
   - os: linux
+    compiler: clang
+    env:
+    - RUN_SCAN_BUILD=1
+    before_install:
+    - sh .travis/install-clang-scan-build-linux.sh
+  - os: linux
     compiler: gcc
     env:
     - ENABLE_SIDH_IQC_REF=1
