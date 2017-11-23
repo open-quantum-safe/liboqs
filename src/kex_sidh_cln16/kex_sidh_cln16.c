@@ -36,6 +36,9 @@ static int isCompressed(const char *named_parameters) {
 	return 0;
 }
 
+// Check if curve isogeny structure is NULL
+extern bool oqs_sidh_cln16_is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny);
+
 OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand, const char *named_parameters) {
 	int compressed = isCompressed(named_parameters);
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
