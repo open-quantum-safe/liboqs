@@ -82,12 +82,16 @@ cleanup:
 	return ret;
 }
 
-int OQS_KEX_code_mcbits_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, UNUSED const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
+int OQS_KEX_code_mcbits_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
 
 	int ret;
 
 	*bob_msg = NULL;
 	*key = NULL;
+
+	if (alice_msg_len != CRYPTO_PUBLICKEYBYTES) {
+		goto err;
+	}
 
 	/* allocate message and session key */
 	*bob_msg = malloc(CRYPTO_BYTES + 32);
@@ -115,11 +119,15 @@ cleanup:
 	return ret;
 }
 
-int OQS_KEX_code_mcbits_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, UNUSED const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
+int OQS_KEX_code_mcbits_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
 
 	int ret;
 
 	*key = NULL;
+
+	if (bob_msg_len != (CRYPTO_BYTES + 32)) {
+		goto err;
+	}
 
 	/* allocate session key */
 	*key = malloc(32);

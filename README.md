@@ -130,13 +130,13 @@ To install the library on macOS:
 
 To build with `kex_sidh_iqc_ref ` enabled:
 
-	./configure --enable-sidhiqc
+	./configure --enable-kex-sidh-iqc-ref
 	make clean
 	make
 
 You may need to specify the path to your libgmp directory:
 
-	./configure --enable-sidhiqc --with-gmp-dir=/path/to/gmp/directory
+	./configure --enable-kex-sidh-iqc-ref --with-gmp-dir=/path/to/gmp/directory
 	make clean
 	make
 
@@ -154,7 +154,7 @@ To install the library on Ubuntu:
 
 To build with `kex_code_mcbits ` enabled:
 
-	./configure --enable-mcbits
+	./configure --enable-kex-code-mcbits
 	make clean
 	make
 
