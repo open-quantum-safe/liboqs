@@ -14,23 +14,36 @@
 #include "sidh_public_key.h"
 #include "sidh_shared_key.h"
 #include "kex_sidh_iqc_ref.h"
+#include "kex_sidh_iqc_ref_params.h"
 
-OQS_KEX *OQS_KEX_sidh_iqc_ref_new(OQS_RAND *rand) {
+OQS_KEX *OQS_KEX_sidh_iqc_ref_new(OQS_RAND *rand, const char *named_parameters) {
+
+	if (named_parameters == NULL) {
+		named_parameters = "params771";
+	}
 
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
 	if (k == NULL) {
 		return NULL;
 	}
 
-	// initialize
-	//	char *input_params = "sample_params/public_params_771";
 	public_params_t *params =
 	    (public_params_t *) malloc(2 * sizeof(public_params_t));
+	if (params == NULL) {
+		goto err;
+	}
+
 	oqs_sidh_iqc_ref_public_params_init(params[0]);
 	oqs_sidh_iqc_ref_public_params_init(params[1]);
 
-	if (!oqs_sidh_iqc_ref_public_params_read(params[0], params[1], "sample_params/public_params_771"))
-		return NULL;
+	const char **input = oqs_sidh_iqc_ref_params_from_name(named_parameters);
+	if (input == NULL) {
+		goto err_clear;
+	}
+
+	if (!oqs_sidh_iqc_ref_public_params_read(params[0], params[1], input)) {
+		goto err_clear;
+	}
 
 	oqs_sidh_iqc_ref_fp_init_chararacteristic(params[0]->characteristic);
 
@@ -40,7 +53,7 @@ OQS_KEX *OQS_KEX_sidh_iqc_ref_new(OQS_RAND *rand) {
 	k->estimated_quantum_security = 128;
 	k->seed = NULL;
 	k->seed_len = 0;
-	k->named_parameters = strdup("sample_params/public_params_771");
+	k->named_parameters = strdup(named_parameters);
 	k->params = params;
 	k->ctx = NULL;
 	k->alice_0 = &OQS_KEX_sidh_iqc_ref_alice_0;
@@ -50,6 +63,15 @@ OQS_KEX *OQS_KEX_sidh_iqc_ref_new(OQS_RAND *rand) {
 	k->free = &OQS_KEX_sidh_iqc_ref_free;
 
 	return k;
+
+err_clear:
+	oqs_sidh_iqc_ref_public_params_clear(params[0]);
+	oqs_sidh_iqc_ref_public_params_clear(params[1]);
+
+err:
+	free(params);
+	free(k);
+	return NULL;
 }
 
 int OQS_KEX_sidh_iqc_ref_alice_0(OQS_KEX *k, void **alice_priv,
@@ -201,8 +223,10 @@ void OQS_KEX_sidh_iqc_ref_free(OQS_KEX *k) {
 	oqs_sidh_iqc_ref_public_params_clear(((public_params_t *) (k->params))[0]);
 	oqs_sidh_iqc_ref_public_params_clear(((public_params_t *) (k->params))[1]);
 	free(k->params);
-	k->ctx = NULL;
+	k->params = NULL;
 	free(k->method_name);
 	k->method_name = NULL;
+	free(k->named_parameters);
+	k->named_parameters = NULL;
 	free(k);
 }

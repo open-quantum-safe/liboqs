@@ -9,8 +9,7 @@
  */
 
 #if defined(WINDOWS)
-/* Disable error/warning for unary minus operator used in this file */
-#pragma warning(disable : 4146)
+#pragma warning(disable : 4146 4244 4267)
 #endif
 
 #include <inttypes.h>

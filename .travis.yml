@@ -63,6 +63,7 @@ matrix:
     - CC_OQS=clang
     - AES_NI=0
     before_install:
+    - brew update
     - brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/0c4314c499576b28e4c082b591228a8f940954c0/Formula/clang-format.rb
   - os: osx
     compiler: clang
@@ -76,6 +77,7 @@ matrix:
     - USE_PICNIC=1
     - M4RI_DIR=/usr/local/
     before_install:
+    - brew update
     - brew install libsodium
     - brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/0c4314c499576b28e4c082b591228a8f940954c0/Formula/clang-format.rb
     - brew install homebrew/science/m4ri
