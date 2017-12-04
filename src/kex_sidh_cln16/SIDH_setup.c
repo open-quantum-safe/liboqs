@@ -67,9 +67,6 @@ PCurveIsogenyStruct oqs_sidh_cln16_curve_allocate(PCurveIsogenyStaticData CurveD
 	pCurveIsogeny->Montgomery_pp = (digit_t *) calloc(1, pbytes);
 	pCurveIsogeny->Montgomery_one = (digit_t *) calloc(1, pbytes);
 
-	if (oqs_sidh_cln16_is_CurveIsogenyStruct_null(pCurveIsogeny)) {
-		return NULL;
-	}
 	return pCurveIsogeny;
 }
 

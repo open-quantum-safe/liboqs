@@ -695,7 +695,7 @@ static void get_X_on_curve(oqs_sidh_cln16_f2elm_t A, unsigned int *r, oqs_sidh_c
 
 	oqs_sidh_cln16_fpcopy751(((oqs_sidh_cln16_felm_t *) &LIST)[(*r << 1) - 2], r1); // r1 = list[2*r-1]
 	oqs_sidh_cln16_fpcopy751(((oqs_sidh_cln16_felm_t *) &LIST)[(*r << 1) - 1], r0); // r0 = list[2*r]
-	rsq[0] = (*r) * (*r);                                                           // rsp = r^2
+	rsq[0] = (digit_t)(*r) * (*r);                                                  // rsp = r^2
 	oqs_sidh_cln16_to_mont(rsq, rsq);                                               // Converting to Montgomery representation
 	oqs_sidh_cln16_fpmul751_mont(A[1], r1, t0);                                     // t0 = A1*r1
 	oqs_sidh_cln16_fpmul751_mont(A[0], r0, v0);                                     // v0 = A0*r0

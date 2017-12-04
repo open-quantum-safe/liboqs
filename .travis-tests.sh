@@ -55,12 +55,9 @@ if [[ ${ENABLE_KEX_SIDH_CLN16} == 0 ]];then
   enable_disable_str+=" --disable-kex-sidh-cln16"
 fi
 
-if [[ ${USE_PICNIC} == 1 ]];then
-  enable_disable_str+=" --enable-picnic"
-  ./download-and-setup-picnic.sh
-  if [[ ! -z "${M4RI_DIR// }" ]];then
-     enable_disable_str+=" --with-m4ri-dir=${M4RI_DIR}"
-  fi
+./download-and-setup-picnic.sh
+if [[ ! -z "${M4RI_DIR// }" ]];then
+  enable_disable_str+=" --with-m4ri-dir=${M4RI_DIR}"
 fi
 
 ./configure --enable-silent-rules ${enable_disable_str}
@@ -69,11 +66,5 @@ make
 make test
 
 for f in $(ls .travis/*-check.sh); do
-  if [[ ${USE_PICNIC} == 1 ]];then
-  if [[ ! "$f" == ".travis/global-namespace-check.sh" ]];then
     bash $f;
-  fi
-else
-  bash $f;
-fi
 done
