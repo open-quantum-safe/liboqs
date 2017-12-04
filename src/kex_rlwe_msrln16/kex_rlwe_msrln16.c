@@ -18,6 +18,10 @@
 #include "LatticeCrypto_priv.h"
 #include "kex_rlwe_msrln16.h"
 
+#if defined(WINDOWS)
+#define strdup _strdup // for strdup deprecation warning
+#endif
+
 OQS_KEX *OQS_KEX_rlwe_msrln16_new(OQS_RAND *rand) {
 
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
@@ -71,7 +75,9 @@ int OQS_KEX_rlwe_msrln16_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_
 err:
 	ret = 0;
 	free(*alice_msg);
+	*alice_msg = NULL;
 	free(*alice_priv);
+	*alice_priv = NULL;
 
 cleanup:
 	return ret;
@@ -109,7 +115,9 @@ int OQS_KEX_rlwe_msrln16_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t 
 err:
 	ret = 0;
 	free(*bob_msg);
+	*bob_msg = NULL;
 	free(*key);
+	*key = NULL;
 
 cleanup:
 
@@ -143,6 +151,7 @@ int OQS_KEX_rlwe_msrln16_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, cons
 err:
 	ret = 0;
 	free(*key);
+	*key = NULL;
 
 cleanup:
 

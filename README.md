@@ -56,7 +56,7 @@ You need to install autoconf, automake and libtool:
 
 ### Building
 
-To build, clone or download the source from GitHub, then simply type:
+To build, first clone or download the source from GitHub, then simply type:
 
 	autoreconf -i
 	./configure
@@ -129,13 +129,13 @@ To install the library on macOS:
 
 To build with `kex_sidh_iqc_ref ` enabled:
 
-	./configure --enable-sidhiqc
+	./configure --enable-kex-sidh-iqc-ref
 	make clean
 	make
 
 You may need to specify the path to your libgmp directory:
 
-	./configure --enable-sidhiqc --with-gmp-dir=/path/to/gmp/directory
+	./configure --enable-kex-sidh-iqc-ref --with-gmp-dir=/path/to/gmp/directory
 	make clean
 	make
 
@@ -153,7 +153,7 @@ To install the library on Ubuntu:
 
 To build with `kex_code_mcbits ` enabled:
 
-	./configure --enable-mcbits
+	./configure --enable-kex-code-mcbits
 	make clean
 	make
 
@@ -202,6 +202,16 @@ McBits is disabled by default in the Visual Studio build; follow these steps to 
 - Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
 - Add the libsodium library to the "Additional Dependencies" in the `test_kex` project Linker properties.
 
+Picnic is disabled by default in the Visual Studio build; follow these steps to enable it:
+- Download the [Picnic library](https://github.com/Microsoft/Picnic/archive/master.zip), unzip it into src\sig\sig_picnic\external.
+- Open src\sig_picnic\external\Picnic-master\VisualStudio\picnic.sln, build the library for the desired target.
+- Add "ENABLE_PICNIC" the oqs and test_picnic projects' C/C++ Preprocessor Definitions.
+- Add "libeay32.lib" and "picnic.lib" to the test_picnic project's Linker Input.
+Picnic requires pre-generated parameters to run. They cannot be generated on Windows due to some lib dependencies. They must therefore
+be generated externally and imported on the Windows machine; see the Picnic library documentation. Once this is done, before running
+the OQS unit tests or other programs using OQS with Picnic enabled, follow this step:
+- Add an environment variable PICNIC_PARAMS_PATH containing the path of the pregenerated parameters.
+
 Building for Android
 --------------------
 
@@ -222,7 +232,6 @@ Run it from your Android device:
 	adb shell "/data/local/tmp/test_kex"
 
 Tested on SM-930F
-
 
 Documentation
 -------------
@@ -371,6 +380,7 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 ### Contributors
 
 - Javad Doliskani (University of Waterloo)
+- Vlad Gheorghiu (evolutionQ / University of Waterloo)
 - Tancrède Lepoint (SRI International)
 - Shravan Mishra (University of Waterloo)
 - Christian Paquin (Microsoft Research)

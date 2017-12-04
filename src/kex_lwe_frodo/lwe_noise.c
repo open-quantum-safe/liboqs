@@ -36,7 +36,7 @@ static void lwe_sample_n_inverse_8(uint16_t *s, const size_t n, const uint8_t *c
 		uint8_t sign = rndvec[i] & 0x1; // pick the least significant bit
 
 		// No need to compare with the last value.
-		for (size_t j = 0; j < cdf_table_len - 1; j++) {
+		for (int64_t j = 0; j < (int64_t)(cdf_table_len - 1); j++) {
 			// Constant time comparison: 1 if cdf_table[j] < rnd, 0 otherwise.
 			// Critically uses the fact that cdf_table[j] and rnd fit in 7 bits.
 			sample += (uint8_t)(cdf_table[j] - rnd) >> 7;

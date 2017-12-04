@@ -17,6 +17,10 @@
 #include <oqs/rand.h>
 #include <oqs/rand_urandom_aesctr.h>
 
+#if defined(WINDOWS)
+#define strdup _strdup // for strdup deprecation warning
+#endif
+
 typedef struct oqs_rand_urandom_aesctr_ctx {
 	uint64_t ctr;
 	void *schedule;

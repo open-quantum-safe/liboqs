@@ -37,15 +37,15 @@ typedef public_params_struct public_params_t[1];
 void oqs_sidh_iqc_ref_public_params_init(public_params_t params);
 
 /**
- * Reads the public parameters from file named {@code file_name}.
+ * Reads the public parameters from array pointed by {@code input}.
  * @param paramsA
  * @param paramsB
- * @param file_name
+ * @param input
  * @return 1 if the parameters are read successfully, and 0 otherwise.
  */
 int oqs_sidh_iqc_ref_public_params_read(public_params_t paramsA,
                                         public_params_t paramsB,
-                                        const char *file_name);
+                                        const char **input);
 
 /**
  * Prints the public parameters to the standard output.

@@ -1,4 +1,8 @@
 #if defined(WINDOWS)
+#pragma warning(disable : 4047 4090)
+#endif
+
+#if defined(WINDOWS)
 #define UNUSED
 #else
 #define UNUSED __attribute__((unused))
@@ -17,19 +21,23 @@
 #include "SIDH.h"
 #include "kex_sidh_cln16.h"
 
-static char *P751 = "p751";
-static char *CompressedP751 = "compressedp751";
+#if defined(WINDOWS)
+#define strdup _strdup // for strdup deprecation warning
+#endif
+
+static const char *P751 = "p751";
+static const char *CompressedP751 = "compressedp751";
 
 static int isCompressed(const char *named_parameters) {
-	int compressed = 0; // defaults to non-compressed
-	if (named_parameters == NULL ||
-	    strncmp(P751, named_parameters, strlen(P751)) == 0) {
-		compressed = 0;
-	} else if (strncmp(CompressedP751, named_parameters, strlen(CompressedP751)) == 0) {
-		compressed = 1;
+	if (named_parameters != NULL && strcmp(named_parameters, CompressedP751) == 0) {
+		return 1;
 	}
-	return compressed;
+
+	return 0;
 }
+
+// Check if curve isogeny structure is NULL
+extern bool oqs_sidh_cln16_is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny);
 
 OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand, const char *named_parameters) {
 	int compressed = isCompressed(named_parameters);
@@ -40,8 +48,10 @@ OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand, const char *named_parameters) {
 
 	// Curve isogeny system initialization
 	PCurveIsogenyStruct curveIsogeny = oqs_sidh_cln16_curve_allocate(&CurveIsogeny_SIDHp751);
-	if (curveIsogeny == NULL) {
+
+	if (curveIsogeny == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(curveIsogeny)) {
 		free(k);
+		oqs_sidh_cln16_curve_free(curveIsogeny);
 		return NULL;
 	}
 	if (oqs_sidh_cln16_curve_initialize(curveIsogeny, &CurveIsogeny_SIDHp751) != SIDH_CRYPTO_SUCCESS) {
@@ -74,8 +84,9 @@ int OQS_KEX_sidh_cln16_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_ms
 	uint8_t *alice_tmp_pub = NULL;
 
 	if (!k || !alice_priv || !alice_msg || !alice_msg_len) {
-		return NULL;
+		return 0;
 	}
+
 	int compressed = isCompressed(k->named_parameters);
 	*alice_priv = NULL;
 	/* alice_msg is alice's public key */
@@ -118,17 +129,14 @@ int OQS_KEX_sidh_cln16_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_ms
 
 err:
 	ret = 0;
-	if (alice_msg && *alice_msg) {
-		free(*alice_msg);
-	}
-	if (alice_priv && *alice_priv) {
-		free(*alice_priv);
-	}
+	free(*alice_msg);
+	*alice_msg = NULL;
+	free(*alice_priv);
+	*alice_priv = NULL;
 
 cleanup:
-	if (alice_tmp_pub) {
-		free(alice_tmp_pub);
-	}
+	free(alice_tmp_pub);
+
 	return ret;
 }
 
@@ -136,16 +144,18 @@ int OQS_KEX_sidh_cln16_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t al
 
 	int ret;
 	uint8_t *bob_priv = NULL;
-	*bob_msg = NULL;
-	*key = NULL;
 	// non-compressed public key
 	uint8_t *bob_tmp_pub = NULL;
 	// decompression values
 	unsigned char *R = NULL, *A = NULL;
 
 	if (!k || !alice_msg || !bob_msg || !bob_msg_len || !key || !key_len) {
-		return NULL;
+		return 0;
 	}
+
+	*bob_msg = NULL;
+	*key = NULL;
+
 	int compressed = isCompressed(k->named_parameters);
 
 	if (compressed) {
@@ -217,26 +227,17 @@ int OQS_KEX_sidh_cln16_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t al
 
 err:
 	ret = 0;
-	if (bob_msg && *bob_msg) {
-		free(*bob_msg);
-	}
-	if (key && *key) {
-		free(*key);
-	}
+	free(*bob_msg);
+	*bob_msg = NULL;
+	free(*key);
+	*key = NULL;
 
 cleanup:
-	if (bob_tmp_pub) {
-		free(bob_tmp_pub);
-	}
-	if (bob_priv) {
-		free(bob_priv);
-	}
-	if (A) {
-		free(A);
-	}
-	if (R) {
-		free(R);
-	}
+	free(bob_tmp_pub);
+	free(bob_priv);
+	free(A);
+	free(R);
+
 	return ret;
 }
 
@@ -247,8 +248,11 @@ int OQS_KEX_sidh_cln16_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t
 	unsigned char *R = NULL, *A = NULL;
 
 	if (!k || !alice_priv || !bob_msg || !key || !key_len) {
-		return NULL;
+		return 0;
 	}
+
+	*key = NULL;
+
 	int compressed = isCompressed(k->named_parameters);
 
 	*key = malloc(SIDH_SHAREDKEY_LEN);
@@ -288,17 +292,12 @@ int OQS_KEX_sidh_cln16_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t
 
 err:
 	ret = 0;
-	if (key) {
-		free(*key);
-	}
+	free(*key);
+	*key = NULL;
 
 cleanup:
-	if (A) {
-		free(A);
-	}
-	if (R) {
-		free(R);
-	}
+	free(A);
+	free(R);
 
 	return ret;
 }

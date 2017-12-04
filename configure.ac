@@ -99,10 +99,6 @@ ARG_ENABL_SET([kex-code-mcbits], [enable KEX-CODE-MCBITS.])
 AM_CONDITIONAL([kex_code_mcbits], [test "x$kex_code_mcbits" = xtrue])
 AM_CONDITIONAL([USE_MCBITS], [test "x$kex_code_mcbits" = xtrue])
 
-ARG_ENABL_SET([picnic], [enable PICNIC.])
-AM_CONDITIONAL([picnic], [test "x$picnic" = xtrue])
-AM_CONDITIONAL([USE_PICNIC], [test "x$picnic" = xtrue])
-
 ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
 AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
 AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
@@ -242,15 +238,11 @@ if test x"$kex_sidh_iqc_ref" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
 fi
 
-if test x"$picnic" = x"true"; then
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_PICNIC"
-  SRCDIR=${SRCDIR}" src/sig_picnic"
-fi
-
 if test x"$kex_rlwe_newhope_avx2" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_rlwe_newhope/avx2"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLWE_NEWHOPE_AVX2"
 fi
+
 AC_SUBST(AM_CPPFLAGS)
 AC_SUBST(AM_CFLAGS)
 AC_SUBST(SRCDIR)
@@ -264,7 +256,6 @@ AC_SUBST(USE_KEX_MLWE_KYBER)
 AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_CLN16)
-AC_SUBST(USE_PICNIC)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE_AVX2)
