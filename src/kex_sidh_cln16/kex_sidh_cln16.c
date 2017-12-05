@@ -36,6 +36,9 @@ static int isCompressed(const char *named_parameters) {
 	return 0;
 }
 
+// Check if curve isogeny structure is NULL
+extern bool oqs_sidh_cln16_is_CurveIsogenyStruct_null(PCurveIsogenyStruct pCurveIsogeny);
+
 OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand, const char *named_parameters) {
 	int compressed = isCompressed(named_parameters);
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
@@ -45,8 +48,10 @@ OQS_KEX *OQS_KEX_sidh_cln16_new(OQS_RAND *rand, const char *named_parameters) {
 
 	// Curve isogeny system initialization
 	PCurveIsogenyStruct curveIsogeny = oqs_sidh_cln16_curve_allocate(&CurveIsogeny_SIDHp751);
-	if (curveIsogeny == NULL) {
+
+	if (curveIsogeny == NULL || oqs_sidh_cln16_is_CurveIsogenyStruct_null(curveIsogeny)) {
 		free(k);
+		oqs_sidh_cln16_curve_free(curveIsogeny);
 		return NULL;
 	}
 	if (oqs_sidh_cln16_curve_initialize(curveIsogeny, &CurveIsogeny_SIDHp751) != SIDH_CRYPTO_SUCCESS) {
