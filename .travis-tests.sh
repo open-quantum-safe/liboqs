@@ -67,5 +67,5 @@ make
 make test
 
 for f in $(ls .travis/*-check.sh); do
-  bash $f;
+    bash $f;
 done

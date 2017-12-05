@@ -887,7 +887,7 @@ ntru_crypto_ntru_encrypt_keygen(
 		total_polys += 2; /* ringel_buf{1,2} */
 	}
 
-	scratch_buf_len = total_polys * pad_deg * sizeof(uint16_t);
+	scratch_buf_len = ((size_t)(total_polys * pad_deg)) * sizeof(uint16_t);
 	scratch_buf_len += 2 * dF * sizeof(uint16_t);
 	scratch_buf = MALLOC(scratch_buf_len);
 	if (!scratch_buf) {

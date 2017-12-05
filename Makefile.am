@@ -61,7 +61,6 @@ if USE_SIG_PICNIC
 	cd .. && rm -rf temp
 endif
 
-
 noinst_bin_PROGRAMS = test_rand test_kex test_aes test_sig
 
 noinst_bindir=$(prefix)/tests
