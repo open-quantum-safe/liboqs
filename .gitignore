@@ -36,9 +36,6 @@ include
 /test_sig
 /test_rand
 /test_aes
-benchmark_lowmc
-pp_matrices
-precomputed_data
 
 # Debug files
 *.dSYM/
@@ -61,7 +58,11 @@ VisualStudio/**/*.user
 
 # External sources
 external
-src/sig_picnic/external
+src/sig_picnic/external/**
+
+# Travis files
+cmake-3.8.0.tar.gz
+cmake-3.8.0/**
 
 #Autotools
 autom4te.cache
