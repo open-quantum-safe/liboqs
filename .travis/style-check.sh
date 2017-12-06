@@ -7,7 +7,7 @@ else
 	CLANGFORMAT=clang-format-3.9 make prettyprint
 fi;
 
-modified=$(git status -s)
+modified=$(git status -s) | grep -v "src/sig_picnic/external"
 
 if [ "$modified" ]; then
 	tput setaf 1;
