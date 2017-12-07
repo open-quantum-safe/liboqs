@@ -348,6 +348,6 @@ cleanup:
 #else // !ENABLE_SIG_PICNIC
 int main() {
 	printf("No signature algorithm available. Make sure configure was run properly; see Readme.md.\n");
-	return 1;
+	return 0;
 }
 #endif
