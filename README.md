@@ -237,6 +237,13 @@ Run it from your Android device:
 
 Tested on SM-930F
 
+Building for ARM
+----------------
+
+To build on ARM (such as a Raspberry Pi), certain ciphers must be disabled when running configure:
+
+	./configure --disable-aes-ni
+
 Documentation
 -------------
 
