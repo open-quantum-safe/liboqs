@@ -117,6 +117,7 @@ test: clean-tests
 
 links:
 	$(MKDIR_P) include/oqs
+	cp -f config.h include/oqs
 	cp -f src/common/common.h include/oqs
 	cp -f src/crypto/aes/aes.h include/oqs
 	cp -f src/crypto/rand/rand.h include/oqs
