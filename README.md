@@ -189,6 +189,10 @@ To build with `sig_picnic` enabled:
 	make clean
 	make
 	make test   (this generates data needed by the Picnic library)
+ 
+### Configured Algorithms
+
+Flags for all the configured algorithms are generated in config.h file.
 
 Building and running on Windows
 -------------------------------
