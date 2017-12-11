@@ -1,5 +1,15 @@
 #!/bin/bash
 
+modified=$(git status -s)
+
+if [ "$modified" ]; then
+	tput setaf 1;
+	echo "There are modified files present in the directory prior to prettyprint check. This may indicate that some files should be added to .gitignore.";
+	tput sgr 0;
+	git status -s
+	exit 1;
+fi;
+
 if [ ! -x "$(which clang-format-3.9)" ]; then
 	# If clang-format is not version -3.9, just use clang-format
 	CLANGFORMAT=clang-format make prettyprint
