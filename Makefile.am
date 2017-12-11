@@ -140,7 +140,7 @@ links:
 	cp -f src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 if USE_KEX_RLWE_NEWHOPE_AVX2
-	./patches/apply-patch kex_rlwe_newhope_avx2
+	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
 	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
 endif
 	cp -f src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
@@ -174,7 +174,12 @@ if USE_OPENSSL
 endif
 
 prettyprint:
-	find src -name '*.c' -o -name '*.h' | grep -v Picnic*| grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
+	find src -name '*.c' -o -name '*.h' | grep -v Picnic* | grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: links
 	doxygen
+
+cleanup-patch:
+if USE_KEX_RLWE_NEWHOPE_AVX2
+	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
+endif
