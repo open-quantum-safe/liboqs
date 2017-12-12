@@ -21,6 +21,9 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kex/libkex.la
+if USE_KEX_RLWE_NEWHOPE_AVX2
+liboqs_la_LIBADD += src/kex_rlwe_newhope/avx2/libnewhope_avx2.la
+endif
 if USE_KEX_LWE_FRODO
 liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la
 endif
@@ -137,6 +140,10 @@ links:
 	cp -f src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	cp -f src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
+if USE_KEX_RLWE_NEWHOPE_AVX2
+	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
+	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
+endif
 	cp -f src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	cp -f src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	cp -f src/sig/sig.h include/oqs
@@ -168,7 +175,12 @@ if USE_OPENSSL
 endif
 
 prettyprint:
-	find src -name '*.c' -o -name '*.h' | grep -v Picnic*| xargs $(CLANGFORMAT) -style=file -i
+	find src -name '*.c' -o -name '*.h' | grep -v Picnic* | grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: links
 	doxygen
+
+cleanup-patch:
+if USE_KEX_RLWE_NEWHOPE_AVX2
+	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
+endif
