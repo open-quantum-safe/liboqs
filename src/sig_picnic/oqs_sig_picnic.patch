@@ -57,19 +57,19 @@ index 0630aab..07d8fb4 100644
    uint64_t* rows          = &FIRST_ROW(result)[word_count - 1];
    const uint64_t* wsrc    = (const uint64_t*)data;
 diff --git a/io.h b/io.h
-index 38ed7d8..57d77a0 100644
+index 5544302..2799a75 100644
 --- a/io.h
 +++ b/io.h
-@@ -20,8 +20,8 @@
- #define PICNIC_EXPORT
- #endif
+@@ -15,8 +15,8 @@
+ 
+ #include "mzd_additional.h"
  
 -void mzd_to_char_array(uint8_t* dst, const mzd_local_t* data, unsigned numbytes);
 -void mzd_from_char_array(mzd_local_t* result, const uint8_t* data, unsigned len);
 +void oqs_sig_picnic_mzd_to_char_array(uint8_t* dst, const mzd_local_t* data, unsigned numbytes);
 +void oqs_sig_picnic_mzd_from_char_array(mzd_local_t* result, const uint8_t* data, unsigned len);
  
- void print_hex(FILE* out, const uint8_t* data, size_t len) PICNIC_EXPORT;
+ void print_hex(FILE* out, const uint8_t* data, size_t len);
  
 diff --git a/kdf_shake.c b/kdf_shake.c
 index 14b6dbb..572b402 100644
@@ -110,10 +110,10 @@ index 82152fd..9fd44a0 100644
  #define kdf_shake_finalize_key(ctx) hash_final((ctx))
  #define kdf_shake_get_randomness(ctx, dst, count) hash_squeeze((dst), (count), (ctx))
 diff --git a/lowmc.c b/lowmc.c
-index a788d75..70ff5e9 100644
+index d4e5387..2d7a036 100644
 --- a/lowmc.c
 +++ b/lowmc.c
-@@ -44,46 +44,46 @@ static void sbox_layer_uint64(mzd_local_t* y, mzd_local_t const* x, mask_t const
+@@ -47,46 +47,46 @@ static void sbox_layer_uint64(mzd_local_t* y, mzd_local_t const* x, mask_t const
  #ifdef WITH_CUSTOM_INSTANCES
  static void sbox_layer_bitsliced(mzd_local_t* out, mzd_local_t const* in, mask_t const* mask) {
    mzd_local_t* buffer[6] = {NULL};
@@ -182,7 +182,7 @@ index a788d75..70ff5e9 100644
  }
  
  #ifdef WITH_OPT
-@@ -255,17 +255,17 @@ static sbox_layer_impl get_sbox_layer(const lowmc_t* lowmc) {
+@@ -264,17 +264,17 @@ static sbox_layer_impl get_sbox_layer(const lowmc_t* lowmc) {
  #if defined(REDUCED_LINEAR_LAYER)
  static mzd_local_t* lowmc_reduced_linear_layer(lowmc_t const* lowmc, lowmc_key_t const* lowmc_key,
                                                 mzd_local_t const* p, sbox_layer_impl sbox_layer) {
@@ -208,7 +208,7 @@ index a788d75..70ff5e9 100644
  #endif
  
    word mask                  = WORD_C(0xFFFFFFFF);
-@@ -278,28 +278,28 @@ static mzd_local_t* lowmc_reduced_linear_layer(lowmc_t const* lowmc, lowmc_key_t
+@@ -287,28 +287,28 @@ static mzd_local_t* lowmc_reduced_linear_layer(lowmc_t const* lowmc, lowmc_key_t
      mask = ~mask;
  
  #if defined(MUL_M4RI)
@@ -247,7 +247,7 @@ index a788d75..70ff5e9 100644
  #endif
  
    lowmc_round_t const* round = lowmc->rounds;
-@@ -307,24 +307,24 @@ static mzd_local_t* lowmc_plain(lowmc_t const* lowmc, lowmc_key_t const* lowmc_k
+@@ -316,24 +316,24 @@ static mzd_local_t* lowmc_plain(lowmc_t const* lowmc, lowmc_key_t const* lowmc_k
      sbox_layer(x, x, &lowmc->mask);
  
  #if defined(MUL_M4RI)
@@ -292,7 +292,7 @@ index 38eba01..ef46d82 100644
  
  #endif
 diff --git a/lowmc_128_128_20.c b/lowmc_128_128_20.c
-index e5b74f4..ab39397 100644
+index 32c87a4..c79516e 100644
 --- a/lowmc_128_128_20.c
 +++ b/lowmc_128_128_20.c
 @@ -5723,7 +5723,7 @@ static const mzd_local_t precomputed_round_key_matrix_non_linear_part_128_128_20
@@ -326,18 +326,18 @@ index e5b74f4..ab39397 100644
    }
  }
  #if defined(REDUCED_LINEAR_LAYER)
--const mzd_local_t* lowmc_128_128_20_get_precomputed_round_key_matrix_non_linear_part() {
-+const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_precomputed_round_key_matrix_non_linear_part() {
+-const mzd_local_t* lowmc_128_128_20_get_precomputed_round_key_matrix_non_linear_part(void) {
++const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_precomputed_round_key_matrix_non_linear_part(void) {
    return &precomputed_round_key_matrix_non_linear_part_128_128_20;
  }
  
--const mzd_local_t* lowmc_128_128_20_get_precomputed_round_key_matrix_linear_part() {
-+const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_precomputed_round_key_matrix_linear_part() {
+-const mzd_local_t* lowmc_128_128_20_get_precomputed_round_key_matrix_linear_part(void) {
++const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_precomputed_round_key_matrix_linear_part(void) {
    return &precomputed_round_key_matrix_linear_part_128_128_20;
  }
  #endif
 diff --git a/lowmc_128_128_20.h b/lowmc_128_128_20.h
-index 16bbb14..33c1af5 100644
+index 83a1b67..8cbd325 100644
 --- a/lowmc_128_128_20.h
 +++ b/lowmc_128_128_20.h
 @@ -6,10 +6,10 @@
@@ -347,17 +347,17 @@ index 16bbb14..33c1af5 100644
 -const mzd_local_t* lowmc_128_128_20_get_linear_layer(uint32_t r);
 -const mzd_local_t* lowmc_128_128_20_get_round_key(uint32_t r);
 -const mzd_local_t* lowmc_128_128_20_get_round_const(uint32_t r);
--const mzd_local_t* lowmc_128_128_20_get_precomputed_round_key_matrix_non_linear_part();
--const mzd_local_t* lowmc_128_128_20_get_precomputed_round_key_matrix_linear_part();
+-const mzd_local_t* lowmc_128_128_20_get_precomputed_round_key_matrix_non_linear_part(void);
+-const mzd_local_t* lowmc_128_128_20_get_precomputed_round_key_matrix_linear_part(void);
 +const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_linear_layer(uint32_t r);
 +const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_round_key(uint32_t r);
 +const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_round_const(uint32_t r);
-+const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_precomputed_round_key_matrix_non_linear_part();
-+const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_precomputed_round_key_matrix_linear_part();
++const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_precomputed_round_key_matrix_non_linear_part(void);
++const mzd_local_t* oqs_sig_picnic_lowmc_128_128_20_get_precomputed_round_key_matrix_linear_part(void);
  
  #endif
 diff --git a/lowmc_192_192_30.c b/lowmc_192_192_30.c
-index c874946..b54c75c 100644
+index 40a4eb2..7e82863 100644
 --- a/lowmc_192_192_30.c
 +++ b/lowmc_192_192_30.c
 @@ -12415,7 +12415,7 @@ static const mzd_local_t precomputed_round_key_matrix_non_linear_part_192_192_30
@@ -391,18 +391,18 @@ index c874946..b54c75c 100644
    }
  }
  #if defined(REDUCED_LINEAR_LAYER)
--const mzd_local_t* lowmc_192_192_30_get_precomputed_round_key_matrix_non_linear_part() {
-+const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_precomputed_round_key_matrix_non_linear_part() {
+-const mzd_local_t* lowmc_192_192_30_get_precomputed_round_key_matrix_non_linear_part(void) {
++const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_precomputed_round_key_matrix_non_linear_part(void) {
    return &precomputed_round_key_matrix_non_linear_part_192_192_30;
  }
  
--const mzd_local_t* lowmc_192_192_30_get_precomputed_round_key_matrix_linear_part() {
-+const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_precomputed_round_key_matrix_linear_part() {
+-const mzd_local_t* lowmc_192_192_30_get_precomputed_round_key_matrix_linear_part(void) {
++const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_precomputed_round_key_matrix_linear_part(void) {
    return &precomputed_round_key_matrix_linear_part_192_192_30;
  }
  #endif
 diff --git a/lowmc_192_192_30.h b/lowmc_192_192_30.h
-index 8fb23cc..a1a8059 100644
+index fb0169a..538166b 100644
 --- a/lowmc_192_192_30.h
 +++ b/lowmc_192_192_30.h
 @@ -6,10 +6,10 @@
@@ -412,17 +412,17 @@ index 8fb23cc..a1a8059 100644
 -const mzd_local_t* lowmc_192_192_30_get_linear_layer(uint32_t r);
 -const mzd_local_t* lowmc_192_192_30_get_round_key(uint32_t r);
 -const mzd_local_t* lowmc_192_192_30_get_round_const(uint32_t r);
--const mzd_local_t* lowmc_192_192_30_get_precomputed_round_key_matrix_non_linear_part();
--const mzd_local_t* lowmc_192_192_30_get_precomputed_round_key_matrix_linear_part();
+-const mzd_local_t* lowmc_192_192_30_get_precomputed_round_key_matrix_non_linear_part(void);
+-const mzd_local_t* lowmc_192_192_30_get_precomputed_round_key_matrix_linear_part(void);
 +const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_linear_layer(uint32_t r);
 +const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_round_key(uint32_t r);
 +const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_round_const(uint32_t r);
-+const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_precomputed_round_key_matrix_non_linear_part();
-+const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_precomputed_round_key_matrix_linear_part();
++const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_precomputed_round_key_matrix_non_linear_part(void);
++const mzd_local_t* oqs_sig_picnic_lowmc_192_192_30_get_precomputed_round_key_matrix_linear_part(void);
  
  #endif
 diff --git a/lowmc_256_256_38.c b/lowmc_256_256_38.c
-index 194ea14..da2b25a 100644
+index fd2284f..092d6f0 100644
 --- a/lowmc_256_256_38.c
 +++ b/lowmc_256_256_38.c
 @@ -20623,7 +20623,7 @@ static const mzd_local_t precomputed_round_key_matrix_non_linear_part_256_256_38
@@ -456,18 +456,18 @@ index 194ea14..da2b25a 100644
    }
  }
  #if defined(REDUCED_LINEAR_LAYER)
--const mzd_local_t* lowmc_256_256_38_get_precomputed_round_key_matrix_non_linear_part() {
-+const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_precomputed_round_key_matrix_non_linear_part() {
+-const mzd_local_t* lowmc_256_256_38_get_precomputed_round_key_matrix_non_linear_part(void) {
++const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_precomputed_round_key_matrix_non_linear_part(void) {
    return &precomputed_round_key_matrix_non_linear_part_256_256_38;
  }
  
--const mzd_local_t* lowmc_256_256_38_get_precomputed_round_key_matrix_linear_part() {
-+const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_precomputed_round_key_matrix_linear_part() {
+-const mzd_local_t* lowmc_256_256_38_get_precomputed_round_key_matrix_linear_part(void) {
++const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_precomputed_round_key_matrix_linear_part(void) {
    return &precomputed_round_key_matrix_linear_part_256_256_38;
  }
  #endif
 diff --git a/lowmc_256_256_38.h b/lowmc_256_256_38.h
-index 40b74f4..8373ef8 100644
+index 6bb0c59..b0c0afc 100644
 --- a/lowmc_256_256_38.h
 +++ b/lowmc_256_256_38.h
 @@ -6,10 +6,10 @@
@@ -477,21 +477,21 @@ index 40b74f4..8373ef8 100644
 -const mzd_local_t* lowmc_256_256_38_get_linear_layer(uint32_t r);
 -const mzd_local_t* lowmc_256_256_38_get_round_key(uint32_t r);
 -const mzd_local_t* lowmc_256_256_38_get_round_const(uint32_t r);
--const mzd_local_t* lowmc_256_256_38_get_precomputed_round_key_matrix_non_linear_part();
--const mzd_local_t* lowmc_256_256_38_get_precomputed_round_key_matrix_linear_part();
+-const mzd_local_t* lowmc_256_256_38_get_precomputed_round_key_matrix_non_linear_part(void);
+-const mzd_local_t* lowmc_256_256_38_get_precomputed_round_key_matrix_linear_part(void);
 +const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_linear_layer(uint32_t r);
 +const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_round_key(uint32_t r);
 +const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_round_const(uint32_t r);
-+const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_precomputed_round_key_matrix_non_linear_part();
-+const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_precomputed_round_key_matrix_linear_part();
++const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_precomputed_round_key_matrix_non_linear_part(void);
++const mzd_local_t* oqs_sig_picnic_lowmc_256_256_38_get_precomputed_round_key_matrix_linear_part(void);
  
  #endif
 diff --git a/lowmc_pars.c b/lowmc_pars.c
-index 10b6761..e2e2869 100644
+index 24bfb76..6b59834 100644
 --- a/lowmc_pars.c
 +++ b/lowmc_pars.c
-@@ -40,20 +40,20 @@
- static mzd_local_t* readMZD_TStructFromFile(FILE* file);
+@@ -38,20 +38,20 @@
+ #include <string.h>
  
  static mask_t* prepare_masks(mask_t* mask, unsigned int n, unsigned int m) {
 -  mask->x0   = mzd_local_init(1, n);
@@ -519,7 +519,7 @@ index 10b6761..e2e2869 100644
  
    mask->x0i   = FIRST_ROW(mask->x0)[n / 64 - 1];
    mask->x1i   = FIRST_ROW(mask->x1)[n / 64 - 1];
-@@ -63,7 +63,7 @@ static mask_t* prepare_masks(mask_t* mask, unsigned int n, unsigned int m) {
+@@ -61,7 +61,7 @@ static mask_t* prepare_masks(mask_t* mask, unsigned int n, unsigned int m) {
    return mask;
  }
  
@@ -528,7 +528,7 @@ index 10b6761..e2e2869 100644
    if (!lowmc) {
      return false;
    }
-@@ -82,19 +82,19 @@ bool lowmc_init(lowmc_t* lowmc, unsigned int m, unsigned int n, unsigned int r,
+@@ -80,19 +80,19 @@ bool lowmc_init(lowmc_t* lowmc, unsigned int m, unsigned int n, unsigned int r,
  
  #define LOAD_OPT(N, K, R)                                                                          \
    lowmc->precomputed_non_linear_part_matrix =                                                      \
@@ -554,7 +554,7 @@ index 10b6761..e2e2869 100644
    }                                                                                                \
    LOAD##PREC(N, K, R);
  
-@@ -129,36 +129,36 @@ bool lowmc_init(lowmc_t* lowmc, unsigned int m, unsigned int n, unsigned int r,
+@@ -127,29 +127,29 @@ bool lowmc_init(lowmc_t* lowmc, unsigned int m, unsigned int n, unsigned int r,
    }
  #endif
  
@@ -590,15 +590,7 @@ index 10b6761..e2e2869 100644
      return false;
    }
  
-   return true;
- }
- 
--bool lowmc_read_file(lowmc_t* lowmc, unsigned int m, unsigned int n, unsigned int r,
-+bool oqs_sig_picnic_lowmc_read_file(lowmc_t* lowmc, unsigned int m, unsigned int n, unsigned int r,
-                      unsigned int k) {
-   if (!lowmc) {
-     return false;
-@@ -209,7 +209,7 @@ static mzd_local_t* readMZD_TStructFromFile(FILE* file) {
+@@ -164,7 +164,7 @@ static mzd_local_t* readMZD_TStructFromFile(FILE* file) {
    ret += fread(&(nrows), sizeof(uint32_t), 1, file);
    ret += fread(&(ncols), sizeof(uint32_t), 1, file);
  
@@ -607,9 +599,18 @@ index 10b6761..e2e2869 100644
    for (unsigned int i = 0; i < A->nrows; i++) {
      ret += fread(ROW(A, i), A->rowstride * sizeof(word), 1, file);
    }
-@@ -217,40 +217,40 @@ static mzd_local_t* readMZD_TStructFromFile(FILE* file) {
+@@ -172,7 +172,7 @@ static mzd_local_t* readMZD_TStructFromFile(FILE* file) {
    return A;
  }
+ 
+-bool lowmc_read_file(lowmc_t* lowmc, unsigned int m, unsigned int n, unsigned int r,
++bool oqs_sig_picnic_lowmc_read_file(lowmc_t* lowmc, unsigned int m, unsigned int n, unsigned int r,
+                      unsigned int k) {
+   if (!lowmc) {
+     return false;
+@@ -217,40 +217,40 @@ bool lowmc_read_file(lowmc_t* lowmc, unsigned int m, unsigned int n, unsigned in
+ }
+ #endif
  
 -void lowmc_clear(lowmc_t* lowmc) {
 +void oqs_sig_picnic_lowmc_clear(lowmc_t* lowmc) {
@@ -687,10 +688,10 @@ index 0adaca8..429d98a 100644
  
  #endif
 diff --git a/mpc.c b/mpc.c
-index cffdb5e..bedcae4 100644
+index db17ffb..095a901 100644
 --- a/mpc.c
 +++ b/mpc.c
-@@ -19,32 +19,32 @@
+@@ -22,32 +22,32 @@
  
  #include <string.h>
  
@@ -734,88 +735,39 @@ index cffdb5e..bedcae4 100644
                      view_t* view, unsigned viewshift) {
    for (unsigned m = 0; m < SC_PROOF; ++m) {
      const unsigned j = (m + 1) % SC_PROOF;
-@@ -91,13 +91,13 @@ void mpc_and_uint64(uint64_t* res, uint64_t const* first, uint64_t const* second
-   }
- 
+@@ -96,27 +96,27 @@ void mpc_and_uint64(uint64_t* res, uint64_t const* first, uint64_t const* second
  #ifdef WITH_SSE2
--__attribute__((target("sse2"))) void mpc_and_sse(__m128i* res, __m128i const* first,
-+__attribute__((target("sse2"))) void oqs_sig_picnic_mpc_and_sse(__m128i* res, __m128i const* first,
-                                                  __m128i const* second, __m128i const* r,
-                                                  view_t* view, unsigned viewshift) {
+ #ifdef WITH_CUSTOM_INSTANCES
+ ATTRIBUTE_TARGET("sse2")
+-void mpc_and_sse(__m128i* res, __m128i const* first, __m128i const* second, __m128i const* r,
++void oqs_sig_picnic_mpc_and_sse(__m128i* res, __m128i const* first, __m128i const* second, __m128i const* r,
+                  view_t* view, unsigned viewshift) {
    mpc_and_def(__m128i, _mm_and_si128, _mm_xor_si128, mm128_shift_right);
  }
  
--__attribute__((target("sse2"))) void mpc_and_256_sse(__m128i res[SC_PROOF][2],
-+__attribute__((target("sse2"))) void oqs_sig_picnic_mpc_and_256_sse(__m128i res[SC_PROOF][2],
-                                                      __m128i const first[SC_PROOF][2],
-                                                      __m128i const second[SC_PROOF][2],
-                                                      __m128i const r[SC_PROOF][2], view_t* view,
-@@ -106,7 +106,7 @@ __attribute__((target("sse2"))) void mpc_and_256_sse(__m128i res[SC_PROOF][2],
+ ATTRIBUTE_TARGET("sse2")
+-void mpc_and_256_sse(__m128i res[SC_PROOF][2], __m128i const first[SC_PROOF][2],
++void oqs_sig_picnic_mpc_and_256_sse(__m128i res[SC_PROOF][2], __m128i const first[SC_PROOF][2],
+                      __m128i const second[SC_PROOF][2], __m128i const r[SC_PROOF][2], view_t* view,
+                      unsigned viewshift) {
+   mpc_and_def_multiple(__m128i, mm256_and_sse, mm256_xor_sse, mm256_shift_right_sse, 2);
  }
  
- #ifdef WITH_CUSTOM_INSTANCES
--__attribute__((target("sse2"))) void mpc_and_384_sse(__m128i res[SC_PROOF][3],
-+__attribute__((target("sse2"))) void oqs_sig_picnic_mpc_and_384_sse(__m128i res[SC_PROOF][3],
-                                                      __m128i const first[SC_PROOF][3],
-                                                      __m128i const second[SC_PROOF][3],
-                                                      __m128i const r[SC_PROOF][3], view_t* view,
-@@ -114,7 +114,7 @@ __attribute__((target("sse2"))) void mpc_and_384_sse(__m128i res[SC_PROOF][3],
+ ATTRIBUTE_TARGET("sse2")
+-void mpc_and_384_sse(__m128i res[SC_PROOF][3], __m128i const first[SC_PROOF][3],
++void oqs_sig_picnic_mpc_and_384_sse(__m128i res[SC_PROOF][3], __m128i const first[SC_PROOF][3],
+                      __m128i const second[SC_PROOF][3], __m128i const r[SC_PROOF][3], view_t* view,
+                      unsigned viewshift) {
    mpc_and_def_multiple(__m128i, mm384_and_sse, mm384_xor_sse, mm384_shift_right_sse, 3);
  }
  
--__attribute__((target("sse2"))) void mpc_and_512_sse(__m128i res[SC_PROOF][4],
-+__attribute__((target("sse2"))) void oqs_sig_picnic_mpc_and_512_sse(__m128i res[SC_PROOF][4],
-                                                      __m128i const first[SC_PROOF][4],
-                                                      __m128i const second[SC_PROOF][4],
-                                                      __m128i const r[SC_PROOF][4], view_t* view,
-@@ -126,14 +126,14 @@ __attribute__((target("sse2"))) void mpc_and_512_sse(__m128i res[SC_PROOF][4],
- #endif
- 
- #ifdef WITH_AVX2
--__attribute__((target("avx2"))) void mpc_and_avx(__m256i* res, __m256i const* first,
-+__attribute__((target("avx2"))) void oqs_sig_picnic_mpc_and_avx(__m256i* res, __m256i const* first,
-                                                  __m256i const* second, __m256i const* r,
-                                                  view_t* view, unsigned viewshift) {
-   mpc_and_def(__m256i, _mm256_and_si256, _mm256_xor_si256, mm256_shift_right);
- }
- 
- #ifdef WITH_CUSTOM_INSTANCES
--__attribute__((target("avx2"))) void mpc_and_512_avx(__m256i res[SC_VERIFY][2],
-+__attribute__((target("avx2"))) void oqs_sig_picnic_mpc_and_512_avx(__m256i res[SC_VERIFY][2],
-                                                      __m256i const first[SC_VERIFY][2],
-                                                      __m256i const second[SC_VERIFY][2],
-                                                      __m256i const r[SC_VERIFY][2], view_t* view,
-@@ -144,25 +144,25 @@ __attribute__((target("avx2"))) void mpc_and_512_avx(__m256i res[SC_VERIFY][2],
- 
- #endif
- #ifdef WITH_NEON
--void mpc_and_neon(uint32x4_t* res, uint32x4_t const* first, uint32x4_t const* second,
-+void oqs_sig_picnic_mpc_and_neon(uint32x4_t* res, uint32x4_t const* first, uint32x4_t const* second,
-                   uint32x4_t const* r, view_t* view, unsigned viewshift) {
-   mpc_and_def(uint32x4_t, vandq_u32, veorq_u32, mm128_shift_right);
- }
- 
--void mpc_and_256_neon(uint32x4_t res[SC_PROOF][2], uint32x4_t const first[SC_PROOF][2],
-+void oqs_sig_picnic_mpc_and_256_neon(uint32x4_t res[SC_PROOF][2], uint32x4_t const first[SC_PROOF][2],
-                       uint32x4_t const second[SC_PROOF][2], uint32x4_t const r[SC_PROOF][2],
-                       view_t* view, unsigned viewshift) {
-   mpc_and_def_multiple(uint32x4_t, mm256_and, mm256_xor, mm256_shift_right, 2);
- }
- 
- #ifdef WITH_CUSTOM_INSTANCES
--void mpc_and_384_neon(uint32x4_t res[SC_PROOF][3], uint32x4_t const first[SC_PROOF][3],
-+void oqs_sig_picnic_mpc_and_384_neon(uint32x4_t res[SC_PROOF][3], uint32x4_t const first[SC_PROOF][3],
-                       uint32x4_t const second[SC_PROOF][3], uint32x4_t const r[SC_PROOF][3],
-                       view_t* view, unsigned viewshift) {
-   mpc_and_def_multiple(uint32x4_t, mm384_and, mm384_xor, mm384_shift_right, 3);
- }
- 
--void mpc_and_512_neon(uint32x4_t res[SC_PROOF][4], uint32x4_t const first[SC_PROOF][4],
-+void oqs_sig_picnic_mpc_and_512_neon(uint32x4_t res[SC_PROOF][4], uint32x4_t const first[SC_PROOF][4],
-                       uint32x4_t const second[SC_PROOF][4], uint32x4_t const r[SC_PROOF][4],
-                       view_t* view, unsigned viewshift) {
-   mpc_and_def_multiple(uint32x4_t, mm512_and, mm512_xor, mm512_shift_right, 4);
-@@ -171,7 +171,7 @@ void mpc_and_512_neon(uint32x4_t res[SC_PROOF][4], uint32x4_t const first[SC_PRO
+ ATTRIBUTE_TARGET("sse2")
+-void mpc_and_512_sse(__m128i res[SC_PROOF][4], __m128i const first[SC_PROOF][4],
++void oqs_sig_picnic_mpc_and_512_sse(__m128i res[SC_PROOF][4], __m128i const first[SC_PROOF][4],
+                      __m128i const second[SC_PROOF][4], __m128i const r[SC_PROOF][4], view_t* view,
+                      unsigned viewshift) {
+   mpc_and_def_multiple(__m128i, mm512_and_sse, mm512_xor_sse, mm512_shift_right_sse, 4);
+@@ -169,7 +169,7 @@ void mpc_and_512_neon(uint32x4_t res[SC_PROOF][4], uint32x4_t const first[SC_PRO
  #endif
  #endif
  
@@ -824,7 +776,7 @@ index cffdb5e..bedcae4 100644
               mzd_local_t* const* r, view_t* view, unsigned viewshift, mzd_local_t* const* buffer) {
    mzd_local_t* b = buffer[0];
  
-@@ -179,26 +179,26 @@ void mpc_and(mzd_local_t* const* res, mzd_local_t* const* first, mzd_local_t* co
+@@ -177,26 +177,26 @@ void mpc_and(mzd_local_t* const* res, mzd_local_t* const* first, mzd_local_t* co
      const unsigned j = (m + 1) % SC_PROOF;
  
      // f[m] & s[m]
@@ -861,8 +813,8 @@ index cffdb5e..bedcae4 100644
                             uint64_t const* r, view_t* view, uint64_t const mask,
                             unsigned viewshift) {
    for (unsigned m = 0; m < (SC_VERIFY - 1); ++m) {
-@@ -315,13 +315,13 @@ mpc_and_verify_512_avx(__m256i res[SC_VERIFY][2], __m256i const first[SC_VERIFY]
- #endif
+@@ -312,13 +312,13 @@ void mpc_and_verify_512_avx(__m256i res[SC_VERIFY][2], __m256i const first[SC_VE
+ 
  #ifdef WITH_NEON
  #ifdef WITH_CUSTOM_INSTANCES
 -void mpc_and_verify_neon(uint32x4_t* res, uint32x4_t const* first, uint32x4_t const* second,
@@ -877,7 +829,7 @@ index cffdb5e..bedcae4 100644
                               uint32x4_t const second[SC_VERIFY][2],
                               uint32x4_t const r[SC_VERIFY][2], view_t* view, uint32x4_t const* mask,
                               unsigned viewshift) {
-@@ -329,7 +329,7 @@ void mpc_and_verify_256_neon(uint32x4_t res[SC_VERIFY][2], uint32x4_t const firs
+@@ -326,7 +326,7 @@ void mpc_and_verify_256_neon(uint32x4_t res[SC_VERIFY][2], uint32x4_t const firs
                                2);
  }
  
@@ -886,7 +838,7 @@ index cffdb5e..bedcae4 100644
                               uint32x4_t const second[SC_VERIFY][3],
                               uint32x4_t const r[SC_VERIFY][3], view_t* view, uint32x4_t const* mask,
                               unsigned viewshift) {
-@@ -337,7 +337,7 @@ void mpc_and_verify_384_neon(uint32x4_t res[SC_VERIFY][3], uint32x4_t const firs
+@@ -334,7 +334,7 @@ void mpc_and_verify_384_neon(uint32x4_t res[SC_VERIFY][3], uint32x4_t const firs
                                3);
  }
  
@@ -895,7 +847,7 @@ index cffdb5e..bedcae4 100644
                               uint32x4_t const second[SC_VERIFY][4],
                               uint32x4_t const r[SC_VERIFY][4], view_t* view, uint32x4_t const* mask,
                               unsigned viewshift) {
-@@ -348,7 +348,7 @@ void mpc_and_verify_512_neon(uint32x4_t res[SC_VERIFY][4], uint32x4_t const firs
+@@ -345,7 +345,7 @@ void mpc_and_verify_512_neon(uint32x4_t res[SC_VERIFY][4], uint32x4_t const firs
  #endif
  #endif
  
@@ -904,7 +856,7 @@ index cffdb5e..bedcae4 100644
                      mzd_local_t* const* r, view_t* view, mzd_local_t const* mask,
                      unsigned viewshift, mzd_local_t* const* buffer) {
    mzd_local_t* b = buffer[0];
-@@ -356,29 +356,29 @@ void mpc_and_verify(mzd_local_t* const* res, mzd_local_t* const* first, mzd_loca
+@@ -353,29 +353,29 @@ void mpc_and_verify(mzd_local_t* const* res, mzd_local_t* const* first, mzd_loca
    for (unsigned m = 0; m < (SC_VERIFY - 1); ++m) {
      const unsigned j = m + 1;
  
@@ -948,7 +900,7 @@ index cffdb5e..bedcae4 100644
    }
  }
 diff --git a/mpc.h b/mpc.h
-index b3f151f..c160417 100644
+index 7539e90..8b7a2d7 100644
 --- a/mpc.h
 +++ b/mpc.h
 @@ -48,32 +48,32 @@ typedef view_t rvec_t;
@@ -985,13 +937,13 @@ index b3f151f..c160417 100644
                      unsigned viewshift, mzd_local_t* const* buffer) ATTR_NONNULL;
  
 -void mpc_and_uint64(uint64_t* res, uint64_t const* first, uint64_t const* second, uint64_t const* r,
-+void oqs_sig_picnic_oqs_sig_picnic_mpc_and_uint64(uint64_t* res, uint64_t const* first, uint64_t const* second, uint64_t const* r,
-                     view_t* view, unsigned viewshift) __attribute__((nonnull));
++void oqs_sig_picnic_mpc_and_uint64(uint64_t* res, uint64_t const* first, uint64_t const* second, uint64_t const* r,
+                     view_t* view, unsigned viewshift) ATTR_NONNULL;
  
 -void mpc_and_verify_uint64(uint64_t* res, uint64_t const* first, uint64_t const* second,
 +void oqs_sig_picnic_mpc_and_verify_uint64(uint64_t* res, uint64_t const* first, uint64_t const* second,
-                            uint64_t const* r, view_t* view, uint64_t const mask, unsigned viewshift)
-     __attribute__((nonnull));
+                            uint64_t const* r, view_t* view, uint64_t const mask,
+                            unsigned viewshift) ATTR_NONNULL;
  
 @@ -81,85 +81,85 @@ void mpc_and_verify_uint64(uint64_t* res, uint64_t const* first, uint64_t const*
  #include "simd.h"
@@ -1056,8 +1008,8 @@ index b3f151f..c160417 100644
                              __m256i const second[SC_VERIFY][2], __m256i const r[SC_VERIFY][2],
                              view_t* view, __m256i const* mask, unsigned viewshift) ATTR_NONNULL;
  #endif
- #ifdef WITH_NEON
  
+ #ifdef WITH_NEON
 -void mpc_and_neon(uint32x4_t* res, uint32x4_t const* first, uint32x4_t const* second,
 +void oqs_sig_picnic_mpc_and_neon(uint32x4_t* res, uint32x4_t const* first, uint32x4_t const* second,
                    uint32x4_t const* r, view_t* view, unsigned viewshift);
@@ -1108,87 +1060,10 @@ index b3f151f..c160417 100644
  
  #endif
 diff --git a/mpc_lowmc.c b/mpc_lowmc.c
-index c86f614..9ad0091 100644
+index 7e3d8fe..41ffbdc 100644
 --- a/mpc_lowmc.c
 +++ b/mpc_lowmc.c
-@@ -45,51 +45,51 @@ static sbox_vars_t* sbox_vars_init(sbox_vars_t* vars, uint32_t n, unsigned sc);
- static void sbox_vars_clear(sbox_vars_t* vars);
- 
- #define bitsliced_step_1(sc)                                                                       \
--  mpc_and_const(out, in, mask->mask, sc);                                                          \
-+  oqs_sig_picnic_mpc_and_const(out, in, mask->mask, sc);                                                          \
-                                                                                                    \
--  mpc_and_const(vars->x0m, in, mask->x0, sc);                                                      \
--  mpc_and_const(vars->x1m, in, mask->x1, sc);                                                      \
--  mpc_and_const(vars->x2m, in, mask->x2, sc);                                                      \
--  mpc_and_const(vars->r0m, rvec, mask->x0, sc);                                                    \
--  mpc_and_const(vars->r1m, rvec, mask->x1, sc);                                                    \
--  mpc_and_const(vars->r2m, rvec, mask->x2, sc);                                                    \
-+  oqs_sig_picnic_mpc_and_const(vars->x0m, in, mask->x0, sc);                                                      \
-+  oqs_sig_picnic_mpc_and_const(vars->x1m, in, mask->x1, sc);                                                      \
-+  oqs_sig_picnic_mpc_and_const(vars->x2m, in, mask->x2, sc);                                                      \
-+  oqs_sig_picnic_mpc_and_const(vars->r0m, rvec, mask->x0, sc);                                                    \
-+  oqs_sig_picnic_mpc_and_const(vars->r1m, rvec, mask->x1, sc);                                                    \
-+  oqs_sig_picnic_mpc_and_const(vars->r2m, rvec, mask->x2, sc);                                                    \
-                                                                                                    \
--  mpc_shift_left(vars->x0s, vars->x0m, 2, sc);                                                     \
--  mpc_shift_left(vars->r0s, vars->r0m, 2, sc);                                                     \
-+  oqs_sig_picnic_mpc_shift_left(vars->x0s, vars->x0m, 2, sc);                                                     \
-+  oqs_sig_picnic_mpc_shift_left(vars->r0s, vars->r0m, 2, sc);                                                     \
-                                                                                                    \
--  mpc_shift_left(vars->x1s, vars->x1m, 1, sc);                                                     \
--  mpc_shift_left(vars->r1s, vars->r1m, 1, sc)
-+  oqs_sig_picnic_mpc_shift_left(vars->x1s, vars->x1m, 1, sc);                                                     \
-+  oqs_sig_picnic_mpc_shift_left(vars->r1s, vars->r1m, 1, sc)
- 
- #define bitsliced_step_2(sc)                                                                       \
-   /* (b & c) ^ a */                                                                                \
--  mpc_xor(vars->r2m, vars->r2m, vars->x0s, sc);                                                    \
-+  oqs_sig_picnic_mpc_xor(vars->r2m, vars->r2m, vars->x0s, sc);                                                    \
-   /* a ^ b */                                                                                      \
--  mpc_xor(vars->x0s, vars->x0s, vars->x1s, sc);                                                    \
-+  oqs_sig_picnic_mpc_xor(vars->x0s, vars->x0s, vars->x1s, sc);                                                    \
-   /* (c & a) ^ a ^ b */                                                                            \
--  mpc_xor(vars->r1m, vars->r1m, vars->x0s, sc);                                                    \
-+  oqs_sig_picnic_mpc_xor(vars->r1m, vars->r1m, vars->x0s, sc);                                                    \
-   /* (a & b) ^ a ^ b ^ c */                                                                        \
--  mpc_xor(vars->r0m, vars->r0m, vars->x0s, sc);                                                    \
--  mpc_xor(vars->r0m, vars->r0m, vars->x2m, sc);                                                    \
-+  oqs_sig_picnic_mpc_xor(vars->r0m, vars->r0m, vars->x0s, sc);                                                    \
-+  oqs_sig_picnic_mpc_xor(vars->r0m, vars->r0m, vars->x2m, sc);                                                    \
-                                                                                                    \
--  mpc_shift_right(vars->x0s, vars->r2m, 2, sc);                                                    \
--  mpc_shift_right(vars->x1s, vars->r1m, 1, sc);                                                    \
-+  oqs_sig_picnic_mpc_shift_right(vars->x0s, vars->r2m, 2, sc);                                                    \
-+  oqs_sig_picnic_mpc_shift_right(vars->x1s, vars->r1m, 1, sc);                                                    \
-                                                                                                    \
--  mpc_xor(out, out, vars->r0m, sc);                                                                \
--  mpc_xor(out, out, vars->x0s, sc);                                                                \
--  mpc_xor(out, out, vars->x1s, sc)
-+  oqs_sig_picnic_mpc_xor(out, out, vars->r0m, sc);                                                                \
-+  oqs_sig_picnic_mpc_xor(out, out, vars->x0s, sc);                                                                \
-+  oqs_sig_picnic_mpc_xor(out, out, vars->x1s, sc)
- 
- static void _mpc_sbox_layer_bitsliced(mzd_local_t** out, mzd_local_t* const* in, view_t* view,
-                                       mzd_local_t* const* rvec, mask_t const* mask,
-                                       sbox_vars_t const* vars) {
-   bitsliced_step_1(SC_PROOF);
- 
--  mpc_clear(view->s, SC_PROOF);
-+  oqs_sig_picnic_mpc_clear(view->s, SC_PROOF);
-   // a & b
--  mpc_and(vars->r0m, vars->x0s, vars->x1s, vars->r2m, view, 0, vars->v);
-+  oqs_sig_picnic_mpc_and(vars->r0m, vars->x0s, vars->x1s, vars->r2m, view, 0, vars->v);
-   // b & c
--  mpc_and(vars->r2m, vars->x1s, vars->x2m, vars->r1s, view, 1, vars->v);
-+  oqs_sig_picnic_mpc_and(vars->r2m, vars->x1s, vars->x2m, vars->r1s, view, 1, vars->v);
-   // c & a
--  mpc_and(vars->r1m, vars->x0s, vars->x2m, vars->r0s, view, 2, vars->v);
-+  oqs_sig_picnic_mpc_and(vars->r1m, vars->x0s, vars->x2m, vars->r0s, view, 2, vars->v);
- 
-   bitsliced_step_2(SC_PROOF);
- }
-@@ -99,13 +99,13 @@ static void _mpc_sbox_layer_bitsliced_verify(mzd_local_t** out, mzd_local_t* con
+@@ -102,13 +102,13 @@ static void _mpc_sbox_layer_bitsliced_verify(mzd_local_t** out, mzd_local_t* con
                                               mask_t const* mask, sbox_vars_t const* vars) {
    bitsliced_step_1(SC_VERIFY);
  
@@ -1206,7 +1081,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_step_2(SC_VERIFY);
  }
-@@ -163,9 +163,9 @@ static void _mpc_sbox_layer_bitsliced_uint64(uint64_t* out, uint64_t const* in,
+@@ -167,9 +167,9 @@ static void _mpc_sbox_layer_bitsliced_uint64(uint64_t* out, uint64_t const* in,
    bitsliced_step_1_uint64(SC_PROOF);
  
    memset(view->t, 0, sizeof(uint64_t) * SC_PROOF);
@@ -1219,7 +1094,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_step_2_uint64(SC_PROOF);
  }
-@@ -175,9 +175,9 @@ static void _mpc_sbox_layer_bitsliced_verify_uint64(uint64_t* out, uint64_t cons
+@@ -179,9 +179,9 @@ static void _mpc_sbox_layer_bitsliced_verify_uint64(uint64_t* out, uint64_t cons
    bitsliced_step_1_uint64(SC_VERIFY);
  
    view->t[0] = 0;
@@ -1232,8 +1107,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_step_2_uint64(SC_VERIFY);
  }
-@@ -329,10 +329,10 @@ _mpc_sbox_layer_bitsliced_128_sse(mzd_local_t** out, mzd_local_t* const* in, vie
-                                   mzd_local_t** rvec, mask_t const* mask) {
+@@ -335,10 +335,10 @@ static void _mpc_sbox_layer_bitsliced_128_sse(mzd_local_t** out, mzd_local_t* co
+                                               mask_t const* mask) {
    bitsliced_mm_step_1(SC_PROOF, __m128i, _mm_and_si128, mm128_shift_left);
  
 -  mpc_clear(view->s, SC_PROOF);
@@ -1247,8 +1122,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2(SC_PROOF, __m128i, _mm_and_si128, _mm_xor_si128, mm128_shift_right);
  }
-@@ -342,10 +342,10 @@ _mpc_sbox_layer_bitsliced_verify_128_sse(mzd_local_t** out, mzd_local_t* const*
-                                          mzd_local_t** rvec, mask_t const* mask) {
+@@ -349,10 +349,10 @@ static void _mpc_sbox_layer_bitsliced_verify_128_sse(mzd_local_t** out, mzd_loca
+                                                      mask_t const* mask) {
    bitsliced_mm_step_1(SC_VERIFY, __m128i, _mm_and_si128, mm128_shift_left);
  
 -  mzd_local_clear(view->s[0]);
@@ -1262,8 +1137,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2(SC_VERIFY, __m128i, _mm_and_si128, _mm_xor_si128, mm128_shift_right);
  }
-@@ -355,10 +355,10 @@ _mpc_sbox_layer_bitsliced_256_sse(mzd_local_t** out, mzd_local_t* const* in, vie
-                                   mzd_local_t** rvec, mask_t const* mask) {
+@@ -363,10 +363,10 @@ static void _mpc_sbox_layer_bitsliced_256_sse(mzd_local_t** out, mzd_local_t* co
+                                               mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_PROOF, __m128i, mm256_and_sse, mm256_shift_left_sse, 2);
  
 -  mpc_clear(view->s, SC_PROOF);
@@ -1277,8 +1152,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_PROOF, __m128i, mm256_and_sse, mm256_xor_sse,
                                        mm256_shift_right_sse, 2);
-@@ -369,10 +369,10 @@ _mpc_sbox_layer_bitsliced_verify_256_sse(mzd_local_t** out, mzd_local_t* const*
-                                          mzd_local_t** rvec, mask_t const* mask) {
+@@ -378,10 +378,10 @@ static void _mpc_sbox_layer_bitsliced_verify_256_sse(mzd_local_t** out, mzd_loca
+                                                      mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_VERIFY, __m128i, mm256_and_sse, mm256_shift_left_sse, 2);
  
 -  mzd_local_clear(view->s[0]);
@@ -1292,8 +1167,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_VERIFY, __m128i, mm256_and_sse, mm256_xor_sse,
                                        mm256_shift_right_sse, 2);
-@@ -384,10 +384,10 @@ _mpc_sbox_layer_bitsliced_384_sse(mzd_local_t** out, mzd_local_t* const* in, vie
-                                   mzd_local_t** rvec, mask_t const* mask) {
+@@ -393,10 +393,10 @@ static void _mpc_sbox_layer_bitsliced_384_sse(mzd_local_t** out, mzd_local_t* co
+                                               mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_PROOF, __m128i, mm384_and_sse, mm384_shift_left_sse, 3);
  
 -  mpc_clear(view->s, SC_PROOF);
@@ -1307,8 +1182,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_PROOF, __m128i, mm384_and_sse, mm384_xor_sse,
                                        mm384_shift_right_sse, 3);
-@@ -398,10 +398,10 @@ _mpc_sbox_layer_bitsliced_verify_384_sse(mzd_local_t** out, mzd_local_t* const*
-                                          mzd_local_t** rvec, mask_t const* mask) {
+@@ -408,10 +408,10 @@ static void _mpc_sbox_layer_bitsliced_verify_384_sse(mzd_local_t** out, mzd_loca
+                                                      mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_VERIFY, __m128i, mm384_and_sse, mm384_shift_left_sse, 3);
  
 -  mzd_local_clear(view->s[0]);
@@ -1322,8 +1197,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_VERIFY, __m128i, mm384_and_sse, mm384_xor_sse,
                                        mm384_shift_right_sse, 3);
-@@ -412,10 +412,10 @@ _mpc_sbox_layer_bitsliced_512_sse(mzd_local_t** out, mzd_local_t* const* in, vie
-                                   mzd_local_t** rvec, mask_t const* mask) {
+@@ -423,10 +423,10 @@ static void _mpc_sbox_layer_bitsliced_512_sse(mzd_local_t** out, mzd_local_t* co
+                                               mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_PROOF, __m128i, mm512_and_sse, mm512_shift_left_sse, 4);
  
 -  mpc_clear(view->s, SC_PROOF);
@@ -1337,8 +1212,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_PROOF, __m128i, mm512_and_sse, mm512_xor_sse,
                                        mm512_shift_right_sse, 4);
-@@ -426,10 +426,10 @@ _mpc_sbox_layer_bitsliced_verify_512_sse(mzd_local_t** out, mzd_local_t* const*
-                                          mzd_local_t** rvec, mask_t const* mask) {
+@@ -438,10 +438,10 @@ static void _mpc_sbox_layer_bitsliced_verify_512_sse(mzd_local_t** out, mzd_loca
+                                                      mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_VERIFY, __m128i, mm512_and_sse, mm512_shift_left_sse, 4);
  
 -  mzd_local_clear(view->s[0]);
@@ -1352,8 +1227,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_VERIFY, __m128i, mm512_and_sse, mm512_xor_sse,
                                        mm512_shift_right_sse, 4);
-@@ -443,10 +443,10 @@ _mpc_sbox_layer_bitsliced_256_avx(mzd_local_t** out, mzd_local_t* const* in, vie
-                                   mzd_local_t** rvec, mask_t const* mask) {
+@@ -457,10 +457,10 @@ static void _mpc_sbox_layer_bitsliced_256_avx(mzd_local_t** out, mzd_local_t* co
+                                               mask_t const* mask) {
    bitsliced_mm_step_1(SC_PROOF, __m256i, _mm256_and_si256, mm256_shift_left);
  
 -  mpc_clear(view->s, SC_PROOF);
@@ -1367,8 +1242,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2(SC_PROOF, __m256i, _mm256_and_si256, _mm256_xor_si256, mm256_shift_right);
  }
-@@ -456,10 +456,10 @@ _mpc_sbox_layer_bitsliced_verify_256_avx(mzd_local_t** out, mzd_local_t** in, vi
-                                          mzd_local_t* const* rvec, mask_t const* mask) {
+@@ -471,10 +471,10 @@ static void _mpc_sbox_layer_bitsliced_verify_256_avx(mzd_local_t** out, mzd_loca
+                                                      mask_t const* mask) {
    bitsliced_mm_step_1(SC_VERIFY, __m256i, _mm256_and_si256, mm256_shift_left);
  
 -  mzd_local_clear(view->s[0]);
@@ -1382,8 +1257,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2(SC_VERIFY, __m256i, _mm256_and_si256, _mm256_xor_si256, mm256_shift_right);
  }
-@@ -470,10 +470,10 @@ _mpc_sbox_layer_bitsliced_512_avx(mzd_local_t** out, mzd_local_t* const* in, vie
-                                   mzd_local_t** rvec, mask_t const* mask) {
+@@ -485,10 +485,10 @@ static void _mpc_sbox_layer_bitsliced_512_avx(mzd_local_t** out, mzd_local_t* co
+                                               mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_PROOF, __m256i, mm512_and_avx, mm512_shift_left_avx, 2);
  
 -  mpc_clear(view->s, SC_PROOF);
@@ -1397,8 +1272,8 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_PROOF, __m256i, mm512_and_avx, mm512_xor_avx,
                                        mm512_shift_right_avx, 2);
-@@ -484,10 +484,10 @@ _mpc_sbox_layer_bitsliced_verify_512_avx(mzd_local_t** out, mzd_local_t** in, vi
-                                          mzd_local_t* const* rvec, mask_t const* mask) {
+@@ -500,10 +500,10 @@ static void _mpc_sbox_layer_bitsliced_verify_512_avx(mzd_local_t** out, mzd_loca
+                                                      mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_VERIFY, __m256i, mm512_and_avx, mm512_shift_left_avx, 2);
  
 -  mzd_local_clear(view->s[0]);
@@ -1412,7 +1287,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_VERIFY, __m256i, mm512_and_avx, mm512_xor_avx,
                                        mm512_shift_right_avx, 2);
-@@ -501,10 +501,10 @@ static void _mpc_sbox_layer_bitsliced_128_neon(mzd_local_t** out, mzd_local_t* c
+@@ -518,10 +518,10 @@ static void _mpc_sbox_layer_bitsliced_128_neon(mzd_local_t** out, mzd_local_t* c
                                                 mask_t const* mask) {
    bitsliced_mm_step_1(SC_PROOF, uint32x4_t, vandq_u32, mm128_shift_left);
  
@@ -1427,7 +1302,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2(SC_PROOF, uint32x4_t, vandq_u32, veorq_u32, mm128_shift_right);
  }
-@@ -514,10 +514,10 @@ static void _mpc_sbox_layer_bitsliced_verify_128_neon(mzd_local_t** out, mzd_loc
+@@ -531,10 +531,10 @@ static void _mpc_sbox_layer_bitsliced_verify_128_neon(mzd_local_t** out, mzd_loc
                                                        mask_t const* mask) {
    bitsliced_mm_step_1(SC_VERIFY, uint32x4_t, vandq_u32, mm128_shift_left);
  
@@ -1442,7 +1317,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2(SC_VERIFY, uint32x4_t, vandq_u32, veorq_u32, mm128_shift_right);
  }
-@@ -527,10 +527,10 @@ static void _mpc_sbox_layer_bitsliced_256_neon(mzd_local_t** out, mzd_local_t* c
+@@ -544,10 +544,10 @@ static void _mpc_sbox_layer_bitsliced_256_neon(mzd_local_t** out, mzd_local_t* c
                                                 mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_PROOF, uint32x4_t, mm256_and, mm256_shift_left, 2);
  
@@ -1457,7 +1332,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_PROOF, uint32x4_t, mm256_and, mm256_xor, mm256_shift_right,
                                        2);
-@@ -541,10 +541,10 @@ static void _mpc_sbox_layer_bitsliced_verify_256_neon(mzd_local_t** out, mzd_loc
+@@ -558,10 +558,10 @@ static void _mpc_sbox_layer_bitsliced_verify_256_neon(mzd_local_t** out, mzd_loc
                                                        mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_VERIFY, uint32x4_t, mm256_and, mm256_shift_left, 2);
  
@@ -1472,7 +1347,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_VERIFY, uint32x4_t, mm256_and, mm256_xor,
                                        mm256_shift_right, 2);
-@@ -556,10 +556,10 @@ static void _mpc_sbox_layer_bitsliced_384_neon(mzd_local_t** out, mzd_local_t* c
+@@ -572,10 +572,10 @@ static void _mpc_sbox_layer_bitsliced_384_neon(mzd_local_t** out, mzd_local_t* c
                                                 mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_PROOF, uint32x4_t, mm384_and, mm384_shift_left, 3);
  
@@ -1487,7 +1362,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_PROOF, uint32x4_t, mm384_and, mm384_xor, mm384_shift_right,
                                        3);
-@@ -570,10 +570,10 @@ static void _mpc_sbox_layer_bitsliced_verify_384_neon(mzd_local_t** out, mzd_loc
+@@ -586,10 +586,10 @@ static void _mpc_sbox_layer_bitsliced_verify_384_neon(mzd_local_t** out, mzd_loc
                                                        mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_VERIFY, uint32x4_t, mm384_and, mm384_shift_left, 3);
  
@@ -1502,7 +1377,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_VERIFY, uint32x4_t, mm384_and, mm384_xor,
                                        mm384_shift_right, 3);
-@@ -585,10 +585,10 @@ static void _mpc_sbox_layer_bitsliced_512_neon(mzd_local_t** out, mzd_local_t* c
+@@ -601,10 +601,10 @@ static void _mpc_sbox_layer_bitsliced_512_neon(mzd_local_t** out, mzd_local_t* c
                                                 mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_PROOF, uint32x4_t, mm512_and, mm512_shift_left, 4);
  
@@ -1517,7 +1392,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_PROOF, uint32x4_t, mm512_and, mm512_xor, mm512_shift_right,
                                        4);
-@@ -599,10 +599,10 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
+@@ -615,10 +615,10 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
                                                        mask_t const* mask) {
    bitsliced_mm_step_1_multiple_of_128(SC_VERIFY, uint32x4_t, mm512_and, mm512_shift_left, 4);
  
@@ -1532,7 +1407,7 @@ index c86f614..9ad0091 100644
  
    bitsliced_mm_step_2_multiple_of_128(SC_VERIFY, uint32x4_t, mm512_and, mm512_xor,
                                        mm512_shift_right, 4);
-@@ -670,7 +670,7 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
+@@ -700,7 +700,7 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
  #define loop_optimize(sbox_args, sbox, sbox_selector, no_scr, no_scr_active, const_mat_mul_func,   \
                        add_func, mul_more_cols, const_addmat_mul_func, ch, shares)                  \
    mzd_local_t* nl_part[shares];                                                                    \
@@ -1541,7 +1416,7 @@ index c86f614..9ad0091 100644
    MPC_LOOP(mul_more_cols, nl_part, lowmc_key, lowmc->precomputed_non_linear_part_##no_scr,         \
             shares);                                                                                \
    word mask = 0x00000000FFFFFFFF;                                                                  \
-@@ -687,14 +687,14 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
+@@ -715,7 +715,7 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
      MPC_LOOP(const_mat_mul_func, x, y, round->l_##no_scr, shares);                                 \
      MPC_IF_ELSE(add_func, x, x, round->constant, shares, ch);                                      \
    }                                                                                                \
@@ -1550,15 +1425,7 @@ index c86f614..9ad0091 100644
  
  #define loop(sbox_args, sbox, sbox_selector, no_scr, no_scr_active, const_mat_mul_func, add_func,  \
               mul_more_cols, const_addmat_mul_func, ch, shares)                                     \
-   for (unsigned i = 0; i < lowmc->r; ++i, ++views, ++round) {                                      \
-     R(sbox_selector, shares)                                                                       \
-     SBOX(sbox_args, sbox, sbox_selector, y, x, views, r, &lowmc->mask, &vars, lowmc->n, shares);   \
--    mpc_clear(x, shares);                                                                          \
-+    oqs_sig_picnic_mpc_clear(x, shares);						\
-     MPC_LOOP(const_mat_mul_func, x, y, round->l_##no_scr, shares);                                 \
-     MPC_IF_ELSE(add_func, x, x, round->constant, shares, ch);                                      \
-     no_scr_active(const_mat_mul_func, add_func, const_addmat_mul_func, shares);                    \
-@@ -711,12 +711,12 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
+@@ -739,12 +739,12 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
  #define _mpc_lowmc_call_bitsliced(ch, sbox_args, sbox, sbox_selector, no_scr, no_scr_active,       \
                                    optimize, const_mat_mul_func, add_func, mul_more_cols,           \
                                    const_addmat_mul_func)                                           \
@@ -1573,7 +1440,7 @@ index c86f614..9ad0091 100644
                                                                                                     \
    MPC_LOOP(const_mat_mul_func, x, lowmc_key, lowmc->k0_##no_scr, SC_PROOF);                        \
    MPC_IF_ELSE(add_func, x, x, p, SC_PROOF, ch);                                                    \
-@@ -726,7 +726,7 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
+@@ -754,7 +754,7 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
    loop##optimize(sbox_args, sbox, sbox_selector, no_scr, no_scr_active, const_mat_mul_func,        \
                   add_func, mul_more_cols, const_addmat_mul_func, ch, SC_PROOF)                     \
        VARS_FREE_##sbox_args;                                                                       \
@@ -1582,7 +1449,7 @@ index c86f614..9ad0091 100644
  
  #define init_key mzd_local_t* const* lowmc_key = &in_out_shares->s[0];
  
-@@ -739,7 +739,7 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
+@@ -767,7 +767,7 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
    VARS_##sbox_args(SC_VERIFY);                                                                     \
    mzd_local_t* x[2 * SC_VERIFY];                                                                   \
    mzd_local_t** y = &x[SC_VERIFY];                                                                 \
@@ -1591,7 +1458,7 @@ index c86f614..9ad0091 100644
                                                                                                     \
    MPC_LOOP(const_mat_mul_func, x, lowmc_key, lowmc->k0_##no_scr, SC_VERIFY);                       \
    MPC_IF_ELSE(add_func, x, x, p, SC_VERIFY, ch);                                                   \
-@@ -748,8 +748,8 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
+@@ -776,8 +776,8 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
                                                                                                     \
    loop##optimize(sbox_args, sbox, sbox_selector, no_scr, no_scr_active, const_mat_mul_func,        \
                   add_func, mul_more_cols, const_addmat_mul_func, ch, SC_VERIFY);                   \
@@ -1602,116 +1469,134 @@ index c86f614..9ad0091 100644
    VARS_FREE_##sbox_args;
  
  static void mpc_lowmc_call(lowmc_t const* lowmc, mpc_lowmc_key_t* lowmc_key, mzd_local_t const* p,
-@@ -758,38 +758,38 @@ static void mpc_lowmc_call(lowmc_t const* lowmc, mpc_lowmc_key_t* lowmc_key, mzd
- #ifdef MUL_M4RI
+@@ -787,25 +787,25 @@ static void mpc_lowmc_call(lowmc_t const* lowmc, mpc_lowmc_key_t* lowmc_key, mzd
+ #ifdef WITH_CUSTOM_INSTANCES
    if (lowmc->m != 10) {
      _mpc_lowmc_call_bitsliced(0, 6, _mpc_sbox_layer_bitsliced, mzd, lookup, noscr, _optimize,
 -                              mzd_mul_vl_general, mzd_xor_general, mzd_mul_vl_general,
--                              mzd_addmul_vl_general);
-+                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_vl_general,
-+                              oqs_sig_picnic_mzd_addmul_vl_general);
-   } else {
++                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general,
+                               mzd_addmul_vl_general);
+   } else
+ #endif
+   {
 -    _mpc_lowmc_call_bitsliced(0, 6, , uint64, lookup, noscr, _optimize, mzd_mul_vl_general,
 -                              mzd_xor_general, mzd_mul_vl_general, mzd_addmul_vl_general);
 +    _mpc_lowmc_call_bitsliced(0, 6, , uint64, lookup, noscr, _optimize, oqs_sig_picnic_mzd_mul_vl_general,
-+                              oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_addmul_vl_general);
++                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, mzd_addmul_vl_general);
    }
  #else
+ #ifdef WITH_CUSTOM_INSTANCES
    if (lowmc->m != 10) {
      _mpc_lowmc_call_bitsliced(0, 6, _mpc_sbox_layer_bitsliced, mzd, matrix, scr, _optimize,
 -                              mzd_mul_v_general, mzd_xor_general, mzd_mul_v_general,
 -                              mzd_addmul_v_general);
-+                              oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_v_general,
++                              oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_v_general,
 +                              oqs_sig_picnic_mzd_addmul_v_general);
-   } else {
+   } else
+ #endif
+   {
 -    _mpc_lowmc_call_bitsliced(0, 6, , uint64, matrix, scr, _optimize, mzd_mul_v_general,
 -                              mzd_xor_general, mzd_mul_v_general, mzd_addmul_v_general);
 +    _mpc_lowmc_call_bitsliced(0, 6, , uint64, matrix, scr, _optimize, oqs_sig_picnic_mzd_mul_v_general,
-+                              oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
++                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
    }
  #endif
  #else
- #ifdef MUL_M4RI
+@@ -813,23 +813,23 @@ static void mpc_lowmc_call(lowmc_t const* lowmc, mpc_lowmc_key_t* lowmc_key, mzd
+ #ifdef WITH_CUSTOM_INSTANCES
    if (lowmc->m != 10) {
      _mpc_lowmc_call_bitsliced(0, 6, _mpc_sbox_layer_bitsliced, mzd, lookup, noscr, ,
 -                              mzd_mul_vl_general, mzd_xor_general, , mzd_addmul_vl_general);
-+                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general, , oqs_sig_picnic_mzd_addmul_vl_general);
-   } else {
++                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, , mzd_addmul_vl_general);
+   } else
+ #endif
+   {
 -    _mpc_lowmc_call_bitsliced(0, 6, , uint64, lookup, noscr, , mzd_mul_vl_general, mzd_xor_general,
--                              , mzd_addmul_vl_general);
-+    _mpc_lowmc_call_bitsliced(0, 6, , uint64, lookup, noscr, , oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general,
-+                              , oqs_sig_picnic_mzd_addmul_vl_general);
++    _mpc_lowmc_call_bitsliced(0, 6, , uint64, lookup, noscr, , oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general,
+                               , mzd_addmul_vl_general);
    }
  #else
+ #ifdef WITH_CUSTOM_INSTANCES
    if (lowmc->m != 10) {
      _mpc_lowmc_call_bitsliced(0, 6, _mpc_sbox_layer_bitsliced, mzd, matrix, scr, ,
 -                              mzd_mul_v_general, mzd_xor_general, , mzd_addmul_v_general);
-+                              oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general, , oqs_sig_picnic_mzd_addmul_v_general);
-   } else {
++                              oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general, , oqs_sig_picnic_mzd_addmul_v_general);
+   } else
+ #endif
+   {
 -    _mpc_lowmc_call_bitsliced(0, 6, , uint64, matrix, scr, , mzd_mul_v_general, mzd_xor_general, ,
 -                              mzd_addmul_v_general);
-+    _mpc_lowmc_call_bitsliced(0, 6, , uint64, matrix, scr, , oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general, ,
++    _mpc_lowmc_call_bitsliced(0, 6, , uint64, matrix, scr, , oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general, ,
 +                              oqs_sig_picnic_mzd_addmul_v_general);
    }
  #endif
  #endif
-@@ -801,40 +801,40 @@ static void mpc_lowmc_call_verify(lowmc_t const* lowmc, mzd_local_t const* p, vi
- #ifdef MUL_M4RI
+@@ -842,26 +842,26 @@ static void mpc_lowmc_call_verify(lowmc_t const* lowmc, mzd_local_t const* p, vi
+ #ifdef WITH_CUSTOM_INSTANCES
    if (lowmc->m != 10) {
      _mpc_lowmc_call_bitsliced_verify_m(ch, 6, _mpc_sbox_layer_bitsliced_verify, mzd, lookup, noscr,
 -                                       _optimize, mzd_mul_vl_general, mzd_xor_general,
 -                                       mzd_mul_vl_general, mzd_addmul_vl_general);
-+                                       _optimize, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general,
-+                                       oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_addmul_vl_general);
-   } else {
++                                       _optimize, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general,
++                                       oqs_sig_picnic_mzd_mul_vl_general, mzd_addmul_vl_general);
+   } else
+ #endif
+   {
      _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, lookup, noscr, _optimize,
 -                                       mzd_mul_vl_general, mzd_xor_general, mzd_mul_vl_general,
--                                       mzd_addmul_vl_general);
-+                                       oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_vl_general,
-+                                       oqs_sig_picnic_mzd_addmul_vl_general);
++                                       oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general,
+                                        mzd_addmul_vl_general);
    }
  #else
+ #ifdef WITH_CUSTOM_INSTANCES
    if (lowmc->m != 10) {
      _mpc_lowmc_call_bitsliced_verify_m(ch, 6, _mpc_sbox_layer_bitsliced_verify, mzd, matrix, scr,
 -                                       _optimize, mzd_mul_v_general, mzd_xor_general,
 -                                       mzd_mul_v_general, mzd_addmul_v_general);
-+                                       _optimize, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general,
++                                       _optimize, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general,
 +                                       oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
-   } else {
+   } else
+ #endif
+   {
 -    _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, matrix, scr, _optimize, mzd_mul_v_general,
 -                                       mzd_xor_general, mzd_mul_v_general, mzd_addmul_v_general);
 +    _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, matrix, scr, _optimize, oqs_sig_picnic_mzd_mul_v_general,
-+                                       oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
++                                       oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
    }
  #endif
  #else
- #ifdef MUL_M4RI
+@@ -869,24 +869,24 @@ static void mpc_lowmc_call_verify(lowmc_t const* lowmc, mzd_local_t const* p, vi
+ #ifdef WITH_CUSTOM_INSTANCES
    if (lowmc->m != 10) {
      _mpc_lowmc_call_bitsliced_verify_m(ch, 6, _mpc_sbox_layer_bitsliced_verify, mzd, lookup, noscr,
 -                                       , mzd_mul_vl_general, mzd_xor_general, ,
--                                       mzd_addmul_vl_general);
-+                                       , oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general, ,
-+                                       oqs_sig_picnic_mzd_addmul_vl_general);
-   } else {
++                                       , oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, ,
+                                        mzd_addmul_vl_general);
+   } else
+ #endif
+   {
 -    _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, lookup, noscr, , mzd_mul_vl_general,
 -                                       mzd_xor_general, , mzd_addmul_vl_general);
 +    _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, lookup, noscr, , oqs_sig_picnic_mzd_mul_vl_general,
-+                                       oqs_sig_picnic_mzd_xor_general, , oqs_sig_picnic_mzd_addmul_vl_general);
++                                       oqs_sig_picnic_mzd_mul_vl_general, , mzd_addmul_vl_general);
    }
  #else
+ #ifdef WITH_CUSTOM_INSTANCES
    if (lowmc->m != 10) {
      _mpc_lowmc_call_bitsliced_verify_m(ch, 6, _mpc_sbox_layer_bitsliced_verify, mzd, matrix, scr, ,
 -                                       mzd_mul_v_general, mzd_xor_general, , mzd_addmul_v_general);
-+                                       oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general, , oqs_sig_picnic_mzd_addmul_v_general);
-   } else {
++                                       oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general, , oqs_sig_picnic_mzd_addmul_v_general);
+   } else
+ #endif
+   {
 -    _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, matrix, scr, , mzd_mul_v_general,
 -                                       mzd_xor_general, , mzd_addmul_v_general);
 +    _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, matrix, scr, , oqs_sig_picnic_mzd_mul_v_general,
-+                                       oqs_sig_picnic_mzd_xor_general, , oqs_sig_picnic_mzd_addmul_v_general);
++                                       mzd_xor_general, , oqs_sig_picnic_mzd_addmul_v_general);
    }
  #endif
  #endif
-@@ -949,67 +949,67 @@ static void mpc_lowmc_call_verify(lowmc_t const* lowmc, mzd_local_t const* p, vi
+@@ -1026,67 +1026,67 @@ static void mpc_lowmc_call_verify(lowmc_t const* lowmc, mzd_local_t const* p, vi
  #ifdef WITH_SSE2
  mpc_lowmc_call_def(mpc_lowmc_call_128_sse, mpc_lowmc_call_verify_128_sse,
                     _mpc_sbox_layer_bitsliced_128_sse, _mpc_sbox_layer_bitsliced_verify_128_sse,
@@ -1805,7 +1690,7 @@ index c86f614..9ad0091 100644
      free(vars->storage);
      memset(vars, 0, sizeof(*vars));
    }
-@@ -1017,7 +1017,7 @@ static void sbox_vars_clear(sbox_vars_t* vars) {
+@@ -1094,7 +1094,7 @@ static void sbox_vars_clear(sbox_vars_t* vars) {
  
  static sbox_vars_t* sbox_vars_init(sbox_vars_t* vars, uint32_t n, unsigned sc) {
    vars->storage = calloc(11 * sc, sizeof(mzd_local_t*));
@@ -1814,7 +1699,7 @@ index c86f614..9ad0091 100644
  
    for (unsigned int i = 0; i < sc; ++i) {
      vars->x0m[i] = vars->storage[11 * i + 0];
-@@ -1042,7 +1042,7 @@ static sbox_vars_t* sbox_vars_init(sbox_vars_t* vars, uint32_t n, unsigned sc) {
+@@ -1119,7 +1119,7 @@ static sbox_vars_t* sbox_vars_init(sbox_vars_t* vars, uint32_t n, unsigned sc) {
  #define general_or_10(l, f) f##_10
  #endif
  
@@ -1823,7 +1708,7 @@ index c86f614..9ad0091 100644
  #ifdef WITH_OPT
  #ifdef WITH_SSE2
    if (CPU_SUPPORTS_SSE2 && lowmc->n <= 128) {
-@@ -1098,7 +1098,7 @@ lowmc_implementation_f get_lowmc_implementation(const lowmc_t* lowmc) {
+@@ -1176,7 +1176,7 @@ lowmc_implementation_f get_lowmc_implementation(const lowmc_t* lowmc) {
    return mpc_lowmc_call;
  }
  
@@ -1847,10 +1732,10 @@ index 39f5d95..de6b38f 100644
  
  #endif
 diff --git a/mzd_additional.c b/mzd_additional.c
-index 54bb126..256af4b 100644
+index a0e362d..91d15b8 100644
 --- a/mzd_additional.c
 +++ b/mzd_additional.c
-@@ -52,7 +52,7 @@ static uint32_t calculate_rowstride(uint32_t width) {
+@@ -55,7 +55,7 @@ static uint32_t calculate_rowstride(uint32_t width) {
  // In mzd_local_init_multiple we do the same, but store n mzd_local_t instances in one
  // memory block.
  
@@ -1859,7 +1744,7 @@ index 54bb126..256af4b 100644
    const uint32_t width     = (c + 64 - 1) / 64;
    const uint32_t rowstride = calculate_rowstride(width);
  
-@@ -76,11 +76,11 @@ mzd_local_t* mzd_local_init_ex(uint32_t r, uint32_t c, bool clear) {
+@@ -79,11 +79,11 @@ mzd_local_t* mzd_local_init_ex(uint32_t r, uint32_t c, bool clear) {
    return A;
  }
  
@@ -1873,7 +1758,7 @@ index 54bb126..256af4b 100644
    const uint32_t width     = (c + 64 - 1) / 64;
    const uint32_t rowstride = calculate_rowstride(width);
  
-@@ -108,19 +108,19 @@ void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, uint32_t r, uint32_
+@@ -111,19 +111,19 @@ void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, uint32_t r, uint32_
    }
  }
  
@@ -1896,7 +1781,7 @@ index 54bb126..256af4b 100644
    }
  
    memcpy(ASSUME_ALIGNED(FIRST_ROW(dst), 32), ASSUME_ALIGNED(CONST_FIRST_ROW(src), 32),
-@@ -128,13 +128,13 @@ mzd_local_t* mzd_local_copy(mzd_local_t* dst, mzd_local_t const* src) {
+@@ -131,13 +131,13 @@ mzd_local_t* mzd_local_copy(mzd_local_t* dst, mzd_local_t const* src) {
    return dst;
  }
  
@@ -1913,7 +1798,7 @@ index 54bb126..256af4b 100644
      return;
    }
  
-@@ -151,9 +151,9 @@ void mzd_shift_right(mzd_local_t* res, mzd_local_t const* val, unsigned count) {
+@@ -154,9 +154,9 @@ void mzd_shift_right(mzd_local_t* res, mzd_local_t const* val, unsigned count) {
    *resptr = *valptr >> count;
  }
  
@@ -1925,34 +1810,7 @@ index 54bb126..256af4b 100644
      return;
    }
  
-@@ -173,7 +173,7 @@ void mzd_shift_left(mzd_local_t* res, mzd_local_t const* val, unsigned count) {
- #ifdef WITH_OPT
- #ifdef WITH_SSE2
- __attribute__((target("sse2"))) static inline mzd_local_t*
--mzd_and_sse(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-+oqs_sig_picnic_mzd_and_sse(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-   unsigned int width    = first->rowstride;
-   word* resptr          = FIRST_ROW(res);
-   word const* firstptr  = CONST_FIRST_ROW(first);
-@@ -194,7 +194,7 @@ mzd_and_sse(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* secon
- 
- #ifdef WITH_AVX2
- __attribute__((target("avx2"))) static inline mzd_local_t*
--mzd_and_avx(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-+oqs_sig_picnic_mzd_and_avx(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-   unsigned int width    = first->rowstride;
-   word* resptr          = FIRST_ROW(res);
-   word const* firstptr  = CONST_FIRST_ROW(first);
-@@ -214,7 +214,7 @@ mzd_and_avx(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* secon
- #endif
- 
- #ifdef WITH_NEON
--static inline mzd_local_t* mzd_and_neon(mzd_local_t* res, mzd_local_t const* first,
-+static inline mzd_local_t* oqs_sig_picnic_mzd_and_neon(mzd_local_t* res, mzd_local_t const* first,
-                                         mzd_local_t const* second) {
-   unsigned int width    = first->rowstride;
-   word* resptr          = FIRST_ROW(res);
-@@ -235,21 +235,21 @@ static inline mzd_local_t* mzd_and_neon(mzd_local_t* res, mzd_local_t const* fir
+@@ -240,7 +240,7 @@ static inline mzd_local_t* mzd_and_neon(mzd_local_t* res, mzd_local_t const* fir
  #endif
  #endif
  
@@ -1961,51 +1819,34 @@ index 54bb126..256af4b 100644
  #ifdef WITH_OPT
  #ifdef WITH_AVX2
    if (CPU_SUPPORTS_AVX2 && first->ncols >= 256 && ((first->ncols & (word_size_bits - 1)) == 0)) {
--    return mzd_and_avx(res, first, second);
-+    return oqs_sig_picnic_mzd_and_avx(res, first, second);
-   }
- #endif
- #ifdef WITH_SSE2
-   if (CPU_SUPPORTS_SSE2 && ((first->ncols & (word_size_bits - 1)) == 0)) {
--    return mzd_and_sse(res, first, second);
-+    return oqs_sig_picnic_mzd_and_sse(res, first, second);
-   }
- #endif
- #ifdef WITH_NEON
-   if (CPU_SUPPORTS_NEON && first->ncols % ((first->ncols & (word_size_bits - 1)) == 0)) {
--    return mzd_and_neon(res, first, second);
-+    return oqs_sig_picnic_mzd_and_neon(res, first, second);
-   }
- #endif
- #endif
-@@ -269,7 +269,7 @@ mzd_local_t* mzd_and(mzd_local_t* res, mzd_local_t const* first, mzd_local_t con
+@@ -274,7 +274,7 @@ mzd_local_t* mzd_and(mzd_local_t* res, mzd_local_t const* first, mzd_local_t con
  #ifdef WITH_OPT
  #ifdef WITH_SSE2
- __attribute__((target("sse2"))) mzd_local_t*
--mzd_xor_sse(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-+oqs_sig_picnic_mzd_xor_sse(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+ ATTRIBUTE_TARGET("sse2")
+-mzd_local_t* mzd_xor_sse(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
++mzd_local_t* oqs_sig_picnic_mzd_xor_sse(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
    unsigned int width    = first->rowstride;
    word* resptr          = FIRST_ROW(res);
    word const* firstptr  = CONST_FIRST_ROW(first);
-@@ -290,7 +290,7 @@ mzd_xor_sse(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* secon
+@@ -295,7 +295,7 @@ mzd_local_t* mzd_xor_sse(mzd_local_t* res, mzd_local_t const* first, mzd_local_t
  
  #ifdef WITH_AVX2
- __attribute__((target("avx2"))) mzd_local_t*
--mzd_xor_avx(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-+oqs_sig_picnic_mzd_xor_avx(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+ ATTRIBUTE_TARGET("avx2")
+-mzd_local_t* mzd_xor_avx(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
++mzd_local_t* oqs_sig_picnic_mzd_xor_avx(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
    unsigned int width    = first->rowstride;
    word* resptr          = FIRST_ROW(res);
    word const* firstptr  = CONST_FIRST_ROW(first);
-@@ -309,7 +309,7 @@ mzd_xor_avx(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* secon
- }
+@@ -315,7 +315,7 @@ mzd_local_t* mzd_xor_avx(mzd_local_t* res, mzd_local_t const* first, mzd_local_t
  #endif
+ 
  #ifdef WITH_NEON
 -inline mzd_local_t* mzd_xor_neon(mzd_local_t* res, mzd_local_t const* first,
 +inline mzd_local_t* oqs_sig_picnic_mzd_xor_neon(mzd_local_t* res, mzd_local_t const* first,
                                   mzd_local_t const* second) {
    unsigned int width    = first->rowstride;
    word* resptr          = FIRST_ROW(res);
-@@ -330,28 +330,28 @@ inline mzd_local_t* mzd_xor_neon(mzd_local_t* res, mzd_local_t const* first,
+@@ -336,28 +336,28 @@ inline mzd_local_t* mzd_xor_neon(mzd_local_t* res, mzd_local_t const* first,
  #endif
  #endif
  
@@ -2040,7 +1881,7 @@ index 54bb126..256af4b 100644
                               mzd_local_t const* second) {
    unsigned int width    = first->width;
    word* resptr          = FIRST_ROW(res);
-@@ -365,38 +365,38 @@ mzd_local_t* mzd_xor_general(mzd_local_t* res, mzd_local_t const* first,
+@@ -371,37 +371,37 @@ mzd_local_t* mzd_xor_general(mzd_local_t* res, mzd_local_t const* first,
    return res;
  }
  
@@ -2073,43 +1914,42 @@ index 54bb126..256af4b 100644
  
  #ifdef WITH_OPT
  #ifdef WITH_SSE2
- 
- __attribute__((target("sse2"))) mzd_local_t*
--mzd_mul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+ ATTRIBUTE_TARGET("sse2")
+-mzd_local_t* mzd_mul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
 -  mzd_local_clear(c);
 -  return mzd_addmul_v_sse(c, v, A);
-+oqs_sig_picnic_mzd_mul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_mul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
 +  oqs_sig_picnic_mzd_local_clear(c);
 +  return oqs_sig_picnic_mzd_addmul_v_sse(c, v, A);
  }
  
- __attribute__((target("sse2"))) mzd_local_t*
--mzd_addmul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-+oqs_sig_picnic_mzd_addmul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+ ATTRIBUTE_TARGET("sse2")
+-mzd_local_t* mzd_addmul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_addmul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
    word* cptr                    = FIRST_ROW(c);
    word const* vptr              = CONST_FIRST_ROW(v);
    const unsigned int width      = v->width;
-@@ -423,13 +423,13 @@ mzd_addmul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+@@ -428,13 +428,13 @@ mzd_local_t* mzd_addmul_v_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t
  
  #ifdef WITH_AVX2
- __attribute__((target("avx2"))) mzd_local_t*
--mzd_mul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+ ATTRIBUTE_TARGET("avx2")
+-mzd_local_t* mzd_mul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
 -  mzd_local_clear(c);
 -  return mzd_addmul_v_avx(c, v, A);
-+oqs_sig_picnic_mzd_mul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_mul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
 +  oqs_sig_picnic_mzd_local_clear(c);
 +  return oqs_sig_picnic_mzd_addmul_v_avx(c, v, A);
  }
  
- __attribute__((target("avx2"))) mzd_local_t*
--mzd_addmul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-+oqs_sig_picnic_mzd_addmul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+ ATTRIBUTE_TARGET("avx2")
+-mzd_local_t* mzd_addmul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_addmul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
    word* cptr                    = FIRST_ROW(c);
    word const* vptr              = CONST_FIRST_ROW(v);
    const unsigned int width      = v->width;
-@@ -455,12 +455,12 @@ mzd_addmul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
- 
+@@ -460,12 +460,12 @@ mzd_local_t* mzd_addmul_v_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t
  #endif
+ 
  #ifdef WITH_NEON
 -mzd_local_t* mzd_mul_v_neon(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
 -  mzd_local_clear(c);
@@ -2124,8 +1964,8 @@ index 54bb126..256af4b 100644
    word* cptr                    = FIRST_ROW(c);
    word const* vptr              = CONST_FIRST_ROW(v);
    const unsigned int width      = v->width;
-@@ -487,7 +487,7 @@ inline mzd_local_t* mzd_addmul_v_neon(mzd_local_t* c, mzd_local_t const* v, mzd_
- 
+@@ -491,7 +491,7 @@ inline mzd_local_t* mzd_addmul_v_neon(mzd_local_t* c, mzd_local_t const* v, mzd_
+ #endif
  #endif
  
 -mzd_local_t* mzd_addmul_v(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
@@ -2133,7 +1973,7 @@ index 54bb126..256af4b 100644
    if (A->ncols != c->ncols || A->nrows != v->ncols) {
      // number of columns does not match
      return NULL;
-@@ -497,26 +497,26 @@ mzd_local_t* mzd_addmul_v(mzd_local_t* c, mzd_local_t const* v, mzd_local_t cons
+@@ -501,26 +501,26 @@ mzd_local_t* mzd_addmul_v(mzd_local_t* c, mzd_local_t const* v, mzd_local_t cons
    if (A->nrows % (sizeof(word) * 8) == 0) {
  #ifdef WITH_AVX2
      if (CPU_SUPPORTS_AVX2 && (A->ncols & 0xff) == 0) {
@@ -2165,7 +2005,7 @@ index 54bb126..256af4b 100644
  
    const unsigned int len       = A->width;
    const unsigned int rowstride = A->rowstride;
-@@ -543,7 +543,7 @@ mzd_local_t* mzd_addmul_v_general(mzd_local_t* c, mzd_local_t const* v, mzd_loca
+@@ -547,7 +547,7 @@ mzd_local_t* mzd_addmul_v_general(mzd_local_t* c, mzd_local_t const* v, mzd_loca
    return c;
  }
  
@@ -2174,7 +2014,7 @@ index 54bb126..256af4b 100644
    if (first == second) {
      return true;
    }
-@@ -583,8 +583,8 @@ static void xor_comb(const unsigned int len, word* Brow, mzd_local_t const* A,
+@@ -587,8 +587,8 @@ static void xor_comb(const unsigned int len, word* Brow, mzd_local_t const* A,
   * Pre-compute matrices for faster mzd_addmul_v computions.
   *
   */
@@ -2185,116 +2025,115 @@ index 54bb126..256af4b 100644
  
    const unsigned int len = A->width;
  
-@@ -604,7 +604,7 @@ mzd_local_t* mzd_precompute_matrix_lookup(mzd_local_t const* A) {
+@@ -608,7 +608,7 @@ mzd_local_t* mzd_precompute_matrix_lookup(mzd_local_t const* A) {
  #ifdef WITH_OPT
  #ifdef WITH_SSE2
- __attribute__((target("sse2"))) mzd_local_t*
--mzd_mul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-+oqs_sig_picnic_mzd_mul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-   word const* vptr                = __builtin_assume_aligned(CONST_FIRST_ROW(v), 16);
+ ATTRIBUTE_TARGET("sse2")
+-mzd_local_t* mzd_mul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_mul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+   word const* vptr                = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 16);
    const unsigned int width        = v->width;
    static const unsigned int moff2 = 256;
-@@ -626,13 +626,13 @@ mzd_mul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+@@ -630,13 +630,13 @@ mzd_local_t* mzd_mul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_
  }
  
- __attribute__((target("sse2"))) mzd_local_t*
--mzd_mul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+ ATTRIBUTE_TARGET("sse2")
+-mzd_local_t* mzd_mul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
 -  mzd_local_clear(c);
 -  return mzd_addmul_vl_sse(c, v, A);
-+oqs_sig_picnic_mzd_mul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_mul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
 +  oqs_sig_picnic_mzd_local_clear(c);
 +  return oqs_sig_picnic_mzd_addmul_vl_sse(c, v, A);
  }
  
- __attribute__((target("sse2"))) mzd_local_t*
--mzd_addmul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-+oqs_sig_picnic_mzd_addmul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-   word const* vptr                = __builtin_assume_aligned(CONST_FIRST_ROW(v), 16);
+ ATTRIBUTE_TARGET("sse2")
+-mzd_local_t* mzd_addmul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_addmul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+   word const* vptr                = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 16);
    const unsigned int width        = v->width;
    static const unsigned int moff2 = 256;
-@@ -654,7 +654,7 @@ mzd_addmul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A
+@@ -658,7 +658,7 @@ mzd_local_t* mzd_addmul_vl_sse_128(mzd_local_t* c, mzd_local_t const* v, mzd_loc
  }
  
- __attribute__((target("sse2"))) mzd_local_t*
--mzd_addmul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-+oqs_sig_picnic_mzd_addmul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-   word const* vptr              = __builtin_assume_aligned(CONST_FIRST_ROW(v), 16);
+ ATTRIBUTE_TARGET("sse2")
+-mzd_local_t* mzd_addmul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_addmul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+   word const* vptr              = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 16);
    const unsigned int width      = v->width;
    const unsigned int rowstride  = A->rowstride;
-@@ -679,7 +679,7 @@ mzd_addmul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+@@ -683,7 +683,7 @@ mzd_local_t* mzd_addmul_vl_sse(mzd_local_t* c, mzd_local_t const* v, mzd_local_t
  
  #ifdef WITH_AVX2
- __attribute__((target("avx2"))) mzd_local_t*
--mzd_mul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-+oqs_sig_picnic_mzd_mul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-   word const* vptr                = __builtin_assume_aligned(CONST_FIRST_ROW(v), 16);
+ ATTRIBUTE_TARGET("avx2")
+-mzd_local_t* mzd_mul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_mul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+   word const* vptr                = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 16);
    const unsigned int width        = v->width;
    static const unsigned int moff2 = 256;
-@@ -701,7 +701,7 @@ mzd_mul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+@@ -705,7 +705,7 @@ mzd_local_t* mzd_mul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_
  }
  
- __attribute__((target("avx2"))) mzd_local_t*
--mzd_addmul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-+oqs_sig_picnic_mzd_addmul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-   word const* vptr                = __builtin_assume_aligned(CONST_FIRST_ROW(v), 16);
+ ATTRIBUTE_TARGET("avx2")
+-mzd_local_t* mzd_addmul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_addmul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+   word const* vptr                = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 16);
    const unsigned int width        = v->width;
    static const unsigned int moff2 = 256;
-@@ -723,13 +723,13 @@ mzd_addmul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A
+@@ -727,13 +727,13 @@ mzd_local_t* mzd_addmul_vl_avx_256(mzd_local_t* c, mzd_local_t const* v, mzd_loc
  }
  
- __attribute__((target("avx2"))) mzd_local_t*
--mzd_mul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+ ATTRIBUTE_TARGET("avx2")
+-mzd_local_t* mzd_mul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
 -  mzd_local_clear(c);
 -  return mzd_addmul_vl_avx(c, v, A);
-+oqs_sig_picnic_mzd_mul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_mul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
 +  oqs_sig_picnic_mzd_local_clear(c);
 +  return oqs_sig_picnic_mzd_addmul_vl_avx(c, v, A);
  }
  
- __attribute__((target("avx2"))) mzd_local_t*
--mzd_addmul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-+oqs_sig_picnic_mzd_addmul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-   word const* vptr              = __builtin_assume_aligned(CONST_FIRST_ROW(v), 16);
+ ATTRIBUTE_TARGET("avx2")
+-mzd_local_t* mzd_addmul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_addmul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+   word const* vptr              = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 16);
    const unsigned int width      = v->width;
    const unsigned int rowstride  = A->rowstride;
-@@ -752,7 +752,7 @@ mzd_addmul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
- }
+@@ -757,7 +757,7 @@ mzd_local_t* mzd_addmul_vl_avx(mzd_local_t* c, mzd_local_t const* v, mzd_local_t
  #endif
+ 
  #ifdef WITH_NEON
--inline mzd_local_t* mzd_mul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v,
-+inline mzd_local_t* oqs_sig_picnic_mzd_mul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v,
-                                         mzd_local_t const* A) {
+-mzd_local_t* mzd_mul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_mul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
  
-   word const* vptr                = __builtin_assume_aligned(CONST_FIRST_ROW(v), 16);
-@@ -774,7 +774,7 @@ inline mzd_local_t* mzd_mul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v,
-   *mcptr            = mc;
+   word const* vptr                = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 16);
+   const unsigned int width        = v->width;
+@@ -780,7 +780,7 @@ mzd_local_t* mzd_mul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v, mzd_local
    return c;
  }
--inline mzd_local_t* mzd_addmul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v,
-+inline mzd_local_t* oqs_sig_picnic_mzd_addmul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v,
-                                            mzd_local_t const* A) {
-   word const* vptr                = __builtin_assume_aligned(CONST_FIRST_ROW(v), 16);
+ 
+-mzd_local_t* mzd_addmul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_addmul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+   word const* vptr                = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 16);
    static const unsigned int moff2 = 256;
-@@ -798,13 +798,13 @@ inline mzd_local_t* mzd_addmul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v,
+ 
+@@ -804,13 +804,13 @@ mzd_local_t* mzd_addmul_vl_neon_128(mzd_local_t* c, mzd_local_t const* v, mzd_lo
    return c;
  }
  
--inline mzd_local_t* mzd_mul_vl_neon_multiple_of_128(mzd_local_t* c, mzd_local_t const* v,
-+inline mzd_local_t* oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128(mzd_local_t* c, mzd_local_t const* v,
-                                                     mzd_local_t const* A) {
+-mzd_local_t* mzd_mul_vl_neon_multiple_of_128(mzd_local_t* c, mzd_local_t const* v,
++mzd_local_t* oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128(mzd_local_t* c, mzd_local_t const* v,
+                                              mzd_local_t const* A) {
 -  mzd_local_clear(c);
--  return mzd_addmul_vl_neon(c, v, A);
 +  oqs_sig_picnic_mzd_local_clear(c);
-+  return oqs_sig_picnic_mzd_addmul_vl_neon(c, v, A);
+   return mzd_addmul_vl_neon(c, v, A);
  }
  
--inline mzd_local_t* mzd_addmul_vl_neon(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-+inline mzd_local_t* oqs_sig_picnic_mzd_addmul_vl_neon(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-   word const* vptr              = __builtin_assume_aligned(CONST_FIRST_ROW(v), alignof(uint32x4_t));
+-mzd_local_t* mzd_addmul_vl_neon(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
++mzd_local_t* oqs_sig_picnic_mzd_addmul_vl_neon(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+   word const* vptr              = ASSUME_ALIGNED(CONST_FIRST_ROW(v), alignof(uint32x4_t));
    const unsigned int width      = v->width;
    const unsigned int rowstride  = A->rowstride;
-@@ -830,7 +830,7 @@ inline mzd_local_t* mzd_addmul_vl_neon(mzd_local_t* c, mzd_local_t const* v, mzd
- 
+@@ -835,7 +835,7 @@ mzd_local_t* mzd_addmul_vl_neon(mzd_local_t* c, mzd_local_t const* v, mzd_local_
+ #endif
  #endif
  
 -mzd_local_t* mzd_mul_vl(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
@@ -2302,7 +2141,7 @@ index 54bb126..256af4b 100644
    if (A->nrows != 32 * v->ncols) {
      // number of columns does not match
      return NULL;
-@@ -841,36 +841,36 @@ mzd_local_t* mzd_mul_vl(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const*
+@@ -846,36 +846,36 @@ mzd_local_t* mzd_mul_vl(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const*
  #ifdef WITH_AVX2
      if (CPU_SUPPORTS_AVX2) {
        if (A->ncols == 256) {
@@ -2348,7 +2187,7 @@ index 54bb126..256af4b 100644
    if (A->ncols != c->ncols || A->nrows != 32 * v->ncols) {
      // number of columns does not match
      return NULL;
-@@ -881,39 +881,39 @@ mzd_local_t* mzd_addmul_vl(mzd_local_t* c, mzd_local_t const* v, mzd_local_t con
+@@ -886,39 +886,39 @@ mzd_local_t* mzd_addmul_vl(mzd_local_t* c, mzd_local_t const* v, mzd_local_t con
  #ifdef WITH_AVX2
      if (CPU_SUPPORTS_AVX2) {
        if (A->ncols == 256) {
@@ -2397,10 +2236,10 @@ index 54bb126..256af4b 100644
    word* cptr               = FIRST_ROW(c);
    word const* vptr         = CONST_FIRST_ROW(v);
 diff --git a/mzd_additional.h b/mzd_additional.h
-index d97d3f5..c40fa3f 100644
+index 7992128..c084e6d 100644
 --- a/mzd_additional.h
 +++ b/mzd_additional.h
-@@ -28,44 +28,44 @@ typedef struct {
+@@ -27,44 +27,44 @@ typedef struct {
    uint64_t rows[];
  } mzd_local_t ATTR_ALIGNED(32);
  
@@ -2463,7 +2302,7 @@ index d97d3f5..c40fa3f 100644
                            mzd_local_t const* second) ATTR_NONNULL;
  
  /**
-@@ -78,85 +78,85 @@ mzd_local_t* mzd_xor_neon(mzd_local_t* res, mzd_local_t const* first,
+@@ -77,85 +77,85 @@ mzd_local_t* mzd_xor_neon(mzd_local_t* res, mzd_local_t const* first,
   *          second vector
   * \returns true if both vectors are equal, false otherwise.
   */
@@ -2578,9 +2417,9 @@ index d97d3f5..c40fa3f 100644
 -mzd_local_t* mzd_precompute_matrix_lookup(mzd_local_t const* A) ATTR_NONNULL;
 +mzd_local_t* oqs_sig_picnic_mzd_precompute_matrix_lookup(mzd_local_t const* A) ATTR_NONNULL;
  
- #define ROW(v, r) ((word*)(((void*)(v)) + 32 + (v)->rowstride * (r) * sizeof(word)))
+ #define ROW(v, r) ((word*)(((uint8_t*)(v)) + 32 + (v)->rowstride * (r) * sizeof(word)))
  #define CONST_ROW(v, r)                                                                            \
-@@ -168,7 +168,7 @@ mzd_local_t* mzd_precompute_matrix_lookup(mzd_local_t const* A) ATTR_NONNULL;
+@@ -167,7 +167,7 @@ mzd_local_t* mzd_precompute_matrix_lookup(mzd_local_t const* A) ATTR_NONNULL;
  #define WRITE_BIT(w, spot, value)                                                                  \
    ((w) = (((w) & ~(UINT64_C(1) << (spot))) | (-(word)(value) & (UINT64_C(1) << (spot)))))
  
@@ -2590,7 +2429,7 @@ index d97d3f5..c40fa3f 100644
  
  #endif
 diff --git a/picnic.c b/picnic.c
-index 9d9aba3..f0336e0 100644
+index 91eeed3..55cb19c 100644
 --- a/picnic.c
 +++ b/picnic.c
 @@ -22,7 +22,7 @@
@@ -2601,8 +2440,8 @@ index 9d9aba3..f0336e0 100644
 +  return oqs_sig_picnic_get_instance(param);
  }
  
- size_t picnic_signature_size(picnic_params_t param) {
-@@ -108,22 +108,22 @@ int picnic_sk_to_pk(const picnic_privatekey_t* sk, picnic_publickey_t* pk) {
+ size_t PICNIC_CALLING_CONVENTION picnic_signature_size(picnic_params_t param) {
+@@ -110,22 +110,22 @@ int PICNIC_CALLING_CONVENTION picnic_sk_to_pk(const picnic_privatekey_t* sk,
    uint8_t* pk_pt       = &pk->data[1];
    const uint8_t* sk_pt = &sk->data[1 + input_size];
  
@@ -2634,7 +2473,7 @@ index 9d9aba3..f0336e0 100644
  
    return 0;
  }
-@@ -153,21 +153,21 @@ int picnic_validate_keypair(const picnic_privatekey_t* sk, const picnic_publicke
+@@ -156,21 +156,21 @@ int PICNIC_CALLING_CONVENTION picnic_validate_keypair(const picnic_privatekey_t*
      return -1;
    }
  
@@ -2665,7 +2504,7 @@ index 9d9aba3..f0336e0 100644
  
    return memcmp(buffer, pk_c, output_size);
  }
-@@ -191,7 +191,7 @@ int picnic_sign(const picnic_privatekey_t* sk, const uint8_t* message, size_t me
+@@ -195,7 +195,7 @@ int PICNIC_CALLING_CONVENTION picnic_sign(const picnic_privatekey_t* sk, const u
    const uint8_t* sk_c  = &sk->data[1 + input_size + output_size];
    const uint8_t* sk_pt = &sk->data[1 + input_size];
  
@@ -2674,7 +2513,7 @@ index 9d9aba3..f0336e0 100644
               ? 0
               : -1;
  }
-@@ -213,7 +213,7 @@ int picnic_verify(const picnic_publickey_t* pk, const uint8_t* message, size_t m
+@@ -218,7 +218,7 @@ int PICNIC_CALLING_CONVENTION picnic_verify(const picnic_publickey_t* pk, const
    const uint8_t* pk_c  = &pk->data[1 + output_size];
    const uint8_t* pk_pt = &pk->data[1];
  
@@ -2683,7 +2522,7 @@ index 9d9aba3..f0336e0 100644
  }
  
  void picnic_visualize(FILE* out, const uint8_t* public_key, size_t public_key_size,
-@@ -228,7 +228,7 @@ void picnic_visualize(FILE* out, const uint8_t* public_key, size_t public_key_si
+@@ -233,7 +233,7 @@ void picnic_visualize(FILE* out, const uint8_t* public_key, size_t public_key_si
      return;
    }
  
@@ -2691,12 +2530,12 @@ index 9d9aba3..f0336e0 100644
 +  oqs_sig_picnic_visualize_signature(out, instance, msg, msglen, sig, siglen);
  }
  
- const char* picnic_get_param_name(picnic_params_t parameters) {
+ const char* PICNIC_CALLING_CONVENTION picnic_get_param_name(picnic_params_t parameters) {
 diff --git a/picnic_impl.c b/picnic_impl.c
-index a69b10d..d9a93be 100644
+index f1a308b..ced069e 100644
 --- a/picnic_impl.c
 +++ b/picnic_impl.c
-@@ -243,10 +243,10 @@ static void mzd_to_bitstream(bitstream_t* bs, const mzd_local_t* v, const size_t
+@@ -246,10 +246,10 @@ static void mzd_to_bitstream(bitstream_t* bs, const mzd_local_t* v, const size_t
    const uint64_t* d = &CONST_FIRST_ROW(v)[v->width - 1];
    size_t bits       = size;
    for (; bits >= sizeof(uint64_t) * 8; bits -= sizeof(uint64_t) * 8, --d) {
@@ -2709,7 +2548,7 @@ index a69b10d..d9a93be 100644
    }
  }
  
-@@ -256,10 +256,10 @@ static void mzd_from_bitstream(bitstream_t* bs, mzd_local_t* v, const size_t siz
+@@ -259,10 +259,10 @@ static void mzd_from_bitstream(bitstream_t* bs, mzd_local_t* v, const size_t siz
  
    size_t bits = size;
    for (; bits >= sizeof(uint64_t) * 8; bits -= sizeof(uint64_t) * 8, --d) {
@@ -2722,7 +2561,7 @@ index a69b10d..d9a93be 100644
      --d;
    }
    for (; d >= f; --d) {
-@@ -268,11 +268,11 @@ static void mzd_from_bitstream(bitstream_t* bs, mzd_local_t* v, const size_t siz
+@@ -271,11 +271,11 @@ static void mzd_from_bitstream(bitstream_t* bs, mzd_local_t* v, const size_t siz
  }
  
  static void uint64_to_bitstream(bitstream_t* bs, const uint64_t v) {
@@ -2736,7 +2575,7 @@ index a69b10d..d9a93be 100644
  }
  
  static void compress_view(uint8_t* dst, const picnic_instance_t* pp, const view_t* views,
-@@ -347,13 +347,13 @@ static void decompress_random_tape_new(rvec_t* rvec, const picnic_instance_t* pp
+@@ -356,13 +356,13 @@ static void decompress_random_tape_new(rvec_t* rvec, const picnic_instance_t* pp
  }
  
  static void mzd_share(mzd_local_t* shared_value[SC_PROOF]) {
@@ -2754,7 +2593,7 @@ index a69b10d..d9a93be 100644
  }
  
  static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
-@@ -379,13 +379,13 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
+@@ -388,13 +388,13 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
    view_t* views    = calloc(sizeof(view_t), view_count);
    if (lowmc->m != 10) {
      for (size_t i = 0; i < view_count; ++i) {
@@ -2771,7 +2610,7 @@ index a69b10d..d9a93be 100644
  
    // Generate seeds
    START_TIMING;
-@@ -409,7 +409,7 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
+@@ -418,7 +418,7 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
  
    START_TIMING;
    mzd_local_t* shared_key[SC_PROOF];
@@ -2780,7 +2619,7 @@ index a69b10d..d9a93be 100644
    END_TIMING(timing_and_size->sign.secret_sharing);
  
    // START_TIMING; TODO: I guess this shouldn't be here
-@@ -417,7 +417,7 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
+@@ -426,7 +426,7 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
    rvec_t* rvec = calloc(sizeof(rvec_t), lowmc_r); // random tapes for and-gates
    if (lowmc->m != 10) {
      for (unsigned int i = 0; i < lowmc_r; ++i) {
@@ -2789,7 +2628,7 @@ index a69b10d..d9a93be 100644
      }
    }
  
-@@ -434,11 +434,11 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
+@@ -443,11 +443,11 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
      // compute sharing
      for (unsigned int j = 0; j < SC_PROOF - 1; ++j) {
        kdf_shake_get_randomness(&kdfs[j], round->input_shares[j], input_size);
@@ -2804,7 +2643,7 @@ index a69b10d..d9a93be 100644
  
      // compute random tapes
      for (unsigned int j = 0; j < SC_PROOF; ++j) {
-@@ -455,7 +455,7 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
+@@ -464,7 +464,7 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
  
      // commitments
      for (unsigned int j = 0; j < SC_PROOF; ++j) {
@@ -2813,7 +2652,7 @@ index a69b10d..d9a93be 100644
        compress_view(round->communicated_bits[j], pp, views, j);
        hash_commitment(pp, round, j);
      }
-@@ -478,17 +478,17 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
+@@ -487,17 +487,17 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
    free(tape_bytes);
    if (lowmc->m != 10) {
      for (unsigned n = 0; n < view_count; ++n) {
@@ -2836,7 +2675,7 @@ index a69b10d..d9a93be 100644
    proof_free(prf);
  
    END_TIMING(timing_and_size->sign.challenge);
-@@ -519,12 +519,12 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
+@@ -528,12 +528,12 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
    }
  
    in_out_shares_t in_out_shares[2];
@@ -2852,7 +2691,7 @@ index a69b10d..d9a93be 100644
      }
    }
  
-@@ -533,7 +533,7 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
+@@ -542,7 +542,7 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
    rvec_t* rvec = calloc(sizeof(rvec_t), lowmc_r); // random tapes for and-gates
    if (lowmc->m != 10) {
      for (unsigned int i = 0; i < lowmc_r; ++i) {
@@ -2861,7 +2700,7 @@ index a69b10d..d9a93be 100644
      }
    }
    uint8_t* tape_bytes = malloc(view_size);
-@@ -557,8 +557,8 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
+@@ -566,8 +566,8 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
        kdf_shake_get_randomness(&kdfs[1], round->input_shares[1], input_size);
      }
  
@@ -2872,7 +2711,7 @@ index a69b10d..d9a93be 100644
  
      // compute random tapes
      for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-@@ -578,10 +578,10 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
+@@ -590,10 +590,10 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
      mzd_unshare(in_out_shares[1].s[2], ys);
  
      for (unsigned int j = 0; j < SC_VERIFY; ++j) {
@@ -2885,7 +2724,7 @@ index a69b10d..d9a93be 100644
  
      if (transform == TRANSFORM_UR) {
        for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-@@ -599,16 +599,16 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
+@@ -611,16 +611,16 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
    free(tape_bytes);
    if (lowmc->m != 10) {
      for (unsigned n = 0; n < view_count; ++n) {
@@ -2906,7 +2745,7 @@ index a69b10d..d9a93be 100644
  
    proof_free(prf);
  
-@@ -765,42 +765,42 @@ err:
+@@ -777,42 +777,42 @@ err:
    return NULL;
  }
  
@@ -2964,7 +2803,7 @@ index a69b10d..d9a93be 100644
                           const uint8_t* sig, size_t siglen) {
    const size_t digest_size    = pp->digest_size;
    const size_t seed_size      = pp->seed_size;
-@@ -882,14 +882,14 @@ void hash_commitment(const picnic_instance_t* pp, proof_round_t* prf_round, unsi
+@@ -894,14 +894,14 @@ void hash_commitment(const picnic_instance_t* pp, proof_round_t* prf_round, unsi
    hash_context ctx;
  
    // hash the seed
@@ -2981,7 +2820,7 @@ index a69b10d..d9a93be 100644
    hash_update(&ctx, &HASH_PREFIX_0, sizeof(HASH_PREFIX_0));
    hash_update(&ctx, tmp, hashlen);
    // hash input share
-@@ -913,7 +913,7 @@ static void H3_compute(const picnic_instance_t* pp, uint8_t* hash, uint8_t* ch)
+@@ -925,7 +925,7 @@ static void H3_compute(const picnic_instance_t* pp, uint8_t* hash, uint8_t* ch)
    while (ch < eof) {
      if (bit_idx >= digest_size_bits) {
        hash_context ctx;
@@ -2990,7 +2829,7 @@ index a69b10d..d9a93be 100644
        hash_update(&ctx, &HASH_PREFIX_1, sizeof(HASH_PREFIX_1));
        hash_update(&ctx, hash, digest_size);
        hash_final(&ctx);
-@@ -936,7 +936,7 @@ void fs_H3_verify(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t*
+@@ -948,7 +948,7 @@ void fs_H3_verify(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t*
    const size_t output_size = pp->output_size;
  
    hash_context ctx;
@@ -2999,7 +2838,7 @@ index a69b10d..d9a93be 100644
    hash_update(&ctx, &HASH_PREFIX_1, sizeof(HASH_PREFIX_1));
  
    // hash output shares
-@@ -1036,7 +1036,7 @@ void fs_H3(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t* circuit
+@@ -1048,7 +1048,7 @@ void fs_H3(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t* circuit
    const size_t num_rounds = pp->num_rounds;
  
    hash_context ctx;
@@ -3008,7 +2847,7 @@ index a69b10d..d9a93be 100644
    hash_update(&ctx, &HASH_PREFIX_1, sizeof(HASH_PREFIX_1));
  
    // hash output shares
-@@ -1072,7 +1072,7 @@ void unruh_G(const picnic_instance_t* pp, proof_round_t* prf_round, unsigned vid
+@@ -1084,7 +1084,7 @@ void unruh_G(const picnic_instance_t* pp, proof_round_t* prf_round, unsigned vid
    const size_t seedlen     = pp->seed_size;
  
    /* Hash the seed with H_5, store digest in output */
@@ -3017,7 +2856,7 @@ index a69b10d..d9a93be 100644
    hash_update(&ctx, &HASH_PREFIX_5, sizeof(HASH_PREFIX_5));
    hash_update(&ctx, prf_round->seeds[vidx], seedlen);
    hash_final(&ctx);
-@@ -1081,7 +1081,7 @@ void unruh_G(const picnic_instance_t* pp, proof_round_t* prf_round, unsigned vid
+@@ -1093,7 +1093,7 @@ void unruh_G(const picnic_instance_t* pp, proof_round_t* prf_round, unsigned vid
    hash_squeeze(tmp, digest_size, &ctx);
  
    /* Hash H_5(seed), the view, and the length */
@@ -3026,13 +2865,9 @@ index a69b10d..d9a93be 100644
    hash_update(&ctx, tmp, digest_size);
    if (include_is) {
      hash_update(&ctx, prf_round->input_shares[vidx], pp->input_size);
-@@ -1161,17 +1161,17 @@ static bool create_instance(picnic_instance_t* pp, picnic_params_t param, uint32
-   START_TIMING;
-   bool have_instance = false;
-   if (!known_instance) {
--    have_instance = lowmc_read_file(&pp->lowmc, m, n, r, k);
-+    have_instance = oqs_sig_picnic_lowmc_read_file(&pp->lowmc, m, n, r, k);
+@@ -1181,14 +1181,14 @@ static bool create_instance(picnic_instance_t* pp, picnic_params_t param, uint32
    }
+ #endif
    if (!have_instance) {
 -    have_instance = lowmc_init(&pp->lowmc, m, n, r, k);
 +    have_instance = oqs_sig_picnic_lowmc_init(&pp->lowmc, m, n, r, k);
@@ -3048,7 +2883,7 @@ index a69b10d..d9a93be 100644
  
    pp->params         = param;
    pp->transform      = param_to_transform(param);
-@@ -1210,10 +1210,10 @@ static bool create_instance(picnic_instance_t* pp, picnic_params_t param, uint32
+@@ -1227,10 +1227,10 @@ static bool create_instance(picnic_instance_t* pp, picnic_params_t param, uint32
  }
  
  static void destroy_instance(picnic_instance_t* pp) {
@@ -3061,8 +2896,8 @@ index a69b10d..d9a93be 100644
    if (param <= PARAMETER_SET_INVALID || param >= PARAMETER_SET_MAX_INDEX) {
      return NULL;
    }
-@@ -1243,8 +1243,8 @@ static void collapse_challenge(uint8_t* collapsed, const picnic_instance_t* pp,
-   bitstream_t bs = {.buffer = collapsed, .position = 0};
+@@ -1262,8 +1262,8 @@ static void collapse_challenge(uint8_t* collapsed, const picnic_instance_t* pp,
+   bs.position = 0;
  
    for (unsigned int i = 0; i < pp->num_rounds; ++i) {
 -    bitstream_put_bits(&bs, challenge[i] & 1, 1);
@@ -3072,15 +2907,18 @@ index a69b10d..d9a93be 100644
    }
  }
  
-@@ -1252,14 +1252,14 @@ static bool expand_challenge(uint8_t* challenge, const picnic_instance_t* pp,
-                              const uint8_t* collapsed) {
-   bitstream_t bs = {.buffer = (uint8_t*)collapsed, .position = 0};
+@@ -1274,8 +1274,8 @@ static bool expand_challenge(uint8_t* challenge, const picnic_instance_t* pp,
+   bs.position = 0;
+ 
    for (unsigned int i = 0; i < pp->num_rounds; ++i) {
--    challenge[i] = bitstream_get_bits(&bs, 1) | (bitstream_get_bits(&bs, 1) << 1);
-+    challenge[i] = oqs_sig_picnic_bitstream_get_bits(&bs, 1) | (oqs_sig_picnic_bitstream_get_bits(&bs, 1) << 1);
-     if (challenge[i] == 3) {
+-    uint8_t ch = bitstream_get_bits(&bs, 1);
+-    ch |= bitstream_get_bits(&bs, 1) << 1;
++    uint8_t ch = oqs_sig_picnic_bitstream_get_bits(&bs, 1);
++    ch |= oqs_sig_picnic_bitstream_get_bits(&bs, 1) << 1;
+     if (ch == 3) {
        return false;
      }
+@@ -1283,7 +1283,7 @@ static bool expand_challenge(uint8_t* challenge, const picnic_instance_t* pp,
    }
  
    size_t remaining_bits = (pp->collapsed_challenge_size << 3) - bs.position;
@@ -3090,7 +2928,7 @@ index a69b10d..d9a93be 100644
    }
  
 diff --git a/picnic_impl.h b/picnic_impl.h
-index e4e1827..205a066 100644
+index dcc3747..18bfde5 100644
 --- a/picnic_impl.h
 +++ b/picnic_impl.h
 @@ -42,17 +42,17 @@ typedef struct {
@@ -3114,7 +2952,7 @@ index e4e1827..205a066 100644
 +void oqs_sig_picnic_visualize_signature(FILE* out, const picnic_instance_t* pp, const uint8_t* msg, size_t msglen,
                           const uint8_t* sig, size_t siglen);
  
- size_t picnic_get_private_key_size(picnic_params_t param);
+ PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_private_key_size(picnic_params_t param);
 diff --git a/sha3/KeccakHash.c b/sha3/KeccakHash.c
 index bcfd1e9..6c7a0e6 100644
 --- a/sha3/KeccakHash.c
@@ -3226,60 +3064,68 @@ index 99347d6..1ba03a0 100644
  #endif
  
 diff --git a/tests/bitstream_test.c b/tests/bitstream_test.c
-index e73fc14..554b464 100644
+index 620bcc6..7bc11e4 100644
 --- a/tests/bitstream_test.c
 +++ b/tests/bitstream_test.c
-@@ -14,10 +14,10 @@ static int simple_test(void) {
-     const uint64_t v                 = UINT64_C(1) << (i - 1);
- 
-     bitstream_t bsw = {.buffer = buffer, .position = 0};
+@@ -16,12 +16,12 @@ static int simple_test(void) {
+     bitstream_t bsw;
+     bsw.buffer = buffer;
+     bsw.position = 0;
 -    bitstream_put_bits(&bsw, v, i);
 +    oqs_sig_picnic_bitstream_put_bits(&bsw, v, i);
  
-     bitstream_t bsr = {.buffer = buffer, .position = 0};
+     bitstream_t bsr;
+     bsr.buffer = buffer;
+     bsr.position = 0;
 -    const uint64_t r = bitstream_get_bits(&bsr, i);
 +    const uint64_t r = oqs_sig_picnic_bitstream_get_bits(&bsr, i);
      if (r != v) {
        printf("simple_test: expected %016" PRIx64 ", got %016" PRIx64 "\n", v, r);
        ret = -1;
-@@ -43,15 +43,15 @@ static int test_30(void) {
-   uint8_t buffer2[sizeof(uint64_t)] = {0};
- 
-   bitstream_t bsw = {.buffer = buffer, .position = 0};
+@@ -49,19 +49,19 @@ static int test_30(void) {
+   bitstream_t bsw;
+   bsw.buffer = buffer;
+   bsw.position = 0;
 -  bitstream_put_bits(&bsw, v, 30);
 +  oqs_sig_picnic_bitstream_put_bits(&bsw, v, 30);
  
-   bitstream_t bsw2 = {.buffer = buffer2, .position = 0};
+   bitstream_t bsw2;
+   bsw2.buffer = buffer2;
+   bsw2.position = 0;
    for (unsigned int i = 0; i < 30; ++i) {
 -    bitstream_put_bits(&bsw2, v >> (30 - i - 1), 1);
 +    oqs_sig_picnic_bitstream_put_bits(&bsw2, v >> (30 - i - 1), 1);
    }
  
-   bitstream_t bsr = {.buffer = buffer, .position = 0};
--  const uint64_t r = bitstream_get_bits(&bsr, 30);
-+  const uint64_t r = oqs_sig_picnic_bitstream_get_bits(&bsr, 30);
+   bitstream_t bsr;
+   bsr.buffer = buffer;
+   bsr.position = 0;
+-  uint64_t r = bitstream_get_bits(&bsr, 30);
++  uint64_t r = oqs_sig_picnic_bitstream_get_bits(&bsr, 30);
    if (r != v) {
      printf("test_30: expected %016" PRIx64 ", got %016" PRIx64 "\n", v, r);
      ret = -1;
-@@ -59,7 +59,7 @@ static int test_30(void) {
- 
-   bitstream_t bsr2 = {.buffer = buffer2, .position = 0};
+@@ -71,7 +71,7 @@ static int test_30(void) {
+   bsr2.buffer = buffer2;
+   bsr2.position = 0;
    for (unsigned int i = 0; i < 30; ++i) {
--    const uint64_t r = bitstream_get_bits(&bsr2, 1);
-+    const uint64_t r = oqs_sig_picnic_bitstream_get_bits(&bsr2, 1);
+-    r = bitstream_get_bits(&bsr2, 1);
++    r = oqs_sig_picnic_bitstream_get_bits(&bsr2, 1);
      const uint64_t e = (v >> (30 - i - 1)) & 0x1;
      if (e != r) {
        printf("test_30: expected2 %016" PRIx64 ", got %016" PRIx64 "\n", e, r);
-@@ -91,16 +91,16 @@ static int test_multiple_30(void) {
-   const uint64_t v2 = (~v) & ((1 << 30) - 1);
- 
-   bitstream_t bsw = {.buffer = buffer, .position = 0};
+@@ -105,18 +105,18 @@ static int test_multiple_30(void) {
+   bitstream_t bsw;
+   bsw.buffer = buffer;
+   bsw.position = 0;
 -  bitstream_put_bits(&bsw, v, 30);
 -  bitstream_put_bits(&bsw, v2, 30);
 +  oqs_sig_picnic_bitstream_put_bits(&bsw, v, 30);
 +  oqs_sig_picnic_bitstream_put_bits(&bsw, v2, 30);
  
-   bitstream_t bsr = {.buffer = buffer, .position = 0};
+   bitstream_t bsr;
+   bsr.buffer = buffer;
+   bsr.position = 0;
 -  uint64_t r = bitstream_get_bits(&bsr, 30);
 +  uint64_t r = oqs_sig_picnic_bitstream_get_bits(&bsr, 30);
    if (r != v) {

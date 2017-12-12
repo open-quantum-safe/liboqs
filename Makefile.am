@@ -59,8 +59,8 @@ endif
 
 libmerge_external.la:
 if USE_SIG_PICNIC
-	mkdir -p temp && cp liboqs.a temp/ && cp src/sig_picnic/external/build/libpicnic.a temp/
-	cd temp && ar x liboqs.a && ar x libpicnic.a && ar cr liboqs.a *.o && ranlib liboqs.a && mv liboqs.a ../.libs
+	mkdir -p temp && cp liboqs.a temp/ && cp src/sig_picnic/external/build/libpicnic_static.a temp/
+	cd temp && ar x liboqs.a && ar x libpicnic_static.a && ar cr liboqs.a *.o && ranlib liboqs.a && mv liboqs.a ../.libs
 	cd .. && rm -rf temp
 endif
 
@@ -149,9 +149,6 @@ endif
 if USE_SIDH_IQC
 	cp -f src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
 	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
-endif
-if USE_SIG_PICNIC
-	[ -d  src/sig_picnic/external/build ] && rm -rf src/sig_picnic/external/build
 endif
 
 clean-local:
