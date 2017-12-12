@@ -12,6 +12,7 @@ matrix:
     - ENABLE_KEX_MLWE_KYBER=0
     - ENABLE_KEX_SIDH_CLN16=0
     - USE_OPENSSL=1
+    - ENABLE_KEX_RLWE_NEWHOPE_AVX2=1
     addons:
       apt:
         sources:

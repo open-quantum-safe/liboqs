@@ -4,7 +4,6 @@ set -e
 
 export CC=$CC_OQS
 
-autoreconf -i
 enable_disable_str=
 if [[ ${USE_OPENSSL} == 1 ]];then
   enable_disable_str=" --enable-openssl"
@@ -61,6 +60,11 @@ else
   cd src/sig_picnic;sh ./build_picnic.sh;cd ../..;
 fi
 
+if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
+  enable_disable_str+=" --enable-kex-rlwe-newhope-avx2"
+fi
+
+autoreconf -i
 ./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make
@@ -69,3 +73,5 @@ make test
 for f in $(ls .travis/*-check.sh); do
     bash $f;
 done
+
+

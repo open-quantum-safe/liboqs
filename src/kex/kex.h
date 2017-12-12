@@ -11,6 +11,10 @@
 
 #include <oqs/rand.h>
 
+#if !defined(WINDOWS)
+#include <oqs/config.h>
+#endif
+
 enum OQS_KEX_alg_name {
 	OQS_KEX_alg_default,
 	OQS_KEX_alg_rlwe_bcns15,
@@ -23,6 +27,7 @@ enum OQS_KEX_alg_name {
 	OQS_KEX_alg_ntru,
 	OQS_KEX_alg_sidh_iqc_ref,
 	OQS_KEX_alg_mlwe_kyber,
+	OQS_KEX_alg_rlwe_newhope_avx2,
 };
 
 typedef struct OQS_KEX OQS_KEX;

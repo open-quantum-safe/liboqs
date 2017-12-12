@@ -10,6 +10,6 @@ configuration:
 
 test_script:
 - cmd: >-
-    C:\projects\liboqs\VisualStudio\x64\%configuration%\test_rand.exe
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\test_rand.exe
 
-    C:\projects\liboqs\VisualStudio\x64\%configuration%\test_kex.exe
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\test_kex.exe
