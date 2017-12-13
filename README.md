@@ -268,15 +268,15 @@ Contributing and using
 
 We hope OQS will provide a framework for many post-quantum implementations.
 
-In the immediate term, if you have feedback on our API ([kex.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/kex/kex.h), [sig.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/sig/sig.h) or [rand.h](https://github.com/open-quantum-safe/liboqs/blob/master/src/rand/rand.h)), please contact us so we can ensure our API covers a wide range of implementation needs.
-
-If you have or are writing an implementation of a post-quantum key exchange algorithm, we hope you will consider making an implementation that meets our API so that others may use it and would be happy to discuss including it directly in liboqs.  Please take a look at our [coding conventions](https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions).
+If you have or are writing an implementation of a post-quantum key exchange algorithm, we hope you will consider making an implementation that meets our API so that others may use it and would be happy to discuss including it directly in liboqs.  Please take a look at our [coding conventions](https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions) and our instructions for [integrating external implementations into liboqs](https://github.com/open-quantum-safe/liboqs/wiki/Integrating-external-implementations-into-liboqs).
 
 If you would like to use liboqs in an application-level protocol, please get in touch and we can provide some guidance on options for using liboqs.
 
 We are also interested in assistance from code reviewers.
 
 Please contact Douglas Stebila <[stebilad@mcmaster.ca](mailto:stebilad@mcmaster.ca)>.
+
+
 
 License
 -------
