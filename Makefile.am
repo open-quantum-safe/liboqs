@@ -73,19 +73,25 @@ installheader_HEADERS=config.h \
 	src/kex_sidh_cln16/kex_sidh_cln16.h \
 	src/sig/sig.h
 
+install-exec-local:
 if USE_KEX_RLWE_NEWHOPE_AVX2
-bash patches/apply-patch.sh kex_rlwe_newhope_avx2
-installheader_HEADERS += src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h
-bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
+	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
+endif
+
+install-exec-hook:
+	mkdir -p $(includedir)/oqs
+if USE_KEX_RLWE_NEWHOPE_AVX2
+	cp src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h $(includedir)/oqs
+	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
 endif
 if USE_OPENSSL
-installheader_HEADERS+=src/sig_picnic/external/Picnic-master/picnic.h
+	cp src/sig_picnic/external/Picnic-master/picnic.h $(includedir)/oqs
 endif
 if USE_MCBITS
-installheader_HEADERS+=src/kex_code_mcbits/kex_code_mcbits.h
+	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
 if USE_SIDH_IQC
-installheader_HEADERS+=src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h
+	cp src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h $(includedir)/oqs
 endif
 
 
