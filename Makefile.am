@@ -74,7 +74,9 @@ installheader_HEADERS=config.h \
 	src/sig/sig.h
 
 if USE_KEX_RLWE_NEWHOPE_AVX2
+bash patches/apply-patch.sh kex_rlwe_newhope_avx2
 installheader_HEADERS += src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h
+bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
 endif
 if USE_OPENSSL
 installheader_HEADERS+=src/sig_picnic/external/Picnic-master/picnic.h
