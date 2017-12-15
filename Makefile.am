@@ -55,6 +55,46 @@ endif
 
 #liboqs_la_LIBADD += src/sig_picnic/libpicnic.la
 
+installheaderdir=$(includedir)/oqs
+installheader_HEADERS=config.h \
+	src/common/common.h \
+	src/crypto/aes/aes.h \
+	src/crypto/rand/rand.h \
+	src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h \
+	src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h \
+	src/crypto/sha3/sha3.h \
+	src/kex/kex.h \
+ 	src/kex_lwe_frodo/kex_lwe_frodo.h \
+	src/kex_mlwe_kyber/kex_mlwe_kyber.h \
+	src/kex_ntru/kex_ntru.h \
+	src/kex_rlwe_bcns15/kex_rlwe_bcns15.h \
+	src/kex_rlwe_msrln16/kex_rlwe_msrln16.h \
+	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
+	src/kex_sidh_cln16/kex_sidh_cln16.h \
+	src/sig/sig.h
+
+install-exec-local:
+if USE_KEX_RLWE_NEWHOPE_AVX2
+	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
+endif
+
+install-exec-hook:
+	mkdir -p $(includedir)/oqs
+if USE_KEX_RLWE_NEWHOPE_AVX2
+	cp src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h $(includedir)/oqs
+	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
+endif
+if USE_OPENSSL
+	cp src/sig_picnic/external/Picnic-master/picnic.h $(includedir)/oqs
+endif
+if USE_MCBITS
+	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
+endif
+if USE_SIDH_IQC
+	cp src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h $(includedir)/oqs
+endif
+
+
 noinst_bin_PROGRAMS = test_rand test_kex test_aes
 
 if USE_OPENSSL
@@ -184,3 +224,5 @@ cleanup-patch:
 if USE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
 endif
+
+
