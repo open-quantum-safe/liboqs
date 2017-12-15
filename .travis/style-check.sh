@@ -1,6 +1,7 @@
 #!/bin/bash
 
-modified=$(git status -s)
+# see what has been modified (ignoring submodules because they are likely patched)
+modified=$(git status -s --ignore-submodules)
 
 if [ "$modified" ]; then
 	tput setaf 1;
@@ -17,7 +18,7 @@ else
 	CLANGFORMAT=clang-format-3.9 make prettyprint
 fi;
 
-modified=$(git status -s) | grep -v "src/sig_picnic/external"
+modified=$(git status -s)
 
 if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
   modified=$(echo $modified | grep -v "kex_rlwe_newhope/avx2" | grep -v "Makefile.am" | grep -v "avx2/kex*")
