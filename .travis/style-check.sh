@@ -18,7 +18,7 @@ else
 	CLANGFORMAT=clang-format-3.9 make prettyprint
 fi;
 
-modified=$(git status -s)
+modified=$(git status -s --ignore-submodules)
 
 if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
   modified=$(echo $modified | grep -v "kex_rlwe_newhope/avx2" | grep -v "Makefile.am" | grep -v "avx2/kex*")
