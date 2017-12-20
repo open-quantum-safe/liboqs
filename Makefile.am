@@ -12,7 +12,7 @@ CLANGFORMAT ?= clang-format-3.9
 SUBDIRS = ${SRCDIR}
 
 BUILT_SOURCES = links
-lib_LTLIBRARIES = liboqs.la
+lib_LTLIBRARIES = liboqs.la libmerge_external.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
 liboqs_la_LIBADD += src/crypto/aes/libaes.la
@@ -53,7 +53,9 @@ if USE_SIDH_IQC
 liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
 endif
 
-#liboqs_la_LIBADD += src/sig_picnic/libpicnic.la
+if USE_SIG_PICNIC
+liboqs_la_LIBADD += src/sig_picnic/libpicnic_i.la
+endif
 
 installheaderdir=$(includedir)/oqs
 installheader_HEADERS=config.h \
@@ -64,7 +66,7 @@ installheader_HEADERS=config.h \
 	src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h \
 	src/crypto/sha3/sha3.h \
 	src/kex/kex.h \
- 	src/kex_lwe_frodo/kex_lwe_frodo.h \
+	src/kex_lwe_frodo/kex_lwe_frodo.h \
 	src/kex_mlwe_kyber/kex_mlwe_kyber.h \
 	src/kex_ntru/kex_ntru.h \
 	src/kex_rlwe_bcns15/kex_rlwe_bcns15.h \
@@ -97,9 +99,14 @@ endif
 
 noinst_bin_PROGRAMS = test_rand test_kex test_aes
 
-if USE_OPENSSL
-#noinst_bin_PROGRAMS += pp_matrices test_sig
+libmerge_external.la:
+if USE_SIG_PICNIC
+	mkdir -p temp && cp liboqs.a temp/ && cp src/sig_picnic/external/build/libpicnic_static.a temp/
+	cd temp && ar x liboqs.a && ar x libpicnic_static.a && ar cr liboqs.a *.o && ranlib liboqs.a && mv liboqs.a ../.libs
+	cd .. && rm -rf temp
 endif
+
+noinst_bin_PROGRAMS = test_rand test_kex test_aes test_sig
 
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
@@ -116,18 +123,12 @@ if USE_SIDH_IQC
 test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
 endif
 
+test_sig_LDADD =  liboqs.la -lm
+test_sig_SOURCES = src/sig/test_sig.c
+test_sig_CPPFLAGS = -I./include
+test_sig_CPPFLAGS += $(AM_CPPFLAGS)
 if USE_OPENSSL
-#test_sig_LDADD =  liboqs.la -lm
-#test_sig_SOURCES = src/sig/test_sig.c
-#test_sig_CPPFLAGS = -I${OPENSSL_DIR}/include -I./include
-#test_sig_CPPFLAGS += $(AM_CPPFLAGS)
-#test_sig_LDADD += -L${OPENSSL_DIR}/lib -lssl -lcrypto
-
-#pp_matrices_LDADD =  liboqs.la -lm
-#pp_matrices_SOURCES = src/sig_picnic/external/Picnic-master/preprocessMatrices.c
-#pp_matrices_CPPFLAGS = -std=c99 -I${OPENSSL_DIR}/include -I${M4RI_DIR}/include/m4ri -I./include
-#pp_matrices_CPPFLAGS += $(AM_CPPFLAGS)
-#pp_matrices_LDADD += -L${OPENSSL_DIR}/lib -L${M4RI_DIR}/lib -lssl -lcrypto -lm4ri
+test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
 test_aes_LDADD =  liboqs.la -lm
@@ -157,12 +158,7 @@ test: clean-tests
 	./test_kex --quiet
 	./test_rand --quiet
 	./test_aes
-if USE_OPENSSL
-#	mkdir -p precomputed_data
-#	./pp_matrices
-#	./test_sig
-endif
-
+	./test_sig
 
 links:
 	$(MKDIR_P) include/oqs
@@ -187,9 +183,7 @@ endif
 	cp -f src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
 	cp -f src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	cp -f src/sig/sig.h include/oqs
-if USE_OPENSSL
-	cp -f src/sig_picnic/external/Picnic-master/picnic.h include/oqs
-endif
+	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
@@ -198,7 +192,6 @@ if USE_SIDH_IQC
 	cp -f src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
 	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
 endif
-	$(LN_S) -f ../../src/sig_picnic/sig_picnic.h include/oqs
 
 clean-local:
 	rm -f liboqs.a
@@ -206,16 +199,13 @@ clean-local:
 if USE_SIDH_IQC
 	rm -f sample_params
 endif
+
+
 clean-tests:
-	rm -f test_kex test_rand test_aes
-if USE_OPENSSL
-#	rm -f test_sig
-#	rm -f pp_matrices
-#	rm -rf precomputed_data
-endif
+	rm -f test_kex test_rand test_aes test_sig
 
 prettyprint:
-	find src -name '*.c' -o -name '*.h' | grep -v Picnic* | grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
+	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: links
 	doxygen
