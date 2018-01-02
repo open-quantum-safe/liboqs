@@ -95,4 +95,7 @@ double OQS_RAND_zscore_deviation_from_uniform(const unsigned long occurrences[25
 void OQS_RAND_report_statistics(const unsigned long occurrences[256], const char *indent);
 
 int OQS_RAND_get_system_entropy(uint8_t *buf, size_t n);
+
+int randombytes(unsigned char* random_array, unsigned long long nbytes);
+
 #endif
