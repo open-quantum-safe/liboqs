@@ -1,9 +1,3 @@
-#if defined(WINDOWS)
-#define UNUSED
-#else
-#define UNUSED __attribute__((unused))
-#endif
-
 #include <stdlib.h>
 #include <string.h>
 #if !defined(WINDOWS)

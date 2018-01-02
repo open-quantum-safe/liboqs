@@ -2,12 +2,6 @@
 #pragma warning(disable : 4047 4090)
 #endif
 
-#if defined(WINDOWS)
-#define UNUSED
-#else
-#define UNUSED __attribute__((unused))
-#endif
-
 #include <stdlib.h>
 #include <string.h>
 #if !defined(WINDOWS)
@@ -15,6 +9,7 @@
 #include <unistd.h>
 #endif
 
+#include <oqs/common.h>
 #include <oqs/kex.h>
 #include <oqs/rand.h>
 

@@ -1,13 +1,7 @@
-#if defined(WINDOWS)
-#define UNUSED
-// __attribute__ not supported in VS, is there something else I should define?
-#else
-#define UNUSED __attribute__((unused))
-#endif
-
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <oqs/common.h>
 
 #ifndef AES_ENABLE_NI
 #include <assert.h>
