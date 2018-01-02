@@ -85,7 +85,7 @@
 * \param input The message input byte array
 * \param inplen The number of message bytes to process
 */
-void OQS_SHA3_sha3256(uint8_t* output, const uint8_t* input, size_t inplen);
+void OQS_SHA3_sha3256(uint8_t *output, const uint8_t *input, size_t inplen);
 
 /**
 * \brief Process a message with SHA3-512 and return the hash code in the output byte array.
@@ -96,7 +96,7 @@ void OQS_SHA3_sha3256(uint8_t* output, const uint8_t* input, size_t inplen);
 * \param input The message input byte array
 * \param inplen The number of message bytes to process
 */
-void OQS_SHA3_sha3512(uint8_t* output, const uint8_t* input, size_t inplen);
+void OQS_SHA3_sha3512(uint8_t *output, const uint8_t *input, size_t inplen);
 
 /**
 * \brief The Keccak absorb function.
@@ -111,7 +111,7 @@ void OQS_SHA3_sha3512(uint8_t* output, const uint8_t* input, size_t inplen);
 * \param inplen The number of message bytes to process
 * \param domain The domain seperation code (SHA3=0x06, SHAKE=0x1F, cSHAKE=0x04)
 */
-void OQS_SHA3_keccak_absorb(uint64_t* state, size_t rate, const uint8_t* input, size_t inplen, uint8_t domain);
+void OQS_SHA3_keccak_absorb(uint64_t *state, size_t rate, const uint8_t *input, size_t inplen, uint8_t domain);
 
 /**
 * \brief The Keccak permute function.
@@ -119,7 +119,7 @@ void OQS_SHA3_keccak_absorb(uint64_t* state, size_t rate, const uint8_t* input, 
 *
 * \param state The function state; must be initialized
 */
-void OQS_SHA3_keccak_permute(uint64_t* state);
+void OQS_SHA3_keccak_permute(uint64_t *state);
 
 /**
 * \brief The Keccak squeeze function.
@@ -132,7 +132,7 @@ void OQS_SHA3_keccak_permute(uint64_t* state);
 * \param state The function state; must be pre-initialized
 * \param rate The rate of absorption, in bytes
 */
-void OQS_SHA3_keccak_squeezeblocks(uint8_t* output, size_t nblocks, uint64_t* state, size_t rate);
+void OQS_SHA3_keccak_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state, size_t rate);
 
 /* SHAKE */
 
@@ -146,7 +146,7 @@ void OQS_SHA3_keccak_squeezeblocks(uint8_t* output, size_t nblocks, uint64_t* st
 * \param input The input seed byte array
 * \param inplen The number of seed bytes to process
 */
-void OQS_SHA3_shake128(uint8_t* output, size_t outlen, const uint8_t* input, size_t inplen);
+void OQS_SHA3_shake128(uint8_t *output, size_t outlen, const uint8_t *input, size_t inplen);
 
 /**
 * \brief The SHAKE-128 absorb function.
@@ -160,7 +160,7 @@ void OQS_SHA3_shake128(uint8_t* output, size_t outlen, const uint8_t* input, siz
 * \param input The input seed byte array
 * \param inplen The number of seed bytes to process
 */
-void OQS_SHA3_shake128_absorb(uint64_t* state, const uint8_t* input, size_t inplen);
+void OQS_SHA3_shake128_absorb(uint64_t *state, const uint8_t *input, size_t inplen);
 
 /**
 * \brief The SHAKE-128 squeeze function.
@@ -173,7 +173,7 @@ void OQS_SHA3_shake128_absorb(uint64_t* state, const uint8_t* input, size_t inpl
 * \param nblocks The number of blocks to extract
 * \param state The function state; must be pre-initialized
 */
-void OQS_SHA3_shake128_squeezeblocks(uint8_t* output, size_t nblocks, uint64_t* state);
+void OQS_SHA3_shake128_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
 
 /**
 * \brief Seed a SHAKE-256 instance, and generate an array of pseudo-random bytes.
@@ -185,7 +185,7 @@ void OQS_SHA3_shake128_squeezeblocks(uint8_t* output, size_t nblocks, uint64_t* 
 * \param input The input seed byte array
 * \param inplen The number of seed bytes to process
 */
-void OQS_SHA3_shake256(uint8_t* output, size_t outlen, const uint8_t* input, size_t inplen);
+void OQS_SHA3_shake256(uint8_t *output, size_t outlen, const uint8_t *input, size_t inplen);
 
 /**
 * \brief The SHAKE-256 absorb function.
@@ -199,7 +199,7 @@ void OQS_SHA3_shake256(uint8_t* output, size_t outlen, const uint8_t* input, siz
 * \param input The input seed byte array
 * \param inplen The number of seed bytes to process
 */
-void OQS_SHA3_shake256_absorb(uint64_t* state, const uint8_t* input, size_t inplen);
+void OQS_SHA3_shake256_absorb(uint64_t *state, const uint8_t *input, size_t inplen);
 
 /**
 * \brief The SHAKE-256 squeeze function.
@@ -211,7 +211,7 @@ void OQS_SHA3_shake256_absorb(uint64_t* state, const uint8_t* input, size_t inpl
 * \param nblocks The number of blocks to extract
 * \param state The function state; must be pre-initialized
 */
-void OQS_SHA3_shake256_squeezeblocks(uint8_t* output, size_t nblocks, uint64_t* state);
+void OQS_SHA3_shake256_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
 
 /* cSHAKE */
 
@@ -227,7 +227,7 @@ void OQS_SHA3_shake256_squeezeblocks(uint8_t* output, size_t nblocks, uint64_t* 
 * \param input The input seed byte array
 * \param inplen The number of seed bytes to process
 */
-void OQS_SHA3_cshake128_simple(uint8_t* output, size_t outlen, uint16_t cstm, const uint8_t* input, size_t inplen);
+void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen);
 
 /**
 * \brief The cSHAKE-128 simple absorb function.
@@ -242,7 +242,7 @@ void OQS_SHA3_cshake128_simple(uint8_t* output, size_t outlen, uint16_t cstm, co
 * \param input The input seed byte array
 * \param inplen The number of seed bytes to process
 */
-void OQS_SHA3_cshake128_simple_absorb(uint64_t* state, uint16_t cstm, const uint8_t* input, size_t inplen);
+void OQS_SHA3_cshake128_simple_absorb(uint64_t *state, uint16_t cstm, const uint8_t *input, size_t inplen);
 
 /**
 * \brief The cSHAKE-128 simple squeeze function.
@@ -254,7 +254,7 @@ void OQS_SHA3_cshake128_simple_absorb(uint64_t* state, uint16_t cstm, const uint
 * \param nblocks The number of blocks to extract
 * \param state The function state; must be pre-initialized
 */
-void OQS_SHA3_cshake128_simple_squeezeblocks(uint8_t* output, size_t nblocks, uint64_t* state);
+void OQS_SHA3_cshake128_simple_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
 
 /**
 * \brief Seed a cSHAKE-256 instance and generate pseudo-random output.
@@ -268,7 +268,7 @@ void OQS_SHA3_cshake128_simple_squeezeblocks(uint8_t* output, size_t nblocks, ui
 * \param input The input seed byte array
 * \param inplen The number of seed bytes to process
 */
-void OQS_SHA3_cshake256_simple(uint8_t* output, size_t outlen, uint16_t cstm, const uint8_t* input, size_t inplen);
+void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen);
 
 /**
 * \brief The cSHAKE-256 simple absorb function.
@@ -283,7 +283,7 @@ void OQS_SHA3_cshake256_simple(uint8_t* output, size_t outlen, uint16_t cstm, co
 * \param input The input seed byte array
 * \param inplen The number of seed bytes to process
 */
-void OQS_SHA3_cshake256_simple_absorb(uint64_t* state, uint16_t cstm, const uint8_t* input, size_t inplen);
+void OQS_SHA3_cshake256_simple_absorb(uint64_t *state, uint16_t cstm, const uint8_t *input, size_t inplen);
 
 /**
 * \brief The cSHAKE-256 simple squeeze function.
@@ -295,6 +295,6 @@ void OQS_SHA3_cshake256_simple_absorb(uint64_t* state, uint16_t cstm, const uint
 * \param nblocks The number of blocks to extract
 * \param state The function state; must be pre-initialized
 */
-void OQS_SHA3_cshake256_simple_squeezeblocks(uint8_t* output, size_t nblocks, uint64_t* state);
+void OQS_SHA3_cshake256_simple_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
 
 #endif
