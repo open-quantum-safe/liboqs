@@ -97,8 +97,6 @@ if USE_SIDH_IQC
 endif
 
 
-noinst_bin_PROGRAMS = test_rand test_kex test_aes
-
 libmerge_external.la:
 if USE_SIG_PICNIC
 	mkdir -p temp && cp liboqs.a temp/ && cp src/sig_picnic/external/build/libpicnic_static.a temp/
@@ -106,7 +104,7 @@ if USE_SIG_PICNIC
 	cd .. && rm -rf temp
 endif
 
-noinst_bin_PROGRAMS = test_rand test_kex test_aes test_sig
+noinst_bin_PROGRAMS = test_rand test_kex test_aes test_sha3 test_sig
 
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
@@ -153,11 +151,17 @@ test_rand_CPPFLAGS += -maes -msse2
 endif
 endif
 
+test_sha3_LDADD =  liboqs.la -lm
+test_sha3_SOURCES = src/crypto/sha3/test_sha3.c
+test_sha3_CPPFLAGS = -I./include
+test_sha3_CPPFLAGS += $(AM_CPPFLAGS)
+
 test: clean-tests
 	make
 	./test_kex --quiet
 	./test_rand --quiet
 	./test_aes
+	./test_sha3
 	./test_sig
 
 links:
@@ -202,7 +206,7 @@ endif
 
 
 clean-tests:
-	rm -f test_kex test_rand test_aes test_sig
+	rm -f test_kex test_rand test_aes test_sha3 test_sig
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
@@ -214,5 +218,3 @@ cleanup-patch:
 if USE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
 endif
-
-
