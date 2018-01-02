@@ -27,6 +27,9 @@ endif
 if USE_KEX_LWE_FRODO
 liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la
 endif
+if USE_KEX_LWE_FRODOKEM
+liboqs_la_LIBADD += src/kex_lwe_frodokem/libfrodokem.la
+endif
 if USE_KEX_MLWE_KYBER
 liboqs_la_LIBADD += src/kex_mlwe_kyber/libkyber.la
 endif
@@ -67,6 +70,7 @@ installheader_HEADERS=config.h \
 	src/crypto/sha3/sha3.h \
 	src/kex/kex.h \
 	src/kex_lwe_frodo/kex_lwe_frodo.h \
+	src/kex_lwe_frodokem/kex_lwe_frodokem.h \
 	src/kex_mlwe_kyber/kex_mlwe_kyber.h \
 	src/kex_ntru/kex_ntru.h \
 	src/kex_rlwe_bcns15/kex_rlwe_bcns15.h \
@@ -171,6 +175,7 @@ links:
 	cp -f src/crypto/sha3/sha3.h include/oqs
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
+	cp -f src/kex_lwe_frodokem/kex_lwe_frodokem.h include/oqs
 	cp -f src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
 	cp -f src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
@@ -214,5 +219,3 @@ cleanup-patch:
 if USE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
 endif
-
-

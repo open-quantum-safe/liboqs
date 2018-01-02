@@ -1,0 +1,34 @@
+#if !defined(WINDOWS)
+#define NIX
+#endif
+#define _X86_
+#define _FAST_GENERIC_
+#define _CSHAKE128_FOR_A_
+
+#include <oqs/sha3.h>
+#define cshake128_simple OQS_SHA3_cshake128_simple
+
+#include <oqs/rand.h>
+
+// fix global namespacing
+#define frodo_add oqs_kex_lwe_frodokem_640_cshake_frodo_add
+#define frodo_key_decode oqs_kex_lwe_frodokem_640_cshake_frodo_key_decode
+#define frodo_key_encode oqs_kex_lwe_frodokem_640_cshake_frodo_key_encode
+#define frodo_mul_add_as_plus_e oqs_kex_lwe_frodokem_640_cshake_frodo_mul_add_as_plus_e
+#define frodo_mul_add_sa_plus_e oqs_kex_lwe_frodokem_640_cshake_frodo_mul_add_sa_plus_e
+#define frodo_mul_add_sb_plus_e oqs_kex_lwe_frodokem_640_cshake_frodo_mul_add_sb_plus_e
+#define frodo_mul_bs oqs_kex_lwe_frodokem_640_cshake_frodo_mul_bs
+#define frodo_pack oqs_kex_lwe_frodokem_640_cshake_frodo_pack
+#define frodo_sample_n oqs_kex_lwe_frodokem_640_cshake_frodo_sample_n
+#define frodo_sub oqs_kex_lwe_frodokem_640_cshake_frodo_sub
+#define frodo_unpack oqs_kex_lwe_frodokem_640_cshake_frodo_unpack
+#define clear_words oqs_kex_lwe_frodokem_640_cshake_clear_words
+#define crypto_kem_keypair_Frodo640 oqs_kex_lwe_frodokem_640_cshake_keypair
+#define crypto_kem_enc_Frodo640 oqs_kex_lwe_frodokem_640_cshake_enc
+#define crypto_kem_dec_Frodo640 oqs_kex_lwe_frodokem_640_cshake_dec
+#define CDF_TABLE oqs_kex_lwe_frodokem_640_cshake_CDF_TABLE
+#define CDF_TABLE_LEN oqs_kex_lwe_frodokem_640_cshake_CDF_TABLE_LEN
+
+#include "upstream/api_frodo640.h"
+#include "upstream/frodo640.c"
+#include "upstream/util.c"
