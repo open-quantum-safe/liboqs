@@ -164,33 +164,6 @@ To build with `kex_code_mcbits ` enabled:
   make clean
   make
 
-### Building with `sig_picnic` enabled
-
-The `sig_picnic` signature algorithm is not enabled by default since it requires:
-
-- external libraries (`openssl` and `m4ri`);
-- to download and setup Picnic;
-- a parameters generation preprocessing step.
-
-To install the libraries on macOS:
-
-	brew install openssl homebrew/science/m4ri
-
-To install the libraries on Ubuntu:
-
-	sudo apt install libssl-dev libm4ri-dev
-
-To download the Picnic source code:
-
-	./download-and-setup-picnic.sh
-
-To build with `sig_picnic` enabled:
-
-	./configure --enable-picnic --enable-openssl [--with-openssl-dir=<..> --with-m4r-dir=<..>]
-	make clean
-	make
-	make test   (this generates data needed by the Picnic library)
- 
 ### Configured Algorithms
 
 Flags for all the configured algorithms are generated in config.h file.
