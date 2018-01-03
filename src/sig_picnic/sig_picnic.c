@@ -1,9 +1,4 @@
 #ifdef ENABLE_SIG_PICNIC
-#if defined(WINDOWS)
-#define UNUSED
-#else
-#define UNUSED __attribute__((unused))
-#endif
 
 #include <string.h>
 #include <oqs/common.h>

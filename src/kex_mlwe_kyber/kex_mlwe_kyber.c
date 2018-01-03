@@ -1,10 +1,3 @@
-#if defined(WINDOWS)
-#define UNUSED
-// __attribute__ not supported in VS, is there something else I should define?
-#else
-#define UNUSED __attribute__((unused))
-#endif
-
 #include <stdlib.h>
 #include <string.h>
 #if !defined(WINDOWS)
@@ -12,6 +5,7 @@
 #include <unistd.h>
 #endif
 
+#include <oqs/common.h>
 #include <oqs/kex.h>
 #include <oqs/rand.h>
 

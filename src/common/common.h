@@ -16,4 +16,11 @@ void OQS_MEM_secure_free(void *ptr, size_t len);
 #define eprintf(...) fprintf(stderr, __VA_ARGS__);
 #endif
 
+#if defined(WINDOWS)
+#define UNUSED
+// __attribute__ not supported in VS
+#else
+#define UNUSED __attribute__((unused))
+#endif
+
 #endif
