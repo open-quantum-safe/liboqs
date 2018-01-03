@@ -181,3 +181,12 @@ err:
 
 	return result;
 }
+
+int randombytes(unsigned char* random_array, unsigned long long nbytes) {
+	OQS_RAND *r = OQS_RAND_new(OQS_RAND_alg_default);
+	if (r == NULL) {
+		return 1;
+	}
+	OQS_RAND_n(r, random_array, nbytes);
+	return 0;
+}

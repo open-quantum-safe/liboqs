@@ -28,6 +28,8 @@ enum OQS_KEX_alg_name {
 	OQS_KEX_alg_sidh_iqc_ref,
 	OQS_KEX_alg_mlwe_kyber,
 	OQS_KEX_alg_rlwe_newhope_avx2,
+	OQS_KEX_alg_lwe_frodokem_640_aes,
+	OQS_KEX_alg_lwe_frodokem_640_cshake,
 };
 
 typedef struct OQS_KEX OQS_KEX;
