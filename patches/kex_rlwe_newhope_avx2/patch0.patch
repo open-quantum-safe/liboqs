@@ -1039,7 +1039,7 @@ index dba8eca..46fac8f 100644
  static int fd = -1;
  
 -void randombytes(unsigned char *x,unsigned long long xlen)
-+static void randombytes(unsigned char *x,unsigned long long xlen)
++static void randombytes_unused(unsigned char *x,unsigned long long xlen)
  {
    int i;
  
@@ -1052,7 +1052,7 @@ index 7f2c4c0..72e06b7 100644
  #define RANDOMBYTES_H
  
 -void randombytes(unsigned char *x,unsigned long long xlen);
-+static void randombytes(unsigned char *x,unsigned long long xlen);
++static void randombytes_unused(unsigned char *x,unsigned long long xlen);
  
  #endif
 diff --git a/src/kex_rlwe_newhope/avx2/rec.s b/src/kex_rlwe_newhope/avx2/rec.s
