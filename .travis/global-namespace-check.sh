@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if [[ $(nm -g liboqs.a | grep ' T ' | grep -E -v -i ' T [_]?(OQS|ntru|picnic|Keccak|randombytes)') ]];
+if [[ $(nm -g liboqs.a | grep ' T ' | grep -E -v -i ' T [_]?[OQS|ntru|picnic|Keccak|randombytes]') ]];
 then
 	tput setaf 1;
 	echo "Code contains the following non-namespaced global symbols; see https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for function naming conventions.";
 	tput sgr 0
-	nm -g liboqs.a | grep ' T ' | grep -E -v -i ' T [_]?(OQS|ntru|picnic|Keccak|randombytes)'
+	nm -g liboqs.a | grep ' T ' | grep -E -v -i ' T [_]?[OQS|ntru|picnic|Keccak|randombytes]'
 	exit 1;
 else
 	tput setaf 2;
