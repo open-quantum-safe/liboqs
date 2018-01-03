@@ -95,9 +95,10 @@ static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, 
 	}
 
 	if (print) {
-		printf("================================================================================\n");
+		printf("--------------------------------------------------------------------------------\n");
 		printf("Sample computation for key exchange method %s\n", kex->method_name);
-		printf("================================================================================\n");
+		printf("--------------------------------------------------------------------------------\n");
+		fflush(stdout);
 	}
 
 	/* Alice's initial message */
@@ -182,12 +183,6 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 		occurrences[i] = 0;
 	}
 
-	ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, quiet ? 0 : 1, occurrences);
-
-	if (ret != 1) {
-		goto err;
-	}
-
 	/* setup KEX */
 	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
 	if (kex == NULL) {
@@ -198,6 +193,13 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 	printf("Testing correctness and randomness of key exchange method %s (params=%s) for %d iterations\n",
 	       kex->method_name, named_parameters, iterations);
 	printf("================================================================================\n");
+
+	ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, quiet ? 0 : 1, occurrences);
+
+	if (ret != 1) {
+		goto err;
+	}
+
 	for (int i = 0; i < iterations; i++) {
 		ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 0, occurrences);
 		if (ret != 1) {
