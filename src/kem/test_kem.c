@@ -11,8 +11,11 @@ struct kem_testcase {
 };
 
 struct kem_testcase kem_testcases[] = {
-#ifdef OQS_ENABLE_KEM_dummy
-	{OQS_KEM_alg_dummy, 100},
+#ifdef OQS_ENABLE_KEM_dummy1
+	{OQS_KEM_alg_dummy1, 100},
+#endif
+#ifdef OQS_ENABLE_KEM_dummy2
+	{OQS_KEM_alg_dummy2, 100},
 #endif
 };
 

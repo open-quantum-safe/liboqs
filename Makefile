@@ -1,10 +1,17 @@
-ENABLE_KEMS=dummy
+# THESE SHOULD BE THE ONLY OPTIONS TO BE CONFIGURED BY THE PERSON COMPILING
+
+ENABLE_KEMS=dummy1 dummy2
 
 CC=gcc
 OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
 OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib
-CFLAGS=-Iinclude -I${OPENSSL_INCLUDE_DIR} -Wall -Werror
-LDFLAGS=-L${OPENSSL_LIB_DIR} -lcrypto
+CFLAGS=
+LDFLAGS=
+
+# NOTHING AFTER THIS SHOULD NEED TO BE CHANGED BY THE PERSON COMPILING
+
+CFLAGS+=-Iinclude -I${OPENSSL_INCLUDE_DIR} -Wall -Werror
+LDFLAGS+=-L${OPENSSL_LIB_DIR} -lcrypto
 
 all: mkdirs headers liboqs tests
 
@@ -37,6 +44,9 @@ liboqs: ${OBJECTS} ${ARCHIVES}
 
 TEST_PROGRAMS=test_kem
 tests: ${TEST_PROGRAMS}
+
+test: tests
+	./test_kem
 
 clean:
 	rm -rf includes
