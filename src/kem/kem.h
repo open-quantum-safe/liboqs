@@ -5,6 +5,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <oqs/oqs.h>
+
 enum OQS_KEM_alg_name {
 	OQS_KEM_alg_default,
 	OQS_KEM_alg_dummy,
@@ -28,6 +30,10 @@ typedef struct OQS_KEM {
 	OQS_STATUS (*decaps)(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 } OQS_KEM;
+
+#ifdef OQS_ENABLE_KEM_dummy
+#include <oqs/kem_dummy.h>
+#endif
 
 OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name);
 

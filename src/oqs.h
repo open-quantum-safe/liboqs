@@ -5,6 +5,7 @@
 #define OQS_SUCCESS 0
 #define OQS_ERROR -1
 
+#include <oqs/config.h>
 #include <oqs/rand.h>
 #include <oqs/kem.h>
 

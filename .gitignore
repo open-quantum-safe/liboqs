@@ -1,3 +1,5 @@
 .objs/
 include/
 liboqs.a
+src/config.h
+test_kem

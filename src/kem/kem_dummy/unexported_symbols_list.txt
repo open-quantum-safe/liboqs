@@ -1,0 +1,4 @@
+_crypto_kem_keypair
+_crypto_kem_enc
+_crypto_kem_dec
+_another_global_function
