@@ -1,6 +1,7 @@
 # THESE SHOULD BE THE ONLY OPTIONS TO BE CONFIGURED BY THE PERSON COMPILING
 
 ENABLE_KEMS=dummy1 dummy2
+KEM_DEFAULT=dummy1
 
 CC=gcc
 OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
@@ -30,6 +31,7 @@ config_h:
 	rm -rf src/config.h
 	touch src/config.h
 	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/config.h;)
+	echo "#define OQS_KEM_DEFAULT OQS_KEM_alg_${KEM_DEFAULT}" >> src/config.h
 
 headers: config_h ${HEADERS}
 	rm -rf include

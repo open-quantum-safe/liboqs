@@ -6,7 +6,7 @@
 OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name) {
 	switch(alg_name) {
 		case OQS_KEM_alg_default:
-			return OQS_KEM_new(OQS_KEM_alg_dummy1);
+			return OQS_KEM_new(OQS_KEM_DEFAULT);
 		case OQS_KEM_alg_dummy1:
 #ifdef OQS_ENABLE_KEM_dummy1
 			return OQS_KEM_dummy1_new();
