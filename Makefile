@@ -11,8 +11,8 @@ LDFLAGS=
 
 # NOTHING AFTER THIS SHOULD NEED TO BE CHANGED BY THE PERSON COMPILING
 
-CFLAGS+=-std=c11 -Iinclude -I${OPENSSL_INCLUDE_DIR} -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
-LDFLAGS+=-L${OPENSSL_LIB_DIR} -lcrypto
+CFLAGS+=-std=c11 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
+LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto
 
 all: mkdirs headers liboqs tests
 
@@ -20,44 +20,44 @@ OBJECT_DIRS=
 include src/common/Makefile
 include src/kem/Makefile
 
-HEADERS=src/oqs.h ${HEADERS_COMMON} ${HEADERS_KEM}
-OBJECTS=${OBJECTS_COMMON} ${OBJECTS_KEM}
-ARCHIVES=${ARCHIVES_KEM}
+HEADERS=src/oqs.h $(HEADERS_COMMON) $(HEADERS_KEM)
+OBJECTS=$(OBJECTS_COMMON) $(OBJECTS_KEM)
+ARCHIVES=$(ARCHIVES_KEM)
 
 mkdirs:
-	mkdir -p ${OBJECT_DIRS}
+	mkdir -p $(OBJECT_DIRS)
 
 DATE=`date`
 UNAME=`uname -a`
-CC_VERSION=`${CC} --version | tr '\n' ' '`
+CC_VERSION=`$(CC) --version | tr '\n' ' '`
 config_h:
 	rm -rf src/config.h
 	touch src/config.h
 	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/config.h;)
-	echo "#define OQS_KEM_DEFAULT OQS_KEM_alg_${KEM_DEFAULT}" >> src/config.h
-	echo "#define OQS_COMPILE_DATE \"${DATE}\"" >> src/config.h
-	echo "#define OQS_COMPILE_CC \"${CC}\"" >> src/config.h
-	echo "#define OQS_COMPILE_CC_VERSION \"${CC_VERSION}\"" >> src/config.h
-	echo "#define OQS_COMPILE_CFLAGS \"${CFLAGS}\"" >> src/config.h
-	echo "#define OQS_COMPILE_LDFLAGS \"${LDFLAGS}\"" >> src/config.h
-	echo "#define OQS_COMPILE_ENABLE_KEMS \"${ENABLE_KEMS}\"" >> src/config.h
-	echo "#define OQS_COMPILE_KEM_DEFAULT \"${KEM_DEFAULT}\"" >> src/config.h
-	echo "#define OQS_COMPILE_UNAME \"${UNAME}\"" >> src/config.h
+	echo "#define OQS_KEM_DEFAULT OQS_KEM_alg_$(KEM_DEFAULT)" >> src/config.h
+	echo "#define OQS_COMPILE_DATE \"$(DATE)\"" >> src/config.h
+	echo "#define OQS_COMPILE_CC \"$(CC)\"" >> src/config.h
+	echo "#define OQS_COMPILE_CC_VERSION \"$(CC_VERSION)\"" >> src/config.h
+	echo "#define OQS_COMPILE_CFLAGS \"$(CFLAGS)\"" >> src/config.h
+	echo "#define OQS_COMPILE_LDFLAGS \"$(LDFLAGS)\"" >> src/config.h
+	echo "#define OQS_COMPILE_ENABLE_KEMS \"$(ENABLE_KEMS)\"" >> src/config.h
+	echo "#define OQS_COMPILE_KEM_DEFAULT \"$(KEM_DEFAULT)\"" >> src/config.h
+	echo "#define OQS_COMPILE_UNAME \"$(UNAME)\"" >> src/config.h
 
 
-headers: config_h ${HEADERS}
+headers: config_h $(HEADERS)
 	rm -rf include
 	mkdir -p include/oqs
-	cp ${HEADERS} src/config.h include/oqs
+	cp $(HEADERS) src/config.h include/oqs
 
-liboqs: ${OBJECTS} ${ARCHIVES}
+liboqs: $(OBJECTS) $(ARCHIVES)
 	rm -f liboqs_tmp.a liboqs.a
-	ar -r -c liboqs_tmp.a ${OBJECTS}
-	libtool -static -o liboqs.a liboqs_tmp.a ${ARCHIVES}
+	ar -r -c liboqs_tmp.a $(OBJECTS)
+	libtool -static -o liboqs.a liboqs_tmp.a $(ARCHIVES)
 	rm -f liboqs_tmp.a
 
 TEST_PROGRAMS=test_kem
-tests: ${TEST_PROGRAMS}
+tests: $(TEST_PROGRAMS)
 
 test: tests
 	./test_kem
@@ -66,4 +66,4 @@ clean:
 	rm -rf includes
 	rm -rf .objs
 	rm -f liboqs.a
-	rm -f ${TEST_PROGRAMS}
+	rm -f $(TEST_PROGRAMS)
