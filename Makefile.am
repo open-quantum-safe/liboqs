@@ -40,8 +40,8 @@ endif
 if USE_KEX_RLWE_NEWHOPE
 liboqs_la_LIBADD += src/kex_rlwe_newhope/libnewhope.la
 endif
-if USE_KEX_SIDH_CLN16
-liboqs_la_LIBADD += src/kex_sidh_cln16/libcln16.la
+if USE_KEX_SIDH_MSR
+liboqs_la_LIBADD += src/kex_sidh_msr/libsidhmsr.la
 endif
 
 liboqs_la_LIBADD += src/sig/libsig.la
@@ -144,7 +144,7 @@ if USE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
 	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
 endif
-	cp -f src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
+	cp -f src/kex_sidh_msr/kex_sidh_msr.h include/oqs
 	cp -f src/kex_mlwe_kyber/kex_mlwe_kyber.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 if USE_OPENSSL

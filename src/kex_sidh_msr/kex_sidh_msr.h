@@ -12,6 +12,11 @@
 #include <oqs/kex.h>
 #include <oqs/rand.h>
 
+#define OQS_KEX_SIDH_503_params "sidh503"
+#define OQS_KEX_SIDH_751_params "sidh751"
+#define OQS_KEX_SIKE_503_params "sike503"
+#define OQS_KEX_SIKE_751_params "sike751"
+
 OQS_KEX *OQS_KEX_sidh_msr_new(OQS_RAND *rand, const char *named_parameters);
 
 int OQS_KEX_sidh_msr_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len);
