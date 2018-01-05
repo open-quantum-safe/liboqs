@@ -1,9 +1,14 @@
 HEADERS_KEM_DUMMY1=src/kem/kem_dummy1/kem_dummy1.h
+HEADERS_KEM+=${HEADERS_KEM_DUMMY1}
 
 OBJECT_DIRS+=.objs/kem/kem_dummy1
 OBJECTS_KEM_DUMMY1=.objs/kem/kem_dummy1/kem_dummy1.o
+OBJECTS_KEM+=${OBJECTS_KEM_DUMMY1}
 
 ARCHIVES_KEM_DUMMY1=.objs/kem/kem_dummy1/kem_dummy1_upstream.a
+ifneq (,$(findstring dummy1, ${ENABLE_KEMS}))
+ARCHIVES_KEM+=${ARCHIVES_KEM_DUMMY1}
+endif
 
 .objs/kem/kem_dummy1/kem_dummy1.o: src/kem/kem_dummy1/kem_dummy1.c
 	${CC} -c src/kem/kem_dummy1/kem_dummy1.c -o .objs/kem/kem_dummy1/kem_dummy1.o ${CFLAGS}
