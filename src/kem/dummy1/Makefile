@@ -5,13 +5,13 @@ OBJECT_DIRS+=.objs/kem/dummy1
 OBJECTS_KEM_DUMMY1=.objs/kem/dummy1/kem_dummy1.o
 OBJECTS_KEM+=$(OBJECTS_KEM_DUMMY1)
 
+.objs/kem/dummy1/kem_dummy1.o: src/kem/dummy1/kem_dummy1.c
+	$(CC) -c src/kem/dummy1/kem_dummy1.c -o .objs/kem/dummy1/kem_dummy1.o $(CFLAGS)
+
 ARCHIVES_KEM_DUMMY1=.objs/kem/dummy1/kem_dummy1_upstream.a
 ifneq (,$(findstring dummy1, $(ENABLE_KEMS)))
 ARCHIVES_KEM+=$(ARCHIVES_KEM_DUMMY1)
 endif
-
-.objs/kem/dummy1/kem_dummy1.o: src/kem/dummy1/kem_dummy1.c
-	$(CC) -c src/kem/dummy1/kem_dummy1.c -o .objs/kem/dummy1/kem_dummy1.o $(CFLAGS)
 
 KEM_DUMMY1_UPSTREAM_OBJECTS=src/kem/dummy1/upstream/dummy.o
 
