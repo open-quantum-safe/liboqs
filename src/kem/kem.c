@@ -11,13 +11,13 @@ OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name) {
 #ifdef OQS_ENABLE_KEM_dummy1
 			return OQS_KEM_dummy1_new();
 #else
-			assert(0);
+			return NULL;
 #endif
 		case OQS_KEM_alg_dummy2:
 #ifdef OQS_ENABLE_KEM_dummy2
 			return OQS_KEM_dummy2_new();
 #else
-			assert(0);
+			return NULL;
 #endif
 		default:
 			assert(0);

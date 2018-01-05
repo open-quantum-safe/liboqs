@@ -17,8 +17,7 @@ typedef struct OQS_KEM {
 
 	char *method_name;
 
-	uint16_t claimed_classical_security;
-	uint16_t claimed_quantum_security;
+	uint8_t claimed_nist_level;
 	bool ind_cca;
 
 	size_t length_public_key;
