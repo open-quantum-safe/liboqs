@@ -4,6 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-int OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
+void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
 
 #endif

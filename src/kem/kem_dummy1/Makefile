@@ -16,7 +16,7 @@ endif
 KEM_DUMMY1_UPSTREAM_OBJECTS=src/kem/kem_dummy1/upstream/dummy.o
 
 .objs/kem/kem_dummy1/kem_dummy1_upstream.a:
-	cd src/kem/kem_dummy1/upstream && make
+	cd src/kem/kem_dummy1/upstream && $(MAKE)
 	rm -f .objs/kem/kem_dummy1/kem_dummy1_upstream.a
 	ar -r -c .objs/kem/kem_dummy1/kem_dummy1_upstream.a ${KEM_DUMMY1_UPSTREAM_OBJECTS}
 	ld -r .objs/kem/kem_dummy1/kem_dummy1_upstream.a -o .objs/kem/kem_dummy1/kem_dummy1_upstream.a \

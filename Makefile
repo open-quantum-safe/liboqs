@@ -11,7 +11,7 @@ LDFLAGS=
 
 # NOTHING AFTER THIS SHOULD NEED TO BE CHANGED BY THE PERSON COMPILING
 
-CFLAGS+=-Iinclude -I${OPENSSL_INCLUDE_DIR} -Wall -Werror
+CFLAGS+=-std=c11 -Iinclude -I${OPENSSL_INCLUDE_DIR} -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 LDFLAGS+=-L${OPENSSL_LIB_DIR} -lcrypto
 
 all: mkdirs headers liboqs tests

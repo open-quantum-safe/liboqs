@@ -81,7 +81,7 @@ cleanup:
 	return ret;
 }
 
-int main(int argc, char **argv) {
+int main() {
 
 	int ret = EXIT_SUCCESS;
 	OQS_STATUS rc;
