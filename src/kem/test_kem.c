@@ -5,16 +5,6 @@
 
 #include <oqs/oqs.h>
 
-struct kem_testcase {
-	enum OQS_KEM_alg_name alg_name;
-	int iterations;
-};
-
-struct kem_testcase kem_testcases[] = {
-	{OQS_KEM_alg_dummy1, 100},
-	{OQS_KEM_alg_dummy2, 100},
-};
-
 static OQS_STATUS kem_test_correctness(enum OQS_KEM_alg_name alg_name) {
 
 	OQS_KEM *kem = NULL;
@@ -93,11 +83,9 @@ int main(int argc, char **argv) {
 
 	int ret = EXIT_SUCCESS;
 	OQS_STATUS rc;
-	size_t num_kex_testcases = sizeof(kem_testcases) / sizeof(struct kem_testcase);
 
-	for (size_t i = 0; i < num_kex_testcases; i++) {
-		struct kem_testcase testcase = kem_testcases[i];
-		rc = kem_test_correctness(testcase.alg_name);
+	for (int i = OQS_KEM_alg_default; i < OQS_KEM_alg_last; i++) {
+		rc = kem_test_correctness(i);
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
 		}

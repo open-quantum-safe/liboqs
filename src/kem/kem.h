@@ -7,10 +7,12 @@
 
 #include <oqs/oqs.h>
 
+// This enum is assumed to be in increasing order: 0, 1, 2, .., last
 enum OQS_KEM_alg_name {
-	OQS_KEM_alg_default,
+	OQS_KEM_alg_default = 0,
 	OQS_KEM_alg_dummy1,
 	OQS_KEM_alg_dummy2,
+	OQS_KEM_alg_last
 };
 
 typedef struct OQS_KEM {
