@@ -10,5 +10,5 @@ ARCHIVES_KEM=
 test_kem: src/kem/test_kem.c liboqs.a
 	$(CC) src/kem/test_kem.c liboqs.a -o test_kem $(CFLAGS) $(LDFLAGS)
 
-include src/kem/kem_dummy1/Makefile
-include src/kem/kem_dummy2/Makefile
+include src/kem/dummy1/Makefile
+include src/kem/dummy2/Makefile
