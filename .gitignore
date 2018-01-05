@@ -3,4 +3,5 @@ include/
 liboqs.a
 src/config.h
 test_kem
+example_kem
 *dSYM

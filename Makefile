@@ -14,7 +14,7 @@ LDFLAGS=
 CFLAGS+=-std=c11 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto
 
-all: mkdirs headers liboqs tests
+all: mkdirs headers liboqs tests examples
 
 OBJECT_DIRS=
 include src/common/Makefile
@@ -62,8 +62,12 @@ tests: $(TEST_PROGRAMS)
 test: tests
 	./test_kem
 
+EXAMPLE_PROGRAMS=example_kem
+examples: $(EXAMPLE_PROGRAMS)
+
 clean:
 	rm -rf includes
 	rm -rf .objs
 	rm -f liboqs.a
 	rm -f $(TEST_PROGRAMS)
+	rm -f $(EXAMPLE_PROGRAMS)
