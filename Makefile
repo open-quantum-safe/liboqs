@@ -27,11 +27,23 @@ ARCHIVES=${ARCHIVES_KEM}
 mkdirs:
 	mkdir -p ${OBJECT_DIRS}
 
+DATE=`date`
+UNAME=`uname -a`
+CC_VERSION=`${CC} --version | tr '\n' ' '`
 config_h:
 	rm -rf src/config.h
 	touch src/config.h
 	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/config.h;)
 	echo "#define OQS_KEM_DEFAULT OQS_KEM_alg_${KEM_DEFAULT}" >> src/config.h
+	echo "#define OQS_COMPILE_DATE \"${DATE}\"" >> src/config.h
+	echo "#define OQS_COMPILE_CC \"${CC}\"" >> src/config.h
+	echo "#define OQS_COMPILE_CC_VERSION \"${CC_VERSION}\"" >> src/config.h
+	echo "#define OQS_COMPILE_CFLAGS \"${CFLAGS}\"" >> src/config.h
+	echo "#define OQS_COMPILE_LDFLAGS \"${LDFLAGS}\"" >> src/config.h
+	echo "#define OQS_COMPILE_ENABLE_KEMS \"${ENABLE_KEMS}\"" >> src/config.h
+	echo "#define OQS_COMPILE_KEM_DEFAULT \"${KEM_DEFAULT}\"" >> src/config.h
+	echo "#define OQS_COMPILE_UNAME \"${UNAME}\"" >> src/config.h
+
 
 headers: config_h ${HEADERS}
 	rm -rf include
