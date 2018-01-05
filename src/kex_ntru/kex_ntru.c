@@ -1,12 +1,5 @@
 #ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
 
-#if defined(WINDOWS)
-#define UNUSED
-// __attribute__ not supported in VS
-#else
-#define UNUSED __attribute__((unused))
-#endif
-
 #include <fcntl.h>
 #if defined(WINDOWS)
 #include <windows.h>
@@ -15,6 +8,7 @@
 #include <unistd.h>
 #endif
 
+#include <oqs/common.h>
 #include <oqs/kex.h>
 #include <oqs/kex_ntru.h>
 #include <oqs/rand.h>

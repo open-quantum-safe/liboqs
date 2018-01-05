@@ -24,14 +24,14 @@ struct sig_testcase {
 };
 
 /* Add new testcases here */
-#ifdef ENABLE_PICNIC
+#ifdef ENABLE_SIG_PICNIC
 struct sig_testcase sig_testcases[] = {
-    {OQS_SIG_picnic_1_316_FS, "picnic_1_316_FS", 0, 10},
-    {OQS_SIG_picnic_1_316_UR, "picnic_1_316_UR", 0, 10},
-    {OQS_SIG_picnic_10_38_FS, "picnic_10_38_FS", 0, 10},
-    {OQS_SIG_picnic_10_38_UR, "picnic_10_38_UR", 0, 10},
-    {OQS_SIG_picnic_42_14_FS, "picnic_42_14_FS", 0, 10},
-    {OQS_SIG_picnic_42_14_UR, "picnic_42_14_UR", 0, 10},
+    {OQS_SIG_picnic_L1_FS, "picnic_L1_FS", 0, 10},
+    {OQS_SIG_picnic_L1_UR, "picnic_L1_UR", 0, 10},
+    {OQS_SIG_picnic_L3_FS, "picnic_L3_FS", 0, 10},
+    {OQS_SIG_picnic_L3_UR, "picnic_L3_UR", 0, 10},
+    {OQS_SIG_picnic_L5_FS, "picnic_L5_FS", 0, 10},
+    {OQS_SIG_picnic_L5_UR, "picnic_L5_UR", 0, 10},
 };
 #endif
 
@@ -178,7 +178,7 @@ cleanup:
 	return rc;
 }
 
-static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, int iterations, bool quiet) {
+UNUSED static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, int iterations, bool quiet) {
 	int ret;
 	ret = sig_test_correctness(rand, algid, !quiet);
 	if (ret != 1) {
@@ -199,7 +199,7 @@ err:
 	return ret;
 }
 
-static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int seconds) {
+UNUSED static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int seconds) {
 	int rc;
 
 	uint8_t *priv = NULL;
@@ -268,7 +268,7 @@ cleanup:
 	return rc;
 }
 
-#ifdef ENABLE_PICNIC
+#ifdef ENABLE_SIG_PICNIC
 int main(int argc, char **argv) {
 	int success = 1;
 	bool run_all = true;
@@ -345,9 +345,9 @@ cleanup:
 	}
 	return (success == 1) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
-#else // !ENABLE_PICNIC
+#else // !ENABLE_SIG_PICNIC
 int main() {
 	printf("No signature algorithm available. Make sure configure was run properly; see Readme.md.\n");
-	return 1;
+	return 0;
 }
 #endif

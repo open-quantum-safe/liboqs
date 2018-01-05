@@ -1,12 +1,7 @@
-#if defined(WINDOWS)
-#define UNUSED
-#else
-#define UNUSED __attribute__((unused))
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <oqs/common.h>
 #include "sidh_elliptic_curve.h"
 #include "sidh_public_param.h"
 #include "sidh_isogeny.h"

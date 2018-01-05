@@ -127,6 +127,10 @@ ARG_DISBL_SET([kex-sidh-msr], [disable KEX-SIDH-MSR.])
 AM_CONDITIONAL([kex_sidh_msr], [test "x$kex_sidh_msr" = xtrue])
 AM_CONDITIONAL([USE_KEX_SIDH_MSR], [test "x$kex_sidh_msr" = xtrue])
 
+ARG_DISBL_SET([sig-picnic], [disable SIG-PICNIC.])
+AM_CONDITIONAL([sig_picnic], [test "x$sig_picnic" = xtrue])
+AM_CONDITIONAL([USE_SIG_PICNIC], [test "x$sig_picnic" = xtrue])
+
 ARG_ENABL_SET([kex-rlwe-newhope-avx2], [enable KEX-RLWE-NEWHOPE-AVX2.])
 AM_CONDITIONAL([kex_rlwe_newhope_avx2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
 AM_CONDITIONAL([USE_KEX_RLWE_NEWHOPE_AVX2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
@@ -218,14 +222,24 @@ if test x"$kex_sidh_msr" = x"true"; then
   AC_DEFINE(ENABLE_KEX_SIDH_MSR, 1, "Define to 1 when SIDH MSR enabled")
 fi
 
-SRCDIR=${SRCDIR}" src/sig"
-
 # Conditional KEX
 if test x"$kex_code_mcbits" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_code_mcbits"
 fi
 if test x"$kex_sidh_iqc_ref" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
+fi
+
+# SIG
+SRCDIR=${SRCDIR}" src/sig"
+
+if test x"$sig_picnic" = x"true"; then
+  SRCDIR=${SRCDIR}" src/sig_picnic"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIG_PICNIC"
+  AC_CONFIG_COMMANDS_POST([echo Building Picnic library])
+  AC_CONFIG_COMMANDS_POST([cd src/sig_picnic])
+  AC_CONFIG_COMMANDS_POST([./build_picnic.sh])
+  AC_CONFIG_COMMANDS_POST([cd ../..])
 fi
 
 # Flags
@@ -264,6 +278,7 @@ AC_SUBST(USE_KEX_MLWE_KYBER)
 AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_MSR)
+AC_SUBST(USE_SIG_PICNIC)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE_AVX2)

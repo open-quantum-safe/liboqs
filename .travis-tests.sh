@@ -54,9 +54,10 @@ if [[ ${ENABLE_KEX_SIDH_CLN16} == 0 ]];then
   enable_disable_str+=" --disable-kex-sidh-cln16"
 fi
 
-./download-and-setup-picnic.sh
-if [[ ! -z "${M4RI_DIR// }" ]];then
-  enable_disable_str+=" --with-m4ri-dir=${M4RI_DIR}"
+if [[ ${ENABLE_SIG_PICNIC} == 0 ]];then
+  enable_disable_str+=" --disable-sig-picnic"
+else
+  cd src/sig_picnic;sh ./build_picnic.sh;cd ../..;
 fi
 
 if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then

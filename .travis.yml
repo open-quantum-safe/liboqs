@@ -11,20 +11,21 @@ matrix:
     - ENABLE_KEX_LWE_FRODO=0
     - ENABLE_KEX_MLWE_KYBER=0
     - ENABLE_KEX_SIDH_CLN16=0
-    - USE_PICNIC=1
+    - ENABLE_SIG_PICNIC=0
     - USE_OPENSSL=1
     - ENABLE_KEX_RLWE_NEWHOPE_AVX2=1
     addons:
       apt:
         sources:
         - ubuntu-toolchain-r-test
-        packages:
-          - libm4ri-dev
     before_install:
     - sh .travis/install-clang-format-linux.sh
+    - sh .travis/install_cmake3_8.sh
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-4.9
+    env:
+    - CC_OQS=gcc-4.9
+    - ENABLE_SIG_PICNIC=0
     addons:
       apt:
         sources:
@@ -33,6 +34,7 @@ matrix:
         - gcc-4.9
     before_install:
     - sh .travis/install-clang-format-linux.sh
+    - sh .travis/install_cmake3_8.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-5
@@ -44,6 +46,7 @@ matrix:
         - gcc-5
     before_install:
     - sh .travis/install-clang-format-linux.sh
+    - sh .travis/install_cmake3_8.sh
   - os: linux
     compiler: gcc
     env:
@@ -58,6 +61,7 @@ matrix:
         - libssl-dev
     before_install:
     - sh .travis/install-clang-format-linux.sh
+    - sh .travis/install_cmake3_8.sh
   - os: osx
     compiler: clang
     env:
@@ -75,13 +79,10 @@ matrix:
     - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package
     - ENABLE_CODE_MCBITS=1
     - ENABLE_SIDH_IQC_REF=1
-    - USE_PICNIC=1
-    - M4RI_DIR=/usr/local/
     before_install:
     - brew update
     - brew install libsodium
     - brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/0c4314c499576b28e4c082b591228a8f940954c0/Formula/clang-format.rb
-    - brew install homebrew/science/m4ri
 
 script:
   - ./.travis-tests.sh
