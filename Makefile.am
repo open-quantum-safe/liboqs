@@ -72,7 +72,7 @@ installheader_HEADERS=config.h \
 	src/kex_rlwe_bcns15/kex_rlwe_bcns15.h \
 	src/kex_rlwe_msrln16/kex_rlwe_msrln16.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
-	src/kex_sidh_cln16/kex_sidh_cln16.h \
+	src/kex_sidh_msr/kex_sidh_msr.h \
 	src/sig/sig.h
 
 install-exec-local:
