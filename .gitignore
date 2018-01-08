@@ -96,3 +96,6 @@ stamp-h1
 #params
 sample_params
 data/
+
+# Exceptions
+!/src/kex_sidh_msr/config.h
