@@ -89,9 +89,9 @@ static const unsigned int strat_Bob[MAX_Bob-1] = {
 // Setting up macro defines and including GF(p), GF(p^2), curve, isogeny and kex functions
 #define fpcopy                        fpcopy751
 #define fpzero                        fpzero751
-#define fpadd                         fpadd751
-#define fpsub                         fpsub751
-#define fpneg                         fpneg751
+#define fpadd                         oqs_kex_sidh_msr_fpadd751
+#define fpsub                         oqs_kex_sidh_msr_fpsub751
+#define fpneg                         oqs_kex_sidh_msr_fpneg751
 #define fpdiv2                        fpdiv2_751
 #define fpcorrection                  fpcorrection751
 #define fpmul_mont                    fpmul751_mont
@@ -101,8 +101,8 @@ static const unsigned int strat_Bob[MAX_Bob-1] = {
 #define fpinv_mont_bingcd             fpinv751_mont_bingcd
 #define fp2copy                       fp2copy751
 #define fp2zero                       fp2zero751
-#define fp2add                        fp2add751
-#define fp2sub                        fp2sub751
+#define fp2add                        oqs_kex_sidh_msr_fp2add751
+#define fp2sub                        oqs_kex_sidh_msr_fp2sub751
 #define fp2neg                        fp2neg751
 #define fp2div2                       fp2div2_751
 #define fp2correction                 fp2correction751
