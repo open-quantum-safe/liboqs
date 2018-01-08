@@ -62,8 +62,8 @@ OQS_KEX *OQS_KEX_sidh_msr_new(OQS_RAND *rand, const char *named_parameters) {
 	}
 	if (strcmp(named_parameters, OQS_KEX_SIDH_503_params) == 0) {
 		k->method_name = strdup("SIDH MSR p503");
-		k->estimated_classical_security = 125; // same as AES128
-		k->estimated_quantum_security = 83; // same as AES128
+		k->estimated_classical_security = 126; // same as AES128
+		k->estimated_quantum_security = 84; // same as AES128
 		k->named_parameters = OQS_KEX_SIDH_503_params;
 		sidh_ctx->is_sidh = 1;
 		// from P503_api.h
@@ -76,8 +76,8 @@ OQS_KEX *OQS_KEX_sidh_msr_new(OQS_RAND *rand, const char *named_parameters) {
 		sidh_ctx->EphemeralSecretAgreement_B = &EphemeralSecretAgreement_B_SIDHp503;
 	} else if (strcmp(named_parameters, OQS_KEX_SIDH_751_params) == 0) {
 		k->method_name = strdup("SIDH MSR p751");
-		k->estimated_classical_security = 186; // same as AES192
-		k->estimated_quantum_security = 124; // same as AES192
+		k->estimated_classical_security = 188; // same as AES192
+		k->estimated_quantum_security = 125; // same as AES192
 		k->named_parameters = OQS_KEX_SIDH_751_params;
 		sidh_ctx->is_sidh = 1;
 		// from P751_api.h
@@ -90,8 +90,8 @@ OQS_KEX *OQS_KEX_sidh_msr_new(OQS_RAND *rand, const char *named_parameters) {
 		sidh_ctx->EphemeralSecretAgreement_B = &EphemeralSecretAgreement_B_SIDHp751;
 	} else if (strcmp(named_parameters, OQS_KEX_SIKE_503_params) == 0) {
 		k->method_name = strdup("SIKE MSR p503");
-		k->estimated_classical_security = 125;  // same as AES128
-		k->estimated_quantum_security = 83; // same as AES128
+		k->estimated_classical_security = 126;  // same as AES128
+		k->estimated_quantum_security = 84; // same as AES128
 		k->named_parameters = OQS_KEX_SIKE_503_params;
 		sidh_ctx->is_sidh = 0;
 		// from P503_api.h
@@ -104,8 +104,8 @@ OQS_KEX *OQS_KEX_sidh_msr_new(OQS_RAND *rand, const char *named_parameters) {
 		sidh_ctx->crypto_kem_dec = &crypto_kem_dec_SIKEp503;
 	} else if (strcmp(named_parameters, OQS_KEX_SIKE_751_params) == 0) {
 		k->method_name = strdup("SIKE MSR p751");
-		k->estimated_classical_security = 186; // same as AES192
-		k->estimated_quantum_security = 124; // same as AES192
+		k->estimated_classical_security = 188; // same as AES192
+		k->estimated_quantum_security = 125; // same as AES192
 		k->named_parameters = OQS_KEX_SIKE_751_params;
 		sidh_ctx->is_sidh = 0;
 		// from P751_api.h
