@@ -1,6 +1,6 @@
 # THESE SHOULD BE THE ONLY OPTIONS TO BE CONFIGURED BY THE PERSON COMPILING
 
-ENABLE_KEMS=dummy1 dummy2
+ENABLE_KEMS=dummy1 dummy2 frodokem_640_aes frodokem_976_aes frodokem_640_cshake frodokem_976_cshake # EDIT-WHEN-ADDING-KEM
 KEM_DEFAULT=dummy1
 
 CC=gcc
@@ -71,3 +71,7 @@ clean:
 	rm -f liboqs.a
 	rm -f $(TEST_PROGRAMS)
 	rm -f $(EXAMPLE_PROGRAMS)
+
+check_namespacing: liboqs
+	-nm -g liboqs.a | grep ' T ' | grep -v ' _OQS'
+	-nm -g liboqs.a | grep ' D ' | grep -v ' _OQS'

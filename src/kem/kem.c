@@ -19,6 +19,31 @@ OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name) {
 #else
 			return NULL;
 #endif
+		case OQS_KEM_alg_frodokem_640_aes:
+#ifdef OQS_ENABLE_KEM_frodokem_640_aes
+			return OQS_KEM_frodokem_640_aes_new();
+#else
+			return NULL;
+#endif
+		case OQS_KEM_alg_frodokem_976_aes:
+#ifdef OQS_ENABLE_KEM_frodokem_976_aes
+			return OQS_KEM_frodokem_976_aes_new();
+#else
+			return NULL;
+#endif
+		case OQS_KEM_alg_frodokem_640_cshake:
+#ifdef OQS_ENABLE_KEM_frodokem_640_cshake
+			return OQS_KEM_frodokem_640_cshake_new();
+#else
+			return NULL;
+#endif
+		case OQS_KEM_alg_frodokem_976_cshake:
+#ifdef OQS_ENABLE_KEM_frodokem_976_cshake
+			return OQS_KEM_frodokem_976_cshake_new();
+#else
+			return NULL;
+#endif
+// EDIT-WHEN-ADDING-KEM
 		default:
 			assert(0);
 	}
