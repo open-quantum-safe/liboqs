@@ -4,15 +4,13 @@
 
 #ifdef OQS_ENABLE_KEM_dummy2
 
-#include "upstream/api.h"
-
 OQS_KEM *OQS_KEM_dummy2_new() {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
 	}
-	kem->method_name = CRYPTO_ALGNAME;
+	kem->method_name = "Dummy 2";
 
 	kem->claimed_nist_level = 0;
 	kem->ind_cca = false;

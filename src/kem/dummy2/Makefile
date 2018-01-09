@@ -1,7 +1,9 @@
 ifeq (x64,$(ARCH))
 ENABLE_KEMS+=$(findstring dummy2, $(KEMS_TO_ENABLE))
+MAKE_FLAGS_KEM_DUMMY2=
 else ifeq (x86,$(ARCH))
 ENABLE_KEMS+=$(findstring dummy2, $(KEMS_TO_ENABLE))
+MAKE_FLAGS_KEM_DUMMY2=
 endif
 
 HEADERS_KEM_DUMMY2=src/kem/dummy2/kem_dummy2.h
@@ -22,7 +24,7 @@ endif
 KEM_DUMMY2_UPSTREAM_OBJECTS=src/kem/dummy2/upstream/dummy.o src/kem/dummy2/upstream/extra_file.o
 
 .objs/kem/dummy2/kem_dummy2_upstream.a:
-	cd src/kem/dummy2/upstream && $(MAKE)
+	cd src/kem/dummy2/upstream && $(MAKE) $(MAKE_FLAGS_KEM_DUMMY2)
 	$(RM) $@
 	ar -r -c $@ $(KEM_DUMMY2_UPSTREAM_OBJECTS)
 	bash scripts/symbol_alias.sh $@ _crypto_kem_keypair _OQS_KEM_dummy2_keypair

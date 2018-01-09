@@ -12,8 +12,8 @@ OQS_KEM *OQS_KEM_frodokem_640_aes_new() {
 	}
 	kem->method_name = "FrodoKEM-640-AES";
 
-	kem->claimed_nist_level = 0;
-	kem->ind_cca = false;
+	kem->claimed_nist_level = 1;
+	kem->ind_cca = true;
 
 	kem->length_public_key = OQS_KEM_frodokem_640_aes_length_public_key;
 	kem->length_secret_key = OQS_KEM_frodokem_640_aes_length_secret_key;
@@ -40,8 +40,8 @@ OQS_KEM *OQS_KEM_frodokem_976_aes_new() {
 	}
 	kem->method_name = "FrodoKEM-976-AES";
 
-	kem->claimed_nist_level = 0;
-	kem->ind_cca = false;
+	kem->claimed_nist_level = 3;
+	kem->ind_cca = true;
 
 	kem->length_public_key = OQS_KEM_frodokem_976_aes_length_public_key;
 	kem->length_secret_key = OQS_KEM_frodokem_976_aes_length_secret_key;
@@ -68,8 +68,8 @@ OQS_KEM *OQS_KEM_frodokem_640_cshake_new() {
 	}
 	kem->method_name = "FrodoKEM-640-CSHAKE";
 
-	kem->claimed_nist_level = 0;
-	kem->ind_cca = false;
+	kem->claimed_nist_level = 1;
+	kem->ind_cca = true;
 
 	kem->length_public_key = OQS_KEM_frodokem_640_cshake_length_public_key;
 	kem->length_secret_key = OQS_KEM_frodokem_640_cshake_length_secret_key;
@@ -96,8 +96,8 @@ OQS_KEM *OQS_KEM_frodokem_976_cshake_new() {
 	}
 	kem->method_name = "FrodoKEM-976-CSHAKE";
 
-	kem->claimed_nist_level = 0;
-	kem->ind_cca = false;
+	kem->claimed_nist_level = 3;
+	kem->ind_cca = true;
 
 	kem->length_public_key = OQS_KEM_frodokem_976_cshake_length_public_key;
 	kem->length_secret_key = OQS_KEM_frodokem_976_cshake_length_secret_key;

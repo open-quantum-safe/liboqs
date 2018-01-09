@@ -16,4 +16,5 @@ example_kem: src/kem/example_kem.c liboqs.a
 include src/kem/dummy1/Makefile
 include src/kem/dummy2/Makefile
 include src/kem/frodokem/Makefile
+include src/kem/newhopenist/Makefile
 # EDIT-WHEN-ADDING-KEM

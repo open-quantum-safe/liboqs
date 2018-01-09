@@ -5,7 +5,6 @@
 
 #ifdef OQS_ENABLE_KEM_dummy1
 
-// I am not sure how to automatically generate these from api.h without including api.h which would risk polluting the global namespace
 #define OQS_KEM_dummy1_length_public_key 64
 #define OQS_KEM_dummy1_length_secret_key 192
 #define OQS_KEM_dummy1_length_ciphertext 128

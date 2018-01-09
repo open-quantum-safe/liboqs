@@ -43,6 +43,18 @@ OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name) {
 #else
 			return NULL;
 #endif
+		case OQS_KEM_alg_newhope_512_cca_kem:
+#ifdef OQS_ENABLE_KEM_newhope_512_cca_kem
+			return OQS_KEM_newhope_512_cca_kem_new();
+#else
+			return NULL;
+#endif
+		case OQS_KEM_alg_newhope_1024_cca_kem:
+#ifdef OQS_ENABLE_KEM_newhope_1024_cca_kem
+			return OQS_KEM_newhope_1024_cca_kem_new();
+#else
+			return NULL;
+#endif
 // EDIT-WHEN-ADDING-KEM
 		default:
 			assert(0);
