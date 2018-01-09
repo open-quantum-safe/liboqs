@@ -205,7 +205,7 @@ clean-tests:
 	rm -f test_kex test_rand test_aes test_sig
 
 prettyprint:
-	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
+	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: links
 	doxygen
