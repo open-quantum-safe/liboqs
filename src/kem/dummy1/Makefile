@@ -1,3 +1,9 @@
+ifeq (x64,$(ARCH))
+ENABLE_KEMS+=$(findstring dummy1, $(KEMS_TO_ENABLE))
+else ifeq (x86,$(ARCH))
+ENABLE_KEMS+=$(findstring dummy1, $(KEMS_TO_ENABLE))
+endif
+
 HEADERS_KEM_DUMMY1=src/kem/dummy1/kem_dummy1.h
 HEADERS_KEM+=$(HEADERS_KEM_DUMMY1)
 
@@ -17,11 +23,10 @@ KEM_DUMMY1_UPSTREAM_OBJECTS=src/kem/dummy1/upstream/dummy.o
 
 .objs/kem/dummy1/kem_dummy1_upstream.a:
 	cd src/kem/dummy1/upstream && $(MAKE)
-	rm -f .objs/kem/dummy1/kem_dummy1_upstream.a
-	ar -r -c .objs/kem/dummy1/kem_dummy1_upstream.a $(KEM_DUMMY1_UPSTREAM_OBJECTS)
-	ld -r .objs/kem/dummy1/kem_dummy1_upstream.a -o .objs/kem/dummy1/kem_dummy1_upstream.a \
-		-alias _crypto_kem_keypair _OQS_KEM_dummy1_keypair \
-		-alias _crypto_kem_enc _OQS_KEM_dummy1_encaps \
-		-alias _crypto_kem_dec _OQS_KEM_dummy1_decaps \
-		-unexported_symbols_list src/kem/dummy1/unexported_symbols_list.txt
-	rm -f $(KEM_DUMMY1_UPSTREAM_OBJECTS)
+	$(RM) $@
+	ar -r -c $@ $(KEM_DUMMY1_UPSTREAM_OBJECTS)
+	bash scripts/symbol_alias.sh $@ _crypto_kem_keypair _OQS_KEM_dummy1_keypair
+	bash scripts/symbol_alias.sh $@ _crypto_kem_enc _OQS_KEM_dummy1_encaps
+	bash scripts/symbol_alias.sh $@ _crypto_kem_dec _OQS_KEM_dummy1_decaps
+	bash scripts/symbol_unexport.sh $@ src/kem/dummy1/unexported_symbols_list.txt
+	$(RM) $(KEM_DUMMY1_UPSTREAM_OBJECTS)

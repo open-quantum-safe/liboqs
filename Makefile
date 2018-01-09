@@ -1,7 +1,10 @@
 # THESE SHOULD BE THE ONLY OPTIONS TO BE CONFIGURED BY THE PERSON COMPILING
 
-ENABLE_KEMS=dummy1 dummy2 frodokem_640_aes frodokem_976_aes frodokem_640_cshake frodokem_976_cshake # EDIT-WHEN-ADDING-KEM
+KEMS_TO_ENABLE=dummy1 dummy2 frodokem_640_aes frodokem_976_aes frodokem_640_cshake frodokem_976_cshake # EDIT-WHEN-ADDING-KEM
 KEM_DEFAULT=dummy1
+
+ARCH=x64
+# x64 OR x86 OR ARM
 
 CC=gcc
 OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
@@ -11,12 +14,15 @@ LDFLAGS=
 
 # NOTHING AFTER THIS SHOULD NEED TO BE CHANGED BY THE PERSON COMPILING
 
-CFLAGS+=-std=c11 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
+ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
+
+CFLAGS+=-O3 -std=c11 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto
 
 all: mkdirs headers liboqs tests examples
 
 OBJECT_DIRS=
+
 include src/common/Makefile
 include src/kem/Makefile
 
@@ -31,7 +37,7 @@ DATE=`date`
 UNAME=`uname -a`
 CC_VERSION=`$(CC) --version | tr '\n' ' '`
 config_h:
-	rm -rf src/config.h
+	$(RM) -r src/config.h
 	touch src/config.h
 	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/config.h;)
 	echo "#define OQS_KEM_DEFAULT OQS_KEM_alg_$(KEM_DEFAULT)" >> src/config.h
@@ -46,15 +52,15 @@ config_h:
 
 
 headers: config_h $(HEADERS)
-	rm -rf include
+	$(RM) -r include
 	mkdir -p include/oqs
 	cp $(HEADERS) src/config.h include/oqs
 
 liboqs: $(OBJECTS) $(ARCHIVES)
-	rm -f liboqs_tmp.a liboqs.a
+	$(RM) liboqs_tmp.a liboqs.a
 	ar -r -c liboqs_tmp.a $(OBJECTS)
 	libtool -static -o liboqs.a liboqs_tmp.a $(ARCHIVES)
-	rm -f liboqs_tmp.a
+	$(RM) liboqs_tmp.a
 
 TEST_PROGRAMS=test_kem
 tests: $(TEST_PROGRAMS)
@@ -66,12 +72,12 @@ EXAMPLE_PROGRAMS=example_kem
 examples: $(EXAMPLE_PROGRAMS)
 
 clean:
-	rm -rf includes
-	rm -rf .objs
-	rm -f liboqs.a
-	rm -f $(TEST_PROGRAMS)
-	rm -f $(EXAMPLE_PROGRAMS)
+	$(RM) -r includes
+	$(RM) -r .objs
+	$(RM) liboqs.a
+	$(RM) $(TEST_PROGRAMS)
+	$(RM) $(EXAMPLE_PROGRAMS)
 
 check_namespacing: liboqs
-	-nm -g liboqs.a | grep ' T ' | grep -v ' _OQS'
-	-nm -g liboqs.a | grep ' D ' | grep -v ' _OQS'
+	nm -g liboqs.a | grep ' T ' | grep -v ' _OQS'; test $$? -eq 1
+	nm -g liboqs.a | grep ' D ' | grep -v ' _OQS'; test $$? -eq 1
