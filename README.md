@@ -32,7 +32,6 @@ liboqs currently contains:
 - `kex_sidh_iqc_ref`: key exchange from the supersingular isogeny Diffie-Hellman problem (De Feo, Jao, Plût, *J. Math. Cryptol.* 8(3):209, 2014, [https://eprint.iacr.org/2011/506](https://eprint.iacr.org/2011/506)), using a reference implementation by Javad Doliskani
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
 - `kex_ntru`: NTRU: key transport using NTRU public key encryption (Hoffstein, Pipher, Silverman, *ANTS 1998*) with the EES743EP1 parameter set, wrapper around the implementation from the NTRU Open Source project [https://github.com/NTRUOpenSourceProject/NTRUEncrypt](https://github.com/NTRUOpenSourceProject/NTRUEncrypt))
-- `kex_mlwe_kyber`: Kyber: a CCA-secure module-lattice-based key exchange mechanism (Bos, Ducas, Kiltz, Lepoint, Lyubashevsky, Schwabe, Shanck, Stehlé, *Real World Crypto 2017*, [https://eprint.iacr.org/2017/634](https://eprint.iacr.org/2017/634)), using the reference C implementation of Kyber from [pq-crystals/kyber](https://github.com/pq-crystals/kyber)
 - `sig_picnic`: signature based on zero-knowledge proof as specified in Post-Quantum Zero-Knowledge and Signatures from Symmetric-Key Primitives (Melissa Chase and David Derler and Steven Goldfeder and Claudio Orlandi and Sebastian Ramacher and Christian Rechberger and Daniel Slamanig and Greg Zaverucha, [https://eprint.iacr.org/2017/279.pdf](https://eprint.iacr.org/2017/279.pdf)), using the optimized implemenation from [https://github.com/IAIK/Picnic](https://github.com/IAIK/Picnic)
 
 Detailed information about each algorithm and implementations can be found in the [docs/Algorithm data sheets](https://github.com/open-quantum-safe/liboqs/tree/master/docs/Algorithm%20data%20sheets) directory.
@@ -160,7 +159,7 @@ To build with `kex_code_mcbits ` enabled:
 
 ### Building with the following KEX algorithms disabled
 
-  ./configure --disable-kex-ntru --disable-kex-lwe-frodo --disable-kex-mlwe-kyber --disable-kex-rlwe-msrln16  --disable-kex-rlwe-newhope --disable-kex-sidh-cln16
+  ./configure --disable-kex-ntru --disable-kex-lwe-frodo --disable-kex-rlwe-msrln16  --disable-kex-rlwe-newhope --disable-kex-sidh-cln16
   make clean
   make
 
@@ -252,7 +251,6 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 - `src/crypto/aes/aes_c.c`: public domain
 - `src/crypto/rand_urandom_chacha20/external`: public domain
 - `src/kex_code_mcbits`: public domain
-- `src/kex_mlwe_kyber`: public domain
 - `src/kex_rlwe_bcns15`: public domain ([Unlicense](http://unlicense.org))
 - `src/kex_rlwe_msrln16`: MIT License
 - `src/kex_rlwe_msrln16/external`: public domain ([CC0](http://creativecommons.org/publicdomain/zero/1.0/))

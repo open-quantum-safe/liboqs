@@ -107,10 +107,6 @@ ARG_DISBL_SET([kex-lwe-frodo], [disable KEX-LWE-FRODO.])
 AM_CONDITIONAL([kex_lwe_frodo], [test "x$kex_lwe_frodo" = xtrue])
 AM_CONDITIONAL([USE_KEX_LWE_FRODO], [test "x$kex_lwe_frodo" = xtrue])
 
-ARG_DISBL_SET([kex-mlwe-kyber], [disable KEX-MLWE-KYBER.])
-AM_CONDITIONAL([kex_mlwe_kyber], [test "x$kex_mlwe_kyber" = xtrue])
-AM_CONDITIONAL([USE_KEX_MLWE_KYBER], [test "x$kex_mlwe_kyber" = xtrue])
-
 ARG_DISBL_SET([kex-ntru], [disable KEX-NTRU.])
 AM_CONDITIONAL([kex_ntru], [test "x$kex_ntru" = xtrue])
 AM_CONDITIONAL([USE_KEX_NTRU], [test "x$kex_ntru" = xtrue])
@@ -192,12 +188,6 @@ if test x"$kex_lwe_frodo" = x"true"; then
   AC_DEFINE(ENABLE_KEX_LWE_FRODO, 1, "Define to 1 when FRODO enabled")
 fi
 
-if test x"$kex_mlwe_kyber" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kex_mlwe_kyber"
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_MLWE_KYBER"
-  AC_DEFINE(ENABLE_KEX_MLWE_KYBER, 1, "Define to 1 when KYBER enabled")
-fi
-
 if test x"$kex_ntru" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_ntru"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_NTRU"
@@ -274,7 +264,6 @@ AC_SUBST(USE_KEX_NTRU)
 AC_SUBST(USE_MCBITS)
 AC_SUBST(USE_SIDH_IQC)
 AC_SUBST(USE_KEX_LWE_FRODO)
-AC_SUBST(USE_KEX_MLWE_KYBER)
 AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_CLN16)
@@ -302,7 +291,6 @@ AC_CONFIG_FILES([Makefile
                  src/kex_lwe_frodo/Makefile
                  src/sig/Makefile
                  src/sig_picnic/Makefile
-                 src/kex_mlwe_kyber/Makefile
                  src/kex_rlwe_newhope/avx2/Makefile])
 
 AC_OUTPUT

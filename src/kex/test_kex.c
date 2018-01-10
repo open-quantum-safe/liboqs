@@ -31,9 +31,6 @@ struct kex_testcase kex_testcases[] = {
 #ifdef ENABLE_CODE_MCBITS
     {OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
 #endif
-#ifdef ENABLE_KEX_MLWE_KYBER
-    {OQS_KEX_alg_mlwe_kyber, NULL, 0, NULL, "mlwe_kyber", 0, 100},
-#endif
 #ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
 #ifdef ENABLE_KEX_NTRU
     {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},

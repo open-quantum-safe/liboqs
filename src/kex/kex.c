@@ -3,7 +3,6 @@
 #include <oqs/kex.h>
 
 #include <oqs/kex_lwe_frodo.h>
-#include <oqs/kex_mlwe_kyber.h>
 #include <oqs/kex_ntru.h>
 #include <oqs/kex_rlwe_bcns15.h>
 #include <oqs/kex_rlwe_msrln16.h>
@@ -46,12 +45,6 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 	case OQS_KEX_alg_code_mcbits:
 #ifdef ENABLE_CODE_MCBITS
 		return OQS_KEX_code_mcbits_new(rand);
-#else
-		assert(0);
-#endif
-#ifdef ENABLE_KEX_MLWE_KYBER
-	case OQS_KEX_alg_mlwe_kyber:
-		return OQS_KEX_mlwe_kyber_new(rand);
 #else
 		assert(0);
 #endif
