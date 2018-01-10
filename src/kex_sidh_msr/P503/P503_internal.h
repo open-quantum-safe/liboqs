@@ -115,15 +115,15 @@ static void fpzero503(digit_t *a);
 static bool fpequal503_non_constant_time(const digit_t *a, const digit_t *b);
 
 // Modular addition, c = a+b mod p503
-extern void fpadd503(const digit_t *a, const digit_t *b, digit_t *c);
+static void fpadd503(const digit_t *a, const digit_t *b, digit_t *c);
 extern void fpadd503_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular subtraction, c = a-b mod p503
-extern void fpsub503(const digit_t *a, const digit_t *b, digit_t *c);
+static void fpsub503(const digit_t *a, const digit_t *b, digit_t *c);
 extern void fpsub503_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular negation, a = -a mod p503
-extern void fpneg503(digit_t *a);
+static void fpneg503(digit_t *a);
 
 // Modular division by two, c = a/2 mod p503.
 static void fpdiv2_503(const digit_t *a, digit_t *c);
@@ -169,10 +169,10 @@ static void fp2zero503(f2elm_t a);
 static void fp2neg503(f2elm_t a);
 
 // GF(p503^2) addition, c = a+b in GF(p503^2)
-extern void fp2add503(const f2elm_t a, const f2elm_t b, f2elm_t c);
+static void fp2add503(const f2elm_t a, const f2elm_t b, f2elm_t c);
 
 // GF(p503^2) subtraction, c = a-b in GF(p503^2)
-extern void fp2sub503(const f2elm_t a, const f2elm_t b, f2elm_t c);
+static void fp2sub503(const f2elm_t a, const f2elm_t b, f2elm_t c);
 
 // GF(p503^2) division by two, c = a/2  in GF(p503^2)
 static void fp2div2_503(const f2elm_t a, f2elm_t c);

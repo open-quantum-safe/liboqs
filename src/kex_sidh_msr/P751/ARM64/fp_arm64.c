@@ -13,14 +13,15 @@
 *
 *********************************************************************************************/
 
+/* OQS note: not needed since this file is #included in another source file
 #include "../P751_internal.h"
 
 // Global constants
 extern const uint64_t p751[NWORDS_FIELD];
 extern const uint64_t p751x2[NWORDS_FIELD]; 
+*/
 
-
-__inline void oqs_kex_sidh_msr_fpadd751(const digit_t* a, const digit_t* b, digit_t* c)
+__inline void fpadd751(const digit_t* a, const digit_t* b, digit_t* c)
 { // Modular addition, c = a+b mod p751.
   // Inputs: a, b in [0, 2*p751-1] 
   // Output: c in [0, 2*p751-1]
@@ -29,7 +30,7 @@ __inline void oqs_kex_sidh_msr_fpadd751(const digit_t* a, const digit_t* b, digi
 } 
 
 
-__inline void oqs_kex_sidh_msr_fpsub751(const digit_t* a, const digit_t* b, digit_t* c)
+__inline void fpsub751(const digit_t* a, const digit_t* b, digit_t* c)
 { // Modular subtraction, c = a-b mod p751.
   // Inputs: a, b in [0, 2*p751-1] 
   // Output: c in [0, 2*p751-1] 
@@ -38,7 +39,7 @@ __inline void oqs_kex_sidh_msr_fpsub751(const digit_t* a, const digit_t* b, digi
 }
 
 
-__inline void oqs_kex_sidh_msr_fpneg751(digit_t* a)
+__inline void fpneg751(digit_t* a)
 { // Modular negation, a = -a mod p751.
   // Input/output: a in [0, 2*p751-1] 
     unsigned int i, borrow = 0;

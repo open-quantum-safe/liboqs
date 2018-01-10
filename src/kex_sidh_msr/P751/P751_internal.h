@@ -116,15 +116,15 @@ static void fpzero751(digit_t* a);
 static bool fpequal751_non_constant_time(const digit_t* a, const digit_t* b); 
 
 // Modular addition, c = a+b mod p751
-extern void fpadd751(const digit_t* a, const digit_t* b, digit_t* c);
+static void fpadd751(const digit_t* a, const digit_t* b, digit_t* c);
 extern void fpadd751_asm(const digit_t* a, const digit_t* b, digit_t* c);
 
 // Modular subtraction, c = a-b mod p751
-extern void fpsub751(const digit_t* a, const digit_t* b, digit_t* c);
+static void fpsub751(const digit_t* a, const digit_t* b, digit_t* c);
 extern void fpsub751_asm(const digit_t* a, const digit_t* b, digit_t* c);
 
 // Modular negation, a = -a mod p751        
-extern void fpneg751(digit_t* a);  
+static void fpneg751(digit_t* a);  
 
 // Modular division by two, c = a/2 mod p751.
 static void fpdiv2_751(const digit_t* a, digit_t* c);
@@ -170,10 +170,10 @@ static void fp2zero751(f2elm_t a);
 static void fp2neg751(f2elm_t a);
 
 // GF(p751^2) addition, c = a+b in GF(p751^2)
-extern void fp2add751(const f2elm_t a, const f2elm_t b, f2elm_t c);           
+static void fp2add751(const f2elm_t a, const f2elm_t b, f2elm_t c);           
 
 // GF(p751^2) subtraction, c = a-b in GF(p751^2)
-extern void fp2sub751(const f2elm_t a, const f2elm_t b, f2elm_t c); 
+static void fp2sub751(const f2elm_t a, const f2elm_t b, f2elm_t c); 
 
 // GF(p751^2) division by two, c = a/2  in GF(p751^2) 
 static void fp2div2_751(const f2elm_t a, f2elm_t c);
