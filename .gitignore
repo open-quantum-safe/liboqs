@@ -58,6 +58,7 @@ VisualStudio/**/*.user
 
 # External sources
 external
+!src/sig_picnic/external
 src/sig_picnic/external/build/**
 /temp/
 
