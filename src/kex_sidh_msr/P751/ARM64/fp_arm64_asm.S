@@ -1,13 +1,11 @@
 //*******************************************************************************************
-// SIDH: an efficient supersingular isogeny-based cryptography library for ephemeral 
-//       Diffie-Hellman key exchange.
+// SIDH: an efficient supersingular isogeny cryptography library
 //
 // Author:   David Urbanik;  dburbani@uwaterloo.ca 
 //
-// Abstract: Assembly optimizations for finite field arithmetic on 64-bit ARM. 
+// Abstract: Assembly optimizations for finite field arithmetic over P751 on 64-bit ARM. 
 //
-//           Modified to allow inputs in [0, 2*p751-1].
-// 
+// File was modified to allow inputs in [0, 2*p751-1].
 //*******************************************************************************************
 
 .data
@@ -51,8 +49,8 @@ p751x2:
 //  Field addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_sidh_cln16_fpadd751_asm
-oqs_sidh_cln16_fpadd751_asm:
+.global fpadd751_asm
+fpadd751_asm:
     // Arguments are 3 pointers of type digit_t*, where the first two arguments are summands and the third is the result register. 
 	// These arguments are stored in x0, x1, and x2 respectively.
 
@@ -159,8 +157,8 @@ oqs_sidh_cln16_fpadd751_asm:
 //  Field subtraction
 //  Operation: c [x2] = a [x0] - b [x1]
 //*********************************************************************** 
-.global oqs_sidh_cln16_fpsub751_asm
-oqs_sidh_cln16_fpsub751_asm:
+.global fpsub751_asm
+fpsub751_asm:
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -239,8 +237,8 @@ oqs_sidh_cln16_fpsub751_asm:
 //  Integer multiplication using Comba method
 //  Operation: c [x2] = a [x0] * b [x1]
 //***********************************************************************
-.global oqs_sidh_cln16_mul751_asm
-oqs_sidh_cln16_mul751_asm:
+.global mul751_asm
+mul751_asm:
     sub sp, sp, #80
     stp x19, x20, [sp]
     stp x21, x22, [sp, #16]
@@ -1514,8 +1512,8 @@ oqs_sidh_cln16_mul751_asm:
 //  Operation: mc [x1] = ma [x0]
 //  NOTE: ma=mc is not allowed
 //*********************************************************************** 
-.global oqs_sidh_cln16_rdc751_asm
-oqs_sidh_cln16_rdc751_asm:
+.global rdc751_asm
+rdc751_asm:
     //  ma is in x0
     //  mc is in x1
 
@@ -2204,8 +2202,8 @@ oqs_sidh_cln16_rdc751_asm:
 //  751-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_sidh_cln16_mp_add751_asm
-oqs_sidh_cln16_mp_add751_asm:
+.global mp_add751_asm
+mp_add751_asm:
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -2245,8 +2243,8 @@ oqs_sidh_cln16_mp_add751_asm:
 //  2x751-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_sidh_cln16_mp_add751x2_asm
-oqs_sidh_cln16_mp_add751x2_asm:
+.global mp_add751x2_asm
+mp_add751x2_asm:
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -2305,6 +2303,81 @@ oqs_sidh_cln16_mp_add751x2_asm:
     adcs x12, x12, x16
     adcs x13, x13, x17
     adcs x14, x14, x18
+
+    stp x3, x4,   [x2,#96]
+    stp x5, x6,   [x2,#112]
+    stp x7, x8,   [x2,#128]
+    stp x9, x10,  [x2,#144]
+    stp x11, x12, [x2,#160]
+    stp x13, x14, [x2,#176]
+    ret   
+
+
+//***********************************************************************
+//  2x751-bit multiprecision subtraction
+//  Operation: c [x2] = a [x0] - b [x1]. Returns borrow mask
+//*********************************************************************** 
+.global mp_sub751x2_asm
+mp_sub751x2_asm:
+    ldp x3, x4,   [x0,#0]
+    ldp x5, x6,   [x0,#16]
+    ldp x7, x8,   [x0,#32]
+    ldp x9, x10,  [x0,#48]
+    ldp x11, x12, [x0,#64]
+    ldp x13, x14, [x0,#80]
+
+    ldp x15, x16,   [x1,#0]
+    ldp x17, x18,   [x1,#16]
+    subs x3, x3, x15
+    sbcs x4, x4, x16
+    sbcs x5, x5, x17
+    sbcs x6, x6, x18
+    ldp x15, x16,   [x1,#32]
+    ldp x17, x18,   [x1,#48]
+    sbcs x7, x7, x15
+    sbcs x8, x8, x16
+    sbcs x9, x9, x17
+    sbcs x10, x10, x18
+    ldp x15, x16,   [x1,#64]
+    ldp x17, x18,   [x1,#80]
+    sbcs x11, x11, x15
+    sbcs x12, x12, x16
+    sbcs x13, x13, x17
+    sbcs x14, x14, x18
+
+    stp x3, x4,   [x2,#0]
+    stp x5, x6,   [x2,#16]
+    stp x7, x8,   [x2,#32]
+    stp x9, x10,  [x2,#48]
+    stp x11, x12, [x2,#64]
+    stp x13, x14, [x2,#80]
+	
+    ldp x3, x4,   [x0,#96]
+    ldp x5, x6,   [x0,#112]
+    ldp x7, x8,   [x0,#128]
+    ldp x9, x10,  [x0,#144]
+    ldp x11, x12, [x0,#160]
+    ldp x13, x14, [x0,#176]
+
+    ldp x15, x16,   [x1,#96]
+    ldp x17, x18,   [x1,#112]
+    sbcs x3, x3, x15
+    sbcs x4, x4, x16
+    sbcs x5, x5, x17
+    sbcs x6, x6, x18
+    ldp x15, x16,   [x1,#128]
+    ldp x17, x18,   [x1,#144]
+    sbcs x7, x7, x15
+    sbcs x8, x8, x16
+    sbcs x9, x9, x17
+    sbcs x10, x10, x18
+    ldp x15, x16,   [x1,#160]
+    ldp x17, x18,   [x1,#176]
+    sbcs x11, x11, x15
+    sbcs x12, x12, x16
+    sbcs x13, x13, x17
+    sbcs x14, x14, x18
+    sbc x0, xzr, xzr
 
     stp x3, x4,   [x2,#96]
     stp x5, x6,   [x2,#112]

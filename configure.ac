@@ -119,9 +119,9 @@ ARG_DISBL_SET([kex-rlwe-newhope], [disable KEX-RLWE-NEWHOPE.])
 AM_CONDITIONAL([kex_rlwe_newhope], [test "x$kex_rlwe_newhope" = xtrue])
 AM_CONDITIONAL([USE_KEX_RLWE_NEWHOPE], [test "x$kex_rlwe_newhope" = xtrue])
 
-ARG_DISBL_SET([kex-sidh-cln16], [disable KEX-SIDH-CLN16.])
-AM_CONDITIONAL([kex_sidh_cln16], [test "x$kex_sidh_cln16" = xtrue])
-AM_CONDITIONAL([USE_KEX_SIDH_CLN16], [test "x$kex_sidh_cln16" = xtrue])
+ARG_DISBL_SET([kex-sidh-msr], [disable KEX-SIDH-MSR.])
+AM_CONDITIONAL([kex_sidh_msr], [test "x$kex_sidh_msr" = xtrue])
+AM_CONDITIONAL([USE_KEX_SIDH_MSR], [test "x$kex_sidh_msr" = xtrue])
 
 ARG_DISBL_SET([sig-picnic], [disable SIG-PICNIC.])
 AM_CONDITIONAL([sig_picnic], [test "x$sig_picnic" = xtrue])
@@ -206,10 +206,10 @@ if test x"$kex_rlwe_newhope" = x"true"; then
   AC_DEFINE(ENABLE_KEX_RLWE_NEWHOPE, 1, "Define to 1 when RLWE NEWHOPE enabled")
 fi
 
-if test x"$kex_sidh_cln16" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kex_sidh_cln16"
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_SIDH_CLN16"
-  AC_DEFINE(ENABLE_KEX_SIDH_CLN16, 1, "Define to 1 when SIDH CLN16 enabled")
+if test x"$kex_sidh_msr" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kex_sidh_msr"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_SIDH_MSR"
+  AC_DEFINE(ENABLE_KEX_SIDH_MSR, 1, "Define to 1 when SIDH MSR enabled")
 fi
 
 # Conditional KEX
@@ -266,7 +266,7 @@ AC_SUBST(USE_SIDH_IQC)
 AC_SUBST(USE_KEX_LWE_FRODO)
 AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
-AC_SUBST(USE_KEX_SIDH_CLN16)
+AC_SUBST(USE_KEX_SIDH_MSR)
 AC_SUBST(USE_SIG_PICNIC)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)
@@ -284,7 +284,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_rlwe_bcns15/Makefile
                  src/kex_rlwe_newhope/Makefile
                  src/kex_rlwe_msrln16/Makefile
-                 src/kex_sidh_cln16/Makefile
+                 src/kex_sidh_msr/Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
                  src/kex_sidh_iqc_ref/Makefile
