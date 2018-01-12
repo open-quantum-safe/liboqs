@@ -47,7 +47,6 @@
     <ClInclude Include="..\..\src\kex_code_mcbits\mcbits.h" />
     <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h" />
     <ClInclude Include="..\..\src\kex_lwe_frodo\local.h" />
-    <ClInclude Include="..\..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" />
     <ClInclude Include="..\..\src\kex_ntru\kex_ntru.h" />
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" />
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\local.h" />
@@ -58,9 +57,6 @@
     <ClInclude Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" />
     <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto.h" />
     <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_priv.h" />
-    <ClInclude Include="..\..\src\kex_sidh_cln16\kex_sidh_cln16.h" />
-    <ClInclude Include="..\..\src\kex_sidh_cln16\SIDH.h" />
-    <ClInclude Include="..\..\src\kex_sidh_cln16\SIDH_internal.h" />
     <ClInclude Include="..\..\src\sig\sig.h" />
     <ClInclude Include="..\..\src\sig_picnic\sig_picnic.h" />
   </ItemGroup>
@@ -79,7 +75,6 @@
     <ClCompile Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.c" />
     <ClCompile Include="..\..\src\kex_lwe_frodo\lwe.c" />
     <ClCompile Include="..\..\src\kex_lwe_frodo\lwe_noise.c" />
-    <ClCompile Include="..\..\src\kex_mlwe_kyber\kex_mlwe_kyber.c" />
     <ClCompile Include="..\..\src\kex_ntru\kex_ntru.c" />
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\fft.c" />
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.c" />
@@ -89,13 +84,6 @@
     <ClCompile Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.c" />
     <ClCompile Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_kex.c" />
     <ClCompile Include="..\..\src\kex_rlwe_msrln16\ntt_constants.c" />
-    <ClCompile Include="..\..\src\kex_sidh_cln16\ec_isogeny.c" />
-    <ClCompile Include="..\..\src\kex_sidh_cln16\fpx.c" />
-    <ClCompile Include="..\..\src\kex_sidh_cln16\generic\fp_generic.c" />
-    <ClCompile Include="..\..\src\kex_sidh_cln16\kex_sidh_cln16.c" />
-    <ClCompile Include="..\..\src\kex_sidh_cln16\SIDH.c" />
-    <ClCompile Include="..\..\src\kex_sidh_cln16\sidh_kex.c" />
-    <ClCompile Include="..\..\src\kex_sidh_cln16\SIDH_setup.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
     <ClCompile Include="..\..\src\sig_picnic\sig_picnic.c" />
   </ItemGroup>
@@ -235,10 +223,8 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
@@ -273,10 +259,8 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
@@ -311,10 +295,8 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
@@ -333,7 +315,7 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-	  <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -353,15 +335,13 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
     </PreBuildEvent>
-	<Lib>
+    <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>
@@ -397,10 +377,8 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
@@ -439,10 +417,8 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
@@ -481,10 +457,8 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
@@ -505,7 +479,7 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-	  <TreatWarningAsError>true</TreatWarningAsError>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -527,15 +501,13 @@ copy "$(SolutionDir)..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h" "$(SolutionDir)inc
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_lwe_frodo\kex_lwe_frodo.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_cln16\kex_sidh_cln16.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_mlwe_kyber\kex_mlwe_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 </Command>
     </PreBuildEvent>
-	<Lib>
+    <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
   </ItemDefinitionGroup>

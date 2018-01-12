@@ -31,9 +31,6 @@ struct kex_testcase kex_testcases[] = {
 #ifdef ENABLE_CODE_MCBITS
     {OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
 #endif
-#ifdef ENABLE_KEX_MLWE_KYBER
-    {OQS_KEX_alg_mlwe_kyber, NULL, 0, NULL, "mlwe_kyber", 0, 100},
-#endif
 #ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
 #ifdef ENABLE_KEX_NTRU
     {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},
@@ -46,9 +43,11 @@ struct kex_testcase kex_testcases[] = {
 #ifdef ENABLE_KEX_RLWE_NEWHOPE
     {OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100},
 #endif
-#ifdef ENABLE_KEX_SIDH_CLN16
-    {OQS_KEX_alg_sidh_cln16, NULL, 0, NULL, "sidh_cln16", 0, 10},
-    {OQS_KEX_alg_sidh_cln16_compressed, NULL, 0, NULL, "sidh_cln16_compressed", 0, 10},
+#ifdef ENABLE_KEX_SIDH_MSR
+    {OQS_KEX_alg_sidh_msr_503, NULL, 0, NULL, "sidh_msr_503", 0, 10},
+    {OQS_KEX_alg_sidh_msr_751, NULL, 0, NULL, "sidh_msr_751", 0, 10},
+    {OQS_KEX_alg_sike_msr_503, NULL, 0, NULL, "sike_msr_503", 0, 10},
+    {OQS_KEX_alg_sike_msr_751, NULL, 0, NULL, "sike_msr_751", 0, 10},
 #endif
 #ifdef ENABLE_SIDH_IQC_REF
     {OQS_KEX_alg_sidh_iqc_ref, NULL, 0, "params771", "sidh_iqc_ref", 0, 10},

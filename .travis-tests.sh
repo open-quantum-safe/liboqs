@@ -34,10 +34,6 @@ if [[ ${ENABLE_KEX_LWE_FRODO} == 0 ]];then
   enable_disable_str+=" --disable-kex-lwe-frodo"
 fi
 
-if [[ ${ENABLE_KEX_MLWE_KYBER} == 0 ]];then
-  enable_disable_str+=" --disable-kex-mlwe-kyber"
-fi
-
 if [[ ${ENABLE_KEX_NTRU} == 0 ]];then
   enable_disable_str+=" --disable-kex-ntru"
 fi

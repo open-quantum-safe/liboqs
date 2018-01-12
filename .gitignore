@@ -76,7 +76,6 @@ compile
 config.guess
 config.h
 config.h.in
-!src/sig_picnic/external/config.h.in
 config.log
 config.status
 config.sub
@@ -99,3 +98,6 @@ stamp-h1
 sample_params
 data/
 
+# Exceptions
+!/src/kex_sidh_msr/config.h
+!src/sig_picnic/external/config.h.in

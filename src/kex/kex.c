@@ -3,12 +3,13 @@
 #include <oqs/kex.h>
 
 #include <oqs/kex_lwe_frodo.h>
-#include <oqs/kex_mlwe_kyber.h>
 #include <oqs/kex_ntru.h>
 #include <oqs/kex_rlwe_bcns15.h>
 #include <oqs/kex_rlwe_msrln16.h>
 #include <oqs/kex_rlwe_newhope.h>
-#include <oqs/kex_sidh_cln16.h>
+#ifdef ENABLE_KEX_SIDH_MSR
+#include <oqs/kex_sidh_msr.h>
+#endif
 
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
@@ -49,12 +50,6 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #else
 		assert(0);
 #endif
-#ifdef ENABLE_KEX_MLWE_KYBER
-	case OQS_KEX_alg_mlwe_kyber:
-		return OQS_KEX_mlwe_kyber_new(rand);
-#else
-		assert(0);
-#endif
 #ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
 #ifdef ENABLE_KEX_NTRU
 	case OQS_KEX_alg_ntru:
@@ -83,11 +78,15 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #else
 		assert(0);
 #endif
-#ifdef ENABLE_KEX_SIDH_CLN16
-	case OQS_KEX_alg_sidh_cln16:
-		return OQS_KEX_sidh_cln16_new(rand, NULL);
-	case OQS_KEX_alg_sidh_cln16_compressed:
-		return OQS_KEX_sidh_cln16_new(rand, "compressedp751");
+#ifdef ENABLE_KEX_SIDH_MSR
+	case OQS_KEX_alg_sidh_msr_503:
+		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIDH_503_params);
+	case OQS_KEX_alg_sidh_msr_751:
+		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIDH_751_params);
+	case OQS_KEX_alg_sike_msr_503:
+		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIKE_503_params);
+	case OQS_KEX_alg_sike_msr_751:
+		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIKE_751_params);
 #else
 		assert(0);
 #endif
