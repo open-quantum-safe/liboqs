@@ -76,6 +76,7 @@ compile
 config.guess
 config.h
 config.h.in
+!src/sig_picnic/external/config.h.in
 config.log
 config.status
 config.sub
@@ -97,3 +98,4 @@ stamp-h1
 #params
 sample_params
 data/
+
