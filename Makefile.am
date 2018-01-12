@@ -37,8 +37,8 @@ endif
 if USE_KEX_RLWE_NEWHOPE
 liboqs_la_LIBADD += src/kex_rlwe_newhope/libnewhope.la
 endif
-if USE_KEX_SIDH_CLN16
-liboqs_la_LIBADD += src/kex_sidh_cln16/libcln16.la
+if USE_KEX_SIDH_MSR
+liboqs_la_LIBADD += src/kex_sidh_msr/libsidhmsr.la
 endif
 
 liboqs_la_LIBADD += src/sig/libsig.la
@@ -68,7 +68,7 @@ installheader_HEADERS=config.h \
 	src/kex_rlwe_bcns15/kex_rlwe_bcns15.h \
 	src/kex_rlwe_msrln16/kex_rlwe_msrln16.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
-	src/kex_sidh_cln16/kex_sidh_cln16.h \
+	src/kex_sidh_msr/kex_sidh_msr.h \
 	src/sig/sig.h
 
 install-exec-local:
@@ -175,7 +175,7 @@ if USE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
 	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
 endif
-	cp -f src/kex_sidh_cln16/kex_sidh_cln16.h include/oqs
+	cp -f src/kex_sidh_msr/kex_sidh_msr.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	$(LN_S) -f .libs/liboqs.a
@@ -199,7 +199,7 @@ clean-tests:
 	rm -f test_kex test_rand test_aes test_sig
 
 prettyprint:
-	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
+	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: links
 	doxygen
@@ -208,5 +208,3 @@ cleanup-patch:
 if USE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
 endif
-
-
