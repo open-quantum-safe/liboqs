@@ -76,6 +76,18 @@
     <ClCompile Include="..\..\src\sig_picnic\sig_picnic.c">
       <Filter>Sig_Picnic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kex_sidh_msr\kex_sidh_msr.c">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_sidh_msr\P503\P503.c">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_sidh_msr\P751\P751.c">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kex_sidh_msr\sha3\fips202.c">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
@@ -150,6 +162,27 @@
     <ClInclude Include="..\..\src\sig_picnic\sig_picnic.h">
       <Filter>Sig_Picnic</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kex_sidh_msr\kex_sidh_msr.h">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_sidh_msr\sha3\fips202.h">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_api.h">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_internal.h">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_sidh_msr\windows_undef.h">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_api.h">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_internal.h">
+      <Filter>KEX_SIDH_MSR</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -193,6 +226,9 @@
     </Filter>
     <Filter Include="Sig_Picnic">
       <UniqueIdentifier>{18dd9adb-41b8-4058-a714-0a0d49db26ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="KEX_SIDH_MSR">
+      <UniqueIdentifier>{e8cfee66-d051-4f66-af66-1478288097fb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

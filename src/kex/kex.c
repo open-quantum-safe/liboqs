@@ -7,9 +7,7 @@
 #include <oqs/kex_rlwe_bcns15.h>
 #include <oqs/kex_rlwe_msrln16.h>
 #include <oqs/kex_rlwe_newhope.h>
-#ifdef ENABLE_KEX_SIDH_MSR
 #include <oqs/kex_sidh_msr.h>
-#endif
 
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
