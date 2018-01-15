@@ -23,6 +23,20 @@
 		printf("\n");                                            \
 	}
 
+/* Helper macro for partially displaying hexadecimal strings */
+#define PRINT_PARTIAL_HEX_STRING(label, str, len, sub_len)                \
+	{                                                                     \
+		printf("%-20s (%4zu bytes):  ", (label), (size_t)(len));          \
+		for (size_t i = 0; i < (sub_len); i++) {                          \
+			printf("%02X", ((unsigned char *) (str))[i]);                 \
+		}                                                                 \
+		printf("...");                                                    \
+		for (size_t i = 0; i < (sub_len); i++) {                          \
+			printf("%02X", ((unsigned char *) (str))[len - sub_len + i]); \
+		}                                                                 \
+		printf("\n");                                                     \
+	}
+
 /* Cleaning up memory etc */
 void cleanup(uint8_t *alice_msg, size_t alice_msg_len, uint8_t *alice_key,
              size_t alice_key_len, uint8_t *bob_msg, size_t bob_msg_len,
@@ -86,7 +100,7 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
-	PRINT_HEX_STRING("Alice message", alice_msg, alice_msg_len)
+	PRINT_PARTIAL_HEX_STRING("Alice message", alice_msg, alice_msg_len, 20)
 
 	/* Bob's response */
 	success = OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len,
@@ -99,7 +113,7 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
-	PRINT_HEX_STRING("Bob message", bob_msg, bob_msg_len)
+	PRINT_PARTIAL_HEX_STRING("Bob message", bob_msg, bob_msg_len, 20)
 	PRINT_HEX_STRING("Bob session key", bob_key, bob_key_len)
 
 	/* Alice processes Bob's response */
