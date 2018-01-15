@@ -180,12 +180,12 @@ test: clean-tests
 	./test_kex --quiet
 	./test_rand --quiet
 	./test_aes
-	./minimal_kex_oqs
 if USE_SIG_PICNIC
 	./test_sig
 	./minimal_sig_oqs
 endif
-
+	./minimal_kex_oqs
+	
 links:
 	$(MKDIR_P) include/oqs
 	cp -f config.h include/oqs
