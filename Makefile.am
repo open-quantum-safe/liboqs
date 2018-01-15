@@ -92,9 +92,6 @@ if USE_SIDH_IQC
 	cp src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h $(includedir)/oqs
 endif
 
-
-noinst_bin_PROGRAMS = test_rand test_kex test_aes
-
 libmerge_external.la:
 if USE_SIG_PICNIC
 	mkdir -p temp && cp liboqs.a temp/ && cp src/sig_picnic/external/build/libpicnic_static.a temp/
@@ -102,7 +99,10 @@ if USE_SIG_PICNIC
 	cd .. && rm -rf temp
 endif
 
-noinst_bin_PROGRAMS = test_rand test_kex test_aes test_sig
+noinst_bin_PROGRAMS = test_rand test_kex test_aes minimal_kex_oqs
+if USE_SIG_PICNIC
+noinst_bin_PROGRAMS += test_sig minimal_sig_oqs
+endif
 
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
@@ -119,12 +119,19 @@ if USE_SIDH_IQC
 test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
 endif
 
+if USE_SIG_PICNIC
 test_sig_LDADD =  liboqs.la -lm
 test_sig_SOURCES = src/sig/test_sig.c
 test_sig_CPPFLAGS = -I./include
 test_sig_CPPFLAGS += $(AM_CPPFLAGS)
 if USE_OPENSSL
 test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
+minimal_sig_oqs_LDADD =  liboqs.la -lm
+minimal_sig_oqs_SOURCES = src/sig/minimal_sig_oqs.c
+minimal_sig_oqs_CPPFLAGS = -I./include
+minimal_sig_oqs_CPPFLAGS += $(AM_CPPFLAGS)
 endif
 
 test_aes_LDADD =  liboqs.la -lm
@@ -148,6 +155,11 @@ if USE_AES_NI
 test_rand_CPPFLAGS += -maes -msse2
 endif
 endif
+
+minimal_kex_oqs_LDADD =  liboqs.la -lm
+minimal_kex_oqs_SOURCES = src/kex/minimal_kex_oqs.c
+minimal_kex_oqs_CPPFLAGS = -I./include
+minimal_kex_oqs_CPPFLAGS += $(AM_CPPFLAGS)
 
 test: clean-tests
 	make
@@ -190,6 +202,10 @@ endif
 clean-local:
 	rm -f liboqs.a
 	rm -rf include
+	rm -f minimal_kex_oqs
+if USE_SIG_PICNIC
+	rm -f minimal_sig_oqs
+endif
 if USE_SIDH_IQC
 	rm -f sample_params
 endif
