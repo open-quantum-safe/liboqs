@@ -132,6 +132,10 @@ minimal_sig_oqs_LDADD =  liboqs.la -lm
 minimal_sig_oqs_SOURCES = src/sig/minimal_sig_oqs.c
 minimal_sig_oqs_CPPFLAGS = -I./include
 minimal_sig_oqs_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+minimal_sig_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
 endif
 
 test_aes_LDADD =  liboqs.la -lm
@@ -160,6 +164,16 @@ minimal_kex_oqs_LDADD =  liboqs.la -lm
 minimal_kex_oqs_SOURCES = src/kex/minimal_kex_oqs.c
 minimal_kex_oqs_CPPFLAGS = -I./include
 minimal_kex_oqs_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_MCBITS
+minimal_kex_oqs_LDADD += -L${SODIUM_DIR}/lib -lsodium
+endif
+if USE_OPENSSL
+minimal_kex_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+if USE_SIDH_IQC
+minimal_kex_oqs_LDADD += -L$(GMP_DIR)/lib -lgmp
+endif
+
 
 test: clean-tests
 	make
