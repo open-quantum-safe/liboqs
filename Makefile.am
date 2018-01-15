@@ -180,7 +180,9 @@ test: clean-tests
 	./test_kex --quiet
 	./test_rand --quiet
 	./test_aes
+if USE_SIG_PICNIC
 	./test_sig
+endif
 
 links:
 	$(MKDIR_P) include/oqs
