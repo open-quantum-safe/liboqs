@@ -11,29 +11,12 @@
 #include <oqs/rand.h>
 #include <oqs/sig.h>
 
-/* Helper macro for displaying hexadecimal strings */
-#define PRINT_HEX_STRING(label, str, len)                        \
-	{                                                            \
-		printf("%-20s (%4zu bytes):  ", (label), (size_t)(len)); \
-		for (size_t i = 0; i < (len); i++) {                     \
-			printf("%02X", ((unsigned char *) (str))[i]);        \
-		}                                                        \
-		printf("\n");                                            \
-	}
+/* Displays hexadecimal strings */
+void print_hex_string(const char *label, uint8_t *str, size_t len);
 
-/* Helper macro for partially displaying hexadecimal strings */
-#define PRINT_PARTIAL_HEX_STRING(label, str, len, sub_len)                \
-	{                                                                     \
-		printf("%-20s (%4zu bytes):  ", (label), (size_t)(len));          \
-		for (size_t i = 0; i < (sub_len); i++) {                          \
-			printf("%02X", ((unsigned char *) (str))[i]);                 \
-		}                                                                 \
-		printf("...");                                                    \
-		for (size_t i = 0; i < (sub_len); i++) {                          \
-			printf("%02X", ((unsigned char *) (str))[len - sub_len + i]); \
-		}                                                                 \
-		printf("\n");                                                     \
-	}
+/* Partially displays hexadecimal strings */
+void print_partial_hex_string(const char *label, uint8_t *str, size_t len,
+                              size_t sub_len);
 
 /* Cleaning up memory etc */
 void cleanup(uint8_t *msg, size_t msg_len, uint8_t *sig, size_t sig_len,
@@ -104,8 +87,8 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
-	PRINT_HEX_STRING("Private key", priv, s->priv_key_len)
-	PRINT_HEX_STRING("Public key", pub, s->pub_key_len)
+	print_hex_string("Private key", priv, s->priv_key_len);
+	print_hex_string("Public key", pub, s->pub_key_len);
 
 	/* Allocates the memory for the message to sign */
 	msg_len = 64; // TODO: randomize based on scheme's max length
@@ -119,7 +102,7 @@ int main(void) {
 
 	/* Generates a random message to sign */
 	OQS_RAND_n(rnd, msg, msg_len);
-	PRINT_HEX_STRING("Message", msg, msg_len)
+	print_hex_string("Message", msg, msg_len);
 
 	/* Allocates memory for the signature */
 	sig_len = s->max_sig_len;
@@ -142,7 +125,7 @@ int main(void) {
 
 	if (sig_len > 40) {
 		// only print the parts of the sig if too long
-		PRINT_PARTIAL_HEX_STRING("Signature", sig, sig_len, 20);
+		print_partial_hex_string("Signature", sig, sig_len, 20);
 	}
 
 	/* Verification */
@@ -159,6 +142,27 @@ int main(void) {
 	cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
 
 	return EXIT_SUCCESS;
+}
+
+void print_hex_string(const char *label, uint8_t *str, size_t len) {
+	printf("%-20s (%4zu bytes):  ", label, len);
+	for (size_t i = 0; i < (len); i++) {
+		printf("%02X", ((unsigned char *) (str))[i]);
+	}
+	printf("\n");
+}
+
+void print_partial_hex_string(const char *label, uint8_t *str, size_t len,
+                              size_t sub_len) {
+	printf("%-20s (%4zu bytes):  ", label, len);
+	for (size_t i = 0; i < (sub_len); i++) {
+		printf("%02X", ((unsigned char *) (str))[i]);
+	}
+	printf("...");
+	for (size_t i = 0; i < (sub_len); i++) {
+		printf("%02X", ((unsigned char *) (str))[len - sub_len + i]);
+	}
+	printf("\n");
 }
 
 /* Cleaning up memory etc */
