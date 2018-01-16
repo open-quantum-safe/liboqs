@@ -14,11 +14,11 @@
 #include <oqs/rand.h>
 
 /* Displays hexadecimal strings */
-void print_hex_string(const char *label, uint8_t *str, size_t len);
+void disp_hex_string(const char *label, uint8_t *str, size_t len);
 
 /* Partially displays hexadecimal strings */
-void print_partial_hex_string(const char *label, uint8_t *str, size_t len,
-                              size_t sub_len);
+void disp_part_hex_string(const char *label, uint8_t *str, size_t len,
+                          size_t sub_len);
 
 /* Cleaning up memory etc */
 void cleanup(uint8_t *alice_msg, size_t alice_msg_len, uint8_t *alice_key,
@@ -83,7 +83,7 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
-	print_partial_hex_string("Alice message", alice_msg, alice_msg_len, 20);
+	disp_part_hex_string("Alice message", alice_msg, alice_msg_len, 20);
 
 	/* Bob's response */
 	success = OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len,
@@ -96,8 +96,8 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
-	print_partial_hex_string("Bob message", bob_msg, bob_msg_len, 20);
-	print_hex_string("Bob session key", bob_key, bob_key_len);
+	disp_part_hex_string("Bob message", bob_msg, bob_msg_len, 20);
+	disp_hex_string("Bob session key", bob_key, bob_key_len);
 
 	/* Alice processes Bob's response */
 	success = OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key,
@@ -110,7 +110,7 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
-	print_hex_string("Alice session key", alice_key, alice_key_len);
+	disp_hex_string("Alice session key", alice_key, alice_key_len);
 
 	/* Compare key lengths */
 	if (alice_key_len != bob_key_len) {
@@ -128,8 +128,8 @@ int main(void) {
 	if (success != 0) {
 		eprintf("ERROR: Alice's session key and Bob's session "
 		        "key are not equal!\n");
-		print_hex_string("Alice session key", alice_key, alice_key_len);
-		print_hex_string("Bob session key", bob_key, bob_key_len);
+		disp_hex_string("Alice session key", alice_key, alice_key_len);
+		disp_hex_string("Bob session key", bob_key, bob_key_len);
 		cleanup(alice_msg, alice_msg_len, alice_key, alice_key_len, bob_msg,
 		        bob_msg_len, bob_key, bob_key_len, alice_priv, kex, rnd);
 
@@ -144,7 +144,7 @@ int main(void) {
 	return EXIT_SUCCESS;
 }
 
-void print_hex_string(const char *label, uint8_t *str, size_t len) {
+void disp_hex_string(const char *label, uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
 	for (size_t i = 0; i < (len); i++) {
 		printf("%02X", ((unsigned char *) (str))[i]);
@@ -152,8 +152,8 @@ void print_hex_string(const char *label, uint8_t *str, size_t len) {
 	printf("\n");
 }
 
-void print_partial_hex_string(const char *label, uint8_t *str, size_t len,
-                              size_t sub_len) {
+void disp_part_hex_string(const char *label, uint8_t *str, size_t len,
+                          size_t sub_len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
 	for (size_t i = 0; i < (sub_len); i++) {
 		printf("%02X", ((unsigned char *) (str))[i]);
