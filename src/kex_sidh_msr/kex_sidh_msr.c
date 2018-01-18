@@ -58,7 +58,7 @@ OQS_KEX *OQS_KEX_sidh_msr_new(OQS_RAND *rand, const char *named_parameters) {
 	}
 	SIDH_CTX *sidh_ctx = malloc(sizeof(SIDH_CTX));
 	if (sidh_ctx == NULL) {
-		goto cleanup;
+		goto err;
 	}
 	if (strcmp(named_parameters, OQS_KEX_SIDH_503_params) == 0) {
 		k->method_name = strdup("SIDH MSR p503");

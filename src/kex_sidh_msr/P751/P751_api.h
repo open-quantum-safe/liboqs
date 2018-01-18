@@ -9,15 +9,18 @@
 
 #include <oqs/rand.h>
 
-/*********************** Key encapsulation mechanism API ***********************/
+#if defined(WINDOWS)
+#include "../windows_undef.h"
+#endif
 
-#define CRYPTO_SECRETKEYBYTES 644 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes
-#define CRYPTO_PUBLICKEYBYTES 564
-#define CRYPTO_BYTES 24
-#define CRYPTO_CIPHERTEXTBYTES 596 // CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes
+/*********************** Key encapsulation mechanism API ***********************/
+#define OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES 644 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes
+#define OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES 564
+#define OQS_SIDH_MSR_CRYPTO_BYTES 24
+#define OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES 596 // CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes
 
 // Algorithm name
-#define CRYPTO_ALGNAME "SIKEp751"
+#define OQS_SIDH_MSR_CRYPTO_ALGNAME "SIKEp751"
 
 // SIKE's key generation
 // It produces a private key sk and computes the public key pk.

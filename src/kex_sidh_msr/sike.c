@@ -19,7 +19,7 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk, OQS_RAND *rand) { /
 	EphemeralKeyGeneration_B(sk + MSG_BYTES, pk, rand);
 
 	// Append public key pk to secret key sk
-	memcpy(&sk[MSG_BYTES + SECRETKEY_B_BYTES], pk, CRYPTO_PUBLICKEYBYTES);
+	memcpy(&sk[MSG_BYTES + SECRETKEY_B_BYTES], pk, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES);
 
 	return 0;
 }
@@ -34,13 +34,13 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 	unsigned char ephemeralsk[SECRETKEY_A_BYTES];
 	unsigned char jinvariant[FP2_ENCODED_BYTES];
 	unsigned char h[MSG_BYTES];
-	unsigned char temp[CRYPTO_CIPHERTEXTBYTES + MSG_BYTES];
+	unsigned char temp[OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES];
 	unsigned int i;
 
 	// Generate ephemeralsk <- G(m||pk) mod oA
 	OQS_RAND_n(rand, temp, MSG_BYTES);
-	memcpy(&temp[MSG_BYTES], pk, CRYPTO_PUBLICKEYBYTES);
-	cshake256_simple(ephemeralsk, SECRETKEY_A_BYTES, G, temp, CRYPTO_PUBLICKEYBYTES + MSG_BYTES);
+	memcpy(&temp[MSG_BYTES], pk, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES);
+	cshake256_simple(ephemeralsk, SECRETKEY_A_BYTES, G, temp, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES + MSG_BYTES);
 	ephemeralsk[SECRETKEY_A_BYTES - 1] &= MASK_ALICE;
 
 	// Encrypt
@@ -48,11 +48,11 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 	EphemeralSecretAgreement_A(ephemeralsk, pk, jinvariant);
 	cshake256_simple(h, MSG_BYTES, P, jinvariant, FP2_ENCODED_BYTES);
 	for (i = 0; i < MSG_BYTES; i++)
-		ct[i + CRYPTO_PUBLICKEYBYTES] = temp[i] ^ h[i];
+		ct[i + OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES] = temp[i] ^ h[i];
 
 	// Generate shared secret ss <- H(m||ct)
-	memcpy(&temp[MSG_BYTES], ct, CRYPTO_CIPHERTEXTBYTES);
-	cshake256_simple(ss, CRYPTO_BYTES, H, temp, CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
+	memcpy(&temp[MSG_BYTES], ct, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES);
+	cshake256_simple(ss, OQS_SIDH_MSR_CRYPTO_BYTES, H, temp, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
 
 	return 0;
 }
@@ -67,28 +67,28 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 	unsigned char ephemeralsk_[SECRETKEY_A_BYTES];
 	unsigned char jinvariant_[FP2_ENCODED_BYTES];
 	unsigned char h_[MSG_BYTES];
-	unsigned char c0_[CRYPTO_PUBLICKEYBYTES];
-	unsigned char temp[CRYPTO_CIPHERTEXTBYTES + MSG_BYTES];
+	unsigned char c0_[OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES];
+	unsigned char temp[OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES];
 	unsigned int i;
 
 	// Decrypt
 	EphemeralSecretAgreement_B(sk + MSG_BYTES, ct, jinvariant_);
 	cshake256_simple(h_, MSG_BYTES, P, jinvariant_, FP2_ENCODED_BYTES);
 	for (i = 0; i < MSG_BYTES; i++)
-		temp[i] = ct[i + CRYPTO_PUBLICKEYBYTES] ^ h_[i];
+		temp[i] = ct[i + OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES] ^ h_[i];
 
 	// Generate ephemeralsk_ <- G(m||pk) mod oA
-	memcpy(&temp[MSG_BYTES], &sk[MSG_BYTES + SECRETKEY_B_BYTES], CRYPTO_PUBLICKEYBYTES);
-	cshake256_simple(ephemeralsk_, SECRETKEY_A_BYTES, G, temp, CRYPTO_PUBLICKEYBYTES + MSG_BYTES);
+	memcpy(&temp[MSG_BYTES], &sk[MSG_BYTES + SECRETKEY_B_BYTES], OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES);
+	cshake256_simple(ephemeralsk_, SECRETKEY_A_BYTES, G, temp, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES + MSG_BYTES);
 	ephemeralsk_[SECRETKEY_A_BYTES - 1] &= MASK_ALICE;
 
 	// Generate shared secret ss <- H(m||ct) or output ss <- H(s||ct)
 	EphemeralKeyGeneration_A(ephemeralsk_, c0_, rand);
-	if (memcmp(c0_, ct, CRYPTO_PUBLICKEYBYTES) != 0) {
+	if (memcmp(c0_, ct, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES) != 0) {
 		memcpy(temp, sk, MSG_BYTES);
 	}
-	memcpy(&temp[MSG_BYTES], ct, CRYPTO_CIPHERTEXTBYTES);
-	cshake256_simple(ss, CRYPTO_BYTES, H, temp, CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
+	memcpy(&temp[MSG_BYTES], ct, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES);
+	cshake256_simple(ss, OQS_SIDH_MSR_CRYPTO_BYTES, H, temp, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
 
 	return 0;
 }
