@@ -1,3 +1,0 @@
-[submodule "picnic"]
-	path = src/sig_picnic/external
-	url = https://github.com/IAIK/Picnic.git

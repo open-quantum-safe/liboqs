@@ -58,6 +58,7 @@ VisualStudio/**/*.user
 
 # External sources
 external
+!src/sig_picnic/external
 src/sig_picnic/external/build/**
 /temp/
 
@@ -99,3 +100,4 @@ data/
 
 # Exceptions
 !/src/kex_sidh_msr/config.h
+!src/sig_picnic/external/config.h.in
