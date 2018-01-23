@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REGEX=' T [_]?(OQS|ntru|picnic|Keccak|.*SIKEp503|.*SIDHp503|.*SIKEp751|.*SIDHp751|.*shake128|.*shake256|rand_bytes|cpu_supports|uint64_from_char_array|uint64_to_char_array|_print_hex|_ntt_double|_rec|_aligned_alloc|_aligned_free)'
+REGEX=' T [_]?(OQS|ntru|picnic|Keccak|.*SIKEp503|.*SIDHp503|.*SIKEp751|.*SIDHp751|.*shake128|.*shake256|rand_bytes|cpu_supports|uint64_from_char_array|uint64_to_char_array|print_hex|ntt_double|rec|aligned_alloc|aligned_free)'
 
 if [[ $(nm -g liboqs.a | grep ' T ' | grep -E -v -i "$REGEX") ]];
 then
