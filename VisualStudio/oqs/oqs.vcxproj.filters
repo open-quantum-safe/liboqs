@@ -183,6 +183,9 @@
     <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_internal.h">
       <Filter>KEX_SIDH_MSR</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\picnic.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">

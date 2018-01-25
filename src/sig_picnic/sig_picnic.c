@@ -5,7 +5,7 @@
 #include <oqs/sig.h>
 #include <oqs/rand.h>
 #include "sig_picnic.h"
-#include "picnic.h"
+#include "external/picnic.h"
 
 static char *Picnic_L1_FS_name = "Picnic_L1_FS";
 static char *Picnic_L1_UR_name = "Picnic_L1_UR";
@@ -98,9 +98,9 @@ int OQS_SIG_picnic_get(OQS_SIG *s, enum OQS_SIG_algid algid) {
 	}
 	// set the ctx, sizes, and API functions
 	s->ctx = pctx;
-	s->priv_key_len = PRIV_KEY_LEN[pctx->params] + PUB_KEY_LEN[pctx->params]; // priv key also contains pub key
-	s->pub_key_len = PUB_KEY_LEN[pctx->params];
-	s->max_sig_len = SIG_LEN[pctx->params];
+	s->priv_key_len = (uint16_t) (PRIV_KEY_LEN[pctx->params] + PUB_KEY_LEN[pctx->params]); // priv key also contains pub key
+	s->pub_key_len = (uint16_t) PUB_KEY_LEN[pctx->params];
+	s->max_sig_len = (uint32_t) SIG_LEN[pctx->params];
 	s->keygen = &OQS_SIG_picnic_keygen;
 	s->sign = &OQS_SIG_picnic_sign;
 	s->verify = &OQS_SIG_picnic_verify;

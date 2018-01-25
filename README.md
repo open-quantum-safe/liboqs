@@ -170,7 +170,9 @@ Flags for all the configured algorithms are generated in config.h file.
 Building and running on Windows
 -------------------------------
 
-Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder.  Builds have been tested on Windows 10.
+Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder. Builds have been tested on Windows 10.
+
+CMake (https://cmake.org/download/) is required and must be installed before building the Visual Studio solution.
 
 McBits is disabled by default in the Visual Studio build; follow these steps to enable it:
 
@@ -178,8 +180,6 @@ McBits is disabled by default in the Visual Studio build; follow these steps to 
 - Add `ENABLE_CODE_MCBITS` and `SODIUM_STATIC` to the preprocessor definitions of the `oqs` and `test_kex` projects.
 - Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
 - Add the libsodium library to the "Additional Dependencies" in the `test_kex` project Linker properties.
-
-Picnic is not currently supported in the Visual Studio build.
 
 Building for Android
 --------------------
