@@ -92,9 +92,6 @@ if USE_SIDH_IQC
 	cp src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h $(includedir)/oqs
 endif
 
-
-noinst_bin_PROGRAMS = test_rand test_kex test_aes
-
 libmerge_external.la:
 if USE_SIG_PICNIC
 	mkdir -p temp && cp liboqs.a temp/ && cp src/sig_picnic/external/build/libpicnic_static.a temp/
@@ -102,7 +99,13 @@ if USE_SIG_PICNIC
 	cd .. && rm -rf temp
 endif
 
-noinst_bin_PROGRAMS = test_rand test_kex test_aes test_sig
+noinst_bin_PROGRAMS = test_kex test_aes test_rand
+if USE_KEX_LWE_FRODO
+noinst_bin_PROGRAMS += minimal_kex_oqs
+endif
+if USE_SIG_PICNIC
+noinst_bin_PROGRAMS += test_sig minimal_sig_oqs
+endif
 
 noinst_bindir=$(prefix)/tests
 test_kex_LDADD =  liboqs.la -lm
@@ -119,6 +122,7 @@ if USE_SIDH_IQC
 test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
 endif
 
+if USE_SIG_PICNIC
 test_sig_LDADD =  liboqs.la -lm
 test_sig_SOURCES = src/sig/test_sig.c
 test_sig_CPPFLAGS = -I./include
@@ -126,6 +130,33 @@ test_sig_CPPFLAGS += $(AM_CPPFLAGS)
 if USE_OPENSSL
 test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
+
+minimal_sig_oqs_LDADD =  liboqs.la -lm
+minimal_sig_oqs_SOURCES = src/sig/minimal_sig_oqs.c
+minimal_sig_oqs_CPPFLAGS = -I./include
+minimal_sig_oqs_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+minimal_sig_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
+endif # USE_SIG_PICNIC
+
+if USE_KEX_LWE_FRODO
+minimal_kex_oqs_LDADD =  liboqs.la -lm
+minimal_kex_oqs_SOURCES = src/kex/minimal_kex_oqs.c
+minimal_kex_oqs_CPPFLAGS = -I./include
+minimal_kex_oqs_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_MCBITS
+minimal_kex_oqs_LDADD += -L${SODIUM_DIR}/lib -lsodium
+endif
+if USE_OPENSSL
+minimal_kex_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+if USE_SIDH_IQC
+minimal_kex_oqs_LDADD += -L$(GMP_DIR)/lib -lgmp
+endif
+
+endif # USE_KEX_LWE_FRODO
 
 test_aes_LDADD =  liboqs.la -lm
 test_aes_SOURCES = src/crypto/aes/test_aes.c
@@ -147,15 +178,22 @@ else
 if USE_AES_NI
 test_rand_CPPFLAGS += -maes -msse2
 endif
-endif
+endif # USE_OPENSSL
+
 
 test: clean-tests
 	make
 	./test_kex --quiet
 	./test_rand --quiet
 	./test_aes
+if USE_SIG_PICNIC
 	./test_sig
-
+	./minimal_sig_oqs
+endif
+if USE_KEX_LWE_FRODO
+	./minimal_kex_oqs
+endif
+	
 links:
 	$(MKDIR_P) include/oqs
 	cp -f config.h include/oqs
@@ -190,13 +228,19 @@ endif
 clean-local:
 	rm -f liboqs.a
 	rm -rf include
+if USE_KEX_LWE_FRODO
+	rm -f minimal_kex_oqs
+endif
+if USE_SIG_PICNIC
+	rm -f test_sig
+	rm -f minimal_sig_oqs
+endif
 if USE_SIDH_IQC
 	rm -f sample_params
 endif
 
-
 clean-tests:
-	rm -f test_kex test_rand test_aes test_sig
+	rm -f test_kex test_rand test_aes
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
