@@ -69,7 +69,8 @@ This will generate:
 - `test_aes`: A simple test harness for AES.  This will test the correctness of the C implementation (and of the AES-NI implementation, if not disabled) of AES, and will compare the speed of these implementations against OpenSSL's AES implementation.
 - `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
 - `test_sig`: A simple test harness for the signature algorithms.
-
+- `minimal_kex_oqs`: A minimal runnable example showing the usage of KEX API.
+- `minimal_sig_oqs`: A minimal runnable example showing the usage of SIG API.
 ### Running
 
 To run the tests, simply type:

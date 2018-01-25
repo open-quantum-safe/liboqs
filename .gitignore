@@ -36,6 +36,8 @@ include
 /test_sig
 /test_rand
 /test_aes
+/minimal_kex_oqs
+/minimal_sig_oqs
 
 # Debug files
 *.dSYM/
