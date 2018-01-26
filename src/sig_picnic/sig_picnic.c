@@ -98,7 +98,7 @@ int OQS_SIG_picnic_get(OQS_SIG *s, enum OQS_SIG_algid algid) {
 	}
 	// set the ctx, sizes, and API functions
 	s->ctx = pctx;
-	s->priv_key_len = (uint16_t) (PRIV_KEY_LEN[pctx->params] + PUB_KEY_LEN[pctx->params]); // priv key also contains pub key
+	s->priv_key_len = (uint16_t)(PRIV_KEY_LEN[pctx->params] + PUB_KEY_LEN[pctx->params]); // priv key also contains pub key
 	s->pub_key_len = (uint16_t) PUB_KEY_LEN[pctx->params];
 	s->max_sig_len = (uint32_t) SIG_LEN[pctx->params];
 	s->keygen = &OQS_SIG_picnic_keygen;
