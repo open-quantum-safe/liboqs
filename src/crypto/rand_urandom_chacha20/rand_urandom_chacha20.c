@@ -64,7 +64,7 @@ static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 	if (rand_ctx == NULL) {
 		goto err;
 	}
-	if (!OQS_RAND_get_system_entropy(rand_ctx->key, 32)) {
+	if (OQS_RAND_get_system_entropy(rand_ctx->key, 32) != OQS_SUCCESS) {
 		goto err;
 	}
 	memset(rand_ctx->nonce, 0, 8);

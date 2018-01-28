@@ -7,12 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <oqs/common.h>
-#include <oqs/sig.h>
-#include <oqs/rand.h>
+#include <oqs/oqs.h>
 
 #include "../ds_benchmark.h"
-#include "../common/common.h"
 
 // TODO: add signature size to benchmark
 
@@ -38,31 +35,9 @@ struct sig_testcase sig_testcases[] = {
 #define SIG_TEST_ITERATIONS 100
 #define SIG_BENCH_SECONDS 1
 
-#define PRINT_HEX_STRING(label, str, len)                        \
-	{                                                            \
-		printf("%-20s (%4zu bytes):  ", (label), (size_t)(len)); \
-		for (size_t i = 0; i < (len); i++) {                     \
-			printf("%02X", ((unsigned char *) (str))[i]);        \
-		}                                                        \
-		printf("\n");                                            \
-	}
+static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const int print) {
 
-#define PRINT_PARTIAL_HEX_STRING(label, str, len, sublen)                \
-	{                                                                    \
-		printf("%-20s (%4zu bytes):  ", (label), (size_t)(len));         \
-		for (size_t i = 0; i < (sublen); i++) {                          \
-			printf("%02X", ((unsigned char *) (str))[i]);                \
-		}                                                                \
-		printf("...");                                                   \
-		for (size_t i = 0; i < (sublen); i++) {                          \
-			printf("%02X", ((unsigned char *) (str))[len - sublen + i]); \
-		}                                                                \
-		printf("\n");                                                    \
-	}
-
-static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const int print) {
-
-	int rc;
+	OQS_STATUS rc;
 
 	uint8_t *priv = NULL;
 	uint8_t *pub = NULL;
@@ -97,14 +72,14 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const 
 	}
 
 	rc = OQS_SIG_keygen(s, priv, pub);
-	if (rc != 1) {
+	if (rc != OQS_SUCCESS) {
 		eprintf("OQS_SIG_keygen failed\n");
 		goto err;
 	}
 
 	if (print) {
-		PRINT_HEX_STRING("Private key", priv, s->priv_key_len)
-		PRINT_HEX_STRING("Public key", pub, s->pub_key_len)
+		OQS_print_hex_string("Private key", priv, s->priv_key_len);
+		OQS_print_hex_string("Public key", pub, s->pub_key_len);
 	}
 
 	/* Generate message to sign */
@@ -116,7 +91,7 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const 
 	}
 	OQS_RAND_n(rand, msg, msg_len);
 	if (print) {
-		PRINT_HEX_STRING("Message", msg, msg_len)
+		OQS_print_hex_string("Message", msg, msg_len);
 	}
 
 	/* Signature */
@@ -128,7 +103,7 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const 
 	}
 
 	rc = OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len);
-	if (rc != 1) {
+	if (rc != OQS_SUCCESS) {
 		eprintf("OQS_SIG_sign failed\n");
 		goto err;
 	}
@@ -136,13 +111,13 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const 
 	if (print) {
 		if (sig_len > 40) {
 			// only print the parts of the sig if too long
-			PRINT_PARTIAL_HEX_STRING("Signature", sig, sig_len, 20);
+			OQS_print_part_hex_string("Signature", sig, sig_len, 20);
 		}
 	}
 
 	/* Verification */
 	rc = OQS_SIG_verify(s, pub, msg, msg_len, sig, sig_len);
-	if (rc != 1) {
+	if (rc != OQS_SUCCESS) {
 		eprintf("ERROR: OQS_SIG_verify failed\n");
 		goto err;
 	}
@@ -152,11 +127,11 @@ static int sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const 
 		printf("\n\n");
 	}
 
-	rc = 1;
+	rc = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	rc = 0;
+	rc = OQS_ERROR;
 
 cleanup:
 	if (msg != NULL) {
@@ -178,29 +153,29 @@ cleanup:
 	return rc;
 }
 
-UNUSED static int sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, int iterations, bool quiet) {
-	int ret;
+UNUSED static OQS_STATUS sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, int iterations, bool quiet) {
+	OQS_STATUS ret;
 	ret = sig_test_correctness(rand, algid, !quiet);
-	if (ret != 1) {
+	if (ret != OQS_SUCCESS) {
 		goto err;
 	}
 
 	printf("Testing correctness and randomness of signature for %d iterations\n", iterations);
 	for (int i = 0; i < iterations; i++) {
 		ret = sig_test_correctness(rand, algid, 0);
-		if (ret != 1) {
+		if (ret != OQS_SUCCESS) {
 			goto err;
 		}
 	}
 	printf("All signatures were valid.\n");
 	printf("\n\n");
-	return 1;
+	return OQS_SUCCESS;
 err:
 	return ret;
 }
 
-UNUSED static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int seconds) {
-	int rc;
+UNUSED static OQS_STATUS sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int seconds) {
+	OQS_STATUS rc;
 
 	uint8_t *priv = NULL;
 	uint8_t *pub = NULL;
@@ -252,11 +227,11 @@ UNUSED static int sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, co
 	OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len);
 	TIME_OPERATION_SECONDS({ OQS_SIG_verify(s, pub, msg, msg_len, sig, sig_len); }, "verify", seconds);
 
-	rc = 1;
+	rc = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	rc = 0;
+	rc = OQS_ERROR;
 
 cleanup:
 	free(priv);
@@ -270,7 +245,7 @@ cleanup:
 
 #ifdef ENABLE_SIG_PICNIC
 int main(int argc, char **argv) {
-	int success = 1;
+	OQS_STATUS success = OQS_SUCCESS;
 	bool run_all = true;
 	bool quiet = false;
 	bool bench = false;
@@ -317,7 +292,7 @@ int main(int argc, char **argv) {
 			int num_iter = sig_testcases[i].iter;
 			success = sig_test_correctness_wrapper(rand, sig_testcases[i].algid, num_iter, quiet);
 		}
-		if (success != 1) {
+		if (success != OQS_SUCCESS) {
 			goto err;
 		}
 	}
@@ -332,22 +307,22 @@ int main(int argc, char **argv) {
 		PRINT_TIMER_FOOTER
 	}
 
-	success = 1;
+	success = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	success = 0;
+	success = OQS_ERROR;
 	eprintf("ERROR!\n");
 
 cleanup:
 	if (rand) {
 		OQS_RAND_free(rand);
 	}
-	return (success == 1) ? EXIT_SUCCESS : EXIT_FAILURE;
+	return (success == OQS_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 #else // !ENABLE_SIG_PICNIC
 int main() {
 	printf("No signature algorithm available. Make sure configure was run properly; see Readme.md.\n");
-	return 0;
+	return EXIT_FAILURE;
 }
 #endif

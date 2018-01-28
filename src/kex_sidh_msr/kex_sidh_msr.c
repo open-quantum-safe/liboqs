@@ -141,10 +141,10 @@ cleanup:
 	return k;
 }
 
-int OQS_KEX_sidh_msr_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
-	int ret = 0;
+OQS_STATUS OQS_KEX_sidh_msr_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
+	OQS_STATUS ret = OQS_ERROR;
 	if (!k || !alice_priv || !alice_msg || !alice_msg_len) {
-		return 0;
+		return OQS_ERROR;
 	}
 
 	*alice_priv = NULL;
@@ -172,11 +172,11 @@ int OQS_KEX_sidh_msr_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg,
 	}
 	*alice_msg_len = sidh_ctx->pub_key_len;
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	ret = 0;
+	ret = OQS_ERROR;
 	free(*alice_msg);
 	*alice_msg = NULL;
 	free(*alice_priv);
@@ -186,13 +186,13 @@ cleanup:
 	return ret;
 }
 
-int OQS_KEX_sidh_msr_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
+OQS_STATUS OQS_KEX_sidh_msr_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
 
-	int ret;
+	OQS_STATUS ret;
 	uint8_t *bob_priv = NULL;
 
 	if (!k || !alice_msg || !bob_msg || !bob_msg_len || !key || !key_len) {
-		return 0;
+		return OQS_ERROR;
 	}
 
 	*bob_msg = NULL;
@@ -237,11 +237,11 @@ int OQS_KEX_sidh_msr_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alic
 	}
 	*key_len = sidh_ctx->shared_secret_len;
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	ret = 0;
+	ret = OQS_ERROR;
 	free(*bob_msg);
 	*bob_msg = NULL;
 	free(*key);
@@ -253,12 +253,12 @@ cleanup:
 	return ret;
 }
 
-int OQS_KEX_sidh_msr_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
+OQS_STATUS OQS_KEX_sidh_msr_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
 
-	int ret;
+	OQS_STATUS ret;
 
 	if (!k || !alice_priv || !bob_msg || !key || !key_len) {
-		return 0;
+		return OQS_ERROR;
 	}
 
 	SIDH_CTX *sidh_ctx = (SIDH_CTX *) k->ctx;
@@ -287,11 +287,11 @@ int OQS_KEX_sidh_msr_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *
 		}
 	}
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	ret = 0;
+	ret = OQS_ERROR;
 	free(*key);
 	*key = NULL;
 

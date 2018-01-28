@@ -7,16 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <oqs/common.h>
-#include <oqs/rand.h>
-#include <oqs/sig.h>
-
-/* Displays hexadecimal strings */
-void disp_hex_string(const char *label, uint8_t *str, size_t len);
-
-/* Partially displays hexadecimal strings */
-void disp_part_hex_string(const char *label, uint8_t *str, size_t len,
-                          size_t sub_len);
+#include <oqs/oqs.h>
 
 /* Cleaning up memory etc */
 void cleanup(uint8_t *msg, size_t msg_len, uint8_t *sig, size_t sig_len,
@@ -87,8 +78,8 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
-	disp_hex_string("Private key", priv, s->priv_key_len);
-	disp_hex_string("Public key", pub, s->pub_key_len);
+	OQS_print_hex_string("Private key", priv, s->priv_key_len);
+	OQS_print_hex_string("Public key", pub, s->pub_key_len);
 
 	/* Allocates the memory for the message to sign */
 	msg_len = 64; // TODO: randomize based on scheme's max length
@@ -102,7 +93,7 @@ int main(void) {
 
 	/* Generates a random message to sign */
 	OQS_RAND_n(rnd, msg, msg_len);
-	disp_hex_string("Message", msg, msg_len);
+	OQS_print_hex_string("Message", msg, msg_len);
 
 	/* Allocates memory for the signature */
 	sig_len = s->max_sig_len;
@@ -125,7 +116,7 @@ int main(void) {
 
 	if (sig_len > 40) {
 		// only print the parts of the sig if too long
-		disp_part_hex_string("Signature", sig, sig_len, 20);
+		OQS_print_part_hex_string("Signature", sig, sig_len, 20);
 	}
 
 	/* Verification */
@@ -142,27 +133,6 @@ int main(void) {
 	cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
 
 	return EXIT_SUCCESS;
-}
-
-void disp_hex_string(const char *label, uint8_t *str, size_t len) {
-	printf("%-20s (%4zu bytes):  ", label, len);
-	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
-	}
-	printf("\n");
-}
-
-void disp_part_hex_string(const char *label, uint8_t *str, size_t len,
-                          size_t sub_len) {
-	printf("%-20s (%4zu bytes):  ", label, len);
-	for (size_t i = 0; i < (sub_len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
-	}
-	printf("...");
-	for (size_t i = 0; i < (sub_len); i++) {
-		printf("%02X", ((unsigned char *) (str))[len - sub_len + i]);
-	}
-	printf("\n");
 }
 
 /* Cleaning up memory etc */

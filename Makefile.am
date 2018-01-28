@@ -56,6 +56,7 @@ endif
 
 installheaderdir=$(includedir)/oqs
 installheader_HEADERS=config.h \
+	src/common/oqs.h \
 	src/common/common.h \
 	src/crypto/aes/aes.h \
 	src/crypto/rand/rand.h \
@@ -197,6 +198,7 @@ endif
 links:
 	$(MKDIR_P) include/oqs
 	cp -f config.h include/oqs
+	cp -f src/common/oqs.h include/oqs
 	cp -f src/common/common.h include/oqs
 	cp -f src/crypto/aes/aes.h include/oqs
 	cp -f src/crypto/rand/rand.h include/oqs
