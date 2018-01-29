@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\common\common.h" />
+    <ClInclude Include="..\..\src\common\oqs.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes_local.h" />
     <ClInclude Include="..\..\src\crypto\rand\rand.h" />
