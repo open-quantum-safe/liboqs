@@ -1,6 +1,7 @@
 #ifndef __OQS_COMMON_H
 #define __OQS_COMMON_H
 
+#include <stdint.h>
 #include <stdlib.h>
 
 typedef int OQS_STATUS;
