@@ -14,4 +14,9 @@ EXPORTS
 	OQS_KEX_alice_1
 	OQS_KEX_alice_priv_free
 	OQS_KEX_free
+	OQS_SIG_new
+	OQS_SIG_keygen
+	OQS_SIG_sign
+	OQS_SIG_verify
+	OQS_SIG_free
 	free
