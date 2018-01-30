@@ -62,6 +62,7 @@ VisualStudio/**/*.user
 external
 !src/sig_picnic/external
 src/sig_picnic/external/build/**
+src/sig_picnic/external/msbuild/**
 /temp/
 
 # Travis files
