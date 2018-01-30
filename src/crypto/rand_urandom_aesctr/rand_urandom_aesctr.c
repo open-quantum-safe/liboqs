@@ -14,6 +14,7 @@
 
 #include <assert.h>
 #include <oqs/aes.h>
+#include <oqs/common.h>
 #include <oqs/rand.h>
 #include <oqs/rand_urandom_aesctr.h>
 
@@ -35,7 +36,7 @@ static oqs_rand_urandom_aesctr_ctx *oqs_rand_urandom_aesctr_ctx_new() {
 		goto err;
 	}
 	uint8_t key[16];
-	if (!OQS_RAND_get_system_entropy(key, 16)) {
+	if (OQS_RAND_get_system_entropy(key, 16) != OQS_SUCCESS) {
 		goto err;
 	}
 	OQS_AES128_load_schedule(key, &rand_ctx->schedule, 1);

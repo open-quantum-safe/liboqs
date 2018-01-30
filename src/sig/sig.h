@@ -8,6 +8,8 @@
 
 #include <stddef.h>
 #include <stdint.h>
+
+#include <oqs/common.h>
 #include <oqs/rand.h>
 
 /**
@@ -83,7 +85,8 @@ struct OQS_SIG {
 	 * @param pub              The signer's public key.
 	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
 	 */
-	int (*keygen)(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
+	OQS_STATUS(*keygen)
+	(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
 
 	/**
 	 * Pointer to a function for signature generation.
@@ -96,7 +99,8 @@ struct OQS_SIG {
 	 * @param sig_len          In: length of sig, out: length of the generated signature.
 	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
 	 */
-	int (*sign)(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
+	OQS_STATUS(*sign)
+	(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
 
 	/**
 	 * Pointer to a function for signature verification.
@@ -107,9 +111,10 @@ struct OQS_SIG {
 	 * @param msg_len          Length of the signed message.
 	 * @param sig              The signature to verify.
 	 * @param sig_len          Length of the signature to verify.
-	 @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
+	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
 	 */
-	int (*verify)(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
+	OQS_STATUS(*verify)
+	(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
 };
 
 /**
@@ -130,7 +135,7 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid);
  *                           must have allocated s->pub_key_len bytes.
  * @return                   OQS_SUCCESS on success, or OQS_ERROR on failure
  */
-int OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
+OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
 
 /**
  * Generates a new signature.
@@ -142,7 +147,7 @@ int OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
  * @param sig_len   Pointer to the length of the generated signature. 
  * @return          OQS_SUCCESS on success, or OQS_ERROR on failure
  */
-int OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
+OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
 
 /**
  * Verifies a signature.
@@ -154,7 +159,7 @@ int OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, cons
  * @param sig_len   Length of the signature. 
  * @return          OQS_SUCCESS on success, or OQS_ERROR on failure
  */
-int OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
+OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
 
 /**
  * Frees the signature object, de-initializing the underlying library code.

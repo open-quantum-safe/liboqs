@@ -9,6 +9,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <oqs/common.h>
+
 enum OQS_RAND_alg_name {
 	OQS_RAND_alg_default,
 	OQS_RAND_alg_urandom_chacha20,
@@ -94,5 +96,5 @@ double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occur
 double OQS_RAND_zscore_deviation_from_uniform(const unsigned long occurrences[256]);
 void OQS_RAND_report_statistics(const unsigned long occurrences[256], const char *indent);
 
-int OQS_RAND_get_system_entropy(uint8_t *buf, size_t n);
+OQS_STATUS OQS_RAND_get_system_entropy(uint8_t *buf, size_t n);
 #endif

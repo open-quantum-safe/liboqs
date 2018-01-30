@@ -7,11 +7,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <oqs/kex.h>
-#include <oqs/rand.h>
+#include <oqs/oqs.h>
 
 #include "../ds_benchmark.h"
-#include "../common/common.h"
 
 struct kex_testcase {
 	enum OQS_KEX_alg_name alg_name;
@@ -61,19 +59,10 @@ struct kex_testcase kex_testcases[] = {
 #define KEX_TEST_ITERATIONS 100
 #define KEX_BENCH_SECONDS_DEFAULT 1
 
-#define PRINT_HEX_STRING(label, str, len)                        \
-	{                                                            \
-		printf("%-20s (%4zu bytes):  ", (label), (size_t)(len)); \
-		for (size_t i = 0; i < (len); i++) {                     \
-			printf("%02X", ((unsigned char *) (str))[i]);        \
-		}                                                        \
-		printf("\n");                                            \
-	}
-
-static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int print, unsigned long occurrences[256]) {
+static OQS_STATUS kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const int print, unsigned long occurrences[256]) {
 
 	OQS_KEX *kex = NULL;
-	int rc;
+	OQS_STATUS rc;
 
 	void *alice_priv = NULL;
 	uint8_t *alice_msg = NULL;
@@ -101,36 +90,36 @@ static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, 
 
 	/* Alice's initial message */
 	rc = OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
-	if (rc != 1) {
+	if (rc != OQS_SUCCESS) {
 		eprintf("OQS_KEX_alice_0 failed\n");
 		goto err;
 	}
 
 	if (print) {
-		PRINT_HEX_STRING("Alice message", alice_msg, alice_msg_len)
+		OQS_print_part_hex_string("Alice message", alice_msg, alice_msg_len, 20);
 	}
 
 	/* Bob's response */
 	rc = OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
-	if (rc != 1) {
+	if (rc != OQS_SUCCESS) {
 		eprintf("OQS_KEX_bob failed\n");
 		goto err;
 	}
 
 	if (print) {
-		PRINT_HEX_STRING("Bob message", bob_msg, bob_msg_len)
-		PRINT_HEX_STRING("Bob session key", bob_key, bob_key_len)
+		OQS_print_part_hex_string("Bob message", bob_msg, bob_msg_len, 20);
+		OQS_print_hex_string("Bob session key", bob_key, bob_key_len);
 	}
 
 	/* Alice processes Bob's response */
 	rc = OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len);
-	if (rc != 1) {
+	if (rc != OQS_SUCCESS) {
 		eprintf("OQS_KEX_alice_1 failed\n");
 		goto err;
 	}
 
 	if (print) {
-		PRINT_HEX_STRING("Alice session key", alice_key, alice_key_len)
+		OQS_print_hex_string("Alice session key", alice_key, alice_key_len);
 	}
 
 	/* compare session key lengths and values */
@@ -138,11 +127,10 @@ static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, 
 		eprintf("ERROR: Alice's session key and Bob's session key are different lengths (%zu vs %zu)\n", alice_key_len, bob_key_len);
 		goto err;
 	}
-	rc = memcmp(alice_key, bob_key, alice_key_len);
-	if (rc != 0) {
+	if (memcmp(alice_key, bob_key, alice_key_len) != 0) {
 		eprintf("ERROR: Alice's session key and Bob's session key are not equal\n");
-		PRINT_HEX_STRING("Alice session key", alice_key, alice_key_len)
-		PRINT_HEX_STRING("Bob session key", bob_key, bob_key_len)
+		OQS_print_hex_string("Alice session key", alice_key, alice_key_len);
+		OQS_print_hex_string("Bob session key", bob_key, bob_key_len);
 		goto err;
 	}
 	if (print) {
@@ -155,11 +143,11 @@ static int kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, 
 		OQS_RAND_test_record_occurrence(alice_key[i], occurrences);
 	}
 
-	rc = 1;
+	rc = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	rc = 0;
+	rc = OQS_ERROR;
 
 cleanup:
 	free(alice_msg);
@@ -172,9 +160,9 @@ cleanup:
 	return rc;
 }
 
-static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations, bool quiet) {
+static OQS_STATUS kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, int iterations, bool quiet) {
 	OQS_KEX *kex = NULL;
-	int ret;
+	OQS_STATUS ret;
 
 	unsigned long occurrences[256];
 	for (int i = 0; i < 256; i++) {
@@ -183,7 +171,7 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 
 	ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, quiet ? 0 : 1, occurrences);
 
-	if (ret != 1) {
+	if (ret != OQS_SUCCESS) {
 		goto err;
 	}
 
@@ -199,7 +187,7 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 	printf("================================================================================\n");
 	for (int i = 0; i < iterations; i++) {
 		ret = kex_test_correctness(rand, alg_name, seed, seed_len, named_parameters, 0, occurrences);
-		if (ret != 1) {
+		if (ret != OQS_SUCCESS) {
 			goto err;
 		}
 	}
@@ -207,11 +195,11 @@ static int kex_test_correctness_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 	OQS_RAND_report_statistics(occurrences, "");
 	printf("\n\n");
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	ret = 0;
+	ret = OQS_ERROR;
 
 cleanup:
 	OQS_KEX_free(kex);
@@ -229,10 +217,10 @@ static void cleanup_bob(uint8_t *bob_msg, uint8_t *bob_key) {
 	free(bob_key);
 }
 
-static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const size_t seconds) {
+static OQS_STATUS kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const size_t seconds) {
 
 	OQS_KEX *kex = NULL;
-	int rc;
+	OQS_STATUS rc;
 
 	void *alice_priv = NULL;
 	uint8_t *alice_msg = NULL;
@@ -264,11 +252,11 @@ static int kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 
 	printf("Communication (bytes): A->B: %zu, B->A: %zu, total: %zu; classical/quantum security bits [%u:%u] \n", alice_msg_len, bob_msg_len, alice_msg_len + bob_msg_len, kex->estimated_classical_security, kex->estimated_quantum_security);
 
-	rc = 1;
+	rc = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	rc = 0;
+	rc = OQS_ERROR;
 
 cleanup:
 	free(alice_msg);
@@ -281,10 +269,10 @@ cleanup:
 	return rc;
 }
 
-static int kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
+static OQS_STATUS kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters) {
 
 	OQS_KEX *kex = NULL;
-	int rc;
+	OQS_STATUS rc;
 
 	void *alice_priv = NULL;
 	uint8_t *alice_msg = NULL;
@@ -309,11 +297,11 @@ static int kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name,
 	OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
 	OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len);
 
-	rc = 1;
+	rc = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	rc = 0;
+	rc = OQS_ERROR;
 
 cleanup:
 	free(alice_msg);
@@ -346,7 +334,7 @@ void print_help() {
 
 int main(int argc, char **argv) {
 
-	int success = 1;
+	OQS_STATUS success = OQS_SUCCESS;
 	bool run_all = true;
 	bool quiet = false;
 	bool bench = false;
@@ -398,12 +386,12 @@ int main(int argc, char **argv) {
 			if (run_all || kex_testcases[i].run == 1) {
 				success = kex_mem_bench_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters);
 			}
-			if (success != 1) {
+			if (success != OQS_SUCCESS) {
 				goto err;
 			}
 		}
 		printf("memory benchmarks done, exiting..\n");
-		success = 1;
+		success = OQS_SUCCESS;
 		goto cleanup;
 	}
 
@@ -412,7 +400,7 @@ int main(int argc, char **argv) {
 			int num_iter = kex_testcases[i].iter;
 			success = kex_test_correctness_wrapper(rand, kex_testcases[i].alg_name, kex_testcases[i].seed, kex_testcases[i].seed_len, kex_testcases[i].named_parameters, num_iter, quiet);
 		}
-		if (success != 1) {
+		if (success != OQS_SUCCESS) {
 			goto err;
 		}
 	}
@@ -427,15 +415,15 @@ int main(int argc, char **argv) {
 		PRINT_TIMER_FOOTER
 	}
 
-	success = 1;
+	success = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	success = 0;
+	success = OQS_ERROR;
 	eprintf("ERROR!\n");
 
 cleanup:
 	OQS_RAND_free(rand);
 
-	return (success == 1) ? EXIT_SUCCESS : EXIT_FAILURE;
+	return (success == OQS_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

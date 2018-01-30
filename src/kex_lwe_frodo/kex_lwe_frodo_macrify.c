@@ -85,9 +85,9 @@ err:
 	return NULL;
 }
 
-int MACRIFY(OQS_KEX_lwe_frodo_alice_0)(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
+OQS_STATUS MACRIFY(OQS_KEX_lwe_frodo_alice_0)(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
 
-	int ret;
+	OQS_STATUS ret;
 
 	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
 
@@ -118,7 +118,7 @@ int MACRIFY(OQS_KEX_lwe_frodo_alice_0)(OQS_KEX *k, void **alice_priv, uint8_t **
 
 	oqs_kex_lwe_frodo_pack(*alice_msg, PARAMS_REC_PUB_LENGTH, b, PARAMS_N * PARAMS_NBAR, PARAMS_LOG2Q);
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
@@ -127,15 +127,15 @@ err:
 	*alice_msg = NULL;
 	free(*alice_priv);
 	*alice_priv = NULL;
-	ret = 0;
+	ret = OQS_ERROR;
 
 cleanup:
 	return ret;
 }
 
-int MACRIFY(OQS_KEX_lwe_frodo_bob)(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
+OQS_STATUS MACRIFY(OQS_KEX_lwe_frodo_bob)(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
 
-	int ret;
+	OQS_STATUS ret;
 
 	struct oqs_kex_lwe_frodo_params *params = (struct oqs_kex_lwe_frodo_params *) k->params;
 
@@ -196,11 +196,11 @@ int MACRIFY(OQS_KEX_lwe_frodo_bob)(OQS_KEX *k, const uint8_t *alice_msg, const s
 	*bob_msg_len = PARAMS_REC_PUB_LENGTH + PARAMS_REC_HINT_LENGTH;
 	*key_len = PARAMS_KEY_BYTES;
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	ret = 0;
+	ret = OQS_ERROR;
 	free(*bob_msg);
 	*bob_msg = NULL;
 	OQS_MEM_secure_free(*key, PARAMS_KEY_BYTES);
@@ -214,9 +214,9 @@ cleanup:
 	return ret;
 }
 
-int MACRIFY(OQS_KEX_lwe_frodo_alice_1)(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
+OQS_STATUS MACRIFY(OQS_KEX_lwe_frodo_alice_1)(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
 
-	int ret;
+	OQS_STATUS ret;
 	*key = NULL;
 
 	/* check length of other party's public key */
@@ -247,11 +247,11 @@ int MACRIFY(OQS_KEX_lwe_frodo_alice_1)(UNUSED OQS_KEX *k, const void *alice_priv
 
 	*key_len = PARAMS_KEY_BYTES;
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	ret = 0;
+	ret = OQS_ERROR;
 	OQS_MEM_secure_free(*key, PARAMS_KEY_BYTES);
 	*key = NULL;
 
