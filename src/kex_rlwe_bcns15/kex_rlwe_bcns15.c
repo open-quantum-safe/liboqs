@@ -48,9 +48,9 @@ OQS_KEX *OQS_KEX_rlwe_bcns15_new(OQS_RAND *rand) {
 	return k;
 }
 
-int OQS_KEX_rlwe_bcns15_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
+OQS_STATUS OQS_KEX_rlwe_bcns15_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
 
-	int ret;
+	OQS_STATUS ret;
 	uint32_t *alice_msg_32 = NULL;
 
 	*alice_priv = NULL;
@@ -71,11 +71,11 @@ int OQS_KEX_rlwe_bcns15_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_m
 	*alice_msg = (uint8_t *) alice_msg_32;
 	*alice_msg_len = 1024 * sizeof(uint32_t);
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	ret = 0;
+	ret = OQS_ERROR;
 	free(alice_msg_32);
 	OQS_MEM_secure_free(*alice_priv, 1024 * sizeof(uint32_t));
 	*alice_priv = NULL;
@@ -84,9 +84,9 @@ cleanup:
 	return ret;
 }
 
-int OQS_KEX_rlwe_bcns15_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
+OQS_STATUS OQS_KEX_rlwe_bcns15_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
 
-	int ret;
+	OQS_STATUS ret;
 
 	uint32_t *bob_priv = NULL;
 	uint64_t *key_64 = NULL;
@@ -122,11 +122,11 @@ int OQS_KEX_rlwe_bcns15_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t a
 	*key = (uint8_t *) key_64;
 	*key_len = 16 * sizeof(uint64_t);
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	ret = 0;
+	ret = OQS_ERROR;
 	free(*bob_msg);
 	*bob_msg = NULL;
 	OQS_MEM_secure_free(key_64, 16 * sizeof(uint64_t));
@@ -137,9 +137,9 @@ cleanup:
 	return ret;
 }
 
-int OQS_KEX_rlwe_bcns15_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
+OQS_STATUS OQS_KEX_rlwe_bcns15_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
 
-	int ret;
+	OQS_STATUS ret;
 
 	uint64_t *key_64 = NULL;
 
@@ -161,11 +161,11 @@ int OQS_KEX_rlwe_bcns15_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_
 	*key = (uint8_t *) key_64;
 	*key_len = 16 * sizeof(uint64_t);
 
-	ret = 1;
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	ret = 0;
+	ret = OQS_ERROR;
 	OQS_MEM_secure_free(key_64, 16 * sizeof(uint64_t));
 
 cleanup:

@@ -5,9 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <oqs/rand.h>
-
-#include "../../common/common.h"
+#include <oqs/oqs.h>
 
 struct rand_testcase {
 	enum OQS_RAND_alg_name alg_name;
@@ -53,34 +51,24 @@ static void rand_test_distribution_64(OQS_RAND *rand, unsigned long occurrences[
 	}
 }
 
-static int rand_test_distribution_n(OQS_RAND *rand, unsigned long occurrences[256], int len) {
+static OQS_STATUS rand_test_distribution_n(OQS_RAND *rand, unsigned long occurrences[256], int len) {
 	uint8_t *x = malloc(len);
 	if (x == NULL) {
-		return 0;
+		return OQS_ERROR;
 	}
 	OQS_RAND_n(rand, x, len);
 	for (int i = 0; i < len; i++) {
 		OQS_RAND_test_record_occurrence(x[i], occurrences);
 	}
 	free(x);
-	return 1;
+	return OQS_SUCCESS;
 }
-
-#define PRINT_HEX_STRING(label, str, len)                        \
-	{                                                            \
-		printf("%-20s (%4zu bytes):  ", (label), (size_t)(len)); \
-		for (size_t i = 0; i < (len); i++) {                     \
-			printf("%02X", ((unsigned char *) (str))[i]);        \
-		}                                                        \
-		printf("\n");                                            \
-	}
-
-static int rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int iterations, bool quiet) {
+static OQS_STATUS rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int iterations, bool quiet) {
 
 	OQS_RAND *rand = OQS_RAND_new(alg_name);
 	if (rand == NULL) {
 		eprintf("rand is NULL\n");
-		return 0;
+		return OQS_ERROR;
 	}
 
 	if (!quiet) {
@@ -90,25 +78,25 @@ static int rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int i
 
 		uint8_t x[256];
 		OQS_RAND_n(rand, x, 256);
-		PRINT_HEX_STRING("OQS_RAND_n, n = 256", x, 256)
+		OQS_print_hex_string("OQS_RAND_n, n = 256", x, 256);
 
 		uint8_t y8 = OQS_RAND_8(rand);
-		PRINT_HEX_STRING("OQS_RAND_8", (uint8_t *) &y8, sizeof(y8));
+		OQS_print_hex_string("OQS_RAND_8", (uint8_t *) &y8, sizeof(y8));
 		y8 = OQS_RAND_8(rand);
-		PRINT_HEX_STRING("OQS_RAND_8", (uint8_t *) &y8, sizeof(y8));
+		OQS_print_hex_string("OQS_RAND_8", (uint8_t *) &y8, sizeof(y8));
 
 		uint32_t y32 = OQS_RAND_32(rand);
-		PRINT_HEX_STRING("OQS_RAND_32", (uint8_t *) &y32, sizeof(y32));
+		OQS_print_hex_string("OQS_RAND_32", (uint8_t *) &y32, sizeof(y32));
 		y32 = OQS_RAND_32(rand);
-		PRINT_HEX_STRING("OQS_RAND_32", (uint8_t *) &y32, sizeof(y32));
+		OQS_print_hex_string("OQS_RAND_32", (uint8_t *) &y32, sizeof(y32));
 
 		uint64_t y64 = OQS_RAND_64(rand);
-		PRINT_HEX_STRING("OQS_RAND_64", (uint8_t *) &y64, sizeof(y64));
+		OQS_print_hex_string("OQS_RAND_64", (uint8_t *) &y64, sizeof(y64));
 		y64 = OQS_RAND_64(rand);
-		PRINT_HEX_STRING("OQS_RAND_64", (uint8_t *) &y64, sizeof(y64));
+		OQS_print_hex_string("OQS_RAND_64", (uint8_t *) &y64, sizeof(y64));
 
 		OQS_RAND_n(rand, x, 256);
-		PRINT_HEX_STRING("OQS_RAND_n, n = 256", x, 256)
+		OQS_print_hex_string("OQS_RAND_n, n = 256", x, 256);
 	}
 
 	printf("================================================================================\n");
@@ -150,12 +138,12 @@ static int rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int i
 
 	OQS_RAND_free(rand);
 
-	return 1;
+	return OQS_SUCCESS;
 }
 
 int main(int argc, char **argv) {
 
-	int success;
+	OQS_STATUS success;
 	bool quiet = false;
 
 	for (int i = 1; i < argc; i++) {
@@ -179,19 +167,19 @@ int main(int argc, char **argv) {
 	size_t rand_testcases_len = sizeof(rand_testcases) / sizeof(struct rand_testcase);
 	for (size_t i = 0; i < rand_testcases_len; i++) {
 		success = rand_test_distribution_wrapper(rand_testcases[i].alg_name, RAND_TEST_ITERATIONS, quiet);
-		if (success != 1) {
+		if (success != OQS_SUCCESS) {
 			goto err;
 		}
 	}
 
-	success = 1;
+	success = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	success = 0;
+	success = OQS_ERROR;
 	eprintf("ERROR!\n");
 
 cleanup:
 
-	return (success == 1) ? EXIT_SUCCESS : EXIT_FAILURE;
+	return (success == OQS_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

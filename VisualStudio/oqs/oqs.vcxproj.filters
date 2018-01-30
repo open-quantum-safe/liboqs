@@ -185,6 +185,8 @@
     </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\external\picnic.h">
       <Filter>Sig_Picnic</Filter>
+    <ClInclude Include="..\..\src\common\oqs.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

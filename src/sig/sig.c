@@ -1,4 +1,5 @@
 #include <assert.h>
+
 #include <oqs/common.h>
 #include <oqs/sig.h>
 #ifdef ENABLE_SIG_PICNIC
@@ -39,7 +40,7 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
 	return s;
 }
 
-int OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) {
+OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) {
 	if (s == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -47,7 +48,7 @@ int OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) {
 	}
 }
 
-int OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len) {
+OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len) {
 	if (s == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -55,7 +56,7 @@ int OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, cons
 	}
 }
 
-int OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len) {
+OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len) {
 	if (s == NULL) {
 		return OQS_ERROR;
 	} else {
