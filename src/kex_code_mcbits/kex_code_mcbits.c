@@ -2,7 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#if !defined(WINDOWS)
+#if !defined(_WIN32)
 #include <strings.h>
 #include <unistd.h>
 #endif
@@ -14,7 +14,7 @@
 #include "kex_code_mcbits.h"
 #include "mcbits.h"
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #define strdup _strdup // for strdup deprecation warning
 #endif
 

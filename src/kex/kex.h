@@ -12,7 +12,7 @@
 #include <oqs/common.h>
 #include <oqs/rand.h>
 
-#if !defined(WINDOWS)
+#if !defined(_WIN32)
 #include <oqs/config.h>
 #endif
 

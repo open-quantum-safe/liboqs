@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-#if !defined(WINDOWS)
+#if !defined(_WIN32)
 #include <strings.h>
 #include <unistd.h>
 #endif
@@ -13,7 +13,7 @@
 #include "LatticeCrypto_priv.h"
 #include "kex_rlwe_msrln16.h"
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #define strdup _strdup // for strdup deprecation warning
 #endif
 

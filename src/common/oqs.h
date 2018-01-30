@@ -8,7 +8,7 @@
 #include <oqs/sha3.h>
 #include <oqs/sig.h>
 
-#if !defined(WINDOWS)
+#if !defined(_WIN32)
 #include <oqs/config.h>
 #endif
 

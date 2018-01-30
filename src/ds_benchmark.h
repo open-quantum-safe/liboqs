@@ -86,13 +86,13 @@ PRINT_TIMER_FOOTER
 #include <inttypes.h>
 #include <stdio.h>
 #include <stdlib.h>
-#if !defined(WINDOWS)
+#if !defined(_WIN32)
 #include <sys/time.h>
 #endif
 #include <math.h>
 #include <time.h>
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #include <Windows.h>
 
 int gettimeofday(struct timeval *tp, struct timezone *tzp) {
@@ -114,7 +114,7 @@ int gettimeofday(struct timeval *tp, struct timezone *tzp) {
 #endif
 
 static uint64_t rdtsc(void) {
-#if defined(WINDOWS)
+#if defined(_WIN32)
 	return __rdtsc();
 #elif defined(__aarch64__)
 	uint64_t x;

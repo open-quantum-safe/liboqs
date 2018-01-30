@@ -1,9 +1,9 @@
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #pragma warning(disable : 4267)
 #endif
 
 #include <sys/types.h>
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #include <windows.h>
 #include <Wincrypt.h>
 #else
@@ -21,7 +21,7 @@
 
 #include "external/chacha20.c"
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #define strdup _strdup // for strdup deprecation warning
 #endif
 

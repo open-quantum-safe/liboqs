@@ -21,7 +21,7 @@ extern uint16_t omegas_inv_montgomery[];
 extern uint16_t psis_inv_montgomery[];
 extern uint16_t psis_bitrev_montgomery[];
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 typedef unsigned __int16 uint16_t;
 #endif
 

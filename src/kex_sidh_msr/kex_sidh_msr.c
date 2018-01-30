@@ -1,8 +1,8 @@
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #pragma warning(disable : 4047 4090)
 #endif
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #define UNUSED
 #else
 #define UNUSED __attribute__((unused))
@@ -10,7 +10,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#if !defined(WINDOWS)
+#if !defined(_WIN32)
 #include <strings.h>
 #include <unistd.h>
 #endif
@@ -22,7 +22,7 @@
 #include "P751/P751_api.h"
 #include "kex_sidh_msr.h"
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #define strdup _strdup // for strdup deprecation warning
 #endif
 
