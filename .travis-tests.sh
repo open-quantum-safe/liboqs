@@ -46,7 +46,7 @@ if [[ ${ENABLE_KEX_RLWE_NEWHOPE} == 0 ]];then
   enable_disable_str+=" --disable-kex-rlwe-newhope"
 fi
 
-if [[ ${ENABLE_KEX_SIDH_CLN16} == 0 ]];then
+if [[ ${ENABLE_KEX_SIDH_MSR} == 0 ]];then
   enable_disable_str+=" --disable-kex-sidh-cln16"
 fi
 
