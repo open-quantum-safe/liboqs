@@ -58,7 +58,7 @@ static int picnic_sign_verify(const picnic_params_t param) {
   return ret;
 }
 
-int main() {
+int main(void) {
   int ret = 0;
   for (unsigned int param = Picnic_L1_FS; param < PARAMETER_SET_MAX_INDEX; ++param) {
     printf("testing: %d ... ", param);

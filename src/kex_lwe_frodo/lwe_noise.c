@@ -11,7 +11,7 @@
 
 #define RECOMMENDED_N_ARRAY_SIZE (752 * 8)
 #define RECOMMENDED_CDF_TABLE_LEN 6
-#if defined(WINDOWS)
+#if defined(_WIN32)
 // VS complains about arrays initialized with const param. On Windows,
 // we use directly the recommended value passed down from calling functions.
 // Currently there is only one set of params, so that works. Need to fix this

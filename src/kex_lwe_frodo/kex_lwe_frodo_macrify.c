@@ -1,4 +1,4 @@
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #define strdup _strdup // for strdup deprecation warning
 #endif
 

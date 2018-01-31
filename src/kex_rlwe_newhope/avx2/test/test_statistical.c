@@ -38,7 +38,7 @@ static int hamming32(const unsigned char *k)
   return r;
 }
 
-int main()
+int main(void)
 {
   poly sk_a;
   unsigned char key_b[32];

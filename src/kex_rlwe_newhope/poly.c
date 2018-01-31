@@ -4,7 +4,7 @@
 
 typedef struct {
 	uint16_t coeffs[PARAM_N];
-#if defined(WINDOWS)
+#if defined(_WIN32)
 } poly;
 #else
 } poly __attribute__((aligned(32)));

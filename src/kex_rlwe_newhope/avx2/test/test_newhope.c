@@ -112,7 +112,7 @@ int test_invalid_ciphertext()
 }
 
 
-int main(){
+int main(void){
 
   test_keys();
   test_invalid_sk_a();

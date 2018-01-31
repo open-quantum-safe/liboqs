@@ -1,7 +1,7 @@
 #ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
 
 #include <fcntl.h>
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #include <windows.h>
 #include <Wincrypt.h>
 #else
@@ -15,7 +15,7 @@
 
 #include <ntru_crypto.h>
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #define strdup _strdup // for strdup deprecation warning
 #endif
 

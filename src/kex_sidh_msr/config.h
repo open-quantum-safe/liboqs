@@ -22,7 +22,7 @@
 #define OS_WIN 1
 #define OS_LINUX 2
 /*
-#if defined(__WINDOWS__)        // Microsoft Windows OS
+#if defined(_WIN32)        // Microsoft Windows OS
     #define OS_TARGET OS_WIN
 #elif defined(__LINUX__)        // Linux OS
     #define OS_TARGET OS_LINUX 

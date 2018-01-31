@@ -127,7 +127,7 @@ int picnicExample(picnic_params_t parameters) {
   return 0;
 }
 
-int main() {
+int main(void) {
   for (picnic_params_t params = 1; params < PARAMETER_SET_MAX_INDEX; params++) {
     picnicExample(params);
   }

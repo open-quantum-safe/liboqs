@@ -49,7 +49,7 @@ static void print_results(const char *s, unsigned long long *t, size_t tlen)
 
 unsigned long long t[NTESTS];
 
-int main()
+int main(void)
 {
   poly sk_a;
   unsigned char key_a[32], key_b[32];

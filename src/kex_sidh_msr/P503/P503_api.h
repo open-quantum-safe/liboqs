@@ -9,7 +9,7 @@
 
 #include <oqs/rand.h>
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #include "../windows_undef.h"
 #endif
 

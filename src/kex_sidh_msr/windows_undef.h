@@ -3,7 +3,7 @@
  * to avoid Visual Studio errors
  */
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
 #undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
 #undef OQS_SIDH_MSR_CRYPTO_BYTES

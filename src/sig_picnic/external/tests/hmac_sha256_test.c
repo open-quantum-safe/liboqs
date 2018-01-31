@@ -1,6 +1,6 @@
 #include "../randomness.h"
 
-int main() {
+int main(void) {
 
   unsigned int ret_val = 0;
   unsigned char dst[32];

@@ -5,7 +5,7 @@
  * from https://twitter.com/tweetfips202
  * by Gilles Van Assche, Daniel J. Bernstein, and Peter Schwabe */
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #pragma warning(disable : 4244)
 #endif
 

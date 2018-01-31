@@ -1,5 +1,5 @@
 #include <sys/types.h>
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #include <windows.h>
 #include <Wincrypt.h>
 #else
@@ -18,7 +18,7 @@
 #include <oqs/rand.h>
 #include <oqs/rand_urandom_aesctr.h>
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #define strdup _strdup // for strdup deprecation warning
 #endif
 

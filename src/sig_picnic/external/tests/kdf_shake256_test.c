@@ -1,6 +1,6 @@
 #include "../kdf_shake.h"
 
-int main() {
+int main(void) {
   const uint8_t key[] = {0xab, 0xcd};
 
   kdf_shake_t ctx;

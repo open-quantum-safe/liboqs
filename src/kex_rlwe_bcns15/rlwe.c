@@ -8,7 +8,7 @@
  * See LICENSE for complete information.
  */
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #pragma warning(disable : 4146 4244 4267)
 #endif
 
