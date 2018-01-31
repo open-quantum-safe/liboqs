@@ -39,6 +39,6 @@ void test(void) {
 }
 #endif
 
-int main() {
+int main(void) {
   test();
 }

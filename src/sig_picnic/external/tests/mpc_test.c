@@ -86,7 +86,7 @@ void run_tests(void) {
   test_mpc_add();
 }
 
-int main() {
+int main(void) {
   run_tests();
 
   return 0;

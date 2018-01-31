@@ -131,7 +131,7 @@ static int test_multiple_30(void) {
   return ret;
 }
 
-int main() {
+int main(void) {
   int ret = 0;
 
   int tmp = simple_test();

@@ -76,7 +76,7 @@ static int picnic_test_with_read_write(picnic_params_t parameters) {
   return 0;
 }
 
-int main() {
+int main(void) {
   int ret = 0;
   for (picnic_params_t params = 1; params < PARAMETER_SET_MAX_INDEX; params++) {
     if (picnic_test_with_read_write(params)) {

@@ -321,7 +321,7 @@ cleanup:
 	return (success == OQS_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 #else // !ENABLE_SIG_PICNIC
-int main() {
+int main(void) {
 	printf("No signature algorithm available. Make sure configure was run properly; see Readme.md.\n");
 	return EXIT_FAILURE;
 }

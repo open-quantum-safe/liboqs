@@ -429,7 +429,7 @@ static void test_mzd_shift(void) {
 #endif
 }
 
-int main() {
+int main(void) {
   test_mzd_local_equal();
   test_mzd_mul();
   test_mzd_mul_avx();
