@@ -5,7 +5,7 @@
 #include <stdlib.h>
 
 typedef enum { OQS_ERROR = -1,
-               OQS_SUCCESS = 0 } OQS_STATUS;
+	           OQS_SUCCESS = 0 } OQS_STATUS;
 
 /* Displays hexadecimal strings */
 void OQS_print_hex_string(const char *label, uint8_t *str, size_t len);
