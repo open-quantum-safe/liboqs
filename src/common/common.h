@@ -4,9 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-typedef int OQS_STATUS;
-#define OQS_SUCCESS 0
-#define OQS_ERROR -1
+typedef enum {OQS_SUCCESS=0, OQS_ERROR=-1} OQS_STATUS;
 
 /* Displays hexadecimal strings */
 void OQS_print_hex_string(const char *label, uint8_t *str, size_t len);
