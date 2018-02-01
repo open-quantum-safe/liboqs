@@ -136,8 +136,7 @@ int main(void) {
 	return EXIT_SUCCESS;
 }
 #else // !ENABLE_KEX_LWE_FRODO
-int main(void)
-{
+int main(void) {
 	printf("KEX algorithm not available. Make sure configure was run properly; see Readme.md.\n");
 	return EXIT_FAILURE;
 }
