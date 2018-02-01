@@ -12,7 +12,9 @@
 #include <oqs/common.h>
 #include <oqs/rand.h>
 
-#if !defined(_WIN32)
+#if defined(_WIN32)
+#include "..\winconfig.h"
+#else
 #include <oqs/config.h>
 #endif
 

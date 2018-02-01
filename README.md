@@ -175,6 +175,8 @@ Windows binaries can be generated using the Visual Studio solution in the Visual
 
 CMake (https://cmake.org/download/) is required and must be installed before building the Visual Studio solution.
 
+The supported schemes are defined in the projects' winconfig.h file.
+
 McBits is disabled by default in the Visual Studio build; follow these steps to enable it:
 
 - Obtain the [libsodium library](https://libsodium.org); compile the static library from the Visual Studio projects.
