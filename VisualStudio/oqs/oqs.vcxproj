@@ -319,6 +319,7 @@ msbuild  /t:Rebuild /p:Configuration=Release "$(SolutionDir)..\src\sig_picnic\ex
     <PreBuildEvent>
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
+copy "$(SolutionDir)..\config.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
@@ -365,6 +366,7 @@ msbuild  /t:Rebuild /p:Configuration=Release "$(SolutionDir)..\src\sig_picnic\ex
     <PreBuildEvent>
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
+copy "$(SolutionDir)..\config.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
@@ -502,6 +504,7 @@ msbuild  /t:Rebuild /p:Configuration=Release "$(SolutionDir)..\src\sig_picnic\ex
     <PreBuildEvent>
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
+copy "$(SolutionDir)..\config.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
@@ -552,6 +555,7 @@ msbuild  /t:Rebuild /p:Configuration=Release "$(SolutionDir)..\src\sig_picnic\ex
     <PreBuildEvent>
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
+copy "$(SolutionDir)..\config.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"

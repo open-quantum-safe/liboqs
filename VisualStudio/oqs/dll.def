@@ -21,4 +21,4 @@ EXPORTS
 	OQS_SIG_free
 	OQS_print_hex_string
 	OQS_print_part_hex_string
-	free
+	OQS_MEM_secure_free
