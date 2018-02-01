@@ -17,6 +17,7 @@ void cleanup(uint8_t *alice_msg, size_t alice_msg_len, uint8_t *alice_key,
              uint8_t *bob_key, size_t bob_key_len, void *alice_priv,
              OQS_KEX *kex, OQS_RAND *rnd);
 
+#ifdef ENABLE_KEX_LWE_FRODO
 int main(void) {
 	/* Key exchange parameters */
 	void *alice_priv = NULL;   // Alice's private key
@@ -134,6 +135,13 @@ int main(void) {
 
 	return EXIT_SUCCESS;
 }
+#else // !ENABLE_KEX_LWE_FRODO
+int main(void)
+{
+	printf("KEX algorithm not available. Make sure configure was run properly; see Readme.md.\n");
+	return EXIT_FAILURE;
+}
+#endif
 
 void cleanup(uint8_t *alice_msg, size_t alice_msg_len, uint8_t *alice_key,
              size_t alice_key_len, uint8_t *bob_msg, size_t bob_msg_len,
