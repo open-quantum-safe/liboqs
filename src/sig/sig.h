@@ -12,6 +12,12 @@
 #include <oqs/common.h>
 #include <oqs/rand.h>
 
+#if defined(_WIN32)
+#include "..\winconfig.h"
+#else
+#include <oqs/config.h>
+#endif
+
 /**
  * Supported signature algorithms.
  * Note: the Picnic algs are not wrapped with a ENABLE_SIG_PICNIC
