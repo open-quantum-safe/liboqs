@@ -5,12 +5,12 @@
 #ifndef __OQS_SIG_PICNIC_H
 #define __OQS_SIG_PICNIC_H
 
+#include <oqs/sig.h>
+
 #ifdef ENABLE_SIG_PICNIC
 #include <stddef.h>
 #include <stdint.h>
-
 #include <oqs/common.h>
-#include <oqs/sig.h>
 #include <oqs/rand.h>
 
 OQS_STATUS OQS_SIG_picnic_get(OQS_SIG *sig, enum OQS_SIG_algid algid);

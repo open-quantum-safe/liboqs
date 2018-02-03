@@ -1,8 +1,9 @@
+#include <oqs/sig.h>
+
 #ifdef ENABLE_SIG_PICNIC
 
 #include <string.h>
 #include <oqs/common.h>
-#include <oqs/sig.h>
 #include <oqs/rand.h>
 #include "sig_picnic.h"
 #include "external/picnic.h"

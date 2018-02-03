@@ -13,6 +13,7 @@
 void cleanup(uint8_t *msg, size_t msg_len, uint8_t *sig, size_t sig_len,
              uint8_t *pub, uint8_t *priv, OQS_SIG *s, OQS_RAND *rnd);
 
+#ifdef ENABLE_SIG_PICNIC
 int main(void) {
 	uint8_t *priv = NULL; // Private key
 	uint8_t *pub = NULL;  // Public key
@@ -134,6 +135,12 @@ int main(void) {
 
 	return EXIT_SUCCESS;
 }
+#else // !ENABLE_SIG_PICNIC
+int main(void) {
+	printf("No signature algorithm available. Make sure configure was run properly; see Readme.md.\n");
+	return EXIT_FAILURE;
+}
+#endif
 
 /* Cleaning up memory etc */
 void cleanup(uint8_t *msg, size_t msg_len, uint8_t *sig, size_t sig_len,

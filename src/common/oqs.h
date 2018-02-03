@@ -8,7 +8,9 @@
 #include <oqs/sha3.h>
 #include <oqs/sig.h>
 
-#if !defined(_WIN32)
+#if defined(_WIN32)
+#include "..\winconfig.h"
+#else
 #include <oqs/config.h>
 #endif
 
