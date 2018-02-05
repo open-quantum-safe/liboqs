@@ -55,7 +55,8 @@ AR=ar rcs
 RANLIB=ranlib
 LN=ln -s
 
-CFLAGS= -O3 -std=gnu11 -Wall -Wextra -march=native -DNIX -D $(ARCHITECTURE) -D $(USE_OPT_LEVEL) -D $(USE_GENERATION_A) -D $(USING_OPENSSL)
+#CFLAGS= -O3 -std=gnu11 -Wall -Wextra -march=native -DNIX -D $(ARCHITECTURE) -D $(USE_OPT_LEVEL) -D $(USE_GENERATION_A) -D $(USING_OPENSSL)
+CFLAGS= -O3 -std=gnu11 -Wall -Wextra -DNIX -D $(ARCHITECTURE) -D $(USE_OPT_LEVEL) -D $(USE_GENERATION_A) -D $(USING_OPENSSL)
 ifeq "$(USE_OPENSSL)" "FALSE"
 LDFLAGS=-lm
 else

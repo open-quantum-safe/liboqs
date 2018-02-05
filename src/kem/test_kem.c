@@ -57,8 +57,8 @@ static OQS_STATUS kem_test_correctness(enum OQS_KEM_alg_name alg_name) {
 	rv = memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret);
 	if (rv != 0) {
 		fprintf(stderr, "ERROR: shared secrets are not equal\n");
-		OQS_PRINT_HEX_STRING("shared_secret_e", shared_secret_e, kem->length_shared_secret)
-		OQS_PRINT_HEX_STRING("shared_secret_d", shared_secret_d, kem->length_shared_secret)
+		OQS_print_hex_string("shared_secret_e", shared_secret_e, kem->length_shared_secret);
+		OQS_print_hex_string("shared_secret_d", shared_secret_d, kem->length_shared_secret);
 		goto err;
 	} else {
 		printf("shared secrets are equal\n");

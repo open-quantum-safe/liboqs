@@ -19,7 +19,7 @@
  * indicating which algorithms were enabled when this instance of liboqs
  * was compiled.
  */
-static int example_stack() {
+static OQS_STATUS example_stack() {
 
 #ifdef OQS_ENABLE_KEM_dummy1
 // if dummy1 was enabled at compile-time
@@ -33,25 +33,25 @@ static int example_stack() {
 	rc = OQS_KEM_dummy1_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_dummy1_keypair failed!\n");
-		return -1;
+		return OQS_ERROR;
 	}
 	rc = OQS_KEM_dummy1_encaps(ciphertext, shared_secret_e, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_dummy1_encaps failed!\n");
-		return -1;
+		return OQS_ERROR;
 	}
 	rc = OQS_KEM_dummy1_decaps(shared_secret_d, ciphertext, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_dummy1_decaps failed!\n");
-		return -1;
+		return OQS_ERROR;
 	}
 	printf("[example_stack] OQS_KEM_dummy1 operations completed.\n");
-	return 0; // success!
+	return OQS_SUCCESS; // success!
 
 #else
 // if dummy1 was not enabled at compile-time
 
-	return -1;
+	return OQS_ERROR;
 
 #endif
 }
@@ -65,7 +65,7 @@ static int example_stack() {
  * algorithm in question was enabled at compile-time; instead, the caller
  * must check that the OQS_KEM object returned is not NULL.
  */
-static int example_heap() {
+static OQS_STATUS example_heap() {
 
 	OQS_KEM *kem = NULL;
 	uint8_t *public_key = NULL;
@@ -74,12 +74,12 @@ static int example_heap() {
 	uint8_t *shared_secret_e = NULL;
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS rc;
-	int ret = -1;
+	int ret = OQS_ERROR;
 
 	kem = OQS_KEM_new(OQS_KEM_alg_dummy1);
 	if (kem == NULL) {
 		// dummy1 was not enabled at compile-time
-		return -2;
+		return OQS_ERROR;
 	}
 
 	public_key = malloc(kem->length_public_key);
@@ -109,11 +109,11 @@ static int example_heap() {
 	}
 
 	printf("[example_heap]  OQS_KEM_dummy1 operations completed.\n");
-	ret = 0; // success
+	ret = OQS_SUCCESS; // success
 	goto cleanup;
 
 err:
-	ret = -1;
+	ret = OQS_ERROR;
 
 cleanup:
 	free(public_key);

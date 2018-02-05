@@ -1,0 +1,7 @@
+Sample computation for KEM NewHope512-CCA-KEM
+================================================================================
+shared secrets are equal
+test_kem(18802,0x7fff71591300) malloc: *** error for object 0x7f8dc3d00078:
+incorrect checksum for freed object - object was probably modified after being
+freed.
+*** set a breakpoint in malloc_error_break to debug
