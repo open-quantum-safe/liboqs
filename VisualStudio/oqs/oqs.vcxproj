@@ -337,11 +337,14 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 mkdir "$(SolutionDir)..\src\sig_picnic\external\msbuild"
 cd "$(SolutionDir)..\src\sig_picnic\external\msbuild"
 cmake -G "Visual Studio 15 2017 Win64" "$(SolutionDir)..\src\sig_picnic\external\"
-msbuild  /t:Rebuild /p:Configuration=Release;Platform=x64 "$(SolutionDir)..\src\sig_picnic\external\msbuild\picnic.sln"</Command>
+msbuild /p:Configuration=Release;Platform=x64 "$(SolutionDir)..\src\sig_picnic\external\msbuild\picnic.sln"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
+    <PostBuildEvent>
+      <Command>lib /out:"$(OutDir)oqs.lib" "$(OutDir)oqs.lib" "$(SolutionDir)..\src\sig_picnic\external\msbuild\Release\libpicnic_static.lib"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">
     <ClCompile>
@@ -384,7 +387,7 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 mkdir "$(SolutionDir)..\src\sig_picnic\external\msbuild"
 cd "$(SolutionDir)..\src\sig_picnic\external\msbuild"
 cmake -G "Visual Studio 15 2017 Win64" "$(SolutionDir)..\src\sig_picnic\external\"
-msbuild  /t:Rebuild /p:Configuration=Release;Platform=x64 "$(SolutionDir)..\src\sig_picnic\external\msbuild\picnic.sln"</Command>
+msbuild /p:Configuration=Release;Platform=x64 "$(SolutionDir)..\src\sig_picnic\external\msbuild\picnic.sln"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -518,11 +521,14 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 mkdir "$(SolutionDir)..\src\sig_picnic\external\msbuild"
 cd "$(SolutionDir)..\src\sig_picnic\external\msbuild"
 cmake -G "Visual Studio 15 2017 Win64" "$(SolutionDir)..\src\sig_picnic\external\"
-msbuild  /t:Rebuild /p:Configuration=Release;Platform=x64 "$(SolutionDir)..\src\sig_picnic\external\msbuild\picnic.sln"</Command>
+msbuild /p:Configuration=Release;Platform=x64 "$(SolutionDir)..\src\sig_picnic\external\msbuild\picnic.sln"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
     </Lib>
+    <PostBuildEvent>
+      <Command>lib /out:"$(OutDir)oqs.lib" "$(OutDir)oqs.lib" "$(SolutionDir)..\src\sig_picnic\external\msbuild\Release\libpicnic_static.lib"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|x64'">
     <ClCompile>
@@ -569,7 +575,7 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 mkdir "$(SolutionDir)..\src\sig_picnic\external\msbuild"
 cd "$(SolutionDir)..\src\sig_picnic\external\msbuild"
 cmake -G "Visual Studio 15 2017 Win64" "$(SolutionDir)..\src\sig_picnic\external\"
-msbuild  /t:Rebuild /p:Configuration=Release;Platform=x64 "$(SolutionDir)..\src\sig_picnic\external\msbuild\picnic.sln"</Command>
+msbuild /p:Configuration=Release;Platform=x64 "$(SolutionDir)..\src\sig_picnic\external\msbuild\picnic.sln"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
