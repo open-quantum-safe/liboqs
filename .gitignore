@@ -3,5 +3,6 @@ include/
 liboqs.a
 src/config.h
 test_kem
+speed_kem
 example_kem
 *dSYM

@@ -10,6 +10,9 @@ ARCHIVES_KEM=
 test_kem: src/kem/test_kem.c liboqs.a
 	$(CC) src/kem/test_kem.c liboqs.a -o test_kem $(CFLAGS) $(LDFLAGS)
 
+speed_kem: src/kem/speed_kem.c liboqs.a
+	$(CC) src/kem/speed_kem.c liboqs.a -o speed_kem $(CFLAGS) $(LDFLAGS)
+
 example_kem: src/kem/example_kem.c liboqs.a
 	$(CC) src/kem/example_kem.c liboqs.a -o example_kem $(CFLAGS) $(LDFLAGS)
 

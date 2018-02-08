@@ -71,6 +71,12 @@ tests: $(TEST_PROGRAMS)
 test: tests
 	./test_kem
 
+SPEED_PROGRAMS=speed_kem
+speeds: $(SPEED_PROGRAMS)
+
+speed: speeds
+	./speed_kem --info
+
 EXAMPLE_PROGRAMS=example_kem
 examples: $(EXAMPLE_PROGRAMS)
 
@@ -79,6 +85,7 @@ clean:
 	$(RM) -r .objs
 	$(RM) liboqs.a
 	$(RM) $(TEST_PROGRAMS)
+	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
 
 check_namespacing: all
