@@ -22,7 +22,7 @@
 static OQS_STATUS example_stack() {
 
 #ifdef OQS_ENABLE_KEM_dummy1
-// if dummy1 was enabled at compile-time
+	// if dummy1 was enabled at compile-time
 
 	OQS_STATUS rc;
 	uint8_t public_key[OQS_KEM_dummy1_length_public_key];
@@ -49,7 +49,7 @@ static OQS_STATUS example_stack() {
 	return OQS_SUCCESS; // success!
 
 #else
-// if dummy1 was not enabled at compile-time
+	// if dummy1 was not enabled at compile-time
 
 	return OQS_ERROR;
 
@@ -123,7 +123,6 @@ cleanup:
 	free(shared_secret_d);
 
 	return ret;
-
 }
 
 int main() {

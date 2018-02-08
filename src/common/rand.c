@@ -5,7 +5,8 @@
 #include <oqs/oqs.h>
 
 static __inline void delay(unsigned int count) {
-	while (count--) {}
+	while (count--) {
+	}
 }
 
 void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
@@ -31,5 +32,4 @@ void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 		bytes_total_read += bytes_last_read;
 		bytes_left_to_read -= bytes_last_read;
 	}
-
 }

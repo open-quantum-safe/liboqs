@@ -25,7 +25,6 @@ OQS_KEM *OQS_KEM_newhope_512_cca_kem_new() {
 	kem->decaps = OQS_KEM_newhope_512_cca_kem_decaps;
 
 	return kem;
-
 }
 
 #endif
@@ -53,7 +52,6 @@ OQS_KEM *OQS_KEM_newhope_1024_cca_kem_new() {
 	kem->decaps = OQS_KEM_newhope_1024_cca_kem_decaps;
 
 	return kem;
-
 }
 
 #endif

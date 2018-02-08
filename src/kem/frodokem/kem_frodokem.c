@@ -25,7 +25,6 @@ OQS_KEM *OQS_KEM_frodokem_640_aes_new() {
 	kem->decaps = OQS_KEM_frodokem_640_aes_decaps;
 
 	return kem;
-
 }
 
 #endif
@@ -53,7 +52,6 @@ OQS_KEM *OQS_KEM_frodokem_976_aes_new() {
 	kem->decaps = OQS_KEM_frodokem_976_aes_decaps;
 
 	return kem;
-
 }
 
 #endif
@@ -81,7 +79,6 @@ OQS_KEM *OQS_KEM_frodokem_640_cshake_new() {
 	kem->decaps = OQS_KEM_frodokem_640_cshake_decaps;
 
 	return kem;
-
 }
 
 #endif
@@ -109,7 +106,6 @@ OQS_KEM *OQS_KEM_frodokem_976_cshake_new() {
 	kem->decaps = OQS_KEM_frodokem_976_cshake_decaps;
 
 	return kem;
-
 }
 
 #endif

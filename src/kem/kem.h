@@ -34,9 +34,11 @@ typedef struct OQS_KEM {
 	size_t length_ciphertext;
 	size_t length_shared_secret;
 
+	// clang-format off
 	OQS_STATUS (*keypair)(uint8_t *public_key, uint8_t *secret_key);
 	OQS_STATUS (*encaps)(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 	OQS_STATUS (*decaps)(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+	// clang-format on
 
 } OQS_KEM;
 

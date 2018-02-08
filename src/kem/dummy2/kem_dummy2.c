@@ -25,7 +25,6 @@ OQS_KEM *OQS_KEM_dummy2_new() {
 	kem->decaps = OQS_KEM_dummy2_decaps;
 
 	return kem;
-
 }
 
 #endif
