@@ -10,7 +10,7 @@ OQS_KEM *OQS_KEM_dummy2_new() {
 	if (kem == NULL) {
 		return NULL;
 	}
-	kem->method_name = "Dummy 2";
+	kem->method_name = "Dummy-2";
 
 	kem->claimed_nist_level = 0;
 	kem->ind_cca = false;
