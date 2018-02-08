@@ -8,7 +8,7 @@
 #define OQS_KEM_newhope_512_cca_kem_length_public_key 928
 #define OQS_KEM_newhope_512_cca_kem_length_secret_key 1888
 #define OQS_KEM_newhope_512_cca_kem_length_ciphertext 1120
-#define OQS_KEM_newhope_512_cca_kem_length_shared_secret 16
+#define OQS_KEM_newhope_512_cca_kem_length_shared_secret 32 
 
 OQS_KEM *OQS_KEM_newhope_512_cca_kem_new();
 
