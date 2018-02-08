@@ -30,6 +30,7 @@ src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/%
 	$(CC) -c -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 $(ARCHIVES_KEM_NEWHOPENIST_512_CCA_KEM): $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
+	$(RM) $@
 	ar -r -c $@ $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
 	bash scripts/symbol_alias.sh $@ _crypto_kem_keypair _OQS_KEM_newhope_512_cca_kem_keypair
 	bash scripts/symbol_alias.sh $@ _crypto_kem_enc _OQS_KEM_newhope_512_cca_kem_encaps
@@ -49,6 +50,7 @@ src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/
 	$(CC) -c -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 $(ARCHIVES_KEM_NEWHOPENIST_1024_CCA_KEM): $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
+	$(RM) $@
 	ar -r -c $@ $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
 	bash scripts/symbol_alias.sh $@ _crypto_kem_keypair _OQS_KEM_newhope_1024_cca_kem_keypair
 	bash scripts/symbol_alias.sh $@ _crypto_kem_enc _OQS_KEM_newhope_1024_cca_kem_encaps

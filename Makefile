@@ -81,7 +81,7 @@ clean:
 	$(RM) $(TEST_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
 
-check_namespacing: liboqs
+check_namespacing: all
 	nm -g liboqs.a | grep ' T ' | grep -v ' _OQS'; test $$? -eq 1
 	nm -g liboqs.a | grep ' D ' | grep -v ' _OQS'; test $$? -eq 1
 
