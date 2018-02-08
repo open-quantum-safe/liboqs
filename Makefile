@@ -22,7 +22,7 @@ ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATI
 CFLAGS+=-O2 -std=c11 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto
 
-all: mkdirs headers liboqs tests examples
+all: mkdirs headers liboqs tests speeds examples
 
 OBJECT_DIRS=
 
@@ -59,7 +59,7 @@ headers: config_h $(HEADERS)
 	mkdir -p include/oqs
 	cp $(HEADERS) src/config.h include/oqs
 
-liboqs: $(OBJECTS) $(ARCHIVES)
+liboqs: mkdirs headers $(OBJECTS) $(ARCHIVES)
 	$(RM) liboqs_tmp.a liboqs.a
 	ar -r -c liboqs_tmp.a $(OBJECTS)
 	libtool -static -o liboqs.a liboqs_tmp.a $(ARCHIVES)
