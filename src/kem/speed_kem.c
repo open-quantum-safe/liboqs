@@ -60,6 +60,19 @@ cleanup:
 	return ret;
 }
 
+OQS_STATUS printAlgs() {
+	for (int i = OQS_KEM_alg_default; i < OQS_KEM_alg_last; i++) {
+		OQS_KEM *kem = OQS_KEM_new(i);
+		if (kem == NULL) {
+			return OQS_ERROR;
+		}
+		printf("%s\n", kem->method_name);
+		OQS_KEM_free(kem);
+	}
+	return OQS_SUCCESS;
+
+}
+
 int main(int argc, char **argv) {
 
 	int ret = EXIT_SUCCESS;
@@ -68,9 +81,17 @@ int main(int argc, char **argv) {
 	bool printUsage = false;
 	int duration = 3;
 	bool printKemInfo = false;
+	enum OQS_KEM_alg_name single_alg = OQS_KEM_alg_last;
 
 	for (int i = 1; i < argc; i++) {
-		if ((strcmp(argv[i], "--duration") == 0) || (strcmp(argv[i], "-d") == 0)) {
+		if (strcmp(argv[i], "--algs") == 0) {
+			rc = printAlgs();
+			if (rc == OQS_SUCCESS) {
+				return EXIT_SUCCESS;
+			} else {
+				return EXIT_FAILURE;
+			}
+		} else if ((strcmp(argv[i], "--duration") == 0) || (strcmp(argv[i], "-d") == 0)) {
 			if (i < argc - 1) {
 				duration = (int) strtol(argv[i + 1], NULL, 10);
 				if (duration > 0) {
@@ -78,21 +99,44 @@ int main(int argc, char **argv) {
 					continue;
 				}
 			}
+		} else if ((strcmp(argv[i], "--help") == 0) || (strcmp(argv[i], "-h") == 0)) {
+			printUsage = true;
+			break;
 		} else if ((strcmp(argv[i], "--info") == 0) || (strcmp(argv[i], "-i") == 0)) {
 			printKemInfo = true;
 			continue;
+		} else {
+			for (int alg_name = OQS_KEM_alg_default; alg_name < OQS_KEM_alg_last; alg_name++) {
+				OQS_KEM *kem = OQS_KEM_new(alg_name);
+				if (kem == NULL) {
+					return EXIT_FAILURE;
+				}
+				if (strcmp(argv[i], kem->method_name) == 0) {
+					single_alg = alg_name;
+				}
+				OQS_KEM_free(kem);
+			}
+			// didn't find one?
+			if (single_alg == OQS_KEM_alg_last) {
+				printUsage = true;
+				break;
+			}
 		}
-		printUsage = true;
-		break;
 	}
 
 	if (printUsage) {
-		fprintf(stderr, "Usage: speed_kem <options>\n");
-		fprintf(stderr, "Options: \n");
+		fprintf(stderr, "Usage: speed_kem <options> <alg>\n");
+		fprintf(stderr, "\n");
+		fprintf(stderr, "<options>\n");
+		fprintf(stderr, "--algs             Print supported algorithms and terminate\n");
 		fprintf(stderr, "--duration n\n");
-		fprintf(stderr, "-d n               Run each speed test for approximately n seconds, default n=3\n");
+		fprintf(stderr, " -d n              Run each speed test for approximately n seconds, default n=3\n");
+		fprintf(stderr, "--help\n");
+		fprintf(stderr, " -h                Print usage\n");
 		fprintf(stderr, "--info\n");
-		fprintf(stderr, "-i                 Print info (sizes, security level) about each KEM\n");
+		fprintf(stderr, " -i                Print info (sizes, security level) about each KEM\n");
+		fprintf(stderr, "\n");
+		fprintf(stderr, "<alg>              Only run the specified KEM method; must be one of the algorithms output by --algs\n");
 		return EXIT_FAILURE;
 	}
 
@@ -109,10 +153,17 @@ int main(int argc, char **argv) {
 	printf("==========\n");
 
 	PRINT_TIMER_HEADER
-	for (int i = OQS_KEM_alg_default; i < OQS_KEM_alg_last; i++) {
-		rc = kem_speed_wrapper(i, duration, printKemInfo);
+	if (single_alg != OQS_KEM_alg_last) {
+		rc = kem_speed_wrapper(single_alg, duration, printKemInfo);
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
+		}
+	} else {
+		for (int i = OQS_KEM_alg_default; i < OQS_KEM_alg_last; i++) {
+			rc = kem_speed_wrapper(i, duration, printKemInfo);
+			if (rc != OQS_SUCCESS) {
+				ret = EXIT_FAILURE;
+			}
 		}
 	}
 	PRINT_TIMER_FOOTER
