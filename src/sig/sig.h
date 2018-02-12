@@ -121,6 +121,13 @@ struct OQS_SIG {
 	 */
 	OQS_STATUS(*verify)
 	(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
+
+	/**
+	 * Pointer to a function for freeing the allocated signature structure
+	 *
+	 * @param s                Signature structure
+	 */
+	void (*free)(OQS_SIG *s);
 };
 
 /**
