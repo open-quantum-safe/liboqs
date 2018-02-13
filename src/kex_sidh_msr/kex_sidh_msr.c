@@ -26,8 +26,8 @@
 #define strdup _strdup // for strdup deprecation warning
 #endif
 
-// TODO: create a ctx object that holds the SIDH/SIKE key sizes and functions to call.
-//       then store it in k->ctx.
+// a ctx object that holds the SIDH/SIKE key sizes and functions to call.
+// then store it in k->ctx.
 typedef struct SIDH_CTX {
 	size_t priv_key_len;
 	size_t pub_key_len;
@@ -148,14 +148,16 @@ OQS_STATUS OQS_KEX_sidh_msr_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **ali
 	}
 
 	*alice_priv = NULL;
+	*alice_msg = NULL;
 	SIDH_CTX *sidh_ctx = (SIDH_CTX *) k->ctx;
 
 	/* alice_msg is alice's public key */
-	*alice_msg = malloc(sidh_ctx->pub_key_len);
+	*alice_msg = calloc(sidh_ctx->pub_key_len, sizeof(uint8_t));
 	if (*alice_msg == NULL) {
 		goto err;
 	}
-	*alice_priv = malloc(sidh_ctx->priv_key_len);
+
+	*alice_priv = calloc(sidh_ctx->priv_key_len, sizeof(uint8_t));
 	if (*alice_priv == NULL) {
 		goto err;
 	}
@@ -204,19 +206,19 @@ OQS_STATUS OQS_KEX_sidh_msr_bob(OQS_KEX *k, const uint8_t *alice_msg, const size
 	}
 	// bob's message is 1) for SIDH: bob's public key, and 2) for SIKE: bob's ciphertext
 	*bob_msg_len = sidh_ctx->is_sidh ? sidh_ctx->pub_key_len : sidh_ctx->cipher_text_len;
-	*bob_msg = malloc(*bob_msg_len);
+	*bob_msg = calloc(*bob_msg_len, sizeof(uint8_t));
 	if (*bob_msg == NULL) {
 		goto err;
 	}
 
-	*key = malloc(sidh_ctx->shared_secret_len);
+	*key = calloc(sidh_ctx->shared_secret_len, sizeof(uint8_t));
 	if (*key == NULL) {
 		goto err;
 	}
 
 	// generate Bob's key pair and shared secret
 	if (sidh_ctx->is_sidh) {
-		bob_priv = malloc(sidh_ctx->priv_key_len);
+		bob_priv = calloc(sidh_ctx->priv_key_len, sizeof(uint8_t));
 		if (bob_priv == NULL) {
 			goto err;
 		}
@@ -269,7 +271,7 @@ OQS_STATUS OQS_KEX_sidh_msr_alice_1(OQS_KEX *k, const void *alice_priv, const ui
 	}
 
 	*key = NULL;
-	*key = malloc(sidh_ctx->shared_secret_len);
+	*key = calloc(sidh_ctx->shared_secret_len, sizeof(uint8_t));
 	if (*key == NULL) {
 		goto err;
 	}
