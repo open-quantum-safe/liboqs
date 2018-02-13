@@ -65,8 +65,7 @@ OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *m
 }
 
 void OQS_SIG_free(OQS_SIG *s) {
-	if (s == NULL) {
-		return;
+	if (s) {
+		s->free(s);
 	}
-	free(s);
 }
