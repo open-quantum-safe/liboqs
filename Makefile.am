@@ -12,7 +12,7 @@ CLANGFORMAT ?= clang-format-3.9
 SUBDIRS = ${SRCDIR}
 
 BUILT_SOURCES = links
-lib_LTLIBRARIES = liboqs.la libmerge_external.la
+lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
 liboqs_la_LIBADD += src/crypto/aes/libaes.la
@@ -91,13 +91,6 @@ if USE_MCBITS
 endif
 if USE_SIDH_IQC
 	cp src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h $(includedir)/oqs
-endif
-
-libmerge_external.la:
-if USE_SIG_PICNIC
-	mkdir -p temp && cp liboqs.a temp/ && cp src/sig_picnic/external/build/libpicnic_static.a temp/
-	cd temp && ar x liboqs.a && ar x libpicnic_static.a && ar cr liboqs.a *.o && ranlib liboqs.a && mv liboqs.a ../.libs
-	cd .. && rm -rf temp
 endif
 
 noinst_bin_PROGRAMS = test_kex test_aes test_rand
@@ -194,7 +187,7 @@ endif
 if USE_KEX_LWE_FRODO
 	./minimal_kex_oqs
 endif
-	
+
 links:
 	$(MKDIR_P) include/oqs
 	cp -f config.h include/oqs
