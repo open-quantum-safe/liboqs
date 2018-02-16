@@ -19,7 +19,6 @@ matrix:
         - ubuntu-toolchain-r-test
     before_install:
     - sh .travis/install-clang-format-linux.sh
-    - sh .travis/install_cmake3_8.sh
   - os: linux
     compiler: gcc
     env:
@@ -33,7 +32,6 @@ matrix:
         - gcc-4.9
     before_install:
     - sh .travis/install-clang-format-linux.sh
-    - sh .travis/install_cmake3_8.sh
   - os: linux
     compiler: gcc
     env: CC_OQS=gcc-5
@@ -45,7 +43,6 @@ matrix:
         - gcc-5
     before_install:
     - sh .travis/install-clang-format-linux.sh
-    - sh .travis/install_cmake3_8.sh
   - os: linux
     compiler: gcc
     env:
@@ -60,7 +57,6 @@ matrix:
         - libssl-dev
     before_install:
     - sh .travis/install-clang-format-linux.sh
-    - sh .travis/install_cmake3_8.sh
   - os: osx
     compiler: clang
     env:

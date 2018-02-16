@@ -86,13 +86,13 @@ static void _mpc_sbox_layer_bitsliced(mzd_local_t** out, mzd_local_t* const* in,
                                       sbox_vars_t const* vars) {
   bitsliced_step_1(SC_PROOF);
 
-  mpc_clear(view->s, SC_PROOF);
+  oqs_sig_picnic_mpc_clear(view->s, SC_PROOF);
   // a & b
-  mpc_and(vars->r0m, vars->x0s, vars->x1s, vars->r2m, view, 0, vars->v);
+  oqs_sig_picnic_mpc_and(vars->r0m, vars->x0s, vars->x1s, vars->r2m, view, 0, vars->v);
   // b & c
-  mpc_and(vars->r2m, vars->x1s, vars->x2m, vars->r1s, view, 1, vars->v);
+  oqs_sig_picnic_mpc_and(vars->r2m, vars->x1s, vars->x2m, vars->r1s, view, 1, vars->v);
   // c & a
-  mpc_and(vars->r1m, vars->x0s, vars->x2m, vars->r0s, view, 2, vars->v);
+  oqs_sig_picnic_mpc_and(vars->r1m, vars->x0s, vars->x2m, vars->r0s, view, 2, vars->v);
 
   bitsliced_step_2(SC_PROOF);
 }
@@ -722,7 +722,7 @@ static void _mpc_sbox_layer_bitsliced_verify_512_neon(mzd_local_t** out, mzd_loc
   for (unsigned i = 0; i < lowmc->r; ++i, ++views, ++round) {                                      \
     R(sbox_selector, shares);                                                                      \
     SBOX(sbox_args, sbox, sbox_selector, y, x, views, r, &lowmc->mask, &vars, lowmc->n, shares);   \
-    mpc_clear(x, shares);                                                                          \
+    oqs_sig_picnic_mpc_clear(x, shares);                                                                          \
     MPC_LOOP(const_mat_mul_func, x, y, round->l_##no_scr, shares);                                 \
     MPC_IF_ELSE(add_func, x, x, round->constant, shares, ch);                                      \
     no_scr_active(const_mat_mul_func, add_func, const_addmat_mul_func, shares);                    \
@@ -787,25 +787,25 @@ static void mpc_lowmc_call(lowmc_t const* lowmc, mpc_lowmc_key_t* lowmc_key, mzd
 #ifdef WITH_CUSTOM_INSTANCES
   if (lowmc->m != 10) {
     _mpc_lowmc_call_bitsliced(0, 6, _mpc_sbox_layer_bitsliced, mzd, lookup, noscr, _optimize,
-                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general,
+                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_vl_general,
                               mzd_addmul_vl_general);
   } else
 #endif
   {
     _mpc_lowmc_call_bitsliced(0, 6, , uint64, lookup, noscr, _optimize, oqs_sig_picnic_mzd_mul_vl_general,
-                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, mzd_addmul_vl_general);
+                              oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_vl_general, mzd_addmul_vl_general);
   }
 #else
 #ifdef WITH_CUSTOM_INSTANCES
   if (lowmc->m != 10) {
     _mpc_lowmc_call_bitsliced(0, 6, _mpc_sbox_layer_bitsliced, mzd, matrix, scr, _optimize,
-                              oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_v_general,
+                              oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_v_general,
                               oqs_sig_picnic_mzd_addmul_v_general);
   } else
 #endif
   {
     _mpc_lowmc_call_bitsliced(0, 6, , uint64, matrix, scr, _optimize, oqs_sig_picnic_mzd_mul_v_general,
-                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
+                              oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
   }
 #endif
 #else
@@ -813,22 +813,22 @@ static void mpc_lowmc_call(lowmc_t const* lowmc, mpc_lowmc_key_t* lowmc_key, mzd
 #ifdef WITH_CUSTOM_INSTANCES
   if (lowmc->m != 10) {
     _mpc_lowmc_call_bitsliced(0, 6, _mpc_sbox_layer_bitsliced, mzd, lookup, noscr, ,
-                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, , mzd_addmul_vl_general);
+                              oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general, , mzd_addmul_vl_general);
   } else
 #endif
   {
-    _mpc_lowmc_call_bitsliced(0, 6, , uint64, lookup, noscr, , oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general,
+    _mpc_lowmc_call_bitsliced(0, 6, , uint64, lookup, noscr, , oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general,
                               , mzd_addmul_vl_general);
   }
 #else
 #ifdef WITH_CUSTOM_INSTANCES
   if (lowmc->m != 10) {
     _mpc_lowmc_call_bitsliced(0, 6, _mpc_sbox_layer_bitsliced, mzd, matrix, scr, ,
-                              oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general, , oqs_sig_picnic_mzd_addmul_v_general);
+                              oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general, , oqs_sig_picnic_mzd_addmul_v_general);
   } else
 #endif
   {
-    _mpc_lowmc_call_bitsliced(0, 6, , uint64, matrix, scr, , oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general, ,
+    _mpc_lowmc_call_bitsliced(0, 6, , uint64, matrix, scr, , oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general, ,
                               oqs_sig_picnic_mzd_addmul_v_general);
   }
 #endif
@@ -842,26 +842,26 @@ static void mpc_lowmc_call_verify(lowmc_t const* lowmc, mzd_local_t const* p, vi
 #ifdef WITH_CUSTOM_INSTANCES
   if (lowmc->m != 10) {
     _mpc_lowmc_call_bitsliced_verify_m(ch, 6, _mpc_sbox_layer_bitsliced_verify, mzd, lookup, noscr,
-                                       _optimize, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general,
+                                       _optimize, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general,
                                        oqs_sig_picnic_mzd_mul_vl_general, mzd_addmul_vl_general);
   } else
 #endif
   {
     _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, lookup, noscr, _optimize,
-                                       oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general,
+                                       oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_vl_general,
                                        mzd_addmul_vl_general);
   }
 #else
 #ifdef WITH_CUSTOM_INSTANCES
   if (lowmc->m != 10) {
     _mpc_lowmc_call_bitsliced_verify_m(ch, 6, _mpc_sbox_layer_bitsliced_verify, mzd, matrix, scr,
-                                       _optimize, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general,
+                                       _optimize, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general,
                                        oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
   } else
 #endif
   {
     _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, matrix, scr, _optimize, oqs_sig_picnic_mzd_mul_v_general,
-                                       oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
+                                       oqs_sig_picnic_mzd_xor_general, oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_addmul_v_general);
   }
 #endif
 #else
@@ -869,24 +869,24 @@ static void mpc_lowmc_call_verify(lowmc_t const* lowmc, mzd_local_t const* p, vi
 #ifdef WITH_CUSTOM_INSTANCES
   if (lowmc->m != 10) {
     _mpc_lowmc_call_bitsliced_verify_m(ch, 6, _mpc_sbox_layer_bitsliced_verify, mzd, lookup, noscr,
-                                       , oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_mul_vl_general, ,
+                                       , oqs_sig_picnic_mzd_mul_vl_general, oqs_sig_picnic_mzd_xor_general, ,
                                        mzd_addmul_vl_general);
   } else
 #endif
   {
     _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, lookup, noscr, , oqs_sig_picnic_mzd_mul_vl_general,
-                                       oqs_sig_picnic_mzd_mul_vl_general, , mzd_addmul_vl_general);
+                                       oqs_sig_picnic_mzd_xor_general, , mzd_addmul_vl_general);
   }
 #else
 #ifdef WITH_CUSTOM_INSTANCES
   if (lowmc->m != 10) {
     _mpc_lowmc_call_bitsliced_verify_m(ch, 6, _mpc_sbox_layer_bitsliced_verify, mzd, matrix, scr, ,
-                                       oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_mul_vl_general, , oqs_sig_picnic_mzd_addmul_v_general);
+                                       oqs_sig_picnic_mzd_mul_v_general, oqs_sig_picnic_mzd_xor_general, , oqs_sig_picnic_mzd_addmul_v_general);
   } else
 #endif
   {
     _mpc_lowmc_call_bitsliced_verify_m(ch, 6, , uint64, matrix, scr, , oqs_sig_picnic_mzd_mul_v_general,
-                                       mzd_xor_general, , oqs_sig_picnic_mzd_addmul_v_general);
+									   oqs_sig_picnic_mzd_xor_general, , oqs_sig_picnic_mzd_addmul_v_general);
   }
 #endif
 #endif
@@ -1012,14 +1012,14 @@ static void mpc_lowmc_call_verify(lowmc_t const* lowmc, mzd_local_t const* p, vi
 #define mpc_lowmc_call_def(N_SIGN, N_VERIFY, SBOX_SIGN, SBOX_VERIFY, MUL, MUL_L, XOR, XOR_L,       \
                            MUL_MC, MUL_MC_L, ADDMUL, ADDMUL_L)                                     \
   mpc_lowmc_call_def_gen(N_SIGN, N_VERIFY, SBOX_SIGN, SBOX_VERIFY, MUL, MUL_L, XOR, XOR_L, MUL_MC, \
-                         MUL_MC_L, ADDMUL, ADDMUL_L);                                              \
+                         MUL_MC_L, ADDMUL, ADDMUL_L)                                               \
   mpc_lowmc_call_def_10(N_SIGN, N_VERIFY, SBOX_SIGN, SBOX_VERIFY, MUL, MUL_L, XOR, XOR_L, MUL_MC,  \
-                        MUL_MC_L, ADDMUL, ADDMUL_L);
+                        MUL_MC_L, ADDMUL, ADDMUL_L)
 #else
 #define mpc_lowmc_call_def(N_SIGN, N_VERIFY, SBOX_SIGN, SBOX_VERIFY, MUL, MUL_L, XOR, XOR_L,       \
                            MUL_MC, MUL_MC_L, ADDMUL, ADDMUL_L)                                     \
   mpc_lowmc_call_def_10(N_SIGN, N_VERIFY, SBOX_SIGN, SBOX_VERIFY, MUL, MUL_L, XOR, XOR_L, MUL_MC,  \
-                        MUL_MC_L, ADDMUL, ADDMUL_L);
+                        MUL_MC_L, ADDMUL, ADDMUL_L)
 #endif
 
 #ifdef WITH_OPT
@@ -1027,59 +1027,59 @@ static void mpc_lowmc_call_verify(lowmc_t const* lowmc, mzd_local_t const* p, vi
 mpc_lowmc_call_def(mpc_lowmc_call_128_sse, mpc_lowmc_call_verify_128_sse,
                    _mpc_sbox_layer_bitsliced_128_sse, _mpc_sbox_layer_bitsliced_verify_128_sse,
                    oqs_sig_picnic_mzd_mul_v_sse, oqs_sig_picnic_mzd_mul_vl_sse_128, oqs_sig_picnic_mzd_xor_sse, oqs_sig_picnic_mzd_xor_sse, oqs_sig_picnic_mzd_mul_v_sse,
-                   oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_addmul_v_sse, oqs_sig_picnic_mzd_addmul_vl_sse_128);
+                   oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_addmul_v_sse, oqs_sig_picnic_mzd_addmul_vl_sse_128)
 mpc_lowmc_call_def(mpc_lowmc_call_256_sse, mpc_lowmc_call_verify_256_sse,
                    _mpc_sbox_layer_bitsliced_256_sse, _mpc_sbox_layer_bitsliced_verify_256_sse,
                    oqs_sig_picnic_mzd_mul_v_sse, oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_xor_sse, oqs_sig_picnic_mzd_xor_sse, oqs_sig_picnic_mzd_mul_v_sse,
-                   oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_addmul_v_sse, oqs_sig_picnic_mzd_addmul_vl_sse);
+                   oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_addmul_v_sse, oqs_sig_picnic_mzd_addmul_vl_sse)
 #ifdef WITH_CUSTOM_INSTANCES
 mpc_lowmc_call_def(mpc_lowmc_call_384_sse, mpc_lowmc_call_verify_384_sse,
                    _mpc_sbox_layer_bitsliced_384_sse, _mpc_sbox_layer_bitsliced_verify_384_sse,
                    oqs_sig_picnic_mzd_mul_v_sse, oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_xor_sse, oqs_sig_picnic_mzd_xor_sse, oqs_sig_picnic_mzd_mul_v_sse,
-                   oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_addmul_v_sse, oqs_sig_picnic_mzd_addmul_vl_sse);
+                   oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_addmul_v_sse, oqs_sig_picnic_mzd_addmul_vl_sse)
 mpc_lowmc_call_def(mpc_lowmc_call_512_sse, mpc_lowmc_call_verify_512_sse,
                    _mpc_sbox_layer_bitsliced_512_sse, _mpc_sbox_layer_bitsliced_verify_512_sse,
                    oqs_sig_picnic_mzd_mul_v_sse, oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_xor_sse, oqs_sig_picnic_mzd_xor_sse, oqs_sig_picnic_mzd_mul_v_sse,
-                   oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_addmul_v_sse, oqs_sig_picnic_mzd_addmul_vl_sse);
+                   oqs_sig_picnic_mzd_mul_vl_sse, oqs_sig_picnic_mzd_addmul_v_sse, oqs_sig_picnic_mzd_addmul_vl_sse)
 #endif
 #endif
 #ifdef WITH_AVX2
 mpc_lowmc_call_def(mpc_lowmc_call_256_avx, mpc_lowmc_call_verify_256_avx,
                    _mpc_sbox_layer_bitsliced_256_avx, _mpc_sbox_layer_bitsliced_verify_256_avx,
                    oqs_sig_picnic_mzd_mul_v_avx, oqs_sig_picnic_mzd_mul_vl_avx_256, oqs_sig_picnic_mzd_xor_avx, oqs_sig_picnic_mzd_xor_avx, oqs_sig_picnic_mzd_mul_v_avx,
-                   oqs_sig_picnic_mzd_mul_vl_avx, oqs_sig_picnic_mzd_addmul_v_avx, oqs_sig_picnic_mzd_addmul_vl_avx_256);
+                   oqs_sig_picnic_mzd_mul_vl_avx, oqs_sig_picnic_mzd_addmul_v_avx, oqs_sig_picnic_mzd_addmul_vl_avx_256)
 #ifdef WITH_CUSTOM_INSTANCES
 mpc_lowmc_call_def(mpc_lowmc_call_384_avx, mpc_lowmc_call_verify_384_avx,
                    _mpc_sbox_layer_bitsliced_512_avx, _mpc_sbox_layer_bitsliced_verify_512_avx,
                    oqs_sig_picnic_mzd_mul_v_avx, oqs_sig_picnic_mzd_mul_vl_avx, oqs_sig_picnic_mzd_xor_avx, oqs_sig_picnic_mzd_xor_avx, oqs_sig_picnic_mzd_mul_v_avx,
-                   oqs_sig_picnic_mzd_mul_vl_avx, oqs_sig_picnic_mzd_addmul_v_avx, oqs_sig_picnic_mzd_addmul_vl_avx);
+                   oqs_sig_picnic_mzd_mul_vl_avx, oqs_sig_picnic_mzd_addmul_v_avx, oqs_sig_picnic_mzd_addmul_vl_avx)
 mpc_lowmc_call_def(mpc_lowmc_call_512_avx, mpc_lowmc_call_verify_512_avx,
                    _mpc_sbox_layer_bitsliced_512_avx, _mpc_sbox_layer_bitsliced_verify_512_avx,
                    oqs_sig_picnic_mzd_mul_v_avx, oqs_sig_picnic_mzd_mul_vl_avx, oqs_sig_picnic_mzd_xor_avx, oqs_sig_picnic_mzd_xor_avx, oqs_sig_picnic_mzd_mul_v_avx,
-                   oqs_sig_picnic_mzd_mul_vl_avx, oqs_sig_picnic_mzd_addmul_v_avx, oqs_sig_picnic_mzd_addmul_vl_avx);
+                   oqs_sig_picnic_mzd_mul_vl_avx, oqs_sig_picnic_mzd_addmul_v_avx, oqs_sig_picnic_mzd_addmul_vl_avx)
 #endif
 #endif
 #ifdef WITH_NEON
 mpc_lowmc_call_def(mpc_lowmc_call_128_neon, mpc_lowmc_call_verify_128_neon,
                    _mpc_sbox_layer_bitsliced_128_neon, _mpc_sbox_layer_bitsliced_verify_128_neon,
                    oqs_sig_picnic_mzd_mul_v_neon, oqs_sig_picnic_mzd_mul_vl_neon_128, oqs_sig_picnic_mzd_xor_neon, oqs_sig_picnic_mzd_xor_neon, oqs_sig_picnic_mzd_mul_v_neon,
-                   oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128, oqs_sig_picnic_mzd_addmul_v_neon, oqs_sig_picnic_mzd_addmul_vl_neon_128);
+                   oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128, oqs_sig_picnic_mzd_addmul_v_neon, oqs_sig_picnic_mzd_addmul_vl_neon_128)
 mpc_lowmc_call_def(mpc_lowmc_call_256_neon, mpc_lowmc_call_verify_256_neon,
                    _mpc_sbox_layer_bitsliced_256_neon, _mpc_sbox_layer_bitsliced_verify_256_neon,
                    oqs_sig_picnic_mzd_mul_v_neon, oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128, oqs_sig_picnic_mzd_xor_neon, oqs_sig_picnic_mzd_xor_neon,
                    oqs_sig_picnic_mzd_mul_v_neon, oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128, oqs_sig_picnic_mzd_addmul_v_neon,
-                   oqs_sig_picnic_mzd_addmul_vl_neon);
+                   oqs_sig_picnic_mzd_addmul_vl_neon)
 #ifdef WITH_CUSTOM_INSTANCES
 mpc_lowmc_call_def(mpc_lowmc_call_384_neon, mpc_lowmc_call_verify_384_neon,
                    _mpc_sbox_layer_bitsliced_384_neon, _mpc_sbox_layer_bitsliced_verify_384_neon,
                    oqs_sig_picnic_mzd_mul_v_neon, oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128, oqs_sig_picnic_mzd_xor_neon, oqs_sig_picnic_mzd_xor_neon,
                    oqs_sig_picnic_mzd_mul_v_neon, oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128, oqs_sig_picnic_mzd_addmul_v_neon,
-                   oqs_sig_picnic_mzd_addmul_vl_neon);
+                   oqs_sig_picnic_mzd_addmul_vl_neon)
 mpc_lowmc_call_def(mpc_lowmc_call_512_neon, mpc_lowmc_call_verify_512_neon,
                    _mpc_sbox_layer_bitsliced_512_neon, _mpc_sbox_layer_bitsliced_verify_512_neon,
                    oqs_sig_picnic_mzd_mul_v_neon, oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128, oqs_sig_picnic_mzd_xor_neon, oqs_sig_picnic_mzd_xor_neon,
                    oqs_sig_picnic_mzd_mul_v_neon, oqs_sig_picnic_mzd_mul_vl_neon_multiple_of_128, oqs_sig_picnic_mzd_addmul_v_neon,
-                   oqs_sig_picnic_mzd_addmul_vl_neon);
+                   oqs_sig_picnic_mzd_addmul_vl_neon)
 #endif
 #endif
 #endif

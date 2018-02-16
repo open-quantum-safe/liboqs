@@ -326,16 +326,16 @@ static inline void FN_ATTRIBUTES_SSE2_NP mm512_shift_left_sse(__m128i res[4], __
   res[2] = _mm_or_si128(res[2], total_carry);
 }
 
-apply_region(mm128_xor_region, __m128i, _mm_xor_si128, FN_ATTRIBUTES_SSE2_NP);
+apply_region(mm128_xor_region, __m128i, _mm_xor_si128, FN_ATTRIBUTES_SSE2_NP)
 apply_mask_region(mm128_xor_mask_region, __m128i, _mm_xor_si128, _mm_and_si128,
-                  FN_ATTRIBUTES_SSE2_NP);
-apply_array(mm256_xor_sse, __m128i, _mm_xor_si128, 2, FN_ATTRIBUTES_SSE2_NP);
-apply_array(mm256_and_sse, __m128i, _mm_and_si128, 2, FN_ATTRIBUTES_SSE2_NP);
+                  FN_ATTRIBUTES_SSE2_NP)
+apply_array(mm256_xor_sse, __m128i, _mm_xor_si128, 2, FN_ATTRIBUTES_SSE2_NP)
+apply_array(mm256_and_sse, __m128i, _mm_and_si128, 2, FN_ATTRIBUTES_SSE2_NP)
 #ifdef WITH_CUSTOM_INSTANCES
-apply_array(mm384_xor_sse, __m128i, _mm_xor_si128, 3, FN_ATTRIBUTES_SSE2_NP);
-apply_array(mm384_and_sse, __m128i, _mm_and_si128, 3, FN_ATTRIBUTES_SSE2_NP);
-apply_array(mm512_xor_sse, __m128i, _mm_xor_si128, 4, FN_ATTRIBUTES_SSE2_NP);
-apply_array(mm512_and_sse, __m128i, _mm_and_si128, 4, FN_ATTRIBUTES_SSE2_NP);
+apply_array(mm384_xor_sse, __m128i, _mm_xor_si128, 3, FN_ATTRIBUTES_SSE2_NP)
+apply_array(mm384_and_sse, __m128i, _mm_and_si128, 3, FN_ATTRIBUTES_SSE2_NP)
+apply_array(mm512_xor_sse, __m128i, _mm_xor_si128, 4, FN_ATTRIBUTES_SSE2_NP)
+apply_array(mm512_and_sse, __m128i, _mm_and_si128, 4, FN_ATTRIBUTES_SSE2_NP)
 #endif
 #endif
 

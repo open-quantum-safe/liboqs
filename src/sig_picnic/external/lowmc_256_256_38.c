@@ -6,7 +6,14 @@
 
 #include "lowmc_256_256_38.h"
 
-static const mzd_local_t L_256_256_38_0 = { 256, 256, 4, 4, { 0 }, {
+/* The GCC_EXT macro is to prevent a warning from the pedantic flag */
+#if defined(_WIN32)
+#define GCC_EXT
+#else
+#define GCC_EXT __extension__
+#endif
+
+GCC_EXT static const mzd_local_t L_256_256_38_0 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xae978c90acbcb7d2), UINT64_C(0xf329f900fd7471c8), UINT64_C(0x196d51fb151aa810), UINT64_C(0xa3ee2402aca98dee),
   UINT64_C(0x621e2889382ae9ba), UINT64_C(0xb17a2f815cf94db8), UINT64_C(0x41d55b4bc59515f5), UINT64_C(0xc1be206b1e9c56f6),
   UINT64_C(0x91fc9063bcbdddbc), UINT64_C(0x78dab681f07518d2), UINT64_C(0x9b2ab650d25d64ac), UINT64_C(0x75d8571ebfa33f5d),
@@ -265,7 +272,7 @@ static const mzd_local_t L_256_256_38_0 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x572f89b433cd9344), UINT64_C(0xd871654dc9a927d4), UINT64_C(0x08be086728dec4b6), UINT64_C(0x5e11342d92675f09),
 }};
 
-static const mzd_local_t L_256_256_38_1 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_1 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x76c98a03dd62152d), UINT64_C(0x7103eeb3466a68ca), UINT64_C(0x2bc6ad62a40b2539), UINT64_C(0x7fcbcc6fa811fba9),
   UINT64_C(0x4c9ef8703a4ec0db), UINT64_C(0x35ded9d2b83720da), UINT64_C(0x7c43677ff8d69561), UINT64_C(0x84fe45ee52faf0fe),
   UINT64_C(0x0253343f3fee6ec0), UINT64_C(0x2dc06ed2dd70cd54), UINT64_C(0x27a2d1b6e1e979f3), UINT64_C(0xa1ff2765433b0be0),
@@ -524,7 +531,7 @@ static const mzd_local_t L_256_256_38_1 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x828ddda09f3e480d), UINT64_C(0x3883a6d11bb5f529), UINT64_C(0x5f35aab2c6848f62), UINT64_C(0x4464ff9aadc13324),
 }};
 
-static const mzd_local_t L_256_256_38_2 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_2 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xe790a08c9a431a8e), UINT64_C(0x0ec4de89067b426b), UINT64_C(0xf46de932d91e435e), UINT64_C(0xd2c145ba0d1a563b),
   UINT64_C(0x6fb8e7b85baaad28), UINT64_C(0x17849365f5fbec33), UINT64_C(0x1ed747acfedbc680), UINT64_C(0x965677d462be371d),
   UINT64_C(0x11d985170b723f68), UINT64_C(0x2e0c65feb8320c23), UINT64_C(0xc118e424a5e179da), UINT64_C(0x92c7c45c18946593),
@@ -783,7 +790,7 @@ static const mzd_local_t L_256_256_38_2 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x22c662d553abe27f), UINT64_C(0xadb1e8bfd92bb2d3), UINT64_C(0xf6688411cc5be9cd), UINT64_C(0x110edee186e66241),
 }};
 
-static const mzd_local_t L_256_256_38_3 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_3 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xc11a32f28c450e8a), UINT64_C(0xf4651e7d447e3ffe), UINT64_C(0x2f32b6949926ae0e), UINT64_C(0xecc8b9a8b985a9a1),
   UINT64_C(0x78839bf233b81805), UINT64_C(0x57cde10554efdc2e), UINT64_C(0x9a92f21fe58a763d), UINT64_C(0xcca8d684d0963ed4),
   UINT64_C(0xa40c375f5fa2c53f), UINT64_C(0x23c15351966098d9), UINT64_C(0x4eebb71d895b42d1), UINT64_C(0xe17a6956e9acfe64),
@@ -1042,7 +1049,7 @@ static const mzd_local_t L_256_256_38_3 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x4270eda95f28719a), UINT64_C(0xadf3cbbfc2c11caf), UINT64_C(0xf8d1e2d6dbba1ad6), UINT64_C(0x4d99470134a52fe5),
 }};
 
-static const mzd_local_t L_256_256_38_4 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_4 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x505d9f650daacdce), UINT64_C(0xa473e5bc65ed298c), UINT64_C(0x3942e6d45c772736), UINT64_C(0x7389edd8781cff43),
   UINT64_C(0xb4a0957a7389e2a0), UINT64_C(0x185b0ce13d9fac89), UINT64_C(0xfee9fdda86190f60), UINT64_C(0x26a8ad400090a975),
   UINT64_C(0x53ebfda7eb1c22c2), UINT64_C(0xc549dc8f3a5d02cf), UINT64_C(0x972910ec40aa7df5), UINT64_C(0x10ac2044028514cb),
@@ -1301,7 +1308,7 @@ static const mzd_local_t L_256_256_38_4 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xaabb5dab37d59362), UINT64_C(0x4cad1270538c23cf), UINT64_C(0x4032f689565ca591), UINT64_C(0x44cacef393e76bb3),
 }};
 
-static const mzd_local_t L_256_256_38_5 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_5 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x30975687ea4cd9b5), UINT64_C(0x9522fa32598e2d0c), UINT64_C(0x6ee9988d842b2e90), UINT64_C(0x8888ab0e2a372317),
   UINT64_C(0x606aa83b7e7e54f9), UINT64_C(0x0df79b46200395a0), UINT64_C(0xa9c0218ed5e5bf4c), UINT64_C(0x77abdcdb331d36e7),
   UINT64_C(0x42340df5c2a4343b), UINT64_C(0xf0fca7d0a7746080), UINT64_C(0x6df1fa50b42c73fb), UINT64_C(0x10268aebe1422d3a),
@@ -1560,7 +1567,7 @@ static const mzd_local_t L_256_256_38_5 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x7128338f74b87353), UINT64_C(0x70a6f5e861294b38), UINT64_C(0x508a34d1e4c66e08), UINT64_C(0x5ebcae738dc160d3),
 }};
 
-static const mzd_local_t L_256_256_38_6 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_6 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x38570c3f280d44b1), UINT64_C(0xa79239d3a1539e87), UINT64_C(0xd4f3f5cccfd13a23), UINT64_C(0xdad8f39e36526502),
   UINT64_C(0x33265e1cf7b38681), UINT64_C(0x4508940146666e0e), UINT64_C(0x645baa3b1f25fa64), UINT64_C(0xb938142e5760b1c8),
   UINT64_C(0xecea39ac9e7cbde3), UINT64_C(0x8eddfa13dd58fff5), UINT64_C(0x3951d202eba88e02), UINT64_C(0x26941671356190ce),
@@ -1819,7 +1826,7 @@ static const mzd_local_t L_256_256_38_6 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xb95aea6933cb0e73), UINT64_C(0x9b748c1aaeb807b6), UINT64_C(0x42c9b73b3aafc86a), UINT64_C(0xb25d0a0a758651b5),
 }};
 
-static const mzd_local_t L_256_256_38_7 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_7 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xf6be21acd60c3bbb), UINT64_C(0x0bdd31249c362cd0), UINT64_C(0x234fcb7697ca644c), UINT64_C(0xb67c7d0b506d6a7e),
   UINT64_C(0x6964ed8d5bda6b45), UINT64_C(0x219a1a642cde0c84), UINT64_C(0x0b032536866831f1), UINT64_C(0xd88d928d9b7b00ea),
   UINT64_C(0x868ec4bf3ef142f2), UINT64_C(0xf6ec17fc898e5733), UINT64_C(0x14f698355a70d3ea), UINT64_C(0x7927a88f1b777bac),
@@ -2078,7 +2085,7 @@ static const mzd_local_t L_256_256_38_7 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x127d322d46308fa6), UINT64_C(0x8b7bea893a4ffbe1), UINT64_C(0xb5b13acc9d632e1c), UINT64_C(0x838a16a327cf9ba6),
 }};
 
-static const mzd_local_t L_256_256_38_8 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_8 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x2ef3948c9039c6c7), UINT64_C(0x02320e49b3cb80ae), UINT64_C(0xbe4ef9f8666af521), UINT64_C(0x4353ae7052d86081),
   UINT64_C(0x992f32699496a68c), UINT64_C(0x77be6079e3c52fd0), UINT64_C(0x44a217ed7c64900d), UINT64_C(0x161f38dc5905c3ae),
   UINT64_C(0x20d153cd98dc0c7f), UINT64_C(0xb2843d219292cf6a), UINT64_C(0x680a728719575165), UINT64_C(0x59dadf45f7d34cde),
@@ -2337,7 +2344,7 @@ static const mzd_local_t L_256_256_38_8 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xfdd693a1704922d5), UINT64_C(0x4beca62163f5d012), UINT64_C(0x076b22d704e50ed4), UINT64_C(0xe0711f7bacbd3ce3),
 }};
 
-static const mzd_local_t L_256_256_38_9 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_9 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x82a6b7fa107cadbb), UINT64_C(0x4b522e13d3dd7b09), UINT64_C(0x3b5b0e3f7cf4ea00), UINT64_C(0xe96b5cbdeca7bd6f),
   UINT64_C(0x6954cbad3fc845fb), UINT64_C(0x9adecc012647bce1), UINT64_C(0xa5b0684f3ed7a848), UINT64_C(0x8847348c7faff9c0),
   UINT64_C(0xfdfe0185ec246f5b), UINT64_C(0x36f7eb9eb6eea29a), UINT64_C(0xb410b478a272715b), UINT64_C(0xd3ff770a7d9354aa),
@@ -2596,7 +2603,7 @@ static const mzd_local_t L_256_256_38_9 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xec111fd7c382bc5d), UINT64_C(0x7e4dc2a828489ec7), UINT64_C(0x8632fe51627a36b5), UINT64_C(0x513ec5cfb8649642),
 }};
 
-static const mzd_local_t L_256_256_38_10 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_10 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x387954305973ecf1), UINT64_C(0xddf6fdd952f5d4de), UINT64_C(0xfe2090ad1c8b86ef), UINT64_C(0xffe7230bbb5a7cf2),
   UINT64_C(0x6bca7f15771fa6d5), UINT64_C(0x4dd8147421a52d2c), UINT64_C(0x618f1f9d6f3f9c2e), UINT64_C(0x39697372873b72a0),
   UINT64_C(0xc677ee28af10e34f), UINT64_C(0x050ddf1285cd9144), UINT64_C(0x4bea27bc80fb0f20), UINT64_C(0xa5f0041376a71407),
@@ -2855,7 +2862,7 @@ static const mzd_local_t L_256_256_38_10 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xc78cb79e677e2ec8), UINT64_C(0x5a3db3d40948f103), UINT64_C(0x7b48a525a80389f5), UINT64_C(0xa41ddb7c3791af97),
 }};
 
-static const mzd_local_t L_256_256_38_11 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_11 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xc60d01444f4def15), UINT64_C(0xceb7899f475483cb), UINT64_C(0xcab40c4a4aaf3e25), UINT64_C(0xe1153e37eff86842),
   UINT64_C(0x85f0f69e319c7555), UINT64_C(0x875a89d027d49468), UINT64_C(0x336ee0f7fb833093), UINT64_C(0xe90998ded0e459db),
   UINT64_C(0x8e22069541c8772b), UINT64_C(0x9d68aa05d9c7b6f2), UINT64_C(0xa6792ad18463978d), UINT64_C(0xfca6cea595166a2d),
@@ -3114,7 +3121,7 @@ static const mzd_local_t L_256_256_38_11 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x0f29569cd9e458eb), UINT64_C(0x5bada95c265d7cea), UINT64_C(0xd4eac08718fc37ff), UINT64_C(0x2e5ee00c50315193),
 }};
 
-static const mzd_local_t L_256_256_38_12 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_12 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x1a9c3d8fd9fabefe), UINT64_C(0xef4b5e72713dae08), UINT64_C(0x8afdb59a8286e7f2), UINT64_C(0x19587fac316b9b57),
   UINT64_C(0x3192f3a3f4bcb784), UINT64_C(0xc2ef40618e0448fd), UINT64_C(0x02d332864299bed9), UINT64_C(0xe0faf9f078eeeedc),
   UINT64_C(0x6ffc159e278c911e), UINT64_C(0x18d25ceb0d6000dd), UINT64_C(0x5ff2718501e2863c), UINT64_C(0x13af9681e1f45927),
@@ -3373,7 +3380,7 @@ static const mzd_local_t L_256_256_38_12 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x5a6b1c34745b6337), UINT64_C(0x82114d992aae4be8), UINT64_C(0xa713457821c743e3), UINT64_C(0xf116dd336b1eedf8),
 }};
 
-static const mzd_local_t L_256_256_38_13 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_13 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xbbf763279188f439), UINT64_C(0xe96cf7ef79912e6c), UINT64_C(0x744f9b4904778d90), UINT64_C(0xa8ecc0ec2ae9f8ae),
   UINT64_C(0xad5192a0d64e53f5), UINT64_C(0x7b672738856a9ad5), UINT64_C(0xea96c1b58e139651), UINT64_C(0x00a3080acd263fad),
   UINT64_C(0x4558dd318aa903f2), UINT64_C(0x4340ea29d5712572), UINT64_C(0xf79c6e44c46d7a93), UINT64_C(0xfeb8c92bcaa2bc0e),
@@ -3632,7 +3639,7 @@ static const mzd_local_t L_256_256_38_13 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x0cb3ff9bd65a5f95), UINT64_C(0xdcb687eaf07e69ca), UINT64_C(0x38265e0b0276bf53), UINT64_C(0x03d547894109709d),
 }};
 
-static const mzd_local_t L_256_256_38_14 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_14 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x54e6c9849a7966ee), UINT64_C(0xa3615f831dae57a0), UINT64_C(0x7ef606c21daa4d22), UINT64_C(0x6cd1881083c96738),
   UINT64_C(0xe35ab2c7fff051dc), UINT64_C(0x5cab19a6ca5e93bb), UINT64_C(0xb13873450323a92c), UINT64_C(0x743779de5df0d436),
   UINT64_C(0x5a9a41526b7326e2), UINT64_C(0xeb269a3d724087e4), UINT64_C(0xfadc5c617cb8a5e7), UINT64_C(0x19876f0f41e8e107),
@@ -3891,7 +3898,7 @@ static const mzd_local_t L_256_256_38_14 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x03e5fd4db053602c), UINT64_C(0xc12467da509123a3), UINT64_C(0xe341310b30cf4dd9), UINT64_C(0x4008dfe75d058035),
 }};
 
-static const mzd_local_t L_256_256_38_15 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_15 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xb1060a9b7ea825f9), UINT64_C(0xc80b33824b653dc2), UINT64_C(0xa7b32f3326aa538d), UINT64_C(0x14783b45a8a3b198),
   UINT64_C(0x7aefe77bf15b525f), UINT64_C(0x676711a8a27446f6), UINT64_C(0xbe0fb9f2cd03b96f), UINT64_C(0x1fd0c083a57ab2bc),
   UINT64_C(0x8b977946ce8f1f7e), UINT64_C(0xb5f837652362a035), UINT64_C(0xc3a78ef5cc34fc81), UINT64_C(0x0a0f6f0198d941c9),
@@ -4150,7 +4157,7 @@ static const mzd_local_t L_256_256_38_15 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x1c74a069358f53e3), UINT64_C(0x4b99cd05bb69448e), UINT64_C(0x4d3ce62be3479a3c), UINT64_C(0x901e7f2c9bfdef23),
 }};
 
-static const mzd_local_t L_256_256_38_16 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_16 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xe9d7229263ed25a0), UINT64_C(0x7fc41b93a6d89765), UINT64_C(0xa38db9f9fe0b571e), UINT64_C(0xa907986e9a58bea2),
   UINT64_C(0x200c86f5083fb0a2), UINT64_C(0xa5d0e3008c109f61), UINT64_C(0xfa95e839eb361667), UINT64_C(0x286f369610cf8720),
   UINT64_C(0x76df0342d94252c3), UINT64_C(0xb1706d4ff0fd3f4a), UINT64_C(0xc2f261978552bfd1), UINT64_C(0xef9b467d679993ca),
@@ -4409,7 +4416,7 @@ static const mzd_local_t L_256_256_38_16 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x682caac80a2b06e8), UINT64_C(0xd67ebfedaabf5eb5), UINT64_C(0x7c110befefd2ef79), UINT64_C(0xd1eaccd7bd1dc398),
 }};
 
-static const mzd_local_t L_256_256_38_17 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_17 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x246baa51a0a69931), UINT64_C(0xddf8703e12e580a7), UINT64_C(0x2571d86674554fb3), UINT64_C(0x9574d3ebbf80ccf6),
   UINT64_C(0xf90698ef8675add1), UINT64_C(0xdddc6e292e8e09b0), UINT64_C(0x35b28bf4c786226f), UINT64_C(0x360cc79cefe0a3e6),
   UINT64_C(0xfcd7e72be41035de), UINT64_C(0x83b28e6d8c7fa049), UINT64_C(0xda2d253999a64f29), UINT64_C(0x30c37cbdf05c52a1),
@@ -4668,7 +4675,7 @@ static const mzd_local_t L_256_256_38_17 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xa2e850b32b725d44), UINT64_C(0xe2f42c13aed6c33d), UINT64_C(0x38d7b676a091c4a0), UINT64_C(0x0ca1afbc5586c623),
 }};
 
-static const mzd_local_t L_256_256_38_18 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_18 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x130cb4ba6c62e7d0), UINT64_C(0xe9fae5862acc82be), UINT64_C(0xa1e4203092790ce7), UINT64_C(0x0b1cece93e37962f),
   UINT64_C(0x97d6488ad1fb71d6), UINT64_C(0x64e8584089f635d0), UINT64_C(0xebc112db4b5b97f9), UINT64_C(0xb4520c669edad247),
   UINT64_C(0xd4e78a2941971376), UINT64_C(0x0ce8158e8de66215), UINT64_C(0x78bb2824d7d6f2f8), UINT64_C(0x2293d8b5216143a8),
@@ -4927,7 +4934,7 @@ static const mzd_local_t L_256_256_38_18 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xe2ab4d4a43bc3234), UINT64_C(0xdb6708898c3f3200), UINT64_C(0xc65c70b239e8c012), UINT64_C(0x68c6c66690ab7636),
 }};
 
-static const mzd_local_t L_256_256_38_19 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_19 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x5aaff7fdd351ed68), UINT64_C(0xb25ff39da729ab0b), UINT64_C(0xf77a0f043ff80cb6), UINT64_C(0xb7c8697d3d2fc84f),
   UINT64_C(0xe4e12a3801b74911), UINT64_C(0x9a4c5cd4aa5be4e6), UINT64_C(0x11ddf776ced3811f), UINT64_C(0x2b8aafec12a19064),
   UINT64_C(0xf141b55edf9a929f), UINT64_C(0xf5d29961f44c729c), UINT64_C(0x20c9c56073f5df6a), UINT64_C(0x6385bb75a67af2b2),
@@ -5186,7 +5193,7 @@ static const mzd_local_t L_256_256_38_19 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x7edfda2006f35133), UINT64_C(0x80fe71ef51540f87), UINT64_C(0x51bb3f69de1214cf), UINT64_C(0x92a4d98b55067408),
 }};
 
-static const mzd_local_t L_256_256_38_20 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_20 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x735d6f2e7127445f), UINT64_C(0x0c21a69bf8340450), UINT64_C(0xf8ff0aa519be4192), UINT64_C(0x017924baf2069ab6),
   UINT64_C(0x8c26748cb68f4334), UINT64_C(0xfcd288b811aeecc5), UINT64_C(0x73c15d485930040a), UINT64_C(0x0239903376ecdd23),
   UINT64_C(0x8e2ce70d0b435a92), UINT64_C(0x171aeb4ec9d93f03), UINT64_C(0x5bc2363f4f29fdfb), UINT64_C(0x204fa8ea13a54ec4),
@@ -5445,7 +5452,7 @@ static const mzd_local_t L_256_256_38_20 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xbbfd938fcb0fc317), UINT64_C(0x63847e8504a7adb4), UINT64_C(0x3ac33a36b0b9534e), UINT64_C(0x507f18f2589566dd),
 }};
 
-static const mzd_local_t L_256_256_38_21 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_21 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xc284fb3d65ce2cff), UINT64_C(0x493413610b8344c0), UINT64_C(0x044a552e162cfe95), UINT64_C(0x1e9e7cc68e6ce49a),
   UINT64_C(0x095b6410cc05e86f), UINT64_C(0x95f462c36b737bd1), UINT64_C(0xa4d729a8f18460e4), UINT64_C(0x7aced61141472832),
   UINT64_C(0x2fceeb27a6f185d3), UINT64_C(0xef468f4b1271c926), UINT64_C(0x96da1aea408a5d9f), UINT64_C(0xc6ffa7b2ebb53b11),
@@ -5704,7 +5711,7 @@ static const mzd_local_t L_256_256_38_21 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x1d339e06fd20f5c8), UINT64_C(0x13a84873e8ff6391), UINT64_C(0x46812264f64fc221), UINT64_C(0xbc0862d3211925f4),
 }};
 
-static const mzd_local_t L_256_256_38_22 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_22 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xbdb4dfdff4319aef), UINT64_C(0x4f68241b1f29a1c9), UINT64_C(0xc4fbf5f492034b0d), UINT64_C(0xfe7c3f3995751cf4),
   UINT64_C(0x39485ebe014fac26), UINT64_C(0x6c74bcc364299c43), UINT64_C(0xd99299d703e9d27c), UINT64_C(0x6885045353db29d2),
   UINT64_C(0x68a8f66c64ee99a3), UINT64_C(0x23f6728128f4824a), UINT64_C(0x469a55d7ef245ada), UINT64_C(0x15647d80df8b753e),
@@ -5963,7 +5970,7 @@ static const mzd_local_t L_256_256_38_22 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xa2e1f31d2ef1efe5), UINT64_C(0xab4aaadf81d3066d), UINT64_C(0x4bf751e937e24515), UINT64_C(0xbf4d82e963195b50),
 }};
 
-static const mzd_local_t L_256_256_38_23 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_23 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6a893bc2efb6bbcc), UINT64_C(0x1d33cb4137fec49c), UINT64_C(0xb10326ad3d2d011e), UINT64_C(0x31f919dd64aff609),
   UINT64_C(0x5874e374323adb2a), UINT64_C(0x79899304525b90af), UINT64_C(0x1cbc7a153fd548c3), UINT64_C(0xd25d50f8731481b1),
   UINT64_C(0xf0cf1334c371131f), UINT64_C(0xd9350feeae857e68), UINT64_C(0x9e30d3d86d1c7add), UINT64_C(0xffbac530e8a9151b),
@@ -6222,7 +6229,7 @@ static const mzd_local_t L_256_256_38_23 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x8ced4ba1d3a87b8e), UINT64_C(0xfa8bbb3e7f63ea06), UINT64_C(0x57c0db18016c2029), UINT64_C(0xb0f9bb7603868628),
 }};
 
-static const mzd_local_t L_256_256_38_24 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_24 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x8e0045584f9e1ddf), UINT64_C(0xd1e2687e5c9e23bc), UINT64_C(0x1e70a57b70088d5f), UINT64_C(0xd107d851ade28358),
   UINT64_C(0x43f705e75dd8d43c), UINT64_C(0xcc8f3cc27c340b45), UINT64_C(0x6f96a92366ef6d0b), UINT64_C(0x1db5c7b8ba0cd83e),
   UINT64_C(0xe9304b11cae80c54), UINT64_C(0x7418e824965aa289), UINT64_C(0x2731ef7e7bbd46dd), UINT64_C(0x5a68ce1c2f1db625),
@@ -6481,7 +6488,7 @@ static const mzd_local_t L_256_256_38_24 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x39c7a31d2b59b43d), UINT64_C(0xa62c758c3001189f), UINT64_C(0x715d6395db61835c), UINT64_C(0x5245b1e8700e201b),
 }};
 
-static const mzd_local_t L_256_256_38_25 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_25 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x11719eb2dd4ff5c7), UINT64_C(0x50056b2d397dacd3), UINT64_C(0x8b7ea3d9ba19e0f3), UINT64_C(0x5132cb3efe3d81a2),
   UINT64_C(0x77bfd659111a6e91), UINT64_C(0xe2b27c1aa5734bc1), UINT64_C(0x6af0c7b77181dbf3), UINT64_C(0x6aa0bae210a35f75),
   UINT64_C(0x0186b6f80345a134), UINT64_C(0x8914a1c3a392acf2), UINT64_C(0x7023a7be252493a7), UINT64_C(0x966b5c80f7777e72),
@@ -6740,7 +6747,7 @@ static const mzd_local_t L_256_256_38_25 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x0ce945dc2e2ea3dd), UINT64_C(0xdecb7e2b1d64152f), UINT64_C(0x06dd000bc6b51f95), UINT64_C(0xf08df922578905b1),
 }};
 
-static const mzd_local_t L_256_256_38_26 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_26 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x7b5fd34d399d63d3), UINT64_C(0x889dbf4ab398d53e), UINT64_C(0x92b5f8310df11e39), UINT64_C(0x26b7fd95f1a1383b),
   UINT64_C(0x1d93c69806a54be2), UINT64_C(0xf9897807052bd47a), UINT64_C(0xb60ce597bc7b7543), UINT64_C(0xc64ce00eaf4cf8ee),
   UINT64_C(0xd4235510d20a1ddf), UINT64_C(0x199e2510d6c4d8a5), UINT64_C(0xd65ad8173e657b55), UINT64_C(0xf032c5bbae981402),
@@ -6999,7 +7006,7 @@ static const mzd_local_t L_256_256_38_26 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x48502e4956157f15), UINT64_C(0x3508b99991362ff0), UINT64_C(0xb987626dcec757d0), UINT64_C(0xdb96dad7e52a8325),
 }};
 
-static const mzd_local_t L_256_256_38_27 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_27 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6ce9bfca6d58868b), UINT64_C(0x12c09fb15bd09414), UINT64_C(0x4eab878f15292189), UINT64_C(0x53b403d2d2166d96),
   UINT64_C(0xd25700308cf6243c), UINT64_C(0xf98a36e02ebea2eb), UINT64_C(0x9f36fa467656b9d0), UINT64_C(0xca4c49551bda756a),
   UINT64_C(0x0d066153acef5bf6), UINT64_C(0x335a8ff54b9ed1e0), UINT64_C(0x1033d1eb3f080b3c), UINT64_C(0x02f0b1cd4271a4f0),
@@ -7258,7 +7265,7 @@ static const mzd_local_t L_256_256_38_27 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xa0c5e5214050f524), UINT64_C(0x11f56bd60da2dab7), UINT64_C(0x3b56f925049f2a29), UINT64_C(0xb8d4ca4b55f09118),
 }};
 
-static const mzd_local_t L_256_256_38_28 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_28 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x047bcc41399d8c12), UINT64_C(0x6303e640d1a27560), UINT64_C(0xd0b3d6535e7b5ed4), UINT64_C(0x4c0ce2601625acb4),
   UINT64_C(0xbc36607472cb3973), UINT64_C(0xdefa82517736659e), UINT64_C(0x4bd7581ea7cbb283), UINT64_C(0x2e15c8042ee1e482),
   UINT64_C(0x32714c8b8c40a95b), UINT64_C(0x57b6735936165328), UINT64_C(0x66378beac7afcf22), UINT64_C(0xfd1f4b4a728e5463),
@@ -7517,7 +7524,7 @@ static const mzd_local_t L_256_256_38_28 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xf9b9e0b80b1b77c6), UINT64_C(0xd69879e924e997e4), UINT64_C(0x72aeeadf6f9cd68b), UINT64_C(0xf6922ce3b29976af),
 }};
 
-static const mzd_local_t L_256_256_38_29 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_29 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xa65ab3feb132f066), UINT64_C(0xd9cddc892bb826d1), UINT64_C(0xba1f1f90b40a72ae), UINT64_C(0x63d598f6003979b9),
   UINT64_C(0x6b21077c85dc1063), UINT64_C(0x885e3acff8809ec3), UINT64_C(0x86a9679a42ba4a89), UINT64_C(0x35025ea3f0f0f53e),
   UINT64_C(0xf99d9320f792e12e), UINT64_C(0xbdc2dae370629275), UINT64_C(0xc4fa7e74702b721c), UINT64_C(0x6700f1d99c6299d1),
@@ -7776,7 +7783,7 @@ static const mzd_local_t L_256_256_38_29 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x8ef6be449f75b069), UINT64_C(0x4f357fb8d37828aa), UINT64_C(0x68f1369acf92db01), UINT64_C(0x0c6cb2167478e869),
 }};
 
-static const mzd_local_t L_256_256_38_30 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_30 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x5d460270623cb77e), UINT64_C(0xfc3d1e9ff68b6229), UINT64_C(0x403451b458209251), UINT64_C(0x383b54ff2bb3c3a7),
   UINT64_C(0xd55c57d3d948ed9a), UINT64_C(0x05b1b73480f01612), UINT64_C(0xb3454fe53765fcb1), UINT64_C(0x02c60d9640a5209e),
   UINT64_C(0x469bd285c9f2cccd), UINT64_C(0x7d9410ac111e645e), UINT64_C(0xd65ec93c3642bcd3), UINT64_C(0x6238fca017e59fa9),
@@ -8035,7 +8042,7 @@ static const mzd_local_t L_256_256_38_30 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6bb8fb1e6a79c9fd), UINT64_C(0x3ec9eeeb211e43c2), UINT64_C(0xee6b09be279d186b), UINT64_C(0x01e2407ff924ed1e),
 }};
 
-static const mzd_local_t L_256_256_38_31 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_31 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6c6b7bb6a7cbb10e), UINT64_C(0x50c303110537c316), UINT64_C(0x5ffdcc222f630da7), UINT64_C(0x4b03d59c3803505c),
   UINT64_C(0x315979ce7f30e4b8), UINT64_C(0x6293ba3b7e34a128), UINT64_C(0x11a108d597d8ec7a), UINT64_C(0x88323c20546c1d0c),
   UINT64_C(0x409d3538511a772a), UINT64_C(0xe40886e51948320b), UINT64_C(0x6c090d7d4806fbce), UINT64_C(0xffb5b4aa0244bd24),
@@ -8294,7 +8301,7 @@ static const mzd_local_t L_256_256_38_31 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x2482a381c54f4db8), UINT64_C(0xef6741c40cea61f0), UINT64_C(0x535334c301308add), UINT64_C(0x66eb02ac46ced322),
 }};
 
-static const mzd_local_t L_256_256_38_32 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_32 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xcce514e6deb17204), UINT64_C(0x8249cd87cdebb8cf), UINT64_C(0xa7104b4ead2e39a0), UINT64_C(0xb87aa62e8a65138c),
   UINT64_C(0x94b29f96300f2d3b), UINT64_C(0xe8f1b37ffe8a9a53), UINT64_C(0x6622ba40612a362c), UINT64_C(0xcef60cb97b93533a),
   UINT64_C(0x018430405644407d), UINT64_C(0x30fc5881ed8f2576), UINT64_C(0x88ba4823fa265532), UINT64_C(0xa88034c0d2b04ea0),
@@ -8553,7 +8560,7 @@ static const mzd_local_t L_256_256_38_32 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x56456c7945c99054), UINT64_C(0xeecd238b8edcfea0), UINT64_C(0xe5b1198f4b7362c6), UINT64_C(0x13b8dc3064727ae2),
 }};
 
-static const mzd_local_t L_256_256_38_33 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_33 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x2e0cf228551ff8cd), UINT64_C(0xc78df1b5e2b68d56), UINT64_C(0x3a01f9f3d801f770), UINT64_C(0xe36786c1882c6f02),
   UINT64_C(0x24958f93969c0ede), UINT64_C(0x1e6571ea50b1fe7b), UINT64_C(0x13f9e849d17076e3), UINT64_C(0xd46c492f110be476),
   UINT64_C(0xc048c9f5ada00d79), UINT64_C(0x590ea3e32cac3b41), UINT64_C(0x9982e884b3ef6aa2), UINT64_C(0xf79e0b386ad8860b),
@@ -8812,7 +8819,7 @@ static const mzd_local_t L_256_256_38_33 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x28db4477aa22e6b2), UINT64_C(0x437c5cfc43a76c0c), UINT64_C(0x2bd45cc9639e9fd5), UINT64_C(0xe302590c620884d8),
 }};
 
-static const mzd_local_t L_256_256_38_34 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_34 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x78160346ec431577), UINT64_C(0x6435eb1eb7048db7), UINT64_C(0x1f6db2071874e013), UINT64_C(0xf114ec8e2ce2222b),
   UINT64_C(0x7e1658651f8b758e), UINT64_C(0x58020e1ae8510f42), UINT64_C(0x59546ad6dd8989c2), UINT64_C(0x894e5f4a784ece75),
   UINT64_C(0x774df41739e83eb2), UINT64_C(0xfa98c54629f799aa), UINT64_C(0xe932fb219e9f1c11), UINT64_C(0xb7fbc662c6231dc3),
@@ -9071,7 +9078,7 @@ static const mzd_local_t L_256_256_38_34 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xe73506382621fc1c), UINT64_C(0x8629d594bc0309f7), UINT64_C(0xe5aa2a73819d5eee), UINT64_C(0xbc95bee91191c5ae),
 }};
 
-static const mzd_local_t L_256_256_38_35 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_35 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x1fa559dff9ae31be), UINT64_C(0x058e084ce68d50a5), UINT64_C(0x0cf102662cdc33db), UINT64_C(0xceca692dda00f4c0),
   UINT64_C(0xeb706682e98bfb1f), UINT64_C(0xfcf50cdbe0243b03), UINT64_C(0xf285b85f52cc9aaa), UINT64_C(0x806e0e0efedb98e1),
   UINT64_C(0x5b06df08e734b30d), UINT64_C(0x0a728be6b8443dca), UINT64_C(0x2b0317e2fd61381d), UINT64_C(0xc564e32b09754ad2),
@@ -9330,7 +9337,7 @@ static const mzd_local_t L_256_256_38_35 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xaa2288a3228064e4), UINT64_C(0x7bc9ba191cc769ad), UINT64_C(0xae959eed7e81f073), UINT64_C(0xec12480430752f6e),
 }};
 
-static const mzd_local_t L_256_256_38_36 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_36 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6cee805b41707457), UINT64_C(0x4241604538d6d275), UINT64_C(0xe68515fa42db3f7a), UINT64_C(0x0fd27a442896187f),
   UINT64_C(0x8c6bc8cf6714d2e2), UINT64_C(0x462c18a3ba8c1784), UINT64_C(0x42bb51d26f0bae7e), UINT64_C(0x7eb90d3a411ec85d),
   UINT64_C(0x33614f456e8b93ae), UINT64_C(0xa89df099cee1b7aa), UINT64_C(0xb117a500218ad60a), UINT64_C(0x65e17dd736a8bc90),
@@ -9589,7 +9596,7 @@ static const mzd_local_t L_256_256_38_36 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xa37cf2163eb36831), UINT64_C(0x6e7775a68407e557), UINT64_C(0x71b02393fa58adf5), UINT64_C(0xcd1316c338ce445b),
 }};
 
-static const mzd_local_t L_256_256_38_37 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t L_256_256_38_37 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x1e38d12c93cc94e0), UINT64_C(0xb03c3f201dc64682), UINT64_C(0xad967f15ca2ac1d9), UINT64_C(0x277dd6cb6755a2ea),
   UINT64_C(0xbf9dfbeaf08d5ace), UINT64_C(0xd0f7eaa4d8a78a97), UINT64_C(0xfbf14baa4b00bdfb), UINT64_C(0x0d35aefd079589b2),
   UINT64_C(0xdea2f6647873d6f6), UINT64_C(0x734b1efe20a95b09), UINT64_C(0x63dde58e69258e66), UINT64_C(0xf74111f1936ad6ef),
@@ -9849,7 +9856,7 @@ static const mzd_local_t L_256_256_38_37 = { 256, 256, 4, 4, { 0 }, {
 }};
 
 #if !defined(REDUCED_LINEAR_LAYER)
-static const mzd_local_t K_256_256_38_0 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_0 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x2ecbc97e010f28f6), UINT64_C(0xf6ae999ee000bab1), UINT64_C(0x1a4a5e7707fb8fbe), UINT64_C(0xee51da95ffd0357a),
   UINT64_C(0xe7ff833b9260505e), UINT64_C(0xb42752eb014efcd7), UINT64_C(0x9c47fee54514ea45), UINT64_C(0x4e764d8a4e48c37e),
   UINT64_C(0x3dfe0493c94805ee), UINT64_C(0x26f418f1547693d6), UINT64_C(0xe5dc8f879933fce7), UINT64_C(0x67ce702079ff826b),
@@ -10108,7 +10115,7 @@ static const mzd_local_t K_256_256_38_0 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x0148327190b6ef97), UINT64_C(0x36e68e04ad8db967), UINT64_C(0x76054fe164791675), UINT64_C(0x2f33a4335698bd6c),
 }};
 
-static const mzd_local_t K_256_256_38_1 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_1 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xadea969f89f331ba), UINT64_C(0xf2a28a6c7b5616b7), UINT64_C(0xa9db534273dfc6d7), UINT64_C(0xd144fcc76068ce9f),
   UINT64_C(0xc7db4b5db5b966a2), UINT64_C(0x8612e463e60a90f8), UINT64_C(0x12aaa92877546755), UINT64_C(0x9d7c221447a909cb),
   UINT64_C(0x904af3d20a501528), UINT64_C(0xc2056f557f7a2830), UINT64_C(0xd9d0b44a5bf848b7), UINT64_C(0x25741e882ec9ea96),
@@ -10367,7 +10374,7 @@ static const mzd_local_t K_256_256_38_1 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x68f53b9224d8256b), UINT64_C(0x29248598d0581273), UINT64_C(0x1f653f0594f8111c), UINT64_C(0x4fcce409a1bfba24),
 }};
 
-static const mzd_local_t K_256_256_38_2 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_2 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x03cd99d82e0974c3), UINT64_C(0x6603022fb2c7122d), UINT64_C(0xb033e2ded107a61c), UINT64_C(0xe0b740d6dfff7157),
   UINT64_C(0x7900420ca9fa2fdd), UINT64_C(0x4573c910667384a4), UINT64_C(0xfda96eab362fc12a), UINT64_C(0xbade58444b0c560f),
   UINT64_C(0x8ce2440f49340140), UINT64_C(0xd49b4a9d95ac31ae), UINT64_C(0x4e05b4a662261cbc), UINT64_C(0xb55020ac7f71683f),
@@ -10626,7 +10633,7 @@ static const mzd_local_t K_256_256_38_2 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xa2b134e5f7ad3e30), UINT64_C(0x27a70d1a9c2fe8fe), UINT64_C(0x879e3af0d03ebf10), UINT64_C(0xbe3cda64a4587d6c),
 }};
 
-static const mzd_local_t K_256_256_38_3 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_3 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x53fefd48f6ddec7f), UINT64_C(0xd89be9aa377af5c5), UINT64_C(0x161cb05b5f9a17a2), UINT64_C(0x02fa69ee0d0bc361),
   UINT64_C(0xe2bb18ecc287d679), UINT64_C(0xe3196a92635d46cc), UINT64_C(0xe492ca503131c5ce), UINT64_C(0x8989459545254dd1),
   UINT64_C(0xf07c73309fea24fe), UINT64_C(0x8ff9f8ea9ab7968a), UINT64_C(0xbd4224fd283f453d), UINT64_C(0xaf80bedb80727dbb),
@@ -10885,7 +10892,7 @@ static const mzd_local_t K_256_256_38_3 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x2c658c0f2d944491), UINT64_C(0x03433d4601403e7d), UINT64_C(0xca2455c5dbaa5d65), UINT64_C(0xbd9c0c4af82f77ae),
 }};
 
-static const mzd_local_t K_256_256_38_4 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_4 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xc4edf52b69e6cc49), UINT64_C(0xba7d22ed3953c080), UINT64_C(0x7a651e4ccd62cd83), UINT64_C(0x6689a39a87c3bdd0),
   UINT64_C(0x07d7e726284cbc1b), UINT64_C(0x643e40f7b36ca0bf), UINT64_C(0xed1427ef7c00a086), UINT64_C(0xf7a18d763a668e3f),
   UINT64_C(0x39be39ce98b71d02), UINT64_C(0x2fbedb3bd664c1e6), UINT64_C(0x5b10e6dbc17c3160), UINT64_C(0x81d0e26de2dfbd01),
@@ -11144,7 +11151,7 @@ static const mzd_local_t K_256_256_38_4 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x62044f30c22b560c), UINT64_C(0x64dfdd1b452af689), UINT64_C(0x1528e9d6b8fdbe09), UINT64_C(0xdc2a9ad646f7ee36),
 }};
 
-static const mzd_local_t K_256_256_38_5 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_5 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xcb899b7602867aef), UINT64_C(0xb1fb7adfac86203f), UINT64_C(0x63fb8a8bcf820bf3), UINT64_C(0xeb6324bdbbd1f1a2),
   UINT64_C(0x465c554d64d100c9), UINT64_C(0x227b05daf129770a), UINT64_C(0x1477b4eb46feebcb), UINT64_C(0x89331a6d01d3a29a),
   UINT64_C(0x961c1387adfe04b5), UINT64_C(0x367b75bbfcda69f5), UINT64_C(0xa33139fdbeb5a2c9), UINT64_C(0x9b8a341529a608ca),
@@ -11403,7 +11410,7 @@ static const mzd_local_t K_256_256_38_5 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x366be76dfbc24427), UINT64_C(0x66613f363049a1b8), UINT64_C(0x2fa52584a7f0c70d), UINT64_C(0x73ac397c4d78f215),
 }};
 
-static const mzd_local_t K_256_256_38_6 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_6 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x8c5cce9b87e28240), UINT64_C(0x622329b3b2dbde94), UINT64_C(0xea49b79c80b25de7), UINT64_C(0x9d4ea430d460ea03),
   UINT64_C(0x9d2e2fea2e372243), UINT64_C(0xb3df3dab9cd8726c), UINT64_C(0x75867ed6da9cd04f), UINT64_C(0x2b1c56f5dca45e3a),
   UINT64_C(0x9c11390183440d44), UINT64_C(0x760bb3cca612c576), UINT64_C(0xb3fb64c7a174596e), UINT64_C(0xf231cca371715fcf),
@@ -11662,7 +11669,7 @@ static const mzd_local_t K_256_256_38_6 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6aac334fbd39710b), UINT64_C(0x453728645b87ff30), UINT64_C(0xb338be81adba00d8), UINT64_C(0xb15f55bb193ff3ba),
 }};
 
-static const mzd_local_t K_256_256_38_7 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_7 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x0a890ac202789851), UINT64_C(0x2609d46942ac4305), UINT64_C(0xb87a76500c79104e), UINT64_C(0x382ae4f26e5e7cbe),
   UINT64_C(0x5474c53454475fac), UINT64_C(0xbfbd69510062f486), UINT64_C(0x0b852cf3a4d2450a), UINT64_C(0xf9183a6c778bd493),
   UINT64_C(0x85e9d41062de43ae), UINT64_C(0x20664c0f76813781), UINT64_C(0xcdce50c44d117d6d), UINT64_C(0x4b0e8b833c1cb9f2),
@@ -11921,7 +11928,7 @@ static const mzd_local_t K_256_256_38_7 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xffbc3660196bec4a), UINT64_C(0x5113c20032f8bb73), UINT64_C(0x31dd018671ac6571), UINT64_C(0x84497f6bc2145d49),
 }};
 
-static const mzd_local_t K_256_256_38_8 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_8 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xe02593b020e24e80), UINT64_C(0x5697dc420bd12e3f), UINT64_C(0xc4881301de2bb43f), UINT64_C(0xb999cf9df3515754),
   UINT64_C(0xecb0f9505028e239), UINT64_C(0x80a755cad8d1005c), UINT64_C(0x638bf7a08aed9b20), UINT64_C(0x79ac29cfcb15dbfc),
   UINT64_C(0xae595a172efa80d8), UINT64_C(0x06d6a1418610a95f), UINT64_C(0xea104c5d80fe91bf), UINT64_C(0x0215ca962192b63a),
@@ -12180,7 +12187,7 @@ static const mzd_local_t K_256_256_38_8 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x97a0b0c774b416e8), UINT64_C(0x13eed0854c265769), UINT64_C(0xd2615aa1b7c5aaa4), UINT64_C(0xd105e091cfefd0a8),
 }};
 
-static const mzd_local_t K_256_256_38_9 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_9 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6447aa636cba497b), UINT64_C(0x30a58d8b052dd3ef), UINT64_C(0x4c2ead07f5a4e00c), UINT64_C(0xd34ad29bf59a7d8f),
   UINT64_C(0xdb01840693e2930d), UINT64_C(0x503f2e0322adb4d3), UINT64_C(0x8ea7cb880584b807), UINT64_C(0xd6b876caf096a6ef),
   UINT64_C(0x1d76aca636e8f0f5), UINT64_C(0x5adc52cd63f14efc), UINT64_C(0xa7519ebb63b404e9), UINT64_C(0xb8a3b3d1d87ccd54),
@@ -12439,7 +12446,7 @@ static const mzd_local_t K_256_256_38_9 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x48006f03e130ddfb), UINT64_C(0x711fda57cd3077e3), UINT64_C(0xb67e345583df924b), UINT64_C(0x75f41e929ee1d627),
 }};
 
-static const mzd_local_t K_256_256_38_10 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_10 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xb73c2da201d8d635), UINT64_C(0x12401b18efbbfd76), UINT64_C(0x406ec25a3c8f32ad), UINT64_C(0x77970268b1771795),
   UINT64_C(0x340279dcfe16c7b8), UINT64_C(0x96a06b99a36caeac), UINT64_C(0xcf51600ab34339e4), UINT64_C(0xfad1000767908905),
   UINT64_C(0x7446f956a53cb7a0), UINT64_C(0x7ad667d7ed4cc92f), UINT64_C(0xe2840b8087dc269a), UINT64_C(0x04563318d3b5e9f5),
@@ -12698,7 +12705,7 @@ static const mzd_local_t K_256_256_38_10 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xadb812c0077200f2), UINT64_C(0xbebb990a5952f727), UINT64_C(0x5f282da802f4f9d0), UINT64_C(0x816620559713d026),
 }};
 
-static const mzd_local_t K_256_256_38_11 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_11 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x15a54b8d0c1d9f89), UINT64_C(0x471af61fe32d995b), UINT64_C(0xdac3d07879fe9f0c), UINT64_C(0xa18b476058d5a1e0),
   UINT64_C(0x72b32cd5ab314dcb), UINT64_C(0xfa757e2e5b9b4ea6), UINT64_C(0xd5317c6ac84a0b4b), UINT64_C(0xf04a4b2396068f30),
   UINT64_C(0x37216f9f58c2824a), UINT64_C(0x381e2c8ea5d4c2fb), UINT64_C(0xa8cccd93227dda55), UINT64_C(0xf2f065593be05abf),
@@ -12957,7 +12964,7 @@ static const mzd_local_t K_256_256_38_11 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x2561577e9fab58cd), UINT64_C(0x2f13119d8078f0c8), UINT64_C(0x86140d6452eac560), UINT64_C(0x04eac59bc467a487),
 }};
 
-static const mzd_local_t K_256_256_38_12 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_12 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6894ee6c9eaf4928), UINT64_C(0xdc3de15455a52359), UINT64_C(0x5aa12ad6abc3666d), UINT64_C(0xbf8bb63848202792),
   UINT64_C(0xf9c81b9703d3040f), UINT64_C(0x8bd2725eb874692d), UINT64_C(0x7c2ef32351edd7e4), UINT64_C(0xff52079aa9e846b7),
   UINT64_C(0x9244af10491a1db7), UINT64_C(0xa836c35066e97f56), UINT64_C(0x64cc9c23aff9094d), UINT64_C(0x9381fc342d0d02d3),
@@ -13216,7 +13223,7 @@ static const mzd_local_t K_256_256_38_12 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x8f03d6cd5dda0a6a), UINT64_C(0x206dccc21e37ad55), UINT64_C(0xba46ba5c8c5b1811), UINT64_C(0x63982a09084218fb),
 }};
 
-static const mzd_local_t K_256_256_38_13 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_13 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xb0e2bfe31dd6e368), UINT64_C(0x6e01fecd5b3910b8), UINT64_C(0x2353555d77815dcd), UINT64_C(0x6929c7ba58b55c26),
   UINT64_C(0xd4b400443d04315f), UINT64_C(0x9881bc19566e12b0), UINT64_C(0x0e0561913c314046), UINT64_C(0xe1196010e2ee185c),
   UINT64_C(0x955ec4c4a83a8a88), UINT64_C(0x5a4ea47b9c3fe5d5), UINT64_C(0x7cfdd22d6393f21e), UINT64_C(0xd70b14c8903ae7b7),
@@ -13475,7 +13482,7 @@ static const mzd_local_t K_256_256_38_13 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xff19817c0997554b), UINT64_C(0xdd38fe78e9c613c8), UINT64_C(0x3fe9949db4f8b891), UINT64_C(0x449d3369468552e3),
 }};
 
-static const mzd_local_t K_256_256_38_14 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_14 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x99f99cf509b75f97), UINT64_C(0xa74c3fccef4ffba1), UINT64_C(0xbf354ad7a082cacd), UINT64_C(0x8abbf606334fe5e3),
   UINT64_C(0xfc11b4dced5f36e7), UINT64_C(0x28b667fc5442624d), UINT64_C(0xfa6a66df0186e085), UINT64_C(0x73de35db94b44f23),
   UINT64_C(0xa6489d749bca36ad), UINT64_C(0xf6aef2a1f8ccc3a0), UINT64_C(0xabf842e3ba01d704), UINT64_C(0xfd49a941482ba457),
@@ -13734,7 +13741,7 @@ static const mzd_local_t K_256_256_38_14 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x12270440b31b8ace), UINT64_C(0xdb1033a464fe6e3d), UINT64_C(0xfd6761fde549a078), UINT64_C(0x3a706b251d099626),
 }};
 
-static const mzd_local_t K_256_256_38_15 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_15 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x5f7fb7dd31dd0fa5), UINT64_C(0xe4546d5196eba79e), UINT64_C(0x7779c3e3b9ec1140), UINT64_C(0x8db3b1bf592a5429),
   UINT64_C(0xfc12f0776665fd1a), UINT64_C(0xe7fa8548e96f50ef), UINT64_C(0xe2997846d672ce44), UINT64_C(0xde9c66c96ff7703c),
   UINT64_C(0x052ea2838bd43bb1), UINT64_C(0x6aab59d3d09cf0dc), UINT64_C(0x056d9e69d9b22476), UINT64_C(0xcb27d32d73413b46),
@@ -13993,7 +14000,7 @@ static const mzd_local_t K_256_256_38_15 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x001cc203e0eaa4ec), UINT64_C(0x8488e156943c8924), UINT64_C(0x1a7951d41b7b137a), UINT64_C(0x20f0ba11f5cf0154),
 }};
 
-static const mzd_local_t K_256_256_38_16 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_16 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x930763cf104ab687), UINT64_C(0x70e4faa169073fba), UINT64_C(0xc2c0c8675287ee9b), UINT64_C(0x986c070f991de5b9),
   UINT64_C(0x19edd58465bb2985), UINT64_C(0x8c57bc32928551de), UINT64_C(0x64ee5ecc9857d8e2), UINT64_C(0x013f206ab3bf2ead),
   UINT64_C(0x8be52fa07a0eba12), UINT64_C(0xfdbd36f0f514f873), UINT64_C(0xea4d7455586d8fb5), UINT64_C(0xa70d86f119a87b1e),
@@ -14252,7 +14259,7 @@ static const mzd_local_t K_256_256_38_16 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xd9b60ce4471ca22d), UINT64_C(0x2bbb44d613690976), UINT64_C(0x14e79d2e398e0a77), UINT64_C(0xde2e4138f5378de9),
 }};
 
-static const mzd_local_t K_256_256_38_17 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_17 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xedfdeeb9ecf52892), UINT64_C(0x80599fe94e884756), UINT64_C(0x733ea73fa6dcc041), UINT64_C(0xf30d721e5edfa0bd),
   UINT64_C(0xa279c626a123a8e5), UINT64_C(0x0dae1c55729a2c24), UINT64_C(0xb6156cc40ce77147), UINT64_C(0x3ca98c689d3dddd3),
   UINT64_C(0x8a688b7e2bf72927), UINT64_C(0x52b9cfa36dd2342a), UINT64_C(0x60aaad86dd8df43b), UINT64_C(0x548e4bc7aeb71b8c),
@@ -14511,7 +14518,7 @@ static const mzd_local_t K_256_256_38_17 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x82c8ae12ba8937f0), UINT64_C(0x38e7f3db36584e22), UINT64_C(0x03d782ea5d0304c6), UINT64_C(0x7eacdedbf6dd9926),
 }};
 
-static const mzd_local_t K_256_256_38_18 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_18 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xe09ca24608cc6c89), UINT64_C(0xae72154e73063407), UINT64_C(0xae96a024282955cd), UINT64_C(0x899bd586e2a79961),
   UINT64_C(0xc8f0e06c4e89eb53), UINT64_C(0xd241a4ae2d46ef75), UINT64_C(0x7fb7e5bea11c5db1), UINT64_C(0x4136b3795d6dbff4),
   UINT64_C(0xed1ac611dc2ece11), UINT64_C(0x276da6c6e03b2b82), UINT64_C(0x5db8a92d52144150), UINT64_C(0x504ff9a9e6d80321),
@@ -14770,7 +14777,7 @@ static const mzd_local_t K_256_256_38_18 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x2f2a2a49f8a79600), UINT64_C(0x02145868e3b7ed78), UINT64_C(0xe74fdec17e6c31d9), UINT64_C(0x24aa0eb29551151b),
 }};
 
-static const mzd_local_t K_256_256_38_19 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_19 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x7a9e58a8543d5908), UINT64_C(0x26c031ca5384dd73), UINT64_C(0x6176f6a14f3330fe), UINT64_C(0x2bf7414ccdda4ed4),
   UINT64_C(0xe9e9bc2ae9d2398e), UINT64_C(0x64c63d9447dd3385), UINT64_C(0xc96bb8578e0c3ad3), UINT64_C(0xb64d9592218f8b22),
   UINT64_C(0xedc1839b0513f41b), UINT64_C(0x4dd6a3bed935e983), UINT64_C(0xaad4379479a75724), UINT64_C(0xbf467df81f5392cb),
@@ -15029,7 +15036,7 @@ static const mzd_local_t K_256_256_38_19 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x30b7b147f1f3918d), UINT64_C(0x53758c1d61e90a32), UINT64_C(0x59bb3815022eae54), UINT64_C(0xf06ade3d09da822a),
 }};
 
-static const mzd_local_t K_256_256_38_20 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_20 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x828bb66f14c50207), UINT64_C(0x353c8209108c6666), UINT64_C(0x6b0be266e1a20622), UINT64_C(0xb033bfedde1b431a),
   UINT64_C(0xe0545359e0150d9b), UINT64_C(0xf8e75381907354e5), UINT64_C(0xfa6f0626a3582ea3), UINT64_C(0xf579a9a08b7ae5d4),
   UINT64_C(0xf5e1518d9b31f3e1), UINT64_C(0x0c1172fed0d99af0), UINT64_C(0x3a00ea39eadf1dc4), UINT64_C(0x9e40ef192724279a),
@@ -15288,7 +15295,7 @@ static const mzd_local_t K_256_256_38_20 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xa49b867bd6e0ad96), UINT64_C(0xab4a28cd8222c78d), UINT64_C(0x0feea90fa0b7ac19), UINT64_C(0x6daf4941b5d0ca21),
 }};
 
-static const mzd_local_t K_256_256_38_21 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_21 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x2879b43360c35334), UINT64_C(0x2656060cfb479d15), UINT64_C(0x081ae132f54f2fe3), UINT64_C(0x7d6df1f7e7611699),
   UINT64_C(0x29f59f74a0aa1f4f), UINT64_C(0xb1d8f9f272a0400e), UINT64_C(0xbe723d712c75ab62), UINT64_C(0x614a710f5319a7cb),
   UINT64_C(0xcc28d72b9b5b057c), UINT64_C(0xff498f7a4c9bd155), UINT64_C(0x7fb4eb735579047b), UINT64_C(0xaaefafb121ab17c4),
@@ -15547,7 +15554,7 @@ static const mzd_local_t K_256_256_38_21 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xb09be27ecdb4852e), UINT64_C(0x5d681791c9db951b), UINT64_C(0xdf66356ad94b63a8), UINT64_C(0x0e5b27616621f3b5),
 }};
 
-static const mzd_local_t K_256_256_38_22 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_22 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x37c44a3c127bb944), UINT64_C(0xa2fc920813b8715e), UINT64_C(0x55a248e262fc6e58), UINT64_C(0x75b1d52ae6407fcc),
   UINT64_C(0xf5f46dc3068a57e9), UINT64_C(0x58ab56730893ee68), UINT64_C(0x380358f3e5b0909e), UINT64_C(0xb0f5eefa621e4c72),
   UINT64_C(0xe727bfa4629bd2db), UINT64_C(0x139244922e91a121), UINT64_C(0xd0d290a6d37cce3c), UINT64_C(0xe67bc0ffec452bcf),
@@ -15806,7 +15813,7 @@ static const mzd_local_t K_256_256_38_22 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x746128cd59b7e53d), UINT64_C(0xe69ef28b9a23440c), UINT64_C(0x6318ea3b6daa0204), UINT64_C(0xcec9a8fdc0ebc051),
 }};
 
-static const mzd_local_t K_256_256_38_23 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_23 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x8c8acf3f3f91314b), UINT64_C(0x53bf1e0a9b1ab864), UINT64_C(0x784a8a4ff81e026e), UINT64_C(0xfa8cf1f855ac1430),
   UINT64_C(0x5c1681bd9772f5fe), UINT64_C(0xef81a581aab27ba1), UINT64_C(0xee72f578c9a10d97), UINT64_C(0x3390a02a309c3025),
   UINT64_C(0x68ac44e4987f4aff), UINT64_C(0x23022627a2ec51fd), UINT64_C(0x068cda3f89463a60), UINT64_C(0x2257fa66fd3724c0),
@@ -16065,7 +16072,7 @@ static const mzd_local_t K_256_256_38_23 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xc1f5acb9ec8a92f2), UINT64_C(0xd2dc117c94a60471), UINT64_C(0xab19ca593f7efb74), UINT64_C(0x93a6e499b73df1d1),
 }};
 
-static const mzd_local_t K_256_256_38_24 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_24 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xc74e051c1cafca99), UINT64_C(0xbcc6a8f13228c24e), UINT64_C(0xbfeab0fa0e89c61b), UINT64_C(0x45edb1840aa25f42),
   UINT64_C(0x2b354422c259a492), UINT64_C(0xfd860262787b4a04), UINT64_C(0x2f1bc281cb95cbb9), UINT64_C(0x93608b5477c384b1),
   UINT64_C(0xb1cef2b942d8676f), UINT64_C(0x3e2eeef618831c69), UINT64_C(0x1f6c198b32bcb339), UINT64_C(0x4f2eb17a99b2a997),
@@ -16324,7 +16331,7 @@ static const mzd_local_t K_256_256_38_24 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x98723ced1a14ec8e), UINT64_C(0x3019e2e45e644768), UINT64_C(0x8cc53ac6352101ad), UINT64_C(0x9041fdf3c5f7046c),
 }};
 
-static const mzd_local_t K_256_256_38_25 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_25 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x226e62e1aeace1ca), UINT64_C(0xc60278674b10455e), UINT64_C(0x4b1f751206d34d41), UINT64_C(0xa551926cd1844dc8),
   UINT64_C(0xce140a3e23adf4bd), UINT64_C(0x8dead6c836affc50), UINT64_C(0xcc19f8f8e12b55c7), UINT64_C(0x2df3c503e664ef56),
   UINT64_C(0xfcd66e6f9ddea9d0), UINT64_C(0x0b504b1bdb6b25e1), UINT64_C(0xd0517e5e4b5b7d2b), UINT64_C(0xa2d601f1699aadb8),
@@ -16583,7 +16590,7 @@ static const mzd_local_t K_256_256_38_25 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x5a4f53636a32748d), UINT64_C(0xfd1a08d67a46244b), UINT64_C(0xa4ea2cdfa358809b), UINT64_C(0x0407938dbb13d854),
 }};
 
-static const mzd_local_t K_256_256_38_26 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_26 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x1ad163701f360c3c), UINT64_C(0xc89a953c7725330d), UINT64_C(0xe2f2ee02dfc06919), UINT64_C(0x5ef19df5e66023bd),
   UINT64_C(0x42e7f75d9fb33c47), UINT64_C(0x9bcd6d2274b0cbb6), UINT64_C(0x918f5d479612d7f8), UINT64_C(0xecf685a421d3bf5d),
   UINT64_C(0x17f1fdce85eec282), UINT64_C(0x52273adba10b8af3), UINT64_C(0x9651c826bc73617a), UINT64_C(0x1cce0365bab6d874),
@@ -16842,7 +16849,7 @@ static const mzd_local_t K_256_256_38_26 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xb5889a129aa07b6f), UINT64_C(0x834aa380c079fb05), UINT64_C(0x7074de5e798821f7), UINT64_C(0x15831b72825af038),
 }};
 
-static const mzd_local_t K_256_256_38_27 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_27 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x49bf129580b8d073), UINT64_C(0x8c0ac6b093d55e71), UINT64_C(0xa9339fcdcd0e417e), UINT64_C(0x75937e8632750c1e),
   UINT64_C(0x6cc0984f181ad3c5), UINT64_C(0xac8d49b6d6f5daec), UINT64_C(0x63d1d54103fc58d3), UINT64_C(0x7385521b275ac2bd),
   UINT64_C(0x7221ae0e0d7eb879), UINT64_C(0x70a8be46585ab257), UINT64_C(0xc4c0106b7697d68e), UINT64_C(0x7bc6e4b3ee04a727),
@@ -17101,7 +17108,7 @@ static const mzd_local_t K_256_256_38_27 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x27ff593d147280c6), UINT64_C(0x5ef537cc59b9c5de), UINT64_C(0x18fda24be2a82b27), UINT64_C(0x146227e84a5b511d),
 }};
 
-static const mzd_local_t K_256_256_38_28 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_28 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x597cd5406b06c48f), UINT64_C(0x047d4644e4fe4011), UINT64_C(0x29247706dd97841e), UINT64_C(0x14e4f69ecda3ade7),
   UINT64_C(0x3e36947a25ff2f08), UINT64_C(0x8b930505bd9c365a), UINT64_C(0x5bfd44bfe04261aa), UINT64_C(0x75a46ae1613ad7b4),
   UINT64_C(0xe48ffa38bf9a3e8d), UINT64_C(0x8a17562c3df771a8), UINT64_C(0xdf9e399137f80ffe), UINT64_C(0x9c793987eed745c9),
@@ -17360,7 +17367,7 @@ static const mzd_local_t K_256_256_38_28 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x7bb8759ebf351775), UINT64_C(0x1b1dab031a94a830), UINT64_C(0x6ab9bf4e8bdf9ad4), UINT64_C(0x77848503d40e77db),
 }};
 
-static const mzd_local_t K_256_256_38_29 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_29 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xab7757fab8efefad), UINT64_C(0x0cdc0ee961f32d39), UINT64_C(0xa6fcc07be6b98e81), UINT64_C(0xc30caf37ecafd8b7),
   UINT64_C(0x33056f830044e7ed), UINT64_C(0x3bb876bd93c195ef), UINT64_C(0xe498d49d5a76987e), UINT64_C(0xb84c11f2739ef78f),
   UINT64_C(0xf29b399d38add92e), UINT64_C(0x61df50a8acb085d5), UINT64_C(0x7d62486142bf0af4), UINT64_C(0xa06fb6d57810cbb3),
@@ -17619,7 +17626,7 @@ static const mzd_local_t K_256_256_38_29 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x724db7ff3c6ce34b), UINT64_C(0xf3dfb8f4359217e0), UINT64_C(0x801908a29e67d15b), UINT64_C(0xbd2487b69e1b5ecf),
 }};
 
-static const mzd_local_t K_256_256_38_30 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_30 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x25c1383e89b95bde), UINT64_C(0x0ac3c1e18dcbf6c7), UINT64_C(0x35ce472f0751fcee), UINT64_C(0x4ba37cd4097c332a),
   UINT64_C(0x2734f819683ef3cf), UINT64_C(0x12ee500be0911d43), UINT64_C(0x245c2ec883a24720), UINT64_C(0x3b93194bc7792e49),
   UINT64_C(0x5742cb8b3a75474f), UINT64_C(0xcc90f80481638010), UINT64_C(0x721a4c836ac25ac3), UINT64_C(0xf52394f7c62e4396),
@@ -17878,7 +17885,7 @@ static const mzd_local_t K_256_256_38_30 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x80403a0dfb8e963b), UINT64_C(0xfa7f54c1d28f48f6), UINT64_C(0x47425e9a93ac58f1), UINT64_C(0x5119faa7f97e317b),
 }};
 
-static const mzd_local_t K_256_256_38_31 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_31 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x30ffd9c40347a3ad), UINT64_C(0xfa36ada8945b562f), UINT64_C(0x0d926337826f6067), UINT64_C(0xf38066569c7e9a4c),
   UINT64_C(0x468ee6af99e40d3f), UINT64_C(0xbcb01799799c2883), UINT64_C(0x23c26520c6664cf0), UINT64_C(0xc914f360dd59c6fc),
   UINT64_C(0xd8c1a3774a4469ae), UINT64_C(0x267819bac5dd8a4b), UINT64_C(0xac3d32e7c7b2b65c), UINT64_C(0x5fbec30c577b6525),
@@ -18137,7 +18144,7 @@ static const mzd_local_t K_256_256_38_31 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xe56f4dd4af5a170a), UINT64_C(0x5907ce9559d480bc), UINT64_C(0xbab646d6bc146d31), UINT64_C(0x676a3d5f66a2fb2b),
 }};
 
-static const mzd_local_t K_256_256_38_32 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_32 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xa85ce6f3793a53b9), UINT64_C(0xcdc36ab9552d3506), UINT64_C(0x8ada2cd92d3192d2), UINT64_C(0xeb8a1ebb3e055469),
   UINT64_C(0xef5ecaf32f36b1d0), UINT64_C(0x2bc70b06b3642c33), UINT64_C(0xcd8cbd4a4c0cddbb), UINT64_C(0x49218775f28fcdee),
   UINT64_C(0x351c28b794ee042d), UINT64_C(0x8e22d17bb172c663), UINT64_C(0xc4802bdb50f92c54), UINT64_C(0x9b23fb02856d755a),
@@ -18396,7 +18403,7 @@ static const mzd_local_t K_256_256_38_32 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x8b1c7d107ab867cd), UINT64_C(0x2aa02d4a1d1318d2), UINT64_C(0x642102386bcd43b9), UINT64_C(0x7032f6b73b8c6ec5),
 }};
 
-static const mzd_local_t K_256_256_38_33 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_33 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x32a155c3782ef52b), UINT64_C(0xf8366a1ef0359ff3), UINT64_C(0x2a15a503e67f3e65), UINT64_C(0xde01f802abbbc5bb),
   UINT64_C(0x0bc14ee010d5358b), UINT64_C(0xdb4b02ddb7056936), UINT64_C(0x8891e107b922e605), UINT64_C(0x8d9d694ec57485a4),
   UINT64_C(0x07892f19aadf5ea8), UINT64_C(0xfaa7c29a601de00d), UINT64_C(0x802817bc3e7e72ac), UINT64_C(0xa19d33ab60d37a77),
@@ -18655,7 +18662,7 @@ static const mzd_local_t K_256_256_38_33 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xc26c894bc34af628), UINT64_C(0x68eacd6e50b238f3), UINT64_C(0x799a4979ccb5113b), UINT64_C(0xc1b927a898bb55cb),
 }};
 
-static const mzd_local_t K_256_256_38_34 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_34 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6d0fa1d72e102f4f), UINT64_C(0x7c76c29aa5492040), UINT64_C(0xdfdec0a1c353f82f), UINT64_C(0xddd97e4f6137e5a1),
   UINT64_C(0xd8e10878eef70171), UINT64_C(0x90c573d7fc29fc2c), UINT64_C(0x85ff26b7eae7abb7), UINT64_C(0x943d39c3b293a12e),
   UINT64_C(0x63fcc88139f335e8), UINT64_C(0xc3f3fd5847aa8383), UINT64_C(0x4ea87bb38ce397a0), UINT64_C(0xc6195654fcd11d3d),
@@ -18914,7 +18921,7 @@ static const mzd_local_t K_256_256_38_34 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x0a226547a50efae1), UINT64_C(0xd298e966839bd1c0), UINT64_C(0x8b6422460583f528), UINT64_C(0x1469eecda828c175),
 }};
 
-static const mzd_local_t K_256_256_38_35 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_35 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x72d3925cf6183051), UINT64_C(0xabcf9ada80bba6f8), UINT64_C(0x840a28dece6ec024), UINT64_C(0xcdd40c6a4d730e03),
   UINT64_C(0x6195bfca521b5380), UINT64_C(0xcba9049e262a2104), UINT64_C(0xe81043b24bcfc80b), UINT64_C(0xe0a0f88e1c86b944),
   UINT64_C(0xa9aa3bd3176397fc), UINT64_C(0x1ba59ab82c758fb9), UINT64_C(0xebffa608708814c8), UINT64_C(0x849ef20a30f43cd1),
@@ -19173,7 +19180,7 @@ static const mzd_local_t K_256_256_38_35 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xcfc615e7f9e41c02), UINT64_C(0x157b3bddd350d819), UINT64_C(0x4f549bc5c330a75e), UINT64_C(0xe5e7722c23f93e11),
 }};
 
-static const mzd_local_t K_256_256_38_36 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_36 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xe550077c9ff1caaa), UINT64_C(0x975a694aea5036c9), UINT64_C(0xc9330dd037e7f48f), UINT64_C(0xacbbbee502d388b2),
   UINT64_C(0x4ae433c224b068a2), UINT64_C(0xd47c2649a8312921), UINT64_C(0x4adb4929664351ed), UINT64_C(0xf98fd2662dddf09b),
   UINT64_C(0xaf39bc1be7dadf81), UINT64_C(0xe0fa1c2a6c7ce69e), UINT64_C(0xb3e1f6ad9bd54a75), UINT64_C(0x99219f44ee646975),
@@ -19432,7 +19439,7 @@ static const mzd_local_t K_256_256_38_36 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x6e7971397020d4d2), UINT64_C(0xfbf7b92a30a0faa4), UINT64_C(0x50fb544e08cf41ed), UINT64_C(0x336f08d549389443),
 }};
 
-static const mzd_local_t K_256_256_38_37 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_37 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x74a25f6480639686), UINT64_C(0xe538fbc1978f4055), UINT64_C(0x3faf8a1d2add8030), UINT64_C(0x279b79c7ef5e2fff),
   UINT64_C(0x99f689a49818e5ed), UINT64_C(0x9525f14d3afe13c8), UINT64_C(0xc167acd22781d8c2), UINT64_C(0xe102df34feb24909),
   UINT64_C(0xc73c3e16eb21164f), UINT64_C(0xcb795bcb7c9e7d4d), UINT64_C(0x04685e37ca21ff4c), UINT64_C(0xa4a9e3cecc1ba35e),
@@ -19691,7 +19698,7 @@ static const mzd_local_t K_256_256_38_37 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0x25756011a39b3f8b), UINT64_C(0x22d9360f289b855f), UINT64_C(0xc7502bc7c14ab42e), UINT64_C(0x3569f1a7fb64d6bd),
 }};
 
-static const mzd_local_t K_256_256_38_38 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t K_256_256_38_38 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xb2c8e55b2070f979), UINT64_C(0xf283524a39737c46), UINT64_C(0x4c07e3acc849d40f), UINT64_C(0x1dbbb431984632d8),
   UINT64_C(0xf1d456565bcfc3af), UINT64_C(0x70cb9e0f67268821), UINT64_C(0x1cd6320032143040), UINT64_C(0x5a6e2fcfea60359c),
   UINT64_C(0x272bf18103e10039), UINT64_C(0x1d427ab3dc895424), UINT64_C(0x84d5e1a65ec56abd), UINT64_C(0x3c23d2ae84bb7f93),
@@ -19951,160 +19958,160 @@ static const mzd_local_t K_256_256_38_38 = { 256, 256, 4, 4, { 0 }, {
 }};
 
 #endif
-static const mzd_local_t C_256_256_38_0 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_0 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x1b9aa03b391fc5b3), UINT64_C(0x317f22e97ece6a70), UINT64_C(0x3b1efede9f52aec6), UINT64_C(0xb859e57097151099),
 }};
 
-static const mzd_local_t C_256_256_38_1 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_1 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xbc40e75240fe9768), UINT64_C(0x290a7477b06bd094), UINT64_C(0xfb00267326d0e54b), UINT64_C(0x6a7de920e6783f77),
 }};
 
-static const mzd_local_t C_256_256_38_2 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_2 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x93d378fc9000ba6a), UINT64_C(0x945b827dab9134a0), UINT64_C(0xbae90c646094cd82), UINT64_C(0x9717e94d18eb0d1e),
 }};
 
-static const mzd_local_t C_256_256_38_3 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_3 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x662b62f6834e1902), UINT64_C(0xe2df0243ab1a52e9), UINT64_C(0xab61cda664f101be), UINT64_C(0xe5e631cf32c45a11),
 }};
 
-static const mzd_local_t C_256_256_38_4 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_4 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xa08ba6e84c50e20c), UINT64_C(0x9878adbbd8e06620), UINT64_C(0xd325364fef815acc), UINT64_C(0xd72771b87ccaf4bd),
 }};
 
-static const mzd_local_t C_256_256_38_5 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_5 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xce12bc46d2151b0e), UINT64_C(0xf4c13971a4e5e4d1), UINT64_C(0x9d7cd9abd91ba569), UINT64_C(0xbeeb199c0235d359),
 }};
 
-static const mzd_local_t C_256_256_38_6 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_6 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xdb6aedb4d3446775), UINT64_C(0x19bc3d8179318903), UINT64_C(0xbb21fbd60b4ec682), UINT64_C(0x78d8dd1117615d56),
 }};
 
-static const mzd_local_t C_256_256_38_7 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_7 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x72697c5ccbee1061), UINT64_C(0xdfbd72494b185860), UINT64_C(0x5c34315fc3b1bf9d), UINT64_C(0x1751848b1d2cfe23),
 }};
 
-static const mzd_local_t C_256_256_38_8 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_8 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x2ef0458b002884e2), UINT64_C(0xd02b40e55225e7af), UINT64_C(0xbe92741053f00b15), UINT64_C(0x027bc3351a8bccd1),
 }};
 
-static const mzd_local_t C_256_256_38_9 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_9 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xb4d829599eb9a550), UINT64_C(0xa8e0c96b8764b7f4), UINT64_C(0x609da65ae8fad578), UINT64_C(0x9eda84baefc7fdad),
 }};
 
-static const mzd_local_t C_256_256_38_10 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_10 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x1bc0268deef2af0e), UINT64_C(0xc8dd5390f1a4f981), UINT64_C(0x80529fb78fe2230b), UINT64_C(0xdab9e022a1780169),
 }};
 
-static const mzd_local_t C_256_256_38_11 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_11 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x9f4ef5c2486e13e8), UINT64_C(0x3cafa63ecd4420f9), UINT64_C(0xf9373796f7d7bc0b), UINT64_C(0xfe2aaf4114b0d880),
 }};
 
-static const mzd_local_t C_256_256_38_12 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_12 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xc015fc0c3faef14e), UINT64_C(0x9981333d2dccfd8f), UINT64_C(0xd4520264a0804b42), UINT64_C(0xe99e5ca88a7eae4e),
 }};
 
-static const mzd_local_t C_256_256_38_13 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_13 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x5366da5c820277c8), UINT64_C(0x8c28e2c69b191998), UINT64_C(0xcce423483ffdbf9d), UINT64_C(0x14a0c980b3ace167),
 }};
 
-static const mzd_local_t C_256_256_38_14 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_14 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xfe5709c406173ad4), UINT64_C(0x7bdf32db15963569), UINT64_C(0xe854ba67c9f0ee01), UINT64_C(0x877c0bcc7f0330e3),
 }};
 
-static const mzd_local_t C_256_256_38_15 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_15 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x0a304a9a0d2c93a9), UINT64_C(0x30e25094477ee678), UINT64_C(0xfa6668222b1bef74), UINT64_C(0x8497e477cb047d4b),
 }};
 
-static const mzd_local_t C_256_256_38_16 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_16 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xcac4e02b819d178d), UINT64_C(0xb468910e8bd48326), UINT64_C(0xd20be626829c874c), UINT64_C(0xbdbb9eec310a7c63),
 }};
 
-static const mzd_local_t C_256_256_38_17 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_17 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xe249dd5e95028943), UINT64_C(0x2c9f7da01d253c53), UINT64_C(0xb91142cf39eb550d), UINT64_C(0xd33dba8fdef952b1),
 }};
 
-static const mzd_local_t C_256_256_38_18 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_18 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xe68f9ee0b152eb92), UINT64_C(0x77c1744a11eeb6ba), UINT64_C(0x005531df780a2e4a), UINT64_C(0xe487bf8dc388df6f),
 }};
 
-static const mzd_local_t C_256_256_38_19 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_19 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x634eff226d94d763), UINT64_C(0xe53cd24379e46efb), UINT64_C(0x22dff9067ade2d1a), UINT64_C(0xc079bf395dc7dd16),
 }};
 
-static const mzd_local_t C_256_256_38_20 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_20 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x5eaa0fb1146ec381), UINT64_C(0xa90b0d7c8e06995c), UINT64_C(0x09ff77ab33630ae3), UINT64_C(0x9e1cde55030dd841),
 }};
 
-static const mzd_local_t C_256_256_38_21 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_21 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xcc96da78eafc91cf), UINT64_C(0xc812c720fc6363ed), UINT64_C(0x5aba0f79ea0e2011), UINT64_C(0x28dd1a2df6472470),
 }};
 
-static const mzd_local_t C_256_256_38_22 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_22 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x42a698a9be1e6c94), UINT64_C(0x266ebb7af2dbe7c9), UINT64_C(0xfc003d64cc6f4747), UINT64_C(0x010dce8ff735d722),
 }};
 
-static const mzd_local_t C_256_256_38_23 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_23 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xbf088fb1773dd3eb), UINT64_C(0xddd11efd1a963f73), UINT64_C(0x03ed7ee9cc26e4fc), UINT64_C(0x68f9fb092ab39494),
 }};
 
-static const mzd_local_t C_256_256_38_24 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_24 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x5ed84a2cdaa9750c), UINT64_C(0xd07db0af6476dbde), UINT64_C(0x044e10ca97307de6), UINT64_C(0x1a3ae097a90367df),
 }};
 
-static const mzd_local_t C_256_256_38_25 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_25 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x12d0f0076232315e), UINT64_C(0xba8586e8e8d49023), UINT64_C(0xa4df76779e176a26), UINT64_C(0x11e0ebe1f9b4656b),
 }};
 
-static const mzd_local_t C_256_256_38_26 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_26 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xd0f94fcedbc6e7e0), UINT64_C(0x0aef4db1eda1ca19), UINT64_C(0xf73f4c249c26cd87), UINT64_C(0x46bae123efbda268),
 }};
 
-static const mzd_local_t C_256_256_38_27 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_27 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xe83ee49867ba5098), UINT64_C(0x515a7a0166241471), UINT64_C(0xc0f09d1b02f58c2b), UINT64_C(0x39d85bacba7dc1db),
 }};
 
-static const mzd_local_t C_256_256_38_28 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_28 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x371430caf54f0ea6), UINT64_C(0x5689eb6e11a81631), UINT64_C(0x5de835629ca1584f), UINT64_C(0x0535cabfb3ff28ca),
 }};
 
-static const mzd_local_t C_256_256_38_29 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_29 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xef0f62e083311c2e), UINT64_C(0x750c1cd23ffbde16), UINT64_C(0xb9bc10c824e974d0), UINT64_C(0xef6ba88ac9c0278d),
 }};
 
-static const mzd_local_t C_256_256_38_30 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_30 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x32ba36b15029b83d), UINT64_C(0x80266c4961810254), UINT64_C(0xf61bed73337b7575), UINT64_C(0xf5ee8613cf30b114),
 }};
 
-static const mzd_local_t C_256_256_38_31 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_31 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x87e4fd1c2afdce0d), UINT64_C(0x225432d8dc0bb846), UINT64_C(0x158207e21b56b8e7), UINT64_C(0xc506004643dfbaff),
 }};
 
-static const mzd_local_t C_256_256_38_32 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_32 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x00d5b47b249ee641), UINT64_C(0x9ce5966d2089cd32), UINT64_C(0xe5645ae46c213907), UINT64_C(0x1ffb0517b69df1ba),
 }};
 
-static const mzd_local_t C_256_256_38_33 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_33 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xa389ef4e7aa15550), UINT64_C(0x66461a1ea3ea1e23), UINT64_C(0x1247c9f905fd31d0), UINT64_C(0x7073397635ca74e5),
 }};
 
-static const mzd_local_t C_256_256_38_34 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_34 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xaecdae71088d9dc7), UINT64_C(0xe20e9e479729ad0d), UINT64_C(0xa950553fe6d7c64b), UINT64_C(0x0902c65590de7e1b),
 }};
 
-static const mzd_local_t C_256_256_38_35 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_35 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x4fd6135025582c42), UINT64_C(0x40f6efbfc6903ba4), UINT64_C(0x4bea42489b3788e3), UINT64_C(0xb07e4232b139fe0d),
 }};
 
-static const mzd_local_t C_256_256_38_36 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_36 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0xde003a05c7ac1580), UINT64_C(0x659338e74651e2e4), UINT64_C(0xcd2d44db3683c8a5), UINT64_C(0x1ae20fda24fff251),
 }};
 
-static const mzd_local_t C_256_256_38_37 = { 1, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t C_256_256_38_37 = { 1, 256, 4, 4, { 0 }, {
   UINT64_C(0x48313ca7e2fe392e), UINT64_C(0x28f84164c80159f5), UINT64_C(0xa10f9636f42d47e1), UINT64_C(0x970da1e6f421ad87),
 }};
 
 #if defined(REDUCED_LINEAR_LAYER)
-static const mzd_local_t precomputed_round_key_matrix_linear_part_256_256_38 = { 256, 256, 4, 4, { 0 }, {
+GCC_EXT static const mzd_local_t precomputed_round_key_matrix_linear_part_256_256_38 = { 256, 256, 4, 4, { 0 }, {
   UINT64_C(0xfc104fadfd8e1d30), UINT64_C(0x4f792ab4bfd126f1), UINT64_C(0x2e1f9b288edc0fec), UINT64_C(0xee51da9710ed3d32),
   UINT64_C(0xe1d5d3bc4539f88f), UINT64_C(0x01dc73f3f9adfddc), UINT64_C(0x180e119999fe6e1d), UINT64_C(0x4e764d8b68a90ff1),
   UINT64_C(0x6cf699744c0b7c12), UINT64_C(0xd3f807dcf9763819), UINT64_C(0xa9f86ef26748ac21), UINT64_C(0x67ce7020163d2ce8),
@@ -20363,7 +20370,7 @@ static const mzd_local_t precomputed_round_key_matrix_linear_part_256_256_38 = {
   UINT64_C(0x6e07332082a3813b), UINT64_C(0xf43c8d076fe58932), UINT64_C(0x0e6d6105f0d87b0a), UINT64_C(0x2f33a43241c08531),
 }};
 
-static const mzd_local_t precomputed_round_key_matrix_non_linear_part_256_256_38 = { 256, 1216, 19, 20, { 0 }, {
+GCC_EXT static const mzd_local_t precomputed_round_key_matrix_non_linear_part_256_256_38 = { 256, 1216, 19, 20, { 0 }, {
   UINT64_C(0x12725a610949e302), UINT64_C(0x0a4d9af73a06ad8f), UINT64_C(0x332cd75e247aec2e), UINT64_C(0x15640c71018f9ca0), UINT64_C(0x35e3600a387e483b), UINT64_C(0x336a1c8517349e74), UINT64_C(0x0eff185f375c6f7c), UINT64_C(0x0f5b119315cdcfc5), UINT64_C(0x3949b84011c32e17), UINT64_C(0x358e2bc63362c4b2), UINT64_C(0x0ebfd6dd2dfc90c2), UINT64_C(0x1d10010f086d27c8), UINT64_C(0x30cd68ed3c01eec9), UINT64_C(0x2b45cb6314863e83), UINT64_C(0x3fe7573e186c2f32), UINT64_C(0x1f5d8a2706181c52), UINT64_C(0x0cae9cef10dc18ff), UINT64_C(0x1fbc372d0c8eecd9), UINT64_C(0x0fd97d8639dc2556), UINT64_C(0x0000000000000000),
   UINT64_C(0x1550da27250cf225), UINT64_C(0x00c112d71359e04a), UINT64_C(0x249bfcee35569a2a), UINT64_C(0x184907e9211ced09), UINT64_C(0x12d4f8e122f8a7cf), UINT64_C(0x240e160112bcc48a), UINT64_C(0x0781bba81e11870f), UINT64_C(0x11477a99235e80c9), UINT64_C(0x06720d923e38a13c), UINT64_C(0x1eb3b17b20237f9b), UINT64_C(0x1a3b92cb3ae8ec6d), UINT64_C(0x22fa50993d025c74), UINT64_C(0x027e7211296a3648), UINT64_C(0x3371db3d3896d271), UINT64_C(0x0d94a7541d032f81), UINT64_C(0x0ed231fa1ae2c7b8), UINT64_C(0x1c599ca932c4f4f2), UINT64_C(0x108e7dd720989540), UINT64_C(0x17259dfd0ce741b1), UINT64_C(0x0000000000000000),
   UINT64_C(0x1757c6b63b088ad7), UINT64_C(0x040594ff3825aa6d), UINT64_C(0x2f5a1c8d26ff9ff6), UINT64_C(0x01e169f118726582), UINT64_C(0x183448301c5e1f38), UINT64_C(0x3de3fe081284f9e8), UINT64_C(0x146b718019c2741c), UINT64_C(0x070595cc2f83963e), UINT64_C(0x099d43162a258bed), UINT64_C(0x2830d1fa3c82ca8f), UINT64_C(0x3fb56aff00e51ce9), UINT64_C(0x3ac0f60626f093d2), UINT64_C(0x1e0784333539807e), UINT64_C(0x353afc191b7e7a60), UINT64_C(0x3fc0a5c915ba8c56), UINT64_C(0x138ac5520781205e), UINT64_C(0x0317ffd3200c4975), UINT64_C(0x0fa9f7490ee848cd), UINT64_C(0x0014bb8407939086), UINT64_C(0x0000000000000000),

@@ -43,15 +43,15 @@ Builds have been tested on Mac OS X 10.11.6, macOS 10.12.5, Ubuntu 16.04.1.
 
 ### Install dependencies for macOS
 
-You need to install autoconf, automake, cmake, and libtool:
+You need to install autoconf, automake, and libtool:
 
-	brew install autoconf automake cmake libtool
+	brew install autoconf automake libtool
 
 ### Install dependencies for Ubuntu
 
-You need to install autoconf, automake, cmake, and libtool:
+You need to install autoconf, automake, and libtool:
 
-	sudo apt install autoconf automake cmake libtool
+	sudo apt install autoconf automake libtool
 
 ### Building
 
@@ -172,8 +172,6 @@ Building and running on Windows
 -------------------------------
 
 Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder. Builds have been tested on Windows 10.
-
-CMake (https://cmake.org/download/) is required and must be installed before building the Visual Studio solution.
 
 The supported schemes are defined in the projects' winconfig.h file.
 

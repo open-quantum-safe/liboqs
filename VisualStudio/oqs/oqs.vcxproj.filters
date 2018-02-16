@@ -88,6 +88,60 @@
     <ClCompile Include="..\..\src\kex_sidh_msr\sha3\fips202.c">
       <Filter>KEX_SIDH_MSR</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\aligned_alloc.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\bitstream.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\cpu.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\io.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\kdf_shake.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\lowmc.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\lowmc_128_128_20.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\lowmc_192_192_30.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\lowmc_256_256_38.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\lowmc_pars.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\mpc.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\mpc_lowmc.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\mzd_additional.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\picnic.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\picnic_impl.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\sha3\KeccakHash.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\sha3\KeccakSponge.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig_picnic\external\sha3\opt64\KeccakP-1600-opt64.c">
+      <Filter>Sig_Picnic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
@@ -190,6 +244,63 @@
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\winconfig.h" />
+    <ClInclude Include="..\..\src\sig_picnic\external\bitstream.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\compat.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\cpu.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\crypto_sign.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\endian_compat.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\io.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\kdf_shake.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\lowmc.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\lowmc_128_128_20.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\lowmc_192_192_30.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\lowmc_256_256_38.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\lowmc_pars.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\macros.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\mpc.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\mpc_lowmc.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\mzd_additional.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\picnic_impl.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\sha3\KeccakHash.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig_picnic\external\sha3\KeccakSponge.h">
+      <Filter>Sig_Picnic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
