@@ -7,7 +7,5 @@
 #define ENABLE_KEX_RLWE_MSRLN16
 #define ENABLE_KEX_RLWE_NEWHOPE
 #define ENABLE_KEX_SIDH_MSR
-#if defined(_WIN64)
 #define ENABLE_SIG_PICNIC
-#endif
 #endif

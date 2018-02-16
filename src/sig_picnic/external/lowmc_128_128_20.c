@@ -6,7 +6,14 @@
 
 #include "lowmc_128_128_20.h"
 
-static const mzd_local_t L_128_128_20_0 = { 128, 128, 2, 2, { 0 }, {
+/* The GCC_EXT macro is to prevent a warning from the pedantic flag */
+#if defined(_WIN32)
+#define GCC_EXT
+#else
+#define GCC_EXT __extension__
+#endif
+
+GCC_EXT static const mzd_local_t L_128_128_20_0 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xde3547d35d776373), UINT64_C(0x7b6ec5825f32786d),
   UINT64_C(0xa1bf2597d8732f36), UINT64_C(0x7e52b8560916d23a),
   UINT64_C(0xf72e3cc9bdb8a5c0), UINT64_C(0xe4aaae0160b2b5e0),
@@ -137,7 +144,7 @@ static const mzd_local_t L_128_128_20_0 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xf43a4253f3c3fd59), UINT64_C(0x7cdacbe067e296da),
 }};
 
-static const mzd_local_t L_128_128_20_1 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_1 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x21b3a1c46e48a328), UINT64_C(0x01c316793b2b7d67),
   UINT64_C(0x7a3b61b10b91fd11), UINT64_C(0x9aa9fb13bbcf104d),
   UINT64_C(0x59069bd39e126650), UINT64_C(0x4b4f8ec667b4198a),
@@ -268,7 +275,7 @@ static const mzd_local_t L_128_128_20_1 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x4d95a6a8a1609f3d), UINT64_C(0x11c18ffc05c5687e),
 }};
 
-static const mzd_local_t L_128_128_20_2 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_2 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xd5d1bd1a15015242), UINT64_C(0xdd2f8c435feb822a),
   UINT64_C(0x93d275c3b0f36de0), UINT64_C(0x4789356426dd4209),
   UINT64_C(0xf7a89f938342d90c), UINT64_C(0x9768f14467164881),
@@ -399,7 +406,7 @@ static const mzd_local_t L_128_128_20_2 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xa582cdc21d3ea764), UINT64_C(0xb6913b42382635f3),
 }};
 
-static const mzd_local_t L_128_128_20_3 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_3 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x66d8eff0cf1df924), UINT64_C(0x46dce135c250e1a2),
   UINT64_C(0x05c22ccc74636d46), UINT64_C(0x1c06a1fe8448e243),
   UINT64_C(0xcd7067f9dbf1ef70), UINT64_C(0x4b89f7f8e18a342d),
@@ -530,7 +537,7 @@ static const mzd_local_t L_128_128_20_3 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x5a0be1e3d31e7021), UINT64_C(0x626e4cea81d6db74),
 }};
 
-static const mzd_local_t L_128_128_20_4 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_4 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xf30e7d1c82d94a98), UINT64_C(0x79077e2ccc57508c),
   UINT64_C(0x020f19051e2f586d), UINT64_C(0x6d5226589f1bc780),
   UINT64_C(0x0513dae08bf040d0), UINT64_C(0x98ab122b422caa10),
@@ -661,7 +668,7 @@ static const mzd_local_t L_128_128_20_4 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x3667468ed996c441), UINT64_C(0xce4612ffa027ee75),
 }};
 
-static const mzd_local_t L_128_128_20_5 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_5 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x80f9f5cb3bd2b6ff), UINT64_C(0x0c79dc219d51f29e),
   UINT64_C(0xd3da1f610332842b), UINT64_C(0xb9a2725376b3c2d7),
   UINT64_C(0x6313d8af383a5f08), UINT64_C(0x59e71d36a006616f),
@@ -792,7 +799,7 @@ static const mzd_local_t L_128_128_20_5 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xe39dd0b0856b5eba), UINT64_C(0x676722bb3fab6c28),
 }};
 
-static const mzd_local_t L_128_128_20_6 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_6 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x66fa78de21fdbb6f), UINT64_C(0xf35d670df356b976),
   UINT64_C(0x927ad2cf75afd588), UINT64_C(0x2425b523a36b63bf),
   UINT64_C(0xed0d4c421b44be3d), UINT64_C(0x893576b7f17649a2),
@@ -923,7 +930,7 @@ static const mzd_local_t L_128_128_20_6 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x58810e1c31237c37), UINT64_C(0xd11609a147979378),
 }};
 
-static const mzd_local_t L_128_128_20_7 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_7 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xd8efc1f6ca1e5296), UINT64_C(0x051c94c2d993306c),
   UINT64_C(0xb983f4f437dd3ce7), UINT64_C(0x25d290d11db6a42b),
   UINT64_C(0x083dea17fe5af57c), UINT64_C(0x83eda818e40b8cce),
@@ -1054,7 +1061,7 @@ static const mzd_local_t L_128_128_20_7 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xe1a8b6ec4859ccd4), UINT64_C(0x69a00cc7e3cc0fb7),
 }};
 
-static const mzd_local_t L_128_128_20_8 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_8 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x0d07edb58fc35569), UINT64_C(0x76f7d5ff22f29adb),
   UINT64_C(0x93162fcfe260da7b), UINT64_C(0x965053a2a35ffb16),
   UINT64_C(0x7864e4125fb6592c), UINT64_C(0x763b32d1d67b1df3),
@@ -1185,7 +1192,7 @@ static const mzd_local_t L_128_128_20_8 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xe8868be592eaef97), UINT64_C(0x29ec962cb52d1c72),
 }};
 
-static const mzd_local_t L_128_128_20_9 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_9 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x021ba01c87a3a119), UINT64_C(0xeb208d5d6adba04e),
   UINT64_C(0x5da14401b3a65c02), UINT64_C(0x0060ed2146ca3756),
   UINT64_C(0x67e9fdfd65d2416b), UINT64_C(0xb0b7ce3ebcb1dfa0),
@@ -1316,7 +1323,7 @@ static const mzd_local_t L_128_128_20_9 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x6d624b4d8ec7c548), UINT64_C(0x7eabe70ad49ed633),
 }};
 
-static const mzd_local_t L_128_128_20_10 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_10 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x48a1fd2dc36799f9), UINT64_C(0xe55ef5d130c15d83),
   UINT64_C(0xc6be807aefe52864), UINT64_C(0x01f1749c64c57866),
   UINT64_C(0xf0ce17f1250ee961), UINT64_C(0x3028fe3689131029),
@@ -1447,7 +1454,7 @@ static const mzd_local_t L_128_128_20_10 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x05f8943225073a24), UINT64_C(0xd598f3580d8e8ebd),
 }};
 
-static const mzd_local_t L_128_128_20_11 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_11 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xe9c618ad81cec0fe), UINT64_C(0xf69f43aac68a42d2),
   UINT64_C(0x9945e6ec6e5ba4ca), UINT64_C(0x16df65607eb76740),
   UINT64_C(0xa8e7b58c27f7bec0), UINT64_C(0x0b2bf9cb423329b5),
@@ -1578,7 +1585,7 @@ static const mzd_local_t L_128_128_20_11 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x664b889ff9582afb), UINT64_C(0x0949f529795da267),
 }};
 
-static const mzd_local_t L_128_128_20_12 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_12 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x729935f2bff09648), UINT64_C(0x0ee43dab6827b77a),
   UINT64_C(0xafbbc06360765ba2), UINT64_C(0xc9b3237e5f435b73),
   UINT64_C(0xb60b5cd59df2d833), UINT64_C(0xccf042fc2c9dae79),
@@ -1709,7 +1716,7 @@ static const mzd_local_t L_128_128_20_12 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x80425b5c638ebad2), UINT64_C(0xa78861812360c8d8),
 }};
 
-static const mzd_local_t L_128_128_20_13 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_13 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x4ee286722a63dd7c), UINT64_C(0xca2e5c2b936fc504),
   UINT64_C(0x7acf6bb18a16b1d7), UINT64_C(0x9db48267d55c4198),
   UINT64_C(0x1cf6c14f7ccdb3cc), UINT64_C(0xf5509b77f6ca6fca),
@@ -1840,7 +1847,7 @@ static const mzd_local_t L_128_128_20_13 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xe2c605ddcc0f4811), UINT64_C(0xb21917a5320d8f96),
 }};
 
-static const mzd_local_t L_128_128_20_14 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_14 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xef49e8994e6bce23), UINT64_C(0x5eda7a68454b46e0),
   UINT64_C(0xdba8c9962ffe7bb2), UINT64_C(0x72d0e4c871166a32),
   UINT64_C(0xfe636470fd543c32), UINT64_C(0x5489154c34e11b94),
@@ -1971,7 +1978,7 @@ static const mzd_local_t L_128_128_20_14 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x4b7089360debad77), UINT64_C(0x21e392d3347f5016),
 }};
 
-static const mzd_local_t L_128_128_20_15 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_15 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x98fddb30e5cb9038), UINT64_C(0xe303b3cd7a65923b),
   UINT64_C(0x586bb4231c40673d), UINT64_C(0xcf7ebc923a9b7131),
   UINT64_C(0x560c8741f6fdf054), UINT64_C(0xace36e0c2bf83c46),
@@ -2102,7 +2109,7 @@ static const mzd_local_t L_128_128_20_15 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x276e9aa3ad29fd2b), UINT64_C(0xb0ad99098f7f2270),
 }};
 
-static const mzd_local_t L_128_128_20_16 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_16 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x33c7edf6f1b4446c), UINT64_C(0x3ac0d509ddb2efb4),
   UINT64_C(0xd1786ea519de10b6), UINT64_C(0xea9518db6a003325),
   UINT64_C(0x73b951265316fb35), UINT64_C(0x715d046b24c3c3fb),
@@ -2233,7 +2240,7 @@ static const mzd_local_t L_128_128_20_16 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xa064ab5ad44e507f), UINT64_C(0x544b4fb2ea261fc7),
 }};
 
-static const mzd_local_t L_128_128_20_17 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_17 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xbfc221f0dd573805), UINT64_C(0x1f8dca4176fb73ea),
   UINT64_C(0x02aa6988e669953b), UINT64_C(0x04964ee0c47b98aa),
   UINT64_C(0x02ac68bb231a7067), UINT64_C(0x230846f006aa1a90),
@@ -2364,7 +2371,7 @@ static const mzd_local_t L_128_128_20_17 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xd20ae97e6d8b8f1b), UINT64_C(0x6130a1d8b1bdbb1b),
 }};
 
-static const mzd_local_t L_128_128_20_18 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_18 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x00d9e44c7053f87c), UINT64_C(0xb98ab179c9fdbebb),
   UINT64_C(0x9f2fcaebf6ace40a), UINT64_C(0xedb0eeaaeb993d64),
   UINT64_C(0x7665217aa484da84), UINT64_C(0xb9a554c5d5d96c9f),
@@ -2495,7 +2502,7 @@ static const mzd_local_t L_128_128_20_18 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x5e2af266d60e6d4c), UINT64_C(0xd9d99ede23a399ca),
 }};
 
-static const mzd_local_t L_128_128_20_19 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t L_128_128_20_19 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xb3e3e0d606d92ada), UINT64_C(0xe3bb242edd66ad8e),
   UINT64_C(0x2c282a054b19ee2a), UINT64_C(0x28d9ff97414d30be),
   UINT64_C(0xe41db7123482ca22), UINT64_C(0xd7087ddac6b5d1a0),
@@ -2627,7 +2634,7 @@ static const mzd_local_t L_128_128_20_19 = { 128, 128, 2, 2, { 0 }, {
 }};
 
 #if !defined(REDUCED_LINEAR_LAYER)
-static const mzd_local_t K_128_128_20_0 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_0 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xfc6e5633b1b14b6b), UINT64_C(0x76818985a86a01e2),
   UINT64_C(0x0fb016685c4614be), UINT64_C(0xab372846fb6e0100),
   UINT64_C(0x0f73306f3e2ac52f), UINT64_C(0xbab30ef81fb688fc),
@@ -2758,7 +2765,7 @@ static const mzd_local_t K_128_128_20_0 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xfa15fa6a32fcaaa7), UINT64_C(0x2e42f81b55f8c96b),
 }};
 
-static const mzd_local_t K_128_128_20_1 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_1 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xf6f2fda07013db30), UINT64_C(0x084b3bb6fb95e14f),
   UINT64_C(0xbe1cbb21c4d1e505), UINT64_C(0x2c6a77d8604ccc4e),
   UINT64_C(0x712f6264a2c85436), UINT64_C(0xdd77318ff3263f00),
@@ -2889,7 +2896,7 @@ static const mzd_local_t K_128_128_20_1 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x07bd438c8d494610), UINT64_C(0x4f5042a5f8e17d48),
 }};
 
-static const mzd_local_t K_128_128_20_2 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_2 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xb0cb4b10806533ad), UINT64_C(0x360752761f687343),
   UINT64_C(0xe226d03f0c89c109), UINT64_C(0x7c021b086de1bb79),
   UINT64_C(0xe0bc98a58dc2deb3), UINT64_C(0x990ab16158b8d111),
@@ -3020,7 +3027,7 @@ static const mzd_local_t K_128_128_20_2 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x17867468a677149b), UINT64_C(0x3a2558d419c3b77d),
 }};
 
-static const mzd_local_t K_128_128_20_3 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_3 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x923854c060dee9d4), UINT64_C(0xf875733d270d07f7),
   UINT64_C(0xe33f56494921a9ba), UINT64_C(0x96deecc8de70b770),
   UINT64_C(0x46aeaf688ac48fef), UINT64_C(0xb21d1aca2847667c),
@@ -3151,7 +3158,7 @@ static const mzd_local_t K_128_128_20_3 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x9bab4c12c99c3cb3), UINT64_C(0x5838b6f5b8a1bdd9),
 }};
 
-static const mzd_local_t K_128_128_20_4 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_4 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x616238d8159d90af), UINT64_C(0x608c33242646aed3),
   UINT64_C(0x1e66899faf8567b9), UINT64_C(0xfd535b638940037b),
   UINT64_C(0x71adf9e13c08c004), UINT64_C(0x2b16248906cad908),
@@ -3282,7 +3289,7 @@ static const mzd_local_t K_128_128_20_4 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x7f26584b4ce7e7b9), UINT64_C(0xaaee3353e3947079),
 }};
 
-static const mzd_local_t K_128_128_20_5 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_5 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xf02eca7f77344754), UINT64_C(0x3dd13b9202c36309),
   UINT64_C(0x4ac8eb8d5311eb40), UINT64_C(0x6a11f7d565ceeb82),
   UINT64_C(0x95b9976bb69b9e9a), UINT64_C(0xb50e9b7e70f9f260),
@@ -3413,7 +3420,7 @@ static const mzd_local_t K_128_128_20_5 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xe10522e1d13fa7f7), UINT64_C(0xfa13c5926edfc95e),
 }};
 
-static const mzd_local_t K_128_128_20_6 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_6 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x93713a8ce1a2fd5c), UINT64_C(0x19c334b384c60207),
   UINT64_C(0x4a68de1eaad2bc01), UINT64_C(0x5c607d4da7059171),
   UINT64_C(0x56f53f9cdc6b296b), UINT64_C(0x580bf3b687eb9cde),
@@ -3544,7 +3551,7 @@ static const mzd_local_t K_128_128_20_6 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x5214886730aba192), UINT64_C(0x3f6bbc3ecdea1ab7),
 }};
 
-static const mzd_local_t K_128_128_20_7 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_7 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x2cd810c94f7cdb49), UINT64_C(0xe3ebf3503868217d),
   UINT64_C(0x2be4a69c22173e2c), UINT64_C(0x2bdf5710cbbd00cc),
   UINT64_C(0xe9655a74c663f692), UINT64_C(0xe16e99ca7f5143ac),
@@ -3675,7 +3682,7 @@ static const mzd_local_t K_128_128_20_7 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xc0577af0d46d01bc), UINT64_C(0xd2356b5babd02bf6),
 }};
 
-static const mzd_local_t K_128_128_20_8 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_8 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x71e2edad322f534c), UINT64_C(0xb590fa9a49263d02),
   UINT64_C(0x976827ac89a9eeb1), UINT64_C(0xbce0bc49eb826da7),
   UINT64_C(0x25c1bb7a7076ab4c), UINT64_C(0x4500b1f77d242614),
@@ -3806,7 +3813,7 @@ static const mzd_local_t K_128_128_20_8 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x4fbea9ba857171d6), UINT64_C(0xb8fadddd1c35e8c3),
 }};
 
-static const mzd_local_t K_128_128_20_9 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_9 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xb16908851d359a9b), UINT64_C(0x758df6ff439a3d4b),
   UINT64_C(0x5b0905255b9eac62), UINT64_C(0xc172d16dd93f3a7d),
   UINT64_C(0x3bfc42e8c1daaebf), UINT64_C(0xa363ac8b525cb596),
@@ -3937,7 +3944,7 @@ static const mzd_local_t K_128_128_20_9 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xfb84a1a85e5e2716), UINT64_C(0x68a85826dc14f77a),
 }};
 
-static const mzd_local_t K_128_128_20_10 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_10 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x8a77b375ec2f2748), UINT64_C(0xeb6b6e8c276fff92),
   UINT64_C(0x8fcefd58b5413227), UINT64_C(0x31cceb6cb9e52ee2),
   UINT64_C(0xcc7d262fa006424f), UINT64_C(0x04a96181f92582d4),
@@ -4068,7 +4075,7 @@ static const mzd_local_t K_128_128_20_10 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x6c2ad338ce69e82a), UINT64_C(0x22801bed07ad21df),
 }};
 
-static const mzd_local_t K_128_128_20_11 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_11 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x75c308a1b05badc3), UINT64_C(0xc9faf54cfbe196d8),
   UINT64_C(0xe12fa3909779016b), UINT64_C(0xaf7ecdffd5b1e030),
   UINT64_C(0x8ffeddf6f3b3c6dd), UINT64_C(0xc29c566a2ad11677),
@@ -4199,7 +4206,7 @@ static const mzd_local_t K_128_128_20_11 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xf8cd220fce341c5d), UINT64_C(0xcf734df406769425),
 }};
 
-static const mzd_local_t K_128_128_20_12 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_12 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x454b866a93f04a78), UINT64_C(0x91114c4759cc5b81),
   UINT64_C(0xe63ab0619612dcc2), UINT64_C(0xdeb7cf8a8173857a),
   UINT64_C(0xa6a84e129e430c5f), UINT64_C(0x65ea3e81a3e27bf8),
@@ -4330,7 +4337,7 @@ static const mzd_local_t K_128_128_20_12 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xb4d7f1ceb15a85d3), UINT64_C(0x680b244aa01ea220),
 }};
 
-static const mzd_local_t K_128_128_20_13 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_13 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x7b6971a1214c2b44), UINT64_C(0xab117f26d3037707),
   UINT64_C(0x97dd02dde6fe345b), UINT64_C(0x6c32ad53962ef6ce),
   UINT64_C(0x52c8e1c0dc344c56), UINT64_C(0x37b10feb2d0131c2),
@@ -4461,7 +4468,7 @@ static const mzd_local_t K_128_128_20_13 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x0eb1b3d4848d495d), UINT64_C(0x41624b9efdb86aee),
 }};
 
-static const mzd_local_t K_128_128_20_14 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_14 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x81f315a97e148f7a), UINT64_C(0xb25c726e74429046),
   UINT64_C(0x59d7a72298943fa6), UINT64_C(0x8d8c1bc68e3c91af),
   UINT64_C(0xfd9df160d26e7c66), UINT64_C(0x6fa0ca60af3a2b65),
@@ -4592,7 +4599,7 @@ static const mzd_local_t K_128_128_20_14 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x102aed0209e08fc9), UINT64_C(0x98c501a244d15b1d),
 }};
 
-static const mzd_local_t K_128_128_20_15 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_15 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x3f496cdabdfc013e), UINT64_C(0x11030f752917225f),
   UINT64_C(0x1a39a4cc364eee62), UINT64_C(0x1c415e4a2d46c430),
   UINT64_C(0x46bb557dc0d119b2), UINT64_C(0xbca3de3eca3f6fd1),
@@ -4723,7 +4730,7 @@ static const mzd_local_t K_128_128_20_15 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x99f1ce5815f02150), UINT64_C(0xa28507afb25e89b5),
 }};
 
-static const mzd_local_t K_128_128_20_16 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_16 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x202b8e4850eed0d8), UINT64_C(0x5eed9c7c62a5ff8e),
   UINT64_C(0xe12dfd60c1e70d32), UINT64_C(0xbf2e9af809df40c4),
   UINT64_C(0x5b32f35fcebaf094), UINT64_C(0x095ecef0b6f92f90),
@@ -4854,7 +4861,7 @@ static const mzd_local_t K_128_128_20_16 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xfff5b212eff4a860), UINT64_C(0x247ca765c40ce65b),
 }};
 
-static const mzd_local_t K_128_128_20_17 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_17 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x8970acb4f7f73185), UINT64_C(0x5a41ed5e4c0b8285),
   UINT64_C(0x267e5c3132b1ede0), UINT64_C(0x7940146dec066c75),
   UINT64_C(0x8eb467692cb4d8c2), UINT64_C(0x5bfcf7d09b28fe00),
@@ -4985,7 +4992,7 @@ static const mzd_local_t K_128_128_20_17 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x72ab0e1f9a6559c2), UINT64_C(0x0753d2db3051ac2f),
 }};
 
-static const mzd_local_t K_128_128_20_18 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_18 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xc490a55a6f86e8be), UINT64_C(0x832e942367808289),
   UINT64_C(0x3e085b69d9408a86), UINT64_C(0xd50722868fdf3ab1),
   UINT64_C(0x2609d553b8285b2e), UINT64_C(0x810f45f3d80ad931),
@@ -5116,7 +5123,7 @@ static const mzd_local_t K_128_128_20_18 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xd0e038258c634c61), UINT64_C(0xf8a9190265184265),
 }};
 
-static const mzd_local_t K_128_128_20_19 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_19 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x551f904c9d6d2917), UINT64_C(0x9e59a52c78851ab5),
   UINT64_C(0x4b0b284e01613b6c), UINT64_C(0x256ce96da8eae1ca),
   UINT64_C(0x7ae06fdb85a84e7f), UINT64_C(0x345b12d8ca731516),
@@ -5247,7 +5254,7 @@ static const mzd_local_t K_128_128_20_19 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x0f38368763c2beb2), UINT64_C(0x63070b5cd19b9d11),
 }};
 
-static const mzd_local_t K_128_128_20_20 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t K_128_128_20_20 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0xd19ee0537a5188f1), UINT64_C(0x385aa601aa44f469),
   UINT64_C(0x9956f02c187a93ca), UINT64_C(0x16e6655f7c461e1a),
   UINT64_C(0xa1a2cec0bbc1be9d), UINT64_C(0xd324018faa7e20cb),
@@ -5379,88 +5386,88 @@ static const mzd_local_t K_128_128_20_20 = { 128, 128, 2, 2, { 0 }, {
 }};
 
 #endif
-static const mzd_local_t C_128_128_20_0 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_0 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0x4070873bab23733b), UINT64_C(0x59040f95a862ef07),
 }};
 
-static const mzd_local_t C_128_128_20_1 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_1 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xfc9e64eed6d0b860), UINT64_C(0x2d01e35ba7798b0b),
 }};
 
-static const mzd_local_t C_128_128_20_2 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_2 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0x469ade2665ed09c9), UINT64_C(0x9e1d7d81662171c1),
 }};
 
-static const mzd_local_t C_128_128_20_3 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_3 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xd57367d77f65776e), UINT64_C(0xe52b290cd4777fd1),
 }};
 
-static const mzd_local_t C_128_128_20_4 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_4 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0x43e690e7db0794b3), UINT64_C(0xe736398e9dbc19aa),
 }};
 
-static const mzd_local_t C_128_128_20_5 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_5 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0x5790e68e21a63443), UINT64_C(0xebd4295a40958c00),
 }};
 
-static const mzd_local_t C_128_128_20_6 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_6 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xd6a43e8b12a5f970), UINT64_C(0xbc926ff297ff38b7),
 }};
 
-static const mzd_local_t C_128_128_20_7 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_7 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xfd72831d77189159), UINT64_C(0x8aeaf21272172815),
 }};
 
-static const mzd_local_t C_128_128_20_8 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_8 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xc2e2b5739b72813e), UINT64_C(0x5246977e3d29c34c),
 }};
 
-static const mzd_local_t C_128_128_20_9 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_9 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0x88cbeb2662b4e088), UINT64_C(0x008c852e93631bc6),
 }};
 
-static const mzd_local_t C_128_128_20_10 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_10 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0x903864bfc5b4a497), UINT64_C(0x114c84d88bbd88c9),
 }};
 
-static const mzd_local_t C_128_128_20_11 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_11 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xc82dc0b34ca72c00), UINT64_C(0xb77e1861f8827d6d),
 }};
 
-static const mzd_local_t C_128_128_20_12 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_12 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xa15f67ff468f9e9c), UINT64_C(0x02d5b975bd3428b3),
 }};
 
-static const mzd_local_t C_128_128_20_13 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_13 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0x99f13e1f346d0304), UINT64_C(0x4e7a7374cc63fe6c),
 }};
 
-static const mzd_local_t C_128_128_20_14 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_14 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0x490ee16c7852d04c), UINT64_C(0xb41f0dece52390a5),
 }};
 
-static const mzd_local_t C_128_128_20_15 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_15 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xf6ee3eaa57265ad8), UINT64_C(0x2ada2f0a778fd874),
 }};
 
-static const mzd_local_t C_128_128_20_16 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_16 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xa371f5d894a21004), UINT64_C(0x0cdddf9097484762),
 }};
 
-static const mzd_local_t C_128_128_20_17 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_17 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xaa15b47962c277a9), UINT64_C(0x26d212246cd00ac8),
 }};
 
-static const mzd_local_t C_128_128_20_18 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_18 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0xe813787d61a1c30a), UINT64_C(0x1c2933d55e2300bf),
 }};
 
-static const mzd_local_t C_128_128_20_19 = { 1, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t C_128_128_20_19 = { 1, 128, 2, 2, { 0 }, {
   UINT64_C(0x2678a63bf4f438b2), UINT64_C(0x7c778776bab589d1),
 }};
 
 #if defined(REDUCED_LINEAR_LAYER)
-static const mzd_local_t precomputed_round_key_matrix_linear_part_128_128_20 = { 128, 128, 2, 2, { 0 }, {
+GCC_EXT static const mzd_local_t precomputed_round_key_matrix_linear_part_128_128_20 = { 128, 128, 2, 2, { 0 }, {
   UINT64_C(0x7f6e7b7adabc4318), UINT64_C(0x76818984b3248786),
   UINT64_C(0x3a3cd67b6c4c501d), UINT64_C(0xab37284643366193),
   UINT64_C(0x5c1db5cfccda9501), UINT64_C(0xbab30ef977432daa),
@@ -5591,7 +5598,7 @@ static const mzd_local_t precomputed_round_key_matrix_linear_part_128_128_20 = {
   UINT64_C(0x998d749e77deb823), UINT64_C(0x2e42f818624b95bf),
 }};
 
-static const mzd_local_t precomputed_round_key_matrix_non_linear_part_128_128_20 = { 128, 640, 10, 12, { 0 }, {
+GCC_EXT static const mzd_local_t precomputed_round_key_matrix_non_linear_part_128_128_20 = { 128, 640, 10, 12, { 0 }, {
   UINT64_C(0x01d9067a1067d3c3), UINT64_C(0x37280b69301c0e4c), UINT64_C(0x2b77688738074854), UINT64_C(0x238ef1f42ada6bab), UINT64_C(0x295399513f769231), UINT64_C(0x1462252d11ef29d4), UINT64_C(0x199a14fb138632ab), UINT64_C(0x3a9a7a4c3d1ab39a), UINT64_C(0x35804798281fbfba), UINT64_C(0x38f1410926ca6a1a), UINT64_C(0x0000000000000000), UINT64_C(0x0000000000000000),
   UINT64_C(0x2ae660cb1030ec90), UINT64_C(0x26b145da0ae68546), UINT64_C(0x17e8a5052e5d361a), UINT64_C(0x07abb4ce196a7949), UINT64_C(0x2e4b27e106962d6b), UINT64_C(0x3b4a700a0ef465d7), UINT64_C(0x00bde7ec0ce06782), UINT64_C(0x21ecea8d1d761ff9), UINT64_C(0x3e8c344d33c912bb), UINT64_C(0x248b1d261e38a9d7), UINT64_C(0x0000000000000000), UINT64_C(0x0000000000000000),
   UINT64_C(0x1ba1e6f516386dbd), UINT64_C(0x0952a3f90c277c0c), UINT64_C(0x375c18551a215ad9), UINT64_C(0x3a6d535b1751614a), UINT64_C(0x0b74deca3dd2b628), UINT64_C(0x3a4950451b0f2b90), UINT64_C(0x12060e772a5f0411), UINT64_C(0x21996fa41ae43a0f), UINT64_C(0x138e5f191232919f), UINT64_C(0x2425f93d2f2b2939), UINT64_C(0x0000000000000000), UINT64_C(0x0000000000000000),

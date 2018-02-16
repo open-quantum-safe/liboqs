@@ -170,7 +170,7 @@ void oqs_sig_picnic_mpc_and_512_neon(uint32x4_t res[SC_PROOF][4], uint32x4_t con
 #endif
 
 #if defined(WITH_CUSTOM_INSTANCES)
-void mpc_and(mzd_local_t* const* res, mzd_local_t* const* first, mzd_local_t* const* second,
+void oqs_sig_picnic_mpc_and(mzd_local_t* const* res, mzd_local_t* const* first, mzd_local_t* const* second,
              mzd_local_t* const* r, view_t* view, unsigned viewshift, mzd_local_t* const* buffer) {
   mzd_local_t* b = buffer[0];
 

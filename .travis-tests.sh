@@ -52,8 +52,6 @@ fi
 
 if [[ ${ENABLE_SIG_PICNIC} == 0 ]];then
   enable_disable_str+=" --disable-sig-picnic"
-else
-  cd src/sig_picnic;sh ./build_picnic.sh;cd ../..;
 fi
 
 if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
