@@ -18,7 +18,7 @@ PRINT_RESET="tput sgr 0"
 
 if [ ${UNAME} = 'Darwin' ]
 then
-	ld -r $1 -o $1 -alias $2 $3
+	ld -r $1 -o $1 -alias _$2 _$3
 elif [ ${UNAME} = 'Linux' ]
 then
 	objcopy --redefine-sym $2=$3 $1

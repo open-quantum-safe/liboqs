@@ -27,8 +27,8 @@ KEM_DUMMY2_UPSTREAM_OBJECTS=src/kem/dummy2/upstream/dummy.o src/kem/dummy2/upstr
 	cd src/kem/dummy2/upstream && $(MAKE) $(MAKE_FLAGS_KEM_DUMMY2)
 	$(RM) $@
 	ar -r -c $@ $(KEM_DUMMY2_UPSTREAM_OBJECTS)
-	bash scripts/symbol_alias.sh $@ _crypto_kem_keypair _OQS_KEM_dummy2_keypair
-	bash scripts/symbol_alias.sh $@ _crypto_kem_enc _OQS_KEM_dummy2_encaps
-	bash scripts/symbol_alias.sh $@ _crypto_kem_dec _OQS_KEM_dummy2_decaps
+	bash scripts/symbol_alias.sh $@ crypto_kem_keypair OQS_KEM_dummy2_keypair
+	bash scripts/symbol_alias.sh $@ crypto_kem_enc OQS_KEM_dummy2_encaps
+	bash scripts/symbol_alias.sh $@ crypto_kem_dec OQS_KEM_dummy2_decaps
 	bash scripts/symbol_unexport.sh $@ src/kem/dummy2/unexported_symbols_list.txt
 	$(RM) $(KEM_DUMMY2_UPSTREAM_OBJECTS)

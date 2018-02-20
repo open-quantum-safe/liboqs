@@ -27,14 +27,14 @@ SRCS_KEM_NEWHOPE_512_CCA_KEM=src/kem/newhopenist/upstream/Optimized_Implementati
 OBJS_KEM_NEWHOPE_512_CCA_KEM=$(SRCS_KEM_NEWHOPE_512_CCA_KEM:.c=.o)
 
 src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/%.o: src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/%.c
-	$(CC) -c -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 $(ARCHIVES_KEM_NEWHOPENIST_512_CCA_KEM): $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
 	$(RM) $@
 	ar -r -c $@ $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
-	bash scripts/symbol_alias.sh $@ _crypto_kem_keypair _OQS_KEM_newhope_512_cca_kem_keypair
-	bash scripts/symbol_alias.sh $@ _crypto_kem_enc _OQS_KEM_newhope_512_cca_kem_encaps
-	bash scripts/symbol_alias.sh $@ _crypto_kem_dec _OQS_KEM_newhope_512_cca_kem_decaps
+	bash scripts/symbol_alias.sh $@ crypto_kem_keypair OQS_KEM_newhope_512_cca_kem_keypair
+	bash scripts/symbol_alias.sh $@ crypto_kem_enc OQS_KEM_newhope_512_cca_kem_encaps
+	bash scripts/symbol_alias.sh $@ crypto_kem_dec OQS_KEM_newhope_512_cca_kem_decaps
 	bash scripts/symbol_unexport.sh $@ src/kem/newhopenist/unexported_symbols_list.txt
 	$(RM) $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
 
@@ -47,13 +47,13 @@ SRCS_KEM_NEWHOPE_1024_CCA_KEM=src/kem/newhopenist/upstream/Optimized_Implementat
 OBJS_KEM_NEWHOPE_1024_CCA_KEM=$(SRCS_KEM_NEWHOPE_1024_CCA_KEM:.c=.o)
 
 src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/%.o: src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/%.c
-	$(CC) -c -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 $(ARCHIVES_KEM_NEWHOPENIST_1024_CCA_KEM): $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
 	$(RM) $@
 	ar -r -c $@ $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
-	bash scripts/symbol_alias.sh $@ _crypto_kem_keypair _OQS_KEM_newhope_1024_cca_kem_keypair
-	bash scripts/symbol_alias.sh $@ _crypto_kem_enc _OQS_KEM_newhope_1024_cca_kem_encaps
-	bash scripts/symbol_alias.sh $@ _crypto_kem_dec _OQS_KEM_newhope_1024_cca_kem_decaps
+	bash scripts/symbol_alias.sh $@ crypto_kem_keypair OQS_KEM_newhope_1024_cca_kem_keypair
+	bash scripts/symbol_alias.sh $@ crypto_kem_enc OQS_KEM_newhope_1024_cca_kem_encaps
+	bash scripts/symbol_alias.sh $@ crypto_kem_dec OQS_KEM_newhope_1024_cca_kem_decaps
 	bash scripts/symbol_unexport.sh $@ src/kem/newhopenist/unexported_symbols_list.txt
 	$(RM) $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
