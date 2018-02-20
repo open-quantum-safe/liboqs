@@ -39,7 +39,7 @@ Detailed information about each algorithm and implementations can be found in th
 Building and Running on Linux and macOS
 ---------------------------------------
 
-Builds have been tested on Mac OS X 10.11.6, macOS 10.12.5, Ubuntu 16.04.1.
+Builds have been tested on Mac OS X 10.10.5 (gcc/clang), Mac OS X 10.11.6 (clang), macOS 10.12.5 (clang), Ubuntu 16.04.1 (gcc).
 
 ### Install dependencies for macOS
 
