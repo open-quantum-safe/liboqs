@@ -89,8 +89,7 @@ clean:
 	$(RM) $(EXAMPLE_PROGRAMS)
 
 check_namespacing: all
-	nm -g liboqs.a | grep ' T ' | grep -v ' _OQS'; test $$? -eq 1
-	nm -g liboqs.a | grep ' D ' | grep -v ' _OQS'; test $$? -eq 1
+	.travis/global-namespace-check.sh
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v upstream | xargs $(CLANGFORMAT) -style=file -i

@@ -1,0 +1,23 @@
+language: c
+dist: trusty
+sudo: false
+
+matrix:
+  include:
+  - os: linux
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - gcc-7
+        - libssl-dev
+    env:
+      - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+    before_install:
+    - sh .travis/install-clang-format-linux.sh
+  - os: osx
+    compiler: clang
+    
+script:
+  - .travis/all-tests.sh
