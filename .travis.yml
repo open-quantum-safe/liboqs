@@ -12,7 +12,7 @@ matrix:
         packages:
         - gcc-7
         - libssl-dev
-        - libtool-bin
+        - libtool
     env:
       - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
   - os: osx
