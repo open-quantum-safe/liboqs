@@ -12,12 +12,11 @@ matrix:
         packages:
         - gcc-7
         - libssl-dev
+        - libtool-bin
     env:
       - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-    before_install:
-    - sh .travis/install-clang-format-linux.sh
   - os: osx
     compiler: clang
-    
+
 script:
   - .travis/all-tests.sh
