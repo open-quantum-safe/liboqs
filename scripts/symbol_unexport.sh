@@ -4,7 +4,7 @@
 # Unexports a given list of symbols in a library file
 ###
 
-if [ $# -ne 3 ]
+if [ $# -ne 2 ]
 then
 	echo "Usage: symbol_unexport.sh file.a symbols.txt"
 	echo ""
