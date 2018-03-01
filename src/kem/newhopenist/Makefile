@@ -27,7 +27,7 @@ SRCS_KEM_NEWHOPE_512_CCA_KEM=src/kem/newhopenist/upstream/Optimized_Implementati
 OBJS_KEM_NEWHOPE_512_CCA_KEM=$(SRCS_KEM_NEWHOPE_512_CCA_KEM:.c=.o)
 
 src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/%.o: src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/%.c
-	$(CC) -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c -O3 -std=c99 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 $(ARCHIVES_KEM_NEWHOPENIST_512_CCA_KEM): $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
 	$(RM) $@
@@ -47,7 +47,7 @@ SRCS_KEM_NEWHOPE_1024_CCA_KEM=src/kem/newhopenist/upstream/Optimized_Implementat
 OBJS_KEM_NEWHOPE_1024_CCA_KEM=$(SRCS_KEM_NEWHOPE_1024_CCA_KEM:.c=.o)
 
 src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/%.o: src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/%.c
-	$(CC) -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c -O3 -std=c99 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 $(ARCHIVES_KEM_NEWHOPENIST_1024_CCA_KEM): $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
 	$(RM) $@
