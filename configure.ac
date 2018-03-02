@@ -88,7 +88,7 @@ DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
 ######################################################################
 
 ARG_DISBL_SET([aes-ni], [enable AES-NI.])
-AM_CONDITIONAL([aes_ni], [test "x$aes_ni" = xtrue])
+AM_CONDITIONAL([aes_ni], [test "x$aes_ni" = xtrue]) # disabled on ARM below
 AM_CONDITIONAL([USE_AES_NI], [test "x$aes_ni" = xtrue])
 
 ARG_ENABL_SET([openssl], [enable OPENSSL.])
@@ -166,11 +166,18 @@ if test x"$linux" = x"true"; then
         AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc"
         arm64=true
         ;;
+    arm* )
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DARM"
+        AM_CONDITIONAL([aes_ni], [false])
+        AM_CONDITIONAL([USE_AES_NI], [false])
+        arm=true
+        ;;
   esac
 fi
 
 AM_CONDITIONAL([X86_64], [test "x$x86_64" = xtrue])
 AM_CONDITIONAL([ARM64], [test "x$arm64" = xtrue])
+AM_CONDITIONAL([ARM], [test "x$arm" = xtrue])
 
 # Common sources
 SRCDIR=" src/common"
@@ -231,7 +238,8 @@ fi
 
 # Flags
 AM_CPPFLAGS=${AM_CPPFLAGS}" -g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
-if test x"$aes_ni" = x"true"; then
+# if test x"$aes_ni" = x"true" && test x"$ARM" = x"false"; then
+if test -z "${aes_ni_TRUE}"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DAES_ENABLE_NI"
 fi
 if test x"$openssl" = x"true"; then
