@@ -93,7 +93,7 @@ if USE_SIDH_IQC
 	cp src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h $(includedir)/oqs
 endif
 
-noinst_bin_PROGRAMS = test_kex test_aes test_rand
+noinst_bin_PROGRAMS = test_kex test_aes test_rand test_sha3
 if USE_KEX_LWE_FRODO
 noinst_bin_PROGRAMS += minimal_kex_oqs
 endif
@@ -174,12 +174,17 @@ test_rand_CPPFLAGS += -maes -msse2
 endif
 endif # USE_OPENSSL
 
+test_sha3_LDADD =  liboqs.la -lm
+test_sha3_SOURCES = src/crypto/sha3/test_sha3.c
+test_sha3_CPPFLAGS = -I./include
+test_sha3_CPPFLAGS += $(AM_CPPFLAGS)
 
 test: clean-tests
 	make
 	./test_kex --quiet
 	./test_rand --quiet
 	./test_aes
+	./test_sha3
 if USE_SIG_PICNIC
 	./test_sig
 	./minimal_sig_oqs
@@ -235,7 +240,7 @@ if USE_SIDH_IQC
 endif
 
 clean-tests:
-	rm -f test_kex test_rand test_aes
+	rm -f test_kex test_rand test_aes test_sha3
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i

@@ -10,7 +10,7 @@
  *
  * [1] C. Peikert, "Lattice cryptography for the internet", in Post-Quantum Cryptography -
  *     6th International Workshop (PQCrypto 2014), LNCS 8772, pp. 197-219. Springer, 2014.
- * [2] E. Alkim, L. Ducas, T. Pöppelmann and P. Schwabe, "Post-quantum key exchange - a new
+ * [2] E. Alkim, L. Ducas, T. Poppelmann and P. Schwabe, "Post-quantum key exchange - a new
  *     hope", IACR Cryptology ePrint Archive, Report 2015/1092, 2015.
  *
  ******************************************************************************************/
@@ -18,6 +18,7 @@
 #include "LatticeCrypto_priv.h"
 #include "oqs/rand.h"
 #include <oqs/sha3.h>
+#include <string.h>
 
 extern const int32_t psi_rev_ntt1024_12289[1024];
 extern const int32_t omegainv_rev_ntt1024_12289[1024];
@@ -287,6 +288,8 @@ CRYPTO_STATUS oqs_rlwe_msrln16_generate_a(uint32_t *a, const unsigned char *seed
 	unsigned int nblocks = 16;
 	uint8_t buf[OQS_SHA3_SHAKE128_RATE * 16]; // was * nblocks, but VS doesn't like this buf init
 	uint64_t state[OQS_SHA3_STATESIZE];
+	memset(buf, 0, sizeof(buf));
+	memset(state, 0, sizeof(state));
 	OQS_SHA3_shake128_absorb(state, seed, OQS_RLWE_MSRLN16_SEED_BYTES);
 	OQS_SHA3_shake128_squeezeblocks((unsigned char *) buf, nblocks, state);
 
