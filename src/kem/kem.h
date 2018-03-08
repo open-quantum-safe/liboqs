@@ -18,6 +18,7 @@ enum OQS_KEM_alg_name {
 	OQS_KEM_alg_frodokem_976_cshake,
 	OQS_KEM_alg_newhope_512_cca_kem,
 	OQS_KEM_alg_newhope_1024_cca_kem,
+	OQS_KEM_alg_BIG_QUAKE_1,
 	// EDIT-WHEN-ADDING-KEM
 	OQS_KEM_alg_last
 };
@@ -54,6 +55,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_dummy2.h>
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
+#include <oqs/kem_BIGQUAKE.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif

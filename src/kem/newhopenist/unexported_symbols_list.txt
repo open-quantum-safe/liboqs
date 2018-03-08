@@ -7,7 +7,6 @@ _shake128_squeezeblocks
 _shake256
 _crypto_kem_dec
 _crypto_kem_enc
-_crypto_kem_keypair
 _bitrev_vector
 _mul_coefficients
 _ntt

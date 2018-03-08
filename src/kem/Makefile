@@ -20,4 +20,5 @@ include src/kem/dummy1/Makefile
 include src/kem/dummy2/Makefile
 include src/kem/frodokem/Makefile
 include src/kem/newhopenist/Makefile
+include src/kem/BIG_QUAKE/Makefile
 # EDIT-WHEN-ADDING-KEM

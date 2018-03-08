@@ -2,7 +2,11 @@
 
 KEMS_TO_ENABLE=dummy1 dummy2 \
 	frodokem_640_aes frodokem_976_aes frodokem_640_cshake frodokem_976_cshake \
-	newhope_512_cca_kem newhope_1024_cca_kem # EDIT-WHEN-ADDING-KEM
+	newhope_512_cca_kem newhope_1024_cca_kem BIG_QUAKE_1 # EDIT-WHEN-ADDING-KEM
+
+#KEMS_TO_ENABLE=dummy2 \
+	newhope_1024_cca_kem # EDIT-WHEN-ADDING-KEM
+
 KEM_DEFAULT=dummy1
 
 ARCH=x64
@@ -13,14 +17,14 @@ OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
 OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib
 CFLAGS=
 LDFLAGS=
-CLANGFORMAT=clang-format
+CLANGFORMAT=clang-format-3.9
 
 # NOTHING AFTER THIS SHOULD NEED TO BE CHANGED BY THE PERSON COMPILING
 
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
 CFLAGS+=-O2 -std=c11 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
-LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto
+LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
 all: mkdirs headers liboqs tests speeds examples
 
@@ -62,7 +66,10 @@ headers: config_h $(HEADERS)
 liboqs: mkdirs headers $(OBJECTS) $(ARCHIVES)
 	$(RM) liboqs_tmp.a liboqs.a
 	ar -r -c liboqs_tmp.a $(OBJECTS)
-	libtool -static -o liboqs.a liboqs_tmp.a $(ARCHIVES)
+	mkdir archive_temp
+	cp liboqs_tmp.a $(ARCHIVES) archive_temp
+	./scripts/build_archive
+	rm -rf archive_temp
 	$(RM) liboqs_tmp.a
 
 TEST_PROGRAMS=test_kem
