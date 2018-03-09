@@ -34,8 +34,6 @@ enum OQS_KEX_alg_name {
 	OQS_KEX_alg_rlwe_newhope_avx2,
 };
 
-typedef struct OQS_KEX OQS_KEX;
-
 /**
  * OQS key exchange object
  */
@@ -98,7 +96,7 @@ typedef struct OQS_KEX {
 	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure
 	 */
 	OQS_STATUS(*alice_0)
-	(OQS_KEX *k, void **alive_priv, uint8_t **alice_msg, size_t *alice_msg_len);
+	(struct OQS_KEX *k, void **alive_priv, uint8_t **alice_msg, size_t *alice_msg_len);
 
 	/**
 	 * Pointer to a function for shared key generation by Bob.
@@ -113,7 +111,7 @@ typedef struct OQS_KEX {
 	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure
 	 */
 	OQS_STATUS(*bob)
-	(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
+	(struct OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
 
 	/**
 	 * Pointer to a function for shared key generation by Alice.
@@ -127,7 +125,7 @@ typedef struct OQS_KEX {
 	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure
 	 */
 	OQS_STATUS(*alice_1)
-	(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len);
+	(struct OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len);
 
 	/**
 	 * Pointer to a function for freeing Alice's private key
@@ -135,14 +133,14 @@ typedef struct OQS_KEX {
 	 * @param k                Key exchange structure
 	 * @param alice_priv       Alice's private key
 	 */
-	void (*alice_priv_free)(OQS_KEX *k, void *alice_priv);
+	void (*alice_priv_free)(struct OQS_KEX *k, void *alice_priv);
 
 	/**
 	 * Pointer to a function for freeing the allocated key exchange structure
 	 *
 	 * @param k                Key exchange structure
 	 */
-	void (*free)(OQS_KEX *k);
+	void (*free)(struct OQS_KEX *k);
 
 } OQS_KEX;
 
