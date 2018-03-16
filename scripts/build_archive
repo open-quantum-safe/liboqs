@@ -11,49 +11,44 @@ for c in `find . -name "*.a"`;do
   cd ..
 done
 
-#Find duplicate object files (by name) across all the algorithms and their
-#implementations
+#Find duplicate symbols 
+
+find_dup() {
+  symbs=$1
+  array=()
+  oldsymb='' 
+  for symb in $symbs;do
+    newsymb=$symb
+    if [ ! -z "$oldsymb" ];then
+      if [ "$newsymb" = "$oldsymb" ];then
+        array+=' '
+        array+=$oldsymb
+      fi
+    fi
+    oldsymb=$newsymb
+  done
+  echo ${array[@]}
+}
+
+#Find all the object files (by name) which occur more than once 
+#across all the algorithms and their implementations
 
 objs=`find . -name "*.o" | awk  'BEGIN { FS = "/" } ; {print $3}'| sort`
-array=()
-oldobj='' 
-for obj in $objs;do
-  newobj=$obj
-#  echo $newobj
-  if [ ! -z "$oldobj" ];then
-    if [ "$newobj" = "$oldobj" ];then
-#      echo $newobj
-#      echo $oldobj
-      array+=' '
-      array+=$oldobj
-    fi
-  fi
-    oldobj=$newobj
-done
+dupes=`find_dup "$objs" | tr ' ' '\n' | uniq`
 
-dupes=`echo ${array[@]}|tr ' ' '\n'|uniq`
-#echo $dupes
-
-#Find unique object files by content (among files with duplicate names) across all the algorithms and their
-#implementations
+#Find unique object files by content (among files with duplicate names)
+#across all the algorithms and their implementations
 
 for dupe in $dupes;do
-#  echo $dupe
   different=0
   oldobj1=''
   newobjs=`find . -name "$dupe"`
-# echo $newobjs
   for newobj in $newobjs;do 
-#   echo $newobj
     if [ ! -z "$oldobj1" ];then
       m1=`md5sum $newobj| awk '{print $1}'`
       m2=`md5sum $oldobj1 | awk '{print $1}'`
-#     echo $m1
-#     echo $m2
       if [ "$m1" != "$m2" ];then
         different=1
-#       echo $m1
-#       echo $m2
         unique_dup+=' '
         unique_dup+=$oldobj1
       fi
@@ -66,16 +61,56 @@ for dupe in $dupes;do
   fi
 done
 
-#Make content-wise unique file namewise-unique too by appending a counter value.
+#Files contentwise unique but namewise non-unique
+#Make content-wise unique file namewise-unique too by appending a counter value
+#to the filename and then resolve colliding symbols.
 
 unique_dupes=`echo ${unique_dup[@]}`
+
 var=1
 for unique_dup in ${unique_dupes};do
-  unique=`echo ${unique_dup} | sed 's/\(.*\)\(.o\)/\1_'$var'\2/'`
-# echo $unique
+  unique=`echo ${unique_dup} | sed 's/\(.*\)\(.o\)/\1_'${var}OQS'\2/'`
   mv ${unique_dup} $unique
   var=$((var+1))
 done
+
+#Look for changed files (i.e. suffixed with OQS), update symbols for each implementation
+
+resolve_local_symbol_collision() {
+  for libdir in $1;do
+    cd $libdir
+    files=`find . -name "*OQS.o"`
+    for file in $files;do
+      symbols=`nm $file | grep " $2 "| awk '{print $3}'`
+      for symbol in $symbols;do
+        case "$symbol" in 
+          *OQS*)
+            continue
+          ;;
+        esac
+        var=$((var+1))
+        objcopy --redefine-sym $symbol=${symbol}_$var $file
+        all_files=`find . -name "*.o"`
+        for nfile in ${all_files};do
+          usymbol=`nm $nfile | grep " U "| grep "\<$symbol\>" | awk '{print $2}'`
+          if [ ! -z "$usymbol" ];then
+            if [ "$usymbol" = "$symbol" ];then
+              objcopy --redefine-sym $symbol=${symbol}_$var $nfile
+            fi
+          fi
+        done
+      done
+    done
+    cd ..
+  done
+}
+
+
+libdirs=`find . -type d -name "*.a_1"`
+#Resolve function symbols
+resolve_local_symbol_collision "$libdirs" "T"
+#Resolve data symbols
+resolve_local_symbol_collision "$libdirs" "D" 
 
 #Aggregate all the updated object files in a new directory 
 
@@ -85,87 +120,58 @@ for obj in $objs;do
   cp -f $obj final_temp/
 done
 
+#Resolve collision globally
+#Here the general idea is to find colliding symbols
+#in merged directory and then going back to the library's
+#local directory to patch symbols to prevent collision
+
 cd final_temp
+
+resolve_global_symbol_collision() {
+  for dupy in $1;do
+    for fil in $2;do
+     sym=$(nm $fil | grep " $3 "|  awk '{print $3}' |   grep "\<$dupy\>")
+     if [ ! -z "$sym" ];then
+        if [ "$sym" = "$dupy" ];then
+          file_a=`echo $fil | sed 's/.\/\(.*\)/\1/g'`
+          cd ..   
+          a=`find .  -name  ${file_a} | grep -v "$4"`
+          for filepath in $a; do
+            filedir=`echo $filepath |awk -F "/" '{print $2}'`
+            cd $filedir
+            obs=`find . -name "*.o"`
+            for ob in $obs;do
+              objcopy --redefine-sym $sym=${sym}_$var $ob
+            done
+            cp -f *.o ../"$4"
+            cd ..
+          done
+          cd "$4"
+          var=$((var+1))
+        fi 
+      fi
+    done
+  done
+}
+
+
+#Resolve function symbols 
+
+dup_symbols=`find . -name "*.o" | xargs nm| grep ' T '|  awk '{print $3}' | sort`
+dupes=`find_dup "${dup_symbols}" | uniq`
+files=`find . -name "*.o"`
+#Rename T and corresponding U symbols in library's local directory
+resolve_global_symbol_collision "$dupes" "$files" "T" "final_temp"
+
+#Resolve data symbols
+
+dup_symbols=`find . -name "*.o" | xargs nm| grep ' D '|  awk '{print $3}' | sort`
+dupes=`find_dup "${dup_symbols}" | tr ' ' '\n' | uniq`
+files=`find . -name "*.o"`
+#Rename D and corresponding U symbols in library's local directory
+resolve_global_symbol_collision "$dupes" "$files" "D" "final_temp"
+
 ar cr liboqs.a *.o 
 cp liboqs.a ../..
 cd ../..
-
-#Compile test_kem.c to collect linking errors for resolution later
-
-gcc src/kem/test_kem.c liboqs.a -o test_kem  -O2 -std=c11 -Iinclude -I/usr/local/opt/openssl/include -Wno-unused-function -Werror -Wpedantic -Wall -Wextra  -L/usr/local/opt/openssl/lib -lcrypto -lm  >t 2>&1 
-
-cat t | grep -v data | grep -v collect2| grep -v Warning > func
-awk '{ printf "%s", $0; if (NR % 3 == 0) print ""; else printf " " }' func > func_merged
-
-#Linking errors related to function name collision
-#Below is used to get symbols and the corresponding object files where the
-#errors are happening 
-
-funcs_collision=$(cat func_merged | tr '(' ' ' | tr ')' ' '| tr -d ''\''' | tr -d '`' | tr -d ':'| awk '{print $2" "$13" "$5}')
-
-cd archive_temp/final_temp
-
-
-#Rename the symbols to prevent function name collision
-
-var=1
-first=
-second=
-third=
-counter=1
-for foo in ${funcs_collision};do
-  first=$foo
-  if [ $((var%3)) -eq 0 ];then
-    objcopy --redefine-sym $first=${first}_$counter $third
-    counter=$((counter+1))
-    objcopy --redefine-sym $first=${first}_$counter $second
-    counter=$((counter+1))
-    #echo $third $second $first
-  fi
-  if [ $((var%3)) -eq 2 ];then
-    third=$second
-  fi
-  second=$first
-  var=$((var+1))
-done
-
-cd ../..
-
-#Linking errors related to data section
-
-data_collison=$(cat t | grep data |awk '{ printf "%s", $0; if (NR % 2 == 0) print ""; else printf " " }' |  tr '(' ' ' | tr ')' ' '| tr -d ''\''' | tr -d '`' | tr -d ':'| awk '{print $2" "$9" "$7}')
-
-
-cd archive_temp/final_temp
-
-
-#Rename the symbols to prevent data name collision
-
-var=1
-for foo in ${data_collison};do
-  first=$foo
-  if [ $((var%3)) -eq 0 ];then
-    objcopy --redefine-sym $first=${first}_$counter $third
-    counter=$((counter+1))
-    objcopy --redefine-sym $first=${first}_$counter $second
-    counter=$((counter+1))
-    #echo $third $second $first
-  fi
-  if [ $((var%3)) -eq 2 ];then
-    third=$second
-  fi
-  second=$first
-  var=$((var+1))
-done
-
-#create archive and cleanup
-
-rm -f liboqs.a
-ar cr liboqs.a *.o 
-cp liboqs.a ../..
-cd ../..
-rm -f t func func_merged
-
-
-
 

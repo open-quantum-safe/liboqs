@@ -4,8 +4,6 @@ KEMS_TO_ENABLE=dummy1 dummy2 \
 	frodokem_640_aes frodokem_976_aes frodokem_640_cshake frodokem_976_cshake \
 	newhope_512_cca_kem newhope_1024_cca_kem BIG_QUAKE_1 # EDIT-WHEN-ADDING-KEM
 
-#KEMS_TO_ENABLE=dummy2 \
-	newhope_1024_cca_kem # EDIT-WHEN-ADDING-KEM
 
 KEM_DEFAULT=dummy1
 
