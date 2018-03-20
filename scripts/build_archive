@@ -39,139 +39,130 @@ dupes=`find_dup "$objs" | tr ' ' '\n' | uniq`
 #Find unique object files by content (among files with duplicate names)
 #across all the algorithms and their implementations
 
+var=0
+map=()
+oldstr=
+dif=0
+same=0
 for dupe in $dupes;do
-  different=0
-  oldobj1=''
-  newobjs=`find . -name "$dupe"`
-  for newobj in $newobjs;do 
-    if [ ! -z "$oldobj1" ];then
-      m1=`md5sum $newobj| awk '{print $1}'`
-      m2=`md5sum $oldobj1 | awk '{print $1}'`
+  str=
+  oldstr=
+  newobjs=`find . -name "$dupe"|sort`
+  for newstr in $newobjs;do 
+    if [ ! -z "$oldstr" ];then
+      m1=`md5sum $newstr| awk '{print $1}'`
+      m2=`md5sum $oldstr | awk '{print $1}'`
       if [ "$m1" != "$m2" ];then
-        different=1
-        unique_dup+=' '
-        unique_dup+=$oldobj1
+        if [ $dif -eq 0 ];then
+          if [ $same -eq 0 ];then
+            str+=$oldstr
+          else
+            same=0
+            str+=' ' 
+            str+=$oldstr
+          fi
+          dif=1 
+        else
+          str+=';' 
+            str+=$oldstr
+        fi 
+      else
+        if [ $same -eq 0 ];then
+          if [ $dif -eq 0 ];then
+            str+=$oldstr
+          else
+            dif=0
+            str+=';' 
+            str+=$oldstr
+          fi
+          same=1
+        else
+            str+=' ' 
+            str+=$oldstr
+        fi
       fi
     fi
-    oldobj1=$newobj
+    oldstr=$newstr
   done
-  if [ $different -eq 1 ];then
-    unique_dup+=' '
-    unique_dup+=$oldobj1
+    if [ $dif -eq 1 ];then
+    dif=0
+    str+=';' 
+    str+=$newstr
   fi
+  if [ $same -eq 1 ];then
+    same=0
+    str+=' ' 
+    str+=$newstr
+  fi
+
+  case "$str" in 
+  *\;*)
+    map+=("$var"="$str")
+    var=$((var+1))
+    ;;
+    *)
+    ;;
+  esac
 done
 
-#Files contentwise unique but namewise non-unique
-#Make content-wise unique file namewise-unique too by appending a counter value
-#to the filename and then resolve colliding symbols.
 
-unique_dupes=`echo ${unique_dup[@]}`
+:<<'END'
+Make file names, text and data symbols unique.  
+END
 
-var=1
-for unique_dup in ${unique_dupes};do
-  unique=`echo ${unique_dup} | sed 's/\(.*\)\(.o\)/\1_'${var}OQS'\2/'`
-  mv ${unique_dup} $unique
-  var=$((var+1))
-done
-
-#Look for changed files (i.e. suffixed with OQS), update symbols for each implementation
-
-resolve_local_symbol_collision() {
-  for libdir in $1;do
-    cd $libdir
-    files=`find . -name "*OQS.o"`
-    for file in $files;do
-      symbols=`nm $file | grep " $2 "| awk '{print $3}'`
-      for symbol in $symbols;do
-        case "$symbol" in 
+len=${#map[@]}
+k=0
+while [  $k -lt $len ]; do
+  str=`echo ${map[$k]} | awk -F '=' '{print $2}'`
+  IFS=';'; for word in $str; do 
+    IFS=' ';for w in $word;do
+    unique=$(echo $w | sed 's/\(.*\)\(.o\)/\1_'${var}'OQS\2/')
+      mv $w $unique
+      libdir=$(echo $unique | sed 's#./\(.*\)/.*#\1#')
+      tsymbols=$(nm $unique | grep " T "| awk '{print $3}')
+      unset IFS
+      for tsymbol in $tsymbols;do
+        case "$tsymbol" in 
           *OQS*)
             continue
           ;;
         esac
-        var=$((var+1))
-        objcopy --redefine-sym $symbol=${symbol}_$var $file
-        all_files=`find . -name "*.o"`
-        for nfile in ${all_files};do
-          usymbol=`nm $nfile | grep " U "| grep "\<$symbol\>" | awk '{print $2}'`
-          if [ ! -z "$usymbol" ];then
-            if [ "$usymbol" = "$symbol" ];then
-              objcopy --redefine-sym $symbol=${symbol}_$var $nfile
-            fi
+        objs=`find $libdir -name "*.o"`
+        for obj in $objs;do
+          if [ ! -z "$tsymbol" ];then
+            objcopy --redefine-sym $tsymbol=${tsymbol}_$var $obj
+          fi
+        done
+      done
+
+      tsymbols=$(nm $unique | grep " D "| awk '{print $3}')
+      for tsymbol in $tsymbols;do
+        case "$tsymbol" in 
+          *OQS*)
+            continue
+          ;;
+        esac
+        objs=`find $libdir -name "*.o"`
+        for obj in $objs;do
+          if [ ! -z "$tsymbol" ];then
+            objcopy --redefine-sym $tsymbol=${tsymbol}_$var $obj
           fi
         done
       done
     done
-    cd ..
+    var=$((var+1))
   done
-}
-
-
-libdirs=`find . -type d -name "*.a_1"`
-#Resolve function symbols
-resolve_local_symbol_collision "$libdirs" "T"
-#Resolve data symbols
-resolve_local_symbol_collision "$libdirs" "D" 
-
-#Aggregate all the updated object files in a new directory 
-
-mkdir final_temp
-objs=`find . -name "*.o"`
-for obj in $objs;do
-  cp -f $obj final_temp/
+   k=$((k+1)) 
 done
 
-#Resolve collision globally
-#Here the general idea is to find colliding symbols
-#in merged directory and then going back to the library's
-#local directory to patch symbols to prevent collision
+unset IFS
+mkdir final_temp
+ob=$(find . -name "*.o")
+for obj in $ob;do
+  cp $obj final_temp
+done
 
 cd final_temp
-
-resolve_global_symbol_collision() {
-  for dupy in $1;do
-    for fil in $2;do
-     sym=$(nm $fil | grep " $3 "|  awk '{print $3}' |   grep "\<$dupy\>")
-     if [ ! -z "$sym" ];then
-        if [ "$sym" = "$dupy" ];then
-          file_a=`echo $fil | sed 's/.\/\(.*\)/\1/g'`
-          cd ..   
-          a=`find .  -name  ${file_a} | grep -v "$4"`
-          for filepath in $a; do
-            filedir=`echo $filepath |awk -F "/" '{print $2}'`
-            cd $filedir
-            obs=`find . -name "*.o"`
-            for ob in $obs;do
-              objcopy --redefine-sym $sym=${sym}_$var $ob
-            done
-            cp -f *.o ../"$4"
-            cd ..
-          done
-          cd "$4"
-          var=$((var+1))
-        fi 
-      fi
-    done
-  done
-}
-
-
-#Resolve function symbols 
-
-dup_symbols=`find . -name "*.o" | xargs nm| grep ' T '|  awk '{print $3}' | sort`
-dupes=`find_dup "${dup_symbols}" | uniq`
-files=`find . -name "*.o"`
-#Rename T and corresponding U symbols in library's local directory
-resolve_global_symbol_collision "$dupes" "$files" "T" "final_temp"
-
-#Resolve data symbols
-
-dup_symbols=`find . -name "*.o" | xargs nm| grep ' D '|  awk '{print $3}' | sort`
-dupes=`find_dup "${dup_symbols}" | tr ' ' '\n' | uniq`
-files=`find . -name "*.o"`
-#Rename D and corresponding U symbols in library's local directory
-resolve_global_symbol_collision "$dupes" "$files" "D" "final_temp"
-
 ar cr liboqs.a *.o 
 cp liboqs.a ../..
 cd ../..
-
