@@ -67,6 +67,7 @@ This will generate:
 - `liboqs.a`: A static library with implementations for the algorithms listed in "Contents" above.
 - `test_rand`: A simple test harness for the random number generator.  This will test the distance of PRNG output from uniform using statistical distance.
 - `test_aes`: A simple test harness for AES.  This will test the correctness of the C implementation (and of the AES-NI implementation, if not disabled) of AES, and will compare the speed of these implementations against OpenSSL's AES implementation.
+- `test_sha3`: A simple test harness for SHA-3.  This will test the correctness of the C implementation of SHA-3.
 - `test_kex`: A simple test harness for the default key exchange algorithm.  This will output key exchange messages; indicate whether the parties agree on the session key or not over a large number of trials; and measure the distance of the sessions keys from uniform using statistical distance.
 - `test_sig`: A simple test harness for the signature algorithms.
 - `minimal_kex_oqs`: A minimal runnable example showing the usage of KEX API.
@@ -235,8 +236,6 @@ We are also interested in assistance from code reviewers.
 
 Please contact Douglas Stebila <[stebilad@mcmaster.ca](mailto:stebilad@mcmaster.ca)>.
 
-
-
 License
 -------
 
@@ -244,6 +243,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 
 - `src/crypto/aes/aes_c.c`: public domain
 - `src/crypto/rand_urandom_chacha20/external`: public domain
+- `src/crypto/sha3`: public domain
 - `src/kex_code_mcbits`: public domain
 - `src/kex_rlwe_bcns15`: public domain ([Unlicense](http://unlicense.org))
 - `src/kex_rlwe_msrln16`: MIT License
@@ -266,6 +266,7 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 - Shravan Mishra (University of Waterloo)
 - Christian Paquin (Microsoft Research)
 - Alex Parent (University of Waterloo)
+- [John Underhill](https://github.com/Steppenwolfe65/CEX)
 - Sebastian Verschoor (University of Waterloo)
 
 ### Support

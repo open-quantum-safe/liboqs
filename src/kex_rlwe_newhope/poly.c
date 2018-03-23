@@ -151,7 +151,8 @@ static void poly_uniform(poly *a, const unsigned char *seed) {
 	uint64_t state[OQS_SHA3_STATESIZE];
 	unsigned int nblocks = 16;
 	uint8_t buf[OQS_SHA3_SHAKE128_RATE * 16];
-
+	memset(state, 0, sizeof(state));
+	memset(buf, 0, sizeof(buf));
 	OQS_SHA3_shake128_absorb(state, seed, NEWHOPE_SEEDBYTES);
 
 	OQS_SHA3_shake128_squeezeblocks((unsigned char *) buf, nblocks, state);

@@ -36,6 +36,7 @@ include
 /test_sig
 /test_rand
 /test_aes
+/test_sha3
 /minimal_kex_oqs
 /minimal_sig_oqs
 
