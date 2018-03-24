@@ -86,6 +86,10 @@ speed: speeds
 EXAMPLE_PROGRAMS=example_kem
 examples: $(EXAMPLE_PROGRAMS)
 
+docs:
+	mkdir -p docs/doxygen
+	doxygen Doxyfile
+
 clean:
 	$(RM) -r includes
 	$(RM) -r .objs
@@ -94,6 +98,7 @@ clean:
 	$(RM) $(TEST_PROGRAMS)
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
+	$(RM) -rf docs 
 
 check_namespacing: all
 	.travis/global-namespace-check.sh
