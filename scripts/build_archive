@@ -36,6 +36,7 @@ find_dup() {
 objs=`find . -name "*.o" | awk  'BEGIN { FS = "/" } ; {print $3}'| sort`
 dupes=`find_dup "$objs" | tr ' ' '\n' | uniq`
 
+
 #Find unique object files by content (among files with duplicate names)
 #across all the algorithms and their implementations
 
@@ -162,7 +163,54 @@ for obj in $ob;do
   cp $obj final_temp
 done
 
+resolve_global_symbol_collision() {
+  for dupy in $1;do
+    for fil in $2;do
+     sym=$(nm $fil | grep " $3 "|  awk '{print $3}' |   grep "\<$dupy\>")
+     if [ ! -z "$sym" ];then
+        if [ "$sym" = "$dupy" ];then
+          file_a=`echo $fil | sed 's/.\/\(.*\)/\1/g'`
+          cd ..   
+          a=`find .  -name  ${file_a} | grep -v "$4"`
+          for filepath in $a; do
+            filedir=`echo $filepath |awk -F "/" '{print $2}'`
+            cd $filedir
+            obs=`find . -name "*.o"`
+            for ob in $obs;do
+              objcopy --redefine-sym $sym=${sym}_$var $ob
+            done
+            cp -f *.o ../"$4"
+            cd ..
+          done
+          cd "$4"
+          var=$((var+1))
+        fi 
+      fi
+    done
+  done
+}
+
 cd final_temp
+#Resolve function symbols 
+
+dup_symbols=`find . -name "*.o" | xargs nm| grep ' T '|  awk '{print $3}' | sort`
+dupes=`find_dup "${dup_symbols}" | uniq`
+files=`find . -name "*.o"`
+#Rename T and corresponding U symbols in library's local directory
+resolve_global_symbol_collision "$dupes" "$files" "T" "final_temp"
+
+#Resolve data symbols
+
+dup_symbols=`find . -name "*.o" | xargs nm| grep ' D '|  awk '{print $3}' | sort`
+dupes=`find_dup "${dup_symbols}" | tr ' ' '\n' | uniq`
+files=`find . -name "*.o"`
+#Rename D and corresponding U symbols in library's local directory
+resolve_global_symbol_collision "$dupes" "$files" "D" "final_temp"
+
+
+
 ar cr liboqs.a *.o 
 cp liboqs.a ../..
+gcc -shared -fPIC -o liboqs.so *.o
+cp liboqs.so ../..
 cd ../..

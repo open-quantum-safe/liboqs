@@ -14,7 +14,7 @@ ARCH=x64
 CC=gcc
 OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
 OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib
-CFLAGS=
+CFLAGS=-fPIC
 LDFLAGS=
 CLANGFORMAT=clang-format-3.9
 
@@ -23,7 +23,7 @@ CLANGFORMAT=clang-format-3.9
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
 CFLAGS+=-O2 -std=c11 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
-LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
+LDFLAGS+=-L$(OPENSSL_LIB_DIR) -L. -lcrypto -lm
 
 all: mkdirs headers liboqs tests speeds examples
 

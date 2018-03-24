@@ -45,7 +45,7 @@ endif
 ARCHIVES_KEM+=$(ARCHIVES_KEM_FRODOKEM)
 
 .objs/kem/frodokem/kem_frodokem_640_aes_upstream.a:
-	cd src/kem/frodokem/upstream && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=AES128 USE_OPENSSL=FALSE
+	cd src/kem/frodokem/upstream && $(MAKE) clean && export CFLAGS=-fPIC && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=AES128 USE_OPENSSL=FALSE
 	$(RM) $@
 	cp src/kem/frodokem/upstream/frodo640/libfrodo.a $@
 	bash scripts/symbol_alias.sh $@ crypto_kem_keypair_Frodo640 OQS_KEM_frodokem_640_aes_keypair
@@ -55,7 +55,7 @@ ARCHIVES_KEM+=$(ARCHIVES_KEM_FRODOKEM)
 	cd src/kem/frodokem/upstream && $(MAKE) clean
 
 .objs/kem/frodokem/kem_frodokem_976_aes_upstream.a:
-	cd src/kem/frodokem/upstream && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=AES128 USE_OPENSSL=FALSE
+	cd src/kem/frodokem/upstream && $(MAKE) clean && export CFLAGS=-fPIC && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=AES128 USE_OPENSSL=FALSE
 	$(RM) $@
 	cp src/kem/frodokem/upstream/frodo976/libfrodo.a $@
 	bash scripts/symbol_alias.sh $@ crypto_kem_keypair_Frodo976 OQS_KEM_frodokem_976_aes_keypair
@@ -65,7 +65,7 @@ ARCHIVES_KEM+=$(ARCHIVES_KEM_FRODOKEM)
 	cd src/kem/frodokem/upstream && $(MAKE) clean
 
 .objs/kem/frodokem/kem_frodokem_640_cshake_upstream.a:
-	cd src/kem/frodokem/upstream && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=CSHAKE128 USE_OPENSSL=FALSE
+	cd src/kem/frodokem/upstream && $(MAKE) clean && export CFLAGS=-fPIC && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=CSHAKE128 USE_OPENSSL=FALSE
 	$(RM) $@
 	cp src/kem/frodokem/upstream/frodo640/libfrodo.a $@
 	bash scripts/symbol_alias.sh $@ crypto_kem_keypair_Frodo640 OQS_KEM_frodokem_640_cshake_keypair
@@ -75,7 +75,7 @@ ARCHIVES_KEM+=$(ARCHIVES_KEM_FRODOKEM)
 	cd src/kem/frodokem/upstream && $(MAKE) clean
 
 .objs/kem/frodokem/kem_frodokem_976_cshake_upstream.a:
-	cd src/kem/frodokem/upstream && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=CSHAKE128 USE_OPENSSL=FALSE
+	cd src/kem/frodokem/upstream && $(MAKE) clean && export CFLAGS=-fPIC && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=CSHAKE128 USE_OPENSSL=FALSE
 	$(RM) $@
 	cp src/kem/frodokem/upstream/frodo976/libfrodo.a $@
 	bash scripts/symbol_alias.sh $@ crypto_kem_keypair_Frodo976 OQS_KEM_frodokem_976_cshake_keypair

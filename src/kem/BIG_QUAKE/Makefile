@@ -29,7 +29,7 @@ SRCS_KEM_BIG_QUAKE_1=src/kem/BIG_QUAKE/upstream/Optimized_Implementation/BIG_QUA
 OBJS_KEM_BIG_QUAKE_1=$(SRCS_KEM_BIG_QUAKE_1:.c=.o)
 
 src/kem/BIG_QUAKE/upstream/Optimized_Implementation/BIG_QUAKE_1/%.o: src/kem/BIG_QUAKE/upstream/Optimized_Implementation/BIG_QUAKE_1/%.c
-	$(CC) -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -fPIC -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 $(ARCHIVES_KEM_BIG_QUAKE_1): $(OBJS_KEM_BIG_QUAKE_1)
 	$(RM) $@
@@ -49,7 +49,7 @@ SRCS_KEM_BIG_QUAKE_3=src/kem/BIG_QUAKE/upstream/Optimized_Implementation/BIG_QUA
 OBJS_KEM_BIG_QUAKE_3=$(SRCS_KEM_BIG_QUAKE_3:.c=.o)
 
 src/kem/BIG_QUAKE/upstream/Optimized_Implementation/BIG_QUAKE_3/%.o: src/kem/BIG_QUAKE/upstream/Optimized_Implementation/BIG_QUAKE_3/%.c
-	$(CC) -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -fPIC -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 $(ARCHIVES_KEM_BIG_QUAKE_3): $(OBJS_KEM_BIG_QUAKE_3)
 	$(RM) $@
@@ -69,7 +69,7 @@ SRCS_KEM_BIG_QUAKE_5=src/kem/BIG_QUAKE/upstream/Optimized_Implementation/BIG_QUA
 OBJS_KEM_BIG_QUAKE_5=$(SRCS_KEM_BIG_QUAKE_5:.c=.o)
 
 src/kem/BIG_QUAKE/upstream/Optimized_Implementation/BIG_QUAKE_5/%.o: src/kem/BIG_QUAKE/upstream/Optimized_Implementation/BIG_QUAKE_5/%.c
-	$(CC) -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -fPIC -c -O3 -std=c11 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 $(ARCHIVES_KEM_BIG_QUAKE_5): $(OBJS_KEM_BIG_QUAKE_5)
 	$(RM) $@
