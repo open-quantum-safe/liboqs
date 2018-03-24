@@ -90,6 +90,7 @@ clean:
 	$(RM) -r includes
 	$(RM) -r .objs
 	$(RM) liboqs.a
+	$(RM) liboqs.so
 	$(RM) $(TEST_PROGRAMS)
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)

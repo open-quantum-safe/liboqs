@@ -8,7 +8,7 @@ PRINT_GREEN="tput setaf 2"
 PRINT_RED="tput setaf 1"
 PRINT_RESET="tput sgr 0"
 
-REGEX=' _OQS'
+REGEX='OQS'
 LIBOQS=liboqs.a
 
 # try to find liboqs.a

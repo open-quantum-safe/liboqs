@@ -207,10 +207,15 @@ files=`find . -name "*.o"`
 #Rename D and corresponding U symbols in library's local directory
 resolve_global_symbol_collision "$dupes" "$files" "D" "final_temp"
 
-
-
+ar cr liboqs.a *.o 
+nm liboqs.a | grep ' T ' | awk '{print $3}' | grep -v OQS > unexport
+nm liboqs.a | grep ' D ' | awk '{print $3}' | grep -v OQS >> unexport
+nm liboqs.a | grep ' U ' | awk '{print $2}' | grep -v OQS >> unexport
+objcopy --weaken-symbols=unexport liboqs.a
+rm -f *.o
+ar x liboqs.a
+gcc -shared -fPIC -o liboqs.so *.o
 ar cr liboqs.a *.o 
 cp liboqs.a ../..
-gcc -shared -fPIC -o liboqs.so *.o
 cp liboqs.so ../..
 cd ../..
