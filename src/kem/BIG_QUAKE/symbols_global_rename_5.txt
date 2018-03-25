@@ -1,0 +1,3 @@
+crypto_kem_keypair OQS_KEM_BIG_QUAKE_5_keypair
+crypto_kem_enc OQS_KEM_BIG_QUAKE_5_encaps
+crypto_kem_dec OQS_KEM_BIG_QUAKE_5_decaps

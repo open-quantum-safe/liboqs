@@ -61,7 +61,25 @@ OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name) {
 #else
 		return NULL;
 #endif
-		// EDIT-WHEN-ADDING-KEM
+	case OQS_KEM_alg_BIG_QUAKE_1:
+#ifdef OQS_ENABLE_KEM_BIG_QUAKE_1
+		return OQS_KEM_BIG_QUAKE_1_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_BIG_QUAKE_5:
+#ifdef OQS_ENABLE_KEM_BIG_QUAKE_5
+		return OQS_KEM_BIG_QUAKE_5_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_BIG_QUAKE_3:
+#ifdef OQS_ENABLE_KEM_BIG_QUAKE_3
+		return OQS_KEM_BIG_QUAKE_3_new();
+#else
+		return NULL;
+#endif
+	// EDIT-WHEN-ADDING-KEM
 	default:
 		assert(0);
 	}

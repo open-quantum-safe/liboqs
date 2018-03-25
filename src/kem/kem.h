@@ -35,6 +35,9 @@
  * for binary compability across versions, even if an algorithm is removed.
  *
  * New algorithms should have identifiers added immediately before `OQS_KEM_alg_last`.
+ * Numerical values should be contiguous, so that one can write
+ *
+ *     for (int alg_name = OQS_KEM_alg_default; alg_name < OQS_KEM_alg_last; alg_name++) { ... }
  */
 enum OQS_KEM_alg_name {
 	OQS_KEM_alg_default = 0,
@@ -47,8 +50,11 @@ enum OQS_KEM_alg_name {
 	OQS_KEM_alg_kyber512 = 7,
 	OQS_KEM_alg_kyber768 = 8,
 	OQS_KEM_alg_kyber1024 = 9,
+	OQS_KEM_alg_BIG_QUAKE_1 = 10,
+	OQS_KEM_alg_BIG_QUAKE_3 = 11,
+	OQS_KEM_alg_BIG_QUAKE_5 = 12,
 	// EDIT-WHEN-ADDING-KEM
-	OQS_KEM_alg_last = 10
+	OQS_KEM_alg_last = 13
 };
 
 /**
@@ -185,6 +191,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
+#include <oqs/kem_BIGQUAKE.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H
