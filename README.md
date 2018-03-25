@@ -64,7 +64,7 @@ Acceptance criteria for nist-branch
 Contributing
 ------------
 
-*TODO*
+Contributions that meet the acceptance criteria above are gratefully welcomed.  See [CONTRIBUTING.md](https://github.com/open-quantum-safe/liboqs/blob/ds-nist-branch/CONTRIBUTING.md) for details on contributing an implementation.
 
 Lifecycle for nist-branch
 -------------------------
@@ -77,14 +77,59 @@ Lifecycle for nist-branch
 
 **API stability:** The public API of liboqs nist-branch is considered to be the functions in `oqs/common.h`, `oqs/config.h`, `oqs/kem.h`, and `oqs/rand.h`.  We intend to maintain this API for the foreseeable future.
 
-**Binary compatibility:** *TODO*
+**Binary compatibility:** No guarantees are made for binary compatibility between different snapshots of nist-branch.
 
 Building and running liboqs nist-branch
 ---------------------------------------
 
 [Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=ds-nist-branch)
 
-*TODO*
+Builds have been tested on macOS 10.12.6 (clang), macOS 10.13.3 (clang), Ubuntu 14.04.5 (gcc-7).
+
+### Install dependencies for Linux (Ubuntu)
+
+You need to install the following packages:
+
+	sudo apt install gcc libssl-dev
+
+### Install dependencies for macOS
+
+You need to install the following packages using brew (or a package manager of your choice):
+
+	brew install openssl
+
+### Building
+
+To build, first clone or download the source from GitHub, then run Make.
+
+	git clone https://github.com/open-quantum-safe/liboqs.git
+	cd liboqs
+	git checkout ds-nist-branch
+	make
+
+If you wish to change the target architecture or disable certain algorithms, edit the first few lines of `Makefile`, then run:
+
+	make clean
+	make
+
+This will generate:
+
+- `liboqs.a`: Static library
+- `liboqs.so`: Shared library
+- `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
+- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
+- `example_kem`: Minimal runnable example showing the usage of the KEM API
+
+Documentation
+-------------
+
+The directory `docs/algorithms` contains information about each algorithm available in this branch of liboqs.
+
+If you have Doxygen installed (Linux: `sudo apt install doxygen graphviz`; macOS: `brew install doxygen graphviz`), you can build HTML documentation of the liboqs nist-branch API:
+
+	make docs
+
+Then open `docs/doxygen/html/index.html` in your web browser.
 
 License
 -------
@@ -93,7 +138,23 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 
 liboqs includes some third party libraries or modules that may be licensed differently.  All third-party code is contained in directories labelled `upstream`, and each such upstream directory contains a license file indicating the license that applies to code in that directory.
 
-Contributors
-------------
+Team
+----
 
-*TODO*
+The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) (University of Waterloo) and [Douglas Stebila](https://www.douglas.stebila.ca/research/) (McMaster University).
+
+### Contributors
+
+Contributors to this nist-branch of liboqs include:
+
+- Tancrède Lepoint (SRI International)
+- Shravan Mishra (University of Waterloo)
+- Douglas Stebila (McMaster University)
+
+nist-branch is based on the liboqs master branch, which includes additional contributors.
+
+Upstream implementations are due to their original authors.  See the algorithm datasheets in `docs/algorithms` for information about each upstream implementation.
+
+### Support
+
+Development of Open Quantum Safe has been supported in part by the Tutte Institute for Mathematics and Computing.  Research projects which developed specific components of Open Quantum Safe have been supported by various research grants; see the source papers for funding acknowledgments.
