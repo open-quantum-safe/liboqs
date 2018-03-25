@@ -13,7 +13,7 @@ if [ -z ${CC_OVERRIDE+x} ]; then
 fi
 
 make clean
-make "ARCH=${ARCH} CC=${CC_OVERRIDE}"
+make "ARCH=${ARCH}" "CC=${CC_OVERRIDE}"
 make docs
 ./test_kem
 ./example_kem
