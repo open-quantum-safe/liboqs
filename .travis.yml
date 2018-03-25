@@ -11,15 +11,32 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - doxygen
+        - graphviz
         - gcc-7
         - libssl-dev
-        - libtool
     env:
-      - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+      - ARCH=x64
+      - CC_OVERRIDE=gcc-7
+  - os: linux
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - doxygen
+        - graphviz
+        - gcc-7
+        - libssl-dev
+    env:
+      - ARCH=x86
+      - CC_OVERRIDE=gcc-7
   - os: osx
     compiler: clang
     before_install:
       - brew install doxygen
+    env:
+      - ARCH=x64
+      - CC_OVERRIDE=clang
 
 script:
   - .travis/all-tests.sh

@@ -11,7 +11,7 @@ ARCH=x64
 CC=gcc
 OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
 OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib
-CFLAGS=-fPIC
+CFLAGS+= -fPIC
 LDFLAGS=
 CLANGFORMAT=clang-format
 
