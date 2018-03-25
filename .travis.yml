@@ -10,6 +10,7 @@ matrix:
         sources:
         - ubuntu-toolchain-r-test
         packages:
+        - doxygen
         - gcc-7
         - libssl-dev
         - libtool
@@ -17,6 +18,8 @@ matrix:
       - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
   - os: osx
     compiler: clang
+    before_install:
+      - brew install doxygen
 
 script:
   - .travis/all-tests.sh
