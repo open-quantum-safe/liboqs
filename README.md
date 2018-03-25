@@ -48,7 +48,7 @@ In addition, implementations that we have included on this nist-branch of liboqs
 Acceptance criteria for nist-branch
 -----------------------------------
 
-- **Algorithmic requirements:** 
+- **Algorithmic requirements:**
 	- Any algorithm accepted as a full and complete submission to round 1 of the NIST Post-Quantum Cryptography project is eligible for inclusion.
 	- Algorithms whose security is considered effectively broken are not eligible for addition; see the Lifecycle section below for conditions on their removal.
 	- KEMs can be IND-CPA or IND-CCA-secure, at any NIST security level.
@@ -82,7 +82,7 @@ Lifecycle for nist-branch
 Building and running liboqs nist-branch
 ---------------------------------------
 
-Build status using Travis continuous integration system: [![Build Status](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=ds-nist-branch)](https://travis-ci.org/open-quantum-safe/liboqs)
+[Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=ds-nist-branch)
 
 *TODO*
 
@@ -97,4 +97,3 @@ Contributors
 ------------
 
 *TODO*
-

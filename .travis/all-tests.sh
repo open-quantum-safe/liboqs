@@ -4,6 +4,7 @@ set -e
 
 make clean
 make
+make docs
 ./test_kem
 ./example_kem
 
