@@ -16,8 +16,8 @@ matrix:
         - libssl-dev
         - libtool
     env:
-      - CC=gcc-7
-      - CXX=g++-7
+      - ARCH=x64
+      - MATRIX_EVAL="CC=gcc-7"
   - os: linux
     addons:
       apt:
@@ -31,12 +31,13 @@ matrix:
         - libtool
     env:
       - ARCH=x86
-      - CC=gcc-7
-      - CXX=g++-7
+      - MATRIX_EVAL="CC=gcc-7"
   - os: osx
     compiler: clang
     before_install:
       - brew install doxygen
+    env:
+      - ARCH=x64
 
 script:
   - .travis/all-tests.sh
