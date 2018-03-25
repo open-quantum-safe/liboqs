@@ -1,0 +1,3 @@
+crypto_kem_keypair_Frodo976 OQS_KEM_frodokem_976_cshake_keypair
+crypto_kem_enc_Frodo976 OQS_KEM_frodokem_976_cshake_encaps
+crypto_kem_dec_Frodo976 OQS_KEM_frodokem_976_cshake_decaps

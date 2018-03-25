@@ -1,8 +1,8 @@
 # THESE SHOULD BE THE ONLY OPTIONS TO BE CONFIGURED BY THE PERSON COMPILING
 
 KEMS_TO_ENABLE=dummy1 dummy2 \
-	frodokem_640_aes frodokem_976_aes frodokem_640_cshake frodokem_976_cshake \
-	newhope_512_cca_kem newhope_1024_cca_kem # EDIT-WHEN-ADDING-KEM
+               frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
+			   newhope_512_cca_kem newhope_1024_cca_kem
 KEM_DEFAULT=dummy1
 
 ARCH=x64
@@ -11,7 +11,7 @@ ARCH=x64
 CC=gcc
 OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
 OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib
-CFLAGS=
+CFLAGS=-fPIC
 LDFLAGS=
 CLANGFORMAT=clang-format
 
@@ -20,18 +20,18 @@ CLANGFORMAT=clang-format
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
-LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto
+LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
 all: mkdirs headers liboqs tests speeds examples
 
 OBJECT_DIRS=
+TO_CLEAN=liboqs.a
 
 include src/common/Makefile
 include src/kem/Makefile
 
 HEADERS=src/oqs.h $(HEADERS_COMMON) $(HEADERS_KEM)
 OBJECTS=$(OBJECTS_COMMON) $(OBJECTS_KEM)
-ARCHIVES=$(ARCHIVES_KEM)
 
 mkdirs:
 	mkdir -p $(OBJECT_DIRS)
@@ -59,11 +59,10 @@ headers: config_h $(HEADERS)
 	mkdir -p include/oqs
 	cp $(HEADERS) src/config.h include/oqs
 
-liboqs: mkdirs headers $(OBJECTS) $(ARCHIVES)
-	$(RM) liboqs_tmp.a liboqs.a
-	ar -r -c liboqs_tmp.a $(OBJECTS)
-	libtool -static -o liboqs.a liboqs_tmp.a $(ARCHIVES)
-	$(RM) liboqs_tmp.a
+liboqs: mkdirs headers $(OBJECTS) $(UPSTREAMS)
+	$(RM) -f liboqs.a
+	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
+	gcc -shared -o liboqs.so liboqs.a
 
 TEST_PROGRAMS=test_kem
 tests: $(TEST_PROGRAMS)
@@ -83,7 +82,7 @@ examples: $(EXAMPLE_PROGRAMS)
 clean:
 	$(RM) -r includes
 	$(RM) -r .objs
-	$(RM) liboqs.a
+	$(RM) $(TO_CLEAN)
 	$(RM) $(TEST_PROGRAMS)
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)

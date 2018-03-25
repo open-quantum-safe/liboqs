@@ -1,0 +1,3 @@
+crypto_kem_keypair_Frodo640 OQS_KEM_frodokem_640_cshake_keypair
+crypto_kem_enc_Frodo640 OQS_KEM_frodokem_640_cshake_encaps
+crypto_kem_dec_Frodo640 OQS_KEM_frodokem_640_cshake_decaps

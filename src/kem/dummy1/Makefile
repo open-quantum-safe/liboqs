@@ -9,26 +9,20 @@ endif
 HEADERS_KEM_DUMMY1=src/kem/dummy1/kem_dummy1.h
 HEADERS_KEM+=$(HEADERS_KEM_DUMMY1)
 
-OBJECT_DIRS+=.objs/kem/dummy1
-OBJECTS_KEM_DUMMY1=.objs/kem/dummy1/kem_dummy1.o
+OBJECT_DIRS+=.objs/kem_dummy1
+OBJECTS_KEM_DUMMY1=.objs/kem_dummy1/kem_dummy1.o
 OBJECTS_KEM+=$(OBJECTS_KEM_DUMMY1)
 
-.objs/kem/dummy1/kem_dummy1.o: src/kem/dummy1/kem_dummy1.c
-	$(CC) -c src/kem/dummy1/kem_dummy1.c -o .objs/kem/dummy1/kem_dummy1.o $(CFLAGS)
+.objs/kem_dummy1/kem_dummy1.o: src/kem/dummy1/kem_dummy1.c
+	$(CC) -c src/kem/dummy1/kem_dummy1.c -o .objs/kem_dummy1/kem_dummy1.o $(CFLAGS)
 
-ARCHIVES_KEM_DUMMY1=.objs/kem/dummy1/kem_dummy1_upstream.a
 ifneq (,$(findstring dummy1, $(ENABLE_KEMS)))
-ARCHIVES_KEM+=$(ARCHIVES_KEM_DUMMY1)
+UPSTREAMS+=kem_dummy1_upstream
 endif
 
 KEM_DUMMY1_UPSTREAM_OBJECTS=src/kem/dummy1/upstream/dummy.o
-
-.objs/kem/dummy1/kem_dummy1_upstream.a:
+kem_dummy1_upstream:
 	cd src/kem/dummy1/upstream && $(MAKE) $(MAKE_FLAGS_KEM_DUMMY1)
-	$(RM) $@
-	ar -r -c $@ $(KEM_DUMMY1_UPSTREAM_OBJECTS)
-	bash scripts/symbol_alias.sh $@ crypto_kem_keypair OQS_KEM_dummy1_keypair
-	bash scripts/symbol_alias.sh $@ crypto_kem_enc OQS_KEM_dummy1_encaps
-	bash scripts/symbol_alias.sh $@ crypto_kem_dec OQS_KEM_dummy1_decaps
-	bash scripts/symbol_unexport.sh $@ src/kem/dummy1/unexported_symbols_list.txt
-	$(RM) $(KEM_DUMMY1_UPSTREAM_OBJECTS)
+	bash scripts/collect_objects.sh kem_dummy1 $(KEM_DUMMY1_UPSTREAM_OBJECTS)
+	bash scripts/symbols_global_rename.sh kem_dummy1 src/kem/dummy1/symbols_global_rename.txt
+	bash scripts/symbols_local.sh kem_dummy1 src/kem/dummy1/symbols_local.txt

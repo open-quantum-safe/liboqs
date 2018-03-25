@@ -2,7 +2,6 @@ HEADERS_KEM=src/kem/kem.h
 
 OBJECT_DIRS+=.objs/kem
 OBJECTS_KEM=.objs/kem/kem.o
-ARCHIVES_KEM=
 
 .objs/kem/kem.o: src/kem/kem.c
 	$(CC) -c src/kem/kem.c -o .objs/kem/kem.o $(CFLAGS)

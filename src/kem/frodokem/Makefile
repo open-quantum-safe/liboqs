@@ -22,64 +22,42 @@ OBJECTS_KEM+=$(OBJECTS_KEM_FRODOKEM)
 .objs/kem/frodokem/kem_frodokem.o: src/kem/frodokem/kem_frodokem.c
 	$(CC) -c src/kem/frodokem/kem_frodokem.c -o .objs/kem/frodokem/kem_frodokem.o $(CFLAGS)
 
-ARCHIVES_KEM_FRODOKEM_640_AES=.objs/kem/frodokem/kem_frodokem_640_aes_upstream.a
 ifneq (,$(findstring frodokem_640_aes, $(ENABLE_KEMS)))
-ARCHIVES_KEM_FRODOKEM+=$(ARCHIVES_KEM_FRODOKEM_640_AES)
+UPSTREAMS+=kem_frodokem_640_aes
 endif
 
-ARCHIVES_KEM_FRODOKEM_976_AES=.objs/kem/frodokem/kem_frodokem_976_aes_upstream.a
 ifneq (,$(findstring frodokem_976_aes, $(ENABLE_KEMS)))
-ARCHIVES_KEM_FRODOKEM+=$(ARCHIVES_KEM_FRODOKEM_976_AES)
+UPSTREAMS+=kem_frodokem_976_aes
 endif
 
-ARCHIVES_KEM_FRODOKEM_640_CSHAKE=.objs/kem/frodokem/kem_frodokem_640_cshake_upstream.a
 ifneq (,$(findstring frodokem_640_cshake, $(ENABLE_KEMS)))
-ARCHIVES_KEM_FRODOKEM+=$(ARCHIVES_KEM_FRODOKEM_640_CSHAKE)
+UPSTREAMS+=kem_frodokem_640_cshake
 endif
 
-ARCHIVES_KEM_FRODOKEM_976_CSHAKE=.objs/kem/frodokem/kem_frodokem_976_cshake_upstream.a
 ifneq (,$(findstring frodokem_976_cshake, $(ENABLE_KEMS)))
-ARCHIVES_KEM_FRODOKEM+=$(ARCHIVES_KEM_FRODOKEM_976_CSHAKE)
+UPSTREAMS+=kem_frodokem_976_cshake
 endif
 
-ARCHIVES_KEM+=$(ARCHIVES_KEM_FRODOKEM)
-
-.objs/kem/frodokem/kem_frodokem_640_aes_upstream.a:
+kem_frodokem_640_aes:
 	cd src/kem/frodokem/upstream && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=AES128 USE_OPENSSL=FALSE
-	$(RM) $@
-	cp src/kem/frodokem/upstream/frodo640/libfrodo.a $@
-	bash scripts/symbol_alias.sh $@ crypto_kem_keypair_Frodo640 OQS_KEM_frodokem_640_aes_keypair
-	bash scripts/symbol_alias.sh $@ crypto_kem_enc_Frodo640 OQS_KEM_frodokem_640_aes_encaps
-	bash scripts/symbol_alias.sh $@ crypto_kem_dec_Frodo640 OQS_KEM_frodokem_640_aes_decaps
-	bash scripts/symbol_unexport.sh $@ src/kem/frodokem/unexported_symbols_list.txt
-	cd src/kem/frodokem/upstream && $(MAKE) clean
+	bash scripts/explode_and_collect.sh kem_frodokem_640_aes src/kem/frodokem/upstream/frodo640/libfrodo.a
+	bash scripts/symbols_global_rename.sh kem_frodokem_640_aes src/kem/frodokem/symbols_global_rename_640_aes.txt
+	bash scripts/symbols_local.sh kem_frodokem_640_aes src/kem/frodokem/symbols_local.txt
 
-.objs/kem/frodokem/kem_frodokem_976_aes_upstream.a:
+kem_frodokem_976_aes:
 	cd src/kem/frodokem/upstream && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=AES128 USE_OPENSSL=FALSE
-	$(RM) $@
-	cp src/kem/frodokem/upstream/frodo976/libfrodo.a $@
-	bash scripts/symbol_alias.sh $@ crypto_kem_keypair_Frodo976 OQS_KEM_frodokem_976_aes_keypair
-	bash scripts/symbol_alias.sh $@ crypto_kem_enc_Frodo976 OQS_KEM_frodokem_976_aes_encaps
-	bash scripts/symbol_alias.sh $@ crypto_kem_dec_Frodo976 OQS_KEM_frodokem_976_aes_decaps
-	bash scripts/symbol_unexport.sh $@ src/kem/frodokem/unexported_symbols_list.txt
-	cd src/kem/frodokem/upstream && $(MAKE) clean
+	bash scripts/explode_and_collect.sh kem_frodokem_976_aes src/kem/frodokem/upstream/frodo976/libfrodo.a
+	bash scripts/symbols_global_rename.sh kem_frodokem_976_aes src/kem/frodokem/symbols_global_rename_976_aes.txt
+	bash scripts/symbols_local.sh kem_frodokem_976_aes src/kem/frodokem/symbols_local.txt
 
-.objs/kem/frodokem/kem_frodokem_640_cshake_upstream.a:
+kem_frodokem_640_cshake:
 	cd src/kem/frodokem/upstream && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=CSHAKE128 USE_OPENSSL=FALSE
-	$(RM) $@
-	cp src/kem/frodokem/upstream/frodo640/libfrodo.a $@
-	bash scripts/symbol_alias.sh $@ crypto_kem_keypair_Frodo640 OQS_KEM_frodokem_640_cshake_keypair
-	bash scripts/symbol_alias.sh $@ crypto_kem_enc_Frodo640 OQS_KEM_frodokem_640_cshake_encaps
-	bash scripts/symbol_alias.sh $@ crypto_kem_dec_Frodo640 OQS_KEM_frodokem_640_cshake_decaps
-	bash scripts/symbol_unexport.sh $@ src/kem/frodokem/unexported_symbols_list.txt
-	cd src/kem/frodokem/upstream && $(MAKE) clean
+	bash scripts/explode_and_collect.sh kem_frodokem_640_cshake src/kem/frodokem/upstream/frodo640/libfrodo.a
+	bash scripts/symbols_global_rename.sh kem_frodokem_640_cshake src/kem/frodokem/symbols_global_rename_640_cshake.txt
+	bash scripts/symbols_local.sh kem_frodokem_640_cshake src/kem/frodokem/symbols_local.txt
 
-.objs/kem/frodokem/kem_frodokem_976_cshake_upstream.a:
+kem_frodokem_976_cshake:
 	cd src/kem/frodokem/upstream && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_KEM_FRODOKEM) OPT_LEVEL=FAST_GENERIC GENERATION_A=CSHAKE128 USE_OPENSSL=FALSE
-	$(RM) $@
-	cp src/kem/frodokem/upstream/frodo976/libfrodo.a $@
-	bash scripts/symbol_alias.sh $@ crypto_kem_keypair_Frodo976 OQS_KEM_frodokem_976_cshake_keypair
-	bash scripts/symbol_alias.sh $@ crypto_kem_enc_Frodo976 OQS_KEM_frodokem_976_cshake_encaps
-	bash scripts/symbol_alias.sh $@ crypto_kem_dec_Frodo976 OQS_KEM_frodokem_976_cshake_decaps
-	bash scripts/symbol_unexport.sh $@ src/kem/frodokem/unexported_symbols_list.txt
-	cd src/kem/frodokem/upstream && $(MAKE) clean
+	bash scripts/explode_and_collect.sh kem_frodokem_976_cshake src/kem/frodokem/upstream/frodo976/libfrodo.a
+	bash scripts/symbols_global_rename.sh kem_frodokem_976_cshake src/kem/frodokem/symbols_global_rename_976_cshake.txt
+	bash scripts/symbols_local.sh kem_frodokem_976_cshake src/kem/frodokem/symbols_local.txt
