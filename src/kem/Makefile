@@ -15,8 +15,6 @@ speed_kem: src/kem/speed_kem.c liboqs
 example_kem: src/kem/example_kem.c liboqs
 	$(CC) src/kem/example_kem.c liboqs.a -o example_kem $(CFLAGS) $(LDFLAGS)
 
-include src/kem/dummy1/Makefile
-include src/kem/dummy2/Makefile
 include src/kem/frodokem/Makefile
 include src/kem/newhopenist/Makefile
 # EDIT-WHEN-ADDING-KEM

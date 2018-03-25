@@ -76,7 +76,7 @@ static OQS_STATUS example_heap() {
 	OQS_STATUS rc;
 	int ret = OQS_ERROR;
 
-	kem = OQS_KEM_new(OQS_KEM_alg_dummy1);
+	kem = OQS_KEM_new(OQS_KEM_DEFAULT);
 	if (kem == NULL) {
 		// dummy1 was not enabled at compile-time
 		return OQS_ERROR;
@@ -108,7 +108,7 @@ static OQS_STATUS example_heap() {
 		goto err;
 	}
 
-	printf("[example_heap]  OQS_KEM_dummy1 operations completed.\n");
+	printf("[example_heap]  OQS_KEM_DEFAULT operations completed.\n");
 	ret = OQS_SUCCESS; // success
 	goto cleanup;
 

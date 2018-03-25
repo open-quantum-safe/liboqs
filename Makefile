@@ -1,9 +1,8 @@
 # THESE SHOULD BE THE ONLY OPTIONS TO BE CONFIGURED BY THE PERSON COMPILING
 
-KEMS_TO_ENABLE=dummy1 dummy2 \
-               frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
+KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
 			   newhope_512_cca_kem newhope_1024_cca_kem
-KEM_DEFAULT=dummy1
+KEM_DEFAULT=newhope_1024_cca_kem
 
 ARCH=x64
 # x64 OR x86 OR ARM
