@@ -43,6 +43,24 @@ OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name) {
 #else
 		return NULL;
 #endif
+	case OQS_KEM_alg_kyber512:
+#ifdef OQS_ENABLE_KEM_kyber512
+		return OQS_KEM_kyber512_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_kyber768:
+#ifdef OQS_ENABLE_KEM_kyber768
+		return OQS_KEM_kyber768_new();
+#else
+		return NULL;
+#endif
+	case OQS_KEM_alg_kyber1024:
+#ifdef OQS_ENABLE_KEM_kyber1024
+		return OQS_KEM_kyber1024_new();
+#else
+		return NULL;
+#endif
 		// EDIT-WHEN-ADDING-KEM
 	default:
 		assert(0);

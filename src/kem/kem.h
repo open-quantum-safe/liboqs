@@ -44,8 +44,11 @@ enum OQS_KEM_alg_name {
 	OQS_KEM_alg_frodokem_976_cshake = 4,
 	OQS_KEM_alg_newhope_512_cca_kem = 5,
 	OQS_KEM_alg_newhope_1024_cca_kem = 6,
+	OQS_KEM_alg_kyber512 = 7,
+	OQS_KEM_alg_kyber768 = 8,
+	OQS_KEM_alg_kyber1024 = 9,
 	// EDIT-WHEN-ADDING-KEM
-	OQS_KEM_alg_last = 7
+	OQS_KEM_alg_last = 10
 };
 
 /**
@@ -181,6 +184,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
+#include <oqs/kem_kyber.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H
