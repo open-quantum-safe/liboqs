@@ -49,8 +49,7 @@ static OQS_STATUS example_stack() {
 	return OQS_SUCCESS; // success!
 
 #else
-	// if FrodoKEM-640-AES was not enabled at compile-time
-
+	printf("[example_stack] OQS_KEM_frodokem_640_aes was not enabled at compile-time.\n");
 	return OQS_ERROR;
 
 #endif
@@ -76,9 +75,9 @@ static OQS_STATUS example_heap() {
 	OQS_STATUS rc;
 	int ret = OQS_ERROR;
 
-	kem = OQS_KEM_new(OQS_KEM_DEFAULT);
+	kem = OQS_KEM_new(OQS_KEM_alg_frodokem_640_aes);
 	if (kem == NULL) {
-		// Default KEM was not enabled at compile-time
+		printf("[example_heap]  OQS_KEM_frodokem_640_aes was not enabled at compile-time.\n");
 		return OQS_ERROR;
 	}
 
@@ -108,7 +107,7 @@ static OQS_STATUS example_heap() {
 		goto err;
 	}
 
-	printf("[example_heap]  OQS_KEM_DEFAULT operations completed.\n");
+	printf("[example_heap]  OQS_KEM_frodokem_640_aes operations completed.\n");
 	ret = OQS_SUCCESS; // success
 	goto cleanup;
 
