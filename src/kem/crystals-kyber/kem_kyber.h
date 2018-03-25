@@ -8,7 +8,7 @@
 #define OQS_KEM_kyber512_length_public_key 736
 #define OQS_KEM_kyber512_length_secret_key 1632
 #define OQS_KEM_kyber512_length_ciphertext 800
-#define OQS_KEM_kyber512_length_shared_secret 32 
+#define OQS_KEM_kyber512_length_shared_secret 32
 
 OQS_KEM *OQS_KEM_kyber512_new();
 
@@ -23,7 +23,7 @@ extern OQS_STATUS OQS_KEM_kyber512_decaps(uint8_t *shared_secret, const unsigned
 #define OQS_KEM_kyber768_length_public_key 1088
 #define OQS_KEM_kyber768_length_secret_key 2400
 #define OQS_KEM_kyber768_length_ciphertext 1152
-#define OQS_KEM_kyber768_length_shared_secret 32 
+#define OQS_KEM_kyber768_length_shared_secret 32
 
 OQS_KEM *OQS_KEM_kyber768_new();
 
@@ -38,7 +38,7 @@ extern OQS_STATUS OQS_KEM_kyber768_decaps(uint8_t *shared_secret, const unsigned
 #define OQS_KEM_kyber1024_length_public_key 1440
 #define OQS_KEM_kyber1024_length_secret_key 3168
 #define OQS_KEM_kyber1024_length_ciphertext 1504
-#define OQS_KEM_kyber1024_length_shared_secret 32 
+#define OQS_KEM_kyber1024_length_shared_secret 32
 
 OQS_KEM *OQS_KEM_kyber1024_new();
 
