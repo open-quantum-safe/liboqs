@@ -11,12 +11,28 @@ matrix:
         - ubuntu-toolchain-r-test
         packages:
         - doxygen
+        - graphviz
         - gcc-7
         - libssl-dev
         - libtool
     env:
-      - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-      - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7 && ARCH=x86"
+      - CC=gcc-7
+      - CXX=g++-7
+  - os: linux
+    addons:
+      apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - doxygen
+        - graphviz
+        - gcc-7
+        - libssl-dev
+        - libtool
+    env:
+      - ARCH=x86
+      - CC=gcc-7
+      - CXX=g++-7
   - os: osx
     compiler: clang
     before_install:
