@@ -1,5 +1,0 @@
-crypto_kem_keypair
-crypto_kem_enc
-crypto_kem_dec
-another_global_function
-extra_function

@@ -38,16 +38,14 @@
  */
 enum OQS_KEM_alg_name {
 	OQS_KEM_alg_default = 0,
-	OQS_KEM_alg_dummy1 = 1,
-	OQS_KEM_alg_dummy2 = 2,
-	OQS_KEM_alg_frodokem_640_aes = 3,
-	OQS_KEM_alg_frodokem_976_aes = 4,
-	OQS_KEM_alg_frodokem_640_cshake = 5,
-	OQS_KEM_alg_frodokem_976_cshake = 6,
-	OQS_KEM_alg_newhope_512_cca_kem = 7,
-	OQS_KEM_alg_newhope_1024_cca_kem = 8,
+	OQS_KEM_alg_frodokem_640_aes = 1,
+	OQS_KEM_alg_frodokem_976_aes = 2,
+	OQS_KEM_alg_frodokem_640_cshake = 3,
+	OQS_KEM_alg_frodokem_976_cshake = 4,
+	OQS_KEM_alg_newhope_512_cca_kem = 5,
+	OQS_KEM_alg_newhope_1024_cca_kem = 6,
 	// EDIT-WHEN-ADDING-KEM
-	OQS_KEM_alg_last = 9
+	OQS_KEM_alg_last = 7
 };
 
 /**
@@ -181,8 +179,6 @@ OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsi
  */
 void OQS_KEM_free(OQS_KEM *kem);
 
-#include <oqs/kem_dummy1.h>
-#include <oqs/kem_dummy2.h>
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
 // EDIT-WHEN-ADDING-KEM

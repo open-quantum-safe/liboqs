@@ -11,9 +11,9 @@
  * statically on the stack, calling a specific algorithm's functions
  * directly.
  *
- * The macros OQS_KEM_dummy1_length_* and the functions OQS_KEM_dummy1_*
- * are only defined if the algorithm dummy1 was enabled at compile-time
- * which must be checked using the OQS_ENABLE_KEM_dummy1 macro.
+ * The macros OQS_KEM_frodokem_640_aes_length_* and the functions OQS_KEM_frodokem_640_aes_*
+ * are only defined if the algorithm FrodoKEM-640-AES was enabled at compile-time
+ * which must be checked using the OQS_ENABLE_KEM_frodokem_640_aes macro.
  *
  * <oqs/config.h>, which is included in <oqs/oqs.h>, contains macros
  * indicating which algorithms were enabled when this instance of liboqs
@@ -21,36 +21,35 @@
  */
 static OQS_STATUS example_stack() {
 
-#ifdef OQS_ENABLE_KEM_dummy1
-	// if dummy1 was enabled at compile-time
+#ifdef OQS_ENABLE_KEM_frodokem_640_aes
+	// if FrodoKEM-640-AES was enabled at compile-time
 
 	OQS_STATUS rc;
-	uint8_t public_key[OQS_KEM_dummy1_length_public_key];
-	uint8_t secret_key[OQS_KEM_dummy1_length_secret_key];
-	uint8_t ciphertext[OQS_KEM_dummy1_length_ciphertext];
-	uint8_t shared_secret_e[OQS_KEM_dummy1_length_shared_secret];
-	uint8_t shared_secret_d[OQS_KEM_dummy1_length_shared_secret];
-	rc = OQS_KEM_dummy1_keypair(public_key, secret_key);
+	uint8_t public_key[OQS_KEM_frodokem_640_aes_length_public_key];
+	uint8_t secret_key[OQS_KEM_frodokem_640_aes_length_secret_key];
+	uint8_t ciphertext[OQS_KEM_frodokem_640_aes_length_ciphertext];
+	uint8_t shared_secret_e[OQS_KEM_frodokem_640_aes_length_shared_secret];
+	uint8_t shared_secret_d[OQS_KEM_frodokem_640_aes_length_shared_secret];
+	rc = OQS_KEM_frodokem_640_aes_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_dummy1_keypair failed!\n");
+		fprintf(stderr, "ERROR: OQS_KEM_frodokem_640_aes_keypair failed!\n");
 		return OQS_ERROR;
 	}
-	rc = OQS_KEM_dummy1_encaps(ciphertext, shared_secret_e, public_key);
+	rc = OQS_KEM_frodokem_640_aes_encaps(ciphertext, shared_secret_e, public_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_dummy1_encaps failed!\n");
+		fprintf(stderr, "ERROR: OQS_KEM_frodokem_640_aes_encaps failed!\n");
 		return OQS_ERROR;
 	}
-	rc = OQS_KEM_dummy1_decaps(shared_secret_d, ciphertext, secret_key);
+	rc = OQS_KEM_frodokem_640_aes_decaps(shared_secret_d, ciphertext, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_dummy1_decaps failed!\n");
+		fprintf(stderr, "ERROR: OQS_KEM_frodokem_640_aes_decaps failed!\n");
 		return OQS_ERROR;
 	}
-	printf("[example_stack] OQS_KEM_dummy1 operations completed.\n");
+	printf("[example_stack] OQS_KEM_frodokem_640_aes operations completed.\n");
 	return OQS_SUCCESS; // success!
 
 #else
-	// if dummy1 was not enabled at compile-time
-
+	printf("[example_stack] OQS_KEM_frodokem_640_aes was not enabled at compile-time.\n");
 	return OQS_ERROR;
 
 #endif
@@ -76,9 +75,9 @@ static OQS_STATUS example_heap() {
 	OQS_STATUS rc;
 	int ret = OQS_ERROR;
 
-	kem = OQS_KEM_new(OQS_KEM_alg_dummy1);
+	kem = OQS_KEM_new(OQS_KEM_alg_frodokem_640_aes);
 	if (kem == NULL) {
-		// dummy1 was not enabled at compile-time
+		printf("[example_heap]  OQS_KEM_frodokem_640_aes was not enabled at compile-time.\n");
 		return OQS_ERROR;
 	}
 
@@ -108,7 +107,7 @@ static OQS_STATUS example_heap() {
 		goto err;
 	}
 
-	printf("[example_heap]  OQS_KEM_dummy1 operations completed.\n");
+	printf("[example_heap]  OQS_KEM_frodokem_640_aes operations completed.\n");
 	ret = OQS_SUCCESS; // success
 	goto cleanup;
 

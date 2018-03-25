@@ -70,7 +70,6 @@ OQS_STATUS printAlgs() {
 		OQS_KEM_free(kem);
 	}
 	return OQS_SUCCESS;
-
 }
 
 int main(int argc, char **argv) {

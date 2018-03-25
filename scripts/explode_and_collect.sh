@@ -11,7 +11,7 @@ if [ $# -lt 2 ]
 then
 	echo "Usage: explode.sh module archive"
 	echo ""
-	echo "Example: module could be kem_dummy1"
+	echo "Example: module could be kem_frodokem_640_aes"
 	exit 1
 fi
 
