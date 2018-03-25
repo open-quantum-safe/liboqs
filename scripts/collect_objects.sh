@@ -22,6 +22,7 @@ UNAME=`uname`
 if [ ${UNAME} = 'Darwin' ]
 then
 	rm -f .objs/${MODULE}/${MODULE}_upstream.a
+	mkdir -p .objs/${MODULE}
 	ar rcs .objs/${MODULE}/${MODULE}_upstream.a ${OBJFILES}
 elif [ ${UNAME} = 'Linux' ]
 then
@@ -32,8 +33,12 @@ then
 		cp ${OBJFILE} .objs/${MODULE}/upstream/${MODULE}_${BASENAME}
 	done
 else
+	PRINT_GREEN="tput setaf 2"
+	PRINT_RED="tput setaf 1"
+	PRINT_RESET="tput sgr 0"
+
 	${PRINT_RED}
-	echo "Don't know how to alias symbols on this platform."
+	echo "Don't know how to collect objects on this platform."
 	${PRINT_RESET}
 	exit 1
 fi

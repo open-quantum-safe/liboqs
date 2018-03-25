@@ -17,12 +17,7 @@ then
 fi
 
 MODULE=$1
-
 SYMBOLS_FILE=$2
-
-PRINT_GREEN="tput setaf 2"
-PRINT_RED="tput setaf 1"
-PRINT_RESET="tput sgr 0"
 
 SYMBOLS=`cat ${SYMBOLS_FILE}`
 PREFIX=_oqs_${MODULE}
@@ -52,6 +47,10 @@ then
 		objcopy ${WEAKEN_ARG} ${OBJFILE}
 	done
 else
+	PRINT_GREEN="tput setaf 2"
+	PRINT_RED="tput setaf 1"
+	PRINT_RESET="tput sgr 0"
+
 	${PRINT_RED}
 	echo "Don't know how to unexport symbols on this platform."
 	${PRINT_RESET}
