@@ -17,3 +17,4 @@ src/*/*/*/*/*/*.o
 src/*/*/*/*/*/*/*.o
 src/kem/frodokem/upstream/frodo640/
 src/kem/frodokem/upstream/frodo976/
+docs/doxygen

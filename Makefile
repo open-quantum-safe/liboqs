@@ -42,15 +42,28 @@ CC_VERSION=`$(CC) --version | tr '\n' ' '`
 config_h:
 	$(RM) -r src/config.h
 	touch src/config.h
-	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/config.h;)
+	echo "/**" >> src/config.h
+	echo " * @file config.h" >> src/config.h
+	echo " * @brief Pre-processor macros indicating compile-time options." >> src/config.h
+	echo " */" >> src/config.h
+	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "/** Preprocessor macro indicating KEM $(ENABLE_KEM) is enabled. */" >> src/config.h; echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/config.h;)
+	echo "/** Preprocessor macro setting the default KEM to $(KEM_DEFAULT). */" >> src/config.h
 	echo "#define OQS_KEM_DEFAULT OQS_KEM_alg_$(KEM_DEFAULT)" >> src/config.h
+	echo "/** Date on which liboqs was compiled. */" >> src/config.h
 	echo "#define OQS_COMPILE_DATE \"$(DATE)\"" >> src/config.h
+	echo "/** Compiler command used to compile liboqs. */" >> src/config.h
 	echo "#define OQS_COMPILE_CC \"$(CC)\"" >> src/config.h
+	echo "/** Compiler version used to compile liboqs. */" >> src/config.h
 	echo "#define OQS_COMPILE_CC_VERSION \"$(CC_VERSION)\"" >> src/config.h
+	echo "/** CFLAGS version used to compile liboqs. */" >> src/config.h
 	echo "#define OQS_COMPILE_CFLAGS \"$(CFLAGS)\"" >> src/config.h
+	echo "/** LDFLAGS version used to compile liboqs. */" >> src/config.h
 	echo "#define OQS_COMPILE_LDFLAGS \"$(LDFLAGS)\"" >> src/config.h
+	echo "/** List of KEMs enabled at compile time. */" >> src/config.h
 	echo "#define OQS_COMPILE_ENABLE_KEMS \"$(ENABLE_KEMS)\"" >> src/config.h
+	echo "/** Which KEM is mapped to the default (OQS_KEM_alg_default). */" >> src/config.h
 	echo "#define OQS_COMPILE_KEM_DEFAULT \"$(KEM_DEFAULT)\"" >> src/config.h
+	echo "/** Platform on which liboqs was compiled. */" >> src/config.h
 	echo "#define OQS_COMPILE_UNAME \"$(UNAME)\"" >> src/config.h
 
 
@@ -79,6 +92,10 @@ speed: speeds
 EXAMPLE_PROGRAMS=example_kem
 examples: $(EXAMPLE_PROGRAMS)
 
+docs: headers
+	mkdir -p docs/doxygen
+	doxygen docs/.Doxyfile
+
 clean:
 	$(RM) -r includes
 	$(RM) -r .objs
@@ -86,6 +103,7 @@ clean:
 	$(RM) $(TEST_PROGRAMS)
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
+	$(RM) -r docs/doxygen
 
 check_namespacing: all
 	.travis/global-namespace-check.sh
