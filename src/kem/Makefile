@@ -17,4 +17,5 @@ example_kem: src/kem/example_kem.c liboqs
 
 include src/kem/frodokem/Makefile
 include src/kem/newhopenist/Makefile
+include src/kem/crystals-kyber/Makefile
 # EDIT-WHEN-ADDING-KEM
