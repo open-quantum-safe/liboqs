@@ -7,7 +7,7 @@ build:
 
 branches:
   except:
-    *nist*
+    /*nist*/
 
 configuration:
   - Release
