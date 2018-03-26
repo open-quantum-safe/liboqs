@@ -85,9 +85,6 @@
     <ClCompile Include="..\..\src\kex_sidh_msr\P751\P751.c">
       <Filter>KEX_SIDH_MSR</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_sidh_msr\sha3\fips202.c">
-      <Filter>KEX_SIDH_MSR</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\sig_picnic\external\aligned_alloc.c">
       <Filter>Sig_Picnic</Filter>
     </ClCompile>
@@ -217,9 +214,6 @@
       <Filter>Sig_Picnic</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_sidh_msr\kex_sidh_msr.h">
-      <Filter>KEX_SIDH_MSR</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_sidh_msr\sha3\fips202.h">
       <Filter>KEX_SIDH_MSR</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_api.h">
