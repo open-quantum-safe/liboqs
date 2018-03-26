@@ -19,7 +19,9 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 
 ### Getting started
 
-1. Ensure that the implementation meets the acceptance criteria stated in [README.md](https://github.com/open-quantum-safe/liboqs/blob/ds-nist-branch/README.md), including that the implementation is licensed under an acceptable open source license.
+1. Ensure that the implementation meets the acceptance criteria stated in [README.md](https://github.com/open-quantum-safe/liboqs/blob/ds-nist-branch/README.md), including that:
+	- the implementation is licensed under an acceptable open source license; and
+	- that there are no known breaks of the algorithm (see the "View comments" link for the submission on the [NIST Round 1 submission page](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography/Round-1-Submissions)).
 2. Make a new working branch off of nist-branch, preferably with the word `nist` somewhere in the branch name.
 3. Create new directories `src/kem/potato` and `src/kem/potato/upstream`
 
