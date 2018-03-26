@@ -99,6 +99,7 @@ docs: headers
 clean:
 	$(RM) -r includes
 	$(RM) -r .objs
+	$(RM) liboqs.a liboqs.so
 	$(RM) $(TO_CLEAN)
 	$(RM) $(TEST_PROGRAMS)
 	$(RM) $(SPEED_PROGRAMS)
