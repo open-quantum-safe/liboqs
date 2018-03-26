@@ -1,69 +1,72 @@
 #include <assert.h>
 #include <stdlib.h>
+#include <strings.h>
 
 #include <oqs/oqs.h>
 
-OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name) {
-	switch (alg_name) {
-	case OQS_KEM_alg_default:
+// EDIT-WHEN-ADDING-KEM
+char *OQS_KEM_algs[OQS_KEM_algs_length] = { OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024 };
+
+OQS_KEM *OQS_KEM_new(const char *method_name) {
+	if (0 == strcasecmp(method_name, OQS_KEM_alg_default)) {
 		return OQS_KEM_new(OQS_KEM_DEFAULT);
-	case OQS_KEM_alg_frodokem_640_aes:
-#ifdef OQS_ENABLE_KEM_frodokem_640_aes
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_640_aes)) {
+		#ifdef OQS_ENABLE_KEM_frodokem_640_aes
 		return OQS_KEM_frodokem_640_aes_new();
-#else
+		#else
 		return NULL;
-#endif
-	case OQS_KEM_alg_frodokem_976_aes:
+		#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_976_aes)) {
 #ifdef OQS_ENABLE_KEM_frodokem_976_aes
 		return OQS_KEM_frodokem_976_aes_new();
 #else
 		return NULL;
 #endif
-	case OQS_KEM_alg_frodokem_640_cshake:
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_640_cshake)) {
 #ifdef OQS_ENABLE_KEM_frodokem_640_cshake
 		return OQS_KEM_frodokem_640_cshake_new();
 #else
 		return NULL;
 #endif
-	case OQS_KEM_alg_frodokem_976_cshake:
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_976_cshake)) {
 #ifdef OQS_ENABLE_KEM_frodokem_976_cshake
 		return OQS_KEM_frodokem_976_cshake_new();
 #else
 		return NULL;
 #endif
-	case OQS_KEM_alg_newhope_512_cca_kem:
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_512_cca_kem)) {
 #ifdef OQS_ENABLE_KEM_newhope_512_cca_kem
 		return OQS_KEM_newhope_512_cca_kem_new();
 #else
 		return NULL;
 #endif
-	case OQS_KEM_alg_newhope_1024_cca_kem:
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_1024_cca_kem)) {
 #ifdef OQS_ENABLE_KEM_newhope_1024_cca_kem
 		return OQS_KEM_newhope_1024_cca_kem_new();
 #else
 		return NULL;
 #endif
-	case OQS_KEM_alg_kyber512:
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_kyber512)) {
 #ifdef OQS_ENABLE_KEM_kyber512
 		return OQS_KEM_kyber512_new();
 #else
 		return NULL;
 #endif
-	case OQS_KEM_alg_kyber768:
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_kyber768)) {
 #ifdef OQS_ENABLE_KEM_kyber768
 		return OQS_KEM_kyber768_new();
 #else
 		return NULL;
 #endif
-	case OQS_KEM_alg_kyber1024:
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_kyber1024)) {
 #ifdef OQS_ENABLE_KEM_kyber1024
 		return OQS_KEM_kyber1024_new();
 #else
 		return NULL;
 #endif
 	// EDIT-WHEN-ADDING-KEM
-	default:
-		assert(0);
+	} else {
+		return NULL;
 	}
 }
 

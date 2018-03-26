@@ -10,7 +10,7 @@ OQS_KEM *OQS_KEM_newhope_512_cca_kem_new() {
 	if (kem == NULL) {
 		return NULL;
 	}
-	kem->method_name = "NewHope512-CCA-KEM";
+	kem->method_name = OQS_KEM_alg_newhope_512_cca_kem;
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -37,7 +37,7 @@ OQS_KEM *OQS_KEM_newhope_1024_cca_kem_new() {
 	if (kem == NULL) {
 		return NULL;
 	}
-	kem->method_name = "NewHope1024-CCA-KEM";
+	kem->method_name = OQS_KEM_alg_newhope_1024_cca_kem;
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;

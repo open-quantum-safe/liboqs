@@ -5,7 +5,7 @@
 
 #include <oqs/oqs.h>
 
-static OQS_STATUS kem_test_correctness(enum OQS_KEM_alg_name alg_name) {
+static OQS_STATUS kem_test_correctness(const char *method_name) {
 
 	OQS_KEM *kem = NULL;
 	uint8_t *public_key = NULL;
@@ -16,7 +16,7 @@ static OQS_STATUS kem_test_correctness(enum OQS_KEM_alg_name alg_name) {
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
 
-	kem = OQS_KEM_new(alg_name);
+	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
 		return OQS_SUCCESS;
 	}
@@ -86,8 +86,8 @@ int main() {
 	int ret = EXIT_SUCCESS;
 	OQS_STATUS rc;
 
-	for (int i = OQS_KEM_alg_default; i < OQS_KEM_alg_last; i++) {
-		rc = kem_test_correctness(i);
+	for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
+		rc = kem_test_correctness(OQS_KEM_algs[i]);
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
 		}
