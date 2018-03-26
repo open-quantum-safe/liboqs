@@ -64,7 +64,7 @@ Acceptance criteria for nist-branch
 Contributing
 ------------
 
-Contributions that meet the acceptance criteria above are gratefully welcomed.  See [CONTRIBUTING.md](https://github.com/open-quantum-safe/liboqs/blob/ds-nist-branch/CONTRIBUTING.md) for details on contributing an implementation.
+Contributions that meet the acceptance criteria above are gratefully welcomed.  See <a href="https://github.com/open-quantum-safe/liboqs/blob/ds-nist-branch/CONTRIBUTING.md">CONTRIBUTING.md</a> for details on contributing an implementation.
 
 Lifecycle for nist-branch
 -------------------------
