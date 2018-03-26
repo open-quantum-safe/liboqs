@@ -6,9 +6,9 @@
 
 if [[ ! -z ${TRAVIS_OS_NAME} ]];
 then
-	if [[ ! ${TRAVIS_OS_NAME} == "osx" ]];
+	if [[ ! ${TRAVIS_OS_NAME} == "linux" ]];
 	then
-		echo "When running on Travis, style-check is only run on macOS builds."
+		echo "When running on Travis, style-check is only run on Linux builds."
 		exit 0
 	fi
 fi
