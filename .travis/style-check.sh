@@ -29,10 +29,10 @@ then
 	exit 1;
 fi;
 
-TRY_CLANGFORMAT="clang-format"
+TRY_CLANGFORMAT="clang-format-3.9"
 if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
 then
-	TRY_CLANGFORMAT="clang-format-3.9"
+	TRY_CLANGFORMAT="clang-format"
 	if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
 	then
 		${PRINT_RED}
@@ -48,11 +48,11 @@ then
 	${PRINT_RED}
 	echo "clang-format is not version 3.9."
 	${PRINT_RESET}
-	clang-format -version
+	${TRY_CLANGFORMAT} -version
 	exit 1
 fi;
 
-make prettyprint
+make prettyprint CLANGFORMAT=${TRY_CLANGFORMAT}
 
 MODIFIED=$(git status -s)
 
