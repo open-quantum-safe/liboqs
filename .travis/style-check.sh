@@ -4,6 +4,15 @@
 # Checks that all non-upstream files satisfy prettyprint requirements.
 ###
 
+if [[ ! -z ${TRAVIS_OS_NAME} ]];
+then
+	if [[ ! ${TRAVIS_OS_NAME} == "osx" ]];
+	then
+		echo "When running on Travis, style-check is only run on macOS builds."
+		exit 0
+	fi
+fi
+
 PRINT_GREEN="tput setaf 2"
 PRINT_RED="tput setaf 1"
 PRINT_RESET="tput sgr 0"
@@ -14,7 +23,7 @@ MODIFIED=$(git status -s)
 if [[ ! -z "${MODIFIED}" ]];
 then
 	${PRINT_RED}
-	echo "There are modified files present in the directory prior to prettyprint check. This may indicate that some files should be added to .gitignore.";
+	echo "There are modified files present in the directory prior to prettyprint check. This may indicate that some files should be added to .gitignore or need to be committed.";
 	${PRINT_RESET}
 	git status -s
 	exit 1;
