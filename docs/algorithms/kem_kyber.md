@@ -15,11 +15,11 @@ Summary
 Parameter sets
 --------------
 
-| Parameter set | OQS algorithm name | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
-|---------------|:------------------:|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| Kyber-512     |     `kyber512`     |     IND-CCA    |              1              |           736           |           1632          |           800           |             32             |
-| Kyber-768     |     `kyber768`     |     IND-CCA    |              3              |           1088          |           2400          |           1152          |             32             |
-| Kyber-1024    |     `kyber1024`    |     IND-CCA    |              5              |           1440          |           3168          |           1504          |             32             |
+| Parameter set | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
+|---------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
+| Kyber512      |     IND-CCA    |              1              |           736           |           1632          |           800           |             32             |
+| Kyber768      |     IND-CCA    |              3              |           1088          |           2400          |           1152          |             32             |
+| Kyber1024     |     IND-CCA    |              5              |           1440          |           3168          |           1504          |             32             |
 
 Implementation
 --------------

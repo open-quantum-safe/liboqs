@@ -15,12 +15,12 @@ Summary
 Parameter sets
 --------------
 
-| Parameter set       |   OQS algorithm name  | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
-|---------------------|:---------------------:|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| FrodoKEM-640-AES    |   `frodokem_640_aes`  |     IND-CCA    |              1              |           9616          |          19872          |           9736          |             16             |
-| FrodoKEM-640-cSHAKE | `frodokem_640_cshake` |     IND-CCA    |              1              |           9616          |          19872          |           9736          |             16             |
-| FrodoKEM-976-AES    |   `frodokem_976_aes`  |     IND-CCA    |              3              |          15632          |          31272          |          15768          |             24             |
-| FrodoKEM-976-cSHAKE | `frodokem_976_cshake` |     IND-CCA    |              3              |          15632          |          31272          |          15768          |             24             |
+| Parameter set       | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
+|---------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
+| FrodoKEM-640-AES    |     IND-CCA    |              1              |           9616          |          19872          |           9736          |             16             |
+| FrodoKEM-640-cSHAKE |     IND-CCA    |              1              |           9616          |          19872          |           9736          |             16             |
+| FrodoKEM-976-AES    |     IND-CCA    |              3              |          15632          |          31272          |          15768          |             24             |
+| FrodoKEM-976-cSHAKE |     IND-CCA    |              3              |          15632          |          31272          |          15768          |             24             |
 
 Implementation
 --------------
