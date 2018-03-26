@@ -4,11 +4,11 @@
 # Checks that all non-upstream files satisfy prettyprint requirements.
 ###
 
-if [[ ! -z ${TRAVIS_OS_NAME} ]];
+if [[ "x${TRAVIS}" == "xtrue" ]];
 then
-	if [[ ! ${TRAVIS_OS_NAME} == "linux" ]];
+	if [[ ! "x${CHECK_STYLE}" == "xtrue" ]];
 	then
-		echo "When running on Travis, style-check is only run on Linux builds."
+		echo "When running on Travis, style-check is only run on some builds."
 		exit 0
 	fi
 fi

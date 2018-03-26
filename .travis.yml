@@ -1,6 +1,6 @@
 language: c
 dist: trusty
-sudo: false
+sudo: true
 
 matrix:
   include:
@@ -19,6 +19,7 @@ matrix:
     env:
       - ARCH=x64
       - CC_OVERRIDE=gcc-7
+      - CHECK_STYLE=true
   - os: linux
     addons:
       apt:
