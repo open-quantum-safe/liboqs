@@ -5,17 +5,17 @@
 #include <oqs/oqs.h>
 
 // EDIT-WHEN-ADDING-KEM
-char *OQS_KEM_algs[OQS_KEM_algs_length] = { OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024 };
+char *OQS_KEM_algs[OQS_KEM_algs_length] = {OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024};
 
 OQS_KEM *OQS_KEM_new(const char *method_name) {
 	if (0 == strcasecmp(method_name, OQS_KEM_alg_default)) {
 		return OQS_KEM_new(OQS_KEM_DEFAULT);
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_640_aes)) {
-		#ifdef OQS_ENABLE_KEM_frodokem_640_aes
+#ifdef OQS_ENABLE_KEM_frodokem_640_aes
 		return OQS_KEM_frodokem_640_aes_new();
-		#else
+#else
 		return NULL;
-		#endif
+#endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_976_aes)) {
 #ifdef OQS_ENABLE_KEM_frodokem_976_aes
 		return OQS_KEM_frodokem_976_aes_new();
@@ -64,7 +64,7 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	// EDIT-WHEN-ADDING-KEM
+		// EDIT-WHEN-ADDING-KEM
 	} else {
 		return NULL;
 	}

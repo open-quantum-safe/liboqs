@@ -26,25 +26,25 @@
 #include <oqs/oqs.h>
 
 /** Algorithm identifier for default KEM algorithm. */
-#define OQS_KEM_alg_default              "DEFAULT"
+#define OQS_KEM_alg_default "DEFAULT"
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
-#define OQS_KEM_alg_frodokem_640_aes     "FrodoKEM-640-AES"
+#define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
 /** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
-#define OQS_KEM_alg_frodokem_640_cshake  "FrodoKEM-640-cSHAKE"
+#define OQS_KEM_alg_frodokem_640_cshake "FrodoKEM-640-cSHAKE"
 /** Algorithm identifier for FrodoKEM-976-AES KEM. */
-#define OQS_KEM_alg_frodokem_976_aes     "FrodoKEM-976-AES"
+#define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
 /** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
-#define OQS_KEM_alg_frodokem_976_cshake  "FrodoKEM-976-cSHAKE"
+#define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
 /** Algorithm identifier for NewHope512-CCA-KEM KEM. */
-#define OQS_KEM_alg_newhope_512_cca_kem  "NewHope512-CCA-KEM"
+#define OQS_KEM_alg_newhope_512_cca_kem "NewHope512-CCA-KEM"
 /** Algorithm identifier for NewHope1024-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_1024_cca_kem "NewHope1024-CCA-KEM"
 /** Algorithm identifier for Kyber512 KEM. */
-#define OQS_KEM_alg_kyber512             "Kyber512"
+#define OQS_KEM_alg_kyber512 "Kyber512"
 /** Algorithm identifier for Kyber768 KEM. */
-#define OQS_KEM_alg_kyber768             "Kyber768"
+#define OQS_KEM_alg_kyber768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
-#define OQS_KEM_alg_kyber1024            "Kyber1024"
+#define OQS_KEM_alg_kyber1024 "Kyber1024"
 // EDIT-WHEN-ADDING-KEM
 
 /**
