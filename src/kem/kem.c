@@ -61,7 +61,7 @@ OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name) {
 #else
 		return NULL;
 #endif
-		// EDIT-WHEN-ADDING-KEM
+	// EDIT-WHEN-ADDING-KEM
 	default:
 		assert(0);
 	}
