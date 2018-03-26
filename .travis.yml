@@ -34,6 +34,8 @@ matrix:
     compiler: clang
     before_install:
       - brew install doxygen
+      - brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/0c4314c499576b28e4c082b591228a8f940954c0/Formula/clang-format.rb
+      - brew switch clang-format 2016-06-27
     env:
       - ARCH=x64
       - CC_OVERRIDE=clang
