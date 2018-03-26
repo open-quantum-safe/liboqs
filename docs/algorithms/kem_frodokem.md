@@ -1,5 +1,5 @@
-Algorithm datasheet: `kem_frodokem`
-===================================
+liboqs nist-branch algorithm datasheet: `kem_frodokem`
+======================================================
 
 Summary
 -------
@@ -8,7 +8,7 @@ Summary
 - **Algorithm type**: key encapsulation mechanism
 - **Main cryptographic assumption**: learning with errors (LWE)
 - **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/Frodo.zip
-- **Submitters (to NIST competition)**: Michael Naehrig, Erdem Alkim, Joppe Bos, Leo Ducas, Karen Easterbrook, Brian LaMacchia, Patrick Longa, Ilya Mironov, Valeria Nikolaenko, Christopher Peikert, Ananth Raghunathan, Douglas Stebila
+- **Submitters (to NIST competition)**: Michael Naehrig, Erdem Alkim, Joppe Bos, Léo Ducas, Karen Easterbrook, Brian LaMacchia, Patrick Longa, Ilya Mironov, Valeria Nikolaenko, Christopher Peikert, Ananth Raghunathan, Douglas Stebila
 - **Submitters' website**: https://frodokem.org/
 - **Added to liboqs by**: Douglas Stebila
 
@@ -29,7 +29,7 @@ Implementation
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes
-- **Architectures supported in liboqs**: x86, x64
+- **Architectures supported in liboqs nist-branch**: x86, x64
 
 Additional comments
 -------------------
