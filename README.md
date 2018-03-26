@@ -32,6 +32,8 @@ This branch takes a "light touch" approach to incorporation:
 - The implementation will be added to the build process.
 - To avoid namespace collisions between different algorithms, symbol renaming will be used on the compiled files.
 
+For a list of algorithms included in nist-branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/ds-nist-branch/docs/algorithms).
+
 Limitations and security
 ------------------------
 

@@ -38,7 +38,7 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 4. Edit `src/kem/kem.h` at the two `EDIT-WHEN-ADDING-KEM` markers to add the analogous lines for potato.
 5. Edit `src/kem/kem.c` at the `EDIT-WHEN-ADDING-KEM` marker to add the analogous lines for potato.
 
-`.c` and `.h` files in liboqs (other than in `upstream` directories) must meet the OQS coding convention and style and are checked by the pretty-printer.  See [our wiki page](https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions) for details.
+`.c` and `.h` files in liboqs (other than in `upstream` directories) must meet the OQS coding convention and style and are checked by the pretty-printer.  See https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for details.
 
 ### Adding to the build system
 
@@ -79,7 +79,7 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 
 ### Documentation
 
-1. Add an algorithm datasheet in `docs/algorithms` for your module (`kem_potato.md`) containing information about each algorithm (`kem_potato_512`, ...) following the examples in the other files in this directory.
+1. Add an algorithm datasheet in `docs/algorithms` for your module (`kem_potato.md`) containing information about each algorithm (`kem_potato_512`, ...) following the examples in the other files in this directory.  You may find the online Markdown table generator at http://www.tablesgenerator.com/markdown_tables helpful -- you can paste Markdown in, graphically edit, and then copy Markdown out.
 2. Do a `git commit`.
 
 ### Submitting
