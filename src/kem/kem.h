@@ -25,31 +25,40 @@
 
 #include <oqs/oqs.h>
 
+/** Algorithm identifier for default KEM algorithm. */
+#define OQS_KEM_alg_default "DEFAULT"
+/** Algorithm identifier for FrodoKEM-640-AES KEM. */
+#define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
+/** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
+#define OQS_KEM_alg_frodokem_640_cshake "FrodoKEM-640-cSHAKE"
+/** Algorithm identifier for FrodoKEM-976-AES KEM. */
+#define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
+/** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
+#define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
+/** Algorithm identifier for NewHope512-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_512_cca_kem "NewHope512-CCA-KEM"
+/** Algorithm identifier for NewHope1024-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_1024_cca_kem "NewHope1024-CCA-KEM"
+/** Algorithm identifier for Kyber512 KEM. */
+#define OQS_KEM_alg_kyber512 "Kyber512"
+/** Algorithm identifier for Kyber768 KEM. */
+#define OQS_KEM_alg_kyber768 "Kyber768"
+/** Algorithm identifier for Kyber1024 KEM. */
+#define OQS_KEM_alg_kyber1024 "Kyber1024"
+// EDIT-WHEN-ADDING-KEM
+/** Number of algorithm identifiers above. */
+#define OQS_KEM_algs_length 10
+
 /**
- * Identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
+ * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
  *
- * Note that algorithm identifiers are present in this enum even when the algorithm is disabled
+ * Note that algorithm identifiers are present in this list even when the algorithm is disabled
  * at compile time.
  *
- * The order and numbers of the identifiers (except `OQS_KEM_alg_last`) should remain fixed
- * for binary compability across versions, even if an algorithm is removed.
- *
- * New algorithms should have identifiers added immediately before `OQS_KEM_alg_last`.
+ * @param[in] i Index of the algorithm identifier to return, 0 <= i < OQS_KEM_algs_length
+ * @return Algorithm identifier as a string, or NULL.
  */
-enum OQS_KEM_alg_name {
-	OQS_KEM_alg_default = 0,
-	OQS_KEM_alg_frodokem_640_aes = 1,
-	OQS_KEM_alg_frodokem_976_aes = 2,
-	OQS_KEM_alg_frodokem_640_cshake = 3,
-	OQS_KEM_alg_frodokem_976_cshake = 4,
-	OQS_KEM_alg_newhope_512_cca_kem = 5,
-	OQS_KEM_alg_newhope_1024_cca_kem = 6,
-	OQS_KEM_alg_kyber512 = 7,
-	OQS_KEM_alg_kyber768 = 8,
-	OQS_KEM_alg_kyber1024 = 9,
-	// EDIT-WHEN-ADDING-KEM
-	OQS_KEM_alg_last = 10
-};
+char *OQS_KEM_alg_identifier(size_t i);
 
 /**
  * Key encapsulation mechanism object
@@ -124,12 +133,12 @@ typedef struct OQS_KEM {
  * Consturcts an OQS_KEM object for a particular algorithm.
  *
  * Callers should always check whether the return value is `NULL`, which indicates either than an
- * invalid algorithm identifier was provided, or that the requested algorithm was disabled at compile-time.
+ * invalid algorithm name was provided, or that the requested algorithm was disabled at compile-time.
  *
- * @param[in] alg_name Identifier of the desired KEM algorithm.
+ * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_KEM_algs`.
  * @return An OQS_KEM for the particular algorithm, or `NULL` if the algorithm has been disabled at compile-time.
  */
-OQS_KEM *OQS_KEM_new(enum OQS_KEM_alg_name alg_name);
+OQS_KEM *OQS_KEM_new(const char *method_name);
 
 /**
  * Keypair generation algorithm.

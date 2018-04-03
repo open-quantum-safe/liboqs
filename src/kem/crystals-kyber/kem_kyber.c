@@ -10,7 +10,7 @@ OQS_KEM *OQS_KEM_kyber512_new() {
 	if (kem == NULL) {
 		return NULL;
 	}
-	kem->method_name = "Kyber512";
+	kem->method_name = OQS_KEM_alg_kyber512;
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -37,7 +37,7 @@ OQS_KEM *OQS_KEM_kyber768_new() {
 	if (kem == NULL) {
 		return NULL;
 	}
-	kem->method_name = "Kyber768";
+	kem->method_name = OQS_KEM_alg_kyber768;
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -64,7 +64,7 @@ OQS_KEM *OQS_KEM_kyber1024_new() {
 	if (kem == NULL) {
 		return NULL;
 	}
-	kem->method_name = "Kyber1024";
+	kem->method_name = OQS_KEM_alg_kyber1024;
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;

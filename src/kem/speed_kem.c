@@ -8,7 +8,7 @@
 
 #include "../common/ds_benchmark.h"
 
-static OQS_STATUS kem_speed_wrapper(enum OQS_KEM_alg_name alg_name, int duration, bool printInfo) {
+static OQS_STATUS kem_speed_wrapper(const char *method_name, int duration, bool printInfo) {
 
 	OQS_KEM *kem = NULL;
 	uint8_t *public_key = NULL;
@@ -18,7 +18,7 @@ static OQS_STATUS kem_speed_wrapper(enum OQS_KEM_alg_name alg_name, int duration
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS ret = OQS_ERROR;
 
-	kem = OQS_KEM_new(alg_name);
+	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
 		return OQS_SUCCESS;
 	}
@@ -61,12 +61,13 @@ cleanup:
 }
 
 OQS_STATUS printAlgs() {
-	for (int i = OQS_KEM_alg_default; i < OQS_KEM_alg_last; i++) {
-		OQS_KEM *kem = OQS_KEM_new(i);
+	for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
+		OQS_KEM *kem = OQS_KEM_new(OQS_KEM_alg_identifier(i));
 		if (kem == NULL) {
-			return OQS_ERROR;
+			printf("%s (disabled)\n", OQS_KEM_alg_identifier(i));
+		} else {
+			printf("%s\n", OQS_KEM_alg_identifier(i));
 		}
-		printf("%s\n", kem->method_name);
 		OQS_KEM_free(kem);
 	}
 	return OQS_SUCCESS;
@@ -80,7 +81,8 @@ int main(int argc, char **argv) {
 	bool printUsage = false;
 	int duration = 3;
 	bool printKemInfo = false;
-	enum OQS_KEM_alg_name single_alg = OQS_KEM_alg_last;
+
+	OQS_KEM *single_kem = NULL;
 
 	for (int i = 1; i < argc; i++) {
 		if (strcmp(argv[i], "--algs") == 0) {
@@ -105,18 +107,8 @@ int main(int argc, char **argv) {
 			printKemInfo = true;
 			continue;
 		} else {
-			for (int alg_name = OQS_KEM_alg_default; alg_name < OQS_KEM_alg_last; alg_name++) {
-				OQS_KEM *kem = OQS_KEM_new(alg_name);
-				if (kem == NULL) {
-					return EXIT_FAILURE;
-				}
-				if (strcmp(argv[i], kem->method_name) == 0) {
-					single_alg = alg_name;
-				}
-				OQS_KEM_free(kem);
-			}
-			// didn't find one?
-			if (single_alg == OQS_KEM_alg_last) {
+			single_kem = OQS_KEM_new(argv[i]);
+			if (single_kem == NULL) {
 				printUsage = true;
 				break;
 			}
@@ -152,14 +144,14 @@ int main(int argc, char **argv) {
 	printf("==========\n");
 
 	PRINT_TIMER_HEADER
-	if (single_alg != OQS_KEM_alg_last) {
-		rc = kem_speed_wrapper(single_alg, duration, printKemInfo);
+	if (single_kem != NULL) {
+		rc = kem_speed_wrapper(single_kem->method_name, duration, printKemInfo);
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
 		}
 	} else {
-		for (int i = OQS_KEM_alg_default; i < OQS_KEM_alg_last; i++) {
-			rc = kem_speed_wrapper(i, duration, printKemInfo);
+		for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
+			rc = kem_speed_wrapper(OQS_KEM_alg_identifier(i), duration, printKemInfo);
 			if (rc != OQS_SUCCESS) {
 				ret = EXIT_FAILURE;
 			}
