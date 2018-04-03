@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">
@@ -63,7 +63,6 @@
     <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_internal.h" />
     <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_api.h" />
     <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_internal.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\sha3\fips202.h" />
     <ClInclude Include="..\..\src\kex_sidh_msr\windows_undef.h" />
     <ClInclude Include="..\..\src\sig\sig.h" />
     <ClInclude Include="..\..\src\sig_picnic\external\bitstream.h" />
@@ -116,7 +115,6 @@
     <ClCompile Include="..\..\src\kex_sidh_msr\kex_sidh_msr.c" />
     <ClCompile Include="..\..\src\kex_sidh_msr\P503\P503.c" />
     <ClCompile Include="..\..\src\kex_sidh_msr\P751\P751.c" />
-    <ClCompile Include="..\..\src\kex_sidh_msr\sha3\fips202.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
     <ClCompile Include="..\..\src\sig_picnic\external\aligned_alloc.c" />
     <ClCompile Include="..\..\src\sig_picnic\external\bitstream.c" />

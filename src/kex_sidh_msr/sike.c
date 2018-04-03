@@ -5,7 +5,7 @@
 *********************************************************************************************/
 
 #include <string.h>
-#include "sha3/fips202.h"
+#include <oqs/sha3.h>
 
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk, OQS_RAND *rand) { // SIKE's key generation
 	                                                                           // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
@@ -40,19 +40,19 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 	// Generate ephemeralsk <- G(m||pk) mod oA
 	OQS_RAND_n(rand, temp, MSG_BYTES);
 	memcpy(&temp[MSG_BYTES], pk, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES);
-	cshake256_simple(ephemeralsk, SECRETKEY_A_BYTES, G, temp, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES + MSG_BYTES);
+	OQS_SHA3_cshake256_simple(ephemeralsk, SECRETKEY_A_BYTES, G, temp, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES + MSG_BYTES);
 	ephemeralsk[SECRETKEY_A_BYTES - 1] &= MASK_ALICE;
 
 	// Encrypt
 	EphemeralKeyGeneration_A(ephemeralsk, ct, rand);
 	EphemeralSecretAgreement_A(ephemeralsk, pk, jinvariant);
-	cshake256_simple(h, MSG_BYTES, P, jinvariant, FP2_ENCODED_BYTES);
+	OQS_SHA3_cshake256_simple(h, MSG_BYTES, P, jinvariant, FP2_ENCODED_BYTES);
 	for (i = 0; i < MSG_BYTES; i++)
 		ct[i + OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES] = temp[i] ^ h[i];
 
 	// Generate shared secret ss <- H(m||ct)
 	memcpy(&temp[MSG_BYTES], ct, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES);
-	cshake256_simple(ss, OQS_SIDH_MSR_CRYPTO_BYTES, H, temp, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
+	OQS_SHA3_cshake256_simple(ss, OQS_SIDH_MSR_CRYPTO_BYTES, H, temp, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
 
 	return 0;
 }
@@ -73,13 +73,13 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 
 	// Decrypt
 	EphemeralSecretAgreement_B(sk + MSG_BYTES, ct, jinvariant_);
-	cshake256_simple(h_, MSG_BYTES, P, jinvariant_, FP2_ENCODED_BYTES);
+	OQS_SHA3_cshake256_simple(h_, MSG_BYTES, P, jinvariant_, FP2_ENCODED_BYTES);
 	for (i = 0; i < MSG_BYTES; i++)
 		temp[i] = ct[i + OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES] ^ h_[i];
 
 	// Generate ephemeralsk_ <- G(m||pk) mod oA
 	memcpy(&temp[MSG_BYTES], &sk[MSG_BYTES + SECRETKEY_B_BYTES], OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES);
-	cshake256_simple(ephemeralsk_, SECRETKEY_A_BYTES, G, temp, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES + MSG_BYTES);
+	OQS_SHA3_cshake256_simple(ephemeralsk_, SECRETKEY_A_BYTES, G, temp, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES + MSG_BYTES);
 	ephemeralsk_[SECRETKEY_A_BYTES - 1] &= MASK_ALICE;
 
 	// Generate shared secret ss <- H(m||ct) or output ss <- H(s||ct)
@@ -88,7 +88,7 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 		memcpy(temp, sk, MSG_BYTES);
 	}
 	memcpy(&temp[MSG_BYTES], ct, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES);
-	cshake256_simple(ss, OQS_SIDH_MSR_CRYPTO_BYTES, H, temp, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
+	OQS_SHA3_cshake256_simple(ss, OQS_SIDH_MSR_CRYPTO_BYTES, H, temp, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
 
 	return 0;
 }
