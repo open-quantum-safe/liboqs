@@ -1,15 +1,38 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <strings.h>
 
 #include <oqs/oqs.h>
+
+static char *oqs_randombytes_selected_algorithm = OQS_RAND_alg_system;
+
+bool OQS_randombytes_switch_algorithm(const char *algorithm) {
+	if (0 == strcasecmp(algorithm, OQS_RAND_alg_system)) {
+		oqs_randombytes_selected_algorithm = OQS_RAND_alg_system;
+		return true;
+	} else if (0 == strcasecmp(algorithm, OQS_RAND_alg_nist_kat)) {
+		oqs_randombytes_selected_algorithm = OQS_RAND_alg_nist_kat;
+		return true;
+	} else {
+		return false;
+	}
+}
+
+void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+	if (0 == strcasecmp(oqs_randombytes_selected_algorithm, OQS_RAND_alg_nist_kat)) {
+		OQS_randombytes_nist_kat(random_array, bytes_to_read);
+	} else {
+		OQS_randombytes_system(random_array, bytes_to_read);
+	}
+}
 
 static __inline void delay(unsigned int count) {
 	while (count--) {
 	}
 }
 
-void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 
 	int handle;
 	do {
