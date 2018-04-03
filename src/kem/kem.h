@@ -46,23 +46,19 @@
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber1024 "Kyber1024"
 // EDIT-WHEN-ADDING-KEM
-
-/**
- * Number of KEM algorithms in liboqs; equivalently the length of the OQS_KEM_algs array.
- *
- * Note that algorithm identifiers are present in this array even when the algorithm is disabled
- * at compile time.
- */
+/** Number of algorithm identifiers above. */
 #define OQS_KEM_algs_length 10
-// EDIT-WHEN-ADDING-KEM
 
 /**
- * Identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
+ * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
  *
- * Note that algorithm identifiers are present in this array even when the algorithm is disabled
+ * Note that algorithm identifiers are present in this list even when the algorithm is disabled
  * at compile time.
+ *
+ * @param[in] i Index of the algorithm identifier to return, 0 <= i < OQS_KEM_algs_length
+ * @return Algorithm identifier as a string, or NULL.
  */
-extern char *OQS_KEM_algs[OQS_KEM_algs_length];
+char *OQS_KEM_alg_identifier(size_t i);
 
 /**
  * Key encapsulation mechanism object

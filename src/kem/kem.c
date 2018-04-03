@@ -4,8 +4,15 @@
 
 #include <oqs/oqs.h>
 
-// EDIT-WHEN-ADDING-KEM
-char *OQS_KEM_algs[OQS_KEM_algs_length] = {OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024};
+char *OQS_KEM_alg_identifier(size_t i) {
+	// EDIT-WHEN-ADDING-KEM
+	char *a[OQS_KEM_algs_length] = {OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024};
+	if (i >= OQS_KEM_algs_length) {
+		return NULL;
+	} else {
+		return a[i];
+	}
+}
 
 OQS_KEM *OQS_KEM_new(const char *method_name) {
 	if (0 == strcasecmp(method_name, OQS_KEM_alg_default)) {

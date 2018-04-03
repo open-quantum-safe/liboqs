@@ -62,11 +62,11 @@ cleanup:
 
 OQS_STATUS printAlgs() {
 	for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
-		OQS_KEM *kem = OQS_KEM_new(OQS_KEM_algs[i]);
+		OQS_KEM *kem = OQS_KEM_new(OQS_KEM_alg_identifier(i));
 		if (kem == NULL) {
-			printf("%s (disabled)\n", OQS_KEM_algs[i]);
+			printf("%s (disabled)\n", OQS_KEM_alg_identifier(i));
 		} else {
-			printf("%s\n", OQS_KEM_algs[i]);
+			printf("%s\n", OQS_KEM_alg_identifier(i));
 		}
 		OQS_KEM_free(kem);
 	}
@@ -151,7 +151,7 @@ int main(int argc, char **argv) {
 		}
 	} else {
 		for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
-			rc = kem_speed_wrapper(OQS_KEM_algs[i], duration, printKemInfo);
+			rc = kem_speed_wrapper(OQS_KEM_alg_identifier(i), duration, printKemInfo);
 			if (rc != OQS_SUCCESS) {
 				ret = EXIT_FAILURE;
 			}

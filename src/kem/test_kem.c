@@ -87,7 +87,7 @@ int main() {
 	OQS_STATUS rc;
 
 	for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
-		rc = kem_test_correctness(OQS_KEM_algs[i]);
+		rc = kem_test_correctness(OQS_KEM_alg_identifier(i));
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
 		}
