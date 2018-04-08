@@ -76,8 +76,8 @@ cleanup:
 		OQS_MEM_secure_free(shared_secret_e, kem->length_shared_secret);
 		OQS_MEM_secure_free(shared_secret_d, kem->length_shared_secret);
 	}
-	free(public_key);
-	free(ciphertext);
+	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(ciphertext);
 	OQS_KEM_free(kem);
 
 	return ret;

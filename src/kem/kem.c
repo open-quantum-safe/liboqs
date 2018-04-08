@@ -100,5 +100,5 @@ OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsi
 }
 
 void OQS_KEM_free(OQS_KEM *kem) {
-	free(kem);
+	OQS_MEM_insecure_free(kem);
 }

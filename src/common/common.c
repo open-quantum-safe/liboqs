@@ -25,8 +25,12 @@ void OQS_MEM_cleanse(void *ptr, size_t len) {
 void OQS_MEM_secure_free(void *ptr, size_t len) {
 	if (ptr != NULL) {
 		OQS_MEM_cleanse(ptr, len);
-		free(ptr);
+		free(ptr); // IGNORE free-check
 	}
+}
+
+void OQS_MEM_insecure_free(void *ptr) {
+	free(ptr); // IGNORE free-check
 }
 
 /* Displays hexadecimal strings */
