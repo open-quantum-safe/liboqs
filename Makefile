@@ -6,7 +6,7 @@ KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_97
 KEM_DEFAULT=newhope_1024_cca_kem
 
 ARCH=x64
-# x64 OR x86 OR ARM
+# x64 OR x86
 
 CC=gcc
 OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
@@ -119,3 +119,6 @@ check_namespacing: all
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v upstream | xargs $(CLANGFORMAT) -style=file -i
+
+pre-push:
+	ARCH=x64 CC_OVERRIDE=gcc .travis/all-tests.sh
