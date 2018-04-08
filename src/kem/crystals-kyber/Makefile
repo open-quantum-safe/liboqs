@@ -28,7 +28,6 @@ SRCS_KEM_KYBER512_CCA_KEM=src/kem/crystals-kyber/upstream/Optimized_Implementati
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber512/kem.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber512/poly.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber512/precomp.c \
-src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber512/rng.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber512/cbd.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber512/indcpa.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber512/ntt.c \
@@ -55,7 +54,6 @@ SRCS_KEM_KYBER768_CCA_KEM=src/kem/crystals-kyber/upstream/Optimized_Implementati
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber768/kem.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber768/poly.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber768/precomp.c \
-src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber768/rng.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber768/cbd.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber768/indcpa.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber768/ntt.c \
@@ -82,7 +80,6 @@ SRCS_KEM_KYBER1024_CCA_KEM=src/kem/crystals-kyber/upstream/Optimized_Implementat
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber1024/kem.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber1024/poly.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber1024/precomp.c \
-src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber1024/rng.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber1024/cbd.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber1024/indcpa.c \
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber1024/ntt.c \

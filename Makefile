@@ -6,7 +6,7 @@ KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_97
 KEM_DEFAULT=newhope_1024_cca_kem
 
 ARCH=x64
-# x64 OR x86 OR ARM
+# x64 OR x86
 
 CC=gcc
 OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
@@ -22,7 +22,7 @@ ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATI
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
-all: mkdirs headers liboqs tests speeds examples
+all: mkdirs headers liboqs tests speeds kats examples
 
 OBJECT_DIRS=
 TO_CLEAN=liboqs.a
@@ -80,8 +80,15 @@ liboqs: mkdirs headers $(OBJECTS) $(UPSTREAMS)
 TEST_PROGRAMS=test_kem
 tests: $(TEST_PROGRAMS)
 
+KAT_PROGRAMS=kat_kem
+kats: $(KAT_PROGRAMS)
+
 test: tests
 	./test_kem
+
+kat: kats
+	./kat_kem
+	scripts/check_kats.sh
 
 SPEED_PROGRAMS=speed_kem
 speeds: $(SPEED_PROGRAMS)
@@ -102,6 +109,7 @@ clean:
 	$(RM) liboqs.a liboqs.so
 	$(RM) $(TO_CLEAN)
 	$(RM) $(TEST_PROGRAMS)
+	$(RM) $(KAT_PROGRAMS)
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
 	$(RM) -r docs/doxygen
@@ -111,3 +119,6 @@ check_namespacing: all
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v upstream | xargs $(CLANGFORMAT) -style=file -i
+
+pre-push:
+	ARCH=x64 CC_OVERRIDE=gcc .travis/all-tests.sh
