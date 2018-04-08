@@ -115,11 +115,14 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
+	if (kem != NULL) {
+		OQS_MEM_secure_free(secret_key, kem->length_secret_key);
+		OQS_MEM_secure_free(shared_secret_e, kem->length_shared_secret);
+		OQS_MEM_secure_free(shared_secret_d, kem->length_shared_secret);
+	}
 	OQS_MEM_insecure_free(public_key);
-	OQS_MEM_secure_free(secret_key);
 	OQS_MEM_insecure_free(ciphertext);
-	OQS_MEM_secure_free(shared_secret_e);
-	OQS_MEM_secure_free(shared_secret_d);
+	OQS_KEM_free(kem);
 
 	return ret;
 }
