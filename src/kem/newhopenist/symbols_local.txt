@@ -25,13 +25,6 @@ poly_tobytes
 poly_tomsg
 poly_uniform
 montgomery_reduce
-AES256_CTR_DRBG_Update
-AES256_ECB
-handleErrors
-randombytes
-randombytes_init
-seedexpander
-seedexpander_init
 cmov
 verify
 omegas_bitrev_montgomery

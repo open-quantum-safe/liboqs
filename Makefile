@@ -22,7 +22,7 @@ ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATI
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
-all: mkdirs headers liboqs tests speeds examples
+all: mkdirs headers liboqs tests speeds kats examples
 
 OBJECT_DIRS=
 TO_CLEAN=liboqs.a
@@ -109,6 +109,7 @@ clean:
 	$(RM) liboqs.a liboqs.so
 	$(RM) $(TO_CLEAN)
 	$(RM) $(TEST_PROGRAMS)
+	$(RM) $(KAT_PROGRAMS)
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
 	$(RM) -r docs/doxygen

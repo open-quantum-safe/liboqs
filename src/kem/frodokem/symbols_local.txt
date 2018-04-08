@@ -16,7 +16,6 @@ frodo_sub
 clear_words
 frodo_pack
 frodo_unpack
-randombytes
 AES128_ECB_enc_sch
 AES128_free_schedule
 AES128_load_schedule
