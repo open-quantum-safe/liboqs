@@ -22,7 +22,7 @@ ifneq (,$(findstring newhope_512_cca_kem, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_newhope_512_cca_kem_upstream
 endif
 
-SRCS_KEM_NEWHOPE_512_CCA_KEM=src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/cpapke.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/fips202.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/kem.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/ntt.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/poly.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/precomp.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/reduce.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/rng.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/verify.c
+SRCS_KEM_NEWHOPE_512_CCA_KEM=src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/cpapke.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/fips202.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/kem.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/ntt.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/poly.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/precomp.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/reduce.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/verify.c
 OBJS_KEM_NEWHOPE_512_CCA_KEM=$(SRCS_KEM_NEWHOPE_512_CCA_KEM:.c=.o)
 
 TO_CLEAN+= $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
@@ -39,7 +39,7 @@ ifneq (,$(findstring newhope_1024_cca_kem, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_newhope_1024_cca_kem_upstream
 endif
 
-SRCS_KEM_NEWHOPE_1024_CCA_KEM=src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/cpapke.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/fips202.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/kem.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/ntt.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/poly.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/precomp.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/reduce.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/rng.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/verify.c
+SRCS_KEM_NEWHOPE_1024_CCA_KEM=src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/cpapke.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/fips202.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/kem.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/ntt.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/poly.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/precomp.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/reduce.c src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/verify.c
 OBJS_KEM_NEWHOPE_1024_CCA_KEM=$(SRCS_KEM_NEWHOPE_1024_CCA_KEM:.c=.o)
 
 TO_CLEAN+= $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)

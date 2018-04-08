@@ -5,6 +5,7 @@ liboqs.a
 liboqs.so
 src/config.h
 test_kem
+kat_kem
 speed_kem
 example_kem
 *dSYM
@@ -18,3 +19,4 @@ src/*/*/*/*/*/*/*.o
 src/kem/frodokem/upstream/frodo640/
 src/kem/frodokem/upstream/frodo976/
 docs/doxygen
+kat_kem_rsp/

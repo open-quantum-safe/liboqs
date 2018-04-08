@@ -9,6 +9,9 @@ OBJECTS_KEM=.objs/kem/kem.o
 test_kem: src/kem/test_kem.c liboqs
 	$(CC) src/kem/test_kem.c liboqs.a -o test_kem $(CFLAGS) $(LDFLAGS)
 
+kat_kem: src/kem/kat_kem.c liboqs
+	$(CC) src/kem/kat_kem.c liboqs.a -o kat_kem $(CFLAGS) $(LDFLAGS)
+
 speed_kem: src/kem/speed_kem.c liboqs
 	$(CC) src/kem/speed_kem.c liboqs.a -o speed_kem $(CFLAGS) $(LDFLAGS)
 

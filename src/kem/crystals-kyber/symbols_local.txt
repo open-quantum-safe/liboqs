@@ -23,7 +23,6 @@ polyvec_invntt
 polyvec_ntt
 polyvec_pointwise_acc
 polyvec_tobytes
-randombytes
 sha3_512
 shake128_absorb
 shake128_squeezeblocks
@@ -54,9 +53,3 @@ crypto_kem_dec
 crypto_kem_enc
 crypto_kem_keypair
 verify
-AES256_CTR_DRBG_Update
-AES256_ECB
-handleErrors
-randombytes_init
-seedexpander
-seedexpander_init
