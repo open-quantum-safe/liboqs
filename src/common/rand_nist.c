@@ -36,8 +36,6 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 
 	int len;
 
-	int ciphertext_len;
-
 	/* Create and initialise the context */
 	if (!(ctx = EVP_CIPHER_CTX_new()))
 		handleErrors();
@@ -47,7 +45,6 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 
 	if (1 != EVP_EncryptUpdate(ctx, buffer, &len, ctr, 16))
 		handleErrors();
-	ciphertext_len = len;
 
 	/* Clean up */
 	EVP_CIPHER_CTX_free(ctx);

@@ -119,6 +119,7 @@ This will generate:
 - `liboqs.a`: Static library
 - `liboqs.so`: Shared library
 - `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
+- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
 
