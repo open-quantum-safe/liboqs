@@ -123,7 +123,6 @@ cleanup:
 	free(ciphertext);
 	OQS_KEM_free(kem);
 	return ret;
-
 }
 
 int main() {
