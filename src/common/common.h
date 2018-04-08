@@ -68,9 +68,20 @@ void OQS_MEM_cleanse(void *ptr, size_t len);
  * Designed to be protected against optimizing compilers which try to remove "unnecessary"
  * operations.  Should be used for all buffers containing secret data.
  *
- * @param[in] ptr The start of the memory to zero out.
+ * @param[in] ptr The start of the memory to zero out and free.
  * @param[in] len The number of bytes to zero out.
  */
 void OQS_MEM_secure_free(void *ptr, size_t len);
+
+/**
+ * Frees `ptr`.
+ *
+ * Can be called with `ptr = NULL`, in which case no operation is performed.
+ *
+ * Should only be used on non-secret data.
+ *
+ * @param[in] ptr The start of the memory to free.
+ */
+void OQS_MEM_insecure_free(void *ptr);
 
 #endif // __OQS_COMMON_H

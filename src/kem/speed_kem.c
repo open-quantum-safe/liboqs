@@ -50,11 +50,13 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
-	free(public_key);
-	free(secret_key);
-	free(ciphertext);
-	free(shared_secret_e);
-	free(shared_secret_d);
+	if (kem != NULL) {
+		OQS_MEM_secure_free(secret_key, kem->length_secret_key);
+		OQS_MEM_secure_free(shared_secret_e, kem->length_shared_secret);
+		OQS_MEM_secure_free(shared_secret_d, kem->length_shared_secret);
+	}
+	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(ciphertext);
 	OQS_KEM_free(kem);
 
 	return ret;
