@@ -22,7 +22,7 @@ typedef struct {
 static AES256_CTR_DRBG_struct DRBG_ctx;
 static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V);
 
-void handleErrors(void) {
+static void handleErrors(void) {
 	ERR_print_errors_fp(stderr);
 	abort();
 }
