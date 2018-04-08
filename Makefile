@@ -80,8 +80,15 @@ liboqs: mkdirs headers $(OBJECTS) $(UPSTREAMS)
 TEST_PROGRAMS=test_kem
 tests: $(TEST_PROGRAMS)
 
+KAT_PROGRAMS=kat_kem
+kats: $(KAT_PROGRAMS)
+
 test: tests
 	./test_kem
+
+kat: kats
+	./kat_kem
+	scripts/check_kats.sh
 
 SPEED_PROGRAMS=speed_kem
 speeds: $(SPEED_PROGRAMS)

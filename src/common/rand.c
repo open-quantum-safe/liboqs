@@ -5,26 +5,26 @@
 
 #include <oqs/oqs.h>
 
-static char *oqs_randombytes_selected_algorithm = OQS_RAND_alg_system;
+static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
 
-bool OQS_randombytes_switch_algorithm(const char *algorithm) {
-	if (0 == strcasecmp(algorithm, OQS_RAND_alg_system)) {
-		oqs_randombytes_selected_algorithm = OQS_RAND_alg_system;
-		return true;
-	} else if (0 == strcasecmp(algorithm, OQS_RAND_alg_nist_kat)) {
-		oqs_randombytes_selected_algorithm = OQS_RAND_alg_nist_kat;
-		return true;
+OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
+	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
+		oqs_randombytes_algorithm = &OQS_randombytes_system;
+		return OQS_SUCCESS;
+	} else if (0 == strcasecmp(OQS_RAND_alg_nist_kat, algorithm)) {
+		oqs_randombytes_algorithm = &OQS_randombytes_nist_kat;
+		return OQS_SUCCESS;
 	} else {
-		return false;
+		return OQS_ERROR;
 	}
 }
 
+void randombytes(uint8_t *random_array, size_t bytes_to_read) {
+	OQS_randombytes(random_array, bytes_to_read);
+}
+
 void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
-	if (0 == strcasecmp(oqs_randombytes_selected_algorithm, OQS_RAND_alg_nist_kat)) {
-		OQS_randombytes_nist_kat(random_array, bytes_to_read);
-	} else {
-		OQS_randombytes_system(random_array, bytes_to_read);
-	}
+	oqs_randombytes_algorithm(random_array, bytes_to_read);
 }
 
 static __inline void delay(unsigned int count) {

@@ -19,9 +19,9 @@
  * Switches OQS_randombytes to use the specified algorithm.
  *
  * @param[in] algorithm The name of the algorithm to use.
- * @return true if `algorithm` is a supported algorithm name, false otherwise.
+ * @return OQS_SUCCESS if `algorithm` is a supported algorithm name, OQS_ERROR otherwise.
  */
-bool OQS_randombytes_switch_algorithm(const char *algorithm);
+OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm);
 
 /**
  * Fills the given memory with the requested number of (pseudo)random bytes.

@@ -70,9 +70,9 @@ CFLAGS += -mavx2 -maes -msse2
 endif
 endif
 
-.PHONY: all check clean prettyprint
+.PHONY: all
 
-all: lib640 lib976 tests KATS
+all: lib640 lib976
 
 objs/%.o: src/%.c
 	@mkdir -p $(@D)
@@ -123,13 +123,13 @@ $(SHAKEx4_OBJS): $(SHAKEx4_HEADERS)
 endif
 endif
 
-lib640: $(KEM_FRODO640_OBJS) $(RAND_OBJS) $(AES_OBJS) $(AES_NI_OBJS) $(SHAKE_OBJS) $(SHAKEx4_OBJS)
+lib640: $(KEM_FRODO640_OBJS) $(AES_OBJS) $(AES_NI_OBJS) $(SHAKE_OBJS) $(SHAKEx4_OBJS)
 	rm -rf frodo640
 	mkdir frodo640
 	$(AR) frodo640/libfrodo.a $^
 	$(RANLIB) frodo640/libfrodo.a
 
-lib976: $(KEM_FRODO976_OBJS) $(RAND_OBJS) $(AES_OBJS) $(AES_NI_OBJS) $(SHAKE_OBJS) $(SHAKEx4_OBJS)
+lib976: $(KEM_FRODO976_OBJS) $(AES_OBJS) $(AES_NI_OBJS) $(SHAKE_OBJS) $(SHAKEx4_OBJS)
 	rm -rf frodo976
 	mkdir frodo976
 	$(AR) frodo976/libfrodo.a $^
