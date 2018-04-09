@@ -37,17 +37,17 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 1. From another KEM implementation's directory, copy (and rename appropriately) `src/kem/whatever/kem_whatever.c` and `src/kem/whatever/kem_whatever.h` to `src/kem/potato`.
 2. Edit `src/kem/potato/kem_potato.h` to create a copy of the macros and function prototypes for each algorithm to expose; copy the correct lengths into the length macros from the upstream algorithm's `api.h` file.
 3. Edit `src/kem/potato/kem_potato.c` to create a copy of the constructor for each algorithm to expose; set the correct `method_name`, `claimed_nist_level` (1-5), and `ind_cca` values.
-4. Edit `src/kem/kem.h` at the two `EDIT-WHEN-ADDING-KEM` markers to add the analogous lines for potato.
-5. Edit `src/kem/kem.c` at the `EDIT-WHEN-ADDING-KEM` marker to add the analogous lines for potato.
+4. Edit `src/kem/kem.h` at the `EDIT-WHEN-ADDING-KEM` marker to add the analogous lines for potato.
+5. Edit `src/kem/kem.c` at the two `EDIT-WHEN-ADDING-KEM` markers to add the analogous lines for potato.
 
-`.c` and `.h` files in liboqs (other than in `upstream` directories) must meet the OQS coding convention and style and are checked by the pretty-printer.  See https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for details.
+`.c` and `.h` files in liboqs (other than in `upstream` directories) must meet the OQS coding convention and style and are checked by the pretty-printer.  See https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for details.  You can use `make prettyprint` to run the pretty-printer; you will need to install `clang-format` version 3.9, as per the instructions at the link above.
 
 ### Adding to the build system
 
 1. From another KEM implementation's directory, copy `src/kem/whatever/Makefile` to `src/kem/potato`.
 2. Edit `src/kem/potato/Makefile`.
 3. At the top of the Makefile, set up which algorithms are available in each architecture and whatever architecture-specific flags need to be passed down to the underlying Makefile.
-4. Edit the lower part of the Makefile to create a compilation target for each algorithm/parameterization.  You can do this either by calling the upstream implementations Makefile to get it to generate `.o` or `.a` files, or by directly specifying compilation commands.
+4. Edit the lower part of the Makefile to create a compilation target for each algorithm/parameterization.  You can do this either by calling the upstream implementations Makefile to get it to generate `.o` or `.a` files, or by directly specifying compilation commands.  You should remove the upstream implementation algorithm's `randombytes` function from being built, as we will instead use the `randombytes` function in liboqs; in many NIST implementations with an `rng.c` file, you should just need to remove `rng.c` from being built.
 5. In the compilation target for each algorithm/parameterization (`potato_512`, ...), you will need to call various scripts to collect together object files, rename global symbols, and hide local symbols.  Below we suppose we are working with the `potato_512` parameterization.
 	1. If the upstream implementation has generated `.o` files, use `scripts/collect_objects.sh` to collect those into liboqs's `.objs` directory.  (See `src/kem/newhopenist/Makefile` for an example.)
 	2. If the upstream implementation has generated a `.a` file, use `scripts/explode_and_collect.sh` to generate the `.o` files for liboqs's `.objs` director. (See `src/kem/frodokem/Makefile` for an example.)
@@ -62,8 +62,9 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 2. Our build system is configured so that any warning when compiling a non-upstream file is treated as an error.  Fix any such warnings/errors that arise.
 3. Make sure the `./test_kem` works and includes your algorithm.
 4. Check that `./speed_kem` works, includes your algorithm, and that the performance is inline with the expected performance documented in the submission.
-5. Do a `git commit`.
-6. Run `make prettyprint` to reformat non-upstream `.c` and `.h` files according to our coding conventions.  We use clang-format version 3.9.  (Unfortunately, different versions of clang-format may produce different results with the same configuration file, so you must use clang-format version 3.9).  
+5. For each algorithm (`potato_512`, ...), create a corresponding file `src/kem/potato/potato_512.kat` containing the **first** known answer test response values from the NIST submission.  Make sure that `./kat_kem` generates the corresponding file under `kat_kem_rsp`, and then run `scripts/check_kats.sh` to check that the KATs match.
+6. Do a `git commit`.
+7. Run `make prettyprint` to reformat non-upstream `.c` and `.h` files according to our coding conventions.  We use clang-format version 3.9.  (Unfortunately, different versions of clang-format may produce different results with the same configuration file, so you must use clang-format version 3.9).  
 	- To install and use clang-format 3.9 on Ubuntu:
 		- Try `sudo apt install clang-format-3.9`
 		- If that doesn't work, try the following:
@@ -76,8 +77,8 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 		1. `brew unlink clang-format`
 		2. `brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/0c4314c499576b28e4c082b591228a8f940954c0/Formula/clang-format.rb`
 		3. `brew switch clang-format 2016-06-27`
-7. Check any changes made by the pretty-printer to ensure the meaning of the code did not change.
-8. Do a `git commit`.
+8. Check any changes made by the pretty-printer to ensure the meaning of the code did not change.
+9. Do a `git commit`.
 
 ### Documentation
 
@@ -86,14 +87,15 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 
 ### Submitting
 
-1. Make a pull request against `nist-branch` on Github.
-2. Add the `nist-branch` label and the `not ready for merge` label.
-3. Submitting a pull request will activate the Travis continuous integration build system, which builds liboqs on a variety of platforms.  Depending on the time of day and the load on Travis, the build may complete within a few minutes or be queued for sometimes up to an hour.
-4. Once the Travis build is complete, check the status of the build.  If it failed, click on the red X, see which build targets failed, and check the logs to try to identify the problem so you can fix it.  Common reasons for Travis build failures include:
+1. Run `make pre-push` to run (almost) all of the the tests that our continuous integration system will run.  Fix any warnings or errors before continuing.
+2. Make a pull request against `nist-branch` on Github.
+3. Add the `nist-branch` label and the `not ready for merge` label.
+4. Submitting a pull request will activate the Travis continuous integration build system, which builds liboqs on a variety of platforms.  Depending on the time of day and the load on Travis, the build may complete within a few minutes or be queued for sometimes up to an hour.
+5. Once the Travis build is complete, check the status of the build.  If it failed, click on the red X, see which build targets failed, and check the logs to try to identify the problem so you can fix it.  Common reasons for Travis build failures include:
 	- prettyprint inconsistencies
 	- non-namespaced global symbols
 	- compiler warnings in the non-upstream files treated as errors
-5. Once your pull request is passing Travis builds, remove the `not ready for merge` label, and request a review from one of the team (either `dstebila` or `smashra`).
-6. We'll review the code, test out the build, and follow up with you via comments on the pull request page.
+6. Once your pull request is passing Travis builds, remove the `not ready for merge` label, and request a review from one of the team (either `dstebila` or `smashra`).
+7. We'll review the code, test out the build, and follow up with you via comments on the pull request page.
 
 Thanks for contributing to liboqs!
