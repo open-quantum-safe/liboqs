@@ -1,6 +1,6 @@
 *DRAFT RELEASE NOTES*
 
-liboqs nist-branch snapshot 2018-03
+liboqs nist-branch snapshot 2018-04
 ===================================
 
 About
@@ -15,7 +15,7 @@ This branch of liboqs (**nist-branch**) focuses on incorporating submissions to 
 Release notes
 =============
 
-This snapshot of nist-branch was released on *TODO*.  Its release page on Github is https://github.com/open-quantum-safe/liboqs/releases/tag/nist-branch-snapshot-2018-03.
+This snapshot of nist-branch was released on *TODO*.  Its release page on Github is https://github.com/open-quantum-safe/liboqs/releases/tag/nist-branch-snapshot-2018-04.
 
 What's New
 ----------
@@ -40,6 +40,7 @@ This branch takes a "light touch" approach to incorporation:
 ### Generated executables and libraries
 
 - `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
+- `kat_kem`: Known answer test generator for all enabled key encapsulation mechanisms, to compare against KAT values in NIST submissions
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
 - `liboqs.a`: Static library
@@ -59,4 +60,11 @@ This snapshot release of nist-branch contains the following differences compared
 - Algorithms are formulated as key encapsulation mechanisms, rather than key exchange mechanisms
 - Integrations are "light touch" -- see README.md for more about integration philosophy.
 - A different build process is used
-- A global `random_bytes` function is available for random number generation, rather than the `OQS_RAND` object in master
+- A global `randombytes` function is available for random number generation, rather than the `OQS_RAND` object in master
+
+Future work
+-----------
+
+Snapshot releases of nist-branch will be made monthly.
+
+By mid-May 2018, we intend to have nist-branch and master branch with the same API, and for our OpenSSL and OpenSSH integrations building against both nist-branch and master branch.
