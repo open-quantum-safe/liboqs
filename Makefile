@@ -108,6 +108,7 @@ docs: headers
 	doxygen docs/.Doxyfile
 
 install:
+	@if [[ $(PREFIX) == "usr_local" ]] ; then echo "Installing to `pwd`/$(PREFIX). Override by running 'make install PREFIX=<destination>'."; fi
 	mkdir -p $(PREFIX_INCLUDE)
 	mkdir -p $(PREFIX_LIB)
 	$(RM) -r $(PREFIX_INCLUDE)/oqs
