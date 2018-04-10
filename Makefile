@@ -8,6 +8,10 @@ KEM_DEFAULT=newhope_1024_cca_kem
 ARCH=x64
 # x64 OR x86
 
+PREFIX=usr_local
+PREFIX_INCLUDE=$(PREFIX)/include
+PREFIX_LIB=$(PREFIX)/lib
+
 CC=gcc
 OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
 OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib
@@ -102,6 +106,16 @@ examples: $(EXAMPLE_PROGRAMS)
 docs: headers
 	mkdir -p docs/doxygen
 	doxygen docs/.Doxyfile
+
+install:
+	mkdir -p $(PREFIX_INCLUDE)
+	mkdir -p $(PREFIX_LIB)
+	$(RM) -r $(PREFIX_INCLUDE)/oqs
+	$(RM) $(PREFIX_LIB)/liboqs.a
+	$(RM) $(PREFIX_LIB)/liboqs.so
+	cp -r include/oqs $(PREFIX_INCLUDE)
+	cp liboqs.a $(PREFIX_LIB)
+	cp liboqs.so $(PREFIX_LIB)
 
 clean:
 	$(RM) -r includes
