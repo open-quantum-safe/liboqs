@@ -20,6 +20,10 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	}
 }
 
+void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t)) {
+	oqs_randombytes_algorithm = algorithm_ptr;
+}
+
 void randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	OQS_randombytes(random_array, bytes_to_read);
 }
