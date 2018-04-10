@@ -22,7 +22,7 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 1. Ensure that the implementation meets the acceptance criteria stated in [README.md](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/README.md), including that:
 	- the implementation is licensed under an acceptable open source license; and
 	- that there are no known breaks of the algorithm (see the "View comments" link for the submission on the [NIST Round 1 submission page](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography/Round-1-Submissions)).
-2. Make a new working branch off of the current nist-branch "dev" branch, preferably with the word `nist` somewhere in the branch name.
+2. Make a new working branch off of nist-branch, preferably with the word `nist` somewhere in the branch name.
 3. Create new directories `src/kem/potato` and `src/kem/potato/upstream`
 
 ### Adding the upstream implementation
@@ -88,7 +88,7 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 ### Submitting
 
 1. Run `make pre-push` to run (almost) all of the the tests that our continuous integration system will run.  Fix any warnings or errors before continuing.
-2. Make a pull request against the current nist-branch "dev" branch on Github.
+2. Make a pull request against `nist-branch` on Github.
 3. Add the `nist-branch` label and the `not ready for merge` label.
 4. Submitting a pull request will activate the Travis continuous integration build system, which builds liboqs on a variety of platforms.  Depending on the time of day and the load on Travis, the build may complete within a few minutes or be queued for sometimes up to an hour.
 5. Once the Travis build is complete, check the status of the build.  If it failed, click on the red X, see which build targets failed, and check the logs to try to identify the problem so you can fix it.  Common reasons for Travis build failures include:
