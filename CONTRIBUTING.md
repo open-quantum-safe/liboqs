@@ -54,7 +54,7 @@ Suppose the module we want to add is a KEM called `potato`.  Some NIST submissio
 	3. Create a file `symbols_global_rename_512.txt` indicating how to rename the existing function names for the globally exposed symbols (namely, the mapping to obtain `OQS_KEM_potato_512_keygen`, `OQS_KEM_potato_512_encaps`, and `OQS_KEM_potato_512_decaps`); the format of this file should be two symbols per line, the old name and the new name, separated by a space.  Add a line in the compilation target to run `scripts/symbols_global_rename.sh` with `symbols_global_rename_512.txt`.
 	4. Create a file `symbols_local.txt` containing the names of all other publicly visible symbols from the upstream implementation that need to be removed from the global namespace; the format of the file is one symbol per line.  You can find these by symbols by running `nm -g potato.a | grep ' T '` and `nm -g potato.a | grep ' D '`, or on the individual object files (`*.o`).  The same file can be used for all parameterizations of this algorithm.  On macOS, symbols will be prefixed with an underscore (`_`); you should omit the underscore.  Add a line in the compilation target to run `scripts/symbols_local.sh` with `symbols_local.txt`.
 6. Edit `src/kem/Makefile` at the `EDIT-WHEN-ADDING-KEM` marker to include `src/kem/potato/Makefile`.
-7. Edit `src/Makefile` at the `EDIT-WHEN-ADDING-KEM` marker to add the various algorithms/parameterizations (`potato_512`, ...) to the list of KEMs enabled by default.
+7. Edit `Makefile` at the `EDIT-WHEN-ADDING-KEM` marker to add the various algorithms/parameterizations (`potato_512`, ...) to the list of KEMs enabled by default.
 
 ### Testing
 
