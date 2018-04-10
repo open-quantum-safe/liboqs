@@ -1,8 +1,6 @@
 liboqs - nist-branch
 ====================
 
-**This is a development branch that is currently not for use.**
-
 liboqs is a C library for quantum-resistant cryptographic algorithms.  This branch of liboqs focuses on incorporating submissions to the NIST Post-Quantum Cryptography standardization project.
 
 Overview
