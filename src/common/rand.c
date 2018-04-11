@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -19,6 +20,10 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	}
 }
 
+void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t)) {
+	oqs_randombytes_algorithm = algorithm_ptr;
+}
+
 void randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	OQS_randombytes(random_array, bytes_to_read);
 }
@@ -34,25 +39,26 @@ static __inline void delay(unsigned int count) {
 
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 
-	int handle;
+	FILE *handle;
 	do {
-		handle = open("/dev/urandom", O_RDONLY);
-		if (handle == -1) {
+		handle = fopen("/dev/urandom", "rb");
+		if (handle == NULL) {
 			delay(0xFFFFF);
 		}
-	} while (handle == -1);
+	} while (handle == NULL);
 
 	int bytes_last_read, bytes_total_read, bytes_left_to_read;
 	bytes_total_read = 0;
 	bytes_left_to_read = bytes_to_read;
 	while (bytes_left_to_read > 0) {
 		do {
-			bytes_last_read = read(handle, random_array + bytes_total_read, bytes_left_to_read);
-			if (bytes_last_read == -1) {
+			bytes_last_read = fread(random_array + bytes_total_read, 1, bytes_left_to_read, handle);
+			if (bytes_last_read <= 0) {
 				delay(0xFFFF);
 			}
-		} while (bytes_last_read == -1);
+		} while (bytes_last_read <= 0);
 		bytes_total_read += bytes_last_read;
 		bytes_left_to_read -= bytes_last_read;
 	}
+	fclose(handle);
 }

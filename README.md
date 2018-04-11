@@ -1,8 +1,6 @@
 liboqs - nist-branch
 ====================
 
-**This is a development branch that is currently not for use.**
-
 liboqs is a C library for quantum-resistant cryptographic algorithms.  This branch of liboqs focuses on incorporating submissions to the NIST Post-Quantum Cryptography standardization project.
 
 Overview
@@ -32,7 +30,7 @@ This branch takes a "light touch" approach to incorporation:
 - The implementation will be added to the build process.
 - To avoid namespace collisions between different algorithms, symbol renaming will be used on the compiled files.
 
-For a list of algorithms included in nist-branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/ds-nist-branch/docs/algorithms).
+For a list of algorithms included in nist-branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/nist-branch/docs/algorithms).
 
 Limitations and security
 ------------------------
@@ -43,7 +41,7 @@ We believe that the NIST Post-Quantum Cryptography standardization project is cu
 
 We acknowledge that some parties may want to begin deploying post-quantum cryptography prior to the conclusion of the NIST standardization project.  We strongly recommend that any attempts to do make use of so-called **hybrid cryptography**, in which post-quantum public-key algorithms are used alongside traditional public key algorithms (like RSA or elliptic curves) so that the solution is at least no less secure than existing traditional cryptography.
 
-liboqs is provided "as is", without warranty of any kind.  See [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/ds-nist-branch/LICENSE.txt) for the full disclaimer.
+liboqs is provided "as is", without warranty of any kind.  See [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/LICENSE.txt) for the full disclaimer.
 
 In addition, implementations that we have included on this nist-branch of liboqs have received no quality control or vetting by OQS.  **THE NIST-BRANCH OF LIBOQS SHOULD BE USED EXCLUSIVELY FOR EXPERIMENTATION AND PROTOTYPING, AND SHOULD NEVER BE USED IN ANY PRODUCTION ENVIRONMENT OR TO PROTECT ANY SENSITIVE DATA.**
 
@@ -66,7 +64,7 @@ Acceptance criteria for nist-branch
 Contributing
 ------------
 
-Contributions that meet the acceptance criteria above are gratefully welcomed.  See <a href="https://github.com/open-quantum-safe/liboqs/blob/ds-nist-branch/CONTRIBUTING.md">CONTRIBUTING.md</a> for details on contributing an implementation.
+Contributions that meet the acceptance criteria above are gratefully welcomed.  See <a href="https://github.com/open-quantum-safe/liboqs/blob/nist-branch/CONTRIBUTING.md">CONTRIBUTING.md</a> for details on contributing an implementation.
 
 Lifecycle for nist-branch
 -------------------------
@@ -84,7 +82,7 @@ Lifecycle for nist-branch
 Building and running liboqs nist-branch
 ---------------------------------------
 
-[Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=ds-nist-branch)
+[Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=nist-branch)
 
 Builds have been tested on macOS 10.12.6 (clang), macOS 10.13.3 (clang), Ubuntu 14.04.5 (gcc-7).
 
@@ -106,7 +104,7 @@ To build, first clone or download the source from GitHub, then run Make.
 
 	git clone https://github.com/open-quantum-safe/liboqs.git
 	cd liboqs
-	git checkout ds-nist-branch
+	git checkout nist-branch
 	make
 
 If you wish to change the target architecture or disable certain algorithms, edit the first few lines of `Makefile`, then run:
@@ -137,7 +135,7 @@ Then open `docs/doxygen/html/index.html` in your web browser.
 License
 -------
 
-liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/ds-nist-branch/LICENSE.txt) for details.  
+liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/LICENSE.txt) for details.  
 
 liboqs includes some third party libraries or modules that may be licensed differently.  All third-party code is contained in directories labelled `upstream`, and each such upstream directory contains a license file indicating the license that applies to code in that directory.
 

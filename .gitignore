@@ -21,3 +21,5 @@ src/kem/frodokem/upstream/frodo976/
 docs/doxygen
 kat_kem_rsp/
 *~
+usr_local
+

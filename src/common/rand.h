@@ -24,6 +24,16 @@
 OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm);
 
 /**
+ * Switches OQS_randombytes to use the given function.
+ *
+ * This allows additional custom RNGs besides the provided ones.  The provided RNG
+ * function must have the same signature as `OQS_randombytes`.
+ *
+ * @param[in] algorithm_ptr Pointer to the RNG function to use.
+ */
+void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t));
+
+/**
  * Fills the given memory with the requested number of (pseudo)random bytes.
  *
  * This implementation uses whichever algorithm has been selected by

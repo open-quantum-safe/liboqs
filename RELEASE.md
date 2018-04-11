@@ -1,5 +1,3 @@
-*DRAFT RELEASE NOTES*
-
 liboqs nist-branch snapshot 2018-04
 ===================================
 
@@ -15,7 +13,7 @@ This branch of liboqs (**nist-branch**) focuses on incorporating submissions to 
 Release notes
 =============
 
-This snapshot of nist-branch was released on *TODO*.  Its release page on Github is https://github.com/open-quantum-safe/liboqs/releases/tag/nist-branch-snapshot-2018-04.
+This snapshot of nist-branch was released on April 10, 2018.  Its release page on Github is https://github.com/open-quantum-safe/liboqs/releases/tag/nist-branch-snapshot-2018-04.
 
 What's New
 ----------
@@ -33,34 +31,38 @@ This branch takes a "light touch" approach to incorporation:
 
 ### New key encapsulation mechanisms
 
-- FrodoKEM: 4 parameterizations: FrodoKEM-640-AES, FrodoKEM-640-cSHAKE, FrodoKEM-976-AES, FrodoKEM-976-cSHAKE
-- CRYSTALS-KYBER: 3 parameterizations: Kyber-512, Kyber-768, Kyber-1024
-- NewHopeNIST: 2 parameterizations: NewHope512-CCA-KEM, NewHope1024-CCA-KEM
+- FrodoKEM: 4 parameterizations: FrodoKEM-640-AES, FrodoKEM-640-cSHAKE, FrodoKEM-976-AES, FrodoKEM-976-cSHAKE.
+- CRYSTALS-KYBER: 3 parameterizations: Kyber-512, Kyber-768, Kyber-1024.
+- NewHopeNIST: 2 parameterizations: NewHope512-CCA-KEM, NewHope1024-CCA-KEM.
 
 ### Generated executables and libraries
 
-- `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
-- `kat_kem`: Known answer test generator for all enabled key encapsulation mechanisms, to compare against KAT values in NIST submissions
-- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
-- `example_kem`: Minimal runnable example showing the usage of the KEM API
-- `liboqs.a`: Static library
-- `liboqs.so`: Shared library
+- `test_kem`: Simple test harness for all enabled key encapsulation mechanisms.
+- `kat_kem`: Known answer test generator for all enabled key encapsulation mechanisms, to compare against KAT values in NIST submissions.
+- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions.
+- `example_kem`: Minimal runnable example showing the usage of the KEM API.
+- `liboqs.a`: Static library.
+- `liboqs.so`: Shared library.
 
 ### Documentation
 
-- Full Doxygen documentation of the public API (`oqs/common.h`, `oqs/config.h`, `oqs/kem.h`, and `oqs/rand.h`)
-- Algorithm datasheets for all supported algorithms in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/nist-branch/docs/algorithms)
-- Instructions for contributing new algorithms in [CONTRIBUTING.md](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/CONTRIBUTING.md)
+- Full Doxygen documentation of the public API (`oqs/common.h`, `oqs/config.h`, `oqs/kem.h`, and `oqs/rand.h`).
+- Algorithm datasheets for all supported algorithms in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/nist-branch/docs/algorithms).
+- Instructions for contributing new algorithms in [CONTRIBUTING.md](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/CONTRIBUTING.md).
+
+### Application integrations
+
+- OpenSSL 1.0.2: A prototype integration of liboqs-based key exchange into TLS 1.2 in our fork of OpenSSL 1.0.2; see the [OQS-OpenSSL-1_0_2-stable](https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL_1_0_2-stable) branch of our OpenSSL fork's repository.
 
 Comparison to liboqs master
 ---------------------------
 
 This snapshot release of nist-branch contains the following differences compared to the current version of liboqs master:
 
-- Algorithms are formulated as key encapsulation mechanisms, rather than key exchange mechanisms
+- Algorithms are formulated as key encapsulation mechanisms, rather than key exchange mechanisms.
 - Integrations are "light touch" -- see README.md for more about integration philosophy.
-- A different build process is used
-- A global `randombytes` function is available for random number generation, rather than the `OQS_RAND` object in master
+- A different build process is used.
+- A global `randombytes` function is available for random number generation, rather than the `OQS_RAND` object in master.
 
 Future work
 -----------
