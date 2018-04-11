@@ -117,7 +117,6 @@ main()
             printf("crypto_kem_dec returned bad 'ss' value\n");
             return KAT_CRYPTO_FAILURE;
         }
-
     } while ( !done );
     
     fclose(fp_rsp);

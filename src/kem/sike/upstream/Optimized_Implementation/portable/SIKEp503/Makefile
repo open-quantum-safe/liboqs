@@ -35,9 +35,9 @@ RANLIB=ranlib
 CFLAGS=$(OPT) $(ADDITIONAL_SETTINGS) -D $(ARCHITECTURE) -D __LINUX__ -D $(USE_OPT_LEVEL)
 LDFLAGS=-lm
 EXTRA_OBJECTS_503=objs503/fp_generic.o
-OBJECTS_503=objs503/P503.o $(EXTRA_OBJECTS_503) objs/random.o objs/fips202.o
+OBJECTS_503=objs503/P503.o $(EXTRA_OBJECTS_503) objs/fips202.o
 
-all: lib503 tests KATS
+all: lib503
 
 objs503/%.o: %.c
 	@mkdir -p $(@D)
@@ -46,11 +46,8 @@ objs503/%.o: %.c
 objs503/fp_generic.o: generic/fp_generic.c
 	$(CC) -c $(CFLAGS) generic/fp_generic.c -o objs503/fp_generic.o
 
-objs/random.o: random/random.c
-	@mkdir -p $(@D)
-	$(CC) -c $(CFLAGS) random/random.c -o objs/random.o
-
 objs/fips202.o: sha3/fips202.c
+	@mkdir -p $(@D)
 	$(CC) -c $(CFLAGS) sha3/fips202.c -o objs/fips202.o
 
 lib503: $(OBJECTS_503)

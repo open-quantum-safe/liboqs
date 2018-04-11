@@ -2,7 +2,8 @@
 
 KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
 			   newhope_512_cca_kem newhope_1024_cca_kem \
-			   kyber512 kyber768 kyber1024
+			   kyber512 kyber768 kyber1024 \
+			   sike_p503, sike_p751
 KEM_DEFAULT=newhope_1024_cca_kem
 
 ARCH=x64

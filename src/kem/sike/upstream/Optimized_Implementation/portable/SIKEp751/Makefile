@@ -35,9 +35,9 @@ RANLIB=ranlib
 CFLAGS=$(OPT) $(ADDITIONAL_SETTINGS) -D $(ARCHITECTURE) -D __LINUX__ -D $(USE_OPT_LEVEL)
 LDFLAGS=-lm
 EXTRA_OBJECTS_751=objs751/fp_generic.o
-OBJECTS_751=objs751/P751.o $(EXTRA_OBJECTS_751) objs/random.o objs/fips202.o
+OBJECTS_751=objs751/P751.o $(EXTRA_OBJECTS_751) objs/fips202.o
 
-all: lib751 tests KATS
+all: lib751
 
 objs751/%.o: %.c
 	@mkdir -p $(@D)
@@ -46,11 +46,8 @@ objs751/%.o: %.c
 objs751/fp_generic.o: generic/fp_generic.c
 	$(CC) -c $(CFLAGS) generic/fp_generic.c -o objs751/fp_generic.o
 
-objs/random.o: random/random.c
-	@mkdir -p $(@D)
-	$(CC) -c $(CFLAGS) random/random.c -o objs/random.o
-
 objs/fips202.o: sha3/fips202.c
+	@mkdir -p $(@D)
 	$(CC) -c $(CFLAGS) sha3/fips202.c -o objs/fips202.o
 
 lib751: $(OBJECTS_751)

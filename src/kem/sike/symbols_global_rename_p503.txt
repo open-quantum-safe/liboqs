@@ -1,0 +1,14 @@
+crypto_kem_keypair OQS_KEM_sike_p503_keypair
+crypto_kem_enc OQS_KEM_sike_p503_encaps
+crypto_kem_dec OQS_KEM_sike_p503_decaps
+Montgomery_R2 Montgomery_R2_p503
+Montgomery_one Montgomery_one_p503
+A_gen A_gen_p503
+B_gen B_gen_p503
+strat_Alice strat_Alice_p503
+strat_Bob strat_Bob_p503
+Border_div3 Border_div3_p503
+Montgomery_rprime Montgomery_rprime_p503
+Montgomery_Rprime Montgomery_Rprime_p503
+Alice_order Alice_order_p503
+Bob_order Bob_order_p503
