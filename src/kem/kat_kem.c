@@ -69,14 +69,16 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	ciphertext = malloc(kem->length_ciphertext);
 	shared_secret_e = malloc(kem->length_shared_secret);
 	shared_secret_d = malloc(kem->length_shared_secret);
-	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
+	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) ||
+	    (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "[kat_kem] %s ERROR: malloc failed!\n", method_name);
 		goto err;
 	}
 
 	rc = OQS_KEM_keypair(kem, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_kem] %s ERROR: OQS_KEM_keypair failed!\n", method_name);
+		fprintf(stderr, "[kat_kem] %s ERROR: OQS_KEM_keypair failed!\n",
+		        method_name);
 		goto err;
 	}
 	fprintBstr(fh, "pk = ", public_key, kem->length_public_key);
@@ -84,7 +86,8 @@ static OQS_STATUS kem_kat(const char *method_name) {
 
 	rc = OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_kem] %s ERROR: OQS_KEM_encaps failed!\n", method_name);
+		fprintf(stderr, "[kat_kem] %s ERROR: OQS_KEM_encaps failed!\n",
+		        method_name);
 		goto err;
 	}
 	fprintBstr(fh, "ct = ", ciphertext, kem->length_ciphertext);
@@ -92,15 +95,19 @@ static OQS_STATUS kem_kat(const char *method_name) {
 
 	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "[kat_kem] %s ERROR: OQS_KEM_decaps failed!\n", method_name);
+		fprintf(stderr, "[kat_kem] %s ERROR: OQS_KEM_decaps failed!\n",
+		        method_name);
 		goto err;
 	}
 
 	rv = memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret);
 	if (rv != 0) {
-		fprintf(stderr, "[kat_kem] %s ERROR: shared secrets are not equal\n", method_name);
-		OQS_print_hex_string("shared_secret_e", shared_secret_e, kem->length_shared_secret);
-		OQS_print_hex_string("shared_secret_d", shared_secret_d, kem->length_shared_secret);
+		fprintf(stderr, "[kat_kem] %s ERROR: shared secrets are not equal\n",
+		        method_name);
+		OQS_print_hex_string("shared_secret_e", shared_secret_e,
+		                     kem->length_shared_secret);
+		OQS_print_hex_string("shared_secret_d", shared_secret_d,
+		                     kem->length_shared_secret);
 		goto err;
 	}
 

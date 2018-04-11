@@ -2,7 +2,8 @@
  * \file oqs.h
  * \brief Overall header file for liboqs.
  *
- * C programs using liboqs can include just this one file, and it will include all
+ * C programs using liboqs can include just this one file, and it will include
+ * all
  * other necessary headers from liboqs.
  */
 

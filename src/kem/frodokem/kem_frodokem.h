@@ -12,9 +12,15 @@
 
 OQS_KEM *OQS_KEM_frodokem_640_aes_new();
 
-extern OQS_STATUS OQS_KEM_frodokem_640_aes_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_frodokem_640_aes_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_frodokem_640_aes_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+extern OQS_STATUS OQS_KEM_frodokem_640_aes_keypair(uint8_t *public_key,
+                                                   uint8_t *secret_key);
+extern OQS_STATUS OQS_KEM_frodokem_640_aes_encaps(uint8_t *ciphertext,
+                                                  uint8_t *shared_secret,
+                                                  const uint8_t *public_key);
+extern OQS_STATUS
+OQS_KEM_frodokem_640_aes_decaps(uint8_t *shared_secret,
+                                const unsigned char *ciphertext,
+                                const uint8_t *secret_key);
 
 #endif
 
@@ -27,9 +33,15 @@ extern OQS_STATUS OQS_KEM_frodokem_640_aes_decaps(uint8_t *shared_secret, const 
 
 OQS_KEM *OQS_KEM_frodokem_976_aes_new();
 
-extern OQS_STATUS OQS_KEM_frodokem_976_aes_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_frodokem_976_aes_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_frodokem_976_aes_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+extern OQS_STATUS OQS_KEM_frodokem_976_aes_keypair(uint8_t *public_key,
+                                                   uint8_t *secret_key);
+extern OQS_STATUS OQS_KEM_frodokem_976_aes_encaps(uint8_t *ciphertext,
+                                                  uint8_t *shared_secret,
+                                                  const uint8_t *public_key);
+extern OQS_STATUS
+OQS_KEM_frodokem_976_aes_decaps(uint8_t *shared_secret,
+                                const unsigned char *ciphertext,
+                                const uint8_t *secret_key);
 
 #endif
 
@@ -42,9 +54,15 @@ extern OQS_STATUS OQS_KEM_frodokem_976_aes_decaps(uint8_t *shared_secret, const 
 
 OQS_KEM *OQS_KEM_frodokem_640_cshake_new();
 
-extern OQS_STATUS OQS_KEM_frodokem_640_cshake_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_frodokem_640_cshake_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_frodokem_640_cshake_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+extern OQS_STATUS OQS_KEM_frodokem_640_cshake_keypair(uint8_t *public_key,
+                                                      uint8_t *secret_key);
+extern OQS_STATUS OQS_KEM_frodokem_640_cshake_encaps(uint8_t *ciphertext,
+                                                     uint8_t *shared_secret,
+                                                     const uint8_t *public_key);
+extern OQS_STATUS
+OQS_KEM_frodokem_640_cshake_decaps(uint8_t *shared_secret,
+                                   const unsigned char *ciphertext,
+                                   const uint8_t *secret_key);
 
 #endif
 
@@ -57,9 +75,15 @@ extern OQS_STATUS OQS_KEM_frodokem_640_cshake_decaps(uint8_t *shared_secret, con
 
 OQS_KEM *OQS_KEM_frodokem_976_cshake_new();
 
-extern OQS_STATUS OQS_KEM_frodokem_976_cshake_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_frodokem_976_cshake_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_frodokem_976_cshake_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+extern OQS_STATUS OQS_KEM_frodokem_976_cshake_keypair(uint8_t *public_key,
+                                                      uint8_t *secret_key);
+extern OQS_STATUS OQS_KEM_frodokem_976_cshake_encaps(uint8_t *ciphertext,
+                                                     uint8_t *shared_secret,
+                                                     const uint8_t *public_key);
+extern OQS_STATUS
+OQS_KEM_frodokem_976_cshake_decaps(uint8_t *shared_secret,
+                                   const unsigned char *ciphertext,
+                                   const uint8_t *secret_key);
 
 #endif
 

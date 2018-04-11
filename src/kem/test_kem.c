@@ -21,9 +21,11 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		return OQS_SUCCESS;
 	}
 
-	printf("================================================================================\n");
+	printf("====================================================================="
+	       "===========\n");
 	printf("Sample computation for KEM %s\n", kem->method_name);
-	printf("================================================================================\n");
+	printf("====================================================================="
+	       "===========\n");
 
 	public_key = malloc(kem->length_public_key);
 	secret_key = malloc(kem->length_secret_key);
@@ -31,7 +33,8 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	shared_secret_e = malloc(kem->length_shared_secret);
 	shared_secret_d = malloc(kem->length_shared_secret);
 
-	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
+	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) ||
+	    (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");
 		goto err;
 	}
@@ -57,8 +60,10 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	rv = memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret);
 	if (rv != 0) {
 		fprintf(stderr, "ERROR: shared secrets are not equal\n");
-		OQS_print_hex_string("shared_secret_e", shared_secret_e, kem->length_shared_secret);
-		OQS_print_hex_string("shared_secret_d", shared_secret_d, kem->length_shared_secret);
+		OQS_print_hex_string("shared_secret_e", shared_secret_e,
+		                     kem->length_shared_secret);
+		OQS_print_hex_string("shared_secret_d", shared_secret_d,
+		                     kem->length_shared_secret);
 		goto err;
 	} else {
 		printf("shared secrets are equal\n");
