@@ -32,7 +32,4 @@ Implementation
 Additional comments
 -------------------
 
-The original Sike implementation includes optimizations that are not currently being built in liboqs:
-
-- AES-NI
-- AVX2
+The original Sike implementation includes optimizations that are not currently being built in liboqs. See src/kem/sike/upstream/README for details.
