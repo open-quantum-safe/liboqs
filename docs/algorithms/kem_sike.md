@@ -17,8 +17,8 @@ Parameter sets
 
 | Parameter set   | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
 |-----------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| Sike p503       |     IND-CCA    |              1              |            378          |            434          |            402          |             16             |
-| Sike p751       |     IND-CCA    |              3              |            564          |            644          |            596          |             24             |
+| Sike-p503       |     IND-CCA    |              1              |            378          |            434          |            402          |             16             |
+| Sike-p751       |     IND-CCA    |              3              |            564          |            644          |            596          |             24             |
 
 Implementation
 --------------
