@@ -1,13 +1,12 @@
-#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <strings.h>
 #include <unistd.h>
+#include <fcntl.h>
+#include <strings.h>
 
 #include <oqs/oqs.h>
 
-static void (*oqs_randombytes_algorithm)(uint8_t *,
-                                         size_t) = &OQS_randombytes_system;
+static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
 
 OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
@@ -21,8 +20,7 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	}
 }
 
-void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *,
-                                                            size_t)) {
+void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t)) {
 	oqs_randombytes_algorithm = algorithm_ptr;
 }
 
@@ -54,8 +52,7 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	bytes_left_to_read = bytes_to_read;
 	while (bytes_left_to_read > 0) {
 		do {
-			bytes_last_read =
-			    fread(random_array + bytes_total_read, 1, bytes_left_to_read, handle);
+			bytes_last_read = fread(random_array + bytes_total_read, 1, bytes_left_to_read, handle);
 			if (bytes_last_read <= 0) {
 				delay(0xFFFF);
 			}

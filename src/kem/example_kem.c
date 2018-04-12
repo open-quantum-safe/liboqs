@@ -11,10 +11,8 @@
  * statically on the stack, calling a specific algorithm's functions
  * directly.
  *
- * The macros OQS_KEM_frodokem_640_aes_length_* and the functions
- * OQS_KEM_frodokem_640_aes_*
- * are only defined if the algorithm FrodoKEM-640-AES was enabled at
- * compile-time
+ * The macros OQS_KEM_frodokem_640_aes_length_* and the functions OQS_KEM_frodokem_640_aes_*
+ * are only defined if the algorithm FrodoKEM-640-AES was enabled at compile-time
  * which must be checked using the OQS_ENABLE_KEM_frodokem_640_aes macro.
  *
  * <oqs/config.h>, which is included in <oqs/oqs.h>, contains macros
@@ -51,8 +49,7 @@ static OQS_STATUS example_stack() {
 	return OQS_SUCCESS; // success!
 
 #else
-	printf("[example_stack] OQS_KEM_frodokem_640_aes was not enabled at "
-	       "compile-time.\n");
+	printf("[example_stack] OQS_KEM_frodokem_640_aes was not enabled at compile-time.\n");
 	return OQS_ERROR;
 
 #endif
@@ -80,8 +77,7 @@ static OQS_STATUS example_heap() {
 
 	kem = OQS_KEM_new(OQS_KEM_alg_frodokem_640_aes);
 	if (kem == NULL) {
-		printf("[example_heap]  OQS_KEM_frodokem_640_aes was not enabled at "
-		       "compile-time.\n");
+		printf("[example_heap]  OQS_KEM_frodokem_640_aes was not enabled at compile-time.\n");
 		return OQS_ERROR;
 	}
 
@@ -90,8 +86,7 @@ static OQS_STATUS example_heap() {
 	ciphertext = malloc(kem->length_ciphertext);
 	shared_secret_e = malloc(kem->length_shared_secret);
 	shared_secret_d = malloc(kem->length_shared_secret);
-	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) ||
-	    (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
+	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed!\n");
 		goto err;
 	}

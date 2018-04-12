@@ -8,8 +8,7 @@
 
 #include "../common/ds_benchmark.h"
 
-static OQS_STATUS kem_speed_wrapper(const char *method_name, int duration,
-                                    bool printInfo) {
+static OQS_STATUS kem_speed_wrapper(const char *method_name, int duration, bool printInfo) {
 
 	OQS_KEM *kem = NULL;
 	uint8_t *public_key = NULL;
@@ -30,29 +29,18 @@ static OQS_STATUS kem_speed_wrapper(const char *method_name, int duration,
 	shared_secret_e = malloc(kem->length_shared_secret);
 	shared_secret_d = malloc(kem->length_shared_secret);
 
-	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) ||
-	    (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
+	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");
 		goto err;
 	}
 
-	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n", kem->method_name,
-	       "", "", "", "", "", "");
-	TIME_OPERATION_SECONDS(OQS_KEM_keypair(kem, public_key, secret_key), "keygen",
-	                       duration)
-	TIME_OPERATION_SECONDS(
-	    OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key), "encaps",
-	    duration)
-	TIME_OPERATION_SECONDS(
-	    OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key), "decaps",
-	    duration)
+	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n", kem->method_name, "", "", "", "", "", "");
+	TIME_OPERATION_SECONDS(OQS_KEM_keypair(kem, public_key, secret_key), "keygen", duration)
+	TIME_OPERATION_SECONDS(OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key), "encaps", duration)
+	TIME_OPERATION_SECONDS(OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key), "decaps", duration)
 
 	if (printInfo) {
-		printf("public key bytes: %zu, ciphertext bytes: %zu, secret key bytes: "
-		       "%zu, shared secret key bytes: %zu, NIST level: %d, IND-CCA: %s\n",
-		       kem->length_public_key, kem->length_ciphertext,
-		       kem->length_secret_key, kem->length_shared_secret,
-		       kem->claimed_nist_level, kem->ind_cca ? "Y" : "N");
+		printf("public key bytes: %zu, ciphertext bytes: %zu, secret key bytes: %zu, shared secret key bytes: %zu, NIST level: %d, IND-CCA: %s\n", kem->length_public_key, kem->length_ciphertext, kem->length_secret_key, kem->length_shared_secret, kem->claimed_nist_level, kem->ind_cca ? "Y" : "N");
 	}
 
 	ret = OQS_SUCCESS;
@@ -106,8 +94,7 @@ int main(int argc, char **argv) {
 			} else {
 				return EXIT_FAILURE;
 			}
-		} else if ((strcmp(argv[i], "--duration") == 0) ||
-		           (strcmp(argv[i], "-d") == 0)) {
+		} else if ((strcmp(argv[i], "--duration") == 0) || (strcmp(argv[i], "-d") == 0)) {
 			if (i < argc - 1) {
 				duration = (int) strtol(argv[i + 1], NULL, 10);
 				if (duration > 0) {
@@ -115,12 +102,10 @@ int main(int argc, char **argv) {
 					continue;
 				}
 			}
-		} else if ((strcmp(argv[i], "--help") == 0) ||
-		           (strcmp(argv[i], "-h") == 0)) {
+		} else if ((strcmp(argv[i], "--help") == 0) || (strcmp(argv[i], "-h") == 0)) {
 			printUsage = true;
 			break;
-		} else if ((strcmp(argv[i], "--info") == 0) ||
-		           (strcmp(argv[i], "-i") == 0)) {
+		} else if ((strcmp(argv[i], "--info") == 0) || (strcmp(argv[i], "-i") == 0)) {
 			printKemInfo = true;
 			continue;
 		} else {
@@ -136,19 +121,15 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "Usage: speed_kem <options> <alg>\n");
 		fprintf(stderr, "\n");
 		fprintf(stderr, "<options>\n");
-		fprintf(stderr,
-		        "--algs             Print supported algorithms and terminate\n");
+		fprintf(stderr, "--algs             Print supported algorithms and terminate\n");
 		fprintf(stderr, "--duration n\n");
-		fprintf(stderr, " -d n              Run each speed test for approximately "
-		                "n seconds, default n=3\n");
+		fprintf(stderr, " -d n              Run each speed test for approximately n seconds, default n=3\n");
 		fprintf(stderr, "--help\n");
 		fprintf(stderr, " -h                Print usage\n");
 		fprintf(stderr, "--info\n");
-		fprintf(stderr, " -i                Print info (sizes, security level) "
-		                "about each KEM\n");
+		fprintf(stderr, " -i                Print info (sizes, security level) about each KEM\n");
 		fprintf(stderr, "\n");
-		fprintf(stderr, "<alg>              Only run the specified KEM method; "
-		                "must be one of the algorithms output by --algs\n");
+		fprintf(stderr, "<alg>              Only run the specified KEM method; must be one of the algorithms output by --algs\n");
 		return EXIT_FAILURE;
 	}
 

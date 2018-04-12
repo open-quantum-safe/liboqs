@@ -35,29 +35,24 @@ typedef enum {
  *
  * @param[in] label A label to display alongside the value
  * @param[in] str The byte array to print
- * @param[in] len The number of bytes to print; the memory allocated for `str`
- * must be at least `len` bytes
+ * @param[in] len The number of bytes to print; the memory allocated for `str` must be at least `len` bytes
  */
 void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len);
 
 /**
- * Prints part of a byte array to stdout as a hexadecimal string, specifically
- * the first `sub_len`
+ * Prints part of a byte array to stdout as a hexadecimal string, specifically the first `sub_len`
  * and last `sub_len` bytes.
  * @param[in] label A label to display alongside the value
  * @param[in] str The byte array to print
- * @param[in] len The length of the byte array `str`; the memory allocated for
- * `str` must be at least `len` bytes
+ * @param[in] len The length of the byte array `str`; the memory allocated for `str` must be at least `len` bytes
  * @param[in] sub_len The number of bytes to print
  */
-void OQS_print_part_hex_string(const char *label, const uint8_t *str,
-                               size_t len, size_t sub_len);
+void OQS_print_part_hex_string(const char *label, const uint8_t *str, size_t len, size_t sub_len);
 
 /**
  * Zeros out `len` bytes of memory starting at `ptr`.
  *
- * Designed to be protected against optimizing compilers which try to remove
- * "unnecessary"
+ * Designed to be protected against optimizing compilers which try to remove "unnecessary"
  * operations.  Should be used for all buffers containing secret data.
  *
  * @param[in] ptr The start of the memory to zero out.
@@ -70,8 +65,7 @@ void OQS_MEM_cleanse(void *ptr, size_t len);
  *
  * Can be called with `ptr = NULL`, in which case no operation is performed.
  *
- * Designed to be protected against optimizing compilers which try to remove
- * "unnecessary"
+ * Designed to be protected against optimizing compilers which try to remove "unnecessary"
  * operations.  Should be used for all buffers containing secret data.
  *
  * @param[in] ptr The start of the memory to zero out and free.

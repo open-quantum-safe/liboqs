@@ -96,8 +96,7 @@ PRINT_TIMER_FOOTER
 #include <Windows.h>
 
 int gettimeofday(struct timeval *tp, struct timezone *tzp) {
-	// Note: some broken versions only have 8 trailing zero's, the correct epoch
-	// has 9 trailing zero's
+	// Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
 	static const uint64_t EPOCH = ((uint64_t) 116444736000000000ULL);
 
 	SYSTEMTIME system_time;
@@ -134,16 +133,14 @@ static uint64_t rdtsc(void) {
 #endif
 }
 
-#define DEFINE_TIMER_VARIABLES                                                 \
-	volatile uint64_t _bench_cycles_start, _bench_cycles_end;                  \
-	uint64_t _bench_cycles_cumulative = 0;                                     \
-	int64_t _bench_cycles_diff;                                                \
-	struct timeval _bench_timeval_start, _bench_timeval_end;                   \
-	uint64_t _bench_iterations, _bench_time_cumulative;                        \
-	double _bench_cycles_x, _bench_cycles_mean, _bench_cycles_delta,           \
-	    _bench_cycles_M2, _bench_cycles_stdev;                                 \
-	double _bench_time_x, _bench_time_mean, _bench_time_delta, _bench_time_M2, \
-	    _bench_time_stdev;
+#define DEFINE_TIMER_VARIABLES                                                                              \
+	volatile uint64_t _bench_cycles_start, _bench_cycles_end;                                               \
+	uint64_t _bench_cycles_cumulative = 0;                                                                  \
+	int64_t _bench_cycles_diff;                                                                             \
+	struct timeval _bench_timeval_start, _bench_timeval_end;                                                \
+	uint64_t _bench_iterations, _bench_time_cumulative;                                                     \
+	double _bench_cycles_x, _bench_cycles_mean, _bench_cycles_delta, _bench_cycles_M2, _bench_cycles_stdev; \
+	double _bench_time_x, _bench_time_mean, _bench_time_delta, _bench_time_M2, _bench_time_stdev;
 
 #define INITIALIZE_TIMER        \
 	_bench_iterations = 0;      \
@@ -157,31 +154,26 @@ static uint64_t rdtsc(void) {
 	gettimeofday(&_bench_timeval_start, NULL); \
 	_bench_cycles_start = rdtsc();
 
-// Mean and population standard deviation are calculated in an online way using
-// the algorithm in
+// Mean and population standard deviation are calculated in an online way using the algorithm in
 //     http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm
-#define STOP_TIMER                                                            \
-	_bench_cycles_end = rdtsc();                                              \
-	gettimeofday(&_bench_timeval_end, NULL);                                  \
-	_bench_iterations += 1;                                                   \
-	if (_bench_cycles_end < _bench_cycles_start) {                            \
-		_bench_cycles_end += (uint64_t) 1 << 32;                              \
-	}                                                                         \
-	_bench_cycles_diff = _bench_cycles_end;                                   \
-	_bench_cycles_diff -= _bench_cycles_start;                                \
-	_bench_cycles_cumulative += _bench_cycles_diff;                           \
-	_bench_cycles_x = (double) (_bench_cycles_diff);                          \
-	_bench_cycles_delta = _bench_cycles_x - _bench_cycles_mean;               \
-	_bench_cycles_mean += _bench_cycles_delta / (double) _bench_iterations;   \
-	_bench_cycles_M2 +=                                                       \
-	    _bench_cycles_delta * (_bench_cycles_x - _bench_cycles_mean);         \
-	_bench_time_x = (double) ((_bench_timeval_end.tv_sec * 1000000 +          \
-	                           _bench_timeval_end.tv_usec) -                  \
-	                          (_bench_timeval_start.tv_sec * 1000000 +        \
-	                           _bench_timeval_start.tv_usec));                \
-	_bench_time_delta = _bench_time_x - _bench_time_mean;                     \
-	_bench_time_mean += _bench_time_delta / (double) _bench_iterations;       \
-	_bench_time_M2 += _bench_time_delta * (_bench_time_x - _bench_time_mean); \
+#define STOP_TIMER                                                                                                                                                          \
+	_bench_cycles_end = rdtsc();                                                                                                                                            \
+	gettimeofday(&_bench_timeval_end, NULL);                                                                                                                                \
+	_bench_iterations += 1;                                                                                                                                                 \
+	if (_bench_cycles_end < _bench_cycles_start) {                                                                                                                          \
+		_bench_cycles_end += (uint64_t) 1 << 32;                                                                                                                            \
+	}                                                                                                                                                                       \
+	_bench_cycles_diff = _bench_cycles_end;                                                                                                                                 \
+	_bench_cycles_diff -= _bench_cycles_start;                                                                                                                              \
+	_bench_cycles_cumulative += _bench_cycles_diff;                                                                                                                         \
+	_bench_cycles_x = (double) (_bench_cycles_diff);                                                                                                                        \
+	_bench_cycles_delta = _bench_cycles_x - _bench_cycles_mean;                                                                                                             \
+	_bench_cycles_mean += _bench_cycles_delta / (double) _bench_iterations;                                                                                                 \
+	_bench_cycles_M2 += _bench_cycles_delta * (_bench_cycles_x - _bench_cycles_mean);                                                                                       \
+	_bench_time_x = (double) ((_bench_timeval_end.tv_sec * 1000000 + _bench_timeval_end.tv_usec) - (_bench_timeval_start.tv_sec * 1000000 + _bench_timeval_start.tv_usec)); \
+	_bench_time_delta = _bench_time_x - _bench_time_mean;                                                                                                                   \
+	_bench_time_mean += _bench_time_delta / (double) _bench_iterations;                                                                                                     \
+	_bench_time_M2 += _bench_time_delta * (_bench_time_x - _bench_time_mean);                                                                                               \
 	_bench_time_cumulative += _bench_time_x;
 
 #define FINALIZE_TIMER                                                             \
@@ -196,25 +188,20 @@ static uint64_t rdtsc(void) {
 		_bench_time_stdev = sqrt(_bench_time_M2 / (double) _bench_iterations);     \
 	}
 
-#define PRINT_CURRENT_TIME                                  \
-	{                                                       \
-		char _bench_time_buff[20];                          \
-		time_t _bench_time_now = time(0);                   \
-		strftime(_bench_time_buff, 20, "%Y-%m-%d %H:%M:%S", \
-		         localtime(&_bench_time_now));              \
-		printf("%s", _bench_time_buff);                     \
+#define PRINT_CURRENT_TIME                                                                \
+	{                                                                                     \
+		char _bench_time_buff[20];                                                        \
+		time_t _bench_time_now = time(0);                                                 \
+		strftime(_bench_time_buff, 20, "%Y-%m-%d %H:%M:%S", localtime(&_bench_time_now)); \
+		printf("%s", _bench_time_buff);                                                   \
 	}
 
-#define PRINT_TIMER_HEADER                                                     \
-	printf("Started at ");                                                     \
-	PRINT_CURRENT_TIME                                                         \
-	printf("\n");                                                              \
-	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n",                \
-	       "Operation                     ", "Iterations", "Total time (s)",   \
-	       "Time (us): mean", "pop. stdev", "CPU cycles: mean", "pop. stdev"); \
-	printf("%-30s | %10s:| %14s:| %15s:| %10s:| %16s:| %10s:\n",               \
-	       "------------------------------", "----------", "--------------",   \
-	       "---------------", "----------", "----------------", "----------");
+#define PRINT_TIMER_HEADER                                                                                                                                                                            \
+	printf("Started at ");                                                                                                                                                                            \
+	PRINT_CURRENT_TIME                                                                                                                                                                                \
+	printf("\n");                                                                                                                                                                                     \
+	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n", "Operation                     ", "Iterations", "Total time (s)", "Time (us): mean", "pop. stdev", "CPU cycles: mean", "pop. stdev"); \
+	printf("%-30s | %10s:| %14s:| %15s:| %10s:| %16s:| %10s:\n", "------------------------------", "----------", "--------------", "---------------", "----------", "----------------", "----------");
 /* colons are used in above to right-align cell contents in Markdown */
 
 #define PRINT_TIMER_FOOTER \
@@ -222,14 +209,8 @@ static uint64_t rdtsc(void) {
 	PRINT_CURRENT_TIME     \
 	printf("\n");
 
-#define PRINT_TIMER_AVG(op_name)                                             \
-	printf("%-30s | %10" PRIu64                                              \
-	       " | %14.3f | %15.3f | %10.3f | %16.0f | %10.0f\n",                \
-	       (op_name), _bench_iterations,                                     \
-	       ((double) _bench_time_cumulative) / 1000000.0, _bench_time_mean,  \
-	       _bench_time_stdev,                                                \
-	       ((double) _bench_cycles_cumulative) / (double) _bench_iterations, \
-	       _bench_cycles_stdev);
+#define PRINT_TIMER_AVG(op_name) \
+	printf("%-30s | %10" PRIu64 " | %14.3f | %15.3f | %10.3f | %16.0f | %10.0f\n", (op_name), _bench_iterations, ((double) _bench_time_cumulative) / 1000000.0, _bench_time_mean, _bench_time_stdev, ((double) _bench_cycles_cumulative) / (double) _bench_iterations, _bench_cycles_stdev);
 
 #define TIME_OPERATION_ITERATIONS(op, op_name, it) \
 	{                                              \
