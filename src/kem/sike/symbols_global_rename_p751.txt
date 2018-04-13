@@ -1,14 +1,3 @@
 crypto_kem_keypair OQS_KEM_sike_p751_keypair
 crypto_kem_enc OQS_KEM_sike_p751_encaps
 crypto_kem_dec OQS_KEM_sike_p751_decaps
-Montgomery_R2 Montgomery_R2_p751
-Montgomery_one Montgomery_one_p751
-A_gen A_gen_p751
-B_gen B_gen_p751
-strat_Alice strat_Alice_p751
-strat_Bob strat_Bob_p751
-Border_div3 Border_div3_p751
-Montgomery_rprime Montgomery_rprime_p751
-Montgomery_Rprime Montgomery_Rprime_p751
-Alice_order Alice_order_p751
-Bob_order Bob_order_p751
