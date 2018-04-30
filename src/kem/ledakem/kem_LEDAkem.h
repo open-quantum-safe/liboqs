@@ -29,27 +29,6 @@ extern OQS_STATUS OQS_KEM_ledakem_decaps(uint8_t *shared_secret, const unsigned 
 #define OQS_KEM_ledakem_C1_N04_length_ciphertext 2136
 #define OQS_KEM_ledakem_C1_N04_length_shared_secret 32
 
-#elif defined(OQS_ENABLE_KEM_ledakem_C2_N02)
-
-#define OQS_KEM_ledakem_C2_N02_length_public_key 7200
-#define OQS_KEM_ledakem_C2_N02_length_secret_key 32
-#define OQS_KEM_ledakem_C2_N02_length_ciphertext 7200
-#define OQS_KEM_ledakem_C2_N02_length_shared_secret 48
-
-#elif defined(OQS_ENABLE_KEM_ledakem_C2_N03)
-
-#define OQS_KEM_ledakem_C2_N03_length_public_key 10384
-#define OQS_KEM_ledakem_C2_N03_length_secret_key 32
-#define OQS_KEM_ledakem_C2_N03_length_ciphertext 5192
-#define OQS_KEM_ledakem_C2_N03_length_shared_secret 48
-
-#elif defined(OQS_ENABLE_KEM_ledakem_C2_N04)
-
-#define OQS_KEM_ledakem_C2_N04_length_public_key 13152
-#define OQS_KEM_ledakem_C2_N04_length_secret_key 32
-#define OQS_KEM_ledakem_C2_N04_length_ciphertext 4384
-#define OQS_KEM_ledakem_C2_N04_length_shared_secret 48
-
 #elif defined(OQS_ENABLE_KEM_ledakem_C3_N02)
 
 #define OQS_KEM_ledakem_C3_N02_length_public_key 7200 
@@ -70,27 +49,6 @@ extern OQS_STATUS OQS_KEM_ledakem_decaps(uint8_t *shared_secret, const unsigned 
 #define OQS_KEM_ledakem_C3_N04_length_secret_key 32
 #define OQS_KEM_ledakem_C3_N04_length_ciphertext 4384
 #define OQS_KEM_ledakem_C3_N04_length_shared_secret 48
-
-#elif defined(OQS_ENABLE_KEM_ledakem_C4_N02)
-
-#define OQS_KEM_ledakem__C4_N02_length_public_key 12384
-#define OQS_KEM_ledakem__C4_N02_length_secret_key 40 
-#define OQS_KEM_ledakem__C4_N02_length_ciphertext 12384
-#define OQS_KEM_ledakem__C4_N02_length_shared_secret 64
-
-#elif defined(OQS_ENABLE_KEM_ledakem_C4_N03)
-
-#define OQS_KEM_ledakem_C4_N03_length_public_key 18016
-#define OQS_KEM_ledakem_C4_N03_length_secret_key 40
-#define OQS_KEM_ledakem_C4_N03_length_ciphertext 9008
-#define OQS_KEM_ledakem_C4_N03_length_shared_secret 64
-
-#elif defined(OQS_ENABLE_KEM_ledakem_C4_N04)
-
-#define OQS_KEM_ledakem__C4_N04_length_public_key 22704
-#define OQS_KEM_ledakem__C4_N04_length_secret_key 40
-#define OQS_KEM_ledakem__C4_N04_length_ciphertext 7568
-#define OQS_KEM_ledakem__C4_N04_length_shared_secret 64
 
 #elif defined(OQS_ENABLE_KEM_ledakem_C5_N02)
 

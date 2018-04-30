@@ -13,17 +13,11 @@ OQS_KEM *OQS_KEM_ledakem_new() {
   defined(OQS_ENABLE_KEM_ledakem_C1_N03) || \
   defined(OQS_ENABLE_KEM_ledakem_C1_N04))
 	kem->claimed_nist_level = 1;
-#elif (defined(OQS_ENABLE_KEM_ledakem_C2_N02) || \
-  defined(OQS_ENABLE_KEM_ledakem_C2_N03) || \
-  defined(OQS_ENABLE_KEM_ledakem_C2_N04) || \
-  defined(OQS_ENABLE_KEM_ledakem_C3_N02) || \
+#elif (defined(OQS_ENABLE_KEM_ledakem_C3_N02) || \
   defined(OQS_ENABLE_KEM_ledakem_C3_N03) || \
   defined(OQS_ENABLE_KEM_ledakem_C3_N04))
 	kem->claimed_nist_level = 3;
-#elif (defined(OQS_ENABLE_KEM_ledakem_C4_N02) || \
-  defined(OQS_ENABLE_KEM_ledakem_C4_N03) || \
-  defined(OQS_ENABLE_KEM_ledakem_C4_N04) || \
-  defined(OQS_ENABLE_KEM_ledakem_C5_N02) || \
+#elif (defined(OQS_ENABLE_KEM_ledakem_C5_N02) || \
   defined(OQS_ENABLE_KEM_ledakem_C5_N03) || \
   defined(OQS_ENABLE_KEM_ledakem_C5_N04))
 	kem->claimed_nist_level = 5; 
@@ -48,24 +42,6 @@ OQS_KEM *OQS_KEM_ledakem_new() {
 	kem->length_secret_key = OQS_KEM_ledakem_C1_N04_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C1_N04_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C1_N04_length_shared_secret;
-#elif defined(OQS_ENABLE_KEM_ledakem_C2_N02)
-	kem->method_name = "ledakem_C2_N02";
-	kem->length_public_key = OQS_KEM_ledakem_C2_N02_length_public_key;
-	kem->length_secret_key = OQS_KEM_ledakem_C2_N02_length_secret_key;
-	kem->length_ciphertext = OQS_KEM_ledakem_C2_N02_length_ciphertext;
-	kem->length_shared_secret = OQS_KEM_ledakem_C2_N02_length_shared_secret;
-#elif defined(OQS_ENABLE_KEM_ledakem_C2_N03)
-	kem->method_name = "ledakem_C2_N03";
-	kem->length_public_key = OQS_KEM_ledakem_C2_N03_length_public_key;
-	kem->length_secret_key = OQS_KEM_ledakem_C2_N03_length_secret_key;
-	kem->length_ciphertext = OQS_KEM_ledakem_C2_N03_length_ciphertext;
-	kem->length_shared_secret = OQS_KEM_ledakem_C2_N03_length_shared_secret;
-#elif defined(OQS_ENABLE_KEM_ledakem_C2_N04)
-	kem->method_name = "ledakem_C2_N04";
-	kem->length_public_key = OQS_KEM_ledakem_C2_N04_length_public_key;
-	kem->length_secret_key = OQS_KEM_ledakem_C2_N04_length_secret_key;
-	kem->length_ciphertext = OQS_KEM_ledakem_C2_N04_length_ciphertext;
-	kem->length_shared_secret = OQS_KEM_ledakem_C2_N04_length_shared_secret;
 #elif defined(OQS_ENABLE_KEM_ledakem_C3_N02)
 	kem->method_name = "ledakem_C3_N02";
 	kem->length_public_key = OQS_KEM_ledakem_C3_N02_length_public_key;
@@ -84,24 +60,6 @@ OQS_KEM *OQS_KEM_ledakem_new() {
 	kem->length_secret_key = OQS_KEM_ledakem_C3_N04_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C3_N04_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C3_N04_length_shared_secret;
-#elif defined(OQS_ENABLE_KEM_ledakem_C4_N02)
-	kem->method_name = "ledakem_C4_N02";
-	kem->length_public_key = OQS_KEM_ledakem_C4_N02_length_public_key;
-	kem->length_secret_key = OQS_KEM_ledakem_C4_N02_length_secret_key;
-	kem->length_ciphertext = OQS_KEM_ledakem_C4_N02_length_ciphertext;
-	kem->length_shared_secret = OQS_KEM_ledakem_C4_N02_length_shared_secret;
-#elif defined(OQS_ENABLE_KEM_ledakem_C4_N03)
-	kem->method_name = "ledakem_C4_N03";
-	kem->length_public_key = OQS_KEM_ledakem_C4_N03_length_public_key;
-	kem->length_secret_key = OQS_KEM_ledakem_C4_N03_length_secret_key;
-	kem->length_ciphertext = OQS_KEM_ledakem_C4_N03_length_ciphertext;
-	kem->length_shared_secret = OQS_KEM_ledakem_C4_N03_length_shared_secret;
-#elif defined(OQS_ENABLE_KEM_ledakem_C4_N04)
-	kem->method_name = "ledakem_C4_N04";
-	kem->length_public_key = OQS_KEM_ledakem_C4_N04_length_public_key;
-	kem->length_secret_key = OQS_KEM_ledakem_C4_N04_length_secret_key;
-	kem->length_ciphertext = OQS_KEM_ledakem_C4_N04_length_ciphertext;
-	kem->length_shared_secret = OQS_KEM_ledakem_C4_N04_length_shared_secret;
 #elif defined(OQS_ENABLE_KEM_ledakem_C5_N02)
 	kem->method_name = "ledakem_C5_N02";
 	kem->length_public_key = OQS_KEM_ledakem_C5_N02_length_public_key;
