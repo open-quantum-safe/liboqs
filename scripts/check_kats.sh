@@ -11,7 +11,31 @@ PRINT_RESET="tput sgr 0"
 RET=0
 
 KEMS=`grep 'define OQS_KEM_alg_' src/kem/kem.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
+
+#LEDAkem specific functionality
+KEY=`grep 'ledakem' Makefile`
+leda=
+for key in $KEY;do
+  case $key in
+    leda*) leda=$key
+  esac  
+done
+
+leda=`echo ${leda} | sed 's/ledakem_\(.*\)/\1/'`
+
+leda_kat_str=LEDAkem_${leda}
+#
+
 for kem in ${KEMS}; do
+  case $kem in
+    LEDA*)
+      case $kem in
+        ${leda_kat_str})
+          ;;
+        *)
+          continue
+      esac
+  esac  
 
 	kat="kat_kem_rsp/${kem}.kat"
 	if [[ ! -e ${kat} ]];
