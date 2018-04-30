@@ -2,7 +2,7 @@
 
 KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
 			   newhope_512_cca_kem newhope_1024_cca_kem \
-			   kyber512 kyber768 kyber1024 # EDIT-WHEN-ADDING-KEM
+			   kyber512 kyber768 kyber1024 ledakem_C5_N04 # EDIT-WHEN-ADDING-KEM
 KEM_DEFAULT=newhope_1024_cca_kem
 
 ARCH=x64
@@ -19,11 +19,14 @@ CFLAGS+= -fPIC
 LDFLAGS=
 CLANGFORMAT=clang-format
 
+
+
+
 # NOTHING AFTER THIS SHOULD NEED TO BE CHANGED BY THE PERSON COMPILING
 
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
-CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
+CFLAGS+=-g -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
 all: mkdirs headers liboqs tests speeds kats examples

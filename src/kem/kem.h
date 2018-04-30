@@ -45,9 +45,11 @@
 #define OQS_KEM_alg_kyber768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber1024 "Kyber1024"
+/** Algorithm identifier for LEDA KEM. */
+#define OQS_KEM_alg_ledakem "LEDAkem"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 10
+#define OQS_KEM_algs_length 11
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -194,6 +196,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
+#include <oqs/kem_LEDAkem.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H
