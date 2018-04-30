@@ -23,9 +23,9 @@ Parameter sets
 | LEDAKEM-C3_N02      |     IND-CCA    |              3              |           7200      |          32                 |         7200            |             48             |
 | LEDAKEM-C3_N03      |     IND-CCA    |              3              |           10384     |          32                 |         5192            |             48             |
 | LEDAKEM-C3_N04      |     IND-CCA    |              3              |           13152     |          32                 |         4384            |             48             |
-| LEDAKEM-C3_N02      |     IND-CCA    |              5              |           12384     |          40                 |         12384           |             64             |
-| LEDAKEM-C3_N03      |     IND-CCA    |              5              |           18016     |          40                 |         9008            |             64             |
-| LEDAKEM-C3_N04      |     IND-CCA    |              5              |           22704     |          40                 |         7568            |             64             |
+| LEDAKEM-C5_N02      |     IND-CCA    |              5              |           12384     |          40                 |         12384           |             64             |
+| LEDAKEM-C5_N03      |     IND-CCA    |              5              |           18016     |          40                 |         9008            |             64             |
+| LEDAKEM-C5_N04      |     IND-CCA    |              5              |           22704     |          40                 |         7568            |             64             |
 
 Implementation
 --------------
