@@ -21,5 +21,6 @@ example_kem: src/kem/example_kem.c liboqs
 include src/kem/frodokem/Makefile
 include src/kem/newhopenist/Makefile
 include src/kem/crystals-kyber/Makefile
+include src/kem/sike/Makefile
 include src/kem/BIG_QUAKE/Makefile
 # EDIT-WHEN-ADDING-KEM

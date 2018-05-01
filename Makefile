@@ -3,7 +3,8 @@
 KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
 			   newhope_512_cca_kem newhope_1024_cca_kem \
 			   kyber512 kyber768 kyber1024 \
-				 BIG_QUAKE_1 BIG_QUAKE_3 BIG_QUAKE_5 # EDIT-WHEN-ADDING-KEM
+			   sike_p503, sike_p751 \
+			   BIG_QUAKE_1 BIG_QUAKE_3 BIG_QUAKE_5 # EDIT-WHEN-ADDING-KEM
 KEM_DEFAULT=newhope_1024_cca_kem
 
 ARCH=x64
