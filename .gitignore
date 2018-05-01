@@ -20,4 +20,7 @@ src/kem/frodokem/upstream/frodo640/
 src/kem/frodokem/upstream/frodo976/
 docs/doxygen
 kat_kem_rsp/
+*~
 usr_local
+src/kem/sike/upstream/Optimized_Implementation/portable/SIKEp503/
+src/kem/sike/upstream/Optimized_Implementation/portable/SIKEp751/

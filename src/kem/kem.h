@@ -45,9 +45,14 @@
 #define OQS_KEM_alg_kyber768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber1024 "Kyber1024"
+/** Algorithm identifier for Sike p503 KEM. */
+#define OQS_KEM_alg_sike_p503 "Sike-p503"
+/** Algorithm identifier for Sike p751 KEM. */
+#define OQS_KEM_alg_sike_p751 "Sike-p751"
+
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 10
+#define OQS_KEM_algs_length 12
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -194,6 +199,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
+#include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H

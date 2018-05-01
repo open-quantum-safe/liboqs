@@ -1,0 +1,26 @@
+Supersingular Isogeny Key Encapsulation: SIKEp503
+Optimized implementation written in portable C
+=======================================================================
+    
+Simply do:
+
+$ make clean; make
+
+And then execute the following to run the tests:
+
+$ ./sike/test_KEM
+
+Or execute the following to run the KATs:
+
+$ ./sike/PQCtestKAT_kem
+
+By default, x64 is the targeted architecture, and compilation is performed with 
+GNU GCC.
+
+
+ADDITIONAL OPTIONS
+------------------
+
+make CC=[gcc/clang] ARCH=[x64/x86/ARM/ARM64] SET=EXTENDED
+
+Setting "SET=EXTENDED" adds the flags -fwrapv -fomit-frame-pointer -march=native.
