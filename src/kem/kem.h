@@ -49,10 +49,16 @@
 #define OQS_KEM_alg_sike_p503 "Sike-p503"
 /** Algorithm identifier for Sike p751 KEM. */
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
+/** Algorithm identifier for BIG_QUAKE_1. */
+#define OQS_KEM_alg_BIG_QUAKE_1 "BIG_QUAKE_1"
+/** Algorithm identifier for BIG_QUAKE_3. */
+#define OQS_KEM_alg_BIG_QUAKE_3 "BIG_QUAKE_3"
+/** Algorithm identifier for BIG_QUAKE_5. */
+#define OQS_KEM_alg_BIG_QUAKE_5 "BIG_QUAKE_5"
 
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 12
+#define OQS_KEM_algs_length 15
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -200,6 +206,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
 #include <oqs/kem_sike.h>
+#include <oqs/kem_BIGQUAKE.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H
