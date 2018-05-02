@@ -45,15 +45,23 @@
 #define OQS_KEM_alg_kyber768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber1024 "Kyber1024"
-/** Algorithm identifier for LEDA KEM. */
+/** Algorithm identifier for LEDA KEM SL=1 N0=2. */
 #define OQS_KEM_alg_ledakem_C1_N02 "LEDAKEM_C1_N02"
+/** Algorithm identifier for LEDA KEM SL=1 N0=3. */
 #define OQS_KEM_alg_ledakem_C1_N03 "LEDAKEM_C1_N03"
+/** Algorithm identifier for LEDA KEM SL=1 N0=4. */
 #define OQS_KEM_alg_ledakem_C1_N04 "LEDAKEM_C1_N04"
+/** Algorithm identifier for LEDA KEM SL=3 N0=2. */
 #define OQS_KEM_alg_ledakem_C3_N02 "LEDAKEM_C3_N02"
+/** Algorithm identifier for LEDA KEM SL=3 N0=3. */
 #define OQS_KEM_alg_ledakem_C3_N03 "LEDAKEM_C3_N03"
+/** Algorithm identifier for LEDA KEM SL=3 N0=4. */
 #define OQS_KEM_alg_ledakem_C3_N04 "LEDAKEM_C3_N04"
+/** Algorithm identifier for LEDA KEM SL=5 N0=2. */
 #define OQS_KEM_alg_ledakem_C5_N02 "LEDAKEM_C5_N02"
+/** Algorithm identifier for LEDA KEM SL=5 N0=3. */
 #define OQS_KEM_alg_ledakem_C5_N03 "LEDAKEM_C5_N03"
+/** Algorithm identifier for LEDA KEM SL=5 N0=4. */
 #define OQS_KEM_alg_ledakem_C5_N04 "LEDAKEM_C5_N04"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
