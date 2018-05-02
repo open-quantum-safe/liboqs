@@ -42,6 +42,7 @@ kem_ledakem_C1_N02:
 	bash scripts/explode_and_collect.sh kem_ledakem_C1_N02  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl1_N02.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C1_N02 src/kem/ledakem/symbols_global_rename_C1_N02.txt
 	bash scripts/symbols_local.sh kem_ledakem_C1_N02 src/kem/ledakem/symbols_local.txt
+	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && rm -rf bin/* 
 
 ifneq (,$(findstring ledakem_C1_N03, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_ledakem_C1_N03
@@ -52,6 +53,7 @@ kem_ledakem_C1_N03:
 	bash scripts/explode_and_collect.sh kem_ledakem_C1_N03  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl1_N03.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C1_N03 src/kem/ledakem/symbols_global_rename_C1_N03.txt
 	bash scripts/symbols_local.sh kem_ledakem_C1_N03 src/kem/ledakem/symbols_local.txt
+	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && rm -rf bin/* 
 
 ifneq (,$(findstring ledakem_C1_N04, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_ledakem_C1_N04
@@ -62,6 +64,7 @@ kem_ledakem_C1_N04:
 	bash scripts/explode_and_collect.sh kem_ledakem_C1_N04  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl1_N04.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C1_N04 src/kem/ledakem/symbols_global_rename_C1_N04.txt
 	bash scripts/symbols_local.sh kem_ledakem_C1_N04 src/kem/ledakem/symbols_local.txt
+	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && rm -rf bin/* 
 
 ifneq (,$(findstring ledakem_C3_N02, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_ledakem_C3_N02
@@ -72,6 +75,7 @@ kem_ledakem_C3_N02:
 	bash scripts/explode_and_collect.sh kem_ledakem_C3_N02  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl3_N02.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C3_N02 src/kem/ledakem/symbols_global_rename_C3_N02.txt
 	bash scripts/symbols_local.sh kem_ledakem_C3_N02 src/kem/ledakem/symbols_local.txt
+	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && rm -rf bin/* 
 
 ifneq (,$(findstring ledakem_C3_N03, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_ledakem_C3_N03
@@ -82,6 +86,7 @@ kem_ledakem_C3_N03:
 	bash scripts/explode_and_collect.sh kem_ledakem_C3_N03  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl3_N03.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C3_N03 src/kem/ledakem/symbols_global_rename_C3_N03.txt
 	bash scripts/symbols_local.sh kem_ledakem_C3_N03 src/kem/ledakem/symbols_local.txt
+	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && rm -rf bin/* 
 
 ifneq (,$(findstring ledakem_C3_N04, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_ledakem_C3_N04
@@ -92,6 +97,7 @@ kem_ledakem_C3_N04:
 	bash scripts/explode_and_collect.sh kem_ledakem_C3_N04  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl3_N04.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C3_N04 src/kem/ledakem/symbols_global_rename_C3_N04.txt
 	bash scripts/symbols_local.sh kem_ledakem_C3_N04 src/kem/ledakem/symbols_local.txt
+	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && rm -rf bin/* 
 
 ifneq (,$(findstring ledakem_C5_N02, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_ledakem_C5_N02
@@ -102,6 +108,7 @@ kem_ledakem_C5_N02:
 	bash scripts/explode_and_collect.sh kem_ledakem_C5_N02  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl5_N02.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C5_N02 src/kem/ledakem/symbols_global_rename_C5_N02.txt
 	bash scripts/symbols_local.sh kem_ledakem_C5_N02 src/kem/ledakem/symbols_local.txt
+	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && rm -rf bin/* 
 
 ifneq (,$(findstring ledakem_C5_N03, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_ledakem_C5_N03
@@ -112,6 +119,7 @@ kem_ledakem_C5_N03:
 	bash scripts/explode_and_collect.sh kem_ledakem_C5_N03  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl5_N03.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C5_N03 src/kem/ledakem/symbols_global_rename_C5_N03.txt
 	bash scripts/symbols_local.sh kem_ledakem_C5_N03 src/kem/ledakem/symbols_local.txt
+	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && rm -rf bin/* 
 
 ifneq (,$(findstring ledakem_C5_N04, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_ledakem_C5_N04
@@ -122,6 +130,7 @@ kem_ledakem_C5_N04:
 	bash scripts/explode_and_collect.sh kem_ledakem_C5_N04  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl5_N04.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C5_N04 src/kem/ledakem/symbols_global_rename_C5_N04.txt
 	bash scripts/symbols_local.sh kem_ledakem_C5_N04 src/kem/ledakem/symbols_local.txt
+	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && rm -rf bin/* 
 
 
 
