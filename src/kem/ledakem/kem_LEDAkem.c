@@ -19,14 +19,13 @@ OQS_KEM *OQS_KEM_ledakem_C1_N02_new() {
 	kem->length_ciphertext = OQS_KEM_ledakem_C1_N02_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C1_N02_length_shared_secret;
 
-  kem->keypair = OQS_KEM_ledakem_C1_N02_keypair;
+	kem->keypair = OQS_KEM_ledakem_C1_N02_keypair;
 	kem->encaps = OQS_KEM_ledakem_C1_N02_encaps;
 	kem->decaps = OQS_KEM_ledakem_C1_N02_decaps;
 	return kem;
 }
 
 #endif
-
 
 #if defined(OQS_ENABLE_KEM_ledakem_C1_N03)
 
@@ -45,11 +44,11 @@ OQS_KEM *OQS_KEM_ledakem_C1_N03_new() {
 	kem->length_ciphertext = OQS_KEM_ledakem_C1_N03_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C1_N03_length_shared_secret;
 
-  kem->keypair = OQS_KEM_ledakem_C1_N03_keypair;
+	kem->keypair = OQS_KEM_ledakem_C1_N03_keypair;
 	kem->encaps = OQS_KEM_ledakem_C1_N03_encaps;
 	kem->decaps = OQS_KEM_ledakem_C1_N03_decaps;
 	return kem;
-} 
+}
 
 #endif
 
@@ -70,11 +69,11 @@ OQS_KEM *OQS_KEM_ledakem_C1_N04_new() {
 	kem->length_ciphertext = OQS_KEM_ledakem_C1_N04_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C1_N04_length_shared_secret;
 
-  kem->keypair = OQS_KEM_ledakem_C1_N04_keypair;
+	kem->keypair = OQS_KEM_ledakem_C1_N04_keypair;
 	kem->encaps = OQS_KEM_ledakem_C1_N04_encaps;
 	kem->decaps = OQS_KEM_ledakem_C1_N04_decaps;
 	return kem;
-} 
+}
 
 #endif
 
@@ -95,11 +94,11 @@ OQS_KEM *OQS_KEM_ledakem_C3_N02_new() {
 	kem->length_ciphertext = OQS_KEM_ledakem_C3_N02_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C3_N02_length_shared_secret;
 
-  kem->keypair = OQS_KEM_ledakem_C3_N02_keypair;
+	kem->keypair = OQS_KEM_ledakem_C3_N02_keypair;
 	kem->encaps = OQS_KEM_ledakem_C3_N02_encaps;
 	kem->decaps = OQS_KEM_ledakem_C3_N02_decaps;
 	return kem;
-} 
+}
 
 #endif
 
@@ -120,7 +119,7 @@ OQS_KEM *OQS_KEM_ledakem_C3_N03_new() {
 	kem->length_ciphertext = OQS_KEM_ledakem_C3_N03_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C3_N03_length_shared_secret;
 
-  kem->keypair = OQS_KEM_ledakem_C3_N03_keypair;
+	kem->keypair = OQS_KEM_ledakem_C3_N03_keypair;
 	kem->encaps = OQS_KEM_ledakem_C3_N03_encaps;
 	kem->decaps = OQS_KEM_ledakem_C3_N03_decaps;
 	return kem;
@@ -145,14 +144,14 @@ OQS_KEM *OQS_KEM_ledakem_C3_N04_new() {
 	kem->length_ciphertext = OQS_KEM_ledakem_C3_N04_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C3_N04_length_shared_secret;
 
-  kem->keypair = OQS_KEM_ledakem_C3_N04_keypair;
+	kem->keypair = OQS_KEM_ledakem_C3_N04_keypair;
 	kem->encaps = OQS_KEM_ledakem_C3_N04_encaps;
 	kem->decaps = OQS_KEM_ledakem_C3_N04_decaps;
 	return kem;
 }
 
 #endif
-  
+
 #if defined(OQS_ENABLE_KEM_ledakem_C5_N02)
 
 OQS_KEM *OQS_KEM_ledakem_C5_N02_new() {
@@ -170,7 +169,7 @@ OQS_KEM *OQS_KEM_ledakem_C5_N02_new() {
 	kem->length_ciphertext = OQS_KEM_ledakem_C5_N02_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C5_N02_length_shared_secret;
 
-  kem->keypair = OQS_KEM_ledakem_C5_N02_keypair;
+	kem->keypair = OQS_KEM_ledakem_C5_N02_keypair;
 	kem->encaps = OQS_KEM_ledakem_C5_N02_encaps;
 	kem->decaps = OQS_KEM_ledakem_C5_N02_decaps;
 	return kem;
@@ -195,7 +194,7 @@ OQS_KEM *OQS_KEM_ledakem_C5_N03_new() {
 	kem->length_ciphertext = OQS_KEM_ledakem_C5_N03_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C5_N03_length_shared_secret;
 
-  kem->keypair = OQS_KEM_ledakem_C5_N03_keypair;
+	kem->keypair = OQS_KEM_ledakem_C5_N03_keypair;
 	kem->encaps = OQS_KEM_ledakem_C5_N03_encaps;
 	kem->decaps = OQS_KEM_ledakem_C5_N03_decaps;
 	return kem;
@@ -219,13 +218,12 @@ OQS_KEM *OQS_KEM_ledakem_C5_N04_new() {
 	kem->length_secret_key = OQS_KEM_ledakem_C5_N04_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C5_N04_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_ledakem_C5_N04_length_shared_secret;
-	
-  kem->keypair = OQS_KEM_ledakem_C5_N04_keypair;
+
+	kem->keypair = OQS_KEM_ledakem_C5_N04_keypair;
 	kem->encaps = OQS_KEM_ledakem_C5_N04_encaps;
 	kem->decaps = OQS_KEM_ledakem_C5_N04_decaps;
 
-  return kem;
+	return kem;
 }
 
 #endif
-
