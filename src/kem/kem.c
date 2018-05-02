@@ -6,26 +6,7 @@
 
 char *OQS_KEM_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-KEM
-	char *a[OQS_KEM_algs_length] = {OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024
-#if defined(OQS_ENABLE_KEM_ledakem_C1_N02) 
-, OQS_KEM_alg_ledakem_C1_N02
-#elif defined(OQS_ENABLE_KEM_ledakem_C1_N03)        
-, OQS_KEM_alg_ledakem_C1_N03
-#elif defined(OQS_ENABLE_KEM_ledakem_C1_N04)        
-, OQS_KEM_alg_ledakem_C1_N04
-#elif defined(OQS_ENABLE_KEM_ledakem_C3_N02)        
-, OQS_KEM_alg_ledakem_C3_N02
-#elif defined(OQS_ENABLE_KEM_ledakem_C3_N03)        
-, OQS_KEM_alg_ledakem_C3_N03
-#elif defined(OQS_ENABLE_KEM_ledakem_C3_N04)        
-, OQS_KEM_alg_ledakem_C3_N04
-#elif defined(OQS_ENABLE_KEM_ledakem_C5_N02)        
-, OQS_KEM_alg_ledakem_C5_N02
-#elif defined(OQS_ENABLE_KEM_ledakem_C5_N03)        
-, OQS_KEM_alg_ledakem_C5_N03
-#elif defined(OQS_ENABLE_KEM_ledakem_C5_N04)        
-, OQS_KEM_alg_ledakem_C5_N04
-#endif
+	char *a[OQS_KEM_algs_length] = {OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024, OQS_KEM_alg_ledakem_C1_N02 , OQS_KEM_alg_ledakem_C1_N03, OQS_KEM_alg_ledakem_C1_N04, OQS_KEM_alg_ledakem_C3_N02, OQS_KEM_alg_ledakem_C3_N03, OQS_KEM_alg_ledakem_C3_N04, OQS_KEM_alg_ledakem_C5_N02, OQS_KEM_alg_ledakem_C5_N03, OQS_KEM_alg_ledakem_C5_N04
 };
 	if (i >= OQS_KEM_algs_length) {
 		return NULL;
@@ -91,36 +72,58 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-  } else if 
+  } else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C1_N02)) {
 #if defined(OQS_ENABLE_KEM_ledakem_C1_N02) 
-  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C1_N02)) {
-		return OQS_KEM_ledakem_new();
-#elif defined(OQS_ENABLE_KEM_ledakem_C1_N03)        
-  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C1_N03)) {
-		return OQS_KEM_ledakem_new();
-#elif defined(OQS_ENABLE_KEM_ledakem_C1_N04)        
-  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C1_N04)) {
-		return OQS_KEM_ledakem_new();
-#elif defined(OQS_ENABLE_KEM_ledakem_C3_N02)        
-  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C3_N02)) { 
-		return OQS_KEM_ledakem_new();
-#elif defined(OQS_ENABLE_KEM_ledakem_C3_N03)        
-  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C3_N03)) {
-		return OQS_KEM_ledakem_new();
-#elif defined(OQS_ENABLE_KEM_ledakem_C3_N04)        
-  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C3_N04)) {
-		return OQS_KEM_ledakem_new();
-#elif defined(OQS_ENABLE_KEM_ledakem_C5_N02)        
-  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N02)) {
-		return OQS_KEM_ledakem_new();
-#elif defined(OQS_ENABLE_KEM_ledakem_C5_N03)        
-  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N03)) {
-		return OQS_KEM_ledakem_new();
-#elif defined(OQS_ENABLE_KEM_ledakem_C5_N04)        
-  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N04)) {
-		return OQS_KEM_ledakem_new();
+		return OQS_KEM_ledakem_C1_N02_new();
 #else
-    (1) {
+		return NULL;
+#endif
+  } else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C1_N03)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C1_N03) 
+    return OQS_KEM_ledakem_C1_N03_new();
+#else
+		return NULL;
+#endif
+  } else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C1_N04)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C1_N04)        
+  		return OQS_KEM_ledakem_C1_N04_new();
+#else
+		return NULL;
+#endif
+  } else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C3_N02)) { 
+#if defined(OQS_ENABLE_KEM_ledakem_C3_N02)        
+		return OQS_KEM_ledakem_C3_N02_new();
+#else
+		return NULL;
+#endif
+  } else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C3_N03)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C3_N03)        
+		return OQS_KEM_ledakem_C3_N03_new();
+#else
+		return NULL;
+#endif
+  } else if  (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C3_N04)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C3_N04)        
+		return OQS_KEM_ledakem_C3_N04_new();
+#else
+		return NULL;
+#endif
+  } else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N02)) {
+#ifdef OQS_ENABLE_KEM_ledakem_C5_N02        
+  		return OQS_KEM_ledakem_C5_N02_new();
+#else
+		return NULL;
+#endif
+  } else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N03)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C5_N03)        
+  		return OQS_KEM_ledakem_C5_N03_new();
+#else
+		return NULL;
+#endif
+  } else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N04)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C5_N04)        
+  		return OQS_KEM_ledakem_C5_N04_new();
+#else
 		return NULL;
 #endif
 		// EDIT-WHEN-ADDING-KEM
@@ -136,6 +139,7 @@ OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *sec
 		return kem->keypair(public_key, secret_key);
 	}
 }
+
 OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
@@ -143,6 +147,7 @@ OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shar
 		return kem->encaps(ciphertext, shared_secret, public_key);
 	}
 }
+
 OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;

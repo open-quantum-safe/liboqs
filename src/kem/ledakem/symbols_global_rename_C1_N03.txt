@@ -1,0 +1,3 @@
+crypto_kem_keypair OQS_KEM_ledakem_C1_N03_keypair
+crypto_kem_enc OQS_KEM_ledakem_C1_N03_encaps
+crypto_kem_dec OQS_KEM_ledakem_C1_N03_decaps

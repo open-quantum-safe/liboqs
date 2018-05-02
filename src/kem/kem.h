@@ -46,28 +46,18 @@
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber1024 "Kyber1024"
 /** Algorithm identifier for LEDA KEM. */
-#if defined(OQS_ENABLE_KEM_ledakem_C1_N02)
-#define OQS_KEM_alg_ledakem_C1_N02 "LEDAkem_C1_N02"
-#elif defined(OQS_ENABLE_KEM_ledakem_C1_N03)
-#define OQS_KEM_alg_ledakem_C1_N03 "LEDAkem_C1_N03"
-#elif defined(OQS_ENABLE_KEM_ledakem_C1_N04)
-#define OQS_KEM_alg_ledakem_C1_N04 "LEDAkem_C1_N04"
-#elif defined(OQS_ENABLE_KEM_ledakem_C3_N02)
-#define OQS_KEM_alg_ledakem_C3_N02 "LEDAkem_C3_N02"
-#elif defined(OQS_ENABLE_KEM_ledakem_C3_N03)
-#define OQS_KEM_alg_ledakem_C3_N03 "LEDAkem_C3_N03"
-#elif defined(OQS_ENABLE_KEM_ledakem_C3_N04)
-#define OQS_KEM_alg_ledakem_C3_N04 "LEDAkem_C3_N04"
-#elif defined(OQS_ENABLE_KEM_ledakem_C5_N02)
-#define OQS_KEM_alg_ledakem_C5_N02 "LEDAkem_C5_N02"
-#elif defined(OQS_ENABLE_KEM_ledakem_C5_N03)
-#define OQS_KEM_alg_ledakem_C5_N03 "LEDAkem_C5_N03"
-#elif (defined(OQS_ENABLE_KEM_ledakem_C5_N04))
-#define OQS_KEM_alg_ledakem_C5_N04 "LEDAkem_C5_N04"
-#endif
+#define OQS_KEM_alg_ledakem_C1_N02 "LEDAKEM_C1_N02"
+#define OQS_KEM_alg_ledakem_C1_N03 "LEDAKEM_C1_N03"
+#define OQS_KEM_alg_ledakem_C1_N04 "LEDAKEM_C1_N04"
+#define OQS_KEM_alg_ledakem_C3_N02 "LEDAKEM_C3_N02"
+#define OQS_KEM_alg_ledakem_C3_N03 "LEDAKEM_C3_N03"
+#define OQS_KEM_alg_ledakem_C3_N04 "LEDAKEM_C3_N04"
+#define OQS_KEM_alg_ledakem_C5_N02 "LEDAKEM_C5_N02"
+#define OQS_KEM_alg_ledakem_C5_N03 "LEDAKEM_C5_N03"
+#define OQS_KEM_alg_ledakem_C5_N04 "LEDAKEM_C5_N04"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 11
+#define OQS_KEM_algs_length 19
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
