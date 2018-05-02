@@ -6,7 +6,7 @@
 
 char *OQS_KEM_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-KEM
-	char *a[OQS_KEM_algs_length] = {OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024, OQS_KEM_alg_ledakem_C1_N02, OQS_KEM_alg_ledakem_C1_N03, OQS_KEM_alg_ledakem_C1_N04, OQS_KEM_alg_ledakem_C3_N02, OQS_KEM_alg_ledakem_C3_N03, OQS_KEM_alg_ledakem_C3_N04, OQS_KEM_alg_ledakem_C5_N02, OQS_KEM_alg_ledakem_C5_N03, OQS_KEM_alg_ledakem_C5_N04};
+	char *a[OQS_KEM_algs_length] = {OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024, OQS_KEM_alg_sike_p503, OQS_KEM_alg_sike_p751, OQS_KEM_alg_BIG_QUAKE_1, OQS_KEM_alg_BIG_QUAKE_3, OQS_KEM_alg_BIG_QUAKE_5,OQS_KEM_alg_ledakem_C1_N02, OQS_KEM_alg_ledakem_C1_N03, OQS_KEM_alg_ledakem_C1_N04, OQS_KEM_alg_ledakem_C3_N02, OQS_KEM_alg_ledakem_C3_N03, OQS_KEM_alg_ledakem_C3_N04, OQS_KEM_alg_ledakem_C5_N02, OQS_KEM_alg_ledakem_C5_N03, OQS_KEM_alg_ledakem_C5_N04};
 	if (i >= OQS_KEM_algs_length) {
 		return NULL;
 	} else {
@@ -122,6 +122,36 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N04)) {
 #if defined(OQS_ENABLE_KEM_ledakem_C5_N04)
 		return OQS_KEM_ledakem_C5_N04_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_sike_p503)) {
+#ifdef OQS_ENABLE_KEM_sike_p503
+		return OQS_KEM_sike_p503_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_sike_p751)) {
+#ifdef OQS_ENABLE_KEM_sike_p751
+		return OQS_KEM_sike_p751_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_BIG_QUAKE_1)) {
+#ifdef OQS_ENABLE_KEM_BIG_QUAKE_1
+		return OQS_KEM_BIG_QUAKE_1_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_BIG_QUAKE_3)) {
+#ifdef OQS_ENABLE_KEM_BIG_QUAKE_3
+		return OQS_KEM_BIG_QUAKE_3_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_BIG_QUAKE_5)) {
+#ifdef OQS_ENABLE_KEM_BIG_QUAKE_5
+		return OQS_KEM_BIG_QUAKE_5_new();
 #else
 		return NULL;
 #endif

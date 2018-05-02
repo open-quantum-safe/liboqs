@@ -1,0 +1,23 @@
+Supersingular Isogeny Key Encapsulation: SIKEp503
+Optimized implementation for ARM64 platforms with ARM64 assembly
+=======================================================================
+    
+Simply do:
+
+$ make clean; make
+
+And then execute the following to run the tests:
+
+$ ./sike/test_KEM
+
+Or execute the following to run the KATs:
+
+$ ./sike/PQCtestKAT_kem
+
+Compilation is performed with GNU GCC by default.
+
+
+ADDITIONAL OPTIONS
+------------------
+
+make CC=[gcc/clang]

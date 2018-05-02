@@ -1,0 +1,74 @@
+00 zero
+01 1 in montgomery
+02 2 in montgomery
+03 R^2
+04 4^-1 in Montgomery
+05 1 in regular domain
+06 6 in Montgomery
+07 Unused
+08 A.a
+09 A.b
+0a B.a
+0b B.b
+0c A24.a Unused
+0d A24.b Unused
+0e PAx.a
+0f PAx.b
+10 PAy.a Unused
+11 PAy.b Unused
+12 QAx.a
+13 QAx.b
+14 QAy.a Unused
+15 QAy.b Unused
+16 QPAx.a
+17 QPAx.b
+18 QPAy.a Unused
+19 QPAy.b Unused
+1a PBx.a
+1b PBx.b
+1c PBy.a Unused
+1d PBy.b Unused
+1e QBx.a
+1f QBx.b
+20 QBy.a Unused
+21 QBy.b Unused
+22 QPBx.a
+23 QPBx.b
+24 QPBy.a Unused
+25 QPBy.b Unused
+26 EA.A
+28 j(EAB) Alice's final j-invariant
+2a Unused
+2c EB.A
+2e j(EBA) Bob's final j-invariant
+30 Unused
+32 phiPB.x
+34 phiPB.z
+36 phiQB.x
+38 phiQB.z
+3a phiQPB.x
+3c phiQPB.z
+3e phiPA.x
+40 phiPA.z
+42 phiQA.x
+44 phiQA.z
+46 phiQPA.x
+48 phiQPA.z
+4a Rx Secret Kernel R1
+4c Rz
+4e A->A24plus
+50 C24/A24minus
+52 Coef0
+54 Coef1
+56 Coef2
+--Double point mult
+4a Px
+4c Rz
+60 QPx
+62 QPz
+64 Qx
+66 Qz
+6e A24
+--ISO computations
+60 - 8f temporary values
+90 - bf point queue (holds up to 12 points)
