@@ -50,7 +50,9 @@ _INLINE_ status_t encrypt(OUT ct_t* ct,
 {
     status_t res = SUCCESS;
 
+#ifndef BIKE2
     uint8_t c0[R_SIZE] = {0};
+#endif
     uint8_t c1[R_SIZE] = {0};
 
     uint8_t e0[R_SIZE] = {0};
@@ -62,30 +64,32 @@ _INLINE_ status_t encrypt(OUT ct_t* ct,
     // ct = (m*pk0 + e0, m*pk1 + e1)
     uint8_t m[R_SIZE] = {0};
     sample_uniform_r_bits(m, seed, NO_RESTRICTION);
-    cyclic_product(c0, m, pk->val0);
-    cyclic_product(c1, m, pk->val1);
-    ossl_add(ct->val0, c0, e0);
-    ossl_add(ct->val1, c1, e1);
+    cyclic_product(c0, m, pk->u.v.val0);
+    cyclic_product(c1, m, pk->u.v.val1);
+    ossl_add(ct->u.v.val0, c0, e0);
+    ossl_add(ct->u.v.val1, c1, e1);
 #else
 #ifdef BIKE2
+	UNUSED(seed);
     // ct = (e1*pk1 + e0)
-    cyclic_product(c1, e1, pk->val1);
-    ossl_add(ct->val0, c1, e0);
-    for (int i = 0; i < R_SIZE; i++)
-        ct->val1[i] = 0;
+    cyclic_product(c1, e1, pk->u.v.val1);
+    ossl_add(ct->u.v.val0, c1, e0);
+    for (uint32_t i = 0; i < R_SIZE; i++)
+        ct->u.v.val1[i] = 0;
 #else
 #ifdef BIKE3
+    UNUSED(seed);
     // ct = (e1*pk0 + e_extra, e1*pk1 + e0)
-    cyclic_product(c0, e1, pk->val0);
-    cyclic_product(c1, e1, pk->val1);
-    ossl_add(ct->val0, c0, ep);
-    ossl_add(ct->val1, c1, e0);
+    cyclic_product(c0, e1, pk->u.v.val0);
+    cyclic_product(c1, e1, pk->u.v.val1);
+    ossl_add(ct->u.v.val0, c0, ep);
+    ossl_add(ct->u.v.val1, c1, e0);
 #endif
 #endif
 #endif
 
-    EDMSG("c0: "); print((uint64_t*)ct->val0, R_BITS);
-    EDMSG("c1: "); print((uint64_t*)ct->val1, R_BITS);
+    EDMSG("c0: "); print((uint64_t*)ct->u.v.val0, R_BITS);
+    EDMSG("c1: "); print((uint64_t*)ct->u.v.val1, R_BITS);
 
     return res;
 }
@@ -107,7 +111,7 @@ _INLINE_ status_t get_ss(OUT ss_t* out, IN uint8_t* e)
     //By copying only the LSBs
     for(uint32_t i = 0; i < sizeof(ss_t); i++)
     {
-        out->raw[i] = hash.raw[i];
+        out->raw[i] = hash.u.raw[i];
     }
 
     DMSG("    Exit get_ss.\n");
@@ -134,19 +138,19 @@ _INLINE_ status_t compute_syndrome(OUT syndrome_t* syndrome,
 
 #ifdef BIKE1
     // BIKE-1 syndrome: s = h0*c0 + h1*c1:
-    cyclic_product(s0, sk->val0, ct->val0);
+    cyclic_product(s0, sk->u.v.val0, ct->u.v.val0);
     uint8_t s1[R_SIZE] = {0};
-    cyclic_product(s1, sk->val1, ct->val1);
+    cyclic_product(s1, sk->u.v.val1, ct->u.v.val1);
     ossl_add(s0, s0, s1);
 #else
 #ifdef BIKE2
     // BIKE-2 syndrome: s = c0*h0
-    cyclic_product(s0, sk->val0, ct->val0);
+    cyclic_product(s0, sk->u.v.val0, ct->u.v.val0);
 #else
 #ifdef BIKE3
     // BIKE3 syndrome: s = c0 + c1*h0
-    cyclic_product(s0, ct->val1, sk->val0);
-    ossl_add(s0, s0, ct->val0);
+    cyclic_product(s0, ct->u.v.val1, sk->u.v.val0);
+    ossl_add(s0, s0, ct->u.v.val0);
 #endif
 #endif
 #endif
@@ -181,9 +185,9 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
     static int key_gen_cnt = 0;
     static uint8_t h0[BATCH_SIZE][R_SIZE];
 #else
-    uint8_t * h0 = l_sk->val0;
+    uint8_t * h0 = l_sk->u.v.val0;
 #endif    
-    uint8_t * h1 = l_sk->val1;
+    uint8_t * h1 = l_sk->u.v.val1;
 
     DMSG("  Enter crypto_kem_keypair.\n");
     DMSG("    Calculating the secret key.\n");
@@ -192,16 +196,15 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
     uint8_t g[R_SIZE] = {0};
 #endif
 #ifdef BIKE2
-    uint8_t inv_h0[R_SIZE] = {0};
     uint8_t inv[R_SIZE] = {0};
 #endif
 #ifdef BIKE3
     uint8_t tmp1[R_SIZE] = {0};
-	uint8_t * g = l_pk->val1;
+	uint8_t * g = l_pk->u.v.val1;
 #endif
 
     //Both h0 and h1 use the same context
-    init_aes_ctr_prf_state(&h_prf_state, MAX_AES_INVOKATION, &seeds.s1);
+    init_aes_ctr_prf_state(&h_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
 
 #ifdef BIKE2
     if(key_gen_cnt == 0)
@@ -220,10 +223,10 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
 
 #ifdef BIKE1
     //  pk = (g*h1, g*h0)
-    res = sample_uniform_r_bits(g, &seeds.s2, MUST_BE_ODD);  CHECK_STATUS(res);
+    res = sample_uniform_r_bits(g, &seeds.u.v.s2, MUST_BE_ODD);  CHECK_STATUS(res);
 
-    cyclic_product(l_pk->val0, g, h1); CHECK_STATUS(res);
-    cyclic_product(l_pk->val1, g, h0); CHECK_STATUS(res);
+    cyclic_product(l_pk->u.v.val0, g, h1); CHECK_STATUS(res);
+    cyclic_product(l_pk->u.v.val1, g, h0); CHECK_STATUS(res);
 #else
 #ifdef BIKE2
     // pk = (1, h1*h0^(-1))
@@ -232,7 +235,7 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
 
     if(key_gen_cnt == 0)
     {	
-        for(int i=0;i<R_SIZE;i++)
+        for(uint32_t i=0;i<R_SIZE;i++)
             tmp0_ntl[0][i] = h0[0][i];
 
         for(int i=1;i<BATCH_SIZE;i++)
@@ -249,28 +252,28 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
         cyclic_product(inv,tmp1[1], h0[1]);	
     }
 
-    for(int i=0;i<R_SIZE;i++)
-        l_sk->val0[i] = h0[key_gen_cnt][i];
-    l_pk->val0[0] = 1;
-    for (int i = 1; i < R_SIZE; i++)
-        l_pk->val0[i] = 0;
+    for(uint32_t i=0;i<R_SIZE;i++)
+        l_sk->u.v.val0[i] = h0[key_gen_cnt][i];
+    l_pk->u.v.val0[0] = 1;
+    for (uint32_t i = 1; i < R_SIZE; i++)
+        l_pk->u.v.val0[i] = 0;
     if(key_gen_cnt > 0)
         cyclic_product(inv,tmp1[key_gen_cnt],tmp0_ntl[key_gen_cnt-1]);
-    cyclic_product(l_pk->val1,l_sk->val1,inv);
+    cyclic_product(l_pk->u.v.val1,l_sk->u.v.val1,inv);
 #else
 #ifdef BIKE3
     // pk = (h1 + g*h0, g)
-    res = sample_uniform_r_bits(g, &seeds.s2, MUST_BE_ODD);  CHECK_STATUS(res);
+    res = sample_uniform_r_bits(g, &seeds.u.v.s2, MUST_BE_ODD);  CHECK_STATUS(res);
     cyclic_product(tmp1, g, h0);
-    ossl_add(l_pk->val0, tmp1, h1);
+    ossl_add(l_pk->u.v.val0, tmp1, h1);
 #endif
 #endif
 #endif
 
-    EDMSG("h0: "); print((uint64_t*)l_sk->val0, R_BITS);
-    EDMSG("h1: "); print((uint64_t*)l_sk->val1, R_BITS);
-    EDMSG("g0: "); print((uint64_t*)l_pk->val0, R_BITS);
-    EDMSG("g1: "); print((uint64_t*)l_pk->val1, R_BITS);
+    EDMSG("h0: "); print((uint64_t*)l_sk->u.v.val0, R_BITS);
+    EDMSG("h1: "); print((uint64_t*)l_sk->u.v.val1, R_BITS);
+    EDMSG("g0: "); print((uint64_t*)l_pk->u.v.val0, R_BITS);
+    EDMSG("g1: "); print((uint64_t*)l_pk->u.v.val1, R_BITS);
 
 EXIT:
 #ifdef BIKE2
@@ -311,7 +314,7 @@ int crypto_kem_enc(OUT unsigned char *ct,
 
     //random data generator;
     // Using first seed
-    init_aes_ctr_prf_state(&e_prf_state, MAX_AES_INVOKATION, &seeds.s1);
+    init_aes_ctr_prf_state(&e_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
 
     DMSG("    Generating error.\n");
     res = generate_sparse_rep(e, T1, N_BITS, &e_prf_state); CHECK_STATUS(res);
@@ -324,9 +327,9 @@ int crypto_kem_enc(OUT unsigned char *ct,
     // Using second seed
     DMSG("    Encrypting.\n");
 #ifdef BIKE3
-    res = encrypt(l_ct, e, e_extra, l_pk, &seeds.s2);             	CHECK_STATUS(res);
+    res = encrypt(l_ct, e, e_extra, l_pk, &seeds.u.v.s2);             	CHECK_STATUS(res);
 #else
-    res = encrypt(l_ct, e, 0, l_pk, &seeds.s2);             	CHECK_STATUS(res);
+    res = encrypt(l_ct, e, 0, l_pk, &seeds.u.v.s2);             	CHECK_STATUS(res);
 #endif
 
     DMSG("    Generating shared secret.\n");
@@ -358,8 +361,8 @@ int crypto_kem_dec(OUT unsigned char *ss,
     DMSG("  Converting to compact rep.\n");
     uint32_t h0_compact[DV] = {0};
     uint32_t h1_compact[DV] = {0};
-    convert2compact(h0_compact, l_sk->val0);
-    convert2compact(h1_compact, l_sk->val1);
+    convert2compact(h0_compact, l_sk->u.v.val0);
+    convert2compact(h1_compact, l_sk->u.v.val1);
 
     DMSG("  Computing s.\n");
     syndrome_t syndrome;

@@ -50,7 +50,8 @@ typedef enum _seeds_purpose seeds_purpose_t;
 
 _INLINE_ void get_seeds(OUT double_seed_t* seeds, seeds_purpose_t seeds_type __attribute__((unused)) )
 {
-    OQS_randombytes(seeds->s1.raw, sizeof(double_seed_t));
+    OQS_randombytes(seeds->u.v.s1.u.raw, sizeof(seed_t));
+	OQS_randombytes(seeds->u.v.s2.u.raw, sizeof(seed_t));
 }
 
 typedef enum 

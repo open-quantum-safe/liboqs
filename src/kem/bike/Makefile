@@ -1,9 +1,9 @@
 ENABLE_KEMS += $(findstring bike1_l1, $(KEMS_TO_ENABLE))
 ENABLE_KEMS += $(findstring bike1_l3, $(KEMS_TO_ENABLE))
 ENABLE_KEMS += $(findstring bike1_l5, $(KEMS_TO_ENABLE))
-#ENABLE_KEMS += $(findstring bike2_l1, $(KEMS_TO_ENABLE))
-#ENABLE_KEMS += $(findstring bike2_l3, $(KEMS_TO_ENABLE))
-#ENABLE_KEMS += $(findstring bike2_l5, $(KEMS_TO_ENABLE))
+ENABLE_KEMS += $(findstring bike2_l1, $(KEMS_TO_ENABLE))
+ENABLE_KEMS += $(findstring bike2_l3, $(KEMS_TO_ENABLE))
+ENABLE_KEMS += $(findstring bike2_l5, $(KEMS_TO_ENABLE))
 ENABLE_KEMS += $(findstring bike3_l1, $(KEMS_TO_ENABLE))
 ENABLE_KEMS += $(findstring bike3_l3, $(KEMS_TO_ENABLE))
 ENABLE_KEMS += $(findstring bike3_l5, $(KEMS_TO_ENABLE))
@@ -60,55 +60,55 @@ OBJS_KEM_BIKE = $(UPSTREAM_DIR)/*.o
 TO_CLEAN += $(OBJS_KEM_BIKE)
 
 kem_bike1_l1_upstream: 
-	cd $(UPSTREAM_DIR) && make clean && make VER=1 LEVEL=1 OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
+	cd $(UPSTREAM_DIR) && make clean && make VER=1 LEVEL=1 CFLAGS="$(CFLAGS)" OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
 	bash scripts/collect_objects.sh kem_bike1_l1 $(OBJS_KEM_BIKE)
 	bash scripts/symbols_global_rename.sh kem_bike1_l1 src/kem/bike/symbols_global_rename_bike1_l1.txt
 	bash scripts/symbols_local.sh kem_bike1_l1 src/kem/bike/symbols_local.txt
 
 kem_bike1_l3_upstream: 
-	cd $(UPSTREAM_DIR) && make clean && make VER=1 LEVEL=3 OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
+	cd $(UPSTREAM_DIR) && make clean && make VER=1 LEVEL=3 CFLAGS="$(CFLAGS)" OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
 	bash scripts/collect_objects.sh kem_bike1_l3 $(OBJS_KEM_BIKE)
 	bash scripts/symbols_global_rename.sh kem_bike1_l3 src/kem/bike/symbols_global_rename_bike1_l3.txt
 	bash scripts/symbols_local.sh kem_bike1_l3 src/kem/bike/symbols_local.txt
 
 kem_bike1_l5_upstream: 
-	cd $(UPSTREAM_DIR) && make clean && make VER=1 LEVEL=5 OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
+	cd $(UPSTREAM_DIR) && make clean && make VER=1 LEVEL=5 CFLAGS="$(CFLAGS)" OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
 	bash scripts/collect_objects.sh kem_bike1_l5 $(OBJS_KEM_BIKE)
 	bash scripts/symbols_global_rename.sh kem_bike1_l5 src/kem/bike/symbols_global_rename_bike1_l5.txt
 	bash scripts/symbols_local.sh kem_bike1_l5 src/kem/bike/symbols_local.txt
 
 kem_bike2_l1_upstream: 
-	cd $(UPSTREAM_DIR) && make clean && make VER=2 LEVEL=1 OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
+	cd $(UPSTREAM_DIR) && make clean && make VER=2 LEVEL=1 CFLAGS="$(CFLAGS)" OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
 	bash scripts/collect_objects.sh kem_bike2_l1 $(OBJS_KEM_BIKE)
 	bash scripts/symbols_global_rename.sh kem_bike2_l1 src/kem/bike/symbols_global_rename_bike2_l1.txt
 	bash scripts/symbols_local.sh kem_bike2_l1 src/kem/bike/symbols_local.txt
 
 kem_bike2_l3_upstream: 
-	cd $(UPSTREAM_DIR) && make clean && make VER=2 LEVEL=3 OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
+	cd $(UPSTREAM_DIR) && make clean && make VER=2 LEVEL=3 CFLAGS="$(CFLAGS)" OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
 	bash scripts/collect_objects.sh kem_bike2_l3 $(OBJS_KEM_BIKE)
 	bash scripts/symbols_global_rename.sh kem_bike2_l3 src/kem/bike/symbols_global_rename_bike2_l3.txt
 	bash scripts/symbols_local.sh kem_bike2_l3 src/kem/bike/symbols_local.txt
 
 kem_bike2_l5_upstream: 
-	cd $(UPSTREAM_DIR) && make clean && make VER=2 LEVEL=5 OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
+	cd $(UPSTREAM_DIR) && make clean && make VER=2 LEVEL=5 CFLAGS="$(CFLAGS)" OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
 	bash scripts/collect_objects.sh kem_bike2_l5 $(OBJS_KEM_BIKE)
 	bash scripts/symbols_global_rename.sh kem_bike2_l5 src/kem/bike/symbols_global_rename_bike2_l5.txt
 	bash scripts/symbols_local.sh kem_bike2_l5 src/kem/bike/symbols_local.txt
 
 kem_bike3_l1_upstream: 
-	cd $(UPSTREAM_DIR) && make clean && make VER=3 LEVEL=1 OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
+	cd $(UPSTREAM_DIR) && make clean && make VER=3 LEVEL=1 CFLAGS="$(CFLAGS)" OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
 	bash scripts/collect_objects.sh kem_bike3_l1 $(OBJS_KEM_BIKE)
 	bash scripts/symbols_global_rename.sh kem_bike3_l1 src/kem/bike/symbols_global_rename_bike3_l1.txt
 	bash scripts/symbols_local.sh kem_bike3_l1 src/kem/bike/symbols_local.txt
 
 kem_bike3_l3_upstream: 
-	cd $(UPSTREAM_DIR) && make clean && make VER=3 LEVEL=3 OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
+	cd $(UPSTREAM_DIR) && make clean && make VER=3 LEVEL=3 CFLAGS="$(CFLAGS)" OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
 	bash scripts/collect_objects.sh kem_bike3_l3 $(OBJS_KEM_BIKE)
 	bash scripts/symbols_global_rename.sh kem_bike3_l3 src/kem/bike/symbols_global_rename_bike3_l3.txt
 	bash scripts/symbols_local.sh kem_bike3_l3 src/kem/bike/symbols_local.txt
 
 kem_bike3_l5_upstream: 
-	cd $(UPSTREAM_DIR) && make clean && make VER=3 LEVEL=5 OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
+	cd $(UPSTREAM_DIR) && make clean && make VER=3 LEVEL=5 CFLAGS="$(CFLAGS)" OPENSSL_INCLUDE_DIR=$(OPENSSL_INCLUDE_DIR) INC_DIR=$(realpath include)
 	bash scripts/collect_objects.sh kem_bike3_l5 $(OBJS_KEM_BIKE)
 	bash scripts/symbols_global_rename.sh kem_bike3_l5 src/kem/bike/symbols_global_rename_bike3_l5.txt
 	bash scripts/symbols_local.sh kem_bike3_l5 src/kem/bike/symbols_local.txt

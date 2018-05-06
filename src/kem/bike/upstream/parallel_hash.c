@@ -53,9 +53,9 @@ typedef struct yx_s
             sha384_hash_t x[PH_SLICES_NUM];
             //We define MAX_REM_LEN and not lrem to be compatible with the standard of C.
             uint8_t y[MAX_REM_LEN];
-        };
+        } v;
         uint8_t raw[(PH_SLICES_NUM * sizeof(sha384_hash_t)) + MAX_REM_LEN];
-    };
+    } u;
 } yx_t;
 
 #pragma pack(pop)
@@ -68,8 +68,8 @@ _INLINE_ uint64_t compute_slice_len(IN uint64_t la)
 }
 
 void parallel_hash(OUT sha384_hash_t* out_hash,
-        IN const uint8_t* m,
-        IN const uint32_t la)
+                   IN const uint8_t* m,
+                   IN const uint32_t la)
 {
     DMSG("    Enter parallel_hash.\n");
 
@@ -93,17 +93,17 @@ void parallel_hash(OUT sha384_hash_t* out_hash,
     //Hash each block (X[i]).
     for(uint32_t i = 0; i < PH_SLICES_NUM; i++)
     {
-        SHA384(&m[i * ls], ls, yx.x[i].raw);
-        EDMSG("X[%u]:", i); print((uint64_t*)yx.x[i].raw, sizeof(yx.x[i])*8);
+        SHA384(&m[i * ls], ls, yx.u.v.x[i].u.raw);
+        EDMSG("X[%u]:", i); print((uint64_t*)yx.u.v.x[i].u.raw, sizeof(yx.u.v.x[i])*8);
     }
 
     //Copy the reminder (Y).
-    memcpy(yx.y, &m[PH_SLICES_NUM * ls], lrem);
+    memcpy(yx.u.v.y, &m[PH_SLICES_NUM * ls], lrem);
 
     //Compute the final hash (on YX).
-    SHA384(yx.raw, sizeof(yx), out_hash->raw);
+    SHA384(yx.u.raw, sizeof(yx), out_hash->u.raw);
 
-    EDMSG("\nY:  "); print((uint64_t*)yx.y, lrem*8);
+    EDMSG("\nY:  "); print((uint64_t*)yx.u.v.y, lrem*8);
 
     DMSG("    Exit parallel_hash.\n");
 }

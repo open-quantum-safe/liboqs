@@ -46,17 +46,17 @@ status_t init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t* s,
     }
 
     //Set the Key schedule (from seed).
-    if (AES_set_encrypt_key(seed->raw, AES256_KEY_BITS, &s->key) != 0)
+    if (AES_set_encrypt_key(seed->u.raw, AES256_KEY_BITS, &s->key) != 0)
     {
         return E_AES_SET_KEY_FAIL;
     }
 
     //Initialize buffer and counter
-    s->ctr.qwords[0] = 0;
-    s->ctr.qwords[1] = 0;
+    s->ctr.u.qwords[0] = 0;
+    s->ctr.u.qwords[1] = 0;
 
-    AES_encrypt(s->ctr.bytes, s->buffer.bytes, &s->key);
-    s->ctr.qwords[0]++;
+    AES_encrypt(s->ctr.u.bytes, s->buffer.u.bytes, &s->key);
+    s->ctr.u.qwords[0]++;
 
     s->pos = 0;
     s->rem_invokations = (maxInvokations - 1);
@@ -77,8 +77,8 @@ _INLINE_ status_t perform_aes(OUT uint8_t* ct, IN OUT aes_ctr_prf_state_t* s)
         return E_AES_OVER_USED;
     }
 
-    AES_encrypt(s->ctr.bytes, ct, &s->key);
-    s->ctr.qwords[0]++;
+    AES_encrypt(s->ctr.u.bytes, ct, &s->key);
+    s->ctr.u.qwords[0]++;
     s->rem_invokations--;
 
     return SUCCESS;
@@ -94,7 +94,7 @@ status_t aes_ctr_prf(OUT uint8_t* a,
     //No need in additional AES.
     if ((len + s->pos) <= AES256_BLOCK_SIZE)
     {
-        memcpy(a, &s->buffer.bytes[s->pos], len);
+        memcpy(a, &s->buffer.u.bytes[s->pos], len);
         s->pos += len;
 
         return res;
@@ -103,7 +103,7 @@ status_t aes_ctr_prf(OUT uint8_t* a,
     //if s.pos != AES256_BLOCK_SIZE then copy whats left in the buffer.
     //else copy zero bytes.
     uint32_t idx = AES256_BLOCK_SIZE - s->pos;
-    memcpy(a, &s->buffer.bytes[s->pos], idx);
+    memcpy(a, &s->buffer.u.bytes[s->pos], idx);
 
     //Init s.pos;
     s->pos = 0;
@@ -115,11 +115,11 @@ status_t aes_ctr_prf(OUT uint8_t* a,
         idx += AES256_BLOCK_SIZE;
     }
 
-    res = perform_aes(s->buffer.bytes, s);                CHECK_STATUS(res);
+    res = perform_aes(s->buffer.u.bytes, s);                CHECK_STATUS(res);
 
     //Copy the tail.
     s->pos = len - idx;
-    memcpy(&a[idx], s->buffer.bytes, s->pos);
+    memcpy(&a[idx], s->buffer.u.bytes, s->pos);
 
     EXIT:
     return res;

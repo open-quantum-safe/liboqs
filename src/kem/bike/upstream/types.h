@@ -45,7 +45,7 @@ typedef struct uint128_s
         uint8_t bytes[16];
         uint32_t dwords[4];
         uint64_t qwords[2];
-    };
+    } u;
 } uint128_t;
 
 //For clarity of the code.
@@ -69,9 +69,9 @@ typedef struct generic_param_n_s
         {
             uint8_t val0[R_SIZE];
             uint8_t val1[R_SIZE];
-        };
+        } v;
         uint8_t raw[N_SIZE];
-    };
+    }u;
 } generic_param_n_t;
 
 typedef generic_param_n_t sk_t;
@@ -101,7 +101,7 @@ typedef struct seed_s
     union {
         uint8_t  raw[32];
         uint64_t qwords[4];
-    };
+    } u;
 } seed_t;
 
 //Both keygen and encaps require double seed.
@@ -111,9 +111,9 @@ typedef struct double_seed_s
         struct {
             seed_t s1;
             seed_t s2;
-        };
+        } v;
         uint8_t raw[sizeof(seed_t) * 2ULL];
-    };
+    } u;
 } double_seed_t;
 
 //////////////////////////////

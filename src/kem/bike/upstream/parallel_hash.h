@@ -46,7 +46,7 @@ typedef struct sha384_hash_s
     {
         uint8_t  raw[SHA384_HASH_SIZE];
         uint64_t qwords[SHA384_HASH_QWORDS];
-    };
+    } u;
 } sha384_hash_t;
 
 //The parallel_hash algorithm uses the technique described in

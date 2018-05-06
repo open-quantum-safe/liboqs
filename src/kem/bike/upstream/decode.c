@@ -262,7 +262,7 @@ int decode(uint8_t e[R_BITS*2],
     double_seed_t seeds = {0};
     get_seeds(&seeds, DECAPS_SEEDS);
     aes_ctr_prf_state_t prf_state = {0};
-    init_aes_ctr_prf_state(&prf_state, (MASK(32)), &seeds.s1);
+    init_aes_ctr_prf_state(&prf_state, (MASK(32)), &seeds.u.v.s1);
 
     // computing the first column of each parity-check block:
     uint32_t h0_compact_col[DV] = {0};

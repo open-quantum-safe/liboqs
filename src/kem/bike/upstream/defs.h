@@ -40,7 +40,7 @@
 ///////////////////////////////////////////
 
 // DEFINE BATCH COUNT FOR SIMULTANEOUS INVERSION 
-#define BATCH_SIZE 1
+#define BATCH_SIZE 2
 
 // BIKE shared-secret size:
 #define ELL_K_BITS  256ULL
@@ -125,7 +125,9 @@
 #define R_SIZE   DIVIDE_AND_CEIL(R_BITS, 8ULL)
 #define N_SIZE   DIVIDE_AND_CEIL(N_BITS, 8ULL)
 #define R_DQWORDS DIVIDE_AND_CEIL(R_SIZE, 16ULL)
-#define MAX_J_SIZE 5*T1
+#define MAX_J_SIZE 10*T1
+
+#define UNUSED(x) (void)(x)
 
 ////////////////////////////////////////////
 //             Debug
@@ -171,8 +173,8 @@
 ////////////////////////////////////////////
 //              Testing
 ///////////////////////////////////////////
-#define NUM_OF_CODE_TESTS       100ULL
-#define NUM_OF_ENCRYPTION_TESTS 100ULL
+#define NUM_OF_CODE_TESTS       1ULL
+#define NUM_OF_ENCRYPTION_TESTS 1ULL
 
 #endif //__TYPES_H_INCLUDED__
 
