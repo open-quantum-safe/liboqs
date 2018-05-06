@@ -38,15 +38,16 @@
 
 #include "types.h"
 
-// Count number of 1's in tmp:
+#define MAX_IT 10
+#define MAX_DELTA 4
+
+// count number of 1's in tmp:
 uint32_t getHammingWeight(const uint8_t tmp[R_BITS], const uint32_t length);
 
-// Decode a syndrome s into an error vector e.
-// The final syndrome weight is less-or-equal than u.
-int decode(uint8_t e[R_BITS*2],
-        uint8_t s[R_BITS],
-        uint32_t h0_compact[DV],
-        uint32_t h1_compact[DV],
-        uint32_t u);
+int decode(uint8_t e[2*R_BITS],
+           uint8_t s[R_BITS],
+           uint32_t h0_compact[DV],
+           uint32_t h1_compact[DV],
+           uint32_t u);
 
 #endif //_R_DECAPS_H_

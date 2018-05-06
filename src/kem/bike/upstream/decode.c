@@ -4,6 +4,8 @@
  * Copyright (c) 2017 Nir Drucker, Shay Gueron, Rafael Misoczki, Tobias Oder, Tim Gueneysu
  * (drucker.nir@gmail.com, shay.gueron@gmail.com, rafael.misoczki@intel.com, tobias.oder@rub.de, tim.gueneysu@rub.de)
  *
+ * This decoder is the decoder of CAKE combined with the thresholds of BIKE.
+ * 
  * Permission to use this code for BIKE is granted.
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -54,19 +56,6 @@ uint32_t getHammingWeight(const uint8_t tmp[R_BITS], const uint32_t length)
     return count;
 }
 
-// function (not constant time) to check if an array is zero:
-uint32_t isZero(uint8_t s[R_BITS])
-{
-    for (uint32_t i = 0; i < R_BITS; i++)
-    {
-        if (s[i])
-        {
-            return 0;
-        }
-    }
-    return 1;
-}
-
 uint32_t get_predefined_threshold_var(const uint8_t s[R_BITS])
 {
     // compute syndrome weight:
@@ -79,21 +68,11 @@ uint32_t get_predefined_threshold_var(const uint8_t s[R_BITS])
     return threshold;
 }
 
-// compute the max number of unsatisfied parity-check equations:
-int get_max_upc(uint8_t unsat_counter[N_BITS])
-{
-    int maxupc = -1;
-    for (uint32_t i = 0; i < N_BITS; i++)
-        if (unsat_counter[i] > maxupc)
-            maxupc = unsat_counter[i];
-    return  maxupc;
-}           
-
-void recompute_syndrome(uint8_t s[R_BITS],
-        const uint32_t numPositions,
-        const uint32_t positions[N_BITS],
-        const uint32_t h0_compact[DV],
-        const uint32_t h1_compact[DV])
+static void recompute_syndrome(uint8_t s[R_BITS],
+                               const uint32_t numPositions,
+                               const uint32_t positions[N_BITS],
+                               const uint32_t h0_compact[DV],
+                               const uint32_t h1_compact[DV])
 {
     for (uint32_t i = 0; i < numPositions; i++)
     {
@@ -161,265 +140,159 @@ void compute_counter_of_unsat(uint8_t unsat_counter[N_BITS],
     }
 }
 
-uint32_t ctr(
-        uint32_t h_compact_col[DV],
-        int position,
-        uint8_t s[R_BITS])
-{
-    uint32_t count = 0;
-    for (uint32_t i = 0; i < DV; i++)
-    {
-        if (s[(h_compact_col[i] + position) % R_BITS])
-            count++;
-    }
-    return count;
-}
-
-void getCol(
-        uint32_t h_compact_col[DV],
-        uint32_t h_compact_row[DV])
-{
-    if (h_compact_row[0] == 0)
-    {
-        h_compact_col[0] = 0;
-
-        for (uint32_t i = 1; i < DV; i++)
-        {
-            // set indices in increasing order:
-            h_compact_col[i] = R_BITS - h_compact_row[DV-i];
-        }
-    } else
-    {
-        for (uint32_t i = 0; i < DV; i++)
-        {
-            // set indices in increasing order:
-            h_compact_col[i] = R_BITS - h_compact_row[DV-1-i];
-        }
-    }
-}
-
-// The position in e is adjusted because syndrome is transposed.
-void flipAdjustedErrorPosition(uint8_t e[R_BITS*2], uint32_t position)
-{
-    uint32_t adjustedPosition = position;
-    if (position != 0 && position != R_BITS)
-    {
-        adjustedPosition = (position > R_BITS) ? \
-                ((N_BITS - position)+R_BITS) : (R_BITS - position);
-    }
-    e[adjustedPosition] ^= 1;
-}
-
-void check(
-        uint8_t e[R_BITS*2],
-        uint32_t h0_compact_col[DV],
-        uint32_t h1_compact_col[DV],
-        uint32_t h0_compact[DV],
-        uint32_t h1_compact[DV],
-        uint8_t s[R_BITS],
-        uint32_t Jl[4*DV],
-        uint32_t sizeJl)
-{
-    for (uint32_t j = 0; j < sizeJl; j++)
-    {
-        uint32_t pos = Jl[j];
-        if (pos < R_BITS)
-        {
-            uint32_t counter_unsat_pos = ctr(h0_compact_col, pos, s);
-            if (counter_unsat_pos > (DV/2))
-            {
-                flipAdjustedErrorPosition(e, pos);
-                recompute_syndrome(s, 1, &pos, h0_compact, h1_compact);
-                DMSG("    Weight of syndrome: %d\n",
-                        getHammingWeight(s, R_BITS));
-            }
-        }
-        else
-        {
-            uint32_t counter_unsat_pos = ctr(h1_compact_col, pos-R_BITS, s);
-            if (counter_unsat_pos > (DV/2))
-            {
-                flipAdjustedErrorPosition(e, pos);
-                recompute_syndrome(s, 1, &pos, h0_compact, h1_compact);
-                DMSG("    Weight of syndrome: %d\n",
-                        getHammingWeight(s, R_BITS));
-            }
-        }
-    }
-}
-
-#define MIN(a, b) ((a > b) ? b : a);
-
-// Algorithm 3: One-Round Bit Flipping Algorithm
 int decode(uint8_t e[R_BITS*2],
-        uint8_t s[R_BITS],
-        uint32_t h0_compact[DV],
-        uint32_t h1_compact[DV],
-        uint32_t u)
+           uint8_t s_original[R_BITS],
+           uint32_t h0_compact[DV],
+           uint32_t h1_compact[DV],
+           uint32_t u)
 {
+    int code_ret = -1;
 
-    // PRNG tools:
-    double_seed_t seeds = {0};
-    get_seeds(&seeds, DECAPS_SEEDS);
-    aes_ctr_prf_state_t prf_state = {0};
-    init_aes_ctr_prf_state(&prf_state, (MASK(32)), &seeds.u.v.s1);
+    int delta = MAX_DELTA;
+    uint8_t s[R_BITS] = {0};
+    memcpy(s, s_original, R_BITS);
 
-    // computing the first column of each parity-check block:
-    uint32_t h0_compact_col[DV] = {0};
-    uint32_t h1_compact_col[DV] = {0};
-    getCol(h0_compact_col, h0_compact);
-    getCol(h1_compact_col, h1_compact);
-
-    // J: list of positions involved in more than
-    // (threshold - delta) unsatisfied p.c. equations:
-    uint32_t J[DELTA_BIT_FLIPPING][MAX_J_SIZE] = {0};
-    uint32_t sizeJ[DELTA_BIT_FLIPPING] = {0};
-
-    // count the number of unsatisfied parity-checks:
-    uint8_t unsat_counter[N_BITS] = {0};
-    compute_counter_of_unsat(unsat_counter, s, h0_compact, h1_compact);
-
-    // LINE 1 of One-Round Bit Flipping Algorithm:
-    uint32_t threshold = get_predefined_threshold_var(s);
-    DMSG("\t\t\tThreshold: %d\n", threshold);
-
-    // LINES 2-4 of One-Round Bit Flipping Algorithm:
-    for (uint32_t i = 0; i < N_BITS; i++)
+    int iter = 0;
+    while (delta >= 0)
     {
-        if (unsat_counter[i] > threshold - DELTA_BIT_FLIPPING)
+        for (; iter < MAX_IT; iter++)
         {
-            uint32_t difference = threshold - MIN(threshold, unsat_counter[i]);
-            J[difference][sizeJ[difference]] = i;
-            sizeJ[difference]++;
-        }
-    }
+            DMSG("    delta: %d\n", delta);
+            DMSG("    Iteration: %d\n", iter);
+            DMSG("    Weight of e: %d\n", getHammingWeight(e, N_BITS));
+            DMSG("    Weight of syndrome: %d\n", getHammingWeights(s, R_BITS));
+            
+            // count the number of unsatisfied parity-checks:
+            uint8_t unsat_counter[N_BITS] = {0};
+            compute_counter_of_unsat(unsat_counter, s, h0_compact, h1_compact);
 
-    // LINES 5-6 of One-Round Bit Flipping Algorithm:
-    for (uint32_t i = 0; i < sizeJ[0]; i++)
-    {
-        flipAdjustedErrorPosition(e, J[0][i]);
-    }
+            // defining the threshold:
+            int threshold = get_predefined_threshold_var(s);
+            DMSG("    Threshold type: %d value: %d\n", THRESHOLD_TECHNIQUE, threshold);
 
-    recompute_syndrome(s, sizeJ[0], J[0], h0_compact, h1_compact);
-
-    DMSG("\t\tStep 1. Weight(syndrome): %u Weight(error): %u.\n", getHammingWeight(s, R_BITS), getHammingWeight(e, N_BITS));
-
-    // check if decoding finished:
-    if (getHammingWeight(s, R_BITS) <= u)
-    {
-        DMSG("\t\tWeight(syndrome): %d\n", getHammingWeight(s, R_BITS));
-        return 0;
-    }
-
-    // LINES 7-10 of One-Round Bit Flipping Algorithm:
-    while (getHammingWeight(s, R_BITS) > S_BIT_FLIPPING)
-    {
-        for (int l = 0; l < DELTA_BIT_FLIPPING; l++)
-        {
-            check(e, h0_compact_col, h1_compact_col, h0_compact, h1_compact, s,
-                    J[l], sizeJ[l]);
-        }
-        DMSG("\t\tStep 2 (loop). Weight(syndrome): %u Weight(error): %u\n", getHammingWeight(s, R_BITS), getHammingWeight(e, N_BITS));
-    }
-
-    // check if decoding finished:
-    if (getHammingWeight(s, R_BITS) <= u)
-    {
-        DMSG("\t\tWeight(syndrome): %d\n", getHammingWeight(s, R_BITS));
-        return 0;
-    }
-
-    // LINES 11-12 of One-Round Bit Flipping Algorithm:
-    uint32_t errorPos[R_BITS] = {0};
-    int countError = 0;
-    for (uint32_t i = 0; i < 2*R_BITS; i++)
-    {
-        if (e[i])
-        {
-            uint32_t posError = i;
-            if (i != 0 && i != R_BITS)
+            // we call black positions the positions involved in more than "threshold" unsatisfied parity-checks:
+            uint32_t numBlackPositions = 0;
+            uint32_t blackPositions[N_BITS] = {0}; // TODO: the size of blackPositions vector can be much smaller
+    
+            // we call gray positions the positions involved in more than (threashold - delta) unsat. parity-checks:
+            uint32_t numGrayPositions = 0;
+            uint32_t grayPositions[N_BITS] = {0}; // TODO: the size of grayPositions vector can be much smaller
+            
+            // Decoding Step I: flipping all black positions:
+            for (uint64_t i = 0; i < N_BITS; i++)
             {
-                // the position in e is adjusted since syndrome is transposed
-                posError = (i > R_BITS)? ((N_BITS - i)+R_BITS) : (R_BITS - i);
+                if (unsat_counter[i] >= threshold)
+                {
+                    blackPositions[numBlackPositions++] = i;
+                    uint32_t posError = i;
+                    if (i != 0 && i != R_BITS)
+                    {
+                        // the position in e is adjusted because syndrome is transposed
+                        posError = (i > R_BITS) ? ((N_BITS - i)+R_BITS) : (R_BITS - i); 
+                    }
+                    e[posError] ^= 1; 
+    
+                    DMSG("      flipping black position: %d\n", posError);
+    
+                } else if(unsat_counter[i] > threshold - delta) {
+                    grayPositions[numGrayPositions++] = i;
+                }
             }
-            errorPos[countError++] = posError;
-        }
-    }
-    for (int j = 0; j < countError; j++)
-    {
-        uint32_t pos = errorPos[j];
-        uint32_t counter_unsat_pos;
-
-        if (pos < R_BITS)
-        {
-            counter_unsat_pos = ctr(h0_compact_col, pos, s);
-        }
-        else
-        {
-            counter_unsat_pos = ctr(h1_compact_col, pos-R_BITS, s);
-        }
-
-        if (counter_unsat_pos > (DV/2))
-        {
-            flipAdjustedErrorPosition(e, pos);
-            recompute_syndrome(s, 1, &pos, h0_compact, h1_compact);
-        }
-    }
-
-    DMSG("\t\tStep 3. Weight(syndrome): %u Weight(error): %u.\n", getHammingWeight(s, R_BITS), getHammingWeight(e, N_BITS));
-
-    // check if decoding finished:
-    if (getHammingWeight(s, R_BITS) <= u)
-    {
-        DMSG("\t\tWeight(syndrome): %d\n", getHammingWeight(s, R_BITS));
-        return 0;
-    }
-
-    // LINES 13-15 of One-Round Bit Flipping Algorithm:
-    while (getHammingWeight(s, R_BITS) > u)
-    {
-        // find a random non-zero position in the syndrome:
-        uint32_t i = 0;
-        get_rand_mod_len(&i, R_BITS, &prf_state);
-        while (!s[i])
-            i = (i + 1) % R_BITS;
-
-        int errorFound = 0;
-        for (uint32_t j = 0; j < DV && !errorFound; j++)
-        {
-            // finding position of 1 in the i-th row:
-            uint32_t pos = (h0_compact[j] + i) % R_BITS;
-            uint32_t counter_unsat_pos = ctr(h0_compact_col, pos, s);
-            if (counter_unsat_pos > (DV/2))
+    
+            // Decoding Step I: recompute syndrome:
+            recompute_syndrome(s, numBlackPositions, blackPositions, h0_compact, h1_compact);
+    
+            // Decoding Step I: check if syndrome is 0 (successful decoding):
+            if (getHammingWeight(s, R_BITS) <= u)
             {
-                flipAdjustedErrorPosition(e, pos);
-                recompute_syndrome(s, 1, &pos, h0_compact, h1_compact);
-                errorFound = 1;
-                DMSG("\t\t\tFlipped position %d which has counter_unsat_pos: %d\n", pos, counter_unsat_pos);
+                code_ret = 0;
+                DMSG("    Weight of syndrome: 0\n");
+                break;
+            }
+    
+            // recompute counter of unsat. parity checks:
+            compute_counter_of_unsat(unsat_counter, s, h0_compact, h1_compact);
+    
+            // Decoding Step II: Unflip positions that still have high number of unsatisfied parity-checks associated:  
+            uint32_t positionsToUnflip[N_BITS] = {0}; // TODO: the size of positionsToUnflip vector can be much smaller
+            uint32_t numUnflippedPositions = 0;
+            
+            for (uint32_t i = 0; i < numBlackPositions; i++)
+            {
+                uint32_t pos = blackPositions[i];
+                if (unsat_counter[pos] > (DV+1)/2)
+                {
+                    positionsToUnflip[numUnflippedPositions++] = pos;
+                    uint32_t posError  = pos;
+                    if (pos != 0 && pos != R_BITS)
+                    {
+                        // the position in e is adjusted because syndrome is transposed
+                        posError = (pos > R_BITS) ? ((N_BITS - pos)+R_BITS) : (R_BITS - pos); 
+                    }
+                    e[posError] ^= 1; 
+                    //MSG("      unflipping black position: %d\n", posError);
+                }
+            }
+
+            // Decoding Step II: recompute syndrome:
+            recompute_syndrome(s, numUnflippedPositions, positionsToUnflip, h0_compact, h1_compact);
+
+            // Decoding Step II: check if syndrome is 0 (successful decoding):
+            if (getHammingWeight(s, R_BITS) <= u)
+            {
+                code_ret = 0;
+                DMSG("    Weight of syndrome: 0\n");
+                break;
+            }
+
+            // recomputing counter of unsat. parity checks:
+            compute_counter_of_unsat(unsat_counter, s, h0_compact, h1_compact);
+
+            // Decoding Step III: Flip all gray positions associated to high number of unsatisfied parity-checks: 
+            uint32_t grayPositionsToFlip[N_BITS] = {0}; // TODO: the size of grayPositionsToFlip vector can be much smaller
+            uint32_t numGrayPositionsToFlip = 0;
+
+            for (uint32_t i = 0; i < numGrayPositions; i++)
+            {
+                uint32_t pos = grayPositions[i];
+                if (unsat_counter[pos] > (DV+1)/2)
+                {
+                    grayPositionsToFlip[numGrayPositionsToFlip++] = pos;
+                    uint32_t posError  = pos;
+                    if (pos != 0 && pos != R_BITS)
+                    {
+                        // the position in e is adjusted because syndrome is transposed
+                        posError = (pos > R_BITS) ? ((N_BITS - pos)+R_BITS) : (R_BITS - pos); 
+                    }
+                    e[posError] ^= 1; 
+                    //MSG("      flipping gray position: %d\n", posError);
+                }
+            }
+
+            // Decoding Step III: recompute syndrome:
+            recompute_syndrome(s, numGrayPositionsToFlip, grayPositionsToFlip, h0_compact, h1_compact);
+
+            // Decoding Step III: check if syndrome is 0 (successful decoding):
+            if (getHammingWeight(s, R_BITS) <= u)
+            {
+                code_ret = 0;
+                DMSG("    Weight of syndrome: 0\n");
+                break;
             }
         }
-        for (uint32_t j = 0; j < DV && !errorFound; j++)
-        {
-            // finding position of 1 in the i-th row:
-            uint32_t pos = (h1_compact[j] + i) % R_BITS;
-            pos += R_BITS;
-            uint32_t counter_unsat_pos = ctr(h1_compact_col, pos, s);
-            if (counter_unsat_pos > (DV/2))
+        if (getHammingWeight(s, R_BITS) <= u) {
+            break;
+        } else {
+            delta--;
+            iter = 0;
+            
+            for (uint64_t i = 0; i < N_BITS; i++)
             {
-                flipAdjustedErrorPosition(e, pos);
-                recompute_syndrome(s, 1, &pos, h0_compact, h1_compact);
-                errorFound = 1;
-                DMSG("\t\t\tFlipped position %d which has counter_unsat_pos: %d\n", pos, counter_unsat_pos);
+                e[i] = 0; 
             }
-        }
-        DMSG("\t\t\t\tStep 4 (loop). Weight(syndrome): %d Weight(error): %d\n", getHammingWeight(s, R_BITS), getHammingWeight(e, N_BITS));
-    }
-    // check if decoding finished:
-    if (getHammingWeight(s, R_BITS) <= u)
-    {
-        DMSG("\t\tWeight(syndrome): %d\n", getHammingWeight(s, R_BITS));
-        return 0;
+            memcpy(s, s_original, R_BITS);
+       }
     }
 
-    return -1;
+    return code_ret;
 }
