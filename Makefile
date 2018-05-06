@@ -5,7 +5,9 @@ KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_97
 			   kyber512 kyber768 kyber1024 \
 			   bike1_l1 bike1_l3 bike1_l5 \
 			   bike2_l1 bike2_l3 bike2_l5 \
-			   bike3_l1 bike3_l3 bike3_l5 # EDIT-WHEN-ADDING-KEM
+			   bike3_l1 bike3_l3 bike3_l5 \
+			   sike_p503, sike_p751 \
+			   BIG_QUAKE_1 BIG_QUAKE_3 BIG_QUAKE_5 # EDIT-WHEN-ADDING-KEM
 
 KEM_DEFAULT=newhope_1024_cca_kem
 

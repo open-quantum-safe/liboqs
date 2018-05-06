@@ -1,0 +1,31 @@
+Supersingular Isogeny Key Encapsulation: SIKEp751
+Optimized implementation for x64 platforms with x64 assembly
+=======================================================================
+    
+Simply do:
+
+$ make clean; make
+
+And then execute the following to run the tests:
+
+$ ./sike/test_KEM
+
+Or execute the following to run the KATs:
+
+$ ./sike/PQCtestKAT_kem
+
+By default, MULX and ADX instructions are used, and compilation is performed with 
+GNU GCC.
+
+
+ADDITIONAL OPTIONS
+------------------
+
+make CC=[gcc/clang] SET=EXTENDED USE_MULX=[TRUE/FALSE] USE_ADX=[TRUE/FALSE]
+
+Setting "SET=EXTENDED" adds the flags -fwrapv -fomit-frame-pointer -march=native.
+The use of mulx and adx instructions is included by default. The user is responsible 
+for checking if these instructions are supported in the targeted platform and then 
+setting the corresponding flags above accordingly.
+
+Note: USE_ADX can only be set to TRUE if USE_MULX=TRUE.
