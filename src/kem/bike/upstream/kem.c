@@ -215,6 +215,7 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
 #else
 #ifdef BIKE2
     // pk = (1, h1*h0^(-1))
+	memset(l_pk->u.v.val0, 0, R_SIZE);
     l_pk->u.v.val0[0] = 1; //assume all elements initialized with 0
     ossl_mod_inv(inv_h0, h0);
     cyclic_product(l_pk->u.v.val1, h1, inv_h0);
