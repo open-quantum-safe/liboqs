@@ -44,6 +44,3 @@ Additional comments
   - AVX2
   - AVX512
 
-- BIKE2 is currently set to have BATCH_SIZE=16.
-
-
