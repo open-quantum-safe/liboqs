@@ -66,6 +66,8 @@ _INLINE_ void print_uint64(IN const uint64_t val)
 
 #ifdef WIN32
     printf("%.16I64x", tmp);
+#elif __APPLE__
+    printf("%.16llx",  tmp);
 #else
     printf("%.16lx",  tmp);
 #endif
