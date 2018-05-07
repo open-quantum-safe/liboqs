@@ -4,7 +4,7 @@
  * Copyright (c) 2017 Nir Drucker, Shay Gueron, Rafael Misoczki, Tobias Oder, Tim Gueneysu
  * (drucker.nir@gmail.com, shay.gueron@gmail.com, rafael.misoczki@intel.com, tobias.oder@rub.de, tim.gueneysu@rub.de)
  *
- * This decoder is the decoder of CAKE combined with the thresholds of BIKE.
+ * This decoder is the decoder used by CAKE. But with the thresholds used by BIKE's decoder.
  * 
  * Permission to use this code for BIKE is granted.
  * Redistribution and use in source and binary forms, with or without

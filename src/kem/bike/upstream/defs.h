@@ -39,9 +39,6 @@
 //         BIKE main parameters
 ///////////////////////////////////////////
 
-// DEFINE BATCH COUNT FOR SIMULTANEOUS INVERSION 
-#define BATCH_SIZE 16
-
 // BIKE shared-secret size:
 #define ELL_K_BITS  256ULL
 #define ELL_K_SIZE (ELL_K_BITS/8)

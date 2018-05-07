@@ -181,12 +181,7 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
     get_seeds(&seeds, KEYGEN_SEEDS);
 
     // sk = (h0, h1)
-#ifdef BIKE2
-    static int key_gen_cnt = 0;
-    static uint8_t h0[BATCH_SIZE][R_SIZE];
-#else
     uint8_t * h0 = l_sk->u.v.val0;
-#endif    
     uint8_t * h1 = l_sk->u.v.val1;
 
     DMSG("  Enter crypto_kem_keypair.\n");
@@ -196,7 +191,7 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
     uint8_t g[R_SIZE] = {0};
 #endif
 #ifdef BIKE2
-    uint8_t inv[R_SIZE] = {0};
+    uint8_t inv_h0[R_SIZE];
 #endif
 #ifdef BIKE3
     uint8_t tmp1[R_SIZE] = {0};
@@ -206,19 +201,9 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
     //Both h0 and h1 use the same context
     init_aes_ctr_prf_state(&h_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
 
-#ifdef BIKE2
-    if(key_gen_cnt == 0)
-    {
-        for(int i =0;i<BATCH_SIZE;i++)
-        {
-            res = generate_sparse_rep(h0[i], DV, R_BITS, &h_prf_state); CHECK_STATUS(res);
-        }
-    }	
-    res = generate_sparse_rep(h1, DV, R_BITS, &h_prf_state); CHECK_STATUS(res);
-#else
     res = generate_sparse_rep(h0, DV, R_BITS, &h_prf_state); CHECK_STATUS(res);
     res = generate_sparse_rep(h1, DV, R_BITS, &h_prf_state); CHECK_STATUS(res);
-#endif
+
     DMSG("    Calculating the public key.\n");
 
 #ifdef BIKE1
@@ -230,36 +215,9 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
 #else
 #ifdef BIKE2
     // pk = (1, h1*h0^(-1))
-    static uint8_t tmp1[BATCH_SIZE][R_SIZE];
-    static uint8_t tmp0_ntl[BATCH_SIZE][R_SIZE];
-
-    if(key_gen_cnt == 0)
-    {	
-        for(uint32_t i=0;i<R_SIZE;i++)
-            tmp0_ntl[0][i] = h0[0][i];
-
-        for(int i=1;i<BATCH_SIZE;i++)
-        {
-             cyclic_product(tmp0_ntl[i], tmp0_ntl[i-1], h0[i]);			
-        }	
-
-        ossl_mod_inv(tmp1[BATCH_SIZE-1], tmp0_ntl[BATCH_SIZE-1]);
-
-        for(int i=BATCH_SIZE-2;i>=1;i--)
-        {
-            cyclic_product(tmp1[i], tmp1[i+1], h0[i+1]);			
-        }
-        cyclic_product(inv,tmp1[1], h0[1]);	
-    }
-
-    for(uint32_t i=0;i<R_SIZE;i++)
-        l_sk->u.v.val0[i] = h0[key_gen_cnt][i];
-    l_pk->u.v.val0[0] = 1;
-    for (uint32_t i = 1; i < R_SIZE; i++)
-        l_pk->u.v.val0[i] = 0;
-    if(key_gen_cnt > 0)
-        cyclic_product(inv,tmp1[key_gen_cnt],tmp0_ntl[key_gen_cnt-1]);
-    cyclic_product(l_pk->u.v.val1,l_sk->u.v.val1,inv);
+    l_pk->u.v.val0[0] = 1; //assume all elements initialized with 0
+    ossl_mod_inv(inv_h0, h0);
+    cyclic_product(l_pk->u.v.val1, h1, inv_h0);
 #else
 #ifdef BIKE3
     // pk = (h1 + g*h0, g)
@@ -276,9 +234,6 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
     EDMSG("g1: "); print((uint64_t*)l_pk->u.v.val1, R_BITS);
 
 EXIT:
-#ifdef BIKE2
-    key_gen_cnt = (key_gen_cnt +1) % BATCH_SIZE;
-#endif
     DMSG("  Exit crypto_kem_keypair.\n");
     return res;
 }
