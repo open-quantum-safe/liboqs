@@ -61,7 +61,6 @@ cleanup:
 	OQS_MEM_cleanse(shared_secret_d, OQS_KEM_frodokem_640_aes_length_shared_secret);
 	return ret;
 
-
 #else
 	printf("[example_stack] OQS_KEM_frodokem_640_aes was not enabled at compile-time.\n");
 	return OQS_ERROR;
