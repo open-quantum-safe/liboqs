@@ -1,0 +1,3 @@
+crypto_kem_keypair OQS_KEM_bike1_l1_keypair
+crypto_kem_enc OQS_KEM_bike1_l1_encaps
+crypto_kem_dec OQS_KEM_bike1_l1_decaps

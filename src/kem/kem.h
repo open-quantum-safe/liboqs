@@ -45,6 +45,24 @@
 #define OQS_KEM_alg_kyber768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber1024 "Kyber1024"
+/** Algorithm identifier for BIKE1 L1 KEM. */
+#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
+/** Algorithm identifier for BIKE1 L3 KEM. */
+#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
+/** Algorithm identifier for BIKE1 L5 KEM. */
+#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
+/** Algorithm identifier for BIKE2 L1 KEM. */
+#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
+/** Algorithm identifier for BIKE2 L3 KEM. */
+#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
+/** Algorithm identifier for BIKE2 L5 KEM. */
+#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
+/** Algorithm identifier for BIKE3 L1 KEM. */
+#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
+/** Algorithm identifier for BIKE3 L3 KEM. */
+#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
+/** Algorithm identifier for BIKE3 L5 KEM. */
+#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 /** Algorithm identifier for Sike p503 KEM. */
 #define OQS_KEM_alg_sike_p503 "Sike-p503"
 /** Algorithm identifier for Sike p751 KEM. */
@@ -58,7 +76,7 @@
 
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 15
+#define OQS_KEM_algs_length 24
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -205,6 +223,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
+#include <oqs/kem_bike.h>
 #include <oqs/kem_sike.h>
 #include <oqs/kem_BIGQUAKE.h>
 // EDIT-WHEN-ADDING-KEM
