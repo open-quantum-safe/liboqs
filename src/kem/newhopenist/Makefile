@@ -15,7 +15,7 @@ OBJECT_DIRS+=.objs/kem/newhopenist
 OBJECTS_KEM_NEWHOPENIST=.objs/kem/newhopenist/kem_newhopenist.o
 OBJECTS_KEM+=$(OBJECTS_KEM_NEWHOPENIST)
 
-.objs/kem/newhopenist/kem_newhopenist.o: src/kem/newhopenist/kem_newhopenist.c
+.objs/kem/newhopenist/kem_newhopenist.o: headers src/kem/newhopenist/kem_newhopenist.c
 	$(CC) -c src/kem/newhopenist/kem_newhopenist.c -o .objs/kem/newhopenist/kem_newhopenist.o $(CFLAGS)
 
 ifneq (,$(findstring newhope_512_cca_kem, $(ENABLE_KEMS)))
