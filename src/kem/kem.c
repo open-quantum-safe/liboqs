@@ -214,6 +214,9 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N04)) {
 #if defined(OQS_ENABLE_KEM_ledakem_C5_N04)
 		return OQS_KEM_ledakem_C5_N04_new();
+#else
+		return NULL;
+#endif
 		// EDIT-WHEN-ADDING-KEM
 	} else {
 		return NULL;
