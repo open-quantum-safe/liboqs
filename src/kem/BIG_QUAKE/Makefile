@@ -17,7 +17,7 @@ OBJECT_DIRS+=.objs/kem/BIG_QUAKE
 OBJECTS_KEM_BIGQUAKE=.objs/kem/BIG_QUAKE/kem_BIGQUAKE.o
 OBJECTS_KEM+=$(OBJECTS_KEM_BIGQUAKE)
 
-.objs/kem/BIG_QUAKE/kem_BIGQUAKE.o: src/kem/BIG_QUAKE/kem_BIGQUAKE.c
+.objs/kem/BIG_QUAKE/kem_BIGQUAKE.o: headers src/kem/BIG_QUAKE/kem_BIGQUAKE.c
 	$(CC) -c src/kem/BIG_QUAKE/kem_BIGQUAKE.c -o .objs/kem/BIG_QUAKE/kem_BIGQUAKE.o $(CFLAGS)
 
 ifneq (,$(findstring BIG_QUAKE_1, $(ENABLE_KEMS)))

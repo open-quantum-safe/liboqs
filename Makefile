@@ -32,7 +32,7 @@ ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATI
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
-all: mkdirs headers liboqs tests speeds kats examples
+all: liboqs tests speeds kats examples
 
 OBJECT_DIRS=
 TO_CLEAN=liboqs.a
@@ -45,6 +45,7 @@ OBJECTS=$(OBJECTS_COMMON) $(OBJECTS_KEM)
 
 mkdirs:
 	mkdir -p $(OBJECT_DIRS)
+	mkdir -p .objs_upstream
 
 DATE=`date`
 UNAME=`uname -a`
@@ -76,21 +77,22 @@ config_h:
 	echo "/** Platform on which liboqs was compiled. */" >> src/config.h
 	echo "#define OQS_COMPILE_UNAME \"$(UNAME)\"" >> src/config.h
 
-
-headers: config_h $(HEADERS)
+headers: config_h mkdirs
 	$(RM) -r include
 	mkdir -p include/oqs
 	cp $(HEADERS) src/config.h include/oqs
 
-liboqs: mkdirs headers $(OBJECTS) $(UPSTREAMS)
+liboqs: headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
 	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
 	gcc -shared -o liboqs.so liboqs.a
 
 TEST_PROGRAMS=test_kem
+$(TEST_PROGRAMS): liboqs
 tests: $(TEST_PROGRAMS)
 
 KAT_PROGRAMS=kat_kem
+$(KAT_PROGRAMS): liboqs
 kats: $(KAT_PROGRAMS)
 
 test: tests
@@ -101,12 +103,14 @@ kat: kats
 	scripts/check_kats.sh
 
 SPEED_PROGRAMS=speed_kem
+$(SPEED_PROGRAMS): liboqs
 speeds: $(SPEED_PROGRAMS)
 
 speed: speeds
 	./speed_kem --info
 
 EXAMPLE_PROGRAMS=example_kem
+$(EXAMPLE_PROGRAMS): liboqs
 examples: $(EXAMPLE_PROGRAMS)
 
 docs: headers
@@ -129,6 +133,7 @@ clean:
 	$(RM) -r .objs
 	$(RM) -r *.dSYM
 	$(RM) -r kat_kem_rsp
+	$(RM) -r .objs_upstream
 	$(RM) liboqs.a liboqs.so
 	$(RM) $(TO_CLEAN)
 	$(RM) $(TEST_PROGRAMS)
