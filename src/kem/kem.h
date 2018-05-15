@@ -45,6 +45,34 @@
 #define OQS_KEM_alg_kyber768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber1024 "Kyber1024"
+/** Algorithm identifier for BIKE1 L1 KEM. */
+#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
+/** Algorithm identifier for BIKE1 L3 KEM. */
+#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
+/** Algorithm identifier for BIKE1 L5 KEM. */
+#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
+/** Algorithm identifier for BIKE2 L1 KEM. */
+#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
+/** Algorithm identifier for BIKE2 L3 KEM. */
+#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
+/** Algorithm identifier for BIKE2 L5 KEM. */
+#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
+/** Algorithm identifier for BIKE3 L1 KEM. */
+#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
+/** Algorithm identifier for BIKE3 L3 KEM. */
+#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
+/** Algorithm identifier for BIKE3 L5 KEM. */
+#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
+/** Algorithm identifier for Sike p503 KEM. */
+#define OQS_KEM_alg_sike_p503 "Sike-p503"
+/** Algorithm identifier for Sike p751 KEM. */
+#define OQS_KEM_alg_sike_p751 "Sike-p751"
+/** Algorithm identifier for BIG_QUAKE_1. */
+#define OQS_KEM_alg_BIG_QUAKE_1 "BIG_QUAKE_1"
+/** Algorithm identifier for BIG_QUAKE_3. */
+#define OQS_KEM_alg_BIG_QUAKE_3 "BIG_QUAKE_3"
+/** Algorithm identifier for BIG_QUAKE_5. */
+#define OQS_KEM_alg_BIG_QUAKE_5 "BIG_QUAKE_5"
 /** Algorithm identifier for LEDA KEM SL=1 N0=2. */
 #define OQS_KEM_alg_ledakem_C1_N02 "LEDAKEM_C1_N02"
 /** Algorithm identifier for LEDA KEM SL=1 N0=3. */
@@ -63,21 +91,9 @@
 #define OQS_KEM_alg_ledakem_C5_N03 "LEDAKEM_C5_N03"
 /** Algorithm identifier for LEDA KEM SL=5 N0=4. */
 #define OQS_KEM_alg_ledakem_C5_N04 "LEDAKEM_C5_N04"
-/** Number of algorithm identifiers above. */
-/** Algorithm identifier for Sike p503 KEM. */
-#define OQS_KEM_alg_sike_p503 "Sike-p503"
-/** Algorithm identifier for Sike p751 KEM. */
-#define OQS_KEM_alg_sike_p751 "Sike-p751"
-/** Algorithm identifier for BIG_QUAKE_1. */
-#define OQS_KEM_alg_BIG_QUAKE_1 "BIG_QUAKE_1"
-/** Algorithm identifier for BIG_QUAKE_3. */
-#define OQS_KEM_alg_BIG_QUAKE_3 "BIG_QUAKE_3"
-/** Algorithm identifier for BIG_QUAKE_5. */
-#define OQS_KEM_alg_BIG_QUAKE_5 "BIG_QUAKE_5"
-
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 24
+#define OQS_KEM_algs_length 33
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -225,6 +241,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
 #include <oqs/kem_LEDAkem.h>
+#include <oqs/kem_bike.h>
 #include <oqs/kem_sike.h>
 #include <oqs/kem_BIGQUAKE.h>
 // EDIT-WHEN-ADDING-KEM

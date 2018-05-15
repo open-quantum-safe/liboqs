@@ -3,9 +3,14 @@
 KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
 			   newhope_512_cca_kem newhope_1024_cca_kem \
 			   kyber512 kyber768 kyber1024 \
+			   bike1_l1 bike1_l3 bike1_l5 \
+			   bike2_l1 bike2_l3 bike2_l5 \
+			   bike3_l1 bike3_l3 bike3_l5 \
 			   sike_p503, sike_p751 \
-			   BIG_QUAKE_1 BIG_QUAKE_3 BIG_QUAKE_5 ledakem_C1_N02 ledakem_C1_N03 ledakem_C1_N04 \
-				 ledakem_C3_N02 ledakem_C3_N03 ledakem_C3_N04 ledakem_C5_N02 ledakem_C5_N03 ledakem_C5_N04 # EDIT-WHEN-ADDING-KEM
+			   BIG_QUAKE_1 BIG_QUAKE_3 BIG_QUAKE_5 \
+			   ledakem_C1_N02 ledakem_C1_N03 ledakem_C1_N04 \
+			   ledakem_C3_N02 ledakem_C3_N03 ledakem_C3_N04 \
+			   ledakem_C5_N02 ledakem_C5_N03 ledakem_C5_N04 # EDIT-WHEN-ADDING-KEM
 KEM_DEFAULT=newhope_1024_cca_kem
 
 ARCH=x64
@@ -127,6 +132,8 @@ install:
 clean:
 	$(RM) -r includes
 	$(RM) -r .objs
+	$(RM) -r *.dSYM
+	$(RM) -r kat_kem_rsp
 	$(RM) liboqs.a liboqs.so
 	$(RM) $(TO_CLEAN)
 	$(RM) $(TEST_PROGRAMS)
