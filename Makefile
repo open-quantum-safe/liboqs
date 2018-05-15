@@ -127,6 +127,8 @@ install:
 clean:
 	$(RM) -r includes
 	$(RM) -r .objs
+	$(RM) -r *.dSYM
+	$(RM) -r kat_kem_rsp
 	$(RM) liboqs.a liboqs.so
 	$(RM) $(TO_CLEAN)
 	$(RM) $(TEST_PROGRAMS)
