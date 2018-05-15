@@ -22,7 +22,7 @@ extern OQS_STATUS OQS_KEM_BIG_QUAKE_1_decaps(uint8_t *shared_secret, const unsig
 
 #define OQS_KEM_BIG_QUAKE_3_length_public_key 84132
 #define OQS_KEM_BIG_QUAKE_3_length_secret_key 30860
-#define OQS_KEM_BIG_QUAKE_3_length_ciphertext 3248
+#define OQS_KEM_BIG_QUAKE_3_length_ciphertext 406
 #define OQS_KEM_BIG_QUAKE_3_length_shared_secret 32
 
 OQS_KEM *OQS_KEM_BIG_QUAKE_3_new();
@@ -37,7 +37,7 @@ extern OQS_STATUS OQS_KEM_BIG_QUAKE_3_decaps(uint8_t *shared_secret, const unsig
 
 #define OQS_KEM_BIG_QUAKE_5_length_public_key 149800
 #define OQS_KEM_BIG_QUAKE_5_length_secret_key 41804
-#define OQS_KEM_BIG_QUAKE_5_length_ciphertext 3932
+#define OQS_KEM_BIG_QUAKE_5_length_ciphertext 492
 #define OQS_KEM_BIG_QUAKE_5_length_shared_secret 32
 
 OQS_KEM *OQS_KEM_BIG_QUAKE_5_new();
