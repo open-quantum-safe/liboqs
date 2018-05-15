@@ -6,10 +6,14 @@
 
 char *OQS_KEM_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-KEM
-
-	char *a[OQS_KEM_algs_length] = {OQS_KEM_alg_default, OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake, OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem, OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024, OQS_KEM_alg_sike_p503, OQS_KEM_alg_sike_p751, OQS_KEM_alg_BIG_QUAKE_1, OQS_KEM_alg_BIG_QUAKE_3, OQS_KEM_alg_BIG_QUAKE_5, OQS_KEM_alg_bike1_l1, OQS_KEM_alg_bike1_l3,
-	                                OQS_KEM_alg_bike1_l5, OQS_KEM_alg_bike2_l1, OQS_KEM_alg_bike2_l3, OQS_KEM_alg_bike2_l5, OQS_KEM_alg_bike3_l1, OQS_KEM_alg_bike3_l3,
-	                                OQS_KEM_alg_bike3_l5};
+	char *a[OQS_KEM_algs_length] = {
+	    OQS_KEM_alg_default,
+	    OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake,
+	    OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem,
+	    OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024,
+	    OQS_KEM_alg_sike_p503, OQS_KEM_alg_sike_p751,
+	    OQS_KEM_alg_BIG_QUAKE_1, OQS_KEM_alg_BIG_QUAKE_3, OQS_KEM_alg_BIG_QUAKE_5,
+	    OQS_KEM_alg_bike1_l1, OQS_KEM_alg_bike1_l3, OQS_KEM_alg_bike1_l5, OQS_KEM_alg_bike2_l1, OQS_KEM_alg_bike2_l3, OQS_KEM_alg_bike2_l5, OQS_KEM_alg_bike3_l1, OQS_KEM_alg_bike3_l3, OQS_KEM_alg_bike3_l5};
 	if (i >= OQS_KEM_algs_length) {
 		return NULL;
 	} else {
