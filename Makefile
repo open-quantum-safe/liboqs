@@ -1,6 +1,6 @@
 # THESE SHOULD BE THE ONLY OPTIONS TO BE CONFIGURED BY THE PERSON COMPILING
 
-KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
+KEMS_TO_ENABLE?=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
 			   newhope_512_cca_kem newhope_1024_cca_kem \
 			   kyber512 kyber768 kyber1024 \
 			   bike1_l1 bike1_l3 bike1_l5 \
@@ -9,21 +9,21 @@ KEMS_TO_ENABLE=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_97
 			   sike_p503, sike_p751 \
 			   BIG_QUAKE_1 BIG_QUAKE_3 BIG_QUAKE_5 # EDIT-WHEN-ADDING-KEM
 
-KEM_DEFAULT=newhope_1024_cca_kem
+KEM_DEFAULT?=newhope_1024_cca_kem
 
-ARCH=x64
+ARCH?=x64
 # x64 OR x86
 
-PREFIX=usr_local
-PREFIX_INCLUDE=$(PREFIX)/include
-PREFIX_LIB=$(PREFIX)/lib
+PREFIX?=usr_local
+PREFIX_INCLUDE?=$(PREFIX)/include
+PREFIX_LIB?=$(PREFIX)/lib
 
-CC=gcc
-OPENSSL_INCLUDE_DIR=/usr/local/opt/openssl/include
-OPENSSL_LIB_DIR=/usr/local/opt/openssl/lib
+CC?=gcc
+OPENSSL_INCLUDE_DIR?=/usr/local/opt/openssl/include
+OPENSSL_LIB_DIR?=/usr/local/opt/openssl/lib
 CFLAGS+= -fPIC
-LDFLAGS=
-CLANGFORMAT=clang-format
+LDFLAGS?=
+CLANGFORMAT?=clang-format
 
 # NOTHING AFTER THIS SHOULD NEED TO BE CHANGED BY THE PERSON COMPILING
 
