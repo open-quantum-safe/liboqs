@@ -40,6 +40,7 @@ make clean
 make "ARCH=${ARCH}" "CC=${CC_OVERRIDE}"
 make docs
 ./test_kem
+./test_kem_shared
 ./example_kem
 
 for f in $(ls .travis/*-check.sh); do

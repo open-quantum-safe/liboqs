@@ -85,9 +85,9 @@ headers: config_h $(HEADERS)
 liboqs: mkdirs headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
 	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
-	gcc -shared -o liboqs.so liboqs.a
+	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` -lcrypto
 
-TEST_PROGRAMS=test_kem
+TEST_PROGRAMS=test_kem test_kem_shared
 tests: $(TEST_PROGRAMS)
 
 KAT_PROGRAMS=kat_kem
