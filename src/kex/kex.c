@@ -5,7 +5,6 @@
 #include <oqs/kex_lwe_frodo.h>
 #include <oqs/kex_ntru.h>
 #include <oqs/kex_rlwe_bcns15.h>
-#include <oqs/kex_rlwe_msrln16.h>
 #include <oqs/kex_rlwe_newhope.h>
 #include <oqs/kex_sidh_msr.h>
 
@@ -55,12 +54,6 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #endif
 	case OQS_KEX_alg_rlwe_bcns15:
 		return OQS_KEX_rlwe_bcns15_new(rand);
-	case OQS_KEX_alg_rlwe_msrln16:
-#ifdef ENABLE_KEX_RLWE_MSRLN16
-		return OQS_KEX_rlwe_msrln16_new(rand);
-#else
-		assert(0);
-#endif
 	case OQS_KEX_alg_rlwe_newhope:
 #ifdef ENABLE_KEX_RLWE_NEWHOPE
 		return OQS_KEX_rlwe_newhope_new(rand);

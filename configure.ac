@@ -100,10 +100,6 @@ ARG_DISBL_SET([kex-ntru], [disable KEX-NTRU.])
 AM_CONDITIONAL([kex_ntru], [test "x$kex_ntru" = xtrue])
 AM_CONDITIONAL([USE_KEX_NTRU], [test "x$kex_ntru" = xtrue])
 
-ARG_DISBL_SET([kex-rlwe-msrln16], [disable KEX-RLWE-MSRLN16.])
-AM_CONDITIONAL([kex_rlwe_msrln16], [test "x$kex_rlwe_msrln16" = xtrue])
-AM_CONDITIONAL([USE_KEX_RLWE_MSRLN16], [test "x$kex_rlwe_msrln16" = xtrue])
-
 ARG_DISBL_SET([kex-rlwe-newhope], [disable KEX-RLWE-NEWHOPE.])
 AM_CONDITIONAL([kex_rlwe_newhope], [test "x$kex_rlwe_newhope" = xtrue])
 AM_CONDITIONAL([USE_KEX_RLWE_NEWHOPE], [test "x$kex_rlwe_newhope" = xtrue])
@@ -190,12 +186,6 @@ if test x"$kex_ntru" = x"true"; then
   AC_DEFINE(ENABLE_KEX_NTRU, 1, "Define to 1 when NTRU enabled")
 fi
 
-if test x"$kex_rlwe_msrln16" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLWE_MSRLN16"
-  AC_DEFINE(ENABLE_KEX_RLWE_MSRLN16, 1, "Define to 1 when RLWE MSRLN16 enabled")
-fi
-
 if test x"$kex_rlwe_newhope" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_rlwe_newhope"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLWE_NEWHOPE"
@@ -249,7 +239,6 @@ AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_KEX_NTRU)
 AC_SUBST(USE_MCBITS)
 AC_SUBST(USE_KEX_LWE_FRODO)
-AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_MSR)
 AC_SUBST(USE_SIG_PICNIC)
@@ -267,7 +256,6 @@ AC_CONFIG_FILES([Makefile
                  src/crypto/aes/Makefile
                  src/kex_rlwe_bcns15/Makefile
                  src/kex_rlwe_newhope/Makefile
-                 src/kex_rlwe_msrln16/Makefile
                  src/kex_sidh_msr/Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile

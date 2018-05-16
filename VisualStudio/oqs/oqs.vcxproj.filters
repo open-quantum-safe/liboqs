@@ -10,23 +10,14 @@
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.c">
       <Filter>KEX_BCNS15</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.c">
-      <Filter>KEX_MSR_LN16</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c">
       <Filter>KEX_NewHope</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_kex.c">
-      <Filter>KEX_MSR_LN16</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_lwe_frodo\lwe.c">
       <Filter>KEX_Frodo</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_lwe_frodo\lwe_noise.c">
       <Filter>KEX_Frodo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_msrln16\ntt_constants.c">
-      <Filter>KEX_MSR_LN16</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe.c">
       <Filter>KEX_BCNS15</Filter>
@@ -150,17 +141,8 @@
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h">
       <Filter>KEX_BCNS15</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h">
-      <Filter>KEX_MSR_LN16</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h">
       <Filter>KEX_NewHope</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto.h">
-      <Filter>KEX_MSR_LN16</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_priv.h">
-      <Filter>KEX_MSR_LN16</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_bcns15\local.h">
       <Filter>KEX_BCNS15</Filter>
@@ -320,9 +302,6 @@
     </Filter>
     <Filter Include="KEX_Frodo">
       <UniqueIdentifier>{6bfff158-3e78-402f-ba16-e8d315089de8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="KEX_MSR_LN16">
-      <UniqueIdentifier>{9f5ed87f-ed1e-47b4-b7e7-1d6648cb88fd}</UniqueIdentifier>
     </Filter>
     <Filter Include="KEX_NewHope">
       <UniqueIdentifier>{d0291785-4232-4264-b1bd-08b7e3f8df5e}</UniqueIdentifier>

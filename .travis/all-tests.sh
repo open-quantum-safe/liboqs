@@ -61,10 +61,6 @@ if [[ ${ENABLE_KEX_NTRU} == 0 ]];then
 	enable_disable_str+=" --disable-kex-ntru"
 fi
 
-if [[ ${ENABLE_KEX_RLWE_MSRLN16} == 0 ]];then
-	enable_disable_str+=" --disable-kex-rlwe-msrln16"
-fi
-
 if [[ ${ENABLE_KEX_RLWE_NEWHOPE} == 0 ]];then
 	enable_disable_str+=" --disable-kex-rlwe-newhope"
 fi
