@@ -5,7 +5,7 @@ ACLOCAL_AMFLAGS = -I config
 include aminclude.am
 
 # ensure the distribution of the doxygen configuration file
-EXTRA_DIST = doxygen.cfg
+EXTRA_DIST = docs/.Doxyfile
 
 CLANGFORMAT ?= clang-format-3.9
 
@@ -244,8 +244,7 @@ clean-tests:
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
 
-docs: links
-	doxygen
+docs: doxygen-run
 
 cleanup-patch:
 if USE_KEX_RLWE_NEWHOPE_AVX2

@@ -84,7 +84,7 @@ DX_RTF_FEATURE(OFF)
 DX_XML_FEATURE(OFF)
 DX_PDF_FEATURE(OFF)
 DX_PS_FEATURE(OFF)
-DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
+DX_INIT_DOXYGEN([$PACKAGE_NAME],[docs/.Doxyfile])
 ######################################################################
 
 ARG_DISBL_SET([aes-ni], [enable AES-NI.])

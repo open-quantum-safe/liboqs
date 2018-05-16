@@ -23,7 +23,7 @@ matrix:
   - os: linux
     compiler: gcc
     env:
-    - CC_OQS=gcc-4.9
+    - CC_OVERRIDE=gcc-4.9
     - ENABLE_SIG_PICNIC=0
     addons:
       apt:
@@ -35,7 +35,7 @@ matrix:
     - sh .travis/install-clang-format-linux.sh
   - os: linux
     compiler: gcc
-    env: CC_OQS=gcc-5
+    env: CC_OVERRIDE=gcc-5
     addons:
       apt:
         sources:
@@ -45,7 +45,7 @@ matrix:
   - os: linux
     compiler: gcc
     env:
-    - CC_OQS=gcc-6
+    - CC_OVERRIDE=gcc-6
     - USE_OPENSSL=1
     addons:
       apt:
@@ -57,12 +57,12 @@ matrix:
   - os: osx
     compiler: clang
     env:
-    - CC_OQS=clang
+    - CC_OVERRIDE=clang
     - AES_NI=0
   - os: osx
     compiler: clang
     env:
-    - CC_OQS=clang
+    - CC_OVERRIDE=clang
     - AES_NI=0
     - USE_OPENSSL=1
     - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package
@@ -73,4 +73,4 @@ matrix:
     - brew install libsodium
 
 script:
-  - ./.travis-tests.sh
+  - .travis/all-tests.sh
