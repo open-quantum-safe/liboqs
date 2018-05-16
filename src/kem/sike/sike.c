@@ -5,11 +5,12 @@
 *********************************************************************************************/
 
 #include <string.h>
+#include <oqs/common.h>
 #include <oqs/sha3.h>
 
-int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // SIKE's key generation
-	                                                           // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
-	                                                           //          public key pk (CRYPTO_PUBLICKEYBYTES bytes)
+OQS_STATUS crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // SIKE's key generation
+	                                                                  // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
+	                                                                  //          public key pk (CRYPTO_PUBLICKEYBYTES bytes)
 
 	// Generate lower portion of secret key sk <- s||SK
 	OQS_randombytes(sk, MSG_BYTES);
@@ -21,13 +22,13 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // SIKE's key gen
 	// Append public key pk to secret key sk
 	memcpy(&sk[MSG_BYTES + SECRETKEY_B_BYTES], pk, OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES);
 
-	return 0;
+	return OQS_SUCCESS;
 }
 
-int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) { // SIKE's encapsulation
-	                                                                                // Input:   public key pk         (CRYPTO_PUBLICKEYBYTES bytes)
-	                                                                                // Outputs: shared secret ss      (CRYPTO_BYTES bytes)
-	                                                                                //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes)
+OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) { // SIKE's encapsulation
+	                                                                                       // Input:   public key pk         (CRYPTO_PUBLICKEYBYTES bytes)
+	                                                                                       // Outputs: shared secret ss      (CRYPTO_BYTES bytes)
+	                                                                                       //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes)
 	const uint16_t G = 0;
 	const uint16_t H = 1;
 	const uint16_t P = 2;
@@ -54,13 +55,13 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 	memcpy(&temp[MSG_BYTES], ct, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES);
 	OQS_SHA3_cshake256_simple(ss, OQS_SIDH_MSR_CRYPTO_BYTES, H, temp, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
 
-	return 0;
+	return OQS_SUCCESS;
 }
 
-int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) { // SIKE's decapsulation
-	                                                                                      // Input:   secret key sk         (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
-	                                                                                      //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes)
-	                                                                                      // Outputs: shared secret ss      (CRYPTO_BYTES bytes)
+OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) { // SIKE's decapsulation
+	                                                                                             // Input:   secret key sk         (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
+	                                                                                             //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes)
+	                                                                                             // Outputs: shared secret ss      (CRYPTO_BYTES bytes)
 	const uint16_t G = 0;
 	const uint16_t H = 1;
 	const uint16_t P = 2;
@@ -90,5 +91,5 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 	memcpy(&temp[MSG_BYTES], ct, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES);
 	OQS_SHA3_cshake256_simple(ss, OQS_SIDH_MSR_CRYPTO_BYTES, H, temp, OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
 
-	return 0;
+	return OQS_SUCCESS;
 }
