@@ -14,6 +14,19 @@ KEM_DEFAULT?=newhope_1024_cca_kem
 ARCH?=x64
 # x64 OR x86
 
+#Currently checking CPUID only on Linux machines this 
+#Should be extended to other system in the future.
+DETECTED_OS = $(shell uname -s)
+ifeq ($(DETECTED_OS), Linux)
+  AVX_SUPPORT = $(shell grep avx /proc/cpuinfo)
+  AVX2_SUPPORT = $(shell grep avx2 /proc/cpuinfo)
+  AVX512_SUPPORT = $(shell grep avx512 /proc/cpuinfo)
+  
+  export AVX_SUPPORT
+  export AVX2_SUPPORT
+  export AVX512_SUPPORT
+endif
+
 PREFIX?=usr_local
 PREFIX_INCLUDE?=$(PREFIX)/include
 PREFIX_LIB?=$(PREFIX)/lib
@@ -30,6 +43,14 @@ CLANGFORMAT?=clang-format
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
+ifdef AVX512_SUPPORT
+  CFLAGS+=-DAVX512
+else ifdef AVX2_SUPPORT
+  CFLAGS+=-DAVX2
+else ifdef AVX_SUPPORT
+  CFLAGS+=-DAVX
+endif
+
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
 all: liboqs tests speeds kats examples

@@ -15,9 +15,6 @@ OBJECT_DIRS+=.objs/kem/bike
 OBJECTS_KEM_BIKE=.objs/kem/bike/kem_bike.o
 OBJECTS_KEM+=$(OBJECTS_KEM_BIKE)
 
-.objs/kem/bike/kem_bike.o: headers src/kem/bike/kem_bike.c
-	$(CC) -c src/kem/bike/kem_bike.c -o .objs/kem/bike/kem_bike.o $(CFLAGS)
-
 ifneq (,$(findstring bike1_l1, $(ENABLE_KEMS)))
   UPSTREAMS+=kem_bike1_l1_upstream
 endif
@@ -54,7 +51,16 @@ ifneq (,$(findstring bike3_l5, $(ENABLE_KEMS)))
   UPSTREAMS+=kem_bike3_l5_upstream
 endif
 
-UPSTREAM_DIR := src/kem/bike/upstream
+ifneq (,AVX512_SUPPORT)
+    UPSTREAM_DIR := src/kem/bike/upstream/additional_implementation
+else ifneq (,AVX2_SUPPORT)
+    UPSTREAM_DIR := src/kem/bike/upstream/additional_implementation
+else
+    UPSTREAM_DIR := src/kem/bike/upstream/reference_implementation
+endif
+
+.objs/kem/bike/kem_bike.o: headers src/kem/bike/kem_bike.c
+	$(CC) -c src/kem/bike/kem_bike.c -o .objs/kem/bike/kem_bike.o $(CFLAGS)
 
 kem_bike1_l1_upstream: mkdirs headers
 	$(RM) -r .objs_upstream/kem_bike1_l1
