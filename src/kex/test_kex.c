@@ -35,9 +35,6 @@ struct kex_testcase kex_testcases[] = {
 #endif
 #endif
     {OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "rlwe_bcns15", 0, 100},
-#ifdef ENABLE_KEX_RLWE_MSRLN16
-    {OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0, 100},
-#endif
 #ifdef ENABLE_KEX_RLWE_NEWHOPE
     {OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100},
 #endif

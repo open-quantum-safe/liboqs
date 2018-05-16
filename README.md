@@ -25,7 +25,6 @@ liboqs currently contains:
 
 - `kex_rlwe_bcns15`: key exchange from the ring learning with errors problem (Bos, Costello, Naehrig, Stebila, *IEEE Symposium on Security & Privacy 2015*, [https://eprint.iacr.org/2014/599](https://eprint.iacr.org/2014/599))
 - `kex_rlwe_newhope`: "NewHope": key exchange from the ring learning with errors problem (Alkim, Ducas, Pöppelmann, Schwabe, *USENIX Security 2016*, [https://eprint.iacr.org/2015/1092](https://eprint.iacr.org/2015/1092)) (using the reference C implementation of NewHope from [https://github.com/tpoeppelmann/newhope](https://github.com/tpoeppelmann/newhope))
-- `kex_rlwe_msrln16`: Microsoft Research implementation of Peikert's ring-LWE key exchange (Longa, Naehrig, *CANS 2016*, [https://eprint.iacr.org/2016/504](https://eprint.iacr.org/2016/504)) (based on the implementation of Alkim, Ducas, Pöppelmann, and Schwabe, with improvements from Longa and Naehrig, see [https://www.microsoft.com/en-us/research/project/lattice-cryptography-library/](https://www.microsoft.com/en-us/research/project/lattice-cryptography-library/))
 - `kex_lwe_frodo`: "Frodo": key exchange from the learning with errors problem (Bos, Costello, Ducas, Mironov, Naehrig, Nikolaenko, Raghunathan, Stebila, *ACM Conference on Computer and Communications Security 2016*, [https://eprint.iacr.org/2016/659](https://eprint.iacr.org/2016/659))
 - `kex_sidh_msr`: key exchange from the supersingular isogeny Diffie-Hellman problem (Costello, Naehrig, Longa, *CRYPTO 2016*, [https://eprint.iacr.org/2016/413](https://eprint.iacr.org/2016/413)), using the implementation of Microsoft Research [https://www.microsoft.com/en-us/research/project/sidh-library/](https://www.microsoft.com/en-us/research/project/sidh-library/)
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
@@ -139,7 +138,7 @@ To build with `kex_code_mcbits ` enabled:
 
 ### Building with the following KEX algorithms disabled
 
-  ./configure --disable-kex-ntru --disable-kex-lwe-frodo --disable-kex-rlwe-msrln16  --disable-kex-rlwe-newhope --disable-kex-sidh-msr
+  ./configure --disable-kex-ntru --disable-kex-lwe-frodo --disable-kex-rlwe-newhope --disable-kex-sidh-msr
   make clean
   make
 
@@ -224,8 +223,6 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 - `src/crypto/sha3`: public domain
 - `src/kex_code_mcbits`: public domain
 - `src/kex_rlwe_bcns15`: public domain ([Unlicense](http://unlicense.org))
-- `src/kex_rlwe_msrln16`: MIT License
-- `src/kex_rlwe_msrln16/external`: public domain ([CC0](http://creativecommons.org/publicdomain/zero/1.0/))
 - `src/kex_rlwe_newhope`: public domain
 - `src/kex_sidh_msr`: MIT License
 - `src/sig_picnic`: MIT License
