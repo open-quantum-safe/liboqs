@@ -1,5 +1,8 @@
 #WA for GCC 4.8.5 bug.
-EXTRA_FLAGS += -Wno-missing-braces -Wno-missing-field-initializers -maes
+EXTRA_FLAGS += -Wno-missing-braces -Wno-missing-field-initializers -maes -mavx
+
+#Always use SHA384 code other versions are not supported
+EXTRA_FLAGS +=-DSHA384
 
 ifdef RDTSC
     EXTRA_FLAGS += -DRDTSC
@@ -29,7 +32,6 @@ ifdef BATCH_SIZE
 endif
 
 ifdef AVX512_SUPPORT
-    EXTRA_FLAGS += -mavx512f
     SUF = _avx512
 else
     EXTRA_FLAGS += -mavx2

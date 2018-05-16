@@ -54,3 +54,5 @@ sha384_512_multi_block_avx2
 sha384_512_multi_block_avx512 
 AES_256_Key_Expansion 
 gf2x_mod_mul 
+find_error1
+find_error2

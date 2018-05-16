@@ -84,24 +84,24 @@ typedef ALIGN(16) struct decode_ctx_s
 void split_e(OUT split_e_t* split_e, IN const e_t* e)
 {
     //Copy lower bytes (e0)
-    memcpy(PTR(split_e).val[0].raw, e->raw, R_SIZE);
+    memcpy(PTRV(split_e)[0].raw, e->raw, R_SIZE);
     
     //Now load second value
     for(uint32_t i = R_SIZE ; i < N_SIZE; ++i)
     {
-        PTR(split_e).val[1].raw[i - R_SIZE] = ((e->raw[i] << LAST_R_BYTE_TRAIL) | 
+        PTRV(split_e)[1].raw[i - R_SIZE] = ((e->raw[i] << LAST_R_BYTE_TRAIL) | 
                                                (e->raw[i-1] >> LAST_R_BYTE_LEAD));
     }
     
     //Fix corner case
     if(N_SIZE < 2UL*R_SIZE)
     {
-        PTR(split_e).val[1].raw[R_SIZE-1] = (e->raw[N_SIZE-1] >> LAST_R_BYTE_LEAD);
+        PTRV(split_e)[1].raw[R_SIZE-1] = (e->raw[N_SIZE-1] >> LAST_R_BYTE_LEAD);
     }
     
     //Fix last value
-    PTR(split_e).val[0].raw[R_SIZE-1] &= LAST_R_BYTE_MASK;
-    PTR(split_e).val[1].raw[R_SIZE-1] &= LAST_R_BYTE_MASK;
+    PTRV(split_e)[0].raw[R_SIZE-1] &= LAST_R_BYTE_MASK;
+    PTRV(split_e)[1].raw[R_SIZE-1] &= LAST_R_BYTE_MASK;
 }
 
 // transpose a row into a column
@@ -125,7 +125,7 @@ void compute_syndrome(OUT syndrome_t* syndrome,
     dbl_pad_syndrome_t pad_s;
 
 #if BIKE_VER==1
-    const pad_ct_t pad_ct = {{.u.v.val=PTR(ct).val[0]}, {.u.v.val=PTR(ct).val[1]}};
+    const pad_ct_t pad_ct = {{.u.v.val=PTRV(ct)[0]}, {.u.v.val=PTRV(ct)[1]}};
 
     //compute s = c0*h0 + c1*h1:
     gf2x_mod_mul(pad_s[0].u.qw, pad_ct[0].u.qw, pad_sk[0].u.qw);
@@ -140,8 +140,8 @@ void compute_syndrome(OUT syndrome_t* syndrome,
 #elif BIKE_VER==3
     // BIKE3 syndrome: s = c0 + c1*h0
     //NTL is better in this case.
-    cyclic_product(VAL(pad_s[0]).raw, PTR(ct).val[1].raw, VAL(pad_sk[0]).raw);
-    gf2x_add(VAL(pad_s[0]).raw, VAL(pad_s[0]).raw, PTR(ct).val[0].raw, R_SIZE);
+    cyclic_product(VAL(pad_s[0]).raw, PTRV(ct)[1].raw, VAL(pad_sk[0]).raw);
+    gf2x_add(VAL(pad_s[0]).raw, VAL(pad_s[0]).raw, PTRV(ct)[0].raw, R_SIZE);
 #endif
 
     //Converting to redunandt representation and then transposing the value.
@@ -190,30 +190,30 @@ void recompute_syndrome(OUT syndrome_t* syndrome,
     ct_t tmp_ct = *ct;
 
     //Adapt the ciphertext
-    gf2x_add(tmp_ct.val[0].raw, tmp_ct.val[0].raw, splitted_e.val[0].raw, R_SIZE);
-    gf2x_add(tmp_ct.val[1].raw, tmp_ct.val[1].raw, splitted_e.val[1].raw, R_SIZE);
+    gf2x_add(VAL(tmp_ct)[0].raw, VAL(tmp_ct)[0].raw, VAL(splitted_e)[0].raw, R_SIZE);
+    gf2x_add(VAL(tmp_ct)[1].raw, VAL(tmp_ct)[1].raw, VAL(splitted_e)[1].raw, R_SIZE);
 
 #elif BIKE_VER==2
     ct_t tmp_ct;
 
     //Adapt the ciphertext with e1
-    cyclic_product(tmp_ct.raw, splitted_e.val[1].raw, sk->pk.raw);
+    cyclic_product(tmp_ct.raw, VAL(splitted_e)[1].raw, PTR(sk).pk.raw);
     gf2x_add(tmp_ct.raw, tmp_ct.raw, ct->raw, R_SIZE);
 
     //Adapt the ciphertext with e0
-    gf2x_add(tmp_ct.raw, tmp_ct.raw, splitted_e.val[0].raw, R_SIZE);
+    gf2x_add(tmp_ct.raw, tmp_ct.raw, VAL(splitted_e)[0].raw, R_SIZE);
 
 #elif BIKE_VER==3
     ct_t tmp_ct;
 
     //Adapt the ciphertext with e1
-    cyclic_product(tmp_ct.val[0].raw, splitted_e.val[1].raw, sk->pk.val[0].raw);
-    cyclic_product(tmp_ct.val[1].raw, splitted_e.val[1].raw, sk->pk.val[1].raw);
-    gf2x_add(tmp_ct.val[0].raw, tmp_ct.val[0].raw, ct->val[0].raw, R_SIZE);
-    gf2x_add(tmp_ct.val[1].raw, tmp_ct.val[1].raw, ct->val[1].raw, R_SIZE);
+    cyclic_product(VAL(tmp_ct)[0].raw, VAL(splitted_e)[1].raw, PTR(sk).pk.u.v.val[0].raw);
+    cyclic_product(VAL(tmp_ct)[1].raw, VAL(splitted_e)[1].raw, PTR(sk).pk.u.v.val[1].raw);
+    gf2x_add(VAL(tmp_ct)[0].raw, VAL(tmp_ct)[0].raw, PTRV(ct)[0].raw, R_SIZE);
+    gf2x_add(VAL(tmp_ct)[1].raw, VAL(tmp_ct)[1].raw, PTRV(ct)[1].raw, R_SIZE);
 
     //Adapt the ciphertext with e0
-    gf2x_add(tmp_ct.val[1].raw, tmp_ct.val[1].raw, splitted_e.val[0].raw, R_SIZE);
+    gf2x_add(VAL(tmp_ct)[1].raw, VAL(tmp_ct)[1].raw, VAL(splitted_e)[0].raw, R_SIZE);
 #endif
     
     //recompute the syndromee
@@ -389,8 +389,8 @@ int decode(OUT e_t* e,
         inv_h_compressed[1].val[i].val = R_BITS - PTR(sk).wlist[1].val[i].val; 
 
 #ifdef CONSTANT_TIME
-        inv_h_compressed[0].val[i].used = sk->wlist[0].val[i].used;
-        inv_h_compressed[1].val[i].used = sk->wlist[1].val[i].used;
+        inv_h_compressed[0].val[i].used = PTR(sk).wlist[0].val[i].used;
+        inv_h_compressed[1].val[i].used = PTR(sk).wlist[1].val[i].used;
 #endif
     }
 

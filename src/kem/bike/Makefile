@@ -51,13 +51,15 @@ ifneq (,$(findstring bike3_l5, $(ENABLE_KEMS)))
   UPSTREAMS+=kem_bike3_l5_upstream
 endif
 
-ifneq (,AVX512_SUPPORT)
+ifneq (,$(findstring gcc, $(CC)))
+  ifneq (,AVX512_SUPPORT)
     UPSTREAM_DIR := src/kem/bike/upstream/additional_implementation
-else ifneq (,AVX2_SUPPORT)
+  else ifneq (,AVX2_SUPPORT)
     UPSTREAM_DIR := src/kem/bike/upstream/additional_implementation
-else
-    UPSTREAM_DIR := src/kem/bike/upstream/reference_implementation
+  endif
 endif
+
+UPSTREAM_DIR ?= src/kem/bike/upstream/reference_implementation
 
 .objs/kem/bike/kem_bike.o: headers src/kem/bike/kem_bike.c
 	$(CC) -c src/kem/bike/kem_bike.c -o .objs/kem/bike/kem_bike.o $(CFLAGS)

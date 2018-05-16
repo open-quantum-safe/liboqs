@@ -20,10 +20,11 @@
 //param.foo1.foo2.foo3.val = param.foo1.foo5.foo6.val
 //To avoid this we always use the same structure 
 //struct { union { struct { some val } v; } u; } name.
-//Then we can make the code more readable by using the two macros below.
+//Then we can make the code more readable by using the three macros below.
 //It will be shorter to use P() and V() instead of PTR/VAL, respectively.
 //However then it will be harder to "grep" it.
 #define PTR(x) x->u.v
+#define PTRV(x) (x->u.v.val)
 #define VAL(x) (x.u.v.val)
 
 typedef struct uint128_s

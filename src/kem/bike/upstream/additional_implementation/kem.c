@@ -30,13 +30,13 @@ _INLINE_ status_t encrypt(OUT ct_t* ct,
     dbl_pad_ct_t p_ct;
 
     //Pad the public key
-    const pad_pk_t p_pk = {{.u.v.val = PTR(pk).val[0], .u.v.pad = {0}},
-                           {.u.v.val = PTR(pk).val[1], .u.v.pad = {0}}};
+    const pad_pk_t p_pk = {{.u.v.val = PTRV(pk)[0], .u.v.pad = {0}},
+                           {.u.v.val = PTRV(pk)[1], .u.v.pad = {0}}};
 
     DMSG("    Sampling m.\n");
     res = sample_uniform_r_bits(VAL(m).raw, seed, NO_RESTRICTION); CHECK_STATUS(res);
 
-    EDMSG("m:  "); print((uint64_t*)m.val.raw, R_BITS);
+    EDMSG("m:  "); print((uint64_t*)VAL(m).raw, R_BITS);
 
     DMSG("    Calculating the ciphertext.\n");
 
@@ -45,15 +45,15 @@ _INLINE_ status_t encrypt(OUT ct_t* ct,
 
     DMSG("    Addding Error to the ciphertext.\n");
 
-    gf2x_add(VAL(p_ct[0]).raw, VAL(p_ct[0]).raw, PTR(splitted_e).val[0].raw, R_SIZE);
-    gf2x_add(VAL(p_ct[1]).raw, VAL(p_ct[1]).raw, PTR(splitted_e).val[1].raw, R_SIZE);
+    gf2x_add(VAL(p_ct[0]).raw, VAL(p_ct[0]).raw, PTRV(splitted_e)[0].raw, R_SIZE);
+    gf2x_add(VAL(p_ct[1]).raw, VAL(p_ct[1]).raw, PTRV(splitted_e)[1].raw, R_SIZE);
 
     //Copy the data outside
-    PTR(ct).val[0] = VAL(p_ct[0]);
-    PTR(ct).val[1] = VAL(p_ct[1]);
+    PTRV(ct)[0] = VAL(p_ct[0]);
+    PTRV(ct)[1] = VAL(p_ct[1]);
 
-    EDMSG("c0: "); print((uint64_t*)PTR(ct).val[0].raw, R_BITS);
-    EDMSG("c1: "); print((uint64_t*)PTR(ct).val[1].raw, R_BITS);
+    EDMSG("c0: "); print((uint64_t*)PTRV(ct)[0].raw, R_BITS);
+    EDMSG("c1: "); print((uint64_t*)PTRV(ct)[1].raw, R_BITS);
 
 EXIT:
     return res;
@@ -70,7 +70,7 @@ _INLINE_ status_t calc_pk(OUT pk_t* pk,
     res = sample_uniform_r_bits(VAL(g).raw, g_seed, MUST_BE_ODD);  
     CHECK_STATUS(res);
     
-    EDMSG("g:  "); print((uint64_t*)g.val.raw, R_BITS);
+    EDMSG("g:  "); print((uint64_t*)VAL(g).raw, R_BITS);
     
     //PK is dbl padded because modmul require scratch space for the multiplication result
     dbl_pad_pk_t p_pk = {0};
@@ -80,11 +80,11 @@ _INLINE_ status_t calc_pk(OUT pk_t* pk,
     gf2x_mod_mul(p_pk[1].u.qw, g.u.qw, p_sk[0].u.qw);
 
     //Copy the data outside
-    PTR(pk).val[0] = VAL(p_pk[0]);
-    PTR(pk).val[1] = VAL(p_pk[1]);
+    PTRV(pk)[0] = VAL(p_pk[0]);
+    PTRV(pk)[1] = VAL(p_pk[1]);
 
-    EDMSG("g0: "); print((uint64_t*)PTR(pk).val[0].raw, R_BITS);
-    EDMSG("g1: "); print((uint64_t*)PTR(pk).val[1].raw, R_BITS);
+    EDMSG("g0: "); print((uint64_t*)PTRV(pk)[0].raw, R_BITS);
+    EDMSG("g1: "); print((uint64_t*)PTRV(pk)[1].raw, R_BITS);
 
 EXIT:
 
@@ -102,8 +102,8 @@ _INLINE_ void encrypt(OUT ct_t* ct,
     const pad_pk_t p_pk = {{.v.val = *pk, .v.pad = {0}}};
     dbl_pad_ct_t p_ct;
 
-    cyclic_product(VAL(p_ct).raw, PTR(splitted_e).val[1].raw, VAL(p_pk).raw);
-    gf2x_add(VAL(p_ct).raw, VAL(p_ct).raw, PTR(splitted_e).val[0].raw, R_SIZE);
+    cyclic_product(VAL(p_ct).raw, PTRV(splitted_e)[1].raw, VAL(p_pk).raw);
+    gf2x_add(VAL(p_ct).raw, VAL(p_ct).raw, PTRV(splitted_e)[0].raw, R_SIZE);
     
     *ct = VAL(p_ct);
     EDMSG("c:  "); print((uint64_t*)ct->raw, R_BITS);
@@ -224,13 +224,13 @@ _INLINE_ status_t encrypt(OUT ct_t* ct,
     CHECK_STATUS(res);
 
     // ct = (e1*pk0 + e_extra, e1*pk1 + e0)
-    cyclic_product(PTR(ct).val[0].raw, PTR(splitted_e).val[1].raw, PTR(pk).val[0].raw);
-    cyclic_product(PTR(ct).val[1].raw, PTR(splitted_e).val[1].raw, PTR(pk).val[1].raw);
-    gf2x_add(PTR(ct).val[0].raw, PTR(ct).val[0].raw, VAL(e_extra).raw, R_SIZE);
-    gf2x_add(PTR(ct).val[1].raw, PTR(ct).val[1].raw, PTR(splitted_e).val[0].raw, R_SIZE);
+    cyclic_product(PTRV(ct)[0].raw, PTRV(splitted_e)[1].raw, PTRV(pk)[0].raw);
+    cyclic_product(PTRV(ct)[1].raw, PTRV(splitted_e)[1].raw, PTRV(pk)[1].raw);
+    gf2x_add(PTRV(ct)[0].raw, PTRV(ct)[0].raw, VAL(e_extra).raw, R_SIZE);
+    gf2x_add(PTRV(ct)[1].raw, PTRV(ct)[1].raw, PTRV(splitted_e)[0].raw, R_SIZE);
 
-    EDMSG("c0: "); print((uint64_t*)PTR(ct).val[0].raw, R_BITS);
-    EDMSG("c1: "); print((uint64_t*)PTR(ct).val[1].raw, R_BITS);
+    EDMSG("c0: "); print((uint64_t*)PTRV(ct)[0].raw, R_BITS);
+    EDMSG("c1: "); print((uint64_t*)PTRV(ct)[1].raw, R_BITS);
 
 EXIT:
 
@@ -250,16 +250,16 @@ _INLINE_ status_t calc_pk(OUT pk_t* pk,
     CHECK_STATUS(res);
 
     cyclic_product(tmp1.raw, VAL(g).raw, PTR(sk).bin[0].raw);
-    gf2x_add(PTR(pk).val[0].raw, tmp1.raw, PTR(sk).bin[1].raw, R_SIZE);
+    gf2x_add(PTRV(pk)[0].raw, tmp1.raw, PTR(sk).bin[1].raw, R_SIZE);
 
     //Copy g to pk[1]
-    PTR(pk).val[1] = VAL(g);
+    PTRV(pk)[1] = VAL(g);
     
     //Store the pk for later use
     PTR(sk).pk = *pk;
     
-    EDMSG("g0: "); print((uint64_t*)PTR(pk).val[0].raw, R_BITS);
-    EDMSG("g1: "); print((uint64_t*)PTR(pk).val[1].raw, R_BITS);
+    EDMSG("g0: "); print((uint64_t*)PTRV(pk)[0].raw, R_BITS);
+    EDMSG("g1: "); print((uint64_t*)PTRV(pk)[1].raw, R_BITS);
 
 EXIT:
 
@@ -391,14 +391,14 @@ int crypto_kem_enc(OUT unsigned char *ct,
     res = generate_sparse_rep(VAL(e).raw, dummy.val, T1, N_BITS, sizeof(e), &e_prf_state); 
     CHECK_STATUS(res);
 
-    EDMSG("e:  "); print((uint64_t*)e.val.raw, sizeof(e.val)*8);
+    EDMSG("e:  "); print((uint64_t*)VAL(e).raw, sizeof(VAL(e))*8);
 
     //Split e into e0 and e1. Initialization is done in split_e
     split_e_t splitted_e;
     split_e(&splitted_e, &VAL(e));
     
-    EDMSG("e0: "); print((uint64_t*)splitted_e.val[0].raw, R_BITS);
-    EDMSG("e1: "); print((uint64_t*)splitted_e.val[1].raw, R_BITS);
+    EDMSG("e0: "); print((uint64_t*)VAL(splitted_e)[0].raw, R_BITS);
+    EDMSG("e1: "); print((uint64_t*)VAL(splitted_e)[1].raw, R_BITS);
 
     // Computing ct = enc(pk, e)
     // Using second seed

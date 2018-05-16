@@ -55,8 +55,8 @@ _INLINE_ void get_seeds(OUT double_seed_t* seeds,
     UNUSED(seeds_type);
     OQS_randombytes(seeds->u.v.s1.u.raw, sizeof(double_seed_t));
 
-    EDMSG("s1: "); print(seeds->u.v.s1.qwords, sizeof(seed_t)*8);
-    EDMSG("s2: "); print(seeds->u.v.s2.qwords, sizeof(seed_t)*8);
+    EDMSG("s1: "); print(seeds->u.v.s1.u.qwords, sizeof(seed_t)*8);
+    EDMSG("s2: "); print(seeds->u.v.s2.u.qwords, sizeof(seed_t)*8);
 #endif
 }
 

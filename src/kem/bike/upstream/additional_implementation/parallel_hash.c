@@ -72,7 +72,7 @@ void parallel_hash(OUT sha_hash_t* out_hash,
 
     for(uint32_t i = 0; i < MAX_MB_SLICES; i++)
     {
-        EDMSG("X[%u]:", i); print((uint64_t*)yx.u.v.x[i].raw, sizeof(yx.u.v.x[i])*8);
+        EDMSG("X[%u]:", i); print((uint64_t*)yx.u.v.x[i].u.raw, sizeof(yx.u.v.x[i])*8);
     }
 
     //Copy the reminder (Y).
