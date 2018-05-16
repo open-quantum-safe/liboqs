@@ -17,7 +17,7 @@ OBJECT_DIRS+=.objs/kem/crystals-kyber
 OBJECTS_KEM_KYBER=.objs/kem/crystals-kyber/kem_kyber.o
 OBJECTS_KEM+=$(OBJECTS_KEM_KYBER)
 
-.objs/kem/crystals-kyber/kem_kyber.o: src/kem/crystals-kyber/kem_kyber.c
+.objs/kem/crystals-kyber/kem_kyber.o: headers src/kem/crystals-kyber/kem_kyber.c
 	$(CC) -c src/kem/crystals-kyber/kem_kyber.c -o .objs/kem/crystals-kyber/kem_kyber.o $(CFLAGS)
 
 ifneq (,$(findstring kyber512, $(ENABLE_KEMS)))
