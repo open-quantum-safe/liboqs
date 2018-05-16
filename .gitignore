@@ -32,6 +32,7 @@ include
 *.i*86
 *.x86_64
 *.hex
+/test_kem
 /test_kex
 /test_sig
 /test_rand
