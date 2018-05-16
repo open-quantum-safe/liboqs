@@ -9,7 +9,7 @@
 #include <oqs/oqs.h>
 
 // Use OpenSSL's RAND_bytes as the default PRNG
-static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = (void (*)(uint8_t *, size_t)) &RAND_bytes;
+static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = (void (*)(uint8_t *, size_t)) & RAND_bytes;
 
 OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
@@ -19,7 +19,7 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 		oqs_randombytes_algorithm = &OQS_randombytes_nist_kat;
 		return OQS_SUCCESS;
 	} else if (0 == strcasecmp(OQS_RAND_alg_openssl, algorithm)) {
-		oqs_randombytes_algorithm = (void (*)(uint8_t *, size_t)) &RAND_bytes;
+		oqs_randombytes_algorithm = (void (*)(uint8_t *, size_t)) & RAND_bytes;
 		return OQS_SUCCESS;
 	} else {
 		return OQS_ERROR;
