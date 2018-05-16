@@ -33,8 +33,8 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 	switch (alg_name) {
 	case OQS_KEX_alg_default:
 		return OQS_KEX_rlwe_bcns15_new(rand);
-#ifdef ENABLE_KEX_LWE_FRODO
 	case OQS_KEX_alg_lwe_frodo:
+#ifdef ENABLE_KEX_LWE_FRODO
 		return OQS_KEX_lwe_frodo_new_recommended(rand, seed, seed_len, named_parameters);
 #else
 		assert(0);
@@ -46,8 +46,8 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 		assert(0);
 #endif
 #ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
-#ifdef ENABLE_KEX_NTRU
 	case OQS_KEX_alg_ntru:
+#ifdef ENABLE_KEX_NTRU
 		return OQS_KEX_ntru_new(rand);
 #else
 		assert(0);
@@ -55,20 +55,20 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 #endif
 	case OQS_KEX_alg_rlwe_bcns15:
 		return OQS_KEX_rlwe_bcns15_new(rand);
-#ifdef ENABLE_KEX_RLWE_MSRLN16
 	case OQS_KEX_alg_rlwe_msrln16:
+#ifdef ENABLE_KEX_RLWE_MSRLN16
 		return OQS_KEX_rlwe_msrln16_new(rand);
 #else
 		assert(0);
 #endif
-#ifdef ENABLE_KEX_RLWE_NEWHOPE
 	case OQS_KEX_alg_rlwe_newhope:
+#ifdef ENABLE_KEX_RLWE_NEWHOPE
 		return OQS_KEX_rlwe_newhope_new(rand);
 #else
 		assert(0);
 #endif
-#ifdef ENABLE_KEX_RLWE_NEWHOPE_AVX2
 	case OQS_KEX_alg_rlwe_newhope_avx2:
+#ifdef ENABLE_KEX_RLWE_NEWHOPE_AVX2
 		return OQS_KEX_rlwe_newhope_avx2_new(rand);
 #else
 		assert(0);
@@ -83,6 +83,10 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 	case OQS_KEX_alg_sike_msr_751:
 		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIKE_751_params);
 #else
+	case OQS_KEX_alg_sidh_msr_503:
+	case OQS_KEX_alg_sidh_msr_751:
+	case OQS_KEX_alg_sike_msr_503:
+	case OQS_KEX_alg_sike_msr_751:
 		assert(0);
 #endif
 

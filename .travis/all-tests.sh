@@ -70,7 +70,7 @@ if [[ ${ENABLE_KEX_RLWE_NEWHOPE} == 0 ]];then
 fi
 
 if [[ ${ENABLE_KEX_SIDH_MSR} == 0 ]];then
-	enable_disable_str+=" --disable-kex-sidh-cln16"
+	enable_disable_str+=" --disable-kex-sidh-msr"
 fi
 
 if [[ ${ENABLE_SIG_PICNIC} == 0 ]];then
