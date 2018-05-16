@@ -44,11 +44,11 @@ CLANGFORMAT?=clang-format
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
-ifdef AVX512_SUPPORT
+ifneq (,$(AVX512_SUPPORT))
   CFLAGS+=-DAVX512
-else ifdef AVX2_SUPPORT
+else ifneq (,$(AVX2_SUPPORT))
   CFLAGS+=-DAVX2
-else ifdef AVX_SUPPORT
+else ifneq (,$(AVX_SUPPORT))
   CFLAGS+=-DAVX
 endif
 

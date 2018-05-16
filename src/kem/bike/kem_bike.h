@@ -7,6 +7,7 @@
 #if (defined(__GNUC__) && !defined(__clang__))
 #define GCC_COMPILER
 #endif
+
 #if defined(GCC_COMPILER) && (defined(AVX2) || defined(AVX512))
 #define ADDITIONAL_IMPL
 #endif
