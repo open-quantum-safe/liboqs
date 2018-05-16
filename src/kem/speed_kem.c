@@ -86,6 +86,8 @@ int main(int argc, char **argv) {
 
 	OQS_KEM *single_kem = NULL;
 
+	OQS_randombytes_switch_algorithm(OQS_RAND_alg_openssl);
+
 	for (int i = 1; i < argc; i++) {
 		if (strcmp(argv[i], "--algs") == 0) {
 			rc = printAlgs();
@@ -140,6 +142,7 @@ int main(int argc, char **argv) {
 	printf("OS:       %s\n", OQS_COMPILE_UNAME);
 	printf("CFLAGS:   %s\n", OQS_COMPILE_CFLAGS);
 	printf("LDFLAGS:  %s\n", OQS_COMPILE_LDFLAGS);
+	printf("RNG:      OpenSSL\n");
 	printf("\n");
 
 	printf("Speed test\n");
