@@ -5,18 +5,18 @@
 
 //Determine wethear the additional implementation is being used.
 #if (defined(__GNUC__) && !defined(__clang__))
-    #define GCC_COMPILER 
+#define GCC_COMPILER
 #endif
 #if defined(GCC_COMPILER) && (defined(AVX2) || defined(AVX512))
-    #define ADDITIONAL_IMPL
+#define ADDITIONAL_IMPL
 #endif
 
 #ifdef OQS_ENABLE_KEM_bike1_l1
 
 #ifdef ADDITIONAL_IMPL
-  #define OQS_KEM_bike1_l1_length_secret_key 3606
+#define OQS_KEM_bike1_l1_length_secret_key 3606
 #else
-  #define OQS_KEM_bike1_l1_length_secret_key 2542
+#define OQS_KEM_bike1_l1_length_secret_key 2542
 #endif
 #define OQS_KEM_bike1_l1_length_public_key 2542
 #define OQS_KEM_bike1_l1_length_ciphertext 2542
