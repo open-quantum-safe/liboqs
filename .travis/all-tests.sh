@@ -53,13 +53,6 @@ if [[ ${ENABLE_CODE_MCBITS} == 1 ]];then
 	fi
 fi
 
-if [[ ${ENABLE_SIDH_IQC_REF} == 1 ]];then
-	enable_disable_str+=" --enable-kex-sidh-iqc-ref"
-	if [[ ! -z "${GMP_DIR// }" ]];then
-		enable_disable_str+=" --with-gmp-dir=${GMP_DIR}"
-	fi
-fi
-
 if [[ ${ENABLE_KEX_LWE_FRODO} == 0 ]];then
 	enable_disable_str+=" --disable-kex-lwe-frodo"
 fi
@@ -77,7 +70,7 @@ if [[ ${ENABLE_KEX_RLWE_NEWHOPE} == 0 ]];then
 fi
 
 if [[ ${ENABLE_KEX_SIDH_MSR} == 0 ]];then
-	enable_disable_str+=" --disable-kex-sidh-cln16"
+	enable_disable_str+=" --disable-kex-sidh-msr"
 fi
 
 if [[ ${ENABLE_SIG_PICNIC} == 0 ]];then
