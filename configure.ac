@@ -183,7 +183,7 @@ AM_CONDITIONAL([ARM], [test "x$arm" = xtrue])
 SRCDIR=" src/common"
 
 # Crypto sources
-SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/rand src/crypto/sha3 src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
+SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/sha3 src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 
 # KEX
 SRCDIR=${SRCDIR}" src/kex"
@@ -282,7 +282,6 @@ AC_CONFIG_FILES([Makefile
                  src/common/Makefile
                  src/kex/Makefile
                  src/crypto/sha3/Makefile
-                 src/crypto/rand/Makefile
                  src/crypto/rand_urandom_chacha20/Makefile
                  src/crypto/rand_urandom_aesctr/Makefile
                  src/crypto/aes/Makefile
