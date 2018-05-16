@@ -8,13 +8,11 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
+#include <strings.h>
 #endif
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <fcntl.h>
-#include <strings.h>
 
 #include <oqs/oqs.h>
 
@@ -31,10 +29,6 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 
 void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t)) {
 	oqs_randombytes_algorithm = algorithm_ptr;
-}
-
-void randombytes(uint8_t *random_array, size_t bytes_to_read) {
-	OQS_randombytes(random_array, bytes_to_read);
 }
 
 void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
