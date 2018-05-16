@@ -88,6 +88,9 @@ int main() {
 	int ret = EXIT_SUCCESS;
 	OQS_STATUS rc;
 
+	// Use system RNG in this program
+	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
+
 	for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
 		rc = kem_test_correctness(OQS_KEM_alg_identifier(i));
 		if (rc != OQS_SUCCESS) {
