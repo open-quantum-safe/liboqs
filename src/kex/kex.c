@@ -13,9 +13,6 @@
 #include <oqs/kex_code_mcbits.h>
 #endif
 
-#ifdef ENABLE_SIDH_IQC_REF
-#include <oqs/kex_sidh_iqc_ref.h>
-#endif
 #ifdef ENABLE_KEX_RLWE_NEWHOPE_AVX2
 #include <oqs/kex_rlwe_newhope_avx2.h>
 #endif
@@ -89,12 +86,6 @@ OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8
 		assert(0);
 #endif
 
-	case OQS_KEX_alg_sidh_iqc_ref:
-#ifdef ENABLE_SIDH_IQC_REF
-		return OQS_KEX_sidh_iqc_ref_new(rand, named_parameters);
-#else
-		assert(0);
-#endif
 	default:
 		assert(0);
 		return NULL;

@@ -28,13 +28,6 @@ AC_ARG_WITH(
   [AC_SUBST(OPENSSL_DIR, /usr)]
 )
 AC_ARG_WITH(
-  [gmp-dir],
-  AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr).]),
-  [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
-   AC_SUBST(GMP_DIR, [$withval])],
-  [AC_SUBST(GMP_DIR, /usr)]
-)
-AC_ARG_WITH(
   [sodium-dir],
   AS_HELP_STRING([--with-sodium-dir=dir],[sodium dir used locally (default /usr).]),
   [AC_DEFINE_UNQUOTED(SODIUMDIR, [$withval], [SODIUM DIR used locally])
@@ -98,10 +91,6 @@ AM_CONDITIONAL([USE_OPENSSL], [test "x$openssl" = xtrue])
 ARG_ENABL_SET([kex-code-mcbits], [enable KEX-CODE-MCBITS.])
 AM_CONDITIONAL([kex_code_mcbits], [test "x$kex_code_mcbits" = xtrue])
 AM_CONDITIONAL([USE_MCBITS], [test "x$kex_code_mcbits" = xtrue])
-
-ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
-AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
-AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
 
 ARG_DISBL_SET([kex-lwe-frodo], [disable KEX-LWE-FRODO.])
 AM_CONDITIONAL([kex_lwe_frodo], [test "x$kex_lwe_frodo" = xtrue])
@@ -223,9 +212,6 @@ fi
 if test x"$kex_code_mcbits" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_code_mcbits"
 fi
-if test x"$kex_sidh_iqc_ref" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
-fi
 
 # SIG
 SRCDIR=${SRCDIR}" src/sig"
@@ -249,11 +235,6 @@ if test x"$kex_code_mcbits" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_CODE_MCBITS"
   AC_DEFINE(ENABLE_CODE_MCBITS, 1, "Define to 1 when MCBITS enabled")
 fi
-if test x"$kex_sidh_iqc_ref" = x"true"; then
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIDH_IQC_REF"
-  SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
-  AC_DEFINE(ENABLE_SIDH_IQC_REF, 1, "Define to 1 when SIDH IQC enabled")
-fi
 
 if test x"$kex_rlwe_newhope_avx2" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_rlwe_newhope/avx2"
@@ -267,7 +248,6 @@ AC_SUBST(USE_OPENSSL)
 AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_KEX_NTRU)
 AC_SUBST(USE_MCBITS)
-AC_SUBST(USE_SIDH_IQC)
 AC_SUBST(USE_KEX_LWE_FRODO)
 AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
@@ -291,7 +271,6 @@ AC_CONFIG_FILES([Makefile
                  src/kex_sidh_msr/Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
-                 src/kex_sidh_iqc_ref/Makefile
                  src/kex_lwe_frodo/Makefile
                  src/sig/Makefile
                  src/sig_picnic/Makefile

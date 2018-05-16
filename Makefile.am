@@ -45,9 +45,6 @@ liboqs_la_LIBADD += src/sig/libsig.la
 if USE_MCBITS
 liboqs_la_LIBADD += src/kex_code_mcbits/libmcbits.la
 endif
-if USE_SIDH_IQC
-liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
-endif
 
 if USE_SIG_PICNIC
 liboqs_la_LIBADD += src/sig_picnic/libpicnic_i.la
@@ -88,9 +85,6 @@ endif
 if USE_MCBITS
 	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
-if USE_SIDH_IQC
-	cp src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h $(includedir)/oqs
-endif
 
 noinst_bin_PROGRAMS = test_kex test_aes test_rand test_sha3
 if USE_KEX_LWE_FRODO
@@ -110,9 +104,6 @@ test_kex_LDADD += -L${SODIUM_DIR}/lib -lsodium
 endif
 if USE_OPENSSL
 test_kex_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-if USE_SIDH_IQC
-test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
 endif
 
 if USE_SIG_PICNIC
@@ -144,9 +135,6 @@ minimal_kex_oqs_LDADD += -L${SODIUM_DIR}/lib -lsodium
 endif
 if USE_OPENSSL
 minimal_kex_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-if USE_SIDH_IQC
-minimal_kex_oqs_LDADD += -L$(GMP_DIR)/lib -lgmp
 endif
 
 endif # USE_KEX_LWE_FRODO
@@ -219,10 +207,6 @@ endif
 if USE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
-if USE_SIDH_IQC
-	cp -f src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
-	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
-endif
 
 clean-local:
 	rm -f liboqs.a
@@ -233,9 +217,6 @@ endif
 if USE_SIG_PICNIC
 	rm -f test_sig
 	rm -f minimal_sig_oqs
-endif
-if USE_SIDH_IQC
-	rm -f sample_params
 endif
 
 clean-tests:
