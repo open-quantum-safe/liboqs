@@ -16,6 +16,8 @@
 #define OQS_RAND_alg_system "system"
 /** Algorithm identifier for NIST deterministic RNG for KATs. */
 #define OQS_RAND_alg_nist_kat "NIST-KAT"
+/** Algorithm identifier for using OpenSSL's PRNG. */
+#define OQS_RAND_alg_openssl "OpenSSL"
 
 /**
  * Switches OQS_randombytes to use the specified algorithm.
