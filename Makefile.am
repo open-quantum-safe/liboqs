@@ -89,7 +89,7 @@ if USE_MCBITS
 	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
 
-noinst_bin_PROGRAMS = test_kem test_kex test_aes test_rand test_sha3
+noinst_bin_PROGRAMS = speed_kem test_kem test_kex test_aes test_rand test_sha3
 if USE_KEX_LWE_FRODO
 noinst_bin_PROGRAMS += minimal_kex_oqs
 endif
@@ -98,6 +98,14 @@ noinst_bin_PROGRAMS += test_sig minimal_sig_oqs
 endif
 
 noinst_bindir=$(prefix)/tests
+
+speed_kem_LDADD =  liboqs.la -lm
+speed_kem_SOURCES = src/kem/speed_kem.c
+speed_kem_CPPFLAGS = -I./include
+speed_kem_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+speed_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
 
 test_kem_LDADD =  liboqs.la -lm
 test_kem_SOURCES = src/kem/test_kem.c
@@ -234,7 +242,7 @@ if USE_SIG_PICNIC
 endif
 
 clean-tests:
-	rm -f test_kem test_kex test_rand test_aes test_sha3
+	rm -f speed_kem test_kem test_kex test_rand test_aes test_sha3
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i

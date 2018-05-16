@@ -18,7 +18,6 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
-		printf("KEM not found: %s\n", method_name);
 		return OQS_SUCCESS;
 	}
 

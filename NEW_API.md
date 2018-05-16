@@ -3,3 +3,4 @@
 ## Things to remember to do
 
 - Create a new `test_common` program that combines `test_rand`, `test_aes`, `test_sha`, etc.
+- `speed_kem` needs autoconf to generate compilation information variables
