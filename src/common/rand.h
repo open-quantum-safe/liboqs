@@ -1,11 +1,13 @@
 /**
  * \file rand.h
- * \brief Header defining the generic OQS PRNG
+ * \brief Random number generator.
  */
 
-#ifndef __OQS_RAND_H
-#define __OQS_RAND_H
+#ifndef __OQS_RANDOM_H
+#define __OQS_RANDOM_H
 
+#include <stdbool.h>
+#define HAVE_BOOL
 #include <stddef.h>
 #include <stdint.h>
 
@@ -14,11 +16,13 @@
 /*********************
  *** START NEW API ***
  *********************/
-/* TODO: Consider adding OpenSSL and/or NIST-KAT PRNGs from nist-branch */
+/* TODO: Consider adding NIST-KAT PRNGs from nist-branch */
 /* TODO: Decide how to do statistical testing of new PRNG */
 
 /** Algorithm identifier for system PRNG. */
 #define OQS_RAND_alg_system "system"
+/** Algorithm identifier for using OpenSSL's PRNG. */
+#define OQS_RAND_alg_openssl "OpenSSL"
 
 /**
  * Switches OQS_randombytes to use the specified algorithm.
@@ -164,4 +168,4 @@ OQS_STATUS OQS_RAND_get_system_entropy(uint8_t *buf, size_t n);
  *** STOP DEPRECATED CODE *** expected removal Aug. 2018 ***
  ***********************************************************/
 
-#endif
+#endif // __OQS_RANDOM_H
