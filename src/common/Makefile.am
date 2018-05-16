@@ -5,3 +5,6 @@ libcommon_la_SOURCES = common.c rand.c
 
 libcommon_la_CPPFLAGS = -I../../include
 libcommon_la_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+libcommon_la_CPPFLAGS += -I$(OPENSSL_DIR)/include
+endif
