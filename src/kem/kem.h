@@ -73,10 +73,15 @@
 #define OQS_KEM_alg_BIG_QUAKE_3 "BIG_QUAKE_3"
 /** Algorithm identifier for BIG_QUAKE_5. */
 #define OQS_KEM_alg_BIG_QUAKE_5 "BIG_QUAKE_5"
-
+/** Algorithm identifier for LightSaber-KEM. */
+#define OQS_KEM_alg_saber_light_saber_kem "LightSaber-KEM"
+/** Algorithm identifier for Saber-KEM. */
+#define OQS_KEM_alg_saber_saber_kem "Saber-KEM"
+/** Algorithm identifier for FireSaber-KEM. */
+#define OQS_KEM_alg_saber_fire_saber_kem "FireSaber-KEM"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 24
+#define OQS_KEM_algs_length 27
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -226,6 +231,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_bike.h>
 #include <oqs/kem_sike.h>
 #include <oqs/kem_BIGQUAKE.h>
+#include <oqs/kem_saber.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H
