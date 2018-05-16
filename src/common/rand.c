@@ -8,10 +8,10 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdlib.h>
-#include <strings.h>
 #endif
 
 #include <stdio.h>
+#include <strings.h>
 #include <fcntl.h>
 
 #include <oqs/oqs.h>
