@@ -8,8 +8,8 @@
 #include <oqs/sha3.h>
 
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // SIKE's key generation
-	                                                                           // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
-	                                                                           //          public key pk (CRYPTO_PUBLICKEYBYTES bytes)
+	                                                           // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
+	                                                           //          public key pk (CRYPTO_PUBLICKEYBYTES bytes)
 
 	// Generate lower portion of secret key sk <- s||SK
 	OQS_randombytes(sk, MSG_BYTES);
@@ -25,9 +25,9 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // SIKE's key gen
 }
 
 int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) { // SIKE's encapsulation
-	                                                                                                // Input:   public key pk         (CRYPTO_PUBLICKEYBYTES bytes)
-	                                                                                                // Outputs: shared secret ss      (CRYPTO_BYTES bytes)
-	                                                                                                //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes)
+	                                                                                // Input:   public key pk         (CRYPTO_PUBLICKEYBYTES bytes)
+	                                                                                // Outputs: shared secret ss      (CRYPTO_BYTES bytes)
+	                                                                                //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes)
 	const uint16_t G = 0;
 	const uint16_t H = 1;
 	const uint16_t P = 2;
@@ -58,9 +58,9 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 }
 
 int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) { // SIKE's decapsulation
-	                                                                                                      // Input:   secret key sk         (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
-	                                                                                                      //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes)
-	                                                                                                      // Outputs: shared secret ss      (CRYPTO_BYTES bytes)
+	                                                                                      // Input:   secret key sk         (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
+	                                                                                      //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes)
+	                                                                                      // Outputs: shared secret ss      (CRYPTO_BYTES bytes)
 	const uint16_t G = 0;
 	const uint16_t H = 1;
 	const uint16_t P = 2;

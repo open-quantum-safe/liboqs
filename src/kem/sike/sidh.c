@@ -48,7 +48,7 @@ static void fp2_decode(const unsigned char *enc, f2elm_t x) { // Parse byte sequ
 }
 
 void random_mod_order_A(unsigned char *random_digits) { // Generation of Alice's secret key
-	                                                                    // Outputs random value in [0, 2^eA - 1]
+	                                                    // Outputs random value in [0, 2^eA - 1]
 	unsigned long long nbytes = NBITS_TO_NBYTES(OALICE_BITS);
 
 	clear_words((void *) random_digits, MAXWORDS_ORDER);
@@ -57,7 +57,7 @@ void random_mod_order_A(unsigned char *random_digits) { // Generation of Alice's
 }
 
 void random_mod_order_B(unsigned char *random_digits) { // Generation of Bob's secret key
-	                                                                    // Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]
+	                                                    // Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]
 	unsigned long long nbytes = NBITS_TO_NBYTES(OBOB_BITS - 1);
 
 	clear_words((void *) random_digits, MAXWORDS_ORDER);
@@ -66,8 +66,8 @@ void random_mod_order_B(unsigned char *random_digits) { // Generation of Bob's s
 }
 
 int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA) { // Alice's ephemeral public key generation
-	                                                                                                        // Input:  a private key PrivateKeyA in the range [0, 2^eA - 1].
-	                                                                                                        // Output: the public key PublicKeyA consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
+	                                                                                        // Input:  a private key PrivateKeyA in the range [0, 2^eA - 1].
+	                                                                                        // Output: the public key PublicKeyA consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_ALICE];
 	f2elm_t XPA, XQA, XRA, coeff[3], A24plus = {0}, C24 = {0}, A = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_ALICE], npts = 0, ii = 0;
@@ -131,8 +131,8 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 }
 
 int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *PublicKeyB) { // Bob's ephemeral public key generation
-	                                                                                                        // Input:  a private key PrivateKeyB in the range [0, 2^Floor(Log(2,oB)) - 1].
-	                                                                                                        // Output: the public key PublicKeyB consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
+	                                                                                        // Input:  a private key PrivateKeyB in the range [0, 2^Floor(Log(2,oB)) - 1].
+	                                                                                        // Output: the public key PublicKeyB consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_BOB];
 	f2elm_t XPB, XQB, XRB, coeff[3], A24plus = {0}, A24minus = {0}, A = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_BOB], npts = 0, ii = 0;
