@@ -8,7 +8,7 @@ AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 
 # Configure
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SRCDIR([src/ds_benchmark.h])
+AC_CONFIG_SRCDIR([src/common/ds_benchmark.h])
 AC_CONFIG_MACRO_DIRS([config])
 
 # Checks for programs.

@@ -237,7 +237,7 @@
     <ClInclude Include="..\..\src\sig_picnic\external\picnic.h">
       <Filter>Sig_Picnic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\common\oqs.h">
+    <ClInclude Include="..\..\src\oqs.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\winconfig.h" />
