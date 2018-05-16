@@ -22,9 +22,9 @@ OQS_KEM *OQS_KEM_sike_p503_new() {
 	kem->length_ciphertext = OQS_KEM_sike_p503_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_sike_p503_length_shared_secret;
 
-	kem->keypair = crypto_kem_keypair_SIKEp503;
-	kem->encaps = crypto_kem_enc_SIKEp503;
-	kem->decaps = crypto_kem_dec_SIKEp503;
+	kem->keypair = oqs_kem_sike_p503_keypair;
+	kem->encaps = oqs_kem_sike_p503_enc;
+	kem->decaps = oqs_kem_sike_p503_dec;
 
 	return kem;
 }
@@ -51,9 +51,9 @@ OQS_KEM *OQS_KEM_sike_p751_new() {
 	kem->length_ciphertext = OQS_KEM_sike_p751_length_ciphertext;
 	kem->length_shared_secret = OQS_KEM_sike_p751_length_shared_secret;
 
-	kem->keypair = crypto_kem_keypair_SIKEp751;
-	kem->encaps = crypto_kem_enc_SIKEp751;
-	kem->decaps = crypto_kem_dec_SIKEp751;
+	kem->keypair = oqs_kem_sike_p751_keypair;
+	kem->encaps = oqs_kem_sike_p751_enc;
+	kem->decaps = oqs_kem_sike_p751_dec;
 
 	return kem;
 }
