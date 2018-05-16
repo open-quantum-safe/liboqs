@@ -8,7 +8,7 @@
 # * DX_ARG_ABLE : new variable 'DX_FLAG_DX_CURRENT_FEATURE'
 # * DX_CLEAR_DEPEND : use of explicit variable 'DX_FLAG_DX_CURRENT_FEATURE'
 #   in AC_SUBST instead of 'DX_FLAG[]DX_CURRENT_FEATURE' which is rejected by
-#   newer autotools  
+#   newer autotools
 
 # Generate automatic documentation using Doxygen. Works in concert with the
 # aminclude.m4 file and a compatible doxygen configuration file. Defines the
@@ -188,8 +188,8 @@ AC_DEFUN([DX_INIT_DOXYGEN], [
 
 # Files:
 AC_SUBST([DX_PROJECT], [$1])
-AC_SUBST([DX_CONFIG], [ifelse([$2], [], Doxyfile, [$2])])
-AC_SUBST([DX_DOCDIR], [ifelse([$3], [], doxygen-doc, [$3])])
+AC_SUBST([DX_CONFIG], [ifelse([$2], [], docs/.Doxyfile, [$2])])
+AC_SUBST([DX_DOCDIR], [ifelse([$3], [], docs/doxygen, [$3])])
 
 # Environment variables used inside doxygen.cfg:
 DX_ENV_APPEND(SRCDIR, $srcdir)

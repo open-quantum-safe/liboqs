@@ -35,11 +35,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\common\oqs.h" />
+    <ClInclude Include="..\..\src\oqs.h" />
     <ClInclude Include="..\..\src\common\common.h" />
+    <ClInclude Include="..\..\src\common\rand.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes_local.h" />
-    <ClInclude Include="..\..\src\crypto\rand\rand.h" />
     <ClInclude Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" />
     <ClInclude Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" />
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h" />
@@ -90,10 +90,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\common\common.c" />
+    <ClCompile Include="..\..\src\common\rand.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
-    <ClCompile Include="..\..\src\crypto\rand\rand.c" />
     <ClCompile Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.c" />
     <ClCompile Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.c" />
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
@@ -274,10 +274,10 @@
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
@@ -313,10 +313,10 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
@@ -352,10 +352,10 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
@@ -398,10 +398,10 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
@@ -443,10 +443,10 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
@@ -486,10 +486,10 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
@@ -529,10 +529,10 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
@@ -579,10 +579,10 @@ copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\common\oqs.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"

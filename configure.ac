@@ -8,7 +8,7 @@ AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 
 # Configure
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SRCDIR([src/ds_benchmark.h])
+AC_CONFIG_SRCDIR([src/common/ds_benchmark.h])
 AC_CONFIG_MACRO_DIRS([config])
 
 # Checks for programs.
@@ -84,7 +84,7 @@ DX_RTF_FEATURE(OFF)
 DX_XML_FEATURE(OFF)
 DX_PDF_FEATURE(OFF)
 DX_PS_FEATURE(OFF)
-DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
+DX_INIT_DOXYGEN([$PACKAGE_NAME],[docs/.Doxyfile])
 ######################################################################
 
 ARG_DISBL_SET([aes-ni], [enable AES-NI.])
@@ -183,7 +183,7 @@ AM_CONDITIONAL([ARM], [test "x$arm" = xtrue])
 SRCDIR=" src/common"
 
 # Crypto sources
-SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/rand src/crypto/sha3 src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
+SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/sha3 src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 
 # KEX
 SRCDIR=${SRCDIR}" src/kex"
@@ -282,7 +282,6 @@ AC_CONFIG_FILES([Makefile
                  src/common/Makefile
                  src/kex/Makefile
                  src/crypto/sha3/Makefile
-                 src/crypto/rand/Makefile
                  src/crypto/rand_urandom_chacha20/Makefile
                  src/crypto/rand_urandom_aesctr/Makefile
                  src/crypto/aes/Makefile

@@ -1,40 +1,75 @@
 #!/bin/bash
 
-# see what has been modified (ignoring submodules because they are likely patched)
-modified=$(git status -s --ignore-submodules)
+###
+# Checks that all non-upstream files satisfy prettyprint requirements.
+###
 
-if [ "$modified" ]; then
-	tput setaf 1;
-	echo "There are modified files present in the directory prior to prettyprint check. This may indicate that some files should be added to .gitignore.";
-	tput sgr 0;
-	git status -s
-	exit 1;
-fi;
-
-if [ ! -x "$(which clang-format-3.9)" ]; then
-	# If clang-format is not version -3.9, just use clang-format
-	CLANGFORMAT=clang-format make prettyprint
-else
-	CLANGFORMAT=clang-format-3.9 make prettyprint
-fi;
-
-modified=$(git status -s --ignore-submodules)
-
-if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
-  modified=$(echo $modified | grep -v "kex_rlwe_newhope/avx2" | grep -v "Makefile.am" | grep -v "avx2/kex*")
-else
-  modified=$(echo $modified | grep -v "Makefile.am")
+if [[ "x${TRAVIS}" == "xtrue" ]];
+then
+	if [[ ! "x${CHECK_STYLE}" == "xtrue" ]];
+	then
+		echo "When running on Travis, style-check is only run on some builds."
+		exit 0
+	fi
 fi
 
-if [ "$modified" ]; then
-	tput setaf 1;
+PRINT_GREEN="tput setaf 2"
+PRINT_RED="tput setaf 1"
+PRINT_RESET="tput sgr 0"
+
+# see what has been modified (ignoring submodules because they are likely patched)
+MODIFIED=$(git status -s)
+
+if [[ ! -z "${MODIFIED}" ]];
+then
+	${PRINT_RED}
+	echo "There are modified files present in the directory prior to prettyprint check. This may indicate that some files should be added to .gitignore or need to be committed.";
+	${PRINT_RESET}
+	git status -s
+	exit 1;
+fi;
+
+TRY_CLANGFORMAT="clang-format-3.9"
+if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
+then
+	TRY_CLANGFORMAT="clang-format"
+	if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
+	then
+		${PRINT_RED}
+		echo "Cannot find clang-format."
+		${PRINT_RESET}
+		exit 1
+	fi
+fi
+
+CLANG_FORMAT_VERSION=`${TRY_CLANGFORMAT} -version | grep 3.9`
+if [[ -z "${CLANG_FORMAT_VERSION}" ]];
+then
+	${PRINT_RED}
+	echo "clang-format is not version 3.9."
+	${PRINT_RESET}
+	${TRY_CLANGFORMAT} -version
+	exit 1
+fi;
+
+make prettyprint CLANGFORMAT=${TRY_CLANGFORMAT}
+
+MODIFIED=$(git status -s)
+if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
+  MODIFIED=$(echo $MODIFIED | grep -v "kex_rlwe_newhope/avx2" | grep -v "Makefile.am" | grep -v "avx2/kex*")
+else
+  MODIFIED=$(echo $MODIFIED | grep -v "Makefile.am")
+fi
+
+if [[ ! -z "${MODIFIED}" ]]; then
+	${PRINT_RED}
 	echo "Code does not adhere to the project standards. Run \"make prettyprint\".";
-	tput sgr 0;
+	${PRINT_RESET}
 	git status -s
 	exit 1;
 else
-	tput setaf 2;
+	${PRINT_GREEN}
 	echo "Code adheres to the project standards (prettyprint).";
-	tput sgr 0;
+	${PRINT_RESET}
 	exit 0;
 fi;

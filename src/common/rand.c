@@ -1,17 +1,101 @@
-#include <assert.h>
 #include <stdio.h>
-#include <math.h>
 #if defined(_WIN32)
 #include <windows.h>
 #include <Wincrypt.h>
 #else
-#include <unistd.h>
-#include <fcntl.h>
 #include <stdlib.h>
+#include <unistd.h>
 #endif
 
-#include <oqs/common.h>
-#include <oqs/rand.h>
+#include <fcntl.h>
+#include <strings.h>
+
+#ifdef USE_OPENSSL
+#include <openssl/rand.h>
+#endif
+
+#include <oqs/oqs.h>
+
+#ifdef USE_OPENSSL
+// Use OpenSSL's RAND_bytes as the default PRNG
+static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = (void (*)(uint8_t *, size_t)) & RAND_bytes;
+#else
+static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
+#endif
+
+OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
+	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
+		oqs_randombytes_algorithm = &OQS_randombytes_system;
+		return OQS_SUCCESS;
+	} else if (0 == strcasecmp(OQS_RAND_alg_openssl, algorithm)) {
+#ifdef USE_OPENSSL
+		oqs_randombytes_algorithm = (void (*)(uint8_t *, size_t)) & RAND_bytes;
+		return OQS_SUCCESS;
+#else
+		return OQS_ERROR;
+#endif
+	} else {
+		return OQS_ERROR;
+	}
+}
+
+void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t)) {
+	oqs_randombytes_algorithm = algorithm_ptr;
+}
+
+void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+	oqs_randombytes_algorithm(random_array, bytes_to_read);
+}
+
+static __inline void delay(unsigned int count) {
+	while (count--) {
+	}
+}
+
+#if !defined(_WIN32)
+void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
+
+	FILE *handle;
+	do {
+		handle = fopen("/dev/urandom", "rb");
+		if (handle == NULL) {
+			delay(0xFFFFF);
+		}
+	} while (handle == NULL);
+
+	int bytes_last_read, bytes_total_read, bytes_left_to_read;
+	bytes_total_read = 0;
+	bytes_left_to_read = bytes_to_read;
+	while (bytes_left_to_read > 0) {
+		do {
+			bytes_last_read = fread(random_array + bytes_total_read, 1, bytes_left_to_read, handle);
+			if (bytes_last_read <= 0) {
+				delay(0xFFFF);
+			}
+		} while (bytes_last_read <= 0);
+		bytes_total_read += bytes_last_read;
+		bytes_left_to_read -= bytes_last_read;
+	}
+	fclose(handle);
+}
+#else
+void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
+	HCRYPTPROV hCryptProv;
+	while (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
+	       !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
+		// loop until success
+	}
+}
+#endif
+
+/************************************************************
+ *** START DEPRECATED CODE *** expected removal Aug. 2018 ***
+ ************************************************************/
+
+#include <assert.h>
+#include <math.h>
+#include <stdio.h>
+
 #include <oqs/rand_urandom_aesctr.h>
 #include <oqs/rand_urandom_chacha20.h>
 
@@ -182,3 +266,7 @@ err:
 
 	return result;
 }
+
+/***********************************************************
+ *** STOP DEPRECATED CODE *** expected removal Aug. 2018 ***
+ ***********************************************************/

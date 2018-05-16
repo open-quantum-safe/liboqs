@@ -5,7 +5,7 @@ ACLOCAL_AMFLAGS = -I config
 include aminclude.am
 
 # ensure the distribution of the doxygen configuration file
-EXTRA_DIST = doxygen.cfg
+EXTRA_DIST = docs/.Doxyfile
 
 CLANGFORMAT ?= clang-format-3.9
 
@@ -16,7 +16,6 @@ lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
 liboqs_la_LIBADD += src/crypto/aes/libaes.la
-liboqs_la_LIBADD += src/crypto/rand/librand.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
@@ -56,10 +55,10 @@ endif
 
 installheaderdir=$(includedir)/oqs
 installheader_HEADERS=config.h \
-	src/common/oqs.h \
+	src/oqs.h \
 	src/common/common.h \
+	src/common/rand.h \
 	src/crypto/aes/aes.h \
-	src/crypto/rand/rand.h \
 	src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h \
 	src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h \
 	src/crypto/sha3/sha3.h \
@@ -196,10 +195,10 @@ endif
 links:
 	$(MKDIR_P) include/oqs
 	cp -f config.h include/oqs
-	cp -f src/common/oqs.h include/oqs
+	cp -f src/oqs.h include/oqs
 	cp -f src/common/common.h include/oqs
+	cp -f src/common/rand.h include/oqs
 	cp -f src/crypto/aes/aes.h include/oqs
-	cp -f src/crypto/rand/rand.h include/oqs
 	cp -f src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 	cp -f src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	cp -f src/crypto/sha3/sha3.h include/oqs
@@ -245,8 +244,7 @@ clean-tests:
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
 
-docs: links
-	doxygen
+docs: doxygen-run
 
 cleanup-patch:
 if USE_KEX_RLWE_NEWHOPE_AVX2

@@ -37,6 +37,9 @@
     <ClCompile Include="..\..\src\common\common.c">
       <Filter>Common</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\common\rand.c">
+      <Filter>Common</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\crypto\aes\aes.c">
       <Filter>Crypto\AES</Filter>
     </ClCompile>
@@ -49,10 +52,10 @@
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c">
       <Filter>Crypto\SHA3</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\crypto\rand\rand.c">
-      <Filter>Crypto\Rand</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.c">
+        <ClCompile Include="..\..\src\common\rand.c">
+          <Filter>Crypto\Rand</Filter>
+        </ClCompile>
       <Filter>Crypto\Rand</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.c">
@@ -177,6 +180,9 @@
     <ClInclude Include="..\..\src\common\common.h">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\common\rand.h">
+      <Filter>Common</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\crypto\aes\aes.h">
       <Filter>Crypto\AES</Filter>
     </ClInclude>
@@ -185,9 +191,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h">
       <Filter>Crypto\SHA3</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\crypto\rand\rand.h">
-      <Filter>Crypto\Rand</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h">
       <Filter>Crypto\Rand</Filter>
@@ -234,7 +237,7 @@
     <ClInclude Include="..\..\src\sig_picnic\external\picnic.h">
       <Filter>Sig_Picnic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\common\oqs.h">
+    <ClInclude Include="..\..\src\oqs.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\winconfig.h" />
