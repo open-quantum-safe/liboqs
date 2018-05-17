@@ -83,10 +83,13 @@ headers: config_h mkdirs
 	mkdir -p include/oqs
 	cp $(HEADERS) src/config.h include/oqs
 
-liboqs: headers $(OBJECTS) $(UPSTREAMS)
+libkeccak:
+	bash scripts/build-keccak-code-package.sh
+
+liboqs: libkeccak headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
-	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
-	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` -lcrypto
+	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'` vendor/KeccakCodePackage-master/bin/generic64/libkeccak.a
+	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` vendor/KeccakCodePackage-master/bin/generic64/libkeccak.a -lcrypto
 
 TEST_PROGRAMS=test_kem test_kem_shared
 $(TEST_PROGRAMS): liboqs
@@ -142,6 +145,7 @@ clean:
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
 	$(RM) -r docs/doxygen
+	$(RM) -r vendor/KeccakCodePackage-master
 
 check_namespacing: all
 	.travis/global-namespace-check.sh
