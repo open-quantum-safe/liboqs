@@ -86,6 +86,8 @@ Building and running liboqs nist-branch
 
 Builds have been tested on macOS 10.12.6 (clang), macOS 10.13.3 (clang), Ubuntu 14.04.5 (gcc-7).
 
+The dependencies for liboqs are OpenSSL and the Keccak Code Package (libkeccak).  liboqs' build process will download and build libkeccak automatically.  You must install OpenSSL following the instructions below.
+
 ### Install dependencies for Linux (Ubuntu)
 
 You need to install the following packages:
@@ -139,6 +141,8 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 
 liboqs includes some third party libraries or modules that may be licensed differently.  All third-party code is contained in directories labelled `upstream`, and each such upstream directory contains a license file indicating the license that applies to code in that directory.
 
+See https://github.com/gvanas/KeccakCodePackage#under-which-license-is-the-kcp-distributed for information on the licensing of the Keccak Code Package (libkecak).
+
 Team
 ----
 
@@ -148,6 +152,12 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 
 Contributors to this nist-branch of liboqs include:
 
+- Nicholas Allen (Amazon Web Services)
+- Eric Crockett (Amazon Web Services)
+- Nir Drucker (Amazon Web Services)
+- Vlad Gheorghiu (evolutionQ)
+- Shay Gueron (Amazon Web Services)
+- Christian Paquin (Microsoft Research)
 - Tancrède Lepoint (SRI International)
 - Shravan Mishra (University of Waterloo)
 - Douglas Stebila (McMaster University)
