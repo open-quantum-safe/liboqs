@@ -32,7 +32,7 @@ USE_OPT_LEVEL=_OPTIMIZED_GENERIC_
 AR=ar rcs
 RANLIB=ranlib
 
-CFLAGS=$(OPT) $(ADDITIONAL_SETTINGS) -D $(ARCHITECTURE) -D __LINUX__ -D $(USE_OPT_LEVEL)
+CFLAGS=-fPIC $(OPT) $(ADDITIONAL_SETTINGS) -D $(ARCHITECTURE) -D __LINUX__ -D $(USE_OPT_LEVEL)
 LDFLAGS=-lm
 EXTRA_OBJECTS_751=objs751/fp_generic.o
 OBJECTS_751=objs751/P751.o $(EXTRA_OBJECTS_751) objs/fips202.o
@@ -79,4 +79,3 @@ check: tests
 
 clean:
 	rm -rf *.req objs751 objs sike
-
