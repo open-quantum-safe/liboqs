@@ -8,7 +8,8 @@ KEMS_TO_ENABLE?=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_9
 			   bike3_l1 bike3_l3 bike3_l5 \
 			   sike_p503, sike_p751 \
 			   BIG_QUAKE_1 BIG_QUAKE_3 BIG_QUAKE_5 \
-			   saber_light_saber_kem saber_saber_kem saber_fire_saber_kem# EDIT-WHEN-ADDING-KEM
+			   saber_light_saber_kem saber_saber_kem saber_fire_saber_kem \
+			   lima_2p_1024_cca_kem # EDIT-WHEN-ADDING-KEM
 
 KEM_DEFAULT?=newhope_1024_cca_kem
 
@@ -32,6 +33,9 @@ ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATI
 
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
+
+KECCAK_INCLUDE_DIR=vendor/KeccakCodePackage-master/bin/generic64
+KECCAK_LIB_DIR=vendor/KeccakCodePackage-master/bin/generic64
 
 all: liboqs tests speeds kats examples
 
@@ -85,11 +89,14 @@ headers: config_h mkdirs
 
 libkeccak:
 	bash scripts/build-keccak-code-package.sh
+	$(RM) -f .objs/keccak
+	mkdir -p .objs/keccak
+	cd .objs/keccak && ar x ../../vendor/KeccakCodePackage-master/bin/generic64/libkeccak.a
 
 liboqs: libkeccak headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
-	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'` vendor/KeccakCodePackage-master/bin/generic64/libkeccak.a
-	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` vendor/KeccakCodePackage-master/bin/generic64/libkeccak.a -lcrypto
+	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
+	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` -lcrypto
 
 TEST_PROGRAMS=test_kem test_kem_shared
 $(TEST_PROGRAMS): liboqs

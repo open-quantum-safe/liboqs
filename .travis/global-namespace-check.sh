@@ -8,7 +8,7 @@ PRINT_GREEN="tput setaf 2"
 PRINT_RED="tput setaf 1"
 PRINT_RESET="tput sgr 0"
 
-REGEX=' [_]?(OQS|randombytes)'
+REGEX=' [_]?(OQS|randombytes|cSHAKE|LakeKeyak|KMAC|Kangaroo|Keccak|KetJr|KetMj|KetMn|KetSr|Ketje|Keyak|Kra|LunarKeyak|OceanKeyak|ParallelHash|RiverKeyak|SHA3|SHAKE|SeaKeyak|TupleHash|Vatte)'
 LIBOQS=liboqs.a
 
 # try to find liboqs.a
