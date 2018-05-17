@@ -25,28 +25,41 @@ static OQS_STATUS example_stack() {
 	// if FrodoKEM-640-AES was enabled at compile-time
 
 	OQS_STATUS rc;
+	OQS_STATUS ret = OQS_ERROR;
+
 	uint8_t public_key[OQS_KEM_frodokem_640_aes_length_public_key];
 	uint8_t secret_key[OQS_KEM_frodokem_640_aes_length_secret_key];
 	uint8_t ciphertext[OQS_KEM_frodokem_640_aes_length_ciphertext];
 	uint8_t shared_secret_e[OQS_KEM_frodokem_640_aes_length_shared_secret];
 	uint8_t shared_secret_d[OQS_KEM_frodokem_640_aes_length_shared_secret];
+
 	rc = OQS_KEM_frodokem_640_aes_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_frodokem_640_aes_keypair failed!\n");
-		return OQS_ERROR;
+		goto err;
 	}
 	rc = OQS_KEM_frodokem_640_aes_encaps(ciphertext, shared_secret_e, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_frodokem_640_aes_encaps failed!\n");
-		return OQS_ERROR;
+		goto err;
 	}
 	rc = OQS_KEM_frodokem_640_aes_decaps(shared_secret_d, ciphertext, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_KEM_frodokem_640_aes_decaps failed!\n");
-		return OQS_ERROR;
+		goto err;
 	}
 	printf("[example_stack] OQS_KEM_frodokem_640_aes operations completed.\n");
-	return OQS_SUCCESS; // success!
+	ret = OQS_SUCCESS; // success!
+	goto cleanup;
+
+err:
+	ret = OQS_ERROR;
+
+cleanup:
+	OQS_MEM_cleanse(secret_key, OQS_KEM_frodokem_640_aes_length_secret_key);
+	OQS_MEM_cleanse(shared_secret_e, OQS_KEM_frodokem_640_aes_length_shared_secret);
+	OQS_MEM_cleanse(shared_secret_d, OQS_KEM_frodokem_640_aes_length_shared_secret);
+	return ret;
 
 #else
 	printf("[example_stack] OQS_KEM_frodokem_640_aes was not enabled at compile-time.\n");
@@ -73,7 +86,7 @@ static OQS_STATUS example_heap() {
 	uint8_t *shared_secret_e = NULL;
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS rc;
-	int ret = OQS_ERROR;
+	OQS_STATUS ret = OQS_ERROR;
 
 	kem = OQS_KEM_new(OQS_KEM_alg_frodokem_640_aes);
 	if (kem == NULL) {

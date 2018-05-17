@@ -17,7 +17,7 @@ OBJECTS_KEM+=$(OBJECTS_KEM_SIKE)
 
 TO_CLEAN+= $(OBJECTS_KEM_SIKE)
 
-.objs/kem/sike/kem_sike.o: src/kem/sike/kem_sike.c
+.objs/kem/sike/kem_sike.o: headers src/kem/sike/kem_sike.c
 	$(CC) -c src/kem/sike/kem_sike.c -o .objs/kem/sike/kem_sike.o $(CFLAGS)
 
 ifneq (,$(findstring sike_p503, $(ENABLE_KEMS)))

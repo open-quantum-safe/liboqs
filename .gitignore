@@ -1,5 +1,5 @@
 .objs/
-.tmp/
+.objs_upstream/
 include/
 liboqs.a
 liboqs.so
