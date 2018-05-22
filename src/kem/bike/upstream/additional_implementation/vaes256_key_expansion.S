@@ -35,8 +35,8 @@ AES_256_Key_Expansion:
    vmovdqu 16(key), %xmm3
    vmovdqa %xmm1, (ks)
    vmovdqa %xmm3, 16(ks)
-   vmovdqa (con), %xmm0
-   vmovdqa (mask_256), %xmm15
+   vmovdqa con(%rip), %xmm0
+   vmovdqa mask_256(%rip), %xmm15
    vpxor %xmm14, %xmm14, %xmm14
    
    mov $6, %ax

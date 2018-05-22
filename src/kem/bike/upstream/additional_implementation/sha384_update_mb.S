@@ -63,7 +63,7 @@
     vprorq_ymm   39, 25, \A, W1_y
     vpxor TMP1_y, W1_y, TMP1_y
 
-    vmovdqu (ones), W3_y
+    vmovdqu ones(%rip), W3_y
     vpxor \E, W3_y, W3_y
     vpand W3_y, TMP2_y, TMP2_y
     vpand \F, \E, W1_y
@@ -134,7 +134,7 @@
 
     vmovdqa   \G, TMP2_y
 
-    vmovdqu (ones), W3_y
+    vmovdqu ones(%rip), W3_y
     vpxor \E, W3_y, W3_y
     vpand W3_y, TMP2_y, TMP2_y
     vpand \F, \E, W3_y
@@ -186,11 +186,11 @@ sha384_512_multi_block_avx2:
     jb .Llast_zero_y
     movl %edx, %r13d
     sub %r14d, %r13d
-    vmovdqu (and_last_block_256), AND_BLK_y #if above it means last block is less
+    vmovdqu and_last_block_256(%rip), AND_BLK_y #if above it means last block is less
     vmovdqu AND_BLK_y, 16*32(%rsp)
     jmp .Lbody_avx2
 .Llast_zero_y:
-    vmovdqu (and_last_block_not_256), AND_BLK_y #if lower it means last block is larger than the rest and we take him as our loop var
+    vmovdqu and_last_block_not_256(%rip), AND_BLK_y #if lower it means last block is larger than the rest and we take him as our loop var
     vmovdqu AND_BLK_y, 16*32(%rsp)
     movq %r14, %rdx
 # first step - load the message, taking a word of each message, into appropriate
@@ -233,10 +233,10 @@ _L_outer_loop_y:
 
     add $32, %r12
 
-    vpshufb (bswap_mask64_256), W0_y, W0_y
-    vpshufb (bswap_mask64_256), W1_y, W1_y
-    vpshufb (bswap_mask64_256), W2_y, W2_y
-    vpshufb (bswap_mask64_256), W3_y, W3_y
+    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
+    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
+    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
+    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
 
     vmovdqu W0_y, 0*32(%rsp)
     vmovdqu W1_y, 1*32(%rsp)
@@ -260,10 +260,10 @@ _L_outer_loop_y:
 
     add $32, %r12
 
-    vpshufb (bswap_mask64_256), W0_y, W0_y
-    vpshufb (bswap_mask64_256), W1_y, W1_y
-    vpshufb (bswap_mask64_256), W2_y, W2_y
-    vpshufb (bswap_mask64_256), W3_y, W3_y
+    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
+    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
+    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
+    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
 
     vmovdqu W0_y, 4*32(%rsp)
     vmovdqu W1_y, 5*32(%rsp)
@@ -287,10 +287,10 @@ _L_outer_loop_y:
 
     add $32, %r12
 
-    vpshufb (bswap_mask64_256), W0_y, W0_y
-    vpshufb (bswap_mask64_256), W1_y, W1_y
-    vpshufb (bswap_mask64_256), W2_y, W2_y
-    vpshufb (bswap_mask64_256), W3_y, W3_y
+    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
+    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
+    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
+    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
 
     vmovdqu W0_y, 8*32(%rsp)
     vmovdqu W1_y, 9*32(%rsp)
@@ -314,10 +314,10 @@ _L_outer_loop_y:
 
     add $32, %r12
 
-    vpshufb (bswap_mask64_256), W0_y, W0_y
-    vpshufb (bswap_mask64_256), W1_y, W1_y
-    vpshufb (bswap_mask64_256), W2_y, W2_y
-    vpshufb (bswap_mask64_256), W3_y, W3_y
+    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
+    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
+    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
+    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
 
     vmovdqu W0_y, 12*32(%rsp)
     vmovdqu W1_y, 13*32(%rsp)
@@ -557,10 +557,10 @@ _avx512_shortcut:
     jb .Llast_zero
     movl %edx, %r13d
     sub %r14d, %r13d
-    vmovdqu64 (and_last_block), AND_BLK #if above it means last block is less
+    vmovdqu64 and_last_block(%rip), AND_BLK #if above it means last block is less
     jmp .Lbody_avx512
 .Llast_zero:
-    vmovdqu64 (and_last_block_not), AND_BLK #if lower it means last block is larger than the rest and we take him as our loop var
+    vmovdqu64 and_last_block_not(%rip), AND_BLK #if lower it means last block is larger than the rest and we take him as our loop var
     movq %r14, %rdx
 # first step - load the message, taking a word of each message, into appropriate
 # location inside an zmm register
@@ -676,22 +676,22 @@ _L_outer_loop:
     vshufi64x2 $0xee, W15, TMP1, W15
     vshufi64x2 $0x44, W13, TMP4, W9
     vshufi64x2 $0xee, W13, TMP4, W13
-    vpshufb (bswap_mask64_512), W0, W0
-    vpshufb (bswap_mask64_512), W1, W1
-    vpshufb (bswap_mask64_512), W2, W2
-    vpshufb (bswap_mask64_512), W3, W3
-    vpshufb (bswap_mask64_512), W4, W4
-    vpshufb (bswap_mask64_512), W5, W5
-    vpshufb (bswap_mask64_512), W6, W6
-    vpshufb (bswap_mask64_512), W7, W7
-    vpshufb (bswap_mask64_512), W8, W8
-    vpshufb (bswap_mask64_512), W9, W9
-    vpshufb (bswap_mask64_512), W10, W10
-    vpshufb (bswap_mask64_512), W11, W11
-    vpshufb (bswap_mask64_512), W12, W12
-    vpshufb (bswap_mask64_512), W13, W13
-    vpshufb (bswap_mask64_512), W14, W14
-    vpshufb (bswap_mask64_512), W15, W15
+    vpshufb bswap_mask64_512(%rip), W0, W0
+    vpshufb bswap_mask64_512(%rip), W1, W1
+    vpshufb bswap_mask64_512(%rip), W2, W2
+    vpshufb bswap_mask64_512(%rip), W3, W3
+    vpshufb bswap_mask64_512(%rip), W4, W4
+    vpshufb bswap_mask64_512(%rip), W5, W5
+    vpshufb bswap_mask64_512(%rip), W6, W6
+    vpshufb bswap_mask64_512(%rip), W7, W7
+    vpshufb bswap_mask64_512(%rip), W8, W8
+    vpshufb bswap_mask64_512(%rip), W9, W9
+    vpshufb bswap_mask64_512(%rip), W10, W10
+    vpshufb bswap_mask64_512(%rip), W11, W11
+    vpshufb bswap_mask64_512(%rip), W12, W12
+    vpshufb bswap_mask64_512(%rip), W13, W13
+    vpshufb bswap_mask64_512(%rip), W14, W14
+    vpshufb bswap_mask64_512(%rip), W15, W15
     #load address of the K table
     lea K_table_512(%rip), %rbx
     mov   $4, %rcx

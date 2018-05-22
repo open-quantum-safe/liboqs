@@ -68,8 +68,6 @@ SHUF_MASK:
 .set BIT_MASK_REG, %ymm14
 .set ONES, %ymm15
 
-.set _MM_CMPINT_NE, $4
-
 .globl    convert_to_redundant_rep
 .hidden   convert_to_redundant_rep
 .type     convert_to_redundant_rep,@function
