@@ -312,6 +312,9 @@ int crypto_kem_keypair(OUT unsigned char *pk, OUT unsigned char *sk)
     //We don't want to send the padded data outside to save BW.
     pad_sk_t p_sk = {0};
 
+    //Make sure that the wlists are zeroed for the KATs.
+    memset(l_sk->u.raw, 0, sizeof(l_sk->u.raw));
+
 #if BATCH_SIZE > 1
     static batch_ctx_t batch_ctx = {.cnt = 0};
     res = init_batch(&h_prf_state, &batch_ctx);
