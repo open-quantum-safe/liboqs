@@ -8,7 +8,8 @@
 #define GCC_COMPILER
 #endif
 
-#if defined(GCC_COMPILER) && (defined(AVX2) || defined(AVX512))
+#if defined(GCC_COMPILER) && defined(SUPPORTED_BINUTILS) && \
+    (defined(AVX2) || defined(AVX512))
 #define ADDITIONAL_IMPL
 #endif
 
@@ -43,9 +44,9 @@ extern OQS_STATUS OQS_KEM_bike1_l1_decaps(uint8_t *shared_secret,
 #define OQS_KEM_bike1_l3_length_public_key 5474
 #define OQS_KEM_bike1_l3_length_ciphertext 5474
 #else
-#define OQS_KEM_bike1_l3_length_secret_key 5474
-#define OQS_KEM_bike1_l3_length_public_key 5474
-#define OQS_KEM_bike1_l3_length_ciphertext 5474
+#define OQS_KEM_bike1_l3_length_secret_key 4964
+#define OQS_KEM_bike1_l3_length_public_key 4964
+#define OQS_KEM_bike1_l3_length_ciphertext 4964
 #endif
 #define OQS_KEM_bike1_l3_length_shared_secret 32
 
@@ -93,7 +94,7 @@ extern OQS_STATUS OQS_KEM_bike1_l5_decaps(uint8_t *shared_secret,
 #define OQS_KEM_bike2_l1_length_public_key 1271
 #define OQS_KEM_bike2_l1_length_ciphertext 1271
 #else
-#define OQS_KEM_bike2_l1_length_secret_key 4964
+#define OQS_KEM_bike2_l1_length_secret_key 2542
 #define OQS_KEM_bike2_l1_length_public_key 2542
 #define OQS_KEM_bike2_l1_length_ciphertext 2542
 #endif
