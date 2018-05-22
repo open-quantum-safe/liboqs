@@ -5,6 +5,7 @@ liboqs.a
 liboqs.so
 src/config.h
 test_kem
+test_kem_shared
 kat_kem
 speed_kem
 example_kem

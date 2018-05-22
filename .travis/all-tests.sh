@@ -40,6 +40,9 @@ make clean
 make -j8 "ARCH=${ARCH}" "CC=${CC_OVERRIDE}"
 make docs
 ./test_kem
+LD_LIBRARY_PATH=.
+export LD_LIBRARY_PATH
+./test_kem_shared
 ./example_kem
 
 for f in $(ls .travis/*-check.sh); do

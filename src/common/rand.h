@@ -52,33 +52,6 @@ void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t));
 void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
 
 /**
- * Fills the given memory with the requested number of random bytes.
- *
- * This implementation reads the bytes directly from `/dev/urandom` and will
- * block until the requested number of bytes have been read.
- *
- * The caller is responsible for providing a buffer allocated with sufficient room.
- *
- * @param[out] random_array Pointer to the memory to fill with random bytes
- * @param[in] bytes_to_read The number of random bytes to read into memory
- */
-void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
-
-/**
- * Fills the given memory with the requested number of pseudorandom bytes.
- *
- * This implementation expands using the seed specified by OQS_randombytes_nist_kat_init
- * using the approach in
- * https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/example-files/api-notes.pdf
- *
- * The caller is responsible for providing a buffer allocated with sufficient room.
- *
- * @param[out] random_array Pointer to the memory to fill with pseudorandom bytes
- * @param[in] bytes_to_read The number of random bytes to read into memory
- */
-void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
-
-/**
  * Initializes the NIST DRBG with a given seed.
  *
  * @param[in] entropy_input The seed; must be exactly 48 bytes
