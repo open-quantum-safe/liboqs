@@ -23,8 +23,8 @@ for kem in ${KEMS}; do
 		continue
 	fi
 
-	orig=`find src -name ${kem}.kat`
-	if [[ "x${orig}x" == "xx" ]];
+	origs=`find src -name ${kem}*.kat |tr '\n' ' '`
+	if [[ "x${origs}x" == "xx" ]];
 	then
 		${PRINT_RED}
 		echo "No original KAT file found for ${kem}"
@@ -32,21 +32,29 @@ for kem in ${KEMS}; do
 		RET=1
 		continue
 	fi
+	
+	match=0
+	for orig in ${origs}; do
+		diff ${orig} ${kat} > /dev/null 2>&1
+		error=$?
+		if [ $error -eq 0 ] 
+		then
+			echo "KAT values match for ${kem} and ${orig}"
+			match=1
+			break			
+		elif [ ! $error -eq 1 ]
+		then
+			${PRINT_RED}
+			echo "An error occurred in the diff command"
+			${PRINT_RESET}
+			RET=1
+		fi
+        done
 
-	diff ${orig} ${kat} > /dev/null 2>&1
-	error=$?
-	if [ $error -eq 0 ]
-	then
-		echo "KAT values match for ${kem}"
-	elif [ $error -eq 1 ]
+        if [ $match -eq 0 ] 
 	then
 		${PRINT_RED}
-		echo "KAT values do not match for ${kem}"
-		${PRINT_RESET}
-		RET=1
-	else
-		${PRINT_RED}
-		echo "An error occurred in the diff command"
+		echo "KAT values do not match for ${kem} with any of ${origs}"
 		${PRINT_RESET}
 		RET=1
 	fi
