@@ -71,7 +71,7 @@
     #define BLOCK_SIZE (32768)
   #else
     #if LEVEL==3
-      #define R_BITS  21893
+      #define R_BITS  19853
       #define DV      103
       #define FAKE_DV 197
       #define T1      199

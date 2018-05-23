@@ -41,13 +41,11 @@ extern OQS_STATUS OQS_KEM_bike1_l1_decaps(uint8_t *shared_secret,
 
 #ifdef ADDITIONAL_IMPL
 #define OQS_KEM_bike1_l3_length_secret_key 7050
-#define OQS_KEM_bike1_l3_length_public_key 5474
-#define OQS_KEM_bike1_l3_length_ciphertext 5474
 #else
 #define OQS_KEM_bike1_l3_length_secret_key 4964
+#endif
 #define OQS_KEM_bike1_l3_length_public_key 4964
 #define OQS_KEM_bike1_l3_length_ciphertext 4964
-#endif
 #define OQS_KEM_bike1_l3_length_shared_secret 32
 
 OQS_KEM *OQS_KEM_bike1_l3_new();
@@ -117,8 +115,8 @@ extern OQS_STATUS OQS_KEM_bike2_l1_decaps(uint8_t *shared_secret,
 
 #ifdef ADDITIONAL_IMPL
 #define OQS_KEM_bike2_l3_length_secret_key 9787
-#define OQS_KEM_bike2_l3_length_public_key 2737
-#define OQS_KEM_bike2_l3_length_ciphertext 2737
+#define OQS_KEM_bike2_l3_length_public_key 2482
+#define OQS_KEM_bike2_l3_length_ciphertext 2482
 #else
 #define OQS_KEM_bike2_l3_length_secret_key 4964
 #define OQS_KEM_bike2_l3_length_public_key 4964
