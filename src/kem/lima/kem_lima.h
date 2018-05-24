@@ -66,7 +66,7 @@ extern OQS_STATUS OQS_KEM_lima_sp_1306_cca_kem_decaps(uint8_t *shared_secret, co
 #ifdef OQS_ENABLE_KEM_lima_sp_1822_cca_kem
 
 #define OQS_KEM_lima_sp_1822_cca_kem_length_public_key 14577
-#define OQS_KEM_lima_sp_1822_cca_kem_length_secret_key 24745
+#define OQS_KEM_lima_sp_1822_cca_kem_length_secret_key 21865
 #define OQS_KEM_lima_sp_1822_cca_kem_length_ciphertext 8827
 #define OQS_KEM_lima_sp_1822_cca_kem_length_shared_secret 32
 

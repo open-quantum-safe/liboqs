@@ -9,7 +9,7 @@ KEMS_TO_ENABLE?=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_9
 			   sike_p503, sike_p751 \
 			   BIG_QUAKE_1 BIG_QUAKE_3 BIG_QUAKE_5 \
 			   saber_light_saber_kem saber_saber_kem saber_fire_saber_kem \
-			   lima_2p_1024_cca_kem # EDIT-WHEN-ADDING-KEM
+			   lima_2p_1024_cca_kem lima_2p_2048_cca_kem lima_sp_1018_cca_kem lima_sp_1306_cca_kem lima_sp_1822_cca_kem lima_sp_2062_cca_kem # EDIT-WHEN-ADDING-KEM
 
 KEM_DEFAULT?=newhope_1024_cca_kem
 

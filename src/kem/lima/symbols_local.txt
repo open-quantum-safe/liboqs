@@ -36,6 +36,7 @@ generate_gaussian_noise
 get_random_field_element
 get_random_field_elements
 increment_seed
+init_done
 inv_mod_q
 lima_dec_cca
 lima_dec_cpa
