@@ -25,3 +25,4 @@ kat_kem_rsp/
 usr_local
 src/kem/sike/upstream/Optimized_Implementation/portable/SIKEp503/
 src/kem/sike/upstream/Optimized_Implementation/portable/SIKEp751/
+vendor

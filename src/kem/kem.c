@@ -14,7 +14,8 @@ char *OQS_KEM_alg_identifier(size_t i) {
 	    OQS_KEM_alg_sike_p503, OQS_KEM_alg_sike_p751,
 	    OQS_KEM_alg_BIG_QUAKE_1, OQS_KEM_alg_BIG_QUAKE_3, OQS_KEM_alg_BIG_QUAKE_5,
 	    OQS_KEM_alg_bike1_l1, OQS_KEM_alg_bike1_l3, OQS_KEM_alg_bike1_l5, OQS_KEM_alg_bike2_l1, OQS_KEM_alg_bike2_l3, OQS_KEM_alg_bike2_l5, OQS_KEM_alg_bike3_l1, OQS_KEM_alg_bike3_l3, OQS_KEM_alg_bike3_l5,
-	    OQS_KEM_alg_saber_light_saber_kem, OQS_KEM_alg_saber_saber_kem, OQS_KEM_alg_saber_fire_saber_kem};
+	    OQS_KEM_alg_saber_light_saber_kem, OQS_KEM_alg_saber_saber_kem, OQS_KEM_alg_saber_fire_saber_kem,
+	    OQS_KEM_alg_lima_2p_1024_cca_kem, OQS_KEM_alg_lima_2p_2048_cca_kem, OQS_KEM_alg_lima_sp_1018_cca_kem, OQS_KEM_alg_lima_sp_1306_cca_kem, OQS_KEM_alg_lima_sp_1822_cca_kem, OQS_KEM_alg_lima_sp_2062_cca_kem};
 	if (i >= OQS_KEM_algs_length) {
 		return NULL;
 	} else {
@@ -178,6 +179,42 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_saber_fire_saber_kem)) {
 #ifdef OQS_ENABLE_KEM_saber_fire_saber_kem
 		return OQS_KEM_saber_fire_saber_kem_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_lima_2p_1024_cca_kem)) {
+#ifdef OQS_ENABLE_KEM_lima_2p_1024_cca_kem
+		return OQS_KEM_lima_2p_1024_cca_kem_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_lima_2p_2048_cca_kem)) {
+#ifdef OQS_ENABLE_KEM_lima_2p_2048_cca_kem
+		return OQS_KEM_lima_2p_2048_cca_kem_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_lima_sp_1018_cca_kem)) {
+#ifdef OQS_ENABLE_KEM_lima_sp_1018_cca_kem
+		return OQS_KEM_lima_sp_1018_cca_kem_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_lima_sp_1306_cca_kem)) {
+#ifdef OQS_ENABLE_KEM_lima_sp_1306_cca_kem
+		return OQS_KEM_lima_sp_1306_cca_kem_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_lima_sp_1822_cca_kem)) {
+#ifdef OQS_ENABLE_KEM_lima_sp_1822_cca_kem
+		return OQS_KEM_lima_sp_1822_cca_kem_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_lima_sp_2062_cca_kem)) {
+#ifdef OQS_ENABLE_KEM_lima_sp_2062_cca_kem
+		return OQS_KEM_lima_sp_2062_cca_kem_new();
 #else
 		return NULL;
 #endif

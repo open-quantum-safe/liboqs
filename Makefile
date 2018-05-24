@@ -8,7 +8,8 @@ KEMS_TO_ENABLE?=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_9
 			   bike3_l1 bike3_l3 bike3_l5 \
 			   sike_p503, sike_p751 \
 			   BIG_QUAKE_1 BIG_QUAKE_3 BIG_QUAKE_5 \
-			   saber_light_saber_kem saber_saber_kem saber_fire_saber_kem# EDIT-WHEN-ADDING-KEM
+			   saber_light_saber_kem saber_saber_kem saber_fire_saber_kem \
+			   lima_2p_1024_cca_kem lima_2p_2048_cca_kem lima_sp_1018_cca_kem lima_sp_1306_cca_kem lima_sp_1822_cca_kem lima_sp_2062_cca_kem # EDIT-WHEN-ADDING-KEM
 
 KEM_DEFAULT?=newhope_1024_cca_kem
 
@@ -64,6 +65,9 @@ endif
 
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
+KECCAK_INCLUDE_DIR=vendor/KeccakCodePackage-master/bin/generic64
+KECCAK_LIB_DIR=vendor/KeccakCodePackage-master/bin/generic64
+
 all: liboqs tests speeds kats examples
 
 OBJECT_DIRS=
@@ -114,7 +118,13 @@ headers: config_h mkdirs
 	mkdir -p include/oqs
 	cp $(HEADERS) src/config.h include/oqs
 
-liboqs: headers $(OBJECTS) $(UPSTREAMS)
+libkeccak:
+	bash scripts/build-keccak-code-package.sh
+	$(RM) -f .objs/keccak
+	mkdir -p .objs/keccak
+	cd .objs/keccak && ar x ../../vendor/KeccakCodePackage-master/bin/generic64/libkeccak.a
+
+liboqs: libkeccak headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
 	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
 	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` -lcrypto
@@ -173,6 +183,7 @@ clean:
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
 	$(RM) -r docs/doxygen
+	$(RM) -r vendor/KeccakCodePackage-master
 
 check_namespacing: all
 	.travis/global-namespace-check.sh
