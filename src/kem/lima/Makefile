@@ -43,7 +43,7 @@ ifneq (,$(findstring lima_sp_2062_cca_kem, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_lima_sp_2062_cca_kem_upstream
 endif
 
-SRCS_KEM_LIMA_2P_1024_CCA_KEM= src/kem/lima/upstream/optimized-implementation-master/lib/fft.c src/kem/lima/upstream/optimized-implementation-master/lib/lima.c src/kem/lima/upstream/optimized-implementation-master/lib/modp.c src/kem/lima/upstream/optimized-implementation-master/lib/xof.c src/kem/lima/upstream/optimized-implementation-master/lib/LimaAPI.c
+SRCS_KEM_LIMA_2P_1024_CCA_KEM= src/kem/lima/upstream/optimized-implementation-master/Lib/fft.c src/kem/lima/upstream/optimized-implementation-master/Lib/lima.c src/kem/lima/upstream/optimized-implementation-master/Lib/modp.c src/kem/lima/upstream/optimized-implementation-master/Lib/xof.c src/kem/lima/upstream/optimized-implementation-master/Lib/LimaAPI.c
 OBJS_KEM_LIMA_2P_1024_CCA_KEM=$(SRCS_KEM_LIMA_2P_1024_CCA_KEM:.c=.o)
 
 SRCS_KEM_LIMA_2P_2048_CCA_KEM=$(SRCS_KEM_LIMA_2P_1024_CCA_KEM)
@@ -68,7 +68,7 @@ TO_CLEAN+= $(OBJS_KEM_LIMA_SP_1306_CCA_KEM)
 TO_CLEAN+= $(OBJS_KEM_LIMA_SP_1822_CCA_KEM)
 TO_CLEAN+= $(OBJS_KEM_LIMA_SP_2062_CCA_KEM)
 
-src/kem/lima/upstream/optimized-implementation-master/lib/%.o: src/kem/lima/upstream/optimized-implementation-master/lib/%.c libkeccak
+src/kem/lima/upstream/optimized-implementation-master/Lib/%.o: src/kem/lima/upstream/optimized-implementation-master/Lib/%.c libkeccak
 	$(CC) -c -fPIC -O3 -std=c99 -o $@ $< -I$(OPENSSL_INCLUDE_DIR) -I$(KECCAK_INCLUDE_DIR)
 
 kem_lima_2p_1024_cca_kem_upstream: $(OBJS_KEM_LIMA_2P_1024_CCA_KEM) src/kem/lima/upstream/optimized-implementation-master/NIST/EncapCCA/kem.c
