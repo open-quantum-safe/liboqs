@@ -112,7 +112,7 @@ To build, first clone or download the source from GitHub, then run Make.
 If you wish to change the target architecture or disable certain algorithms, edit the first few lines of `Makefile`, then run:
 
 	make clean
-	make
+	make -j8
 
 This will generate:
 
@@ -122,6 +122,10 @@ This will generate:
 - `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
+
+You can specify the path for installation by overriding the `PREFIX` environment variable before running `make install`, for example:
+
+	PREFIX=/path/to/install make install
 
 Documentation
 -------------
