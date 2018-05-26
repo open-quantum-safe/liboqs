@@ -16,14 +16,14 @@ KEM_DEFAULT?=newhope_1024_cca_kem
 ARCH?=x64
 # x64 OR x86
 
-#Currently checking CPUID only on Linux machines this 
+#Currently checking CPUID only on Linux machines this
 #Should be extended to other system in the future.
 DETECTED_OS = $(shell uname -s)
 ifeq ($(DETECTED_OS), Linux)
   AVX_SUPPORT = $(shell grep avx /proc/cpuinfo)
   AVX2_SUPPORT = $(shell grep avx2 /proc/cpuinfo)
   AVX512_SUPPORT = $(shell grep avx512 /proc/cpuinfo)
-  
+
   export AVX_SUPPORT
   export AVX2_SUPPORT
   export AVX512_SUPPORT
@@ -45,6 +45,9 @@ CLANGFORMAT?=clang-format
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
+ifeq ($(arch), "x64")
+  CFLAGS+= -arch x86_64
+endif
 
 ifneq (,$(BINUTILS_VER))
   ifeq ($(shell expr $(BINUTILS_VER) \>= 2.26), 1)
@@ -52,7 +55,7 @@ ifneq (,$(BINUTILS_VER))
     export SUPPORTED_BINUTILS
     CFLAGS+=-DSUPPORTED_BINUTILS=1
   endif
-  
+
   #Allow AVX optimizations only if a relevant binutils is being in use.
   ifneq (,$(AVX512_SUPPORT))
     CFLAGS+=-DAVX512
