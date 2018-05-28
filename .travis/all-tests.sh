@@ -36,6 +36,11 @@ if [ -z ${CC_OVERRIDE+x} ]; then
 	exit 1
 fi
 
+if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+	cat /proc/cpuinfo
+	dpkg -l | grep binutils
+fi
+
 make clean
 make -j8 "ARCH=${ARCH}" "CC=${CC_OVERRIDE}"
 make docs
