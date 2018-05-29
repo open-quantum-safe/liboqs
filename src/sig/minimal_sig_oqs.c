@@ -71,7 +71,7 @@ int main(void) {
 	}
 
 	/* Generates the signature key pair */
-	int success = OQS_SIG_keygen(s, priv, pub);
+	OQS_STATUS success = OQS_SIG_keygen(s, priv, pub);
 	if (success != OQS_SUCCESS) {
 		eprintf("ERROR: OQS_SIG_keygen failed!\n");
 		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);

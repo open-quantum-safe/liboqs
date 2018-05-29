@@ -66,7 +66,7 @@ int main(void) {
 	printf("===============================================================\n");
 
 	/* Alice's initial message */
-	int success = OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
+	OQS_STATUS success = OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
 	if (success != OQS_SUCCESS) {
 		eprintf("ERROR: OQS_KEX_alice_0 failed!\n");
 		cleanup(alice_msg, alice_msg_len, alice_key, alice_key_len, bob_msg,

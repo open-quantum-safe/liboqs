@@ -222,7 +222,8 @@ cleanup:
 void OQS_KEX_ntru_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 	if (alice_priv) {
 		OQS_KEX_ntru_alice_priv *ntru_alice_priv = (OQS_KEX_ntru_alice_priv *) alice_priv;
-		free(ntru_alice_priv->priv_key);
+		//free(ntru_alice_priv->priv_key);
+		OQS_MEM_secure_free(ntru_alice_priv->priv_key, ntru_alice_priv->priv_key_len);
 	}
 	free(alice_priv);
 }
