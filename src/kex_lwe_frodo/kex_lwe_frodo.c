@@ -26,7 +26,6 @@ static size_t alice_priv_key_len = PARAMS_N * PARAMS_NBAR * sizeof(uint16_t);
 #undef MACRIFY
 
 void OQS_KEX_lwe_frodo_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
-	// free(alice_priv);
 	OQS_MEM_secure_free(alice_priv, alice_priv_key_len);
 }
 

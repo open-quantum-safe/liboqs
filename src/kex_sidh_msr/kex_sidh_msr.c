@@ -304,7 +304,6 @@ cleanup:
 
 void OQS_KEX_sidh_msr_alice_priv_free(OQS_KEX *k, void *alice_priv) {
 	if (alice_priv) {
-		// free(alice_priv);
 		SIDH_CTX *sidh_ctx = (SIDH_CTX *) k->ctx;
 		OQS_MEM_secure_free(alice_priv, (sidh_ctx->priv_key_len) * sizeof(uint8_t));
 	}

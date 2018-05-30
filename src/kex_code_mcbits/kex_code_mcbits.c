@@ -145,7 +145,6 @@ cleanup:
 
 void OQS_KEX_code_mcbits_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 	if (alice_priv) {
-		// free(alice_priv);
 		OQS_MEM_secure_free(alice_priv, CRYPTO_SECRETKEYBYTES);
 	}
 }

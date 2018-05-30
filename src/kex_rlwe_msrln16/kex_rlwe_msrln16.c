@@ -155,7 +155,6 @@ cleanup:
 
 void OQS_KEX_rlwe_msrln16_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 	if (alice_priv) {
-		//free(alice_priv);
 		OQS_MEM_secure_free(alice_priv, 1024 * sizeof(uint32_t));
 	}
 }
