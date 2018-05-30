@@ -1,5 +1,5 @@
 /*
- * minimal_kem_oqs.c
+ * example_kem_oqs.c
  *
  * Minimal example of a Diffie-Hellman post-quantum key encapsulation
  * implemented in liboqs.
