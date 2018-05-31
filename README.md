@@ -92,7 +92,7 @@ The dependencies for liboqs are OpenSSL and the Keccak Code Package (libkeccak).
 
 You need to install the following packages:
 
-	sudo apt install gcc libssl-dev
+	sudo apt install gcc libssl-dev xsltproc
 
 ### Install dependencies for macOS
 
