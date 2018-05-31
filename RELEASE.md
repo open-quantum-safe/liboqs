@@ -1,4 +1,4 @@
-liboqs nist-branch snapshot 2018-05 -- DRAFT
+liboqs nist-branch snapshot 2018-05
 ===================================
 
 About
@@ -39,6 +39,7 @@ The following KEMs have been added in the 2018-05 snapshot release:
 
 - Can now be built with multi-threaded make (e.g., `make -j8`)
 - The default pseudorandom number generator is now OpenSSL's `RAND_bytes` function for better performance; applications can choose a different PRNG at runtime
+- `example_kem` matches documented example in https://github.com/open-quantum-safe/liboqs/wiki/Minimal-example-of-a-post-quantum-key-encapsulation-mechanism-(using-the-new-NIST-like)-API (contributed by Vlad Gheorghiu)
 
 ### Fixes
 
@@ -54,6 +55,7 @@ This snapshot release of nist-branch contains the following differences compared
 - Integrations are "light touch" -- see README.md for more about integration philosophy.
 - A different build process is used.
 - A global `randombytes` function is available for random number generation, rather than the `OQS_RAND` object in master.
+- Signature schemes are not yet supported.
 
 Future work
 -----------
