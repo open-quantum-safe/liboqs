@@ -20,12 +20,13 @@
 #include "recommended.h"
 #define MACRIFY(NAME) NAME##_recommended
 #include "kex_lwe_frodo_macrify.c"
+static size_t alice_priv_key_len = PARAMS_N * PARAMS_NBAR * sizeof(uint16_t);
 // undefine macros to avoid any confusion later
 #include "recommended.h"
 #undef MACRIFY
 
 void OQS_KEX_lwe_frodo_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
-	free(alice_priv);
+	OQS_MEM_secure_free(alice_priv, alice_priv_key_len);
 }
 
 void OQS_KEX_lwe_frodo_free(OQS_KEX *k) {

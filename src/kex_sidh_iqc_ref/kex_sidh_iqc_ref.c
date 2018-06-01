@@ -206,7 +206,9 @@ OQS_STATUS OQS_KEX_sidh_iqc_ref_alice_1(OQS_KEX *k, const void *alice_priv,
 
 void OQS_KEX_sidh_iqc_ref_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 	if (alice_priv) {
-		free(alice_priv);
+		uint32_t prime_size = (mpz_sizeinbase(characteristic, 2) + 7) / 8;
+		uint32_t private_key_size = 2 * prime_size;
+		OQS_MEM_secure_free(alice_priv, private_key_size);
 	}
 }
 
