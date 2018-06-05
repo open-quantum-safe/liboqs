@@ -1,4 +1,4 @@
-liboqs nist-branch snapshot 2018-04
+liboqs nist-branch snapshot 2018-05
 ===================================
 
 About
@@ -10,49 +10,41 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 
 This branch of liboqs (**nist-branch**) focuses on incorporating submissions to the NIST Post-Quantum Cryptography standardization project.  Details about nist-branch can be found in [README.md](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/README.md).  See in particular limitations on intended use.
 
+This branch of liboqs can be used with the following Open Quantum Safe application integrations:
+
+- OpenSSL 1.0.2: A prototype integration of liboqs-based key exchange into TLS 1.2 in our fork of OpenSSL 1.0.2; see the [OQS-OpenSSL-1_0_2-stable](https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL_1_0_2-stable) branch of our OpenSSL fork's repository.
+
+
 Release notes
 =============
 
-This snapshot of nist-branch was released on April 10, 2018.  Its release page on Github is https://github.com/open-quantum-safe/liboqs/releases/tag/nist-branch-snapshot-2018-04.
+This snapshot of nist-branch was released on May 30, 2018.  Its release page on Github is https://github.com/open-quantum-safe/liboqs/releases/tag/nist-branch-snapshot-2018-05.
 
 What's New
 ----------
 
-This is the first snapshot release of liboqs nist-branch.
-
-This branch of liboqs aims to non-selectively incorporate submissions to the NIST Post-Quantum Cryptography project for the purposes of benchmarking and integration into a common API for liboqs-reliant applications.
-
-This branch takes a "light touch" approach to incorporation:
-
-- Source code from a NIST submission will be included ideally with no changes, in an "upstream" subdirectory.
-- A thin wrapper will be written to provide the implementation using the liboqs API.
-- The implementation will be added to the build process.
-- To avoid namespace collisions between different algorithms, symbol renaming will be used on the compiled files.
+This is the second snapshot release of liboqs nist-branch.
 
 ### New key encapsulation mechanisms
 
-- FrodoKEM: 4 parameterizations: FrodoKEM-640-AES, FrodoKEM-640-cSHAKE, FrodoKEM-976-AES, FrodoKEM-976-cSHAKE.
-- CRYSTALS-KYBER: 3 parameterizations: Kyber-512, Kyber-768, Kyber-1024.
-- NewHopeNIST: 2 parameterizations: NewHope512-CCA-KEM, NewHope1024-CCA-KEM.
+The following KEMs have been added in the 2018-05 snapshot release:
 
-### Generated executables and libraries
+- **BIG QUAKE**: 3 parameterization: BIG_QUAKE_1, BIG_QUAKE_3, BIG_QUAKE_5 (contributed by Shravan Mashra (University of Waterloo))
+- **BIKE**: 9 parameterizations: BIKE1-L1, BIKE1-L3, BIKE1-L5, BIKE2-L1, BIKE2-L3, BIKE2-L5, BIKE3-L1, BIKE3-L3, BIKE3-L5; optimized builds on Linux platforms with AVX/AVX2/AVX512 support (contributed by Nir Drucker and Shay Gueron (Amazon Web Services))
+- **LIMA**: 6 parameterizations: Lima-2p-1024-CCA-KEM, Lima-2p-2048-CCA-KEM, Lima-sp-1018-CCA-KEM, Lima-sp-1306-CCA-KEM, Lima-sp-1822-CCA-KEM, Lima-sp-2062-CCA-KEM (contributed by Douglas Stebila (McMaster University))
+- **Saber**: 3 parameterizations: LightSaber-KEM, Saber-KEM, FireSaber-KEM (contributed by Douglas Stebila (McMaster University))
+- **SIKE**: 2 parameterizations: Sike-p503, Sike-p751 (contributed by Christian Paquin (Microsoft Research))
 
-- `test_kem`: Simple test harness for all enabled key encapsulation mechanisms.
-- `kat_kem`: Known answer test generator for all enabled key encapsulation mechanisms, to compare against KAT values in NIST submissions.
-- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions.
-- `example_kem`: Minimal runnable example showing the usage of the KEM API.
-- `liboqs.a`: Static library.
-- `liboqs.so`: Shared library.
+### General improvements
 
-### Documentation
+- Can now be built with multi-threaded make (e.g., `make -j8`)
+- The default pseudorandom number generator is now OpenSSL's `RAND_bytes` function for better performance; applications can choose a different PRNG at runtime
+- `example_kem` matches documented example in https://github.com/open-quantum-safe/liboqs/wiki/Minimal-example-of-a-post-quantum-key-encapsulation-mechanism-(using-the-new-NIST-like)-API (contributed by Vlad Gheorghiu)
 
-- Full Doxygen documentation of the public API (`oqs/common.h`, `oqs/config.h`, `oqs/kem.h`, and `oqs/rand.h`).
-- Algorithm datasheets for all supported algorithms in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/nist-branch/docs/algorithms).
-- Instructions for contributing new algorithms in [CONTRIBUTING.md](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/CONTRIBUTING.md).
+### Fixes
 
-### Application integrations
-
-- OpenSSL 1.0.2: A prototype integration of liboqs-based key exchange into TLS 1.2 in our fork of OpenSSL 1.0.2; see the [OQS-OpenSSL-1_0_2-stable](https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL_1_0_2-stable) branch of our OpenSSL fork's repository.
+- Fixed improperly built shared library
+- Cleansed secret variables in example programs
 
 Comparison to liboqs master
 ---------------------------
@@ -63,10 +55,11 @@ This snapshot release of nist-branch contains the following differences compared
 - Integrations are "light touch" -- see README.md for more about integration philosophy.
 - A different build process is used.
 - A global `randombytes` function is available for random number generation, rather than the `OQS_RAND` object in master.
+- Signature schemes are not yet supported.
 
 Future work
 -----------
 
-Snapshot releases of nist-branch will be made monthly.
+Snapshot releases of nist-branch will be made monthly.  Plans for the next snapshot release of nist-branch can be found online at https://github.com/open-quantum-safe/liboqs/projects/8.
 
-By mid-May 2018, we intend to have nist-branch and master branch with the same API, and for our OpenSSL and OpenSSH integrations building against both nist-branch and master branch.
+By the end of June 2018, we aim to release a new version of our master branch that uses the same API as nist-branch.
