@@ -116,6 +116,10 @@ ARG_ENABL_SET([kex-rlwe-newhope-avx2], [enable KEX-RLWE-NEWHOPE-AVX2.])
 AM_CONDITIONAL([kex_rlwe_newhope_avx2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
 AM_CONDITIONAL([USE_KEX_RLWE_NEWHOPE_AVX2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
 
+ARG_DISBL_SET([kem-sike], [disable KEM-SIKE.])
+AM_CONDITIONAL([kem_sike], [test "x$kem_sike" = xtrue])
+AM_CONDITIONAL([USE_KEM_SIKE], [test "x$kem_sike" = xtrue])
+
 AC_CANONICAL_HOST
 
 # Check for which host we are on and setup a few things
@@ -212,6 +216,17 @@ if test x"$sig_picnic" = x"true"; then
   AC_DEFINE(ENABLE_SIG_PICNIC, 1, "Define to 1 when PICNIC enabled")
 fi
 
+# KEM
+SRCDIR=${SRCDIR}" src/kem"
+
+if test x"$kem_sike" = x"true"; then
+  SRCDIR=${SRCDIR}" src/kem/sike"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DOQS_ENABLE_KEM_sike_p503 -DOQS_ENABLE_KEM_sike_p751"
+  AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")
+  AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")
+fi
+
+
 # Flags
 AM_CPPFLAGS=${AM_CPPFLAGS}" -g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 # if test x"$aes_ni" = x"true" && test x"$ARM" = x"false"; then
@@ -245,10 +260,12 @@ AC_SUBST(USE_SIG_PICNIC)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE_AVX2)
+AC_SUBST(USE_KEM_SIKE)
 
 
 AC_CONFIG_FILES([Makefile
                  src/common/Makefile
+                 src/kem/Makefile
                  src/kex/Makefile
                  src/crypto/sha3/Makefile
                  src/crypto/rand_urandom_chacha20/Makefile
@@ -262,6 +279,8 @@ AC_CONFIG_FILES([Makefile
                  src/kex_lwe_frodo/Makefile
                  src/sig/Makefile
                  src/sig_picnic/Makefile
-                 src/kex_rlwe_newhope/avx2/Makefile])
+                 src/kex_rlwe_newhope/avx2/Makefile
+                 src/kem/sike/Makefile
+                 ])
 
 AC_OUTPUT

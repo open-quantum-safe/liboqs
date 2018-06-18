@@ -19,6 +19,7 @@ liboqs_la_LIBADD += src/crypto/aes/libaes.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
+liboqs_la_LIBADD += src/kem/libkem.la
 liboqs_la_LIBADD += src/kex/libkex.la
 if USE_KEX_RLWE_NEWHOPE_AVX2
 liboqs_la_LIBADD += src/kex_rlwe_newhope/avx2/libnewhope_avx2.la
@@ -47,6 +48,10 @@ if USE_SIG_PICNIC
 liboqs_la_LIBADD += src/sig_picnic/libpicnic_i.la
 endif
 
+if USE_KEM_SIKE
+liboqs_la_LIBADD += src/kem/sike/libkemsike.la
+endif
+
 installheaderdir=$(includedir)/oqs
 installheader_HEADERS=config.h \
 	src/oqs.h \
@@ -56,12 +61,14 @@ installheader_HEADERS=config.h \
 	src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h \
 	src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h \
 	src/crypto/sha3/sha3.h \
+	src/kem/kem.h \
 	src/kex/kex.h \
 	src/kex_lwe_frodo/kex_lwe_frodo.h \
 	src/kex_ntru/kex_ntru.h \
 	src/kex_rlwe_bcns15/kex_rlwe_bcns15.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
 	src/kex_sidh_msr/kex_sidh_msr.h \
+	src/kem/sike/kem_sike.h \
 	src/sig/sig.h
 
 install-exec-local:
@@ -82,7 +89,7 @@ if USE_MCBITS
 	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
 
-noinst_bin_PROGRAMS = test_kex test_aes test_rand test_sha3
+noinst_bin_PROGRAMS = speed_kem test_kem test_kex test_aes test_rand test_sha3
 if USE_KEX_LWE_FRODO
 noinst_bin_PROGRAMS += minimal_kex_oqs
 endif
@@ -91,6 +98,23 @@ noinst_bin_PROGRAMS += test_sig minimal_sig_oqs
 endif
 
 noinst_bindir=$(prefix)/tests
+
+speed_kem_LDADD =  liboqs.la -lm
+speed_kem_SOURCES = src/kem/speed_kem.c
+speed_kem_CPPFLAGS = -I./include
+speed_kem_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+speed_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
+test_kem_LDADD =  liboqs.la -lm
+test_kem_SOURCES = src/kem/test_kem.c
+test_kem_CPPFLAGS = -I./include
+test_kem_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+test_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
 test_kex_LDADD =  liboqs.la -lm
 test_kex_SOURCES = src/kex/test_kex.c
 test_kex_CPPFLAGS = -I./include
@@ -164,6 +188,7 @@ test_sha3_CPPFLAGS += $(AM_CPPFLAGS)
 
 test: clean-tests
 	make
+	./test_kem
 	./test_kex --quiet
 	./test_rand --quiet
 	./test_aes
@@ -186,6 +211,8 @@ links:
 	cp -f src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 	cp -f src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	cp -f src/crypto/sha3/sha3.h include/oqs
+	cp -f src/kem/kem.h include/oqs
+	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
@@ -215,7 +242,7 @@ if USE_SIG_PICNIC
 endif
 
 clean-tests:
-	rm -f test_kex test_rand test_aes test_sha3
+	rm -f speed_kem test_kem test_kex test_rand test_aes test_sha3
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
