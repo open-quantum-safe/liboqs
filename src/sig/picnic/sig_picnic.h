@@ -1,5 +1,5 @@
-#ifndef __OQS_SIG_SIKE_H
-#define __OQS_SIG_SIKE_H
+#ifndef __OQS_SIG_PICNIC_H
+#define __OQS_SIG_PICNIC_H
 
 #include <oqs/oqs.h>
 
@@ -75,7 +75,7 @@ extern OQS_STATUS OQS_SIG_picnic_L5_FS_sign_open(uint8_t *message, size_t *messa
 
 #ifdef OQS_ENABLE_SIG_picnic_L5_UR
 
-#define OQS_SIG_picnic_L5_UR_length_public_key 65 
+#define OQS_SIG_picnic_L5_UR_length_public_key 65
 #define OQS_SIG_picnic_L5_UR_length_secret_key 98
 #define OQS_SIG_picnic_L5_UR_length_signature 209478
 
