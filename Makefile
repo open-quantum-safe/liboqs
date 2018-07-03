@@ -137,7 +137,7 @@ headers: config_h mkdirs
 
 libkeccak:
 	bash scripts/build-keccak-code-package.sh
-	$(RM) -f .objs/keccak FIXMEOQS
+	$(RM) -rf .objs/keccak
 	mkdir -p .objs/keccak
 	cd .objs/keccak && ar x ../../vendor/KeccakCodePackage-master/bin/generic64/libkeccak.a
 
