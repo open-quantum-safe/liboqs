@@ -10,24 +10,24 @@ PRINT_RESET="tput sgr 0"
 
 RET=0
 
-KEMS=`grep 'define OQS_KEM_alg_' src/kem/kem.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
-for kem in ${KEMS}; do
+ALGS=`grep 'define OQS_..._alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
+for alg in ${ALGS}; do
 
-	kat="kat_kem_rsp/${kem}.kat"
-	if [[ ! -e ${kat} ]];
+	kat=`find kat_*_rsp -name ${alg}*.kat |tr '\n' ' '`
+	if [ ! -e ${kat} ];
 	then
 		${PRINT_RED}
-		echo "KAT file not generated for ${kem}"
+		echo "KAT file not generated for ${alg}"
 		${PRINT_RESET}
 		RET=1
 		continue
 	fi
 
-	origs=`find src -name ${kem}*.kat |tr '\n' ' '`
+	origs=`find src -name ${alg}*.kat |tr '\n' ' '`
 	if [[ "x${origs}x" == "xx" ]];
 	then
 		${PRINT_RED}
-		echo "No original KAT file found for ${kem}"
+		echo "No original KAT file found for ${alg}"
 		${PRINT_RESET}
 		RET=1
 		continue
@@ -39,7 +39,7 @@ for kem in ${KEMS}; do
 		error=$?
 		if [ $error -eq 0 ] 
 		then
-			echo "KAT values match for ${kem} and ${orig}"
+			echo "KAT values match for ${alg} and ${orig}"
 			match=1
 			break			
 		elif [ ! $error -eq 1 ]
@@ -54,11 +54,12 @@ for kem in ${KEMS}; do
         if [ $match -eq 0 ] 
 	then
 		${PRINT_RED}
-		echo "KAT values do not match for ${kem} with any of ${origs}"
+		echo "KAT values do not match for ${alg} with any of ${origs}"
 		${PRINT_RESET}
 		RET=1
 	fi
 done
+
 
 if [[ "${RET}" == "0" ]];
 then

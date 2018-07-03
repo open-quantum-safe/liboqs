@@ -6,9 +6,14 @@ liboqs.so
 src/config.h
 test_kem
 test_kem_shared
+test_sig
+test_sig_shared
 kat_kem
+kat_sig
 speed_kem
+speed_sig
 example_kem
+example_sig
 *dSYM
 src/*.o
 src/*/*.o
@@ -21,6 +26,7 @@ src/kem/frodokem/upstream/frodo640/
 src/kem/frodokem/upstream/frodo976/
 docs/doxygen
 kat_kem_rsp/
+kat_sig_rsp/
 *~
 usr_local
 src/kem/sike/upstream/Optimized_Implementation/portable/SIKEp503/

@@ -1,0 +1,3 @@
+crypto_sign_keypair OQS_SIG_picnic_L5_FS_keypair
+crypto_sign OQS_SIG_picnic_L5_FS_sign
+crypto_sign_open OQS_SIG_picnic_L5_FS_sign_open

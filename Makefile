@@ -13,6 +13,10 @@ KEMS_TO_ENABLE?=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_9
 
 KEM_DEFAULT?=newhope_1024_cca_kem
 
+SIGS_TO_ENABLE?=picnic_L1_FS picnic_L1_UR picnic_L3_FS picnic_L3_UR picnic_L5_FS picnic_L5_UR # EDIT-WHEN-ADDING-SIG
+
+SIG_DEFAULT?=picnic_L1_FS
+
 ARCH?=x64
 # x64 OR x86
 
@@ -43,6 +47,8 @@ CLANGFORMAT?=clang-format
 # NOTHING AFTER THIS SHOULD NEED TO BE CHANGED BY THE PERSON COMPILING
 
 ENABLE_KEMS= # THIS WILL BE FILLED IN BY INDIVIDUAL KEMS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
+
+ENABLE_SIGS= # THIS WILL BE FILLED IN BY INDIVIDUAL SIGS' MAKEFILES IN COMBINATION WITH THE ARCHITECTURE
 
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 ifeq ($(arch), "x64")
@@ -78,9 +84,10 @@ TO_CLEAN=liboqs.a
 
 include src/common/Makefile
 include src/kem/Makefile
+include src/sig/Makefile
 
-HEADERS=src/oqs.h $(HEADERS_COMMON) $(HEADERS_KEM)
-OBJECTS=$(OBJECTS_COMMON) $(OBJECTS_KEM)
+HEADERS=src/oqs.h $(HEADERS_COMMON) $(HEADERS_KEM) $(HEADERS_SIG)
+OBJECTS=$(OBJECTS_COMMON) $(OBJECTS_KEM) $(OBJECTS_SIG)
 
 mkdirs:
 	mkdir -p $(OBJECT_DIRS)
@@ -97,8 +104,11 @@ config_h:
 	echo " * @brief Pre-processor macros indicating compile-time options." >> src/config.h
 	echo " */" >> src/config.h
 	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "/** Preprocessor macro indicating KEM $(ENABLE_KEM) is enabled. */" >> src/config.h; echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/config.h;)
+	$(foreach ENABLE_SIG, $(ENABLE_SIGS), echo "/** Preprocessor macro indicating SIG $(ENABLE_SIG) is enabled. */" >> src/config.h; echo "#define OQS_ENABLE_SIG_$(ENABLE_SIG)" >> src/config.h;)
 	echo "/** Preprocessor macro setting the default KEM to $(KEM_DEFAULT). */" >> src/config.h
 	echo "#define OQS_KEM_DEFAULT OQS_KEM_alg_$(KEM_DEFAULT)" >> src/config.h
+	echo "/** Preprocessor macro setting the default SIG to $(SIG_DEFAULT). */" >> src/config.h
+	echo "#define OQS_SIG_DEFAULT OQS_SIG_alg_$(SIG_DEFAULT)" >> src/config.h
 	echo "/** Date on which liboqs was compiled. */" >> src/config.h
 	echo "#define OQS_COMPILE_DATE \"$(DATE)\"" >> src/config.h
 	echo "/** Compiler command used to compile liboqs. */" >> src/config.h
@@ -111,8 +121,12 @@ config_h:
 	echo "#define OQS_COMPILE_LDFLAGS \"$(LDFLAGS)\"" >> src/config.h
 	echo "/** List of KEMs enabled at compile time. */" >> src/config.h
 	echo "#define OQS_COMPILE_ENABLE_KEMS \"$(ENABLE_KEMS)\"" >> src/config.h
+	echo "/** List of SIGs enabled at compile time. */" >> src/config.h
+	echo "#define OQS_COMPILE_ENABLE_SIGS \"$(ENABLE_SIGS)\"" >> src/config.h
 	echo "/** Which KEM is mapped to the default (OQS_KEM_alg_default). */" >> src/config.h
 	echo "#define OQS_COMPILE_KEM_DEFAULT \"$(KEM_DEFAULT)\"" >> src/config.h
+	echo "/** Which SIG is mapped to the default (OQS_SIG_alg_default). */" >> src/config.h
+	echo "#define OQS_COMPILE_SIG_DEFAULT \"$(SIG_DEFAULT)\"" >> src/config.h
 	echo "/** Platform on which liboqs was compiled. */" >> src/config.h
 	echo "#define OQS_COMPILE_UNAME \"$(UNAME)\"" >> src/config.h
 
@@ -123,7 +137,7 @@ headers: config_h mkdirs
 
 libkeccak:
 	bash scripts/build-keccak-code-package.sh
-	$(RM) -f .objs/keccak
+	$(RM) -f .objs/keccak FIXMEOQS
 	mkdir -p .objs/keccak
 	cd .objs/keccak && ar x ../../vendor/KeccakCodePackage-master/bin/generic64/libkeccak.a
 
@@ -132,29 +146,32 @@ liboqs: libkeccak headers $(OBJECTS) $(UPSTREAMS)
 	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
 	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` -lcrypto
 
-TEST_PROGRAMS=test_kem test_kem_shared
+TEST_PROGRAMS=test_kem test_kem_shared test_sig test_sig_shared
 $(TEST_PROGRAMS): liboqs
 tests: $(TEST_PROGRAMS)
 
-KAT_PROGRAMS=kat_kem
+KAT_PROGRAMS=kat_kem kat_sig
 $(KAT_PROGRAMS): liboqs
 kats: $(KAT_PROGRAMS)
 
 test: tests
 	./test_kem
+	./test_sig
 
 kat: kats
 	./kat_kem
+	./kat_sig
 	scripts/check_kats.sh
 
-SPEED_PROGRAMS=speed_kem
+SPEED_PROGRAMS=speed_kem speed_sig
 $(SPEED_PROGRAMS): liboqs
 speeds: $(SPEED_PROGRAMS)
 
 speed: speeds
 	./speed_kem --info
+	./speed_sig --info
 
-EXAMPLE_PROGRAMS=example_kem
+EXAMPLE_PROGRAMS=example_kem example_sig
 $(EXAMPLE_PROGRAMS): liboqs
 examples: $(EXAMPLE_PROGRAMS)
 
@@ -177,7 +194,7 @@ clean:
 	$(RM) -r includes
 	$(RM) -r .objs
 	$(RM) -r *.dSYM
-	$(RM) -r kat_kem_rsp
+	$(RM) -r kat_kem_rsp kat_sig_rsp
 	$(RM) -r .objs_upstream
 	$(RM) liboqs.a liboqs.so
 	$(RM) $(TO_CLEAN)

@@ -35,6 +35,11 @@ The following KEMs have been added in the 2018-05 snapshot release:
 - **Saber**: 3 parameterizations: LightSaber-KEM, Saber-KEM, FireSaber-KEM (contributed by Douglas Stebila (McMaster University))
 - **SIKE**: 2 parameterizations: Sike-p503, Sike-p751 (contributed by Christian Paquin (Microsoft Research))
 
+### New signature schemes
+
+The following signature schemes have been added in the 2018-07 snapshot release:
+- **Picnic**: 6 parameterizations: picnic_L1_FS, picnic_L1_UR, picnic_L3_FS, picnic_L3_UR, picnic_L5_FS, picnic_L5_UR (contributed by Christian Paquin (Microsoft Research))
+
 ### General improvements
 
 - Can now be built with multi-threaded make (e.g., `make -j8`)

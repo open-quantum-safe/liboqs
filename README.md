@@ -75,7 +75,7 @@ Lifecycle for nist-branch
 
 **Algorithm compatibility:** Algorithm implementations on nist-branch may be updated at any time.  This may cause changes in runtime or even a change in the message generation and processing.  Thus, no guarantees are made for compatibility of messages exchange between different snapshots of nist-branch.
 
-**API stability:** The public API of liboqs nist-branch is considered to be the functions in `oqs/common.h`, `oqs/config.h`, `oqs/kem.h`, and `oqs/rand.h`.  For the first few snapshot releases of nist-branch, this API should be considered in draft.
+**API stability:** The public API of liboqs nist-branch is considered to be the functions in `oqs/common.h`, `oqs/config.h`, `oqs/kem.h`, `oqs/rand.h`, and `oqs/sig.h`.  For the first few snapshot releases of nist-branch, this API should be considered in draft.
 
 **Binary compatibility:** No guarantees are made for binary compatibility between different snapshots of nist-branch.
 
@@ -119,9 +119,13 @@ This will generate:
 - `liboqs.a`: Static library
 - `liboqs.so`: Shared library
 - `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
+- `test_sig`: Simple test harness for all enabled key signature schemes
 - `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
+- `kat_sig`: Program that generates known answer test (KAT) values for all enabled signature schemes using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
+- `speed_sig`: Benchmarking program for signature schemes; see `./speed_sig --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
+- `example_sig`: Minimal runnable example showing the usage of the signature API
 
 You can specify the path for installation by overriding the `PREFIX` environment variable before running `make install`, for example:
 

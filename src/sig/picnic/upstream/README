@@ -1,0 +1,55 @@
+The Picnic Digital Signature Algorithm
+2017-09-29
+
+Melissa Chase, David Derler, Steven Goldfeder, Claudio Orlandi, 
+Sebastian Ramacher, Christian Rechberger, Daniel Slamanig, Greg Zaverucha
+
+Submission package for the NIST Post-Quantum Cryptography Standardization 
+project 
+https://csrc.nist.gov/projects/post-quantum-cryptography/post-quantum-cryptography-standardization
+
+All software in this package was tested under Linux and builds with make. 
+
+Package Contents
+
+submission/
+├── Additional_Implementations    Optimized for specific processor features, AVX2 and ARM NEON
+│   ├── picnicl1fs-avx2
+│   ├── picnicl1ur-avx2
+│   ├── picnicl3fs-avx2
+│   ├── picnicl3ur-avx2
+│   ├── picnicl5fs-avx2
+│   ├── picnicl5ur-avx2
+│   ├── picnicl1fs-neon
+│   ├── picnicl1ur-neon
+│   ├── picnicl3fs-neon
+│   ├── picnicl3ur-neon
+│   ├── picnicl5fs-neon
+│   └── picnicl5ur-neon
+├── KAT                         One set KATs per parameter set
+│   ├── picnicl1fs
+│   ├── picnicl3fs
+│   ├── picnicl5fs
+│   ├── picnicl1ur
+│   ├── picnicl3ur
+│   └── picnicl5ur
+├── Optimized_Implementation    Optimized C implementation
+│   ├── picnicl1fs
+│   ├── picnicl1ur
+│   ├── picnicl3fs
+│   ├── picnicl3ur
+│   ├── picnicl5fs
+│   └── picnicl5ur
+├── Reference_Implementation     Unoptimized reference implementation
+│   ├── picnicl1fs
+│   ├── picnicl1ur
+│   ├── picnicl3fs
+│   ├── picnicl3ur
+│   ├── picnicl5fs
+│   └── picnicl5ur
+└── Supporting_Documentation
+    ├── Picnic_Cover_Sheet.pdf
+    ├── Picnic_Design.pdf       Design and security analysis document
+    └── Picnic_Spec.pdf         Specification document
+
+
