@@ -7,7 +7,7 @@
 
 #define OQS_SIG_qTESLA_I_length_public_key 1504
 #define OQS_SIG_qTESLA_I_length_secret_key 2112
-#define OQS_SIG_qTESLA_I_length_signature 1376
+#define OQS_SIG_qTESLA_I_length_sig_overhead 1376
 
 OQS_SIG *OQS_SIG_qTESLA_I_new();
 
@@ -21,7 +21,7 @@ extern OQS_STATUS OQS_SIG_qTESLA_I_sign_open(uint8_t *message, size_t *message_l
 
 #define OQS_SIG_qTESLA_III_size_length_public_key 2976
 #define OQS_SIG_qTESLA_III_size_length_secret_key 4160
-#define OQS_SIG_qTESLA_III_size_length_signature 2720
+#define OQS_SIG_qTESLA_III_size_length_sig_overhead 2720
 
 OQS_SIG *OQS_SIG_qTESLA_III_size_new();
 
@@ -35,7 +35,7 @@ extern OQS_STATUS OQS_SIG_qTESLA_III_size_sign_open(uint8_t *message, size_t *me
 
 #define OQS_SIG_qTESLA_III_speed_length_public_key 3104
 #define OQS_SIG_qTESLA_III_speed_length_secret_key 4160
-#define OQS_SIG_qTESLA_III_speed_length_signature 2848
+#define OQS_SIG_qTESLA_III_speed_length_sig_overhead 2848
 
 OQS_SIG *OQS_SIG_qTESLA_III_speed_new();
 
@@ -49,7 +49,7 @@ extern OQS_STATUS OQS_SIG_qTESLA_III_speed_sign_open(uint8_t *message, size_t *m
 
 #define OQS_SIG_qTESLA_p_I_length_public_key 14880
 #define OQS_SIG_qTESLA_p_I_length_secret_key 5184
-#define OQS_SIG_qTESLA_p_I_length_signature 2848
+#define OQS_SIG_qTESLA_p_I_length_sig_overhead 2848
 
 OQS_SIG *OQS_SIG_qTESLA_p_I_new();
 
@@ -63,7 +63,7 @@ extern OQS_STATUS OQS_SIG_qTESLA_p_I_sign_open(uint8_t *message, size_t *message
 
 #define OQS_SIG_qTESLA_p_III_length_public_key 39712
 #define OQS_SIG_qTESLA_p_III_length_secret_key 12352
-#define OQS_SIG_qTESLA_p_III_length_signature 6176
+#define OQS_SIG_qTESLA_p_III_length_sig_overhead 6176
 
 OQS_SIG *OQS_SIG_qTESLA_p_III_new();
 

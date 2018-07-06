@@ -83,8 +83,8 @@ typedef struct OQS_SIG {
 	size_t length_public_key;
 	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
 	size_t length_secret_key;
-	/** The (maximum) length, in bytes, of signatures for this signature scheme. */
-	size_t length_signature;
+	/** The (maximum) length, in bytes, of signature overheads for this signature scheme. */
+	size_t length_sig_overhead;
 
 	// clang-format off
 

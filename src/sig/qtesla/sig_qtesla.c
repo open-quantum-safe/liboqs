@@ -17,7 +17,7 @@ OQS_SIG *OQS_SIG_qTESLA_I_new() {
 
 	sig->length_public_key = OQS_SIG_qTESLA_I_length_public_key;
 	sig->length_secret_key = OQS_SIG_qTESLA_I_length_secret_key;
-	sig->length_signature  = OQS_SIG_qTESLA_I_length_signature;
+	sig->length_sig_overhead = OQS_SIG_qTESLA_I_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_qTESLA_I_keypair;
 	sig->sign = OQS_SIG_qTESLA_I_sign;
@@ -43,7 +43,7 @@ OQS_SIG *OQS_SIG_qTESLA_III_size_new() {
 
 	sig->length_public_key = OQS_SIG_qTESLA_III_size_length_public_key;
 	sig->length_secret_key = OQS_SIG_qTESLA_III_size_length_secret_key;
-	sig->length_signature  = OQS_SIG_qTESLA_III_size_length_signature;
+	sig->length_sig_overhead = OQS_SIG_qTESLA_III_size_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_qTESLA_III_size_keypair;
 	sig->sign = OQS_SIG_qTESLA_III_size_sign;
@@ -69,7 +69,7 @@ OQS_SIG *OQS_SIG_qTESLA_III_speed_new() {
 
 	sig->length_public_key = OQS_SIG_qTESLA_III_speed_length_public_key;
 	sig->length_secret_key = OQS_SIG_qTESLA_III_speed_length_secret_key;
-	sig->length_signature  = OQS_SIG_qTESLA_III_speed_length_signature;
+	sig->length_sig_overhead = OQS_SIG_qTESLA_III_speed_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_qTESLA_III_speed_keypair;
 	sig->sign = OQS_SIG_qTESLA_III_speed_sign;
@@ -95,7 +95,7 @@ OQS_SIG *OQS_SIG_qTESLA_p_I_new() {
 
 	sig->length_public_key = OQS_SIG_qTESLA_p_I_length_public_key;
 	sig->length_secret_key = OQS_SIG_qTESLA_p_I_length_secret_key;
-	sig->length_signature  = OQS_SIG_qTESLA_p_I_length_signature;
+	sig->length_sig_overhead = OQS_SIG_qTESLA_p_I_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_qTESLA_p_I_keypair;
 	sig->sign = OQS_SIG_qTESLA_p_I_sign;
@@ -121,7 +121,7 @@ OQS_SIG *OQS_SIG_qTESLA_p_III_new() {
 
 	sig->length_public_key = OQS_SIG_qTESLA_p_III_length_public_key;
 	sig->length_secret_key = OQS_SIG_qTESLA_p_III_length_secret_key;
-	sig->length_signature  = OQS_SIG_qTESLA_p_III_length_signature;
+	sig->length_sig_overhead = OQS_SIG_qTESLA_p_III_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_qTESLA_p_III_keypair;
 	sig->sign = OQS_SIG_qTESLA_p_III_sign;

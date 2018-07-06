@@ -17,7 +17,7 @@ OQS_SIG *OQS_SIG_picnic_L1_FS_new() {
 
 	sig->length_public_key = OQS_SIG_picnic_L1_FS_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L1_FS_length_secret_key;
-	sig->length_signature  = OQS_SIG_picnic_L1_FS_length_signature;
+	sig->length_sig_overhead = OQS_SIG_picnic_L1_FS_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_picnic_L1_FS_keypair;
 	sig->sign = OQS_SIG_picnic_L1_FS_sign;
@@ -43,7 +43,7 @@ OQS_SIG *OQS_SIG_picnic_L1_UR_new() {
 
 	sig->length_public_key = OQS_SIG_picnic_L1_UR_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L1_UR_length_secret_key;
-	sig->length_signature  = OQS_SIG_picnic_L1_UR_length_signature;
+	sig->length_sig_overhead = OQS_SIG_picnic_L1_UR_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_picnic_L1_UR_keypair;
 	sig->sign = OQS_SIG_picnic_L1_UR_sign;
@@ -69,7 +69,7 @@ OQS_SIG *OQS_SIG_picnic_L3_FS_new() {
 	
 	sig->length_public_key = OQS_SIG_picnic_L3_FS_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L3_FS_length_secret_key;
-	sig->length_signature  = OQS_SIG_picnic_L3_FS_length_signature;
+	sig->length_sig_overhead = OQS_SIG_picnic_L3_FS_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_picnic_L3_FS_keypair;
 	sig->sign = OQS_SIG_picnic_L3_FS_sign;
@@ -95,7 +95,7 @@ OQS_SIG *OQS_SIG_picnic_L3_UR_new() {
 	
 	sig->length_public_key = OQS_SIG_picnic_L3_UR_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L3_UR_length_secret_key;
-	sig->length_signature  = OQS_SIG_picnic_L3_UR_length_signature;
+	sig->length_sig_overhead = OQS_SIG_picnic_L3_UR_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_picnic_L3_UR_keypair;
 	sig->sign = OQS_SIG_picnic_L3_UR_sign;
@@ -121,7 +121,7 @@ OQS_SIG *OQS_SIG_picnic_L5_FS_new() {
 	
 	sig->length_public_key = OQS_SIG_picnic_L5_FS_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L5_FS_length_secret_key;
-	sig->length_signature  = OQS_SIG_picnic_L5_FS_length_signature;
+	sig->length_sig_overhead = OQS_SIG_picnic_L5_FS_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_picnic_L5_FS_keypair;
 	sig->sign = OQS_SIG_picnic_L5_FS_sign;
@@ -147,7 +147,7 @@ OQS_SIG *OQS_SIG_picnic_L5_UR_new() {
 	
 	sig->length_public_key = OQS_SIG_picnic_L5_UR_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L5_UR_length_secret_key;
-	sig->length_signature  = OQS_SIG_picnic_L5_UR_length_signature;
+	sig->length_sig_overhead = OQS_SIG_picnic_L5_UR_length_sig_overhead;
 
 	sig->keypair = OQS_SIG_picnic_L5_UR_keypair;
 	sig->sign = OQS_SIG_picnic_L5_UR_sign;
