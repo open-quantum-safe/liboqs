@@ -13,7 +13,7 @@ OQS_SIG *OQS_SIG_qTESLA_I_new() {
 	sig->method_name = OQS_SIG_alg_qTESLA_I;
 
 	sig->claimed_nist_level = 1;
-	sig->euf_cma = false;
+	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_qTESLA_I_length_public_key;
 	sig->length_secret_key = OQS_SIG_qTESLA_I_length_secret_key;
@@ -39,7 +39,7 @@ OQS_SIG *OQS_SIG_qTESLA_III_size_new() {
 	sig->method_name = OQS_SIG_alg_qTESLA_III_size;
 
 	sig->claimed_nist_level = 3;
-	sig->euf_cma = false;
+	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_qTESLA_III_size_length_public_key;
 	sig->length_secret_key = OQS_SIG_qTESLA_III_size_length_secret_key;
@@ -65,7 +65,7 @@ OQS_SIG *OQS_SIG_qTESLA_III_speed_new() {
 	sig->method_name = OQS_SIG_alg_qTESLA_III_speed;
 
 	sig->claimed_nist_level = 3;
-	sig->euf_cma = false;
+	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_qTESLA_III_speed_length_public_key;
 	sig->length_secret_key = OQS_SIG_qTESLA_III_speed_length_secret_key;
