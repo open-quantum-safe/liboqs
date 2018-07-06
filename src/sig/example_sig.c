@@ -106,7 +106,7 @@ static OQS_STATUS example_heap() {
 	}
 
 	OQS_randombytes(message, message_len);
-	
+
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_keypair failed!\n");

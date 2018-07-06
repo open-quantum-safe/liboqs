@@ -36,7 +36,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	}
 
 	OQS_randombytes(message, message_len);
-	
+
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
@@ -56,7 +56,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	}
 
 	/* modify the signed message to invalidate the signature */
-	signed_message[0]++; 
+	signed_message[0]++;
 	rc = OQS_SIG_sign_open(sig, message, &message_len, signed_message, signed_message_len, public_key);
 	if (rc != OQS_ERROR) {
 		fprintf(stderr, "ERROR: OQS_SIG_sign_open should have failed!\n");

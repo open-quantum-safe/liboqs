@@ -74,7 +74,7 @@ static OQS_STATUS sig_kat(const char *method_name) {
 	fprintBstr(fh, "msg = ", message, mlen);
 
 	OQS_randombytes_nist_kat_init(seed, NULL, 256);
-	
+
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_keypair failed!\n", method_name);

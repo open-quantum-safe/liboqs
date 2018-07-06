@@ -66,7 +66,7 @@ OQS_SIG *OQS_SIG_picnic_L3_FS_new() {
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
-	
+
 	sig->length_public_key = OQS_SIG_picnic_L3_FS_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L3_FS_length_secret_key;
 	sig->length_sig_overhead = OQS_SIG_picnic_L3_FS_length_sig_overhead;
@@ -92,7 +92,7 @@ OQS_SIG *OQS_SIG_picnic_L3_UR_new() {
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
-	
+
 	sig->length_public_key = OQS_SIG_picnic_L3_UR_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L3_UR_length_secret_key;
 	sig->length_sig_overhead = OQS_SIG_picnic_L3_UR_length_sig_overhead;
@@ -118,7 +118,7 @@ OQS_SIG *OQS_SIG_picnic_L5_FS_new() {
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;
-	
+
 	sig->length_public_key = OQS_SIG_picnic_L5_FS_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L5_FS_length_secret_key;
 	sig->length_sig_overhead = OQS_SIG_picnic_L5_FS_length_sig_overhead;
@@ -144,7 +144,7 @@ OQS_SIG *OQS_SIG_picnic_L5_UR_new() {
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;
-	
+
 	sig->length_public_key = OQS_SIG_picnic_L5_UR_length_public_key;
 	sig->length_secret_key = OQS_SIG_picnic_L5_UR_length_secret_key;
 	sig->length_sig_overhead = OQS_SIG_picnic_L5_UR_length_sig_overhead;
