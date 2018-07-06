@@ -39,6 +39,7 @@ The following KEMs have been added in the 2018-05 snapshot release:
 
 The following signature schemes have been added in the 2018-07 snapshot release:
 - **Picnic**: 6 parameterizations: picnic_L1_FS, picnic_L1_UR, picnic_L3_FS, picnic_L3_UR, picnic_L5_FS, picnic_L5_UR (contributed by Christian Paquin (Microsoft Research))
+- **qTESLA**: 5 parameterizations: qTESLA_I, qTESLA_III_size, qTESLA_III_speed, qTESLA_p_I, qTESLA_p_I (contributed by Christian Paquin (Microsoft Research))
 
 ### General improvements
 

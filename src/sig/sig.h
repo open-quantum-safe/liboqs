@@ -39,9 +39,20 @@
 #define OQS_SIG_alg_picnic_L5_FS "picnic_L5_FS"
 /** Algorithm identifier for Picnic_L5_FS */
 #define OQS_SIG_alg_picnic_L5_UR "picnic_L5_UR"
+/** Algorithm identifier for qTESLA_I */
+#define OQS_SIG_alg_qTESLA_I "qTESLA_I"
+/** Algorithm identifier for qTESLA_III_size */
+#define OQS_SIG_alg_qTESLA_III_size "qTESLA_III_size"
+/** Algorithm identifier for qTESLA_III_speed */
+#define OQS_SIG_alg_qTESLA_III_speed "qTESLA_III_speed"
+/** Algorithm identifier for qTESLA_p_I */
+#define OQS_SIG_alg_qTESLA_p_I "qTESLA_p_I"
+/** Algorithm identifier for qTESLA_p_III */
+#define OQS_SIG_alg_qTESLA_p_III "qTESLA_p_III"
+
 // EDIT-WHEN-ADDING-SIG
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 7
+#define OQS_SIG_algs_length 12
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_new.
@@ -192,6 +203,7 @@ OQS_STATUS OQS_SIG_sign_open(const OQS_SIG *sig, uint8_t *message, size_t *messa
 void OQS_SIG_free(OQS_SIG *sig);
 
 #include <oqs/sig_picnic.h>
+#include <oqs/sig_qtesla.h>
 // EDIT-WHEN-ADDING-SIG
 
 #endif // __OQS_SIG_H

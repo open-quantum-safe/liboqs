@@ -13,7 +13,13 @@ char *OQS_SIG_alg_identifier(size_t i) {
 	    OQS_SIG_alg_picnic_L3_FS,
 	    OQS_SIG_alg_picnic_L3_UR,
 	    OQS_SIG_alg_picnic_L5_FS,
-	    OQS_SIG_alg_picnic_L5_UR};
+	    OQS_SIG_alg_picnic_L5_UR,
+	    OQS_SIG_alg_qTESLA_I,
+	    OQS_SIG_alg_qTESLA_III_size,
+	    OQS_SIG_alg_qTESLA_III_speed,
+	    OQS_SIG_alg_qTESLA_p_I,
+	    OQS_SIG_alg_qTESLA_p_III
+	};
 	if (i >= OQS_SIG_algs_length) {
 		return NULL;
 	} else {
@@ -60,6 +66,36 @@ OQS_SIG *OQS_SIG_new(const char *method_name) {
 #else
 		return NULL;
 #endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTESLA_I)) {
+#ifdef OQS_ENABLE_SIG_qTESLA_I
+		return OQS_SIG_qTESLA_I_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTESLA_III_size)) {
+#ifdef OQS_ENABLE_SIG_qTESLA_III_size
+		return OQS_SIG_qTESLA_III_size_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTESLA_III_speed)) {
+#ifdef OQS_ENABLE_SIG_qTESLA_III_speed
+		return OQS_SIG_qTESLA_III_speed_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTESLA_p_I)) {
+#ifdef OQS_ENABLE_SIG_qTESLA_p_I
+		return OQS_SIG_qTESLA_p_I_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTESLA_p_III)) {
+#ifdef OQS_ENABLE_SIG_qTESLA_p_III
+		return OQS_SIG_qTESLA_p_III_new();
+#else
+		return NULL;
+#endif
 		// EDIT-WHEN-ADDING-SIG
 	} else {
 		return NULL;
@@ -67,27 +103,27 @@ OQS_SIG *OQS_SIG_new(const char *method_name) {
 }
 
 OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key) {
-	if (sig == NULL) {
-		return OQS_ERROR;
-	} else {
-		return sig->keypair(public_key, secret_key);
-	}
+  if (sig == NULL || sig->keypair(public_key, secret_key) != 0) {
+    return OQS_ERROR;
+  } else {
+    return OQS_SUCCESS;
+  }
 }
 
 OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-	if (sig == NULL) {
-		return OQS_ERROR;
-	} else {
-		return sig->sign(signed_message, signed_message_len, message, message_len, secret_key);
-	}
+  if (sig == NULL || sig->sign(signed_message, signed_message_len, message, message_len, secret_key) != 0) {
+    return OQS_ERROR;
+  } else {
+    return OQS_SUCCESS;
+  }
 }
 
 OQS_STATUS OQS_SIG_sign_open(const OQS_SIG *sig, uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key) {
-	if (sig == NULL) {
-		return OQS_ERROR;
-	} else {
-		return sig->sign_open(message, message_len, signed_message, signed_message_len, public_key);
-	}
+  if (sig == NULL || sig->sign_open(message, message_len, signed_message, signed_message_len, public_key) != 0) {
+    return OQS_ERROR;
+  } else {
+    return OQS_SUCCESS;
+  }
 }
 
 void OQS_SIG_free(OQS_SIG *sig) {

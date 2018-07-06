@@ -13,7 +13,7 @@ RET=0
 ALGS=`grep 'define OQS_..._alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
 for alg in ${ALGS}; do
 
-	kat=`find kat_*_rsp -name ${alg}*.kat |tr '\n' ' '`
+	kat=`find kat_*_rsp -name ${alg}.kat |tr '\n' ' '`
 	if [ ! -e ${kat} ];
 	then
 		${PRINT_RED}
@@ -23,7 +23,7 @@ for alg in ${ALGS}; do
 		continue
 	fi
 
-	origs=`find src -name ${alg}*.kat |tr '\n' ' '`
+	origs=`find src -name ${alg}.kat |tr '\n' ' '`
 	if [[ "x${origs}x" == "xx" ]];
 	then
 		${PRINT_RED}
