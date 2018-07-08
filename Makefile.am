@@ -30,7 +30,6 @@ endif
 if USE_KEX_NTRU
 liboqs_la_LIBADD += src/kex_ntru/libntru.la
 endif
-liboqs_la_LIBADD += src/kex_rlwe_bcns15/libbcns15.la
 if USE_KEX_RLWE_NEWHOPE
 liboqs_la_LIBADD += src/kex_rlwe_newhope/libnewhope.la
 endif
@@ -65,7 +64,6 @@ installheader_HEADERS=config.h \
 	src/kex/kex.h \
 	src/kex_lwe_frodo/kex_lwe_frodo.h \
 	src/kex_ntru/kex_ntru.h \
-	src/kex_rlwe_bcns15/kex_rlwe_bcns15.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
 	src/kex_sidh_msr/kex_sidh_msr.h \
 	src/kem/sike/kem_sike.h \
@@ -216,7 +214,6 @@ links:
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
-	cp -f src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 if USE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/apply-patch.sh kex_rlwe_newhope_avx2

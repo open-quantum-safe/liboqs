@@ -1,14 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\src\kex_rlwe_bcns15\fft.c">
-      <Filter>KEX_BCNS15</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.c">
       <Filter>KEX_Frodo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.c">
-      <Filter>KEX_BCNS15</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c">
       <Filter>KEX_NewHope</Filter>
@@ -18,12 +12,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\kex_lwe_frodo\lwe_noise.c">
       <Filter>KEX_Frodo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe.c">
-      <Filter>KEX_BCNS15</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe_kex.c">
-      <Filter>KEX_BCNS15</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\common\common.c">
       <Filter>Common</Filter>
@@ -138,26 +126,14 @@
     <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
       <Filter>KEX_Frodo</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h">
-      <Filter>KEX_BCNS15</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h">
       <Filter>KEX_NewHope</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_bcns15\local.h">
-      <Filter>KEX_BCNS15</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_lwe_frodo\local.h">
       <Filter>KEX_Frodo</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h">
       <Filter>KEX_NewHope</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_bcns15\rlwe_table.h">
-      <Filter>KEX_BCNS15</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_bcns15\rlwe_a.h">
-      <Filter>KEX_BCNS15</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\common\common.h">
       <Filter>Common</Filter>
@@ -296,9 +272,6 @@
     </Filter>
     <Filter Include="KEX">
       <UniqueIdentifier>{3bb6aa76-f294-47a9-bf22-76245c9cb1d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="KEX_BCNS15">
-      <UniqueIdentifier>{ab581356-2a96-4211-99e3-f5cecd92eda3}</UniqueIdentifier>
     </Filter>
     <Filter Include="KEX_Frodo">
       <UniqueIdentifier>{6bfff158-3e78-402f-ba16-e8d315089de8}</UniqueIdentifier>

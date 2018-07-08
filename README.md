@@ -23,7 +23,6 @@ Contents
 
 liboqs currently contains:
 
-- `kex_rlwe_bcns15`: key exchange from the ring learning with errors problem (Bos, Costello, Naehrig, Stebila, *IEEE Symposium on Security & Privacy 2015*, [https://eprint.iacr.org/2014/599](https://eprint.iacr.org/2014/599))
 - `kex_rlwe_newhope`: "NewHope": key exchange from the ring learning with errors problem (Alkim, Ducas, Pöppelmann, Schwabe, *USENIX Security 2016*, [https://eprint.iacr.org/2015/1092](https://eprint.iacr.org/2015/1092)) (using the reference C implementation of NewHope from [https://github.com/tpoeppelmann/newhope](https://github.com/tpoeppelmann/newhope))
 - `kex_lwe_frodo`: "Frodo": key exchange from the learning with errors problem (Bos, Costello, Ducas, Mironov, Naehrig, Nikolaenko, Raghunathan, Stebila, *ACM Conference on Computer and Communications Security 2016*, [https://eprint.iacr.org/2016/659](https://eprint.iacr.org/2016/659))
 - `kex_sidh_msr`: key exchange from the supersingular isogeny Diffie-Hellman problem (Costello, Naehrig, Longa, *CRYPTO 2016*, [https://eprint.iacr.org/2016/413](https://eprint.iacr.org/2016/413)), using the implementation of Microsoft Research [https://www.microsoft.com/en-us/research/project/sidh-library/](https://www.microsoft.com/en-us/research/project/sidh-library/)
@@ -86,7 +85,7 @@ To run benchmark only on some ciphers, run
 
 to list the available ciphers and then run e.g.
 
-	./test_kex --bench rlwe_bcns15 rlwe_newhope
+	./test_kex --bench rlwe_newhope
 
 
 #### Memory benchmarks
@@ -222,7 +221,6 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 - `src/crypto/rand_urandom_chacha20/external`: public domain
 - `src/crypto/sha3`: public domain
 - `src/kex_code_mcbits`: public domain
-- `src/kex_rlwe_bcns15`: public domain ([Unlicense](http://unlicense.org))
 - `src/kex_rlwe_newhope`: public domain
 - `src/kex_sidh_msr`: MIT License
 - `src/sig_picnic`: MIT License

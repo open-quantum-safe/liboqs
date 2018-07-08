@@ -39,4 +39,4 @@ void oqs_kex_lwe_frodo_mul_add_sa_plus_e_on_the_fly_recommended(uint16_t *b, con
 void oqs_kex_lwe_frodo_mul_add_sb_plus_e_recommended(uint16_t *out, const uint16_t *b, const uint16_t *s, const uint16_t *e);
 void oqs_kex_lwe_frodo_mul_bs_recommended(uint16_t *out, const uint16_t *b, const uint16_t *s);
 
-#endif /* _OQS_KEX_RLWE_BCNS15_LOCAL_H_ */
+#endif /* _OQS_KEX_LWE_FRODO_LOCAL_H_ */
