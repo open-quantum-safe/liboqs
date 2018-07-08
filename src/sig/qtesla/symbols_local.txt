@@ -27,3 +27,6 @@ sample_y
 zeta
 zetainv
 hash_vm
+crypto_sign
+crypto_sign_keypair
+crypto_sign_open
