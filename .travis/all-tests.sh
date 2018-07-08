@@ -53,10 +53,6 @@ if [[ ${ENABLE_CODE_MCBITS} == 1 ]];then
 	fi
 fi
 
-if [[ ${ENABLE_KEX_LWE_FRODO} == 0 ]];then
-	enable_disable_str+=" --disable-kex-lwe-frodo"
-fi
-
 if [[ ${ENABLE_KEX_NTRU} == 0 ]];then
 	enable_disable_str+=" --disable-kex-ntru"
 fi

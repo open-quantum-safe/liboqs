@@ -8,7 +8,6 @@ matrix:
     compiler: gcc
     env:
     - CC_OVERRIDE=gcc
-    - ENABLE_KEX_LWE_FRODO=0
     - ENABLE_KEX_SIDH_MSR=0
     - ENABLE_SIG_PICNIC=0
     - USE_OPENSSL=1

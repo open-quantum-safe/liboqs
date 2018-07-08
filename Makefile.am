@@ -24,9 +24,6 @@ liboqs_la_LIBADD += src/kex/libkex.la
 if USE_KEX_RLWE_NEWHOPE_AVX2
 liboqs_la_LIBADD += src/kex_rlwe_newhope/avx2/libnewhope_avx2.la
 endif
-if USE_KEX_LWE_FRODO
-liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la
-endif
 if USE_KEX_NTRU
 liboqs_la_LIBADD += src/kex_ntru/libntru.la
 endif
@@ -62,7 +59,6 @@ installheader_HEADERS=config.h \
 	src/crypto/sha3/sha3.h \
 	src/kem/kem.h \
 	src/kex/kex.h \
-	src/kex_lwe_frodo/kex_lwe_frodo.h \
 	src/kex_ntru/kex_ntru.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
 	src/kex_sidh_msr/kex_sidh_msr.h \
@@ -88,9 +84,6 @@ if USE_MCBITS
 endif
 
 noinst_bin_PROGRAMS = speed_kem test_kem test_kex test_aes test_rand test_sha3
-if USE_KEX_LWE_FRODO
-noinst_bin_PROGRAMS += minimal_kex_oqs
-endif
 if USE_SIG_PICNIC
 noinst_bin_PROGRAMS += test_sig minimal_sig_oqs
 endif
@@ -143,20 +136,6 @@ endif
 
 endif # USE_SIG_PICNIC
 
-if USE_KEX_LWE_FRODO
-minimal_kex_oqs_LDADD =  liboqs.la -lm
-minimal_kex_oqs_SOURCES = src/kex/minimal_kex_oqs.c
-minimal_kex_oqs_CPPFLAGS = -I./include
-minimal_kex_oqs_CPPFLAGS += $(AM_CPPFLAGS)
-if USE_MCBITS
-minimal_kex_oqs_LDADD += -L${SODIUM_DIR}/lib -lsodium
-endif
-if USE_OPENSSL
-minimal_kex_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-endif # USE_KEX_LWE_FRODO
-
 test_aes_LDADD =  liboqs.la -lm
 test_aes_SOURCES = src/crypto/aes/test_aes.c
 test_aes_CPPFLAGS = -I./include
@@ -195,9 +174,6 @@ if USE_SIG_PICNIC
 	./test_sig
 	./minimal_sig_oqs
 endif
-if USE_KEX_LWE_FRODO
-	./minimal_kex_oqs
-endif
 
 links:
 	$(MKDIR_P) include/oqs
@@ -212,7 +188,6 @@ links:
 	cp -f src/kem/kem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kex/kex.h include/oqs
-	cp -f src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 if USE_KEX_RLWE_NEWHOPE_AVX2
@@ -230,9 +205,6 @@ endif
 clean-local:
 	rm -f liboqs.a
 	rm -rf include
-if USE_KEX_LWE_FRODO
-	rm -f minimal_kex_oqs
-endif
 if USE_SIG_PICNIC
 	rm -f test_sig
 	rm -f minimal_sig_oqs

@@ -1,17 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.c">
-      <Filter>KEX_Frodo</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c">
       <Filter>KEX_NewHope</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_lwe_frodo\lwe.c">
-      <Filter>KEX_Frodo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_lwe_frodo\lwe_noise.c">
-      <Filter>KEX_Frodo</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\common\common.c">
       <Filter>Common</Filter>
@@ -123,14 +114,8 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
-      <Filter>KEX_Frodo</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h">
       <Filter>KEX_NewHope</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_lwe_frodo\local.h">
-      <Filter>KEX_Frodo</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h">
       <Filter>KEX_NewHope</Filter>
@@ -272,9 +257,6 @@
     </Filter>
     <Filter Include="KEX">
       <UniqueIdentifier>{3bb6aa76-f294-47a9-bf22-76245c9cb1d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="KEX_Frodo">
-      <UniqueIdentifier>{6bfff158-3e78-402f-ba16-e8d315089de8}</UniqueIdentifier>
     </Filter>
     <Filter Include="KEX_NewHope">
       <UniqueIdentifier>{d0291785-4232-4264-b1bd-08b7e3f8df5e}</UniqueIdentifier>
