@@ -10,7 +10,7 @@ PRINT_RESET="tput sgr 0"
 
 RET=0
 
-ALGS=`grep 'define OQS_..._alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
+ALGS=`grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
 for alg in ${ALGS}; do
 
 	kat=`find kat_*_rsp -name ${alg}.kat |tr '\n' ' '`
@@ -32,16 +32,16 @@ for alg in ${ALGS}; do
 		RET=1
 		continue
 	fi
-	
+
 	match=0
 	for orig in ${origs}; do
 		diff ${orig} ${kat} > /dev/null 2>&1
 		error=$?
-		if [ $error -eq 0 ] 
+		if [ $error -eq 0 ]
 		then
 			echo "KAT values match for ${alg} and ${orig}"
 			match=1
-			break			
+			break
 		elif [ ! $error -eq 1 ]
 		then
 			${PRINT_RED}
@@ -51,7 +51,7 @@ for alg in ${ALGS}; do
 		fi
         done
 
-        if [ $match -eq 0 ] 
+        if [ $match -eq 0 ]
 	then
 		${PRINT_RED}
 		echo "KAT values do not match for ${alg} with any of ${origs}"

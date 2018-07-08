@@ -9,7 +9,7 @@ PRINT_RED="tput setaf 1"
 PRINT_RESET="tput sgr 0"
 
 # get the list of KEMs and signatures from the list of algorithm identifiers src/kem/kem.h and src/sig/sig.h
-ALGS=`grep 'define OQS_..._alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
+ALGS=`grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
 
 RET=0
 for alg in ${ALGS}; do
