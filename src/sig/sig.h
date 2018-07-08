@@ -104,7 +104,7 @@ typedef struct OQS_SIG {
 	/**
 	 * Signature generation algorithm.
 	 *
-	 * Caller is responsible for allocating sufficient memory for `signed_message`, 
+	 * Caller is responsible for allocating sufficient memory for `signed_message`,
 	 * based on the `length_*` members in this object or the per-scheme
 	 * compile-time macros `OQS_SIG_*_length_*`.
 	 *
@@ -115,7 +115,7 @@ typedef struct OQS_SIG {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-         OQS_STATUS (*sign)(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+	OQS_STATUS (*sign)(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 
 	/**
 	 * Signature verification algorithm.
@@ -164,7 +164,7 @@ OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *sec
 /**
  * Signature generation algorithm.
  *
- * Caller is responsible for allocating sufficient memory for `signed_message`, 
+ * Caller is responsible for allocating sufficient memory for `signed_message`,
  * based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_SIG_*_length_*`.
  *
