@@ -55,35 +55,41 @@ endif
 sig_picnic_L1_FS:
 	cd src/sig/picnic/upstream/Optimized_Implementation/picnicl1fs && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_SIG_PICNIC) libpicnic.a
 	bash scripts/explode_and_collect.sh sig_picnic_L1_FS src/sig/picnic/upstream/Optimized_Implementation/picnicl1fs/libpicnic.a
+	$(RM) src/sig/picnic/upstream/Optimized_Implementation/picnicl1fs/libpicnic.a
 	bash scripts/symbols_global_rename.sh sig_picnic_L1_FS src/sig/picnic/symbols_global_rename_L1_FS.txt
 	bash scripts/symbols_local.sh sig_picnic_L1_FS src/sig/picnic/symbols_local.txt
 
 sig_picnic_L1_UR:
 	cd src/sig/picnic/upstream/Optimized_Implementation/picnicl1ur && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_SIG_PICNIC) libpicnic.a
 	bash scripts/explode_and_collect.sh sig_picnic_L1_UR src/sig/picnic/upstream/Optimized_Implementation/picnicl1ur/libpicnic.a
+	$(RM) src/sig/picnic/upstream/Optimized_Implementation/picnicl1ur/libpicnic.a
 	bash scripts/symbols_global_rename.sh sig_picnic_L1_UR src/sig/picnic/symbols_global_rename_L1_UR.txt
 	bash scripts/symbols_local.sh sig_picnic_L1_UR src/sig/picnic/symbols_local.txt
 
 sig_picnic_L3_FS:
 	cd src/sig/picnic/upstream/Optimized_Implementation/picnicl3fs && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_SIG_PICNIC) libpicnic.a
 	bash scripts/explode_and_collect.sh sig_picnic_L3_FS src/sig/picnic/upstream/Optimized_Implementation/picnicl3fs/libpicnic.a
+	$(RM) src/sig/picnic/upstream/Optimized_Implementation/picnicl3fs/libpicnic.a
 	bash scripts/symbols_global_rename.sh sig_picnic_L3_FS src/sig/picnic/symbols_global_rename_L3_FS.txt
 	bash scripts/symbols_local.sh sig_picnic_L3_FS src/sig/picnic/symbols_local.txt
 
 sig_picnic_L3_UR:
 	cd src/sig/picnic/upstream/Optimized_Implementation/picnicl3ur && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_SIG_PICNIC) libpicnic.a
 	bash scripts/explode_and_collect.sh sig_picnic_L3_UR src/sig/picnic/upstream/Optimized_Implementation/picnicl3ur/libpicnic.a
+	$(RM) src/sig/picnic/upstream/Optimized_Implementation/picnicl3ur/libpicnic.a
 	bash scripts/symbols_global_rename.sh sig_picnic_L3_UR src/sig/picnic/symbols_global_rename_L3_UR.txt
 	bash scripts/symbols_local.sh sig_picnic_L3_UR src/sig/picnic/symbols_local.txt
 
 sig_picnic_L5_FS:
 	cd src/sig/picnic/upstream/Optimized_Implementation/picnicl5fs && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_SIG_PICNIC) libpicnic.a
 	bash scripts/explode_and_collect.sh sig_picnic_L5_FS src/sig/picnic/upstream/Optimized_Implementation/picnicl5fs/libpicnic.a
+	$(RM) src/sig/picnic/upstream/Optimized_Implementation/picnicl5fs/libpicnic.a
 	bash scripts/symbols_global_rename.sh sig_picnic_L5_FS src/sig/picnic/symbols_global_rename_L5_FS.txt
 	bash scripts/symbols_local.sh sig_picnic_L5_FS src/sig/picnic/symbols_local.txt
 
 sig_picnic_L5_UR:
 	cd src/sig/picnic/upstream/Optimized_Implementation/picnicl5ur && $(MAKE) clean && $(MAKE) $(MAKE_FLAGS_SIG_PICNIC) libpicnic.a
 	bash scripts/explode_and_collect.sh sig_picnic_L5_UR src/sig/picnic/upstream/Optimized_Implementation/picnicl5ur/libpicnic.a
+	$(RM) src/sig/picnic/upstream/Optimized_Implementation/picnicl5ur/libpicnic.a
 	bash scripts/symbols_global_rename.sh sig_picnic_L5_UR src/sig/picnic/symbols_global_rename_L5_UR.txt
 	bash scripts/symbols_local.sh sig_picnic_L5_UR src/sig/picnic/symbols_local.txt
