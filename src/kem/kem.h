@@ -31,9 +31,17 @@
 #define OQS_KEM_alg_sike_p503 "Sike-p503"
 /** Algorithm identifier for Sike p751 KEM. */
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
+/** Algorithm identifier for FrodoKEM-640-AES KEM. */
+#define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
+/** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
+#define OQS_KEM_alg_frodokem_640_cshake "FrodoKEM-640-cSHAKE"
+/** Algorithm identifier for FrodoKEM-976-AES KEM. */
+#define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
+/** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
+#define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 3
+#define OQS_KEM_algs_length 7
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
@@ -180,6 +188,7 @@ OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsi
 void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_sike.h>
+#include <oqs/kem_frodokem.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H

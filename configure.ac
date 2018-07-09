@@ -112,10 +112,6 @@ ARG_ENABL_SET([kex-rlwe-newhope-avx2], [enable KEX-RLWE-NEWHOPE-AVX2.])
 AM_CONDITIONAL([kex_rlwe_newhope_avx2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
 AM_CONDITIONAL([USE_KEX_RLWE_NEWHOPE_AVX2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
 
-ARG_DISBL_SET([kem-sike], [disable KEM-SIKE.])
-AM_CONDITIONAL([kem_sike], [test "x$kem_sike" = xtrue])
-AM_CONDITIONAL([USE_KEM_SIKE], [test "x$kem_sike" = xtrue])
-
 AC_CANONICAL_HOST
 
 # Check for which host we are on and setup a few things
@@ -208,12 +204,20 @@ fi
 # KEM
 SRCDIR=${SRCDIR}" src/kem"
 
-if test x"$kem_sike" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kem/sike"
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DOQS_ENABLE_KEM_sike_p503 -DOQS_ENABLE_KEM_sike_p751"
-  AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")
-  AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")
-fi
+ARG_DISBL_SET([kem-sike], [disable KEM-SIKE.])
+AM_CONDITIONAL([ENABLE_KEM_SIKE], [test "x$kem_sike" = xtrue])
+AM_COND_IF([ENABLE_KEM_SIKE], [SRCDIR="${SRCDIR} src/kem/sike"])
+AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")])
+AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")])
+
+ARG_DISBL_SET([kem-frodokem], [disable KEM-FrodoKEM.])
+AM_CONDITIONAL([ENABLE_KEM_FRODOKEM], [test "x$kem_frodokem" = xtrue])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [SRCDIR="${SRCDIR} src/kem/frodokem"])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_aes, 1, "Define to 1 when FrodoKEM-640-AES enabled")])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_cshake, 1, "Define to 1 when FrodoKEM-640-cSHAKE enabled")])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_aes, 1, "Define to 1 when FrodoKEM-976-AES enabled")])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_cshake, 1, "Define to 1 when FrodoKEM-976-cSHAKE enabled")])
+
 
 
 # Flags
@@ -248,7 +252,6 @@ AC_SUBST(USE_SIG_PICNIC)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE_AVX2)
-AC_SUBST(USE_KEM_SIKE)
 
 
 AC_CONFIG_FILES([Makefile
@@ -267,6 +270,7 @@ AC_CONFIG_FILES([Makefile
                  src/sig_picnic/Makefile
                  src/kex_rlwe_newhope/avx2/Makefile
                  src/kem/sike/Makefile
+                 src/kem/frodokem/Makefile
                  ])
 
 AC_OUTPUT

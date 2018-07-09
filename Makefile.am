@@ -44,8 +44,11 @@ if USE_SIG_PICNIC
 liboqs_la_LIBADD += src/sig_picnic/libpicnic_i.la
 endif
 
-if USE_KEM_SIKE
+if ENABLE_KEM_SIKE
 liboqs_la_LIBADD += src/kem/sike/libkemsike.la
+endif
+if ENABLE_KEM_FRODOKEM
+liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
 endif
 
 installheaderdir=$(includedir)/oqs
@@ -63,6 +66,7 @@ installheader_HEADERS=config.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
 	src/kex_sidh_msr/kex_sidh_msr.h \
 	src/kem/sike/kem_sike.h \
+	src/kem/frodokem/kem_frodokem.h \
 	src/sig/sig.h
 
 install-exec-local:
@@ -83,7 +87,7 @@ if USE_MCBITS
 	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
 
-noinst_bin_PROGRAMS = speed_kem test_kem test_kex test_aes test_rand test_sha3
+noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_aes test_rand test_sha3
 if USE_SIG_PICNIC
 noinst_bin_PROGRAMS += test_sig minimal_sig_oqs
 endif
@@ -104,6 +108,14 @@ test_kem_CPPFLAGS = -I./include
 test_kem_CPPFLAGS += $(AM_CPPFLAGS)
 if USE_OPENSSL
 test_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
+example_kem_LDADD =  liboqs.la -lm
+example_kem_SOURCES = src/kem/example_kem.c
+example_kem_CPPFLAGS = -I./include
+example_kem_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+example_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
 test_kex_LDADD =  liboqs.la -lm
@@ -165,6 +177,7 @@ test_sha3_CPPFLAGS += $(AM_CPPFLAGS)
 
 test: clean-tests
 	make
+	./example_kem
 	./test_kem
 	./test_kex --quiet
 	./test_rand --quiet
@@ -187,6 +200,7 @@ links:
 	cp -f src/crypto/sha3/sha3.h include/oqs
 	cp -f src/kem/kem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
+	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
@@ -197,7 +211,6 @@ endif
 	cp -f src/kex_sidh_msr/kex_sidh_msr.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
-	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
@@ -211,7 +224,7 @@ if USE_SIG_PICNIC
 endif
 
 clean-tests:
-	rm -f speed_kem test_kem test_kex test_rand test_aes test_sha3
+	rm -f example_kem speed_kem test_kem test_kex test_rand test_aes test_sha3
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
