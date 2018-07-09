@@ -211,6 +211,7 @@ endif
 	cp -f src/kex_sidh_msr/kex_sidh_msr.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
+	$(LN_S) -f .libs/liboqs.a
 if USE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
