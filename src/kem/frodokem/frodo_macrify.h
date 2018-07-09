@@ -11,7 +11,6 @@
 #include <stdint.h>
 #include "config.h"
 
-
 void oqs_kem_frodokem_pack(unsigned char *out, const size_t outlen, const uint16_t *in, const size_t inlen, const unsigned char lsb);
 void oqs_kem_frodokem_unpack(uint16_t *out, const size_t outlen, const unsigned char *in, const size_t inlen, const unsigned char lsb);
 static void frodo_sample_n(uint16_t *s, const size_t n);

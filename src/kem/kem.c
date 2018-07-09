@@ -56,7 +56,7 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	// EDIT-WHEN-ADDING-KEM
+		// EDIT-WHEN-ADDING-KEM
 	} else {
 		return NULL;
 	}
