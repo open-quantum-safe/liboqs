@@ -4,12 +4,12 @@ liboqs master branch algorithm datasheet: `kem_sike`
 Summary
 -------
 
-- **Name**: Sike
+- **Name**: SIKE
 - **Algorithm type**: key encapsulation mechanism
 - **Main cryptographic assumption**: (supersingular) isogeny walk problem
 - **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/SIKE.zip
 - **Submitters (to NIST competition)**: David Jao, Reza Azarderakhsh, Matthew Campagna, Craig Costello, Luca De Feo, Basil Hess, Amir Jalali, Brian Koziel, Brian LaMacchia, Patrick Longa, Michael Naehrig, Joost Renes, Vladimir Soukharev, David Urbanik
-- **Submitters' website**:
+- **Submitters' website**: http://sike.org/
 - **Added to liboqs by**: Christian Paquin
 
 Parameter sets
