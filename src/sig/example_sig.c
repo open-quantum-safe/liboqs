@@ -12,9 +12,9 @@
  * statically on the stack, calling a specific algorithm's functions
  * directly.
  *
- * The macros OQS_SIG_picnic_L1_FS_length_* and the functions OQS_SIG_picnic_L1_FS_*
+ * The macros OQS_SIG_qTESLA_I_length_* and the functions OQS_SIG_qTESLA_I_*
  * are only defined if the algorithm Picnic-L1-FS was enabled at compile-time
- * which must be checked using the OQS_ENABLE_SIG_picnic_L1_FS macro.
+ * which must be checked using the OQS_ENABLE_SIG_qTESLA_I macro.
  *
  * <oqs/config.h>, which is included in <oqs/oqs.h>, contains macros
  * indicating which algorithms were enabled when this instance of liboqs
@@ -22,37 +22,37 @@
  */
 static OQS_STATUS example_stack() {
 
-#ifdef OQS_ENABLE_SIG_picnic_L1_FS
+#ifdef OQS_ENABLE_SIG_qTESLA_I
 	// if Picnic-L1-FS was enabled at compile-time
 
 	OQS_STATUS rc;
 	OQS_STATUS ret = OQS_ERROR;
 
-	uint8_t public_key[OQS_SIG_picnic_L1_FS_length_public_key];
-	uint8_t secret_key[OQS_SIG_picnic_L1_FS_length_secret_key];
+	uint8_t public_key[OQS_SIG_qTESLA_I_length_public_key];
+	uint8_t secret_key[OQS_SIG_qTESLA_I_length_secret_key];
 	uint8_t message[MESSAGE_LEN];
-	uint8_t signed_message[MESSAGE_LEN + OQS_SIG_picnic_L1_FS_length_sig_overhead];
+	uint8_t signed_message[MESSAGE_LEN + OQS_SIG_qTESLA_I_length_sig_overhead];
 	size_t message_len = MESSAGE_LEN;
 	size_t signed_message_len;
 
 	OQS_randombytes(message, MESSAGE_LEN);
 
-	rc = OQS_SIG_picnic_L1_FS_keypair(public_key, secret_key);
+	rc = OQS_SIG_qTESLA_I_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_picnic_L1_FS_keypair failed!\n");
+		fprintf(stderr, "ERROR: OQS_SIG_qTESLA_I_keypair failed!\n");
 		goto err;
 	}
-	rc = OQS_SIG_picnic_L1_FS_sign(signed_message, &signed_message_len, message, message_len, secret_key);
+	rc = OQS_SIG_qTESLA_I_sign(signed_message, &signed_message_len, message, message_len, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_picnic_L1_FS_sign failed!\n");
+		fprintf(stderr, "ERROR: OQS_SIG_qTESLA_I_sign failed!\n");
 		goto err;
 	}
-	rc = OQS_SIG_picnic_L1_FS_sign_open(message, &message_len, signed_message, signed_message_len, public_key);
+	rc = OQS_SIG_qTESLA_I_sign_open(message, &message_len, signed_message, signed_message_len, public_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_picnic_L1_FS_sign_open failed!\n");
+		fprintf(stderr, "ERROR: OQS_SIG_qTESLA_I_sign_open failed!\n");
 		goto err;
 	}
-	printf("[example_stack] OQS_SIG_picnic_L1_FS operations completed.\n");
+	printf("[example_stack] OQS_SIG_qTESLA_I operations completed.\n");
 	ret = OQS_SUCCESS; // success!
 	goto cleanup;
 
@@ -60,11 +60,11 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
-	OQS_MEM_cleanse(secret_key, OQS_SIG_picnic_L1_FS_length_secret_key);
+	OQS_MEM_cleanse(secret_key, OQS_SIG_qTESLA_I_length_secret_key);
 	return ret;
 
 #else
-	printf("[example_stack] OQS_SIG_picnic_L1_FS was not enabled at compile-time.\n");
+	printf("[example_stack] OQS_SIG_qTESLA_I was not enabled at compile-time.\n");
 	return OQS_ERROR;
 
 #endif
@@ -90,9 +90,9 @@ static OQS_STATUS example_heap() {
 	OQS_STATUS rc;
 	OQS_STATUS ret = OQS_ERROR;
 
-	sig = OQS_SIG_new(OQS_SIG_alg_picnic_L1_FS);
+	sig = OQS_SIG_new(OQS_SIG_alg_qTESLA_I);
 	if (sig == NULL) {
-		printf("[example_heap]  OQS_SIG_alg_picnic_L1_FS was not enabled at compile-time.\n");
+		printf("[example_heap]  OQS_SIG_alg_qTESLA_I was not enabled at compile-time.\n");
 		return OQS_ERROR;
 	}
 
@@ -123,7 +123,7 @@ static OQS_STATUS example_heap() {
 		goto err;
 	}
 
-	printf("[example_heap]  OQS_SIG_picnic_L1_FS operations completed.\n");
+	printf("[example_heap]  OQS_SIG_qTESLA_I operations completed.\n");
 	ret = OQS_SUCCESS; // success
 	goto cleanup;
 

@@ -13,10 +13,9 @@ KEMS_TO_ENABLE?=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_9
 
 KEM_DEFAULT?=newhope_1024_cca_kem
 
-SIGS_TO_ENABLE?=picnic_L1_FS picnic_L1_UR picnic_L3_FS picnic_L3_UR picnic_L5_FS picnic_L5_UR \
-		qTESLA_I qTESLA_III_size qTESLA_III_speed qTESLA_p_I qTESLA_p_III # EDIT-WHEN-ADDING-SIG
-
-SIG_DEFAULT?=picnic_L1_FS
+SIGS_TO_ENABLE?=qTESLA_I qTESLA_III_size qTESLA_III_speed qTESLA_p_I qTESLA_p_III \
+#		picnic_L1_FS picnic_L1_UR picnic_L3_FS picnic_L3_UR picnic_L5_FS picnic_L5_UR # EDIT-WHEN-ADDING-SIG
+SIG_DEFAULT?=qTESLA_I
 
 ARCH?=x64
 # x64 OR x86
