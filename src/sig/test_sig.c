@@ -31,12 +31,11 @@ struct sig_testcase sig_testcases[] = {
     {OQS_SIG_picnic_L5_UR, "picnic_L5_UR", 0, 10},
 #endif
 #ifdef ENABLE_SIG_QTESLA
-    {OQS_SIG_qTESLA_I,         "qTESLA_I",         0, 10},
+    {OQS_SIG_qTESLA_I, "qTESLA_I", 0, 10},
     {OQS_SIG_qTESLA_III_speed, "qTESLA_III_speed", 0, 10},
-    {OQS_SIG_qTESLA_III_size,  "qTESLA_III_size",  0, 10},
+    {OQS_SIG_qTESLA_III_size, "qTESLA_III_size", 0, 10},
 #endif
 };
-
 
 #define SIG_TEST_ITERATIONS 100
 #define SIG_BENCH_SECONDS 1

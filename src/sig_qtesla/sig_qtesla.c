@@ -60,7 +60,7 @@ OQS_STATUS OQS_SIG_qTESLA_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) 
 	if (s == NULL || priv == NULL || pub == NULL) {
 		return OQS_ERROR;
 	}
-	
+
 	if (strcmp(s->method_name, qTESLA_I_name) == 0) {
 		if (oqs_qTESLA_I_crypto_sign_keypair(s->rand, pub, priv) != 0) {
 			return OQS_ERROR;
@@ -83,17 +83,17 @@ OQS_STATUS OQS_SIG_qTESLA_sign(const OQS_SIG *s, const uint8_t *priv, const uint
 	if (s == NULL || priv == NULL || msg == NULL || sig == NULL || sig_len == NULL) {
 		return OQS_ERROR;
 	}
-	
+
 	if (strcmp(s->method_name, qTESLA_I_name) == 0) {
-		if (oqs_qTESLA_I_crypto_sign(s->rand, sig, (unsigned long long*) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
+		if (oqs_qTESLA_I_crypto_sign(s->rand, sig, (unsigned long long *) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
 			return OQS_ERROR;
 		}
 	} else if (strcmp(s->method_name, qTESLA_III_size_name) == 0) {
-		if (oqs_qTESLA_III_size_crypto_sign(s->rand, sig, (unsigned long long*) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
+		if (oqs_qTESLA_III_size_crypto_sign(s->rand, sig, (unsigned long long *) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
 			return OQS_ERROR;
 		}
 	} else if (strcmp(s->method_name, qTESLA_III_speed_name) == 0) {
-		if (oqs_qTESLA_III_speed_crypto_sign(s->rand, sig, (unsigned long long*) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
+		if (oqs_qTESLA_III_speed_crypto_sign(s->rand, sig, (unsigned long long *) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
 			return OQS_ERROR;
 		}
 	} else {
@@ -109,15 +109,15 @@ OQS_STATUS OQS_SIG_qTESLA_verify(UNUSED const OQS_SIG *s, const uint8_t *pub, co
 	}
 
 	if (strcmp(s->method_name, qTESLA_I_name) == 0) {
-		if (oqs_qTESLA_I_crypto_verify((unsigned char*) msg, (unsigned long long) msg_len, sig, (unsigned long long) sig_len, pub) != 0) {
+		if (oqs_qTESLA_I_crypto_verify((unsigned char *) msg, (unsigned long long) msg_len, sig, (unsigned long long) sig_len, pub) != 0) {
 			return OQS_ERROR;
 		}
 	} else if (strcmp(s->method_name, qTESLA_III_size_name) == 0) {
-		if (oqs_qTESLA_III_size_crypto_verify((unsigned char*) msg, (unsigned long long) msg_len, sig, (unsigned long long) sig_len, pub) != 0) {
+		if (oqs_qTESLA_III_size_crypto_verify((unsigned char *) msg, (unsigned long long) msg_len, sig, (unsigned long long) sig_len, pub) != 0) {
 			return OQS_ERROR;
 		}
 	} else if (strcmp(s->method_name, qTESLA_III_speed_name) == 0) {
-		if (oqs_qTESLA_III_speed_crypto_verify((unsigned char*) msg, (unsigned long long) msg_len, sig, (unsigned long long) sig_len, pub) != 0) {
+		if (oqs_qTESLA_III_speed_crypto_verify((unsigned char *) msg, (unsigned long long) msg_len, sig, (unsigned long long) sig_len, pub) != 0) {
 			return OQS_ERROR;
 		}
 	} else {
