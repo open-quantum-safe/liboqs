@@ -963,14 +963,14 @@ static void sparse_mul32(poly prod, const int32_t *pk, const uint32_t pos_list[P
 
 #include "qTESLA_api.c"
 
-int qTESLA_III_size_crypto_sign_keypair(OQS_RAND *rand, unsigned char *pk, unsigned char *sk) {
+int oqs_qTESLA_III_size_crypto_sign_keypair(OQS_RAND *rand, unsigned char *pk, unsigned char *sk) {
   return crypto_sign_keypair(rand, pk, sk);
 }
 
-int qTESLA_III_size_crypto_sign(OQS_RAND *rand, unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char* sk) {
+int oqs_qTESLA_III_size_crypto_sign(OQS_RAND *rand, unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char* sk) {
   return crypto_sign(rand, sm, smlen, m, mlen, sk);
 }
 
-int qTESLA_III_size_crypto_verify(unsigned char *m, unsigned long long mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
+int oqs_qTESLA_III_size_crypto_verify(unsigned char *m, unsigned long long mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
   return crypto_verify(m, mlen, sm, smlen, pk);
 }
