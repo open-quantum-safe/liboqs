@@ -127,6 +127,10 @@ ARG_DISBL_SET([sig-picnic], [disable SIG-PICNIC.])
 AM_CONDITIONAL([sig_picnic], [test "x$sig_picnic" = xtrue])
 AM_CONDITIONAL([USE_SIG_PICNIC], [test "x$sig_picnic" = xtrue])
 
+ARG_DISBL_SET([sig-qtesla], [disable SIG-QTESLA.])
+AM_CONDITIONAL([sig_qtesla], [test "x$sig_qtesla" = xtrue])
+AM_CONDITIONAL([USE_SIG_QTESLA], [test "x$sig_qtesla" = xtrue])
+
 ARG_ENABL_SET([kex-rlwe-newhope-avx2], [enable KEX-RLWE-NEWHOPE-AVX2.])
 AM_CONDITIONAL([kex_rlwe_newhope_avx2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
 AM_CONDITIONAL([USE_KEX_RLWE_NEWHOPE_AVX2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
@@ -236,6 +240,12 @@ if test x"$sig_picnic" = x"true"; then
   AC_DEFINE(ENABLE_SIG_PICNIC, 1, "Define to 1 when PICNIC enabled")
 fi
 
+if test x"$sig_qtesla" = x"true"; then
+  SRCDIR=${SRCDIR}" src/sig_qtesla"
+  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIG_QTESLA"
+  AC_DEFINE(ENABLE_SIG_QTESLA, 1, "Define to 1 when QTESLA enabled")
+fi
+
 # Flags
 AM_CPPFLAGS=${AM_CPPFLAGS}" -g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 # if test x"$aes_ni" = x"true" && test x"$ARM" = x"false"; then
@@ -273,6 +283,7 @@ AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_MSR)
 AC_SUBST(USE_SIG_PICNIC)
+AC_SUBST(USE_SIG_QTESLA)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE_AVX2)
@@ -296,6 +307,7 @@ AC_CONFIG_FILES([Makefile
                  src/kex_lwe_frodo/Makefile
                  src/sig/Makefile
                  src/sig_picnic/Makefile
+		 src/sig_qtesla/Makefile
                  src/kex_rlwe_newhope/avx2/Makefile])
 
 AC_OUTPUT

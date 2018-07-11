@@ -33,6 +33,7 @@ liboqs currently contains:
 - `kex_code_mcbits`: "McBits": key exchange from the error correcting codes, specifically Niederreiter's form of McEliece public key encryption using hidden Goppa codes (Bernstein, Chou, Schwabe, *CHES 2013*, [https://eprint.iacr.org/2015/610](https://eprint.iacr.org/2015/610)), using the implementation of McBits from [https://www.win.tue.nl/~tchou/mcbits/](https://www.win.tue.nl/~tchou/mcbits/))
 - `kex_ntru`: NTRU: key transport using NTRU public key encryption (Hoffstein, Pipher, Silverman, *ANTS 1998*) with the EES743EP1 parameter set, wrapper around the implementation from the NTRU Open Source project [https://github.com/NTRUOpenSourceProject/NTRUEncrypt](https://github.com/NTRUOpenSourceProject/NTRUEncrypt))
 - `sig_picnic`: signature based on zero-knowledge proof as specified in Post-Quantum Zero-Knowledge and Signatures from Symmetric-Key Primitives (Melissa Chase and David Derler and Steven Goldfeder and Claudio Orlandi and Sebastian Ramacher and Christian Rechberger and Daniel Slamanig and Greg Zaverucha, [https://eprint.iacr.org/2017/279.pdf](https://eprint.iacr.org/2017/279.pdf)), using the optimized implemenation from [https://github.com/IAIK/Picnic](https://github.com/IAIK/Picnic)
+- `sig_qtesla`: signature based on the hardness of the decisional Ring Learning With Errors (R-LWE) problem, as described in the [qTesla specification](https://qtesla.org/wp-content/uploads/2018/07/qTESLA_v2.1_06.30.2018.pdf), using the code from [https://github.com/qtesla/qTesla](https://github.com/qtesla/qTesla)
 
 Detailed information about each algorithm and implementations can be found in the [docs/Algorithm data sheets](https://github.com/open-quantum-safe/liboqs/tree/master/docs/Algorithm%20data%20sheets) directory.
 
@@ -252,6 +253,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 - `src/kex_sidh_msr`: MIT License
 - `src/kex_sidh_iqc_ref`: MIT License
 - `src/sig_picnic`: MIT License
+- `src/sig_qtesla`: public domain
 
 Team
 ----

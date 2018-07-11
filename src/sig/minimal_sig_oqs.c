@@ -22,7 +22,7 @@ int main(void) {
 	uint8_t *sig = NULL;  // Signature
 	size_t sig_len = 0;   // Signature's length
 
-	enum OQS_SIG_algid alg_name = OQS_SIG_picnic_default; // Algorithm name
+	enum OQS_SIG_algid alg_name = OQS_SIG_default; // Algorithm name
 	// Equivalent to OQS_SIG_picnic_L1_FS
 
 	OQS_RAND *rnd = NULL; // Source of randomness
@@ -137,7 +137,7 @@ int main(void) {
 }
 #else // !ENABLE_SIG_PICNIC
 int main(void) {
-	printf("No signature algorithm available. Make sure configure was run properly; see Readme.md.\n");
+	printf("Picnic not available. Make sure configure was run properly (see Readme.md) or change this code to use a different algorithm.\n");
 	return EXIT_FAILURE;
 }
 #endif

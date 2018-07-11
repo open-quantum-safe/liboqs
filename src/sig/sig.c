@@ -5,6 +5,9 @@
 #ifdef ENABLE_SIG_PICNIC
 #include <oqs/sig_picnic.h>
 #endif
+#ifdef ENABLE_SIG_QTESLA
+#include <oqs/sig_qtesla.h>
+#endif
 
 OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
 	if (rand == NULL) {
@@ -25,8 +28,18 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
 	case OQS_SIG_picnic_L3_UR:
 	case OQS_SIG_picnic_L5_FS:
 	case OQS_SIG_picnic_L5_UR:
-	case OQS_SIG_picnic_default:
+	case OQS_SIG_default:
 		if (OQS_SIG_picnic_get(s, algid) != OQS_SUCCESS) {
+			free(s);
+			return NULL;
+		}
+		break;
+#endif
+#ifdef ENABLE_SIG_QTESLA
+	case OQS_SIG_qTESLA_I:
+	case OQS_SIG_qTESLA_III_speed:
+	case OQS_SIG_qTESLA_III_size:
+		if (OQS_SIG_qTESLA_get(s, algid) != OQS_SUCCESS) {
 			free(s);
 			return NULL;
 		}

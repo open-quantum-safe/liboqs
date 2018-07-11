@@ -21,16 +21,22 @@ struct sig_testcase {
 };
 
 /* Add new testcases here */
-#ifdef ENABLE_SIG_PICNIC
 struct sig_testcase sig_testcases[] = {
+#ifdef ENABLE_SIG_PICNIC
     {OQS_SIG_picnic_L1_FS, "picnic_L1_FS", 0, 10},
     {OQS_SIG_picnic_L1_UR, "picnic_L1_UR", 0, 10},
     {OQS_SIG_picnic_L3_FS, "picnic_L3_FS", 0, 10},
     {OQS_SIG_picnic_L3_UR, "picnic_L3_UR", 0, 10},
     {OQS_SIG_picnic_L5_FS, "picnic_L5_FS", 0, 10},
     {OQS_SIG_picnic_L5_UR, "picnic_L5_UR", 0, 10},
-};
 #endif
+#ifdef ENABLE_SIG_QTESLA
+    {OQS_SIG_qTESLA_I,         "qTESLA_I",         0, 10},
+    {OQS_SIG_qTESLA_III_speed, "qTESLA_III_speed", 0, 10},
+    {OQS_SIG_qTESLA_III_size,  "qTESLA_III_size",  0, 10},
+#endif
+};
+
 
 #define SIG_TEST_ITERATIONS 100
 #define SIG_BENCH_SECONDS 1
@@ -78,8 +84,16 @@ static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid,
 	}
 
 	if (print) {
-		OQS_print_hex_string("Private key", priv, s->priv_key_len);
-		OQS_print_hex_string("Public key", pub, s->pub_key_len);
+		if (s->priv_key_len > 100) {
+			OQS_print_part_hex_string("Private key", priv, s->priv_key_len, 20);
+		} else {
+			OQS_print_hex_string("Private key", priv, s->priv_key_len);
+		}
+		if (s->pub_key_len > 100) {
+			OQS_print_part_hex_string("Public key", pub, s->pub_key_len, 20);
+		} else {
+			OQS_print_hex_string("Public key", pub, s->pub_key_len);
+		}
 	}
 
 	/* Generate message to sign */
@@ -109,9 +123,11 @@ static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid,
 	}
 
 	if (print) {
-		if (sig_len > 40) {
+		if (sig_len > 100) {
 			// only print the parts of the sig if too long
 			OQS_print_part_hex_string("Signature", sig, sig_len, 20);
+		} else {
+			OQS_print_hex_string("Signature", sig, sig_len);
 		}
 	}
 
@@ -243,7 +259,6 @@ cleanup:
 	return rc;
 }
 
-#ifdef ENABLE_SIG_PICNIC
 int main(int argc, char **argv) {
 	OQS_STATUS success = OQS_SUCCESS;
 	bool run_all = true;
@@ -320,9 +335,3 @@ cleanup:
 	}
 	return (success == OQS_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
-#else // !ENABLE_SIG_PICNIC
-int main(void) {
-	printf("No signature algorithm available. Make sure configure was run properly; see Readme.md.\n");
-	return EXIT_FAILURE;
-}
-#endif
