@@ -103,5 +103,3 @@ KeccakWidth1600_SpongeAbsorb
 KeccakWidth1600_SpongeAbsorbLastFewBits
 KeccakWidth1600_SpongeInitialize
 KeccakWidth1600_SpongeSqueeze
-aligned_alloc
-aligned_free
