@@ -49,7 +49,7 @@
 /*              start PSEUDO-RAND GENERATOR ROUTINES for rnd.h                */
 /*----------------------------------------------------------------------------*/
 
-
+#if 0
 void initialize_pseudo_random_generator_seed(int ac, char *av[])
 {
 
@@ -69,7 +69,7 @@ void initialize_pseudo_random_generator_seed(int ac, char *av[])
 
 } // end initilize_pseudo_random_sequence_seed
 
-
+#endif
 /*----------------------------------------------------------------------------*/
 
 /* Initializes a dedicated DRBG context to avoid conflicts with the global one
@@ -186,7 +186,7 @@ AES256_ECB(unsigned char *key, unsigned char *ptx, unsigned char *ctx)
    rijndaelKeySetupEnc(round_key, key, KEYLEN_b);
    rijndaelEncrypt(round_key, NROUNDS, ptx, ctx);
 }
-
+#if 0
 void
 randombytes_init(unsigned char *entropy_input,
                  unsigned char *personalization_string,
@@ -235,7 +235,7 @@ randombytes(unsigned char *x, unsigned long long xlen)
 
    return RNG_SUCCESS;
 }
-
+#endif
 void
 AES256_CTR_DRBG_Update(unsigned char *provided_data,
                        unsigned char *Key,
@@ -263,7 +263,7 @@ AES256_CTR_DRBG_Update(unsigned char *provided_data,
    memcpy(V, temp+32, 16);
 }
 
-
+#if 0
 
 void deterministic_random_byte_generator(unsigned char *const output,
       const unsigned long long output_len,
@@ -313,6 +313,7 @@ void deterministic_random_byte_generator(unsigned char *const output,
    ctx.reseed_counter++;
 
 } // end deterministic_random_byte_generator
+#endif
 
 void seedexpander_from_trng(AES_XOF_struct *ctx,
                             const unsigned char *trng_entropy

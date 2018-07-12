@@ -36,10 +36,18 @@ if [ -z ${CC_OVERRIDE+x} ]; then
 	exit 1
 fi
 
+if [[ "${TRAVIS_OS_NAME}" == "linux" ]]; then
+	cat /proc/cpuinfo
+	dpkg -l | grep binutils
+fi
+
 make clean
-make "ARCH=${ARCH}" "CC=${CC_OVERRIDE}"
+make -j8 "ARCH=${ARCH}" "CC=${CC_OVERRIDE}"
 make docs
 ./test_kem
+LD_LIBRARY_PATH=.
+export LD_LIBRARY_PATH
+./test_kem_shared
 ./example_kem
 
 for f in $(ls .travis/*-check.sh); do

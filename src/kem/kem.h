@@ -91,9 +91,27 @@
 #define OQS_KEM_alg_ledakem_C5_N03 "LEDAKEM_C5_N03"
 /** Algorithm identifier for LEDA KEM SL=5 N0=4. */
 #define OQS_KEM_alg_ledakem_C5_N04 "LEDAKEM_C5_N04"
+/** Algorithm identifier for LightSaber-KEM. */
+#define OQS_KEM_alg_saber_light_saber_kem "LightSaber-KEM"
+/** Algorithm identifier for Saber-KEM. */
+#define OQS_KEM_alg_saber_saber_kem "Saber-KEM"
+/** Algorithm identifier for FireSaber-KEM. */
+#define OQS_KEM_alg_saber_fire_saber_kem "FireSaber-KEM"
+/** Algorithm identifier for Lima-2p-1024 CCA KEM. */
+#define OQS_KEM_alg_lima_2p_1024_cca_kem "Lima-2p-1024-CCA-KEM"
+/** Algorithm identifier for Lima-2p-2048 CCA KEM. */
+#define OQS_KEM_alg_lima_2p_2048_cca_kem "Lima-2p-2048-CCA-KEM"
+/** Algorithm identifier for Lima-sp-1018 CCA KEM. */
+#define OQS_KEM_alg_lima_sp_1018_cca_kem "Lima-sp-1018-CCA-KEM"
+/** Algorithm identifier for Lima-sp-1306 CCA KEM. */
+#define OQS_KEM_alg_lima_sp_1306_cca_kem "Lima-sp-1306-CCA-KEM"
+/** Algorithm identifier for Lima-sp-1822 CCA KEM. */
+#define OQS_KEM_alg_lima_sp_1822_cca_kem "Lima-sp-1822-CCA-KEM"
+/** Algorithm identifier for Lima-sp-2062 CCA KEM. */
+#define OQS_KEM_alg_lima_sp_2062_cca_kem "Lima-sp-2062-CCA-KEM"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 33
+#define OQS_KEM_algs_length 42 
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -244,6 +262,8 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_bike.h>
 #include <oqs/kem_sike.h>
 #include <oqs/kem_BIGQUAKE.h>
+#include <oqs/kem_saber.h>
+#include <oqs/kem_lima.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H

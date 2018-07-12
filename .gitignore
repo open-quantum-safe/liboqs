@@ -1,10 +1,11 @@
 .objs/
-.tmp/
+.objs_upstream/
 include/
 liboqs.a
 liboqs.so
 src/config.h
 test_kem
+test_kem_shared
 kat_kem
 speed_kem
 example_kem
@@ -24,3 +25,4 @@ kat_kem_rsp/
 usr_local
 src/kem/sike/upstream/Optimized_Implementation/portable/SIKEp503/
 src/kem/sike/upstream/Optimized_Implementation/portable/SIKEp751/
+vendor

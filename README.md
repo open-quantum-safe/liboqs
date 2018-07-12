@@ -86,11 +86,13 @@ Building and running liboqs nist-branch
 
 Builds have been tested on macOS 10.12.6 (clang), macOS 10.13.3 (clang), Ubuntu 14.04.5 (gcc-7).
 
+The dependencies for liboqs are OpenSSL and the Keccak Code Package (libkeccak).  liboqs' build process will download and build libkeccak automatically.  You must install OpenSSL following the instructions below.
+
 ### Install dependencies for Linux (Ubuntu)
 
 You need to install the following packages:
 
-	sudo apt install gcc libssl-dev
+	sudo apt install gcc libssl-dev unzip xsltproc
 
 ### Install dependencies for macOS
 
@@ -110,7 +112,7 @@ To build, first clone or download the source from GitHub, then run Make.
 If you wish to change the target architecture or disable certain algorithms, edit the first few lines of `Makefile`, then run:
 
 	make clean
-	make
+	make -j8
 
 This will generate:
 
@@ -120,6 +122,10 @@ This will generate:
 - `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
+
+You can specify the path for installation by overriding the `PREFIX` environment variable before running `make install`, for example:
+
+	PREFIX=/path/to/install make install
 
 Documentation
 -------------
@@ -139,6 +145,8 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 
 liboqs includes some third party libraries or modules that may be licensed differently.  All third-party code is contained in directories labelled `upstream`, and each such upstream directory contains a license file indicating the license that applies to code in that directory.
 
+See https://github.com/gvanas/KeccakCodePackage#under-which-license-is-the-kcp-distributed for information on the licensing of the Keccak Code Package (libkecak).
+
 Team
 ----
 
@@ -148,6 +156,12 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 
 Contributors to this nist-branch of liboqs include:
 
+- Nicholas Allen (Amazon Web Services)
+- Eric Crockett (Amazon Web Services)
+- Nir Drucker (Amazon Web Services)
+- Vlad Gheorghiu (evolutionQ)
+- Shay Gueron (Amazon Web Services)
+- Christian Paquin (Microsoft Research)
 - Tancrède Lepoint (SRI International)
 - Shravan Mishra (University of Waterloo)
 - Douglas Stebila (McMaster University)

@@ -8,7 +8,7 @@ PRINT_GREEN="tput setaf 2"
 PRINT_RED="tput setaf 1"
 PRINT_RESET="tput sgr 0"
 
-REGEX=' [_]?(OQS|randombytes)'
+REGEX=' [_]?(OQS|randombytes|cSHAKE|LakeKeyak|KMAC|Kangaroo|Keccak|KetJr|KetMj|KetMn|KetSr|Ketje|Keyak|Kra|LunarKeyak|OceanKeyak|ParallelHash|RiverKeyak|SHA3|SHAKE|SeaKeyak|TupleHash|Vatte)'
 LIBOQS=liboqs.a
 
 # try to find liboqs.a
@@ -38,17 +38,31 @@ else
     ${PRINT_RESET}
 fi;
 
-# check for globally namespaced variables using ' T '
+# check for globally namespaced variables using ' D '
 if [[ $(nm -g ${LIBOQS} | grep ' D ' | grep -E -v "${REGEX}") ]];
 then
     ${PRINT_RED}
-    echo "Code contains the following non-namespaced global variables; see https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for naming conventions.";
+    echo "Code contains the following non-namespaced global variables (type 'D'); see https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for naming conventions.";
     ${PRINT_RESET}
     nm -g ${LIBOQS} | grep ' D ' | grep -E -v "${REGEX}"
     exit 1;
 else
     ${PRINT_GREEN}
-    echo "Code contains no non-namespaced global variables.";
+    echo "Code contains no non-namespaced global variables (type 'D').";
+    ${PRINT_RESET}
+fi;
+
+# check for globally namespaced variables using ' S '
+if [[ $(nm -g ${LIBOQS} | grep ' S ' | grep -E -v "${REGEX}") ]];
+then
+    ${PRINT_RED}
+    echo "Code contains the following non-namespaced global variables (type 'S'); see https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for naming conventions.";
+    ${PRINT_RESET}
+    nm -g ${LIBOQS} | grep ' S ' | grep -E -v "${REGEX}"
+    exit 1;
+else
+    ${PRINT_GREEN}
+    echo "Code contains no non-namespaced global variables (type 'S').";
     ${PRINT_RESET}
 fi;
 

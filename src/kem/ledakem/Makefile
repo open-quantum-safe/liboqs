@@ -37,9 +37,10 @@ ifneq (,$(findstring ledakem_C1_N02, $(ENABLE_KEMS)))
 UPSTREAMS+=kem_ledakem_C1_N02
 endif
 
+
 kem_ledakem_C1_N02:
 	cd src/kem/ledakem/upstream/Reference_Implementation/KEM && export SL=1 && export N0=2 && $(MAKE) clean && $(MAKE) ${MAKE_FLAGS_KEM_LEDAKEM} 
-	cd src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/ && ar xv libLEDAkem_sl1_N02.a && strip -N initialize_pseudo_random_generator_seed rng.o && strip -N randombytes rng.o \
+#	cd src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/ && ar xv libLEDAkem_sl1_N02.a && strip -N initialize_pseudo_random_generator_seed rng.o && strip -N randombytes rng.o \
 	&& strip -N randombytes_init rng.o && strip -N deterministic_random_byte_generator rng.o && ar rcs libLEDAkem_sl1_N02.a *.o
 	bash scripts/explode_and_collect.sh kem_ledakem_C1_N02  src/kem/ledakem/upstream/Reference_Implementation/KEM/bin/libLEDAkem_sl1_N02.a
 	bash scripts/symbols_global_rename.sh kem_ledakem_C1_N02 src/kem/ledakem/symbols_global_rename_C1_N02.txt
