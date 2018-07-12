@@ -507,7 +507,7 @@ void encode_c(uint32_t *pos_list, int16_t *sign_list, unsigned char *c_bin) { //
 	int i, pos, cnt = 0;
 	int16_t c[PARAM_N];
 	const int RLENGTH = OQS_SHA3_SHAKE128_RATE;
-	unsigned char r[RLENGTH];
+	unsigned char r[OQS_SHA3_SHAKE128_RATE]; /* OQS note: was RLENGTH but it was failing on macOS */
 	uint16_t dmsp = 0;
 
 	// Use the hash value as key to generate some randomness
