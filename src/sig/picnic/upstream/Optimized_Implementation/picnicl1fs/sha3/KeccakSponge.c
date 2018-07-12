@@ -15,10 +15,6 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #include "KeccakSponge.h"
 
-#ifdef KeccakReference
-    #include "displayIntermediateValues.h"
-#endif
-
 #ifndef KeccakP1600_excluded
     #include "KeccakP-1600-SnP.h"
 

@@ -1,10 +1,26 @@
+/*
+ *  This file is part of the optimized implementation of the Picnic signature scheme.
+ *  See the accompanying documentation for complete details.
+ *
+ *  The code is provided under the MIT license, see LICENSE for
+ *  more details.
+ *  SPDX-License-Identifier: MIT
+ */
+
 
 #include "compat.h"
 #include "mzd_additional.h"
 
+#if !defined(_MSC_VER)
+#include <stdalign.h>
+#endif
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+
+#if !defined(_MSC_VER) && !defined(static_assert)
+#define static_assert _Static_assert
+#endif
 
 static const size_t mzd_local_t_size = (sizeof(mzd_local_t) + 0x1f) & ~0x1f;
 static_assert(((sizeof(mzd_local_t) + 0x1f) & ~0x1f) == 32, "sizeof mzd_local_t not supported");
@@ -13,12 +29,16 @@ static const unsigned int align_bound = 128 / (8 * sizeof(word));
 
 static uint32_t calculate_rowstride(uint32_t width) {
   // As soon as we hit the AVX bound, use 32 byte alignment. Otherwise use 16
-  // byte alignment for SSE.
+  // byte alignment for SSE2 and 128 bit vectors.
   if (width > align_bound) {
     return ((width * sizeof(word) + 31) & ~31) / sizeof(word);
   } else {
     return ((width * sizeof(word) + 15) & ~15) / sizeof(word);
   }
+}
+
+static uint32_t calculate_width(uint32_t c) {
+  return (c + sizeof(word) * 8 - 1) / (sizeof(word) * 8);
 }
 
 // Notes on the memory layout: mzd_init allocates multiple memory blocks (one
@@ -30,11 +50,14 @@ static uint32_t calculate_rowstride(uint32_t width) {
 // memory block.
 
 mzd_local_t* mzd_local_init_ex(uint32_t r, uint32_t c, bool clear) {
-  const uint32_t width     = (c + 64 - 1) / 64;
+  const uint32_t width     = calculate_width(c);
   const uint32_t rowstride = calculate_rowstride(width);
 
   const size_t buffer_size = r * rowstride * sizeof(word);
 
+  /* We always align mzd_local_ts to 32 bytes. Thus the first row is always
+   * aligned to 32 bytes as well. For 128 bit and SSE all other rows are then
+   * aligned to 16 bytes. */
   unsigned char* buffer = aligned_alloc(32, (mzd_local_t_size + buffer_size + 31) & ~31);
 
   mzd_local_t* A = (mzd_local_t*)buffer;
@@ -58,7 +81,7 @@ void mzd_local_free(mzd_local_t* v) {
 }
 
 void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, uint32_t r, uint32_t c, bool clear) {
-  const uint32_t width     = (c + 64 - 1) / 64;
+  const uint32_t width     = calculate_width(c);
   const uint32_t rowstride = calculate_rowstride(width);
 
   const size_t buffer_size   = r * rowstride * sizeof(word);
@@ -118,8 +141,8 @@ void mzd_shift_right(mzd_local_t* res, mzd_local_t const* val, unsigned count) {
   const unsigned int nwords     = val->width;
   const unsigned int left_count = 8 * sizeof(word) - count;
 
-  word* resptr       = FIRST_ROW(res);
-  word const* valptr = CONST_FIRST_ROW(val);
+  word* resptr       = ASSUME_ALIGNED(FIRST_ROW(res), 32);
+  word const* valptr = ASSUME_ALIGNED(CONST_FIRST_ROW(val), 32);
 
   for (unsigned int i = nwords - 1; i; --i, ++resptr) {
     const word tmp = *valptr >> count;
@@ -148,96 +171,83 @@ void mzd_shift_left(mzd_local_t* res, mzd_local_t const* val, unsigned count) {
 }
 
 
-mzd_local_t* mzd_and(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+void mzd_and(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
 
   unsigned int width    = first->width;
-  word* resptr          = FIRST_ROW(res);
-  word const* firstptr  = CONST_FIRST_ROW(first);
-  word const* secondptr = CONST_FIRST_ROW(second);
+  word* resptr          = ASSUME_ALIGNED(FIRST_ROW(res), 32);
+  word const* firstptr  = ASSUME_ALIGNED(CONST_FIRST_ROW(first), 32);
+  word const* secondptr = ASSUME_ALIGNED(CONST_FIRST_ROW(second), 32);
 
   while (width--) {
     *resptr++ = *firstptr++ & *secondptr++;
   }
-
-  return res;
 }
 
 
-mzd_local_t* mzd_xor(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  return mzd_xor_general(res, first, second);
+void mzd_xor(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64(res, first, second);
 }
 
-mzd_local_t* mzd_xor_general(mzd_local_t* res, mzd_local_t const* first,
-                             mzd_local_t const* second) {
+void mzd_xor_uint64(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
   unsigned int width    = first->width;
-  word* resptr          = FIRST_ROW(res);
-  word const* firstptr  = CONST_FIRST_ROW(first);
-  word const* secondptr = CONST_FIRST_ROW(second);
+  word* resptr          = ASSUME_ALIGNED(FIRST_ROW(res), 32);
+  word const* firstptr  = ASSUME_ALIGNED(CONST_FIRST_ROW(first), 32);
+  word const* secondptr = ASSUME_ALIGNED(CONST_FIRST_ROW(second), 32);
 
   while (width--) {
     *resptr++ = *firstptr++ ^ *secondptr++;
   }
-
-  return res;
 }
 
-mzd_local_t* mzd_mul_v(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
+void mzd_mul_v(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
   if (At->nrows != v->ncols) {
     // number of columns does not match
-    return NULL;
+    return;
   }
 
   mzd_local_clear(c);
-  return mzd_addmul_v(c, v, At);
+  mzd_addmul_v(c, v, At);
 }
 
-mzd_local_t* mzd_mul_v_general(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-
+void mzd_mul_v_uint64(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
   if (At->nrows != v->ncols) {
     // number of columns does not match
-    return NULL;
+    return;
   }
 
   mzd_local_clear(c);
-  return mzd_addmul_v_general(c, v, At);
+  mzd_addmul_v_uint64(c, v, At);
 }
 
 
-mzd_local_t* mzd_addmul_v(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   if (A->ncols != c->ncols || A->nrows != v->ncols) {
     // number of columns does not match
-    return NULL;
+    return;
   }
 
 
-  return mzd_addmul_v_general(c, v, A);
+  mzd_addmul_v_uint64(c, v, A);
 }
 
-mzd_local_t* mzd_addmul_v_general(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-
+void mzd_addmul_v_uint64(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const unsigned int len       = A->width;
   const unsigned int rowstride = A->rowstride;
-  word* cptr                   = FIRST_ROW(c);
-  word const* vptr             = CONST_FIRST_ROW(v);
+  word* cptr                   = ASSUME_ALIGNED(FIRST_ROW(c), 32);
+  word const* vptr             = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 32);
   const unsigned int width     = v->width;
+  word const* Aptr             = ASSUME_ALIGNED(CONST_FIRST_ROW(A), 32);
 
   for (unsigned int w = 0; w < width; ++w, ++vptr) {
     word idx = *vptr;
 
-    word const* Aptr = CONST_ROW(A, w * sizeof(word) * 8);
-    while (idx) {
-      if (idx & 0x1) {
-        for (unsigned int i = 0; i < len; ++i) {
-          cptr[i] ^= Aptr[i];
-        }
+    for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, Aptr += rowstride) {
+      const uint64_t mask = -(idx & 1);
+      for (unsigned int j = 0; j < len; ++j) {
+        cptr[j] ^= (Aptr[j] & mask);
       }
-
-      Aptr += rowstride;
-      idx >>= 1;
     }
   }
-
-  return c;
 }
 
 bool mzd_local_equal(mzd_local_t const* first, mzd_local_t const* second) {
@@ -278,7 +288,6 @@ static void xor_comb(const unsigned int len, word* Brow, mzd_local_t const* A,
 
 /**
  * Pre-compute matrices for faster mzd_addmul_v computions.
- *
  */
 mzd_local_t* mzd_precompute_matrix_lookup(mzd_local_t const* A) {
   mzd_local_t* B = mzd_local_init_ex(32 * A->nrows, A->ncols, true);
@@ -299,34 +308,35 @@ mzd_local_t* mzd_precompute_matrix_lookup(mzd_local_t const* A) {
 }
 
 
-mzd_local_t* mzd_mul_vl(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   if (A->nrows != 32 * v->ncols) {
     // number of columns does not match
-    return NULL;
+    return;
   }
 
   mzd_local_clear(c);
-  return mzd_addmul_vl(c, v, A);
+  mzd_addmul_vl(c, v, A);
 }
 
-mzd_local_t* mzd_mul_vl_general(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   mzd_local_clear(c);
-  return mzd_addmul_vl_general(c, v, A);
+  mzd_addmul_vl_uint64(c, v, A);
 }
 
-mzd_local_t* mzd_addmul_vl(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_vl(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   if (A->ncols != c->ncols || A->nrows != 32 * v->ncols) {
     // number of columns does not match
-    return NULL;
+    return;
   }
 
-  return mzd_addmul_vl_general(c, v, A);
+  mzd_addmul_vl_uint64(c, v, A);
+  return;
 }
 
-mzd_local_t* mzd_addmul_vl_general(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_vl_uint64(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const unsigned int len   = A->width;
-  word* cptr               = FIRST_ROW(c);
-  word const* vptr         = CONST_FIRST_ROW(v);
+  word* cptr               = ASSUME_ALIGNED(FIRST_ROW(c), 32);
+  word const* vptr         = ASSUME_ALIGNED(CONST_FIRST_ROW(v), 32);
   const unsigned int width = v->width;
 
   for (unsigned int w = 0; w < width; ++w, ++vptr) {
@@ -345,6 +355,4 @@ mzd_local_t* mzd_addmul_vl_general(mzd_local_t* c, mzd_local_t const* v, mzd_loc
       add += 256;
     }
   }
-
-  return c;
 }

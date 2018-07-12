@@ -15,6 +15,8 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
+#include <limits.h>
 #include "brg_endian.h"
 #include "KeccakP-1600-opt64-config.h"
 
@@ -27,15 +29,12 @@ typedef unsigned long long int UINT64;
 
 #if defined(_MSC_VER)
 #define ROL64(a, offset) _rotl64(a, offset)
-#elif defined(KeccakP1600_useSHLD)
-    #define ROL64(x,N) ({ \
-    register UINT64 __out; \
-    register UINT64 __in = x; \
-    __asm__ ("shld %2,%0,%0" : "=r"(__out) : "0"(__in), "i"(N)); \
-    __out; \
-    })
 #else
-#define ROL64(a, offset) ((((UINT64)a) << offset) ^ (((UINT64)a) >> (64-offset)))
+static uint64_t ROL64(uint64_t x, unsigned int N) {
+  static const unsigned int mask = (CHAR_BIT*sizeof(x) - 1);
+  N &= mask;
+  return (x << N) | (x >> ((-N) & mask));
+}
 #endif
 
 #include "KeccakP-1600-64.macros"
@@ -155,7 +154,7 @@ void KeccakP1600_AddLanes(void *state, const unsigned char *data, unsigned int l
     }
 #else
     unsigned int i;
-    UINT8 *curData = data;
+    UINT8 const *curData = data;
     for(i=0; i<laneCount; i++, curData+=8) {
         UINT64 lane = (UINT64)curData[0]
             | ((UINT64)curData[1] << 8)
@@ -186,83 +185,6 @@ void KeccakP1600_AddByte(void *state, unsigned char byte, unsigned int offset)
 void KeccakP1600_AddBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length)
 {
     SnP_AddBytes(state, data, offset, length, KeccakP1600_AddLanes, KeccakP1600_AddBytesInLane, 8);
-}
-
-/* ---------------------------------------------------------------- */
-
-void KeccakP1600_OverwriteBytesInLane(void *state, unsigned int lanePosition, const unsigned char *data, unsigned int offset, unsigned int length)
-{
-#if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
-#ifdef KeccakP1600_useLaneComplementing
-    if ((lanePosition == 1) || (lanePosition == 2) || (lanePosition == 8) || (lanePosition == 12) || (lanePosition == 17) || (lanePosition == 20)) {
-        unsigned int i;
-        for(i=0; i<length; i++)
-            ((unsigned char*)state)[lanePosition*8+offset+i] = ~data[i];
-    }
-    else
-#endif
-    {
-        memcpy((unsigned char*)state+lanePosition*8+offset, data, length);
-    }
-#else
-#error "Not yet implemented"
-#endif
-}
-
-/* ---------------------------------------------------------------- */
-
-void KeccakP1600_OverwriteLanes(void *state, const unsigned char *data, unsigned int laneCount)
-{
-#if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
-#ifdef KeccakP1600_useLaneComplementing
-    unsigned int lanePosition;
-
-    for(lanePosition=0; lanePosition<laneCount; lanePosition++)
-        if ((lanePosition == 1) || (lanePosition == 2) || (lanePosition == 8) || (lanePosition == 12) || (lanePosition == 17) || (lanePosition == 20))
-            ((UINT64*)state)[lanePosition] = ~((const UINT64*)data)[lanePosition];
-        else
-            ((UINT64*)state)[lanePosition] = ((const UINT64*)data)[lanePosition];
-#else
-    memcpy(state, data, laneCount*8);
-#endif
-#else
-#error "Not yet implemented"
-#endif
-}
-
-/* ---------------------------------------------------------------- */
-
-void KeccakP1600_OverwriteBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length)
-{
-    SnP_OverwriteBytes(state, data, offset, length, KeccakP1600_OverwriteLanes, KeccakP1600_OverwriteBytesInLane, 8);
-}
-
-/* ---------------------------------------------------------------- */
-
-void KeccakP1600_OverwriteWithZeroes(void *state, unsigned int byteCount)
-{
-#if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
-#ifdef KeccakP1600_useLaneComplementing
-    unsigned int lanePosition;
-
-    for(lanePosition=0; lanePosition<byteCount/8; lanePosition++)
-        if ((lanePosition == 1) || (lanePosition == 2) || (lanePosition == 8) || (lanePosition == 12) || (lanePosition == 17) || (lanePosition == 20))
-            ((UINT64*)state)[lanePosition] = ~0;
-        else
-            ((UINT64*)state)[lanePosition] = 0;
-    if (byteCount%8 != 0) {
-        lanePosition = byteCount/8;
-        if ((lanePosition == 1) || (lanePosition == 2) || (lanePosition == 8) || (lanePosition == 12) || (lanePosition == 17) || (lanePosition == 20))
-            memset((unsigned char*)state+lanePosition*8, 0xFF, byteCount%8);
-        else
-            memset((unsigned char*)state+lanePosition*8, 0, byteCount%8);
-    }
-#else
-    memset(state, 0, byteCount);
-#endif
-#else
-#error "Not yet implemented"
-#endif
 }
 
 /* ---------------------------------------------------------------- */
@@ -337,7 +259,7 @@ void KeccakP1600_ExtractBytesInLane(const void *state, unsigned int lanePosition
 /* ---------------------------------------------------------------- */
 
 #if (PLATFORM_BYTE_ORDER != IS_LITTLE_ENDIAN)
-void fromWordToBytes(UINT8 *bytes, const UINT64 word)
+static void fromWordToBytes(UINT8 *bytes, const UINT64 word)
 {
     unsigned int i;
 

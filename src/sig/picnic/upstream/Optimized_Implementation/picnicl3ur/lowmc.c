@@ -1,87 +1,95 @@
+/*
+ *  This file is part of the optimized implementation of the Picnic signature scheme.
+ *  See the accompanying documentation for complete details.
+ *
+ *  The code is provided under the MIT license, see LICENSE for
+ *  more details.
+ *  SPDX-License-Identifier: MIT
+ */
+
+
 #include "lowmc.h"
 #include "lowmc_pars.h"
 #include "mzd_additional.h"
 
 
-static void sbox_layer_bitsliced(mzd_local_t* out, mzd_local_t* in, mask_t const* mask) {
-  mzd_and(out, in, mask->mask);
+#if !defined(_MSC_VER)
+#include <stdalign.h>
+#endif
+#include <string.h>
 
-  mzd_local_t* buffer[6] = {NULL};
-  mzd_local_init_multiple_ex(buffer, 6, 1, in->ncols, false);
-
-  // a
-  mzd_local_t* x0m = mzd_and(buffer[0], mask->x0, in);
-  // b
-  mzd_local_t* x1m = mzd_and(buffer[1], mask->x1, in);
-  // c
-  mzd_local_t* x2m = mzd_and(buffer[2], mask->x2, in);
-
-  mzd_shift_left(x0m, x0m, 2);
-  mzd_shift_left(x1m, x1m, 1);
-
-  // b & c
-  mzd_local_t* t0 = mzd_and(buffer[3], x1m, x2m);
-  // c & a
-  mzd_local_t* t1 = mzd_and(buffer[4], x0m, x2m);
-  // a & b
-  mzd_local_t* t2 = mzd_and(buffer[5], x0m, x1m);
+static uint64_t sbox_layer_bitsliced_uint64(uint64_t in) {
+  // a, b, c
+  const uint64_t x0m = (in & MASK_X0I) << 2;
+  const uint64_t x1m = (in & MASK_X1I) << 1;
+  const uint64_t x2m = in & MASK_X2I;
 
   // (b & c) ^ a
-  mzd_xor(t0, t0, x0m);
-
+  const uint64_t t0 = (x1m & x2m) ^ x0m;
   // (c & a) ^ a ^ b
-  mzd_xor(t1, t1, x0m);
-  mzd_xor(t1, t1, x1m);
-
+  const uint64_t t1 = (x0m & x2m) ^ x0m ^ x1m;
   // (a & b) ^ a ^ b ^c
-  mzd_xor(t2, t2, x0m);
-  mzd_xor(t2, t2, x1m);
-  mzd_xor(t2, t2, x2m);
+  const uint64_t t2 = (x0m & x1m) ^ x0m ^ x1m ^ x2m;
 
-  mzd_shift_right(t0, t0, 2);
-  mzd_shift_right(t1, t1, 1);
+  return (in & MASK_MASK) ^ (t0 >> 2) ^ (t1 >> 1) ^ t2;
+}
 
-  mzd_xor(out, out, t2);
-  mzd_xor(out, out, t0);
-  mzd_xor(out, out, t1);
+/**
+ * S-box for m = 10
+ */
+static void sbox_layer_uint64(mzd_local_t* x, mask_t const* mask) {
+  (void)mask;
 
-  mzd_local_free_multiple(buffer);
+  uint64_t* d = &FIRST_ROW(x)[x->width - 1];
+  *d = sbox_layer_bitsliced_uint64(*d);
 }
 
 
-mzd_local_t* lowmc_call(lowmc_t const* lowmc, lowmc_key_t const* lowmc_key, mzd_local_t const* p) {
-  if (p->ncols > lowmc->n) {
-    return NULL;
-  }
-  if (p->nrows != 1) {
-    return NULL;
-  }
+typedef void (*sbox_layer_impl)(mzd_local_t*, mask_t const*);
 
-  mzd_local_t* x = mzd_local_init_ex(1, lowmc->n, false);
-  mzd_local_t* y = mzd_local_init_ex(1, lowmc->n, false);
+static sbox_layer_impl get_sbox_layer(const lowmc_t* lowmc) {
+  if (lowmc->m == 10) {
+    return sbox_layer_uint64;
+  }
+  return NULL;
+}
+
+static mzd_local_t* lowmc_reduced_linear_layer(lowmc_t const* lowmc, lowmc_key_t const* lowmc_key,
+                                               mzd_local_t const* p) {
+  mzd_local_t* x       = mzd_local_init_ex(1, lowmc->n, false);
+  mzd_local_t* y       = mzd_local_init_ex(1, lowmc->n, false);
+  mzd_local_t* nl_part = mzd_local_init_ex(1, lowmc->r * 32, false);
 
   mzd_local_copy(x, p);
-#if defined(MUL_M4RI)
   mzd_addmul_vl(x, lowmc_key, lowmc->k0_lookup);
-#else
-  mzd_addmul_v(x, lowmc_key, lowmc->k0_matrix);
-#endif
+  mzd_mul_vl(nl_part, lowmc_key, lowmc->precomputed_non_linear_part_lookup);
 
   lowmc_round_t const* round = lowmc->rounds;
   for (unsigned i = 0; i < lowmc->r; ++i, ++round) {
-    {
-      sbox_layer_bitsliced(y, x, &lowmc->mask);
-    }
-#if defined(MUL_M4RI)
-    mzd_mul_vl(x, y, round->l_lookup);
-#else
-    mzd_mul_v(x, y, round->l_matrix);
-#endif
-    mzd_xor(x, x, round->constant);
-    mzd_addmul_v(x, lowmc_key, round->k_matrix);
+    sbox_layer_uint64(x, NULL);
+
+    const word mask          = (i & 1) ? WORD_C(0xFFFFFFFF00000000) : WORD_C(0x00000000FFFFFFFF);
+    const unsigned int shift = (i & 1) ? 2 : 34;
+
+    FIRST_ROW(x)[x->width - 1] ^= (CONST_FIRST_ROW(nl_part)[i >> 1] & mask) << shift;
+
+    mzd_mul_vl(y, x, round->l_lookup);
+    mzd_xor(x, y, round->constant);
   }
 
   mzd_local_free(y);
-
+  mzd_local_free(nl_part);
   return x;
+}
+
+mzd_local_t* lowmc_call(lowmc_t const* lowmc, lowmc_key_t const* lowmc_key, mzd_local_t const* p) {
+  sbox_layer_impl sbox_layer = get_sbox_layer(lowmc);
+  if (!sbox_layer) {
+    return NULL;
+  }
+
+  if (lowmc->m == 10) {
+    return lowmc_reduced_linear_layer(lowmc, lowmc_key, p);
+  }
+  return NULL;
 }

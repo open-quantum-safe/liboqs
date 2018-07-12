@@ -1,8 +1,26 @@
+/*
+ *  This file is part of the optimized implementation of the Picnic signature scheme.
+ *  See the accompanying documentation for complete details.
+ *
+ *  The code is provided under the MIT license, see LICENSE for
+ *  more details.
+ *  SPDX-License-Identifier: MIT
+ */
+
+/* define HAVE_* for more known good configurations */
+#if !defined(HAVE_POSIX_MEMALIGN) &&                                                               \
+    ((defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L) || defined(__APPLE__))
+/* defined in POSIX and available on OS X */
+#define HAVE_POSIX_MEMALIGN
+#endif
+
+#if !defined(HAVE_MEMALIGN) && defined(__linux__)
+/* always availalbe on Linux */
+#define HAVE_MEMALIGN
+#endif
 
 #include "compat.h"
-
 #if !defined(HAVE_ALIGNED_ALLOC)
-
 #include <errno.h>
 #include <stdlib.h>
 #if !defined(HAVE_POSIX_MEMALIGN) || defined(__MING32__) || defined(__MING64__) || defined(_MSC_VER)
@@ -18,8 +36,8 @@ void* aligned_alloc(size_t alignment, size_t size) {
 
 #if defined(HAVE_POSIX_MEMALIGN)
   /* check alignment (needs to be >= sizeof(void*)) */
-  if (align < sizeof(void*)) {
-    align = sizeof(void*);
+  if (alignment < sizeof(void*)) {
+    alignment = sizeof(void*);
   }
 
   void* ptr     = NULL;

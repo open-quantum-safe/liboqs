@@ -1,3 +1,12 @@
+/*
+ *  This file is part of the optimized implementation of the Picnic signature scheme.
+ *  See the accompanying documentation for complete details.
+ *
+ *  The code is provided under the MIT license, see LICENSE for
+ *  more details.
+ *  SPDX-License-Identifier: MIT
+ */
+
 #ifndef KDF_SHAKE_H
 #define KDF_SHAKE_H
 
@@ -16,7 +25,7 @@
 #define KeccakP800_excluded
 #endif
 
-#ifndef SUPERCOP
+#if !defined(SUPERCOP)
 #include "sha3/KeccakHash.h"
 #else
 #include <libkeccak.a.headers/KeccakHash.h>
@@ -26,18 +35,32 @@
 
 typedef Keccak_HashInstance hash_context;
 
-void hash_init(hash_context* ctx, const picnic_instance_t* pp);
+static inline void hash_init(hash_context* ctx, const picnic_instance_t* pp) {
+  if (pp->security_level == 64) {
+    Keccak_HashInitialize_SHAKE128(ctx);
+  } else {
+    Keccak_HashInitialize_SHAKE256(ctx);
+  }
+}
 
-#define hash_update(ctx, data, size) Keccak_HashUpdate((ctx), (data), (size) << 3)
-#define hash_final(ctx) Keccak_HashFinal((ctx), NULL)
-#define hash_squeeze(buffer, buflen, ctx) Keccak_HashSqueeze((ctx), (buffer), (buflen) << 3)
+static inline void hash_update(hash_context* ctx, const uint8_t* data, size_t size) {
+  Keccak_HashUpdate(ctx, data, size << 3);
+}
+
+static inline void hash_final(hash_context* ctx) {
+  Keccak_HashFinal(ctx, NULL);
+}
+
+static inline void hash_squeeze(hash_context* ctx, uint8_t* buffer, size_t buflen) {
+  Keccak_HashSqueeze(ctx, buffer, buflen << 3);
+}
 
 typedef Keccak_HashInstance kdf_shake_t;
 
 #define kdf_shake_init(ctx, pp) hash_init((ctx), (pp))
 #define kdf_shake_update_key(ctx, key, keylen) hash_update((ctx), (key), (keylen))
 #define kdf_shake_finalize_key(ctx) hash_final((ctx))
-#define kdf_shake_get_randomness(ctx, dst, count) hash_squeeze((dst), (count), (ctx))
+#define kdf_shake_get_randomness(ctx, dst, count) hash_squeeze((ctx), (dst), (count))
 #define kdf_shake_clear(ctx)
 
 #endif

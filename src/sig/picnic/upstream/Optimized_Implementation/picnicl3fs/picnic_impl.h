@@ -1,3 +1,12 @@
+/*
+ *  This file is part of the optimized implementation of the Picnic signature scheme.
+ *  See the accompanying documentation for complete details.
+ *
+ *  The code is provided under the MIT license, see LICENSE for
+ *  more details.
+ *  SPDX-License-Identifier: MIT
+ */
+
 #ifndef PICNIC_IMPL_H
 #define PICNIC_IMPL_H
 
@@ -9,10 +18,7 @@
 
 typedef enum { TRANSFORM_FS, TRANSFORM_UR } transform_t;
 
-struct picnic_instance_s {
-  picnic_params_t params;
-  transform_t transform;
-
+typedef struct {
   lowmc_t lowmc;
   lowmc_implementation_f lowmc_impl;
   lowmc_verify_implementation_f lowmc_verify_impl;
@@ -31,19 +37,29 @@ struct picnic_instance_s {
   uint32_t unruh_without_input_bytes_size; /* bytes */
   uint32_t unruh_with_input_bytes_size;    /* bytes */
   uint32_t max_signature_size;             /* bytes */
-};
+
+  picnic_params_t params;
+  transform_t transform;
+} picnic_instance_t;
 
 picnic_instance_t* get_instance(picnic_params_t param);
 const picnic_instance_t* picnic_instance_get(picnic_params_t param);
 
-bool fis_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
-              const uint8_t* public_key, const uint8_t* msg, size_t msglen, uint8_t* sig,
-              size_t* siglen);
+bool impl_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
+               const uint8_t* public_key, const uint8_t* msg, size_t msglen, uint8_t* sig,
+               size_t* siglen);
 
-bool fis_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
-                const uint8_t* msg, size_t msglen, const uint8_t* sig, size_t siglen);
+bool impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
+                 const uint8_t* msg, size_t msglen, const uint8_t* sig, size_t siglen);
 
 void visualize_signature(FILE* out, const picnic_instance_t* pp, const uint8_t* msg, size_t msglen,
                          const uint8_t* sig, size_t siglen);
+
+PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_private_key_size(picnic_params_t param);
+PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_public_key_size(picnic_params_t param);
+PICNIC_EXPORT int PICNIC_CALLING_CONVENTION picnic_sk_to_pk(const picnic_privatekey_t* sk,
+                                                            picnic_publickey_t* pk);
+void picnic_visualize(FILE* out, const uint8_t* public_key, size_t public_key_size,
+                      const uint8_t* msg, size_t msglen, const uint8_t* sig, size_t siglen);
 
 #endif

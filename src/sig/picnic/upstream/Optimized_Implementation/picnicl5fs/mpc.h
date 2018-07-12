@@ -1,3 +1,12 @@
+/*
+ *  This file is part of the optimized implementation of the Picnic signature scheme.
+ *  See the accompanying documentation for complete details.
+ *
+ *  The code is provided under the MIT license, see LICENSE for
+ *  more details.
+ *  SPDX-License-Identifier: MIT
+ */
+
 #ifndef MPC_H
 #define MPC_H
 
@@ -10,7 +19,6 @@
 #define SC_VERIFY 2
 
 typedef union {
-  mzd_local_t* s[SC_PROOF];
   uint64_t t[SC_PROOF];
 } view_t;
 
@@ -62,11 +70,11 @@ void mpc_and_verify(mzd_local_t* const* res, mzd_local_t* const* first, mzd_loca
                     unsigned viewshift, mzd_local_t* const* buffer) ATTR_NONNULL;
 
 void mpc_and_uint64(uint64_t* res, uint64_t const* first, uint64_t const* second, uint64_t const* r,
-                    view_t* view, unsigned viewshift) __attribute__((nonnull));
+                    view_t* view, unsigned viewshift) ATTR_NONNULL;
 
 void mpc_and_verify_uint64(uint64_t* res, uint64_t const* first, uint64_t const* second,
-                           uint64_t const* r, view_t* view, uint64_t const mask, unsigned viewshift)
-    __attribute__((nonnull));
+                           uint64_t const* r, view_t* view, uint64_t const mask,
+                           unsigned viewshift) ATTR_NONNULL;
 
 
 void mpc_copy(mzd_local_t** out, mzd_local_t* const* in, unsigned sc) ATTR_NONNULL_ARG(2);

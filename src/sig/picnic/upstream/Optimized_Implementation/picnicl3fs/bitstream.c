@@ -1,8 +1,17 @@
+/*
+ *  This file is part of the optimized implementation of the Picnic signature scheme.
+ *  See the accompanying documentation for complete details.
+ *
+ *  The code is provided under the MIT license, see LICENSE for
+ *  more details.
+ *  SPDX-License-Identifier: MIT
+ */
+
 
 #include "bitstream.h"
 
 bitstream_value_t bitstream_get_bits(bitstream_t* bs, unsigned int num_bits) {
-  const uint8_t* p              = &bs->buffer[bs->position / 8];
+  const uint8_t* p              = &bs->cbuffer[bs->position / 8];
   const unsigned int skip_bits  = bs->position % 8;
   const unsigned int start_bits = 8 - skip_bits;
 

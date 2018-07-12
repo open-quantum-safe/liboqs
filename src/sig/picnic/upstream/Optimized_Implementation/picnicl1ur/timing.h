@@ -1,3 +1,12 @@
+/*
+ *  This file is part of the optimized implementation of the Picnic signature scheme.
+ *  See the accompanying documentation for complete details.
+ *
+ *  The code is provided under the MIT license, see LICENSE for
+ *  more details.
+ *  SPDX-License-Identifier: MIT
+ */
+
 #ifndef TIMING_H
 #define TIMING_H
 
@@ -33,11 +42,11 @@ typedef union {
 #ifdef WITH_OPENMP
 #include <omp.h>
 
-static inline uint64_t gettime_clock() {
+static inline uint64_t gettime_clock(void) {
   return omp_get_wtime() * 1000 * 1000;
 }
 #else
-static inline uint64_t gettime_clock() {
+static inline uint64_t gettime_clock(void) {
   return clock() * TIMING_SCALE;
 }
 #endif

@@ -9,21 +9,18 @@
 static int picnic_sign_verify(const picnic_params_t param) {
   static const uint8_t m[] = "test message";
 
-  const size_t max_signature_size = picnic_get_max_sig_size(param);
+  const size_t max_signature_size = picnic_signature_size(param);
   if (!max_signature_size) {
     /* not supported */
     return -2;
   }
 
-  uint8_t private_key[PICNIC_MAX_PRIVATE_KEY_SIZE];
-  uint8_t public_key[PICNIC_MAX_PUBLIC_KEY_SIZE];
-
-  size_t private_key_size = sizeof(private_key);
-  size_t public_key_size  = sizeof(public_key);
+  picnic_privatekey_t private_key;
+  picnic_publickey_t public_key;
 
   /* Create a key pair */
   printf("Creating key pair ... ");
-  if (!picnic_create_key(param, private_key, &private_key_size, public_key, &public_key_size)) {
+  if (picnic_keygen(param, &public_key, &private_key)) {
     printf("FAILED!\n");
     return -1;
   }
@@ -31,7 +28,7 @@ static int picnic_sign_verify(const picnic_params_t param) {
 
   /* Valid key pair */
   printf("Validating key pair ... ");
-  if (!picnic_verify_key(private_key, private_key_size, public_key, public_key_size)) {
+  if (picnic_validate_keypair(&private_key, &public_key)) {
     printf("FAILED!\n");
     return -1;
   }
@@ -43,11 +40,10 @@ static int picnic_sign_verify(const picnic_params_t param) {
 
   /* Sign a message */
   printf("Signing message ... ");
-  if (picnic_sign(private_key, private_key_size, public_key, public_key_size, m, sizeof(m), sig,
-                  &siglen)) {
+  if (!picnic_sign(&private_key, m, sizeof(m), sig, &siglen)) {
     printf("OK\nVerifying signature ... ");
     /* Verify signature */
-    if (!picnic_verify(public_key, public_key_size, m, sizeof(m), sig, siglen)) {
+    if (picnic_verify(&public_key, m, sizeof(m), sig, siglen)) {
       ret = -1;
       printf("FAILED!\n");
     } else {
