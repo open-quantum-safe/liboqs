@@ -29,7 +29,7 @@ OBJECT_DIRS+=.objs/kem/ledakem
 OBJECTS_KEM_LEDAKEM=.objs/kem/ledakem/kem_LEDAkem.o
 OBJECTS_KEM+=$(OBJECTS_KEM_LEDAKEM)
 
-.objs/kem/ledakem/kem_LEDAkem.o: src/kem/ledakem/kem_LEDAkem.c
+.objs/kem/ledakem/kem_LEDAkem.o: headers src/kem/ledakem/kem_LEDAkem.c
 	$(CC) -c src/kem/ledakem/kem_LEDAkem.c -o .objs/kem/ledakem/kem_LEDAkem.o $(CFLAGS)
 
 ifneq (,$(findstring ledakem_C1_N02, $(ENABLE_KEMS)))
