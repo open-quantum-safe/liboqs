@@ -27,7 +27,7 @@ include src/kem/crystals-kyber/Makefile
 include src/kem/bike/Makefile
 include src/kem/sike/Makefile
 include src/kem/BIG_QUAKE/Makefile
-include src/kem/ledakem/Makefile
 include src/kem/saber/Makefile
 include src/kem/lima/Makefile
+include src/kem/ledakem/Makefile
 # EDIT-WHEN-ADDING-KEM
