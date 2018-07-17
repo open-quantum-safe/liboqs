@@ -11,6 +11,7 @@ PRINT_RESET="tput sgr 0"
 RET=0
 
 KEMS=`grep 'define OQS_KEM_alg_' src/kem/kem.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
+
 for kem in ${KEMS}; do
 
 	kat="kat_kem_rsp/${kem}.kat"

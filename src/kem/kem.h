@@ -73,6 +73,24 @@
 #define OQS_KEM_alg_BIG_QUAKE_3 "BIG_QUAKE_3"
 /** Algorithm identifier for BIG_QUAKE_5. */
 #define OQS_KEM_alg_BIG_QUAKE_5 "BIG_QUAKE_5"
+/** Algorithm identifier for LEDA KEM SL=1 N0=2. */
+#define OQS_KEM_alg_ledakem_C1_N02 "LEDAKEM_C1_N02"
+/** Algorithm identifier for LEDA KEM SL=1 N0=3. */
+#define OQS_KEM_alg_ledakem_C1_N03 "LEDAKEM_C1_N03"
+/** Algorithm identifier for LEDA KEM SL=1 N0=4. */
+#define OQS_KEM_alg_ledakem_C1_N04 "LEDAKEM_C1_N04"
+/** Algorithm identifier for LEDA KEM SL=3 N0=2. */
+#define OQS_KEM_alg_ledakem_C3_N02 "LEDAKEM_C3_N02"
+/** Algorithm identifier for LEDA KEM SL=3 N0=3. */
+#define OQS_KEM_alg_ledakem_C3_N03 "LEDAKEM_C3_N03"
+/** Algorithm identifier for LEDA KEM SL=3 N0=4. */
+#define OQS_KEM_alg_ledakem_C3_N04 "LEDAKEM_C3_N04"
+/** Algorithm identifier for LEDA KEM SL=5 N0=2. */
+#define OQS_KEM_alg_ledakem_C5_N02 "LEDAKEM_C5_N02"
+/** Algorithm identifier for LEDA KEM SL=5 N0=3. */
+#define OQS_KEM_alg_ledakem_C5_N03 "LEDAKEM_C5_N03"
+/** Algorithm identifier for LEDA KEM SL=5 N0=4. */
+#define OQS_KEM_alg_ledakem_C5_N04 "LEDAKEM_C5_N04"
 /** Algorithm identifier for LightSaber-KEM. */
 #define OQS_KEM_alg_saber_light_saber_kem "LightSaber-KEM"
 /** Algorithm identifier for Saber-KEM. */
@@ -93,7 +111,7 @@
 #define OQS_KEM_alg_lima_sp_2062_cca_kem "Lima-sp-2062-CCA-KEM"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 33
+#define OQS_KEM_algs_length 42
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -240,6 +258,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
+#include <oqs/kem_ledakem.h>
 #include <oqs/kem_bike.h>
 #include <oqs/kem_sike.h>
 #include <oqs/kem_BIGQUAKE.h>
