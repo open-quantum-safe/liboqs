@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include <oqs/kem_LEDAkem.h>
+#include <oqs/kem_ledakem.h>
 
 #if defined(OQS_ENABLE_KEM_ledakem_C1_N02)
 

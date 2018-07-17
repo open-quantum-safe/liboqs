@@ -258,7 +258,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
-#include <oqs/kem_LEDAkem.h>
+#include <oqs/kem_ledakem.h>
 #include <oqs/kem_bike.h>
 #include <oqs/kem_sike.h>
 #include <oqs/kem_BIGQUAKE.h>
