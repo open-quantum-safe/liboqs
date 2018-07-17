@@ -64,6 +64,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	}
 
 	ret = OQS_SUCCESS;
+	printf("verification passes as expected\n");
 	goto cleanup;
 
 err:
