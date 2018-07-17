@@ -1,0 +1,18 @@
+# This is a sample build configuration for Python.
+# Check our guides at https://confluence.atlassian.com/x/x4UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: sagemath/sagemath
+
+pipelines:
+  default:
+    - step:
+        script: # Modify the commands below to build your repository.
+          - export SAGE_ROOT=`sage -c "import os; print os.environ['SAGE_ROOT']"`
+          - . $SAGE_ROOT/local/bin/sage-env
+          - umask 000 # allow to run doctests in  world writable directory
+          - pip install -r requirements.txt # install flake8
+          - flake8 estimator.py
+          - PYTHONIOENCODING=UTF-8 PYTHONPATH=`pwd` sage-runtests estimator.py
+          - PYTHONIOENCODING=UTF-8 PYTHONPATH=`pwd` sage-runtests README.rst

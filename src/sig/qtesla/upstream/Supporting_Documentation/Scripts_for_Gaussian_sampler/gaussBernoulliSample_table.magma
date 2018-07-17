@@ -1,0 +1,26 @@
+/*************************************************************************************
+* qTESLA: an efficient post-quantum signature scheme based on the R-LWE problem
+*
+* Abstract: script to generate the precomputed Bernoulli table B
+**************************************************************************************/
+
+
+k := 28;        // <- Insert here value of xi (PARAM_Xi) of the wanted Gaussian                        
+prec := Ceiling(128*Log(10, 2)) + 1;
+sigma_2 := 1/Sqrt(2*ChangePrecision(Log(2), prec));
+f := 2*(k*sigma_2)^2;
+a := Exp(ChangePrecision(-1/f, prec));
+b := 2^5;
+c := 3;
+"  // Restriction: "*Sprint(c*Round(Log(2, b)))*"-bit exponent";
+"    static const double exp["*Sprint(c)*"]["*Sprint(b)*"] = {";
+for i in [0..c-1] do
+    "    {";
+    for j in [0..b-1] do
+        "       "*Sprint(a^j)*",";
+    end for;
+    "    },";
+    a := a^b;
+end for;
+"    };";
+"  // assert(t >= 0 && t < (1LL << "*Sprint(c*Round(Log(2, b)))*"));";

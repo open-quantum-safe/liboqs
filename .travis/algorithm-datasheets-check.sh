@@ -8,16 +8,16 @@ PRINT_GREEN="tput setaf 2"
 PRINT_RED="tput setaf 1"
 PRINT_RESET="tput sgr 0"
 
-# get the list of KEMs from the list of algorithm identifiers in enum OQS_KEM_alg_name in src/kem/kem.h
-KEMS=`grep 'define OQS_KEM_alg_' src/kem/kem.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
+# get the list of KEMs and signatures from the list of algorithm identifiers src/kem/kem.h and src/sig/sig.h
+ALGS=`grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
 
 RET=0
-for kem in ${KEMS}; do
-	FOUND=`grep ${kem} docs/algorithms/*.md`
+for alg in ${ALGS}; do
+	FOUND=`grep ${alg} docs/algorithms/*.md`
 	if [[ -z "${FOUND}" ]];
 	then
 		${PRINT_RED}
-		echo "Could not find algorithm datasheet containing '${kem}'."
+		echo "Could not find algorithm datasheet containing '${alg}'."
 		${PRINT_RESET}
 		RET=1
 	fi
@@ -26,7 +26,7 @@ done
 if [[ "${RET}" == "0" ]];
 then
 	${PRINT_GREEN}
-	echo "Algorithm datasheet present for all KEMs #defined in src/kem/kem.h.";
+	echo "Algorithm datasheet present for all algs #defined in src/kem/kem.h and src/sig/sig.h.";
 	${PRINT_RESET}
 fi
 

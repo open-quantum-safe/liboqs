@@ -1,0 +1,17 @@
+Lattice-based digital signature scheme qTESLA
+
+Principal and auxiliary submitters:
+Sedat Akleylek, Erdem Alkim, Paulo Barreto, Nina Bindel, Johannes Buchmann, 
+Edward Eaton, Gus Gutoski, Juliane Krämer, Patrick Longa, Harun Polat, 
+Jefferson Ricardini, and Gustavo Zanon
+
+The qTESLA source code and header files in this package are released to the public domain.
+
+Third-party code included in the package is licensed as follows:
+
+- src/sha3/fips202.c: public domain
+- src/sha3/fips202x4.c: public domain
+- src/sha3/keccak4x: all files in this folder are public domain (CC0), excepting
+- src/sha3/keccak4x/brg_endian.h which is copyrighted by Brian Gladman and comes with a BSD 3-clause license.
+- tests/PQCtestKAT_sign.c: copyrighted by Lawrence E. Bassham
+- tests/rng.c: copyrighted by Lawrence E. Bassham

@@ -32,6 +32,11 @@ then
 	done
 	ARCHIVE_FILE=.objs/${MODULE}/${MODULE}_upstream.a
 	ld -r ${ARCHIVE_FILE} -o ${ARCHIVE_FILE} ${UNEXPORT_ARG}
+	# rename macOS-only symbols
+	if [ -e "${SYMBOLS_FILE}.macos" ];
+	then
+		bash $0 ${MODULE} "${SYMBOLS_FILE}.macos"
+	fi
 elif [ ${UNAME} = 'Linux' ]
 then
 	REDEFINE_ARG=
@@ -46,6 +51,11 @@ then
 		objcopy ${REDEFINE_ARG} ${OBJFILE}
 		objcopy ${WEAKEN_ARG} ${OBJFILE}
 	done
+	# rename Linux-only symbols
+	if [ -e "${SYMBOLS_FILE}.linux" ];
+	then
+		bash $0 ${MODULE} "${SYMBOLS_FILE}.linux"
+	fi
 else
 	PRINT_GREEN="tput setaf 2"
 	PRINT_RED="tput setaf 1"
