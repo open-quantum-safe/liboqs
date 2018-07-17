@@ -14,6 +14,7 @@ char *OQS_KEM_alg_identifier(size_t i) {
 	    OQS_KEM_alg_sike_p503, OQS_KEM_alg_sike_p751,
 	    OQS_KEM_alg_BIG_QUAKE_1, OQS_KEM_alg_BIG_QUAKE_3, OQS_KEM_alg_BIG_QUAKE_5,
 	    OQS_KEM_alg_bike1_l1, OQS_KEM_alg_bike1_l3, OQS_KEM_alg_bike1_l5, OQS_KEM_alg_bike2_l1, OQS_KEM_alg_bike2_l3, OQS_KEM_alg_bike2_l5, OQS_KEM_alg_bike3_l1, OQS_KEM_alg_bike3_l3, OQS_KEM_alg_bike3_l5,
+	    OQS_KEM_alg_ledakem_C1_N02, OQS_KEM_alg_ledakem_C1_N03, OQS_KEM_alg_ledakem_C1_N04, OQS_KEM_alg_ledakem_C3_N02, OQS_KEM_alg_ledakem_C3_N03, OQS_KEM_alg_ledakem_C3_N04, OQS_KEM_alg_ledakem_C5_N02, OQS_KEM_alg_ledakem_C5_N03, OQS_KEM_alg_ledakem_C5_N04,
 	    OQS_KEM_alg_saber_light_saber_kem, OQS_KEM_alg_saber_saber_kem, OQS_KEM_alg_saber_fire_saber_kem,
 	    OQS_KEM_alg_lima_2p_1024_cca_kem, OQS_KEM_alg_lima_2p_2048_cca_kem, OQS_KEM_alg_lima_sp_1018_cca_kem, OQS_KEM_alg_lima_sp_1306_cca_kem, OQS_KEM_alg_lima_sp_1822_cca_kem, OQS_KEM_alg_lima_sp_2062_cca_kem};
 	if (i >= OQS_KEM_algs_length) {
@@ -164,6 +165,60 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C1_N02)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C1_N02)
+		return OQS_KEM_ledakem_C1_N02_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C1_N03)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C1_N03)
+		return OQS_KEM_ledakem_C1_N03_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C1_N04)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C1_N04)
+		return OQS_KEM_ledakem_C1_N04_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C3_N02)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C3_N02)
+		return OQS_KEM_ledakem_C3_N02_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C3_N03)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C3_N03)
+		return OQS_KEM_ledakem_C3_N03_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C3_N04)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C3_N04)
+		return OQS_KEM_ledakem_C3_N04_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N02)) {
+#ifdef OQS_ENABLE_KEM_ledakem_C5_N02
+		return OQS_KEM_ledakem_C5_N02_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N03)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C5_N03)
+		return OQS_KEM_ledakem_C5_N03_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledakem_C5_N04)) {
+#if defined(OQS_ENABLE_KEM_ledakem_C5_N04)
+		return OQS_KEM_ledakem_C5_N04_new();
+#else
+		return NULL;
+#endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_saber_light_saber_kem)) {
 #ifdef OQS_ENABLE_KEM_saber_light_saber_kem
 		return OQS_KEM_saber_light_saber_kem_new();
@@ -231,6 +286,7 @@ OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *sec
 		return kem->keypair(public_key, secret_key);
 	}
 }
+
 OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
@@ -238,6 +294,7 @@ OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shar
 		return kem->encaps(ciphertext, shared_secret, public_key);
 	}
 }
+
 OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;

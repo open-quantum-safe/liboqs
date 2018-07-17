@@ -29,16 +29,20 @@ then
 	exit 1;
 fi;
 
-TRY_CLANGFORMAT="clang-format-3.9"
+TRY_CLANGFORMAT="/usr/local/Cellar/clang-format/2016-06-27/bin/clang-format"
 if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
 then
-	TRY_CLANGFORMAT="clang-format"
+	TRY_CLANGFORMAT="clang-format-3.9"
 	if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
 	then
-		${PRINT_RED}
-		echo "Cannot find clang-format."
-		${PRINT_RESET}
-		exit 1
+		TRY_CLANGFORMAT="clang-format"
+		if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
+		then
+			${PRINT_RED}
+			echo "Cannot find clang-format."
+			${PRINT_RESET}
+			exit 1
+		fi
 	fi
 fi
 

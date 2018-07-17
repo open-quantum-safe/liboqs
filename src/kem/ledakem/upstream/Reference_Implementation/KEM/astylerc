@@ -1,0 +1,6 @@
+--max-code-length=80 # clamp lines
+--break-after-logical
+--style=kr   # alternatively --style=otbs
+--mode=c     # should be inferred, but, just in case
+--align-pointer=name
+--indent=spaces=3

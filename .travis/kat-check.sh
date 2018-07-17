@@ -23,7 +23,7 @@ else
 	${PRINT_RED}
 	echo "Error in known answer tests.";
 	${PRINT_RESET}
-	RET = 1
+	RET=1
 fi
 
 exit ${RET}
