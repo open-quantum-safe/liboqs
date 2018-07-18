@@ -20,19 +20,23 @@
 
 /**
  * Supported signature algorithms.
- * Note: the Picnic algs are not wrapped with a ENABLE_SIG_PICNIC
+ * Note: the sig algids are not wrapped with a ENABLE_SIG_*
  *       to avoid forcing calling apps to define the macro. The library
  *       compiled without the macro fails if these algid are requested.
  */
 enum OQS_SIG_algid {
+	OQS_SIG_default, // equivalent to OQS_SIG_picnic_L1_FS
 	/* Picnic sig algs */
-	OQS_SIG_picnic_default, // equivalent to OQS_SIG_picnic_L1_FS
 	OQS_SIG_picnic_L1_FS,
 	OQS_SIG_picnic_L1_UR,
 	OQS_SIG_picnic_L3_FS,
 	OQS_SIG_picnic_L3_UR,
 	OQS_SIG_picnic_L5_FS,
 	OQS_SIG_picnic_L5_UR,
+	/* qTesla sig algs */
+	OQS_SIG_qTESLA_I,
+	OQS_SIG_qTESLA_III_speed,
+	OQS_SIG_qTESLA_III_size,
 };
 
 /**

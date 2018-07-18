@@ -57,7 +57,7 @@ OQS_STATUS OQS_SIG_picnic_get(OQS_SIG *s, enum OQS_SIG_algid algid) {
 	// NOTE: the key and sig len values use macros, so we can't
 	//       parametrized with pctx->params to shorten the code.
 	switch (algid) {
-	case OQS_SIG_picnic_default:
+	case OQS_SIG_default:
 	case OQS_SIG_picnic_L1_FS:
 		pctx->params = Picnic_L1_FS;
 		s->method_name = Picnic_L1_FS_name;
