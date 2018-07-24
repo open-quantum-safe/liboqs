@@ -49,12 +49,12 @@
 #define OQS_SIG_alg_picnic_L5_FS "picnic_L5_FS"
 /** Algorithm identifier for Picnic_L5_FS */
 #define OQS_SIG_alg_picnic_L5_UR "picnic_L5_UR"
-/** Algorithm identifier for Dilithium_II */
-#define OQS_SIG_alg_Dilithium_II "Dilithium_II_medium"
-/** Algorithm identifier for Dilithium_III */
-#define OQS_SIG_alg_Dilithium_III "Dilithium_III_recommended"
-/** Algorithm identifier for Dilithium_IV */
-#define OQS_SIG_alg_Dilithium_IV "Dilithium_IV_very_high"
+/** Algorithm identifier for Dilithium_II_medium */
+#define OQS_SIG_alg_Dilithium_II_medium "Dilithium_II_medium"
+/** Algorithm identifier for Dilithium_III_recommended */
+#define OQS_SIG_alg_Dilithium_III_recommended "Dilithium_III_recommended"
+/** Algorithm identifier for Dilithium_IV_very_high */
+#define OQS_SIG_alg_Dilithium_IV_very_high "Dilithium_IV_very_high"
 
 // EDIT-WHEN-ADDING-SIG
 /** Number of algorithm identifiers above (including default). */

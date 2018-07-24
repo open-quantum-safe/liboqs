@@ -98,21 +98,21 @@ OQS_SIG *OQS_SIG_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_Dilithium_II)) {
-#ifdef OQS_ENABLE_SIG_Dilithium_II
-		return OQS_SIG_Dilithium_II_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_Dilithium_II_medium)) {
+#ifdef OQS_ENABLE_SIG_Dilithium_II_medium
+		return OQS_SIG_Dilithium_II_medium_new();
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_Dilithium_III)) {
-#ifdef OQS_ENABLE_SIG_Dilithium_III
-		return OQS_SIG_Dilithium_III_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_Dilithium_III_recommended)) {
+#ifdef OQS_ENABLE_SIG_Dilithium_III_recommended
+		return OQS_SIG_Dilithium_III_recommended_new();
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_Dilithium_IV)) {
-#ifdef OQS_ENABLE_SIG_Dilithium_IV
-		return OQS_SIG_Dilithium_IV_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_Dilithium_IV_very_high)) {
+#ifdef OQS_ENABLE_SIG_Dilithium_IV_very_high
+		return OQS_SIG_Dilithium_IV_very_high_new();
 #else
 		return NULL;
 #endif
