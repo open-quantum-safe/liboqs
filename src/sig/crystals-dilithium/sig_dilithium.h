@@ -5,9 +5,9 @@
 
 #ifdef OQS_ENABLE_SIG_Dilithium_II_medium
 
-#define OQS_SIG_Dilithium_II_medium_length_public_key 1184U
-#define OQS_SIG_Dilithium_II_medium_length_secret_key 2800U
-#define OQS_SIG_Dilithium_II_medium_length_sig_overhead 2044U
+#define OQS_SIG_Dilithium_II_medium_length_public_key 1184
+#define OQS_SIG_Dilithium_II_medium_length_secret_key 2800
+#define OQS_SIG_Dilithium_II_medium_length_sig_overhead 2044
 
 OQS_SIG *OQS_SIG_Dilithium_II_medium_new();
 
@@ -19,9 +19,9 @@ extern OQS_STATUS OQS_SIG_Dilithium_II_medium_sign_open(uint8_t *message, size_t
 
 #ifdef OQS_ENABLE_SIG_Dilithium_III_recommended
 
-#define OQS_SIG_Dilithium_III_recommended_length_public_key 1472U
-#define OQS_SIG_Dilithium_III_recommended_length_secret_key 3504U
-#define OQS_SIG_Dilithium_III_recommended_length_sig_overhead 2701U
+#define OQS_SIG_Dilithium_III_recommended_length_public_key 1472
+#define OQS_SIG_Dilithium_III_recommended_length_secret_key 3504
+#define OQS_SIG_Dilithium_III_recommended_length_sig_overhead 2701
 
 OQS_SIG *OQS_SIG_Dilithium_III_recommended_new();
 
@@ -33,9 +33,9 @@ extern OQS_STATUS OQS_SIG_Dilithium_III_recommended_sign_open(uint8_t *message, 
 
 #ifdef OQS_ENABLE_SIG_Dilithium_IV_very_high
 
-#define OQS_SIG_Dilithium_IV_very_high_length_public_key 1760U
-#define OQS_SIG_Dilithium_IV_very_high_length_secret_key 3856U
-#define OQS_SIG_Dilithium_IV_very_high_length_sig_overhead 3366U
+#define OQS_SIG_Dilithium_IV_very_high_length_public_key 1760
+#define OQS_SIG_Dilithium_IV_very_high_length_secret_key 3856
+#define OQS_SIG_Dilithium_IV_very_high_length_sig_overhead 3366
 
 OQS_SIG *OQS_SIG_Dilithium_IV_very_high_new();
 
