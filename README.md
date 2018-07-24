@@ -161,6 +161,7 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 Contributors to this nist-branch of liboqs include:
 
 - Nicholas Allen (Amazon Web Services)
+- Maxime Anvari
 - Eric Crockett (Amazon Web Services)
 - Nir Drucker (Amazon Web Services)
 - Vlad Gheorghiu (evolutionQ)
