@@ -59,6 +59,7 @@ ifeq ($(arch), "x64")
   CFLAGS+= -arch x86_64
 endif
 
+BINUTILS_VER=$(shell ld -v | grep -o "[0-9][0-9]*.[0-9][0-9]*")
 ifneq (,$(BINUTILS_VER))
   ifeq ($(shell expr $(BINUTILS_VER) \>= 2.26), 1)
     SUPPORTED_BINUTILS=1
