@@ -64,7 +64,7 @@ static OQS_STATUS sig_kat(const char *method_name) {
 	fprintf(fh, "mlen = %lu\n", mlen);
 	public_key = malloc(sig->length_public_key);
 	secret_key = malloc(sig->length_secret_key);
-	message = malloc(mlen);
+	message = malloc(mlen + sig->length_sig_overhead);
 	signed_message = malloc(mlen + sig->length_sig_overhead);
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signed_message == NULL)) {
 		fprintf(stderr, "[kat_sig] %s ERROR: malloc failed!\n", method_name);
