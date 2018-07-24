@@ -19,9 +19,9 @@ char *OQS_SIG_alg_identifier(size_t i) {
 	    OQS_SIG_alg_picnic_L3_UR,
 	    OQS_SIG_alg_picnic_L5_FS,
 	    OQS_SIG_alg_picnic_L5_UR,
-		OQS_SIG_alg_Dilithium_II_medium,
-		OQS_SIG_alg_Dilithium_III_recommended,
-		OQS_SIG_alg_Dilithium_IV_very_high};
+	    OQS_SIG_alg_Dilithium_II_medium,
+	    OQS_SIG_alg_Dilithium_III_recommended,
+	    OQS_SIG_alg_Dilithium_IV_very_high};
 	if (i >= OQS_SIG_algs_length) {
 		return NULL;
 	} else {
