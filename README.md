@@ -98,7 +98,7 @@ You need to install the following packages:
 
 You need to install the following packages using brew (or a package manager of your choice):
 
-	brew install openssl
+	brew install openssl wget
 
 ### Building
 
