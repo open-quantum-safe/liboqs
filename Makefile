@@ -18,7 +18,7 @@ KEM_DEFAULT?=newhope_1024_cca_kem
 
 SIGS_TO_ENABLE?=qTESLA_I qTESLA_III_size qTESLA_III_speed qTESLA_p_I qTESLA_p_III \
 			          picnic_L1_FS picnic_L1_UR picnic_L3_FS picnic_L3_UR picnic_L5_FS picnic_L5_UR \
-					  Dilithium_II_medium # EDIT-WHEN-ADDING-SIG
+					  Dilithium_II_medium Dilithium_III_recommended Dilithium_IV_very_high # EDIT-WHEN-ADDING-SIG
 
 SIG_DEFAULT?=qTESLA_I
 
