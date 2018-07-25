@@ -26,19 +26,19 @@
 // It produces a private key sk and computes the public key pk.
 // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = 644 bytes)
 //          public key pk (CRYPTO_PUBLICKEYBYTES = 564 bytes)
-int oqs_kem_sike_p751_keypair(unsigned char *pk, unsigned char *sk);
+int OQS_KEM_sike_p751_keypair(unsigned char *pk, unsigned char *sk);
 
 // SIKE's encapsulation
 // Input:   public key pk         (CRYPTO_PUBLICKEYBYTES = 564 bytes)
 // Outputs: shared secret ss      (CRYPTO_BYTES = 24 bytes)
 //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 596 bytes)
-int oqs_kem_sike_p751_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
+int OQS_KEM_sike_p751_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
 
 // SIKE's decapsulation
 // Input:   secret key sk         (CRYPTO_SECRETKEYBYTES = 644 bytes)
 //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 596 bytes)
 // Outputs: shared secret ss      (CRYPTO_BYTES = 24 bytes)
-int oqs_kem_sike_p751_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+int OQS_KEM_sike_p751_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
 
 // Encoding of keys for KEM-based isogeny system "SIKEp751" (wire format):
 // ----------------------------------------------------------------------

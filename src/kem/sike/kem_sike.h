@@ -12,9 +12,9 @@
 
 OQS_KEM *OQS_KEM_sike_p503_new();
 
-extern OQS_STATUS OQS_KEM_sike_p503_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_sike_p503_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_sike_p503_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_sike_p503_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_sike_p503_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_sike_p503_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -27,9 +27,9 @@ extern OQS_STATUS OQS_KEM_sike_p503_decaps(uint8_t *shared_secret, const unsigne
 
 OQS_KEM *OQS_KEM_sike_p751_new();
 
-extern OQS_STATUS OQS_KEM_sike_p751_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_sike_p751_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_sike_p751_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_sike_p751_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_sike_p751_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_sike_p751_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 

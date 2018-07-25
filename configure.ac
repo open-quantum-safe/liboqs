@@ -92,10 +92,6 @@ ARG_ENABL_SET([kex-code-mcbits], [enable KEX-CODE-MCBITS.])
 AM_CONDITIONAL([kex_code_mcbits], [test "x$kex_code_mcbits" = xtrue])
 AM_CONDITIONAL([USE_MCBITS], [test "x$kex_code_mcbits" = xtrue])
 
-ARG_DISBL_SET([kex-lwe-frodo], [disable KEX-LWE-FRODO.])
-AM_CONDITIONAL([kex_lwe_frodo], [test "x$kex_lwe_frodo" = xtrue])
-AM_CONDITIONAL([USE_KEX_LWE_FRODO], [test "x$kex_lwe_frodo" = xtrue])
-
 ARG_DISBL_SET([kex-ntru], [disable KEX-NTRU.])
 AM_CONDITIONAL([kex_ntru], [test "x$kex_ntru" = xtrue])
 AM_CONDITIONAL([USE_KEX_NTRU], [test "x$kex_ntru" = xtrue])
@@ -115,10 +111,6 @@ AM_CONDITIONAL([USE_SIG_PICNIC], [test "x$sig_picnic" = xtrue])
 ARG_ENABL_SET([kex-rlwe-newhope-avx2], [enable KEX-RLWE-NEWHOPE-AVX2.])
 AM_CONDITIONAL([kex_rlwe_newhope_avx2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
 AM_CONDITIONAL([USE_KEX_RLWE_NEWHOPE_AVX2], [test "x$kex_rlwe_newhope_avx2" = xtrue])
-
-ARG_DISBL_SET([kem-sike], [disable KEM-SIKE.])
-AM_CONDITIONAL([kem_sike], [test "x$kem_sike" = xtrue])
-AM_CONDITIONAL([USE_KEM_SIKE], [test "x$kem_sike" = xtrue])
 
 AC_CANONICAL_HOST
 
@@ -177,12 +169,6 @@ SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/sha3 src/crypto/rand_urandom_aesctr 
 # KEX
 SRCDIR=${SRCDIR}" src/kex"
 
-if test x"$kex_lwe_frodo" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_LWE_FRODO"
-  AC_DEFINE(ENABLE_KEX_LWE_FRODO, 1, "Define to 1 when FRODO enabled")
-fi
-
 if test x"$kex_ntru" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_ntru"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_NTRU"
@@ -218,12 +204,20 @@ fi
 # KEM
 SRCDIR=${SRCDIR}" src/kem"
 
-if test x"$kem_sike" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kem/sike"
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DOQS_ENABLE_KEM_sike_p503 -DOQS_ENABLE_KEM_sike_p751"
-  AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")
-  AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")
-fi
+ARG_DISBL_SET([kem-sike], [disable KEM-SIKE.])
+AM_CONDITIONAL([ENABLE_KEM_SIKE], [test "x$kem_sike" = xtrue])
+AM_COND_IF([ENABLE_KEM_SIKE], [SRCDIR="${SRCDIR} src/kem/sike"])
+AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")])
+AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")])
+
+ARG_DISBL_SET([kem-frodokem], [disable KEM-FrodoKEM.])
+AM_CONDITIONAL([ENABLE_KEM_FRODOKEM], [test "x$kem_frodokem" = xtrue])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [SRCDIR="${SRCDIR} src/kem/frodokem"])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_aes, 1, "Define to 1 when FrodoKEM-640-AES enabled")])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_cshake, 1, "Define to 1 when FrodoKEM-640-cSHAKE enabled")])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_aes, 1, "Define to 1 when FrodoKEM-976-AES enabled")])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_cshake, 1, "Define to 1 when FrodoKEM-976-cSHAKE enabled")])
+
 
 
 # Flags
@@ -252,14 +246,12 @@ AC_SUBST(USE_OPENSSL)
 AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_KEX_NTRU)
 AC_SUBST(USE_MCBITS)
-AC_SUBST(USE_KEX_LWE_FRODO)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_MSR)
 AC_SUBST(USE_SIG_PICNIC)
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE_AVX2)
-AC_SUBST(USE_KEM_SIKE)
 
 
 AC_CONFIG_FILES([Makefile
@@ -274,11 +266,11 @@ AC_CONFIG_FILES([Makefile
                  src/kex_sidh_msr/Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
-                 src/kex_lwe_frodo/Makefile
                  src/sig/Makefile
                  src/sig_picnic/Makefile
                  src/kex_rlwe_newhope/avx2/Makefile
                  src/kem/sike/Makefile
+                 src/kem/frodokem/Makefile
                  ])
 
 AC_OUTPUT

@@ -1,0 +1,34 @@
+#include <stdint.h>
+
+#define CRYPTO_SECRETKEYBYTES 31272 // sizeof(s) + CRYPTO_PUBLICKEYBYTES + 2*PARAMS_N*PARAMS_NBAR
+#define CRYPTO_PUBLICKEYBYTES 15632 // sizeof(seed_A) + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8
+#define CRYPTO_BYTES 24
+#define CRYPTO_CIPHERTEXTBYTES 15768 // (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 + (PARAMS_LOGQ*PARAMS_NBAR*PARAMS_NBAR)/8 + CRYPTO_BYTES
+
+#define PARAMS_N 976
+#define PARAMS_NBAR 8
+#define PARAMS_LOGQ 16
+#define PARAMS_Q (1 << PARAMS_LOGQ)
+#define PARAMS_EXTRACTED_BITS 3
+#define PARAMS_STRIPE_STEP 8
+#define PARAMS_PARALLEL 4
+#define BYTES_SEED_A 16
+#define BYTES_MU (PARAMS_EXTRACTED_BITS * PARAMS_NBAR * PARAMS_NBAR) / 8
+
+// CDF table
+static uint16_t CDF_TABLE[11] = {5638, 15915, 23689, 28571, 31116, 32217, 32613, 32731, 32760, 32766, 32767};
+static uint16_t CDF_TABLE_LEN = 11;
+
+#if defined(_WIN32)
+#define WINDOWS
+#else
+#define NIX
+#endif
+
+#if defined(__amd64) || defined(__x86_64)
+#define _AMD64_
+#elif defined(__i386)
+#define _X86_
+#endif
+
+#define _FAST_GENERIC_

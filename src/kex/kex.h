@@ -21,7 +21,6 @@
 enum OQS_KEX_alg_name {
 	OQS_KEX_alg_default,
 	OQS_KEX_alg_rlwe_newhope,
-	OQS_KEX_alg_lwe_frodo,
 	OQS_KEX_alg_sidh_msr_503,
 	OQS_KEX_alg_sidh_msr_751,
 	OQS_KEX_alg_sike_msr_503,
