@@ -3,8 +3,9 @@
 
 # Init
 AC_INIT([liboqs], [1.0.0], [])
-LT_INIT([disable-shared])
+LT_INIT([])
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
+AM_PROG_LIBTOOL
 
 # Configure
 AC_CONFIG_HEADERS([config.h])
@@ -148,15 +149,15 @@ AM_CONDITIONAL([ON_DARWIN], [test "x$darwin" = xtrue])
 if test x"$linux" = x"true"; then
   case $host_cpu in
     x86_64* )
-        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64 -fPIC"
         x86_64=true
         ;;
     aarch64* )
-        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc"
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc -fPIC"
         arm64=true
         ;;
     arm* )
-        AM_CPPFLAGS=${AM_CPPFLAGS}" -DARM"
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DARM -fPIC"
         AM_CONDITIONAL([aes_ni], [false])
         AM_CONDITIONAL([USE_AES_NI], [false])
         arm=true
