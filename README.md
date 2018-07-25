@@ -62,6 +62,8 @@ To build, first clone or download the source from GitHub, then simply type:
 	./configure
 	make clean
 	make
+	
+(If on macOS you encounter an error like `Can't exec "libtoolize": No such file or directory at ...`, try running with `LIBTOOLIZE=glibtoolize autoreconf -i`.)
 
 This will generate:
 
