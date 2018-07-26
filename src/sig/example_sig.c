@@ -32,8 +32,10 @@ static OQS_STATUS example_stack() {
 	uint8_t secret_key[OQS_SIG_qTESLA_I_length_secret_key];
 	uint8_t message[MESSAGE_LEN];
 	uint8_t signed_message[MESSAGE_LEN + OQS_SIG_qTESLA_I_length_sig_overhead];
+	uint8_t opened_message[MESSAGE_LEN + OQS_SIG_qTESLA_I_length_sig_overhead];
 	size_t message_len = MESSAGE_LEN;
 	size_t signed_message_len;
+	size_t opened_message_len;
 
 	OQS_randombytes(message, MESSAGE_LEN);
 
@@ -47,7 +49,7 @@ static OQS_STATUS example_stack() {
 		fprintf(stderr, "ERROR: OQS_SIG_qTESLA_I_sign failed!\n");
 		goto err;
 	}
-	rc = OQS_SIG_qTESLA_I_sign_open(message, &message_len, signed_message, signed_message_len, public_key);
+	rc = OQS_SIG_qTESLA_I_sign_open(opened_message, &opened_message_len, signed_message, signed_message_len, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_qTESLA_I_sign_open failed!\n");
 		goto err;
@@ -85,8 +87,10 @@ static OQS_STATUS example_heap() {
 	uint8_t *secret_key = NULL;
 	uint8_t *message = NULL;
 	uint8_t *signed_message = NULL;
+	uint8_t *opened_message = NULL;
 	size_t message_len = 50;
 	size_t signed_message_len;
+	size_t opened_message_len;
 	OQS_STATUS rc;
 	OQS_STATUS ret = OQS_ERROR;
 
@@ -100,7 +104,8 @@ static OQS_STATUS example_heap() {
 	secret_key = malloc(sig->length_secret_key);
 	message = malloc(message_len);
 	signed_message = malloc(message_len + sig->length_sig_overhead);
-	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signed_message == NULL)) {
+	opened_message = malloc(message_len + sig->length_sig_overhead);
+	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signed_message == NULL) || (opened_message == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed!\n");
 		goto err;
 	}
@@ -117,7 +122,7 @@ static OQS_STATUS example_heap() {
 		fprintf(stderr, "ERROR: OQS_SIG_sign failed!\n");
 		goto err;
 	}
-	rc = OQS_SIG_sign_open(sig, message, &message_len, signed_message, signed_message_len, public_key);
+	rc = OQS_SIG_sign_open(sig, opened_message, &opened_message_len, signed_message, signed_message_len, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_sign_open failed!\n");
 		goto err;
@@ -135,6 +140,7 @@ cleanup:
 		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
 	}
 	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(opened_message);
 	OQS_MEM_insecure_free(signed_message);
 	OQS_MEM_insecure_free(message);
 	OQS_SIG_free(sig);
