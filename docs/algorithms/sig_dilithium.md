@@ -1,5 +1,5 @@
 liboqs nist-branch algorithm datasheet: `sig_dilithium`
-===================================================
+=======================================================
 
 Summary
 -------
@@ -15,12 +15,11 @@ Summary
 Parameter sets
 --------------
 
-| Parameter set    | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
-|------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:----------------------:|
-| Dilithium_II_medium |    EUF-CMA     |              1              |          1184           |          2800           |          2044          |
-| Dilithium_III_recommended  |    EUF-CMA     |              3              |          1472           |          3504           |          2701          |
-| Dilithium_IV_very_high |    EUF-CMA     |              3              |          1760           |          3856           |          3366          |
-
+| Parameter set               | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
+|-----------------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:----------------------:|
+| `Dilithium_II_medium`       |     EUF-CMA    |              1              |           1184          |           2800          |          2044          |
+| `Dilithium_III_recommended` |     EUF-CMA    |              3              |           1472          |           3504          |          2701          |
+| `Dilithium_IV_very_high`    |     EUF-CMA    |              3              |           1760          |           3856          |          3366          |
 
 Implementation
 --------------
