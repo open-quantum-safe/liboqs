@@ -8,7 +8,7 @@ AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 
 # Configure
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SRCDIR([src/ds_benchmark.h])
+AC_CONFIG_SRCDIR([src/common/ds_benchmark.h])
 AC_CONFIG_MACRO_DIRS([config])
 
 # Checks for programs.
@@ -26,13 +26,6 @@ AC_ARG_WITH(
   [AC_DEFINE_UNQUOTED(OPENSSLDIR, [$withval], [OPENSSL DIR used locally])
    AC_SUBST(OPENSSL_DIR, [$withval])],
   [AC_SUBST(OPENSSL_DIR, /usr)]
-)
-AC_ARG_WITH(
-  [gmp-dir],
-  AS_HELP_STRING([--with-gmp-dir=dir],[gmp dir used locally (default /usr).]),
-  [AC_DEFINE_UNQUOTED(GMPDIR, [$withval], [GMP DIR used locally])
-   AC_SUBST(GMP_DIR, [$withval])],
-  [AC_SUBST(GMP_DIR, /usr)]
 )
 AC_ARG_WITH(
   [sodium-dir],
@@ -84,7 +77,7 @@ DX_RTF_FEATURE(OFF)
 DX_XML_FEATURE(OFF)
 DX_PDF_FEATURE(OFF)
 DX_PS_FEATURE(OFF)
-DX_INIT_DOXYGEN([$PACKAGE_NAME],[doxygen.cfg])
+DX_INIT_DOXYGEN([$PACKAGE_NAME],[docs/.Doxyfile])
 ######################################################################
 
 ARG_DISBL_SET([aes-ni], [enable AES-NI.])
@@ -99,21 +92,9 @@ ARG_ENABL_SET([kex-code-mcbits], [enable KEX-CODE-MCBITS.])
 AM_CONDITIONAL([kex_code_mcbits], [test "x$kex_code_mcbits" = xtrue])
 AM_CONDITIONAL([USE_MCBITS], [test "x$kex_code_mcbits" = xtrue])
 
-ARG_ENABL_SET([kex-sidh-iqc-ref], [enable KEX-SIDH-IQC-REF.])
-AM_CONDITIONAL([kex_sidh_iqc_ref], [test "x$kex_sidh_iqc_ref" = xtrue])
-AM_CONDITIONAL([USE_SIDH_IQC], [test "x$kex_sidh_iqc_ref" = xtrue])
-
-ARG_DISBL_SET([kex-lwe-frodo], [disable KEX-LWE-FRODO.])
-AM_CONDITIONAL([kex_lwe_frodo], [test "x$kex_lwe_frodo" = xtrue])
-AM_CONDITIONAL([USE_KEX_LWE_FRODO], [test "x$kex_lwe_frodo" = xtrue])
-
 ARG_DISBL_SET([kex-ntru], [disable KEX-NTRU.])
 AM_CONDITIONAL([kex_ntru], [test "x$kex_ntru" = xtrue])
 AM_CONDITIONAL([USE_KEX_NTRU], [test "x$kex_ntru" = xtrue])
-
-ARG_DISBL_SET([kex-rlwe-msrln16], [disable KEX-RLWE-MSRLN16.])
-AM_CONDITIONAL([kex_rlwe_msrln16], [test "x$kex_rlwe_msrln16" = xtrue])
-AM_CONDITIONAL([USE_KEX_RLWE_MSRLN16], [test "x$kex_rlwe_msrln16" = xtrue])
 
 ARG_DISBL_SET([kex-rlwe-newhope], [disable KEX-RLWE-NEWHOPE.])
 AM_CONDITIONAL([kex_rlwe_newhope], [test "x$kex_rlwe_newhope" = xtrue])
@@ -187,28 +168,15 @@ AM_CONDITIONAL([ARM], [test "x$arm" = xtrue])
 SRCDIR=" src/common"
 
 # Crypto sources
-SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/rand src/crypto/sha3 src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
+SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/sha3 src/crypto/rand_urandom_aesctr src/crypto/rand_urandom_chacha20"
 
 # KEX
 SRCDIR=${SRCDIR}" src/kex"
-SRCDIR=${SRCDIR}" src/kex_rlwe_bcns15"
-
-if test x"$kex_lwe_frodo" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kex_lwe_frodo"
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_LWE_FRODO"
-  AC_DEFINE(ENABLE_KEX_LWE_FRODO, 1, "Define to 1 when FRODO enabled")
-fi
 
 if test x"$kex_ntru" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_ntru"
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_NTRU"
   AC_DEFINE(ENABLE_KEX_NTRU, 1, "Define to 1 when NTRU enabled")
-fi
-
-if test x"$kex_rlwe_msrln16" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kex_rlwe_msrln16"
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_KEX_RLWE_MSRLN16"
-  AC_DEFINE(ENABLE_KEX_RLWE_MSRLN16, 1, "Define to 1 when RLWE MSRLN16 enabled")
 fi
 
 if test x"$kex_rlwe_newhope" = x"true"; then
@@ -227,9 +195,6 @@ fi
 if test x"$kex_code_mcbits" = x"true"; then
   SRCDIR=${SRCDIR}" src/kex_code_mcbits"
 fi
-if test x"$kex_sidh_iqc_ref" = x"true"; then
-  SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
-fi
 
 # SIG
 SRCDIR=${SRCDIR}" src/sig"
@@ -246,6 +211,23 @@ if test x"$sig_qtesla" = x"true"; then
   AC_DEFINE(ENABLE_SIG_QTESLA, 1, "Define to 1 when QTESLA enabled")
 fi
 
+# KEM
+SRCDIR=${SRCDIR}" src/kem"
+
+ARG_DISBL_SET([kem-sike], [disable KEM-SIKE.])
+AM_CONDITIONAL([ENABLE_KEM_SIKE], [test "x$kem_sike" = xtrue])
+AM_COND_IF([ENABLE_KEM_SIKE], [SRCDIR="${SRCDIR} src/kem/sike"])
+AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")])
+AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")])
+
+ARG_DISBL_SET([kem-frodokem], [disable KEM-FrodoKEM.])
+AM_CONDITIONAL([ENABLE_KEM_FRODOKEM], [test "x$kem_frodokem" = xtrue])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [SRCDIR="${SRCDIR} src/kem/frodokem"])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_aes, 1, "Define to 1 when FrodoKEM-640-AES enabled")])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_cshake, 1, "Define to 1 when FrodoKEM-640-cSHAKE enabled")])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_aes, 1, "Define to 1 when FrodoKEM-976-AES enabled")])
+AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_cshake, 1, "Define to 1 when FrodoKEM-976-cSHAKE enabled")])
+
 # Flags
 AM_CPPFLAGS=${AM_CPPFLAGS}" -g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
 # if test x"$aes_ni" = x"true" && test x"$ARM" = x"false"; then
@@ -258,11 +240,6 @@ fi
 if test x"$kex_code_mcbits" = x"true"; then
   AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_CODE_MCBITS"
   AC_DEFINE(ENABLE_CODE_MCBITS, 1, "Define to 1 when MCBITS enabled")
-fi
-if test x"$kex_sidh_iqc_ref" = x"true"; then
-  AM_CPPFLAGS=${AM_CPPFLAGS}" -DENABLE_SIDH_IQC_REF"
-  SRCDIR=${SRCDIR}" src/kex_sidh_iqc_ref"
-  AC_DEFINE(ENABLE_SIDH_IQC_REF, 1, "Define to 1 when SIDH IQC enabled")
 fi
 
 if test x"$kex_rlwe_newhope_avx2" = x"true"; then
@@ -277,9 +254,6 @@ AC_SUBST(USE_OPENSSL)
 AC_SUBST(USE_AES_NI)
 AC_SUBST(USE_KEX_NTRU)
 AC_SUBST(USE_MCBITS)
-AC_SUBST(USE_SIDH_IQC)
-AC_SUBST(USE_KEX_LWE_FRODO)
-AC_SUBST(USE_KEX_RLWE_MSRLN16)
 AC_SUBST(USE_KEX_RLWE_NEWHOPE)
 AC_SUBST(USE_KEX_SIDH_MSR)
 AC_SUBST(USE_SIG_PICNIC)
@@ -291,23 +265,22 @@ AC_SUBST(USE_KEX_RLWE_NEWHOPE_AVX2)
 
 AC_CONFIG_FILES([Makefile
                  src/common/Makefile
+                 src/kem/Makefile
                  src/kex/Makefile
                  src/crypto/sha3/Makefile
-                 src/crypto/rand/Makefile
                  src/crypto/rand_urandom_chacha20/Makefile
                  src/crypto/rand_urandom_aesctr/Makefile
                  src/crypto/aes/Makefile
-                 src/kex_rlwe_bcns15/Makefile
                  src/kex_rlwe_newhope/Makefile
-                 src/kex_rlwe_msrln16/Makefile
                  src/kex_sidh_msr/Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
-                 src/kex_sidh_iqc_ref/Makefile
-                 src/kex_lwe_frodo/Makefile
                  src/sig/Makefile
                  src/sig_picnic/Makefile
-		 src/sig_qtesla/Makefile
-                 src/kex_rlwe_newhope/avx2/Makefile])
+                 src/sig_qtesla/Makefile
+                 src/kex_rlwe_newhope/avx2/Makefile
+                 src/kem/sike/Makefile
+                 src/kem/frodokem/Makefile
+                 ])
 
 AC_OUTPUT

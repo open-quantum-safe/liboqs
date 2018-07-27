@@ -5,7 +5,7 @@ ACLOCAL_AMFLAGS = -I config
 include aminclude.am
 
 # ensure the distribution of the doxygen configuration file
-EXTRA_DIST = doxygen.cfg
+EXTRA_DIST = docs/.Doxyfile
 
 CLANGFORMAT ?= clang-format-3.9
 
@@ -16,23 +16,16 @@ lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
 liboqs_la_LIBADD += src/crypto/aes/libaes.la
-liboqs_la_LIBADD += src/crypto/rand/librand.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
+liboqs_la_LIBADD += src/kem/libkem.la
 liboqs_la_LIBADD += src/kex/libkex.la
 if USE_KEX_RLWE_NEWHOPE_AVX2
 liboqs_la_LIBADD += src/kex_rlwe_newhope/avx2/libnewhope_avx2.la
 endif
-if USE_KEX_LWE_FRODO
-liboqs_la_LIBADD += src/kex_lwe_frodo/libfrodo.la
-endif
 if USE_KEX_NTRU
 liboqs_la_LIBADD += src/kex_ntru/libntru.la
-endif
-liboqs_la_LIBADD += src/kex_rlwe_bcns15/libbcns15.la
-if USE_KEX_RLWE_MSRLN16
-liboqs_la_LIBADD += src/kex_rlwe_msrln16/libmsrln16.la
 endif
 if USE_KEX_RLWE_NEWHOPE
 liboqs_la_LIBADD += src/kex_rlwe_newhope/libnewhope.la
@@ -46,34 +39,37 @@ liboqs_la_LIBADD += src/sig/libsig.la
 if USE_MCBITS
 liboqs_la_LIBADD += src/kex_code_mcbits/libmcbits.la
 endif
-if USE_SIDH_IQC
-liboqs_la_LIBADD += src/kex_sidh_iqc_ref/libsidhiqc.la
-endif
 
 if USE_SIG_PICNIC
 liboqs_la_LIBADD += src/sig_picnic/libpicnic_i.la
 endif
-
 if USE_SIG_QTESLA
 liboqs_la_LIBADD += src/sig_qtesla/libqtesla.la
 endif
 
+if ENABLE_KEM_SIKE
+liboqs_la_LIBADD += src/kem/sike/libkemsike.la
+endif
+if ENABLE_KEM_FRODOKEM
+liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
+endif
+
 installheaderdir=$(includedir)/oqs
 installheader_HEADERS=config.h \
-	src/common/oqs.h \
+	src/oqs.h \
 	src/common/common.h \
+	src/common/rand.h \
 	src/crypto/aes/aes.h \
-	src/crypto/rand/rand.h \
 	src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h \
 	src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h \
 	src/crypto/sha3/sha3.h \
+	src/kem/kem.h \
 	src/kex/kex.h \
-	src/kex_lwe_frodo/kex_lwe_frodo.h \
 	src/kex_ntru/kex_ntru.h \
-	src/kex_rlwe_bcns15/kex_rlwe_bcns15.h \
-	src/kex_rlwe_msrln16/kex_rlwe_msrln16.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
 	src/kex_sidh_msr/kex_sidh_msr.h \
+	src/kem/sike/kem_sike.h \
+	src/kem/frodokem/kem_frodokem.h \
 	src/sig/sig.h
 
 install-exec-local:
@@ -94,19 +90,39 @@ endif
 if USE_MCBITS
 	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
-if USE_SIDH_IQC
-	cp src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h $(includedir)/oqs
-endif
 
-noinst_bin_PROGRAMS = test_kex test_sig test_aes test_rand test_sha3
-if USE_KEX_LWE_FRODO
-noinst_bin_PROGRAMS += minimal_kex_oqs
-endif
+noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_sig test_aes test_rand test_sha3
+
 if USE_SIG_PICNIC
 noinst_bin_PROGRAMS += minimal_sig_oqs
 endif
 
 noinst_bindir=$(prefix)/tests
+
+speed_kem_LDADD =  liboqs.la -lm
+speed_kem_SOURCES = src/kem/speed_kem.c
+speed_kem_CPPFLAGS = -I./include
+speed_kem_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+speed_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
+test_kem_LDADD =  liboqs.la -lm
+test_kem_SOURCES = src/kem/test_kem.c
+test_kem_CPPFLAGS = -I./include
+test_kem_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+test_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
+example_kem_LDADD =  liboqs.la -lm
+example_kem_SOURCES = src/kem/example_kem.c
+example_kem_CPPFLAGS = -I./include
+example_kem_CPPFLAGS += $(AM_CPPFLAGS)
+if USE_OPENSSL
+example_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
+endif
+
 test_kex_LDADD =  liboqs.la -lm
 test_kex_SOURCES = src/kex/test_kex.c
 test_kex_CPPFLAGS = -I./include
@@ -117,9 +133,6 @@ endif
 if USE_OPENSSL
 test_kex_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
-if USE_SIDH_IQC
-test_kex_LDADD += -L$(GMP_DIR)/lib -lgmp
-endif
 
 test_sig_LDADD =  liboqs.la -lm
 test_sig_SOURCES = src/sig/test_sig.c
@@ -128,23 +141,6 @@ test_sig_CPPFLAGS += $(AM_CPPFLAGS)
 if USE_OPENSSL
 test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
-
-if USE_KEX_LWE_FRODO
-minimal_kex_oqs_LDADD =  liboqs.la -lm
-minimal_kex_oqs_SOURCES = src/kex/minimal_kex_oqs.c
-minimal_kex_oqs_CPPFLAGS = -I./include
-minimal_kex_oqs_CPPFLAGS += $(AM_CPPFLAGS)
-if USE_MCBITS
-minimal_kex_oqs_LDADD += -L${SODIUM_DIR}/lib -lsodium
-endif
-if USE_OPENSSL
-minimal_kex_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-if USE_SIDH_IQC
-minimal_kex_oqs_LDADD += -L$(GMP_DIR)/lib -lgmp
-endif
-
-endif # USE_KEX_LWE_FRODO
 
 if USE_SIG_PICNIC
 minimal_sig_oqs_LDADD =  liboqs.la -lm
@@ -185,14 +181,13 @@ test_sha3_CPPFLAGS += $(AM_CPPFLAGS)
 
 test: clean-tests
 	make
+	./example_kem
+	./test_kem
 	./test_kex --quiet
 	./test_rand --quiet
 	./test_aes
 	./test_sha3
 	./test_sig
-if USE_KEX_LWE_FRODO
-	./minimal_kex_oqs
-endif
 if USE_SIG_PICNIC
 	./minimal_sig_oqs
 endif
@@ -200,18 +195,18 @@ endif
 links:
 	$(MKDIR_P) include/oqs
 	cp -f config.h include/oqs
-	cp -f src/common/oqs.h include/oqs
+	cp -f src/oqs.h include/oqs
 	cp -f src/common/common.h include/oqs
+	cp -f src/common/rand.h include/oqs
 	cp -f src/crypto/aes/aes.h include/oqs
-	cp -f src/crypto/rand/rand.h include/oqs
 	cp -f src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
 	cp -f src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	cp -f src/crypto/sha3/sha3.h include/oqs
+	cp -f src/kem/kem.h include/oqs
+	cp -f src/kem/sike/kem_sike.h include/oqs
+	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kex/kex.h include/oqs
-	cp -f src/kex_lwe_frodo/kex_lwe_frodo.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
-	cp -f src/kex_rlwe_bcns15/kex_rlwe_bcns15.h include/oqs
-	cp -f src/kex_rlwe_msrln16/kex_rlwe_msrln16.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 if USE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
@@ -225,32 +220,21 @@ endif
 if USE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
-if USE_SIDH_IQC
-	cp -f src/kex_sidh_iqc_ref/kex_sidh_iqc_ref.h include/oqs
-	$(LN_S) -f src/kex_sidh_iqc_ref/sample_params
-endif
 
 clean-local:
 	rm -f liboqs.a
 	rm -rf include
-if USE_KEX_LWE_FRODO
-	rm -f minimal_kex_oqs
-endif
 if USE_SIG_PICNIC
 	rm -f minimal_sig_oqs
 endif
-if USE_SIDH_IQC
-	rm -f sample_params
-endif
 
 clean-tests:
-	rm -f test_kex test_sig test_rand test_aes test_sha3
+	rm -f example_kem speed_kem test_kem test_kex test_sig test_rand test_aes test_sha3
 
 prettyprint:
 	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
 
-docs: links
-	doxygen
+docs: doxygen-run
 
 cleanup-patch:
 if USE_KEX_RLWE_NEWHOPE_AVX2

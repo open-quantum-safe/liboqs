@@ -1,40 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\..\src\kex_rlwe_bcns15\fft.c">
-      <Filter>KEX_BCNS15</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.c">
-      <Filter>KEX_Frodo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.c">
-      <Filter>KEX_BCNS15</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.c">
-      <Filter>KEX_MSR_LN16</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c">
       <Filter>KEX_NewHope</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_kex.c">
-      <Filter>KEX_MSR_LN16</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_lwe_frodo\lwe.c">
-      <Filter>KEX_Frodo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_lwe_frodo\lwe_noise.c">
-      <Filter>KEX_Frodo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_msrln16\ntt_constants.c">
-      <Filter>KEX_MSR_LN16</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe.c">
-      <Filter>KEX_BCNS15</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_bcns15\rlwe_kex.c">
-      <Filter>KEX_BCNS15</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\common\common.c">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\common\rand.c">
       <Filter>Common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\crypto\aes\aes.c">
@@ -49,10 +22,10 @@
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c">
       <Filter>Crypto\SHA3</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\crypto\rand\rand.c">
-      <Filter>Crypto\Rand</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.c">
+        <ClCompile Include="..\..\src\common\rand.c">
+          <Filter>Crypto\Rand</Filter>
+        </ClCompile>
       <Filter>Crypto\Rand</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.c">
@@ -141,40 +114,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\kex_lwe_frodo\kex_lwe_frodo.h">
-      <Filter>KEX_Frodo</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_bcns15\kex_rlwe_bcns15.h">
-      <Filter>KEX_BCNS15</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_msrln16\kex_rlwe_msrln16.h">
-      <Filter>KEX_MSR_LN16</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h">
       <Filter>KEX_NewHope</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto.h">
-      <Filter>KEX_MSR_LN16</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_msrln16\LatticeCrypto_priv.h">
-      <Filter>KEX_MSR_LN16</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_bcns15\local.h">
-      <Filter>KEX_BCNS15</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_lwe_frodo\local.h">
-      <Filter>KEX_Frodo</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h">
       <Filter>KEX_NewHope</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_bcns15\rlwe_table.h">
-      <Filter>KEX_BCNS15</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_bcns15\rlwe_a.h">
-      <Filter>KEX_BCNS15</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\common\common.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\common\rand.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\aes\aes.h">
@@ -185,9 +134,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h">
       <Filter>Crypto\SHA3</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\crypto\rand\rand.h">
-      <Filter>Crypto\Rand</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h">
       <Filter>Crypto\Rand</Filter>
@@ -234,7 +180,7 @@
     <ClInclude Include="..\..\src\sig_picnic\external\picnic.h">
       <Filter>Sig_Picnic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\common\oqs.h">
+    <ClInclude Include="..\..\src\oqs.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="..\winconfig.h" />
@@ -311,15 +257,6 @@
     </Filter>
     <Filter Include="KEX">
       <UniqueIdentifier>{3bb6aa76-f294-47a9-bf22-76245c9cb1d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="KEX_BCNS15">
-      <UniqueIdentifier>{ab581356-2a96-4211-99e3-f5cecd92eda3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="KEX_Frodo">
-      <UniqueIdentifier>{6bfff158-3e78-402f-ba16-e8d315089de8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="KEX_MSR_LN16">
-      <UniqueIdentifier>{9f5ed87f-ed1e-47b4-b7e7-1d6648cb88fd}</UniqueIdentifier>
     </Filter>
     <Filter Include="KEX_NewHope">
       <UniqueIdentifier>{d0291785-4232-4264-b1bd-08b7e3f8df5e}</UniqueIdentifier>

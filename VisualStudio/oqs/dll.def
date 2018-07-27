@@ -1,5 +1,9 @@
 LIBRARY oqs
 EXPORTS
+	OQS_randombytes_switch_algorithm
+	OQS_randombytes_custom_algorithm
+	OQS_randombytes
+	OQS_randombytes_system
 	OQS_RAND_new
 	OQS_RAND_free
 	OQS_RAND_8
@@ -21,4 +25,6 @@ EXPORTS
 	OQS_SIG_free
 	OQS_print_hex_string
 	OQS_print_part_hex_string
+	OQS_MEM_cleanse
 	OQS_MEM_secure_free
+	OQS_MEM_insecure_free

@@ -5,7 +5,7 @@
 
 #include <oqs/oqs.h>
 
-#include "../../ds_benchmark.h"
+#include "../../common/ds_benchmark.h"
 #include "aes.h"
 #include "aes_local.h"
 

@@ -32,6 +32,9 @@ include
 *.i*86
 *.x86_64
 *.hex
+/example_kem
+/speed_kem
+/test_kem
 /test_kex
 /test_sig
 /test_rand
@@ -78,7 +81,7 @@ Makefile
 aclocal.m4
 compile
 config.guess
-config.h
+/config.h
 config.h.in
 config.log
 config.status

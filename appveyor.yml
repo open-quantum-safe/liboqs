@@ -8,6 +8,7 @@ build:
 branches:
   except:
     - /.*nist.*/
+    - /master-new-.*/
 
 configuration:
   - Release

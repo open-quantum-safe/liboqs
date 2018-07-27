@@ -9,7 +9,7 @@
 
 #include <oqs/oqs.h>
 
-#include "../ds_benchmark.h"
+#include "../common/ds_benchmark.h"
 
 struct kex_testcase {
 	enum OQS_KEX_alg_name alg_name;
@@ -23,9 +23,6 @@ struct kex_testcase {
 
 /* Add new testcases here */
 struct kex_testcase kex_testcases[] = {
-#ifdef ENABLE_KEX_LWE_FRODO
-    {OQS_KEX_alg_lwe_frodo, (unsigned char *) "01234567890123456", 16, "recommended", "lwe_frodo_recommended", 0, 100},
-#endif
 #ifdef ENABLE_CODE_MCBITS
     {OQS_KEX_alg_code_mcbits, NULL, 0, NULL, "code_mcbits", 0, 25},
 #endif
@@ -33,10 +30,6 @@ struct kex_testcase kex_testcases[] = {
 #ifdef ENABLE_KEX_NTRU
     {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},
 #endif
-#endif
-    {OQS_KEX_alg_rlwe_bcns15, NULL, 0, NULL, "rlwe_bcns15", 0, 100},
-#ifdef ENABLE_KEX_RLWE_MSRLN16
-    {OQS_KEX_alg_rlwe_msrln16, NULL, 0, NULL, "rlwe_msrln16", 0, 100},
 #endif
 #ifdef ENABLE_KEX_RLWE_NEWHOPE
     {OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100},
@@ -46,9 +39,6 @@ struct kex_testcase kex_testcases[] = {
     {OQS_KEX_alg_sidh_msr_751, NULL, 0, NULL, "sidh_msr_751", 0, 10},
     {OQS_KEX_alg_sike_msr_503, NULL, 0, NULL, "sike_msr_503", 0, 10},
     {OQS_KEX_alg_sike_msr_751, NULL, 0, NULL, "sike_msr_751", 0, 10},
-#endif
-#ifdef ENABLE_SIDH_IQC_REF
-    {OQS_KEX_alg_sidh_iqc_ref, NULL, 0, "params771", "sidh_iqc_ref", 0, 10},
 #endif
 #ifdef ENABLE_KEX_RLWE_NEWHOPE_AVX2
     {OQS_KEX_alg_rlwe_newhope_avx2, NULL, 0, NULL, "rlwe_newhope_avx2", 0, 100},
