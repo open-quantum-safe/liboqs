@@ -9,7 +9,12 @@ libkembike_la_LIBADD += libcodebike2_l1.la libcodebike2_l3.la libcodebike2_l5.la
 libkembike_la_LIBADD += libcodebike3_l1.la libcodebike3_l3.la libcodebike3_l5.la
 libkembike_la_SOURCES = kem_bike.c 
 
-CPPFLAGS = -I../../../include -I. -fPIC -w $(AM_CPPFLAGS)
+INC = -I../../../include -I.
+if USE_OPENSSL
+  INC += -I$(OPENSSL_DIR)/include
+endif
+
+CPPFLAGS = $(INC) -fPIC -w $(AM_CPPFLAGS)
 libkembike_la_CPPFLAGS = $(CPPFLAGS)
 libkembike1_l1_la_CPPFLAGS = $(CPPFLAGS)
 libkembike1_l3_la_CPPFLAGS = $(CPPFLAGS)
