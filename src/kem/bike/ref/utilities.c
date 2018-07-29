@@ -36,6 +36,8 @@
 #include "stdio.h"
 #include "openssl_utils.h"
 
+#if VERBOSE == 2
+
 #define BITS_IN_QW 64ULL
 #define BITS_IN_BYTE 8ULL
 
@@ -156,3 +158,5 @@ void print_BE(IN const uint64_t *in, IN const uint32_t bits_num) {
 
 	printf("\n");
 }
+
+#endif
