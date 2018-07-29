@@ -214,11 +214,19 @@ fi
 # KEM
 SRCDIR=${SRCDIR}" src/kem"
 
-ARG_DISBL_SET([kem-sike], [disable KEM-SIKE.])
-AM_CONDITIONAL([ENABLE_KEM_SIKE], [test "x$kem_sike" = xtrue])
-AM_COND_IF([ENABLE_KEM_SIKE], [SRCDIR="${SRCDIR} src/kem/sike"])
-AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")])
-AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")])
+ARG_DISBL_SET([kem-bike], [disable KEM-BIKE.])
+AM_CONDITIONAL([ENABLE_KEM_BIKE], [test "x$kem_bike" = xtrue])
+AM_CONDITIONAL([ENABLE_KEM_BIKE], [test "x$openssl" = xtrue])
+AM_COND_IF([ENABLE_KEM_BIKE], [SRCDIR="${SRCDIR} src/kem/bike"])
+AM_COND_IF([ENABLE_KEM_BIKE], [AC_DEFINE(OQS_ENABLE_KEM_bike1_l1, 1, "Define to 1 when BIKE1-L1 enabled")])
+AM_COND_IF([ENABLE_KEM_BIKE], [AC_DEFINE(OQS_ENABLE_KEM_bike1_l3, 1, "Define to 1 when BIKE1-L3 enabled")])
+AM_COND_IF([ENABLE_KEM_BIKE], [AC_DEFINE(OQS_ENABLE_KEM_bike1_l5, 1, "Define to 1 when BIKE1-L5 enabled")])
+AM_COND_IF([ENABLE_KEM_BIKE], [AC_DEFINE(OQS_ENABLE_KEM_bike2_l1, 1, "Define to 1 when BIKE2-L1 enabled")])
+AM_COND_IF([ENABLE_KEM_BIKE], [AC_DEFINE(OQS_ENABLE_KEM_bike2_l3, 1, "Define to 1 when BIKE2-L3 enabled")])
+AM_COND_IF([ENABLE_KEM_BIKE], [AC_DEFINE(OQS_ENABLE_KEM_bike2_l5, 1, "Define to 1 when BIKE2-L5 enabled")])
+AM_COND_IF([ENABLE_KEM_BIKE], [AC_DEFINE(OQS_ENABLE_KEM_bike3_l1, 1, "Define to 1 when BIKE3-L1 enabled")])
+AM_COND_IF([ENABLE_KEM_BIKE], [AC_DEFINE(OQS_ENABLE_KEM_bike3_l3, 1, "Define to 1 when BIKE3-L3 enabled")])
+AM_COND_IF([ENABLE_KEM_BIKE], [AC_DEFINE(OQS_ENABLE_KEM_bike3_l5, 1, "Define to 1 when BIKE3-L5 enabled")])
 
 ARG_DISBL_SET([kem-frodokem], [disable KEM-FrodoKEM.])
 AM_CONDITIONAL([ENABLE_KEM_FRODOKEM], [test "x$kem_frodokem" = xtrue])
@@ -227,6 +235,12 @@ AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_aes, 1,
 AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_cshake, 1, "Define to 1 when FrodoKEM-640-cSHAKE enabled")])
 AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_aes, 1, "Define to 1 when FrodoKEM-976-AES enabled")])
 AM_COND_IF([ENABLE_KEM_FRODOKEM], [AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_cshake, 1, "Define to 1 when FrodoKEM-976-cSHAKE enabled")])
+
+ARG_DISBL_SET([kem-sike], [disable KEM-SIKE.])
+AM_CONDITIONAL([ENABLE_KEM_SIKE], [test "x$kem_sike" = xtrue])
+AM_COND_IF([ENABLE_KEM_SIKE], [SRCDIR="${SRCDIR} src/kem/sike"])
+AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")])
+AM_COND_IF([ENABLE_KEM_SIKE], [AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")])
 
 # Flags
 AM_CPPFLAGS=${AM_CPPFLAGS}" -g -std=gnu11 -Wno-unused-function -Werror -Wpedantic -Wall -Wextra -DCONSTANT_TIME"
@@ -279,8 +293,9 @@ AC_CONFIG_FILES([Makefile
                  src/sig_picnic/Makefile
                  src/sig_qtesla/Makefile
                  src/kex_rlwe_newhope/avx2/Makefile
-                 src/kem/sike/Makefile
-                 src/kem/frodokem/Makefile
+				 src/kem/bike/Makefile
+				 src/kem/frodokem/Makefile
+                 src/kem/sike/Makefile                 
                  ])
 
 AC_OUTPUT
