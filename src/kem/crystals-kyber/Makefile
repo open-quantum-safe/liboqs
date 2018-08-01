@@ -39,7 +39,7 @@ OBJS_KEM_KYBER512_CCA_KEM=$(SRCS_KEM_KYBER512_CCA_KEM:.c=.o)
 TO_CLEAN+=$(OBJS_KEM_KYBER512_CCA_KEM)
 
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber512/%.o: src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber512/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 kem_kyber512_upstream: $(OBJS_KEM_KYBER512_CCA_KEM)
 	bash scripts/collect_objects.sh kem_kyber512 $(OBJS_KEM_KYBER512_CCA_KEM)
@@ -65,7 +65,7 @@ OBJS_KEM_KYBER768_CCA_KEM=$(SRCS_KEM_KYBER768_CCA_KEM:.c=.o)
 TO_CLEAN+=$(OBJS_KEM_KYBER768_CCA_KEM)
 
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber768/%.o: src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber768/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 kem_kyber768_upstream: $(OBJS_KEM_KYBER768_CCA_KEM)
 	bash scripts/collect_objects.sh kem_kyber768 $(OBJS_KEM_KYBER768_CCA_KEM)
@@ -91,7 +91,7 @@ OBJS_KEM_KYBER1024_CCA_KEM=$(SRCS_KEM_KYBER1024_CCA_KEM:.c=.o)
 TO_CLEAN+=$(OBJS_KEM_KYBER1024_CCA_KEM)
 
 src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber1024/%.o: src/kem/crystals-kyber/upstream/Optimized_Implementation/crypto_kem/kyber1024/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 kem_kyber1024_usptream: $(OBJS_KEM_KYBER1024_CCA_KEM)
 	bash scripts/collect_objects.sh kem_kyber1024 $(OBJS_KEM_KYBER1024_CCA_KEM)

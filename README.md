@@ -98,7 +98,7 @@ You need to install the following packages:
 
 You need to install the following packages using brew (or a package manager of your choice):
 
-	brew install openssl
+	brew install openssl wget
 
 ### Building
 
@@ -161,6 +161,7 @@ The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwat
 Contributors to this nist-branch of liboqs include:
 
 - Nicholas Allen (Amazon Web Services)
+- Maxime Anvari
 - Eric Crockett (Amazon Web Services)
 - Nir Drucker (Amazon Web Services)
 - Vlad Gheorghiu (evolutionQ)
