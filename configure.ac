@@ -3,8 +3,9 @@
 
 # Init
 AC_INIT([liboqs], [1.0.0], [])
-LT_INIT([disable-shared])
+LT_INIT([])
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
+AM_PROG_LIBTOOL
 
 # Configure
 AC_CONFIG_HEADERS([config.h])
@@ -119,12 +120,14 @@ AC_CANONICAL_HOST
 case $host_os in
   darwin* )
         darwin=true
+        AM_CFLAGS=${AM_CFLAGS}" -fPIC "
         ;;
   linux-android*)
         AM_CFLAGS=${AM_CFLAGS}" -pie "
         linux=true
         ;;
   linux*)
+        AM_CFLAGS=${AM_CFLAGS}" -fPIC "
         linux=true
         ;;
     *)
@@ -144,7 +147,7 @@ if test x"$linux" = x"true"; then
         x86_64=true
         ;;
     aarch64* )
-        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc"
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+cr"
         arm64=true
         ;;
     arm* )
