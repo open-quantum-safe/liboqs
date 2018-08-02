@@ -128,12 +128,14 @@ AC_CANONICAL_HOST
 case $host_os in
   darwin* )
         darwin=true
+        AM_CFLAGS=${AM_CFLAGS}" -fPIC "
         ;;
   linux-android*)
         AM_CFLAGS=${AM_CFLAGS}" -pie "
         linux=true
         ;;
   linux*)
+        AM_CFLAGS=${AM_CFLAGS}" -fPIC "
         linux=true
         ;;
     *)
@@ -149,15 +151,15 @@ AM_CONDITIONAL([ON_DARWIN], [test "x$darwin" = xtrue])
 if test x"$linux" = x"true"; then
   case $host_cpu in
     x86_64* )
-        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64 -fPIC"
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
         x86_64=true
         ;;
     aarch64* )
-        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc -fPIC"
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+cr"
         arm64=true
         ;;
     arm* )
-        AM_CPPFLAGS=${AM_CPPFLAGS}" -DARM -fPIC"
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DARM"
         AM_CONDITIONAL([aes_ni], [false])
         AM_CONDITIONAL([USE_AES_NI], [false])
         arm=true
