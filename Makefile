@@ -12,12 +12,14 @@ KEMS_TO_ENABLE?=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_9
 			   ledakem_C3_N02 ledakem_C3_N03 ledakem_C3_N04 \
 			   ledakem_C5_N02 ledakem_C5_N03 ledakem_C5_N04 \
 			   saber_light_saber_kem saber_saber_kem saber_fire_saber_kem \
-			   lima_2p_1024_cca_kem lima_2p_2048_cca_kem lima_sp_1018_cca_kem lima_sp_1306_cca_kem lima_sp_1822_cca_kem lima_sp_2062_cca_kem # EDIT-WHEN-ADDING-KEM
+			   lima_2p_1024_cca_kem lima_2p_2048_cca_kem lima_sp_1018_cca_kem lima_sp_1306_cca_kem lima_sp_1822_cca_kem lima_sp_2062_cca_kem \
+			   titanium_cca_std_kem
+			   # EDIT-WHEN-ADDING-KEM
 
 KEM_DEFAULT?=newhope_1024_cca_kem
 
 SIGS_TO_ENABLE?=qTESLA_I qTESLA_III_size qTESLA_III_speed qTESLA_p_I qTESLA_p_III \
-			          picnic_L1_FS picnic_L1_UR picnic_L3_FS picnic_L3_UR picnic_L5_FS picnic_L5_UR # EDIT-WHEN-ADDING-SIG
+		          picnic_L1_FS picnic_L1_UR picnic_L3_FS picnic_L3_UR picnic_L5_FS picnic_L5_UR # EDIT-WHEN-ADDING-SIG
 
 SIG_DEFAULT?=qTESLA_I
 

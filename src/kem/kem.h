@@ -109,9 +109,12 @@
 #define OQS_KEM_alg_lima_sp_1822_cca_kem "Lima-sp-1822-CCA-KEM"
 /** Algorithm identifier for Lima-sp-2062 CCA KEM. */
 #define OQS_KEM_alg_lima_sp_2062_cca_kem "Lima-sp-2062-CCA-KEM"
+/** Algorithm identifier for Titanium Std CCA KEM */
+#define OQS_KEM_alg_titanium_cca_std_kem "Titanium-CCA-std"
+
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 42
+#define OQS_KEM_algs_length 43
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -194,7 +197,7 @@ typedef struct OQS_KEM {
 } OQS_KEM;
 
 /**
- * Consturcts an OQS_KEM object for a particular algorithm.
+ * Constructs an OQS_KEM object for a particular algorithm.
  *
  * Callers should always check whether the return value is `NULL`, which indicates either than an
  * invalid algorithm name was provided, or that the requested algorithm was disabled at compile-time.
@@ -264,6 +267,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_BIGQUAKE.h>
 #include <oqs/kem_saber.h>
 #include <oqs/kem_lima.h>
+#include <oqs/kem_titanium.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H
