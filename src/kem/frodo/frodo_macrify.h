@@ -1,5 +1,5 @@
 /********************************************************************************************
-* FrodoKEM: Learning with Errors Key Encapsulation
+* Frodo: Learning with Errors Key Encapsulation
 *
 * Abstract: header for internal functions
 *********************************************************************************************/
@@ -11,8 +11,8 @@
 #include <stdint.h>
 #include "config.h"
 
-void oqs_kem_frodokem_pack(unsigned char *out, const size_t outlen, const uint16_t *in, const size_t inlen, const unsigned char lsb);
-void oqs_kem_frodokem_unpack(uint16_t *out, const size_t outlen, const unsigned char *in, const size_t inlen, const unsigned char lsb);
+void oqs_kem_frodo_pack(unsigned char *out, const size_t outlen, const uint16_t *in, const size_t inlen, const unsigned char lsb);
+void oqs_kem_frodo_unpack(uint16_t *out, const size_t outlen, const unsigned char *in, const size_t inlen, const unsigned char lsb);
 static void frodo_sample_n(uint16_t *s, const size_t n);
 
 static int frodo_mul_add_as_plus_e(uint16_t *b, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);

@@ -53,7 +53,7 @@ struct OQS_SIG {
 	/**
 	 * Specifies the name of the signature method
 	 */
-	char *method_name;
+	const char *method_name;
 
 	/**
 	 * Classical security in terms of the number of bits provided by the

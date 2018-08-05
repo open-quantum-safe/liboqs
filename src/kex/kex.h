@@ -70,7 +70,7 @@ typedef struct OQS_KEX {
 	/**
 	 * Named parameters for this key exchange method instance, if any.
 	 */
-	char *named_parameters;
+	const char *named_parameters;
 
 	/**
 	 * Opaque pointer for passing around instance-specific data

@@ -92,10 +92,10 @@ _INLINE_ void recompute_syndrome(uint8_t s[R_BITS],
 	}
 }
 
-_INLINE_ compute_counter_of_unsat(uint8_t unsat_counter[N_BITS],
-                                  const uint8_t s[R_BITS],
-                                  const uint32_t h0_compact[DV],
-                                  const uint32_t h1_compact[DV]) {
+_INLINE_ void compute_counter_of_unsat(uint8_t unsat_counter[N_BITS],
+                                       const uint8_t s[R_BITS],
+                                       const uint32_t h0_compact[DV],
+                                       const uint32_t h1_compact[DV]) {
 	uint8_t unsat_counter2[N_BITS * 2] = {0};
 	uint32_t h1_compact2[DV] = {0};
 

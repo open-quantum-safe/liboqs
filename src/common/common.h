@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <oqs/config.h>
 
 /**
  * Represents return values from functions.

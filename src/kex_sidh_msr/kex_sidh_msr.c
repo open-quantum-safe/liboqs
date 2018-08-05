@@ -19,6 +19,18 @@
 #include <oqs/rand.h>
 
 #include "P503/P503_api.h"
+
+// Preventing redefinition of symbols
+// Todo: remove
+#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
+#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
+#undef OQS_SIDH_MSR_CRYPTO_BYTES
+#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
+#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
+#undef SIDH_SECRETKEYBYTES
+#undef SIDH_PUBLICKEYBYTES
+#undef SIDH_BYTES
+
 #include "P751/P751_api.h"
 #include "kex_sidh_msr.h"
 

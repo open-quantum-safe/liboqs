@@ -1,7 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 noinst_LTLIBRARIES = libntru.la
 
-
 libntru_la_SOURCES = kex_ntru.c \
 	ntru_crypto_drbg.c \
 	ntru_crypto_hash.c \
@@ -20,6 +19,5 @@ libntru_la_SOURCES = kex_ntru.c \
 	ntru_crypto_ntru_mult_coeffs_karat.c
 
 
-libntru_la_CPPFLAGS = -I../../include
-libntru_la_CPPFLAGS += $(AM_CPPFLAGS) 
+libntru_la_CFLAGS = $(AM_CFLAGS) 
 
