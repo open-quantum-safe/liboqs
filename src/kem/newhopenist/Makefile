@@ -28,7 +28,7 @@ OBJS_KEM_NEWHOPE_512_CCA_KEM=$(SRCS_KEM_NEWHOPE_512_CCA_KEM:.c=.o)
 TO_CLEAN+= $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
 
 src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/%.o: src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope512cca/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 kem_newhope_512_cca_kem_upstream: $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
 	bash scripts/collect_objects.sh kem_newhope_512_cca_kem $(OBJS_KEM_NEWHOPE_512_CCA_KEM)
@@ -45,7 +45,7 @@ OBJS_KEM_NEWHOPE_1024_CCA_KEM=$(SRCS_KEM_NEWHOPE_1024_CCA_KEM:.c=.o)
 TO_CLEAN+= $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
 
 src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/%.o: src/kem/newhopenist/upstream/Optimized_Implementation/crypto_kem/newhope1024cca/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 kem_newhope_1024_cca_kem_upstream: $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)
 	bash scripts/collect_objects.sh kem_newhope_1024_cca_kem $(OBJS_KEM_NEWHOPE_1024_CCA_KEM)

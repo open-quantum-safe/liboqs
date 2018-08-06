@@ -1,4 +1,4 @@
-liboqs nist-branch snapshot 2018-07 -- DRAFT
+liboqs nist-branch snapshot 2018-07
 ===================================
 
 About
@@ -12,7 +12,7 @@ This branch of liboqs (**nist-branch**) focuses on incorporating submissions to 
 
 This branch of liboqs can be used with the following Open Quantum Safe application integrations:
 
-- OpenSSL 1.0.2: A prototype integration of liboqs-based key exchange into TLS 1.2 in our fork of OpenSSL 1.0.2; see the [OQS-OpenSSL-1_0_2-stable](https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL_1_0_2-stable) branch of our OpenSSL fork's repository.
+- OpenSSL 1.0.2: A prototype integration of liboqs-based key exchange into TLS 1.2 in our fork of OpenSSL 1.0.2; see the [OQS-OpenSSL-1\_0\_2-stable](https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL_1_0_2-stable) branch of our OpenSSL fork's repository.
 
 
 Release notes
@@ -27,7 +27,7 @@ This is the third snapshot release of liboqs nist-branch.
 
 ### New key encapsulation mechanisms
 
-The following KEMs have been added in the 2018-05 snapshot release:
+The following KEMs have been added in the 2018-07 snapshot release:
 
 - **LEDAkem**: 9 parameterizations: `LEDAKEM_C1_N02`, `LEDAKEM_C1_N03`, `LEDAKEM_C1_N04`, `LEDAKEM_C3_N02`, `LEDAKEM_C3_N03`, `LEDAKEM_C3_N04`, `LEDAKEM_C5_N02`, `LEDAKEM_C5_N03`, `LEDAKEM_C5_N04` (contributed by Shravan Mashra (University of Waterloo))
 

@@ -24,7 +24,7 @@ OBJS_SIG_QTESLA_I=$(SRCS_SIG_QTESLA_I:.c=.o)
 TO_CLEAN+= $(OBJS_SIG_QTESLA_I)
 
 src/sig/qtesla/upstream/Reference_implementation/qTesla_I/%.o: src/sig/qtesla/upstream/Reference_implementation/qTesla_I/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $<
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $<
 
 sig_qTESLA_I_upstream: $(OBJS_SIG_QTESLA_I)
 	bash scripts/collect_objects.sh sig_qTESLA_I $(OBJS_SIG_QTESLA_I)
@@ -41,7 +41,7 @@ OBJS_SIG_QTESLA_III_SIZE=$(SRCS_SIG_QTESLA_III_SIZE:.c=.o)
 TO_CLEAN+= $(OBJS_SIG_QTESLA_III_SIZE)
 
 src/sig/qtesla/upstream/Reference_implementation/qTesla_III_size/%.o: src/sig/qtesla/upstream/Reference_implementation/qTesla_III_size/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $<
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $<
 
 sig_qTESLA_III_size_upstream: $(OBJS_SIG_QTESLA_III_SIZE)
 	bash scripts/collect_objects.sh sig_qTESLA_III_size $(OBJS_SIG_QTESLA_III_SIZE)
@@ -58,7 +58,7 @@ OBJS_SIG_QTESLA_III_SPEED=$(SRCS_SIG_QTESLA_III_SPEED:.c=.o)
 TO_CLEAN+= $(OBJS_SIG_QTESLA_III_SPEED)
 
 src/sig/qtesla/upstream/Reference_implementation/qTesla_III_speed/%.o: src/sig/qtesla/upstream/Reference_implementation/qTesla_III_speed/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $<
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $<
 
 sig_qTESLA_III_speed_upstream: $(OBJS_SIG_QTESLA_III_SPEED)
 	bash scripts/collect_objects.sh sig_qTESLA_III_speed $(OBJS_SIG_QTESLA_III_SPEED)
@@ -75,7 +75,7 @@ OBJS_SIG_QTESLA_P_I=$(SRCS_SIG_QTESLA_P_I:.c=.o)
 TO_CLEAN+= $(OBJS_SIG_QTESLA_P_I)
 
 src/sig/qtesla/upstream/Reference_implementation/qTesla_p_I/%.o: src/sig/qtesla/upstream/Reference_implementation/qTesla_p_I/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $<
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $<
 
 sig_qTESLA_p_I_upstream: $(OBJS_SIG_QTESLA_P_I)
 	bash scripts/collect_objects.sh sig_qTESLA_p_I $(OBJS_SIG_QTESLA_P_I)
@@ -92,7 +92,7 @@ OBJS_SIG_QTESLA_P_III=$(SRCS_SIG_QTESLA_P_III:.c=.o)
 TO_CLEAN+= $(OBJS_SIG_QTESLA_P_III)
 
 src/sig/qtesla/upstream/Reference_implementation/qTesla_p_III/%.o: src/sig/qtesla/upstream/Reference_implementation/qTesla_p_III/%.c
-	$(CC) -c -fPIC -O3 -std=c99 -o $@ $<
+	$(CC) -c -fPIC -O3 -std=c99 -march=native -o $@ $<
 
 sig_qTESLA_p_III_upstream: $(OBJS_SIG_QTESLA_P_III)
 	bash scripts/collect_objects.sh sig_qTESLA_p_III $(OBJS_SIG_QTESLA_P_III)
