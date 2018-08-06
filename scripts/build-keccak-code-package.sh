@@ -16,6 +16,10 @@ then
 	cd vendor
 	unzip KeccakCodePackage-master.zip
 	cd ..
+	if [ -d "vendor/XKCP-master" ];
+	then
+		mv vendor/XKCP-master vendor/KeccakCodePackage-master
+	fi
 fi
 
 cd vendor/KeccakCodePackage-master
