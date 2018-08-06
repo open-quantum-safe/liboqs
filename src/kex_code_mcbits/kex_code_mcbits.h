@@ -1,6 +1,7 @@
 /**
  * \file kex_code_mcbits.h
  * \brief Header for code-based key exchange protocol McBits
+ * \deprecated Expected removal Sep. 2018
  */
 
 #ifndef __OQS_KEX_CODE_MCBITS_H

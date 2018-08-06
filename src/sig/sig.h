@@ -1,6 +1,7 @@
 /**
  * \file sig.h
  * \brief Header defining the API for generic OQS Signature
+ * \deprecated Expected removal Sep. 2018
  */
 
 #ifndef __OQS_SIG_H
@@ -43,6 +44,10 @@ enum OQS_SIG_algid {
  * OQS signature object
  */
 typedef struct OQS_SIG OQS_SIG; // so the code below compiles...
+
+/**
+ * OQS signature object
+ */
 struct OQS_SIG {
 
 	/**
@@ -95,8 +100,7 @@ struct OQS_SIG {
 	 * @param pub              The signer's public key.
 	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
 	 */
-	OQS_STATUS(*keygen)
-	(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
+	OQS_STATUS (*keygen)(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
 
 	/**
 	 * Pointer to a function for signature generation.
@@ -109,8 +113,7 @@ struct OQS_SIG {
 	 * @param sig_len          In: length of sig, out: length of the generated signature.
 	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
 	 */
-	OQS_STATUS(*sign)
-	(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
+	OQS_STATUS (*sign)(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
 
 	/**
 	 * Pointer to a function for signature verification.
@@ -123,8 +126,7 @@ struct OQS_SIG {
 	 * @param sig_len          Length of the signature to verify.
 	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
 	 */
-	OQS_STATUS(*verify)
-	(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
+	OQS_STATUS (*verify)(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
 
 	/**
 	 * Pointer to a function for freeing the allocated signature structure
@@ -146,9 +148,9 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid);
 /**
  * Generates a new signature key pair.
  * @param s                  Pointer to the signature object.
- * @param priv               Pointer where the generated private key will be stored. Caller 
+ * @param priv               Pointer where the generated private key will be stored. Caller
  *                           must have allocated s->priv_key_len bytes.
- * @param pub                Pointer where the generated public key will be stored. Caller 
+ * @param pub                Pointer where the generated public key will be stored. Caller
  *                           must have allocated s->pub_key_len bytes.
  * @return                   OQS_SUCCESS on success, or OQS_ERROR on failure
  */
@@ -161,7 +163,7 @@ OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
  * @param msg       Pointer to the message to sign.
  * @param msg_len   Length of the message to sign `msg`.
  * @param sig       Pointer where the generated signature will be stored. Caller must have allocated `s->max_sig_len` bytes.
- * @param sig_len   Pointer to the length of the generated signature. 
+ * @param sig_len   Pointer to the length of the generated signature.
  * @return          OQS_SUCCESS on success, or OQS_ERROR on failure
  */
 OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
@@ -173,7 +175,7 @@ OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *ms
  * @param msg       Pointer to the signed message.
  * @param msg_len   Length of the signed message `msg`.
  * @param sig       Pointer to the signature.
- * @param sig_len   Length of the signature. 
+ * @param sig_len   Length of the signature.
  * @return          OQS_SUCCESS on success, or OQS_ERROR on failure
  */
 OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);

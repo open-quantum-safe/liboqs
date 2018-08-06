@@ -14,7 +14,7 @@
  * You can copy, modify, distribute and perform the work, even for commercial
  * purposes, all without asking permission. You should have received a copy of
  * the creative commons license (CC0 1.0 universal) along with this program.
- * See the license file for more information. 
+ * See the license file for more information.
  *
  *
  *********************************************************************************/
@@ -76,6 +76,7 @@ typedef UINT64 uint64_t;
 
 #endif
 
+#define HAVE_BOOL
 #if !defined(HAVE_BOOL) && !defined(__cplusplus)
 #define HAVE_BOOL
 typedef uint8_t bool;
