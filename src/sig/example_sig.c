@@ -30,7 +30,7 @@ static OQS_STATUS example_stack() {
 
 	uint8_t public_key[OQS_SIG_qTESLA_I_length_public_key];
 	uint8_t secret_key[OQS_SIG_qTESLA_I_length_secret_key];
-	uint8_t message[MESSAGE_LEN];
+	uint8_t message[MESSAGE_LEN + OQS_SIG_qTESLA_I_length_sig_overhead];
 	uint8_t signed_message[MESSAGE_LEN + OQS_SIG_qTESLA_I_length_sig_overhead];
 	uint8_t opened_message[MESSAGE_LEN + OQS_SIG_qTESLA_I_length_sig_overhead];
 	size_t message_len = MESSAGE_LEN;
@@ -102,7 +102,7 @@ static OQS_STATUS example_heap() {
 
 	public_key = malloc(sig->length_public_key);
 	secret_key = malloc(sig->length_secret_key);
-	message = malloc(message_len);
+	message = malloc(message_len + sig->length_sig_overhead);
 	signed_message = malloc(message_len + sig->length_sig_overhead);
 	opened_message = malloc(message_len + sig->length_sig_overhead);
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signed_message == NULL) || (opened_message == NULL)) {

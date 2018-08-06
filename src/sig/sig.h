@@ -49,10 +49,16 @@
 #define OQS_SIG_alg_picnic_L5_FS "picnic_L5_FS"
 /** Algorithm identifier for Picnic_L5_FS */
 #define OQS_SIG_alg_picnic_L5_UR "picnic_L5_UR"
+/** Algorithm identifier for Dilithium_II_medium */
+#define OQS_SIG_alg_Dilithium_II_medium "Dilithium_II_medium"
+/** Algorithm identifier for Dilithium_III_recommended */
+#define OQS_SIG_alg_Dilithium_III_recommended "Dilithium_III_recommended"
+/** Algorithm identifier for Dilithium_IV_very_high */
+#define OQS_SIG_alg_Dilithium_IV_very_high "Dilithium_IV_very_high"
 
 // EDIT-WHEN-ADDING-SIG
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 12
+#define OQS_SIG_algs_length 15
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_new.
@@ -204,6 +210,7 @@ void OQS_SIG_free(OQS_SIG *sig);
 
 #include <oqs/sig_qtesla.h>
 #include <oqs/sig_picnic.h>
+#include <oqs/sig_dilithium.h>
 // EDIT-WHEN-ADDING-SIG
 
 #endif // __OQS_SIG_H

@@ -1,0 +1,3 @@
+crypto_sign_keypair OQS_SIG_Dilithium_II_medium_keypair
+crypto_sign OQS_SIG_Dilithium_II_medium_sign
+crypto_sign_open OQS_SIG_Dilithium_II_medium_sign_open

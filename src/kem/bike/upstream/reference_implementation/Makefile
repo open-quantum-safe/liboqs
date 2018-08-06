@@ -28,7 +28,7 @@ ifeq ($(LEVEL),5)
 endif
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $(EXTRA_FLAGS) -I$(INC_DIR) -o  $@ $< -I$(OPENSSL_INCLUDE_DIR)
+	$(CC) -c $(CFLAGS) $(EXTRA_FLAGS) -I"$(INC_DIR)" -o  $@ $< -I$(OPENSSL_INCLUDE_DIR)
 
 all: $(OBJS)
 
