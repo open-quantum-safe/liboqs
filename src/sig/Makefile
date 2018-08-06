@@ -23,4 +23,5 @@ example_sig: headers src/sig/example_sig.c liboqs
 
 include src/sig/picnic/Makefile
 include src/sig/qtesla/Makefile
+include src/sig/crystals-dilithium/Makefile
 # EDIT-WHEN-ADDING-SIG

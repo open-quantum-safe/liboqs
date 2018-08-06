@@ -29,7 +29,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	public_key = malloc(sig->length_public_key);
 	secret_key = malloc(sig->length_secret_key);
-	message = malloc(message_len);
+	message = malloc(message_len + sig->length_sig_overhead);
 	signed_message = malloc(message_len + sig->length_sig_overhead);
 	opened_message = malloc(message_len + sig->length_sig_overhead);
 
