@@ -52,6 +52,7 @@
 #include "ntru_crypto.h"
 #include "ntru_crypto_drbg.h"
 #include "ntru_crypto_hmac.h"
+#include <oqs/common.h>
 
 /************************
  * HMAC_DRBG parameters *
@@ -318,7 +319,7 @@ sha256_hmac_drbg_instantiate(
 	memset(key, 0, sizeof(key));
 	if ((result = ntru_crypto_hmac_create_ctx(NTRU_CRYPTO_HASH_ALGID_SHA256,
 	                                          key, sizeof(key), &s->hmac_ctx)) != NTRU_CRYPTO_HMAC_OK) {
-		FREE(s);
+		OQS_MEM_insecure_free(s);
 		return result;
 	}
 
@@ -330,7 +331,7 @@ sha256_hmac_drbg_instantiate(
 	                                      pers_str, pers_str_bytes)) != DRBG_OK) {
 		(void) ntru_crypto_hmac_destroy_ctx(s->hmac_ctx);
 		memset(s->V, 0, sizeof(s->V));
-		FREE(s);
+		OQS_MEM_insecure_free(s);
 		memset(entropy_nonce, 0, sizeof(entropy_nonce));
 		return result;
 	}
@@ -347,9 +348,9 @@ sha256_hmac_drbg_instantiate(
 	return result;
 }
 
-/* sha256_hmac_drbg_free
+/* sha256_hmac_drbg_free IGNORE free-check
  *
- * This routine frees a SHA-256 HMAC_DRBG internal state.
+ * This routine frees a SHA-256 HMAC_DRBG internal state. IGNORE free-check
  *
  * Returns DRBG_OK if successful.
  * Returns DRBG_BAD_PARAMETER if inappropriate NULL pointers are passed.
@@ -366,7 +367,7 @@ sha256_hmac_drbg_free(
 	s->sec_strength = 0;
 	s->requests_left = 0;
 	s->entropy_fn = NULL;
-	FREE(s);
+	OQS_MEM_insecure_free(s);
 }
 
 /* sha256_hmac_drbg_reseed
@@ -728,7 +729,7 @@ ntru_crypto_drbg_external_instantiate(
 
 /* ntru_crypto_drbg_uninstantiate
  *
- * This routine frees a drbg given its handle.
+ * This routine frees a drbg given its handle. IGNORE free-check 
  *
  * Returns DRBG_OK if successful.
  * Returns DRBG_ERROR_BASE + DRBG_BAD_PARAMETER if handle is not valid.
@@ -746,12 +747,12 @@ ntru_crypto_drbg_uninstantiate(
 		DRBG_RET(DRBG_BAD_PARAMETER);
 	}
 
-	/* zero and free drbg state */
+	/* zero and free drbg state IGNORE free-check */
 
 	if (drbg->state) {
 		switch (drbg->type) {
 		case EXTERNAL_DRBG:
-			FREE(drbg->state);
+			OQS_MEM_insecure_free(drbg->state);
 			break;
 		case SHA256_HMAC_DRBG:
 			sha256_hmac_drbg_free((SHA256_HMAC_DRBG_STATE *) drbg->state);

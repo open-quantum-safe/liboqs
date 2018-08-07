@@ -12,6 +12,7 @@
 #include <string.h>
 
 #include "aes.h"
+#include <oqs/common.h>
 
 typedef unsigned char byte;
 
@@ -230,7 +231,7 @@ void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 
 void oqs_aes128_free_schedule_c(void *schedule) {
 	if (schedule != NULL) {
-		free(schedule);
+		OQS_MEM_insecure_free(schedule);
 	}
 }
 

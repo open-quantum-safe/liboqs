@@ -117,7 +117,7 @@ static inline void incle(unsigned char n[16]) {
 
 /** multiple-blocks-at-once AES encryption with AES-NI ;
     on Haswell, aesenc as a latency of 7 and a througput of 1
-    so the sequence of aesenc should be bubble-free, if you
+    so the sequence of aesenc should be bubble-free IGNORE free-check, if you 
     have at least 8 blocks. Let's build an arbitratry-sized
     function */
 /* Step 1 : loading the nonce */
