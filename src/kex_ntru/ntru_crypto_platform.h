@@ -76,7 +76,6 @@ typedef UINT64 uint64_t;
 
 #endif
 
-#define HAVE_BOOL
 #if !defined(HAVE_BOOL) && !defined(__cplusplus)
 #define HAVE_BOOL
 typedef uint8_t bool;
