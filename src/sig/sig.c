@@ -30,7 +30,7 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
 	case OQS_SIG_picnic_L5_UR:
 	case OQS_SIG_default:
 		if (OQS_SIG_picnic_get(s, algid) != OQS_SUCCESS) {
-			free(s);
+			OQS_MEM_insecure_free(s);
 			return NULL;
 		}
 		break;
@@ -40,13 +40,13 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
 	case OQS_SIG_qTESLA_III_speed:
 	case OQS_SIG_qTESLA_III_size:
 		if (OQS_SIG_qTESLA_get(s, algid) != OQS_SUCCESS) {
-			free(s);
+			OQS_MEM_insecure_free(s);
 			return NULL;
 		}
 		break;
 #endif
 	default:
-		free(s);
+		OQS_MEM_insecure_free(s);
 		return NULL;
 	}
 
@@ -79,6 +79,6 @@ OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *m
 
 void OQS_SIG_free(OQS_SIG *s) {
 	if (s) {
-		s->free(s);
+		s->free(s); // IGNORE free-check
 	}
 }

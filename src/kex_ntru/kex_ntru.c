@@ -35,7 +35,7 @@ OQS_KEX *OQS_KEX_ntru_new(OQS_RAND *rand) {
 	k->bob = &OQS_KEX_ntru_bob;
 	k->alice_1 = &OQS_KEX_ntru_alice_1;
 	k->alice_priv_free = &OQS_KEX_ntru_alice_priv_free;
-	k->free = &OQS_KEX_ntru_free;
+	k->free = &OQS_KEX_ntru_free; //  IGNORE free-check
 	return k;
 }
 
@@ -115,10 +115,10 @@ OQS_STATUS OQS_KEX_ntru_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t **
 err:
 	ret = OQS_ERROR;
 	if (ntru_alice_priv != NULL)
-		free(ntru_alice_priv->priv_key);
-	free(ntru_alice_priv);
+		OQS_MEM_secure_free(ntru_alice_priv->priv_key, ntru_alice_priv->priv_key_len);
+	OQS_MEM_insecure_free(ntru_alice_priv);
 	*alice_priv = NULL;
-	free(*alice_msg);
+	OQS_MEM_insecure_free(*alice_msg);
 	*alice_msg = NULL;
 cleanup:
 	ntru_crypto_drbg_uninstantiate(drbg);
@@ -170,9 +170,9 @@ OQS_STATUS OQS_KEX_ntru_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t a
 
 err:
 	ret = OQS_ERROR;
-	free(*bob_msg);
+	OQS_MEM_insecure_free(*bob_msg);
 	*bob_msg = NULL;
-	free(*key);
+	OQS_MEM_insecure_free(*key);
 	*key = NULL;
 cleanup:
 	ntru_crypto_drbg_uninstantiate(drbg);
@@ -212,7 +212,7 @@ OQS_STATUS OQS_KEX_ntru_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const
 
 err:
 	ret = OQS_ERROR;
-	free(*key);
+	OQS_MEM_insecure_free(*key);
 	*key = NULL;
 cleanup:
 
@@ -224,13 +224,12 @@ void OQS_KEX_ntru_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 		OQS_KEX_ntru_alice_priv *ntru_alice_priv = (OQS_KEX_ntru_alice_priv *) alice_priv;
 		OQS_MEM_secure_free(ntru_alice_priv->priv_key, ntru_alice_priv->priv_key_len);
 	}
-	free(alice_priv);
 }
 
 void OQS_KEX_ntru_free(OQS_KEX *k) {
 	if (k)
-		free(k->method_name);
-	free(k);
+		OQS_MEM_insecure_free(k->method_name);
+	OQS_MEM_insecure_free(k);
 }
 
 #endif

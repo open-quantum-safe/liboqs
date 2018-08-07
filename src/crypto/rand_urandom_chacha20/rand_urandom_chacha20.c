@@ -54,7 +54,7 @@ OQS_RAND *OQS_RAND_urandom_chacha20_new() {
 	r->rand_32 = &OQS_RAND_urandom_chacha20_32;
 	r->rand_64 = &OQS_RAND_urandom_chacha20_64;
 	r->rand_n = &OQS_RAND_urandom_chacha20_n;
-	r->free = &OQS_RAND_urandom_chacha20_free;
+	r->free = &OQS_RAND_urandom_chacha20_free; // IGNORE free-check
 	return r;
 }
 
@@ -73,7 +73,7 @@ static OQS_RAND_urandom_chacha20_ctx *OQS_RAND_urandom_chacha20_ctx_new() {
 	goto okay;
 err:
 	if (rand_ctx) {
-		free(rand_ctx);
+		OQS_MEM_insecure_free(rand_ctx);
 	}
 	return NULL;
 okay:
@@ -129,7 +129,7 @@ void OQS_RAND_urandom_chacha20_n(OQS_RAND *r, uint8_t *out, size_t n) {
 }
 
 static void OQS_RAND_urandom_chacha20_ctx_free(void *rand_ctx) {
-	free(rand_ctx);
+	OQS_MEM_insecure_free(rand_ctx);
 }
 
 void OQS_RAND_urandom_chacha20_free(OQS_RAND *r) {
@@ -137,7 +137,7 @@ void OQS_RAND_urandom_chacha20_free(OQS_RAND *r) {
 		OQS_RAND_urandom_chacha20_ctx_free(r->ctx);
 	}
 	if (r) {
-		free(r->method_name);
+		OQS_MEM_insecure_free(r->method_name);
 	}
-	free(r);
+	OQS_MEM_insecure_free(r);
 }

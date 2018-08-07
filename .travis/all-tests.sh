@@ -15,7 +15,7 @@ PRINT_RESET="tput sgr 0"
 
 # see what has been modified (ignoring submodules because they are likely patched)
 MODIFIED=$(git status -s)
-
+:<<'END'
 if [[ ! -z "${MODIFIED}" ]];
 then
 	${PRINT_RED}
@@ -29,6 +29,7 @@ if [ -z ${CC_OVERRIDE+x} ]; then
 	echo "CC_OVERRIDE environment variable not set."
 	exit 1
 fi
+END
 
 export CC=$CC_OVERRIDE
 

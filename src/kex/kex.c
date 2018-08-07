@@ -111,6 +111,6 @@ void OQS_KEX_alice_priv_free(OQS_KEX *k, void *alice_priv) {
 
 void OQS_KEX_free(OQS_KEX *k) {
 	if (k) {
-		k->free(k);
+		k->free(k); // IGNORE free-check
 	}
 }

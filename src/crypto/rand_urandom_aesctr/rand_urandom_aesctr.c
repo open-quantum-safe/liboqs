@@ -45,7 +45,7 @@ static oqs_rand_urandom_aesctr_ctx *oqs_rand_urandom_aesctr_ctx_new() {
 	goto okay;
 err:
 	if (rand_ctx) {
-		free(rand_ctx);
+		OQS_MEM_insecure_free(rand_ctx);
 	}
 	return NULL;
 okay:
@@ -115,10 +115,10 @@ void OQS_RAND_urandom_aesctr_free(OQS_RAND *r) {
 		if (rand_ctx) {
 			OQS_AES128_free_schedule(rand_ctx->schedule);
 		}
-		free(r->ctx);
-		free(r->method_name);
+		OQS_MEM_insecure_free(r->ctx);
+		OQS_MEM_insecure_free(r->method_name);
 	}
-	free(r);
+	OQS_MEM_insecure_free(r);
 }
 
 OQS_RAND *OQS_RAND_urandom_aesctr_new() {
@@ -138,6 +138,6 @@ OQS_RAND *OQS_RAND_urandom_aesctr_new() {
 	r->rand_32 = &OQS_RAND_urandom_aesctr_32;
 	r->rand_64 = &OQS_RAND_urandom_aesctr_64;
 	r->rand_n = &OQS_RAND_urandom_aesctr_n;
-	r->free = &OQS_RAND_urandom_aesctr_free;
+	r->free = &OQS_RAND_urandom_aesctr_free; // IGNORE free-check'
 	return r;
 }
