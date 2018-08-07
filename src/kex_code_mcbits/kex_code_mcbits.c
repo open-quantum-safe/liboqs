@@ -35,7 +35,7 @@ OQS_KEX *OQS_KEX_code_mcbits_new(OQS_RAND *rand) {
 	k->bob = &OQS_KEX_code_mcbits_bob;
 	k->alice_1 = &OQS_KEX_code_mcbits_alice_1;
 	k->alice_priv_free = &OQS_KEX_code_mcbits_alice_priv_free;
-	k->free = &OQS_KEX_code_mcbits_free; // IGNORE free-check 
+	k->free = &OQS_KEX_code_mcbits_free; // IGNORE free-check
 	return k;
 }
 
