@@ -17,7 +17,3 @@ libntru_la_SOURCES = kex_ntru.c \
 	ntru_crypto_sha2.c \
 	ntru_crypto_ntru_mult_indices.c \
 	ntru_crypto_ntru_mult_coeffs_karat.c
-
-
-libntru_la_CFLAGS = $(AM_CFLAGS) 
-

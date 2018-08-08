@@ -42,12 +42,12 @@
 #include "aes_ctr_prf.h"
 #include "conversions.h"
 
-_INLINE_ status_t encrypt(OUT ct_t *ct,
-                          IN const uint8_t *e,
-                          IN const uint8_t *ep __attribute__((__unused__)),
-                          IN const pk_t *pk,
-                          IN const seed_t *seed) {
-	status_t res = SUCCESS;
+_INLINE_ OQS_STATUS encrypt(OUT ct_t *ct,
+                            IN const uint8_t *e,
+                            IN const uint8_t *ep __attribute__((__unused__)),
+                            IN const pk_t *pk,
+                            IN const seed_t *seed) {
+	OQS_STATUS res = OQS_SUCCESS;
 
 #ifndef BIKE2
 	uint8_t c0[R_SIZE] = {0};
@@ -96,8 +96,8 @@ _INLINE_ status_t encrypt(OUT ct_t *ct,
 }
 
 //Generate the Shared Secret (K(e))
-_INLINE_ status_t get_ss(OUT ss_t *out, IN uint8_t *e) {
-	status_t res = SUCCESS;
+_INLINE_ OQS_STATUS get_ss(OUT ss_t *out, IN uint8_t *e) {
+	OQS_STATUS res = OQS_SUCCESS;
 
 	DMSG("    Enter get_ss.\n");
 
@@ -124,10 +124,10 @@ _INLINE_ void transpose(uint8_t col[R_BITS], uint8_t row[R_BITS]) {
 	}
 }
 
-_INLINE_ status_t compute_syndrome(OUT syndrome_t *syndrome,
+_INLINE_ OQS_STATUS compute_syndrome(OUT syndrome_t *syndrome,
                                    IN const ct_t *ct,
                                    IN const sk_t *sk) {
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 	uint8_t s_tmp_bytes[R_BITS] = {0};
 	uint8_t s0[R_SIZE] = {0};
 
@@ -161,11 +161,11 @@ _INLINE_ status_t compute_syndrome(OUT syndrome_t *syndrome,
 //The three APIs below (keypair, enc, dec) are defined by NIST:
 //In addition there are two KAT versions of this API as defined.
 ////////////////////////////////////////////////////////////////
-int keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
+OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	//Convert to this implementation types
 	sk_t *l_sk = (sk_t *) sk;
 	pk_t *l_pk = (pk_t *) pk;
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 
 	//For NIST DRBG_CTR.
 	double_seed_t seeds = {0};
@@ -246,12 +246,12 @@ EXIT:
 //Encapsulate - pk is the public key,
 //              ct is a key encapsulation message (ciphertext),
 //              ss is the shared secret.
-int encaps(OUT unsigned char *ct,
-           OUT unsigned char *ss,
-           IN const unsigned char *pk) {
+OQS_STATUS encaps(OUT unsigned char *ct,
+                  OUT unsigned char *ss,
+                  IN const unsigned char *pk) {
 	DMSG("  Enter crypto_kem_enc.\n");
 
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 
 	//Convert to these implementation types
 	const pk_t *l_pk = (pk_t *) pk;
@@ -310,11 +310,11 @@ EXIT:
 //Decapsulate - ct is a key encapsulation message (ciphertext),
 //              sk is the private key,
 //              ss is the shared secret
-int decaps(OUT unsigned char *ss,
-           IN const unsigned char *ct,
-           IN const unsigned char *sk) {
+OQS_STATUS decaps(OUT unsigned char *ss,
+                  IN const unsigned char *ct,
+                  IN const unsigned char *sk) {
 	DMSG("  Enter crypto_kem_dec.\n");
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 
 	//Convert to this implementation types
 	const sk_t *l_sk = (sk_t *) sk;

@@ -35,18 +35,20 @@
 #ifndef _OSSL_UTILITIES_H_
 #define _OSSL_UTILITIES_H_
 
+#include "oqs/common.h"
+
 #include "string.h"
 #include "types.h"
 #include "utilities.h"
 #include "openssl/bn.h"
 
 //Perform a cyclic product by using OpenSSL.
-_INLINE_ status_t ossl_cyclic_product(OUT BIGNUM *r,
+_INLINE_ OQS_STATUS ossl_cyclic_product(OUT BIGNUM *r,
                                       IN const BIGNUM *a,
                                       IN const BIGNUM *b) {
 	BN_CTX *bn_ctx = BN_CTX_new();
 	BIGNUM *m = BN_new();
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 
 	// m = x^PARAM_R - 1
 	if ((BN_set_bit(m, R_BITS) == 0) ||
@@ -67,11 +69,11 @@ EXIT:
 	return res;
 }
 
-_INLINE_ status_t invert_poly(OUT BIGNUM *r,
+_INLINE_ OQS_STATUS invert_poly(OUT BIGNUM *r,
                               IN const BIGNUM *a) {
 	BN_CTX *bn_ctx = BN_CTX_new();
 	BIGNUM *m = BN_new();
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 
 	// m = x^PARAM_R - 1
 	if ((BN_set_bit(m, R_BITS) == 0) ||
@@ -112,7 +114,7 @@ _INLINE_ void reverse_endian(OUT uint8_t *res,
 	}
 }
 
-_INLINE_ status_t ossl_bn2bin(OUT uint8_t *out,
+_INLINE_ OQS_STATUS ossl_bn2bin(OUT uint8_t *out,
                               IN const BIGNUM *in,
                               IN const uint32_t size) {
 	uint8_t be_tmp[size];
@@ -123,10 +125,10 @@ _INLINE_ status_t ossl_bn2bin(OUT uint8_t *out,
 	}
 	reverse_endian(out, be_tmp, BN_num_bytes(in));
 
-	return SUCCESS;
+	return OQS_SUCCESS;
 }
 
-_INLINE_ status_t ossl_bin2bn(IN BIGNUM *out,
+_INLINE_ OQS_STATUS ossl_bin2bn(IN BIGNUM *out,
                               OUT const uint8_t *in,
                               IN const uint32_t size) {
 	uint8_t be_tmp[size];
@@ -138,10 +140,10 @@ _INLINE_ status_t ossl_bin2bn(IN BIGNUM *out,
 		return E_OSSL_FAILURE;
 	}
 
-	return SUCCESS;
+	return OQS_SUCCESS;
 }
 
-_INLINE_ status_t print_ossl_bn(IN const BIGNUM *bn, IN const uint64_t size) {
+_INLINE_ OQS_STATUS print_ossl_bn(IN const BIGNUM *bn, IN const uint64_t size) {
 	uint8_t tmp[size];
 	if (ossl_bn2bin(tmp, bn, size)) {
 		return E_OSSL_FAILURE;
@@ -149,7 +151,7 @@ _INLINE_ status_t print_ossl_bn(IN const BIGNUM *bn, IN const uint64_t size) {
 
 	print((uint64_t *) tmp, size * 8);
 
-	return SUCCESS;
+	return OQS_SUCCESS;
 }
 
 _INLINE_ void ossl_add(OUT uint8_t res_bin[R_SIZE],

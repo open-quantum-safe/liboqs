@@ -72,7 +72,7 @@
  * @param[in] i Index of the algorithm identifier to return, 0 <= i < OQS_KEM_algs_length
  * @return Algorithm identifier as a string, or NULL.
  */
-const char *OQS_KEM_alg_identifier(size_t i);
+OQS_API const char *OQS_KEM_alg_identifier(size_t i);
 
 /**
  * Key encapsulation mechanism object
@@ -152,7 +152,7 @@ typedef struct OQS_KEM {
  * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_KEM_algs`.
  * @return An OQS_KEM for the particular algorithm, or `NULL` if the algorithm has been disabled at compile-time.
  */
-OQS_KEM *OQS_KEM_new(const char *method_name);
+OQS_API OQS_KEM *OQS_KEM_new(const char *method_name);
 
 /**
  * Keypair generation algorithm.
@@ -166,7 +166,7 @@ OQS_KEM *OQS_KEM_new(const char *method_name);
  * @param[out] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key);
 
 /**
  * Encapsulation algorithm.
@@ -181,7 +181,7 @@ OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *sec
  * @param[in] public_key The public key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 
 /**
  * Decapsulation algorithm.
@@ -196,7 +196,7 @@ OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shar
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 /**
  * Frees an OQS_KEM object that was constructed by OQS_KEM_new.

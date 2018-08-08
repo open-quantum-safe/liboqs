@@ -99,4 +99,6 @@ void OQS_MEM_insecure_free(void *ptr);
 #define UNUSED __attribute__((unused))
 #endif
 
+#define OQS_API __attribute__((visibility("default")))
+
 #endif // __OQS_COMMON_H

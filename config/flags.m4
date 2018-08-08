@@ -1,5 +1,5 @@
 # Set compilation flags
-AC_DEFUN([SET_CFLAGS],
+AC_DEFUN([SET_AM_CFLAGS],
 [
   AM_CFLAGS=${AM_CFLAGS}" -std=gnu11"
 
@@ -19,6 +19,9 @@ AC_DEFUN([SET_CFLAGS],
 
   # For shared objects
   AM_CFLAGS=${AM_CFLAGS}" -fPIC "
+  
+  # Hidding all unneeded symbols.
+  AM_CFLAGS=${AM_CFLAGS}" -fvisibility=hidden "
 
   # Add default include directories
   AM_CFLAGS=${AM_CFLAGS}" -I`pwd`/include -I. "

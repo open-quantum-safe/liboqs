@@ -94,7 +94,7 @@ SRCDIR=${SRCDIR}" src/kem \
                   src/sig"
 
 #Set the default compilation flags
-SET_CFLAGS
+SET_AM_CFLAGS
 
 AC_SUBST(ON_DARWIN)
 AC_SUBST(X86_64)

@@ -45,11 +45,11 @@ _INLINE_ uint32_t count_ones(IN const uint8_t *a,
 	return count;
 }
 
-_INLINE_ status_t get_rand_mod_len(OUT uint32_t *rand_pos,
+_INLINE_ OQS_STATUS get_rand_mod_len(OUT uint32_t *rand_pos,
                                    IN const uint32_t len,
                                    IN OUT aes_ctr_prf_state_t *prf_state) {
 	const uint64_t mask = MASK(bit_scan_reverse(len));
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 
 	do {
 		//Generate 128bit of random numbers
@@ -70,7 +70,7 @@ EXIT:
 	return res;
 }
 
-_INLINE_ status_t make_odd_weight(IN OUT uint8_t *a,
+_INLINE_ OQS_STATUS make_odd_weight(IN OUT uint8_t *a,
                                   IN const uint32_t len,
                                   IN OUT aes_ctr_prf_state_t *prf_state) {
 	uint32_t rand_pos = 0;
@@ -78,11 +78,11 @@ _INLINE_ status_t make_odd_weight(IN OUT uint8_t *a,
 
 	if (((count_ones(a, R_SIZE) % 2) == 1)) {
 		//Already odd.
-		return SUCCESS;
+		return OQS_SUCCESS;
 	}
 
 	//Generate random bit and flip it.
-	status_t res = get_rand_mod_len(&rand_pos, len, prf_state);
+	OQS_STATUS res = get_rand_mod_len(&rand_pos, len, prf_state);
 	CHECK_STATUS(res);
 
 	rand_byte = rand_pos >> 3;
@@ -91,14 +91,14 @@ _INLINE_ status_t make_odd_weight(IN OUT uint8_t *a,
 	a[rand_byte] ^= BIT(rand_bit);
 
 EXIT:
-	return SUCCESS;
+	return OQS_SUCCESS;
 }
 
 //must_be_odd - 1 true, 0 not
-status_t sample_uniform_r_bits(OUT uint8_t *n_rand,
+OQS_STATUS sample_uniform_r_bits(OUT uint8_t *n_rand,
                                IN const seed_t *seed,
                                IN const must_be_odd_t must_be_odd) {
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 
 	//For the seedexpander
 	aes_ctr_prf_state_t prf_state = {0};
@@ -137,12 +137,12 @@ _INLINE_ void SET_BIT(uint8_t *tmp, int position) {
 	tmp[index] |= 1UL << (pos);
 }
 
-status_t generate_sparse_rep(OUT uint8_t *r,
+OQS_STATUS generate_sparse_rep(OUT uint8_t *r,
                              IN const uint32_t weight,
                              IN const uint32_t len,
                              IN OUT aes_ctr_prf_state_t *prf_state) {
 	uint32_t rand_pos = 0;
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 	uint64_t ctr = 0;
 
 	//Ensure r is zero.

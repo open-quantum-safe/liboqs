@@ -152,13 +152,15 @@ typedef struct OQS_KEX {
  *                           if any, or NULL.
  * @return                   The object on success, or NULL on failure.
  */
-OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters);
+OQS_API OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters);
 
-OQS_STATUS OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len);
-OQS_STATUS OQS_KEX_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
+OQS_API OQS_STATUS OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len);
+
+OQS_API OQS_STATUS OQS_KEX_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
+
 OQS_STATUS OQS_KEX_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len);
 
-void OQS_KEX_alice_priv_free(OQS_KEX *k, void *alice_priv);
-void OQS_KEX_free(OQS_KEX *k);
+OQS_API void OQS_KEX_alice_priv_free(OQS_KEX *k, void *alice_priv);
+OQS_API void OQS_KEX_free(OQS_KEX *k);
 
 #endif

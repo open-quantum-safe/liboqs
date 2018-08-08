@@ -111,15 +111,16 @@ typedef struct double_seed_s {
 //   Error handling
 /////////////////////////////
 
+//TODO:Fix this.
 //This convention will work all over the code.
 #define ERR(v)     \
 	{              \
-		res = v;   \
+		res = OQS_ERROR;   \
 		goto EXIT; \
 	}
 #define CHECK_STATUS(stat)     \
 	{                          \
-		if (stat != SUCCESS) { \
+		if (stat != OQS_SUCCESS) { \
 			goto EXIT;         \
 		}                      \
 	}

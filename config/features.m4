@@ -22,13 +22,16 @@ AC_DEFUN([ARG_ENABL_SET_WRAP],
 
 AC_DEFUN([CONFIG_FEATURE_FLAGS],
 [
+
+  #The flags are organizes according to features then cryptosystems.
+
   # The parameters are 
   # 1) Flag-name 
   # 2) Param-name
   # 3) Compilation param name
   # 4) Compilation directory
-  ARG_ENABL_SET_WRAP([openssl], [openssl], [USE_OPENSSL])
   ARG_DISBL_SET_WRAP([aes-ni],  [aes_ni],  [USE_AES_NI])
+  ARG_ENABL_SET_WRAP([openssl], [openssl], [USE_OPENSSL])
 
   #BIKE depends on OpenSSL
   AM_COND_IF([USE_OPENSSL],

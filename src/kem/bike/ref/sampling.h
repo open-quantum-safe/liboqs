@@ -59,15 +59,15 @@ typedef enum {
 //Return's a BIGNUM with r random bits
 //No restrictions exist for the top or bottom bits -
 //and the BIGNUM can be smaller than 2^(r-1).
-status_t sample_uniform_r_bits(OUT uint8_t *n,
-                               IN const seed_t *seed,
-                               IN const must_be_odd_t must_be_odd);
+OQS_STATUS sample_uniform_r_bits(OUT uint8_t *n,
+                                 IN const seed_t *seed,
+                                 IN const must_be_odd_t must_be_odd);
 
 //Generate a random BIGNUM r of length len with a set weight
 //Using the random ctx supplied.
-status_t generate_sparse_rep(OUT uint8_t *r,
-                             IN const uint32_t weight,
-                             IN const uint32_t len,
-                             IN OUT aes_ctr_prf_state_t *prf_state);
+OQS_STATUS generate_sparse_rep(OUT uint8_t *r,
+                               IN const uint32_t weight,
+                               IN const uint32_t len,
+                               IN OUT aes_ctr_prf_state_t *prf_state);
 
 #endif //_SAMPLE_H_

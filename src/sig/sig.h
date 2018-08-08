@@ -141,7 +141,7 @@ struct OQS_SIG {
  * @param algid              The id of the signature algorithm to be instantiated.
  * @return                   A new signature object on success, or NULL on failure.
  */
-OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid);
+OQS_API OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid);
 
 /**
  * Generates a new signature key pair.
@@ -152,7 +152,7 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid);
  *                           must have allocated s->pub_key_len bytes.
  * @return                   OQS_SUCCESS on success, or OQS_ERROR on failure
  */
-OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
+OQS_API OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
 
 /**
  * Generates a new signature.
@@ -164,7 +164,7 @@ OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
  * @param sig_len   Pointer to the length of the generated signature. 
  * @return          OQS_SUCCESS on success, or OQS_ERROR on failure
  */
-OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
+OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
 
 /**
  * Verifies a signature.
@@ -176,13 +176,13 @@ OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *ms
  * @param sig_len   Length of the signature. 
  * @return          OQS_SUCCESS on success, or OQS_ERROR on failure
  */
-OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
+OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
 
 /**
  * Frees the signature object, de-initializing the underlying library code.
  * Does NOT free the rand object passed to OQS_SIG_new.
  * @param s          The signature object.
  */
-void OQS_SIG_free(OQS_SIG *s);
+OQS_API void OQS_SIG_free(OQS_SIG *s);
 
 #endif
