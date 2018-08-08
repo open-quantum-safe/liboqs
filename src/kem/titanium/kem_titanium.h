@@ -48,4 +48,19 @@ extern OQS_STATUS OQS_KEM_titanium_cca_med_decaps(uint8_t *shared_secret, const 
 
 #endif
 
+#ifdef OQS_ENABLE_KEM_titanium_cca_super_kem
+
+#define OQS_KEM_titanium_cca_super_length_public_key 26912
+#define OQS_KEM_titanium_cca_super_length_secret_key 26944
+#define OQS_KEM_titanium_cca_super_length_ciphertext 8352
+#define OQS_KEM_titanium_cca_super_length_shared_secret 32
+
+OQS_KEM *OQS_KEM_titanium_cca_super_new();
+
+extern OQS_STATUS OQS_KEM_titanium_cca_super_keypair(uint8_t *public_key, uint8_t *secret_key);
+extern OQS_STATUS OQS_KEM_titanium_cca_super_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+extern OQS_STATUS OQS_KEM_titanium_cca_super_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+
+#endif
+
 #endif /* __OQS_KEM_TITANIUM_H */
