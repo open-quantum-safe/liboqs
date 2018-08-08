@@ -14,7 +14,7 @@
  *
  * @param key            Initial Key.
  * @param schedule       Abstract data structure for a key schedule.
- * @param forEncryption  1 if key schedule is for encryption, 0 if for decryption.
+ * @param for_encryption 1 if key schedule is for encryption, 0 if for decryption.
  */
 void OQS_AES128_load_schedule(const uint8_t *key, void **schedule, int for_encryption);
 
@@ -43,7 +43,7 @@ void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
  * @param ciphertext     Ciphertext to be decrypted.
  * @param ciphertext_len Length on the ciphertext in bytes. Must be a multiple of 16.
  * @param key            Key to be used for encryption.
- * @param ciphertext     Pointer to a block of memory which >= in size to the ciphertext block. The result will be written here.
+ * @param plaintext      Pointer to a block of memory which >= in size to the ciphertext block. The result will be written here.
  */
 void OQS_AES128_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext);
 

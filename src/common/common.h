@@ -84,13 +84,21 @@ void OQS_MEM_secure_free(void *ptr, size_t len);
  */
 void OQS_MEM_insecure_free(void *ptr);
 
+/**
+ * Function to print a message to standard error.  Workaround on Android to print
+ * directly to stdout.
+ */
 #if __ANDROID__
-//android workaround
 #define eprintf(...) printf(__VA_ARGS__);
 #else
 #define eprintf(...) fprintf(stderr, __VA_ARGS__);
 #endif
 
+/**
+ * Macros that indicates a function argument may be unused.  Used to comply with
+ * an API specification but when an implementation doesn't actually use the argument
+ * and we'd get a compiler warning otherwise.
+ */
 #if defined(_WIN32)
 #define UNUSED
 // __attribute__ not supported in VS

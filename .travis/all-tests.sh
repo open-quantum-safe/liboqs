@@ -78,6 +78,7 @@ autoreconf -i
 ./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make
+make docs
 make test
 
 for f in $(ls .travis/*-check.sh); do
