@@ -125,8 +125,8 @@ _INLINE_ void transpose(uint8_t col[R_BITS], uint8_t row[R_BITS]) {
 }
 
 _INLINE_ OQS_STATUS compute_syndrome(OUT syndrome_t *syndrome,
-                                   IN const ct_t *ct,
-                                   IN const sk_t *sk) {
+                                     IN const ct_t *ct,
+                                     IN const sk_t *sk) {
 	OQS_STATUS res = OQS_SUCCESS;
 	uint8_t s_tmp_bytes[R_BITS] = {0};
 	uint8_t s0[R_SIZE] = {0};

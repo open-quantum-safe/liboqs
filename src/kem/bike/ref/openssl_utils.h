@@ -44,8 +44,8 @@
 
 //Perform a cyclic product by using OpenSSL.
 _INLINE_ OQS_STATUS ossl_cyclic_product(OUT BIGNUM *r,
-                                      IN const BIGNUM *a,
-                                      IN const BIGNUM *b) {
+                                        IN const BIGNUM *a,
+                                        IN const BIGNUM *b) {
 	BN_CTX *bn_ctx = BN_CTX_new();
 	BIGNUM *m = BN_new();
 	OQS_STATUS res = OQS_SUCCESS;
@@ -70,7 +70,7 @@ EXIT:
 }
 
 _INLINE_ OQS_STATUS invert_poly(OUT BIGNUM *r,
-                              IN const BIGNUM *a) {
+                                IN const BIGNUM *a) {
 	BN_CTX *bn_ctx = BN_CTX_new();
 	BIGNUM *m = BN_new();
 	OQS_STATUS res = OQS_SUCCESS;
@@ -115,8 +115,8 @@ _INLINE_ void reverse_endian(OUT uint8_t *res,
 }
 
 _INLINE_ OQS_STATUS ossl_bn2bin(OUT uint8_t *out,
-                              IN const BIGNUM *in,
-                              IN const uint32_t size) {
+                                IN const BIGNUM *in,
+                                IN const uint32_t size) {
 	uint8_t be_tmp[size];
 	memset(out, 0, size);
 
@@ -129,8 +129,8 @@ _INLINE_ OQS_STATUS ossl_bn2bin(OUT uint8_t *out,
 }
 
 _INLINE_ OQS_STATUS ossl_bin2bn(IN BIGNUM *out,
-                              OUT const uint8_t *in,
-                              IN const uint32_t size) {
+                                OUT const uint8_t *in,
+                                IN const uint32_t size) {
 	uint8_t be_tmp[size];
 	memset(be_tmp, 0, size);
 

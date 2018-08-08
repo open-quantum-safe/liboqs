@@ -113,16 +113,16 @@ typedef struct double_seed_s {
 
 //TODO:Fix this.
 //This convention will work all over the code.
-#define ERR(v)     \
-	{              \
-		res = OQS_ERROR;   \
-		goto EXIT; \
+#define ERR(v)           \
+	{                    \
+		res = OQS_ERROR; \
+		goto EXIT;       \
 	}
-#define CHECK_STATUS(stat)     \
-	{                          \
+#define CHECK_STATUS(stat)         \
+	{                              \
 		if (stat != OQS_SUCCESS) { \
-			goto EXIT;         \
-		}                      \
+			goto EXIT;             \
+		}                          \
 	}
 
 enum _status {

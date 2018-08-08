@@ -80,8 +80,8 @@ _INLINE_ OQS_STATUS perform_aes(OUT uint8_t *ct, IN OUT aes_ctr_prf_state_t *s) 
 }
 
 OQS_STATUS aes_ctr_prf(OUT uint8_t *a,
-                     IN aes_ctr_prf_state_t *s,
-                     IN const uint32_t len) {
+                       IN aes_ctr_prf_state_t *s,
+                       IN const uint32_t len) {
 	OQS_STATUS res = OQS_SUCCESS;
 
 	//When Len i smaller then whats left in the buffer

@@ -46,8 +46,8 @@ _INLINE_ uint32_t count_ones(IN const uint8_t *a,
 }
 
 _INLINE_ OQS_STATUS get_rand_mod_len(OUT uint32_t *rand_pos,
-                                   IN const uint32_t len,
-                                   IN OUT aes_ctr_prf_state_t *prf_state) {
+                                     IN const uint32_t len,
+                                     IN OUT aes_ctr_prf_state_t *prf_state) {
 	const uint64_t mask = MASK(bit_scan_reverse(len));
 	OQS_STATUS res = OQS_SUCCESS;
 
@@ -71,8 +71,8 @@ EXIT:
 }
 
 _INLINE_ OQS_STATUS make_odd_weight(IN OUT uint8_t *a,
-                                  IN const uint32_t len,
-                                  IN OUT aes_ctr_prf_state_t *prf_state) {
+                                    IN const uint32_t len,
+                                    IN OUT aes_ctr_prf_state_t *prf_state) {
 	uint32_t rand_pos = 0;
 	uint32_t rand_byte, rand_bit;
 
@@ -96,8 +96,8 @@ EXIT:
 
 //must_be_odd - 1 true, 0 not
 OQS_STATUS sample_uniform_r_bits(OUT uint8_t *n_rand,
-                               IN const seed_t *seed,
-                               IN const must_be_odd_t must_be_odd) {
+                                 IN const seed_t *seed,
+                                 IN const must_be_odd_t must_be_odd) {
 	OQS_STATUS res = OQS_SUCCESS;
 
 	//For the seedexpander
@@ -138,9 +138,9 @@ _INLINE_ void SET_BIT(uint8_t *tmp, int position) {
 }
 
 OQS_STATUS generate_sparse_rep(OUT uint8_t *r,
-                             IN const uint32_t weight,
-                             IN const uint32_t len,
-                             IN OUT aes_ctr_prf_state_t *prf_state) {
+                               IN const uint32_t weight,
+                               IN const uint32_t len,
+                               IN OUT aes_ctr_prf_state_t *prf_state) {
 	uint32_t rand_pos = 0;
 	OQS_STATUS res = OQS_SUCCESS;
 	uint64_t ctr = 0;
