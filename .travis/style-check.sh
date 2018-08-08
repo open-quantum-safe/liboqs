@@ -15,6 +15,18 @@ then
 	fi
 fi
 
+# See what has been modified (ignoring submodules because they are likely patched)
+MODIFIED=$(git status -s)
+
+if [[ ! -z "${MODIFIED}" ]];
+then
+	${PRINT_RED}
+	echo "There are modified files present in the directory prior to prettyprint check. This may indicate that some files should be added to .gitignore or need to be committed.";
+	${PRINT_RESET}
+	git status -s
+	exit 1;
+fi;
+
 TRY_CLANGFORMAT="clang-format-3.9"
 if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
 then
@@ -38,9 +50,7 @@ then
 	exit 1
 fi;
 
-# See what has been modified (ignoring submodules because they are likely patched)
 MODIFIED=$(git status -s)
-
 if [[ ! -z "${MODIFIED}" ]];
 then
 	${PRINT_RED}
