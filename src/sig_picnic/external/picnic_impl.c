@@ -26,6 +26,8 @@
 #include <math.h>
 #include <stdlib.h>
 
+#include <oqs/common.h>
+
 typedef struct {
   uint8_t* seeds[SC_PROOF];
   uint8_t* commitments[SC_PROOF];
@@ -221,8 +223,8 @@ static sig_proof_t* proof_new_verify(const picnic_instance_t* pp, uint8_t** rsla
 }
 
 static void proof_free(sig_proof_t* prf) {
-  free(prf->challenge);
-  free(prf);
+  OQS_MEM_insecure_free(prf->challenge);
+  OQS_MEM_insecure_free(prf);
 }
 
 static void kdf_init_from_seed(kdf_shake_t* kdf, const uint8_t* seed, const picnic_instance_t* pp) {
@@ -473,7 +475,7 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
   const bool ret = sig_proof_to_char_array(pp, prf, sig, siglen);
 
   // clean up
-  free(tape_bytes);
+  OQS_MEM_insecure_free(tape_bytes);
 #if defined(WITH_CUSTOM_INSTANCES)
   if (lowmc->m != 10) {
     for (unsigned n = 0; n < view_count; ++n) {
@@ -484,8 +486,8 @@ static bool sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
     }
   }
 #endif
-  free(rvec);
-  free(views);
+  OQS_MEM_secure_free(rvec, sizeof(rvec_t));
+  OQS_MEM_secure_free(views, sizeof(view_t));
   oqs_sig_picnic_mzd_local_free_multiple(shared_key);
   oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[1].s);
   oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[0].s);
@@ -596,7 +598,7 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
   const int success_status = memcmp(challenge, prf->challenge, pp->num_rounds);
 
   // clean up
-  free(tape_bytes);
+  OQS_MEM_insecure_free(tape_bytes);
 #if defined(WITH_CUSTOM_INSTANCES)
   if (lowmc->m != 10) {
     for (unsigned n = 0; n < view_count; ++n) {
@@ -607,8 +609,8 @@ static bool verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, m
     }
   }
 #endif
-  free(rvec);
-  free(views);
+  OQS_MEM_secure_free(rvec, sizeof(rvec_t));
+  OQS_MEM_secure_free(views, sizeof(view_t));
   oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[1].s);
   oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[0].s);
 
