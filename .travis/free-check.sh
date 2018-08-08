@@ -10,7 +10,7 @@ PRINT_RESET="tput sgr 0"
 
 RET=0
 
-FREE=`find src -name '*.c' | grep -v upstream | grep -v external | xargs grep '[^_]free' | grep -v 'IGNORE free-check'`
+FREE=`find src -name '*.c' | grep -v upstream | xargs grep '[^_]free' | grep -v 'IGNORE free-check'`
 
 if [[ ! -z "${FREE}" ]];
 then
