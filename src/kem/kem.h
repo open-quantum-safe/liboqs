@@ -31,14 +31,14 @@
 #define OQS_KEM_alg_sike_p503 "Sike-p503"
 /** Algorithm identifier for Sike p751 KEM. */
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
-/** Algorithm identifier for Frodo-640-AES KEM. */
-#define OQS_KEM_alg_frodo_640_aes "Frodo-640-AES"
-/** Algorithm identifier for Frodo-640-cSHAKE KEM. */
-#define OQS_KEM_alg_frodo_640_cshake "Frodo-640-cSHAKE"
-/** Algorithm identifier for Frodo-976-AES KEM. */
-#define OQS_KEM_alg_frodo_976_aes "Frodo-976-AES"
-/** Algorithm identifier for Frodo-976-cSHAKE KEM. */
-#define OQS_KEM_alg_frodo_976_cshake "Frodo-976-cSHAKE"
+/** Algorithm identifier for FrodoKEM-640-AES KEM. */
+#define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
+/** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
+#define OQS_KEM_alg_frodokem_640_cshake "FrodoKEM-640-cSHAKE"
+/** Algorithm identifier for FrodoKEM-976-AES KEM. */
+#define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
+/** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
+#define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
 /** Algorithm identifier for BIKE1-L1 KEM. */
 #define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
 /** Algorithm identifier for BIKE1-L1 KEM. */
@@ -206,7 +206,7 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
 void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_bike.h>
-#include <oqs/kem_frodo.h>
+#include <oqs/kem_frodokem.h>
 #include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 

@@ -39,7 +39,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
     [AM_CONDITIONAL(ENABLE_KEM_BIKE, [USE_OPENSSL])]
   )
 
-  ARG_DISBL_SET_WRAP([kem-frodo], [kem_frodo], [ENABLE_KEM_FRODO], [src/kem/frodo])
+  ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
 
   ARG_ENABL_SET_WRAP([kex-code-mcbits], [kex_code_mcbits], 
@@ -76,11 +76,11 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l5, 1, "Define to 1 when BIKE3-L5 enabled")
   ])
 
-  AM_COND_IF([ENABLE_KEM_FRODO], [
-    AC_DEFINE(OQS_ENABLE_KEM_frodo_640_aes,    1, "Define to 1 when Frodo-640-AES enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_frodo_640_cshake, 1, "Define to 1 when Frodo-640-cSHAKE enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_frodo_976_aes,    1, "Define to 1 when Frodo-976-AES enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_frodo_976_cshake, 1, "Define to 1 when Frodo-976-cSHAKE enabled")
+  AM_COND_IF([ENABLE_KEM_FRODOKEM], [
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_aes,    1, "Define to 1 when FrodoKEM-640-AES enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_cshake, 1, "Define to 1 when FrodoKEM-640-cSHAKE enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_aes,    1, "Define to 1 when FrodoKEM-976-AES enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_cshake, 1, "Define to 1 when FrodoKEM-976-cSHAKE enabled")
   ])
 
   AM_COND_IF([ENABLE_KEM_SIKE], [

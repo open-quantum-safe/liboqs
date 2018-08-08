@@ -50,8 +50,8 @@ endif
 if ENABLE_KEM_BIKE
 liboqs_la_LIBADD += src/kem/bike/libkembike.la
 endif
-if ENABLE_KEM_FRODO
-liboqs_la_LIBADD += src/kem/frodo/libkemfrodo.la
+if ENABLE_KEM_FRODOKEM
+liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
 endif
 if ENABLE_KEM_SIKE
 liboqs_la_LIBADD += src/kem/sike/libkemsike.la
@@ -72,7 +72,7 @@ installheader_HEADERS=config.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
 	src/kex_sidh_msr/kex_sidh_msr.h \
 	src/kem/bike/kem_bike.h \
-	src/kem/frodo/kem_frodo.h \
+	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h
 
@@ -208,7 +208,7 @@ links:
 	cp -f src/crypto/sha3/sha3.h include/oqs
 	cp -f src/kem/kem.h include/oqs
 	cp -f src/kem/bike/kem_bike.h include/oqs
-	cp -f src/kem/frodo/kem_frodo.h include/oqs
+	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
