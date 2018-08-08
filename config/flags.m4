@@ -11,8 +11,7 @@ AC_DEFUN([SET_AM_CFLAGS],
 
   # Add extra warnings
   AM_CFLAGS=${AM_CFLAGS}" -Wimplicit -Wunused -Wcomment -Wchar-subscripts -Wuninitialized "
-  AM_CFLAGS=${AM_CFLAGS}" -Wshadow -Wcast-align -Wwrite-strings "
-  AM_CFLAGS=${AM_CFLAGS}" -Wformat-security "
+  AM_CFLAGS=${AM_CFLAGS}" -Wshadow -Wformat-security -Wwrite-strings "
 
   # Disable, due to bugs in GCC 4.8/4.9
   AM_CFLAGS=${AM_CFLAGS}" -Wno-missing-braces -Wno-missing-field-initializers"
