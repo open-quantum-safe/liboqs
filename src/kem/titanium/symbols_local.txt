@@ -29,3 +29,6 @@ seedexpander_init
 sampler_binomial
 sampler_zb
 sampler_zq
+crypto_encrypt_keypair
+crypto_encrypt
+crypto_encrypt_open
