@@ -45,7 +45,7 @@
 #include <math.h>
 
 // count number of 1's in tmp:
-uint32_t FN(getHammingWeight)(const uint8_t tmp[R_BITS], const uint32_t length) {
+uint32_t getHammingWeight(const uint8_t tmp[R_BITS], const uint32_t length) {
 	uint32_t count = 0;
 	for (uint32_t i = 0; i < length; i++) {
 		count += tmp[i];
@@ -56,7 +56,7 @@ uint32_t FN(getHammingWeight)(const uint8_t tmp[R_BITS], const uint32_t length) 
 
 _INLINE_ uint32_t get_predefined_threshold_var(const uint8_t s[R_BITS]) {
 	// compute syndrome weight:
-	uint32_t syndromeWeight = FN(getHammingWeight)(s, R_BITS);
+	uint32_t syndromeWeight = getHammingWeight(s, R_BITS);
 
 	// set threshold according to syndrome weight:
 	uint32_t threshold = ceil(VAR_TH_FCT(syndromeWeight));
@@ -121,11 +121,11 @@ _INLINE_ void compute_counter_of_unsat(uint8_t unsat_counter[N_BITS],
 	}
 }
 
-int FN(decode)(uint8_t e[R_BITS * 2],
-               uint8_t s_original[R_BITS],
-               uint32_t h0_compact[DV],
-               uint32_t h1_compact[DV],
-               uint32_t u) {
+int decode(uint8_t e[R_BITS * 2],
+           uint8_t s_original[R_BITS],
+           uint32_t h0_compact[DV],
+           uint32_t h1_compact[DV],
+           uint32_t u) {
 	int code_ret = -1;
 
 	int delta = MAX_DELTA;
@@ -137,8 +137,8 @@ int FN(decode)(uint8_t e[R_BITS * 2],
 		for (; iter < MAX_IT; iter++) {
 			DMSG("    delta: %d\n", delta);
 			DMSG("    Iteration: %d\n", iter);
-			DMSG("    Weight of e: %d\n", FN(getHammingWeight)(e, N_BITS));
-			DMSG("    Weight of syndrome: %d\n", FN(getHammingWeights)(s, R_BITS));
+			DMSG("    Weight of e: %d\n", getHammingWeight(e, N_BITS));
+			DMSG("    Weight of syndrome: %d\n", getHammingWeights(s, R_BITS));
 
 			// count the number of unsatisfied parity-checks:
 			uint8_t unsat_counter[N_BITS] = {0};
@@ -178,7 +178,7 @@ int FN(decode)(uint8_t e[R_BITS * 2],
 			recompute_syndrome(s, numBlackPositions, blackPositions, h0_compact, h1_compact);
 
 			// Decoding Step I: check if syndrome is 0 (successful decoding):
-			if (FN(getHammingWeight)(s, R_BITS) <= u) {
+			if (getHammingWeight(s, R_BITS) <= u) {
 				code_ret = 0;
 				DMSG("    Weight of syndrome: 0\n");
 				break;
@@ -209,7 +209,7 @@ int FN(decode)(uint8_t e[R_BITS * 2],
 			recompute_syndrome(s, numUnflippedPositions, positionsToUnflip, h0_compact, h1_compact);
 
 			// Decoding Step II: check if syndrome is 0 (successful decoding):
-			if (FN(getHammingWeight)(s, R_BITS) <= u) {
+			if (getHammingWeight(s, R_BITS) <= u) {
 				code_ret = 0;
 				DMSG("    Weight of syndrome: 0\n");
 				break;
@@ -240,13 +240,13 @@ int FN(decode)(uint8_t e[R_BITS * 2],
 			recompute_syndrome(s, numGrayPositionsToFlip, grayPositionsToFlip, h0_compact, h1_compact);
 
 			// Decoding Step III: check if syndrome is 0 (successful decoding):
-			if (FN(getHammingWeight)(s, R_BITS) <= u) {
+			if (getHammingWeight(s, R_BITS) <= u) {
 				code_ret = 0;
 				DMSG("    Weight of syndrome: 0\n");
 				break;
 			}
 		}
-		if (FN(getHammingWeight)(s, R_BITS) <= u) {
+		if (getHammingWeight(s, R_BITS) <= u) {
 			break;
 		} else {
 			delta--;

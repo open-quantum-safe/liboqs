@@ -62,8 +62,7 @@ _INLINE_ status_t encrypt(OUT ct_t *ct,
 #ifdef BIKE1
 	// ct = (m*pk0 + e0, m*pk1 + e1)
 	uint8_t m[R_SIZE] = {0};
-	FN(sample_uniform_r_bits)
-	(m, seed, NO_RESTRICTION);
+	sample_uniform_r_bits(m, seed, NO_RESTRICTION);
 	cyclic_product(c0, m, pk->u.v.val0);
 	cyclic_product(c1, m, pk->u.v.val1);
 	ossl_add(ct->u.v.val0, c0, e0);
@@ -105,8 +104,7 @@ _INLINE_ status_t get_ss(OUT ss_t *out, IN uint8_t *e) {
 	sha384_hash_t hash = {0};
 
 	//Calculate the hash.
-	FN(parallel_hash)
-	(&hash, e, N_SIZE);
+	parallel_hash(&hash, e, N_SIZE);
 
 	//Truncate the final hash into K.
 	//By copying only the LSBs
@@ -153,8 +151,7 @@ _INLINE_ status_t compute_syndrome(OUT syndrome_t *syndrome,
 #endif
 
 	//Store the syndrome in a bit array
-	FN(convertByteToBinary)
-	(s_tmp_bytes, s0, R_BITS);
+	convertByteToBinary(s_tmp_bytes, s0, R_BITS);
 	transpose(syndrome->raw, s_tmp_bytes);
 
 	return res;
@@ -164,7 +161,7 @@ _INLINE_ status_t compute_syndrome(OUT syndrome_t *syndrome,
 //The three APIs below (keypair, enc, dec) are defined by NIST:
 //In addition there are two KAT versions of this API as defined.
 ////////////////////////////////////////////////////////////////
-int FN(keypair)(OUT unsigned char *pk, OUT unsigned char *sk) {
+int keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	//Convert to this implementation types
 	sk_t *l_sk = (sk_t *) sk;
 	pk_t *l_pk = (pk_t *) pk;
@@ -196,19 +193,18 @@ int FN(keypair)(OUT unsigned char *pk, OUT unsigned char *sk) {
 #endif
 
 	//Both h0 and h1 use the same context
-	FN(init_aes_ctr_prf_state)
-	(&h_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
+	init_aes_ctr_prf_state(&h_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
 
-	res = FN(generate_sparse_rep)(h0, DV, R_BITS, &h_prf_state);
+	res = generate_sparse_rep(h0, DV, R_BITS, &h_prf_state);
 	CHECK_STATUS(res);
-	res = FN(generate_sparse_rep)(h1, DV, R_BITS, &h_prf_state);
+	res = generate_sparse_rep(h1, DV, R_BITS, &h_prf_state);
 	CHECK_STATUS(res);
 
 	DMSG("    Calculating the public key.\n");
 
 #ifdef BIKE1
 	//  pk = (g*h1, g*h0)
-	res = FN(sample_uniform_r_bits)(g, &seeds.u.v.s2, MUST_BE_ODD);
+	res = sample_uniform_r_bits(g, &seeds.u.v.s2, MUST_BE_ODD);
 	CHECK_STATUS(res);
 
 	cyclic_product(l_pk->u.v.val0, g, h1);
@@ -225,7 +221,7 @@ int FN(keypair)(OUT unsigned char *pk, OUT unsigned char *sk) {
 #else
 #ifdef BIKE3
 	// pk = (h1 + g*h0, g)
-	res = FN(sample_uniform_r_bits)(g, &seeds.u.v.s2, MUST_BE_ODD);
+	res = sample_uniform_r_bits(g, &seeds.u.v.s2, MUST_BE_ODD);
 	CHECK_STATUS(res);
 	cyclic_product(tmp1, g, h0);
 	ossl_add(l_pk->u.v.val0, tmp1, h1);
@@ -250,9 +246,9 @@ EXIT:
 //Encapsulate - pk is the public key,
 //              ct is a key encapsulation message (ciphertext),
 //              ss is the shared secret.
-int FN(encaps)(OUT unsigned char *ct,
-               OUT unsigned char *ss,
-               IN const unsigned char *pk) {
+int encaps(OUT unsigned char *ct,
+           OUT unsigned char *ss,
+           IN const unsigned char *pk) {
 	DMSG("  Enter crypto_kem_enc.\n");
 
 	status_t res = SUCCESS;
@@ -277,15 +273,14 @@ int FN(encaps)(OUT unsigned char *ct,
 
 	//random data generator;
 	// Using first seed
-	FN(init_aes_ctr_prf_state)
-	(&e_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
+	init_aes_ctr_prf_state(&e_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
 
 	DMSG("    Generating error.\n");
-	res = FN(generate_sparse_rep)(e, T1, N_BITS, &e_prf_state);
+	res = generate_sparse_rep(e, T1, N_BITS, &e_prf_state);
 	CHECK_STATUS(res);
 
 #ifdef BIKE3
-	res = FN(generate_sparse_rep)(e_extra, T1 / 2, R_BITS, &e_prf_state);
+	res = generate_sparse_rep(e_extra, T1 / 2, R_BITS, &e_prf_state);
 #endif
 
 	// computing ct = enc(pk, e)
@@ -315,9 +310,9 @@ EXIT:
 //Decapsulate - ct is a key encapsulation message (ciphertext),
 //              sk is the private key,
 //              ss is the shared secret
-int FN(decaps)(OUT unsigned char *ss,
-               IN const unsigned char *ct,
-               IN const unsigned char *sk) {
+int decaps(OUT unsigned char *ss,
+           IN const unsigned char *ct,
+           IN const unsigned char *sk) {
 	DMSG("  Enter crypto_kem_dec.\n");
 	status_t res = SUCCESS;
 
@@ -329,10 +324,8 @@ int FN(decaps)(OUT unsigned char *ss,
 	DMSG("  Converting to compact rep.\n");
 	uint32_t h0_compact[DV] = {0};
 	uint32_t h1_compact[DV] = {0};
-	FN(convert2compact)
-	(h0_compact, l_sk->u.v.val0);
-	FN(convert2compact)
-	(h1_compact, l_sk->u.v.val1);
+	convert2compact(h0_compact, l_sk->u.v.val0);
+	convert2compact(h1_compact, l_sk->u.v.val1);
 
 	DMSG("  Computing s.\n");
 	syndrome_t syndrome;
@@ -347,7 +340,7 @@ int FN(decaps)(OUT unsigned char *ss,
 #ifdef BIKE3
 	u = T1 / 2; // For BIKE-3, u = t/2
 #endif
-	rc = FN(decode)(e, syndrome.raw, h0_compact, h1_compact, u);
+	rc = decode(e, syndrome.raw, h0_compact, h1_compact, u);
 
 	if (rc == 0) {
 		DMSG("    Decoding result: success\n");
@@ -356,12 +349,11 @@ int FN(decaps)(OUT unsigned char *ss,
 	}
 
 	// checking if error weight is exactly t:
-	if (FN(getHammingWeight)(e, 2 * R_BITS) != T1) {
+	if (getHammingWeight(e, 2 * R_BITS) != T1) {
 		MSG("Error weight is not t\n");
 	}
 
-	FN(convertBinaryToByte)
-	(eBytes, e, 2 * R_BITS);
+	convertBinaryToByte(eBytes, e, 2 * R_BITS);
 	res = get_ss(l_ss, eBytes);
 	CHECK_STATUS(res);
 

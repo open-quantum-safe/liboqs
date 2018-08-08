@@ -58,8 +58,8 @@ typedef struct sha384_hash_s {
 //    Journal of Information Security 5:91-113 (2014).
 //
 // It is designed to convert the serial hashing to a parallelizeable process.
-void FN(parallel_hash)(OUT sha384_hash_t *out_hash,
-                       IN const uint8_t *m,
-                       IN const uint32_t la);
+void parallel_hash(OUT sha384_hash_t *out_hash,
+                   IN const uint8_t *m,
+                   IN const uint32_t la);
 
 #endif //__AES_CTR_REF_H_INCLUDED__

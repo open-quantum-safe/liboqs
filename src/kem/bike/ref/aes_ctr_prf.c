@@ -36,9 +36,9 @@
 #include "stdio.h"
 #include "utilities.h"
 
-status_t FN(init_aes_ctr_prf_state)(OUT aes_ctr_prf_state_t *s,
-                                    IN const uint32_t maxInvokations,
-                                    IN const seed_t *seed) {
+status_t init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
+                                IN const uint32_t maxInvokations,
+                                IN const seed_t *seed) {
 	if (maxInvokations == 0) {
 		return E_AES_CTR_PRF_INIT_FAIL;
 	}
@@ -79,9 +79,9 @@ _INLINE_ status_t perform_aes(OUT uint8_t *ct, IN OUT aes_ctr_prf_state_t *s) {
 	return SUCCESS;
 }
 
-status_t FN(aes_ctr_prf)(OUT uint8_t *a,
-                         IN aes_ctr_prf_state_t *s,
-                         IN const uint32_t len) {
+status_t aes_ctr_prf(OUT uint8_t *a,
+                     IN aes_ctr_prf_state_t *s,
+                     IN const uint32_t len) {
 	status_t res = SUCCESS;
 
 	//When Len i smaller then whats left in the buffer

@@ -65,9 +65,9 @@ _INLINE_ uint64_t compute_slice_len(IN uint64_t la) {
 	return ((alpha * HASH_BLOCK_SIZE) + SLICE_REM);
 }
 
-void FN(parallel_hash)(OUT sha384_hash_t *out_hash,
-                       IN const uint8_t *m,
-                       IN const uint32_t la) {
+void parallel_hash(OUT sha384_hash_t *out_hash,
+                   IN const uint8_t *m,
+                   IN const uint32_t la) {
 	DMSG("    Enter parallel_hash.\n");
 
 	//Calculating how many bytes will go to "parallel" hashing

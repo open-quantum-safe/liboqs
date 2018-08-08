@@ -53,7 +53,7 @@ _INLINE_ status_t get_rand_mod_len(OUT uint32_t *rand_pos,
 
 	do {
 		//Generate 128bit of random numbers
-		res = FN(aes_ctr_prf)((uint8_t *) rand_pos, prf_state, sizeof(*rand_pos));
+		res = aes_ctr_prf((uint8_t *) rand_pos, prf_state, sizeof(*rand_pos));
 		CHECK_STATUS(res);
 
 		//Mask only relevant bits
@@ -95,20 +95,19 @@ EXIT:
 }
 
 //must_be_odd - 1 true, 0 not
-status_t FN(sample_uniform_r_bits)(OUT uint8_t *n_rand,
-                                   IN const seed_t *seed,
-                                   IN const must_be_odd_t must_be_odd) {
+status_t sample_uniform_r_bits(OUT uint8_t *n_rand,
+                               IN const seed_t *seed,
+                               IN const must_be_odd_t must_be_odd) {
 	status_t res = SUCCESS;
 
 	//For the seedexpander
 	aes_ctr_prf_state_t prf_state = {0};
 
 	//Both h0 and h1 use the same context
-	FN(init_aes_ctr_prf_state)
-	(&prf_state, MAX_AES_INVOKATION, seed);
+	init_aes_ctr_prf_state(&prf_state, MAX_AES_INVOKATION, seed);
 
 	//Generate random data.
-	res = FN(aes_ctr_prf)(n_rand, &prf_state, R_SIZE);
+	res = aes_ctr_prf(n_rand, &prf_state, R_SIZE);
 	CHECK_STATUS(res);
 
 	//Mask upper bits of the MSByte.
@@ -138,10 +137,10 @@ _INLINE_ void SET_BIT(uint8_t *tmp, int position) {
 	tmp[index] |= 1UL << (pos);
 }
 
-status_t FN(generate_sparse_rep)(OUT uint8_t *r,
-                                 IN const uint32_t weight,
-                                 IN const uint32_t len,
-                                 IN OUT aes_ctr_prf_state_t *prf_state) {
+status_t generate_sparse_rep(OUT uint8_t *r,
+                             IN const uint32_t weight,
+                             IN const uint32_t len,
+                             IN OUT aes_ctr_prf_state_t *prf_state) {
 	uint32_t rand_pos = 0;
 	status_t res = SUCCESS;
 	uint64_t ctr = 0;

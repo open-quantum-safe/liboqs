@@ -41,12 +41,12 @@
 #define MAX_DELTA 4
 
 // count number of 1's in tmp:
-uint32_t FN(getHammingWeight)(const uint8_t tmp[R_BITS], const uint32_t length);
+uint32_t getHammingWeight(const uint8_t tmp[R_BITS], const uint32_t length);
 
-int FN(decode)(uint8_t e[2 * R_BITS],
-               uint8_t s[R_BITS],
-               uint32_t h0_compact[DV],
-               uint32_t h1_compact[DV],
-               uint32_t u);
+int decode(uint8_t e[2 * R_BITS],
+           uint8_t s[R_BITS],
+           uint32_t h0_compact[DV],
+           uint32_t h1_compact[DV],
+           uint32_t u);
 
 #endif //_R_DECAPS_H_

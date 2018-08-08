@@ -43,10 +43,6 @@
 #define ELL_K_BITS 256ULL
 #define ELL_K_SIZE (ELL_K_BITS / 8)
 
-#define PASTER(x, y) x##_##y
-#define EVALUATOR(x, y) PASTER(x, y)
-#define FN(fname) EVALUATOR(BIKE_FUNC_PREFIX, fname)
-
 ////////////////////////////////////////////
 // Implicit Parameters (do NOT edit below)
 ///////////////////////////////////////////
