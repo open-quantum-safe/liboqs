@@ -876,6 +876,7 @@ RECURSIVE              = NO
 
 EXCLUDE                = include/oqs/kex.h \
                          include/oqs/kex_ntru.h \
+                         include/oqs/kex_code_mcbits.h \
                          include/oqs/kex_rlwe_newhope.h \
                          include/oqs/kex_sidh_msr.h \
                          include/oqs/rand_urandom_aesctr.h \
