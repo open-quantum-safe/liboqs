@@ -17,7 +17,7 @@ char *OQS_KEM_alg_identifier(size_t i) {
 	    OQS_KEM_alg_ledakem_C1_N02, OQS_KEM_alg_ledakem_C1_N03, OQS_KEM_alg_ledakem_C1_N04, OQS_KEM_alg_ledakem_C3_N02, OQS_KEM_alg_ledakem_C3_N03, OQS_KEM_alg_ledakem_C3_N04, OQS_KEM_alg_ledakem_C5_N02, OQS_KEM_alg_ledakem_C5_N03, OQS_KEM_alg_ledakem_C5_N04,
 	    OQS_KEM_alg_saber_light_saber_kem, OQS_KEM_alg_saber_saber_kem, OQS_KEM_alg_saber_fire_saber_kem,
 	    OQS_KEM_alg_lima_2p_1024_cca_kem, OQS_KEM_alg_lima_2p_2048_cca_kem, OQS_KEM_alg_lima_sp_1018_cca_kem, OQS_KEM_alg_lima_sp_1306_cca_kem, OQS_KEM_alg_lima_sp_1822_cca_kem, OQS_KEM_alg_lima_sp_2062_cca_kem,
-	    OQS_KEM_alg_titanium_cca_std_kem, OQS_KEM_alg_titanium_cca_hi_kem, OQS_KEM_alg_titanium_cca_med_kem};
+	    OQS_KEM_alg_titanium_cca_std_kem, OQS_KEM_alg_titanium_cca_hi_kem, OQS_KEM_alg_titanium_cca_med_kem, OQS_KEM_alg_titanium_cca_super_kem};
 	if (i >= OQS_KEM_algs_length) {
 		return NULL;
 	} else {
@@ -283,6 +283,12 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_titanium_cca_med_kem)) {
 #ifdef OQS_ENABLE_KEM_titanium_cca_med_kem
 		return OQS_KEM_titanium_cca_med_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_titanium_cca_super_kem)) {
+#ifdef OQS_ENABLE_KEM_titanium_cca_super_kem
+		return OQS_KEM_titanium_cca_super_new();
 #else
 		return NULL;
 #endif

@@ -2,11 +2,13 @@ ifeq (x64,$(ARCH))
 ENABLE_KEMS+=$(findstring titanium_cca_std_kem, $(KEMS_TO_ENABLE))
 ENABLE_KEMS+=$(findstring titanium_cca_hi_kem, $(KEMS_TO_ENABLE))
 ENABLE_KEMS+=$(findstring titanium_cca_med_kem, $(KEMS_TO_ENABLE))
+ENABLE_KEMS+=$(findstring titanium_cca_super_kem, $(KEMS_TO_ENABLE))
 MAKE_FLAGS_KEM_TITANIUM=
 else ifeq (x86,$(ARCH))
 ENABLE_KEMS+=$(findstring titanium_cca_std_kem, $(KEMS_TO_ENABLE))
 ENABLE_KEMS+=$(findstring titanium_cca_hi_kem, $(KEMS_TO_ENABLE))
 ENABLE_KEMS+=$(findstring titanium_cca_med_kem, $(KEMS_TO_ENABLE))
+ENABLE_KEMS+=$(findstring titanium_cca_super_kem, $(KEMS_TO_ENABLE))
 MAKE_FLAGS_KEM_TITANIUM=
 endif
 
@@ -106,3 +108,32 @@ titanium_cca_med_kem_upstream: $(OBJS_KEM_TITANIUM_CCA_MED)
 	bash scripts/collect_objects.sh $(MED_MODULE)  $(MED_DIR)/*.o
 	bash scripts/symbols_global_rename.sh $(MED_MODULE)  src/kem/titanium/symbols_global_rename_med.txt
 	bash scripts/symbols_local.sh $(MED_MODULE)  src/kem/titanium/symbols_local.txt
+
+
+# super strength make targets
+ifneq (,$(findstring titanium_cca_super_kem, $(ENABLE_KEMS)))
+UPSTREAMS+=titanium_cca_super_kem_upstream
+endif
+
+SUPER_DIR=src/kem/titanium/upstream/Titanium_CCA_super
+SRCS_KEM_TITANIUM_CCA_SUPER=$(SUPER_DIR)/encrypt.c \
+						$(SUPER_DIR)/kem.c \
+						$(SUPER_DIR)/ntt.c \
+						$(SUPER_DIR)/pack.c \
+						$(SUPER_DIR)/sampler.c \
+						$(SUPER_DIR)/fastrandombytes.c \
+						$(SUPER_DIR)/rng.c
+
+OBJS_KEM_TITANIUM_CCA_SUPER=$(SRCS_KEM_TITANIUM_CCA_SUPER:.c=.o)
+
+TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_SUPER)
+
+src/kem/titanium/upstream/Titanium_CCA_super/%.o: $(SUPER_DIR)/%.c $(SUPER_DIR)/littleendian.h $(SUPER_DIR)/fastmodulo.h
+	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
+
+SUPER_MODULE=titanium_cca_super
+
+titanium_cca_super_kem_upstream: $(OBJS_KEM_TITANIUM_CCA_SUPER)
+	bash scripts/collect_objects.sh $(SUPER_MODULE)  $(SUPER_DIR)/*.o
+	bash scripts/symbols_global_rename.sh $(SUPER_MODULE)  src/kem/titanium/symbols_global_rename_super.txt
+	bash scripts/symbols_local.sh $(SUPER_MODULE)  src/kem/titanium/symbols_local.txt
