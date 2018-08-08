@@ -49,7 +49,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kex-rlwe-newhope],[kex_rlwe_newhope], 
                      [ENABLE_KEX_RLWE_NEWHOPE], [src/kex_rlwe_newhope])
   ARG_ENABL_SET_WRAP([kex-rlwe-newhope-avx2], [kex_rlwe_newhope_avx2], 
-                     [ENABLE_KEX_RLWE_NEWHOPE_AVX2], [src/kex_rlwe_newhope_avx2])
+                     [ENABLE_KEX_RLWE_NEWHOPE_AVX2], [src/kex_rlwe_newhope/avx2])
   ARG_DISBL_SET_WRAP([kex-sidh-msr], [kex_sidh_msr],
                      [ENABLE_KEX_SIDH_MSR], [src/kex_sidh_msr])
 

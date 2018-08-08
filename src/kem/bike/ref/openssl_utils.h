@@ -121,7 +121,7 @@ _INLINE_ OQS_STATUS ossl_bn2bin(OUT uint8_t *out,
 	memset(out, 0, size);
 
 	if (BN_bn2bin(in, be_tmp) == 0) {
-		return E_OSSL_FAILURE;
+		return OQS_ERROR;
 	}
 	reverse_endian(out, be_tmp, BN_num_bytes(in));
 
@@ -137,7 +137,7 @@ _INLINE_ OQS_STATUS ossl_bin2bn(IN BIGNUM *out,
 	reverse_endian(be_tmp, in, size);
 
 	if (BN_bin2bn(be_tmp, size, out) == 0) {
-		return E_OSSL_FAILURE;
+		return OQS_ERROR;
 	}
 
 	return OQS_SUCCESS;
@@ -146,7 +146,7 @@ _INLINE_ OQS_STATUS ossl_bin2bn(IN BIGNUM *out,
 _INLINE_ OQS_STATUS print_ossl_bn(IN const BIGNUM *bn, IN const uint64_t size) {
 	uint8_t tmp[size];
 	if (ossl_bn2bin(tmp, bn, size)) {
-		return E_OSSL_FAILURE;
+		return OQS_ERROR;
 	}
 
 	print((uint64_t *) tmp, size * 8);
