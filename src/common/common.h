@@ -99,6 +99,14 @@ void OQS_MEM_insecure_free(void *ptr);
 #define UNUSED __attribute__((unused))
 #endif
 
+/**
+ * Defines which functions should be exposed outside the LibOQS library
+ *
+ * By default the visibility of all the symbols is defined to "hidden"
+ * Only the library API should be marked as default
+ *
+ * Example: OQS_API return_value function_name(void);
+ */
 #define OQS_API __attribute__((visibility("default")))
 
 #endif // __OQS_COMMON_H

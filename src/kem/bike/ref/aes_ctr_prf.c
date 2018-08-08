@@ -40,12 +40,12 @@ OQS_STATUS init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
                                   IN const uint32_t maxInvokations,
                                   IN const seed_t *seed) {
 	if (maxInvokations == 0) {
-		return E_AES_CTR_PRF_INIT_FAIL;
+		return OQS_ERROR;
 	}
 
 	//Set the Key schedule (from seed).
 	if (AES_set_encrypt_key(seed->u.raw, AES256_KEY_BITS, &s->key) != 0) {
-		return E_AES_SET_KEY_FAIL;
+		return OQS_ERROR;
 	}
 
 	//Initialize buffer and counter
@@ -69,7 +69,7 @@ OQS_STATUS init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
 
 _INLINE_ OQS_STATUS perform_aes(OUT uint8_t *ct, IN OUT aes_ctr_prf_state_t *s) {
 	if (s->rem_invokations == 0) {
-		return E_AES_OVER_USED;
+		return OQS_ERROR;
 	}
 
 	AES_encrypt(s->ctr.u.bytes, ct, &s->key);
