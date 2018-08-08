@@ -39,38 +39,35 @@
 #include "openssl_utils.h"
 #include "aes_ctr_prf.h"
 
-enum _seeds_purpose
-{
-    KEYGEN_SEEDS = 0,
-    ENCAPS_SEEDS = 1,
-    DECAPS_SEEDS = 2
+enum _seeds_purpose {
+	KEYGEN_SEEDS = 0,
+	ENCAPS_SEEDS = 1,
+	DECAPS_SEEDS = 2
 };
 
 typedef enum _seeds_purpose seeds_purpose_t;
 
-_INLINE_ void get_seeds(OUT double_seed_t* seeds, seeds_purpose_t seeds_type __attribute__((unused)) )
-{
-    OQS_randombytes(seeds->u.v.s1.u.raw, sizeof(double_seed_t));
+_INLINE_ void get_seeds(OUT double_seed_t *seeds, seeds_purpose_t seeds_type __attribute__((unused))) {
+	OQS_randombytes(seeds->u.v.s1.u.raw, sizeof(double_seed_t));
 }
 
-typedef enum 
-{
-    NO_RESTRICTION=0,
-    MUST_BE_ODD=1
+typedef enum {
+	NO_RESTRICTION = 0,
+	MUST_BE_ODD = 1
 } must_be_odd_t;
 
 //Return's a BIGNUM with r random bits
 //No restrictions exist for the top or bottom bits -
 //and the BIGNUM can be smaller than 2^(r-1).
-status_t sample_uniform_r_bits(OUT uint8_t* n,
-                               IN const seed_t* seed,
+status_t sample_uniform_r_bits(OUT uint8_t *n,
+                               IN const seed_t *seed,
                                IN const must_be_odd_t must_be_odd);
 
 //Generate a random BIGNUM r of length len with a set weight
 //Using the random ctx supplied.
-status_t generate_sparse_rep(OUT uint8_t* r,
-        IN const uint32_t weight,
-        IN const uint32_t len,
-        IN OUT aes_ctr_prf_state_t *prf_state);
+status_t generate_sparse_rep(OUT uint8_t *r,
+                             IN const uint32_t weight,
+                             IN const uint32_t len,
+                             IN OUT aes_ctr_prf_state_t *prf_state);
 
 #endif //_SAMPLE_H_

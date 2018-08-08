@@ -35,24 +35,23 @@
 #ifndef __FUNCTIONS_RENAMING_H_INCLUDED__
 #define __FUNCTIONS_RENAMING_H_INCLUDED__
 
-#define PASTER(x,y) x ## _ ## y
-#define EVALUATOR(x,y)  PASTER(x,y)
+#define PASTER(x, y) x##_##y
+#define EVALUATOR(x, y) PASTER(x, y)
 #define RENAME_FUNC_NAME(fname) EVALUATOR(FUNC_PREFIX, fname)
 
-#define aes_ctr_prf            RENAME_FUNC_NAME(aes_ctr_prf)
-#define sample_uniform_r_bits  RENAME_FUNC_NAME(sample_uniform_r_bits)
+#define aes_ctr_prf RENAME_FUNC_NAME(aes_ctr_prf)
+#define sample_uniform_r_bits RENAME_FUNC_NAME(sample_uniform_r_bits)
 #define init_aes_ctr_prf_state RENAME_FUNC_NAME(init_aes_ctr_prf_state)
-#define generate_sparse_rep    RENAME_FUNC_NAME(generate_sparse_rep)
-#define parallel_hash          RENAME_FUNC_NAME(parallel_hash)
-#define getHammingWeight       RENAME_FUNC_NAME(getHammingWeight)
-#define decode                 RENAME_FUNC_NAME(decode)
-#define generate_sparse_rep    RENAME_FUNC_NAME(generate_sparse_rep)
-#define convert2compact        RENAME_FUNC_NAME(convert2compact)
-#define convertByteToBinary    RENAME_FUNC_NAME(convertByteToBinary)
-#define convertBinaryToByte    RENAME_FUNC_NAME(convertBinaryToByte)
-#define keypair                RENAME_FUNC_NAME(keypair)
-#define decaps                 RENAME_FUNC_NAME(decaps)
-#define encaps                 RENAME_FUNC_NAME(encaps)
+#define generate_sparse_rep RENAME_FUNC_NAME(generate_sparse_rep)
+#define parallel_hash RENAME_FUNC_NAME(parallel_hash)
+#define getHammingWeight RENAME_FUNC_NAME(getHammingWeight)
+#define decode RENAME_FUNC_NAME(decode)
+#define generate_sparse_rep RENAME_FUNC_NAME(generate_sparse_rep)
+#define convert2compact RENAME_FUNC_NAME(convert2compact)
+#define convertByteToBinary RENAME_FUNC_NAME(convertByteToBinary)
+#define convertBinaryToByte RENAME_FUNC_NAME(convertBinaryToByte)
+#define keypair RENAME_FUNC_NAME(keypair)
+#define decaps RENAME_FUNC_NAME(decaps)
+#define encaps RENAME_FUNC_NAME(encaps)
 
 #endif //__FUNCTIONS_RENAMING_H_INCLUDED__
-
