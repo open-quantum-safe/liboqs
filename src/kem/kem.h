@@ -113,10 +113,12 @@
 #define OQS_KEM_alg_titanium_cca_std_kem "Titanium-CCA-std"
 /** Algorithm identifier for Titanium hi CCA KEM */
 #define OQS_KEM_alg_titanium_cca_hi_kem "Titanium-CCA-hi"
+/** Algorithm identifier for Titanium med CCA KEM */
+#define OQS_KEM_alg_titanium_cca_med_kem "Titanium-CCA-med"
 
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 44
+#define OQS_KEM_algs_length 45
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.

@@ -1,10 +1,12 @@
 ifeq (x64,$(ARCH))
 ENABLE_KEMS+=$(findstring titanium_cca_std_kem, $(KEMS_TO_ENABLE))
 ENABLE_KEMS+=$(findstring titanium_cca_hi_kem, $(KEMS_TO_ENABLE))
+ENABLE_KEMS+=$(findstring titanium_cca_med_kem, $(KEMS_TO_ENABLE))
 MAKE_FLAGS_KEM_TITANIUM=
 else ifeq (x86,$(ARCH))
 ENABLE_KEMS+=$(findstring titanium_cca_std_kem, $(KEMS_TO_ENABLE))
 ENABLE_KEMS+=$(findstring titanium_cca_hi_kem, $(KEMS_TO_ENABLE))
+ENABLE_KEMS+=$(findstring titanium_cca_med_kem, $(KEMS_TO_ENABLE))
 MAKE_FLAGS_KEM_TITANIUM=
 endif
 
@@ -20,8 +22,6 @@ OBJECTS_KEM+=$(OBJECTS_KEM_TITANIUM)
 	$(CC) -c src/kem/titanium/kem_titanium.c -o .objs/kem/titanium/kem_titanium.o $(CFLAGS)
 
 # Std strength make targets
-STD_MODULE=kem_titanium_cca_std
-
 ifneq (,$(findstring titanium_cca_std_kem, $(ENABLE_KEMS)))
 UPSTREAMS+=titanium_cca_std_kem_upstream
 endif
@@ -41,6 +41,8 @@ TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_STD)
 
 src/kem/titanium/upstream/Titanium_CCA_std/%.o: src/kem/titanium/upstream/Titanium_CCA_std/%.c $(STD_DIR)/littleendian.h $(STD_DIR)/fastmodulo.h
 	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
+
+STD_MODULE=kem_titanium_cca_std
 
 titanium_cca_std_kem_upstream: $(OBJS_KEM_TITANIUM_CCA_STD)
 	bash scripts/collect_objects.sh $(STD_MODULE)  $(OBJS_KEM_TITANIUM_CCA_STD)
@@ -75,3 +77,32 @@ titanium_cca_hi_kem_upstream: $(OBJS_KEM_TITANIUM_CCA_HI)
 	bash scripts/collect_objects.sh $(HI_MODULE)  $(HI_DIR)/*.o
 	bash scripts/symbols_global_rename.sh $(HI_MODULE)  src/kem/titanium/symbols_global_rename_hi.txt
 	bash scripts/symbols_local.sh $(HI_MODULE)  src/kem/titanium/symbols_local.txt
+
+
+# med strength make targets
+ifneq (,$(findstring titanium_cca_med_kem, $(ENABLE_KEMS)))
+UPSTREAMS+=titanium_cca_med_kem_upstream
+endif
+
+MED_DIR=src/kem/titanium/upstream/Titanium_CCA_med
+SRCS_KEM_TITANIUM_CCA_MED=$(MED_DIR)/encrypt.c \
+						$(MED_DIR)/kem.c \
+						$(MED_DIR)/ntt.c \
+						$(MED_DIR)/pack.c \
+						$(MED_DIR)/sampler.c \
+						$(MED_DIR)/fastrandombytes.c \
+						$(MED_DIR)/rng.c
+
+OBJS_KEM_TITANIUM_CCA_MED=$(SRCS_KEM_TITANIUM_CCA_MED:.c=.o)
+
+TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_MED)
+
+src/kem/titanium/upstream/Titanium_CCA_med/%.o: $(MED_DIR)/%.c $(MED_DIR)/littleendian.h $(MED_DIR)/fastmodulo.h
+	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
+
+MED_MODULE=titanium_cca_med
+
+titanium_cca_med_kem_upstream: $(OBJS_KEM_TITANIUM_CCA_MED)
+	bash scripts/collect_objects.sh $(MED_MODULE)  $(MED_DIR)/*.o
+	bash scripts/symbols_global_rename.sh $(MED_MODULE)  src/kem/titanium/symbols_global_rename_med.txt
+	bash scripts/symbols_local.sh $(MED_MODULE)  src/kem/titanium/symbols_local.txt
