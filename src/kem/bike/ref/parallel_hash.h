@@ -37,14 +37,16 @@
 
 #include "types.h"
 
-#define SHA384_HASH_SIZE 48ULL
-#define SHA384_HASH_QWORDS (SHA384_HASH_SIZE / 8)
+#define SHA384_HASH_SIZE   48ULL
+#define SHA384_HASH_QWORDS (SHA384_HASH_SIZE/8)
 
-typedef struct sha384_hash_s {
-	union {
-		uint8_t raw[SHA384_HASH_SIZE];
-		uint64_t qwords[SHA384_HASH_QWORDS];
-	} u;
+typedef struct sha384_hash_s
+{
+    union
+    {
+        uint8_t  raw[SHA384_HASH_SIZE];
+        uint64_t qwords[SHA384_HASH_QWORDS];
+    } u;
 } sha384_hash_t;
 
 //The parallel_hash algorithm uses the technique described in
@@ -58,8 +60,9 @@ typedef struct sha384_hash_s {
 //    Journal of Information Security 5:91-113 (2014).
 //
 // It is designed to convert the serial hashing to a parallelizeable process.
-void FN(parallel_hash)(OUT sha384_hash_t *out_hash,
-                       IN const uint8_t *m,
-                       IN const uint32_t la);
+void parallel_hash(OUT sha384_hash_t* out_hash,
+                   IN const uint8_t* m,
+                   IN const uint32_t la);
 
 #endif //__AES_CTR_REF_H_INCLUDED__
+

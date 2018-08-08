@@ -41,17 +41,17 @@
 #if VERBOSE == 2
 
 #ifdef PRINT_IN_BE
-//Printing values in Big Endian
-void print_BE(IN const uint64_t *in, IN const uint32_t bits_num);
+  //Printing values in Big Endian
+  void print_BE(IN const uint64_t *in, IN const uint32_t bits_num);
 
-//Print in Big Endian
-#define print(in, bits_num) print_BE(in, bits_num)
+  //Print in Big Endian
+  #define print(in, bits_num) print_BE(in, bits_num)
 #else
-//Printing values in Little Endian
-void print_LE(IN const uint64_t *in, IN const uint32_t bits_num);
+  //Printing values in Little Endian
+  void print_LE(IN const uint64_t *in, IN const uint32_t bits_num);
 
-//Print in Little Endian
-#define print(in, bits_num) print_LE(in, bits_num)
+  //Print in Little Endian
+  #define print(in, bits_num) print_LE(in, bits_num)
 #endif
 #else
 //No prints at all
