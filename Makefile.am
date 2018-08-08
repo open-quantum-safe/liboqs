@@ -91,7 +91,7 @@ if USE_MCBITS
 	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
 
-noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_sig test_aes test_rand test_sha3
+noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_sig test_aes test_rand test_sha3 kat_kem
 
 if USE_SIG_PICNIC
 noinst_bin_PROGRAMS += minimal_sig_oqs
@@ -99,7 +99,7 @@ endif
 
 noinst_bindir=$(prefix)/tests
 
-speed_kem_LDADD =  liboqs.la -lm
+speed_kem_LDADD =  liboqs.la -lm -lcrypto
 speed_kem_SOURCES = src/kem/speed_kem.c
 speed_kem_CPPFLAGS = -I./include
 speed_kem_CPPFLAGS += $(AM_CPPFLAGS)
@@ -107,7 +107,7 @@ if USE_OPENSSL
 speed_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
-test_kem_LDADD =  liboqs.la -lm
+test_kem_LDADD =  liboqs.la -lm -lcrypto
 test_kem_SOURCES = src/kem/test_kem.c
 test_kem_CPPFLAGS = -I./include
 test_kem_CPPFLAGS += $(AM_CPPFLAGS)
@@ -115,7 +115,7 @@ if USE_OPENSSL
 test_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
-example_kem_LDADD =  liboqs.la -lm
+example_kem_LDADD =  liboqs.la -lm -lcrypto
 example_kem_SOURCES = src/kem/example_kem.c
 example_kem_CPPFLAGS = -I./include
 example_kem_CPPFLAGS += $(AM_CPPFLAGS)
@@ -123,7 +123,7 @@ if USE_OPENSSL
 example_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
-test_kex_LDADD =  liboqs.la -lm
+test_kex_LDADD =  liboqs.la -lm -lcrypto
 test_kex_SOURCES = src/kex/test_kex.c
 test_kex_CPPFLAGS = -I./include
 test_kex_CPPFLAGS += $(AM_CPPFLAGS)
@@ -134,7 +134,7 @@ if USE_OPENSSL
 test_kex_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
-test_sig_LDADD =  liboqs.la -lm
+test_sig_LDADD =  liboqs.la -lm -lcrypto
 test_sig_SOURCES = src/sig/test_sig.c
 test_sig_CPPFLAGS = -I./include
 test_sig_CPPFLAGS += $(AM_CPPFLAGS)
@@ -143,7 +143,7 @@ test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 
 if USE_SIG_PICNIC
-minimal_sig_oqs_LDADD =  liboqs.la -lm
+minimal_sig_oqs_LDADD =  liboqs.la -lm -lcrypto
 minimal_sig_oqs_SOURCES = src/sig/minimal_sig_oqs.c
 minimal_sig_oqs_CPPFLAGS = -I./include
 minimal_sig_oqs_CPPFLAGS += $(AM_CPPFLAGS)
@@ -152,7 +152,7 @@ minimal_sig_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 endif
 endif # USE_SIG_PICNIC
 
-test_aes_LDADD =  liboqs.la -lm
+test_aes_LDADD =  liboqs.la -lm -lcrypto
 test_aes_SOURCES = src/crypto/aes/test_aes.c
 test_aes_CPPFLAGS = -I./include
 test_aes_CPPFLAGS += $(AM_CPPFLAGS)
@@ -165,7 +165,7 @@ test_rand_SOURCES = src/crypto/rand/test_rand.c
 
 test_rand_CPPFLAGS = -Iinclude -Isrc/crypto/rand_urandom_aesctr/
 test_rand_CPPFLAGS += $(AM_CPPFLAGS)
-test_rand_LDADD = liboqs.la
+test_rand_LDADD = liboqs.la -lcrypto
 if USE_OPENSSL
 test_rand_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
 else
@@ -174,10 +174,15 @@ test_rand_CPPFLAGS += -maes -msse2
 endif
 endif # USE_OPENSSL
 
-test_sha3_LDADD =  liboqs.la -lm
+test_sha3_LDADD =  liboqs.la -lm -lcrypto
 test_sha3_SOURCES = src/crypto/sha3/test_sha3.c
 test_sha3_CPPFLAGS = -I./include
 test_sha3_CPPFLAGS += $(AM_CPPFLAGS)
+
+kat_kem_LDADD =  liboqs.la -lcrypto
+kat_kem_SOURCES = src/kem/kat_kem.c
+kat_kem_CPPFLAGS = -I./include
+kat_kem_CPPFLAGS += $(AM_CPPFLAGS)
 
 test: clean-tests
 	make

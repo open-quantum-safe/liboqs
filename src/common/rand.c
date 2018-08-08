@@ -23,9 +23,14 @@ static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = (void (*)(uint8_t 
 static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
 #endif
 
+void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
+
 OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
 		oqs_randombytes_algorithm = &OQS_randombytes_system;
+		return OQS_SUCCESS;
+  } else if (0 == strcasecmp(OQS_RAND_alg_nist_kat, algorithm)) {
+		oqs_randombytes_algorithm = &OQS_randombytes_nist_kat;
 		return OQS_SUCCESS;
 	} else if (0 == strcasecmp(OQS_RAND_alg_openssl, algorithm)) {
 #ifdef USE_OPENSSL
