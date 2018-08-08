@@ -47,11 +47,14 @@ if USE_SIG_QTESLA
 liboqs_la_LIBADD += src/sig_qtesla/libqtesla.la
 endif
 
-if ENABLE_KEM_SIKE
-liboqs_la_LIBADD += src/kem/sike/libkemsike.la
+if ENABLE_KEM_BIKE
+liboqs_la_LIBADD += src/kem/bike/libkembike.la
 endif
 if ENABLE_KEM_FRODOKEM
 liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
+endif
+if ENABLE_KEM_SIKE
+liboqs_la_LIBADD += src/kem/sike/libkemsike.la
 endif
 
 installheaderdir=$(includedir)/oqs
@@ -68,8 +71,9 @@ installheader_HEADERS=config.h \
 	src/kex_ntru/kex_ntru.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
 	src/kex_sidh_msr/kex_sidh_msr.h \
-	src/kem/sike/kem_sike.h \
+	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
+	src/kem/sike/kem_sike.h \
 	src/sig/sig.h
 
 install-exec-local:
@@ -203,8 +207,9 @@ links:
 	cp -f src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	cp -f src/crypto/sha3/sha3.h include/oqs
 	cp -f src/kem/kem.h include/oqs
-	cp -f src/kem/sike/kem_sike.h include/oqs
+	cp -f src/kem/bike/kem_bike.h include/oqs
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
+	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
