@@ -197,6 +197,12 @@ if USE_SIG_PICNIC
 	./minimal_sig_oqs
 endif
 
+kat: kats
+	./kat_kem
+	./kat_sig
+	scripts/check_kats.sh
+
+
 links:
 	$(MKDIR_P) include/oqs
 	cp -f config.h include/oqs
