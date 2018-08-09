@@ -29,9 +29,6 @@ AC_DEFUN([SET_AM_CFLAGS],
 
   AM_COND_IF(USE_OPENSSL, [AM_CFLAGS=${AM_CFLAGS}" -I"${OPENSSL_DIR}"/include "])
 
-  # Extra flags
-  AM_CFLAGS=${AM_CFLAGS}" -DCONSTANT_TIME "
-
   # Optimization level
   AM_CFLAGS=${AM_CFLAGS}" -O3 "
 
@@ -39,6 +36,10 @@ AC_DEFUN([SET_AM_CFLAGS],
 
   AM_COND_IF(USE_AES_NI, [AM_CFLAGS=${AM_CFLAGS}" -maes -msse2 "])
 
+  # Extra flags
+  AM_CFLAGS=${AM_CFLAGS}" -DCONSTANT_TIME "
+
+  AM_CONDITIONAL(CONSTANT_TIME,[true])
   AC_SUBST(AM_CFLAGS)
 ]
 )

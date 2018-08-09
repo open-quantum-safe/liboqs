@@ -36,7 +36,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   #BIKE depends on OpenSSL
   AM_COND_IF([USE_OPENSSL],
     [ARG_DISBL_SET_WRAP([kem-bike], [kem_bike], [ENABLE_KEM_BIKE], [src/kem/bike] )],
-    [AM_CONDITIONAL(ENABLE_KEM_BIKE, [USE_OPENSSL])]
+    [AM_CONDITIONAL(ENABLE_KEM_BIKE, [false])]
   )
 
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
@@ -74,6 +74,13 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l1, 1, "Define to 1 when BIKE3-L1 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l3, 1, "Define to 1 when BIKE3-L3 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l5, 1, "Define to 1 when BIKE3-L5 enabled")
+    
+    # Default is false.
+    AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [false])
+    AM_COND_IF([USE_AVX2_INSTRUCTIONS], 
+               [AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [test x$gcc_cv_compiler = xtrue])
+                AM_COND_IF([BIKE_ADDITIONAL_IMPL], [AC_DEFINE(BIKE_ADDITIONAL_IMPL, 1, "Define to 1 when BIKE uses the additional implementation")])
+               ])
   ])
 
   AM_COND_IF([ENABLE_KEM_FRODOKEM], [

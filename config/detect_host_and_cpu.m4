@@ -23,8 +23,6 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
 
   AM_CONDITIONAL([ON_DARWIN], [test "x$darwin" = xtrue])
   AM_CONDITIONAL([ON_LINUX], [test "x$linux" = xtrue])
-  AC_SUBST(ON_LINUX)
-  AC_SUBST(ON_DARWIN)
 
   # Enable assembly optimizations here
   # Appearenly asm optimizations do not work well with darwin
@@ -48,16 +46,27 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
           AC_MSG_ERROR([Your CPU is not currently supported])
           ;;
       esac
-  
-
-    AM_CONDITIONAL([X86_64], [test "x$x86_64" = xtrue])
-    AM_CONDITIONAL([ARM64], [test "x$arm64" = xtrue])
-    AM_CONDITIONAL([ARM], [test "x$arm" = xtrue])
-    AC_SUBST(ARM)
-    AC_SUBST(ARM64)
-    AC_SUBST(X86_64)
-
-    #Check if further x86 optimizations are available to use (e.g., avx/avx2/bmi).
-    AM_COND_IF([X86_64], [AX_CHECK_X86_FEATURES])
   ])
+
+  AM_CONDITIONAL([X86_64], [test "x$x86_64" = xtrue])
+  AM_CONDITIONAL([ARM64], [test "x$arm64" = xtrue])
+  AM_CONDITIONAL([ARM], [test "x$arm" = xtrue])
+
+  AC_CACHE_CHECK([for GNUC compiler],
+    [gcc_cv_compiler],
+    [AC_RUN_IFELSE(
+    [AC_LANG_PROGRAM( [],
+    [ #if defined(__GNUC__) && !defined(__clang__)
+        return 0;
+      #else
+        return 1;
+      #endif
+    ])],
+    [gcc_cv_compiler=true],
+    [gcc_cv_compiler=false]
+    )]
+  )
+
+  #Check if further x86 optimizations are available (e.g., avx/avx2/bmi).
+  AX_CHECK_X86_FEATURES
 ])

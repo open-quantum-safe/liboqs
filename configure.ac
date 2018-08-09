@@ -29,6 +29,9 @@ AC_GENERAL_CHECKS
 # DOXYGEN SUPPORT
 CONFIG_DOXIGEN
 
+# Detect the host CPU and x86 features that are availble.
+DETECT_HOST_AND_CPU
+
 # Configure the list of supported features
 CONFIG_FEATURES
 
@@ -48,8 +51,6 @@ SRCDIR=${SRCDIR}" src/kem \
 
 #Set the default compilation flags
 SET_AM_CFLAGS
-
-DETECT_HOST_AND_CPU
 
 AC_SUBST(SRCDIR)
 AC_CONFIG_FILES([Makefile

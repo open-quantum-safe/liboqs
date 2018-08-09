@@ -39,6 +39,11 @@
 #define EVALUATOR(x, y) PASTER(x, y)
 #define RENAME_FUNC_NAME(fname) EVALUATOR(FUNC_PREFIX, fname)
 
+#define keypair RENAME_FUNC_NAME(keypair)
+#define decaps RENAME_FUNC_NAME(decaps)
+#define encaps RENAME_FUNC_NAME(encaps)
+
+// Symbols from the reference implementaiton
 #define aes_ctr_prf RENAME_FUNC_NAME(aes_ctr_prf)
 #define sample_uniform_r_bits RENAME_FUNC_NAME(sample_uniform_r_bits)
 #define init_aes_ctr_prf_state RENAME_FUNC_NAME(init_aes_ctr_prf_state)
@@ -50,8 +55,33 @@
 #define convert2compact RENAME_FUNC_NAME(convert2compact)
 #define convertByteToBinary RENAME_FUNC_NAME(convertByteToBinary)
 #define convertBinaryToByte RENAME_FUNC_NAME(convertBinaryToByte)
-#define keypair RENAME_FUNC_NAME(keypair)
-#define decaps RENAME_FUNC_NAME(decaps)
-#define encaps RENAME_FUNC_NAME(encaps)
+
+// Symbols from the additional implementaiton
+#define AES256_Enc_Intrinsic RENAME_FUNC_NAME(AES256_Enc_Intrinsic)
+#define split_e RENAME_FUNC_NAME(split_e)
+#define compute_syndrome RENAME_FUNC_NAME(compute_syndrome)
+#define end RENAME_FUNC_NAME(end)
+#define start RENAME_FUNC_NAME(start)
+#define generate_sparse_fake_rep RENAME_FUNC_NAME(generate_sparse_fake_rep)
+#define sha_mb RENAME_FUNC_NAME(sha_mb)
+#define sha RENAME_FUNC_NAME(sha)
+#define convert_to_redundant_rep RENAME_FUNC_NAME(convert_to_redundant_rep)
+#define count_ones RENAME_FUNC_NAME(count_ones)
+#define _CMP_LT_OS RENAME_FUNC_NAME(_CMP_LT_OS)
+#define recompute RENAME_FUNC_NAME(recompute)
+#define recompute_syndrome RENAME_FUNC_NAME(recompute_syndrome)
+#define gf2x_add_avx2 RENAME_FUNC_NAME(gf2x_add_avx2)
+#define gf2_muladd_4x4 RENAME_FUNC_NAME(gf2_muladd_4x4)
+#define karatzuba_add1 RENAME_FUNC_NAME(karatzuba_add1)
+#define karatzuba_add2 RENAME_FUNC_NAME(karatzuba_add2)
+#define red_asm RENAME_FUNC_NAME(red_asm)
+#define secure_set_bits RENAME_FUNC_NAME(secure_set_bits)
+#define sha384_512_multi_block_avx2 RENAME_FUNC_NAME(sha384_512_multi_block_avx2)
+#define sha384_512_multi_block_avx512 RENAME_FUNC_NAME(sha384_512_multi_block_avx512)
+#define AES_256_Key_Expansion RENAME_FUNC_NAME(AES_256_Key_Expansion)
+#define gf2x_mod_mul RENAME_FUNC_NAME(gf2x_mod_mul)
+#define find_error1 RENAME_FUNC_NAME(find_error1)
+#define find_error2 RENAME_FUNC_NAME(find_error2)
+#define compute_counter_of_unsat RENAME_FUNC_NAME(compute_counter_of_unsat)
 
 #endif //__FUNCTIONS_RENAMING_H_INCLUDED__
