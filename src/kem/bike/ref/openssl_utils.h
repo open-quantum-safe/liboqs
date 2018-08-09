@@ -53,12 +53,12 @@ _INLINE_ OQS_STATUS ossl_cyclic_product(OUT BIGNUM *r,
 	// m = x^PARAM_R - 1
 	if ((BN_set_bit(m, R_BITS) == 0) ||
 	    (BN_set_bit(m, 0) == 0)) {
-		ERR(E_OSSL_FAILURE);
+		ERR(OQS_EXTERNAL_LIB_ERROR_OPENSSL);
 	}
 
 	// r = a*b mod m
 	if (BN_GF2m_mod_mul(r, a, b, m, bn_ctx) == 0) {
-		ERR(E_OSSL_FAILURE);
+		ERR(OQS_EXTERNAL_LIB_ERROR_OPENSSL);
 	}
 
 EXIT:
@@ -78,12 +78,12 @@ _INLINE_ OQS_STATUS invert_poly(OUT BIGNUM *r,
 	// m = x^PARAM_R - 1
 	if ((BN_set_bit(m, R_BITS) == 0) ||
 	    (BN_set_bit(m, 0) == 0)) {
-		ERR(E_OSSL_FAILURE);
+		ERR(OQS_EXTERNAL_LIB_ERROR_OPENSSL);
 	}
 
 	// r = a*b mod m
 	if (BN_GF2m_mod_inv(r, a, m, bn_ctx) == 0) {
-		ERR(E_OSSL_FAILURE);
+		ERR(OQS_EXTERNAL_LIB_ERROR_OPENSSL);
 	}
 
 EXIT:
@@ -121,7 +121,7 @@ _INLINE_ OQS_STATUS ossl_bn2bin(OUT uint8_t *out,
 	memset(out, 0, size);
 
 	if (BN_bn2bin(in, be_tmp) == 0) {
-		return OQS_ERROR;
+		return OQS_EXTERNAL_LIB_ERROR_OPENSSL;
 	}
 	reverse_endian(out, be_tmp, BN_num_bytes(in));
 
@@ -137,7 +137,7 @@ _INLINE_ OQS_STATUS ossl_bin2bn(IN BIGNUM *out,
 	reverse_endian(be_tmp, in, size);
 
 	if (BN_bin2bn(be_tmp, size, out) == 0) {
-		return OQS_ERROR;
+		return OQS_EXTERNAL_LIB_ERROR_OPENSSL;
 	}
 
 	return OQS_SUCCESS;
@@ -146,7 +146,7 @@ _INLINE_ OQS_STATUS ossl_bin2bn(IN BIGNUM *out,
 _INLINE_ OQS_STATUS print_ossl_bn(IN const BIGNUM *bn, IN const uint64_t size) {
 	uint8_t tmp[size];
 	if (ossl_bn2bin(tmp, bn, size)) {
-		return OQS_ERROR;
+		return OQS_EXTERNAL_LIB_ERROR_OPENSSL;
 	}
 
 	print((uint64_t *) tmp, size * 8);
@@ -154,79 +154,112 @@ _INLINE_ OQS_STATUS print_ossl_bn(IN const BIGNUM *bn, IN const uint64_t size) {
 	return OQS_SUCCESS;
 }
 
-_INLINE_ void ossl_add(OUT uint8_t res_bin[R_SIZE],
-                       IN const uint8_t a_bin[R_SIZE],
-                       IN const uint8_t b_bin[R_SIZE]) {
-	BIGNUM *r = BN_new();
-	BIGNUM *a = BN_new();
-	BIGNUM *b = BN_new();
-
-	ossl_bin2bn(a, a_bin, R_SIZE);
-	ossl_bin2bn(b, b_bin, R_SIZE);
-	BN_GF2m_add(r, a, b);
-	ossl_bn2bin(res_bin, r, R_SIZE);
-
-	BN_free(a);
-	BN_free(b);
-	BN_free(r);
-}
-
-//Perform a cyclic product by using OpenSSL.
-_INLINE_ void cyclic_product(OUT uint8_t res_bin[R_SIZE],
+_INLINE_ OQS_STATUS ossl_add(OUT uint8_t res_bin[R_SIZE],
                              IN const uint8_t a_bin[R_SIZE],
                              IN const uint8_t b_bin[R_SIZE]) {
 	BIGNUM *r = BN_new();
 	BIGNUM *a = BN_new();
 	BIGNUM *b = BN_new();
 
-	ossl_bin2bn(a, a_bin, R_SIZE);
-	ossl_bin2bn(b, b_bin, R_SIZE);
-	ossl_cyclic_product(r, a, b);
-	ossl_bn2bin(res_bin, r, R_SIZE);
+	OQS_STATUS res = ossl_bin2bn(a, a_bin, R_SIZE);
+	CHECK_STATUS(res);
+	res = ossl_bin2bn(b, b_bin, R_SIZE);
+	CHECK_STATUS(res);
 
+	if (BN_GF2m_add(r, a, b) == 0) {
+		ERR(OQS_EXTERNAL_LIB_ERROR_OPENSSL);
+	}
+
+	res = ossl_bn2bin(res_bin, r, R_SIZE);
+	CHECK_STATUS(res);
+
+EXIT:
 	BN_free(a);
 	BN_free(b);
 	BN_free(r);
+
+	return res;
 }
 
-_INLINE_ void ossl_split_polynomial(OUT uint8_t e0_bin[R_SIZE],
-                                    OUT uint8_t e1_bin[R_SIZE],
-                                    IN const uint8_t e_bin[2 * R_SIZE]) {
+//Perform a cyclic product by using OpenSSL.
+_INLINE_ OQS_STATUS cyclic_product(OUT uint8_t res_bin[R_SIZE],
+                                   IN const uint8_t a_bin[R_SIZE],
+                                   IN const uint8_t b_bin[R_SIZE]) {
+	BIGNUM *r = BN_new();
+	BIGNUM *a = BN_new();
+	BIGNUM *b = BN_new();
+
+	OQS_STATUS res = ossl_bin2bn(a, a_bin, R_SIZE);
+	CHECK_STATUS(res);
+	res = ossl_bin2bn(b, b_bin, R_SIZE);
+	CHECK_STATUS(res);
+	res = ossl_cyclic_product(r, a, b);
+	CHECK_STATUS(res);
+	res = ossl_bn2bin(res_bin, r, R_SIZE);
+	CHECK_STATUS(res);
+
+EXIT:
+	BN_free(a);
+	BN_free(b);
+	BN_free(r);
+
+	return res;
+}
+
+_INLINE_ OQS_STATUS ossl_split_polynomial(OUT uint8_t e0_bin[R_SIZE],
+                                          OUT uint8_t e1_bin[R_SIZE],
+                                          IN const uint8_t e_bin[2 * R_SIZE]) {
 	BN_CTX *bn_ctx = BN_CTX_new();
 	BIGNUM *e = BN_new();
 	BIGNUM *e0 = BN_new();
 	BIGNUM *e1 = BN_new();
 	BIGNUM *mid = BN_new();
 
-	ossl_bin2bn(e, e_bin, N_SIZE);
+	OQS_STATUS res = ossl_bin2bn(e, e_bin, N_SIZE);
+	CHECK_STATUS(res);
 
 	//Split e to e0 and e1.
-	BN_set_bit(mid, R_BITS);
-	BN_mod(e0, e, mid, bn_ctx);
-	BN_rshift(e1, e, R_BITS);
+	if ((BN_set_bit(mid, R_BITS) == 0) ||
+	    (BN_mod(e0, e, mid, bn_ctx) == 0) ||
+	    (BN_rshift(e1, e, R_BITS) == 0)) {
+		ERR(OQS_EXTERNAL_LIB_ERROR_OPENSSL);
+	}
 
-	ossl_bn2bin(e0_bin, e0, R_SIZE);
-	ossl_bn2bin(e1_bin, e1, R_SIZE);
+	res = ossl_bn2bin(e0_bin, e0, R_SIZE);
+	CHECK_STATUS(res);
 
+	res = ossl_bn2bin(e1_bin, e1, R_SIZE);
+	CHECK_STATUS(res);
+
+EXIT:
 	BN_free(mid);
 	BN_free(e);
 	BN_free(e0);
 	BN_free(e1);
 	BN_CTX_free(bn_ctx);
+
+	return res;
 }
 
 //Perform a cyclic product by using OpenSSL.
-_INLINE_ void ossl_mod_inv(OUT uint8_t res_bin[R_SIZE],
-                           IN const uint8_t a_bin[R_SIZE]) {
+_INLINE_ OQS_STATUS ossl_mod_inv(OUT uint8_t res_bin[R_SIZE],
+                                 IN const uint8_t a_bin[R_SIZE]) {
 	BIGNUM *r = BN_new();
 	BIGNUM *a = BN_new();
 
-	ossl_bin2bn(a, a_bin, R_SIZE);
-	invert_poly(r, a);
-	ossl_bn2bin(res_bin, r, R_SIZE);
+	OQS_STATUS res = ossl_bin2bn(a, a_bin, R_SIZE);
+	CHECK_STATUS(res);
 
+	res = invert_poly(r, a);
+	CHECK_STATUS(res);
+
+	res = ossl_bn2bin(res_bin, r, R_SIZE);
+	CHECK_STATUS(res);
+EXIT:
 	BN_free(a);
 	BN_free(r);
+
+	return res;
 }
 
 #endif //_OSSL_UTILITIES_H_

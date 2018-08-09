@@ -57,32 +57,43 @@ _INLINE_ OQS_STATUS encrypt(OUT ct_t *ct,
 	uint8_t e0[R_SIZE] = {0};
 	uint8_t e1[R_SIZE] = {0};
 
-	ossl_split_polynomial(e0, e1, e);
+	res = ossl_split_polynomial(e0, e1, e);
+	CHECK_STATUS(res);
 
 #ifdef BIKE1
 	// ct = (m*pk0 + e0, m*pk1 + e1)
 	uint8_t m[R_SIZE] = {0};
 	sample_uniform_r_bits(m, seed, NO_RESTRICTION);
-	cyclic_product(c0, m, pk->u.v.val0);
-	cyclic_product(c1, m, pk->u.v.val1);
-	ossl_add(ct->u.v.val0, c0, e0);
-	ossl_add(ct->u.v.val1, c1, e1);
+	res = cyclic_product(c0, m, pk->u.v.val0);
+	CHECK_STATUS(res);
+	res = cyclic_product(c1, m, pk->u.v.val1);
+	CHECK_STATUS(res);
+	res = ossl_add(ct->u.v.val0, c0, e0);
+	CHECK_STATUS(res);
+	res = ossl_add(ct->u.v.val1, c1, e1);
+	CHECK_STATUS(res);
 #else
 #ifdef BIKE2
 	BIKE_UNUSED(seed);
 	// ct = (e1*pk1 + e0)
-	cyclic_product(c1, e1, pk->u.v.val1);
-	ossl_add(ct->u.v.val0, c1, e0);
+	res = cyclic_product(c1, e1, pk->u.v.val1);
+	CHECK_STATUS(res);
+	res = ossl_add(ct->u.v.val0, c1, e0);
+	CHECK_STATUS(res);
 	for (uint32_t i = 0; i < R_SIZE; i++)
 		ct->u.v.val1[i] = 0;
 #else
 #ifdef BIKE3
 	BIKE_UNUSED(seed);
 	// ct = (e1*pk0 + e_extra, e1*pk1 + e0)
-	cyclic_product(c0, e1, pk->u.v.val0);
-	cyclic_product(c1, e1, pk->u.v.val1);
-	ossl_add(ct->u.v.val0, c0, ep);
-	ossl_add(ct->u.v.val1, c1, e0);
+	res = cyclic_product(c0, e1, pk->u.v.val0);
+	CHECK_STATUS(res);
+	res = cyclic_product(c1, e1, pk->u.v.val1);
+	CHECK_STATUS(res);
+	res = ossl_add(ct->u.v.val0, c0, ep);
+	CHECK_STATUS(res);
+	res = ossl_add(ct->u.v.val1, c1, e0);
+	CHECK_STATUS(res);
 #endif
 #endif
 #endif
@@ -91,11 +102,11 @@ _INLINE_ OQS_STATUS encrypt(OUT ct_t *ct,
 	print((uint64_t *) ct->u.v.val0, R_BITS);
 	EDMSG("c1: ");
 	print((uint64_t *) ct->u.v.val1, R_BITS);
-
+EXIT:
 	return res;
 }
 
-//Generate the Shared Secret (K(e))
+//Generate the Shared Secres (K(e))
 _INLINE_ OQS_STATUS get_ss(OUT ss_t *out, IN uint8_t *e) {
 	OQS_STATUS res = OQS_SUCCESS;
 
@@ -132,20 +143,26 @@ _INLINE_ OQS_STATUS compute_syndrome(OUT syndrome_t *syndrome,
 	uint8_t s0[R_SIZE] = {0};
 
 #ifdef BIKE1
-	// BIKE-1 syndrome: s = h0*c0 + h1*c1:
-	cyclic_product(s0, sk->u.v.val0, ct->u.v.val0);
 	uint8_t s1[R_SIZE] = {0};
-	cyclic_product(s1, sk->u.v.val1, ct->u.v.val1);
-	ossl_add(s0, s0, s1);
+	// BIKE-1 syndrome: s = h0*c0 + h1*c1:
+	res = cyclic_product(s0, sk->u.v.val0, ct->u.v.val0);
+	CHECK_STATUS(res);
+	res = cyclic_product(s1, sk->u.v.val1, ct->u.v.val1);
+	CHECK_STATUS(res);
+	res = ossl_add(s0, s0, s1);
+	CHECK_STATUS(res);
 #else
 #ifdef BIKE2
 	// BIKE-2 syndrome: s = c0*h0
-	cyclic_product(s0, sk->u.v.val0, ct->u.v.val0);
+	res = cyclic_product(s0, sk->u.v.val0, ct->u.v.val0);
+	CHECK_STATUS(res);
 #else
 #ifdef BIKE3
 	// BIKE3 syndrome: s = c0 + c1*h0
-	cyclic_product(s0, ct->u.v.val1, sk->u.v.val0);
-	ossl_add(s0, s0, ct->u.v.val0);
+	res = cyclic_product(s0, ct->u.v.val1, sk->u.v.val0);
+	CHECK_STATUS(res);
+	res = ossl_add(s0, s0, ct->u.v.val0);
+	CHECK_STATUS(res);
 #endif
 #endif
 #endif
@@ -153,7 +170,7 @@ _INLINE_ OQS_STATUS compute_syndrome(OUT syndrome_t *syndrome,
 	//Store the syndrome in a bit array
 	convertByteToBinary(s_tmp_bytes, s0, R_BITS);
 	transpose(syndrome->raw, s_tmp_bytes);
-
+EXIT:
 	return res;
 }
 
@@ -179,7 +196,7 @@ OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	uint8_t *h1 = l_sk->u.v.val1;
 
 	DMSG("  Enter crypto_kem_keypair.\n");
-	DMSG("    Calculating the secret key.\n");
+	DMSG("    Calculating the secres key.\n");
 
 #ifdef BIKE1
 	uint8_t g[R_SIZE] = {0};
@@ -193,7 +210,8 @@ OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 #endif
 
 	//Both h0 and h1 use the same context
-	init_aes_ctr_prf_state(&h_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
+	res = init_aes_ctr_prf_state(&h_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
+	CHECK_STATUS(res);
 
 	res = generate_sparse_rep(h0, DV, R_BITS, &h_prf_state);
 	CHECK_STATUS(res);
@@ -216,15 +234,19 @@ OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	// pk = (1, h1*h0^(-1))
 	memset(l_pk->u.v.val0, 0, R_SIZE);
 	l_pk->u.v.val0[0] = 1; //assume all elements initialized with 0
-	ossl_mod_inv(inv_h0, h0);
-	cyclic_product(l_pk->u.v.val1, h1, inv_h0);
+	res = ossl_mod_inv(inv_h0, h0);
+	CHECK_STATUS(res);
+	res = cyclic_product(l_pk->u.v.val1, h1, inv_h0);
+	CHECK_STATUS(res);
 #else
 #ifdef BIKE3
 	// pk = (h1 + g*h0, g)
 	res = sample_uniform_r_bits(g, &seeds.u.v.s2, MUST_BE_ODD);
 	CHECK_STATUS(res);
-	cyclic_product(tmp1, g, h0);
-	ossl_add(l_pk->u.v.val0, tmp1, h1);
+	res = cyclic_product(tmp1, g, h0);
+	CHECK_STATUS(res);
+	res = ossl_add(l_pk->u.v.val0, tmp1, h1);
+	CHECK_STATUS(res);
 #endif
 #endif
 #endif
@@ -273,7 +295,8 @@ OQS_STATUS encaps(OUT unsigned char *ct,
 
 	//random data generator;
 	// Using first seed
-	init_aes_ctr_prf_state(&e_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
+	res = init_aes_ctr_prf_state(&e_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
+	CHECK_STATUS(res);
 
 	DMSG("    Generating error.\n");
 	res = generate_sparse_rep(e, T1, N_BITS, &e_prf_state);
@@ -281,6 +304,7 @@ OQS_STATUS encaps(OUT unsigned char *ct,
 
 #ifdef BIKE3
 	res = generate_sparse_rep(e_extra, T1 / 2, R_BITS, &e_prf_state);
+	CHECK_STATUS(res);
 #endif
 
 	// computing ct = enc(pk, e)
@@ -346,11 +370,13 @@ OQS_STATUS decaps(OUT unsigned char *ss,
 		DMSG("    Decoding result: success\n");
 	} else {
 		DMSG("    Decoding result: failure!\n");
+		ERR(OQS_ERR_KEM_BIKE_DECODING_FAILURE);
 	}
 
 	// checking if error weight is exactly t:
 	if (getHammingWeight(e, 2 * R_BITS) != T1) {
 		MSG("Error weight is not t\n");
+		ERR(OQS_ERR_KEM_BIKE_WEIGHT_IS_NOT_T);
 	}
 
 	convertBinaryToByte(eBytes, e, 2 * R_BITS);

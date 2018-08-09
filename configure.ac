@@ -32,6 +32,9 @@ CONFIG_DOXIGEN
 # Configure the list of supported features
 CONFIG_FEATURES
 
+#Check if avx/avx2/bmi is enabled.
+AX_CHECK_X86_FEATURES
+
 AC_CANONICAL_HOST
 
 # Check for which host we are on and setup a few things

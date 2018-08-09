@@ -7,6 +7,7 @@ noinst_LTLIBRARIES += libkembike3_l1.la libkembike3_l3.la libkembike3_l5.la
 libkembike_la_LIBADD = libkembike1_l1.la libkembike1_l3.la libkembike1_l5.la
 libkembike_la_LIBADD += libkembike2_l1.la libkembike2_l3.la libkembike2_l5.la
 libkembike_la_LIBADD += libkembike3_l1.la libkembike3_l3.la libkembike3_l5.la
+
 libkembike_la_SOURCES = kem_bike.c 
 
 COMMON_FLAGS = $(AM_CFLAGS) -include ref/functions_renaming.h

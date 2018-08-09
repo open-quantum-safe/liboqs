@@ -111,12 +111,11 @@ typedef struct double_seed_s {
 //   Error handling
 /////////////////////////////
 
-//TODO:Fix this.
 //This convention will work all over the code.
-#define ERR(v)           \
-	{                    \
-		res = OQS_ERROR; \
-		goto EXIT;       \
+#define ERR(v)     \
+	{              \
+		res = v;   \
+		goto EXIT; \
 	}
 #define CHECK_STATUS(stat)         \
 	{                              \
@@ -124,22 +123,6 @@ typedef struct double_seed_s {
 			goto EXIT;             \
 		}                          \
 	}
-
-enum _status {
-	SUCCESS = 0,
-	E_FAIL_TO_DECODE = 1,
-	E_OSSL_FAILURE = 2,
-	E_FAIL_TO_PERFORM_CYCLIC_PRODUCT = 3,
-	E_FAIL_TO_PERFORM_ADD = 4,
-	E_FAIL_TO_SPLIT = 5,
-	E_AES_SET_KEY_FAIL = 6,
-	E_ERROR_WEIGHT_IS_NOT_T = 7,
-	E_DECODING_FAILURE = 8,
-	E_AES_CTR_PRF_INIT_FAIL = 9,
-	E_AES_OVER_USED = 10
-};
-
-typedef enum _status status_t;
 
 #pragma pack(pop)
 
