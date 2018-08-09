@@ -64,6 +64,9 @@ AC_DEFUN([CONFIG_FEATURES],
 [
   CONFIG_FEATURE_FLAGS
 
+  # Default is set to false, will be changed upon demand
+  AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [false])
+
   AM_COND_IF([ENABLE_KEM_BIKE], [
     AC_DEFINE(OQS_ENABLE_KEM_bike1_l1, 1, "Define to 1 when BIKE1-L1 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_bike1_l3, 1, "Define to 1 when BIKE1-L3 enabled")
@@ -75,8 +78,6 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l3, 1, "Define to 1 when BIKE3-L3 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l5, 1, "Define to 1 when BIKE3-L5 enabled")
     
-    # Default is false.
-    AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [false])
     AM_COND_IF([USE_AVX2_INSTRUCTIONS], 
                [AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [test x$gcc_cv_compiler = xtrue])
                 AM_COND_IF([BIKE_ADDITIONAL_IMPL], [AC_DEFINE(BIKE_ADDITIONAL_IMPL, 1, "Define to 1 when BIKE uses the additional implementation")])
