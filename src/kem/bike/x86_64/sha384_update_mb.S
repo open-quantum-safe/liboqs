@@ -12,6 +12,8 @@
 # https://mta.openssl.org/pipermail/openssl-dev/2016-August/008238.html
 ##############################################################################
 
+#include "oqs/config.h"
+
 .text
 
 .hidden sha384_512_multi_block_avx2
@@ -425,8 +427,9 @@ END_y:
     ret
 .size   sha384_512_multi_block_avx2,.-sha384_512_multi_block_avx2
 
-.hidden sha384_512_multi_block_avx2
-.globl  sha384_512_multi_block_avx2
+#ifdef USE_AVX512F_INSTRUCTIONS
+.hidden sha384_512_multi_block_avx512
+.globl  sha384_512_multi_block_avx512
 .type   sha384_512_multi_block_avx512,@function
 .align  64
 
@@ -531,7 +534,7 @@ END_y:
     vpaddq   %zmm11, \H, \H
     vpaddq   %zmm9, \H, \H
 .endm
-.globl sha384_512_multi_block_avx512
+
 sha384_512_multi_block_avx512:
 .align  32
 
@@ -785,6 +788,9 @@ END:
     .byte   0xf3,0xc3
     ret
 .size   sha384_512_multi_block_avx512,.-sha384_512_multi_block_avx512
+
+# // USE_AVX512F_INSTRUCTIONS
+#endif
 
 .data 
 
