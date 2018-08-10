@@ -106,7 +106,7 @@ err:
 	ret = OQS_ERROR;
 	OQS_MEM_insecure_free(*bob_msg);
 	*bob_msg = NULL;
-	OQS_MEM_insecure_free(*key);
+	OQS_MEM_secure_free(*key, 32);
 	*key = NULL;
 
 cleanup:
@@ -135,7 +135,7 @@ OQS_STATUS OQS_KEX_code_mcbits_alice_1(UNUSED OQS_KEX *k, const void *alice_priv
 
 err:
 	ret = OQS_ERROR;
-	OQS_MEM_insecure_free(*key);
+	OQS_MEM_secure_free(*key, 32);
 	*key = NULL;
 
 cleanup:

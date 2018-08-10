@@ -319,7 +319,7 @@ sha256_hmac_drbg_instantiate(
 	memset(key, 0, sizeof(key));
 	if ((result = ntru_crypto_hmac_create_ctx(NTRU_CRYPTO_HASH_ALGID_SHA256,
 	                                          key, sizeof(key), &s->hmac_ctx)) != NTRU_CRYPTO_HMAC_OK) {
-		OQS_MEM_insecure_free(s);
+		OQS_MEM_secure_free(s, sizeof(SHA256_HMAC_DRBG_STATE));
 		return result;
 	}
 
@@ -331,7 +331,7 @@ sha256_hmac_drbg_instantiate(
 	                                      pers_str, pers_str_bytes)) != DRBG_OK) {
 		(void) ntru_crypto_hmac_destroy_ctx(s->hmac_ctx);
 		memset(s->V, 0, sizeof(s->V));
-		OQS_MEM_insecure_free(s);
+		OQS_MEM_secure_free(s, sizeof(SHA256_HMAC_DRBG_STATE));
 		memset(entropy_nonce, 0, sizeof(entropy_nonce));
 		return result;
 	}
@@ -367,7 +367,7 @@ sha256_hmac_drbg_free(
 	s->sec_strength = 0;
 	s->requests_left = 0;
 	s->entropy_fn = NULL;
-	OQS_MEM_insecure_free(s);
+	OQS_MEM_secure_free(s, sizeof(SHA256_HMAC_DRBG_STATE));
 }
 
 /* sha256_hmac_drbg_reseed
@@ -752,7 +752,7 @@ ntru_crypto_drbg_uninstantiate(
 	if (drbg->state) {
 		switch (drbg->type) {
 		case EXTERNAL_DRBG:
-			OQS_MEM_insecure_free(drbg->state);
+			OQS_MEM_secure_free(drbg->state, sizeof(EXTERNAL_DRBG_STATE));
 			break;
 		case SHA256_HMAC_DRBG:
 			sha256_hmac_drbg_free((SHA256_HMAC_DRBG_STATE *) drbg->state);

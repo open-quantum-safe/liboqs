@@ -246,7 +246,7 @@ err:
 	ret = OQS_ERROR;
 	OQS_MEM_insecure_free(*bob_msg);
 	*bob_msg = NULL;
-	OQS_MEM_insecure_free(*key);
+	OQS_MEM_secure_free(*key, key_len);
 	*key = NULL;
 
 cleanup:

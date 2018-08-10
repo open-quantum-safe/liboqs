@@ -141,7 +141,7 @@ err:
 
 cleanup:
 	OQS_MEM_insecure_free(alice_msg);
-	OQS_MEM_insecure_free(alice_key);
+	OQS_MEM_secure_free(alice_key, alice_key_len);
 	OQS_MEM_insecure_free(bob_msg);
 	OQS_MEM_insecure_free(bob_key);
 	OQS_KEX_alice_priv_free(kex, alice_priv);
@@ -202,9 +202,9 @@ static void cleanup_alice_0(OQS_KEX *kex, void *alice_priv, uint8_t *alice_msg) 
 	OQS_KEX_alice_priv_free(kex, alice_priv);
 }
 
-static void cleanup_bob(uint8_t *bob_msg, uint8_t *bob_key) {
+static void cleanup_bob(uint8_t *bob_msg, uint8_t *bob_key, size_t bob_key_len) {
 	OQS_MEM_insecure_free(bob_msg);
-	OQS_MEM_insecure_free(bob_key);
+	OQS_MEM_secure_free(bob_key, bob_key_len);
 }
 
 static OQS_STATUS kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, const uint8_t *seed, const size_t seed_len, const char *named_parameters, const size_t seconds) {
@@ -234,10 +234,10 @@ static OQS_STATUS kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_na
 	TIME_OPERATION_SECONDS({ OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len); cleanup_alice_0(kex, alice_priv, alice_msg); }, "alice 0", seconds);
 
 	OQS_KEX_alice_0(kex, &alice_priv, &alice_msg, &alice_msg_len);
-	TIME_OPERATION_SECONDS({ OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len); cleanup_bob(bob_msg, bob_key); }, "bob", seconds);
+	TIME_OPERATION_SECONDS({ OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len); cleanup_bob(bob_msg, bob_key, bob_key_len); }, "bob", seconds);
 
 	OQS_KEX_bob(kex, alice_msg, alice_msg_len, &bob_msg, &bob_msg_len, &bob_key, &bob_key_len);
-	TIME_OPERATION_SECONDS({ OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len); OQS_MEM_insecure_free(alice_key); }, "alice 1", seconds);
+	TIME_OPERATION_SECONDS({ OQS_KEX_alice_1(kex, alice_priv, bob_msg, bob_msg_len, &alice_key, &alice_key_len); OQS_MEM_secure_free(alice_key, alice_key_len); }, "alice 1", seconds);
 	alice_key = NULL;
 
 	printf("Communication (bytes): A->B: %zu, B->A: %zu, total: %zu; classical/quantum security bits [%u:%u] \n", alice_msg_len, bob_msg_len, alice_msg_len + bob_msg_len, kex->estimated_classical_security, kex->estimated_quantum_security);
@@ -250,9 +250,9 @@ err:
 
 cleanup:
 	OQS_MEM_insecure_free(alice_msg);
-	OQS_MEM_insecure_free(alice_key);
+	OQS_MEM_secure_free(alice_key, alice_key_len);
 	OQS_MEM_insecure_free(bob_msg);
-	OQS_MEM_insecure_free(bob_key);
+	OQS_MEM_secure_free(bob_key, bob_key_len);
 	OQS_KEX_alice_priv_free(kex, alice_priv);
 	OQS_KEX_free(kex);
 
@@ -295,9 +295,9 @@ err:
 
 cleanup:
 	OQS_MEM_insecure_free(alice_msg);
-	OQS_MEM_insecure_free(alice_key);
+	OQS_MEM_secure_free(alice_key, alice_key_len);
 	OQS_MEM_insecure_free(bob_msg);
-	OQS_MEM_insecure_free(bob_key);
+	OQS_MEM_secure_free(bob_key, bob_key_len);
 	OQS_KEX_alice_priv_free(kex, alice_priv);
 	OQS_KEX_free(kex);
 

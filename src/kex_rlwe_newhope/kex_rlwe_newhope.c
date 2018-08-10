@@ -107,7 +107,7 @@ err:
 	ret = OQS_ERROR;
 	OQS_MEM_insecure_free(*bob_msg);
 	*bob_msg = NULL;
-	OQS_MEM_insecure_free(*key);
+	OQS_MEM_secure_free(*key, *key_len);
 	*key = NULL;
 
 cleanup:
@@ -140,7 +140,7 @@ OQS_STATUS OQS_KEX_rlwe_newhope_alice_1(UNUSED OQS_KEX *k, const void *alice_pri
 
 err:
 	ret = OQS_ERROR;
-	OQS_MEM_insecure_free(*key);
+	OQS_MEM_secure_free(*key, *key_len);
 	*key = NULL;
 
 cleanup:
