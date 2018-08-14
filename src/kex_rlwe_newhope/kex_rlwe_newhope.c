@@ -156,9 +156,9 @@ void OQS_KEX_rlwe_newhope_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 
 void OQS_KEX_rlwe_newhope_free(OQS_KEX *k) {
 	if (k) {
-		free(k->named_parameters);
+		free((char *) k->named_parameters);
 		k->named_parameters = NULL;
-		free(k->method_name);
+		free((char *) k->method_name);
 		k->method_name = NULL;
 	}
 	free(k);

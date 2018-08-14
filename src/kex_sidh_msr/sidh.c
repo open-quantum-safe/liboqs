@@ -65,7 +65,7 @@ void random_mod_order_B(unsigned char *random_digits, OQS_RAND *rand) { // Gener
 	random_digits[nbytes - 1] &= MASK_BOB; // Masking last byte
 }
 
-int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA, OQS_RAND *rand) { // Alice's ephemeral public key generation
+int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA, UNUSED OQS_RAND *rand) { // Alice's ephemeral public key generation
 	                                                                                                        // Input:  a private key PrivateKeyA in the range [0, 2^eA - 1].
 	                                                                                                        // Output: the public key PublicKeyA consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_ALICE];
@@ -130,7 +130,7 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 	return 0;
 }
 
-int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *PublicKeyB, OQS_RAND *rand) { // Bob's ephemeral public key generation
+int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *PublicKeyB, UNUSED OQS_RAND *rand) { // Bob's ephemeral public key generation
 	                                                                                                        // Input:  a private key PrivateKeyB in the range [0, 2^Floor(Log(2,oB)) - 1].
 	                                                                                                        // Output: the public key PublicKeyB consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_BOB];

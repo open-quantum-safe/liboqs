@@ -39,9 +39,27 @@
 #define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
 /** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
 #define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 7
+#define OQS_KEM_algs_length 16
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
@@ -54,7 +72,7 @@
  * @param[in] i Index of the algorithm identifier to return, 0 <= i < OQS_KEM_algs_length
  * @return Algorithm identifier as a string, or NULL.
  */
-char *OQS_KEM_alg_identifier(size_t i);
+OQS_API const char *OQS_KEM_alg_identifier(size_t i);
 
 /**
  * Key encapsulation mechanism object
@@ -62,7 +80,7 @@ char *OQS_KEM_alg_identifier(size_t i);
 typedef struct OQS_KEM {
 
 	/** Printable string representing the name of the key encapsulation mechanism. */
-	char *method_name;
+	const char *method_name;
 
 	/** The NIST security level (1, 2, 3, 4, 5) claimed in this algorithm's original NIST submission. */
 	uint8_t claimed_nist_level;
@@ -134,7 +152,7 @@ typedef struct OQS_KEM {
  * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_KEM_algs`.
  * @return An OQS_KEM for the particular algorithm, or `NULL` if the algorithm has been disabled at compile-time.
  */
-OQS_KEM *OQS_KEM_new(const char *method_name);
+OQS_API OQS_KEM *OQS_KEM_new(const char *method_name);
 
 /**
  * Keypair generation algorithm.
@@ -148,7 +166,7 @@ OQS_KEM *OQS_KEM_new(const char *method_name);
  * @param[out] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key);
 
 /**
  * Encapsulation algorithm.
@@ -163,7 +181,7 @@ OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *sec
  * @param[in] public_key The public key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 
 /**
  * Decapsulation algorithm.
@@ -178,7 +196,7 @@ OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shar
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 /**
  * Frees an OQS_KEM object that was constructed by OQS_KEM_new.
@@ -187,8 +205,9 @@ OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsi
  */
 void OQS_KEM_free(OQS_KEM *kem);
 
-#include <oqs/kem_sike.h>
+#include <oqs/kem_bike.h>
 #include <oqs/kem_frodokem.h>
+#include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H

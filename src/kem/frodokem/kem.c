@@ -92,7 +92,7 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) { // Frodo-KEM's key decapsulation
 	uint16_t B[PARAMS_N * PARAMS_NBAR] = {0}, Bp[PARAMS_N * PARAMS_NBAR] = {0}, W[PARAMS_NBAR * PARAMS_NBAR] = {0};
 	uint16_t C[PARAMS_NBAR * PARAMS_NBAR] = {0}, CC[PARAMS_NBAR * PARAMS_NBAR] = {0};
-	uint16_t *S = (uint16_t *) (sk + CRYPTO_BYTES + CRYPTO_PUBLICKEYBYTES);
+	const uint16_t *S = (const uint16_t *) (sk + CRYPTO_BYTES + CRYPTO_PUBLICKEYBYTES);
 	ALIGN_HEADER(32)
 	uint16_t BBp[PARAMS_N * PARAMS_NBAR] ALIGN_FOOTER(32) = {0};
 	ALIGN_HEADER(32)

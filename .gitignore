@@ -111,4 +111,3 @@ data/
 
 # Misc (master branch)
 .objs_upstream
-*_kem*

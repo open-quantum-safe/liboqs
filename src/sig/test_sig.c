@@ -15,7 +15,7 @@
 
 struct sig_testcase {
 	enum OQS_SIG_algid algid;
-	char *algid_name;
+	const char *algid_name;
 	int run;
 	int iter;
 };
@@ -275,8 +275,8 @@ int main(int argc, char **argv) {
 				printf("  --bench, -b\n");
 				printf("    Run benchmarks\n");
 				printf("\nschemes:\n");
-				for (size_t i = 0; i < sig_testcases_len; i++) {
-					printf("  %s\n", sig_testcases[i].algid_name);
+				for (size_t j = 0; j < sig_testcases_len; j++) {
+					printf("  %s\n", sig_testcases[j].algid_name);
 				}
 				return EXIT_SUCCESS;
 			} else if (strcmp(argv[i], "--quiet") == 0 || strcmp(argv[i], "-q") == 0) {

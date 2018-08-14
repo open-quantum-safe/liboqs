@@ -15,8 +15,8 @@ struct kex_testcase {
 	enum OQS_KEX_alg_name alg_name;
 	unsigned char *seed;
 	size_t seed_len;
-	char *named_parameters;
-	char *id;
+	const char *named_parameters;
+	const char *id;
 	int run;
 	int iter;
 };
