@@ -55,6 +55,8 @@
 #define convert2compact RENAME_FUNC_NAME(convert2compact)
 #define convertByteToBinary RENAME_FUNC_NAME(convertByteToBinary)
 #define convertBinaryToByte RENAME_FUNC_NAME(convertBinaryToByte)
+#define print_BE RENAME_FUNC_NAME(print_BE)
+#define print_LE RENAME_FUNC_NAME(print_LE)
 
 // Symbols from the additional implementaiton
 #define AES256_Enc_Intrinsic RENAME_FUNC_NAME(AES256_Enc_Intrinsic)
