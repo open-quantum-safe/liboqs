@@ -37,7 +37,7 @@ OQS_KEX *OQS_KEX_rlwe_newhope_avx2_new(OQS_RAND *rand) {
 	k->bob = &OQS_KEX_rlwe_newhope_avx2_bob;
 	k->alice_1 = &OQS_KEX_rlwe_newhope_avx2_alice_1;
 	k->alice_priv_free = &OQS_KEX_rlwe_newhope_avx2_alice_priv_free;
-	k->free = &OQS_KEX_rlwe_newhope_avx2_free;
+	k->free = &OQS_KEX_rlwe_newhope_avx2_free; // IGNORE free-check
 	return k;
 }
 
@@ -64,9 +64,9 @@ OQS_STATUS OQS_KEX_rlwe_newhope_avx2_alice_0(UNUSED OQS_KEX *k, void **alice_pri
 
 err:
 	ret = OQS_ERROR;
-	free(*alice_msg);
+	OQS_MEM_insecure_free(*alice_msg);
 	*alice_msg = NULL;
-	free(*alice_priv);
+	OQS_MEM_secure_free(*alice_priv, sizeof(poly));
 	*alice_priv = NULL;
 
 cleanup:
@@ -102,9 +102,9 @@ OQS_STATUS OQS_KEX_rlwe_newhope_avx2_bob(UNUSED OQS_KEX *k, const uint8_t *alice
 
 err:
 	ret = OQS_ERROR;
-	free(*bob_msg);
+	OQS_MEM_insecure_free(*bob_msg);
 	*bob_msg = NULL;
-	free(*key);
+	OQS_MEM_secure_free(*key, *key_len);
 	*key = NULL;
 
 cleanup:
@@ -135,7 +135,7 @@ OQS_STATUS OQS_KEX_rlwe_newhope_avx2_alice_1(UNUSED OQS_KEX *k, const void *alic
 
 err:
 	ret = OQS_ERROR;
-	free(*key);
+	OQS_MEM_secure_free(*key, *key_len);
 	*key = NULL;
 
 cleanup:
@@ -145,16 +145,16 @@ cleanup:
 
 void OQS_KEX_rlwe_newhope_avx2_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 	if (alice_priv) {
-		free(alice_priv);
+		OQS_MEM_secure_free(alice_priv, sizeof(poly));
 	}
 }
 
 void OQS_KEX_rlwe_newhope_avx2_free(OQS_KEX *k) {
 	if (k) {
-		free(k->named_parameters);
+		OQS_MEM_insecure_free(k->named_parameters);
 		k->named_parameters = NULL;
-		free(k->method_name);
+		OQS_MEM_insecure_free(k->method_name);
 		k->method_name = NULL;
 	}
-	free(k);
+	OQS_MEM_insecure_free(k);
 }

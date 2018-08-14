@@ -122,7 +122,7 @@ AC_CANONICAL_HOST
 # specifically based on the host
 case $host_os in
   darwin* )
-        AM_CFLAGS=${AM_CFLAGS}" -fno-pie -nopie "
+        AM_CFLAGS=${AM_CFLAGS}" -fno-pie -no-pie "
         darwin=true
         ;;
   linux-android*)
