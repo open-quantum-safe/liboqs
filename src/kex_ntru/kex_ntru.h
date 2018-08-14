@@ -1,6 +1,7 @@
 /**
  * \file kex_ntru.h
  * \brief Header for the NTRU implementation of OQS_KEX
+ * \deprecated Expected removal Sep. 2018
  */
 
 #ifndef __OQS_KEX_NTRU_H

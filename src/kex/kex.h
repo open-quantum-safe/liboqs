@@ -1,6 +1,7 @@
 /**
  * \file kex.h
  * \brief Header defining the API for generic OQS Key exchange
+ * \deprecated Expected removal Sep. 2018
  */
 
 #ifndef __OQS_KEX_H
