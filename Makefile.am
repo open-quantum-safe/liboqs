@@ -9,7 +9,7 @@ EXTRA_DIST = docs/.Doxyfile
 
 CLANGFORMAT ?= clang-format-3.9
 
-SUBDIRS = ${SRCDIR}
+SUBDIRS = ${SRCDIR} . tests
 
 BUILT_SOURCES = links
 lib_LTLIBRARIES = liboqs.la
@@ -95,105 +95,17 @@ if ENABLE_MCBITS
 	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
 
-noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_sig test_aes test_rand test_sha3
-
-if ENABLE_SIG_PICNIC
-noinst_bin_PROGRAMS += minimal_sig_oqs
-endif
-
-noinst_bindir=$(prefix)/tests
-
-speed_kem_LDADD =  liboqs.la -lm
-speed_kem_SOURCES = src/kem/speed_kem.c
-speed_kem_CFLAGS = -I./include
-speed_kem_CFLAGS += $(AM_CFLAGS)
-if USE_OPENSSL
-speed_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-test_kem_LDADD =  liboqs.la -lm
-test_kem_SOURCES = src/kem/test_kem.c
-test_kem_CFLAGS = -I./include
-test_kem_CFLAGS += $(AM_CFLAGS)
-if USE_OPENSSL
-test_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-example_kem_LDADD =  liboqs.la -lm
-example_kem_SOURCES = src/kem/example_kem.c
-example_kem_CFLAGS = -I./include
-example_kem_CFLAGS += $(AM_CFLAGS)
-if USE_OPENSSL
-example_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-test_kex_LDADD =  liboqs.la -lm
-test_kex_SOURCES = src/kex/test_kex.c
-test_kex_CFLAGS = -I./include
-test_kex_CFLAGS += $(AM_CFLAGS)
-if ENABLE_MCBITS
-test_kex_LDADD += -L${SODIUM_DIR}/lib -lsodium
-endif
-if USE_OPENSSL
-test_kex_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-test_sig_LDADD =  liboqs.la -lm
-test_sig_SOURCES = src/sig/test_sig.c
-test_sig_CFLAGS = -I./include
-test_sig_CFLAGS += $(AM_CFLAGS)
-if USE_OPENSSL
-test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-if ENABLE_SIG_PICNIC
-minimal_sig_oqs_LDADD =  liboqs.la -lm
-minimal_sig_oqs_SOURCES = src/sig/minimal_sig_oqs.c
-minimal_sig_oqs_CFLAGS = -I./include
-minimal_sig_oqs_CFLAGS += $(AM_CFLAGS)
-if USE_OPENSSL
-minimal_sig_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-endif # USE_SIG_PICNIC
-
-test_aes_LDADD =  liboqs.la -lm
-test_aes_SOURCES = src/crypto/aes/test_aes.c
-test_aes_CFLAGS = -I./include
-test_aes_CFLAGS += $(AM_CFLAGS)
-
-if USE_OPENSSL
-test_aes_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-test_rand_SOURCES = src/crypto/rand/test_rand.c
-
-test_rand_CFLAGS = -Iinclude -Isrc/crypto/rand_urandom_aesctr/
-test_rand_CFLAGS += $(AM_CFLAGS)
-test_rand_LDADD = liboqs.la
-if USE_OPENSSL
-test_rand_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-else
-if USE_AES_NI
-test_rand_CFLAGS += -maes -msse2
-endif
-endif # USE_OPENSSL
-
-test_sha3_LDADD =  liboqs.la -lm
-test_sha3_SOURCES = src/crypto/sha3/test_sha3.c
-test_sha3_CFLAGS = -I./include
-test_sha3_CFLAGS += $(AM_CFLAGS)
-
 test: clean-tests
 	make
-	./example_kem
-	./test_kem
-	./test_kex --quiet
-	./test_rand --quiet
-	./test_aes
-	./test_sha3
-	./test_sig
+	tests/example_kem
+	tests/test_kem
+	tests/test_kex --quiet
+	tests/test_rand --quiet
+	tests/test_aes
+	tests/test_sha3
+	tests/test_sig
 if ENABLE_SIG_PICNIC
-	./minimal_sig_oqs
+	tests/minimal_sig_oqs
 endif
 
 links:
@@ -229,15 +141,12 @@ endif
 clean-local:
 	rm -f liboqs.a
 	rm -rf include
-if ENABLE_SIG_PICNIC
-	rm -f minimal_sig_oqs
-endif
 
 clean-tests:
-	rm -f example_kem speed_kem test_kem test_kex test_sig test_rand test_aes test_sha3
+	rm -f tests/example_kem tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/minimal_sig_oqs tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
 
 prettyprint:
-	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: doxygen-run
 

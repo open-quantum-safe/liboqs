@@ -9,7 +9,7 @@
 
 #include <oqs/oqs.h>
 
-#include "../common/ds_benchmark.h"
+#include "ds_benchmark.h"
 
 // TODO: add signature size to benchmark
 
