@@ -4,9 +4,9 @@
 	.text
 .LHOTB11:
 	.p2align 4,,15
-	.globl	crypto_stream_aes256ctr
-	.type	crypto_stream_aes256ctr, @function
-crypto_stream_aes256ctr:
+	.globl	OQS_crypto_stream_aes256ctr
+	.type	OQS_crypto_stream_aes256ctr, @function
+OQS_crypto_stream_aes256ctr:
 .LFB2248:
 	.cfi_startproc
 	pushq	%rbp
@@ -328,7 +328,7 @@ crypto_stream_aes256ctr:
 	ret
 	.cfi_endproc
 .LFE2248:
-	.size	crypto_stream_aes256ctr, .-crypto_stream_aes256ctr
+	.size	OQS_crypto_stream_aes256ctr, .-OQS_crypto_stream_aes256ctr
 	.section	.text.unlikely
 .LCOLDE11:
 	.text

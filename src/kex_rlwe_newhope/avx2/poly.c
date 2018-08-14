@@ -1,7 +1,7 @@
 #include "poly.h"
 #include "ntt.h"
-#include "randombytes.h"
-#include "fips202.h"
+#include "randombytes.c"
+#include "fips202.c"
 #include "crypto_stream.h"
 
 static uint16_t barrett_reduce(uint16_t a)
@@ -14,7 +14,7 @@ static uint16_t barrett_reduce(uint16_t a)
   return a;
 }
 
-void poly_frombytes(poly *r, const unsigned char *a)
+static void poly_frombytes(poly *r, const unsigned char *a)
 {
   int i;
   for(i=0;i<PARAM_N/4;i++)
@@ -26,7 +26,7 @@ void poly_frombytes(poly *r, const unsigned char *a)
   }
 }
 
-void poly_tobytes(unsigned char *r, const poly *p)
+static void poly_tobytes(unsigned char *r, const poly *p)
 {
   int i;
   uint16_t t0,t1,t2,t3,m;
@@ -70,7 +70,7 @@ void poly_tobytes(unsigned char *r, const poly *p)
 
 
 
-void poly_uniform(poly *a, const unsigned char *seed)
+static void poly_uniform(poly *a, const unsigned char *seed)
 {
   unsigned int pos=0, ctr=0;
   uint16_t val;
@@ -99,9 +99,9 @@ void poly_uniform(poly *a, const unsigned char *seed)
 }
 
 
-extern void cbd(poly *r, unsigned char *b);
+extern void OQS_cbd(poly *r, unsigned char *b);
 
-void poly_getnoise(poly *r, unsigned char *seed, unsigned char nonce)
+static void poly_getnoise(poly *r, unsigned char *seed, unsigned char nonce)
 {
 #if PARAM_K != 16
 #error "poly_getnoise in poly.c only supports k=16"
@@ -115,29 +115,29 @@ void poly_getnoise(poly *r, unsigned char *seed, unsigned char nonce)
   n[0] = nonce;
 
   crypto_stream(buf,4*PARAM_N,n,seed);
-  cbd(r,buf);
+  OQS_cbd(r,buf);
 }
 
-void poly_add(poly *r, const poly *a, const poly *b)
+static void poly_add(poly *r, const poly *a, const poly *b)
 {
   int i;
   for(i=0;i<PARAM_N;i++)
     r->coeffs[i] = barrett_reduce(a->coeffs[i] + b->coeffs[i]);
 }
 
-void poly_ntt(poly *r)
+static void poly_ntt(poly *r)
 {
   double __attribute__ ((aligned (32))) temp[PARAM_N];
-  poly_pointwise(r, r, (poly *)psis_bitrev);
+  OQS_poly_pointwise(r, r, (poly *)psis_bitrev);
 
-  ntt_double(r->coeffs,omegas_double,temp);
+  OQS_ntt_double(r->coeffs,omegas_double,temp);
 }
 
-void poly_invntt(poly *r)
+static void poly_invntt(poly *r)
 {
   double __attribute__ ((aligned (32))) temp[PARAM_N];
 
-  bitrev_vector(r->coeffs);
-  ntt_double(r->coeffs, omegas_inv_double,temp);
-  poly_pointwise(r, r, (poly *)psis_inv);
+  OQS_bitrev_vector(r->coeffs);
+  OQS_ntt_double(r->coeffs, omegas_inv_double,temp);
+  OQS_poly_pointwise(r, r, (poly *)psis_inv);
 }

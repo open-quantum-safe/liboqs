@@ -9,7 +9,7 @@
 #include "poly.h"
 #include <stdio.h>
 
-void helprec(poly *c, const poly *v, const unsigned char *seed, unsigned char nonce);
-void rec(unsigned char *key, const poly *v, const poly *c);
+static void helprec(poly *c, const poly *v, const unsigned char *seed, unsigned char nonce);
+void OQS_rec(unsigned char *key, const poly *v, const poly *c);
 
 #endif

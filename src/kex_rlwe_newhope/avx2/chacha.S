@@ -18,14 +18,14 @@
 
 .text
 
-GLOBAL(chacha)
-GLOBAL(xchacha)
-GLOBAL(hchacha)
-GLOBAL(chacha_blocks)
+GLOBAL(OQS_chacha)
+GLOBAL(OQS_xchacha)
+GLOBAL(OQS_hchacha)
+GLOBAL(OQS_chacha_blocks)
 
 /* Windows 64 calling convention fixups */
 #if defined(_WIN64) || defined(__CYGWIN64__)
-FN(chacha)
+FN(OQS_chacha)
 subq $184, %rsp
 vmovdqa %xmm6, 0(%rsp)
 vmovdqa %xmm7, 16(%rsp)
@@ -60,9 +60,9 @@ movq 160(%rsp), %rdi
 movq 168(%rsp), %rsi
 addq $184, %rsp
 ret
-ENDFN(chacha)
+ENDFN(OQS_chacha)
 
-FN(xchacha)
+FN(OQS_xchacha)
 subq $184, %rsp
 vmovdqa %xmm6, 0(%rsp)
 vmovdqa %xmm7, 16(%rsp)
@@ -97,9 +97,9 @@ movq 160(%rsp), %rdi
 movq 168(%rsp), %rsi
 addq $184, %rsp
 ret
-ENDFN(xchacha)
+ENDFN(OQS_xchacha)
 
-FN(chacha_blocks)
+FN(OQS_chacha_blocks)
 subq $184, %rsp
 movdqa %xmm6, 0(%rsp)
 movdqa %xmm7, 16(%rsp)
@@ -132,9 +132,9 @@ movq 160(%rsp), %rdi
 movq 168(%rsp), %rsi
 addq $184, %rsp
 ret
-ENDFN(chacha_blocks)
+ENDFN(OQS_chacha_blocks)
 
-FN(hchacha)
+FN(OQS_hchacha)
 subq $40, %rsp
 movdqa %xmm6, 0(%rsp)
 movq %rdi, 16(%rsp)
@@ -149,7 +149,7 @@ movq 16(%rsp), %rdi
 movq 24(%rsp), %rsi
 addq $40, %rsp
 ret
-ENDFN(hchacha)
+ENDFN(OQS_hchacha)
 
 #define chacha chacha_thunk
 #define xchacha xchacha_thunk
