@@ -158,7 +158,7 @@ OQS_API OQS_STATUS OQS_KEX_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **alic
 
 OQS_API OQS_STATUS OQS_KEX_bob(OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len);
 
-OQS_STATUS OQS_KEX_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len);
+OQS_API OQS_STATUS OQS_KEX_alice_1(OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len);
 
 OQS_API void OQS_KEX_alice_priv_free(OQS_KEX *k, void *alice_priv);
 OQS_API void OQS_KEX_free(OQS_KEX *k);

@@ -1,5 +1,5 @@
 /********************************************************************************************
-* Frodo: Learning with Errors Key Encapsulation
+* FrodoKEM: Learning with Errors Key Encapsulation
 *
 * Abstract: matrix arithmetic functions used by the KEM
 *********************************************************************************************/

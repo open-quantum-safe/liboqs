@@ -1,7 +1,7 @@
 /********************************************************************************************
-* Frodo: Learning with Errors Key Encapsulation
+* FrodoKEM: Learning with Errors Key Encapsulation
 *
-* Abstract: additional functions for Frodo
+* Abstract: additional functions for FrodoKEM
 *********************************************************************************************/
 
 #include <stdint.h>
@@ -9,7 +9,7 @@
 
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 
-void oqs_kem_frodo_pack(unsigned char *out, const size_t outlen, const uint16_t *in, const size_t inlen, const unsigned char lsb) { // Pack the input uint16 vector into a char output vector, copying lsb bits from each input element.
+void oqs_kem_frodokem_pack(unsigned char *out, const size_t outlen, const uint16_t *in, const size_t inlen, const unsigned char lsb) { // Pack the input uint16 vector into a char output vector, copying lsb bits from each input element.
 	                                                                                                                                // If inlen * lsb / 8 > outlen, only outlen * 8 bits are copied.
 	memset(out, 0, outlen);
 
@@ -56,7 +56,7 @@ void oqs_kem_frodo_pack(unsigned char *out, const size_t outlen, const uint16_t 
 	}
 }
 
-void oqs_kem_frodo_unpack(uint16_t *out, const size_t outlen, const unsigned char *in, const size_t inlen, const unsigned char lsb) { // Unpack the input char vector into a uint16_t output vector, copying lsb bits
+void oqs_kem_frodokem_unpack(uint16_t *out, const size_t outlen, const unsigned char *in, const size_t inlen, const unsigned char lsb) { // Unpack the input char vector into a uint16_t output vector, copying lsb bits
 	                                                                                                                                  // for each output element from input. outlen must be at least ceil(inlen * 8 / lsb).
 	memset(out, 0, outlen * sizeof(uint16_t));
 

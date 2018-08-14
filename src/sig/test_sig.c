@@ -276,7 +276,7 @@ int main(int argc, char **argv) {
 				printf("    Run benchmarks\n");
 				printf("\nschemes:\n");
 				for (size_t j = 0; j < sig_testcases_len; j++) {
-					printf("  %s\n", sig_testcases[i].algid_name);
+					printf("  %s\n", sig_testcases[j].algid_name);
 				}
 				return EXIT_SUCCESS;
 			} else if (strcmp(argv[i], "--quiet") == 0 || strcmp(argv[i], "-q") == 0) {

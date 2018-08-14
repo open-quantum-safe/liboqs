@@ -1,5 +1,5 @@
 /********************************************************************************************
-* Frodo: Learning with Errors Key Encapsulation
+* FrodoKEM: Learning with Errors Key Encapsulation
 *
 * Abstract: Key Encapsulation Mechanism (KEM) based on Frodo
 *********************************************************************************************/
@@ -27,7 +27,7 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // Frodo-KEM's ke
 	frodo_mul_add_as_plus_e(B, S, E, pk);
 
 	// Encode the second part of the public key
-	oqs_kem_frodo_pack(pk + BYTES_SEED_A, CRYPTO_PUBLICKEYBYTES - BYTES_SEED_A, B, PARAMS_N * PARAMS_NBAR, PARAMS_LOGQ);
+	oqs_kem_frodokem_pack(pk + BYTES_SEED_A, CRYPTO_PUBLICKEYBYTES - BYTES_SEED_A, B, PARAMS_N * PARAMS_NBAR, PARAMS_LOGQ);
 
 	// Add pk and S to the secret key
 	memcpy(&sk[CRYPTO_BYTES], pk, CRYPTO_PUBLICKEYBYTES);
@@ -61,17 +61,17 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 	frodo_sample_n(Sp, PARAMS_N * PARAMS_NBAR);
 	frodo_sample_n(Ep, PARAMS_N * PARAMS_NBAR);
 	frodo_mul_add_sa_plus_e(Bp, Sp, Ep, temp);
-	oqs_kem_frodo_pack(ct, (PARAMS_LOGQ * PARAMS_N * PARAMS_NBAR) / 8, Bp, PARAMS_N * PARAMS_NBAR, PARAMS_LOGQ);
+	oqs_kem_frodokem_pack(ct, (PARAMS_LOGQ * PARAMS_N * PARAMS_NBAR) / 8, Bp, PARAMS_N * PARAMS_NBAR, PARAMS_LOGQ);
 
 	// Generate Epp, and compute V = Sp*B + Epp
 	frodo_sample_n(Epp, PARAMS_NBAR * PARAMS_NBAR);
-	oqs_kem_frodo_unpack(B, PARAMS_N * PARAMS_NBAR, temp + BYTES_SEED_A, CRYPTO_PUBLICKEYBYTES - BYTES_SEED_A, PARAMS_LOGQ);
+	oqs_kem_frodokem_unpack(B, PARAMS_N * PARAMS_NBAR, temp + BYTES_SEED_A, CRYPTO_PUBLICKEYBYTES - BYTES_SEED_A, PARAMS_LOGQ);
 	frodo_mul_add_sb_plus_e(V, B, Sp, Epp);
 
 	// Encode mu, and compute C = V + enc(mu) (mode q)
 	frodo_key_encode(C, (uint16_t *) (temp + CRYPTO_PUBLICKEYBYTES));
 	frodo_add(C, V, C);
-	oqs_kem_frodo_pack(ct + (PARAMS_LOGQ * PARAMS_N * PARAMS_NBAR) / 8, (PARAMS_LOGQ * PARAMS_NBAR * PARAMS_NBAR) / 8, C, PARAMS_NBAR * PARAMS_NBAR, PARAMS_LOGQ);
+	oqs_kem_frodokem_pack(ct + (PARAMS_LOGQ * PARAMS_N * PARAMS_NBAR) / 8, (PARAMS_LOGQ * PARAMS_NBAR * PARAMS_NBAR) / 8, C, PARAMS_NBAR * PARAMS_NBAR, PARAMS_LOGQ);
 
 	// Compute ss = F(ct||KK||d) and the ciphertext CT = ct||d
 	memcpy(temp, ct, CRYPTO_CIPHERTEXTBYTES - CRYPTO_BYTES);
@@ -105,8 +105,8 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 	memcpy(temp, &sk[CRYPTO_BYTES], CRYPTO_PUBLICKEYBYTES);
 
 	// Compute W = C - Bp*S (mod q), and decode the randomness mu
-	oqs_kem_frodo_unpack(Bp, PARAMS_N * PARAMS_NBAR, ct, (PARAMS_LOGQ * PARAMS_N * PARAMS_NBAR) / 8, PARAMS_LOGQ);
-	oqs_kem_frodo_unpack(C, PARAMS_NBAR * PARAMS_NBAR, ct + (PARAMS_LOGQ * PARAMS_N * PARAMS_NBAR) / 8, (PARAMS_LOGQ * PARAMS_NBAR * PARAMS_NBAR) / 8, PARAMS_LOGQ);
+	oqs_kem_frodokem_unpack(Bp, PARAMS_N * PARAMS_NBAR, ct, (PARAMS_LOGQ * PARAMS_N * PARAMS_NBAR) / 8, PARAMS_LOGQ);
+	oqs_kem_frodokem_unpack(C, PARAMS_NBAR * PARAMS_NBAR, ct + (PARAMS_LOGQ * PARAMS_N * PARAMS_NBAR) / 8, (PARAMS_LOGQ * PARAMS_NBAR * PARAMS_NBAR) / 8, PARAMS_LOGQ);
 	frodo_mul_bs(W, Bp, S);
 	frodo_sub(W, C, W);
 	frodo_key_decode((uint16_t *) (temp + CRYPTO_PUBLICKEYBYTES), W);
@@ -122,7 +122,7 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 
 	// Generate Epp, and compute W = Sp*B + Epp
 	frodo_sample_n(Epp, PARAMS_NBAR * PARAMS_NBAR);
-	oqs_kem_frodo_unpack(B, PARAMS_N * PARAMS_NBAR, temp + BYTES_SEED_A, CRYPTO_PUBLICKEYBYTES - BYTES_SEED_A, PARAMS_LOGQ);
+	oqs_kem_frodokem_unpack(B, PARAMS_N * PARAMS_NBAR, temp + BYTES_SEED_A, CRYPTO_PUBLICKEYBYTES - BYTES_SEED_A, PARAMS_LOGQ);
 	frodo_mul_add_sb_plus_e(W, B, Sp, Epp);
 
 	// Encode mu, and compute CC = W + enc(mu) (mode q)

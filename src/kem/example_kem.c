@@ -30,7 +30,7 @@ void cleanup_heap(uint8_t *secret_key, uint8_t *shared_secret_e,
  *
  * The macros OQS_KEM_frodokem_640_aes_length_* and the functions
  * OQS_KEM_frodokem_640_aes_* are only defined if the algorithm
- * FrodoKEMKEM-640-AES was enabled at compile-time which must be
+ * FrodoKEM-640-AES was enabled at compile-time which must be
  * checked using the OQS_ENABLE_KEM_frodokem_640_aes macro.
  *
  * <oqs/config.h>, which is included in <oqs/oqs.h>, contains macros

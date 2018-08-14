@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_FRODO_H
-#define __OQS_KEM_FRODO_H
+#ifndef __OQS_KEM_FRODOKEM_H
+#define __OQS_KEM_FRODOKEM_H
 
 #include <oqs/oqs.h>
 

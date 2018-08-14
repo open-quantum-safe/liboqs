@@ -1,7 +1,7 @@
 /********************************************************************************************
 * FrodoKEM: Learning with Errors Key Encapsulation
 *
-* Abstract: functions for Frodo-640
+* Abstract: functions for FrodoKEM-640
 *           Instantiates "frodo_macrify.c" with the necessary matrix arithmetic functions
 *********************************************************************************************/
 
