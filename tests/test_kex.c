@@ -9,7 +9,7 @@
 
 #include <oqs/oqs.h>
 
-#include "../common/ds_benchmark.h"
+#include "ds_benchmark.h"
 
 struct kex_testcase {
 	enum OQS_KEX_alg_name alg_name;

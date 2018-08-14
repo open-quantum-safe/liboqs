@@ -9,7 +9,6 @@ AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 
 # Configure
 AC_CONFIG_HEADERS([config.h])
-AC_CONFIG_SRCDIR([src/common/ds_benchmark.h])
 AC_CONFIG_MACRO_DIRS([config])
 
 # Set paths to external libraries.
@@ -72,6 +71,7 @@ AC_CONFIG_FILES([Makefile
                  src/kem/bike/Makefile
                  src/kem/frodokem/Makefile
                  src/kem/sike/Makefile
+                 tests/Makefile
                  ])
 
 AC_OUTPUT
