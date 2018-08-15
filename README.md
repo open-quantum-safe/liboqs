@@ -32,6 +32,8 @@ This branch takes a "light touch" approach to incorporation:
 
 For a list of algorithms included in nist-branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/nist-branch/docs/algorithms).
 
+liboqs nist-branch can be used in our fork of OpenSSL to prototype quantum-resistant TLS ciphersuites.  See [https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL\_1\_0\_2-stable](https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL_1_0_2-stable).
+
 Limitations and security
 ------------------------
 
@@ -55,7 +57,7 @@ Acceptance criteria for nist-branch
 	- Signature schemes can be EUF-CMA-secure, at any NIST security level.
 - **Targets**:
 	- **Operating systems:** The code must build on Linux and macOS.
-	- **Architecture:** The code must build at least on x64.  Targets are currently provided for x86.  We plan to add an AVX2 target, and possibly others.
+	- **Architecture:** The code must build at least on x64.  Targets are currently provided for x86 and x64.  We plan to add an AVX2 target, and possibly others.
 - **Source code requirements:**
 	- The source code can be from the original submission, or can be an updated version.
 	- **License:** Source code licensed under the MIT License, the BSD license, or in the public domain can be directly incorporated into the repository.  GPL code will not be included in the repository, but a wrapper to the OQS API may be included, as well as a script that downloads and compiles in GPL code if the algorithm is requested at compile-time.
@@ -82,9 +84,10 @@ Lifecycle for nist-branch
 Building and running liboqs nist-branch
 ---------------------------------------
 
-[Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=nist-branch)
+Builds are tested using the Travis continuous integration system on macOS 10.13.3 (clang 9.1.0) and Ubuntu 14.04.5 (gcc-7).
 
-Builds have been tested on macOS 10.12.6 (clang), macOS 10.13.3 (clang), Ubuntu 14.04.5 (gcc-7).
+- [Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=nist-branch)
+
 
 The dependencies for liboqs are OpenSSL and the Keccak Code Package (libkeccak).  liboqs' build process will download and build libkeccak automatically.  You must install OpenSSL following the instructions below.
 
@@ -154,7 +157,7 @@ See https://github.com/XKCP/XKCP#under-which-license-is-the-xkcp-distributed for
 Team
 ----
 
-The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) (University of Waterloo) and [Douglas Stebila](https://www.douglas.stebila.ca/research/) (McMaster University).
+The Open Quantum Safe project is lead by [Douglas Stebila](https://www.douglas.stebila.ca/research/) [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
 
 ### Contributors
 
@@ -169,7 +172,7 @@ Contributors to this nist-branch of liboqs include:
 - Christian Paquin (Microsoft Research)
 - Tancrède Lepoint (SRI International)
 - Shravan Mishra (University of Waterloo)
-- Douglas Stebila (McMaster University)
+- Douglas Stebila (University of Waterloo)
 
 nist-branch is based on the liboqs master branch, which includes additional contributors.
 
