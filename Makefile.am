@@ -203,7 +203,7 @@ if USE_MCBITS
 endif
 if USE_OPENSSL
 # IS THIS STILL NEEDED? FIXMEOQS
-	cp src/sig_picnic/external/picnic.h $(includedir)/oqs
+	cp src/sig_picnic/external/picnic.h include/oqs
 endif
 
 
