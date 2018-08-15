@@ -4,8 +4,8 @@
 * Abstract: header for internal functions
 *********************************************************************************************/
 
-#ifndef _FRODO_MACRIFY_H_
-#define _FRODO_MACRIFY_H_
+#ifndef _FRODOKEM_MACRIFY_H_
+#define _FRODOKEM_MACRIFY_H_
 
 #include <stddef.h>
 #include <stdint.h>

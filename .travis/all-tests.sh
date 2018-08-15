@@ -9,11 +9,9 @@
 
 set -e
 
-PRINT_GREEN="tput setaf 2"
-PRINT_RED="tput setaf 1"
-PRINT_RESET="tput sgr 0"
+source $(dirname $0)/defs.sh
 
-# see what has been modified (ignoring submodules because they are likely patched)
+# See what has been modified (ignoring submodules because they are likely patched)
 MODIFIED=$(git status -s)
 if [[ ! -z "${MODIFIED}" ]];
 then
@@ -45,7 +43,7 @@ if [[ ${AES_NI} == 0 ]];then
 	enable_disable_str+=" --disable-aes-ni"
 fi
 
-if [[ ${ENABLE_CODE_MCBITS} == 1 ]];then
+if [[ ${USE_CODE_MCBITS} == 1 ]];then
 	enable_disable_str+=" --enable-kex-code-mcbits"
 	if [[ ! -z "${SODIUM_DIR// }" ]];then
 		enable_disable_str+=" --with-sodium-dir=${SODIUM_DIR}"

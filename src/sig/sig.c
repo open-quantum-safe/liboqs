@@ -9,7 +9,7 @@
 #include <oqs/sig_qtesla.h>
 #endif
 
-OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
+OQS_API OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
 	if (rand == NULL) {
 		return NULL;
 	}
@@ -53,7 +53,7 @@ OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
 	return s;
 }
 
-OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) {
+OQS_API OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) {
 	if (s == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -61,7 +61,7 @@ OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) {
 	}
 }
 
-OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len) {
+OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len) {
 	if (s == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -69,7 +69,7 @@ OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *ms
 	}
 }
 
-OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len) {
+OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len) {
 	if (s == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -77,7 +77,7 @@ OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *m
 	}
 }
 
-void OQS_SIG_free(OQS_SIG *s) {
+OQS_API void OQS_SIG_free(OQS_SIG *s) {
 	if (s) {
 		s->free(s); // IGNORE free-check
 	}
