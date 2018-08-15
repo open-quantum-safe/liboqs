@@ -74,10 +74,10 @@ installheader_HEADERS=config.h \
 
 if USE_OPENSSL
 # IS THIS STILL NEEDED? FIXMEOQS
-	cp src/sig_picnic/external/Picnic-master/picnic.h $(includedir)/oqs
+cp src/sig_picnic/external/Picnic-master/picnic.h $(includedir)/oqs
 endif
 if USE_MCBITS
-	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
+cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
 
 noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_sig test_aes test_rand test_sha3
