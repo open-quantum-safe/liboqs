@@ -125,4 +125,30 @@ void OQS_MEM_insecure_free(void *ptr);
  */
 #define OQS_API __attribute__((visibility("default")))
 
+/** Internal macro used for function renaming. */
+#define PASTER(x, y) x##_##y
+
+/** Internal macro used for function renaming. */
+#define EVALUATOR(x, y) PASTER(x, y)
+
+/**
+ * Used for renaming functions.
+ *
+ * Some implementations are structured so that binaries for multiple parameter
+ * sets are generated from the same source code but with different macros set.
+ * This causes problems when trying to assemble a single binary.
+ *
+ * To apply this technique to an implementation, do the following in that
+ * implementation's directory:
+ * 1. Define the appropriate prefix as a compiler flag -DFUNC_PREFIX=whatever
+ *    in Makefile.am
+ * 2. Create a functions_renaming.h file that uses RENAME_FUNC_NAME to combine
+ *    the specified prefix with a basename.
+ * 3. include "functions_renaming.h" in all files in that subdirectory that
+ *    need to have their functions renamed during compilation.
+ *
+ * See src/kem/bike for an example usage.
+ */
+#define RENAME_FUNC_NAME(fname) EVALUATOR(FUNC_PREFIX, fname)
+
 #endif // __OQS_COMMON_H

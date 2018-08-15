@@ -1,17 +1,18 @@
 ##############################################################################
-# Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+# Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 # Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Written by Nir Drucker and Shay Gueron
 # AWS Cryptographic Algorithms Group
 # (ndrucker@amazon.com, gueron@amazon.com)
 #
-# Multi block SHA384 AVX2/AVX512 is due to: 
-# "Multi Block (MB) SHA384 for x86_64 architectures that support 
+# Multi block SHA384 AVX2/AVX512 is due to:
+# "Multi Block (MB) SHA384 for x86_64 architectures that support
 # AVX2/AVX512 instructions set" by Shay Gueron and Regev Shemy at
 # https://mta.openssl.org/pipermail/openssl-dev/2016-August/008238.html
 ##############################################################################
 
+#include "../functions_renaming.h"
 #include "oqs/config.h"
 
 .text
@@ -792,7 +793,7 @@ END:
 # // USE_AVX512F_INSTRUCTIONS
 #endif
 
-.data 
+.data
 
 .align 64
 and_last_block_not_256:

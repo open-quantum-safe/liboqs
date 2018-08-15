@@ -1,5 +1,5 @@
 ##############################################################################
-# Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+# Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 # Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Written by Nir Drucker and Shay Gueron
@@ -12,6 +12,7 @@
 ##############################################################################
 
 #define __ASM_FILE__
+#include "../functions_renaming.h"
 #include "defs.h"
 
 .data
@@ -30,13 +31,13 @@ SHUF_MASK:
 .byte 0x2,0x2,0x2,0x2,0x2,0x2,0x2,0x2
 .byte 0x3,0x3,0x3,0x3,0x3,0x3,0x3,0x3
 
-.text    
+.text
 
 #############################################################################################
 # convert a sequence of uint8_t elements which fully uses all 8-bits of an uint8_t element to
 # a sequence of uint8_t which uses just a single bit per byte (either 0 or 1).
-#void convert_to_redundant_rep(OUT uint8_t* out, 
-#                             IN const uint8_t * in, 
+#void convert_to_redundant_rep(OUT uint8_t* out,
+#                             IN const uint8_t * in,
 #                             IN const uint64_t length)
 
 .set out, %rdi
@@ -79,7 +80,7 @@ convert_to_redundant_rep:
     xor in_itr, in_itr
     xor out_itr, out_itr
     mov $6*4, in_next_itr
-    
+
     vmovdqu  BIT_MASK(%rip), BIT_MASK_REG
     vmovdqu  ONES_MASK(%rip), ONES
     vmovdqu  SHUF_MASK(%rip), SHUF_MASK_REG
@@ -89,23 +90,23 @@ convert_to_redundant_rep:
     .irpc i,012345
         vpbroadcastd 0x4*\i(in, in_itr, 1), DUP4_\i
     .endr
-    
+
     .irpc i,012345
         vpshufb SHUF_MASK_REG, DUP4_\i, DUP4_\i
     .endr
-    
+
     .irpc i,012345
         vpand BIT_MASK_REG, DUP4_\i, DUP4_MASKED\i
     .endr
-    
+
     .irpc i,012345
         vpcmpeqb ZERO, DUP4_MASKED\i, DUP4_MASKED\i
     .endr
-    
+
     .irpc i,012345
         vpaddb DUP4_MASKED\i, ONES, DUP4_MASKED\i
     .endr
-    
+
     .irpc i,012345
         vmovdqu DUP4_MASKED\i, YMM_SIZE*\i(out, out_itr, 1)
     .endr
@@ -157,12 +158,12 @@ convert_to_redundant_rep:
 count_ones:
     push len
     xor %rax, %rax
-    
+
     mov len, qw_itr
     mov len, len_itr
     shr $3, qw_itr
     and $0x7, len_itr
-    
+
     test qw_itr,qw_itr
     jz .co_singles_loop
 
@@ -176,10 +177,10 @@ count_ones:
 .co_singles:
     test len_itr, len_itr
     jz .end_co
-    
+
     #zero upper bits val64
     xor val64, val64
-    
+
 .co_singles_loop:
     movb -0x1(in, len, 1), val8
     popcnt val64, pop_res

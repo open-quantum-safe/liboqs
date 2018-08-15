@@ -1,5 +1,5 @@
 ##############################################################################
-# Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+# Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 # Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Written by Nir Drucker and Shay Gueron
@@ -12,9 +12,10 @@
 ##############################################################################
 
 #define __ASM_FILE__
+#include "../functions_renaming.h"
 #include "defs.h"
 
-.text    
+.text
 
 ###################################################################################
 #void gf2_add(const uint64_t *res, const uint64_t *a, const uint64_t *b, const uint64_t size)

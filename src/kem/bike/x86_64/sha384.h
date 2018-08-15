@@ -1,5 +1,5 @@
 /***************************************************************************
-* Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+* Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Written by Nir Drucker and Shay Gueron
@@ -12,6 +12,7 @@
 #ifndef _SHA384_H_
 #define _SHA384_H_
 
+#include "../functions_renaming.h"
 #include "types.h"
 
 #ifdef USE_AVX512F_INSTRUCTIONS

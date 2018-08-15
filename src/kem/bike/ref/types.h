@@ -35,6 +35,7 @@
 #ifndef __TYPES_H_INCLUDED__
 #define __TYPES_H_INCLUDED__
 
+#include "../functions_renaming.h"
 #include "defs.h"
 #include <stdint.h>
 

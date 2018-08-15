@@ -1,5 +1,5 @@
 ##############################################################################
-# Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+# Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 # Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Written by Nir Drucker and Shay Gueron
@@ -12,6 +12,7 @@
 ##############################################################################
 
 #define __ASM_FILE__
+#include "../functions_renaming.h"
 #include "bike_defs.h"
 
 .set p, %rdi
@@ -29,10 +30,10 @@ red_asm:
     vmovdqu R_QW    *0x8(p,itr,8), %ymm2
     vmovdqu (R_QW-1)*0x8(p,itr,8), %ymm3
     vmovdqu (p,itr,8), %ymm4
-    
+
     vpsllq $LAST_R_QW_TRAIL, %ymm2, %ymm2
     vpsrlq $LAST_R_QW_LEAD,  %ymm3, %ymm3
-    
+
     vpor  %ymm2, %ymm3, %ymm5
     vpxor %ymm4, %ymm5, %ymm5
     vmovdqu %ymm5, (p,itr,8)

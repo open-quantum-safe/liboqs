@@ -32,12 +32,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
-#ifndef __FUNCTIONS_RENAMING_H_INCLUDED__
-#define __FUNCTIONS_RENAMING_H_INCLUDED__
-
-#define PASTER(x, y) x##_##y
-#define EVALUATOR(x, y) PASTER(x, y)
-#define RENAME_FUNC_NAME(fname) EVALUATOR(FUNC_PREFIX, fname)
+#include <oqs/common.h>
 
 #define keypair RENAME_FUNC_NAME(keypair)
 #define decaps RENAME_FUNC_NAME(decaps)
@@ -85,5 +80,3 @@
 #define find_error1 RENAME_FUNC_NAME(find_error1)
 #define find_error2 RENAME_FUNC_NAME(find_error2)
 #define compute_counter_of_unsat RENAME_FUNC_NAME(compute_counter_of_unsat)
-
-#endif //__FUNCTIONS_RENAMING_H_INCLUDED__

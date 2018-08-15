@@ -1,5 +1,5 @@
 ##############################################################################
-# Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+# Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 # Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Written by Nir Drucker and Shay Gueron
@@ -12,9 +12,10 @@
 ##############################################################################
 
 #define __ASM_FILE__
+#include "../functions_renaming.h"
 #include "bike_defs.h"
 
-.data 
+.data
 
 .align 64
 INIT_POS0:
@@ -25,8 +26,8 @@ INIT_POS1:
 DWORDS_INC:
 .long 16, 16, 16, 16, 16, 16, 16, 16
 
-.text    
-#void secure_set_bits(IN OUT uint8_t* a, 
+.text
+#void secure_set_bits(IN OUT uint8_t* a,
 #                     IN const compressed_n_t* wlist,
 #                     IN const uint32_t a_len,
 #                     IN const uint32_t weight)
@@ -90,7 +91,7 @@ DWORDS_INC:
         #copy to tmp mem in order to broadcast.
         mov dword_pos,   (%rsp)
         mov bit_mask, 0x8(%rsp)
-        
+
         #copy to wide regs.
         vpbroadcastd (%rsp), DWORD_POS\i
         vpbroadcastd 0x8(%rsp), BIT_MASK\i
@@ -116,7 +117,7 @@ secure_set_bits:
         LOAD_POS 0
         LOAD_POS 1
         LOAD_POS 2
-        
+
         xor itr, itr
 
 .align 16
@@ -199,11 +200,11 @@ secure_set_bits:
         add $2*0x20, itr
         cmp len, itr
         jl .rest_loop
-    
+
     inc w_itr
     cmp weight, w_itr
     jl .rest_wloop
-        
+
 #endif
 
 .exit:

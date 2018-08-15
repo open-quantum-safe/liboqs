@@ -1,5 +1,5 @@
 /***************************************************************************
-* Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+* Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Written by Nir Drucker and Shay Gueron
@@ -12,6 +12,7 @@
 #ifndef __BIKE_DEFS_H_INCLUDED__
 #define __BIKE_DEFS_H_INCLUDED__
 
+#include "../functions_renaming.h"
 #include "defs.h"
 
 #if BIKE_VER > 3

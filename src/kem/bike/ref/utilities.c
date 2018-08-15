@@ -32,6 +32,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
+#include "../functions_renaming.h"
 #include "utilities.h"
 #include "stdio.h"
 #include "openssl_utils.h"

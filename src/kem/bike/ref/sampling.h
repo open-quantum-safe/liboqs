@@ -35,6 +35,7 @@
 #ifndef _SAMPLE_H_
 #define _SAMPLE_H_
 
+#include "../functions_renaming.h"
 #include "oqs/rand.h"
 #include "openssl_utils.h"
 #include "aes_ctr_prf.h"
