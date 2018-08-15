@@ -94,5 +94,5 @@ void gf2x_mod_mul(OUT uint64_t *res,
 	red_asm(res);
 
 	//Free also clear the memory! this prevents secrets from being exposed
-	free(secure_buffer);
+	OQS_MEM_secure_free(secure_buffer, 3 * R_PADDED_SIZE);
 }
