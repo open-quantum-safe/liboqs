@@ -149,7 +149,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 
 liboqs includes some third party libraries or modules that may be licensed differently.  All third-party code is contained in directories labelled `upstream`, and each such upstream directory contains a license file indicating the license that applies to code in that directory.
 
-See https://github.com/gvanas/KeccakCodePackage#under-which-license-is-the-kcp-distributed for information on the licensing of the Keccak Code Package (libkecak).
+See https://github.com/XKCP/XKCP#under-which-license-is-the-xkcp-distributed for information on the licensing of the Keccak Code Package (libkecak).
 
 Team
 ----

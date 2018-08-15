@@ -5,24 +5,20 @@
 
 set -e
 
-if [ ! -d "vendor/KeccakCodePackage-master" ];
+if [ ! -d "vendor/XKCP-master" ];
 then
 	mkdir -p vendor
-	if [ ! -f "vendor/KeccakCodePackage-master.zip" ];
+	if [ ! -f "vendor/XKCP-master.zip" ];
 	then
-		wget -O vendor/KeccakCodePackage-master.zip https://github.com/gvanas/KeccakCodePackage/archive/master.zip
+		wget -O vendor/XKCP-master.zip https://github.com/XKCP/XKCP/archive/master.zip
 	fi
 
 	cd vendor
-	unzip KeccakCodePackage-master.zip
+	unzip XKCP-master.zip
 	cd ..
-	if [ -d "vendor/XKCP-master" ];
-	then
-		mv vendor/XKCP-master vendor/KeccakCodePackage-master
-	fi
 fi
 
-cd vendor/KeccakCodePackage-master
+cd vendor/XKCP-master
 CFLAGS=-fPIC
 export CFLAGS
 make generic64/libkeccak.a
