@@ -48,9 +48,9 @@
 ///////////////////////////////////////////
 
 // BIKE-1 and BIKE-2 parameters:
-#ifndef BIKE3
+#if (BIKE_VER != 3)
 // 128-bits of post-quantum security parameters:
-#ifdef PARAM128
+#if LEVEL == 5
 #define R_BITS 32749ULL
 #define DV 137ULL
 #define T1 264ULL
@@ -59,7 +59,7 @@
 #define S_BIT_FLIPPING 12000
 #else
 // 96-bits of post-quantum security parameters:
-#ifdef PARAM96
+#if LEVEL == 3
 //    #define R_BITS 21893ULL
 #define R_BITS 19853ULL
 #define DV 103ULL
@@ -69,7 +69,7 @@
 #define S_BIT_FLIPPING 7000
 #else
 // 64-bits of post-quantum security parameters:
-#ifdef PARAM64
+#if LEVEL == 1
 #define R_BITS 10163ULL
 #define DV 71ULL
 #define T1 134ULL
@@ -83,7 +83,7 @@
 // BIKE-3 parameters:
 #else
 // 128-bits of post-quantum security parameters:
-#ifdef PARAM128
+#if LEVEL == 5
 #define R_BITS 36131ULL
 #define DV 133ULL
 #define T1 300ULL
@@ -92,7 +92,7 @@
 #define S_BIT_FLIPPING 12000
 #else
 // 96-bits of post-quantum security parameters:
-#ifdef PARAM96
+#if LEVEL == 3
 #define R_BITS 21683ULL
 #define DV 99ULL
 #define T1 226ULL
@@ -101,7 +101,7 @@
 #define S_BIT_FLIPPING 7000
 #else
 // 64-bits of post-quantum security parameters:
-#ifdef PARAM64
+#if LEVEL == 1
 #define R_BITS 11027ULL
 #define DV 67ULL
 #define T1 154ULL

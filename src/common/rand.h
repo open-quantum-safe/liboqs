@@ -7,7 +7,6 @@
 #define __OQS_RANDOM_H
 
 #include <stdbool.h>
-#define HAVE_BOOL
 #include <stddef.h>
 #include <stdint.h>
 
@@ -74,19 +73,30 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
  ********************/
 
 /************************************************************
- *** START DEPRECATED CODE *** expected removal Aug. 2018 ***
+ *** START DEPRECATED CODE *** expected removal Sep. 2018 ***
  ************************************************************/
 
+/** Algorithm identifiers
+ *
+ * @deprecated Expected removal Sep. 2018
+ */
 enum OQS_RAND_alg_name {
 	OQS_RAND_alg_default,
 	OQS_RAND_alg_urandom_chacha20,
 	OQS_RAND_alg_urandom_aesctr,
 };
 
+/**
+ * OQS PRNG object
+ *
+ * @deprecated Expected removal Sep. 2018
+ */
 typedef struct OQS_RAND OQS_RAND;
 
 /**
  * OQS PRNG object
+ *
+ * @deprecated Expected removal Sep. 2018
  */
 struct OQS_RAND {
 
@@ -114,54 +124,157 @@ struct OQS_RAND {
 
 	/**
 	 * Function which returns an 8-bit random unsigned integer
+	 *
+	 * @param r PRNG object
 	 */
 	uint8_t (*rand_8)(OQS_RAND *r);
 
 	/**
 	 * Function which returns an 32-bit random unsigned integer
+	 *
+	 * @param r PRNG object
 	 */
 	uint32_t (*rand_32)(OQS_RAND *r);
 
 	/**
 	 * Function which returns an 64-bit random unsigned integer
+	 *
+	 * @param r PRNG object
 	 */
 	uint64_t (*rand_64)(OQS_RAND *r);
 
 	/**
 	 * Function which generates n random 8-bit unsigned integers
 	 *
-	 * @param out : pointer to an array large enough to store the output integers (\f$\text{size} \geq n\f$)
-	 * @param n : number of integers to generate
+	 * @param r PRNG object
+	 * @param out pointer to an array large enough to store the output integers (\f$\text{size} \geq n\f$)
+	 * @param n number of integers to generate
 	 */
 	void (*rand_n)(OQS_RAND *r, uint8_t *out, size_t n);
 
 	/**
 	 * Pointer to a function for freeing the allocated key exchange structure
 	 *
-	 * @param k : Key exchange structure
-	 *
+	 * @param r PRNG object
 	 */
 	void (*free)(OQS_RAND *r);
 };
 
+/**
+ * Construct a new PRNG object
+ *
+ * @param alg_name Algorithm identifier
+ * @deprecated Expected removal Sep. 2018
+ */
 OQS_RAND *OQS_RAND_new(enum OQS_RAND_alg_name alg_name);
 
+/**
+ * Function which returns an 8-bit random unsigned integer
+ *
+ * @param r PRNG object
+ * @deprecated Expected removal Sep. 2018
+ */
 uint8_t OQS_RAND_8(OQS_RAND *r);
+
+/**
+ * Function which returns an 32-bit random unsigned integer
+ *
+ * @param r PRNG object
+ * @deprecated Expected removal Sep. 2018
+ */
 uint32_t OQS_RAND_32(OQS_RAND *r);
+
+/**
+ * Function which returns an 64-bit random unsigned integer
+ *
+ * @param r PRNG object
+ * @deprecated Expected removal Sep. 2018
+ */
 uint64_t OQS_RAND_64(OQS_RAND *r);
+
+/**
+ * Function which generates n random 8-bit unsigned integers
+ *
+ * @param r PRNG object
+ * @param out pointer to an array large enough to store the output integers (\f$\text{size} \geq n\f$)
+ * @param n number of integers to generate
+ * @deprecated Expected removal Sep. 2018
+ */
 void OQS_RAND_n(OQS_RAND *r, uint8_t *out, size_t n);
 
+/**
+ * Pointer to a function for freeing the allocated key exchange structure
+ *
+ * @param r PRNG object
+ * @deprecated Expected removal Sep. 2018
+ */
 void OQS_RAND_free(OQS_RAND *r);
 
+/**
+ * Internal function for statistical testing
+ *
+ * @param b undocumented
+ * @param occurrences undocumented
+ * @deprecated Expected removal Sep. 2018
+ */
 void OQS_RAND_test_record_occurrence(const unsigned char b, unsigned long occurrences[256]);
+
+/**
+ * Internal function for statistical testing
+ *
+ * @param occurrences undocumented
+ * @return undocumented
+ * @deprecated Expected removal Sep. 2018
+ */
 double OQS_RAND_test_statistical_distance_from_uniform(const unsigned long occurrences[256]);
 
+/**
+ * Parameter for statistical testing.
+ *
+ * @deprecated Expected removal Sep. 2018
+ */
 #define ZSCORE_SPARSE (999.999)
+
+/**
+ * Parameter for statistical testing.
+ *
+ * @deprecated Expected removal Sep. 2018
+ */
 #define ZSCORE_BIGNEG (-100.0)
+
+/**
+ * Parameter for statistical testing.
+ *
+ * @deprecated Expected removal Sep. 2018
+ */
 #define ZSCORE_BIGPOS (+100.0)
+
+/**
+ * Internal function for statistical testing
+ *
+ * @param occurrences undocumented
+ * @return undocumented
+ * @deprecated Expected removal Sep. 2018
+ */
 double OQS_RAND_zscore_deviation_from_uniform(const unsigned long occurrences[256]);
+
+/**
+ * Internal function for statistical testing
+ *
+ * @param occurrences undocumented
+ * @param indent undocumented
+ * @deprecated Expected removal Sep. 2018
+ */
 void OQS_RAND_report_statistics(const unsigned long occurrences[256], const char *indent);
 
+/**
+ * undocumented
+ *
+ * @param buf undocumented
+ * @param n undocumented
+ * @return undocumented
+ * @deprecated Expected removal Sep. 2018
+ */
 OQS_STATUS OQS_RAND_get_system_entropy(uint8_t *buf, size_t n);
 
 /***********************************************************

@@ -36,16 +36,16 @@
 #include "stdio.h"
 #include "utilities.h"
 
-status_t init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
-                                IN const uint32_t maxInvokations,
-                                IN const seed_t *seed) {
+OQS_STATUS init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
+                                  IN const uint32_t maxInvokations,
+                                  IN const seed_t *seed) {
 	if (maxInvokations == 0) {
-		return E_AES_CTR_PRF_INIT_FAIL;
+		return OQS_ERR_KEM_BIKE_AES_CTR_PRF_INIT;
 	}
 
 	//Set the Key schedule (from seed).
 	if (AES_set_encrypt_key(seed->u.raw, AES256_KEY_BITS, &s->key) != 0) {
-		return E_AES_SET_KEY_FAIL;
+		return OQS_ERR_KEM_BIKE_AES_SET_KEY;
 	}
 
 	//Initialize buffer and counter
@@ -64,25 +64,25 @@ status_t init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
 	SEDMSG("      s.buffer = "); //print(s->buffer.qwords, sizeof(s->buffer)*8);
 	SEDMSG("      s.ctr = 0x");  //print(s->ctr.qwords, sizeof(s->ctr)*8);
 
-	return SUCCESS;
+	return OQS_SUCCESS;
 }
 
-_INLINE_ status_t perform_aes(OUT uint8_t *ct, IN OUT aes_ctr_prf_state_t *s) {
+_INLINE_ OQS_STATUS perform_aes(OUT uint8_t *ct, IN OUT aes_ctr_prf_state_t *s) {
 	if (s->rem_invokations == 0) {
-		return E_AES_OVER_USED;
+		return OQS_ERR_KEM_BIKE_AES_OVER_USED;
 	}
 
 	AES_encrypt(s->ctr.u.bytes, ct, &s->key);
 	s->ctr.u.qwords[0]++;
 	s->rem_invokations--;
 
-	return SUCCESS;
+	return OQS_SUCCESS;
 }
 
-status_t aes_ctr_prf(OUT uint8_t *a,
-                     IN aes_ctr_prf_state_t *s,
-                     IN const uint32_t len) {
-	status_t res = SUCCESS;
+OQS_STATUS aes_ctr_prf(OUT uint8_t *a,
+                       IN aes_ctr_prf_state_t *s,
+                       IN const uint32_t len) {
+	OQS_STATUS res = OQS_SUCCESS;
 
 	//When Len i smaller then whats left in the buffer
 	//No need in additional AES.

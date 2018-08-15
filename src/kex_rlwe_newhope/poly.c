@@ -32,25 +32,25 @@ static uint16_t barrett_reduce(uint16_t a) {
 	return a;
 }
 
-static void bitrev_vector(uint16_t *poly) {
+static void bitrev_vector(uint16_t *poly1) {
 	unsigned int i, r;
 	uint16_t tmp;
 
 	for (i = 0; i < PARAM_N; i++) {
 		r = oqs_kex_rlwe_newhope_bitrev_table[i];
 		if (i < r) {
-			tmp = poly[i];
-			poly[i] = poly[r];
-			poly[r] = tmp;
+			tmp = poly1[i];
+			poly1[i] = poly1[r];
+			poly1[r] = tmp;
 		}
 	}
 }
 
-static void mul_coefficients(uint16_t *poly, const uint16_t *factors) {
+static void mul_coefficients(uint16_t *poly1, const uint16_t *factors) {
 	unsigned int i;
 
 	for (i = 0; i < PARAM_N; i++) {
-		poly[i] = montgomery_reduce((poly[i] * factors[i]));
+		poly1[i] = montgomery_reduce((poly1[i] * factors[i]));
 	}
 }
 

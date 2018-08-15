@@ -9,7 +9,7 @@ EXTRA_DIST = docs/.Doxyfile
 
 CLANGFORMAT ?= clang-format-3.9
 
-SUBDIRS = ${SRCDIR}
+SUBDIRS = ${SRCDIR} . tests
 
 BUILT_SOURCES = links
 lib_LTLIBRARIES = liboqs.la
@@ -21,29 +21,29 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kem/libkem.la
 liboqs_la_LIBADD += src/kex/libkex.la
-if USE_KEX_RLWE_NEWHOPE_AVX2
+if ENABLE_KEX_RLWE_NEWHOPE_AVX2
 liboqs_la_LIBADD += src/kex_rlwe_newhope/avx2/libnewhope_avx2.la
 endif
-if USE_KEX_NTRU
+if ENABLE_KEX_NTRU
 liboqs_la_LIBADD += src/kex_ntru/libntru.la
 endif
-if USE_KEX_RLWE_NEWHOPE
+if ENABLE_KEX_RLWE_NEWHOPE
 liboqs_la_LIBADD += src/kex_rlwe_newhope/libnewhope.la
 endif
-if USE_KEX_SIDH_MSR
+if ENABLE_KEX_SIDH_MSR
 liboqs_la_LIBADD += src/kex_sidh_msr/libsidhmsr.la
 endif
 
 liboqs_la_LIBADD += src/sig/libsig.la
 
-if USE_MCBITS
+if ENABLE_MCBITS
 liboqs_la_LIBADD += src/kex_code_mcbits/libmcbits.la
 endif
 
-if USE_SIG_PICNIC
+if ENABLE_SIG_PICNIC
 liboqs_la_LIBADD += src/sig_picnic/libpicnic_i.la
 endif
-if USE_SIG_QTESLA
+if ENABLE_SIG_QTESLA
 liboqs_la_LIBADD += src/sig_qtesla/libqtesla.la
 endif
 
@@ -77,13 +77,13 @@ installheader_HEADERS=config.h \
 	src/sig/sig.h
 
 install-exec-local:
-if USE_KEX_RLWE_NEWHOPE_AVX2
+if ENABLE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
 endif
 
 install-exec-hook:
 	mkdir -p $(includedir)/oqs
-if USE_KEX_RLWE_NEWHOPE_AVX2
+if ENABLE_KEX_RLWE_NEWHOPE_AVX2
 	cp src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h $(includedir)/oqs
 	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
 endif
@@ -91,109 +91,21 @@ if USE_OPENSSL
 # IS THIS STILL NEEDED? FIXMEOQS
 	cp src/sig_picnic/external/Picnic-master/picnic.h $(includedir)/oqs
 endif
-if USE_MCBITS
+if ENABLE_MCBITS
 	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
 endif
 
-noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_sig test_aes test_rand test_sha3
-
-if USE_SIG_PICNIC
-noinst_bin_PROGRAMS += minimal_sig_oqs
-endif
-
-noinst_bindir=$(prefix)/tests
-
-speed_kem_LDADD =  liboqs.la -lm
-speed_kem_SOURCES = src/kem/speed_kem.c
-speed_kem_CPPFLAGS = -I./include
-speed_kem_CPPFLAGS += $(AM_CPPFLAGS)
-if USE_OPENSSL
-speed_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-test_kem_LDADD =  liboqs.la -lm
-test_kem_SOURCES = src/kem/test_kem.c
-test_kem_CPPFLAGS = -I./include
-test_kem_CPPFLAGS += $(AM_CPPFLAGS)
-if USE_OPENSSL
-test_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-example_kem_LDADD =  liboqs.la -lm
-example_kem_SOURCES = src/kem/example_kem.c
-example_kem_CPPFLAGS = -I./include
-example_kem_CPPFLAGS += $(AM_CPPFLAGS)
-if USE_OPENSSL
-example_kem_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-test_kex_LDADD =  liboqs.la -lm
-test_kex_SOURCES = src/kex/test_kex.c
-test_kex_CPPFLAGS = -I./include
-test_kex_CPPFLAGS += $(AM_CPPFLAGS)
-if USE_MCBITS
-test_kex_LDADD += -L${SODIUM_DIR}/lib -lsodium
-endif
-if USE_OPENSSL
-test_kex_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-test_sig_LDADD =  liboqs.la -lm
-test_sig_SOURCES = src/sig/test_sig.c
-test_sig_CPPFLAGS = -I./include
-test_sig_CPPFLAGS += $(AM_CPPFLAGS)
-if USE_OPENSSL
-test_sig_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-if USE_SIG_PICNIC
-minimal_sig_oqs_LDADD =  liboqs.la -lm
-minimal_sig_oqs_SOURCES = src/sig/minimal_sig_oqs.c
-minimal_sig_oqs_CPPFLAGS = -I./include
-minimal_sig_oqs_CPPFLAGS += $(AM_CPPFLAGS)
-if USE_OPENSSL
-minimal_sig_oqs_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-endif # USE_SIG_PICNIC
-
-test_aes_LDADD =  liboqs.la -lm
-test_aes_SOURCES = src/crypto/aes/test_aes.c
-test_aes_CPPFLAGS = -I./include
-test_aes_CPPFLAGS += $(AM_CPPFLAGS)
-
-if USE_OPENSSL
-test_aes_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-endif
-
-test_rand_SOURCES = src/crypto/rand/test_rand.c
-
-test_rand_CPPFLAGS = -Iinclude -Isrc/crypto/rand_urandom_aesctr/
-test_rand_CPPFLAGS += $(AM_CPPFLAGS)
-test_rand_LDADD = liboqs.la
-if USE_OPENSSL
-test_rand_LDADD += -L$(OPENSSL_DIR)/lib -lcrypto
-else
-if USE_AES_NI
-test_rand_CPPFLAGS += -maes -msse2
-endif
-endif # USE_OPENSSL
-
-test_sha3_LDADD =  liboqs.la -lm
-test_sha3_SOURCES = src/crypto/sha3/test_sha3.c
-test_sha3_CPPFLAGS = -I./include
-test_sha3_CPPFLAGS += $(AM_CPPFLAGS)
-
 test: clean-tests
 	make
-	./example_kem
-	./test_kem
-	./test_kex --quiet
-	./test_rand --quiet
-	./test_aes
-	./test_sha3
-	./test_sig
-if USE_SIG_PICNIC
-	./minimal_sig_oqs
+	tests/example_kem
+	tests/test_kem
+	tests/test_kex --quiet
+	tests/test_rand --quiet
+	tests/test_aes
+	tests/test_sha3
+	tests/test_sig
+if ENABLE_SIG_PICNIC
+	tests/minimal_sig_oqs
 endif
 
 links:
@@ -213,7 +125,7 @@ links:
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
-if USE_KEX_RLWE_NEWHOPE_AVX2
+if ENABLE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
 	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
 endif
@@ -222,26 +134,23 @@ endif
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
 	$(LN_S) -f .libs/liboqs.a
-if USE_MCBITS
+if ENABLE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
 
 clean-local:
 	rm -f liboqs.a
 	rm -rf include
-if USE_SIG_PICNIC
-	rm -f minimal_sig_oqs
-endif
 
 clean-tests:
-	rm -f example_kem speed_kem test_kem test_kex test_sig test_rand test_aes test_sha3
+	rm -f tests/example_kem tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/minimal_sig_oqs tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
 
 prettyprint:
-	find src -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: doxygen-run
 
 cleanup-patch:
-if USE_KEX_RLWE_NEWHOPE_AVX2
+if ENABLE_KEX_RLWE_NEWHOPE_AVX2
 	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
 endif

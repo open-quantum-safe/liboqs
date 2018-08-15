@@ -8,12 +8,12 @@
 #include "sig_picnic.h"
 #include "external/picnic.h"
 
-static char *Picnic_L1_FS_name = "Picnic_L1_FS";
-static char *Picnic_L1_UR_name = "Picnic_L1_UR";
-static char *Picnic_L3_FS_name = "Picnic_L3_FS";
-static char *Picnic_L3_UR_name = "Picnic_L3_UR";
-static char *Picnic_L5_FS_name = "Picnic_L5_FS";
-static char *Picnic_L5_UR_name = "Picnic_L5_UR";
+static const char *Picnic_L1_FS_name = "Picnic_L1_FS";
+static const char *Picnic_L1_UR_name = "Picnic_L1_UR";
+static const char *Picnic_L3_FS_name = "Picnic_L3_FS";
+static const char *Picnic_L3_UR_name = "Picnic_L3_UR";
+static const char *Picnic_L5_FS_name = "Picnic_L5_FS";
+static const char *Picnic_L5_UR_name = "Picnic_L5_UR";
 static size_t PRIV_KEY_LEN[] = {
     0,
     PICNIC_PRIVATE_KEY_SIZE(Picnic_L1_FS),
