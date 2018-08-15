@@ -82,8 +82,8 @@ endif
 
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
-KECCAK_INCLUDE_DIR=vendor/KeccakCodePackage-master/bin/generic64
-KECCAK_LIB_DIR=vendor/KeccakCodePackage-master/bin/generic64
+KECCAK_INCLUDE_DIR=vendor/XKCP-master/bin/generic64
+KECCAK_LIB_DIR=vendor/XKCP-master/bin/generic64
 
 all: liboqs tests speeds kats examples
 
@@ -147,7 +147,7 @@ libkeccak:
 	bash scripts/build-keccak-code-package.sh
 	$(RM) -rf .objs/keccak
 	mkdir -p .objs/keccak
-	cd .objs/keccak && ar x ../../vendor/KeccakCodePackage-master/bin/generic64/libkeccak.a
+	cd .objs/keccak && ar x ../../vendor/XKCP-master/bin/generic64/libkeccak.a
 
 liboqs: libkeccak headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
@@ -211,7 +211,7 @@ clean:
 	$(RM) $(SPEED_PROGRAMS)
 	$(RM) $(EXAMPLE_PROGRAMS)
 	$(RM) -r docs/doxygen
-	$(RM) -r vendor/KeccakCodePackage-master
+	$(RM) -r vendor/XKCP-master
 
 check_namespacing: all
 	.travis/global-namespace-check.sh
