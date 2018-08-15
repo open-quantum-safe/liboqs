@@ -201,11 +201,6 @@ endif
 if USE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
-if USE_OPENSSL
-# IS THIS STILL NEEDED? FIXMEOQS
-	cp src/sig_picnic/external/picnic.h include/oqs
-endif
-
 
 clean-local:
 	rm -f liboqs.a

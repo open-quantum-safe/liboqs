@@ -129,7 +129,6 @@ case $host_os in
         linux=true
         ;;
   linux*)
-        AM_CFLAGS=${AM_CFLAGS}" -fno-pie -no-pie "
         linux=true
         ;;
     *)
