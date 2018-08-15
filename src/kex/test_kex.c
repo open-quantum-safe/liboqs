@@ -58,12 +58,12 @@ static OQS_STATUS kex_test_correctness(OQS_RAND *rand, enum OQS_KEX_alg_name alg
 	uint8_t *alice_msg = NULL;
 	size_t alice_msg_len;
 	uint8_t *alice_key = NULL;
-	size_t alice_key_len;
+	size_t alice_key_len = 0;
 
 	uint8_t *bob_msg = NULL;
 	size_t bob_msg_len;
 	uint8_t *bob_key = NULL;
-	size_t bob_key_len;
+	size_t bob_key_len = 0;
 
 	/* setup KEX */
 	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
@@ -216,12 +216,12 @@ static OQS_STATUS kex_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name alg_na
 	uint8_t *alice_msg = NULL;
 	size_t alice_msg_len;
 	uint8_t *alice_key = NULL;
-	size_t alice_key_len;
+	size_t alice_key_len = 0;
 
 	uint8_t *bob_msg = NULL;
 	size_t bob_msg_len;
 	uint8_t *bob_key = NULL;
-	size_t bob_key_len;
+	size_t bob_key_len = 0;
 
 	/* setup KEX */
 	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
@@ -268,12 +268,12 @@ static OQS_STATUS kex_mem_bench_wrapper(OQS_RAND *rand, enum OQS_KEX_alg_name al
 	uint8_t *alice_msg = NULL;
 	size_t alice_msg_len;
 	uint8_t *alice_key = NULL;
-	size_t alice_key_len;
+	size_t alice_key_len = 0;
 
 	uint8_t *bob_msg = NULL;
 	size_t bob_msg_len;
 	uint8_t *bob_key = NULL;
-	size_t bob_key_len;
+	size_t bob_key_len = 0;
 
 	kex = OQS_KEX_new(rand, alg_name, seed, seed_len, named_parameters);
 	if (kex == NULL) {
