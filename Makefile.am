@@ -72,13 +72,6 @@ installheader_HEADERS=config.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/sig/sig.h
 
-if USE_OPENSSL
-# IS THIS STILL NEEDED? FIXMEOQS
-cp src/sig_picnic/external/Picnic-master/picnic.h $(includedir)/oqs
-endif
-if USE_MCBITS
-cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
-endif
 
 noinst_bin_PROGRAMS = example_kem speed_kem test_kem test_kex test_sig test_aes test_rand test_sha3
 
@@ -208,6 +201,11 @@ endif
 if USE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
+if USE_OPENSSL
+# IS THIS STILL NEEDED? FIXMEOQS
+	cp src/sig_picnic/external/picnic.h $(includedir)/oqs
+endif
+
 
 clean-local:
 	rm -f liboqs.a
