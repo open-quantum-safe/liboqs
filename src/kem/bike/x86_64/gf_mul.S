@@ -1,5 +1,5 @@
 ##############################################################################
-# Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+# Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 # Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Written by Nir Drucker and Shay Gueron
@@ -12,9 +12,10 @@
 ##############################################################################
 
 #define __ASM_FILE__
+#include "../functions_renaming.h"
 #include "defs.h"
 
-.text    
+.text
 #void gf2_mul_4x4(const uint64_t *res, const uint64_t *a, const uint64_t *b)
 
 .set res, %rdi
@@ -75,7 +76,7 @@ gf2_muladd_4x4:
       vmovdqu XMM_SIZE*\i(a), A\i
       vmovdqu XMM_SIZE*\i(b), B\i
     .endr
-          
+
     vpclmulqdq $0x00, A0, B0, X0
     vpclmulqdq $0x00, A1, B0, X1
     vpclmulqdq $0x11, A0, B0, X2
@@ -101,7 +102,7 @@ gf2_muladd_4x4:
     vmovdqu 8*1(res), XT0
     vmovdqu 8*3(res), XT1
     vmovdqu 8*5(res), XT2
-    
+
     vpclmulqdq $0x10, A0, B0, X0
     vpclmulqdq $0x01, A0, B0, X1
     vpclmulqdq $0x01, A1, B0, X2
@@ -118,22 +119,22 @@ gf2_muladd_4x4:
 
     vxorpd X0, XT0, XT0
     vxorpd X1, XT0, XT0
-    
+
     vxorpd X6, XT2, XT2
     vxorpd X7, XT2, XT2
 
     vmovdqu XT0, 8*1(res)
     vmovdqu XT1, 8*3(res)
     vmovdqu XT2, 8*5(res)
-    
+
   ret
 .size   gf2_muladd_4x4,.-gf2_muladd_4x4
 
 ########################################################################################
-# void karatzuba_add1(OUT const uint64_t *res, 
-#                     IN const uint64_t  *a, 
-#                     IN const uint64_t  *b, 
-#                     IN const uint64_t  n_half, 
+# void karatzuba_add1(OUT const uint64_t *res,
+#                     IN const uint64_t  *a,
+#                     IN const uint64_t  *b,
+#                     IN const uint64_t  n_half,
 #                              uint64_t  *alah);
 #
 #The variables alah|blbh|tmp are located on the secure buffer in that order exactly!
@@ -187,17 +188,17 @@ karatzuba_add1:
     vmovdqu (a, itr, 8),    a_wide
     vmovdqu (b, itr, 8),    b_wide
     vmovdqu (res1, itr, 8), res1_wide
-   
+
     vpxor (a_high, itr, 8), a_wide, alah_wide
     vpxor (b_high, itr, 8), b_wide, blbh_wide
     vpxor (res2, itr, 8),   res1_wide, tmp_wide
 
     #a_low + a_high
     vmovdqu alah_wide, (alah, itr, 8)
-    
+
     #b_low + b_high
     vmovdqu blbh_wide, (blbh, itr, 8)
-    
+
     #Storing res1 and res2 together in one location
     #It is used to xor out "res2|res1" in the future.
     vmovdqu tmp_wide, (tmp, itr, 8)
@@ -212,12 +213,12 @@ karatzuba_add1:
     ret
 .size karatzuba_add1,.-karatzuba_add1
 
-   
+
 #######################################################
 # void karatzuba_add2(OUT const uint64_t *res,
-#                     IN  const uint64_t *res1, 
-#                     IN  const uint64_t *res2, 
-#                     IN  const uint64_t *tmp, 
+#                     IN  const uint64_t *res1,
+#                     IN  const uint64_t *res2,
+#                     IN  const uint64_t *tmp,
 #                     IN  const uint64_t n_half);
 
 .set res,    %rdi
@@ -242,7 +243,7 @@ karatzuba_add1:
 karatzuba_add2:
 
     lea (res2, n_half, 8), res3
-    
+
     dec n_half
     xor itr, itr
     jmp .lT2
@@ -251,22 +252,21 @@ karatzuba_add2:
     vmovdqu (tmp, itr, 8), tmp_wide
     vmovdqu (res1, itr, 8), res1_wide
     vmovdqu (res2, itr, 8), res2_wide
-    
+
     vpxor (res, itr, 8), tmp_wide, res_wide
     vpxor (res3, itr, 8), tmp_wide, res3_wide
-    
+
     vpxor res_wide , res1_wide, res1_wide
     vpxor res3_wide, res2_wide, res2_wide
-    
+
     vmovdqu res1_wide, (res1, itr, 8)
     vmovdqu res2_wide, (res2, itr, 8)
 
     add $4, itr
     cmp n_half, itr
     jl .lT2
-    
+
 .Lt2_end:
-    
+
     ret
 .size karatzuba_add2,.-karatzuba_add2
-

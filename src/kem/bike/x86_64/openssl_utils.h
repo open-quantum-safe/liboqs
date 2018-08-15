@@ -35,6 +35,7 @@
 #ifndef _OSSL_UTILITIES_H_
 #define _OSSL_UTILITIES_H_
 
+#include "../functions_renaming.h"
 #include "string.h"
 #include "types.h"
 #include "utilities.h"

@@ -1,5 +1,5 @@
 ##############################################################################
-# Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+# Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 # Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 #
 # Written by Nir Drucker and Shay Gueron
@@ -12,13 +12,14 @@
 ##############################################################################
 
 #define __ASM_FILE__
+#include "../functions_renaming.h"
 #include "bike_defs.h"
 
 #ifdef USE_AVX512F_INSTRUCTIONS
 
 #ifdef CONSTANT_TIME
 
-.text    
+.text
 #void compute_counter_of_unsat(uint8_t unsat_counter[N_BITS],
 #                              const uint8_t s[R_BITS],
 #                              const uint64_t inv_h0_compressed[DV],
@@ -55,15 +56,15 @@
         #load position
         vbroadcastss 0x4(\inv_h_compressed, itr2, 8), mask
         mov (\inv_h_compressed, itr2, 8), tmp32
-        
+
         #adjust loop offset
-        add itr1, tmp 
+        add itr1, tmp
 
         vpandq (ZMM_SIZE*0)(s, tmp, 1), mask, %zmm16
         vpandq (ZMM_SIZE*1)(s, tmp, 1), mask, %zmm17
         vpandq (ZMM_SIZE*2)(s, tmp, 1), mask, %zmm18
         vpandq (ZMM_SIZE*3)(s, tmp, 1), mask, %zmm19
-        
+
         vpaddb %zmm0, %zmm16, %zmm0
         vpaddb %zmm1, %zmm17, %zmm1
         vpaddb %zmm2, %zmm18, %zmm2
@@ -98,7 +99,7 @@
         vpaddb %zmm13, %zmm29, %zmm13
         vpaddb %zmm14, %zmm30, %zmm14
         vpaddb %zmm15, %zmm31, %zmm15
-                
+
         inc itr2
         cmp $FAKE_DV, itr2
         jl .Linner_loop\tag
@@ -191,7 +192,7 @@ find_error1:
 .find_err1_start:
     movb (upc), val
     mov $R_BITS-1, itr
-    
+
     MASK_OR black_th black_acc
     MASK_OR gray_th gray_acc
 
@@ -200,7 +201,7 @@ find_error1:
     movb (upc, itr, 1), val
     xor   cmp_res64, cmp_res64
     rol bit
-    
+
     #Store qw after 64 iterations.
     cmp $1, bit
     jne .dont_store1
@@ -209,11 +210,11 @@ find_error1:
     movq black_acc, (black_e, qw_itr, 8)
     xorq black_acc, (e, qw_itr, 8)
     movq gray_acc, (gray_e, qw_itr, 8)
-    
+
     #Restart the acc blocks
     xor black_acc, black_acc
     xor gray_acc, gray_acc
-    
+
     inc qw_itr
 .dont_store1:
 
@@ -293,7 +294,7 @@ find_error2:
 .find_err2_start:
     movb (upc), val
     mov $R_BITS-1, itr
-    
+
     MASK_OR threshold pos_acc
 
 .find_err2_loop:
@@ -301,7 +302,7 @@ find_error2:
     movb (upc, itr, 1), val
     xor   cmp_res64, cmp_res64
     rol bit
-    
+
     #Store qw after 64 iterations.
     cmp $1, bit
     jne .dont_store2
@@ -311,7 +312,7 @@ find_error2:
     #update the error.
     xorq pos_acc, (e, qw_itr, 8)
     xorq pos_acc, pos_acc
-    
+
     inc qw_itr
 .dont_store2:
 
@@ -332,7 +333,7 @@ find_error2:
     shl  $3, qw_itr
     sub $N_EXTRA_BYTES, qw_itr
     shl $8*N_EXTRA_BYTES, pos_acc
-   
+
     #update the final values
     andq (pos_e, qw_itr, 1), pos_acc
     xorq pos_acc, (e, qw_itr, 1)
@@ -348,7 +349,7 @@ find_error2:
 #// CONSTANT_TIME
 #else
 
-.text    
+.text
 #void compute_counter_of_unsat(uint8_t unsat_counter[N_BITS],
 #                              const uint8_t s[R_BITS],
 #                              const uint64_t inv_h0_compact[DV],
@@ -385,12 +386,12 @@ find_error2:
         mov (\inv_h_compact, itr2, 4), tmp32
 
         #adjust loop offset
-        add itr1, tmp 
+        add itr1, tmp
 
         .irp ALL_ZMMS
             vpaddb (ZMM_SIZE*\i)(s, tmp, 1), %zmm\i, %zmm\i
         .endr
-        
+
         add $ALL_ZMM_SIZE, tmp
         inc itr2
         cmp $DV, itr2
@@ -474,7 +475,7 @@ recompute:
     #When there are no positions to flip do nothing.
     test numPos, numPos
     je .Lexit
-    
+
     #Allocate room on the stack.
     sub $2*ZMM_SIZE, %rsp
 
@@ -488,24 +489,24 @@ recompute:
     vmovdqu64 ZMM_SIZE*\i(h_compressed), H0\i
     vmovdqu64 ZMM_SIZE*(\i+1)(h_compressed), H1\i
     .endr
-    
+
     #initialize pos_itr
     xor pos_itr, pos_itr
-    
+
 .Lpos_loop:
     vbroadcastss (positions, pos_itr, 4), POS
-    
+
     .irp i,ZMM_INDICES
     vcmpps $_CMP_LT_OS, H0\i, POS, %k1
     vcmpps $_CMP_LT_OS, H1\i, POS, %k2
     vpsubd H0\i, POS, RES
     vpsubd H1\i, POS, RES2
-    
+
     vpaddd RES, RBITS, RES{%k1}
     vpaddd RES2, RBITS, RES2{%k2}
     vmovdqu64 RES, (%rsp)
     vmovdqu64 RES2, ZMM_SIZE(%rsp)
-    
+
     xor itr2, itr2
 .Linside_loop\i:
     mov (%rsp, itr2, 4), %eax
@@ -514,7 +515,7 @@ recompute:
     cmp $32, itr2
     jne .Linside_loop\i
     .endr
-    
+
     inc pos_itr
     cmp numPos, pos_itr
     jne .Lpos_loop
@@ -523,10 +524,10 @@ recompute:
 .Ltail:
     vmovdqu64 4*ITER_INC(h_compressed), H00
     xor pos_itr, pos_itr
-    
+
 .Lpos_tail_loop:
     vbroadcastss (positions, pos_itr, 4), POS
-    
+
     vcmpps $_CMP_LT_OS, H00, POS, %k1
     vpsubd H00, POS, RES
     vpaddd RES, RBITS, RES{%k1}
@@ -544,9 +545,9 @@ recompute:
     inc pos_itr
     cmp numPos, pos_itr
     jne .Lpos_tail_loop
-    
+
     add $2*ZMM_SIZE, %rsp
-    
+
 .Lexit:
     ret
 .size    recompute,.-recompute
@@ -560,7 +561,7 @@ recompute:
 #ifdef CONSTANT_TIME
 
 
-.text    
+.text
 #void compute_counter_of_unsat(uint8_t unsat_counter[N_BITS],
 #                              const uint8_t s[R_BITS],
 #                              const uint64_t inv_h0_compressed[DV],
@@ -598,9 +599,9 @@ recompute:
         #load position
         vbroadcastss 0x4(\inv_h_compressed, itr2, 8), mask
         mov (\inv_h_compressed, itr2, 8), tmp32
-        
+
         #adjust loop offset
-        add itr1, tmp 
+        add itr1, tmp
 
         vpand (YMM_SIZE*0)(s, tmp, 1), mask, %ymm8
         vpand (YMM_SIZE*1)(s, tmp, 1), mask, %ymm9
@@ -614,14 +615,14 @@ recompute:
         vpaddb %ymm2, %ymm10, %ymm2
         vpaddb %ymm3, %ymm11, %ymm3
         vpaddb %ymm4, %ymm12, %ymm4
-        
+
         vpand (YMM_SIZE*6)(s, tmp, 1), mask, %ymm14
         vpand (YMM_SIZE*7)(s, tmp, 1), mask, %ymm15
-        
+
         vpaddb %ymm5, %ymm13, %ymm5
         vpaddb %ymm6, %ymm14, %ymm6
         vpaddb %ymm7, %ymm15, %ymm7
-        
+
         inc itr2
         cmp $FAKE_DV, itr2
         jl .Linner_loop\tag
@@ -705,7 +706,7 @@ find_error1:
     xor qw_itr, qw_itr
     xor black_acc, black_acc
     xor gray_acc, gray_acc
-    
+
     mov $N0, n0
     mov $1, bit
     xor cmp_res64, cmp_res64
@@ -713,7 +714,7 @@ find_error1:
 .find_err1_start:
     movb (upc), val
     mov $R_BITS-1, itr
-    
+
     MASK_OR black_th black_acc
     MASK_OR gray_th gray_acc
 
@@ -722,7 +723,7 @@ find_error1:
     movb (upc, itr, 1), val
     xor   cmp_res64, cmp_res64
     rol bit
-    
+
     #Store qw after 64 iterations.
     cmp $1, bit
     jne .dont_store1
@@ -734,7 +735,7 @@ find_error1:
     #Restart the acc blocks
     xor black_acc, black_acc
     xor gray_acc, gray_acc
-    
+
     inc qw_itr
 .dont_store1:
 
@@ -814,7 +815,7 @@ find_error2:
 .find_err2_start:
     movb (upc), val
     mov $R_BITS-1, itr
-    
+
     MASK_OR threshold pos_acc
 
 .find_err2_loop:
@@ -822,7 +823,7 @@ find_error2:
     movb (upc, itr, 1), val
     xor   cmp_res64, cmp_res64
     rol bit
-    
+
     #Store qw after 64 iterations.
     cmp $1, bit
     jne .dont_store2
@@ -832,7 +833,7 @@ find_error2:
     #update the error.
     xorq pos_acc, (e, qw_itr, 8)
     xorq pos_acc, pos_acc
-    
+
     inc qw_itr
 .dont_store2:
 
@@ -853,7 +854,7 @@ find_error2:
     shl  $3, qw_itr
     sub $N_EXTRA_BYTES, qw_itr
     shl $8*N_EXTRA_BYTES, pos_acc
-   
+
     #update the final values
     andq (pos_e, qw_itr, 1), pos_acc
     xorq pos_acc, (e, qw_itr, 1)
@@ -869,7 +870,7 @@ find_error2:
 #// CONSTANT_TIME
 #else
 
-.text    
+.text
 #void compute_counter_of_unsat(uint8_t unsat_counter[N_BITS],
 #                              const uint8_t s[R_BITS],
 #                              const uint64_t inv_h0_compact[DV],
@@ -893,7 +894,7 @@ find_error2:
 .macro SUM tag inv_h_compressed res_offset
     xor itr1, itr1
     xor tmp, tmp
-    
+
 .Lloop\tag:
 
     .irp ALL_YMMS
@@ -908,12 +909,12 @@ find_error2:
         mov (\inv_h_compressed, itr2, 4), tmp32
 
         #adjust loop offset
-        add itr1, tmp 
+        add itr1, tmp
 
         .irp ALL_YMMS
             vpaddb (YMM_SIZE*\i)(s, tmp, 1), %ymm\i, %ymm\i
         .endr
-        
+
         inc itr2
         cmp $DV, itr2
         jl .Linner_loop\tag
@@ -1002,10 +1003,10 @@ recompute:
     #When there are no positions to flip do nothing.
     test numPos, numPos
     je .Lexit
-    
+
     #Allocate room on the stack.
     sub $2*YMM_SIZE, %rsp
-    
+
     #Initialize the h_compressed iterator to 0.
     xor h_itr, h_itr
 
@@ -1020,13 +1021,13 @@ recompute:
         vmovdqu YMM_SIZE*\i(h_compressed, h_itr, 4), H0\i
         vmovdqu YMM_SIZE*(\i+1)(h_compressed, h_itr, 4), H1\i
     .endr
-    
+
     #initialize pos_itr
     xor pos_itr, pos_itr
-    
+
 .Lpos_loop:
     vbroadcastss (positions, pos_itr, 4), POS
-    
+
     .irp i, YMM_INDICES
         vcmpps $_CMP_LT_OS, H0\i, POS, MASK
         vcmpps $_CMP_LT_OS, H1\i, POS, MASK2
@@ -1035,12 +1036,12 @@ recompute:
 
         vpand  MASK, RBITS, MASK
         vpand  MASK2, RBITS, MASK2
-        
+
         vpaddd RES, MASK, RES
         vpaddd RES2, MASK2, RES2
         vmovdqu RES, (%rsp)
         vmovdqu RES2, YMM_SIZE(%rsp)
-        
+
         xor itr2, itr2
 .Linside_loop\i:
         mov (%rsp, itr2, 4), %eax
@@ -1049,7 +1050,7 @@ recompute:
         cmp $16, itr2
         jne .Linside_loop\i
     .endr
-    
+
     add $1, pos_itr
     cmp numPos, pos_itr
     jne .Lpos_loop
@@ -1062,17 +1063,17 @@ recompute:
 .Ltail:
     vmovdqu YMM_SIZE*0(h_compressed, h_itr, 4), H00
     vmovdqu YMM_SIZE*1(h_compressed, h_itr, 4), H02
-    
+
     xor pos_itr, pos_itr
-    
+
 .Lpos_tail_loop:
     vbroadcastss (positions, pos_itr, 4), POS
-    
+
     vcmpps $_CMP_LT_OS, H00, POS, MASK
     vcmpps $_CMP_LT_OS, H02, POS, MASK2
     vpsubd H00, POS, RES
     vpsubd H02, POS, RES2
-    
+
     vpand  MASK, RBITS, MASK
     vpand  MASK2, RBITS, MASK2
 
@@ -1093,10 +1094,10 @@ recompute:
     inc pos_itr
     cmp numPos, pos_itr
     jne .Lpos_tail_loop
-  
+
     #Fix RSP offset.
     add $2*YMM_SIZE, %rsp
-    
+
 .Lexit:
     ret
 .size    recompute,.-recompute
@@ -1106,4 +1107,3 @@ recompute:
 
 # //USE_AVX2_INSTRUCTIONS
 #endif
-

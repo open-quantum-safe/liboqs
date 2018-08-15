@@ -35,6 +35,7 @@
 #ifndef _R_DECAPS_H_
 #define _R_DECAPS_H_
 
+#include "../functions_renaming.h"
 #include "types.h"
 
 #define MAX_IT 10

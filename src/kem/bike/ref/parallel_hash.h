@@ -35,6 +35,7 @@
 #ifndef __PARALLEL_HASH_H_INCLUDED__
 #define __PARALLEL_HASH_H_INCLUDED__
 
+#include "../functions_renaming.h"
 #include "types.h"
 
 #define SHA384_HASH_SIZE 48ULL

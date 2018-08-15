@@ -32,6 +32,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ******************************************************************************/
 
+#include "../functions_renaming.h"
 #include "sampling.h"
 
 _INLINE_ uint32_t count_ones(IN const uint8_t *a,

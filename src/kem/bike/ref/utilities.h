@@ -35,6 +35,7 @@
 #ifndef _UTILITIES_H_
 #define _UTILITIES_H_
 
+#include "../functions_renaming.h"
 #include "types.h"
 
 //Printing number is required only in verbose level 2 or above.

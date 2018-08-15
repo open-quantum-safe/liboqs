@@ -35,6 +35,8 @@
 #ifndef __DEFS_H_INCLUDED__
 #define __DEFS_H_INCLUDED__
 
+#include "../functions_renaming.h"
+
 ////////////////////////////////////////////
 //         BIKE main parameters
 ///////////////////////////////////////////

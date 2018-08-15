@@ -1,5 +1,5 @@
 /***************************************************************************
-* Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+* Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Written by Nir Drucker and Shay Gueron
@@ -11,6 +11,8 @@
 
 #ifndef MEASURE_H
 #define MEASURE_H
+
+#include "../functions_renaming.h"
 
 #ifndef RDTSC
 //Less accurate measurement than with RDTSC
@@ -54,7 +56,7 @@ inline static uint64_t get_Clks(void) {
 	return ((uint64_t) lo) ^ (((uint64_t) hi) << 32);
 }
 
-/* 
+/*
    This MACRO measures the number of cycles "x" runs. This is the flow:
       1) it sets the priority to FIFO, to avoid time slicing if possible.
       2) it repeats "x" WARMUP times, in order to warm the cache.

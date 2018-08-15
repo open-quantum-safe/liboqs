@@ -1,5 +1,5 @@
 /***************************************************************************
-* Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+* Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Written by Nir Drucker and Shay Gueron
@@ -13,6 +13,7 @@
 #define __DEFS_H_INCLUDED__
 
 #include <oqs/config.h>
+#include "../functions_renaming.h"
 
 ////////////////////////////////////////////
 //             Basic defs

@@ -35,6 +35,7 @@
 #ifndef __AES_CTR_REF_H_INCLUDED__
 #define __AES_CTR_REF_H_INCLUDED__
 
+#include "../functions_renaming.h"
 #include "types.h"
 #include "oqs/common.h"
 #include "openssl/aes.h"

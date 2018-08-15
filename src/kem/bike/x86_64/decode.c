@@ -1,5 +1,5 @@
 /***************************************************************************
-* Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+* Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Written by Nir Drucker and Shay Gueron
@@ -8,15 +8,16 @@
 *
 * The license is detailed in the file LICENSE.txt, and applies to this file.
 *
-* The optimizations are based on the description developed in the paper: 
-* N. Drucker, S. Gueron, 
-* "A toolbox for software optimization of QC-MDPC code-based cryptosystems", 
+* The optimizations are based on the description developed in the paper:
+* N. Drucker, S. Gueron,
+* "A toolbox for software optimization of QC-MDPC code-based cryptosystems",
 * ePrint (2017).
 * The decoder (in decoder/decoder.c) algorithm is the algorithm included in
 * the early submission of CAKE (due to N. Sandrier and R Misoczki).
 *
 * ***************************************************************************/
 
+#include "../functions_renaming.h"
 #include "decode.h"
 #include "stdio.h"
 #include "string.h"
