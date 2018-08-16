@@ -118,13 +118,15 @@ static uint64_t _bench_rdtsc(void) {
 	return __rdtsc();
 #elif defined(__i586__) || defined(__amd64__)
 	uint64_t x;
-	__asm__ volatile(".byte 0x0f, 0x31" : "=A"(x));
+	__asm__ volatile(".byte 0x0f, 0x31"
+	                 : "=A"(x));
 	return x;
 #elif defined(__arm__)
 	/* Use the ARM performance counters. */
 	unsigned int value;
 	/* Read CCNT Register */
-	asm volatile("mrc p15, 0, %0, c9, c13, 0\t\n" : "=r"(value));
+	asm volatile("mrc p15, 0, %0, c9, c13, 0\t\n"
+	             : "=r"(value));
 	return value;
 #else
 	struct timespec time;
@@ -200,7 +202,7 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 	gettimeofday(&_bench_timeval_end, NULL);                                                                                                                                \
 	_bench_iterations += 1;                                                                                                                                                 \
 	if (_bench_cycles_end < _bench_cycles_start) {                                                                                                                          \
-		_bench_cycles_end += (uint64_t) 1 << 32;                                                                                                                          \
+		_bench_cycles_end += (uint64_t) 1 << 32;                                                                                                                            \
 	}                                                                                                                                                                       \
 	_bench_cycles_diff = _bench_cycles_end;                                                                                                                                 \
 	_bench_cycles_diff -= _bench_cycles_start;                                                                                                                              \
