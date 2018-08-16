@@ -34,8 +34,7 @@ SRCS_KEM_TITANIUM_CCA_STD=$(STD_DIR)/encrypt.c \
 						$(STD_DIR)/ntt.c \
 						$(STD_DIR)/pack.c \
 						$(STD_DIR)/sampler.c \
-						$(STD_DIR)/fastrandombytes.c \
-						$(STD_DIR)/rng.c
+						$(STD_DIR)/fastrandombytes.c
 
 OBJS_KEM_TITANIUM_CCA_STD=$(SRCS_KEM_TITANIUM_CCA_STD:.c=.o)
 
@@ -63,8 +62,7 @@ SRCS_KEM_TITANIUM_CCA_HI=$(HI_DIR)/encrypt.c \
 						$(HI_DIR)/ntt.c \
 						$(HI_DIR)/pack.c \
 						$(HI_DIR)/sampler.c \
-						$(HI_DIR)/fastrandombytes.c \
-						$(HI_DIR)/rng.c
+						$(HI_DIR)/fastrandombytes.c
 
 OBJS_KEM_TITANIUM_CCA_HI=$(SRCS_KEM_TITANIUM_CCA_HI:.c=.o)
 
@@ -73,7 +71,7 @@ TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_HI)
 src/kem/titanium/upstream/Titanium_CCA_hi/%.o: src/kem/titanium/upstream/Titanium_CCA_hi/%.c $(HI_DIR)/littleendian.h $(HI_DIR)/fastmodulo.h
 	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
 
-HI_MODULE=titanium_cca_hi
+HI_MODULE=kem_titanium_cca_hi
 
 titanium_cca_hi_kem_upstream: $(OBJS_KEM_TITANIUM_CCA_HI)
 	bash scripts/collect_objects.sh $(HI_MODULE)  $(HI_DIR)/*.o
@@ -92,8 +90,7 @@ SRCS_KEM_TITANIUM_CCA_MED=$(MED_DIR)/encrypt.c \
 						$(MED_DIR)/ntt.c \
 						$(MED_DIR)/pack.c \
 						$(MED_DIR)/sampler.c \
-						$(MED_DIR)/fastrandombytes.c \
-						$(MED_DIR)/rng.c
+						$(MED_DIR)/fastrandombytes.c
 
 OBJS_KEM_TITANIUM_CCA_MED=$(SRCS_KEM_TITANIUM_CCA_MED:.c=.o)
 
@@ -102,7 +99,7 @@ TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_MED)
 src/kem/titanium/upstream/Titanium_CCA_med/%.o: $(MED_DIR)/%.c $(MED_DIR)/littleendian.h $(MED_DIR)/fastmodulo.h
 	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
 
-MED_MODULE=titanium_cca_med
+MED_MODULE=kem_titanium_cca_med
 
 titanium_cca_med_kem_upstream: $(OBJS_KEM_TITANIUM_CCA_MED)
 	bash scripts/collect_objects.sh $(MED_MODULE)  $(MED_DIR)/*.o
@@ -121,8 +118,7 @@ SRCS_KEM_TITANIUM_CCA_SUPER=$(SUPER_DIR)/encrypt.c \
 						$(SUPER_DIR)/ntt.c \
 						$(SUPER_DIR)/pack.c \
 						$(SUPER_DIR)/sampler.c \
-						$(SUPER_DIR)/fastrandombytes.c \
-						$(SUPER_DIR)/rng.c
+						$(SUPER_DIR)/fastrandombytes.c
 
 OBJS_KEM_TITANIUM_CCA_SUPER=$(SRCS_KEM_TITANIUM_CCA_SUPER:.c=.o)
 
@@ -131,7 +127,7 @@ TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_SUPER)
 src/kem/titanium/upstream/Titanium_CCA_super/%.o: $(SUPER_DIR)/%.c $(SUPER_DIR)/littleendian.h $(SUPER_DIR)/fastmodulo.h
 	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
 
-SUPER_MODULE=titanium_cca_super
+SUPER_MODULE=kem_titanium_cca_super
 
 titanium_cca_super_kem_upstream: $(OBJS_KEM_TITANIUM_CCA_SUPER)
 	bash scripts/collect_objects.sh $(SUPER_MODULE)  $(SUPER_DIR)/*.o
