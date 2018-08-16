@@ -170,6 +170,7 @@ Contributors to this nist-branch of liboqs include:
 - Tancrède Lepoint (SRI International)
 - Shravan Mishra (University of Waterloo)
 - Douglas Stebila (McMaster University)
+- Ben Davies (University of Waterloo)
 
 nist-branch is based on the liboqs master branch, which includes additional contributors.
 
