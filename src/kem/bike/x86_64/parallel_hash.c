@@ -16,14 +16,17 @@
 
 #define MAX_REM_LEN (MAX_MB_SLICES * HASH_BLOCK_SIZE)
 
+// We need to ensure that the compiler does not add padding between x and y
+// Because the entire structore goes into the hash function
 #pragma pack(push, 1)
 
-//The below struct is a concatination of eight slices and Y.
+// The struct below is a concatination of eight slices and Y
 typedef struct yx_s {
 	union {
 		struct {
 			sha_hash_t x[MAX_MB_SLICES];
-			//We define MAX_REM_LEN and not lrem to be compatible with the standard of C.
+			// We define MAX_REM_LEN and not lrem to be
+			// compatible with the standard of C
 			uint8_t y[MAX_REM_LEN];
 		} v;
 		uint8_t raw[(MAX_MB_SLICES * sizeof(sha_hash_t)) + MAX_REM_LEN];
@@ -32,19 +35,20 @@ typedef struct yx_s {
 
 #pragma pack(pop)
 
-_INLINE_ uint64_t compute_slice_len(IN uint64_t la) {
-	//alpha is the number of full blocks.
+_INLINE_ uint64_t compute_slice_len(IN const uint64_t la) {
+	// alpha is the number of full blocks.
 	const uint64_t alpha = (((la / MAX_MB_SLICES) - SLICE_REM) / HASH_BLOCK_SIZE);
 	return ((alpha * HASH_BLOCK_SIZE) + SLICE_REM);
 }
 
+// This function assumes that m is of N_BITS length
 void parallel_hash(OUT sha_hash_t *out_hash,
                    IN const uint8_t *m,
                    IN const uint32_t la) {
 	DMSG("    Enter parallel_hash.\n");
 
-	//Calculating how many bytes will go to "parallel" hashing
-	//and how many will remind as a tail for later on.
+	// Calculating how many bytes will go to "parallel" hashing
+	// and how many will remind as a tail for later on
 	const uint32_t ls = compute_slice_len(la);
 	const uint32_t lrem = (uint32_t)(la - (ls * MAX_MB_SLICES));
 	yx_t yx = {0};
@@ -62,7 +66,7 @@ void parallel_hash(OUT sha_hash_t *out_hash,
 	DMSG("\n");
 	EDMSG("    The 8 SHA digests:\n");
 
-	//Use optimize API for 4 blocks.
+	// Use optimized API for 4 blocks.
 	const uint64_t partial_len = (NUM_OF_BLOCKS_IN_MB * ls);
 	sha_mb(&yx.u.v.x[0], m, partial_len, NUM_OF_BLOCKS_IN_MB);
 #if NUM_OF_BLOCKS_IN_MB != MAX_MB_SLICES
@@ -74,14 +78,17 @@ void parallel_hash(OUT sha_hash_t *out_hash,
 		print((uint64_t *) yx.u.v.x[i].u.raw, sizeof(yx.u.v.x[i]) * 8);
 	}
 
-	//Copy the reminder (Y).
+	// Copy the reminder (Y)
 	memcpy(yx.u.v.y, &m[MAX_MB_SLICES * ls], lrem);
 
-	//Compute the final hash (on YX).
+	// Compute the final hash (on YX)
 	sha(out_hash, sizeof(yx), yx.u.raw);
 
 	EDMSG("\nY:  ");
 	print((uint64_t *) yx.u.v.y, lrem * 8);
+
+	// yx might contain secrets.
+	OQS_MEM_cleanse(yx.u.raw, sizeof(yx));
 
 	DMSG("    Exit parallel_hash.\n");
 }

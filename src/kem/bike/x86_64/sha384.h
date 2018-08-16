@@ -86,10 +86,7 @@ typedef struct {
 //         ASM APIs
 ///////////////////////////////////////////////
 
-void sha384_512_multi_block_avx2(OUT sha_mb_ctx *ctx,
-                                 IN const hash_desc *input,
-                                 IN const uint32_t min_length);
-
+#ifdef USE_AVX512F_INSTRUCTIONS
 void sha384_512_multi_block_avx512(OUT sha_mb_ctx *ctx,
                                    IN const hash_desc *input,
                                    IN const uint32_t min_length);
@@ -97,11 +94,28 @@ void sha384_512_multi_block_avx512(OUT sha_mb_ctx *ctx,
 _INLINE_ void sha_mb_avx(OUT sha_mb_ctx *ctx,
                          IN const hash_desc *input,
                          IN const uint32_t min_length) {
-#ifdef USE_AVX512F_INSTRUCTIONS
+
 	sha384_512_multi_block_avx512(ctx, input, min_length);
-#else
-	sha384_512_multi_block_avx2(ctx, input, min_length);
-#endif
 }
+
+#else  // USE_AVX512F_INSTRUCTIONS
+
+// This functions uses the secure buffer instead of writing data on the stack.
+// Later we can easily free its content which might include secrets
+void sha384_512_multi_block_avx2(OUT sha_mb_ctx *ctx,
+                                 IN const hash_desc *input,
+                                 IN const uint32_t min_length,
+                                 IN OUT uint8_t *secure_buf);
+
+_INLINE_ void sha_mb_avx(OUT sha_mb_ctx *ctx,
+                         IN const hash_desc *input,
+                         IN const uint32_t min_length) {
+
+	uint8_t *secure_buf = malloc(SHA_MB_SECURE_BUF_SIZE);
+	sha384_512_multi_block_avx2(ctx, input, min_length, secure_buf);
+
+	free(secure_buf);
+}
+#endif // USE_AVX512F_INSTRUCTIONS
 
 #endif //_SHA384_H_

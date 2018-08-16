@@ -45,12 +45,12 @@
 
 #pragma pack(push, 1)
 
-//The below struct is a concatenation of eight slices and Y.
+// The below struct is a concatenation of eight slices and Y
 typedef struct yx_s {
 	union {
 		struct {
 			sha384_hash_t x[PH_SLICES_NUM];
-			//We define MAX_REM_LEN and not lrem to be compatible with the standard of C.
+			// We define MAX_REM_LEN and not lrem to be compatible with the standard of C
 			uint8_t y[MAX_REM_LEN];
 		} v;
 		uint8_t raw[(PH_SLICES_NUM * sizeof(sha384_hash_t)) + MAX_REM_LEN];
@@ -60,7 +60,7 @@ typedef struct yx_s {
 #pragma pack(pop)
 
 _INLINE_ uint64_t compute_slice_len(IN uint64_t la) {
-	//alpha is the number of full blocks.
+	// alpha is the number of full blocks
 	const uint64_t alpha = (((la / PH_SLICES_NUM) - SLICE_REM) / HASH_BLOCK_SIZE);
 	return ((alpha * HASH_BLOCK_SIZE) + SLICE_REM);
 }
@@ -70,8 +70,8 @@ void parallel_hash(OUT sha384_hash_t *out_hash,
                    IN const uint32_t la) {
 	DMSG("    Enter parallel_hash.\n");
 
-	//Calculating how many bytes will go to "parallel" hashing
-	//and how many will remind as a tail for later on.
+	// Calculating how many bytes will go to "parallel" hashing
+	// and how many will remind as a tail for later on
 	const uint32_t ls = compute_slice_len(la);
 	const uint32_t lrem = (uint32_t)(la - (ls * PH_SLICES_NUM));
 	yx_t yx = {0};
@@ -89,17 +89,17 @@ void parallel_hash(OUT sha384_hash_t *out_hash,
 	DMSG("\n");
 	EDMSG("    The 8 SHA digests:\n");
 
-	//Hash each block (X[i]).
+	// Hash each block (X[i])
 	for (uint32_t i = 0; i < PH_SLICES_NUM; i++) {
 		SHA384(&m[i * ls], ls, yx.u.v.x[i].u.raw);
 		EDMSG("X[%u]:", i);
 		print((uint64_t *) yx.u.v.x[i].u.raw, sizeof(yx.u.v.x[i]) * 8);
 	}
 
-	//Copy the reminder (Y).
+	// Copy the reminder (Y)
 	memcpy(yx.u.v.y, &m[PH_SLICES_NUM * ls], lrem);
 
-	//Compute the final hash (on YX).
+	// Compute the final hash (on YX)
 	SHA384(yx.u.raw, sizeof(yx), out_hash->u.raw);
 
 	EDMSG("\nY:  ");

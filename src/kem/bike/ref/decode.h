@@ -49,4 +49,4 @@ int decode(uint8_t e[2 * R_BITS],
            uint32_t h1_compact[DV],
            uint32_t u);
 
-#endif //_R_DECAPS_H_
+#endif // _R_DECAPS_H_

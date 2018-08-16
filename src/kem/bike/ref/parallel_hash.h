@@ -43,23 +43,23 @@
 typedef struct sha384_hash_s {
 	union {
 		uint8_t raw[SHA384_HASH_SIZE];
-		uint64_t qwords[SHA384_HASH_QWORDS];
+		uint64_t qw[SHA384_HASH_QWORDS];
 	} u;
 } sha384_hash_t;
 
-//The parallel_hash algorithm uses the technique described in
-// 1) S. Gueron, V. Krasnov. Simultaneous Hashing of Multiple Messages.
-//    Journal of Information Security 3:319-325 (2012).
-// 2) S. Gueron. A j-Lanes Tree Hashing Mode and j-Lanes SHA-256.
-//    Journal of Information Security 4:7-11 (2013).
-// See also:
-// 3) S. Gueron. Parallelized Hashing via j-Lanes and j-Pointers Tree Modes,
-//    with Applications to SHA-256.
-//    Journal of Information Security 5:91-113 (2014).
+// The parallel_hash algorithm uses the technique described in
+//  1) S. Gueron, V. Krasnov. Simultaneous Hashing of Multiple Messages.
+//     Journal of Information Security 3:319-325 (2012).
+//  2) S. Gueron. A j-Lanes Tree Hashing Mode and j-Lanes SHA-256.
+//     Journal of Information Security 4:7-11 (2013).
+//  See also:
+//  3) S. Gueron. Parallelized Hashing via j-Lanes and j-Pointers Tree Modes,
+//     with Applications to SHA-256.
+//     Journal of Information Security 5:91-113 (2014).
 //
-// It is designed to convert the serial hashing to a parallelizeable process.
+//  It is designed to convert the serial hashing to a parallelizeable process.
 void parallel_hash(OUT sha384_hash_t *out_hash,
                    IN const uint8_t *m,
                    IN const uint32_t la);
 
-#endif //__AES_CTR_REF_H_INCLUDED__
+#endif // __AES_CTR_REF_H_INCLUDED__
