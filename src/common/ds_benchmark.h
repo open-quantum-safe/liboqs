@@ -113,25 +113,52 @@ int gettimeofday(struct timeval *tp, struct timezone *tzp) {
 }
 #endif
 
-static uint64_t rdtsc(void) {
-#if defined(_WIN32)
+static uint64_t _bench_rdtsc(void) {
+#if defined(_WIN32) || defined(_WIN64)
 	return __rdtsc();
-#elif defined(__aarch64__)
+#elif defined(__i586__) || defined(__amd64__)
 	uint64_t x;
-	asm volatile("isb; mrs %0, cntvct_el0"
-	             : "=r"(x));
+	__asm__ volatile(".byte 0x0f, 0x31" : "=A"(x));
 	return x;
 #elif defined(__arm__)
+	/* Use the ARM performance counters. */
+	unsigned int value;
+	/* Read CCNT Register */
+	asm volatile("mrc p15, 0, %0, c9, c13, 0\t\n" : "=r"(value));
+	return value;
+#else
 	struct timespec time;
 	clock_gettime(CLOCK_REALTIME, &time);
 	return (int64_t)(time.tv_sec * 1e9 + time.tv_nsec);
-#else
-	uint64_t x;
-	__asm__ volatile(".byte 0x0f, 0x31"
-	                 : "=A"(x));
-	return x;
 #endif
 }
+
+#if defined(__arm__)
+static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
+	/* In general enable all counters (including cycle counter) */
+	int32_t value = 1;
+
+	/* Peform reset */
+	if (do_reset) {
+		value |= 2; /* reset all counters to zero */
+		value |= 4; /* reset cycle counter to zero */
+	}
+
+	if (enable_divider)
+		value |= 8; /* enable "by 64" divider for CCNT */
+
+	value |= 16;
+
+	/* Program the performance-counter control-register */
+	asm volatile("mcr p15, 0, %0, c9, c12, 0\t\n" ::"r"(value));
+
+	/* Enable all counters */
+	asm volatile("mcr p15, 0, %0, c9, c12, 1\t\n" ::"r"(0x8000000f));
+
+	/* Clear overflows */
+	asm volatile("mcr p15, 0, %0, c9, c12, 3\t\n" ::"r"(0x8000000f));
+}
+#endif
 
 #define DEFINE_TIMER_VARIABLES                                                                              \
 	volatile uint64_t _bench_cycles_start, _bench_cycles_end;                                               \
@@ -142,6 +169,16 @@ static uint64_t rdtsc(void) {
 	double _bench_cycles_x, _bench_cycles_mean, _bench_cycles_delta, _bench_cycles_M2, _bench_cycles_stdev; \
 	double _bench_time_x, _bench_time_mean, _bench_time_delta, _bench_time_M2, _bench_time_stdev;
 
+#if defined(__arm__)
+#define INITIALIZE_TIMER            \
+	_bench_init_perfcounters(1, 0); \
+	_bench_iterations = 0;          \
+	_bench_cycles_mean = 0.0;       \
+	_bench_cycles_M2 = 0.0;         \
+	_bench_time_cumulative = 0;     \
+	_bench_time_mean = 0.0;         \
+	_bench_time_M2 = 0.0;
+#else
 #define INITIALIZE_TIMER        \
 	_bench_iterations = 0;      \
 	_bench_cycles_mean = 0.0;   \
@@ -149,19 +186,21 @@ static uint64_t rdtsc(void) {
 	_bench_time_cumulative = 0; \
 	_bench_time_mean = 0.0;     \
 	_bench_time_M2 = 0.0;
+#endif
 
 #define START_TIMER                            \
 	gettimeofday(&_bench_timeval_start, NULL); \
-	_bench_cycles_start = rdtsc();
+	_bench_cycles_start = _bench_rdtsc();
 
 // Mean and population standard deviation are calculated in an online way using the algorithm in
 //     http://en.wikipedia.org/wiki/Algorithms_for_calculating_variance#Online_algorithm
+
 #define STOP_TIMER                                                                                                                                                          \
-	_bench_cycles_end = rdtsc();                                                                                                                                            \
+	_bench_cycles_end = _bench_rdtsc();                                                                                                                                     \
 	gettimeofday(&_bench_timeval_end, NULL);                                                                                                                                \
 	_bench_iterations += 1;                                                                                                                                                 \
 	if (_bench_cycles_end < _bench_cycles_start) {                                                                                                                          \
-		_bench_cycles_end += (uint64_t) 1 << 32;                                                                                                                            \
+		_bench_cycles_end += (uint64_t) 1 << 32;                                                                                                                          \
 	}                                                                                                                                                                       \
 	_bench_cycles_diff = _bench_cycles_end;                                                                                                                                 \
 	_bench_cycles_diff -= _bench_cycles_start;                                                                                                                              \
