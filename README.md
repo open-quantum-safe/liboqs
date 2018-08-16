@@ -14,14 +14,14 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 - a collection of open source implementations of post-quantum cryptography algorithms
 - a test harness and benchmarking routines
 
-The OQS project also provides prototype integrations into application-level protocols to enable testing of quantum-resistant cryptography.  
+The OQS project also provides prototype integrations into application-level protocols to enable testing of quantum-resistant cryptography.
 
 More information on OQS can be found on our website: [https://openquantumsafe.org/](https://openquantumsafe.org/).
 
 nist-branch
 -----------
 
-This branch of liboqs aims to non-selectively incorporate submissions to the NIST Post-Quantum Cryptography project for the purposes of benchmarking and integration into a common API for liboqs-reliant applications.  
+This branch of liboqs aims to non-selectively incorporate submissions to the NIST Post-Quantum Cryptography project for the purposes of benchmarking and integration into a common API for liboqs-reliant applications.
 
 This branch takes a "light touch" approach to incorporation:
 
@@ -37,9 +37,9 @@ liboqs nist-branch can be used in our fork of OpenSSL to prototype quantum-resis
 Limitations and security
 ------------------------
 
-liboqs is designed for prototyping and evaluating quantum-resistant cryptography.  Security of proposed quantum-resistant algorithms may rapidly change as research advances, and may ultimately be completely insecure against either classical or quantum computers.  
+liboqs is designed for prototyping and evaluating quantum-resistant cryptography.  Security of proposed quantum-resistant algorithms may rapidly change as research advances, and may ultimately be completely insecure against either classical or quantum computers.
 
-We believe that the NIST Post-Quantum Cryptography standardization project is currently the best avenue to identifying potentially quantum-resistant algorithms.  liboqs does not intend to "pick winners", and we strongly recommend that applications and protocols rely on the outcomes of the NIST standardization project when deploying post-quantum cryptography.  
+We believe that the NIST Post-Quantum Cryptography standardization project is currently the best avenue to identifying potentially quantum-resistant algorithms.  liboqs does not intend to "pick winners", and we strongly recommend that applications and protocols rely on the outcomes of the NIST standardization project when deploying post-quantum cryptography.
 
 We acknowledge that some parties may want to begin deploying post-quantum cryptography prior to the conclusion of the NIST standardization project.  We strongly recommend that any attempts to do make use of so-called **hybrid cryptography**, in which post-quantum public-key algorithms are used alongside traditional public key algorithms (like RSA or elliptic curves) so that the solution is at least no less secure than existing traditional cryptography.
 
@@ -51,17 +51,17 @@ Acceptance criteria for nist-branch
 -----------------------------------
 
 - **Algorithmic requirements:**
-	- Any algorithm accepted as a full and complete submission to round 1 of the NIST Post-Quantum Cryptography project is eligible for inclusion.
-	- Algorithms whose security is considered effectively broken are not eligible for addition; see the Lifecycle section below for conditions on their removal.
-	- KEMs can be IND-CPA or IND-CCA-secure, at any NIST security level.
-	- Signature schemes can be EUF-CMA-secure, at any NIST security level.
+    - Any algorithm accepted as a full and complete submission to round 1 of the NIST Post-Quantum Cryptography project is eligible for inclusion.
+    - Algorithms whose security is considered effectively broken are not eligible for addition; see the Lifecycle section below for conditions on their removal.
+    - KEMs can be IND-CPA or IND-CCA-secure, at any NIST security level.
+    - Signature schemes can be EUF-CMA-secure, at any NIST security level.
 - **Targets**:
-	- **Operating systems:** The code must build on Linux and macOS.
-	- **Architecture:** The code must build at least on x64.  Targets are currently provided for x86 and x64.  We plan to add an AVX2 target, and possibly others.
+    - **Operating systems:** The code must build on Linux and macOS.
+    - **Architecture:** The code must build at least on x64.  Targets are currently provided for x86 and x64.  We plan to add an AVX2 target, and possibly others.
 - **Source code requirements:**
-	- The source code can be from the original submission, or can be an updated version.
-	- **License:** Source code licensed under the MIT License, the BSD license, or in the public domain can be directly incorporated into the repository.  GPL code will not be included in the repository, but a wrapper to the OQS API may be included, as well as a script that downloads and compiles in GPL code if the algorithm is requested at compile-time.
-	- **Code quality:** Given the "light touch" philosophy of nist-branch, we have no requirements on source code quality, other than that it compile on the targets.
+    - The source code can be from the original submission, or can be an updated version.
+    - **License:** Source code licensed under the MIT License, the BSD license, or in the public domain can be directly incorporated into the repository.  GPL code will not be included in the repository, but a wrapper to the OQS API may be included, as well as a script that downloads and compiles in GPL code if the algorithm is requested at compile-time.
+    - **Code quality:** Given the "light touch" philosophy of nist-branch, we have no requirements on source code quality, other than that it compile on the targets.
 
 Contributing
 ------------
@@ -95,27 +95,27 @@ The dependencies for liboqs are OpenSSL and the Keccak Code Package (libkeccak).
 
 You need to install the following packages:
 
-	sudo apt install gcc libssl-dev unzip xsltproc
+    sudo apt install gcc libssl-dev unzip xsltproc
 
 ### Install dependencies for macOS
 
 You need to install the following packages using brew (or a package manager of your choice):
 
-	brew install openssl wget
+    brew install openssl wget
 
 ### Building
 
 To build, first clone or download the source from GitHub, then run Make.
 
-	git clone https://github.com/open-quantum-safe/liboqs.git
-	cd liboqs
-	git checkout nist-branch
-	make
+    git clone https://github.com/open-quantum-safe/liboqs.git
+    cd liboqs
+    git checkout nist-branch
+    make
 
 If you wish to change the target architecture or disable certain algorithms, edit the first few lines of `Makefile`, then run:
 
-	make clean
-	make -j8
+    make clean
+    make -j8
 
 This will generate:
 
@@ -132,7 +132,7 @@ This will generate:
 
 You can specify the path for installation by overriding the `PREFIX` environment variable before running `make install`, for example:
 
-	PREFIX=/path/to/install make install
+    PREFIX=/path/to/install make install
 
 Documentation
 -------------
@@ -141,14 +141,14 @@ The directory `docs/algorithms` contains information about each algorithm availa
 
 If you have Doxygen installed (Linux: `sudo apt install doxygen graphviz`; macOS: `brew install doxygen graphviz`), you can build HTML documentation of the liboqs nist-branch API:
 
-	make docs
+    make docs
 
 Then open `docs/doxygen/html/index.html` in your web browser.
 
 License
 -------
 
-liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/LICENSE.txt) for details.  
+liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/LICENSE.txt) for details.
 
 liboqs includes some third party libraries or modules that may be licensed differently.  All third-party code is contained in directories labelled `upstream`, and each such upstream directory contains a license file indicating the license that applies to code in that directory.
 
@@ -157,7 +157,7 @@ See https://github.com/XKCP/XKCP#under-which-license-is-the-xkcp-distributed for
 Team
 ----
 
-The Open Quantum Safe project is lead by [Douglas Stebila](https://www.douglas.stebila.ca/research/) [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
+The Open Quantum Safe project is led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
 
 ### Contributors
 
@@ -173,6 +173,7 @@ Contributors to this nist-branch of liboqs include:
 - Tancrède Lepoint (SRI International)
 - Shravan Mishra (University of Waterloo)
 - Douglas Stebila (University of Waterloo)
+- Ben Davies (University of Waterloo)
 
 nist-branch is based on the liboqs master branch, which includes additional contributors.
 
