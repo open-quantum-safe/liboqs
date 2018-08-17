@@ -40,7 +40,7 @@ OBJS_KEM_TITANIUM_CCA_STD=$(SRCS_KEM_TITANIUM_CCA_STD:.c=.o)
 
 TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_STD)
 
-src/kem/titanium/upstream/Titanium_CCA_std/%.o: src/kem/titanium/upstream/Titanium_CCA_std/%.c $(STD_DIR)/littleendian.h $(STD_DIR)/fastmodulo.h
+src/kem/titanium/upstream/Titanium_CCA_std/%.o: src/kem/titanium/upstream/Titanium_CCA_std/%.c $(STD_DIR)/littleendian.h $(STD_DIR)/fastmodulo.h  libkeccak
 	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
 
 STD_MODULE=kem_titanium_cca_std
@@ -68,7 +68,7 @@ OBJS_KEM_TITANIUM_CCA_HI=$(SRCS_KEM_TITANIUM_CCA_HI:.c=.o)
 
 TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_HI)
 
-src/kem/titanium/upstream/Titanium_CCA_hi/%.o: src/kem/titanium/upstream/Titanium_CCA_hi/%.c $(HI_DIR)/littleendian.h $(HI_DIR)/fastmodulo.h
+src/kem/titanium/upstream/Titanium_CCA_hi/%.o: src/kem/titanium/upstream/Titanium_CCA_hi/%.c $(HI_DIR)/littleendian.h $(HI_DIR)/fastmodulo.h libkeccak
 	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
 
 HI_MODULE=kem_titanium_cca_hi
@@ -96,7 +96,7 @@ OBJS_KEM_TITANIUM_CCA_MED=$(SRCS_KEM_TITANIUM_CCA_MED:.c=.o)
 
 TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_MED)
 
-src/kem/titanium/upstream/Titanium_CCA_med/%.o: $(MED_DIR)/%.c $(MED_DIR)/littleendian.h $(MED_DIR)/fastmodulo.h
+src/kem/titanium/upstream/Titanium_CCA_med/%.o: $(MED_DIR)/%.c $(MED_DIR)/littleendian.h $(MED_DIR)/fastmodulo.h libkeccak
 	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
 
 MED_MODULE=kem_titanium_cca_med
@@ -124,7 +124,7 @@ OBJS_KEM_TITANIUM_CCA_SUPER=$(SRCS_KEM_TITANIUM_CCA_SUPER:.c=.o)
 
 TO_CLEAN+=$(OBJS_KEM_TITANIUM_CCA_SUPER)
 
-src/kem/titanium/upstream/Titanium_CCA_super/%.o: $(SUPER_DIR)/%.c $(SUPER_DIR)/littleendian.h $(SUPER_DIR)/fastmodulo.h
+src/kem/titanium/upstream/Titanium_CCA_super/%.o: $(SUPER_DIR)/%.c $(SUPER_DIR)/littleendian.h $(SUPER_DIR)/fastmodulo.h libkeccak
 	$(CC) -O2 -fPIC -I$(KECCAK_INCLUDE_DIR) -c -o $@ $<
 
 SUPER_MODULE=kem_titanium_cca_super

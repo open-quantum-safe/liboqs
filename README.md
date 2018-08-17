@@ -154,7 +154,7 @@ See https://github.com/gvanas/KeccakCodePackage#under-which-license-is-the-kcp-d
 Team
 ----
 
-The Open Quantum Safe project is lead by [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) (University of Waterloo) and [Douglas Stebila](https://www.douglas.stebila.ca/research/) (McMaster University).
+The Open Quantum Safe project is led by [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) (University of Waterloo) and [Douglas Stebila](https://www.douglas.stebila.ca/research/) (McMaster University).
 
 ### Contributors
 
