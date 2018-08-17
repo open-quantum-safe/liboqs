@@ -6,7 +6,7 @@ Summary
 
 - **Name:** Titanium CCA
 - **Algorithm type:** Key Encapsulation Mechanism
-- **Main cryptographic assumption:**
+- **Main cryptographic assumption:** Polynomial learning with errors
 - **NIST submission URL:** https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/Titanium.zip
 - **Submitters (to NIST competition):** Ron Steinfeld, Amin Sakzad, Raymond K. Zhao
 - **Submitters' website:** http://users.monash.edu.au/~rste/Titanium.html
