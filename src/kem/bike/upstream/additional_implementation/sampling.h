@@ -12,6 +12,7 @@
 #ifndef _SAMPLE_H_
 #define _SAMPLE_H_
 
+#include <oqs/rand.h>
 #include "stdio.h"
 #include "aes_ctr_prf.h"
 #include "utilities.h"

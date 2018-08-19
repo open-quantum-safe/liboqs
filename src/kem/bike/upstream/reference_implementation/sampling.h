@@ -35,7 +35,7 @@
 #ifndef _SAMPLE_H_
 #define _SAMPLE_H_
 
-#include "oqs/rand.h"
+#include <oqs/rand.h>
 #include "aes_ctr_prf.h"
 #include "utilities.h"
 
