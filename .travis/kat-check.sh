@@ -10,7 +10,7 @@ PRINT_RESET="tput sgr 0"
 
 RET=0
 
-./kat_kem
+./tests/kat_kem
 scripts/check_kats.sh
 error=$?
 if [ $error -eq 0 ];
