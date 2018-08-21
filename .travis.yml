@@ -67,6 +67,7 @@ matrix:
     env:
     - CC_OVERRIDE=clang
     - AES_NI=0
+    - USE_OPENSSL=1
     before_install:
     - brew update
     - brew install libsodium doxygen graphviz
