@@ -4,9 +4,7 @@
 # Checks that all algorithms have an algorithm datasheet in doc/algorithms.
 ###
 
-PRINT_GREEN="tput setaf 2"
-PRINT_RED="tput setaf 1"
-PRINT_RESET="tput sgr 0"
+source $(dirname $0)/defs.sh
 
 # get the list of KEMs from the list of algorithm identifiers in enum OQS_KEM_alg_name in src/kem/kem.h
 KEMS=`grep 'define OQS_KEM_alg_' src/kem/kem.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`

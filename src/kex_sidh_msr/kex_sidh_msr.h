@@ -1,6 +1,7 @@
 /**
  * \file kex_sidh_msr.h
  * \brief Header for SIDH key exchange protocol from the Microsoft SIDH library
+ * \deprecated Expected removal Sep. 2018
  */
 
 #ifndef __OQS_KEX_SIDH_MSR_H

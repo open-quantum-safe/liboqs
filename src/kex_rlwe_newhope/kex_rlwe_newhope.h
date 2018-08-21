@@ -1,6 +1,7 @@
 /**
  * \file kex_rlwe_newhope.h
  * \brief Header for ring-LWE key exchange protocol NewHope
+ * \deprecated Expected removal Sep. 2018
  */
 
 #ifndef __OQS_KEX_RLWE_NEWHOPE_H

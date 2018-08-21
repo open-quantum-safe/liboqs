@@ -31,6 +31,17 @@ OQS_KEM *OQS_KEM_sike_p503_new() {
 
 #endif
 
+// Preventing redefinition of symbols
+// Todo: remove
+#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
+#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
+#undef OQS_SIDH_MSR_CRYPTO_BYTES
+#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
+#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
+#undef SIDH_SECRETKEYBYTES
+#undef SIDH_PUBLICKEYBYTES
+#undef SIDH_BYTES
+
 #ifdef OQS_ENABLE_KEM_sike_p751
 
 #include "P751/P751_api.h"

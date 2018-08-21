@@ -10,9 +10,9 @@
 #include "external/qTESLA_III_size.h"
 #include "external/qTESLA_III_speed.h"
 
-static char *qTESLA_I_name = "qTESLA_I";
-static char *qTESLA_III_size_name = "qTESLA_III_size";
-static char *qTESLA_III_speed_name = "qTESLA_III_speed";
+static const char *qTESLA_I_name = "qTESLA_I";
+static const char *qTESLA_III_size_name = "qTESLA_III_size";
+static const char *qTESLA_III_speed_name = "qTESLA_III_speed";
 
 OQS_STATUS OQS_SIG_qTESLA_get(OQS_SIG *s, enum OQS_SIG_algid algid) {
 	if (s == NULL) {

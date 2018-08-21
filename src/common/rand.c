@@ -10,13 +10,10 @@
 #include <fcntl.h>
 #include <strings.h>
 
-#ifdef USE_OPENSSL
-#include <openssl/rand.h>
-#endif
-
 #include <oqs/oqs.h>
 
 #ifdef USE_OPENSSL
+#include <openssl/rand.h>
 // Use OpenSSL's RAND_bytes as the default PRNG
 static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = (void (*)(uint8_t *, size_t)) & RAND_bytes;
 #else

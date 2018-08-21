@@ -1,6 +1,7 @@
 /**
  * \file rand_urandom_chacha20.h
  * \brief Header for the chacha implementation of OQS_RAND
+ * \deprecated Expected removal Sep. 2018
  */
 
 #ifndef __OQS_RAND_URANDOM_CHACHA20_H

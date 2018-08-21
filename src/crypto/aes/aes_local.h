@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include "oqs/common.h"
 
 void oqs_aes128_load_schedule_ni(const uint8_t *key, void **schedule);
 void oqs_aes128_free_schedule_ni(void *schedule);

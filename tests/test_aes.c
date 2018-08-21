@@ -5,9 +5,9 @@
 
 #include <oqs/oqs.h>
 
-#include "../../common/ds_benchmark.h"
-#include "aes.h"
-#include "aes_local.h"
+#include "ds_benchmark.h"
+#include <oqs/aes.h>
+#include "../src/crypto/aes/aes_local.h"
 
 #define BENCH_DURATION 1
 

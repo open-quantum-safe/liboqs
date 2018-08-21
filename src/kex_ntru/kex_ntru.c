@@ -13,6 +13,7 @@
 #include <oqs/kex_ntru.h>
 #include <oqs/rand.h>
 
+#define HAVE_BOOL
 #include <ntru_crypto.h>
 
 #if defined(_WIN32)
