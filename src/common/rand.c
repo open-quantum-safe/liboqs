@@ -29,7 +29,7 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
 		oqs_randombytes_algorithm = &OQS_randombytes_system;
 		return OQS_SUCCESS;
-  } else if (0 == strcasecmp(OQS_RAND_alg_nist_kat, algorithm)) {
+	} else if (0 == strcasecmp(OQS_RAND_alg_nist_kat, algorithm)) {
 		oqs_randombytes_algorithm = &OQS_randombytes_nist_kat;
 		return OQS_SUCCESS;
 	} else if (0 == strcasecmp(OQS_RAND_alg_openssl, algorithm)) {

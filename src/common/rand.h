@@ -72,7 +72,6 @@ void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
  */
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
 
-
 /**
  * Initializes the NIST DRBG with a given seed.
  *
