@@ -36,7 +36,7 @@ test_kex_LDADD        = -L.. -loqs -lm -lcrypto
 test_rand_LDADD       = -L.. -loqs -lm -lcrypto
 test_sha3_LDADD       = -L.. -loqs -lm -lcrypto
 test_sig_LDADD        = -L.. -loqs -lm -lcrypto
-kat_kem_LDADD         = ../liboqs.la -lcrypto
+kat_kem_LDADD         = ../liboqs.la -lm -lcrypto
 
 if USE_OPENSSL
 example_kem_LDADD     += -L$(OPENSSL_DIR)/lib -lcrypto
