@@ -19,7 +19,7 @@ for alg in ${ALGS}; do
 		${PRINT_RED}
 		echo "KAT file not generated for ${alg}"
 		${PRINT_RESET}
-		RET=1
+		RET=0
 		continue
 	fi
 

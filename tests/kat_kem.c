@@ -38,7 +38,7 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
 		printf("[kem_kat] %s was not enabled at compile-time.\n", method_name);
-		goto err;
+		goto algo_not_enabled;
 	}
 
 	for (size_t i = 0; i < 48; i++) {
@@ -109,6 +109,9 @@ static OQS_STATUS kem_kat(const char *method_name) {
 
 err:
 	ret = OQS_ERROR;
+
+algo_not_enabled:
+	ret = OQS_SUCCESS;
 
 cleanup:
 	if (fh != NULL) {
