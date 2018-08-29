@@ -37,43 +37,47 @@
 #include "utilities.h"
 
 OQS_STATUS init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
-                                  IN const uint32_t maxInvokations,
+                                  IN const uint32_t max_invokations,
                                   IN const seed_t *seed) {
-	if (maxInvokations == 0) {
+	if (0 == max_invokations) {
 		return OQS_ERR_KEM_BIKE_AES_CTR_PRF_INIT;
 	}
 
-	//Set the Key schedule (from seed).
-	if (AES_set_encrypt_key(seed->u.raw, AES256_KEY_BITS, &s->key) != 0) {
+	// Set the Key schedule (from seed)
+	if (AES_set_encrypt_key(seed->raw, AES256_KEY_BITS, &s->key) != 0) {
 		return OQS_ERR_KEM_BIKE_AES_SET_KEY;
 	}
 
-	//Initialize buffer and counter
-	s->ctr.u.qwords[0] = 0;
-	s->ctr.u.qwords[1] = 0;
+	// Initialize buffer and counter
+	s->ctr.u.qw[0] = 0;
+	s->ctr.u.qw[1] = 0;
 
 	AES_encrypt(s->ctr.u.bytes, s->buffer.u.bytes, &s->key);
-	s->ctr.u.qwords[0]++;
+	s->ctr.u.qw[0]++;
 
 	s->pos = 0;
-	s->rem_invokations = (maxInvokations - 1);
+	s->rem_invokations = (max_invokations - 1);
 
 	SEDMSG("    Init aes_prf_ctr state:\n");
 	SEDMSG("      s.pos = %d\n", s->pos);
 	SEDMSG("      s.rem_invokations = %u\n", s->rem_invokations);
-	SEDMSG("      s.buffer = "); //print(s->buffer.qwords, sizeof(s->buffer)*8);
-	SEDMSG("      s.ctr = 0x");  //print(s->ctr.qwords, sizeof(s->ctr)*8);
+	SEDMSG("      s.buffer = "); //print(s->buffer.qw, sizeof(s->buffer)*8);
+	SEDMSG("      s.ctr = 0x");  //print(s->ctr.qw, sizeof(s->ctr)*8);
 
 	return OQS_SUCCESS;
 }
 
 _INLINE_ OQS_STATUS perform_aes(OUT uint8_t *ct, IN OUT aes_ctr_prf_state_t *s) {
-	if (s->rem_invokations == 0) {
+	// Ensure that the CTR is big enough
+	static_assert(((sizeof(s->ctr.u.qw[0]) == 8) && (BIT(33) >= MAX_AES_INVOKATION)),
+	              ctr_size_is_too_small);
+
+	if (0 == s->rem_invokations) {
 		return OQS_ERR_KEM_BIKE_AES_OVER_USED;
 	}
 
 	AES_encrypt(s->ctr.u.bytes, ct, &s->key);
-	s->ctr.u.qwords[0]++;
+	s->ctr.u.qw[0]++;
 	s->rem_invokations--;
 
 	return OQS_SUCCESS;
@@ -84,8 +88,8 @@ OQS_STATUS aes_ctr_prf(OUT uint8_t *a,
                        IN const uint32_t len) {
 	OQS_STATUS res = OQS_SUCCESS;
 
-	//When Len i smaller then whats left in the buffer
-	//No need in additional AES.
+	// When Len is smaller then whats left in the buffer
+	// there is no need in additional AES.
 	if ((len + s->pos) <= AES256_BLOCK_SIZE) {
 		memcpy(a, &s->buffer.u.bytes[s->pos], len);
 		s->pos += len;
@@ -93,15 +97,15 @@ OQS_STATUS aes_ctr_prf(OUT uint8_t *a,
 		return res;
 	}
 
-	//if s.pos != AES256_BLOCK_SIZE then copy whats left in the buffer.
-	//else copy zero bytes.
+	// If s.pos != AES256_BLOCK_SIZE then copy whats left in the buffer.
+	// Else copy zero bytes.
 	uint32_t idx = AES256_BLOCK_SIZE - s->pos;
 	memcpy(a, &s->buffer.u.bytes[s->pos], idx);
 
-	//Init s.pos;
+	// Init s.pos;
 	s->pos = 0;
 
-	//Copy full AES blocks.
+	// Copy full AES blocks.
 	while ((len - (idx - 1)) >= AES256_BLOCK_SIZE) {
 		res = perform_aes(&a[idx], s);
 		CHECK_STATUS(res);
@@ -111,7 +115,7 @@ OQS_STATUS aes_ctr_prf(OUT uint8_t *a,
 	res = perform_aes(s->buffer.u.bytes, s);
 	CHECK_STATUS(res);
 
-	//Copy the tail.
+	// Copy the tail.
 	s->pos = len - idx;
 	memcpy(&a[idx], s->buffer.u.bytes, s->pos);
 

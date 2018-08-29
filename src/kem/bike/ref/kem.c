@@ -102,7 +102,7 @@ EXIT:
 	return res;
 }
 
-//Generate the Shared Secres (K(e))
+// Generate the Shared Secres (K(e))
 _INLINE_ OQS_STATUS get_ss(OUT ss_t *out, IN uint8_t *e) {
 	OQS_STATUS res = OQS_SUCCESS;
 
@@ -110,11 +110,11 @@ _INLINE_ OQS_STATUS get_ss(OUT ss_t *out, IN uint8_t *e) {
 
 	sha384_hash_t hash = {0};
 
-	//Calculate the hash.
+	// Calculate the hash
 	parallel_hash(&hash, e, N_SIZE);
 
-	//Truncate the final hash into K.
-	//By copying only the LSBs
+	// Truncate the final hash into K
+	// By copying only the LSBs
 	for (uint32_t i = 0; i < sizeof(ss_t); i++) {
 		out->raw[i] = hash.u.raw[i];
 	}
@@ -123,7 +123,7 @@ _INLINE_ OQS_STATUS get_ss(OUT ss_t *out, IN uint8_t *e) {
 	return res;
 }
 
-// transpose a row into a column:
+// Transpose a row into a column:
 _INLINE_ void transpose(uint8_t col[R_BITS], uint8_t row[R_BITS]) {
 	col[0] = row[0];
 	for (uint64_t i = 1; i < R_BITS; ++i) {
@@ -159,7 +159,7 @@ _INLINE_ OQS_STATUS compute_syndrome(OUT syndrome_t *syndrome,
 	CHECK_STATUS(res);
 #endif
 
-	//Store the syndrome in a bit array
+	// Store the syndrome in a bit array
 	convertByteToBinary(s_tmp_bytes, s0, R_BITS);
 	transpose(syndrome->raw, s_tmp_bytes);
 EXIT:
@@ -167,21 +167,20 @@ EXIT:
 }
 
 ////////////////////////////////////////////////////////////////
-//The three APIs below (keypair, enc, dec) are defined by NIST:
-//In addition there are two KAT versions of this API as defined.
+// The three APIs below (keypair, enc, dec) are defined by NIST:
 ////////////////////////////////////////////////////////////////
 OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
-	//Convert to this implementation types
+	// Convert to this implementation types
 	sk_t *l_sk = (sk_t *) sk;
 	pk_t *l_pk = (pk_t *) pk;
 	OQS_STATUS res = OQS_SUCCESS;
 
-	//For NIST DRBG_CTR.
+	// For NIST DRBG_CTR
 	double_seed_t seeds = {0};
 	aes_ctr_prf_state_t h_prf_state = {0};
 
-	//Get the entropy seeds.
-	get_seeds(&seeds, KEYGEN_SEEDS);
+	// Get the entropy seeds
+	get_seeds(&seeds);
 
 	// sk = (h0, h1)
 	uint8_t *h0 = l_sk->u.v.val0;
@@ -199,8 +198,8 @@ OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	uint8_t *g = l_pk->u.v.val1;
 #endif
 
-	//Both h0 and h1 use the same context
-	res = init_aes_ctr_prf_state(&h_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
+	// Both h0 and h1 use the same context
+	res = init_aes_ctr_prf_state(&h_prf_state, MAX_AES_INVOKATION, &seeds.s1);
 	CHECK_STATUS(res);
 
 	res = generate_sparse_rep(h0, DV, R_BITS, &h_prf_state);
@@ -212,7 +211,7 @@ OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 
 #if BIKE_VER == 1
 	//  pk = (g*h1, g*h0)
-	res = sample_uniform_r_bits(g, &seeds.u.v.s2, MUST_BE_ODD);
+	res = sample_uniform_r_bits(g, &seeds.s2, MUST_BE_ODD);
 	CHECK_STATUS(res);
 
 	cyclic_product(l_pk->u.v.val0, g, h1);
@@ -222,14 +221,17 @@ OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 #elif BIKE_VER == 2
 	// pk = (1, h1*h0^(-1))
 	memset(l_pk->u.v.val0, 0, R_SIZE);
-	l_pk->u.v.val0[0] = 1; //assume all elements initialized with 0
+
+	// assume all elements initialized with 0
+	l_pk->u.v.val0[0] = 1;
 	res = ossl_mod_inv(inv_h0, h0);
 	CHECK_STATUS(res);
 	res = cyclic_product(l_pk->u.v.val1, h1, inv_h0);
 	CHECK_STATUS(res);
 #elif BIKE_VER == 3
+
 	// pk = (h1 + g*h0, g)
-	res = sample_uniform_r_bits(g, &seeds.u.v.s2, MUST_BE_ODD);
+	res = sample_uniform_r_bits(g, &seeds.s2, MUST_BE_ODD);
 	CHECK_STATUS(res);
 	res = cyclic_product(tmp1, g, h0);
 	CHECK_STATUS(res);
@@ -251,9 +253,9 @@ EXIT:
 	return res;
 }
 
-//Encapsulate - pk is the public key,
-//              ct is a key encapsulation message (ciphertext),
-//              ss is the shared secret.
+// Encapsulate - pk is the public key,
+//               ct is a key encapsulation message (ciphertext),
+//               ss is the shared secret.
 OQS_STATUS encaps(OUT unsigned char *ct,
                   OUT unsigned char *ss,
                   IN const unsigned char *pk) {
@@ -261,27 +263,27 @@ OQS_STATUS encaps(OUT unsigned char *ct,
 
 	OQS_STATUS res = OQS_SUCCESS;
 
-	//Convert to these implementation types
+	// Convert to these implementation types
 	const pk_t *l_pk = (pk_t *) pk;
 	ct_t *l_ct = (ct_t *) ct;
 	ss_t *l_ss = (ss_t *) ss;
 
-	//For NIST DRBG_CTR.
+	// For NIST DRBG_CTR
 	double_seed_t seeds = {0};
 	aes_ctr_prf_state_t e_prf_state = {0};
 
-	//Get the entropy seeds.
-	get_seeds(&seeds, ENCAPS_SEEDS);
+	// Get the entropy seeds
+	get_seeds(&seeds);
 
-	// error vector:
+	// Error vector:
 	uint8_t e[N_SIZE] = {0};
 #if BIKE_VER == 3
 	uint8_t e_extra[R_SIZE] = {0};
 #endif
 
-	//random data generator;
+	// Random data generator
 	// Using first seed
-	res = init_aes_ctr_prf_state(&e_prf_state, MAX_AES_INVOKATION, &seeds.u.v.s1);
+	res = init_aes_ctr_prf_state(&e_prf_state, MAX_AES_INVOKATION, &seeds.s1);
 	CHECK_STATUS(res);
 
 	DMSG("    Generating error.\n");
@@ -293,14 +295,14 @@ OQS_STATUS encaps(OUT unsigned char *ct,
 	CHECK_STATUS(res);
 #endif
 
-	// computing ct = enc(pk, e)
+	// Compute ct = enc(pk, e)
 	// Using second seed
 	DMSG("    Encrypting.\n");
 #if BIKE_VER == 3
-	res = encrypt(l_ct, e, e_extra, l_pk, &seeds.u.v.s2);
+	res = encrypt(l_ct, e, e_extra, l_pk, &seeds.s2);
 	CHECK_STATUS(res);
 #else
-	res = encrypt(l_ct, e, 0, l_pk, &seeds.u.v.s2);
+	res = encrypt(l_ct, e, 0, l_pk, &seeds.s2);
 	CHECK_STATUS(res);
 #endif
 
@@ -317,16 +319,16 @@ EXIT:
 	return res;
 }
 
-//Decapsulate - ct is a key encapsulation message (ciphertext),
-//              sk is the private key,
-//              ss is the shared secret
+// Decapsulate - ct is a key encapsulation message (ciphertext),
+//               sk is the private key,
+//               ss is the shared secret
 OQS_STATUS decaps(OUT unsigned char *ss,
                   IN const unsigned char *ct,
                   IN const unsigned char *sk) {
 	DMSG("  Enter crypto_kem_dec.\n");
 	OQS_STATUS res = OQS_SUCCESS;
 
-	//Convert to this implementation types
+	// Convert to this implementation types
 	const sk_t *l_sk = (sk_t *) sk;
 	const ct_t *l_ct = (ct_t *) ct;
 	ss_t *l_ss = (ss_t *) ss;
@@ -342,7 +344,8 @@ OQS_STATUS decaps(OUT unsigned char *ss,
 	uint8_t e[R_BITS * 2] = {0};
 	uint8_t eBytes[N_SIZE] = {0};
 	int rc;
-	uint32_t u = 0; // For BIKE-1 and BIKE-2, u = 0 (i.e. syndrome must become a zero-vector)
+	// For BIKE-1 and BIKE-2, u = 0 (i.e. syndrome must become a zero-vector)
+	uint32_t u = 0;
 	res = compute_syndrome(&syndrome, l_ct, l_sk);
 	CHECK_STATUS(res);
 
@@ -359,7 +362,7 @@ OQS_STATUS decaps(OUT unsigned char *ss,
 		ERR(OQS_ERR_KEM_BIKE_DECODING_FAILURE);
 	}
 
-	// checking if error weight is exactly t:
+	// Check if error weight equals T1:
 	if (getHammingWeight(e, 2 * R_BITS) != T1) {
 		MSG("Error weight is not t\n");
 		ERR(OQS_ERR_KEM_BIKE_WEIGHT_IS_NOT_T);

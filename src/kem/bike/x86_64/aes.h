@@ -13,17 +13,30 @@
 #define __AES_H_INCLUDED__
 
 #include "types.h"
-
-#define AES256_KEY_SIZE 32ULL
-#define AES256_KEY_BITS (AES256_KEY_SIZE * 8)
-#define AES256_BLOCK_SIZE 16ULL
+#include <wmmintrin.h>
+#include <tmmintrin.h>
 
 #define MAX_AES_INVOKATION (MASK(32))
 
-void AES_256_Key_Expansion(OUT uint8_t *ks, IN const uint8_t *key);
+#define AES256_KEY_SIZE (32ULL)
+#define AES256_KEY_BITS (AES256_KEY_SIZE * 8)
+#define AES256_BLOCK_SIZE (16ULL)
+#define AES256_ROUNDS (14ULL)
 
-void AES256_Enc_Intrinsic(OUT const uint8_t *ct,
+typedef ALIGN(16) struct aes256_key_s {
+	uint8_t raw[AES256_KEY_SIZE];
+} aes256_key_t;
+
+typedef ALIGN(16) struct aes256_ks_s {
+	__m128i keys[AES256_ROUNDS + 1];
+} aes256_ks_t;
+
+// The ks parameter must be 16 bytes aligned!
+void aes256_key_expansion(OUT aes256_ks_t *ks,
+                          IN const aes256_key_t *key);
+
+void aes256_enc_intrinsic(OUT const uint8_t *ct,
                           IN const uint8_t *pt,
-                          IN const uint8_t *ks);
+                          IN const aes256_ks_t *ks);
 
-#endif //__AES_H_INCLUDED__
+#endif // __AES_H_INCLUDED__
