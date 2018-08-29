@@ -23,7 +23,7 @@ for alg in ${ALGS}; do
 		continue
 	fi
 
-	origs=`find src -name ${alg}.kat |tr '\n' ' '`
+	origs=`find src -name ${alg}.kat -o -name ${alg}.*.kat |tr '\n' ' '`
 	if [[ "x${origs}x" == "xx" ]];
 	then
 		${PRINT_RED}

@@ -11,75 +11,92 @@
 # github.com/Shay-Gueron/A-toolbox-for-software-optimization-of-QC-MDPC-code-based-cryptosystems
 ##############################################################################
 
+#define __ASM_FILE__
+#include "bike_defs.h"
+
 .data
 
-.align    16
-mask_256:
+.align 16, 0x90
+MASK1:
 .long 0x0c0f0e0d,0x0c0f0e0d,0x0c0f0e0d,0x0c0f0e0d
-con:
+CON1:
 .long 1,1,1,1
 
-########################################################################
-# void AES_256_Key_Expansion (OUT uint8_t *ks, IN  const uint8_t *key);
-
-#Linux ABI
-.set ks,  %rdi
-.set key, %rsi
+.set k256_size, 32
 
 .text
-.hidden AES_256_Key_Expansion
-.globl  AES_256_Key_Expansion
-.type   AES_256_Key_Expansion,@function
-AES_256_Key_Expansion:
-   vmovdqu (key), %xmm1
-   vmovdqu 16(key), %xmm3
-   vmovdqa %xmm1, (ks)
-   vmovdqa %xmm3, 16(ks)
-   vmovdqa con(%rip), %xmm0
-   vmovdqa mask_256(%rip), %xmm15
-   vpxor %xmm14, %xmm14, %xmm14
-   
+
+################################################################################
+# void aes256_key_expansion(OUT aes256_ks_t* ks, IN const uint8_t* key);
+# The output parameter must be 16 bytes aligned!
+#
+#Linux ABI
+.set out,      %rdi
+.set in,       %rsi
+
+.set CON,      %xmm0
+.set MASK_REG, %xmm1
+
+.set IN0,      %xmm2
+.set IN1,      %xmm3
+
+.set TMP1,     %xmm4
+.set TMP2,     %xmm5
+
+.set ZERO,     %xmm15
+
+.macro ROUND1 in0 in1
+    add $k256_size, out
+    vpshufb     MASK_REG, \in1, TMP2
+    vaesenclast CON,  TMP2, TMP2
+    vpslld      $1,   CON,  CON
+    vpslldq     $4,   \in0, TMP1
+    vpxor       TMP1, \in0, \in0
+    vpslldq     $4,   TMP1, TMP1
+    vpxor       TMP1, \in0, \in0
+    vpslldq     $4,   TMP1, TMP1	   
+    vpxor       TMP1, \in0, \in0
+    vpxor       TMP2, \in0, \in0
+    vmovdqa     \in0, (out)
+.endm
+
+.macro ROUND2
+   vpshufd     $0xff, IN0,  TMP2
+   vaesenclast ZERO,  TMP2, TMP2
+   vpslldq     $4,    IN1,  TMP1
+   vpxor       TMP1,  IN1,  IN1
+   vpslldq     $4,    TMP1, TMP1
+   vpxor       TMP1,  IN1,  IN1
+   vpslldq     $4,    TMP1, TMP1
+   vpxor       TMP1,  IN1,  IN1
+   vpxor       TMP2,  IN1,  IN1
+   vmovdqa     IN1,   16(out)
+.endm
+
+.type   aes256_key_expansion,@function
+.hidden aes256_key_expansion
+.globl  aes256_key_expansion
+aes256_key_expansion:
+   vmovdqu (in),   IN0
+   vmovdqu 16(in), IN1
+   vmovdqa IN0,    (out)
+   vmovdqa IN1,  16(out)
+
+   vmovdqa CON1(%rip), CON
+   vmovdqa MASK1(%rip), MASK_REG
+
+   vpxor ZERO, ZERO, ZERO
+
    mov $6, %ax
-LOOP_256_VAES:
+.loop256:
 
-   add $32, ks
+   ROUND1 IN0 IN1
    dec %ax
+   ROUND2
+   jne .loop256
 
-   vpshufb     %xmm15, %xmm3, %xmm2
-   vaesenclast %xmm0,  %xmm2, %xmm2 
-   vpslld      $1,     %xmm0, %xmm0
-   vpslldq     $4,     %xmm1, %xmm4
-   vpxor       %xmm4,  %xmm1, %xmm1
-   vpslldq     $4,     %xmm4, %xmm4	   
-   vpxor       %xmm4,  %xmm1, %xmm1
-   vpslldq     $4,     %xmm4, %xmm4
-   vpxor       %xmm4,  %xmm1, %xmm1    
-   vpxor       %xmm2,  %xmm1, %xmm1    
-   vmovdqa     %xmm1,  (ks)
-   
-   vpshufd     $0xff,  %xmm1, %xmm2
-   vaesenclast %xmm14, %xmm2, %xmm2
-   vpslldq     $4,     %xmm3, %xmm4
-   vpxor       %xmm4,  %xmm3, %xmm3
-   vpslldq     $4,     %xmm4, %xmm4
-   vpxor       %xmm4,  %xmm3, %xmm3
-   vpslldq     $4,     %xmm4, %xmm4
-   vpxor       %xmm4,  %xmm3, %xmm3
-   vpxor       %xmm2,  %xmm3, %xmm3
-   vmovdqa     %xmm3,  16(ks)
-   
-   jne LOOP_256_VAES
-   
-   vpshufb     %xmm15, %xmm3, %xmm2
-   vaesenclast %xmm0,  %xmm2, %xmm2 
-   vpslldq     $4,     %xmm1, %xmm4
-   vpxor       %xmm4,  %xmm1, %xmm1
-   vpslldq     $4,     %xmm4, %xmm4
-   vpxor       %xmm4,  %xmm1, %xmm1
-   vpslldq     $4,     %xmm4, %xmm4
-   vpxor       %xmm4,  %xmm1, %xmm1    
-   vpxor       %xmm2,  %xmm1, %xmm1    
-   vmovdqa     %xmm1,  32(ks)
-   
+   ROUND1 IN0 IN1
+
    ret
-.size   AES_256_Key_Expansion,.-AES_256_Key_Expansion
+.size aes256_key_expansion, .-aes256_key_expansion
+

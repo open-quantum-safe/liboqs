@@ -12,421 +12,14 @@
 # https://mta.openssl.org/pipermail/openssl-dev/2016-August/008238.html
 ##############################################################################
 
+#define __ASM_FILE__
+#include "bike_defs.h"
+
 .text
 
-.hidden sha384_512_multi_block_avx2
-.globl  sha384_512_multi_block_avx2
-.type   sha384_512_multi_block_avx2,@function
-.align  64
-
-.set W0_y,%ymm0
-.set W1_y,%ymm1
-.set W2_y,%ymm2
-.set W3_y,%ymm3
-.set TMP0_y,%ymm4
-.set TMP1_y,%ymm5
-.set TMP2_y,%ymm6
-.set TMP3_y,%ymm7
-
-.set A_y,%ymm8
-.set B_y,%ymm9
-.set C_y,%ymm10
-.set D_y,%ymm11
-.set E_y,%ymm12
-.set F_y,%ymm13
-.set G_y,%ymm14
-.set H_y,%ymm15
-.set AND_BLK_y, %ymm7
-
-.macro vprorq_ymm i, j, in, out
-    vpsrlq $\i, \in, TMP3_y
-    vpsllq $\j, \in, \out
-    vpor TMP3_y, \out, \out
-.endm
-
-.macro round_y A,B,C,D,E,F,G,H,i,w0,w1,w9,w14
-
-    vmovdqu \w0*32(%rsp), W0_y
-    vprorq_ymm   14, 50, \E, TMP0_y
-    vprorq_ymm   18, 46, \E, TMP1_y
-    vprorq_ymm   41, 23, \E, TMP2_y
-    vpxor TMP0_y, TMP1_y, TMP0_y
-    vpxor TMP0_y, TMP2_y, TMP0_y
-
-    vpaddq   W0_y, \H, W2_y
-    vmovdqa   \G, TMP2_y
-    vmovdqa   \A, \H
-
-    vprorq_ymm   28, 36, \A, TMP1_y
-    vprorq_ymm   34, 30, \A, W1_y
-    vpxor TMP1_y, W1_y, TMP1_y
-    vprorq_ymm   39, 25, \A, W1_y
-    vpxor TMP1_y, W1_y, TMP1_y
-
-    vmovdqu ones(%rip), W3_y
-    vpxor \E, W3_y, W3_y
-    vpand W3_y, TMP2_y, TMP2_y
-    vpand \F, \E, W1_y
-    vpxor W1_y, TMP2_y, TMP2_y
-
-
-    vpand \H, \B, W1_y
-    vpand \H, \C, W3_y
-    vpxor W1_y, W3_y, \H
-    vpand \B, \C, W1_y
-    vpxor W1_y, \H, \H
-
-    vpbroadcastq   (%rbx), W3_y
-    vpaddq   W2_y, W3_y, W3_y
-    vmovdqu \w9*32(%rsp), W2_y
-    vpaddq   W2_y , W0_y, W0_y
-
-    vpaddq   TMP2_y, W3_y, TMP2_y
-    vpaddq   TMP0_y, TMP2_y, TMP2_y
-
-    vmovdqu \w1*32(%rsp), W1_y # zmm8
-    vmovdqu \w14*32(%rsp), W3_y #zmm13
-
-    vprorq_ymm   19, 45, W3_y, TMP0_y
-    vprorq_ymm   61, 3, W3_y, W2_y
-    vpxor TMP0_y, W2_y, TMP0_y
-    vpsrlq   $6, W3_y, W3_y
-    vpxor TMP0_y, W3_y, TMP0_y #TMP0 = zmm13
-
-    vpaddq   TMP2_y, \H, \H
-    vpaddq   TMP2_y, \D, \D
-    vpaddq   TMP1_y, \H, \H
-
-    lea      8(%rbx), %rbx
-
-    # Calculate sigma0
-    vprorq_ymm   1, 63, W1_y, W2_y
-    vprorq_ymm   8, 56, W1_y, W3_y
-    vpxor W2_y, W3_y, W3_y
-    vpsrlq   $7, W1_y, W1_y
-    vpxor W1_y, W3_y, W1_y
-
-    vpaddq   TMP0_y, W0_y, W0_y
-    vpaddq   W1_y, W0_y, W0_y
-
-    vmovdqu   W0_y, \w0*32(%rsp)
-.endm
-
-.macro round_last_y A,B,C,D,E,F,G,H,i,w0
-
-    vmovdqu \w0*32(%rsp), W0_y
-
-    vprorq_ymm   14, 50, \E, TMP0_y
-    vprorq_ymm   18, 46, \E, TMP1_y
-    vprorq_ymm   41, 23, \E, TMP2_y
-    vpxor TMP0_y, TMP1_y, TMP0_y #
-    vpxor TMP0_y, TMP2_y, TMP0_y # TMP0_y = S1
-
-    vpaddq   W0_y, \H, W2_y
-
-
-    vprorq_ymm   28, 36, \A, TMP1_y
-    vprorq_ymm   34, 30, \A, W1_y
-    vpxor TMP1_y, W1_y, TMP1_y
-    vprorq_ymm   39, 25, \A, W1_y
-    vpxor TMP1_y, W1_y, TMP1_y
-
-
-    vmovdqa   \G, TMP2_y
-
-    vmovdqu ones(%rip), W3_y
-    vpxor \E, W3_y, W3_y
-    vpand W3_y, TMP2_y, TMP2_y
-    vpand \F, \E, W3_y
-    vpxor W3_y, TMP2_y, TMP2_y
-
-    vpbroadcastq   (%rbx), W3_y
-    vpaddq   W2_y, W3_y, W3_y
-    lea      8(%rbx), %rbx
-
-    vpaddq   TMP2_y, W3_y, W3_y
-
-    vmovdqa   \A, \H
-    vpand \H, \B, TMP2_y
-    vpand \H, \C, TMP3_y
-    vpxor TMP2_y, TMP3_y, \H
-    vpand \B, \C, TMP3_y
-    vpxor TMP3_y, \H, \H
-
-
-
-    vpaddq  TMP0_y, W3_y, W3_y
-    vpaddq  W3_y, \D, \D
-    vpaddq  W3_y, \H, \H
-    vpaddq  TMP1_y, \H, \H
-
-.endm
-
-sha384_512_multi_block_avx2:
-
-    push  %rbx
-    push  %rbp
-    push  %r8
-    push  %r9
-    push  %r10
-    push  %r11
-    push  %r12
-    push  %r13
-    push  %r14
-    push  %r15
-    xor %r14, %r14
-    xor %r13, %r13
-    movq   %rsp, %rbp     # copy %rsp
-    subq  $608, %rsp
-    movl  8(%rsi), %edx #right after the pointer of the buffer there is the len
-    movl  8+16*3(%rsi), %r14d #since only last buffer could be different on size than others and by 1
-    cmpl %r14d, %edx #if equal it means no need for last block handling
-    je .Lbody_avx2 #we handle last iteration differently
-    mov $1, %r13
-    jb .Llast_zero_y
-    movl %edx, %r13d
-    sub %r14d, %r13d
-    vmovdqu and_last_block_256(%rip), AND_BLK_y #if above it means last block is less
-    vmovdqu AND_BLK_y, 16*32(%rsp)
-    jmp .Lbody_avx2
-.Llast_zero_y:
-    vmovdqu and_last_block_not_256(%rip), AND_BLK_y #if lower it means last block is larger than the rest and we take him as our loop var
-    vmovdqu AND_BLK_y, 16*32(%rsp)
-    movq %r14, %rdx
-# first step - load the message, taking a word of each message, into appropriate
-# location inside an zmm register
-.Lbody_avx2:
-    xor   %r8, %r8
-    #load the values of H
-    vmovdqu   64*0(%rdi), A_y
-    vmovdqu   64*1(%rdi), B_y
-    vmovdqu   64*2(%rdi), C_y
-    vmovdqu   64*3(%rdi), D_y
-    vmovdqu   64*4(%rdi), E_y
-    vmovdqu   64*5(%rdi), F_y
-    vmovdqu   64*6(%rdi), G_y
-    vmovdqu   64*7(%rdi), H_y
-    xor  %r9, %r9
-    movq    16*0(%rsi), %r8
-    movq    16*1(%rsi), %r9
-    movq    16*2(%rsi), %r10
-    movq    16*3(%rsi), %r11
-    xor %r12, %r12
-    jmp   _L_outer_loop_y
-.align 64
-_L_outer_loop_y:
-    vmovdqu   (%r8, %r12), W0_y
-    vmovdqu   (%r9, %r12), W1_y
-    vmovdqu   (%r10, %r12), W2_y
-    vmovdqu   (%r11, %r12), W3_y
-
-    vpunpcklqdq W1_y, W0_y, TMP0_y
-    vpunpckhqdq W1_y, W0_y, TMP1_y
-    vpunpcklqdq W3_y, W2_y, TMP2_y
-    vpunpckhqdq W3_y, W2_y, TMP3_y
-
-    vperm2i128 $0x20, TMP2_y, TMP0_y, W0_y
-    vperm2i128 $0x20, TMP3_y, TMP1_y, W1_y
-    vperm2i128 $0x31, TMP2_y, TMP0_y, W2_y
-    vperm2i128 $0x31, TMP3_y, TMP1_y, W3_y
-
-
-    add $32, %r12
-
-    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
-    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
-    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
-    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
-
-    vmovdqu W0_y, 0*32(%rsp)
-    vmovdqu W1_y, 1*32(%rsp)
-    vmovdqu W2_y, 2*32(%rsp)
-    vmovdqu W3_y, 3*32(%rsp)
-
-    vmovdqu   (%r8, %r12), W0_y
-    vmovdqu   (%r9, %r12), W1_y
-    vmovdqu   (%r10, %r12), W2_y
-    vmovdqu   (%r11, %r12), W3_y
-
-    vpunpcklqdq W1_y, W0_y, TMP0_y
-    vpunpckhqdq W1_y, W0_y, TMP1_y
-    vpunpcklqdq W3_y, W2_y, TMP2_y
-    vpunpckhqdq W3_y, W2_y, TMP3_y
-
-    vperm2i128 $0x20, TMP2_y, TMP0_y, W0_y
-    vperm2i128 $0x20, TMP3_y, TMP1_y, W1_y
-    vperm2i128 $0x31, TMP2_y, TMP0_y, W2_y
-    vperm2i128 $0x31, TMP3_y, TMP1_y, W3_y
-
-    add $32, %r12
-
-    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
-    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
-    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
-    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
-
-    vmovdqu W0_y, 4*32(%rsp)
-    vmovdqu W1_y, 5*32(%rsp)
-    vmovdqu W2_y, 6*32(%rsp)
-    vmovdqu W3_y, 7*32(%rsp)
-
-    vmovdqu   (%r8, %r12), W0_y
-    vmovdqu   (%r9, %r12), W1_y
-    vmovdqu   (%r10, %r12), W2_y
-    vmovdqu   (%r11, %r12), W3_y
-
-    vpunpcklqdq W1_y, W0_y, TMP0_y
-    vpunpckhqdq W1_y, W0_y, TMP1_y
-    vpunpcklqdq W3_y, W2_y, TMP2_y
-    vpunpckhqdq W3_y, W2_y, TMP3_y
-
-    vperm2i128 $0x20, TMP2_y, TMP0_y, W0_y
-    vperm2i128 $0x20, TMP3_y, TMP1_y, W1_y
-    vperm2i128 $0x31, TMP2_y, TMP0_y, W2_y
-    vperm2i128 $0x31, TMP3_y, TMP1_y, W3_y
-
-    add $32, %r12
-
-    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
-    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
-    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
-    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
-
-    vmovdqu W0_y, 8*32(%rsp)
-    vmovdqu W1_y, 9*32(%rsp)
-    vmovdqu W2_y, 10*32(%rsp)
-    vmovdqu W3_y, 11*32(%rsp)
-
-    vmovdqu   (%r8, %r12), W0_y
-    vmovdqu   (%r9, %r12), W1_y
-    vmovdqu   (%r10, %r12), W2_y
-    vmovdqu   (%r11, %r12), W3_y
-
-    vpunpcklqdq W1_y, W0_y, TMP0_y
-    vpunpckhqdq W1_y, W0_y, TMP1_y
-    vpunpcklqdq W3_y, W2_y, TMP2_y
-    vpunpckhqdq W3_y, W2_y, TMP3_y
-
-    vperm2i128 $0x20, TMP2_y, TMP0_y, W0_y
-    vperm2i128 $0x20, TMP3_y, TMP1_y, W1_y
-    vperm2i128 $0x31, TMP2_y, TMP0_y, W2_y
-    vperm2i128 $0x31, TMP3_y, TMP1_y, W3_y
-
-    add $32, %r12
-
-    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
-    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
-    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
-    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
-
-    vmovdqu W0_y, 12*32(%rsp)
-    vmovdqu W1_y, 13*32(%rsp)
-    vmovdqu W2_y, 14*32(%rsp)
-    vmovdqu W3_y, 15*32(%rsp)
-
-    #load address of the K table
-    lea K_table_512(%rip), %rbx
-    mov   $4, %rcx
-    jmp   _L_inner_loop_y
-
-.align 16
-_L_inner_loop_y:
-
-    round_y A_y, B_y, C_y, D_y, E_y, F_y, G_y, H_y, 0, 0, 1, 9, 14
-    round_y H_y, A_y, B_y, C_y, D_y, E_y, F_y, G_y, 1, 1, 2, 10, 15
-    round_y G_y, H_y, A_y, B_y, C_y, D_y, E_y, F_y, 2, 2, 3, 11, 0
-    round_y F_y, G_y, H_y, A_y, B_y, C_y, D_y, E_y, 3, 3, 4, 12, 1
-    round_y E_y, F_y, G_y, H_y, A_y, B_y, C_y, D_y, 4, 4, 5, 13, 2
-    round_y D_y, E_y, F_y, G_y, H_y, A_y, B_y, C_y, 5, 5, 6, 14, 3
-    round_y C_y, D_y, E_y, F_y, G_y, H_y, A_y, B_y, 6, 6, 7, 15, 4
-    round_y B_y, C_y, D_y, E_y, F_y, G_y, H_y, A_y, 7, 7, 8, 0, 5
-
-    round_y A_y, B_y, C_y, D_y, E_y, F_y, G_y, H_y, 8, 8, 9, 1, 6
-    round_y H_y, A_y, B_y, C_y, D_y, E_y, F_y, G_y, 9, 9, 10,2, 7
-    round_y G_y, H_y, A_y, B_y, C_y, D_y, E_y, F_y, 10, 10, 11, 3, 8
-    round_y F_y, G_y, H_y, A_y, B_y, C_y, D_y, E_y, 11, 11, 12, 4, 9
-    round_y E_y, F_y, G_y, H_y, A_y, B_y, C_y, D_y, 12, 12, 13, 5, 10
-    round_y D_y, E_y, F_y, G_y, H_y, A_y, B_y, C_y, 13, 13, 14, 6, 11
-    round_y C_y, D_y, E_y, F_y, G_y, H_y, A_y, B_y, 14, 14, 15, 7, 12
-    round_y B_y, C_y, D_y, E_y, F_y, G_y, H_y, A_y, 15, 15, 0, 8, 13
-
-    dec   %rcx
-    jne   _L_inner_loop_y
-
-    round_last_y A_y, B_y, C_y, D_y, E_y, F_y, G_y, H_y, 0, 0
-    round_last_y H_y, A_y, B_y, C_y, D_y, E_y, F_y, G_y, 1, 1
-    round_last_y G_y, H_y, A_y, B_y, C_y, D_y, E_y, F_y, 2, 2
-    round_last_y F_y, G_y, H_y, A_y, B_y, C_y, D_y, E_y, 3, 3
-    round_last_y E_y, F_y, G_y, H_y, A_y, B_y, C_y, D_y, 4, 4
-    round_last_y D_y, E_y, F_y, G_y, H_y, A_y, B_y, C_y, 5, 5
-    round_last_y C_y, D_y, E_y, F_y, G_y, H_y, A_y, B_y, 6, 6
-    round_last_y B_y, C_y, D_y, E_y, F_y, G_y, H_y, A_y, 7, 7
-    round_last_y A_y, B_y, C_y, D_y, E_y, F_y, G_y, H_y, 8, 8
-    round_last_y H_y, A_y, B_y, C_y, D_y, E_y, F_y, G_y, 9, 9
-    round_last_y G_y, H_y, A_y, B_y, C_y, D_y, E_y, F_y, 10, 10
-    round_last_y F_y, G_y, H_y, A_y, B_y, C_y, D_y, E_y, 11, 11
-    round_last_y E_y, F_y, G_y, H_y, A_y, B_y, C_y, D_y, 12, 12
-    round_last_y D_y, E_y, F_y, G_y, H_y, A_y, B_y, C_y, 13, 13
-    round_last_y C_y, D_y, E_y, F_y, G_y, H_y, A_y, B_y, 14, 14
-    round_last_y B_y, C_y, D_y, E_y, F_y, G_y, H_y, A_y, 15, 15
-
-
-    #update hash values
-    cmpl %r13d, %edx
-    jne CONTINUE_y
-    vmovdqu 16*32(%rsp), AND_BLK_y
-    dec %r13
-    vpand  AND_BLK_y, A_y, A_y
-    vpand  AND_BLK_y, B_y, B_y
-    vpand  AND_BLK_y, C_y, C_y
-    vpand  AND_BLK_y, D_y, D_y
-    vpand  AND_BLK_y, E_y, E_y
-    vpand  AND_BLK_y, F_y, F_y
-    vpand  AND_BLK_y, G_y, G_y
-    vpand  AND_BLK_y, H_y, H_y
-    #update hash values
-
-CONTINUE_y:
-    vpaddq  64*0(%rdi), A_y, A_y
-    vpaddq  64*1(%rdi), B_y, B_y
-    vpaddq  64*2(%rdi), C_y, C_y
-    vpaddq  64*3(%rdi), D_y, D_y
-    vpaddq  64*4(%rdi), E_y, E_y
-    vpaddq  64*5(%rdi), F_y, F_y
-    vpaddq  64*6(%rdi), G_y, G_y
-    vpaddq  64*7(%rdi), H_y, H_y
-
-END_y:
-    vmovdqu  A_y, 0*64(%rdi)
-    vmovdqu  B_y, 1*64(%rdi)
-    vmovdqu  C_y, 2*64(%rdi)
-    vmovdqu  D_y, 3*64(%rdi)
-    vmovdqu  E_y, 4*64(%rdi)
-    vmovdqu  F_y, 5*64(%rdi)
-    vmovdqu  G_y, 6*64(%rdi)
-    vmovdqu  H_y, 7*64(%rdi)
-
-
-    dec   %rdx
-    jne   _L_outer_loop_y
-    movq   %rbp, %rsp
-    pop   %r15
-    pop   %r14
-    pop   %r13
-    pop   %r12
-    pop   %r11
-    pop   %r10
-    pop   %r9
-    pop   %r8
-    pop   %rbp
-    pop   %rbx
-.Lepilogue_avx2:
-    .byte   0xf3,0xc3
-    ret
-.size   sha384_512_multi_block_avx2,.-sha384_512_multi_block_avx2
-
-.hidden sha384_512_multi_block_avx2
-.globl  sha384_512_multi_block_avx2
+#ifdef AVX512
+.hidden sha384_512_multi_block_avx512
+.globl  sha384_512_multi_block_avx512
 .type   sha384_512_multi_block_avx512,@function
 .align  64
 
@@ -531,7 +124,7 @@ END_y:
     vpaddq   %zmm11, \H, \H
     vpaddq   %zmm9, \H, \H
 .endm
-.globl sha384_512_multi_block_avx512
+
 sha384_512_multi_block_avx512:
 .align  32
 
@@ -785,6 +378,422 @@ END:
     .byte   0xf3,0xc3
     ret
 .size   sha384_512_multi_block_avx512,.-sha384_512_multi_block_avx512
+
+# // AVX512
+#else
+
+.hidden sha384_512_multi_block_avx2
+.globl  sha384_512_multi_block_avx2
+.type   sha384_512_multi_block_avx2,@function
+.align  64
+
+.set W0_y,%ymm0
+.set W1_y,%ymm1
+.set W2_y,%ymm2
+.set W3_y,%ymm3
+.set TMP0_y,%ymm4
+.set TMP1_y,%ymm5
+.set TMP2_y,%ymm6
+.set TMP3_y,%ymm7
+
+.set A_y,%ymm8
+.set B_y,%ymm9
+.set C_y,%ymm10
+.set D_y,%ymm11
+.set E_y,%ymm12
+.set F_y,%ymm13
+.set G_y,%ymm14
+.set H_y,%ymm15
+.set AND_BLK_y, %ymm7
+
+.macro vprorq_ymm i, j, in, out
+    vpsrlq $\i, \in, TMP3_y
+    vpsllq $\j, \in, \out
+    vpor TMP3_y, \out, \out
+.endm
+
+.macro round_y A,B,C,D,E,F,G,H,i,w0,w1,w9,w14
+
+    vmovdqu \w0*32(%rsp), W0_y
+    vprorq_ymm   14, 50, \E, TMP0_y
+    vprorq_ymm   18, 46, \E, TMP1_y
+    vprorq_ymm   41, 23, \E, TMP2_y
+    vpxor TMP0_y, TMP1_y, TMP0_y
+    vpxor TMP0_y, TMP2_y, TMP0_y
+
+    vpaddq   W0_y, \H, W2_y
+    vmovdqa   \G, TMP2_y
+    vmovdqa   \A, \H
+
+    vprorq_ymm   28, 36, \A, TMP1_y
+    vprorq_ymm   34, 30, \A, W1_y
+    vpxor TMP1_y, W1_y, TMP1_y
+    vprorq_ymm   39, 25, \A, W1_y
+    vpxor TMP1_y, W1_y, TMP1_y
+
+    vmovdqu ones(%rip), W3_y
+    vpxor \E, W3_y, W3_y
+    vpand W3_y, TMP2_y, TMP2_y
+    vpand \F, \E, W1_y
+    vpxor W1_y, TMP2_y, TMP2_y
+
+
+    vpand \H, \B, W1_y
+    vpand \H, \C, W3_y
+    vpxor W1_y, W3_y, \H
+    vpand \B, \C, W1_y
+    vpxor W1_y, \H, \H
+
+    vpbroadcastq   (%rbx), W3_y
+    vpaddq   W2_y, W3_y, W3_y
+    vmovdqu \w9*32(%rsp), W2_y
+    vpaddq   W2_y , W0_y, W0_y
+
+    vpaddq   TMP2_y, W3_y, TMP2_y
+    vpaddq   TMP0_y, TMP2_y, TMP2_y
+
+    vmovdqu \w1*32(%rsp), W1_y # zmm8
+    vmovdqu \w14*32(%rsp), W3_y #zmm13
+
+    vprorq_ymm   19, 45, W3_y, TMP0_y
+    vprorq_ymm   61, 3, W3_y, W2_y
+    vpxor TMP0_y, W2_y, TMP0_y
+    vpsrlq   $6, W3_y, W3_y
+    vpxor TMP0_y, W3_y, TMP0_y #TMP0 = zmm13
+
+    vpaddq   TMP2_y, \H, \H
+    vpaddq   TMP2_y, \D, \D
+    vpaddq   TMP1_y, \H, \H
+
+    lea      8(%rbx), %rbx
+
+    # Calculate sigma0
+    vprorq_ymm   1, 63, W1_y, W2_y
+    vprorq_ymm   8, 56, W1_y, W3_y
+    vpxor W2_y, W3_y, W3_y
+    vpsrlq   $7, W1_y, W1_y
+    vpxor W1_y, W3_y, W1_y
+
+    vpaddq   TMP0_y, W0_y, W0_y
+    vpaddq   W1_y, W0_y, W0_y
+
+    vmovdqu   W0_y, \w0*32(%rsp)
+.endm
+
+.macro round_last_y A,B,C,D,E,F,G,H,i,w0
+
+    vmovdqu \w0*32(%rsp), W0_y
+
+    vprorq_ymm   14, 50, \E, TMP0_y
+    vprorq_ymm   18, 46, \E, TMP1_y
+    vprorq_ymm   41, 23, \E, TMP2_y
+    vpxor TMP0_y, TMP1_y, TMP0_y #
+    vpxor TMP0_y, TMP2_y, TMP0_y # TMP0_y = S1
+
+    vpaddq   W0_y, \H, W2_y
+
+
+    vprorq_ymm   28, 36, \A, TMP1_y
+    vprorq_ymm   34, 30, \A, W1_y
+    vpxor TMP1_y, W1_y, TMP1_y
+    vprorq_ymm   39, 25, \A, W1_y
+    vpxor TMP1_y, W1_y, TMP1_y
+
+
+    vmovdqa   \G, TMP2_y
+
+    vmovdqu ones(%rip), W3_y
+    vpxor \E, W3_y, W3_y
+    vpand W3_y, TMP2_y, TMP2_y
+    vpand \F, \E, W3_y
+    vpxor W3_y, TMP2_y, TMP2_y
+
+    vpbroadcastq   (%rbx), W3_y
+    vpaddq   W2_y, W3_y, W3_y
+    lea      8(%rbx), %rbx
+
+    vpaddq   TMP2_y, W3_y, W3_y
+
+    vmovdqa   \A, \H
+    vpand \H, \B, TMP2_y
+    vpand \H, \C, TMP3_y
+    vpxor TMP2_y, TMP3_y, \H
+    vpand \B, \C, TMP3_y
+    vpxor TMP3_y, \H, \H
+
+
+
+    vpaddq  TMP0_y, W3_y, W3_y
+    vpaddq  W3_y, \D, \D
+    vpaddq  W3_y, \H, \H
+    vpaddq  TMP1_y, \H, \H
+
+.endm
+
+sha384_512_multi_block_avx2:
+
+    push  %rbx
+    push  %rbp
+    push  %r8
+    push  %r9
+    push  %r10
+    push  %r11
+    push  %r12
+    push  %r13
+    push  %r14
+    push  %r15
+    xor %r14, %r14
+    xor %r13, %r13
+    movq   %rsp, %rbp     # copy %rsp
+    movq  %rcx, %rsp
+    movl  8(%rsi), %edx #right after the pointer of the buffer there is the len
+    movl  8+16*3(%rsi), %r14d #since only last buffer could be different on size than others and by 1
+    cmpl %r14d, %edx #if equal it means no need for last block handling
+    je .Lbody_avx2 #we handle last iteration differently
+    mov $1, %r13
+    jb .Llast_zero_y
+    movl %edx, %r13d
+    sub %r14d, %r13d
+    vmovdqu and_last_block_256(%rip), AND_BLK_y #if above it means last block is less
+    vmovdqu AND_BLK_y, 16*32(%rsp)
+    jmp .Lbody_avx2
+.Llast_zero_y:
+    vmovdqu and_last_block_not_256(%rip), AND_BLK_y #if lower it means last block is larger than the rest and we take him as our loop var
+    vmovdqu AND_BLK_y, 16*32(%rsp)
+    movq %r14, %rdx
+# first step - load the message, taking a word of each message, into appropriate
+# location inside an zmm register
+.Lbody_avx2:
+    xor   %r8, %r8
+    #load the values of H
+    vmovdqu   64*0(%rdi), A_y
+    vmovdqu   64*1(%rdi), B_y
+    vmovdqu   64*2(%rdi), C_y
+    vmovdqu   64*3(%rdi), D_y
+    vmovdqu   64*4(%rdi), E_y
+    vmovdqu   64*5(%rdi), F_y
+    vmovdqu   64*6(%rdi), G_y
+    vmovdqu   64*7(%rdi), H_y
+    xor  %r9, %r9
+    movq    16*0(%rsi), %r8
+    movq    16*1(%rsi), %r9
+    movq    16*2(%rsi), %r10
+    movq    16*3(%rsi), %r11
+    xor %r12, %r12
+    jmp   _L_outer_loop_y
+.align 64
+_L_outer_loop_y:
+    vmovdqu   (%r8, %r12), W0_y
+    vmovdqu   (%r9, %r12), W1_y
+    vmovdqu   (%r10, %r12), W2_y
+    vmovdqu   (%r11, %r12), W3_y
+
+    vpunpcklqdq W1_y, W0_y, TMP0_y
+    vpunpckhqdq W1_y, W0_y, TMP1_y
+    vpunpcklqdq W3_y, W2_y, TMP2_y
+    vpunpckhqdq W3_y, W2_y, TMP3_y
+
+    vperm2i128 $0x20, TMP2_y, TMP0_y, W0_y
+    vperm2i128 $0x20, TMP3_y, TMP1_y, W1_y
+    vperm2i128 $0x31, TMP2_y, TMP0_y, W2_y
+    vperm2i128 $0x31, TMP3_y, TMP1_y, W3_y
+
+
+    add $32, %r12
+
+    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
+    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
+    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
+    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
+
+    vmovdqu W0_y, 0*32(%rsp)
+    vmovdqu W1_y, 1*32(%rsp)
+    vmovdqu W2_y, 2*32(%rsp)
+    vmovdqu W3_y, 3*32(%rsp)
+
+    vmovdqu   (%r8, %r12), W0_y
+    vmovdqu   (%r9, %r12), W1_y
+    vmovdqu   (%r10, %r12), W2_y
+    vmovdqu   (%r11, %r12), W3_y
+
+    vpunpcklqdq W1_y, W0_y, TMP0_y
+    vpunpckhqdq W1_y, W0_y, TMP1_y
+    vpunpcklqdq W3_y, W2_y, TMP2_y
+    vpunpckhqdq W3_y, W2_y, TMP3_y
+
+    vperm2i128 $0x20, TMP2_y, TMP0_y, W0_y
+    vperm2i128 $0x20, TMP3_y, TMP1_y, W1_y
+    vperm2i128 $0x31, TMP2_y, TMP0_y, W2_y
+    vperm2i128 $0x31, TMP3_y, TMP1_y, W3_y
+
+    add $32, %r12
+
+    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
+    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
+    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
+    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
+
+    vmovdqu W0_y, 4*32(%rsp)
+    vmovdqu W1_y, 5*32(%rsp)
+    vmovdqu W2_y, 6*32(%rsp)
+    vmovdqu W3_y, 7*32(%rsp)
+
+    vmovdqu   (%r8, %r12), W0_y
+    vmovdqu   (%r9, %r12), W1_y
+    vmovdqu   (%r10, %r12), W2_y
+    vmovdqu   (%r11, %r12), W3_y
+
+    vpunpcklqdq W1_y, W0_y, TMP0_y
+    vpunpckhqdq W1_y, W0_y, TMP1_y
+    vpunpcklqdq W3_y, W2_y, TMP2_y
+    vpunpckhqdq W3_y, W2_y, TMP3_y
+
+    vperm2i128 $0x20, TMP2_y, TMP0_y, W0_y
+    vperm2i128 $0x20, TMP3_y, TMP1_y, W1_y
+    vperm2i128 $0x31, TMP2_y, TMP0_y, W2_y
+    vperm2i128 $0x31, TMP3_y, TMP1_y, W3_y
+
+    add $32, %r12
+
+    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
+    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
+    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
+    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
+
+    vmovdqu W0_y, 8*32(%rsp)
+    vmovdqu W1_y, 9*32(%rsp)
+    vmovdqu W2_y, 10*32(%rsp)
+    vmovdqu W3_y, 11*32(%rsp)
+
+    vmovdqu   (%r8, %r12), W0_y
+    vmovdqu   (%r9, %r12), W1_y
+    vmovdqu   (%r10, %r12), W2_y
+    vmovdqu   (%r11, %r12), W3_y
+
+    vpunpcklqdq W1_y, W0_y, TMP0_y
+    vpunpckhqdq W1_y, W0_y, TMP1_y
+    vpunpcklqdq W3_y, W2_y, TMP2_y
+    vpunpckhqdq W3_y, W2_y, TMP3_y
+
+    vperm2i128 $0x20, TMP2_y, TMP0_y, W0_y
+    vperm2i128 $0x20, TMP3_y, TMP1_y, W1_y
+    vperm2i128 $0x31, TMP2_y, TMP0_y, W2_y
+    vperm2i128 $0x31, TMP3_y, TMP1_y, W3_y
+
+    add $32, %r12
+
+    vpshufb bswap_mask64_256(%rip), W0_y, W0_y
+    vpshufb bswap_mask64_256(%rip), W1_y, W1_y
+    vpshufb bswap_mask64_256(%rip), W2_y, W2_y
+    vpshufb bswap_mask64_256(%rip), W3_y, W3_y
+
+    vmovdqu W0_y, 12*32(%rsp)
+    vmovdqu W1_y, 13*32(%rsp)
+    vmovdqu W2_y, 14*32(%rsp)
+    vmovdqu W3_y, 15*32(%rsp)
+
+    #load address of the K table
+    lea K_table_512(%rip), %rbx
+    mov   $4, %rcx
+    jmp   _L_inner_loop_y
+
+.align 16
+_L_inner_loop_y:
+
+    round_y A_y, B_y, C_y, D_y, E_y, F_y, G_y, H_y, 0, 0, 1, 9, 14
+    round_y H_y, A_y, B_y, C_y, D_y, E_y, F_y, G_y, 1, 1, 2, 10, 15
+    round_y G_y, H_y, A_y, B_y, C_y, D_y, E_y, F_y, 2, 2, 3, 11, 0
+    round_y F_y, G_y, H_y, A_y, B_y, C_y, D_y, E_y, 3, 3, 4, 12, 1
+    round_y E_y, F_y, G_y, H_y, A_y, B_y, C_y, D_y, 4, 4, 5, 13, 2
+    round_y D_y, E_y, F_y, G_y, H_y, A_y, B_y, C_y, 5, 5, 6, 14, 3
+    round_y C_y, D_y, E_y, F_y, G_y, H_y, A_y, B_y, 6, 6, 7, 15, 4
+    round_y B_y, C_y, D_y, E_y, F_y, G_y, H_y, A_y, 7, 7, 8, 0, 5
+
+    round_y A_y, B_y, C_y, D_y, E_y, F_y, G_y, H_y, 8, 8, 9, 1, 6
+    round_y H_y, A_y, B_y, C_y, D_y, E_y, F_y, G_y, 9, 9, 10,2, 7
+    round_y G_y, H_y, A_y, B_y, C_y, D_y, E_y, F_y, 10, 10, 11, 3, 8
+    round_y F_y, G_y, H_y, A_y, B_y, C_y, D_y, E_y, 11, 11, 12, 4, 9
+    round_y E_y, F_y, G_y, H_y, A_y, B_y, C_y, D_y, 12, 12, 13, 5, 10
+    round_y D_y, E_y, F_y, G_y, H_y, A_y, B_y, C_y, 13, 13, 14, 6, 11
+    round_y C_y, D_y, E_y, F_y, G_y, H_y, A_y, B_y, 14, 14, 15, 7, 12
+    round_y B_y, C_y, D_y, E_y, F_y, G_y, H_y, A_y, 15, 15, 0, 8, 13
+
+    dec   %rcx
+    jne   _L_inner_loop_y
+
+    round_last_y A_y, B_y, C_y, D_y, E_y, F_y, G_y, H_y, 0, 0
+    round_last_y H_y, A_y, B_y, C_y, D_y, E_y, F_y, G_y, 1, 1
+    round_last_y G_y, H_y, A_y, B_y, C_y, D_y, E_y, F_y, 2, 2
+    round_last_y F_y, G_y, H_y, A_y, B_y, C_y, D_y, E_y, 3, 3
+    round_last_y E_y, F_y, G_y, H_y, A_y, B_y, C_y, D_y, 4, 4
+    round_last_y D_y, E_y, F_y, G_y, H_y, A_y, B_y, C_y, 5, 5
+    round_last_y C_y, D_y, E_y, F_y, G_y, H_y, A_y, B_y, 6, 6
+    round_last_y B_y, C_y, D_y, E_y, F_y, G_y, H_y, A_y, 7, 7
+    round_last_y A_y, B_y, C_y, D_y, E_y, F_y, G_y, H_y, 8, 8
+    round_last_y H_y, A_y, B_y, C_y, D_y, E_y, F_y, G_y, 9, 9
+    round_last_y G_y, H_y, A_y, B_y, C_y, D_y, E_y, F_y, 10, 10
+    round_last_y F_y, G_y, H_y, A_y, B_y, C_y, D_y, E_y, 11, 11
+    round_last_y E_y, F_y, G_y, H_y, A_y, B_y, C_y, D_y, 12, 12
+    round_last_y D_y, E_y, F_y, G_y, H_y, A_y, B_y, C_y, 13, 13
+    round_last_y C_y, D_y, E_y, F_y, G_y, H_y, A_y, B_y, 14, 14
+    round_last_y B_y, C_y, D_y, E_y, F_y, G_y, H_y, A_y, 15, 15
+
+
+    #update hash values
+    cmpl %r13d, %edx
+    jne CONTINUE_y
+    vmovdqu 16*32(%rsp), AND_BLK_y
+    dec %r13
+    vpand  AND_BLK_y, A_y, A_y
+    vpand  AND_BLK_y, B_y, B_y
+    vpand  AND_BLK_y, C_y, C_y
+    vpand  AND_BLK_y, D_y, D_y
+    vpand  AND_BLK_y, E_y, E_y
+    vpand  AND_BLK_y, F_y, F_y
+    vpand  AND_BLK_y, G_y, G_y
+    vpand  AND_BLK_y, H_y, H_y
+    #update hash values
+
+CONTINUE_y:
+    vpaddq  64*0(%rdi), A_y, A_y
+    vpaddq  64*1(%rdi), B_y, B_y
+    vpaddq  64*2(%rdi), C_y, C_y
+    vpaddq  64*3(%rdi), D_y, D_y
+    vpaddq  64*4(%rdi), E_y, E_y
+    vpaddq  64*5(%rdi), F_y, F_y
+    vpaddq  64*6(%rdi), G_y, G_y
+    vpaddq  64*7(%rdi), H_y, H_y
+
+END_y:
+    vmovdqu  A_y, 0*64(%rdi)
+    vmovdqu  B_y, 1*64(%rdi)
+    vmovdqu  C_y, 2*64(%rdi)
+    vmovdqu  D_y, 3*64(%rdi)
+    vmovdqu  E_y, 4*64(%rdi)
+    vmovdqu  F_y, 5*64(%rdi)
+    vmovdqu  G_y, 6*64(%rdi)
+    vmovdqu  H_y, 7*64(%rdi)
+
+
+    dec   %rdx
+    jne   _L_outer_loop_y
+    movq   %rbp, %rsp
+    pop   %r15
+    pop   %r14
+    pop   %r13
+    pop   %r12
+    pop   %r11
+    pop   %r10
+    pop   %r9
+    pop   %r8
+    pop   %rbp
+    pop   %rbx
+.Lepilogue_avx2:
+    .byte   0xf3,0xc3
+    ret
+.size   sha384_512_multi_block_avx2,.-sha384_512_multi_block_avx2
+
+#endif
 
 .data 
 
