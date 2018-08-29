@@ -21,9 +21,9 @@ More information on OQS can be found on our website: [https://openquantumsafe.or
 master branch
 -------------
 
-This branch of liboqs aims to selectively incorporate potentially quantum-resistant key encapsulation mechanisms and signature schemes, for the purposes of integration into a common API for liboqs-reliant applications.
+This branch of liboqs aims to selectively incorporate allegedly quantum-resistant key encapsulation mechanisms and signature schemes, for the purposes of integration into a common API for liboqs-reliant applications.
 
-Implementations on this branch must beet certain acceptance criteria as indicated below.
+Implementations on this branch must meet certain acceptance criteria as indicated below.
 
 For a list of algorithms included in master branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/master/docs/algorithms).
 
