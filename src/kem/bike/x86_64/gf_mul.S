@@ -15,7 +15,8 @@
 #include "defs.h"
 
 .text    
-#void gf2_mul_4x4(const uint64_t *res, const uint64_t *a, const uint64_t *b)
+########################################################################################
+# void gf2_muladd_4x4(uint64_t *res, const uint64_t *a, const uint64_t *b)
 
 .set res, %rdi
 .set a, %rsi
@@ -136,8 +137,8 @@ gf2_muladd_4x4:
 #                     IN const uint64_t  n_half, 
 #                              uint64_t  *alah);
 #
-#The variables alah|blbh|tmp are located on the secure buffer in that order exactly!
-#but we recalculate their offsets here to not pass it on the stack.
+# The variables alah|blbh|tmp are located on the secure buffer in that order exactly!
+# but we recalculate their offsets here in order not to pass them on the stack.
 
 .set res, %rdi
 .set a, %rsi
@@ -153,7 +154,7 @@ gf2_muladd_4x4:
 .set b_high, %r13
 .set res1, %r14
 
-#We use rax and not r15 to save push/pop
+# We use rax and not r15 to save push/pop
 .set res2, %rax
 
 .set a_wide,    %ymm0
@@ -192,14 +193,14 @@ karatzuba_add1:
     vpxor (b_high, itr, 8), b_wide, blbh_wide
     vpxor (res2, itr, 8),   res1_wide, tmp_wide
 
-    #a_low + a_high
+    # a_low + a_high
     vmovdqu alah_wide, (alah, itr, 8)
     
-    #b_low + b_high
+    # b_low + b_high
     vmovdqu blbh_wide, (blbh, itr, 8)
     
-    #Storing res1 and res2 together in one location
-    #It is used to xor out "res2|res1" in the future.
+    # Storing res1 and res2 together in one location
+    # It will be used to xor "res2|res1" in the future.
     vmovdqu tmp_wide, (tmp, itr, 8)
 
     add $4, itr
@@ -269,4 +270,3 @@ karatzuba_add2:
     
     ret
 .size karatzuba_add2,.-karatzuba_add2
-

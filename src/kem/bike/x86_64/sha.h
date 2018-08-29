@@ -23,16 +23,18 @@
 typedef struct sha384_hash_s {
 	union {
 		uint8_t raw[SHA384_HASH_SIZE];
-		uint64_t qwords[SHA384_HASH_QWORDS];
+		uint64_t qw[SHA384_HASH_QWORDS];
 	} u;
 } sha384_hash_t;
+static_assert(sizeof(sha384_hash_t) == SHA384_HASH_SIZE, sha384_hash_size);
 
 typedef struct sha512_hash_s {
 	union {
 		uint8_t raw[SHA512_HASH_SIZE];
-		uint64_t qwords[SHA512_HASH_QWORDS];
+		uint64_t qw[SHA512_HASH_QWORDS];
 	} u;
 } sha512_hash_t;
+static_assert(sizeof(sha512_hash_t) == SHA512_HASH_SIZE, sha512_hash_size);
 
 typedef struct {
 	uint8_t *ptr;
@@ -50,4 +52,4 @@ void sha_mb(OUT sha_hash_t *hash_out,
             IN const uint32_t byte_length,
             IN const uint32_t num);
 
-#endif //_MB_SHA_H_
+#endif // _MB_SHA_H_
