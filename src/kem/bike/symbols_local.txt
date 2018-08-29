@@ -32,7 +32,8 @@ CHECK_BIT
 SET_BIT
 
 from_the_addition_implementation
-AES256_Enc_Intrinsic
+aes256_key_expansion
+aes256_enc_intrinsic
 split_e
 compute_syndrome
 end
@@ -52,7 +53,10 @@ red_asm
 secure_set_bits 
 sha384_512_multi_block_avx2 
 sha384_512_multi_block_avx512 
-AES_256_Key_Expansion 
 gf2x_mod_mul 
 find_error1
 find_error2
+ossl_add
+cyclic_product
+ossl_split_polynomial
+ossl_mod_inv

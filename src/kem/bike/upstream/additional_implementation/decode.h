@@ -14,17 +14,17 @@
 
 #include "types.h"
 
-void split_e(OUT split_e_t* split_e, IN const e_t* e);
+void split_e(OUT split_e_t *split_e, IN const e_t *e);
 
-void compute_syndrome(OUT syndrome_t* syndrome,
-                      IN const ct_t* ct,
-                      IN const sk_t* sk);
+void compute_syndrome(OUT syndrome_t *syndrome,
+                      IN const ct_t *ct,
+                      IN const sk_t *sk);
 
-//e and s should be zeroed before calling the decoder.
-int decode(OUT e_t* e,
-           OUT syndrome_t* s,
-           IN const ct_t* ct,
-           IN const sk_t* sk,
+// e and s should be zeroed before calling the decoder.
+int decode(OUT e_t *e,
+           OUT syndrome_t *s,
+           IN const ct_t *ct,
+           IN const sk_t *sk,
            IN const uint32_t u);
 
-#endif //_R_DECAPS_H_
+#endif // _R_DECAPS_H_
