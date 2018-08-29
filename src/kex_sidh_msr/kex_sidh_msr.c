@@ -262,7 +262,7 @@ err:
 	*key = NULL;
 
 cleanup:
-	OQS_MEM_insecure_free(bob_priv);
+	OQS_MEM_secure_free(bob_priv, sidh_ctx->priv_key_len);
 
 	return ret;
 }
@@ -306,7 +306,7 @@ OQS_STATUS OQS_KEX_sidh_msr_alice_1(OQS_KEX *k, const void *alice_priv, const ui
 
 err:
 	ret = OQS_ERROR;
-	OQS_MEM_insecure_free(*key);
+	OQS_MEM_secure_free(*key, sidh_ctx->shared_secret_len);
 	*key = NULL;
 
 cleanup:

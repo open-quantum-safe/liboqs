@@ -348,9 +348,9 @@ sha256_hmac_drbg_instantiate(
 	return result;
 }
 
-/* sha256_hmac_drbg_free IGNORE free-check
+/* sha256_hmac_drbg_free
  *
- * This routine frees a SHA-256 HMAC_DRBG internal state. IGNORE free-check
+ * This routine frees a SHA-256 HMAC_DRBG internal state.
  *
  * Returns DRBG_OK if successful.
  * Returns DRBG_BAD_PARAMETER if inappropriate NULL pointers are passed.
@@ -729,7 +729,7 @@ ntru_crypto_drbg_external_instantiate(
 
 /* ntru_crypto_drbg_uninstantiate
  *
- * This routine frees a drbg given its handle. IGNORE free-check 
+ * This routine frees a drbg given its handle.
  *
  * Returns DRBG_OK if successful.
  * Returns DRBG_ERROR_BASE + DRBG_BAD_PARAMETER if handle is not valid.
@@ -747,7 +747,7 @@ ntru_crypto_drbg_uninstantiate(
 		DRBG_RET(DRBG_BAD_PARAMETER);
 	}
 
-	/* zero and free drbg state IGNORE free-check */
+	/* zero and free drbg state */
 
 	if (drbg->state) {
 		switch (drbg->type) {

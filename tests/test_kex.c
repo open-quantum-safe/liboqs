@@ -143,7 +143,7 @@ cleanup:
 	OQS_MEM_insecure_free(alice_msg);
 	OQS_MEM_secure_free(alice_key, alice_key_len);
 	OQS_MEM_insecure_free(bob_msg);
-	OQS_MEM_insecure_free(bob_key);
+	OQS_MEM_secure_free(bob_key, bob_key_len);
 	OQS_KEX_alice_priv_free(kex, alice_priv);
 	OQS_KEX_free(kex);
 
