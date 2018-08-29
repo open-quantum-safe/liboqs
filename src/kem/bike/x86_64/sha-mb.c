@@ -16,7 +16,6 @@
 * ***************************************************************************/
 
 #include <string.h>
-#include <stdio.h>
 #include "sha.h"
 #include "utilities.h"
 
@@ -43,7 +42,7 @@ _INLINE_ void sha_mb_update(IN OUT sha_mb_ctx *ctx,
                             IN const uint8_t *data,
                             IN const uint32_t len,
                             IN const uint32_t num_buffers) {
-	if (len == 0) {
+	if (0 == len) {
 		return;
 	}
 
@@ -79,7 +78,7 @@ _INLINE_ uint32_t sha_prepare_last_block(OUT uint8_t *last_block,
 	last_length = ret * HASH_BLOCK_SIZE;
 	loc = message_length - (message_length % HASH_BLOCK_SIZE);
 
-	for (i = 0; i < message_length % HASH_BLOCK_SIZE; i++) {
+	for (i = 0; i < (message_length % HASH_BLOCK_SIZE); i++) {
 		last_block[i] = msg[loc + i];
 	}
 
@@ -117,15 +116,15 @@ _INLINE_ void sha_mb_final(OUT sha_hash_t digest[],
 	sha_mb_avx(ctx, hdesc, num_buffers / 4);
 
 	for (i = 0; i < num_buffers; i++) {
-		digest[i].u.qwords[0] = bswap_64(ctx->A[i]);
-		digest[i].u.qwords[1] = bswap_64(ctx->B[i]);
-		digest[i].u.qwords[2] = bswap_64(ctx->C[i]);
-		digest[i].u.qwords[3] = bswap_64(ctx->D[i]);
-		digest[i].u.qwords[4] = bswap_64(ctx->E[i]);
-		digest[i].u.qwords[5] = bswap_64(ctx->F[i]);
+		digest[i].u.qw[0] = bswap_64(ctx->A[i]);
+		digest[i].u.qw[1] = bswap_64(ctx->B[i]);
+		digest[i].u.qw[2] = bswap_64(ctx->C[i]);
+		digest[i].u.qw[3] = bswap_64(ctx->D[i]);
+		digest[i].u.qw[4] = bswap_64(ctx->E[i]);
+		digest[i].u.qw[5] = bswap_64(ctx->F[i]);
 #ifndef SHA384
-		digest[i].u.qwords[6] = bswap_64(ctx->G[i]);
-		digest[i].u.qwords[7] = bswap_64(ctx->H[i]);
+		digest[i].u.qw[6] = bswap_64(ctx->G[i]);
+		digest[i].u.qw[7] = bswap_64(ctx->H[i]);
 #endif
 	}
 }

@@ -37,28 +37,28 @@
 
 #include "types.h"
 
-//Printing number is required only in verbose level 2 or above.
+// Printing number is required only in verbose level 2 or above
 #if VERBOSE == 2
 
 #ifdef PRINT_IN_BE
 //Printing values in Big Endian
 void print_BE(IN const uint64_t *in, IN const uint32_t bits_num);
 
-//Print in Big Endian
+// Print in Big Endian
 #define print(in, bits_num) print_BE(in, bits_num)
 #else
-//Printing values in Little Endian
+// Printing values in Little Endian
 void print_LE(IN const uint64_t *in, IN const uint32_t bits_num);
 
-//Print in Little Endian
+// Print in Little Endian
 #define print(in, bits_num) print_LE(in, bits_num)
 #endif
 #else
-//No prints at all
+// No prints at all
 #define print(in, bits_num)
 #endif
 
-//Comparing value in a constant time manner.
+// Comparing value in a constant time manner
 _INLINE_ uint32_t safe_cmp(IN const uint8_t *a,
                            IN const uint8_t *b,
                            IN const uint32_t size) {
@@ -71,9 +71,9 @@ _INLINE_ uint32_t safe_cmp(IN const uint8_t *a,
 	return (res == 0);
 }
 
-//BSR returns ceil(log2(val))
+// BSR returns ceil(log2(val))
 _INLINE_ uint8_t bit_scan_reverse(uint64_t val) {
-	//index is always smaller than 64.
+	// index is always smaller than 64
 	uint8_t index = 0;
 
 	while (val != 0) {
@@ -84,4 +84,4 @@ _INLINE_ uint8_t bit_scan_reverse(uint64_t val) {
 	return index;
 }
 
-#endif //_UTILITIES_H_
+#endif // s_UTILITIES_H_

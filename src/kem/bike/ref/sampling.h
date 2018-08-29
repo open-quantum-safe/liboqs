@@ -36,19 +36,16 @@
 #define _SAMPLE_H_
 
 #include "oqs/rand.h"
-#include "openssl_utils.h"
 #include "aes_ctr_prf.h"
+#include "utilities.h"
 
-enum _seeds_purpose {
-	KEYGEN_SEEDS = 0,
-	ENCAPS_SEEDS = 1,
-	DECAPS_SEEDS = 2
-};
+_INLINE_ void get_seeds(OUT double_seed_t *seeds) {
+	OQS_randombytes(seeds->s1.raw, sizeof(double_seed_t));
 
-typedef enum _seeds_purpose seeds_purpose_t;
-
-_INLINE_ void get_seeds(OUT double_seed_t *seeds, seeds_purpose_t seeds_type __attribute__((unused))) {
-	OQS_randombytes(seeds->u.v.s1.u.raw, sizeof(double_seed_t));
+	EDMSG("s1: ");
+	print(seeds->s1.u.qw, sizeof(seed_t) * 8);
+	EDMSG("s2: ");
+	print(seeds->s2.u.qw, sizeof(seed_t) * 8);
 }
 
 typedef enum {
@@ -56,18 +53,19 @@ typedef enum {
 	MUST_BE_ODD = 1
 } must_be_odd_t;
 
-//Return's a BIGNUM with r random bits
-//No restrictions exist for the top or bottom bits -
-//and the BIGNUM can be smaller than 2^(r-1).
-OQS_STATUS sample_uniform_r_bits(OUT uint8_t *n,
+// Return's an array of r pseudorandom bits
+// No restrictions exist for the top or bottom bits -
+// in case an odd number is  requried then set must_be_odd=1
+OQS_STATUS sample_uniform_r_bits(OUT uint8_t *r,
                                  IN const seed_t *seed,
                                  IN const must_be_odd_t must_be_odd);
 
-//Generate a random BIGNUM r of length len with a set weight
-//Using the random ctx supplied.
-OQS_STATUS generate_sparse_rep(OUT uint8_t *r,
+// Generate a pseudorandom r of length len with a set weight
+// Using the pseudorandom ctx supplied
+// Outputs also a compressed (not ordered) list of indices
+OQS_STATUS generate_sparse_rep(OUT uint8_t *a,
                                IN const uint32_t weight,
                                IN const uint32_t len,
                                IN OUT aes_ctr_prf_state_t *prf_state);
 
-#endif //_SAMPLE_H_
+#endif // _SAMPLE_H_

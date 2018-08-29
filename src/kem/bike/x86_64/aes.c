@@ -10,18 +10,21 @@
 * ***************************************************************************/
 
 #include "aes.h"
-#include <wmmintrin.h>
-#include <tmmintrin.h>
 
-void AES256_Enc_Intrinsic(OUT const uint8_t *CT,
-                          IN const uint8_t *PT,
-                          IN const uint8_t *KS) {
-	uint32_t i;
-	__m128i block = _mm_loadu_si128((__m128i *) PT);
-	block = _mm_xor_si128(block, ((__m128i *) KS)[0]);
-	for (i = 1; i < 14; i++) {
-		block = _mm_aesenc_si128(block, ((__m128i *) KS)[i]);
+void aes256_enc_intrinsic(OUT const uint8_t *ct,
+                          IN const uint8_t *pt,
+                          IN const aes256_ks_t *ks) {
+	uint32_t i = 0;
+	volatile __m128i block = _mm_loadu_si128((__m128i *) pt);
+
+	block = _mm_xor_si128(block, ks->keys[0]);
+	for (i = 1; i < AES256_ROUNDS; i++) {
+		block = _mm_aesenc_si128(block, ks->keys[i]);
 	}
-	block = _mm_aesenclast_si128(block, ((__m128i *) KS)[14]);
-	_mm_storeu_si128((__m128i *) (CT), block);
+	block = _mm_aesenclast_si128(block, ks->keys[AES256_ROUNDS]);
+
+	_mm_storeu_si128((__m128i *) (ct), block);
+
+	// Clear the secret data when done
+	block = _mm_setzero_si128();
 }
