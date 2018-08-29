@@ -293,10 +293,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\kex\minimal_kex_oqs.c" />
+    <ClInclude Include="..\winconfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\winconfig.h" />
+    <ClCompile Include="..\..\tests\minimal_kex_oqs.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
