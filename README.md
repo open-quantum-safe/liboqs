@@ -157,7 +157,7 @@ Windows binaries can be generated using the Visual Studio solution in the `Visua
 
 Builds are tested using the Appveyor continuous integration system on Windows Server 2016 (Visual Studio 2017).  Our developers also test builds periodically on Windows 10.
 
-- [Build status using Appveyor continuous integration system:](https://ci.appveyor.com/project/dstebila/liboqs) [![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs/branch/master)
+- [Build status using Appveyor continuous integration system:](https://ci.appveyor.com/project/dstebila/liboqs) ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true)
 
 The supported schemes are defined in the projects' `winconfig.h` file.
 
