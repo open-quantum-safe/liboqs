@@ -2,13 +2,14 @@
 #if defined(_WIN32)
 #include <windows.h>
 #include <Wincrypt.h>
+#define strcasecmp _stricmp
 #else
 #include <stdlib.h>
 #include <unistd.h>
+#include <strings.h>
 #endif
 
 #include <fcntl.h>
-#include <strings.h>
 
 #include <oqs/oqs.h>
 
