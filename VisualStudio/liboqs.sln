@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26430.4
@@ -21,6 +21,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "minimal_kex_oqs", "minimal_
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "minimal_sig_oqs", "minimal_sig_oqs\minimal_sig_oqs.vcxproj", "{0B75FD61-D29F-43FE-9D6D-EDE3B5289C66}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DCFEFB81-4696-45D2-9FCA-351CCFC13C74} = {DCFEFB81-4696-45D2-9FCA-351CCFC13C74}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_kem", "test_kem\test_kem.vcxproj", "{76A44A7A-305F-4542-86E3-B6547DAD418C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{DCFEFB81-4696-45D2-9FCA-351CCFC13C74} = {DCFEFB81-4696-45D2-9FCA-351CCFC13C74}
 	EndProjectSection
@@ -117,6 +122,22 @@ Global
 		{0B75FD61-D29F-43FE-9D6D-EDE3B5289C66}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64
 		{0B75FD61-D29F-43FE-9D6D-EDE3B5289C66}.ReleaseDLL|x86.ActiveCfg = Release|Win32
 		{0B75FD61-D29F-43FE-9D6D-EDE3B5289C66}.ReleaseDLL|x86.Build.0 = Release|Win32
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.Debug|x64.ActiveCfg = Debug|x64
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.Debug|x64.Build.0 = Debug|x64
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.Debug|x86.ActiveCfg = Debug|Win32
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.Debug|x86.Build.0 = Debug|Win32
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.DebugDLL|x64.ActiveCfg = Debug|x64
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.DebugDLL|x64.Build.0 = Debug|x64
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.DebugDLL|x86.ActiveCfg = Debug|Win32
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.DebugDLL|x86.Build.0 = Debug|Win32
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.Release|x64.ActiveCfg = Release|x64
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.Release|x64.Build.0 = Release|x64
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.Release|x86.ActiveCfg = Release|Win32
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.Release|x86.Build.0 = Release|Win32
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.ReleaseDLL|x64.ActiveCfg = Release|x64
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.ReleaseDLL|x64.Build.0 = Release|x64
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.ReleaseDLL|x86.ActiveCfg = Release|Win32
+		{76A44A7A-305F-4542-86E3-B6547DAD418C}.ReleaseDLL|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -109,6 +109,27 @@
     <ClCompile Include="..\..\src\sig_picnic\sig_picnic.c">
       <Filter>picnic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\kem.c">
+      <Filter>kem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c">
+      <Filter>frodo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\frodo640_aes.c">
+      <Filter>frodo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\frodo640_cshake.c">
+      <Filter>frodo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\frodo976_aes.c">
+      <Filter>frodo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\frodo976_cshake.c">
+      <Filter>frodo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\util.c">
+      <Filter>frodo</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\oqs.h" />
@@ -236,6 +257,12 @@
     <ClInclude Include="..\..\src\kex_sidh_msr\windows_undef.h">
       <Filter>sidh</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kem\kem.h">
+      <Filter>kem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h">
+      <Filter>frodo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="dll.def" />
@@ -267,6 +294,12 @@
     </Filter>
     <Filter Include="sidh">
       <UniqueIdentifier>{7e30eb7e-4fb9-4783-8154-6f2a9f88e68a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="kem">
+      <UniqueIdentifier>{ceb9c773-d92e-44b7-916a-eb1d6a2ec89b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frodo">
+      <UniqueIdentifier>{10d21755-2db3-4ce1-a5ce-fbfe1aadcc53}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
