@@ -262,14 +262,18 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-</Command>
+copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
@@ -298,14 +302,18 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-</Command>
+copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -334,14 +342,18 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-</Command>
+copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -377,14 +389,18 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-      </Command>
+copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -419,14 +435,18 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-      </Command>
+copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
@@ -459,14 +479,18 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-      </Command>
+copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -499,14 +523,18 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-      </Command>
+copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -546,14 +574,18 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-      </Command>
+copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>

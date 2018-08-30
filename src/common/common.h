@@ -8,7 +8,11 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#if defined(_WIN32)
+#include <oqs/winconfig.h>
+#else
 #include <oqs/config.h>
+#endif
 
 /**
  * Represents return values from functions.
@@ -123,6 +127,10 @@ void OQS_MEM_insecure_free(void *ptr);
  *
  * Example: OQS_API return_value function_name(void);
  */
+#if defined(_WIN32)
+#define OQS_API
+#else
 #define OQS_API __attribute__((visibility("default")))
+#endif
 
 #endif // __OQS_COMMON_H
