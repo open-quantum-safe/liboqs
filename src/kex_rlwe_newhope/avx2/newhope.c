@@ -1,7 +1,5 @@
-#include "poly.h"
-#include "randombytes.h"
-#include "error_correction.h"
-#include "fips202.h"
+#include "poly.c"
+#include "error_correction.c"
 
 static void encode_a(unsigned char *r, const poly *pk, const unsigned char *seed)
 {
@@ -48,7 +46,7 @@ static void gen_a(poly *a, const unsigned char *seed)
 
 // API FUNCTIONS 
 
-void newhope_keygen(unsigned char *send, poly *sk)
+static void newhope_keygen(unsigned char *send, poly *sk)
 {
   poly a, e, r, pk;
   unsigned char seed[NEWHOPE_SEEDBYTES];
@@ -66,14 +64,14 @@ void newhope_keygen(unsigned char *send, poly *sk)
   poly_getnoise(&e,noiseseed,1);
   poly_ntt(&e);
 
-  poly_pointwise(&r,sk,&a);
+  OQS_poly_pointwise(&r,sk,&a);
   poly_add(&pk,&e,&r);
 
   encode_a(send, &pk, seed);
 }
 
 
-void newhope_sharedb(unsigned char *sharedkey, unsigned char *send, const unsigned char *received)
+static void newhope_sharedb(unsigned char *sharedkey, unsigned char *send, const unsigned char *received)
 {
   poly sp, ep, v, a, pka, c, epp, bp;
   unsigned char seed[NEWHOPE_SEEDBYTES];
@@ -89,10 +87,10 @@ void newhope_sharedb(unsigned char *sharedkey, unsigned char *send, const unsign
   poly_getnoise(&ep,noiseseed,1);
   poly_ntt(&ep);
 
-  poly_pointwise(&bp, &a, &sp);
+  OQS_poly_pointwise(&bp, &a, &sp);
   poly_add(&bp, &bp, &ep);
   
-  poly_pointwise(&v, &pka, &sp);
+  OQS_poly_pointwise(&v, &pka, &sp);
   poly_invntt(&v);
 
   poly_getnoise(&epp,noiseseed,2);
@@ -102,7 +100,7 @@ void newhope_sharedb(unsigned char *sharedkey, unsigned char *send, const unsign
 
   encode_b(send, &bp, &c);
   
-  rec(sharedkey, &v, &c);
+  OQS_rec(sharedkey, &v, &c);
 
 #ifndef STATISTICAL_TEST 
   sha3256(sharedkey, sharedkey, 32);
@@ -110,16 +108,16 @@ void newhope_sharedb(unsigned char *sharedkey, unsigned char *send, const unsign
 }
 
 
-void newhope_shareda(unsigned char *sharedkey, const poly *sk, const unsigned char *received)
+static void newhope_shareda(unsigned char *sharedkey, const poly *sk, const unsigned char *received)
 {
   poly v,bp, c;
 
   decode_b(&bp, &c, received);
 
-  poly_pointwise(&v,sk,&bp);
+  OQS_poly_pointwise(&v,sk,&bp);
   poly_invntt(&v);
  
-  rec(sharedkey, &v, &c);
+  OQS_rec(sharedkey, &v, &c);
 
 #ifndef STATISTICAL_TEST 
   sha3256(sharedkey, sharedkey, 32); 

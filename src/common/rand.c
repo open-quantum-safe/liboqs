@@ -128,7 +128,7 @@ void OQS_RAND_n(OQS_RAND *r, uint8_t *out, size_t n) {
 
 void OQS_RAND_free(OQS_RAND *r) {
 	if (r) {
-		r->free(r);
+		r->free(r); // IGNORE free-check
 	}
 }
 

@@ -1,4 +1,4 @@
-/***************************************************************************
+	/***************************************************************************
 * Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
 * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
@@ -96,6 +96,6 @@ void gf2x_mod_mul(OUT uint64_t *res,
 	// This function implicitly assumes that the size of res is 2*R_PADDED_QW
 	red_asm(res);
 
-	// Free also clears the memory! this prevents secrets from being exposed
-	free(secure_buffer);
+	//Free also clear the memory! this prevents secrets from being exposed
+	OQS_MEM_secure_free(secure_buffer, 3 * R_PADDED_SIZE);
 }

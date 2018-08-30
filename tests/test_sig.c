@@ -150,16 +150,16 @@ err:
 
 cleanup:
 	if (msg != NULL) {
-		free(msg);
+		OQS_MEM_insecure_free(msg);
 	}
 	if (sig != NULL) {
-		free(sig);
+		OQS_MEM_insecure_free(sig);
 	}
 	if (pub != NULL) {
-		free(pub);
+		OQS_MEM_insecure_free(pub);
 	}
 	if (priv != NULL) {
-		free(priv);
+		OQS_MEM_secure_free(priv, s->priv_key_len);
 	}
 	if (s != NULL) {
 		OQS_SIG_free(s);
@@ -249,10 +249,10 @@ err:
 	rc = OQS_ERROR;
 
 cleanup:
-	free(priv);
-	free(pub);
-	free(msg);
-	free(sig);
+	OQS_MEM_secure_free(priv, s->priv_key_len);
+	OQS_MEM_insecure_free(pub);
+	OQS_MEM_insecure_free(msg);
+	OQS_MEM_insecure_free(sig);
 	OQS_SIG_free(s);
 
 	return rc;

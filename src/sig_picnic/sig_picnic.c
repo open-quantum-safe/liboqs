@@ -105,7 +105,7 @@ OQS_STATUS OQS_SIG_picnic_get(OQS_SIG *s, enum OQS_SIG_algid algid) {
 	s->keygen = &OQS_SIG_picnic_keygen;
 	s->sign = &OQS_SIG_picnic_sign;
 	s->verify = &OQS_SIG_picnic_verify;
-	s->free = &OQS_SIG_picnic_free;
+	s->free = &OQS_SIG_picnic_free; //  IGNORE free-check
 
 	return OQS_SUCCESS;
 }
@@ -173,9 +173,9 @@ void OQS_SIG_picnic_free(OQS_SIG *s) {
 	if (!s) {
 		return;
 	}
-	free(s->ctx);
+	OQS_MEM_insecure_free(s->ctx);
 	s->ctx = NULL;
-	free(s);
+	OQS_MEM_insecure_free(s);
 }
 
 #endif

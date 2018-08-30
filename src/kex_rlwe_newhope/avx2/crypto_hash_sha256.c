@@ -217,7 +217,7 @@ static int crypto_hashblocks_sha256(unsigned char *statebytes,const unsigned cha
   return inlen;
 }
 
-static const char iv[32] = {
+static const unsigned iv[32] = {
   0x6a,0x09,0xe6,0x67,
   0xbb,0x67,0xae,0x85,
   0x3c,0x6e,0xf3,0x72,
@@ -228,7 +228,7 @@ static const char iv[32] = {
   0x5b,0xe0,0xcd,0x19,
 } ;
 
-int crypto_hash_sha256(unsigned char *out,const unsigned char *in,unsigned long long inlen)
+static int crypto_hash_sha256(unsigned char *out,const unsigned char *in,unsigned long long inlen)
 {
   unsigned char h[32];
   unsigned char padded[128];

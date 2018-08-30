@@ -3,7 +3,7 @@
 
 //See paper for details on the error reconciliation
 
-extern void hr(poly *c, const poly *v, unsigned char rand[32]);
+extern void OQS_hr(poly *c, const poly *v, unsigned char rand[32]);
 
 void helprec(poly *c, const poly *v, const unsigned char *seed, unsigned char nonce)
 {
@@ -17,5 +17,5 @@ void helprec(poly *c, const poly *v, const unsigned char *seed, unsigned char no
 
   crypto_stream(rand,32,n,seed);
 
-  hr(c, v, rand);
+  OQS_hr(c, v, rand);
 }

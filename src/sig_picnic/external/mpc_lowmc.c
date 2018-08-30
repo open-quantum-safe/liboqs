@@ -23,6 +23,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <oqs/common.h>
+
 #ifdef WITH_OPT
 #include "simd.h"
 #endif
@@ -1087,7 +1089,7 @@ mpc_lowmc_call_def(mpc_lowmc_call_512_neon, mpc_lowmc_call_verify_512_neon,
 static void sbox_vars_clear(sbox_vars_t* vars) {
   if (vars->storage) {
     oqs_sig_picnic_mzd_local_free_multiple(vars->storage);
-    free(vars->storage);
+    OQS_MEM_insecure_free(vars->storage);
     memset(vars, 0, sizeof(*vars));
   }
 }

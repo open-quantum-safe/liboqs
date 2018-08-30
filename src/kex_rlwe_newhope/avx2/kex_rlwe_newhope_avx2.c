@@ -1,6 +1,13 @@
+#if defined(WINDOWS)
+#define UNUSED
+// __attribute__ not supported in VS, is there something else I should define?
+#else
+#define UNUSED __attribute__((unused))
+#endif
+
 #include <stdlib.h>
 #include <string.h>
-#if !defined(_WIN32)
+#if !defined(WINDOWS)
 #include <strings.h>
 #include <unistd.h>
 #endif
@@ -9,20 +16,16 @@
 #include <oqs/kex.h>
 #include <oqs/rand.h>
 
-#include "kex_rlwe_newhope.h"
+#include "kex_rlwe_newhope_avx2.h"
 #include "newhope.c"
 #include "params.h"
 
-#if defined(_WIN32)
-#define strdup _strdup // for strdup deprecation warning
-#endif
-
-OQS_KEX *OQS_KEX_rlwe_newhope_new(OQS_RAND *rand) {
+OQS_KEX *OQS_KEX_rlwe_newhope_avx2_new(OQS_RAND *rand) {
 	OQS_KEX *k = malloc(sizeof(OQS_KEX));
 	if (k == NULL) {
 		return NULL;
 	}
-	k->method_name = strdup("RLWE NewHope");
+	k->method_name = strdup("RLWE NewHope AVX2");
 	k->estimated_classical_security = 229; // http://eprint.iacr.org/2015/1092.pdf Table 1 NewHope dual known classical
 	k->estimated_quantum_security = 206;   // http://eprint.iacr.org/2015/1092.pdf Table 1 NewHope dual known quantum
 	k->seed = NULL;
@@ -30,20 +33,17 @@ OQS_KEX *OQS_KEX_rlwe_newhope_new(OQS_RAND *rand) {
 	k->named_parameters = 0;
 	k->rand = rand;
 	k->params = NULL;
-	k->alice_0 = &OQS_KEX_rlwe_newhope_alice_0;
-	k->bob = &OQS_KEX_rlwe_newhope_bob;
-	k->alice_1 = &OQS_KEX_rlwe_newhope_alice_1;
-	k->alice_priv_free = &OQS_KEX_rlwe_newhope_alice_priv_free;
-	k->free = &OQS_KEX_rlwe_newhope_free; //  IGNORE free-check
+	k->alice_0 = &OQS_KEX_rlwe_newhope_avx2_alice_0;
+	k->bob = &OQS_KEX_rlwe_newhope_avx2_bob;
+	k->alice_1 = &OQS_KEX_rlwe_newhope_avx2_alice_1;
+	k->alice_priv_free = &OQS_KEX_rlwe_newhope_avx2_alice_priv_free;
+	k->free = &OQS_KEX_rlwe_newhope_avx2_free; // IGNORE free-check
 	return k;
 }
 
-OQS_STATUS OQS_KEX_rlwe_newhope_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
+OQS_STATUS OQS_KEX_rlwe_newhope_avx2_alice_0(UNUSED OQS_KEX *k, void **alice_priv, uint8_t **alice_msg, size_t *alice_msg_len) {
 
 	OQS_STATUS ret;
-
-	*alice_priv = NULL;
-	*alice_msg = NULL;
 
 	/* allocate public/private key pair */
 	*alice_msg = malloc(NEWHOPE_SENDABYTES);
@@ -56,7 +56,7 @@ OQS_STATUS OQS_KEX_rlwe_newhope_alice_0(UNUSED OQS_KEX *k, void **alice_priv, ui
 	}
 
 	/* generate public/private key pair */
-	keygen(*alice_msg, (poly *) (*alice_priv), k->rand);
+	newhope_keygen(*alice_msg, (poly *) (*alice_priv));
 	*alice_msg_len = NEWHOPE_SENDABYTES;
 
 	ret = OQS_SUCCESS;
@@ -74,12 +74,9 @@ cleanup:
 	return ret;
 }
 
-OQS_STATUS OQS_KEX_rlwe_newhope_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
+OQS_STATUS OQS_KEX_rlwe_newhope_avx2_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg, const size_t alice_msg_len, uint8_t **bob_msg, size_t *bob_msg_len, uint8_t **key, size_t *key_len) {
 
 	OQS_STATUS ret;
-
-	*bob_msg = NULL;
-	*key = NULL;
 
 	if (alice_msg_len != NEWHOPE_SENDABYTES) {
 		goto err;
@@ -96,7 +93,7 @@ OQS_STATUS OQS_KEX_rlwe_newhope_bob(UNUSED OQS_KEX *k, const uint8_t *alice_msg,
 	}
 
 	/* generate Bob's response */
-	sharedb(*key, *bob_msg, alice_msg, k->rand);
+	newhope_sharedb(*key, *bob_msg, alice_msg);
 	*bob_msg_len = NEWHOPE_SENDBBYTES;
 	*key_len = 32;
 
@@ -115,11 +112,9 @@ cleanup:
 	return ret;
 }
 
-OQS_STATUS OQS_KEX_rlwe_newhope_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
+OQS_STATUS OQS_KEX_rlwe_newhope_avx2_alice_1(UNUSED OQS_KEX *k, const void *alice_priv, const uint8_t *bob_msg, const size_t bob_msg_len, uint8_t **key, size_t *key_len) {
 
 	OQS_STATUS ret;
-
-	*key = NULL;
 
 	if (bob_msg_len != NEWHOPE_SENDBBYTES) {
 		goto err;
@@ -132,7 +127,7 @@ OQS_STATUS OQS_KEX_rlwe_newhope_alice_1(UNUSED OQS_KEX *k, const void *alice_pri
 	}
 
 	/* generate Alice's session key */
-	shareda(*key, (poly *) alice_priv, bob_msg);
+	newhope_shareda(*key, (poly *) alice_priv, bob_msg);
 	*key_len = 32;
 
 	ret = OQS_SUCCESS;
@@ -148,15 +143,15 @@ cleanup:
 	return ret;
 }
 
-void OQS_KEX_rlwe_newhope_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
+void OQS_KEX_rlwe_newhope_avx2_alice_priv_free(UNUSED OQS_KEX *k, void *alice_priv) {
 	if (alice_priv) {
 		OQS_MEM_secure_free(alice_priv, sizeof(poly));
 	}
 }
 
-void OQS_KEX_rlwe_newhope_free(OQS_KEX *k) {
+void OQS_KEX_rlwe_newhope_avx2_free(OQS_KEX *k) {
 	if (k) {
-		OQS_MEM_insecure_free((void *) k->named_parameters);
+		OQS_MEM_insecure_free(k->named_parameters);
 		k->named_parameters = NULL;
 		OQS_MEM_insecure_free(k->method_name);
 		k->method_name = NULL;

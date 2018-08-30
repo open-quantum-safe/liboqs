@@ -51,10 +51,10 @@
 
 # qhasm: enter poly_pointwise
 .p2align 5
-.global _poly_pointwise
-.global poly_pointwise
-_poly_pointwise:
-poly_pointwise:
+.global OQS_poly_pointwise
+.global OQS_poly_pointwise
+OQS_poly_pointwise:
+OQS_poly_pointwise:
 mov %rsp,%r11
 and $31,%r11
 add $0,%r11

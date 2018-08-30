@@ -76,25 +76,6 @@ installheader_HEADERS=config.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h
 
-install-exec-local:
-if ENABLE_KEX_RLWE_NEWHOPE_AVX2
-	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
-endif
-
-install-exec-hook:
-	mkdir -p $(includedir)/oqs
-if ENABLE_KEX_RLWE_NEWHOPE_AVX2
-	cp src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h $(includedir)/oqs
-	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
-endif
-if USE_OPENSSL
-# IS THIS STILL NEEDED? FIXMEOQS
-	cp src/sig_picnic/external/Picnic-master/picnic.h $(includedir)/oqs
-endif
-if ENABLE_MCBITS
-	cp src/kex_code_mcbits/kex_code_mcbits.h $(includedir)/oqs
-endif
-
 test: clean-tests
 	make
 	tests/example_kem
@@ -126,7 +107,6 @@ links:
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
 	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
 if ENABLE_KEX_RLWE_NEWHOPE_AVX2
-	bash patches/apply-patch.sh kex_rlwe_newhope_avx2
 	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
 endif
 	cp -f src/kex_sidh_msr/kex_sidh_msr.h include/oqs
@@ -149,8 +129,3 @@ prettyprint:
 	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: doxygen-run
-
-cleanup-patch:
-if ENABLE_KEX_RLWE_NEWHOPE_AVX2
-	bash patches/cleanup-patch.sh kex_rlwe_newhope/avx2
-endif
