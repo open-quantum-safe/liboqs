@@ -76,8 +76,7 @@ installheader_HEADERS=config.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h
 
-test: clean-tests
-	make
+test: check
 	tests/example_kem
 	tests/test_kem
 	tests/test_kex --quiet

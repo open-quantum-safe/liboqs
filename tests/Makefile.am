@@ -1,12 +1,11 @@
 AUTOMAKE_OPTIONS = foreign
-noinst_bin_PROGRAMS = example_kem speed_kem test_kem \
+check_PROGRAMS = example_kem speed_kem test_kem \
                       minimal_kex_oqs test_kex \
                       test_sig \
                       test_aes test_rand test_sha3
 if ENABLE_SIG_PICNIC
-noinst_bin_PROGRAMS += minimal_sig_oqs
+check_PROGRAMS += minimal_sig_oqs
 endif
-noinst_bindir = .
 
 example_kem_SOURCES     = example_kem.c
 speed_kem_SOURCES       = speed_kem.c
