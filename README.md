@@ -119,7 +119,7 @@ Run the build system:
 	./configure
 	make clean
 	make
-	
+
 (If on macOS you encounter an error like `Can't exec "libtoolize": No such file or directory at ...`, try running with `LIBTOOLIZE=glibtoolize autoreconf -i`.)
 
 You can enable/disable various algorithms at compile-time, tell liboqs to use OpenSSL for certain crypto algorithms, and more; see `./configure --help`.  (In particular, on macOS, you might want to point liboqs to brew's version of OpenSSL, via the command: `./configure --enable-openssl --with-openssl-dir=/usr/local/opt/openssl`.)
@@ -153,11 +153,13 @@ You may also get instant memory usage results of an algorithm (e.g. ntru) by run
 Building and running on Windows
 -------------------------------
 
-**Windows builds are currently not supported as the codebase is undergoing rapid changes, but we plan to fix Windows builds soon.**
+Windows binaries can be generated using the Visual Studio solution in the `VisualStudio` folder.
 
-Windows binaries can be generated using the Visual Studio solution in the VisualStudio folder. Builds have been tested on Windows 10.
+Builds are tested using the Appveyor continuous integration system on Windows Server 2016 (Visual Studio 2017).  Our developers also test builds periodically on Windows 10.
 
-The supported schemes are defined in the projects' winconfig.h file.
+- [Build status using Appveyor continuous integration system:](https://ci.appveyor.com/project/dstebila/liboqs) [![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs/branch/master)
+
+The supported schemes are defined in the projects' `winconfig.h` file.
 
 McBits is disabled by default in the Visual Studio build; follow these steps to enable it:
 
