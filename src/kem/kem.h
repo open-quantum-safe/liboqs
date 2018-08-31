@@ -158,46 +158,46 @@ typedef struct OQS_KEM {
 
 	// clang-format off
 
-    /**
-     * Keypair generation algorithm.
-     *
-     * Caller is responsible for allocating sufficient memory for `public_key` and
-     * `secret_key`, based on the `length_*` members in this object or the per-scheme
-     * compile-time macros `OQS_KEM_*_length_*`.
-     *
-     * @param[out] public_key The public key represented as a byte string.
-     * @param[out] secret_key The secret key represented as a byte string.
-     * @return OQS_SUCCESS or OQS_ERROR
-     */
-    OQS_STATUS (*keypair)(uint8_t *public_key, uint8_t *secret_key);
+	/**
+	 * Keypair generation algorithm.
+	 *
+	 * Caller is responsible for allocating sufficient memory for `public_key` and
+	 * `secret_key`, based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_KEM_*_length_*`.
+	 *
+	 * @param[out] public_key The public key represented as a byte string.
+	 * @param[out] secret_key The secret key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*keypair)(uint8_t *public_key, uint8_t *secret_key);
 
-    /**
-     * Encapsulation algorithm.
-     *
-     * Caller is responsible for allocating sufficient memory for `ciphertext` and
-     * `shared_secret`, based on the `length_*` members in this object or the per-scheme
-     * compile-time macros `OQS_KEM_*_length_*`.
-     *
-     * @param[out] ciphertext The ciphertext (encapsulation) represented as a byte string.
-     * @param[out] shared_secret The shared secret represented as a byte string.
-     * @param[in] public_key The public key represented as a byte string.
-     * @return OQS_SUCCESS or OQS_ERROR
-     */
-    OQS_STATUS (*encaps)(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+	/**
+	 * Encapsulation algorithm.
+	 *
+	 * Caller is responsible for allocating sufficient memory for `ciphertext` and
+	 * `shared_secret`, based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_KEM_*_length_*`.
+	 *
+	 * @param[out] ciphertext The ciphertext (encapsulation) represented as a byte string.
+	 * @param[out] shared_secret The shared secret represented as a byte string.
+	 * @param[in] public_key The public key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*encaps)(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 
-    /**
-     * Decapsulation algorithm.
-     *
-     * Caller is responsible for allocating sufficient memory for `shared_secret`, based
-     * on the `length_*` members in this object or the per-scheme compile-time macros
-     * `OQS_KEM_*_length_*`.
-     *
-     * @param[out] shared_secret The shared secret represented as a byte string.
-     * @param[in] ciphertext The ciphertext (encapsulation) represented as a byte string.
-     * @param[in] secret_key The secret key represented as a byte string.
-     * @return OQS_SUCCESS or OQS_ERROR
-     */
-    OQS_STATUS (*decaps)(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+	/**
+	 * Decapsulation algorithm.
+	 *
+	 * Caller is responsible for allocating sufficient memory for `shared_secret`, based
+	 * on the `length_*` members in this object or the per-scheme compile-time macros
+	 * `OQS_KEM_*_length_*`.
+	 *
+	 * @param[out] shared_secret The shared secret represented as a byte string.
+	 * @param[in] ciphertext The ciphertext (encapsulation) represented as a byte string.
+	 * @param[in] secret_key The secret key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*decaps)(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 	// clang-format on
 
 } OQS_KEM;

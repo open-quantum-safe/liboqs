@@ -51,17 +51,17 @@ Acceptance criteria for nist-branch
 -----------------------------------
 
 - **Algorithmic requirements:**
-    - Any algorithm accepted as a full and complete submission to round 1 of the NIST Post-Quantum Cryptography project is eligible for inclusion.
-    - Algorithms whose security is considered effectively broken are not eligible for addition; see the Lifecycle section below for conditions on their removal.
-    - KEMs can be IND-CPA or IND-CCA-secure, at any NIST security level.
-    - Signature schemes can be EUF-CMA-secure, at any NIST security level.
+	- Any algorithm accepted as a full and complete submission to round 1 of the NIST Post-Quantum Cryptography project is eligible for inclusion.
+	- Algorithms whose security is considered effectively broken are not eligible for addition; see the Lifecycle section below for conditions on their removal.
+	- KEMs can be IND-CPA or IND-CCA-secure, at any NIST security level.
+	- Signature schemes can be EUF-CMA-secure, at any NIST security level.
 - **Targets**:
-    - **Operating systems:** The code must build on Linux and macOS.
-    - **Architecture:** The code must build at least on x64.  Targets are currently provided for x86 and x64.  We plan to add an AVX2 target, and possibly others.
+	- **Operating systems:** The code must build on Linux and macOS.
+	- **Architecture:** The code must build at least on x64.  Targets are currently provided for x86 and x64.  We plan to add an AVX2 target, and possibly others.
 - **Source code requirements:**
-    - The source code can be from the original submission, or can be an updated version.
-    - **License:** Source code licensed under the MIT License, the BSD license, or in the public domain can be directly incorporated into the repository.  GPL code will not be included in the repository, but a wrapper to the OQS API may be included, as well as a script that downloads and compiles in GPL code if the algorithm is requested at compile-time.
-    - **Code quality:** Given the "light touch" philosophy of nist-branch, we have no requirements on source code quality, other than that it compile on the targets.
+	- The source code can be from the original submission, or can be an updated version.
+	- **License:** Source code licensed under the MIT License, the BSD license, or in the public domain can be directly incorporated into the repository.  GPL code will not be included in the repository, but a wrapper to the OQS API may be included, as well as a script that downloads and compiles in GPL code if the algorithm is requested at compile-time.
+	- **Code quality:** Given the "light touch" philosophy of nist-branch, we have no requirements on source code quality, other than that it compile on the targets.
 
 Contributing
 ------------
@@ -95,27 +95,27 @@ The dependencies for liboqs are OpenSSL and the Keccak Code Package (libkeccak).
 
 You need to install the following packages:
 
-    sudo apt install gcc libssl-dev unzip xsltproc
+	sudo apt install gcc libssl-dev unzip xsltproc
 
 ### Install dependencies for macOS
 
 You need to install the following packages using brew (or a package manager of your choice):
 
-    brew install openssl wget
+	brew install openssl wget
 
 ### Building
 
 To build, first clone or download the source from GitHub, then run Make.
 
-    git clone https://github.com/open-quantum-safe/liboqs.git
-    cd liboqs
-    git checkout nist-branch
-    make
+	git clone https://github.com/open-quantum-safe/liboqs.git
+	cd liboqs
+	git checkout nist-branch
+	make
 
 If you wish to change the target architecture or disable certain algorithms, edit the first few lines of `Makefile`, then run:
 
-    make clean
-    make -j8
+	make clean
+	make -j8
 
 This will generate:
 
@@ -132,7 +132,7 @@ This will generate:
 
 You can specify the path for installation by overriding the `PREFIX` environment variable before running `make install`, for example:
 
-    PREFIX=/path/to/install make install
+	PREFIX=/path/to/install make install
 
 Documentation
 -------------
@@ -141,7 +141,7 @@ The directory `docs/algorithms` contains information about each algorithm availa
 
 If you have Doxygen installed (Linux: `sudo apt install doxygen graphviz`; macOS: `brew install doxygen graphviz`), you can build HTML documentation of the liboqs nist-branch API:
 
-    make docs
+	make docs
 
 Then open `docs/doxygen/html/index.html` in your web browser.
 
