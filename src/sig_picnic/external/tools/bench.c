@@ -23,6 +23,8 @@
 #include <linux/perf_event.h>
 #include <sys/syscall.h>
 
+#include <oqs.common.h>
+
 typedef struct { int fd; } timing_context_t;
 
 static bool timing_init(timing_context_t* ctx) {
@@ -304,7 +306,7 @@ static void sign_and_verify(const bench_options_t* options) {
   timing_close(&ctx);
   print_timings(timings_fis, options->iter);
 
-  free(timings_fis);
+  OQS_MEM_insecure_free(timings_fis);
 }
 
 int main(int argc, char** argv) {

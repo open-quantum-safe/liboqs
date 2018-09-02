@@ -13,7 +13,6 @@ source $(dirname $0)/defs.sh
 
 # See what has been modified (ignoring submodules because they are likely patched)
 MODIFIED=$(git status -s)
-
 if [[ ! -z "${MODIFIED}" ]];
 then
 	${PRINT_RED}

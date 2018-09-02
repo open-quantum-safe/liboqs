@@ -37,6 +37,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <oqs/common.h>
+
 static mask_t* prepare_masks(mask_t* mask, unsigned int n, unsigned int m) {
   mask->x0   = oqs_sig_picnic_mzd_local_init(1, n);
   mask->x1   = oqs_sig_picnic_mzd_local_init_ex(1, n, false);
@@ -247,7 +249,7 @@ void oqs_sig_picnic_lowmc_clear(lowmc_t* lowmc) {
   if (lowmc->needs_free) {
     oqs_sig_picnic_mzd_local_free((mzd_local_t*)lowmc->k0_matrix);
   }
-  free(lowmc->rounds);
+  OQS_MEM_insecure_free(lowmc->rounds);
 
   oqs_sig_picnic_mzd_local_free(lowmc->mask.x0);
   oqs_sig_picnic_mzd_local_free(lowmc->mask.x1);

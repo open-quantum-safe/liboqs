@@ -140,14 +140,14 @@ OQS_KEX *OQS_KEX_sidh_msr_new(OQS_RAND *rand, const char *named_parameters) {
 	k->bob = &OQS_KEX_sidh_msr_bob;
 	k->alice_1 = &OQS_KEX_sidh_msr_alice_1;
 	k->alice_priv_free = &OQS_KEX_sidh_msr_alice_priv_free;
-	k->free = &OQS_KEX_sidh_msr_free;
+	k->free = &OQS_KEX_sidh_msr_free; // IGNORE free-check
 
 	goto cleanup;
 
 err:
-	free(k);
+	OQS_MEM_insecure_free(k);
 	k = NULL;
-	free(sidh_ctx);
+	OQS_MEM_insecure_free(sidh_ctx);
 
 cleanup:
 	return k;
@@ -191,9 +191,9 @@ OQS_STATUS OQS_KEX_sidh_msr_alice_0(OQS_KEX *k, void **alice_priv, uint8_t **ali
 
 err:
 	ret = OQS_ERROR;
-	free(*alice_msg);
+	OQS_MEM_insecure_free(*alice_msg);
 	*alice_msg = NULL;
-	free(*alice_priv);
+	OQS_MEM_secure_free(*alice_priv, sidh_ctx->priv_key_len);
 	*alice_priv = NULL;
 
 cleanup:
@@ -256,13 +256,13 @@ OQS_STATUS OQS_KEX_sidh_msr_bob(OQS_KEX *k, const uint8_t *alice_msg, const size
 
 err:
 	ret = OQS_ERROR;
-	free(*bob_msg);
+	OQS_MEM_insecure_free(*bob_msg);
 	*bob_msg = NULL;
-	free(*key);
+	OQS_MEM_secure_free(*key, key_len);
 	*key = NULL;
 
 cleanup:
-	free(bob_priv);
+	OQS_MEM_secure_free(bob_priv, sidh_ctx->priv_key_len);
 
 	return ret;
 }
@@ -306,7 +306,7 @@ OQS_STATUS OQS_KEX_sidh_msr_alice_1(OQS_KEX *k, const void *alice_priv, const ui
 
 err:
 	ret = OQS_ERROR;
-	free(*key);
+	OQS_MEM_secure_free(*key, sidh_ctx->shared_secret_len);
 	*key = NULL;
 
 cleanup:
@@ -325,9 +325,9 @@ void OQS_KEX_sidh_msr_free(OQS_KEX *k) {
 	if (!k) {
 		return;
 	}
-	free(k->ctx); // FIXMEOQS: do I need to cast to SIDH_CTX?
+	OQS_MEM_insecure_free(k->ctx); // FIXMEOQS: do I need to cast to SIDH_CTX?
 	k->ctx = NULL;
-	free(k->method_name);
+	OQS_MEM_insecure_free(k->method_name);
 	k->method_name = NULL;
-	free(k);
+	OQS_MEM_insecure_free(k);
 }

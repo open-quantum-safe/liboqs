@@ -76,9 +76,9 @@
 # qhasm: enter ntt_double
 .p2align 5
 .global _ntt_double
-.global ntt_double
+.global OQS_ntt_double
 _ntt_double:
-ntt_double:
+OQS_ntt_double:
 mov %rsp,%r11
 and $31,%r11
 add $0,%r11

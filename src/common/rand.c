@@ -2,13 +2,15 @@
 #if defined(_WIN32)
 #include <windows.h>
 #include <Wincrypt.h>
+#include <assert.h>
+#define strcasecmp _stricmp
 #else
 #include <stdlib.h>
 #include <unistd.h>
+#include <strings.h>
 #endif
 
 #include <fcntl.h>
-#include <strings.h>
 
 #include <oqs/oqs.h>
 
@@ -78,10 +80,11 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 #else
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	HCRYPTPROV hCryptProv;
-	while (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	       !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
-		// loop until success
+	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
+		!CryptGenRandom(hCryptProv, (DWORD)bytes_to_read, random_array)) {
+		assert(0); // no other way to return an error; better fail than return bad random data
 	}
+	CryptReleaseContext(hCryptProv, 0);
 }
 #endif
 
@@ -127,7 +130,7 @@ void OQS_RAND_n(OQS_RAND *r, uint8_t *out, size_t n) {
 
 void OQS_RAND_free(OQS_RAND *r) {
 	if (r) {
-		r->free(r);
+		r->free(r); // IGNORE free-check
 	}
 }
 

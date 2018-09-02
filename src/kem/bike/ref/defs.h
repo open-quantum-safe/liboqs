@@ -170,10 +170,7 @@
 //#define NO_SPACE
 //#define NO_NEWLINE
 
-////////////////////////////////////////////
-//              Testing
-///////////////////////////////////////////
-#define NUM_OF_CODE_TESTS 1ULL
-#define NUM_OF_ENCRYPTION_TESTS 1ULL
+#define BIKE_UNUSED_ATT __attribute__((unused))
+#define static_assert(COND, MSG) typedef char static_assertion_##MSG[(COND) ? 1 : -1] BIKE_UNUSED_ATT
 
 #endif //__TYPES_H_INCLUDED__

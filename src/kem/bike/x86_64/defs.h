@@ -18,29 +18,30 @@
 //             Basic defs
 ///////////////////////////////////////////
 
-//Divide by the divider and round up to next integer.
-//In asm the symbols '==' and '?' are not allowed therefore if using divide_and_ceil
-//in asm files we must ensure with static_assert its validity.
-#ifdef __ASM_FILE__
-#define DIVIDE_AND_CEIL(x, divider) ((x / divider) + 1)
-#define static_assert(COND, MSG)
-#elif __cplusplus
-#define DIVIDE_AND_CEIL(x, divider) ((x / divider) + (x % divider == 0 ? 0 : 1))
-#define static_assert(COND, MSG) static_assert(COND, "MSG")
-#else
-#define DIVIDE_AND_CEIL(x, divider) ((x / divider) + (x % divider == 0 ? 0 : 1))
-#define static_assert(COND, MSG) typedef char static_assertion_##MSG[(COND) ? 1 : -1]
-#endif
-
-#define BIKE_UNUSED(x) (void) (x)
-
-#define ALIGN(n) __attribute__((aligned(n)))
-
-//For clarity of the code.
+// For code clarity.
 #define IN
 #define OUT
 
-//Bit manipations
+#define ALIGN(n) __attribute__((aligned(n)))
+#define BIKE_UNUSED(x) (void) (x)
+#define BIKE_UNUSED_ATT __attribute__((unused))
+
+#define _INLINE_ static inline
+
+// In asm the symbols '==' and '?' are not allowed therefore if using divide_and_ceil
+// in asm files we must ensure with static_assert its validity
+#ifdef __ASM_FILE__
+#define static_assert(COND, MSG)
+#elif defined(__cplusplus)
+#define static_assert(COND, MSG) static_assert(COND, "MSG")
+#else
+#define static_assert(COND, MSG) typedef char static_assertion_##MSG[(COND) ? 1 : -1] BIKE_UNUSED_ATT
+#endif
+
+// Divide by the divider and round up to next integer
+#define DIVIDE_AND_CEIL(x, divider) ((x + divider) / divider)
+
+// Bit manipations
 #ifdef __ASM_FILE__
 #define BIT(len) (1 << (len))
 #else
@@ -49,8 +50,6 @@
 
 #define MASK(len) (BIT(len) - 1)
 #define SIZEOF_BITS(b) (sizeof(b) * 8)
-
-#define _INLINE_ static inline
 
 #define XMM_SIZE 0x10
 #define YMM_SIZE 0x20
@@ -99,21 +98,8 @@
 //              Printing
 ///////////////////////////////////////////
 
-//Show timer rests in cycles.
-//#define RDTSC
+// #define PRINT_IN_BE
+// #define NO_SPACE
+// #define NO_NEWLINE
 
-//#define PRINT_IN_BE
-//#define NO_SPACE
-//#define NO_NEWLINE
-
-////////////////////////////////////////////
-//              Testing
-///////////////////////////////////////////
-#ifndef NUM_OF_TESTS
-#define NUM_OF_TESTS 1
-#endif
-
-//Disabled for random testing
-//#define USE_NIST_RAND
-
-#endif //__TYPES_H_INCLUDED__
+#endif // __TYPES_H_INCLUDED__

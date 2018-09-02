@@ -14,6 +14,8 @@
 #include <m4ri/m4ri.h>
 #include <openssl/rand.h>
 
+#include <oqs/common.h>
+
 typedef struct {
   mzd_t* x0;
   mzd_t* x1;
@@ -148,7 +150,7 @@ static bool lowmc_write_file(lowmc_t* lowmc) {
   }
 
   FILE* file = fopen(file_name, "w");
-  free(file_name);
+  OQS_MEM_insecure_free(file_name);
   if (file) {
     fwrite(&lowmc->m, sizeof(lowmc->m), 1, file);
     fwrite(&lowmc->n, sizeof(lowmc->n), 1, file);
@@ -213,7 +215,7 @@ static void lowmc_clear(lowmc_t* lowmc) {
   mzd_free(lowmc->precomputed_linear_part_matrix);
 #endif
   mzd_free(lowmc->k0_matrix);
-  free(lowmc->rounds);
+  OQS_MEM_insecure_free(lowmc->rounds);
 }
 
 static bool parse_arg(long* value, const char* arg) {

@@ -13,21 +13,21 @@
 #include "string.h"
 #include "assert.h"
 
-_INLINE_ status_t get_rand_mod_len(OUT uint32_t *rand_pos,
-                                   IN const uint32_t len,
-                                   IN OUT aes_ctr_prf_state_t *prf_state) {
+_INLINE_ OQS_STATUS get_rand_mod_len(OUT uint32_t *rand_pos,
+                                     IN const uint32_t len,
+                                     IN OUT aes_ctr_prf_state_t *prf_state) {
 	const uint64_t mask = MASK(bit_scan_reverse(len));
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 
 	do {
-		//Generate 128bit of random numbers
+		// Generate 128bit of random numbers
 		res = aes_ctr_prf((uint8_t *) rand_pos, prf_state, sizeof(*rand_pos));
 		CHECK_STATUS(res);
 
-		//Mask only relevant bits
+		// Mask only relevant bits
 		(*rand_pos) &= mask;
 
-		//Break if a number smaller than len is found
+		// Break if a number smaller than len is found
 		if ((*rand_pos) < len) {
 			break;
 		}
@@ -38,18 +38,18 @@ EXIT:
 	return res;
 }
 
-_INLINE_ status_t make_odd_weight(IN OUT uint8_t *a,
-                                  IN const uint32_t len,
-                                  IN OUT aes_ctr_prf_state_t *prf_state) {
+_INLINE_ OQS_STATUS make_odd_weight(IN OUT uint8_t *a,
+                                    IN const uint32_t len,
+                                    IN OUT aes_ctr_prf_state_t *prf_state) {
 	uint32_t rand_pos = 0;
 
 	if (((count_ones(a, R_SIZE) % 2) == 1)) {
-		//Already odd
-		return SUCCESS;
+		// Already odd
+		return OQS_SUCCESS;
 	}
 
-	//Generate random bit and flip it
-	status_t res = get_rand_mod_len(&rand_pos, len, prf_state);
+	// Generate random bit and flip it
+	OQS_STATUS res = get_rand_mod_len(&rand_pos, len, prf_state);
 	CHECK_STATUS(res);
 
 	const uint32_t rand_byte = rand_pos >> 3;
@@ -58,29 +58,29 @@ _INLINE_ status_t make_odd_weight(IN OUT uint8_t *a,
 	a[rand_byte] ^= BIT(rand_bit);
 
 EXIT:
-	return SUCCESS;
+	return OQS_SUCCESS;
 }
 
-//IN: must_be_odd - 1 true, 0 not
-status_t sample_uniform_r_bits(OUT uint8_t *r,
-                               IN const seed_t *seed,
-                               IN const must_be_odd_t must_be_odd) {
-	status_t res = SUCCESS;
+// IN: must_be_odd - 1 true, 0 not
+OQS_STATUS sample_uniform_r_bits(OUT uint8_t *r,
+                                 IN const seed_t *seed,
+                                 IN const must_be_odd_t must_be_odd) {
+	OQS_STATUS res = OQS_SUCCESS;
 
-	//For the seedexpander
+	// For the seedexpander
 	aes_ctr_prf_state_t prf_state = {0};
 
-	//Both h0 and h1 use the same context
+	// Both h0 and h1 use the same context
 	init_aes_ctr_prf_state(&prf_state, MAX_AES_INVOKATION, seed);
 
-	//Generate random data
+	// Generate random data
 	res = aes_ctr_prf(r, &prf_state, R_SIZE);
 	CHECK_STATUS(res);
 
-	//Mask upper bits of the MSByte
+	// Mask upper bits of the MSByte
 	r[R_SIZE - 1] &= MASK(R_BITS + 8 - (R_SIZE * 8));
 
-	if (must_be_odd == MUST_BE_ODD) {
+	if (MUST_BE_ODD == must_be_odd) {
 		res = make_odd_weight(r, R_BITS, &prf_state);
 		CHECK_STATUS(res);
 	}
@@ -119,27 +119,27 @@ extern void secure_set_bits(IN OUT uint8_t *a,
                             IN const uint32_t a_len,
                             IN const uint32_t weight);
 
-//Assumption 1) fake_weight > waight
-//           3) paddded_len % 64 = 0!
-status_t generate_sparse_fake_rep(OUT uint8_t *a,
-                                  OUT idx_t wlist[],
-                                  IN const uint32_t weight,
-                                  IN const uint32_t fake_weight,
-                                  IN const uint32_t len,
-                                  IN const uint32_t padded_len,
-                                  IN OUT aes_ctr_prf_state_t *prf_state) {
-	assert(padded_len % 64 == 0);
+// Assumption 1) fake_weight > waight
+//            2) paddded_len % 64 = 0!
+OQS_STATUS generate_sparse_fake_rep(OUT uint8_t *a,
+                                    OUT idx_t wlist[],
+                                    IN const uint32_t weight,
+                                    IN const uint32_t fake_weight,
+                                    IN const uint32_t len,
+                                    IN const uint32_t padded_len,
+                                    IN OUT aes_ctr_prf_state_t *prf_state) {
+	assert((padded_len % 64) == 0);
 	assert(fake_weight >= weight);
 
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 	uint64_t ctr = 0;
 	uint32_t real_wlist[weight];
 
-	//Initialize lists
+	// Initialize lists
 	memset(wlist, 0, sizeof(idx_t) * fake_weight);
 	memset(real_wlist, 0, sizeof(real_wlist));
 
-	//Generate fake_weight rand numbers
+	// Generate fake_weight rand numbers
 	do {
 		res = get_rand_mod_len(&wlist[ctr].val, len, prf_state);
 		CHECK_STATUS(res);
@@ -147,7 +147,7 @@ status_t generate_sparse_fake_rep(OUT uint8_t *a,
 		ctr += is_new(wlist, ctr);
 	} while (ctr < fake_weight);
 
-	//Allocate weight real positions
+	// Allocate weight real positions
 	ctr = 0;
 	do {
 		res = get_rand_mod_len(&real_wlist[ctr], fake_weight, prf_state);
@@ -157,39 +157,39 @@ status_t generate_sparse_fake_rep(OUT uint8_t *a,
 
 	} while (ctr < weight);
 
-	//Applying the indices in constant time
+	// Applying the indices in constant time
 	uint32_t mask = 0;
 	for (uint32_t j = 0; j < fake_weight; j++) {
 		for (uint32_t i = 0; i < weight; i++) {
 			mask = secure_cmp32(j, real_wlist[i]);
-			//Turn on real val mask.
+			// Turn on real val mask
 			wlist[j].used |= (-1U * mask);
 		}
 	}
 
-	//Initialize to zero
+	// Initialize to zero
 	memset(a, 0, (len + 7) >> 3);
 
-	//Assign values to "a"
+	// Assign values to "a"
 	secure_set_bits(a, wlist, padded_len, fake_weight);
 
 EXIT:
 	return res;
 }
 
-//Assumption 1) paddded_len % 64 = 0!
-status_t generate_sparse_rep(OUT uint8_t *a,
-                             OUT idx_t wlist[],
-                             IN const uint32_t weight,
-                             IN const uint32_t len,
-                             IN const uint32_t padded_len,
-                             IN OUT aes_ctr_prf_state_t *prf_state) {
-	assert(padded_len % 64 == 0);
+// Assumption 1) paddded_len % 64 = 0
+OQS_STATUS generate_sparse_rep(OUT uint8_t *a,
+                               OUT idx_t wlist[],
+                               IN const uint32_t weight,
+                               IN const uint32_t len,
+                               IN const uint32_t padded_len,
+                               IN OUT aes_ctr_prf_state_t *prf_state) {
+	assert((padded_len % 64) == 0);
 
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 	uint64_t ctr = 0;
 
-	//Generate fake_weight rand numbers
+	// Generate fake_weight rand numbers
 	do {
 		res = get_rand_mod_len(&wlist[ctr].val, len, prf_state);
 		CHECK_STATUS(res);
@@ -198,10 +198,10 @@ status_t generate_sparse_rep(OUT uint8_t *a,
 		ctr += is_new(wlist, ctr);
 	} while (ctr < weight);
 
-	//Initialize to zero
+	// Initialize to zero
 	memset(a, 0, (len + 7) >> 3);
 
-	//Assign values to "a"
+	// Assign values to "a"
 	secure_set_bits(a, wlist, padded_len, weight);
 
 EXIT:
@@ -211,10 +211,10 @@ EXIT:
 #else
 
 //////////////////////////////////////
-//NON CONSTANT TIME implementation!
+// NON CONSTANT TIME implementation!
 //////////////////////////////////////
 
-//Return 1 if set
+// Return 1 if set
 _INLINE_ int is_bit_set(IN const uint8_t *a,
                         IN const uint32_t pos) {
 
@@ -233,23 +233,23 @@ _INLINE_ void set_bit(IN uint8_t *a,
 	a[byte_pos] |= BIT(bit_pos);
 }
 
-//Assumption fake_weight > waight
-status_t generate_sparse_fake_rep(OUT uint8_t *a,
-                                  OUT idx_t wlist[],
-                                  IN const uint32_t weight,
-                                  IN const uint32_t fake_weight,
-                                  IN const uint32_t len,
-                                  IN const uint32_t padded_len,
-                                  IN OUT aes_ctr_prf_state_t *prf_state) {
+// Assumption fake_weight > waight
+OQS_STATUS generate_sparse_fake_rep(OUT uint8_t *a,
+                                    OUT idx_t wlist[],
+                                    IN const uint32_t weight,
+                                    IN const uint32_t fake_weight,
+                                    IN const uint32_t len,
+                                    IN const uint32_t padded_len,
+                                    IN OUT aes_ctr_prf_state_t *prf_state) {
 	BIKE_UNUSED(fake_weight);
 
 #ifndef VALIDATE_CONSTANT_TIME
 	return generate_sparse_rep(a, wlist, weight, len, padded_len, prf_state);
 #else
-	//This part of code to be able to compare constant and
+	// This part of code to be able to compare constant and
 	// non constant time implementations.
 
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 	uint64_t ctr = 0;
 
 	uint32_t real_wlist[weight];
@@ -258,10 +258,10 @@ status_t generate_sparse_fake_rep(OUT uint8_t *a,
 	res = generate_sparse_rep(a, inordered_wlist, fake_weight, len, padded_len, prf_state);
 	CHECK_STATUS(res);
 
-	//Initialize to zero
+	// Initialize to zero
 	memset(a, 0, (len + 7) >> 3);
 
-	//Allocate weight real positions
+	// Allocate weight real positions
 	do {
 		res = get_rand_mod_len(&real_wlist[ctr], fake_weight, prf_state);
 		CHECK_STATUS(res);
@@ -277,19 +277,19 @@ EXIT:
 #endif
 }
 
-//Assumption fake_weight > waight
-status_t generate_sparse_rep(OUT uint8_t *a,
-                             OUT idx_t wlist[],
-                             IN const uint32_t weight,
-                             IN const uint32_t len,
-                             IN const uint32_t padded_len,
-                             IN OUT aes_ctr_prf_state_t *prf_state) {
+// Assumption fake_weight > waight
+OQS_STATUS generate_sparse_rep(OUT uint8_t *a,
+                               OUT idx_t wlist[],
+                               IN const uint32_t weight,
+                               IN const uint32_t len,
+                               IN const uint32_t padded_len,
+                               IN OUT aes_ctr_prf_state_t *prf_state) {
 	BIKE_UNUSED(padded_len);
 
-	status_t res = SUCCESS;
+	OQS_STATUS res = OQS_SUCCESS;
 	uint64_t ctr = 0;
 
-	//Initialize to zero
+	// Initialize to zero
 	memset(a, 0, (len + 7) >> 3);
 
 	do {

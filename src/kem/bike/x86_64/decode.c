@@ -21,7 +21,6 @@
 #include "stdio.h"
 #include "string.h"
 #include "utilities.h"
-#include "measurements.h"
 #include "gf2x_mul.h"
 
 #if BIKE_VER > 1
@@ -32,7 +31,7 @@
 #define MAX_IT 25
 
 ////////////////////////////////////////////////////////////////////////////////
-//Defined in decode.S file
+// Defined in decode.S file
 extern void compute_counter_of_unsat(OUT uint8_t upc[N_BITS],
                                      IN const uint8_t s[R_BITS],
                                      IN const compressed_idx_dv_t *inv_h0_compressed,
@@ -50,7 +49,7 @@ extern void convert_to_redundant_rep(OUT uint8_t *out,
 ////////////////////////////////////////////////////////////////////////////////
 
 typedef ALIGN(16) struct decode_ctx_s {
-// count the number of unsatisfied parity-checks:
+// Count the number of unsatisfied parity-checks:
 #ifdef USE_AVX512F_INSTRUCTIONS
 	ALIGN(16)
 	uint8_t upc[N_QDQWORDS_BITS];
@@ -82,30 +81,30 @@ typedef ALIGN(16) struct decode_ctx_s {
 } decode_ctx_t;
 
 void split_e(OUT split_e_t *split_e, IN const e_t *e) {
-	//Copy lower bytes (e0)
+	// Copy lower bytes (e0)
 	memcpy(PTRV(split_e)[0].raw, e->raw, R_SIZE);
 
-	//Now load second value
+	// Now load second value
 	for (uint32_t i = R_SIZE; i < N_SIZE; ++i) {
 		PTRV(split_e)
 		[1].raw[i - R_SIZE] = ((e->raw[i] << LAST_R_BYTE_TRAIL) |
 		                       (e->raw[i - 1] >> LAST_R_BYTE_LEAD));
 	}
 
-	//Fix corner case
+	// Fix corner case
 	if (N_SIZE < 2UL * R_SIZE) {
 		PTRV(split_e)
 		[1].raw[R_SIZE - 1] = (e->raw[N_SIZE - 1] >> LAST_R_BYTE_LEAD);
 	}
 
-	//Fix last value
+	// Fix last value
 	PTRV(split_e)
 	[0].raw[R_SIZE - 1] &= LAST_R_BYTE_MASK;
 	PTRV(split_e)
 	[1].raw[R_SIZE - 1] &= LAST_R_BYTE_MASK;
 }
 
-// transpose a row into a column
+// Transpose a row into a column
 _INLINE_ void transpose(OUT red_r_t *col,
                         IN const red_r_t *row) {
 	col->raw[0] = row->raw[0];
@@ -117,35 +116,41 @@ _INLINE_ void transpose(OUT red_r_t *col,
 void compute_syndrome(OUT syndrome_t *syndrome,
                       IN const ct_t *ct,
                       IN const sk_t *sk) {
-	const pad_sk_t pad_sk = {{.u.v.val = PTR(sk).bin[0]}, {.u.v.val = PTR(sk).bin[1]}};
+	pad_sk_t pad_sk = {{.u.v.val = PTR(sk).bin[0]}, {.u.v.val = PTR(sk).bin[1]}};
 
-	//gf2x_mod_mul requires the values to be 64bit padded and extra (dbl) space for the results
+	// gf2x_mod_mul requires the values to be 64bit padded and extra (dbl) space for the results
 	dbl_pad_syndrome_t pad_s;
 
 #if BIKE_VER == 1
-	const pad_ct_t pad_ct = {{.u.v.val = PTRV(ct)[0]}, {.u.v.val = PTRV(ct)[1]}};
+	pad_ct_t pad_ct = {{.u.v.val = PTRV(ct)[0]}, {.u.v.val = PTRV(ct)[1]}};
 
-	//compute s = c0*h0 + c1*h1:
+	// Compute s = c0*h0 + c1*h1:
 	gf2x_mod_mul(pad_s[0].u.qw, pad_ct[0].u.qw, pad_sk[0].u.qw);
 	gf2x_mod_mul(pad_s[1].u.qw, pad_ct[1].u.qw, pad_sk[1].u.qw);
 
 	gf2x_add(VAL(pad_s[0]).raw, VAL(pad_s[0]).raw, VAL(pad_s[1]).raw, R_SIZE);
 
 #elif BIKE_VER == 2
-	const pad_ct_t pad_ct = {.u.v.val = *ct};
+	pad_ct_t pad_ct = {.u.v.val = *ct};
 	gf2x_mod_mul(pad_s[0].u.qw, pad_ct.u.qw, pad_sk[0].u.qw);
 
 #elif BIKE_VER == 3
 	// BIKE3 syndrome: s = c0 + c1*h0
-	//NTL is better in this case.
+	// NTL is better in this case
 	cyclic_product(VAL(pad_s[0]).raw, PTRV(ct)[1].raw, VAL(pad_sk[0]).raw);
 	gf2x_add(VAL(pad_s[0]).raw, VAL(pad_s[0]).raw, PTRV(ct)[0].raw, R_SIZE);
 #endif
 
-	//Converting to redunandt representation and then transposing the value.
+	// Converting to redunandt representation and then transposing the value
 	red_r_t s_tmp_bytes = {0};
 	convert_to_redundant_rep(s_tmp_bytes.raw, VAL(pad_s[0]).raw, sizeof(s_tmp_bytes));
 	transpose(&PTR(syndrome).dup1, &s_tmp_bytes);
+
+	OQS_MEM_cleanse(pad_s, sizeof(pad_s));
+	OQS_MEM_cleanse(pad_sk, sizeof(pad_sk));
+#if (BIKE_VER != 3)
+	OQS_MEM_cleanse((uint8_t *) &pad_ct, sizeof(pad_ct));
+#endif
 }
 
 _INLINE_ uint32_t get_threshold(IN const red_r_t *s) {
@@ -178,42 +183,44 @@ void recompute_syndrome(OUT syndrome_t *syndrome,
                         IN const ct_t *ct,
                         IN const sk_t *sk,
                         IN const e_t *e) {
-	//Split e into e0 and e1. Initialization is done in split_e.
+	// Split e into e0 and e1. Initialization is done in split_e
 	split_e_t splitted_e;
 	split_e(&splitted_e, e);
 
 #if BIKE_VER == 1
 	ct_t tmp_ct = *ct;
 
-	//Adapt the ciphertext
+	// Adapt the ciphertext
 	gf2x_add(VAL(tmp_ct)[0].raw, VAL(tmp_ct)[0].raw, VAL(splitted_e)[0].raw, R_SIZE);
 	gf2x_add(VAL(tmp_ct)[1].raw, VAL(tmp_ct)[1].raw, VAL(splitted_e)[1].raw, R_SIZE);
 
 #elif BIKE_VER == 2
 	ct_t tmp_ct;
 
-	//Adapt the ciphertext with e1
+	// Adapt the ciphertext with e1
 	cyclic_product(tmp_ct.raw, VAL(splitted_e)[1].raw, PTR(sk).pk.raw);
 	gf2x_add(tmp_ct.raw, tmp_ct.raw, ct->raw, R_SIZE);
 
-	//Adapt the ciphertext with e0
+	// Adapt the ciphertext with e0
 	gf2x_add(tmp_ct.raw, tmp_ct.raw, VAL(splitted_e)[0].raw, R_SIZE);
 
 #elif BIKE_VER == 3
 	ct_t tmp_ct;
 
-	//Adapt the ciphertext with e1
+	// Adapt the ciphertext with e1
 	cyclic_product(VAL(tmp_ct)[0].raw, VAL(splitted_e)[1].raw, PTR(sk).pk.u.v.val[0].raw);
 	cyclic_product(VAL(tmp_ct)[1].raw, VAL(splitted_e)[1].raw, PTR(sk).pk.u.v.val[1].raw);
 	gf2x_add(VAL(tmp_ct)[0].raw, VAL(tmp_ct)[0].raw, PTRV(ct)[0].raw, R_SIZE);
 	gf2x_add(VAL(tmp_ct)[1].raw, VAL(tmp_ct)[1].raw, PTRV(ct)[1].raw, R_SIZE);
 
-	//Adapt the ciphertext with e0
+	// Adapt the ciphertext with e0
 	gf2x_add(VAL(tmp_ct)[1].raw, VAL(tmp_ct)[1].raw, VAL(splitted_e)[0].raw, R_SIZE);
 #endif
 
-	//recompute the syndromee
+	// Recompute the syndromee
 	compute_syndrome(syndrome, &tmp_ct, sk);
+
+	OQS_MEM_cleanse(splitted_e.u.raw, sizeof(splitted_e));
 }
 
 ///////////////////////////////////////////////////////////
@@ -267,7 +274,7 @@ _INLINE_ void fix_gray_error(IN OUT syndrome_t *s,
 _INLINE_ void update_e(IN OUT e_t *e,
                        IN const uint32_t pos,
                        IN const uint8_t part) {
-	const uint32_t transpose_pos = (pos == 0 ? 0 : (R_BITS - pos)) + (part * R_BITS);
+	const uint32_t transpose_pos = ((0 == pos) ? 0 : (R_BITS - pos)) + (part * R_BITS);
 	const uint32_t byte_pos = (transpose_pos >> 3);
 	const uint32_t bit_pos = (transpose_pos & 0x7);
 
@@ -353,7 +360,7 @@ int decode(OUT e_t *e,
 #ifdef CONSTANT_TIME
 	decode_ctx_t ctx = {0};
 #else
-	//No need to init (performance)
+	// No need to init (performance)
 	decode_ctx_t ctx;
 	BIKE_UNUSED(ct);
 #endif
@@ -375,10 +382,10 @@ int decode(OUT e_t *e,
 	for (ctx.delta = MAX_DELTA;
 	     (ctx.delta >= 0) && (count_ones(PTR(s).dup1.raw, sizeof(PTR(s).dup1)) > u);
 	     ctx.delta--) {
-		//Reset the error
+		// Reset the error
 		memset(e, 0, sizeof(*e));
 
-		//Reset the syndrom
+		// Reset the syndrom
 		PTR(s).dup1 = original_s.u.v.dup1;
 		PTR(s).dup2 = original_s.u.v.dup1;
 
@@ -401,7 +408,7 @@ int decode(OUT e_t *e,
 			DMSG("    Weight of e: %lu\n", count_ones(e->raw, sizeof(*e)));
 			DMSG("    Weight of syndrome: %lu\n", count_ones(PTR(s).dup1.raw, sizeof(PTR(s).dup1)));
 
-			//Make sure both duplication are the same!
+			// Make sure both duplication are the same!
 			memcpy(PTR(s).dup2.raw, PTR(s).dup1.raw, sizeof(PTR(s).dup1));
 
 			// Recompute the UPC
@@ -419,10 +426,10 @@ int decode(OUT e_t *e,
 				break;
 			}
 
-			//Make sure both duplication are the same!
+			// Make sure both duplication are the same!
 			memcpy(PTR(s).dup2.raw, PTR(s).dup1.raw, sizeof(PTR(s).dup1));
 
-			//Recompute UPC
+			// Recompute UPC
 			compute_counter_of_unsat(ctx.upc, s->u.raw, &inv_h_compressed[0], &inv_h_compressed[1]);
 
 			// Decoding Step III: Flip all gray positions associated to high number of UPC
@@ -434,12 +441,14 @@ int decode(OUT e_t *e,
 				break;
 			}
 
-			//Make sure both duplication are the same!
+			// Make sure both duplication are the same!
 			memcpy(PTR(s).dup2.raw, PTR(s).dup1.raw, sizeof(PTR(s).dup1));
 		}
 	}
 
 	DMSG("    Weight of syndrome: 0\n");
+
+	OQS_MEM_cleanse(inv_h_compressed, sizeof(inv_h_compressed));
 
 	return code_ret;
 }

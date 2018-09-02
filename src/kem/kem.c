@@ -1,6 +1,10 @@
 #include <assert.h>
 #include <stdlib.h>
+#if defined(_WIN32)
+#define strcasecmp _stricmp
+#else
 #include <strings.h>
+#endif
 
 #include <oqs/oqs.h>
 

@@ -36,27 +36,27 @@
 #define __TYPES_H_INCLUDED__
 
 #include "defs.h"
-#include <stdint.h>
+#include <oqs/common.h>
 
 typedef struct uint128_s {
 	union {
 		uint8_t bytes[16];
-		uint32_t dwords[4];
-		uint64_t qwords[2];
+		uint32_t dw[4];
+		uint64_t qw[2];
 	} u;
 } uint128_t;
 
-//For clarity of the code.
+// For clarity of the code
 #define IN
 #define OUT
 
-//Bit manipulations
+// Bit manipulations
 #define BIT(len) (1ULL << (len))
 #define MASK(len) (BIT(len) - 1ULL)
 
 #define _INLINE_ static inline
 
-//Make sure no compiler optimizations.
+// Make sure no compiler optimizations.
 #pragma pack(push, 1)
 
 typedef struct generic_param_n_s {
@@ -90,28 +90,20 @@ enum _seed_id {
 };
 
 typedef struct seed_s {
-	union {
-		uint8_t raw[32];
-		uint64_t qwords[4];
-	} u;
+	uint8_t raw[32];
 } seed_t;
 
-//Both keygen and encaps require double seed.
+// Both keygen and encaps require double seed
 typedef struct double_seed_s {
-	union {
-		struct {
-			seed_t s1;
-			seed_t s2;
-		} v;
-		uint8_t raw[sizeof(seed_t) * 2ULL];
-	} u;
+	seed_t s1;
+	seed_t s2;
 } double_seed_t;
 
 //////////////////////////////
 //   Error handling
 /////////////////////////////
 
-//This convention will work all over the code.
+// This convention will work all over the code
 #define ERR(v)     \
 	{              \
 		res = v;   \
@@ -126,4 +118,4 @@ typedef struct double_seed_s {
 
 #pragma pack(pop)
 
-#endif //__TYPES_H_INCLUDED__
+#endif // __TYPES_H_INCLUDED__

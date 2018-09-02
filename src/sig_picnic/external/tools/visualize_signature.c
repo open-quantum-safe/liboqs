@@ -65,7 +65,7 @@ static int test_vector(const picnic_params_t param) {
     ret = -1;
   }
 
-  free(sig);
+  OQS_MEM_insecure_free(sig);
   return ret;
 }
 

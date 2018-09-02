@@ -37,10 +37,10 @@
 
 # qhasm: enter bitrev_vector
 .p2align 5
-.global _bitrev_vector
-.global bitrev_vector
-_bitrev_vector:
-bitrev_vector:
+.global OQS_bitrev_vector
+.global OQS_bitrev_vector
+OQS_bitrev_vector:
+OQS_bitrev_vector:
 movq %rsp,%r11
 and $31,%r11
 add $0,%r11

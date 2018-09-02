@@ -72,7 +72,7 @@ static int picnic_test_with_read_write(picnic_params_t parameters) {
     return ret;
   }
 
-  free(signature);
+  OQS_MEM_insecure_free(signature);
   return 0;
 }
 

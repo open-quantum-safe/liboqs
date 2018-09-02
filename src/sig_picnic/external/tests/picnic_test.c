@@ -54,7 +54,7 @@ static int picnic_sign_verify(const picnic_params_t param) {
     printf("FAILED!\n");
   }
 
-  free(sig);
+  OQS_MEM_insecure_free(sig);
   return ret;
 }
 

@@ -18,6 +18,8 @@
 
 #ifdef CONSTANT_TIME
 
+.local _CMP_LT_OS
+
 .text    
 #void compute_counter_of_unsat(uint8_t unsat_counter[N_BITS],
 #                              const uint8_t s[R_BITS],

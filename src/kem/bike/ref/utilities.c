@@ -45,7 +45,7 @@
 #define bswap_64(x) __builtin_bswap64(x)
 #endif
 
-//Print a new line only if we prints in qw blocks.
+// Print a new line only if we prints in qw blocks
 _INLINE_ void print_newline(IN const uint64_t qw_pos) {
 #ifndef NO_NEWLINE
 	if ((qw_pos % 4) == 3) {
@@ -54,9 +54,9 @@ _INLINE_ void print_newline(IN const uint64_t qw_pos) {
 #endif
 }
 
-//Prints a QW in LE/BE in win/linux format.
+// Prints a QW in LE/BE in win/linux format
 _INLINE_ void print_uint64(IN const uint64_t val) {
-//If printing in BE is required swap the order of bytes.
+// If printing in BE is required swap the order of bytes
 #ifdef PRINT_IN_BE
 	uint64_t tmp = bswap_64(val);
 #else
@@ -76,30 +76,30 @@ _INLINE_ void print_uint64(IN const uint64_t val) {
 #endif
 }
 
-//Last block requires a special handling as we should zero mask all the bits above the desired number.
-//endien - 0 - BE, 1 - LE
-//Return 1 if last block was printed else 0.
+// Last block requires a special handling as we should zero mask
+// all the bits above the desired number.
+// endien - 0 - BE, 1 - LE
+// Return 1 if last block was printed else 0
 _INLINE_ uint8_t print_last_block(IN const uint8_t *last_bytes,
                                   IN const uint32_t bits_num,
                                   IN const uint32_t endien) {
-	//Floor of bits/64 the reminder is in the next QW.
+	// Floor of bits/64 the reminder is in the next QW
 	const uint32_t qw_num = bits_num / BITS_IN_QW;
 
-	//How many bits to pad with zero.
+	// How many bits to pad with zero
 	const uint32_t rem_bits = bits_num - (BITS_IN_QW * qw_num);
 
-	//We read byte byte and not the whole QW to avoid reading bad memory address.
+	// We read byte byte and not the whole QW to avoid reading bad memory address
 	const uint32_t bytes_num = (rem_bits % 8 == 0) ? rem_bits / BITS_IN_BYTE : 1 + rem_bits / BITS_IN_BYTE;
-
 	int i;
 
 	if (rem_bits == 0) {
 		return 0;
 	}
 
-	//Mask unneeded bits
+	// Mask unneeded bits
 	const uint8_t last_byte = (rem_bits % 8 == 0) ? last_bytes[bytes_num - 1] : last_bytes[bytes_num - 1] & MASK(rem_bits % 8);
-	//BE
+	// BE
 	if (endien == 0) {
 		for (i = 0; (uint32_t) i < (bytes_num - 1); i++) {
 			printf("%.2x", last_bytes[i]);
@@ -132,10 +132,10 @@ _INLINE_ uint8_t print_last_block(IN const uint8_t *last_bytes,
 void print_LE(IN const uint64_t *in, IN const uint32_t bits_num) {
 	const uint32_t qw_num = bits_num / BITS_IN_QW;
 
-	//Print the MSB QW
+	// Print the MSB QW
 	uint32_t qw_pos = print_last_block((uint8_t *) &in[qw_num], bits_num, 1);
 
-	//Print each 8 bytes separated by space (if required)
+	// Print each 8 bytes separated by space (if required)
 	for (int i = ((int) qw_num) - 1; i >= 0; i--, qw_pos++) {
 		print_uint64(in[i]);
 		print_newline(qw_pos);
@@ -147,13 +147,13 @@ void print_LE(IN const uint64_t *in, IN const uint32_t bits_num) {
 void print_BE(IN const uint64_t *in, IN const uint32_t bits_num) {
 	const uint32_t qw_num = bits_num / BITS_IN_QW;
 
-	//Print each 16 numbers separately.
+	// Print each 16 numbers separately
 	for (uint32_t i = 0; i < qw_num; ++i) {
 		print_uint64(in[i]);
 		print_newline(i);
 	}
 
-	//Print the MSB QW
+	// Print the MSB QW
 	print_last_block((uint8_t *) &in[qw_num], bits_num, 0);
 
 	printf("\n");
