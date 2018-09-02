@@ -14,16 +14,16 @@ ALGS=`grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h src/sig/sig.h | grep -v 
 for alg in ${ALGS}; do
 
 	kat=`find kat_*_rsp -name ${alg}.kat |tr '\n' ' '`
-	if [ -z "${kat}" ];
+	if [ ! -e ${kat} ];
 	then
 		${PRINT_RED}
 		echo "KAT file not generated for ${alg}"
 		${PRINT_RESET}
-		RET=0
+		RET=1
 		continue
 	fi
 
-	origs=`find src -name ${alg}.kat |tr '\n' ' '`
+	origs=`find src -name ${alg}.kat -o -name ${alg}.*.kat |tr '\n' ' '`
 	if [[ "x${origs}x" == "xx" ]];
 	then
 		${PRINT_RED}
