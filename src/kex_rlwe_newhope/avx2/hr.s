@@ -81,10 +81,10 @@
 
 # qhasm: enter hr
 .p2align 5
-.global _hr
-.global hr
-_hr:
-hr:
+.global OQS_hr
+.global OQS_hr
+OQS_hr:
+OQS_hr:
 mov %rsp,%r11
 and $31,%r11
 add $0,%r11

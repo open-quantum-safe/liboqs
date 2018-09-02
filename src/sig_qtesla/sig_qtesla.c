@@ -51,7 +51,7 @@ OQS_STATUS OQS_SIG_qTESLA_get(OQS_SIG *s, enum OQS_SIG_algid algid) {
 	s->keygen = &OQS_SIG_qTESLA_keygen;
 	s->sign = &OQS_SIG_qTESLA_sign;
 	s->verify = &OQS_SIG_qTESLA_verify;
-	s->free = &OQS_SIG_qTESLA_free;
+	s->free = &OQS_SIG_qTESLA_free; // IGNORE free-check
 
 	return OQS_SUCCESS;
 }
@@ -130,7 +130,7 @@ void OQS_SIG_qTESLA_free(OQS_SIG *s) {
 	if (!s) {
 		return;
 	}
-	free(s);
+	OQS_MEM_insecure_free(s);
 }
 
 #endif

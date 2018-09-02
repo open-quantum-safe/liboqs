@@ -16,6 +16,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <oqs/common.h>
+
 #define MSG_LEN 500
 
 int picnicExample(picnic_params_t parameters) {
@@ -122,7 +124,7 @@ int picnicExample(picnic_params_t parameters) {
   }
   printf(" success\n\n");
 
-  free(signature);
+  OQS_MEM_insecure_free(signature);
 
   return 0;
 }

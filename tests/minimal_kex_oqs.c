@@ -17,7 +17,7 @@ void cleanup(uint8_t *alice_msg, size_t alice_msg_len, uint8_t *alice_key,
              uint8_t *bob_key, size_t bob_key_len, void *alice_priv,
              OQS_KEX *kex, OQS_RAND *rnd);
 
-#ifdef ENABLE_KEX_LWE_FRODO
+#ifdef ENABLE_KEX_RLWE_NEWHOPE
 int main(void) {
 	/* Key exchange parameters */
 	void *alice_priv = NULL;   // Alice's private key
@@ -32,7 +32,7 @@ int main(void) {
 	size_t bob_key_len = 0;  // Bob's final key length
 
 	/* Setup the key exchange protocol */
-	enum OQS_KEX_alg_name alg_name = OQS_KEX_alg_lwe_frodo;      // Alg. name
+	enum OQS_KEX_alg_name alg_name = OQS_KEX_alg_rlwe_newhope;      // Alg. name
 	const uint8_t *seed = (unsigned char *) "01234567890123456"; // Rand. seed
 	const size_t seed_len = 16;                                  // Seed length
 	const char *named_parameters = "recommended";                // Named params.

@@ -60,7 +60,7 @@ static OQS_STATUS rand_test_distribution_n(OQS_RAND *rand, unsigned long occurre
 	for (int i = 0; i < len; i++) {
 		OQS_RAND_test_record_occurrence(x[i], occurrences);
 	}
-	free(x);
+	OQS_MEM_insecure_free(x);
 	return OQS_SUCCESS;
 }
 static OQS_STATUS rand_test_distribution_wrapper(enum OQS_RAND_alg_name alg_name, int iterations, bool quiet) {

@@ -61,7 +61,7 @@ void oqs_aes128_load_schedule_ni(const uint8_t *key, void **_schedule) {
 
 void oqs_aes128_free_schedule_ni(void *schedule) {
 	if (schedule != NULL) {
-		free(schedule);
+		OQS_MEM_secure_free(schedule, 320);
 	}
 }
 

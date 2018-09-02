@@ -72,9 +72,9 @@
 # qhasm: enter rec
 .p2align 5
 .global _rec
-.global rec
+.global OQS_rec
 _rec:
-rec:
+OQS_rec:
 mov %rsp,%r11
 and $31,%r11
 add $32,%r11

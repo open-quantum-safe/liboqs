@@ -59,10 +59,10 @@
 
 # qhasm: enter cbd
 .p2align 5
-.global _cbd
-.global cbd
-_cbd:
-cbd:
+.global OQS_cbd
+.global OQS_cbd
+OQS_cbd:
+OQS_cbd:
 mov %rsp,%r11
 and $31,%r11
 add $0,%r11
