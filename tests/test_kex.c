@@ -31,17 +31,11 @@ struct kex_testcase kex_testcases[] = {
     {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},
 #endif
 #endif
-#ifdef ENABLE_KEX_RLWE_NEWHOPE
-    {OQS_KEX_alg_rlwe_newhope, NULL, 0, NULL, "rlwe_newhope", 0, 100},
-#endif
 #ifdef ENABLE_KEX_SIDH_MSR
     {OQS_KEX_alg_sidh_msr_503, NULL, 0, NULL, "sidh_msr_503", 0, 10},
     {OQS_KEX_alg_sidh_msr_751, NULL, 0, NULL, "sidh_msr_751", 0, 10},
     {OQS_KEX_alg_sike_msr_503, NULL, 0, NULL, "sike_msr_503", 0, 10},
     {OQS_KEX_alg_sike_msr_751, NULL, 0, NULL, "sike_msr_751", 0, 10},
-#endif
-#ifdef ENABLE_KEX_RLWE_NEWHOPE_AVX2
-    {OQS_KEX_alg_rlwe_newhope_avx2, NULL, 0, NULL, "rlwe_newhope_avx2", 0, 100},
 #endif
 
 };

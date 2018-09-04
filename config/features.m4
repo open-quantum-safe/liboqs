@@ -25,8 +25,8 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 
   #The flags are organizes according to features then cryptosystems.
 
-  # The parameters are 
-  # 1) Flag-name 
+  # The parameters are
+  # 1) Flag-name
   # 2) Param-name
   # 3) Compilation param name
   # 4) Compilation directory
@@ -42,20 +42,16 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
 
-  ARG_ENABL_SET_WRAP([kex-code-mcbits], [kex_code_mcbits], 
+  ARG_ENABL_SET_WRAP([kex-code-mcbits], [kex_code_mcbits],
                      [ENABLE_MCBITS], [src/kex_code_mcbits])
-  ARG_DISBL_SET_WRAP([kex-ntru], [kex_ntru], 
+  ARG_DISBL_SET_WRAP([kex-ntru], [kex_ntru],
                      [ENABLE_KEX_NTRU], [src/kex_ntru])
-  ARG_DISBL_SET_WRAP([kex-rlwe-newhope],[kex_rlwe_newhope], 
-                     [ENABLE_KEX_RLWE_NEWHOPE], [src/kex_rlwe_newhope])
-  ARG_ENABL_SET_WRAP([kex-rlwe-newhope-avx2], [kex_rlwe_newhope_avx2], 
-                     [ENABLE_KEX_RLWE_NEWHOPE_AVX2], [src/kex_rlwe_newhope/avx2])
   ARG_DISBL_SET_WRAP([kex-sidh-msr], [kex_sidh_msr],
                      [ENABLE_KEX_SIDH_MSR], [src/kex_sidh_msr])
 
-  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic], 
+  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
                      [ENABLE_SIG_PICNIC], [src/sig_picnic])
-  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla], 
+  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
                      [ENABLE_SIG_QTESLA], [src/sig_qtesla])
 ]
 )
@@ -77,8 +73,8 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l1, 1, "Define to 1 when BIKE3-L1 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l3, 1, "Define to 1 when BIKE3-L3 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l5, 1, "Define to 1 when BIKE3-L5 enabled")
-    
-    AM_COND_IF([USE_AVX2_INSTRUCTIONS], 
+
+    AM_COND_IF([USE_AVX2_INSTRUCTIONS],
                [AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [test x$gcc_cv_compiler = xtrue])
                 AM_COND_IF([BIKE_ADDITIONAL_IMPL], [AC_DEFINE(BIKE_ADDITIONAL_IMPL, 1, "Define to 1 when BIKE uses the additional implementation")])
                ])

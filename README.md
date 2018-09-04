@@ -190,7 +190,6 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/crypto/rand_urandom_chacha20/external`: public domain
 - `src/crypto/sha3`: public domain
 - `src/kex_code_mcbits`: public domain
-- `src/kex_rlwe_newhope`: public domain
 - `src/sig_qtesla`: public domain
 
 Team
