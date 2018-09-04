@@ -310,6 +310,11 @@ static void poly_uniform(poly a, const unsigned char *seed) { // Generation of p
 	OQS_SHA3_cshake128_simple(buf, OQS_SHA3_SHAKE128_RATE * nblocks, dmsp++, seed, CRYPTO_RANDOMBYTES);
 
 	while (i < PARAM_N) {
+		if (pos > OQS_SHA3_SHAKE128_RATE * nblocks - 4 * nbytes) {
+			nblocks = 1;
+			OQS_SHA3_cshake128_simple(buf, OQS_SHA3_SHAKE128_RATE * nblocks, dmsp++, seed, CRYPTO_RANDOMBYTES);
+			pos = 0;
+		}
 		val1 = (*(uint32_t *) (buf + pos)) & mask;
 		pos += nbytes;
 		val2 = (*(uint32_t *) (buf + pos)) & mask;
@@ -326,29 +331,32 @@ static void poly_uniform(poly a, const unsigned char *seed) { // Generation of p
 			a[i++] = reduce((int64_t) val3 * PARAM_R2_INVN);
 		if (val4 < PARAM_Q && i < PARAM_N)
 			a[i++] = reduce((int64_t) val4 * PARAM_R2_INVN);
-		if (pos > OQS_SHA3_SHAKE128_RATE * nblocks - 4 * nbytes) {
-			nblocks = 1;
-			OQS_SHA3_cshake128_simple(buf, OQS_SHA3_SHAKE128_RATE * nblocks, dmsp++, seed, CRYPTO_RANDOMBYTES);
-			pos = 0;
-		}
 	}
 }
 
 /* sample.c */
 
 #define round_double(x) (uint64_t)(x + 0.5)
+#define NBLOCKS_SHAKE256  OQS_SHA3_SHAKE256_RATE/(((PARAM_B_BITS+1)+7)/8)
 
 static void sample_y(int64_t *y, const unsigned char *seed, int nonce) { // Sample polynomial y, such that each coefficient is in the range [-B,B]
-	unsigned int i, pos = 0;
+	unsigned int i = 0, pos = 0, nblocks = PARAM_N;
 	unsigned int nbytes = ((PARAM_B_BITS + 1) + 7) / 8;
 	unsigned char buf[PARAM_N * nbytes];
 	int16_t dmsp = (int16_t)(nonce << 8);
 
-	OQS_SHA3_cshake256_simple((uint8_t *) buf, PARAM_N * nbytes, dmsp, seed, CRYPTO_RANDOMBYTES);
+	OQS_SHA3_cshake256_simple((uint8_t *) buf, PARAM_N * nbytes, dmsp++, seed, CRYPTO_RANDOMBYTES);
 
-	for (i = 0; i < PARAM_N; i++) {
+	while (i<PARAM_N) {
+		if (pos >= nblocks*nbytes) {
+			nblocks = NBLOCKS_SHAKE256;
+			OQS_SHA3_cshake256_simple((uint8_t*)buf, OQS_SHA3_SHAKE256_RATE, dmsp++, seed, CRYPTO_RANDOMBYTES);
+			pos = 0;
+		}
 		y[i] = (*(uint32_t *) (buf + pos)) & ((1 << (PARAM_B_BITS + 1)) - 1);
 		y[i] -= PARAM_B;
+		if (y[i] != (1<<PARAM_B_BITS))
+			i++;
 		pos += nbytes;
 	}
 }
@@ -597,24 +605,23 @@ static void encode_c(uint32_t *pos_list, int16_t *sign_list, unsigned char *c_bi
 		c[i] = 0;
 
 	for (i = 0; i < PARAM_W;) { // Sample a unique position k times. Use two bytes
+		if (cnt > (RLENGTH - 3)) {
+			OQS_SHA3_cshake128_simple(r, RLENGTH, dmsp++, c_bin, CRYPTO_RANDOMBYTES);
+			cnt = 0;
+		}
 		pos = (r[cnt] << 8) | (r[cnt + 1]);
 		pos = pos & (PARAM_N - 1); // Position is in the range [0,N-1]
-		cnt += 2;
 
 		if (c[pos] == 0) { // Position has not been set yet. Determine sign
-			if ((r[cnt] & 1) == 1)
+			if ((r[cnt + 2] & 1) == 1)
 				c[pos] = -1;
 			else
 				c[pos] = 1;
 			pos_list[i] = pos;
 			sign_list[i] = c[pos];
 			i++;
-			cnt++;
 		}
-		if (cnt > (RLENGTH - 3)) {
-			OQS_SHA3_cshake128_simple(r, RLENGTH, dmsp++, c_bin, CRYPTO_RANDOMBYTES);
-			cnt = 0;
-		}
+		cnt += 3;
 	}
 }
 
