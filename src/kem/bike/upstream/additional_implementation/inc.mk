@@ -1,13 +1,6 @@
 #WA for GCC 4.8.5 bug.
 EXTRA_FLAGS += -Wno-missing-braces -Wno-missing-field-initializers -maes -mavx
 
-#Always use SHA384 code other versions are not supported
-EXTRA_FLAGS +=-DSHA384
-
-ifdef RDTSC
-    EXTRA_FLAGS += -DRDTSC
-endif
-
 ifdef VERBOSE
     EXTRA_FLAGS += -DVERBOSE=$(VERBOSE)
 endif
@@ -17,10 +10,6 @@ ifdef VER
 else
     $(info using BIKE_VER=1 as default.)
     EXTRA_FLAGS += -DBIKE_VER=1
-endif
-
-ifdef FIXED_SEED
-    EXTRA_FLAGS += -DFIXED_SEED=1
 endif
 
 ifdef CHECK_COMPILATION
