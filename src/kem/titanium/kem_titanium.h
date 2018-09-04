@@ -12,9 +12,9 @@
 
 OQS_KEM *OQS_KEM_titanium_cca_std_new();
 
-extern OQS_STATUS OQS_KEM_titanium_cca_std_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_titanium_cca_std_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_titanium_cca_std_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_titanium_cca_std_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_titanium_cca_std_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_titanium_cca_std_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -27,9 +27,9 @@ extern OQS_STATUS OQS_KEM_titanium_cca_std_decaps(uint8_t *shared_secret, const 
 
 OQS_KEM *OQS_KEM_titanium_cca_hi_new();
 
-extern OQS_STATUS OQS_KEM_titanium_cca_hi_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_titanium_cca_hi_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_titanium_cca_hi_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_titanium_cca_hi_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_titanium_cca_hi_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_titanium_cca_hi_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -42,9 +42,9 @@ extern OQS_STATUS OQS_KEM_titanium_cca_hi_decaps(uint8_t *shared_secret, const u
 
 OQS_KEM *OQS_KEM_titanium_cca_med_new();
 
-extern OQS_STATUS OQS_KEM_titanium_cca_med_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_titanium_cca_med_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_titanium_cca_med_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_titanium_cca_med_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_titanium_cca_med_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_titanium_cca_med_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -57,9 +57,9 @@ extern OQS_STATUS OQS_KEM_titanium_cca_med_decaps(uint8_t *shared_secret, const 
 
 OQS_KEM *OQS_KEM_titanium_cca_super_new();
 
-extern OQS_STATUS OQS_KEM_titanium_cca_super_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_titanium_cca_super_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_titanium_cca_super_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_titanium_cca_super_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_titanium_cca_super_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_titanium_cca_super_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 

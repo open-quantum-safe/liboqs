@@ -67,7 +67,7 @@ OQS_KEM *OQS_KEM_titanium_cca_med_new() {
 	}
 	kem->method_name = OQS_KEM_alg_titanium_cca_med_kem;
 
-	kem->claimed_nist_level = 0; // from https://github.com/raykzhao/liboqs
+	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
 
 	kem->length_public_key = OQS_KEM_titanium_cca_med_length_public_key;
