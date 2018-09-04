@@ -36,6 +36,7 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 		return OQS_SUCCESS;
 #else
 		return OQS_ERROR;
+#endif
 	} else if (0 == strcasecmp(OQS_RAND_alg_openssl, algorithm)) {
 #ifdef USE_OPENSSL
 		oqs_randombytes_algorithm = (void (*)(uint8_t *, size_t)) & RAND_bytes;
