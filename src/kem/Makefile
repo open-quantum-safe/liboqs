@@ -30,4 +30,5 @@ include src/kem/BIG_QUAKE/Makefile
 include src/kem/saber/Makefile
 include src/kem/lima/Makefile
 include src/kem/ledakem/Makefile
+include src/kem/titanium/Makefile
 # EDIT-WHEN-ADDING-KEM
