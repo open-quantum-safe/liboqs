@@ -83,6 +83,14 @@ matrix:
     before_install:
     - brew update
     - brew install libsodium doxygen graphviz
+  - os: osx
+    compiler: clang
+    env:
+    - CC_OVERRIDE=clang
+    - AES_NI=0
+    before_install:
+    - brew update
+    - brew install doxygen graphviz
 
 script:
   - .travis/all-tests.sh
