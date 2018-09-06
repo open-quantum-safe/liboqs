@@ -22,21 +22,15 @@ static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = (void (*)(uint8_t 
 static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
 #endif
 
-#ifdef USE_OPENSSL
 void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
-#endif
 
 OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
 		oqs_randombytes_algorithm = &OQS_randombytes_system;
 		return OQS_SUCCESS;
 	} else if (0 == strcasecmp(OQS_RAND_alg_nist_kat, algorithm)) {
-#ifdef USE_OPENSSL
 		oqs_randombytes_algorithm = &OQS_randombytes_nist_kat;
 		return OQS_SUCCESS;
-#else
-		return OQS_ERROR;
-#endif
 	} else if (0 == strcasecmp(OQS_RAND_alg_openssl, algorithm)) {
 #ifdef USE_OPENSSL
 		oqs_randombytes_algorithm = (void (*)(uint8_t *, size_t)) & RAND_bytes;
@@ -92,7 +86,7 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	HCRYPTPROV hCryptProv;
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-		!CryptGenRandom(hCryptProv, (DWORD)bytes_to_read, random_array)) {
+	    !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
 		assert(0); // no other way to return an error; better fail than return bad random data
 	}
 	CryptReleaseContext(hCryptProv, 0);
