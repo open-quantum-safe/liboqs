@@ -84,6 +84,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\src\common\common.c" />
     <ClCompile Include="..\..\src\common\rand.c" />
+    <ClCompile Include="..\..\src\common\rand_nist.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
