@@ -157,7 +157,7 @@ See https://github.com/XKCP/XKCP#under-which-license-is-the-xkcp-distributed for
 Team
 ----
 
-The Open Quantum Safe project is led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
+The Open Quantum Safe project is led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
 
 ### Contributors
 
