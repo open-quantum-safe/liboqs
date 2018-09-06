@@ -3,9 +3,9 @@
 
 # Init
 AC_INIT([liboqs], [1.0.0], [])
-LT_INIT([disable-shared])
 
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
+AM_PROG_LIBTOOL
 
 # Configure
 AC_CONFIG_HEADERS([config.h])

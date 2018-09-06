@@ -117,13 +117,11 @@ endif
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
-	$(LN_S) -f .libs/liboqs.a
 if ENABLE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
 
 clean-local:
-	rm -f liboqs.a
 	rm -rf include
 
 clean-tests:

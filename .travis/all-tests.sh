@@ -75,6 +75,10 @@ autoreconf -i
 ./configure --enable-silent-rules ${enable_disable_str}
 make clean
 make
+# Excercise static build of liboqs too
+./configure LDFLAGS="-static" --enable-silent-rules ${enable_disable_str}
+make clean
+make
 make docs
 make test
 

@@ -22,7 +22,7 @@ AC_DEFUN([SET_AM_CFLAGS],
   AM_CFLAGS=${AM_CFLAGS}" -fPIC "
   
   # Hidding all unneeded symbols.
-  AM_CFLAGS=${AM_CFLAGS}" -fvisibility=hidden "
+  #AM_CFLAGS=${AM_CFLAGS}" -fvisibility=hidden "
 
   # Add default include directories
   AM_CFLAGS=${AM_CFLAGS}" -I`pwd`/include -I. "
