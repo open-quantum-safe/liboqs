@@ -21,14 +21,8 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kem/libkem.la
 liboqs_la_LIBADD += src/kex/libkex.la
-if ENABLE_KEX_RLWE_NEWHOPE_AVX2
-liboqs_la_LIBADD += src/kex_rlwe_newhope/avx2/libnewhope_avx2.la
-endif
 if ENABLE_KEX_NTRU
 liboqs_la_LIBADD += src/kex_ntru/libntru.la
-endif
-if ENABLE_KEX_RLWE_NEWHOPE
-liboqs_la_LIBADD += src/kex_rlwe_newhope/libnewhope.la
 endif
 if ENABLE_KEX_SIDH_MSR
 liboqs_la_LIBADD += src/kex_sidh_msr/libsidhmsr.la
@@ -56,6 +50,9 @@ endif
 if ENABLE_KEM_SIKE
 liboqs_la_LIBADD += src/kem/sike/libkemsike.la
 endif
+if ENABLE_KEM_NEWHOPE
+liboqs_la_LIBADD += src/kem/newhope/libkemnewhope.la
+endif
 
 installheaderdir=$(includedir)/oqs
 installheader_HEADERS=config.h \
@@ -69,11 +66,11 @@ installheader_HEADERS=config.h \
 	src/kem/kem.h \
 	src/kex/kex.h \
 	src/kex_ntru/kex_ntru.h \
-	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
 	src/kex_sidh_msr/kex_sidh_msr.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
+	src/kem/newhope/kem_newhope.h \
 	src/sig/sig.h
 
 test: check
@@ -102,12 +99,9 @@ links:
 	cp -f src/kem/bike/kem_bike.h include/oqs
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
+	cp -f src/kem/newhope/kem_newhope.h include/oqs
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
-	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
-if ENABLE_KEX_RLWE_NEWHOPE_AVX2
-	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
-endif
 	cp -f src/kex_sidh_msr/kex_sidh_msr.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
@@ -125,6 +119,6 @@ clean-tests:
 	rm -f tests/example_kem tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/minimal_sig_oqs tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
 
 prettyprint:
-	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v "sig_picnic/external*" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: doxygen-run

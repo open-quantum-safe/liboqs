@@ -41,15 +41,12 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
+  ARG_DISBL_SET_WRAP([kem-newhope],  [kem_newhope],  [ENABLE_KEM_NEWHOPE],  [src/kem/newhope])
 
   ARG_ENABL_SET_WRAP([kex-code-mcbits], [kex_code_mcbits], 
                      [ENABLE_MCBITS], [src/kex_code_mcbits])
   ARG_DISBL_SET_WRAP([kex-ntru], [kex_ntru], 
                      [ENABLE_KEX_NTRU], [src/kex_ntru])
-  ARG_DISBL_SET_WRAP([kex-rlwe-newhope],[kex_rlwe_newhope], 
-                     [ENABLE_KEX_RLWE_NEWHOPE], [src/kex_rlwe_newhope])
-  ARG_ENABL_SET_WRAP([kex-rlwe-newhope-avx2], [kex_rlwe_newhope_avx2], 
-                     [ENABLE_KEX_RLWE_NEWHOPE_AVX2], [src/kex_rlwe_newhope/avx2])
   ARG_DISBL_SET_WRAP([kex-sidh-msr], [kex_sidh_msr],
                      [ENABLE_KEX_SIDH_MSR], [src/kex_sidh_msr])
 
@@ -94,6 +91,10 @@ AC_DEFUN([CONFIG_FEATURES],
   AM_COND_IF([ENABLE_KEM_SIKE], [
     AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")
+  ])
+
+  AM_COND_IF([ENABLE_KEM_NEWHOPE], [
+    AC_DEFINE(OQS_ENABLE_KEM_newhope_512cca, 1, "Define to 1 when NewHope-512cca enabled")
   ])
 
 ]
