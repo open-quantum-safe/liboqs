@@ -85,6 +85,11 @@ if ENABLE_SIG_PICNIC
 	tests/minimal_sig_oqs
 endif
 
+kat: clean-kats
+	make
+	tests/kat_kem
+	scripts/check_kats.sh
+
 links:
 	$(MKDIR_P) include/oqs
 	cp -f config.h include/oqs
@@ -106,7 +111,6 @@ links:
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
-	$(LN_S) -f .libs/liboqs.a
 if ENABLE_MCBITS
 	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
 endif
@@ -117,6 +121,9 @@ clean-local:
 
 clean-tests:
 	rm -f tests/example_kem tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/minimal_sig_oqs tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
+
+clean-kats:
+	rm -rf tests/kat_kem kat_kem_rsp/
 
 prettyprint:
 	find src tests -name '*.c' -o -name '*.h' | grep -v "sig_picnic/external*" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
