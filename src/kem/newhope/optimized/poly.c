@@ -231,7 +231,10 @@ void poly_uniform(poly *a, const unsigned char *seed)
 
   for(i=0;i<NEWHOPE_SYMBYTES;i++)
     extseed[i] = seed[i];
-
+  
+  for (i = 0; i < OQS_SHA3_STATESIZE; ++i)
+    state[i] = 0;
+ 
   for(i=0;i<NEWHOPE_N/64;i++) /* generate a in blocks of 64 coefficients */
   {
     ctr = 0;

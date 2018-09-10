@@ -95,6 +95,7 @@ AC_DEFUN([CONFIG_FEATURES],
 
   AM_COND_IF([ENABLE_KEM_NEWHOPE], [
     AC_DEFINE(OQS_ENABLE_KEM_newhope_512cca, 1, "Define to 1 when NewHope-512cca enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_newhope_1024cca, 1, "Define to 1 when NewHope-1024cca enabled")
   ])
 
 ]

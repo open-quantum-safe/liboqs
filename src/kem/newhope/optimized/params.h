@@ -4,7 +4,6 @@
 #define NEWHOPE_Q 12289 
 #define NEWHOPE_K 8           /* used in noise sampling */
 
-#define NEWHOPE_N 512
 
 #define NEWHOPE_SYMBYTES 32   /* size of shared key, seeds/coins, and hashes */
 

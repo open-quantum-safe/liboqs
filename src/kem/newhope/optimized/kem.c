@@ -94,9 +94,6 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
   unsigned char k_coins_d[3*NEWHOPE_SYMBYTES];                                                /* Will contain key, coins, qrom-hash */
   const unsigned char *pk = sk+NEWHOPE_CPAPKE_SECRETKEYBYTES;
 
-  printf("NEWHOPE_CCAKEM_CIPHERTEXTBYTES %d\n", NEWHOPE_CCAKEM_CIPHERTEXTBYTES);
-  printf("NEWHOPE_CPAPKE_SECRETKEYBYTES %d\n",NEWHOPE_CPAPKE_SECRETKEYBYTES);
-
   cpapke_dec(buf, ct, sk);
 
   for(i=0;i<NEWHOPE_SYMBYTES;i++)                                                             /* Use hash of pk stored in sk */
