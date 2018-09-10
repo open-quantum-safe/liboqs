@@ -8,6 +8,7 @@ char *OQS_KEM_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-KEM
 	char *a[OQS_KEM_algs_length] = {
 	    OQS_KEM_alg_default,
+	    OQS_KEM_alg_LOTUS192KEM, OQS_KEM_alg_LOTUS256KEM, OQS_KEM_alg_LOTUS128KEM,
 	    OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake,
 	    OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem,
 	    OQS_KEM_alg_kyber512, OQS_KEM_alg_kyber768, OQS_KEM_alg_kyber1024,
@@ -295,6 +296,24 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_titanium_cca_hi_kem)) {
 #ifdef OQS_ENABLE_KEM_titanium_cca_hi_kem
 		return OQS_KEM_titanium_cca_hi_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_LOTUS192KEM)) {
+#ifdef OQS_ENABLE_KEM_LOTUS192KEM
+		return OQS_KEM_LOTUS192KEM_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_LOTUS256KEM)) {
+#ifdef OQS_ENABLE_KEM_LOTUS256KEM
+		return OQS_KEM_LOTUS256KEM_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_LOTUS128KEM)) {
+#ifdef OQS_ENABLE_KEM_LOTUS128KEM
+		return OQS_KEM_LOTUS128KEM_new();
 #else
 		return NULL;
 #endif

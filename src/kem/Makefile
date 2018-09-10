@@ -31,4 +31,5 @@ include src/kem/saber/Makefile
 include src/kem/lima/Makefile
 include src/kem/ledakem/Makefile
 include src/kem/titanium/Makefile
+include src/kem/lotus/Makefile
 # EDIT-WHEN-ADDING-KEM

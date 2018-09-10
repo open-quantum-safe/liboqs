@@ -1,6 +1,7 @@
 # THESE SHOULD BE THE ONLY OPTIONS TO BE CONFIGURED BY THE PERSON COMPILING
 
 KEMS_TO_ENABLE?=frodokem_640_aes frodokem_640_cshake frodokem_976_aes frodokem_976_cshake \
+			   LOTUS192KEM LOTUS256KEM LOTUS128KEM \
 			   newhope_512_cca_kem newhope_1024_cca_kem \
 			   kyber512 kyber768 kyber1024 \
 			   bike1_l1 bike1_l3 bike1_l5 \
