@@ -51,12 +51,6 @@
     <ClInclude Include="..\..\src\kex_ntru\kex_ntru.h" />
     <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" />
     <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\kex_sidh_msr.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_api.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_internal.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_api.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_internal.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\windows_undef.h" />
     <ClInclude Include="..\..\src\sig\sig.h" />
     <ClInclude Include="..\..\src\sig_picnic\external\bitstream.h" />
     <ClInclude Include="..\..\src\sig_picnic\external\compat.h" />
@@ -102,9 +96,6 @@
     <ClCompile Include="..\..\src\kex_code_mcbits\kex_code_mcbits.c" />
     <ClCompile Include="..\..\src\kex_ntru\kex_ntru.c" />
     <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c" />
-    <ClCompile Include="..\..\src\kex_sidh_msr\kex_sidh_msr.c" />
-    <ClCompile Include="..\..\src\kex_sidh_msr\P503\P503.c" />
-    <ClCompile Include="..\..\src\kex_sidh_msr\P751\P751.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
     <ClCompile Include="..\..\src\sig_picnic\external\aligned_alloc.c" />
     <ClCompile Include="..\..\src\sig_picnic\external\bitstream.c" />
@@ -279,7 +270,6 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -319,7 +309,6 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -359,7 +348,6 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -406,7 +394,6 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -452,7 +439,6 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -496,7 +482,6 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -540,7 +525,6 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -591,7 +575,6 @@ copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
