@@ -30,9 +30,6 @@ endif
 if ENABLE_KEX_RLWE_NEWHOPE
 liboqs_la_LIBADD += src/kex_rlwe_newhope/libnewhope.la
 endif
-if ENABLE_KEX_SIDH_MSR
-liboqs_la_LIBADD += src/kex_sidh_msr/libsidhmsr.la
-endif
 
 liboqs_la_LIBADD += src/sig/libsig.la
 
@@ -70,7 +67,6 @@ installheader_HEADERS=config.h \
 	src/kex/kex.h \
 	src/kex_ntru/kex_ntru.h \
 	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
-	src/kex_sidh_msr/kex_sidh_msr.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
@@ -108,7 +104,6 @@ links:
 if ENABLE_KEX_RLWE_NEWHOPE_AVX2
 	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
 endif
-	cp -f src/kex_sidh_msr/kex_sidh_msr.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
@@ -125,6 +120,6 @@ clean-tests:
 	rm -f tests/example_kem tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/minimal_sig_oqs tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
 
 prettyprint:
-	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
 
 docs: doxygen-run

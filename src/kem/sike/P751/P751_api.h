@@ -63,22 +63,22 @@ int OQS_KEM_sike_p751_dec(unsigned char *ss, const unsigned char *ct, const unsi
 
 // Generation of Alice's secret key
 // Outputs random value in [0, 2^372 - 1] to be used as Alice's private key
-void oqs_kem_sike_p751_sidh_random_mod_order_A(unsigned char *random_digits);
+void oqs_kem_sidh_p751_random_mod_order_A(unsigned char *random_digits);
 
 // Generation of Bob's secret key
 // Outputs random value in [0, 2^Floor(Log(2,3^239)) - 1] to be used as Bob's private key
-void oqs_kem_sike_p751_sidh_random_mod_order_B(unsigned char *random_digits);
+void oqs_kem_sidh_p751_random_mod_order_B(unsigned char *random_digits);
 
 // Alice's ephemeral public key generation
 // Input:  a private key PrivateKeyA in the range [0, 2^372 - 1], stored in 47 bytes.
 // Output: the public key PublicKeyA consisting of 3 GF(p751^2) elements encoded in 564 bytes.
-int oqs_kem_sike_p751_sidh_EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA);
+int oqs_kem_sidh_p751_EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA);
 
 // Bob's ephemeral key-pair generation
 // It produces a private key PrivateKeyB and computes the public key PublicKeyB.
 // The private key is an integer in the range [0, 2^Floor(Log(2,3^239)) - 1], stored in 48 bytes.
 // The public key consists of 3 GF(p751^2) elements encoded in 564 bytes.
-int oqs_kem_sike_p751_sidh_EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *PublicKeyB);
+int oqs_kem_sidh_p751_EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *PublicKeyB);
 
 // Alice's ephemeral shared secret computation
 // It produces a shared secret key SharedSecretA using her secret key PrivateKeyA and Bob's public key PublicKeyB
@@ -92,7 +92,7 @@ int oqs_kem_sike_p751_sidh_EphemeralSecretAgreement_A(const unsigned char *Priva
 // Inputs: Bob's PrivateKeyB is an integer in the range [0, 2^Floor(Log(2,3^239)) - 1], stored in 48 bytes.
 //         Alice's PublicKeyA consists of 3 GF(p751^2) elements encoded in 564 bytes.
 // Output: a shared secret SharedSecretB that consists of one element in GF(p751^2) encoded in 188 bytes.
-int oqs_kem_sike_p751_sidh_EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned char *PublicKeyA, unsigned char *SharedSecretB);
+int oqs_kem_sidh_p751_EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned char *PublicKeyA, unsigned char *SharedSecretB);
 
 // Encoding of keys for KEX-based isogeny system "SIDHp751" (wire format):
 // ----------------------------------------------------------------------
