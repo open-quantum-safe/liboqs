@@ -61,7 +61,6 @@ AC_CONFIG_FILES([Makefile
                  src/crypto/rand_urandom_aesctr/Makefile
                  src/crypto/aes/Makefile
                  src/kex_rlwe_newhope/Makefile
-                 src/kex_sidh_msr/Makefile
                  src/kex_code_mcbits/Makefile
                  src/kex_ntru/Makefile
                  src/sig/Makefile
