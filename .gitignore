@@ -43,6 +43,10 @@ tests/test_sha3
 tests/minimal_kex_oqs
 tests/minimal_sig_oqs
 
+#kat
+tests/kat_kem
+kat_kem_rsp/
+
 # Debug files
 *.dSYM/
 *.su
