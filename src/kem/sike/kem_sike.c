@@ -114,6 +114,7 @@ OQS_STATUS OQS_KEM_sidh_p503_keypair(uint8_t *public_key, uint8_t *secret_key) {
   if (oqs_kem_sidh_p503_EphemeralKeyGeneration_A((unsigned char *) secret_key, (unsigned char *) public_key) != 0) {
     return OQS_ERROR;
   }
+  return OQS_SUCCESS;
 }
 
 OQS_STATUS OQS_KEM_sidh_p503_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
@@ -143,6 +144,7 @@ OQS_STATUS OQS_KEM_sidh_p503_decaps(uint8_t *shared_secret, const unsigned char 
   if (oqs_kem_sidh_p503_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
     return OQS_ERROR;
   }
+  return OQS_SUCCESS;
 }
 
 #endif
@@ -190,6 +192,7 @@ OQS_STATUS OQS_KEM_sidh_p751_keypair(uint8_t *public_key, uint8_t *secret_key) {
   if (oqs_kem_sidh_p751_EphemeralKeyGeneration_A((unsigned char *) secret_key, (unsigned char *) public_key) != 0) {
     return OQS_ERROR;
   }
+  return OQS_SUCCESS;
 }
 
 OQS_STATUS OQS_KEM_sidh_p751_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
@@ -219,6 +222,7 @@ OQS_STATUS OQS_KEM_sidh_p751_decaps(uint8_t *shared_secret, const unsigned char 
   if (oqs_kem_sidh_p751_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
     return OQS_ERROR;
   }
+  return OQS_SUCCESS;
 }
 
 #endif
