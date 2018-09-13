@@ -6,7 +6,7 @@ Summary
 
 - **Name:** Titanium CCA
 - **Algorithm type:** Key Encapsulation Mechanism
-- **Main cryptographic assumption:** Polynomial learning with errors
+- **Main cryptographic assumption:** Middle-Product Learning with Errors (MP-LWE)
 - **NIST submission URL:** https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/Titanium.zip
 - **Submitters (to NIST competition):** Ron Steinfeld, Amin Sakzad, Raymond K. Zhao
 - **Submitters' website:** http://users.monash.edu.au/~rste/Titanium.html
@@ -28,7 +28,7 @@ Implementation
 - **Source of implementation:** https://github.com/raykzhao/Titanium (commit a7547ad486e7220e1d9ffac7a76fe260dfa36cc3)
 - **License:** Released into the public domain
 - **Language:** C
-- **Constant-time:** Unknown
+- **Constant-time:** Yes
 - **Architectures supported in liboqs nist-branch**: x64
 
 Additional comments
