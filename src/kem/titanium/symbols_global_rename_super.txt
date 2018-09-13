@@ -1,0 +1,3 @@
+crypto_kem_keypair OQS_KEM_titanium_cca_super_keypair
+crypto_kem_enc OQS_KEM_titanium_cca_super_encaps
+crypto_kem_dec OQS_KEM_titanium_cca_super_decaps
