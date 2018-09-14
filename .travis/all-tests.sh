@@ -54,20 +54,12 @@ if [[ ${ENABLE_KEX_NTRU} == 0 ]];then
 	enable_disable_str+=" --disable-kex-ntru"
 fi
 
-if [[ ${ENABLE_KEX_RLWE_NEWHOPE} == 0 ]];then
-	enable_disable_str+=" --disable-kex-rlwe-newhope"
-fi
-
 if [[ ${ENABLE_KEX_SIDH_MSR} == 0 ]];then
 	enable_disable_str+=" --disable-kex-sidh-msr"
 fi
 
 if [[ ${ENABLE_SIG_PICNIC} == 0 ]];then
 	enable_disable_str+=" --disable-sig-picnic"
-fi
-
-if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
-	enable_disable_str+=" --enable-kex-rlwe-newhope-avx2"
 fi
 
 # build and run
