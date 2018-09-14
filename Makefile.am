@@ -21,14 +21,8 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kem/libkem.la
 liboqs_la_LIBADD += src/kex/libkex.la
-if ENABLE_KEX_RLWE_NEWHOPE_AVX2
-liboqs_la_LIBADD += src/kex_rlwe_newhope/avx2/libnewhope_avx2.la
-endif
 if ENABLE_KEX_NTRU
 liboqs_la_LIBADD += src/kex_ntru/libntru.la
-endif
-if ENABLE_KEX_RLWE_NEWHOPE
-liboqs_la_LIBADD += src/kex_rlwe_newhope/libnewhope.la
 endif
 
 liboqs_la_LIBADD += src/sig/libsig.la
@@ -66,7 +60,6 @@ installheader_HEADERS=config.h \
 	src/kem/kem.h \
 	src/kex/kex.h \
 	src/kex_ntru/kex_ntru.h \
-	src/kex_rlwe_newhope/kex_rlwe_newhope.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
@@ -105,10 +98,6 @@ links:
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
-	cp -f src/kex_rlwe_newhope/kex_rlwe_newhope.h include/oqs
-if ENABLE_KEX_RLWE_NEWHOPE_AVX2
-	cp -f src/kex_rlwe_newhope/avx2/kex_rlwe_newhope_avx2.h include/oqs
-endif
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
@@ -127,6 +116,6 @@ clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/
 
 prettyprint:
-	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_rlwe_newhope/avx2" | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | xargs $(CLANGFORMAT) -style=file -i
 
 docs: doxygen-run

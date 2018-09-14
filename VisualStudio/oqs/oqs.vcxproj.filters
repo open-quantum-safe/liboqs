@@ -64,9 +64,6 @@
     <ClCompile Include="..\..\src\kex_ntru\kex_ntru.c">
       <Filter>ntru</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c">
-      <Filter>newhope</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\sig_picnic\external\lowmc.c">
       <Filter>picnic</Filter>
     </ClCompile>
@@ -188,9 +185,6 @@
     <ClInclude Include="..\..\src\kex_ntru\kex_ntru.h">
       <Filter>ntru</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h">
-      <Filter>newhope</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\external\lowmc.h">
       <Filter>picnic</Filter>
     </ClInclude>
@@ -221,8 +215,15 @@
     <ClInclude Include="..\..\src\sig_picnic\external\mzd_additional.h">
       <Filter>picnic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h">
-      <Filter>newhope</Filter>
+    <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_internal.h">
+      <Filter>sidh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_api.h">
+      <Filter>sidh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_internal.h">
+      <Filter>sidh</Filter>
+>>>>>>> origin/master
     </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\external\picnic.h">
       <Filter>picnic</Filter>
@@ -264,9 +265,6 @@
     </Filter>
     <Filter Include="ntru">
       <UniqueIdentifier>{669c3be0-bba3-4507-b0a2-a332bbce2052}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="newhope">
-      <UniqueIdentifier>{754f92dd-11d8-4c4e-85e5-b8753a66f3d1}</UniqueIdentifier>
     </Filter>
     <Filter Include="kem">
       <UniqueIdentifier>{ceb9c773-d92e-44b7-916a-eb1d6a2ec89b}</UniqueIdentifier>
