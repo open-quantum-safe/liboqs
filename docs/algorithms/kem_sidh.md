@@ -16,13 +16,13 @@ Parameter sets
 
 | Parameter set   | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
 |-----------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| Sidh-p503       |     IND-CCA    |              1              |            378          |             32          |            378          |            126             |
-| Sidh-p751       |     IND-CCA    |              3              |            564          |             48          |            564          |            188             |
+| Sidh-p503       |     IND-CPA    |              1              |            378          |             32          |            378          |            126             |
+| Sidh-p751       |     IND-CPA    |              3              |            564          |             48          |            564          |            188             |
 
 Implementation
 --------------
 
-- **Source of implementation:** https://github.com/Microsoft/PQCrypto-SIDH
+- **Source of implementation:** https://github.com/Microsoft/PQCrypto-SIDH (v3.0)
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes
@@ -31,4 +31,4 @@ Implementation
 Additional comments
 -------------------
 
-
+No KAT are available for SIDH.
