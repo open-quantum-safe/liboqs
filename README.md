@@ -57,7 +57,7 @@ Acceptance criteria for nist-branch
 	- Signature schemes can be EUF-CMA-secure, at any NIST security level.
 - **Targets**:
 	- **Operating systems:** The code must build on Linux and macOS.
-	- **Architecture:** The code must build at least on x64.  Targets are currently provided for x86 and x64.  We plan to add an AVX2 target, and possibly others.
+	- **Architecture:** The code must build at least on x64.  Targets are currently provided for x86 and x64, and pre-processor macros are set for AVX, AVX2, and AVX-512 instruction set extensions.
 - **Source code requirements:**
 	- The source code can be from the original submission, or can be an updated version.
 	- **License:** Source code licensed under the MIT License, the BSD license, or in the public domain can be directly incorporated into the repository.  GPL code will not be included in the repository, but a wrapper to the OQS API may be included, as well as a script that downloads and compiles in GPL code if the algorithm is requested at compile-time.
