@@ -14,7 +14,7 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 - a collection of open source implementations of post-quantum cryptography algorithms
 - a test harness and benchmarking routines
 
-The OQS project also provides prototype integrations into application-level protocols to enable testing of quantum-resistant cryptography.  
+The OQS project also provides prototype integrations into application-level protocols to enable testing of quantum-resistant cryptography.
 
 More information on OQS can be found on our website: [https://openquantumsafe.org/](https://openquantumsafe.org/).
 
@@ -30,9 +30,9 @@ For a list of algorithms included in master branch, see the datasheets in [docs/
 Limitations and security
 ------------------------
 
-liboqs is designed for prototyping and evaluating quantum-resistant cryptography.  Security of proposed quantum-resistant algorithms may rapidly change as research advances, and may ultimately be completely insecure against either classical or quantum computers.  
+liboqs is designed for prototyping and evaluating quantum-resistant cryptography.  Security of proposed quantum-resistant algorithms may rapidly change as research advances, and may ultimately be completely insecure against either classical or quantum computers.
 
-We believe that the NIST Post-Quantum Cryptography standardization project is currently the best avenue to identifying potentially quantum-resistant algorithms.  liboqs does not intend to "pick winners", and we strongly recommend that applications and protocols rely on the outcomes of the NIST standardization project when deploying post-quantum cryptography.  
+We believe that the NIST Post-Quantum Cryptography standardization project is currently the best avenue to identifying potentially quantum-resistant algorithms.  liboqs does not intend to "pick winners", and we strongly recommend that applications and protocols rely on the outcomes of the NIST standardization project when deploying post-quantum cryptography.
 
 We acknowledge that some parties may want to begin deploying post-quantum cryptography prior to the conclusion of the NIST standardization project.  We strongly recommend that any attempts to do make use of so-called **hybrid cryptography**, in which post-quantum public-key algorithms are used alongside traditional public key algorithms (like RSA or elliptic curves) so that the solution is at least no less secure than existing traditional cryptography.
 
@@ -161,13 +161,6 @@ Builds are tested using the Appveyor continuous integration system on Windows Se
 
 The supported schemes are defined in the projects' `winconfig.h` file.
 
-McBits is disabled by default in the Visual Studio build; follow these steps to enable it:
-
-- Obtain the [libsodium library](https://libsodium.org); compile the static library from the Visual Studio projects.
-- Add `ENABLE_CODE_MCBITS` and `SODIUM_STATIC` to the preprocessor definitions of the `oqs` and `test_kex` projects.
-- Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
-- Add the libsodium library to the "Additional Dependencies" in the `test_kex` project Linker properties.
-
 Documentation
 -------------
 
@@ -182,14 +175,13 @@ Then open `docs/doxygen/html/index.html` in your web browser.
 License
 -------
 
-liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for details.  
+liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for details.
 
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
 - `src/crypto/aes/aes_c.c`: public domain
 - `src/crypto/rand_urandom_chacha20/external`: public domain
 - `src/crypto/sha3`: public domain
-- `src/kex_code_mcbits`: public domain
 - `src/sig_qtesla`: public domain
 
 Team
