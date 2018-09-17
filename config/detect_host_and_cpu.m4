@@ -7,7 +7,7 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
   case $host_os in
     darwin* )
           darwin=true
-          AM_LIBTOOLFLAGS=${AM_LIBTOOLCFLAGS}" -no_warning_for_no_symbols "
+          AM_LIBTOOLFLAGS=${AM_LIBTOOLFLAGS}" -no_warning_for_no_symbols "
           ;;
     linux-android*)
           AM_CFLAGS=${AM_CFLAGS}" -pie "
