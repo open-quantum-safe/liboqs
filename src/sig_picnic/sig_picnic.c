@@ -4,7 +4,6 @@
 
 #include <string.h>
 #include <oqs/common.h>
-#include <oqs/rand.h>
 #include "sig_picnic.h"
 #include "external/picnic.h"
 
@@ -117,7 +116,7 @@ OQS_STATUS OQS_SIG_picnic_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) 
 	picnic_publickey_t pk;
 	picnic_privatekey_t sk;
 	picnic_params_t parameters = ((PICNIC_CTX *) s->ctx)->params;
-	int ret = picnic_keygen(parameters, &pk, &sk, s->rand);
+	int ret = picnic_keygen(parameters, &pk, &sk);
 	if (ret != 0) { // DO NOT modify this return code to OQS_SUCCESS/OQS_ERROR
 		return OQS_ERROR;
 	}
