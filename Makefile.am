@@ -24,9 +24,6 @@ liboqs_la_LIBADD += src/kex/libkex.la
 if ENABLE_KEX_NTRU
 liboqs_la_LIBADD += src/kex_ntru/libntru.la
 endif
-if ENABLE_KEX_SIDH_MSR
-liboqs_la_LIBADD += src/kex_sidh_msr/libsidhmsr.la
-endif
 
 liboqs_la_LIBADD += src/sig/libsig.la
 
@@ -63,7 +60,6 @@ installheader_HEADERS=config.h \
 	src/kem/kem.h \
 	src/kex/kex.h \
 	src/kex_ntru/kex_ntru.h \
-	src/kex_sidh_msr/kex_sidh_msr.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
@@ -102,7 +98,6 @@ links:
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
-	cp -f src/kex_sidh_msr/kex_sidh_msr.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
@@ -120,6 +115,6 @@ clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/
 
 prettyprint:
-	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | grep -v "kex_sidh_msr" | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | xargs $(CLANGFORMAT) -style=file -i
 
 docs: doxygen-run

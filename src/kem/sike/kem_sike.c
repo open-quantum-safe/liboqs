@@ -31,8 +31,7 @@ OQS_KEM *OQS_KEM_sike_p503_new() {
 
 #endif
 
-// Preventing redefinition of symbols
-// Todo: remove
+// Preventing redefinition of symbols in P*_api.h
 #undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
 #undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
 #undef OQS_SIDH_MSR_CRYPTO_BYTES
@@ -67,6 +66,160 @@ OQS_KEM *OQS_KEM_sike_p751_new() {
 	kem->decaps = OQS_KEM_sike_p751_dec;
 
 	return kem;
+}
+
+#endif
+
+// Preventing redefinition of symbols in P*_api.h
+#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
+#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
+#undef OQS_SIDH_MSR_CRYPTO_BYTES
+#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
+#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
+#undef SIDH_SECRETKEYBYTES
+#undef SIDH_PUBLICKEYBYTES
+#undef SIDH_BYTES
+
+#ifdef OQS_ENABLE_KEM_sidh_p503
+
+#include "P503/P503_api.h"
+
+OQS_KEM *OQS_KEM_sidh_p503_new() {
+
+	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
+	if (kem == NULL) {
+		return NULL;
+	}
+	kem->method_name = OQS_KEM_alg_sidh_p503;
+
+	kem->claimed_nist_level = 1;
+	kem->ind_cca = false;
+
+	kem->length_public_key = OQS_KEM_sidh_p503_length_public_key;
+	kem->length_secret_key = OQS_KEM_sidh_p503_length_secret_key;
+	kem->length_ciphertext = OQS_KEM_sidh_p503_length_ciphertext;
+	kem->length_shared_secret = OQS_KEM_sidh_p503_length_shared_secret;
+
+	kem->keypair = OQS_KEM_sidh_p503_keypair;
+	kem->encaps = OQS_KEM_sidh_p503_encaps;
+	kem->decaps = OQS_KEM_sidh_p503_decaps;
+
+	return kem;
+}
+
+/* Forward KEM API calls to SIDH's API */
+OQS_STATUS OQS_KEM_sidh_p503_keypair(uint8_t *public_key, uint8_t *secret_key) {
+	if (oqs_kem_sidh_p503_EphemeralKeyGeneration_A((unsigned char *) secret_key, (unsigned char *) public_key) != 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
+}
+
+OQS_STATUS OQS_KEM_sidh_p503_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+	OQS_STATUS ret = OQS_ERROR;
+	unsigned char* secret_key = malloc(OQS_KEM_sidh_p503_length_secret_key);
+	if (oqs_kem_sidh_p503_EphemeralKeyGeneration_B(secret_key, (unsigned char *) ciphertext)) {
+		goto err;
+	}
+	if (oqs_kem_sidh_p503_EphemeralSecretAgreement_B(secret_key, (unsigned char *) public_key, (unsigned char *) shared_secret) != 0) {
+		goto err;
+	}
+	ret = OQS_SUCCESS;
+	goto cleanup;
+
+err:
+	ret = OQS_ERROR;
+
+cleanup:
+	if (secret_key != NULL) {
+		OQS_MEM_secure_free(secret_key, OQS_KEM_sidh_p503_length_secret_key);
+	}
+
+	return ret;
+}
+
+OQS_STATUS OQS_KEM_sidh_p503_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+	if (oqs_kem_sidh_p503_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
+}
+
+#endif
+
+// Preventing redefinition of symbols P*_api.h
+#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
+#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
+#undef OQS_SIDH_MSR_CRYPTO_BYTES
+#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
+#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
+#undef SIDH_SECRETKEYBYTES
+#undef SIDH_PUBLICKEYBYTES
+#undef SIDH_BYTES
+
+#ifdef OQS_ENABLE_KEM_sidh_p751
+
+#include "P751/P751_api.h"
+
+OQS_KEM *OQS_KEM_sidh_p751_new() {
+
+	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
+	if (kem == NULL) {
+		return NULL;
+	}
+	kem->method_name = OQS_KEM_alg_sidh_p751;
+
+	kem->claimed_nist_level = 3;
+	kem->ind_cca = false;
+
+	kem->length_public_key = OQS_KEM_sidh_p751_length_public_key;
+	kem->length_secret_key = OQS_KEM_sidh_p751_length_secret_key;
+	kem->length_ciphertext = OQS_KEM_sidh_p751_length_ciphertext;
+	kem->length_shared_secret = OQS_KEM_sidh_p751_length_shared_secret;
+
+	kem->keypair = OQS_KEM_sidh_p751_keypair;
+	kem->encaps = OQS_KEM_sidh_p751_encaps;
+	kem->decaps = OQS_KEM_sidh_p751_decaps;
+
+	return kem;
+}
+
+/* Forward KEM API calls to SIDH's API */
+OQS_STATUS OQS_KEM_sidh_p751_keypair(uint8_t *public_key, uint8_t *secret_key) {
+	if (oqs_kem_sidh_p751_EphemeralKeyGeneration_A((unsigned char *) secret_key, (unsigned char *) public_key) != 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
+}
+
+OQS_STATUS OQS_KEM_sidh_p751_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+	OQS_STATUS ret = OQS_ERROR;
+	unsigned char* secret_key = malloc(OQS_KEM_sidh_p751_length_secret_key);
+	if (oqs_kem_sidh_p751_EphemeralKeyGeneration_B(secret_key, (unsigned char *) ciphertext)) {
+		goto err;
+	}
+	if (oqs_kem_sidh_p751_EphemeralSecretAgreement_B(secret_key, (unsigned char *) public_key, (unsigned char *) shared_secret) != 0) {
+		goto err;
+	}
+	ret = OQS_SUCCESS;
+	goto cleanup;
+
+err:
+	ret = OQS_ERROR;
+
+cleanup:
+	if (secret_key != NULL) {
+		OQS_MEM_secure_free(secret_key, OQS_KEM_sidh_p751_length_secret_key);
+	}
+
+	return ret;
+}
+
+OQS_STATUS OQS_KEM_sidh_p751_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+	if (oqs_kem_sidh_p751_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 #endif

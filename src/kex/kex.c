@@ -3,7 +3,6 @@
 #include <oqs/kex.h>
 
 #include <oqs/kex_ntru.h>
-#include <oqs/kex_sidh_msr.h>
 
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
@@ -38,22 +37,6 @@ OQS_API OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 #else
 		assert(0);
 #endif
-#endif
-#ifdef ENABLE_KEX_SIDH_MSR
-	case OQS_KEX_alg_sidh_msr_503:
-		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIDH_503_params);
-	case OQS_KEX_alg_sidh_msr_751:
-		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIDH_751_params);
-	case OQS_KEX_alg_sike_msr_503:
-		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIKE_503_params);
-	case OQS_KEX_alg_sike_msr_751:
-		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIKE_751_params);
-#else
-	case OQS_KEX_alg_sidh_msr_503:
-	case OQS_KEX_alg_sidh_msr_751:
-	case OQS_KEX_alg_sike_msr_503:
-	case OQS_KEX_alg_sike_msr_751:
-		assert(0);
 #endif
 
 	default:

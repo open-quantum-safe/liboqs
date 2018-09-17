@@ -31,12 +31,6 @@ struct kex_testcase kex_testcases[] = {
     {OQS_KEX_alg_ntru, NULL, 0, NULL, "ntru", 0, 25},
 #endif
 #endif
-#ifdef ENABLE_KEX_SIDH_MSR
-    {OQS_KEX_alg_sidh_msr_503, NULL, 0, NULL, "sidh_msr_503", 0, 10},
-    {OQS_KEX_alg_sidh_msr_751, NULL, 0, NULL, "sidh_msr_751", 0, 10},
-    {OQS_KEX_alg_sike_msr_503, NULL, 0, NULL, "sike_msr_503", 0, 10},
-    {OQS_KEX_alg_sike_msr_751, NULL, 0, NULL, "sike_msr_751", 0, 10},
-#endif
 
 };
 

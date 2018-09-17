@@ -31,6 +31,10 @@
 #define OQS_KEM_alg_sike_p503 "Sike-p503"
 /** Algorithm identifier for Sike p751 KEM. */
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
+/** Algorithm identifier for Sidh p503 KEM. */
+#define OQS_KEM_alg_sidh_p503 "Sidh-p503"
+/** Algorithm identifier for Sidh p751 KEM. */
+#define OQS_KEM_alg_sidh_p751 "Sidh-p751"
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
 /** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
@@ -59,7 +63,7 @@
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 16
+#define OQS_KEM_algs_length 18
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 

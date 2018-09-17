@@ -46,8 +46,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
                      [ENABLE_MCBITS], [src/kex_code_mcbits])
   ARG_DISBL_SET_WRAP([kex-ntru], [kex_ntru],
                      [ENABLE_KEX_NTRU], [src/kex_ntru])
-  ARG_DISBL_SET_WRAP([kex-sidh-msr], [kex_sidh_msr],
-                     [ENABLE_KEX_SIDH_MSR], [src/kex_sidh_msr])
 
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
                      [ENABLE_SIG_PICNIC], [src/sig_picnic])
@@ -90,6 +88,8 @@ AC_DEFUN([CONFIG_FEATURES],
   AM_COND_IF([ENABLE_KEM_SIKE], [
     AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_sidh_p503, 1, "Define to 1 when Sidh-p503 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_sidh_p751, 1, "Define to 1 when Sidh-p751 enabled")
   ])
 
 ]
