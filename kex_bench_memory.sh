@@ -37,7 +37,7 @@ Usage: $0 [OPTION]... ALGORITHM
   --tmp-dir=DIR       temporary directory [default: $DEFAULT_TMP_DIR]
     ALGORITHM         algorithm to test
 
-Example usage: $0 ntru
+Example usage: $0 TODO
 
 EOF
   exit 0

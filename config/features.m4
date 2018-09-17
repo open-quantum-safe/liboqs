@@ -44,8 +44,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 
   ARG_ENABL_SET_WRAP([kex-code-mcbits], [kex_code_mcbits],
                      [ENABLE_MCBITS], [src/kex_code_mcbits])
-  ARG_DISBL_SET_WRAP([kex-ntru], [kex_ntru],
-                     [ENABLE_KEX_NTRU], [src/kex_ntru])
 
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
                      [ENABLE_SIG_PICNIC], [src/sig_picnic])

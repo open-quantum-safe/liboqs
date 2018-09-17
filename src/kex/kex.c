@@ -2,8 +2,6 @@
 
 #include <oqs/kex.h>
 
-#include <oqs/kex_ntru.h>
-
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
 #endif
@@ -17,6 +15,7 @@ OQS_API OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 
 	//To disable warnings when the function arguments are not being used depending
 	//on which algorithm has been disabled
+	UNUSED_KEX(rand);
 	UNUSED_KEX(seed);
 	UNUSED_KEX(seed_len);
 	UNUSED_KEX(named_parameters);
@@ -29,14 +28,6 @@ OQS_API OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 		return OQS_KEX_code_mcbits_new(rand);
 #else
 		assert(0);
-#endif
-#ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
-	case OQS_KEX_alg_ntru:
-#ifdef ENABLE_KEX_NTRU
-		return OQS_KEX_ntru_new(rand);
-#else
-		assert(0);
-#endif
 #endif
 
 	default:
