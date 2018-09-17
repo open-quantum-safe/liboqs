@@ -64,9 +64,6 @@
     <ClCompile Include="..\..\src\kex_ntru\kex_ntru.c">
       <Filter>ntru</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_sidh_msr\kex_sidh_msr.c">
-      <Filter>sidh</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\sig_picnic\external\lowmc.c">
       <Filter>picnic</Filter>
     </ClCompile>
@@ -93,12 +90,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\kex_code_mcbits\external\operations.c">
       <Filter>mcbits</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_sidh_msr\P503\P503.c">
-      <Filter>sidh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_sidh_msr\P751\P751.c">
-      <Filter>sidh</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig_picnic\external\picnic.c">
       <Filter>picnic</Filter>
@@ -194,9 +185,6 @@
     <ClInclude Include="..\..\src\kex_ntru\kex_ntru.h">
       <Filter>ntru</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_sidh_msr\kex_sidh_msr.h">
-      <Filter>sidh</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\external\lowmc.h">
       <Filter>picnic</Filter>
     </ClInclude>
@@ -227,9 +215,6 @@
     <ClInclude Include="..\..\src\sig_picnic\external\mzd_additional.h">
       <Filter>picnic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_api.h">
-      <Filter>sidh</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_internal.h">
       <Filter>sidh</Filter>
     </ClInclude>
@@ -238,6 +223,7 @@
     </ClInclude>
     <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_internal.h">
       <Filter>sidh</Filter>
+>>>>>>> origin/master
     </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\external\picnic.h">
       <Filter>picnic</Filter>
@@ -247,9 +233,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\sig_picnic.h">
       <Filter>picnic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_sidh_msr\windows_undef.h">
-      <Filter>sidh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kem\kem.h">
       <Filter>kem</Filter>
@@ -282,9 +265,6 @@
     </Filter>
     <Filter Include="ntru">
       <UniqueIdentifier>{669c3be0-bba3-4507-b0a2-a332bbce2052}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="sidh">
-      <UniqueIdentifier>{7e30eb7e-4fb9-4783-8154-6f2a9f88e68a}</UniqueIdentifier>
     </Filter>
     <Filter Include="kem">
       <UniqueIdentifier>{ceb9c773-d92e-44b7-916a-eb1d6a2ec89b}</UniqueIdentifier>
