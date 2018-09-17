@@ -11,7 +11,7 @@
 
 /* Cleaning up memory etc */
 void cleanup(uint8_t *msg, size_t msg_len, uint8_t *sig, size_t sig_len,
-             uint8_t *pub, uint8_t *priv, OQS_SIG *s, OQS_RAND *rnd);
+             uint8_t *pub, uint8_t *priv, OQS_SIG *s);
 
 #ifdef ENABLE_SIG_PICNIC
 int main(void) {
@@ -25,24 +25,14 @@ int main(void) {
 	enum OQS_SIG_algid alg_name = OQS_SIG_default; // Algorithm name
 	// Equivalent to OQS_SIG_picnic_L1_FS
 
-	OQS_RAND *rnd = NULL; // Source of randomness
 	OQS_SIG *s = NULL;    // OQS_SIG structure
 
-	/* Setup the source of randomness */
-	rnd = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
-	if (rnd == NULL) {
-		eprintf("ERROR: Setting up the randomness source!\n");
-		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
-
-		return EXIT_FAILURE;
-	}
-
 	/* Populate the OQS_SIG structure, here's where liboqs sets up
-     * the specific details of the selected SIG implementation */
-	s = OQS_SIG_new(rnd, alg_name);
+	 * the specific details of the selected SIG implementation */
+	s = OQS_SIG_new(alg_name);
 	if (s == NULL) {
 		eprintf("ERROR: OQS_SIG_new failed!\n");
-		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
+		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
 
 		return EXIT_FAILURE;
 	}
@@ -56,7 +46,7 @@ int main(void) {
 	priv = malloc(s->priv_key_len);
 	if (priv == NULL) {
 		eprintf("ERROR: priv malloc failed!\n");
-		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
+		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
 
 		return EXIT_FAILURE;
 	}
@@ -65,7 +55,7 @@ int main(void) {
 	pub = malloc(s->pub_key_len);
 	if (pub == NULL) {
 		eprintf("ERROR: pub malloc failed!\n");
-		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
+		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
 
 		return EXIT_FAILURE;
 	}
@@ -74,7 +64,7 @@ int main(void) {
 	OQS_STATUS success = OQS_SIG_keygen(s, priv, pub);
 	if (success != OQS_SUCCESS) {
 		eprintf("ERROR: OQS_SIG_keygen failed!\n");
-		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
+		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
 
 		return EXIT_FAILURE;
 	}
@@ -87,13 +77,13 @@ int main(void) {
 	msg = malloc(msg_len);
 	if (msg == NULL) {
 		eprintf("ERROR: msg malloc failed!\n");
-		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
+		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
 
 		return EXIT_FAILURE;
 	}
 
 	/* Generates a random message to sign */
-	OQS_RAND_n(rnd, msg, msg_len);
+	OQS_randombytes(msg, msg_len);
 	OQS_print_hex_string("Message", msg, msg_len);
 
 	/* Allocates memory for the signature */
@@ -101,7 +91,7 @@ int main(void) {
 	sig = malloc(sig_len);
 	if (sig == NULL) {
 		eprintf("ERROR: sig malloc failed!\n");
-		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
+		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
 
 		return EXIT_FAILURE;
 	}
@@ -110,7 +100,7 @@ int main(void) {
 	success = OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len);
 	if (success != OQS_SUCCESS) {
 		eprintf("ERROR: OQS_SIG_sign failed!\n");
-		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
+		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
 
 		return EXIT_FAILURE;
 	}
@@ -124,14 +114,14 @@ int main(void) {
 	success = OQS_SIG_verify(s, pub, msg, msg_len, sig, sig_len);
 	if (success != OQS_SUCCESS) {
 		eprintf("ERROR: OQS_SIG_verify failed!\n");
-		cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
+		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
 
 		return EXIT_FAILURE;
 	}
 
 	/* Success and clean-up */
 	printf("Signature is valid.\n");
-	cleanup(msg, msg_len, sig, sig_len, pub, priv, s, rnd);
+	cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
 
 	return EXIT_SUCCESS;
 }
@@ -144,11 +134,10 @@ int main(void) {
 
 /* Cleaning up memory etc */
 void cleanup(uint8_t *msg, size_t msg_len, uint8_t *sig, size_t sig_len,
-             uint8_t *pub, uint8_t *priv, OQS_SIG *s, OQS_RAND *rnd) {
+             uint8_t *pub, uint8_t *priv, OQS_SIG *s) {
 	OQS_MEM_secure_free(msg, msg_len);
 	OQS_MEM_secure_free(sig, sig_len);
 	OQS_MEM_secure_free(pub, s->pub_key_len);
 	OQS_MEM_secure_free(priv, s->priv_key_len);
 	OQS_SIG_free(s);
-	OQS_RAND_free(rnd);
 }

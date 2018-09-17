@@ -11,7 +11,6 @@
 #include <stdint.h>
 
 #include <oqs/common.h>
-#include <oqs/rand.h>
 
 #if defined(_WIN32)
 #include <oqs/winconfig.h>
@@ -49,11 +48,6 @@ typedef struct OQS_SIG OQS_SIG; // so the code below compiles...
  * OQS signature object
  */
 struct OQS_SIG {
-
-	/**
-	 * PRNG
-	 */
-	OQS_RAND *rand;
 
 	/**
 	 * Specifies the name of the signature method
@@ -142,11 +136,10 @@ struct OQS_SIG {
 /**
  * Instantiate a new signature object.
  *
- * @param rand               The random number generator.
  * @param algid              The id of the signature algorithm to be instantiated.
  * @return                   A new signature object on success, or NULL on failure.
  */
-OQS_API OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid);
+OQS_API OQS_SIG *OQS_SIG_new(enum OQS_SIG_algid algid);
 
 /**
  * Generates a new signature key pair.
@@ -185,7 +178,6 @@ OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const ui
 
 /**
  * Frees the signature object, de-initializing the underlying library code.
- * Does NOT free the rand object passed to OQS_SIG_new.
  * @param s          The signature object.
  */
 OQS_API void OQS_SIG_free(OQS_SIG *s);

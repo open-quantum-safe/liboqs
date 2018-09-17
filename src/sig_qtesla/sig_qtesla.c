@@ -4,7 +4,6 @@
 
 #include <string.h>
 #include <oqs/common.h>
-#include <oqs/rand.h>
 #include "sig_qtesla.h"
 #include "external/qTESLA_I.h"
 #include "external/qTESLA_III_size.h"
@@ -62,15 +61,15 @@ OQS_STATUS OQS_SIG_qTESLA_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub) 
 	}
 
 	if (strcmp(s->method_name, qTESLA_I_name) == 0) {
-		if (oqs_qTESLA_I_crypto_sign_keypair(s->rand, pub, priv) != 0) {
+		if (oqs_qTESLA_I_crypto_sign_keypair(pub, priv) != 0) {
 			return OQS_ERROR;
 		}
 	} else if (strcmp(s->method_name, qTESLA_III_size_name) == 0) {
-		if (oqs_qTESLA_III_size_crypto_sign_keypair(s->rand, pub, priv) != 0) {
+		if (oqs_qTESLA_III_size_crypto_sign_keypair(pub, priv) != 0) {
 			return OQS_ERROR;
 		}
 	} else if (strcmp(s->method_name, qTESLA_III_speed_name) == 0) {
-		if (oqs_qTESLA_III_speed_crypto_sign_keypair(s->rand, pub, priv) != 0) {
+		if (oqs_qTESLA_III_speed_crypto_sign_keypair(pub, priv) != 0) {
 			return OQS_ERROR;
 		}
 	} else {
@@ -85,15 +84,15 @@ OQS_STATUS OQS_SIG_qTESLA_sign(const OQS_SIG *s, const uint8_t *priv, const uint
 	}
 
 	if (strcmp(s->method_name, qTESLA_I_name) == 0) {
-		if (oqs_qTESLA_I_crypto_sign(s->rand, sig, (unsigned long long *) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
+		if (oqs_qTESLA_I_crypto_sign(sig, (unsigned long long *) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
 			return OQS_ERROR;
 		}
 	} else if (strcmp(s->method_name, qTESLA_III_size_name) == 0) {
-		if (oqs_qTESLA_III_size_crypto_sign(s->rand, sig, (unsigned long long *) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
+		if (oqs_qTESLA_III_size_crypto_sign(sig, (unsigned long long *) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
 			return OQS_ERROR;
 		}
 	} else if (strcmp(s->method_name, qTESLA_III_speed_name) == 0) {
-		if (oqs_qTESLA_III_speed_crypto_sign(s->rand, sig, (unsigned long long *) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
+		if (oqs_qTESLA_III_speed_crypto_sign(sig, (unsigned long long *) sig_len, msg, (unsigned long long) msg_len, priv) != 0) {
 			return OQS_ERROR;
 		}
 	} else {

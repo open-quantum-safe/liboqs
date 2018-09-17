@@ -9,7 +9,7 @@
 *              - unsigned char *sk: secret key
 * Returns:     0 for successful execution
 **********************************************************/
-static int crypto_sign_keypair(OQS_RAND *rand, unsigned char *pk, unsigned char *sk) {
+static int crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
 	unsigned char randomness[CRYPTO_RANDOMBYTES], randomness_extended[4 * CRYPTO_SEEDBYTES];
 	poly s, e, a, t;
 	int nonce = 0; // Initialize domain separator for error and secret polynomials
@@ -18,7 +18,7 @@ static int crypto_sign_keypair(OQS_RAND *rand, unsigned char *pk, unsigned char 
 #endif
 
 	// Get randomness_extended <- seed_e, seed_s, seed_a, seed_y
-	OQS_RAND_n(rand, randomness, CRYPTO_RANDOMBYTES);
+	OQS_randombytes(randomness, CRYPTO_RANDOMBYTES);
 	if (strcmp(CRYPTO_ALGNAME, "qTesla-I") == 0) {
 		OQS_SHA3_shake128(randomness_extended, 4 * CRYPTO_SEEDBYTES, randomness, CRYPTO_RANDOMBYTES);
 	} else /* III-size, III-speed */ {
@@ -66,7 +66,7 @@ static int crypto_sign_keypair(OQS_RAND *rand, unsigned char *pk, unsigned char 
 *              - unsigned long long *smlen: signature length*
 * Returns:     0 for successful execution
 ***************************************************************/
-static int crypto_sign(OQS_RAND *rand, unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
+static int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
 	unsigned char c[CRYPTO_C_BYTES], randomness[CRYPTO_SEEDBYTES], randomness_input[CRYPTO_RANDOMBYTES + CRYPTO_SEEDBYTES + mlen];
 	uint32_t pos_list[PARAM_W];
 	int16_t sign_list[PARAM_W];
@@ -79,7 +79,7 @@ static int crypto_sign(OQS_RAND *rand, unsigned char *sm, unsigned long long *sm
 #endif
 
 	// Get H(seed_y, r, m) to sample y
-	OQS_RAND_n(rand, randomness_input + CRYPTO_RANDOMBYTES, CRYPTO_RANDOMBYTES);
+	OQS_randombytes(randomness_input + CRYPTO_RANDOMBYTES, CRYPTO_RANDOMBYTES);
 	memcpy(randomness_input, &sk[CRYPTO_SECRETKEYBYTES - CRYPTO_SEEDBYTES], CRYPTO_SEEDBYTES);
 	memcpy(randomness_input + CRYPTO_RANDOMBYTES + CRYPTO_SEEDBYTES, m, mlen);
 	if (strcmp(CRYPTO_ALGNAME, "qTesla-I") == 0) {

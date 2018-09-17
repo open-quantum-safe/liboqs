@@ -40,7 +40,7 @@ struct sig_testcase sig_testcases[] = {
 #define SIG_TEST_ITERATIONS 100
 #define SIG_BENCH_SECONDS 1
 
-static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const int print) {
+static OQS_STATUS sig_test_correctness(enum OQS_SIG_algid algid, const int print) {
 
 	OQS_STATUS rc;
 
@@ -52,7 +52,7 @@ static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid,
 	size_t sig_len;
 
 	/* setup signature object */
-	OQS_SIG *s = OQS_SIG_new(rand, algid);
+	OQS_SIG *s = OQS_SIG_new(algid);
 	if (s == NULL) {
 		eprintf("sig new failed\n");
 		goto err;
@@ -102,7 +102,7 @@ static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid,
 		eprintf("msg malloc failed\n");
 		goto err;
 	}
-	OQS_RAND_n(rand, msg, msg_len);
+	OQS_randombytes(msg, msg_len);
 	if (print) {
 		OQS_print_hex_string("Message", msg, msg_len);
 	}
@@ -168,16 +168,16 @@ cleanup:
 	return rc;
 }
 
-UNUSED static OQS_STATUS sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, int iterations, bool quiet) {
+UNUSED static OQS_STATUS sig_test_correctness_wrapper(enum OQS_SIG_algid algid, int iterations, bool quiet) {
 	OQS_STATUS ret;
-	ret = sig_test_correctness(rand, algid, !quiet);
+	ret = sig_test_correctness(algid, !quiet);
 	if (ret != OQS_SUCCESS) {
 		goto err;
 	}
 
 	printf("Testing correctness and randomness of signature for %d iterations\n", iterations);
 	for (int i = 0; i < iterations; i++) {
-		ret = sig_test_correctness(rand, algid, 0);
+		ret = sig_test_correctness(algid, 0);
 		if (ret != OQS_SUCCESS) {
 			goto err;
 		}
@@ -189,7 +189,7 @@ err:
 	return ret;
 }
 
-UNUSED static OQS_STATUS sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int seconds) {
+UNUSED static OQS_STATUS sig_bench_wrapper(enum OQS_SIG_algid algid, const int seconds) {
 	OQS_STATUS rc;
 
 	uint8_t *priv = NULL;
@@ -200,7 +200,7 @@ UNUSED static OQS_STATUS sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid al
 	size_t sig_len;
 
 	/* setup signature object */
-	OQS_SIG *s = OQS_SIG_new(rand, algid);
+	OQS_SIG *s = OQS_SIG_new(algid);
 	if (s == NULL) {
 		eprintf("sig new failed\n");
 		goto err;
@@ -263,7 +263,6 @@ int main(int argc, char **argv) {
 	bool run_all = true;
 	bool quiet = false;
 	bool bench = false;
-	OQS_RAND *rand = NULL;
 	size_t sig_testcases_len = sizeof(sig_testcases) / sizeof(struct sig_testcase);
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
@@ -295,16 +294,10 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	/* setup RAND */
-	rand = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
-	if (rand == NULL) {
-		goto err;
-	}
-
 	for (size_t i = 0; i < sig_testcases_len; i++) {
 		if (run_all || sig_testcases[i].run == 1) {
 			int num_iter = sig_testcases[i].iter;
-			success = sig_test_correctness_wrapper(rand, sig_testcases[i].algid, num_iter, quiet);
+			success = sig_test_correctness_wrapper(sig_testcases[i].algid, num_iter, quiet);
 		}
 		if (success != OQS_SUCCESS) {
 			goto err;
@@ -315,7 +308,7 @@ int main(int argc, char **argv) {
 		PRINT_TIMER_HEADER
 		for (size_t i = 0; i < sig_testcases_len; i++) {
 			if (run_all || sig_testcases[i].run == 1) {
-				sig_bench_wrapper(rand, sig_testcases[i].algid, SIG_BENCH_SECONDS);
+				sig_bench_wrapper(sig_testcases[i].algid, SIG_BENCH_SECONDS);
 			}
 		}
 		PRINT_TIMER_FOOTER
@@ -329,8 +322,5 @@ err:
 	eprintf("ERROR!\n");
 
 cleanup:
-	if (rand) {
-		OQS_RAND_free(rand);
-	}
 	return (success == OQS_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

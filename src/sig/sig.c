@@ -9,16 +9,11 @@
 #include <oqs/sig_qtesla.h>
 #endif
 
-OQS_API OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid) {
-	if (rand == NULL) {
-		return NULL;
-	}
-
+OQS_API OQS_SIG *OQS_SIG_new(enum OQS_SIG_algid algid) {
 	OQS_SIG *s = malloc(sizeof(OQS_SIG));
 	if (s == NULL) {
 		return NULL;
 	}
-	s->rand = rand;
 
 	switch (algid) {
 #ifdef ENABLE_SIG_PICNIC
