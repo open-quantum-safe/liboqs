@@ -14,7 +14,7 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 - a collection of open source implementations of post-quantum cryptography algorithms
 - a test harness and benchmarking routines
 
-The OQS project also provides prototype integrations into application-level protocols to enable testing of quantum-resistant cryptography.  
+The OQS project also provides prototype integrations into application-level protocols to enable testing of quantum-resistant cryptography.
 
 More information on OQS can be found on our website: [https://openquantumsafe.org/](https://openquantumsafe.org/).
 
@@ -30,9 +30,9 @@ For a list of algorithms included in master branch, see the datasheets in [docs/
 Limitations and security
 ------------------------
 
-liboqs is designed for prototyping and evaluating quantum-resistant cryptography.  Security of proposed quantum-resistant algorithms may rapidly change as research advances, and may ultimately be completely insecure against either classical or quantum computers.  
+liboqs is designed for prototyping and evaluating quantum-resistant cryptography.  Security of proposed quantum-resistant algorithms may rapidly change as research advances, and may ultimately be completely insecure against either classical or quantum computers.
 
-We believe that the NIST Post-Quantum Cryptography standardization project is currently the best avenue to identifying potentially quantum-resistant algorithms.  liboqs does not intend to "pick winners", and we strongly recommend that applications and protocols rely on the outcomes of the NIST standardization project when deploying post-quantum cryptography.  
+We believe that the NIST Post-Quantum Cryptography standardization project is currently the best avenue to identifying potentially quantum-resistant algorithms.  liboqs does not intend to "pick winners", and we strongly recommend that applications and protocols rely on the outcomes of the NIST standardization project when deploying post-quantum cryptography.
 
 We acknowledge that some parties may want to begin deploying post-quantum cryptography prior to the conclusion of the NIST standardization project.  We strongly recommend that any attempts to do make use of so-called **hybrid cryptography**, in which post-quantum public-key algorithms are used alongside traditional public key algorithms (like RSA or elliptic curves) so that the solution is at least no less secure than existing traditional cryptography.
 
@@ -182,7 +182,7 @@ Then open `docs/doxygen/html/index.html` in your web browser.
 License
 -------
 
-liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for details.  
+liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for details.
 
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
@@ -196,11 +196,11 @@ liboqs includes some third party libraries or modules that are licensed differen
 Team
 ----
 
-The Open Quantum Safe project is lead by [Douglas Stebila](https://www.douglas.stebila.ca/research/) [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
+The Open Quantum Safe project is led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
 
 ### Contributors
 
-Contributors to this nist-branch of liboqs include:
+Contributors to this master branch of liboqs include:
 
 - Nicholas Allen (Amazon Web Services)
 - Maxime Anvari
@@ -216,6 +216,7 @@ Contributors to this nist-branch of liboqs include:
 - Douglas Stebila (University of Waterloo)
 - [John Underhill](https://github.com/Steppenwolfe65/CEX)
 - Sebastian Verschoor (University of Waterloo)
+- Ben Davies (University of Waterloo)
 
 ### Support
 
