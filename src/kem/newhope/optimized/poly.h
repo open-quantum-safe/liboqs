@@ -9,8 +9,8 @@
  * coeffs[0] + X*coeffs[1] + X^2*xoeffs[2] + ... + X^{n-1}*coeffs[n-1] 
  */
 typedef struct {
-  uint16_t coeffs[NEWHOPE_N];
-} poly __attribute__ ((aligned (32)));
+	uint16_t coeffs[NEWHOPE_N];
+} poly __attribute__((aligned(32)));
 
 void poly_uniform(poly *a, const unsigned char *seed);
 void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce);

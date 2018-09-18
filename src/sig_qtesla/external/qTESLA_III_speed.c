@@ -337,7 +337,7 @@ static void poly_uniform(poly a, const unsigned char *seed) { // Generation of p
 /* sample.c */
 
 #define round_double(x) (uint64_t)(x + 0.5)
-#define NBLOCKS_SHAKE256  OQS_SHA3_SHAKE256_RATE/(((PARAM_B_BITS+1)+7)/8)
+#define NBLOCKS_SHAKE256 OQS_SHA3_SHAKE256_RATE / (((PARAM_B_BITS + 1) + 7) / 8)
 
 static void sample_y(int64_t *y, const unsigned char *seed, int nonce) { // Sample polynomial y, such that each coefficient is in the range [-B,B]
 	unsigned int i = 0, pos = 0, nblocks = PARAM_N;
@@ -347,15 +347,15 @@ static void sample_y(int64_t *y, const unsigned char *seed, int nonce) { // Samp
 
 	OQS_SHA3_cshake256_simple((uint8_t *) buf, PARAM_N * nbytes, dmsp++, seed, CRYPTO_RANDOMBYTES);
 
-	while (i<PARAM_N) {
-		if (pos >= nblocks*nbytes) {
+	while (i < PARAM_N) {
+		if (pos >= nblocks * nbytes) {
 			nblocks = NBLOCKS_SHAKE256;
-			OQS_SHA3_cshake256_simple((uint8_t*)buf, OQS_SHA3_SHAKE256_RATE, dmsp++, seed, CRYPTO_RANDOMBYTES);
+			OQS_SHA3_cshake256_simple((uint8_t *) buf, OQS_SHA3_SHAKE256_RATE, dmsp++, seed, CRYPTO_RANDOMBYTES);
 			pos = 0;
 		}
 		y[i] = (*(uint32_t *) (buf + pos)) & ((1 << (PARAM_B_BITS + 1)) - 1);
 		y[i] -= PARAM_B;
-		if (y[i] != (1<<PARAM_B_BITS))
+		if (y[i] != (1 << PARAM_B_BITS))
 			i++;
 		pos += nbytes;
 	}

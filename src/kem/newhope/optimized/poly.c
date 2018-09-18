@@ -13,18 +13,17 @@
 *              
 * Returns integer in {0,...,q-1} congruent to x modulo q
 **************************************************/
-static uint16_t coeff_freeze(uint16_t x)
-{
-  uint16_t m,r;
-  int16_t c;
-  r = x % NEWHOPE_Q;
+static uint16_t coeff_freeze(uint16_t x) {
+	uint16_t m, r;
+	int16_t c;
+	r = x % NEWHOPE_Q;
 
-  m = r - NEWHOPE_Q;
-  c = m;
-  c >>= 15;
-  r = m ^ ((r^m)&c);
+	m = r - NEWHOPE_Q;
+	c = m;
+	c >>= 15;
+	r = m ^ ((r ^ m) & c);
 
-  return r;
+	return r;
 }
 
 /*************************************************
@@ -36,14 +35,13 @@ static uint16_t coeff_freeze(uint16_t x)
 *              
 * Returns |(x mod q) - Q/2|
 **************************************************/
-static uint16_t flipabs(uint16_t x)
-{
-  int16_t r,m;
-  r = coeff_freeze(x);
+static uint16_t flipabs(uint16_t x) {
+	int16_t r, m;
+	r = coeff_freeze(x);
 
-  r = r - NEWHOPE_Q/2;
-  m = r >> 15;
-  return (r + m) ^ m;
+	r = r - NEWHOPE_Q / 2;
+	m = r >> 15;
+	return (r + m) ^ m;
 }
 
 /*************************************************
@@ -54,16 +52,14 @@ static uint16_t flipabs(uint16_t x)
 * Arguments:   - poly *r:                pointer to output polynomial
 *              - const unsigned char *a: pointer to input byte array
 **************************************************/
-void poly_frombytes(poly *r, const unsigned char *a)
-{
-  int i;
-  for(i=0;i<NEWHOPE_N/4;i++)
-  {
-    r->coeffs[4*i+0] =                               a[7*i+0]        | (((uint16_t)a[7*i+1] & 0x3f) << 8);
-    r->coeffs[4*i+1] = (a[7*i+1] >> 6) | (((uint16_t)a[7*i+2]) << 2) | (((uint16_t)a[7*i+3] & 0x0f) << 10);
-    r->coeffs[4*i+2] = (a[7*i+3] >> 4) | (((uint16_t)a[7*i+4]) << 4) | (((uint16_t)a[7*i+5] & 0x03) << 12);
-    r->coeffs[4*i+3] = (a[7*i+5] >> 2) | (((uint16_t)a[7*i+6]) << 6);
-  }
+void poly_frombytes(poly *r, const unsigned char *a) {
+	int i;
+	for (i = 0; i < NEWHOPE_N / 4; i++) {
+		r->coeffs[4 * i + 0] = a[7 * i + 0] | (((uint16_t) a[7 * i + 1] & 0x3f) << 8);
+		r->coeffs[4 * i + 1] = (a[7 * i + 1] >> 6) | (((uint16_t) a[7 * i + 2]) << 2) | (((uint16_t) a[7 * i + 3] & 0x0f) << 10);
+		r->coeffs[4 * i + 2] = (a[7 * i + 3] >> 4) | (((uint16_t) a[7 * i + 4]) << 4) | (((uint16_t) a[7 * i + 5] & 0x03) << 12);
+		r->coeffs[4 * i + 3] = (a[7 * i + 5] >> 2) | (((uint16_t) a[7 * i + 6]) << 6);
+	}
 }
 
 /*************************************************
@@ -74,25 +70,23 @@ void poly_frombytes(poly *r, const unsigned char *a)
 * Arguments:   - unsigned char *r: pointer to output byte array
 *              - const poly *p:    pointer to input polynomial
 **************************************************/
-void poly_tobytes(unsigned char *r, const poly *p)
-{
-  int i;
-  uint16_t t0,t1,t2,t3;
-  for(i=0;i<NEWHOPE_N/4;i++)
-  {
-    t0 = coeff_freeze(p->coeffs[4*i+0]);
-    t1 = coeff_freeze(p->coeffs[4*i+1]);
-    t2 = coeff_freeze(p->coeffs[4*i+2]);
-    t3 = coeff_freeze(p->coeffs[4*i+3]);
+void poly_tobytes(unsigned char *r, const poly *p) {
+	int i;
+	uint16_t t0, t1, t2, t3;
+	for (i = 0; i < NEWHOPE_N / 4; i++) {
+		t0 = coeff_freeze(p->coeffs[4 * i + 0]);
+		t1 = coeff_freeze(p->coeffs[4 * i + 1]);
+		t2 = coeff_freeze(p->coeffs[4 * i + 2]);
+		t3 = coeff_freeze(p->coeffs[4 * i + 3]);
 
-    r[7*i+0] =  t0 & 0xff;
-    r[7*i+1] = (t0 >> 8) | (t1 << 6);
-    r[7*i+2] = (t1 >> 2);
-    r[7*i+3] = (t1 >> 10) | (t2 << 4);
-    r[7*i+4] = (t2 >> 4);
-    r[7*i+5] = (t2 >> 12) | (t3 << 2);
-    r[7*i+6] = (t3 >> 6);
-  }
+		r[7 * i + 0] = t0 & 0xff;
+		r[7 * i + 1] = (t0 >> 8) | (t1 << 6);
+		r[7 * i + 2] = (t1 >> 2);
+		r[7 * i + 3] = (t1 >> 10) | (t2 << 4);
+		r[7 * i + 4] = (t2 >> 4);
+		r[7 * i + 5] = (t2 >> 12) | (t3 << 2);
+		r[7 * i + 6] = (t3 >> 6);
+	}
 }
 
 /*************************************************
@@ -103,25 +97,22 @@ void poly_tobytes(unsigned char *r, const poly *p)
 * Arguments:   - unsigned char *r: pointer to output byte array
 *              - const poly *p:    pointer to input polynomial
 **************************************************/
-void poly_compress(unsigned char *r, const poly *p)
-{
-  unsigned int i,j,k=0;
+void poly_compress(unsigned char *r, const poly *p) {
+	unsigned int i, j, k = 0;
 
-  uint32_t t[8];
+	uint32_t t[8];
 
-  for(i=0;i<NEWHOPE_N;i+=8)
-  {
-    for(j=0;j<8;j++)
-    {
-      t[j] = coeff_freeze(p->coeffs[i+j]);
-      t[j] = (((t[j] << 3) + NEWHOPE_Q/2)/NEWHOPE_Q) & 0x7;
-    }
+	for (i = 0; i < NEWHOPE_N; i += 8) {
+		for (j = 0; j < 8; j++) {
+			t[j] = coeff_freeze(p->coeffs[i + j]);
+			t[j] = (((t[j] << 3) + NEWHOPE_Q / 2) / NEWHOPE_Q) & 0x7;
+		}
 
-    r[k]   =  t[0]       | (t[1] << 3) | (t[2] << 6);
-    r[k+1] = (t[2] >> 2) | (t[3] << 1) | (t[4] << 4) | (t[5] << 7);
-    r[k+2] = (t[5] >> 1) | (t[6] << 2) | (t[7] << 5);
-    k += 3;
-  }
+		r[k] = t[0] | (t[1] << 3) | (t[2] << 6);
+		r[k + 1] = (t[2] >> 2) | (t[3] << 1) | (t[4] << 4) | (t[5] << 7);
+		r[k + 2] = (t[5] >> 1) | (t[6] << 2) | (t[7] << 5);
+		k += 3;
+	}
 }
 
 /*************************************************
@@ -133,23 +124,21 @@ void poly_compress(unsigned char *r, const poly *p)
 * Arguments:   - poly *r:                pointer to output polynomial
 *              - const unsigned char *a: pointer to input byte array
 **************************************************/
-void poly_decompress(poly *r, const unsigned char *a)
-{
-  unsigned int i,j;
-  for(i=0;i<NEWHOPE_N;i+=8)
-  {
-    r->coeffs[i+0] =  a[0] & 7;
-    r->coeffs[i+1] = (a[0] >> 3) & 7;
-    r->coeffs[i+2] = (a[0] >> 6) | ((a[1] << 2) & 4);
-    r->coeffs[i+3] = (a[1] >> 1) & 7;
-    r->coeffs[i+4] = (a[1] >> 4) & 7;
-    r->coeffs[i+5] = (a[1] >> 7) | ((a[2] << 1) & 6);
-    r->coeffs[i+6] = (a[2] >> 2) & 7;
-    r->coeffs[i+7] = (a[2] >> 5);
-    a += 3;
-    for(j=0;j<8;j++)
-      r->coeffs[i+j] = ((uint32_t)r->coeffs[i+j] * NEWHOPE_Q + 4) >> 3;
-  }
+void poly_decompress(poly *r, const unsigned char *a) {
+	unsigned int i, j;
+	for (i = 0; i < NEWHOPE_N; i += 8) {
+		r->coeffs[i + 0] = a[0] & 7;
+		r->coeffs[i + 1] = (a[0] >> 3) & 7;
+		r->coeffs[i + 2] = (a[0] >> 6) | ((a[1] << 2) & 4);
+		r->coeffs[i + 3] = (a[1] >> 1) & 7;
+		r->coeffs[i + 4] = (a[1] >> 4) & 7;
+		r->coeffs[i + 5] = (a[1] >> 7) | ((a[2] << 1) & 6);
+		r->coeffs[i + 6] = (a[2] >> 2) & 7;
+		r->coeffs[i + 7] = (a[2] >> 5);
+		a += 3;
+		for (j = 0; j < 8; j++)
+			r->coeffs[i + j] = ((uint32_t) r->coeffs[i + j] * NEWHOPE_Q + 4) >> 3;
+	}
 }
 
 /*************************************************
@@ -160,22 +149,20 @@ void poly_decompress(poly *r, const unsigned char *a)
 * Arguments:   - poly *r:                  pointer to output polynomial
 *              - const unsigned char *msg: pointer to input message
 **************************************************/
-void poly_frommsg(poly *r, const unsigned char *msg)
-{
-  unsigned int i,j,mask;
-  for(i=0;i<32;i++) // XXX: MACRO for 32
-  {
-    for(j=0;j<8;j++)
-    {
-      mask = -((msg[i] >> j)&1);
-      r->coeffs[8*i+j+  0] = mask & (NEWHOPE_Q/2);
-      r->coeffs[8*i+j+256] = mask & (NEWHOPE_Q/2);
+void poly_frommsg(poly *r, const unsigned char *msg) {
+	unsigned int i, j, mask;
+	for (i = 0; i < 32; i++) // XXX: MACRO for 32
+	{
+		for (j = 0; j < 8; j++) {
+			mask = -((msg[i] >> j) & 1);
+			r->coeffs[8 * i + j + 0] = mask & (NEWHOPE_Q / 2);
+			r->coeffs[8 * i + j + 256] = mask & (NEWHOPE_Q / 2);
 #if (NEWHOPE_N == 1024)
-      r->coeffs[8*i+j+512] = mask & (NEWHOPE_Q/2);
-      r->coeffs[8*i+j+768] = mask & (NEWHOPE_Q/2);
+			r->coeffs[8 * i + j + 512] = mask & (NEWHOPE_Q / 2);
+			r->coeffs[8 * i + j + 768] = mask & (NEWHOPE_Q / 2);
 #endif
-    }
-  }
+		}
+	}
 }
 
 /*************************************************
@@ -186,31 +173,29 @@ void poly_frommsg(poly *r, const unsigned char *msg)
 * Arguments:   - unsigned char *msg: pointer to output message
 *              - const poly *x:      pointer to input polynomial
 **************************************************/
-void poly_tomsg(unsigned char *msg, const poly *x)
-{
-  unsigned int i;
-  uint16_t t;
+void poly_tomsg(unsigned char *msg, const poly *x) {
+	unsigned int i;
+	uint16_t t;
 
-  for(i=0;i<32;i++)
-    msg[i] = 0;
+	for (i = 0; i < 32; i++)
+		msg[i] = 0;
 
-  for(i=0;i<256;i++)
-  {
-    t  = flipabs(x->coeffs[i+  0]);
-    t += flipabs(x->coeffs[i+256]);
+	for (i = 0; i < 256; i++) {
+		t = flipabs(x->coeffs[i + 0]);
+		t += flipabs(x->coeffs[i + 256]);
 #if (NEWHOPE_N == 1024)
-    t += flipabs(x->coeffs[i+512]);
-    t += flipabs(x->coeffs[i+768]);
-    t = ((t - NEWHOPE_Q));
+		t += flipabs(x->coeffs[i + 512]);
+		t += flipabs(x->coeffs[i + 768]);
+		t = ((t - NEWHOPE_Q));
 #else
-    t = ((t - NEWHOPE_Q/2));
+		t = ((t - NEWHOPE_Q / 2));
 #endif
 
-    t >>= 15;
-    msg[i>>3] |= t<<(i&7);
-  }
+		t >>= 15;
+		msg[i >> 3] |= t << (i & 7);
+	}
 }
- 
+
 /*************************************************
 * Name:        poly_uniform
 * 
@@ -220,42 +205,39 @@ void poly_tomsg(unsigned char *msg, const poly *x)
 * Arguments:   - poly *a:                   pointer to output polynomial
 *              - const unsigned char *seed: pointer to input seed
 **************************************************/
-void poly_uniform(poly *a, const unsigned char *seed)
-{
-  unsigned int ctr=0;
-  uint16_t val;
-  uint64_t state[OQS_SHA3_STATESIZE];
-  uint8_t buf[OQS_SHA3_CSHAKE128_RATE];
-  uint8_t extseed[NEWHOPE_SYMBYTES+1];
-  int i,j,k;
+void poly_uniform(poly *a, const unsigned char *seed) {
+	unsigned int ctr = 0;
+	uint16_t val;
+	uint64_t state[OQS_SHA3_STATESIZE];
+	uint8_t buf[OQS_SHA3_CSHAKE128_RATE];
+	uint8_t extseed[NEWHOPE_SYMBYTES + 1];
+	int i, j, k;
 
-  for(i=0;i<NEWHOPE_SYMBYTES;i++)
-    extseed[i] = seed[i];
-  
-  for (i = 0; i < OQS_SHA3_STATESIZE; ++i)
-    state[i] = 0;
- 
-  for(i=0;i<NEWHOPE_N/64;i++) /* generate a in blocks of 64 coefficients */
-  {
-    ctr = 0;
-    extseed[NEWHOPE_SYMBYTES] = i; /* domain-separate the 16 independent calls */
-    for (k = 0; k < OQS_SHA3_STATESIZE; ++k)
-      state[k] = 0;
-    OQS_SHA3_shake128_absorb(state, extseed, NEWHOPE_SYMBYTES+1);
-    while(ctr < 64) /* Very unlikely to run more than once */
-    {
-      OQS_SHA3_shake128_squeezeblocks(buf,1,state);
-      for(j=0;j<OQS_SHA3_CSHAKE128_RATE && ctr < 64;j+=2)
-      {
-        val = (buf[j] | ((uint16_t) buf[j+1] << 8));
-        if(val < 5*NEWHOPE_Q)
-        {
-          a->coeffs[i*64+ctr] = val;
-          ctr++;
-        }
-      }
-    }
-  }
+	for (i = 0; i < NEWHOPE_SYMBYTES; i++)
+		extseed[i] = seed[i];
+
+	for (i = 0; i < OQS_SHA3_STATESIZE; ++i)
+		state[i] = 0;
+
+	for (i = 0; i < NEWHOPE_N / 64; i++) /* generate a in blocks of 64 coefficients */
+	{
+		ctr = 0;
+		extseed[NEWHOPE_SYMBYTES] = i; /* domain-separate the 16 independent calls */
+		for (k = 0; k < OQS_SHA3_STATESIZE; ++k)
+			state[k] = 0;
+		OQS_SHA3_shake128_absorb(state, extseed, NEWHOPE_SYMBYTES + 1);
+		while (ctr < 64) /* Very unlikely to run more than once */
+		{
+			OQS_SHA3_shake128_squeezeblocks(buf, 1, state);
+			for (j = 0; j < OQS_SHA3_CSHAKE128_RATE && ctr < 64; j += 2) {
+				val = (buf[j] | ((uint16_t) buf[j + 1] << 8));
+				if (val < 5 * NEWHOPE_Q) {
+					a->coeffs[i * 64 + ctr] = val;
+					ctr++;
+				}
+			}
+		}
+	}
 }
 
 /*************************************************
@@ -265,12 +247,11 @@ void poly_uniform(poly *a, const unsigned char *seed)
 *
 * Arguments:   - unsigned char a: input byte
 **************************************************/
-static unsigned char hw(unsigned char a)
-{
-  unsigned char i, r = 0;
-  for(i=0;i<8;i++)
-    r += (a >> i) & 1;
-  return r;
+static unsigned char hw(unsigned char a) {
+	unsigned char i, r = 0;
+	for (i = 0; i < 8; i++)
+		r += (a >> i) & 1;
+	return r;
 }
 
 /*************************************************
@@ -284,31 +265,29 @@ static unsigned char hw(unsigned char a)
 *              - const unsigned char *seed: pointer to input seed 
 *              - unsigned char nonce:       one-byte input nonce
 **************************************************/
-void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce)
-{
+void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce) {
 #if NEWHOPE_K != 8
 #error "poly_sample in poly.c only supports k=8"
 #endif
-  unsigned char buf[128], a, b;
-//  uint32_t t, d, a, b, c;
-  int i,j;
+	unsigned char buf[128], a, b;
+	//  uint32_t t, d, a, b, c;
+	int i, j;
 
-  unsigned char extseed[NEWHOPE_SYMBYTES+2];
+	unsigned char extseed[NEWHOPE_SYMBYTES + 2];
 
-  for(i=0;i<NEWHOPE_SYMBYTES;i++)
-    extseed[i] = seed[i];
-  extseed[NEWHOPE_SYMBYTES] = nonce;
+	for (i = 0; i < NEWHOPE_SYMBYTES; i++)
+		extseed[i] = seed[i];
+	extseed[NEWHOPE_SYMBYTES] = nonce;
 
-  for(i=0;i<NEWHOPE_N/64;i++) /* Generate noise in blocks of 64 coefficients */
-  {
-    extseed[NEWHOPE_SYMBYTES+1] = i;
-    OQS_SHA3_shake256(buf,128,extseed,NEWHOPE_SYMBYTES+2);
-    for(j=0;j<64;j++)
-    {
-      a = buf[2*j];
-      b = buf[2*j+1];
-      r->coeffs[64*i+j] = hw(a) + NEWHOPE_Q - hw(b);
-      /*
+	for (i = 0; i < NEWHOPE_N / 64; i++) /* Generate noise in blocks of 64 coefficients */
+	{
+		extseed[NEWHOPE_SYMBYTES + 1] = i;
+		OQS_SHA3_shake256(buf, 128, extseed, NEWHOPE_SYMBYTES + 2);
+		for (j = 0; j < 64; j++) {
+			a = buf[2 * j];
+			b = buf[2 * j + 1];
+			r->coeffs[64 * i + j] = hw(a) + NEWHOPE_Q - hw(b);
+			/*
       t = buf[j] | ((uint32_t)buf[j+1] << 8) | ((uint32_t)buf[j+2] << 16) | ((uint32_t)buf[j+3] << 24);
       d = 0;
       for(k=0;k<8;k++)
@@ -320,8 +299,8 @@ void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce)
       r->coeffs[64*i+j/2]   = a + NEWHOPE_Q - b;
       r->coeffs[64*i+j/2+1] = c + NEWHOPE_Q - d;
       */
-    }
-  }
+		}
+	}
 }
 
 /*************************************************
@@ -333,15 +312,13 @@ void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce)
 *              - const poly *a: pointer to first input polynomial
 *              - const poly *b: pointer to second input polynomial
 **************************************************/
-void poly_mul_pointwise(poly *r, const poly *a, const poly *b)
-{
-  int i;
-  uint16_t t;
-  for(i=0;i<NEWHOPE_N;i++)
-  {
-    t            = montgomery_reduce(3186*b->coeffs[i]); /* t is now in Montgomery domain */
-    r->coeffs[i] = montgomery_reduce(a->coeffs[i] * t);  /* r->coeffs[i] is back in normal domain */
-  }
+void poly_mul_pointwise(poly *r, const poly *a, const poly *b) {
+	int i;
+	uint16_t t;
+	for (i = 0; i < NEWHOPE_N; i++) {
+		t = montgomery_reduce(3186 * b->coeffs[i]);         /* t is now in Montgomery domain */
+		r->coeffs[i] = montgomery_reduce(a->coeffs[i] * t); /* r->coeffs[i] is back in normal domain */
+	}
 }
 
 /*************************************************
@@ -353,11 +330,10 @@ void poly_mul_pointwise(poly *r, const poly *a, const poly *b)
 *              - const poly *a: pointer to first input polynomial
 *              - const poly *b: pointer to second input polynomial
 **************************************************/
-void poly_add(poly *r, const poly *a, const poly *b)
-{
-  int i;
-  for(i=0;i<NEWHOPE_N;i++)
-    r->coeffs[i] = (a->coeffs[i] + b->coeffs[i]) % NEWHOPE_Q;
+void poly_add(poly *r, const poly *a, const poly *b) {
+	int i;
+	for (i = 0; i < NEWHOPE_N; i++)
+		r->coeffs[i] = (a->coeffs[i] + b->coeffs[i]) % NEWHOPE_Q;
 }
 
 /*************************************************
@@ -369,11 +345,10 @@ void poly_add(poly *r, const poly *a, const poly *b)
 *              - const poly *a: pointer to first input polynomial
 *              - const poly *b: pointer to second input polynomial
 **************************************************/
-void poly_sub(poly *r, const poly *a, const poly *b)
-{
-  int i;
-  for(i=0;i<NEWHOPE_N;i++)
-    r->coeffs[i] = (a->coeffs[i] + 3*NEWHOPE_Q - b->coeffs[i]) % NEWHOPE_Q;
+void poly_sub(poly *r, const poly *a, const poly *b) {
+	int i;
+	for (i = 0; i < NEWHOPE_N; i++)
+		r->coeffs[i] = (a->coeffs[i] + 3 * NEWHOPE_Q - b->coeffs[i]) % NEWHOPE_Q;
 }
 
 /*************************************************
@@ -385,10 +360,9 @@ void poly_sub(poly *r, const poly *a, const poly *b)
 *
 * Arguments:   - poly *r: pointer to in/output polynomial
 **************************************************/
-void poly_ntt(poly *r)
-{
-  mul_coefficients(r->coeffs, psis_bitrev_montgomery);
-  ntt((uint16_t *)r->coeffs, omegas_bitrev_montgomery);
+void poly_ntt(poly *r) {
+	mul_coefficients(r->coeffs, psis_bitrev_montgomery);
+	ntt((uint16_t *) r->coeffs, omegas_bitrev_montgomery);
 }
 
 /*************************************************
@@ -400,10 +374,8 @@ void poly_ntt(poly *r)
 *
 * Arguments:   - poly *r: pointer to in/output polynomial
 **************************************************/
-void poly_invntt(poly *r)
-{
-  bitrev_vector(r->coeffs);
-  ntt((uint16_t *)r->coeffs, omegas_inv_bitrev_montgomery);
-  mul_coefficients(r->coeffs, psis_inv_montgomery);
+void poly_invntt(poly *r) {
+	bitrev_vector(r->coeffs);
+	ntt((uint16_t *) r->coeffs, omegas_inv_bitrev_montgomery);
+	mul_coefficients(r->coeffs, psis_inv_montgomery);
 }
-

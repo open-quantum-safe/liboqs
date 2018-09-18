@@ -5,7 +5,6 @@
 #include <oqs/rand.h>
 #include <oqs/sha3.h>
 
-
 /*************************************************
 * Name:        encode_pk
 * 
@@ -17,12 +16,11 @@
 *              const poly *pk:            pointer to the input public-key polynomial
 *              const unsigned char *seed: pointer to the input public seed
 **************************************************/
-static void encode_pk(unsigned char *r, const poly *pk, const unsigned char *seed)
-{
-  int i;
-  poly_tobytes(r, pk);
-  for(i=0;i<NEWHOPE_SYMBYTES;i++)
-    r[NEWHOPE_POLYBYTES+i] = seed[i];
+static void encode_pk(unsigned char *r, const poly *pk, const unsigned char *seed) {
+	int i;
+	poly_tobytes(r, pk);
+	for (i = 0; i < NEWHOPE_SYMBYTES; i++)
+		r[NEWHOPE_POLYBYTES + i] = seed[i];
 }
 
 /*************************************************
@@ -34,12 +32,11 @@ static void encode_pk(unsigned char *r, const poly *pk, const unsigned char *see
 *              unsigned char *seed:    pointer to output public seed
 *              const unsigned char *r: pointer to input byte array
 **************************************************/
-static void decode_pk(poly *pk, unsigned char *seed, const unsigned char *r)
-{
-  int i;
-  poly_frombytes(pk, r);
-  for(i=0;i<NEWHOPE_SYMBYTES;i++)
-    seed[i] = r[NEWHOPE_POLYBYTES+i];
+static void decode_pk(poly *pk, unsigned char *seed, const unsigned char *r) {
+	int i;
+	poly_frombytes(pk, r);
+	for (i = 0; i < NEWHOPE_SYMBYTES; i++)
+		seed[i] = r[NEWHOPE_POLYBYTES + i];
 }
 
 /*************************************************
@@ -53,10 +50,9 @@ static void decode_pk(poly *pk, unsigned char *seed, const unsigned char *r)
 *              - const poly *b:    pointer to the input polynomial b
 *              - const poly *v:    pointer to the input polynomial v
 **************************************************/
-static void encode_c(unsigned char *r, const poly *b, const poly *v)
-{
-  poly_tobytes(r,b);
-  poly_compress(r+NEWHOPE_POLYBYTES,v);
+static void encode_c(unsigned char *r, const poly *b, const poly *v) {
+	poly_tobytes(r, b);
+	poly_compress(r + NEWHOPE_POLYBYTES, v);
 }
 
 /*************************************************
@@ -68,10 +64,9 @@ static void encode_c(unsigned char *r, const poly *b, const poly *v)
 *              - poly *v:                pointer to output polynomial v
 *              - const unsigned char *r: pointer to input byte array
 **************************************************/
-static void decode_c(poly *b, poly *v, const unsigned char *r)
-{
-  poly_frombytes(b, r);
-  poly_decompress(v, r+NEWHOPE_POLYBYTES);
+static void decode_c(poly *b, poly *v, const unsigned char *r) {
+	poly_frombytes(b, r);
+	poly_decompress(v, r + NEWHOPE_POLYBYTES);
 }
 
 /*************************************************
@@ -82,11 +77,9 @@ static void decode_c(poly *b, poly *v, const unsigned char *r)
 * Arguments:   - poly *a:                   pointer to output polynomial a
 *              - const unsigned char *seed: pointer to input seed
 **************************************************/
-static void gen_a(poly *a, const unsigned char *seed)
-{
-  poly_uniform(a,seed);
+static void gen_a(poly *a, const unsigned char *seed) {
+	poly_uniform(a, seed);
 }
-
 
 /*************************************************
 * Name:        cpapke_keypair
@@ -99,29 +92,28 @@ static void gen_a(poly *a, const unsigned char *seed)
 *              - unsigned char *sk: pointer to output private key
 **************************************************/
 void cpapke_keypair(unsigned char *pk,
-                    unsigned char *sk)
-{
-  poly ahat, ehat, ahat_shat, bhat, shat;
-  unsigned char z[2*NEWHOPE_SYMBYTES];
-  unsigned char *publicseed = z;
-  unsigned char *noiseseed = z+NEWHOPE_SYMBYTES;
+                    unsigned char *sk) {
+	poly ahat, ehat, ahat_shat, bhat, shat;
+	unsigned char z[2 * NEWHOPE_SYMBYTES];
+	unsigned char *publicseed = z;
+	unsigned char *noiseseed = z + NEWHOPE_SYMBYTES;
 
-  OQS_randombytes(z, NEWHOPE_SYMBYTES);
-  OQS_SHA3_shake256(z, 2*NEWHOPE_SYMBYTES, z, NEWHOPE_SYMBYTES);
+	OQS_randombytes(z, NEWHOPE_SYMBYTES);
+	OQS_SHA3_shake256(z, 2 * NEWHOPE_SYMBYTES, z, NEWHOPE_SYMBYTES);
 
-  gen_a(&ahat, publicseed);
+	gen_a(&ahat, publicseed);
 
-  poly_sample(&shat, noiseseed, 0);
-  poly_ntt(&shat);
+	poly_sample(&shat, noiseseed, 0);
+	poly_ntt(&shat);
 
-  poly_sample(&ehat, noiseseed, 1);
-  poly_ntt(&ehat);
+	poly_sample(&ehat, noiseseed, 1);
+	poly_ntt(&ehat);
 
-  poly_mul_pointwise(&ahat_shat, &shat, &ahat);
-  poly_add(&bhat, &ehat, &ahat_shat);
+	poly_mul_pointwise(&ahat_shat, &shat, &ahat);
+	poly_add(&bhat, &ehat, &ahat_shat);
 
-  poly_tobytes(sk, &shat);
-  encode_pk(pk, &bhat, publicseed);
+	poly_tobytes(sk, &shat);
+	encode_pk(pk, &bhat, publicseed);
 }
 
 /*************************************************
@@ -140,35 +132,33 @@ void cpapke_keypair(unsigned char *pk,
 void cpapke_enc(unsigned char *c,
                 const unsigned char *m,
                 const unsigned char *pk,
-                const unsigned char *coin)
-{
-  poly sprime, eprime, vprime, ahat, bhat, eprimeprime, uhat, v;
-  unsigned char publicseed[NEWHOPE_SYMBYTES];
+                const unsigned char *coin) {
+	poly sprime, eprime, vprime, ahat, bhat, eprimeprime, uhat, v;
+	unsigned char publicseed[NEWHOPE_SYMBYTES];
 
-  poly_frommsg(&v, m);
+	poly_frommsg(&v, m);
 
-  decode_pk(&bhat, publicseed, pk);
-  gen_a(&ahat, publicseed);
+	decode_pk(&bhat, publicseed, pk);
+	gen_a(&ahat, publicseed);
 
-  poly_sample(&sprime, coin, 0);
-  poly_sample(&eprime, coin, 1);
-  poly_sample(&eprimeprime, coin, 2);
+	poly_sample(&sprime, coin, 0);
+	poly_sample(&eprime, coin, 1);
+	poly_sample(&eprimeprime, coin, 2);
 
-  poly_ntt(&sprime);
-  poly_ntt(&eprime);
+	poly_ntt(&sprime);
+	poly_ntt(&eprime);
 
-  poly_mul_pointwise(&uhat, &ahat, &sprime);
-  poly_add(&uhat, &uhat, &eprime);
+	poly_mul_pointwise(&uhat, &ahat, &sprime);
+	poly_add(&uhat, &uhat, &eprime);
 
-  poly_mul_pointwise(&vprime, &bhat, &sprime);
-  poly_invntt(&vprime);
+	poly_mul_pointwise(&vprime, &bhat, &sprime);
+	poly_invntt(&vprime);
 
-  poly_add(&vprime, &vprime, &eprimeprime);
-  poly_add(&vprime, &vprime, &v); // add message
+	poly_add(&vprime, &vprime, &eprimeprime);
+	poly_add(&vprime, &vprime, &v); // add message
 
-  encode_c(c, &uhat, &vprime);
+	encode_c(c, &uhat, &vprime);
 }
-
 
 /*************************************************
 * Name:        cpapke_dec
@@ -183,17 +173,16 @@ void cpapke_enc(unsigned char *c,
 **************************************************/
 void cpapke_dec(unsigned char *m,
                 const unsigned char *c,
-                const unsigned char *sk)
-{
-  poly vprime, uhat, tmp, shat;
+                const unsigned char *sk) {
+	poly vprime, uhat, tmp, shat;
 
-  poly_frombytes(&shat, sk);
+	poly_frombytes(&shat, sk);
 
-  decode_c(&uhat, &vprime, c);
-  poly_mul_pointwise(&tmp, &shat, &uhat);
-  poly_invntt(&tmp);
+	decode_c(&uhat, &vprime, c);
+	poly_mul_pointwise(&tmp, &shat, &uhat);
+	poly_invntt(&tmp);
 
-  poly_sub(&tmp, &tmp, &vprime);
+	poly_sub(&tmp, &tmp, &vprime);
 
-  poly_tomsg(m, &tmp);
+	poly_tomsg(m, &tmp);
 }

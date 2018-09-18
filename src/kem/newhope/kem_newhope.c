@@ -29,7 +29,6 @@ OQS_KEM *OQS_KEM_newhope_512cca_new() {
 
 #endif
 
-
 #ifdef OQS_ENABLE_KEM_newhope_1024cca
 
 OQS_KEM *OQS_KEM_newhope_1024cca_new() {
@@ -56,5 +55,3 @@ OQS_KEM *OQS_KEM_newhope_1024cca_new() {
 }
 
 #endif
-
-
