@@ -11,7 +11,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <oqs/common.h>
-#include <oqs/rand.h>
 
 OQS_STATUS OQS_SIG_qTESLA_get(OQS_SIG *sig, enum OQS_SIG_algid algid);
 OQS_STATUS OQS_SIG_qTESLA_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
