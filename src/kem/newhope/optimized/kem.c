@@ -23,7 +23,7 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
 {
   size_t i;
   
-  cpapke_keypair(pk, sk);                                                   /* First put the actual secret key into sk */
+  cpapke_keypair(pk, sk);     
   sk += NEWHOPE_CPAPKE_SECRETKEYBYTES;
 
   for(i=0;i<NEWHOPE_CPAPKE_PUBLICKEYBYTES;i++)                              /* Append the public key for re-encryption */

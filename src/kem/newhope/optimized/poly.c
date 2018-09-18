@@ -224,10 +224,10 @@ void poly_uniform(poly *a, const unsigned char *seed)
 {
   unsigned int ctr=0;
   uint16_t val;
-  uint64_t state[25];
+  uint64_t state[OQS_SHA3_STATESIZE];
   uint8_t buf[OQS_SHA3_CSHAKE128_RATE];
   uint8_t extseed[NEWHOPE_SYMBYTES+1];
-  int i,j;
+  int i,j,k;
 
   for(i=0;i<NEWHOPE_SYMBYTES;i++)
     extseed[i] = seed[i];
@@ -239,6 +239,8 @@ void poly_uniform(poly *a, const unsigned char *seed)
   {
     ctr = 0;
     extseed[NEWHOPE_SYMBYTES] = i; /* domain-separate the 16 independent calls */
+    for (k = 0; k < OQS_SHA3_STATESIZE; ++k)
+      state[k] = 0;
     OQS_SHA3_shake128_absorb(state, extseed, NEWHOPE_SYMBYTES+1);
     while(ctr < 64) /* Very unlikely to run more than once */
     {
