@@ -28,6 +28,8 @@ if [ -z ${CC_OVERRIDE+x} ]; then
 fi
 
 export CC=$CC_OVERRIDE
+export CFLAGS=$CFLAGS
+export LDFLAGS=$LDFLAGS
 
 # construct configure arguments
 enable_disable_str=
@@ -68,7 +70,7 @@ autoreconf -i
 make clean
 make
 # Excercise static build of liboqs too
-./configure LDFLAGS="-static" --enable-silent-rules ${enable_disable_str}
+./configure LDFLAGS+="-static" --enable-silent-rules ${enable_disable_str}
 make clean
 make
 make docs
