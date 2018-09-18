@@ -40,7 +40,7 @@ OQS_KEM *OQS_KEM_newhope_1024cca_new() {
 	}
 	kem->method_name = OQS_KEM_alg_newhope_1024cca;
 
-	kem->claimed_nist_level = 1;
+	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;
 
 	kem->length_public_key = OQS_KEM_newhope_1024cca_length_public_key;
