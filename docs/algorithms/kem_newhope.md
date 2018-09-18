@@ -16,8 +16,8 @@ Parameter sets
 
 | Parameter set       | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
 |---------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| NewHope-512         |     IND-CCA    |              1              |           928          |          1888          |           1120          |             32             |
-| NewHope-1024        |     IND-CCA    |              5              |           1824         |          3680          |           2208          |             32             |
+| NewHope-512CCA      |     IND-CCA    |              1              |           928          |          1888          |           1120          |             32             |
+| NewHope-1024CCA     |     IND-CCA    |              5              |           1824         |          3680          |           2208          |             32             |
 
 Implementation
 --------------
