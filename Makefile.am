@@ -85,7 +85,7 @@ if ENABLE_SIG_PICNIC
 	tests/minimal_sig_oqs
 endif
 
-kat: clean-kats
+kat: check 
 	make
 	tests/kat_kem
 	scripts/check_kats.sh
