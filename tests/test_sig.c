@@ -65,12 +65,12 @@ static OQS_STATUS sig_test_correctness(enum OQS_SIG_algid algid, const int print
 	}
 
 	/* key generation */
-	priv = malloc(s->priv_key_len);
+	priv = malloc(s->length_secret_key);
 	if (priv == NULL) {
 		eprintf("priv malloc failed\n");
 		goto err;
 	}
-	pub = malloc(s->pub_key_len);
+	pub = malloc(s->length_public_key);
 	if (pub == NULL) {
 		eprintf("pub malloc failed\n");
 		goto err;
@@ -83,15 +83,15 @@ static OQS_STATUS sig_test_correctness(enum OQS_SIG_algid algid, const int print
 	}
 
 	if (print) {
-		if (s->priv_key_len > 100) {
-			OQS_print_part_hex_string("Private key", priv, s->priv_key_len, 20);
+		if (s->length_secret_key > 100) {
+			OQS_print_part_hex_string("Private key", priv, s->length_secret_key, 20);
 		} else {
-			OQS_print_hex_string("Private key", priv, s->priv_key_len);
+			OQS_print_hex_string("Private key", priv, s->length_secret_key);
 		}
-		if (s->pub_key_len > 100) {
-			OQS_print_part_hex_string("Public key", pub, s->pub_key_len, 20);
+		if (s->length_public_key > 100) {
+			OQS_print_part_hex_string("Public key", pub, s->length_public_key, 20);
 		} else {
-			OQS_print_hex_string("Public key", pub, s->pub_key_len);
+			OQS_print_hex_string("Public key", pub, s->length_public_key);
 		}
 	}
 
@@ -108,7 +108,7 @@ static OQS_STATUS sig_test_correctness(enum OQS_SIG_algid algid, const int print
 	}
 
 	/* Signature */
-	sig_len = s->max_sig_len;
+	sig_len = s->max_length_signature;
 	sig = malloc(sig_len);
 	if (sig == NULL) {
 		eprintf("sig malloc failed\n");
@@ -159,7 +159,7 @@ cleanup:
 		OQS_MEM_insecure_free(pub);
 	}
 	if (priv != NULL) {
-		OQS_MEM_secure_free(priv, s->priv_key_len);
+		OQS_MEM_secure_free(priv, s->length_secret_key);
 	}
 	if (s != NULL) {
 		OQS_SIG_free(s);
@@ -207,12 +207,12 @@ UNUSED static OQS_STATUS sig_bench_wrapper(enum OQS_SIG_algid algid, const int s
 	}
 
 	/* key generation */
-	priv = malloc(s->priv_key_len);
+	priv = malloc(s->length_secret_key);
 	if (priv == NULL) {
 		eprintf("priv malloc failed\n");
 		goto err;
 	}
-	pub = malloc(s->pub_key_len);
+	pub = malloc(s->length_public_key);
 	if (pub == NULL) {
 		eprintf("pub malloc failed\n");
 		goto err;
@@ -230,14 +230,14 @@ UNUSED static OQS_STATUS sig_bench_wrapper(enum OQS_SIG_algid algid, const int s
 		eprintf("msg malloc failed\n");
 		goto err;
 	}
-	sig_len = s->max_sig_len;
+	sig_len = s->max_length_signature;
 	sig = malloc(sig_len);
 	if (sig == NULL) {
 		eprintf("sig malloc failed\n");
 		goto err;
 	}
 
-	TIME_OPERATION_SECONDS({ OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len); sig_len = s->max_sig_len; }, "sign", seconds);
+	TIME_OPERATION_SECONDS({ OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len); sig_len = s->max_length_signature; }, "sign", seconds);
 
 	OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len);
 	TIME_OPERATION_SECONDS({ OQS_SIG_verify(s, pub, msg, msg_len, sig, sig_len); }, "verify", seconds);
@@ -249,7 +249,7 @@ err:
 	rc = OQS_ERROR;
 
 cleanup:
-	OQS_MEM_secure_free(priv, s->priv_key_len);
+	OQS_MEM_secure_free(priv, s->length_secret_key);
 	OQS_MEM_insecure_free(pub);
 	OQS_MEM_insecure_free(msg);
 	OQS_MEM_insecure_free(sig);

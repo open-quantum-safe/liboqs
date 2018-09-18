@@ -43,7 +43,7 @@ int main(void) {
 	printf("====================================\n");
 
 	/* Private key memory allocation */
-	priv = malloc(s->priv_key_len);
+	priv = malloc(s->length_secret_key);
 	if (priv == NULL) {
 		eprintf("ERROR: priv malloc failed!\n");
 		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
@@ -52,7 +52,7 @@ int main(void) {
 	}
 
 	/* Public key memory generation */
-	pub = malloc(s->pub_key_len);
+	pub = malloc(s->length_public_key);
 	if (pub == NULL) {
 		eprintf("ERROR: pub malloc failed!\n");
 		cleanup(msg, msg_len, sig, sig_len, pub, priv, s);
@@ -69,8 +69,8 @@ int main(void) {
 		return EXIT_FAILURE;
 	}
 
-	OQS_print_hex_string("Private key", priv, s->priv_key_len);
-	OQS_print_hex_string("Public key", pub, s->pub_key_len);
+	OQS_print_hex_string("Private key", priv, s->length_secret_key);
+	OQS_print_hex_string("Public key", pub, s->length_public_key);
 
 	/* Allocates the memory for the message to sign */
 	msg_len = 64; // TODO: randomize based on scheme's max length
@@ -87,7 +87,7 @@ int main(void) {
 	OQS_print_hex_string("Message", msg, msg_len);
 
 	/* Allocates memory for the signature */
-	sig_len = s->max_sig_len;
+	sig_len = s->max_length_signature;
 	sig = malloc(sig_len);
 	if (sig == NULL) {
 		eprintf("ERROR: sig malloc failed!\n");
@@ -137,7 +137,7 @@ void cleanup(uint8_t *msg, size_t msg_len, uint8_t *sig, size_t sig_len,
              uint8_t *pub, uint8_t *priv, OQS_SIG *s) {
 	OQS_MEM_secure_free(msg, msg_len);
 	OQS_MEM_secure_free(sig, sig_len);
-	OQS_MEM_secure_free(pub, s->pub_key_len);
-	OQS_MEM_secure_free(priv, s->priv_key_len);
+	OQS_MEM_secure_free(pub, s->length_public_key);
+	OQS_MEM_secure_free(priv, s->length_secret_key);
 	OQS_SIG_free(s);
 }

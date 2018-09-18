@@ -22,27 +22,24 @@ OQS_STATUS OQS_SIG_qTESLA_get(OQS_SIG *s, enum OQS_SIG_algid algid) {
 	switch (algid) {
 	case OQS_SIG_qTESLA_I:
 		s->method_name = qTESLA_I_name;
-		s->estimated_classical_security = 104;
-		s->estimated_quantum_security = 97;
-		s->priv_key_len = 2112;
-		s->pub_key_len = 1504;
-		s->max_sig_len = 1376;
+		s->claimed_nist_level = 1;
+		s->length_secret_key = 2112;
+		s->length_public_key = 1504;
+		s->max_length_signature = 1376;
 		break;
 	case OQS_SIG_qTESLA_III_size:
 		s->method_name = qTESLA_III_size_name;
-		s->estimated_classical_security = 188;
-		s->estimated_quantum_security = 169;
-		s->priv_key_len = 4160;
-		s->pub_key_len = 2976;
-		s->max_sig_len = 2720;
+		s->claimed_nist_level = 3;
+		s->length_secret_key = 4160;
+		s->length_public_key = 2976;
+		s->max_length_signature = 2720;
 		break;
 	case OQS_SIG_qTESLA_III_speed:
 		s->method_name = qTESLA_III_speed_name;
-		s->estimated_classical_security = 178;
-		s->estimated_quantum_security = 164;
-		s->priv_key_len = 4160;
-		s->pub_key_len = 3104;
-		s->max_sig_len = 2848;
+		s->claimed_nist_level = 3;
+		s->length_secret_key = 4160;
+		s->length_public_key = 3104;
+		s->max_length_signature = 2848;
 		break;
 	default:
 		return OQS_ERROR;

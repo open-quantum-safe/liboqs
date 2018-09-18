@@ -7,6 +7,7 @@
 #ifndef __OQS_SIG_H
 #define __OQS_SIG_H
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
@@ -49,37 +50,21 @@ typedef struct OQS_SIG OQS_SIG; // so the code below compiles...
  */
 struct OQS_SIG {
 
-	/**
-	 * Specifies the name of the signature method
-	 */
+	/** Printable string representing the name of the signature scheme. */
 	const char *method_name;
 
-	/**
-	 * Classical security in terms of the number of bits provided by the
-	 * signature method.
-	 */
-	uint16_t estimated_classical_security;
+	/** The NIST security level (1, 2, 3, 4, 5) claimed for this scheme. */
+	uint8_t claimed_nist_level;
 
-	/**
-	 *  Equivalent quantum security in terms of the number of bits provided by the
-	 *  signature method.
-	 */
-	uint16_t estimated_quantum_security;
+	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
+	bool euf_cma;
 
-	/**
-	 *  Private key length.
-	 */
-	uint16_t priv_key_len;
-
-	/**
-	 *  Public key length.
-	 */
-	uint16_t pub_key_len;
-
-	/**
-	 *  Maximum signature length.
-	 */
-	uint32_t max_sig_len;
+	/** The (maximum) length, in bytes, of public keys for this signature scheme. */
+	size_t length_public_key;
+	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
+	size_t length_secret_key;
+	/** The (maximum) length, in bytes, of a signature for this signature scheme. */
+	size_t max_length_signature;
 
 	/**
 	 * Opaque pointer for passing around any computation context
