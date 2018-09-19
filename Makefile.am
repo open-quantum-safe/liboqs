@@ -21,9 +21,6 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kem/libkem.la
 liboqs_la_LIBADD += src/kex/libkex.la
-if ENABLE_KEX_NTRU
-liboqs_la_LIBADD += src/kex_ntru/libntru.la
-endif
 
 liboqs_la_LIBADD += src/sig/libsig.la
 
@@ -59,7 +56,6 @@ installheader_HEADERS=config.h \
 	src/crypto/sha3/sha3.h \
 	src/kem/kem.h \
 	src/kex/kex.h \
-	src/kex_ntru/kex_ntru.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
@@ -97,7 +93,6 @@ links:
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kex/kex.h include/oqs
-	cp -f src/kex_ntru/kex_ntru.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
