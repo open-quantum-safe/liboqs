@@ -3,15 +3,9 @@
 #include <oqs/kex.h>
 
 #include <oqs/kex_ntru.h>
-#include <oqs/kex_rlwe_newhope.h>
-#include <oqs/kex_sidh_msr.h>
 
 #ifdef ENABLE_CODE_MCBITS
 #include <oqs/kex_code_mcbits.h>
-#endif
-
-#ifdef ENABLE_KEX_RLWE_NEWHOPE_AVX2
-#include <oqs/kex_rlwe_newhope_avx2.h>
 #endif
 
 #define UNUSED_KEX(expr) \
@@ -29,7 +23,7 @@ OQS_API OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 
 	switch (alg_name) {
 	case OQS_KEX_alg_default:
-		return OQS_KEX_rlwe_newhope_new(rand);
+		return NULL;
 	case OQS_KEX_alg_code_mcbits:
 #ifdef ENABLE_CODE_MCBITS
 		return OQS_KEX_code_mcbits_new(rand);
@@ -43,34 +37,6 @@ OQS_API OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 #else
 		assert(0);
 #endif
-#endif
-	case OQS_KEX_alg_rlwe_newhope:
-#ifdef ENABLE_KEX_RLWE_NEWHOPE
-		return OQS_KEX_rlwe_newhope_new(rand);
-#else
-		assert(0);
-#endif
-	case OQS_KEX_alg_rlwe_newhope_avx2:
-#ifdef ENABLE_KEX_RLWE_NEWHOPE_AVX2
-		return OQS_KEX_rlwe_newhope_avx2_new(rand);
-#else
-		assert(0);
-#endif
-#ifdef ENABLE_KEX_SIDH_MSR
-	case OQS_KEX_alg_sidh_msr_503:
-		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIDH_503_params);
-	case OQS_KEX_alg_sidh_msr_751:
-		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIDH_751_params);
-	case OQS_KEX_alg_sike_msr_503:
-		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIKE_503_params);
-	case OQS_KEX_alg_sike_msr_751:
-		return OQS_KEX_sidh_msr_new(rand, OQS_KEX_SIKE_751_params);
-#else
-	case OQS_KEX_alg_sidh_msr_503:
-	case OQS_KEX_alg_sidh_msr_751:
-	case OQS_KEX_alg_sike_msr_503:
-	case OQS_KEX_alg_sike_msr_751:
-		assert(0);
 #endif
 
 	default:

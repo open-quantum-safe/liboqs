@@ -40,7 +40,7 @@ struct sig_testcase sig_testcases[] = {
 #define SIG_TEST_ITERATIONS 100
 #define SIG_BENCH_SECONDS 1
 
-static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const int print) {
+static OQS_STATUS sig_test_correctness(enum OQS_SIG_algid algid, const int print) {
 
 	OQS_STATUS rc;
 
@@ -52,7 +52,7 @@ static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid,
 	size_t sig_len;
 
 	/* setup signature object */
-	OQS_SIG *s = OQS_SIG_new(rand, algid);
+	OQS_SIG *s = OQS_SIG_new(algid);
 	if (s == NULL) {
 		eprintf("sig new failed\n");
 		goto err;
@@ -65,12 +65,12 @@ static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid,
 	}
 
 	/* key generation */
-	priv = malloc(s->priv_key_len);
+	priv = malloc(s->length_secret_key);
 	if (priv == NULL) {
 		eprintf("priv malloc failed\n");
 		goto err;
 	}
-	pub = malloc(s->pub_key_len);
+	pub = malloc(s->length_public_key);
 	if (pub == NULL) {
 		eprintf("pub malloc failed\n");
 		goto err;
@@ -83,15 +83,15 @@ static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid,
 	}
 
 	if (print) {
-		if (s->priv_key_len > 100) {
-			OQS_print_part_hex_string("Private key", priv, s->priv_key_len, 20);
+		if (s->length_secret_key > 100) {
+			OQS_print_part_hex_string("Private key", priv, s->length_secret_key, 20);
 		} else {
-			OQS_print_hex_string("Private key", priv, s->priv_key_len);
+			OQS_print_hex_string("Private key", priv, s->length_secret_key);
 		}
-		if (s->pub_key_len > 100) {
-			OQS_print_part_hex_string("Public key", pub, s->pub_key_len, 20);
+		if (s->length_public_key > 100) {
+			OQS_print_part_hex_string("Public key", pub, s->length_public_key, 20);
 		} else {
-			OQS_print_hex_string("Public key", pub, s->pub_key_len);
+			OQS_print_hex_string("Public key", pub, s->length_public_key);
 		}
 	}
 
@@ -102,13 +102,13 @@ static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid,
 		eprintf("msg malloc failed\n");
 		goto err;
 	}
-	OQS_RAND_n(rand, msg, msg_len);
+	OQS_randombytes(msg, msg_len);
 	if (print) {
 		OQS_print_hex_string("Message", msg, msg_len);
 	}
 
 	/* Signature */
-	sig_len = s->max_sig_len;
+	sig_len = s->max_length_signature;
 	sig = malloc(sig_len);
 	if (sig == NULL) {
 		eprintf("sig malloc failed\n");
@@ -159,7 +159,7 @@ cleanup:
 		OQS_MEM_insecure_free(pub);
 	}
 	if (priv != NULL) {
-		OQS_MEM_secure_free(priv, s->priv_key_len);
+		OQS_MEM_secure_free(priv, s->length_secret_key);
 	}
 	if (s != NULL) {
 		OQS_SIG_free(s);
@@ -168,16 +168,16 @@ cleanup:
 	return rc;
 }
 
-UNUSED static OQS_STATUS sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, int iterations, bool quiet) {
+UNUSED static OQS_STATUS sig_test_correctness_wrapper(enum OQS_SIG_algid algid, int iterations, bool quiet) {
 	OQS_STATUS ret;
-	ret = sig_test_correctness(rand, algid, !quiet);
+	ret = sig_test_correctness(algid, !quiet);
 	if (ret != OQS_SUCCESS) {
 		goto err;
 	}
 
 	printf("Testing correctness and randomness of signature for %d iterations\n", iterations);
 	for (int i = 0; i < iterations; i++) {
-		ret = sig_test_correctness(rand, algid, 0);
+		ret = sig_test_correctness(algid, 0);
 		if (ret != OQS_SUCCESS) {
 			goto err;
 		}
@@ -189,7 +189,7 @@ err:
 	return ret;
 }
 
-UNUSED static OQS_STATUS sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int seconds) {
+UNUSED static OQS_STATUS sig_bench_wrapper(enum OQS_SIG_algid algid, const int seconds) {
 	OQS_STATUS rc;
 
 	uint8_t *priv = NULL;
@@ -200,19 +200,19 @@ UNUSED static OQS_STATUS sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid al
 	size_t sig_len;
 
 	/* setup signature object */
-	OQS_SIG *s = OQS_SIG_new(rand, algid);
+	OQS_SIG *s = OQS_SIG_new(algid);
 	if (s == NULL) {
 		eprintf("sig new failed\n");
 		goto err;
 	}
 
 	/* key generation */
-	priv = malloc(s->priv_key_len);
+	priv = malloc(s->length_secret_key);
 	if (priv == NULL) {
 		eprintf("priv malloc failed\n");
 		goto err;
 	}
-	pub = malloc(s->pub_key_len);
+	pub = malloc(s->length_public_key);
 	if (pub == NULL) {
 		eprintf("pub malloc failed\n");
 		goto err;
@@ -230,14 +230,14 @@ UNUSED static OQS_STATUS sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid al
 		eprintf("msg malloc failed\n");
 		goto err;
 	}
-	sig_len = s->max_sig_len;
+	sig_len = s->max_length_signature;
 	sig = malloc(sig_len);
 	if (sig == NULL) {
 		eprintf("sig malloc failed\n");
 		goto err;
 	}
 
-	TIME_OPERATION_SECONDS({ OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len); sig_len = s->max_sig_len; }, "sign", seconds);
+	TIME_OPERATION_SECONDS({ OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len); sig_len = s->max_length_signature; }, "sign", seconds);
 
 	OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len);
 	TIME_OPERATION_SECONDS({ OQS_SIG_verify(s, pub, msg, msg_len, sig, sig_len); }, "verify", seconds);
@@ -249,7 +249,7 @@ err:
 	rc = OQS_ERROR;
 
 cleanup:
-	OQS_MEM_secure_free(priv, s->priv_key_len);
+	OQS_MEM_secure_free(priv, s->length_secret_key);
 	OQS_MEM_insecure_free(pub);
 	OQS_MEM_insecure_free(msg);
 	OQS_MEM_insecure_free(sig);
@@ -263,7 +263,6 @@ int main(int argc, char **argv) {
 	bool run_all = true;
 	bool quiet = false;
 	bool bench = false;
-	OQS_RAND *rand = NULL;
 	size_t sig_testcases_len = sizeof(sig_testcases) / sizeof(struct sig_testcase);
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
@@ -295,16 +294,10 @@ int main(int argc, char **argv) {
 		}
 	}
 
-	/* setup RAND */
-	rand = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
-	if (rand == NULL) {
-		goto err;
-	}
-
 	for (size_t i = 0; i < sig_testcases_len; i++) {
 		if (run_all || sig_testcases[i].run == 1) {
 			int num_iter = sig_testcases[i].iter;
-			success = sig_test_correctness_wrapper(rand, sig_testcases[i].algid, num_iter, quiet);
+			success = sig_test_correctness_wrapper(sig_testcases[i].algid, num_iter, quiet);
 		}
 		if (success != OQS_SUCCESS) {
 			goto err;
@@ -315,7 +308,7 @@ int main(int argc, char **argv) {
 		PRINT_TIMER_HEADER
 		for (size_t i = 0; i < sig_testcases_len; i++) {
 			if (run_all || sig_testcases[i].run == 1) {
-				sig_bench_wrapper(rand, sig_testcases[i].algid, SIG_BENCH_SECONDS);
+				sig_bench_wrapper(sig_testcases[i].algid, SIG_BENCH_SECONDS);
 			}
 		}
 		PRINT_TIMER_FOOTER
@@ -329,8 +322,5 @@ err:
 	eprintf("ERROR!\n");
 
 cleanup:
-	if (rand) {
-		OQS_RAND_free(rand);
-	}
 	return (success == OQS_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE;
 }

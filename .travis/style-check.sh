@@ -62,11 +62,7 @@ fi;
 
 make prettyprint CLANGFORMAT=${TRY_CLANGFORMAT}
 
-if [[ ${ENABLE_KEX_RLWE_NEWHOPE_AVX2} == 1 ]];then
-  MODIFIED=$(echo $MODIFIED | grep -v "kex_rlwe_newhope/avx2" | grep -v "Makefile.am" | grep -v "avx2/kex*")
-else
-  MODIFIED=$(echo $MODIFIED | grep -v "Makefile.am")
-fi
+MODIFIED=$(echo $MODIFIED | grep -v "Makefile.am")
 
 if [[ ! -z "${MODIFIED}" ]]; then
 	${PRINT_RED}
