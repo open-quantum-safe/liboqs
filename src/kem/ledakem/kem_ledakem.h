@@ -11,9 +11,9 @@
 #define OQS_KEM_ledakem_C1_N02_length_shared_secret 32
 
 OQS_KEM *OQS_KEM_ledakem_C1_N02_new();
-extern OQS_STATUS OQS_KEM_ledakem_C1_N02_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_ledakem_C1_N02_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_ledakem_C1_N02_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C1_N02_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C1_N02_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_ledakem_C1_N02_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -24,9 +24,9 @@ extern OQS_STATUS OQS_KEM_ledakem_C1_N02_decaps(uint8_t *shared_secret, const un
 #define OQS_KEM_ledakem_C1_N03_length_shared_secret 32
 
 OQS_KEM *OQS_KEM_ledakem_C1_N03_new();
-extern OQS_STATUS OQS_KEM_ledakem_C1_N03_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_ledakem_C1_N03_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_ledakem_C1_N03_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C1_N03_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C1_N03_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_ledakem_C1_N03_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -38,9 +38,9 @@ extern OQS_STATUS OQS_KEM_ledakem_C1_N03_decaps(uint8_t *shared_secret, const un
 #define OQS_KEM_ledakem_C1_N04_length_shared_secret 32
 
 OQS_KEM *OQS_KEM_ledakem_C1_N04_new();
-extern OQS_STATUS OQS_KEM_ledakem_C1_N04_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_ledakem_C1_N04_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_ledakem_C1_N04_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C1_N04_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C1_N04_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_ledakem_C1_N04_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -52,9 +52,9 @@ extern OQS_STATUS OQS_KEM_ledakem_C1_N04_decaps(uint8_t *shared_secret, const un
 #define OQS_KEM_ledakem_C3_N02_length_shared_secret 48
 
 OQS_KEM *OQS_KEM_ledakem_C3_N02_new();
-extern OQS_STATUS OQS_KEM_ledakem_C3_N02_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_ledakem_C3_N02_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_ledakem_C3_N02_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C3_N02_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C3_N02_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_ledakem_C3_N02_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -66,9 +66,9 @@ extern OQS_STATUS OQS_KEM_ledakem_C3_N02_decaps(uint8_t *shared_secret, const un
 #define OQS_KEM_ledakem_C3_N03_length_shared_secret 48
 
 OQS_KEM *OQS_KEM_ledakem_C3_N03_new();
-extern OQS_STATUS OQS_KEM_ledakem_C3_N03_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_ledakem_C3_N03_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_ledakem_C3_N03_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C3_N03_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C3_N03_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_ledakem_C3_N03_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -80,9 +80,9 @@ extern OQS_STATUS OQS_KEM_ledakem_C3_N03_decaps(uint8_t *shared_secret, const un
 #define OQS_KEM_ledakem_C3_N04_length_shared_secret 48
 
 OQS_KEM *OQS_KEM_ledakem_C3_N04_new();
-extern OQS_STATUS OQS_KEM_ledakem_C3_N04_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_ledakem_C3_N04_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_ledakem_C3_N04_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C3_N04_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C3_N04_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_ledakem_C3_N04_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -94,9 +94,9 @@ extern OQS_STATUS OQS_KEM_ledakem_C3_N04_decaps(uint8_t *shared_secret, const un
 #define OQS_KEM_ledakem_C5_N02_length_shared_secret 64
 
 OQS_KEM *OQS_KEM_ledakem_C5_N02_new();
-extern OQS_STATUS OQS_KEM_ledakem_C5_N02_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_ledakem_C5_N02_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_ledakem_C5_N02_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C5_N02_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C5_N02_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_ledakem_C5_N02_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -108,9 +108,9 @@ extern OQS_STATUS OQS_KEM_ledakem_C5_N02_decaps(uint8_t *shared_secret, const un
 #define OQS_KEM_ledakem_C5_N03_length_shared_secret 64
 
 OQS_KEM *OQS_KEM_ledakem_C5_N03_new();
-extern OQS_STATUS OQS_KEM_ledakem_C5_N03_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_ledakem_C5_N03_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_ledakem_C5_N03_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C5_N03_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C5_N03_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_ledakem_C5_N03_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -122,9 +122,9 @@ extern OQS_STATUS OQS_KEM_ledakem_C5_N03_decaps(uint8_t *shared_secret, const un
 #define OQS_KEM_ledakem_C5_N04_length_shared_secret 64
 
 OQS_KEM *OQS_KEM_ledakem_C5_N04_new();
-extern OQS_STATUS OQS_KEM_ledakem_C5_N04_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_ledakem_C5_N04_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_ledakem_C5_N04_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C5_N04_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_ledakem_C5_N04_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_ledakem_C5_N04_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 

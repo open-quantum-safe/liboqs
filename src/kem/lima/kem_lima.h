@@ -12,9 +12,9 @@
 
 OQS_KEM *OQS_KEM_lima_2p_1024_cca_kem_new();
 
-extern OQS_STATUS OQS_KEM_lima_2p_1024_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_lima_2p_1024_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_lima_2p_1024_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_2p_1024_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_2p_1024_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_lima_2p_1024_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -27,9 +27,9 @@ extern OQS_STATUS OQS_KEM_lima_2p_1024_cca_kem_decaps(uint8_t *shared_secret, co
 
 OQS_KEM *OQS_KEM_lima_2p_2048_cca_kem_new();
 
-extern OQS_STATUS OQS_KEM_lima_2p_2048_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_lima_2p_2048_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_lima_2p_2048_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_2p_2048_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_2p_2048_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_lima_2p_2048_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -42,9 +42,9 @@ extern OQS_STATUS OQS_KEM_lima_2p_2048_cca_kem_decaps(uint8_t *shared_secret, co
 
 OQS_KEM *OQS_KEM_lima_sp_1018_cca_kem_new();
 
-extern OQS_STATUS OQS_KEM_lima_sp_1018_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_lima_sp_1018_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_lima_sp_1018_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_sp_1018_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_sp_1018_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_lima_sp_1018_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -57,9 +57,9 @@ extern OQS_STATUS OQS_KEM_lima_sp_1018_cca_kem_decaps(uint8_t *shared_secret, co
 
 OQS_KEM *OQS_KEM_lima_sp_1306_cca_kem_new();
 
-extern OQS_STATUS OQS_KEM_lima_sp_1306_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_lima_sp_1306_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_lima_sp_1306_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_sp_1306_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_sp_1306_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_lima_sp_1306_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -72,9 +72,9 @@ extern OQS_STATUS OQS_KEM_lima_sp_1306_cca_kem_decaps(uint8_t *shared_secret, co
 
 OQS_KEM *OQS_KEM_lima_sp_1822_cca_kem_new();
 
-extern OQS_STATUS OQS_KEM_lima_sp_1822_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_lima_sp_1822_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_lima_sp_1822_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_sp_1822_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_sp_1822_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_lima_sp_1822_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -87,9 +87,9 @@ extern OQS_STATUS OQS_KEM_lima_sp_1822_cca_kem_decaps(uint8_t *shared_secret, co
 
 OQS_KEM *OQS_KEM_lima_sp_2062_cca_kem_new();
 
-extern OQS_STATUS OQS_KEM_lima_sp_2062_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_lima_sp_2062_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_lima_sp_2062_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_sp_2062_cca_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_lima_sp_2062_cca_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_lima_sp_2062_cca_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
