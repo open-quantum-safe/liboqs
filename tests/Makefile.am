@@ -21,14 +21,13 @@ test_kex_SOURCES        = test_kex.c
 test_rand_SOURCES       = test_rand.c
 test_sha3_SOURCES       = test_sha3.c
 test_sig_SOURCES        = test_sig.c
-kat_kem_SOURCES 	= kat_kem.c
+kat_kem_SOURCES         = kat_kem.c
 
 example_kem_LDADD     = ${LIB_FLAGS}
 minimal_kex_oqs_LDADD = ${LIB_FLAGS}
 
 if ENABLE_SIG_PICNIC
 minimal_sig_oqs_LDADD = ${LIB_FLAGS}
-
 endif
 speed_kem_LDADD       = ${LIB_FLAGS}
 test_aes_LDADD        = ${LIB_FLAGS}
@@ -38,7 +37,6 @@ test_rand_LDADD       = ${LIB_FLAGS}
 test_sha3_LDADD       = ${LIB_FLAGS}
 test_sig_LDADD        = ${LIB_FLAGS}
 kat_kem_LDADD         = ${LIB_FLAGS}
-
 
 if USE_OPENSSL
 example_kem_LDADD     += -L$(OPENSSL_DIR)/lib -lcrypto
