@@ -111,7 +111,6 @@ To build, first clone or download the source from GitHub:
 	git clone https://github.com/open-quantum-safe/liboqs.git
 	cd liboqs
 	git checkout master
-	make
 
 Run the build system:
 
