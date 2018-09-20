@@ -148,7 +148,7 @@ typedef struct OQS_KEM {
 } OQS_KEM;
 
 /**
- * Consturcts an OQS_KEM object for a particular algorithm.
+ * Constructs an OQS_KEM object for a particular algorithm.
  *
  * Callers should always check whether the return value is `NULL`, which indicates either than an
  * invalid algorithm name was provided, or that the requested algorithm was disabled at compile-time.
