@@ -143,11 +143,11 @@ There are also a variety of test programs built under the `tests` directory:
 
 To run one or more ciphers only once use `--mem-bench`, which is suitable for memory usage profiling:
 
-	tests/test_kex --mem-bench ntru
+	tests/test_kex --mem-bench FIXME
 
-You may also get instant memory usage results of an algorithm (e.g. ntru) by running [valgrind's massif tool](http://valgrind.org/docs/manual/ms-manual.html) by running
+You may also get instant memory usage results of an algorithm (e.g. FIXME) by running [valgrind's massif tool](http://valgrind.org/docs/manual/ms-manual.html) by running
 
-	./kex_bench_memory.sh ntru
+	./kex_bench_memory.sh FIXME
 
 Building and running on Windows
 -------------------------------
