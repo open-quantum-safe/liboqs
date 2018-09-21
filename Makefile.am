@@ -20,7 +20,6 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kem/libkem.la
-liboqs_la_LIBADD += src/kex/libkex.la
 liboqs_la_LIBADD += src/sig/libsig.la
 
 if ENABLE_SIG_PICNIC
@@ -50,7 +49,6 @@ installheader_HEADERS=config.h \
 	src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h \
 	src/crypto/sha3/sha3.h \
 	src/kem/kem.h \
-	src/kex/kex.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
@@ -59,7 +57,6 @@ installheader_HEADERS=config.h \
 test: check
 	tests/example_kem
 	tests/test_kem
-	tests/test_kex --quiet
 	tests/test_rand --quiet
 	tests/test_aes
 	tests/test_sha3
@@ -86,7 +83,6 @@ links:
 	cp -f src/kem/bike/kem_bike.h include/oqs
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
-	cp -f src/kex/kex.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
@@ -96,7 +92,7 @@ clean-local:
 	rm -rf include
 
 clean-tests:
-	rm -f tests/example_kem tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/minimal_sig_oqs tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
+	rm -f tests/example_kem tests/speed_kem tests/test_kem tests/minimal_sig_oqs tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
 
 clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/

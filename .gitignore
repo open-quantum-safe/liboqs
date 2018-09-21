@@ -35,12 +35,10 @@ include
 tests/example_kem
 tests/speed_kem
 tests/test_kem
-tests/test_kex
 tests/test_sig
 tests/test_rand
 tests/test_aes
 tests/test_sha3
-tests/minimal_kex_oqs
 tests/minimal_sig_oqs
 
 #kat

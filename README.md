@@ -135,7 +135,6 @@ There are also a variety of test programs built under the `tests` directory:
 - `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
-- `minimal_kex_oqs`: Minimal runnable example showing the usage of the kex exchange API (to be removed)
 - `minimal_sig_oqs`: Minimal runnable example showing the usage of the signature API (to be removed and replaced by `example_sig`)
 - `test_aes`, `test_rand`, `test_sha3`: Simple test harnesses for crypto sub-components
 
@@ -143,7 +142,7 @@ There are also a variety of test programs built under the `tests` directory:
 
 To run one or more ciphers only once use `--mem-bench`, which is suitable for memory usage profiling:
 
-	tests/test_kex --mem-bench FIXME
+	tests/test_kem --mem-bench FIXME
 
 You may also get instant memory usage results of an algorithm (e.g. FIXME) by running [valgrind's massif tool](http://valgrind.org/docs/manual/ms-manual.html) by running
 
