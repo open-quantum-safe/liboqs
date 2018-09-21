@@ -110,7 +110,6 @@ sample_params
 data/
 
 # Exceptions
-!/src/kex_sidh_msr/config.h
 !src/sig_picnic/external/config.h.in
 
 # Misc (master branch)
