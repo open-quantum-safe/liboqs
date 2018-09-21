@@ -7,11 +7,11 @@
 #ifndef __OQS_SIG_H
 #define __OQS_SIG_H
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
 #include <oqs/common.h>
-#include <oqs/rand.h>
 
 #if defined(_WIN32)
 #include <oqs/winconfig.h>
@@ -50,42 +50,21 @@ typedef struct OQS_SIG OQS_SIG; // so the code below compiles...
  */
 struct OQS_SIG {
 
-	/**
-	 * PRNG
-	 */
-	OQS_RAND *rand;
-
-	/**
-	 * Specifies the name of the signature method
-	 */
+	/** Printable string representing the name of the signature scheme. */
 	const char *method_name;
 
-	/**
-	 * Classical security in terms of the number of bits provided by the
-	 * signature method.
-	 */
-	uint16_t estimated_classical_security;
+	/** The NIST security level (1, 2, 3, 4, 5) claimed for this scheme. */
+	uint8_t claimed_nist_level;
 
-	/**
-	 *  Equivalent quantum security in terms of the number of bits provided by the
-	 *  signature method.
-	 */
-	uint16_t estimated_quantum_security;
+	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
+	bool euf_cma;
 
-	/**
-	 *  Private key length.
-	 */
-	uint16_t priv_key_len;
-
-	/**
-	 *  Public key length.
-	 */
-	uint16_t pub_key_len;
-
-	/**
-	 *  Maximum signature length.
-	 */
-	uint32_t max_sig_len;
+	/** The (maximum) length, in bytes, of public keys for this signature scheme. */
+	size_t length_public_key;
+	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
+	size_t length_secret_key;
+	/** The (maximum) length, in bytes, of a signature for this signature scheme. */
+	size_t max_length_signature;
 
 	/**
 	 * Opaque pointer for passing around any computation context
@@ -142,11 +121,10 @@ struct OQS_SIG {
 /**
  * Instantiate a new signature object.
  *
- * @param rand               The random number generator.
  * @param algid              The id of the signature algorithm to be instantiated.
  * @return                   A new signature object on success, or NULL on failure.
  */
-OQS_API OQS_SIG *OQS_SIG_new(OQS_RAND *rand, enum OQS_SIG_algid algid);
+OQS_API OQS_SIG *OQS_SIG_new(enum OQS_SIG_algid algid);
 
 /**
  * Generates a new signature key pair.
@@ -185,7 +163,6 @@ OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const ui
 
 /**
  * Frees the signature object, de-initializing the underlying library code.
- * Does NOT free the rand object passed to OQS_SIG_new.
  * @param s          The signature object.
  */
 OQS_API void OQS_SIG_free(OQS_SIG *s);

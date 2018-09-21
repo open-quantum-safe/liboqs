@@ -187,11 +187,11 @@ liboqs includes some third party libraries or modules that are licensed differen
 Team
 ----
 
-The Open Quantum Safe project is lead by [Douglas Stebila](https://www.douglas.stebila.ca/research/) [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
+The Open Quantum Safe project is led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
 
 ### Contributors
 
-Contributors to this nist-branch of liboqs include:
+Contributors to this master branch of liboqs include:
 
 - Nicholas Allen (Amazon Web Services)
 - Maxime Anvari
@@ -207,6 +207,7 @@ Contributors to this nist-branch of liboqs include:
 - Douglas Stebila (University of Waterloo)
 - [John Underhill](https://github.com/Steppenwolfe65/CEX)
 - Sebastian Verschoor (University of Waterloo)
+- Ben Davies (University of Waterloo)
 
 ### Support
 

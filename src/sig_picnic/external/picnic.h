@@ -29,7 +29,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <oqs/rand.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -105,7 +104,7 @@ picnic_get_param_name(picnic_params_t parameters);
  */
 PICNIC_EXPORT int PICNIC_CALLING_CONVENTION picnic_keygen(picnic_params_t parameters,
                                                           picnic_publickey_t* pk,
-                                                          picnic_privatekey_t* sk, OQS_RAND* rand);
+                                                          picnic_privatekey_t* sk);
 
 /**
  * Signature function.
