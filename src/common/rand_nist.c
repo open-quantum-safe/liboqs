@@ -9,9 +9,13 @@
 #include <assert.h>
 #include <string.h>
 
+#ifdef USE_OPENSSL
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
+#else
+#include <oqs/aes.h>
+#endif
 
 typedef struct {
 	unsigned char Key[32];
@@ -22,16 +26,19 @@ typedef struct {
 static AES256_CTR_DRBG_struct DRBG_ctx;
 static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V);
 
+#ifdef USE_OPENSSL
 static void handleErrors(void) {
 	ERR_print_errors_fp(stderr);
 	abort();
 }
+#endif
 
 // Use whatever AES implementation you have. This uses AES from openSSL library
 //    key - 256-bit AES key
 //    ctr - a 128-bit plaintext value
 //    buffer - a 128-bit ciphertext value
 static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *buffer) {
+#ifdef USE_OPENSSL
 	EVP_CIPHER_CTX *ctx;
 
 	int len;
@@ -48,6 +55,12 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 
 	/* Clean up */
 	EVP_CIPHER_CTX_free(ctx);
+#else
+	void *schedule = NULL;
+	OQS_AES256_load_schedule(key, &schedule, 1);
+	OQS_AES256_ECB_enc(ctr, 16, key, buffer);
+	OQS_AES256_free_schedule(schedule);
+#endif
 }
 
 void OQS_randombytes_nist_kat_init(unsigned char *entropy_input, unsigned char *personalization_string, int security_strength) {
