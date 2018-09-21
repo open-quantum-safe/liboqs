@@ -12,9 +12,9 @@
 
 OQS_KEM *OQS_KEM_kyber512_new();
 
-extern OQS_STATUS OQS_KEM_kyber512_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_kyber512_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_kyber512_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_kyber512_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_kyber512_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_kyber512_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -27,9 +27,9 @@ extern OQS_STATUS OQS_KEM_kyber512_decaps(uint8_t *shared_secret, const unsigned
 
 OQS_KEM *OQS_KEM_kyber768_new();
 
-extern OQS_STATUS OQS_KEM_kyber768_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_kyber768_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_kyber768_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_kyber768_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_kyber768_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_kyber768_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -42,9 +42,9 @@ extern OQS_STATUS OQS_KEM_kyber768_decaps(uint8_t *shared_secret, const unsigned
 
 OQS_KEM *OQS_KEM_kyber1024_new();
 
-extern OQS_STATUS OQS_KEM_kyber1024_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_kyber1024_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_kyber1024_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_kyber1024_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_kyber1024_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_kyber1024_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
