@@ -42,8 +42,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
 
-  ARG_ENABL_SET_WRAP([kex-code-mcbits], [kex_code_mcbits],
-                     [ENABLE_MCBITS], [src/kex_code_mcbits])
   ARG_DISBL_SET_WRAP([kex-ntru], [kex_ntru],
                      [ENABLE_KEX_NTRU], [src/kex_ntru])
 

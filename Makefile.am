@@ -27,10 +27,6 @@ endif
 
 liboqs_la_LIBADD += src/sig/libsig.la
 
-if ENABLE_MCBITS
-liboqs_la_LIBADD += src/kex_code_mcbits/libmcbits.la
-endif
-
 if ENABLE_SIG_PICNIC
 liboqs_la_LIBADD += src/sig_picnic/libpicnic_i.la
 endif
@@ -100,9 +96,6 @@ links:
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig_picnic/sig_picnic.h include/oqs
 	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
-if ENABLE_MCBITS
-	cp -f src/kex_code_mcbits/kex_code_mcbits.h include/oqs
-endif
 
 clean-local:
 	rm -f liboqs.a
