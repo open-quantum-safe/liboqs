@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">
@@ -45,10 +45,6 @@
     <ClInclude Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" />
     <ClInclude Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" />
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h" />
-    <ClInclude Include="..\..\src\kex\kex.h" />
-    <ClInclude Include="..\..\src\kex_code_mcbits\kex_code_mcbits.h" />
-    <ClInclude Include="..\..\src\kex_code_mcbits\mcbits.h" />
-    <ClInclude Include="..\..\src\kex_ntru\kex_ntru.h" />
     <ClInclude Include="..\..\src\sig\sig.h" />
     <ClInclude Include="..\..\src\sig_picnic\external\bitstream.h" />
     <ClInclude Include="..\..\src\sig_picnic\external\compat.h" />
@@ -90,10 +86,6 @@
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\util.c" />
     <ClCompile Include="..\..\src\kem\kem.c" />
-    <ClCompile Include="..\..\src\kex\kex.c" />
-    <ClCompile Include="..\..\src\kex_code_mcbits\external\operations.c" />
-    <ClCompile Include="..\..\src\kex_code_mcbits\kex_code_mcbits.c" />
-    <ClCompile Include="..\..\src\kex_ntru\kex_ntru.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
     <ClCompile Include="..\..\src\sig_picnic\external\aligned_alloc.c" />
     <ClCompile Include="..\..\src\sig_picnic\external\bitstream.c" />
@@ -241,7 +233,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NTRU;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -278,7 +270,7 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NTRU;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -316,7 +308,7 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NTRU;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -359,7 +351,7 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NTRU;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -404,7 +396,7 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NTRU;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -445,7 +437,7 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NTRU;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
@@ -487,7 +479,7 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NTRU;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -534,7 +526,7 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NTRU;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

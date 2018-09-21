@@ -1,13 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\src\common\common.c">
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\common\rand.c">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\common\rand_nist.c">
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\crypto\aes\aes.c">
@@ -27,9 +24,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c">
       <Filter>crypto</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex\kex.c">
-      <Filter>kex</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\sig.c">
       <Filter>sig</Filter>
@@ -58,12 +52,6 @@
     <ClCompile Include="..\..\src\sig_picnic\external\sha3\KeccakSponge.c">
       <Filter>picnic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kex_code_mcbits\kex_code_mcbits.c">
-      <Filter>mcbits</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_ntru\kex_ntru.c">
-      <Filter>ntru</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\sig_picnic\external\lowmc.c">
       <Filter>picnic</Filter>
     </ClCompile>
@@ -87,9 +75,6 @@
     </ClCompile>
     <ClCompile Include="..\..\src\sig_picnic\external\mzd_additional.c">
       <Filter>picnic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kex_code_mcbits\external\operations.c">
-      <Filter>mcbits</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig_picnic\external\picnic.c">
       <Filter>picnic</Filter>
@@ -146,9 +131,6 @@
     <ClInclude Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h">
       <Filter>crypto</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex\kex.h">
-      <Filter>kex</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\sig\sig.h">
       <Filter>sig</Filter>
     </ClInclude>
@@ -179,12 +161,6 @@
     <ClInclude Include="..\..\src\sig_picnic\external\sha3\KeccakSponge.h">
       <Filter>picnic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_code_mcbits\kex_code_mcbits.h">
-      <Filter>mcbits</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_ntru\kex_ntru.h">
-      <Filter>ntru</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\external\lowmc.h">
       <Filter>picnic</Filter>
     </ClInclude>
@@ -203,9 +179,6 @@
     <ClInclude Include="..\..\src\sig_picnic\external\macros.h">
       <Filter>picnic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kex_code_mcbits\mcbits.h">
-      <Filter>mcbits</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\external\mpc.h">
       <Filter>picnic</Filter>
     </ClInclude>
@@ -214,16 +187,6 @@
     </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\external\mzd_additional.h">
       <Filter>picnic</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_internal.h">
-      <Filter>sidh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_api.h">
-      <Filter>sidh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_internal.h">
-      <Filter>sidh</Filter>
->>>>>>> origin/master
     </ClInclude>
     <ClInclude Include="..\..\src\sig_picnic\external\picnic.h">
       <Filter>picnic</Filter>
@@ -251,20 +214,11 @@
     <Filter Include="crypto">
       <UniqueIdentifier>{57fbdf3e-6a39-495b-bbc2-6d342bacc156}</UniqueIdentifier>
     </Filter>
-    <Filter Include="kex">
-      <UniqueIdentifier>{dad45e36-f955-417c-846f-256015873c5a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="sig">
       <UniqueIdentifier>{143e4927-3f7d-449f-b1d9-669993470c2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="picnic">
       <UniqueIdentifier>{38993d7a-4180-4824-9451-f118b8df2fbd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="mcbits">
-      <UniqueIdentifier>{b6afb5f9-a34e-4e96-b458-2d2bf2a1f6f7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ntru">
-      <UniqueIdentifier>{669c3be0-bba3-4507-b0a2-a332bbce2052}</UniqueIdentifier>
     </Filter>
     <Filter Include="kem">
       <UniqueIdentifier>{ceb9c773-d92e-44b7-916a-eb1d6a2ec89b}</UniqueIdentifier>
