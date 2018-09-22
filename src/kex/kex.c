@@ -2,8 +2,6 @@
 
 #include <oqs/kex.h>
 
-#include <oqs/kex_ntru.h>
-
 #define UNUSED_KEX(expr) \
 	do {                 \
 		(void) (expr);   \
@@ -13,6 +11,7 @@ OQS_API OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 
 	//To disable warnings when the function arguments are not being used depending
 	//on which algorithm has been disabled
+	UNUSED_KEX(rand);
 	UNUSED_KEX(seed);
 	UNUSED_KEX(seed_len);
 	UNUSED_KEX(named_parameters);
@@ -20,15 +19,6 @@ OQS_API OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 	switch (alg_name) {
 	case OQS_KEX_alg_default:
 		return NULL;
-
-#ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
-	case OQS_KEX_alg_ntru:
-#ifdef ENABLE_KEX_NTRU
-		return OQS_KEX_ntru_new(rand);
-#else
-		assert(0);
-#endif
-#endif
 
 	default:
 		assert(0);
