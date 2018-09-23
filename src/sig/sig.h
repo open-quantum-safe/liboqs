@@ -49,7 +49,7 @@
 /** Number of algorithm identifiers above (including default). */
 #define OQS_SIG_algs_length 10
 /** The default signature. */
-#define OQS_SIG_DEFAULT OQS_SIG_alg_qTESLA_I
+#define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_new.
