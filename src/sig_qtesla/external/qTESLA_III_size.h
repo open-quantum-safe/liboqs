@@ -1,13 +1,13 @@
-int oqs_qTESLA_III_size_crypto_sign_keypair(
+int OQS_SIG_qTESLA_III_size_keypair(
     unsigned char *,
     unsigned char *);
 
-int oqs_qTESLA_III_size_crypto_sign(
+int OQS_SIG_qTESLA_III_size_sign(
     unsigned char *, unsigned long long *,
     const unsigned char *, unsigned long long,
     const unsigned char *);
 
-int oqs_qTESLA_III_size_crypto_verify(
+int OQS_SIG_qTESLA_III_size_verify(
     unsigned char *, unsigned long long,
     const unsigned char *, unsigned long long,
     const unsigned char *);

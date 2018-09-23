@@ -1,21 +1,48 @@
-/**
- * \file sig_qtesla.h
- * \brief Header for the qTesla library
- */
 #ifndef __OQS_SIG_QTESLA_H
 #define __OQS_SIG_QTESLA_H
 
-#include <oqs/sig.h>
+#include <oqs/oqs.h>
 
-#ifdef ENABLE_SIG_QTESLA
-#include <stddef.h>
-#include <stdint.h>
-#include <oqs/common.h>
+#ifdef OQS_ENABLE_SIG_qTESLA_I
 
-OQS_STATUS OQS_SIG_qTESLA_get(OQS_SIG *sig, enum OQS_SIG_algid algid);
-OQS_STATUS OQS_SIG_qTESLA_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
-OQS_STATUS OQS_SIG_qTESLA_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
-OQS_STATUS OQS_SIG_qTESLA_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
-void OQS_SIG_qTESLA_free(OQS_SIG *s);
+#define OQS_SIG_qTESLA_I_length_public_key 1504
+#define OQS_SIG_qTESLA_I_length_secret_key 2112
+#define OQS_SIG_qTESLA_I_length_signature 1376
+
+OQS_SIG *OQS_SIG_qTESLA_I_new();
+
+extern OQS_STATUS OQS_SIG_qTESLA_I_keypair(uint8_t *public_key, uint8_t *secret_key);
+extern OQS_STATUS OQS_SIG_qTESLA_I_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+extern OQS_STATUS OQS_SIG_qTESLA_I_verify(uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+
 #endif
+
+#ifdef OQS_ENABLE_SIG_qTESLA_III_size
+
+#define OQS_SIG_qTESLA_III_size_length_public_key 2976
+#define OQS_SIG_qTESLA_III_size_length_secret_key 4160
+#define OQS_SIG_qTESLA_III_size_length_signature 2720
+
+OQS_SIG *OQS_SIG_qTESLA_III_size_new();
+
+extern OQS_STATUS OQS_SIG_qTESLA_III_size_keypair(uint8_t *public_key, uint8_t *secret_key);
+extern OQS_STATUS OQS_SIG_qTESLA_III_size_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+extern OQS_STATUS OQS_SIG_qTESLA_III_size_verify(uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_qTESLA_III_speed
+
+#define OQS_SIG_qTESLA_III_speed_length_public_key 3104
+#define OQS_SIG_qTESLA_III_speed_length_secret_key 4160
+#define OQS_SIG_qTESLA_III_speed_length_signature 2848
+
+OQS_SIG *OQS_SIG_qTESLA_III_speed_new();
+
+extern OQS_STATUS OQS_SIG_qTESLA_III_speed_keypair(uint8_t *public_key, uint8_t *secret_key);
+extern OQS_STATUS OQS_SIG_qTESLA_III_speed_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+extern OQS_STATUS OQS_SIG_qTESLA_III_speed_verify(uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+
+#endif
+
 #endif
