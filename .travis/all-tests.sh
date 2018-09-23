@@ -43,19 +43,8 @@ if [[ ${AES_NI} == 0 ]];then
 	enable_disable_str+=" --disable-aes-ni"
 fi
 
-if [[ ${USE_CODE_MCBITS} == 1 ]];then
-	enable_disable_str+=" --enable-kex-code-mcbits"
-	if [[ ! -z "${SODIUM_DIR// }" ]];then
-		enable_disable_str+=" --with-sodium-dir=${SODIUM_DIR}"
-	fi
-fi
-
 if [[ ${ENABLE_KEX_NTRU} == 0 ]];then
 	enable_disable_str+=" --disable-kex-ntru"
-fi
-
-if [[ ${ENABLE_KEX_SIDH_MSR} == 0 ]];then
-	enable_disable_str+=" --disable-kex-sidh-msr"
 fi
 
 if [[ ${ENABLE_SIG_PICNIC} == 0 ]];then

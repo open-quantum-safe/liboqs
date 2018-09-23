@@ -160,13 +160,6 @@ Builds are tested using the Appveyor continuous integration system on Windows Se
 
 The supported schemes are defined in the projects' `winconfig.h` file.
 
-McBits is disabled by default in the Visual Studio build; follow these steps to enable it:
-
-- Obtain the [libsodium library](https://libsodium.org); compile the static library from the Visual Studio projects.
-- Add `ENABLE_CODE_MCBITS` and `SODIUM_STATIC` to the preprocessor definitions of the `oqs` and `test_kex` projects.
-- Add the sodium "src/include" location to the "Additional Include Directories" in the oqs project C properties.
-- Add the libsodium library to the "Additional Dependencies" in the `test_kex` project Linker properties.
-
 Documentation
 -------------
 
@@ -188,7 +181,6 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/crypto/aes/aes_c.c`: public domain
 - `src/crypto/rand_urandom_chacha20/external`: public domain
 - `src/crypto/sha3`: public domain
-- `src/kex_code_mcbits`: public domain
 - `src/sig_qtesla`: public domain
 
 Team

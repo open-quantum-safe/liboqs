@@ -21,7 +21,6 @@
 
 enum OQS_KEX_alg_name {
 	OQS_KEX_alg_default,
-	OQS_KEX_alg_code_mcbits,
 	OQS_KEX_alg_ntru,
 };
 
