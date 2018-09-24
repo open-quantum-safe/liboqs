@@ -65,13 +65,13 @@ installheader_HEADERS=config.h \
 
 test: check
 	tests/example_kem
+	tests/example_sig
 	tests/test_kem
 	tests/test_kex --quiet
 	tests/test_rand --quiet
 	tests/test_aes
 	tests/test_sha3
 	tests/test_sig
-	tests/minimal_sig_oqs
 
 kat: clean-kats check
 	tests/kat_kem
@@ -102,7 +102,7 @@ clean-local:
 	rm -rf include
 
 clean-tests:
-	rm -f tests/example_kem tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/minimal_sig_oqs tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
+	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
 
 clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/
