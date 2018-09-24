@@ -123,7 +123,7 @@ OQS_SIG *OQS_SIG_new(const char *method_name) {
 }
 
 OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key) {
-	if (sig == NULL || sig->keypair(public_key, secret_key) != 0) {
+	if (sig == NULL || sig->keypair(public_key, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
@@ -131,7 +131,7 @@ OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *sec
 }
 
 OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-	if (sig == NULL || sig->sign(signed_message, signed_message_len, message, message_len, secret_key) != 0) {
+	if (sig == NULL || sig->sign(signed_message, signed_message_len, message, message_len, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
@@ -139,7 +139,7 @@ OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signed_message, size_t *sig
 }
 
 OQS_STATUS OQS_SIG_sign_open(const OQS_SIG *sig, uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key) {
-	if (sig == NULL || sig->sign_open(message, message_len, signed_message, signed_message_len, public_key) != 0) {
+	if (sig == NULL || sig->sign_open(message, message_len, signed_message, signed_message_len, public_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
