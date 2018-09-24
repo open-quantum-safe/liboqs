@@ -46,9 +46,9 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
                      [ENABLE_KEX_NTRU], [src/kex_ntru])
 
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
-                     [ENABLE_SIG_PICNIC], [src/sig_picnic])
+                     [ENABLE_SIG_PICNIC], [src/sig/picnic])
   ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
-                     [ENABLE_SIG_QTESLA], [src/sig_qtesla])
+                     [ENABLE_SIG_QTESLA], [src/sig/qtesla])
 ]
 )
 
