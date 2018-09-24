@@ -107,7 +107,7 @@ OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signatur
 	}
 }
 
-OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	if (sig == NULL || sig->verify(message, message_len, signature, signature_len, public_key) != 0) {
 		return OQS_ERROR;
 	} else {

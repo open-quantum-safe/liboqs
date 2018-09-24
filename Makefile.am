@@ -59,7 +59,9 @@ installheader_HEADERS=config.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
-	src/sig/sig.h
+	src/sig/sig.h \
+	src/sig/picnic/sig_picnic.h \
+	src/sig/qtesla/sig_qtesla.h
 
 test: check
 	tests/example_kem

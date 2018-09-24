@@ -132,7 +132,7 @@ typedef struct OQS_SIG {
 	 * @param[in] public_key The public key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*verify)(uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+	OQS_STATUS (*verify)(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 	// clang-format on
 
 } OQS_SIG;
@@ -190,7 +190,7 @@ OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signatur
  * @param[in] public_key The public key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 
 /**
  * Frees an OQS_SIG object that was constructed by OQS_SIG_new.

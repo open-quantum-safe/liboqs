@@ -13,7 +13,7 @@ OQS_SIG *OQS_SIG_qTESLA_I_new();
 
 extern OQS_STATUS OQS_SIG_qTESLA_I_keypair(uint8_t *public_key, uint8_t *secret_key);
 extern OQS_STATUS OQS_SIG_qTESLA_I_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_qTESLA_I_verify(uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+extern OQS_STATUS OQS_SIG_qTESLA_I_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 
 #endif
 
@@ -27,7 +27,7 @@ OQS_SIG *OQS_SIG_qTESLA_III_size_new();
 
 extern OQS_STATUS OQS_SIG_qTESLA_III_size_keypair(uint8_t *public_key, uint8_t *secret_key);
 extern OQS_STATUS OQS_SIG_qTESLA_III_size_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_qTESLA_III_size_verify(uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+extern OQS_STATUS OQS_SIG_qTESLA_III_size_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 
 #endif
 
@@ -41,7 +41,7 @@ OQS_SIG *OQS_SIG_qTESLA_III_speed_new();
 
 extern OQS_STATUS OQS_SIG_qTESLA_III_speed_keypair(uint8_t *public_key, uint8_t *secret_key);
 extern OQS_STATUS OQS_SIG_qTESLA_III_speed_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_qTESLA_III_speed_verify(uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+extern OQS_STATUS OQS_SIG_qTESLA_III_speed_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 
 #endif
 
