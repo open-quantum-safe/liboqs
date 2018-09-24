@@ -48,8 +48,12 @@
 // EDIT-WHEN-ADDING-SIG
 /** Number of algorithm identifiers above (including default). */
 #define OQS_SIG_algs_length 10
-/** The default signature. */
+/** The default signature. Different on Windows because qTESLA is not yet supported. */
+#if defined(_WIN32)
 #define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
+#else
+#define OQS_SIG_DEFAULT OQS_SIG_alg_qTESLA_I
+#endif
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_new.
