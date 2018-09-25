@@ -33,6 +33,7 @@ include
 *.x86_64
 *.hex
 tests/example_kem
+tests/example_sig
 tests/speed_kem
 tests/test_kem
 tests/test_kex
