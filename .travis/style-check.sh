@@ -1,10 +1,12 @@
 #!/bin/bash
 
-source $(dirname $0)/defs.sh
-
 ###
 # Checks that all non-upstream files satisfy prettyprint requirements.
 ###
+
+set -e
+
+source $(dirname $0)/defs.sh
 
 if [[ "x${TRAVIS}" == "xtrue" ]];
 then

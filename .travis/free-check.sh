@@ -4,6 +4,8 @@
 # Checks that "free" is not used unprotected in the main OQS code.
 ###
 
+set -e
+
 source $(dirname $0)/defs.sh
 
 RET=0
