@@ -43,11 +43,8 @@ then
 fi
 
 # Check clang-format version
-set +e
 CLANG_FORMAT_VERSION=`${TRY_CLANGFORMAT} -version | grep 3.9`
-ERROR_CODE=$?
-set -e
-if [ ${ERROR_CODE} -ne 1 ];
+if [[ -z "${CLANG_FORMAT_VERSION}" ]];
 then
 	${PRINT_RED}
 	echo "clang-format is not version 3.9."
