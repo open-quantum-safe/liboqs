@@ -32,9 +32,9 @@ int main(void) {
 	size_t bob_key_len = 0;  // Bob's final key length
 
 	/* Setup the key exchange protocol */
-	enum OQS_KEX_alg_name alg_name = OQS_KEX_alg_default;        // Alg. name
-	OQS_RAND *rnd = NULL;                                        // Source of randomness
-	OQS_KEX *kex = NULL;                                         // OQS_KEX structure
+	enum OQS_KEX_alg_name alg_name = OQS_KEX_alg_default; // Alg. name
+	OQS_RAND *rnd = NULL;                                 // Source of randomness
+	OQS_KEX *kex = NULL;                                  // OQS_KEX structure
 
 	/* Setup the source of randomness */
 	rnd = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);

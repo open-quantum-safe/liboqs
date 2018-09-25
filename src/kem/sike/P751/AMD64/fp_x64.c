@@ -15,8 +15,8 @@ extern const uint64_t p751x2[NWORDS_FIELD];
 */
 
 __inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p751.
-                                                                         // Inputs: a, b in [0, 2*p751-1]
-                                                                         // Output: c in [0, 2*p751-1]
+	                                                                     // Inputs: a, b in [0, 2*p751-1]
+	                                                                     // Output: c in [0, 2*p751-1]
 
 #if (OS_TARGET == OS_WIN)
 	unsigned int i, carry = 0;
@@ -45,8 +45,8 @@ __inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 }
 
 __inline void fpsub751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p751.
-                                                                         // Inputs: a, b in [0, 2*p751-1]
-                                                                         // Output: c in [0, 2*p751-1]
+	                                                                     // Inputs: a, b in [0, 2*p751-1]
+	                                                                     // Output: c in [0, 2*p751-1]
 
 #if (OS_TARGET == OS_WIN)
 	unsigned int i, borrow = 0;
@@ -523,9 +523,9 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 }
 
 void rdc_mont(const digit_t *ma, digit_t *mc) { // Efficient Montgomery reduction using comba and exploiting the special form of the prime p751.
-                                                // mc = ma*R^-1 mod p751x2, where R = 2^768.
-                                                // If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
-                                                // ma is assumed to be in Montgomery representation.
+	                                            // mc = ma*R^-1 mod p751x2, where R = 2^768.
+	                                            // If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
+	                                            // ma is assumed to be in Montgomery representation.
 
 #if (OS_TARGET == OS_WIN)
 	unsigned int carry;

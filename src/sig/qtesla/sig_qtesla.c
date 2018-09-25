@@ -79,4 +79,3 @@ OQS_SIG *OQS_SIG_qTESLA_III_speed_new() {
 }
 
 #endif
-

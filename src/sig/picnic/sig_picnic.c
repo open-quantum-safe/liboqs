@@ -1,6 +1,6 @@
 #include <oqs/sig.h>
 
-#if defined(OQS_SIG_alg_picnic_L1_UR) || defined(OQS_SIG_alg_picnic_L1_FS) || defined(OQS_SIG_alg_picnic_L3_UR) || defined(OQS_SIG_alg_picnic_L3_FS) || defined(OQS_SIG_alg_picnic_L5_UR) || defined(OQS_SIG_alg_picnic_L5_FS) 
+#if defined(OQS_SIG_alg_picnic_L1_UR) || defined(OQS_SIG_alg_picnic_L1_FS) || defined(OQS_SIG_alg_picnic_L3_UR) || defined(OQS_SIG_alg_picnic_L3_FS) || defined(OQS_SIG_alg_picnic_L5_UR) || defined(OQS_SIG_alg_picnic_L5_FS)
 
 #include <string.h>
 #include <oqs/common.h>
