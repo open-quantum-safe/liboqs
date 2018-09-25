@@ -102,7 +102,7 @@ clean-local:
 	rm -rf include
 
 clean-tests:
-	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
+	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/speed_sig tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
 
 clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/
