@@ -64,8 +64,8 @@ source $(dirname $0)/defs.sh
 		bash $f;
 	done
 ) # the end of the "try...catch" block
-errorCode=$?
-if [ $errorCode -ne 0 ]; then
+ERROR_CODE=$?
+if [ ${ERROR_CODE} -ne 0 ]; then
 	${PRINT_RED}
 	echo "An error occurred while running all-tests.sh.  If the previous line is a green success message, that is likely what the *last* successful command, and the next command is what caused the error.";
 	${PRINT_RESET}
