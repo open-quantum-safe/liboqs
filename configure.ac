@@ -62,8 +62,8 @@ AC_CONFIG_FILES([Makefile
                  src/crypto/aes/Makefile
                  src/kex_ntru/Makefile
                  src/sig/Makefile
-                 src/sig_picnic/Makefile
-                 src/sig_qtesla/Makefile
+                 src/sig/picnic/Makefile
+                 src/sig/qtesla/Makefile
                  src/kem/bike/Makefile
                  src/kem/frodokem/Makefile
                  src/kem/sike/Makefile

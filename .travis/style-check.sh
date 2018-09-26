@@ -1,10 +1,12 @@
 #!/bin/bash
 
-source $(dirname $0)/defs.sh
-
 ###
 # Checks that all non-upstream files satisfy prettyprint requirements.
 ###
+
+set -e
+
+source $(dirname $0)/defs.sh
 
 if [[ "x${TRAVIS}" == "xtrue" ]];
 then
@@ -15,9 +17,8 @@ then
 	fi
 fi
 
-# See what has been modified (ignoring submodules because they are likely patched)
-MODIFIED=$(git status -s)
-
+# Make sure that there are no modified files to start with
+MODIFIED=`git status -s`
 if [[ ! -z "${MODIFIED}" ]];
 then
 	${PRINT_RED}
@@ -27,6 +28,7 @@ then
 	exit 1;
 fi;
 
+# Find clang-format
 TRY_CLANGFORMAT="clang-format-3.9"
 if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
 then
@@ -40,8 +42,12 @@ then
 	fi
 fi
 
+# Check clang-format version
+set +e
 CLANG_FORMAT_VERSION=`${TRY_CLANGFORMAT} -version | grep 3.9`
-if [[ -z "${CLANG_FORMAT_VERSION}" ]];
+ERROR_CODE=$?
+set -e
+if [ ${ERROR_CODE} -ne 0 ];
 then
 	${PRINT_RED}
 	echo "clang-format is not version 3.9."
@@ -50,20 +56,11 @@ then
 	exit 1
 fi;
 
-MODIFIED=$(git status -s)
-if [[ ! -z "${MODIFIED}" ]];
-then
-	${PRINT_RED}
-	echo "There are modified files present in the directory prior to prettyprint check. This may indicate that some files should be added to .gitignore or need to be committed.";
-	${PRINT_RESET}
-	git status -s
-	exit 1;
-fi;
-
+# Pretty-print everything
 make prettyprint CLANGFORMAT=${TRY_CLANGFORMAT}
 
-MODIFIED=$(echo $MODIFIED | grep -v "Makefile.am")
-
+# Check if there are any modified files
+MODIFIED=`git status -s`
 if [[ ! -z "${MODIFIED}" ]]; then
 	${PRINT_RED}
 	echo "Code does not adhere to the project standards. Run \"make prettyprint\".";

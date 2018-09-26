@@ -4,6 +4,8 @@
 # Checks that all algorithms have an algorithm datasheet in doc/algorithms.
 ###
 
+set -e
+
 source $(dirname $0)/defs.sh
 
 # get the list of KEMs from the list of algorithm identifiers in enum OQS_KEM_alg_name in src/kem/kem.h

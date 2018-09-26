@@ -28,10 +28,10 @@ endif
 liboqs_la_LIBADD += src/sig/libsig.la
 
 if ENABLE_SIG_PICNIC
-liboqs_la_LIBADD += src/sig_picnic/libpicnic_i.la
+liboqs_la_LIBADD += src/sig/picnic/libpicnic_i.la
 endif
 if ENABLE_SIG_QTESLA
-liboqs_la_LIBADD += src/sig_qtesla/libqtesla.la
+liboqs_la_LIBADD += src/sig/qtesla/libqtesla.la
 endif
 
 if ENABLE_KEM_BIKE
@@ -59,19 +59,19 @@ installheader_HEADERS=config.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
-	src/sig/sig.h
+	src/sig/sig.h \
+	src/sig/picnic/sig_picnic.h \
+	src/sig/qtesla/sig_qtesla.h
 
 test: check
 	tests/example_kem
+	tests/example_sig
 	tests/test_kem
 	tests/test_kex --quiet
 	tests/test_rand --quiet
 	tests/test_aes
 	tests/test_sha3
 	tests/test_sig
-if ENABLE_SIG_PICNIC
-	tests/minimal_sig_oqs
-endif
 
 kat: clean-kats check
 	tests/kat_kem
@@ -94,20 +94,20 @@ links:
 	cp -f src/kex/kex.h include/oqs
 	cp -f src/kex_ntru/kex_ntru.h include/oqs
 	cp -f src/sig/sig.h include/oqs
-	cp -f src/sig_picnic/sig_picnic.h include/oqs
-	cp -f src/sig_qtesla/sig_qtesla.h include/oqs
+	cp -f src/sig/picnic/sig_picnic.h include/oqs
+	cp -f src/sig/qtesla/sig_qtesla.h include/oqs
 
 clean-local:
 	rm -f liboqs.a
 	rm -rf include
 
 clean-tests:
-	rm -f tests/example_kem tests/speed_kem tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/minimal_sig_oqs tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
+	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/speed_sig tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
 
 clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/
 
 prettyprint:
-	find src tests -name '*.c' -o -name '*.h' | grep -v sig_picnic/external* | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | xargs $(CLANGFORMAT) -style=file -i
 
 docs: doxygen-run

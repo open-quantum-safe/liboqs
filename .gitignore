@@ -33,7 +33,9 @@ include
 *.x86_64
 *.hex
 tests/example_kem
+tests/example_sig
 tests/speed_kem
+tests/speed_sig
 tests/test_kem
 tests/test_kex
 tests/test_sig
@@ -41,7 +43,6 @@ tests/test_rand
 tests/test_aes
 tests/test_sha3
 tests/minimal_kex_oqs
-tests/minimal_sig_oqs
 
 #kat
 tests/kat_kem

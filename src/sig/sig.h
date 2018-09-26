@@ -1,7 +1,19 @@
 /**
  * \file sig.h
- * \brief Header defining the API for generic OQS Signature
- * \deprecated Expected removal Sep. 2018
+ * \brief Signature schemes
+ *
+ * The file `src/sig/example_sig.c` contains two examples on using the OQS_SIG API.
+ *
+ * The first example uses the individual scheme's algorithms directly and uses
+ * no dynamic memory allocation -- all buffers are allocated on the stack, with
+ * sizes indicated using preprocessor macros.  Since algorithms can be disabled at
+ * compile-time, the programmer should wrap the code in \#ifdefs.
+ *
+ * The second example uses an OQS_SIG object to use an algorithm specified at
+ * runtime.  Therefore it uses dynamic memory allocation -- all buffers must be
+ * malloc'ed by the programmer, with sizes indicated using the corresponding length
+ * member of the OQS_SIG object in question.  Since algorithms can be disabled at
+ * compile-time, the programmer should check that the OQS_SIG object is not `NULL`.
  */
 
 #ifndef __OQS_SIG_H
@@ -11,49 +23,58 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <oqs/common.h>
+#include <oqs/oqs.h>
 
+/** Algorithm identifier for default SIG algorithm. */
+#define OQS_SIG_alg_default "DEFAULT"
+/** Algorithm identifier for qTESLA_I */
+#define OQS_SIG_alg_qTESLA_I "qTESLA_I"
+/** Algorithm identifier for qTESLA_III_size */
+#define OQS_SIG_alg_qTESLA_III_size "qTESLA_III_size"
+/** Algorithm identifier for qTESLA_III_speed */
+#define OQS_SIG_alg_qTESLA_III_speed "qTESLA_III_speed"
+/** Algorithm identifier for picnic_L1_FS */
+#define OQS_SIG_alg_picnic_L1_FS "picnic_L1_FS"
+/** Algorithm identifier for picnic_L1_UR */
+#define OQS_SIG_alg_picnic_L1_UR "picnic_L1_UR"
+/** Algorithm identifier for picnic_L3_FS */
+#define OQS_SIG_alg_picnic_L3_FS "picnic_L3_FS"
+/** Algorithm identifier for Picnic_L3_UR */
+#define OQS_SIG_alg_picnic_L3_UR "picnic_L3_UR"
+/** Algorithm identifier for Picnic_L5_FS */
+#define OQS_SIG_alg_picnic_L5_FS "picnic_L5_FS"
+/** Algorithm identifier for Picnic_L5_FS */
+#define OQS_SIG_alg_picnic_L5_UR "picnic_L5_UR"
+// EDIT-WHEN-ADDING-SIG
+/** Number of algorithm identifiers above (including default). */
+#define OQS_SIG_algs_length 10
+/** The default signature. Different on Windows because qTESLA is not yet supported. */
 #if defined(_WIN32)
-#include <oqs/winconfig.h>
+#define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
 #else
-#include <oqs/config.h>
+#define OQS_SIG_DEFAULT OQS_SIG_alg_qTESLA_I
 #endif
 
 /**
- * Supported signature algorithms.
- * Note: the sig algids are not wrapped with a ENABLE_SIG_*
- *       to avoid forcing calling apps to define the macro. The library
- *       compiled without the macro fails if these algid are requested.
+ * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_new.
+ *
+ * Note that algorithm identifiers are present in this list even when the algorithm is disabled
+ * at compile time.
+ *
+ * @param[in] i Index of the algorithm identifier to return, 0 <= i < OQS_SIG_algs_length
+ * @return Algorithm identifier as a string, or NULL.
  */
-enum OQS_SIG_algid {
-	OQS_SIG_default, // equivalent to OQS_SIG_picnic_L1_FS
-	/* Picnic sig algs */
-	OQS_SIG_picnic_L1_FS,
-	OQS_SIG_picnic_L1_UR,
-	OQS_SIG_picnic_L3_FS,
-	OQS_SIG_picnic_L3_UR,
-	OQS_SIG_picnic_L5_FS,
-	OQS_SIG_picnic_L5_UR,
-	/* qTesla sig algs */
-	OQS_SIG_qTESLA_I,
-	OQS_SIG_qTESLA_III_speed,
-	OQS_SIG_qTESLA_III_size,
-};
+OQS_API const char *OQS_SIG_alg_identifier(size_t i);
 
 /**
- * OQS signature object
+ * Signature schemes object
  */
-typedef struct OQS_SIG OQS_SIG; // so the code below compiles...
-
-/**
- * OQS signature object
- */
-struct OQS_SIG {
+typedef struct OQS_SIG {
 
 	/** Printable string representing the name of the signature scheme. */
 	const char *method_name;
 
-	/** The NIST security level (1, 2, 3, 4, 5) claimed for this scheme. */
+	/** The NIST security level (1, 2, 3, 4, 5) claimed for this algorithm. */
 	uint8_t claimed_nist_level;
 
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
@@ -63,108 +84,119 @@ struct OQS_SIG {
 	size_t length_public_key;
 	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
 	size_t length_secret_key;
-	/** The (maximum) length, in bytes, of a signature for this signature scheme. */
-	size_t max_length_signature;
+	/** The (maximum) length, in bytes, of signatures for this signature scheme. */
+	size_t length_signature;
 
-	/**
-	 * Opaque pointer for passing around any computation context
-	 */
-	void *ctx;
-
-	// clang-format and doxygen don't work together nicely on these three functions
 	// clang-format off
-	/**
-	 * Pointer to a function for public and private signature key generation.
-	 *
-	 * @param s                The signature structure.
-	 * @param priv             The signer's private key.
-	 * @param pub              The signer's public key.
-	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
-	 */
-	OQS_STATUS(*keygen)(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
 
 	/**
-	 * Pointer to a function for signature generation.
+	 * Keypair generation algorithm.
 	 *
-	 * @param s                The signature structure.
-	 * @param priv             The signer's private key.
-	 * @param msg              The message to sign.
-	 * @param msg_len          Length of the message to sign.
-	 * @param sig              The generated signature. Must be allocated by the caller, or NULL to learn how much space is needed, as returned in sig_len.
-	 * @param sig_len          In: length of sig, out: length of the generated signature.
-	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
+	 * Caller is responsible for allocating sufficient memory for `public_key` and
+	 * `secret_key`, based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_SIG_*_length_*`.
+	 *
+	 * @param[out] public_key The public key represented as a byte string.
+	 * @param[out] secret_key The secret key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS(*sign)(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
+	OQS_STATUS (*keypair)(uint8_t *public_key, uint8_t *secret_key);
 
 	/**
-	 * Pointer to a function for signature verification.
+	 * Signature generation algorithm.
 	 *
-	 * @param s                The signature structure.
-	 * @param pub              The signer's public key.
-	 * @param msg              The signed message.
-	 * @param msg_len          Length of the signed message.
-	 * @param sig              The signature to verify.
-	 * @param sig_len          Length of the signature to verify.
-	 * @return                 OQS_SUCCESS on success, or OQS_ERROR on failure.
+	 * Caller is responsible for allocating sufficient memory for `signature`,
+	 * based on the `length_*` members in this object or the per-scheme
+	 * compile-time macros `OQS_SIG_*_length_*`.
+	 *
+	 * @param[out] signature The signature on the message represented as a byte string.
+	 * @param[out] signature_len The length of the signature.
+	 * @param[in] message The message to sign represented as a byte string.
+	 * @param[in] message_len The length of the message to sign.
+	 * @param[in] secret_key The secret key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS(*verify)(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
+	OQS_STATUS (*sign)(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+
+	/**
+	 * Signature verification algorithm.
+	 *
+	 * @param[in] message The message represented as a byte string.
+	 * @param[in] message_len The length of the message.
+	 * @param[in] signature The signature on the message represented as a byte string.
+	 * @param[in] signature_len The length of the signature.
+	 * @param[in] public_key The public key represented as a byte string.
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
+	OQS_STATUS (*verify)(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 	// clang-format on
 
-	/**
-	 * Pointer to a function for freeing the allocated signature structure
-	 *
-	 * @param s                Signature structure
-	 */
-	void (*free)(OQS_SIG *s);
-};
+} OQS_SIG;
 
 /**
- * Instantiate a new signature object.
+ * Constructs an OQS_SIG object for a particular algorithm.
  *
- * @param algid              The id of the signature algorithm to be instantiated.
- * @return                   A new signature object on success, or NULL on failure.
+ * Callers should always check whether the return value is `NULL`, which indicates either than an
+ * invalid algorithm name was provided, or that the requested algorithm was disabled at compile-time.
+ *
+ * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_SIG_algs`.
+ * @return An OQS_SIG for the particular algorithm, or `NULL` if the algorithm has been disabled at compile-time.
  */
-OQS_API OQS_SIG *OQS_SIG_new(enum OQS_SIG_algid algid);
+OQS_SIG *OQS_SIG_new(const char *method_name);
 
 /**
- * Generates a new signature key pair.
- * @param s                  Pointer to the signature object.
- * @param priv               Pointer where the generated private key will be stored. Caller
- *                           must have allocated s->priv_key_len bytes.
- * @param pub                Pointer where the generated public key will be stored. Caller
- *                           must have allocated s->pub_key_len bytes.
- * @return                   OQS_SUCCESS on success, or OQS_ERROR on failure
+ * Keypair generation algorithm.
+ *
+ * Caller is responsible for allocating sufficient memory for `public_key` and
+ * `secret_key`, based on the `length_*` members in this object or the per-scheme
+ * compile-time macros `OQS_SIG_*_length_*`.
+ *
+ * @param[in] sig The OQS_SIG object representing the signature scheme.
+ * @param[out] public_key The public key represented as a byte string.
+ * @param[out] secret_key The secret key represented as a byte string.
+ * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_keygen(const OQS_SIG *s, uint8_t *priv, uint8_t *pub);
+OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key);
 
 /**
- * Generates a new signature.
- * @param s         Pointer to the signature object.
- * @param priv      Pointer to the signer's private key, of expected length `s->priv_key_len` bytes.
- * @param msg       Pointer to the message to sign.
- * @param msg_len   Length of the message to sign `msg`.
- * @param sig       Pointer where the generated signature will be stored. Caller must have allocated `s->max_sig_len` bytes.
- * @param sig_len   Pointer to the length of the generated signature.
- * @return          OQS_SUCCESS on success, or OQS_ERROR on failure
+ * Signature generation algorithm.
+ *
+ * Caller is responsible for allocating sufficient memory for `signnature`,
+ * based on the `length_*` members in this object or the per-scheme
+ * compile-time macros `OQS_SIG_*_length_*`.
+ *
+ * @param[in] sig The OQS_SIG object representing the signature scheme.
+ * @param[out] signature The signature on the message represented as a byte string.
+ * @param[out] signature_len The length of the signature.
+ * @param[in] message The message to sign represented as a byte string.
+ * @param[in] message_len The length of the message to sign.
+ * @param[in] secret_key The secret key represented as a byte string.
+ * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *s, const uint8_t *priv, const uint8_t *msg, const size_t msg_len, uint8_t *sig, size_t *sig_len);
+OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 
 /**
- * Verifies a signature.
- * @param s         Pointer to the signature object.
- * @param pub       Pointer to the signer's public key, of expected length `s->pub_key_len` bytes.
- * @param msg       Pointer to the signed message.
- * @param msg_len   Length of the signed message `msg`.
- * @param sig       Pointer to the signature.
- * @param sig_len   Length of the signature.
- * @return          OQS_SUCCESS on success, or OQS_ERROR on failure
+ * Signature verification algorithm.
+ *
+ * @param[in] sig The OQS_SIG object representing the signature scheme.
+ * @param[in] message The message represented as a byte string.
+ * @param[in] message_len The length of the message.
+ * @param[in] signature The signature on the message represented as a byte string.
+ * @param[in] signature_len The length of the signature.
+ * @param[in] public_key The public key represented as a byte string.
+ * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *s, const uint8_t *pub, const uint8_t *msg, const size_t msg_len, const uint8_t *sig, const size_t sig_len);
+OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 
 /**
- * Frees the signature object, de-initializing the underlying library code.
- * @param s          The signature object.
+ * Frees an OQS_SIG object that was constructed by OQS_SIG_new.
+ *
+ * @param[in] sig The OQS_SIG object to free.
  */
-OQS_API void OQS_SIG_free(OQS_SIG *s);
+void OQS_SIG_free(OQS_SIG *sig);
 
-#endif
+#include <oqs/sig_qtesla.h>
+#include <oqs/sig_picnic.h>
+// EDIT-WHEN-ADDING-SIG
+
+#endif // __OQS_SIG_H
