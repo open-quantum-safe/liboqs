@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">
@@ -37,6 +37,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\kem.h" />
+    <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
+    <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h" />
+    <ClInclude Include="..\..\src\kem\sike\P503\P503_internal.h" />
+    <ClInclude Include="..\..\src\kem\sike\P751\P751_api.h" />
+    <ClInclude Include="..\..\src\kem\sike\P751\P751_internal.h" />
     <ClInclude Include="..\..\src\oqs.h" />
     <ClInclude Include="..\..\src\common\common.h" />
     <ClInclude Include="..\..\src\common\rand.h" />
@@ -86,6 +91,9 @@
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\util.c" />
     <ClCompile Include="..\..\src\kem\kem.c" />
+    <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
+    <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
+    <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\aligned_alloc.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\bitstream.c" />
