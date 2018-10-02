@@ -4,9 +4,9 @@
 # Checks that all KATs pass.
 ###
 
-PRINT_GREEN="tput setaf 2"
-PRINT_RED="tput setaf 1"
-PRINT_RESET="tput sgr 0"
+set -e
+
+source $(dirname $0)/defs.sh
 
 RET=0
 
