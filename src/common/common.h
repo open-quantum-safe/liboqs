@@ -9,6 +9,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#include <oqs/config.h>
+
 /**
  * Represents return values from functions.
  *
@@ -91,5 +93,31 @@ void OQS_MEM_secure_free(void *ptr, size_t len);
  * @param[in] ptr The start of the memory to free.
  */
 void OQS_MEM_insecure_free(void *ptr);
+
+/**
+ * Macros that indicates a function argument may be unused.  Used to comply with
+ * an API specification but when an implementation doesn't actually use the argument
+ * and we'd get a compiler warning otherwise.
+ */
+#if defined(_WIN32)
+#define UNUSED
+// __attribute__ not supported in VS
+#else
+#define UNUSED __attribute__((unused))
+#endif
+
+/**
+ * Defines which functions should be exposed outside the LibOQS library
+ *
+ * By default the visibility of all the symbols is defined to "hidden"
+ * Only the library API should be marked as default
+ *
+ * Example: OQS_API return_value function_name(void);
+ */
+#if defined(_WIN32)
+#define OQS_API
+#else
+#define OQS_API __attribute__((visibility("default")))
+#endif
 
 #endif // __OQS_COMMON_H
