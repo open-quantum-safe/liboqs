@@ -67,7 +67,7 @@
 #define OQS_KEM_alg_newhope_1024cca "NEWHOPE-1024CCA"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 20 
+#define OQS_KEM_algs_length 20
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
