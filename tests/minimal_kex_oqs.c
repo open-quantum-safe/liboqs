@@ -17,7 +17,7 @@ void cleanup(uint8_t *alice_msg, size_t alice_msg_len, uint8_t *alice_key,
              uint8_t *bob_key, size_t bob_key_len, void *alice_priv,
              OQS_KEX *kex, OQS_RAND *rnd);
 
-#ifdef ENABLE_KEX_RLWE_NEWHOPE
+#ifdef ENABLE_KEX_NTRU
 int main(void) {
 	/* Key exchange parameters */
 	void *alice_priv = NULL;   // Alice's private key
@@ -32,12 +32,9 @@ int main(void) {
 	size_t bob_key_len = 0;  // Bob's final key length
 
 	/* Setup the key exchange protocol */
-	enum OQS_KEX_alg_name alg_name = OQS_KEX_alg_rlwe_newhope;   // Alg. name
-	const uint8_t *seed = (unsigned char *) "01234567890123456"; // Rand. seed
-	const size_t seed_len = 16;                                  // Seed length
-	const char *named_parameters = "recommended";                // Named params.
-	OQS_RAND *rnd = NULL;                                        // Source of randomness
-	OQS_KEX *kex = NULL;                                         // OQS_KEX structure
+	enum OQS_KEX_alg_name alg_name = OQS_KEX_alg_default; // Alg. name
+	OQS_RAND *rnd = NULL;                                 // Source of randomness
+	OQS_KEX *kex = NULL;                                  // OQS_KEX structure
 
 	/* Setup the source of randomness */
 	rnd = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
@@ -51,7 +48,7 @@ int main(void) {
 
 	/* Populate the OQS_KEX structure, here's where liboqs sets up
      * the specific details of the selected KEX implementation */
-	kex = OQS_KEX_new(rnd, alg_name, seed, seed_len, named_parameters);
+	kex = OQS_KEX_new(rnd, alg_name, NULL, 0, NULL);
 	if (kex == NULL) {
 		eprintf("ERROR: OQS_KEX_new failed!\n");
 		cleanup(alice_msg, alice_msg_len, alice_key, alice_key_len, bob_msg,

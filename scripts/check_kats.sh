@@ -7,16 +7,17 @@
 PRINT_GREEN="tput setaf 2"
 PRINT_RED="tput setaf 1"
 PRINT_RESET="tput sgr 0"
+PRINT_YELLOW="tput setaf 3"
 
 RET=0
 
-ALGS=`grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
+ALGS=`grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | grep -v 'sidh' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]'`
 for alg in ${ALGS}; do
 
 	kat=`find kat_*_rsp -name ${alg}.kat |tr '\n' ' '`
 	if [ -z "${kat}" ];
 	then
-		${PRINT_RED}
+		${PRINT_YELLOW}
 		echo "KAT file not generated for ${alg}"
 		${PRINT_RESET}
 		RET=0

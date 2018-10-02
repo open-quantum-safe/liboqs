@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -84,7 +83,6 @@ cleanup:
 }
 
 int main() {
-
 	int ret = EXIT_SUCCESS;
 	OQS_STATUS rc;
 
