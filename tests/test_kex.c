@@ -11,6 +11,12 @@
 
 #include "ds_benchmark.h"
 
+#if __ANDROID__
+#define eprintf(...) printf(__VA_ARGS__);
+#else
+#define eprintf(...) fprintf(stderr, __VA_ARGS__);
+#endif
+
 struct kex_testcase {
 	enum OQS_KEX_alg_name alg_name;
 	unsigned char *seed;

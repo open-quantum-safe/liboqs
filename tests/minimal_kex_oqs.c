@@ -11,6 +11,12 @@
 
 #include <oqs/oqs.h>
 
+#if __ANDROID__
+#define eprintf(...) printf(__VA_ARGS__);
+#else
+#define eprintf(...) fprintf(stderr, __VA_ARGS__);
+#endif
+
 /* Cleaning up memory etc */
 void cleanup(uint8_t *alice_msg, size_t alice_msg_len, uint8_t *alice_key,
              size_t alice_key_len, uint8_t *bob_msg, size_t bob_msg_len,

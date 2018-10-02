@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+
 #if defined(_WIN32)
 #include <oqs/winconfig.h>
 #else
@@ -96,16 +97,6 @@ void OQS_MEM_secure_free(void *ptr, size_t len);
  * @param[in] ptr The start of the memory to free.
  */
 void OQS_MEM_insecure_free(void *ptr);
-
-/**
- * Function to print a message to standard error.  Workaround on Android to print
- * directly to stdout.
- */
-#if __ANDROID__
-#define eprintf(...) printf(__VA_ARGS__);
-#else
-#define eprintf(...) fprintf(stderr, __VA_ARGS__);
-#endif
 
 /**
  * Macros that indicates a function argument may be unused.  Used to comply with
