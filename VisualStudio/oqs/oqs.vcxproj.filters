@@ -106,6 +106,30 @@
     <ClCompile Include="..\..\src\kem\frodokem\util.c">
       <Filter>frodo</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope.c">
+      <Filter>newhope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src/kem/newhope/optimized/cpapke.c">
+      <Filter>newhope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src/kem/newhope/optimized/kem.c">
+      <Filter>newhope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src/kem/newhope/optimized/ntt.c">
+      <Filter>newhope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src/kem/newhope/optimized/poly.c">
+      <Filter>newhope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src/kem/newhope/optimized/precomp.c">
+      <Filter>newhope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src/kem/newhope/optimized/reduce.c">
+      <Filter>newhope</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src/kem/newhope/optimized/verify.c">
+      <Filter>newhope</Filter>
+    </ClCompile> 
     <ClCompile Include="..\..\src\common\rand_nist.c" />
     <ClCompile Include="..\..\src\kem\sike\kem_sike.c">
       <Filter>sike</Filter>

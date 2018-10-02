@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
+    <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h" />
     <ClInclude Include="..\..\src\kem\kem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h" />
@@ -90,6 +91,14 @@
     <ClCompile Include="..\..\src\kem\frodokem\frodo976_cshake.c" />
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\util.c" />
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope.c" />
+    <ClCompile Include="..\..\src/kem/newhope/optimized/cpapke.c" />
+    <ClCompile Include="..\..\src/kem/newhope/optimized/kem.c" />
+    <ClCompile Include="..\..\src/kem/newhope/optimized/ntt.c" />
+    <ClCompile Include="..\..\src/kem/newhope/optimized/poly.c" />
+    <ClCompile Include="..\..\src/kem/newhope/optimized/precomp.c" />
+    <ClCompile Include="..\..\src/kem/newhope/optimized/reduce.c" />
+    <ClCompile Include="..\..\src/kem/newhope/optimized/verify.c" />
     <ClCompile Include="..\..\src\kem\kem.c" />
     <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
     <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
