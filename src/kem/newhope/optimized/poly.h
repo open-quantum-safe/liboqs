@@ -10,12 +10,12 @@
  */
 typedef struct {
 	uint16_t coeffs[NEWHOPE_N];
-} poly 
+} poly
 
 #if !defined(_WIN32)
-__attribute__((aligned(32)));
+    __attribute__((aligned(32)));
 #else
-;
+    ;
 #endif
 
 void poly_uniform(poly *a, const unsigned char *seed);
