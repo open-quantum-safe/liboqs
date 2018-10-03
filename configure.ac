@@ -3,9 +3,9 @@
 
 # Init
 AC_INIT([liboqs], [1.0.0], [])
-LT_INIT([disable-shared])
 
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
+AM_PROG_LIBTOOL
 
 # Configure
 AC_CONFIG_HEADERS([config.h])
@@ -59,8 +59,8 @@ AC_CONFIG_FILES([Makefile
                  src/crypto/rand_urandom_aesctr/Makefile
                  src/crypto/aes/Makefile
                  src/sig/Makefile
-                 src/sig_picnic/Makefile
-                 src/sig_qtesla/Makefile
+                 src/sig/picnic/Makefile
+                 src/sig/qtesla/Makefile
                  src/kem/bike/Makefile
                  src/kem/frodokem/Makefile
                  src/kem/sike/Makefile

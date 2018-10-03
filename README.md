@@ -133,8 +133,9 @@ There are also a variety of test programs built under the `tests` directory:
 - `test_sig`: Simple test harness for all enabled key signature schemes
 - `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
+- `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
-- `minimal_sig_oqs`: Minimal runnable example showing the usage of the signature API (to be removed and replaced by `example_sig`)
+- `example_sig`: Minimal runnable example showing the usage of the signature API
 - `test_aes`, `test_rand`, `test_sha3`: Simple test harnesses for crypto sub-components
 
 #### Memory benchmarks
@@ -207,4 +208,8 @@ Contributors to this master branch of liboqs include:
 
 ### Support
 
-Development of Open Quantum Safe has been supported in part by the Tutte Institute for Mathematics and Computing.  Research projects which developed specific components of Open Quantum Safe have been supported by various research grants; see the source papers for funding acknowledgments.
+Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services and the Tutte Institute for Mathematics and Computing.  
+
+We'd like to make a special acknowledgement to the companies who have dedicated programmer time to contribute source code to OQS, including Amazon Web Services, evolutionQ, and Microsoft Research.  
+
+Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.

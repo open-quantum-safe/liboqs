@@ -134,7 +134,11 @@ int main() {
 	OQS_STATUS rc;
 
 	int status;
+#if defined(_WIN32)
+	status = _mkdir("kat_kem_rsp");
+#else
 	status = mkdir("kat_kem_rsp", S_IRWXU);
+#endif
 	if (!((status == 0) || (errno == EEXIST))) {
 		return EXIT_FAILURE;
 	}

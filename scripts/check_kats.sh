@@ -7,6 +7,7 @@
 PRINT_GREEN="tput setaf 2"
 PRINT_RED="tput setaf 1"
 PRINT_RESET="tput sgr 0"
+PRINT_YELLOW="tput setaf 3"
 
 RET=0
 
@@ -16,7 +17,7 @@ for alg in ${ALGS}; do
 	kat=`find kat_*_rsp -name ${alg}.kat |tr '\n' ' '`
 	if [ -z "${kat}" ];
 	then
-		${PRINT_RED}
+		${PRINT_YELLOW}
 		echo "KAT file not generated for ${alg}"
 		${PRINT_RESET}
 		RET=0

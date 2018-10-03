@@ -12,6 +12,7 @@ libkembike_la_SOURCES = kem_bike.c
 
 COMMON_FLAGS = $(AM_CFLAGS) -include functions_renaming.h
 libkembike_la_CFLAGS = $(COMMON_FLAGS)
+libkembike_la_LIBTOOLFLAGS = $(AM_LIBTOOLFLAGS)
 
 #When AVX2 is supported also AVX512 is supported and we can use the additional implementation.
 if BIKE_ADDITIONAL_IMPL
@@ -22,6 +23,7 @@ endif
 
 COMMON_CSRCS = $(BIKE_SRC_DIR)/kem.c $(BIKE_SRC_DIR)/aes_ctr_prf.c $(BIKE_SRC_DIR)/parallel_hash.c 
 COMMON_CSRCS += $(BIKE_SRC_DIR)/sampling.c $(BIKE_SRC_DIR)/utilities.c $(BIKE_SRC_DIR)/decode.c $(BIKE_SRC_DIR)/openssl_utils.c 
+
 
 if BIKE_ADDITIONAL_IMPL
   COMMON_CSRCS += $(BIKE_SRC_DIR)/aes.c $(BIKE_SRC_DIR)/sha.c
