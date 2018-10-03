@@ -1,8 +1,14 @@
 AUTOMAKE_OPTIONS = foreign
-check_PROGRAMS = example_kem speed_kem test_kem kat_kem \
-                      minimal_kex_oqs test_kex \
-                      example_sig speed_sig test_sig \
-                      test_aes test_rand test_sha3
+if ENABLE_SHARED
+check_PROGRAMS = example_kem
+else
+check_PROGRAMS = 	example_kem speed_kem test_kem kat_kem \
+                    minimal_kex_oqs test_kex \
+                    example_sig speed_sig test_sig \
+                    test_aes test_rand test_sha3
+endif
+
+LIB_FLAGS=../liboqs.la -lm -lcrypto
 
 example_kem_SOURCES     = example_kem.c
 example_sig_SOURCES     = example_sig.c
@@ -17,18 +23,18 @@ test_sha3_SOURCES       = test_sha3.c
 test_sig_SOURCES        = test_sig.c
 kat_kem_SOURCES         = kat_kem.c
 
-example_kem_LDADD     = -L.. -loqs -lm -lcrypto
-example_sig_LDADD     = -L.. -loqs -lm -lcrypto
-minimal_kex_oqs_LDADD = -L.. -loqs -lm -lcrypto
-speed_kem_LDADD       = -L.. -loqs -lm -lcrypto
-speed_sig_LDADD       = -L.. -loqs -lm -lcrypto
-test_aes_LDADD        = -L.. -loqs -lm -lcrypto
-test_kem_LDADD        = -L.. -loqs -lm -lcrypto
-test_kex_LDADD        = -L.. -loqs -lm -lcrypto
-test_rand_LDADD       = -L.. -loqs -lm -lcrypto
-test_sha3_LDADD       = -L.. -loqs -lm -lcrypto
-test_sig_LDADD        = -L.. -loqs -lm -lcrypto
-kat_kem_LDADD         = ../liboqs.la -lm -lcrypto
+example_kem_LDADD     = ${LIB_FLAGS}
+example_sig_LDADD     = ${LIB_FLAGS}
+minimal_kex_oqs_LDADD = ${LIB_FLAGS}
+speed_kem_LDADD       = ${LIB_FLAGS}
+speed_sig_LDADD       = ${LIB_FLAGS}
+test_aes_LDADD        = ${LIB_FLAGS}
+test_kem_LDADD        = ${LIB_FLAGS}
+test_kex_LDADD        = ${LIB_FLAGS}
+test_rand_LDADD       = ${LIB_FLAGS}
+test_sha3_LDADD       = ${LIB_FLAGS}
+test_sig_LDADD        = ${LIB_FLAGS}
+kat_kem_LDADD         = ${LIB_FLAGS}
 
 if USE_OPENSSL
 example_kem_LDADD     += -L$(OPENSSL_DIR)/lib -lcrypto
