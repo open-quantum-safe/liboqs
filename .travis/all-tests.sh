@@ -66,7 +66,6 @@ source $(dirname $0)/defs.sh
   make
   make docs
   make test
-  make kat
 
 	for f in $(ls .travis/*-check.sh); do
 		bash $f;
