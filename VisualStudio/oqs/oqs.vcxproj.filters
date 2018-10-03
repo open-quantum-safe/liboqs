@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\src\common\common.c">
@@ -106,6 +106,16 @@
     <ClCompile Include="..\..\src\kem\frodokem\util.c">
       <Filter>frodo</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\common\rand_nist.c" />
+    <ClCompile Include="..\..\src\kem\sike\kem_sike.c">
+      <Filter>sike</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\sike\P503\P503.c">
+      <Filter>sike</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\sike\P751\P751.c">
+      <Filter>sike</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\oqs.h" />
@@ -203,6 +213,21 @@
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h">
       <Filter>frodo</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\kem_sike.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P503\P503_internal.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P751\P751_internal.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P751\P751_api.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h">
+      <Filter>sike</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="dll.def" />
@@ -225,6 +250,9 @@
     </Filter>
     <Filter Include="frodo">
       <UniqueIdentifier>{10d21755-2db3-4ce1-a5ce-fbfe1aadcc53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sike">
+      <UniqueIdentifier>{620a9f8e-2013-4cb3-ad37-2ee4348ed893}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

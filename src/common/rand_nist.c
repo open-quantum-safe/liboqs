@@ -9,7 +9,8 @@
 #include <assert.h>
 #include <string.h>
 
-#ifdef USE_OPENSSL
+#include <oqs/common.h>
+#if USE_OPENSSL
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
@@ -63,7 +64,7 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 #endif
 }
 
-void OQS_randombytes_nist_kat_init(unsigned char *entropy_input, unsigned char *personalization_string, int security_strength) {
+OQS_API void OQS_randombytes_nist_kat_init(unsigned char *entropy_input, unsigned char *personalization_string, int security_strength) {
 	unsigned char seed_material[48];
 
 	assert(security_strength == 256);

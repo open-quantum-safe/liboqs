@@ -9,9 +9,9 @@
 
 #include <string.h>
 
-int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // Frodo-KEM's key generation
-	                                                           // Outputs: public key pk (               BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 bytes)
-	                                                           //          secret key sk (CRYPTO_BYTES + BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 + 2*PARAMS_N*PARAMS_NBAR bytes)
+OQS_API int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // Frodo-KEM's key generation
+	                                                                   // Outputs: public key pk (               BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 bytes)
+	                                                                   //          secret key sk (CRYPTO_BYTES + BYTES_SEED_A + (PARAMS_LOGQ*PARAMS_N*PARAMS_NBAR)/8 + 2*PARAMS_N*PARAMS_NBAR bytes)
 	uint16_t B[PARAMS_N * PARAMS_NBAR] = {0}, S[2 * PARAMS_N * PARAMS_NBAR] = {0};
 	uint16_t *E = (uint16_t *) &S[PARAMS_N * PARAMS_NBAR];
 	uint8_t *randomness = sk;
@@ -39,7 +39,7 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // Frodo-KEM's ke
 	return 0;
 }
 
-int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) { // Frodo-KEM's key encapsulation
+OQS_API int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) { // Frodo-KEM's key encapsulation
 	unsigned char randomness[BYTES_MU];
 	uint16_t B[PARAMS_N * PARAMS_NBAR] = {0}, V[PARAMS_NBAR * PARAMS_NBAR] = {0}, C[PARAMS_NBAR * PARAMS_NBAR] = {0};
 	ALIGN_HEADER(32)
@@ -89,7 +89,7 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 	return 0;
 }
 
-int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) { // Frodo-KEM's key decapsulation
+OQS_API int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) { // Frodo-KEM's key decapsulation
 	uint16_t B[PARAMS_N * PARAMS_NBAR] = {0}, Bp[PARAMS_N * PARAMS_NBAR] = {0}, W[PARAMS_NBAR * PARAMS_NBAR] = {0};
 	uint16_t C[PARAMS_NBAR * PARAMS_NBAR] = {0}, CC[PARAMS_NBAR * PARAMS_NBAR] = {0};
 	const uint16_t *S = (const uint16_t *) (sk + CRYPTO_BYTES + CRYPTO_PUBLICKEYBYTES);

@@ -60,6 +60,13 @@ source $(dirname $0)/defs.sh
 	make docs
 	make test
 
+	# Excercise static build of liboqs too
+	./configure --enable-shared=no --enable-silent-rules ${enable_disable_str}
+	make clean
+	make
+	make docs
+	make test
+
 	for f in $(ls .travis/*-check.sh); do
 		bash $f;
 	done
