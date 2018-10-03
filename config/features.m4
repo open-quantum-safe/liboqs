@@ -46,15 +46,13 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
 
-  ARG_ENABL_SET_WRAP([kex-code-mcbits], [kex_code_mcbits],
-                     [ENABLE_MCBITS], [src/kex_code_mcbits])
   ARG_DISBL_SET_WRAP([kex-ntru], [kex_ntru],
                      [ENABLE_KEX_NTRU], [src/kex_ntru])
 
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
-                     [ENABLE_SIG_PICNIC], [src/sig_picnic])
+                     [ENABLE_SIG_PICNIC], [src/sig/picnic])
   ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
-                     [ENABLE_SIG_QTESLA], [src/sig_qtesla])
+                     [ENABLE_SIG_QTESLA], [src/sig/qtesla])
 ]
 )
 
@@ -94,6 +92,21 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_sidh_p503, 1, "Define to 1 when Sidh-p503 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_sidh_p751, 1, "Define to 1 when Sidh-p751 enabled")
+  ])
+
+  AM_COND_IF([ENABLE_SIG_QTESLA], [
+    AC_DEFINE(OQS_ENABLE_SIG_qTESLA_I,         1, "Define to 1 when qTESLA-I enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_qTESLA_III_size,  1, "Define to 1 when qTESLA-III-size enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_qTESLA_III_speed, 1, "Define to 1 when qTESLA-III-speed enabled")
+  ])
+
+  AM_COND_IF([ENABLE_SIG_PICNIC], [
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L1_FS, 1, "Define to 1 when picnic-L1-FS enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L1_UR, 1, "Define to 1 when picnic-L1-UR enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L3_FS, 1, "Define to 1 when picnic-L3-FS enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L3_UR, 1, "Define to 1 when picnic-L3-UR enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L5_FS, 1, "Define to 1 when picnic-L5-FS enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L5_UR, 1, "Define to 1 when picnic-L5-UR enabled")
   ])
 
 ]

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">
@@ -36,9 +36,9 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{76A44A7A-305F-4542-86E3-B6547DAD418C}</ProjectGuid>
+    <ProjectGuid>{8E88C3A1-FB32-4E2E-AAA3-1770800C798A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>test_kem</RootNamespace>
+    <RootNamespace>speed_sig</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -332,7 +332,7 @@
     <ClInclude Include="..\winconfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tests\test_kem.c" />
+    <ClCompile Include="..\..\tests\speed_sig.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

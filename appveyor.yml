@@ -19,4 +19,10 @@ test_script:
 
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\test_sig.exe
 
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\minimal_sig_oqs.exe
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\example_kem.exe
+
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\kat_kem.exe
+    
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\speed_kem.exe
+
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\speed_sig.exe

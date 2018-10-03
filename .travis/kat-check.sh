@@ -4,6 +4,8 @@
 # Checks that all KATs pass.
 ###
 
+set -e
+
 source $(dirname $0)/defs.sh
 
 RET=0

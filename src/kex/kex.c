@@ -4,10 +4,6 @@
 
 #include <oqs/kex_ntru.h>
 
-#ifdef ENABLE_CODE_MCBITS
-#include <oqs/kex_code_mcbits.h>
-#endif
-
 #define UNUSED_KEX(expr) \
 	do {                 \
 		(void) (expr);   \
@@ -24,12 +20,7 @@ OQS_API OQS_KEX *OQS_KEX_new(OQS_RAND *rand, enum OQS_KEX_alg_name alg_name, con
 	switch (alg_name) {
 	case OQS_KEX_alg_default:
 		return NULL;
-	case OQS_KEX_alg_code_mcbits:
-#ifdef ENABLE_CODE_MCBITS
-		return OQS_KEX_code_mcbits_new(rand);
-#else
-		assert(0);
-#endif
+
 #ifndef DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT
 	case OQS_KEX_alg_ntru:
 #ifdef ENABLE_KEX_NTRU
