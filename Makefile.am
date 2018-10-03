@@ -65,7 +65,11 @@ installheader_HEADERS=config.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h
 
-test: check
+
+test: clean-tests check
+if ENABLESHARED
+	tests/example_kem
+else
 	tests/example_kem
 	tests/test_kem
 	tests/test_kex --quiet
@@ -76,9 +80,9 @@ test: check
 if ENABLE_SIG_PICNIC
 	tests/minimal_sig_oqs
 endif
+endif
 
-kat: clean-kats
-	make
+kat: check
 	tests/kat_kem
 	scripts/check_kats.sh
 

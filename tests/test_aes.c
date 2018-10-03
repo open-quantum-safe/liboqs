@@ -240,14 +240,19 @@ int main(int argc, char **argv) {
 	}
 
 	printf("=== test_aes correctness ===\n");
-	if (test_aes128_correctness_c() != EXIT_SUCCESS) return EXIT_FAILURE;
-	if (test_aes256_correctness_c() != EXIT_SUCCESS) return EXIT_FAILURE;
+	if (test_aes128_correctness_c() != EXIT_SUCCESS)
+		return EXIT_FAILURE;
+	if (test_aes256_correctness_c() != EXIT_SUCCESS)
+		return EXIT_FAILURE;
 #ifdef AES_ENABLE_NI
-	if (test_aes128_correctness_ni() != EXIT_SUCCESS) return EXIT_FAILURE;
+	if (test_aes128_correctness_ni() != EXIT_SUCCESS)
+		return EXIT_FAILURE;
 #endif
 #ifdef USE_OPENSSL
-	if (test_aes128_correctness_ossl() != EXIT_SUCCESS) return EXIT_FAILURE;
-	if (test_aes256_correctness_ossl() != EXIT_SUCCESS) return EXIT_FAILURE;
+	if (test_aes128_correctness_ossl() != EXIT_SUCCESS)
+		return EXIT_FAILURE;
+	if (test_aes256_correctness_ossl() != EXIT_SUCCESS)
+		return EXIT_FAILURE;
 #endif
 	printf("Tests passed.\n\n");
 

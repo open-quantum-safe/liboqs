@@ -188,11 +188,11 @@ static void sub_bytes_inv(byte *a, int n) {
 
 // Rotate the first four bytes of the input eight bits to the left
 static inline void rot_word(byte *a) {
-    byte temp = a[0];
-    a[0]=a[1];
-    a[1]=a[2];
-    a[2]=a[3];
-    a[3]=temp;
+	byte temp = a[0];
+	a[0] = a[1];
+	a[1] = a[2];
+	a[2] = a[3];
+	a[3] = temp;
 }
 
 // Perform the core key schedule transform on 4 bytes, as part of the key expansion process
@@ -250,32 +250,32 @@ void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(16 * 15);
 	assert(*_schedule != NULL);
 	uint8_t *schedule = (uint8_t *) *_schedule;
-	int i = 0;                                       // The count of how many iterations we've done
-    uint8_t t[4];                                    // Temporary working area
+	int i = 0;    // The count of how many iterations we've done
+	uint8_t t[4]; // Temporary working area
 
-    // The first 32 bytes of the expanded key are simply the encryption key
-    memcpy(schedule, key, 8 * 4);
+	// The first 32 bytes of the expanded key are simply the encryption key
+	memcpy(schedule, key, 8 * 4);
 
-    // The remaining 240-32 bytes of the expanded key are computed in one of three ways:
-    for (i = 8; i < 4 * 15; i++) {
-        if (i % 8 == 0) {
-            memcpy(t, schedule + 4 * (i - 1), 4);     // We assign the value of the previous 4 bytes in the expanded key to t
-            sub_bytes(t, 4);                      // We apply byte-wise substitution to t
-            rot_word(t);                          // We rotate t one byte left
-            t[0] ^= lookup_rcon[i / 8];           // We xor in the round constant
-            xor(t, schedule + 4 * (i - 8), 4);        // We xor in the four-byte block n bytes before
-            memcpy(schedule + 4 * i, t, 4);           // This becomes the next 4 bytes in the expanded key
-        } else if (i % 8 == 4) {
-            memcpy(t, schedule + 4 * (i - 1), 4);     // We assign the value of the previous 4 bytes in the expanded key to t
-            sub_bytes(t, 4);                      // We apply byte-wise substitution to t
-            xor(t, schedule + 4 * (i - 8), 4);        // We xor in the four-byte block n bytes before
-            memcpy(schedule + 4 * i, t, 4);           // This becomes the next 4 bytes in the expanded key
-        } else {
-            memcpy(t, schedule + 4 * (i - 1), 4);     // We assign the value of the previous 4 bytes in the expanded key to t
-            xor(t, schedule + 4 * (i - 8), 4);        // We xor in the four-byte block n bytes before
-            memcpy(schedule + 4 * i, t, 4);           // This becomes the next 4 bytes in the expanded key
-        }
-    }
+	// The remaining 240-32 bytes of the expanded key are computed in one of three ways:
+	for (i = 8; i < 4 * 15; i++) {
+		if (i % 8 == 0) {
+			memcpy(t, schedule + 4 * (i - 1), 4); // We assign the value of the previous 4 bytes in the expanded key to t
+			sub_bytes(t, 4);                      // We apply byte-wise substitution to t
+			rot_word(t);                          // We rotate t one byte left
+			t[0] ^= lookup_rcon[i / 8];           // We xor in the round constant
+			xor(t, schedule + 4 * (i - 8), 4);    // We xor in the four-byte block n bytes before
+			memcpy(schedule + 4 * i, t, 4);       // This becomes the next 4 bytes in the expanded key
+		} else if (i % 8 == 4) {
+			memcpy(t, schedule + 4 * (i - 1), 4); // We assign the value of the previous 4 bytes in the expanded key to t
+			sub_bytes(t, 4);                      // We apply byte-wise substitution to t
+			xor(t, schedule + 4 * (i - 8), 4);    // We xor in the four-byte block n bytes before
+			memcpy(schedule + 4 * i, t, 4);       // This becomes the next 4 bytes in the expanded key
+		} else {
+			memcpy(t, schedule + 4 * (i - 1), 4); // We assign the value of the previous 4 bytes in the expanded key to t
+			xor(t, schedule + 4 * (i - 8), 4);    // We xor in the four-byte block n bytes before
+			memcpy(schedule + 4 * i, t, 4);       // This becomes the next 4 bytes in the expanded key
+		}
+	}
 }
 
 void oqs_aes256_free_schedule_c(void *schedule) {

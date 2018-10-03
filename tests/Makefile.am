@@ -1,10 +1,15 @@
 AUTOMAKE_OPTIONS = foreign
-check_PROGRAMS = example_kem speed_kem test_kem \
-                      minimal_kex_oqs test_kex \
-                      test_sig \
-                      test_aes test_rand test_sha3 kat_kem
+if ENABLESHARED
+check_PROGRAMS = example_kem
+else
+check_PROGRAMS = 	example_kem speed_kem test_kem \
+	minimal_kex_oqs test_kex \
+	test_sig \
+	test_aes test_rand test_sha3 kat_kem
+
 if ENABLE_SIG_PICNIC
 check_PROGRAMS += minimal_sig_oqs
+endif
 endif
 
 LIB_FLAGS=../liboqs.la -lm -lcrypto

@@ -33,6 +33,10 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([aes-ni],  [aes_ni],  [USE_AES_NI])
   ARG_ENABL_SET_WRAP([openssl], [openssl], [USE_OPENSSL])
 
+  AS_IF([test "x${enable_shared}" = "xyes" ], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
+  AM_CONDITIONAL([ENABLESHARED],[test "x${enable_shared}" = "xyes"])
+  AC_SUBST(ENABLESHARED)
+
   #BIKE depends on OpenSSL
   AM_COND_IF([USE_OPENSSL],
     [ARG_DISBL_SET_WRAP([kem-bike], [kem_bike], [ENABLE_KEM_BIKE], [src/kem/bike] )],
