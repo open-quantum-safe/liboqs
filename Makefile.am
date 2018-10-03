@@ -78,9 +78,11 @@ else
 	tests/test_sig
 endif
 
+if !ENABLESHARED
 kat: clean-kats check
 	tests/kat_kem
 	scripts/check_kats.sh
+endif
 
 links:
 	$(MKDIR_P) include/oqs

@@ -9,15 +9,14 @@
 #include <assert.h>
 #include <string.h>
 
-#ifdef USE_OPENSSL
+#include <oqs/common.h>
+#if USE_OPENSSL
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
 #else
 #include <oqs/aes.h>
 #endif
-
-#include <oqs/common.h>
 
 typedef struct {
 	unsigned char Key[32];
