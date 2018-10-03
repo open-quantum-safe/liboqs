@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include <oqs/common.h>
+
 #if USE_OPENSSL
 #include <openssl/conf.h>
 #include <openssl/evp.h>
