@@ -63,7 +63,11 @@ installheader_HEADERS=config.h \
 	src/sig/picnic/sig_picnic.h \
 	src/sig/qtesla/sig_qtesla.h
 
-test: check
+
+test: clean-tests check
+if ENABLE_SHARED
+	tests/example_kem
+else
 	tests/example_kem
 	tests/example_sig
 	tests/test_kem
@@ -72,10 +76,13 @@ test: check
 	tests/test_aes
 	tests/test_sha3
 	tests/test_sig
+endif
 
+if !ENABLE_SHARED
 kat: clean-kats check
 	tests/kat_kem
 	scripts/check_kats.sh
+endif
 
 links:
 	$(MKDIR_P) include/oqs
@@ -98,7 +105,6 @@ links:
 	cp -f src/sig/qtesla/sig_qtesla.h include/oqs
 
 clean-local:
-	rm -f liboqs.a
 	rm -rf include
 
 clean-tests:
