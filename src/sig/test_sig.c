@@ -24,7 +24,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	}
 
 	printf("================================================================================\n");
-	printf("Sample computation for SIG %s\n", sig->method_name);
+	printf("Sample computation for signature %s\n", sig->method_name);
 	printf("================================================================================\n");
 
 	public_key = malloc(sig->length_public_key);
@@ -76,8 +76,8 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		goto err;
 	}
 
-	ret = OQS_SUCCESS;
 	printf("verification passes as expected\n");
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
