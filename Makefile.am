@@ -65,7 +65,7 @@ installheader_HEADERS=config.h \
 
 
 test: clean-tests check
-if ENABLESHARED
+if ENABLE_SHARED
 	tests/example_kem
 else
 	tests/example_kem
@@ -78,7 +78,7 @@ else
 	tests/test_sig
 endif
 
-if !ENABLESHARED
+if !ENABLE_SHARED
 kat: clean-kats check
 	tests/kat_kem
 	scripts/check_kats.sh

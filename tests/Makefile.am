@@ -1,5 +1,5 @@
 AUTOMAKE_OPTIONS = foreign
-if ENABLESHARED
+if ENABLE_SHARED
 check_PROGRAMS = example_kem
 else
 check_PROGRAMS = 	example_kem speed_kem test_kem \

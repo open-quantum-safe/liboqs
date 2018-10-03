@@ -34,8 +34,8 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_ENABL_SET_WRAP([openssl], [openssl], [USE_OPENSSL])
 
   AS_IF([test "x${enable_shared}" = "xyes" ], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
-  AM_CONDITIONAL([ENABLESHARED],[test "x${enable_shared}" = "xyes"])
-  AC_SUBST(ENABLESHARED)
+  AM_CONDITIONAL([ENABLE_SHARED],[test "x${enable_shared}" = "xyes"])
+  AC_SUBST(ENABLE_SHARED)
 
   #BIKE depends on OpenSSL
   AM_COND_IF([USE_OPENSSL],
