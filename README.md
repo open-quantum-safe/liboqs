@@ -82,7 +82,6 @@ Lifecycle for master branch
 
 Some aspects of liboqs master branch are currently in transition:
 
-- All key exchange (KEX) algorithms will be removed; some will be replaced with key encapsulation mechanisms (KEMs), others will not be replaced.
 - The signature API will be modified to be closer to the API used on liboqs nist-branch
 
 Building and running liboqs master branch
@@ -146,7 +145,6 @@ To run one or more ciphers only once use `--mem-bench`, which is suitable for me
 
 You may also get instant memory usage results of an algorithm (e.g. FIXME) by running [valgrind's massif tool](http://valgrind.org/docs/manual/ms-manual.html) by running
 
-	./kex_bench_memory.sh FIXME
 
 Building and running on Windows
 -------------------------------
