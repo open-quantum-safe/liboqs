@@ -61,6 +61,7 @@ installheader_HEADERS=config.h \
 	src/kex_ntru/kex_ntru.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
+	src/kem/newhope/kem_newhope.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/picnic/sig_picnic.h \
