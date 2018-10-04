@@ -12,12 +12,6 @@ EXPORTS
 	OQS_RAND_n
 	OQS_RAND_test_record_occurrence
 	OQS_RAND_report_statistics
-	OQS_KEX_new
-	OQS_KEX_alice_0
-	OQS_KEX_bob
-	OQS_KEX_alice_1
-	OQS_KEX_alice_priv_free
-	OQS_KEX_free
 	OQS_SIG_new
 	OQS_SIG_keygen
 	OQS_SIG_sign

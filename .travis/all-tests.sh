@@ -44,10 +44,6 @@ source $(dirname $0)/defs.sh
 		enable_disable_str+=" --disable-aes-ni"
 	fi
 
-	if [[ ${ENABLE_KEX_NTRU} == 0 ]];then
-		enable_disable_str+=" --disable-kex-ntru"
-	fi
-
 	if [[ ${ENABLE_SIG_PICNIC} == 0 ]];then
 		enable_disable_str+=" --disable-sig-picnic"
 	fi
