@@ -16,12 +16,6 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c">
       <Filter>crypto</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.c">
-      <Filter>crypto</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.c">
-      <Filter>crypto</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c">
       <Filter>crypto</Filter>
     </ClCompile>
@@ -133,12 +127,6 @@
       <Filter>crypto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h">
-      <Filter>crypto</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h">
-      <Filter>crypto</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h">
       <Filter>crypto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sig\sig.h">

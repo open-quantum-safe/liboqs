@@ -16,8 +16,6 @@ lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
 liboqs_la_LIBADD += src/crypto/aes/libaes.la
-liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
-liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kem/libkem.la
 liboqs_la_LIBADD += src/sig/libsig.la
@@ -45,8 +43,6 @@ installheader_HEADERS=config.h \
 	src/common/common.h \
 	src/common/rand.h \
 	src/crypto/aes/aes.h \
-	src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h \
-	src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h \
 	src/crypto/sha3/sha3.h \
 	src/kem/kem.h \
 	src/kem/bike/kem_bike.h \
@@ -64,7 +60,6 @@ else
 	tests/example_kem
 	tests/example_sig
 	tests/test_kem
-	tests/test_rand --quiet
 	tests/test_aes
 	tests/test_sha3
 	tests/test_sig
@@ -83,8 +78,6 @@ links:
 	cp -f src/common/common.h include/oqs
 	cp -f src/common/rand.h include/oqs
 	cp -f src/crypto/aes/aes.h include/oqs
-	cp -f src/crypto/rand_urandom_aesctr/rand_urandom_aesctr.h include/oqs
-	cp -f src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h include/oqs
 	cp -f src/crypto/sha3/sha3.h include/oqs
 	cp -f src/kem/kem.h include/oqs
 	cp -f src/kem/bike/kem_bike.h include/oqs
@@ -98,7 +91,7 @@ clean-local:
 	rm -rf include
 
 clean-tests:
-	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/speed_sig tests/test_kem tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
+	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/speed_sig tests/test_kem tests/test_sig tests/test_aes tests/test_sha3
 
 clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/

@@ -226,7 +226,7 @@ int main(int argc, char **argv) {
 			if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0) {
 				bench = true;
 			} else {
-				printf("Usage: ./test_rand [options]\n");
+				printf("Usage: ./test_aes [options]\n");
 				printf("\nOptions:\n");
 				printf("  --bench, -b\n");
 				printf("    Run benchmarks\n");

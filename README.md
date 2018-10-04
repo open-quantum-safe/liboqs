@@ -131,7 +131,7 @@ There are also a variety of test programs built under the `tests` directory:
 - `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
 - `example_sig`: Minimal runnable example showing the usage of the signature API
-- `test_aes`, `test_rand`, `test_sha3`: Simple test harnesses for crypto sub-components
+- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 
 Building and running on Windows
 -------------------------------
@@ -163,7 +163,6 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
 - `src/crypto/aes/aes_c.c`: public domain
-- `src/crypto/rand_urandom_chacha20/external`: public domain
 - `src/crypto/sha3`: public domain
 - `src/sig_qtesla`: public domain
 
