@@ -45,7 +45,6 @@ SRCDIR=${SRCDIR}" src/crypto/aes \
 
 # Protocols
 SRCDIR=${SRCDIR}" src/kem \
-                  src/kex \
                   src/sig"
 
 #Set the default compilation flags
@@ -55,12 +54,10 @@ AC_SUBST(SRCDIR)
 AC_CONFIG_FILES([Makefile
                  src/common/Makefile
                  src/kem/Makefile
-                 src/kex/Makefile
                  src/crypto/sha3/Makefile
                  src/crypto/rand_urandom_chacha20/Makefile
                  src/crypto/rand_urandom_aesctr/Makefile
                  src/crypto/aes/Makefile
-                 src/kex_ntru/Makefile
                  src/sig/Makefile
                  src/sig/picnic/Makefile
                  src/sig/qtesla/Makefile
