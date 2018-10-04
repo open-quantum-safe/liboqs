@@ -28,7 +28,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	}
 }
 
-OQS_SIG *OQS_SIG_new(const char *method_name) {
+OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	if (0 == strcasecmp(method_name, OQS_SIG_alg_default)) {
 		return OQS_SIG_new(OQS_SIG_DEFAULT);
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTESLA_I)) {
@@ -91,7 +91,7 @@ OQS_SIG *OQS_SIG_new(const char *method_name) {
 	}
 }
 
-OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key) {
 	if (sig == NULL || sig->keypair(public_key, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
@@ -99,7 +99,7 @@ OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *sec
 	}
 }
 
-OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	if (sig == NULL || sig->sign(signature, signature_len, message, message_len, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
@@ -107,7 +107,7 @@ OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signatur
 	}
 }
 
-OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	if (sig == NULL || sig->verify(message, message_len, signature, signature_len, public_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
@@ -115,6 +115,6 @@ OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t mes
 	}
 }
 
-void OQS_SIG_free(OQS_SIG *sig) {
+OQS_API void OQS_SIG_free(OQS_SIG *sig) {
 	OQS_MEM_insecure_free(sig);
 }

@@ -9,10 +9,12 @@
 #include <unistd.h>
 #include <strings.h>
 #endif
-
 #include <fcntl.h>
 
 #include <oqs/oqs.h>
+
+void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
+void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
 
 #ifdef USE_OPENSSL
 #include <openssl/rand.h>
@@ -21,8 +23,6 @@ static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = (void (*)(uint8_t 
 #else
 static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
 #endif
-
-void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
 
 OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {

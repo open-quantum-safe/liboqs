@@ -41,4 +41,5 @@ test_kem_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
 test_rand_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
 test_sha3_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
 test_sig_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
+kat_kem_LDADD         += -L$(OPENSSL_DIR)/lib -lcrypto
 endif

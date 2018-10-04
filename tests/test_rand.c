@@ -7,6 +7,12 @@
 
 #include <oqs/oqs.h>
 
+#if __ANDROID__
+#define eprintf(...) printf(__VA_ARGS__);
+#else
+#define eprintf(...) fprintf(stderr, __VA_ARGS__);
+#endif
+
 struct rand_testcase {
 	enum OQS_RAND_alg_name alg_name;
 };
