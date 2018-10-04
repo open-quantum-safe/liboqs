@@ -24,7 +24,7 @@ static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_s
 
 void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
 
-OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
+OQS_API OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
 		oqs_randombytes_algorithm = &OQS_randombytes_system;
 		return OQS_SUCCESS;
@@ -43,11 +43,11 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	}
 }
 
-void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t)) {
+OQS_API void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t)) {
 	oqs_randombytes_algorithm = algorithm_ptr;
 }
 
-void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	oqs_randombytes_algorithm(random_array, bytes_to_read);
 }
 

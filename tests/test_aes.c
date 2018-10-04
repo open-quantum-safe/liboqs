@@ -9,6 +9,15 @@
 #include <oqs/aes.h>
 #include "../src/crypto/aes/aes_local.h"
 
+/* Displays hexadecimal strings */
+static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
+	printf("%-20s (%4zu bytes):  ", label, len);
+	for (size_t i = 0; i < (len); i++) {
+		printf("%02X", ((unsigned char *) (str))[i]);
+	}
+	printf("\n");
+}
+
 #define BENCH_DURATION 1
 
 static const uint8_t test_aes128_plaintext[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, 0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};

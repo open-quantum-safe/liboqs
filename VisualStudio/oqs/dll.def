@@ -14,8 +14,6 @@ EXPORTS
 	OQS_SIG_sign
 	OQS_SIG_verify
 	OQS_SIG_free
-	OQS_print_hex_string
-	OQS_print_part_hex_string
 	OQS_MEM_cleanse
 	OQS_MEM_secure_free
 	OQS_MEM_insecure_free

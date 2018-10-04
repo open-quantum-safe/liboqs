@@ -1,10 +1,8 @@
 AUTOMAKE_OPTIONS = foreign
-if ENABLE_SHARED
-check_PROGRAMS = example_kem
-else
-check_PROGRAMS = 	example_kem speed_kem test_kem \
-	example_sig speed_sig test_sig \
-	test_aes test_sha3 kat_kem
+check_PROGRAMS = 	example_kem speed_kem test_kem kat_kem \
+	example_sig speed_sig test_sig
+if !ENABLE_SHARED
+check_PROGRAMS += test_aes test_sha3
 endif
 
 LIB_FLAGS=../liboqs.la -lm -lcrypto
@@ -38,4 +36,5 @@ test_aes_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
 test_kem_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
 test_sha3_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
 test_sig_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
+kat_kem_LDADD         += -L$(OPENSSL_DIR)/lib -lcrypto
 endif

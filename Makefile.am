@@ -54,22 +54,18 @@ installheader_HEADERS=config.h \
 
 
 test: clean-tests check
-if ENABLE_SHARED
-	tests/example_kem
-else
 	tests/example_kem
 	tests/example_sig
 	tests/test_kem
+	tests/test_sig
+if !ENABLE_SHARED
 	tests/test_aes
 	tests/test_sha3
-	tests/test_sig
 endif
 
-if !ENABLE_SHARED
 kat: clean-kats check
 	tests/kat_kem
 	scripts/check_kats.sh
-endif
 
 links:
 	$(MKDIR_P) include/oqs
