@@ -80,10 +80,6 @@ Lifecycle for master branch
 
 **API stability:** The public API of liboqs master branch is currently considered to be the functions in `oqs/common.h`, `oqs/config.h`, `oqs/kem.h`, and `oqs/rand.h`.  Incompatible changes to the public API will lead to incrementing $X$ in version $X.Y.Z$. (`oqs/sig.h` will eventually be part of the public API, but is currently under development, and no promises are made about its API stability at present.)
 
-Some aspects of liboqs master branch are currently in transition:
-
-- The signature API will be modified to be closer to the API used on liboqs nist-branch
-
 Building and running liboqs master branch
 -----------------------------------------
 
@@ -129,7 +125,6 @@ The main build result is `liboqs.a`, a static library.  (This may be placed in t
 There are also a variety of test programs built under the `tests` directory:
 
 - `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
-- `test_kem`: Simple test harness for all enabled key exchange algorithms
 - `test_sig`: Simple test harness for all enabled key signature schemes
 - `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
@@ -137,15 +132,6 @@ There are also a variety of test programs built under the `tests` directory:
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
 - `example_sig`: Minimal runnable example showing the usage of the signature API
 - `test_aes`, `test_rand`, `test_sha3`: Simple test harnesses for crypto sub-components
-
-#### Memory benchmarks
-
-To run one or more ciphers only once use `--mem-bench`, which is suitable for memory usage profiling:
-
-	tests/test_kem --mem-bench FIXME
-
-You may also get instant memory usage results of an algorithm (e.g. FIXME) by running [valgrind's massif tool](http://valgrind.org/docs/manual/ms-manual.html) by running
-
 
 Building and running on Windows
 -------------------------------
