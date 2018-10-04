@@ -18,7 +18,7 @@ then
 fi
 
 # Make sure that there are no modified files to start with
-MODIFIED=`git status -s`
+MODIFIED=$(git status -s)
 if [[ ! -z "${MODIFIED}" ]];
 then
 	${PRINT_RED}
@@ -29,22 +29,26 @@ then
 fi;
 
 # Find clang-format
-TRY_CLANGFORMAT="clang-format-3.9"
+TRY_CLANGFORMAT="/usr/local/Cellar/clang-format/2016-06-27/bin/clang-format"
 if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
 then
-	TRY_CLANGFORMAT="clang-format"
+	TRY_CLANGFORMAT="clang-format-3.9"
 	if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
 	then
-		${PRINT_RED}
-		echo "Cannot find clang-format."
-		${PRINT_RESET}
-		exit 1
+		TRY_CLANGFORMAT="clang-format"
+		if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
+		then
+			${PRINT_RED}
+			echo "Cannot find clang-format."
+			${PRINT_RESET}
+			exit 1
+		fi
 	fi
 fi
 
 # Check clang-format version
 set +e
-CLANG_FORMAT_VERSION=`${TRY_CLANGFORMAT} -version | grep 3.9`
+CLANG_FORMAT_VERSION=$(${TRY_CLANGFORMAT} -version | grep 3.9)
 ERROR_CODE=$?
 set -e
 if [ ${ERROR_CODE} -ne 0 ];
@@ -60,7 +64,7 @@ fi;
 make prettyprint CLANGFORMAT=${TRY_CLANGFORMAT}
 
 # Check if there are any modified files
-MODIFIED=`git status -s`
+MODIFIED=$(git status -s)
 if [[ ! -z "${MODIFIED}" ]]; then
 	${PRINT_RED}
 	echo "Code does not adhere to the project standards. Run \"make prettyprint\".";

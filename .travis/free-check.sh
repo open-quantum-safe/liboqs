@@ -12,7 +12,7 @@ RET=0
 
 # We need to temporarily remove bash fail-on-error for the last command, because grep returns with error code 1 when there are no lines found
 set +e
-FREE=`find src -name '*.c' | grep -v upstream | xargs grep '[^_]free' | grep "free(" | grep -v 'IGNORE free-check'`
+FREE=$(find src -name '*.c' | grep -v upstream | xargs grep '[^_]free' | grep "free(" | grep -v 'IGNORE free-check')
 ERROR_CODE=$?
 set -e
 

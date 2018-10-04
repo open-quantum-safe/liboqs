@@ -1,17 +1,13 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <oqs/oqs.h>
 
-/* Displays hexadecimal strings */
-static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
-	printf("%-20s (%4zu bytes):  ", label, len);
-	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
-	}
-	printf("\n");
-}
+typedef struct magic_s {
+	uint8_t val[32];
+} magic_t;
 
 static OQS_STATUS kem_test_correctness(const char *method_name) {
 
@@ -24,6 +20,13 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
 
+	//The magic numbers are 32 random values.
+	//The length of the magic number was chosen arbitrarilly to 32.
+	magic_t magic = {{0xfa, 0xfa, 0xfa, 0xfa, 0xbc, 0xbc, 0xbc, 0xbc,
+	                  0x15, 0x61, 0x15, 0x61, 0x15, 0x61, 0x15, 0x61,
+	                  0xad, 0xad, 0x43, 0x43, 0xad, 0xad, 0x34, 0x34,
+	                  0x12, 0x34, 0x56, 0x78, 0x12, 0x34, 0x56, 0x78}};
+
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
 		return OQS_SUCCESS;
@@ -33,11 +36,18 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	printf("Sample computation for KEM %s\n", kem->method_name);
 	printf("================================================================================\n");
 
-	public_key = malloc(kem->length_public_key);
-	secret_key = malloc(kem->length_secret_key);
-	ciphertext = malloc(kem->length_ciphertext);
-	shared_secret_e = malloc(kem->length_shared_secret);
-	shared_secret_d = malloc(kem->length_shared_secret);
+	public_key = malloc(kem->length_public_key + sizeof(magic_t));
+	secret_key = malloc(kem->length_secret_key + sizeof(magic_t));
+	ciphertext = malloc(kem->length_ciphertext + sizeof(magic_t));
+	shared_secret_e = malloc(kem->length_shared_secret + sizeof(magic_t));
+	shared_secret_d = malloc(kem->length_shared_secret + sizeof(magic_t));
+
+	//Set the magic numbers
+	memcpy(public_key + kem->length_public_key, magic.val, sizeof(magic_t));
+	memcpy(secret_key + kem->length_secret_key, magic.val, sizeof(magic_t));
+	memcpy(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
+	memcpy(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
+	memcpy(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");
@@ -72,6 +82,16 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		printf("shared secrets are equal\n");
 	}
 
+	rv = memcmp(public_key + kem->length_public_key, magic.val, sizeof(magic_t));
+	rv |= memcmp(secret_key + kem->length_secret_key, magic.val, sizeof(magic_t));
+	rv |= memcmp(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
+	rv |= memcmp(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
+	rv |= memcmp(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
+	if (rv != 0) {
+		fprintf(stderr, "ERROR: Magic numbers do not match\n");
+		goto err;
+	}
+
 	ret = OQS_SUCCESS;
 	goto cleanup;
 
@@ -92,6 +112,7 @@ cleanup:
 }
 
 int main() {
+
 	int ret = EXIT_SUCCESS;
 	OQS_STATUS rc;
 

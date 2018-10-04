@@ -14,11 +14,10 @@
 
 /** Algorithm identifier for system PRNG. */
 #define OQS_RAND_alg_system "system"
-/** Algorithm identifier for using OpenSSL's PRNG. */
-#define OQS_RAND_alg_openssl "OpenSSL"
 /** Algorithm identifier for NIST deterministic RNG for KATs. */
 #define OQS_RAND_alg_nist_kat "NIST-KAT"
 /** Algorithm identifier for using OpenSSL's PRNG. */
+#define OQS_RAND_alg_openssl "OpenSSL"
 
 /**
  * Switches OQS_randombytes to use the specified algorithm.
@@ -51,19 +50,6 @@ OQS_API void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, s
  * @param[in] bytes_to_read The number of random bytes to read into memory
  */
 OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
-
-/**
- * Fills the given memory with the requested number of random bytes.
- *
- * This implementation reads the bytes directly from `/dev/urandom` and will
- * block until the requested number of bytes have been read.
- *
- * The caller is responsible for providing a buffer allocated with sufficient room.
- *
- * @param[out] random_array Pointer to the memory to fill with random bytes
- * @param[in] bytes_to_read The number of random bytes to read into memory
- */
-void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
 
 /**
  * Initializes the NIST DRBG with a given seed.

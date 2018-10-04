@@ -74,7 +74,7 @@ typedef struct OQS_SIG {
 	/** Printable string representing the name of the signature scheme. */
 	const char *method_name;
 
-	/** The NIST security level (1, 2, 3, 4, 5) claimed for this algorithm. */
+	/** The NIST security level (1, 2, 3, 4, 5) claimed in this algorithm's original NIST submission. */
 	uint8_t claimed_nist_level;
 
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */

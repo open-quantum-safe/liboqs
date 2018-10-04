@@ -8,7 +8,7 @@
 #include <windows.h>
 #endif
 
-void OQS_API OQS_MEM_cleanse(void *ptr, size_t len) {
+OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 #if defined(_WIN32)
 	SecureZeroMemory(ptr, len);
 #elif defined(HAVE_MEMSET_S)
@@ -22,13 +22,13 @@ void OQS_API OQS_MEM_cleanse(void *ptr, size_t len) {
 #endif
 }
 
-void OQS_API OQS_MEM_secure_free(void *ptr, size_t len) {
+OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 	if (ptr != NULL) {
 		OQS_MEM_cleanse(ptr, len);
 		free(ptr); // IGNORE free-check
 	}
 }
 
-void OQS_API OQS_MEM_insecure_free(void *ptr) {
+OQS_API void OQS_MEM_insecure_free(void *ptr) {
 	free(ptr); // IGNORE free-check
 }
