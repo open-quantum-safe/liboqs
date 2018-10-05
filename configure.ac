@@ -10,6 +10,7 @@ AM_PROG_LIBTOOL
 # Configure
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIRS([config])
+AC_CHECK_FUNCS(getentropy)
 
 # Set paths to external libraries.
 ADD_EXTERNAL_LIB
