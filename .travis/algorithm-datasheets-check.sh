@@ -9,9 +9,7 @@ set -e
 source $(dirname $0)/defs.sh
 
 # get the list of KEMs and signatures from the list of algorithm identifiers src/kem/kem.h and src/sig/sig.h
-# FIXME: temporarily disabling signature algorithms
-ALGS=$(grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]')
-# ALGS=$(grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]')
+ALGS=$(grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h src/sig/sig.h | grep -v 'default' | sed -e 's/^[^"]*"//' | sed -e 's/".*$//' | tr -d '[:blank:]')
 
 RET=0
 for alg in ${ALGS}; do
@@ -30,9 +28,7 @@ done
 if [[ "${RET}" == "0" ]];
 then
 	${PRINT_GREEN}
-	# FIXME: temporarily disabling signature algorithms
-	echo "Algorithm datasheet present for all algs #defined in src/kem/kem.h.";
-	# echo "Algorithm datasheet present for all algs #defined in src/kem/kem.h and src/sig/sig.h.";
+	echo "Algorithm datasheet present for all algs #defined in src/kem/kem.h and src/sig/sig.h.";
 	${PRINT_RESET}
 fi
 
