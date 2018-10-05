@@ -9,6 +9,9 @@
 #include <unistd.h>
 #include <strings.h>
 #endif
+#if defined(HAVE_GETENTROPY)
+#include <sys/random.h>
+#endif
 #include <fcntl.h>
 
 #include <oqs/oqs.h>
