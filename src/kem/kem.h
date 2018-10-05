@@ -211,7 +211,7 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
  *
  * @param[in] kem The OQS_KEM object to free.
  */
-void OQS_KEM_free(OQS_KEM *kem);
+OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_bike.h>
 #include <oqs/kem_frodokem.h>

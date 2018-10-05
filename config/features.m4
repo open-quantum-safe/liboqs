@@ -33,6 +33,10 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([aes-ni],  [aes_ni],  [USE_AES_NI])
   ARG_ENABL_SET_WRAP([openssl], [openssl], [USE_OPENSSL])
 
+  AS_IF([test "x${enable_shared}" = "xyes" ], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
+  AM_CONDITIONAL([ENABLE_SHARED],[test "x${enable_shared}" = "xyes"])
+  AC_SUBST(ENABLE_SHARED)
+
   #BIKE depends on OpenSSL
   AM_COND_IF([USE_OPENSSL],
     [ARG_DISBL_SET_WRAP([kem-bike], [kem_bike], [ENABLE_KEM_BIKE], [src/kem/bike] )],
@@ -43,8 +47,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
   ARG_DISBL_SET_WRAP([kem-newhope],  [kem_newhope],  [ENABLE_KEM_NEWHOPE],  [src/kem/newhope])
 
-  ARG_DISBL_SET_WRAP([kex-ntru], [kex_ntru],
-                     [ENABLE_KEX_NTRU], [src/kex_ntru])
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
                      [ENABLE_SIG_PICNIC], [src/sig/picnic])
   ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],

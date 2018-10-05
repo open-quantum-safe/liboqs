@@ -6,7 +6,7 @@ Summary
 
 - **Name**: SIDH
 - **Algorithm type**: key exchange
-- **Note**: SIDH is as ephemeral KEX related to the SIKE KEM (sike.org) submitted to NIST
+- **Note**: SIDH is as ephemeral key exchange algorithm related to the SIKE KEM (sike.org) submitted to NIST. It is NOT secure to use it with static keys.
 - **Main cryptographic assumption**: (supersingular) isogeny walk problem
 - **Submitters' website**: https://github.com/Microsoft/PQCrypto-SIDH
 - **Added to liboqs by**: Christian Paquin

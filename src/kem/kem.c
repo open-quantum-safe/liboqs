@@ -155,6 +155,7 @@ OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint
 		return kem->keypair(public_key, secret_key);
 	}
 }
+
 OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
@@ -162,6 +163,7 @@ OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8
 		return kem->encaps(ciphertext, shared_secret, public_key);
 	}
 }
+
 OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;

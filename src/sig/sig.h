@@ -74,7 +74,7 @@ typedef struct OQS_SIG {
 	/** Printable string representing the name of the signature scheme. */
 	const char *method_name;
 
-	/** The NIST security level (1, 2, 3, 4, 5) claimed for this algorithm. */
+	/** The NIST security level (1, 2, 3, 4, 5) claimed in this algorithm's original NIST submission. */
 	uint8_t claimed_nist_level;
 
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
@@ -142,7 +142,7 @@ typedef struct OQS_SIG {
  * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_SIG_algs`.
  * @return An OQS_SIG for the particular algorithm, or `NULL` if the algorithm has been disabled at compile-time.
  */
-OQS_SIG *OQS_SIG_new(const char *method_name);
+OQS_API OQS_SIG *OQS_SIG_new(const char *method_name);
 
 /**
  * Keypair generation algorithm.
@@ -156,7 +156,7 @@ OQS_SIG *OQS_SIG_new(const char *method_name);
  * @param[out] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key);
 
 /**
  * Signature generation algorithm.
@@ -173,7 +173,7 @@ OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *sec
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
 
 /**
  * Signature verification algorithm.
@@ -186,14 +186,14 @@ OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *signatur
  * @param[in] public_key The public key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 
 /**
  * Frees an OQS_SIG object that was constructed by OQS_SIG_new.
  *
  * @param[in] sig The OQS_SIG object to free.
  */
-void OQS_SIG_free(OQS_SIG *sig);
+OQS_API void OQS_SIG_free(OQS_SIG *sig);
 
 #include <oqs/sig_qtesla.h>
 #include <oqs/sig_picnic.h>

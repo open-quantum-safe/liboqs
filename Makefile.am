@@ -20,11 +20,6 @@ liboqs_la_LIBADD += src/crypto/rand_urandom_aesctr/librandaesctr.la
 liboqs_la_LIBADD += src/crypto/rand_urandom_chacha20/librandchacha20.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kem/libkem.la
-liboqs_la_LIBADD += src/kex/libkex.la
-if ENABLE_KEX_NTRU
-liboqs_la_LIBADD += src/kex_ntru/libntru.la
-endif
-
 liboqs_la_LIBADD += src/sig/libsig.la
 
 if ENABLE_SIG_PICNIC
@@ -57,8 +52,6 @@ installheader_HEADERS=config.h \
 	src/crypto/rand_urandom_chacha20/rand_urandom_chacha20.h \
 	src/crypto/sha3/sha3.h \
 	src/kem/kem.h \
-	src/kex/kex.h \
-	src/kex_ntru/kex_ntru.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/newhope/kem_newhope.h \
@@ -67,19 +60,25 @@ installheader_HEADERS=config.h \
 	src/sig/picnic/sig_picnic.h \
 	src/sig/qtesla/sig_qtesla.h
 
-test: check
+
+test: clean-tests check
+if ENABLE_SHARED
+	tests/example_kem
+else
 	tests/example_kem
 	tests/example_sig
 	tests/test_kem
-	tests/test_kex --quiet
 	tests/test_rand --quiet
 	tests/test_aes
 	tests/test_sha3
 	tests/test_sig
+endif
 
+if !ENABLE_SHARED
 kat: clean-kats check
 	tests/kat_kem
 	scripts/check_kats.sh
+endif
 
 links:
 	$(MKDIR_P) include/oqs
@@ -96,18 +95,15 @@ links:
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kem/newhope/kem_newhope.h include/oqs
-	cp -f src/kex/kex.h include/oqs
-	cp -f src/kex_ntru/kex_ntru.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig/picnic/sig_picnic.h include/oqs
 	cp -f src/sig/qtesla/sig_qtesla.h include/oqs
 
 clean-local:
-	rm -f liboqs.a
 	rm -rf include
 
 clean-tests:
-	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/speed_sig tests/test_kem tests/minimal_kex_oqs tests/test_kex tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
+	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/speed_sig tests/test_kem tests/test_sig tests/test_rand tests/test_aes tests/test_sha3
 
 clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/

@@ -26,7 +26,7 @@ Security
 Parameter set 1
 ---------------
 
-"qTESLA-I" parameter set from [qTesla]
+`qTESLA_I` parameter set from [qTesla]
 
 **Claimed classical security:** 
 
@@ -45,7 +45,7 @@ Parameter set 1
 Parameter set 2
 ---------------
 
-"qTESLA-III-speed" parameter set from [qTesla]
+`qTESLA_III_speed` parameter set from [qTesla]
 
 **Claimed classical security:** 
 
@@ -64,7 +64,7 @@ Parameter set 2
 Parameter set 3
 ---------------
 
-"qTESLA-III-size" parameter set from [qTesla]
+`qTESLA_III_size` parameter set from [qTesla]
 
 **Claimed classical security:** 
 
