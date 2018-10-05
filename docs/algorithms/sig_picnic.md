@@ -31,7 +31,7 @@ Implementation
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes
-- **Architectures supported in liboqs nist-branch**: x86, x64
+- **Architectures supported in liboqs master branch**: x86, x64
 
 Additional comments
 -------------------
