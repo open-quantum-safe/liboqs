@@ -12,19 +12,12 @@
 
 #include <oqs/common.h>
 
-/*********************
- *** START NEW API ***
- *********************/
-/* TODO: Consider adding NIST-KAT PRNGs from nist-branch */
-/* TODO: Decide how to do statistical testing of new PRNG */
-
 /** Algorithm identifier for system PRNG. */
 #define OQS_RAND_alg_system "system"
-/** Algorithm identifier for using OpenSSL's PRNG. */
-#define OQS_RAND_alg_openssl "OpenSSL"
 /** Algorithm identifier for NIST deterministic RNG for KATs. */
 #define OQS_RAND_alg_nist_kat "NIST-KAT"
 /** Algorithm identifier for using OpenSSL's PRNG. */
+#define OQS_RAND_alg_openssl "OpenSSL"
 
 /**
  * Switches OQS_randombytes to use the specified algorithm.
@@ -59,19 +52,6 @@ void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t));
 void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
 
 /**
- * Fills the given memory with the requested number of random bytes.
- *
- * This implementation reads the bytes directly from `/dev/urandom` and will
- * block until the requested number of bytes have been read.
- *
- * The caller is responsible for providing a buffer allocated with sufficient room.
- *
- * @param[out] random_array Pointer to the memory to fill with random bytes
- * @param[in] bytes_to_read The number of random bytes to read into memory
- */
-void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
-
-/**
  * Initializes the NIST DRBG with a given seed.
  *
  * @param[in] entropy_input The seed; must be exactly 48 bytes
@@ -79,10 +59,6 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
  * @param[in] security_strength The required security strength; must be 256
  */
 void OQS_randombytes_nist_kat_init(const uint8_t *entropy_input, const uint8_t *personalization_string, int security_strength);
-
-/********************
- *** STOP NEW API ***
- ********************/
 
 /************************************************************
  *** START DEPRECATED CODE *** expected removal Sep. 2018 ***
