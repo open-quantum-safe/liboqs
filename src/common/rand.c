@@ -9,9 +9,6 @@
 #include <unistd.h>
 #include <strings.h>
 #endif
-#if defined(HAVE_GETENTROPY)
-#include <sys/random.h>
-#endif
 #include <fcntl.h>
 
 #include <oqs/oqs.h>
@@ -60,7 +57,7 @@ static __inline void delay(unsigned int count) {
 }
 
 #if !defined(_WIN32)
-#if defined(HAVE_GETENTROPY)
+#if defined(HAVE_GETENTROPY) && !defined(__APPLE__)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 
 	int rc;
