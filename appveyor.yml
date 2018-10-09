@@ -22,7 +22,9 @@ test_script:
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\example_kem.exe
 
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\kat_kem.exe
-    
+
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\kat-check.bat
+
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\speed_kem.exe
 
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\speed_sig.exe
