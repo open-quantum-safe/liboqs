@@ -59,7 +59,7 @@ AC_CONFIG_FILES([Makefile
                  src/kem/bike/Makefile
                  src/kem/frodokem/Makefile
                  src/kem/sike/Makefile
-                 src/kem/newhope/Makefile
+                 src/kem/newhopenist/Makefile
                  tests/Makefile
                  ])
 
