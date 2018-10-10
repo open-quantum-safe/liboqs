@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 # Init
-AC_INIT([liboqs], [1.0.0], [])
+AC_INIT([liboqs], [0.1.0-rc1], [https://github.com/open-quantum-safe/liboqs/issues], [liboqs-master], [https://openquantumsafe.org/])
 
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 AM_PROG_LIBTOOL

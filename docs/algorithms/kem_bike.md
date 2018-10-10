@@ -6,7 +6,7 @@ Summary
 
 - **Name**: BIKE
 - **Algorithm type**: Key Encapsulation Mechanism
-- **Main cryptographic assumption**: Quasi Cyclic Syndrom Decoding (QCSD)
+- **Main cryptographic assumption**: Quasi-cyclic syndrome decoding (QCSD)
 - **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/BIKE.zip
 - **Submitters (to NIST competition)**: Nicolas Aragon, Paulo Barreto, Slim Bettaieb, Loic Bidoux, Olivier Blazy, Jean-Christophe Deneuville, Phillipe Gaborit, Shay Gueron, Tim Guneysu, Carlos Aguilar Melchor, Rafael Misoczki, Edoardo Persichetti, Nicolas Sendrier, Jean-Pierre Tillich, Gilles Zemor
 - **Submitters' website**: http://bikesuite.org/
