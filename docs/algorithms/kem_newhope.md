@@ -4,12 +4,12 @@ liboqs master branch algorithm datasheet: `kem_newhope`
 Summary
 -------
 
-- **Name**: NewHope 
+- **Name**: NewHope
 - **Algorithm type**: key encapsulation mechanism
 - **Main cryptographic assumption**: Ring Learning With Errors (RLWE)
-- **Scheme authors**: Thomas Pöppelmann, Erdem Alkim, Roberto Avanzi, Joppe Bos, Léo Ducas, Antonio de la Piedra, Peter Schwabe, Douglas Stebila 
+- **Scheme authors**: Thomas Pöppelmann, Erdem Alkim, Roberto Avanzi, Joppe Bos, Léo Ducas, Antonio de la Piedra, Peter Schwabe, Douglas Stebila
 - **Authors' website**: https://newhopecrypto.org/
-- **Added to liboqs by**: Shravan Mishra 
+- **Added to liboqs by**: Shravan Mishra
 
 Parameter sets
 --------------
@@ -23,9 +23,10 @@ Implementation
 --------------
 
 - **Source of implementation:** https://newhopecrypto.org/data/NewHope_2017_12_21.zip
-- **License:** 
+- **Implementation version:** https://newhopecrypto.org/data/NewHope_2017_12_21.zip
+- **License:** Public domain
 - **Language:** C
-- **Constant-time:** Yes 
+- **Constant-time:** Yes
 - **Architectures supported in liboqs master branch**: x86, x64
 
 Additional comments

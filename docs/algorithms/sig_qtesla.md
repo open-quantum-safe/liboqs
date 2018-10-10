@@ -20,14 +20,13 @@ Parameter sets
 | qTESLA_I         |    EUF-CMA     |              1              |          1504           |          2112           |          1376          |
 | qTESLA_III_size  |    EUF-CMA     |              3              |          2976           |          4160           |          2720          |
 | qTESLA_III_speed |    EUF-CMA     |              3              |          3104           |          4160           |          2848          |
-| qTESLA_p_I       |    EUF-CMA     |              1              |         14880           |          5184           |          2848          |
-| qTESLA_p_III     |    EUF-CMA     |              3              |         39712           |         12352           |          6176          |
 
 
 Implementation
 --------------
 
 - **Source of implementation:** https://github.com/qtesla/qTesla
+- **Implmentation version:** TODO
 - **License:** public domain
 - **Language:** C
 - **Constant-time:** Yes

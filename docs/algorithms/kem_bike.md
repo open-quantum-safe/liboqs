@@ -30,7 +30,8 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** This is a reference code (for functionality testing) that is based on the reference code of the Nist submission. This code was modified to use OpenSSL instead of NTL.
+- **Source of implementation:** http://bikesuite.org/#implementation
+- **Implementation version:** TODO
 - **License:** MIT License
 - **Language:** C
  **Constant-time:** No
@@ -38,9 +39,11 @@ Implementation
 
 Additional comments
 -------------------
+
+This is a reference code (for functionality testing) that is based on the reference code of the NIST submission. This code was modified to use OpenSSL instead of NTL.
+
 - The original BIKE implementation includes additional optimizations that are not currently being built in liboqs:
   - CLMUL
   - AES-NI
   - AVX2
   - AVX512
-

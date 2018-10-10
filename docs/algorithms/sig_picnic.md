@@ -28,6 +28,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/IAIK/Picnic
+- **Implementation version:** TODO
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes

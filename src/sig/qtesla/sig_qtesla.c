@@ -11,6 +11,7 @@ OQS_SIG *OQS_SIG_qTESLA_I_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_qTESLA_I;
+	sig->alg_version = "TODO";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
@@ -37,6 +38,7 @@ OQS_SIG *OQS_SIG_qTESLA_III_size_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_qTESLA_III_size;
+	sig->alg_version = "TODO";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
@@ -63,6 +65,7 @@ OQS_SIG *OQS_SIG_qTESLA_III_speed_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_qTESLA_III_speed;
+	sig->alg_version = "TODO";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;

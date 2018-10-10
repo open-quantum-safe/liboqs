@@ -41,9 +41,9 @@ The following KEMs are present in this liboqs master release:
 The following signature schemes are present in this liboqs master release:
 
 - **Picnic**: based on hash function and key recovery security of lowMC block cipher; 6 parameterizations: `picnic_L1_FS`, `picnic_L1_UR`, `picnic_L3_FS`, `picnic_L3_UR`, `picnic_L5_FS`, `picnic_L5_UR`
-- **qTESLA**, based on ring learning with errors; 5 parameterizations: `qTESLA_I`, `qTESLA_III_size`, `qTESLA_III_speed`, `qTESLA_p_I`, `qTESLA_p_I`
+- **qTESLA**, based on ring learning with errors; 3 parameterizations: `qTESLA_I`, `qTESLA_III_size`, `qTESLA_III_speed`
 
 Future work
 -----------
 
-Releases of liboqs master branch will be made every 2 to 3 months.  Deatils about the algorithm lifecycle of master branch can be found in README.md.  Plans for the next release can be found online at https://github.com/open-quantum-safe/liboqs/projects/12.
+Releases of liboqs master branch will be made every 2 to 3 months.  Details about the algorithm lifecycle of master branch can be found in README.md.  Plans for the next release can be found online at https://github.com/open-quantum-safe/liboqs/projects/12.
