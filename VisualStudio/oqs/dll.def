@@ -4,21 +4,16 @@ EXPORTS
 	OQS_randombytes_custom_algorithm
 	OQS_randombytes
 	OQS_randombytes_system
-	OQS_RAND_new
-	OQS_RAND_free
-	OQS_RAND_8
-	OQS_RAND_32
-	OQS_RAND_64
-	OQS_RAND_n
-	OQS_RAND_test_record_occurrence
-	OQS_RAND_report_statistics
+	OQS_KEM_new
+	OQS_KEM_keypair
+	OQS_KEM_encaps
+	OQS_KEM_decaps
+	OQS_KEM_free
 	OQS_SIG_new
 	OQS_SIG_keygen
 	OQS_SIG_sign
 	OQS_SIG_verify
 	OQS_SIG_free
-	OQS_print_hex_string
-	OQS_print_part_hex_string
 	OQS_MEM_cleanse
 	OQS_MEM_secure_free
 	OQS_MEM_insecure_free

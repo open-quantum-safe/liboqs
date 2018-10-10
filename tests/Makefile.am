@@ -1,10 +1,8 @@
 AUTOMAKE_OPTIONS = foreign
-if ENABLE_SHARED
-check_PROGRAMS = example_kem
-else
-check_PROGRAMS = 	example_kem speed_kem test_kem \
-	example_sig speed_sig test_sig \
-	test_aes test_rand test_sha3 kat_kem
+check_PROGRAMS = 	example_kem speed_kem test_kem kat_kem \
+	example_sig speed_sig test_sig
+if !ENABLE_SHARED
+check_PROGRAMS += test_aes test_sha3
 endif
 
 LIB_FLAGS=../liboqs.la -lm -lcrypto
@@ -15,7 +13,6 @@ speed_kem_SOURCES       = speed_kem.c
 speed_sig_SOURCES       = speed_sig.c
 test_aes_SOURCES        = test_aes.c
 test_kem_SOURCES        = test_kem.c
-test_rand_SOURCES       = test_rand.c
 test_sha3_SOURCES       = test_sha3.c
 test_sig_SOURCES        = test_sig.c
 kat_kem_SOURCES         = kat_kem.c
@@ -26,7 +23,6 @@ speed_kem_LDADD       = ${LIB_FLAGS}
 speed_sig_LDADD       = ${LIB_FLAGS}
 test_aes_LDADD        = ${LIB_FLAGS}
 test_kem_LDADD        = ${LIB_FLAGS}
-test_rand_LDADD       = ${LIB_FLAGS}
 test_sha3_LDADD       = ${LIB_FLAGS}
 test_sig_LDADD        = ${LIB_FLAGS}
 kat_kem_LDADD         = ${LIB_FLAGS}
@@ -38,7 +34,6 @@ speed_kem_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
 speed_sig_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
 test_aes_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
 test_kem_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
-test_rand_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
 test_sha3_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
 test_sig_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
 kat_kem_LDADD         += -L$(OPENSSL_DIR)/lib -lcrypto

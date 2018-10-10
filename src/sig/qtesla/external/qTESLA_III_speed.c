@@ -2775,7 +2775,7 @@ static void sparse_mul16(poly prod, const unsigned char *sk, const uint32_t pos_
 
 /********************************************************************************************
 * Name:        sparse_mul32
-* Description: performs sparse polynomial multiplication 
+* Description: performs sparse polynomial multiplication
 * Parameters:  inputs:
 *              - const int32_t* pk: part of the public key
 *              - const uint32_t pos_list[PARAM_W]: list of indices of nonzero elements in c
@@ -2804,14 +2804,14 @@ static void sparse_mul32(poly prod, const int32_t *pk, const uint32_t pos_list[P
 
 #include "qTESLA_api.c"
 
-int OQS_SIG_qTESLA_III_speed_keypair(unsigned char *pk, unsigned char *sk) {
+OQS_API int OQS_SIG_qTESLA_III_speed_keypair(unsigned char *pk, unsigned char *sk) {
 	return crypto_sign_keypair(pk, sk);
 }
 
-int OQS_SIG_qTESLA_III_speed_sign(unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
+OQS_API int OQS_SIG_qTESLA_III_speed_sign(unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
 	return crypto_sign(sm, smlen, m, mlen, sk);
 }
 
-int OQS_SIG_qTESLA_III_speed_verify(unsigned char *m, unsigned long long mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
+OQS_API int OQS_SIG_qTESLA_III_speed_verify(unsigned char *m, unsigned long long mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
 	return crypto_verify(m, mlen, sm, smlen, pk);
 }

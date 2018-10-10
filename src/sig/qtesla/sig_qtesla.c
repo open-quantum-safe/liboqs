@@ -4,7 +4,7 @@
 
 #ifdef OQS_ENABLE_SIG_qTESLA_I
 
-OQS_SIG *OQS_SIG_qTESLA_I_new() {
+OQS_API OQS_SIG *OQS_SIG_qTESLA_I_new() {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -30,7 +30,7 @@ OQS_SIG *OQS_SIG_qTESLA_I_new() {
 
 #ifdef OQS_ENABLE_SIG_qTESLA_III_size
 
-OQS_SIG *OQS_SIG_qTESLA_III_size_new() {
+OQS_API OQS_SIG *OQS_SIG_qTESLA_III_size_new() {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -56,7 +56,7 @@ OQS_SIG *OQS_SIG_qTESLA_III_size_new() {
 
 #ifdef OQS_ENABLE_SIG_qTESLA_III_speed
 
-OQS_SIG *OQS_SIG_qTESLA_III_speed_new() {
+OQS_API OQS_SIG *OQS_SIG_qTESLA_III_speed_new() {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {

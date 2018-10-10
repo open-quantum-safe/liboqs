@@ -32,25 +32,3 @@ OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 OQS_API void OQS_MEM_insecure_free(void *ptr) {
 	free(ptr); // IGNORE free-check
 }
-
-/* Displays hexadecimal strings */
-void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
-	printf("%-20s (%4zu bytes):  ", label, len);
-	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
-	}
-	printf("\n");
-}
-
-/* Partially displays hexadecimal strings */
-void OQS_print_part_hex_string(const char *label, const uint8_t *str, size_t len, size_t sub_len) {
-	printf("%-20s (%4zu bytes):  ", label, len);
-	for (size_t i = 0; i < (sub_len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
-	}
-	printf("...");
-	for (size_t i = 0; i < (sub_len); i++) {
-		printf("%02X", ((unsigned char *) (str))[len - sub_len + i]);
-	}
-	printf("\n");
-}
