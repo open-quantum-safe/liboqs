@@ -36,7 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
-    <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h" />
+    <ClInclude Include="..\..\src\kem\newhopenist\kem_newhopenist.h" />
     <ClInclude Include="..\..\src\kem\kem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h" />
@@ -87,10 +87,10 @@
     <ClCompile Include="..\..\src\kem\frodokem\frodo976_cshake.c" />
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\util.c" />
-    <ClCompile Include="..\..\src\kem\newhope\kem_newhope.c" />
+    <ClCompile Include="..\..\src\kem\newhopenist\kem_newhopenist.c" />
     <ClCompile Include="..\..\src\kem\kem.c" />
-    <ClCompile Include="..\..\src\kem\newhope\win_newhope1024cca.c" />
-    <ClCompile Include="..\..\src\kem\newhope\win_newhope512cca.c" />
+    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope1024cca.c" />
+    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope512cca.c" />
     <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
     <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
     <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
@@ -243,7 +243,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhope</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -261,7 +261,7 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -276,7 +276,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhope</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -295,7 +295,7 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -310,7 +310,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhope</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
@@ -329,7 +329,7 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -349,7 +349,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhope</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
@@ -370,7 +370,7 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -390,7 +390,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhope</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -410,7 +410,7 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -427,7 +427,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhope</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -448,7 +448,7 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -465,7 +465,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhope</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
@@ -486,7 +486,7 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -508,7 +508,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhope</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
@@ -531,7 +531,7 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
