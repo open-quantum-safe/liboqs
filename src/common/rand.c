@@ -8,9 +8,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <strings.h>
+#include <sys/random.h>
 #endif
 #include <fcntl.h>
-#include <sys/random.h>
 
 #include <oqs/oqs.h>
 
