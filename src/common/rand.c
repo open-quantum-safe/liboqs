@@ -8,7 +8,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <strings.h>
+#if defined(__APPLE__)
 #include <sys/random.h>
+#else
+#include <unistd.h>
+#endif
 #endif
 #include <fcntl.h>
 
