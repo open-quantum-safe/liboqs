@@ -16,6 +16,20 @@
 #endif
 
 /**
+ * Defines which functions should be exposed outside the LibOQS library
+ *
+ * By default the visibility of all the symbols is defined to "hidden"
+ * Only the library API should be marked as default
+ *
+ * Example: OQS_API return_value function_name(void);
+ */
+#if defined(_WIN32)
+#define OQS_API
+#else
+#define OQS_API __attribute__((visibility("default")))
+#endif
+
+/**
  * Represents return values from functions.
  *
  * Callers should compare with the symbol rather than the individual value.
@@ -53,7 +67,7 @@ typedef enum {
  * @param[in] ptr The start of the memory to zero out.
  * @param[in] len The number of bytes to zero out.
  */
-void OQS_MEM_cleanse(void *ptr, size_t len);
+OQS_API void OQS_MEM_cleanse(void *ptr, size_t len);
 
 /**
  * Zeros out `len` bytes of memory starting at `ptr`, then frees `ptr`.
@@ -66,7 +80,7 @@ void OQS_MEM_cleanse(void *ptr, size_t len);
  * @param[in] ptr The start of the memory to zero out and free.
  * @param[in] len The number of bytes to zero out.
  */
-void OQS_MEM_secure_free(void *ptr, size_t len);
+OQS_API void OQS_MEM_secure_free(void *ptr, size_t len);
 
 /**
  * Frees `ptr`.
@@ -77,7 +91,7 @@ void OQS_MEM_secure_free(void *ptr, size_t len);
  *
  * @param[in] ptr The start of the memory to free.
  */
-void OQS_MEM_insecure_free(void *ptr);
+OQS_API void OQS_MEM_insecure_free(void *ptr);
 
 /**
  * Macros that indicates a function argument may be unused.  Used to comply with
@@ -89,20 +103,6 @@ void OQS_MEM_insecure_free(void *ptr);
 // __attribute__ not supported in VS
 #else
 #define UNUSED __attribute__((unused))
-#endif
-
-/**
- * Defines which functions should be exposed outside the LibOQS library
- *
- * By default the visibility of all the symbols is defined to "hidden"
- * Only the library API should be marked as default
- *
- * Example: OQS_API return_value function_name(void);
- */
-#if defined(_WIN32)
-#define OQS_API
-#else
-#define OQS_API __attribute__((visibility("default")))
 #endif
 
 #endif // __OQS_COMMON_H
