@@ -3,7 +3,7 @@ noinst_LTLIBRARIES  = libkemnewhopenist.la
 noinst_LTLIBRARIES += libkemnewhopenist_512_cca.la libkemnewhopenist_1024_cca.la
 
 libkemnewhopenist_la_LIBADD = libkemnewhopenist_512_cca.la libkemnewhopenist_1024_cca.la
-libkemnewhopenist_la_SOURCES = kem_newhope.c
+libkemnewhopenist_la_SOURCES = kem_newhopenist.c
 
 COMMON_FLAGS = $(AM_CFLAGS) -include functions_renaming.h
 libkemnewhopenist_la_CFLAGS = $(COMMON_FLAGS)
