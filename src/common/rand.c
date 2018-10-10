@@ -10,6 +10,7 @@
 #include <strings.h>
 #endif
 #include <fcntl.h>
+#include <sys/random.h>
 
 #include <oqs/oqs.h>
 
@@ -51,13 +52,8 @@ void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	oqs_randombytes_algorithm(random_array, bytes_to_read);
 }
 
-static __inline void delay(unsigned int count) {
-	while (count--) {
-	}
-}
-
 #if !defined(_WIN32)
-#if defined(HAVE_GETENTROPY) && !defined(__APPLE__)
+#if defined(HAVE_GETENTROPY)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 
 	int rc;
@@ -66,6 +62,11 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	} while (rc != 0);
 }
 #else
+static __inline void delay(unsigned int count) {
+	while (count--) {
+	}
+}
+
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 
 	FILE *handle;
