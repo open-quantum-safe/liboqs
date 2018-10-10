@@ -61,10 +61,10 @@
 #define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
 /** Algorithm identifier for BIKE1-L1 KEM. */
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
-/** Algorithm identifier for NewHope512-CCA-KEM KEM. */
-#define OQS_KEM_alg_newhope_512_cca_kem "NewHope512-CCA-KEM"
-/** Algorithm identifier for NewHope1024-CCA-KEM KEM. */
-#define OQS_KEM_alg_newhope_1024_cca_kem "NewHope1024-CCA-KEM"
+/** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
+/** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
 #define OQS_KEM_algs_length 20
