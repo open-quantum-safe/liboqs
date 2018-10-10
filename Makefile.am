@@ -100,4 +100,4 @@ clean-kats:
 prettyprint:
 	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | xargs $(CLANGFORMAT) -style=file -i
 
-docs: doxygen-run
+docs: links doxygen-run
