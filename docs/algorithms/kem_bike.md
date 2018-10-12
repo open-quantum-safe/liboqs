@@ -31,19 +31,14 @@ Implementation
 --------------
 
 - **Source of implementation:** http://bikesuite.org/#implementation
-- **Implementation version:** TODO
+- **Implementation version:** 1.0.0
 - **License:** MIT License
 - **Language:** C
- **Constant-time:** No
- **Architectures supported in liboqs nist-branch**: x86, x64
+- **Constant-time:** No
+- **Architectures supported in liboqs nist-branch**: x86, x64
 
 Additional comments
 -------------------
-
-This is a reference code (for functionality testing) that is based on the reference code of the NIST submission. This code was modified to use OpenSSL instead of NTL.
-
-- The original BIKE implementation includes additional optimizations that are not currently being built in liboqs:
-  - CLMUL
-  - AES-NI
-  - AVX2
-  - AVX512
+- LibOQS includes both the reference implementation and the additional implementation of BIKE from http://bikesuite.org/#implementation. The additional implementation is automatically being chosen once compiling LibOQS on a x64 Linux OS with AVX2/512 support.
+- The reference code has been modified to use OpenSSL instead of NTL.
+- The secret key size might vary between the two implementations.
