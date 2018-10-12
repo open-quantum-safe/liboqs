@@ -61,10 +61,10 @@
 #define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
 /** Algorithm identifier for BIKE1-L1 KEM. */
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
-/** Algorithm identifier for NEWHOPE_512CCA KEM. */
-#define OQS_KEM_alg_newhope_512cca "NEWHOPE-512CCA"
-/** Algorithm identifier for NEWHOPE_1024CCA KEM. */
-#define OQS_KEM_alg_newhope_1024cca "NEWHOPE-1024CCA"
+/** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
+/** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
 #define OQS_KEM_algs_length 20
@@ -216,7 +216,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_bike.h>
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_sike.h>
-#include <oqs/kem_newhope.h>
+#include <oqs/kem_newhopenist.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H

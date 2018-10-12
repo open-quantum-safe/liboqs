@@ -9,9 +9,9 @@
 #define CRYPTO_BYTES NEWHOPE_SYMBYTES
 
 #if (NEWHOPE_N == 512)
-#define CRYPTO_ALGNAME "NewHope512-CCAKEM"
+#define CRYPTO_ALGNAME "NewHope-512-CCA-KEM"
 #elif (NEWHOPE_N == 1024)
-#define CRYPTO_ALGNAME "NewHope1024-CCAKEM"
+#define CRYPTO_ALGNAME "NewHope-1024-CCA-KEM"
 #else
 #error "NEWHOPE_N must be either 512 or 1024"
 #endif
