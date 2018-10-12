@@ -16,12 +16,6 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c">
       <Filter>crypto</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.c">
-      <Filter>crypto</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.c">
-      <Filter>crypto</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c">
       <Filter>crypto</Filter>
     </ClCompile>
@@ -115,17 +109,17 @@
     <ClCompile Include="..\..\src\kem\sike\P751\P751.c">
       <Filter>sike</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\newhope\kem_newhope.c">
-      <Filter>newhope</Filter>
+    <ClCompile Include="..\..\src\kem\newhopenist\kem_newhopenist.c">
+      <Filter>newhopenist</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\common\rand_nist.c">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\newhope\win_newhope512cca.c">
-      <Filter>newhope</Filter>
+    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope512cca.c">
+      <Filter>newhopenist</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\newhope\win_newhope1024cca.c">
-      <Filter>newhope</Filter>
+    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope1024cca.c">
+      <Filter>newhopenist</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,12 +138,6 @@
       <Filter>crypto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h">
-      <Filter>crypto</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h">
-      <Filter>crypto</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h">
       <Filter>crypto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sig\sig.h">
@@ -239,8 +227,8 @@
     <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h">
       <Filter>sike</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h">
-      <Filter>newhope</Filter>
+    <ClInclude Include="..\..\src\kem\newhopenist\kem_newhopenist.h">
+      <Filter>newhopenist</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -268,7 +256,7 @@
     <Filter Include="sike">
       <UniqueIdentifier>{620a9f8e-2013-4cb3-ad37-2ee4348ed893}</UniqueIdentifier>
     </Filter>
-    <Filter Include="newhope">
+    <Filter Include="newhopenist">
       <UniqueIdentifier>{cb72ff2d-77c6-4e60-a04e-6aad5fc6c328}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

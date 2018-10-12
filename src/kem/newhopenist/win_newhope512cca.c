@@ -1,7 +1,7 @@
-/* newhope 512cca compilation file for Windows */
+/* NewHope-512-CCA-KEM compilation file for Windows */
 
-#define NEWHOPE_N 1024
-#define FUNC_PREFIX OQS_KEM_newhope_1024cca
+#define NEWHOPE_N 512
+#define FUNC_PREFIX OQS_KEM_newhope_512_cca_kem
 
 #include "functions_renaming.h"
 #include "optimized\cpapke.c"

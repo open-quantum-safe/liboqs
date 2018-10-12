@@ -17,7 +17,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	    OQS_KEM_alg_bike1_l1, OQS_KEM_alg_bike1_l3, OQS_KEM_alg_bike1_l5,
 	    OQS_KEM_alg_bike2_l1, OQS_KEM_alg_bike2_l3, OQS_KEM_alg_bike2_l5,
 	    OQS_KEM_alg_bike3_l1, OQS_KEM_alg_bike3_l3, OQS_KEM_alg_bike3_l5,
-	    OQS_KEM_alg_newhope_512cca, OQS_KEM_alg_newhope_1024cca};
+	    OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem};
 	if (i >= OQS_KEM_algs_length) {
 		return NULL;
 	} else {
@@ -130,15 +130,15 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_512cca)) {
-#ifdef OQS_ENABLE_KEM_newhope_512cca
-		return OQS_KEM_newhope_512cca_new();
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_512_cca_kem)) {
+#ifdef OQS_ENABLE_KEM_newhope_512_cca_kem
+		return OQS_KEM_newhope_512_cca_kem_new();
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_1024cca)) {
-#ifdef OQS_ENABLE_KEM_newhope_1024cca
-		return OQS_KEM_newhope_1024cca_new();
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_1024_cca_kem)) {
+#ifdef OQS_ENABLE_KEM_newhope_1024_cca_kem
+		return OQS_KEM_newhope_1024_cca_kem_new();
 #else
 		return NULL;
 #endif
