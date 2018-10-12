@@ -36,7 +36,7 @@ static OQS_STATUS example_stack() {
 	size_t signed_message_len;
 	size_t opened_message_len;
 
-	OQS_randombytes(message, MESSAGE_LEN);
+	OQS_randombytes(message, message_len);
 
 	rc = OQS_SIG_qTESLA_I_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {

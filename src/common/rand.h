@@ -10,7 +10,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <oqs/oqs.h>
+#include <oqs/common.h>
 
 /** Algorithm identifier for system PRNG. */
 #define OQS_RAND_alg_system "system"

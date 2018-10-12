@@ -4,9 +4,9 @@
 
 #include <oqs/oqs.h>
 
-char *OQS_KEM_alg_identifier(size_t i) {
+OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-KEM
-	char *a[OQS_KEM_algs_length] = {
+	const char *a[OQS_KEM_algs_length] = {
 	    OQS_KEM_alg_default,
 	    OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake,
 	    OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem,
@@ -25,7 +25,7 @@ char *OQS_KEM_alg_identifier(size_t i) {
 	}
 }
 
-OQS_KEM *OQS_KEM_new(const char *method_name) {
+OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	if (0 == strcasecmp(method_name, OQS_KEM_alg_default)) {
 		return OQS_KEM_new(OQS_KEM_DEFAULT);
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_640_aes)) {
@@ -304,7 +304,7 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 	}
 }
 
-OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -312,7 +312,7 @@ OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *sec
 	}
 }
 
-OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -320,7 +320,7 @@ OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shar
 	}
 }
 
-OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -328,6 +328,6 @@ OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsi
 	}
 }
 
-void OQS_KEM_free(OQS_KEM *kem) {
+OQS_API void OQS_KEM_free(OQS_KEM *kem) {
 	OQS_MEM_insecure_free(kem);
 }

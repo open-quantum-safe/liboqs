@@ -8,11 +8,7 @@
 # - CC_OVERRIDE: whatever compiler you want to use
 ###
 
-set -e
-
-PRINT_GREEN="tput setaf 2"
-PRINT_RED="tput setaf 1"
-PRINT_RESET="tput sgr 0"
+source $(dirname $0)/defs.sh
 
 # see what has been modified (ignoring submodules because they are likely patched)
 MODIFIED=$(git status -s)

@@ -1,7 +1,10 @@
 #!/bin/bash
-#
+
+###
 # Install clang-format on Linux
-#
+###
+
+set -e
 
 if [ ! -x "$(which clang-format-3.9)" ]; then
 	sudo add-apt-repository 'deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.9 main'
