@@ -27,14 +27,24 @@
 
 /** Algorithm identifier for default KEM algorithm. */
 #define OQS_KEM_alg_default "DEFAULT"
-/** Algorithm identifier for Sike p503 KEM. */
-#define OQS_KEM_alg_sike_p503 "Sike-p503"
-/** Algorithm identifier for Sike p751 KEM. */
-#define OQS_KEM_alg_sike_p751 "Sike-p751"
-/** Algorithm identifier for Sidh p503 KEM. */
-#define OQS_KEM_alg_sidh_p503 "Sidh-p503"
-/** Algorithm identifier for Sidh p751 KEM. */
-#define OQS_KEM_alg_sidh_p751 "Sidh-p751"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
+/** Algorithm identifier for BIKE1-L3 KEM. */
+#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
+/** Algorithm identifier for BIKE1-L5 KEM. */
+#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
+/** Algorithm identifier for BIKE2-L1 KEM. */
+#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
+/** Algorithm identifier for BIKE2-L3 KEM. */
+#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
+/** Algorithm identifier for BIKE2-L5 KEM. */
+#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
+/** Algorithm identifier for BIKE3-L1 KEM. */
+#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
+/** Algorithm identifier for BIKE3-L3 KEM. */
+#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
+/** Algorithm identifier for BIKE3-L5 KEM. */
+#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
 /** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
@@ -43,28 +53,18 @@
 #define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
 /** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
 #define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 /** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
 /** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
+/** Algorithm identifier for Sidh p503 KEM. */
+#define OQS_KEM_alg_sidh_p503 "Sidh-p503"
+/** Algorithm identifier for Sidh p751 KEM. */
+#define OQS_KEM_alg_sidh_p751 "Sidh-p751"
+/** Algorithm identifier for Sike p503 KEM. */
+#define OQS_KEM_alg_sike_p503 "Sike-p503"
+/** Algorithm identifier for Sike p751 KEM. */
+#define OQS_KEM_alg_sike_p751 "Sike-p751"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
 #define OQS_KEM_algs_length 20
@@ -223,8 +223,8 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_bike.h>
 #include <oqs/kem_frodokem.h>
-#include <oqs/kem_sike.h>
 #include <oqs/kem_newhopenist.h>
+#include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H

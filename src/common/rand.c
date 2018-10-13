@@ -24,7 +24,7 @@ void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
 #ifdef USE_OPENSSL
 #include <openssl/rand.h>
 // Use OpenSSL's RAND_bytes as the default PRNG
-static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = (void (*)(uint8_t *, size_t)) & RAND_bytes;
+static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_openssl;
 #else
 static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
 #endif
@@ -38,7 +38,7 @@ OQS_API OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 		return OQS_SUCCESS;
 	} else if (0 == strcasecmp(OQS_RAND_alg_openssl, algorithm)) {
 #ifdef USE_OPENSSL
-		oqs_randombytes_algorithm = (void (*)(uint8_t *, size_t)) & RAND_bytes;
+		oqs_randombytes_algorithm = &OQS_randombytes_openssl;
 		return OQS_SUCCESS;
 #else
 		return OQS_ERROR;
@@ -105,5 +105,14 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 		assert(0); // no other way to return an error; better fail than return bad random data
 	}
 	CryptReleaseContext(hCryptProv, 0);
+}
+#endif
+
+#ifdef USE_OPENSSL
+void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read) {
+	int rc;
+	do {
+		rc = RAND_bytes(random_array, bytes_to_read);
+	} while (rc != 1);
 }
 #endif
