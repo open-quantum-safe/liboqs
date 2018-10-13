@@ -20,6 +20,9 @@
 
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
 void OQS_randombytes_nist_kat(uint8_t *random_array, size_t bytes_to_read);
+#ifdef USE_OPENSSL
+void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read);
+#endif
 
 #ifdef USE_OPENSSL
 #include <openssl/rand.h>
