@@ -23,6 +23,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://newhopecrypto.org/data/NewHope_2017_12_21.zip
+- **Implementation version:** https://newhopecrypto.org/data/NewHope_2017_12_21.zip
 - **License:**
 - **Language:** C
 - **Constant-time:** Yes

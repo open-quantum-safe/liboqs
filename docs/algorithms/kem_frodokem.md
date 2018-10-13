@@ -25,6 +25,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE
+- **Implementation version:** https://github.com/Microsoft/PQCrypto-LWEKE/commit/47da00a91270b6f103232314eef0b891b83bfd3b
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes
