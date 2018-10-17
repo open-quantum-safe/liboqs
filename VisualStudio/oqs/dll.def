@@ -1,19 +1,33 @@
 LIBRARY oqs
 EXPORTS
+	OQS_MEM_cleanse
+	OQS_MEM_secure_free
+	OQS_MEM_insecure_free
 	OQS_randombytes_switch_algorithm
 	OQS_randombytes_custom_algorithm
 	OQS_randombytes
-	OQS_randombytes_system
+	OQS_randombytes_nist_kat_init
+	OQS_KEM_frodokem_640_aes_keypair
+	OQS_KEM_frodokem_640_aes_encaps
+	OQS_KEM_frodokem_640_aes_decaps
+	OQS_KEM_frodokem_976_aes_keypair
+	OQS_KEM_frodokem_976_aes_encaps
+	OQS_KEM_frodokem_976_aes_decaps
+	OQS_KEM_frodokem_640_cshake_keypair
+	OQS_KEM_frodokem_640_cshake_encaps
+	OQS_KEM_frodokem_640_cshake_decaps
+	OQS_KEM_frodokem_976_cshake_keypair
+	OQS_KEM_frodokem_976_cshake_encaps
+	OQS_KEM_frodokem_976_cshake_decaps
+	OQS_KEM_alg_identifier
 	OQS_KEM_new
 	OQS_KEM_keypair
 	OQS_KEM_encaps
 	OQS_KEM_decaps
 	OQS_KEM_free
+	OQS_SIG_alg_identifier
 	OQS_SIG_new
-	OQS_SIG_keygen
+	OQS_SIG_keypair
 	OQS_SIG_sign
 	OQS_SIG_verify
 	OQS_SIG_free
-	OQS_MEM_cleanse
-	OQS_MEM_secure_free
-	OQS_MEM_insecure_free
