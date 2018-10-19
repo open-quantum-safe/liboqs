@@ -257,8 +257,8 @@ EXIT:
 //               ct is a key encapsulation message (ciphertext),
 //               ss is the shared secret.
 OQS_API OQS_STATUS encaps(OUT unsigned char *ct,
-                  OUT unsigned char *ss,
-                  IN const unsigned char *pk) {
+                          OUT unsigned char *ss,
+                          IN const unsigned char *pk) {
 	DMSG("  Enter crypto_kem_enc.\n");
 
 	OQS_STATUS res = OQS_SUCCESS;
@@ -323,8 +323,8 @@ EXIT:
 //               sk is the private key,
 //               ss is the shared secret
 OQS_API OQS_STATUS decaps(OUT unsigned char *ss,
-                  IN const unsigned char *ct,
-                  IN const unsigned char *sk) {
+                          IN const unsigned char *ct,
+                          IN const unsigned char *sk) {
 	DMSG("  Enter crypto_kem_dec.\n");
 	OQS_STATUS res = OQS_SUCCESS;
 

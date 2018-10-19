@@ -109,5 +109,4 @@ OQS_API OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, co
 	OQS_SHA3_shake256(ss, NEWHOPE_SYMBYTES, k_coins_d, 2 * NEWHOPE_SYMBYTES);                              /* hash concatenation of pre-k and h(c) to k */
 
 	return (OQS_STATUS) -fail;
-
 }
