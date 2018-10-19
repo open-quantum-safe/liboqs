@@ -11,6 +11,7 @@ OQS_KEM *OQS_KEM_frodokem_640_aes_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_frodokem_640_aes;
+	kem->alg_version = "https://github.com/Microsoft/PQCrypto-LWEKE/commit/47da00a91270b6f103232314eef0b891b83bfd3b";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -38,6 +39,7 @@ OQS_KEM *OQS_KEM_frodokem_976_aes_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_frodokem_976_aes;
+	kem->alg_version = "https://github.com/Microsoft/PQCrypto-LWEKE/commit/47da00a91270b6f103232314eef0b891b83bfd3b";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -65,6 +67,7 @@ OQS_KEM *OQS_KEM_frodokem_640_cshake_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_frodokem_640_cshake;
+	kem->alg_version = "https://github.com/Microsoft/PQCrypto-LWEKE/commit/47da00a91270b6f103232314eef0b891b83bfd3b";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -92,6 +95,7 @@ OQS_KEM *OQS_KEM_frodokem_976_cshake_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_frodokem_976_cshake;
+	kem->alg_version = "https://github.com/Microsoft/PQCrypto-LWEKE/commit/47da00a91270b6f103232314eef0b891b83bfd3b";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;

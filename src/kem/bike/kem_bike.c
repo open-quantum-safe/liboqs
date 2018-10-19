@@ -4,6 +4,9 @@
 
 #ifdef OQS_ENABLE_KEM_bike1_l1
 
+// TODO: can't reliably provide a BIKE base version as code included in libOQS
+//       doesn't match the NIST PQ submission zip, or the BIKE website.
+
 OQS_KEM *OQS_KEM_bike1_l1_new() {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
@@ -11,6 +14,7 @@ OQS_KEM *OQS_KEM_bike1_l1_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike1_l1;
+	kem->alg_version = "TODO";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = false;
@@ -38,6 +42,7 @@ OQS_KEM *OQS_KEM_bike1_l3_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike1_l3;
+	kem->alg_version = "TODO";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = false;
@@ -65,6 +70,7 @@ OQS_KEM *OQS_KEM_bike1_l5_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike1_l5;
+	kem->alg_version = "TODO";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
@@ -92,6 +98,7 @@ OQS_KEM *OQS_KEM_bike2_l1_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike2_l1;
+	kem->alg_version = "TODO";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
@@ -119,6 +126,7 @@ OQS_KEM *OQS_KEM_bike2_l3_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike2_l3;
+	kem->alg_version = "TODO";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
@@ -146,6 +154,7 @@ OQS_KEM *OQS_KEM_bike2_l5_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike2_l5;
+	kem->alg_version = "TODO";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
@@ -173,6 +182,7 @@ OQS_KEM *OQS_KEM_bike3_l1_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike3_l1;
+	kem->alg_version = "TODO";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
@@ -200,6 +210,7 @@ OQS_KEM *OQS_KEM_bike3_l3_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike3_l3;
+	kem->alg_version = "TODO";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
@@ -227,6 +238,7 @@ OQS_KEM *OQS_KEM_bike3_l5_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike3_l5;
+	kem->alg_version = "TODO";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;

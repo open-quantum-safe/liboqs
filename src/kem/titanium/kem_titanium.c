@@ -11,6 +11,7 @@ OQS_KEM *OQS_KEM_titanium_cca_std_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_titanium_cca_std_kem;
+	kem->alg_version = "https://github.com/raykzhao/Titanium/tree/a7547ad486e7220e1d9ffac7a76fe260dfa36cc3";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -39,6 +40,7 @@ OQS_KEM *OQS_KEM_titanium_cca_hi_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_titanium_cca_hi_kem;
+	kem->alg_version = "https://github.com/raykzhao/Titanium/tree/a7547ad486e7220e1d9ffac7a76fe260dfa36cc3";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -66,6 +68,7 @@ OQS_KEM *OQS_KEM_titanium_cca_med_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_titanium_cca_med_kem;
+	kem->alg_version = "https://github.com/raykzhao/Titanium/tree/a7547ad486e7220e1d9ffac7a76fe260dfa36cc3";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -93,6 +96,7 @@ OQS_KEM *OQS_KEM_titanium_cca_super_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_titanium_cca_super_kem;
+	kem->alg_version = "https://github.com/raykzhao/Titanium/tree/a7547ad486e7220e1d9ffac7a76fe260dfa36cc3";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;

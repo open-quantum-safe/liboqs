@@ -27,7 +27,7 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** https://lima-pq.github.io/ optimized implementation
+- **Source of implementation:** https://lima-pq.github.io/ optimized implementation   (commit: c660c24db8ddbdce097a2bb19059c6896ef1c27c)
 - **License:** Public domain
 - **Language:** C
 - **Constant-time:** Unknown

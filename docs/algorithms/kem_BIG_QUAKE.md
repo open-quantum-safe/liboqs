@@ -24,7 +24,7 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:**  https://bigquake.inria.fr/
+- **Source of implementation:**  https://bigquake.inria.fr/files/2018/03/BIGQUAKE-source.tar.gz (reference implementation)
 - **License:** Public domain
 - **Language:** C
 - **Constant-time:** Yes
