@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_bike1_l1_new() {
 	kem->method_name = OQS_KEM_alg_bike1_l1;
 #if defined(OQS_KEM_BIKE_REFERENCE_IMPLEMENTATION)
 	kem->alg_version = "Reference - 06/29/2018";
-#elif defined(DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
+#elif defined(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
 	kem->alg_version = "Additional - 05/23/2018";
 #else
 #error "BIKE version macro not specified correctly"
@@ -47,7 +47,7 @@ OQS_KEM *OQS_KEM_bike1_l3_new() {
 	kem->method_name = OQS_KEM_alg_bike1_l3;
 #if defined(OQS_KEM_BIKE_REFERENCE_IMPLEMENTATION)
 	kem->alg_version = "Reference - 06/29/2018";
-#elif defined(DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
+#elif defined(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
 	kem->alg_version = "Additional - 05/23/2018";
 #else
 #error "BIKE version macro not specified correctly"
@@ -81,7 +81,7 @@ OQS_KEM *OQS_KEM_bike1_l5_new() {
 	kem->method_name = OQS_KEM_alg_bike1_l5;
 #if defined(OQS_KEM_BIKE_REFERENCE_IMPLEMENTATION)
 	kem->alg_version = "Reference - 06/29/2018";
-#elif defined(DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
+#elif defined(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
 	kem->alg_version = "Additional - 05/23/2018";
 #else
 #error "BIKE version macro not specified correctly"
@@ -115,7 +115,7 @@ OQS_KEM *OQS_KEM_bike2_l1_new() {
 	kem->method_name = OQS_KEM_alg_bike2_l1;
 #if defined(OQS_KEM_BIKE_REFERENCE_IMPLEMENTATION)
 	kem->alg_version = "Reference - 06/29/2018";
-#elif defined(DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
+#elif defined(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
 	kem->alg_version = "Additional - 05/23/2018";
 #else
 #error "BIKE version macro not specified correctly"
@@ -149,7 +149,7 @@ OQS_KEM *OQS_KEM_bike2_l3_new() {
 	kem->method_name = OQS_KEM_alg_bike2_l3;
 #if defined(OQS_KEM_BIKE_REFERENCE_IMPLEMENTATION)
 	kem->alg_version = "Reference - 06/29/2018";
-#elif defined(DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
+#elif defined(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
 	kem->alg_version = "Additional - 05/23/2018";
 #else
 #error "BIKE version macro not specified correctly"
@@ -183,7 +183,7 @@ OQS_KEM *OQS_KEM_bike2_l5_new() {
 	kem->method_name = OQS_KEM_alg_bike2_l5;
 #if defined(OQS_KEM_BIKE_REFERENCE_IMPLEMENTATION)
 	kem->alg_version = "Reference - 06/29/2018";
-#elif defined(DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
+#elif defined(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
 	kem->alg_version = "Additional - 05/23/2018";
 #else
 #error "BIKE version macro not specified correctly"
@@ -217,7 +217,7 @@ OQS_KEM *OQS_KEM_bike3_l1_new() {
 	kem->method_name = OQS_KEM_alg_bike3_l1;
 #if defined(OQS_KEM_BIKE_REFERENCE_IMPLEMENTATION)
 	kem->alg_version = "Reference - 06/29/2018";
-#elif defined(DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
+#elif defined(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
 	kem->alg_version = "Additional - 05/23/2018";
 #else
 #error "BIKE version macro not specified correctly"
@@ -251,7 +251,7 @@ OQS_KEM *OQS_KEM_bike3_l3_new() {
 	kem->method_name = OQS_KEM_alg_bike3_l3;
 #if defined(OQS_KEM_BIKE_REFERENCE_IMPLEMENTATION)
 	kem->alg_version = "Reference - 06/29/2018";
-#elif defined(DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
+#elif defined(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
 	kem->alg_version = "Additional - 05/23/2018";
 #else
 #error "BIKE version macro not specified correctly"
@@ -285,7 +285,7 @@ OQS_KEM *OQS_KEM_bike3_l5_new() {
 	kem->method_name = OQS_KEM_alg_bike3_l5;
 #if defined(OQS_KEM_BIKE_REFERENCE_IMPLEMENTATION)
 	kem->alg_version = "Reference - 06/29/2018";
-#elif defined(DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
+#elif defined(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
 	kem->alg_version = "Additional - 05/23/2018";
 #else
 #error "BIKE version macro not specified correctly"
