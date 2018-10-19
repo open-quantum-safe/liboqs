@@ -6,33 +6,6 @@ EXPORTS
 	OQS_KEM_encaps
 	OQS_KEM_decaps
 	OQS_KEM_free
-	OQS_KEM_bike1_l1_decaps
-	OQS_KEM_bike1_l1_encaps
-	OQS_KEM_bike1_l1_keypair
-	OQS_KEM_bike1_l3_decaps
-	OQS_KEM_bike1_l3_encaps
-	OQS_KEM_bike1_l3_keypair
-	OQS_KEM_bike1_l5_decaps
-	OQS_KEM_bike1_l5_encaps
-	OQS_KEM_bike1_l5_keypair
-	OQS_KEM_bike2_l1_decaps
-	OQS_KEM_bike2_l1_encaps
-	OQS_KEM_bike2_l1_keypair
-	OQS_KEM_bike2_l3_decaps
-	OQS_KEM_bike2_l3_encaps
-	OQS_KEM_bike2_l3_keypair
-	OQS_KEM_bike2_l5_decaps
-	OQS_KEM_bike2_l5_encaps
-	OQS_KEM_bike2_l5_keypair
-	OQS_KEM_bike3_l1_decaps
-	OQS_KEM_bike3_l1_encaps
-	OQS_KEM_bike3_l1_keypair
-	OQS_KEM_bike3_l3_decaps
-	OQS_KEM_bike3_l3_encaps
-	OQS_KEM_bike3_l3_keypair
-	OQS_KEM_bike3_l5_decaps
-	OQS_KEM_bike3_l5_encaps
-	OQS_KEM_bike3_l5_keypair
 	OQS_KEM_frodokem_640_aes_decaps
 	OQS_KEM_frodokem_640_aes_encaps
 	OQS_KEM_frodokem_640_aes_keypair
@@ -51,12 +24,6 @@ EXPORTS
 	OQS_KEM_newhope_512_cca_kem_decaps
 	OQS_KEM_newhope_512_cca_kem_encaps
 	OQS_KEM_newhope_512_cca_kem_keypair
-	OQS_KEM_sidh_p503_decaps
-	OQS_KEM_sidh_p503_encaps
-	OQS_KEM_sidh_p503_keypair
-	OQS_KEM_sidh_p751_decaps
-	OQS_KEM_sidh_p751_encaps
-	OQS_KEM_sidh_p751_keypair
 	OQS_KEM_sike_p503_decaps
 	OQS_KEM_sike_p503_encaps
 	OQS_KEM_sike_p503_keypair
@@ -94,12 +61,3 @@ EXPORTS
 	OQS_SIG_picnic_L5_UR_keypair
 	OQS_SIG_picnic_L5_UR_sign
 	OQS_SIG_picnic_L5_UR_verify
-	OQS_SIG_qTESLA_I_keypair
-	OQS_SIG_qTESLA_I_sign
-	OQS_SIG_qTESLA_I_verify
-	OQS_SIG_qTESLA_III_size_keypair
-	OQS_SIG_qTESLA_III_size_sign
-	OQS_SIG_qTESLA_III_size_verify
-	OQS_SIG_qTESLA_III_speed_keypair
-	OQS_SIG_qTESLA_III_speed_sign
-	OQS_SIG_qTESLA_III_speed_verify
