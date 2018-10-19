@@ -169,7 +169,7 @@ EXIT:
 ////////////////////////////////////////////////////////////////
 // The three APIs below (keypair, enc, dec) are defined by NIST:
 ////////////////////////////////////////////////////////////////
-OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
+OQS_API OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	// Convert to this implementation types
 	sk_t *l_sk = (sk_t *) sk;
 	pk_t *l_pk = (pk_t *) pk;
@@ -256,7 +256,7 @@ EXIT:
 // Encapsulate - pk is the public key,
 //               ct is a key encapsulation message (ciphertext),
 //               ss is the shared secret.
-OQS_STATUS encaps(OUT unsigned char *ct,
+OQS_API OQS_STATUS encaps(OUT unsigned char *ct,
                   OUT unsigned char *ss,
                   IN const unsigned char *pk) {
 	DMSG("  Enter crypto_kem_enc.\n");
@@ -322,7 +322,7 @@ EXIT:
 // Decapsulate - ct is a key encapsulation message (ciphertext),
 //               sk is the private key,
 //               ss is the shared secret
-OQS_STATUS decaps(OUT unsigned char *ss,
+OQS_API OQS_STATUS decaps(OUT unsigned char *ss,
                   IN const unsigned char *ct,
                   IN const unsigned char *sk) {
 	DMSG("  Enter crypto_kem_dec.\n");

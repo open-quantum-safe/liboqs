@@ -9,7 +9,7 @@
 *              - unsigned char *sk: secret key
 * Returns:     0 for successful execution
 **********************************************************/
-static int crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
+static OQS_STATUS crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
 	unsigned char randomness[CRYPTO_RANDOMBYTES], randomness_extended[4 * CRYPTO_SEEDBYTES];
 	poly s, e, a, t;
 	int nonce = 0; // Initialize domain separator for error and secret polynomials
@@ -50,7 +50,7 @@ static int crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
 	pack_sk(sk, s, e, &randomness_extended[2 * CRYPTO_SEEDBYTES]);
 	encode_pk(pk, t, &randomness_extended[2 * CRYPTO_SEEDBYTES]);
 
-	return 0;
+	return OQS_SUCCESS;
 }
 
 /***************************************************************
@@ -66,7 +66,7 @@ static int crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
 *              - unsigned long long *smlen: signature length*
 * Returns:     0 for successful execution
 ***************************************************************/
-static int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
+static OQS_STATUS crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
 	unsigned char c[CRYPTO_C_BYTES], randomness[CRYPTO_SEEDBYTES], randomness_input[CRYPTO_RANDOMBYTES + CRYPTO_SEEDBYTES + mlen];
 	uint32_t pos_list[PARAM_W];
 	int16_t sign_list[PARAM_W];
@@ -122,7 +122,7 @@ static int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsig
 		*smlen = CRYPTO_BYTES;
 		encode_sig(sm, c, z);
 
-		return 0;
+		return OQS_SUCCESS;
 	}
 }
 
@@ -139,7 +139,7 @@ static int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsig
 * Returns:     0 for valid signature
 *              <0 for invalid signature
 ************************************************************/
-static int crypto_verify(unsigned char *m, unsigned long long mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
+static OQS_STATUS crypto_verify(unsigned char *m, unsigned long long mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
 	unsigned char c[CRYPTO_C_BYTES], c_sig[CRYPTO_C_BYTES], seed[CRYPTO_SEEDBYTES];
 	uint32_t pos_list[PARAM_W];
 	int16_t sign_list[PARAM_W];
@@ -147,11 +147,11 @@ static int crypto_verify(unsigned char *m, unsigned long long mlen, const unsign
 	poly w, z, a, Tc;
 
 	if (smlen < CRYPTO_BYTES)
-		return -1;
+		return OQS_ERROR;
 
 	decode_sig(c, z, sm);
 	if (test_z(z) != 0)
-		return -2; // Check norm of z
+		return OQS_ERROR; // Check norm of z
 	decode_pk((int32_t *) pk_t, seed, pk);
 	poly_uniform(a, seed);
 	encode_c(pos_list, sign_list, c);
@@ -162,7 +162,7 @@ static int crypto_verify(unsigned char *m, unsigned long long mlen, const unsign
 
 	// Check if the calculated c matches c from the signature
 	if (memcmp(c, c_sig, CRYPTO_C_BYTES))
-		return -3;
+		return OQS_ERROR;
 
-	return 0;
+	return OQS_SUCCESS;
 }

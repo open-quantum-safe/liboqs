@@ -64,13 +64,6 @@ VisualStudio/**/x64/
 VisualStudio/include/
 VisualStudio/**/*.user
 
-# External sources
-external
-!src/sig_picnic/external
-src/sig_picnic/external/build/**
-src/sig_picnic/external/msbuild/**
-/temp/
-
 # Travis files
 cmake-3.8.0.tar.gz
 cmake-3.8.0/**

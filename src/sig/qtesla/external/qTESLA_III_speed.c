@@ -2804,14 +2804,14 @@ static void sparse_mul32(poly prod, const int32_t *pk, const uint32_t pos_list[P
 
 #include "qTESLA_api.c"
 
-OQS_API int OQS_SIG_qTESLA_III_speed_keypair(unsigned char *pk, unsigned char *sk) {
+OQS_API OQS_STATUS OQS_SIG_qTESLA_III_speed_keypair(unsigned char *pk, unsigned char *sk) {
 	return crypto_sign_keypair(pk, sk);
 }
 
-OQS_API int OQS_SIG_qTESLA_III_speed_sign(unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
+OQS_API OQS_STATUS OQS_SIG_qTESLA_III_speed_sign(unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
 	return crypto_sign(sm, smlen, m, mlen, sk);
 }
 
-OQS_API int OQS_SIG_qTESLA_III_speed_verify(unsigned char *m, unsigned long long mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
+OQS_API OQS_STATUS OQS_SIG_qTESLA_III_speed_verify(unsigned char *m, unsigned long long mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
 	return crypto_verify(m, mlen, sm, smlen, pk);
 }

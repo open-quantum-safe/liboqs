@@ -1,33 +1,105 @@
 LIBRARY oqs
 EXPORTS
-	OQS_MEM_cleanse
-	OQS_MEM_secure_free
-	OQS_MEM_insecure_free
-	OQS_randombytes_switch_algorithm
-	OQS_randombytes_custom_algorithm
-	OQS_randombytes
-	OQS_randombytes_nist_kat_init
-	OQS_KEM_frodokem_640_aes_keypair
-	OQS_KEM_frodokem_640_aes_encaps
-	OQS_KEM_frodokem_640_aes_decaps
-	OQS_KEM_frodokem_976_aes_keypair
-	OQS_KEM_frodokem_976_aes_encaps
-	OQS_KEM_frodokem_976_aes_decaps
-	OQS_KEM_frodokem_640_cshake_keypair
-	OQS_KEM_frodokem_640_cshake_encaps
-	OQS_KEM_frodokem_640_cshake_decaps
-	OQS_KEM_frodokem_976_cshake_keypair
-	OQS_KEM_frodokem_976_cshake_encaps
-	OQS_KEM_frodokem_976_cshake_decaps
 	OQS_KEM_alg_identifier
 	OQS_KEM_new
 	OQS_KEM_keypair
 	OQS_KEM_encaps
 	OQS_KEM_decaps
 	OQS_KEM_free
+	OQS_KEM_bike1_l1_decaps
+	OQS_KEM_bike1_l1_encaps
+	OQS_KEM_bike1_l1_keypair
+	OQS_KEM_bike1_l3_decaps
+	OQS_KEM_bike1_l3_encaps
+	OQS_KEM_bike1_l3_keypair
+	OQS_KEM_bike1_l5_decaps
+	OQS_KEM_bike1_l5_encaps
+	OQS_KEM_bike1_l5_keypair
+	OQS_KEM_bike2_l1_decaps
+	OQS_KEM_bike2_l1_encaps
+	OQS_KEM_bike2_l1_keypair
+	OQS_KEM_bike2_l3_decaps
+	OQS_KEM_bike2_l3_encaps
+	OQS_KEM_bike2_l3_keypair
+	OQS_KEM_bike2_l5_decaps
+	OQS_KEM_bike2_l5_encaps
+	OQS_KEM_bike2_l5_keypair
+	OQS_KEM_bike3_l1_decaps
+	OQS_KEM_bike3_l1_encaps
+	OQS_KEM_bike3_l1_keypair
+	OQS_KEM_bike3_l3_decaps
+	OQS_KEM_bike3_l3_encaps
+	OQS_KEM_bike3_l3_keypair
+	OQS_KEM_bike3_l5_decaps
+	OQS_KEM_bike3_l5_encaps
+	OQS_KEM_bike3_l5_keypair
+	OQS_KEM_frodokem_640_aes_decaps
+	OQS_KEM_frodokem_640_aes_encaps
+	OQS_KEM_frodokem_640_aes_keypair
+	OQS_KEM_frodokem_640_cshake_decaps
+	OQS_KEM_frodokem_640_cshake_encaps
+	OQS_KEM_frodokem_640_cshake_keypair
+	OQS_KEM_frodokem_976_aes_decaps
+	OQS_KEM_frodokem_976_aes_encaps
+	OQS_KEM_frodokem_976_aes_keypair
+	OQS_KEM_frodokem_976_cshake_decaps
+	OQS_KEM_frodokem_976_cshake_encaps
+	OQS_KEM_frodokem_976_cshake_keypair
+	OQS_KEM_newhope_1024_cca_kem_decaps
+	OQS_KEM_newhope_1024_cca_kem_encaps
+	OQS_KEM_newhope_1024_cca_kem_keypair
+	OQS_KEM_newhope_512_cca_kem_decaps
+	OQS_KEM_newhope_512_cca_kem_encaps
+	OQS_KEM_newhope_512_cca_kem_keypair
+	OQS_KEM_sidh_p503_decaps
+	OQS_KEM_sidh_p503_encaps
+	OQS_KEM_sidh_p503_keypair
+	OQS_KEM_sidh_p751_decaps
+	OQS_KEM_sidh_p751_encaps
+	OQS_KEM_sidh_p751_keypair
+	OQS_KEM_sike_p503_decaps
+	OQS_KEM_sike_p503_encaps
+	OQS_KEM_sike_p503_keypair
+	OQS_KEM_sike_p751_decaps
+	OQS_KEM_sike_p751_encaps
+	OQS_KEM_sike_p751_keypair
+	OQS_MEM_cleanse
+	OQS_MEM_insecure_free
+	OQS_MEM_secure_free
+	OQS_randombytes
+	OQS_randombytes_custom_algorithm
+	OQS_randombytes_nist_kat_init
+	OQS_randombytes_switch_algorithm
 	OQS_SIG_alg_identifier
 	OQS_SIG_new
 	OQS_SIG_keypair
 	OQS_SIG_sign
 	OQS_SIG_verify
 	OQS_SIG_free
+	OQS_SIG_picnic_L1_FS_keypair
+	OQS_SIG_picnic_L1_FS_sign
+	OQS_SIG_picnic_L1_FS_verify
+	OQS_SIG_picnic_L1_UR_keypair
+	OQS_SIG_picnic_L1_UR_sign
+	OQS_SIG_picnic_L1_UR_verify
+	OQS_SIG_picnic_L3_FS_keypair
+	OQS_SIG_picnic_L3_FS_sign
+	OQS_SIG_picnic_L3_FS_verify
+	OQS_SIG_picnic_L3_UR_keypair
+	OQS_SIG_picnic_L3_UR_sign
+	OQS_SIG_picnic_L3_UR_verify
+	OQS_SIG_picnic_L5_FS_keypair
+	OQS_SIG_picnic_L5_FS_sign
+	OQS_SIG_picnic_L5_FS_verify
+	OQS_SIG_picnic_L5_UR_keypair
+	OQS_SIG_picnic_L5_UR_sign
+	OQS_SIG_picnic_L5_UR_verify
+	OQS_SIG_qTESLA_I_keypair
+	OQS_SIG_qTESLA_I_sign
+	OQS_SIG_qTESLA_I_verify
+	OQS_SIG_qTESLA_III_size_keypair
+	OQS_SIG_qTESLA_III_size_sign
+	OQS_SIG_qTESLA_III_size_verify
+	OQS_SIG_qTESLA_III_speed_keypair
+	OQS_SIG_qTESLA_III_speed_sign
+	OQS_SIG_qTESLA_III_speed_verify

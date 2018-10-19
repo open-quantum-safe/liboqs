@@ -106,15 +106,15 @@ OQS_SIG *OQS_SIG_picnic_L1_FS_new() {
 	return sig;
 }
 
-OQS_STATUS OQS_SIG_picnic_L1_FS_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L1_FS_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return common_picnic_keypair(Picnic_L1_FS, secret_key, public_key);
 }
 
-OQS_STATUS OQS_SIG_picnic_L1_FS_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L1_FS_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	return common_picnic_sign(Picnic_L1_FS, secret_key, message, message_len, signature, signature_len);
 }
 
-OQS_STATUS OQS_SIG_picnic_L1_FS_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L1_FS_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	return common_picnic_verify(Picnic_L1_FS, public_key, message, message_len, signature, signature_len);
 }
 
@@ -145,15 +145,15 @@ OQS_SIG *OQS_SIG_picnic_L1_UR_new() {
 	return sig;
 }
 
-OQS_STATUS OQS_SIG_picnic_L1_UR_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L1_UR_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return common_picnic_keypair(Picnic_L1_UR, secret_key, public_key);
 }
 
-OQS_STATUS OQS_SIG_picnic_L1_UR_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L1_UR_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	return common_picnic_sign(Picnic_L1_UR, secret_key, message, message_len, signature, signature_len);
 }
 
-OQS_STATUS OQS_SIG_picnic_L1_UR_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L1_UR_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	return common_picnic_verify(Picnic_L1_UR, public_key, message, message_len, signature, signature_len);
 }
 
@@ -184,15 +184,15 @@ OQS_SIG *OQS_SIG_picnic_L3_FS_new() {
 	return sig;
 }
 
-OQS_STATUS OQS_SIG_picnic_L3_FS_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L3_FS_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return common_picnic_keypair(Picnic_L3_FS, secret_key, public_key);
 }
 
-OQS_STATUS OQS_SIG_picnic_L3_FS_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L3_FS_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	return common_picnic_sign(Picnic_L3_FS, secret_key, message, message_len, signature, signature_len);
 }
 
-OQS_STATUS OQS_SIG_picnic_L3_FS_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L3_FS_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	return common_picnic_verify(Picnic_L3_FS, public_key, message, message_len, signature, signature_len);
 }
 
@@ -223,15 +223,15 @@ OQS_SIG *OQS_SIG_picnic_L3_UR_new() {
 	return sig;
 }
 
-OQS_STATUS OQS_SIG_picnic_L3_UR_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L3_UR_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return common_picnic_keypair(Picnic_L3_UR, secret_key, public_key);
 }
 
-OQS_STATUS OQS_SIG_picnic_L3_UR_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L3_UR_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	return common_picnic_sign(Picnic_L3_UR, secret_key, message, message_len, signature, signature_len);
 }
 
-OQS_STATUS OQS_SIG_picnic_L3_UR_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L3_UR_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	return common_picnic_verify(Picnic_L3_UR, public_key, message, message_len, signature, signature_len);
 }
 
@@ -262,15 +262,15 @@ OQS_SIG *OQS_SIG_picnic_L5_FS_new() {
 	return sig;
 }
 
-OQS_STATUS OQS_SIG_picnic_L5_FS_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L5_FS_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return common_picnic_keypair(Picnic_L5_FS, secret_key, public_key);
 }
 
-OQS_STATUS OQS_SIG_picnic_L5_FS_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L5_FS_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	return common_picnic_sign(Picnic_L5_FS, secret_key, message, message_len, signature, signature_len);
 }
 
-OQS_STATUS OQS_SIG_picnic_L5_FS_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L5_FS_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	return common_picnic_verify(Picnic_L5_FS, public_key, message, message_len, signature, signature_len);
 }
 
@@ -302,15 +302,15 @@ OQS_SIG *OQS_SIG_picnic_L5_UR_new() {
 	return sig;
 }
 
-OQS_STATUS OQS_SIG_picnic_L5_UR_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L5_UR_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return common_picnic_keypair(Picnic_L5_UR, secret_key, public_key);
 }
 
-OQS_STATUS OQS_SIG_picnic_L5_UR_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L5_UR_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 	return common_picnic_sign(Picnic_L5_UR, secret_key, message, message_len, signature, signature_len);
 }
 
-OQS_STATUS OQS_SIG_picnic_L5_UR_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_picnic_L5_UR_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	return common_picnic_verify(Picnic_L5_UR, public_key, message, message_len, signature, signature_len);
 }
 
