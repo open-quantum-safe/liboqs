@@ -4,9 +4,6 @@
 
 #ifdef OQS_ENABLE_SIG_picnic_L1_FS
 
-// TODO: can't reliably provide a Picnic base version as code included in libOQS
-//       doesn't match the NIST PQ submission zip or their website.
-
 OQS_SIG *OQS_SIG_picnic_L1_FS_new() {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));

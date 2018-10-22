@@ -2,9 +2,6 @@
 
 #include <oqs/sig_qtesla.h>
 
-// TODO: can't reliably provide a qTESLA base version as code included in libOQS
-//       doesn't match the NIST PQ submission zip or their website.
-
 #ifdef OQS_ENABLE_SIG_qTESLA_I
 
 OQS_SIG *OQS_SIG_qTESLA_I_new() {
