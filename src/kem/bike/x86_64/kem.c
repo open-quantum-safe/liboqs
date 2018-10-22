@@ -1,5 +1,5 @@
 /***************************************************************************
-* Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+* Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Written by Nir Drucker and Shay Gueron
@@ -307,7 +307,7 @@ _INLINE_ void get_ss(OUT ss_t *out, IN const e_t *e) {
 ////////////////////////////////////////////////////////////////
 // The three APIs below (keygeneration, encapsulate, decapsulate) are defined by NIST:
 ////////////////////////////////////////////////////////////////
-int keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
+OQS_API OQS_STATUS keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	// Convert to this implementation types
 	sk_t *l_sk = (sk_t *) sk;
 	pk_t *l_pk = (pk_t *) pk;
@@ -390,9 +390,9 @@ EXIT:
 // Encapsulate - pk is the public key,
 //               ct is a key encapsulation message (ciphertext),
 //               ss is the shared secret.
-int encaps(OUT unsigned char *ct,
-           OUT unsigned char *ss,
-           IN const unsigned char *pk) {
+OQS_API OQS_STATUS encaps(OUT unsigned char *ct,
+                          OUT unsigned char *ss,
+                          IN const unsigned char *pk) {
 	DMSG("  Enter crypto_kem_enc.\n");
 
 	OQS_STATUS res = OQS_SUCCESS;
@@ -463,9 +463,9 @@ EXIT:
 // Decapsulate - ct is a key encapsulation message (ciphertext),
 //               sk is the private key,
 //               ss is the shared secret
-int decaps(OUT unsigned char *ss,
-           IN const unsigned char *ct,
-           IN const unsigned char *sk) {
+OQS_API OQS_STATUS decaps(OUT unsigned char *ss,
+                          IN const unsigned char *ct,
+                          IN const unsigned char *sk) {
 	OQS_STATUS res = OQS_SUCCESS;
 	DMSG("  Enter crypto_kem_dec.\n");
 

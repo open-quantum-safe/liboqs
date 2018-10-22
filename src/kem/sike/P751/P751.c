@@ -114,8 +114,8 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define mp_addx2_asm mp_add751x2_asm
 #define mp_subx2_asm mp_sub751x2_asm
 #define crypto_kem_keypair OQS_KEM_sike_p751_keypair
-#define crypto_kem_enc OQS_KEM_sike_p751_enc
-#define crypto_kem_dec OQS_KEM_sike_p751_dec
+#define crypto_kem_enc OQS_KEM_sike_p751_encaps
+#define crypto_kem_dec OQS_KEM_sike_p751_decaps
 #define random_mod_order_A oqs_kem_sidh_p751_random_mod_order_A
 #define random_mod_order_B oqs_kem_sidh_p751_random_mod_order_B
 #define EphemeralKeyGeneration_A oqs_kem_sidh_p751_EphemeralKeyGeneration_A

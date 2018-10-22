@@ -19,7 +19,7 @@
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
+OQS_API OQS_STATUS crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
 	size_t i;
 
 	cpapke_keypair(pk, sk);
@@ -34,7 +34,7 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
 
 	OQS_randombytes(sk, NEWHOPE_SYMBYTES); /* Append the value s for pseudo-random output on reject */
 
-	return 0;
+	return OQS_SUCCESS;
 }
 
 /*************************************************
@@ -49,7 +49,7 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) {
+OQS_API OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) {
 	unsigned char k_coins_d[3 * NEWHOPE_SYMBYTES]; /* Will contain key, coins, qrom-hash */
 	unsigned char buf[2 * NEWHOPE_SYMBYTES];
 	int i;
@@ -67,7 +67,7 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 
 	OQS_SHA3_shake256(k_coins_d + NEWHOPE_SYMBYTES, NEWHOPE_SYMBYTES, ct, NEWHOPE_CCAKEM_CIPHERTEXTBYTES); /* overwrite coins in k_coins_d with h(c) */
 	OQS_SHA3_shake256(ss, NEWHOPE_SYMBYTES, k_coins_d, 2 * NEWHOPE_SYMBYTES);                              /* hash concatenation of pre-k and h(c) to ss */
-	return 0;
+	return OQS_SUCCESS;
 }
 
 /*************************************************
@@ -84,7 +84,7 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 *
 * On failure, ss will contain a randomized value.
 **************************************************/
-int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) {
+OQS_API OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) {
 	int i, fail;
 	unsigned char ct_cmp[NEWHOPE_CCAKEM_CIPHERTEXTBYTES];
 	unsigned char buf[2 * NEWHOPE_SYMBYTES];
@@ -108,5 +108,5 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 	cmov(k_coins_d, sk + NEWHOPE_CCAKEM_SECRETKEYBYTES - NEWHOPE_SYMBYTES, NEWHOPE_SYMBYTES, fail);        /* Overwrite pre-k with z on re-encryption failure */
 	OQS_SHA3_shake256(ss, NEWHOPE_SYMBYTES, k_coins_d, 2 * NEWHOPE_SYMBYTES);                              /* hash concatenation of pre-k and h(c) to k */
 
-	return -fail;
+	return (OQS_STATUS) -fail;
 }

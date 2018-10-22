@@ -33,13 +33,13 @@ int OQS_KEM_sike_p503_keypair(unsigned char *pk, unsigned char *sk);
 // Input:   public key pk         (CRYPTO_PUBLICKEYBYTES = 378 bytes)
 // Outputs: shared secret ss      (CRYPTO_BYTES = 16 bytes)
 //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 402 bytes)
-int OQS_KEM_sike_p503_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
+int OQS_KEM_sike_p503_encaps(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
 
 // SIKE's decapsulation
 // Input:   secret key sk         (CRYPTO_SECRETKEYBYTES = 434 bytes)
 //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 402 bytes)
 // Outputs: shared secret ss      (CRYPTO_BYTES = 16 bytes)
-int OQS_KEM_sike_p503_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+int OQS_KEM_sike_p503_decaps(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
 
 // Encoding of keys for KEM-based isogeny system "SIKEp503" (wire format):
 // ----------------------------------------------------------------------

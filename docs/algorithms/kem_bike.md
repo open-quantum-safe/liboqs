@@ -31,7 +31,7 @@ Implementation
 --------------
 
 - **Source of implementation:** http://bikesuite.org/#implementation
-- **Implementation version:** 1.0.0
+- **Implementation version:** Additional implementation: 05/23/2018; reference implementation: 06/29/2018 (with NTL calls replaced by OpenSSL calls and the decoder of the additional implementation)
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** No

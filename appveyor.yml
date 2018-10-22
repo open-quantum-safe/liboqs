@@ -12,6 +12,7 @@ branches:
 
 configuration:
   - Release
+  - ReleaseDLL
 
 test_script:
 - cmd: >-

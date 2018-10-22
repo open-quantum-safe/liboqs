@@ -24,8 +24,8 @@ OQS_KEM *OQS_KEM_sike_p503_new() {
 	kem->length_shared_secret = OQS_KEM_sike_p503_length_shared_secret;
 
 	kem->keypair = OQS_KEM_sike_p503_keypair;
-	kem->encaps = OQS_KEM_sike_p503_enc;
-	kem->decaps = OQS_KEM_sike_p503_dec;
+	kem->encaps = OQS_KEM_sike_p503_encaps;
+	kem->decaps = OQS_KEM_sike_p503_decaps;
 
 	return kem;
 }
@@ -64,8 +64,8 @@ OQS_KEM *OQS_KEM_sike_p751_new() {
 	kem->length_shared_secret = OQS_KEM_sike_p751_length_shared_secret;
 
 	kem->keypair = OQS_KEM_sike_p751_keypair;
-	kem->encaps = OQS_KEM_sike_p751_enc;
-	kem->decaps = OQS_KEM_sike_p751_dec;
+	kem->encaps = OQS_KEM_sike_p751_encaps;
+	kem->decaps = OQS_KEM_sike_p751_decaps;
 
 	return kem;
 }
@@ -111,14 +111,14 @@ OQS_KEM *OQS_KEM_sidh_p503_new() {
 }
 
 /* Forward KEM API calls to SIDH's API */
-OQS_STATUS OQS_KEM_sidh_p503_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p503_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	if (oqs_kem_sidh_p503_EphemeralKeyGeneration_A((unsigned char *) secret_key, (unsigned char *) public_key) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
 }
 
-OQS_STATUS OQS_KEM_sidh_p503_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p503_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 	OQS_STATUS ret = OQS_ERROR;
 	unsigned char *secret_key = malloc(OQS_KEM_sidh_p503_length_secret_key);
 	if (oqs_kem_sidh_p503_EphemeralKeyGeneration_B(secret_key, (unsigned char *) ciphertext)) {
@@ -141,7 +141,7 @@ cleanup:
 	return ret;
 }
 
-OQS_STATUS OQS_KEM_sidh_p503_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p503_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p503_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
@@ -189,14 +189,14 @@ OQS_KEM *OQS_KEM_sidh_p751_new() {
 }
 
 /* Forward KEM API calls to SIDH's API */
-OQS_STATUS OQS_KEM_sidh_p751_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p751_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	if (oqs_kem_sidh_p751_EphemeralKeyGeneration_A((unsigned char *) secret_key, (unsigned char *) public_key) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
 }
 
-OQS_STATUS OQS_KEM_sidh_p751_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p751_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 	OQS_STATUS ret = OQS_ERROR;
 	unsigned char *secret_key = malloc(OQS_KEM_sidh_p751_length_secret_key);
 	if (oqs_kem_sidh_p751_EphemeralKeyGeneration_B(secret_key, (unsigned char *) ciphertext)) {
@@ -219,7 +219,7 @@ cleanup:
 	return ret;
 }
 
-OQS_STATUS OQS_KEM_sidh_p751_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p751_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p751_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
