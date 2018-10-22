@@ -27,7 +27,8 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** The code in liboqs is related to the submitted version https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/Picnic.zip
+- **Source of implementation:** https://github.com/IAIK/Picnic
+- **Implementation version:** https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes

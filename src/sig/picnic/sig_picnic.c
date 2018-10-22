@@ -14,7 +14,7 @@ OQS_SIG *OQS_SIG_picnic_L1_FS_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L1_FS;
-	sig->alg_version = "TODO";
+	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
@@ -41,7 +41,7 @@ OQS_SIG *OQS_SIG_picnic_L1_UR_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L1_UR;
-	sig->alg_version = "TODO";
+	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
@@ -68,7 +68,7 @@ OQS_SIG *OQS_SIG_picnic_L3_FS_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L3_FS;
-	sig->alg_version = "TODO";
+	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
@@ -95,7 +95,7 @@ OQS_SIG *OQS_SIG_picnic_L3_UR_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L3_UR;
-	sig->alg_version = "TODO";
+	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
@@ -122,7 +122,7 @@ OQS_SIG *OQS_SIG_picnic_L5_FS_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L5_FS;
-	sig->alg_version = "TODO";
+	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;
@@ -149,7 +149,7 @@ OQS_SIG *OQS_SIG_picnic_L5_UR_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L5_UR;
-	sig->alg_version = "TODO";
+	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;
