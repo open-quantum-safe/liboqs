@@ -100,7 +100,7 @@ OQS_KEM *OQS_KEM_bike2_l1_new() {
 	kem->method_name = OQS_KEM_alg_bike2_l1;
 	kem->alg_version = "TODO";
 
-	kem->claimed_nist_level = 5;
+	kem->claimed_nist_level = 1;
 	kem->ind_cca = false;
 
 	kem->length_public_key = OQS_KEM_bike2_l1_length_public_key;
@@ -128,7 +128,7 @@ OQS_KEM *OQS_KEM_bike2_l3_new() {
 	kem->method_name = OQS_KEM_alg_bike2_l3;
 	kem->alg_version = "TODO";
 
-	kem->claimed_nist_level = 5;
+	kem->claimed_nist_level = 3;
 	kem->ind_cca = false;
 
 	kem->length_public_key = OQS_KEM_bike2_l3_length_public_key;
@@ -184,7 +184,7 @@ OQS_KEM *OQS_KEM_bike3_l1_new() {
 	kem->method_name = OQS_KEM_alg_bike3_l1;
 	kem->alg_version = "TODO";
 
-	kem->claimed_nist_level = 5;
+	kem->claimed_nist_level = 1;
 	kem->ind_cca = false;
 
 	kem->length_public_key = OQS_KEM_bike3_l1_length_public_key;
@@ -212,7 +212,7 @@ OQS_KEM *OQS_KEM_bike3_l3_new() {
 	kem->method_name = OQS_KEM_alg_bike3_l3;
 	kem->alg_version = "TODO";
 
-	kem->claimed_nist_level = 5;
+	kem->claimed_nist_level = 3;
 	kem->ind_cca = false;
 
 	kem->length_public_key = OQS_KEM_bike3_l3_length_public_key;
