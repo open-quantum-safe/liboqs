@@ -11,6 +11,7 @@ OQS_KEM *OQS_KEM_lima_2p_1024_cca_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_lima_2p_1024_cca_kem;
+	kem->alg_version = "https://github.com/lima-pq/optimized-implementation/tree/c660c24db8ddbdce097a2bb19059c6896ef1c27c";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -38,6 +39,7 @@ OQS_KEM *OQS_KEM_lima_2p_2048_cca_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_lima_2p_2048_cca_kem;
+	kem->alg_version = "https://github.com/lima-pq/optimized-implementation/tree/c660c24db8ddbdce097a2bb19059c6896ef1c27c";
 
 	kem->claimed_nist_level = 4;
 	kem->ind_cca = true;
@@ -65,6 +67,7 @@ OQS_KEM *OQS_KEM_lima_sp_1018_cca_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_lima_sp_1018_cca_kem;
+	kem->alg_version = "https://github.com/lima-pq/optimized-implementation/tree/c660c24db8ddbdce097a2bb19059c6896ef1c27c";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -92,6 +95,7 @@ OQS_KEM *OQS_KEM_lima_sp_1306_cca_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_lima_sp_1306_cca_kem;
+	kem->alg_version = "https://github.com/lima-pq/optimized-implementation/tree/c660c24db8ddbdce097a2bb19059c6896ef1c27c";
 
 	kem->claimed_nist_level = 2;
 	kem->ind_cca = true;
@@ -119,6 +123,7 @@ OQS_KEM *OQS_KEM_lima_sp_1822_cca_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_lima_sp_1822_cca_kem;
+	kem->alg_version = "https://github.com/lima-pq/optimized-implementation/tree/c660c24db8ddbdce097a2bb19059c6896ef1c27c";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -146,6 +151,7 @@ OQS_KEM *OQS_KEM_lima_sp_2062_cca_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_lima_sp_2062_cca_kem;
+	kem->alg_version = "https://github.com/lima-pq/optimized-implementation/tree/c660c24db8ddbdce097a2bb19059c6896ef1c27c";
 
 	kem->claimed_nist_level = 4;
 	kem->ind_cca = true;

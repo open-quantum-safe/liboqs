@@ -79,6 +79,14 @@ typedef struct OQS_SIG {
 	/** Printable string representing the name of the signature scheme. */
 	const char *method_name;
 
+	/**
+	 * Printable string representing the version of the cryptographic algorithm.
+	 *
+	 * Implementations with the same method_name and same alg_version will be interoperable.
+	 * See README.md for information about algorithm compatibility.
+	 */
+	const char *alg_version;
+
 	/** The NIST security level (1, 2, 3, 4, 5) claimed in this algorithm's original NIST submission. */
 	uint8_t claimed_nist_level;
 

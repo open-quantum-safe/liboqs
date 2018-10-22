@@ -11,6 +11,7 @@ OQS_KEM *OQS_KEM_saber_light_saber_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_saber_light_saber_kem;
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/SABER.zip";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -38,6 +39,7 @@ OQS_KEM *OQS_KEM_saber_saber_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_saber_saber_kem;
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/SABER.zip";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -65,6 +67,7 @@ OQS_KEM *OQS_KEM_saber_fire_saber_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_saber_fire_saber_kem;
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/SABER.zip";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;

@@ -11,6 +11,7 @@ OQS_KEM *OQS_KEM_sike_p503_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p503;
+	kem->alg_version = "https://github.com/Microsoft/PQCrypto-SIDH/tree/77044b76181eb61c744ac8eb7ddc7a8fe72f6919";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -38,6 +39,7 @@ OQS_KEM *OQS_KEM_sike_p751_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p751;
+	kem->alg_version = "https://github.com/Microsoft/PQCrypto-SIDH/tree/77044b76181eb61c744ac8eb7ddc7a8fe72f6919";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;

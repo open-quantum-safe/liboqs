@@ -11,6 +11,7 @@ OQS_KEM *OQS_KEM_BIG_QUAKE_1_new() {
 		return NULL;
 	}
 	kem->method_name = "BIG_QUAKE_1";
+	kem->alg_version = "https://bigquake.inria.fr/files/2018/03/BIGQUAKE-source.tar.gz";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -38,6 +39,7 @@ OQS_KEM *OQS_KEM_BIG_QUAKE_3_new() {
 		return NULL;
 	}
 	kem->method_name = "BIG_QUAKE_3";
+	kem->alg_version = "https://bigquake.inria.fr/files/2018/03/BIGQUAKE-source.tar.gz";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -65,6 +67,7 @@ OQS_KEM *OQS_KEM_BIG_QUAKE_5_new() {
 		return NULL;
 	}
 	kem->method_name = "BIG_QUAKE_5";
+	kem->alg_version = "https://bigquake.inria.fr/files/2018/03/BIGQUAKE-source.tar.gz";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;

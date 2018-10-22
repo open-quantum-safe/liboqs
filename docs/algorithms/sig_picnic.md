@@ -9,7 +9,7 @@ Summary
 - **Main cryptographic assumption**: hash function security (ROM/QROM), key recovery attacks on the lowMC block cipher
 - **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/Picnic.zip
 - **Submitters (to NIST competition)**: Greg Zaverucha, Melissa Chase, David Derler, Steven Goldfeder, Claudio Orlandi, Sebastian Ramacher, Christian Rechberger, Daniel Slamanig
-- **Submitters' website**: https://microsoft.github.io/Picnic/
+- **Submitters' website**: https://microsoft.github.io/Picnic/ and https://github.com/IAIK/Picnic
 - **Added to liboqs by**: Christian Paquin
 
 Parameter sets
@@ -28,6 +28,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/IAIK/Picnic
+- **Implementation version:** https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes

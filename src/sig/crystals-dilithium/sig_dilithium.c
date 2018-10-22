@@ -2,6 +2,9 @@
 
 #include <oqs/sig_dilithium.h>
 
+// TODO: can't reliably provide a base version as code included in libOQS
+//       doesn't match the NIST PQ submission zip or their github version.
+
 #ifdef OQS_ENABLE_SIG_Dilithium_II_medium
 
 OQS_SIG *OQS_SIG_Dilithium_II_medium_new() {
@@ -11,6 +14,7 @@ OQS_SIG *OQS_SIG_Dilithium_II_medium_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_Dilithium_II_medium;
+	sig->alg_version = "TODO";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
@@ -37,6 +41,7 @@ OQS_SIG *OQS_SIG_Dilithium_III_recommended_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_Dilithium_III_recommended;
+	sig->alg_version = "TODO";
 
 	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
@@ -63,6 +68,7 @@ OQS_SIG *OQS_SIG_Dilithium_IV_very_high_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_Dilithium_IV_very_high;
+	sig->alg_version = "TODO";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;

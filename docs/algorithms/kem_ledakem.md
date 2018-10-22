@@ -30,7 +30,7 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** https://github.com/LEDAcrypt/LEDAkem
+- **Source of implementation:** https://github.com/LEDAcrypt/LEDAkem, the nist-branch upstream code is a near match to the sumbission: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes
