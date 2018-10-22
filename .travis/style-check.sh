@@ -4,6 +4,10 @@
 # Checks that all non-upstream files satisfy prettyprint requirements.
 ###
 
+set -e
+
+source $(dirname $0)/defs.sh
+
 if [[ "x${TRAVIS}" == "xtrue" ]];
 then
 	if [[ ! "x${CHECK_STYLE}" == "xtrue" ]];
@@ -13,13 +17,8 @@ then
 	fi
 fi
 
-PRINT_GREEN="tput setaf 2"
-PRINT_RED="tput setaf 1"
-PRINT_RESET="tput sgr 0"
-
-# see what has been modified (ignoring submodules because they are likely patched)
+# Make sure that there are no modified files to start with
 MODIFIED=$(git status -s)
-
 if [[ ! -z "${MODIFIED}" ]];
 then
 	${PRINT_RED}
@@ -29,6 +28,7 @@ then
 	exit 1;
 fi;
 
+# Find clang-format
 TRY_CLANGFORMAT="/usr/local/Cellar/clang-format/2016-06-27/bin/clang-format"
 if [[ ! -x $(which ${TRY_CLANGFORMAT}) ]];
 then
@@ -46,8 +46,12 @@ then
 	fi
 fi
 
-CLANG_FORMAT_VERSION=`${TRY_CLANGFORMAT} -version | grep 3.9`
-if [[ -z "${CLANG_FORMAT_VERSION}" ]];
+# Check clang-format version
+set +e
+CLANG_FORMAT_VERSION=$(${TRY_CLANGFORMAT} -version | grep 3.9)
+ERROR_CODE=$?
+set -e
+if [ ${ERROR_CODE} -ne 0 ];
 then
 	${PRINT_RED}
 	echo "clang-format is not version 3.9."
@@ -56,10 +60,11 @@ then
 	exit 1
 fi;
 
+# Pretty-print everything
 make prettyprint CLANGFORMAT=${TRY_CLANGFORMAT}
 
+# Check if there are any modified files
 MODIFIED=$(git status -s)
-
 if [[ ! -z "${MODIFIED}" ]]; then
 	${PRINT_RED}
 	echo "Code does not adhere to the project standards. Run \"make prettyprint\".";

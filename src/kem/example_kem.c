@@ -42,7 +42,7 @@ OQS_STATUS example_stack() {
 	printf("[example_stack] OQS_KEM_frodokem_640_aes was not enabled at "
 	       "compile-time.\n");
 	return OQS_ERROR;
-#endif
+#else
 	uint8_t public_key[OQS_KEM_frodokem_640_aes_length_public_key];
 	uint8_t secret_key[OQS_KEM_frodokem_640_aes_length_secret_key];
 	uint8_t ciphertext[OQS_KEM_frodokem_640_aes_length_ciphertext];
@@ -79,6 +79,7 @@ OQS_STATUS example_stack() {
 	printf("[example_stack] OQS_KEM_frodokem_640_aes operations completed.\n");
 
 	return OQS_SUCCESS; // success!
+#endif
 }
 
 /* This function gives an example of the operations performed by both

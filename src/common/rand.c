@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <fcntl.h>
 #include <strings.h>
+#include <fcntl.h>
 
 #include <openssl/rand.h>
 

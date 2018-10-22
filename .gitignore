@@ -34,3 +34,4 @@ src/kem/sike/upstream/Optimized_Implementation/portable/SIKEp751/
 src/sig/picnic/upstream/Optimized_Implementation/**/libpicnic.a
 vendor
 .vscode
+*.geany

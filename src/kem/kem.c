@@ -4,9 +4,9 @@
 
 #include <oqs/oqs.h>
 
-char *OQS_KEM_alg_identifier(size_t i) {
+OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-KEM
-	char *a[OQS_KEM_algs_length] = {
+	const char *a[OQS_KEM_algs_length] = {
 	    OQS_KEM_alg_default,
 	    OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_640_cshake, OQS_KEM_alg_frodokem_976_cshake,
 	    OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem,
@@ -16,7 +16,8 @@ char *OQS_KEM_alg_identifier(size_t i) {
 	    OQS_KEM_alg_bike1_l1, OQS_KEM_alg_bike1_l3, OQS_KEM_alg_bike1_l5, OQS_KEM_alg_bike2_l1, OQS_KEM_alg_bike2_l3, OQS_KEM_alg_bike2_l5, OQS_KEM_alg_bike3_l1, OQS_KEM_alg_bike3_l3, OQS_KEM_alg_bike3_l5,
 	    OQS_KEM_alg_ledakem_C1_N02, OQS_KEM_alg_ledakem_C1_N03, OQS_KEM_alg_ledakem_C1_N04, OQS_KEM_alg_ledakem_C3_N02, OQS_KEM_alg_ledakem_C3_N03, OQS_KEM_alg_ledakem_C3_N04, OQS_KEM_alg_ledakem_C5_N02, OQS_KEM_alg_ledakem_C5_N03, OQS_KEM_alg_ledakem_C5_N04,
 	    OQS_KEM_alg_saber_light_saber_kem, OQS_KEM_alg_saber_saber_kem, OQS_KEM_alg_saber_fire_saber_kem,
-	    OQS_KEM_alg_lima_2p_1024_cca_kem, OQS_KEM_alg_lima_2p_2048_cca_kem, OQS_KEM_alg_lima_sp_1018_cca_kem, OQS_KEM_alg_lima_sp_1306_cca_kem, OQS_KEM_alg_lima_sp_1822_cca_kem, OQS_KEM_alg_lima_sp_2062_cca_kem};
+	    OQS_KEM_alg_lima_2p_1024_cca_kem, OQS_KEM_alg_lima_2p_2048_cca_kem, OQS_KEM_alg_lima_sp_1018_cca_kem, OQS_KEM_alg_lima_sp_1306_cca_kem, OQS_KEM_alg_lima_sp_1822_cca_kem, OQS_KEM_alg_lima_sp_2062_cca_kem,
+	    OQS_KEM_alg_titanium_cca_std_kem, OQS_KEM_alg_titanium_cca_hi_kem, OQS_KEM_alg_titanium_cca_med_kem, OQS_KEM_alg_titanium_cca_super_kem};
 	if (i >= OQS_KEM_algs_length) {
 		return NULL;
 	} else {
@@ -24,7 +25,7 @@ char *OQS_KEM_alg_identifier(size_t i) {
 	}
 }
 
-OQS_KEM *OQS_KEM_new(const char *method_name) {
+OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	if (0 == strcasecmp(method_name, OQS_KEM_alg_default)) {
 		return OQS_KEM_new(OQS_KEM_DEFAULT);
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_640_aes)) {
@@ -273,13 +274,37 @@ OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_titanium_cca_std_kem)) {
+#ifdef OQS_ENABLE_KEM_titanium_cca_std_kem
+		return OQS_KEM_titanium_cca_std_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_titanium_cca_med_kem)) {
+#ifdef OQS_ENABLE_KEM_titanium_cca_med_kem
+		return OQS_KEM_titanium_cca_med_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_titanium_cca_super_kem)) {
+#ifdef OQS_ENABLE_KEM_titanium_cca_super_kem
+		return OQS_KEM_titanium_cca_super_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_titanium_cca_hi_kem)) {
+#ifdef OQS_ENABLE_KEM_titanium_cca_hi_kem
+		return OQS_KEM_titanium_cca_hi_new();
+#else
+		return NULL;
+#endif
 		// EDIT-WHEN-ADDING-KEM
 	} else {
 		return NULL;
 	}
 }
 
-OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -287,7 +312,7 @@ OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *sec
 	}
 }
 
-OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -295,7 +320,7 @@ OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shar
 	}
 }
 
-OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;
 	} else {
@@ -303,6 +328,6 @@ OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsi
 	}
 }
 
-void OQS_KEM_free(OQS_KEM *kem) {
+OQS_API void OQS_KEM_free(OQS_KEM *kem) {
 	OQS_MEM_insecure_free(kem);
 }

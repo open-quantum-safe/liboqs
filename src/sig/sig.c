@@ -4,9 +4,9 @@
 
 #include <oqs/oqs.h>
 
-char *OQS_SIG_alg_identifier(size_t i) {
+OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-SIG
-	char *a[OQS_SIG_algs_length] = {
+	const char *a[OQS_SIG_algs_length] = {
 	    OQS_SIG_alg_default,
 	    OQS_SIG_alg_qTESLA_I,
 	    OQS_SIG_alg_qTESLA_III_size,
@@ -29,7 +29,7 @@ char *OQS_SIG_alg_identifier(size_t i) {
 	}
 }
 
-OQS_SIG *OQS_SIG_new(const char *method_name) {
+OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	if (0 == strcasecmp(method_name, OQS_SIG_alg_default)) {
 		return OQS_SIG_new(OQS_SIG_DEFAULT);
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTESLA_I)) {
@@ -122,30 +122,30 @@ OQS_SIG *OQS_SIG_new(const char *method_name) {
 	}
 }
 
-OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key) {
-	if (sig == NULL || sig->keypair(public_key, secret_key) != 0) {
+OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key) {
+	if (sig == NULL || sig->keypair(public_key, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
 	}
 }
 
-OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-	if (sig == NULL || sig->sign(signed_message, signed_message_len, message, message_len, secret_key) != 0) {
+OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+	if (sig == NULL || sig->sign(signed_message, signed_message_len, message, message_len, secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
 	}
 }
 
-OQS_STATUS OQS_SIG_sign_open(const OQS_SIG *sig, uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key) {
-	if (sig == NULL || sig->sign_open(message, message_len, signed_message, signed_message_len, public_key) != 0) {
+OQS_API OQS_STATUS OQS_SIG_sign_open(const OQS_SIG *sig, uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key) {
+	if (sig == NULL || sig->sign_open(message, message_len, signed_message, signed_message_len, public_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
 	}
 }
 
-void OQS_SIG_free(OQS_SIG *sig) {
+OQS_API void OQS_SIG_free(OQS_SIG *sig) {
 	OQS_MEM_insecure_free(sig);
 }

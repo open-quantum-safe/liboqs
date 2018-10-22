@@ -14,14 +14,14 @@ The **Open Quantum Safe (OQS) project** has the goal of developing and prototypi
 - a collection of open source implementations of post-quantum cryptography algorithms
 - a test harness and benchmarking routines
 
-The OQS project also provides prototype integrations into application-level protocols to enable testing of quantum-resistant cryptography.  
+The OQS project also provides prototype integrations into application-level protocols to enable testing of quantum-resistant cryptography.
 
 More information on OQS can be found on our website: [https://openquantumsafe.org/](https://openquantumsafe.org/).
 
 nist-branch
 -----------
 
-This branch of liboqs aims to non-selectively incorporate submissions to the NIST Post-Quantum Cryptography project for the purposes of benchmarking and integration into a common API for liboqs-reliant applications.  
+This branch of liboqs aims to non-selectively incorporate submissions to the NIST Post-Quantum Cryptography project for the purposes of benchmarking and integration into a common API for liboqs-reliant applications.
 
 This branch takes a "light touch" approach to incorporation:
 
@@ -37,9 +37,9 @@ liboqs nist-branch can be used in our fork of OpenSSL to prototype quantum-resis
 Limitations and security
 ------------------------
 
-liboqs is designed for prototyping and evaluating quantum-resistant cryptography.  Security of proposed quantum-resistant algorithms may rapidly change as research advances, and may ultimately be completely insecure against either classical or quantum computers.  
+liboqs is designed for prototyping and evaluating quantum-resistant cryptography.  Security of proposed quantum-resistant algorithms may rapidly change as research advances, and may ultimately be completely insecure against either classical or quantum computers.
 
-We believe that the NIST Post-Quantum Cryptography standardization project is currently the best avenue to identifying potentially quantum-resistant algorithms.  liboqs does not intend to "pick winners", and we strongly recommend that applications and protocols rely on the outcomes of the NIST standardization project when deploying post-quantum cryptography.  
+We believe that the NIST Post-Quantum Cryptography standardization project is currently the best avenue to identifying potentially quantum-resistant algorithms.  liboqs does not intend to "pick winners", and we strongly recommend that applications and protocols rely on the outcomes of the NIST standardization project when deploying post-quantum cryptography.
 
 We acknowledge that some parties may want to begin deploying post-quantum cryptography prior to the conclusion of the NIST standardization project.  We strongly recommend that any attempts to do make use of so-called **hybrid cryptography**, in which post-quantum public-key algorithms are used alongside traditional public key algorithms (like RSA or elliptic curves) so that the solution is at least no less secure than existing traditional cryptography.
 
@@ -57,7 +57,7 @@ Acceptance criteria for nist-branch
 	- Signature schemes can be EUF-CMA-secure, at any NIST security level.
 - **Targets**:
 	- **Operating systems:** The code must build on Linux and macOS.
-	- **Architecture:** The code must build at least on x64.  Targets are currently provided for x86 and x64.  We plan to add an AVX2 target, and possibly others.
+	- **Architecture:** The code must build at least on x64.  Targets are currently provided for x86 and x64, and pre-processor macros are set for AVX, AVX2, and AVX-512 instruction set extensions.
 - **Source code requirements:**
 	- The source code can be from the original submission, or can be an updated version.
 	- **License:** Source code licensed under the MIT License, the BSD license, or in the public domain can be directly incorporated into the repository.  GPL code will not be included in the repository, but a wrapper to the OQS API may be included, as well as a script that downloads and compiles in GPL code if the algorithm is requested at compile-time.
@@ -148,7 +148,7 @@ Then open `docs/doxygen/html/index.html` in your web browser.
 License
 -------
 
-liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/LICENSE.txt) for details.  
+liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/LICENSE.txt) for details.
 
 liboqs includes some third party libraries or modules that may be licensed differently.  All third-party code is contained in directories labelled `upstream`, and each such upstream directory contains a license file indicating the license that applies to code in that directory.
 
@@ -157,7 +157,7 @@ See https://github.com/XKCP/XKCP#under-which-license-is-the-xkcp-distributed for
 Team
 ----
 
-The Open Quantum Safe project is lead by [Douglas Stebila](https://www.douglas.stebila.ca/research/) [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
+The Open Quantum Safe project is led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
 
 ### Contributors
 
@@ -173,6 +173,7 @@ Contributors to this nist-branch of liboqs include:
 - Tancrède Lepoint (SRI International)
 - Shravan Mishra (University of Waterloo)
 - Douglas Stebila (University of Waterloo)
+- Ben Davies (University of Waterloo)
 
 nist-branch is based on the liboqs master branch, which includes additional contributors.
 
@@ -180,4 +181,8 @@ Upstream implementations are due to their original authors.  See the algorithm d
 
 ### Support
 
-Development of Open Quantum Safe has been supported in part by the Tutte Institute for Mathematics and Computing.  Research projects which developed specific components of Open Quantum Safe have been supported by various research grants; see the source papers for funding acknowledgments.
+Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services and the Tutte Institute for Mathematics and Computing.  
+
+We'd like to make a special acknowledgement to the companies who have dedicated programmer time to contribute source code to OQS, including Amazon Web Services, evolutionQ, and Microsoft Research.  
+
+Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.

@@ -12,9 +12,9 @@
 
 OQS_KEM *OQS_KEM_BIG_QUAKE_1_new();
 
-extern OQS_STATUS OQS_KEM_BIG_QUAKE_1_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_BIG_QUAKE_1_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_BIG_QUAKE_1_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_BIG_QUAKE_1_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_BIG_QUAKE_1_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_BIG_QUAKE_1_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -27,9 +27,9 @@ extern OQS_STATUS OQS_KEM_BIG_QUAKE_1_decaps(uint8_t *shared_secret, const unsig
 
 OQS_KEM *OQS_KEM_BIG_QUAKE_3_new();
 
-extern OQS_STATUS OQS_KEM_BIG_QUAKE_3_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_BIG_QUAKE_3_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_BIG_QUAKE_3_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_BIG_QUAKE_3_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_BIG_QUAKE_3_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_BIG_QUAKE_3_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -42,9 +42,9 @@ extern OQS_STATUS OQS_KEM_BIG_QUAKE_3_decaps(uint8_t *shared_secret, const unsig
 
 OQS_KEM *OQS_KEM_BIG_QUAKE_5_new();
 
-extern OQS_STATUS OQS_KEM_BIG_QUAKE_5_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_BIG_QUAKE_5_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_BIG_QUAKE_5_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_BIG_QUAKE_5_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_BIG_QUAKE_5_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_BIG_QUAKE_5_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 

@@ -12,9 +12,9 @@
 
 OQS_KEM *OQS_KEM_saber_light_saber_kem_new();
 
-extern OQS_STATUS OQS_KEM_saber_light_saber_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_saber_light_saber_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_saber_light_saber_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_saber_light_saber_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_saber_light_saber_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_saber_light_saber_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -27,9 +27,9 @@ extern OQS_STATUS OQS_KEM_saber_light_saber_kem_decaps(uint8_t *shared_secret, c
 
 OQS_KEM *OQS_KEM_saber_saber_kem_new();
 
-extern OQS_STATUS OQS_KEM_saber_saber_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_saber_saber_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_saber_saber_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_saber_saber_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_saber_saber_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_saber_saber_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 
@@ -42,9 +42,9 @@ extern OQS_STATUS OQS_KEM_saber_saber_kem_decaps(uint8_t *shared_secret, const u
 
 OQS_KEM *OQS_KEM_saber_fire_saber_kem_new();
 
-extern OQS_STATUS OQS_KEM_saber_fire_saber_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_KEM_saber_fire_saber_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-extern OQS_STATUS OQS_KEM_saber_fire_saber_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_STATUS OQS_KEM_saber_fire_saber_kem_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_KEM_saber_fire_saber_kem_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_STATUS OQS_KEM_saber_fire_saber_kem_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 #endif
 

@@ -11,9 +11,9 @@
 
 OQS_SIG *OQS_SIG_Dilithium_II_medium_new();
 
-extern OQS_STATUS OQS_SIG_Dilithium_II_medium_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_Dilithium_II_medium_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_Dilithium_II_medium_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_Dilithium_II_medium_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_SIG_Dilithium_II_medium_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_STATUS OQS_SIG_Dilithium_II_medium_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
 
 #endif
 
@@ -25,9 +25,9 @@ extern OQS_STATUS OQS_SIG_Dilithium_II_medium_sign_open(uint8_t *message, size_t
 
 OQS_SIG *OQS_SIG_Dilithium_III_recommended_new();
 
-extern OQS_STATUS OQS_SIG_Dilithium_III_recommended_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_Dilithium_III_recommended_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_Dilithium_III_recommended_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_Dilithium_III_recommended_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_SIG_Dilithium_III_recommended_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_STATUS OQS_SIG_Dilithium_III_recommended_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
 
 #endif
 
@@ -39,9 +39,9 @@ extern OQS_STATUS OQS_SIG_Dilithium_III_recommended_sign_open(uint8_t *message, 
 
 OQS_SIG *OQS_SIG_Dilithium_IV_very_high_new();
 
-extern OQS_STATUS OQS_SIG_Dilithium_IV_very_high_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_Dilithium_IV_very_high_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_Dilithium_IV_very_high_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_Dilithium_IV_very_high_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_SIG_Dilithium_IV_very_high_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_STATUS OQS_SIG_Dilithium_IV_very_high_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
 
 #endif
 #endif

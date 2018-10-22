@@ -11,9 +11,9 @@
 
 OQS_SIG *OQS_SIG_picnic_L1_FS_new();
 
-extern OQS_STATUS OQS_SIG_picnic_L1_FS_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L1_FS_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L1_FS_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_picnic_L1_FS_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L1_FS_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L1_FS_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
 
 #endif
 
@@ -25,9 +25,9 @@ extern OQS_STATUS OQS_SIG_picnic_L1_FS_sign_open(uint8_t *message, size_t *messa
 
 OQS_SIG *OQS_SIG_picnic_L1_UR_new();
 
-extern OQS_STATUS OQS_SIG_picnic_L1_UR_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L1_UR_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L1_UR_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_picnic_L1_UR_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L1_UR_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L1_UR_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
 
 #endif
 
@@ -39,9 +39,9 @@ extern OQS_STATUS OQS_SIG_picnic_L1_UR_sign_open(uint8_t *message, size_t *messa
 
 OQS_SIG *OQS_SIG_picnic_L3_FS_new();
 
-extern OQS_STATUS OQS_SIG_picnic_L3_FS_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L3_FS_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L3_FS_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_picnic_L3_FS_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L3_FS_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L3_FS_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
 
 #endif
 
@@ -53,9 +53,9 @@ extern OQS_STATUS OQS_SIG_picnic_L3_FS_sign_open(uint8_t *message, size_t *messa
 
 OQS_SIG *OQS_SIG_picnic_L3_UR_new();
 
-extern OQS_STATUS OQS_SIG_picnic_L3_UR_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L3_UR_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L3_UR_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_picnic_L3_UR_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L3_UR_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L3_UR_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
 
 #endif
 
@@ -67,9 +67,9 @@ extern OQS_STATUS OQS_SIG_picnic_L3_UR_sign_open(uint8_t *message, size_t *messa
 
 OQS_SIG *OQS_SIG_picnic_L5_FS_new();
 
-extern OQS_STATUS OQS_SIG_picnic_L5_FS_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L5_FS_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L5_FS_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_picnic_L5_FS_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L5_FS_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L5_FS_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
 
 #endif
 
@@ -81,9 +81,9 @@ extern OQS_STATUS OQS_SIG_picnic_L5_FS_sign_open(uint8_t *message, size_t *messa
 
 OQS_SIG *OQS_SIG_picnic_L5_UR_new();
 
-extern OQS_STATUS OQS_SIG_picnic_L5_UR_keypair(uint8_t *public_key, uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L5_UR_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-extern OQS_STATUS OQS_SIG_picnic_L5_UR_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
+OQS_STATUS OQS_SIG_picnic_L5_UR_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L5_UR_sign(uint8_t *signed_message, size_t *signed_message_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_STATUS OQS_SIG_picnic_L5_UR_sign_open(uint8_t *message, size_t *message_len, const uint8_t *signed_message, size_t signed_message_len, const uint8_t *public_key);
 
 #endif
 

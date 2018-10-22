@@ -109,9 +109,18 @@
 #define OQS_KEM_alg_lima_sp_1822_cca_kem "Lima-sp-1822-CCA-KEM"
 /** Algorithm identifier for Lima-sp-2062 CCA KEM. */
 #define OQS_KEM_alg_lima_sp_2062_cca_kem "Lima-sp-2062-CCA-KEM"
+/** Algorithm identifier for Titanium Std CCA KEM */
+#define OQS_KEM_alg_titanium_cca_std_kem "Titanium-CCA-std"
+/** Algorithm identifier for Titanium hi CCA KEM */
+#define OQS_KEM_alg_titanium_cca_hi_kem "Titanium-CCA-hi"
+/** Algorithm identifier for Titanium med CCA KEM */
+#define OQS_KEM_alg_titanium_cca_med_kem "Titanium-CCA-med"
+/** Algorithm identifier for Titanium supet CCA KEM */
+#define OQS_KEM_alg_titanium_cca_super_kem "Titanium-CCA-super"
+
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 42
+#define OQS_KEM_algs_length 46
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -122,7 +131,7 @@
  * @param[in] i Index of the algorithm identifier to return, 0 <= i < OQS_KEM_algs_length
  * @return Algorithm identifier as a string, or NULL.
  */
-char *OQS_KEM_alg_identifier(size_t i);
+OQS_API const char *OQS_KEM_alg_identifier(size_t i);
 
 /**
  * Key encapsulation mechanism object
@@ -130,7 +139,7 @@ char *OQS_KEM_alg_identifier(size_t i);
 typedef struct OQS_KEM {
 
 	/** Printable string representing the name of the key encapsulation mechanism. */
-	char *method_name;
+	const char *method_name;
 
 	/** The NIST security level (1, 2, 3, 4, 5) claimed in this algorithm's original NIST submission. */
 	uint8_t claimed_nist_level;
@@ -194,7 +203,7 @@ typedef struct OQS_KEM {
 } OQS_KEM;
 
 /**
- * Consturcts an OQS_KEM object for a particular algorithm.
+ * Constructs an OQS_KEM object for a particular algorithm.
  *
  * Callers should always check whether the return value is `NULL`, which indicates either than an
  * invalid algorithm name was provided, or that the requested algorithm was disabled at compile-time.
@@ -202,7 +211,7 @@ typedef struct OQS_KEM {
  * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_KEM_algs`.
  * @return An OQS_KEM for the particular algorithm, or `NULL` if the algorithm has been disabled at compile-time.
  */
-OQS_KEM *OQS_KEM_new(const char *method_name);
+OQS_API OQS_KEM *OQS_KEM_new(const char *method_name);
 
 /**
  * Keypair generation algorithm.
@@ -216,7 +225,7 @@ OQS_KEM *OQS_KEM_new(const char *method_name);
  * @param[out] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key);
 
 /**
  * Encapsulation algorithm.
@@ -231,7 +240,7 @@ OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *sec
  * @param[in] public_key The public key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 
 /**
  * Decapsulation algorithm.
@@ -246,14 +255,14 @@ OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8_t *shar
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
-OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 
 /**
  * Frees an OQS_KEM object that was constructed by OQS_KEM_new.
  *
  * @param[in] kem The OQS_KEM object to free.
  */
-void OQS_KEM_free(OQS_KEM *kem);
+OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
@@ -264,6 +273,7 @@ void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_BIGQUAKE.h>
 #include <oqs/kem_saber.h>
 #include <oqs/kem_lima.h>
+#include <oqs/kem_titanium.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H
