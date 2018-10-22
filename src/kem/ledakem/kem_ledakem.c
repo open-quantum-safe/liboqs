@@ -14,6 +14,7 @@ OQS_KEM *OQS_KEM_ledakem_C1_N02_new() {
 	kem->ind_cca = true;
 
 	kem->method_name = "LEDAKEM_C1_N02";
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip";
 	kem->length_public_key = OQS_KEM_ledakem_C1_N02_length_public_key;
 	kem->length_secret_key = OQS_KEM_ledakem_C1_N02_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C1_N02_length_ciphertext;
@@ -39,6 +40,7 @@ OQS_KEM *OQS_KEM_ledakem_C1_N03_new() {
 	kem->ind_cca = true;
 
 	kem->method_name = "LEDAKEM_C1_N03";
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip";
 	kem->length_public_key = OQS_KEM_ledakem_C1_N03_length_public_key;
 	kem->length_secret_key = OQS_KEM_ledakem_C1_N03_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C1_N03_length_ciphertext;
@@ -64,6 +66,7 @@ OQS_KEM *OQS_KEM_ledakem_C1_N04_new() {
 	kem->ind_cca = true;
 
 	kem->method_name = "LEDAKEM_C1_N04";
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip";
 	kem->length_public_key = OQS_KEM_ledakem_C1_N04_length_public_key;
 	kem->length_secret_key = OQS_KEM_ledakem_C1_N04_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C1_N04_length_ciphertext;
@@ -89,6 +92,7 @@ OQS_KEM *OQS_KEM_ledakem_C3_N02_new() {
 	kem->ind_cca = true;
 
 	kem->method_name = "LEDAKEM_C3_N02";
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip";
 	kem->length_public_key = OQS_KEM_ledakem_C3_N02_length_public_key;
 	kem->length_secret_key = OQS_KEM_ledakem_C3_N02_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C3_N02_length_ciphertext;
@@ -114,6 +118,7 @@ OQS_KEM *OQS_KEM_ledakem_C3_N03_new() {
 	kem->ind_cca = true;
 
 	kem->method_name = "LEDAKEM_C3_N03";
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip";
 	kem->length_public_key = OQS_KEM_ledakem_C3_N03_length_public_key;
 	kem->length_secret_key = OQS_KEM_ledakem_C3_N03_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C3_N03_length_ciphertext;
@@ -139,6 +144,7 @@ OQS_KEM *OQS_KEM_ledakem_C3_N04_new() {
 	kem->ind_cca = true;
 
 	kem->method_name = "LEDAKEM_C3_N04";
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip";
 	kem->length_public_key = OQS_KEM_ledakem_C3_N04_length_public_key;
 	kem->length_secret_key = OQS_KEM_ledakem_C3_N04_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C3_N04_length_ciphertext;
@@ -164,6 +170,7 @@ OQS_KEM *OQS_KEM_ledakem_C5_N02_new() {
 	kem->ind_cca = true;
 
 	kem->method_name = "LEDAKEM_C5_N02";
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip";
 	kem->length_public_key = OQS_KEM_ledakem_C5_N02_length_public_key;
 	kem->length_secret_key = OQS_KEM_ledakem_C5_N02_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C5_N02_length_ciphertext;
@@ -189,6 +196,7 @@ OQS_KEM *OQS_KEM_ledakem_C5_N03_new() {
 	kem->ind_cca = true;
 
 	kem->method_name = "LEDAKEM_C5_N03";
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip";
 	kem->length_public_key = OQS_KEM_ledakem_C5_N03_length_public_key;
 	kem->length_secret_key = OQS_KEM_ledakem_C5_N03_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C5_N03_length_ciphertext;
@@ -214,6 +222,7 @@ OQS_KEM *OQS_KEM_ledakem_C5_N04_new() {
 	kem->ind_cca = true;
 
 	kem->method_name = "LEDAKEM_C5_N04";
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/LEDAkem.zip";
 	kem->length_public_key = OQS_KEM_ledakem_C5_N04_length_public_key;
 	kem->length_secret_key = OQS_KEM_ledakem_C5_N04_length_secret_key;
 	kem->length_ciphertext = OQS_KEM_ledakem_C5_N04_length_ciphertext;

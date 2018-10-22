@@ -11,6 +11,7 @@ OQS_KEM *OQS_KEM_newhope_512_cca_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_newhope_512_cca_kem;
+	kem->alg_version = "https://newhopecrypto.org/data/NewHope_2017_12_21.zip";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -38,6 +39,7 @@ OQS_KEM *OQS_KEM_newhope_1024_cca_kem_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_newhope_1024_cca_kem;
+	kem->alg_version = "https://newhopecrypto.org/data/NewHope_2017_12_21.zip";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;
