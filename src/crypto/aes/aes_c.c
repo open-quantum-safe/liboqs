@@ -186,6 +186,15 @@ static void sub_bytes_inv(byte *a, int n) {
 	}
 }
 
+// Rotate the first four bytes of the input eight bits to the left
+static inline void rot_word(byte *a) {
+	byte temp = a[0];
+	a[0] = a[1];
+	a[1] = a[2];
+	a[2] = a[3];
+	a[3] = temp;
+}
+
 // Perform the core key schedule transform on 4 bytes, as part of the key expansion process
 // http://en.wikipedia.org/wiki/Rijndael_key_schedule#Key_schedule_core
 static void key_schedule_core(byte *a, int i) {
@@ -232,6 +241,46 @@ void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 void oqs_aes128_free_schedule_c(void *schedule) {
 	if (schedule != NULL) {
 		OQS_MEM_secure_free(schedule, 176);
+	}
+}
+
+// Expand the 16-byte key to 15 round keys (240 bytes)
+// http://en.wikipedia.org/wiki/Rijndael_key_schedule#The_key_schedule
+void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
+	*_schedule = malloc(16 * 15);
+	assert(*_schedule != NULL);
+	uint8_t *schedule = (uint8_t *) *_schedule;
+	int i = 0;    // The count of how many iterations we've done
+	uint8_t t[4]; // Temporary working area
+
+	// The first 32 bytes of the expanded key are simply the encryption key
+	memcpy(schedule, key, 8 * 4);
+
+	// The remaining 240-32 bytes of the expanded key are computed in one of three ways:
+	for (i = 8; i < 4 * 15; i++) {
+		if (i % 8 == 0) {
+			memcpy(t, schedule + 4 * (i - 1), 4); // We assign the value of the previous 4 bytes in the expanded key to t
+			sub_bytes(t, 4);                      // We apply byte-wise substitution to t
+			rot_word(t);                          // We rotate t one byte left
+			t[0] ^= lookup_rcon[i / 8];           // We xor in the round constant
+			xor(t, schedule + 4 * (i - 8), 4);    // We xor in the four-byte block n bytes before
+			memcpy(schedule + 4 * i, t, 4);       // This becomes the next 4 bytes in the expanded key
+		} else if (i % 8 == 4) {
+			memcpy(t, schedule + 4 * (i - 1), 4); // We assign the value of the previous 4 bytes in the expanded key to t
+			sub_bytes(t, 4);                      // We apply byte-wise substitution to t
+			xor(t, schedule + 4 * (i - 8), 4);    // We xor in the four-byte block n bytes before
+			memcpy(schedule + 4 * i, t, 4);       // This becomes the next 4 bytes in the expanded key
+		} else {
+			memcpy(t, schedule + 4 * (i - 1), 4); // We assign the value of the previous 4 bytes in the expanded key to t
+			xor(t, schedule + 4 * (i - 8), 4);    // We xor in the four-byte block n bytes before
+			memcpy(schedule + 4 * i, t, 4);       // This becomes the next 4 bytes in the expanded key
+		}
+	}
+}
+
+void oqs_aes256_free_schedule_c(void *schedule) {
+	if (schedule != NULL) {
+		OQS_MEM_secure_free(schedule, 16 * 15);
 	}
 }
 
@@ -331,6 +380,50 @@ void oqs_aes128_dec_c(const uint8_t *ciphertext, const void *_schedule, uint8_t 
 	// Reverse the middle rounds
 	for (i = 0; i < 9; i++) {
 		xor_round_key(plaintext, schedule, 9 - i);
+		mix_cols_inv(plaintext);
+		shift_rows_inv(plaintext);
+		sub_bytes_inv(plaintext, 16);
+	}
+
+	// Reverse the first Round
+	xor_round_key(plaintext, schedule, 0);
+}
+
+void oqs_aes256_enc_c(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
+	const uint8_t *schedule = (const uint8_t *) _schedule;
+	int i; // To count the rounds
+
+	// First Round
+	memcpy(ciphertext, plaintext, 16);
+	xor_round_key(ciphertext, schedule, 0);
+
+	// Middle rounds
+	for (i = 0; i < 13; i++) {
+		sub_bytes(ciphertext, 16);
+		shift_rows(ciphertext);
+		mix_cols(ciphertext);
+		xor_round_key(ciphertext, schedule, i + 1);
+	}
+
+	// Final Round
+	sub_bytes(ciphertext, 16);
+	shift_rows(ciphertext);
+	xor_round_key(ciphertext, schedule, 14);
+}
+
+void oqs_aes256_dec_c(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext) {
+	const uint8_t *schedule = (const uint8_t *) _schedule;
+	int i; // To count the rounds
+
+	// Reverse the final Round
+	memcpy(plaintext, ciphertext, 16);
+	xor_round_key(plaintext, schedule, 14);
+	shift_rows_inv(plaintext);
+	sub_bytes_inv(plaintext, 16);
+
+	// Reverse the middle rounds
+	for (i = 0; i < 13; i++) {
+		xor_round_key(plaintext, schedule, 13 - i);
 		mix_cols_inv(plaintext);
 		shift_rows_inv(plaintext);
 		sub_bytes_inv(plaintext, 16);

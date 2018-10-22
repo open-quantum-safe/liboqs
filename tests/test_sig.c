@@ -2,335 +2,102 @@
 #pragma warning(disable : 4244 4293)
 #endif
 
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include <oqs/oqs.h>
 
-#include "ds_benchmark.h"
+static OQS_STATUS sig_test_correctness(const char *method_name) {
 
-// TODO: add signature size to benchmark
+	OQS_SIG *sig = NULL;
+	uint8_t *public_key = NULL;
+	uint8_t *secret_key = NULL;
+	uint8_t *message = NULL;
+	size_t message_len = 100;
+	uint8_t *signature = NULL;
+	size_t signature_len;
+	OQS_STATUS rc, ret = OQS_ERROR;
 
-struct sig_testcase {
-	enum OQS_SIG_algid algid;
-	const char *algid_name;
-	int run;
-	int iter;
-};
-
-/* Add new testcases here */
-struct sig_testcase sig_testcases[] = {
-#ifdef ENABLE_SIG_PICNIC
-    {OQS_SIG_picnic_L1_FS, "picnic_L1_FS", 0, 10},
-    {OQS_SIG_picnic_L1_UR, "picnic_L1_UR", 0, 10},
-    {OQS_SIG_picnic_L3_FS, "picnic_L3_FS", 0, 10},
-    {OQS_SIG_picnic_L3_UR, "picnic_L3_UR", 0, 10},
-    {OQS_SIG_picnic_L5_FS, "picnic_L5_FS", 0, 10},
-    {OQS_SIG_picnic_L5_UR, "picnic_L5_UR", 0, 10},
-#endif
-#ifdef ENABLE_SIG_QTESLA
-    {OQS_SIG_qTESLA_I, "qTESLA_I", 0, 10},
-    {OQS_SIG_qTESLA_III_speed, "qTESLA_III_speed", 0, 10},
-    {OQS_SIG_qTESLA_III_size, "qTESLA_III_size", 0, 10},
-#endif
-};
-
-#define SIG_TEST_ITERATIONS 100
-#define SIG_BENCH_SECONDS 1
-
-static OQS_STATUS sig_test_correctness(OQS_RAND *rand, enum OQS_SIG_algid algid, const int print) {
-
-	OQS_STATUS rc;
-
-	uint8_t *priv = NULL;
-	uint8_t *pub = NULL;
-	uint8_t *msg = NULL;
-	size_t msg_len;
-	uint8_t *sig = NULL;
-	size_t sig_len;
-
-	/* setup signature object */
-	OQS_SIG *s = OQS_SIG_new(rand, algid);
-	if (s == NULL) {
-		eprintf("sig new failed\n");
-		goto err;
-	}
-
-	if (print) {
-		printf("================================================================================\n");
-		printf("Sample computation for signature method %s\n", s->method_name);
-		printf("================================================================================\n");
-	}
-
-	/* key generation */
-	priv = malloc(s->priv_key_len);
-	if (priv == NULL) {
-		eprintf("priv malloc failed\n");
-		goto err;
-	}
-	pub = malloc(s->pub_key_len);
-	if (pub == NULL) {
-		eprintf("pub malloc failed\n");
-		goto err;
-	}
-
-	rc = OQS_SIG_keygen(s, priv, pub);
-	if (rc != OQS_SUCCESS) {
-		eprintf("OQS_SIG_keygen failed\n");
-		goto err;
-	}
-
-	if (print) {
-		if (s->priv_key_len > 100) {
-			OQS_print_part_hex_string("Private key", priv, s->priv_key_len, 20);
-		} else {
-			OQS_print_hex_string("Private key", priv, s->priv_key_len);
-		}
-		if (s->pub_key_len > 100) {
-			OQS_print_part_hex_string("Public key", pub, s->pub_key_len, 20);
-		} else {
-			OQS_print_hex_string("Public key", pub, s->pub_key_len);
-		}
-	}
-
-	/* Generate message to sign */
-	msg_len = 100; // FIXME TODO: randomize based on scheme's max length
-	msg = malloc(msg_len);
-	if (msg == NULL) {
-		eprintf("msg malloc failed\n");
-		goto err;
-	}
-	OQS_RAND_n(rand, msg, msg_len);
-	if (print) {
-		OQS_print_hex_string("Message", msg, msg_len);
-	}
-
-	/* Signature */
-	sig_len = s->max_sig_len;
-	sig = malloc(sig_len);
+	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
-		eprintf("sig malloc failed\n");
+		return OQS_SUCCESS;
+	}
+
+	printf("================================================================================\n");
+	printf("Sample computation for signature %s\n", sig->method_name);
+	printf("================================================================================\n");
+
+	public_key = malloc(sig->length_public_key);
+	secret_key = malloc(sig->length_secret_key);
+	message = malloc(message_len);
+	signature = malloc(sig->length_signature);
+
+	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
+		fprintf(stderr, "ERROR: malloc failed\n");
 		goto err;
 	}
 
-	rc = OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len);
+	OQS_randombytes(message, message_len);
+
+	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
-		eprintf("OQS_SIG_sign failed\n");
+		fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
 		goto err;
 	}
 
-	if (print) {
-		if (sig_len > 100) {
-			// only print the parts of the sig if too long
-			OQS_print_part_hex_string("Signature", sig, sig_len, 20);
-		} else {
-			OQS_print_hex_string("Signature", sig, sig_len);
-		}
-	}
-
-	/* Verification */
-	rc = OQS_SIG_verify(s, pub, msg, msg_len, sig, sig_len);
+	rc = OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key);
 	if (rc != OQS_SUCCESS) {
-		eprintf("ERROR: OQS_SIG_verify failed\n");
+		fprintf(stderr, "ERROR: OQS_SIG_sign failed\n");
 		goto err;
 	}
 
-	if (print) {
-		printf("Signature is valid.\n");
-		printf("\n\n");
+	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+	if (rc != OQS_SUCCESS) {
+		fprintf(stderr, "ERROR: OQS_SIG_verify failed\n");
+		goto err;
 	}
 
-	rc = OQS_SUCCESS;
+	/* modify the signature to invalidate it */
+	signature[0]++;
+	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+	if (rc != OQS_ERROR) {
+		fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
+		goto err;
+	}
+
+	printf("verification passes as expected\n");
+	ret = OQS_SUCCESS;
 	goto cleanup;
 
 err:
-	rc = OQS_ERROR;
+	ret = OQS_ERROR;
 
 cleanup:
-	if (msg != NULL) {
-		OQS_MEM_insecure_free(msg);
-	}
 	if (sig != NULL) {
-		OQS_MEM_insecure_free(sig);
+		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
 	}
-	if (pub != NULL) {
-		OQS_MEM_insecure_free(pub);
-	}
-	if (priv != NULL) {
-		OQS_MEM_secure_free(priv, s->priv_key_len);
-	}
-	if (s != NULL) {
-		OQS_SIG_free(s);
-	}
+	OQS_MEM_insecure_free(public_key);
+	OQS_MEM_insecure_free(message);
+	OQS_MEM_insecure_free(signature);
+	OQS_SIG_free(sig);
 
-	return rc;
-}
-
-UNUSED static OQS_STATUS sig_test_correctness_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, int iterations, bool quiet) {
-	OQS_STATUS ret;
-	ret = sig_test_correctness(rand, algid, !quiet);
-	if (ret != OQS_SUCCESS) {
-		goto err;
-	}
-
-	printf("Testing correctness and randomness of signature for %d iterations\n", iterations);
-	for (int i = 0; i < iterations; i++) {
-		ret = sig_test_correctness(rand, algid, 0);
-		if (ret != OQS_SUCCESS) {
-			goto err;
-		}
-	}
-	printf("All signatures were valid.\n");
-	printf("\n\n");
-	return OQS_SUCCESS;
-err:
 	return ret;
 }
 
-UNUSED static OQS_STATUS sig_bench_wrapper(OQS_RAND *rand, enum OQS_SIG_algid algid, const int seconds) {
+int main() {
+	int ret = EXIT_SUCCESS;
 	OQS_STATUS rc;
 
-	uint8_t *priv = NULL;
-	uint8_t *pub = NULL;
-	uint8_t *msg = NULL;
-	size_t msg_len;
-	uint8_t *sig = NULL;
-	size_t sig_len;
+	// Use system RNG in this program
+	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
-	/* setup signature object */
-	OQS_SIG *s = OQS_SIG_new(rand, algid);
-	if (s == NULL) {
-		eprintf("sig new failed\n");
-		goto err;
-	}
-
-	/* key generation */
-	priv = malloc(s->priv_key_len);
-	if (priv == NULL) {
-		eprintf("priv malloc failed\n");
-		goto err;
-	}
-	pub = malloc(s->pub_key_len);
-	if (pub == NULL) {
-		eprintf("pub malloc failed\n");
-		goto err;
-	}
-
-	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n", s->method_name, "", "", "", "", "", "");
-
-	TIME_OPERATION_SECONDS({ OQS_SIG_keygen(s, priv, pub); }, "keygen", seconds);
-
-	OQS_SIG_keygen(s, priv, pub);
-	/* Generate message to sign */
-	msg_len = 100; // FIXME TODO: randomize based on scheme's max length
-	msg = malloc(msg_len);
-	if (msg == NULL) {
-		eprintf("msg malloc failed\n");
-		goto err;
-	}
-	sig_len = s->max_sig_len;
-	sig = malloc(sig_len);
-	if (sig == NULL) {
-		eprintf("sig malloc failed\n");
-		goto err;
-	}
-
-	TIME_OPERATION_SECONDS({ OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len); sig_len = s->max_sig_len; }, "sign", seconds);
-
-	OQS_SIG_sign(s, priv, msg, msg_len, sig, &sig_len);
-	TIME_OPERATION_SECONDS({ OQS_SIG_verify(s, pub, msg, msg_len, sig, sig_len); }, "verify", seconds);
-
-	rc = OQS_SUCCESS;
-	goto cleanup;
-
-err:
-	rc = OQS_ERROR;
-
-cleanup:
-	OQS_MEM_secure_free(priv, s->priv_key_len);
-	OQS_MEM_insecure_free(pub);
-	OQS_MEM_insecure_free(msg);
-	OQS_MEM_insecure_free(sig);
-	OQS_SIG_free(s);
-
-	return rc;
-}
-
-int main(int argc, char **argv) {
-	OQS_STATUS success = OQS_SUCCESS;
-	bool run_all = true;
-	bool quiet = false;
-	bool bench = false;
-	OQS_RAND *rand = NULL;
-	size_t sig_testcases_len = sizeof(sig_testcases) / sizeof(struct sig_testcase);
-	for (int i = 1; i < argc; i++) {
-		if (argv[i][0] == '-') {
-			if ((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "-help") == 0) || (strcmp(argv[i], "--help") == 0)) {
-				printf("Usage: ./test_sig [options] [schemes]\n");
-				printf("\nOptions:\n");
-				printf("  --quiet, -q\n");
-				printf("    Less verbose output\n");
-				printf("  --bench, -b\n");
-				printf("    Run benchmarks\n");
-				printf("\nschemes:\n");
-				for (size_t j = 0; j < sig_testcases_len; j++) {
-					printf("  %s\n", sig_testcases[j].algid_name);
-				}
-				return EXIT_SUCCESS;
-			} else if (strcmp(argv[i], "--quiet") == 0 || strcmp(argv[i], "-q") == 0) {
-				quiet = true;
-			} else if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0) {
-				bench = true;
-			}
-
-		} else {
-			run_all = false;
-			for (size_t j = 0; j < sig_testcases_len; j++) {
-				if (strcmp(argv[i], sig_testcases[j].algid_name) == 0) {
-					sig_testcases[j].run = 1;
-				}
-			}
+	for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
+		rc = sig_test_correctness(OQS_SIG_alg_identifier(i));
+		if (rc != OQS_SUCCESS) {
+			ret = EXIT_FAILURE;
 		}
 	}
 
-	/* setup RAND */
-	rand = OQS_RAND_new(OQS_RAND_alg_urandom_chacha20);
-	if (rand == NULL) {
-		goto err;
-	}
-
-	for (size_t i = 0; i < sig_testcases_len; i++) {
-		if (run_all || sig_testcases[i].run == 1) {
-			int num_iter = sig_testcases[i].iter;
-			success = sig_test_correctness_wrapper(rand, sig_testcases[i].algid, num_iter, quiet);
-		}
-		if (success != OQS_SUCCESS) {
-			goto err;
-		}
-	}
-
-	if (bench) {
-		PRINT_TIMER_HEADER
-		for (size_t i = 0; i < sig_testcases_len; i++) {
-			if (run_all || sig_testcases[i].run == 1) {
-				sig_bench_wrapper(rand, sig_testcases[i].algid, SIG_BENCH_SECONDS);
-			}
-		}
-		PRINT_TIMER_FOOTER
-	}
-
-	success = OQS_SUCCESS;
-	goto cleanup;
-
-err:
-	success = OQS_ERROR;
-	eprintf("ERROR!\n");
-
-cleanup:
-	if (rand) {
-		OQS_RAND_free(rand);
-	}
-	return (success == OQS_SUCCESS) ? EXIT_SUCCESS : EXIT_FAILURE;
+	return ret;
 }

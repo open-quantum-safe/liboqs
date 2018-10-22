@@ -27,10 +27,24 @@
 
 /** Algorithm identifier for default KEM algorithm. */
 #define OQS_KEM_alg_default "DEFAULT"
-/** Algorithm identifier for Sike p503 KEM. */
-#define OQS_KEM_alg_sike_p503 "Sike-p503"
-/** Algorithm identifier for Sike p751 KEM. */
-#define OQS_KEM_alg_sike_p751 "Sike-p751"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
+/** Algorithm identifier for BIKE1-L3 KEM. */
+#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
+/** Algorithm identifier for BIKE1-L5 KEM. */
+#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
+/** Algorithm identifier for BIKE2-L1 KEM. */
+#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
+/** Algorithm identifier for BIKE2-L3 KEM. */
+#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
+/** Algorithm identifier for BIKE2-L5 KEM. */
+#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
+/** Algorithm identifier for BIKE3-L1 KEM. */
+#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
+/** Algorithm identifier for BIKE3-L3 KEM. */
+#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
+/** Algorithm identifier for BIKE3-L5 KEM. */
+#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
 /** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
@@ -39,27 +53,21 @@
 #define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
 /** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
 #define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
+/** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
+/** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
+/** Algorithm identifier for Sidh p503 KEM. */
+#define OQS_KEM_alg_sidh_p503 "Sidh-p503"
+/** Algorithm identifier for Sidh p751 KEM. */
+#define OQS_KEM_alg_sidh_p751 "Sidh-p751"
+/** Algorithm identifier for Sike p503 KEM. */
+#define OQS_KEM_alg_sike_p503 "Sike-p503"
+/** Algorithm identifier for Sike p751 KEM. */
+#define OQS_KEM_alg_sike_p751 "Sike-p751"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 16
+#define OQS_KEM_algs_length 20
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
@@ -81,6 +89,14 @@ typedef struct OQS_KEM {
 
 	/** Printable string representing the name of the key encapsulation mechanism. */
 	const char *method_name;
+
+	/**
+	 * Printable string representing the version of the cryptographic algorithm.
+	 *
+	 * Implementations with the same method_name and same alg_version will be interoperable.
+	 * See README.md for information about algorithm compatibility.
+	 */
+	const char *alg_version;
 
 	/** The NIST security level (1, 2, 3, 4, 5) claimed in this algorithm's original NIST submission. */
 	uint8_t claimed_nist_level;
@@ -144,7 +160,7 @@ typedef struct OQS_KEM {
 } OQS_KEM;
 
 /**
- * Consturcts an OQS_KEM object for a particular algorithm.
+ * Constructs an OQS_KEM object for a particular algorithm.
  *
  * Callers should always check whether the return value is `NULL`, which indicates either than an
  * invalid algorithm name was provided, or that the requested algorithm was disabled at compile-time.
@@ -203,10 +219,11 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
  *
  * @param[in] kem The OQS_KEM object to free.
  */
-void OQS_KEM_free(OQS_KEM *kem);
+OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_bike.h>
 #include <oqs/kem_frodokem.h>
+#include <oqs/kem_newhopenist.h>
 #include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 

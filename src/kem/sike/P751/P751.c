@@ -114,14 +114,14 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define mp_addx2_asm mp_add751x2_asm
 #define mp_subx2_asm mp_sub751x2_asm
 #define crypto_kem_keypair OQS_KEM_sike_p751_keypair
-#define crypto_kem_enc OQS_KEM_sike_p751_enc
-#define crypto_kem_dec OQS_KEM_sike_p751_dec
-#define random_mod_order_A oqs_kem_sike_p751_sidh_random_mod_order_A
-#define random_mod_order_B oqs_kem_sike_p751_sidh_random_mod_order_B
-#define EphemeralKeyGeneration_A oqs_kem_sike_p751_sidh_EphemeralKeyGeneration_A
-#define EphemeralKeyGeneration_B oqs_kem_sike_p751_sidh_EphemeralKeyGeneration_B
-#define EphemeralSecretAgreement_A oqs_kem_sike_p751_sidh_EphemeralSecretAgreement_A
-#define EphemeralSecretAgreement_B oqs_kem_sike_p751_sidh_EphemeralSecretAgreement_B
+#define crypto_kem_enc OQS_KEM_sike_p751_encaps
+#define crypto_kem_dec OQS_KEM_sike_p751_decaps
+#define random_mod_order_A oqs_kem_sidh_p751_random_mod_order_A
+#define random_mod_order_B oqs_kem_sidh_p751_random_mod_order_B
+#define EphemeralKeyGeneration_A oqs_kem_sidh_p751_EphemeralKeyGeneration_A
+#define EphemeralKeyGeneration_B oqs_kem_sidh_p751_EphemeralKeyGeneration_B
+#define EphemeralSecretAgreement_A oqs_kem_sidh_p751_EphemeralSecretAgreement_A
+#define EphemeralSecretAgreement_B oqs_kem_sidh_p751_EphemeralSecretAgreement_B
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"

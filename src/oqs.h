@@ -19,7 +19,6 @@
 #include <oqs/aes.h>
 #include <oqs/sha3.h>
 #include <oqs/rand.h>
-#include <oqs/kex.h>
 #include <oqs/kem.h>
 #include <oqs/sig.h>
 

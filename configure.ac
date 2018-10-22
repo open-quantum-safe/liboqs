@@ -2,10 +2,10 @@
 # Process this file with autoconf to produce a configure script.
 
 # Init
-AC_INIT([liboqs], [1.0.0], [])
-LT_INIT([disable-shared])
+AC_INIT([liboqs], [0.1.0-rc1], [https://github.com/open-quantum-safe/liboqs/issues], [liboqs-master], [https://openquantumsafe.org/])
 
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
+AM_PROG_LIBTOOL
 
 # Configure
 AC_CONFIG_HEADERS([config.h])
@@ -38,14 +38,10 @@ CONFIG_FEATURES
 SRCDIR=${SRCDIR}" src/common"
 
 # Crypto sources
-SRCDIR=${SRCDIR}" src/crypto/aes \
-                  src/crypto/sha3 \
-                  src/crypto/rand_urandom_aesctr \
-                  src/crypto/rand_urandom_chacha20"
+SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/sha3"
 
 # Protocols
 SRCDIR=${SRCDIR}" src/kem \
-                  src/kex \
                   src/sig"
 
 #Set the default compilation flags
@@ -55,22 +51,15 @@ AC_SUBST(SRCDIR)
 AC_CONFIG_FILES([Makefile
                  src/common/Makefile
                  src/kem/Makefile
-                 src/kex/Makefile
                  src/crypto/sha3/Makefile
-                 src/crypto/rand_urandom_chacha20/Makefile
-                 src/crypto/rand_urandom_aesctr/Makefile
                  src/crypto/aes/Makefile
-                 src/kex_rlwe_newhope/Makefile
-                 src/kex_sidh_msr/Makefile
-                 src/kex_code_mcbits/Makefile
-                 src/kex_ntru/Makefile
                  src/sig/Makefile
-                 src/sig_picnic/Makefile
-                 src/sig_qtesla/Makefile
-                 src/kex_rlwe_newhope/avx2/Makefile
+                 src/sig/picnic/Makefile
+                 src/sig/qtesla/Makefile
                  src/kem/bike/Makefile
                  src/kem/frodokem/Makefile
                  src/kem/sike/Makefile
+                 src/kem/newhopenist/Makefile
                  tests/Makefile
                  ])
 

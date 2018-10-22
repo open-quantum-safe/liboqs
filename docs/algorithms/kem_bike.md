@@ -6,7 +6,7 @@ Summary
 
 - **Name**: BIKE
 - **Algorithm type**: Key Encapsulation Mechanism
-- **Main cryptographic assumption**: Quasi Cyclic Syndrom Decoding (QCSD)
+- **Main cryptographic assumption**: Quasi-cyclic syndrome decoding (QCSD)
 - **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/BIKE.zip
 - **Submitters (to NIST competition)**: Nicolas Aragon, Paulo Barreto, Slim Bettaieb, Loic Bidoux, Olivier Blazy, Jean-Christophe Deneuville, Phillipe Gaborit, Shay Gueron, Tim Guneysu, Carlos Aguilar Melchor, Rafael Misoczki, Edoardo Persichetti, Nicolas Sendrier, Jean-Pierre Tillich, Gilles Zemor
 - **Submitters' website**: http://bikesuite.org/
@@ -30,17 +30,15 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** This is a reference code (for functionality testing) that is based on the reference code of the Nist submission. This code was modified to use OpenSSL instead of NTL.
+- **Source of implementation:** http://bikesuite.org/#implementation
+- **Implementation version:** Additional implementation: 05/23/2018; reference implementation: 06/29/2018 (with NTL calls replaced by OpenSSL calls and the decoder of the additional implementation)
 - **License:** MIT License
 - **Language:** C
- **Constant-time:** No
- **Architectures supported in liboqs nist-branch**: x86, x64
+- **Constant-time:** No
+- **Architectures supported in liboqs nist-branch**: x86, x64
 
 Additional comments
 -------------------
-- The original BIKE implementation includes additional optimizations that are not currently being built in liboqs:
-  - CLMUL
-  - AES-NI
-  - AVX2
-  - AVX512
-
+- LibOQS includes both the reference implementation and the additional implementation of BIKE from http://bikesuite.org/#implementation. The additional implementation is automatically being chosen once compiling LibOQS on a x64 Linux OS with AVX2/512 support.
+- The reference code has been modified to use OpenSSL instead of NTL.
+- The secret key size might vary between the two implementations.

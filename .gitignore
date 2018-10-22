@@ -33,15 +33,17 @@ include
 *.x86_64
 *.hex
 tests/example_kem
+tests/example_sig
 tests/speed_kem
+tests/speed_sig
 tests/test_kem
-tests/test_kex
 tests/test_sig
-tests/test_rand
 tests/test_aes
 tests/test_sha3
-tests/minimal_kex_oqs
-tests/minimal_sig_oqs
+
+#kat
+tests/kat_kem
+kat_kem_rsp/
 
 # Debug files
 *.dSYM/
@@ -61,13 +63,6 @@ VisualStudio/**/Win32/
 VisualStudio/**/x64/
 VisualStudio/include/
 VisualStudio/**/*.user
-
-# External sources
-external
-!src/sig_picnic/external
-src/sig_picnic/external/build/**
-src/sig_picnic/external/msbuild/**
-/temp/
 
 # Travis files
 cmake-3.8.0.tar.gz
@@ -106,8 +101,8 @@ sample_params
 data/
 
 # Exceptions
-!/src/kex_sidh_msr/config.h
 !src/sig_picnic/external/config.h.in
 
 # Misc (master branch)
 .objs_upstream
+*.geany

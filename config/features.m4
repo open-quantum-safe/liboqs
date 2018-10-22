@@ -25,13 +25,17 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 
   #The flags are organizes according to features then cryptosystems.
 
-  # The parameters are 
-  # 1) Flag-name 
+  # The parameters are
+  # 1) Flag-name
   # 2) Param-name
   # 3) Compilation param name
   # 4) Compilation directory
   ARG_DISBL_SET_WRAP([aes-ni],  [aes_ni],  [USE_AES_NI])
   ARG_ENABL_SET_WRAP([openssl], [openssl], [USE_OPENSSL])
+
+  AS_IF([test "x${enable_shared}" = "xyes" ], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
+  AM_CONDITIONAL([ENABLE_SHARED],[test "x${enable_shared}" = "xyes"])
+  AC_SUBST(ENABLE_SHARED)
 
   #BIKE depends on OpenSSL
   AM_COND_IF([USE_OPENSSL],
@@ -41,22 +45,12 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
+  ARG_DISBL_SET_WRAP([kem-newhope],  [kem_newhope],  [ENABLE_KEM_NEWHOPE],  [src/kem/newhopenist])
 
-  ARG_ENABL_SET_WRAP([kex-code-mcbits], [kex_code_mcbits], 
-                     [ENABLE_MCBITS], [src/kex_code_mcbits])
-  ARG_DISBL_SET_WRAP([kex-ntru], [kex_ntru], 
-                     [ENABLE_KEX_NTRU], [src/kex_ntru])
-  ARG_DISBL_SET_WRAP([kex-rlwe-newhope],[kex_rlwe_newhope], 
-                     [ENABLE_KEX_RLWE_NEWHOPE], [src/kex_rlwe_newhope])
-  ARG_ENABL_SET_WRAP([kex-rlwe-newhope-avx2], [kex_rlwe_newhope_avx2], 
-                     [ENABLE_KEX_RLWE_NEWHOPE_AVX2], [src/kex_rlwe_newhope/avx2])
-  ARG_DISBL_SET_WRAP([kex-sidh-msr], [kex_sidh_msr],
-                     [ENABLE_KEX_SIDH_MSR], [src/kex_sidh_msr])
-
-  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic], 
-                     [ENABLE_SIG_PICNIC], [src/sig_picnic])
-  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla], 
-                     [ENABLE_SIG_QTESLA], [src/sig_qtesla])
+  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
+                     [ENABLE_SIG_PICNIC], [src/sig/picnic])
+  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
+                     [ENABLE_SIG_QTESLA], [src/sig/qtesla])
 ]
 )
 
@@ -77,8 +71,8 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l1, 1, "Define to 1 when BIKE3-L1 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l3, 1, "Define to 1 when BIKE3-L3 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l5, 1, "Define to 1 when BIKE3-L5 enabled")
-    
-    AM_COND_IF([USE_AVX2_INSTRUCTIONS], 
+
+    AM_COND_IF([USE_AVX2_INSTRUCTIONS],
                [AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [test x$gcc_cv_compiler = xtrue])
                 AM_COND_IF([BIKE_ADDITIONAL_IMPL], [AC_DEFINE(BIKE_ADDITIONAL_IMPL, 1, "Define to 1 when BIKE uses the additional implementation")])
                ])
@@ -94,6 +88,28 @@ AC_DEFUN([CONFIG_FEATURES],
   AM_COND_IF([ENABLE_KEM_SIKE], [
     AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_sidh_p503, 1, "Define to 1 when Sidh-p503 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_sidh_p751, 1, "Define to 1 when Sidh-p751 enabled")
+  ])
+
+  AM_COND_IF([ENABLE_SIG_QTESLA], [
+    AC_DEFINE(OQS_ENABLE_SIG_qTESLA_I,         1, "Define to 1 when qTESLA-I enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_qTESLA_III_size,  1, "Define to 1 when qTESLA-III-size enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_qTESLA_III_speed, 1, "Define to 1 when qTESLA-III-speed enabled")
+  ])
+
+  AM_COND_IF([ENABLE_SIG_PICNIC], [
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L1_FS, 1, "Define to 1 when picnic-L1-FS enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L1_UR, 1, "Define to 1 when picnic-L1-UR enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L3_FS, 1, "Define to 1 when picnic-L3-FS enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L3_UR, 1, "Define to 1 when picnic-L3-UR enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L5_FS, 1, "Define to 1 when picnic-L5-FS enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic_L5_UR, 1, "Define to 1 when picnic-L5-UR enabled")
+  ])
+
+  AM_COND_IF([ENABLE_KEM_NEWHOPE], [
+    AC_DEFINE(OQS_ENABLE_KEM_newhope_512_cca_kem, 1, "Define to 1 when NewHope-512-CCA-KEM enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_newhope_1024_cca_kem, 1, "Define to 1 when NewHope-1024-CCA-KEM enabled")
   ])
 
 ]

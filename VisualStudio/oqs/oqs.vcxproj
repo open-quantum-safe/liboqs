@@ -36,59 +36,50 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
+    <ClInclude Include="..\..\src\kem\newhopenist\kem_newhopenist.h" />
     <ClInclude Include="..\..\src\kem\kem.h" />
+    <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
+    <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h" />
+    <ClInclude Include="..\..\src\kem\sike\P503\P503_internal.h" />
+    <ClInclude Include="..\..\src\kem\sike\P751\P751_api.h" />
+    <ClInclude Include="..\..\src\kem\sike\P751\P751_internal.h" />
     <ClInclude Include="..\..\src\oqs.h" />
     <ClInclude Include="..\..\src\common\common.h" />
     <ClInclude Include="..\..\src\common\rand.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes_local.h" />
-    <ClInclude Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" />
-    <ClInclude Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" />
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h" />
-    <ClInclude Include="..\..\src\kex\kex.h" />
-    <ClInclude Include="..\..\src\kex_code_mcbits\kex_code_mcbits.h" />
-    <ClInclude Include="..\..\src\kex_code_mcbits\mcbits.h" />
-    <ClInclude Include="..\..\src\kex_ntru\kex_ntru.h" />
-    <ClInclude Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" />
-    <ClInclude Include="..\..\src\kex_rlwe_newhope\params.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\kex_sidh_msr.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_api.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\P503\P503_internal.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_api.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\P751\P751_internal.h" />
-    <ClInclude Include="..\..\src\kex_sidh_msr\windows_undef.h" />
     <ClInclude Include="..\..\src\sig\sig.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\bitstream.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\compat.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\cpu.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\crypto_sign.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\endian_compat.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\io.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\kdf_shake.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\lowmc.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\lowmc_128_128_20.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\lowmc_192_192_30.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\lowmc_256_256_38.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\lowmc_pars.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\macros.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\mpc.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\mpc_lowmc.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\mzd_additional.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\picnic.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\picnic_impl.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\sha3\KeccakHash.h" />
-    <ClInclude Include="..\..\src\sig_picnic\external\sha3\KeccakSponge.h" />
-    <ClInclude Include="..\..\src\sig_picnic\sig_picnic.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\bitstream.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\compat.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\cpu.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\crypto_sign.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\endian_compat.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\io.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\kdf_shake.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\lowmc.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\lowmc_128_128_20.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\lowmc_192_192_30.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\lowmc_256_256_38.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\lowmc_pars.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\macros.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\mpc.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\mpc_lowmc.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\mzd_additional.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic_impl.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\sha3\KeccakHash.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\sha3\KeccakSponge.h" />
+    <ClInclude Include="..\..\src\sig\picnic\sig_picnic.h" />
     <ClInclude Include="..\winconfig.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\src\common\common.c" />
     <ClCompile Include="..\..\src\common\rand.c" />
+    <ClCompile Include="..\..\src\common\rand_nist.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
-    <ClCompile Include="..\..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.c" />
-    <ClCompile Include="..\..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.c" />
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
     <ClCompile Include="..\..\src\kem\frodokem\frodo640_aes.c" />
     <ClCompile Include="..\..\src\kem\frodokem\frodo640_cshake.c" />
@@ -96,35 +87,33 @@
     <ClCompile Include="..\..\src\kem\frodokem\frodo976_cshake.c" />
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\util.c" />
+    <ClCompile Include="..\..\src\kem\newhopenist\kem_newhopenist.c" />
     <ClCompile Include="..\..\src\kem\kem.c" />
-    <ClCompile Include="..\..\src\kex\kex.c" />
-    <ClCompile Include="..\..\src\kex_code_mcbits\external\operations.c" />
-    <ClCompile Include="..\..\src\kex_code_mcbits\kex_code_mcbits.c" />
-    <ClCompile Include="..\..\src\kex_ntru\kex_ntru.c" />
-    <ClCompile Include="..\..\src\kex_rlwe_newhope\kex_rlwe_newhope.c" />
-    <ClCompile Include="..\..\src\kex_sidh_msr\kex_sidh_msr.c" />
-    <ClCompile Include="..\..\src\kex_sidh_msr\P503\P503.c" />
-    <ClCompile Include="..\..\src\kex_sidh_msr\P751\P751.c" />
+    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope1024cca.c" />
+    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope512cca.c" />
+    <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
+    <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
+    <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\aligned_alloc.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\bitstream.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\cpu.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\io.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\kdf_shake.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\lowmc.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\lowmc_128_128_20.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\lowmc_192_192_30.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\lowmc_256_256_38.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\lowmc_pars.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\mpc.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\mpc_lowmc.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\mzd_additional.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\picnic.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\picnic_impl.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\sha3\KeccakHash.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\sha3\KeccakSponge.c" />
-    <ClCompile Include="..\..\src\sig_picnic\external\sha3\opt64\KeccakP-1600-opt64.c" />
-    <ClCompile Include="..\..\src\sig_picnic\sig_picnic.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\aligned_alloc.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\bitstream.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\cpu.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\io.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\kdf_shake.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\lowmc.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\lowmc_128_128_20.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\lowmc_192_192_30.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\lowmc_256_256_38.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\lowmc_pars.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\mpc.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\mpc_lowmc.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\mzd_additional.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic_impl.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\sha3\KeccakHash.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\sha3\KeccakSponge.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-opt64.c" />
+    <ClCompile Include="..\..\src\sig\picnic\sig_picnic.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="dll.def" />
@@ -252,9 +241,9 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NEWHOPE;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -268,21 +257,15 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
@@ -291,9 +274,9 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NEWHOPE;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -308,21 +291,15 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -331,9 +308,9 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NEWHOPE;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
@@ -348,21 +325,15 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -376,9 +347,9 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NEWHOPE;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
@@ -395,21 +366,15 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -423,9 +388,9 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NEWHOPE;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -441,21 +406,15 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
@@ -466,9 +425,9 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;AES_DISABLE_NI;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NEWHOPE;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;MUL_M4RI;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -485,21 +444,15 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -510,9 +463,9 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NEWHOPE;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
@@ -529,21 +482,15 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -559,9 +506,9 @@ copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;DISABLE_NTRU_ON_WINDOWS_BY_DEFAULT;OQS_RAND_DEFAULT_URANDOM_CHACHA20;OQS_KEX_DEFAULT_NEWHOPE;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_AMD64_;inline=__inline;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_SSE2;WITH_SSE4_1;WITH_AVX2;MUL_M4RI;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig_picnic\external\;$(SolutionDir)..\src\sig_picnic\external\sha3\;$(SolutionDir)..\src\sig_picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
     </ClCompile>
@@ -580,21 +527,15 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_chacha20\rand_urandom_chacha20.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\crypto\rand_urandom_aesctr\rand_urandom_aesctr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex\kex.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_code_mcbits\kex_code_mcbits.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_ntru\kex_ntru.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_rlwe_newhope\kex_rlwe_newhope.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kex_sidh_msr\kex_sidh_msr.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig_qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
