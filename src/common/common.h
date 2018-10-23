@@ -50,12 +50,6 @@ typedef enum {
 	OQS_SUCCESS = 0,
 	/** Used to indicate failures in external libraries (e.g., OpenSSL). */
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
-	/** Used to indicate errors occurred during BIKE protocol. */
-	OQS_ERR_KEM_BIKE_DECODING_FAILURE = 100,
-	OQS_ERR_KEM_BIKE_AES_SET_KEY,
-	OQS_ERR_KEM_BIKE_WEIGHT_IS_NOT_T,
-	OQS_ERR_KEM_BIKE_AES_CTR_PRF_INIT,
-	OQS_ERR_KEM_BIKE_AES_OVER_USED
 } OQS_STATUS;
 
 /**
