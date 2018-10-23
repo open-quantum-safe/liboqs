@@ -14,6 +14,13 @@
 
 #include <oqs/config.h>
 
+// Map BIKE internal errors to OQS ones
+#define OQS_ERR_KEM_BIKE_DECODING_FAILURE OQS_ERROR
+#define OQS_ERR_KEM_BIKE_AES_SET_KEY OQS_ERROR
+#define OQS_ERR_KEM_BIKE_WEIGHT_IS_NOT_T OQS_ERROR
+#define OQS_ERR_KEM_BIKE_AES_CTR_PRF_INIT OQS_ERROR
+#define OQS_ERR_KEM_BIKE_AES_OVER_USED OQS_ERROR
+
 ////////////////////////////////////////////
 //             Basic defs
 ///////////////////////////////////////////
