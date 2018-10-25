@@ -12,6 +12,20 @@
 #include <oqs/config.h>
 
 /**
+ * Defines which functions should be exposed outside the LibOQS library
+ *
+ * By default the visibility of all the symbols is defined to "hidden"
+ * Only the library API should be marked as default
+ *
+ * Example: OQS_API return_value function_name(void);
+ */
+#if defined(_WIN32)
+#define OQS_API
+#else
+#define OQS_API __attribute__((visibility("default")))
+#endif
+
+/**
  * Represents return values from functions.
  *
  * Callers should compare with the symbol rather than the individual value.
@@ -35,25 +49,6 @@ typedef enum {
 } OQS_STATUS;
 
 /**
- * Prints a byte array to stdout as a hexadecimal.
- *
- * @param[in] label A label to display alongside the value
- * @param[in] str The byte array to print
- * @param[in] len The number of bytes to print; the memory allocated for `str` must be at least `len` bytes
- */
-void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len);
-
-/**
- * Prints part of a byte array to stdout as a hexadecimal string, specifically the first `sub_len`
- * and last `sub_len` bytes.
- * @param[in] label A label to display alongside the value
- * @param[in] str The byte array to print
- * @param[in] len The length of the byte array `str`; the memory allocated for `str` must be at least `len` bytes
- * @param[in] sub_len The number of bytes to print
- */
-void OQS_print_part_hex_string(const char *label, const uint8_t *str, size_t len, size_t sub_len);
-
-/**
  * Zeros out `len` bytes of memory starting at `ptr`.
  *
  * Designed to be protected against optimizing compilers which try to remove "unnecessary"
@@ -62,7 +57,7 @@ void OQS_print_part_hex_string(const char *label, const uint8_t *str, size_t len
  * @param[in] ptr The start of the memory to zero out.
  * @param[in] len The number of bytes to zero out.
  */
-void OQS_MEM_cleanse(void *ptr, size_t len);
+OQS_API void OQS_MEM_cleanse(void *ptr, size_t len);
 
 /**
  * Zeros out `len` bytes of memory starting at `ptr`, then frees `ptr`.
@@ -75,7 +70,7 @@ void OQS_MEM_cleanse(void *ptr, size_t len);
  * @param[in] ptr The start of the memory to zero out and free.
  * @param[in] len The number of bytes to zero out.
  */
-void OQS_MEM_secure_free(void *ptr, size_t len);
+OQS_API void OQS_MEM_secure_free(void *ptr, size_t len);
 
 /**
  * Frees `ptr`.
@@ -86,7 +81,7 @@ void OQS_MEM_secure_free(void *ptr, size_t len);
  *
  * @param[in] ptr The start of the memory to free.
  */
-void OQS_MEM_insecure_free(void *ptr);
+OQS_API void OQS_MEM_insecure_free(void *ptr);
 
 /**
  * Macros that indicates a function argument may be unused.  Used to comply with
@@ -98,20 +93,6 @@ void OQS_MEM_insecure_free(void *ptr);
 // __attribute__ not supported in VS
 #else
 #define UNUSED __attribute__((unused))
-#endif
-
-/**
- * Defines which functions should be exposed outside the LibOQS library
- *
- * By default the visibility of all the symbols is defined to "hidden"
- * Only the library API should be marked as default
- *
- * Example: OQS_API return_value function_name(void);
- */
-#if defined(_WIN32)
-#define OQS_API
-#else
-#define OQS_API __attribute__((visibility("default")))
 #endif
 
 #endif // __OQS_COMMON_H

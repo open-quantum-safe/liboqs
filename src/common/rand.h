@@ -25,7 +25,7 @@
  * @param[in] algorithm The name of the algorithm to use.
  * @return OQS_SUCCESS if `algorithm` is a supported algorithm name, OQS_ERROR otherwise.
  */
-OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm);
+OQS_API OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm);
 
 /**
  * Switches OQS_randombytes to use the given function.
@@ -35,7 +35,7 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm);
  *
  * @param[in] algorithm_ptr Pointer to the RNG function to use.
  */
-void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t));
+OQS_API void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t));
 
 /**
  * Fills the given memory with the requested number of (pseudo)random bytes.
@@ -49,7 +49,7 @@ void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t));
  * @param[out] random_array Pointer to the memory to fill with (pseudo)random bytes
  * @param[in] bytes_to_read The number of random bytes to read into memory
  */
-void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
+OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
 
 /**
  * Initializes the NIST DRBG with a given seed.
@@ -58,6 +58,6 @@ void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
  * @param[in] personalization_string An optional personalization string; may be NULL
  * @param[in] security_strength The required security strength; must be 256
  */
-void OQS_randombytes_nist_kat_init(const uint8_t *entropy_input, const uint8_t *personalization_string, int security_strength);
+OQS_API void OQS_randombytes_nist_kat_init(const uint8_t *entropy_input, const uint8_t *personalization_string, int security_strength);
 
 #endif // __OQS_RANDOM_H

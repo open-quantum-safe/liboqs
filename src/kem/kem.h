@@ -27,6 +27,30 @@
 
 /** Algorithm identifier for default KEM algorithm. */
 #define OQS_KEM_alg_default "DEFAULT"
+/** Algorithm identifier for BIG_QUAKE_1. */
+#define OQS_KEM_alg_BIG_QUAKE_1 "BIG_QUAKE_1"
+/** Algorithm identifier for BIG_QUAKE_3. */
+#define OQS_KEM_alg_BIG_QUAKE_3 "BIG_QUAKE_3"
+/** Algorithm identifier for BIG_QUAKE_5. */
+#define OQS_KEM_alg_BIG_QUAKE_5 "BIG_QUAKE_5"
+/** Algorithm identifier for BIKE1-L1 KEM. */
+#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
+/** Algorithm identifier for BIKE1-L3 KEM. */
+#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
+/** Algorithm identifier for BIKE1-L5 KEM. */
+#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
+/** Algorithm identifier for BIKE2-L1 KEM. */
+#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
+/** Algorithm identifier for BIKE2-L3 KEM. */
+#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
+/** Algorithm identifier for BIKE2-L5 KEM. */
+#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
+/** Algorithm identifier for BIKE3-L1 KEM. */
+#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
+/** Algorithm identifier for BIKE3-L3 KEM. */
+#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
+/** Algorithm identifier for BIKE3-L5 KEM. */
+#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
 /** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
@@ -35,44 +59,12 @@
 #define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
 /** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
 #define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
-/** Algorithm identifier for NewHope512-CCA-KEM KEM. */
-#define OQS_KEM_alg_newhope_512_cca_kem "NewHope512-CCA-KEM"
-/** Algorithm identifier for NewHope1024-CCA-KEM KEM. */
-#define OQS_KEM_alg_newhope_1024_cca_kem "NewHope1024-CCA-KEM"
 /** Algorithm identifier for Kyber512 KEM. */
 #define OQS_KEM_alg_kyber512 "Kyber512"
 /** Algorithm identifier for Kyber768 KEM. */
 #define OQS_KEM_alg_kyber768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber1024 "Kyber1024"
-/** Algorithm identifier for BIKE1 L1 KEM. */
-#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
-/** Algorithm identifier for BIKE1 L3 KEM. */
-#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
-/** Algorithm identifier for BIKE1 L5 KEM. */
-#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
-/** Algorithm identifier for BIKE2 L1 KEM. */
-#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
-/** Algorithm identifier for BIKE2 L3 KEM. */
-#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
-/** Algorithm identifier for BIKE2 L5 KEM. */
-#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
-/** Algorithm identifier for BIKE3 L1 KEM. */
-#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
-/** Algorithm identifier for BIKE3 L3 KEM. */
-#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
-/** Algorithm identifier for BIKE3 L5 KEM. */
-#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
-/** Algorithm identifier for Sike p503 KEM. */
-#define OQS_KEM_alg_sike_p503 "Sike-p503"
-/** Algorithm identifier for Sike p751 KEM. */
-#define OQS_KEM_alg_sike_p751 "Sike-p751"
-/** Algorithm identifier for BIG_QUAKE_1. */
-#define OQS_KEM_alg_BIG_QUAKE_1 "BIG_QUAKE_1"
-/** Algorithm identifier for BIG_QUAKE_3. */
-#define OQS_KEM_alg_BIG_QUAKE_3 "BIG_QUAKE_3"
-/** Algorithm identifier for BIG_QUAKE_5. */
-#define OQS_KEM_alg_BIG_QUAKE_5 "BIG_QUAKE_5"
 /** Algorithm identifier for LEDA KEM SL=1 N0=2. */
 #define OQS_KEM_alg_ledakem_C1_N02 "LEDAKEM_C1_N02"
 /** Algorithm identifier for LEDA KEM SL=1 N0=3. */
@@ -91,12 +83,6 @@
 #define OQS_KEM_alg_ledakem_C5_N03 "LEDAKEM_C5_N03"
 /** Algorithm identifier for LEDA KEM SL=5 N0=4. */
 #define OQS_KEM_alg_ledakem_C5_N04 "LEDAKEM_C5_N04"
-/** Algorithm identifier for LightSaber-KEM. */
-#define OQS_KEM_alg_saber_light_saber_kem "LightSaber-KEM"
-/** Algorithm identifier for Saber-KEM. */
-#define OQS_KEM_alg_saber_saber_kem "Saber-KEM"
-/** Algorithm identifier for FireSaber-KEM. */
-#define OQS_KEM_alg_saber_fire_saber_kem "FireSaber-KEM"
 /** Algorithm identifier for Lima-2p-1024 CCA KEM. */
 #define OQS_KEM_alg_lima_2p_1024_cca_kem "Lima-2p-1024-CCA-KEM"
 /** Algorithm identifier for Lima-2p-2048 CCA KEM. */
@@ -109,6 +95,20 @@
 #define OQS_KEM_alg_lima_sp_1822_cca_kem "Lima-sp-1822-CCA-KEM"
 /** Algorithm identifier for Lima-sp-2062 CCA KEM. */
 #define OQS_KEM_alg_lima_sp_2062_cca_kem "Lima-sp-2062-CCA-KEM"
+/** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
+/** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
+#define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
+/** Algorithm identifier for LightSaber-KEM. */
+#define OQS_KEM_alg_saber_light_saber_kem "LightSaber-KEM"
+/** Algorithm identifier for Saber-KEM. */
+#define OQS_KEM_alg_saber_saber_kem "Saber-KEM"
+/** Algorithm identifier for FireSaber-KEM. */
+#define OQS_KEM_alg_saber_fire_saber_kem "FireSaber-KEM"
+/** Algorithm identifier for Sike p503 KEM. */
+#define OQS_KEM_alg_sike_p503 "Sike-p503"
+/** Algorithm identifier for Sike p751 KEM. */
+#define OQS_KEM_alg_sike_p751 "Sike-p751"
 /** Algorithm identifier for Titanium Std CCA KEM */
 #define OQS_KEM_alg_titanium_cca_std_kem "Titanium-CCA-std"
 /** Algorithm identifier for Titanium hi CCA KEM */
@@ -117,7 +117,6 @@
 #define OQS_KEM_alg_titanium_cca_med_kem "Titanium-CCA-med"
 /** Algorithm identifier for Titanium supet CCA KEM */
 #define OQS_KEM_alg_titanium_cca_super_kem "Titanium-CCA-super"
-
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
 #define OQS_KEM_algs_length 46
@@ -272,15 +271,15 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
  */
 OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
+#include <oqs/kem_BIGQUAKE.h>
+#include <oqs/kem_bike.h>
 #include <oqs/kem_frodokem.h>
-#include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
 #include <oqs/kem_ledakem.h>
-#include <oqs/kem_bike.h>
-#include <oqs/kem_sike.h>
-#include <oqs/kem_BIGQUAKE.h>
-#include <oqs/kem_saber.h>
 #include <oqs/kem_lima.h>
+#include <oqs/kem_newhopenist.h>
+#include <oqs/kem_saber.h>
+#include <oqs/kem_sike.h>
 #include <oqs/kem_titanium.h>
 // EDIT-WHEN-ADDING-KEM
 

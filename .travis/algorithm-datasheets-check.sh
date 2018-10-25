@@ -13,7 +13,9 @@ ALGS=$(grep -E 'define OQS_(KEM|SIG)_alg_' src/kem/kem.h src/sig/sig.h | grep -v
 
 RET=0
 for alg in ${ALGS}; do
+	set +e
 	FOUND=$(grep ${alg} docs/algorithms/*.md)
+	set -e
 	if [[ -z "${FOUND}" ]];
 	then
 		${PRINT_RED}
