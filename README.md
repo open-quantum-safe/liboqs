@@ -1,7 +1,7 @@
 liboqs - master branch
 ======================
 
-liboqs is a C library for quantum-resistant cryptographic algorithms.  This branch of liboqs focuses on selected key encapsulations and signature algorithms.
+**liboqs** is a C library for quantum-resistant cryptographic algorithms.  This branch of liboqs focuses on selected key encapsulations and signature algorithms.
 
 Overview
 --------
@@ -89,7 +89,7 @@ Lifecycle for master branch
 Building and running liboqs master branch
 -----------------------------------------
 
-Builds are tested using the Travis continuous integration system on macOS 10.13.3 (clang 9.1.0) and Ubuntu 14.04.5 (gcc.4.8, gcc-4.9, gcc-5, gcc-6).
+Builds are tested using the Travis continuous integration system on macOS 10.13.3 (clang 9.1.0) and Ubuntu 14.04.5 (gcc.4.8, gcc-4.9, gcc-5, gcc-6).  It has also been tested manually on macOS 10.14 (clang 10.0.0) and Ubuntu 18.04.1 (gcc-7).
 
 - [Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
 
