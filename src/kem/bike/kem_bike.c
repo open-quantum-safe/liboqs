@@ -11,6 +11,11 @@ OQS_KEM *OQS_KEM_bike1_l1_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike1_l1;
+#if defined(ADDITIONAL_IMPL)
+	kem->alg_version = "Additional - 05/23/2018";
+#else
+	kem->alg_version = "Reference - 06/29/2018";
+#endif
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = false;
@@ -38,6 +43,11 @@ OQS_KEM *OQS_KEM_bike1_l3_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike1_l3;
+#if defined(ADDITIONAL_IMPL)
+	kem->alg_version = "Additional - 05/23/2018";
+#else
+	kem->alg_version = "Reference - 06/29/2018";
+#endif
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = false;
@@ -65,6 +75,11 @@ OQS_KEM *OQS_KEM_bike1_l5_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike1_l5;
+#if defined(ADDITIONAL_IMPL)
+	kem->alg_version = "Additional - 05/23/2018";
+#else
+	kem->alg_version = "Reference - 06/29/2018";
+#endif
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
@@ -92,6 +107,11 @@ OQS_KEM *OQS_KEM_bike2_l1_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike2_l1;
+#if defined(ADDITIONAL_IMPL)
+	kem->alg_version = "Additional - 05/23/2018";
+#else
+	kem->alg_version = "Reference - 06/29/2018";
+#endif
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = false;
@@ -119,6 +139,11 @@ OQS_KEM *OQS_KEM_bike2_l3_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike2_l3;
+#if defined(ADDITIONAL_IMPL)
+	kem->alg_version = "Additional - 05/23/2018";
+#else
+	kem->alg_version = "Reference - 06/29/2018";
+#endif
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = false;
@@ -146,6 +171,11 @@ OQS_KEM *OQS_KEM_bike2_l5_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike2_l5;
+#if defined(ADDITIONAL_IMPL)
+	kem->alg_version = "Additional - 05/23/2018";
+#else
+	kem->alg_version = "Reference - 06/29/2018";
+#endif
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
@@ -173,6 +203,11 @@ OQS_KEM *OQS_KEM_bike3_l1_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike3_l1;
+#if defined(ADDITIONAL_IMPL)
+	kem->alg_version = "Additional - 05/23/2018";
+#else
+	kem->alg_version = "Reference - 06/29/2018";
+#endif
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = false;
@@ -200,6 +235,11 @@ OQS_KEM *OQS_KEM_bike3_l3_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike3_l3;
+#if defined(ADDITIONAL_IMPL)
+	kem->alg_version = "Additional - 05/23/2018";
+#else
+	kem->alg_version = "Reference - 06/29/2018";
+#endif
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = false;
@@ -227,6 +267,11 @@ OQS_KEM *OQS_KEM_bike3_l5_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_bike3_l5;
+#if defined(ADDITIONAL_IMPL)
+	kem->alg_version = "Additional - 05/23/2018";
+#else
+	kem->alg_version = "Reference - 06/29/2018";
+#endif
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;

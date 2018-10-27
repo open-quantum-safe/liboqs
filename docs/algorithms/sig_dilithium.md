@@ -8,7 +8,7 @@ Summary
 - **Algorithm type**: signature
 - **Main cryptographic assumption**: Module Learning With Errors (M-LWE) and Module-Short Integer Solution (M-SIS) problems.
 - **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/CRYSTALS_Dilithium.zip
-- **Submitters (to NIST competition)**: 
+- **Submitters (to NIST competition)**:
 - **Submitters' website**: https://pq-crystals.org/dilithium/
 - **Added to liboqs by**: Tancrède Lepoint
 
@@ -24,7 +24,7 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** https://github.com/pq-crystals/dilithium
+- **Source of implementation:** https://pq-crystals.org/dilithium/data/dilithium-submission-nist-updated.zip (MD5 9083c07710658cba3612a2512284898f)
 - **License:** public domain
 - **Language:** C
 - **Constant-time:** Yes

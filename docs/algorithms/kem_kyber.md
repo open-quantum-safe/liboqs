@@ -24,7 +24,7 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** https://github.com/pq-crystals/liboqs
+- **Source of implementation:** https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/CRYSTALS_Kyber.zip (optimized variant)
 - **License:** Public domain
 - **Language:** C
 - **Constant-time:** Yes

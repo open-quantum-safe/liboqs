@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <strings.h>
+#if defined(__APPLE__)
+#include <sys/random.h>
+#else
+#include <unistd.h>
+#endif
 #include <fcntl.h>
 
 #include <openssl/rand.h>
@@ -15,7 +20,7 @@ void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read);
 // Use OpenSSL's RAND_bytes as the default PRNG
 static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_openssl;
 
-OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
+OQS_API OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
 		oqs_randombytes_algorithm = &OQS_randombytes_system;
 		return OQS_SUCCESS;
@@ -30,7 +35,7 @@ OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	}
 }
 
-void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t)) {
+OQS_API void OQS_randombytes_custom_algorithm(void (*algorithm_ptr)(uint8_t *, size_t)) {
 	oqs_randombytes_algorithm = algorithm_ptr;
 }
 
@@ -38,10 +43,19 @@ void randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	OQS_randombytes(random_array, bytes_to_read);
 }
 
-void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	oqs_randombytes_algorithm(random_array, bytes_to_read);
 }
 
+#if defined(HAVE_GETENTROPY)
+void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
+
+	int rc;
+	do {
+		rc = getentropy(random_array, bytes_to_read);
+	} while (rc != 0);
+}
+#else
 static __inline void delay(unsigned int count) {
 	while (count--) {
 	}
@@ -72,6 +86,7 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	}
 	fclose(handle);
 }
+#endif
 
 void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read) {
 	int rc;

@@ -27,16 +27,12 @@
 
 /** Algorithm identifier for default SIG algorithm. */
 #define OQS_SIG_alg_default "DEFAULT"
-/** Algorithm identifier for qTESLA_I */
-#define OQS_SIG_alg_qTESLA_I "qTESLA_I"
-/** Algorithm identifier for qTESLA_III_size */
-#define OQS_SIG_alg_qTESLA_III_size "qTESLA_III_size"
-/** Algorithm identifier for qTESLA_III_speed */
-#define OQS_SIG_alg_qTESLA_III_speed "qTESLA_III_speed"
-/** Algorithm identifier for qTESLA_p_I */
-#define OQS_SIG_alg_qTESLA_p_I "qTESLA_p_I"
-/** Algorithm identifier for qTESLA_p_III */
-#define OQS_SIG_alg_qTESLA_p_III "qTESLA_p_III"
+/** Algorithm identifier for Dilithium_II_medium */
+#define OQS_SIG_alg_Dilithium_II_medium "Dilithium_II_medium"
+/** Algorithm identifier for Dilithium_III_recommended */
+#define OQS_SIG_alg_Dilithium_III_recommended "Dilithium_III_recommended"
+/** Algorithm identifier for Dilithium_IV_very_high */
+#define OQS_SIG_alg_Dilithium_IV_very_high "Dilithium_IV_very_high"
 /** Algorithm identifier for picnic_L1_FS */
 #define OQS_SIG_alg_picnic_L1_FS "picnic_L1_FS"
 /** Algorithm identifier for picnic_L1_UR */
@@ -49,13 +45,16 @@
 #define OQS_SIG_alg_picnic_L5_FS "picnic_L5_FS"
 /** Algorithm identifier for Picnic_L5_FS */
 #define OQS_SIG_alg_picnic_L5_UR "picnic_L5_UR"
-/** Algorithm identifier for Dilithium_II_medium */
-#define OQS_SIG_alg_Dilithium_II_medium "Dilithium_II_medium"
-/** Algorithm identifier for Dilithium_III_recommended */
-#define OQS_SIG_alg_Dilithium_III_recommended "Dilithium_III_recommended"
-/** Algorithm identifier for Dilithium_IV_very_high */
-#define OQS_SIG_alg_Dilithium_IV_very_high "Dilithium_IV_very_high"
-
+/** Algorithm identifier for qTESLA_I */
+#define OQS_SIG_alg_qTESLA_I "qTESLA_I"
+/** Algorithm identifier for qTESLA_III_size */
+#define OQS_SIG_alg_qTESLA_III_size "qTESLA_III_size"
+/** Algorithm identifier for qTESLA_III_speed */
+#define OQS_SIG_alg_qTESLA_III_speed "qTESLA_III_speed"
+/** Algorithm identifier for qTESLA_p_I */
+#define OQS_SIG_alg_qTESLA_p_I "qTESLA_p_I"
+/** Algorithm identifier for qTESLA_p_III */
+#define OQS_SIG_alg_qTESLA_p_III "qTESLA_p_III"
 // EDIT-WHEN-ADDING-SIG
 /** Number of algorithm identifiers above (including default). */
 #define OQS_SIG_algs_length 15
@@ -78,6 +77,14 @@ typedef struct OQS_SIG {
 
 	/** Printable string representing the name of the signature scheme. */
 	const char *method_name;
+
+	/**
+	 * Printable string representing the version of the cryptographic algorithm.
+	 *
+	 * Implementations with the same method_name and same alg_version will be interoperable.
+	 * See README.md for information about algorithm compatibility.
+	 */
+	const char *alg_version;
 
 	/** The NIST security level (1, 2, 3, 4, 5) claimed in this algorithm's original NIST submission. */
 	uint8_t claimed_nist_level;
@@ -208,9 +215,9 @@ OQS_API OQS_STATUS OQS_SIG_sign_open(const OQS_SIG *sig, uint8_t *message, size_
  */
 OQS_API void OQS_SIG_free(OQS_SIG *sig);
 
-#include <oqs/sig_qtesla.h>
-#include <oqs/sig_picnic.h>
 #include <oqs/sig_dilithium.h>
+#include <oqs/sig_picnic.h>
+#include <oqs/sig_qtesla.h>
 // EDIT-WHEN-ADDING-SIG
 
 #endif // __OQS_SIG_H

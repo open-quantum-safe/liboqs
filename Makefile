@@ -144,7 +144,7 @@ libkeccak:
 liboqs: libkeccak headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
 	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
-	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` -lcrypto
+	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` -L$(OPENSSL_LIB_DIR) -lcrypto
 
 TEST_PROGRAMS=test_kem test_kem_shared test_sig test_sig_shared
 $(TEST_PROGRAMS): liboqs

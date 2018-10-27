@@ -11,6 +11,7 @@ OQS_KEM *OQS_KEM_kyber512_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_kyber512;
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/CRYSTALS_Kyber.zip";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -38,6 +39,7 @@ OQS_KEM *OQS_KEM_kyber768_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_kyber768;
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/CRYSTALS_Kyber.zip";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -65,6 +67,7 @@ OQS_KEM *OQS_KEM_kyber1024_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_kyber1024;
+	kem->alg_version = "https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/CRYSTALS_Kyber.zip";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
