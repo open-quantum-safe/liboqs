@@ -37,6 +37,8 @@
 #include "utilities.h"
 #include "openssl/bn.h"
 
+#define MAX_OPENSSL_INV_TRIALS 1000
+
 // Perform a cyclic product by using OpenSSL
 _INLINE_ OQS_STATUS ossl_cyclic_product(OUT BIGNUM *r,
                                         IN const BIGNUM *a,
@@ -79,7 +81,15 @@ _INLINE_ OQS_STATUS invert_poly(OUT BIGNUM *r,
 	}
 
 	// r = a*b mod m
-	if (BN_GF2m_mod_inv(r, a, m, bn_ctx) == 0) {
+	uint32_t inv_res;
+	for (uint32_t i = 0; i < MAX_OPENSSL_INV_TRIALS; i++) {
+		inv_res = BN_GF2m_mod_inv(r, a, m, bn_ctx);
+		if (inv_res != 0) {
+			break;
+		}
+	}
+
+	if (0 == inv_res) {
 		ERR(OQS_EXTERNAL_LIB_ERROR_OPENSSL);
 	}
 
