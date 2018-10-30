@@ -13,7 +13,7 @@
  * directly.
  *
  * The macros OQS_SIG_qTESLA_I_length_* and the functions OQS_SIG_qTESLA_I_*
- * are only defined if the algorithm Picnic-L1-FS was enabled at compile-time
+ * are only defined if the algorithm qTESLA-I was enabled at compile-time
  * which must be checked using the OQS_ENABLE_SIG_qTESLA_I macro.
  *
  * <oqs/config.h>, which is included in <oqs/oqs.h>, contains macros
