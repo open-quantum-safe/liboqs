@@ -7,6 +7,11 @@ AC_INIT([liboqs], [0.1.0-rc1], [https://github.com/open-quantum-safe/liboqs/issu
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 AM_PROG_LIBTOOL
 
+# Define
+AC_DEFINE([OQS_VERSION_NUMBER],[0x00100001L],[Numeric liboqs version])
+AC_DEFINE([OQS_VERSION_TEXT],["0.1.0 RC1"],[Text liboqs version])
+AC_DEFINE([OQS_MASTER_BRANCH],[],[liboqs branch])
+
 # Configure
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIRS([config])
