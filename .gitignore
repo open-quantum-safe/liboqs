@@ -1,6 +1,6 @@
 .objs/
 .objs_upstream/
-include/
+/include
 liboqs.a
 liboqs.so
 src/config.h
