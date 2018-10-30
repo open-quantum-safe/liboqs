@@ -103,6 +103,11 @@ config_h:
 	echo " * @file config.h" >> src/config.h
 	echo " * @brief Pre-processor macros indicating compile-time options." >> src/config.h
 	echo " */" >> src/config.h
+	echo "/** liboqs version: 0.1.0 RC2 */" >> src/config.h
+	echo "#define OQS_VERSION_NUMBER 0x00100002L" >> src/config.h
+	echo "#define OQS_VERSION_TEXT \"0.1.0 RC2\"" >> src/config.h
+	echo "/** liboqs branch. */" >> src/config.h
+	echo "#define OQS_NIST_BRANCH" >> src/config.h
 	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "/** Preprocessor macro indicating KEM $(ENABLE_KEM) is enabled. */" >> src/config.h; echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/config.h;)
 	$(foreach ENABLE_SIG, $(ENABLE_SIGS), echo "/** Preprocessor macro indicating SIG $(ENABLE_SIG) is enabled. */" >> src/config.h; echo "#define OQS_ENABLE_SIG_$(ENABLE_SIG)" >> src/config.h;)
 	echo "/** Preprocessor macro setting the default KEM to $(KEM_DEFAULT). */" >> src/config.h
