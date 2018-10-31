@@ -36,6 +36,7 @@
 #define __TYPES_H_INCLUDED__
 
 #include "defs.h"
+#include "../../../../config.h"
 #include <oqs/common.h>
 
 typedef struct uint128_s {
