@@ -12,7 +12,7 @@
 #if defined(_WIN32)
 #include <oqs/winconfig.h>
 #else
-#include <oqs/config.h>
+#include <oqs/oqsconfig.h>
 #endif
 
 /**

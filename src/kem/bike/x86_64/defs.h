@@ -1,5 +1,5 @@
 /***************************************************************************
-* Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
+* Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
 * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 *
 * Written by Nir Drucker and Shay Gueron
@@ -12,7 +12,8 @@
 #ifndef __DEFS_H_INCLUDED__
 #define __DEFS_H_INCLUDED__
 
-#include <oqs/config.h>
+#include <oqs/oqsconfig.h>
+#include <config.h>
 
 // Map BIKE internal errors to OQS ones
 #define OQS_ERR_KEM_BIKE_DECODING_FAILURE OQS_ERROR
