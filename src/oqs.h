@@ -9,7 +9,7 @@
 #ifndef __OQS_H
 #define __OQS_H
 
-#include <oqs/config.h>
+#include <oqs/oqsconfig.h>
 #include <oqs/common.h>
 #include <oqs/rand.h>
 #include <oqs/kem.h>

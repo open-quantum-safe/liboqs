@@ -12,7 +12,7 @@
 #ifndef __DEFS_H_INCLUDED__
 #define __DEFS_H_INCLUDED__
 
-#include <oqs/config.h>
+#include <oqs/oqsconfig.h>
 
 // Map BIKE internal errors to OQS ones
 #define OQS_ERR_KEM_BIKE_DECODING_FAILURE OQS_ERROR

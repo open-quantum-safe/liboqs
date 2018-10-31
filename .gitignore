@@ -3,7 +3,7 @@
 /include
 liboqs.a
 liboqs.so
-src/config.h
+src/oqsconfig.h
 test_kem
 test_kem_shared
 test_sig
