@@ -9,7 +9,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include <oqs/config.h>
+#include <oqs/oqsconfig.h>
 
 /**
  * Defines which functions should be exposed outside the LibOQS library

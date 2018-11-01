@@ -97,48 +97,48 @@ DATE=`date`
 UNAME=`uname -a`
 CC_VERSION=`$(CC) --version | tr '\n' ' '`
 config_h:
-	$(RM) -r src/config.h
-	touch src/config.h
-	echo "/**" >> src/config.h
-	echo " * @file config.h" >> src/config.h
-	echo " * @brief Pre-processor macros indicating compile-time options." >> src/config.h
-	echo " */" >> src/config.h
-	echo "/** liboqs version: 0.1.0 RC2 */" >> src/config.h
-	echo "#define OQS_VERSION_NUMBER 0x00100002L" >> src/config.h
-	echo "#define OQS_VERSION_TEXT \"0.1.0 RC2\"" >> src/config.h
-	echo "/** liboqs branch. */" >> src/config.h
-	echo "#define OQS_NIST_BRANCH" >> src/config.h
-	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "/** Preprocessor macro indicating KEM $(ENABLE_KEM) is enabled. */" >> src/config.h; echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/config.h;)
-	$(foreach ENABLE_SIG, $(ENABLE_SIGS), echo "/** Preprocessor macro indicating SIG $(ENABLE_SIG) is enabled. */" >> src/config.h; echo "#define OQS_ENABLE_SIG_$(ENABLE_SIG)" >> src/config.h;)
-	echo "/** Preprocessor macro setting the default KEM to $(KEM_DEFAULT). */" >> src/config.h
-	echo "#define OQS_KEM_DEFAULT OQS_KEM_alg_$(KEM_DEFAULT)" >> src/config.h
-	echo "/** Preprocessor macro setting the default SIG to $(SIG_DEFAULT). */" >> src/config.h
-	echo "#define OQS_SIG_DEFAULT OQS_SIG_alg_$(SIG_DEFAULT)" >> src/config.h
-	echo "/** Date on which liboqs was compiled. */" >> src/config.h
-	echo "#define OQS_COMPILE_DATE \"$(DATE)\"" >> src/config.h
-	echo "/** Compiler command used to compile liboqs. */" >> src/config.h
-	echo "#define OQS_COMPILE_CC \"$(CC)\"" >> src/config.h
-	echo "/** Compiler version used to compile liboqs. */" >> src/config.h
-	echo "#define OQS_COMPILE_CC_VERSION \"$(CC_VERSION)\"" >> src/config.h
-	echo "/** CFLAGS version used to compile liboqs. */" >> src/config.h
-	echo "#define OQS_COMPILE_CFLAGS \"$(CFLAGS)\"" >> src/config.h
-	echo "/** LDFLAGS version used to compile liboqs. */" >> src/config.h
-	echo "#define OQS_COMPILE_LDFLAGS \"$(LDFLAGS)\"" >> src/config.h
-	echo "/** List of KEMs enabled at compile time. */" >> src/config.h
-	echo "#define OQS_COMPILE_ENABLE_KEMS \"$(ENABLE_KEMS)\"" >> src/config.h
-	echo "/** List of SIGs enabled at compile time. */" >> src/config.h
-	echo "#define OQS_COMPILE_ENABLE_SIGS \"$(ENABLE_SIGS)\"" >> src/config.h
-	echo "/** Which KEM is mapped to the default (OQS_KEM_alg_default). */" >> src/config.h
-	echo "#define OQS_COMPILE_KEM_DEFAULT \"$(KEM_DEFAULT)\"" >> src/config.h
-	echo "/** Which SIG is mapped to the default (OQS_SIG_alg_default). */" >> src/config.h
-	echo "#define OQS_COMPILE_SIG_DEFAULT \"$(SIG_DEFAULT)\"" >> src/config.h
-	echo "/** Platform on which liboqs was compiled. */" >> src/config.h
-	echo "#define OQS_COMPILE_UNAME \"$(UNAME)\"" >> src/config.h
+	$(RM) -r src/oqsconfig.h
+	touch src/oqsconfig.h
+	echo "/**" >> src/oqsconfig.h
+	echo " * @file config.h" >> src/oqsconfig.h
+	echo " * @brief Pre-processor macros indicating compile-time options." >> src/oqsconfig.h
+	echo " */" >> src/oqsconfig.h
+	echo "/** liboqs version: 0.1.0 RC2 */" >> src/oqsconfig.h
+	echo "#define OQS_VERSION_NUMBER 0x00100002L" >> src/oqsconfig.h
+	echo "#define OQS_VERSION_TEXT \"0.1.0 RC2\"" >> src/oqsconfig.h
+	echo "/** liboqs branch. */" >> src/oqsconfig.h
+	echo "#define OQS_NIST_BRANCH" >> src/oqsconfig.h
+	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "/** Preprocessor macro indicating KEM $(ENABLE_KEM) is enabled. */" >> src/oqsconfig.h; echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/oqsconfig.h;)
+	$(foreach ENABLE_SIG, $(ENABLE_SIGS), echo "/** Preprocessor macro indicating SIG $(ENABLE_SIG) is enabled. */" >> src/oqsconfig.h; echo "#define OQS_ENABLE_SIG_$(ENABLE_SIG)" >> src/oqsconfig.h;)
+	echo "/** Preprocessor macro setting the default KEM to $(KEM_DEFAULT). */" >> src/oqsconfig.h
+	echo "#define OQS_KEM_DEFAULT OQS_KEM_alg_$(KEM_DEFAULT)" >> src/oqsconfig.h
+	echo "/** Preprocessor macro setting the default SIG to $(SIG_DEFAULT). */" >> src/oqsconfig.h
+	echo "#define OQS_SIG_DEFAULT OQS_SIG_alg_$(SIG_DEFAULT)" >> src/oqsconfig.h
+	echo "/** Date on which liboqs was compiled. */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_DATE \"$(DATE)\"" >> src/oqsconfig.h
+	echo "/** Compiler command used to compile liboqs. */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_CC \"$(CC)\"" >> src/oqsconfig.h
+	echo "/** Compiler version used to compile liboqs. */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_CC_VERSION \"$(CC_VERSION)\"" >> src/oqsconfig.h
+	echo "/** CFLAGS version used to compile liboqs. */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_CFLAGS \"$(CFLAGS)\"" >> src/oqsconfig.h
+	echo "/** LDFLAGS version used to compile liboqs. */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_LDFLAGS \"$(LDFLAGS)\"" >> src/oqsconfig.h
+	echo "/** List of KEMs enabled at compile time. */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_ENABLE_KEMS \"$(ENABLE_KEMS)\"" >> src/oqsconfig.h
+	echo "/** List of SIGs enabled at compile time. */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_ENABLE_SIGS \"$(ENABLE_SIGS)\"" >> src/oqsconfig.h
+	echo "/** Which KEM is mapped to the default (OQS_KEM_alg_default). */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_KEM_DEFAULT \"$(KEM_DEFAULT)\"" >> src/oqsconfig.h
+	echo "/** Which SIG is mapped to the default (OQS_SIG_alg_default). */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_SIG_DEFAULT \"$(SIG_DEFAULT)\"" >> src/oqsconfig.h
+	echo "/** Platform on which liboqs was compiled. */" >> src/oqsconfig.h
+	echo "#define OQS_COMPILE_UNAME \"$(UNAME)\"" >> src/oqsconfig.h
 
 headers: config_h mkdirs
 	$(RM) -r include
 	mkdir -p include/oqs
-	cp $(HEADERS) src/config.h include/oqs
+	cp $(HEADERS) src/oqsconfig.h include/oqs
 
 libkeccak:
 	bash scripts/build-keccak-code-package.sh

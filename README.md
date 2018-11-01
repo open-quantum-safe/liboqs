@@ -77,7 +77,7 @@ Lifecycle for nist-branch
 
 **Algorithm compatibility:** Algorithm implementations on nist-branch may be updated at any time.  This may cause changes in runtime or even a change in the message generation and processing.  Thus, no guarantees are made for compatibility of messages exchange between different snapshots of nist-branch.
 
-**API stability:** The public API of liboqs nist-branch is considered to be the functions in `oqs/common.h`, `oqs/config.h`, `oqs/kem.h`, `oqs/rand.h`, and `oqs/sig.h`.  For the first few snapshot releases of nist-branch, this API should be considered in draft.
+**API stability:** The public API of liboqs nist-branch is considered to be the functions in `oqs/common.h`, `oqs/oqsconfig.h`, `oqs/kem.h`, `oqs/rand.h`, and `oqs/sig.h`.  For the first few snapshot releases of nist-branch, this API should be considered in draft.
 
 **Binary compatibility:** No guarantees are made for binary compatibility between different snapshots of nist-branch.
 
