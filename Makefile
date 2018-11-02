@@ -184,7 +184,7 @@ docs: headers
 	mkdir -p docs/doxygen
 	doxygen docs/.Doxyfile
 
-install:
+install-noshared:
 	@if [[ $(PREFIX) == "usr_local" ]] ; then echo "Installing to `pwd`/$(PREFIX). Override by running 'make install PREFIX=<destination>'."; fi
 	mkdir -p $(PREFIX_INCLUDE)
 	mkdir -p $(PREFIX_LIB)
@@ -193,6 +193,8 @@ install:
 	$(RM) $(PREFIX_LIB)/liboqs.so
 	cp -r include/oqs $(PREFIX_INCLUDE)
 	cp liboqs.a $(PREFIX_LIB)
+
+install: install-noshared
 	cp liboqs.so $(PREFIX_LIB)
 
 clean:
