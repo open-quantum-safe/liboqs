@@ -89,7 +89,7 @@ Lifecycle for master branch
 Building and running liboqs master branch
 -----------------------------------------
 
-Builds are tested using the Travis continuous integration system on macOS 10.13.3 (clang 9.1.0) and Ubuntu 14.04.5 (gcc.4.8, gcc-4.9, gcc-5, gcc-6).  It has also been tested manually on macOS 10.14 (clang 10.0.0) and Ubuntu 18.04.1 (gcc-7).
+Builds are tested using the Travis continuous integration system on macOS 10.13.3 (clang 9.1.0) and Ubuntu 14.04.5 (gcc.4.8, gcc-4.9, gcc-5, gcc-6).  It has also been tested manually on macOS 10.14 (clang 10.0.0), Ubuntu 14.04 (gcc-5), Ubuntu 16.04 (gcc-5), and Ubuntu 18.04.1 (gcc-7).
 
 - [Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
 
@@ -109,16 +109,15 @@ You need to install the following packages using brew (or a package manager of y
 
 To build, first clone or download the source from GitHub:
 
-	git clone https://github.com/open-quantum-safe/liboqs.git
+	git clone -b master https://github.com/open-quantum-safe/liboqs.git
 	cd liboqs
-	git checkout master
 
 Run the build system:
 
 	autoreconf -i
 	./configure
 	make clean
-	make
+	make -j
 
 (If on macOS you encounter an error like `Can't exec "libtoolize": No such file or directory at ...`, try running with `LIBTOOLIZE=glibtoolize autoreconf -i`.)
 
@@ -132,7 +131,7 @@ There are also a variety of test programs built under the `tests` directory:
 
 - `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
 - `test_sig`: Simple test harness for all enabled key signature schemes
-- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
+- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values using `scripts/check_cats.sh`
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
@@ -170,7 +169,8 @@ liboqs includes some third party libraries or modules that are licensed differen
 
 - `src/crypto/aes/aes_c.c`: public domain
 - `src/crypto/sha3`: public domain
-- `src/sig_qtesla`: public domain
+- `src/kem/newhopenist/optimized`: public domain
+- `src/sig/qtesla/external`: public domain
 
 Team
 ----
