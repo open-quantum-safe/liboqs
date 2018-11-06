@@ -11,7 +11,7 @@ CLANGFORMAT ?= clang-format-3.9
 
 SUBDIRS = ${SRCDIR} . tests
 
-BUILT_SOURCES = links
+BUILT_SOURCES = oqsconfigh links
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
@@ -40,9 +40,12 @@ if ENABLE_KEM_NEWHOPE
 liboqs_la_LIBADD += src/kem/newhopenist/libkemnewhopenist.la
 endif
 
+oqsconfigh:
+	grep OQS_ config.h > src/oqsconfig.h
+
 installheaderdir=$(includedir)/oqs
-installheader_HEADERS=config.h \
-	src/oqs.h \
+installheader_HEADERS= src/oqs.h \
+	src/oqsconfig.h \
 	src/common/common.h \
 	src/common/rand.h \
 	src/crypto/aes/aes.h \
@@ -71,10 +74,10 @@ kat: clean-kats check
 	tests/kat_kem
 	scripts/check_kats.sh
 
-links:
+links: oqsconfigh
 	$(MKDIR_P) include/oqs
-	cp -f config.h include/oqs
 	cp -f src/oqs.h include/oqs
+	cp -f src/oqsconfig.h include/oqs
 	cp -f src/common/common.h include/oqs
 	cp -f src/common/rand.h include/oqs
 	cp -f src/crypto/aes/aes.h include/oqs

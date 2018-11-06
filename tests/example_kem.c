@@ -33,7 +33,7 @@ void cleanup_heap(uint8_t *secret_key, uint8_t *shared_secret_e,
  * FrodoKEM-640-AES was enabled at compile-time which must be
  * checked using the OQS_ENABLE_KEM_frodokem_640_aes macro.
  *
- * <oqs/config.h>, which is included in <oqs/oqs.h>, contains macros
+ * <oqs/oqsconfig.h>, which is included in <oqs/oqs.h>, contains macros
  * indicating which algorithms were enabled when this instance of liboqs
  * was compiled.
  */

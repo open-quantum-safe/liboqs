@@ -17,10 +17,8 @@ libkembike_la_LIBTOOLFLAGS = $(AM_LIBTOOLFLAGS)
 #When AVX2 is supported also AVX512 is supported and we can use the additional implementation.
 if BIKE_ADDITIONAL_IMPL
   BIKE_SRC_DIR=x86_64/
-  libkembike_la_CFLAGS += -DOQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 else
   BIKE_SRC_DIR=ref/
-  libkembike_la_CFLAGS += -DOQS_KEM_BIKE_REFERENCE_IMPLEMENTATION
 endif
 
 COMMON_CSRCS = $(BIKE_SRC_DIR)/kem.c $(BIKE_SRC_DIR)/aes_ctr_prf.c $(BIKE_SRC_DIR)/parallel_hash.c

@@ -10,7 +10,7 @@
 #define __OQS_H
 
 #if !defined(_WIN32)
-#include <oqs/config.h>
+#include <oqs/oqsconfig.h>
 #else
 #include <oqs/winconfig.h>
 #endif
