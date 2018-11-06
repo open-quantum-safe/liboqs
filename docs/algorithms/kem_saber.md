@@ -6,7 +6,7 @@ Summary
 
 - **Name**: SABER
 - **Algorithm type**: key encapsulation mechanism
-- **Main cryptographic assumption**: module learning with rounding (MLWR)
+- **Main cryptographic assumption**: module learning with rounding (MLWE)
 - **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/SABER.zip
 - **Submitters (to NIST competition)**: Jan-Pieter D'Anvers, Angshuman Karmakar, Sujoy Sinha Roy, Frederik Vercauteren
 - **Submitters' website**: https://github.com/Angshumank/SABER
