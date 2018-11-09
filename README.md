@@ -149,6 +149,15 @@ Builds are tested using the Appveyor continuous integration system on Windows Se
 
 The supported schemes are defined in the projects' `winconfig.h` file.
 
+Building on other platforms
+---------------------------
+
+We do not yet fully support building liboqs on ARM platforms, but are working towards maintaining ARM support in a future release.
+
+At present, we have successfully built liboqs on a Raspberry Pi 3B (armv7l) with the following configure command:
+
+    ./configure --disable-aes-ni --disable-sig-qtesla --disable-kem-frodokem
+
 Documentation
 -------------
 
