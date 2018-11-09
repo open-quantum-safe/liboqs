@@ -1,5 +1,5 @@
-liboqs nist-branch snapshot 2018-11 release candidate
-===================================
+liboqs nist-branch snapshot 2018-11-rc3
+=======================================
 
 About
 -----

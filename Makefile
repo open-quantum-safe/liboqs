@@ -117,8 +117,8 @@ config_h:
 	# 1.2.3-rc2      0x10203002 (same as ...rc2-dev)
 	# 1.2.3          0x1020300f
 	# 1.2.3a         0x1020301f
-	echo "#define OQS_VERSION_NUMBER 0x00100002L" >> src/oqsconfig.h
-	echo "#define OQS_VERSION_TEXT \"0.1.0 RC2\"" >> src/oqsconfig.h
+	echo "#define OQS_VERSION_NUMBER 0x00100003L" >> src/oqsconfig.h
+	echo "#define OQS_VERSION_TEXT \"0.1.0 RC3\"" >> src/oqsconfig.h
 	echo "/** liboqs branch. */" >> src/oqsconfig.h
 	echo "#define OQS_NIST_BRANCH" >> src/oqsconfig.h
 	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "/** Preprocessor macro indicating KEM $(ENABLE_KEM) is enabled. */" >> src/oqsconfig.h; echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/oqsconfig.h;)
@@ -162,7 +162,7 @@ libkeccak:
 liboqs: libkeccak headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
 	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
-	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` ${LDFLAGS} 
+	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` ${LDFLAGS}
 
 TEST_PROGRAMS=test_kem test_kem_shared test_sig test_sig_shared
 $(TEST_PROGRAMS): liboqs
