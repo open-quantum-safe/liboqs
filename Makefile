@@ -72,7 +72,10 @@ ifeq ($(DETECTED_OS), Linux)
   endif
 endif
 
-LDFLAGS+=-Wl,-rpath,${OPENSSL_LIB_DIR} -Wl,--enable-new-dtags
+LDFLAGS+=-Wl,-rpath,${OPENSSL_LIB_DIR}
+ifeq ($(DETECTED_OS), Linux)
+LDFLAGS+=-Wl,--enable-new-dtags
+endif
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
 KECCAK_INCLUDE_DIR=vendor/XKCP-master/bin/generic64
