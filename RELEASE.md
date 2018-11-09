@@ -1,4 +1,4 @@
-liboqs master branch version 0.1.0-rc2
+liboqs master branch version 0.1.0-rc3
 ======================================
 
 About
