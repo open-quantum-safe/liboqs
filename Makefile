@@ -104,17 +104,16 @@ config_h:
 	echo " * @brief Pre-processor macros indicating compile-time options." >> src/oqsconfig.h
 	echo " */" >> src/oqsconfig.h
 	# Numeric release version identifier:
-	# MNNFFPPS: major minor fix patch status
+	# MYYYYMMS: major year month status
 	# The status nibble has one of the values 0 for development, 1 to e for release candidates 1 to 4, and f for release
 	# For example:
-	# 1.2.3-dev      0x10203000
-	# 1.2.3-rc1      0x10203001
-	# 1.2.3-rc2-dev  0x10203002
-	# 1.2.3-rc2      0x10203002 (same as ...rc2-dev)
-	# 1.2.3          0x1020300f
-	# 1.2.3a         0x1020301f
-	echo "#define OQS_VERSION_NUMBER 0x0010000fL" >> src/oqsconfig.h
-	echo "#define OQS_VERSION_TEXT \"0.1.0\"" >> src/oqsconfig.h
+	# 2018-11-dev      0x02018110
+	# 2018-11-rc1      0x02018111
+	# 2018-11-rc2-dev  0x02018112
+	# 2018-11-rc2      0x02018112 (same as ...rc2-dev)
+	# 2018-11          0x0201811f
+	echo "#define OQS_VERSION_NUMBER 0x0201811fL" >> src/oqsconfig.h
+	echo "#define OQS_VERSION_TEXT \"2018-11\"" >> src/oqsconfig.h
 	echo "/** liboqs branch. */" >> src/oqsconfig.h
 	echo "#define OQS_NIST_BRANCH" >> src/oqsconfig.h
 	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "/** Preprocessor macro indicating KEM $(ENABLE_KEM) is enabled. */" >> src/oqsconfig.h; echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/oqsconfig.h;)

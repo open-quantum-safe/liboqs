@@ -1,4 +1,4 @@
-liboqs nist-branch snapshot 2018-10
+liboqs nist-branch snapshot 2018-11
 ===================================
 
 About
