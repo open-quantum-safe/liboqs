@@ -72,6 +72,10 @@ ifeq ($(DETECTED_OS), Linux)
   endif
 endif
 
+LDFLAGS+=-Wl,-rpath,${OPENSSL_LIB_DIR}
+ifeq ($(DETECTED_OS), Linux)
+LDFLAGS+=-Wl,--enable-new-dtags
+endif
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
 KECCAK_INCLUDE_DIR=vendor/XKCP-master/bin/generic64
@@ -157,7 +161,7 @@ libkeccak:
 liboqs: libkeccak headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
 	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
-	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` -L$(OPENSSL_LIB_DIR) -lcrypto
+	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` ${LDFLAGS}
 
 TEST_PROGRAMS=test_kem test_kem_shared test_sig test_sig_shared
 $(TEST_PROGRAMS): liboqs
