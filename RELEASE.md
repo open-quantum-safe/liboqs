@@ -1,5 +1,5 @@
-liboqs master branch version 0.1.0-rc3
-======================================
+liboqs master branch version 0.1.0
+==================================
 
 About
 -----
@@ -19,7 +19,7 @@ This branch of liboqs can be used with the following Open Quantum Safe applicati
 Release notes
 =============
 
-**This is a release candidate for liboqs master, not a final release.**. This release of liboqs master branch was released on TODO.  Its release page on GitHub is TODO.
+This release of liboqs master branch was released on November 13, 2018.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs/releases/tag/master-0.1.0.
 
 What's New
 ----------
