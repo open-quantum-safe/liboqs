@@ -1,6 +1,15 @@
 Contributing to liboqs nist-branch
 ==================================
 
+liboqs has two branches: "master branch", and "nist-branch".  
+
+liboqs master branch focuses on focuses on selected key encapsulations and signature algorithms. Implementations on this branch must beet certain acceptance criteria.
+
+liboqs nist-branch focuses on incorporating submissions to the NIST Post-Quantum Cryptography standardization project. It takes a "light touch" approach to incorporation.
+
+About liboqs nist-branch
+------------------------
+
 This branch takes a "light touch" approach to incorporating new implementations:
 
 - Source code from a NIST submission will be included ideally with no changes, in an "upstream" subdirectory.
@@ -8,16 +17,40 @@ This branch takes a "light touch" approach to incorporating new implementations:
 - The implementation will be added to the build process.
 - To avoid namespace collisions between different algorithms, symbol renaming will be used on the compiled files.
 
-This file describes the step-by-step procedure to add a new KEM or signature algorithm to liboqs nist-branch.  Separate instructions apply for adding an algorithm to master branch.
+Contributing new algorithms
+---------------------------
 
-If you get stuck or are unsure of what to do, feel free to contact us via a Github issue/pull request/@mention, or email one of the team.
+We welcome contributions of new algorithms to liboqs nist-branch.  As the name suggests, any algorithm that was submitted to the NIST Post-Quantum Cryptography project is eligible for inclusion, with the exception of algorithms which are already broken.  See README.md for detailed acceptance criteria.
 
-Basic steps
+Instructions for contributing a new algorithm appear below.
+
+Contributing enhancements
+-------------------------
+
+Contributions to our existing library are gratefully welcomed.  If you find a bug in our code, have some improvements to an algorithm, are interested in getting liboqs to build on a new platform, or want to explore integrating liboqs into a new application, please feel free to contact us on GitHub via an issue or pull request.
+
+Bug reports
 -----------
+
+Bug reports can be filed as issues on GitHub.  Please use the "bug" label.  Please indicate which branch of liboqs the issue relates to (master or nist-branch), and what platform was in use (CPU, operating system, compiler).
+
+License
+-------
+
+liboqs is licensed primarily under the MIT License.  Submissions to liboqs nist-branch must be under the MIT License, a compatible license, or in the public domain.  See README.md for details.
+
+Instructions for adding an algorithm to liboqs nist-branch
+----------------------------------------------------------
+
+The rest of this describes the step-by-step procedure to add a new KEM or signature algorithm to liboqs nist-branch.  Separate instructions apply for adding an algorithm to master branch.
+
+If you get stuck or are unsure of what to do, feel free to contact us via a GitHub issue/pull request/@mention, or email one of the team.
+
+### Basic steps
 
 Suppose the module we want to add is a KEM or signature called `potato`.  Some NIST submissions contain multiple algorithms at different security levels or with different parameters, for example `potato_512`, `potato_1024`, `potato_2048`.  In liboqs, we create a single source code directory `src/{kem|sig}/potato`, and a single wrapper file `{kem|sig}_potato.c`, but that wrapper file contains wrappers for each of the different parameterizations, named for example `OQS_{KEM|SIG}_potato_512`, ...
 
-### Getting started
+#### Getting started
 
 1. Ensure that the implementation meets the acceptance criteria stated in [README.md](https://github.com/open-quantum-safe/liboqs/blob/nist-branch/README.md), including that:
 	- the implementation is licensed under an acceptable open source license; and
@@ -25,14 +58,14 @@ Suppose the module we want to add is a KEM or signature called `potato`.  Some N
 2. Make a new working branch off of nist-branch, preferably with the word `nist` somewhere in the branch name.
 3. Create new directories `src/{kem|sig}/potato` and `src/{kem|sig}/potato/upstream`
 
-### Adding the upstream implementation
+#### Adding the upstream implementation
 
 1. Download the ZIP file of the submission from the NIST website (or elsewhere).
 2. Copy the contents of the ZIP file (except the known answer tests (KAT) and the supporting documentation folders) into `src/{kem|sig}/potato/upstream`.
 3. If `src/{kem|sig}/potato/upstream` does not already contain a `LICENSE.txt` file, confirm the license of the implementation and add a corresponding LICENSE.txt file.
 4. Do a `git add` and `git commit` on the newly added files (so that we get a fresh snapshot of the files before any objects are built).
 
-### Creating the OQS wrapper
+#### Creating the OQS wrapper
 
 1. From another KEM or signature implementation's directory, copy (and rename appropriately) `src/{kem|sig}/whatever/{kem|sig}_whatever.c` and `src/{kem|sig}/whatever/{kem|sig}_whatever.h` to `src/{kem|sig}/potato`.
 2. Edit `src/{kem|sig}/potato/{kem|sig}_potato.h` to create a copy of the macros and function prototypes for each algorithm to expose; copy the correct lengths into the length macros from the upstream algorithm's `api.h` file.
@@ -42,7 +75,7 @@ Suppose the module we want to add is a KEM or signature called `potato`.  Some N
 
 `.c` and `.h` files in liboqs (other than in `upstream` directories) must meet the OQS coding convention and style and are checked by the pretty-printer.  See https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for details.  You can use `make prettyprint` to run the pretty-printer; you will need to install `clang-format` version 3.9, as per the instructions at the link above.
 
-### Adding to the build system
+#### Adding to the build system
 
 1. From another KEM or signature implementation's directory, copy `src/{kem|sig}/whatever/Makefile` to `src/{kem|sig}/potato`.
 2. Edit `src/{kem|sig}/potato/Makefile`.
@@ -56,7 +89,7 @@ Suppose the module we want to add is a KEM or signature called `potato`.  Some N
 6. Edit `src/{kem|sig}/Makefile` at the `EDIT-WHEN-ADDING-{KEM|SIG}` marker to include `src/{kem|sig}/potato/Makefile`.
 7. Edit `Makefile` at the `EDIT-WHEN-ADDING-{KEM|SIG}` marker to add the various algorithms/parameterizations (`potato_512`, ...) to the list of KEMs/signatures enabled by default.
 
-### Testing
+#### Testing
 
 1. Try building use `make clean; make`.
 2. Our build system is configured so that any warning when compiling a non-upstream file is treated as an error.  Fix any such warnings/errors that arise.
@@ -80,15 +113,15 @@ Suppose the module we want to add is a KEM or signature called `potato`.  Some N
 8. Check any changes made by the pretty-printer to ensure the meaning of the code did not change.
 9. Do a `git commit`.
 
-### Documentation
+#### Documentation
 
 1. Add an algorithm datasheet in `docs/algorithms` for your module (`{kem|sig}_potato.md`) containing information about each algorithm (`{kem|sig}_potato_512`, ...) following the examples in the other files in this directory.  You may find the online Markdown table generator at http://www.tablesgenerator.com/markdown_tables helpful -- you can paste Markdown in, graphically edit, and then copy Markdown out.
 2. Do a `git commit`.
 
-### Submitting
+#### Submitting
 
 1. Run `make pre-push` to run (almost) all of the the tests that our continuous integration system will run.  Fix any warnings or errors before continuing.
-2. Make a pull request against `nist-branch` on Github.
+2. Make a pull request against `nist-branch` on GitHub.
 3. Add the `nist-branch` label and the `not ready for merge` label.
 4. Submitting a pull request will activate the Travis continuous integration build system, which builds liboqs on a variety of platforms.  Depending on the time of day and the load on Travis, the build may complete within a few minutes or be queued for sometimes up to an hour.
 5. Once the Travis build is complete, check the status of the build.  If it failed, click on the red X, see which build targets failed, and check the logs to try to identify the problem so you can fix it.  Common reasons for Travis build failures include:
