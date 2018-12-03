@@ -109,6 +109,18 @@
 #define OQS_KEM_alg_sike_p503 "Sike-p503"
 /** Algorithm identifier for Sike p751 KEM. */
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
+/** Algorithm identifier for BabyBear CCA KEM */
+#define OQS_KEM_alg_babybear_cca "BabyBear-CCA-KEM"
+/** Algorithm identifier for MamaBear CCA KEM */
+#define OQS_KEM_alg_mamabear_cca "MamaBear-CCA-KEM"
+/** Algorithm identifier for PapaBear CCA KEM */
+#define OQS_KEM_alg_papabear_cca "PapaBear-CCA-KEM"
+/** Algorithm identifier for BabyBearEphem CPA KEM */
+#define OQS_KEM_alg_babybear_ephem_cpa "BabyBearEphem-CPA-KEM"
+/** Algorithm identifier for MamaBearEphem CPA KEM */
+#define OQS_KEM_alg_mamabear_ephem_cpa "MamaBearEphem-CPA-KEM"
+/** Algorithm identifier for PapaBearEphem CPA KEM */
+#define OQS_KEM_alg_papabear_ephem_cpa "PapaBearEphem-CPA-KEM"
 /** Algorithm identifier for Titanium Std CCA KEM */
 #define OQS_KEM_alg_titanium_cca_std_kem "Titanium-CCA-std"
 /** Algorithm identifier for Titanium hi CCA KEM */
@@ -119,7 +131,7 @@
 #define OQS_KEM_alg_titanium_cca_super_kem "Titanium-CCA-super"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 46
+#define OQS_KEM_algs_length 52
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -280,6 +292,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_saber.h>
 #include <oqs/kem_sike.h>
+#include <oqs/kem_threebears.h>
 #include <oqs/kem_titanium.h>
 // EDIT-WHEN-ADDING-KEM
 

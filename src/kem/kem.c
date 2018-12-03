@@ -17,6 +17,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	    OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem,
 	    OQS_KEM_alg_saber_light_saber_kem, OQS_KEM_alg_saber_saber_kem, OQS_KEM_alg_saber_fire_saber_kem,
 	    OQS_KEM_alg_sike_p503, OQS_KEM_alg_sike_p751,
+	    OQS_KEM_alg_babybear_cca, OQS_KEM_alg_mamabear_cca, OQS_KEM_alg_papabear_cca, OQS_KEM_alg_babybear_ephem_cpa, OQS_KEM_alg_mamabear_ephem_cpa, OQS_KEM_alg_papabear_ephem_cpa,
 	    OQS_KEM_alg_titanium_cca_std_kem, OQS_KEM_alg_titanium_cca_hi_kem, OQS_KEM_alg_titanium_cca_med_kem, OQS_KEM_alg_titanium_cca_super_kem};
 	if (i >= OQS_KEM_algs_length) {
 		return NULL;
@@ -271,6 +272,42 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_saber_fire_saber_kem)) {
 #ifdef OQS_ENABLE_KEM_saber_fire_saber_kem
 		return OQS_KEM_saber_fire_saber_kem_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_babybear_cca)) {
+#ifdef OQS_ENABLE_KEM_babybear_cca
+		return OQS_KEM_babybear_cca_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_mamabear_cca)) {
+#ifdef OQS_ENABLE_KEM_mamabear_cca
+		return OQS_KEM_mamabear_cca_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_papabear_cca)) {
+#ifdef OQS_ENABLE_KEM_papabear_cca
+		return OQS_KEM_papabear_cca_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_babybear_ephem_cpa)) {
+#ifdef OQS_ENABLE_KEM_babybear_ephem_cpa
+		return OQS_KEM_babybear_ephem_cpa_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_mamabear_ephem_cpa)) {
+#ifdef OQS_ENABLE_KEM_mamabear_ephem_cpa
+		return OQS_KEM_mamabear_ephem_cpa_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_papabear_ephem_cpa)) {
+#ifdef OQS_ENABLE_KEM_papabear_ephem_cpa
+		return OQS_KEM_papabear_ephem_cpa_new();
 #else
 		return NULL;
 #endif
