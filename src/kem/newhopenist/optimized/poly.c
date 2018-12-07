@@ -2,6 +2,7 @@
 #include "ntt.h"
 #include "reduce.h"
 
+#include <oqs/rand.h>
 #include <oqs/sha3.h>
 
 /*************************************************
