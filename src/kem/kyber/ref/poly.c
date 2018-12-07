@@ -4,6 +4,7 @@
 #include "reduce.h"
 #include "cbd.h"
 
+#include "oqs/rand.h"
 #include "oqs/sha3.h"
 
 /*************************************************
@@ -29,6 +30,8 @@ void poly_compress(unsigned char *r, const poly *a)
     r[k+2] = (t[5] >> 1) | (t[6] << 2) | (t[7] << 5);
     k += 3;
   }
+
+  OQS_MEM_cleanse((void *)t, 8);
 }
 
 /*************************************************
@@ -89,6 +92,8 @@ void poly_tobytes(unsigned char *r, const poly *a)
     r[13*i+11] = (t[6] >> 10) | ((t[7] & 0x1f) << 3);
     r[13*i+12] = (t[7] >>  5);
   }
+  
+  OQS_MEM_cleanse((void *)t, 8);
 }
 
 /*************************************************
@@ -140,6 +145,9 @@ void poly_getnoise(poly *r,const unsigned char *seed, unsigned char nonce)
   OQS_SHA3_shake256(buf,KYBER_ETA*KYBER_N/4,extseed,KYBER_SYMBYTES+1);
 
   cbd(r, buf);
+  
+  OQS_MEM_cleanse((void *)buf, KYBER_ETA*KYBER_N/4);
+  OQS_MEM_cleanse((void *)extseed, KYBER_SYMBYTES+1);
 }
 
 /*************************************************
@@ -222,6 +230,8 @@ void poly_frommsg(poly *r, const unsigned char msg[KYBER_SYMBYTES])
       r->coeffs[8*i+j] = mask & ((KYBER_Q+1)/2);
     }   
   }
+  
+  OQS_MEM_cleanse((void *)&mask, sizeof(uint16_t));
 }
 
 /*************************************************

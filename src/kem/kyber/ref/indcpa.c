@@ -191,7 +191,7 @@ void indcpa_keypair(unsigned char *pk,
                    unsigned char *sk)
 {
   polyvec a[KYBER_K], e, pkpv, skpv;
-  unsigned char buf[KYBER_SYMBYTES+KYBER_SYMBYTES];
+  unsigned char buf[2*KYBER_SYMBYTES];
   unsigned char *publicseed = buf;
   unsigned char *noiseseed = buf+KYBER_SYMBYTES;
   int i;
@@ -219,6 +219,11 @@ void indcpa_keypair(unsigned char *pk,
 
   pack_sk(sk, &skpv);
   pack_pk(pk, &pkpv, publicseed);
+
+  OQS_MEM_cleanse((void *)&e, sizeof(polyvec));
+  OQS_MEM_cleanse((void *)&skpv, sizeof(polyvec));
+  OQS_MEM_cleanse((void *)buf, 2*KYBER_SYMBYTES);
+  OQS_MEM_cleanse((void *)&pkpv, sizeof(polyvec)); /* Is this required? Coefficients of pkpv aren't frozen */
 }
 
 
@@ -278,6 +283,13 @@ void indcpa_enc(unsigned char *c,
   poly_add(&v, &v, &k);
 
   pack_ciphertext(c, &bp, &v);
+  
+  OQS_MEM_cleanse((void *)&sp, sizeof(polyvec));
+  OQS_MEM_cleanse((void *)&ep, sizeof(polyvec));
+  OQS_MEM_cleanse((void *)&k, sizeof(poly));
+  OQS_MEM_cleanse((void *)&epp, sizeof(poly));
+  OQS_MEM_cleanse((void *)&bp, sizeof(polyvec)); /* Is this required? Coefficients of bp aren't frozen */
+  OQS_MEM_cleanse((void *)&v, sizeof(poly)); /* Is this required? Coefficients of v aren't frozen */
 }
 
 /*************************************************
@@ -308,4 +320,7 @@ void indcpa_dec(unsigned char *m,
   poly_sub(&mp, &mp, &v);
 
   poly_tomsg(m, &mp);
+  
+  OQS_MEM_cleanse((void *)&skpv, sizeof(polyvec));
+  OQS_MEM_cleanse((void *)&mp, sizeof(poly));
 }

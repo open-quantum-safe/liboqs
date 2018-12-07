@@ -57,7 +57,8 @@ OQS_API OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const un
   OQS_SHA3_sha3256(kr+KYBER_SYMBYTES, ct, KYBER_CIPHERTEXTBYTES);             /* overwrite coins in kr with H(c) */
   OQS_SHA3_sha3256(ss, kr, 2*KYBER_SYMBYTES);                                 /* hash concatenation of pre-k and H(c) to k */
 
-  //XXX: zero buffers
+  OQS_MEM_cleanse((void *)kr, 2*KYBER_SYMBYTES);
+  OQS_MEM_cleanse((void *)buf, 2*KYBER_SYMBYTES);
 
   return OQS_SUCCESS;
 }
@@ -101,7 +102,9 @@ OQS_API OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, co
 
   OQS_SHA3_sha3256(ss, kr, 2*KYBER_SYMBYTES);                                 /* hash concatenation of pre-k and H(c) to k */
 
-  //XXX: zero buffers
+  OQS_MEM_cleanse((void *)buf, 2*KYBER_SYMBYTES);
+  OQS_MEM_cleanse((void *)kr, 2*KYBER_SYMBYTES);
+  OQS_MEM_cleanse((void *)&fail, sizeof(int));
 
   return OQS_SUCCESS;
 }

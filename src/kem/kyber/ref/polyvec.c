@@ -2,6 +2,7 @@
 #include "cbd.h"
 #include "reduce.h"
 
+#include "oqs/rand.h"
 #include "oqs/sha3.h"
 
 #if (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 352))
@@ -39,6 +40,8 @@ void polyvec_compress(unsigned char *r, const polyvec *a)
     }
     r += 352;
   }
+  
+  OQS_MEM_cleanse((void *)t, 8);
 }
 
 /*************************************************
@@ -67,122 +70,6 @@ void polyvec_decompress(polyvec *r, const unsigned char *a)
       r->vec[i].coeffs[8*j+7] = ((((a[11*j+ 9] >> 5) | (((uint32_t)a[11*j+10] & 0xff) << 3)) * KYBER_Q) + 1024) >> 11;
     }
     a += 352;
-  }
-}
-
-#elif (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 320))
-
-void polyvec_compress(unsigned char *r, const polyvec *a)
-{
-  int i,j,k;
-  uint16_t t[4];
-  for(i=0;i<KYBER_K;i++)
-  {
-    for(j=0;j<KYBER_N/4;j++)
-    {
-      for(k=0;k<4;k++)
-        t[k] = ((((uint32_t)freeze(a->vec[i].coeffs[4*j+k]) << 10) + KYBER_Q/2)/ KYBER_Q) & 0x3ff;
-
-      r[5*j+ 0] =  t[0] & 0xff;
-      r[5*j+ 1] = (t[0] >>  8) | ((t[1] & 0x3f) << 2);
-      r[5*j+ 2] = (t[1] >>  6) | ((t[2] & 0x0f) << 4);
-      r[5*j+ 3] = (t[2] >>  4) | ((t[3] & 0x03) << 6);
-      r[5*j+ 4] = (t[3] >>  2);
-    }
-    r += 320;
-  }
-}
-
-void polyvec_decompress(polyvec *r, const unsigned char *a)
-{
-  int i,j;
-  for(i=0;i<KYBER_K;i++)
-  {
-    for(j=0;j<KYBER_N/4;j++)
-    {
-      r->vec[i].coeffs[4*j+0] =  (((a[5*j+ 0]       | (((uint32_t)a[5*j+ 1] & 0x03) << 8)) * KYBER_Q) + 512) >> 10;
-      r->vec[i].coeffs[4*j+1] = ((((a[5*j+ 1] >> 2) | (((uint32_t)a[5*j+ 2] & 0x0f) << 6)) * KYBER_Q) + 512) >> 10;
-      r->vec[i].coeffs[4*j+2] = ((((a[5*j+ 2] >> 4) | (((uint32_t)a[5*j+ 3] & 0x3f) << 4)) * KYBER_Q) + 512) >> 10;
-      r->vec[i].coeffs[4*j+3] = ((((a[5*j+ 3] >> 6) | (((uint32_t)a[5*j+ 4] & 0xff) << 2)) * KYBER_Q) + 512) >> 10;
-    }
-    a += 320;
-  }
-}
-
-#elif (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 288))
-
-void polyvec_compress(unsigned char *r, const polyvec *a)
-{
-  int i,j,k;
-  uint16_t t[8];
-  for(i=0;i<KYBER_K;i++)
-  {
-    for(j=0;j<KYBER_N/8;j++)
-    {
-      for(k=0;k<8;k++)
-        t[k] = ((((uint32_t)freeze(a->vec[i].coeffs[8*j+k]) << 9) + KYBER_Q/2)/ KYBER_Q) & 0x1ff;
-
-      r[9*j+ 0] =  t[0] & 0xff;
-      r[9*j+ 1] = (t[0] >>  8) | ((t[1] & 0x7f) << 1);
-      r[9*j+ 2] = (t[1] >>  7) | ((t[2] & 0x3f) << 2);
-      r[9*j+ 3] = (t[2] >>  6) | ((t[3] & 0x1f) << 3);
-      r[9*j+ 4] = (t[3] >>  5) | ((t[4] & 0x0f) << 4);
-      r[9*j+ 5] = (t[4] >>  4) | ((t[5] & 0x07) << 5);
-      r[9*j+ 6] = (t[5] >>  3) | ((t[6] & 0x03) << 6);
-      r[9*j+ 7] = (t[6] >>  2) | ((t[7] & 0x01) << 7);
-      r[9*j+ 8] = (t[7] >>  1);
-    }
-    r += 288;
-  }
-}
-
-void polyvec_decompress(polyvec *r, const unsigned char *a)
-{
-  int i,j;
-  for(i=0;i<KYBER_K;i++)
-  {
-    for(j=0;j<KYBER_N/8;j++)
-    {
-      r->vec[i].coeffs[8*j+0] =  (((a[9*j+ 0]       | (((uint32_t)a[9*j+ 1] & 0x01) << 8)) * KYBER_Q) + 256) >> 9;
-      r->vec[i].coeffs[8*j+1] = ((((a[9*j+ 1] >> 1) | (((uint32_t)a[9*j+ 2] & 0x03) << 7)) * KYBER_Q) + 256) >> 9;
-      r->vec[i].coeffs[8*j+2] = ((((a[9*j+ 2] >> 2) | (((uint32_t)a[9*j+ 3] & 0x07) << 6)) * KYBER_Q) + 256) >> 9;
-      r->vec[i].coeffs[8*j+3] = ((((a[9*j+ 3] >> 3) | (((uint32_t)a[9*j+ 4] & 0x0f) << 5)) * KYBER_Q) + 256) >> 9;
-      r->vec[i].coeffs[8*j+4] = ((((a[9*j+ 4] >> 4) | (((uint32_t)a[9*j+ 5] & 0x1f) << 4)) * KYBER_Q) + 256) >> 9;
-      r->vec[i].coeffs[8*j+5] = ((((a[9*j+ 5] >> 5) | (((uint32_t)a[9*j+ 6] & 0x3f) << 3)) * KYBER_Q) + 256) >> 9;
-      r->vec[i].coeffs[8*j+6] = ((((a[9*j+ 6] >> 6) | (((uint32_t)a[9*j+ 7] & 0x7f) << 2)) * KYBER_Q) + 256) >> 9;
-      r->vec[i].coeffs[8*j+7] = ((((a[9*j+ 7] >> 7) | (((uint32_t)a[9*j+ 8] & 0xff) << 1)) * KYBER_Q) + 256) >> 9;
-    }
-    a += 288;
-  }
-}
-
-
-#elif (KYBER_POLYVECCOMPRESSEDBYTES == (KYBER_K * 256))
-
-void polyvec_compress(unsigned char *r, const polyvec *a)
-{
-  int i,j,k;
-  uint16_t t;
-  for(i=0;i<KYBER_K;i++)
-  {
-    for(j=0;j<KYBER_N;j++)
-    {
-      r[j] = ((((uint32_t)freeze(a->vec[i].coeffs[j]) << 8) + KYBER_Q/2)/ KYBER_Q) & 0xff;
-    }
-    r += 256;
-  }
-}
-
-void polyvec_decompress(polyvec *r, const unsigned char *a)
-{
-  int i,j;
-  for(i=0;i<KYBER_K;i++)
-  {
-    for(j=0;j<KYBER_N;j++)
-    {
-      r->vec[i].coeffs[j] = ((a[j] * KYBER_Q) + 128) >> 8;
-    }
-    a += 256;
   }
 }
 
@@ -273,6 +160,8 @@ void polyvec_pointwise_acc(poly *r, const polyvec *a, const polyvec *b)
     }
     r->coeffs[j] = barrett_reduce(r->coeffs[j]);
   }
+
+  OQS_MEM_cleanse((void *)&t, sizeof(uint16_t));
 }
 
 /*************************************************
