@@ -19,3 +19,9 @@ MamaBearEphem_get_pubkey
 PapaBearEphem_decapsulate
 PapaBearEphem_encapsulate
 PapaBearEphem_get_pubkey
+hash_output
+hash_times_n
+hash_update
+melas_fec_correct
+melas_fec_set
+threebears_cshake_init
