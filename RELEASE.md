@@ -30,6 +30,8 @@ This is the fifth snapshot release of liboqs nist-branch.
 
 The following KEMs have been added in the 2019-01 snapshot release:
 
+- **ThreeBears**: 6 parameterizations: BabyBear-CCA-KEM, MamaBear-CCA-KEM, PapaBear-CCA-KEM, BabyBearEphem-CPA-KEM, MamaBearEphem-CPA-KEM, PapaBearEphem-CPA-KEM (contributed by Mike Hamburg)
+
 ### New signature schemes
 
 The following signature schemes have been added in the 2019-01 snapshot release:
