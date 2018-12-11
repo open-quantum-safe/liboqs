@@ -1,7 +1,7 @@
 Contributing to liboqs nist-branch
 ==================================
 
-liboqs has two branches: "master branch", and "nist-branch".  
+liboqs has two branches: "master branch", and "nist-branch".
 
 liboqs master branch focuses on focuses on selected key encapsulations and signature algorithms. Implementations on this branch must beet certain acceptance criteria.
 
@@ -45,6 +45,8 @@ Instructions for adding an algorithm to liboqs nist-branch
 The rest of this describes the step-by-step procedure to add a new KEM or signature algorithm to liboqs nist-branch.  Separate instructions apply for adding an algorithm to master branch.
 
 If you get stuck or are unsure of what to do, feel free to contact us via a GitHub issue/pull request/@mention, or email one of the team.
+
+Much of this integration work can be performed automatically with [liboqs-utils](https://github.com/truth-quark/liboqs-utils). liboqs-utils is currently under development, but may save development time. Usage & feedback for this repository is welcomed.
 
 ### Basic steps
 
