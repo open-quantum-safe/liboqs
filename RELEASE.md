@@ -1,5 +1,5 @@
-liboqs nist-branch snapshot 2018-11
-===================================
+liboqs nist-branch snapshot 2019-01-dev
+=======================================
 
 About
 -----
@@ -19,37 +19,25 @@ This branch of liboqs can be used with the following Open Quantum Safe applicati
 Release notes
 =============
 
-This snapshot of nist-branch was released on November 13, 2018.  Its release page on Github is https://github.com/open-quantum-safe/liboqs/releases/tag/nist-branch-snapshot-2018-11.
+This snapshot of nist-branch was released on XXX.  Its release page on Github is XXX.
 
 What's New
 ----------
 
-This is the fourth snapshot release of liboqs nist-branch.
+This is the fifth snapshot release of liboqs nist-branch.
 
 ### New key encapsulation mechanisms
 
-The following KEMs have been added in the 2018-11 snapshot release:
-
-- **Titanium**: 4 parameterizations: `Titanium-CCA-std`, `Titanium-CCA-med`, `Titanium-CCA-hi`, `Titanium-CCA-super` (contributed by Ben Davies (University of Waterloo))
-
-The BIKE implementation was updated.
+The following KEMs have been added in the 2019-01 snapshot release:
 
 ### New signature schemes
 
-The following signature schemes have been added in the 2018-11 snapshot release:
-
-- **CRYSTALS-Dilithium**: 3 parameterizations: `Dilithium_II_medium`, `Dilithium_III_recommended`, `Dilithium_IV_very_high` (contributed by Tancrède Lepoint)
-
-The qTESLA implementation was updated with a new upstream version (2018-07-28).
+The following signature schemes have been added in the 2019-01 snapshot release:
 
 ### API changes
 
-- The public and private API have been more clearly delineated.  The public API is now deemed to consist of `oqs/common.h`, `oqs/oqsconfig.h`, `oqs/kem.h`, `oqs/rand.h`, and `oqs/sig.h` and is marked with `OQS_API`.
-- An `alg_version` field is present on the `OQS_KEM` and `OQS_SIG` objects to indicate the version of the algorithm present.
-
 ### Fixes
 
-- URL for downloading Keccak Code Package updated.
 - See https://github.com/open-quantum-safe/liboqs/issues?q=is%3Aissue+label%3Anist-branch+is%3Aclosed+project%3Aopen-quantum-safe%2Fliboqs%2F9 for a detailed list of changes.
 
 Future work

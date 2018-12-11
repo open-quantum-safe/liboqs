@@ -116,8 +116,8 @@ config_h:
 	# 2018-11-rc2-dev  0x02018112
 	# 2018-11-rc2      0x02018112 (same as ...rc2-dev)
 	# 2018-11          0x0201811f
-	echo "#define OQS_VERSION_NUMBER 0x0201811fL" >> src/oqsconfig.h
-	echo "#define OQS_VERSION_TEXT \"2018-11\"" >> src/oqsconfig.h
+	echo "#define OQS_VERSION_NUMBER 0x02019010L" >> src/oqsconfig.h
+	echo "#define OQS_VERSION_TEXT \"2019-01-dev\"" >> src/oqsconfig.h
 	echo "/** liboqs branch. */" >> src/oqsconfig.h
 	echo "#define OQS_NIST_BRANCH" >> src/oqsconfig.h
 	$(foreach ENABLE_KEM, $(ENABLE_KEMS), echo "/** Preprocessor macro indicating KEM $(ENABLE_KEM) is enabled. */" >> src/oqsconfig.h; echo "#define OQS_ENABLE_KEM_$(ENABLE_KEM)" >> src/oqsconfig.h;)
