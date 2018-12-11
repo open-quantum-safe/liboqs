@@ -152,7 +152,3 @@ kem_papabear_ephem_cpa_upstream: $(OBJS_KEM_PAPABEAR_EPHEM_CPA_KEM)
 	bash scripts/collect_objects.sh kem_papabear_ephem_cpa $(OBJS_KEM_PAPABEAR_EPHEM_CPA_KEM)
 	bash scripts/symbols_global_rename.sh kem_papabear_ephem_cpa src/kem/threebears/symbols_global_rename_papabear_ephem_cpa.txt
 	bash scripts/symbols_local.sh kem_papabear_ephem_cpa src/kem/threebears/symbols_local.txt
-
-
-
-
