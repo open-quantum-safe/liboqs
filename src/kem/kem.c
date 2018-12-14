@@ -24,6 +24,10 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	}
 }
 
+OQS_API int OQS_KEM_alg_count() {
+	return OQS_KEM_algs_length;
+}
+
 OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	if (0 == strcasecmp(method_name, OQS_KEM_alg_default)) {
 		return OQS_KEM_new(OQS_KEM_DEFAULT);
