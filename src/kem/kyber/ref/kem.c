@@ -17,16 +17,15 @@
 *
 * Returns 0 (success)
 **************************************************/
-OQS_API OQS_STATUS crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
-{
-  size_t i;
-  indcpa_keypair(pk, sk);
-  for(i=0;i<KYBER_INDCPA_PUBLICKEYBYTES;i++)
-    sk[i+KYBER_INDCPA_SECRETKEYBYTES] = pk[i];
-  OQS_SHA3_sha3256(sk+KYBER_SECRETKEYBYTES-2*KYBER_SYMBYTES,pk,KYBER_PUBLICKEYBYTES);
-  OQS_randombytes(sk+KYBER_SECRETKEYBYTES-KYBER_SYMBYTES,KYBER_SYMBYTES);         /* Value z for pseudo-random output on reject */
+OQS_API OQS_STATUS crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
+	size_t i;
+	indcpa_keypair(pk, sk);
+	for (i = 0; i < KYBER_INDCPA_PUBLICKEYBYTES; i++)
+		sk[i + KYBER_INDCPA_SECRETKEYBYTES] = pk[i];
+	OQS_SHA3_sha3256(sk + KYBER_SECRETKEYBYTES - 2 * KYBER_SYMBYTES, pk, KYBER_PUBLICKEYBYTES);
+	OQS_randombytes(sk + KYBER_SECRETKEYBYTES - KYBER_SYMBYTES, KYBER_SYMBYTES); /* Value z for pseudo-random output on reject */
 
-  return OQS_SUCCESS;
+	return OQS_SUCCESS;
 }
 
 /*************************************************
@@ -41,26 +40,25 @@ OQS_API OQS_STATUS crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
 *
 * Returns 0 (success)
 **************************************************/
-OQS_API OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk)
-{
-  unsigned char  kr[2*KYBER_SYMBYTES];                                        /* Will contain key, coins */
-  unsigned char buf[2*KYBER_SYMBYTES];                          
+OQS_API OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) {
+	unsigned char kr[2 * KYBER_SYMBYTES]; /* Will contain key, coins */
+	unsigned char buf[2 * KYBER_SYMBYTES];
 
-  OQS_randombytes(buf, KYBER_SYMBYTES);
-  OQS_SHA3_sha3256(buf,buf,KYBER_SYMBYTES);                                   /* Don't release system RNG output */
+	OQS_randombytes(buf, KYBER_SYMBYTES);
+	OQS_SHA3_sha3256(buf, buf, KYBER_SYMBYTES); /* Don't release system RNG output */
 
-  OQS_SHA3_sha3256(buf+KYBER_SYMBYTES, pk, KYBER_PUBLICKEYBYTES);             /* Multitarget countermeasure for coins + contributory KEM */
-  OQS_SHA3_sha3512(kr, buf, 2*KYBER_SYMBYTES);
+	OQS_SHA3_sha3256(buf + KYBER_SYMBYTES, pk, KYBER_PUBLICKEYBYTES); /* Multitarget countermeasure for coins + contributory KEM */
+	OQS_SHA3_sha3512(kr, buf, 2 * KYBER_SYMBYTES);
 
-  indcpa_enc(ct, buf, pk, kr+KYBER_SYMBYTES);                                 /* coins are in kr+KYBER_SYMBYTES */
+	indcpa_enc(ct, buf, pk, kr + KYBER_SYMBYTES); /* coins are in kr+KYBER_SYMBYTES */
 
-  OQS_SHA3_sha3256(kr+KYBER_SYMBYTES, ct, KYBER_CIPHERTEXTBYTES);             /* overwrite coins in kr with H(c) */
-  OQS_SHA3_sha3256(ss, kr, 2*KYBER_SYMBYTES);                                 /* hash concatenation of pre-k and H(c) to k */
+	OQS_SHA3_sha3256(kr + KYBER_SYMBYTES, ct, KYBER_CIPHERTEXTBYTES); /* overwrite coins in kr with H(c) */
+	OQS_SHA3_sha3256(ss, kr, 2 * KYBER_SYMBYTES);                     /* hash concatenation of pre-k and H(c) to k */
 
-  OQS_MEM_cleanse((void *)kr, 2*KYBER_SYMBYTES);
-  OQS_MEM_cleanse((void *)buf, 2*KYBER_SYMBYTES);
+	OQS_MEM_cleanse((void *) kr, 2 * KYBER_SYMBYTES);
+	OQS_MEM_cleanse((void *) buf, 2 * KYBER_SYMBYTES);
 
-  return OQS_SUCCESS;
+	return OQS_SUCCESS;
 }
 
 /*************************************************
@@ -77,34 +75,33 @@ OQS_API OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const un
 *
 * On failure, ss will contain a pseudo-random value.
 **************************************************/
-OQS_API OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk)
-{
-  size_t i; 
-  int fail;
-  unsigned char cmp[KYBER_CIPHERTEXTBYTES];
-  unsigned char buf[2*KYBER_SYMBYTES];
-  unsigned char kr[2*KYBER_SYMBYTES];                                         /* Will contain key and coins */
-  const unsigned char *pk = sk+KYBER_INDCPA_SECRETKEYBYTES;
+OQS_API OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) {
+	size_t i;
+	int fail;
+	unsigned char cmp[KYBER_CIPHERTEXTBYTES];
+	unsigned char buf[2 * KYBER_SYMBYTES];
+	unsigned char kr[2 * KYBER_SYMBYTES]; /* Will contain key and coins */
+	const unsigned char *pk = sk + KYBER_INDCPA_SECRETKEYBYTES;
 
-  indcpa_dec(buf, ct, sk);
-                                                                              
-  for(i=0;i<KYBER_SYMBYTES;i++)                                               /* Multitarget countermeasure for coins + contributory KEM */
-    buf[KYBER_SYMBYTES+i] = sk[KYBER_SECRETKEYBYTES-2*KYBER_SYMBYTES+i];      /* Save hash by storing H(pk) in sk */
-  OQS_SHA3_sha3512(kr, buf, 2*KYBER_SYMBYTES);
+	indcpa_dec(buf, ct, sk);
 
-  indcpa_enc(cmp, buf, pk, kr+KYBER_SYMBYTES);                                /* coins are in kr+KYBER_SYMBYTES */
+	for (i = 0; i < KYBER_SYMBYTES; i++)                                             /* Multitarget countermeasure for coins + contributory KEM */
+		buf[KYBER_SYMBYTES + i] = sk[KYBER_SECRETKEYBYTES - 2 * KYBER_SYMBYTES + i]; /* Save hash by storing H(pk) in sk */
+	OQS_SHA3_sha3512(kr, buf, 2 * KYBER_SYMBYTES);
 
-  fail = verify(ct, cmp, KYBER_CIPHERTEXTBYTES);
+	indcpa_enc(cmp, buf, pk, kr + KYBER_SYMBYTES); /* coins are in kr+KYBER_SYMBYTES */
 
-  OQS_SHA3_sha3256(kr+KYBER_SYMBYTES, ct, KYBER_CIPHERTEXTBYTES);             /* overwrite coins in kr with H(c)  */
+	fail = verify(ct, cmp, KYBER_CIPHERTEXTBYTES);
 
-  cmov(kr, sk+KYBER_SECRETKEYBYTES-KYBER_SYMBYTES, KYBER_SYMBYTES, fail);     /* Overwrite pre-k with z on re-encryption failure */
+	OQS_SHA3_sha3256(kr + KYBER_SYMBYTES, ct, KYBER_CIPHERTEXTBYTES); /* overwrite coins in kr with H(c)  */
 
-  OQS_SHA3_sha3256(ss, kr, 2*KYBER_SYMBYTES);                                 /* hash concatenation of pre-k and H(c) to k */
+	cmov(kr, sk + KYBER_SECRETKEYBYTES - KYBER_SYMBYTES, KYBER_SYMBYTES, fail); /* Overwrite pre-k with z on re-encryption failure */
 
-  OQS_MEM_cleanse((void *)buf, 2*KYBER_SYMBYTES);
-  OQS_MEM_cleanse((void *)kr, 2*KYBER_SYMBYTES);
-  OQS_MEM_cleanse((void *)&fail, sizeof(int));
+	OQS_SHA3_sha3256(ss, kr, 2 * KYBER_SYMBYTES); /* hash concatenation of pre-k and H(c) to k */
 
-  return OQS_SUCCESS;
+	OQS_MEM_cleanse((void *) buf, 2 * KYBER_SYMBYTES);
+	OQS_MEM_cleanse((void *) kr, 2 * KYBER_SYMBYTES);
+	OQS_MEM_cleanse((void *) &fail, sizeof(int));
+
+	return OQS_SUCCESS;
 }

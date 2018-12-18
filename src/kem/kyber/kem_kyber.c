@@ -31,7 +31,6 @@ OQS_KEM *OQS_KEM_kyber_512_cca_kem_new() {
 
 #endif
 
-
 #ifdef OQS_ENABLE_KEM_kyber_768_cca_kem
 
 OQS_KEM *OQS_KEM_kyber_768_cca_kem_new() {
@@ -59,7 +58,6 @@ OQS_KEM *OQS_KEM_kyber_768_cca_kem_new() {
 }
 
 #endif
-
 
 #ifdef OQS_ENABLE_KEM_kyber_1024_cca_kem
 

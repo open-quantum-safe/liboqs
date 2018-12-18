@@ -22,7 +22,6 @@ OQS_API OQS_STATUS OQS_KEM_kyber_512_cca_kem_decaps(uint8_t *shared_secret,
                                                     const uint8_t *secret_key);
 #endif
 
-
 #ifdef OQS_ENABLE_KEM_kyber_768_cca_kem
 
 #define OQS_KEM_kyber_768_cca_kem_length_secret_key 2400
@@ -42,7 +41,6 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_cca_kem_decaps(uint8_t *shared_secret,
                                                     const uint8_t *secret_key);
 #endif
 
-
 #ifdef OQS_ENABLE_KEM_kyber_1024_cca_kem
 
 #define OQS_KEM_kyber_1024_cca_kem_length_secret_key 3168
@@ -61,6 +59,5 @@ OQS_API OQS_STATUS OQS_KEM_kyber_1024_cca_kem_decaps(uint8_t *shared_secret,
                                                      const unsigned char *ciphertext,
                                                      const uint8_t *secret_key);
 #endif
-
 
 #endif
