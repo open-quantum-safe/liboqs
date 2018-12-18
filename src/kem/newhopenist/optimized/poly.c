@@ -303,7 +303,7 @@ void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce) {
 		}
 	}
 
-  OQS_MEM_cleanse((void *)buf, 128);
+	OQS_MEM_cleanse((void *) buf, 128);
 }
 
 /*************************************************

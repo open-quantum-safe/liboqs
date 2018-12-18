@@ -115,11 +115,11 @@ void cpapke_keypair(unsigned char *pk,
 	poly_tobytes(sk, &shat);
 	encode_pk(pk, &bhat, publicseed);
 
-  OQS_MEM_cleanse((void *) z, 2 * NEWHOPE_SYMBYTES);
-  OQS_MEM_cleanse((void *) &shat, sizeof(poly));
-  OQS_MEM_cleanse((void *) &ehat, sizeof(poly));
-  OQS_MEM_cleanse((void *) &ahat_shat, sizeof(poly));
-  OQS_MEM_cleanse((void *) &bhat, sizeof(poly));  /* Is this necessary? Coefficients of bhat aren't frozen. */
+	OQS_MEM_cleanse((void *) z, 2 * NEWHOPE_SYMBYTES);
+	OQS_MEM_cleanse((void *) &shat, sizeof(poly));
+	OQS_MEM_cleanse((void *) &ehat, sizeof(poly));
+	OQS_MEM_cleanse((void *) &ahat_shat, sizeof(poly));
+	OQS_MEM_cleanse((void *) &bhat, sizeof(poly)); /* Is this necessary? Coefficients of bhat aren't frozen. */
 }
 
 /*************************************************
@@ -165,12 +165,12 @@ void cpapke_enc(unsigned char *c,
 
 	encode_c(c, &uhat, &vprime);
 
-  OQS_MEM_cleanse((void *) &sprime, sizeof(poly));
-  OQS_MEM_cleanse((void *) &eprime, sizeof(poly));
-  OQS_MEM_cleanse((void *) &v, sizeof(poly));
-  OQS_MEM_cleanse((void *) &eprimeprime, sizeof(poly));  
-  OQS_MEM_cleanse((void *) &uhat, sizeof(poly)); /* Is this necessary? Coefficients of uhat aren't frozen. */
-  OQS_MEM_cleanse((void *) &vprime, sizeof(poly)); /* Is this necessary? Coefficients of vprime aren't frozen. */
+	OQS_MEM_cleanse((void *) &sprime, sizeof(poly));
+	OQS_MEM_cleanse((void *) &eprime, sizeof(poly));
+	OQS_MEM_cleanse((void *) &v, sizeof(poly));
+	OQS_MEM_cleanse((void *) &eprimeprime, sizeof(poly));
+	OQS_MEM_cleanse((void *) &uhat, sizeof(poly));   /* Is this necessary? Coefficients of uhat aren't frozen. */
+	OQS_MEM_cleanse((void *) &vprime, sizeof(poly)); /* Is this necessary? Coefficients of vprime aren't frozen. */
 }
 
 /*************************************************
@@ -199,6 +199,6 @@ void cpapke_dec(unsigned char *m,
 
 	poly_tomsg(m, &tmp);
 
-  OQS_MEM_cleanse((void *) &shat, sizeof(poly));
-  OQS_MEM_cleanse((void *) &tmp, sizeof(poly));
+	OQS_MEM_cleanse((void *) &shat, sizeof(poly));
+	OQS_MEM_cleanse((void *) &tmp, sizeof(poly));
 }
