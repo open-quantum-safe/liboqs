@@ -39,6 +39,9 @@ endif
 if ENABLE_KEM_NEWHOPE
 liboqs_la_LIBADD += src/kem/newhopenist/libkemnewhopenist.la
 endif
+if ENABLE_KEM_KYBER
+liboqs_la_LIBADD += src/kem/kyber/libkemkyber.la
+endif
 
 oqsconfigh:
 	grep OQS_ config.h > src/oqsconfig.h
@@ -54,6 +57,7 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/newhopenist/kem_newhopenist.h \
+	src/kem/kyber/kem_kyber.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/picnic/sig_picnic.h \
@@ -87,6 +91,7 @@ links: oqsconfigh
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kem/newhopenist/kem_newhopenist.h include/oqs
+	cp -f src/kem/kyber/kem_kyber.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig/picnic/sig_picnic.h include/oqs
 	cp -f src/sig/qtesla/sig_qtesla.h include/oqs
