@@ -36,7 +36,7 @@ OQS_API int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // Frodo-
 	// Cleanup:
 	OQS_MEM_cleanse((void *) S, PARAMS_N * PARAMS_NBAR / 2);
 	OQS_MEM_cleanse((void *) E, PARAMS_N * PARAMS_NBAR / 2);
-	return 0;
+	return OQS_SUCCESS;
 }
 
 OQS_API int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) { // Frodo-KEM's key encapsulation
@@ -86,7 +86,7 @@ OQS_API int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned 
 	OQS_MEM_cleanse((void *) V, PARAMS_NBAR * PARAMS_NBAR / 2);
 	OQS_MEM_cleanse((void *) G, CRYPTO_BYTES / 2);
 	OQS_MEM_cleanse((void *) (temp + CRYPTO_CIPHERTEXTBYTES - CRYPTO_BYTES), CRYPTO_BYTES / 2);
-	return 0;
+	return OQS_SUCCESS;
 }
 
 OQS_API int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) { // Frodo-KEM's key decapsulation
@@ -154,5 +154,5 @@ OQS_API int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const uns
 	OQS_MEM_cleanse((void *) W, PARAMS_NBAR * PARAMS_NBAR / 2);
 	OQS_MEM_cleanse((void *) G, CRYPTO_BYTES / 2);
 	OQS_MEM_cleanse((void *) (temp + CRYPTO_CIPHERTEXTBYTES - CRYPTO_BYTES), CRYPTO_BYTES / 2);
-	return 0;
+	return OQS_SUCCESS;
 }

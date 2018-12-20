@@ -2,6 +2,7 @@
 #include "ntt.h"
 #include "reduce.h"
 
+#include <oqs/rand.h>
 #include <oqs/sha3.h>
 
 /*************************************************
@@ -301,6 +302,8 @@ void poly_sample(poly *r, const unsigned char *seed, unsigned char nonce) {
       */
 		}
 	}
+
+	OQS_MEM_cleanse((void *) buf, 128);
 }
 
 /*************************************************
