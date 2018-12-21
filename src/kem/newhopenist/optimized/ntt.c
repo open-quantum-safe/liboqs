@@ -157,7 +157,7 @@ void ntt(uint16_t *a, const uint16_t *omega) {
 
 #elif (NEWHOPE_N == 1024)
 
-void /*************************************************
+/*************************************************
 * Name:        ntt
 * 
 * Description: Computes number-theoretic transform (NTT) of
@@ -168,7 +168,7 @@ void /*************************************************
 *              - const uint16_t* omega: pointer to input powers of root of unity omega;
 *                                       assumed to be in Montgomery domain
 **************************************************/
-    ntt(uint16_t *a, const uint16_t *omega) {
+void ntt(uint16_t *a, const uint16_t *omega) {
 	int i, start, j, jTwiddle, distance;
 	uint16_t temp, W;
 
