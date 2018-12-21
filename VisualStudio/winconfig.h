@@ -6,12 +6,15 @@
 #define OQS_ENABLE_KEM_frodokem_976_aes
 #define OQS_ENABLE_KEM_frodokem_640_cshake
 #define OQS_ENABLE_KEM_frodokem_976_cshake
+#define OQS_ENABLE_KEM_kyber_512_cca_kem
+#define OQS_ENABLE_KEM_kyber_768_cca_kem
+#define OQS_ENABLE_KEM_kyber_1024_cca_kem
+#define OQS_ENABLE_KEM_newhope_1024_cca_kem
+#define OQS_ENABLE_KEM_newhope_512_cca_kem
 #define OQS_ENABLE_KEM_sike_p503
 #define OQS_ENABLE_KEM_sike_p751
 #define OQS_ENABLE_KEM_sidh_p503
 #define OQS_ENABLE_KEM_sidh_p751
-#define OQS_ENABLE_KEM_newhope_1024_cca_kem
-#define OQS_ENABLE_KEM_newhope_512_cca_kem
 #define OQS_ENABLE_SIG_picnic_L1_FS
 #define OQS_ENABLE_SIG_picnic_L1_UR
 #define OQS_ENABLE_SIG_picnic_L3_FS

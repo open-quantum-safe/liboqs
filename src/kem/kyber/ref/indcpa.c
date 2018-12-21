@@ -119,7 +119,7 @@ static void gen_matrix(polyvec *a, const unsigned char *seed, int transposed) //
 	uint16_t val;
 	unsigned int nblocks;
 	const unsigned int maxnblocks = 4;
-	uint8_t buf[OQS_SHA3_SHAKE128_RATE * maxnblocks];
+	uint8_t buf[OQS_SHA3_SHAKE128_RATE * 4]; /* was '* maxnblocks' but this is not a contant expr on WIN32 */
 	int i, j, k;
 	uint64_t state[25]; // SHAKE state
 	unsigned char extseed[KYBER_SYMBYTES + 2];
