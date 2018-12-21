@@ -57,6 +57,12 @@
 #define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
 /** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
+/** Algorithm identifier for Kyber-512-CCA-KEM KEM. */
+#define OQS_KEM_alg_kyber_512_cca_kem "Kyber-512-CCA-KEM"
+/** Algorithm identifier for Kyber-768-CCA-KEM KEM. */
+#define OQS_KEM_alg_kyber_768_cca_kem "Kyber-768-CCA-KEM"
+/** Algorithm identifier for Kyber-1024-CCA-KEM KEM. */
+#define OQS_KEM_alg_kyber_1024_cca_kem "Kyber-1024-CCA-KEM"
 /** Algorithm identifier for Sidh p503 KEM. */
 #define OQS_KEM_alg_sidh_p503 "Sidh-p503"
 /** Algorithm identifier for Sidh p751 KEM. */
@@ -67,7 +73,7 @@
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 20
+#define OQS_KEM_algs_length 23
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
@@ -234,6 +240,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_bike.h>
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
+#include <oqs/kem_kyber.h>
 #include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 

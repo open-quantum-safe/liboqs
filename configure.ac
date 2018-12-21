@@ -74,6 +74,7 @@ AC_CONFIG_FILES([Makefile
                  src/kem/frodokem/Makefile
                  src/kem/sike/Makefile
                  src/kem/newhopenist/Makefile
+                 src/kem/kyber/Makefile
                  tests/Makefile
                  ])
 

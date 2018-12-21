@@ -194,6 +194,7 @@ Contributors to this master branch of liboqs include:
 - Maxime Anvari
 - Eric Crockett (Amazon Web Services)
 - Nir Drucker (Amazon Web Services)
+- Ben Davies (University of Waterloo)
 - Javad Doliskani (University of Waterloo)
 - Vlad Gheorghiu (evolutionQ)
 - Shay Gueron (Amazon Web Services)
@@ -201,10 +202,10 @@ Contributors to this master branch of liboqs include:
 - Shravan Mishra (University of Waterloo)
 - Christian Paquin (Microsoft Research)
 - Alex Parent (University of Waterloo)
+- Peter Schwabe (Radboud University Nijmegen)
 - Douglas Stebila (University of Waterloo)
 - [John Underhill](https://github.com/Steppenwolfe65/CEX)
 - Sebastian Verschoor (University of Waterloo)
-- Ben Davies (University of Waterloo)
 
 ### Support
 
