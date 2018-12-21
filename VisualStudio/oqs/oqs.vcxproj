@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
+    <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h" />
     <ClInclude Include="..\..\src\kem\newhopenist\kem_newhopenist.h" />
     <ClInclude Include="..\..\src\kem\kem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
@@ -87,6 +88,10 @@
     <ClCompile Include="..\..\src\kem\frodokem\frodo976_cshake.c" />
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\util.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber.c" />
+    <ClCompile Include="..\..\src\kem\kyber\win_kyber1024.c" />
+    <ClCompile Include="..\..\src\kem\kyber\win_kyber512.c" />
+    <ClCompile Include="..\..\src\kem\kyber\win_kyber768.c" />
     <ClCompile Include="..\..\src\kem\newhopenist\kem_newhopenist.c" />
     <ClCompile Include="..\..\src\kem\kem.c" />
     <ClCompile Include="..\..\src\kem\newhopenist\win_newhope1024cca.c" />
