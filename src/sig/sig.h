@@ -71,6 +71,16 @@
 OQS_API const char *OQS_SIG_alg_identifier(size_t i);
 
 /**
+ * Returns the number of signature mechanisms in liboqs.  They can be enumerated with
+ * OQS_SIG_alg_identifier.
+ *
+ * Note that some mechanisms may be disabled at compile time.
+ *
+ * @return The number of signature mechanisms.
+ */
+OQS_API int OQS_SIG_alg_count();
+
+/**
  * Signature schemes object
  */
 typedef struct OQS_SIG {

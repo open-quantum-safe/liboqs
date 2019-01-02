@@ -145,6 +145,16 @@
 OQS_API const char *OQS_KEM_alg_identifier(size_t i);
 
 /**
+ * Returns the number of key encapsulation mechanisms in liboqs.  They can be enumerated with
+ * OQS_KEM_alg_identifier.
+ *
+ * Note that some mechanisms may be disabled at compile time.
+ *
+ * @return The number of key encapsulation mechanisms.
+ */
+OQS_API int OQS_KEM_alg_count();
+
+/**
  * Key encapsulation mechanism object
  */
 typedef struct OQS_KEM {
