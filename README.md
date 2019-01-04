@@ -145,6 +145,10 @@ If you have Doxygen installed (Linux: `sudo apt install doxygen graphviz`; macOS
 
 Then open `docs/doxygen/html/index.html` in your web browser.
 
+### liboqs default algorithms
+
+The key encapsulation algorithm type `OQS_KEM_alg_default` and signature algorithm type `OQS_SIG_alg_default` are intended for testing purposes and can be changed at compile-time. Care should be exercised if these types are used for other purposes.
+
 License
 -------
 
