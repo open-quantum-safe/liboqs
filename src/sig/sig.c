@@ -29,6 +29,10 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	}
 }
 
+OQS_API int OQS_SIG_alg_count() {
+	return OQS_SIG_algs_length;
+}
+
 OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	if (0 == strcasecmp(method_name, OQS_SIG_alg_default)) {
 		return OQS_SIG_new(OQS_SIG_DEFAULT);
