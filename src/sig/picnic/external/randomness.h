@@ -7,6 +7,8 @@
  *  SPDX-License-Identifier: MIT
  */
 
+// TODO: DELETE THIS FILE (FIXMEOQS)
+
 #ifndef RANDOMNESS_H
 #define RANDOMNESS_H
 
@@ -14,5 +16,6 @@
 #include <stdint.h>
 
 int rand_bytes(uint8_t* dst, size_t len);
+
 
 #endif

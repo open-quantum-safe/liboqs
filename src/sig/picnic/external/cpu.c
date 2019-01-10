@@ -58,14 +58,14 @@ static unsigned init_caps(void) {
     if (regs.edx & (1 << 26)) {
       caps |= CPU_CAP_SSE2;
     }
-    if (regs.ecx & (1 << 19)) {
-      caps |= CPU_CAP_SSE4_1;
+    if (regs.ecx & (1 << 23)) {
+      caps |= CPU_CAP_POPCNT;
     }
   }
 
   if (max >= 7) {
     __cpuidex(regs.data, 7, 0);
-    if (regs.ebx & (1 << 5)) {
+    if (regs.ebx & ((1 << 5) | (1 << 8))) {
       caps |= CPU_CAP_AVX2;
     }
   }
@@ -73,7 +73,31 @@ static unsigned init_caps(void) {
   return caps;
 }
 #else
+#if defined(SUPERCOP)
+// SUPERCOP places a cpuid.h on the include search path before the system
+// provided cpuid.h. We hack around that by assuming that cpuid always exists
+// and defining __get_cpuid on our own.
+
+static int __get_cpuid(unsigned int leaf, unsigned int* reax, unsigned int* rebx,
+                       unsigned int* recx, unsigned int* redx) {
+
+  unsigned int eax, ebx, ecx, edx;
+  __asm__("cpuid\n" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "0"(leaf & 0x80000000));
+  if (eax == 0 || eax < leaf) {
+    return 0;
+  }
+
+  __asm__("cpuid\n" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "0"(leaf));
+  *reax = eax;
+  *rebx = ebx;
+  *recx = ecx;
+  *redx = edx;
+
+  return 1;
+}
+#else
 #include <cpuid.h>
+#endif
 
 static unsigned init_caps(void) {
   unsigned int caps = 0;
@@ -83,13 +107,13 @@ static unsigned init_caps(void) {
     if (edx & (1 << 26)) {
       caps |= CPU_CAP_SSE2;
     }
-    if (ecx & (1 << 19)) {
-      caps |= CPU_CAP_SSE4_1;
+    if (ecx & (1 << 23)) {
+      caps |= CPU_CAP_POPCNT;
     }
   }
 
   if (__get_cpuid(7, &eax, &ebx, &ecx, &edx)) {
-    if (ebx & (1 << 5)) {
+    if (ebx & ((1 << 5) | (1 << 8))) {
       caps |= CPU_CAP_AVX2;
     }
   }

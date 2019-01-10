@@ -1,12 +1,10 @@
 /*
-Implementation by the Keccak, Keyak and Ketje Teams, namely, Guido Bertoni,
-Joan Daemen, Michaël Peeters, Gilles Van Assche and Ronny Van Keer, hereby
-denoted as "the implementer".
+Implementation by the Keccak Team, namely, Guido Bertoni, Joan Daemen,
+Michaël Peeters, Gilles Van Assche and Ronny Van Keer,
+hereby denoted as "the implementer".
 
-For more information, feedback or questions, please refer to our websites:
-http://keccak.noekeon.org/
-http://keyak.noekeon.org/
-http://ketje.noekeon.org/
+For more information, feedback or questions, please refer to our website:
+https://keccak.team/
 
 To the extent possible under law, the implementer has waived all copyright
 and related or neighboring rights to the source code in this file.
@@ -18,7 +16,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #ifndef KeccakP1600_excluded
 
-#include "KeccakSponge.h"
+#include "KeccakSpongeWidth1600.h"
 #include <string.h>
 
 #ifndef _Keccak_BitTypes_
@@ -51,31 +49,31 @@ typedef struct {
   * @pre    One must have r+c=1600 and the rate a multiple of 8 bits in this implementation.
   * @return SUCCESS if successful, FAIL otherwise.
   */
-HashReturn oqs_sig_picnic_Keccak_HashInitialize(Keccak_HashInstance *hashInstance, unsigned int rate, unsigned int capacity, unsigned int hashbitlen, unsigned char delimitedSuffix);
+HashReturn Keccak_HashInitialize(Keccak_HashInstance *hashInstance, unsigned int rate, unsigned int capacity, unsigned int hashbitlen, unsigned char delimitedSuffix);
 
 /** Macro to initialize a SHAKE128 instance as specified in the FIPS 202 standard.
   */
-#define Keccak_HashInitialize_SHAKE128(hashInstance)        oqs_sig_picnic_Keccak_HashInitialize(hashInstance, 1344,  256,   0, 0x1F)
+#define Keccak_HashInitialize_SHAKE128(hashInstance)        Keccak_HashInitialize(hashInstance, 1344,  256,   0, 0x1F)
 
 /** Macro to initialize a SHAKE256 instance as specified in the FIPS 202 standard.
   */
-#define Keccak_HashInitialize_SHAKE256(hashInstance)        oqs_sig_picnic_Keccak_HashInitialize(hashInstance, 1088,  512,   0, 0x1F)
+#define Keccak_HashInitialize_SHAKE256(hashInstance)        Keccak_HashInitialize(hashInstance, 1088,  512,   0, 0x1F)
 
 /** Macro to initialize a SHA3-224 instance as specified in the FIPS 202 standard.
   */
-#define Keccak_HashInitialize_SHA3_224(hashInstance)        oqs_sig_picnic_Keccak_HashInitialize(hashInstance, 1152,  448, 224, 0x06)
+#define Keccak_HashInitialize_SHA3_224(hashInstance)        Keccak_HashInitialize(hashInstance, 1152,  448, 224, 0x06)
 
 /** Macro to initialize a SHA3-256 instance as specified in the FIPS 202 standard.
   */
-#define Keccak_HashInitialize_SHA3_256(hashInstance)        oqs_sig_picnic_Keccak_HashInitialize(hashInstance, 1088,  512, 256, 0x06)
+#define Keccak_HashInitialize_SHA3_256(hashInstance)        Keccak_HashInitialize(hashInstance, 1088,  512, 256, 0x06)
 
 /** Macro to initialize a SHA3-384 instance as specified in the FIPS 202 standard.
   */
-#define Keccak_HashInitialize_SHA3_384(hashInstance)        oqs_sig_picnic_Keccak_HashInitialize(hashInstance,  832,  768, 384, 0x06)
+#define Keccak_HashInitialize_SHA3_384(hashInstance)        Keccak_HashInitialize(hashInstance,  832,  768, 384, 0x06)
 
 /** Macro to initialize a SHA3-512 instance as specified in the FIPS 202 standard.
   */
-#define Keccak_HashInitialize_SHA3_512(hashInstance)        oqs_sig_picnic_Keccak_HashInitialize(hashInstance,  576, 1024, 512, 0x06)
+#define Keccak_HashInitialize_SHA3_512(hashInstance)        Keccak_HashInitialize(hashInstance,  576, 1024, 512, 0x06)
 
 /**
   * Function to give input data to be absorbed.
@@ -87,7 +85,7 @@ HashReturn oqs_sig_picnic_Keccak_HashInitialize(Keccak_HashInstance *hashInstanc
   * @pre    In the previous call to Keccak_HashUpdate(), databitlen was a multiple of 8.
   * @return SUCCESS if successful, FAIL otherwise.
   */
-HashReturn oqs_sig_picnic_Keccak_HashUpdate(Keccak_HashInstance *hashInstance, const BitSequence *data, BitLength databitlen);
+HashReturn Keccak_HashUpdate(Keccak_HashInstance *hashInstance, const BitSequence *data, BitLength databitlen);
 
 /**
   * Function to call after all input blocks have been input and to get
@@ -100,7 +98,7 @@ HashReturn oqs_sig_picnic_Keccak_HashUpdate(Keccak_HashInstance *hashInstance, c
   * @param  hashval     Pointer to the buffer where to store the output data.
   * @return SUCCESS if successful, FAIL otherwise.
   */
-HashReturn oqs_sig_picnic_Keccak_HashFinal(Keccak_HashInstance *hashInstance, BitSequence *hashval);
+HashReturn Keccak_HashFinal(Keccak_HashInstance *hashInstance, BitSequence *hashval);
 
  /**
   * Function to squeeze output data.
@@ -111,7 +109,7 @@ HashReturn oqs_sig_picnic_Keccak_HashFinal(Keccak_HashInstance *hashInstance, Bi
   * @pre    @a databitlen is a multiple of 8.
   * @return SUCCESS if successful, FAIL otherwise.
   */
-HashReturn oqs_sig_picnic_Keccak_HashSqueeze(Keccak_HashInstance *hashInstance, BitSequence *data, BitLength databitlen);
+HashReturn Keccak_HashSqueeze(Keccak_HashInstance *hashInstance, BitSequence *data, BitLength databitlen);
 
 #endif
 

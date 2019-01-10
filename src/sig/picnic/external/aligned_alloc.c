@@ -9,12 +9,22 @@
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
+#else
+/* define HAVE_* for more known good configurations */
+#if !defined(HAVE_POSIX_MEMALIGN) &&                                                               \
+    ((defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L) || defined(__APPLE__))
+/* defined in POSIX and available on OS X */
+#define HAVE_POSIX_MEMALIGN
+#endif
+
+#if !defined(HAVE_MEMALIGN) && defined(__linux__)
+/* always availalbe on Linux */
+#define HAVE_MEMALIGN
+#endif
 #endif
 
 #include "compat.h"
-
 #if !defined(HAVE_ALIGNED_ALLOC)
-
 #include <errno.h>
 #include <stdlib.h>
 #if !defined(HAVE_POSIX_MEMALIGN) || defined(__MING32__) || defined(__MING64__) || defined(_MSC_VER)
@@ -56,7 +66,7 @@ void* aligned_alloc(size_t alignment, size_t size) {
 
 void aligned_free(void* ptr) {
 #if defined(HAVE_POSIX_MEMALIGN) || defined(HAVE_MEMALIGN)
-  free(ptr); // IGNORE free-check
+  free(ptr);
 #elif defined(__MINGW32__) || defined(__MINGW64__)
   __mingw_aligned_free(ptr);
 #elif defined(_MSC_VER)

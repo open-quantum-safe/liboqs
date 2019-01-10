@@ -11,11 +11,12 @@
 #include <config.h>
 #endif
 
+#include "io.h"
 #include "lowmc.h"
 #include "lowmc_pars.h"
 #include "mzd_additional.h"
 
-#ifdef WITH_OPT
+#if defined(WITH_OPT)
 #include "simd.h"
 #endif
 
@@ -24,327 +25,1157 @@
 #endif
 #include <string.h>
 
-static uint64_t sbox_layer_bitsliced_uint64(uint64_t in, mask_t const* mask) {
+static uint64_t sbox_layer_10_bitsliced_uint64(uint64_t in) {
   // a, b, c
-  const uint64_t x0m = (in & mask->x0i) << 2;
-  const uint64_t x1m = (in & mask->x1i) << 1;
-  const uint64_t x2m = in & mask->x2i;
+  const uint64_t x0s = (in & MASK_X0I) << 2;
+  const uint64_t x1s = (in & MASK_X1I) << 1;
+  const uint64_t x2m = in & MASK_X2I;
 
   // (b & c) ^ a
-  const uint64_t t0 = (x1m & x2m) ^ x0m;
+  const uint64_t t0 = (x1s & x2m) ^ x0s;
   // (c & a) ^ a ^ b
-  const uint64_t t1 = (x0m & x2m) ^ x0m ^ x1m;
+  const uint64_t t1 = (x0s & x2m) ^ x0s ^ x1s;
   // (a & b) ^ a ^ b ^c
-  const uint64_t t2 = (x0m & x1m) ^ x0m ^ x1m ^ x2m;
+  const uint64_t t2 = (x0s & x1s) ^ x0s ^ x1s ^ x2m;
 
-  return (in & mask->maski) ^ (t0 >> 2) ^ (t1 >> 1) ^ t2;
+  return (in & MASK_MASK) ^ (t0 >> 2) ^ (t1 >> 1) ^ t2;
 }
 
-static void sbox_layer_uint64(mzd_local_t* y, mzd_local_t const* x, mask_t const* mask) {
-  FIRST_ROW(y)[y->width - 1] = sbox_layer_bitsliced_uint64(CONST_FIRST_ROW(x)[x->width - 1], mask);
-}
-
-#ifdef WITH_CUSTOM_INSTANCES
-static void sbox_layer_bitsliced(mzd_local_t* out, mzd_local_t const* in, mask_t const* mask) {
-  mzd_local_t* buffer[6] = {NULL};
-  oqs_sig_picnic_mzd_local_init_multiple_ex(buffer, 6, 1, in->ncols, false);
-
-  // a
-  mzd_local_t* x0m = oqs_sig_picnic_mzd_and(buffer[0], mask->x0, in);
-  // b
-  mzd_local_t* x1m = oqs_sig_picnic_mzd_and(buffer[1], mask->x1, in);
-  // c
-  mzd_local_t* x2m = oqs_sig_picnic_mzd_and(buffer[2], mask->x2, in);
-
-  oqs_sig_picnic_mzd_shift_left(x0m, x0m, 2);
-  oqs_sig_picnic_mzd_shift_left(x1m, x1m, 1);
-
-  // b & c
-  mzd_local_t* t0 = oqs_sig_picnic_mzd_and(buffer[3], x1m, x2m);
-  // c & a
-  mzd_local_t* t1 = oqs_sig_picnic_mzd_and(buffer[4], x0m, x2m);
-  // a & b
-  mzd_local_t* t2 = oqs_sig_picnic_mzd_and(buffer[5], x0m, x1m);
-
-  // (b & c) ^ a
-  oqs_sig_picnic_mzd_xor(t0, t0, x0m);
-
-  // (c & a) ^ a ^ b
-  oqs_sig_picnic_mzd_xor(t1, t1, x0m);
-  oqs_sig_picnic_mzd_xor(t1, t1, x1m);
-
-  // (a & b) ^ a ^ b ^c
-  oqs_sig_picnic_mzd_xor(t2, t2, x0m);
-  oqs_sig_picnic_mzd_xor(t2, t2, x1m);
-  oqs_sig_picnic_mzd_xor(t2, t2, x2m);
-
-  oqs_sig_picnic_mzd_shift_right(t0, t0, 2);
-  oqs_sig_picnic_mzd_shift_right(t1, t1, 1);
-
-  oqs_sig_picnic_mzd_and(out, in, mask->mask);
-  oqs_sig_picnic_mzd_xor(out, out, t2);
-  oqs_sig_picnic_mzd_xor(out, out, t0);
-  oqs_sig_picnic_mzd_xor(out, out, t1);
-
-  oqs_sig_picnic_mzd_local_free_multiple(buffer);
-}
-
-#ifdef WITH_OPT
-#ifdef WITH_SSE2
-__attribute__((target("sse2"))) static void sbox_layer_sse(mzd_local_t* out, mzd_local_t const* in,
-                                                           mask_t const* mask) {
-  __m128i const* ip = (__m128i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(in), alignof(__m128i));
-  __m128i const min = *ip;
-
-  __m128i const* x0p = (__m128i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->x0), alignof(__m128i));
-  __m128i const* x1p = (__m128i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->x1), alignof(__m128i));
-  __m128i const* x2p = (__m128i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->x2), alignof(__m128i));
-
-  __m128i x0m = _mm_and_si128(min, *x0p);
-  __m128i x1m = _mm_and_si128(min, *x1p);
-  __m128i x2m = _mm_and_si128(min, *x2p);
-
-  x0m = mm128_shift_left(x0m, 2);
-  x1m = mm128_shift_left(x1m, 1);
-
-  __m128i t0 = _mm_and_si128(x1m, x2m);
-  __m128i t1 = _mm_and_si128(x0m, x2m);
-  __m128i t2 = _mm_and_si128(x0m, x1m);
-
-  t0 = _mm_xor_si128(t0, x0m);
-
-  x0m = _mm_xor_si128(x0m, x1m);
-  t1  = _mm_xor_si128(t1, x0m);
-
-  t2 = _mm_xor_si128(t2, x0m);
-  t2 = _mm_xor_si128(t2, x2m);
-
-  t0 = mm128_shift_right(t0, 2);
-  t1 = mm128_shift_right(t1, 1);
-
-  __m128i const* xmp =
-      (__m128i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->mask), alignof(__m128i));
-  __m128i* op = (__m128i*)ASSUME_ALIGNED(FIRST_ROW(out), alignof(__m128i));
-
-  __m128i mout = _mm_and_si128(min, *xmp);
-
-  mout = _mm_xor_si128(mout, t2);
-  mout = _mm_xor_si128(mout, t1);
-  *op  = _mm_xor_si128(mout, t0);
-}
-#endif
-
-#ifdef WITH_AVX2
 /**
- * AVX2 version of LowMC. It assumes that mzd_local_t's row[0] is always 32 byte
- * aligned.
+ * S-box for m = 10
  */
-__attribute__((target("avx2"))) static void sbox_layer_avx(mzd_local_t* out, mzd_local_t const* in,
-                                                           mask_t const* mask) {
-  __m256i const* ip = (__m256i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(in), alignof(__m256i));
-  __m256i const min = *ip;
+static void sbox_layer_10_uint64(uint64_t* d) {
+  *d = sbox_layer_10_bitsliced_uint64(*d);
+}
 
-  __m256i const* x0p = (__m256i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->x0), alignof(__m256i));
-  __m256i const* x1p = (__m256i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->x1), alignof(__m256i));
-  __m256i const* x2p = (__m256i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->x2), alignof(__m256i));
+#if defined(WITH_LOWMC_M1)
+static uint64_t sbox_layer_1_bitsliced_uint64(uint64_t in) {
+  // a, b, c
+  const uint64_t x0s = (in & MASK_X0I_1) << 2;
+  const uint64_t x1s = (in & MASK_X1I_1) << 1;
+  const uint64_t x2m = in & MASK_X2I_1;
 
-  __m256i x0m = _mm256_and_si256(min, *x0p);
-  __m256i x1m = _mm256_and_si256(min, *x1p);
-  __m256i x2m = _mm256_and_si256(min, *x2p);
+  // (b & c) ^ a
+  const uint64_t t0 = (x1s & x2m) ^ x0s;
+  // (c & a) ^ a ^ b
+  const uint64_t t1 = (x0s & x2m) ^ x0s ^ x1s;
+  // (a & b) ^ a ^ b ^c
+  const uint64_t t2 = (x0s & x1s) ^ x0s ^ x1s ^ x2m;
 
-  x0m = mm256_shift_left(x0m, 2);
-  x1m = mm256_shift_left(x1m, 1);
+  return (in & MASK_MASK_1) ^ (t0 >> 2) ^ (t1 >> 1) ^ t2;
+}
 
-  __m256i t0 = _mm256_and_si256(x1m, x2m);
-  __m256i t1 = _mm256_and_si256(x0m, x2m);
-  __m256i t2 = _mm256_and_si256(x0m, x1m);
-
-  t0 = _mm256_xor_si256(t0, x0m);
-
-  x0m = _mm256_xor_si256(x0m, x1m);
-  t1  = _mm256_xor_si256(t1, x0m);
-
-  t2 = _mm256_xor_si256(t2, x0m);
-  t2 = _mm256_xor_si256(t2, x2m);
-
-  t0 = mm256_shift_right(t0, 2);
-  t1 = mm256_shift_right(t1, 1);
-
-  __m256i const* xmp =
-      (__m256i const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->mask), alignof(__m256i));
-  __m256i* op = (__m256i*)ASSUME_ALIGNED(FIRST_ROW(out), alignof(__m256i));
-
-  __m256i mout = _mm256_and_si256(min, *xmp);
-
-  mout = _mm256_xor_si256(mout, t2);
-  mout = _mm256_xor_si256(mout, t1);
-  *op  = _mm256_xor_si256(mout, t0);
+/**
+ * S-box for m = 1
+ */
+static void sbox_layer_1_uint64(uint64_t* d) {
+  *d = sbox_layer_1_bitsliced_uint64(*d);
 }
 #endif
 
-#ifdef WITH_NEON
-static void sbox_layer_neon(mzd_local_t* out, mzd_local_t const* in, mask_t const* mask) {
-  uint32x4_t const* ip =
-      (uint32x4_t const*)ASSUME_ALIGNED(CONST_FIRST_ROW(in), alignof(uint32x4_t));
-  uint32x4_t const min = *ip;
-
-  uint32x4_t const* x0p =
-      (uint32x4_t const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->x0), alignof(uint32x4_t));
-  uint32x4_t const* x1p =
-      (uint32x4_t const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->x1), alignof(uint32x4_t));
-  uint32x4_t const* x2p =
-      (uint32x4_t const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->x2), alignof(uint32x4_t));
-
-  uint32x4_t x0m = vandq_u32(min, *x0p);
-  uint32x4_t x1m = vandq_u32(min, *x1p);
-  uint32x4_t x2m = vandq_u32(min, *x2p);
-
-  x0m = mm128_shift_left(x0m, 2);
-  x1m = mm128_shift_left(x1m, 1);
-
-  uint32x4_t t0 = vandq_u32(x1m, x2m);
-  uint32x4_t t1 = vandq_u32(x0m, x2m);
-  uint32x4_t t2 = vandq_u32(x0m, x1m);
-
-  t0 = veorq_u32(t0, x0m);
-
-  x0m = veorq_u32(x0m, x1m);
-  t1  = veorq_u32(t1, x0m);
-
-  t2 = veorq_u32(t2, x0m);
-  t2 = veorq_u32(t2, x2m);
-
-  t0 = mm128_shift_right(t0, 2);
-  t1 = mm128_shift_right(t1, 1);
-
-  uint32x4_t const* xmp =
-      (uint32x4_t const*)ASSUME_ALIGNED(CONST_FIRST_ROW(mask->mask), alignof(uint32x4_t));
-  uint32x4_t* op = (uint32x4_t*)ASSUME_ALIGNED(FIRST_ROW(out), alignof(uint32x4_t));
-
-  uint32x4_t mout = vandq_u32(min, *xmp);
-
-  mout = veorq_u32(mout, t2);
-  mout = veorq_u32(mout, t1);
-  *op  = veorq_u32(mout, t0);
-}
+#if defined(WITH_LOWMC_128_128_20)
+#include "lowmc_128_128_20.h"
 #endif
+#if defined(WITH_LOWMC_192_192_30)
+#include "lowmc_192_192_30.h"
 #endif
+#if defined(WITH_LOWMC_256_256_38)
+#include "lowmc_256_256_38.h"
+#endif
+#if defined(WITH_LOWMC_128_128_182)
+#include "lowmc_128_128_182.h"
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+#include "lowmc_192_192_284.h"
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+#include "lowmc_256_256_363.h"
 #endif
 
-typedef void (*sbox_layer_impl)(mzd_local_t*, mzd_local_t const*, mask_t const*);
+// uint64 based implementation
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_uint64_128, mzd_addmul_vl_uint64_128)
+#define MUL SELECT_V_VL(mzd_mul_v_uint64_128, mzd_mul_vl_uint64_128)
+#define XOR mzd_xor_uint64_128
+#define SHUFFLE mzd_shuffle_128
 
-static sbox_layer_impl get_sbox_layer(const lowmc_t* lowmc) {
-  if (lowmc->m <= 20) {
-    return sbox_layer_uint64;
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_uint64_128_576, mzd_mul_vl_uint64_128_576)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_uint64_128_640, mzd_mul_vl_uint64_128_640)
+#define MUL_R_1  mzd_addmul_v_uint64_3_128
+#define MUL_R_10 mzd_addmul_v_uint64_30_128
+#define MUL_Z_1  mzd_mul_v_parity_uint64_128_3
+#define MUL_Z_10 mzd_mul_v_parity_uint64_128_30
+#define XOR_MC_1 mzd_xor_uint64_576
+#define XOR_MC_10 mzd_xor_uint64_640
+
+#define LOWMC_N LOWMC_L1_N
+#define LOWMC_R_10 LOWMC_L1_R
+#define LOWMC_R_1 LOWMC_L1_1_R
+#if defined(WITH_LOWMC_128_128_20)
+#define LOWMC_INSTANCE_10 lowmc_128_128_20
+#endif
+#if defined(WITH_LOWMC_128_128_182)
+#define LOWMC_INSTANCE_1 lowmc_128_128_182
+#endif
+
+#define LOWMC lowmc_uint64_128
+#include "lowmc.c.i"
+
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_uint64_192, mzd_addmul_vl_uint64_192)
+#define MUL SELECT_V_VL(mzd_mul_v_uint64_192, mzd_mul_vl_uint64_192)
+#define SHUFFLE mzd_shuffle_192
+#define XOR mzd_xor_uint64_192
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_uint64_192_896, mzd_mul_vl_uint64_192_896)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_uint64_192_960, mzd_mul_vl_uint64_192_960)
+#define MUL_R_1  mzd_addmul_v_uint64_3_192
+#define MUL_R_10 mzd_addmul_v_uint64_30_192
+#define MUL_Z_1 mzd_mul_v_parity_uint64_192_3
+#define MUL_Z_10 mzd_mul_v_parity_uint64_192_30
+#define XOR_MC_1 mzd_xor_uint64_896
+#define XOR_MC_10 mzd_xor_uint64_960
+
+#undef LOWMC
+#undef LOWMC_N
+#undef LOWMC_R_10
+#undef LOWMC_R_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_INSTANCE_1
+
+#define LOWMC_N LOWMC_L3_N
+#define LOWMC_R_10 LOWMC_L3_R
+#define LOWMC_R_1 LOWMC_L3_1_R
+#if defined(WITH_LOWMC_192_192_30)
+#define LOWMC_INSTANCE_10 lowmc_192_192_30
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+#define LOWMC_INSTANCE_1 lowmc_192_192_284
+#endif
+#define LOWMC lowmc_uint64_192
+#include "lowmc.c.i"
+
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_uint64_256, mzd_addmul_vl_uint64_256)
+#define MUL SELECT_V_VL(mzd_mul_v_uint64_256, mzd_mul_vl_uint64_256)
+#define SHUFFLE mzd_shuffle_256
+#define XOR mzd_xor_uint64_256
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_uint64_256_1152, mzd_mul_vl_uint64_256_1152)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_uint64_256_1216, mzd_mul_vl_uint64_256_1216)
+#define MUL_R_1  mzd_addmul_v_uint64_3_256
+#define MUL_R_10 mzd_addmul_v_uint64_30_256
+#define MUL_Z_1  mzd_mul_v_parity_uint64_256_3
+#define MUL_Z_10 mzd_mul_v_parity_uint64_256_30
+#define XOR_MC_1 mzd_xor_uint64_1152
+#define XOR_MC_10 mzd_xor_uint64_1216
+
+#undef LOWMC
+#undef LOWMC_N
+#undef LOWMC_R_10
+#undef LOWMC_R_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_INSTANCE_1
+
+#define LOWMC_N LOWMC_L5_N
+#define LOWMC_R_10 LOWMC_L5_R
+#define LOWMC_R_1 LOWMC_L5_1_R
+#if defined(WITH_LOWMC_256_256_38)
+#define LOWMC_INSTANCE_10 lowmc_256_256_38
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+#define LOWMC_INSTANCE_1 lowmc_256_256_363
+#endif
+#define LOWMC lowmc_uint64_256
+#include "lowmc.c.i"
+
+#undef LOWMC
+#undef LOWMC_N
+#undef LOWMC_R_10
+#undef LOWMC_R_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_INSTANCE_1
+
+#if defined(WITH_OPT)
+#if defined(WITH_SSE2) || defined(WITH_NEON)
+#if defined(WITH_SSE2)
+#define FN_ATTR ATTR_TARGET_SSE2
+#endif
+
+// L1 using SSE2/NEON
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_128, mzd_addmul_vl_s128_128)
+#define MUL SELECT_V_VL(mzd_mul_v_s128_128, mzd_mul_vl_s128_128)
+#define SHUFFLE mzd_shuffle_128
+#define XOR mzd_xor_s128_128
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_128_128_20)
+#define LOWMC_INSTANCE_10 lowmc_128_128_20
+#endif
+#if defined(WITH_LOWMC_128_128_182)
+#define LOWMC_INSTANCE_1 lowmc_128_128_182
+#endif
+#define LOWMC_N LOWMC_L1_N
+#define LOWMC_R_10 LOWMC_L1_R
+#define LOWMC_R_1 LOWMC_L1_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_128_640, mzd_mul_vl_s128_128_640)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_128_640, mzd_mul_vl_s128_128_640)
+#define MUL_R_1  mzd_addmul_v_s128_3_128
+#define MUL_R_10 mzd_addmul_v_s128_30_128
+#define MUL_Z_1  mzd_mul_v_parity_uint64_128_3
+#define MUL_Z_10 mzd_mul_v_parity_uint64_128_30
+#define XOR_MC_1 mzd_xor_s128_640
+#define XOR_MC_10 mzd_xor_s128_640
+
+#undef LOWMC
+#define LOWMC lowmc_s128_128
+#include "lowmc.c.i"
+
+// L3 using SSE2/NEON
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_192, mzd_addmul_vl_s128_192)
+#define MUL SELECT_V_VL(mzd_mul_v_s128_192, mzd_mul_vl_s128_192)
+#define SHUFFLE mzd_shuffle_192
+#define XOR mzd_xor_s128_256
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_192_192_30)
+#define LOWMC_INSTANCE_10 lowmc_192_192_30
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+#define LOWMC_INSTANCE_1 lowmc_192_192_284
+#endif
+#define LOWMC_N LOWMC_L3_N
+#define LOWMC_R_10 LOWMC_L3_R
+#define LOWMC_R_1 LOWMC_L3_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_192_896, mzd_mul_vl_s128_192_896)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_192_1024, mzd_mul_vl_s128_192_1024)
+#define MUL_R_1  mzd_addmul_v_s128_3_192
+#define MUL_R_10 mzd_addmul_v_s128_30_192
+#define MUL_Z_1  mzd_mul_v_parity_uint64_192_3
+#define MUL_Z_10 mzd_mul_v_parity_uint64_192_30
+#define XOR_MC_1 mzd_xor_s128_896
+#define XOR_MC_10 mzd_xor_s128_1024
+
+#undef LOWMC
+#define LOWMC lowmc_s128_192
+#include "lowmc.c.i"
+
+// L5 using SSE2/NEON
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_256, mzd_addmul_vl_s128_256)
+#define MUL SELECT_V_VL(mzd_mul_v_s128_256, mzd_mul_vl_s128_256)
+#define SHUFFLE mzd_shuffle_256
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_256_256_38)
+#define LOWMC_INSTANCE_10 lowmc_256_256_38
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+#define LOWMC_INSTANCE_1 lowmc_256_256_363
+#endif
+#define LOWMC_N LOWMC_L5_N
+#define LOWMC_R_10 LOWMC_L5_R
+#define LOWMC_R_1 LOWMC_L5_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_256_1152, mzd_mul_vl_s128_256_1152)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_256_1280, mzd_mul_vl_s128_256_1280)
+#define MUL_R_1  mzd_addmul_v_s128_3_256
+#define MUL_R_10 mzd_addmul_v_s128_30_256
+#define MUL_Z_1  mzd_mul_v_parity_uint64_256_3
+#define MUL_Z_10 mzd_mul_v_parity_uint64_256_30
+#define XOR_MC_1 mzd_xor_s128_1152
+#define XOR_MC_10 mzd_xor_s128_1280
+
+#undef LOWMC
+#define LOWMC lowmc_s128_256
+#include "lowmc.c.i"
+
+#undef FN_ATTR
+#endif
+
+#if defined(WITH_SSE2) && defined(WITH_POPCNT)
+#define FN_ATTR ATTR_TARGET("sse2,popcnt")
+
+// L1 using SSE2 and POPCNT
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_128, mzd_addmul_vl_s128_128)
+#define MUL SELECT_V_VL(mzd_mul_v_s128_128, mzd_mul_vl_s128_128)
+#define SHUFFLE mzd_shuffle_128
+#define XOR mzd_xor_s128_128
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_128_128_20)
+#define LOWMC_INSTANCE_10 lowmc_128_128_20
+#endif
+#if defined(WITH_LOWMC_128_128_182)
+#define LOWMC_INSTANCE_1 lowmc_128_128_182
+#endif
+#define LOWMC_N LOWMC_L1_N
+#define LOWMC_R_10 LOWMC_L1_R
+#define LOWMC_R_1 LOWMC_L1_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_128_640, mzd_mul_vl_s128_128_640)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_128_640, mzd_mul_vl_s128_128_640)
+#define MUL_R_1  mzd_addmul_v_s128_3_128
+#define MUL_R_10 mzd_addmul_v_s128_30_128
+#define MUL_Z_1  mzd_mul_v_parity_popcnt_128_3
+#define MUL_Z_10 mzd_mul_v_parity_popcnt_128_30
+#define XOR_MC_1 mzd_xor_s128_640
+#define XOR_MC_10 mzd_xor_s128_640
+
+#undef LOWMC
+#define LOWMC lowmc_s128_popcnt_128
+#include "lowmc.c.i"
+
+// L3 using SSE2 and POPCNT
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_192, mzd_addmul_vl_s128_192)
+#define MUL SELECT_V_VL(mzd_mul_v_s128_192, mzd_mul_vl_s128_192)
+#define SHUFFLE mzd_shuffle_192
+#define XOR mzd_xor_s128_256
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_192_192_30)
+#define LOWMC_INSTANCE_10 lowmc_192_192_30
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+#define LOWMC_INSTANCE_1 lowmc_192_192_284
+#endif
+#define LOWMC_N LOWMC_L3_N
+#define LOWMC_R_10 LOWMC_L3_R
+#define LOWMC_R_1 LOWMC_L3_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_192_896, mzd_mul_vl_s128_192_896)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_192_1024, mzd_mul_vl_s128_192_1024)
+#define MUL_R_1  mzd_addmul_v_s128_3_192
+#define MUL_R_10 mzd_addmul_v_s128_30_192
+#define MUL_Z_1  mzd_mul_v_parity_popcnt_192_3
+#define MUL_Z_10 mzd_mul_v_parity_popcnt_192_30
+#define XOR_MC_1 mzd_xor_s128_896
+#define XOR_MC_10 mzd_xor_s128_1024
+
+#undef LOWMC
+#define LOWMC lowmc_s128_popcnt_192
+#include "lowmc.c.i"
+
+// L5 using SSE2 and POPCNT
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_256, mzd_addmul_vl_s128_256)
+#define MUL SELECT_V_VL(mzd_mul_v_s128_256, mzd_mul_vl_s128_256)
+#define SHUFFLE mzd_shuffle_256
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_256_256_38)
+#define LOWMC_INSTANCE_10 lowmc_256_256_38
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+#define LOWMC_INSTANCE_1 lowmc_256_256_363
+#endif
+#define LOWMC_N LOWMC_L5_N
+#define LOWMC_R_10 LOWMC_L5_R
+#define LOWMC_R_1 LOWMC_L5_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_256_1152, mzd_mul_vl_s128_256_1152)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_256_1280, mzd_mul_vl_s128_256_1280)
+#define MUL_R_1  mzd_addmul_v_s128_3_256
+#define MUL_R_10 mzd_addmul_v_s128_30_256
+#define MUL_Z_1  mzd_mul_v_parity_popcnt_256_3
+#define MUL_Z_10 mzd_mul_v_parity_popcnt_256_30
+#define XOR_MC_1 mzd_xor_s128_1152
+#define XOR_MC_10 mzd_xor_s128_1280
+
+#undef LOWMC
+#define LOWMC lowmc_s128_popcnt_256
+#include "lowmc.c.i"
+
+#undef FN_ATTR
+#endif
+
+#if defined(WITH_AVX2)
+#define FN_ATTR ATTR_TARGET_AVX2
+
+// L1 using AVX2
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_128, mzd_addmul_vl_s256_128)
+#define MUL SELECT_V_VL(mzd_mul_v_s256_128, mzd_mul_vl_s256_128)
+#define SHUFFLE mzd_shuffle_pext_128
+#define XOR mzd_xor_s256_128
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_128_128_20)
+#define LOWMC_INSTANCE_10 lowmc_128_128_20
+#endif
+#if defined(WITH_LOWMC_128_128_182)
+#define LOWMC_INSTANCE_1 lowmc_128_128_182
+#endif
+#define LOWMC_N LOWMC_L1_N
+#define LOWMC_R_10 LOWMC_L1_R
+#define LOWMC_R_1 LOWMC_L1_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_128_768, mzd_mul_vl_s256_128_768)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_128_768, mzd_mul_vl_s256_128_768)
+#define MUL_R_1  mzd_addmul_v_s256_3_128
+#define MUL_R_10 mzd_addmul_v_s256_30_128
+#define MUL_Z_1  mzd_mul_v_parity_uint64_128_3
+#define MUL_Z_10 mzd_mul_v_parity_uint64_128_30
+#define XOR_MC_1 mzd_xor_s256_768
+#define XOR_MC_10 mzd_xor_s256_768
+
+#undef LOWMC
+#define LOWMC lowmc_s256_128
+#include "lowmc.c.i"
+
+// L3 using AVX2
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_192, mzd_addmul_vl_s256_192)
+#define MUL SELECT_V_VL(mzd_mul_v_s256_192, mzd_mul_vl_s256_192)
+#define SHUFFLE mzd_shuffle_pext_192
+#define XOR mzd_xor_s256_256
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_192_192_30)
+#define LOWMC_INSTANCE_10 lowmc_192_192_30
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+#define LOWMC_INSTANCE_1 lowmc_192_192_284
+#endif
+#define LOWMC_N LOWMC_L3_N
+#define LOWMC_R_10 LOWMC_L3_R
+#define LOWMC_R_1 LOWMC_L3_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_192_1024, mzd_mul_vl_s256_192_1024)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_192_1024, mzd_mul_vl_s256_192_1024)
+#define MUL_R_1  mzd_addmul_v_s256_3_192
+#define MUL_R_10 mzd_addmul_v_s256_30_192
+#define MUL_Z_1  mzd_mul_v_parity_uint64_192_3
+#define MUL_Z_10 mzd_mul_v_parity_uint64_192_30
+#define XOR_MC_1 mzd_xor_s256_1024
+#define XOR_MC_10 mzd_xor_s256_1024
+
+#undef LOWMC
+#define LOWMC lowmc_s256_192
+#include "lowmc.c.i"
+
+// L5 using AVX2
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_256, mzd_addmul_vl_s256_256)
+#define MUL SELECT_V_VL(mzd_mul_v_s256_256, mzd_mul_vl_s256_256)
+#define SHUFFLE mzd_shuffle_pext_256
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_256_256_38)
+#define LOWMC_INSTANCE_10 lowmc_256_256_38
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+#define LOWMC_INSTANCE_1 lowmc_256_256_363
+#endif
+#define LOWMC_N LOWMC_L5_N
+#define LOWMC_R_10 LOWMC_L5_R
+#define LOWMC_R_1 LOWMC_L5_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_256_1280, mzd_mul_vl_s256_256_1280)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_256_1280, mzd_mul_vl_s256_256_1280)
+#define MUL_R_1  mzd_addmul_v_s256_3_256
+#define MUL_R_10 mzd_addmul_v_s256_30_256
+#define MUL_Z_1  mzd_mul_v_parity_uint64_256_3
+#define MUL_Z_10 mzd_mul_v_parity_uint64_256_30
+#define XOR_MC_1 mzd_xor_s256_1280
+#define XOR_MC_10 mzd_xor_s256_1280
+
+#undef LOWMC
+#define LOWMC lowmc_s256_256
+#include "lowmc.c.i"
+
+#undef FN_ATTR
+
+#if defined(WITH_POPCNT)
+#define FN_ATTR ATTR_TARGET("avx2,bmi2,popcnt")
+
+// L1 using AVX2
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_128, mzd_addmul_vl_s256_128)
+#define MUL SELECT_V_VL(mzd_mul_v_s256_128, mzd_mul_vl_s256_128)
+#define SHUFFLE mzd_shuffle_pext_128
+#define XOR mzd_xor_s256_128
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_128_128_20)
+#define LOWMC_INSTANCE_10 lowmc_128_128_20
+#endif
+#if defined(WITH_LOWMC_128_128_182)
+#define LOWMC_INSTANCE_1 lowmc_128_128_182
+#endif
+#define LOWMC_N LOWMC_L1_N
+#define LOWMC_R_10 LOWMC_L1_R
+#define LOWMC_R_1 LOWMC_L1_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_128_768, mzd_mul_vl_s256_128_768)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_128_768, mzd_mul_vl_s256_128_768)
+#define MUL_R_1  mzd_addmul_v_s256_3_128
+#define MUL_R_10 mzd_addmul_v_s256_30_128
+#define MUL_Z_1  mzd_mul_v_parity_popcnt_128_3
+#define MUL_Z_10 mzd_mul_v_parity_popcnt_128_30
+#define XOR_MC_1 mzd_xor_s256_768
+#define XOR_MC_10 mzd_xor_s256_768
+
+#undef LOWMC
+#define LOWMC lowmc_s256_popcnt_128
+#include "lowmc.c.i"
+
+// L3 using AVX2
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#undef XOR
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_192, mzd_addmul_vl_s256_192)
+#define MUL SELECT_V_VL(mzd_mul_v_s256_192, mzd_mul_vl_s256_192)
+#define SHUFFLE mzd_shuffle_pext_192
+#define XOR mzd_xor_s256_256
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_192_192_30)
+#define LOWMC_INSTANCE_10 lowmc_192_192_30
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+#define LOWMC_INSTANCE_1 lowmc_192_192_284
+#endif
+#define LOWMC_N LOWMC_L3_N
+#define LOWMC_R_10 LOWMC_L3_R
+#define LOWMC_R_1 LOWMC_L3_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_192_1024, mzd_mul_vl_s256_192_1024)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_192_1024, mzd_mul_vl_s256_192_1024)
+#define MUL_R_1  mzd_addmul_v_s256_3_192
+#define MUL_R_10 mzd_addmul_v_s256_30_192
+#define MUL_Z_1  mzd_mul_v_parity_popcnt_192_3
+#define MUL_Z_10 mzd_mul_v_parity_popcnt_192_30
+#define XOR_MC_1 mzd_xor_s256_1024
+#define XOR_MC_10 mzd_xor_s256_1024
+
+#undef LOWMC
+#define LOWMC lowmc_s256_popcnt_192
+#include "lowmc.c.i"
+
+// L5 using AVX2
+#undef ADDMUL
+#undef MUL
+#undef SHUFFLE
+#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_256, mzd_addmul_vl_s256_256)
+#define MUL SELECT_V_VL(mzd_mul_v_s256_256, mzd_mul_vl_s256_256)
+#define SHUFFLE mzd_shuffle_pext_256
+
+#undef LOWMC_INSTANCE_1
+#undef LOWMC_INSTANCE_10
+#undef LOWMC_N
+#undef LOWMC_R_1
+#undef LOWMC_R_10
+#if defined(WITH_LOWMC_256_256_38)
+#define LOWMC_INSTANCE_10 lowmc_256_256_38
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+#define LOWMC_INSTANCE_1 lowmc_256_256_363
+#endif
+#define LOWMC_N LOWMC_L5_N
+#define LOWMC_R_10 LOWMC_L5_R
+#define LOWMC_R_1 LOWMC_L5_1_R
+
+#undef MUL_MC_1
+#undef MUL_MC_10
+#undef MUL_R_1
+#undef MUL_R_10
+#undef MUL_Z_1
+#undef MUL_Z_10
+#undef XOR_MC_1
+#undef XOR_MC_10
+#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_256_1280, mzd_mul_vl_s256_256_1280)
+#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_256_1280, mzd_mul_vl_s256_256_1280)
+#define MUL_R_1  mzd_addmul_v_s256_3_256
+#define MUL_R_10 mzd_addmul_v_s256_30_256
+#define MUL_Z_1  mzd_mul_v_parity_popcnt_256_3
+#define MUL_Z_10 mzd_mul_v_parity_popcnt_256_30
+#define XOR_MC_1 mzd_xor_s256_1280
+#define XOR_MC_10 mzd_xor_s256_1280
+
+#undef LOWMC
+#define LOWMC lowmc_s256_popcnt_256
+#include "lowmc.c.i"
+
+#undef FN_ATTR
+#endif
+
+#undef SHUFFLE
+#define SHUFFLE mzd_shuffle
+#endif
+#endif
+
+lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc) {
+  ASSUME(lowmc->m == 10 || lowmc->m == 1);
+  ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
+
+#if defined(WITH_OPT)
+#if defined(WITH_AVX2)
+  if (CPU_SUPPORTS_AVX2) {
+    if (lowmc->m == 10) {
+#if defined(WITH_POPCNT)
+      if (CPU_SUPPORTS_POPCNT) {
+        switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+        case 128:
+          return lowmc_s256_popcnt_128_10;
+#endif
+#if defined(WITH_LOWMC_192_192_30)
+        case 192:
+          return lowmc_s256_popcnt_192_10;
+#endif
+#if defined(WITH_LOWMC_256_256_38)
+        case 256:
+          return lowmc_s256_popcnt_256_10;
+#endif
+        }
+      }
+#endif
+      switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+      case 128:
+        return lowmc_s256_128_10;
+#endif
+#if defined(WITH_LOWMC_192_192_30)
+      case 192:
+        return lowmc_s256_192_10;
+#endif
+#if defined(WITH_LOWMC_256_256_38)
+      case 256:
+        return lowmc_s256_256_10;
+#endif
+      }
+    }
+#if defined(WITH_LOWMC_M1)
+    if (lowmc->m == 1) {
+#if defined(WITH_POPCNT)
+      if (CPU_SUPPORTS_POPCNT) {
+        switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+        case 128:
+          return lowmc_s256_popcnt_128_1;
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+        case 192:
+          return lowmc_s256_popcnt_192_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+        case 256:
+          return lowmc_s256_popcnt_256_1;
+#endif
+        }
+      }
+#endif
+      switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+      case 128:
+        return lowmc_s256_128_1;
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+      case 192:
+        return lowmc_s256_192_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+      case 256:
+        return lowmc_s256_256_1;
+#endif
+      }
+    }
+#endif
   }
-#ifdef WITH_CUSTOM_INSTANCES
-#ifdef WITH_OPT
-#ifdef WITH_SSE2
-  if (CPU_SUPPORTS_SSE2 && lowmc->n == 128) {
-    return sbox_layer_sse;
-  }
 #endif
-#ifdef WITH_AVX2
-  if (CPU_SUPPORTS_AVX2 && lowmc->n == 256) {
-    return sbox_layer_avx;
-  }
+#if defined(WITH_SSE2) || defined(WITH_NEON)
+  if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
+    if (lowmc->m == 10) {
+#if defined(WITH_POPCNT)
+      if (CPU_SUPPORTS_POPCNT) {
+        switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+        case 128:
+          return lowmc_s128_popcnt_128_10;
 #endif
-#ifdef WITH_NEON
-  if (CPU_SUPPORTS_NEON && lowmc->n == 128) {
-    return sbox_layer_neon;
-  }
+#if defined(WITH_LOWMC_192_192_30)
+        case 192:
+          return lowmc_s128_popcnt_192_10;
 #endif
+#if defined(WITH_LOWMC_256_256_38)
+        case 256:
+          return lowmc_s128_popcnt_256_10;
 #endif
-  return sbox_layer_bitsliced;
-#else
-  return NULL;
+        }
+      }
 #endif
-}
-
-#if defined(REDUCED_LINEAR_LAYER)
-static mzd_local_t* lowmc_reduced_linear_layer(lowmc_t const* lowmc, lowmc_key_t const* lowmc_key,
-                                               mzd_local_t const* p, sbox_layer_impl sbox_layer) {
-  mzd_local_t* x       = oqs_sig_picnic_mzd_local_init_ex(1, lowmc->n, false);
-  mzd_local_t* y       = oqs_sig_picnic_mzd_local_init_ex(1, lowmc->n, false);
-  mzd_local_t* nl_part = oqs_sig_picnic_mzd_local_init_ex(1, lowmc->r * 32, false);
-
-  oqs_sig_picnic_mzd_local_copy(x, p);
-#if defined(MUL_M4RI)
-  oqs_sig_picnic_mzd_addmul_vl(x, lowmc_key, lowmc->k0_lookup);
-  oqs_sig_picnic_mzd_mul_vl(nl_part, lowmc_key, lowmc->precomputed_non_linear_part_lookup);
-#else
-  oqs_sig_picnic_mzd_addmul_v(x, lowmc_key, lowmc->k0_matrix);
-  oqs_sig_picnic_mzd_mul_v(nl_part, lowmc_key, lowmc->precomputed_non_linear_part_matrix);
+      switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+      case 128:
+        return lowmc_s128_128_10;
 #endif
-
-  word mask                  = WORD_C(0xFFFFFFFF);
-  lowmc_round_t const* round = lowmc->rounds;
-  for (unsigned i = 0; i < lowmc->r; ++i, ++round) {
-    sbox_layer(x, x, &lowmc->mask);
-
-    const unsigned int shift = ((mask & WORD_C(0xFFFFFFFF)) ? 34 : 2);
-    FIRST_ROW(x)[x->width - 1] ^= (CONST_FIRST_ROW(nl_part)[i >> 1] & mask) << shift;
-    mask = ~mask;
-
-#if defined(MUL_M4RI)
-    oqs_sig_picnic_mzd_mul_vl(y, x, round->l_lookup);
-#else
-    oqs_sig_picnic_mzd_mul_v(y, x, round->l_matrix);
+#if defined(WITH_LOWMC_192_192_30)
+      case 192:
+        return lowmc_s128_192_10;
 #endif
-    oqs_sig_picnic_mzd_xor(x, y, round->constant);
-  }
-
-  oqs_sig_picnic_mzd_local_free(y);
-  oqs_sig_picnic_mzd_local_free(nl_part);
-  return x;
-}
-#else
-static mzd_local_t* lowmc_plain(lowmc_t const* lowmc, lowmc_key_t const* lowmc_key,
-                                mzd_local_t const* p, sbox_layer_impl sbox_layer) {
-  mzd_local_t* x = oqs_sig_picnic_mzd_local_init_ex(1, lowmc->n, false);
-  mzd_local_t* y = oqs_sig_picnic_mzd_local_init_ex(1, lowmc->n, false);
-
-  oqs_sig_picnic_mzd_local_copy(x, p);
-#if defined(MUL_M4RI)
-  oqs_sig_picnic_mzd_addmul_vl(x, lowmc_key, lowmc->k0_lookup);
-#else
-  oqs_sig_picnic_mzd_addmul_v(x, lowmc_key, lowmc->k0_matrix);
+#if defined(WITH_LOWMC_256_256_38)
+      case 256:
+        return lowmc_s128_256_10;
 #endif
-
-  lowmc_round_t const* round = lowmc->rounds;
-  for (unsigned i = 0; i < lowmc->r; ++i, ++round) {
-    sbox_layer(x, x, &lowmc->mask);
-
-#if defined(MUL_M4RI)
-    oqs_sig_picnic_mzd_mul_vl(y, x, round->l_lookup);
-#else
-    oqs_sig_picnic_mzd_mul_v(y, x, round->l_matrix);
+      }
+    }
+#if defined(WITH_LOWMC_M1)
+    if (lowmc->m == 1) {
+#if defined(WITH_POPCNT)
+      if (CPU_SUPPORTS_POPCNT) {
+        switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+        case 128:
+          return lowmc_s128_popcnt_128_1;
 #endif
-    oqs_sig_picnic_mzd_xor(x, y, round->constant);
-#if defined(MUL_M4RI) && !defined(REDUCED_LINEAR_LAYER)
-    oqs_sig_picnic_mzd_addmul_vl(x, lowmc_key, round->k_lookup);
-#else
-    oqs_sig_picnic_mzd_addmul_v(x, lowmc_key, round->k_matrix);
+#if defined(WITH_LOWMC_192_192_284)
+        case 192:
+          return lowmc_s128_popcnt_192_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+        case 256:
+          return lowmc_s128_popcnt_256_1;
+#endif
+        }
+      }
+#endif
+      switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+      case 128:
+        return lowmc_s128_128_1;
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+      case 192:
+        return lowmc_s128_192_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+      case 256:
+        return lowmc_s128_256_1;
+#endif
+      }
+    }
 #endif
   }
-
-  oqs_sig_picnic_mzd_local_free(y);
-  return x;
-}
+#endif
 #endif
 
-mzd_local_t* oqs_sig_picnic_lowmc_call(lowmc_t const* lowmc, lowmc_key_t const* lowmc_key, mzd_local_t const* p) {
-  sbox_layer_impl sbox_layer = get_sbox_layer(lowmc);
-  if (!sbox_layer) {
-    return NULL;
-  }
-
-#if defined(REDUCED_LINEAR_LAYER)
   if (lowmc->m == 10) {
-    return lowmc_reduced_linear_layer(lowmc, lowmc_key, p, sbox_layer);
-  }
-  return NULL;
-#else
-  return lowmc_plain(lowmc, lowmc_key, p, sbox_layer);
+    switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+    case 128:
+      return lowmc_uint64_128_10;
 #endif
+#if defined(WITH_LOWMC_192_192_30)
+    case 192:
+      return lowmc_uint64_192_10;
+#endif
+#if defined(WITH_LOWMC_256_256_38)
+    case 256:
+      return lowmc_uint64_256_10;
+#endif
+    }
+  }
+
+#if defined(WITH_LOWMC_M1)
+  if (lowmc->m == 1) {
+    switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+    case 128:
+      return lowmc_uint64_128_1;
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+    case 192:
+      return lowmc_uint64_192_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+    case 256:
+      return lowmc_uint64_256_1;
+#endif
+    }
+  }
+#endif
+
+  return NULL;
+}
+
+lowmc_store_implementation_f lowmc_store_get_implementation(const lowmc_t* lowmc) {
+  ASSUME(lowmc->m == 10 || lowmc->m == 1);
+  ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
+
+#if defined(WITH_OPT)
+#if defined(WITH_AVX2)
+  if (CPU_SUPPORTS_AVX2) {
+    if (lowmc->m == 10) {
+#if defined(WITH_POPCNT)
+      if (CPU_SUPPORTS_POPCNT) {
+        switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+        case 128:
+          return lowmc_s256_popcnt_128_store_10;
+#endif
+#if defined(WITH_LOWMC_192_192_30)
+        case 192:
+          return lowmc_s256_popcnt_192_store_10;
+#endif
+#if defined(WITH_LOWMC_256_256_38)
+        case 256:
+          return lowmc_s256_popcnt_256_store_10;
+#endif
+        }
+      }
+#endif
+      switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+      case 128:
+        return lowmc_s256_128_store_10;
+#endif
+#if defined(WITH_LOWMC_192_192_30)
+      case 192:
+        return lowmc_s256_192_store_10;
+#endif
+#if defined(WITH_LOWMC_256_256_38)
+      case 256:
+        return lowmc_s256_256_store_10;
+#endif
+      }
+    }
+#if defined(WITH_LOWMC_M1)
+    if (lowmc->m == 1) {
+#if defined(WITH_POPCNT)
+      if (CPU_SUPPORTS_POPCNT) {
+        switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+        case 128:
+          return lowmc_s256_popcnt_128_store_1;
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+        case 192:
+          return lowmc_s256_popcnt_192_store_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+        case 256:
+          return lowmc_s256_popcnt_256_store_1;
+#endif
+        }
+      }
+#endif
+      switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+      case 128:
+        return lowmc_s256_128_store_1;
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+      case 192:
+        return lowmc_s256_192_store_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+      case 256:
+        return lowmc_s256_256_store_1;
+#endif
+      }
+    }
+#endif
+  }
+#endif
+#if defined(WITH_SSE2) || defined(WITH_NEON)
+  if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
+    if (lowmc->m == 10) {
+#if defined(WITH_POPCNT)
+      if (CPU_SUPPORTS_POPCNT) {
+        switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+        case 128:
+          return lowmc_s128_popcnt_128_store_10;
+#endif
+#if defined(WITH_LOWMC_192_192_30)
+        case 192:
+          return lowmc_s128_popcnt_192_store_10;
+#endif
+#if defined(WITH_LOWMC_256_256_38)
+        case 256:
+          return lowmc_s128_popcnt_256_store_10;
+#endif
+        }
+      }
+#endif
+      switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+      case 128:
+        return lowmc_s128_128_store_10;
+#endif
+#if defined(WITH_LOWMC_192_192_30)
+      case 192:
+        return lowmc_s128_192_store_10;
+#endif
+#if defined(WITH_LOWMC_256_256_38)
+      case 256:
+        return lowmc_s128_256_store_10;
+#endif
+      }
+    }
+#if defined(WITH_LOWMC_M1)
+    if (lowmc->m == 1) {
+#if defined(WITH_POPCNT)
+      if (CPU_SUPPORTS_POPCNT) {
+        switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+        case 128:
+          return lowmc_s128_popcnt_128_store_1;
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+        case 192:
+          return lowmc_s128_popcnt_192_store_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+        case 256:
+          return lowmc_s128_popcnt_256_store_1;
+#endif
+        }
+      }
+#endif
+      switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+      case 128:
+        return lowmc_s128_128_store_1;
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+      case 192:
+        return lowmc_s128_192_store_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+      case 256:
+        return lowmc_s128_256_store_1;
+#endif
+      }
+    }
+#endif
+  }
+#endif
+#endif
+
+  if (lowmc->m == 10) {
+    switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_20)
+    case 128:
+      return lowmc_uint64_128_store_10;
+#endif
+#if defined(WITH_LOWMC_192_192_30)
+    case 192:
+      return lowmc_uint64_192_store_10;
+#endif
+#if defined(WITH_LOWMC_256_256_38)
+    case 256:
+      return lowmc_uint64_256_store_10;
+#endif
+    }
+  }
+
+#if defined(WITH_LOWMC_M1)
+  if (lowmc->m == 1) {
+    switch (lowmc->n) {
+#if defined(WITH_LOWMC_128_128_182)
+    case 128:
+      return lowmc_uint64_128_store_1;
+#endif
+#if defined(WITH_LOWMC_192_192_284)
+    case 192:
+      return lowmc_uint64_192_store_1;
+#endif
+#if defined(WITH_LOWMC_256_256_363)
+    case 256:
+      return lowmc_uint64_256_store_1;
+#endif
+    }
+  }
+#endif
+
+  return NULL;
 }

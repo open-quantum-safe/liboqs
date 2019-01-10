@@ -12,13 +12,15 @@
 
 #include "lowmc_pars.h"
 
-/**
- * Implements LowMC encryption
- *
- * \param  lowmc the lowmc parameters
- * \param  p     the plaintext
- * \return       the ciphertext
- */
-mzd_local_t* oqs_sig_picnic_lowmc_call(lowmc_t const* lowmc, lowmc_key_t const* lowmc_key, mzd_local_t const* p);
+typedef struct {
+  mzd_local_t** state;
+} recorded_state_t;
+
+typedef mzd_local_t* (*lowmc_implementation_f)(lowmc_key_t const*, mzd_local_t const*);
+typedef void (*lowmc_store_implementation_f)(lowmc_key_t const*, mzd_local_t const*,
+                                             recorded_state_t* state);
+
+lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc);
+lowmc_store_implementation_f lowmc_store_get_implementation(const lowmc_t* lowmc);
 
 #endif
