@@ -66,7 +66,7 @@ void* aligned_alloc(size_t alignment, size_t size) {
 
 void aligned_free(void* ptr) {
 #if defined(HAVE_POSIX_MEMALIGN) || defined(HAVE_MEMALIGN)
-  free(ptr);
+  OQS_MEM_insecure_free(ptr);
 #elif defined(__MINGW32__) || defined(__MINGW64__)
   __mingw_aligned_free(ptr);
 #elif defined(_MSC_VER)

@@ -240,8 +240,8 @@ static sig_proof_t* proof_new_verify(const picnic_instance_t* pp, uint8_t** rsla
 }
 
 static void proof_free(sig_proof_t* prf) {
-  free(prf->challenge);
-  free(prf);
+  OQS_MEM_insecure_free(prf->challenge);
+  OQS_MEM_insecure_free(prf);
 }
 
 static void kdf_shake_update_key_intLE(kdf_shake_t* kdf, uint16_t x) {
@@ -865,16 +865,16 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
   const int ret = sig_proof_to_char_array(pp, prf, sig, siglen);
 
   // clean up
-  free(tape_bytes);
-  free(rvec);
-  free(views);
+  OQS_MEM_insecure_free(tape_bytes);
+  OQS_MEM_insecure_free(rvec);
+  OQS_MEM_insecure_free(views);
   oqs_sig_picnic_mzd_local_free_multiple(shared_key);
   oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[1].s);
   oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[0].s);
   proof_free(prf);
 
   oqs_sig_picnic_mzd_local_free_multiple(recorded_state.state);
-  free(recorded_state.state);
+  OQS_MEM_insecure_free(recorded_state.state);
 
   return ret;
 }
@@ -968,9 +968,9 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
   const int success_status = memcmp(challenge, prf->challenge, pp->num_rounds);
 
   // clean up
-  free(tape_bytes);
-  free(rvec);
-  free(views);
+  OQS_MEM_insecure_free(tape_bytes);
+  OQS_MEM_insecure_free(rvec);
+  OQS_MEM_insecure_free(views);
   oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[1].s);
   oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[0].s);
 
