@@ -127,7 +127,7 @@ typedef struct {
  *
  * \return parameters defining a LowMC instance
  */
-bool lowmc_init(lowmc_t* lowmc);
+bool oqs_sig_picnic_lowmc_init(lowmc_t* lowmc);
 #endif
 
 /**
@@ -135,7 +135,7 @@ bool lowmc_init(lowmc_t* lowmc);
  *
  * \param lowmc the LowMC parameters to be cleared
  */
-void lowmc_clear(lowmc_t* lowmc);
+void oqs_sig_picnic_lowmc_clear(lowmc_t* lowmc);
 
 
 #endif

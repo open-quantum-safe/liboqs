@@ -17,7 +17,7 @@
 #include "mzd_additional.h"
 
 #if defined(MUL_M4RI)
-bool lowmc_init(lowmc_t* lowmc) {
+bool oqs_sig_picnic_lowmc_init(lowmc_t* lowmc) {
   if (!lowmc) {
     return false;
   }
@@ -43,7 +43,7 @@ bool lowmc_init(lowmc_t* lowmc) {
 }
 #endif
 
-void lowmc_clear(lowmc_t* lowmc) {
+void oqs_sig_picnic_lowmc_clear(lowmc_t* lowmc) {
   for (unsigned int i = 0; i < lowmc->r; ++i) {
 #if defined(MUL_M4RI)
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)

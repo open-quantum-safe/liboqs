@@ -22,8 +22,8 @@ static void N_LOWMC(lowmc_key_t const* lowmc_key, mzd_local_t const* p, recorded
 static mzd_local_t* N_LOWMC(lowmc_key_t const* lowmc_key, mzd_local_t const* p) {
 #endif
 #if defined(REDUCED_ROUND_KEY_COMPUTATION)
-  mzd_local_t* x       = mzd_local_init_ex(1, LOWMC_N, false);
-  mzd_local_t* y       = mzd_local_init_ex(1, LOWMC_N, false);
+  mzd_local_t* x       = oqs_sig_picnic_mzd_local_init_ex(1, LOWMC_N, false);
+  mzd_local_t* y       = oqs_sig_picnic_mzd_local_init_ex(1, LOWMC_N, false);
 #if defined(M_FIXED_10)
   mzd_local_t nl_part[(LOWMC_R * 32 + 255) / 256];
 #elif defined(M_FIXED_1)
@@ -113,10 +113,10 @@ static mzd_local_t* N_LOWMC(lowmc_key_t const* lowmc_key, mzd_local_t const* p) 
     y              = t;
   }
 #endif
-  mzd_local_free(y);
+  oqs_sig_picnic_mzd_local_free(y);
 #if defined(RECORD_STATE)
   copy(state->state[LOWMC_R], x);
-  mzd_local_free(x);
+  oqs_sig_picnic_mzd_local_free(x);
 #else
   return x;
 #endif
@@ -139,10 +139,10 @@ static mzd_local_t* N_LOWMC(lowmc_key_t const* lowmc_key, mzd_local_t const* p) 
     ADDMUL(x, lowmc_key, CONCAT(round->k, matrix_postfix));
   }
 
-  mzd_local_free(y);
+  oqs_sig_picnic_mzd_local_free(y);
 #if defined(RECORD_STATE)
   copy(state->state[LOWMC_R], x);
-  mzd_local_free(x);
+  oqs_sig_picnic_mzd_local_free(x);
 #else
   return x;
 #endif

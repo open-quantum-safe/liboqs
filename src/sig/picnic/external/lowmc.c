@@ -93,19 +93,19 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #endif
 
 // uint64 based implementation
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_uint64_128, mzd_addmul_vl_uint64_128)
-#define MUL SELECT_V_VL(mzd_mul_v_uint64_128, mzd_mul_vl_uint64_128)
-#define XOR mzd_xor_uint64_128
-#define SHUFFLE mzd_shuffle_128
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_uint64_128, oqs_sig_picnic_mzd_addmul_vl_uint64_128)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_128, oqs_sig_picnic_mzd_mul_vl_uint64_128)
+#define XOR oqs_sig_picnic_mzd_xor_uint64_128
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_128
 
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_uint64_128_576, mzd_mul_vl_uint64_128_576)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_uint64_128_640, mzd_mul_vl_uint64_128_640)
-#define MUL_R_1  mzd_addmul_v_uint64_3_128
-#define MUL_R_10 mzd_addmul_v_uint64_30_128
-#define MUL_Z_1  mzd_mul_v_parity_uint64_128_3
-#define MUL_Z_10 mzd_mul_v_parity_uint64_128_30
-#define XOR_MC_1 mzd_xor_uint64_576
-#define XOR_MC_10 mzd_xor_uint64_640
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_128_576, oqs_sig_picnic_mzd_mul_vl_uint64_128_576)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_128_640, oqs_sig_picnic_mzd_mul_vl_uint64_128_640)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_uint64_3_128
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_uint64_30_128
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_128_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_128_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_uint64_576
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_uint64_640
 
 #define LOWMC_N LOWMC_L1_N
 #define LOWMC_R_10 LOWMC_L1_R
@@ -124,10 +124,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_uint64_192, mzd_addmul_vl_uint64_192)
-#define MUL SELECT_V_VL(mzd_mul_v_uint64_192, mzd_mul_vl_uint64_192)
-#define SHUFFLE mzd_shuffle_192
-#define XOR mzd_xor_uint64_192
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_uint64_192, oqs_sig_picnic_mzd_addmul_vl_uint64_192)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_192, oqs_sig_picnic_mzd_mul_vl_uint64_192)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_192
+#define XOR oqs_sig_picnic_mzd_xor_uint64_192
 
 #undef MUL_MC_1
 #undef MUL_MC_10
@@ -137,14 +137,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_uint64_192_896, mzd_mul_vl_uint64_192_896)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_uint64_192_960, mzd_mul_vl_uint64_192_960)
-#define MUL_R_1  mzd_addmul_v_uint64_3_192
-#define MUL_R_10 mzd_addmul_v_uint64_30_192
-#define MUL_Z_1 mzd_mul_v_parity_uint64_192_3
-#define MUL_Z_10 mzd_mul_v_parity_uint64_192_30
-#define XOR_MC_1 mzd_xor_uint64_896
-#define XOR_MC_10 mzd_xor_uint64_960
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_192_896, oqs_sig_picnic_mzd_mul_vl_uint64_192_896)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_192_960, oqs_sig_picnic_mzd_mul_vl_uint64_192_960)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_uint64_3_192
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_uint64_30_192
+#define MUL_Z_1 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_uint64_896
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_uint64_960
 
 #undef LOWMC
 #undef LOWMC_N
@@ -169,10 +169,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_uint64_256, mzd_addmul_vl_uint64_256)
-#define MUL SELECT_V_VL(mzd_mul_v_uint64_256, mzd_mul_vl_uint64_256)
-#define SHUFFLE mzd_shuffle_256
-#define XOR mzd_xor_uint64_256
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_uint64_256, oqs_sig_picnic_mzd_addmul_vl_uint64_256)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_256, oqs_sig_picnic_mzd_mul_vl_uint64_256)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_256
+#define XOR oqs_sig_picnic_mzd_xor_uint64_256
 
 #undef MUL_MC_1
 #undef MUL_MC_10
@@ -182,14 +182,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_uint64_256_1152, mzd_mul_vl_uint64_256_1152)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_uint64_256_1216, mzd_mul_vl_uint64_256_1216)
-#define MUL_R_1  mzd_addmul_v_uint64_3_256
-#define MUL_R_10 mzd_addmul_v_uint64_30_256
-#define MUL_Z_1  mzd_mul_v_parity_uint64_256_3
-#define MUL_Z_10 mzd_mul_v_parity_uint64_256_30
-#define XOR_MC_1 mzd_xor_uint64_1152
-#define XOR_MC_10 mzd_xor_uint64_1216
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_256_1152, oqs_sig_picnic_mzd_mul_vl_uint64_256_1152)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_256_1216, oqs_sig_picnic_mzd_mul_vl_uint64_256_1216)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_uint64_3_256
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_uint64_30_256
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_256_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_256_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_uint64_1152
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_uint64_1216
 
 #undef LOWMC
 #undef LOWMC_N
@@ -228,10 +228,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_128, mzd_addmul_vl_s128_128)
-#define MUL SELECT_V_VL(mzd_mul_v_s128_128, mzd_mul_vl_s128_128)
-#define SHUFFLE mzd_shuffle_128
-#define XOR mzd_xor_s128_128
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_128, oqs_sig_picnic_mzd_addmul_vl_s128_128)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128, oqs_sig_picnic_mzd_mul_vl_s128_128)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_128
+#define XOR oqs_sig_picnic_mzd_xor_s128_128
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -256,14 +256,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_128_640, mzd_mul_vl_s128_128_640)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_128_640, mzd_mul_vl_s128_128_640)
-#define MUL_R_1  mzd_addmul_v_s128_3_128
-#define MUL_R_10 mzd_addmul_v_s128_30_128
-#define MUL_Z_1  mzd_mul_v_parity_uint64_128_3
-#define MUL_Z_10 mzd_mul_v_parity_uint64_128_30
-#define XOR_MC_1 mzd_xor_s128_640
-#define XOR_MC_10 mzd_xor_s128_640
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128_640, oqs_sig_picnic_mzd_mul_vl_s128_128_640)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128_640, oqs_sig_picnic_mzd_mul_vl_s128_128_640)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s128_3_128
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_128
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_128_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_128_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_640
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_640
 
 #undef LOWMC
 #define LOWMC lowmc_s128_128
@@ -274,10 +274,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_192, mzd_addmul_vl_s128_192)
-#define MUL SELECT_V_VL(mzd_mul_v_s128_192, mzd_mul_vl_s128_192)
-#define SHUFFLE mzd_shuffle_192
-#define XOR mzd_xor_s128_256
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_192, oqs_sig_picnic_mzd_addmul_vl_s128_192)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192, oqs_sig_picnic_mzd_mul_vl_s128_192)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_192
+#define XOR oqs_sig_picnic_mzd_xor_s128_256
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -302,14 +302,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_192_896, mzd_mul_vl_s128_192_896)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_192_1024, mzd_mul_vl_s128_192_1024)
-#define MUL_R_1  mzd_addmul_v_s128_3_192
-#define MUL_R_10 mzd_addmul_v_s128_30_192
-#define MUL_Z_1  mzd_mul_v_parity_uint64_192_3
-#define MUL_Z_10 mzd_mul_v_parity_uint64_192_30
-#define XOR_MC_1 mzd_xor_s128_896
-#define XOR_MC_10 mzd_xor_s128_1024
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192_896, oqs_sig_picnic_mzd_mul_vl_s128_192_896)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192_1024, oqs_sig_picnic_mzd_mul_vl_s128_192_1024)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s128_3_192
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_192
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_192_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_896
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_1024
 
 #undef LOWMC
 #define LOWMC lowmc_s128_192
@@ -319,9 +319,9 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef ADDMUL
 #undef MUL
 #undef SHUFFLE
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_256, mzd_addmul_vl_s128_256)
-#define MUL SELECT_V_VL(mzd_mul_v_s128_256, mzd_mul_vl_s128_256)
-#define SHUFFLE mzd_shuffle_256
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_256, oqs_sig_picnic_mzd_addmul_vl_s128_256)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256, oqs_sig_picnic_mzd_mul_vl_s128_256)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_256
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -346,14 +346,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_256_1152, mzd_mul_vl_s128_256_1152)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_256_1280, mzd_mul_vl_s128_256_1280)
-#define MUL_R_1  mzd_addmul_v_s128_3_256
-#define MUL_R_10 mzd_addmul_v_s128_30_256
-#define MUL_Z_1  mzd_mul_v_parity_uint64_256_3
-#define MUL_Z_10 mzd_mul_v_parity_uint64_256_30
-#define XOR_MC_1 mzd_xor_s128_1152
-#define XOR_MC_10 mzd_xor_s128_1280
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256_1152, oqs_sig_picnic_mzd_mul_vl_s128_256_1152)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256_1280, oqs_sig_picnic_mzd_mul_vl_s128_256_1280)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s128_3_256
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_256
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_256_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_256_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_1152
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_1280
 
 #undef LOWMC
 #define LOWMC lowmc_s128_256
@@ -370,10 +370,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_128, mzd_addmul_vl_s128_128)
-#define MUL SELECT_V_VL(mzd_mul_v_s128_128, mzd_mul_vl_s128_128)
-#define SHUFFLE mzd_shuffle_128
-#define XOR mzd_xor_s128_128
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_128, oqs_sig_picnic_mzd_addmul_vl_s128_128)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128, oqs_sig_picnic_mzd_mul_vl_s128_128)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_128
+#define XOR oqs_sig_picnic_mzd_xor_s128_128
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -398,14 +398,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_128_640, mzd_mul_vl_s128_128_640)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_128_640, mzd_mul_vl_s128_128_640)
-#define MUL_R_1  mzd_addmul_v_s128_3_128
-#define MUL_R_10 mzd_addmul_v_s128_30_128
-#define MUL_Z_1  mzd_mul_v_parity_popcnt_128_3
-#define MUL_Z_10 mzd_mul_v_parity_popcnt_128_30
-#define XOR_MC_1 mzd_xor_s128_640
-#define XOR_MC_10 mzd_xor_s128_640
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128_640, oqs_sig_picnic_mzd_mul_vl_s128_128_640)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128_640, oqs_sig_picnic_mzd_mul_vl_s128_128_640)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s128_3_128
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_128
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_640
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_640
 
 #undef LOWMC
 #define LOWMC lowmc_s128_popcnt_128
@@ -416,10 +416,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_192, mzd_addmul_vl_s128_192)
-#define MUL SELECT_V_VL(mzd_mul_v_s128_192, mzd_mul_vl_s128_192)
-#define SHUFFLE mzd_shuffle_192
-#define XOR mzd_xor_s128_256
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_192, oqs_sig_picnic_mzd_addmul_vl_s128_192)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192, oqs_sig_picnic_mzd_mul_vl_s128_192)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_192
+#define XOR oqs_sig_picnic_mzd_xor_s128_256
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -444,14 +444,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_192_896, mzd_mul_vl_s128_192_896)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_192_1024, mzd_mul_vl_s128_192_1024)
-#define MUL_R_1  mzd_addmul_v_s128_3_192
-#define MUL_R_10 mzd_addmul_v_s128_30_192
-#define MUL_Z_1  mzd_mul_v_parity_popcnt_192_3
-#define MUL_Z_10 mzd_mul_v_parity_popcnt_192_30
-#define XOR_MC_1 mzd_xor_s128_896
-#define XOR_MC_10 mzd_xor_s128_1024
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192_896, oqs_sig_picnic_mzd_mul_vl_s128_192_896)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192_1024, oqs_sig_picnic_mzd_mul_vl_s128_192_1024)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s128_3_192
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_192
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_896
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_1024
 
 #undef LOWMC
 #define LOWMC lowmc_s128_popcnt_192
@@ -461,9 +461,9 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef ADDMUL
 #undef MUL
 #undef SHUFFLE
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_256, mzd_addmul_vl_s128_256)
-#define MUL SELECT_V_VL(mzd_mul_v_s128_256, mzd_mul_vl_s128_256)
-#define SHUFFLE mzd_shuffle_256
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_256, oqs_sig_picnic_mzd_addmul_vl_s128_256)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256, oqs_sig_picnic_mzd_mul_vl_s128_256)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_256
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -488,14 +488,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_256_1152, mzd_mul_vl_s128_256_1152)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_256_1280, mzd_mul_vl_s128_256_1280)
-#define MUL_R_1  mzd_addmul_v_s128_3_256
-#define MUL_R_10 mzd_addmul_v_s128_30_256
-#define MUL_Z_1  mzd_mul_v_parity_popcnt_256_3
-#define MUL_Z_10 mzd_mul_v_parity_popcnt_256_30
-#define XOR_MC_1 mzd_xor_s128_1152
-#define XOR_MC_10 mzd_xor_s128_1280
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256_1152, oqs_sig_picnic_mzd_mul_vl_s128_256_1152)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256_1280, oqs_sig_picnic_mzd_mul_vl_s128_256_1280)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s128_3_256
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_256
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_1152
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_1280
 
 #undef LOWMC
 #define LOWMC lowmc_s128_popcnt_256
@@ -512,10 +512,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_128, mzd_addmul_vl_s256_128)
-#define MUL SELECT_V_VL(mzd_mul_v_s256_128, mzd_mul_vl_s256_128)
-#define SHUFFLE mzd_shuffle_pext_128
-#define XOR mzd_xor_s256_128
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_128, oqs_sig_picnic_mzd_addmul_vl_s256_128)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128, oqs_sig_picnic_mzd_mul_vl_s256_128)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_128
+#define XOR oqs_sig_picnic_mzd_xor_s256_128
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -540,14 +540,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_128_768, mzd_mul_vl_s256_128_768)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_128_768, mzd_mul_vl_s256_128_768)
-#define MUL_R_1  mzd_addmul_v_s256_3_128
-#define MUL_R_10 mzd_addmul_v_s256_30_128
-#define MUL_Z_1  mzd_mul_v_parity_uint64_128_3
-#define MUL_Z_10 mzd_mul_v_parity_uint64_128_30
-#define XOR_MC_1 mzd_xor_s256_768
-#define XOR_MC_10 mzd_xor_s256_768
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128_768, oqs_sig_picnic_mzd_mul_vl_s256_128_768)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128_768, oqs_sig_picnic_mzd_mul_vl_s256_128_768)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_128
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_128
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_128_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_128_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_768
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_768
 
 #undef LOWMC
 #define LOWMC lowmc_s256_128
@@ -558,10 +558,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_192, mzd_addmul_vl_s256_192)
-#define MUL SELECT_V_VL(mzd_mul_v_s256_192, mzd_mul_vl_s256_192)
-#define SHUFFLE mzd_shuffle_pext_192
-#define XOR mzd_xor_s256_256
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_192, oqs_sig_picnic_mzd_addmul_vl_s256_192)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192, oqs_sig_picnic_mzd_mul_vl_s256_192)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_192
+#define XOR oqs_sig_picnic_mzd_xor_s256_256
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -586,14 +586,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_192_1024, mzd_mul_vl_s256_192_1024)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_192_1024, mzd_mul_vl_s256_192_1024)
-#define MUL_R_1  mzd_addmul_v_s256_3_192
-#define MUL_R_10 mzd_addmul_v_s256_30_192
-#define MUL_Z_1  mzd_mul_v_parity_uint64_192_3
-#define MUL_Z_10 mzd_mul_v_parity_uint64_192_30
-#define XOR_MC_1 mzd_xor_s256_1024
-#define XOR_MC_10 mzd_xor_s256_1024
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192_1024, oqs_sig_picnic_mzd_mul_vl_s256_192_1024)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192_1024, oqs_sig_picnic_mzd_mul_vl_s256_192_1024)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_192
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_192
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_192_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_1024
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_1024
 
 #undef LOWMC
 #define LOWMC lowmc_s256_192
@@ -603,9 +603,9 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef ADDMUL
 #undef MUL
 #undef SHUFFLE
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_256, mzd_addmul_vl_s256_256)
-#define MUL SELECT_V_VL(mzd_mul_v_s256_256, mzd_mul_vl_s256_256)
-#define SHUFFLE mzd_shuffle_pext_256
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_256, oqs_sig_picnic_mzd_addmul_vl_s256_256)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256, oqs_sig_picnic_mzd_mul_vl_s256_256)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_256
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -630,14 +630,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_256_1280, mzd_mul_vl_s256_256_1280)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_256_1280, mzd_mul_vl_s256_256_1280)
-#define MUL_R_1  mzd_addmul_v_s256_3_256
-#define MUL_R_10 mzd_addmul_v_s256_30_256
-#define MUL_Z_1  mzd_mul_v_parity_uint64_256_3
-#define MUL_Z_10 mzd_mul_v_parity_uint64_256_30
-#define XOR_MC_1 mzd_xor_s256_1280
-#define XOR_MC_10 mzd_xor_s256_1280
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256_1280, oqs_sig_picnic_mzd_mul_vl_s256_256_1280)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256_1280, oqs_sig_picnic_mzd_mul_vl_s256_256_1280)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_256
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_256
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_256_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_256_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_1280
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_1280
 
 #undef LOWMC
 #define LOWMC lowmc_s256_256
@@ -653,10 +653,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_128, mzd_addmul_vl_s256_128)
-#define MUL SELECT_V_VL(mzd_mul_v_s256_128, mzd_mul_vl_s256_128)
-#define SHUFFLE mzd_shuffle_pext_128
-#define XOR mzd_xor_s256_128
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_128, oqs_sig_picnic_mzd_addmul_vl_s256_128)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128, oqs_sig_picnic_mzd_mul_vl_s256_128)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_128
+#define XOR oqs_sig_picnic_mzd_xor_s256_128
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -681,14 +681,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_128_768, mzd_mul_vl_s256_128_768)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_128_768, mzd_mul_vl_s256_128_768)
-#define MUL_R_1  mzd_addmul_v_s256_3_128
-#define MUL_R_10 mzd_addmul_v_s256_30_128
-#define MUL_Z_1  mzd_mul_v_parity_popcnt_128_3
-#define MUL_Z_10 mzd_mul_v_parity_popcnt_128_30
-#define XOR_MC_1 mzd_xor_s256_768
-#define XOR_MC_10 mzd_xor_s256_768
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128_768, oqs_sig_picnic_mzd_mul_vl_s256_128_768)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128_768, oqs_sig_picnic_mzd_mul_vl_s256_128_768)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_128
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_128
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_768
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_768
 
 #undef LOWMC
 #define LOWMC lowmc_s256_popcnt_128
@@ -699,10 +699,10 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL
 #undef SHUFFLE
 #undef XOR
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_192, mzd_addmul_vl_s256_192)
-#define MUL SELECT_V_VL(mzd_mul_v_s256_192, mzd_mul_vl_s256_192)
-#define SHUFFLE mzd_shuffle_pext_192
-#define XOR mzd_xor_s256_256
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_192, oqs_sig_picnic_mzd_addmul_vl_s256_192)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192, oqs_sig_picnic_mzd_mul_vl_s256_192)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_192
+#define XOR oqs_sig_picnic_mzd_xor_s256_256
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -727,14 +727,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_192_1024, mzd_mul_vl_s256_192_1024)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_192_1024, mzd_mul_vl_s256_192_1024)
-#define MUL_R_1  mzd_addmul_v_s256_3_192
-#define MUL_R_10 mzd_addmul_v_s256_30_192
-#define MUL_Z_1  mzd_mul_v_parity_popcnt_192_3
-#define MUL_Z_10 mzd_mul_v_parity_popcnt_192_30
-#define XOR_MC_1 mzd_xor_s256_1024
-#define XOR_MC_10 mzd_xor_s256_1024
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192_1024, oqs_sig_picnic_mzd_mul_vl_s256_192_1024)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192_1024, oqs_sig_picnic_mzd_mul_vl_s256_192_1024)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_192
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_192
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_1024
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_1024
 
 #undef LOWMC
 #define LOWMC lowmc_s256_popcnt_192
@@ -744,9 +744,9 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef ADDMUL
 #undef MUL
 #undef SHUFFLE
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s256_256, mzd_addmul_vl_s256_256)
-#define MUL SELECT_V_VL(mzd_mul_v_s256_256, mzd_mul_vl_s256_256)
-#define SHUFFLE mzd_shuffle_pext_256
+#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_256, oqs_sig_picnic_mzd_addmul_vl_s256_256)
+#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256, oqs_sig_picnic_mzd_mul_vl_s256_256)
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_256
 
 #undef LOWMC_INSTANCE_1
 #undef LOWMC_INSTANCE_10
@@ -771,14 +771,14 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #undef MUL_Z_10
 #undef XOR_MC_1
 #undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s256_256_1280, mzd_mul_vl_s256_256_1280)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s256_256_1280, mzd_mul_vl_s256_256_1280)
-#define MUL_R_1  mzd_addmul_v_s256_3_256
-#define MUL_R_10 mzd_addmul_v_s256_30_256
-#define MUL_Z_1  mzd_mul_v_parity_popcnt_256_3
-#define MUL_Z_10 mzd_mul_v_parity_popcnt_256_30
-#define XOR_MC_1 mzd_xor_s256_1280
-#define XOR_MC_10 mzd_xor_s256_1280
+#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256_1280, oqs_sig_picnic_mzd_mul_vl_s256_256_1280)
+#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256_1280, oqs_sig_picnic_mzd_mul_vl_s256_256_1280)
+#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_256
+#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_256
+#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_3
+#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_30
+#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_1280
+#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_1280
 
 #undef LOWMC
 #define LOWMC lowmc_s256_popcnt_256
@@ -788,11 +788,11 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #endif
 
 #undef SHUFFLE
-#define SHUFFLE mzd_shuffle
+#define SHUFFLE oqs_sig_picnic_mzd_shuffle
 #endif
 #endif
 
-lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc) {
+lowmc_implementation_f oqs_sig_picnic_lowmc_get_implementation(const lowmc_t* lowmc) {
   ASSUME(lowmc->m == 10 || lowmc->m == 1);
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
@@ -986,7 +986,7 @@ lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc) {
   return NULL;
 }
 
-lowmc_store_implementation_f lowmc_store_get_implementation(const lowmc_t* lowmc) {
+lowmc_store_implementation_f oqs_sig_picnic_lowmc_store_get_implementation(const lowmc_t* lowmc) {
   ASSUME(lowmc->m == 10 || lowmc->m == 1);
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 

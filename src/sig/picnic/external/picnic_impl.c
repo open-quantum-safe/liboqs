@@ -11,6 +11,7 @@
 #include <config.h>
 #endif
 
+/* the commented-out headers are included in their respective c source files */
 #include "bitstream.h"
 #include "compat.h"
 #include "io.h"
@@ -60,7 +61,7 @@ static void collapse_challenge(uint8_t* collapsed, const picnic_instance_t* pp,
 
   for (unsigned int i = 0; i < pp->num_rounds; ++i) {
     // flip challenge bits according to spec
-    bitstream_put_bits_8(&bs, (challenge[i] >> 1) | ((challenge[i] & 1) << 1), 2);
+    oqs_sig_picnic_bitstream_put_bits_8(&bs, (challenge[i] >> 1) | ((challenge[i] & 1) << 1), 2);
   }
 }
 
@@ -74,7 +75,7 @@ static bool expand_challenge(uint8_t* challenge, const picnic_instance_t* pp,
   bs.position = 0;
 
   for (unsigned int i = 0; i < pp->num_rounds; ++i) {
-    const uint8_t ch = bitstream_get_bits_8(&bs, 2);
+    const uint8_t ch = oqs_sig_picnic_bitstream_get_bits_8(&bs, 2);
     if (ch == 3) {
       return false;
     }
@@ -83,7 +84,7 @@ static bool expand_challenge(uint8_t* challenge, const picnic_instance_t* pp,
   }
 
   const size_t remaining_bits = (pp->collapsed_challenge_size << 3) - bs.position;
-  if (remaining_bits && bitstream_get_bits(&bs, remaining_bits)) {
+  if (remaining_bits && oqs_sig_picnic_bitstream_get_bits(&bs, remaining_bits)) {
     return false;
   }
 
@@ -270,19 +271,19 @@ static void kdf_init_from_seed(kdf_shake_t* kdf, const uint8_t* seed, const uint
 }
 
 static void uint64_to_bitstream_10(bitstream_t* bs, const uint64_t v) {
-  bitstream_put_bits_32(bs, v >> (64 - 30), 30);
+  oqs_sig_picnic_bitstream_put_bits_32(bs, v >> (64 - 30), 30);
 }
 
 static uint64_t uint64_from_bitstream_10(bitstream_t* bs) {
-  return ((uint64_t)bitstream_get_bits_32(bs, 30)) << (64 - 30);
+  return ((uint64_t)oqs_sig_picnic_bitstream_get_bits_32(bs, 30)) << (64 - 30);
 }
 
 static void uint64_to_bitstream_1(bitstream_t* bs, const uint64_t v) {
-  bitstream_put_bits_8(bs, v >> (64 - 3), 3);
+  oqs_sig_picnic_bitstream_put_bits_8(bs, v >> (64 - 3), 3);
 }
 
 static uint64_t uint64_from_bitstream_1(bitstream_t* bs) {
-  return ((uint64_t)bitstream_get_bits_8(bs, 3)) << (64 - 3);
+  return ((uint64_t)oqs_sig_picnic_bitstream_get_bits_8(bs, 3)) << (64 - 3);
 }
 
 static void compress_view(uint8_t* dst, const picnic_instance_t* pp, const view_t* views,
@@ -797,15 +798,15 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
   // Perform LowMC evaluation and record state before AND gates
   recorded_state_t recorded_state;
   recorded_state.state = calloc(lowmc_r + 1, sizeof(mzd_local_t*));
-  mzd_local_init_multiple_ex(recorded_state.state, lowmc_r + 1, 1, lowmc_n, false);
+  oqs_sig_picnic_mzd_local_init_multiple_ex(recorded_state.state, lowmc_r + 1, 1, lowmc_n, false);
   lowmc_store_impl(lowmc_key, p, &recorded_state);
 
   sig_proof_t* prf = proof_new(pp);
   view_t* views    = calloc(sizeof(view_t), view_count);
 
   in_out_shares_t in_out_shares[2];
-  mzd_local_init_multiple_ex(in_out_shares[0].s, SC_PROOF, 1, lowmc_k, false);
-  mzd_local_init_multiple_ex(in_out_shares[1].s, SC_PROOF, 1, lowmc_n, false);
+  oqs_sig_picnic_mzd_local_init_multiple_ex(in_out_shares[0].s, SC_PROOF, 1, lowmc_k, false);
+  oqs_sig_picnic_mzd_local_init_multiple_ex(in_out_shares[1].s, SC_PROOF, 1, lowmc_n, false);
 
   // Generate seeds
   generate_seeds(pp, private_key, plaintext, public_key, m, m_len, prf->round[0].seeds[0], prf->salt);
@@ -827,10 +828,10 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
     // compute sharing
     for (unsigned int j = 0; j < SC_PROOF - 1; ++j) {
       kdf_shake_get_randomness(&kdfs[j], round->input_shares[j], input_size);
-      mzd_from_char_array(shared_key[j], round->input_shares[j], input_size);
+      oqs_sig_picnic_mzd_from_char_array(shared_key[j], round->input_shares[j], input_size);
     }
     mzd_share(shared_key[2], shared_key[0], shared_key[1], lowmc_key);
-    mzd_to_char_array(round->input_shares[SC_PROOF - 1], shared_key[SC_PROOF - 1], input_size);
+    oqs_sig_picnic_mzd_to_char_array(round->input_shares[SC_PROOF - 1], shared_key[SC_PROOF - 1], input_size);
 
     // compute random tapes
     for (unsigned int j = 0; j < SC_PROOF; ++j) {
@@ -847,7 +848,7 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
 
     // commitments
     for (unsigned int j = 0; j < SC_PROOF; ++j) {
-      mzd_to_char_array(round->output_shares[j], in_out_shares[1].s[j], output_size);
+      oqs_sig_picnic_mzd_to_char_array(round->output_shares[j], in_out_shares[1].s[j], output_size);
       compress_view(round->communicated_bits[j], pp, views, j);
       hash_commitment(pp, round, j);
     }
@@ -867,12 +868,12 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
   free(tape_bytes);
   free(rvec);
   free(views);
-  mzd_local_free_multiple(shared_key);
-  mzd_local_free_multiple(in_out_shares[1].s);
-  mzd_local_free_multiple(in_out_shares[0].s);
+  oqs_sig_picnic_mzd_local_free_multiple(shared_key);
+  oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[1].s);
+  oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[0].s);
   proof_free(prf);
 
-  mzd_local_free_multiple(recorded_state.state);
+  oqs_sig_picnic_mzd_local_free_multiple(recorded_state.state);
   free(recorded_state.state);
 
   return ret;
@@ -901,8 +902,8 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
   }
 
   in_out_shares_t in_out_shares[2];
-  mzd_local_init_multiple_ex(in_out_shares[0].s, SC_VERIFY, 1, lowmc_k, false);
-  mzd_local_init_multiple_ex(in_out_shares[1].s, SC_PROOF, 1, lowmc_n, false);
+  oqs_sig_picnic_mzd_local_init_multiple_ex(in_out_shares[0].s, SC_VERIFY, 1, lowmc_k, false);
+  oqs_sig_picnic_mzd_local_init_multiple_ex(in_out_shares[1].s, SC_PROOF, 1, lowmc_n, false);
   view_t* views = calloc(sizeof(view_t), view_count);
   rvec_t* rvec = calloc(sizeof(rvec_t), lowmc_r); // random tapes for and-gates
   uint8_t* tape_bytes = malloc(view_size);
@@ -928,8 +929,8 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
       kdf_shake_get_randomness(&kdfs[1], round->input_shares[1], input_size);
     }
 
-    mzd_from_char_array(in_out_shares[0].s[0], round->input_shares[0], input_size);
-    mzd_from_char_array(in_out_shares[0].s[1], round->input_shares[1], input_size);
+    oqs_sig_picnic_mzd_from_char_array(in_out_shares[0].s[0], round->input_shares[0], input_size);
+    oqs_sig_picnic_mzd_from_char_array(in_out_shares[0].s[1], round->input_shares[1], input_size);
 
     // compute random tapes
     for (unsigned int j = 0; j < SC_VERIFY; ++j) {
@@ -949,10 +950,10 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
     mzd_share(in_out_shares[1].s[2], in_out_shares[1].s[0], in_out_shares[1].s[1], c);
     // recompute commitments
     for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-      mzd_to_char_array(round->output_shares[j], in_out_shares[1].s[j], output_size);
+      oqs_sig_picnic_mzd_to_char_array(round->output_shares[j], in_out_shares[1].s[j], output_size);
       hash_commitment(pp, round, j);
     }
-    mzd_to_char_array(round->output_shares[SC_VERIFY], in_out_shares[1].s[SC_VERIFY], output_size);
+    oqs_sig_picnic_mzd_to_char_array(round->output_shares[SC_VERIFY], in_out_shares[1].s[SC_VERIFY], output_size);
 
     if (transform == TRANSFORM_UR) {
       // apply Unruh G permutation
@@ -970,45 +971,45 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
   free(tape_bytes);
   free(rvec);
   free(views);
-  mzd_local_free_multiple(in_out_shares[1].s);
-  mzd_local_free_multiple(in_out_shares[0].s);
+  oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[1].s);
+  oqs_sig_picnic_mzd_local_free_multiple(in_out_shares[0].s);
 
   proof_free(prf);
 
   return success_status;
 }
 
-int impl_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
+int oqs_sig_picnic_impl_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
               const uint8_t* public_key, const uint8_t* msg, size_t msglen, uint8_t* sig,
               size_t* siglen) {
-  mzd_local_t* m_plaintext  = mzd_local_init_ex(1, pp->lowmc->n, false);
-  mzd_local_t* m_privatekey = mzd_local_init_ex(1, pp->lowmc->k, false);
+  mzd_local_t* m_plaintext  = oqs_sig_picnic_mzd_local_init_ex(1, pp->lowmc->n, false);
+  mzd_local_t* m_privatekey = oqs_sig_picnic_mzd_local_init_ex(1, pp->lowmc->k, false);
 
-  mzd_from_char_array(m_plaintext, plaintext, pp->output_size);
-  mzd_from_char_array(m_privatekey, private_key, pp->input_size);
+  oqs_sig_picnic_mzd_from_char_array(m_plaintext, plaintext, pp->output_size);
+  oqs_sig_picnic_mzd_from_char_array(m_privatekey, private_key, pp->input_size);
 
   const int result = sign_impl(pp, private_key, m_privatekey, plaintext, m_plaintext, public_key,
                                msg, msglen, sig, siglen);
 
-  mzd_local_free(m_privatekey);
-  mzd_local_free(m_plaintext);
+  oqs_sig_picnic_mzd_local_free(m_privatekey);
+  oqs_sig_picnic_mzd_local_free(m_plaintext);
 
   return result;
 }
 
-int impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
+int oqs_sig_picnic_impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
                 const uint8_t* msg, size_t msglen, const uint8_t* sig, size_t siglen) {
-  mzd_local_t* m_plaintext = mzd_local_init_ex(1, pp->lowmc->n, false);
-  mzd_local_t* m_publickey = mzd_local_init_ex(1, pp->lowmc->n, false);
+  mzd_local_t* m_plaintext = oqs_sig_picnic_mzd_local_init_ex(1, pp->lowmc->n, false);
+  mzd_local_t* m_publickey = oqs_sig_picnic_mzd_local_init_ex(1, pp->lowmc->n, false);
 
-  mzd_from_char_array(m_plaintext, plaintext, pp->output_size);
-  mzd_from_char_array(m_publickey, public_key, pp->output_size);
+  oqs_sig_picnic_mzd_from_char_array(m_plaintext, plaintext, pp->output_size);
+  oqs_sig_picnic_mzd_from_char_array(m_publickey, public_key, pp->output_size);
 
   const int result =
       verify_impl(pp, plaintext, m_plaintext, public_key, m_publickey, msg, msglen, sig, siglen);
 
-  mzd_local_free(m_publickey);
-  mzd_local_free(m_plaintext);
+  oqs_sig_picnic_mzd_local_free(m_publickey);
+  oqs_sig_picnic_mzd_local_free(m_plaintext);
 
   return result;
 }
@@ -1177,7 +1178,7 @@ static bool instance_initialized[PARAMETER_SET_MAX_INDEX];
 static const lowmc_t* lowmc_get_instance(unsigned int idx) {
 #if defined(MUL_M4RI)
   if (!lowmc_instances_initialized[idx]) {
-    if (lowmc_init(lowmc_instances[idx])) {
+    if (oqs_sig_picnic_lowmc_init(lowmc_instances[idx])) {
       lowmc_instances_initialized[idx] = true;
       return lowmc_instances[idx];
     }
@@ -1190,7 +1191,7 @@ static const lowmc_t* lowmc_get_instance(unsigned int idx) {
 #if defined(MUL_M4RI)
 static void clear_lowmc_instance(unsigned int idx) {
   if (lowmc_instances_initialized[idx]) {
-    lowmc_clear(lowmc_instances[idx]);
+    oqs_sig_picnic_lowmc_clear(lowmc_instances[idx]);
     lowmc_instances_initialized[idx] = false;
   }
 }
@@ -1238,16 +1239,16 @@ static bool create_instance(picnic_instance_t* pp, picnic_params_t param) {
     return false;
   }
 
-  pp->impls.lowmc              = lowmc_get_implementation(pp->lowmc);
-  pp->impls.lowmc_store        = lowmc_store_get_implementation(pp->lowmc);
-  pp->impls.zkbpp_lowmc        = get_zkbpp_lowmc_implementation(pp->lowmc);
-  pp->impls.zkbpp_lowmc_verify = get_zkbpp_lowmc_verify_implementation(pp->lowmc);
-  pp->impls.mzd_share          = get_zkbpp_share_implentation(pp->lowmc);
+  pp->impls.lowmc              = oqs_sig_picnic_lowmc_get_implementation(pp->lowmc);
+  pp->impls.lowmc_store        = oqs_sig_picnic_lowmc_store_get_implementation(pp->lowmc);
+  pp->impls.zkbpp_lowmc        = oqs_sig_picnic_get_zkbpp_lowmc_implementation(pp->lowmc);
+  pp->impls.zkbpp_lowmc_verify = oqs_sig_picnic_get_zkbpp_lowmc_verify_implementation(pp->lowmc);
+  pp->impls.mzd_share          = oqs_sig_picnic_get_zkbpp_share_implentation(pp->lowmc);
 
   return true;
 }
 
-const picnic_instance_t* picnic_instance_get(picnic_params_t param) {
+const picnic_instance_t* oqs_sig_picnic_instance_get(picnic_params_t param) {
   if (param <= PARAMETER_SET_INVALID || param >= PARAMETER_SET_MAX_INDEX) {
     return NULL;
   }

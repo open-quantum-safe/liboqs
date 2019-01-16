@@ -48,13 +48,13 @@ typedef struct {
   } impls;
 } picnic_instance_t;
 
-const picnic_instance_t* picnic_instance_get(picnic_params_t param);
+const picnic_instance_t* oqs_sig_picnic_instance_get(picnic_params_t param);
 
-int impl_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
+int oqs_sig_picnic_impl_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
               const uint8_t* public_key, const uint8_t* msg, size_t msglen, uint8_t* sig,
               size_t* siglen);
 
-int impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
+int oqs_sig_picnic_impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
                 const uint8_t* msg, size_t msglen, const uint8_t* sig, size_t siglen);
 
 PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_lowmc_block_size(picnic_params_t param);

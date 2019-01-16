@@ -20,7 +20,7 @@ typedef mzd_local_t* (*lowmc_implementation_f)(lowmc_key_t const*, mzd_local_t c
 typedef void (*lowmc_store_implementation_f)(lowmc_key_t const*, mzd_local_t const*,
                                              recorded_state_t* state);
 
-lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc);
-lowmc_store_implementation_f lowmc_store_get_implementation(const lowmc_t* lowmc);
+lowmc_implementation_f oqs_sig_picnic_lowmc_get_implementation(const lowmc_t* lowmc);
+lowmc_store_implementation_f oqs_sig_picnic_lowmc_store_get_implementation(const lowmc_t* lowmc);
 
 #endif
