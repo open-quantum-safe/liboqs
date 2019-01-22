@@ -7,10 +7,6 @@
  *  SPDX-License-Identifier: MIT
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include "lowmc_pars.h"
 #include "mpc_lowmc.h"
 #include "mzd_additional.h"

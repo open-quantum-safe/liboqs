@@ -7,10 +7,6 @@
  *  SPDX-License-Identifier: MIT
  */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 /* the commented-out headers are included in their respective c source files */
 #include "bitstream.h"
 #include "compat.h"

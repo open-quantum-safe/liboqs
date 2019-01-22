@@ -16,11 +16,5 @@ endif
 #from config
 libpicnic_i_la_CFLAGS += -DHAVE_ALIGNED_ALLOC -DHAVE_POSIX_MEMALIGN -DHAVE_MEMALIGN
 
-#can't find in grep: -DHAVE_GETLINE
-
-#if !ARM
-#libpicnic_i_la_CFLAGS += -DWITH_SSE2
-#endif
-
 libpicnic_i_la_CFLAGS += $(AM_CFLAGS) 
 
