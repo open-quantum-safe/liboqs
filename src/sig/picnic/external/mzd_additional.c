@@ -1215,7 +1215,7 @@ static void xor_comb_128(block_t* Bblock, const unsigned int boffset, mzd_local_
  * Pre-compute matrices for faster oqs_sig_picnic_mzd_addmul_v computions.
  */
 mzd_local_t* oqs_sig_picnic_mzd_precompute_matrix_lookup(mzd_local_t const* A, unsigned int rows, unsigned int cols) {
-  mzd_local_t* B = mzd_local_init_ex(32 * rows, cols, true);
+  mzd_local_t* B = oqs_sig_picnic_mzd_local_init_ex(32 * rows, cols, true);
 
   const unsigned int len = calculate_width(cols);
   const unsigned int rowstride = calculate_rowstride(len);

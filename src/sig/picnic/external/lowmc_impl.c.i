@@ -121,8 +121,8 @@ static mzd_local_t* N_LOWMC(lowmc_key_t const* lowmc_key, mzd_local_t const* p) 
   return x;
 #endif
 #else
-  mzd_local_t* x = mzd_local_init_ex(1, LOWMC_N, false);
-  mzd_local_t* y = mzd_local_init_ex(1, LOWMC_N, false);
+  mzd_local_t* x = oqs_sig_picnic_mzd_local_init_ex(1, LOWMC_N, false);
+  mzd_local_t* y = oqs_sig_picnic_mzd_local_init_ex(1, LOWMC_N, false);
 
   copy(x, p);
   ADDMUL(x, lowmc_key, CONCAT(LOWMC_INSTANCE.k0, matrix_postfix));
