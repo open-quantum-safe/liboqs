@@ -14,7 +14,7 @@ libpicnic_i_la_CFLAGS += -DWITH_SSE2
 endif
 
 #from config
-libpicnic_i_la_CFLAGS += -DHAVE_ALIGNED_ALLOC -DHAVE_POSIX_MEMALIGN -DHAVE_MEMALIGN
+libpicnic_i_la_CFLAGS += -DHAVE_POSIX_MEMALIGN
 
 libpicnic_i_la_CFLAGS += $(AM_CFLAGS) 
 
