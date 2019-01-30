@@ -19,6 +19,7 @@
 #endif
 #endif
 
+#include <oqs/common.h>
 #include "compat.h"
 #if !defined(HAVE_ALIGNED_ALLOC)
 #include <errno.h>
