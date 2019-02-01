@@ -117,10 +117,13 @@ If you wish to change the target architecture or disable certain algorithms, edi
 	make clean
 	make -j8
 
-This will generate:
+This will generate the following library files:
 
 - `liboqs.a`: Static library
 - `liboqs.so`: Shared library
+
+There are also a variety of test programs built under the `tests` directory:
+
 - `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
 - `test_sig`: Simple test harness for all enabled key signature schemes
 - `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
