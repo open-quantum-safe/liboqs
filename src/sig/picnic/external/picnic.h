@@ -10,8 +10,6 @@
 #ifndef PICNIC_H
 #define PICNIC_H
 
-#define PICNIC_STATIC /* in OQS */
-
 #if !defined(PICNIC_EXPORT)
 #if !defined(PICNIC_STATIC) && (defined(_WIN16) || defined(_WIN32) || defined(_WIN64))
 #define PICNIC_EXPORT __declspec(dllimport)
@@ -34,7 +32,17 @@
 extern "C" {
 #endif
 
-#define LOWMC_BLOCK_SIZE(p) ((((unsigned int)(p) + 3) / 2) * 8)
+#define PICNIC_CONCAT2(a, b) a##_##b
+#define PICNIC_CONCAT(a, b) PICNIC_CONCAT2(a, b)
+
+#define LOWMC_BLOCK_SIZE_Picnic_L1_FS 16
+#define LOWMC_BLOCK_SIZE_Picnic_L1_UR 16
+#define LOWMC_BLOCK_SIZE_Picnic_L3_FS 24
+#define LOWMC_BLOCK_SIZE_Picnic_L3_UR 24
+#define LOWMC_BLOCK_SIZE_Picnic_L5_FS 32
+#define LOWMC_BLOCK_SIZE_Picnic_L5_UR 32
+
+#define LOWMC_BLOCK_SIZE(p) PICNIC_CONCAT(LOWMC_BLOCK_SIZE, p)
 
 #define MAX_LOWMC_ROUNDS 38
 #define MAX_LOWMC_SBOXES 10
@@ -43,15 +51,18 @@ extern "C" {
 #define PICNIC_PRIVATE_KEY_SIZE(p) (1 + 3 * LOWMC_BLOCK_SIZE(p))
 #define PICNIC_PUBLIC_KEY_SIZE(p) (1 + 2 * LOWMC_BLOCK_SIZE(p))
 
-#define PICNIC_SIGNATURE_SIZE_Picnic_L1_FS 34000
-#define PICNIC_SIGNATURE_SIZE_Picnic_L1_UR 53929
-#define PICNIC_SIGNATURE_SIZE_Picnic_L3_FS 76740
-#define PICNIC_SIGNATURE_SIZE_Picnic_L3_UR 121813
-#define PICNIC_SIGNATURE_SIZE_Picnic_L5_FS 132824
-#define PICNIC_SIGNATURE_SIZE_Picnic_L5_UR 209474
-
-#define PICNIC_CONCAT2(a, b) a##_##b
-#define PICNIC_CONCAT(a, b) PICNIC_CONCAT2(a, b)
+#define PICNIC_SIGNATURE_SIZE_Picnic_L1_FS 34016
+#define PICNIC_SIGNATURE_SIZE_Picnic_L1_UR 53945
+#define PICNIC_SIGNATURE_SIZE_Picnic_L3_FS 76724
+#define PICNIC_SIGNATURE_SIZE_Picnic_L3_UR 121837
+#define PICNIC_SIGNATURE_SIZE_Picnic_L5_FS 132856
+#define PICNIC_SIGNATURE_SIZE_Picnic_L5_UR 209506
+#define PICNIC_SIGNATURE_SIZE_Picnic_L1_1_FS 32702
+#define PICNIC_SIGNATURE_SIZE_Picnic_L1_1_UR 51755
+#define PICNIC_SIGNATURE_SIZE_Picnic_L3_1_FS 74790
+#define PICNIC_SIGNATURE_SIZE_Picnic_L3_1_UR 117889
+#define PICNIC_SIGNATURE_SIZE_Picnic_L5_1_FS 130228
+#define PICNIC_SIGNATURE_SIZE_Picnic_L5_1_UR 204250
 
 #define PICNIC_SIGNATURE_SIZE(p) PICNIC_CONCAT(PICNIC_SIGNATURE_SIZE, p)
 
@@ -63,20 +74,32 @@ extern "C" {
 /** Parameter set names */
 typedef enum {
   PARAMETER_SET_INVALID,
+  /* Instances from the Picnic parameter set with LowMC m=10 */
   Picnic_L1_FS, // 1
   Picnic_L1_UR, // 2
   Picnic_L3_FS, // 3
   Picnic_L3_UR, // 4
   Picnic_L5_FS, // 5
   Picnic_L5_UR, // 6
+  /* Instances with LowMC m=1 */
+  Picnic_L1_1_FS, // 7
+  Picnic_L1_1_UR, // 8
+  Picnic_L3_1_FS, // 9
+  Picnic_L3_1_UR, // 10
+  Picnic_L5_1_FS, // 11
+  Picnic_L5_1_UR, // 12
   PARAMETER_SET_MAX_INDEX
 } picnic_params_t;
 
 /** Public key */
-typedef struct { uint8_t data[PICNIC_MAX_PUBLICKEY_SIZE]; } picnic_publickey_t;
+typedef struct {
+  uint8_t data[PICNIC_MAX_PUBLICKEY_SIZE];
+} picnic_publickey_t;
 
 /** Private key */
-typedef struct { uint8_t data[1 + 3 * MAX_LOWMC_BLOCK_SIZE]; } picnic_privatekey_t;
+typedef struct {
+  uint8_t data[1 + 3 * MAX_LOWMC_BLOCK_SIZE];
+} picnic_privatekey_t;
 
 /**
  * Get a string representation of the parameter set.

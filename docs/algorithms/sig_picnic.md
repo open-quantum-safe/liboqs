@@ -17,18 +17,18 @@ Parameter sets
 
 | Parameter set   | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
 |-----------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:----------------------:|
-| picnic_L1_FS    |     EUF-CMA    |              1              |            33           |            50           |          34004         |
-| picnic_L1_UR    |     EUF-CMA    |              1              |            33           |            50           |          53933         |
-| picnic_L3_FS    |     EUF-CMA    |              3              |            49           |            74           |          76744         |
-| picnic_L3_UR    |     EUF-CMA    |              3              |            49           |            74           |         121817         |
-| picnic_L5_FS    |     EUF-CMA    |              5              |            65           |            98           |         132828         |
-| picnic_L5_UR    |     EUF-CMA    |              5              |            65           |            98           |         209478         |
+| picnic_L1_FS    |     EUF-CMA    |              1              |            33           |            49           |          34020         |
+| picnic_L1_UR    |     EUF-CMA    |              1              |            33           |            49           |          53949         |
+| picnic_L3_FS    |     EUF-CMA    |              3              |            49           |            73           |          76768         |
+| picnic_L3_UR    |     EUF-CMA    |              3              |            49           |            73           |         121841         |
+| picnic_L5_FS    |     EUF-CMA    |              5              |            65           |            97           |         132860         |
+| picnic_L5_UR    |     EUF-CMA    |              5              |            65           |            97           |         209510         |
 
 Implementation
 --------------
 
 - **Source of implementation:** https://github.com/IAIK/Picnic
-- **Implementation version:** https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11
+- **Implementation version:** https://github.com/IAIK/Picnic/tree/v1.3.1
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes

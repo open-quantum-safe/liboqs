@@ -5,4 +5,4 @@
 #endif
 
 #define PICNIC_INSTANCE Picnic_L3_UR
-#include "sign.c.template"
+#include "sign.c.i"
