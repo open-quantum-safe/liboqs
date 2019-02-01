@@ -6,7 +6,7 @@
 
 #include <oqs/oqs.h>
 
-#include "../common/ds_benchmark.h"
+#include "ds_benchmark.h"
 
 static OQS_STATUS sig_speed_wrapper(const char *method_name, int duration, bool printInfo) {
 

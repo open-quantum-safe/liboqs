@@ -10,8 +10,8 @@ source $(dirname $0)/defs.sh
 
 RET=0
 
-./kat_kem
-./kat_sig
+tests/kat_kem
+tests/kat_sig
 scripts/check_kats.sh
 error=$?
 if [ $error -eq 0 ];

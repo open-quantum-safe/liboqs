@@ -32,13 +32,13 @@ ARCH?=x64
 #Should be extended to other system in the future.
 DETECTED_OS = $(shell uname -s)
 ifeq ($(DETECTED_OS), Linux)
-  AVX_SUPPORT = $(shell grep avx /proc/cpuinfo)
-  AVX2_SUPPORT = $(shell grep avx2 /proc/cpuinfo)
-  AVX512_SUPPORT = $(shell grep avx512 /proc/cpuinfo)
+	AVX_SUPPORT = $(shell grep avx /proc/cpuinfo)
+	AVX2_SUPPORT = $(shell grep avx2 /proc/cpuinfo)
+	AVX512_SUPPORT = $(shell grep avx512 /proc/cpuinfo)
 
-  export AVX_SUPPORT
-  export AVX2_SUPPORT
-  export AVX512_SUPPORT
+	export AVX_SUPPORT
+	export AVX2_SUPPORT
+	export AVX512_SUPPORT
 endif
 
 PREFIX?=usr_local
@@ -60,22 +60,22 @@ ENABLE_SIGS= # THIS WILL BE FILLED IN BY INDIVIDUAL SIGS' MAKEFILES IN COMBINATI
 
 CFLAGS+=-O2 -std=c99 -Iinclude -I$(OPENSSL_INCLUDE_DIR) -Wno-unused-function -Werror -Wpedantic -Wall -Wextra
 ifeq ($(arch), "x64")
-  CFLAGS+= -arch x86_64
+	CFLAGS+= -arch x86_64
 endif
 
 ifeq ($(DETECTED_OS), Linux)
-  ifneq (,$(AVX512_SUPPORT))
-    CFLAGS+=-DAVX512
-  else ifneq (,$(AVX2_SUPPORT))
-    CFLAGS+=-DAVX2
-  else ifneq (,$(AVX_SUPPORT))
-    CFLAGS+=-DAVX
-  endif
+	ifneq (,$(AVX512_SUPPORT))
+		CFLAGS+=-DAVX512
+	else ifneq (,$(AVX2_SUPPORT))
+		CFLAGS+=-DAVX2
+	else ifneq (,$(AVX_SUPPORT))
+		CFLAGS+=-DAVX
+	endif
 endif
 
 LDFLAGS+=-Wl,-rpath,${OPENSSL_LIB_DIR}
 ifeq ($(DETECTED_OS), Linux)
-LDFLAGS+=-Wl,--enable-new-dtags
+	LDFLAGS+=-Wl,--enable-new-dtags
 endif
 LDFLAGS+=-L$(OPENSSL_LIB_DIR) -lcrypto -lm
 
@@ -90,6 +90,7 @@ TO_CLEAN=liboqs.a
 include src/common/Makefile
 include src/kem/Makefile
 include src/sig/Makefile
+include tests/Makefile
 
 HEADERS=src/oqs.h $(HEADERS_COMMON) $(HEADERS_KEM) $(HEADERS_SIG)
 OBJECTS=$(OBJECTS_COMMON) $(OBJECTS_KEM) $(OBJECTS_SIG)
@@ -163,35 +164,6 @@ liboqs: libkeccak headers $(OBJECTS) $(UPSTREAMS)
 	$(RM) -f liboqs.a
 	ar rcs liboqs.a `find .objs -name '*.a'` `find .objs -name '*.o'`
 	gcc -shared -o liboqs.so `find .objs -name '*.a'` `find .objs -name '*.o'` ${LDFLAGS}
-
-TEST_PROGRAMS=test_kem test_kem_shared test_sig test_sig_shared
-$(TEST_PROGRAMS): liboqs
-tests: $(TEST_PROGRAMS)
-
-KAT_PROGRAMS=kat_kem kat_sig
-$(KAT_PROGRAMS): liboqs
-kats: $(KAT_PROGRAMS)
-
-test: tests
-	./test_kem
-	./test_sig
-
-kat: kats
-	./kat_kem
-	./kat_sig
-	scripts/check_kats.sh
-
-SPEED_PROGRAMS=speed_kem speed_sig
-$(SPEED_PROGRAMS): liboqs
-speeds: $(SPEED_PROGRAMS)
-
-speed: speeds
-	./speed_kem --info
-	./speed_sig --info
-
-EXAMPLE_PROGRAMS=example_kem example_sig
-$(EXAMPLE_PROGRAMS): liboqs
-examples: $(EXAMPLE_PROGRAMS)
 
 docs: headers
 	mkdir -p docs/doxygen
