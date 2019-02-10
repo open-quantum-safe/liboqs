@@ -149,14 +149,21 @@ Builds are tested using the Appveyor continuous integration system on Windows Se
 
 The supported schemes are defined in the projects' `winconfig.h` file.
 
-Building on other platforms
+Building and running on ARM
 ---------------------------
 
-We do not yet fully support building liboqs on ARM platforms, but are working towards maintaining ARM support in a future release.
+Binaries for ARM can be cross-compiled from Ubuntu Linux.  Builds are tested using the Travis continuous integration system on Ubuntu 14.04.5 with QEMU target CPU Cortex-A8.
 
-At present, we have successfully built liboqs on a Raspberry Pi 3B (armv7l) with the following configure command:
+In order to cross compile, you need to have an appropriate toolchain installed, and to test you need QEMU installed.  On Ubuntu:
 
-    ./configure --disable-aes-ni --disable-sig-qtesla --disable-kem-frodokem
+	sudo apt install gcc-arm-linux-gnueabi libc6-dev-armel-cross qemu
+	
+Once the toolchain is installed, you can use the following scripts to build and test ARM builds from Ubuntu Linux:
+
+	scripts/arm-cross-compile.sh
+	scripts/arm-run-tests-qemu.sh
+
+At present there are still some quirks with our ARM build, including problems with the Picnic and qTESLA and the known answer tests causing build errors or segmentation faults.  See issues #461, #462, and #463.
 
 Documentation
 -------------
