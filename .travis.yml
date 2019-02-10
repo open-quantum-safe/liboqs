@@ -20,6 +20,18 @@ matrix:
         - graphviz
     before_install:
     - sh .travis/install-clang-format-linux.sh
+    script:
+    - .travis/all-tests.sh
+  - os: linux
+    compiler: arm-linux-gnueabi-gcc
+    addons:
+      apt:
+        packages:
+        - gcc-arm-linux-gnueabi
+        - qemu
+    script:
+    - scripts/arm-cross-compile.sh
+    - scripts/arm-run-tests-qemu.sh
   - os: linux
     compiler: gcc
     env:
@@ -35,6 +47,8 @@ matrix:
         - graphviz
     before_install:
     - sh .travis/install-clang-format-linux.sh
+    script:
+    - .travis/all-tests.sh
   - os: linux
     compiler: gcc
     env: CC_OVERRIDE=gcc-5
@@ -46,6 +60,8 @@ matrix:
         - gcc-5
         - doxygen
         - graphviz
+    script:
+    - .travis/all-tests.sh
   - os: linux
     compiler: gcc
     env:
@@ -60,6 +76,8 @@ matrix:
         - libssl-dev
         - doxygen
         - graphviz
+    script:
+    - .travis/all-tests.sh
   - os: osx
     compiler: clang
     env:
@@ -70,6 +88,8 @@ matrix:
     before_install:
     - brew update
     - brew install libsodium doxygen graphviz
+    script:
+    - .travis/all-tests.sh
   - os: osx
     compiler: clang
     env:
@@ -78,6 +98,5 @@ matrix:
     before_install:
     - brew update
     - brew install doxygen graphviz
-
-script:
-  - .travis/all-tests.sh
+    script:
+    - .travis/all-tests.sh
