@@ -9,17 +9,17 @@ CHOST=arm-linux-gnueabi
 
 rm -rf build-arm
 mkdir build-arm
-PREFIX=`pwd`
+PREFIX="$(pwd)/build-arm"
 
 if [ ! -f "openssl-1.1.1a.tar.gz" ]; then
     wget https://www.openssl.org/source/openssl-1.1.1a.tar.gz
 fi
 rm -rf openssl-1.1.1a
-tar xf openssl-1.1.1a.tar.gz
+tar zxf openssl-1.1.1a.tar.gz
 cd openssl-1.1.1a
 CC="${CHOST}-gcc" ./Configure linux-armv4 no-shared no-dso no-hw no-engine no-tests -DOPENSSL_NO_SECURE_MEMORY --prefix="${PREFIX}"
 make -j
-make install
+make install_dev
 cd ..
 
 autoreconf -i
