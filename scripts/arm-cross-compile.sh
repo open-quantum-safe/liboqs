@@ -11,7 +11,7 @@ rm -rf build-arm
 mkdir build-arm
 PREFIX=`pwd`
 
-if [ ! -d "openssl-1.1.1a.tar.gz" ]; then
+if [ ! -f "openssl-1.1.1a.tar.gz" ]; then
     wget https://www.openssl.org/source/openssl-1.1.1a.tar.gz
 fi
 rm -rf openssl-1.1.1a
