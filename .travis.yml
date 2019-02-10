@@ -28,6 +28,7 @@ matrix:
       apt:
         packages:
         - gcc-arm-linux-gnueabi
+        - libc6-dev-armel-cross
         - qemu
     script:
     - scripts/arm-cross-compile.sh
