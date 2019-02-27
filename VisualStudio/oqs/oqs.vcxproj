@@ -47,6 +47,8 @@
     <ClInclude Include="..\..\src\oqs.h" />
     <ClInclude Include="..\..\src\common\common.h" />
     <ClInclude Include="..\..\src\common\rand.h" />
+    <ClInclude Include="..\..\src\common\pqclean_shims\fips202.h" />
+    <ClInclude Include="..\..\src\common\pqclean_shims\randombytes.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes_local.h" />
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h" />

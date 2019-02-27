@@ -1,7 +1,5 @@
 /* Kyber768 compilation file for Windows */
 
-#include "../../common/pqclean_shims/fips202.h"
-#include "../../common/pqclean_shims/randombytes.h"
 #include "pqclean_kyber768_clean/cbd.c"
 #include "pqclean_kyber768_clean/indcpa.c"
 #include "pqclean_kyber768_clean/kem.c"
