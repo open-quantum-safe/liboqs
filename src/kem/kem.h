@@ -71,9 +71,11 @@
 #define OQS_KEM_alg_sike_p503 "Sike-p503"
 /** Algorithm identifier for Sike p751 KEM. */
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
+/** Algorithm identifier for NTRU LPRime KEM. */
+#define OQS_KEM_alg_ntrulprime "NTRU-LPRime"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 23
+#define OQS_KEM_algs_length 24
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
@@ -242,6 +244,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
 #include <oqs/kem_sike.h>
+#include <oqs/kem_ntrulprime.h>
 // EDIT-WHEN-ADDING-KEM
 
 #endif // __OQS_KEM_H

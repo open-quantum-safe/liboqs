@@ -75,6 +75,7 @@ AC_CONFIG_FILES([Makefile
                  src/kem/sike/Makefile
                  src/kem/newhopenist/Makefile
                  src/kem/kyber/Makefile
+                 src/kem/ntrulprime/Makefile
                  tests/Makefile
                  ])
 

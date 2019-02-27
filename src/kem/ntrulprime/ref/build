@@ -1,0 +1,22 @@
+#!/bin/sh
+
+export CPATH="$CPATH:$HOME/include"
+export LIBRARY_PATH="$LIBRARY_PATH:$HOME/lib"
+
+for f in `echo $HOME/supercop-20171020/bench/* $HOME/supercop-20170904/bench/*`
+do
+  [ -d "$f" ] && export CPATH="$CPATH:$f/include:$f/include/amd64"
+  [ -d "$f" ] && export LIBRARY_PATH="$LIBRARY_PATH:$f/lib:$f/lib/amd64"
+done
+
+for f in `echo $HOME/supercop-data/*/amd64/include`
+do
+  [ -d "$f" ] && export CPATH="$CPATH:$f"
+done
+
+for f in `echo $HOME/supercop-data/*/amd64/lib`
+do
+  [ -d "$f" ] && export LIBRARY_PATH="$LIBRARY_PATH:$f"
+done
+
+gcc -O3 -march=native -mtune=native -Wall -I. -DKAT -DKATNUM=`cat KATNUM` -o kat nist/kat_kem.c nist/rng.c dec.c enc.c hide.c int32_sort.c keypair.c randomweightw.c rq_fromseed.c rq_mult.c rq_round3.c rq_rounded.c small.c     -lsupercop -lcrypto -ldl 

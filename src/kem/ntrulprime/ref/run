@@ -1,0 +1,2 @@
+#!/bin/sh
+./kat kem/ntrulpr4591761 > kat_kem.int 8> kat_kem.req 9> kat_kem.rsp
