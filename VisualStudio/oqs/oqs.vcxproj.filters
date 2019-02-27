@@ -146,12 +146,6 @@
     <ClInclude Include="..\..\src\common\rand.h">
       <Filter>common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\common\pqclean_shims\fips202.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\common\pqclean_shims\randombytes.h">
-      <Filter>common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\crypto\aes\aes.h">
       <Filter>crypto</Filter>
     </ClInclude>
