@@ -2305,6 +2305,9 @@ void OQS_SHA3_shake128(uint8_t *output, size_t outlen, const uint8_t *input, siz
 }
 
 void OQS_SHA3_shake128_absorb(uint64_t *state, const uint8_t *input, size_t inplen) {
+	for (size_t i = 0; i < SHA3_STATESIZE; ++i) {
+		state[i] = 0;
+	}
 	OQS_SHA3_keccak_absorb(state, SHA3_SHAKE128_RATE, input, inplen, SHA3_SHAKE_DOMAIN);
 }
 
@@ -2338,6 +2341,9 @@ void OQS_SHA3_shake256(uint8_t *output, size_t outlen, const uint8_t *input, siz
 }
 
 void OQS_SHA3_shake256_absorb(uint64_t *state, const uint8_t *input, size_t inplen) {
+	for (size_t i = 0; i < SHA3_STATESIZE; ++i) {
+		state[i] = 0;
+	}
 	OQS_SHA3_keccak_absorb(state, SHA3_SHAKE256_RATE, input, inplen, SHA3_SHAKE_DOMAIN);
 }
 
