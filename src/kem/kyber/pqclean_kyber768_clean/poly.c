@@ -14,13 +14,13 @@
  * Arguments:   - unsigned char *r: pointer to output byte array
  *              - const poly *a:    pointer to input polynomial
  **************************************************/
-void PQCLEAN_KYBER768_poly_compress(unsigned char *r, const poly *a) {
+void PQCLEAN_KYBER768_CLEAN_poly_compress(unsigned char *r, const poly *a) {
     uint32_t t[8];
     unsigned int i, j, k = 0;
 
     for (i = 0; i < KYBER_N; i += 8) {
         for (j = 0; j < 8; j++) {
-            t[j] = (((PQCLEAN_KYBER768_freeze(a->coeffs[i + j]) << 3) + KYBER_Q / 2) / KYBER_Q) & 7;
+            t[j] = (((PQCLEAN_KYBER768_CLEAN_freeze(a->coeffs[i + j]) << 3) + KYBER_Q / 2) / KYBER_Q) & 7;
         }
 
         r[k]     = (unsigned char)( t[0]       | (t[1] << 3) | (t[2] << 6));
@@ -39,7 +39,7 @@ void PQCLEAN_KYBER768_poly_compress(unsigned char *r, const poly *a) {
  * Arguments:   - poly *r:                pointer to output polynomial
  *              - const unsigned char *a: pointer to input byte array
  **************************************************/
-void PQCLEAN_KYBER768_poly_decompress(poly *r, const unsigned char *a) {
+void PQCLEAN_KYBER768_CLEAN_poly_decompress(poly *r, const unsigned char *a) {
     unsigned int i;
     for (i = 0; i < KYBER_N; i += 8) {
         r->coeffs[i + 0] =  (((a[0] & 7) * KYBER_Q) + 4) >> 3;
@@ -62,13 +62,13 @@ void PQCLEAN_KYBER768_poly_decompress(poly *r, const unsigned char *a) {
  * Arguments:   - unsigned char *r: pointer to output byte array
  *              - const poly *a:    pointer to input polynomial
  **************************************************/
-void PQCLEAN_KYBER768_poly_tobytes(unsigned char *r, const poly *a) {
+void PQCLEAN_KYBER768_CLEAN_poly_tobytes(unsigned char *r, const poly *a) {
     int i, j;
     uint16_t t[8];
 
     for (i = 0; i < KYBER_N / 8; i++) {
         for (j = 0; j < 8; j++) {
-            t[j] = PQCLEAN_KYBER768_freeze(a->coeffs[8 * i + j]);
+            t[j] = PQCLEAN_KYBER768_CLEAN_freeze(a->coeffs[8 * i + j]);
         }
 
         r[13 * i +  0] = (unsigned char)( t[0] & 0xff);
@@ -96,7 +96,7 @@ void PQCLEAN_KYBER768_poly_tobytes(unsigned char *r, const poly *a) {
  * Arguments:   - poly *r:                pointer to output polynomial
  *              - const unsigned char *a: pointer to input byte array
  **************************************************/
-void PQCLEAN_KYBER768_poly_frombytes(poly *r, const unsigned char *a) {
+void PQCLEAN_KYBER768_CLEAN_poly_frombytes(poly *r, const unsigned char *a) {
     int i;
     for (i = 0; i < KYBER_N / 8; i++) {
         r->coeffs[8 * i + 0]  = a[13 * i + 0]        | (((uint16_t)a[13 * i +  1] & 0x1f) << 8);
@@ -121,7 +121,7 @@ void PQCLEAN_KYBER768_poly_frombytes(poly *r, const unsigned char *a) {
  *              - const unsigned char *seed: pointer to input seed
  *              - unsigned char nonce:       one-byte input nonce
  **************************************************/
-void PQCLEAN_KYBER768_poly_getnoise(poly *r, const unsigned char *seed, unsigned char nonce) {
+void PQCLEAN_KYBER768_CLEAN_poly_getnoise(poly *r, const unsigned char *seed, unsigned char nonce) {
     unsigned char buf[KYBER_ETA * KYBER_N / 4];
     unsigned char extseed[KYBER_SYMBYTES + 1];
     int i;
@@ -133,7 +133,7 @@ void PQCLEAN_KYBER768_poly_getnoise(poly *r, const unsigned char *seed, unsigned
 
     shake256(buf, KYBER_ETA * KYBER_N / 4, extseed, KYBER_SYMBYTES + 1);
 
-    PQCLEAN_KYBER768_cbd(r, buf);
+    PQCLEAN_KYBER768_CLEAN_cbd(r, buf);
 }
 
 /*************************************************
@@ -146,8 +146,8 @@ void PQCLEAN_KYBER768_poly_getnoise(poly *r, const unsigned char *seed, unsigned
  *
  * Arguments:   - uint16_t *r: pointer to in/output polynomial
  **************************************************/
-void PQCLEAN_KYBER768_poly_ntt(poly *r) {
-    PQCLEAN_KYBER768_ntt(r->coeffs);
+void PQCLEAN_KYBER768_CLEAN_poly_ntt(poly *r) {
+    PQCLEAN_KYBER768_CLEAN_ntt(r->coeffs);
 }
 
 /*************************************************
@@ -159,8 +159,8 @@ void PQCLEAN_KYBER768_poly_ntt(poly *r) {
  *
  * Arguments:   - uint16_t *a: pointer to in/output polynomial
  **************************************************/
-void PQCLEAN_KYBER768_poly_invntt(poly *r) {
-    PQCLEAN_KYBER768_invntt(r->coeffs);
+void PQCLEAN_KYBER768_CLEAN_poly_invntt(poly *r) {
+    PQCLEAN_KYBER768_CLEAN_invntt(r->coeffs);
 }
 
 /*************************************************
@@ -172,10 +172,10 @@ void PQCLEAN_KYBER768_poly_invntt(poly *r) {
  *            - const poly *a: pointer to first input polynomial
  *            - const poly *b: pointer to second input polynomial
  **************************************************/
-void PQCLEAN_KYBER768_poly_add(poly *r, const poly *a, const poly *b) {
+void PQCLEAN_KYBER768_CLEAN_poly_add(poly *r, const poly *a, const poly *b) {
     int i;
     for (i = 0; i < KYBER_N; i++) {
-        r->coeffs[i] = PQCLEAN_KYBER768_barrett_reduce(a->coeffs[i] + b->coeffs[i]);
+        r->coeffs[i] = PQCLEAN_KYBER768_CLEAN_barrett_reduce(a->coeffs[i] + b->coeffs[i]);
     }
 }
 
@@ -188,10 +188,10 @@ void PQCLEAN_KYBER768_poly_add(poly *r, const poly *a, const poly *b) {
  *            - const poly *a: pointer to first input polynomial
  *            - const poly *b: pointer to second input polynomial
  **************************************************/
-void PQCLEAN_KYBER768_poly_sub(poly *r, const poly *a, const poly *b) {
+void PQCLEAN_KYBER768_CLEAN_poly_sub(poly *r, const poly *a, const poly *b) {
     int i;
     for (i = 0; i < KYBER_N; i++) {
-        r->coeffs[i] = PQCLEAN_KYBER768_barrett_reduce(a->coeffs[i] + 3 * KYBER_Q - b->coeffs[i]);
+        r->coeffs[i] = PQCLEAN_KYBER768_CLEAN_barrett_reduce(a->coeffs[i] + 3 * KYBER_Q - b->coeffs[i]);
     }
 }
 
@@ -203,7 +203,7 @@ void PQCLEAN_KYBER768_poly_sub(poly *r, const poly *a, const poly *b) {
  * Arguments:   - poly *r:                  pointer to output polynomial
  *              - const unsigned char *msg: pointer to input message
  **************************************************/
-void PQCLEAN_KYBER768_poly_frommsg(poly *r, const unsigned char msg[KYBER_SYMBYTES]) {
+void PQCLEAN_KYBER768_CLEAN_poly_frommsg(poly *r, const unsigned char msg[KYBER_SYMBYTES]) {
     uint16_t i, j, mask;
 
     for (i = 0; i < KYBER_SYMBYTES; i++) {
@@ -222,14 +222,14 @@ void PQCLEAN_KYBER768_poly_frommsg(poly *r, const unsigned char msg[KYBER_SYMBYT
  * Arguments:   - unsigned char *msg: pointer to output message
  *              - const poly *a:      pointer to input polynomial
  **************************************************/
-void PQCLEAN_KYBER768_poly_tomsg(unsigned char msg[KYBER_SYMBYTES], const poly *a) {
+void PQCLEAN_KYBER768_CLEAN_poly_tomsg(unsigned char msg[KYBER_SYMBYTES], const poly *a) {
     uint16_t t;
     int i, j;
 
     for (i = 0; i < KYBER_SYMBYTES; i++) {
         msg[i] = 0;
         for (j = 0; j < 8; j++) {
-            t = (((PQCLEAN_KYBER768_freeze(a->coeffs[8 * i + j]) << 1) + KYBER_Q / 2) / KYBER_Q) & 1;
+            t = (((PQCLEAN_KYBER768_CLEAN_freeze(a->coeffs[8 * i + j]) << 1) + KYBER_Q / 2) / KYBER_Q) & 1;
             msg[i] |= t << j;
         }
     }

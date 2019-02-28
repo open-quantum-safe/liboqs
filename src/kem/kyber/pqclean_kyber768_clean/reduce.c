@@ -17,7 +17,7 @@ static const uint32_t rlog = 18;
  * Returns:     unsigned integer in {0,...,2^13-1} congruent to a * R^-1 modulo
  *q.
  **************************************************/
-uint16_t PQCLEAN_KYBER768_montgomery_reduce(uint32_t a) {
+uint16_t PQCLEAN_KYBER768_CLEAN_montgomery_reduce(uint32_t a) {
     uint32_t u;
 
     u = (a * qinv);
@@ -37,7 +37,7 @@ uint16_t PQCLEAN_KYBER768_montgomery_reduce(uint32_t a) {
  *
  * Returns:     unsigned integer in {0,...,11768} congruent to a modulo q.
  **************************************************/
-uint16_t PQCLEAN_KYBER768_barrett_reduce(uint16_t a) {
+uint16_t PQCLEAN_KYBER768_CLEAN_barrett_reduce(uint16_t a) {
     uint16_t u;
 
     u = a >> 13; //((uint32_t) a * sinv) >> 16;
@@ -56,10 +56,10 @@ uint16_t PQCLEAN_KYBER768_barrett_reduce(uint16_t a) {
  *
  * Returns:     unsigned integer in {0,...,q-1} congruent to a modulo q.
  **************************************************/
-uint16_t PQCLEAN_KYBER768_freeze(uint16_t x) {
+uint16_t PQCLEAN_KYBER768_CLEAN_freeze(uint16_t x) {
     uint16_t m, r;
     int16_t c;
-    r = PQCLEAN_KYBER768_barrett_reduce(x);
+    r = PQCLEAN_KYBER768_CLEAN_barrett_reduce(x);
 
     m = r - KYBER_Q;
     c = m;

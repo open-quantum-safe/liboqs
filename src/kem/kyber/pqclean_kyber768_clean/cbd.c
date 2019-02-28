@@ -31,7 +31,7 @@ static uint64_t load_littleendian(const unsigned char *x, int bytes) {
  * Arguments:   - poly *r:                  pointer to output polynomial
  *              - const unsigned char *buf: pointer to input byte array
  **************************************************/
-void PQCLEAN_KYBER768_cbd(poly *r, const unsigned char *buf) {
+void PQCLEAN_KYBER768_CLEAN_cbd(poly *r, const unsigned char *buf) {
     #if KYBER_ETA == 3
     uint32_t t, d, a[4], b[4];
     int i, j;

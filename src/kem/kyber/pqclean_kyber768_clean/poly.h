@@ -12,21 +12,21 @@ typedef struct {
     uint16_t coeffs[KYBER_N];
 } poly;
 
-void PQCLEAN_KYBER768_poly_compress(unsigned char *r, const poly *a);
-void PQCLEAN_KYBER768_poly_decompress(poly *r, const unsigned char *a);
+void PQCLEAN_KYBER768_CLEAN_poly_compress(unsigned char *r, const poly *a);
+void PQCLEAN_KYBER768_CLEAN_poly_decompress(poly *r, const unsigned char *a);
 
-void PQCLEAN_KYBER768_poly_tobytes(unsigned char *r, const poly *a);
-void PQCLEAN_KYBER768_poly_frombytes(poly *r, const unsigned char *a);
+void PQCLEAN_KYBER768_CLEAN_poly_tobytes(unsigned char *r, const poly *a);
+void PQCLEAN_KYBER768_CLEAN_poly_frombytes(poly *r, const unsigned char *a);
 
-void PQCLEAN_KYBER768_poly_frommsg(poly *r, const unsigned char msg[KYBER_SYMBYTES]);
-void PQCLEAN_KYBER768_poly_tomsg(unsigned char msg[KYBER_SYMBYTES], const poly *a);
+void PQCLEAN_KYBER768_CLEAN_poly_frommsg(poly *r, const unsigned char msg[KYBER_SYMBYTES]);
+void PQCLEAN_KYBER768_CLEAN_poly_tomsg(unsigned char msg[KYBER_SYMBYTES], const poly *a);
 
-void PQCLEAN_KYBER768_poly_getnoise(poly *r, const unsigned char *seed, unsigned char nonce);
+void PQCLEAN_KYBER768_CLEAN_poly_getnoise(poly *r, const unsigned char *seed, unsigned char nonce);
 
-void PQCLEAN_KYBER768_poly_ntt(poly *r);
-void PQCLEAN_KYBER768_poly_invntt(poly *r);
+void PQCLEAN_KYBER768_CLEAN_poly_ntt(poly *r);
+void PQCLEAN_KYBER768_CLEAN_poly_invntt(poly *r);
 
-void PQCLEAN_KYBER768_poly_add(poly *r, const poly *a, const poly *b);
-void PQCLEAN_KYBER768_poly_sub(poly *r, const poly *a, const poly *b);
+void PQCLEAN_KYBER768_CLEAN_poly_add(poly *r, const poly *a, const poly *b);
+void PQCLEAN_KYBER768_CLEAN_poly_sub(poly *r, const poly *a, const poly *b);
 
 #endif

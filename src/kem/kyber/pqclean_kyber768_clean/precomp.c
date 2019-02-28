@@ -35,7 +35,7 @@ g^(-(i-1))/n*mont))
 
 */
 
-const uint16_t PQCLEAN_KYBER768_zetas[KYBER_N] = {
+const uint16_t PQCLEAN_KYBER768_CLEAN_zetas[KYBER_N] = {
     990,  7427, 2634, 6819, 578,  3281, 2143, 1095, 484,  6362, 3336, 5382,
     6086, 3823, 877,  5656, 3583, 7010, 6414, 263,  1285, 291,  7143, 7338,
     1581, 5134, 5184, 5932, 4042, 5775, 2468, 3,    606,  729,  5383, 962,
@@ -60,7 +60,7 @@ const uint16_t PQCLEAN_KYBER768_zetas[KYBER_N] = {
     2768, 6676, 987,  2214
 };
 
-const uint16_t PQCLEAN_KYBER768_omegas_inv_bitrev_montgomery[KYBER_N / 2] = {
+const uint16_t PQCLEAN_KYBER768_CLEAN_omegas_inv_bitrev_montgomery[KYBER_N / 2] = {
     990,  254,  862,  5047, 6586, 5538, 4400, 7103, 2025, 6804, 3858, 1595,
     2299, 4345, 1319, 7197, 7678, 5213, 1906, 3639, 1749, 2497, 2547, 6100,
     343,  538,  7390, 6396, 7418, 1267, 671,  4098, 5724, 491,  4146, 412,
@@ -74,7 +74,7 @@ const uint16_t PQCLEAN_KYBER768_omegas_inv_bitrev_montgomery[KYBER_N / 2] = {
     8,    4021, 38,   5658, 3017, 6143, 889,  4216
 };
 
-const uint16_t PQCLEAN_KYBER768_psis_inv_montgomery[KYBER_N] = {
+const uint16_t PQCLEAN_KYBER768_CLEAN_psis_inv_montgomery[KYBER_N] = {
     1024, 4972, 5779, 6907, 4943, 4168, 315,  5580, 90,   497,  1123, 142,
     4710, 5527, 2443, 4871, 698,  2489, 2394, 4003, 684,  2241, 2390, 7224,
     5072, 2064, 4741, 1687, 6841, 482,  7441, 1235, 2126, 4742, 2802, 5744,
