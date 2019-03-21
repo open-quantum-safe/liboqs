@@ -50,7 +50,7 @@ extern void convert_to_redundant_rep(OUT uint8_t *out,
 
 typedef ALIGN(16) struct decode_ctx_s {
 // Count the number of unsatisfied parity-checks:
-#ifdef USE_AVX512F_INSTRUCTIONS
+#ifdef AVX512
 	ALIGN(16)
 	uint8_t upc[N_QDQWORDS_BITS];
 #else
