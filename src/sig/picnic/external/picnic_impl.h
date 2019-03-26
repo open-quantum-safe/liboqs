@@ -10,6 +10,7 @@
 #ifndef PICNIC_IMPL_H
 #define PICNIC_IMPL_H
 
+#include "lowmc.h"
 #include "mpc_lowmc.h"
 #include "picnic.h"
 
@@ -19,13 +20,10 @@
 typedef enum { TRANSFORM_FS, TRANSFORM_UR } transform_t;
 
 typedef struct {
-  lowmc_t lowmc;
-  lowmc_implementation_f lowmc_impl;
-  lowmc_verify_implementation_f lowmc_verify_impl;
+  const lowmc_t* lowmc;
 
-  uint32_t security_level; /* bits */
-  uint32_t digest_size;    /* bytes */
-  uint32_t seed_size;      /* bytes */
+  uint32_t digest_size; /* bytes */
+  uint32_t seed_size;   /* bytes */
   uint32_t num_rounds;
 
   uint32_t input_size;      /* bytes */
@@ -40,26 +38,45 @@ typedef struct {
 
   picnic_params_t params;
   transform_t transform;
+
+  struct {
+    lowmc_implementation_f lowmc;
+    lowmc_store_implementation_f lowmc_store;
+    zkbpp_lowmc_implementation_f zkbpp_lowmc;
+    zkbpp_lowmc_verify_implementation_f zkbpp_lowmc_verify;
+    zkbpp_share_implementation_f mzd_share;
+  } impls;
 } picnic_instance_t;
 
-picnic_instance_t* oqs_sig_picnic_get_instance(picnic_params_t param);
-const picnic_instance_t* picnic_instance_get(picnic_params_t param);
+const picnic_instance_t* oqs_sig_picnic_instance_get(picnic_params_t param);
 
-bool oqs_sig_picnic_fis_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
+int oqs_sig_picnic_impl_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
               const uint8_t* public_key, const uint8_t* msg, size_t msglen, uint8_t* sig,
               size_t* siglen);
 
-bool oqs_sig_picnic_fis_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
+int oqs_sig_picnic_impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
                 const uint8_t* msg, size_t msglen, const uint8_t* sig, size_t siglen);
 
-void oqs_sig_picnic_visualize_signature(FILE* out, const picnic_instance_t* pp, const uint8_t* msg, size_t msglen,
-                         const uint8_t* sig, size_t siglen);
-
+PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_lowmc_block_size(picnic_params_t param);
 PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_private_key_size(picnic_params_t param);
 PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_public_key_size(picnic_params_t param);
+/**
+ * Compute public key from secret key.
+ *
+ * @param[in] sk The secret key
+ * @param[out] pk The public key to be populated
+ * @return Returns 0 on success, or a nonzero value indicating an error.
+ **/
 PICNIC_EXPORT int PICNIC_CALLING_CONVENTION picnic_sk_to_pk(const picnic_privatekey_t* sk,
                                                             picnic_publickey_t* pk);
-void picnic_visualize(FILE* out, const uint8_t* public_key, size_t public_key_size,
-                      const uint8_t* msg, size_t msglen, const uint8_t* sig, size_t siglen);
+
+#if defined(PICNIC_STATIC)
+void visualize_signature(FILE* out, const picnic_instance_t* pp, const uint8_t* msg, size_t msglen,
+                         const uint8_t* sig, size_t siglen);
+void picnic_visualize_keys(FILE* out, const picnic_privatekey_t* private_key,
+                           const picnic_publickey_t* public_key);
+void picnic_visualize(FILE* out, const picnic_publickey_t* public_key, const uint8_t* msg,
+                      size_t msglen, const uint8_t* sig, size_t siglen);
+#endif
 
 #endif

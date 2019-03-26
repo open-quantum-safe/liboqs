@@ -15,9 +15,10 @@ KYBER_CSRCS += $(KYBER_SRC_DIR)/ntt.c $(KYBER_SRC_DIR)/poly.c $(KYBER_SRC_DIR)/p
 KYBER_CSRCS += $(KYBER_SRC_DIR)/precomp.c $(KYBER_SRC_DIR)/reduce.c $(KYBER_SRC_DIR)/verify.c
 
 libkemkyber_512_cca_la_SOURCES  = $(KYBER_CSRCS)
-libkemkyber_768_cca_la_SOURCES  = $(KYBER_CSRCS)
 libkemkyber_1024_cca_la_SOURCES = $(KYBER_CSRCS)
 
 libkemkyber_512_cca_la_CFLAGS  = $(COMMON_FLAGS) -DKYBER_K=2 -DFUNC_PREFIX=OQS_KEM_kyber_512_cca_kem
-libkemkyber_768_cca_la_CFLAGS  = $(COMMON_FLAGS) -DKYBER_K=3 -DFUNC_PREFIX=OQS_KEM_kyber_768_cca_kem
 libkemkyber_1024_cca_la_CFLAGS = $(COMMON_FLAGS) -DKYBER_K=4 -DFUNC_PREFIX=OQS_KEM_kyber_1024_cca_kem
+
+libkemkyber_768_cca_la_SOURCES  = pqclean_kyber768_clean/cbd.c pqclean_kyber768_clean/indcpa.c pqclean_kyber768_clean/kem.c pqclean_kyber768_clean/ntt.c pqclean_kyber768_clean/poly.c pqclean_kyber768_clean/polyvec.c pqclean_kyber768_clean/precomp.c pqclean_kyber768_clean/reduce.c pqclean_kyber768_clean/verify.c
+libkemkyber_768_cca_la_CFLAGS  = $(COMMON_FLAGS) -I../../common/pqclean_shims

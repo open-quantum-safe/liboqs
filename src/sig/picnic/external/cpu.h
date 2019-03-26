@@ -12,9 +12,13 @@
 
 #include <stdbool.h>
 
+/* CPU supports SSE2 */
 #define CPU_CAP_SSE2 0x00000001
-#define CPU_CAP_SSE4_1 0x00000002
+/* CPU supports popcnt */
+#define CPU_CAP_POPCNT 0x00000002
+/* CPU supports AVX2 + BMI2 */
 #define CPU_CAP_AVX2 0x00000004
+/* CPU supports NEON */
 #define CPU_CAP_NEON 0x00000008
 
 /**

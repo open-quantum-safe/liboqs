@@ -106,6 +106,6 @@ clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/
 
 prettyprint:
-	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | grep -v pqclean | xargs $(CLANGFORMAT) -style=file -i
 
 docs: links doxygen-run

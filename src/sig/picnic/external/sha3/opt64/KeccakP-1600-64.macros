@@ -1,12 +1,10 @@
 /*
-Implementation by the Keccak, Keyak and Ketje Teams, namely, Guido Bertoni,
-Joan Daemen, Michaël Peeters, Gilles Van Assche and Ronny Van Keer, hereby
-denoted as "the implementer".
+Implementation by the Keccak Team, namely, Guido Bertoni, Joan Daemen,
+Michaël Peeters, Gilles Van Assche and Ronny Van Keer,
+hereby denoted as "the implementer".
 
-For more information, feedback or questions, please refer to our websites:
-http://keccak.noekeon.org/
-http://keyak.noekeon.org/
-http://ketje.noekeon.org/
+For more information, feedback or questions, please refer to our website:
+https://keccak.team/
 
 To the extent possible under law, the implementer has waived all copyright
 and related or neighboring rights to the source code in this file.
@@ -768,27 +766,27 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #define addInput(X, input, laneCount) \
     if (laneCount == 21) { \
-        X##ba ^= input[ 0]; \
-        X##be ^= input[ 1]; \
-        X##bi ^= input[ 2]; \
-        X##bo ^= input[ 3]; \
-        X##bu ^= input[ 4]; \
-        X##ga ^= input[ 5]; \
-        X##ge ^= input[ 6]; \
-        X##gi ^= input[ 7]; \
-        X##go ^= input[ 8]; \
-        X##gu ^= input[ 9]; \
-        X##ka ^= input[10]; \
-        X##ke ^= input[11]; \
-        X##ki ^= input[12]; \
-        X##ko ^= input[13]; \
-        X##ku ^= input[14]; \
-        X##ma ^= input[15]; \
-        X##me ^= input[16]; \
-        X##mi ^= input[17]; \
-        X##mo ^= input[18]; \
-        X##mu ^= input[19]; \
-        X##sa ^= input[20]; \
+        X##ba ^= HTOLE64(input[ 0]); \
+        X##be ^= HTOLE64(input[ 1]); \
+        X##bi ^= HTOLE64(input[ 2]); \
+        X##bo ^= HTOLE64(input[ 3]); \
+        X##bu ^= HTOLE64(input[ 4]); \
+        X##ga ^= HTOLE64(input[ 5]); \
+        X##ge ^= HTOLE64(input[ 6]); \
+        X##gi ^= HTOLE64(input[ 7]); \
+        X##go ^= HTOLE64(input[ 8]); \
+        X##gu ^= HTOLE64(input[ 9]); \
+        X##ka ^= HTOLE64(input[10]); \
+        X##ke ^= HTOLE64(input[11]); \
+        X##ki ^= HTOLE64(input[12]); \
+        X##ko ^= HTOLE64(input[13]); \
+        X##ku ^= HTOLE64(input[14]); \
+        X##ma ^= HTOLE64(input[15]); \
+        X##me ^= HTOLE64(input[16]); \
+        X##mi ^= HTOLE64(input[17]); \
+        X##mo ^= HTOLE64(input[18]); \
+        X##mu ^= HTOLE64(input[19]); \
+        X##sa ^= HTOLE64(input[20]); \
     } \
     else if (laneCount < 16) { \
         if (laneCount < 8) { \
@@ -797,165 +795,165 @@ http://creativecommons.org/publicdomain/zero/1.0/
                     if (laneCount < 1) { \
                     } \
                     else { \
-                        X##ba ^= input[ 0]; \
+                        X##ba ^= HTOLE64(input[ 0]); \
                     } \
                 } \
                 else { \
-                    X##ba ^= input[ 0]; \
-                    X##be ^= input[ 1]; \
+                    X##ba ^= HTOLE64(input[ 0]); \
+                    X##be ^= HTOLE64(input[ 1]); \
                     if (laneCount < 3) { \
                     } \
                     else { \
-                        X##bi ^= input[ 2]; \
+                        X##bi ^= HTOLE64(input[ 2]); \
                     } \
                 } \
             } \
             else { \
-                X##ba ^= input[ 0]; \
-                X##be ^= input[ 1]; \
-                X##bi ^= input[ 2]; \
-                X##bo ^= input[ 3]; \
+                X##ba ^= HTOLE64(input[ 0]); \
+                X##be ^= HTOLE64(input[ 1]); \
+                X##bi ^= HTOLE64(input[ 2]); \
+                X##bo ^= HTOLE64(input[ 3]); \
                 if (laneCount < 6) { \
                     if (laneCount < 5) { \
                     } \
                     else { \
-                        X##bu ^= input[ 4]; \
+                        X##bu ^= HTOLE64(input[ 4]); \
                     } \
                 } \
                 else { \
-                    X##bu ^= input[ 4]; \
-                    X##ga ^= input[ 5]; \
+                    X##bu ^= HTOLE64(input[ 4]); \
+                    X##ga ^= HTOLE64(input[ 5]); \
                     if (laneCount < 7) { \
                     } \
                     else { \
-                        X##ge ^= input[ 6]; \
+                        X##ge ^= HTOLE64(input[ 6]); \
                     } \
                 } \
             } \
         } \
         else { \
-            X##ba ^= input[ 0]; \
-            X##be ^= input[ 1]; \
-            X##bi ^= input[ 2]; \
-            X##bo ^= input[ 3]; \
-            X##bu ^= input[ 4]; \
-            X##ga ^= input[ 5]; \
-            X##ge ^= input[ 6]; \
-            X##gi ^= input[ 7]; \
+            X##ba ^= HTOLE64(input[ 0]); \
+            X##be ^= HTOLE64(input[ 1]); \
+            X##bi ^= HTOLE64(input[ 2]); \
+            X##bo ^= HTOLE64(input[ 3]); \
+            X##bu ^= HTOLE64(input[ 4]); \
+            X##ga ^= HTOLE64(input[ 5]); \
+            X##ge ^= HTOLE64(input[ 6]); \
+            X##gi ^= HTOLE64(input[ 7]); \
             if (laneCount < 12) { \
                 if (laneCount < 10) { \
                     if (laneCount < 9) { \
                     } \
                     else { \
-                        X##go ^= input[ 8]; \
+                        X##go ^= HTOLE64(input[ 8]); \
                     } \
                 } \
                 else { \
-                    X##go ^= input[ 8]; \
-                    X##gu ^= input[ 9]; \
+                    X##go ^= HTOLE64(input[ 8]); \
+                    X##gu ^= HTOLE64(input[ 9]); \
                     if (laneCount < 11) { \
                     } \
                     else { \
-                        X##ka ^= input[10]; \
+                        X##ka ^= HTOLE64(input[10]); \
                     } \
                 } \
             } \
             else { \
-                X##go ^= input[ 8]; \
-                X##gu ^= input[ 9]; \
-                X##ka ^= input[10]; \
-                X##ke ^= input[11]; \
+                X##go ^= HTOLE64(input[ 8]); \
+                X##gu ^= HTOLE64(input[ 9]); \
+                X##ka ^= HTOLE64(input[10]); \
+                X##ke ^= HTOLE64(input[11]); \
                 if (laneCount < 14) { \
                     if (laneCount < 13) { \
                     } \
                     else { \
-                        X##ki ^= input[12]; \
+                        X##ki ^= HTOLE64(input[12]); \
                     } \
                 } \
                 else { \
-                    X##ki ^= input[12]; \
-                    X##ko ^= input[13]; \
+                    X##ki ^= HTOLE64(input[12]); \
+                    X##ko ^= HTOLE64(input[13]); \
                     if (laneCount < 15) { \
                     } \
                     else { \
-                        X##ku ^= input[14]; \
+                        X##ku ^= HTOLE64(input[14]); \
                     } \
                 } \
             } \
         } \
     } \
     else { \
-        X##ba ^= input[ 0]; \
-        X##be ^= input[ 1]; \
-        X##bi ^= input[ 2]; \
-        X##bo ^= input[ 3]; \
-        X##bu ^= input[ 4]; \
-        X##ga ^= input[ 5]; \
-        X##ge ^= input[ 6]; \
-        X##gi ^= input[ 7]; \
-        X##go ^= input[ 8]; \
-        X##gu ^= input[ 9]; \
-        X##ka ^= input[10]; \
-        X##ke ^= input[11]; \
-        X##ki ^= input[12]; \
-        X##ko ^= input[13]; \
-        X##ku ^= input[14]; \
-        X##ma ^= input[15]; \
+        X##ba ^= HTOLE64(input[ 0]); \
+        X##be ^= HTOLE64(input[ 1]); \
+        X##bi ^= HTOLE64(input[ 2]); \
+        X##bo ^= HTOLE64(input[ 3]); \
+        X##bu ^= HTOLE64(input[ 4]); \
+        X##ga ^= HTOLE64(input[ 5]); \
+        X##ge ^= HTOLE64(input[ 6]); \
+        X##gi ^= HTOLE64(input[ 7]); \
+        X##go ^= HTOLE64(input[ 8]); \
+        X##gu ^= HTOLE64(input[ 9]); \
+        X##ka ^= HTOLE64(input[10]); \
+        X##ke ^= HTOLE64(input[11]); \
+        X##ki ^= HTOLE64(input[12]); \
+        X##ko ^= HTOLE64(input[13]); \
+        X##ku ^= HTOLE64(input[14]); \
+        X##ma ^= HTOLE64(input[15]); \
         if (laneCount < 24) { \
             if (laneCount < 20) { \
                 if (laneCount < 18) { \
                     if (laneCount < 17) { \
                     } \
                     else { \
-                        X##me ^= input[16]; \
+                        X##me ^= HTOLE64(input[16]); \
                     } \
                 } \
                 else { \
-                    X##me ^= input[16]; \
-                    X##mi ^= input[17]; \
+                    X##me ^= HTOLE64(input[16]); \
+                    X##mi ^= HTOLE64(input[17]); \
                     if (laneCount < 19) { \
                     } \
                     else { \
-                        X##mo ^= input[18]; \
+                        X##mo ^= HTOLE64(input[18]); \
                     } \
                 } \
             } \
             else { \
-                X##me ^= input[16]; \
-                X##mi ^= input[17]; \
-                X##mo ^= input[18]; \
-                X##mu ^= input[19]; \
+                X##me ^= HTOLE64(input[16]); \
+                X##mi ^= HTOLE64(input[17]); \
+                X##mo ^= HTOLE64(input[18]); \
+                X##mu ^= HTOLE64(input[19]); \
                 if (laneCount < 22) { \
                     if (laneCount < 21) { \
                     } \
                     else { \
-                        X##sa ^= input[20]; \
+                        X##sa ^= HTOLE64(input[20]); \
                     } \
                 } \
                 else { \
-                    X##sa ^= input[20]; \
-                    X##se ^= input[21]; \
+                    X##sa ^= HTOLE64(input[20]); \
+                    X##se ^= HTOLE64(input[21]); \
                     if (laneCount < 23) { \
                     } \
                     else { \
-                        X##si ^= input[22]; \
+                        X##si ^= HTOLE64(input[22]); \
                     } \
                 } \
             } \
         } \
         else { \
-            X##me ^= input[16]; \
-            X##mi ^= input[17]; \
-            X##mo ^= input[18]; \
-            X##mu ^= input[19]; \
-            X##sa ^= input[20]; \
-            X##se ^= input[21]; \
-            X##si ^= input[22]; \
-            X##so ^= input[23]; \
+            X##me ^= HTOLE64(input[16]); \
+            X##mi ^= HTOLE64(input[17]); \
+            X##mo ^= HTOLE64(input[18]); \
+            X##mu ^= HTOLE64(input[19]); \
+            X##sa ^= HTOLE64(input[20]); \
+            X##se ^= HTOLE64(input[21]); \
+            X##si ^= HTOLE64(input[22]); \
+            X##so ^= HTOLE64(input[23]); \
             if (laneCount < 25) { \
             } \
             else { \
-                X##su ^= input[24]; \
+                X##su ^= HTOLE64(input[24]); \
             } \
         } \
     }
