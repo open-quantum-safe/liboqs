@@ -2,6 +2,8 @@ version: 1.0.{build}
 
 image: Visual Studio 2017
 
+platform: x64
+
 build:
   verbosity: minimal
 
@@ -11,21 +13,23 @@ branches:
     - /master-new-.*/
 
 configuration:
+  - Debug
+  - DebugDLL
   - Release
   - ReleaseDLL
 
 test_script:
 - cmd: >-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\test_kem.exe
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\test_kem.exe
 
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\test_sig.exe
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\test_sig.exe
 
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\example_kem.exe
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\example_kem.exe
 
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\kat_kem.exe
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\kat_kem.exe
 
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\kat-check.bat
 
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\speed_kem.exe
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\speed_kem.exe
 
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\x64\%CONFIGURATION%\speed_sig.exe
+    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\speed_sig.exe

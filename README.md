@@ -105,6 +105,19 @@ You need to install the following packages using brew (or a package manager of y
 
 	brew install autoconf automake libtool openssl wget
 
+### Install dependencies for OpenBSD
+
+You need to install the following packages using pkg_add:
+
+	pkg_add automake libtool
+
+On OpenBSD you have to explicitly set the environment variables `AUTOCONF_VERSION` and 
+`AUTOMAKE_VERSION` to a version installed on your system.
+
+	export AUTOCONF_VERSION=`ls -1 /usr/local/bin/autoreconf-* | sort | tail -n 1 | cut -d'-' -f2`
+	export AUTOMAKE_VERSION=`ls -1 /usr/local/bin/automake-* | sort | tail -n 1 | cut -d'-' -f2`
+
+
 ### Building
 
 To build, first clone or download the source from GitHub:

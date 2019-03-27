@@ -16,6 +16,9 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
     linux*)
           linux=true
           ;;
+    openbsd*)
+          openbsd=true
+          ;;
       *)
           #Default Case
           AC_MSG_ERROR([Your platform is not currently supported])
@@ -24,6 +27,7 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
 
   AM_CONDITIONAL([ON_DARWIN], [test "x$darwin" = xtrue])
   AM_CONDITIONAL([ON_LINUX], [test "x$linux" = xtrue])
+  AM_CONDITIONAL([ON_OPENBSD], [test "x$openbsd" = xtrue])
 
   # Enable assembly optimizations here
   # Appearenly asm optimizations do not work well with darwin
