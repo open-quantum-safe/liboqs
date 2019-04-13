@@ -47,12 +47,8 @@
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
-/** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
-#define OQS_KEM_alg_frodokem_640_cshake "FrodoKEM-640-cSHAKE"
-/** Algorithm identifier for FrodoKEM-976-AES KEM. */
-#define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
-/** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
-#define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
+/** Algorithm identifier for FrodoKEM-640-SHAKE KEM. */
+#define OQS_KEM_alg_frodokem_640_shake "FrodoKEM-640-SHAKE"
 /** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
 /** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
@@ -73,7 +69,7 @@
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 23
+#define OQS_KEM_algs_length 21
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
