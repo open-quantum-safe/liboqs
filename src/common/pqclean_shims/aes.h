@@ -19,8 +19,11 @@ static void aes128_keyexp(aes128ctx *r, const unsigned char *key) {
 }
 
 static void aes128_ecb(unsigned char *out, const unsigned char *in, size_t nblocks, aes128ctx *ctx) {
-    OQS_AES128_ECB_enc_sch(in, nblocks * AES_BLOCKBYTES, ctx, out);
-    OQS_AES128_free_schedule(ctx);
+    OQS_AES128_ECB_enc_sch(in, nblocks * AES_BLOCKBYTES, *ctx, out);
+    OQS_AES128_free_schedule(*ctx);
+    // FIXME: PQClean AES API expects that aes128_ecb can be called multiple 
+    // times with the same key schedule, but this instantiation does not, since
+    // it frees the key schedule immediately
 }
 
 #endif
