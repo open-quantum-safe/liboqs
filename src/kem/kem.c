@@ -98,25 +98,25 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_976_aes)) {
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_976_aes)) {
 #ifdef OQS_ENABLE_KEM_frodokem_976_aes
 		return OQS_KEM_frodokem_976_aes_new();
 #else
 		return NULL;
 #endif
-} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_976_shake)) {
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_976_shake)) {
 #ifdef OQS_ENABLE_KEM_frodokem_976_shake
 		return OQS_KEM_frodokem_976_shake_new();
 #else
 		return NULL;
 #endif
-} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_1344_aes)) {
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_1344_aes)) {
 #ifdef OQS_ENABLE_KEM_frodokem_1344_aes
 		return OQS_KEM_frodokem_1344_aes_new();
 #else
 		return NULL;
 #endif
-} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_1344_shake)) {
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_1344_shake)) {
 #ifdef OQS_ENABLE_KEM_frodokem_1344_shake
 		return OQS_KEM_frodokem_1344_shake_new();
 #else

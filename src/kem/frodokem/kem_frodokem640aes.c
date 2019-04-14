@@ -33,17 +33,17 @@ int PQCLEAN_FRODOKEM640AES_CLEAN_crypto_kem_enc(unsigned char *ct, unsigned char
 int PQCLEAN_FRODOKEM640AES_CLEAN_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
 
 OQS_API OQS_STATUS OQS_KEM_frodokem_640_aes_keypair(uint8_t *public_key,
-                                                      uint8_t *secret_key) {
+                                                    uint8_t *secret_key) {
 	return (OQS_STATUS) PQCLEAN_FRODOKEM640AES_CLEAN_crypto_kem_keypair(public_key, secret_key);
 }
 OQS_API OQS_STATUS OQS_KEM_frodokem_640_aes_encaps(uint8_t *ciphertext,
-                                                     uint8_t *shared_secret,
-                                                     const uint8_t *public_key) {
+                                                   uint8_t *shared_secret,
+                                                   const uint8_t *public_key) {
 	return (OQS_STATUS) PQCLEAN_FRODOKEM640AES_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
 }
 OQS_API OQS_STATUS OQS_KEM_frodokem_640_aes_decaps(uint8_t *shared_secret,
-                                                     const unsigned char *ciphertext,
-                                                     const uint8_t *secret_key) {
+                                                   const unsigned char *ciphertext,
+                                                   const uint8_t *secret_key) {
 	return (OQS_STATUS) PQCLEAN_FRODOKEM640AES_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 }
 
