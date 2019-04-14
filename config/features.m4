@@ -82,6 +82,10 @@ AC_DEFUN([CONFIG_FEATURES],
   AM_COND_IF([ENABLE_KEM_FRODOKEM], [
     AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_aes,    1, "Define to 1 when FrodoKEM-640-AES enabled")
     AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_shake,  1, "Define to 1 when FrodoKEM-640-SHAKE enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_aes,    1, "Define to 1 when FrodoKEM-976-AES enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_shake,  1, "Define to 1 when FrodoKEM-976-SHAKE enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_1344_aes,   1, "Define to 1 when FrodoKEM-1344-AES enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_1344_shake, 1, "Define to 1 when FrodoKEM-1344-SHAKE enabled")
   ])
 
   AM_COND_IF([ENABLE_KEM_SIKE], [
