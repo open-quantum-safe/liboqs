@@ -30,6 +30,9 @@ OQS_API int OQS_KEM_alg_count() {
 }
 
 OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
+	if (method_name == NULL) {
+		return NULL;
+	}
 	if (0 == strcasecmp(method_name, OQS_KEM_alg_default)) {
 		return OQS_KEM_new(OQS_KEM_DEFAULT);
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_bike1_l1)) {
