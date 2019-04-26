@@ -7,18 +7,6 @@ EXPORTS
 	OQS_KEM_encaps
 	OQS_KEM_decaps
 	OQS_KEM_free
-	OQS_KEM_frodokem_640_aes_decaps
-	OQS_KEM_frodokem_640_aes_encaps
-	OQS_KEM_frodokem_640_aes_keypair
-	OQS_KEM_frodokem_640_cshake_decaps
-	OQS_KEM_frodokem_640_cshake_encaps
-	OQS_KEM_frodokem_640_cshake_keypair
-	OQS_KEM_frodokem_976_aes_decaps
-	OQS_KEM_frodokem_976_aes_encaps
-	OQS_KEM_frodokem_976_aes_keypair
-	OQS_KEM_frodokem_976_cshake_decaps
-	OQS_KEM_frodokem_976_cshake_encaps
-	OQS_KEM_frodokem_976_cshake_keypair
 	OQS_KEM_kyber_512_cca_kem_keypair
 	OQS_KEM_kyber_512_cca_kem_encaps
 	OQS_KEM_kyber_512_cca_kem_decaps

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">
@@ -35,7 +35,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h" />
     <ClInclude Include="..\..\src\kem\newhopenist\kem_newhopenist.h" />
     <ClInclude Include="..\..\src\kem\kem.h" />
@@ -84,12 +83,6 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\frodo640_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\frodo640_cshake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\frodo976_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\frodo976_cshake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\util.c" />
     <ClCompile Include="..\..\src\kem\kyber\kem_kyber.c" />
     <ClCompile Include="..\..\src\kem\kyber\win_kyber1024.c" />
     <ClCompile Include="..\..\src\kem\kyber\win_kyber512.c" />

@@ -2,10 +2,6 @@
 #define __WINCONFIG_H
 
 /* Enable schemes supported on Windows */
-#define OQS_ENABLE_KEM_frodokem_640_aes
-#define OQS_ENABLE_KEM_frodokem_976_aes
-#define OQS_ENABLE_KEM_frodokem_640_cshake
-#define OQS_ENABLE_KEM_frodokem_976_cshake
 #define OQS_ENABLE_KEM_kyber_512_cca_kem
 #define OQS_ENABLE_KEM_kyber_768_cca_kem
 #define OQS_ENABLE_KEM_kyber_1024_cca_kem
