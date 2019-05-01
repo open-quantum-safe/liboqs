@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="..\..\src\common\common.c">
@@ -25,23 +25,95 @@
     <ClCompile Include="..\..\src\kem\kem.c">
       <Filter>kem</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c">
-      <Filter>frodo</Filter>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c">
+      <Filter>frodo\640aes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\frodo640_aes.c">
-      <Filter>frodo</Filter>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\kem.c">
+      <Filter>frodo\640aes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\frodo640_cshake.c">
-      <Filter>frodo</Filter>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\matrix_aes.c">
+      <Filter>frodo\640aes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\frodo976_aes.c">
-      <Filter>frodo</Filter>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\noise.c">
+      <Filter>frodo\640aes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\frodo976_cshake.c">
-      <Filter>frodo</Filter>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\util.c">
+      <Filter>frodo\640aes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\util.c">
-      <Filter>frodo</Filter>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c">
+      <Filter>frodo\640shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\kem.c">
+      <Filter>frodo\640shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\matrix_shake.c">
+      <Filter>frodo\640shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\noise.c">
+      <Filter>frodo\640shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\util.c">
+      <Filter>frodo\640shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c">
+      <Filter>frodo\976aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\kem.c">
+      <Filter>frodo\976aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\matrix_aes.c">
+      <Filter>frodo\976aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\noise.c">
+      <Filter>frodo\976aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\util.c">
+      <Filter>frodo\976aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c">
+      <Filter>frodo\976shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\kem.c">
+      <Filter>frodo\976shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\matrix_shake.c">
+      <Filter>frodo\976shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\noise.c">
+      <Filter>frodo\976shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\util.c">
+      <Filter>frodo\976shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c">
+      <Filter>frodo\1344aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\kem.c">
+      <Filter>frodo\1344aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\matrix_aes.c">
+      <Filter>frodo\1344aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\noise.c">
+      <Filter>frodo\1344aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\util.c">
+      <Filter>frodo\1344aes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c">
+      <Filter>frodo\1344shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\kem.c">
+      <Filter>frodo\1344shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\matrix_shake.c">
+      <Filter>frodo\1344shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\noise.c">
+      <Filter>frodo\1344shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\util.c">
+      <Filter>frodo\1344shake</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\sike\kem_sike.c">
       <Filter>sike</Filter>
@@ -285,6 +357,24 @@
     </Filter>
     <Filter Include="kyber">
       <UniqueIdentifier>{17171b11-2a2c-4084-a710-c555295e2484}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frodo\640aes">
+      <UniqueIdentifier>{453e77f7-95b8-4adc-adc8-033fe561c018}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frodo\976aes">
+      <UniqueIdentifier>{c94df6b4-9bff-4578-afc4-b6231012249a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frodo\1344aes">
+      <UniqueIdentifier>{3c0ce99d-3db6-4a29-8c4d-d1fd4fcda1ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frodo\640shake">
+      <UniqueIdentifier>{0e47e6c0-e5f5-4614-8d31-e0d3caea98eb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frodo\976shake">
+      <UniqueIdentifier>{90a8df32-f17b-431b-b488-7a21b1c7d2d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frodo\1344shake">
+      <UniqueIdentifier>{de0439be-1a4f-42e3-90f1-e667ccad442b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

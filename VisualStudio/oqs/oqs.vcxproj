@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">
@@ -84,12 +84,36 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\frodo640_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\frodo640_cshake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\frodo976_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\frodo976_cshake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\matrix_aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\matrix_shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\matrix_aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\matrix_shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\matrix_aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\matrix_shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\util.c" />
     <ClCompile Include="..\..\src\kem\kyber\kem_kyber.c" />
     <ClCompile Include="..\..\src\kem\kyber\win_kyber1024.c" />
     <ClCompile Include="..\..\src\kem\kyber\win_kyber512.c" />
@@ -253,6 +277,7 @@
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -287,6 +312,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -323,6 +349,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -363,6 +390,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -404,6 +432,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -442,6 +471,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -482,6 +512,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -526,6 +557,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
+      <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
