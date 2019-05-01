@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">
@@ -35,7 +35,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h" />
     <ClInclude Include="..\..\src\kem\newhopenist\kem_newhopenist.h" />
     <ClInclude Include="..\..\src\kem\kem.h" />

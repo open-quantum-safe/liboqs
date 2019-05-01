@@ -233,9 +233,6 @@
     <ClInclude Include="..\..\src\kem\kem.h">
       <Filter>kem</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h">
-      <Filter>frodo</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h">
       <Filter>sike</Filter>
     </ClInclude>
@@ -345,9 +342,6 @@
     </Filter>
     <Filter Include="kem">
       <UniqueIdentifier>{ceb9c773-d92e-44b7-916a-eb1d6a2ec89b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodo">
-      <UniqueIdentifier>{10d21755-2db3-4ce1-a5ce-fbfe1aadcc53}</UniqueIdentifier>
     </Filter>
     <Filter Include="sike">
       <UniqueIdentifier>{620a9f8e-2013-4cb3-ad37-2ee4348ed893}</UniqueIdentifier>
