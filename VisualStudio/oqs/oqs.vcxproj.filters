@@ -136,6 +136,30 @@
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-opt64.c">
       <Filter>picnic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sig\picnic\external\sha3\KeccakHashtimes4.c">
+      <Filter>picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\picnic\external\sha3\KeccakSpongeWidth1600times4.c">
+      <Filter>picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_impl.c">
+      <Filter>picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_simulate.c">
+      <Filter>picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_simulate_mul.c">
+      <Filter>picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_tree.c">
+      <Filter>picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_types.c">
+      <Filter>picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-times4-on1.c">
+      <Filter>picnic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\oqs.h" />
@@ -252,6 +276,30 @@
       <Filter>picnic</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sig\picnic\external\sha3\KeccakSpongeWidth1600.h">
+      <Filter>picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\picnic\external\sha3\KeccakHashtimes4.h">
+      <Filter>picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\picnic\external\sha3\KeccakSpongeWidth1600times4.h">
+      <Filter>picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_impl.h">
+      <Filter>picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_simulate.h">
+      <Filter>picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_simulate_mul.h">
+      <Filter>picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_tree.h">
+      <Filter>picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_types.h">
+      <Filter>picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-SnP.h">
       <Filter>picnic</Filter>
     </ClInclude>
   </ItemGroup>

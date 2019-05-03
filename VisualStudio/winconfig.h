@@ -21,5 +21,8 @@
 #define OQS_ENABLE_SIG_picnic_L3_UR
 #define OQS_ENABLE_SIG_picnic_L5_FS
 #define OQS_ENABLE_SIG_picnic_L5_UR
+#define OQS_ENABLE_SIG_picnic2_L1_FS
+#define OQS_ENABLE_SIG_picnic2_L3_FS
+#define OQS_ENABLE_SIG_picnic2_L5_FS
 
 #endif

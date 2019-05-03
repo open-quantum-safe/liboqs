@@ -18,6 +18,9 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	    OQS_SIG_alg_picnic_L3_UR,
 	    OQS_SIG_alg_picnic_L5_FS,
 	    OQS_SIG_alg_picnic_L5_UR,
+	    OQS_SIG_alg_picnic2_L1_FS,
+	    OQS_SIG_alg_picnic2_L3_FS,
+	    OQS_SIG_alg_picnic2_L5_FS,
 	    OQS_SIG_alg_qTESLA_I,
 	    OQS_SIG_alg_qTESLA_III_size,
 	    OQS_SIG_alg_qTESLA_III_speed};
@@ -68,6 +71,24 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L5_UR)) {
 #ifdef OQS_ENABLE_SIG_picnic_L5_UR
 		return OQS_SIG_picnic_L5_UR_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic2_L1_FS)) {
+#ifdef OQS_ENABLE_SIG_picnic2_L1_FS
+		return OQS_SIG_picnic2_L1_FS_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic2_L3_FS)) {
+#ifdef OQS_ENABLE_SIG_picnic2_L3_FS
+		return OQS_SIG_picnic2_L3_FS_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic2_L5_FS)) {
+#ifdef OQS_ENABLE_SIG_picnic2_L5_FS
+		return OQS_SIG_picnic2_L5_FS_new();
 #else
 		return NULL;
 #endif

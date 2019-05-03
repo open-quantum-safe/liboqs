@@ -10,6 +10,10 @@
 #ifndef SIMD_H
 #define SIMD_H
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "macros.h"
 
 #if defined(_MSC_VER)
