@@ -11,7 +11,7 @@ CLANGFORMAT ?= clang-format-3.9
 
 SUBDIRS = ${SRCDIR} . tests
 
-BUILT_SOURCES = links
+BUILT_SOURCES = oqsconfigh links
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
@@ -39,10 +39,16 @@ endif
 if ENABLE_KEM_NEWHOPE
 liboqs_la_LIBADD += src/kem/newhopenist/libkemnewhopenist.la
 endif
+if ENABLE_KEM_KYBER
+liboqs_la_LIBADD += src/kem/kyber/libkemkyber.la
+endif
+
+oqsconfigh:
+	grep OQS_ config.h > src/oqsconfig.h
 
 installheaderdir=$(includedir)/oqs
-installheader_HEADERS=config.h \
-	src/oqs.h \
+installheader_HEADERS= src/oqs.h \
+	src/oqsconfig.h \
 	src/common/common.h \
 	src/common/rand.h \
 	src/crypto/aes/aes.h \
@@ -51,6 +57,7 @@ installheader_HEADERS=config.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/newhopenist/kem_newhopenist.h \
+	src/kem/kyber/kem_kyber.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/picnic/sig_picnic.h \
@@ -71,10 +78,10 @@ kat: clean-kats check
 	tests/kat_kem
 	scripts/check_kats.sh
 
-links:
+links: oqsconfigh
 	$(MKDIR_P) include/oqs
-	cp -f config.h include/oqs
 	cp -f src/oqs.h include/oqs
+	cp -f src/oqsconfig.h include/oqs
 	cp -f src/common/common.h include/oqs
 	cp -f src/common/rand.h include/oqs
 	cp -f src/crypto/aes/aes.h include/oqs
@@ -84,6 +91,7 @@ links:
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kem/newhopenist/kem_newhopenist.h include/oqs
+	cp -f src/kem/kyber/kem_kyber.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig/picnic/sig_picnic.h include/oqs
 	cp -f src/sig/qtesla/sig_qtesla.h include/oqs
@@ -98,6 +106,6 @@ clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/
 
 prettyprint:
-	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | grep -v pqclean | xargs $(CLANGFORMAT) -style=file -i
 
 docs: links doxygen-run

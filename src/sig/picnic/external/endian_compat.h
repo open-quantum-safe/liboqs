@@ -11,8 +11,9 @@
 #define PICNIC_COMPAT_ENDIAN_H
 
 #include <stdint.h>
+#include "macros.h"
 
-#if defined(__GCC__) || defined(__clang__)
+#if defined(__GNUC__) || defined(__clang__)
 #define bswap16(x) __builtin_bswap16(x)
 #define bswap32(x) __builtin_bswap32(x)
 #define bswap64(x) __builtin_bswap64(x)
@@ -23,16 +24,16 @@
 #define bswap32(x) _byteswap_ulong(x)
 #define bswap64(x) _byteswap_uint64(x)
 #else
-static inline uint16_t bswap16(uint16_t x) {
+static inline uint16_t ATTR_CONST bswap16(uint16_t x) {
   return ((x & 0xff00) >> 8) | ((x & 0x00ff) << 8);
 }
 
-static inline uint32_t bswap32(uint32_t x) {
+static inline uint32_t ATTR_CONST bswap32(uint32_t x) {
   return ((x & 0xff000000) >> 24) | ((x & 0x00ff0000) >> 8) | ((x & 0x0000ff00) << 8) |
          ((x & 0x000000ff) << 24);
 }
 
-static inline uint64_t bswap64(uint64_t x) {
+static inline uint64_t AATR_CONST bswap64(uint64_t x) {
   return ((x & UINT64_C(0xff00000000000000)) >> 56) | ((x & UINT64_C(0x00ff000000000000)) >> 40) |
          ((x & UINT64_C(0x0000ff0000000000)) >> 24) | ((x & UINT64_C(0x000000ff00000000)) >> 8) |
          ((x & UINT64_C(0x00000000ff000000)) << 8) | ((x & UINT64_C(0x0000000000ff0000)) << 24) |
@@ -58,9 +59,15 @@ static inline uint64_t bswap64(uint64_t x) {
 #endif
 #endif
 
-/* OS X / OpenBSD */
-#if defined(__APPLE__) || defined(__OpenBSD__)
+/* OS X */
+#if defined(__APPLE__)
 #include <machine/endian.h>
+#endif
+
+/* OpenBSD */
+#if defined(__OpenBSD__)
+#include <machine/endian.h>
+#define HAVE_HOSTSWAP
 #endif
 
 /* other BSDs */

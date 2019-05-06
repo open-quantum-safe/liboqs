@@ -47,16 +47,26 @@
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
-/** Algorithm identifier for FrodoKEM-640-cSHAKE KEM. */
-#define OQS_KEM_alg_frodokem_640_cshake "FrodoKEM-640-cSHAKE"
+/** Algorithm identifier for FrodoKEM-640-SHAKE KEM. */
+#define OQS_KEM_alg_frodokem_640_shake "FrodoKEM-640-SHAKE"
 /** Algorithm identifier for FrodoKEM-976-AES KEM. */
 #define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
-/** Algorithm identifier for FrodoKEM-976-cSHAKE KEM. */
-#define OQS_KEM_alg_frodokem_976_cshake "FrodoKEM-976-cSHAKE"
+/** Algorithm identifier for FrodoKEM-976-SHAKE KEM. */
+#define OQS_KEM_alg_frodokem_976_shake "FrodoKEM-976-SHAKE"
+/** Algorithm identifier for FrodoKEM-1344-AES KEM. */
+#define OQS_KEM_alg_frodokem_1344_aes "FrodoKEM-1344-AES"
+/** Algorithm identifier for FrodoKEM-1344-SHAKE KEM. */
+#define OQS_KEM_alg_frodokem_1344_shake "FrodoKEM-1344-SHAKE"
 /** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
 /** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
+/** Algorithm identifier for Kyber-512-CCA-KEM KEM. */
+#define OQS_KEM_alg_kyber_512_cca_kem "Kyber-512-CCA-KEM"
+/** Algorithm identifier for Kyber-768-CCA-KEM KEM. */
+#define OQS_KEM_alg_kyber_768_cca_kem "Kyber-768-CCA-KEM"
+/** Algorithm identifier for Kyber-1024-CCA-KEM KEM. */
+#define OQS_KEM_alg_kyber_1024_cca_kem "Kyber-1024-CCA-KEM"
 /** Algorithm identifier for Sidh p503 KEM. */
 #define OQS_KEM_alg_sidh_p503 "Sidh-p503"
 /** Algorithm identifier for Sidh p751 KEM. */
@@ -67,7 +77,7 @@
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
 // EDIT-WHEN-ADDING-KEM
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 20
+#define OQS_KEM_algs_length 25
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
@@ -81,6 +91,16 @@
  * @return Algorithm identifier as a string, or NULL.
  */
 OQS_API const char *OQS_KEM_alg_identifier(size_t i);
+
+/**
+ * Returns the number of key encapsulation mechanisms in liboqs.  They can be enumerated with
+ * OQS_KEM_alg_identifier.
+ *
+ * Note that some mechanisms may be disabled at compile time.
+ *
+ * @return The number of key encapsulation mechanisms.
+ */
+OQS_API int OQS_KEM_alg_count();
 
 /**
  * Key encapsulation mechanism object
@@ -224,6 +244,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_bike.h>
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_newhopenist.h>
+#include <oqs/kem_kyber.h>
 #include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 

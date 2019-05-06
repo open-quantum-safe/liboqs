@@ -46,6 +46,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
   ARG_DISBL_SET_WRAP([kem-newhope],  [kem_newhope],  [ENABLE_KEM_NEWHOPE],  [src/kem/newhopenist])
+  ARG_DISBL_SET_WRAP([kem-kyber],  [kem_kyber],  [ENABLE_KEM_KYBER],  [src/kem/kyber])
 
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
                      [ENABLE_SIG_PICNIC], [src/sig/picnic])
@@ -74,15 +75,17 @@ AC_DEFUN([CONFIG_FEATURES],
 
     AM_COND_IF([USE_AVX2_INSTRUCTIONS],
                [AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [test x$gcc_cv_compiler = xtrue])
-                AM_COND_IF([BIKE_ADDITIONAL_IMPL], [AC_DEFINE(BIKE_ADDITIONAL_IMPL, 1, "Define to 1 when BIKE uses the additional implementation")])
+                AM_COND_IF([BIKE_ADDITIONAL_IMPL], [AC_DEFINE(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION, 1, "Define to 1 when BIKE uses the additional implementation")])
                ])
   ])
 
   AM_COND_IF([ENABLE_KEM_FRODOKEM], [
     AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_aes,    1, "Define to 1 when FrodoKEM-640-AES enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_cshake, 1, "Define to 1 when FrodoKEM-640-cSHAKE enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_shake,  1, "Define to 1 when FrodoKEM-640-SHAKE enabled")
     AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_aes,    1, "Define to 1 when FrodoKEM-976-AES enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_cshake, 1, "Define to 1 when FrodoKEM-976-cSHAKE enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_shake,  1, "Define to 1 when FrodoKEM-976-SHAKE enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_1344_aes,   1, "Define to 1 when FrodoKEM-1344-AES enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_1344_shake, 1, "Define to 1 when FrodoKEM-1344-SHAKE enabled")
   ])
 
   AM_COND_IF([ENABLE_KEM_SIKE], [
@@ -112,5 +115,10 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_newhope_1024_cca_kem, 1, "Define to 1 when NewHope-1024-CCA-KEM enabled")
   ])
 
+  AM_COND_IF([ENABLE_KEM_KYBER], [
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_512_cca_kem, 1, "Define to 1 when Kyber-512-CCA-KEM enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_768_cca_kem, 1, "Define to 1 when Kyber-512-CCA-KEM enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_1024_cca_kem, 1, "Define to 1 when Kyber-1024-CCA-KEM enabled")
+  ])
 ]
 )

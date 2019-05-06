@@ -67,6 +67,10 @@ OQS_API OQS_STATUS crypto_kem_enc(unsigned char *ct, unsigned char *ss, const un
 
 	OQS_SHA3_shake256(k_coins_d + NEWHOPE_SYMBYTES, NEWHOPE_SYMBYTES, ct, NEWHOPE_CCAKEM_CIPHERTEXTBYTES); /* overwrite coins in k_coins_d with h(c) */
 	OQS_SHA3_shake256(ss, NEWHOPE_SYMBYTES, k_coins_d, 2 * NEWHOPE_SYMBYTES);                              /* hash concatenation of pre-k and h(c) to ss */
+
+	OQS_MEM_cleanse((void *) k_coins_d, 3 * NEWHOPE_SYMBYTES);
+	OQS_MEM_cleanse((void *) buf, 2 * NEWHOPE_SYMBYTES);
+
 	return OQS_SUCCESS;
 }
 
@@ -107,6 +111,9 @@ OQS_API OQS_STATUS crypto_kem_dec(unsigned char *ss, const unsigned char *ct, co
 	OQS_SHA3_shake256(k_coins_d + NEWHOPE_SYMBYTES, NEWHOPE_SYMBYTES, ct, NEWHOPE_CCAKEM_CIPHERTEXTBYTES); /* overwrite coins in k_coins_d with h(c)  */
 	cmov(k_coins_d, sk + NEWHOPE_CCAKEM_SECRETKEYBYTES - NEWHOPE_SYMBYTES, NEWHOPE_SYMBYTES, fail);        /* Overwrite pre-k with z on re-encryption failure */
 	OQS_SHA3_shake256(ss, NEWHOPE_SYMBYTES, k_coins_d, 2 * NEWHOPE_SYMBYTES);                              /* hash concatenation of pre-k and h(c) to k */
+
+	OQS_MEM_cleanse((void *) k_coins_d, 3 * NEWHOPE_SYMBYTES);
+	OQS_MEM_cleanse((void *) buf, 2 * NEWHOPE_SYMBYTES);
 
 	return (OQS_STATUS) -fail;
 }

@@ -1,7 +1,7 @@
 liboqs - master branch
 ======================
 
-liboqs is a C library for quantum-resistant cryptographic algorithms.  This branch of liboqs focuses on selected key encapsulations and signature algorithms.
+**liboqs** is a C library for quantum-resistant cryptographic algorithms.  This branch of liboqs focuses on selected key encapsulations and signature algorithms.
 
 Overview
 --------
@@ -84,12 +84,12 @@ Lifecycle for master branch
 
 **Algorithm compatibility:** Unlike existing standardization cryptographic algorithms (SHA-2, SHA-3, PKCS\#1v1.5, nistp256, ...), post-quantum algorithms are under active development, and the mathematical algorithm of a cryptographic scheme may change: a particular name (e.g., "FrodoKEM-AES-640") may refer to different mathematical algorithms over time.  liboqs may update implementations as algorithms evolve.  During the $0.Y.Z$ phase of liboqs, versions $0.Y.Z$ and version $0.(Y+1).Z'$ may not be interoperable.  liboqs-reliant applications can check the `alg_version` member of the `OQS_KEM` data structure for each algorithm to obtain an identifier of the algorithm version used in a particular implementation; implementations returning the same `alg_version` for an algorithm will be interoperable.
 
-**API stability:** The public API of liboqs master branch is currently considered to be the functions and macros in `oqs/common.h`, `oqs/config.h`, `oqs/kem.h`, `oqs/rand.h`, `oqs/sig.h`, and includes all functions marked with `OQS_API`.  During the $0.Y.Z$ phase of liboqs, incompatible changes to the public API will lead to incrementing $Y$.
+**API stability:** The public API of liboqs master branch is currently considered to be the functions and macros in `oqs/common.h`, `oqs/oqsconfig.h`, `oqs/kem.h`, `oqs/rand.h`, `oqs/sig.h`, and includes all functions marked with `OQS_API`.  During the $0.Y.Z$ phase of liboqs, incompatible changes to the public API will lead to incrementing $Y$.
 
 Building and running liboqs master branch
 -----------------------------------------
 
-Builds are tested using the Travis continuous integration system on macOS 10.13.3 (clang 9.1.0) and Ubuntu 14.04.5 (gcc.4.8, gcc-4.9, gcc-5, gcc-6).
+Builds are tested using the Travis continuous integration system on macOS 10.13.3 (clang 9.1.0) and Ubuntu 14.04.5 (gcc.4.8, gcc-4.9, gcc-5, gcc-6).  It has also been tested manually on macOS 10.14 (clang 10.0.0), Ubuntu 14.04 (gcc-5), Ubuntu 16.04 (gcc-5), and Ubuntu 18.04.1 (gcc-7).
 
 - [Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
 
@@ -105,20 +105,32 @@ You need to install the following packages using brew (or a package manager of y
 
 	brew install autoconf automake libtool openssl wget
 
+### Install dependencies for OpenBSD
+
+You need to install the following packages using pkg_add:
+
+	pkg_add automake libtool
+
+On OpenBSD you have to explicitly set the environment variables `AUTOCONF_VERSION` and 
+`AUTOMAKE_VERSION` to a version installed on your system.
+
+	export AUTOCONF_VERSION=`ls -1 /usr/local/bin/autoreconf-* | sort | tail -n 1 | cut -d'-' -f2`
+	export AUTOMAKE_VERSION=`ls -1 /usr/local/bin/automake-* | sort | tail -n 1 | cut -d'-' -f2`
+
+
 ### Building
 
 To build, first clone or download the source from GitHub:
 
-	git clone https://github.com/open-quantum-safe/liboqs.git
+	git clone -b master https://github.com/open-quantum-safe/liboqs.git
 	cd liboqs
-	git checkout master
 
 Run the build system:
 
 	autoreconf -i
 	./configure
 	make clean
-	make
+	make -j
 
 (If on macOS you encounter an error like `Can't exec "libtoolize": No such file or directory at ...`, try running with `LIBTOOLIZE=glibtoolize autoreconf -i`.)
 
@@ -132,7 +144,7 @@ There are also a variety of test programs built under the `tests` directory:
 
 - `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
 - `test_sig`: Simple test harness for all enabled key signature schemes
-- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values
+- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values using `scripts/check_cats.sh`
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
@@ -150,6 +162,22 @@ Builds are tested using the Appveyor continuous integration system on Windows Se
 
 The supported schemes are defined in the projects' `winconfig.h` file.
 
+Building and running on ARM
+---------------------------
+
+Binaries for ARM can be cross-compiled from Ubuntu Linux.  Builds are tested using the Travis continuous integration system on Ubuntu 14.04.5 with QEMU target CPU Cortex-A8.
+
+In order to cross compile, you need to have an appropriate toolchain installed, and to test you need QEMU installed.  On Ubuntu:
+
+	sudo apt install gcc-arm-linux-gnueabi libc6-dev-armel-cross qemu
+	
+Once the toolchain is installed, you can use the following scripts to build and test ARM builds from Ubuntu Linux:
+
+	scripts/arm-cross-compile.sh
+	scripts/arm-run-tests-qemu.sh
+
+At present there are still some quirks with our ARM build, including problems with the Picnic and qTESLA and the known answer tests causing build errors or segmentation faults.  See issues #461, #462, and #463.
+
 Documentation
 -------------
 
@@ -161,6 +189,10 @@ If you have Doxygen installed (Linux: `sudo apt install doxygen graphviz`; macOS
 
 Then open `docs/doxygen/html/index.html` in your web browser.
 
+### liboqs default algorithms
+
+The key encapsulation algorithm type `OQS_KEM_alg_default` and signature algorithm type `OQS_SIG_alg_default` are intended for testing purposes and can be changed at compile-time. Care should be exercised if these types are used for other purposes.
+
 License
 -------
 
@@ -170,7 +202,8 @@ liboqs includes some third party libraries or modules that are licensed differen
 
 - `src/crypto/aes/aes_c.c`: public domain
 - `src/crypto/sha3`: public domain
-- `src/sig_qtesla`: public domain
+- `src/kem/newhopenist/optimized`: public domain
+- `src/sig/qtesla/external`: public domain
 
 Team
 ----
@@ -185,6 +218,7 @@ Contributors to this master branch of liboqs include:
 - Maxime Anvari
 - Eric Crockett (Amazon Web Services)
 - Nir Drucker (Amazon Web Services)
+- Ben Davies (University of Waterloo)
 - Javad Doliskani (University of Waterloo)
 - Vlad Gheorghiu (evolutionQ)
 - Shay Gueron (Amazon Web Services)
@@ -192,10 +226,10 @@ Contributors to this master branch of liboqs include:
 - Shravan Mishra (University of Waterloo)
 - Christian Paquin (Microsoft Research)
 - Alex Parent (University of Waterloo)
+- Peter Schwabe (Radboud University Nijmegen)
 - Douglas Stebila (University of Waterloo)
 - [John Underhill](https://github.com/Steppenwolfe65/CEX)
 - Sebastian Verschoor (University of Waterloo)
-- Ben Davies (University of Waterloo)
 
 ### Support
 

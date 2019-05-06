@@ -1,16 +1,22 @@
 /*
-Implementation by the Keccak, Keyak and Ketje Teams, namely, Guido Bertoni,
-Joan Daemen, Michaël Peeters, Gilles Van Assche and Ronny Van Keer, hereby
-denoted as "the implementer".
+Implementation by the Keccak Team, namely, Guido Bertoni, Joan Daemen,
+Michaël Peeters, Gilles Van Assche and Ronny Van Keer,
+hereby denoted as "the implementer".
 
-For more information, feedback or questions, please refer to our websites:
-http://keccak.noekeon.org/
-http://keyak.noekeon.org/
-http://ketje.noekeon.org/
+For more information, feedback or questions, please refer to our website:
+https://keccak.team/
 
 To the extent possible under law, the implementer has waived all copyright
 and related or neighboring rights to the source code in this file.
 http://creativecommons.org/publicdomain/zero/1.0/
+
+---
+
+This file implements Keccak-p[1600] in a SnP-compatible way.
+Please refer to SnP-documentation.h for more details.
+
+This implementation comes with KeccakP-1600-SnP.h in the same folder.
+Please refer to LowLevel.build for the exact list of other files it must be combined with.
 */
 
 #include <string.h>
@@ -32,7 +38,6 @@ typedef unsigned long long int UINT64;
 #else
 static uint64_t ROL64(uint64_t x, unsigned int N) {
   static const unsigned int mask = (CHAR_BIT*sizeof(x) - 1);
-  // assert ( (c<=mask) &&"rotate by type width or more");
   N &= mask;
   return (x << N) | (x >> ((-N) & mask));
 }
@@ -155,13 +160,13 @@ void KeccakP1600_AddLanes(void *state, const unsigned char *data, unsigned int l
     }
 #else
     unsigned int i;
-    UINT8 *curData = data;
+    const UINT8 *curData = data;
     for(i=0; i<laneCount; i++, curData+=8) {
         UINT64 lane = (UINT64)curData[0]
-            | ((UINT64)curData[1] << 8)
+            | ((UINT64)curData[1] <<  8)
             | ((UINT64)curData[2] << 16)
             | ((UINT64)curData[3] << 24)
-            | ((UINT64)curData[4] <<32)
+            | ((UINT64)curData[4] << 32)
             | ((UINT64)curData[5] << 40)
             | ((UINT64)curData[6] << 48)
             | ((UINT64)curData[7] << 56);

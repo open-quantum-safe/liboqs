@@ -6,7 +6,7 @@
 //Determine whether the additional implementation is being used.
 #ifdef OQS_ENABLE_KEM_bike1_l1
 
-#ifdef BIKE_ADDITIONAL_IMPL
+#ifdef OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 #ifdef CONSTANT_TIME
 #define OQS_KEM_bike1_l1_length_secret_key 4670
 #else
@@ -34,7 +34,7 @@ OQS_API OQS_STATUS OQS_KEM_bike1_l1_decaps(uint8_t *shared_secret,
 
 #ifdef OQS_ENABLE_KEM_bike1_l3
 
-#ifdef BIKE_ADDITIONAL_IMPL
+#ifdef OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 #ifdef CONSTANT_TIME
 #define OQS_KEM_bike1_l3_length_secret_key 8116
 #else
@@ -62,7 +62,7 @@ OQS_API OQS_STATUS OQS_KEM_bike1_l3_decaps(uint8_t *shared_secret,
 
 #ifdef OQS_ENABLE_KEM_bike1_l5
 
-#ifdef BIKE_ADDITIONAL_IMPL
+#ifdef OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 #ifdef CONSTANT_TIME
 #define OQS_KEM_bike1_l5_length_secret_key 12364
 #else
@@ -90,7 +90,7 @@ OQS_API OQS_STATUS OQS_KEM_bike1_l5_decaps(uint8_t *shared_secret,
 
 #ifdef OQS_ENABLE_KEM_bike2_l1
 
-#ifdef BIKE_ADDITIONAL_IMPL
+#ifdef OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 #ifdef CONSTANT_TIME
 #define OQS_KEM_bike2_l1_length_secret_key 5941
 #else
@@ -120,7 +120,7 @@ OQS_API OQS_STATUS OQS_KEM_bike2_l1_decaps(uint8_t *shared_secret,
 
 #ifdef OQS_ENABLE_KEM_bike2_l3
 
-#ifdef BIKE_ADDITIONAL_IMPL
+#ifdef OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 #ifdef CONSTANT_TIME
 #define OQS_KEM_bike2_l3_length_secret_key 10598
 #else
@@ -151,7 +151,7 @@ OQS_API OQS_STATUS OQS_KEM_bike2_l3_decaps(uint8_t *shared_secret,
 
 #ifdef OQS_ENABLE_KEM_bike2_l5
 
-#ifdef BIKE_ADDITIONAL_IMPL
+#ifdef OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 #ifdef CONSTANT_TIME
 #define OQS_KEM_bike2_l5_length_secret_key 16458
 #else
@@ -182,7 +182,7 @@ OQS_API OQS_STATUS OQS_KEM_bike2_l5_decaps(uint8_t *shared_secret,
 
 #ifdef OQS_ENABLE_KEM_bike3_l1
 
-#ifdef BIKE_ADDITIONAL_IMPL
+#ifdef OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 #ifdef CONSTANT_TIME
 #define OQS_KEM_bike3_l1_length_secret_key 7628
 #else
@@ -211,7 +211,7 @@ OQS_API OQS_STATUS OQS_KEM_bike3_l1_decaps(uint8_t *shared_secret,
 
 #ifdef OQS_ENABLE_KEM_bike3_l3
 
-#ifdef BIKE_ADDITIONAL_IMPL
+#ifdef OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 #ifdef CONSTANT_TIME
 #define OQS_KEM_bike3_l3_length_secret_key 13996
 #else
@@ -239,7 +239,7 @@ OQS_API OQS_STATUS OQS_KEM_bike3_l3_decaps(uint8_t *shared_secret,
 
 #ifdef OQS_ENABLE_KEM_bike3_l5
 
-#ifdef BIKE_ADDITIONAL_IMPL
+#ifdef OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION
 #ifdef CONSTANT_TIME
 #define OQS_KEM_bike3_l5_length_secret_key 22244
 #else
