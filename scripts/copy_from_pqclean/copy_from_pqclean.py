@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import copy
+import glob
 import jinja2
 import os
 import shutil
@@ -19,25 +20,49 @@ def file_put_contents(filename, s, encoding=None):
     with open(filename, mode='w', encoding=encoding) as fh:
         fh.write(s)
 
-def generator(destination_filename, template_filename, pqclean_dir, family, scheme_desired):
+def generator(destination_filename, template_filename, family, scheme_desired):
     template = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', template_filename))
     f = copy.deepcopy(family)
-    f['family'] = f['name']
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
         assert(len(f['schemes']) == 1)
     for scheme in f['schemes']:
-        scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(pqclean_dir, 'crypto_kem', scheme['pqclean_scheme'], 'META.yml')))
         scheme['metadata']['implementations'] = [imp for imp in scheme['metadata']['implementations'] if imp['name'] == scheme['implementation']]
         assert(len(scheme['metadata']['implementations']) == 1)
-        scheme['metadata']['ind_cca'] = 'true'
     file_put_contents(destination_filename, jinja2.Template(template).render(f))
 
-instructions = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', 'copy_from_pqclean.yml'), encoding='utf-8')
-instructions = yaml.safe_load(instructions)
+def replacer(filename, families, delimiter):
+    fragments = glob.glob(os.path.join('scripts', 'copy_from_pqclean', filename, '*.fragment'))
+    contents = file_get_contents(filename)
+    for fragment in fragments:
+        template = file_get_contents(fragment)
+        identifier = os.path.splitext(os.path.basename(fragment))[0]
+        identifier_start = '{} OQS_COPY_FROM_PQCLEAN_FRAGMENT_{}_START'.format(delimiter, identifier.upper())
+        identifier_end = '{} OQS_COPY_FROM_PQCLEAN_FRAGMENT_{}_END'.format(delimiter, identifier.upper())
+        preamble = contents[:contents.find(identifier_start)]
+        postamble = contents[contents.find(identifier_end):]
+        contents = preamble + identifier_start + jinja2.Template(template).render({'families': families}) + postamble
+    file_put_contents(filename, contents)
 
-for family in instructions:
+def load_kems():
+    instructions = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', 'copy_from_pqclean.yml'), encoding='utf-8')
+    instructions = yaml.safe_load(instructions)
+    kems = instructions['kems']
+    for family in kems:
+        family['family'] = family['name']
+        for scheme in family['schemes']:
+            scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_kem', scheme['pqclean_scheme'], 'META.yml')))
+            scheme['metadata']['ind_cca'] = 'true'
+    return kems
+
+kems = load_kems()
+
+for family in kems:
     for scheme in family['schemes']:
+        try:
+            os.mkdir(os.path.join('src', 'kem', family['name']))
+        except:
+            pass
         shutil.rmtree(os.path.join('src', 'kem', family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme'])), ignore_errors=True)
         subprocess.run([
             'cp',
@@ -51,7 +76,6 @@ for family in instructions:
     generator(
         os.path.join('src', 'kem', family['name'], 'kem_{}.h'.format(family['name'])),
         os.path.join('src', 'kem', 'family', 'kem_family.h'),
-        os.environ['PQCLEAN_DIR'],
         family,
         None,
     )
@@ -59,7 +83,6 @@ for family in instructions:
     generator(
         os.path.join('src', 'kem', family['name'], 'Makefile.am'),
         os.path.join('src', 'kem', 'family', 'Makefile.am'),
-        os.environ['PQCLEAN_DIR'],
         family,
         None,
     )
@@ -68,7 +91,12 @@ for family in instructions:
         generator(
             os.path.join('src', 'kem', family['name'], 'kem_{}.c'.format(scheme['pqclean_scheme'])),
             os.path.join('src', 'kem', 'family', 'kem_scheme.c'),
-            os.environ['PQCLEAN_DIR'],
             family,
             scheme,
         )
+
+replacer('config/features.m4', kems, '#####')
+replacer('configure.ac', kems, '#####')
+replacer('Makefile.am', kems, '#####')
+replacer('src/kem/kem.c', kems, '/////')
+replacer('src/kem/kem.h', kems, '/////')

@@ -1,57 +1,64 @@
-- 
-  name: frodokem
-  schemes:
-    - 
-      scheme: 640_aes
-      pqclean_scheme: frodokem640aes
-      implementation: clean
-      sources: 
-        - kem.c
-        - matrix_aes.c
-        - noise.c
-        - util.c
-    - 
-      scheme: 640_shake
-      pqclean_scheme: frodokem640shake
-      implementation: clean
-      sources: 
-        - kem.c
-        - matrix_shake.c
-        - noise.c
-        - util.c
-    - 
-      scheme: 976_aes
-      pqclean_scheme: frodokem976aes
-      implementation: clean
-      sources: 
-        - kem.c
-        - matrix_aes.c
-        - noise.c
-        - util.c
-    - 
-      scheme: 976_shake
-      pqclean_scheme: frodokem976shake
-      implementation: clean
-      sources: 
-        - kem.c
-        - matrix_shake.c
-        - noise.c
-        - util.c
-    - 
-      scheme: 1344_aes
-      pqclean_scheme: frodokem1344aes
-      implementation: clean
-      sources: 
-        - kem.c
-        - matrix_aes.c
-        - noise.c
-        - util.c
-    - 
-      scheme: 1344_shake
-      pqclean_scheme: frodokem1344shake
-      implementation: clean
-      sources: 
-        - kem.c
-        - matrix_shake.c
-        - noise.c
-        - util.c
+kems:
+  - 
+    name: frodokem
+    schemes:
+      - 
+        scheme: 640_aes
+        pqclean_scheme: frodokem640aes
+        pretty_name_full: FrodoKEM-640-AES
+        implementation: clean
+        sources: 
+          - kem.c
+          - matrix_aes.c
+          - noise.c
+          - util.c
+      - 
+        scheme: 640_shake
+        pqclean_scheme: frodokem640shake
+        pretty_name_full: FrodoKEM-640-SHAKE
+        implementation: clean
+        sources: 
+          - kem.c
+          - matrix_shake.c
+          - noise.c
+          - util.c
+      - 
+        scheme: 976_aes
+        pqclean_scheme: frodokem976aes
+        pretty_name_full: FrodoKEM-976-AES
+        implementation: clean
+        sources: 
+          - kem.c
+          - matrix_aes.c
+          - noise.c
+          - util.c
+      - 
+        scheme: 976_shake
+        pqclean_scheme: frodokem976shake
+        pretty_name_full: FrodoKEM-976-SHAKE
+        implementation: clean
+        sources: 
+          - kem.c
+          - matrix_shake.c
+          - noise.c
+          - util.c
+      - 
+        scheme: 1344_aes
+        pqclean_scheme: frodokem1344aes
+        pretty_name_full: FrodoKEM-1344-AES
+        implementation: clean
+        sources: 
+          - kem.c
+          - matrix_aes.c
+          - noise.c
+          - util.c
+      - 
+        scheme: 1344_shake
+        pqclean_scheme: frodokem1344shake
+        pretty_name_full: FrodoKEM-1344-SHAKE
+        implementation: clean
+        sources: 
+          - kem.c
+          - matrix_shake.c
+          - noise.c
+          - util.c

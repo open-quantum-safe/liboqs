@@ -1,0 +1,3 @@
+{% for family in families %}
+  ARG_DISBL_SET_WRAP([kem-{{ family['name'] }}], [kem_{{ family['name'] }}], [ENABLE_KEM_{{ family['name']|upper }}], [src/kem/{{ family['name'] }}]){% endfor %}
+

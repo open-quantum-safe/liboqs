@@ -45,6 +45,7 @@
 #define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
 /** Algorithm identifier for BIKE3-L5 KEM. */
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
 /** Algorithm identifier for FrodoKEM-640-SHAKE KEM. */
@@ -57,6 +58,7 @@
 #define OQS_KEM_alg_frodokem_1344_aes "FrodoKEM-1344-AES"
 /** Algorithm identifier for FrodoKEM-1344-SHAKE KEM. */
 #define OQS_KEM_alg_frodokem_1344_shake "FrodoKEM-1344-SHAKE"
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
 /** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
@@ -242,7 +244,9 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
 OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_bike.h>
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
 #include <oqs/kem_frodokem.h>
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 #include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
 #include <oqs/kem_sike.h>

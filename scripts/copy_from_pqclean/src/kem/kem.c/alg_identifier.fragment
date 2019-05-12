@@ -1,0 +1,3 @@
+{% for family in families %}
+	    {% for scheme in family['schemes'] %}OQS_KEM_alg_{{ family['name'] }}_{{ scheme['scheme'] }}, {% endfor %}{% endfor %}
+

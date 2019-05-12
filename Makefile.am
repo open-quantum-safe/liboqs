@@ -30,9 +30,11 @@ endif
 if ENABLE_KEM_BIKE
 liboqs_la_LIBADD += src/kem/bike/libkembike.la
 endif
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_IF_ENABLE_KEM_START
 if ENABLE_KEM_FRODOKEM
 liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
 endif
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_IF_ENABLE_KEM_END
 if ENABLE_KEM_SIKE
 liboqs_la_LIBADD += src/kem/sike/libkemsike.la
 endif

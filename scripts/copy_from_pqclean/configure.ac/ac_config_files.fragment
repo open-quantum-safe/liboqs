@@ -1,0 +1,3 @@
+{% for family in families %}
+                 src/kem/{{ family['name'] }}/Makefile{% endfor %}
+
