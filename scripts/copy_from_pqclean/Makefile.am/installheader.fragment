@@ -10,7 +10,6 @@ installheader_HEADERS= src/oqs.h \
 {%- for family in families %}
 	src/kem/{{ family['name'] }}/kem_{{ family['name'] }}.h \{% endfor %}
 	src/kem/newhopenist/kem_newhopenist.h \
-	src/kem/kyber/kem_kyber.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/picnic/sig_picnic.h \

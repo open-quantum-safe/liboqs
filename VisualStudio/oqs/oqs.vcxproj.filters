@@ -136,18 +136,6 @@
     <ClCompile Include="..\..\src\kem\newhopenist\win_newhope1024cca.c">
       <Filter>newhopenist</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber.c">
-      <Filter>kyber</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\win_kyber512.c">
-      <Filter>kyber</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\win_kyber768.c">
-      <Filter>kyber</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\win_kyber1024.c">
-      <Filter>kyber</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\sig\picnic\sig_picnic.c">
       <Filter>picnic</Filter>
     </ClCompile>
@@ -251,9 +239,6 @@
     <ClInclude Include="..\..\src\kem\newhopenist\kem_newhopenist.h">
       <Filter>newhopenist</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h">
-      <Filter>kyber</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\sig\picnic\sig_picnic.h">
       <Filter>picnic</Filter>
     </ClInclude>
@@ -348,9 +333,6 @@
     </Filter>
     <Filter Include="newhopenist">
       <UniqueIdentifier>{cb72ff2d-77c6-4e60-a04e-6aad5fc6c328}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="kyber">
-      <UniqueIdentifier>{17171b11-2a2c-4084-a710-c555295e2484}</UniqueIdentifier>
     </Filter>
     <Filter Include="frodo\640aes">
       <UniqueIdentifier>{453e77f7-95b8-4adc-adc8-033fe561c018}</UniqueIdentifier>

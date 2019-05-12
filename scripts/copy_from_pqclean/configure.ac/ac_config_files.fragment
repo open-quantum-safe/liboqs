@@ -12,7 +12,6 @@ AC_CONFIG_FILES([Makefile
                  src/kem/{{ family['name'] }}/Makefile{% endfor %}
                  src/kem/sike/Makefile
                  src/kem/newhopenist/Makefile
-                 src/kem/kyber/Makefile
                  tests/Makefile
                  ])
 

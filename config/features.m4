@@ -49,7 +49,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
   ARG_DISBL_SET_WRAP([kem-newhope],  [kem_newhope],  [ENABLE_KEM_NEWHOPE],  [src/kem/newhopenist])
-  ARG_DISBL_SET_WRAP([kem-kyber],  [kem_kyber],  [ENABLE_KEM_KYBER],  [src/kem/kyber])
 
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
                      [ENABLE_SIG_PICNIC], [src/sig/picnic])
@@ -124,12 +123,6 @@ AC_DEFUN([CONFIG_FEATURES],
   AM_COND_IF([ENABLE_KEM_NEWHOPE], [
     AC_DEFINE(OQS_ENABLE_KEM_newhope_512_cca_kem, 1, "Define to 1 when NewHope-512-CCA-KEM enabled")
     AC_DEFINE(OQS_ENABLE_KEM_newhope_1024_cca_kem, 1, "Define to 1 when NewHope-1024-CCA-KEM enabled")
-  ])
-
-  AM_COND_IF([ENABLE_KEM_KYBER], [
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_512_cca_kem, 1, "Define to 1 when Kyber-512-CCA-KEM enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_768_cca_kem, 1, "Define to 1 when Kyber-512-CCA-KEM enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_1024_cca_kem, 1, "Define to 1 when Kyber-1024-CCA-KEM enabled")
   ])
 ]
 )
