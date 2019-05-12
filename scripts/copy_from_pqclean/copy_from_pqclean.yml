@@ -7,58 +7,61 @@ kems:
         pqclean_scheme: frodokem640aes
         pretty_name_full: FrodoKEM-640-AES
         implementation: clean
-        sources: 
-          - kem.c
-          - matrix_aes.c
-          - noise.c
-          - util.c
+        sources: ['kem.c', 'matrix_aes.c', 'noise.c', 'util.c']
       - 
         scheme: 640_shake
         pqclean_scheme: frodokem640shake
         pretty_name_full: FrodoKEM-640-SHAKE
         implementation: clean
-        sources: 
-          - kem.c
-          - matrix_shake.c
-          - noise.c
-          - util.c
+        sources: ['kem.c', 'matrix_shake.c', 'noise.c', 'util.c']
       - 
         scheme: 976_aes
         pqclean_scheme: frodokem976aes
         pretty_name_full: FrodoKEM-976-AES
         implementation: clean
-        sources: 
-          - kem.c
-          - matrix_aes.c
-          - noise.c
-          - util.c
+        sources: ['kem.c', 'matrix_aes.c', 'noise.c', 'util.c']
       - 
         scheme: 976_shake
         pqclean_scheme: frodokem976shake
         pretty_name_full: FrodoKEM-976-SHAKE
         implementation: clean
-        sources: 
-          - kem.c
-          - matrix_shake.c
-          - noise.c
-          - util.c
+        sources: ['kem.c', 'matrix_shake.c', 'noise.c', 'util.c']
       - 
         scheme: 1344_aes
         pqclean_scheme: frodokem1344aes
         pretty_name_full: FrodoKEM-1344-AES
         implementation: clean
-        sources: 
-          - kem.c
-          - matrix_aes.c
-          - noise.c
-          - util.c
+        sources: ['kem.c', 'matrix_aes.c', 'noise.c', 'util.c']
       - 
         scheme: 1344_shake
         pqclean_scheme: frodokem1344shake
         pretty_name_full: FrodoKEM-1344-SHAKE
         implementation: clean
-        sources: 
-          - kem.c
-          - matrix_shake.c
-          - noise.c
-          - util.c
+        sources: ['kem.c', 'matrix_shake.c', 'noise.c', 'util.c']
+  - 
+    name: ntru
+    schemes:
+      - 
+        scheme: hps2048509
+        pqclean_scheme: ntruhps2048509
+        pretty_name_full: NTRU-HPS-2048-509
+        implementation: clean
+        sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
+      - 
+        scheme: hps2048677
+        pqclean_scheme: ntruhps2048677
+        pretty_name_full: NTRU-HPS-2048-677
+        implementation: clean
+        sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
+      - 
+        scheme: hps4096821
+        pqclean_scheme: ntruhps4096821
+        pretty_name_full: NTRU-HPS-4096-821
+        implementation: clean
+        sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
+      - 
+        scheme: hrss701
+        pqclean_scheme: ntruhrss701
+        pretty_name_full: NTRU-HRSS-701
+        implementation: clean
+        sources: ['kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']

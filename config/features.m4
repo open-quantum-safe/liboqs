@@ -45,6 +45,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_START
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
+  ARG_DISBL_SET_WRAP([kem-ntru], [kem_ntru], [ENABLE_KEM_NTRU], [src/kem/ntru])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
   ARG_DISBL_SET_WRAP([kem-newhope],  [kem_newhope],  [ENABLE_KEM_NEWHOPE],  [src/kem/newhopenist])
@@ -89,6 +90,12 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_shake, 1, "Define to 1 when FrodoKEM-976-SHAKE enabled")
     AC_DEFINE(OQS_ENABLE_KEM_frodokem_1344_aes, 1, "Define to 1 when FrodoKEM-1344-AES enabled")
     AC_DEFINE(OQS_ENABLE_KEM_frodokem_1344_shake, 1, "Define to 1 when FrodoKEM-1344-SHAKE enabled")
+  ])
+  AM_COND_IF([ENABLE_KEM_NTRU], [
+    AC_DEFINE(OQS_ENABLE_KEM_ntru_hps2048509, 1, "Define to 1 when NTRU-HPS-2048-509 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ntru_hps2048677, 1, "Define to 1 when NTRU-HPS-2048-677 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ntru_hps4096821, 1, "Define to 1 when NTRU-HPS-4096-821 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ntru_hrss701, 1, "Define to 1 when NTRU-HRSS-701 enabled")
   ])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AM_COND_IF_END
 

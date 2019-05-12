@@ -34,6 +34,9 @@ endif
 if ENABLE_KEM_FRODOKEM
 liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
 endif
+if ENABLE_KEM_NTRU
+liboqs_la_LIBADD += src/kem/ntru/libkemntru.la
+endif
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_IF_ENABLE_KEM_END
 if ENABLE_KEM_SIKE
 liboqs_la_LIBADD += src/kem/sike/libkemsike.la
@@ -49,6 +52,7 @@ oqsconfigh:
 	grep OQS_ config.h > src/oqsconfig.h
 
 installheaderdir=$(includedir)/oqs
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_START
 installheader_HEADERS= src/oqs.h \
 	src/oqsconfig.h \
 	src/common/common.h \
@@ -58,12 +62,14 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/kem.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
+	src/kem/ntru/kem_ntru.h \
 	src/kem/newhopenist/kem_newhopenist.h \
 	src/kem/kyber/kem_kyber.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/picnic/sig_picnic.h \
 	src/sig/qtesla/sig_qtesla.h
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_END
 
 
 test: clean-tests check
@@ -90,7 +96,10 @@ links: oqsconfigh
 	cp -f src/crypto/sha3/sha3.h include/oqs
 	cp -f src/kem/kem.h include/oqs
 	cp -f src/kem/bike/kem_bike.h include/oqs
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_START
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
+	cp -f src/kem/ntru/kem_ntru.h include/oqs
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_END
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/kem/newhopenist/kem_newhopenist.h include/oqs
 	cp -f src/kem/kyber/kem_kyber.h include/oqs
