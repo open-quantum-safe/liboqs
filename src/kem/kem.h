@@ -58,6 +58,12 @@
 #define OQS_KEM_alg_frodokem_1344_aes "FrodoKEM-1344-AES"
 /** Algorithm identifier for FrodoKEM-1344-SHAKE KEM. */
 #define OQS_KEM_alg_frodokem_1344_shake "FrodoKEM-1344-SHAKE"
+/** Algorithm identifier for Kyber512 KEM. */
+#define OQS_KEM_alg_kyber_kyber512 "Kyber512"
+/** Algorithm identifier for Kyber768 KEM. */
+#define OQS_KEM_alg_kyber_kyber768 "Kyber768"
+/** Algorithm identifier for Kyber1024 KEM. */
+#define OQS_KEM_alg_kyber_kyber1024 "Kyber1024"
 /** Algorithm identifier for NTRU-HPS-2048-509 KEM. */
 #define OQS_KEM_alg_ntru_hps2048509 "NTRU-HPS-2048-509"
 /** Algorithm identifier for NTRU-HPS-2048-677 KEM. */
@@ -80,8 +86,10 @@
 /** Algorithm identifier for Sike p751 KEM. */
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
 // EDIT-WHEN-ADDING-KEM
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 26
+#define OQS_KEM_algs_length 29
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
@@ -248,6 +256,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_bike.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
 #include <oqs/kem_frodokem.h>
+#include <oqs/kem_kyber.h>
 #include <oqs/kem_ntru.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 #include <oqs/kem_newhopenist.h>

@@ -39,6 +39,27 @@ kems:
         implementation: clean
         sources: ['kem.c', 'matrix_shake.c', 'noise.c', 'util.c']
   - 
+    name: kyber
+    schemes:
+      - 
+        scheme: kyber512
+        pqclean_scheme: kyber512
+        pretty_name_full: Kyber512
+        implementation: clean
+        sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
+      - 
+        scheme: kyber768
+        pqclean_scheme: kyber768
+        pretty_name_full: Kyber768
+        implementation: clean
+        sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
+      - 
+        scheme: kyber1024
+        pqclean_scheme: kyber1024
+        pretty_name_full: Kyber1024
+        implementation: clean
+        sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
+  - 
     name: ntru
     schemes:
       - 

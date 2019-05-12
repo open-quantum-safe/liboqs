@@ -34,6 +34,9 @@ endif
 if ENABLE_KEM_FRODOKEM
 liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
 endif
+if ENABLE_KEM_KYBER
+liboqs_la_LIBADD += src/kem/kyber/libkemkyber.la
+endif
 if ENABLE_KEM_NTRU
 liboqs_la_LIBADD += src/kem/ntru/libkemntru.la
 endif
@@ -59,6 +62,7 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/kem.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/frodokem/kem_frodokem.h \
+	src/kem/kyber/kem_kyber.h \
 	src/kem/ntru/kem_ntru.h \
 	src/kem/newhopenist/kem_newhopenist.h \
 	src/kem/sike/kem_sike.h \
@@ -94,6 +98,7 @@ links: oqsconfigh
 	cp -f src/kem/bike/kem_bike.h include/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_START
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
+	cp -f src/kem/kyber/kem_kyber.h include/oqs
 	cp -f src/kem/ntru/kem_ntru.h include/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_END
 	cp -f src/kem/sike/kem_sike.h include/oqs
