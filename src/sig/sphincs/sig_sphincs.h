@@ -3,7 +3,6 @@
 
 #include <oqs/oqs.h>
 
-
 #ifdef OQS_ENABLE_SIG_SPHINCS_haraka_128s_simple
 #define OQS_SIG_SPHINCS_haraka_128s_simple_length_public_key 32
 #define OQS_SIG_SPHINCS_haraka_128s_simple_length_secret_key 64

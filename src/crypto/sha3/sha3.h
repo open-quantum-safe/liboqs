@@ -93,7 +93,6 @@
 */
 void OQS_SHA3_sha3256(uint8_t *output, const uint8_t *input, size_t inplen);
 
-
 /**
  * \brief Initialize initial SHA3 state for incremental hashing api
  *
@@ -158,8 +157,6 @@ void OQS_SHA3_sha3512_inc_absorb(uint64_t *s_inc, const uint8_t *input, size_t i
  * \param s_inc Incremental hashing state
  */
 void OQS_SHA3_sha3512_inc_finalize(uint8_t *output, uint64_t *s_inc);
-
-
 
 /**
 * \brief The Keccak absorb function.
@@ -241,7 +238,7 @@ void OQS_SHA3_shake128_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *
 /**
  * \brief Initialize the incremental hashing API state
  */
-void OQS_SHA3_shake128_inc_init(uint64_t* s_inc);
+void OQS_SHA3_shake128_inc_init(uint64_t *s_inc);
 
 /**
  * \brief Absorb into the state
@@ -266,7 +263,6 @@ void OQS_SHA3_shake128_inc_finalize(uint64_t *s_inc);
  * \param state
  */
 void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, uint64_t *s_inc);
-
 
 /**
 * \brief Seed a SHAKE-256 instance, and generate an array of pseudo-random bytes.
@@ -309,7 +305,7 @@ void OQS_SHA3_shake256_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *
 /**
  * \brief Initialize the incremental hashing API state
  */
-void OQS_SHA3_shake256_inc_init(uint64_t* s_inc);
+void OQS_SHA3_shake256_inc_init(uint64_t *s_inc);
 
 /**
  * \brief Absorb into the state
@@ -334,8 +330,6 @@ void OQS_SHA3_shake256_inc_finalize(uint64_t *s_inc);
  * \param state
  */
 void OQS_SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, uint64_t *s_inc);
-
-
 
 /* cSHAKE */
 
