@@ -72,13 +72,13 @@ Contributions that meet the acceptance criteria above are gratefully welcomed.  
 Lifecycle for master branch
 ---------------------------
 
-**Release cycle:** We aim to make releases of liboqs master branch every 2 to 3 months.  Plans for each individual release can be found on our [Github projects board](https://github.com/open-quantum-safe/liboqs/projects/).  
+**Release cycle:** We aim to make releases of liboqs master branch every 2 to 3 months.  Plans for each individual release can be found on our [Github projects board](https://github.com/open-quantum-safe/liboqs/projects/).
 
 **Versioning:** For approximately the period 2018-2019, we plan to label our releases with a variant of semantic versioning, using the notation *0.Y.Z*.  Semantic versioning allows that anything may change between *0.whatever* versions.  We intend to use *X.Y.Z* labelling as follows, for *X=0*.
 
 - *X=0* will be used for approximately the period 2018-2019.  Later in 2019, we will revisit whether we are ready to make a *1.0.0* release, and specify a new verisoning method at that time.
 - *Y* will be incremented when backwards incompatible changes are introduced that either change the public API or change the input/output behaviour of a cryptographic algorithm.  See explanation below.
-- *Z* will be incremented when backwards compatible bug fixes are introduced.  
+- *Z* will be incremented when backwards compatible bug fixes are introduced.
 
 **Algorithm deprecation:** If an algorithm in master branch is found to be insecure or does not advance to the next round of the NIST competition, but is included in version $0.Y.Z$, it will be marked as deprecated using a compile time warning in version $0.(Y+1).Z'$ and removed in version $0.(Y+2).Z''$.
 
@@ -111,7 +111,7 @@ You need to install the following packages using pkg_add:
 
 	pkg_add automake libtool
 
-On OpenBSD you have to explicitly set the environment variables `AUTOCONF_VERSION` and 
+On OpenBSD you have to explicitly set the environment variables `AUTOCONF_VERSION` and
 `AUTOMAKE_VERSION` to a version installed on your system.
 
 	export AUTOCONF_VERSION=`ls -1 /usr/local/bin/autoreconf-* | sort | tail -n 1 | cut -d'-' -f2`
@@ -170,7 +170,7 @@ Binaries for ARM can be cross-compiled from Ubuntu Linux.  Builds are tested usi
 In order to cross compile, you need to have an appropriate toolchain installed, and to test you need QEMU installed.  On Ubuntu:
 
 	sudo apt install gcc-arm-linux-gnueabi libc6-dev-armel-cross qemu
-	
+
 Once the toolchain is installed, you can use the following scripts to build and test ARM builds from Ubuntu Linux:
 
 	scripts/arm-cross-compile.sh
@@ -202,6 +202,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 
 - `src/crypto/aes/aes_c.c`: public domain
 - `src/crypto/sha3`: public domain
+- `src/crypto/sha2`: public domain
 - `src/kem/newhopenist/optimized`: public domain
 - `src/sig/qtesla/external`: public domain
 
