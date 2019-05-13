@@ -74,6 +74,12 @@
 */
 #define OQS_SHA3_STATESIZE 25
 
+/*!
+\def OQS_SHA3_INC_STATESIZE
+* The size of the state for the incremental hashing API
+*/
+#define OQS_SHA3_INC_STATESIZE 26
+
 /* SHA3 */
 
 /**
@@ -87,6 +93,34 @@
 */
 void OQS_SHA3_sha3256(uint8_t *output, const uint8_t *input, size_t inplen);
 
+
+/**
+ * \brief Initialize initial SHA3 state for incremental hashing api
+ *
+ * \warning The input array should be 26 items
+ */
+void OQS_SHA3_sha3256_inc_init(uint64_t *s_inc);
+
+/**
+ * \brief Absorb a block into the state of inlen bits.
+ *
+ * \param s_inc pointer to input/output incremental state
+ *                First 25 values represent Keccak state.
+ *                26th value represents either the number of absorbed bytes
+ *                that have not been permuted, or not-yet-squeezed bytes.
+ * \param input input to input to be absorbed into s
+ * \param inlen length of input in bytes
+ */
+void OQS_SHA3_sha3256_inc_absorb(uint64_t *s_inc, const uint8_t *input, size_t inlen);
+
+/*
+ * \brief Finalizes absorb phase, prepares for squeezing
+ *
+ * \param output Output buffer, 32 bytes
+ * \param s_inc Incremental hashing state
+ */
+void OQS_SHA3_sha3256_inc_finalize(uint8_t *output, uint64_t *s_inc);
+
 /**
 * \brief Process a message with SHA3-512 and return the hash code in the output byte array.
 *
@@ -97,6 +131,35 @@ void OQS_SHA3_sha3256(uint8_t *output, const uint8_t *input, size_t inplen);
 * \param inplen The number of message bytes to process
 */
 void OQS_SHA3_sha3512(uint8_t *output, const uint8_t *input, size_t inplen);
+
+/**
+ * \brief Initialize initial SHA3 state for incremental hashing api
+ *
+ * \warning The input array should be 26 items
+ */
+void OQS_SHA3_sha3512_inc_init(uint64_t *s_inc);
+
+/**
+ * \brief Absorb a block into the state of inlen bits.
+ *
+ * \param s_inc pointer to input/output incremental state
+ *                First 25 values represent Keccak state.
+ *                26th value represents either the number of absorbed bytes
+ *                that have not been permuted, or not-yet-squeezed bytes.
+ * \param input input to input to be absorbed into s
+ * \param inlen length of input in bytes
+ */
+void OQS_SHA3_sha3512_inc_absorb(uint64_t *s_inc, const uint8_t *input, size_t inlen);
+
+/*
+ * \brief Finalizes output
+ *
+ * \param output Output buffer, 32 bytes
+ * \param s_inc Incremental hashing state
+ */
+void OQS_SHA3_sha3512_inc_finalize(uint8_t *output, uint64_t *s_inc);
+
+
 
 /**
 * \brief The Keccak absorb function.
@@ -176,6 +239,36 @@ void OQS_SHA3_shake128_absorb(uint64_t *state, const uint8_t *input, size_t inpl
 void OQS_SHA3_shake128_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
 
 /**
+ * \brief Initialize the incremental hashing API state
+ */
+void OQS_SHA3_shake128_inc_init(uint64_t* s_inc);
+
+/**
+ * \brief Absorb into the state
+ *
+ * \param s_inc state
+ * \param input input buffer
+ * \param inlen length of input buffer
+ */
+void OQS_SHA3_shake128_inc_absorb(uint64_t *s_inc, const uint8_t *input, size_t inlen);
+/*
+ * \brief Finalizes output
+ *
+ * \param s_inc Incremental hashing state
+ */
+void OQS_SHA3_shake128_inc_finalize(uint64_t *s_inc);
+
+/**
+ * \brief Obtains output
+ *
+ * \param output output buffer
+ * \param outlen bytes of outbut buffer
+ * \param state
+ */
+void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, uint64_t *s_inc);
+
+
+/**
 * \brief Seed a SHAKE-256 instance, and generate an array of pseudo-random bytes.
 *
 * \warning The output array length must not be zero.
@@ -212,6 +305,37 @@ void OQS_SHA3_shake256_absorb(uint64_t *state, const uint8_t *input, size_t inpl
 * \param state The function state; must be pre-initialized
 */
 void OQS_SHA3_shake256_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
+
+/**
+ * \brief Initialize the incremental hashing API state
+ */
+void OQS_SHA3_shake256_inc_init(uint64_t* s_inc);
+
+/**
+ * \brief Absorb into the state
+ *
+ * \param s_inc state
+ * \param input input buffer
+ * \param inlen length of input buffer
+ */
+void OQS_SHA3_shake256_inc_absorb(uint64_t *s_inc, const uint8_t *input, size_t inlen);
+/*
+ * \brief Finalizes output
+ *
+ * \param s_inc Incremental hashing state
+ */
+void OQS_SHA3_shake256_inc_finalize(uint64_t *s_inc);
+
+/**
+ * \brief Obtains output
+ *
+ * \param output output buffer
+ * \param outlen bytes of outbut buffer
+ * \param state
+ */
+void OQS_SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, uint64_t *s_inc);
+
+
 
 /* cSHAKE */
 

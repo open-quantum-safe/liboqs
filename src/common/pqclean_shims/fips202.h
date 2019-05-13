@@ -8,14 +8,30 @@
 #define SHA3_256_RATE OQS_SHA3_SHA3_256_RATE
 #define SHA3_512_RATE OQS_SHA3_SHA3_512_RATE
 
+#define shake128 OQS_SHA3_shake128
 #define shake128_absorb OQS_SHA3_shake128_absorb
 #define shake128_squeezeblocks OQS_SHA3_shake128_squeezeblocks
+#define shake128_inc_init OQS_SHA3_shake128_inc_init
+#define shake128_inc_absorb OQS_SHA3_shake128_inc_absorb
+#define shake128_inc_finalize OQS_SHA3_shake128_inc_finalize
+#define shake128_inc_squeeze OQS_SHA3_shake128_inc_squeeze
+
+#define shake256 OQS_SHA3_shake256
 #define shake256_absorb OQS_SHA3_shake256_absorb
 #define shake256_squeezeblocks OQS_SHA3_shake256_squeezeblocks
-#define shake128 OQS_SHA3_shake128
-#define shake256 OQS_SHA3_shake256
+#define shake256_inc_init OQS_SHA3_shake256_inc_init
+#define shake256_inc_absorb OQS_SHA3_shake256_inc_absorb
+#define shake256_inc_finalize OQS_SHA3_shake256_inc_finalize
+#define shake256_inc_squeeze OQS_SHA3_shake256_inc_squeeze
 
 #define sha3_256 OQS_SHA3_sha3256
+#define sha3_256_inc_init OQS_SHA3_sha3256_inc_init
+#define sha3_256_inc_absorb OQS_SHA3_sha3256_inc_absorb
+#define sha3_256_inc_finalize OQS_SHA3_sha3512_inc_finalize
+
 #define sha3_512 OQS_SHA3_sha3512
+#define sha3_512_inc_init OQS_SHA3_sha3512_inc_init
+#define sha3_512_inc_absorb OQS_SHA3_sha3512_inc_absorb
+#define sha3_512_inc_finalize OQS_SHA3_sha3512_inc_finalize
 
 #endif
