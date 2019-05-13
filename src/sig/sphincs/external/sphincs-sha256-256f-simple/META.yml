@@ -1,0 +1,27 @@
+name: SPHINCS+
+type: signature
+claimed-nist-level: 5
+length-public-key: 64
+length-secret-key: 128
+length-signature: 49216
+testvectors-sha256: b4755edf8351c51225921af38a724d2bd9ff9f3afe4ae2abbc3a59763ecc897d
+principal-submitter: Andreas Hülsing
+auxiliary-submitters:
+  - Jean-Philippe Aumasson
+  - Daniel J. Bernstein,
+  - Christoph Dobraunig
+  - Maria Eichlseder
+  - Scott Fluhrer
+  - Stefan-Lukas Gazdag
+  - Panos Kampanakis
+  - Stefan Kölbl
+  - Tanja Lange
+  - Martin M. Lauridsen
+  - Florian Mendel
+  - Ruben Niederhagen
+  - Christian Rechberger
+  - Joost Rijneveld
+  - Peter Schwabe
+implementations:
+    - name: clean
+      version: https://github.com/sphincs/sphincsplus/commit/77755c94d0bc744478044d6efbb888dc13156441

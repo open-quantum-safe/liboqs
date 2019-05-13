@@ -27,6 +27,9 @@ endif
 if ENABLE_SIG_QTESLA
 liboqs_la_LIBADD += src/sig/qtesla/libqtesla.la
 endif
+if ENABLE_SIG_SPHINCS
+liboqs_la_LIBADD += src/sig/sphincs/libsigsphincs.la
+endif
 
 if ENABLE_KEM_BIKE
 liboqs_la_LIBADD += src/kem/bike/libkembike.la
@@ -63,7 +66,8 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/picnic/sig_picnic.h \
-	src/sig/qtesla/sig_qtesla.h
+	src/sig/qtesla/sig_qtesla.h \
+	src/sig/sphincs/sig_sphincs.h
 
 
 test: clean-tests check
@@ -99,6 +103,7 @@ links: oqsconfigh
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig/picnic/sig_picnic.h include/oqs
 	cp -f src/sig/qtesla/sig_qtesla.h include/oqs
+	cp -f src/sig/sphincs/sig_sphincs.h include/oqs
 
 clean-local:
 	rm -rf include

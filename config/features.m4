@@ -52,6 +52,8 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
                      [ENABLE_SIG_PICNIC], [src/sig/picnic])
   ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
                      [ENABLE_SIG_QTESLA], [src/sig/qtesla])
+  ARG_DISBL_SET_WRAP([sig-sphincs], [sig_sphincs],
+                     [ENABLE_SIG_SPHINCS], [src/sig/sphincs])
 ]
 )
 

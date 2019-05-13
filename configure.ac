@@ -71,6 +71,7 @@ AC_CONFIG_FILES([Makefile
                  src/sig/Makefile
                  src/sig/picnic/Makefile
                  src/sig/qtesla/Makefile
+                 src/sig/sphincs/Makefile
                  src/kem/bike/Makefile
                  src/kem/frodokem/Makefile
                  src/kem/sike/Makefile
