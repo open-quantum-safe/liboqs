@@ -31,7 +31,12 @@ def generator(destination_filename, template_filename, family, scheme_desired):
         assert(len(scheme['metadata']['implementations']) == 1)
     file_put_contents(destination_filename, jinja2.Template(template).render(f))
 
-def replacer(filename, families, delimiter):
+def generator_all(filename, kems):
+    template = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', filename))
+    contents = jinja2.Template(template).render({'kems': kems})
+    file_put_contents(filename, contents)
+
+def replacer(filename, kems, delimiter):
     fragments = glob.glob(os.path.join('scripts', 'copy_from_pqclean', filename, '*.fragment'))
     contents = file_get_contents(filename)
     for fragment in fragments:
@@ -41,7 +46,7 @@ def replacer(filename, families, delimiter):
         identifier_end = '{} OQS_COPY_FROM_PQCLEAN_FRAGMENT_{}_END'.format(delimiter, identifier.upper())
         preamble = contents[:contents.find(identifier_start)]
         postamble = contents[contents.find(identifier_end):]
-        contents = preamble + identifier_start + jinja2.Template(template).render({'families': families}) + postamble
+        contents = preamble + identifier_start + jinja2.Template(template).render({'kems': kems}) + postamble
     file_put_contents(filename, contents)
 
 def load_kems():

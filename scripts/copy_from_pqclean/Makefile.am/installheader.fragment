@@ -7,7 +7,7 @@ installheader_HEADERS= src/oqs.h \
 	src/crypto/sha3/sha3.h \
 	src/kem/kem.h \
 	src/kem/bike/kem_bike.h \
-{%- for family in families %}
+{%- for family in kems %}
 	src/kem/{{ family['name'] }}/kem_{{ family['name'] }}.h \{% endfor %}
 	src/kem/newhopenist/kem_newhopenist.h \
 	src/kem/sike/kem_sike.h \
