@@ -26,15 +26,3 @@ test_kem_LDADD        = ${LIB_FLAGS}
 test_sha3_LDADD       = ${LIB_FLAGS}
 test_sig_LDADD        = ${LIB_FLAGS}
 kat_kem_LDADD         = ${LIB_FLAGS}
-
-if USE_OPENSSL
-example_kem_LDADD     += -L$(OPENSSL_DIR)/lib -lcrypto
-example_sig_LDADD     += -L$(OPENSSL_DIR)/lib -lcrypto
-speed_kem_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
-speed_sig_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
-test_aes_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
-test_kem_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
-test_sha3_LDADD       += -L$(OPENSSL_DIR)/lib -lcrypto
-test_sig_LDADD        += -L$(OPENSSL_DIR)/lib -lcrypto
-kat_kem_LDADD         += -L$(OPENSSL_DIR)/lib -lcrypto
-endif

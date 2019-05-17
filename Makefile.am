@@ -48,6 +48,10 @@ if ENABLE_KEM_NEWHOPE
 liboqs_la_LIBADD += src/kem/newhopenist/libkemnewhopenist.la
 endif
 
+if USE_OPENSSL
+liboqs_la_LIBADD += -L${OPENSSL_DIR}/lib -lcrypto
+endif
+
 oqsconfigh:
 	grep OQS_ config.h > src/oqsconfig.h
 
