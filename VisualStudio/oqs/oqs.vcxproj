@@ -82,6 +82,7 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
     <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\kem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\matrix_aes.c" />
@@ -112,6 +113,72 @@
     <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\matrix_shake.c" />
     <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\noise.c" />
     <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber512.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber768.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber1024.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048509.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\crypto_sort.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048677.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\crypto_sort.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps4096821.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\crypto_sort.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhrss701.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c" />
+<!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\newhopenist\kem_newhopenist.c" />
     <ClCompile Include="..\..\src\kem\kem.c" />
     <ClCompile Include="..\..\src\kem\newhopenist\win_newhope1024cca.c" />
@@ -277,6 +344,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -288,11 +356,14 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
@@ -312,6 +383,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -323,11 +395,14 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -347,6 +422,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -358,11 +434,14 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -389,6 +468,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -400,11 +480,14 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -430,6 +513,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -441,11 +525,14 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
@@ -469,6 +556,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -480,11 +568,14 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -508,6 +599,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -519,11 +611,14 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -554,6 +649,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -565,11 +661,14 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>

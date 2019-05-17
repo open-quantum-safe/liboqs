@@ -49,6 +49,9 @@ def replacer(filename, kems, delimiter):
         contents = preamble + identifier_start + jinja2.Template(template).render({'kems': kems}) + postamble
     file_put_contents(filename, contents)
 
+def unix2dos(filename):
+    subprocess.run(['unix2dos', filename])
+
 def load_kems():
     instructions = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', 'copy_from_pqclean.yml'), encoding='utf-8')
     instructions = yaml.safe_load(instructions)
@@ -105,3 +108,10 @@ replacer('configure.ac', kems, '#####')
 replacer('Makefile.am', kems, '#####')
 replacer('src/kem/kem.c', kems, '/////')
 replacer('src/kem/kem.h', kems, '/////')
+replacer('VisualStudio/winconfig.h', kems, '/////')
+generator_all('VisualStudio/oqs/dll.def', kems)
+unix2dos('VisualStudio/oqs/dll.def')
+replacer('VisualStudio/oqs/oqs.vcxproj', kems, '<!--')
+unix2dos('VisualStudio/oqs/oqs.vcxproj')
+replacer('VisualStudio/oqs/oqs.vcxproj.filters', kems, '<!--')
+unix2dos('VisualStudio/oqs/oqs.vcxproj.filters')
