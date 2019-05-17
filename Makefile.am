@@ -42,6 +42,9 @@ endif
 if ENABLE_KEM_KYBER
 liboqs_la_LIBADD += src/kem/kyber/libkemkyber.la
 endif
+if USE_OPENSSL
+liboqs_la_LIBADD += -L${OPENSSL_DIR}/lib -lcrypto
+endif
 
 oqsconfigh:
 	grep OQS_ config.h > src/oqsconfig.h
