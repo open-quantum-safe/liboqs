@@ -17,7 +17,7 @@ Parameter sets
 
 | Parameter set   | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
 |-----------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:----------------------:|
-| picnic_L1_FS    |     EUF-CMA    |              1              |            33           |            49           |          34038         |
+| picnic_L1_FS    |     EUF-CMA    |              1              |            33           |            49           |          34036         |
 | picnic_L1_UR    |     EUF-CMA    |              1              |            33           |            49           |          53965         |
 | picnic_L3_FS    |     EUF-CMA    |              3              |            49           |            73           |          76776         |
 | picnic_L3_UR    |     EUF-CMA    |              3              |            49           |            73           |         121849         |
