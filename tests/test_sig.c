@@ -32,6 +32,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	secret_key = malloc(sig->length_secret_key);
 	message = malloc(message_len);
 	signature = malloc(sig->length_signature);
+	signature_len = sig->length_signature;
 
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");
@@ -59,14 +60,12 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	}
 
 	/* modify the signature to invalidate it */
-	/* temporarily disabling failure case to investigate travis and appveyor failures
 	signature[0]++;
 	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
 	if (rc != OQS_ERROR) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
 		goto err;
 	}
-	*/
 	printf("verification passes as expected\n");
 	ret = OQS_SUCCESS;
 	goto cleanup;

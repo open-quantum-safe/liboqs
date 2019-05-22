@@ -4,7 +4,7 @@
 #include <oqs/common.h>
 
 /* avoid printing debug output */
-/* #define NDEBUG FIXMEOQS: uncomment */
+#define NDEBUG
 
 /* use OQS's free function */
 #define free OQS_MEM_insecure_free
