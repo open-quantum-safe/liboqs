@@ -45,6 +45,7 @@
 #define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
 /** Algorithm identifier for BIKE3-L5 KEM. */
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
 /** Algorithm identifier for FrodoKEM-640-SHAKE KEM. */
@@ -57,16 +58,25 @@
 #define OQS_KEM_alg_frodokem_1344_aes "FrodoKEM-1344-AES"
 /** Algorithm identifier for FrodoKEM-1344-SHAKE KEM. */
 #define OQS_KEM_alg_frodokem_1344_shake "FrodoKEM-1344-SHAKE"
+/** Algorithm identifier for Kyber512 KEM. */
+#define OQS_KEM_alg_kyber_kyber512 "Kyber512"
+/** Algorithm identifier for Kyber768 KEM. */
+#define OQS_KEM_alg_kyber_kyber768 "Kyber768"
+/** Algorithm identifier for Kyber1024 KEM. */
+#define OQS_KEM_alg_kyber_kyber1024 "Kyber1024"
+/** Algorithm identifier for NTRU-HPS-2048-509 KEM. */
+#define OQS_KEM_alg_ntru_hps2048509 "NTRU-HPS-2048-509"
+/** Algorithm identifier for NTRU-HPS-2048-677 KEM. */
+#define OQS_KEM_alg_ntru_hps2048677 "NTRU-HPS-2048-677"
+/** Algorithm identifier for NTRU-HPS-4096-821 KEM. */
+#define OQS_KEM_alg_ntru_hps4096821 "NTRU-HPS-4096-821"
+/** Algorithm identifier for NTRU-HRSS-701 KEM. */
+#define OQS_KEM_alg_ntru_hrss701 "NTRU-HRSS-701"
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
 /** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
-/** Algorithm identifier for Kyber-512-CCA-KEM KEM. */
-#define OQS_KEM_alg_kyber_512_cca_kem "Kyber-512-CCA-KEM"
-/** Algorithm identifier for Kyber-768-CCA-KEM KEM. */
-#define OQS_KEM_alg_kyber_768_cca_kem "Kyber-768-CCA-KEM"
-/** Algorithm identifier for Kyber-1024-CCA-KEM KEM. */
-#define OQS_KEM_alg_kyber_1024_cca_kem "Kyber-1024-CCA-KEM"
 /** Algorithm identifier for Sidh p503 KEM. */
 #define OQS_KEM_alg_sidh_p503 "Sidh-p503"
 /** Algorithm identifier for Sidh p751 KEM. */
@@ -76,8 +86,10 @@
 /** Algorithm identifier for Sike p751 KEM. */
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
 // EDIT-WHEN-ADDING-KEM
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 25
+#define OQS_KEM_algs_length 29
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
@@ -242,9 +254,12 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
 OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_bike.h>
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
 #include <oqs/kem_frodokem.h>
-#include <oqs/kem_newhopenist.h>
 #include <oqs/kem_kyber.h>
+#include <oqs/kem_ntru.h>
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
+#include <oqs/kem_newhopenist.h>
 #include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 
