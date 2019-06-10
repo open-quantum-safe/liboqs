@@ -1,0 +1,19 @@
+name: DilithiumIII
+type: signature
+claimed-nist-level: 2
+length-public-key: 1472
+length-secret-key: 3504
+length-signature: 2701
+nistkat-sha256: 900268789819cc81b03e6384d97336b7bc700a5a9ffd5d3c993deacb6fe7f5b6
+testvectors-sha256: 35d7e51b9e4e456c68bfc5ae393d311c96005d8563eb3240a051c97f3710c45d
+principal-submitter: Vadim Lyubashevsky
+auxiliary-submitters:
+  - Léo Ducas
+  - Eike Kiltz
+  - Tancrède Lepoint
+  - Peter Schwabe
+  - Gregor Seiler
+  - Damien Stehlé
+implementations:
+    - name: clean
+      version: https://github.com/pq-crystals/dilithium/commit/40f79645879b5c69835cd91d06945d7c24f39922
