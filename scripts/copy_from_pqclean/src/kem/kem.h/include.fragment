@@ -1,0 +1,3 @@
+{% for family in kems %}
+#include <oqs/kem_{{ family['name'] }}.h>{% endfor %}
+

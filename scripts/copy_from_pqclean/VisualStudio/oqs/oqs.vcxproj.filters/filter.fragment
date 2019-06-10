@@ -1,0 +1,5 @@
+ -->{% for family in kems %}{% for scheme in family['schemes'] %}
+    <Filter Include="{{ family['name'] }}\{{ scheme['scheme'] }}">
+      <UniqueIdentifier>{{ '{'}}{{ scheme['visual_studio_guid'] }}{{ '}' }}</UniqueIdentifier>
+    </Filter>{% endfor %}{% endfor %}
+    

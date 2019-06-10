@@ -3,10 +3,13 @@
 
 #include <stdint.h>
 
-uint16_t PQCLEAN_KYBER768_CLEAN_freeze(uint16_t x);
+#define MONT 2285 // 2^16 % Q
+#define QINV 62209 // q^(-1) mod 2^16
 
-uint16_t PQCLEAN_KYBER768_CLEAN_montgomery_reduce(uint32_t a);
+int16_t PQCLEAN_KYBER768_CLEAN_montgomery_reduce(int32_t a);
 
-uint16_t PQCLEAN_KYBER768_CLEAN_barrett_reduce(uint16_t a);
+int16_t PQCLEAN_KYBER768_CLEAN_barrett_reduce(int16_t a);
+
+int16_t PQCLEAN_KYBER768_CLEAN_csubq(int16_t a);
 
 #endif

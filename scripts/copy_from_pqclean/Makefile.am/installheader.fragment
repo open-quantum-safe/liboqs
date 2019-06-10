@@ -1,0 +1,17 @@
+
+installheader_HEADERS= src/oqs.h \
+	src/oqsconfig.h \
+	src/common/common.h \
+	src/common/rand.h \
+	src/crypto/aes/aes.h \
+	src/crypto/sha3/sha3.h \
+	src/kem/kem.h \
+	src/kem/bike/kem_bike.h \
+{%- for family in kems %}
+	src/kem/{{ family['name'] }}/kem_{{ family['name'] }}.h \{% endfor %}
+	src/kem/newhopenist/kem_newhopenist.h \
+	src/kem/sike/kem_sike.h \
+	src/sig/sig.h \
+	src/sig/picnic/sig_picnic.h \
+	src/sig/qtesla/sig_qtesla.h
+

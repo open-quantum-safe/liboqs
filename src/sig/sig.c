@@ -36,6 +36,9 @@ OQS_API int OQS_SIG_alg_count() {
 }
 
 OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
+	if (method_name == NULL) {
+		return NULL;
+	}
 	if (0 == strcasecmp(method_name, OQS_SIG_alg_default)) {
 		return OQS_SIG_new(OQS_SIG_DEFAULT);
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L1_FS)) {

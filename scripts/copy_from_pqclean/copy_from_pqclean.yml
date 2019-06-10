@@ -1,0 +1,101 @@
+kems:
+  - 
+    name: frodokem
+    schemes:
+      - 
+        scheme: 640_aes
+        pqclean_scheme: frodokem640aes
+        pretty_name_full: FrodoKEM-640-AES
+        implementation: clean
+        sources: ['kem.c', 'matrix_aes.c', 'noise.c', 'util.c']
+        visual_studio_guid: 453e77f7-95b8-4adc-adc8-033fe561c018
+      - 
+        scheme: 640_shake
+        pqclean_scheme: frodokem640shake
+        pretty_name_full: FrodoKEM-640-SHAKE
+        implementation: clean
+        sources: ['kem.c', 'matrix_shake.c', 'noise.c', 'util.c']
+        visual_studio_guid: 0e47e6c0-e5f5-4614-8d31-e0d3caea98eb
+      - 
+        scheme: 976_aes
+        pqclean_scheme: frodokem976aes
+        pretty_name_full: FrodoKEM-976-AES
+        implementation: clean
+        sources: ['kem.c', 'matrix_aes.c', 'noise.c', 'util.c']
+        visual_studio_guid: c94df6b4-9bff-4578-afc4-b6231012249a
+      - 
+        scheme: 976_shake
+        pqclean_scheme: frodokem976shake
+        pretty_name_full: FrodoKEM-976-SHAKE
+        implementation: clean
+        sources: ['kem.c', 'matrix_shake.c', 'noise.c', 'util.c']
+        visual_studio_guid: 90a8df32-f17b-431b-b488-7a21b1c7d2d3
+      - 
+        scheme: 1344_aes
+        pqclean_scheme: frodokem1344aes
+        pretty_name_full: FrodoKEM-1344-AES
+        implementation: clean
+        sources: ['kem.c', 'matrix_aes.c', 'noise.c', 'util.c']
+        visual_studio_guid: 3c0ce99d-3db6-4a29-8c4d-d1fd4fcda1ab
+      - 
+        scheme: 1344_shake
+        pqclean_scheme: frodokem1344shake
+        pretty_name_full: FrodoKEM-1344-SHAKE
+        implementation: clean
+        sources: ['kem.c', 'matrix_shake.c', 'noise.c', 'util.c']
+        visual_studio_guid: de0439be-1a4f-42e3-90f1-e667ccad442b
+  - 
+    name: kyber
+    schemes:
+      - 
+        scheme: kyber512
+        pqclean_scheme: kyber512
+        pretty_name_full: Kyber512
+        implementation: clean
+        sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
+        visual_studio_guid: 80001dfa-c3e2-478f-8705-95bafd3f33d3
+      - 
+        scheme: kyber768
+        pqclean_scheme: kyber768
+        pretty_name_full: Kyber768
+        implementation: clean
+        sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
+        visual_studio_guid: 815e88b5-b5d7-43c6-b0c0-2a045a0c7aa6
+      - 
+        scheme: kyber1024
+        pqclean_scheme: kyber1024
+        pretty_name_full: Kyber1024
+        implementation: clean
+        sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
+        visual_studio_guid: fd3c9627-9462-409f-9cdb-0c6566370dbe
+  - 
+    name: ntru
+    schemes:
+      - 
+        scheme: hps2048509
+        pqclean_scheme: ntruhps2048509
+        pretty_name_full: NTRU-HPS-2048-509
+        implementation: clean
+        sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
+        visual_studio_guid: bafe52e5-36c3-462c-9471-147904f60836
+      - 
+        scheme: hps2048677
+        pqclean_scheme: ntruhps2048677
+        pretty_name_full: NTRU-HPS-2048-677
+        implementation: clean
+        sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
+        visual_studio_guid: bc485581-d690-4659-b686-ff11c5280698
+      - 
+        scheme: hps4096821
+        pqclean_scheme: ntruhps4096821
+        pretty_name_full: NTRU-HPS-4096-821
+        implementation: clean
+        sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
+        visual_studio_guid: e89f8171-bf1d-4ebf-925b-9572af2e4200
+      - 
+        scheme: hrss701
+        pqclean_scheme: ntruhrss701
+        pretty_name_full: NTRU-HRSS-701
+        implementation: clean
+        sources: ['kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
+        visual_studio_guid: 96485f85-7dd5-4df3-a1cd-769da06d3ada
