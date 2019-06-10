@@ -45,7 +45,7 @@ lowmc_round_t const* round = LOWMC_INSTANCE.rounds;
       MZD_SHUFFLE(y[k], round->r_mask);
     }
 
-    MPC_LOOP_CONST(MUL_R, x, y, CONCAT(round->r, matrix_postfix), reduced_shares);
+    MPC_LOOP_CONST(ADDMUL_R, x, y, CONCAT(round->r, matrix_postfix), reduced_shares);
     for(unsigned int k = 0; k < reduced_shares; ++k) {
 #if defined(M_FIXED_10)
       BLOCK(y[k], 0)->w64[(LOWMC_N) / (sizeof(word) * 8) - 1] &= WORD_C(0x00000003FFFFFFFF); //clear nl part

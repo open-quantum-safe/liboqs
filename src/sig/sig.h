@@ -39,6 +39,12 @@
 #define OQS_SIG_alg_picnic_L5_FS "picnic_L5_FS"
 /** Algorithm identifier for Picnic_L5_FS */
 #define OQS_SIG_alg_picnic_L5_UR "picnic_L5_UR"
+/** Algorithm identifier for picnic2_L1_FS */
+#define OQS_SIG_alg_picnic2_L1_FS "picnic2_L1_FS"
+/** Algorithm identifier for picnic2_L3_FS */
+#define OQS_SIG_alg_picnic2_L3_FS "picnic2_L3_FS"
+/** Algorithm identifier for picnic2_L5_FS */
+#define OQS_SIG_alg_picnic2_L5_FS "picnic2_L5_FS"
 /** Algorithm identifier for qTESLA_I */
 #define OQS_SIG_alg_qTESLA_I "qTESLA_I"
 /** Algorithm identifier for qTESLA_III_size */
@@ -47,7 +53,7 @@
 #define OQS_SIG_alg_qTESLA_III_speed "qTESLA_III_speed"
 // EDIT-WHEN-ADDING-SIG
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 10
+#define OQS_SIG_algs_length 13
 /** The default signature. Different on Windows because qTESLA is not yet supported. */
 #if defined(_WIN32)
 #define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS

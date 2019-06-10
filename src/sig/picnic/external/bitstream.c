@@ -7,10 +7,14 @@
  *  SPDX-License-Identifier: MIT
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "bitstream.h"
 #include "macros.h"
 
-uint64_t oqs_sig_picnic_bitstream_get_bits(bitstream_t* bs, unsigned int num_bits) {
+uint64_t bitstream_get_bits(bitstream_t* bs, unsigned int num_bits) {
   ASSUME(1 <= num_bits && num_bits <= 64);
 
   const uint8_t* p              = &bs->buffer.r[bs->position / 8];
@@ -36,7 +40,7 @@ uint64_t oqs_sig_picnic_bitstream_get_bits(bitstream_t* bs, unsigned int num_bit
   return ret;
 }
 
-uint8_t oqs_sig_picnic_bitstream_get_bits_8(bitstream_t* bs, unsigned int num_bits) {
+uint8_t bitstream_get_bits_8(bitstream_t* bs, unsigned int num_bits) {
   ASSUME(1 <= num_bits && num_bits <= 8);
 
   const uint8_t* p              = &bs->buffer.r[bs->position / 8];
@@ -58,7 +62,7 @@ uint8_t oqs_sig_picnic_bitstream_get_bits_8(bitstream_t* bs, unsigned int num_bi
   return ret;
 }
 
-uint32_t oqs_sig_picnic_bitstream_get_bits_32(bitstream_t* bs, unsigned int num_bits) {
+uint32_t bitstream_get_bits_32(bitstream_t* bs, unsigned int num_bits) {
   ASSUME(1 <= num_bits && num_bits <= 32);
 
   const uint8_t* p              = &bs->buffer.r[bs->position / 8];
@@ -84,7 +88,7 @@ uint32_t oqs_sig_picnic_bitstream_get_bits_32(bitstream_t* bs, unsigned int num_
   return ret;
 }
 
-void oqs_sig_picnic_bitstream_put_bits(bitstream_t* bs, uint64_t value, unsigned int num_bits) {
+void bitstream_put_bits(bitstream_t* bs, uint64_t value, unsigned int num_bits) {
   ASSUME(1 <= num_bits && num_bits <= 64);
 
   const unsigned int skip_bits = bs->position % 8;
@@ -109,7 +113,7 @@ void oqs_sig_picnic_bitstream_put_bits(bitstream_t* bs, uint64_t value, unsigned
   }
 }
 
-void oqs_sig_picnic_bitstream_put_bits_8(bitstream_t* bs, uint8_t value, unsigned int num_bits) {
+void bitstream_put_bits_8(bitstream_t* bs, uint8_t value, unsigned int num_bits) {
   ASSUME(1 <= num_bits && num_bits <= 8);
 
   const unsigned int skip_bits = bs->position % 8;
@@ -130,7 +134,7 @@ void oqs_sig_picnic_bitstream_put_bits_8(bitstream_t* bs, uint8_t value, unsigne
   }
 }
 
-void oqs_sig_picnic_bitstream_put_bits_32(bitstream_t* bs, uint32_t value, unsigned int num_bits) {
+void bitstream_put_bits_32(bitstream_t* bs, uint32_t value, unsigned int num_bits) {
   ASSUME(1 <= num_bits && num_bits <= 32);
 
   const unsigned int skip_bits = bs->position % 8;
