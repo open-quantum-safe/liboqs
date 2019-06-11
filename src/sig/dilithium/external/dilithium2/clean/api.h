@@ -1,6 +1,7 @@
 #ifndef PQCLEAN_DILITHIUM2_CLEAN_API_H
 #define PQCLEAN_DILITHIUM2_CLEAN_API_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 #define MODE 2

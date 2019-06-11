@@ -1,6 +1,7 @@
 #ifndef PQCLEAN_DILITHIUM3_CLEAN_API_H
 #define PQCLEAN_DILITHIUM3_CLEAN_API_H
 
+#include <stddef.h>
 #include <stdint.h>
 
 
