@@ -18,4 +18,14 @@
 #define sha3_256 OQS_SHA3_sha3256
 #define sha3_512 OQS_SHA3_sha3512
 
+#define shake128_inc_init OQS_SHA3_shake128_inc_init
+#define shake128_inc_absorb OQS_SHA3_shake128_inc_absorb
+#define shake128_inc_finalize OQS_SHA3_shake128_inc_finalize
+#define shake128_inc_squeeze OQS_SHA3_shake128_inc_squeeze
+
+#define shake256_inc_init OQS_SHA3_shake256_inc_init
+#define shake256_inc_absorb OQS_SHA3_shake256_inc_absorb
+#define shake256_inc_finalize OQS_SHA3_shake256_inc_finalize
+#define shake256_inc_squeeze OQS_SHA3_shake256_inc_squeeze
+
 #endif
