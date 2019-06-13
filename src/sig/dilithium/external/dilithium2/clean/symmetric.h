@@ -13,10 +13,10 @@
 #define STREAM128_BLOCKBYTES SHAKE128_RATE
 #define STREAM256_BLOCKBYTES SHAKE256_RATE
 
-void PQCLEAN_DILITHIUM2_CLEAN_shake128_stream_init(shake128ctx *state,
+void PQCLEAN_DILITHIUM2_CLEAN_shake128_stream_init(uint64_t s_inc[25],
         const unsigned char *seed,
         uint16_t nonce);
-void PQCLEAN_DILITHIUM2_CLEAN_shake256_stream_init(shake256ctx *state,
+void PQCLEAN_DILITHIUM2_CLEAN_shake256_stream_init(uint64_t s_inc[25],
         const unsigned char *seed,
         uint16_t nonce);
 

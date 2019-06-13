@@ -52,6 +52,8 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
                      [ENABLE_SIG_PICNIC], [src/sig/picnic])
   ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
                      [ENABLE_SIG_QTESLA], [src/sig/qtesla])
+  ARG_DISBL_SET_WRAP([sig-dilithium], [sig_dilithium],
+                     [ENABLE_SIG_DILITHIUM], [src/sig/dilithium])                    
 ]
 )
 
@@ -109,6 +111,13 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_SIG_picnic_L5_FS, 1, "Define to 1 when picnic-L5-FS enabled")
     AC_DEFINE(OQS_ENABLE_SIG_picnic_L5_UR, 1, "Define to 1 when picnic-L5-UR enabled")
   ])
+
+  AM_COND_IF([ENABLE_SIG_DILITHIUM], [
+    AC_DEFINE(OQS_ENABLE_SIG_DILITHIUM_2, 1, "Define to 1 when DILITHIUM_2 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_DILITHIUM_3, 1, "Define to 1 when DILITHIUM_3 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_DILITHIUM_4, 1, "Define to 1 when DILITHIUM_4 enabled")
+  ])
+
 
   AM_COND_IF([ENABLE_KEM_NEWHOPE], [
     AC_DEFINE(OQS_ENABLE_KEM_newhope_512_cca_kem, 1, "Define to 1 when NewHope-512-CCA-KEM enabled")

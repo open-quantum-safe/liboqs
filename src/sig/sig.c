@@ -20,7 +20,10 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	    OQS_SIG_alg_picnic_L5_UR,
 	    OQS_SIG_alg_qTESLA_I,
 	    OQS_SIG_alg_qTESLA_III_size,
-	    OQS_SIG_alg_qTESLA_III_speed};
+	    OQS_SIG_alg_qTESLA_III_speed,
+	    OQS_SIG_alg_DILITHIUM_2,
+        OQS_SIG_alg_DILITHIUM_3,
+        OQS_SIG_alg_DILITHIUM_4};
 	if (i >= OQS_SIG_algs_length) {
 		return NULL;
 	} else {
@@ -89,6 +92,24 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTESLA_III_speed)) {
 #ifdef OQS_ENABLE_SIG_qTESLA_III_speed
 		return OQS_SIG_qTESLA_III_speed_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_DILITHIUM_2)) {
+#ifdef OQS_ENABLE_SIG_DILITHIUM_2
+		return OQS_SIG_DILITHIUM_2_new();
+#else
+		return NULL;
+#endif
+		} else if (0 == strcasecmp(method_name, OQS_SIG_alg_DILITHIUM_3)) {
+#ifdef OQS_ENABLE_SIG_DILITHIUM_3
+		return OQS_SIG_DILITHIUM_3_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_DILITHIUM_4)) {
+#ifdef OQS_ENABLE_SIG_DILITHIUM_4
+		return OQS_SIG_DILITHIUM_4_new();
 #else
 		return NULL;
 #endif
