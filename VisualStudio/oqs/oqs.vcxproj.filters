@@ -26,6 +26,9 @@
       <Filter>kem</Filter>
     </ClCompile>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem.h">
+      <Filter>frodokem</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c">
       <Filter>frodokem\640_aes</Filter>
     </ClCompile>
@@ -115,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\util.c">
       <Filter>frodokem\1344_shake</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber.h">
+      <Filter>kyber</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\kem_kyber512.c">
       <Filter>kyber\kyber512</Filter>
@@ -206,6 +212,9 @@
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c">
       <Filter>kyber\kyber1024</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope.h">
+      <Filter>newhope</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kem\newhope\kem_newhope512cca.c">
       <Filter>newhope\512cca</Filter>
     </ClCompile>
@@ -253,6 +262,9 @@
     </ClCompile>
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\verify.c">
       <Filter>newhope\1024cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru.h">
+      <Filter>ntru</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048509.c">
       <Filter>ntru\hps2048509</Filter>
