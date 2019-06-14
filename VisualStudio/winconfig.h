@@ -12,13 +12,13 @@
 #define OQS_ENABLE_KEM_kyber_kyber512
 #define OQS_ENABLE_KEM_kyber_kyber768
 #define OQS_ENABLE_KEM_kyber_kyber1024
+#define OQS_ENABLE_KEM_newhope_512cca
+#define OQS_ENABLE_KEM_newhope_1024cca
 #define OQS_ENABLE_KEM_ntru_hps2048509
 #define OQS_ENABLE_KEM_ntru_hps2048677
 #define OQS_ENABLE_KEM_ntru_hps4096821
 #define OQS_ENABLE_KEM_ntru_hrss701
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_KEMS_END
-#define OQS_ENABLE_KEM_newhope_1024_cca_kem
-#define OQS_ENABLE_KEM_newhope_512_cca_kem
 #define OQS_ENABLE_KEM_sike_p503
 #define OQS_ENABLE_KEM_sike_p751
 #define OQS_ENABLE_KEM_sidh_p503

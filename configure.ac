@@ -74,9 +74,9 @@ AC_CONFIG_FILES([Makefile
                  src/kem/bike/Makefile
                  src/kem/frodokem/Makefile
                  src/kem/kyber/Makefile
+                 src/kem/newhope/Makefile
                  src/kem/ntru/Makefile
                  src/kem/sike/Makefile
-                 src/kem/newhopenist/Makefile
                  tests/Makefile
                  ])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AC_CONFIG_FILES_END

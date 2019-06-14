@@ -11,12 +11,6 @@ EXPORTS
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_decaps
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_encaps
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_keypair{% endfor %}{% endfor %}
-	OQS_KEM_newhope_1024_cca_kem_decaps
-	OQS_KEM_newhope_1024_cca_kem_encaps
-	OQS_KEM_newhope_1024_cca_kem_keypair
-	OQS_KEM_newhope_512_cca_kem_decaps
-	OQS_KEM_newhope_512_cca_kem_encaps
-	OQS_KEM_newhope_512_cca_kem_keypair
 	OQS_KEM_sike_p503_decaps
 	OQS_KEM_sike_p503_encaps
 	OQS_KEM_sike_p503_keypair
@@ -55,3 +49,12 @@ EXPORTS
 	OQS_SIG_picnic_L5_UR_keypair
 	OQS_SIG_picnic_L5_UR_sign
 	OQS_SIG_picnic_L5_UR_verify
+	OQS_SIG_picnic2_L1_FS_keypair
+	OQS_SIG_picnic2_L1_FS_sign
+	OQS_SIG_picnic2_L1_FS_verify
+	OQS_SIG_picnic2_L3_FS_keypair
+	OQS_SIG_picnic2_L3_FS_sign
+	OQS_SIG_picnic2_L3_FS_verify
+	OQS_SIG_picnic2_L5_FS_keypair
+	OQS_SIG_picnic2_L5_FS_sign
+	OQS_SIG_picnic2_L5_FS_verify

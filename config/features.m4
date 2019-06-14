@@ -46,10 +46,10 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_START
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-kyber], [kem_kyber], [ENABLE_KEM_KYBER], [src/kem/kyber])
+  ARG_DISBL_SET_WRAP([kem-newhope], [kem_newhope], [ENABLE_KEM_NEWHOPE], [src/kem/newhope])
   ARG_DISBL_SET_WRAP([kem-ntru], [kem_ntru], [ENABLE_KEM_NTRU], [src/kem/ntru])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
-  ARG_DISBL_SET_WRAP([kem-newhope],  [kem_newhope],  [ENABLE_KEM_NEWHOPE],  [src/kem/newhopenist])
 
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
                      [ENABLE_SIG_PICNIC], [src/sig/picnic])
@@ -96,6 +96,10 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber768, 1, "Define to 1 when Kyber768 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber1024, 1, "Define to 1 when Kyber1024 enabled")
   ])
+  AM_COND_IF([ENABLE_KEM_NEWHOPE], [
+    AC_DEFINE(OQS_ENABLE_KEM_newhope_512cca, 1, "Define to 1 when NewHope-512-CCA enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_newhope_1024cca, 1, "Define to 1 when NewHope-1024-CCA enabled")
+  ])
   AM_COND_IF([ENABLE_KEM_NTRU], [
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hps2048509, 1, "Define to 1 when NTRU-HPS-2048-509 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hps2048677, 1, "Define to 1 when NTRU-HPS-2048-677 enabled")
@@ -127,11 +131,6 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_SIG_picnic2_L1_FS, 1, "Define to 1 when picnic2-L1-FS enabled")
     AC_DEFINE(OQS_ENABLE_SIG_picnic2_L3_FS, 1, "Define to 1 when picnic2-L3-FS enabled")
     AC_DEFINE(OQS_ENABLE_SIG_picnic2_L5_FS, 1, "Define to 1 when picnic2-L5-FS enabled")
-  ])
-
-  AM_COND_IF([ENABLE_KEM_NEWHOPE], [
-    AC_DEFINE(OQS_ENABLE_KEM_newhope_512_cca_kem, 1, "Define to 1 when NewHope-512-CCA-KEM enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_newhope_1024_cca_kem, 1, "Define to 1 when NewHope-1024-CCA-KEM enabled")
   ])
 ]
 )
