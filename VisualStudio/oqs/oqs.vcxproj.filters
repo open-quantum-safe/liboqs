@@ -206,6 +206,54 @@
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c">
       <Filter>kyber\kyber1024</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope512cca.c">
+      <Filter>newhope\512cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\cpapke.c">
+      <Filter>newhope\512cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\kem.c">
+      <Filter>newhope\512cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\ntt.c">
+      <Filter>newhope\512cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\poly.c">
+      <Filter>newhope\512cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\precomp.c">
+      <Filter>newhope\512cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\reduce.c">
+      <Filter>newhope\512cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\verify.c">
+      <Filter>newhope\512cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope1024cca.c">
+      <Filter>newhope\1024cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\cpapke.c">
+      <Filter>newhope\1024cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\kem.c">
+      <Filter>newhope\1024cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\ntt.c">
+      <Filter>newhope\1024cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\poly.c">
+      <Filter>newhope\1024cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\precomp.c">
+      <Filter>newhope\1024cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\reduce.c">
+      <Filter>newhope\1024cca</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\verify.c">
+      <Filter>newhope\1024cca</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048509.c">
       <Filter>ntru\hps2048509</Filter>
     </ClCompile>
@@ -321,17 +369,8 @@
     <ClCompile Include="..\..\src\kem\sike\P751\P751.c">
       <Filter>sike</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\newhopenist\kem_newhopenist.c">
-      <Filter>newhopenist</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\common\rand_nist.c">
       <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope512cca.c">
-      <Filter>newhopenist</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope1024cca.c">
-      <Filter>newhopenist</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\picnic\sig_picnic.c">
       <Filter>picnic</Filter>
@@ -457,9 +496,6 @@
     <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h">
       <Filter>sike</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kem\newhopenist\kem_newhopenist.h">
-      <Filter>newhopenist</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\sig\picnic\sig_picnic.h">
       <Filter>picnic</Filter>
     </ClInclude>
@@ -576,9 +612,6 @@
     <Filter Include="sike">
       <UniqueIdentifier>{620a9f8e-2013-4cb3-ad37-2ee4348ed893}</UniqueIdentifier>
     </Filter>
-    <Filter Include="newhopenist">
-      <UniqueIdentifier>{cb72ff2d-77c6-4e60-a04e-6aad5fc6c328}</UniqueIdentifier>
-    </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_START -->
     <Filter Include="frodokem\640_aes">
       <UniqueIdentifier>{453e77f7-95b8-4adc-adc8-033fe561c018}</UniqueIdentifier>
@@ -606,6 +639,12 @@
     </Filter>
     <Filter Include="kyber\kyber1024">
       <UniqueIdentifier>{fd3c9627-9462-409f-9cdb-0c6566370dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="newhope\512cca">
+      <UniqueIdentifier>{fec2e0b7-ccf0-434e-a1ae-4b3bb767e915}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="newhope\1024cca">
+      <UniqueIdentifier>{f26d63a8-92e8-4968-90b1-48aa2b4a9b97}</UniqueIdentifier>
     </Filter>
     <Filter Include="ntru\hps2048509">
       <UniqueIdentifier>{bafe52e5-36c3-462c-9471-147904f60836}</UniqueIdentifier>

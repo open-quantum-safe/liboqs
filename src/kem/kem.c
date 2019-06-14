@@ -16,9 +16,9 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	    ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 	    OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_640_shake, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_976_shake, OQS_KEM_alg_frodokem_1344_aes, OQS_KEM_alg_frodokem_1344_shake,
 	    OQS_KEM_alg_kyber_kyber512, OQS_KEM_alg_kyber_kyber768, OQS_KEM_alg_kyber_kyber1024,
+	    OQS_KEM_alg_newhope_512cca, OQS_KEM_alg_newhope_1024cca,
 	    OQS_KEM_alg_ntru_hps2048509, OQS_KEM_alg_ntru_hps2048677, OQS_KEM_alg_ntru_hps4096821, OQS_KEM_alg_ntru_hrss701,
 	    ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
-	    OQS_KEM_alg_newhope_512_cca_kem, OQS_KEM_alg_newhope_1024_cca_kem,
 	    OQS_KEM_alg_sidh_p503, OQS_KEM_alg_sidh_p751,
 	    OQS_KEM_alg_sike_p503, OQS_KEM_alg_sike_p751};
 	if (i >= OQS_KEM_algs_length) {
@@ -147,6 +147,18 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_512cca)) {
+#ifdef OQS_ENABLE_KEM_newhope_512cca
+		return OQS_KEM_newhope_512cca_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_1024cca)) {
+#ifdef OQS_ENABLE_KEM_newhope_1024cca
+		return OQS_KEM_newhope_1024cca_new();
+#else
+		return NULL;
+#endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntru_hps2048509)) {
 #ifdef OQS_ENABLE_KEM_ntru_hps2048509
 		return OQS_KEM_ntru_hps2048509_new();
@@ -172,18 +184,6 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 		return NULL;
 #endif
 		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_NEW_CASE_END
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_512_cca_kem)) {
-#ifdef OQS_ENABLE_KEM_newhope_512_cca_kem
-		return OQS_KEM_newhope_512_cca_kem_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_1024_cca_kem)) {
-#ifdef OQS_ENABLE_KEM_newhope_1024_cca_kem
-		return OQS_KEM_newhope_1024_cca_kem_new();
-#else
-		return NULL;
-#endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_sidh_p503)) {
 #ifdef OQS_ENABLE_KEM_sidh_p503
 		return OQS_KEM_sidh_p503_new();

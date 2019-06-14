@@ -69,6 +69,23 @@ kems:
         sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
         visual_studio_guid: fd3c9627-9462-409f-9cdb-0c6566370dbe
   - 
+    name: newhope
+    schemes:
+      - 
+        scheme: 512cca
+        pqclean_scheme: newhope512cca
+        pretty_name_full: NewHope-512-CCA
+        implementation: clean
+        sources: ['cpapke.c', 'kem.c', 'ntt.c', 'poly.c', 'precomp.c', 'reduce.c', 'verify.c']
+        visual_studio_guid: fec2e0b7-ccf0-434e-a1ae-4b3bb767e915
+      - 
+        scheme: 1024cca
+        pqclean_scheme: newhope1024cca
+        pretty_name_full: NewHope-1024-CCA
+        implementation: clean
+        sources: ['cpapke.c', 'kem.c', 'ntt.c', 'poly.c', 'precomp.c', 'reduce.c', 'verify.c']
+        visual_studio_guid: f26d63a8-92e8-4968-90b1-48aa2b4a9b97
+  - 
     name: ntru
     schemes:
       - 

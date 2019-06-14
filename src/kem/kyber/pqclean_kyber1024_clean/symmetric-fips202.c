@@ -13,7 +13,7 @@
 *              - unsigned char i                  additional byte of input
 *              - unsigned char j                  additional byte of input
 **************************************************/
-void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_absorb(keccak_state *s, const unsigned char *input, unsigned char x, unsigned char y) {
+void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_absorb(shake128ctx *s, const unsigned char *input, unsigned char x, unsigned char y) {
     unsigned char extseed[KYBER_SYMBYTES + 2];
     int i;
 
@@ -22,7 +22,7 @@ void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_absorb(keccak_state *s, const unsign
     }
     extseed[i++] = x;
     extseed[i]   = y;
-    shake128_absorb(s->s, extseed, KYBER_SYMBYTES + 2);
+    shake128_absorb(s, extseed, KYBER_SYMBYTES + 2);
 }
 
 /*************************************************
@@ -34,10 +34,10 @@ void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_absorb(keccak_state *s, const unsign
 *
 * Arguments:   - unsigned char *output:      pointer to output blocks
 *              - size_t nblocks:             number of blocks to be squeezed (written to output)
-*              - keccak_state *s:            pointer to in/output Keccak state
+*              - shake128ctx *s:             pointer to in/output Keccak state
 **************************************************/
-void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_squeezeblocks(unsigned char *output, size_t nblocks, keccak_state *s) {
-    shake128_squeezeblocks(output, nblocks, s->s);
+void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_squeezeblocks(unsigned char *output, size_t nblocks, shake128ctx *s) {
+    shake128_squeezeblocks(output, nblocks, s);
 }
 
 /*************************************************

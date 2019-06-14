@@ -1,13 +1,13 @@
-#include <stdio.h>
 #include "api.h"
+#include "cpapke.h"
+#include "fips202.h"
 #include "poly.h"
-
-#include <oqs/rand.h>
-#include <oqs/sha3.h>
+#include "randombytes.h"
+#include <stdio.h>
 
 /*************************************************
 * Name:        encode_pk
-* 
+*
 * Description: Serialize the public key as concatenation of the
 *              serialization of the polynomial pk and the public seed
 *              used to generete the polynomial a.
@@ -17,15 +17,16 @@
 *              const unsigned char *seed: pointer to the input public seed
 **************************************************/
 static void encode_pk(unsigned char *r, const poly *pk, const unsigned char *seed) {
-	int i;
-	poly_tobytes(r, pk);
-	for (i = 0; i < NEWHOPE_SYMBYTES; i++)
-		r[NEWHOPE_POLYBYTES + i] = seed[i];
+    int i;
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_tobytes(r, pk);
+    for (i = 0; i < NEWHOPE_SYMBYTES; i++) {
+        r[NEWHOPE_POLYBYTES + i] = seed[i];
+    }
 }
 
 /*************************************************
 * Name:        decode_pk
-* 
+*
 * Description: De-serialize the public key; inverse of encode_pk
 *
 * Arguments:   poly *pk:               pointer to output public-key polynomial
@@ -33,15 +34,16 @@ static void encode_pk(unsigned char *r, const poly *pk, const unsigned char *see
 *              const unsigned char *r: pointer to input byte array
 **************************************************/
 static void decode_pk(poly *pk, unsigned char *seed, const unsigned char *r) {
-	int i;
-	poly_frombytes(pk, r);
-	for (i = 0; i < NEWHOPE_SYMBYTES; i++)
-		seed[i] = r[NEWHOPE_POLYBYTES + i];
+    int i;
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_frombytes(pk, r);
+    for (i = 0; i < NEWHOPE_SYMBYTES; i++) {
+        seed[i] = r[NEWHOPE_POLYBYTES + i];
+    }
 }
 
 /*************************************************
 * Name:        encode_c
-* 
+*
 * Description: Serialize the ciphertext as concatenation of the
 *              serialization of the polynomial b and serialization
 *              of the compressed polynomial v
@@ -51,13 +53,13 @@ static void decode_pk(poly *pk, unsigned char *seed, const unsigned char *r) {
 *              - const poly *v:    pointer to the input polynomial v
 **************************************************/
 static void encode_c(unsigned char *r, const poly *b, const poly *v) {
-	poly_tobytes(r, b);
-	poly_compress(r + NEWHOPE_POLYBYTES, v);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_tobytes(r, b);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_compress(r + NEWHOPE_POLYBYTES, v);
 }
 
 /*************************************************
 * Name:        decode_c
-* 
+*
 * Description: de-serialize the ciphertext; inverse of encode_c
 *
 * Arguments:   - poly *b:                pointer to output polynomial b
@@ -65,66 +67,61 @@ static void encode_c(unsigned char *r, const poly *b, const poly *v) {
 *              - const unsigned char *r: pointer to input byte array
 **************************************************/
 static void decode_c(poly *b, poly *v, const unsigned char *r) {
-	poly_frombytes(b, r);
-	poly_decompress(v, r + NEWHOPE_POLYBYTES);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_frombytes(b, r);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_decompress(v, r + NEWHOPE_POLYBYTES);
 }
 
 /*************************************************
 * Name:        gen_a
-* 
+*
 * Description: Deterministically generate public polynomial a from seed
 *
 * Arguments:   - poly *a:                   pointer to output polynomial a
 *              - const unsigned char *seed: pointer to input seed
 **************************************************/
 static void gen_a(poly *a, const unsigned char *seed) {
-	poly_uniform(a, seed);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_uniform(a, seed);
 }
+
 
 /*************************************************
 * Name:        cpapke_keypair
-* 
-* Description: Generates public and private key 
+*
+* Description: Generates public and private key
 *              for the CPA public-key encryption scheme underlying
 *              the NewHope KEMs
 *
 * Arguments:   - unsigned char *pk: pointer to output public key
 *              - unsigned char *sk: pointer to output private key
 **************************************************/
-void cpapke_keypair(unsigned char *pk,
-                    unsigned char *sk) {
-	poly ahat, ehat, ahat_shat, bhat, shat;
-	unsigned char z[2 * NEWHOPE_SYMBYTES];
-	unsigned char *publicseed = z;
-	unsigned char *noiseseed = z + NEWHOPE_SYMBYTES;
+void PQCLEAN_NEWHOPE1024CCA_CLEAN_cpapke_keypair(unsigned char *pk,
+        unsigned char *sk) {
+    poly ahat, ehat, ahat_shat, bhat, shat;
+    unsigned char z[2 * NEWHOPE_SYMBYTES];
+    unsigned char *publicseed = z;
+    unsigned char *noiseseed = z + NEWHOPE_SYMBYTES;
 
-	OQS_randombytes(z, NEWHOPE_SYMBYTES);
-	OQS_SHA3_shake256(z, 2 * NEWHOPE_SYMBYTES, z, NEWHOPE_SYMBYTES);
+    randombytes(z, NEWHOPE_SYMBYTES);
+    shake256(z, 2 * NEWHOPE_SYMBYTES, z, NEWHOPE_SYMBYTES);
 
-	gen_a(&ahat, publicseed);
+    gen_a(&ahat, publicseed);
 
-	poly_sample(&shat, noiseseed, 0);
-	poly_ntt(&shat);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_sample(&shat, noiseseed, 0);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_ntt(&shat);
 
-	poly_sample(&ehat, noiseseed, 1);
-	poly_ntt(&ehat);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_sample(&ehat, noiseseed, 1);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_ntt(&ehat);
 
-	poly_mul_pointwise(&ahat_shat, &shat, &ahat);
-	poly_add(&bhat, &ehat, &ahat_shat);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_mul_pointwise(&ahat_shat, &shat, &ahat);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_add(&bhat, &ehat, &ahat_shat);
 
-	poly_tobytes(sk, &shat);
-	encode_pk(pk, &bhat, publicseed);
-
-	OQS_MEM_cleanse((void *) z, 2 * NEWHOPE_SYMBYTES);
-	OQS_MEM_cleanse((void *) &shat, sizeof(poly));
-	OQS_MEM_cleanse((void *) &ehat, sizeof(poly));
-	OQS_MEM_cleanse((void *) &ahat_shat, sizeof(poly));
-	OQS_MEM_cleanse((void *) &bhat, sizeof(poly)); /* Is this necessary? Coefficients of bhat aren't frozen. */
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_tobytes(sk, &shat);
+    encode_pk(pk, &bhat, publicseed);
 }
 
 /*************************************************
 * Name:        cpapke_enc
-* 
+*
 * Description: Encryption function of
 *              the CPA public-key encryption scheme underlying
 *              the NewHope KEMs
@@ -135,47 +132,41 @@ void cpapke_keypair(unsigned char *pk,
 *              - const unsigned char *coin: pointer to input random coins used as seed
 *                                           to deterministically generate all randomness
 **************************************************/
-void cpapke_enc(unsigned char *c,
-                const unsigned char *m,
-                const unsigned char *pk,
-                const unsigned char *coin) {
-	poly sprime, eprime, vprime, ahat, bhat, eprimeprime, uhat, v;
-	unsigned char publicseed[NEWHOPE_SYMBYTES];
+void PQCLEAN_NEWHOPE1024CCA_CLEAN_cpapke_enc(unsigned char *c,
+        const unsigned char *m,
+        const unsigned char *pk,
+        const unsigned char *coin) {
+    poly sprime, eprime, vprime, ahat, bhat, eprimeprime, uhat, v;
+    unsigned char publicseed[NEWHOPE_SYMBYTES];
 
-	poly_frommsg(&v, m);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_frommsg(&v, m);
 
-	decode_pk(&bhat, publicseed, pk);
-	gen_a(&ahat, publicseed);
+    decode_pk(&bhat, publicseed, pk);
+    gen_a(&ahat, publicseed);
 
-	poly_sample(&sprime, coin, 0);
-	poly_sample(&eprime, coin, 1);
-	poly_sample(&eprimeprime, coin, 2);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_sample(&sprime, coin, 0);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_sample(&eprime, coin, 1);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_sample(&eprimeprime, coin, 2);
 
-	poly_ntt(&sprime);
-	poly_ntt(&eprime);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_ntt(&sprime);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_ntt(&eprime);
 
-	poly_mul_pointwise(&uhat, &ahat, &sprime);
-	poly_add(&uhat, &uhat, &eprime);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_mul_pointwise(&uhat, &ahat, &sprime);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_add(&uhat, &uhat, &eprime);
 
-	poly_mul_pointwise(&vprime, &bhat, &sprime);
-	poly_invntt(&vprime);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_mul_pointwise(&vprime, &bhat, &sprime);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_invntt(&vprime);
 
-	poly_add(&vprime, &vprime, &eprimeprime);
-	poly_add(&vprime, &vprime, &v); // add message
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_add(&vprime, &vprime, &eprimeprime);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_add(&vprime, &vprime, &v); // add message
 
-	encode_c(c, &uhat, &vprime);
-
-	OQS_MEM_cleanse((void *) &sprime, sizeof(poly));
-	OQS_MEM_cleanse((void *) &eprime, sizeof(poly));
-	OQS_MEM_cleanse((void *) &v, sizeof(poly));
-	OQS_MEM_cleanse((void *) &eprimeprime, sizeof(poly));
-	OQS_MEM_cleanse((void *) &uhat, sizeof(poly));   /* Is this necessary? Coefficients of uhat aren't frozen. */
-	OQS_MEM_cleanse((void *) &vprime, sizeof(poly)); /* Is this necessary? Coefficients of vprime aren't frozen. */
+    encode_c(c, &uhat, &vprime);
 }
+
 
 /*************************************************
 * Name:        cpapke_dec
-* 
+*
 * Description: Decryption function of
 *              the CPA public-key encryption scheme underlying
 *              the NewHope KEMs
@@ -184,21 +175,18 @@ void cpapke_enc(unsigned char *c,
 *              - const unsigned char *c:  pointer to input ciphertext
 *              - const unsigned char *sk: pointer to input secret key
 **************************************************/
-void cpapke_dec(unsigned char *m,
-                const unsigned char *c,
-                const unsigned char *sk) {
-	poly vprime, uhat, tmp, shat;
+void PQCLEAN_NEWHOPE1024CCA_CLEAN_cpapke_dec(unsigned char *m,
+        const unsigned char *c,
+        const unsigned char *sk) {
+    poly vprime, uhat, tmp, shat;
 
-	poly_frombytes(&shat, sk);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_frombytes(&shat, sk);
 
-	decode_c(&uhat, &vprime, c);
-	poly_mul_pointwise(&tmp, &shat, &uhat);
-	poly_invntt(&tmp);
+    decode_c(&uhat, &vprime, c);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_mul_pointwise(&tmp, &shat, &uhat);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_invntt(&tmp);
 
-	poly_sub(&tmp, &tmp, &vprime);
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_sub(&tmp, &tmp, &vprime);
 
-	poly_tomsg(m, &tmp);
-
-	OQS_MEM_cleanse((void *) &shat, sizeof(poly));
-	OQS_MEM_cleanse((void *) &tmp, sizeof(poly));
+    PQCLEAN_NEWHOPE1024CCA_CLEAN_poly_tomsg(m, &tmp);
 }

@@ -64,6 +64,10 @@
 #define OQS_KEM_alg_kyber_kyber768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber_kyber1024 "Kyber1024"
+/** Algorithm identifier for NewHope-512-CCA KEM. */
+#define OQS_KEM_alg_newhope_512cca "NewHope-512-CCA"
+/** Algorithm identifier for NewHope-1024-CCA KEM. */
+#define OQS_KEM_alg_newhope_1024cca "NewHope-1024-CCA"
 /** Algorithm identifier for NTRU-HPS-2048-509 KEM. */
 #define OQS_KEM_alg_ntru_hps2048509 "NTRU-HPS-2048-509"
 /** Algorithm identifier for NTRU-HPS-2048-677 KEM. */
@@ -73,10 +77,6 @@
 /** Algorithm identifier for NTRU-HRSS-701 KEM. */
 #define OQS_KEM_alg_ntru_hrss701 "NTRU-HRSS-701"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
-/** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
-#define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
-/** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
-#define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
 /** Algorithm identifier for Sidh p503 KEM. */
 #define OQS_KEM_alg_sidh_p503 "Sidh-p503"
 /** Algorithm identifier for Sidh p751 KEM. */
@@ -257,9 +257,9 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_kyber.h>
+#include <oqs/kem_newhope.h>
 #include <oqs/kem_ntru.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
-#include <oqs/kem_newhopenist.h>
 #include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 

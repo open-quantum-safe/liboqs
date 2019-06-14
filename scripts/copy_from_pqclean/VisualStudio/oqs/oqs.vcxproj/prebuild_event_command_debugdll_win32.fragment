@@ -11,7 +11,6 @@ copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 {%- for family in kems %}
 copy "$(SolutionDir)..\src\kem\{{ family['name'] }}\kem_{{ family['name'] }}.h" "$(SolutionDir)include\oqs\"{% endfor %}
-copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
