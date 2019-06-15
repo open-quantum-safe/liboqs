@@ -36,6 +36,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\kem\kem.h" />
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_START -->
+    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
+    <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h" />
+    <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h" />
+    <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h" />
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_internal.h" />

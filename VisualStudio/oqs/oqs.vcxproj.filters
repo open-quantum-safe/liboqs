@@ -481,6 +481,20 @@
     <ClInclude Include="..\..\src\kem\kem.h">
       <Filter>kem</Filter>
     </ClInclude>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_START  -->
+    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h">
+      <Filter>frodokem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h">
+      <Filter>kyber</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h">
+      <Filter>newhope</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h">
+      <Filter>ntru</Filter>
+    </ClInclude>
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h">
       <Filter>sike</Filter>
     </ClInclude>
@@ -613,6 +627,9 @@
       <UniqueIdentifier>{620a9f8e-2013-4cb3-ad37-2ee4348ed893}</UniqueIdentifier>
     </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_START -->
+    <Filter Include="frodokem">
+      <UniqueIdentifier>{4547841a-5e25-4215-a32f-13bf244725ed}</UniqueIdentifier>
+    </Filter>
     <Filter Include="frodokem\640_aes">
       <UniqueIdentifier>{453e77f7-95b8-4adc-adc8-033fe561c018}</UniqueIdentifier>
     </Filter>
@@ -631,6 +648,9 @@
     <Filter Include="frodokem\1344_shake">
       <UniqueIdentifier>{de0439be-1a4f-42e3-90f1-e667ccad442b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="kyber">
+      <UniqueIdentifier>{8db00bac-a963-4875-b0a1-945bfed08037}</UniqueIdentifier>
+    </Filter>
     <Filter Include="kyber\kyber512">
       <UniqueIdentifier>{80001dfa-c3e2-478f-8705-95bafd3f33d3}</UniqueIdentifier>
     </Filter>
@@ -640,11 +660,17 @@
     <Filter Include="kyber\kyber1024">
       <UniqueIdentifier>{fd3c9627-9462-409f-9cdb-0c6566370dbe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="newhope">
+      <UniqueIdentifier>{21ea4719-b334-4625-8d3c-3f48de67f6f2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="newhope\512cca">
       <UniqueIdentifier>{fec2e0b7-ccf0-434e-a1ae-4b3bb767e915}</UniqueIdentifier>
     </Filter>
     <Filter Include="newhope\1024cca">
       <UniqueIdentifier>{f26d63a8-92e8-4968-90b1-48aa2b4a9b97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ntru">
+      <UniqueIdentifier>{c75e702c-9706-4807-9ff5-ed29ebc3367c}</UniqueIdentifier>
     </Filter>
     <Filter Include="ntru\hps2048509">
       <UniqueIdentifier>{bafe52e5-36c3-462c-9471-147904f60836}</UniqueIdentifier>
