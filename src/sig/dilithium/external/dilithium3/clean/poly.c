@@ -320,10 +320,10 @@ void PQCLEAN_DILITHIUM3_CLEAN_poly_uniform(poly *a,
     unsigned int i, ctr, off;
     unsigned int buflen = POLY_UNIFORM_BUFLEN;
     unsigned char buf[POLY_UNIFORM_BUFLEN + 2];
-    uint64_t s_inc[26];
+    shake128ctx state;
 
-    stream128_init(s_inc, seed, nonce);
-    stream128_squeezeblocks(buf, POLY_UNIFORM_NBLOCKS, s_inc);
+    stream128_init(&state, seed, nonce);
+    stream128_squeezeblocks(buf, POLY_UNIFORM_NBLOCKS, &state);
 
     ctr = rej_uniform(a->coeffs, N, buf, buflen);
 
@@ -334,7 +334,7 @@ void PQCLEAN_DILITHIUM3_CLEAN_poly_uniform(poly *a,
         }
 
         buflen = STREAM128_BLOCKBYTES + off;
-        stream128_squeezeblocks(buf + off, 1, s_inc);
+        stream128_squeezeblocks(buf + off, 1, &state);
         ctr += rej_uniform(a->coeffs + ctr, N - ctr, buf, buflen);
     }
 }
@@ -396,15 +396,15 @@ void PQCLEAN_DILITHIUM3_CLEAN_poly_uniform_eta(poly *a,
         uint16_t nonce) {
     unsigned int ctr;
     unsigned char buf[POLY_UNIFORM_ETA_BUFLEN];
-    uint64_t s_inc[25];
+    shake128ctx state;
 
-    stream128_init(s_inc, seed, nonce);
-    stream128_squeezeblocks(buf, POLY_UNIFORM_ETA_NBLOCKS, s_inc);
+    stream128_init(&state, seed, nonce);
+    stream128_squeezeblocks(buf, POLY_UNIFORM_ETA_NBLOCKS, &state);
 
     ctr = rej_eta(a->coeffs, N, buf, POLY_UNIFORM_ETA_BUFLEN);
 
     while (ctr < N) {
-        stream128_squeezeblocks(buf, 1, s_inc);
+        stream128_squeezeblocks(buf, 1, &state);
         ctr += rej_eta(a->coeffs + ctr, N - ctr, buf, STREAM128_BLOCKBYTES);
     }
 }
@@ -475,10 +475,10 @@ void PQCLEAN_DILITHIUM3_CLEAN_poly_uniform_gamma1m1(poly *a,
     unsigned int i, ctr, off;
     unsigned int buflen = POLY_UNIFORM_GAMMA1M1_BUFLEN;
     unsigned char buf[POLY_UNIFORM_GAMMA1M1_BUFLEN + 4];
-    uint64_t s_inc[26];
+    shake256ctx state;
 
-    stream256_init(s_inc, seed, nonce);
-    stream256_squeezeblocks(buf, POLY_UNIFORM_GAMMA1M1_NBLOCKS, s_inc);
+    stream256_init(&state, seed, nonce);
+    stream256_squeezeblocks(buf, POLY_UNIFORM_GAMMA1M1_NBLOCKS, &state);
 
     ctr = rej_gamma1m1(a->coeffs, N, buf, buflen);
 
@@ -489,7 +489,7 @@ void PQCLEAN_DILITHIUM3_CLEAN_poly_uniform_gamma1m1(poly *a,
         }
 
         buflen = STREAM256_BLOCKBYTES + off;
-        stream256_squeezeblocks(buf + off, 1, s_inc);
+        stream256_squeezeblocks(buf + off, 1, &state);
         ctr += rej_gamma1m1(a->coeffs + ctr, N - ctr, buf, buflen);
     }
 }
