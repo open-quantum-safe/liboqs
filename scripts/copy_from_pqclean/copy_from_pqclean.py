@@ -71,15 +71,15 @@ for family in kems:
             os.mkdir(os.path.join('src', 'kem', family['name']))
         except:
             pass
-        shutil.rmtree(os.path.join('src', 'kem', family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme'])), ignore_errors=True)
+        shutil.rmtree(os.path.join('src', 'kem', family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], scheme['implementation'])), ignore_errors=True)
         subprocess.run([
             'cp',
             '-pr',
             os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_kem', scheme['pqclean_scheme'], scheme['implementation']),
-            os.path.join('src', 'kem', family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']))
+            os.path.join('src', 'kem', family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], scheme['implementation']))
         ])
-        os.remove(os.path.join('src', 'kem', family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']), 'Makefile'))
-        os.remove(os.path.join('src', 'kem', family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']), 'Makefile.Microsoft_nmake'))
+        os.remove(os.path.join('src', 'kem', family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], scheme['implementation']), 'Makefile'))
+        os.remove(os.path.join('src', 'kem', family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], scheme['implementation']), 'Makefile.Microsoft_nmake'))
 
     generator(
         os.path.join('src', 'kem', family['name'], 'kem_{}.h'.format(family['name'])),
