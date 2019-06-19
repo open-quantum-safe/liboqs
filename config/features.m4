@@ -46,6 +46,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_START
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-kyber], [kem_kyber], [ENABLE_KEM_KYBER], [src/kem/kyber])
+  ARG_DISBL_SET_WRAP([kem-ledacrypt], [kem_ledacrypt], [ENABLE_KEM_LEDACRYPT], [src/kem/ledacrypt])
   ARG_DISBL_SET_WRAP([kem-newhope], [kem_newhope], [ENABLE_KEM_NEWHOPE], [src/kem/newhope])
   ARG_DISBL_SET_WRAP([kem-ntru], [kem_ntru], [ENABLE_KEM_NTRU], [src/kem/ntru])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
@@ -97,6 +98,9 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber512, 1, "Define to 1 when Kyber512 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber768, 1, "Define to 1 when Kyber768 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber1024, 1, "Define to 1 when Kyber1024 enabled")
+  ])
+  AM_COND_IF([ENABLE_KEM_LEDACRYPT], [
+    AC_DEFINE(OQS_ENABLE_KEM_ledacrypt_kem_lt_12, 1, "Define to 1 when LEDAcrypt-KEM-LT-12 enabled")
   ])
   AM_COND_IF([ENABLE_KEM_NEWHOPE], [
     AC_DEFINE(OQS_ENABLE_KEM_newhope_512cca, 1, "Define to 1 when NewHope-512-CCA enabled")

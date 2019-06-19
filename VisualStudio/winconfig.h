@@ -12,6 +12,7 @@
 #define OQS_ENABLE_KEM_kyber_kyber512
 #define OQS_ENABLE_KEM_kyber_kyber768
 #define OQS_ENABLE_KEM_kyber_kyber1024
+#define OQS_ENABLE_KEM_ledacrypt_kem_lt_12
 #define OQS_ENABLE_KEM_newhope_512cca
 #define OQS_ENABLE_KEM_newhope_1024cca
 #define OQS_ENABLE_KEM_ntru_hps2048509

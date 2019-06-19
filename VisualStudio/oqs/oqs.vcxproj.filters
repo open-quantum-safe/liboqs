@@ -206,6 +206,33 @@
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c">
       <Filter>kyber\kyber1024</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\kem_ledakemlt12.c">
+      <Filter>ledacrypt\kem_lt_12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\bf_decoding.c">
+      <Filter>ledacrypt\kem_lt_12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\dfr_test.c">
+      <Filter>ledacrypt\kem_lt_12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\gf2x_arith_mod_xPplusOne.c">
+      <Filter>ledacrypt\kem_lt_12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\gf2x_arith.c">
+      <Filter>ledacrypt\kem_lt_12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\H_Q_matrices_generation.c">
+      <Filter>ledacrypt\kem_lt_12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\kem.c">
+      <Filter>ledacrypt\kem_lt_12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\niederreiter.c">
+      <Filter>ledacrypt\kem_lt_12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\rng.c">
+      <Filter>ledacrypt\kem_lt_12</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kem\newhope\kem_newhope512cca.c">
       <Filter>newhope\512cca</Filter>
     </ClCompile>
@@ -563,6 +590,9 @@
     <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h">
       <Filter>kyber</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kem\ledacrypt\kem_ledacrypt.h">
+      <Filter>ledacrypt</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h">
       <Filter>newhope</Filter>
     </ClInclude>
@@ -749,6 +779,12 @@
     </Filter>
     <Filter Include="kyber\kyber1024">
       <UniqueIdentifier>{fd3c9627-9462-409f-9cdb-0c6566370dbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ledacrypt">
+      <UniqueIdentifier>{80e6cb28-9f7d-4499-966d-89cf6f6359a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ledacrypt\kem_lt_12">
+      <UniqueIdentifier>{84ffe233-5d4a-4dfb-af5f-7e73964c8d49}</UniqueIdentifier>
     </Filter>
     <Filter Include="newhope">
       <UniqueIdentifier>{21ea4719-b334-4625-8d3c-3f48de67f6f2}</UniqueIdentifier>
