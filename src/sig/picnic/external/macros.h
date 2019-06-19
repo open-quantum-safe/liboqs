@@ -10,6 +10,16 @@
 #ifndef PICNIC_MACROS_H
 #define PICNIC_MACROS_H
 
+#include "oqs_picnic_macros.h"
+
+/* __FUNCTION__ generates a warning on Linux with -Wpedantic and newer versions
+ * of GCC (tested with 5.4).  So we use __func__ in all source and define it on
+ * Windows.
+ */
+#if defined(__WINDOWS__)
+#define __func__ __FUNCTION__
+#endif
+
 /* compatibility with clang and other compilers */
 #ifndef __has_attribute
 #define __has_attribute(a) 0
@@ -37,7 +47,9 @@
 
 /* assume */
 #if GNUC_CHECK(4, 5) || __has_builtin(__builtin_unreachable)
-#define ASSUME(p) if (!(p)) __builtin_unreachable()
+#define ASSUME(p)                                                                                  \
+  if (!(p))                                                                                        \
+  __builtin_unreachable()
 #elif defined(_MSC_VER)
 #define ASSUME(p) __assume(p)
 #else
@@ -170,21 +182,80 @@ static inline bool sub_overflow_size_t(const size_t x, const size_t y, size_t* d
 
 #include <stdint.h>
 
-/* parity */
+/* helper functions for parity computations */
 #if GNUC_CHECK(4, 9) || __has_builtin(__builtin_parity)
+ATTR_CONST
+static inline uint8_t parity64_uint8(uint8_t in) {
+  return __builtin_parity(in);
+}
+
 ATTR_CONST
 static inline uint64_t parity64_uint64(uint64_t in) {
   return __builtin_parityll(in);
 }
 #else
 ATTR_CONST
+static inline uint8_t parity64_uint8(uint8_t in) {
+  /* byte parity from: https://graphics.stanford.edu/~seander/bithacks.html#ParityWith64Bits */
+  return (((in * UINT64_C(0x0101010101010101)) & UINT64_C(0x8040201008040201)) % 0x1FF) & 1;
+}
+
+ATTR_CONST
 static inline uint64_t parity64_uint64(uint64_t in) {
-  in ^= in >> 32;
-  in ^= in >> 16;
-  in ^= in >> 8;
-  in ^= in >> 4;
-  return (0x6996 >> (in & 0xf)) & 1;
+  in ^= in >> 1;
+  in ^= in >> 2;
+  in = (in & 0x1111111111111111) * 0x1111111111111111;
+  return (in >> 60) & 1;
 }
 #endif
+
+/* helper functions to ocmpute number of leading zeroes */
+#if GNUC_CHECK(4, 7) || __has_builtin(__builtin_clz)
+ATTR_CONST
+static inline uint32_t clz(uint32_t x) {
+  return x ? __builtin_clz(x) : 32;
+}
+#else
+/* Number of leading zeroes of x.
+ * From the book
+ * H.S. Warren, *Hacker's Delight*, Pearson Education, 2003.
+ * http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
+ */
+ATTR_CONST
+static inline uint32_t clz(uint32_t x) {
+  if (!x) {
+    return 32;
+  }
+
+  uint32_t n = 1;
+  if (!(x >> 16)) {
+    n = n + 16;
+    x = x << 16;
+  }
+  if (!(x >> 24)) {
+    n = n + 8;
+    x = x << 8;
+  }
+  if (!(x >> 28)) {
+    n = n + 4;
+    x = x << 4;
+  }
+  if (!(x >> 30)) {
+    n = n + 2;
+    x = x << 2;
+  }
+  n = n - (x >> 31);
+
+  return n;
+}
+#endif
+
+ATTR_CONST
+static inline uint32_t ceil_log2(uint32_t x) {
+  if (!x) {
+    return 0;
+  }
+  return 32 - clz(x - 1);
+}
 
 #endif

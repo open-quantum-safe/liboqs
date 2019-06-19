@@ -1,0 +1,16 @@
+
+AC_CONFIG_FILES([Makefile
+                 src/common/Makefile
+                 src/kem/Makefile
+                 src/crypto/sha3/Makefile
+                 src/crypto/aes/Makefile
+                 src/sig/Makefile
+                 src/sig/picnic/Makefile
+                 src/sig/qtesla/Makefile
+                 src/kem/bike/Makefile
+{%- for family in kems %}
+                 src/kem/{{ family['name'] }}/Makefile{% endfor %}
+                 src/kem/sike/Makefile
+                 tests/Makefile
+                 ])
+

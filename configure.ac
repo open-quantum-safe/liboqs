@@ -62,6 +62,7 @@ SRCDIR=${SRCDIR}" src/kem \
 SET_AM_CFLAGS
 
 AC_SUBST(SRCDIR)
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AC_CONFIG_FILES_START
 AC_CONFIG_FILES([Makefile
                  src/common/Makefile
                  src/kem/Makefile
@@ -73,10 +74,12 @@ AC_CONFIG_FILES([Makefile
                  src/sig/dilithium/Makefile
                  src/kem/bike/Makefile
                  src/kem/frodokem/Makefile
-                 src/kem/sike/Makefile
-                 src/kem/newhopenist/Makefile
                  src/kem/kyber/Makefile
+                 src/kem/newhope/Makefile
+                 src/kem/ntru/Makefile
+                 src/kem/sike/Makefile
                  tests/Makefile
                  ])
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AC_CONFIG_FILES_END
 
 AC_OUTPUT

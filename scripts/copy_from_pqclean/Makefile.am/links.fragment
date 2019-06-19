@@ -1,0 +1,3 @@
+{% for family in kems %}
+	cp -f src/kem/{{ family['name'] }}/kem_{{ family['name'] }}.h include/oqs{% endfor %}
+

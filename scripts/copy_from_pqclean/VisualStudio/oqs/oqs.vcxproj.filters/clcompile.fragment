@@ -1,0 +1,9 @@
+ -->{% for family in kems %}{% for scheme in family['schemes'] %}
+    <ClCompile Include="..\..\src\kem\{{ family['name'] }}\kem_{{ scheme['pqclean_scheme'] }}.c">
+      <Filter>{{ family['name'] }}\{{ scheme['scheme'] }}</Filter>
+    </ClCompile>
+{%- for file in scheme['sources'] %}
+    <ClCompile Include="..\..\src\kem\{{ family['name'] }}\pqclean_{{ scheme['pqclean_scheme'] }}_{{ scheme['implementation'] }}\{{ file }}">
+      <Filter>{{ family['name'] }}\{{ scheme['scheme'] }}</Filter>
+    </ClCompile>{% endfor %}{% endfor %}{% endfor %}
+    
