@@ -12,5 +12,6 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/picnic/sig_picnic.h \
-	src/sig/qtesla/sig_qtesla.h
+	src/sig/qtesla/sig_qtesla.h \
+	src/sig/dilithium/sig_dilithium.h
 

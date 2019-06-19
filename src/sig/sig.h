@@ -51,9 +51,16 @@
 #define OQS_SIG_alg_qTESLA_III_size "qTESLA_III_size"
 /** Algorithm identifier for qTESLA_III_speed */
 #define OQS_SIG_alg_qTESLA_III_speed "qTESLA_III_speed"
+/** Algorithm identifier for DILITHIUM_2 */
+#define OQS_SIG_alg_dilithium_2 "DILITHIUM_2"
+/** Algorithm identifier for DILITHIUM_3 */
+#define OQS_SIG_alg_dilithium_3 "DILITHIUM_3"
+/** Algorithm identifier for DILITHIUM_4 */
+#define OQS_SIG_alg_dilithium_4 "DILITHIUM_4"
+
 // EDIT-WHEN-ADDING-SIG
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 13
+#define OQS_SIG_algs_length 16
 /** The default signature. Different on Windows because qTESLA is not yet supported. */
 #if defined(_WIN32)
 #define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
@@ -221,6 +228,7 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 
 #include <oqs/sig_picnic.h>
 #include <oqs/sig_qtesla.h>
+#include <oqs/sig_dilithium.h>
 // EDIT-WHEN-ADDING-SIG
 
 #endif // __OQS_SIG_H

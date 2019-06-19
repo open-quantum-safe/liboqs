@@ -55,6 +55,8 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
                      [ENABLE_SIG_PICNIC], [src/sig/picnic])
   ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
                      [ENABLE_SIG_QTESLA], [src/sig/qtesla])
+  ARG_DISBL_SET_WRAP([sig-dilithium], [sig_dilithium],
+                     [ENABLE_SIG_DILITHIUM], [src/sig/dilithium])                    
 ]
 )
 
@@ -131,6 +133,12 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_SIG_picnic2_L1_FS, 1, "Define to 1 when picnic2-L1-FS enabled")
     AC_DEFINE(OQS_ENABLE_SIG_picnic2_L3_FS, 1, "Define to 1 when picnic2-L3-FS enabled")
     AC_DEFINE(OQS_ENABLE_SIG_picnic2_L5_FS, 1, "Define to 1 when picnic2-L5-FS enabled")
+  ])
+
+  AM_COND_IF([ENABLE_SIG_DILITHIUM], [
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_2, 1, "Define to 1 when DILITHIUM_2 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_3, 1, "Define to 1 when DILITHIUM_3 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_4, 1, "Define to 1 when DILITHIUM_4 enabled")
   ])
 ]
 )
