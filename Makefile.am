@@ -77,7 +77,7 @@ installheader_HEADERS= src/oqs.h \
 	src/sig/picnic/sig_picnic.h \
 	src/sig/qtesla/sig_qtesla.h \
 	src/sig/dilithium/sig_dilithium.h
-	##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_END
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_END
 
 
 test: clean-tests check
