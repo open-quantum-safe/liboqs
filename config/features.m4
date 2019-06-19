@@ -136,9 +136,9 @@ AC_DEFUN([CONFIG_FEATURES],
   ])
 
   AM_COND_IF([ENABLE_SIG_DILITHIUM], [
-    AC_DEFINE(OQS_ENABLE_SIG_DILITHIUM_2, 1, "Define to 1 when DILITHIUM_2 enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_DILITHIUM_3, 1, "Define to 1 when DILITHIUM_3 enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_DILITHIUM_4, 1, "Define to 1 when DILITHIUM_4 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_2, 1, "Define to 1 when DILITHIUM_2 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_3, 1, "Define to 1 when DILITHIUM_3 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_4, 1, "Define to 1 when DILITHIUM_4 enabled")
   ])
 ]
 )

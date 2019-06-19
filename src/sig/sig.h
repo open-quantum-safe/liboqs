@@ -52,11 +52,11 @@
 /** Algorithm identifier for qTESLA_III_speed */
 #define OQS_SIG_alg_qTESLA_III_speed "qTESLA_III_speed"
 /** Algorithm identifier for DILITHIUM_2 */
-#define OQS_SIG_alg_DILITHIUM_2 "DILITHIUM_2"
+#define OQS_SIG_alg_dilithium_2 "DILITHIUM_2"
 /** Algorithm identifier for DILITHIUM_3 */
-#define OQS_SIG_alg_DILITHIUM_3 "DILITHIUM_3"
+#define OQS_SIG_alg_dilithium_3 "DILITHIUM_3"
 /** Algorithm identifier for DILITHIUM_4 */
-#define OQS_SIG_alg_DILITHIUM_4 "DILITHIUM_4"
+#define OQS_SIG_alg_dilithium_4 "DILITHIUM_4"
 
 // EDIT-WHEN-ADDING-SIG
 /** Number of algorithm identifiers above (including default). */
