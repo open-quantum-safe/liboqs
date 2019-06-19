@@ -17,9 +17,9 @@ Parameter sets
 
 | Parameter set       | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
 |---------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:----------------------:|
-| Dilithium-1024x768  |    EUF-CMA     |              1              |          1184           |          2800           |          2044          |
-| Dilithium-1280x1024 |    EUF-CMA     |              2              |          1472           |          3504           |          2701          |
-| Dilithium-1536x1280 |    EUF-CMA     |              3              |          1760           |          3856           |          3366          |
+| DILITHIUM_2         |    EUF-CMA     |              1              |          1184           |          2800           |          2044          |
+| DILITHIUM_3         |    EUF-CMA     |              2              |          1472           |          3504           |          2701          |
+| DILITHIUM_4         |    EUF-CMA     |              3              |          1760           |          3856           |          3366          |
 
 
 Implementation
