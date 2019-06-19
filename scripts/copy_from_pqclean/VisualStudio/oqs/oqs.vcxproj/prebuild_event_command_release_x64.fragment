@@ -14,5 +14,6 @@ copy "$(SolutionDir)..\src\kem\{{ family['name'] }}\kem_{{ family['name'] }}.h" 
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     

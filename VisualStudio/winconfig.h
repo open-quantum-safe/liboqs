@@ -32,5 +32,8 @@
 #define OQS_ENABLE_SIG_picnic2_L1_FS
 #define OQS_ENABLE_SIG_picnic2_L3_FS
 #define OQS_ENABLE_SIG_picnic2_L5_FS
+#define OQS_ENABLE_SIG_dilithium2
+#define OQS_ENABLE_SIG_dilithium3
+#define OQS_ENABLE_SIG_dilithium4
 
 #endif

@@ -58,3 +58,12 @@ EXPORTS
 	OQS_SIG_picnic2_L5_FS_keypair
 	OQS_SIG_picnic2_L5_FS_sign
 	OQS_SIG_picnic2_L5_FS_verify
+	OQS_SIG_dilithium2_keypair
+	OQS_SIG_dilithium2_sign
+	OQS_SIG_dilithium2_verify
+	OQS_SIG_dilithium3_keypair
+	OQS_SIG_dilithium3_sign
+	OQS_SIG_dilithium3_verify
+	OQS_SIG_dilithium4_keypair
+	OQS_SIG_dilithium4_sign
+	OQS_SIG_dilithium4_verify
