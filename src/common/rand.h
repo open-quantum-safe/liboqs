@@ -12,6 +12,10 @@
 
 #include <oqs/common.h>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /** Algorithm identifier for system PRNG. */
 #define OQS_RAND_alg_system "system"
 /** Algorithm identifier for NIST deterministic RNG for KATs. */
@@ -59,5 +63,9 @@ OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
  * @param[in] security_strength The required security strength; must be 256
  */
 OQS_API void OQS_randombytes_nist_kat_init(const uint8_t *entropy_input, const uint8_t *personalization_string, int security_strength);
+
+#if defined(__cplusplus)
+}  // extern "C"
+#endif
 
 #endif // __OQS_RANDOM_H

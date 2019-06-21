@@ -15,6 +15,10 @@
 #include <oqs/oqsconfig.h>
 #endif
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /**
  * Defines which functions should be exposed outside the LibOQS library
  *
@@ -97,6 +101,10 @@ OQS_API void OQS_MEM_insecure_free(void *ptr);
 // __attribute__ not supported in VS
 #else
 #define UNUSED __attribute__((unused))
+#endif
+
+#if defined(__cplusplus)
+}  // extern "C"
 #endif
 
 #endif // __OQS_COMMON_H

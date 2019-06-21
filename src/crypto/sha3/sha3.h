@@ -14,6 +14,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /*!
 \def OQS_SHA3_CSHAKE_DOMAIN
 * The cSHAKE function domain code
@@ -296,5 +300,9 @@ void OQS_SHA3_cshake256_simple_absorb(uint64_t *state, uint16_t cstm, const uint
 * \param state The function state; must be pre-initialized
 */
 void OQS_SHA3_cshake256_simple_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
+
+#if defined(__cplusplus)
+}  // extern "C"
+#endif
 
 #endif
