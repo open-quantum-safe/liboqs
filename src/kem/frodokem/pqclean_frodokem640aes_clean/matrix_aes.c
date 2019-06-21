@@ -33,6 +33,7 @@ int PQCLEAN_FRODOKEM640AES_CLEAN_mul_add_as_plus_e(uint16_t *out, const uint16_t
     }
 
     aes128_ecb((uint8_t *) A, (uint8_t *) A, PARAMS_N * PARAMS_N * sizeof(int16_t) / AES_BLOCKBYTES, &ctx128);
+    aes128_ctx_release(&ctx128);
 
     for (i = 0; i < PARAMS_N * PARAMS_N; i++) {
         A[i] = PQCLEAN_FRODOKEM640AES_CLEAN_LE_TO_UINT16(A[i]);
@@ -73,6 +74,7 @@ int PQCLEAN_FRODOKEM640AES_CLEAN_mul_add_sa_plus_e(uint16_t *out, const uint16_t
     }
 
     aes128_ecb((uint8_t *) A, (uint8_t *) A, PARAMS_N * PARAMS_N * sizeof(int16_t) / AES_BLOCKBYTES, &ctx128);
+    aes128_ctx_release(&ctx128);
 
     for (i = 0; i < PARAMS_N * PARAMS_N; i++) {
         A[i] = PQCLEAN_FRODOKEM640AES_CLEAN_LE_TO_UINT16(A[i]);
