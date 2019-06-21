@@ -78,6 +78,12 @@ extern "C" {
 */
 #define OQS_SHA3_STATESIZE 25
 
+/*!
+\def OQS_SHA3_INC_STATESIZE
+* The size of the state for the incremental hashing API
+*/
+#define OQS_SHA3_INC_STATESIZE 26
+
 /* SHA3 */
 
 /**
@@ -180,6 +186,35 @@ void OQS_SHA3_shake128_absorb(uint64_t *state, const uint8_t *input, size_t inpl
 void OQS_SHA3_shake128_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
 
 /**
+ * \brief Initialize the incremental hashing API state
+ */
+void OQS_SHA3_shake128_inc_init(uint64_t *s_inc);
+
+/**
+ * \brief Absorb into the state
+ *
+ * \param s_inc state
+ * \param input input buffer
+ * \param inlen length of input buffer
+ */
+void OQS_SHA3_shake128_inc_absorb(uint64_t *s_inc, const uint8_t *input, size_t inlen);
+/*
+ * \brief Finalizes output
+ *
+ * \param s_inc Incremental hashing state
+ */
+void OQS_SHA3_shake128_inc_finalize(uint64_t *s_inc);
+
+/**
+ * \brief Obtains output
+ *
+ * \param output output buffer
+ * \param outlen bytes of outbut buffer
+ * \param state
+ */
+void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, uint64_t *s_inc);
+
+/**
 * \brief Seed a SHAKE-256 instance, and generate an array of pseudo-random bytes.
 *
 * \warning The output array length must not be zero.
@@ -217,6 +252,35 @@ void OQS_SHA3_shake256_absorb(uint64_t *state, const uint8_t *input, size_t inpl
 */
 void OQS_SHA3_shake256_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
 
+/**
+ * \brief Initialize the incremental hashing API state
+ */
+void OQS_SHA3_shake256_inc_init(uint64_t *s_inc);
+
+/**
+ * \brief Absorb into the state
+ *
+ * \param s_inc state
+ * \param input input buffer
+ * \param inlen length of input buffer
+ */
+void OQS_SHA3_shake256_inc_absorb(uint64_t *s_inc, const uint8_t *input, size_t inlen);
+/*
+ * \brief Finalizes output
+ *
+ * \param s_inc Incremental hashing state
+ */
+void OQS_SHA3_shake256_inc_finalize(uint64_t *s_inc);
+
+/**
+ * \brief Obtains output
+ *
+ * \param output output buffer
+ * \param outlen bytes of outbut buffer
+ * \param state
+ */
+void OQS_SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, uint64_t *s_inc);
+
 /* cSHAKE */
 
 /**
@@ -231,6 +295,7 @@ void OQS_SHA3_shake256_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *
 * \param input The input seed byte array
 * \param inplen The number of seed bytes to process
 */
+
 void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen);
 
 /**

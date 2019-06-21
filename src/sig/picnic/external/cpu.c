@@ -7,6 +7,10 @@
  *  SPDX-License-Identifier: MIT
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "cpu.h"
 
 /* If cmake checks were not run, define some known values. */

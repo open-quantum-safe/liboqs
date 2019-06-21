@@ -43,15 +43,20 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
     [AM_CONDITIONAL(ENABLE_KEM_BIKE, [false])]
   )
 
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_START
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
+  ARG_DISBL_SET_WRAP([kem-kyber], [kem_kyber], [ENABLE_KEM_KYBER], [src/kem/kyber])
+  ARG_DISBL_SET_WRAP([kem-newhope], [kem_newhope], [ENABLE_KEM_NEWHOPE], [src/kem/newhope])
+  ARG_DISBL_SET_WRAP([kem-ntru], [kem_ntru], [ENABLE_KEM_NTRU], [src/kem/ntru])
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
-  ARG_DISBL_SET_WRAP([kem-newhope],  [kem_newhope],  [ENABLE_KEM_NEWHOPE],  [src/kem/newhopenist])
-  ARG_DISBL_SET_WRAP([kem-kyber],  [kem_kyber],  [ENABLE_KEM_KYBER],  [src/kem/kyber])
 
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
                      [ENABLE_SIG_PICNIC], [src/sig/picnic])
   ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
                      [ENABLE_SIG_QTESLA], [src/sig/qtesla])
+  ARG_DISBL_SET_WRAP([sig-dilithium], [sig_dilithium],
+                     [ENABLE_SIG_DILITHIUM], [src/sig/dilithium])                    
 ]
 )
 
@@ -79,14 +84,31 @@ AC_DEFUN([CONFIG_FEATURES],
                ])
   ])
 
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AM_COND_IF_START
   AM_COND_IF([ENABLE_KEM_FRODOKEM], [
-    AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_aes,    1, "Define to 1 when FrodoKEM-640-AES enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_shake,  1, "Define to 1 when FrodoKEM-640-SHAKE enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_aes,    1, "Define to 1 when FrodoKEM-976-AES enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_shake,  1, "Define to 1 when FrodoKEM-976-SHAKE enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_frodokem_1344_aes,   1, "Define to 1 when FrodoKEM-1344-AES enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_aes, 1, "Define to 1 when FrodoKEM-640-AES enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_640_shake, 1, "Define to 1 when FrodoKEM-640-SHAKE enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_aes, 1, "Define to 1 when FrodoKEM-976-AES enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_976_shake, 1, "Define to 1 when FrodoKEM-976-SHAKE enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_frodokem_1344_aes, 1, "Define to 1 when FrodoKEM-1344-AES enabled")
     AC_DEFINE(OQS_ENABLE_KEM_frodokem_1344_shake, 1, "Define to 1 when FrodoKEM-1344-SHAKE enabled")
   ])
+  AM_COND_IF([ENABLE_KEM_KYBER], [
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber512, 1, "Define to 1 when Kyber512 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber768, 1, "Define to 1 when Kyber768 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber1024, 1, "Define to 1 when Kyber1024 enabled")
+  ])
+  AM_COND_IF([ENABLE_KEM_NEWHOPE], [
+    AC_DEFINE(OQS_ENABLE_KEM_newhope_512cca, 1, "Define to 1 when NewHope-512-CCA enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_newhope_1024cca, 1, "Define to 1 when NewHope-1024-CCA enabled")
+  ])
+  AM_COND_IF([ENABLE_KEM_NTRU], [
+    AC_DEFINE(OQS_ENABLE_KEM_ntru_hps2048509, 1, "Define to 1 when NTRU-HPS-2048-509 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ntru_hps2048677, 1, "Define to 1 when NTRU-HPS-2048-677 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ntru_hps4096821, 1, "Define to 1 when NTRU-HPS-4096-821 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ntru_hrss701, 1, "Define to 1 when NTRU-HRSS-701 enabled")
+  ])
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AM_COND_IF_END
 
   AM_COND_IF([ENABLE_KEM_SIKE], [
     AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")
@@ -108,17 +130,15 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_SIG_picnic_L3_UR, 1, "Define to 1 when picnic-L3-UR enabled")
     AC_DEFINE(OQS_ENABLE_SIG_picnic_L5_FS, 1, "Define to 1 when picnic-L5-FS enabled")
     AC_DEFINE(OQS_ENABLE_SIG_picnic_L5_UR, 1, "Define to 1 when picnic-L5-UR enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic2_L1_FS, 1, "Define to 1 when picnic2-L1-FS enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic2_L3_FS, 1, "Define to 1 when picnic2-L3-FS enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_picnic2_L5_FS, 1, "Define to 1 when picnic2-L5-FS enabled")
   ])
 
-  AM_COND_IF([ENABLE_KEM_NEWHOPE], [
-    AC_DEFINE(OQS_ENABLE_KEM_newhope_512_cca_kem, 1, "Define to 1 when NewHope-512-CCA-KEM enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_newhope_1024_cca_kem, 1, "Define to 1 when NewHope-1024-CCA-KEM enabled")
-  ])
-
-  AM_COND_IF([ENABLE_KEM_KYBER], [
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_512_cca_kem, 1, "Define to 1 when Kyber-512-CCA-KEM enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_768_cca_kem, 1, "Define to 1 when Kyber-512-CCA-KEM enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_1024_cca_kem, 1, "Define to 1 when Kyber-1024-CCA-KEM enabled")
+  AM_COND_IF([ENABLE_SIG_DILITHIUM], [
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_2, 1, "Define to 1 when DILITHIUM_2 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_3, 1, "Define to 1 when DILITHIUM_3 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_4, 1, "Define to 1 when DILITHIUM_4 enabled")
   ])
 ]
 )

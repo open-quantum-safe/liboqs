@@ -24,7 +24,8 @@ int crypto_sign(unsigned char* sm, unsigned long long* smlen, const unsigned cha
   size_t signature_len = PICNIC_SIGNATURE_SIZE(PICNIC_INSTANCE);
   uint32_t len         = 0;
 
-  const int ret = picnic_sign((const picnic_privatekey_t*)sk, m, mlen, sm + sizeof(len) + mlen, &signature_len);
+  const int ret =
+      picnic_sign((const picnic_privatekey_t*)sk, m, mlen, sm + sizeof(len) + mlen, &signature_len);
   if (ret) {
     return ret;
   }

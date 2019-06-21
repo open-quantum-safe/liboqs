@@ -59,15 +59,9 @@ static inline uint64_t AATR_CONST bswap64(uint64_t x) {
 #endif
 #endif
 
-/* OS X */
-#if defined(__APPLE__)
+/* OS X / OpenBSD */
+#if defined(__APPLE__) || defined(__OpenBSD__)
 #include <machine/endian.h>
-#endif
-
-/* OpenBSD */
-#if defined(__OpenBSD__)
-#include <machine/endian.h>
-#define HAVE_HOSTSWAP
 #endif
 
 /* other BSDs */

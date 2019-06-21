@@ -41,9 +41,13 @@ extern "C" {
 #define LOWMC_BLOCK_SIZE_Picnic_L3_UR 24
 #define LOWMC_BLOCK_SIZE_Picnic_L5_FS 32
 #define LOWMC_BLOCK_SIZE_Picnic_L5_UR 32
+#define LOWMC_BLOCK_SIZE_Picnic2_L1_FS 16
+#define LOWMC_BLOCK_SIZE_Picnic2_L3_FS 24
+#define LOWMC_BLOCK_SIZE_Picnic2_L5_FS 32
 
 #define LOWMC_BLOCK_SIZE(p) PICNIC_CONCAT(LOWMC_BLOCK_SIZE, p)
 
+#define SALT_SIZE 32
 #define MAX_LOWMC_ROUNDS 38
 #define MAX_LOWMC_SBOXES 10
 #define MAX_ROUNDS 438
@@ -51,16 +55,19 @@ extern "C" {
 #define PICNIC_PRIVATE_KEY_SIZE(p) (1 + 3 * LOWMC_BLOCK_SIZE(p))
 #define PICNIC_PUBLIC_KEY_SIZE(p) (1 + 2 * LOWMC_BLOCK_SIZE(p))
 
-#define PICNIC_SIGNATURE_SIZE_Picnic_L1_FS 34016
-#define PICNIC_SIGNATURE_SIZE_Picnic_L1_UR 53945
-#define PICNIC_SIGNATURE_SIZE_Picnic_L3_FS 76724
-#define PICNIC_SIGNATURE_SIZE_Picnic_L3_UR 121837
+#define PICNIC_SIGNATURE_SIZE_Picnic_L1_FS 34032
+#define PICNIC_SIGNATURE_SIZE_Picnic_L1_UR 53961
+#define PICNIC_SIGNATURE_SIZE_Picnic_L3_FS 76732
+#define PICNIC_SIGNATURE_SIZE_Picnic_L3_UR 121845
 #define PICNIC_SIGNATURE_SIZE_Picnic_L5_FS 132856
 #define PICNIC_SIGNATURE_SIZE_Picnic_L5_UR 209506
-#define PICNIC_SIGNATURE_SIZE_Picnic_L1_1_FS 32702
-#define PICNIC_SIGNATURE_SIZE_Picnic_L1_1_UR 51755
-#define PICNIC_SIGNATURE_SIZE_Picnic_L3_1_FS 74790
-#define PICNIC_SIGNATURE_SIZE_Picnic_L3_1_UR 117889
+#define PICNIC_SIGNATURE_SIZE_Picnic2_L1_FS 13802
+#define PICNIC_SIGNATURE_SIZE_Picnic2_L3_FS 29750
+#define PICNIC_SIGNATURE_SIZE_Picnic2_L5_FS 54732
+#define PICNIC_SIGNATURE_SIZE_Picnic_L1_1_FS 32728
+#define PICNIC_SIGNATURE_SIZE_Picnic_L1_1_UR 51771
+#define PICNIC_SIGNATURE_SIZE_Picnic_L3_1_FS 74798
+#define PICNIC_SIGNATURE_SIZE_Picnic_L3_1_UR 117897
 #define PICNIC_SIGNATURE_SIZE_Picnic_L5_1_FS 130228
 #define PICNIC_SIGNATURE_SIZE_Picnic_L5_1_UR 204250
 
@@ -75,19 +82,22 @@ extern "C" {
 typedef enum {
   PARAMETER_SET_INVALID,
   /* Instances from the Picnic parameter set with LowMC m=10 */
-  Picnic_L1_FS, // 1
-  Picnic_L1_UR, // 2
-  Picnic_L3_FS, // 3
-  Picnic_L3_UR, // 4
-  Picnic_L5_FS, // 5
-  Picnic_L5_UR, // 6
+  Picnic_L1_FS,  // 1
+  Picnic_L1_UR,  // 2
+  Picnic_L3_FS,  // 3
+  Picnic_L3_UR,  // 4
+  Picnic_L5_FS,  // 5
+  Picnic_L5_UR,  // 6
+  Picnic2_L1_FS, // 7
+  Picnic2_L3_FS, // 8
+  Picnic2_L5_FS, // 9
   /* Instances with LowMC m=1 */
-  Picnic_L1_1_FS, // 7
-  Picnic_L1_1_UR, // 8
-  Picnic_L3_1_FS, // 9
-  Picnic_L3_1_UR, // 10
-  Picnic_L5_1_FS, // 11
-  Picnic_L5_1_UR, // 12
+  Picnic_L1_1_FS, // 10
+  Picnic_L1_1_UR, // 11
+  Picnic_L3_1_FS, // 12
+  Picnic_L3_1_UR, // 13
+  Picnic_L5_1_FS, // 14
+  Picnic_L5_1_UR, // 15
   PARAMETER_SET_MAX_INDEX
 } picnic_params_t;
 
