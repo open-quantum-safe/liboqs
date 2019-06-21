@@ -27,8 +27,8 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE/
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/e72fd489baaef597715aa4335ceeea4362301b55
+- **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE/ via https://github.com/PQClean/PQClean
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/ba04db65d7d21e52dea59651bfff4ad28653852d
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes

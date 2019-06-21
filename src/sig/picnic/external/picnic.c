@@ -7,15 +7,20 @@
  *  SPDX-License-Identifier: MIT
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "picnic.h"
 
 #include <stdlib.h>
-#include <oqs/rand.h>
 #include <string.h>
 
 #include "io.h"
 #include "lowmc.h"
 #include "picnic_impl.h"
+#include "picnic2_impl.h"
+#include <oqs/rand.h>
 
 // Public and private keys are serialized as follows:
 // - public key: instance || C || p
@@ -30,7 +35,7 @@
 #define PK_PT(pk) &(pk)->data[1 + output_size]
 
 size_t PICNIC_CALLING_CONVENTION picnic_get_lowmc_block_size(picnic_params_t param) {
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return 0;
   }
@@ -39,7 +44,7 @@ size_t PICNIC_CALLING_CONVENTION picnic_get_lowmc_block_size(picnic_params_t par
 }
 
 size_t PICNIC_CALLING_CONVENTION picnic_signature_size(picnic_params_t param) {
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return 0;
   }
@@ -48,7 +53,7 @@ size_t PICNIC_CALLING_CONVENTION picnic_signature_size(picnic_params_t param) {
 }
 
 size_t PICNIC_CALLING_CONVENTION picnic_get_private_key_size(picnic_params_t param) {
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return 0;
   }
@@ -57,7 +62,7 @@ size_t PICNIC_CALLING_CONVENTION picnic_get_private_key_size(picnic_params_t par
 }
 
 size_t PICNIC_CALLING_CONVENTION picnic_get_public_key_size(picnic_params_t param) {
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return 0;
   }
@@ -72,7 +77,7 @@ int PICNIC_CALLING_CONVENTION picnic_keygen(picnic_params_t param, picnic_public
     return -1;
   }
 
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return -1;
   }
@@ -108,7 +113,7 @@ int PICNIC_CALLING_CONVENTION picnic_sk_to_pk(const picnic_privatekey_t* sk,
   }
 
   const picnic_params_t param       = sk->data[0];
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return -1;
   }
@@ -122,22 +127,22 @@ int PICNIC_CALLING_CONVENTION picnic_sk_to_pk(const picnic_privatekey_t* sk,
   uint8_t* pk_pt       = PK_PT(pk);
   const uint8_t* sk_pt = SK_PT(sk);
 
-  mzd_local_t* plaintext = oqs_sig_picnic_mzd_local_init_ex(1, lowmc->n, false);
-  mzd_local_t* privkey   = oqs_sig_picnic_mzd_local_init_ex(1, lowmc->k, false);
+  mzd_local_t* plaintext = mzd_local_init_ex(1, lowmc->n, false);
+  mzd_local_t* privkey   = mzd_local_init_ex(1, lowmc->k, false);
 
-  oqs_sig_picnic_mzd_from_char_array(plaintext, sk_pt, output_size);
-  oqs_sig_picnic_mzd_from_char_array(privkey, sk_sk, input_size);
+  mzd_from_char_array(plaintext, sk_pt, output_size);
+  mzd_from_char_array(privkey, sk_sk, input_size);
 
   // compute public key
   mzd_local_t* ciphertext = instance->impls.lowmc(privkey, plaintext);
 
   pk->data[0] = param;
   memcpy(pk_pt, sk_pt, output_size);
-  oqs_sig_picnic_mzd_to_char_array(pk_c, ciphertext, output_size);
+  mzd_to_char_array(pk_c, ciphertext, output_size);
 
-  oqs_sig_picnic_mzd_local_free(ciphertext);
-  oqs_sig_picnic_mzd_local_free(privkey);
-  oqs_sig_picnic_mzd_local_free(plaintext);
+  mzd_local_free(ciphertext);
+  mzd_local_free(privkey);
+  mzd_local_free(plaintext);
 
   return 0;
 }
@@ -149,7 +154,7 @@ int PICNIC_CALLING_CONVENTION picnic_validate_keypair(const picnic_privatekey_t*
   }
 
   const picnic_params_t param       = sk->data[0];
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return -1;
   }
@@ -169,21 +174,21 @@ int PICNIC_CALLING_CONVENTION picnic_validate_keypair(const picnic_privatekey_t*
     return -1;
   }
 
-  mzd_local_t* plaintext = oqs_sig_picnic_mzd_local_init_ex(1, lowmc->n, false);
-  mzd_local_t* privkey   = oqs_sig_picnic_mzd_local_init_ex(1, lowmc->k, false);
+  mzd_local_t* plaintext = mzd_local_init_ex(1, lowmc->n, false);
+  mzd_local_t* privkey   = mzd_local_init_ex(1, lowmc->k, false);
 
-  oqs_sig_picnic_mzd_from_char_array(plaintext, sk_pt, instance->output_size);
-  oqs_sig_picnic_mzd_from_char_array(privkey, sk_sk, instance->input_size);
+  mzd_from_char_array(plaintext, sk_pt, instance->output_size);
+  mzd_from_char_array(privkey, sk_sk, instance->input_size);
 
   // compute public key
   mzd_local_t* ciphertext = instance->impls.lowmc(privkey, plaintext);
 
   uint8_t buffer[MAX_LOWMC_BLOCK_SIZE];
-  oqs_sig_picnic_mzd_to_char_array(buffer, ciphertext, output_size);
+  mzd_to_char_array(buffer, ciphertext, output_size);
 
-  oqs_sig_picnic_mzd_local_free(ciphertext);
-  oqs_sig_picnic_mzd_local_free(privkey);
-  oqs_sig_picnic_mzd_local_free(plaintext);
+  mzd_local_free(ciphertext);
+  mzd_local_free(privkey);
+  mzd_local_free(plaintext);
 
   return memcmp(buffer, pk_c, output_size);
 }
@@ -196,7 +201,7 @@ int PICNIC_CALLING_CONVENTION picnic_sign(const picnic_privatekey_t* sk, const u
   }
 
   const picnic_params_t param       = sk->data[0];
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return -1;
   }
@@ -208,7 +213,11 @@ int PICNIC_CALLING_CONVENTION picnic_sign(const picnic_privatekey_t* sk, const u
   const uint8_t* sk_c  = SK_C(sk);
   const uint8_t* sk_pt = SK_PT(sk);
 
-  return oqs_sig_picnic_impl_sign(instance, sk_pt, sk_sk, sk_c, message, message_len, signature, signature_len);
+  if (param == Picnic2_L1_FS || param == Picnic2_L3_FS || param == Picnic2_L5_FS)
+    return impl_sign_picnic2(instance, sk_pt, sk_sk, sk_c, message, message_len, signature,
+					    signature_len);
+  else
+    return impl_sign(instance, sk_pt, sk_sk, sk_c, message, message_len, signature, signature_len);
 }
 
 int PICNIC_CALLING_CONVENTION picnic_verify(const picnic_publickey_t* pk, const uint8_t* message,
@@ -219,7 +228,7 @@ int PICNIC_CALLING_CONVENTION picnic_verify(const picnic_publickey_t* pk, const 
   }
 
   const picnic_params_t param       = pk->data[0];
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return -1;
   }
@@ -229,7 +238,11 @@ int PICNIC_CALLING_CONVENTION picnic_verify(const picnic_publickey_t* pk, const 
   const uint8_t* pk_c  = PK_C(pk);
   const uint8_t* pk_pt = PK_PT(pk);
 
-  return oqs_sig_picnic_impl_verify(instance, pk_pt, pk_c, message, message_len, signature, signature_len);
+  if (param == Picnic2_L1_FS || param == Picnic2_L3_FS || param == Picnic2_L5_FS)
+    return impl_verify_picnic2(instance, pk_pt, pk_c, message, message_len, signature,
+			       signature_len);
+  else
+    return impl_verify(instance, pk_pt, pk_c, message, message_len, signature, signature_len);
 }
 
 const char* PICNIC_CALLING_CONVENTION picnic_get_param_name(picnic_params_t parameters) {
@@ -258,6 +271,12 @@ const char* PICNIC_CALLING_CONVENTION picnic_get_param_name(picnic_params_t para
     return "Picnic_L5_FS";
   case Picnic_L5_UR:
     return "Picnic_L5_UR";
+  case Picnic2_L1_FS:
+    return "Picnic2_L1_FS";
+  case Picnic2_L3_FS:
+    return "Picnic2_L3_FS";
+  case Picnic2_L5_FS:
+    return "Picnic2_L5_FS";
   default:
     return "Unknown parameter set";
   }
@@ -270,7 +289,7 @@ int PICNIC_CALLING_CONVENTION picnic_write_public_key(const picnic_publickey_t* 
   }
 
   const picnic_params_t param       = key->data[0];
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return -1;
   }
@@ -292,7 +311,7 @@ int PICNIC_CALLING_CONVENTION picnic_read_public_key(picnic_publickey_t* key, co
   }
 
   const picnic_params_t param       = buf[0];
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return -1;
   }
@@ -314,7 +333,7 @@ int PICNIC_CALLING_CONVENTION picnic_write_private_key(const picnic_privatekey_t
   }
 
   const picnic_params_t param       = key->data[0];
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return -1;
   }
@@ -337,7 +356,7 @@ int PICNIC_CALLING_CONVENTION picnic_read_private_key(picnic_privatekey_t* key, 
   }
 
   const picnic_params_t param       = buf[0];
-  const picnic_instance_t* instance = oqs_sig_picnic_instance_get(param);
+  const picnic_instance_t* instance = picnic_instance_get(param);
   if (!instance) {
     return -1;
   }
@@ -352,3 +371,5 @@ int PICNIC_CALLING_CONVENTION picnic_read_private_key(picnic_privatekey_t* key, 
   memcpy(key->data, buf, bytes_required);
   return 0;
 }
+
+/* cropped unused picnic_visualize_keys */

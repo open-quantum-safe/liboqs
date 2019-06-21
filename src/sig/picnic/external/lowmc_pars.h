@@ -74,7 +74,7 @@ typedef struct {
 #else
   const mzd_local_t* z_matrix;
   const mzd_local_t* r_matrix;
-  const word         r_mask;
+  const word r_mask;
 #endif
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
   const mzd_local_t* constant;
@@ -127,7 +127,7 @@ typedef struct {
  *
  * \return parameters defining a LowMC instance
  */
-bool oqs_sig_picnic_lowmc_init(lowmc_t* lowmc);
+bool lowmc_init(lowmc_t* lowmc);
 #endif
 
 /**
@@ -135,7 +135,6 @@ bool oqs_sig_picnic_lowmc_init(lowmc_t* lowmc);
  *
  * \param lowmc the LowMC parameters to be cleared
  */
-void oqs_sig_picnic_lowmc_clear(lowmc_t* lowmc);
-
+void lowmc_clear(lowmc_t* lowmc);
 
 #endif

@@ -7,6 +7,10 @@
  *  SPDX-License-Identifier: MIT
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "compat.h"
 #include "mzd_additional.h"
 
@@ -32,19 +36,6 @@ static_assert(((sizeof(mzd_local_t) + 0x1f) & ~0x1f) == 32, "sizeof mzd_local_t 
 #define ATTR_TARGET_S128
 #endif
 
-#if defined(WITH_POPCNT)
-#include <nmmintrin.h>
-
-#if !defined(__x86_64__) && !defined(_M_X64)
-ATTR_TARGET("popcnt") ATTR_CONST static inline uint64_t parity64_popcnt(uint64_t in) {
-  return (_mm_popcnt_u32(in >> 32) ^ _mm_popcnt_u32(in)) & 0x1;
-}
-#else
-ATTR_TARGET("popcnt") ATTR_CONST static inline uint64_t parity64_popcnt(uint64_t in) {
-  return _mm_popcnt_u64(in) & 0x1;
-}
-#endif
-#endif
 #endif
 static const unsigned int align_bound = 128 / (8 * sizeof(word));
 
@@ -70,12 +61,12 @@ static uint32_t calculate_width(uint32_t c) {
 // In mzd_local_init_multiple we do the same, but store n mzd_local_t instances in one
 // memory block.
 
-mzd_local_t* oqs_sig_picnic_mzd_local_init_ex(uint32_t r, uint32_t c, bool clear) {
+mzd_local_t* mzd_local_init_ex(uint32_t r, uint32_t c, bool clear) {
   const uint32_t width     = calculate_width(c);
   const uint32_t rowstride = calculate_rowstride(width);
 
   const size_t buffer_size = r * rowstride * sizeof(word);
-  const size_t alloc_size = (buffer_size + 31) & ~31;
+  const size_t alloc_size  = (buffer_size + 31) & ~31;
 
   /* We always align mzd_local_ts to 32 bytes. Thus the first row is always
    * aligned to 32 bytes as well. For 128 bit and SSE all other rows are then
@@ -88,11 +79,11 @@ mzd_local_t* oqs_sig_picnic_mzd_local_init_ex(uint32_t r, uint32_t c, bool clear
   return (mzd_local_t*)buffer;
 }
 
-void oqs_sig_picnic_mzd_local_free(mzd_local_t* v) {
+void mzd_local_free(mzd_local_t* v) {
   aligned_free(v);
 }
 
-void oqs_sig_picnic_mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, uint32_t r, uint32_t c, bool clear) {
+void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, uint32_t r, uint32_t c, bool clear) {
   const uint32_t width     = calculate_width(c);
   const uint32_t rowstride = calculate_rowstride(width);
 
@@ -105,21 +96,75 @@ void oqs_sig_picnic_mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, uint
   }
 
   for (size_t s = 0; s < n; ++s, full_buffer += size_per_elem) {
-    unsigned char* buffer = full_buffer;
-    dst[s] = (mzd_local_t*)buffer;
+    dst[s] = (mzd_local_t*)full_buffer;
   }
 }
 
-void oqs_sig_picnic_mzd_local_free_multiple(mzd_local_t** vs) {
+void mzd_local_free_multiple(mzd_local_t** vs) {
   if (vs) {
     aligned_free(vs[0]);
+  }
+}
+
+void mzd_copy_uint64_128(mzd_local_t* dst, mzd_local_t const* src) {
+  const block_t* sblock = CONST_BLOCK(src, 0);
+  block_t* dblock       = BLOCK(dst, 0);
+
+  for (unsigned int i = 0; i < 2; ++i) {
+    dblock->w64[i] = sblock->w64[i];
+  }
+}
+
+void mzd_copy_uint64_192(mzd_local_t* dst, mzd_local_t const* src) {
+  const block_t* sblock = CONST_BLOCK(src, 0);
+  block_t* dblock       = BLOCK(dst, 0);
+
+  for (unsigned int i = 0; i < 3; ++i) {
+    dblock->w64[i] = sblock->w64[i];
+  }
+}
+
+void mzd_copy_uint64_256(mzd_local_t* dst, mzd_local_t const* src) {
+  const block_t* sblock = CONST_BLOCK(src, 0);
+  block_t* dblock       = BLOCK(dst, 0);
+
+  for (unsigned int i = 0; i < 4; ++i) {
+    dblock->w64[i] = sblock->w64[i];
   }
 }
 
 #if defined(WITH_OPT)
 #if defined(WITH_SSE2) || defined(WITH_NEON)
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_xor_s128_128(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+void mzd_copy_s128_128(mzd_local_t* dst, mzd_local_t const* src) {
+  BLOCK(dst, 0)->w128[0] = CONST_BLOCK(src, 0)->w128[0];
+}
+
+ATTR_TARGET_S128
+void mzd_copy_s128_256(mzd_local_t* dst, mzd_local_t const* src) {
+  for (unsigned int i = 0; i < 2; ++i) {
+    dst->w128[i] = src->w128[i];
+  }
+}
+#endif
+
+#if defined(WITH_AVX2)
+ATTR_TARGET_AVX2
+void mzd_copy_s256_128(mzd_local_t* dst, mzd_local_t const* src) {
+  BLOCK(dst, 0)->w128[0] = CONST_BLOCK(src, 0)->w128[0];
+}
+
+ATTR_TARGET_AVX2
+void mzd_copy_s256_256(mzd_local_t* dst, mzd_local_t const* src) {
+  BLOCK(dst, 0)->w256 = CONST_BLOCK(src, 0)->w256;
+}
+#endif
+#endif
+
+#if defined(WITH_OPT)
+#if defined(WITH_SSE2) || defined(WITH_NEON)
+ATTR_TARGET_S128
+void mzd_xor_s128_128(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
   block_t* rblock       = BLOCK(res, 0);
   const block_t* fblock = CONST_BLOCK(first, 0);
   const block_t* sblock = CONST_BLOCK(second, 0);
@@ -128,7 +173,7 @@ void oqs_sig_picnic_mzd_xor_s128_128(mzd_local_t* res, mzd_local_t const* first,
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_xor_s128_blocks(block_t* rblock, const block_t* fblock, const block_t* sblock,
+void mzd_xor_s128_blocks(block_t* rblock, const block_t* fblock, const block_t* sblock,
                          unsigned int count) {
   for (; count; --count, ++rblock, ++fblock, ++sblock) {
     rblock->w128[0] = mm128_xor(fblock->w128[0], sblock->w128[0]);
@@ -137,45 +182,45 @@ void oqs_sig_picnic_mzd_xor_s128_blocks(block_t* rblock, const block_t* fblock, 
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_xor_s128_256(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 1);
+void mzd_xor_s128_256(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 1);
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_xor_s128_640(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
+void mzd_xor_s128_640(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
   BLOCK(res, 2)->w128[0] =
       mm128_xor(CONST_BLOCK(first, 2)->w128[0], CONST_BLOCK(second, 2)->w128[0]);
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_xor_s128_896(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
+void mzd_xor_s128_896(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
   BLOCK(res, 3)->w128[0] =
       mm128_xor(CONST_BLOCK(first, 3)->w128[0], CONST_BLOCK(second, 3)->w128[0]);
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_xor_s128_1024(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
+void mzd_xor_s128_1024(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_xor_s128_1152(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
+void mzd_xor_s128_1152(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
   BLOCK(res, 4)->w128[0] =
       mm128_xor(CONST_BLOCK(first, 4)->w128[0], CONST_BLOCK(second, 4)->w128[0]);
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_xor_s128_1280(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 5);
+void mzd_xor_s128_1280(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 5);
 }
 #endif
 
 #if defined(WITH_AVX2)
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_xor_s256_128(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+void mzd_xor_s256_128(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
   block_t* rblock       = BLOCK(res, 0);
   const block_t* fblock = CONST_BLOCK(first, 0);
   const block_t* sblock = CONST_BLOCK(second, 0);
@@ -184,7 +229,7 @@ void oqs_sig_picnic_mzd_xor_s256_128(mzd_local_t* res, mzd_local_t const* first,
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_xor_s256_blocks(block_t* rblock, const block_t* fblock, const block_t* sblock,
+void mzd_xor_s256_blocks(block_t* rblock, const block_t* fblock, const block_t* sblock,
                          unsigned int count) {
   for (; count; --count, ++rblock, ++fblock, ++sblock) {
     rblock->w256 = mm256_xor(fblock->w256, sblock->w256);
@@ -192,82 +237,82 @@ void oqs_sig_picnic_mzd_xor_s256_blocks(block_t* rblock, const block_t* fblock, 
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_xor_s256_256(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 1);
+void mzd_xor_s256_256(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s256_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 1);
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_xor_s256_768(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
+void mzd_xor_s256_768(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s256_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
 }
 
-void oqs_sig_picnic_mzd_xor_s256_1024(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
+void mzd_xor_s256_1024(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s256_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
 }
 
-void oqs_sig_picnic_mzd_xor_s256_1280(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 5);
+void mzd_xor_s256_1280(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_s256_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 5);
 }
 #endif
 #endif
 
-static void oqs_sig_picnic_mzd_xor_uint64_block(block_t* rblock, const block_t* fblock, const block_t* sblock,
+static void mzd_xor_uint64_block(block_t* rblock, const block_t* fblock, const block_t* sblock,
                                  const unsigned int len) {
   for (unsigned int i = 0; i < len; ++i) {
     rblock->w64[i] = fblock->w64[i] ^ sblock->w64[i];
   }
 }
 
-static void oqs_sig_picnic_mzd_xor_uint64_blocks(block_t* rblock, const block_t* fblock, const block_t* sblock,
-                                 const unsigned int len) {
+static void mzd_xor_uint64_blocks(block_t* rblock, const block_t* fblock, const block_t* sblock,
+                                  const unsigned int len) {
   for (unsigned int i = len; i; --i, ++rblock, ++fblock, ++sblock) {
-    oqs_sig_picnic_mzd_xor_uint64_block(rblock, fblock, sblock, 4);
+    mzd_xor_uint64_block(rblock, fblock, sblock, 4);
   }
 }
 
-void oqs_sig_picnic_mzd_xor_uint64_128(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_uint64_block(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
+void mzd_xor_uint64_128(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64_block(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
 }
 
-void oqs_sig_picnic_mzd_xor_uint64_192(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_uint64_block(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
+void mzd_xor_uint64_192(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64_block(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
 }
 
-void oqs_sig_picnic_mzd_xor_uint64_256(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_uint64_block(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
+void mzd_xor_uint64_256(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64_block(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
 }
 
-void oqs_sig_picnic_mzd_xor_uint64_576(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
-  oqs_sig_picnic_mzd_xor_uint64_block(BLOCK(res, 2), CONST_BLOCK(first, 2), CONST_BLOCK(second, 2), 1);
+void mzd_xor_uint64_576(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
+  mzd_xor_uint64_block(BLOCK(res, 2), CONST_BLOCK(first, 2), CONST_BLOCK(second, 2), 1);
 }
 
-void oqs_sig_picnic_mzd_xor_uint64_640(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
-  oqs_sig_picnic_mzd_xor_uint64_block(BLOCK(res, 2), CONST_BLOCK(first, 2), CONST_BLOCK(second, 2), 2);
+void mzd_xor_uint64_640(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
+  mzd_xor_uint64_block(BLOCK(res, 2), CONST_BLOCK(first, 2), CONST_BLOCK(second, 2), 2);
 }
 
-void oqs_sig_picnic_mzd_xor_uint64_896(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
-  oqs_sig_picnic_mzd_xor_uint64_block(BLOCK(res, 3), CONST_BLOCK(first, 3), CONST_BLOCK(second, 3), 2);
+void mzd_xor_uint64_896(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
+  mzd_xor_uint64_block(BLOCK(res, 3), CONST_BLOCK(first, 3), CONST_BLOCK(second, 3), 2);
 }
 
-void oqs_sig_picnic_mzd_xor_uint64_960(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
-  oqs_sig_picnic_mzd_xor_uint64_block(BLOCK(res, 3), CONST_BLOCK(first, 3), CONST_BLOCK(second, 3), 3);
+void mzd_xor_uint64_960(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
+  mzd_xor_uint64_block(BLOCK(res, 3), CONST_BLOCK(first, 3), CONST_BLOCK(second, 3), 3);
 }
 
-void oqs_sig_picnic_mzd_xor_uint64_1152(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
-  oqs_sig_picnic_mzd_xor_uint64_block(BLOCK(res, 4), CONST_BLOCK(first, 4), CONST_BLOCK(second, 4), 2);
+void mzd_xor_uint64_1152(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
+  mzd_xor_uint64_block(BLOCK(res, 4), CONST_BLOCK(first, 4), CONST_BLOCK(second, 4), 2);
 }
 
-void oqs_sig_picnic_mzd_xor_uint64_1216(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  oqs_sig_picnic_mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
-  oqs_sig_picnic_mzd_xor_uint64_block(BLOCK(res, 4), CONST_BLOCK(first, 4), CONST_BLOCK(second, 4), 3);
+void mzd_xor_uint64_1216(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
+  mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
+  mzd_xor_uint64_block(BLOCK(res, 4), CONST_BLOCK(first, 4), CONST_BLOCK(second, 4), 3);
 }
 
-void oqs_sig_picnic_mzd_mul_v_parity_uint64_128_30(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
+void mzd_mul_v_parity_uint64_128_30(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
 
@@ -285,7 +330,7 @@ void oqs_sig_picnic_mzd_mul_v_parity_uint64_128_30(mzd_local_t* c, mzd_local_t c
   cblock->w64[1] = res;
 }
 
-void oqs_sig_picnic_mzd_mul_v_parity_uint64_192_30(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
+void mzd_mul_v_parity_uint64_192_30(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
 
@@ -304,7 +349,7 @@ void oqs_sig_picnic_mzd_mul_v_parity_uint64_192_30(mzd_local_t* c, mzd_local_t c
   cblock->w64[2] = res;
 }
 
-void oqs_sig_picnic_mzd_mul_v_parity_uint64_256_30(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
+void mzd_mul_v_parity_uint64_256_30(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
 
@@ -323,7 +368,7 @@ void oqs_sig_picnic_mzd_mul_v_parity_uint64_256_30(mzd_local_t* c, mzd_local_t c
   cblock->w64[3] = res;
 }
 
-void oqs_sig_picnic_mzd_mul_v_parity_uint64_128_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
+void mzd_mul_v_parity_uint64_128_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
 
@@ -342,7 +387,7 @@ void oqs_sig_picnic_mzd_mul_v_parity_uint64_128_3(mzd_local_t* c, mzd_local_t co
   cblock->w64[1] = (parity1 | (parity2 << 1) | (parity3 << 2)) << 61;
 }
 
-void oqs_sig_picnic_mzd_mul_v_parity_uint64_192_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
+void mzd_mul_v_parity_uint64_192_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
 
@@ -361,7 +406,7 @@ void oqs_sig_picnic_mzd_mul_v_parity_uint64_192_3(mzd_local_t* c, mzd_local_t co
   cblock->w64[2] = res;
 }
 
-void oqs_sig_picnic_mzd_mul_v_parity_uint64_256_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
+void mzd_mul_v_parity_uint64_256_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
 
@@ -381,126 +426,6 @@ void oqs_sig_picnic_mzd_mul_v_parity_uint64_256_3(mzd_local_t* c, mzd_local_t co
 }
 
 #if defined(WITH_OPT)
-#if defined(WITH_POPCNT)
-ATTR_TARGET("popcnt")
-void oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_30(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* vblock = CONST_BLOCK(v, 0);
-
-  cblock->w64[0] = 0;
-
-  word res = 0;
-  for (unsigned int i = 15; i; --i) {
-    const block_t* Ablock = CONST_BLOCK(At, 15 - i);
-    const word parity1 =
-        parity64_popcnt((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]));
-    const word parity2 =
-        parity64_popcnt((vblock->w64[0] & Ablock->w64[2]) ^ (vblock->w64[1] & Ablock->w64[3]));
-    res |= (parity1 | (parity2 << 1)) << (64 - (2 * i));
-  }
-  cblock->w64[1] = res;
-}
-
-ATTR_TARGET("popcnt")
-void oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_30(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* vblock = CONST_BLOCK(v, 0);
-
-  for (unsigned int j = 0; j < 2; j++) {
-    cblock->w64[j] = 0;
-  }
-
-  word res = 0;
-  for (unsigned int i = 30; i; --i) {
-    const block_t* Ablock = CONST_BLOCK(At, 30 - i);
-    const word parity =
-        parity64_popcnt((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]) ^
-                        (vblock->w64[2] & Ablock->w64[2]));
-    res |= parity << (64 - i);
-  }
-  cblock->w64[2] = res;
-}
-
-ATTR_TARGET("popcnt")
-void oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_30(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* vblock = CONST_BLOCK(v, 0);
-
-  for (unsigned int j = 0; j < 3; j++) {
-    cblock->w64[j] = 0;
-  }
-
-  word res = 0;
-  for (unsigned int i = 30; i; --i) {
-    const block_t* Ablock = CONST_BLOCK(At, 30 - i);
-    const word parity =
-        parity64_popcnt((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]) ^
-                        (vblock->w64[2] & Ablock->w64[2]) ^ (vblock->w64[3] & Ablock->w64[3]));
-    res |= parity << (64 - i);
-  }
-  cblock->w64[3] = res;
-}
-
-ATTR_TARGET("popcnt")
-void oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* vblock = CONST_BLOCK(v, 0);
-
-  cblock->w64[0] = 0;
-
-  const block_t* Ablock1 = CONST_BLOCK(At, 0);
-  const block_t* Ablock2 = CONST_BLOCK(At, 1);
-
-  const word parity1 =
-      parity64_popcnt((vblock->w64[0] & Ablock1->w64[0]) ^ (vblock->w64[1] & Ablock1->w64[1]));
-  const word parity2 =
-      parity64_popcnt((vblock->w64[0] & Ablock1->w64[2]) ^ (vblock->w64[1] & Ablock1->w64[3]));
-  const word parity3 =
-      parity64_popcnt((vblock->w64[0] & Ablock2->w64[0]) ^ (vblock->w64[1] & Ablock2->w64[1]));
-
-  cblock->w64[1] = (parity1 | (parity2 << 1) | (parity3 << 2)) << 61;
-}
-
-ATTR_TARGET("popcnt")
-void oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* vblock = CONST_BLOCK(v, 0);
-
-  for (unsigned int j = 0; j < 3; j++) {
-    cblock->w64[j] = 0;
-  }
-
-  word res = 0;
-  for (unsigned int i = 3; i; --i) {
-    const block_t* Ablock = CONST_BLOCK(At, 3 - i);
-    const word parity =
-        parity64_popcnt((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]) ^
-                        (vblock->w64[2] & Ablock->w64[2]));
-    res |= parity << (64 - i);
-  }
-  cblock->w64[2] = res;
-}
-
-ATTR_TARGET("popcnt")
-void oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* vblock = CONST_BLOCK(v, 0);
-
-  for (unsigned int j = 0; j < 3; j++) {
-    cblock->w64[j] = 0;
-  }
-
-  word res = 0;
-  for (unsigned int i = 3; i; --i) {
-    const block_t* Ablock = CONST_BLOCK(At, 3 - i);
-    const word parity =
-        parity64_popcnt((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]) ^
-                        (vblock->w64[2] & Ablock->w64[2]) ^ (vblock->w64[3] & Ablock->w64[3]));
-    res |= parity << (64 - i);
-  }
-  cblock->w64[3] = res;
-}
-#endif
 
 #if defined(WITH_SSE2) || defined(WITH_NEON)
 ATTR_TARGET_S128 ATTR_CONST static inline word128 mm128_compute_mask(const word idx,
@@ -513,7 +438,7 @@ ATTR_TARGET_S128 ATTR_CONST static inline word128 mm128_compute_mask(const word 
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_v_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -532,7 +457,7 @@ void oqs_sig_picnic_mzd_mul_v_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_v_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -552,7 +477,7 @@ void oqs_sig_picnic_mzd_addmul_v_s128_128(mzd_local_t* c, mzd_local_t const* v, 
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_v_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -570,7 +495,7 @@ void oqs_sig_picnic_mzd_mul_v_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_v_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -589,7 +514,7 @@ void oqs_sig_picnic_mzd_addmul_v_s128_192(mzd_local_t* c, mzd_local_t const* v, 
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_v_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -607,7 +532,7 @@ void oqs_sig_picnic_mzd_mul_v_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_v_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -626,7 +551,7 @@ void oqs_sig_picnic_mzd_addmul_v_s128_256(mzd_local_t* c, mzd_local_t const* v, 
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_v_s128_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s128_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -653,7 +578,7 @@ void oqs_sig_picnic_mzd_mul_v_s128_128_640(mzd_local_t* c, mzd_local_t const* v,
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_v_s128_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s128_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -684,7 +609,7 @@ void oqs_sig_picnic_mzd_mul_v_s128_192_896(mzd_local_t* c, mzd_local_t const* v,
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_v_s128_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s128_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -716,7 +641,7 @@ void oqs_sig_picnic_mzd_mul_v_s128_192_1024(mzd_local_t* c, mzd_local_t const* v
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_v_s128_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s128_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -752,7 +677,7 @@ void oqs_sig_picnic_mzd_mul_v_s128_256_1152(mzd_local_t* c, mzd_local_t const* v
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_v_s128_256_1280(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s128_256_1280(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -803,7 +728,7 @@ ATTR_CONST static inline word256 mm256_compute_mask_2(const word idx, const size
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_v_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -825,7 +750,7 @@ void oqs_sig_picnic_mzd_addmul_v_s256_128(mzd_local_t* c, mzd_local_t const* v, 
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_v_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -846,7 +771,7 @@ void oqs_sig_picnic_mzd_mul_v_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_v_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -865,7 +790,7 @@ void oqs_sig_picnic_mzd_addmul_v_s256_192(mzd_local_t* c, mzd_local_t const* v, 
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_v_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -884,7 +809,7 @@ void oqs_sig_picnic_mzd_mul_v_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_v_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -903,7 +828,7 @@ void oqs_sig_picnic_mzd_addmul_v_s256_256(mzd_local_t* c, mzd_local_t const* v, 
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_v_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -922,7 +847,7 @@ void oqs_sig_picnic_mzd_mul_v_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_v_s256_128_768(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s256_128_768(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -943,7 +868,7 @@ void oqs_sig_picnic_mzd_mul_v_s256_128_768(mzd_local_t* c, mzd_local_t const* v,
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_v_s256_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s256_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -964,7 +889,7 @@ void oqs_sig_picnic_mzd_mul_v_s256_192_1024(mzd_local_t* c, mzd_local_t const* v
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_v_s256_256_1280(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_s256_256_1280(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -999,14 +924,14 @@ static void clear_uint64_blocks(block_t* block, unsigned int len) {
   }
 }
 
-static void oqs_sig_picnic_mzd_xor_mask_uint64_block(block_t* rblock, const block_t* fblock, const word mask,
+static void mzd_xor_mask_uint64_block(block_t* rblock, const block_t* fblock, const word mask,
                                       const unsigned int idx) {
   for (unsigned int i = 0; i < idx; ++i) {
     rblock->w64[i] ^= fblock->w64[i] & mask;
   }
 }
 
-void oqs_sig_picnic_mzd_addmul_v_uint64_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_uint64_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -1022,12 +947,12 @@ void oqs_sig_picnic_mzd_addmul_v_uint64_128(mzd_local_t* c, mzd_local_t const* v
   }
 }
 
-void oqs_sig_picnic_mzd_mul_v_uint64_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_uint64_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   clear_uint64_block(BLOCK(c, 0), 2);
-  oqs_sig_picnic_mzd_addmul_v_uint64_128(c, v, A);
+  mzd_addmul_v_uint64_128(c, v, A);
 }
 
-void oqs_sig_picnic_mzd_addmul_v_uint64_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_uint64_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -1036,17 +961,17 @@ void oqs_sig_picnic_mzd_addmul_v_uint64_192(mzd_local_t* c, mzd_local_t const* v
     word idx = *vptr;
     for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
       const uint64_t mask = -(idx & 1);
-      oqs_sig_picnic_mzd_xor_mask_uint64_block(cblock, Ablock, mask, 3);
+      mzd_xor_mask_uint64_block(cblock, Ablock, mask, 3);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_v_uint64_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_uint64_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   clear_uint64_block(BLOCK(c, 0), 3);
-  oqs_sig_picnic_mzd_addmul_v_uint64_192(c, v, A);
+  mzd_addmul_v_uint64_192(c, v, A);
 }
 
-void oqs_sig_picnic_mzd_addmul_v_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -1056,17 +981,17 @@ void oqs_sig_picnic_mzd_addmul_v_uint64_256(mzd_local_t* c, mzd_local_t const* v
 
     for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
       const uint64_t mask = -(idx & 1);
-      oqs_sig_picnic_mzd_xor_mask_uint64_block(cblock, Ablock, mask, 4);
+      mzd_xor_mask_uint64_block(cblock, Ablock, mask, 4);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_v_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   clear_uint64_block(BLOCK(c, 0), 4);
-  oqs_sig_picnic_mzd_addmul_v_uint64_256(c, v, A);
+  mzd_addmul_v_uint64_256(c, v, A);
 }
 
-void oqs_sig_picnic_mzd_mul_v_uint64_128_576(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_uint64_128_576(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -1078,14 +1003,14 @@ void oqs_sig_picnic_mzd_mul_v_uint64_128_576(mzd_local_t* c, mzd_local_t const* 
     for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
       const uint64_t mask = -(idx & 1);
       for (unsigned int j = 0; j < 2; ++j, ++Ablock) {
-        oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
+        mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
       }
-      oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, 2), Ablock, mask, 1);
+      mzd_xor_mask_uint64_block(BLOCK(c, 2), Ablock, mask, 1);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_v_uint64_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_uint64_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -1097,14 +1022,14 @@ void oqs_sig_picnic_mzd_mul_v_uint64_128_640(mzd_local_t* c, mzd_local_t const* 
     for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
       const uint64_t mask = -(idx & 1);
       for (unsigned int j = 0; j < 2; ++j, ++Ablock) {
-        oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
+        mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
       }
-      oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, 2), Ablock, mask, 2);
+      mzd_xor_mask_uint64_block(BLOCK(c, 2), Ablock, mask, 2);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_v_uint64_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_uint64_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -1116,14 +1041,14 @@ void oqs_sig_picnic_mzd_mul_v_uint64_192_896(mzd_local_t* c, mzd_local_t const* 
     for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
       const uint64_t mask = -(idx & 1);
       for (unsigned int j = 0; j < 3; ++j, ++Ablock) {
-        oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
+        mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
       }
-      oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, 3), Ablock, mask, 2);
+      mzd_xor_mask_uint64_block(BLOCK(c, 3), Ablock, mask, 2);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_v_uint64_192_960(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_uint64_192_960(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -1135,14 +1060,14 @@ void oqs_sig_picnic_mzd_mul_v_uint64_192_960(mzd_local_t* c, mzd_local_t const* 
     for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
       const uint64_t mask = -(idx & 1);
       for (unsigned int j = 0; j < 3; ++j, ++Ablock) {
-        oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
+        mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
       }
-      oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, 3), Ablock, mask, 3);
+      mzd_xor_mask_uint64_block(BLOCK(c, 3), Ablock, mask, 3);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_v_uint64_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_uint64_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -1154,14 +1079,14 @@ void oqs_sig_picnic_mzd_mul_v_uint64_256_1152(mzd_local_t* c, mzd_local_t const*
     for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
       const uint64_t mask = -(idx & 1);
       for (unsigned int j = 0; j < 4; ++j, ++Ablock) {
-        oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
+        mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
       }
-      oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, 4), Ablock, mask, 2);
+      mzd_xor_mask_uint64_block(BLOCK(c, 4), Ablock, mask, 2);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_v_uint64_256_1216(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_v_uint64_256_1216(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -1173,9 +1098,9 @@ void oqs_sig_picnic_mzd_mul_v_uint64_256_1216(mzd_local_t* c, mzd_local_t const*
     for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
       const uint64_t mask = -(idx & 1);
       for (unsigned int j = 0; j < 4; ++j, ++Ablock) {
-        oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
+        mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
       }
-      oqs_sig_picnic_mzd_xor_mask_uint64_block(BLOCK(c, 4), Ablock, mask, 3);
+      mzd_xor_mask_uint64_block(BLOCK(c, 4), Ablock, mask, 3);
     }
   }
 }
@@ -1191,9 +1116,9 @@ static void xor_comb(const unsigned int len, const unsigned int rowstride, block
       unsigned int i        = 0;
       unsigned int j        = len;
       for (; i < len / 4; ++i, j -= 4) {
-        oqs_sig_picnic_mzd_xor_uint64_block(&Bblock[i], &Bblock[i], &Ablock[i], 4);
+        mzd_xor_uint64_block(&Bblock[i], &Bblock[i], &Ablock[i], 4);
       }
-      oqs_sig_picnic_mzd_xor_uint64_block(&Bblock[i], &Bblock[i], &Ablock[i], j);
+      mzd_xor_uint64_block(&Bblock[i], &Bblock[i], &Ablock[i], j);
     }
   }
 }
@@ -1212,12 +1137,13 @@ static void xor_comb_128(block_t* Bblock, const unsigned int boffset, mzd_local_
 }
 
 /**
- * Pre-compute matrices for faster oqs_sig_picnic_mzd_addmul_v computions.
+ * Pre-compute matrices for faster mzd_addmul_v computions.
  */
-mzd_local_t* oqs_sig_picnic_mzd_precompute_matrix_lookup(mzd_local_t const* A, unsigned int rows, unsigned int cols) {
-  mzd_local_t* B = oqs_sig_picnic_mzd_local_init_ex(32 * rows, cols, true);
+mzd_local_t* mzd_precompute_matrix_lookup(mzd_local_t const* A, unsigned int rows,
+                                          unsigned int cols) {
+  mzd_local_t* B = mzd_local_init_ex(32 * rows, cols, true);
 
-  const unsigned int len = calculate_width(cols);
+  const unsigned int len       = calculate_width(cols);
   const unsigned int rowstride = calculate_rowstride(len);
 
   for (unsigned int r = 0; r < 32 * rows; ++r) {
@@ -1241,7 +1167,7 @@ mzd_local_t* oqs_sig_picnic_mzd_precompute_matrix_lookup(mzd_local_t const* A, u
 #if defined(WITH_OPT)
 #if defined(WITH_SSE2) || defined(WITH_NEON)
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_vl_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_vl_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 128;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1262,7 +1188,7 @@ void oqs_sig_picnic_mzd_addmul_vl_s128_128(mzd_local_t* c, mzd_local_t const* v,
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_vl_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 128;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1283,7 +1209,7 @@ void oqs_sig_picnic_mzd_mul_vl_s128_128(mzd_local_t* c, mzd_local_t const* v, mz
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_vl_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_vl_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1306,7 +1232,7 @@ void oqs_sig_picnic_mzd_addmul_vl_s128_192(mzd_local_t* c, mzd_local_t const* v,
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_vl_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1328,7 +1254,7 @@ void oqs_sig_picnic_mzd_mul_vl_s128_192(mzd_local_t* c, mzd_local_t const* v, mz
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_vl_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_vl_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1351,7 +1277,7 @@ void oqs_sig_picnic_mzd_addmul_vl_s128_256(mzd_local_t* c, mzd_local_t const* v,
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_vl_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1373,7 +1299,7 @@ void oqs_sig_picnic_mzd_mul_vl_s128_256(mzd_local_t* c, mzd_local_t const* v, mz
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_vl_s128_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s128_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256 * 3;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1389,12 +1315,12 @@ void oqs_sig_picnic_mzd_mul_vl_s128_128_640(mzd_local_t* c, mzd_local_t const* v
     word idx = *vptr;
     for (unsigned int s = sizeof(word); s; s -= 2, idx >>= 16) {
       const block_t* Ablock1 = &Ablock[((idx >> 0) & 0xff) * 3];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock1, 2);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock1, 2);
       cblock[2].w128[0] = mm128_xor(cblock[2].w128[0], Ablock1[2].w128[0]);
       Ablock += moff2;
 
       const block_t* Ablock2 = &Ablock[((idx >> 8) & 0xff) * 3];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock2, 2);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock2, 2);
       cblock[2].w128[0] = mm128_xor(cblock[2].w128[0], Ablock2[2].w128[0]);
       Ablock += moff2;
     }
@@ -1402,7 +1328,7 @@ void oqs_sig_picnic_mzd_mul_vl_s128_128_640(mzd_local_t* c, mzd_local_t const* v
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_vl_s128_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s128_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256 * 4;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1418,12 +1344,12 @@ void oqs_sig_picnic_mzd_mul_vl_s128_192_896(mzd_local_t* c, mzd_local_t const* v
     word idx = *vptr;
     for (unsigned int s = sizeof(word); s; s -= 2, idx >>= 16) {
       const block_t* Ablock1 = &Ablock[((idx >> 0) & 0xff) * 4];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock1, 3);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock1, 3);
       cblock[3].w128[0] = mm128_xor(cblock[3].w128[0], Ablock1[3].w128[0]);
       Ablock += moff2;
 
       const block_t* Ablock2 = &Ablock[((idx >> 8) & 0xff) * 4];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock2, 3);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock2, 3);
       cblock[3].w128[0] = mm128_xor(cblock[3].w128[0], Ablock2[3].w128[0]);
       Ablock += moff2;
     }
@@ -1431,7 +1357,7 @@ void oqs_sig_picnic_mzd_mul_vl_s128_192_896(mzd_local_t* c, mzd_local_t const* v
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_vl_s128_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s128_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256 * 4;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1446,18 +1372,18 @@ void oqs_sig_picnic_mzd_mul_vl_s128_192_1024(mzd_local_t* c, mzd_local_t const* 
     word idx = *vptr;
     for (unsigned int s = sizeof(word); s; s -= 2, idx >>= 16) {
       const block_t* Ablock1 = &Ablock[((idx >> 0) & 0xff) * 4];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock1, 4);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock1, 4);
       Ablock += moff2;
 
       const block_t* Ablock2 = &Ablock[((idx >> 8) & 0xff) * 4];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock2, 4);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock2, 4);
       Ablock += moff2;
     }
   }
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_vl_s128_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s128_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256 * 5;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1473,12 +1399,12 @@ void oqs_sig_picnic_mzd_mul_vl_s128_256_1152(mzd_local_t* c, mzd_local_t const* 
     word idx = *vptr;
     for (unsigned int s = sizeof(word); s; s -= 2, idx >>= 16) {
       const block_t* Ablock1 = &Ablock[((idx >> 0) & 0xff) * 5];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock1, 4);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock1, 4);
       cblock[4].w128[0] = mm128_xor(cblock[4].w128[0], Ablock1[4].w128[0]);
       Ablock += moff2;
 
       const block_t* Ablock2 = &Ablock[((idx >> 8) & 0xff) * 5];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock2, 4);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock2, 4);
       cblock[4].w128[0] = mm128_xor(cblock[4].w128[0], Ablock2[4].w128[0]);
       Ablock += moff2;
     }
@@ -1486,7 +1412,7 @@ void oqs_sig_picnic_mzd_mul_vl_s128_256_1152(mzd_local_t* c, mzd_local_t const* 
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_mul_vl_s128_256_1280(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s128_256_1280(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256 * 5;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1501,11 +1427,11 @@ void oqs_sig_picnic_mzd_mul_vl_s128_256_1280(mzd_local_t* c, mzd_local_t const* 
     word idx = *vptr;
     for (unsigned int s = sizeof(word); s; s -= 2, idx >>= 16) {
       const block_t* Ablock1 = &Ablock[((idx >> 0) & 0xff) * 5];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock1, 5);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock1, 5);
       Ablock += moff2;
 
       const block_t* Ablock2 = &Ablock[((idx >> 8) & 0xff) * 5];
-      oqs_sig_picnic_mzd_xor_s128_blocks(cblock, cblock, Ablock2, 5);
+      mzd_xor_s128_blocks(cblock, cblock, Ablock2, 5);
       Ablock += moff2;
     }
   }
@@ -1514,7 +1440,7 @@ void oqs_sig_picnic_mzd_mul_vl_s128_256_1280(mzd_local_t* c, mzd_local_t const* 
 
 #if defined(WITH_AVX2)
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_vl_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1535,7 +1461,7 @@ void oqs_sig_picnic_mzd_mul_vl_s256_256(mzd_local_t* c, mzd_local_t const* v, mz
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_vl_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_vl_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1556,7 +1482,7 @@ void oqs_sig_picnic_mzd_addmul_vl_s256_256(mzd_local_t* c, mzd_local_t const* v,
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_vl_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1577,7 +1503,7 @@ void oqs_sig_picnic_mzd_mul_vl_s256_192(mzd_local_t* c, mzd_local_t const* v, mz
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_vl_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_vl_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1598,7 +1524,7 @@ void oqs_sig_picnic_mzd_addmul_vl_s256_192(mzd_local_t* c, mzd_local_t const* v,
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_vl_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 128;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1628,7 +1554,7 @@ void oqs_sig_picnic_mzd_mul_vl_s256_128(mzd_local_t* c, mzd_local_t const* v, mz
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_vl_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_vl_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 128;
 
   block_t* cblock       = BLOCK(c, 0);
@@ -1659,7 +1585,7 @@ void oqs_sig_picnic_mzd_addmul_vl_s256_128(mzd_local_t* c, mzd_local_t const* v,
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_vl_s256_128_768(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s256_128_768(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256 * 3;
 
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -1672,16 +1598,16 @@ void oqs_sig_picnic_mzd_mul_vl_s256_128_768(mzd_local_t* c, mzd_local_t const* v
   for (unsigned int w = 2; w; --w, ++vptr) {
     word idx = *vptr;
     for (unsigned int s = sizeof(word); s; s -= 2, idx >>= 16) {
-      oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 0) & 0xff) * 3], 3);
+      mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 0) & 0xff) * 3], 3);
       Ablock += moff2;
-      oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 8) & 0xff) * 3], 3);
+      mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 8) & 0xff) * 3], 3);
       Ablock += moff2;
     }
   }
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_vl_s256_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s256_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256 * 4;
 
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -1694,16 +1620,16 @@ void oqs_sig_picnic_mzd_mul_vl_s256_192_1024(mzd_local_t* c, mzd_local_t const* 
   for (unsigned int w = 3; w; --w, ++vptr) {
     word idx = *vptr;
     for (unsigned int s = sizeof(word); s; s -= 2, idx >>= 16) {
-      oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 0) & 0xff) * 4], 4);
+      mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 0) & 0xff) * 4], 4);
       Ablock += moff2;
-      oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 8) & 0xff) * 4], 4);
+      mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 8) & 0xff) * 4], 4);
       Ablock += moff2;
     }
   }
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_mul_vl_s256_256_1280(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_s256_256_1280(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   static const unsigned int moff2 = 256 * 5;
 
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -1716,9 +1642,9 @@ void oqs_sig_picnic_mzd_mul_vl_s256_256_1280(mzd_local_t* c, mzd_local_t const* 
   for (unsigned int w = 4; w; --w, ++vptr) {
     word idx = *vptr;
     for (unsigned int s = sizeof(word); s; s -= 2, idx >>= 16) {
-      oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 0) & 0xff) * 5], 5);
+      mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 0) & 0xff) * 5], 5);
       Ablock += moff2;
-      oqs_sig_picnic_mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 8) & 0xff) * 5], 5);
+      mzd_xor_s256_blocks(BLOCK(c, 0), CONST_BLOCK(c, 0), &Ablock[((idx >> 8) & 0xff) * 5], 5);
       Ablock += moff2;
     }
   }
@@ -1726,7 +1652,7 @@ void oqs_sig_picnic_mzd_mul_vl_s256_256_1280(mzd_local_t* c, mzd_local_t const* 
 #endif
 #endif
 
-void oqs_sig_picnic_mzd_addmul_vl_uint64_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_vl_uint64_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock  = BLOCK(c, 0);
   word const* vptr = CONST_BLOCK(v, 0)->w64;
 
@@ -1743,12 +1669,12 @@ void oqs_sig_picnic_mzd_addmul_vl_uint64_128(mzd_local_t* c, mzd_local_t const* 
   }
 }
 
-void oqs_sig_picnic_mzd_mul_vl_uint64_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   clear_uint64_block(BLOCK(c, 0), 2);
-  oqs_sig_picnic_mzd_addmul_vl_uint64_128(c, v, A);
+  mzd_addmul_vl_uint64_128(c, v, A);
 }
 
-static void oqs_sig_picnic_mzd_addmul_vl_uint64_256_len(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A,
+static void mzd_addmul_vl_uint64_256_len(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A,
                                          const unsigned int len) {
   block_t* cblock  = BLOCK(c, 0);
   word const* vptr = CONST_BLOCK(v, 0)->w64;
@@ -1758,31 +1684,31 @@ static void oqs_sig_picnic_mzd_addmul_vl_uint64_256_len(mzd_local_t* c, mzd_loca
     for (word idx = *vptr; idx; idx >>= 8, add += 256) {
       const word comb = idx & 0xff;
 
-      oqs_sig_picnic_mzd_xor_uint64_block(cblock, cblock, CONST_BLOCK(A, w * sizeof(word) * 8 * 32 + add + comb),
+      mzd_xor_uint64_block(cblock, cblock, CONST_BLOCK(A, w * sizeof(word) * 8 * 32 + add + comb),
                            len);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_addmul_vl_uint64_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_vl_uint64_256_len(c, v, A, 3);
+void mzd_addmul_vl_uint64_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_vl_uint64_256_len(c, v, A, 3);
 }
 
-void oqs_sig_picnic_mzd_mul_vl_uint64_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   clear_uint64_block(BLOCK(c, 0), 3);
-  oqs_sig_picnic_mzd_addmul_vl_uint64_192(c, v, A);
+  mzd_addmul_vl_uint64_192(c, v, A);
 }
 
-void oqs_sig_picnic_mzd_addmul_vl_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_vl_uint64_256_len(c, v, A, 4);
+void mzd_addmul_vl_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_vl_uint64_256_len(c, v, A, 4);
 }
 
-void oqs_sig_picnic_mzd_mul_vl_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   clear_uint64_block(BLOCK(c, 0), 4);
-  oqs_sig_picnic_mzd_addmul_vl_uint64_256(c, v, A);
+  mzd_addmul_vl_uint64_256(c, v, A);
 }
 
-void oqs_sig_picnic_mzd_mul_vl_uint64_128_576(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64_128_576(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock  = BLOCK(c, 0);
   word const* vptr = CONST_BLOCK(v, 0)->w64;
 
@@ -1795,13 +1721,13 @@ void oqs_sig_picnic_mzd_mul_vl_uint64_128_576(mzd_local_t* c, mzd_local_t const*
       const word comb       = idx & 0xff;
       const block_t* Ablock = CONST_BLOCK(A, (w * sizeof(word) * 8 * 32 + add + comb) * 3);
 
-      oqs_sig_picnic_mzd_xor_uint64_blocks(cblock, cblock, Ablock, 2);
-      oqs_sig_picnic_mzd_xor_uint64_block(&cblock[2], &cblock[2], &Ablock[2], 1);
+      mzd_xor_uint64_blocks(cblock, cblock, Ablock, 2);
+      mzd_xor_uint64_block(&cblock[2], &cblock[2], &Ablock[2], 1);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_vl_uint64_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock  = BLOCK(c, 0);
   word const* vptr = CONST_BLOCK(v, 0)->w64;
 
@@ -1814,13 +1740,13 @@ void oqs_sig_picnic_mzd_mul_vl_uint64_128_640(mzd_local_t* c, mzd_local_t const*
       const word comb       = idx & 0xff;
       const block_t* Ablock = CONST_BLOCK(A, (w * sizeof(word) * 8 * 32 + add + comb) * 3);
 
-      oqs_sig_picnic_mzd_xor_uint64_blocks(cblock, cblock, Ablock, 2);
-      oqs_sig_picnic_mzd_xor_uint64_block(&cblock[2], &cblock[2], &Ablock[2], 2);
+      mzd_xor_uint64_blocks(cblock, cblock, Ablock, 2);
+      mzd_xor_uint64_block(&cblock[2], &cblock[2], &Ablock[2], 2);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_vl_uint64_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock  = BLOCK(c, 0);
   word const* vptr = CONST_BLOCK(v, 0)->w64;
 
@@ -1833,13 +1759,13 @@ void oqs_sig_picnic_mzd_mul_vl_uint64_192_896(mzd_local_t* c, mzd_local_t const*
       const word comb       = idx & 0xff;
       const block_t* Ablock = CONST_BLOCK(A, (w * sizeof(word) * 8 * 32 + add + comb) * 4);
 
-      oqs_sig_picnic_mzd_xor_uint64_blocks(cblock, cblock, Ablock, 3);
-      oqs_sig_picnic_mzd_xor_uint64_block(&cblock[3], &cblock[3], &Ablock[3], 2);
+      mzd_xor_uint64_blocks(cblock, cblock, Ablock, 3);
+      mzd_xor_uint64_block(&cblock[3], &cblock[3], &Ablock[3], 2);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_vl_uint64_192_960(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64_192_960(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock  = BLOCK(c, 0);
   word const* vptr = CONST_BLOCK(v, 0)->w64;
 
@@ -1852,13 +1778,13 @@ void oqs_sig_picnic_mzd_mul_vl_uint64_192_960(mzd_local_t* c, mzd_local_t const*
       const word comb       = idx & 0xff;
       const block_t* Ablock = CONST_BLOCK(A, (w * sizeof(word) * 8 * 32 + add + comb) * 4);
 
-      oqs_sig_picnic_mzd_xor_uint64_blocks(cblock, cblock, Ablock, 3);
-      oqs_sig_picnic_mzd_xor_uint64_block(&cblock[3], &cblock[3], &Ablock[3], 3);
+      mzd_xor_uint64_blocks(cblock, cblock, Ablock, 3);
+      mzd_xor_uint64_block(&cblock[3], &cblock[3], &Ablock[3], 3);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_vl_uint64_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock  = BLOCK(c, 0);
   word const* vptr = CONST_BLOCK(v, 0)->w64;
 
@@ -1871,13 +1797,13 @@ void oqs_sig_picnic_mzd_mul_vl_uint64_256_1152(mzd_local_t* c, mzd_local_t const
       const word comb       = idx & 0xff;
       const block_t* Ablock = CONST_BLOCK(A, (w * sizeof(word) * 8 * 32 + add + comb) * 5);
 
-      oqs_sig_picnic_mzd_xor_uint64_blocks(cblock, cblock, Ablock, 4);
-      oqs_sig_picnic_mzd_xor_uint64_block(&cblock[4], &cblock[4], &Ablock[4], 2);
+      mzd_xor_uint64_blocks(cblock, cblock, Ablock, 4);
+      mzd_xor_uint64_block(&cblock[4], &cblock[4], &Ablock[4], 2);
     }
   }
 }
 
-void oqs_sig_picnic_mzd_mul_vl_uint64_256_1216(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_mul_vl_uint64_256_1216(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock  = BLOCK(c, 0);
   word const* vptr = CONST_BLOCK(v, 0)->w64;
 
@@ -1890,8 +1816,8 @@ void oqs_sig_picnic_mzd_mul_vl_uint64_256_1216(mzd_local_t* c, mzd_local_t const
       const word comb       = idx & 0xff;
       const block_t* Ablock = CONST_BLOCK(A, (w * sizeof(word) * 8 * 32 + add + comb) * 5);
 
-      oqs_sig_picnic_mzd_xor_uint64_blocks(cblock, cblock, Ablock, 4);
-      oqs_sig_picnic_mzd_xor_uint64_block(&cblock[4], &cblock[4], &Ablock[4], 3);
+      mzd_xor_uint64_blocks(cblock, cblock, Ablock, 4);
+      mzd_xor_uint64_block(&cblock[4], &cblock[4], &Ablock[4], 3);
     }
   }
 }
@@ -1908,44 +1834,44 @@ static word extract_bits(word in, word mask) {
   return res;
 }
 
-static inline void oqs_sig_picnic_mzd_shuffle_30_idx(mzd_local_t* x, const word mask, unsigned int idx) {
+static inline void mzd_shuffle_30_idx(mzd_local_t* x, const word mask, unsigned int idx) {
   const word w          = CONST_BLOCK(x, 0)->w64[idx];
   const word a          = extract_bits(w, mask) << 34;
   BLOCK(x, 0)->w64[idx] = a | extract_bits(w, ~mask);
 }
 
-void oqs_sig_picnic_mzd_shuffle_128_30(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_30_idx(x, mask, 1);
+void mzd_shuffle_128_30(mzd_local_t* x, const word mask) {
+  mzd_shuffle_30_idx(x, mask, 1);
 }
 
-void oqs_sig_picnic_mzd_shuffle_192_30(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_30_idx(x, mask, 2);
+void mzd_shuffle_192_30(mzd_local_t* x, const word mask) {
+  mzd_shuffle_30_idx(x, mask, 2);
 }
 
-void oqs_sig_picnic_mzd_shuffle_256_30(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_30_idx(x, mask, 3);
+void mzd_shuffle_256_30(mzd_local_t* x, const word mask) {
+  mzd_shuffle_30_idx(x, mask, 3);
 }
 
-static inline void oqs_sig_picnic_mzd_shuffle_3_idx(mzd_local_t* x, const word mask, unsigned int idx) {
+static inline void mzd_shuffle_3_idx(mzd_local_t* x, const word mask, unsigned int idx) {
   const word w          = CONST_BLOCK(x, 0)->w64[idx];
   const word a          = extract_bits(w, mask) << 61;
   BLOCK(x, 0)->w64[idx] = a | extract_bits(w, ~mask);
 }
 
-void oqs_sig_picnic_mzd_shuffle_128_3(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_3_idx(x, mask, 1);
+void mzd_shuffle_128_3(mzd_local_t* x, const word mask) {
+  mzd_shuffle_3_idx(x, mask, 1);
 }
 
-void oqs_sig_picnic_mzd_shuffle_192_3(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_3_idx(x, mask, 2);
+void mzd_shuffle_192_3(mzd_local_t* x, const word mask) {
+  mzd_shuffle_3_idx(x, mask, 2);
 }
 
-void oqs_sig_picnic_mzd_shuffle_256_3(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_3_idx(x, mask, 3);
+void mzd_shuffle_256_3(mzd_local_t* x, const word mask) {
+  mzd_shuffle_3_idx(x, mask, 3);
 }
 
 // no SIMD
-void oqs_sig_picnic_mzd_addmul_v_uint64_30_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_uint64_30_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -1959,29 +1885,29 @@ void oqs_sig_picnic_mzd_addmul_v_uint64_30_128(mzd_local_t* c, mzd_local_t const
   }
 }
 
-void oqs_sig_picnic_mzd_addmul_v_uint64_30_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_uint64_30_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
   word idx = CONST_BLOCK(v, 0)->w64[2] >> 34;
   for (unsigned int i = 30; i; --i, idx >>= 1, ++Ablock) {
     const uint64_t mask = -(idx & 1);
-    oqs_sig_picnic_mzd_xor_mask_uint64_block(cblock, Ablock, mask, 3);
+    mzd_xor_mask_uint64_block(cblock, Ablock, mask, 3);
   }
 }
 
-void oqs_sig_picnic_mzd_addmul_v_uint64_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_uint64_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
   word idx = CONST_BLOCK(v, 0)->w64[3] >> 34;
   for (unsigned int i = 30; i; --i, idx >>= 1, ++Ablock) {
     const uint64_t mask = -(idx & 1);
-    oqs_sig_picnic_mzd_xor_mask_uint64_block(cblock, Ablock, mask, 4);
+    mzd_xor_mask_uint64_block(cblock, Ablock, mask, 4);
   }
 }
 
-void oqs_sig_picnic_mzd_addmul_v_uint64_3_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_uint64_3_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock        = BLOCK(c, 0);
   const block_t* Ablock1 = CONST_BLOCK(A, 0);
   const block_t* Ablock2 = CONST_BLOCK(A, 1);
@@ -1997,31 +1923,31 @@ void oqs_sig_picnic_mzd_addmul_v_uint64_3_128(mzd_local_t* c, mzd_local_t const*
   }
 }
 
-void oqs_sig_picnic_mzd_addmul_v_uint64_3_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_uint64_3_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
   word idx = CONST_BLOCK(v, 0)->w64[2] >> 61;
   for (unsigned int i = 3; i; --i, idx >>= 1, ++Ablock) {
     const uint64_t mask = -(idx & 1);
-    oqs_sig_picnic_mzd_xor_mask_uint64_block(cblock, Ablock, mask, 3);
+    mzd_xor_mask_uint64_block(cblock, Ablock, mask, 3);
   }
 }
 
-void oqs_sig_picnic_mzd_addmul_v_uint64_3_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_uint64_3_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
   word idx = CONST_BLOCK(v, 0)->w64[3] >> 61;
   for (unsigned int i = 3; i; --i, idx >>= 1, ++Ablock) {
     const uint64_t mask = -(idx & 1);
-    oqs_sig_picnic_mzd_xor_mask_uint64_block(cblock, Ablock, mask, 4);
+    mzd_xor_mask_uint64_block(cblock, Ablock, mask, 4);
   }
 }
 
 #if defined(WITH_SSE2) || defined(WITH_NEON)
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_v_s128_30_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s128_30_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
   word idx              = CONST_BLOCK(v, 0)->w64[1] >> 34;
@@ -2042,7 +1968,7 @@ void oqs_sig_picnic_mzd_addmul_v_s128_30_128(mzd_local_t* c, mzd_local_t const* 
 }
 
 ATTR_TARGET_S128
-static void oqs_sig_picnic_mzd_addmul_v_s128_30_256_idx(mzd_local_t* c, mzd_local_t const* A, word idx) {
+static void mzd_addmul_v_s128_30_256_idx(mzd_local_t* c, mzd_local_t const* A, word idx) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -2057,17 +1983,17 @@ static void oqs_sig_picnic_mzd_addmul_v_s128_30_256_idx(mzd_local_t* c, mzd_loca
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_v_s128_30_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_v_s128_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 34);
+void mzd_addmul_v_s128_30_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_v_s128_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 34);
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_v_s128_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_v_s128_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 34);
+void mzd_addmul_v_s128_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_v_s128_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 34);
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_v_s128_3_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s128_3_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
   const word idx        = CONST_BLOCK(v, 0)->w64[1] >> 61;
@@ -2080,7 +2006,7 @@ void oqs_sig_picnic_mzd_addmul_v_s128_3_128(mzd_local_t* c, mzd_local_t const* v
 }
 
 ATTR_TARGET_S128
-static void oqs_sig_picnic_mzd_addmul_v_s128_3_256_idx(mzd_local_t* c, mzd_local_t const* A, const word idx) {
+static void mzd_addmul_v_s128_3_256_idx(mzd_local_t* c, mzd_local_t const* A, const word idx) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -2095,19 +2021,19 @@ static void oqs_sig_picnic_mzd_addmul_v_s128_3_256_idx(mzd_local_t* c, mzd_local
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_v_s128_3_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_v_s128_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 61);
+void mzd_addmul_v_s128_3_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_v_s128_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 61);
 }
 
 ATTR_TARGET_S128
-void oqs_sig_picnic_mzd_addmul_v_s128_3_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_v_s128_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 61);
+void mzd_addmul_v_s128_3_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_v_s128_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 61);
 }
 #endif
 
 #if defined(WITH_AVX2)
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_v_s256_30_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s256_30_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -2134,7 +2060,7 @@ void oqs_sig_picnic_mzd_addmul_v_s256_30_128(mzd_local_t* c, mzd_local_t const* 
 }
 
 ATTR_TARGET_AVX2
-static void oqs_sig_picnic_mzd_addmul_v_s256_30_256_idx(mzd_local_t* c, mzd_local_t const* A, word idx) {
+static void mzd_addmul_v_s256_30_256_idx(mzd_local_t* c, mzd_local_t const* A, word idx) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -2154,17 +2080,17 @@ static void oqs_sig_picnic_mzd_addmul_v_s256_30_256_idx(mzd_local_t* c, mzd_loca
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_v_s256_30_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_v_s256_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 34);
+void mzd_addmul_v_s256_30_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_v_s256_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 34);
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_v_s256_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_v_s256_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 34);
+void mzd_addmul_v_s256_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_v_s256_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 34);
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_v_s256_3_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+void mzd_addmul_v_s256_3_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
   const word idx        = CONST_BLOCK(v, 0)->w64[1] >> 61;
@@ -2177,7 +2103,7 @@ void oqs_sig_picnic_mzd_addmul_v_s256_3_128(mzd_local_t* c, mzd_local_t const* v
 }
 
 ATTR_TARGET_AVX2
-static void oqs_sig_picnic_mzd_addmul_v_s256_3_256_idx(mzd_local_t* c, mzd_local_t const* A, const word idx) {
+static void mzd_addmul_v_s256_3_256_idx(mzd_local_t* c, mzd_local_t const* A, const word idx) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -2189,13 +2115,13 @@ static void oqs_sig_picnic_mzd_addmul_v_s256_3_256_idx(mzd_local_t* c, mzd_local
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_v_s256_3_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_v_s256_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 61);
+void mzd_addmul_v_s256_3_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_v_s256_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 61);
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_addmul_v_s256_3_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  oqs_sig_picnic_mzd_addmul_v_s256_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 61);
+void mzd_addmul_v_s256_3_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
+  mzd_addmul_v_s256_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 61);
 }
 
 #if !defined(__x86_64__) && !defined(_M_X64)
@@ -2217,44 +2143,44 @@ ATTR_TARGET_AVX2 ATTR_CONST static uint64_t _pext_u64(uint64_t a, uint64_t mask)
 #endif
 
 ATTR_TARGET_AVX2
-static inline void oqs_sig_picnic_mzd_shuffle_pext_30_idx(mzd_local_t* x, const word mask, unsigned int idx) {
+static inline void mzd_shuffle_pext_30_idx(mzd_local_t* x, const word mask, unsigned int idx) {
   const word w          = CONST_BLOCK(x, 0)->w64[idx];
   const word a          = _pext_u64(w, mask) << 34;
   BLOCK(x, 0)->w64[idx] = a | _pext_u64(w, ~mask);
 }
 
-void oqs_sig_picnic_mzd_shuffle_pext_128_30(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_pext_30_idx(x, mask, 1);
+void mzd_shuffle_pext_128_30(mzd_local_t* x, const word mask) {
+  mzd_shuffle_pext_30_idx(x, mask, 1);
 }
 
-void oqs_sig_picnic_mzd_shuffle_pext_192_30(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_pext_30_idx(x, mask, 2);
+void mzd_shuffle_pext_192_30(mzd_local_t* x, const word mask) {
+  mzd_shuffle_pext_30_idx(x, mask, 2);
 }
 
-void oqs_sig_picnic_mzd_shuffle_pext_256_30(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_pext_30_idx(x, mask, 3);
+void mzd_shuffle_pext_256_30(mzd_local_t* x, const word mask) {
+  mzd_shuffle_pext_30_idx(x, mask, 3);
 }
 
 ATTR_TARGET_AVX2
-static inline void oqs_sig_picnic_mzd_shuffle_pext_3_idx(mzd_local_t* x, const word mask, unsigned int idx) {
+static inline void mzd_shuffle_pext_3_idx(mzd_local_t* x, const word mask, unsigned int idx) {
   const word w          = CONST_BLOCK(x, 0)->w64[idx];
   const word a          = _pext_u64(w, mask) << 61;
   BLOCK(x, 0)->w64[idx] = a | _pext_u64(w, ~mask);
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_shuffle_pext_128_3(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_pext_3_idx(x, mask, 1);
+void mzd_shuffle_pext_128_3(mzd_local_t* x, const word mask) {
+  mzd_shuffle_pext_3_idx(x, mask, 1);
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_shuffle_pext_192_3(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_pext_3_idx(x, mask, 2);
+void mzd_shuffle_pext_192_3(mzd_local_t* x, const word mask) {
+  mzd_shuffle_pext_3_idx(x, mask, 2);
 }
 
 ATTR_TARGET_AVX2
-void oqs_sig_picnic_mzd_shuffle_pext_256_3(mzd_local_t* x, const word mask) {
-  oqs_sig_picnic_mzd_shuffle_pext_3_idx(x, mask, 3);
+void mzd_shuffle_pext_256_3(mzd_local_t* x, const word mask) {
+  mzd_shuffle_pext_3_idx(x, mask, 3);
 }
 #endif
 #endif

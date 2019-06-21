@@ -12,14 +12,14 @@
 #define N_SIGN CONCAT(SIGN, 10)
 #define N_VERIFY CONCAT(VERIFY, 10)
 #define MZD_SHUFFLE CONCAT(SHUFFLE, 30)
-#define MUL_R MUL_R_10
+#define ADDMUL_R ADDMUL_R_10
 #define MUL_Z MUL_Z_10
 #define XOR_MC XOR_MC_10
 #define MUL_MC MUL_MC_10
 #define LOWMC_R LOWMC_R_10
 #define LOWMC_INSTANCE LOWMC_INSTANCE_10
 #include "mpc_lowmc_impl.c.i"
-#undef MUL_R
+#undef ADDMUL_R
 #undef MUL_Z
 #undef LOWMC_R
 #undef LOWMC_INSTANCE
@@ -34,14 +34,14 @@
 #define N_SIGN CONCAT(SIGN, 1)
 #define N_VERIFY CONCAT(VERIFY, 1)
 #define MZD_SHUFFLE CONCAT(SHUFFLE, 3)
-#define MUL_R MUL_R_1
+#define ADDMUL_R ADDMUL_R_1
 #define MUL_Z MUL_Z_1
 #define XOR_MC XOR_MC_1
 #define MUL_MC MUL_MC_1
 #define LOWMC_R LOWMC_R_1
 #define LOWMC_INSTANCE LOWMC_INSTANCE_1
 #include "mpc_lowmc_impl.c.i"
-#undef MUL_R
+#undef ADDMUL_R
 #undef MUL_Z
 #undef LOWMC_R
 #undef LOWMC_INSTANCE

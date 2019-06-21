@@ -11,6 +11,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "oqs_picnic_macros.h"
 
 typedef struct {
   union {
@@ -20,11 +21,11 @@ typedef struct {
   size_t position;
 } bitstream_t;
 
-uint64_t oqs_sig_picnic_bitstream_get_bits(bitstream_t* bs, unsigned int num_bits);
-uint8_t oqs_sig_picnic_bitstream_get_bits_8(bitstream_t* bs, unsigned int num_bits);
-uint32_t oqs_sig_picnic_bitstream_get_bits_32(bitstream_t* bs, unsigned int num_bits);
-void oqs_sig_picnic_bitstream_put_bits(bitstream_t* bs, uint64_t value, unsigned int num_bits);
-void oqs_sig_picnic_bitstream_put_bits_8(bitstream_t* bs, uint8_t value, unsigned int num_bits);
-void oqs_sig_picnic_bitstream_put_bits_32(bitstream_t* bs, uint32_t value, unsigned int num_bits);
+uint64_t bitstream_get_bits(bitstream_t* bs, unsigned int num_bits);
+uint8_t bitstream_get_bits_8(bitstream_t* bs, unsigned int num_bits);
+uint32_t bitstream_get_bits_32(bitstream_t* bs, unsigned int num_bits);
+void bitstream_put_bits(bitstream_t* bs, uint64_t value, unsigned int num_bits);
+void bitstream_put_bits_8(bitstream_t* bs, uint8_t value, unsigned int num_bits);
+void bitstream_put_bits_32(bitstream_t* bs, uint32_t value, unsigned int num_bits);
 
 #endif
