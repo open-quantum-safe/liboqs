@@ -1,6 +1,6 @@
 #include <assert.h>
 
-#include <oqs/oqsconfig.h>
+#include <oqs/oqs.h>
 
 #include "aes.h"
 #include "aes_local.h"
