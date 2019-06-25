@@ -65,7 +65,7 @@ OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
 OQS_API void OQS_randombytes_nist_kat_init(const uint8_t *entropy_input, const uint8_t *personalization_string, int security_strength);
 
 #if defined(__cplusplus)
-}  // extern "C"
+} // extern "C"
 #endif
 
 #endif // __OQS_RANDOM_H

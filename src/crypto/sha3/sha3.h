@@ -367,7 +367,7 @@ void OQS_SHA3_cshake256_simple_absorb(uint64_t *state, uint16_t cstm, const uint
 void OQS_SHA3_cshake256_simple_squeezeblocks(uint8_t *output, size_t nblocks, uint64_t *state);
 
 #if defined(__cplusplus)
-}  // extern "C"
+} // extern "C"
 #endif
 
 #endif

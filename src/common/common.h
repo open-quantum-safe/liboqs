@@ -104,7 +104,7 @@ OQS_API void OQS_MEM_insecure_free(void *ptr);
 #endif
 
 #if defined(__cplusplus)
-}  // extern "C"
+} // extern "C"
 #endif
 
 #endif // __OQS_COMMON_H

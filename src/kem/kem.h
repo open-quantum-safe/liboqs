@@ -268,7 +268,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 // EDIT-WHEN-ADDING-KEM
 
 #if defined(__cplusplus)
-}  // extern "C"
+} // extern "C"
 #endif
 
 #endif // __OQS_KEM_H

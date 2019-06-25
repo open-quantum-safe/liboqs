@@ -236,7 +236,7 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 // EDIT-WHEN-ADDING-SIG
 
 #if defined(__cplusplus)
-}  // extern "C"
+} // extern "C"
 #endif
 
 #endif // __OQS_SIG_H

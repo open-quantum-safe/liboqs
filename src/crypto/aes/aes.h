@@ -122,7 +122,7 @@ void OQS_AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 void OQS_AES256_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext);
 
 #if defined(__cplusplus)
-}  // extern "C"
+} // extern "C"
 #endif
 
 #endif
