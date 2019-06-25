@@ -11,6 +11,24 @@ EXPORTS
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_decaps
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_encaps
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_keypair{% endfor %}{% endfor %}
+	OQS_KEM_frodokem_640_aes_decaps
+	OQS_KEM_frodokem_640_aes_encaps
+	OQS_KEM_frodokem_640_aes_keypair
+	OQS_KEM_frodokem_640_shake_decaps
+	OQS_KEM_frodokem_640_shake_encaps
+	OQS_KEM_frodokem_640_shake_keypair
+	OQS_KEM_frodokem_976_aes_decaps
+	OQS_KEM_frodokem_976_aes_encaps
+	OQS_KEM_frodokem_976_aes_keypair
+	OQS_KEM_frodokem_976_shake_decaps
+	OQS_KEM_frodokem_976_shake_encaps
+	OQS_KEM_frodokem_976_shake_keypair
+	OQS_KEM_frodokem_1344_aes_decaps
+	OQS_KEM_frodokem_1344_aes_encaps
+	OQS_KEM_frodokem_1344_aes_keypair
+	OQS_KEM_frodokem_1344_shake_decaps
+	OQS_KEM_frodokem_1344_shake_encaps
+	OQS_KEM_frodokem_1344_shake_keypair
 	OQS_KEM_sike_p503_decaps
 	OQS_KEM_sike_p503_encaps
 	OQS_KEM_sike_p503_keypair

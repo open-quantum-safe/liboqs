@@ -73,10 +73,10 @@ AC_CONFIG_FILES([Makefile
                  src/sig/qtesla/Makefile
                  src/sig/dilithium/Makefile
                  src/kem/bike/Makefile
-                 src/kem/frodokem/Makefile
                  src/kem/kyber/Makefile
                  src/kem/newhope/Makefile
                  src/kem/ntru/Makefile
+                 src/kem/frodokem/Makefile
                  src/kem/sike/Makefile
                  tests/Makefile
                  ])

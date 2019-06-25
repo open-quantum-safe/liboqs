@@ -26,96 +26,6 @@
       <Filter>kem</Filter>
     </ClCompile>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\kem.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\matrix_aes.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\noise.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\util.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\kem.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\matrix_shake.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\noise.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\util.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\kem.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\matrix_aes.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\noise.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\util.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\kem.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\matrix_shake.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\noise.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\util.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\kem.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\matrix_aes.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\noise.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\util.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\kem.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\matrix_shake.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\noise.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\util.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\kem_kyber512.c">
       <Filter>kyber\kyber512</Filter>
     </ClCompile>
@@ -557,9 +467,6 @@
       <Filter>kem</Filter>
     </ClInclude>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_START  -->
-    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h">
-      <Filter>frodokem</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h">
       <Filter>kyber</Filter>
     </ClInclude>
@@ -705,27 +612,6 @@
       <UniqueIdentifier>{620a9f8e-2013-4cb3-ad37-2ee4348ed893}</UniqueIdentifier>
     </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_START -->
-    <Filter Include="frodokem">
-      <UniqueIdentifier>{4547841a-5e25-4215-a32f-13bf244725ed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\640_aes">
-      <UniqueIdentifier>{453e77f7-95b8-4adc-adc8-033fe561c018}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\640_shake">
-      <UniqueIdentifier>{0e47e6c0-e5f5-4614-8d31-e0d3caea98eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\976_aes">
-      <UniqueIdentifier>{c94df6b4-9bff-4578-afc4-b6231012249a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\976_shake">
-      <UniqueIdentifier>{90a8df32-f17b-431b-b488-7a21b1c7d2d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\1344_aes">
-      <UniqueIdentifier>{3c0ce99d-3db6-4a29-8c4d-d1fd4fcda1ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\1344_shake">
-      <UniqueIdentifier>{de0439be-1a4f-42e3-90f1-e667ccad442b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="kyber">
       <UniqueIdentifier>{8db00bac-a963-4875-b0a1-945bfed08037}</UniqueIdentifier>
     </Filter>

@@ -11,6 +11,7 @@ AC_CONFIG_FILES([Makefile
                  src/kem/bike/Makefile
 {%- for family in kems %}
                  src/kem/{{ family['name'] }}/Makefile{% endfor %}
+                 src/kem/frodokem/Makefile
                  src/kem/sike/Makefile
                  tests/Makefile
                  ])
