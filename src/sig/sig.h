@@ -25,6 +25,10 @@
 
 #include <oqs/oqs.h>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /** Algorithm identifier for default SIG algorithm. */
 #define OQS_SIG_alg_default "DEFAULT"
 /** Algorithm identifier for picnic_L1_FS */
@@ -230,5 +234,9 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #include <oqs/sig_qtesla.h>
 #include <oqs/sig_dilithium.h>
 // EDIT-WHEN-ADDING-SIG
+
+#if defined(__cplusplus)
+} // extern "C"
+#endif
 
 #endif // __OQS_SIG_H
