@@ -11,7 +11,7 @@ CLANGFORMAT ?= clang-format-3.9
 
 SUBDIRS = ${SRCDIR} . tests
 
-BUILT_SOURCES = oqsconfigh links
+BUILT_SOURCES = links
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
@@ -55,9 +55,6 @@ if USE_OPENSSL
 liboqs_la_LIBADD += -L${OPENSSL_DIR}/lib -lcrypto
 endif
 
-oqsconfigh:
-	grep OQS_ config.h > src/oqsconfig.h
-
 installheaderdir=$(includedir)/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_START
 installheader_HEADERS= src/oqs.h \
@@ -94,9 +91,11 @@ kat: clean-kats check
 	tests/kat_kem
 	scripts/check_kats.sh
 
-links: oqsconfigh
+links:
 	$(MKDIR_P) include/oqs
 	cp -f src/oqs.h include/oqs
+	grep OQS_ config.h > src/oqsconfig.h
+	grep USE_ config.h >> src/oqsconfig.h
 	cp -f src/oqsconfig.h include/oqs
 	cp -f src/common/common.h include/oqs
 	cp -f src/common/rand.h include/oqs

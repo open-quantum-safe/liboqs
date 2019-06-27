@@ -5,7 +5,10 @@ if !ENABLE_SHARED
 check_PROGRAMS += test_aes test_sha3
 endif
 
-LIB_FLAGS=../liboqs.la -lm -lcrypto
+LIB_FLAGS=../liboqs.la -lm
+if USE_OPENSSL
+LIB_FLAGS += -L${OPENSSL_DIR}/lib -lcrypto
+endif
 
 example_kem_SOURCES     = example_kem.c
 example_sig_SOURCES     = example_sig.c
