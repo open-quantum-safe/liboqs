@@ -641,6 +641,18 @@
     <Filter Include="sig">
       <UniqueIdentifier>{143e4927-3f7d-449f-b1d9-669993470c2f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="dilithium">
+      <UniqueIdentifier>{de97684a-bf94-413e-ad0d-477202dedea6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dilithium\2">
+      <UniqueIdentifier>{cf8dbf1d-cf1a-4ce9-893d-85841bced3fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dilithium\3">
+      <UniqueIdentifier>{c7244cdd-79f6-4b9a-9a4e-ed358dc0cd79}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dilithium\4">
+      <UniqueIdentifier>{f379218e-10bf-4e7a-ac6e-7e283568ff68}</UniqueIdentifier>
+    </Filter>
     <Filter Include="picnic">
       <UniqueIdentifier>{38993d7a-4180-4824-9451-f118b8df2fbd}</UniqueIdentifier>
     </Filter>

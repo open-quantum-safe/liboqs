@@ -1,12 +1,14 @@
 #include <assert.h>
 
+#include <oqs/oqs.h>
+
 #include "aes.h"
 #include "aes_local.h"
 
 void OQS_AES128_load_schedule(const uint8_t *key, void **schedule, UNUSED int for_encryption) {
 #ifdef USE_OPENSSL
 	oqs_aes128_load_schedule_ossl(key, schedule, for_encryption);
-#elif defined(AES_ENABLE_NI)
+#elif defined(USE_AES_NI)
 	oqs_aes128_load_schedule_ni(key, schedule);
 #else
 	oqs_aes128_load_schedule_c(key, schedule);
@@ -16,7 +18,7 @@ void OQS_AES128_load_schedule(const uint8_t *key, void **schedule, UNUSED int fo
 void OQS_AES128_free_schedule(void *schedule) {
 #ifdef USE_OPENSSL
 	oqs_aes128_free_schedule_ossl(schedule);
-#elif defined(AES_ENABLE_NI)
+#elif defined(USE_AES_NI)
 	oqs_aes128_free_schedule_ni(schedule);
 #else
 	oqs_aes128_free_schedule_c(schedule);
@@ -26,7 +28,7 @@ void OQS_AES128_free_schedule(void *schedule) {
 void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 #ifdef USE_OPENSSL
 	oqs_aes128_ecb_enc_ossl(plaintext, plaintext_len, key, ciphertext);
-#elif defined(AES_ENABLE_NI)
+#elif defined(USE_AES_NI)
 	oqs_aes128_ecb_enc_ni(plaintext, plaintext_len, key, ciphertext);
 #else
 	oqs_aes128_ecb_enc_c(plaintext, plaintext_len, key, ciphertext);
@@ -36,7 +38,7 @@ void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
 void OQS_AES128_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext) {
 #ifdef USE_OPENSSL
 	oqs_aes128_ecb_dec_ossl(ciphertext, ciphertext_len, key, plaintext);
-#elif defined(AES_ENABLE_NI)
+#elif defined(USE_AES_NI)
 	oqs_aes128_ecb_dec_ni(ciphertext, ciphertext_len, key, plaintext);
 #else
 	oqs_aes128_ecb_dec_c(ciphertext, ciphertext_len, key, plaintext);
@@ -46,7 +48,7 @@ void OQS_AES128_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, 
 void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 #ifdef USE_OPENSSL
 	oqs_aes128_ecb_enc_sch_ossl(plaintext, plaintext_len, schedule, ciphertext);
-#elif defined(AES_ENABLE_NI)
+#elif defined(USE_AES_NI)
 	oqs_aes128_ecb_enc_sch_ni(plaintext, plaintext_len, schedule, ciphertext);
 #else
 	oqs_aes128_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext);
@@ -56,14 +58,14 @@ void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 void OQS_AES128_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
 #ifdef USE_OPENSSL
 	oqs_aes128_ecb_dec_sch_ossl(ciphertext, ciphertext_len, schedule, plaintext);
-#elif defined(AES_ENABLE_NI)
+#elif defined(USE_AES_NI)
 	oqs_aes128_ecb_dec_sch_ni(ciphertext, ciphertext_len, schedule, plaintext);
 #else
 	oqs_aes128_ecb_dec_sch_c(ciphertext, ciphertext_len, schedule, plaintext);
 #endif
 }
 
-#ifdef AES_ENABLE_NI
+#ifdef USE_AES_NI
 void oqs_aes128_ecb_enc_ni(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
 	oqs_aes128_load_schedule_ni(key, &schedule);
@@ -79,7 +81,7 @@ void oqs_aes128_ecb_enc_c(const uint8_t *plaintext, const size_t plaintext_len, 
 	oqs_aes128_free_schedule_c(schedule);
 }
 
-#ifdef AES_ENABLE_NI
+#ifdef USE_AES_NI
 void oqs_aes128_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
 	for (size_t block = 0; block < plaintext_len / 16; block++) {
@@ -95,7 +97,7 @@ void oqs_aes128_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_l
 	}
 }
 
-#ifdef AES_ENABLE_NI
+#ifdef USE_AES_NI
 void oqs_aes128_ecb_dec_ni(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext) {
 	void *schedule = NULL;
 	oqs_aes128_load_schedule_ni(key, &schedule);
@@ -111,7 +113,7 @@ void oqs_aes128_ecb_dec_c(const uint8_t *ciphertext, const size_t ciphertext_len
 	oqs_aes128_free_schedule_c(schedule);
 }
 
-#ifdef AES_ENABLE_NI
+#ifdef USE_AES_NI
 void oqs_aes128_ecb_dec_sch_ni(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
 	assert(ciphertext_len % 16 == 0);
 	for (size_t block = 0; block < ciphertext_len / 16; block++) {
