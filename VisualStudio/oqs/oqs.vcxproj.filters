@@ -270,6 +270,42 @@
       <Filter>ntru\hrss701</Filter>
     </ClCompile>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo640aes.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo640shake.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo976aes.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo976shake.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344aes.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344shake.c">
+      <Filter>frodokem</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kem\sike\kem_sike.c">
       <Filter>sike</Filter>
     </ClCompile>
@@ -477,6 +513,9 @@
       <Filter>ntru</Filter>
     </ClInclude>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
+    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h">
+      <Filter>frodokem</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h">
       <Filter>sike</Filter>
     </ClInclude>
@@ -607,6 +646,9 @@
     </Filter>
     <Filter Include="kem">
       <UniqueIdentifier>{ceb9c773-d92e-44b7-916a-eb1d6a2ec89b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frodokem">
+      <UniqueIdentifier>{823382e7-b4ee-4e46-abcf-abee46ee1cb0}</UniqueIdentifier>
     </Filter>
     <Filter Include="sike">
       <UniqueIdentifier>{620a9f8e-2013-4cb3-ad37-2ee4348ed893}</UniqueIdentifier>

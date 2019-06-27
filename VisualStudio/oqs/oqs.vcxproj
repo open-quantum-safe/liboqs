@@ -180,6 +180,18 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c" />
 <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo640aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo640shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo976aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo976shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344shake.c" />
     <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
     <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
     <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
