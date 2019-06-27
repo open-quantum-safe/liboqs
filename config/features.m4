@@ -101,6 +101,8 @@ AC_DEFUN([CONFIG_FEATURES],
   ])
   AM_COND_IF([ENABLE_KEM_LEDACRYPT], [
     AC_DEFINE(OQS_ENABLE_KEM_ledacrypt_kem_lt_12, 1, "Define to 1 when LEDAcrypt-KEM-LT-12 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ledacrypt_kem_lt_32, 1, "Define to 1 when LEDAcrypt-KEM-LT-32 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ledacrypt_kem_lt_52, 1, "Define to 1 when LEDAcrypt-KEM-LT-52 enabled")
   ])
   AM_COND_IF([ENABLE_KEM_NEWHOPE], [
     AC_DEFINE(OQS_ENABLE_KEM_newhope_512cca, 1, "Define to 1 when NewHope-512-CCA enabled")

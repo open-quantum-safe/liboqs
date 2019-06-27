@@ -70,6 +70,10 @@ extern "C" {
 #define OQS_KEM_alg_kyber_kyber1024 "Kyber1024"
 /** Algorithm identifier for LEDAcrypt-KEM-LT-12 KEM. */
 #define OQS_KEM_alg_ledacrypt_kem_lt_12 "LEDAcrypt-KEM-LT-12"
+/** Algorithm identifier for LEDAcrypt-KEM-LT-32 KEM. */
+#define OQS_KEM_alg_ledacrypt_kem_lt_32 "LEDAcrypt-KEM-LT-32"
+/** Algorithm identifier for LEDAcrypt-KEM-LT-52 KEM. */
+#define OQS_KEM_alg_ledacrypt_kem_lt_52 "LEDAcrypt-KEM-LT-52"
 /** Algorithm identifier for NewHope-512-CCA KEM. */
 #define OQS_KEM_alg_newhope_512cca "NewHope-512-CCA"
 /** Algorithm identifier for NewHope-1024-CCA KEM. */
@@ -94,7 +98,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 30
+#define OQS_KEM_algs_length 32
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 /** The default KEM. */
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503

@@ -233,6 +233,60 @@
     <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\rng.c">
       <Filter>ledacrypt\kem_lt_12</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\kem_ledakemlt32.c">
+      <Filter>ledacrypt\kem_lt_32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\bf_decoding.c">
+      <Filter>ledacrypt\kem_lt_32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\dfr_test.c">
+      <Filter>ledacrypt\kem_lt_32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\gf2x_arith_mod_xPplusOne.c">
+      <Filter>ledacrypt\kem_lt_32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\gf2x_arith.c">
+      <Filter>ledacrypt\kem_lt_32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\H_Q_matrices_generation.c">
+      <Filter>ledacrypt\kem_lt_32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\kem.c">
+      <Filter>ledacrypt\kem_lt_32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\niederreiter.c">
+      <Filter>ledacrypt\kem_lt_32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\rng.c">
+      <Filter>ledacrypt\kem_lt_32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\kem_ledakemlt52.c">
+      <Filter>ledacrypt\kem_lt_52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\bf_decoding.c">
+      <Filter>ledacrypt\kem_lt_52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\dfr_test.c">
+      <Filter>ledacrypt\kem_lt_52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\gf2x_arith_mod_xPplusOne.c">
+      <Filter>ledacrypt\kem_lt_52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\gf2x_arith.c">
+      <Filter>ledacrypt\kem_lt_52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\H_Q_matrices_generation.c">
+      <Filter>ledacrypt\kem_lt_52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\kem.c">
+      <Filter>ledacrypt\kem_lt_52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\niederreiter.c">
+      <Filter>ledacrypt\kem_lt_52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\rng.c">
+      <Filter>ledacrypt\kem_lt_52</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kem\newhope\kem_newhope512cca.c">
       <Filter>newhope\512cca</Filter>
     </ClCompile>
@@ -785,6 +839,12 @@
     </Filter>
     <Filter Include="ledacrypt\kem_lt_12">
       <UniqueIdentifier>{84ffe233-5d4a-4dfb-af5f-7e73964c8d49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ledacrypt\kem_lt_32">
+      <UniqueIdentifier>{301f555d-8275-4078-8899-9bc09f10f866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ledacrypt\kem_lt_52">
+      <UniqueIdentifier>{1b2c969d-1917-4df6-a093-701fd9515d1d}</UniqueIdentifier>
     </Filter>
     <Filter Include="newhope">
       <UniqueIdentifier>{21ea4719-b334-4625-8d3c-3f48de67f6f2}</UniqueIdentifier>

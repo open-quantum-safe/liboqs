@@ -14,10 +14,11 @@ Summary
 Parameter sets
 --------------
 
-| Parameter set           | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
-|-------------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| LEDALEDAcrypt-KEM-LT-12 |     IND-CCA    |              1              |           6520          |            26           |           6520          |             32             |
-
+| Parameter set       | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
+|---------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
+| LEDAcrypt-KEM-LT-12 |     IND-CCA    |              1              |           6520          |            26           |           6520          |             32             |
+| LEDAcrypt-KEM-LT-32 |     IND-CCA    |              3              |          12032          |            34           |          12032          |             32             |
+| LEDAcrypt-KEM-LT-52 |     IND-CCA    |              5              |          19040          |            42           |          19040          |             32             |
 Implementation
 --------------
 

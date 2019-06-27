@@ -16,7 +16,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	    ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 	    OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_640_shake, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_976_shake, OQS_KEM_alg_frodokem_1344_aes, OQS_KEM_alg_frodokem_1344_shake,
 	    OQS_KEM_alg_kyber_kyber512, OQS_KEM_alg_kyber_kyber768, OQS_KEM_alg_kyber_kyber1024,
-	    OQS_KEM_alg_ledacrypt_kem_lt_12,
+	    OQS_KEM_alg_ledacrypt_kem_lt_12, OQS_KEM_alg_ledacrypt_kem_lt_32, OQS_KEM_alg_ledacrypt_kem_lt_52,
 	    OQS_KEM_alg_newhope_512cca, OQS_KEM_alg_newhope_1024cca,
 	    OQS_KEM_alg_ntru_hps2048509, OQS_KEM_alg_ntru_hps2048677, OQS_KEM_alg_ntru_hps4096821, OQS_KEM_alg_ntru_hrss701,
 	    ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
@@ -151,6 +151,18 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledacrypt_kem_lt_12)) {
 #ifdef OQS_ENABLE_KEM_ledacrypt_kem_lt_12
 		return OQS_KEM_ledacrypt_kem_lt_12_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledacrypt_kem_lt_32)) {
+#ifdef OQS_ENABLE_KEM_ledacrypt_kem_lt_32
+		return OQS_KEM_ledacrypt_kem_lt_32_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledacrypt_kem_lt_52)) {
+#ifdef OQS_ENABLE_KEM_ledacrypt_kem_lt_52
+		return OQS_KEM_ledacrypt_kem_lt_52_new();
 #else
 		return NULL;
 #endif
