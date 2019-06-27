@@ -103,6 +103,7 @@ int PQCLEAN_LEDAKEMLT12_LEAKTIME_seedexpander(AES_XOF_struct *ctx, unsigned char
         }
 
     }
+    aes256_ctx_release(&ctx256);
 
     return RNG_SUCCESS;
 }
