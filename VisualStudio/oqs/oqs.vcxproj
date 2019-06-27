@@ -37,11 +37,11 @@
   <ItemGroup>
     <ClInclude Include="..\..\src\kem\kem.h" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_START -->
-    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h" />
     <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h" />
     <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
+    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_internal.h" />
@@ -97,36 +97,6 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\matrix_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\matrix_shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\matrix_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\matrix_shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\matrix_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\matrix_shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\util.c" />
     <ClCompile Include="..\..\src\kem\kyber\kem_kyber512.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\cbd.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\indcpa.c" />
@@ -210,6 +180,18 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c" />
 <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo640aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo640shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo976aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo976shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344shake.c" />
     <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
     <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
     <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
@@ -415,10 +397,10 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -455,10 +437,10 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -495,10 +477,10 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -543,10 +525,10 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -590,10 +572,10 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -634,10 +616,10 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -678,10 +660,10 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -730,10 +712,10 @@ copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
