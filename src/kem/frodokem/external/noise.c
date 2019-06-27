@@ -4,11 +4,6 @@
 * Abstract: noise sampling functions
 *********************************************************************************************/
 
-#include <stddef.h>
-#include <stdint.h>
-
-#include "frodo_internal.h"
-
 void frodo_sample_n(uint16_t *s, const size_t n) 
 { // Fills vector s with n samples from the noise distribution which requires 16 bits to sample. 
   // The distribution is specified by its CDF.

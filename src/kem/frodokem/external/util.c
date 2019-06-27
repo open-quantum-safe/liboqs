@@ -4,11 +4,7 @@
 * Abstract: additional functions for FrodoKEM
 *********************************************************************************************/
 
-#include <stddef.h>
-#include <stdint.h>
 #include <string.h>
-
-#include "frodo_internal.h"
 
 #define min(x, y) (((x) < (y)) ? (x) : (y))
 

@@ -47,3 +47,9 @@
 #define frodo_sub oqs_kem_frodokem_1344_aes_sub
 #define frodo_key_encode oqs_kem_frodokem_1344_aes_key_encode
 #define frodo_key_decode oqs_kem_frodokem_1344_aes_key_decode
+
+#include "frodo_internal.h"
+#include "kem.c"
+#include "noise.c"
+#include "util.c"
+#include "frodo_macrify_reference.c"

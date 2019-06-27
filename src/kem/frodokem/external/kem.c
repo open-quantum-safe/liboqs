@@ -4,10 +4,7 @@
 * Abstract: Key Encapsulation Mechanism (KEM) based on Frodo
 *********************************************************************************************/
 
-#include <stdint.h>
 #include <string.h>
-
-#include "frodo_internal.h"
 
 int crypto_kem_keypair(unsigned char* pk, unsigned char* sk)
 { // FrodoKEM's key generation
