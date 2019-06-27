@@ -25,6 +25,10 @@
 
 #include <oqs/oqs.h>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /** Algorithm identifier for default KEM algorithm. */
 #define OQS_KEM_alg_default "DEFAULT"
 /** Algorithm identifier for BIKE1-L1 KEM. */
@@ -262,5 +266,9 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 #include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
+
+#if defined(__cplusplus)
+} // extern "C"
+#endif
 
 #endif // __OQS_KEM_H
