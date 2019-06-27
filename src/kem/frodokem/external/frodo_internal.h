@@ -42,7 +42,7 @@ void frodo_key_decode(uint16_t *out, const uint16_t *in);
     }
 #endif
 
-#if defined(WINDOWS)
+#if defined(_MSC_VER) // if using Visual Studio compiler
     #define ALIGN_HEADER(N) __declspec(align(N))
     #define ALIGN_FOOTER(N) 
 #else
