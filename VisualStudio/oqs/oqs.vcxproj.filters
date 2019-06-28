@@ -26,291 +26,6 @@
       <Filter>kem</Filter>
     </ClCompile>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\kem.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\matrix_aes.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\noise.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\util.c">
-      <Filter>frodokem\640_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\kem.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\matrix_shake.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\noise.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\util.c">
-      <Filter>frodokem\640_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\kem.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\matrix_aes.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\noise.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\util.c">
-      <Filter>frodokem\976_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\kem.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\matrix_shake.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\noise.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\util.c">
-      <Filter>frodokem\976_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\kem.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\matrix_aes.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\noise.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\util.c">
-      <Filter>frodokem\1344_aes</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\kem.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\matrix_shake.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\noise.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\util.c">
-      <Filter>frodokem\1344_shake</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber512.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\cbd.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\indcpa.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\kem.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\ntt.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\poly.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\polyvec.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\reduce.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\verify.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\symmetric-fips202.c">
-      <Filter>kyber\kyber512</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber768.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\cbd.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\indcpa.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\kem.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\ntt.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\poly.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\polyvec.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\reduce.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\verify.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\symmetric-fips202.c">
-      <Filter>kyber\kyber768</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber1024.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\cbd.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\indcpa.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\kem.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\ntt.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\poly.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\polyvec.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\reduce.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\verify.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c">
-      <Filter>kyber\kyber1024</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048509.c">
-      <Filter>ntru\hps2048509</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\crypto_sort.c">
-      <Filter>ntru\hps2048509</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\kem.c">
-      <Filter>ntru\hps2048509</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\owcpa.c">
-      <Filter>ntru\hps2048509</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\pack3.c">
-      <Filter>ntru\hps2048509</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\packq.c">
-      <Filter>ntru\hps2048509</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\poly.c">
-      <Filter>ntru\hps2048509</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\sample.c">
-      <Filter>ntru\hps2048509</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\verify.c">
-      <Filter>ntru\hps2048509</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048677.c">
-      <Filter>ntru\hps2048677</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\crypto_sort.c">
-      <Filter>ntru\hps2048677</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\kem.c">
-      <Filter>ntru\hps2048677</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\owcpa.c">
-      <Filter>ntru\hps2048677</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\pack3.c">
-      <Filter>ntru\hps2048677</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\packq.c">
-      <Filter>ntru\hps2048677</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\poly.c">
-      <Filter>ntru\hps2048677</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\sample.c">
-      <Filter>ntru\hps2048677</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\verify.c">
-      <Filter>ntru\hps2048677</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps4096821.c">
-      <Filter>ntru\hps4096821</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\crypto_sort.c">
-      <Filter>ntru\hps4096821</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\kem.c">
-      <Filter>ntru\hps4096821</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\owcpa.c">
-      <Filter>ntru\hps4096821</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\pack3.c">
-      <Filter>ntru\hps4096821</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\packq.c">
-      <Filter>ntru\hps4096821</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\poly.c">
-      <Filter>ntru\hps4096821</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\sample.c">
-      <Filter>ntru\hps4096821</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\verify.c">
-      <Filter>ntru\hps4096821</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhrss701.c">
-      <Filter>ntru\hrss701</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\kem.c">
-      <Filter>ntru\hrss701</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\owcpa.c">
-      <Filter>ntru\hrss701</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\pack3.c">
-      <Filter>ntru\hrss701</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\packq.c">
-      <Filter>ntru\hrss701</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\poly.c">
-      <Filter>ntru\hrss701</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\sample.c">
-      <Filter>ntru\hrss701</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c">
-      <Filter>ntru\hrss701</Filter>
-    </ClCompile>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\sike\kem_sike.c">
       <Filter>sike</Filter>
@@ -416,6 +131,107 @@
     </ClCompile>
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-times4-on1.c">
       <Filter>picnic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\matrix_aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\matrix_shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\matrix_aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\matrix_shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\matrix_aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\matrix_shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\noise.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\util.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber512.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber768.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber1024.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048509.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\crypto_sort.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048677.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\crypto_sort.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps4096821.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\crypto_sort.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhrss701.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\sike\P434\P434.c">
+      <Filter>sike</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\sike\P610\P610.c">
+      <Filter>sike</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -553,6 +369,18 @@
     <ClInclude Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-SnP.h">
       <Filter>picnic</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P434\P434_api.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P434\P434_internal.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P610\P610_api.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P610\P610_internal.h">
+      <Filter>sike</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="dll.def" />
@@ -580,45 +408,6 @@
       <UniqueIdentifier>{cb72ff2d-77c6-4e60-a04e-6aad5fc6c328}</UniqueIdentifier>
     </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_START -->
-    <Filter Include="frodokem\640_aes">
-      <UniqueIdentifier>{453e77f7-95b8-4adc-adc8-033fe561c018}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\640_shake">
-      <UniqueIdentifier>{0e47e6c0-e5f5-4614-8d31-e0d3caea98eb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\976_aes">
-      <UniqueIdentifier>{c94df6b4-9bff-4578-afc4-b6231012249a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\976_shake">
-      <UniqueIdentifier>{90a8df32-f17b-431b-b488-7a21b1c7d2d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\1344_aes">
-      <UniqueIdentifier>{3c0ce99d-3db6-4a29-8c4d-d1fd4fcda1ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="frodokem\1344_shake">
-      <UniqueIdentifier>{de0439be-1a4f-42e3-90f1-e667ccad442b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="kyber\kyber512">
-      <UniqueIdentifier>{80001dfa-c3e2-478f-8705-95bafd3f33d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="kyber\kyber768">
-      <UniqueIdentifier>{815e88b5-b5d7-43c6-b0c0-2a045a0c7aa6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="kyber\kyber1024">
-      <UniqueIdentifier>{fd3c9627-9462-409f-9cdb-0c6566370dbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ntru\hps2048509">
-      <UniqueIdentifier>{bafe52e5-36c3-462c-9471-147904f60836}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ntru\hps2048677">
-      <UniqueIdentifier>{bc485581-d690-4659-b686-ff11c5280698}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ntru\hps4096821">
-      <UniqueIdentifier>{e89f8171-bf1d-4ebf-925b-9572af2e4200}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ntru\hrss701">
-      <UniqueIdentifier>{96485f85-7dd5-4df3-a1cd-769da06d3ada}</UniqueIdentifier>
-    </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_END -->
   </ItemGroup>
 </Project>

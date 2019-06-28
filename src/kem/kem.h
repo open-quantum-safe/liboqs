@@ -77,21 +77,29 @@
 #define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
 /** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
 #define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
+/** Algorithm identifier for Sidh p434 KEM. */
+#define OQS_KEM_alg_sidh_p434 "Sidh-p434"
 /** Algorithm identifier for Sidh p503 KEM. */
 #define OQS_KEM_alg_sidh_p503 "Sidh-p503"
+/** Algorithm identifier for Sidh p610 KEM. */
+#define OQS_KEM_alg_sidh_p610 "Sidh-p610"
 /** Algorithm identifier for Sidh p751 KEM. */
 #define OQS_KEM_alg_sidh_p751 "Sidh-p751"
+/** Algorithm identifier for Sike p434 KEM. */
+#define OQS_KEM_alg_sike_p434 "Sike-p434"
 /** Algorithm identifier for Sike p503 KEM. */
 #define OQS_KEM_alg_sike_p503 "Sike-p503"
+/** Algorithm identifier for Sike p610 KEM. */
+#define OQS_KEM_alg_sike_p610 "Sike-p610"
 /** Algorithm identifier for Sike p751 KEM. */
 #define OQS_KEM_alg_sike_p751 "Sike-p751"
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 29
+#define OQS_KEM_algs_length 33
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 /** The default KEM. */
-#define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
+#define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p434
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
