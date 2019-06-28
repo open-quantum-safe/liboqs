@@ -9,9 +9,10 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/bike/kem_bike.h \
 {%- for family in kems %}
 	src/kem/{{ family['name'] }}/kem_{{ family['name'] }}.h \{% endfor %}
-	src/kem/newhopenist/kem_newhopenist.h \
+	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/picnic/sig_picnic.h \
-	src/sig/qtesla/sig_qtesla.h
+	src/sig/qtesla/sig_qtesla.h \
+	src/sig/dilithium/sig_dilithium.h
 

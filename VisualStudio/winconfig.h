@@ -3,25 +3,29 @@
 
 /* Enable schemes supported on Windows */
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_KEMS_START
+#define OQS_ENABLE_KEM_kyber_kyber512
+#define OQS_ENABLE_KEM_kyber_kyber768
+#define OQS_ENABLE_KEM_kyber_kyber1024
+#define OQS_ENABLE_KEM_newhope_512cca
+#define OQS_ENABLE_KEM_newhope_1024cca
+#define OQS_ENABLE_KEM_ntru_hps2048509
+#define OQS_ENABLE_KEM_ntru_hps2048677
+#define OQS_ENABLE_KEM_ntru_hps4096821
+#define OQS_ENABLE_KEM_ntru_hrss701
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_KEMS_END
 #define OQS_ENABLE_KEM_frodokem_640_aes
 #define OQS_ENABLE_KEM_frodokem_640_shake
 #define OQS_ENABLE_KEM_frodokem_976_aes
 #define OQS_ENABLE_KEM_frodokem_976_shake
 #define OQS_ENABLE_KEM_frodokem_1344_aes
 #define OQS_ENABLE_KEM_frodokem_1344_shake
-#define OQS_ENABLE_KEM_kyber_kyber512
-#define OQS_ENABLE_KEM_kyber_kyber768
-#define OQS_ENABLE_KEM_kyber_kyber1024
-#define OQS_ENABLE_KEM_ntru_hps2048509
-#define OQS_ENABLE_KEM_ntru_hps2048677
-#define OQS_ENABLE_KEM_ntru_hps4096821
-#define OQS_ENABLE_KEM_ntru_hrss701
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_KEMS_END
-#define OQS_ENABLE_KEM_newhope_1024_cca_kem
-#define OQS_ENABLE_KEM_newhope_512_cca_kem
+#define OQS_ENABLE_KEM_sike_p464
 #define OQS_ENABLE_KEM_sike_p503
+#define OQS_ENABLE_KEM_sike_p610
 #define OQS_ENABLE_KEM_sike_p751
+#define OQS_ENABLE_KEM_sidh_p464
 #define OQS_ENABLE_KEM_sidh_p503
+#define OQS_ENABLE_KEM_sidh_p610
 #define OQS_ENABLE_KEM_sidh_p751
 #define OQS_ENABLE_SIG_picnic_L1_FS
 #define OQS_ENABLE_SIG_picnic_L1_UR
@@ -32,5 +36,11 @@
 #define OQS_ENABLE_SIG_picnic2_L1_FS
 #define OQS_ENABLE_SIG_picnic2_L3_FS
 #define OQS_ENABLE_SIG_picnic2_L5_FS
+#define OQS_ENABLE_SIG_dilithium_2
+#define OQS_ENABLE_SIG_dilithium_3
+#define OQS_ENABLE_SIG_dilithium_4
+#define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
+#define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
+
 
 #endif

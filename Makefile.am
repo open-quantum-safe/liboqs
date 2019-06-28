@@ -11,7 +11,7 @@ CLANGFORMAT ?= clang-format-3.9
 
 SUBDIRS = ${SRCDIR} . tests
 
-BUILT_SOURCES = oqsconfigh links
+BUILT_SOURCES = links
 lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
@@ -26,34 +26,34 @@ endif
 if ENABLE_SIG_QTESLA
 liboqs_la_LIBADD += src/sig/qtesla/libqtesla.la
 endif
+if ENABLE_SIG_DILITHIUM
+liboqs_la_LIBADD += src/sig/dilithium/libdilithium.la
+endif
 
 if ENABLE_KEM_BIKE
 liboqs_la_LIBADD += src/kem/bike/libkembike.la
 endif
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_IF_ENABLE_KEM_START
-if ENABLE_KEM_FRODOKEM
-liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
-endif
 if ENABLE_KEM_KYBER
 liboqs_la_LIBADD += src/kem/kyber/libkemkyber.la
+endif
+if ENABLE_KEM_NEWHOPE
+liboqs_la_LIBADD += src/kem/newhope/libkemnewhope.la
 endif
 if ENABLE_KEM_NTRU
 liboqs_la_LIBADD += src/kem/ntru/libkemntru.la
 endif
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_IF_ENABLE_KEM_END
+if ENABLE_KEM_FRODOKEM
+liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
+endif
 if ENABLE_KEM_SIKE
 liboqs_la_LIBADD += src/kem/sike/libkemsike.la
-endif
-if ENABLE_KEM_NEWHOPE
-liboqs_la_LIBADD += src/kem/newhopenist/libkemnewhopenist.la
 endif
 
 if USE_OPENSSL
 liboqs_la_LIBADD += -L${OPENSSL_DIR}/lib -lcrypto
 endif
-
-oqsconfigh:
-	grep OQS_ config.h > src/oqsconfig.h
 
 installheaderdir=$(includedir)/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_START
@@ -65,14 +65,15 @@ installheader_HEADERS= src/oqs.h \
 	src/crypto/sha3/sha3.h \
 	src/kem/kem.h \
 	src/kem/bike/kem_bike.h \
-	src/kem/frodokem/kem_frodokem.h \
 	src/kem/kyber/kem_kyber.h \
+	src/kem/newhope/kem_newhope.h \
 	src/kem/ntru/kem_ntru.h \
-	src/kem/newhopenist/kem_newhopenist.h \
+	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/picnic/sig_picnic.h \
-	src/sig/qtesla/sig_qtesla.h
+	src/sig/qtesla/sig_qtesla.h \
+	src/sig/dilithium/sig_dilithium.h
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_END
 
 
@@ -90,9 +91,11 @@ kat: clean-kats check
 	tests/kat_kem
 	scripts/check_kats.sh
 
-links: oqsconfigh
+links:
 	$(MKDIR_P) include/oqs
 	cp -f src/oqs.h include/oqs
+	grep OQS_ config.h > src/oqsconfig.h
+	grep USE_ config.h >> src/oqsconfig.h
 	cp -f src/oqsconfig.h include/oqs
 	cp -f src/common/common.h include/oqs
 	cp -f src/common/rand.h include/oqs
@@ -101,15 +104,16 @@ links: oqsconfigh
 	cp -f src/kem/kem.h include/oqs
 	cp -f src/kem/bike/kem_bike.h include/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_START
-	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/kyber/kem_kyber.h include/oqs
+	cp -f src/kem/newhope/kem_newhope.h include/oqs
 	cp -f src/kem/ntru/kem_ntru.h include/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_END
+	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
-	cp -f src/kem/newhopenist/kem_newhopenist.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig/picnic/sig_picnic.h include/oqs
 	cp -f src/sig/qtesla/sig_qtesla.h include/oqs
+	cp -f src/sig/dilithium/sig_dilithium.h include/oqs
 
 clean-local:
 	rm -rf include
@@ -121,6 +125,6 @@ clean-kats:
 	rm -rf tests/kat_kem kat_kem_rsp/
 
 prettyprint:
-	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | grep -v pqclean | xargs $(CLANGFORMAT) -style=file -i
+	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | grep -v frodokem/external* | grep -v pqclean | xargs $(CLANGFORMAT) -style=file -i
 
 docs: links doxygen-run

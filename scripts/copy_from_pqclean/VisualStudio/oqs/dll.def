@@ -11,12 +11,24 @@ EXPORTS
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_decaps
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_encaps
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_keypair{% endfor %}{% endfor %}
-	OQS_KEM_newhope_1024_cca_kem_decaps
-	OQS_KEM_newhope_1024_cca_kem_encaps
-	OQS_KEM_newhope_1024_cca_kem_keypair
-	OQS_KEM_newhope_512_cca_kem_decaps
-	OQS_KEM_newhope_512_cca_kem_encaps
-	OQS_KEM_newhope_512_cca_kem_keypair
+	OQS_KEM_frodokem_640_aes_decaps
+	OQS_KEM_frodokem_640_aes_encaps
+	OQS_KEM_frodokem_640_aes_keypair
+	OQS_KEM_frodokem_640_shake_decaps
+	OQS_KEM_frodokem_640_shake_encaps
+	OQS_KEM_frodokem_640_shake_keypair
+	OQS_KEM_frodokem_976_aes_decaps
+	OQS_KEM_frodokem_976_aes_encaps
+	OQS_KEM_frodokem_976_aes_keypair
+	OQS_KEM_frodokem_976_shake_decaps
+	OQS_KEM_frodokem_976_shake_encaps
+	OQS_KEM_frodokem_976_shake_keypair
+	OQS_KEM_frodokem_1344_aes_decaps
+	OQS_KEM_frodokem_1344_aes_encaps
+	OQS_KEM_frodokem_1344_aes_keypair
+	OQS_KEM_frodokem_1344_shake_decaps
+	OQS_KEM_frodokem_1344_shake_encaps
+	OQS_KEM_frodokem_1344_shake_keypair
 	OQS_KEM_sike_p503_decaps
 	OQS_KEM_sike_p503_encaps
 	OQS_KEM_sike_p503_keypair
@@ -55,3 +67,21 @@ EXPORTS
 	OQS_SIG_picnic_L5_UR_keypair
 	OQS_SIG_picnic_L5_UR_sign
 	OQS_SIG_picnic_L5_UR_verify
+	OQS_SIG_picnic2_L1_FS_keypair
+	OQS_SIG_picnic2_L1_FS_sign
+	OQS_SIG_picnic2_L1_FS_verify
+	OQS_SIG_picnic2_L3_FS_keypair
+	OQS_SIG_picnic2_L3_FS_sign
+	OQS_SIG_picnic2_L3_FS_verify
+	OQS_SIG_picnic2_L5_FS_keypair
+	OQS_SIG_picnic2_L5_FS_sign
+	OQS_SIG_picnic2_L5_FS_verify
+	OQS_SIG_dilithium_2_keypair
+	OQS_SIG_dilithium_2_sign
+	OQS_SIG_dilithium_2_verify
+	OQS_SIG_dilithium_3_keypair
+	OQS_SIG_dilithium_3_sign
+	OQS_SIG_dilithium_3_verify
+	OQS_SIG_dilithium_4_keypair
+	OQS_SIG_dilithium_4_sign
+	OQS_SIG_dilithium_4_verify

@@ -191,7 +191,11 @@ Then open `docs/doxygen/html/index.html` in your web browser.
 
 ### liboqs default algorithms
 
-The key encapsulation algorithm type `OQS_KEM_alg_default` and signature algorithm type `OQS_SIG_alg_default` are intended for testing purposes and can be changed at compile-time. Care should be exercised if these types are used for other purposes.
+The key encapsulation algorithm type `OQS_KEM_alg_default` and signature algorithm type `OQS_SIG_alg_default` are intended for testing purposes and can be changed at compile-time. Care should be exercised if these types are used for other purposes.  To change these at compile time, for example:
+
+	./configure KEM_DEFAULT=OQS_KEM_alg_frodokem_976_aes SIG_DEFAULT=OQS_SIG_alg_picnic_L1_FS
+
+For the Visual Studio build, default algorithms are manually specified in the file `VisualStudio/winconfig.h`.
 
 License
 -------
@@ -235,6 +239,6 @@ Contributors to this master branch of liboqs include:
 
 Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services and the Tutte Institute for Mathematics and Computing.  
 
-We'd like to make a special acknowledgement to the companies who have dedicated programmer time to contribute source code to OQS, including Amazon Web Services, evolutionQ, and Microsoft Research.  
+We'd like to make a special acknowledgement to the companies who have dedicated programmer time to contribute source code to OQS, including Amazon Web Services, evolutionQ, Microsoft Research, and Cisco Systems.  
 
 Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.
