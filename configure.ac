@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 # Init
-AC_INIT([liboqs], [0.1.0], [https://github.com/open-quantum-safe/liboqs/issues], [liboqs-master], [https://openquantumsafe.org/])
+AC_INIT([liboqs], [0.2.0-dev], [https://github.com/open-quantum-safe/liboqs/issues], [liboqs-master], [https://openquantumsafe.org/])
 
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 AM_PROG_LIBTOOL
@@ -17,8 +17,8 @@ AM_PROG_LIBTOOL
 # 1.2.3-rc2      0x10203002 (same as ...rc2-dev)
 # 1.2.3          0x1020300f
 # 1.2.3a         0x1020301f
-AC_DEFINE([OQS_VERSION_NUMBER],[0x0010000fL],[Numeric liboqs version])
-AC_DEFINE([OQS_VERSION_TEXT],["0.1.0"],[Text liboqs version])
+AC_DEFINE([OQS_VERSION_NUMBER],[0x00200000L],[Numeric liboqs version])
+AC_DEFINE([OQS_VERSION_TEXT],["0.2.0-dev"],[Text liboqs version])
 AC_DEFINE([OQS_MASTER_BRANCH],[],[liboqs branch])
 
 # Configure
@@ -73,13 +73,37 @@ AC_CONFIG_FILES([Makefile
                  src/sig/qtesla/Makefile
                  src/sig/dilithium/Makefile
                  src/kem/bike/Makefile
-                 src/kem/frodokem/Makefile
                  src/kem/kyber/Makefile
                  src/kem/newhope/Makefile
                  src/kem/ntru/Makefile
+                 src/kem/frodokem/Makefile
                  src/kem/sike/Makefile
                  tests/Makefile
                  ])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AC_CONFIG_FILES_END
+
+AC_ARG_VAR([KEM_DEFAULT], [KEM to set at compile-time as OQS_KEM_DEFAULT, e.g. OQS_KEM_alg_sike_p503])
+case "$KEM_DEFAULT" in
+#(
+"")
+  AC_DEFINE([OQS_KEM_DEFAULT], [OQS_KEM_alg_sike_p503], [Set default KEM to SIKEp503])
+;; 
+#(
+*)
+  AC_DEFINE_UNQUOTED([OQS_KEM_DEFAULT], [$KEM_DEFAULT], [Set default KEM user-specified value])
+;;
+esac
+
+AC_ARG_VAR(SIG_DEFAULT, [Signature scheme to set at compile-time as OQS_SIG_DEFAULT, e.g. OQS_SIG_alg_dilithium_2])
+case "$SIG_DEFAULT" in
+#(
+"")
+  AC_DEFINE([OQS_SIG_DEFAULT], [OQS_SIG_alg_dilithium_2], [Set default signature scheme to Dilithium2])
+;; 
+#(
+*)
+  AC_DEFINE_UNQUOTED([OQS_SIG_DEFAULT], [$SIG_DEFAULT], [Set default signature scheme user-specified value])
+;;
+esac
 
 AC_OUTPUT

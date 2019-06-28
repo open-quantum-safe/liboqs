@@ -25,6 +25,10 @@
 
 #include <oqs/oqs.h>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /** Algorithm identifier for default SIG algorithm. */
 #define OQS_SIG_alg_default "DEFAULT"
 /** Algorithm identifier for picnic_L1_FS */
@@ -61,12 +65,6 @@
 // EDIT-WHEN-ADDING-SIG
 /** Number of algorithm identifiers above (including default). */
 #define OQS_SIG_algs_length 16
-/** The default signature. Different on Windows because qTESLA is not yet supported. */
-#if defined(_WIN32)
-#define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
-#else
-#define OQS_SIG_DEFAULT OQS_SIG_alg_qTESLA_I
-#endif
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_new.
@@ -230,5 +228,9 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #include <oqs/sig_qtesla.h>
 #include <oqs/sig_dilithium.h>
 // EDIT-WHEN-ADDING-SIG
+
+#if defined(__cplusplus)
+} // extern "C"
+#endif
 
 #endif // __OQS_SIG_H

@@ -72,7 +72,7 @@ static int test_aes256_correctness_c() {
 	return EXIT_SUCCESS;
 }
 
-#ifdef AES_ENABLE_NI
+#ifdef USE_AES_NI
 static int test_aes128_correctness_ni() {
 	uint8_t derived_plaintext[16], derived_ciphertext[16];
 	void *schedule = NULL;
@@ -168,7 +168,7 @@ static void speed_aes256_c() {
 	oqs_aes256_free_schedule_c(schedule);
 }
 
-#ifdef AES_ENABLE_NI
+#ifdef USE_AES_NI
 static void speed_aes128_ni() {
 	uint8_t plaintext[16], ciphertext[16];
 	void *schedule = NULL;
@@ -253,7 +253,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	if (test_aes256_correctness_c() != EXIT_SUCCESS)
 		return EXIT_FAILURE;
-#ifdef AES_ENABLE_NI
+#ifdef USE_AES_NI
 	if (test_aes128_correctness_ni() != EXIT_SUCCESS)
 		return EXIT_FAILURE;
 #endif
@@ -270,7 +270,7 @@ int main(int argc, char **argv) {
 		PRINT_TIMER_HEADER
 		speed_aes128_c();
 		speed_aes256_c();
-#ifdef AES_ENABLE_NI
+#ifdef USE_AES_NI
 		speed_aes128_ni();
 #endif
 #ifdef USE_OPENSSL

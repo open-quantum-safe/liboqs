@@ -191,7 +191,11 @@ Then open `docs/doxygen/html/index.html` in your web browser.
 
 ### liboqs default algorithms
 
-The key encapsulation algorithm type `OQS_KEM_alg_default` and signature algorithm type `OQS_SIG_alg_default` are intended for testing purposes and can be changed at compile-time. Care should be exercised if these types are used for other purposes.
+The key encapsulation algorithm type `OQS_KEM_alg_default` and signature algorithm type `OQS_SIG_alg_default` are intended for testing purposes and can be changed at compile-time. Care should be exercised if these types are used for other purposes.  To change these at compile time, for example:
+
+	./configure KEM_DEFAULT=OQS_KEM_alg_frodokem_976_aes SIG_DEFAULT=OQS_SIG_alg_picnic_L1_FS
+
+For the Visual Studio build, default algorithms are manually specified in the file `VisualStudio/winconfig.h`.
 
 License
 -------

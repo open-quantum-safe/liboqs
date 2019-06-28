@@ -25,6 +25,10 @@
 
 #include <oqs/oqs.h>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /** Algorithm identifier for default KEM algorithm. */
 #define OQS_KEM_alg_default "DEFAULT"
 /** Algorithm identifier for BIKE1-L1 KEM. */
@@ -46,18 +50,6 @@
 /** Algorithm identifier for BIKE3-L5 KEM. */
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
-/** Algorithm identifier for FrodoKEM-640-AES KEM. */
-#define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
-/** Algorithm identifier for FrodoKEM-640-SHAKE KEM. */
-#define OQS_KEM_alg_frodokem_640_shake "FrodoKEM-640-SHAKE"
-/** Algorithm identifier for FrodoKEM-976-AES KEM. */
-#define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
-/** Algorithm identifier for FrodoKEM-976-SHAKE KEM. */
-#define OQS_KEM_alg_frodokem_976_shake "FrodoKEM-976-SHAKE"
-/** Algorithm identifier for FrodoKEM-1344-AES KEM. */
-#define OQS_KEM_alg_frodokem_1344_aes "FrodoKEM-1344-AES"
-/** Algorithm identifier for FrodoKEM-1344-SHAKE KEM. */
-#define OQS_KEM_alg_frodokem_1344_shake "FrodoKEM-1344-SHAKE"
 /** Algorithm identifier for Kyber512 KEM. */
 #define OQS_KEM_alg_kyber_kyber512 "Kyber512"
 /** Algorithm identifier for Kyber768 KEM. */
@@ -77,6 +69,18 @@
 /** Algorithm identifier for NTRU-HRSS-701 KEM. */
 #define OQS_KEM_alg_ntru_hrss701 "NTRU-HRSS-701"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
+/** Algorithm identifier for FrodoKEM-640-AES KEM. */
+#define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
+/** Algorithm identifier for FrodoKEM-640-SHAKE KEM. */
+#define OQS_KEM_alg_frodokem_640_shake "FrodoKEM-640-SHAKE"
+/** Algorithm identifier for FrodoKEM-976-AES KEM. */
+#define OQS_KEM_alg_frodokem_976_aes "FrodoKEM-976-AES"
+/** Algorithm identifier for FrodoKEM-976-SHAKE KEM. */
+#define OQS_KEM_alg_frodokem_976_shake "FrodoKEM-976-SHAKE"
+/** Algorithm identifier for FrodoKEM-1344-AES KEM. */
+#define OQS_KEM_alg_frodokem_1344_aes "FrodoKEM-1344-AES"
+/** Algorithm identifier for FrodoKEM-1344-SHAKE KEM. */
+#define OQS_KEM_alg_frodokem_1344_shake "FrodoKEM-1344-SHAKE"
 /** Algorithm identifier for Sidh p503 KEM. */
 #define OQS_KEM_alg_sidh_p503 "Sidh-p503"
 /** Algorithm identifier for Sidh p751 KEM. */
@@ -90,8 +94,6 @@
 /** Number of algorithm identifiers above. */
 #define OQS_KEM_algs_length 29
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
-/** The default KEM. */
-#define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -255,12 +257,16 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_bike.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
-#include <oqs/kem_frodokem.h>
 #include <oqs/kem_kyber.h>
 #include <oqs/kem_newhope.h>
 #include <oqs/kem_ntru.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
+#include <oqs/kem_frodokem.h>
 #include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
+
+#if defined(__cplusplus)
+} // extern "C"
+#endif
 
 #endif // __OQS_KEM_H
