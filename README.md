@@ -195,6 +195,8 @@ The key encapsulation algorithm type `OQS_KEM_alg_default` and signature algorit
 
 	./configure KEM_DEFAULT=OQS_KEM_alg_frodokem_976_aes SIG_DEFAULT=OQS_SIG_alg_picnic_L1_FS
 
+For the Visual Studio build, default algorithms are manually specified in the file `VisualStudio/winconfig.h`.
+
 License
 -------
 
