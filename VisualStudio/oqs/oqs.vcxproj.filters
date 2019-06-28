@@ -306,15 +306,6 @@
     <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344shake.c">
       <Filter>frodokem</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\sike\kem_sike.c">
-      <Filter>sike</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\sike\P503\P503.c">
-      <Filter>sike</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\kem\sike\P751\P751.c">
-      <Filter>sike</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\common\rand_nist.c">
       <Filter>common</Filter>
     </ClCompile>
@@ -519,18 +510,45 @@
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h">
       <Filter>sike</Filter>
     </ClInclude>
+    <ClCompile Include="..\..\src\kem\sike\kem_sike.c">
+      <Filter>sike</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\src\kem\sike\P434\P434_internal.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P434\P434_api.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\src\kem\sike\P434\P434.c">
+      <Filter>sike</Filter>
+    </ClCompile>
     <ClInclude Include="..\..\src\kem\sike\P503\P503_internal.h">
       <Filter>sike</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\src\kem\sike\P503\P503.c">
+      <Filter>sike</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\src\kem\sike\P610\P610_internal.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\sike\P610\P610_api.h">
+      <Filter>sike</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\src\kem\sike\P610\P610.c">
+      <Filter>sike</Filter>
+    </ClCompile>
     <ClInclude Include="..\..\src\kem\sike\P751\P751_internal.h">
       <Filter>sike</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\kem\sike\P751\P751_api.h">
       <Filter>sike</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h">
+    <ClCompile Include="..\..\src\kem\sike\P751\P751.c">
       <Filter>sike</Filter>
-    </ClInclude>
+    </ClCompile>
     <ClInclude Include="..\..\src\sig\picnic\sig_picnic.h">
       <Filter>picnic</Filter>
     </ClInclude>
@@ -624,17 +642,6 @@
     <ClInclude Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-SnP.h">
       <Filter>picnic</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\kem\sike\P434\P434_api.h">
-      <Filter>sike</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kem\sike\P434\P434_internal.h">
-      <Filter>sike</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kem\sike\P610\P610_api.h">
-      <Filter>sike</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\kem\sike\P610\P610_internal.h">
-      <Filter>sike</Filter>
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h">
       <Filter>dilithium</Filter>
     </ClInclude>

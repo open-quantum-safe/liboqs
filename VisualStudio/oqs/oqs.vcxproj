@@ -43,14 +43,19 @@
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
+    <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
     <ClInclude Include="..\..\src\kem\sike\P434\P434_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P434\P434_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P434\P434.c" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
     <ClInclude Include="..\..\src\kem\sike\P610\P610_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P610\P610_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P610\P610.c" />
     <ClInclude Include="..\..\src\kem\sike\P751\P751_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P751\P751_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
     <ClInclude Include="..\..\src\oqs.h" />
     <ClInclude Include="..\..\src\common\common.h" />
     <ClInclude Include="..\..\src\common\rand.h" />
@@ -196,11 +201,6 @@
     <ClCompile Include="..\..\src\kem\frodokem\external\frodo976shake.c" />
     <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344aes.c" />
     <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344shake.c" />
-    <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
-    <ClCompile Include="..\..\src\kem\sike\P434\P434.c" />
-    <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
-    <ClCompile Include="..\..\src\kem\sike\P610\P610.c" />
-    <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\aligned_alloc.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\bitstream.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\cpu.c" />
@@ -412,7 +412,7 @@ copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
@@ -452,7 +452,7 @@ copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -492,7 +492,7 @@ copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -540,7 +540,7 @@ copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -587,7 +587,7 @@ copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
@@ -631,7 +631,7 @@ copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -675,7 +675,7 @@ copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -727,7 +727,7 @@ copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
