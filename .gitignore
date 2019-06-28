@@ -5,6 +5,7 @@ include
 
 # Object files
 *.o
+*.o.tmp
 *.ko
 *.obj
 *.elf

@@ -35,5 +35,8 @@
 #define OQS_ENABLE_SIG_dilithium_2
 #define OQS_ENABLE_SIG_dilithium_3
 #define OQS_ENABLE_SIG_dilithium_4
+#define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
+#define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
+
 
 #endif

@@ -94,8 +94,6 @@ extern "C" {
 /** Number of algorithm identifiers above. */
 #define OQS_KEM_algs_length 29
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
-/** The default KEM. */
-#define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
