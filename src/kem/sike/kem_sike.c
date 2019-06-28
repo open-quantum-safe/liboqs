@@ -245,7 +245,7 @@ OQS_KEM *OQS_KEM_sidh_p503_new() {
 	kem->method_name = OQS_KEM_alg_sidh_p503;
 	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/214cd086eea97f0c20b2bffbab897c42cd4ec976";
 
-	kem->claimed_nist_level = 1;
+	kem->claimed_nist_level = 2;
 	kem->ind_cca = false;
 
 	kem->length_public_key = OQS_KEM_sidh_p503_length_public_key;
@@ -325,7 +325,7 @@ OQS_KEM *OQS_KEM_sidh_p610_new() {
 	kem->method_name = OQS_KEM_alg_sidh_p610;
 	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/214cd086eea97f0c20b2bffbab897c42cd4ec976";
 
-	kem->claimed_nist_level = 1;
+	kem->claimed_nist_level = 3;
 	kem->ind_cca = false;
 
 	kem->length_public_key = OQS_KEM_sidh_p610_length_public_key;
@@ -405,7 +405,7 @@ OQS_KEM *OQS_KEM_sidh_p751_new() {
 	kem->method_name = OQS_KEM_alg_sidh_p751;
 	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/214cd086eea97f0c20b2bffbab897c42cd4ec976";
 
-	kem->claimed_nist_level = 3;
+	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
 
 	kem->length_public_key = OQS_KEM_sidh_p751_length_public_key;
