@@ -14,7 +14,7 @@
 
 #include "types.h"
 
-#ifdef USE_AVX512F_INSTRUCTIONS
+#ifdef HAVE_AVX512F_INSTRUCTIONS
 #define NUM_OF_BLOCKS_IN_MB 8ULL
 #else
 #define NUM_OF_BLOCKS_IN_MB 4ULL
@@ -87,7 +87,7 @@ typedef struct {
 //         ASM APIs
 ///////////////////////////////////////////////
 
-#ifdef USE_AVX512F_INSTRUCTIONS
+#ifdef HAVE_AVX512F_INSTRUCTIONS
 void sha384_512_multi_block_avx512(OUT sha_mb_ctx *ctx,
                                    IN const hash_desc *input,
                                    IN const uint32_t min_length);
@@ -99,7 +99,7 @@ _INLINE_ void sha_mb_avx(OUT sha_mb_ctx *ctx,
 	sha384_512_multi_block_avx512(ctx, input, min_length);
 }
 
-#else  // USE_AVX512F_INSTRUCTIONS
+#else  // HAVE_AVX512F_INSTRUCTIONS
 
 // This functions uses the secure buffer instead of writing data on the stack.
 // Later we can easily free its content which might include secrets
@@ -117,6 +117,6 @@ _INLINE_ void sha_mb_avx(OUT sha_mb_ctx *ctx,
 
 	free(secure_buf);
 }
-#endif // USE_AVX512F_INSTRUCTIONS
+#endif // HAVE_AVX512F_INSTRUCTIONS
 
 #endif //_SHA384_H_

@@ -88,7 +88,7 @@ matrix:
     - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package
     before_install:
     - brew update
-    - brew install libsodium doxygen graphviz
+    - brew install doxygen graphviz
     script:
     - .travis/all-tests.sh
   - os: osx

@@ -132,7 +132,7 @@ Error bad "BIKE_VER" value !
 
 #define R_DQWORDS DIVIDE_AND_CEIL(R_SIZE, 16)
 
-#ifdef USE_AVX512F_INSTRUCTIONS
+#ifdef HAVE_AVX512F_INSTRUCTIONS
 
 #define R_QDQWORDS_BITS (DIVIDE_AND_CEIL(R_BITS, ALL_ZMM_SIZE) * ALL_ZMM_SIZE)
     static_assert((R_BITS % ALL_ZMM_SIZE != 0), rbits_2048_err);
@@ -140,7 +140,7 @@ Error bad "BIKE_VER" value !
 #define N_QDQWORDS_BITS (R_QDQWORDS_BITS + R_BITS)
 static_assert((N_BITS % ALL_ZMM_SIZE != 0), nbits_2048_err);
 
-#else //USE_AVX512F_INSTRUCTIONS
+#else //HAVE_AVX512F_INSTRUCTIONS
 
 #define R_DDQWORDS_BITS (DIVIDE_AND_CEIL(R_BITS, ALL_YMM_SIZE) * ALL_YMM_SIZE)
 static_assert((R_BITS % ALL_YMM_SIZE != 0), rbits_512_err);

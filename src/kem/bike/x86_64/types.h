@@ -170,7 +170,7 @@ typedef ALIGN(16) struct syndrome_s {
 		struct {
 			red_r_t dup1;
 			red_r_t dup2;
-#ifdef USE_AVX512F_INSTRUCTIONS
+#ifdef HAVE_AVX512F_INSTRUCTIONS
 			uint8_t reserved[N_QDQWORDS_BITS - N_BITS];
 		} v;
 		uint8_t raw[N_QDQWORDS_BITS];

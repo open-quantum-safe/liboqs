@@ -17,7 +17,7 @@
 
 .text
 
-#ifdef USE_AVX512F_INSTRUCTIONS
+#ifdef HAVE_AVX512F_INSTRUCTIONS
 .hidden sha384_512_multi_block_avx512
 .globl  sha384_512_multi_block_avx512
 .type   sha384_512_multi_block_avx512,@function
@@ -379,7 +379,7 @@ END:
     ret
 .size   sha384_512_multi_block_avx512,.-sha384_512_multi_block_avx512
 
-# // USE_AVX512F_INSTRUCTIONS
+# // HAVE_AVX512F_INSTRUCTIONS
 #else
 
 .hidden sha384_512_multi_block_avx2

@@ -104,6 +104,7 @@ links:
 	$(MKDIR_P) include/oqs
 	cp -f src/oqs.h include/oqs
 	grep OQS_ config.h > src/oqsconfig.h
+	grep 'HAVE_.*_INSTRUCTIONS' config.h >> src/oqsconfig.h
 	grep USE_ config.h >> src/oqsconfig.h
 	cp -f src/oqsconfig.h include/oqs
 	cp -f src/common/common.h include/oqs

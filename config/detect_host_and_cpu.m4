@@ -72,6 +72,4 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
     )]
   )
 
-  #Check if further x86 optimizations are available (e.g., avx/avx2/bmi).
-  AX_CHECK_X86_FEATURES
 ])

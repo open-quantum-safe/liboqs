@@ -5,11 +5,11 @@ libpicnic_i_la_SOURCES = sig_picnic.c external/aligned_alloc.c external/bitstrea
 
 libpicnic_i_la_CFLAGS = -Iexternal -Iexternal/sha3 -Iexternal/sha3/opt64 -DPICNIC_STATIC -DOPTIMIZED_LINEAR_LAYER_EVALUATION -DREDUCED_ROUND_KEY_COMPUTATION -DWITH_LOWMC_128_128_20 -DWITH_LOWMC_192_192_30 -DWITH_LOWMC_256_256_38 -DWITH_OPT -DWITH_POPCNT
 
-if USE_AVX2_INSTRUCTIONS
+if HAVE_AVX2_INSTRUCTIONS
 libpicnic_i_la_CFLAGS += -DWITH_AVX2
 endif
 
-if USE_SSE2_INSTRUCTIONS
+if HAVE_SSE2_INSTRUCTIONS
 libpicnic_i_la_CFLAGS += -DWITH_SSE2
 endif
 

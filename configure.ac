@@ -42,8 +42,9 @@ AC_GENERAL_CHECKS
 # DOXYGEN SUPPORT
 CONFIG_DOXYGEN
 
-# Detect the host CPU and x86 features that are availble.
+# Detect the host CPU and x86 features that are available
 DETECT_HOST_AND_CPU
+AX_CHECK_X86_FEATURES
 
 # Configure the list of supported features
 CONFIG_FEATURES

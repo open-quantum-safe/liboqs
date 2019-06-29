@@ -14,7 +14,7 @@
 #define __ASM_FILE__
 #include "bike_defs.h"
 
-#ifdef USE_AVX512F_INSTRUCTIONS
+#ifdef HAVE_AVX512F_INSTRUCTIONS
 
 #ifdef CONSTANT_TIME
 
@@ -556,8 +556,8 @@ recompute:
 # //CONSTANT_TIME
 #endif
 
-# //USE_AVX512F_INSTRUCTIONS
-#elif defined(USE_AVX2_INSTRUCTIONS)
+# //HAVE_AVX512F_INSTRUCTIONS
+#elif defined(HAVE_AVX2_INSTRUCTIONS)
 
 #ifdef CONSTANT_TIME
 
@@ -1106,6 +1106,6 @@ recompute:
 # //CONSTANT_TIME
 #endif
 
-# //USE_AVX2_INSTRUCTIONS
+# //HAVE_AVX2_INSTRUCTIONS
 #endif
 
