@@ -54,10 +54,8 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
 
-  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
-                     [ENABLE_SIG_PICNIC], [src/sig/picnic])
-  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
-                     [ENABLE_SIG_QTESLA], [src/sig/qtesla])
+  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic], [ENABLE_SIG_PICNIC], [src/sig/picnic])
+  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla], [ENABLE_SIG_QTESLA], [src/sig/qtesla])
 ]
 )
 
@@ -154,6 +152,30 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_SIG_picnic2_L3_FS, 1, "Define to 1 when picnic2-L3-FS enabled")
     AC_DEFINE(OQS_ENABLE_SIG_picnic2_L5_FS, 1, "Define to 1 when picnic2-L5-FS enabled")
   ])
+
+  AC_ARG_VAR([KEM_DEFAULT], [KEM to set at compile-time as OQS_KEM_DEFAULT, e.g. OQS_KEM_alg_sike_p503])
+  AS_IF(
+      [test "x${KEM_DEFAULT}" = "x"],
+      [AC_DEFINE([OQS_KEM_DEFAULT], [OQS_KEM_alg_sike_p503], [Set default KEM to SIKEp503])],
+      [AC_DEFINE_UNQUOTED([OQS_KEM_DEFAULT], [$KEM_DEFAULT], [Set default KEM user-specified value])]
+  )
+
+  AC_ARG_VAR(SIG_DEFAULT, [Signature scheme to set at compile-time as OQS_SIG_DEFAULT, e.g. OQS_SIG_alg_dilithium_2])
+  AS_IF(
+      [test "x${SIG_DEFAULT}" = "x"],
+      [AC_DEFINE([OQS_SIG_DEFAULT], [OQS_SIG_alg_dilithium_2], [Set default signature scheme to DILITHIUM_2])],
+      [AC_DEFINE_UNQUOTED([OQS_SIG_DEFAULT], [$SIG_DEFAULT], [Set default signature scheme user-specified value])]
+  )
+
+  AC_ARG_VAR([AES], [AES implementation to use, e.g. openssl, aesni, c])
+  AM_COND_IF([USE_OPENSSL], [
+    AM_CONDITIONAL(USE_AES_OPENSSL, [test "x${AES}" = "xopenssl" -o "x${AES}" = "x"])
+    AM_CONDITIONAL(USE_AES_NI, [test "x${AES}" = "xaesni"])
+  ], [
+    AM_CONDITIONAL(USE_AES_OPENSSL, [false])
+    AM_CONDITIONAL(USE_AES_NI, [test "x${AES}" = "xaesni"])
+  ])
+
 
 ]
 )

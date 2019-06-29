@@ -85,28 +85,4 @@ AC_CONFIG_FILES([Makefile
                  ])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AC_CONFIG_FILES_END
 
-AC_ARG_VAR([KEM_DEFAULT], [KEM to set at compile-time as OQS_KEM_DEFAULT, e.g. OQS_KEM_alg_sike_p503])
-case "$KEM_DEFAULT" in
-#(
-"")
-  AC_DEFINE([OQS_KEM_DEFAULT], [OQS_KEM_alg_sike_p503], [Set default KEM to SIKEp503])
-;; 
-#(
-*)
-  AC_DEFINE_UNQUOTED([OQS_KEM_DEFAULT], [$KEM_DEFAULT], [Set default KEM user-specified value])
-;;
-esac
-
-AC_ARG_VAR(SIG_DEFAULT, [Signature scheme to set at compile-time as OQS_SIG_DEFAULT, e.g. OQS_SIG_alg_dilithium_2])
-case "$SIG_DEFAULT" in
-#(
-"")
-  AC_DEFINE([OQS_SIG_DEFAULT], [OQS_SIG_alg_dilithium_2], [Set default signature scheme to Dilithium2])
-;; 
-#(
-*)
-  AC_DEFINE_UNQUOTED([OQS_SIG_DEFAULT], [$SIG_DEFAULT], [Set default signature scheme user-specified value])
-;;
-esac
-
 AC_OUTPUT
