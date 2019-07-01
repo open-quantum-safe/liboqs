@@ -7,7 +7,7 @@ EXPORTS
 	OQS_KEM_encaps
 	OQS_KEM_decaps
 	OQS_KEM_free
-	{%- for family in kems %}{% for scheme in family['schemes'] %}
+	{%- for family in instructions['kems'] %}{% for scheme in family['schemes'] %}
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_decaps
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_encaps
 	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_keypair{% endfor %}{% endfor %}

@@ -1,4 +1,4 @@
-  -->{% for family in kems %}
+  -->{% for family in instructions['kems'] %}
     <ClInclude Include="..\..\src\kem\{{ family['name'] }}\kem_{{ family['name'] }}.h">
       <Filter>{{ family['name'] }}</Filter>
     </ClInclude>{% endfor %}

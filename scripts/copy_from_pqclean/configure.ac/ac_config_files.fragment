@@ -9,7 +9,7 @@ AC_CONFIG_FILES([Makefile
                  src/sig/qtesla/Makefile
                  src/sig/dilithium/Makefile
                  src/kem/bike/Makefile
-{%- for family in kems %}
+{%- for family in instructions['kems'] %}
                  src/kem/{{ family['name'] }}/Makefile{% endfor %}
                  src/kem/frodokem/Makefile
                  src/kem/sike/Makefile
