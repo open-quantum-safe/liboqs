@@ -5,4 +5,11 @@
     <Filter Include="{{ family['name'] }}\{{ scheme['scheme'] }}">
       <UniqueIdentifier>{{ '{'}}{{ scheme['visual_studio_guid'] }}{{ '}' }}</UniqueIdentifier>
     </Filter>{% endfor %}{% endfor %}
+{%- for family in instructions['sigs'] %}
+    <Filter Include="{{ family['name'] }}">
+      <UniqueIdentifier>{{ '{'}}{{ family['visual_studio_guid'] }}{{ '}' }}</UniqueIdentifier>
+    </Filter>{% for scheme in family['schemes'] %}
+    <Filter Include="{{ family['name'] }}\{{ scheme['scheme'] }}">
+      <UniqueIdentifier>{{ '{'}}{{ scheme['visual_studio_guid'] }}{{ '}' }}</UniqueIdentifier>
+    </Filter>{% endfor %}{% endfor %}
     

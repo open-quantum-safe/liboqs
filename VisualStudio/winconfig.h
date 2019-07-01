@@ -32,9 +32,11 @@
 #define OQS_ENABLE_SIG_picnic2_L1_FS
 #define OQS_ENABLE_SIG_picnic2_L3_FS
 #define OQS_ENABLE_SIG_picnic2_L5_FS
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_SIGS_START
 #define OQS_ENABLE_SIG_dilithium_2
 #define OQS_ENABLE_SIG_dilithium_3
 #define OQS_ENABLE_SIG_dilithium_4
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_SIGS_END
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
 #define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
 

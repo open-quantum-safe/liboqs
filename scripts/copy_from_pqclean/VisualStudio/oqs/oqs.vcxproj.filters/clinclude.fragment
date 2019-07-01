@@ -2,4 +2,8 @@
     <ClInclude Include="..\..\src\kem\{{ family['name'] }}\kem_{{ family['name'] }}.h">
       <Filter>{{ family['name'] }}</Filter>
     </ClInclude>{% endfor %}
+{%- for family in instructions['sigs'] %}
+    <ClInclude Include="..\..\src\sig\{{ family['name'] }}\sig_{{ family['name'] }}.h">
+      <Filter>{{ family['name'] }}</Filter>
+    </ClInclude>{% endfor %}
     
