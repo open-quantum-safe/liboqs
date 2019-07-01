@@ -4,7 +4,7 @@ set -e
 
 source $(dirname $0)/defs.sh
 
-REGEX=' T [_]?(OQS|PQCLEAN|picnic|Keccak|.*SIKEp503|.*SIDHp503|.*SIKEp751|.*SIDHp751|.*shake128|.*shake256|rand_bytes|cpu_supports|uint64_from_char_array|uint64_to_char_array|print_hex|ntt_double|rec|aligned_alloc|aligned_free)'
+REGEX=' T [_]?(OQS|PQCLEAN|picnic|Keccak|.*shake128|.*shake256|rand_bytes|cpu_supports|uint64_from_char_array|uint64_to_char_array|print_hex|ntt_double|rec|aligned_alloc|aligned_free)'
 
 # For catching errors, we have the first (otherwise superfluous) two lines below two make sure that the commands are being executed correctly
 NON_NAMESPACED=`nm -g .libs/liboqs.a`

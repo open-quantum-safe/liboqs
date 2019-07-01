@@ -118,6 +118,13 @@ static const unsigned int strat_Bob[MAX_Bob-1] = {
 #define EphemeralSecretAgreement_A    oqs_kem_sidh_p503_EphemeralSecretAgreement_A
 #define EphemeralSecretAgreement_B    oqs_kem_sidh_p503_EphemeralSecretAgreement_B
 
+// rename exported functions for OQS global namespace
+#define fpadd503 oqs_kem_sike_fpadd503
+#define fpsub503 oqs_kem_sike_fpsub503
+#define fpneg503 oqs_kem_sike_fpneg503
+#define fp2add503 oqs_kem_sike_fp2add503
+#define fp2sub503 oqs_kem_sike_fp2sub503
+
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"
 #include "AMD64/fp_x64_asm.S"
