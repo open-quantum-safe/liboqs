@@ -4,21 +4,21 @@ kems:
     visual_studio_guid: 8db00bac-a963-4875-b0a1-945bfed08037
     schemes:
       - 
-        scheme: kyber512
+        scheme: "512"
         pqclean_scheme: kyber512
         pretty_name_full: Kyber512
         implementation: clean
         sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
         visual_studio_guid: 80001dfa-c3e2-478f-8705-95bafd3f33d3
       - 
-        scheme: kyber768
+        scheme: "768"
         pqclean_scheme: kyber768
         pretty_name_full: Kyber768
         implementation: clean
         sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
         visual_studio_guid: 815e88b5-b5d7-43c6-b0c0-2a045a0c7aa6
       - 
-        scheme: kyber1024
+        scheme: "1024"
         pqclean_scheme: kyber1024
         pretty_name_full: Kyber1024
         implementation: clean
@@ -29,14 +29,14 @@ kems:
     visual_studio_guid: 21ea4719-b334-4625-8d3c-3f48de67f6f2
     schemes:
       - 
-        scheme: 512cca
+        scheme: "512cca"
         pqclean_scheme: newhope512cca
         pretty_name_full: NewHope-512-CCA
         implementation: clean
         sources: ['cpapke.c', 'kem.c', 'ntt.c', 'poly.c', 'precomp.c', 'reduce.c', 'verify.c']
         visual_studio_guid: fec2e0b7-ccf0-434e-a1ae-4b3bb767e915
       - 
-        scheme: 1024cca
+        scheme: "1024cca"
         pqclean_scheme: newhope1024cca
         pretty_name_full: NewHope-1024-CCA
         implementation: clean
@@ -80,21 +80,21 @@ sigs:
     visual_studio_guid: 2a035f7e-7c7e-4ca3-94ac-140aac970a73
     schemes:
       - 
-        scheme: 2
+        scheme: "2"
         pqclean_scheme: dilithium2
         pretty_name_full: DILITHIUM_2
         implementation: clean
         sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'symmetric.c']
         visual_studio_guid: 1f5e5dbe-8082-4756-9e90-c7d84198d682
       - 
-        scheme: 3
+        scheme: "3"
         pqclean_scheme: dilithium3
         pretty_name_full: DILITHIUM_3
         implementation: clean
         sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'symmetric.c']
         visual_studio_guid: 8a93b308-7b77-41e7-88a5-275994b62322
       - 
-        scheme: 4
+        scheme: "4"
         pqclean_scheme: dilithium4
         pretty_name_full: DILITHIUM_4
         implementation: clean

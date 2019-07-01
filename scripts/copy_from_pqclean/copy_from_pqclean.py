@@ -62,6 +62,8 @@ def load_instructions():
         for scheme in family['schemes']:
             scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_kem', scheme['pqclean_scheme'], 'META.yml')))
             scheme['metadata']['ind_cca'] = 'true'
+            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
+            scheme['scheme_c'] = scheme['scheme'].replace('-', '')
     for family in instructions['sigs']:
         family['type'] = 'sig'
         family['pqclean_type'] = 'sign'
@@ -69,6 +71,8 @@ def load_instructions():
         for scheme in family['schemes']:
             scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_sign', scheme['pqclean_scheme'], 'META.yml')))
             scheme['metadata']['euf_cma'] = 'true'
+            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
+            scheme['scheme_c'] = scheme['scheme'].replace('-', '')
     return instructions
 
 instructions = load_instructions()
@@ -105,7 +109,7 @@ for family in instructions['kems'] + instructions['sigs']:
 
     for scheme in family['schemes']:
         generator(
-            os.path.join('src', family['type'], family['name'], family['type'] + '_{}.c'.format(scheme['pqclean_scheme'])),
+            os.path.join('src', family['type'], family['name'], family['type'] + '_{}_{}.c'.format(family['name'], scheme['scheme_c'])),
             os.path.join('src', family['type'], 'family', family['type'] + '_scheme.c'),
             family,
             scheme,

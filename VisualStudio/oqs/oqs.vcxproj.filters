@@ -26,97 +26,97 @@
       <Filter>kem</Filter>
     </ClCompile>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber512.c">
-      <Filter>kyber\kyber512</Filter>
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_512.c">
+      <Filter>kyber\512</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\cbd.c">
-      <Filter>kyber\kyber512</Filter>
+      <Filter>kyber\512</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\indcpa.c">
-      <Filter>kyber\kyber512</Filter>
+      <Filter>kyber\512</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\kem.c">
-      <Filter>kyber\kyber512</Filter>
+      <Filter>kyber\512</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\ntt.c">
-      <Filter>kyber\kyber512</Filter>
+      <Filter>kyber\512</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\poly.c">
-      <Filter>kyber\kyber512</Filter>
+      <Filter>kyber\512</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\polyvec.c">
-      <Filter>kyber\kyber512</Filter>
+      <Filter>kyber\512</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\reduce.c">
-      <Filter>kyber\kyber512</Filter>
+      <Filter>kyber\512</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\verify.c">
-      <Filter>kyber\kyber512</Filter>
+      <Filter>kyber\512</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\symmetric-fips202.c">
-      <Filter>kyber\kyber512</Filter>
+      <Filter>kyber\512</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber768.c">
-      <Filter>kyber\kyber768</Filter>
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_768.c">
+      <Filter>kyber\768</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\cbd.c">
-      <Filter>kyber\kyber768</Filter>
+      <Filter>kyber\768</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\indcpa.c">
-      <Filter>kyber\kyber768</Filter>
+      <Filter>kyber\768</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\kem.c">
-      <Filter>kyber\kyber768</Filter>
+      <Filter>kyber\768</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\ntt.c">
-      <Filter>kyber\kyber768</Filter>
+      <Filter>kyber\768</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\poly.c">
-      <Filter>kyber\kyber768</Filter>
+      <Filter>kyber\768</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\polyvec.c">
-      <Filter>kyber\kyber768</Filter>
+      <Filter>kyber\768</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\reduce.c">
-      <Filter>kyber\kyber768</Filter>
+      <Filter>kyber\768</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\verify.c">
-      <Filter>kyber\kyber768</Filter>
+      <Filter>kyber\768</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\symmetric-fips202.c">
-      <Filter>kyber\kyber768</Filter>
+      <Filter>kyber\768</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber1024.c">
-      <Filter>kyber\kyber1024</Filter>
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_1024.c">
+      <Filter>kyber\1024</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\cbd.c">
-      <Filter>kyber\kyber1024</Filter>
+      <Filter>kyber\1024</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\indcpa.c">
-      <Filter>kyber\kyber1024</Filter>
+      <Filter>kyber\1024</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\kem.c">
-      <Filter>kyber\kyber1024</Filter>
+      <Filter>kyber\1024</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\ntt.c">
-      <Filter>kyber\kyber1024</Filter>
+      <Filter>kyber\1024</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\poly.c">
-      <Filter>kyber\kyber1024</Filter>
+      <Filter>kyber\1024</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\polyvec.c">
-      <Filter>kyber\kyber1024</Filter>
+      <Filter>kyber\1024</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\reduce.c">
-      <Filter>kyber\kyber1024</Filter>
+      <Filter>kyber\1024</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\verify.c">
-      <Filter>kyber\kyber1024</Filter>
+      <Filter>kyber\1024</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c">
-      <Filter>kyber\kyber1024</Filter>
+      <Filter>kyber\1024</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\newhope\kem_newhope512cca.c">
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope_512cca.c">
       <Filter>newhope\512cca</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\cpapke.c">
@@ -140,7 +140,7 @@
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\verify.c">
       <Filter>newhope\512cca</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\newhope\kem_newhope1024cca.c">
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope_1024cca.c">
       <Filter>newhope\1024cca</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\cpapke.c">
@@ -164,7 +164,7 @@
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\verify.c">
       <Filter>newhope\1024cca</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048509.c">
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hps2048509.c">
       <Filter>ntru\hps2048509</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\crypto_sort.c">
@@ -191,7 +191,7 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\verify.c">
       <Filter>ntru\hps2048509</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048677.c">
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hps2048677.c">
       <Filter>ntru\hps2048677</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\crypto_sort.c">
@@ -218,7 +218,7 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\verify.c">
       <Filter>ntru\hps2048677</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps4096821.c">
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hps4096821.c">
       <Filter>ntru\hps4096821</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\crypto_sort.c">
@@ -245,7 +245,7 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\verify.c">
       <Filter>ntru\hps4096821</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhrss701.c">
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hrss701.c">
       <Filter>ntru\hrss701</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\kem.c">
@@ -269,7 +269,7 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c">
       <Filter>ntru\hrss701</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium2.c">
+    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_2.c">
       <Filter>dilithium\2</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\sign.c">
@@ -296,7 +296,7 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\symmetric.c">
       <Filter>dilithium\2</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium3.c">
+    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_3.c">
       <Filter>dilithium\3</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\sign.c">
@@ -323,7 +323,7 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\symmetric.c">
       <Filter>dilithium\3</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium4.c">
+    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_4.c">
       <Filter>dilithium\4</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\sign.c">
@@ -663,13 +663,13 @@
     <Filter Include="kyber">
       <UniqueIdentifier>{8db00bac-a963-4875-b0a1-945bfed08037}</UniqueIdentifier>
     </Filter>
-    <Filter Include="kyber\kyber512">
+    <Filter Include="kyber\512">
       <UniqueIdentifier>{80001dfa-c3e2-478f-8705-95bafd3f33d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="kyber\kyber768">
+    <Filter Include="kyber\768">
       <UniqueIdentifier>{815e88b5-b5d7-43c6-b0c0-2a045a0c7aa6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="kyber\kyber1024">
+    <Filter Include="kyber\1024">
       <UniqueIdentifier>{fd3c9627-9462-409f-9cdb-0c6566370dbe}</UniqueIdentifier>
     </Filter>
     <Filter Include="newhope">

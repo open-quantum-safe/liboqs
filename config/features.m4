@@ -85,9 +85,9 @@ AC_DEFUN([CONFIG_FEATURES],
 
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AM_COND_IF_START
   AM_COND_IF([ENABLE_KEM_KYBER], [
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber512, 1, "Define to 1 when Kyber512 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber768, 1, "Define to 1 when Kyber768 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber1024, 1, "Define to 1 when Kyber1024 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_512, 1, "Define to 1 when Kyber512 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_768, 1, "Define to 1 when Kyber768 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_1024, 1, "Define to 1 when Kyber1024 enabled")
   ])
   AM_COND_IF([ENABLE_KEM_NEWHOPE], [
     AC_DEFINE(OQS_ENABLE_KEM_newhope_512cca, 1, "Define to 1 when NewHope-512-CCA enabled")
