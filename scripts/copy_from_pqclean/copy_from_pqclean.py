@@ -61,6 +61,12 @@ def load_instructions():
         for scheme in family['schemes']:
             scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_kem', scheme['pqclean_scheme'], 'META.yml')))
             scheme['metadata']['ind_cca'] = 'true'
+    for family in instructions['sigs']:
+        family['type'] = 'sig'
+        family['family'] = family['name']
+        for scheme in family['schemes']:
+            scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_sign', scheme['pqclean_scheme'], 'META.yml')))
+            scheme['metadata']['euf_cma'] = 'true'
     return instructions
 
 instructions = load_instructions()
@@ -109,6 +115,8 @@ replacer('configure.ac', instructions, '#####')
 replacer('Makefile.am', instructions, '#####')
 replacer('src/kem/kem.c', instructions, '/////')
 replacer('src/kem/kem.h', instructions, '/////')
+replacer('src/sig/sig.c', instructions, '/////')
+replacer('src/sig/sig.h', instructions, '/////')
 replacer('VisualStudio/winconfig.h', instructions, '/////')
 generator_all('VisualStudio/oqs/dll.def', instructions)
 unix2dos('VisualStudio/oqs/dll.def')

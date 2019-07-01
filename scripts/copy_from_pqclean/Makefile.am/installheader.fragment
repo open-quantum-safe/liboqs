@@ -12,7 +12,8 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
+{%- for family in instructions['sigs'] %}
+	src/sig/{{ family['name'] }}/sig_{{ family['name'] }}.h \{% endfor %}
 	src/sig/picnic/sig_picnic.h \
-	src/sig/qtesla/sig_qtesla.h \
-	src/sig/dilithium/sig_dilithium.h
+	src/sig/qtesla/sig_qtesla.h
 
