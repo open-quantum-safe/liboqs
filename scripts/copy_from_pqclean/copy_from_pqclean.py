@@ -57,12 +57,14 @@ def load_instructions():
     instructions = yaml.safe_load(instructions)
     for family in instructions['kems']:
         family['type'] = 'kem'
+        family['pqclean_type'] = 'kem'
         family['family'] = family['name']
         for scheme in family['schemes']:
             scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_kem', scheme['pqclean_scheme'], 'META.yml')))
             scheme['metadata']['ind_cca'] = 'true'
     for family in instructions['sigs']:
         family['type'] = 'sig'
+        family['pqclean_type'] = 'sign'
         family['family'] = family['name']
         for scheme in family['schemes']:
             scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_sign', scheme['pqclean_scheme'], 'META.yml')))
@@ -71,7 +73,7 @@ def load_instructions():
 
 instructions = load_instructions()
 
-for family in instructions['kems']:
+for family in instructions['kems'] + instructions['sigs']:
     for scheme in family['schemes']:
         try:
             os.mkdir(os.path.join('src', family['type'], family['name']))
@@ -81,7 +83,7 @@ for family in instructions['kems']:
         subprocess.run([
             'cp',
             '-pr',
-            os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_' + family['type'], scheme['pqclean_scheme'], scheme['implementation']),
+            os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_' + family['pqclean_type'], scheme['pqclean_scheme'], scheme['implementation']),
             os.path.join('src', family['type'], family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']))
         ])
         os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']), 'Makefile'))

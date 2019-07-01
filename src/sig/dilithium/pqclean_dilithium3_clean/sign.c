@@ -180,10 +180,6 @@ int PQCLEAN_DILITHIUM3_CLEAN_crypto_sign_signature(
     shake256_inc_finalize(&state);
     shake256_inc_squeeze(mu, CRHBYTES, &state);
 
-    for (i = 0; i < CRHBYTES; ++i) {
-        sig[CRYPTO_BYTES - CRHBYTES + i] = tr[i];
-    }
-
     crh(rhoprime, key, SEEDBYTES + CRHBYTES);
 
     /* Expand matrix and transform vectors */
