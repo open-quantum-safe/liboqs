@@ -76,8 +76,7 @@ EXPORTS
 	OQS_SIG_picnic2_L5_FS_keypair
 	OQS_SIG_picnic2_L5_FS_sign
 	OQS_SIG_picnic2_L5_FS_verify
-	OQS_SIG_dilithium_2_keypair
 	{%- for family in instructions['sigs'] %}{% for scheme in family['schemes'] %}
-	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_keypair
-	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_sign
-	OQS_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_verify{% endfor %}{% endfor %}
+	OQS_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_keypair
+	OQS_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_sign
+	OQS_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_verify{% endfor %}{% endfor %}
