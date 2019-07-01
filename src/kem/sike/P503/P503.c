@@ -4,6 +4,7 @@
 * Abstract: supersingular isogeny parameters and generation of functions for P503
 *********************************************************************************************/  
 
+#include "../oqs_namespace_sike.h"
 #include "P503_api.h" 
 #include "P503_internal.h"
 
@@ -117,13 +118,6 @@ static const unsigned int strat_Bob[MAX_Bob-1] = {
 #define EphemeralKeyGeneration_B      oqs_kem_sidh_p503_EphemeralKeyGeneration_B
 #define EphemeralSecretAgreement_A    oqs_kem_sidh_p503_EphemeralSecretAgreement_A
 #define EphemeralSecretAgreement_B    oqs_kem_sidh_p503_EphemeralSecretAgreement_B
-
-// rename exported functions for OQS global namespace
-#define fpadd503 oqs_kem_sike_fpadd503
-#define fpsub503 oqs_kem_sike_fpsub503
-#define fpneg503 oqs_kem_sike_fpneg503
-#define fp2add503 oqs_kem_sike_fp2add503
-#define fp2sub503 oqs_kem_sike_fp2sub503
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"

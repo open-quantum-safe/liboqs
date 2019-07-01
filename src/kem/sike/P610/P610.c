@@ -4,6 +4,7 @@
 * Abstract: supersingular isogeny parameters and generation of functions for P610
 *********************************************************************************************/  
 
+#include "../oqs_namespace_sike.h"
 #include "P610_api.h" 
 #include "P610_internal.h"
 
@@ -120,13 +121,6 @@ static const unsigned int strat_Bob[MAX_Bob-1] = {
 #define EphemeralKeyGeneration_B      oqs_kem_sidh_p610_EphemeralKeyGeneration_B
 #define EphemeralSecretAgreement_A    oqs_kem_sidh_p610_EphemeralSecretAgreement_A
 #define EphemeralSecretAgreement_B    oqs_kem_sidh_p610_EphemeralSecretAgreement_B
-
-// rename exported functions for OQS global namespace
-#define fpadd610 oqs_kem_sike_fpadd610
-#define fpsub610 oqs_kem_sike_fpsub610
-#define fpneg610 oqs_kem_sike_fpneg610
-#define fp2add610 oqs_kem_sike_fp2add610
-#define fp2sub610 oqs_kem_sike_fp2sub610
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"

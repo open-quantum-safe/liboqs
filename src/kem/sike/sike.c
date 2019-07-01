@@ -5,7 +5,7 @@
 *********************************************************************************************/ 
 
 #include <string.h>
-#include <oqs/rand.h>
+#include <oqs/common.h>
 #include <oqs/sha3.h>
 
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk)

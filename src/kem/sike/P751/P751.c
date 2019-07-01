@@ -4,6 +4,7 @@
 * Abstract: supersingular isogeny parameters and generation of functions for P751
 *********************************************************************************************/  
 
+#include "../oqs_namespace_sike.h"
 #include "P751_api.h" 
 #include "P751_internal.h"
 
@@ -122,13 +123,6 @@ static const unsigned int strat_Bob[MAX_Bob-1] = {
 #define EphemeralKeyGeneration_B      oqs_kem_sidh_p751_EphemeralKeyGeneration_B
 #define EphemeralSecretAgreement_A    oqs_kem_sidh_p751_EphemeralSecretAgreement_A
 #define EphemeralSecretAgreement_B    oqs_kem_sidh_p751_EphemeralSecretAgreement_B
-
-// rename exported functions for OQS global namespace
-#define fpadd751 oqs_kem_sike_fpadd751
-#define fpsub751 oqs_kem_sike_fpsub751
-#define fpneg751 oqs_kem_sike_fpneg751
-#define fp2add751 oqs_kem_sike_fp2add751
-#define fp2sub751 oqs_kem_sike_fp2sub751
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"
