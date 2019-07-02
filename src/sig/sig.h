@@ -55,16 +55,19 @@ extern "C" {
 #define OQS_SIG_alg_qTESLA_III_size "qTESLA_III_size"
 /** Algorithm identifier for qTESLA_III_speed */
 #define OQS_SIG_alg_qTESLA_III_speed "qTESLA_III_speed"
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for DILITHIUM_2 */
 #define OQS_SIG_alg_dilithium_2 "DILITHIUM_2"
 /** Algorithm identifier for DILITHIUM_3 */
 #define OQS_SIG_alg_dilithium_3 "DILITHIUM_3"
 /** Algorithm identifier for DILITHIUM_4 */
 #define OQS_SIG_alg_dilithium_4 "DILITHIUM_4"
-
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
 #define OQS_SIG_algs_length 16
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_new.
@@ -226,7 +229,9 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 
 #include <oqs/sig_picnic.h>
 #include <oqs/sig_qtesla.h>
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
 #include <oqs/sig_dilithium.h>
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 // EDIT-WHEN-ADDING-SIG
 
 #if defined(__cplusplus)

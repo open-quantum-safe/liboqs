@@ -1,5 +1,0 @@
-{% for family in kems %}
-if ENABLE_KEM_{{ family['name']|upper }}
-liboqs_la_LIBADD += src/kem/{{ family['name'] }}/libkem{{ family['name'] }}.la
-endif{% endfor %}
-

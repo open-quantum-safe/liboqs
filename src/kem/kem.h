@@ -51,11 +51,11 @@ extern "C" {
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for Kyber512 KEM. */
-#define OQS_KEM_alg_kyber_kyber512 "Kyber512"
+#define OQS_KEM_alg_kyber_512 "Kyber512"
 /** Algorithm identifier for Kyber768 KEM. */
-#define OQS_KEM_alg_kyber_kyber768 "Kyber768"
+#define OQS_KEM_alg_kyber_768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
-#define OQS_KEM_alg_kyber_kyber1024 "Kyber1024"
+#define OQS_KEM_alg_kyber_1024 "Kyber1024"
 /** Algorithm identifier for NewHope-512-CCA KEM. */
 #define OQS_KEM_alg_newhope_512cca "NewHope-512-CCA"
 /** Algorithm identifier for NewHope-1024-CCA KEM. */
