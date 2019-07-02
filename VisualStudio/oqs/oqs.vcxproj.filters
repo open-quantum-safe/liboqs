@@ -350,6 +350,30 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\symmetric.c">
       <Filter>dilithium\4</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sig\mqdss\sig_mqdss_31_48.c">
+      <Filter>mqdss\31_48</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\gf31.c">
+      <Filter>mqdss\31_48</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\mq.c">
+      <Filter>mqdss\31_48</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\sign.c">
+      <Filter>mqdss\31_48</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\mqdss\sig_mqdss_31_64.c">
+      <Filter>mqdss\31_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\gf31.c">
+      <Filter>mqdss\31_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\mq.c">
+      <Filter>mqdss\31_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\sign.c">
+      <Filter>mqdss\31_64</Filter>
+    </ClCompile>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c">
       <Filter>frodokem</Filter>
@@ -511,6 +535,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h">
       <Filter>dilithium</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h">
+      <Filter>mqdss</Filter>
     </ClInclude>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h">
@@ -725,6 +752,15 @@
     </Filter>
     <Filter Include="dilithium\4">
       <UniqueIdentifier>{fb8c21f2-891b-46fb-8a45-17f69dfa31bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mqdss">
+      <UniqueIdentifier>{ac98bd77-73db-4889-b91f-75dc49769226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mqdss\31_48">
+      <UniqueIdentifier>{f640e0c6-bcdd-4964-951b-5af45229036f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="mqdss\31_64">
+      <UniqueIdentifier>{cb56a63a-35d6-4825-92fa-07094d96d063}</UniqueIdentifier>
     </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_END -->
   </ItemGroup>
