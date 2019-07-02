@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#if defined(HAVE_AVX_INSTRUCTIONS)
+#if defined(HAVE_AVX2_INSTRUCTIONS)
     #include <immintrin.h>
 #endif
 
@@ -123,7 +123,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             }
         } 
 
-#ifndef HAVE_AVX_INSTRUCTIONS
+#ifndef HAVE_AVX2_INSTRUCTIONS
         for (i = 0; i < PARAMS_NBAR; i++) {
             for (k = 0; k < PARAMS_STRIPE_STEP; k += PARAMS_PARALLEL) {
                 uint16_t sum[PARAMS_PARALLEL] = {0};
@@ -199,7 +199,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             a_cols[i] = LE_TO_UINT16(a_cols[i]);
         }
 
-#ifndef HAVE_AVX_INSTRUCTIONS
+#ifndef HAVE_AVX2_INSTRUCTIONS
         for (i = 0; i < PARAMS_NBAR; i++) {
             uint16_t sum[PARAMS_N] = {0};
             for (j = 0; j < 4; j++) {
