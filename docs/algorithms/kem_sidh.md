@@ -25,7 +25,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/Microsoft/PQCrypto-SIDH
-- **Implementation version:** v3.1 (https://github.com/microsoft/PQCrypto-SIDH/tree/214cd086eea97f0c20b2bffbab897c42cd4ec976)
+- **Implementation version:** v3.1 (https://github.com/microsoft/PQCrypto-SIDH/tree/5ca332aca646b4c5a1f25ca712083b95f0acaf27)
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes

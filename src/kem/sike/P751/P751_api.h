@@ -40,7 +40,7 @@ int OQS_KEM_sike_p751_decaps(unsigned char *ss, const unsigned char *ct, const u
 // Elements over GF(p751) are encoded in 94 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
 // Elements (a+b*i) over GF(p751^2), where a and b are defined over GF(p751), are encoded as {a, b}, with a in the lowest memory portion.
 //
-// Private keys sk consist of the concatenation of a 32-byte random value, a value in the range [0, 2^378-1] and the public key pk. In the SIKE API,
+// Private keys sk consist of the concatenation of a 32-byte random value, a value in the range [0, 2^372-1] and the public key pk. In the SIKE API,
 // private keys are encoded in 644 octets in little endian format.
 // Public keys pk consist of 3 elements in GF(p751^2). In the SIKE API, pk is encoded in 564 octets.
 // Ciphertexts ct consist of the concatenation of a public key value and a 32-byte value. In the SIKE API, ct is encoded in 564 + 32 = 596 octets.
@@ -48,7 +48,8 @@ int OQS_KEM_sike_p751_decaps(unsigned char *ss, const unsigned char *ct, const u
 
 /*********************** Ephemeral key exchange API ***********************/
 
-#define SIDH_SECRETKEYBYTES 48
+#define SIDH_SECRETKEYBYTES_A 47
+#define SIDH_SECRETKEYBYTES_B 48
 #define SIDH_PUBLICKEYBYTES 564
 #define SIDH_BYTES 188
 
@@ -94,8 +95,8 @@ int oqs_kem_sidh_p751_EphemeralSecretAgreement_B(const unsigned char *PrivateKey
 // Elements over GF(p751) are encoded in 94 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
 // Elements (a+b*i) over GF(p751^2), where a and b are defined over GF(p751), are encoded as {a, b}, with a in the lowest memory portion.
 //
-// Private keys PrivateKeyA and PrivateKeyB can have values in the range [0, 2^372-1] and [0, 2^378-1], resp. In the SIDH API, private keys are encoded
-// in 48 octets in little endian format.
+// Private keys PrivateKeyA and PrivateKeyB can have values in the range [0, 2^372-1] and [0, 2^Floor(Log(2,3^239)) - 1], resp. In the SIDH API,
+// Alice's and Bob's private keys are encoded in 47 and 48 octets, resp., in little endian format.
 // Public keys PublicKeyA and PublicKeyB consist of 3 elements in GF(p751^2). In the SIDH API, they are encoded in 564 octets.
 // Shared keys SharedSecretA and SharedSecretB consist of one element in GF(p751^2). In the SIDH API, they are encoded in 188 octets.
 

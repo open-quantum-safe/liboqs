@@ -48,7 +48,8 @@ int OQS_KEM_sike_p434_decaps(unsigned char *ss, const unsigned char *ct, const u
 
 /*********************** Ephemeral key exchange API ***********************/
 
-#define SIDH_SECRETKEYBYTES 28
+#define SIDH_SECRETKEYBYTES_A 27
+#define SIDH_SECRETKEYBYTES_B 28
 #define SIDH_PUBLICKEYBYTES 330
 #define SIDH_BYTES 110
 
@@ -65,7 +66,7 @@ void oqs_kem_sidh_p434_random_mod_order_A(unsigned char *random_digits);
 void oqs_kem_sidh_p434_random_mod_order_B(unsigned char *random_digits);
 
 // Alice's ephemeral public key generation
-// Input:  a private key PrivateKeyA in the range [0, 2^216 - 1], stored in 28 bytes.
+// Input:  a private key PrivateKeyA in the range [0, 2^216 - 1], stored in 27 bytes.
 // Output: the public key PublicKeyA consisting of 3 GF(p434^2) elements encoded in 330 bytes.
 int oqs_kem_sidh_p434_EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA);
 
@@ -77,7 +78,7 @@ int oqs_kem_sidh_p434_EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB,
 
 // Alice's ephemeral shared secret computation
 // It produces a shared secret key SharedSecretA using her secret key PrivateKeyA and Bob's public key PublicKeyB
-// Inputs: Alice's PrivateKeyA is an integer in the range [0, 2^216 - 1], stored in 28 bytes.
+// Inputs: Alice's PrivateKeyA is an integer in the range [0, 2^216 - 1], stored in 27 bytes.
 //         Bob's PublicKeyB consists of 3 GF(p434^2) elements encoded in 330 bytes.
 // Output: a shared secret SharedSecretA that consists of one element in GF(p434^2) encoded in 110 bytes.
 int oqs_kem_sidh_p434_EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned char *PublicKeyB, unsigned char *SharedSecretA);
@@ -94,8 +95,8 @@ int oqs_kem_sidh_p434_EphemeralSecretAgreement_B(const unsigned char *PrivateKey
 // Elements over GF(p434) are encoded in 55 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
 // Elements (a+b*i) over GF(p434^2), where a and b are defined over GF(p434), are encoded as {a, b}, with a in the lowest memory portion.
 //
-// Private keys PrivateKeyA and PrivateKeyB can have values in the range [0, 2^216-1] and [0, 2^217-1], resp. In the SIDH API, private keys are encoded
-// in 28 octets in little endian format.
+// Private keys PrivateKeyA and PrivateKeyB can have values in the range [0, 2^216-1] and [0, 2^Floor(Log(2,3^137)) - 1], resp. In the SIDH API,
+// Alice's and Bob's private keys are encoded in 27 and 28 octets, resp., in little endian format.
 // Public keys PublicKeyA and PublicKeyB consist of 3 elements in GF(p434^2). In the SIDH API, they are encoded in 330 octets.
 // Shared keys SharedSecretA and SharedSecretB consist of one element in GF(p434^2). In the SIDH API, they are encoded in 110 octets.
 

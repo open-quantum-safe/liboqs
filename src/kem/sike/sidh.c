@@ -49,20 +49,14 @@ static void fp2_decode(const unsigned char *enc, f2elm_t x) { // Parse byte sequ
 
 void random_mod_order_A(unsigned char *random_digits) { // Generation of Alice's secret key
 	                                                    // Outputs random value in [0, 2^eA - 1]
-	unsigned long long nbytes = NBITS_TO_NBYTES(OALICE_BITS);
-
-	clear_words((void *) random_digits, MAXWORDS_ORDER);
-	OQS_randombytes(random_digits, nbytes);
-	random_digits[nbytes - 1] &= MASK_ALICE; // Masking last byte
+	OQS_randombytes(random_digits, SECRETKEY_A_BYTES);
+	random_digits[SECRETKEY_A_BYTES - 1] &= MASK_ALICE; // Masking last byte
 }
 
 void random_mod_order_B(unsigned char *random_digits) { // Generation of Bob's secret key
 	                                                    // Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]
-	unsigned long long nbytes = NBITS_TO_NBYTES(OBOB_BITS - 1);
-
-	clear_words((void *) random_digits, MAXWORDS_ORDER);
-	OQS_randombytes(random_digits, nbytes);
-	random_digits[nbytes - 1] &= MASK_BOB; // Masking last byte
+	OQS_randombytes(random_digits, SECRETKEY_B_BYTES);
+	random_digits[SECRETKEY_B_BYTES - 1] &= MASK_BOB; // Masking last byte
 }
 
 int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA) { // Alice's ephemeral public key generation

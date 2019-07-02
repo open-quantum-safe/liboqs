@@ -48,7 +48,8 @@ int OQS_KEM_sike_p610_decaps(unsigned char *ss, const unsigned char *ct, const u
 
 /*********************** Ephemeral key exchange API ***********************/
 
-#define SIDH_SECRETKEYBYTES 38
+#define SIDH_SECRETKEYBYTES_A 39
+#define SIDH_SECRETKEYBYTES_B 38
 #define SIDH_PUBLICKEYBYTES 462
 #define SIDH_BYTES 154
 
@@ -94,8 +95,8 @@ int oqs_kem_sidh_p610_EphemeralSecretAgreement_B(const unsigned char *PrivateKey
 // Elements over GF(p610) are encoded in 77 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
 // Elements (a+b*i) over GF(p610^2), where a and b are defined over GF(p610), are encoded as {a, b}, with a in the lowest memory portion.
 //
-// Private keys PrivateKeyA and PrivateKeyB can have values in the range [0, 2^305-1]. In the SIDH API, private keys are encoded
-// in 38 octets in little endian format.
+// Private keys PrivateKeyA and PrivateKeyB can have values in the range [0, 2^305-1] and [0, 2^Floor(Log(2,3^192)) - 1], resp. In the SIDH API,
+// Alice's and Bob's private keys are encoded in 39 and 38 octets, resp., in little endian format.
 // Public keys PublicKeyA and PublicKeyB consist of 3 elements in GF(p610^2). In the SIDH API, they are encoded in 462 octets.
 // Shared keys SharedSecretA and SharedSecretB consist of one element in GF(p610^2). In the SIDH API, they are encoded in 154 octets.
 

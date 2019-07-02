@@ -33,7 +33,6 @@
 #define NWORDS_ORDER ((NBITS_ORDER + RADIX - 1) / RADIX) // Number of words of oA and oB, where oA and oB are the subgroup orders of Alice and Bob, resp.
 #define NWORDS64_ORDER ((NBITS_ORDER + 63) / 64)         // Number of 64-bit words of a 256-bit element
 #define MAXBITS_ORDER NBITS_ORDER
-#define MAXWORDS_ORDER ((MAXBITS_ORDER + RADIX - 1) / RADIX) // Max. number of words to represent elements in [1, oA-1] or [1, oB].
 #define ALICE 0
 #define BOB 1
 #define OALICE_BITS 250
@@ -50,8 +49,8 @@
 #define MAX_Alice 125
 #define MAX_Bob 159
 #define MSG_BYTES 24
-#define SECRETKEY_A_BYTES (OALICE_BITS + 7) / 8
-#define SECRETKEY_B_BYTES (OBOB_BITS - 1 + 7) / 8
+#define SECRETKEY_A_BYTES ((OALICE_BITS + 7) / 8)
+#define SECRETKEY_B_BYTES ((OBOB_BITS - 1 + 7) / 8)
 #define FP2_ENCODED_BYTES 2 * ((NBITS_FIELD + 7) / 8)
 
 // SIDH's basic element definitions and point representations

@@ -44,9 +44,9 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 	EphemeralKeyGeneration_A(ephemeralsk, ct);
 	EphemeralSecretAgreement_A(ephemeralsk, pk, jinvariant);
 	OQS_SHA3_shake256(h, MSG_BYTES, jinvariant, FP2_ENCODED_BYTES);
-	for (int i = 0; i < MSG_BYTES; i++)
+	for (int i = 0; i < MSG_BYTES; i++) {
 		ct[i + CRYPTO_PUBLICKEYBYTES] = temp[i] ^ h[i];
-
+	}
 	// Generate shared secret ss <- H(m||ct)
 	memcpy(&temp[MSG_BYTES], ct, CRYPTO_CIPHERTEXTBYTES);
 	OQS_SHA3_shake256(ss, CRYPTO_BYTES, temp, CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
@@ -67,9 +67,9 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 	// Decrypt
 	EphemeralSecretAgreement_B(sk + MSG_BYTES, ct, jinvariant_);
 	OQS_SHA3_shake256(h_, MSG_BYTES, jinvariant_, FP2_ENCODED_BYTES);
-	for (int i = 0; i < MSG_BYTES; i++)
+	for (int i = 0; i < MSG_BYTES; i++) {
 		temp[i] = ct[i + CRYPTO_PUBLICKEYBYTES] ^ h_[i];
-
+	}
 	// Generate ephemeralsk_ <- G(m||pk) mod oA
 	memcpy(&temp[MSG_BYTES], &sk[MSG_BYTES + SECRETKEY_B_BYTES], CRYPTO_PUBLICKEYBYTES);
 	OQS_SHA3_shake256(ephemeralsk_, SECRETKEY_A_BYTES, temp, CRYPTO_PUBLICKEYBYTES + MSG_BYTES);
