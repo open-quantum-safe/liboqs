@@ -47,6 +47,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-kyber], [kem_kyber], [ENABLE_KEM_KYBER], [src/kem/kyber])
   ARG_DISBL_SET_WRAP([kem-newhope], [kem_newhope], [ENABLE_KEM_NEWHOPE], [src/kem/newhope])
   ARG_DISBL_SET_WRAP([kem-ntru], [kem_ntru], [ENABLE_KEM_NTRU], [src/kem/ntru])
+  ARG_DISBL_SET_WRAP([sig-dilithium], [sig_dilithium], [ENABLE_SIG_DILITHIUM], [src/sig/dilithium])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
@@ -55,8 +56,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
                      [ENABLE_SIG_PICNIC], [src/sig/picnic])
   ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
                      [ENABLE_SIG_QTESLA], [src/sig/qtesla])
-  ARG_DISBL_SET_WRAP([sig-dilithium], [sig_dilithium],
-                     [ENABLE_SIG_DILITHIUM], [src/sig/dilithium])                    
 ]
 )
 
@@ -86,9 +85,9 @@ AC_DEFUN([CONFIG_FEATURES],
 
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AM_COND_IF_START
   AM_COND_IF([ENABLE_KEM_KYBER], [
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber512, 1, "Define to 1 when Kyber512 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber768, 1, "Define to 1 when Kyber768 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_kyber_kyber1024, 1, "Define to 1 when Kyber1024 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_512, 1, "Define to 1 when Kyber512 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_768, 1, "Define to 1 when Kyber768 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_1024, 1, "Define to 1 when Kyber1024 enabled")
   ])
   AM_COND_IF([ENABLE_KEM_NEWHOPE], [
     AC_DEFINE(OQS_ENABLE_KEM_newhope_512cca, 1, "Define to 1 when NewHope-512-CCA enabled")
@@ -99,6 +98,11 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hps2048677, 1, "Define to 1 when NTRU-HPS-2048-677 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hps4096821, 1, "Define to 1 when NTRU-HPS-4096-821 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hrss701, 1, "Define to 1 when NTRU-HRSS-701 enabled")
+  ])
+  AM_COND_IF([ENABLE_SIG_DILITHIUM], [
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_2, 1, "Define to 1 when DILITHIUM_2 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_3, 1, "Define to 1 when DILITHIUM_3 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_dilithium_4, 1, "Define to 1 when DILITHIUM_4 enabled")
   ])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AM_COND_IF_END
 
@@ -140,10 +144,5 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_SIG_picnic2_L5_FS, 1, "Define to 1 when picnic2-L5-FS enabled")
   ])
 
-  AM_COND_IF([ENABLE_SIG_DILITHIUM], [
-    AC_DEFINE(OQS_ENABLE_SIG_dilithium_2, 1, "Define to 1 when DILITHIUM_2 enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_dilithium_3, 1, "Define to 1 when DILITHIUM_3 enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_dilithium_4, 1, "Define to 1 when DILITHIUM_4 enabled")
-  ])
 ]
 )

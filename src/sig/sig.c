@@ -12,21 +12,11 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-SIG
 	const char *a[OQS_SIG_algs_length] = {
 	    OQS_SIG_alg_default,
-	    OQS_SIG_alg_picnic_L1_FS,
-	    OQS_SIG_alg_picnic_L1_UR,
-	    OQS_SIG_alg_picnic_L3_FS,
-	    OQS_SIG_alg_picnic_L3_UR,
-	    OQS_SIG_alg_picnic_L5_FS,
-	    OQS_SIG_alg_picnic_L5_UR,
-	    OQS_SIG_alg_picnic2_L1_FS,
-	    OQS_SIG_alg_picnic2_L3_FS,
-	    OQS_SIG_alg_picnic2_L5_FS,
-	    OQS_SIG_alg_qTESLA_I,
-	    OQS_SIG_alg_qTESLA_III_size,
-	    OQS_SIG_alg_qTESLA_III_speed,
-	    OQS_SIG_alg_dilithium_2,
-	    OQS_SIG_alg_dilithium_3,
-	    OQS_SIG_alg_dilithium_4};
+	    ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
+	    OQS_SIG_alg_dilithium_2, OQS_SIG_alg_dilithium_3, OQS_SIG_alg_dilithium_4,
+	    ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
+	    OQS_SIG_alg_picnic_L1_FS, OQS_SIG_alg_picnic_L1_UR, OQS_SIG_alg_picnic_L3_FS, OQS_SIG_alg_picnic_L3_UR, OQS_SIG_alg_picnic_L5_FS, OQS_SIG_alg_picnic_L5_UR, OQS_SIG_alg_picnic2_L1_FS, OQS_SIG_alg_picnic2_L3_FS, OQS_SIG_alg_picnic2_L5_FS,
+	    OQS_SIG_alg_qTESLA_I, OQS_SIG_alg_qTESLA_III_size, OQS_SIG_alg_qTESLA_III_speed};
 	if (i >= OQS_SIG_algs_length) {
 		return NULL;
 	} else {
@@ -44,6 +34,26 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	}
 	if (0 == strcasecmp(method_name, OQS_SIG_alg_default)) {
 		return OQS_SIG_new(OQS_SIG_DEFAULT);
+		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_NEW_CASE_START
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_2)) {
+#ifdef OQS_ENABLE_SIG_dilithium_2
+		return OQS_SIG_dilithium_2_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_3)) {
+#ifdef OQS_ENABLE_SIG_dilithium_3
+		return OQS_SIG_dilithium_3_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_4)) {
+#ifdef OQS_ENABLE_SIG_dilithium_4
+		return OQS_SIG_dilithium_4_new();
+#else
+		return NULL;
+#endif
+		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_NEW_CASE_END
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L1_FS)) {
 #ifdef OQS_ENABLE_SIG_picnic_L1_FS
 		return OQS_SIG_picnic_L1_FS_new();
@@ -113,24 +123,6 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTESLA_III_speed)) {
 #ifdef OQS_ENABLE_SIG_qTESLA_III_speed
 		return OQS_SIG_qTESLA_III_speed_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_2)) {
-#ifdef OQS_ENABLE_SIG_dilithium_2
-		return OQS_SIG_dilithium_2_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_3)) {
-#ifdef OQS_ENABLE_SIG_dilithium_3
-		return OQS_SIG_dilithium_3_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_4)) {
-#ifdef OQS_ENABLE_SIG_dilithium_4
-		return OQS_SIG_dilithium_4_new();
 #else
 		return NULL;
 #endif

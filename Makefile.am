@@ -26,14 +26,11 @@ endif
 if ENABLE_SIG_QTESLA
 liboqs_la_LIBADD += src/sig/qtesla/libqtesla.la
 endif
-if ENABLE_SIG_DILITHIUM
-liboqs_la_LIBADD += src/sig/dilithium/libdilithium.la
-endif
 
 if ENABLE_KEM_BIKE
 liboqs_la_LIBADD += src/kem/bike/libkembike.la
 endif
-##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_IF_ENABLE_KEM_START
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_IF_ENABLE_START
 if ENABLE_KEM_KYBER
 liboqs_la_LIBADD += src/kem/kyber/libkemkyber.la
 endif
@@ -43,7 +40,11 @@ endif
 if ENABLE_KEM_NTRU
 liboqs_la_LIBADD += src/kem/ntru/libkemntru.la
 endif
-##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_IF_ENABLE_KEM_END
+
+if ENABLE_SIG_DILITHIUM
+liboqs_la_LIBADD += src/sig/dilithium/libsigdilithium.la
+endif
+##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_IF_ENABLE_END
 if ENABLE_KEM_FRODOKEM
 liboqs_la_LIBADD += src/kem/frodokem/libkemfrodokem.la
 endif
@@ -71,9 +72,9 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
+	src/sig/dilithium/sig_dilithium.h \
 	src/sig/picnic/sig_picnic.h \
-	src/sig/qtesla/sig_qtesla.h \
-	src/sig/dilithium/sig_dilithium.h
+	src/sig/qtesla/sig_qtesla.h
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_END
 
 
@@ -107,13 +108,13 @@ links:
 	cp -f src/kem/kyber/kem_kyber.h include/oqs
 	cp -f src/kem/newhope/kem_newhope.h include/oqs
 	cp -f src/kem/ntru/kem_ntru.h include/oqs
+	cp -f src/sig/dilithium/sig_dilithium.h include/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_END
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
 	cp -f src/kem/sike/kem_sike.h include/oqs
 	cp -f src/sig/sig.h include/oqs
 	cp -f src/sig/picnic/sig_picnic.h include/oqs
 	cp -f src/sig/qtesla/sig_qtesla.h include/oqs
-	cp -f src/sig/dilithium/sig_dilithium.h include/oqs
 
 clean-local:
 	rm -rf include

@@ -1,0 +1,8 @@
+{% for family in instructions['sigs'] %}{% for scheme in family['schemes'] %}
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_{{ family['name'] }}_{{ scheme['scheme'] }})) {
+#ifdef OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}
+		return OQS_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_new();
+#else
+		return NULL;
+#endif{% endfor %}{% endfor %}
+		

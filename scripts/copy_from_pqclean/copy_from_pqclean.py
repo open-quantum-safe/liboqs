@@ -31,12 +31,12 @@ def generator(destination_filename, template_filename, family, scheme_desired):
         assert(len(scheme['metadata']['implementations']) == 1)
     file_put_contents(destination_filename, jinja2.Template(template).render(f))
 
-def generator_all(filename, kems):
+def generator_all(filename, instructions):
     template = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', filename))
-    contents = jinja2.Template(template).render({'kems': kems})
+    contents = jinja2.Template(template).render({'instructions': instructions})
     file_put_contents(filename, contents)
 
-def replacer(filename, kems, delimiter):
+def replacer(filename, instructions, delimiter):
     fragments = glob.glob(os.path.join('scripts', 'copy_from_pqclean', filename, '*.fragment'))
     contents = file_get_contents(filename)
     for fragment in fragments:
@@ -46,72 +46,87 @@ def replacer(filename, kems, delimiter):
         identifier_end = '{} OQS_COPY_FROM_PQCLEAN_FRAGMENT_{}_END'.format(delimiter, identifier.upper())
         preamble = contents[:contents.find(identifier_start)]
         postamble = contents[contents.find(identifier_end):]
-        contents = preamble + identifier_start + jinja2.Template(template).render({'kems': kems}) + postamble
+        contents = preamble + identifier_start + jinja2.Template(template).render({'instructions': instructions}) + postamble
     file_put_contents(filename, contents)
 
 def unix2dos(filename):
     subprocess.run(['unix2dos', filename])
 
-def load_kems():
+def load_instructions():
     instructions = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', 'copy_from_pqclean.yml'), encoding='utf-8')
     instructions = yaml.safe_load(instructions)
-    kems = instructions['kems']
-    for family in kems:
+    for family in instructions['kems']:
+        family['type'] = 'kem'
+        family['pqclean_type'] = 'kem'
         family['family'] = family['name']
         for scheme in family['schemes']:
             scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_kem', scheme['pqclean_scheme'], 'META.yml')))
             scheme['metadata']['ind_cca'] = 'true'
-    return kems
+            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
+            scheme['scheme_c'] = scheme['scheme'].replace('-', '')
+    for family in instructions['sigs']:
+        family['type'] = 'sig'
+        family['pqclean_type'] = 'sign'
+        family['family'] = family['name']
+        for scheme in family['schemes']:
+            scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_sign', scheme['pqclean_scheme'], 'META.yml')))
+            scheme['metadata']['euf_cma'] = 'true'
+            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
+            scheme['scheme_c'] = scheme['scheme'].replace('-', '')
+    return instructions
 
-kems = load_kems()
+instructions = load_instructions()
 
-for family in kems:
+for family in instructions['kems'] + instructions['sigs']:
     for scheme in family['schemes']:
         try:
-            os.mkdir(os.path.join('src', 'kem', family['name']))
+            os.mkdir(os.path.join('src', family['type'], family['name']))
         except:
             pass
-        shutil.rmtree(os.path.join('src', 'kem', family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme'])), ignore_errors=True)
+        shutil.rmtree(os.path.join('src', family['type'], family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme'])), ignore_errors=True)
         subprocess.run([
             'cp',
             '-pr',
-            os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_kem', scheme['pqclean_scheme'], scheme['implementation']),
-            os.path.join('src', 'kem', family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']))
+            os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_' + family['pqclean_type'], scheme['pqclean_scheme'], scheme['implementation']),
+            os.path.join('src', family['type'], family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']))
         ])
-        os.remove(os.path.join('src', 'kem', family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']), 'Makefile'))
-        os.remove(os.path.join('src', 'kem', family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']), 'Makefile.Microsoft_nmake'))
+        os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']), 'Makefile'))
+        os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_clean'.format(scheme['pqclean_scheme']), 'Makefile.Microsoft_nmake'))
 
     generator(
-        os.path.join('src', 'kem', family['name'], 'kem_{}.h'.format(family['name'])),
-        os.path.join('src', 'kem', 'family', 'kem_family.h'),
+        os.path.join('src', family['type'], family['name'], family['type'] + '_{}.h'.format(family['name'])),
+        os.path.join('src', family['type'], 'family', family['type'] + '_family.h'),
         family,
         None,
     )
 
     generator(
-        os.path.join('src', 'kem', family['name'], 'Makefile.am'),
-        os.path.join('src', 'kem', 'family', 'Makefile.am'),
+        os.path.join('src', family['type'], family['name'], 'Makefile.am'),
+        os.path.join('src', family['type'], 'family', 'Makefile.am'),
         family,
         None,
     )
 
     for scheme in family['schemes']:
         generator(
-            os.path.join('src', 'kem', family['name'], 'kem_{}.c'.format(scheme['pqclean_scheme'])),
-            os.path.join('src', 'kem', 'family', 'kem_scheme.c'),
+            os.path.join('src', family['type'], family['name'], family['type'] + '_{}_{}.c'.format(family['name'], scheme['scheme_c'])),
+            os.path.join('src', family['type'], 'family', family['type'] + '_scheme.c'),
             family,
             scheme,
         )
 
-replacer('config/features.m4', kems, '#####')
-replacer('configure.ac', kems, '#####')
-replacer('Makefile.am', kems, '#####')
-replacer('src/kem/kem.c', kems, '/////')
-replacer('src/kem/kem.h', kems, '/////')
-replacer('VisualStudio/winconfig.h', kems, '/////')
-generator_all('VisualStudio/oqs/dll.def', kems)
+
+replacer('config/features.m4', instructions, '#####')
+replacer('configure.ac', instructions, '#####')
+replacer('Makefile.am', instructions, '#####')
+replacer('src/kem/kem.c', instructions, '/////')
+replacer('src/kem/kem.h', instructions, '/////')
+replacer('src/sig/sig.c', instructions, '/////')
+replacer('src/sig/sig.h', instructions, '/////')
+replacer('VisualStudio/winconfig.h', instructions, '/////')
+generator_all('VisualStudio/oqs/dll.def', instructions)
 unix2dos('VisualStudio/oqs/dll.def')
-replacer('VisualStudio/oqs/oqs.vcxproj', kems, '<!--')
+replacer('VisualStudio/oqs/oqs.vcxproj', instructions, '<!--')
 unix2dos('VisualStudio/oqs/oqs.vcxproj')
-replacer('VisualStudio/oqs/oqs.vcxproj.filters', kems, '<!--')
+replacer('VisualStudio/oqs/oqs.vcxproj.filters', instructions, '<!--')
 unix2dos('VisualStudio/oqs/oqs.vcxproj.filters')

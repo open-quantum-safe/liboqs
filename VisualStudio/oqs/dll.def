@@ -7,15 +7,15 @@ EXPORTS
 	OQS_KEM_encaps
 	OQS_KEM_decaps
 	OQS_KEM_free
-	OQS_KEM_kyber_kyber512_decaps
-	OQS_KEM_kyber_kyber512_encaps
-	OQS_KEM_kyber_kyber512_keypair
-	OQS_KEM_kyber_kyber768_decaps
-	OQS_KEM_kyber_kyber768_encaps
-	OQS_KEM_kyber_kyber768_keypair
-	OQS_KEM_kyber_kyber1024_decaps
-	OQS_KEM_kyber_kyber1024_encaps
-	OQS_KEM_kyber_kyber1024_keypair
+	OQS_KEM_kyber_512_decaps
+	OQS_KEM_kyber_512_encaps
+	OQS_KEM_kyber_512_keypair
+	OQS_KEM_kyber_768_decaps
+	OQS_KEM_kyber_768_encaps
+	OQS_KEM_kyber_768_keypair
+	OQS_KEM_kyber_1024_decaps
+	OQS_KEM_kyber_1024_encaps
+	OQS_KEM_kyber_1024_keypair
 	OQS_KEM_newhope_512cca_decaps
 	OQS_KEM_newhope_512cca_encaps
 	OQS_KEM_newhope_512cca_keypair
