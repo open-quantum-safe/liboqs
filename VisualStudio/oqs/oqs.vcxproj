@@ -40,6 +40,7 @@
     <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h" />
     <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h" />
     <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h" />
+    <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
@@ -84,7 +85,6 @@
     <ClInclude Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-SnP.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\simd.h" />
     <ClInclude Include="..\..\src\sig\picnic\sig_picnic.h" />
-    <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h" />
     <ClInclude Include="..\..\src\sig\sig.h" />
     <ClInclude Include="..\winconfig.h" />
   </ItemGroup>
@@ -97,7 +97,7 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber512.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_512.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\cbd.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\indcpa.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\kem.c" />
@@ -107,7 +107,7 @@
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\reduce.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\verify.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\symmetric-fips202.c" />
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber768.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_768.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\cbd.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\indcpa.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\kem.c" />
@@ -117,7 +117,7 @@
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\reduce.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\verify.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\symmetric-fips202.c" />
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber1024.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_1024.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\cbd.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\indcpa.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\kem.c" />
@@ -127,7 +127,7 @@
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\reduce.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\verify.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c" />
-    <ClCompile Include="..\..\src\kem\newhope\kem_newhope512cca.c" />
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope_512cca.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\cpapke.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\kem.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\ntt.c" />
@@ -135,7 +135,7 @@
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\precomp.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\reduce.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\verify.c" />
-    <ClCompile Include="..\..\src\kem\newhope\kem_newhope1024cca.c" />
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope_1024cca.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\cpapke.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\kem.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\ntt.c" />
@@ -143,7 +143,7 @@
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\precomp.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\reduce.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\verify.c" />
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048509.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hps2048509.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\crypto_sort.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\kem.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\owcpa.c" />
@@ -152,7 +152,7 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\poly.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\sample.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\verify.c" />
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps2048677.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hps2048677.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\crypto_sort.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\kem.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\owcpa.c" />
@@ -161,7 +161,7 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\poly.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\sample.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\verify.c" />
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhps4096821.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hps4096821.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\crypto_sort.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\kem.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\owcpa.c" />
@@ -170,7 +170,7 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\poly.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\sample.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\verify.c" />
-    <ClCompile Include="..\..\src\kem\ntru\kem_ntruhrss701.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hrss701.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\kem.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\owcpa.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\pack3.c" />
@@ -178,6 +178,33 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\poly.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\sample.c" />
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_2.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\poly.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\packing.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\ntt.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\reduce.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\rounding.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\symmetric.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_3.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\poly.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\packing.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\ntt.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\reduce.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\rounding.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\symmetric.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_4.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\poly.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\packing.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\ntt.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\reduce.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\rounding.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\symmetric.c" />
 <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\kem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
@@ -223,31 +250,6 @@
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-opt64.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-times4-on1.c" />
     <ClCompile Include="..\..\src\sig\picnic\sig_picnic.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\ntt.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\packing.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\poly.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\polyvec.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\reduce.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\rounding.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\symmetric.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\ntt.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\packing.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\poly.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\polyvec.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\reduce.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\rounding.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\symmetric.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\ntt.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\packing.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\poly.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\polyvec.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\reduce.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\rounding.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\symmetric.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
   </ItemGroup>
   <ItemGroup>
@@ -403,8 +405,8 @@ copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_END -->
     </PreBuildEvent>
@@ -443,8 +445,8 @@ copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_END -->
     </PreBuildEvent>
@@ -483,8 +485,8 @@ copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_END -->
     </PreBuildEvent>
@@ -531,8 +533,8 @@ copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_END -->
     </PreBuildEvent>
@@ -578,8 +580,8 @@ copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_END -->
     </PreBuildEvent>
@@ -622,8 +624,8 @@ copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_END -->
     </PreBuildEvent>
@@ -666,8 +668,8 @@ copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_END -->
     </PreBuildEvent>
@@ -718,8 +720,8 @@ copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_END -->
     </PreBuildEvent>
