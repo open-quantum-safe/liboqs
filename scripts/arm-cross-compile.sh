@@ -25,7 +25,6 @@ cd ..
 autoreconf -i
 hacks=(
 	gcc_cv_compiler=true	# Detecting at this phase isn't good for cross compilation
-	--disable-aes-ni	# This should be conditionalized on x86 host
     --disable-sig-picnic
 	CFLAGS=-D_ARM_		# Several files aren't using the right define
 )

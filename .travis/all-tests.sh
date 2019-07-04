@@ -40,10 +40,6 @@ source $(dirname $0)/defs.sh
 		fi
 	fi
 
-	if [[ ${AES_NI} == 0 ]];then
-		enable_disable_str+=" --disable-aes-ni"
-	fi
-
 	if [[ ${ENABLE_SIG_PICNIC} == 0 ]];then
 		enable_disable_str+=" --disable-sig-picnic"
 	fi

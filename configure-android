@@ -52,5 +52,5 @@ export AR=${ANDROID_NDK_BIN}/${COMPILER_PREFIX}-ar
 export RANLIB=${ANDROID_NDK_BIN}/${COMPILER_PREFIX}-ranlib
 export STRIP=${ANDROID_NDK_BIN}/${COMPILER_PREFIX}-strip
 
-./configure --host="${COMPILER_PREFIX}" --disable-aes-ni --with-sysroot="${ANDROID_SYSROOT_DIR}"
+./configure --host="${COMPILER_PREFIX}" --with-sysroot="${ANDROID_SYSROOT_DIR}"
 
