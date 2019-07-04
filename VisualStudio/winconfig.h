@@ -12,6 +12,9 @@
 #define OQS_ENABLE_KEM_ntru_hps2048677
 #define OQS_ENABLE_KEM_ntru_hps4096821
 #define OQS_ENABLE_KEM_ntru_hrss701
+#define OQS_ENABLE_KEM_saber_lightsaber
+#define OQS_ENABLE_KEM_saber_saber
+#define OQS_ENABLE_KEM_saber_firesaber
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_KEMS_END
 #define OQS_ENABLE_KEM_frodokem_640_aes
 #define OQS_ENABLE_KEM_frodokem_640_shake
