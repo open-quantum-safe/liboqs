@@ -269,6 +269,78 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c">
       <Filter>ntru\hrss701</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\kem_saber_lightsaber.c">
+      <Filter>saber\lightsaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\cbd.c">
+      <Filter>saber\lightsaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\kem.c">
+      <Filter>saber\lightsaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\pack_unpack.c">
+      <Filter>saber\lightsaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\poly.c">
+      <Filter>saber\lightsaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\poly_mul.c">
+      <Filter>saber\lightsaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\SABER_indcpa.c">
+      <Filter>saber\lightsaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\verify.c">
+      <Filter>saber\lightsaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\kem_saber_saber.c">
+      <Filter>saber\saber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\cbd.c">
+      <Filter>saber\saber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\kem.c">
+      <Filter>saber\saber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\pack_unpack.c">
+      <Filter>saber\saber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\poly.c">
+      <Filter>saber\saber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\poly_mul.c">
+      <Filter>saber\saber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\SABER_indcpa.c">
+      <Filter>saber\saber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\verify.c">
+      <Filter>saber\saber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\kem_saber_firesaber.c">
+      <Filter>saber\firesaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\cbd.c">
+      <Filter>saber\firesaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\kem.c">
+      <Filter>saber\firesaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\pack_unpack.c">
+      <Filter>saber\firesaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\poly.c">
+      <Filter>saber\firesaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\poly_mul.c">
+      <Filter>saber\firesaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\SABER_indcpa.c">
+      <Filter>saber\firesaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\verify.c">
+      <Filter>saber\firesaber</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_2.c">
       <Filter>dilithium\2</Filter>
     </ClCompile>
@@ -533,6 +605,9 @@
     <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h">
       <Filter>ntru</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kem\saber\kem_saber.h">
+      <Filter>saber</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h">
       <Filter>dilithium</Filter>
     </ClInclude>
@@ -740,6 +815,18 @@
     </Filter>
     <Filter Include="ntru\hrss701">
       <UniqueIdentifier>{96485f85-7dd5-4df3-a1cd-769da06d3ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="saber">
+      <UniqueIdentifier>{281a0a06-959f-43bb-afc3-d72cf9816fc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="saber\lightsaber">
+      <UniqueIdentifier>{64918521-b019-48f6-89c3-ad2ce40a8c72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="saber\saber">
+      <UniqueIdentifier>{3cbb7630-a3ce-4d70-a37d-8fd780a20aba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="saber\firesaber">
+      <UniqueIdentifier>{f7014d1d-26fc-4fa6-87b2-0c4552cdc0d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="dilithium">
       <UniqueIdentifier>{2a035f7e-7c7e-4ca3-94ac-140aac970a73}</UniqueIdentifier>

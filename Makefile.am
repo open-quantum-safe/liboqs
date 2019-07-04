@@ -40,6 +40,9 @@ endif
 if ENABLE_KEM_NTRU
 liboqs_la_LIBADD += src/kem/ntru/libkemntru.la
 endif
+if ENABLE_KEM_SABER
+liboqs_la_LIBADD += src/kem/saber/libkemsaber.la
+endif
 
 if ENABLE_SIG_DILITHIUM
 liboqs_la_LIBADD += src/sig/dilithium/libsigdilithium.la
@@ -72,6 +75,7 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/kyber/kem_kyber.h \
 	src/kem/newhope/kem_newhope.h \
 	src/kem/ntru/kem_ntru.h \
+	src/kem/saber/kem_saber.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
@@ -112,6 +116,7 @@ links:
 	cp -f src/kem/kyber/kem_kyber.h include/oqs
 	cp -f src/kem/newhope/kem_newhope.h include/oqs
 	cp -f src/kem/ntru/kem_ntru.h include/oqs
+	cp -f src/kem/saber/kem_saber.h include/oqs
 	cp -f src/sig/dilithium/sig_dilithium.h include/oqs
 	cp -f src/sig/mqdss/sig_mqdss.h include/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_END

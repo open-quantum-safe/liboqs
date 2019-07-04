@@ -47,6 +47,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-kyber], [kem_kyber], [ENABLE_KEM_KYBER], [src/kem/kyber])
   ARG_DISBL_SET_WRAP([kem-newhope], [kem_newhope], [ENABLE_KEM_NEWHOPE], [src/kem/newhope])
   ARG_DISBL_SET_WRAP([kem-ntru], [kem_ntru], [ENABLE_KEM_NTRU], [src/kem/ntru])
+  ARG_DISBL_SET_WRAP([kem-saber], [kem_saber], [ENABLE_KEM_SABER], [src/kem/saber])
   ARG_DISBL_SET_WRAP([sig-dilithium], [sig_dilithium], [ENABLE_SIG_DILITHIUM], [src/sig/dilithium])
   ARG_DISBL_SET_WRAP([sig-mqdss], [sig_mqdss], [ENABLE_SIG_MQDSS], [src/sig/mqdss])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
@@ -99,6 +100,11 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hps2048677, 1, "Define to 1 when NTRU-HPS-2048-677 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hps4096821, 1, "Define to 1 when NTRU-HPS-4096-821 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hrss701, 1, "Define to 1 when NTRU-HRSS-701 enabled")
+  ])
+  AM_COND_IF([ENABLE_KEM_SABER], [
+    AC_DEFINE(OQS_ENABLE_KEM_saber_lightsaber, 1, "Define to 1 when LightSaber-KEM enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_saber_saber, 1, "Define to 1 when Saber-KEM enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_saber_firesaber, 1, "Define to 1 when FireSaber-KEM enabled")
   ])
   AM_COND_IF([ENABLE_SIG_DILITHIUM], [
     AC_DEFINE(OQS_ENABLE_SIG_dilithium_2, 1, "Define to 1 when DILITHIUM_2 enabled")
