@@ -81,7 +81,7 @@ void fp2neg(f2elm_t a) { // GF(p^2) negation, a = -a in GF(p^2).
 	fpneg(a[1]);
 }
 
-__inline static void fp2add(const f2elm_t a, const f2elm_t b, f2elm_t c) { // GF(p^2) addition, c = a+b in GF(p^2).
+__inline void fp2add(const f2elm_t a, const f2elm_t b, f2elm_t c) { // GF(p^2) addition, c = a+b in GF(p^2).
 	fpadd(a[0], b[0], c[0]);
 	fpadd(a[1], b[1], c[1]);
 }
@@ -102,25 +102,13 @@ void fp2correction(f2elm_t a) { // Modular correction, a = a in GF(p^2).
 }
 
 __inline static void mp_addfast(const digit_t *a, const digit_t *b, digit_t *c) { // Multiprecision addition, c = a+b.
-#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION)
+#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && (NBITS_FIELD == 434 || NBITS_FIELD == 610))
 
 	mp_add(a, b, c, NWORDS_FIELD);
 
 #elif (OS_TARGET == OS_LINUX)
 
 	mp_add_asm(a, b, c);
-
-#endif
-}
-
-__inline static void mp_addfastx2(const digit_t *a, const digit_t *b, digit_t *c) { // Double-length multiprecision addition, c = a+b.
-#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION)
-
-	mp_add(a, b, c, 2 * NWORDS_FIELD);
-
-#elif (OS_TARGET == OS_LINUX)
-
-	mp_addx2_asm(a, b, c);
 
 #endif
 }
@@ -149,7 +137,7 @@ __inline unsigned int mp_sub(const digit_t *a, const digit_t *b, digit_t *c, con
 
 __inline static digit_t mp_subfast(const digit_t *a, const digit_t *b, digit_t *c) { // Multiprecision subtraction, c = a-b, where lng(a) = lng(b) = 2*NWORDS_FIELD.
                                                                                      // If c < 0 then returns mask = 0xFF..F, else mask = 0x00..0
-#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION)
+#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && (NBITS_FIELD == 434 || NBITS_FIELD == 610))
 
 	return (0 - (digit_t) mp_sub(a, b, c, 2 * NWORDS_FIELD));
 
@@ -160,33 +148,159 @@ __inline static digit_t mp_subfast(const digit_t *a, const digit_t *b, digit_t *
 #endif
 }
 
+__inline static void mp_dblsubfast(const digit_t *a, const digit_t *b, digit_t *c) { // Multiprecision subtraction, c = c-a-b, where lng(a) = lng(b) = 2*NWORDS_FIELD.
+                                                                                     // Inputs should be s.t. c > a and c > b
+#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && (NBITS_FIELD == 434 || NBITS_FIELD == 610))
+
+	mp_sub(c, a, c, 2 * NWORDS_FIELD);
+	mp_sub(c, b, c, 2 * NWORDS_FIELD);
+
+#elif (OS_TARGET == OS_LINUX)
+
+	mp_dblsubx2_asm(a, b, c);
+
+#endif
+}
+
 void fp2mul_mont(const f2elm_t a, const f2elm_t b, f2elm_t c) { // GF(p^2) multiplication using Montgomery arithmetic, c = a*b in GF(p^2).
 	                                                            // Inputs: a = a0+a1*i and b = b0+b1*i, where a0, a1, b0, b1 are in [0, 2*p-1]
 	                                                            // Output: c = c0+c1*i, where c0, c1 are in [0, 2*p-1]
 	felm_t t1, t2;
 	dfelm_t tt1, tt2, tt3;
 	digit_t mask;
-	unsigned int i, borrow = 0;
+	unsigned int i;
 
-	mp_mul(a[0], b[0], tt1, NWORDS_FIELD); // tt1 = a0*b0
-	mp_mul(a[1], b[1], tt2, NWORDS_FIELD); // tt2 = a1*b1
 	mp_addfast(a[0], a[1], t1);            // t1 = a0+a1
 	mp_addfast(b[0], b[1], t2);            // t2 = b0+b1
-	mask = mp_subfast(tt1, tt2, tt3);      // tt3 = a0*b0 - a1*b1. If tt3 < 0 then mask = 0xFF..F, else if tt3 >= 0 then mask = 0x00..0
+	mp_mul(a[0], b[0], tt1, NWORDS_FIELD); // tt1 = a0*b0
+	mp_mul(a[1], b[1], tt2, NWORDS_FIELD); // tt2 = a1*b1
+	mp_mul(t1, t2, tt3, NWORDS_FIELD);     // tt3 = (a0+a1)*(b0+b1)
+	mp_dblsubfast(tt1, tt2, tt3);          // tt3 = (a0+a1)*(b0+b1) - a0*b0 - a1*b1
+	mask = mp_subfast(tt1, tt2, tt1);      // tt1 = a0*b0 - a1*b1. If tt1 < 0 then mask = 0xFF..F, else if tt1 >= 0 then mask = 0x00..0
+
 	for (i = 0; i < NWORDS_FIELD; i++) {
-		ADDC(borrow, tt3[NWORDS_FIELD + i], ((digit_t *) PRIME)[i] & mask, borrow, tt3[NWORDS_FIELD + i]);
+		t1[i] = ((digit_t *) PRIME)[i] & mask;
 	}
-	rdc_mont(tt3, c[0]);               // c[0] = a0*b0 - a1*b1
-	mp_addfastx2(tt1, tt2, tt1);       // tt1 = a0*b0 + a1*b1
-	mp_mul(t1, t2, tt2, NWORDS_FIELD); // tt2 = (a0+a1)*(b0+b1)
-	mp_subfast(tt2, tt1, tt2);         // tt2 = (a0+a1)*(b0+b1) - a0*b0 - a1*b1
-	rdc_mont(tt2, c[1]);               // c[1] = (a0+a1)*(b0+b1) - a0*b0 - a1*b1
+
+	rdc_mont(tt3, c[1]); // c[1] = (a0+a1)*(b0+b1) - a0*b0 - a1*b1
+	mp_addfast((digit_t *) &tt1[NWORDS_FIELD], t1, (digit_t *) &tt1[NWORDS_FIELD]);
+	rdc_mont(tt1, c[0]); // c[0] = a0*b0 - a1*b1
 }
 
 void fpinv_chain_mont(felm_t a) { // Chain to compute a^(p-3)/4 using Montgomery arithmetic.
 	unsigned int i, j;
 
-#if (NBITS_FIELD == 503)
+#if (NBITS_FIELD == 434)
+	felm_t t[31], tt;
+
+	// Precomputed table
+	fpsqr_mont(a, tt);
+	fpmul_mont(a, tt, t[0]);
+	for (i = 0; i <= 29; i++)
+		fpmul_mont(t[i], tt, t[i + 1]);
+
+	fpcopy(a, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[5], tt, tt);
+	for (i = 0; i < 10; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[14], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[3], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[23], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[13], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[24], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[7], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[12], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[30], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[1], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[30], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[21], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[2], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[19], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[1], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[24], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[26], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[16], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[10], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[6], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[0], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[20], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[9], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[25], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[30], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[26], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(a, tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[28], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[6], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[10], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[22], tt, tt);
+	for (j = 0; j < 35; j++) {
+		for (i = 0; i < 6; i++)
+			fpsqr_mont(tt, tt);
+		fpmul_mont(t[30], tt, tt);
+	}
+	fpcopy(tt, a);
+
+#elif (NBITS_FIELD == 503)
 	felm_t t[15], tt;
 
 	// Precomputed table
@@ -326,6 +440,152 @@ void fpinv_chain_mont(felm_t a) { // Chain to compute a^(p-3)/4 using Montgomery
 		for (i = 0; i < 5; i++)
 			fpsqr_mont(tt, tt);
 		fpmul_mont(t[14], tt, tt);
+	}
+	fpcopy(tt, a);
+
+#elif (NBITS_FIELD == 610)
+	felm_t t[31], tt;
+
+	// Precomputed table
+	fpsqr_mont(a, tt);
+	fpmul_mont(a, tt, t[0]);
+	for (i = 0; i <= 29; i++)
+		fpmul_mont(t[i], tt, t[i + 1]);
+
+	fpcopy(a, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[6], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[30], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[25], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[28], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[7], tt, tt);
+	for (i = 0; i < 11; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[11], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(a, tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[0], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[3], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[16], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[24], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[28], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[16], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[4], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[3], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[20], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[11], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[14], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[15], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[0], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[15], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[19], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[9], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[5], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[27], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[28], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[29], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[1], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[3], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[2], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[30], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[25], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[28], tt, tt);
+	for (i = 0; i < 9; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[22], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[3], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[22], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[7], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[9], tt, tt);
+	for (i = 0; i < 6; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[4], tt, tt);
+	for (i = 0; i < 7; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[20], tt, tt);
+	for (i = 0; i < 11; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[10], tt, tt);
+	for (i = 0; i < 8; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[26], tt, tt);
+	for (i = 0; i < 11; i++)
+		fpsqr_mont(tt, tt);
+	fpmul_mont(t[2], tt, tt);
+	for (j = 0; j < 50; j++) {
+		for (i = 0; i < 6; i++)
+			fpsqr_mont(tt, tt);
+		fpmul_mont(t[30], tt, tt);
 	}
 	fpcopy(tt, a);
 

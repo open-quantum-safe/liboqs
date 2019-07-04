@@ -19,9 +19,13 @@
 #define OQS_ENABLE_KEM_frodokem_976_shake
 #define OQS_ENABLE_KEM_frodokem_1344_aes
 #define OQS_ENABLE_KEM_frodokem_1344_shake
+#define OQS_ENABLE_KEM_sike_p434
 #define OQS_ENABLE_KEM_sike_p503
+#define OQS_ENABLE_KEM_sike_p610
 #define OQS_ENABLE_KEM_sike_p751
+#define OQS_ENABLE_KEM_sidh_p434
 #define OQS_ENABLE_KEM_sidh_p503
+#define OQS_ENABLE_KEM_sidh_p610
 #define OQS_ENABLE_KEM_sidh_p751
 #define OQS_ENABLE_SIG_picnic_L1_FS
 #define OQS_ENABLE_SIG_picnic_L1_UR
@@ -37,7 +41,7 @@
 #define OQS_ENABLE_SIG_dilithium_3
 #define OQS_ENABLE_SIG_dilithium_4
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_SIGS_END
-#define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
+#define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p434
 #define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
 
 

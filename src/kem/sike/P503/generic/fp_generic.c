@@ -4,14 +4,12 @@
 * Abstract: portable modular arithmetic for P503
 *********************************************************************************************/
 
-/* OQS note: not needed since this file is #included in another source file
 #include "../P503_internal.h"
 
 // Global constants
 extern const uint64_t p503[NWORDS_FIELD];
 extern const uint64_t p503p1[NWORDS_FIELD];
 extern const uint64_t p503x2[NWORDS_FIELD];
-*/
 
 __inline void fpadd503(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p503.
 	                                                                     // Inputs: a, b in [0, 2*p503-1]

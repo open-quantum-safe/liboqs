@@ -4,8 +4,8 @@
 * Abstract: internal header file for P751
 *********************************************************************************************/
 
-#ifndef __P751_INTERNAL_H__
-#define __P751_INTERNAL_H__
+#ifndef P751_INTERNAL_H
+#define P751_INTERNAL_H
 
 #include "../config.h"
 
@@ -33,7 +33,6 @@
 #define NWORDS_ORDER ((NBITS_ORDER + RADIX - 1) / RADIX) // Number of words of oA and oB, where oA and oB are the subgroup orders of Alice and Bob, resp.
 #define NWORDS64_ORDER ((NBITS_ORDER + 63) / 64)         // Number of 64-bit words of a 384-bit element
 #define MAXBITS_ORDER NBITS_ORDER
-#define MAXWORDS_ORDER ((MAXBITS_ORDER + RADIX - 1) / RADIX) // Max. number of words to represent elements in [1, oA-1] or [1, oB].
 #define ALICE 0
 #define BOB 1
 #define OALICE_BITS 372
@@ -42,7 +41,7 @@
 #define MASK_ALICE 0x0F
 #define MASK_BOB 0x03
 #define PRIME p751
-#define PARAM_A 0
+#define PARAM_A 6
 #define PARAM_C 1
 // Fixed parameters for isogeny tree computation
 #define MAX_INT_POINTS_ALICE 8
@@ -50,8 +49,8 @@
 #define MAX_Alice 186
 #define MAX_Bob 239
 #define MSG_BYTES 32
-#define SECRETKEY_A_BYTES (OALICE_BITS + 7) / 8
-#define SECRETKEY_B_BYTES (OBOB_BITS + 7) / 8
+#define SECRETKEY_A_BYTES ((OALICE_BITS + 7) / 8)
+#define SECRETKEY_B_BYTES ((OBOB_BITS - 1 + 7) / 8)
 #define FP2_ENCODED_BYTES 2 * ((NBITS_FIELD + 7) / 8)
 
 // SIDH's basic element definitions and point representations
@@ -78,15 +77,13 @@ static unsigned int mp_add(const digit_t *a, const digit_t *b, digit_t *c, const
 // 751-bit multiprecision addition, c = a+b
 static void mp_add751(const digit_t *a, const digit_t *b, digit_t *c);
 static void mp_add751_asm(const digit_t *a, const digit_t *b, digit_t *c);
-//void mp_addmask751_asm(const digit_t* a, const digit_t mask, digit_t* c);
-
-// 2x751-bit multiprecision addition, c = a+b
-static void mp_add751x2(const digit_t *a, const digit_t *b, digit_t *c);
-static void mp_add751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision subtraction, c = a-b, where lng(a) = lng(b) = nwords. Returns the borrow bit
 static unsigned int mp_sub(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords);
 static digit_t mp_sub751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+
+// Double 2x751-bit multiprecision subtraction, c = c-a-b, where c > a and c > b
+static void mp_dblsub751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision left shift
 static void mp_shiftleft(digit_t *x, unsigned int shift, const unsigned int nwords);
@@ -112,18 +109,18 @@ static void fpcopy751(const digit_t *a, digit_t *c);
 static void fpzero751(digit_t *a);
 
 // Non constant-time comparison of two field elements. If a = b return TRUE, otherwise, return FALSE
-static bool fpequal751_non_constant_time(const digit_t *a, const digit_t *b);
+bool fpequal751_non_constant_time(const digit_t *a, const digit_t *b);
 
 // Modular addition, c = a+b mod p751
-static void fpadd751(const digit_t *a, const digit_t *b, digit_t *c);
+extern void fpadd751(const digit_t *a, const digit_t *b, digit_t *c);
 extern void fpadd751_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular subtraction, c = a-b mod p751
-static void fpsub751(const digit_t *a, const digit_t *b, digit_t *c);
+extern void fpsub751(const digit_t *a, const digit_t *b, digit_t *c);
 extern void fpsub751_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular negation, a = -a mod p751
-static void fpneg751(digit_t *a);
+extern void fpneg751(digit_t *a);
 
 // Modular division by two, c = a/2 mod p751.
 static void fpdiv2_751(const digit_t *a, digit_t *c);
@@ -169,10 +166,10 @@ static void fp2zero751(f2elm_t a);
 static void fp2neg751(f2elm_t a);
 
 // GF(p751^2) addition, c = a+b in GF(p751^2)
-static void fp2add751(const f2elm_t a, const f2elm_t b, f2elm_t c);
+extern void fp2add751(const f2elm_t a, const f2elm_t b, f2elm_t c);
 
 // GF(p751^2) subtraction, c = a-b in GF(p751^2)
-static void fp2sub751(const f2elm_t a, const f2elm_t b, f2elm_t c);
+extern void fp2sub751(const f2elm_t a, const f2elm_t b, f2elm_t c);
 
 // GF(p751^2) division by two, c = a/2  in GF(p751^2)
 static void fp2div2_751(const f2elm_t a, f2elm_t c);

@@ -33,6 +33,36 @@ void xDBLe(const point_proj_t P, point_proj_t Q, const f2elm_t A24plus, const f2
 	}
 }
 
+#if (OALICE_BITS % 2 == 1)
+
+void get_2_isog(const point_proj_t P, f2elm_t A, f2elm_t C) { // Computes the corresponding 2-isogeny of a projective Montgomery point (X2:Z2) of order 2.
+	                                                          // Input:  projective point of order two P = (X2:Z2).
+	                                                          // Output: the 2-isogenous Montgomery curve with projective coefficients A/C.
+
+	fp2sqr_mont(P->X, A); // A = X2^2
+	fp2sqr_mont(P->Z, C); // C = Z2^2
+	fp2sub(C, A, A);      // A = Z2^2 - X2^2
+}
+
+void eval_2_isog(point_proj_t P, point_proj_t Q) { // Evaluates the isogeny at the point (X:Z) in the domain of the isogeny, given a 2-isogeny phi.
+	                                               // Inputs: the projective point P = (X:Z) and the 2-isogeny kernel projetive point Q = (X2:Z2).
+	                                               // Output: the projective point P = phi(P) = (X:Z) in the codomain.
+	f2elm_t t0, t1, t2, t3;
+
+	fp2add(Q->X, Q->Z, t0);      // t0 = X2+Z2
+	fp2sub(Q->X, Q->Z, t1);      // t1 = X2-Z2
+	fp2add(P->X, P->Z, t2);      // t2 = X+Z
+	fp2sub(P->X, P->Z, t3);      // t3 = X-Z
+	fp2mul_mont(t0, t3, t0);     // t0 = (X2+Z2)*(X-Z)
+	fp2mul_mont(t1, t2, t1);     // t1 = (X2-Z2)*(X+Z)
+	fp2add(t0, t1, t2);          // t2 = (X2+Z2)*(X-Z) + (X2-Z2)*(X+Z)
+	fp2sub(t0, t1, t3);          // t3 = (X2+Z2)*(X-Z) - (X2-Z2)*(X+Z)
+	fp2mul_mont(P->X, t2, P->X); // Xfinal
+	fp2mul_mont(P->Z, t3, P->Z); // Zfinal
+}
+
+#endif
+
 void get_4_isog(const point_proj_t P, f2elm_t A24plus, f2elm_t C24, f2elm_t *coeff) { // Computes the corresponding 4-isogeny of a projective Montgomery point (X4:Z4) of order 4.
 	                                                                                  // Input:  projective point of order four P = (X4:Z4).
 	                                                                                  // Output: the 4-isogenous Montgomery curve with projective coefficients A+2C/4C and the 3 coefficients
@@ -134,9 +164,7 @@ void get_3_isog(const point_proj_t P, f2elm_t A24minus, f2elm_t A24plus, f2elm_t
 	fp2add(t1, t2, t4);             // t4 = 4*X^2 + (X+Z)^2 - (X-Z)^2
 	fp2add(t4, t4, t4);             // t4 = 2(4*X^2 + (X+Z)^2 - (X-Z)^2)
 	fp2add(t0, t4, t4);             // t4 = 8*X^2 + 2*(X+Z)^2 - (X-Z)^2
-	fp2mul_mont(t3, t4, t4);        // t4 = [4*X^2 - (X+Z)^2]*[8*X^2 + 2*(X+Z)^2 - (X-Z)^2]
-	fp2sub(t4, A24minus, t0);       // t0 = [4*X^2 - (X+Z)^2]*[8*X^2 + 2*(X+Z)^2 - (X-Z)^2] - [4*X^2 - (X-Z)^2]*[8*X^2 - (X+Z)^2 + 2*(X-Z)^2]
-	fp2add(A24minus, t0, A24plus);  // A24plus = 8*X^2 - (X+Z)^2 + 2*(X-Z)^2
+	fp2mul_mont(t3, t4, A24plus);   // A24plus = [4*X^2 - (X+Z)^2]*[8*X^2 + 2*(X+Z)^2 - (X-Z)^2]
 }
 
 void eval_3_isog(point_proj_t Q, const f2elm_t *coeff) { // Computes the 3-isogeny R=phi(X:Z), given projective point (X3:Z3) of order 3 on a Montgomery curve and
@@ -149,12 +177,12 @@ void eval_3_isog(point_proj_t Q, const f2elm_t *coeff) { // Computes the 3-isoge
 	fp2sub(Q->X, Q->Z, t1);        // t1 = X-Z
 	fp2mul_mont(t0, coeff[0], t0); // t0 = coeff0*(X+Z)
 	fp2mul_mont(t1, coeff[1], t1); // t1 = coeff1*(X-Z)
-	fp2add(t0, t1, t2);            // t2 = coeff0*(X-Z) + coeff1*(X+Z)
-	fp2sub(t1, t0, t0);            // t0 = coeff0*(X-Z) - coeff1*(X+Z)
-	fp2sqr_mont(t2, t2);           // t2 = [coeff0*(X-Z) + coeff1*(X+Z)]^2
-	fp2sqr_mont(t0, t0);           // t1 = [coeff0*(X-Z) - coeff1*(X+Z)]^2
-	fp2mul_mont(Q->X, t2, Q->X);   // X3final = X*[coeff0*(X-Z) + coeff1*(X+Z)]^2
-	fp2mul_mont(Q->Z, t0, Q->Z);   // Z3final = Z*[coeff0*(X-Z) - coeff1*(X+Z)]^2
+	fp2add(t0, t1, t2);            // t2 = coeff0*(X+Z) + coeff1*(X-Z)
+	fp2sub(t1, t0, t0);            // t0 = coeff1*(X-Z) - coeff0*(X+Z)
+	fp2sqr_mont(t2, t2);           // t2 = [coeff0*(X+Z) + coeff1*(X-Z)]^2
+	fp2sqr_mont(t0, t0);           // t0 = [coeff1*(X-Z) - coeff0*(X+Z)]^2
+	fp2mul_mont(Q->X, t2, Q->X);   // X3final = X*[coeff0*(X+Z) + coeff1*(X-Z)]^2
+	fp2mul_mont(Q->Z, t0, Q->Z);   // Z3final = Z*[coeff1*(X-Z) - coeff0*(X+Z)]^2
 }
 
 void inv_3_way(f2elm_t z1, f2elm_t z2, f2elm_t z3) { // 3-way simultaneous inversion
@@ -272,7 +300,7 @@ static void LADDER3PT(const f2elm_t xP, const f2elm_t xQ, const f2elm_t xPQ, con
 	if (AliceOrBob == ALICE) {
 		nbits = OALICE_BITS;
 	} else {
-		nbits = OBOB_BITS;
+		nbits = OBOB_BITS - 1;
 	}
 
 	// Initializing constant
@@ -302,4 +330,7 @@ static void LADDER3PT(const f2elm_t xP, const f2elm_t xQ, const f2elm_t xPQ, con
 		xDBLADD(R0, R2, R->X, A24);
 		fp2mul_mont(R2->X, R->Z, R2->X);
 	}
+	swap = 0 ^ prevbit;
+	mask = 0 - (digit_t) swap;
+	swap_points(R, R2, mask);
 }

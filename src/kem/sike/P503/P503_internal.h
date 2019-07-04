@@ -4,8 +4,8 @@
 * Abstract: internal header file for P503
 *********************************************************************************************/
 
-#ifndef __P503_INTERNAL_H__
-#define __P503_INTERNAL_H__
+#ifndef P503_INTERNAL_H
+#define P503_INTERNAL_H
 
 #include "../config.h"
 
@@ -33,7 +33,6 @@
 #define NWORDS_ORDER ((NBITS_ORDER + RADIX - 1) / RADIX) // Number of words of oA and oB, where oA and oB are the subgroup orders of Alice and Bob, resp.
 #define NWORDS64_ORDER ((NBITS_ORDER + 63) / 64)         // Number of 64-bit words of a 256-bit element
 #define MAXBITS_ORDER NBITS_ORDER
-#define MAXWORDS_ORDER ((MAXBITS_ORDER + RADIX - 1) / RADIX) // Max. number of words to represent elements in [1, oA-1] or [1, oB].
 #define ALICE 0
 #define BOB 1
 #define OALICE_BITS 250
@@ -42,7 +41,7 @@
 #define MASK_ALICE 0x03
 #define MASK_BOB 0x0F
 #define PRIME p503
-#define PARAM_A 0
+#define PARAM_A 6
 #define PARAM_C 1
 // Fixed parameters for isogeny tree computation
 #define MAX_INT_POINTS_ALICE 7
@@ -50,8 +49,8 @@
 #define MAX_Alice 125
 #define MAX_Bob 159
 #define MSG_BYTES 24
-#define SECRETKEY_A_BYTES (OALICE_BITS + 7) / 8
-#define SECRETKEY_B_BYTES (OBOB_BITS + 7) / 8
+#define SECRETKEY_A_BYTES ((OALICE_BITS + 7) / 8)
+#define SECRETKEY_B_BYTES ((OBOB_BITS - 1 + 7) / 8)
 #define FP2_ENCODED_BYTES 2 * ((NBITS_FIELD + 7) / 8)
 
 // SIDH's basic element definitions and point representations
@@ -78,15 +77,13 @@ static unsigned int mp_add(const digit_t *a, const digit_t *b, digit_t *c, const
 // 503-bit multiprecision addition, c = a+b
 static void mp_add503(const digit_t *a, const digit_t *b, digit_t *c);
 static void mp_add503_asm(const digit_t *a, const digit_t *b, digit_t *c);
-//void mp_addmask503_asm(const digit_t* a, const digit_t mask, digit_t* c);
-
-// 2x503-bit multiprecision addition, c = a+b
-static void mp_add503x2(const digit_t *a, const digit_t *b, digit_t *c);
-static void mp_add503x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision subtraction, c = a-b, where lng(a) = lng(b) = nwords. Returns the borrow bit
 static unsigned int mp_sub(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords);
 static digit_t mp_sub503x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+
+// Double 2x503-bit multiprecision subtraction, c = c-a-b, where c > a and c > b
+static void mp_dblsub503x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision left shift
 static void mp_shiftleft(digit_t *x, unsigned int shift, const unsigned int nwords);
@@ -112,18 +109,18 @@ static void fpcopy503(const digit_t *a, digit_t *c);
 static void fpzero503(digit_t *a);
 
 // Non constant-time comparison of two field elements. If a = b return TRUE, otherwise, return FALSE
-static bool fpequal503_non_constant_time(const digit_t *a, const digit_t *b);
+bool fpequal503_non_constant_time(const digit_t *a, const digit_t *b);
 
 // Modular addition, c = a+b mod p503
-static void fpadd503(const digit_t *a, const digit_t *b, digit_t *c);
+extern void fpadd503(const digit_t *a, const digit_t *b, digit_t *c);
 extern void fpadd503_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular subtraction, c = a-b mod p503
-static void fpsub503(const digit_t *a, const digit_t *b, digit_t *c);
+extern void fpsub503(const digit_t *a, const digit_t *b, digit_t *c);
 extern void fpsub503_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular negation, a = -a mod p503
-static void fpneg503(digit_t *a);
+extern void fpneg503(digit_t *a);
 
 // Modular division by two, c = a/2 mod p503.
 static void fpdiv2_503(const digit_t *a, digit_t *c);
@@ -169,10 +166,10 @@ static void fp2zero503(f2elm_t a);
 static void fp2neg503(f2elm_t a);
 
 // GF(p503^2) addition, c = a+b in GF(p503^2)
-static void fp2add503(const f2elm_t a, const f2elm_t b, f2elm_t c);
+extern void fp2add503(const f2elm_t a, const f2elm_t b, f2elm_t c);
 
 // GF(p503^2) subtraction, c = a-b in GF(p503^2)
-static void fp2sub503(const f2elm_t a, const f2elm_t b, f2elm_t c);
+extern void fp2sub503(const f2elm_t a, const f2elm_t b, f2elm_t c);
 
 // GF(p503^2) division by two, c = a/2  in GF(p503^2)
 static void fp2div2_503(const f2elm_t a, f2elm_t c);

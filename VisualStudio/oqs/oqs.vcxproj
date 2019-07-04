@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">
@@ -44,10 +44,19 @@
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
+    <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
+    <ClInclude Include="..\..\src\kem\sike\P434\P434_api.h" />
+    <ClInclude Include="..\..\src\kem\sike\P434\P434_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P434\P434.c" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
+    <ClInclude Include="..\..\src\kem\sike\P610\P610_api.h" />
+    <ClInclude Include="..\..\src\kem\sike\P610\P610_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P610\P610.c" />
     <ClInclude Include="..\..\src\kem\sike\P751\P751_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P751\P751_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
     <ClInclude Include="..\..\src\oqs.h" />
     <ClInclude Include="..\..\src\common\common.h" />
     <ClInclude Include="..\..\src\common\rand.h" />
@@ -219,9 +228,6 @@
     <ClCompile Include="..\..\src\kem\frodokem\external\frodo976shake.c" />
     <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344aes.c" />
     <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344shake.c" />
-    <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
-    <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
-    <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\aligned_alloc.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\bitstream.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\cpu.c" />

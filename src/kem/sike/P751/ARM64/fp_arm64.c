@@ -1,25 +1,14 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
 *
-* Author:   David Urbanik;  dburbani@uwaterloo.ca 
-*
-* Abstract: Finite field arithmetic over p751 for ARM64 using code modified from the original 
-*           x86_64 and generic implementations by Microsoft.
-*
-*           Most of this file is just a wrapper for the asm file. The other routines are
-*           direct copies of their counterparts on the AMD64 side.
-*
-* File was modified to allow inputs in [0, 2*p751-1].
-*
+* Abstract: modular arithmetic optimized for 64-bit ARMv8 platforms for P751
 *********************************************************************************************/
 
-/* OQS note: not needed since this file is #included in another source file
 #include "../P751_internal.h"
 
 // Global constants
 extern const uint64_t p751[NWORDS_FIELD];
-extern const uint64_t p751x2[NWORDS_FIELD]; 
-*/
+extern const uint64_t p751x2[NWORDS_FIELD];
 
 __inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p751.
 	                                                                     // Inputs: a, b in [0, 2*p751-1]
@@ -80,7 +69,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 	mul751_asm(a, b, c);
 }
 
-void rdc_mont(const digit_t *ma, digit_t *mc) { // Efficient Montgomery reduction using comba and exploiting the special form of the prime p751.
+void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
 	                                            // mc = ma*R^-1 mod p751x2, where R = 2^768.
 	                                            // If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
 	                                            // ma is assumed to be in Montgomery representation.

@@ -4,24 +4,18 @@
 * Abstract: API header file for P503
 *********************************************************************************************/
 
-#ifndef __P503_API_H__
-#define __P503_API_H__
-
-#include <oqs/rand.h>
-
-#if defined(_WIN32)
-#include "../windows_undef.h"
-#endif
+#ifndef P503_API_H
+#define P503_API_H
 
 /*********************** Key encapsulation mechanism API ***********************/
 
-#define OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES 434 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes
-#define OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES 378
-#define OQS_SIDH_MSR_CRYPTO_BYTES 16
-#define OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES 402 // CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes
+#define CRYPTO_SECRETKEYBYTES 434 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes
+#define CRYPTO_PUBLICKEYBYTES 378
+#define CRYPTO_BYTES 24
+#define CRYPTO_CIPHERTEXTBYTES 402 // CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes
 
 // Algorithm name
-#define OQS_SIDH_MSR_CRYPTO_ALGNAME "SIKEp503"
+#define CRYPTO_ALGNAME "SIKEp503"
 
 // SIKE's key generation
 // It produces a private key sk and computes the public key pk.
@@ -31,14 +25,14 @@ int OQS_KEM_sike_p503_keypair(unsigned char *pk, unsigned char *sk);
 
 // SIKE's encapsulation
 // Input:   public key pk         (CRYPTO_PUBLICKEYBYTES = 378 bytes)
-// Outputs: shared secret ss      (CRYPTO_BYTES = 16 bytes)
+// Outputs: shared secret ss      (CRYPTO_BYTES = 24 bytes)
 //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 402 bytes)
 int OQS_KEM_sike_p503_encaps(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
 
 // SIKE's decapsulation
 // Input:   secret key sk         (CRYPTO_SECRETKEYBYTES = 434 bytes)
 //          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 402 bytes)
-// Outputs: shared secret ss      (CRYPTO_BYTES = 16 bytes)
+// Outputs: shared secret ss      (CRYPTO_BYTES = 24 bytes)
 int OQS_KEM_sike_p503_decaps(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
 
 // Encoding of keys for KEM-based isogeny system "SIKEp503" (wire format):
@@ -46,15 +40,16 @@ int OQS_KEM_sike_p503_decaps(unsigned char *ss, const unsigned char *ct, const u
 // Elements over GF(p503) are encoded in 63 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
 // Elements (a+b*i) over GF(p503^2), where a and b are defined over GF(p503), are encoded as {a, b}, with a in the lowest memory portion.
 //
-// Private keys sk consist of the concatenation of a 24-byte random value, a value in the range [0, 2^252-1] and the public key pk. In the SIKE API,
+// Private keys sk consist of the concatenation of a 24-byte random value, a value in the range [0, 2^250-1] and the public key pk. In the SIKE API,
 // private keys are encoded in 434 octets in little endian format.
 // Public keys pk consist of 3 elements in GF(p503^2). In the SIKE API, pk is encoded in 378 octets.
 // Ciphertexts ct consist of the concatenation of a public key value and a 24-byte value. In the SIKE API, ct is encoded in 378 + 24 = 402 octets.
-// Shared keys ss consist of a value of 16 octets.
+// Shared keys ss consist of a value of 24 octets.
 
 /*********************** Ephemeral key exchange API ***********************/
 
-#define SIDH_SECRETKEYBYTES 32
+#define SIDH_SECRETKEYBYTES_A 32
+#define SIDH_SECRETKEYBYTES_B 32
 #define SIDH_PUBLICKEYBYTES 378
 #define SIDH_BYTES 126
 
@@ -100,8 +95,8 @@ int oqs_kem_sidh_p503_EphemeralSecretAgreement_B(const unsigned char *PrivateKey
 // Elements over GF(p503) are encoded in 63 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
 // Elements (a+b*i) over GF(p503^2), where a and b are defined over GF(p503), are encoded as {a, b}, with a in the lowest memory portion.
 //
-// Private keys PrivateKeyA and PrivateKeyB can have values in the range [0, 2^250-1] and [0, 2^252-1], resp. In the SIDH API, private keys are encoded
-// in 32 octets in little endian format.
+// Private keys PrivateKeyA and PrivateKeyB can have values in the range [0, 2^250-1] and [0, 2^Floor(Log(2,3^159)) - 1], resp. In the SIDH API,
+// Alice's and Bob's private keys are encoded in 32 octets in little endian format.
 // Public keys PublicKeyA and PublicKeyB consist of 3 elements in GF(p503^2). In the SIDH API, they are encoded in 378 octets.
 // Shared keys SharedSecretA and SharedSecretB consist of one element in GF(p503^2). In the SIDH API, they are encoded in 126 octets.
 

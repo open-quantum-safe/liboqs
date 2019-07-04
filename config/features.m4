@@ -116,9 +116,13 @@ AC_DEFUN([CONFIG_FEATURES],
   ])
 
   AM_COND_IF([ENABLE_KEM_SIKE], [
+    AC_DEFINE(OQS_ENABLE_KEM_sike_p434, 1, "Define to 1 when Sike-p434 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_sike_p503, 1, "Define to 1 when Sike-p503 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_sike_p610, 1, "Define to 1 when Sike-p610 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_sike_p751, 1, "Define to 1 when Sike-p751 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_sidh_p434, 1, "Define to 1 when Sidh-p434 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_sidh_p503, 1, "Define to 1 when Sidh-p503 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_sidh_p610, 1, "Define to 1 when Sidh-p610 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_sidh_p751, 1, "Define to 1 when Sidh-p751 enabled")
   ])
 
