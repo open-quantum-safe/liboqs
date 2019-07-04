@@ -30,7 +30,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   # 2) Param-name
   # 3) Compilation param name
   # 4) Compilation directory
-  ARG_DISBL_SET_WRAP([aes-ni],  [aes_ni],  [USE_AES_NI])
   ARG_ENABL_SET_WRAP([openssl], [openssl], [USE_OPENSSL])
 
   AS_IF([test "x${enable_shared}" = "xyes" ], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))

@@ -13,9 +13,6 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c">
       <Filter>crypto</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\crypto\aes\aes_ni.c">
-      <Filter>crypto</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c">
       <Filter>crypto</Filter>
     </ClCompile>
@@ -581,9 +578,6 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\aes\aes.h">
-      <Filter>crypto</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\crypto\aes\aes_local.h">
       <Filter>crypto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h">

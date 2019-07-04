@@ -63,7 +63,6 @@
     <ClInclude Include="..\..\src\common\common.h" />
     <ClInclude Include="..\..\src\common\rand.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes.h" />
-    <ClInclude Include="..\..\src\crypto\aes\aes_local.h" />
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\bitstream.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\compat.h" />
@@ -103,9 +102,7 @@
     <ClCompile Include="..\..\src\common\common.c" />
     <ClCompile Include="..\..\src\common\rand.c" />
     <ClCompile Include="..\..\src\common\rand_nist.c" />
-    <ClCompile Include="..\..\src\crypto\aes\aes.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
-    <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
     <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
     <ClCompile Include="..\..\src\kem\kyber\kem_kyber_512.c" />
@@ -418,7 +415,7 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -459,7 +456,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -599,7 +596,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
@@ -644,7 +641,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
       <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>

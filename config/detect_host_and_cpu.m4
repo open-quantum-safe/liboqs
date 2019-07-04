@@ -41,7 +41,6 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
        ;;
     arm* )
         AM_CPPFLAGS=${AM_CPPFLAGS}" -DARM"
-        AM_CONDITIONAL([USE_AES_NI], [false])
         arm=true
         ;;
     *)
