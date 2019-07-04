@@ -100,3 +100,21 @@ sigs:
         implementation: clean
         sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'symmetric.c']
         visual_studio_guid: fb8c21f2-891b-46fb-8a45-17f69dfa31bd
+  - 
+    name: mqdss
+    visual_studio_guid: ac98bd77-73db-4889-b91f-75dc49769226
+    schemes:
+      - 
+        scheme: "31_48"
+        pqclean_scheme: mqdss-48
+        pretty_name_full: MQDSS-31-48
+        implementation: clean
+        sources: ['gf31.c', 'mq.c', 'sign.c']
+        visual_studio_guid: f640e0c6-bcdd-4964-951b-5af45229036f
+      - 
+        scheme: "31_64"
+        pqclean_scheme: mqdss-64
+        pretty_name_full: MQDSS-31-64
+        implementation: clean
+        sources: ['gf31.c', 'mq.c', 'sign.c']
+        visual_studio_guid: cb56a63a-35d6-4825-92fa-07094d96d063
