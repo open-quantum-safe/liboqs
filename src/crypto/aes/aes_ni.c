@@ -113,16 +113,16 @@ void OQS_AES256_load_schedule(const uint8_t *key, void **_schedule, UNUSED int f
 	*_schedule = malloc(14 * 2 * 16);
 	assert(*_schedule != NULL);
 	__m128i *schedule = (__m128i *) *_schedule;
-	schedule[ 0] = _mm_loadu_si128((const __m128i *) key);
-	schedule[ 1] = _mm_loadu_si128((const __m128i *) (key + 16));
-	schedule[ 2] = key_expand(schedule[0], _mm_aeskeygenassist_si128(schedule[1], 0x01));
-	schedule[ 3] = key_expand_aes256_additional(schedule[1], schedule[2]);
-	schedule[ 4] = key_expand(schedule[2], _mm_aeskeygenassist_si128(schedule[3], 0x02));
-	schedule[ 5] = key_expand_aes256_additional(schedule[3], schedule[4]);
-	schedule[ 6] = key_expand(schedule[4], _mm_aeskeygenassist_si128(schedule[5], 0x04));
-	schedule[ 7] = key_expand_aes256_additional(schedule[5], schedule[6]);
-	schedule[ 8] = key_expand(schedule[6], _mm_aeskeygenassist_si128(schedule[7], 0x08));
-	schedule[ 9] = key_expand_aes256_additional(schedule[7], schedule[8]);
+	schedule[0] = _mm_loadu_si128((const __m128i *) key);
+	schedule[1] = _mm_loadu_si128((const __m128i *) (key + 16));
+	schedule[2] = key_expand(schedule[0], _mm_aeskeygenassist_si128(schedule[1], 0x01));
+	schedule[3] = key_expand_aes256_additional(schedule[1], schedule[2]);
+	schedule[4] = key_expand(schedule[2], _mm_aeskeygenassist_si128(schedule[3], 0x02));
+	schedule[5] = key_expand_aes256_additional(schedule[3], schedule[4]);
+	schedule[6] = key_expand(schedule[4], _mm_aeskeygenassist_si128(schedule[5], 0x04));
+	schedule[7] = key_expand_aes256_additional(schedule[5], schedule[6]);
+	schedule[8] = key_expand(schedule[6], _mm_aeskeygenassist_si128(schedule[7], 0x08));
+	schedule[9] = key_expand_aes256_additional(schedule[7], schedule[8]);
 	schedule[10] = key_expand(schedule[8], _mm_aeskeygenassist_si128(schedule[9], 0x10));
 	schedule[11] = key_expand_aes256_additional(schedule[9], schedule[10]);
 	schedule[12] = key_expand(schedule[10], _mm_aeskeygenassist_si128(schedule[11], 0x20));
@@ -167,7 +167,6 @@ static void aes256_dec_block(const uint8_t *ciphertext, const void *_schedule, u
 
 	_mm_storeu_si128((__m128i *) plaintext, m);
 }
-
 
 void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
