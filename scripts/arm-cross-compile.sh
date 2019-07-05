@@ -32,4 +32,4 @@ hacks=(
 
 ./configure --disable-shared --enable-static --host="${CHOST}" --build="$CBUILD" CC="${CHOST}-gcc" --with-openssl="${PREFIX}" "${hacks[@]}"
 make -j
-make -j check LDFLAGS="-L${PREFIX}/lib -static"
+make -j check LDFLAGS="-L${PREFIX}/lib -static -pthread"
