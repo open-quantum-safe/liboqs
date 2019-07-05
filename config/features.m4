@@ -23,7 +23,7 @@ AC_DEFUN([ARG_ENABL_SET_WRAP],
 AC_DEFUN([CONFIG_FEATURE_FLAGS],
 [
 
-  #The flags are organizes according to features then cryptosystems.
+  # The flags are organized according to features then cryptosystems.
 
   # The parameters are
   # 1) Flag-name
@@ -31,7 +31,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   # 3) Compilation param name
   # 4) Compilation directory
   ARG_DISBL_SET_WRAP([aes-ni],  [aes_ni],  [USE_AES_NI])
-  ARG_ENABL_SET_WRAP([openssl], [openssl], [USE_OPENSSL])
 
   AS_IF([test "x${enable_shared}" = "xyes" ], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
   AM_CONDITIONAL([ENABLE_SHARED],[test "x${enable_shared}" = "xyes"])
@@ -53,11 +52,8 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
-
-  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
-                     [ENABLE_SIG_PICNIC], [src/sig/picnic])
-  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
-                     [ENABLE_SIG_QTESLA], [src/sig/qtesla])
+  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic], [ENABLE_SIG_PICNIC], [src/sig/picnic])
+  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla], [ENABLE_SIG_QTESLA], [src/sig/qtesla])
 ]
 )
 

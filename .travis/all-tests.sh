@@ -33,11 +33,10 @@ source $(dirname $0)/defs.sh
 	# construct configure arguments
 	enable_disable_str=
 
-	if [[ ${USE_OPENSSL} == 1 ]];then
-		enable_disable_str=" --enable-openssl"
-		if [[ ! -z "${OPENSSL_DIR// }" ]];then
-			enable_disable_str+=" --with-openssl-dir=${OPENSSL_DIR}"
-		fi
+	if [[ ${WITH_OPENSSL} == 1 ]];then
+		enable_disable_str=" --with-openssl"
+	else
+		enable_disable_str=" --without-openssl"
 	fi
 
 	if [[ ${AES_NI} == 0 ]];then
