@@ -1,24 +1,20 @@
-AC_DEFUN([ARG_DISBL_SET_WRAP],
-[
-  ARG_DISBL_SET([$1], [disable m4_toupper($1).])
-  AM_CONDITIONAL($3, [test x$$2 = xtrue])
+AC_DEFUN([ARG_DISBL_SET_WRAP], [
+  AC_MSG_CHECKING([whether to enable $2])
+  AC_ARG_ENABLE(
+    [$1],
+    [AS_HELP_STRING([--disable-$1], [disable $2])],
+    [use_$2=$withval],
+    [use_$2=default]
+  )
+  AM_CONDITIONAL($3, [test "x${use_$2}" != "xno"])
   AM_COND_IF($3, [
     SRCDIR="${SRCDIR} $4"
-    AC_DEFINE([$3], 1, "Define to 1 when $1 is enabled")
-  ], [])
-]
-)
-
-AC_DEFUN([ARG_ENABL_SET_WRAP],
-[
-  ARG_ENABL_SET([$1], [enable m4_toupper($1).])
-  AM_CONDITIONAL($3, [test x$$2 = xtrue])
-  AM_COND_IF($3, [
-    SRCDIR="${SRCDIR} $4"
-    AC_DEFINE([$3], 1, "Define to 1 when $1 is enabled")
-  ], [])
-]
-)
+    AC_DEFINE([$3], 1, "Defined to 1 when $1 is enabled")
+    AC_MSG_RESULT([yes])
+  ], [
+    AC_MSG_RESULT([no])
+  ])
+])
 
 AC_DEFUN([CONFIG_FEATURE_FLAGS],
 [
@@ -31,10 +27,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   # 3) Compilation param name
   # 4) Compilation directory
   ARG_DISBL_SET_WRAP([aes-ni],  [aes_ni],  [USE_AES_NI])
-
-  AS_IF([test "x${enable_shared}" = "xyes" ], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
-  AM_CONDITIONAL([ENABLE_SHARED],[test "x${enable_shared}" = "xyes"])
-  AC_SUBST(ENABLE_SHARED)
 
   #BIKE depends on OpenSSL
   AM_COND_IF([USE_OPENSSL],
