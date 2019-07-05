@@ -3,7 +3,7 @@ check_PROGRAMS = 	example_kem speed_kem test_kem kat_kem \
 	example_sig speed_sig test_sig \
 	test_aes test_sha3
 
-LIB_FLAGS=../liboqs.la -lm
+LIB_FLAGS=-L../.libs -loqs -lm
 if USE_OPENSSL
 LIB_FLAGS += -L${OPENSSL_DIR}/lib -lcrypto
 endif
@@ -20,12 +20,18 @@ kat_kem_SOURCES         = kat_kem.c
 
 example_kem_LDADD     = ${LIB_FLAGS}
 example_sig_LDADD     = ${LIB_FLAGS}
+kat_kem_LDADD         = ${LIB_FLAGS}
 speed_kem_LDADD       = ${LIB_FLAGS}
 speed_sig_LDADD       = ${LIB_FLAGS}
-test_aes_LDADD        = ${LIB_FLAGS} 
-test_aes_LDADD        += ../src/crypto/aes/.libs/libaes.a # required since OQS_AES symbols are not part of OQS public API
 test_kem_LDADD        = ${LIB_FLAGS}
-test_sha3_LDADD       = ${LIB_FLAGS}
-test_sha3_LDADD        += ../src/crypto/sha3/.libs/libsha3.a # required since OQS_SHA3 symbols are not part of OQS public API
 test_sig_LDADD        = ${LIB_FLAGS}
-kat_kem_LDADD         = ${LIB_FLAGS}
+test_aes_LDADD        = -L../src/crypto/aes/.libs -laes # required since OQS_AES symbols are not part of OQS public API
+test_aes_LDADD        += ${LIB_FLAGS} 
+if USE_OPENSSL
+test_aes_LDADD        += -L${OPENSSL_DIR}/lib -lcrypto
+endif
+test_sha3_LDADD       = -L../src/crypto/sha3/.libs -lsha3 # required since OQS_SHA3 symbols are not part of OQS public API
+test_sha3_LDADD       += ${LIB_FLAGS}
+if USE_OPENSSL
+test_sha3_LDADD       += -L${OPENSSL_DIR}/lib -lcrypto
+endif
