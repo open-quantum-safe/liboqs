@@ -4,10 +4,16 @@
 * from PQClean (https://github.com/PQClean/PQClean/tree/master/common)
 */
 
+#include <oqs/oqsconfig.h>
+
 #include "sha3.h"
 
 #define SHA3_256_RATE OQS_SHA3_SHA3_256_RATE
+#ifndef USE_SHA3_OPENSSL
 #define sha3_256 OQS_SHA3_sha3_256
+#else
+#define sha3_256 oqs_unused_SHA3_sha3_256
+#endif
 
 #define sha3_256incctx OQS_SHA3_sha3_256_inc_ctx
 #define sha3_256_inc_init OQS_SHA3_sha3_256_inc_init

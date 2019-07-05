@@ -95,6 +95,7 @@ matrix:
     env:
     - CC_OVERRIDE=clang
     - AES_NI=0
+    - WITH_OPENSSL=0
     before_install:
     - brew update
     - brew install doxygen graphviz

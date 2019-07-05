@@ -9,13 +9,19 @@ AC_DEFUN([ADD_EXTERNAL_LIB],[
       [disable OpenSSL; use --with-openssl=dir to specify OpenSSL dir (default /usr or /usr/local/opt/openssl on macOS)]
     )],
     [with_openssl=$withval],
-    [with_openssl=default]
+    [with_openssl=yes]
   )
   # platform-specific default directory
   AS_IF(
-    [test "x${with_openssl}" = "xdefault"],
+    [test "x${with_openssl}" = "xyes"],
     [AM_COND_IF(ON_DARWIN,
-      [with_openssl=/usr/local/opt/openssl],
+      [
+        AS_IF(
+          [test -d "/usr/local/opt/openssl@1.1"],
+          [with_openssl=/usr/local/opt/openssl@1.1],
+          [with_openssl=/usr/local/opt/openssl]
+        )
+      ],
       [with_openssl=/usr]
     )]
   )
@@ -46,4 +52,56 @@ AC_DEFUN([ADD_EXTERNAL_LIB],[
     ],
     [AC_SUBST(M4RI_DIR, /usr)]
   )
+
+  # define the --with-sha3 option
+  AC_ARG_WITH([sha3],
+    [AS_HELP_STRING(
+      [--with-sha3=arg],
+      [SHA3 implementation to use: openssl (default if available), c]
+    )],
+    [],
+    [with_sha3=default]
+  )
+  # if supposed to use the default option
+  AS_IF(
+    [test "x${with_sha3}" = "xdefault"],
+    # if OpenSSL is available
+    [AM_COND_IF(USE_OPENSSL,
+      [
+        # check whether we have EVP_sha3_256
+        # note we need to save then restore CFLAGS/LDFLAGS
+        old_CFLAGS=${CFLAGS}
+        old_LDFLAGS=${LDFLAGS}
+        CFLAGS="${CFLAGS} -I${with_openssl}/include"
+        LDFLAGS="${LDFLAGS} -L${with_openssl}/lib"
+        AC_LANG_PUSH([C])
+        AC_CHECK_LIB([crypto], [EVP_sha3_256],
+          [with_sha3=openssl],
+          [with_sha3=c]
+        )
+        AC_LANG_POP([C])
+        CFLAGS=${CFLAGS}
+        LDFLAGS=${LDFLAGS}
+      ],
+      # use C
+      [with_sha3=c]
+    )]
+  )
+  # report result
+  AC_MSG_CHECKING([which SHA-3 implementation to use])
+  # check for invalid arguments
+  AS_IF(
+    [test "x${with_sha3}" != "xopenssl" -a "x${with_sha3}" != "xc"],
+    AC_MSG_FAILURE([invalid --with-sha3 option])
+  )
+  AC_MSG_RESULT([${with_sha3}])
+  # set automake variables and C defines
+  AM_CONDITIONAL(USE_SHA3_OPENSSL, [test "x${with_sha3}" = "xopenssl"])
+  AM_CONDITIONAL(USE_SHA3_C, [test "x${with_sha3}" = "xc"])
+  AM_COND_IF(USE_SHA3_OPENSSL,[
+    AC_DEFINE(USE_SHA3_OPENSSL, [1], [Defined to 1 if liboqs should use OpenSSL for SHA-3 where possible])
+  ])
+  AM_COND_IF(USE_SHA3_C,[
+    AC_DEFINE(USE_SHA3_C, [1], [Define to 1 if liboqs should use built-in C code for SHA-3])
+  ])
 ])
