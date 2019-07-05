@@ -11,7 +11,7 @@
 
 #include <openssl/evp.h>
 
-static void inline do_hash(uint8_t *output, const uint8_t *input, size_t inplen, const EVP_MD *md) {
+static void do_hash(uint8_t *output, const uint8_t *input, size_t inplen, const EVP_MD *md) {
 	EVP_MD_CTX *mdctx;
 	unsigned int outlen;
 	mdctx = EVP_MD_CTX_create();
