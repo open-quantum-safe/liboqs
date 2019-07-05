@@ -106,7 +106,7 @@
     <ClCompile Include="..\..\src\crypto\aes\aes.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
-    <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
+    <ClCompile Include="..\..\src\crypto\sha3\sha3_c.c" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
     <ClCompile Include="..\..\src\kem\kyber\kem_kyber_512.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\cbd.c" />
