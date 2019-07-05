@@ -3,7 +3,7 @@
  * \brief Implementation of the OQS SHA3 API via calls to OpenSSL's SHA-3 functions
  */
 
-#include <oqs/oqsconfig.h>
+#include <oqs/oqs.h>
 
 #ifdef USE_SHA3_OPENSSL
 

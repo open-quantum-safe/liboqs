@@ -4,7 +4,7 @@
 * from PQClean (https://github.com/PQClean/PQClean/tree/master/common)
 */
 
-#include <oqs/oqsconfig.h>
+#include <oqs/oqs.h>
 
 #include "sha3.h"
 
