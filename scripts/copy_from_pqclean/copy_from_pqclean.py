@@ -83,15 +83,15 @@ for family in instructions['kems'] + instructions['sigs']:
             os.mkdir(os.path.join('src', family['type'], family['name']))
         except:
             pass
-        shutil.rmtree(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}}'.format(scheme['pqclean_scheme'], scheme['implementation'])), ignore_errors=True)
+        shutil.rmtree(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], scheme['implementation'])), ignore_errors=True)
         subprocess.run([
             'cp',
             '-pr',
             os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_' + family['pqclean_type'], scheme['pqclean_scheme'], scheme['implementation']),
-            os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}}'.format(scheme['pqclean_scheme'], scheme['implementation']))
+            os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], scheme['implementation']))
         ])
-        os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}}'.format(scheme['pqclean_scheme'], scheme['implementation']), 'Makefile'))
-        os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}}'.format(scheme['pqclean_scheme'], scheme['implementation']), 'Makefile.Microsoft_nmake'))
+        os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], scheme['implementation']), 'Makefile'))
+        os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], scheme['implementation']), 'Makefile.Microsoft_nmake'))
 
     generator(
         os.path.join('src', family['type'], family['name'], family['type'] + '_{}.h'.format(family['name'])),
