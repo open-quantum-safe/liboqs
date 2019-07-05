@@ -91,8 +91,10 @@ test: clean-tests check
 	tests/example_sig
 	tests/test_kem
 	tests/test_sig
+if !ENABLE_SHARED
 	tests/test_aes
 	tests/test_sha3
+endif
 
 kat: clean-kats check
 	tests/kat_kem
