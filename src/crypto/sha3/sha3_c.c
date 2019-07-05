@@ -75,7 +75,7 @@ void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
 	for (size_t i = 0; i < 26; ++i) {
 		state.ctx[i] = 0;
 	}
-	
+
 	/* Note: This function doesn't align exactly to cSHAKE (SP800-185 3.2), which should produce
 	SHAKE output if S and N = zero (sort of a customized custom-SHAKE function).
 	Padding is hard-coded as the first 32 bits, plus 16 bits of fixed S,
@@ -103,7 +103,6 @@ void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
 	/* generate output */
 	OQS_SHA3_cshake128_inc_finalize(&state);
 	OQS_SHA3_cshake128_inc_squeeze(output, outlen, &state);
-
 }
 
 void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen) {
@@ -141,5 +140,4 @@ void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
 	/* generate output */
 	OQS_SHA3_cshake256_inc_finalize(&state);
 	OQS_SHA3_cshake256_inc_squeeze(output, outlen, &state);
-
 }
