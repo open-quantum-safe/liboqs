@@ -793,6 +793,7 @@ WARN_LOGFILE           =
 
 INPUT                  = src/common/common.h \
                          src/common/rand.h \
+                         src/crypto/sha3/sha3.h \
                          src/kem/kem.h \
                          src/sig/sig.h \
                          README.md
