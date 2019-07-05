@@ -13,7 +13,7 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c">
       <Filter>crypto</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\crypto\sha3\sha3.c">
+    <ClCompile Include="..\..\src\crypto\sha3\sha3_c.c">
       <Filter>crypto</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\sig.c">
