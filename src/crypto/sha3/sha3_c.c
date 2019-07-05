@@ -1,4 +1,10 @@
-#include <oqs/oqs.h>
+/**
+* \file sha3_c.c
+* \brief Implementation of the OQS SHA3 API via the files fips202.c and sp800-185.c 
+* from PQClean (https://github.com/PQClean/PQClean/tree/master/common)
+*/
+
+#include "sha3.h"
 
 #define SHA3_256_RATE OQS_SHA3_SHA3_256_RATE
 #define sha3_256 OQS_SHA3_sha3_256
