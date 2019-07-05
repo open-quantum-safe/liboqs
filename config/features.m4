@@ -3,8 +3,8 @@ AC_DEFUN([ARG_DISBL_SET_WRAP], [
   AC_ARG_ENABLE(
     [$1],
     [AS_HELP_STRING([--disable-$1], [disable $2])],
-    [use_$2=$withval],
-    [use_$2=default]
+    [use_$2=$enableval],
+    [use_$2=yes]
   )
   AM_CONDITIONAL($3, [test "x${use_$2}" != "xno"])
   AM_COND_IF($3, [
