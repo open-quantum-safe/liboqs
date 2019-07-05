@@ -16,6 +16,15 @@ EXPORTS
 	OQS_KEM_kyber_1024_decaps
 	OQS_KEM_kyber_1024_encaps
 	OQS_KEM_kyber_1024_keypair
+	OQS_KEM_ledacrypt_kem_lt_12_decaps
+	OQS_KEM_ledacrypt_kem_lt_12_encaps
+	OQS_KEM_ledacrypt_kem_lt_12_keypair
+	OQS_KEM_ledacrypt_kem_lt_32_decaps
+	OQS_KEM_ledacrypt_kem_lt_32_encaps
+	OQS_KEM_ledacrypt_kem_lt_32_keypair
+	OQS_KEM_ledacrypt_kem_lt_52_decaps
+	OQS_KEM_ledacrypt_kem_lt_52_encaps
+	OQS_KEM_ledacrypt_kem_lt_52_keypair
 	OQS_KEM_newhope_512cca_decaps
 	OQS_KEM_newhope_512cca_encaps
 	OQS_KEM_newhope_512cca_keypair

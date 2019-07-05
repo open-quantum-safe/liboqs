@@ -75,6 +75,7 @@ AC_CONFIG_FILES([Makefile
                  src/sig/mqdss/Makefile
                  src/kem/bike/Makefile
                  src/kem/kyber/Makefile
+                 src/kem/ledacrypt/Makefile
                  src/kem/newhope/Makefile
                  src/kem/ntru/Makefile
                  src/kem/saber/Makefile
