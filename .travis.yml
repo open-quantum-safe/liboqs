@@ -83,7 +83,6 @@ matrix:
     compiler: clang
     env:
     - CC_OVERRIDE=clang
-    - AES_NI=0
     - WITH_OPENSSL=1
     before_install:
     - brew update
@@ -94,7 +93,6 @@ matrix:
     compiler: clang
     env:
     - CC_OVERRIDE=clang
-    - AES_NI=0
     - WITH_OPENSSL=0
     before_install:
     - brew update

@@ -26,7 +26,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   # 2) Param-name
   # 3) Compilation param name
   # 4) Compilation directory
-  ARG_DISBL_SET_WRAP([aes-ni],  [aes_ni],  [USE_AES_NI])
 
   #BIKE depends on OpenSSL
   AM_COND_IF([USE_OPENSSL],

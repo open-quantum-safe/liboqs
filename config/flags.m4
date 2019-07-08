@@ -34,8 +34,6 @@ AC_DEFUN([SET_AM_CFLAGS],
 
   AM_CFLAGS=${AM_CFLAGS}" -fomit-frame-pointer "
 
-  AM_COND_IF(USE_AES_NI, [AM_CFLAGS=${AM_CFLAGS}" -maes -msse2 "])
-
   # Extra flags
   AM_CFLAGS=${AM_CFLAGS}" -DCONSTANT_TIME "
 
