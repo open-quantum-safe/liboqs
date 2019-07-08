@@ -4,10 +4,16 @@
 * from PQClean (https://github.com/PQClean/PQClean/tree/master/common)
 */
 
+#include <oqs/oqs.h>
+
 #include "sha3.h"
 
 #define SHA3_256_RATE OQS_SHA3_SHA3_256_RATE
+#ifndef USE_SHA3_OPENSSL
 #define sha3_256 OQS_SHA3_sha3_256
+#else
+#define sha3_256 oqs_unused_SHA3_sha3_256
+#endif
 
 #define sha3_256incctx OQS_SHA3_sha3_256_inc_ctx
 #define sha3_256_inc_init OQS_SHA3_sha3_256_inc_init
@@ -15,7 +21,11 @@
 #define sha3_256_inc_finalize OQS_SHA3_sha3_256_inc_finalize
 
 #define SHA3_384_RATE OQS_SHA3_SHA3_384_RATE
+#ifndef USE_SHA3_OPENSSL
 #define sha3_384 OQS_SHA3_sha3_384
+#else
+#define sha3_384 oqs_unused_SHA3_sha3_384
+#endif
 
 #define sha3_384incctx OQS_SHA3_sha3_384_inc_ctx
 #define sha3_384_inc_init OQS_SHA3_sha3_384_inc_init
@@ -23,7 +33,11 @@
 #define sha3_384_inc_finalize OQS_SHA3_sha3_384_inc_finalize
 
 #define SHA3_512_RATE OQS_SHA3_SHA3_512_RATE
+#ifndef USE_SHA3_OPENSSL
 #define sha3_512 OQS_SHA3_sha3_512
+#else
+#define sha3_512 oqs_unused_SHA3_sha3_512
+#endif
 
 #define sha3_512incctx OQS_SHA3_sha3_512_inc_ctx
 #define sha3_512_inc_init OQS_SHA3_sha3_512_inc_init
@@ -31,7 +45,11 @@
 #define sha3_512_inc_finalize OQS_SHA3_sha3_512_inc_finalize
 
 #define SHAKE128_RATE OQS_SHA3_SHAKE128_RATE
+#ifndef USE_SHA3_OPENSSL
 #define shake128 OQS_SHA3_shake128
+#else
+#define shake128 oqs_unused_SHA3_shake128
+#endif
 
 #define shake128ctx OQS_SHA3_shake128_ctx
 #define shake128_absorb OQS_SHA3_shake128_absorb
@@ -44,7 +62,11 @@
 #define shake128_inc_squeeze OQS_SHA3_shake128_inc_squeeze
 
 #define SHAKE256_RATE OQS_SHA3_SHAKE256_RATE
+#ifndef USE_SHA3_OPENSSL
 #define shake256 OQS_SHA3_shake256
+#else
+#define shake256 oqs_unused_SHA3_shake256
+#endif
 
 #define shake256ctx OQS_SHA3_shake256_ctx
 #define shake256_absorb OQS_SHA3_shake256_absorb

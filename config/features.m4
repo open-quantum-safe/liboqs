@@ -1,29 +1,25 @@
-AC_DEFUN([ARG_DISBL_SET_WRAP],
-[
-  ARG_DISBL_SET([$1], [disable m4_toupper($1).])
-  AM_CONDITIONAL($3, [test x$$2 = xtrue])
+AC_DEFUN([ARG_DISBL_SET_WRAP], [
+  AC_MSG_CHECKING([whether to enable $2])
+  AC_ARG_ENABLE(
+    [$1],
+    [AS_HELP_STRING([--disable-$1], [disable $2])],
+    [use_$2=$enableval],
+    [use_$2=yes]
+  )
+  AM_CONDITIONAL($3, [test "x${use_$2}" != "xno"])
   AM_COND_IF($3, [
     SRCDIR="${SRCDIR} $4"
-    AC_DEFINE([$3], 1, "Define to 1 when $1 is enabled")
-  ], [])
-]
-)
-
-AC_DEFUN([ARG_ENABL_SET_WRAP],
-[
-  ARG_ENABL_SET([$1], [enable m4_toupper($1).])
-  AM_CONDITIONAL($3, [test x$$2 = xtrue])
-  AM_COND_IF($3, [
-    SRCDIR="${SRCDIR} $4"
-    AC_DEFINE([$3], 1, "Define to 1 when $1 is enabled")
-  ], [])
-]
-)
+    AC_DEFINE([$3], 1, "Defined to 1 when $1 is enabled")
+    AC_MSG_RESULT([yes])
+  ], [
+    AC_MSG_RESULT([no])
+  ])
+])
 
 AC_DEFUN([CONFIG_FEATURE_FLAGS],
 [
 
-  #The flags are organizes according to features then cryptosystems.
+  # The flags are organized according to features then cryptosystems.
 
   # The parameters are
   # 1) Flag-name
@@ -31,11 +27,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   # 3) Compilation param name
   # 4) Compilation directory
   ARG_DISBL_SET_WRAP([aes-ni],  [aes_ni],  [USE_AES_NI])
-  ARG_ENABL_SET_WRAP([openssl], [openssl], [USE_OPENSSL])
-
-  AS_IF([test "x${enable_shared}" = "xyes" ], AC_MSG_RESULT([yes]), AC_MSG_RESULT([no]))
-  AM_CONDITIONAL([ENABLE_SHARED],[test "x${enable_shared}" = "xyes"])
-  AC_SUBST(ENABLE_SHARED)
 
   #BIKE depends on OpenSSL
   AM_COND_IF([USE_OPENSSL],
@@ -53,11 +44,8 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
-
-  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic],
-                     [ENABLE_SIG_PICNIC], [src/sig/picnic])
-  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla],
-                     [ENABLE_SIG_QTESLA], [src/sig/qtesla])
+  ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic], [ENABLE_SIG_PICNIC], [src/sig/picnic])
+  ARG_DISBL_SET_WRAP([sig-qtesla], [sig_qtesla], [ENABLE_SIG_QTESLA], [src/sig/qtesla])
 ]
 )
 

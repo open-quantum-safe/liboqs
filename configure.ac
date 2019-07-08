@@ -25,6 +25,9 @@ AC_DEFINE([OQS_MASTER_BRANCH],[],[liboqs branch])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIRS([config])
 
+# Detect the host CPU and x86 features that are available.
+DETECT_HOST_AND_CPU
+
 # Set paths to external libraries.
 ADD_EXTERNAL_LIB
 
@@ -41,9 +44,6 @@ AC_GENERAL_CHECKS
 
 # DOXYGEN SUPPORT
 CONFIG_DOXYGEN
-
-# Detect the host CPU and x86 features that are availble.
-DETECT_HOST_AND_CPU
 
 # Configure the list of supported features
 CONFIG_FEATURES

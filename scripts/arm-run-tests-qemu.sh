@@ -11,3 +11,6 @@ qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem
 
 # qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/example_sig
 # qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_sig
+
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_aes
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_sha3
