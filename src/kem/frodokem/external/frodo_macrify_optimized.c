@@ -208,7 +208,6 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
 
 /* Use vectorized SHAKE 4x if AVX2 and AES instructions available */
 #if !(defined(USE_AVX2_INSTRUCTIONS) && defined(USE_AES_INSTRUCTIONS))
-    int k;
     uint8_t seed_A_separated[2 + BYTES_SEED_A];
     uint16_t* seed_A_origin = (uint16_t*)&seed_A_separated;
     memcpy(&seed_A_separated[2], seed_A, BYTES_SEED_A);
@@ -251,11 +250,11 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             uint16_t sum[PARAMS_N] = {0};
             for (j = 0; j < 4; j++) {
                 uint16_t sp = s[i*PARAMS_N + kk + j];
-                for (k = 0; k < PARAMS_N; k++) {                // Matrix-vector multiplication
+                for (int k = 0; k < PARAMS_N; k++) {                // Matrix-vector multiplication
                     sum[k] += sp * a_cols[(t+j)*PARAMS_N + k];
                 }
              } 
-            for(k = 0; k < PARAMS_N; k++){
+            for (int k = 0; k < PARAMS_N; k++){
                 out[i*PARAMS_N + k] += sum[k];
             }
         }
