@@ -41,7 +41,7 @@ AC_DEFUN([AX_CHECK_X86_FEATURES],
  [m4_foreach_w(
    [ax_x86_feature],
    [mmx popcnt sse sse2 sse3 sse4a sse5 avx avx2 avx512f fma fma4 bmi bmi2
-    avx512bw avx512cd avx512dq avx512er avx512ifma avx512pf avx512vbmi],
+    avx512bw avx512cd avx512dq avx512er avx512ifma avx512pf avx512vbmi aes],
    [AX_X86_CPU_SUPPORTS(ax_x86_feature,
      [X86_FEATURE_CFLAGS="$X86_FEATURE_CFLAGS -m[]ax_x86_feature"],
      [])

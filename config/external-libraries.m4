@@ -104,4 +104,40 @@ AC_DEFUN([ADD_EXTERNAL_LIB],[
   AM_COND_IF(USE_SHA3_C,[
     AC_DEFINE(USE_SHA3_C, [1], [Define to 1 if liboqs should use built-in C code for SHA-3])
   ])
+
+  # define the --with-aes option
+  AC_ARG_WITH([aes],
+    [AS_HELP_STRING(
+      [--with-aes=arg],
+      [AES implementation to use: openssl (default if available), c]
+    )],
+    [],
+    [with_aes=default]
+  )
+  # if supposed to use the default option
+  AS_IF(
+    [test "x${with_aes}" = "xdefault"],
+    # if OpenSSL is available
+    [AM_COND_IF(USE_OPENSSL,
+      [with_aes=openssl],
+      [with_aes=c]
+    )]
+  )
+  # report result
+  AC_MSG_CHECKING([which AES implementation to use])
+  # check for invalid arguments
+  AS_IF(
+    [test "x${with_aes}" != "xopenssl" -a "x${with_aes}" != "xc"],
+    AC_MSG_FAILURE([invalid --with-aes option])
+  )
+  AC_MSG_RESULT([${with_aes}])
+  # set automake variables and C defines
+  AM_CONDITIONAL(USE_AES_OPENSSL, [test "x${with_aes}" = "xopenssl"])
+  AM_CONDITIONAL(USE_AES_C, [test "x${with_aes}" = "xc"])
+  AM_COND_IF(USE_AES_OPENSSL,[
+    AC_DEFINE(USE_AES_OPENSSL, [1], [Defined to 1 if liboqs should use OpenSSL for AES where possible])
+  ])
+  AM_COND_IF(USE_AES_C,[
+    AC_DEFINE(USE_AES_C, [1], [Define to 1 if liboqs should use built-in C code for AES])
+  ])
 ])
