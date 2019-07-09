@@ -8,7 +8,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <oqs/oqsconfig.h>
+#include <oqs/oqs.h>
 
 #if defined(USE_AVX2_INSTRUCTIONS)
     #include <immintrin.h>
@@ -51,7 +51,7 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
 
         OQS_AES128_ECB_enc_sch((uint8_t*)a_row_temp, 4*PARAMS_N*sizeof(int16_t), aes_key_schedule, (uint8_t*)a_row);
 #elif defined (USE_SHAKE128_FOR_A)
-#ifndef USE_AVX2_INSTRUCTIONS
+#if !(defined(USE_AVX2_INSTRUCTIONS) && defined(USE_AES_INSTRUCTIONS))
     uint8_t seed_A_separated[2 + BYTES_SEED_A];
     uint16_t* seed_A_origin = (uint16_t*)&seed_A_separated;
     memcpy(&seed_A_separated[2], seed_A, BYTES_SEED_A);
@@ -206,7 +206,8 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
     int t=0;
     ALIGN_HEADER(32) uint16_t a_cols[4*PARAMS_N] ALIGN_FOOTER(32) = {0};
 
-#ifndef USE_AVX2_INSTRUCTIONS
+/* Use vectorized SHAKE 4x if AVX2 and AES instructions available */
+#if !(defined(USE_AVX2_INSTRUCTIONS) && defined(USE_AES_INSTRUCTIONS))
     int k;
     uint8_t seed_A_separated[2 + BYTES_SEED_A];
     uint16_t* seed_A_origin = (uint16_t*)&seed_A_separated;
@@ -223,7 +224,29 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
         for (i = 0; i < 4 * PARAMS_N; i++) {
             a_cols[i] = LE_TO_UINT16(a_cols[i]);
         }
-
+#else
+        uint8_t seed_A_separated_0[2 + BYTES_SEED_A];
+        uint8_t seed_A_separated_1[2 + BYTES_SEED_A];
+        uint8_t seed_A_separated_2[2 + BYTES_SEED_A];
+        uint8_t seed_A_separated_3[2 + BYTES_SEED_A];
+        uint16_t* seed_A_origin_0 = (uint16_t*)&seed_A_separated_0;
+        uint16_t* seed_A_origin_1 = (uint16_t*)&seed_A_separated_1;
+        uint16_t* seed_A_origin_2 = (uint16_t*)&seed_A_separated_2;
+        uint16_t* seed_A_origin_3 = (uint16_t*)&seed_A_separated_3;
+        memcpy(&seed_A_separated_0[2], seed_A, BYTES_SEED_A);
+        memcpy(&seed_A_separated_1[2], seed_A, BYTES_SEED_A);
+        memcpy(&seed_A_separated_2[2], seed_A, BYTES_SEED_A);
+        memcpy(&seed_A_separated_3[2], seed_A, BYTES_SEED_A);
+        for (kk = 0; kk < PARAMS_N; kk+=4) {
+            seed_A_origin_0[0] = UINT16_TO_LE(kk + 0);
+            seed_A_origin_1[0] = UINT16_TO_LE(kk + 1);
+            seed_A_origin_2[0] = UINT16_TO_LE(kk + 2);
+            seed_A_origin_3[0] = UINT16_TO_LE(kk + 3);
+            OQS_SHA3_shake128_4x((unsigned char*)(a_cols), (unsigned char*)(a_cols + PARAMS_N), (unsigned char*)(a_cols + 2*PARAMS_N), (unsigned char*)(a_cols + 3*PARAMS_N), 
+                        (unsigned long long)(2*PARAMS_N), seed_A_separated_0, seed_A_separated_1, seed_A_separated_2, seed_A_separated_3, 2 + BYTES_SEED_A);
+#endif
+/* Use vectorized matrix multiplicate if AVX2 instructions available */
+#ifndef USE_AVX2_INSTRUCTIONS
         for (i = 0; i < PARAMS_NBAR; i++) {
             uint16_t sum[PARAMS_N] = {0};
             for (j = 0; j < 4; j++) {
@@ -237,25 +260,6 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             }
         }
 #else
-    uint8_t seed_A_separated_0[2 + BYTES_SEED_A];
-    uint8_t seed_A_separated_1[2 + BYTES_SEED_A];
-    uint8_t seed_A_separated_2[2 + BYTES_SEED_A];
-    uint8_t seed_A_separated_3[2 + BYTES_SEED_A];
-    uint16_t* seed_A_origin_0 = (uint16_t*)&seed_A_separated_0;
-    uint16_t* seed_A_origin_1 = (uint16_t*)&seed_A_separated_1;
-    uint16_t* seed_A_origin_2 = (uint16_t*)&seed_A_separated_2;
-    uint16_t* seed_A_origin_3 = (uint16_t*)&seed_A_separated_3;
-    memcpy(&seed_A_separated_0[2], seed_A, BYTES_SEED_A);
-    memcpy(&seed_A_separated_1[2], seed_A, BYTES_SEED_A);
-    memcpy(&seed_A_separated_2[2], seed_A, BYTES_SEED_A);
-    memcpy(&seed_A_separated_3[2], seed_A, BYTES_SEED_A);
-    for (kk = 0; kk < PARAMS_N; kk+=4) {
-        seed_A_origin_0[0] = UINT16_TO_LE(kk + 0);
-        seed_A_origin_1[0] = UINT16_TO_LE(kk + 1);
-        seed_A_origin_2[0] = UINT16_TO_LE(kk + 2);
-        seed_A_origin_3[0] = UINT16_TO_LE(kk + 3);
-        OQS_SHA3_shake128_4x((unsigned char*)(a_cols), (unsigned char*)(a_cols + PARAMS_N), (unsigned char*)(a_cols + 2*PARAMS_N), (unsigned char*)(a_cols + 3*PARAMS_N), 
-                    (unsigned long long)(2*PARAMS_N), seed_A_separated_0, seed_A_separated_1, seed_A_separated_2, seed_A_separated_3, 2 + BYTES_SEED_A);
         for (i = 0; i < PARAMS_NBAR; i++) {
             __m256i a, b0, b1, b2, b3, acc[PARAMS_N/16];
             b0 = _mm256_set1_epi16(s[i*PARAMS_N + kk + 0]);       
@@ -277,7 +281,6 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
                 a = _mm256_mullo_epi16(a, b3);
                 acc[j/16] = _mm256_add_epi16(a, acc[j/16]);
             }
-
             for (j = 0; j < PARAMS_N/16; j++) {
                 _mm256_store_si256((__m256i*)&out[i*PARAMS_N + 16*j], acc[j]);
             }
