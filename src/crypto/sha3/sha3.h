@@ -499,6 +499,28 @@ void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
 */
 void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen);
 
+#if defined(USE_AVX2_INSTRUCTIONS) && defined(USE_AES_INSTRUCTIONS)
+/**
+ * \brief Seed 4 parallel SHAKE-128 instances, and generate 4 arrays of pseudo-random bytes.
+ *
+ * Uses a vectorized (AVX2) implementation of SHAKE-128.
+ *
+ * \warning The output array length must not be zero.
+ *
+ * \param output0 The first output byte array
+ * \param output0 The second output byte array
+ * \param output0 The third output byte array
+ * \param output0 The fourth output byte array
+ * \param outlen The number of output bytes to generate in every output array
+ * \param in0 The first input seed byte array
+ * \param in1 The second input seed byte array
+ * \param in2 The third input seed byte array
+ * \param in3 The fourth input seed byte array
+ * \param inlen The number of seed bytes to process from every input array
+ */
+void OQS_SHA3_shake128_4x(uint8_t *output0, uint8_t *output1, uint8_t *output2, uint8_t *output3, size_t outlen, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen);
+#endif
+
 #if defined(__cplusplus)
 } // extern "C"
 #endif

@@ -30,28 +30,25 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
   AM_CONDITIONAL([ON_OPENBSD], [test "x$openbsd" = xtrue])
 
   # Enable assembly optimizations here
-  # Appearenly asm optimizations do not work well with darwin
-  AM_COND_IF([ON_LINUX], [
-    case $host_cpu in
-      x86_64* )
-          AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
-          x86_64=true
-          ;;
-      aarch64* )
-         AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc"
-         arm64=true
-         ;;
-      arm* )
-          AM_CPPFLAGS=${AM_CPPFLAGS}" -DARM"
-          arm=true
-          ;;
-      *)
-          #Default Case
-          AC_MSG_ERROR([Your CPU is not currently supported])
-          ;;
-      esac
-  ])
-
+  case $host_cpu in
+    x86_64* )
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
+        x86_64=true
+        ;;
+    aarch64* )
+       AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc"
+       arm64=true
+       ;;
+    arm* )
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -DARM"
+        arm=true
+        ;;
+    *)
+        #Default Case
+        AC_MSG_ERROR([Your CPU is not currently supported])
+        ;;
+  esac
+  
   AM_CONDITIONAL([X86_64], [test "x$x86_64" = xtrue])
   AM_CONDITIONAL([ARM64], [test "x$arm64" = xtrue])
   AM_CONDITIONAL([ARM], [test "x$arm" = xtrue])
@@ -70,7 +67,7 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
     [gcc_cv_compiler=false]
     )]
   )
-
-  #Check if further x86 optimizations are available (e.g., avx/avx2/bmi).
+  
   AX_CHECK_X86_FEATURES
+
 ])

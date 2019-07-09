@@ -29,3 +29,12 @@ test_aes_LDFLAGS        = -L../src/crypto/aes/.libs -laes # required since OQS_A
 test_aes_LDFLAGS        += ${commonflags} 
 test_sha3_LDFLAGS       = -L../src/crypto/sha3/.libs -lsha3 # required since OQS_SHA3 symbols are not part of OQS public API
 test_sha3_LDFLAGS       += ${commonflags}
+
+example_kem_DEPENDENCIES = ../liboqs.la
+example_sig_DEPENDENCIES = ../liboqs.la
+speed_kem_DEPENDENCIES   = ../liboqs.la
+speed_sig_DEPENDENCIES   = ../liboqs.la
+test_kem_DEPENDENCIES    = ../liboqs.la
+test_sig_DEPENDENCIES    = ../liboqs.la
+test_aes_DEPENDENCIES    = ../liboqs.la
+test_sha3_DEPENDENCIES   = ../liboqs.la
