@@ -67,7 +67,7 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_bike3_l5, 1, "Define to 1 when BIKE3-L5 enabled")
 
     AM_COND_IF([USE_AES_INSTRUCTIONS],
-      [AM_COND_IF([USE_AVX2_INSTRUCTIONS],
+      [AM_COND_IF([USE_AVX512F_INSTRUCTIONS],
         [
           AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [test x$gcc_cv_compiler = xtrue])
           AM_COND_IF([BIKE_ADDITIONAL_IMPL], [AC_DEFINE(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION, 1, "Define to 1 when BIKE uses the additional implementation")])
