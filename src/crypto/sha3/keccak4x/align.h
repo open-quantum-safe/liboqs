@@ -22,7 +22,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #endif
 
 #if defined(__GNUC__)
-#define ALIGN(x) __attribute__ ((aligned(x)))
+#define ALIGN(x) __attribute__((aligned(x)))
 #elif defined(_MSC_VER)
 #define ALIGN(x) __declspec(align(x))
 #elif defined(__ARMCC_VERSION)

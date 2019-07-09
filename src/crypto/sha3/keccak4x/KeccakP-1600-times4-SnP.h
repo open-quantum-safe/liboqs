@@ -23,9 +23,9 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #include "SIMD256-config.h"
 
-#define KeccakP1600times4_implementation        "256-bit SIMD implementation (" KeccakP1600times4_implementation_config ")"
-#define KeccakP1600times4_statesSizeInBytes     800
-#define KeccakP1600times4_statesAlignment       32
+#define KeccakP1600times4_implementation "256-bit SIMD implementation (" KeccakP1600times4_implementation_config ")"
+#define KeccakP1600times4_statesSizeInBytes 800
+#define KeccakP1600times4_statesAlignment 32
 #define KeccakF1600times4_FastLoop_supported
 #define KeccakP1600times4_12rounds_FastLoop_supported
 
@@ -33,7 +33,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #define KeccakP1600times4_StaticInitialize()
 #define KeccakP1600times4_AddByte(states, instanceIndex, byte, offset) \
-    ((unsigned char*)(states))[(instanceIndex)*8 + ((offset)/8)*4*8 + (offset)%8] ^= (byte)
+	((unsigned char *) (states))[(instanceIndex) *8 + ((offset) / 8) * 4 * 8 + (offset) % 8] ^= (byte)
 static void KeccakP1600times4_PermuteAll_24rounds(void *states);
 
 #endif
