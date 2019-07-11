@@ -38,7 +38,7 @@ OQS_STATUS kem_test_correctness(const char *method_name) {
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
-		return OQS_SUCCESS;
+		return OQS_ERROR;
 	}
 
 	printf("================================================================================\n");

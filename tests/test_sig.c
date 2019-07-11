@@ -21,7 +21,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
-		return OQS_SUCCESS;
+		return OQS_ERROR;
 	}
 
 	printf("================================================================================\n");
