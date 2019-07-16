@@ -17,6 +17,7 @@
 
 #include <oqs/common.h>
 #include <oqs/aes.h>
+#include <oqs/sha2.h>
 #include <oqs/sha3.h>
 #include <oqs/rand.h>
 #include <oqs/kem.h>
