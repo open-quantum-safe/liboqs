@@ -52,7 +52,7 @@ CONFIG_FEATURES
 SRCDIR=${SRCDIR}" src/common"
 
 # Crypto sources
-SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/sha3"
+SRCDIR=${SRCDIR}" src/crypto/aes src/crypto/sha2 src/crypto/sha3"
 
 # Protocols
 SRCDIR=${SRCDIR}" src/kem \
@@ -67,6 +67,7 @@ AC_CONFIG_FILES([Makefile
                  src/common/Makefile
                  src/kem/Makefile
                  src/crypto/sha3/Makefile
+                 src/crypto/sha2/Makefile
                  src/crypto/aes/Makefile
                  src/sig/Makefile
                  src/sig/picnic/Makefile
