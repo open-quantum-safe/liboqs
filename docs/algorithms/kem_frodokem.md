@@ -22,7 +22,7 @@ Parameter sets
 | FrodoKEM-976-AES    |     IND-CCA    |              3              |          15632          |          31296          |          15744          |             24             |
 | FrodoKEM-976-SHAKE  |     IND-CCA    |              3              |          15632          |          31296          |          15744          |             24             |
 | FrodoKEM-1344-AES   |     IND-CCA    |              5              |          21520          |          43088          |          21632          |             32             |
-| FrodoKEM-1344-SHAKE |     IND-CCA    |              5              |          15632          |          43088          |          21632          |             32             |
+| FrodoKEM-1344-SHAKE |     IND-CCA    |              5              |          21520          |          43088          |          21632          |             32             |
 
 Implementation
 --------------
