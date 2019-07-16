@@ -140,4 +140,41 @@ AC_DEFUN([ADD_EXTERNAL_LIB],[
   AM_COND_IF(USE_AES_C,[
     AC_DEFINE(USE_AES_C, [1], [Define to 1 if liboqs should use built-in C code for AES])
   ])
+
+  # define the --with-sha2 option
+  AC_ARG_WITH([sha2],
+    [AS_HELP_STRING(
+      [--with-sha2=arg],
+      [SHA-2 implementation to use: openssl (default if available), c]
+    )],
+    [],
+    [with_sha2=default]
+  )
+  # if supposed to use the default option
+  AS_IF(
+    [test "x${with_sha2}" = "xdefault"],
+    # if OpenSSL is available
+    [AM_COND_IF(USE_OPENSSL,
+      [with_sha2=openssl],
+      [with_sha2=c]
+    )]
+  )
+  # report result
+  AC_MSG_CHECKING([which SHA-2 implementation to use])
+  # check for invalid arguments
+  AS_IF(
+    [test "x${with_sha2}" != "xopenssl" -a "x${with_sha2}" != "xc"],
+    AC_MSG_FAILURE([invalid --with-sha2 option])
+  )
+  AC_MSG_RESULT([${with_sha2}])
+  # set automake variables and C defines
+  AM_CONDITIONAL(USE_SHA2_OPENSSL, [test "x${with_sha2}" = "xopenssl"])
+  AM_CONDITIONAL(USE_SHA2_C, [test "x${with_sha2}" = "xc"])
+  AM_COND_IF(USE_SHA2_OPENSSL,[
+    AC_DEFINE(USE_SHA2_OPENSSL, [1], [Defined to 1 if liboqs should use OpenSSL for SHA-2 where possible])
+  ])
+  AM_COND_IF(USE_SHA2_C,[
+    AC_DEFINE(USE_SHA2_C, [1], [Define to 1 if liboqs should use built-in C code for SHA-2])
+  ])
+
 ])
