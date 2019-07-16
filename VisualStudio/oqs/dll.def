@@ -123,3 +123,6 @@ EXPORTS
 	OQS_SIG_mqdss_31_64_keypair
 	OQS_SIG_mqdss_31_64_sign
 	OQS_SIG_mqdss_31_64_verify
+	OQS_SIG_rainbow_Ia_classic_keypair
+	OQS_SIG_rainbow_Ia_classic_sign
+	OQS_SIG_rainbow_Ia_classic_verify

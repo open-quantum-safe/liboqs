@@ -66,11 +66,13 @@ extern "C" {
 #define OQS_SIG_alg_mqdss_31_48 "MQDSS-31-48"
 /** Algorithm identifier for MQDSS-31-64 */
 #define OQS_SIG_alg_mqdss_31_64 "MQDSS-31-64"
+/** Algorithm identifier for Rainbow-Ia-Classic */
+#define OQS_SIG_alg_rainbow_Ia_classic "Rainbow-Ia-Classic"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 18
+#define OQS_SIG_algs_length 19
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -236,6 +238,7 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
 #include <oqs/sig_dilithium.h>
 #include <oqs/sig_mqdss.h>
+#include <oqs/sig_rainbow.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 // EDIT-WHEN-ADDING-SIG
 

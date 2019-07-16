@@ -443,6 +443,39 @@
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\sign.c">
       <Filter>mqdss\31_64</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Ia_classic.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\blas_comm.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\parallel_matrix_op.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\rainbow.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\rainbow_keypair.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\sign.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\utils_hash.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\utils_prng.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\blas_u32.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\gf.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c">
       <Filter>frodokem</Filter>
@@ -610,6 +643,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h">
       <Filter>mqdss</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\rainbow\sig_rainbow.h">
+      <Filter>rainbow</Filter>
     </ClInclude>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h">
@@ -845,6 +881,12 @@
     </Filter>
     <Filter Include="mqdss\31_64">
       <UniqueIdentifier>{cb56a63a-35d6-4825-92fa-07094d96d063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow">
+      <UniqueIdentifier>{154bc1c9-3ffa-43b4-87f6-7833358925ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\Ia_classic">
+      <UniqueIdentifier>{383a4b2f-3be2-4fdc-890c-2c0b96dd407b}</UniqueIdentifier>
     </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_END -->
   </ItemGroup>

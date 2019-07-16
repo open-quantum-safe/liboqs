@@ -1,0 +1,32 @@
+#ifndef PQCLEAN_RAINBOWIACLASSIC_CLEAN_API_H
+#define PQCLEAN_RAINBOWIACLASSIC_CLEAN_API_H
+
+#include <stddef.h>
+#include <stdint.h>
+
+#define PQCLEAN_RAINBOWIACLASSIC_CLEAN_CRYPTO_SECRETKEYBYTES 92960
+#define PQCLEAN_RAINBOWIACLASSIC_CLEAN_CRYPTO_PUBLICKEYBYTES 148992
+#define PQCLEAN_RAINBOWIACLASSIC_CLEAN_CRYPTO_BYTES 64
+#define PQCLEAN_RAINBOWIACLASSIC_CLEAN_CRYPTO_ALGNAME "RAINBOW(16,32,32,32) - classic"
+
+int PQCLEAN_RAINBOWIACLASSIC_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+
+
+int PQCLEAN_RAINBOWIACLASSIC_CLEAN_crypto_sign_signature(
+    uint8_t *sig, size_t *siglen,
+    const uint8_t *m, size_t mlen, const uint8_t *sk);
+
+int PQCLEAN_RAINBOWIACLASSIC_CLEAN_crypto_sign_verify(
+    const uint8_t *sig, size_t siglen,
+    const uint8_t *m, size_t mlen, const uint8_t *pk);
+
+int PQCLEAN_RAINBOWIACLASSIC_CLEAN_crypto_sign(uint8_t *sm, size_t *smlen,
+        const uint8_t *m, size_t mlen,
+        const uint8_t *sk);
+
+int PQCLEAN_RAINBOWIACLASSIC_CLEAN_crypto_sign_open(uint8_t *m, size_t *mlen,
+        const uint8_t *sm, size_t smlen,
+        const uint8_t *pk);
+
+
+#endif

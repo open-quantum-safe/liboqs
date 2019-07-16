@@ -143,3 +143,14 @@ sigs:
         implementation: clean
         sources: ['gf31.c', 'mq.c', 'sign.c']
         visual_studio_guid: cb56a63a-35d6-4825-92fa-07094d96d063
+  - 
+    name: rainbow
+    visual_studio_guid: 154bc1c9-3ffa-43b4-87f6-7833358925ca
+    schemes:
+      - 
+        scheme: "Ia_classic"
+        pqclean_scheme: rainbowIa-classic
+        pretty_name_full: Rainbow-Ia-Classic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
+        visual_studio_guid: 383a4b2f-3be2-4fdc-890c-2c0b96dd407b
