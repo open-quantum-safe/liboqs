@@ -52,4 +52,4 @@ Implementation
 - **Constant-time:** Yes
 - **Architectures supported in liboqs master branch**: x86, x64
 
-**Note** The SHA256 variants have not yet been implemented.
+**Note** The SHA256 variants have not yet been implemented.  The Haraka variants are not thread-safe.  See https://github.com/PQClean/PQClean/issues/168.
