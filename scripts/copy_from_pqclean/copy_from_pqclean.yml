@@ -100,6 +100,31 @@ kems:
         sources: ['kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
         visual_studio_guid: 96485f85-7dd5-4df3-a1cd-769da06d3ada
   - 
+    name: ntruprime
+    visual_studio_guid: f3f729a2-18de-472a-a242-5390ea8f2518
+    schemes:
+      - 
+        scheme: ntrulpr653
+        pqclean_scheme: ntrulpr653
+        pretty_name_full: ntrulpr653
+        implementation: clean
+        sources: ['decode.c', 'encode.c', 'int32.c', 'kem.c', 'uint32_sort.c', 'uint32.c']
+        visual_studio_guid: 3f1f6934-f2a3-4135-945c-f68ebed0876f
+      - 
+        scheme: ntrulpr761
+        pqclean_scheme: ntrulpr761
+        pretty_name_full: ntrulpr761
+        implementation: clean
+        sources: ['decode.c', 'encode.c', 'int32.c', 'kem.c', 'uint32_sort.c', 'uint32.c']
+        visual_studio_guid: 1450fc90-b9d2-4098-bc35-69b811dc9e14
+      - 
+        scheme: ntrulpr857
+        pqclean_scheme: ntrulpr857
+        pretty_name_full: ntrulpr857
+        implementation: clean
+        sources: ['decode.c', 'encode.c', 'int32.c', 'kem.c', 'uint32_sort.c', 'uint32.c']
+        visual_studio_guid: 5550691d-ef66-4792-aaae-3df6a193ffa8
+  - 
     name: saber
     visual_studio_guid: 281a0a06-959f-43bb-afc3-d72cf9816fc5
     schemes:

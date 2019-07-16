@@ -344,6 +344,69 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c">
       <Filter>ntru\hrss701</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\kem_ntruprime_ntrulpr653.c">
+      <Filter>ntruprime\ntrulpr653</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr653_clean\decode.c">
+      <Filter>ntruprime\ntrulpr653</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr653_clean\encode.c">
+      <Filter>ntruprime\ntrulpr653</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr653_clean\int32.c">
+      <Filter>ntruprime\ntrulpr653</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr653_clean\kem.c">
+      <Filter>ntruprime\ntrulpr653</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr653_clean\uint32_sort.c">
+      <Filter>ntruprime\ntrulpr653</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr653_clean\uint32.c">
+      <Filter>ntruprime\ntrulpr653</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\kem_ntruprime_ntrulpr761.c">
+      <Filter>ntruprime\ntrulpr761</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr761_clean\decode.c">
+      <Filter>ntruprime\ntrulpr761</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr761_clean\encode.c">
+      <Filter>ntruprime\ntrulpr761</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr761_clean\int32.c">
+      <Filter>ntruprime\ntrulpr761</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr761_clean\kem.c">
+      <Filter>ntruprime\ntrulpr761</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr761_clean\uint32_sort.c">
+      <Filter>ntruprime\ntrulpr761</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr761_clean\uint32.c">
+      <Filter>ntruprime\ntrulpr761</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\kem_ntruprime_ntrulpr857.c">
+      <Filter>ntruprime\ntrulpr857</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr857_clean\decode.c">
+      <Filter>ntruprime\ntrulpr857</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr857_clean\encode.c">
+      <Filter>ntruprime\ntrulpr857</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr857_clean\int32.c">
+      <Filter>ntruprime\ntrulpr857</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr857_clean\kem.c">
+      <Filter>ntruprime\ntrulpr857</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr857_clean\uint32_sort.c">
+      <Filter>ntruprime\ntrulpr857</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntruprime\pqclean_ntrulpr857_clean\uint32.c">
+      <Filter>ntruprime\ntrulpr857</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kem\saber\kem_saber_lightsaber.c">
       <Filter>saber\lightsaber</Filter>
     </ClCompile>
@@ -680,6 +743,9 @@
     <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h">
       <Filter>ntru</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kem\ntruprime\kem_ntruprime.h">
+      <Filter>ntruprime</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\kem\saber\kem_saber.h">
       <Filter>saber</Filter>
     </ClInclude>
@@ -902,6 +968,18 @@
     </Filter>
     <Filter Include="ntru\hrss701">
       <UniqueIdentifier>{96485f85-7dd5-4df3-a1cd-769da06d3ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ntruprime">
+      <UniqueIdentifier>{f3f729a2-18de-472a-a242-5390ea8f2518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ntruprime\ntrulpr653">
+      <UniqueIdentifier>{3f1f6934-f2a3-4135-945c-f68ebed0876f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ntruprime\ntrulpr761">
+      <UniqueIdentifier>{1450fc90-b9d2-4098-bc35-69b811dc9e14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ntruprime\ntrulpr857">
+      <UniqueIdentifier>{5550691d-ef66-4792-aaae-3df6a193ffa8}</UniqueIdentifier>
     </Filter>
     <Filter Include="saber">
       <UniqueIdentifier>{281a0a06-959f-43bb-afc3-d72cf9816fc5}</UniqueIdentifier>

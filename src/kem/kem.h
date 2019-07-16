@@ -74,6 +74,12 @@ extern "C" {
 #define OQS_KEM_alg_ntru_hps4096821 "NTRU-HPS-4096-821"
 /** Algorithm identifier for NTRU-HRSS-701 KEM. */
 #define OQS_KEM_alg_ntru_hrss701 "NTRU-HRSS-701"
+/** Algorithm identifier for ntrulpr653 KEM. */
+#define OQS_KEM_alg_ntruprime_ntrulpr653 "ntrulpr653"
+/** Algorithm identifier for ntrulpr761 KEM. */
+#define OQS_KEM_alg_ntruprime_ntrulpr761 "ntrulpr761"
+/** Algorithm identifier for ntrulpr857 KEM. */
+#define OQS_KEM_alg_ntruprime_ntrulpr857 "ntrulpr857"
 /** Algorithm identifier for LightSaber-KEM KEM. */
 #define OQS_KEM_alg_saber_lightsaber "LightSaber-KEM"
 /** Algorithm identifier for Saber-KEM KEM. */
@@ -112,7 +118,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 39
+#define OQS_KEM_algs_length 42
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -281,6 +287,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_ledacrypt.h>
 #include <oqs/kem_newhope.h>
 #include <oqs/kem_ntru.h>
+#include <oqs/kem_ntruprime.h>
 #include <oqs/kem_saber.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 #include <oqs/kem_frodokem.h>

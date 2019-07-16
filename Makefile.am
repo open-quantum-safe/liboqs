@@ -43,6 +43,9 @@ endif
 if ENABLE_KEM_NTRU
 liboqs_la_LIBADD += src/kem/ntru/libkemntru.la
 endif
+if ENABLE_KEM_NTRUPRIME
+liboqs_la_LIBADD += src/kem/ntruprime/libkemntruprime.la
+endif
 if ENABLE_KEM_SABER
 liboqs_la_LIBADD += src/kem/saber/libkemsaber.la
 endif
@@ -79,6 +82,7 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/ledacrypt/kem_ledacrypt.h \
 	src/kem/newhope/kem_newhope.h \
 	src/kem/ntru/kem_ntru.h \
+	src/kem/ntruprime/kem_ntruprime.h \
 	src/kem/saber/kem_saber.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
@@ -119,6 +123,7 @@ links:
 	cp -f src/kem/ledacrypt/kem_ledacrypt.h include/oqs
 	cp -f src/kem/newhope/kem_newhope.h include/oqs
 	cp -f src/kem/ntru/kem_ntru.h include/oqs
+	cp -f src/kem/ntruprime/kem_ntruprime.h include/oqs
 	cp -f src/kem/saber/kem_saber.h include/oqs
 	cp -f src/sig/dilithium/sig_dilithium.h include/oqs
 	cp -f src/sig/mqdss/sig_mqdss.h include/oqs

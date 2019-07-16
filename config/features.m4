@@ -38,6 +38,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-ledacrypt], [kem_ledacrypt], [ENABLE_KEM_LEDACRYPT], [src/kem/ledacrypt])
   ARG_DISBL_SET_WRAP([kem-newhope], [kem_newhope], [ENABLE_KEM_NEWHOPE], [src/kem/newhope])
   ARG_DISBL_SET_WRAP([kem-ntru], [kem_ntru], [ENABLE_KEM_NTRU], [src/kem/ntru])
+  ARG_DISBL_SET_WRAP([kem-ntruprime], [kem_ntruprime], [ENABLE_KEM_NTRUPRIME], [src/kem/ntruprime])
   ARG_DISBL_SET_WRAP([kem-saber], [kem_saber], [ENABLE_KEM_SABER], [src/kem/saber])
   ARG_DISBL_SET_WRAP([sig-dilithium], [sig_dilithium], [ENABLE_SIG_DILITHIUM], [src/sig/dilithium])
   ARG_DISBL_SET_WRAP([sig-mqdss], [sig_mqdss], [ENABLE_SIG_MQDSS], [src/sig/mqdss])
@@ -97,6 +98,11 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hps2048677, 1, "Define to 1 when NTRU-HPS-2048-677 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hps4096821, 1, "Define to 1 when NTRU-HPS-4096-821 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_ntru_hrss701, 1, "Define to 1 when NTRU-HRSS-701 enabled")
+  ])
+  AM_COND_IF([ENABLE_KEM_NTRUPRIME], [
+    AC_DEFINE(OQS_ENABLE_KEM_ntruprime_ntrulpr653, 1, "Define to 1 when ntrulpr653 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ntruprime_ntrulpr761, 1, "Define to 1 when ntrulpr761 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_ntruprime_ntrulpr857, 1, "Define to 1 when ntrulpr857 enabled")
   ])
   AM_COND_IF([ENABLE_KEM_SABER], [
     AC_DEFINE(OQS_ENABLE_KEM_saber_lightsaber, 1, "Define to 1 when LightSaber-KEM enabled")
