@@ -25,6 +25,31 @@ kems:
         sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
         visual_studio_guid: fd3c9627-9462-409f-9cdb-0c6566370dbe
   - 
+    name: ledacrypt
+    visual_studio_guid: 80e6cb28-9f7d-4499-966d-89cf6f6359a2
+    schemes:
+      - 
+        scheme: kem_lt_12
+        pqclean_scheme: ledakemlt12
+        pretty_name_full: LEDAcrypt-KEM-LT-12
+        implementation: leaktime
+        sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c']
+        visual_studio_guid: 84ffe233-5d4a-4dfb-af5f-7e73964c8d49
+      - 
+        scheme: kem_lt_32
+        pqclean_scheme: ledakemlt32
+        pretty_name_full: LEDAcrypt-KEM-LT-32
+        implementation: leaktime
+        sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c']
+        visual_studio_guid: 301f555d-8275-4078-8899-9bc09f10f866
+      - 
+        scheme: kem_lt_52
+        pqclean_scheme: ledakemlt52
+        pretty_name_full: LEDAcrypt-KEM-LT-52
+        implementation: leaktime
+        sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c']
+        visual_studio_guid: 1b2c969d-1917-4df6-a093-701fd9515d1d
+  - 
     name: newhope
     visual_studio_guid: 21ea4719-b334-4625-8d3c-3f48de67f6f2
     schemes:

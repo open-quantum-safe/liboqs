@@ -25,7 +25,24 @@ This branch of liboqs aims to selectively incorporate allegedly quantum-resistan
 
 Implementations on this branch must meet certain acceptance criteria as indicated below.
 
-For a list of algorithms included in master branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/master/docs/algorithms).
+Algorithms currently included in liboqs master branch include:
+
+- Key encapsulation mechanisms
+	- **BIKE**: BIKE1-L1, BIKE1-L3, BIKE1-L5, BIKE2-L1, BIKE2-L3, BIKE2-L5, BIKE3-L1, BIKE3-L3, BIKE3-L5 (NIST Round 1 version)
+	- **FrodoKEM**: FrodoKEM-640-AES, FrodoKEM-640-SHAKE, FrodoKEM-976-AES, FrodoKEM-976-SHAKE, FrodoKEM-1344-AES, FrodoKEM-1344-SHAKE
+	- **Kyber**: Kyber512, Kyber768, Kyber1024
+	- **LEDAcrypt**: LEDAcrypt-KEM-LT-12, LEDAcrypt-KEM-LT-32, LEDAcrypt-KEM-LT-52 (with different public key format, see note in algorithm datasheet)
+	- **NewHope**: NewHope-512-CCA, NewHope-1024-CCA
+	- **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-877, NTRU-HRSS-701
+	- **SABER**: LightSaber-KEM, Saber-KEM, FireSaber-KEM
+	- **SIKE**: SIDH-p434, SIDH-p503, SIDH-p610, SIDH-p751, SIKE-p434, SIKE-p503, SIKE-p610, SIKE-p751
+- Signature schemes
+	- **Dilithium**: Dilithium2, Dilithium3, Dilithium4
+	- **MQDSS**: MQDSS-31-48, MQDSS-31-64
+	- **Picnic**: Picnic-L1-FS, Picnic-L1-UR, Picnic-L3-FS, Picnic-L3-UR, Picnic-L5-FS, Picnic-L5-UR, Picnic2-L1-FS, Picnic2-L3-FS, Picnic2-L5-FS
+	- **qTESLA**: qTESLA-I, qTESLA-III-size, qTESLA-III-speed (NIST Round 1 version)
+
+For details on algorithms included in master branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/master/docs/algorithms).
 
 Limitations and security
 ------------------------
@@ -144,7 +161,7 @@ There are also a variety of test programs built under the `tests` directory:
 
 - `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
 - `test_sig`: Simple test harness for all enabled key signature schemes
-- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values using `scripts/check_cats.sh`
+- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values using `scripts/check_kats.sh`
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
@@ -205,9 +222,17 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
 - `src/crypto/aes/aes_c.c`: public domain
-- `src/crypto/sha3`: public domain
-- `src/kem/newhopenist/optimized`: public domain
-- `src/sig/qtesla/external`: public domain
+- `src/crypto/sha3/fips202.c`: CC0 (public domain)
+- `src/crypto/sha3/keccak4x`: CC0 (public domain), except `brg_endian.h`
+- `src/kem/bike/x86_64`: Apache License v2.0
+- `src/kem/kyber/pqclean_*`: public domain
+- `src/kem/ledacrypt/pqclean_*`: public domain
+- `src/kem/newhope/pqclean_*`: public domain
+- `src/kem/ntru/pqclean_*`: public domain
+- `src/kem/saber/pqclean_*`: public domain
+- `src/sig/dilithium/pqclean_*`: public domain
+- `src/sig/mqdss/pqclean_*`: CC0 (public domain)
+- `src/sig/picnic/external/sha3`: CC0 (public domain)
 
 Team
 ----
@@ -226,11 +251,13 @@ Contributors to this master branch of liboqs include:
 - Javad Doliskani (University of Waterloo)
 - Vlad Gheorghiu (evolutionQ)
 - Shay Gueron (Amazon Web Services)
+- Torben Hansen (Royal Holloway University of London)
 - Tancrède Lepoint (SRI International)
 - Shravan Mishra (University of Waterloo)
 - Christian Paquin (Microsoft Research)
 - Alex Parent (University of Waterloo)
 - Peter Schwabe (Radboud University Nijmegen)
+- Dimitris Sikeridis (University of New Mexico, Cisco Systems)
 - Douglas Stebila (University of Waterloo)
 - [John Underhill](https://github.com/Steppenwolfe65/CEX)
 - Sebastian Verschoor (University of Waterloo)
