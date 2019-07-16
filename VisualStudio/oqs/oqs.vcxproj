@@ -63,6 +63,7 @@
     <ClInclude Include="..\..\src\common\common.h" />
     <ClInclude Include="..\..\src\common\rand.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes.h" />
+    <ClInclude Include="..\..\src\crypto\sha2\sha2.h" />
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\bitstream.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\compat.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="..\..\src\common\rand.c" />
     <ClCompile Include="..\..\src\common\rand_nist.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
+    <ClCompile Include="..\..\src\crypto\sha2\sha2_c.c" />
     <ClCompile Include="..\..\src\crypto\sha3\sha3_c.c" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
     <ClCompile Include="..\..\src\kem\kyber\kem_kyber_512.c" />
@@ -433,6 +435,7 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
@@ -475,6 +478,7 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
@@ -517,6 +521,7 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
@@ -567,6 +572,7 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
@@ -616,6 +622,7 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
@@ -662,6 +669,7 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
@@ -708,6 +716,7 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
@@ -762,6 +771,7 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
