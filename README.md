@@ -40,6 +40,7 @@ Algorithms currently included in liboqs master branch include:
 	- **MQDSS**: MQDSS-31-48, MQDSS-31-64
 	- **Picnic**: Picnic-L1-FS, Picnic-L1-UR, Picnic-L3-FS, Picnic-L3-UR, Picnic-L5-FS, Picnic-L5-UR, Picnic2-L1-FS, Picnic2-L3-FS, Picnic2-L5-FS
 	- **qTESLA**: qTESLA-I, qTESLA-III-size, qTESLA-III-speed (NIST Round 1 version)
+	- **Rainbow**: Rainbow-Ia-Classic, Rainbow-Ia-Cyclic, Rainbow-Ia-Cyclic-Compressed, Rainbow-IIIc-Classic, Rainbow-IIIc-Cyclic, Rainbow-IIIc-Cyclic-Compressed, Rainbow-Vc-Classic, Rainbow-Vc-Cyclic, Rainbow-Vc-Cyclic-Compressed
 
 For details on algorithms included in master branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/master/docs/algorithms).
 
@@ -234,6 +235,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/sig/dilithium/pqclean_*`: public domain
 - `src/sig/mqdss/pqclean_*`: CC0 (public domain)
 - `src/sig/picnic/external/sha3`: CC0 (public domain)
+- `src/sig/rainbow/pqclean_*`: CC0 (public domain)
 
 Team
 ----

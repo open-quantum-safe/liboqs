@@ -109,6 +109,14 @@ AC_DEFUN([CONFIG_FEATURES],
   ])
   AM_COND_IF([ENABLE_SIG_RAINBOW], [
     AC_DEFINE(OQS_ENABLE_SIG_rainbow_Ia_classic, 1, "Define to 1 when Rainbow-Ia-Classic enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Ia_cyclic, 1, "Define to 1 when Rainbow-Ia-Cyclic enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Ia_cyclic_compressed, 1, "Define to 1 when Rainbow-Ia-Cyclic-Compressed enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_rainbow_IIIc_classic, 1, "Define to 1 when Rainbow-IIIc-Classic enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_rainbow_IIIc_cyclic, 1, "Define to 1 when Rainbow-IIIc-Cyclic enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_rainbow_IIIc_cyclic_compressed, 1, "Define to 1 when Rainbow-IIIc-Cyclic-Compressed enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Vc_classic, 1, "Define to 1 when Rainbow-Vc-Classic enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Vc_cyclic, 1, "Define to 1 when Rainbow-Vc-Cyclic enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Vc_cyclic_compressed, 1, "Define to 1 when Rainbow-Vc-Cyclic-Compressed enabled")
   ])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AM_COND_IF_END
 

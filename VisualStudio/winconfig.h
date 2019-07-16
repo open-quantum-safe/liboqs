@@ -46,6 +46,14 @@
 #define OQS_ENABLE_SIG_mqdss_31_48
 #define OQS_ENABLE_SIG_mqdss_31_64
 #define OQS_ENABLE_SIG_rainbow_Ia_classic
+#define OQS_ENABLE_SIG_rainbow_Ia_cyclic
+#define OQS_ENABLE_SIG_rainbow_Ia_cyclic_compressed
+#define OQS_ENABLE_SIG_rainbow_IIIc_classic
+#define OQS_ENABLE_SIG_rainbow_IIIc_cyclic
+#define OQS_ENABLE_SIG_rainbow_IIIc_cyclic_compressed
+#define OQS_ENABLE_SIG_rainbow_Vc_classic
+#define OQS_ENABLE_SIG_rainbow_Vc_cyclic
+#define OQS_ENABLE_SIG_rainbow_Vc_cyclic_compressed
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_SIGS_END
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p434
 #define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS

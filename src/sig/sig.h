@@ -68,11 +68,27 @@ extern "C" {
 #define OQS_SIG_alg_mqdss_31_64 "MQDSS-31-64"
 /** Algorithm identifier for Rainbow-Ia-Classic */
 #define OQS_SIG_alg_rainbow_Ia_classic "Rainbow-Ia-Classic"
+/** Algorithm identifier for Rainbow-Ia-Cyclic */
+#define OQS_SIG_alg_rainbow_Ia_cyclic "Rainbow-Ia-Cyclic"
+/** Algorithm identifier for Rainbow-Ia-Cyclic-Compressed */
+#define OQS_SIG_alg_rainbow_Ia_cyclic_compressed "Rainbow-Ia-Cyclic-Compressed"
+/** Algorithm identifier for Rainbow-IIIc-Classic */
+#define OQS_SIG_alg_rainbow_IIIc_classic "Rainbow-IIIc-Classic"
+/** Algorithm identifier for Rainbow-IIIc-Cyclic */
+#define OQS_SIG_alg_rainbow_IIIc_cyclic "Rainbow-IIIc-Cyclic"
+/** Algorithm identifier for Rainbow-IIIc-Cyclic-Compressed */
+#define OQS_SIG_alg_rainbow_IIIc_cyclic_compressed "Rainbow-IIIc-Cyclic-Compressed"
+/** Algorithm identifier for Rainbow-Vc-Classic */
+#define OQS_SIG_alg_rainbow_Vc_classic "Rainbow-Vc-Classic"
+/** Algorithm identifier for Rainbow-Vc-Cyclic */
+#define OQS_SIG_alg_rainbow_Vc_cyclic "Rainbow-Vc-Cyclic"
+/** Algorithm identifier for Rainbow-Vc-Cyclic-Compressed */
+#define OQS_SIG_alg_rainbow_Vc_cyclic_compressed "Rainbow-Vc-Cyclic-Compressed"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 19
+#define OQS_SIG_algs_length 27
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**

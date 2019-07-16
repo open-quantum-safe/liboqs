@@ -154,3 +154,59 @@ sigs:
         implementation: clean
         sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
         visual_studio_guid: 383a4b2f-3be2-4fdc-890c-2c0b96dd407b
+      - 
+        scheme: "Ia_cyclic"
+        pqclean_scheme: rainbowIa-cyclic
+        pretty_name_full: Rainbow-Ia-Cyclic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
+        visual_studio_guid: 1d381fda-5d72-4e75-bda7-425da26fafd3
+      - 
+        scheme: "Ia_cyclic_compressed"
+        pqclean_scheme: rainbowIa-cyclic-compressed
+        pretty_name_full: Rainbow-Ia-Cyclic-Compressed
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
+        visual_studio_guid: 105adf1c-d79a-4fe1-b83a-bbee5f3fe9e3
+      - 
+        scheme: "IIIc_classic"
+        pqclean_scheme: rainbowIIIc-classic
+        pretty_name_full: Rainbow-IIIc-Classic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
+        visual_studio_guid: 66f609bd-ef1c-4f8c-bccd-6d1ec0a00d32
+      - 
+        scheme: "IIIc_cyclic"
+        pqclean_scheme: rainbowIIIc-cyclic
+        pretty_name_full: Rainbow-IIIc-Cyclic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
+        visual_studio_guid: d5b8951d-3341-422d-ad44-d170cd3050c2
+      - 
+        scheme: "IIIc_cyclic_compressed"
+        pqclean_scheme: rainbowIIIc-cyclic-compressed
+        pretty_name_full: Rainbow-IIIc-Cyclic-Compressed
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
+        visual_studio_guid: f85b2351-3730-4c73-86dd-326824670cb8
+      - 
+        scheme: "Vc_classic"
+        pqclean_scheme: rainbowVc-classic
+        pretty_name_full: Rainbow-Vc-Classic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
+        visual_studio_guid: fb503919-3b72-4053-99c6-efa69fcf99d3
+      - 
+        scheme: "Vc_cyclic"
+        pqclean_scheme: rainbowVc-cyclic
+        pretty_name_full: Rainbow-Vc-Cyclic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
+        visual_studio_guid: 0fbffeac-d3be-4222-b886-86438bfa94f5
+      - 
+        scheme: "Vc_cyclic_compressed"
+        pqclean_scheme: rainbowVc-cyclic-compressed
+        pretty_name_full: Rainbow-Vc-Cyclic-Compressed
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
+        visual_studio_guid: 6ebf00fe-7db0-44ae-99f8-c694388c8514
