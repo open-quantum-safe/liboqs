@@ -1,5 +1,5 @@
-liboqs nist-branch algorithm datasheet: `sig_dilithium`
-===================================================
+liboqs algorithm datasheet: `sig_dilithium`
+===========================================
 
 Summary
 -------

@@ -1,5 +1,5 @@
-liboqs nist-branch algorithm datasheet: `sig_mqdss`
-===================================================
+liboqs algorithm datasheet: `sig_mqdss`
+=======================================
 
 Summary
 -------

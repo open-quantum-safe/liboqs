@@ -1,5 +1,5 @@
-liboqs nist-branch algorithm datasheet: `sig_qtesla`
-===================================================
+liboqs algorithm datasheet: `sig_qtesla`
+========================================
 
 Summary
 -------

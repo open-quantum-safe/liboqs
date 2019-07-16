@@ -1,5 +1,5 @@
-liboqs nist-branch algorithm datasheet: `sig_picnic`
-===================================================
+liboqs algorithm datasheet: `sig_picnic`
+========================================
 
 Summary
 -------
