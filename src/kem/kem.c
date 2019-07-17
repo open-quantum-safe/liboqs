@@ -17,6 +17,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	    OQS_KEM_alg_kyber_512, OQS_KEM_alg_kyber_768, OQS_KEM_alg_kyber_1024,
 	    OQS_KEM_alg_newhope_512cca, OQS_KEM_alg_newhope_1024cca,
 	    OQS_KEM_alg_ntru_hps2048509, OQS_KEM_alg_ntru_hps2048677, OQS_KEM_alg_ntru_hps4096821, OQS_KEM_alg_ntru_hrss701,
+	    OQS_KEM_alg_ntskem_12_64,
 	    OQS_KEM_alg_saber_lightsaber, OQS_KEM_alg_saber_saber, OQS_KEM_alg_saber_firesaber,
 	    ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 	    OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_640_shake, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_976_shake, OQS_KEM_alg_frodokem_1344_aes, OQS_KEM_alg_frodokem_1344_shake,
@@ -145,6 +146,12 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntru_hrss701)) {
 #ifdef OQS_ENABLE_KEM_ntru_hrss701
 		return OQS_KEM_ntru_hrss701_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntskem_12_64)) {
+#ifdef OQS_ENABLE_KEM_ntskem_12_64
+		return OQS_KEM_ntskem_12_64_new();
 #else
 		return NULL;
 #endif

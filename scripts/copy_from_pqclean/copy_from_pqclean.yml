@@ -75,6 +75,17 @@ kems:
         sources: ['kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
         visual_studio_guid: 96485f85-7dd5-4df3-a1cd-769da06d3ada
   - 
+    name: ntskem
+    visual_studio_guid: 817e4056-82cd-42e0-ad10-2b4df0b7138c
+    schemes:
+      - 
+        scheme: "12_64"
+        pqclean_scheme: ntskem1264
+        pretty_name_full: NTS-KEM(12,64)
+        implementation: clean
+        sources: ['additive_fft.c', 'berlekamp_massey.c', 'ff.c', 'kem.c', 'm4r.c', 'matrix_ff2.c', 'nts_kem.c', 'polynomial.c', 'random.c', 'stack.c']
+        visual_studio_guid: 7b347895-119f-45ec-915c-888fd1159ad7
+  - 
     name: saber
     visual_studio_guid: 281a0a06-959f-43bb-afc3-d72cf9816fc5
     schemes:

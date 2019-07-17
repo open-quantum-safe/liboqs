@@ -263,6 +263,39 @@
     <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c">
       <Filter>ntru\hrss701</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\kem_ntskem_12_64.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\additive_fft.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\berlekamp_massey.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\ff.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\kem.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\m4r.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\matrix_ff2.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\nts_kem.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\polynomial.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\random.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ntskem\pqclean_ntskem1264_clean\stack.c">
+      <Filter>ntskem\12_64</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kem\saber\kem_saber_lightsaber.c">
       <Filter>saber\lightsaber</Filter>
     </ClCompile>
@@ -596,6 +629,9 @@
     <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h">
       <Filter>ntru</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kem\ntskem\kem_ntskem.h">
+      <Filter>ntskem</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\kem\saber\kem_saber.h">
       <Filter>saber</Filter>
     </ClInclude>
@@ -806,6 +842,12 @@
     </Filter>
     <Filter Include="ntru\hrss701">
       <UniqueIdentifier>{96485f85-7dd5-4df3-a1cd-769da06d3ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ntskem">
+      <UniqueIdentifier>{817e4056-82cd-42e0-ad10-2b4df0b7138c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ntskem\12_64">
+      <UniqueIdentifier>{7b347895-119f-45ec-915c-888fd1159ad7}</UniqueIdentifier>
     </Filter>
     <Filter Include="saber">
       <UniqueIdentifier>{281a0a06-959f-43bb-afc3-d72cf9816fc5}</UniqueIdentifier>

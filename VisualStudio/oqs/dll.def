@@ -34,6 +34,9 @@ EXPORTS
 	OQS_KEM_ntru_hrss701_decaps
 	OQS_KEM_ntru_hrss701_encaps
 	OQS_KEM_ntru_hrss701_keypair
+	OQS_KEM_ntskem_12_64_decaps
+	OQS_KEM_ntskem_12_64_encaps
+	OQS_KEM_ntskem_12_64_keypair
 	OQS_KEM_saber_lightsaber_decaps
 	OQS_KEM_saber_lightsaber_encaps
 	OQS_KEM_saber_lightsaber_keypair
