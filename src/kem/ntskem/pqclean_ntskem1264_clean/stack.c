@@ -24,48 +24,48 @@ stack* PQCLEAN_NTSKEM1264_CLEAN_stack_create()
     return s;
 }
 
-void PQCLEAN_NTSKEM1264_CLEAN_stack_free(stack *stack)
+void PQCLEAN_NTSKEM1264_CLEAN_stack_free(stack *s)
 {
-    if (stack) {
-        while (stack->size > 0) {
-            PQCLEAN_NTSKEM1264_CLEAN_stack_pop(stack);
+    if (s) {
+        while (s->size > 0) {
+            PQCLEAN_NTSKEM1264_CLEAN_stack_pop(s);
         }
-        free(stack);
-        stack = NULL;
+        free(s);
+        s = NULL;
     }
 }
 
-int PQCLEAN_NTSKEM1264_CLEAN_stack_push(stack *stack, void *ptr)
+int PQCLEAN_NTSKEM1264_CLEAN_stack_push(stack *s, void *ptr)
 {
     node *n = (node *)calloc(1, sizeof(node));
     if (!n)
         return 0;
     
     n->data = ptr;
-    n->prev = stack->top;
-    stack->top = n;
-    stack->size++;
+    n->prev = s->top;
+    s->top = n;
+    s->size++;
     
     return 1;
 }
 
-void* PQCLEAN_NTSKEM1264_CLEAN_stack_pop(stack *stack)
+void* PQCLEAN_NTSKEM1264_CLEAN_stack_pop(stack *s)
 {
     void *ptr = NULL;
-    node *n = stack->top;
+    node *n = s->top;
     if (!n)
         return NULL;
     
     ptr = n->data;
-    stack->top = n->prev;
+    s->top = n->prev;
     free(n);
     
-    stack->size--;
+    s->size--;
     
     return ptr;
 }
 
-size_t PQCLEAN_NTSKEM1264_CLEAN_stack_size(const stack *stack)
+size_t PQCLEAN_NTSKEM1264_CLEAN_stack_size(const stack *s)
 {
-    return stack->size;
+    return s->size;
 }

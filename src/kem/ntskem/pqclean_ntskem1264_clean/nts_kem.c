@@ -34,7 +34,7 @@ typedef struct {
     uint8_t z[ NTS_KEM_KEY_SIZE ];
 } NTSKEM_private;
 
-static const int kNTSKEMKeysize = NTS_KEM_KEY_SIZE;
+static const unsigned int kNTSKEMKeysize = NTS_KEM_KEY_SIZE;
 
 #define NTS_KEM_PARAM_A_REM		(((NTS_KEM_PARAM_A - (kNTSKEMKeysize << 3)) & MOD) >> 3)
 
