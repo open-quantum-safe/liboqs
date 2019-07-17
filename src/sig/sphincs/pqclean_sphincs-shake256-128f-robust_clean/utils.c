@@ -4,6 +4,7 @@
 #include "address.h"
 #include "hash.h"
 #include "params.h"
+#include "hash_state.h"
 #include "thash.h"
 #include "utils.h"
 
@@ -41,7 +42,8 @@ void PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_compute_root(
     unsigned char *root, const unsigned char *leaf,
     uint32_t leaf_idx, uint32_t idx_offset,
     const unsigned char *auth_path, uint32_t tree_height,
-    const unsigned char *pub_seed, uint32_t addr[8]) {
+    const unsigned char *pub_seed, uint32_t addr[8],
+    const hash_state *hash_state_seeded) {
     uint32_t i;
     unsigned char buffer[2 * SPX_N];
 
@@ -67,11 +69,11 @@ void PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_compute_root(
         /* Pick the right or left neighbor, depending on parity of the node. */
         if (leaf_idx & 1) {
             PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_thash_2(
-                buffer + SPX_N, buffer, pub_seed, addr);
+                buffer + SPX_N, buffer, pub_seed, addr, hash_state_seeded);
             memcpy(buffer, auth_path, SPX_N);
         } else {
             PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_thash_2(
-                buffer, buffer, pub_seed, addr);
+                buffer, buffer, pub_seed, addr, hash_state_seeded);
             memcpy(buffer + SPX_N, auth_path, SPX_N);
         }
         auth_path += SPX_N;
@@ -84,7 +86,7 @@ void PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_compute_root(
     PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_set_tree_index(
         addr, leaf_idx + idx_offset);
     PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_thash_2(
-        root, buffer, pub_seed, addr);
+        root, buffer, pub_seed, addr, hash_state_seeded);
 }
 
 /**
@@ -104,8 +106,10 @@ static void PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_treehash(
         unsigned char * /* leaf */,
         const unsigned char * /* sk_seed */,
         const unsigned char * /* pub_seed */,
-        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */),
-    uint32_t tree_addr[8]) {
+        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */,
+        const hash_state * /* hash_state_seeded */),
+    uint32_t tree_addr[8],
+    const hash_state *hash_state_seeded) {
 
     unsigned int offset = 0;
     uint32_t idx;
@@ -114,7 +118,8 @@ static void PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_treehash(
     for (idx = 0; idx < (uint32_t)(1 << tree_height); idx++) {
         /* Add the next leaf node to the stack. */
         gen_leaf(stack + offset * SPX_N,
-                 sk_seed, pub_seed, idx + idx_offset, tree_addr);
+                 sk_seed, pub_seed, idx + idx_offset, tree_addr,
+                 hash_state_seeded);
         offset++;
         heights[offset - 1] = 0;
 
@@ -136,7 +141,7 @@ static void PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_treehash(
             /* Hash the top-most nodes from the stack together. */
             PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_thash_2(
                 stack + (offset - 2)*SPX_N, stack + (offset - 2)*SPX_N,
-                pub_seed, tree_addr);
+                pub_seed, tree_addr, hash_state_seeded);
             offset--;
             /* Note that the top-most node is now one layer higher. */
             heights[offset - 1]++;
@@ -161,15 +166,16 @@ void PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_treehash_FORS_HEIGHT(
         unsigned char * /* leaf */,
         const unsigned char * /* sk_seed */,
         const unsigned char * /* pub_seed */,
-        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */),
-    uint32_t tree_addr[8]) {
+        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */,
+        const hash_state * /* hash_state_seeded */),
+    uint32_t tree_addr[8], const hash_state *hash_state_seeded) {
 
     unsigned char stack[(SPX_FORS_HEIGHT + 1)*SPX_N];
     unsigned int heights[SPX_FORS_HEIGHT + 1];
 
     PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_treehash(
         root, auth_path, stack, heights, sk_seed, pub_seed,
-        leaf_idx, idx_offset, SPX_FORS_HEIGHT, gen_leaf, tree_addr);
+        leaf_idx, idx_offset, SPX_FORS_HEIGHT, gen_leaf, tree_addr, hash_state_seeded);
 }
 
 void PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_treehash_TREE_HEIGHT(
@@ -180,13 +186,14 @@ void PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_treehash_TREE_HEIGHT(
         unsigned char * /* leaf */,
         const unsigned char * /* sk_seed */,
         const unsigned char * /* pub_seed */,
-        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */),
-    uint32_t tree_addr[8]) {
+        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */,
+        const hash_state * /* hash_state_seeded */),
+    uint32_t tree_addr[8], const hash_state *hash_state_seeded) {
 
     unsigned char stack[(SPX_TREE_HEIGHT + 1)*SPX_N];
     unsigned int heights[SPX_TREE_HEIGHT + 1];
 
     PQCLEAN_SPHINCSSHAKE256128FROBUST_CLEAN_treehash(
         root, auth_path, stack, heights, sk_seed, pub_seed,
-        leaf_idx, idx_offset, SPX_TREE_HEIGHT, gen_leaf, tree_addr);
+        leaf_idx, idx_offset, SPX_TREE_HEIGHT, gen_leaf, tree_addr, hash_state_seeded);
 }

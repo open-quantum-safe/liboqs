@@ -2,6 +2,7 @@
 #define SPX_UTILS_H
 
 #include "params.h"
+#include "hash_state.h"
 #include <stddef.h>
 #include <stdint.h>
 
@@ -25,7 +26,8 @@ void PQCLEAN_SPHINCSHARAKA128SROBUST_CLEAN_compute_root(
     unsigned char *root, const unsigned char *leaf,
     uint32_t leaf_idx, uint32_t idx_offset,
     const unsigned char *auth_path, uint32_t tree_height,
-    const unsigned char *pub_seed, uint32_t addr[8]);
+    const unsigned char *pub_seed, uint32_t addr[8],
+    const hash_state *hash_state_seeded);
 
 /**
  * For a given leaf index, computes the authentication path and the resulting
@@ -43,8 +45,9 @@ void PQCLEAN_SPHINCSHARAKA128SROBUST_CLEAN_treehash_FORS_HEIGHT(
         unsigned char * /* leaf */,
         const unsigned char * /* sk_seed */,
         const unsigned char * /* pub_seed */,
-        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */),
-    uint32_t tree_addr[8]);
+        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */,
+        const hash_state * /* hash_state_seeded */),
+    uint32_t tree_addr[8], const hash_state *hash_state_seeded);
 
 void PQCLEAN_SPHINCSHARAKA128SROBUST_CLEAN_treehash_TREE_HEIGHT(
     unsigned char *root, unsigned char *auth_path,
@@ -54,7 +57,8 @@ void PQCLEAN_SPHINCSHARAKA128SROBUST_CLEAN_treehash_TREE_HEIGHT(
         unsigned char * /* leaf */,
         const unsigned char * /* sk_seed */,
         const unsigned char * /* pub_seed */,
-        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */),
-    uint32_t tree_addr[8]);
+        uint32_t /* addr_idx */, const uint32_t[8] /* tree_addr */,
+        const hash_state * /* hash_state_seeded */),
+    uint32_t tree_addr[8], const hash_state *hash_state_seeded);
 
 #endif

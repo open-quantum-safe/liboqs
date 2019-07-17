@@ -5,25 +5,28 @@
 #include "address.h"
 #include "fors.h"
 #include "hash.h"
+#include "hash_state.h"
 #include "thash.h"
 #include "utils.h"
 
 static void fors_gen_sk(unsigned char *sk, const unsigned char *sk_seed,
-                        uint32_t fors_leaf_addr[8]) {
+                        uint32_t fors_leaf_addr[8], const hash_state *hash_state_seeded) {
     PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_prf_addr(
-        sk, sk_seed, fors_leaf_addr);
+        sk, sk_seed, fors_leaf_addr, hash_state_seeded);
 }
 
 static void fors_sk_to_leaf(unsigned char *leaf, const unsigned char *sk,
                             const unsigned char *pub_seed,
-                            uint32_t fors_leaf_addr[8]) {
+                            uint32_t fors_leaf_addr[8],
+                            const hash_state *hash_state_seeded) {
     PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_thash_1(
-        leaf, sk, pub_seed, fors_leaf_addr);
+        leaf, sk, pub_seed, fors_leaf_addr, hash_state_seeded);
 }
 
 static void fors_gen_leaf(unsigned char *leaf, const unsigned char *sk_seed,
                           const unsigned char *pub_seed,
-                          uint32_t addr_idx, const uint32_t fors_tree_addr[8]) {
+                          uint32_t addr_idx, const uint32_t fors_tree_addr[8],
+                          const hash_state *hash_state_seeded) {
     uint32_t fors_leaf_addr[8] = {0};
 
     /* Only copy the parts that must be kept in fors_leaf_addr. */
@@ -34,8 +37,8 @@ static void fors_gen_leaf(unsigned char *leaf, const unsigned char *sk_seed,
     PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_set_tree_index(
         fors_leaf_addr, addr_idx);
 
-    fors_gen_sk(leaf, sk_seed, fors_leaf_addr);
-    fors_sk_to_leaf(leaf, leaf, pub_seed, fors_leaf_addr);
+    fors_gen_sk(leaf, sk_seed, fors_leaf_addr, hash_state_seeded);
+    fors_sk_to_leaf(leaf, leaf, pub_seed, fors_leaf_addr, hash_state_seeded);
 }
 
 /**
@@ -64,7 +67,7 @@ void PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_fors_sign(
     unsigned char *sig, unsigned char *pk,
     const unsigned char *m,
     const unsigned char *sk_seed, const unsigned char *pub_seed,
-    const uint32_t fors_addr[8]) {
+    const uint32_t fors_addr[8], const hash_state *hash_state_seeded) {
     uint32_t indices[SPX_FORS_TREES];
     unsigned char roots[SPX_FORS_TREES * SPX_N];
     uint32_t fors_tree_addr[8] = {0};
@@ -93,19 +96,20 @@ void PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_fors_sign(
             fors_tree_addr, indices[i] + idx_offset);
 
         /* Include the secret key part that produces the selected leaf node. */
-        fors_gen_sk(sig, sk_seed, fors_tree_addr);
+        fors_gen_sk(sig, sk_seed, fors_tree_addr, hash_state_seeded);
         sig += SPX_N;
 
         /* Compute the authentication path for this leaf node. */
         PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_treehash_FORS_HEIGHT(
             roots + i * SPX_N, sig, sk_seed, pub_seed,
-            indices[i], idx_offset, fors_gen_leaf, fors_tree_addr);
+            indices[i], idx_offset, fors_gen_leaf, fors_tree_addr,
+            hash_state_seeded);
         sig += SPX_N * SPX_FORS_HEIGHT;
     }
 
     /* Hash horizontally across all tree roots to derive the public key. */
     PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_thash_FORS_TREES(
-        pk, roots, pub_seed, fors_pk_addr);
+        pk, roots, pub_seed, fors_pk_addr, hash_state_seeded);
 }
 
 /**
@@ -118,7 +122,8 @@ void PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_fors_sign(
 void PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_fors_pk_from_sig(
     unsigned char *pk,
     const unsigned char *sig, const unsigned char *m,
-    const unsigned char *pub_seed, const uint32_t fors_addr[8]) {
+    const unsigned char *pub_seed, const uint32_t fors_addr[8],
+    const hash_state *hash_state_seeded) {
     uint32_t indices[SPX_FORS_TREES];
     unsigned char roots[SPX_FORS_TREES * SPX_N];
     unsigned char leaf[SPX_N];
@@ -148,17 +153,17 @@ void PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_fors_pk_from_sig(
             fors_tree_addr, indices[i] + idx_offset);
 
         /* Derive the leaf from the included secret key part. */
-        fors_sk_to_leaf(leaf, sig, pub_seed, fors_tree_addr);
+        fors_sk_to_leaf(leaf, sig, pub_seed, fors_tree_addr, hash_state_seeded);
         sig += SPX_N;
 
         /* Derive the corresponding root node of this tree. */
         PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_compute_root(
             roots + i * SPX_N, leaf, indices[i], idx_offset, sig,
-            SPX_FORS_HEIGHT, pub_seed, fors_tree_addr);
+            SPX_FORS_HEIGHT, pub_seed, fors_tree_addr, hash_state_seeded);
         sig += SPX_N * SPX_FORS_HEIGHT;
     }
 
     /* Hash horizontally across all tree roots to derive the public key. */
     PQCLEAN_SPHINCSHARAKA128FROBUST_CLEAN_thash_FORS_TREES(
-        pk, roots, pub_seed, fors_pk_addr);
+        pk, roots, pub_seed, fors_pk_addr, hash_state_seeded);
 }

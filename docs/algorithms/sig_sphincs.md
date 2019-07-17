@@ -46,10 +46,10 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/PQClean/PQClean
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/3d7cbefd3b9f9f2b98745edd88118db95f575edf
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/4f19ea25d04ac89d4aa140509ff251a9ca95c006
 - **License:** CC0 1.0 Universal
 - **Language:** C
 - **Constant-time:** Yes
 - **Architectures supported in liboqs master branch**: x86, x64
 
-**Note** The SHA256 variants have not yet been implemented.  The Haraka variants are not thread-safe.  See https://github.com/PQClean/PQClean/issues/168.
+**Note** The SHA256 variants have not yet been implemented.

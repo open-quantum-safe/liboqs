@@ -7,6 +7,7 @@
 #include "fors.h"
 #include "hash.h"
 #include "params.h"
+#include "hash_state.h"
 #include "randombytes.h"
 #include "thash.h"
 #include "utils.h"
@@ -18,7 +19,8 @@
  */
 static void wots_gen_leaf(unsigned char *leaf, const unsigned char *sk_seed,
                           const unsigned char *pub_seed,
-                          uint32_t addr_idx, const uint32_t tree_addr[8]) {
+                          uint32_t addr_idx, const uint32_t tree_addr[8],
+                          const hash_state *hash_state_seeded) {
     unsigned char pk[SPX_WOTS_BYTES];
     uint32_t wots_addr[8] = {0};
     uint32_t wots_pk_addr[8] = {0};
@@ -33,12 +35,12 @@ static void wots_gen_leaf(unsigned char *leaf, const unsigned char *sk_seed,
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_set_keypair_addr(
         wots_addr, addr_idx);
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_wots_gen_pk(
-        pk, sk_seed, pub_seed, wots_addr);
+        pk, sk_seed, pub_seed, wots_addr, hash_state_seeded);
 
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_copy_keypair_addr(
         wots_pk_addr, wots_addr);
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_thash_WOTS_LEN(
-        leaf, pk, pub_seed, wots_pk_addr);
+        leaf, pk, pub_seed, wots_pk_addr, hash_state_seeded);
 }
 
 /*
@@ -81,6 +83,7 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_seed_keypair(
        in one function. */
     unsigned char auth_path[SPX_TREE_HEIGHT * SPX_N];
     uint32_t top_tree_addr[8] = {0};
+    hash_state hash_state_seeded;
 
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_set_layer_addr(
         top_tree_addr, SPX_D - 1);
@@ -94,12 +97,12 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_seed_keypair(
 
     /* This hook allows the hash function instantiation to do whatever
        preparation or computation it needs, based on the public seed. */
-    PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_initialize_hash_function(pk, sk);
+    PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_initialize_hash_function(&hash_state_seeded, pk, sk);
 
     /* Compute root node of the top-most subtree. */
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_treehash_TREE_HEIGHT(
         sk + 3 * SPX_N, auth_path, sk, sk + 2 * SPX_N, 0, 0,
-        wots_gen_leaf, top_tree_addr);
+        wots_gen_leaf, top_tree_addr, &hash_state_seeded);
 
     memcpy(pk + SPX_N, sk + 3 * SPX_N, SPX_N);
 
@@ -141,9 +144,12 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_signature(
     uint32_t wots_addr[8] = {0};
     uint32_t tree_addr[8] = {0};
 
+    hash_state hash_state_seeded;
+
     /* This hook allows the hash function instantiation to do whatever
        preparation or computation it needs, based on the public seed. */
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_initialize_hash_function(
+        &hash_state_seeded,
         pub_seed, sk_seed);
 
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_set_type(
@@ -157,11 +163,11 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_signature(
     randombytes(optrand, SPX_N);
     /* Compute the digest randomization value. */
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_gen_message_random(
-        sig, sk_prf, optrand, m, mlen);
+        sig, sk_prf, optrand, m, mlen, &hash_state_seeded);
 
     /* Derive the message digest and leaf index from R, PK and M. */
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_hash_message(
-        mhash, &tree, &idx_leaf, sig, pk, m, mlen);
+        mhash, &tree, &idx_leaf, sig, pk, m, mlen, &hash_state_seeded);
     sig += SPX_N;
 
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_set_tree_addr(wots_addr, tree);
@@ -170,7 +176,7 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_signature(
 
     /* Sign the message hash using FORS. */
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_fors_sign(
-        sig, root, mhash, sk_seed, pub_seed, wots_addr);
+        sig, root, mhash, sk_seed, pub_seed, wots_addr, &hash_state_seeded);
     sig += SPX_FORS_BYTES;
 
     for (i = 0; i < SPX_D; i++) {
@@ -184,13 +190,13 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_signature(
 
         /* Compute a WOTS signature. */
         PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_wots_sign(
-            sig, root, sk_seed, pub_seed, wots_addr);
+            sig, root, sk_seed, pub_seed, wots_addr, &hash_state_seeded);
         sig += SPX_WOTS_BYTES;
 
         /* Compute the authentication path for the used WOTS leaf. */
         PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_treehash_TREE_HEIGHT(
             root, sig, sk_seed, pub_seed, idx_leaf, 0,
-            wots_gen_leaf, tree_addr);
+            wots_gen_leaf, tree_addr, &hash_state_seeded);
         sig += SPX_TREE_HEIGHT * SPX_N;
 
         /* Update the indices for the next layer. */
@@ -222,6 +228,8 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_verify(
     uint32_t tree_addr[8] = {0};
     uint32_t wots_pk_addr[8] = {0};
 
+    hash_state hash_state_seeded;
+
     if (siglen != SPX_BYTES) {
         return -1;
     }
@@ -229,6 +237,7 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_verify(
     /* This hook allows the hash function instantiation to do whatever
        preparation or computation it needs, based on the public seed. */
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_initialize_hash_function(
+        &hash_state_seeded,
         pub_seed, NULL);
 
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_set_type(
@@ -241,7 +250,7 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_verify(
     /* Derive the message digest and leaf index from R || PK || M. */
     /* The additional SPX_N is a result of the hash domain separator. */
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_hash_message(
-        mhash, &tree, &idx_leaf, sig, pk, m, mlen);
+        mhash, &tree, &idx_leaf, sig, pk, m, mlen, &hash_state_seeded);
     sig += SPX_N;
 
     /* Layer correctly defaults to 0, so no need to set_layer_addr */
@@ -250,7 +259,7 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_verify(
         wots_addr, idx_leaf);
 
     PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_fors_pk_from_sig(
-        root, sig, mhash, pub_seed, wots_addr);
+        root, sig, mhash, pub_seed, wots_addr, &hash_state_seeded);
     sig += SPX_FORS_BYTES;
 
     /* For each subtree.. */
@@ -270,17 +279,17 @@ int PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_crypto_sign_verify(
         /* Initially, root is the FORS pk, but on subsequent iterations it is
            the root of the subtree below the currently processed subtree. */
         PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_wots_pk_from_sig(
-            wots_pk, sig, root, pub_seed, wots_addr);
+            wots_pk, sig, root, pub_seed, wots_addr, &hash_state_seeded);
         sig += SPX_WOTS_BYTES;
 
         /* Compute the leaf node using the WOTS public key. */
         PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_thash_WOTS_LEN(
-            leaf, wots_pk, pub_seed, wots_pk_addr);
+            leaf, wots_pk, pub_seed, wots_pk_addr, &hash_state_seeded);
 
         /* Compute the root node of this subtree. */
         PQCLEAN_SPHINCSHARAKA192FSIMPLE_CLEAN_compute_root(
             root, leaf, idx_leaf, 0, sig, SPX_TREE_HEIGHT,
-            pub_seed, tree_addr);
+            pub_seed, tree_addr, &hash_state_seeded);
         sig += SPX_TREE_HEIGHT * SPX_N;
 
         /* Update the indices for the next layer. */
