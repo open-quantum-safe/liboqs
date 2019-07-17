@@ -5,7 +5,7 @@
 
 #ifdef OQS_ENABLE_KEM_ntruprime_ntrulpr653
 #define OQS_KEM_ntruprime_ntrulpr653_length_public_key 897
-#define OQS_KEM_ntruprime_ntrulpr653_length_secret_key 
+#define OQS_KEM_ntruprime_ntrulpr653_length_secret_key 1125
 #define OQS_KEM_ntruprime_ntrulpr653_length_ciphertext 1025
 #define OQS_KEM_ntruprime_ntrulpr653_length_shared_secret 32
 OQS_KEM *OQS_KEM_ntruprime_ntrulpr653_new();
@@ -16,7 +16,7 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr653_decaps(uint8_t *shared_secret, c
 
 #ifdef OQS_ENABLE_KEM_ntruprime_ntrulpr761
 #define OQS_KEM_ntruprime_ntrulpr761_length_public_key 1039
-#define OQS_KEM_ntruprime_ntrulpr761_length_secret_key 
+#define OQS_KEM_ntruprime_ntrulpr761_length_secret_key 1294
 #define OQS_KEM_ntruprime_ntrulpr761_length_ciphertext 1167
 #define OQS_KEM_ntruprime_ntrulpr761_length_shared_secret 32
 OQS_KEM *OQS_KEM_ntruprime_ntrulpr761_new();
@@ -27,7 +27,7 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr761_decaps(uint8_t *shared_secret, c
 
 #ifdef OQS_ENABLE_KEM_ntruprime_ntrulpr857
 #define OQS_KEM_ntruprime_ntrulpr857_length_public_key 1184
-#define OQS_KEM_ntruprime_ntrulpr857_length_secret_key 
+#define OQS_KEM_ntruprime_ntrulpr857_length_secret_key 1463
 #define OQS_KEM_ntruprime_ntrulpr857_length_ciphertext 1312
 #define OQS_KEM_ntruprime_ntrulpr857_length_shared_secret 32
 OQS_KEM *OQS_KEM_ntruprime_ntrulpr857_new();
