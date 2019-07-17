@@ -38,7 +38,6 @@
     <ClInclude Include="..\..\src\kem\kem.h" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_START -->
     <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h" />
-    <ClInclude Include="..\..\src\kem\ledacrypt\kem_ledacrypt.h" />
     <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h" />
     <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h" />
     <ClInclude Include="..\..\src\kem\saber\kem_saber.h" />
@@ -136,33 +135,6 @@
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\reduce.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\verify.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\kem_ledacrypt_kem_lt_12.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\bf_decoding.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\dfr_test.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\gf2x_arith_mod_xPplusOne.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\gf2x_arith.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\H_Q_matrices_generation.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\kem.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\niederreiter.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\rng.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\kem_ledacrypt_kem_lt_32.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\bf_decoding.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\dfr_test.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\gf2x_arith_mod_xPplusOne.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\gf2x_arith.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\H_Q_matrices_generation.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\kem.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\niederreiter.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\rng.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\kem_ledacrypt_kem_lt_52.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\bf_decoding.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\dfr_test.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\gf2x_arith_mod_xPplusOne.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\gf2x_arith.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\H_Q_matrices_generation.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\kem.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\niederreiter.c" />
-    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\rng.c" />
     <ClCompile Include="..\..\src\kem\newhope\kem_newhope_512cca.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\cpapke.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\kem.c" />
@@ -465,7 +437,6 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\ledacrypt\kem_ledacrypt.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
@@ -508,7 +479,6 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\ledacrypt\kem_ledacrypt.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
@@ -551,7 +521,6 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\ledacrypt\kem_ledacrypt.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
@@ -602,7 +571,6 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\ledacrypt\kem_ledacrypt.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
@@ -652,7 +620,6 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\ledacrypt\kem_ledacrypt.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
@@ -699,7 +666,6 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\ledacrypt\kem_ledacrypt.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
@@ -746,7 +712,6 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\ledacrypt\kem_ledacrypt.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
@@ -801,7 +766,6 @@ copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\ledacrypt\kem_ledacrypt.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"

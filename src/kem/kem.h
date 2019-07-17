@@ -56,12 +56,6 @@ extern "C" {
 #define OQS_KEM_alg_kyber_768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber_1024 "Kyber1024"
-/** Algorithm identifier for LEDAcrypt-KEM-LT-12 KEM. */
-#define OQS_KEM_alg_ledacrypt_kem_lt_12 "LEDAcrypt-KEM-LT-12"
-/** Algorithm identifier for LEDAcrypt-KEM-LT-32 KEM. */
-#define OQS_KEM_alg_ledacrypt_kem_lt_32 "LEDAcrypt-KEM-LT-32"
-/** Algorithm identifier for LEDAcrypt-KEM-LT-52 KEM. */
-#define OQS_KEM_alg_ledacrypt_kem_lt_52 "LEDAcrypt-KEM-LT-52"
 /** Algorithm identifier for NewHope-512-CCA KEM. */
 #define OQS_KEM_alg_newhope_512cca "NewHope-512-CCA"
 /** Algorithm identifier for NewHope-1024-CCA KEM. */
@@ -112,7 +106,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 39
+#define OQS_KEM_algs_length 36
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -278,7 +272,6 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_bike.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
 #include <oqs/kem_kyber.h>
-#include <oqs/kem_ledacrypt.h>
 #include <oqs/kem_newhope.h>
 #include <oqs/kem_ntru.h>
 #include <oqs/kem_saber.h>

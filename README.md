@@ -31,7 +31,6 @@ Algorithms currently included in liboqs master branch include:
 	- **BIKE**: BIKE1-L1, BIKE1-L3, BIKE1-L5, BIKE2-L1, BIKE2-L3, BIKE2-L5, BIKE3-L1, BIKE3-L3, BIKE3-L5 (NIST Round 1 version)
 	- **FrodoKEM**: FrodoKEM-640-AES, FrodoKEM-640-SHAKE, FrodoKEM-976-AES, FrodoKEM-976-SHAKE, FrodoKEM-1344-AES, FrodoKEM-1344-SHAKE
 	- **Kyber**: Kyber512, Kyber768, Kyber1024
-	- **LEDAcrypt**: LEDAcrypt-KEM-LT-12, LEDAcrypt-KEM-LT-32, LEDAcrypt-KEM-LT-52 (with different public key format, see note in algorithm datasheet)
 	- **NewHope**: NewHope-512-CCA, NewHope-1024-CCA
 	- **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-877, NTRU-HRSS-701
 	- **SABER**: LightSaber-KEM, Saber-KEM, FireSaber-KEM
@@ -226,7 +225,6 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/crypto/sha3/keccak4x`: CC0 (public domain), except `brg_endian.h`
 - `src/kem/bike/x86_64`: Apache License v2.0
 - `src/kem/kyber/pqclean_*`: public domain
-- `src/kem/ledacrypt/pqclean_*`: public domain
 - `src/kem/newhope/pqclean_*`: public domain
 - `src/kem/ntru/pqclean_*`: public domain
 - `src/kem/saber/pqclean_*`: public domain
