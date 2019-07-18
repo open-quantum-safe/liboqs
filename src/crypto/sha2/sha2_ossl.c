@@ -66,4 +66,9 @@ void OQS_SHA2_sha256_inc_finalize(uint8_t *out, void *state, const uint8_t *in, 
 	EVP_MD_CTX_free((EVP_MD_CTX *) state);
 }
 
+void OQS_SHA2_sha256_inc_dupe_state(void **stateout, const void *statein) {
+	OQS_SHA2_sha256_inc_init(stateout);
+	EVP_MD_CTX_copy_ex(*stateout, statein);
+}
+
 #endif
