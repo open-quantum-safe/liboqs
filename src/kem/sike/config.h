@@ -16,36 +16,14 @@
 #define OS_WIN 1
 #define OS_LINUX 2
 
-// FIXMEOQS: define a few things, need to link to the build system
-#define OS_TARGET OS_LINUX
-#define _GENERIC_
-#define _AMD64_
-// FIXMEOQS: ====================
-/*
-#if defined(__WINDOWS__)        // Microsoft Windows OS
+#if defined(_WIN32) // Microsoft Windows OS
     #define OS_TARGET OS_WIN
-#elif defined(__LINUX__)        // Linux OS
-    #define OS_TARGET OS_LINUX 
 #else
-    #error -- "Unsupported OS"
+    #define OS_TARGET OS_LINUX // default to Linux
 #endif
-*/
 
-// Definition of compiler
 
-#define COMPILER_VC 1
-#define COMPILER_GCC 2
-#define COMPILER_CLANG 3
-
-#if defined(_MSC_VER) // Microsoft Visual C compiler
-#define COMPILER COMPILER_VC
-#elif defined(__GNUC__) // GNU GCC compiler
-#define COMPILER COMPILER_GCC
-#elif defined(__clang__) // Clang compiler
-#define COMPILER COMPILER_CLANG
-#else
-#error-- "Unsupported COMPILER"
-#endif
+// Definition of compiler (removed in OQS)
 
 // Definition of the targeted architecture and basic data types
 
@@ -92,13 +70,13 @@ typedef uint64_t digit_t; // Unsigned 64-bit digit
 
 #if defined(GENERIC_IMPLEMENTATION)
 typedef uint64_t uint128_t[2];
-#elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_LINUX) && (COMPILER == COMPILER_GCC || COMPILER == COMPILER_CLANG)
+#elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_LINUX)
 #define UINT128_SUPPORT
 typedef unsigned uint128_t __attribute__((mode(TI)));
-#elif (TARGET == TARGET_ARM64 && OS_TARGET == OS_LINUX) && (COMPILER == COMPILER_GCC || COMPILER == COMPILER_CLANG)
+#elif (TARGET == TARGET_ARM64 && OS_TARGET == OS_LINUX)
 #define UINT128_SUPPORT
 typedef unsigned uint128_t __attribute__((mode(TI)));
-#elif (TARGET == TARGET_AMD64) && (OS_TARGET == OS_WIN && COMPILER == COMPILER_VC)
+#elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_WIN)
 #define SCALAR_INTRIN_SUPPORT
 typedef uint64_t uint128_t[2];
 #else

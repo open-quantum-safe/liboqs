@@ -32,11 +32,11 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
   # Enable assembly optimizations here
   case $host_cpu in
     x86_64* )
-        AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=x86-64"
+        AM_CPPFLAGS=${AM_CPPFLAGS}" -march=x86-64"
         x86_64=true
         ;;
     aarch64* )
-       AM_CPPFLAGS=${AM_CPPFLAGS}" -DSIDH_ASM -march=armv8-a+crc"
+       AM_CPPFLAGS=${AM_CPPFLAGS}" -march=armv8-a+crc"
        arm64=true
        ;;
     arm* )
@@ -49,6 +49,7 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
         ;;
   esac
   
+  AM_CONDITIONAL([X86], [test "x$x86" = xtrue])
   AM_CONDITIONAL([X86_64], [test "x$x86_64" = xtrue])
   AM_CONDITIONAL([ARM64], [test "x$arm64" = xtrue])
   AM_CONDITIONAL([ARM], [test "x$arm" = xtrue])
