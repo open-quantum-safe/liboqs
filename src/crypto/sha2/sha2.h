@@ -52,6 +52,10 @@ void OQS_SHA2_sha384(uint8_t *output, const uint8_t *input, size_t inplen);
  */
 void OQS_SHA2_sha512(uint8_t *output, const uint8_t *input, size_t inplen);
 
+void OQS_SHA2_sha256_inc_init(void **state);
+void OQS_SHA2_sha256_inc_blocks(void *state, const uint8_t *in, size_t inblocks);
+void OQS_SHA2_sha256_inc_finalize(uint8_t *out, void *state, const uint8_t *in, size_t inlen);
+
 #if defined(__cplusplus)
 } // extern "C"
 #endif
