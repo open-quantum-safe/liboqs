@@ -232,6 +232,90 @@ sigs:
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_simple.c', 'haraka.c']
         visual_studio_guid: 40b4c623-511f-4235-be9b-9ff675457fe5
       - 
+        scheme: sha256_128f_robust
+        pqclean_scheme: sphincs-sha256-128f-robust
+        pretty_name_full: SHPINCS+-SHA256-128f-robust
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
+        visual_studio_guid: f569c3b0-c6ba-4157-a858-a5fc52d51515
+      - 
+        scheme: sha256_128f_simple
+        pqclean_scheme: sphincs-sha256-128f-simple
+        pretty_name_full: SHPINCS+-SHA256-128f-simple
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
+        visual_studio_guid: 1be5ba25-e61c-4218-a949-129b3422d6d8
+      - 
+        scheme: sha256_128s_robust
+        pqclean_scheme: sphincs-sha256-128s-robust
+        pretty_name_full: SHPINCS+-SHA256-128s-robust
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
+        visual_studio_guid: c2b7b42f-bebf-4a92-8f97-e12740a2f287
+      - 
+        scheme: sha256_128s_simple
+        pqclean_scheme: sphincs-sha256-128s-simple
+        pretty_name_full: SHPINCS+-SHA256-128s-simple
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
+        visual_studio_guid: b380048d-601c-46d6-acb8-591a2c4e1854
+      - 
+        scheme: sha256_192f_robust
+        pqclean_scheme: sphincs-sha256-192f-robust
+        pretty_name_full: SHPINCS+-SHA256-192f-robust
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
+        visual_studio_guid: 639a3ad2-1d05-445a-b9ea-9112fe8a6e7d
+      - 
+        scheme: sha256_192f_simple
+        pqclean_scheme: sphincs-sha256-192f-simple
+        pretty_name_full: SHPINCS+-SHA256-192f-simple
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
+        visual_studio_guid: eea572d4-7c0a-4d63-bd4d-5d038223a922
+      - 
+        scheme: sha256_192s_robust
+        pqclean_scheme: sphincs-sha256-192s-robust
+        pretty_name_full: SHPINCS+-SHA256-192s-robust
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
+        visual_studio_guid: 1972ed56-876a-4eca-aadd-91886adfe290
+      - 
+        scheme: sha256_192s_simple
+        pqclean_scheme: sphincs-sha256-192s-simple
+        pretty_name_full: SHPINCS+-SHA256-192s-simple
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
+        visual_studio_guid: 10d0a3dd-b2b8-4e74-b59c-dc94ea84b7c1
+      - 
+        scheme: sha256_256f_robust
+        pqclean_scheme: sphincs-sha256-256f-robust
+        pretty_name_full: SHPINCS+-SHA256-256f-robust
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
+        visual_studio_guid: 945476fd-8435-4df8-9b4b-c04e74aa6d03
+      - 
+        scheme: sha256_256f_simple
+        pqclean_scheme: sphincs-sha256-256f-simple
+        pretty_name_full: SHPINCS+-SHA256-256f-simple
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
+        visual_studio_guid: d70d780f-3ff0-4146-a6ce-8801bc157f83
+      - 
+        scheme: sha256_256s_robust
+        pqclean_scheme: sphincs-sha256-256s-robust
+        pretty_name_full: SHPINCS+-SHA256-256s-robust
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
+        visual_studio_guid: fd789855-13bb-40e9-a09f-9086dd62ab93
+      - 
+        scheme: sha256_256s_simple
+        pqclean_scheme: sphincs-sha256-256s-simple
+        pretty_name_full: SHPINCS+-SHA256-256s-simple
+        implementation: clean
+        sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
+        visual_studio_guid: 4823fa89-43de-45b0-ac13-3de5345ce48b
+      - 
         scheme: shake256_128f_robust
         pqclean_scheme: sphincs-shake256-128f-robust
         pretty_name_full: SHPINCS+-SHAKE256-128f-robust

@@ -767,6 +767,330 @@
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\haraka.c">
       <Filter>sphincs\haraka_256s_simple</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128f_robust.c">
+      <Filter>sphincs\sha256_128f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\address.c">
+      <Filter>sphincs\sha256_128f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\wots.c">
+      <Filter>sphincs\sha256_128f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\utils.c">
+      <Filter>sphincs\sha256_128f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\fors.c">
+      <Filter>sphincs\sha256_128f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\sign.c">
+      <Filter>sphincs\sha256_128f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_128f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\thash_sha256_robust.c">
+      <Filter>sphincs\sha256_128f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\sha256.c">
+      <Filter>sphincs\sha256_128f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128f_simple.c">
+      <Filter>sphincs\sha256_128f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\address.c">
+      <Filter>sphincs\sha256_128f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\wots.c">
+      <Filter>sphincs\sha256_128f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\utils.c">
+      <Filter>sphincs\sha256_128f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\fors.c">
+      <Filter>sphincs\sha256_128f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\sign.c">
+      <Filter>sphincs\sha256_128f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_128f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\thash_sha256_simple.c">
+      <Filter>sphincs\sha256_128f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\sha256.c">
+      <Filter>sphincs\sha256_128f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128s_robust.c">
+      <Filter>sphincs\sha256_128s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\address.c">
+      <Filter>sphincs\sha256_128s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\wots.c">
+      <Filter>sphincs\sha256_128s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\utils.c">
+      <Filter>sphincs\sha256_128s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\fors.c">
+      <Filter>sphincs\sha256_128s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\sign.c">
+      <Filter>sphincs\sha256_128s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_128s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\thash_sha256_robust.c">
+      <Filter>sphincs\sha256_128s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\sha256.c">
+      <Filter>sphincs\sha256_128s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128s_simple.c">
+      <Filter>sphincs\sha256_128s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\address.c">
+      <Filter>sphincs\sha256_128s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\wots.c">
+      <Filter>sphincs\sha256_128s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\utils.c">
+      <Filter>sphincs\sha256_128s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\fors.c">
+      <Filter>sphincs\sha256_128s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\sign.c">
+      <Filter>sphincs\sha256_128s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_128s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\thash_sha256_simple.c">
+      <Filter>sphincs\sha256_128s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\sha256.c">
+      <Filter>sphincs\sha256_128s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192f_robust.c">
+      <Filter>sphincs\sha256_192f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\address.c">
+      <Filter>sphincs\sha256_192f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\wots.c">
+      <Filter>sphincs\sha256_192f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\utils.c">
+      <Filter>sphincs\sha256_192f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\fors.c">
+      <Filter>sphincs\sha256_192f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\sign.c">
+      <Filter>sphincs\sha256_192f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_192f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\thash_sha256_robust.c">
+      <Filter>sphincs\sha256_192f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\sha256.c">
+      <Filter>sphincs\sha256_192f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192f_simple.c">
+      <Filter>sphincs\sha256_192f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\address.c">
+      <Filter>sphincs\sha256_192f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\wots.c">
+      <Filter>sphincs\sha256_192f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\utils.c">
+      <Filter>sphincs\sha256_192f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\fors.c">
+      <Filter>sphincs\sha256_192f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\sign.c">
+      <Filter>sphincs\sha256_192f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_192f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\thash_sha256_simple.c">
+      <Filter>sphincs\sha256_192f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\sha256.c">
+      <Filter>sphincs\sha256_192f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192s_robust.c">
+      <Filter>sphincs\sha256_192s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\address.c">
+      <Filter>sphincs\sha256_192s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\wots.c">
+      <Filter>sphincs\sha256_192s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\utils.c">
+      <Filter>sphincs\sha256_192s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\fors.c">
+      <Filter>sphincs\sha256_192s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\sign.c">
+      <Filter>sphincs\sha256_192s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_192s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\thash_sha256_robust.c">
+      <Filter>sphincs\sha256_192s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\sha256.c">
+      <Filter>sphincs\sha256_192s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192s_simple.c">
+      <Filter>sphincs\sha256_192s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\address.c">
+      <Filter>sphincs\sha256_192s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\wots.c">
+      <Filter>sphincs\sha256_192s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\utils.c">
+      <Filter>sphincs\sha256_192s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\fors.c">
+      <Filter>sphincs\sha256_192s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\sign.c">
+      <Filter>sphincs\sha256_192s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_192s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\thash_sha256_simple.c">
+      <Filter>sphincs\sha256_192s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\sha256.c">
+      <Filter>sphincs\sha256_192s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256f_robust.c">
+      <Filter>sphincs\sha256_256f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\address.c">
+      <Filter>sphincs\sha256_256f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\wots.c">
+      <Filter>sphincs\sha256_256f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\utils.c">
+      <Filter>sphincs\sha256_256f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\fors.c">
+      <Filter>sphincs\sha256_256f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\sign.c">
+      <Filter>sphincs\sha256_256f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_256f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\thash_sha256_robust.c">
+      <Filter>sphincs\sha256_256f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\sha256.c">
+      <Filter>sphincs\sha256_256f_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256f_simple.c">
+      <Filter>sphincs\sha256_256f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\address.c">
+      <Filter>sphincs\sha256_256f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\wots.c">
+      <Filter>sphincs\sha256_256f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\utils.c">
+      <Filter>sphincs\sha256_256f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\fors.c">
+      <Filter>sphincs\sha256_256f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\sign.c">
+      <Filter>sphincs\sha256_256f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_256f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\thash_sha256_simple.c">
+      <Filter>sphincs\sha256_256f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\sha256.c">
+      <Filter>sphincs\sha256_256f_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256s_robust.c">
+      <Filter>sphincs\sha256_256s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\address.c">
+      <Filter>sphincs\sha256_256s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\wots.c">
+      <Filter>sphincs\sha256_256s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\utils.c">
+      <Filter>sphincs\sha256_256s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\fors.c">
+      <Filter>sphincs\sha256_256s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\sign.c">
+      <Filter>sphincs\sha256_256s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_256s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\thash_sha256_robust.c">
+      <Filter>sphincs\sha256_256s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\sha256.c">
+      <Filter>sphincs\sha256_256s_robust</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256s_simple.c">
+      <Filter>sphincs\sha256_256s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\address.c">
+      <Filter>sphincs\sha256_256s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\wots.c">
+      <Filter>sphincs\sha256_256s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\utils.c">
+      <Filter>sphincs\sha256_256s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\fors.c">
+      <Filter>sphincs\sha256_256s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\sign.c">
+      <Filter>sphincs\sha256_256s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\hash_sha256.c">
+      <Filter>sphincs\sha256_256s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\thash_sha256_simple.c">
+      <Filter>sphincs\sha256_256s_simple</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\sha256.c">
+      <Filter>sphincs\sha256_256s_simple</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_128f_robust.c">
       <Filter>sphincs\shake256_128f_robust</Filter>
     </ClCompile>
@@ -1499,6 +1823,42 @@
     </Filter>
     <Filter Include="sphincs\haraka_256s_simple">
       <UniqueIdentifier>{40b4c623-511f-4235-be9b-9ff675457fe5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_128f_robust">
+      <UniqueIdentifier>{f569c3b0-c6ba-4157-a858-a5fc52d51515}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_128f_simple">
+      <UniqueIdentifier>{1be5ba25-e61c-4218-a949-129b3422d6d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_128s_robust">
+      <UniqueIdentifier>{c2b7b42f-bebf-4a92-8f97-e12740a2f287}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_128s_simple">
+      <UniqueIdentifier>{b380048d-601c-46d6-acb8-591a2c4e1854}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_192f_robust">
+      <UniqueIdentifier>{639a3ad2-1d05-445a-b9ea-9112fe8a6e7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_192f_simple">
+      <UniqueIdentifier>{eea572d4-7c0a-4d63-bd4d-5d038223a922}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_192s_robust">
+      <UniqueIdentifier>{1972ed56-876a-4eca-aadd-91886adfe290}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_192s_simple">
+      <UniqueIdentifier>{10d0a3dd-b2b8-4e74-b59c-dc94ea84b7c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_256f_robust">
+      <UniqueIdentifier>{945476fd-8435-4df8-9b4b-c04e74aa6d03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_256f_simple">
+      <UniqueIdentifier>{d70d780f-3ff0-4146-a6ce-8801bc157f83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_256s_robust">
+      <UniqueIdentifier>{fd789855-13bb-40e9-a09f-9086dd62ab93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sphincs\sha256_256s_simple">
+      <UniqueIdentifier>{4823fa89-43de-45b0-ac13-3de5345ce48b}</UniqueIdentifier>
     </Filter>
     <Filter Include="sphincs\shake256_128f_robust">
       <UniqueIdentifier>{cf170e69-4718-4efd-a7ba-2388a826193c}</UniqueIdentifier>

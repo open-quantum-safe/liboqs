@@ -90,6 +90,30 @@ extern "C" {
 #define OQS_SIG_alg_sphincs_haraka_256s_robust "SHPINCS+-Haraka-256s-robust"
 /** Algorithm identifier for SHPINCS+-Haraka-256s-simple */
 #define OQS_SIG_alg_sphincs_haraka_256s_simple "SHPINCS+-Haraka-256s-simple"
+/** Algorithm identifier for SHPINCS+-SHA256-128f-robust */
+#define OQS_SIG_alg_sphincs_sha256_128f_robust "SHPINCS+-SHA256-128f-robust"
+/** Algorithm identifier for SHPINCS+-SHA256-128f-simple */
+#define OQS_SIG_alg_sphincs_sha256_128f_simple "SHPINCS+-SHA256-128f-simple"
+/** Algorithm identifier for SHPINCS+-SHA256-128s-robust */
+#define OQS_SIG_alg_sphincs_sha256_128s_robust "SHPINCS+-SHA256-128s-robust"
+/** Algorithm identifier for SHPINCS+-SHA256-128s-simple */
+#define OQS_SIG_alg_sphincs_sha256_128s_simple "SHPINCS+-SHA256-128s-simple"
+/** Algorithm identifier for SHPINCS+-SHA256-192f-robust */
+#define OQS_SIG_alg_sphincs_sha256_192f_robust "SHPINCS+-SHA256-192f-robust"
+/** Algorithm identifier for SHPINCS+-SHA256-192f-simple */
+#define OQS_SIG_alg_sphincs_sha256_192f_simple "SHPINCS+-SHA256-192f-simple"
+/** Algorithm identifier for SHPINCS+-SHA256-192s-robust */
+#define OQS_SIG_alg_sphincs_sha256_192s_robust "SHPINCS+-SHA256-192s-robust"
+/** Algorithm identifier for SHPINCS+-SHA256-192s-simple */
+#define OQS_SIG_alg_sphincs_sha256_192s_simple "SHPINCS+-SHA256-192s-simple"
+/** Algorithm identifier for SHPINCS+-SHA256-256f-robust */
+#define OQS_SIG_alg_sphincs_sha256_256f_robust "SHPINCS+-SHA256-256f-robust"
+/** Algorithm identifier for SHPINCS+-SHA256-256f-simple */
+#define OQS_SIG_alg_sphincs_sha256_256f_simple "SHPINCS+-SHA256-256f-simple"
+/** Algorithm identifier for SHPINCS+-SHA256-256s-robust */
+#define OQS_SIG_alg_sphincs_sha256_256s_robust "SHPINCS+-SHA256-256s-robust"
+/** Algorithm identifier for SHPINCS+-SHA256-256s-simple */
+#define OQS_SIG_alg_sphincs_sha256_256s_simple "SHPINCS+-SHA256-256s-simple"
 /** Algorithm identifier for SHPINCS+-SHAKE256-128f-robust */
 #define OQS_SIG_alg_sphincs_shake256_128f_robust "SHPINCS+-SHAKE256-128f-robust"
 /** Algorithm identifier for SHPINCS+-SHAKE256-128f-simple */
@@ -118,7 +142,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 42
+#define OQS_SIG_algs_length 54
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
