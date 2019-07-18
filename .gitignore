@@ -110,3 +110,4 @@ src/oqsconfig.h
 # Misc (master branch)
 .objs_upstream
 *.geany
+.tags*
