@@ -17,11 +17,10 @@
 #define OS_LINUX 2
 
 #if defined(_WIN32) // Microsoft Windows OS
-    #define OS_TARGET OS_WIN
+#define OS_TARGET OS_WIN
 #else
-    #define OS_TARGET OS_LINUX // default to Linux
+#define OS_TARGET OS_LINUX // default to Linux
 #endif
-
 
 // Definition of compiler (removed in OQS)
 
