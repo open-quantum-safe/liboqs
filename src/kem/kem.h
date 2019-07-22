@@ -16,8 +16,8 @@
  * compile-time, the programmer should check that the OQS_KEM object is not `NULL`.
  */
 
-#ifndef __OQS_KEM_H
-#define __OQS_KEM_H
+#ifndef OQS_KEM_H
+#define OQS_KEM_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -128,7 +128,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i);
  *
  * @return The number of key encapsulation mechanisms.
  */
-OQS_API int OQS_KEM_alg_count();
+OQS_API int OQS_KEM_alg_count(void);
 
 /**
  * Indicates whether the specified algorithm was enabled at compile-time or not.
@@ -277,19 +277,19 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
  */
 OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
-#include <oqs/kem_bike.h>
+//#include <oqs/kem_bike.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
-#include <oqs/kem_kyber.h>
-#include <oqs/kem_newhope.h>
-#include <oqs/kem_ntru.h>
-#include <oqs/kem_saber.h>
+//#include <oqs/kem_kyber.h>
+//#include <oqs/kem_newhope.h>
+//#include <oqs/kem_ntru.h>
+//#include <oqs/kem_saber.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 #include <oqs/kem_frodokem.h>
-#include <oqs/kem_sike.h>
+//#include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
 
 #if defined(__cplusplus)
 } // extern "C"
 #endif
 
-#endif // __OQS_KEM_H
+#endif // OQS_KEM_H

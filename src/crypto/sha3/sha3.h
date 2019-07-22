@@ -508,9 +508,9 @@ void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
  * \warning The output array length must not be zero.
  *
  * \param output0 The first output byte array
- * \param output0 The second output byte array
- * \param output0 The third output byte array
- * \param output0 The fourth output byte array
+ * \param output1 The second output byte array
+ * \param output2 The third output byte array
+ * \param output3 The fourth output byte array
  * \param outlen The number of output bytes to generate in every output array
  * \param in0 The first input seed byte array
  * \param in1 The second input seed byte array

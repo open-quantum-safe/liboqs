@@ -6,8 +6,8 @@
  * other necessary headers from liboqs.
  */
 
-#ifndef __OQS_H
-#define __OQS_H
+#ifndef OQS_H
+#define OQS_H
 
 #if !defined(_WIN32)
 #include <oqs/oqsconfig.h>
@@ -21,6 +21,6 @@
 #include <oqs/sha3.h>
 #include <oqs/rand.h>
 #include <oqs/kem.h>
-#include <oqs/sig.h>
+//#include <oqs/sig.h>
 
-#endif // __OQS_H
+#endif // OQS_H

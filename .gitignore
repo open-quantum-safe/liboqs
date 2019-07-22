@@ -70,35 +70,8 @@ VisualStudio/**/*.user
 cmake-3.8.0.tar.gz
 cmake-3.8.0/**
 
-#Autotools
-autom4te.cache
-.deps
-Makefile.in
-Makefile
-aclocal.m4
-compile
-config.guess
-/config.h
-config.h.in
-config.log
-config.status
-config.sub
-config/libtool.m4
-config/ltoptions.m4
-config/ltsugar.m4
-config/ltversion.m4
-config/lt~obsolete.m4
-configure
-depcomp
-install-sh
-libtool
-ltmain.sh
-missing
-stamp-h1
-.libs
-.dirstamp
-confdefs*
-conftest*
+#CMake
+build/
 
 #params
 sample_params
@@ -106,15 +79,15 @@ data/
 
 # Exceptions
 !src/sig_picnic/external/config.h.in
-src/oqsconfig.h
 
-# Misc (master branch)
+# Misc
 .objs_upstream
 *.geany
 .tags*
 __pycache__
 test-results
 .pytest_cache
+tags
 
 # IDEs
 .idea

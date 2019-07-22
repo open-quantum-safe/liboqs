@@ -18,7 +18,6 @@ static OQS_STATUS kem_speed_wrapper(const char *method_name, int duration, bool 
 	uint8_t *shared_secret_e = NULL;
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS ret = OQS_ERROR;
-
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
 		return OQS_SUCCESS;
