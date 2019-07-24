@@ -5,7 +5,6 @@ libkemsike_la_SOURCES = kem_sike.c P434/P434.c P503/P503.c P610/P610.c P751/P751
 
 # FIXMEOQS: use _FAST_ flag for AMD64 and ARM64
 
-
 if X86
 SIKE_FLAGS = -D_GENERIC_ -D_X86_
 else
