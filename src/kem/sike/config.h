@@ -61,8 +61,6 @@ typedef uint64_t digit_t; // Unsigned 64-bit digit
 
 #if defined(_GENERIC_)
 #define GENERIC_IMPLEMENTATION
-#elif defined(_FAST_)
-#define FAST_IMPLEMENTATION
 #endif
 
 // Extended datatype support
