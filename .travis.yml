@@ -24,8 +24,6 @@ matrix:
     - .travis/all-tests.sh
   - os: linux
     compiler: arm-linux-gnueabi-gcc
-    env:
-    - ENABLE_KEM_SIKE=0
     addons:
       apt:
         packages:
