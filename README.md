@@ -176,7 +176,7 @@ Once the toolchain is installed, you can use the following scripts to build and 
 	scripts/arm-cross-compile.sh
 	scripts/arm-run-tests-qemu.sh
 
-At present there are still some quirks with our ARM build, including problems with SIKE, Picnic and qTESLA and the known answer tests causing build errors or segmentation faults.  See issues #461, #462, and #463.
+At present there are still some quirks with our ARM build, including problems with Picnic and qTESLA and the known answer tests causing build errors or segmentation faults.  See issues #461, #462, and #463.
 
 Documentation
 -------------

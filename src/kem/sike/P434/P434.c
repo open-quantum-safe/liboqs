@@ -114,7 +114,7 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"
-#include "AMD64/fp_x64_asm.S"
+// #include "AMD64/fp_x64_asm.S" FIXMEOQS
 #else
 #include "generic/fp_generic.c"
 #endif
