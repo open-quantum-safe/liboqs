@@ -6,10 +6,12 @@
 
 #include "../P503_internal.h"
 
+/* OQS note: this file is #include'd with the defs of these consts; removed to avoid re-defs
 // Global constants
 extern const uint64_t p503[NWORDS_FIELD];
 extern const uint64_t p503p1[NWORDS_FIELD];
 extern const uint64_t p503x2[NWORDS_FIELD];
+*/
 
 __inline void fpadd503(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p503.
 	                                                                     // Inputs: a, b in [0, 2*p503-1]

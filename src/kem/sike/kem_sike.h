@@ -66,7 +66,7 @@ OQS_API OQS_STATUS OQS_KEM_sike_p751_decaps(uint8_t *shared_secret, const unsign
 #ifdef OQS_ENABLE_KEM_sidh_p434
 
 #define OQS_KEM_sidh_p434_length_public_key 330
-#define OQS_KEM_sidh_p434_length_secret_key 32 /* FIXMEOQS: was 28 */
+#define OQS_KEM_sidh_p434_length_secret_key 28
 #define OQS_KEM_sidh_p434_length_ciphertext 330
 #define OQS_KEM_sidh_p434_length_shared_secret 110
 
@@ -96,7 +96,7 @@ OQS_API OQS_STATUS OQS_KEM_sidh_p503_decaps(uint8_t *shared_secret, const unsign
 #ifdef OQS_ENABLE_KEM_sidh_p610
 
 #define OQS_KEM_sidh_p610_length_public_key 462
-#define OQS_KEM_sidh_p610_length_secret_key 40 /* FIXMEOQS was 38 */
+#define OQS_KEM_sidh_p610_length_secret_key 39
 #define OQS_KEM_sidh_p610_length_ciphertext 462
 #define OQS_KEM_sidh_p610_length_shared_secret 154
 

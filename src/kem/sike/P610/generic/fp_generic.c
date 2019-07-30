@@ -6,10 +6,12 @@
 
 #include "../P610_internal.h"
 
+/* OQS note: this file is #include'd with the defs of these consts; removed to avoid re-defs
 // Global constants
 extern const uint64_t p610[NWORDS_FIELD];
 extern const uint64_t p610p1[NWORDS_FIELD];
 extern const uint64_t p610x2[NWORDS_FIELD];
+*/
 
 __inline void fpadd610(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p610.
 	                                                                     // Inputs: a, b in [0, 2*p610-1]
