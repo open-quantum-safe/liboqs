@@ -32,7 +32,6 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	secret_key = malloc(sig->length_secret_key);
 	message = malloc(message_len);
 	signature = malloc(sig->length_signature);
-	signature_len = sig->length_signature;
 
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");

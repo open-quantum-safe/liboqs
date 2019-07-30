@@ -31,6 +31,18 @@ static size_t PUB_KEY_LEN[] = {
     PICNIC_PUBLIC_KEY_SIZE(Picnic2_L3_FS),
     PICNIC_PUBLIC_KEY_SIZE(Picnic2_L5_FS),
 };
+static size_t SIG_LEN[] = {
+    0,
+    PICNIC_SIGNATURE_SIZE(Picnic_L1_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic_L1_UR),
+    PICNIC_SIGNATURE_SIZE(Picnic_L3_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic_L3_UR),
+    PICNIC_SIGNATURE_SIZE(Picnic_L5_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic_L5_UR),
+    PICNIC_SIGNATURE_SIZE(Picnic2_L1_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic2_L3_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic2_L5_FS),
+};
 
 static OQS_STATUS common_picnic_keypair(picnic_params_t parameters, uint8_t *priv, uint8_t *pub) {
 	if (priv == NULL || pub == NULL) {
@@ -63,6 +75,9 @@ static OQS_STATUS common_picnic_sign(picnic_params_t parameters, const uint8_t *
 		return OQS_ERROR;
 	}
 	picnic_privatekey_t sk;
+	// picnic2's signature code checks that the sig_len value is large enough, but the OQS
+	// API treats this as an output parameters, so we set it here
+	*sig_len = SIG_LEN[parameters];
 	// deserialize the private key
 	if (picnic_read_private_key(&sk, priv, PRIV_KEY_LEN[parameters]) != 0) {
 		return OQS_ERROR;
