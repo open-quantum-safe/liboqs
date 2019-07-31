@@ -66,78 +66,78 @@ extern "C" {
 #define OQS_SIG_alg_mqdss_31_48 "MQDSS-31-48"
 /** Algorithm identifier for MQDSS-31-64 */
 #define OQS_SIG_alg_mqdss_31_64 "MQDSS-31-64"
-/** Algorithm identifier for SHPINCS+-Haraka-128f-robust */
-#define OQS_SIG_alg_sphincs_haraka_128f_robust "SHPINCS+-Haraka-128f-robust"
-/** Algorithm identifier for SHPINCS+-Haraka-128f-simple */
-#define OQS_SIG_alg_sphincs_haraka_128f_simple "SHPINCS+-Haraka-128f-simple"
-/** Algorithm identifier for SHPINCS+-Haraka-128s-robust */
-#define OQS_SIG_alg_sphincs_haraka_128s_robust "SHPINCS+-Haraka-128s-robust"
-/** Algorithm identifier for SHPINCS+-Haraka-128s-simple */
-#define OQS_SIG_alg_sphincs_haraka_128s_simple "SHPINCS+-Haraka-128s-simple"
-/** Algorithm identifier for SHPINCS+-Haraka-192f-robust */
-#define OQS_SIG_alg_sphincs_haraka_192f_robust "SHPINCS+-Haraka-192f-robust"
-/** Algorithm identifier for SHPINCS+-Haraka-192f-simple */
-#define OQS_SIG_alg_sphincs_haraka_192f_simple "SHPINCS+-Haraka-192f-simple"
-/** Algorithm identifier for SHPINCS+-Haraka-192s-robust */
-#define OQS_SIG_alg_sphincs_haraka_192s_robust "SHPINCS+-Haraka-192s-robust"
-/** Algorithm identifier for SHPINCS+-Haraka-192s-simple */
-#define OQS_SIG_alg_sphincs_haraka_192s_simple "SHPINCS+-Haraka-192s-simple"
-/** Algorithm identifier for SHPINCS+-Haraka-256f-robust */
-#define OQS_SIG_alg_sphincs_haraka_256f_robust "SHPINCS+-Haraka-256f-robust"
-/** Algorithm identifier for SHPINCS+-Haraka-256f-simple */
-#define OQS_SIG_alg_sphincs_haraka_256f_simple "SHPINCS+-Haraka-256f-simple"
-/** Algorithm identifier for SHPINCS+-Haraka-256s-robust */
-#define OQS_SIG_alg_sphincs_haraka_256s_robust "SHPINCS+-Haraka-256s-robust"
-/** Algorithm identifier for SHPINCS+-Haraka-256s-simple */
-#define OQS_SIG_alg_sphincs_haraka_256s_simple "SHPINCS+-Haraka-256s-simple"
-/** Algorithm identifier for SHPINCS+-SHA256-128f-robust */
-#define OQS_SIG_alg_sphincs_sha256_128f_robust "SHPINCS+-SHA256-128f-robust"
-/** Algorithm identifier for SHPINCS+-SHA256-128f-simple */
-#define OQS_SIG_alg_sphincs_sha256_128f_simple "SHPINCS+-SHA256-128f-simple"
-/** Algorithm identifier for SHPINCS+-SHA256-128s-robust */
-#define OQS_SIG_alg_sphincs_sha256_128s_robust "SHPINCS+-SHA256-128s-robust"
-/** Algorithm identifier for SHPINCS+-SHA256-128s-simple */
-#define OQS_SIG_alg_sphincs_sha256_128s_simple "SHPINCS+-SHA256-128s-simple"
-/** Algorithm identifier for SHPINCS+-SHA256-192f-robust */
-#define OQS_SIG_alg_sphincs_sha256_192f_robust "SHPINCS+-SHA256-192f-robust"
-/** Algorithm identifier for SHPINCS+-SHA256-192f-simple */
-#define OQS_SIG_alg_sphincs_sha256_192f_simple "SHPINCS+-SHA256-192f-simple"
-/** Algorithm identifier for SHPINCS+-SHA256-192s-robust */
-#define OQS_SIG_alg_sphincs_sha256_192s_robust "SHPINCS+-SHA256-192s-robust"
-/** Algorithm identifier for SHPINCS+-SHA256-192s-simple */
-#define OQS_SIG_alg_sphincs_sha256_192s_simple "SHPINCS+-SHA256-192s-simple"
-/** Algorithm identifier for SHPINCS+-SHA256-256f-robust */
-#define OQS_SIG_alg_sphincs_sha256_256f_robust "SHPINCS+-SHA256-256f-robust"
-/** Algorithm identifier for SHPINCS+-SHA256-256f-simple */
-#define OQS_SIG_alg_sphincs_sha256_256f_simple "SHPINCS+-SHA256-256f-simple"
-/** Algorithm identifier for SHPINCS+-SHA256-256s-robust */
-#define OQS_SIG_alg_sphincs_sha256_256s_robust "SHPINCS+-SHA256-256s-robust"
-/** Algorithm identifier for SHPINCS+-SHA256-256s-simple */
-#define OQS_SIG_alg_sphincs_sha256_256s_simple "SHPINCS+-SHA256-256s-simple"
-/** Algorithm identifier for SHPINCS+-SHAKE256-128f-robust */
-#define OQS_SIG_alg_sphincs_shake256_128f_robust "SHPINCS+-SHAKE256-128f-robust"
-/** Algorithm identifier for SHPINCS+-SHAKE256-128f-simple */
-#define OQS_SIG_alg_sphincs_shake256_128f_simple "SHPINCS+-SHAKE256-128f-simple"
-/** Algorithm identifier for SHPINCS+-SHAKE256-128s-robust */
-#define OQS_SIG_alg_sphincs_shake256_128s_robust "SHPINCS+-SHAKE256-128s-robust"
-/** Algorithm identifier for SHPINCS+-SHAKE256-128s-simple */
-#define OQS_SIG_alg_sphincs_shake256_128s_simple "SHPINCS+-SHAKE256-128s-simple"
-/** Algorithm identifier for SHPINCS+-SHAKE256-192f-robust */
-#define OQS_SIG_alg_sphincs_shake256_192f_robust "SHPINCS+-SHAKE256-192f-robust"
-/** Algorithm identifier for SHPINCS+-SHAKE256-192f-simple */
-#define OQS_SIG_alg_sphincs_shake256_192f_simple "SHPINCS+-SHAKE256-192f-simple"
-/** Algorithm identifier for SHPINCS+-SHAKE256-192s-robust */
-#define OQS_SIG_alg_sphincs_shake256_192s_robust "SHPINCS+-SHAKE256-192s-robust"
-/** Algorithm identifier for SHPINCS+-SHAKE256-192s-simple */
-#define OQS_SIG_alg_sphincs_shake256_192s_simple "SHPINCS+-SHAKE256-192s-simple"
-/** Algorithm identifier for SHPINCS+-SHAKE256-256f-robust */
-#define OQS_SIG_alg_sphincs_shake256_256f_robust "SHPINCS+-SHAKE256-256f-robust"
-/** Algorithm identifier for SHPINCS+-SHAKE256-256f-simple */
-#define OQS_SIG_alg_sphincs_shake256_256f_simple "SHPINCS+-SHAKE256-256f-simple"
-/** Algorithm identifier for SHPINCS+-SHAKE256-256s-robust */
-#define OQS_SIG_alg_sphincs_shake256_256s_robust "SHPINCS+-SHAKE256-256s-robust"
-/** Algorithm identifier for SHPINCS+-SHAKE256-256s-simple */
-#define OQS_SIG_alg_sphincs_shake256_256s_simple "SHPINCS+-SHAKE256-256s-simple"
+/** Algorithm identifier for SPHINCS+-Haraka-128f-robust */
+#define OQS_SIG_alg_sphincs_haraka_128f_robust "SPHINCS+-Haraka-128f-robust"
+/** Algorithm identifier for SPHINCS+-Haraka-128f-simple */
+#define OQS_SIG_alg_sphincs_haraka_128f_simple "SPHINCS+-Haraka-128f-simple"
+/** Algorithm identifier for SPHINCS+-Haraka-128s-robust */
+#define OQS_SIG_alg_sphincs_haraka_128s_robust "SPHINCS+-Haraka-128s-robust"
+/** Algorithm identifier for SPHINCS+-Haraka-128s-simple */
+#define OQS_SIG_alg_sphincs_haraka_128s_simple "SPHINCS+-Haraka-128s-simple"
+/** Algorithm identifier for SPHINCS+-Haraka-192f-robust */
+#define OQS_SIG_alg_sphincs_haraka_192f_robust "SPHINCS+-Haraka-192f-robust"
+/** Algorithm identifier for SPHINCS+-Haraka-192f-simple */
+#define OQS_SIG_alg_sphincs_haraka_192f_simple "SPHINCS+-Haraka-192f-simple"
+/** Algorithm identifier for SPHINCS+-Haraka-192s-robust */
+#define OQS_SIG_alg_sphincs_haraka_192s_robust "SPHINCS+-Haraka-192s-robust"
+/** Algorithm identifier for SPHINCS+-Haraka-192s-simple */
+#define OQS_SIG_alg_sphincs_haraka_192s_simple "SPHINCS+-Haraka-192s-simple"
+/** Algorithm identifier for SPHINCS+-Haraka-256f-robust */
+#define OQS_SIG_alg_sphincs_haraka_256f_robust "SPHINCS+-Haraka-256f-robust"
+/** Algorithm identifier for SPHINCS+-Haraka-256f-simple */
+#define OQS_SIG_alg_sphincs_haraka_256f_simple "SPHINCS+-Haraka-256f-simple"
+/** Algorithm identifier for SPHINCS+-Haraka-256s-robust */
+#define OQS_SIG_alg_sphincs_haraka_256s_robust "SPHINCS+-Haraka-256s-robust"
+/** Algorithm identifier for SPHINCS+-Haraka-256s-simple */
+#define OQS_SIG_alg_sphincs_haraka_256s_simple "SPHINCS+-Haraka-256s-simple"
+/** Algorithm identifier for SPHINCS+-SHA256-128f-robust */
+#define OQS_SIG_alg_sphincs_sha256_128f_robust "SPHINCS+-SHA256-128f-robust"
+/** Algorithm identifier for SPHINCS+-SHA256-128f-simple */
+#define OQS_SIG_alg_sphincs_sha256_128f_simple "SPHINCS+-SHA256-128f-simple"
+/** Algorithm identifier for SPHINCS+-SHA256-128s-robust */
+#define OQS_SIG_alg_sphincs_sha256_128s_robust "SPHINCS+-SHA256-128s-robust"
+/** Algorithm identifier for SPHINCS+-SHA256-128s-simple */
+#define OQS_SIG_alg_sphincs_sha256_128s_simple "SPHINCS+-SHA256-128s-simple"
+/** Algorithm identifier for SPHINCS+-SHA256-192f-robust */
+#define OQS_SIG_alg_sphincs_sha256_192f_robust "SPHINCS+-SHA256-192f-robust"
+/** Algorithm identifier for SPHINCS+-SHA256-192f-simple */
+#define OQS_SIG_alg_sphincs_sha256_192f_simple "SPHINCS+-SHA256-192f-simple"
+/** Algorithm identifier for SPHINCS+-SHA256-192s-robust */
+#define OQS_SIG_alg_sphincs_sha256_192s_robust "SPHINCS+-SHA256-192s-robust"
+/** Algorithm identifier for SPHINCS+-SHA256-192s-simple */
+#define OQS_SIG_alg_sphincs_sha256_192s_simple "SPHINCS+-SHA256-192s-simple"
+/** Algorithm identifier for SPHINCS+-SHA256-256f-robust */
+#define OQS_SIG_alg_sphincs_sha256_256f_robust "SPHINCS+-SHA256-256f-robust"
+/** Algorithm identifier for SPHINCS+-SHA256-256f-simple */
+#define OQS_SIG_alg_sphincs_sha256_256f_simple "SPHINCS+-SHA256-256f-simple"
+/** Algorithm identifier for SPHINCS+-SHA256-256s-robust */
+#define OQS_SIG_alg_sphincs_sha256_256s_robust "SPHINCS+-SHA256-256s-robust"
+/** Algorithm identifier for SPHINCS+-SHA256-256s-simple */
+#define OQS_SIG_alg_sphincs_sha256_256s_simple "SPHINCS+-SHA256-256s-simple"
+/** Algorithm identifier for SPHINCS+-SHAKE256-128f-robust */
+#define OQS_SIG_alg_sphincs_shake256_128f_robust "SPHINCS+-SHAKE256-128f-robust"
+/** Algorithm identifier for SPHINCS+-SHAKE256-128f-simple */
+#define OQS_SIG_alg_sphincs_shake256_128f_simple "SPHINCS+-SHAKE256-128f-simple"
+/** Algorithm identifier for SPHINCS+-SHAKE256-128s-robust */
+#define OQS_SIG_alg_sphincs_shake256_128s_robust "SPHINCS+-SHAKE256-128s-robust"
+/** Algorithm identifier for SPHINCS+-SHAKE256-128s-simple */
+#define OQS_SIG_alg_sphincs_shake256_128s_simple "SPHINCS+-SHAKE256-128s-simple"
+/** Algorithm identifier for SPHINCS+-SHAKE256-192f-robust */
+#define OQS_SIG_alg_sphincs_shake256_192f_robust "SPHINCS+-SHAKE256-192f-robust"
+/** Algorithm identifier for SPHINCS+-SHAKE256-192f-simple */
+#define OQS_SIG_alg_sphincs_shake256_192f_simple "SPHINCS+-SHAKE256-192f-simple"
+/** Algorithm identifier for SPHINCS+-SHAKE256-192s-robust */
+#define OQS_SIG_alg_sphincs_shake256_192s_robust "SPHINCS+-SHAKE256-192s-robust"
+/** Algorithm identifier for SPHINCS+-SHAKE256-192s-simple */
+#define OQS_SIG_alg_sphincs_shake256_192s_simple "SPHINCS+-SHAKE256-192s-simple"
+/** Algorithm identifier for SPHINCS+-SHAKE256-256f-robust */
+#define OQS_SIG_alg_sphincs_shake256_256f_robust "SPHINCS+-SHAKE256-256f-robust"
+/** Algorithm identifier for SPHINCS+-SHAKE256-256f-simple */
+#define OQS_SIG_alg_sphincs_shake256_256f_simple "SPHINCS+-SHAKE256-256f-simple"
+/** Algorithm identifier for SPHINCS+-SHAKE256-256s-robust */
+#define OQS_SIG_alg_sphincs_shake256_256s_robust "SPHINCS+-SHAKE256-256s-robust"
+/** Algorithm identifier for SPHINCS+-SHAKE256-256s-simple */
+#define OQS_SIG_alg_sphincs_shake256_256s_simple "SPHINCS+-SHAKE256-256s-simple"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
