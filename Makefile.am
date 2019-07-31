@@ -88,13 +88,14 @@ installheader_HEADERS= src/oqs.h \
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_END
 
 
-test: clean-tests check
+test: check
 	tests/example_kem
 	tests/example_sig
 	tests/test_kem
 	tests/test_sig
 	tests/test_aes
 	tests/test_sha3
+	python3 -m pytest -v
 
 kat: clean-kats check
 	tests/kat_kem
