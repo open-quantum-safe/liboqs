@@ -5,7 +5,7 @@ import pytest
 @pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
 def test_sha256(msg):
     output = helpers.run_subprocess(
-        ['./test_hash', 'sha256'],
+        ['test_hash', 'sha256'],
         working_dir = 'tests',
         input = msg.encode(),
     )
@@ -14,7 +14,7 @@ def test_sha256(msg):
 @pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
 def test_sha384(msg):
     output = helpers.run_subprocess(
-        ['./test_hash', 'sha384'],
+        ['test_hash', 'sha384'],
         working_dir = 'tests',
         input = msg.encode(),
     )
@@ -23,7 +23,7 @@ def test_sha384(msg):
 @pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
 def test_sha512(msg):
     output = helpers.run_subprocess(
-        ['./test_hash', 'sha512'],
+        ['test_hash', 'sha512'],
         working_dir = 'tests',
         input = msg.encode(),
     )
