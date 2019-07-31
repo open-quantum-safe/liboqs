@@ -185,6 +185,14 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i);
 OQS_API int OQS_SIG_alg_count();
 
 /**
+ * Indicates whether the specified algorithm was enabled at compile-time or not.
+ *
+ * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_SIG_algs`.
+ * @return 1 if enabled, 0 if disabled or not found
+ */
+OQS_API int OQS_SIG_alg_is_enabled(const char *method_name);
+
+/**
  * Signature schemes object
  */
 typedef struct OQS_SIG {
