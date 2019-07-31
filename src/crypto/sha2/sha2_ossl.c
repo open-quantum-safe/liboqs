@@ -46,7 +46,7 @@ void OQS_SHA2_sha256_inc_init(void **state) {
 	const EVP_MD *md = NULL;
 	md = EVP_sha256();
 	assert(md != NULL);
-	mdctx = EVP_MD_CTX_new();
+	mdctx = EVP_MD_CTX_create();
 	EVP_DigestInit_ex(mdctx, md, NULL);
 	*state = mdctx;
 }
@@ -63,7 +63,7 @@ void OQS_SHA2_sha256_inc_finalize(uint8_t *out, void *state, const uint8_t *in, 
 		EVP_DigestUpdate((EVP_MD_CTX *) state, in, inlen);
 	}
 	EVP_DigestFinal_ex((EVP_MD_CTX *) state, out, &md_len);
-	EVP_MD_CTX_free((EVP_MD_CTX *) state);
+	EVP_MD_CTX_destroy((EVP_MD_CTX *) state);
 }
 
 void OQS_SHA2_sha256_inc_clone_state(void **stateout, const void *statein) {
