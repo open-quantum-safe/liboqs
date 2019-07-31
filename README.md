@@ -40,6 +40,7 @@ Algorithms currently included in liboqs master branch include:
 	- **MQDSS**: MQDSS-31-48, MQDSS-31-64
 	- **Picnic**: Picnic-L1-FS, Picnic-L1-UR, Picnic-L3-FS, Picnic-L3-UR, Picnic-L5-FS, Picnic-L5-UR, Picnic2-L1-FS, Picnic2-L3-FS, Picnic2-L5-FS
 	- **qTESLA**: qTESLA-I, qTESLA-III-size, qTESLA-III-speed (NIST Round 1 version)
+	- **SPHINCS+**: SPHINCS+-Haraka-128f-robust, SPHINCS+-Haraka-128f-simple, SPHINCS+-Haraka-128s-robust, SPHINCS+-Haraka-128s-simple, SPHINCS+-Haraka-192f-robust, SPHINCS+-Haraka-192f-simple, SPHINCS+-Haraka-192s-robust, SPHINCS+-Haraka-192s-simple, SPHINCS+-Haraka-256f-robust, SPHINCS+-Haraka-256f-simple, SPHINCS+-Haraka-256s-robust, SPHINCS+-Haraka-256s-simple, SPHINCS+-SHAKE256-128f-robust, SPHINCS+-SHAKE256-128f-simple, SPHINCS+-SHAKE256-128s-robust, SPHINCS+-SHAKE256-128s-simple, SPHINCS+-SHAKE256-192f-robust, SPHINCS+-SHAKE256-192f-simple, SPHINCS+-SHAKE256-192s-robust, SPHINCS+-SHAKE256-192s-simple, SPHINCS+-SHAKE256-256f-robust, SPHINCS+-SHAKE256-256f-simple, SPHINCS+-SHAKE256-256s-robust, SPHINCS+-SHAKE256-256s-simple
 
 For details on algorithms included in master branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/master/docs/algorithms).
 
@@ -113,8 +114,7 @@ Builds are tested using the Travis continuous integration system on macOS 10.13.
 
 You need to install the following packages:
 
-	sudo apt install autoconf automake libtool gcc libssl-dev unzip xsltproc
-	pip3 install pytest
+	sudo apt install autoconf automake libtool gcc libssl-dev python3-pytest unzip xsltproc
 
 ### Install dependencies for macOS
 

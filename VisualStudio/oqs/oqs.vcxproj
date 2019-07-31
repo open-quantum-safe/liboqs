@@ -43,6 +43,7 @@
     <ClInclude Include="..\..\src\kem\saber\kem_saber.h" />
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h" />
     <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h" />
+    <ClInclude Include="..\..\src\sig\sphincs\sig_sphincs.h" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
@@ -247,6 +248,318 @@
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\gf31.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\mq.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_192f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_192f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_192s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_192s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_256f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_256f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_256s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_256s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_128f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_128f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_128s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_128s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_192f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_192f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_192s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_192s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_256f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_256f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_256s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_256s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\thash_shake256_simple.c" />
 <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\kem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
@@ -448,6 +761,7 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_END -->
@@ -491,6 +805,7 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_END -->
@@ -534,6 +849,7 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_END -->
@@ -585,6 +901,7 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_END -->
@@ -635,6 +952,7 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_END -->
@@ -682,6 +1000,7 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_END -->
@@ -729,6 +1048,7 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_END -->
@@ -784,6 +1104,7 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_END -->
