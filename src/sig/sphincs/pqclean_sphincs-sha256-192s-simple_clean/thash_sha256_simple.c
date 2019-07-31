@@ -23,7 +23,7 @@ static void PQCLEAN_SPHINCSSHA256192SSIMPLE_CLEAN_thash(
     (void)pub_seed; /* Suppress an 'unused parameter' warning. */
 
     /* Retrieve precomputed state containing pub_seed */
-    sha256_inc_dupe_state(&sha2_state, hash_state_seeded);
+    sha256_inc_clone_state(&sha2_state, hash_state_seeded);
 
     PQCLEAN_SPHINCSSHA256192SSIMPLE_CLEAN_compress_address(buf, addr);
     memcpy(buf + SPX_SHA256_ADDR_BYTES, in, inblocks * SPX_N);

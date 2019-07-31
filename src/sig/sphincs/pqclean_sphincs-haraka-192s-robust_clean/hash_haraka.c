@@ -72,7 +72,7 @@ void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_hash_message(
 
     PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka_S_inc_init(s_inc);
     PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka_S_inc_absorb(s_inc, R, SPX_N, hash_state_seeded);
-    PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka_S_inc_absorb(s_inc, pk, SPX_PK_BYTES, hash_state_seeded);
+    PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka_S_inc_absorb(s_inc, pk + SPX_N, SPX_N, hash_state_seeded);
     PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka_S_inc_absorb(s_inc, m, mlen, hash_state_seeded);
     PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka_S_inc_finalize(s_inc);
     PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka_S_inc_squeeze(buf, SPX_DGST_BYTES, s_inc, hash_state_seeded);
