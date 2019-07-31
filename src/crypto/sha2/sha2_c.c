@@ -589,7 +589,7 @@ void OQS_SHA2_sha256_inc_finalize(uint8_t *out, void *_state, const uint8_t *in,
 	for (size_t i = 0; i < 32; ++i) {
 		out[i] = state->ctx[i];
 	}
-	free(state);
+	OQS_MEM_secure_free(state, sizeof(sha256ctx));
 }
 
 static void sha512_inc_finalize(uint8_t *out, sha512ctx *state, const uint8_t *in, size_t inlen) {
