@@ -17,30 +17,42 @@ Parameter sets
 
 | Parameter set                 | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
 |-------------------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:----------------------:|
-| SHPINCS+-Haraka-128f-robust   |     EUF-CMA    |              1              |            32           |            64           |          16976         |
-| SHPINCS+-Haraka-128f-simple   |     EUF-CMA    |              1              |            32           |            64           |          16976         |
-| SHPINCS+-Haraka-128s-robust   |     EUF-CMA    |              1              |            32           |            64           |          8080          |
-| SHPINCS+-Haraka-128s-simple   |     EUF-CMA    |              1              |            32           |            64           |          8080          |
-| SHPINCS+-Haraka-192f-robust   |     EUF-CMA    |              3              |            48           |            96           |          35664         |
-| SHPINCS+-Haraka-192f-simple   |     EUF-CMA    |              3              |            48           |            96           |          35664         |
-| SHPINCS+-Haraka-192s-robust   |     EUF-CMA    |              3              |            48           |            96           |          17064         |
-| SHPINCS+-Haraka-192s-simple   |     EUF-CMA    |              3              |            48           |            96           |          17064         |
-| SHPINCS+-Haraka-256f-robust   |     EUF-CMA    |              5              |            64           |            128          |          49216         |
-| SHPINCS+-Haraka-256f-simple   |     EUF-CMA    |              5              |            64           |            128          |          49216         |
-| SHPINCS+-Haraka-256s-robust   |     EUF-CMA    |              5              |            64           |            128          |          29792         |
-| SHPINCS+-Haraka-256s-simple   |     EUF-CMA    |              5              |            64           |            128          |          29792         |
-| SHPINCS+-SHAKE256-128f-robust |     EUF-CMA    |              1              |            32           |            64           |          16976         |
-| SHPINCS+-SHAKE256-128f-simple |     EUF-CMA    |              1              |            32           |            64           |          16976         |
-| SHPINCS+-SHAKE256-128s-robust |     EUF-CMA    |              1              |            32           |            64           |          8080          |
-| SHPINCS+-SHAKE256-128s-simple |     EUF-CMA    |              1              |            32           |            64           |          8080          |
-| SHPINCS+-SHAKE256-192f-robust |     EUF-CMA    |              3              |            48           |            96           |          35664         |
-| SHPINCS+-SHAKE256-192f-simple |     EUF-CMA    |              3              |            48           |            96           |          35664         |
-| SHPINCS+-SHAKE256-192s-robust |     EUF-CMA    |              3              |            48           |            96           |          17064         |
-| SHPINCS+-SHAKE256-192s-simple |     EUF-CMA    |              3              |            48           |            96           |          17064         |
-| SHPINCS+-SHAKE256-256f-robust |     EUF-CMA    |              5              |            64           |            128          |          49216         |
-| SHPINCS+-SHAKE256-256f-simple |     EUF-CMA    |              5              |            64           |            128          |          49216         |
-| SHPINCS+-SHAKE256-256s-robust |     EUF-CMA    |              5              |            64           |            128          |          29792         |
-| SHPINCS+-SHAKE256-256s-simple |     EUF-CMA    |              5              |            64           |            128          |          29792         |
+| SPHINCS+-Haraka-128f-robust   |     EUF-CMA    |              1              |            32           |            64           |          16976         |
+| SPHINCS+-Haraka-128f-simple   |     EUF-CMA    |              1              |            32           |            64           |          16976         |
+| SPHINCS+-Haraka-128s-robust   |     EUF-CMA    |              1              |            32           |            64           |          8080          |
+| SPHINCS+-Haraka-128s-simple   |     EUF-CMA    |              1              |            32           |            64           |          8080          |
+| SPHINCS+-Haraka-192f-robust   |     EUF-CMA    |              3              |            48           |            96           |          35664         |
+| SPHINCS+-Haraka-192f-simple   |     EUF-CMA    |              3              |            48           |            96           |          35664         |
+| SPHINCS+-Haraka-192s-robust   |     EUF-CMA    |              3              |            48           |            96           |          17064         |
+| SPHINCS+-Haraka-192s-simple   |     EUF-CMA    |              3              |            48           |            96           |          17064         |
+| SPHINCS+-Haraka-256f-robust   |     EUF-CMA    |              5              |            64           |            128          |          49216         |
+| SPHINCS+-Haraka-256f-simple   |     EUF-CMA    |              5              |            64           |            128          |          49216         |
+| SPHINCS+-Haraka-256s-robust   |     EUF-CMA    |              5              |            64           |            128          |          29792         |
+| SPHINCS+-Haraka-256s-simple   |     EUF-CMA    |              5              |            64           |            128          |          29792         |
+| SPHINCS+-SHA256-128f-robust   |     EUF-CMA    |              1              |            32           |            64           |          16976         |
+| SPHINCS+-SHA256-128f-simple   |     EUF-CMA    |              1              |            32           |            64           |          16976         |
+| SPHINCS+-SHA256-128s-robust   |     EUF-CMA    |              1              |            32           |            64           |          8080          |
+| SPHINCS+-SHA256-128s-simple   |     EUF-CMA    |              1              |            32           |            64           |          8080          |
+| SPHINCS+-SHA256-192f-robust   |     EUF-CMA    |              3              |            48           |            96           |          35664         |
+| SPHINCS+-SHA256-192f-simple   |     EUF-CMA    |              3              |            48           |            96           |          35664         |
+| SPHINCS+-SHA256-192s-robust   |     EUF-CMA    |              3              |            48           |            96           |          17064         |
+| SPHINCS+-SHA256-192s-simple   |     EUF-CMA    |              3              |            48           |            96           |          17064         |
+| SPHINCS+-SHA256-256f-robust   |     EUF-CMA    |              5              |            64           |            128          |          49216         |
+| SPHINCS+-SHA256-256f-simple   |     EUF-CMA    |              5              |            64           |            128          |          49216         |
+| SPHINCS+-SHA256-256s-robust   |     EUF-CMA    |              5              |            64           |            128          |          29792         |
+| SPHINCS+-SHA256-256s-simple   |     EUF-CMA    |              5              |            64           |            128          |          29792         |
+| SPHINCS+-SHAKE256-128f-robust |     EUF-CMA    |              1              |            32           |            64           |          16976         |
+| SPHINCS+-SHAKE256-128f-simple |     EUF-CMA    |              1              |            32           |            64           |          16976         |
+| SPHINCS+-SHAKE256-128s-robust |     EUF-CMA    |              1              |            32           |            64           |          8080          |
+| SPHINCS+-SHAKE256-128s-simple |     EUF-CMA    |              1              |            32           |            64           |          8080          |
+| SPHINCS+-SHAKE256-192f-robust |     EUF-CMA    |              3              |            48           |            96           |          35664         |
+| SPHINCS+-SHAKE256-192f-simple |     EUF-CMA    |              3              |            48           |            96           |          35664         |
+| SPHINCS+-SHAKE256-192s-robust |     EUF-CMA    |              3              |            48           |            96           |          17064         |
+| SPHINCS+-SHAKE256-192s-simple |     EUF-CMA    |              3              |            48           |            96           |          17064         |
+| SPHINCS+-SHAKE256-256f-robust |     EUF-CMA    |              5              |            64           |            128          |          49216         |
+| SPHINCS+-SHAKE256-256f-simple |     EUF-CMA    |              5              |            64           |            128          |          49216         |
+| SPHINCS+-SHAKE256-256s-robust |     EUF-CMA    |              5              |            64           |            128          |          29792         |
+| SPHINCS+-SHAKE256-256s-simple |     EUF-CMA    |              5              |            64           |            128          |          29792         |
 
 Implementation
 --------------
@@ -51,5 +63,3 @@ Implementation
 - **Language:** C
 - **Constant-time:** Yes
 - **Architectures supported in liboqs master branch**: x86, x64
-
-**Note** The SHA256 variants have not yet been implemented.
