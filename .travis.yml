@@ -18,9 +18,9 @@ matrix:
         packages:
         - doxygen
         - graphviz
+        - python3-pytest
     before_install:
     - sh .travis/install-clang-format-linux.sh
-    - pip3 install pytest
     script:
     - .travis/all-tests.sh
   - os: linux
@@ -31,8 +31,6 @@ matrix:
         - gcc-arm-linux-gnueabi
         - libc6-dev-armel-cross
         - qemu
-    before_install:
-    - pip3 install pytest
     script:
     - scripts/arm-cross-compile.sh
     - scripts/arm-run-tests-qemu.sh
@@ -49,9 +47,9 @@ matrix:
         - gcc-4.9
         - doxygen
         - graphviz
+        - python3-pytest
     before_install:
     - sh .travis/install-clang-format-linux.sh
-    - pip3 install pytest
     script:
     - .travis/all-tests.sh
   - os: linux
@@ -65,8 +63,7 @@ matrix:
         - gcc-5
         - doxygen
         - graphviz
-    before_install:
-    - pip3 install pytest
+        - python3-pytest
     script:
     - .travis/all-tests.sh
   - os: linux
@@ -83,8 +80,7 @@ matrix:
         - libssl-dev
         - doxygen
         - graphviz
-    before_install:
-    - pip3 install pytest
+        - python3-pytest
     script:
     - .travis/all-tests.sh
   - os: osx
@@ -95,6 +91,7 @@ matrix:
     before_install:
     - brew update
     - brew install doxygen graphviz
+    - pip3 install pytest
     script:
     - .travis/all-tests.sh
   - os: osx
