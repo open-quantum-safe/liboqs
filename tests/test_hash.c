@@ -10,8 +10,6 @@
 
 #define BUFFER_SIZE 10000
 
-#define __HERE__ fprintf(stderr, "HERE: %s:%d\n", __FILE__, __LINE__); fflush(stderr);
-
 static int read_stdin(uint8_t **msg, size_t *msg_len) {
 	*msg = malloc(BUFFER_SIZE);
 	if (*msg == NULL) {
@@ -115,9 +113,9 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "  test_hash reads input from stdin and outputs hash value as hex string to stdout");
 		return EXIT_FAILURE;
 	}
-	
+
 	char *hash_alg = argv[1];
-	
+
 	if (strcmp(hash_alg, "sha256") == 0) {
 		return do_sha256();
 	} else if (strcmp(hash_alg, "sha384") == 0) {
@@ -128,5 +126,4 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "ERROR: Test not implemented\n");
 		return EXIT_FAILURE;
 	}
-
 }

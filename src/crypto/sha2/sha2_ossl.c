@@ -55,8 +55,8 @@ void OQS_SHA2_sha256_inc_init(void **state) {
 
 void OQS_SHA2_sha256_inc_blocks(void *state, const uint8_t *in, size_t inblocks) {
 	EVP_DigestUpdate((EVP_MD_CTX *) state, in, inblocks * SHA2_BLOCK_SIZE);
- 
 }
+
 void OQS_SHA2_sha256_inc_finalize(uint8_t *out, void *state, const uint8_t *in, size_t inlen) {
 	unsigned int md_len;
 	if (inlen > 0) {
