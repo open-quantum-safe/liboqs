@@ -58,7 +58,7 @@ void OQS_SHA2_sha512(uint8_t *output, const uint8_t *input, size_t inplen);
  *
  * \warning The state must be released by the OQS_SHA2_sha256_inc_finalize function.
  *
- * \param output Pointer to the state
+ * \param state Pointer to the state
  */
 void OQS_SHA2_sha256_inc_init(void **state);
 
