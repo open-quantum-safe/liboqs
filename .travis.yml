@@ -18,6 +18,7 @@ matrix:
         packages:
         - doxygen
         - graphviz
+        - python3-pytest
     before_install:
     - sh .travis/install-clang-format-linux.sh
     script:
@@ -46,6 +47,7 @@ matrix:
         - gcc-4.9
         - doxygen
         - graphviz
+        - python3-pytest
     before_install:
     - sh .travis/install-clang-format-linux.sh
     script:
@@ -61,6 +63,7 @@ matrix:
         - gcc-5
         - doxygen
         - graphviz
+        - python3-pytest
     script:
     - .travis/all-tests.sh
   - os: linux
@@ -77,6 +80,7 @@ matrix:
         - libssl-dev
         - doxygen
         - graphviz
+        - python3-pytest
     script:
     - .travis/all-tests.sh
   - os: osx
@@ -87,6 +91,7 @@ matrix:
     before_install:
     - brew update
     - brew install doxygen graphviz
+    - pip3 install pytest
     script:
     - .travis/all-tests.sh
   - os: osx
@@ -97,5 +102,6 @@ matrix:
     before_install:
     - brew update
     - brew install doxygen graphviz
+    - pip3 install pytest
     script:
     - .travis/all-tests.sh

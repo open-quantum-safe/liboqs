@@ -10,6 +10,9 @@
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c">
       <Filter>crypto</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\crypto\sha2\sha2_c.c">
+      <Filter>crypto</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\crypto\sha3\sha3_c.c">
       <Filter>crypto</Filter>
     </ClCompile>
@@ -575,6 +578,9 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\aes\aes.h">
+      <Filter>crypto</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\crypto\sha2\sha2.h">
       <Filter>crypto</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h">

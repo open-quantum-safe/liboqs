@@ -4,6 +4,7 @@ installheader_HEADERS= src/oqs.h \
 	src/common/common.h \
 	src/common/rand.h \
 	src/crypto/aes/aes.h \
+	src/crypto/sha2/sha2.h \
 	src/crypto/sha3/sha3.h \
 	src/kem/kem.h \
 	src/kem/bike/kem_bike.h \

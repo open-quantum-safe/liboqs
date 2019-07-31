@@ -40,6 +40,7 @@ tests/speed_sig
 tests/test_kem
 tests/test_sig
 tests/test_aes
+tests/test_hash
 tests/test_sha3
 
 #kat
@@ -111,3 +112,4 @@ src/oqsconfig.h
 .objs_upstream
 *.geany
 .tags*
+__pycache__

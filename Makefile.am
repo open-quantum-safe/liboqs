@@ -16,6 +16,7 @@ lib_LTLIBRARIES = liboqs.la
 liboqs_la_SOURCES =
 liboqs_la_LIBADD =  src/common/libcommon.la
 liboqs_la_LIBADD += src/crypto/aes/libaes.la
+liboqs_la_LIBADD += src/crypto/sha2/libsha2.la
 liboqs_la_LIBADD += src/crypto/sha3/libsha3.la
 liboqs_la_LIBADD += src/kem/libkem.la
 liboqs_la_LIBADD += src/sig/libsig.la
@@ -69,6 +70,7 @@ installheader_HEADERS= src/oqs.h \
 	src/common/common.h \
 	src/common/rand.h \
 	src/crypto/aes/aes.h \
+	src/crypto/sha2/sha2.h \
 	src/crypto/sha3/sha3.h \
 	src/kem/kem.h \
 	src/kem/bike/kem_bike.h \
@@ -86,13 +88,14 @@ installheader_HEADERS= src/oqs.h \
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_INSTALLHEADER_END
 
 
-test: clean-tests check
+test: check
 	tests/example_kem
 	tests/example_sig
 	tests/test_kem
 	tests/test_sig
 	tests/test_aes
 	tests/test_sha3
+	python3 -m pytest -v
 
 kat: clean-kats check
 	tests/kat_kem
@@ -107,6 +110,7 @@ links:
 	cp -f src/common/common.h include/oqs
 	cp -f src/common/rand.h include/oqs
 	cp -f src/crypto/aes/aes.h include/oqs
+	cp -f src/crypto/sha2/sha2.h include/oqs
 	cp -f src/crypto/sha3/sha3.h include/oqs
 	cp -f src/kem/kem.h include/oqs
 	cp -f src/kem/bike/kem_bike.h include/oqs

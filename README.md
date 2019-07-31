@@ -114,18 +114,21 @@ Builds are tested using the Travis continuous integration system on macOS 10.13.
 You need to install the following packages:
 
 	sudo apt install autoconf automake libtool gcc libssl-dev unzip xsltproc
+	pip3 install pytest
 
 ### Install dependencies for macOS
 
 You need to install the following packages using brew (or a package manager of your choice):
 
 	brew install autoconf automake libtool openssl wget
+	pip3 install pytest
 
 ### Install dependencies for OpenBSD
 
 You need to install the following packages using pkg_add:
 
 	pkg_add automake libtool
+	pip3 install pytest
 
 On OpenBSD you have to explicitly set the environment variables `AUTOCONF_VERSION` and 
 `AUTOMAKE_VERSION` to a version installed on your system.
