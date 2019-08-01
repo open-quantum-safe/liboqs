@@ -219,7 +219,7 @@ You can locally run any of the integration tests that CircleCI runs.  First, you
 
 where `<jobname>` is one of the following:
 
-- `amd64-buster`
+- `debian-buster-amd64`
 - `ubuntu-trusty-x86_64-gcc47`
 - `ubuntu-trusty-x86_64-gcc48`
 - `ubuntu-xenial-x86_64-gcc49`

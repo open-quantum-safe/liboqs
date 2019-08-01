@@ -12,7 +12,7 @@ version: 2
     - run: python3 -m pytest -v
 
 jobs:
-  amd64-buster:
+  debian-buster-amd64:
     <<: *oqsjob
     environment:
       IMAGE: dstebila/liboqs:amd64-buster-0.0.4
@@ -80,7 +80,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - amd64-buster
+      - debian-buster-amd64
       - ubuntu-trusty-x86_64-gcc47
       - ubuntu-xenial-x86_64-gcc8
       - ubuntu-xenial-x86_64-gcc8-noopenssl
@@ -95,7 +95,7 @@ workflows:
               only:
                 - master
     jobs:
-      - amd64-buster
+      - debian-buster-amd64
       - ubuntu-trusty-x86_64-gcc47
       - ubuntu-trusty-x86_64-gcc48
       - ubuntu-xenial-x86_64-gcc49
