@@ -59,7 +59,8 @@ def available_kems_by_name():
             if line.startswith("#define OQS_KEM_alg_"):
                 kem_name = line.split(' ')[2]
                 kem_name = kem_name[1:-2]
-                available_names.append(kem_name)
+                if kem_name != "DEFAULT":
+                    available_names.append(kem_name)
     return available_names
 
 def is_kem_enabled_by_name(name):
@@ -91,7 +92,8 @@ def available_sigs_by_name():
             if line.startswith("#define OQS_SIG_alg_"):
                 sig_name = line.split(' ')[2]
                 sig_name = sig_name[1:-2]
-                available_names.append(sig_name)
+                if sig_name != "DEFAULT":
+                    available_names.append(sig_name)
     return available_names
 
 def is_sig_enabled_by_name(name):
