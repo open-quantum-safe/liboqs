@@ -48,8 +48,9 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
         cwd=working_dir,
         env=env,
     )
-    print(stdout.decode('utf-8'))
-    assert retcode == expected_returncode, "Got unexpected return code {}".format(retcode)
+    if retcode != expected_returncode:
+        print(stdout.decode('utf-8'))
+        assert False, "Got unexpected return code {}".format(retcode)
     return stdout.decode('utf-8')
 
 def available_kems_by_name():
