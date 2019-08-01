@@ -81,3 +81,35 @@ def is_kem_enabled_by_name(name):
                 if kem_symbol == symbol:
                     return True
     return False
+
+def available_sigs_by_name():
+    available_names = []
+    with open(os.path.join('include', 'oqs', 'sig.h')) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_SIG_alg_"):
+                sig_name = line.split(' ')[2]
+                sig_name = sig_name[1:-2]
+                available_names.append(sig_name)
+    return available_names
+
+def is_sig_enabled_by_name(name):
+    symbol = None
+    with open(os.path.join('include', 'oqs', 'sig.h')) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_SIG_alg_"):
+                sig_symbol = line.split(' ')[1]
+                sig_symbol = sig_symbol[len("OQS_SIG_alg_"):]
+                sig_name = line.split(' ')[2]
+                sig_name = sig_name[1:-2]
+                if sig_name == name:
+                    symbol = sig_symbol
+                    break
+    if symbol == None: return False
+    with open(os.path.join('include', 'oqs', 'oqsconfig.h')) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_ENABLE_SIG_"):
+                sig_symbol = line.split(' ')[1]
+                sig_symbol = sig_symbol[len("OQS_ENABLE_SIG_"):]
+                if sig_symbol == symbol:
+                    return True
+    return False

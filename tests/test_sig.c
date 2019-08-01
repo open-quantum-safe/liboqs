@@ -84,19 +84,29 @@ cleanup:
 	return ret;
 }
 
-int main() {
-	int ret = EXIT_SUCCESS;
-	OQS_STATUS rc;
+int main(int argc, char **argv) {
+
+	if (argc != 2) {
+		fprintf(stderr, "Usage: test_sig algname\n");
+		fprintf(stderr, "  algname: ");
+		for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
+			if (i > 0) {
+				fprintf(stderr, ", ");
+			}
+			fprintf(stderr, "%s", OQS_SIG_alg_identifier(i));
+		}
+		fprintf(stderr, "\n");
+		return EXIT_FAILURE;
+	}
 
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
-	for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
-		rc = sig_test_correctness(OQS_SIG_alg_identifier(i));
-		if (rc != OQS_SUCCESS) {
-			ret = EXIT_FAILURE;
-		}
+	char *alg_name = argv[1];
+	OQS_STATUS rc = sig_test_correctness(alg_name);
+	if (rc != OQS_SUCCESS) {
+		return EXIT_FAILURE;
 	}
+	return EXIT_SUCCESS;
 
-	return ret;
 }

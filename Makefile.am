@@ -97,12 +97,6 @@ installheader_HEADERS= src/oqs.h \
 
 
 test: check
-	tests/example_kem
-	tests/example_sig
-	tests/test_kem
-	tests/test_sig
-	tests/test_aes
-	tests/test_sha3
 	python3 -m pytest -v
 
 links:
