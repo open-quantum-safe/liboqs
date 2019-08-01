@@ -233,6 +233,8 @@ where `<jobname>` is one of the following:
 - `ubuntu-xenial-x86_64-gcc8-noshared`
 - `ubuntu-bionic-x86_64`
 
+You may receive an error "Failed uploading test results directory" when running CircleCI locally, that is expected behaviour.
+
 Documentation
 -------------
 

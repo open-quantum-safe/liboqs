@@ -112,3 +112,4 @@ src/oqsconfig.h
 *.geany
 .tags*
 __pycache__
+test-results

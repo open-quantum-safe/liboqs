@@ -5,12 +5,16 @@ version: 2
     - image: ${IMAGE}
   steps:
     - checkout
-    - run: autoreconf -i
-    - run: ./configure --enable-silent-rules ${CONFIGURE_ARGS}
-    - run: make -j
-    - run: make check
-    - run: python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml
-    - store_test_results:
+    - run:
+        name: Configure
+        command: autoreconf -i && ./configure --enable-silent-rules ${CONFIGURE_ARGS}
+    - run: 
+        name: Build
+        command: make -j && make check
+    - run:
+        name: Run tests
+        command: mkdir test-results && python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml
+    - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
         path: test-results
 
 jobs:
