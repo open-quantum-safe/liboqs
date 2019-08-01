@@ -24,6 +24,8 @@ def test_style():
             )
             found_clang_format = clang_format
             break
+        except:
+            pass
         finally:
             pass
     assert found_clang_format != None, 'No clang-format found'
