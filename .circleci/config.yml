@@ -9,7 +9,9 @@ version: 2
     - run: ./configure --enable-silent-rules ${CONFIGURE_ARGS}
     - run: make -j
     - run: make check
-    - run: python3 -m pytest -v
+    - run: python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml
+    - store_test_results:
+        path: test-results
 
 jobs:
   debian-buster-amd64:
