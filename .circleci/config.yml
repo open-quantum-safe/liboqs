@@ -69,8 +69,7 @@ jobs:
     environment:
       IMAGE: dstebila/liboqs:x86_64-xenial-0.0.5
       CC: gcc-8
-      CONFIGURE_ARGS: --without-openssl
-      CONFIGURE_ARGS: --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+      CONFIGURE_ARGS: --without-openssl --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
   ubuntu-xenial-x86_64-gcc8-noshared:
     <<: *oqsjob
     environment:
