@@ -1,7 +1,3 @@
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true)](https://ci.appveyor.com/project/dstebila/liboqs/branch/master)
-[![CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master.svg?style=svg)](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master)
-[![Travis CI](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)](https://travis-ci.org/open-quantum-safe/liboqs)
-
 liboqs - master branch
 ======================
 
@@ -212,6 +208,12 @@ Builds are tested using continuous integration systems as follows:
 - Ubuntu 18.04.2 (Bionic), with gcc-7, on x86_64 using CircleCI
 - Debian 10 (Buster), with gcc-8.3.0, on amd64 using CircleCI
 - Windows Server 2016, with Visual Studio 2017, on x86_64 using AppVeyor
+
+Build status:
+
+- [AppVeyor](https://ci.appveyor.com/project/dstebila/liboqs): ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true)
+- [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master.svg?style=svg)
+- [Travis CI](https://travis-ci.org/open-quantum-safe/liboqs): ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
 
 You can locally run any of the integration tests that CircleCI runs.  First, you need to install CircleCI's local command line interface as indicated in the [installation instructions](https://circleci.com/docs/2.0/local-cli/).  Then:
 
