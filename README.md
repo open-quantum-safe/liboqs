@@ -203,7 +203,7 @@ A range of tests (including all `test_*` and `kat_*` programs above) can be run 
 Builds are tested using continuous integration systems as follows:
 
 - macOS 10.13.3 (clang 9.1.0) using Travis CI
-- Ubuntu 14.04.5 (Trusty), with gcc 4.7 and gcc-4.8, on x86_64 using CircleCI
+- Ubuntu 14.04.5 (Trusty), with gcc, on ARM Cortex-A8 (via QEMU) using Travis CI
 - Ubuntu 16.04.6 (Xenial), with gcc-4.9, gcc-5, gcc-6, gcc-7, and gcc-8, on x86_64 using CircleCI
 - Ubuntu 18.04.2 (Bionic), with gcc-7, on x86_64 using CircleCI
 - Debian 10 (Buster), with gcc-8.3.0, on amd64 using CircleCI
@@ -222,8 +222,6 @@ You can locally run any of the integration tests that CircleCI runs.  First, you
 where `<jobname>` is one of the following:
 
 - `debian-buster-amd64`
-- `ubuntu-trusty-x86_64-gcc47`
-- `ubuntu-trusty-x86_64-gcc48`
 - `ubuntu-xenial-x86_64-gcc49`
 - `ubuntu-xenial-x86_64-gcc5`
 - `ubuntu-xenial-x86_64-gcc6`
