@@ -45,7 +45,6 @@ tests/test_sha3
 
 #kat
 tests/kat_kem
-kat_kem_rsp/
 
 # Debug files
 *.dSYM/

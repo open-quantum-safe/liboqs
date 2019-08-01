@@ -164,12 +164,16 @@ There are also a variety of test programs built under the `tests` directory:
 
 - `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
 - `test_sig`: Simple test harness for all enabled key signature schemes
-- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values using `scripts/check_kats.sh`
+- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
 - `example_sig`: Minimal runnable example showing the usage of the signature API
 - `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
+
+A range of tests can be run using
+
+	python3 -m pytest
 
 Building and running on Windows
 -------------------------------

@@ -12,6 +12,10 @@ branches:
     - /.*nist.*/
     - /master-new-.*/
 
+init:
+  - set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
+
+
 configuration:
   - Debug
   - DebugDLL
@@ -20,15 +24,15 @@ configuration:
 
 test_script:
 - cmd: >-
+    python -m pip install pytest
+    cd %APPVEYOR_BUILD_FOLDER%
+    python -m pytest -v
+
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\test_kem.exe
 
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\test_sig.exe
 
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\example_kem.exe
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\kat_kem.exe
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\kat-check.bat
 
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\speed_kem.exe
 

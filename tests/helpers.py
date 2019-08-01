@@ -48,3 +48,23 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
     print(stdout.decode('utf-8'))
     assert retcode == expected_returncode, "Got unexpected return code {}".format(retcode)
     return stdout.decode('utf-8')
+
+def enabled_kems_by_name():
+    enabled_symbols = []
+    with open('include/oqs/oqsconfig.h') as fh:
+        for line in fh:
+            if line.startswith("#define OQS_ENABLE_KEM_"):
+                kem_symbol = line.split(' ')[1]
+                kem_symbol = kem_symbol[len("OQS_ENABLE_KEM_"):]
+                enabled_symbols.append(kem_symbol)
+    enabled_names = []
+    with open('include/oqs/kem.h') as fh:
+        for line in fh:
+            if line.startswith("#define OQS_KEM_alg"):
+                kem_symbol = line.split(' ')[1]
+                kem_symbol = kem_symbol[len("OQS_KEM_alg_"):]
+                kem_name = line.split(' ')[2]
+                kem_name = kem_name[1:-2]
+                if kem_symbol in enabled_symbols:
+                    enabled_names.append(kem_name)
+    return enabled_names
