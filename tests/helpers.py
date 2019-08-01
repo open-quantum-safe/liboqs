@@ -3,6 +3,7 @@ import os
 import os.path
 import pytest
 import subprocess
+import sys
 
 # subprocess.run is not defined on older versions of Python that are present on our test platform
 # so we need to supply our own backport
@@ -55,7 +56,7 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
 
 def available_kems_by_name():
     available_names = []
-    with open(os.path.join('include', 'oqs', 'kem.h')) as fh:
+    with open(os.path.join('src', 'kem', 'kem.h')) as fh:
         for line in fh:
             if line.startswith("#define OQS_KEM_alg_"):
                 kem_name = line.split(' ')[2]
@@ -66,7 +67,7 @@ def available_kems_by_name():
 
 def is_kem_enabled_by_name(name):
     symbol = None
-    with open(os.path.join('include', 'oqs', 'kem.h')) as fh:
+    with open(os.path.join('src', 'kem', 'kem.h')) as fh:
         for line in fh:
             if line.startswith("#define OQS_KEM_alg_"):
                 kem_symbol = line.split(' ')[1]
@@ -77,7 +78,11 @@ def is_kem_enabled_by_name(name):
                     symbol = kem_symbol
                     break
     if symbol == None: return False
-    with open(os.path.join('include', 'oqs', 'oqsconfig.h')) as fh:
+    if sys.platform.startswith("win"):
+        header = os.path.join('VisualStudio', 'winconfig.h')
+    else:
+        header = os.path.join('include', 'oqs', 'oqsconfig.h')
+    with open(header) as fh:
         for line in fh:
             if line.startswith("#define OQS_ENABLE_KEM_"):
                 kem_symbol = line.split(' ')[1]
@@ -88,7 +93,7 @@ def is_kem_enabled_by_name(name):
 
 def available_sigs_by_name():
     available_names = []
-    with open(os.path.join('include', 'oqs', 'sig.h')) as fh:
+    with open(os.path.join('src', 'sig', 'sig.h')) as fh:
         for line in fh:
             if line.startswith("#define OQS_SIG_alg_"):
                 sig_name = line.split(' ')[2]
@@ -99,7 +104,7 @@ def available_sigs_by_name():
 
 def is_sig_enabled_by_name(name):
     symbol = None
-    with open(os.path.join('include', 'oqs', 'sig.h')) as fh:
+    with open(os.path.join('src', 'sig', 'sig.h')) as fh:
         for line in fh:
             if line.startswith("#define OQS_SIG_alg_"):
                 sig_symbol = line.split(' ')[1]
@@ -110,7 +115,11 @@ def is_sig_enabled_by_name(name):
                     symbol = sig_symbol
                     break
     if symbol == None: return False
-    with open(os.path.join('include', 'oqs', 'oqsconfig.h')) as fh:
+    if sys.platform.startswith("win"):
+        header = os.path.join('VisualStudio', 'winconfig.h')
+    else:
+        header = os.path.join('include', 'oqs', 'oqsconfig.h')
+    with open(header) as fh:
         for line in fh:
             if line.startswith("#define OQS_ENABLE_SIG_"):
                 sig_symbol = line.split(' ')[1]
@@ -129,3 +138,15 @@ def filtered_test(func):
         else:
             return func(*args, **kwargs)
     return wrapper
+
+def path_to_executable(program_name):
+    if sys.platform.startswith("win"):
+        return os.path.join(
+            os.environ('APPVEYOR_BUILD_FOLDER'),
+            'VisualStudio',
+            os.environ('PLATFORM'),
+            os.environ('CONFIGURATION'),
+            program_name + ".EXE"
+        )
+    else:
+        return os.path.join("tests", program_name)

@@ -1,6 +1,4 @@
 import helpers
-import os
-import os.path
 import pytest
 import sys
 

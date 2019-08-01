@@ -1,7 +1,4 @@
-import hashlib
 import helpers
-import os
-import os.path
 import pytest
 import sys
 
@@ -44,6 +41,7 @@ def test_style():
         ['git', 'status', '-s']
     )
     if (modified_files != ""):
+        print(modified_files)
         assert False, "Some files do not adhere to project style standards.  See the last list of files below `git status -s`"
 
 if __name__ == "__main__":

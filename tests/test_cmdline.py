@@ -1,14 +1,12 @@
-import hashlib
 import helpers
 import os
-import os.path
 import pytest
 
 @helpers.filtered_test
 @pytest.mark.parametrize('program', ['example_kem', 'example_sig', 'test_aes', 'test_sha3'])
 def test_program(program):
     helpers.run_subprocess(
-        [os.path.join('tests', program)],
+        [helpers.path_to_executable(program)],
     )
 
 @helpers.filtered_test
@@ -16,7 +14,7 @@ def test_program(program):
 def test_kem(kem_name):
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     helpers.run_subprocess(
-        [os.path.join('tests', 'test_kem'), kem_name],
+        [helpers.path_to_executable('test_kem'), kem_name],
     )
 
 @helpers.filtered_test
@@ -24,7 +22,7 @@ def test_kem(kem_name):
 def test_sig(sig_name):
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     helpers.run_subprocess(
-        [os.path.join('tests', 'test_sig'), sig_name],
+        [helpers.path_to_executable('test_sig'), sig_name],
     )
 
 if __name__ == "__main__":

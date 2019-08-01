@@ -1,4 +1,3 @@
-import hashlib
 import helpers
 import os
 import os.path
@@ -10,7 +9,7 @@ def test_kem(kem_name):
     if kem_name.startswith('Sidh'): pytest.skip('KATs not available for SIDH')
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
-        [os.path.join('tests', 'kat_kem'), kem_name],
+        [helpers.path_to_executable('kat_kem'), kem_name],
     )
     kats = []
     for filename in os.listdir(os.path.join('tests', 'KATs', 'kem')):

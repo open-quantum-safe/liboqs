@@ -29,13 +29,3 @@ test_script:
     cd %APPVEYOR_BUILD_FOLDER%
 
     python -m pytest -v
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\test_kem.exe
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\test_sig.exe
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\example_kem.exe
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\speed_kem.exe
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\speed_sig.exe
