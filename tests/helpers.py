@@ -142,10 +142,10 @@ def filtered_test(func):
 def path_to_executable(program_name):
     if sys.platform.startswith("win"):
         return os.path.join(
-            os.environ('APPVEYOR_BUILD_FOLDER'),
+            os.environ['APPVEYOR_BUILD_FOLDER'],
             'VisualStudio',
-            os.environ('PLATFORM'),
-            os.environ('CONFIGURATION'),
+            os.environ['PLATFORM'],
+            os.environ['CONFIGURATION'],
             program_name + ".EXE"
         )
     else:
