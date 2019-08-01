@@ -3,6 +3,7 @@ import helpers
 import os
 import os.path
 import pytest
+import sys
 
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
