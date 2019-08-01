@@ -89,7 +89,6 @@ matrix:
     - CC_OVERRIDE=clang
     - WITH_OPENSSL=1
     before_install:
-    - brew update
     - brew install doxygen graphviz
     - pip3 install pytest
     script:
@@ -100,7 +99,6 @@ matrix:
     - CC_OVERRIDE=clang
     - WITH_OPENSSL=0
     before_install:
-    - brew update
     - brew install doxygen graphviz
     - pip3 install pytest
     script:

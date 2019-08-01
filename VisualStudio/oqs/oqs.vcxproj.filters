@@ -443,6 +443,303 @@
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\sign.c">
       <Filter>mqdss\31_64</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Ia_classic.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\blas_comm.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\parallel_matrix_op.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\rainbow.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\rainbow_keypair.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\sign.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\utils_hash.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\utils_prng.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\blas_u32.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\gf.c">
+      <Filter>rainbow\Ia_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Ia_cyclic.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\blas_comm.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\parallel_matrix_op.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\rainbow.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\rainbow_keypair.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\sign.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\utils_hash.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\utils_prng.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\blas_u32.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\gf.c">
+      <Filter>rainbow\Ia_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Ia_cyclic_compressed.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\blas_comm.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\parallel_matrix_op.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\rainbow.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\rainbow_keypair.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\sign.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\utils_hash.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\utils_prng.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\blas_u32.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\gf.c">
+      <Filter>rainbow\Ia_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_IIIc_classic.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\blas_comm.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\parallel_matrix_op.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\rainbow.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\rainbow_keypair.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\sign.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\utils_hash.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\utils_prng.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\blas_u32.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\gf.c">
+      <Filter>rainbow\IIIc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_IIIc_cyclic.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\blas_comm.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\parallel_matrix_op.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\rainbow.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\rainbow_keypair.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\sign.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\utils_hash.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\utils_prng.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\blas_u32.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\gf.c">
+      <Filter>rainbow\IIIc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_IIIc_cyclic_compressed.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\blas_comm.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\parallel_matrix_op.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\rainbow.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\rainbow_keypair.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\sign.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\utils_hash.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\utils_prng.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\blas_u32.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\gf.c">
+      <Filter>rainbow\IIIc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Vc_classic.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\blas_comm.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\parallel_matrix_op.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\rainbow.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\rainbow_keypair.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\sign.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\utils_hash.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\utils_prng.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\blas_u32.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\gf.c">
+      <Filter>rainbow\Vc_classic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Vc_cyclic.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\blas_comm.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\parallel_matrix_op.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\rainbow.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\rainbow_keypair.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\sign.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\utils_hash.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\utils_prng.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\blas_u32.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\gf.c">
+      <Filter>rainbow\Vc_cyclic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Vc_cyclic_compressed.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\blas_comm.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\parallel_matrix_op.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\rainbow.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\rainbow_keypair.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\rainbow_keypair_computation.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\sign.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\utils_hash.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\utils_prng.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\blas_u32.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\gf.c">
+      <Filter>rainbow\Vc_cyclic_compressed</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128f_robust.c">
       <Filter>sphincs\haraka_128f_robust</Filter>
     </ClCompile>
@@ -1547,6 +1844,9 @@
     <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h">
       <Filter>mqdss</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\sig\rainbow\sig_rainbow.h">
+      <Filter>rainbow</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\sig\sphincs\sig_sphincs.h">
       <Filter>sphincs</Filter>
     </ClInclude>
@@ -1784,6 +2084,36 @@
     </Filter>
     <Filter Include="mqdss\31_64">
       <UniqueIdentifier>{cb56a63a-35d6-4825-92fa-07094d96d063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow">
+      <UniqueIdentifier>{154bc1c9-3ffa-43b4-87f6-7833358925ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\Ia_classic">
+      <UniqueIdentifier>{383a4b2f-3be2-4fdc-890c-2c0b96dd407b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\Ia_cyclic">
+      <UniqueIdentifier>{1d381fda-5d72-4e75-bda7-425da26fafd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\Ia_cyclic_compressed">
+      <UniqueIdentifier>{105adf1c-d79a-4fe1-b83a-bbee5f3fe9e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\IIIc_classic">
+      <UniqueIdentifier>{66f609bd-ef1c-4f8c-bccd-6d1ec0a00d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\IIIc_cyclic">
+      <UniqueIdentifier>{d5b8951d-3341-422d-ad44-d170cd3050c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\IIIc_cyclic_compressed">
+      <UniqueIdentifier>{f85b2351-3730-4c73-86dd-326824670cb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\Vc_classic">
+      <UniqueIdentifier>{fb503919-3b72-4053-99c6-efa69fcf99d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\Vc_cyclic">
+      <UniqueIdentifier>{0fbffeac-d3be-4222-b886-86438bfa94f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rainbow\Vc_cyclic_compressed">
+      <UniqueIdentifier>{6ebf00fe-7db0-44ae-99f8-c694388c8514}</UniqueIdentifier>
     </Filter>
     <Filter Include="sphincs">
       <UniqueIdentifier>{72502a10-312e-422b-80b9-b1b08abfe5e7}</UniqueIdentifier>

@@ -15,6 +15,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	    ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 	    OQS_SIG_alg_dilithium_2, OQS_SIG_alg_dilithium_3, OQS_SIG_alg_dilithium_4,
 	    OQS_SIG_alg_mqdss_31_48, OQS_SIG_alg_mqdss_31_64,
+	    OQS_SIG_alg_rainbow_Ia_classic, OQS_SIG_alg_rainbow_Ia_cyclic, OQS_SIG_alg_rainbow_Ia_cyclic_compressed, OQS_SIG_alg_rainbow_IIIc_classic, OQS_SIG_alg_rainbow_IIIc_cyclic, OQS_SIG_alg_rainbow_IIIc_cyclic_compressed, OQS_SIG_alg_rainbow_Vc_classic, OQS_SIG_alg_rainbow_Vc_cyclic, OQS_SIG_alg_rainbow_Vc_cyclic_compressed,
 	    OQS_SIG_alg_sphincs_haraka_128f_robust, OQS_SIG_alg_sphincs_haraka_128f_simple, OQS_SIG_alg_sphincs_haraka_128s_robust, OQS_SIG_alg_sphincs_haraka_128s_simple, OQS_SIG_alg_sphincs_haraka_192f_robust, OQS_SIG_alg_sphincs_haraka_192f_simple, OQS_SIG_alg_sphincs_haraka_192s_robust, OQS_SIG_alg_sphincs_haraka_192s_simple, OQS_SIG_alg_sphincs_haraka_256f_robust, OQS_SIG_alg_sphincs_haraka_256f_simple, OQS_SIG_alg_sphincs_haraka_256s_robust, OQS_SIG_alg_sphincs_haraka_256s_simple, OQS_SIG_alg_sphincs_sha256_128f_robust, OQS_SIG_alg_sphincs_sha256_128f_simple, OQS_SIG_alg_sphincs_sha256_128s_robust, OQS_SIG_alg_sphincs_sha256_128s_simple, OQS_SIG_alg_sphincs_sha256_192f_robust, OQS_SIG_alg_sphincs_sha256_192f_simple, OQS_SIG_alg_sphincs_sha256_192s_robust, OQS_SIG_alg_sphincs_sha256_192s_simple, OQS_SIG_alg_sphincs_sha256_256f_robust, OQS_SIG_alg_sphincs_sha256_256f_simple, OQS_SIG_alg_sphincs_sha256_256s_robust, OQS_SIG_alg_sphincs_sha256_256s_simple, OQS_SIG_alg_sphincs_shake256_128f_robust, OQS_SIG_alg_sphincs_shake256_128f_simple, OQS_SIG_alg_sphincs_shake256_128s_robust, OQS_SIG_alg_sphincs_shake256_128s_simple, OQS_SIG_alg_sphincs_shake256_192f_robust, OQS_SIG_alg_sphincs_shake256_192f_simple, OQS_SIG_alg_sphincs_shake256_192s_robust, OQS_SIG_alg_sphincs_shake256_192s_simple, OQS_SIG_alg_sphincs_shake256_256f_robust, OQS_SIG_alg_sphincs_shake256_256f_simple, OQS_SIG_alg_sphincs_shake256_256s_robust, OQS_SIG_alg_sphincs_shake256_256s_simple,
 	    ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 	    OQS_SIG_alg_picnic_L1_FS, OQS_SIG_alg_picnic_L1_UR, OQS_SIG_alg_picnic_L3_FS, OQS_SIG_alg_picnic_L3_UR, OQS_SIG_alg_picnic_L5_FS, OQS_SIG_alg_picnic_L5_UR, OQS_SIG_alg_picnic2_L1_FS, OQS_SIG_alg_picnic2_L3_FS, OQS_SIG_alg_picnic2_L5_FS,
@@ -64,6 +65,60 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqdss_31_64)) {
 #ifdef OQS_ENABLE_SIG_mqdss_31_64
 		return OQS_SIG_mqdss_31_64_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_rainbow_Ia_classic)) {
+#ifdef OQS_ENABLE_SIG_rainbow_Ia_classic
+		return OQS_SIG_rainbow_Ia_classic_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_rainbow_Ia_cyclic)) {
+#ifdef OQS_ENABLE_SIG_rainbow_Ia_cyclic
+		return OQS_SIG_rainbow_Ia_cyclic_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_rainbow_Ia_cyclic_compressed)) {
+#ifdef OQS_ENABLE_SIG_rainbow_Ia_cyclic_compressed
+		return OQS_SIG_rainbow_Ia_cyclic_compressed_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_rainbow_IIIc_classic)) {
+#ifdef OQS_ENABLE_SIG_rainbow_IIIc_classic
+		return OQS_SIG_rainbow_IIIc_classic_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_rainbow_IIIc_cyclic)) {
+#ifdef OQS_ENABLE_SIG_rainbow_IIIc_cyclic
+		return OQS_SIG_rainbow_IIIc_cyclic_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_rainbow_IIIc_cyclic_compressed)) {
+#ifdef OQS_ENABLE_SIG_rainbow_IIIc_cyclic_compressed
+		return OQS_SIG_rainbow_IIIc_cyclic_compressed_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_rainbow_Vc_classic)) {
+#ifdef OQS_ENABLE_SIG_rainbow_Vc_classic
+		return OQS_SIG_rainbow_Vc_classic_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_rainbow_Vc_cyclic)) {
+#ifdef OQS_ENABLE_SIG_rainbow_Vc_cyclic
+		return OQS_SIG_rainbow_Vc_cyclic_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_rainbow_Vc_cyclic_compressed)) {
+#ifdef OQS_ENABLE_SIG_rainbow_Vc_cyclic_compressed
+		return OQS_SIG_rainbow_Vc_cyclic_compressed_new();
 #else
 		return NULL;
 #endif

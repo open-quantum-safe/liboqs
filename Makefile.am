@@ -51,6 +51,9 @@ endif
 if ENABLE_SIG_MQDSS
 liboqs_la_LIBADD += src/sig/mqdss/libsigmqdss.la
 endif
+if ENABLE_SIG_RAINBOW
+liboqs_la_LIBADD += src/sig/rainbow/libsigrainbow.la
+endif
 if ENABLE_SIG_SPHINCS
 liboqs_la_LIBADD += src/sig/sphincs/libsigsphincs.la
 endif
@@ -86,6 +89,7 @@ installheader_HEADERS= src/oqs.h \
 	src/sig/sig.h \
 	src/sig/dilithium/sig_dilithium.h \
 	src/sig/mqdss/sig_mqdss.h \
+	src/sig/rainbow/sig_rainbow.h \
 	src/sig/sphincs/sig_sphincs.h \
 	src/sig/picnic/sig_picnic.h \
 	src/sig/qtesla/sig_qtesla.h
@@ -125,6 +129,7 @@ links:
 	cp -f src/kem/saber/kem_saber.h include/oqs
 	cp -f src/sig/dilithium/sig_dilithium.h include/oqs
 	cp -f src/sig/mqdss/sig_mqdss.h include/oqs
+	cp -f src/sig/rainbow/sig_rainbow.h include/oqs
 	cp -f src/sig/sphincs/sig_sphincs.h include/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_END
 	cp -f src/kem/frodokem/kem_frodokem.h include/oqs
