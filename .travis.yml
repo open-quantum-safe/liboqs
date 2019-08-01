@@ -5,25 +5,6 @@ sudo: true
 matrix:
   include:
   - os: linux
-    compiler: gcc
-    env:
-    - CC_OVERRIDE=gcc
-    - ENABLE_SIG_PICNIC=0
-    - WITH_OPENSSL=1
-    - CHECK_STYLE=true
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - doxygen
-        - graphviz
-        - python3-pytest
-    before_install:
-    - sh .travis/install-clang-format-linux.sh
-    script:
-    - .travis/all-tests.sh
-  - os: linux
     compiler: arm-linux-gnueabi-gcc
     addons:
       apt:
@@ -34,55 +15,6 @@ matrix:
     script:
     - scripts/arm-cross-compile.sh
     - scripts/arm-run-tests-qemu.sh
-  - os: linux
-    compiler: gcc
-    env:
-    - CC_OVERRIDE=gcc-4.9
-    - ENABLE_SIG_PICNIC=0
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - gcc-4.9
-        - doxygen
-        - graphviz
-        - python3-pytest
-    before_install:
-    - sh .travis/install-clang-format-linux.sh
-    script:
-    - .travis/all-tests.sh
-  - os: linux
-    compiler: gcc
-    env: CC_OVERRIDE=gcc-5
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - gcc-5
-        - doxygen
-        - graphviz
-        - python3-pytest
-    script:
-    - .travis/all-tests.sh
-  - os: linux
-    compiler: gcc
-    env:
-    - CC_OVERRIDE=gcc-6
-    - WITH_OPENSSL=1
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - gcc-6
-        - libssl-dev
-        - doxygen
-        - graphviz
-        - python3-pytest
-    script:
-    - .travis/all-tests.sh
   - os: osx
     compiler: clang
     env:

@@ -1,5 +1,7 @@
+import functools
 import os
 import os.path
+import pytest
 import subprocess
 
 # subprocess.run is not defined on older versions of Python that are present on our test platform
@@ -113,3 +115,14 @@ def is_sig_enabled_by_name(name):
                 if sig_symbol == symbol:
                     return True
     return False
+
+def filtered_test(func):
+    funcname = func.__name__[len("test_"):]
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        if ('SKIP_TESTS' in os.environ) and (funcname in os.environ['SKIP_TESTS'].lower().split(',')):
+            pytest.skip("Test disabled by filter")
+        else:
+            return func(*args, **kwargs)
+    return wrapper
