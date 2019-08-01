@@ -129,7 +129,7 @@ cleanup:
 }
 
 int main(int argc, char **argv) {
-	
+
 	if (argc != 2) {
 		fprintf(stderr, "Usage: kat_kem algname\n");
 		fprintf(stderr, "  algname: ");
