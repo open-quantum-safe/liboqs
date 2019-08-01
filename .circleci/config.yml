@@ -13,7 +13,7 @@ version: 2
         command: make -j && make check
     - run:
         name: Run tests
-        command: mkdir test-results && python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto
+        command: mkdir test-results && ${PYTHON:-python3} -m pytest --verbose --junitxml=test-results/pytest/results.xml ${NUMPROCESSES:---numprocesses=auto}
     - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
         path: test-results
 
@@ -27,16 +27,20 @@ jobs:
   ubuntu-trusty-x86_64-gcc47:
     <<: *oqsjob
     environment:
-      IMAGE: dstebila/liboqs:ubuntu-trusty-x86_64-0.1.0
+      IMAGE: dstebila/liboqs:ubuntu-trusty-x86_64-0.1.1
       CC: gcc-4.7
       CONFIGURE_ARGS: --disable-sig-picnic  --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+      NUMPROCESSES: " "
+      PYTHON: python3.5
       SKIP_TESTS: style
   ubuntu-trusty-x86_64-gcc48:
     <<: *oqsjob
     environment:
-      IMAGE: dstebila/liboqs:ubuntu-trusty-x86_64-0.1.0
+      IMAGE: dstebila/liboqs:ubuntu-trusty-x86_64-0.1.1
       CC: gcc-4.8
       CONFIGURE_ARGS: --disable-sig-picnic --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+      NUMPROCESSES: " "
+      PYTHON: python3.5
       SKIP_TESTS: style
   ubuntu-xenial-x86_64-gcc49:
     <<: *oqsjob
