@@ -13,8 +13,7 @@ def test_kem(kem_name):
         [os.path.join('tests', 'kat_kem'), kem_name],
     )
     kats = []
-    for file in os.scandir(os.path.join('tests', 'KATs', 'kem')):
-        filename = file.name
+    for filename in os.listdir(os.path.join('tests', 'KATs', 'kem')):
         if filename.startswith(kem_name + '.') and filename.endswith('.kat'):
             with open(os.path.join('tests', 'KATs', 'kem', filename), 'r') as myfile:
                 kats.append(myfile.read())
