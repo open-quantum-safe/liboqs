@@ -3,8 +3,8 @@ import os
 import pytest
 
 @helpers.filtered_test
-@pytest.mark.parametrize('program', ['example_kem', 'example_sig', 'test_aes', 'test_sha3'])
-def test_program(program):
+@pytest.mark.parametrize('program', ['example_kem', 'example_sig'])
+def test_examples(program):
     helpers.run_subprocess(
         [helpers.path_to_executable(program)],
     )

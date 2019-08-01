@@ -1,9 +1,25 @@
 import hashlib
 import helpers
 import pytest
+import sys
+
+@helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
+def test_aes():
+    helpers.run_subprocess(
+        [helpers.path_to_executable('test_aes')],
+    )
+
+@helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
+def test_sha3():
+    helpers.run_subprocess(
+        [helpers.path_to_executable('test_sha3')],
+    )
 
 @helpers.filtered_test
 @pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_sha256(msg):
     output = helpers.run_subprocess(
         [helpers.path_to_executable('test_hash'), 'sha256'],
@@ -13,6 +29,7 @@ def test_sha256(msg):
 
 @helpers.filtered_test
 @pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_sha384(msg):
     output = helpers.run_subprocess(
         [helpers.path_to_executable('test_hash'), 'sha384'],
@@ -22,6 +39,7 @@ def test_sha384(msg):
 
 @helpers.filtered_test
 @pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_sha512(msg):
     output = helpers.run_subprocess(
         [helpers.path_to_executable('test_hash'), 'sha512'],

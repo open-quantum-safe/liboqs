@@ -10,6 +10,7 @@ def test_style():
         ['git', 'status', '-s']
     )
     if (modified_files != ""):
+        print(modified_files)
         assert False, "There are modified files present in the directory prior to prettyprint check. This may indicate that some files should be added to .gitignore or need to be committed."
 
     clang_formats = ['/usr/local/Cellar/clang-format/2016-06-27/bin/clang-format', 'clang-format-3.9', 'clang-format']

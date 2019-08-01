@@ -11,6 +11,7 @@ def test_kem(kem_name):
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_kem'), kem_name],
     )
+    output = output.replace("\r\n", "\n")
     kats = []
     for filename in os.listdir(os.path.join('tests', 'KATs', 'kem')):
         if filename.startswith(kem_name + '.') and filename.endswith('.kat'):
