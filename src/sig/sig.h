@@ -156,11 +156,15 @@ extern "C" {
 #define OQS_SIG_alg_sphincs_shake256_256s_robust "SPHINCS+-SHAKE256-256s-robust"
 /** Algorithm identifier for SPHINCS+-SHAKE256-256s-simple */
 #define OQS_SIG_alg_sphincs_shake256_256s_simple "SPHINCS+-SHAKE256-256s-simple"
+/** Algorithm identifier for FALCON-512 */
+#define OQS_SIG_alg_falcon_512 "FALCON-512"
+/** Algorithm identifier for FALCON-1024 */
+#define OQS_SIG_alg_falcon_1024 "FALCON-1024"	
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 63
+#define OQS_SIG_algs_length 65
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -328,6 +332,7 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #include <oqs/sig_mqdss.h>
 #include <oqs/sig_rainbow.h>
 #include <oqs/sig_sphincs.h>
+#include <oqs/sig_falcon.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 // EDIT-WHEN-ADDING-SIG
 

@@ -258,3 +258,5 @@ EXPORTS
 	OQS_SIG_sphincs_shake256_256s_simple_keypair
 	OQS_SIG_sphincs_shake256_256s_simple_sign
 	OQS_SIG_sphincs_shake256_256s_simple_verify
+	OQS_SIG_falcon_512
+	OQS_SIG_falcon_1024

@@ -42,6 +42,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([sig-mqdss], [sig_mqdss], [ENABLE_SIG_MQDSS], [src/sig/mqdss])
   ARG_DISBL_SET_WRAP([sig-rainbow], [sig_rainbow], [ENABLE_SIG_RAINBOW], [src/sig/rainbow])
   ARG_DISBL_SET_WRAP([sig-sphincs], [sig_sphincs], [ENABLE_SIG_SPHINCS], [src/sig/sphincs])
+  ARG_DISBL_SET_WRAP([sig-falcon], [sig_falcon], [ENABLE_SIG_FALCON], [src/sig/falcon])  
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
@@ -156,6 +157,10 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_SIG_sphincs_shake256_256f_simple, 1, "Define to 1 when SPHINCS+-SHAKE256-256f-simple enabled")
     AC_DEFINE(OQS_ENABLE_SIG_sphincs_shake256_256s_robust, 1, "Define to 1 when SPHINCS+-SHAKE256-256s-robust enabled")
     AC_DEFINE(OQS_ENABLE_SIG_sphincs_shake256_256s_simple, 1, "Define to 1 when SPHINCS+-SHAKE256-256s-simple enabled")
+  ])
+  AM_COND_IF([ENABLE_SIG_FALCON], [
+    AC_DEFINE(OQS_ENABLE_SIG_falcon_512, 1, "Define to 1 when Falcon-512 enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_falcon_1024, 1, "Define to 1 when Falcon-1024 enabled")
   ])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AM_COND_IF_END
 

@@ -466,3 +466,21 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_simple.c']
         visual_studio_guid: a7c0f5cd-c1e4-4880-9c9a-98d0b09d03ab
+
+    name: falcon
+    visual_studio_guid: ac98bd77-73db-4889-b91f-75dc49769227
+    schemes:
+      - 
+        scheme: "512"
+        pqclean_scheme: falcon-512
+        pretty_name_full: FALCON-512
+        implementation: clean
+        sources: ['codec.c', 'common.c', 'fft.c', 'fpr.c','keygen.c', 'pqclean.c','rng.c','vrfy.c','sign.c']
+        visual_studio_guid: f640e0c6-bcdd-4964-951b-5af452290370
+      - 
+        scheme: "1024"
+        pqclean_scheme: falcon-1024
+        pretty_name_full: FALCON-1024
+        implementation: clean
+        sources: ['codec.c', 'common.c', 'fft.c', 'fpr.c', keygen.c', 'pqclean.c','rng.c','vrfy.c','sign.c']
+        visual_studio_guid: cb56a63a-35d6-4825-92fa-07094d96d064

@@ -1676,6 +1676,67 @@
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\thash_shake256_simple.c">
       <Filter>sphincs\shake256_256s_simple</Filter>
     </ClCompile>
+
+    <ClCompile Include="..\..\src\sig\falcon\sig_falcon_512.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-512_clean\codec.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-512_clean\common.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-512_clean\fft.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-512_clean\fpr.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-512_clean\keygen.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-512_clean\pqclean.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-512_clean\rng.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-512_clean\sign.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-512_clean\vrfy.c">
+      <Filter>falcon\falcon_512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\sig_falcon_1024.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-1024_clean\codec.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-1024_clean\common.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-1024_clean\fft.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-1024_clean\fpr.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-1024_clean\keygen.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-1024_clean\pqclean.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-1024_clean\rng.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-1024_clean\sign.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\falcon\pqclean_falcon-1024_clean\vrfy.c">
+      <Filter>falcon\falcon_1024</Filter>
+    </ClCompile>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c">
       <Filter>frodokem</Filter>
@@ -1850,6 +1911,9 @@
     <ClInclude Include="..\..\src\sig\sphincs\sig_sphincs.h">
       <Filter>sphincs</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\sig\falcon\sig_falcon.h">
+      <Filter>falcon</Filter>
+    </ClInclude>    
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h">
       <Filter>frodokem</Filter>
@@ -2225,6 +2289,12 @@
     </Filter>
     <Filter Include="sphincs\shake256_256s_simple">
       <UniqueIdentifier>{a7c0f5cd-c1e4-4880-9c9a-98d0b09d03ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="falcon\falcon_512">
+      <UniqueIdentifier>{f640e0c6-bcdd-4964-951b-5af452290370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="falcon\falcon_1024">
+      <UniqueIdentifier>{cb56a63a-35d6-4825-92fa-07094d96d064}</UniqueIdentifier>
     </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_END -->
   </ItemGroup>

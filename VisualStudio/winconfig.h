@@ -90,6 +90,8 @@
 #define OQS_ENABLE_SIG_sphincs_shake256_256f_simple
 #define OQS_ENABLE_SIG_sphincs_shake256_256s_robust
 #define OQS_ENABLE_SIG_sphincs_shake256_256s_simple
+#define OQS_ENABLE_SIG_falcon_512
+#define OQS_ENABLE_SIG_falcon_1024
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_SIGS_END
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p434
 #define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS

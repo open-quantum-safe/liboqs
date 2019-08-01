@@ -45,6 +45,7 @@
     <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h" />
     <ClInclude Include="..\..\src\sig\rainbow\sig_rainbow.h" />
     <ClInclude Include="..\..\src\sig\sphincs\sig_sphincs.h" />
+    <ClInclude Include="..\..\src\sig\falcon\sig_falcon.h" />    
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
@@ -660,6 +661,26 @@
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\sign.c" />
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\hash_shake256.c" />
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\falcon\sig_falcon_512.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\codec.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\common.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\fft.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\fpr.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\keygen.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\pqclean.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\rng.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\vrfy.c" />
+    <ClCompile Include="..\..\src\sig\falcon\sig_falcon_1024.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\codec.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\common.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\fft.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\fpr.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\keygen.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\pqclean.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\rng.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\vrfy.c" />
 <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\kem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
@@ -864,7 +885,8 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -909,7 +931,8 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -954,7 +977,8 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_END -->
     </PreBuildEvent>
     <Lib>
@@ -1007,7 +1031,8 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_END -->
     </PreBuildEvent>
     <Lib>
@@ -1059,7 +1084,8 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -1108,7 +1134,8 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -1157,7 +1184,8 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_END -->
     </PreBuildEvent>
     <Lib>
@@ -1214,7 +1242,8 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"</Command>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_END -->
     </PreBuildEvent>
     <Lib>

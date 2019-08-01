@@ -1,0 +1,23 @@
+# This Makefile can be used with Microsoft Visual Studio's nmake using the command:
+#    nmake /f Makefile.Microsoft_nmake
+
+LIBRARY=libfalcon-1024_clean.lib
+OBJECTS=codec.obj common.obj fft.obj fpr.obj keygen.obj pqclean.obj rng.obj sign.obj vrfy.obj
+
+# Warning C4146 is raised when a unary minus operator is applied to an
+# unsigned type; this has nonetheless been standard and portable for as
+# long as there has been a C standard, and we do that a lot, especially
+# for constant-time computations. Thus, we disable that spurious warning.
+CFLAGS=/nologo /I ..\..\..\common /W4 /wd4146 /WX
+
+all: $(LIBRARY)
+
+# Make sure objects are recompiled if headers change.
+$(OBJECTS): *.h
+
+$(LIBRARY): $(OBJECTS)
+	LIB.EXE /NOLOGO /WX /OUT:$@ $**
+
+clean:
+    -DEL $(OBJECTS)
+    -DEL $(LIBRARY)
