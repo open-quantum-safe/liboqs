@@ -25,7 +25,9 @@ configuration:
 test_script:
 - cmd: >-
     python -m pip install pytest
+
     cd %APPVEYOR_BUILD_FOLDER%
+
     python -m pytest -v
 
     %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\test_kem.exe
