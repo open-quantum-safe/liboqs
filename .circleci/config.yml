@@ -1,0 +1,83 @@
+version: 2
+
+.oqsjob: &oqsjob
+  docker:
+    - image: ${IMAGE}
+  steps:
+    - checkout
+    - run: autoreconf -i
+    - run: ./configure --enable-silent-rules ${CONFIGURE_ARGS}
+    - run: make -j
+    - run: make check
+    - run: python3 -m pytest -v
+
+jobs:
+  amd64-buster:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:amd64-buster-0.0.4
+  x86_64-xenial-gcc49:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:x86_64-xenial-0.0.4
+      CC: gcc-4.9
+      CONFIGURE_ARGS: --disable-sig-picnic
+  x86_64-xenial-gcc5:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:x86_64-xenial-0.0.4
+      CC: gcc-5
+  x86_64-xenial-gcc6:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:x86_64-xenial-0.0.4
+      CC: gcc-6
+  x86_64-xenial-gcc7:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:x86_64-xenial-0.0.4
+      CC: gcc-7
+  x86_64-xenial-gcc8:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:x86_64-xenial-0.0.4
+      CC: gcc-8
+  x86_64-xenial-gcc8-noopenssl:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:x86_64-xenial-0.0.4
+      CC: gcc-8
+      CONFIGURE_ARGS: --without-openssl
+  x86_64-xenial-gcc8-noshared:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:x86_64-xenial-0.0.4
+      CC: gcc-8
+      CONFIGURE_ARGS: --disable-shared
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - amd64-buster
+      - x86_64-xenial-gcc49
+      - x86_64-xenial-gcc8
+      - x86_64-xenial-gcc8-noopenssl
+      - x86_64-xenial-gcc8-noshared
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - amd64-buster
+      - x86_64-xenial-gcc49
+      - x86_64-xenial-gcc5
+      - x86_64-xenial-gcc6
+      - x86_64-xenial-gcc7
+      - x86_64-xenial-gcc8
+      - x86_64-xenial-gcc8-noopenssl
+      - x86_64-xenial-gcc8-noshared
