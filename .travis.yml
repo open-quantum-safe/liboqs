@@ -19,6 +19,7 @@ matrix:
     compiler: clang
     env:
     - WITH_OPENSSL=1
+    - SKIP_TESTS=style
     before_install:
     - brew install doxygen graphviz
     - pip3 install pytest
@@ -35,6 +36,7 @@ matrix:
     compiler: clang
     env:
     - WITH_OPENSSL=0
+    - SKIP_TESTS=style
     before_install:
     - brew install doxygen graphviz
     - pip3 install pytest
