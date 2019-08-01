@@ -18,20 +18,32 @@ matrix:
   - os: osx
     compiler: clang
     env:
-    - CC_OVERRIDE=clang
     - WITH_OPENSSL=1
     before_install:
     - brew install doxygen graphviz
     - pip3 install pytest
     script:
-    - .travis/all-tests.sh
+    - autoreconf -i
+    - ./configure --enable-silent-rules
+    - make
+    - make test
+    - ./configure --enable-silent-rules --disable-shared
+    - make clean
+    - make
+    - make test
   - os: osx
     compiler: clang
     env:
-    - CC_OVERRIDE=clang
     - WITH_OPENSSL=0
     before_install:
     - brew install doxygen graphviz
     - pip3 install pytest
     script:
-    - .travis/all-tests.sh
+    - autoreconf -i
+    - ./configure --enable-silent-rules --without-openssl
+    - make
+    - make test
+    - ./configure --enable-silent-rules --disable-shared
+    - make clean
+    - make
+    - make test
