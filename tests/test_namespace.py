@@ -1,9 +1,12 @@
 import helpers
 import pytest
+import sys
 
 # Check if liboqs contains any non-namespaced global symbols
 # See https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for function naming conventions
 
+@helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 def test_namespace():
     out = helpers.run_subprocess(
         ['nm', '-g', '.libs/liboqs.a']

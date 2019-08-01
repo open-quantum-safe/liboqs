@@ -4,6 +4,7 @@ import os
 import os.path
 import pytest
 
+@helpers.filtered_test
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_kem(kem_name):
     if kem_name.startswith('Sidh'): pytest.skip('KATs not available for SIDH')

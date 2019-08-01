@@ -5,6 +5,7 @@ import os.path
 import pytest
 
 @helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 def test_style():
 
     modified_files = helpers.run_subprocess(
