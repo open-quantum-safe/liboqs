@@ -19,6 +19,21 @@ def test_kem(kem_name):
                 kats.append(myfile.read())
     assert(output in kats)
 
+@helpers.filtered_test
+@pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
+def test_sig(sig_name):
+    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
+    output = helpers.run_subprocess(
+        [helpers.path_to_executable('kat_sig'), sig_name],
+    )
+    output = output.replace("\r\n", "\n")
+    kats = []
+    for filename in os.listdir(os.path.join('tests', 'KATs', 'sig')):
+        if filename.startswith(sig_name + '.') and filename.endswith('.kat'):
+            with open(os.path.join('tests', 'KATs', 'sig', filename), 'r') as myfile:
+                kats.append(myfile.read())
+    assert(output in kats)
+
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)

@@ -1,6 +1,6 @@
 AUTOMAKE_OPTIONS = foreign
 check_PROGRAMS = 	example_kem speed_kem test_kem kat_kem \
-	example_sig speed_sig test_sig \
+	example_sig speed_sig test_sig kat_sig \
 	test_aes test_sha3 test_hash
 
 commonflags  = -L../.libs -loqs -lm
@@ -18,10 +18,12 @@ test_kem_SOURCES        = test_kem.c
 test_sha3_SOURCES       = test_sha3.c
 test_sig_SOURCES        = test_sig.c
 kat_kem_SOURCES         = kat_kem.c
+kat_sig_SOURCES         = kat_sig.c
 
 example_kem_LDFLAGS     = ${commonflags}
 example_sig_LDFLAGS     = ${commonflags}
 kat_kem_LDFLAGS         = ${commonflags}
+kat_sig_LDFLAGS         = ${commonflags}
 speed_kem_LDFLAGS       = ${commonflags}
 speed_sig_LDFLAGS       = ${commonflags}
 test_kem_LDFLAGS        = ${commonflags}
