@@ -22,10 +22,20 @@ configuration:
   - Release
   - ReleaseDLL
 
+before_test:
+- cmd: >-
+    python -m pip install pytest pytest-xdist
+
+    mkdir %APPVEYOR_BUILD_FOLDER%\test-results\pytest
+
 test_script:
 - cmd: >-
-    python -m pip install pytest
-
     cd %APPVEYOR_BUILD_FOLDER%
 
-    python -m pytest -v
+    python -m pytest --verbose --numprocesses=auto --junitxml=test-results\pytest\results.xml
+
+after_test:
+- ps: >-
+    $wc = New-Object 'System.Net.WebClient'
+
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results\pytests\results.xml))
