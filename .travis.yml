@@ -20,6 +20,7 @@ matrix:
     env:
     - WITH_OPENSSL=1
     - SKIP_TESTS=style
+    - HOMEBREW_NO_AUTO_UPDATE=1
     before_install:
     - brew install doxygen graphviz
     - pip3 install pytest
@@ -37,6 +38,7 @@ matrix:
     env:
     - WITH_OPENSSL=0
     - SKIP_TESTS=style
+    - HOMEBREW_NO_AUTO_UPDATE=1
     before_install:
     - brew install doxygen graphviz
     - pip3 install pytest
