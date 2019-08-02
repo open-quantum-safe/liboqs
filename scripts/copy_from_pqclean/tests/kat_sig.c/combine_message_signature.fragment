@@ -10,6 +10,16 @@
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
+{%- elif scheme['signed_msg_order'] == 'msg_then_sig' %}
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
 {%- else %}
 		// not yet implemented
 		return OQS_ERROR;
