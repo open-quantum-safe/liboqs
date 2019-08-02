@@ -35,7 +35,9 @@ void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 
 OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_len, const uint8_t *msg, size_t msg_len, const uint8_t *signature, size_t signature_len, const OQS_SIG *sig) {
 	if (0) {
+		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_START
 	} else if (0 == strcmp(sig->method_name, "DILITHIUM_2")) {
+		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
@@ -44,6 +46,168 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "DILITHIUM_3")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "DILITHIUM_4")) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "MQDSS-31-48")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "MQDSS-31-64")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Ia-Classic")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Ia-Cyclic")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Ia-Cyclic-Compressed")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-IIIc-Classic")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-IIIc-Cyclic")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-IIIc-Cyclic-Compressed")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Vc-Classic")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Vc-Cyclic")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Vc-Cyclic-Compressed")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-128f-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-128f-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-128s-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-128s-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-192f-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-192f-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-192s-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-192s-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-256f-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-256f-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-256s-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-256s-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-128f-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-128f-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-128s-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-128s-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-192f-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-192f-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-192s-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-192s-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-256f-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-256f-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-256s-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHA256-256s-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-128f-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-128f-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-128s-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-128s-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-192f-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-192f-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-192s-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-192s-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-256f-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-256f-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-256s-robust")) {
+		// not yet implemented
+		return OQS_ERROR;
+	} else if (0 == strcmp(sig->method_name, "SPHINCS+-SHAKE256-256s-simple")) {
+		// not yet implemented
+		return OQS_ERROR;
+		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
 	} else {
 		return OQS_ERROR;
 	}
@@ -90,7 +254,7 @@ OQS_STATUS sig_kat(const char *method_name) {
 
 	msg_len = 33 * (0 + 1);
 	fprintf(fh, "mlen = %zu\n", msg_len);
-	
+
 	msg = malloc(msg_len);
 	OQS_randombytes(msg, msg_len);
 	fprintBstr(fh, "msg = ", msg, msg_len);
@@ -104,7 +268,7 @@ OQS_STATUS sig_kat(const char *method_name) {
 		fprintf(stderr, "[kat_sig] %s ERROR: malloc failed!\n", method_name);
 		goto err;
 	}
-	
+
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_keypair failed!\n", method_name);
@@ -112,7 +276,7 @@ OQS_STATUS sig_kat(const char *method_name) {
 	}
 	fprintBstr(fh, "pk = ", public_key, sig->length_public_key);
 	fprintBstr(fh, "sk = ", secret_key, sig->length_secret_key);
-	
+
 	rc = OQS_SIG_sign(sig, signature, &signature_len, msg, msg_len, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_sign failed!\n", method_name);
@@ -125,7 +289,7 @@ OQS_STATUS sig_kat(const char *method_name) {
 	}
 	fprintf(fh, "smlen = %zu\n", signed_msg_len);
 	fprintBstr(fh, "sm = ", signed_msg, signed_msg_len);
-	
+
 	rc = OQS_SIG_verify(sig, msg, msg_len, signature, signature_len, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "[kat_sig] %s ERROR: OQS_SIG_verify failed!\n", method_name);
