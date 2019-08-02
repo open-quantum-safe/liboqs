@@ -57,6 +57,16 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg + 4, msg, msg_len);
 		memcpy(*signed_msg + 4 + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
+	} else if ((0 == strcmp(sig->method_name, "qTESLA_I")) || (0 == strcmp(sig->method_name, "qTESLA_III_size")) || (0 == strcmp(sig->method_name, "qTESLA_III_speed"))) {
+		// signed_msg = signature || msg
+		*signed_msg_len = signature_len + msg_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, signature, signature_len);
+		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
 		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_START
 	} else if (0 == strcmp(sig->method_name, "DILITHIUM_2")) {
 		// signed_msg = signature || msg
