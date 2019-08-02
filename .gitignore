@@ -45,6 +45,7 @@ tests/test_sha3
 
 #kat
 tests/kat_kem
+tests/kat_sig
 
 # Debug files
 *.dSYM/
@@ -113,3 +114,4 @@ src/oqsconfig.h
 .tags*
 __pycache__
 test-results
+.pytest_cache

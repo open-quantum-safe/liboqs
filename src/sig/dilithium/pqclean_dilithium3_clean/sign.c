@@ -367,7 +367,7 @@ int PQCLEAN_DILITHIUM3_CLEAN_crypto_sign(uint8_t *sm,
 *              - unsigned long long *mlen: pointer to output length of message
 *              - const unsigned char *sm: pointer to signed message
 *              - unsigned long long smlen: length of signed message
-*              - const unsigned char *sk: pointer to bit-packed public key
+*              - const unsigned char *pk: pointer to bit-packed public key
 *
 * Returns 0 if signed message could be verified correctly and -1 otherwise
 **************************************************/

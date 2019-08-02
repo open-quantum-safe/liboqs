@@ -1,3 +1,7 @@
+// This KAT test only generates a subset of the NIST KAT files.
+// To extract the subset from a submission file, use the command:
+//     cat PQCkemKAT_whatever.rsp | head -n 8 | tail -n 6
+
 #include <assert.h>
 #include <errno.h>
 #include <stdbool.h>
