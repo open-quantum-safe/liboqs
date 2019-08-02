@@ -39,6 +39,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kat_kem", "kat_kem\kat_kem.
 		{DCFEFB81-4696-45D2-9FCA-351CCFC13C74} = {DCFEFB81-4696-45D2-9FCA-351CCFC13C74}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "kat_sig", "kat_sig\kat_sig.vcxproj", "{104081A8-3D63-4819-A828-DF84FF691BA1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DCFEFB81-4696-45D2-9FCA-351CCFC13C74} = {DCFEFB81-4696-45D2-9FCA-351CCFC13C74}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -179,6 +184,22 @@ Global
 		{BF1D019A-8668-4D4D-AE4A-E67115F570F8}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64
 		{BF1D019A-8668-4D4D-AE4A-E67115F570F8}.ReleaseDLL|x86.ActiveCfg = ReleaseDLL|Win32
 		{BF1D019A-8668-4D4D-AE4A-E67115F570F8}.ReleaseDLL|x86.Build.0 = ReleaseDLL|Win32
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.Debug|x64.ActiveCfg = Debug|x64
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.Debug|x64.Build.0 = Debug|x64
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.Debug|x86.ActiveCfg = Debug|Win32
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.Debug|x86.Build.0 = Debug|Win32
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.DebugDLL|x64.ActiveCfg = DebugDLL|x64
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.DebugDLL|x64.Build.0 = DebugDLL|x64
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.DebugDLL|x86.ActiveCfg = DebugDLL|Win32
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.DebugDLL|x86.Build.0 = DebugDLL|Win32
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.Release|x64.ActiveCfg = Release|x64
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.Release|x64.Build.0 = Release|x64
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.Release|x86.ActiveCfg = Release|Win32
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.Release|x86.Build.0 = Release|Win32
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.ReleaseDLL|x64.ActiveCfg = ReleaseDLL|x64
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.ReleaseDLL|x64.Build.0 = ReleaseDLL|x64
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.ReleaseDLL|x86.ActiveCfg = ReleaseDLL|Win32
+		{104081A8-3D63-4819-A828-DF84FF691BA1}.ReleaseDLL|x86.Build.0 = ReleaseDLL|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
