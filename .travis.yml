@@ -23,7 +23,7 @@ matrix:
     - HOMEBREW_NO_AUTO_UPDATE=1
     before_install:
     - brew install doxygen graphviz
-    - pip3 install pytest
+    - pip3 install pytest pytest-xdist
     script:
     - autoreconf -i
     - ./configure --enable-silent-rules
@@ -32,7 +32,8 @@ matrix:
     - ./configure --enable-silent-rules --disable-shared
     - make clean
     - make
-    - make test
+    - make check
+    - python3 -m pytest --verbose --numprocesses=auto
   - os: osx
     compiler: clang
     env:
@@ -41,7 +42,7 @@ matrix:
     - HOMEBREW_NO_AUTO_UPDATE=1
     before_install:
     - brew install doxygen graphviz
-    - pip3 install pytest
+    - pip3 install pytest pytest-xdist
     script:
     - autoreconf -i
     - ./configure --enable-silent-rules --without-openssl
@@ -50,4 +51,5 @@ matrix:
     - ./configure --enable-silent-rules --disable-shared
     - make clean
     - make
-    - make test
+    - make check
+    - python3 -m pytest --verbose --numprocesses=auto
