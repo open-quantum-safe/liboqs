@@ -27,6 +27,7 @@
 #define bitstream_put_bits_8 oqs_sig_picnic_bitstream_put_bits_8
 #define buildMerkleTree oqs_sig_picnic_buildMerkleTree
 #define copyShares oqs_sig_picnic_copyShares
+#define cpu_supports oqs_sig_picnic_cpu_supports
 #define createTree oqs_sig_picnic_createTree
 #define freeCommitments oqs_sig_picnic_freeCommitments
 #define freeCommitments2 oqs_sig_picnic_freeCommitments2
@@ -196,6 +197,8 @@
 #define mzd_xor_uint64_960 oqs_sig_picnic_mzd_xor_uint64_960
 #define openMerkleTree oqs_sig_picnic_openMerkleTree
 #define openMerkleTreeSize oqs_sig_picnic_openMerkleTreeSize
+#define reconstructSeeds oqs_sig_picnic_reconstructSeeds
+#define reconstructShares oqs_sig_picnic_reconstructShares
 #define revealSeeds oqs_sig_picnic_revealSeeds
 #define revealSeedsSize oqs_sig_picnic_revealSeedsSize
 #define sbox_layer_10_uint64_aux oqs_sig_picnic_sbox_layer_10_uint64_aux

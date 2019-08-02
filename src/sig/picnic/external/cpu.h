@@ -11,6 +11,7 @@
 #define CPU_H
 
 #include <stdbool.h>
+#include "oqs_picnic_macros.h"
 
 /* CPU supports SSE2 */
 #define CPU_CAP_SSE2 0x00000001

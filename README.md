@@ -107,10 +107,6 @@ Lifecycle for master branch
 Building and running liboqs master branch
 -----------------------------------------
 
-Builds are tested using the Travis continuous integration system on macOS 10.13.3 (clang 9.1.0) and Ubuntu 14.04.5 (gcc.4.8, gcc-4.9, gcc-5, gcc-6).  It has also been tested manually on macOS 10.14 (clang 10.0.0), Ubuntu 14.04 (gcc-5), Ubuntu 16.04 (gcc-5), and Ubuntu 18.04.1 (gcc-7).
-
-- [Build status using Travis continuous integration system:](https://travis-ci.org/open-quantum-safe/liboqs/branches) ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
-
 ### Install dependencies for Linux Ubuntu
 
 You need to install the following packages:
@@ -137,7 +133,6 @@ On OpenBSD you have to explicitly set the environment variables `AUTOCONF_VERSIO
 	export AUTOCONF_VERSION=`ls -1 /usr/local/bin/autoreconf-* | sort | tail -n 1 | cut -d'-' -f2`
 	export AUTOMAKE_VERSION=`ls -1 /usr/local/bin/automake-* | sort | tail -n 1 | cut -d'-' -f2`
 
-
 ### Building
 
 To build, first clone or download the source from GitHub:
@@ -162,23 +157,25 @@ The main build result is `liboqs.a`, a static library.  (This may be placed in t
 
 There are also a variety of test programs built under the `tests` directory:
 
-- `test_kem`: Simple test harness for all enabled key encapsulation mechanisms
-- `test_sig`: Simple test harness for all enabled key signature schemes
-- `kat_kem`: Program that generates known answer test (KAT) values for all enabled key encapsulation mechanisms using the same mechanism as the NIST submission requirements, for checking against submitted KAT values using `scripts/check_kats.sh`
+- `test_kem`: Simple test harness for key encapsulation mechanisms
+- `test_sig`: Simple test harness for key signature schemes
+- `kat_kem`: Program that generates known answer test (KAT) values for key encapsulation mechanisms using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
 - `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
 - `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
 - `example_kem`: Minimal runnable example showing the usage of the KEM API
 - `example_sig`: Minimal runnable example showing the usage of the signature API
 - `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 
+A range of tests (including all `test_*` and `kat_*` programs above) can be run using
+
+	python3 -m pytest
+
 Building and running on Windows
 -------------------------------
 
 Windows binaries can be generated using the Visual Studio solution in the `VisualStudio` folder.
 
-Builds are tested using the Appveyor continuous integration system on Windows Server 2016 (Visual Studio 2017).  Our developers also test builds periodically on Windows 10.
-
-- [Build status using Appveyor continuous integration system:](https://ci.appveyor.com/project/dstebila/liboqs) ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true)
+Builds are tested using the AppVeyor continuous integration system on Windows Server 2016 (Visual Studio 2017).  Our developers also test builds periodically on Windows 10.
 
 The supported schemes are defined in the projects' `winconfig.h` file.
 
@@ -197,6 +194,44 @@ Once the toolchain is installed, you can use the following scripts to build and 
 	scripts/arm-run-tests-qemu.sh
 
 At present there are still some quirks with our ARM build, including problems with Picnic and qTESLA and the known answer tests causing build errors or segmentation faults.  See issues #461, #462, and #463.
+
+Testing
+-------
+
+A range of tests (including all `test_*` and `kat_*` programs above) can be run using `make test` or equivalently `python3 -m pytest -v`.
+
+Builds are tested using continuous integration systems as follows:
+
+- macOS 10.13.3 (clang 9.1.0) using Travis CI
+- Ubuntu 14.04.5 (Trusty), with gcc, on ARM Cortex-A8 (via QEMU) using Travis CI
+- Ubuntu 16.04.6 (Xenial), with gcc-4.9, gcc-5, gcc-6, gcc-7, and gcc-8, on x86_64 using CircleCI
+- Ubuntu 18.04.2 (Bionic), with gcc-7, on x86_64 using CircleCI
+- Debian 10 (Buster), with gcc-8.3.0, on amd64 using CircleCI
+- Windows Server 2016, with Visual Studio 2017, on x86_64 using AppVeyor
+
+Build status:
+
+- [AppVeyor](https://ci.appveyor.com/project/dstebila/liboqs): ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true)
+- [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master.svg?style=svg)
+- [Travis CI](https://travis-ci.org/open-quantum-safe/liboqs): ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
+
+You can locally run any of the integration tests that CircleCI runs.  First, you need to install CircleCI's local command line interface as indicated in the [installation instructions](https://circleci.com/docs/2.0/local-cli/).  Then:
+
+	circleci local execute --job <jobname>
+
+where `<jobname>` is one of the following:
+
+- `debian-buster-amd64`
+- `ubuntu-xenial-x86_64-gcc49`
+- `ubuntu-xenial-x86_64-gcc5`
+- `ubuntu-xenial-x86_64-gcc6`
+- `ubuntu-xenial-x86_64-gcc7`
+- `ubuntu-xenial-x86_64-gcc8`
+- `ubuntu-xenial-x86_64-gcc8-noopenssl`
+- `ubuntu-xenial-x86_64-gcc8-noshared`
+- `ubuntu-bionic-x86_64`
+
+You may receive an error "Failed uploading test results directory" when running CircleCI locally, that is expected behaviour.
 
 Documentation
 -------------

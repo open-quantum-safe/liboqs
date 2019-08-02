@@ -97,17 +97,7 @@ installheader_HEADERS= src/oqs.h \
 
 
 test: check
-	tests/example_kem
-	tests/example_sig
-	tests/test_kem
-	tests/test_sig
-	tests/test_aes
-	tests/test_sha3
 	python3 -m pytest -v
-
-kat: clean-kats check
-	tests/kat_kem
-	scripts/check_kats.sh
 
 links:
 	$(MKDIR_P) include/oqs
@@ -143,9 +133,6 @@ clean-local:
 
 clean-tests:
 	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/speed_sig tests/test_kem tests/test_sig tests/test_aes tests/test_sha3
-
-clean-kats:
-	rm -rf tests/kat_kem kat_kem_rsp/
 
 prettyprint:
 	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | grep -v frodokem/external* | grep -v pqclean | xargs $(CLANGFORMAT) -style=file -i
