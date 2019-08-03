@@ -33,7 +33,7 @@ static void print_platform_info() {
 }
 
 #if defined(USE_OPENSSL)
-#include <openssl/crypto.h>
+#include <openssl/opensslv.h>
 #endif
 
 static void print_oqs_configuration() {
@@ -42,7 +42,7 @@ static void print_oqs_configuration() {
 	printf("Git commit:       %s\n", OQS_COMPILE_GIT_COMMIT);
 #endif
 #if defined(USE_OPENSSL)
-	printf("OpenSSL enabled:  Yes (%08lx)\n", OpenSSL_version_num());
+	printf("OpenSSL enabled:  Yes (%s)\n", OPENSSL_VERSION_TEXT);
 #else
 	printf("OpenSSL enabled:  No\n");
 #endif
