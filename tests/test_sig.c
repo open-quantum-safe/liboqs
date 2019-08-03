@@ -100,7 +100,7 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "\n");
 		return EXIT_FAILURE;
 	}
-	
+
 	print_system_info();
 
 	// Use system RNG in this program

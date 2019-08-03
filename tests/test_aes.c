@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
 			}
 		}
 	}
-	
+
 	print_system_info();
 
 	printf("=== test_aes correctness ===\n");
