@@ -12,6 +12,8 @@
 
 #include <oqs/oqs.h>
 
+#include "system_info.c"
+
 /* Displays hexadecimal strings */
 void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
@@ -144,6 +146,8 @@ int main(int argc, char **argv) {
 			fprintf(stderr, "%s", OQS_KEM_alg_identifier(i));
 		}
 		fprintf(stderr, "\n");
+		printf("\n");
+		print_system_info();
 		return EXIT_FAILURE;
 	}
 

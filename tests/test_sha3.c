@@ -5,6 +5,8 @@
 
 #include <oqs/sha3.h>
 
+#include "system_info.c"
+
 #if defined(WINDOWS)
 #define UNUSED
 #else
@@ -817,6 +819,9 @@ int cshake_simple_256_kat_test() {
 */
 int main(UNUSED int argc, UNUSED char **argv) {
 	int ret = EXIT_SUCCESS;
+	
+	print_system_info();
+	
 	if (sha3_256_kat_test() == EXIT_SUCCESS) {
 		printf("Success! passed sha3-256 known answer tests \n");
 	} else {

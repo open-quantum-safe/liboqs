@@ -7,6 +7,7 @@
 #include <oqs/oqs.h>
 
 #include "ds_benchmark.h"
+#include "system_info.c"
 
 static OQS_STATUS sig_speed_wrapper(const char *method_name, int duration, bool printInfo) {
 
@@ -136,16 +137,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	/* TODO: Make autoconf generate these variables */
-	// printf("Compiler setup\n");
-	// printf("==============\n");
-	// printf("Date:     %s\n", OQS_COMPILE_DATE);
-	// printf("Compiler: %s (%s)\n", OQS_COMPILE_CC, OQS_COMPILE_CC_VERSION);
-	// printf("OS:       %s\n", OQS_COMPILE_UNAME);
-	// printf("CFLAGS:   %s\n", OQS_COMPILE_CFLAGS);
-	// printf("LDFLAGS:  %s\n", OQS_COMPILE_LDFLAGS);
-	// printf("RNG:      OpenSSL\n");
-	// printf("\n");
+	print_system_info();
 
 	printf("Speed test\n");
 	printf("==========\n");
