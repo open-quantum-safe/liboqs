@@ -7,9 +7,9 @@ static void print_compiler_info() {
 #if defined(__clang__)
 	printf("Compiler:         clang (%s)\n", __clang_version__);
 #elif defined(__GNUC_PATCHLEVEL__)
-	printf("Compiler:         gcc (%d.%d.%d)\n", __GNU_C__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
+	printf("Compiler:         gcc (%d.%d.%d)\n", __GNUC__, __GNUC_MINOR__, __GNUC_PATCHLEVEL__);
 #elif defined(__GNUC_MINOR__)
-	printf("Compiler:         gcc (%d.%d)\n", __GNU_C__, __GNUC_MINOR__);
+	printf("Compiler:         gcc (%d.%d)\n", __GNUC__, __GNUC_MINOR__);
 #elif defined(__INTEL_COMPILER)
 	printf("Compiler:         Intel C/C++ (%d)\n", __INTEL_COMPILER);
 #elif defined(_MSC_FULL_VER)
