@@ -8,6 +8,8 @@
 
 #include <oqs/oqs.h>
 
+#include "system_info.c"
+
 static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	OQS_SIG *sig = NULL;
@@ -98,6 +100,8 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "\n");
 		return EXIT_FAILURE;
 	}
+
+	print_system_info();
 
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);

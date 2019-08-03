@@ -94,5 +94,8 @@
 #define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p434
 #define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
 
+#define OQS_MASTER_BRANCH /**/
+#define OQS_VERSION_NUMBER 0x00200000L
+#define OQS_VERSION_TEXT "0.2.0-dev"
 
 #endif

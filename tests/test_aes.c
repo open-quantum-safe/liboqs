@@ -6,6 +6,8 @@
 #include <oqs/oqs.h>
 
 #include "ds_benchmark.h"
+#include "system_info.c"
+
 #include <oqs/aes.h>
 
 /* Displays hexadecimal strings */
@@ -125,6 +127,8 @@ int main(int argc, char **argv) {
 			}
 		}
 	}
+
+	print_system_info();
 
 	printf("=== test_aes correctness ===\n");
 	if (test_aes128_correctness() != EXIT_SUCCESS) {

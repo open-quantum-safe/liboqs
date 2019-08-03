@@ -5,6 +5,8 @@
 
 #include <oqs/oqs.h>
 
+#include "system_info.c"
+
 /* Displays hexadecimal strings */
 void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
@@ -134,6 +136,8 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "\n");
 		return EXIT_FAILURE;
 	}
+
+	print_system_info();
 
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);

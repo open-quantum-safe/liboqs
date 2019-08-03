@@ -111,4 +111,8 @@ case "$SIG_DEFAULT" in
 ;;
 esac
 
+AC_DEFINE_UNQUOTED([OQS_COMPILE_CFLAGS], ["$CFLAGS $AM_CFLAGS"], [CFLAGS set during ./configure])
+AC_DEFINE_UNQUOTED([OQS_COMPILE_LDFLAGS], ["$LDFLAGS"], [LDFLAGS set during ./configure])
+AC_DEFINE_UNQUOTED([OQS_COMPILE_BUILD_TARGET], ["$build"], [build set during ./configure])
+
 AC_OUTPUT

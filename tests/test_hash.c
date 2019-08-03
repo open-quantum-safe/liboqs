@@ -8,6 +8,8 @@
 #include <oqs/sha2.h>
 #include <oqs/sha3.h>
 
+#include "system_info.c"
+
 #define BUFFER_SIZE 10000
 
 static int read_stdin(uint8_t **msg, size_t *msg_len) {
@@ -111,6 +113,8 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "Usage: test_hash algname\n");
 		fprintf(stderr, "  algname: sha256, sha384, sha512\n");
 		fprintf(stderr, "  test_hash reads input from stdin and outputs hash value as hex string to stdout");
+		printf("\n");
+		print_system_info();
 		return EXIT_FAILURE;
 	}
 
