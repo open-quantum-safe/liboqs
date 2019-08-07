@@ -132,7 +132,7 @@ clean-local:
 	rm -rf include
 
 clean-tests:
-	rm -f tests/example_kem tests/example_sig tests/speed_kem tests/speed_sig tests/test_kem tests/test_sig tests/test_aes tests/test_sha3
+	rm -f tests/example_kem tests/example_sig tests/kat_kem tests/kat_sig tests/speed_kem tests/speed_sig tests/test_kem tests/test_sig tests/test_aes tests/test_hash tests/test_sha3
 
 prettyprint:
 	find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | grep -v frodokem/external* | grep -v pqclean | xargs $(CLANGFORMAT) -style=file -i
