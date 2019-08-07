@@ -1,0 +1,18 @@
+- Nicholas Allen (Amazon Web Services)
+- Maxime Anvari
+- Eric Crockett (Amazon Web Services)
+- Nir Drucker (Amazon Web Services)
+- Ben Davies (University of Waterloo)
+- Javad Doliskani (University of Waterloo)
+- Vlad Gheorghiu (evolutionQ)
+- Shay Gueron (Amazon Web Services)
+- Torben Hansen (Royal Holloway University of London)
+- Tancrède Lepoint (SRI International)
+- Shravan Mishra (University of Waterloo)
+- Christian Paquin (Microsoft Research)
+- Alex Parent (University of Waterloo)
+- Peter Schwabe (Radboud University Nijmegen)
+- Dimitris Sikeridis (University of New Mexico, Cisco Systems)
+- Douglas Stebila (University of Waterloo)
+- John Underhill
+- Sebastian Verschoor (University of Waterloo)
