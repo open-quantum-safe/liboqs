@@ -17,6 +17,30 @@ version: 2
     - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
         path: test-results
 
+.emulatedjob: &emulatedjob
+  machine:
+    image: ubuntu-1604:201903-01
+  steps:
+    - checkout
+    - run:
+        name: Install the emulation handlers
+        command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    - run:
+        name: Run the tests in a container
+        command: |
+          docker run -e SKIP_TESTS=style --rm -v `pwd`:`pwd` -w `pwd` dstebila/liboqs:debian-buster-${ARCH}-0.1.0 /bin/bash -c "
+          uname -a &&
+          file /bin/ls &&
+          autoreconf -i &&
+          ./configure --enable-silent-rules --disable-sig-sphincs &&
+          make -j &&
+          make check &&
+          mkdir -p test-results/pytest &&
+          python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto
+          "
+    - store_test_results:
+        path: test-results
+
 jobs:
   debian-buster-amd64:
     <<: *oqsjob
@@ -24,6 +48,18 @@ jobs:
       IMAGE: dstebila/liboqs:debian-buster-amd64-0.1.0
       CONFIGURE_ARGS: --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
       SKIP_TESTS: style
+  debian-buster-aarch64:
+    <<: *emulatedjob
+    environment:
+      ARCH: aarch64
+  debian-buster-armhf:
+    <<: *emulatedjob
+    environment:
+      ARCH: armhf
+  debian-buster-armel:
+    <<: *emulatedjob
+    environment:
+      ARCH: armel
   ubuntu-xenial-x86_64-gcc49:
     <<: *oqsjob
     environment:
@@ -93,6 +129,9 @@ workflows:
                 - master
     jobs:
       - debian-buster-amd64
+      - debian-buster-aarch64
+      - debian-buster-armhf
+      - debian-buster-armel
       - ubuntu-xenial-x86_64-gcc49
       - ubuntu-xenial-x86_64-gcc5
       - ubuntu-xenial-x86_64-gcc6
