@@ -118,9 +118,6 @@ workflows:
   build:
     jobs:
       - debian-buster-amd64
-      - debian-buster-aarch64
-      - debian-buster-armhf
-      - debian-buster-armel
       - ubuntu-xenial-x86_64-gcc8
       - ubuntu-xenial-x86_64-gcc8-noopenssl
       - ubuntu-xenial-x86_64-gcc8-noshared
