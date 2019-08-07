@@ -1,9 +1,9 @@
+[AppVeyor](https://ci.appveyor.com/project/dstebila/liboqs): ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true), [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master.svg?style=svg), [Travis CI](https://travis-ci.org/open-quantum-safe/liboqs): ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
+
 liboqs
 ======================
 
 liboqs is an open source C library for quantum-safe cryptographic algorithms.
-
-[AppVeyor](https://ci.appveyor.com/project/dstebila/liboqs): ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true), [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master.svg?style=svg), [Travis CI](https://travis-ci.org/open-quantum-safe/liboqs): ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
 
 - [Overview](#overview)
 - [Status](#status)
@@ -50,7 +50,6 @@ On macOS, using a package manager of your choice (we've picked Homebrew):
 
 1. Get the source:
 
-
 	git clone -b master https://github.com/open-quantum-safe/liboqs.git
 	cd liboqs
 
@@ -81,7 +80,6 @@ A range of tests (including all `test_*` and `kat_*` programs above) can be run 
 
 4. To generate HTML documentation of the API, run:
 
-
 	make docs
 
 Then open `docs/doxygen/html/index.html` in your web browser.
@@ -89,6 +87,10 @@ Then open `docs/doxygen/html/index.html` in your web browser.
 ### Windows
 
 Binaries can be generated using the Visual Studio solution in the `VisualStudio` folder. The supported schemes are defined in the projects' `winconfig.h` file.
+
+### Others
+
+Instructions for OpenBSD and ARM can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki/Building).
 
 ## Docs
 
