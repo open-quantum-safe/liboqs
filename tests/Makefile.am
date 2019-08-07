@@ -41,6 +41,8 @@ test_sha3_LDFLAGS       += ${commonldflags}
 
 example_kem_DEPENDENCIES = ../liboqs.la
 example_sig_DEPENDENCIES = ../liboqs.la
+kat_kem_DEPENDENCIES     = ../liboqs.la
+kat_sig_DEPENDENCIES     = ../liboqs.la
 speed_kem_DEPENDENCIES   = ../liboqs.la
 speed_sig_DEPENDENCIES   = ../liboqs.la
 test_kem_DEPENDENCIES    = ../liboqs.la
