@@ -1,6 +1,6 @@
-## Contributing New Quantum-Safe Algorithms
+##  Contributing new quantum-safe algorithms
 
-New submissions must meet the following acceptance criteria:
+All submissions must meet acceptance criteria given below. Algorithms may be removed if they no longer meet the acceptance criteria.
 
 - **Algorithmic requirements:**
 	- The algorithm must be submitted to the NIST Post-Quantum Cryptography project, or posted as update to an existing algorithm, and must be present in the current round
@@ -24,13 +24,17 @@ The goals and acceptance criteria for new algorithms on liboqs master branch are
 
 To discuss the contribution of a new algorithm to liboqs master branch, please contact [Douglas Stebila](https://www.douglas.stebila.ca/about/contact/) or post an issue on GitHub for discussion.
 
-Additional information about contributing code, including coding conventions, can be found on the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
+Additional information, including coding conventions, can be found on the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
 
-Algorithms may be removed from liboqs master branch if they no longer meet the acceptance criteria, see the lifecycle section below.
+## Contributing other enhancements
+
+Bug reports can be filed as issues on GitHub.  Please use the "bug" label and indicate which version of liboqs the issue relates to (by specifying the commit hash), and what platform was in use (CPU, operating system, compiler).
+
+If you have some improvements to an algorithm, are interested in getting liboqs to build on a new platform, or want to explore integrating liboqs into a new application, feel free to open an issue or contribute a pull request.
 
 ## Lifecycle
 
-**Release cycle:** We aim to make releases of liboqs master branch every 2 to 3 months.  Plans for each individual release can be found on our [Github projects board](https://github.com/open-quantum-safe/liboqs/projects/).  
+**Release cycle:** We aim to make releases 2 to 3 months.  Plans for each individual release can be found on the [Github projects board](https://github.com/open-quantum-safe/liboqs/projects/).  
 
 **Versioning:** For approximately the period 2018-2019, we plan to label our releases with a variant of semantic versioning, using the notation *0.Y.Z*.  Semantic versioning allows that anything may change between *0.whatever* versions.  We intend to use *X.Y.Z* labelling as follows, for *X=0*.
 
@@ -44,18 +48,9 @@ Algorithms may be removed from liboqs master branch if they no longer meet the a
 
 **API stability:** The public API of liboqs master branch is currently considered to be the functions and macros in `oqs/common.h`, `oqs/oqsconfig.h`, `oqs/kem.h`, `oqs/rand.h`, `oqs/sig.h`, and includes all functions marked with `OQS_API`.  During the $0.Y.Z$ phase of liboqs, incompatible changes to the public API will lead to incrementing $Y$.
 
-## Contributing enhancements
-
-If you find a bug in our code, have some improvements to an algorithm, are interested in getting liboqs to build on a new platform, or want to explore integrating liboqs into a new application, please feel free to contact us on GitHub via an issue or pull request.
-
-## Bug reports
-
-Bug reports can be filed as issues on GitHub.  Please use the "bug" label.  Please indicate which version of liboqs the issue relates to (by specifying the commit hash), and what platform was in use (CPU, operating system, compiler).
-
 ## License
 
-
-liboqs is licensed primarily under the MIT License.  Submissions to liboqs master branch must be under the MIT License, a compatible license, or in the public domain.  See README.md for details.
+liboqs is licensed primarily under the MIT License.  Submissions to liboqs master branch must be under the MIT License, a compatible license, or in the public domain.
 
 ## Testing
 
