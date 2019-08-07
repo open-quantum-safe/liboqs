@@ -79,7 +79,7 @@ OQS_API void OQS_randombytes_nist_kat_init(unsigned char *entropy_input, unsigne
 	DRBG_ctx.reseed_counter = 1;
 }
 
-void OQS_randombytes_nist_kat(unsigned char *x, unsigned long long xlen) {
+void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen) {
 	unsigned char block[16];
 	int i = 0;
 

@@ -25,14 +25,14 @@ version: 2
     - run:
         name: Install the emulation handlers
         command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - run:
+    - run: # Skipping sig-sphincs because it exhausts memory on CircleCI
         name: Run the tests in a container
         command: |
           docker run -e SKIP_TESTS=style --rm -v `pwd`:`pwd` -w `pwd` dstebila/liboqs:debian-buster-${ARCH}-0.1.0 /bin/bash -c "
           uname -a &&
           file /bin/ls &&
           autoreconf -i &&
-          ./configure --enable-silent-rules --disable-sig-sphincs &&
+          ./configure --enable-silent-rules ${CONFIGURE_ARGS} &&
           make -j &&
           make check &&
           mkdir -p test-results/pytest &&
@@ -52,14 +52,17 @@ jobs:
     <<: *emulatedjob
     environment:
       ARCH: aarch64
+      CONFIGURE_ARGS: --disable-sig-sphincs # sig-sphincs exhausts memory on CircleCI servers
   debian-buster-armhf:
     <<: *emulatedjob
     environment:
       ARCH: armhf
+      CONFIGURE_ARGS: --disable-sig-sphincs --disable-sig-qtesla # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armhf
   debian-buster-armel:
     <<: *emulatedjob
     environment:
       ARCH: armel
+      CONFIGURE_ARGS: --disable-sig-sphincs --disable-sig-qtesla # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armel
   ubuntu-xenial-x86_64-gcc49:
     <<: *oqsjob
     environment:
