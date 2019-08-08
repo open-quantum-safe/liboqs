@@ -183,14 +183,13 @@ The supported schemes are defined in the projects' `winconfig.h` file.
 Building and running on ARM
 ---------------------------
 
-Binaries for ARM can be cross-compiled from Ubuntu Linux.  Builds are tested using the Travis continuous integration system on Ubuntu 14.04.5 with QEMU target CPU Cortex-A8.
+Our continuous integration system includes builds on various ARM architectures, see the Testing section below.
 
-In order to cross compile, you need to have an appropriate toolchain installed, and to test you need QEMU installed.  On Ubuntu:
+Binaries for ARM can also be cross-compiled on Linux.  In order to cross compile, you need to have an appropriate toolchain installed, and to test you need QEMU installed.  
+
+For example, to cross compile for ARMv7 (armel) on Ubuntu Linux, first install the required toolchain, then use the scripts below to build and test on an emulated ARM Cortex-A8:
 
 	sudo apt install gcc-arm-linux-gnueabi libc6-dev-armel-cross qemu
-	
-Once the toolchain is installed, you can use the following scripts to build and test ARM builds from Ubuntu Linux:
-
 	scripts/arm-cross-compile.sh
 	scripts/arm-run-tests-qemu.sh
 
@@ -207,7 +206,8 @@ Builds are tested using continuous integration systems as follows:
 - Ubuntu 14.04.5 (Trusty), with gcc, on ARM Cortex-A8 (via QEMU) using Travis CI
 - Ubuntu 16.04.6 (Xenial), with gcc-4.9, gcc-5, gcc-6, gcc-7, and gcc-8, on x86_64 using CircleCI
 - Ubuntu 18.04.2 (Bionic), with gcc-7, on x86_64 using CircleCI
-- Debian 10 (Buster), with gcc-8.3.0, on amd64 using CircleCI
+- Debian 10 (Buster), with gcc-8.3.0, on amd64  using CircleCI
+- Debian 10 (Buster), with gcc-8.3.0, on ARMv8 (aarch64), ARMv7 (armhf, armel) (via QEMU) using CircleCI
 - Windows Server 2016, with Visual Studio 2017, on x86_64 using AppVeyor
 
 Build status:
@@ -216,7 +216,7 @@ Build status:
 - [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master.svg?style=svg)
 - [Travis CI](https://travis-ci.org/open-quantum-safe/liboqs): ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
 
-You can locally run any of the integration tests that CircleCI runs.  First, you need to install CircleCI's local command line interface as indicated in the [installation instructions](https://circleci.com/docs/2.0/local-cli/).  Then:
+You can locally run most of the integration tests that CircleCI runs.  First, you need to install CircleCI's local command line interface as indicated in the [installation instructions](https://circleci.com/docs/2.0/local-cli/).  Then:
 
 	circleci local execute --job <jobname>
 
@@ -233,6 +233,8 @@ where `<jobname>` is one of the following:
 - `ubuntu-bionic-x86_64`
 
 You may receive an error "Failed uploading test results directory" when running CircleCI locally, that is expected behaviour.
+
+Note that you cannot run "machine" CircleCI builds locally, which are what we use for testing builds on emulated platforms, specifically the ARM `debian-buster-aarch64`, `-armhf`, and `-armel` jobs.
 
 Documentation
 -------------
