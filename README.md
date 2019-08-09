@@ -7,13 +7,13 @@ liboqs is an open source C library for quantum-safe cryptographic algorithms.
 
 - [Overview](#overview)
 - [Status](#status)
-  * [Supported Algorithms](#supported-algorithms)
-  * [Limitatons and Security](#limitations-and-security)
+  * [Supported algorithms](#supported-algorithms)
+  * [Limitations and Security](#limitations-and-security)
 - [Quickstart](#quickstart)
-  * [Ubuntu/macOS](#ubuntu/macOS)
+  * [Linux / macOS](#linux/macOS)
   * [Windows](#windows)
   * [Others](#others)
-- [Docs](#docs)
+- [Documentation](#documentation)
 - [Contributing](#contributing)
 - [License](#license)
 - [Acknowledgements](#acknowledgements)
@@ -63,64 +63,66 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 ## Quickstart
 
-### Ubuntu/macOS
+### Linux/macOS
 
-0. Install dependencies:
+1. Install dependencies:
 
-On Ubuntu:
+	On Ubuntu:
 
-	sudo apt install autoconf automake libtool gcc libssl-dev python3-pytest unzip xsltproc doxygen graphviz
+		sudo apt install autoconf automake libtool gcc libssl-dev python3-pytest unzip xsltproc doxygen graphviz
 
-On macOS, using a package manager of your choice (we've picked Homebrew):
+	On macOS, using a package manager of your choice (we've picked Homebrew):
 
-	brew install autoconf automake libtool openssl wget doxygen graphviz
-	pip3 install pytest
+		brew install autoconf automake libtool openssl wget doxygen graphviz
+		pip3 install pytest
 
-1. Get the source:
+2. Get the source:
 
-	git clone -b master https://github.com/open-quantum-safe/liboqs.git
-	cd liboqs
+		git clone -b master https://github.com/open-quantum-safe/liboqs.git
+		cd liboqs
 
-and build:
+	and build:
 
-	autoreconf -i
-	./configure
-	make clean
-	make -j
+		autoreconf -i
+		./configure
+		make clean
+		make -j
+		
+	Various options can be passed to configure to disable algorithms, use different implementations, specify which OpenSSL library to use, or cross-compile.  See `./configure --help` for details.
 
-(If on macOS you encounter an error like `Can't exec "libtoolize": No such file or directory at ...`, try running with `LIBTOOLIZE=glibtoolize autoreconf -i`.)
+	(If on macOS you encounter an error like `Can't exec "libtoolize": No such file or directory at ...`, try running with `LIBTOOLIZE=glibtoolize autoreconf -i`.)
 
-2. The main build result is `liboqs.a`, a static library.  (This may be placed in the `.libs` directory.) There are also a variety of programs built under the `tests` directory:
+3. The main build result is `liboqs.a`, a static library.  (This may be placed in the `.libs` directory.) There are also a variety of programs built under the `tests` directory:
 
-- `test_kem`: Simple test harness for key encapsulation mechanisms
-- `test_sig`: Simple test harness for key signature schemes
-- `kat_kem`: Program that generates known answer test (KAT) values for key encapsulation mechanisms using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
-- `kat_sig`: Program that generates known answer test (KAT) values for signature schemes using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
-- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
-- `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
-- `example_kem`: Minimal runnable example showing the usage of the KEM API
-- `example_sig`: Minimal runnable example showing the usage of the signature API
-- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
+	- `test_kem`: Simple test harness for key encapsulation mechanisms
+	- `test_sig`: Simple test harness for key signature schemes
+	- `kat_kem`: Program that generates known answer test (KAT) values for key encapsulation mechanisms using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
+	- `kat_sig`: Program that generates known answer test (KAT) values for signature schemes using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
+	- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
+	- `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
+	- `example_kem`: Minimal runnable example showing the usage of the KEM API
+	- `example_sig`: Minimal runnable example showing the usage of the signature API
+	- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 
-A range of tests (including all `test_*` and `kat_*` programs above) can be run using
+	A range of tests (including all `test_*` and `kat_*` programs above) can be run using
 
-	python3 -m pytest
+		python3 -m pytest
 
-3. To generate HTML documentation of the API, run:
+4. To generate HTML documentation of the API, run:
 
-	make docs
+		make docs
 
-Then open `docs/doxygen/html/index.html` in your web browser.
+	Then open `docs/doxygen/html/index.html` in your web browser.
 
 ### Windows
 
-Binaries can be generated using the Visual Studio solution in the `VisualStudio` folder. The supported schemes are defined in the projects' `winconfig.h` file.
+Binaries can be generated using the Visual Studio solution in the `VisualStudio` folder. The supported schemes are defined in the project's `winconfig.h` file.
 
 ### Others
 
-Instructions for OpenBSD and ARM can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki/Building).
+Instructions for building on OpenBSD and ARM can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki/Building).
 
-## Docs
+## Documentation
 
 Further information can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
 
@@ -135,6 +137,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
 - `src/crypto/aes/aes_c.c`: public domain
+- `src/crypto/sha2/sha2_c.c`: public domain
 - `src/crypto/sha3/fips202.c`: CC0 (public domain)
 - `src/crypto/sha3/keccak4x`: CC0 (public domain), except `brg_endian.h`
 - `src/kem/bike/x86_64`: Apache License v2.0
@@ -145,6 +148,8 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/sig/dilithium/pqclean_*`: public domain
 - `src/sig/mqdss/pqclean_*`: CC0 (public domain)
 - `src/sig/picnic/external/sha3`: CC0 (public domain)
+- `src/sig/rainbow/pqclean_*`: CC0 (public domain)
+- `src/sig/sphincs/pqclean_*`: CC0 (public domain)
 
 ## Acknowledgements
 
