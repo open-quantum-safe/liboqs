@@ -52,6 +52,10 @@ typedef enum {
 	OQS_ERROR = -1,
 	/** Used to indicate successful return from function. */
 	OQS_SUCCESS = 0,
+	/** Used to indicate that algorithm is not enabled */
+	OQS_NOT_ENABLED,
+    /** Used to indicate that algorithm is not supported */
+	OQS_NOT_SUPPORTED, // not sure we'll need this
 	/** Used to indicate failures in external libraries (e.g., OpenSSL). */
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
