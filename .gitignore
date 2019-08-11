@@ -115,3 +115,6 @@ src/oqsconfig.h
 __pycache__
 test-results
 .pytest_cache
+
+# IDEs
+.idea
