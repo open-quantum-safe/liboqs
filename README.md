@@ -1,268 +1,143 @@
-liboqs - master branch
+[AppVeyor](https://ci.appveyor.com/project/dstebila/liboqs): ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true), [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master.svg?style=svg), [Travis CI](https://travis-ci.org/open-quantum-safe/liboqs): ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
+
+liboqs
 ======================
 
-**liboqs** is a C library for quantum-resistant cryptographic algorithms.  This branch of liboqs focuses on selected key encapsulations and signature algorithms.
+liboqs is an open source C library for quantum-safe cryptographic algorithms.
 
-Overview
---------
+- [Overview](#overview)
+- [Status](#status)
+  * [Supported algorithms](#supported-algorithms)
+  * [Limitations and Security](#limitations-and-security)
+- [Quickstart](#quickstart)
+  * [Linux / macOS](#linux/macOS)
+  * [Windows](#windows)
+  * [Others](#others)
+- [Documentation](#documentation)
+- [Contributing](#contributing)
+- [License](#license)
+- [Acknowledgements](#acknowledgements)
 
-The **Open Quantum Safe (OQS) project** has the goal of developing and prototyping quantum-resistant cryptography.
+## Overview
 
-**liboqs** is an open source C library for quantum-resistant cryptographic algorithms.  liboqs provides:
+liboqs provides:
 
-- a common API for post-quantum key encapsulation mechanisms and digital signature schemes
-- a collection of open source implementations of post-quantum cryptography algorithms
+- a collection of open source implementations of quantum-safe key encapsulation mechanism (KEM) and digital signature algorithms; the full list can be found [below](#supported-algorithms)
+- a common API for these algorithms
 - a test harness and benchmarking routines
 
-The OQS project also provides prototype integrations into application-level protocols to enable testing of quantum-resistant cryptography.
+liboqs is part of the **Open Quantum Safe (OQS)** project led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/), which aims to develop and integrate into applications quantum-safe cryptography to facilitate deployment and testing in real world contexts. In particular, OQS provides prototype integrations of liboqs into TLS and SSH, through [OpenSSL](https://github.com/open-quantum-safe/openssl) and [OpenSSH](https://github.com/open-quantum-safe/openssh-portable).
 
-More information on OQS can be found on our website: [https://openquantumsafe.org/](https://openquantumsafe.org/).
+More information on OQS can be found [here](https://openquantumsafe.org/) and in the [associated](https://openquantumsafe.org/papers/SAC-SteMos16.pdf) [whitepapers](https://openquantumsafe.org/papers/NISTPQC-CroPaqSte19.pdf).
 
-master branch
--------------
+## Status
 
-This branch of liboqs aims to selectively incorporate allegedly quantum-resistant key encapsulation mechanisms and signature schemes, for the purposes of integration into a common API for liboqs-reliant applications.
+### Supported Algorithms
 
-Implementations on this branch must meet certain acceptance criteria as indicated below.
+#### Key encapsulation mechanisms
 
-Algorithms currently included in liboqs master branch include:
+- **BIKE**: BIKE1-L1, BIKE1-L3, BIKE1-L5, BIKE2-L1, BIKE2-L3, BIKE2-L5, BIKE3-L1, BIKE3-L3, BIKE3-L5 (NIST Round 1 version)
+- **FrodoKEM**: FrodoKEM-640-AES, FrodoKEM-640-SHAKE, FrodoKEM-976-AES, FrodoKEM-976-SHAKE, FrodoKEM-1344-AES, FrodoKEM-1344-SHAKE
+- **Kyber**: Kyber512, Kyber768, Kyber1024
+- **NewHope**: NewHope-512-CCA, NewHope-1024-CCA
+- **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-877, NTRU-HRSS-701
+- **SABER**: LightSaber-KEM, Saber-KEM, FireSaber-KEM
+- **SIKE**: SIDH-p434, SIDH-p503, SIDH-p610, SIDH-p751, SIKE-p434, SIKE-p503, SIKE-p610, SIKE-p751
 
-- Key encapsulation mechanisms
-	- **BIKE**: BIKE1-L1, BIKE1-L3, BIKE1-L5, BIKE2-L1, BIKE2-L3, BIKE2-L5, BIKE3-L1, BIKE3-L3, BIKE3-L5 (NIST Round 1 version)
-	- **FrodoKEM**: FrodoKEM-640-AES, FrodoKEM-640-SHAKE, FrodoKEM-976-AES, FrodoKEM-976-SHAKE, FrodoKEM-1344-AES, FrodoKEM-1344-SHAKE
-	- **Kyber**: Kyber512, Kyber768, Kyber1024
-	- **NewHope**: NewHope-512-CCA, NewHope-1024-CCA
-	- **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-877, NTRU-HRSS-701
-	- **SABER**: LightSaber-KEM, Saber-KEM, FireSaber-KEM
-	- **SIKE**: SIDH-p434, SIDH-p503, SIDH-p610, SIDH-p751, SIKE-p434, SIKE-p503, SIKE-p610, SIKE-p751
-- Signature schemes
-	- **Dilithium**: Dilithium2, Dilithium3, Dilithium4
-	- **MQDSS**: MQDSS-31-48, MQDSS-31-64
-	- **Picnic**: Picnic-L1-FS, Picnic-L1-UR, Picnic-L3-FS, Picnic-L3-UR, Picnic-L5-FS, Picnic-L5-UR, Picnic2-L1-FS, Picnic2-L3-FS, Picnic2-L5-FS
-	- **qTESLA**: qTESLA-I, qTESLA-III-size, qTESLA-III-speed (NIST Round 1 version)
-	- **Rainbow**: Rainbow-Ia-Classic, Rainbow-Ia-Cyclic, Rainbow-Ia-Cyclic-Compressed, Rainbow-IIIc-Classic, Rainbow-IIIc-Cyclic, Rainbow-IIIc-Cyclic-Compressed, Rainbow-Vc-Classic, Rainbow-Vc-Cyclic, Rainbow-Vc-Cyclic-Compressed
-	- **SPHINCS+**: SPHINCS+-Haraka-128f-robust, SPHINCS+-Haraka-128f-simple, SPHINCS+-Haraka-128s-robust, SPHINCS+-Haraka-128s-simple, SPHINCS+-Haraka-192f-robust, SPHINCS+-Haraka-192f-simple, SPHINCS+-Haraka-192s-robust, SPHINCS+-Haraka-192s-simple, SPHINCS+-Haraka-256f-robust, SPHINCS+-Haraka-256f-simple, SPHINCS+-Haraka-256s-robust, SPHINCS+-Haraka-256s-simple, SPHINCS+-SHAKE256-128f-robust, SPHINCS+-SHAKE256-128f-simple, SPHINCS+-SHAKE256-128s-robust, SPHINCS+-SHAKE256-128s-simple, SPHINCS+-SHAKE256-192f-robust, SPHINCS+-SHAKE256-192f-simple, SPHINCS+-SHAKE256-192s-robust, SPHINCS+-SHAKE256-192s-simple, SPHINCS+-SHAKE256-256f-robust, SPHINCS+-SHAKE256-256f-simple, SPHINCS+-SHAKE256-256s-robust, SPHINCS+-SHAKE256-256s-simple
+#### Signature schemes
 
-For details on algorithms included in master branch, see the datasheets in [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/master/docs/algorithms).
+- **Dilithium**: Dilithium2, Dilithium3, Dilithium4
+- **MQDSS**: MQDSS-31-48, MQDSS-31-64
+- **Picnic**: Picnic-L1-FS, Picnic-L1-UR, Picnic-L3-FS, Picnic-L3-UR, Picnic-L5-FS, Picnic-L5-UR, Picnic2-L1-FS, Picnic2-L3-FS, Picnic2-L5-FS
+- **qTESLA**: qTESLA-I, qTESLA-III-size, qTESLA-III-speed (NIST Round 1 version)
+- **Rainbow**: Rainbow-Ia-Classic, Rainbow-Ia-Cyclic, Rainbow-Ia-Cyclic-Compressed, Rainbow-IIIc-Classic, Rainbow-IIIc-Cyclic, Rainbow-IIIc-Cyclic-Compressed, Rainbow-Vc-Classic, Rainbow-Vc-Cyclic, Rainbow-Vc-Cyclic-Compressed
+- **SPHINCS+**: SPHINCS+-Haraka-128f-robust, SPHINCS+-Haraka-128f-simple, SPHINCS+-Haraka-128s-robust, SPHINCS+-Haraka-128s-simple, SPHINCS+-Haraka-192f-robust, SPHINCS+-Haraka-192f-simple, SPHINCS+-Haraka-192s-robust, SPHINCS+-Haraka-192s-simple, SPHINCS+-Haraka-256f-robust, SPHINCS+-Haraka-256f-simple, SPHINCS+-Haraka-256s-robust, SPHINCS+-Haraka-256s-simple, SPHINCS+-SHAKE256-128f-robust, SPHINCS+-SHAKE256-128f-simple, SPHINCS+-SHAKE256-128s-robust, SPHINCS+-SHAKE256-128s-simple, SPHINCS+-SHAKE256-192f-robust, SPHINCS+-SHAKE256-192f-simple, SPHINCS+-SHAKE256-192s-robust, SPHINCS+-SHAKE256-192s-simple, SPHINCS+-SHAKE256-256f-robust, SPHINCS+-SHAKE256-256f-simple, SPHINCS+-SHAKE256-256s-robust, SPHINCS+-SHAKE256-256s-simple
 
-Limitations and security
-------------------------
+### Limitations and Security
 
-liboqs is designed for prototyping and evaluating quantum-resistant cryptography.  Security of proposed quantum-resistant algorithms may rapidly change as research advances, and may ultimately be completely insecure against either classical or quantum computers.
+As research advances, the supported algorithms may see rapid changes in their security, and may even prove insecure against both classical and quantum computers.
 
-We believe that the NIST Post-Quantum Cryptography standardization project is currently the best avenue to identifying potentially quantum-resistant algorithms.  liboqs does not intend to "pick winners", and we strongly recommend that applications and protocols rely on the outcomes of the NIST standardization project when deploying post-quantum cryptography.
+liboqs does not intend to "pick winners": algorithm support is informed by the NIST [Post-Quantum Cryptography Standardization](https://csrc.nist.gov/Projects/Post-Quantum-Cryptography/Post-Quantum-Cryptography-Standardization) project. We strongly recommend that applications and protocols rely on the outcomes of ths effort when deploying post-quantum cryptography.
 
-We acknowledge that some parties may want to begin deploying post-quantum cryptography prior to the conclusion of the NIST standardization project.  We strongly recommend that any attempts to do make use of so-called **hybrid cryptography**, in which post-quantum public-key algorithms are used alongside traditional public key algorithms (like RSA or elliptic curves) so that the solution is at least no less secure than existing traditional cryptography.
+We realize some parties may want to deploy quantum-safe cryptography prior to the conclusion of the NIST standardization project.  We strongly recommend such attempts make use of so-called **hybrid cryptography**, in which quantum-safe public-key algorithms are used alongside traditional public key algorithms (like RSA or elliptic curves) so that the solution is at least no less secure than existing traditional cryptography.
 
-liboqs is provided "as is", without warranty of any kind.  See [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for the full disclaimer.
+## Quickstart
 
-Acceptance criteria for master branch
--------------------------------------
+### Linux/macOS
 
-New submissions to master branch must meet the following acceptance criteria:
+1. Install dependencies:
 
-- **Algorithmic requirements:**
-	- The algorithm must be submitted to the NIST Post-Quantum Cryptography project, or posted as update to an existing algorithm, and must be present in the current round
-	- Algorithms whose security is considered effectively broken are not eligible for addition; see the Lifecycle section below for conditions on their removal.
-	- KEMs can be IND-CPA or IND-CCA-secure, at any NIST security level.
-	- Signature schemes can be EUF-CMA-secure, at any NIST security level.
-- **Targets**:
-	- **Operating systems:** The code must build on Linux, macOS, and Windows.
-	- **Architecture:** The code must build at least on x86 and x64.  Build targets are available for various processor-specific features.
-- **Source code requirements:**
-	- **License:** Source code licensed under the MIT License, the BSD license, or in the public domain can be directly incorporated into the repository.  GPL code will not be included in the repository.
-	- **Code quality:** The source code must meet the following quality checks, some of which are enforced by our continuous integration system:
-		- Public API functions must be documented with appropriate Doxygen comments.
-		- Source code must be formatted in accordance with our formatting requirements (`make prettyprint`).
-		- All secrets in memory must be zero'ed out before being deallocated/released using our `OQS_MEM_*` functions.
-		- Exported symbols must be namespaced.
-		- We will periodically run static analysis other analysis tools to identify additional potential flaws.
-	- **Common function usage:** The source code should make use of liboqs' random number generator, AES implementation, and SHA-3 implementation, rather than its own implementation.
-- **Maintenance**: We hope the contributor will intend to help update the implementation in liboqs as the algorithm evolves or as we make enhancements to the library.
+	On Ubuntu:
 
-Algorithms may be removed from liboqs master branch if they no longer meet the acceptance criteria, see the lifecycle section below.
+		sudo apt install autoconf automake libtool gcc libssl-dev python3-pytest unzip xsltproc doxygen graphviz
 
-Contributing
-------------
+	On macOS, using a package manager of your choice (we've picked Homebrew):
 
-Contributions that meet the acceptance criteria above are gratefully welcomed.  See <a href="https://github.com/open-quantum-safe/liboqs/blob/master/CONTRIBUTING.md">CONTRIBUTING.md</a> for details on contributing an implementation.
+		brew install autoconf automake libtool openssl wget doxygen graphviz
+		pip3 install pytest
 
-Lifecycle for master branch
----------------------------
+2. Get the source:
 
-**Release cycle:** We aim to make releases of liboqs master branch every 2 to 3 months.  Plans for each individual release can be found on our [Github projects board](https://github.com/open-quantum-safe/liboqs/projects/).  
+		git clone -b master https://github.com/open-quantum-safe/liboqs.git
+		cd liboqs
 
-**Versioning:** For approximately the period 2018-2019, we plan to label our releases with a variant of semantic versioning, using the notation *0.Y.Z*.  Semantic versioning allows that anything may change between *0.whatever* versions.  We intend to use *X.Y.Z* labelling as follows, for *X=0*.
+	and build:
 
-- *X=0* will be used for approximately the period 2018-2019.  Later in 2019, we will revisit whether we are ready to make a *1.0.0* release, and specify a new verisoning method at that time.
-- *Y* will be incremented when backwards incompatible changes are introduced that either change the public API or change the input/output behaviour of a cryptographic algorithm.  See explanation below.
-- *Z* will be incremented when backwards compatible bug fixes are introduced.  
+		autoreconf -i
+		./configure
+		make clean
+		make -j
+		
+	Various options can be passed to configure to disable algorithms, use different implementations, specify which OpenSSL library to use, or cross-compile.  See `./configure --help` for details.
 
-**Algorithm deprecation:** If an algorithm in master branch is found to be insecure or does not advance to the next round of the NIST competition, but is included in version $0.Y.Z$, it will be marked as deprecated using a compile time warning in version $0.(Y+1).Z'$ and removed in version $0.(Y+2).Z''$.
+	(If on macOS you encounter an error like `Can't exec "libtoolize": No such file or directory at ...`, try running with `LIBTOOLIZE=glibtoolize autoreconf -i`.)
 
-**Algorithm compatibility:** Unlike existing standardization cryptographic algorithms (SHA-2, SHA-3, PKCS\#1v1.5, nistp256, ...), post-quantum algorithms are under active development, and the mathematical algorithm of a cryptographic scheme may change: a particular name (e.g., "FrodoKEM-AES-640") may refer to different mathematical algorithms over time.  liboqs may update implementations as algorithms evolve.  During the $0.Y.Z$ phase of liboqs, versions $0.Y.Z$ and version $0.(Y+1).Z'$ may not be interoperable.  liboqs-reliant applications can check the `alg_version` member of the `OQS_KEM` data structure for each algorithm to obtain an identifier of the algorithm version used in a particular implementation; implementations returning the same `alg_version` for an algorithm will be interoperable.
+3. The main build result is `liboqs.a`, a static library.  (This may be placed in the `.libs` directory.) There are also a variety of programs built under the `tests` directory:
 
-**API stability:** The public API of liboqs master branch is currently considered to be the functions and macros in `oqs/common.h`, `oqs/oqsconfig.h`, `oqs/kem.h`, `oqs/rand.h`, `oqs/sig.h`, and includes all functions marked with `OQS_API`.  During the $0.Y.Z$ phase of liboqs, incompatible changes to the public API will lead to incrementing $Y$.
+	- `test_kem`: Simple test harness for key encapsulation mechanisms
+	- `test_sig`: Simple test harness for key signature schemes
+	- `kat_kem`: Program that generates known answer test (KAT) values for key encapsulation mechanisms using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
+	- `kat_sig`: Program that generates known answer test (KAT) values for signature schemes using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
+	- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
+	- `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
+	- `example_kem`: Minimal runnable example showing the usage of the KEM API
+	- `example_sig`: Minimal runnable example showing the usage of the signature API
+	- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 
-Building and running liboqs master branch
------------------------------------------
+	A range of tests (including all `test_*` and `kat_*` programs above) can be run using
 
-### Install dependencies for Linux Ubuntu
+		python3 -m pytest
 
-You need to install the following packages:
+4. To generate HTML documentation of the API, run:
 
-	sudo apt install autoconf automake libtool gcc libssl-dev python3-pytest unzip xsltproc
+		make docs
 
-### Install dependencies for macOS
+	Then open `docs/doxygen/html/index.html` in your web browser.
 
-You need to install the following packages using brew (or a package manager of your choice):
+### Windows
 
-	brew install autoconf automake libtool openssl wget
-	pip3 install pytest
+Binaries can be generated using the Visual Studio solution in the `VisualStudio` folder. The supported schemes are defined in the project's `winconfig.h` file.
 
-### Install dependencies for OpenBSD
+### Others
 
-You need to install the following packages using pkg_add:
+Instructions for building on OpenBSD and ARM can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki/Building).
 
-	pkg_add automake libtool
-	pip3 install pytest
+## Documentation
 
-On OpenBSD you have to explicitly set the environment variables `AUTOCONF_VERSION` and 
-`AUTOMAKE_VERSION` to a version installed on your system.
+Further information can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
 
-	export AUTOCONF_VERSION=`ls -1 /usr/local/bin/autoreconf-* | sort | tail -n 1 | cut -d'-' -f2`
-	export AUTOMAKE_VERSION=`ls -1 /usr/local/bin/automake-* | sort | tail -n 1 | cut -d'-' -f2`
+## Contributing
 
-### Building
+Contributions that meet the acceptance criteria are gratefully welcomed. See our [Contributing Guide](https://github.com/open-quantum-safe/liboqs/wiki/Contributing-Guide) for more details.
 
-To build, first clone or download the source from GitHub:
-
-	git clone -b master https://github.com/open-quantum-safe/liboqs.git
-	cd liboqs
-
-Run the build system:
-
-	autoreconf -i
-	./configure
-	make clean
-	make -j
-
-(If on macOS you encounter an error like `Can't exec "libtoolize": No such file or directory at ...`, try running with `LIBTOOLIZE=glibtoolize autoreconf -i`.)
-
-You can enable/disable various algorithms at compile-time, tell liboqs to use OpenSSL for certain crypto algorithms, and more; see `./configure --help`.
-
-### Build results
-
-The main build result is `liboqs.a`, a static library.  (This may be placed in the `.libs` directory.)
-
-There are also a variety of test programs built under the `tests` directory:
-
-- `test_kem`: Simple test harness for key encapsulation mechanisms
-- `test_sig`: Simple test harness for key signature schemes
-- `kat_kem`: Program that generates known answer test (KAT) values for key encapsulation mechanisms using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
-- `kat_sig`: Program that generates known answer test (KAT) values for signature schemes using the same procedure as the NIST submission requirements, for checking against submitted KAT values using `tests/test_kat.py`
-- `speed_kem`: Benchmarking program for key encapsulation mechanisms; see `./speed_kem --help` for usage instructions
-- `speed_sig`: Benchmarking program for signature mechanisms; see `./speed_sig --help` for usage instructions
-- `example_kem`: Minimal runnable example showing the usage of the KEM API
-- `example_sig`: Minimal runnable example showing the usage of the signature API
-- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
-
-A range of tests (including all `test_*` and `kat_*` programs above) can be run using
-
-	python3 -m pytest
-
-Building and running on Windows
--------------------------------
-
-Windows binaries can be generated using the Visual Studio solution in the `VisualStudio` folder.
-
-Builds are tested using the AppVeyor continuous integration system on Windows Server 2016 (Visual Studio 2017).  Our developers also test builds periodically on Windows 10.
-
-The supported schemes are defined in the projects' `winconfig.h` file.
-
-Building and running on ARM
----------------------------
-
-Our continuous integration system includes builds on various ARM architectures, see the Testing section below.
-
-Binaries for ARM can also be cross-compiled on Linux.  In order to cross compile, you need to have an appropriate toolchain installed, and to test you need QEMU installed.  
-
-For example, to cross compile for ARMv7 (armel) on Ubuntu Linux, first install the required toolchain, then use the scripts below to build and test on an emulated ARM Cortex-A8:
-
-	sudo apt install gcc-arm-linux-gnueabi libc6-dev-armel-cross qemu
-	scripts/arm-cross-compile.sh
-	scripts/arm-run-tests-qemu.sh
-
-At present there are still some quirks with our ARM build, including problems with Picnic and qTESLA and the known answer tests causing build errors or segmentation faults.  See issues #461, #462, and #463.
-
-Testing
--------
-
-A range of tests (including all `test_*` and `kat_*` programs above) can be run using `make test` or equivalently `python3 -m pytest -v`.
-
-Builds are tested using continuous integration systems as follows:
-
-- macOS 10.13.3 (clang 9.1.0) using Travis CI
-- Ubuntu 14.04.5 (Trusty), with gcc, on ARM Cortex-A8 (via QEMU) using Travis CI
-- Ubuntu 16.04.6 (Xenial), with gcc-4.9, gcc-5, gcc-6, gcc-7, and gcc-8, on x86_64 using CircleCI
-- Ubuntu 18.04.2 (Bionic), with gcc-7, on x86_64 using CircleCI
-- Debian 10 (Buster), with gcc-8.3.0, on amd64  using CircleCI
-- Debian 10 (Buster), with gcc-8.3.0, on ARMv8 (aarch64), ARMv7 (armhf, armel) (via QEMU) using CircleCI
-- Windows Server 2016, with Visual Studio 2017, on x86_64 using AppVeyor
-
-Build status:
-
-- [AppVeyor](https://ci.appveyor.com/project/dstebila/liboqs): ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true)
-- [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master.svg?style=svg)
-- [Travis CI](https://travis-ci.org/open-quantum-safe/liboqs): ![Build status image](https://travis-ci.org/open-quantum-safe/liboqs.svg?branch=master)
-
-You can locally run most of the integration tests that CircleCI runs.  First, you need to install CircleCI's local command line interface as indicated in the [installation instructions](https://circleci.com/docs/2.0/local-cli/).  Then:
-
-	circleci local execute --job <jobname>
-
-where `<jobname>` is one of the following:
-
-- `debian-buster-amd64`
-- `ubuntu-xenial-x86_64-gcc49`
-- `ubuntu-xenial-x86_64-gcc5`
-- `ubuntu-xenial-x86_64-gcc6`
-- `ubuntu-xenial-x86_64-gcc7`
-- `ubuntu-xenial-x86_64-gcc8`
-- `ubuntu-xenial-x86_64-gcc8-noopenssl`
-- `ubuntu-xenial-x86_64-gcc8-noshared`
-- `ubuntu-bionic-x86_64`
-
-You may receive an error "Failed uploading test results directory" when running CircleCI locally, that is expected behaviour.
-
-Note that you cannot run "machine" CircleCI builds locally, which are what we use for testing builds on emulated platforms, specifically the ARM `debian-buster-aarch64`, `-armhf`, and `-armel` jobs.
-
-Documentation
--------------
-
-The directory `docs/algorithms` contains information about each algorithm available in this branch of liboqs.
-
-If you have Doxygen installed (Linux: `sudo apt install doxygen graphviz`; macOS: `brew install doxygen graphviz`), you can build HTML documentation of the liboqs master branch API:
-
-	make docs
-
-Then open `docs/doxygen/html/index.html` in your web browser.
-
-### liboqs default algorithms
-
-The key encapsulation algorithm type `OQS_KEM_alg_default` and signature algorithm type `OQS_SIG_alg_default` are intended for testing purposes and can be changed at compile-time. Care should be exercised if these types are used for other purposes.  To change these at compile time, for example:
-
-	./configure KEM_DEFAULT=OQS_KEM_alg_frodokem_976_aes SIG_DEFAULT=OQS_SIG_alg_picnic_L1_FS
-
-For the Visual Studio build, default algorithms are manually specified in the file `VisualStudio/winconfig.h`.
-
-License
--------
+## License
 
 liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for details.
 
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
 - `src/crypto/aes/aes_c.c`: public domain
+- `src/crypto/sha2/sha2_c.c`: public domain
 - `src/crypto/sha3/fips202.c`: CC0 (public domain)
 - `src/crypto/sha3/keccak4x`: CC0 (public domain), except `brg_endian.h`
 - `src/kem/bike/x86_64`: Apache License v2.0
@@ -273,39 +148,13 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/sig/dilithium/pqclean_*`: public domain
 - `src/sig/mqdss/pqclean_*`: CC0 (public domain)
 - `src/sig/picnic/external/sha3`: CC0 (public domain)
+- `src/sig/rainbow/pqclean_*`: CC0 (public domain)
+- `src/sig/sphincs/pqclean_*`: CC0 (public domain)
 
-Team
-----
+## Acknowledgements
 
-The Open Quantum Safe project is led by [Douglas Stebila](https://www.douglas.stebila.ca/research/) and [Michele Mosca](http://faculty.iqc.uwaterloo.ca/mmosca/) at the University of Waterloo.
+Various companies, including Amazon Web Services, evolutionQ, Microsoft Research, and Cisco Systems, have dedicated programmer time to contribute source code to OQS. [Various people](CONTRIBUTORS) have contributed source code to liboqs.
 
-### Contributors
-
-Contributors to this master branch of liboqs include:
-
-- Nicholas Allen (Amazon Web Services)
-- Maxime Anvari
-- Eric Crockett (Amazon Web Services)
-- Nir Drucker (Amazon Web Services)
-- Ben Davies (University of Waterloo)
-- Javad Doliskani (University of Waterloo)
-- Vlad Gheorghiu (evolutionQ)
-- Shay Gueron (Amazon Web Services)
-- Torben Hansen (Royal Holloway University of London)
-- Tancrède Lepoint (SRI International)
-- Shravan Mishra (University of Waterloo)
-- Christian Paquin (Microsoft Research)
-- Alex Parent (University of Waterloo)
-- Peter Schwabe (Radboud University Nijmegen)
-- Dimitris Sikeridis (University of New Mexico, Cisco Systems)
-- Douglas Stebila (University of Waterloo)
-- [John Underhill](https://github.com/Steppenwolfe65/CEX)
-- Sebastian Verschoor (University of Waterloo)
-
-### Support
-
-Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services and the Tutte Institute for Mathematics and Computing.  
-
-We'd like to make a special acknowledgement to the companies who have dedicated programmer time to contribute source code to OQS, including Amazon Web Services, evolutionQ, Microsoft Research, and Cisco Systems.  
+Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services and the Tutte Institute for Mathematics and Computing.
 
 Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.
