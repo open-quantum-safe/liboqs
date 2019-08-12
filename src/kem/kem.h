@@ -131,6 +131,14 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i);
 OQS_API int OQS_KEM_alg_count();
 
 /**
+ * Indicates whether the specified algorithm was enabled at compile-time or not.
+ *
+ * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_KEM_algs`.
+ * @return 1 if enabled, 0 if disabled or not found
+ */
+OQS_API int OQS_KEM_alg_is_enabled(const char *method_name);
+
+/**
  * Key encapsulation mechanism object
  */
 typedef struct OQS_KEM {

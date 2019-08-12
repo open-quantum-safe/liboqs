@@ -40,7 +40,8 @@ OQS_STATUS kem_test_correctness(const char *method_name) {
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
-		return OQS_SUCCESS;
+		// should always succeed since we don't call this function on KEMs that aren't enabled
+		return OQS_ERROR;
 	}
 
 	printf("================================================================================\n");
@@ -143,6 +144,9 @@ int main(int argc, char **argv) {
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
 	char *alg_name = argv[1];
+	if (!OQS_KEM_alg_is_enabled(alg_name)) {
+		return EXIT_FAILURE;
+	}
 	OQS_STATUS rc = kem_test_correctness(alg_name);
 	if (rc != OQS_SUCCESS) {
 		return EXIT_FAILURE;

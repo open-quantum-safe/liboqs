@@ -2,6 +2,7 @@ LIBRARY oqs
 EXPORTS
 	OQS_KEM_alg_identifier
 	OQS_KEM_alg_count
+	OQS_KEM_alg_is_enabled
 	OQS_KEM_new
 	OQS_KEM_keypair
 	OQS_KEM_encaps
@@ -44,6 +45,7 @@ EXPORTS
 	OQS_randombytes_switch_algorithm
 	OQS_SIG_alg_identifier
 	OQS_SIG_alg_count
+	OQS_SIG_alg_is_enabled
 	OQS_SIG_new
 	OQS_SIG_keypair
 	OQS_SIG_sign
