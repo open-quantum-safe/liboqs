@@ -59,7 +59,7 @@ typedef uint64_t digit_t; // Unsigned 64-bit digit
 
 // Selection of generic, portable implementation
 
-#if defined(_GENERIC_)
+#if defined(_GENERIC_) || (_X86_ && OS_TARGET == OS_WIN)
 #define GENERIC_IMPLEMENTATION
 #endif
 
