@@ -43,7 +43,6 @@
     <ClInclude Include="..\..\src\kem\saber\kem_saber.h" />
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h" />
     <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h" />
-    <ClInclude Include="..\..\src\sig\rainbow\sig_rainbow.h" />
     <ClInclude Include="..\..\src\sig\sphincs\sig_sphincs.h" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
@@ -249,105 +248,6 @@
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\gf31.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\mq.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Ia_classic.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\blas_comm.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\parallel_matrix_op.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\rainbow.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\rainbow_keypair.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\rainbow_keypair_computation.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\utils_hash.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\utils_prng.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\blas_u32.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-classic_clean\gf.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Ia_cyclic.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\blas_comm.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\parallel_matrix_op.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\rainbow.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\rainbow_keypair.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\rainbow_keypair_computation.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\utils_hash.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\utils_prng.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\blas_u32.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic_clean\gf.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Ia_cyclic_compressed.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\blas_comm.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\parallel_matrix_op.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\rainbow.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\rainbow_keypair.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\rainbow_keypair_computation.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\utils_hash.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\utils_prng.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\blas_u32.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIa-cyclic-compressed_clean\gf.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_IIIc_classic.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\blas_comm.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\parallel_matrix_op.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\rainbow.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\rainbow_keypair.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\rainbow_keypair_computation.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\utils_hash.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\utils_prng.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\blas_u32.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-classic_clean\gf.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_IIIc_cyclic.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\blas_comm.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\parallel_matrix_op.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\rainbow.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\rainbow_keypair.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\rainbow_keypair_computation.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\utils_hash.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\utils_prng.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\blas_u32.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic_clean\gf.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_IIIc_cyclic_compressed.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\blas_comm.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\parallel_matrix_op.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\rainbow.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\rainbow_keypair.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\rainbow_keypair_computation.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\utils_hash.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\utils_prng.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\blas_u32.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowIIIc-cyclic-compressed_clean\gf.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Vc_classic.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\blas_comm.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\parallel_matrix_op.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\rainbow.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\rainbow_keypair.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\rainbow_keypair_computation.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\utils_hash.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\utils_prng.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\blas_u32.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-classic_clean\gf.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Vc_cyclic.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\blas_comm.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\parallel_matrix_op.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\rainbow.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\rainbow_keypair.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\rainbow_keypair_computation.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\utils_hash.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\utils_prng.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\blas_u32.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic_clean\gf.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\sig_rainbow_Vc_cyclic_compressed.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\blas_comm.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\parallel_matrix_op.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\rainbow.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\rainbow_keypair.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\rainbow_keypair_computation.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\utils_hash.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\utils_prng.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\blas_u32.c" />
-    <ClCompile Include="..\..\src\sig\rainbow\pqclean_rainbowVc-cyclic-compressed_clean\gf.c" />
     <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128f_robust.c" />
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\address.c" />
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\wots.c" />
@@ -861,7 +761,6 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -906,7 +805,6 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -951,7 +849,6 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -1004,7 +901,6 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -1056,7 +952,6 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -1105,7 +1000,6 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -1154,7 +1048,6 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
@@ -1211,7 +1104,6 @@ copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\sig\rainbow\sig_rainbow.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>

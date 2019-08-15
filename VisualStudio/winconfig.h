@@ -45,15 +45,6 @@
 #define OQS_ENABLE_SIG_dilithium_4
 #define OQS_ENABLE_SIG_mqdss_31_48
 #define OQS_ENABLE_SIG_mqdss_31_64
-#define OQS_ENABLE_SIG_rainbow_Ia_classic
-#define OQS_ENABLE_SIG_rainbow_Ia_cyclic
-#define OQS_ENABLE_SIG_rainbow_Ia_cyclic_compressed
-#define OQS_ENABLE_SIG_rainbow_IIIc_classic
-#define OQS_ENABLE_SIG_rainbow_IIIc_cyclic
-#define OQS_ENABLE_SIG_rainbow_IIIc_cyclic_compressed
-#define OQS_ENABLE_SIG_rainbow_Vc_classic
-#define OQS_ENABLE_SIG_rainbow_Vc_cyclic
-#define OQS_ENABLE_SIG_rainbow_Vc_cyclic_compressed
 #define OQS_ENABLE_SIG_sphincs_haraka_128f_robust
 #define OQS_ENABLE_SIG_sphincs_haraka_128f_simple
 #define OQS_ENABLE_SIG_sphincs_haraka_128s_robust

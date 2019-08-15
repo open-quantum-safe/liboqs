@@ -40,7 +40,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-saber], [kem_saber], [ENABLE_KEM_SABER], [src/kem/saber])
   ARG_DISBL_SET_WRAP([sig-dilithium], [sig_dilithium], [ENABLE_SIG_DILITHIUM], [src/sig/dilithium])
   ARG_DISBL_SET_WRAP([sig-mqdss], [sig_mqdss], [ENABLE_SIG_MQDSS], [src/sig/mqdss])
-  ARG_DISBL_SET_WRAP([sig-rainbow], [sig_rainbow], [ENABLE_SIG_RAINBOW], [src/sig/rainbow])
   ARG_DISBL_SET_WRAP([sig-sphincs], [sig_sphincs], [ENABLE_SIG_SPHINCS], [src/sig/sphincs])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
@@ -107,17 +106,6 @@ AC_DEFUN([CONFIG_FEATURES],
   AM_COND_IF([ENABLE_SIG_MQDSS], [
     AC_DEFINE(OQS_ENABLE_SIG_mqdss_31_48, 1, "Define to 1 when MQDSS-31-48 enabled")
     AC_DEFINE(OQS_ENABLE_SIG_mqdss_31_64, 1, "Define to 1 when MQDSS-31-64 enabled")
-  ])
-  AM_COND_IF([ENABLE_SIG_RAINBOW], [
-    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Ia_classic, 1, "Define to 1 when Rainbow-Ia-Classic enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Ia_cyclic, 1, "Define to 1 when Rainbow-Ia-Cyclic enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Ia_cyclic_compressed, 1, "Define to 1 when Rainbow-Ia-Cyclic-Compressed enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_rainbow_IIIc_classic, 1, "Define to 1 when Rainbow-IIIc-Classic enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_rainbow_IIIc_cyclic, 1, "Define to 1 when Rainbow-IIIc-Cyclic enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_rainbow_IIIc_cyclic_compressed, 1, "Define to 1 when Rainbow-IIIc-Cyclic-Compressed enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Vc_classic, 1, "Define to 1 when Rainbow-Vc-Classic enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Vc_cyclic, 1, "Define to 1 when Rainbow-Vc-Cyclic enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_rainbow_Vc_cyclic_compressed, 1, "Define to 1 when Rainbow-Vc-Cyclic-Compressed enabled")
   ])
   AM_COND_IF([ENABLE_SIG_SPHINCS], [
     AC_DEFINE(OQS_ENABLE_SIG_sphincs_haraka_128f_robust, 1, "Define to 1 when SPHINCS+-Haraka-128f-robust enabled")
