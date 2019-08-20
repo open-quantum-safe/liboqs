@@ -1,4 +1,4 @@
-liboqs master branch algorithm datasheet: `kem_ntru`
+liboqs algorithm datasheet: `kem_ntru`
 ====================================================
 
 Summary

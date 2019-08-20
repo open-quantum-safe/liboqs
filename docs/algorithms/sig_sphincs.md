@@ -1,4 +1,4 @@
-liboqs nist-branch algorithm datasheet: `sig_sphincs`
+liboqs algorithm datasheet: `sig_sphincs`
 =====================================================
 
 Summary

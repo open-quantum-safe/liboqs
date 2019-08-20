@@ -1,4 +1,4 @@
-liboqs master branch algorithm datasheet: `kem_frodokem`
+liboqs algorithm datasheet: `kem_frodokem`
 ========================================================
 
 Summary

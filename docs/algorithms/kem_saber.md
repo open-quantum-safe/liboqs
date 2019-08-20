@@ -1,4 +1,4 @@
-liboqs master branch algorithm datasheet: `kem_saber`
+liboqs algorithm datasheet: `kem_saber`
 =====================================================
 
 Summary

@@ -1,4 +1,4 @@
-liboqs master branch algorithm datasheet: `kem_newhope`
+liboqs algorithm datasheet: `kem_newhope`
 =======================================================
 
 Summary
