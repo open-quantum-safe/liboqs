@@ -12,7 +12,7 @@ liboqs can be used with the following Open Quantum Safe application integrations
 
 - **OpenSSL 1.0.2**: A prototype integration of liboqs-based authentication and key exchange into TLS 1.2 in our fork of OpenSSL 1.0.2; see the [OQS-OpenSSL-1\_0\_2-stable](https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL_1_0_2-stable) branch of our OpenSSL fork's repository.
 - **OpenSSL 1.1.1**: A prototype integration of liboqs-based authentication and key exchange into TLS 1.3 in our fork of OpenSSL 1.1.1; see the [OQS-OpenSSL-1\_1\_1-stable](https://github.com/open-quantum-safe/openssl/tree/OQS-OpenSSL_1_1_1-stable) branch of our OpenSSL fork's repository.
-- **OpenSSH 7.7 portable 1**: A prototype integration of liboqs-based authentication and key exchange into SSH in our fork of OpenSSH 7.7; see the [OQS-master](https://github.com/open-quantum-safe/openssh-portable/tree/OQS-master) branch of our OpenSSH fork's repository.
+- **OpenSSH 7.9 portable 1**: A prototype integration of liboqs-based authentication and key exchange into SSH in our fork of OpenSSH 7.9; see the [OQS-master](https://github.com/open-quantum-safe/openssh-portable/tree/OQS-master) branch of our OpenSSH fork's repository.
 
 liboqs can also be used in the following programming languages via language-specific wrappers:
 
