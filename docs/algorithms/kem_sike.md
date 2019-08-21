@@ -1,4 +1,4 @@
-liboqs master branch algorithm datasheet: `kem_sike`
+liboqs algorithm datasheet: `kem_sike`
 ====================================================
 
 Summary

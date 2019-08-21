@@ -1,4 +1,4 @@
-liboqs master branch algorithm datasheet: `kem_kyber`
+liboqs algorithm datasheet: `kem_kyber`
 =====================================================
 
 Summary
