@@ -1,4 +1,4 @@
-liboqs version 0.2.0 (release candidate 1)
+liboqs version 0.2.0 (release candidate 2)
 ====================
 
 About
