@@ -2,9 +2,7 @@ version: 1.0.{build}
 
 image: Visual Studio 2017
 
-platform:
-  - x86
-  - x64
+platform: x64
 
 build:
   verbosity: minimal
