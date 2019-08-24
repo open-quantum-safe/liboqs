@@ -10,7 +10,7 @@ liboqs is an open source C library for quantum-safe cryptographic algorithms.
   * [Supported algorithms](#supported-algorithms)
   * [Limitations and Security](#limitations-and-security)
 - [Quickstart](#quickstart)
-  * [Linux / macOS](#linux/macOS)
+  * [Linux / macOS](#linuxmacOS)
   * [Windows](#windows)
   * [Others](#others)
 - [Documentation](#documentation)
