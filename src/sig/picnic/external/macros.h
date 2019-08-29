@@ -89,6 +89,10 @@
 #define ATTR_ALIGNED(i)
 #endif
 
+/* round size to meet alignment requirements */
+#define ALIGNT(s, t) (((s) + sizeof(t) - 1) & ~(sizeof(t) - 1))
+#define ALIGNU64T(s) ALIGNT(s, uint64_t)
+
 /* unreachable builtin */
 #if GNUC_CHECK(4, 5) || __has_builtin(__builtin_unreachable)
 #define UNREACHABLE __builtin_unreachable()
@@ -153,19 +157,6 @@
 /* concatenation */
 #define CONCAT2(a, b) a##_##b
 #define CONCAT(a, b) CONCAT2(a, b)
-
-/* helper macros to select matrices and multiplicatiion functions */
-#if defined(MUL_M4RI)
-#define matrix_postfix lookup
-#else
-#define matrix_postfix matrix
-#endif
-
-#if defined(MUL_M4RI)
-#define SELECT_V_VL(v, vl) vl
-#else
-#define SELECT_V_VL(v, vl) v
-#endif
 
 /* helper macros/functions for checked integer subtraction */
 #if GNUC_CHECK(5, 0) || __has_builtin(__builtin_add_overflow)

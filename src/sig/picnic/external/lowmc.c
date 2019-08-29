@@ -139,7 +139,7 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #define FN_ATTR ATTR_TARGET_AVX2
 
 // L1 using AVX2
-#include "lowmc_fns_s128_L1.h"
+#include "lowmc_fns_s256_L1.h"
 #undef LOWMC
 #define LOWMC lowmc_s256_128
 #include "lowmc.c.i"
@@ -162,7 +162,11 @@ static void sbox_layer_1_uint64(uint64_t* d) {
 #endif
 
 lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc) {
+#if defined(WITH_LOWMC_M1)
   ASSUME(lowmc->m == 10 || lowmc->m == 1);
+#else
+  ASSUME(lowmc->m == 10);
+#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
 #if defined(WITH_OPT)
@@ -284,7 +288,11 @@ lowmc_implementation_f lowmc_get_implementation(const lowmc_t* lowmc) {
 }
 
 lowmc_store_implementation_f lowmc_store_get_implementation(const lowmc_t* lowmc) {
+#if defined(WITH_LOWMC_M1)
   ASSUME(lowmc->m == 10 || lowmc->m == 1);
+#else
+  ASSUME(lowmc->m == 10);
+#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
 #if defined(WITH_OPT)
@@ -406,8 +414,13 @@ lowmc_store_implementation_f lowmc_store_get_implementation(const lowmc_t* lowmc
 }
 
 lowmc_compute_aux_implementation_f lowmc_compute_aux_get_implementation(const lowmc_t* lowmc) {
+#if defined(WITH_LOWMC_M1)
+  ASSUME(lowmc->m == 10 || lowmc->m == 1);
+#else
   ASSUME(lowmc->m == 10);
+#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
+
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   if (CPU_SUPPORTS_AVX2) {

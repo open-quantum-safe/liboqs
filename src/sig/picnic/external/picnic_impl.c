@@ -53,8 +53,6 @@ const uint8_t HASH_PREFIX_3 = 3;
 const uint8_t HASH_PREFIX_4 = 4;
 const uint8_t HASH_PREFIX_5 = 5;
 
-#define LOWMC_UNSPECFIED_ARG UINT32_MAX
-
 /**
  * Collapse challenge from one char per challenge to bit array.
  */
@@ -95,9 +93,6 @@ static bool expand_challenge(uint8_t* challenge, const picnic_instance_t* pp,
 
   return true;
 }
-
-#define ALIGNT(s, t) (((s) + sizeof(t) - 1) & ~(sizeof(t) - 1))
-#define ALIGNU64T(s) ALIGNT(s, uint64_t)
 
 static sig_proof_t* proof_new(const picnic_instance_t* pp) {
   const size_t digest_size                    = pp->digest_size;
@@ -468,7 +463,7 @@ static void hash_commitment_x4(const picnic_instance_t* pp, proof_round_t* prf_r
 /**
  * Compute commitment to 4 views, for verification
  */
-static void hash_commitment_x4_verify(const picnic_instance_t* pp, sorting_helper_t* helper,
+static void hash_commitment_x4_verify(const picnic_instance_t* pp, const sorting_helper_t* helper,
                                       const unsigned int vidx) {
   const size_t hashlen = pp->digest_size;
 
@@ -767,7 +762,7 @@ static void unruh_G_x4(const picnic_instance_t* pp, proof_round_t* prf_round, un
 /*
  * 4x G permutation for Unruh transform, for verification
  */
-static void unruh_G_x4_verify(const picnic_instance_t* pp, sorting_helper_t* helper,
+static void unruh_G_x4_verify(const picnic_instance_t* pp, const sorting_helper_t* helper,
                               unsigned int vidx, bool include_is) {
   hash_context_x4 ctx;
 
@@ -999,7 +994,7 @@ static void generate_seeds(const picnic_instance_t* pp, const uint8_t* private_k
 #if defined(WITH_EXTRA_RANDOMNESS)
   // Add extra randomn bytes for fault attack mitigation
   unsigned char buffer[2 * MAX_DIGEST_SIZE];
-  rand_bytes(buffer, 2 * seed_size);
+  OQS_randombytes(buffer, 2 * seed_size);
   kdf_shake_update_key(&ctx, buffer, 2 * seed_size);
 #endif
   kdf_shake_finalize_key(&ctx);
@@ -1055,7 +1050,7 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
   proof_round_t* round = prf->round;
   // use 4 parallel instances of keccak for speedup
   uint8_t* tape_bytes_x4[SC_PROOF][4];
-  for (unsigned k = 0; k < SC_PROOF; k++) { /* OQS note: changed i to k to avoid shadowing i */
+  for (unsigned k = 0; k < SC_PROOF; k++) {
     for (unsigned j = 0; j < 4; j++) {
       tape_bytes_x4[k][j] = malloc(view_size);
     }
@@ -1163,8 +1158,8 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
   const int ret = sig_proof_to_char_array(pp, prf, sig, siglen);
 
   // clean up
-  for (unsigned k = 0; k < SC_PROOF; k++) {
-    for (unsigned j = 0; j < 4; j++) {
+  for (unsigned int k = 0; k < SC_PROOF; ++k) {
+    for (unsigned int j = 0; j < 4; ++j) {
       free(tape_bytes_x4[k][j]);
     }
   }
@@ -1229,8 +1224,8 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
         num_current_rounds++;
       }
     }
-    unsigned int i           = 0;
-    sorting_helper_t* helper = sorted_rounds;
+    unsigned int i                 = 0;
+    const sorting_helper_t* helper = sorted_rounds;
     for (; i < (num_current_rounds / 4) * 4; i += 4, helper += 4) {
       const unsigned int a_i = current_chal;
       const unsigned int b_i = (a_i + 1) % 3;
@@ -1457,15 +1452,6 @@ int impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uin
 #define LOWMC_L5_1_OR_NULL NULL
 #endif
 
-#if defined(MUL_M4RI)
-static bool lowmc_instances_initialized[6];
-static lowmc_t* const lowmc_instances[6] = {
-#else
-static const lowmc_t* const lowmc_instances[6] = {
-#endif
-    LOWMC_L1_OR_NULL,   LOWMC_L3_OR_NULL,   LOWMC_L5_OR_NULL,
-    LOWMC_L1_1_OR_NULL, LOWMC_L3_1_OR_NULL, LOWMC_L5_1_OR_NULL};
-
 #define NULL_FNS                                                                                   \
   { NULL, NULL, NULL, NULL, NULL, NULL, NULL }
 
@@ -1505,70 +1491,8 @@ static picnic_instance_t instances[PARAMETER_SET_MAX_INDEX] = {
      PICNIC_SIGNATURE_SIZE_Picnic_L5_1_UR, Picnic_L5_1_UR, TRANSFORM_UR, NULL_FNS}};
 static bool instance_initialized[PARAMETER_SET_MAX_INDEX];
 
-static const lowmc_t* lowmc_get_instance(unsigned int idx) {
-#if defined(MUL_M4RI)
-  if (!lowmc_instances_initialized[idx]) {
-    if (lowmc_init(lowmc_instances[idx])) {
-      lowmc_instances_initialized[idx] = true;
-      return lowmc_instances[idx];
-    }
-    return NULL;
-  }
-#endif
-  return lowmc_instances[idx];
-}
-
-#if defined(MUL_M4RI)
-static void clear_lowmc_instance(unsigned int idx) {
-  if (lowmc_instances_initialized[idx]) {
-    lowmc_clear(lowmc_instances[idx]);
-    lowmc_instances_initialized[idx] = false;
-  }
-}
-#endif
-
-static bool create_instance(picnic_instance_t* pp, picnic_params_t param) {
-  const lowmc_t* lowmc_instance = NULL;
-
-  switch (param) {
-  case Picnic_L1_FS:
-  case Picnic_L1_UR:
-  case Picnic2_L1_FS:
-    lowmc_instance = lowmc_get_instance(0);
-    break;
-
-  case Picnic_L3_FS:
-  case Picnic_L3_UR:
-  case Picnic2_L3_FS:
-    lowmc_instance = lowmc_get_instance(1);
-    break;
-
-  case Picnic_L5_FS:
-  case Picnic_L5_UR:
-  case Picnic2_L5_FS:
-    lowmc_instance = lowmc_get_instance(2);
-    break;
-
-  case Picnic_L1_1_FS:
-  case Picnic_L1_1_UR:
-    lowmc_instance = lowmc_get_instance(3);
-    break;
-
-  case Picnic_L3_1_FS:
-  case Picnic_L3_1_UR:
-    lowmc_instance = lowmc_get_instance(4);
-    break;
-
-  case Picnic_L5_1_FS:
-  case Picnic_L5_1_UR:
-    lowmc_instance = lowmc_get_instance(5);
-    break;
-
-  default:
-    return false;
-  }
-
-  if (!lowmc_instance) {
+static bool create_instance(picnic_instance_t* pp) {
+  if (!pp->lowmc) {
     return false;
   }
 
@@ -1589,7 +1513,7 @@ const picnic_instance_t* picnic_instance_get(picnic_params_t param) {
   }
 
   if (!instance_initialized[param]) {
-    if (!create_instance(&instances[param], param)) {
+    if (!create_instance(&instances[param])) {
       return NULL;
     }
     instance_initialized[param] = true;
@@ -1604,11 +1528,4 @@ ATTR_DTOR static void clear_instances(void) {
       instance_initialized[p] = false;
     }
   }
-
-#if defined(MUL_M4RI)
-  for (unsigned int i = 0;
-       i < sizeof(lowmc_instances_initialized) / sizeof(lowmc_instances_initialized[0]); ++i) {
-    clear_lowmc_instance(i);
-  }
-#endif
 }

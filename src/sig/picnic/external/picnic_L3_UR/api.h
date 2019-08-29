@@ -5,6 +5,7 @@
 #define CRYPTO_PUBLICKEYBYTES (1 + 2 * 24)
 #define CRYPTO_BYTES (4 + 121845)
 #define CRYPTO_ALGNAME "picnicl3ur"
+#define CRYPTO_DETERMINISTIC 1
 
 int crypto_sign_keypair(unsigned char* pk, unsigned char* sk);
 int crypto_sign(unsigned char* sm, unsigned long long* smlen, const unsigned char* m,

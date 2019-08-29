@@ -47,7 +47,7 @@ static void N_SIGN(mpc_lowmc_key_t const* lowmc_key, mzd_local_t const* p, view_
   mzd_local_t x[SC_PROOF][((LOWMC_N) + 255) / 256];
   mzd_local_t y[SC_PROOF][((LOWMC_N) + 255) / 256];
 
-  MPC_LOOP_CONST(MUL, x, lowmc_key, CONCAT(LOWMC_INSTANCE.k0, matrix_postfix), reduced_shares);
+  MPC_LOOP_CONST(MUL, x, lowmc_key, LOWMC_INSTANCE.k0_matrix, reduced_shares);
   MPC_LOOP_CONST_C(XOR, x, x, p, reduced_shares, ch);
 
   #include "mpc_lowmc_loop.c.i"
@@ -80,7 +80,7 @@ static void N_VERIFY(mzd_local_t const* p, view_t* views, in_out_shares_t* in_ou
   mzd_local_t x[SC_VERIFY][((LOWMC_N) + 255) / 256];
   mzd_local_t y[SC_VERIFY][((LOWMC_N) + 255) / 256];
 
-  MPC_LOOP_CONST(MUL, x, lowmc_key, CONCAT(LOWMC_INSTANCE.k0, matrix_postfix), SC_VERIFY);
+  MPC_LOOP_CONST(MUL, x, lowmc_key, LOWMC_INSTANCE.k0_matrix, SC_VERIFY);
   MPC_LOOP_CONST_C(XOR, x, x, p, SC_VERIFY, ch);
 
 #include "mpc_lowmc_loop.c.i"

@@ -120,29 +120,25 @@ int PICNIC_CALLING_CONVENTION picnic_sk_to_pk(const picnic_privatekey_t* sk,
 
   const size_t input_size  = instance->input_size;
   const size_t output_size = instance->output_size;
-  const lowmc_t* lowmc     = instance->lowmc;
 
   const uint8_t* sk_sk = SK_SK(sk);
   uint8_t* pk_c        = PK_C(pk);
   uint8_t* pk_pt       = PK_PT(pk);
   const uint8_t* sk_pt = SK_PT(sk);
 
-  mzd_local_t* plaintext = mzd_local_init_ex(1, lowmc->n, false);
-  mzd_local_t* privkey   = mzd_local_init_ex(1, lowmc->k, false);
+  mzd_local_t plaintext[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
+  mzd_local_t privkey[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
+  mzd_local_t ciphertext[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
 
   mzd_from_char_array(plaintext, sk_pt, output_size);
   mzd_from_char_array(privkey, sk_sk, input_size);
 
   // compute public key
-  mzd_local_t* ciphertext = instance->impls.lowmc(privkey, plaintext);
+  instance->impls.lowmc(privkey, plaintext, ciphertext);
 
   pk->data[0] = param;
   memcpy(pk_pt, sk_pt, output_size);
   mzd_to_char_array(pk_c, ciphertext, output_size);
-
-  mzd_local_free(ciphertext);
-  mzd_local_free(privkey);
-  mzd_local_free(plaintext);
 
   return 0;
 }
@@ -161,7 +157,6 @@ int PICNIC_CALLING_CONVENTION picnic_validate_keypair(const picnic_privatekey_t*
 
   const size_t input_size  = instance->input_size;
   const size_t output_size = instance->output_size;
-  const lowmc_t* lowmc     = instance->lowmc;
   const uint8_t* sk_sk     = SK_SK(sk);
   const uint8_t* sk_pt     = SK_PT(sk);
   const uint8_t* sk_c      = SK_C(sk);
@@ -174,21 +169,18 @@ int PICNIC_CALLING_CONVENTION picnic_validate_keypair(const picnic_privatekey_t*
     return -1;
   }
 
-  mzd_local_t* plaintext = mzd_local_init_ex(1, lowmc->n, false);
-  mzd_local_t* privkey   = mzd_local_init_ex(1, lowmc->k, false);
+  mzd_local_t plaintext[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
+  mzd_local_t privkey[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
+  mzd_local_t ciphertext[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
 
   mzd_from_char_array(plaintext, sk_pt, instance->output_size);
   mzd_from_char_array(privkey, sk_sk, instance->input_size);
 
   // compute public key
-  mzd_local_t* ciphertext = instance->impls.lowmc(privkey, plaintext);
+  instance->impls.lowmc(privkey, plaintext, ciphertext);
 
   uint8_t buffer[MAX_LOWMC_BLOCK_SIZE];
   mzd_to_char_array(buffer, ciphertext, output_size);
-
-  mzd_local_free(ciphertext);
-  mzd_local_free(privkey);
-  mzd_local_free(plaintext);
 
   return memcmp(buffer, pk_c, output_size);
 }
@@ -215,7 +207,7 @@ int PICNIC_CALLING_CONVENTION picnic_sign(const picnic_privatekey_t* sk, const u
 
   if (param == Picnic2_L1_FS || param == Picnic2_L3_FS || param == Picnic2_L5_FS)
     return impl_sign_picnic2(instance, sk_pt, sk_sk, sk_c, message, message_len, signature,
-					    signature_len);
+                             signature_len);
   else
     return impl_sign(instance, sk_pt, sk_sk, sk_c, message, message_len, signature, signature_len);
 }
@@ -240,7 +232,7 @@ int PICNIC_CALLING_CONVENTION picnic_verify(const picnic_publickey_t* pk, const 
 
   if (param == Picnic2_L1_FS || param == Picnic2_L3_FS || param == Picnic2_L5_FS)
     return impl_verify_picnic2(instance, pk_pt, pk_c, message, message_len, signature,
-			       signature_len);
+                               signature_len);
   else
     return impl_verify(instance, pk_pt, pk_c, message, message_len, signature, signature_len);
 }
