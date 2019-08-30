@@ -1455,9 +1455,6 @@
     <ClCompile Include="..\..\src\sig\picnic\external\lowmc_256_256_363.c">
       <Filter>picnic</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sig\picnic\external\lowmc_pars.c">
-      <Filter>picnic</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\sig\picnic\external\mpc_lowmc.c">
       <Filter>picnic</Filter>
     </ClCompile>
