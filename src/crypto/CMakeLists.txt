@@ -1,6 +1,21 @@
-SET(sources
-        aes/aes_c.c
-        sha3/sha3_c.c
-        sha3/sha3x4.c)
+if(USE_AES_OPENSSL)
+    set(AES_IMPL aes/aes_ossl.c)
+else()
+    set(AES_IMPL aes/aes_c.c)
+endif()
 
-ADD_LIBRARY(crypto OBJECT "${sources}")
+if(USE_SHA2_OPENSSL)
+    set(SHA2_IMPL sha2/sha2_ossl.c)
+else()
+    set(SHA2_IMPL sha2/sha2_c.c)
+endif()
+
+set(SHA3_IMPL sha3/sha3_c.c)
+if(USE_SHA3_OPENSSL)
+    set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3_ossl.c)
+endif()
+if(USE_AVX2_INSTRUCTIONS AND USE_AES_INSTRUCTIONS)
+    set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3x4.c)
+endif()
+
+ADD_LIBRARY(crypto OBJECT ${AES_IMPL} ${SHA2_IMPL} ${SHA3_IMPL})

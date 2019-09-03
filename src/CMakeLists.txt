@@ -1,17 +1,16 @@
 add_subdirectory(common)
 add_subdirectory(crypto)
 
-add_subdirectory(kem/frodokem)
-add_subdirectory(kem/kyber)
+if(ENABLE_KEM_FRODOKEM)
+    add_subdirectory(kem/frodokem)
+    set(KEM_OBJS ${KEM_OBJS} $<TARGET_OBJECTS:frodokem>)
+endif()
 
-add_library(oqs SHARED kem/kem.c
-                       $<TARGET_OBJECTS:frodokem>
-                       $<TARGET_OBJECTS:kyber>
-                       $<TARGET_OBJECTS:crypto>
-                       $<TARGET_OBJECTS:common>)
-add_library(oqs_static STATIC kem/kem.c
-                       $<TARGET_OBJECTS:frodokem>
-                       $<TARGET_OBJECTS:kyber>
-                       $<TARGET_OBJECTS:crypto>
-                       $<TARGET_OBJECTS:common>)
-target_link_libraries(oqs ${OPENSSL_CRYPTO_LIBRARY})
+add_library(oqs kem/kem.c
+                ${KEM_OBJS}
+                $<TARGET_OBJECTS:common>
+                $<TARGET_OBJECTS:crypto>)
+
+if(USE_OPENSSL)
+    target_link_libraries(oqs ${OPENSSL_CRYPTO_LIBRARY})
+endif()
