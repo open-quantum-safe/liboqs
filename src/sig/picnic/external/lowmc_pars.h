@@ -79,13 +79,6 @@ typedef struct {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
   const mzd_local_t* constant;
 #endif
-
-#if defined(MUL_M4RI)
-#if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-  mzd_local_t* k_lookup;
-#endif
-  mzd_local_t* l_lookup;
-#endif
 } lowmc_round_t;
 
 /**
@@ -101,40 +94,13 @@ typedef struct {
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
   const mzd_local_t* zr_matrix; // combined linear layers
 #endif
-#if defined(MUL_M4RI)
-  mzd_local_t* k0_lookup;
-#endif
-#if defined(MUL_M4RI)
-  lowmc_round_t* rounds;
-#else
   const lowmc_round_t* rounds;
-#endif
 
 #if defined(REDUCED_ROUND_KEY_COMPUTATION)
   const mzd_local_t* precomputed_non_linear_part_matrix;
-#if defined(MUL_M4RI)
-  mzd_local_t* precomputed_non_linear_part_lookup;
-#endif
   const mzd_local_t* precomputed_constant_linear;
   const mzd_local_t* precomputed_constant_non_linear;
 #endif
-
 } lowmc_t;
-
-#if defined(MUL_M4RI)
-/**
- * Initiaizes lookup tables of a LowMC instance
- *
- * \return parameters defining a LowMC instance
- */
-bool lowmc_init(lowmc_t* lowmc);
-#endif
-
-/**
- * Clears the allocated LowMC parameters
- *
- * \param lowmc the LowMC parameters to be cleared
- */
-void lowmc_clear(lowmc_t* lowmc);
 
 #endif

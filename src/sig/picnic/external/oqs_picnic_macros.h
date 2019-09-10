@@ -15,6 +15,7 @@
 #define allocateCommitments2 oqs_sig_picnic_allocateCommitments2
 #define allocateInputs oqs_sig_picnic_allocateInputs
 #define allocateMsgs oqs_sig_picnic_allocateMsgs
+#define allocateMsgsVerify oqs_sig_picnic_allocateMsgsVerify
 #define allocateProof2 oqs_sig_picnic_allocateProof2
 #define allocateRandomTape oqs_sig_picnic_allocateRandomTape
 #define allocateShares oqs_sig_picnic_allocateShares
@@ -29,6 +30,7 @@
 #define copyShares oqs_sig_picnic_copyShares
 #define cpu_supports oqs_sig_picnic_cpu_supports
 #define createTree oqs_sig_picnic_createTree
+#define finalFreeRandomTape oqs_sig_picnic_finalFreeRandomTape
 #define freeCommitments oqs_sig_picnic_freeCommitments
 #define freeCommitments2 oqs_sig_picnic_freeCommitments2
 #define freeInputs oqs_sig_picnic_freeInputs
@@ -195,6 +197,7 @@
 #define mzd_xor_uint64_640 oqs_sig_picnic_mzd_xor_uint64_640
 #define mzd_xor_uint64_896 oqs_sig_picnic_mzd_xor_uint64_896
 #define mzd_xor_uint64_960 oqs_sig_picnic_mzd_xor_uint64_960
+#define partialFreeRandomTape oqs_sig_picnic_partialFreeRandomTape
 #define openMerkleTree oqs_sig_picnic_openMerkleTree
 #define openMerkleTreeSize oqs_sig_picnic_openMerkleTreeSize
 #define reconstructSeeds oqs_sig_picnic_reconstructSeeds
@@ -204,8 +207,10 @@
 #define sbox_layer_10_uint64_aux oqs_sig_picnic_sbox_layer_10_uint64_aux
 #define setBit oqs_sig_picnic_setBit
 #define sign_picnic2 oqs_sig_picnic_sign_picnic2
+#define tapesToParityOfWord oqs_sig_picnic_tapesToParityOfWord
 #define tapesToWord oqs_sig_picnic_tapesToWord
 #define transpose_64_64 oqs_sig_picnic_transpose_64_64
+#define transpose_64_64_lsb oqs_sig_picnic_transpose_64_64_lsb
 #define verifyMerkleTree oqs_sig_picnic_verifyMerkleTree
 #define verify_picnic2 oqs_sig_picnic_verify_picnic2
 #define xor_array_RC oqs_sig_picnic_xor_array_RC

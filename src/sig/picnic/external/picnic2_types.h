@@ -18,9 +18,11 @@
 /* Type definitions */
 typedef struct randomTape_t {
   uint8_t** tape;
+  uint8_t* aux_bits;
   uint32_t pos;
+  uint32_t aux_pos;
   size_t nTapes;
-  uint64_t buffer[64];
+  uint64_t* buffer;
 } randomTape_t;
 
 typedef struct commitments_t {
@@ -45,6 +47,8 @@ typedef struct shares_t {
 
 void allocateRandomTape(randomTape_t* tape, const picnic_instance_t* params);
 void freeRandomTape(randomTape_t* tape);
+void partialFreeRandomTape(randomTape_t* tape);
+void finalFreeRandomTape(randomTape_t* tape);
 
 void allocateProof2(proof2_t* proof, const picnic_instance_t* params);
 void freeProof2(proof2_t* proof);
@@ -60,6 +64,7 @@ inputs_t allocateInputs(const picnic_instance_t* params);
 void freeInputs(inputs_t inputs);
 
 msgs_t* allocateMsgs(const picnic_instance_t* params);
+msgs_t* allocateMsgsVerify(const picnic_instance_t* params);
 void freeMsgs(msgs_t* msgs);
 
 shares_t* allocateShares(size_t count);

@@ -330,7 +330,11 @@ static void mpc_sbox_layer_bitsliced_verify_uint64_1(uint64_t* in, view_t* view,
 #endif
 
 zkbpp_lowmc_implementation_f get_zkbpp_lowmc_implementation(const lowmc_t* lowmc) {
+#if defined(WITH_LOWMC_M1)
   ASSUME(lowmc->m == 10 || lowmc->m == 1);
+#else
+  ASSUME(lowmc->m == 10);
+#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
 #if defined(WITH_OPT)
@@ -452,7 +456,11 @@ zkbpp_lowmc_implementation_f get_zkbpp_lowmc_implementation(const lowmc_t* lowmc
 }
 
 zkbpp_lowmc_verify_implementation_f get_zkbpp_lowmc_verify_implementation(const lowmc_t* lowmc) {
+#if defined(WITH_LOWMC_M1)
   ASSUME(lowmc->m == 10 || lowmc->m == 1);
+#else
+  ASSUME(lowmc->m == 10);
+#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
 #if defined(WITH_OPT)

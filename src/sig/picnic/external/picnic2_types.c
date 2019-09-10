@@ -12,10 +12,10 @@
 
 #include "picnic2_types.h"
 #include "compat.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <assert.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 shares_t* allocateShares(size_t count) {
   shares_t* shares = malloc(sizeof(shares_t));
@@ -33,20 +33,39 @@ void freeShares(shares_t* shares) {
 void allocateRandomTape(randomTape_t* tape, const picnic_instance_t* params) {
   tape->nTapes         = params->num_MPC_parties;
   tape->tape           = malloc(tape->nTapes * sizeof(uint8_t*));
+  tape->aux_bits       = calloc(1, params->view_size);
+  tape->buffer         = aligned_alloc(32, tape->nTapes * sizeof(uint64_t));
   size_t tapeSizeBytes = 2 * params->view_size + params->input_size;
-  tapeSizeBytes        = ((tapeSizeBytes + 7) / 8) * 8;
-  uint8_t* slab        = calloc(1, tape->nTapes * tapeSizeBytes);
+  tapeSizeBytes = ((tapeSizeBytes + 7) / 8) * 8; // round up to multiple of 64 bit for transpose
+  uint8_t* slab = calloc(1, tape->nTapes * tapeSizeBytes);
   for (uint8_t i = 0; i < tape->nTapes; i++) {
     tape->tape[i] = slab;
     slab += tapeSizeBytes;
   }
-  tape->pos = 0;
+  tape->pos     = 0;
+  tape->aux_pos = 0;
 }
 
 void freeRandomTape(randomTape_t* tape) {
   if (tape != NULL) {
     free(tape->tape[0]);
     free(tape->tape);
+    aligned_free(tape->buffer);
+    free(tape->aux_bits);
+  }
+}
+
+void partialFreeRandomTape(randomTape_t* tape) {
+  if (tape != NULL) {
+    free(tape->tape[0]);
+    free(tape->tape);
+    aligned_free(tape->buffer);
+  }
+}
+
+void finalFreeRandomTape(randomTape_t* tape) {
+  if (tape != NULL) {
+    free(tape->aux_bits);
   }
 }
 
@@ -176,6 +195,26 @@ msgs_t* allocateMsgs(const picnic_instance_t* params) {
       msgs[i].msgs[j] = slab;
       slab += (params->view_size + params->input_size + 7) / 8 * 8;
     }
+  }
+
+  return msgs;
+}
+
+msgs_t* allocateMsgsVerify(const picnic_instance_t* params) {
+  msgs_t* msgs = malloc(sizeof(msgs_t));
+
+  uint8_t* slab =
+      calloc(1, (params->num_MPC_parties * ((params->view_size + params->input_size + 7) / 8 * 8) +
+                 params->num_MPC_parties * sizeof(uint8_t*)));
+
+  msgs->pos      = 0;
+  msgs->unopened = -1;
+  msgs->msgs     = (uint8_t**)slab;
+  slab += params->num_MPC_parties * sizeof(uint8_t*);
+
+  for (uint32_t j = 0; j < params->num_MPC_parties; j++) {
+    msgs->msgs[j] = slab;
+    slab += (params->view_size + params->input_size + 7) / 8 * 8;
   }
 
   return msgs;

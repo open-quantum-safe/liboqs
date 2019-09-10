@@ -11,15 +11,15 @@
  */
 
 #include <assert.h>
-#include <stdlib.h>
 #include <limits.h>
+#include <stdlib.h>
 
 #include "endian_compat.h"
 #include "kdf_shake.h"
 #include "picnic.h"
-#include "picnic_impl.h"
 #include "picnic2_tree.h"
 #include "picnic2_types.h"
+#include "picnic_impl.h"
 
 static int contains(size_t* list, size_t len, size_t value) {
   for (size_t i = 0; i < len; i++) {
@@ -94,12 +94,13 @@ static int hasRightChild(tree_t* tree, size_t node) {
 
 static size_t getParent(size_t node) {
   assert(node != 0);
+  return ((node + 1) >> 1) - 1;
 
-  if (isLeftChild(node)) {
-    /* (node - 1) / 2, but since node % 2 == 1, that's the same as node / 2 */
-    return node >> 1;
-  }
-  return (node - 2) / 2;
+  //if (isLeftChild(node)) {
+  //  /* (node - 1) / 2, but since node % 2 == 1, that's the same as node / 2 */
+  //  return node >> 1;
+  //}
+  //return (node - 2) / 2;
 }
 
 uint8_t** getLeaves(tree_t* tree) {
@@ -114,7 +115,7 @@ uint8_t* getLeaf(tree_t* tree, size_t leafIndex) {
 
 static void hashSeed(uint8_t* digest, const uint8_t* inputSeed, uint8_t* salt, uint8_t hashPrefix,
                      size_t repIndex, size_t nodeIndex, const picnic_instance_t* params) {
-  Keccak_HashInstance ctx;
+  hash_context ctx;
 
   hash_init_prefix(&ctx, params, hashPrefix);
   hash_update(&ctx, inputSeed, params->seed_size);
@@ -127,15 +128,85 @@ static void hashSeed(uint8_t* digest, const uint8_t* inputSeed, uint8_t* salt, u
   hash_squeeze(&ctx, digest, 2 * params->seed_size);
 }
 
+static void hashSeed_x4(uint8_t** digest, const uint8_t** inputSeed, uint8_t* salt,
+                        uint8_t hashPrefix, size_t repIndex, size_t nodeIndex,
+                        const picnic_instance_t* params) {
+  hash_context_x4 ctx;
+
+  hash_init_prefix_x4(&ctx, params, hashPrefix);
+  hash_update_x4(&ctx, inputSeed, params->seed_size);
+  const uint8_t* salts[4] = {salt, salt, salt, salt};
+  hash_update_x4(&ctx, salts, SALT_SIZE);
+  uint16_t repIndexLE    = htole16((uint16_t)repIndex);
+  const uint8_t* reps[4] = {(uint8_t*)&repIndexLE, (uint8_t*)&repIndexLE, (uint8_t*)&repIndexLE,
+                            (uint8_t*)&repIndexLE};
+  hash_update_x4(&ctx, reps, sizeof(uint16_t));
+  uint16_t nodeIndexLE[4] = {htole16((uint16_t)nodeIndex), htole16((uint16_t)nodeIndex + 1),
+                             htole16((uint16_t)nodeIndex + 2), htole16((uint16_t)nodeIndex + 3)};
+  const uint8_t* nodes[4] = {(uint8_t*)&nodeIndexLE[0], (uint8_t*)&nodeIndexLE[1],
+                             (uint8_t*)&nodeIndexLE[2], (uint8_t*)&nodeIndexLE[3]};
+  hash_update_x4(&ctx, nodes, sizeof(uint16_t));
+  hash_final_x4(&ctx);
+  hash_squeeze_x4(&ctx, digest, 2 * params->seed_size);
+}
+
 static void expandSeeds(tree_t* tree, uint8_t* salt, size_t repIndex,
                         const picnic_instance_t* params) {
-  uint8_t tmp[2 * MAX_SEED_SIZE_BYTES];
+  uint8_t tmp[4 * 2 * MAX_SEED_SIZE_BYTES];
+  uint8_t* tmp_ptr[4] = {&tmp[0], &tmp[2 * MAX_SEED_SIZE_BYTES], &tmp[2 * 2 * MAX_SEED_SIZE_BYTES],
+                         &tmp[3 * 2 * MAX_SEED_SIZE_BYTES]};
 
   /* Walk the tree, expanding seeds where possible. Compute children of
    * non-leaf nodes. */
   size_t lastNonLeaf = getParent(tree->numNodes - 1);
+  size_t i           = 0;
+  /* expand the first 4 seeds*/
+  for (; i <= 2; i++) {
+    if (!tree->haveNode[i]) {
+      continue;
+    }
 
-  for (size_t i = 0; i <= lastNonLeaf; i++) {
+    hashSeed(tmp, tree->nodes[i], salt, HASH_PREFIX_1, repIndex, i, params);
+
+    if (!tree->haveNode[2 * i + 1]) {
+      /* left child = H_left(seed_i || salt || t || i) */
+      memcpy(tree->nodes[2 * i + 1], tmp, params->seed_size);
+      tree->haveNode[2 * i + 1] = 1;
+    }
+
+    /* The last non-leaf node will only have a left child when there are an odd number of leaves */
+    if (exists(tree, 2 * i + 2) && !tree->haveNode[2 * i + 2]) {
+      /* right child = H_right(seed_i || salt || t || i)  */
+      memcpy(tree->nodes[2 * i + 2], tmp + params->seed_size, params->seed_size);
+      tree->haveNode[2 * i + 2] = 1;
+    }
+  }
+  /* now hash in groups of 4 for faster hashing */
+  for (; i <= lastNonLeaf / 4 * 4; i += 4) {
+
+    hashSeed_x4(tmp_ptr, (const uint8_t**) &tree->nodes[i], salt, HASH_PREFIX_1, repIndex, i, params);
+
+    for (size_t j = i; j < i + 4; j++) {
+      if (!tree->haveNode[j]) {
+        continue;
+      }
+      if (!tree->haveNode[2 * j + 1]) {
+        /* left child = H_left(seed_i || salt || t || j) */
+        memcpy(tree->nodes[2 * j + 1], tmp_ptr[j-i], params->seed_size);
+        tree->haveNode[2 * j + 1] = 1;
+      }
+
+      /* The last non-leaf node will only have a left child when there are an odd number of leaves
+       */
+      if (exists(tree, 2 * j + 2) && !tree->haveNode[2 * j + 2]) {
+        /* right child = H_right(seed_i || salt || t || j)  */
+        memcpy(tree->nodes[2 * j + 2], tmp_ptr[j-i] + params->seed_size, params->seed_size);
+        tree->haveNode[2 * j + 2] = 1;
+      }
+    }
+  }
+  /* handle last few, which are not a multiple of 4 */
+  for (; i <= lastNonLeaf; i++) {
     if (!tree->haveNode[i]) {
       continue;
     }
@@ -350,7 +421,7 @@ static void computeParentHash(tree_t* tree, size_t child, uint8_t* salt,
   }
 
   /* Compute parent data = H(left child data || [right child data] || salt || parent idx) */
-  Keccak_HashInstance ctx;
+  hash_context ctx;
 
   hash_init_prefix(&ctx, params, HASH_PREFIX_3);
   hash_update(&ctx, tree->nodes[2 * parent + 1], params->digest_size);

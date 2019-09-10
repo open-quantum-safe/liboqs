@@ -14504,589 +14504,341 @@ static const block_t Ri_28[] = {
 
 #endif
 
-#if defined(MUL_M4RI)
-static lowmc_round_t rounds[30] = {
-#else
 static const lowmc_round_t rounds[30] = {
-#endif
 
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_1, L_0, C_0, NULL, NULL
-#else
     K_1, L_0, C_0
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_0, Ri_0, UINT64_C(0xffffffde00000000),
 #else
-#if defined(MUL_M4RI)
-    L_0, NULL
-#else
     L_0
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_2, L_1, C_1, NULL, NULL
-#else
     K_2, L_1, C_1
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_1, Ri_1, UINT64_C(0xffffffde00000000),
 #else
-#if defined(MUL_M4RI)
-    L_1, NULL
-#else
     L_1
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_3, L_2, C_2, NULL, NULL
-#else
     K_3, L_2, C_2
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_2, Ri_2, UINT64_C(0xfffffffc00000000),
 #else
-#if defined(MUL_M4RI)
-    L_2, NULL
-#else
     L_2
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_4, L_3, C_3, NULL, NULL
-#else
     K_4, L_3, C_3
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_3, Ri_3, UINT64_C(0xffffffed00000000),
 #else
-#if defined(MUL_M4RI)
-    L_3, NULL
-#else
     L_3
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_5, L_4, C_4, NULL, NULL
-#else
     K_5, L_4, C_4
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_4, Ri_4, UINT64_C(0xffffffbd00000000),
 #else
-#if defined(MUL_M4RI)
-    L_4, NULL
-#else
     L_4
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_6, L_5, C_5, NULL, NULL
-#else
     K_6, L_5, C_5
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_5, Ri_5, UINT64_C(0xfffffff210000000),
 #else
-#if defined(MUL_M4RI)
-    L_5, NULL
-#else
     L_5
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_7, L_6, C_6, NULL, NULL
-#else
     K_7, L_6, C_6
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_6, Ri_6, UINT64_C(0xffffffec80000000),
 #else
-#if defined(MUL_M4RI)
-    L_6, NULL
-#else
     L_6
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_8, L_7, C_7, NULL, NULL
-#else
     K_8, L_7, C_7
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_7, Ri_7, UINT64_C(0xfffffff880000000),
 #else
-#if defined(MUL_M4RI)
-    L_7, NULL
-#else
     L_7
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_9, L_8, C_8, NULL, NULL
-#else
     K_9, L_8, C_8
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_8, Ri_8, UINT64_C(0xfffffff500000000),
 #else
-#if defined(MUL_M4RI)
-    L_8, NULL
-#else
     L_8
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_10, L_9, C_9, NULL, NULL
-#else
     K_10, L_9, C_9
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_9, Ri_9, UINT64_C(0xffffffdc20000000),
 #else
-#if defined(MUL_M4RI)
-    L_9, NULL
-#else
     L_9
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_11, L_10, C_10, NULL, NULL
-#else
     K_11, L_10, C_10
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_10, Ri_10, UINT64_C(0xfffffff900000000),
 #else
-#if defined(MUL_M4RI)
-    L_10, NULL
-#else
     L_10
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_12, L_11, C_11, NULL, NULL
-#else
     K_12, L_11, C_11
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_11, Ri_11, UINT64_C(0xffffffde00000000),
 #else
-#if defined(MUL_M4RI)
-    L_11, NULL
-#else
     L_11
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_13, L_12, C_12, NULL, NULL
-#else
     K_13, L_12, C_12
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_12, Ri_12, UINT64_C(0xfffffff900000000),
 #else
-#if defined(MUL_M4RI)
-    L_12, NULL
-#else
     L_12
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_14, L_13, C_13, NULL, NULL
-#else
     K_14, L_13, C_13
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_13, Ri_13, UINT64_C(0xfffffff500000000),
 #else
-#if defined(MUL_M4RI)
-    L_13, NULL
-#else
     L_13
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_15, L_14, C_14, NULL, NULL
-#else
     K_15, L_14, C_14
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_14, Ri_14, UINT64_C(0xfffffff900000000),
 #else
-#if defined(MUL_M4RI)
-    L_14, NULL
-#else
     L_14
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_16, L_15, C_15, NULL, NULL
-#else
     K_16, L_15, C_15
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_15, Ri_15, UINT64_C(0xfffffff808000000),
 #else
-#if defined(MUL_M4RI)
-    L_15, NULL
-#else
     L_15
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_17, L_16, C_16, NULL, NULL
-#else
     K_17, L_16, C_16
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_16, Ri_16, UINT64_C(0xffffffaf00000000),
 #else
-#if defined(MUL_M4RI)
-    L_16, NULL
-#else
     L_16
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_18, L_17, C_17, NULL, NULL
-#else
     K_18, L_17, C_17
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_17, Ri_17, UINT64_C(0xffffffee00000000),
 #else
-#if defined(MUL_M4RI)
-    L_17, NULL
-#else
     L_17
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_19, L_18, C_18, NULL, NULL
-#else
     K_19, L_18, C_18
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_18, Ri_18, UINT64_C(0xfffffffc00000000),
 #else
-#if defined(MUL_M4RI)
-    L_18, NULL
-#else
     L_18
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_20, L_19, C_19, NULL, NULL
-#else
     K_20, L_19, C_19
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_19, Ri_19, UINT64_C(0xfffffff900000000),
 #else
-#if defined(MUL_M4RI)
-    L_19, NULL
-#else
     L_19
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_21, L_20, C_20, NULL, NULL
-#else
     K_21, L_20, C_20
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_20, Ri_20, UINT64_C(0xffffff7620000000),
 #else
-#if defined(MUL_M4RI)
-    L_20, NULL
-#else
     L_20
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_22, L_21, C_21, NULL, NULL
-#else
     K_22, L_21, C_21
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_21, Ri_21, UINT64_C(0xfffffff280000000),
 #else
-#if defined(MUL_M4RI)
-    L_21, NULL
-#else
     L_21
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_23, L_22, C_22, NULL, NULL
-#else
     K_23, L_22, C_22
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_22, Ri_22, UINT64_C(0xffffffee00000000),
 #else
-#if defined(MUL_M4RI)
-    L_22, NULL
-#else
     L_22
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_24, L_23, C_23, NULL, NULL
-#else
     K_24, L_23, C_23
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_23, Ri_23, UINT64_C(0xfffffffc00000000),
 #else
-#if defined(MUL_M4RI)
-    L_23, NULL
-#else
     L_23
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_25, L_24, C_24, NULL, NULL
-#else
     K_25, L_24, C_24
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_24, Ri_24, UINT64_C(0xfffffff600000000),
 #else
-#if defined(MUL_M4RI)
-    L_24, NULL
-#else
     L_24
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_26, L_25, C_25, NULL, NULL
-#else
     K_26, L_25, C_25
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_25, Ri_25, UINT64_C(0xffffff7e00000000),
 #else
-#if defined(MUL_M4RI)
-    L_25, NULL
-#else
     L_25
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_27, L_26, C_26, NULL, NULL
-#else
     K_27, L_26, C_26
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_26, Ri_26, UINT64_C(0xfffffff500000000),
 #else
-#if defined(MUL_M4RI)
-    L_26, NULL
-#else
     L_26
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_28, L_27, C_27, NULL, NULL
-#else
     K_28, L_27, C_27
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_27, Ri_27, UINT64_C(0xfffffffa00000000),
 #else
-#if defined(MUL_M4RI)
-    L_27, NULL
-#else
     L_27
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_29, L_28, C_28, NULL, NULL
-#else
     K_29, L_28, C_28
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     Zi_28, Ri_28, UINT64_C(0xfffffff600000000),
 #else
-#if defined(MUL_M4RI)
-    L_28, NULL
-#else
     L_28
-#endif
 #endif
 #endif
   },
   {
 #if !defined(REDUCED_ROUND_KEY_COMPUTATION)
-#if defined(MUL_M4RI)
-    K_30, L_29, C_29, NULL, NULL
-#else
     K_30, L_29, C_29
-#endif
 #else
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
     NULL, NULL, 0,
 #else
-#if defined(MUL_M4RI)
-    L_29, NULL
-#else
     L_29
-#endif
 #endif
 #endif
   },
 };
 
-#if defined(MUL_M4RI)
-lowmc_t lowmc_192_192_30 = {
-#else
 const lowmc_t lowmc_192_192_30 = {
-#endif
   10, 192, 30, 192,
 #if defined(REDUCED_ROUND_KEY_COMPUTATION)
   precomputed_round_key_matrix_linear_part,
@@ -15096,15 +14848,9 @@ const lowmc_t lowmc_192_192_30 = {
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
   Z_r,
 #endif
-#if defined(MUL_M4RI)
-  NULL,
-#endif
   rounds,
 #if defined(REDUCED_ROUND_KEY_COMPUTATION)
   precomputed_round_key_matrix_non_linear_part,
-#if defined(MUL_M4RI)
-  NULL,
-#endif
   precomputed_constant_linear_part,
   precomputed_constant_non_linear_part,
 #endif

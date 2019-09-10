@@ -9,14 +9,14 @@
 
 #include "lowmc_fns_undef.h"
 
-#define ADDMUL SELECT_V_VL(mzd_addmul_v_s128_192, mzd_addmul_vl_s128_192)
-#define MUL SELECT_V_VL(mzd_mul_v_s128_192, mzd_mul_vl_s128_192)
+#define ADDMUL mzd_addmul_v_s128_192
+#define MUL mzd_mul_v_s128_192
 #define SHUFFLE mzd_shuffle_192
 #define XOR mzd_xor_s128_256
 #define COPY mzd_copy_s128_256
 
-#define MUL_MC_1 SELECT_V_VL(mzd_mul_v_s128_192_896, mzd_mul_vl_s128_192_896)
-#define MUL_MC_10 SELECT_V_VL(mzd_mul_v_s128_192_1024, mzd_mul_vl_s128_192_1024)
+#define MUL_MC_1 mzd_mul_v_s128_192_896
+#define MUL_MC_10 mzd_mul_v_s128_192_1024
 #define ADDMUL_R_1 mzd_addmul_v_s128_3_192
 #define ADDMUL_R_10 mzd_addmul_v_s128_30_192
 #define MUL_Z_1 mzd_mul_v_parity_uint64_192_3
