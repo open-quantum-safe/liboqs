@@ -87,26 +87,42 @@ extern "C" {
 #define OQS_KEM_alg_frodokem_1344_aes "FrodoKEM-1344-AES"
 /** Algorithm identifier for FrodoKEM-1344-SHAKE KEM. */
 #define OQS_KEM_alg_frodokem_1344_shake "FrodoKEM-1344-SHAKE"
-/** Algorithm identifier for Sidh p434 KEM. */
-#define OQS_KEM_alg_sidh_p434 "Sidh-p434"
-/** Algorithm identifier for Sidh p503 KEM. */
-#define OQS_KEM_alg_sidh_p503 "Sidh-p503"
-/** Algorithm identifier for Sidh p610 KEM. */
-#define OQS_KEM_alg_sidh_p610 "Sidh-p610"
-/** Algorithm identifier for Sidh p751 KEM. */
-#define OQS_KEM_alg_sidh_p751 "Sidh-p751"
-/** Algorithm identifier for Sike p434 KEM. */
-#define OQS_KEM_alg_sike_p434 "Sike-p434"
-/** Algorithm identifier for Sike p503 KEM. */
-#define OQS_KEM_alg_sike_p503 "Sike-p503"
-/** Algorithm identifier for Sike p610 KEM. */
-#define OQS_KEM_alg_sike_p610 "Sike-p610"
-/** Algorithm identifier for Sike p751 KEM. */
-#define OQS_KEM_alg_sike_p751 "Sike-p751"
+/** Algorithm identifier for SIDH p434 KEM. */
+#define OQS_KEM_alg_sidh_p434 "SIDH-p434"
+/** Algorithm identifier for SIDH p434 compressed KEM. */
+#define OQS_KEM_alg_sidh_p434_compressed "SIDH-p434-compressed"
+/** Algorithm identifier for SIDH p503 KEM. */
+#define OQS_KEM_alg_sidh_p503 "SIDH-p503"
+/** Algorithm identifier for SIDH p503 compressed KEM. */
+#define OQS_KEM_alg_sidh_p503_compressed "SIDH-p503-compressed"
+/** Algorithm identifier for SIDH p610 KEM. */
+#define OQS_KEM_alg_sidh_p610 "SIDH-p610"
+/** Algorithm identifier for SIDH p610 compressed KEM. */
+#define OQS_KEM_alg_sidh_p610_compressed "SIDH-p610-compressed"
+/** Algorithm identifier for SIDH p751 KEM. */
+#define OQS_KEM_alg_sidh_p751 "SIDH-p751"
+/** Algorithm identifier for SIDH p751 compressed KEM. */
+#define OQS_KEM_alg_sidh_p751_compressed "SIDH-p751-compressed"
+/** Algorithm identifier for SIKE p434 KEM. */
+#define OQS_KEM_alg_sike_p434 "SIKE-p434"
+/** Algorithm identifier for SIKE p434 compressed KEM. */
+#define OQS_KEM_alg_sike_p434_compressed "SIKE-p434-compressed"
+/** Algorithm identifier for SIKE p503 KEM. */
+#define OQS_KEM_alg_sike_p503 "SIKE-p503"
+/** Algorithm identifier for SIKE p503 compressed KEM. */
+#define OQS_KEM_alg_sike_p503_compressed "SIKE-p503-compressed"
+/** Algorithm identifier for SIKE p610 KEM. */
+#define OQS_KEM_alg_sike_p610 "SIKE-p610"
+/** Algorithm identifier for SIKE p610 compressed KEM. */
+#define OQS_KEM_alg_sike_p610_compressed "SIKE-p610-compressed"
+/** Algorithm identifier for SIKE p751 KEM. */
+#define OQS_KEM_alg_sike_p751 "SIKE-p751"
+/** Algorithm identifier for SIKE p751 compressed KEM. */
+#define OQS_KEM_alg_sike_p751_compressed "SIKE-p751-compressed"
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 36
+#define OQS_KEM_algs_length 44
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**

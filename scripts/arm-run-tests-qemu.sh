@@ -35,14 +35,14 @@ qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem FrodoKEM-976-AE
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem FrodoKEM-976-SHAKE
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem FrodoKEM-1344-AES
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem FrodoKEM-1344-SHAKE
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Sidh-p434
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Sidh-p503
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Sidh-p610
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Sidh-p751
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Sike-p434
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Sike-p503
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Sike-p610
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Sike-p751
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIDH-p434
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIDH-p503
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIDH-p610
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIDH-p751
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIKE-p434
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIKE-p503
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIKE-p610
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIKE-p751
 
 # qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/example_sig
 # qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_sig

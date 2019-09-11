@@ -30,6 +30,14 @@
 #define OQS_ENABLE_KEM_sidh_p503
 #define OQS_ENABLE_KEM_sidh_p610
 #define OQS_ENABLE_KEM_sidh_p751
+#define OQS_ENABLE_KEM_sike_p434_compressed
+#define OQS_ENABLE_KEM_sike_p503_compressed
+#define OQS_ENABLE_KEM_sike_p610_compressed
+#define OQS_ENABLE_KEM_sike_p751_compressed
+#define OQS_ENABLE_KEM_sidh_p434_compressed
+#define OQS_ENABLE_KEM_sidh_p503_compressed
+#define OQS_ENABLE_KEM_sidh_p610_compressed
+#define OQS_ENABLE_KEM_sidh_p751_compressed
 #define OQS_ENABLE_SIG_picnic_L1_FS
 #define OQS_ENABLE_SIG_picnic_L1_UR
 #define OQS_ENABLE_SIG_picnic_L3_FS

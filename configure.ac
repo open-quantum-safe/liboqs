@@ -86,11 +86,11 @@ AC_CONFIG_FILES([Makefile
                  ])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AC_CONFIG_FILES_END
 
-AC_ARG_VAR([KEM_DEFAULT], [KEM to set at compile-time as OQS_KEM_DEFAULT, e.g. OQS_KEM_alg_sike_p503])
+AC_ARG_VAR([KEM_DEFAULT], [KEM to set at compile-time as OQS_KEM_DEFAULT, e.g. OQS_KEM_alg_sike_p434])
 case "$KEM_DEFAULT" in
 #(
 "")
-  AC_DEFINE([OQS_KEM_DEFAULT], [OQS_KEM_alg_sike_p503], [Set default KEM to SIKEp503])
+  AC_DEFINE([OQS_KEM_DEFAULT], [OQS_KEM_alg_sike_p434], [Set default KEM to SIKEp434])
 ;; 
 #(
 *)

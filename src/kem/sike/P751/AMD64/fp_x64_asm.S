@@ -2770,11 +2770,16 @@ mp_add751_asm:
 
 
 //***********************************************************************
-//  2x751-bit multiprecision subtraction
-//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]. Returns borrow mask
+//  2x751-bit multiprecision subtraction/addition
+//  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p751*2^768
 //*********************************************************************** 
-.global mp_sub751x2_asm
-mp_sub751x2_asm:
+.global mp_subadd751x2_asm
+mp_subadd751x2_asm:
+  push   r12
+  push   r13 
+  push   r14 
+  push   r15
+  push   rbx
   xor    rax, rax
   mov    r8, [reg_p1]
   mov    r9, [reg_p1+8]
@@ -2849,10 +2854,61 @@ mp_sub751x2_asm:
   sbb    r10, [reg_p2+176]
   sbb    r11, [reg_p2+184]
   sbb    rax, 0
+  
+  // Add p751 anded with the mask in rax 
+  mov    r12, [rip+p751]
+  mov    r13, [rip+p751+40]
+  mov    r14, [rip+p751+48]
+  mov    r15, [rip+p751+56]
+  mov    rdi, [rip+p751+64]
+  mov    rsi, [rip+p751+72]
+  mov    rbx, [rip+p751+80]
+  mov    rcx, [rip+p751+88]
+  and    r12, rax
+  and    r13, rax
+  and    r14, rax
+  and    r15, rax
+  and    rdi, rax
+  and    rsi, rax
+  and    rbx, rax
+  and    rcx, rax
+  mov    rax, [reg_p3+96]
+  add    rax, r12
+  mov    [reg_p3+96], rax
+  mov    rax, [reg_p3+104]
+  adc    rax, r12
+  mov    [reg_p3+104], rax
+  mov    rax, [reg_p3+112]
+  adc    rax, r12
+  mov    [reg_p3+112], rax
+  mov    rax, [reg_p3+120]
+  adc    rax, r12
+  mov    [reg_p3+120], rax
+  adc    r12, [reg_p3+128]
+  adc    r13, [reg_p3+136]
+  mov    [reg_p3+128], r12
+  mov    [reg_p3+136], r13
+  mov    r12, [reg_p3+144]
+  mov    r13, [reg_p3+152]
+  adc    r12, r14
+  adc    r13, r15
+  adc    r8, rdi
+  adc    r9, rsi
+  adc    r10, rbx
+  adc    r11, rcx
+  
+  mov    [reg_p3+144], r12
+  mov    [reg_p3+152], r13
   mov    [reg_p3+160], r8
   mov    [reg_p3+168], r9
   mov    [reg_p3+176], r10
   mov    [reg_p3+184], r11
+  pop    rbx
+  pop    r15
+  pop    r14
+  pop    r13
+  pop    r12
+  ret
   ret
 
 
