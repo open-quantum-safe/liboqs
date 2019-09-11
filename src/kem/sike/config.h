@@ -35,25 +35,25 @@
 #define TARGET TARGET_AMD64
 #define RADIX 64
 #define LOG2RADIX 6
-typedef uint64_t digit_t; // Unsigned 64-bit digit
+typedef uint64_t digit_t;  // Unsigned 64-bit digit
 typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 #elif defined(_X86_)
 #define TARGET TARGET_x86
 #define RADIX 32
 #define LOG2RADIX 5
-typedef uint32_t digit_t; // Unsigned 32-bit digit
+typedef uint32_t digit_t;  // Unsigned 32-bit digit
 typedef uint16_t hdigit_t; // Unsigned 16-bit digit
 #elif defined(_ARM_)
 #define TARGET TARGET_ARM
 #define RADIX 32
 #define LOG2RADIX 5
-typedef uint32_t digit_t; // Unsigned 32-bit digit
+typedef uint32_t digit_t;  // Unsigned 32-bit digit
 typedef uint16_t hdigit_t; // Unsigned 16-bit digit
 #elif defined(_ARM64_)
 #define TARGET TARGET_ARM64
 #define RADIX 64
 #define LOG2RADIX 6
-typedef uint64_t digit_t; // Unsigned 64-bit digit
+typedef uint64_t digit_t;  // Unsigned 64-bit digit
 typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 #else
 #error-- "Unsupported ARCHITECTURE"
