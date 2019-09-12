@@ -6,7 +6,7 @@ import pytest
 @helpers.filtered_test
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_kem(kem_name):
-    if kem_name.startswith('Sidh'): pytest.skip('KATs not available for SIDH')
+    if kem_name.startswith('SIDH'): pytest.skip('KATs not available for SIDH')
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_kem'), kem_name],
