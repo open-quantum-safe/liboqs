@@ -1503,6 +1503,18 @@
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-times4-on1.c">
       <Filter>picnic</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\sike\P434\P434_compressed.c">
+      <Filter>sike</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\sike\P503\P503_compressed.c">
+      <Filter>sike</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\sike\P610\P610_compressed.c">
+      <Filter>sike</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\sike\P751\P751_compressed.c">
+      <Filter>sike</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\oqs.h" />
