@@ -465,7 +465,7 @@ mul434_asm:
     and    r10, rbx
     and    r11, rbx
 
-    // r8-r11 <- masked (AH + AL) + masked (AH + AL)
+    // r8-r11 <- masked (AH + AL) + masked (BH + BL)
     add    r8, r12
     adc    r9, r13
     adc    r10, r14
@@ -481,7 +481,7 @@ mul434_asm:
     // [rcx] <- AL x BL
     MUL256_SCHOOL  [reg_p1], [reg_p2], [rcx], r8, r9, r10, r11, r12, r13, r14, r15, rbx, rbp     // Result C0-C3
 
-    // [rsp] <- AH x BH 
+    // [rcx+64] <- AH x BH
     MUL192_SCHOOL  [reg_p1+32], [reg_p2+32], [rcx+64], r8, r9, r10, r11, r12, r13, r14
     
     // r8-r11 <- (AH+AL) x (BH+BL), final step
@@ -809,57 +809,87 @@ mp_add434_asm:
 
 
 //***********************************************************************
-//  2x434-bit multiprecision subtraction
-//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]. Returns borrow mask
+//  2x434-bit multiprecision subtraction/addition
+//  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p434*2^448
 //*********************************************************************** 
-.global mp_sub434x2_asm
-mp_sub434x2_asm:
+.global mp_subadd434x2_asm
+mp_subadd434x2_asm:
+  push   r12
+  push   r13 
+  push   r14 
+  push   r15 
   xor    rax, rax
   mov    r8, [reg_p1]
   mov    r9, [reg_p1+8]
   mov    r10, [reg_p1+16]
   mov    r11, [reg_p1+24]
-  mov    rcx, [reg_p1+32]
+  mov    r12, [reg_p1+32]
   sub    r8, [reg_p2] 
   sbb    r9, [reg_p2+8] 
   sbb    r10, [reg_p2+16] 
   sbb    r11, [reg_p2+24] 
-  sbb    rcx, [reg_p2+32] 
+  sbb    r12, [reg_p2+32] 
   mov    [reg_p3], r8
   mov    [reg_p3+8], r9
   mov    [reg_p3+16], r10
   mov    [reg_p3+24], r11
-  mov    [reg_p3+32], rcx
+  mov    [reg_p3+32], r12
 
   mov    r8, [reg_p1+40]
   mov    r9, [reg_p1+48]
   mov    r10, [reg_p1+56] 
   mov    r11, [reg_p1+64]
-  mov    rcx, [reg_p1+72] 
+  mov    r12, [reg_p1+72] 
   sbb    r8, [reg_p2+40] 
   sbb    r9, [reg_p2+48] 
   sbb    r10, [reg_p2+56]
   sbb    r11, [reg_p2+64] 
-  sbb    rcx, [reg_p2+72]
+  sbb    r12, [reg_p2+72]
   mov    [reg_p3+40], r8
   mov    [reg_p3+48], r9
   mov    [reg_p3+56], r10
-  mov    [reg_p3+64], r11
-  mov    [reg_p3+72], rcx
   
-  mov    r8, [reg_p1+80]
-  mov    r9, [reg_p1+88] 
-  mov    r10, [reg_p1+96]
-  mov    r11, [reg_p1+104]
-  sbb    r8, [reg_p2+80]
-  sbb    r9, [reg_p2+88]
-  sbb    r10, [reg_p2+96] 
-  sbb    r11, [reg_p2+104] 
+  mov    r13, [reg_p1+80]
+  mov    r14, [reg_p1+88] 
+  mov    r15, [reg_p1+96]
+  mov    rcx, [reg_p1+104]
+  sbb    r13, [reg_p2+80]
+  sbb    r14, [reg_p2+88]
+  sbb    r15, [reg_p2+96] 
+  sbb    rcx, [reg_p2+104] 
   sbb    rax, 0
-  mov    [reg_p3+80], r8 
-  mov    [reg_p3+88], r9
-  mov    [reg_p3+96], r10
-  mov    [reg_p3+104], r11
+  
+  // Add p434 anded with the mask in rax 
+  mov    r8, [rip+p434]
+  mov    r9, [rip+p434+24]
+  mov    r10, [rip+p434+32]
+  mov    rdi, [rip+p434+40]
+  mov    rsi, [rip+p434+48]
+  and    r8, rax
+  and    r9, rax
+  and    r10, rax
+  and    rdi, rax
+  and    rsi, rax
+  mov    rax, [reg_p3+56]
+  add    rax, r8
+  adc    r11, r8
+  adc    r12, r8
+  adc    r13, r9
+  adc    r14, r10
+  adc    r15, rdi
+  adc    rcx, rsi
+  
+  mov    [reg_p3+56], rax
+  mov    [reg_p3+64], r11
+  mov    [reg_p3+72], r12
+  mov    [reg_p3+80], r13
+  mov    [reg_p3+88], r14
+  mov    [reg_p3+96], r15
+  mov    [reg_p3+104], rcx
+  pop    r15
+  pop    r14
+  pop    r13
+  pop    r12
   ret
 
 

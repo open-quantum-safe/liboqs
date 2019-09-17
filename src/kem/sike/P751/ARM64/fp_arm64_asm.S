@@ -4,7 +4,18 @@
 // Abstract: field arithmetic in 64-bit ARMv8 assembly for P751 on Linux
 //*******************************************************************************************
 
-.data
+.text
+
+// p751
+p751:
+.quad  0xFFFFFFFFFFFFFFFF
+.quad  0xEEAFFFFFFFFFFFFF
+.quad  0xE3EC968549F878A8
+.quad  0xDA959B1A13F7CC76
+.quad  0x084E9867D6EBE876
+.quad  0x8562B5045CB25748
+.quad  0x0E12909F97BADC66
+.quad  0x00006FE5D541F71C
 
 // 2 * p751
 p751x2:
@@ -28,7 +39,6 @@ p751p1_nz_s32:
 .quad    0xDFCBAA83EE381C25
 
 
-.text
 //***********************************************************************
 //  Field addition
 //  Operation: c [x2] = a [x0] + b [x1]
@@ -1117,81 +1127,114 @@ mp_add751x2_asm:
     stp x9, x10,  [x2,#144]
     stp x11, x12, [x2,#160]
     stp x13, x14, [x2,#176]
-    ret   
+    ret
 
 
 //***********************************************************************
-//  2x751-bit multiprecision subtraction
-//  Operation: c [x2] = a [x0] - b [x1]. Returns borrow mask
+//  2x751-bit multiprecision subtraction/addition
+//  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p751*2^768
 //*********************************************************************** 
-.global mp_sub751x2_asm
-mp_sub751x2_asm:
-    ldp x3, x4,   [x0,#0]
-    ldp x5, x6,   [x0,#16]
-    ldp x7, x8,   [x0,#32]
-    ldp x9, x10,  [x0,#48]
-    ldp x11, x12, [x0,#64]
-    ldp x13, x14, [x0,#80]
+.global mp_subadd751x2_asm
+mp_subadd751x2_asm:
+    sub sp, sp, #16
+    stp x19, x20, [sp]
 
-    ldp x15, x16, [x1,#0]
-    ldp x17, x18, [x1,#16]
-    subs x3, x3, x15
-    sbcs x4, x4, x16
-    sbcs x5, x5, x17
-    sbcs x6, x6, x18
-    ldp x15, x16, [x1,#32]
-    ldp x17, x18, [x1,#48]
-    sbcs x7, x7, x15
-    sbcs x8, x8, x16
-    sbcs x9, x9, x17
-    sbcs x10, x10, x18
-    ldp x15, x16, [x1,#64]
-    ldp x17, x18, [x1,#80]
-    sbcs x11, x11, x15
-    sbcs x12, x12, x16
-    sbcs x13, x13, x17
-    sbcs x14, x14, x18
+    ldp     x3, x4,   [x0,#0]
+    ldp     x5, x6,   [x0,#16]
+    ldp     x11, x12, [x1,#0]
+    ldp     x13, x14, [x1,#16]
+    subs    x3, x3, x11
+    sbcs    x4, x4, x12
+    sbcs    x5, x5, x13
+    sbcs    x6, x6, x14
+    ldp     x7, x8,   [x0,#32]
+    ldp     x9, x10,  [x0,#48]
+    ldp     x11, x12, [x1,#32]
+    ldp     x13, x14, [x1,#48]
+    sbcs    x7, x7, x11
+    sbcs    x8, x8, x12
+    sbcs    x9, x9, x13
+    sbcs    x10, x10, x14
+    stp     x3, x4,   [x2,#0]
+    stp     x5, x6,   [x2,#16]
+    stp     x7, x8,   [x2,#32]
+    stp     x9, x10,  [x2,#48]
 
-    stp x3, x4,   [x2,#0]
-    stp x5, x6,   [x2,#16]
-    stp x7, x8,   [x2,#32]
-    stp x9, x10,  [x2,#48]
-    stp x11, x12, [x2,#64]
-    stp x13, x14, [x2,#80]
+    ldp     x3, x4,   [x0,#64]
+    ldp     x5, x6,   [x0,#80]
+    ldp     x11, x12, [x1,#64]
+    ldp     x13, x14, [x1,#80]
+    sbcs    x3, x3, x11
+    sbcs    x4, x4, x12
+    sbcs    x5, x5, x13
+    sbcs    x6, x6, x14
+    stp     x3, x4,   [x2,#64]
+    stp     x5, x6,   [x2,#80]
+    
+    ldp     x3, x4,   [x0,#96]
+    ldp     x5, x6,   [x0,#112]
+    ldp     x15, x16, [x1,#96]
+    ldp     x17, x19, [x1,#112]
+    sbcs    x3, x3, x15
+    sbcs    x4, x4, x16
+    sbcs    x5, x5, x17
+    sbcs    x6, x6, x19
+    ldp     x7, x8,   [x0,#128]
+    ldp     x9, x10,  [x0,#144]
+    ldp     x15, x16, [x1,#128]
+    ldp     x17, x19, [x1,#144]
+    sbcs    x7, x7, x15
+    sbcs    x8, x8, x16
+    sbcs    x9, x9, x17
+    sbcs    x10, x10, x19
+    ldp     x11, x12,   [x0,#160]
+    ldp     x13, x14,  [x0,#176]
+    ldp     x15, x16, [x1,#160]
+    ldp     x17, x19, [x1,#176]
+    sbcs    x11, x11, x15
+    sbcs    x12, x12, x16
+    sbcs    x13, x13, x17
+    sbcs    x14, x14, x19
+    sbc     x0, xzr, xzr
+
+    // Add p751 anded with the mask in x0 
+    ldr     x1, p751 
+    ldr     x15, p751 + 8
+    ldr     x16, p751 + 16
+    ldr     x17, p751 + 24
+    ldr     x19, p751 + 32
+    ldr     x20, p751 + 40
+    and     x1, x1, x0 
+    and     x15, x15, x0
+    and     x16, x16, x0
+    and     x17, x17, x0
+    and     x19, x19, x0 
+    and     x20, x20, x0
+	adds    x3, x3, x1   
+	adcs    x4, x4, x1   
+	adcs    x5, x5, x1   
+	adcs    x6, x6, x1   
+	adcs    x7, x7, x1  
+	adcs    x8, x8, x15  
+	adcs    x9, x9, x16  
+	adcs    x10, x10, x17  
+	adcs    x11, x11, x19 
+	adcs    x12, x12, x20	
+    stp     x3, x4,   [x2,#96]
+    stp     x5, x6,   [x2,#112]
+    stp     x7, x8,   [x2,#128]
+    stp     x9, x10,  [x2,#144]
+    stp     x11, x12, [x2,#160]
+    ldr     x1, p751 + 48
+    ldr     x3, p751 + 56
+    and     x1, x1, x0 
+    and     x3, x3, x0 
+	adcs    x13, x13, x1  
+	adc     x14, x14, x3 
+    stp     x13, x14,  [x2,#176]
 	
-    ldp x3, x4,   [x0,#96]
-    ldp x5, x6,   [x0,#112]
-    ldp x7, x8,   [x0,#128]
-    ldp x9, x10,  [x0,#144]
-    ldp x11, x12, [x0,#160]
-    ldp x13, x14, [x0,#176]
-
-    ldp x15, x16, [x1,#96]
-    ldp x17, x18, [x1,#112]
-    sbcs x3, x3, x15
-    sbcs x4, x4, x16
-    sbcs x5, x5, x17
-    sbcs x6, x6, x18
-    ldp x15, x16, [x1,#128]
-    ldp x17, x18, [x1,#144]
-    sbcs x7, x7, x15
-    sbcs x8, x8, x16
-    sbcs x9, x9, x17
-    sbcs x10, x10, x18
-    ldp x15, x16, [x1,#160]
-    ldp x17, x18, [x1,#176]
-    sbcs x11, x11, x15
-    sbcs x12, x12, x16
-    sbcs x13, x13, x17
-    sbcs x14, x14, x18
-    sbc x0, xzr, xzr
-
-    stp x3, x4,   [x2,#96]
-    stp x5, x6,   [x2,#112]
-    stp x7, x8,   [x2,#128]
-    stp x9, x10,  [x2,#144]
-    stp x11, x12, [x2,#160]
-    stp x13, x14, [x2,#176]
+    ldp     x19, x20, [sp]
+    add     sp, sp, #16
     ret
 
 

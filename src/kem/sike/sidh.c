@@ -4,16 +4,6 @@
 * Abstract: ephemeral supersingular isogeny Diffie-Hellman key exchange (SIDH)
 *********************************************************************************************/
 
-static void clear_words(void *mem, digit_t nwords) { // Clear digits from memory. "nwords" indicates the number of digits to be zeroed.
-	                                                 // This function uses the volatile type qualifier to inform the compiler not to optimize out the memory clearing.
-	unsigned int i;
-	volatile digit_t *v = mem;
-
-	for (i = 0; i < nwords; i++) {
-		v[i] = 0;
-	}
-}
-
 static void init_basis(digit_t *gen, f2elm_t XP, f2elm_t XQ, f2elm_t XR) { // Initialization of basis points
 
 	fpcopy(gen, XP[0]);
@@ -22,29 +12,6 @@ static void init_basis(digit_t *gen, f2elm_t XP, f2elm_t XQ, f2elm_t XR) { // In
 	fpcopy(gen + 3 * NWORDS_FIELD, XQ[1]);
 	fpcopy(gen + 4 * NWORDS_FIELD, XR[0]);
 	fpcopy(gen + 5 * NWORDS_FIELD, XR[1]);
-}
-
-static void fp2_encode(const f2elm_t x, unsigned char *enc) { // Conversion of GF(p^2) element from Montgomery to standard representation, and encoding by removing leading 0 bytes
-	unsigned int i;
-	f2elm_t t;
-
-	from_fp2mont(x, t);
-	for (i = 0; i < FP2_ENCODED_BYTES / 2; i++) {
-		enc[i] = ((unsigned char *) t)[i];
-		enc[i + FP2_ENCODED_BYTES / 2] = ((unsigned char *) t)[i + MAXBITS_FIELD / 8];
-	}
-}
-
-static void fp2_decode(const unsigned char *enc, f2elm_t x) { // Parse byte sequence back into GF(p^2) element, and conversion to Montgomery representation
-	unsigned int i;
-
-	for (i = 0; i < 2 * (MAXBITS_FIELD / 8); i++)
-		((unsigned char *) x)[i] = 0;
-	for (i = 0; i < FP2_ENCODED_BYTES / 2; i++) {
-		((unsigned char *) x)[i] = enc[i];
-		((unsigned char *) x)[i + MAXBITS_FIELD / 8] = enc[i + FP2_ENCODED_BYTES / 2];
-	}
-	to_fp2mont(x, x);
 }
 
 void random_mod_order_A(unsigned char *random_digits) { // Generation of Alice's secret key

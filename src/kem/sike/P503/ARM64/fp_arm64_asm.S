@@ -4,7 +4,16 @@
 // Abstract: field arithmetic in 64-bit ARMv8 assembly for P503 on Linux
 //*******************************************************************************************
 
-.data
+.text
+
+// p503
+p503:
+.quad  0xFFFFFFFFFFFFFFFF
+.quad  0xABFFFFFFFFFFFFFF
+.quad  0x13085BDA2211E7A0
+.quad  0x1B9BF6C87B7E7DAF
+.quad  0x6045C6BDDA77A4D0
+.quad  0x004066F541811E1E
 
 // p503 + 1
 p503p1:
@@ -31,7 +40,6 @@ p503p1_nz_s8:
 .quad    0x4066F541811E1E60
 
 
-.text
 //***********************************************************************
 //  Field addition
 //  Operation: c [x2] = a [x0] + b [x1]
@@ -690,58 +698,78 @@ mp_add503x2_asm:
     stp     x5, x6,   [x2,#80]
     stp     x7, x8,   [x2,#96]
     stp     x9, x10,  [x2,#112]
-    ret   
+    ret
 
 
 //***********************************************************************
-//  2x503-bit multiprecision subtraction
-//  Operation: c [x2] = a [x0] - b [x1]. Returns borrow mask
+//  2x503-bit multiprecision subtraction/addition
+//  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p503*2^512
 //*********************************************************************** 
-.global mp_sub503x2_asm
-mp_sub503x2_asm:
+.global mp_subadd503x2_asm
+mp_subadd503x2_asm:
     ldp     x3, x4,   [x0,#0]
-    ldp     x5, x6,   [x0,#16]
     ldp     x11, x12, [x1,#0]
+    ldp     x5, x6,   [x0,#16]
     ldp     x13, x14, [x1,#16]
     subs    x3, x3, x11
     sbcs    x4, x4, x12
+    stp     x3, x4,   [x2,#0]
+    ldp     x7, x8,   [x0,#32]
+    ldp     x11, x12, [x1,#32]
     sbcs    x5, x5, x13
     sbcs    x6, x6, x14
-    ldp     x7, x8,   [x0,#32]
-    ldp     x9, x10,  [x0,#48]
-    ldp     x15, x16, [x1,#32]
-    ldp     x17, x18, [x1,#48]
-    sbcs    x7, x7, x15
-    sbcs    x8, x8, x16
-    sbcs    x9, x9, x17
-    sbcs    x10, x10, x18
-
-    stp     x3, x4,   [x2,#0]
     stp     x5, x6,   [x2,#16]
+    ldp     x9, x10,  [x0,#48]
+    ldp     x13, x14, [x1,#48]
+    sbcs    x7, x7, x11
+    sbcs    x8, x8, x12
     stp     x7, x8,   [x2,#32]
+    sbcs    x9, x9, x13
+    sbcs    x10, x10, x14
     stp     x9, x10,  [x2,#48]
     
     ldp     x3, x4,   [x0,#64]
-    ldp     x5, x6,   [x0,#80]
     ldp     x11, x12, [x1,#64]
+    ldp     x5, x6,   [x0,#80]
     ldp     x13, x14, [x1,#80]
     sbcs    x3, x3, x11
     sbcs    x4, x4, x12
+    ldp     x7, x8,   [x0,#96]
+    ldp     x11, x12, [x1,#96]
     sbcs    x5, x5, x13
     sbcs    x6, x6, x14
-    ldp     x7, x8,   [x0,#96]
     ldp     x9, x10,  [x0,#112]
-    ldp     x15, x16, [x1,#96]
-    ldp     x17, x18, [x1,#112]
-    sbcs    x7, x7, x15
-    sbcs    x8, x8, x16
-    sbcs    x9, x9, x17
-    sbcs    x10, x10, x18
+    ldp     x13, x14, [x1,#112]
+    sbcs    x7, x7, x11 
+    ldr     x11, p503
+    sbcs    x8, x8, x12
+    ldr     x12, p503 + 8
+    sbcs    x9, x9, x13
+    ldr     x13, p503 + 16
+    sbcs    x10, x10, x14
+    ldr     x14, p503 + 24
     sbc     x0, xzr, xzr
 
-    stp     x3, x4,   [x2,#64]
-    stp     x5, x6,   [x2,#80]
-    stp     x7, x8,   [x2,#96]
+    // Add p503 anded with the mask in x0
+    ldr     x15, p503 + 32
+    ldr     x16, p503 + 40
+    and     x11, x11, x0 
+    and     x12, x12, x0 
+    and     x13, x13, x0 
+    and     x14, x14, x0 
+    and     x15, x15, x0  
+    and     x16, x16, x0  
+	adds    x3, x3, x11    
+	adcs    x4, x4, x11 
+    stp     x3, x4,   [x2,#64]  
+	adcs    x5, x5, x11   
+	adcs    x6, x6, x12  
+    stp     x5, x6,   [x2,#80] 
+	adcs    x7, x7, x13   
+	adcs    x8, x8, x14 
+    stp     x7, x8,   [x2,#96] 
+	adcs    x9, x9, x15  
+	adc     x10, x10, x16 	
     stp     x9, x10,  [x2,#112]
     ret
 
