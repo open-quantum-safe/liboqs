@@ -176,9 +176,8 @@ AC_DEFUN([CONFIG_FEATURES],
   ])
 
   AM_COND_IF([ENABLE_SIG_QTESLA], [
-    AC_DEFINE(OQS_ENABLE_SIG_qTESLA_I,         1, "Define to 1 when qTESLA-I enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_qTESLA_III_size,  1, "Define to 1 when qTESLA-III-size enabled")
-    AC_DEFINE(OQS_ENABLE_SIG_qTESLA_III_speed, 1, "Define to 1 when qTESLA-III-speed enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_qTesla_p_I,   1, "Define to 1 when qTesla-p-I enabled")
+    AC_DEFINE(OQS_ENABLE_SIG_qTesla_p_III, 1, "Define to 1 when qTesla-p-III-size enabled")
   ])
 
   AM_COND_IF([ENABLE_SIG_PICNIC], [

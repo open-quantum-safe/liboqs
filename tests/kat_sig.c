@@ -59,7 +59,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg + 4, msg, msg_len);
 		memcpy(*signed_msg + 4 + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
-	} else if ((0 == strcmp(sig->method_name, "qTESLA_I")) || (0 == strcmp(sig->method_name, "qTESLA_III_size")) || (0 == strcmp(sig->method_name, "qTESLA_III_speed"))) {
+	} else if ((0 == strcmp(sig->method_name, "qTesla-p-I")) || (0 == strcmp(sig->method_name, "qTesla-p-III"))) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);

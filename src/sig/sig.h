@@ -37,11 +37,11 @@ extern "C" {
 #define OQS_SIG_alg_picnic_L1_UR "picnic_L1_UR"
 /** Algorithm identifier for picnic_L3_FS */
 #define OQS_SIG_alg_picnic_L3_FS "picnic_L3_FS"
-/** Algorithm identifier for Picnic_L3_UR */
+/** Algorithm identifier for picnic_L3_UR */
 #define OQS_SIG_alg_picnic_L3_UR "picnic_L3_UR"
-/** Algorithm identifier for Picnic_L5_FS */
+/** Algorithm identifier for picnic_L5_FS */
 #define OQS_SIG_alg_picnic_L5_FS "picnic_L5_FS"
-/** Algorithm identifier for Picnic_L5_FS */
+/** Algorithm identifier for picnic_L5_FS */
 #define OQS_SIG_alg_picnic_L5_UR "picnic_L5_UR"
 /** Algorithm identifier for picnic2_L1_FS */
 #define OQS_SIG_alg_picnic2_L1_FS "picnic2_L1_FS"
@@ -49,12 +49,10 @@ extern "C" {
 #define OQS_SIG_alg_picnic2_L3_FS "picnic2_L3_FS"
 /** Algorithm identifier for picnic2_L5_FS */
 #define OQS_SIG_alg_picnic2_L5_FS "picnic2_L5_FS"
-/** Algorithm identifier for qTESLA_I */
-#define OQS_SIG_alg_qTESLA_I "qTESLA_I"
-/** Algorithm identifier for qTESLA_III_size */
-#define OQS_SIG_alg_qTESLA_III_size "qTESLA_III_size"
-/** Algorithm identifier for qTESLA_III_speed */
-#define OQS_SIG_alg_qTESLA_III_speed "qTESLA_III_speed"
+/** Algorithm identifier for qTesla-p-I */
+#define OQS_SIG_alg_qTesla_p_I "qTesla-p-I"
+/** Algorithm identifier for qTesla-p-III */
+#define OQS_SIG_alg_qTesla_p_III "qTesla-p-III"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for DILITHIUM_2 */
 #define OQS_SIG_alg_dilithium_2 "DILITHIUM_2"
