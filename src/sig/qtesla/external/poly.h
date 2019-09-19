@@ -5,8 +5,8 @@
 #include "config.h"
 #include <stdint.h>
 
-typedef	int64_t poly[PARAM_N];
-typedef	int64_t poly_k[PARAM_N*PARAM_K];
+typedef int64_t poly[PARAM_N];
+typedef int64_t poly_k[PARAM_N * PARAM_K];
 
 static int64_t reduce(int64_t a);
 static int64_t barr_reduce(int64_t a);

@@ -10,7 +10,6 @@
 #include <stdint.h>
 #include "params.h"
 
-
 #if defined(_qTESLA_p_I_)
 
 // Sigma = 8.5, 64-bit precision
@@ -18,7 +17,7 @@
 #define CDT_ROWS 79
 #define CDT_COLS 1
 
-static const int64_t cdt_v[CDT_ROWS*CDT_COLS] = {
+static const int64_t cdt_v[CDT_ROWS * CDT_COLS] = {
     0x0000000000000000LL, // 0
     0x0601F22A500CC7A8LL, // 1
     0x11F09FFA2C5FC47BLL, // 2
@@ -98,7 +97,7 @@ static const int64_t cdt_v[CDT_ROWS*CDT_COLS] = {
     0x7FFFFFFFFFFFFFFALL, // 76
     0x7FFFFFFFFFFFFFFELL, // 77
     0x7FFFFFFFFFFFFFFFLL, // 78
-}; // cdt_v
+};                        // cdt_v
 
 // memory requirements:
 //     2048 samples: 25524 bytes
@@ -117,7 +116,7 @@ static const int64_t cdt_v[CDT_ROWS*CDT_COLS] = {
 #define CDT_ROWS 112
 #define CDT_COLS 2
 
-static const int64_t cdt_v[CDT_ROWS*CDT_COLS] = {
+static const int64_t cdt_v[CDT_ROWS * CDT_COLS] = {
     0x0000000000000000LL, 0x0000000000000000LL, // 0
     0x0601F22A500CC7A8LL, 0x5C36071879D7F29CLL, // 1
     0x11F09FFA2C5FC47BLL, 0x006E7368FCAA94C5LL, // 2
@@ -230,7 +229,7 @@ static const int64_t cdt_v[CDT_ROWS*CDT_COLS] = {
     0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFECLL, // 109
     0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFBLL, // 110
     0x7FFFFFFFFFFFFFFFLL, 0x7FFFFFFFFFFFFFFFLL, // 111
-}; // cdt_v
+};                                              // cdt_v
 
 // memory requirements:
 //     2048 samples: 43200 bytes
@@ -242,6 +241,6 @@ static const int64_t cdt_v[CDT_ROWS*CDT_COLS] = {
 //       32 samples:  2880 bytes
 // table alone: 1792 bytes
 
-#endif 
+#endif
 
-#endif 
+#endif
