@@ -141,7 +141,7 @@ static void poly_add_correct(poly result, const poly x, const poly y) { // Polyn
 
 	for (int i = 0; i < PARAM_N; i++) {
 		result[i] = x[i] + y[i];
-		result[i] += (result[i] >> (RADIX32-1)) & PARAM_Q;    // If result[i] < 0 then add q
+		result[i] += (result[i] >> (RADIX32 - 1)) & PARAM_Q; // If result[i] < 0 then add q
 		result[i] -= PARAM_Q;
 		result[i] += (result[i] >> (RADIX32 - 1)) & PARAM_Q; // If result[i] >= q then subtract q
 	}
