@@ -1512,6 +1512,15 @@
     <ClCompile Include="..\..\src\kem\sike\P751\P751_compressed.c">
       <Filter>sike</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_I.c">
+      <Filter>qtesla</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_III.c">
+      <Filter>qtesla</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\qtesla\sig_qtesla.c">
+      <Filter>qtesla</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\oqs.h" />
@@ -1697,6 +1706,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-SnP.h">
       <Filter>picnic</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\sig\qtesla\sig_qtesla.h">
+      <Filter>qtesla</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1904,6 +1916,9 @@
     </Filter>
     <Filter Include="sphincs\shake256_256s_simple">
       <UniqueIdentifier>{a7c0f5cd-c1e4-4880-9c9a-98d0b09d03ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="qtesla">
+      <UniqueIdentifier>{7270bf61-720f-485f-8018-c768ea21d907}</UniqueIdentifier>
     </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_END -->
   </ItemGroup>
