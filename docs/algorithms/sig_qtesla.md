@@ -24,7 +24,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/qtesla/qTesla
-- **Implementation version:** https://github.com/microsoft/qTESLA-Library/commit/86656c56f9df80abcaed818d691e934542a3f201
+- **Implementation version:** https://github.com/microsoft/qTESLA-Library/commit/dcaabbff1ef2c1e993c4bca7eb9d4821f2f56bd5
 - **License:** public domain
 - **Language:** C
 - **Constant-time:** Yes
