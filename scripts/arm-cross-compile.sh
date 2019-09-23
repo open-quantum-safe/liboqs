@@ -26,7 +26,6 @@ autoreconf -i
 hacks=(
 	gcc_cv_compiler=true	# Detecting at this phase isn't good for cross compilation
 	CFLAGS=-D_ARM_		# Several files aren't using the right define
-	--disable-sig-picnic	# Problems building Picnic using cross compilation
 	--disable-sig-qtesla	# qTesla fails on armhf and armel
 )
 
