@@ -1736,6 +1736,9 @@
     <Filter Include="sike">
       <UniqueIdentifier>{620a9f8e-2013-4cb3-ad37-2ee4348ed893}</UniqueIdentifier>
     </Filter>
+    <Filter Include="qtesla">
+      <UniqueIdentifier>{7270bf61-720f-485f-8018-c768ea21d907}</UniqueIdentifier>
+    </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_START -->
     <Filter Include="kyber">
       <UniqueIdentifier>{8db00bac-a963-4875-b0a1-945bfed08037}</UniqueIdentifier>
@@ -1916,9 +1919,6 @@
     </Filter>
     <Filter Include="sphincs\shake256_256s_simple">
       <UniqueIdentifier>{a7c0f5cd-c1e4-4880-9c9a-98d0b09d03ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="qtesla">
-      <UniqueIdentifier>{7270bf61-720f-485f-8018-c768ea21d907}</UniqueIdentifier>
     </Filter>
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_FILTER_END -->
   </ItemGroup>

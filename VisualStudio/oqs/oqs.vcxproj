@@ -43,7 +43,6 @@
     <ClInclude Include="..\..\src\kem\saber\kem_saber.h" />
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h" />
     <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h" />
-    <ClInclude Include="..\..\src\sig\qtesla\sig_qtesla.h" />
     <ClInclude Include="..\..\src\sig\sphincs\sig_sphincs.h" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
     <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
@@ -102,6 +101,7 @@
     <ClInclude Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-SnP.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\simd.h" />
     <ClInclude Include="..\..\src\sig\picnic\sig_picnic.h" />
+    <ClInclude Include="..\..\src\sig\qtesla\sig_qtesla.h" />
     <ClInclude Include="..\..\src\sig\sig.h" />
     <ClInclude Include="..\winconfig.h" />
   </ItemGroup>
@@ -253,9 +253,6 @@
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\gf31.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\mq.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\sign.c" />
-    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_I.c" />
-    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_III.c" />
-    <ClCompile Include="..\..\src\sig\qtesla\sig_qtesla.c" />
     <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128f_robust.c" />
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\address.c" />
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\wots.c" />
@@ -609,6 +606,9 @@
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-opt64.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-times4-on1.c" />
     <ClCompile Include="..\..\src\sig\picnic\sig_picnic.c" />
+    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_I.c" />
+    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_III.c" />
+    <ClCompile Include="..\..\src\sig\qtesla\sig_qtesla.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
   </ItemGroup>
   <ItemGroup>
