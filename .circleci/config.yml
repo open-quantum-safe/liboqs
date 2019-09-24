@@ -33,7 +33,7 @@ version: 2
           file /bin/ls &&
           autoreconf -i &&
           ./configure --enable-silent-rules ${CONFIGURE_ARGS} &&
-          make -j &&
+          make &&
           make check &&
           mkdir -p test-results/pytest &&
           python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto
