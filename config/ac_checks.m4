@@ -18,7 +18,6 @@ AC_TYPE_UINT64_T
 AC_TYPE_UINT8_T
 
 # Checks for library functions.
-AC_FUNC_MALLOC
 AC_CHECK_FUNCS([gettimeofday memmove memset pow sqrt strdup])
 AC_CHECK_SIZEOF([size_t])
 AC_CHECK_FUNCS(getentropy)
