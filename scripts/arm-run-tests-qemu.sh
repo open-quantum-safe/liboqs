@@ -44,8 +44,9 @@ qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIKE-p503
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIKE-p610
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem SIKE-p751
 
-# qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/example_sig
-# qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_sig
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/example_sig
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_sig qTesla-p-I
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_sig qTesla-p-III
 
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_aes
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_sha3

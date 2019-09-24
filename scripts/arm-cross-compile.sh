@@ -27,7 +27,6 @@ hacks=(
 	gcc_cv_compiler=true	# Detecting at this phase isn't good for cross compilation
 	CFLAGS=-D_ARM_		# Several files aren't using the right define
 	--disable-sig-picnic	# Problems building Picnic using cross compilation
-	--disable-sig-qtesla	# qTesla fails on armhf and armel
 )
 
 ./configure --disable-shared --enable-static --host="${CHOST}" --build="$CBUILD" CC="${CHOST}-gcc" --with-openssl="${PREFIX}" "${hacks[@]}"

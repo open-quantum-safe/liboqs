@@ -101,6 +101,7 @@
     <ClInclude Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-SnP.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\simd.h" />
     <ClInclude Include="..\..\src\sig\picnic\sig_picnic.h" />
+    <ClInclude Include="..\..\src\sig\qtesla\sig_qtesla.h" />
     <ClInclude Include="..\..\src\sig\sig.h" />
     <ClInclude Include="..\winconfig.h" />
   </ItemGroup>
@@ -605,6 +606,9 @@
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-opt64.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-times4-on1.c" />
     <ClCompile Include="..\..\src\sig\picnic\sig_picnic.c" />
+    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_I.c" />
+    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_III.c" />
+    <ClCompile Include="..\..\src\sig\qtesla\sig_qtesla.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
   </ItemGroup>
   <ItemGroup>

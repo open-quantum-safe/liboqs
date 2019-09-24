@@ -4,7 +4,7 @@ liboqs algorithm datasheet: `sig_qtesla`
 Summary
 -------
 
-- **Name**: qTESLA
+- **Name**: qTesla
 - **Algorithm type**: signature
 - **Main cryptographic assumption**: decisional Ring Learning With Errors (R-LWE) problem.
 - **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-1/submissions/qtesla.zip
@@ -15,18 +15,16 @@ Summary
 Parameter sets
 --------------
 
-| Parameter set    | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
-|------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:----------------------:|
-| qTESLA_I         |    EUF-CMA     |              1              |          1504           |          2112           |          1376          |
-| qTESLA_III_size  |    EUF-CMA     |              3              |          2976           |          4160           |          2720          |
-| qTESLA_III_speed |    EUF-CMA     |              3              |          3104           |          4160           |          2848          |
-
+| Parameter set | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
+|---------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:----------------------:|
+| qTesla-p-I    |    EUF-CMA     |              1              |         14880           |          5184           |          2592          |
+| qTesla-p-III  |    EUF-CMA     |              3              |         38432           |         12352           |          5664          |
 
 Implementation
 --------------
 
 - **Source of implementation:** https://github.com/qtesla/qTesla
-- **Implementation version:** https://github.com/qtesla/qTesla/commit/5e921da989b9b44aba95f63d9c28927d518f630c
+- **Implementation version:** https://github.com/microsoft/qTESLA-Library/commit/dcaabbff1ef2c1e993c4bca7eb9d4821f2f56bd5
 - **License:** public domain
 - **Language:** C
 - **Constant-time:** Yes
