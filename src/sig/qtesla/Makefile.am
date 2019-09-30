@@ -19,5 +19,5 @@ endif # X86
 
 
 libqtesla_la_SOURCES = qtesla_p_I.c qtesla_p_III.c sig_qtesla.c
-libqtesla_la_CFLAGS = $(AM_CFLAGS) $(QTESLA_FLAGS) -Iexternal
+libqtesla_la_CFLAGS = $(AM_CFLAGS) $(QTESLA_FLAGS) -Iportable
 

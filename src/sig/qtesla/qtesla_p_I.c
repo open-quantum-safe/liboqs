@@ -6,12 +6,12 @@
 
 #define _qTESLA_p_I_
 
-#include "external/consts.c"
-#include "external/gauss.c"
-#include "external/pack.c"
-#include "external/poly.c"
-#include "external/sample.c"
-#include "external/sign.c"
+#include "portable/consts.c"
+#include "portable/gauss.c"
+#include "portable/pack.c"
+#include "portable/poly.c"
+#include "portable/sample.c"
+#include "portable/sign.c"
 
 OQS_API OQS_STATUS OQS_SIG_qTesla_p_I_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	int rv = crypto_sign_keypair(public_key, secret_key);
