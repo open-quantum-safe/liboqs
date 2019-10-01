@@ -2,14 +2,14 @@
 # Process this file with autoconf to produce a configure script.
 
 # Init
-AC_INIT([liboqs], [0.2.0-dev], [https://github.com/open-quantum-safe/liboqs/issues], [liboqs-master], [https://openquantumsafe.org/])
+AC_INIT([liboqs], [0.2.0-rc3], [https://github.com/open-quantum-safe/liboqs/issues], [liboqs-master], [https://openquantumsafe.org/])
 
 AM_INIT_AUTOMAKE([subdir-objects no-dependencies])
 AM_PROG_LIBTOOL
 
 # Numeric release version identifier:
 # MNNFFPPS: major minor fix patch status
-# The status nibble has one of the values 0 for development, 1 to e for release candidates 1 to 4, and f for release
+# The status nibble has one of the values 0 for development, 1 to e for release candidates 1 to 14, and f for release
 # For example:
 # 1.2.3-dev      0x10203000
 # 1.2.3-rc1      0x10203001
@@ -17,8 +17,8 @@ AM_PROG_LIBTOOL
 # 1.2.3-rc2      0x10203002 (same as ...rc2-dev)
 # 1.2.3          0x1020300f
 # 1.2.3a         0x1020301f
-AC_DEFINE([OQS_VERSION_NUMBER],[0x00200000L],[Numeric liboqs version])
-AC_DEFINE([OQS_VERSION_TEXT],["0.2.0-dev"],[Text liboqs version])
+AC_DEFINE([OQS_VERSION_NUMBER],[0x00200003L],[Numeric liboqs version])
+AC_DEFINE([OQS_VERSION_TEXT],["0.2.0-rc3"],[Text liboqs version])
 AC_DEFINE([OQS_MASTER_BRANCH],[],[liboqs branch])
 
 # Configure
