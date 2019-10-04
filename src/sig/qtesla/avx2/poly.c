@@ -60,67 +60,24 @@ static int64_t barr_reduce64(int64_t a) { // Barrett reduction
 	return a - u * PARAM_Q;
 }
 
-static sdigit_t barr_reduce(sdigit_t a) { // Barrett reduction
+static int32_t barr_reduce(int32_t a) { // Barrett reduction
 	digit_t u = ((int64_t) a * PARAM_BARR_MULT) >> PARAM_BARR_DIV;
 	return a - (digit_t) u * PARAM_Q;
 }
 
-static void ntt(poly a, const poly w) { // Forward NTT transform
-	int NumoProblems = PARAM_N >> 1, jTwiddle = 0;
+static void poly_ntt(poly2x x_ntt, const poly x) { // Call to NTT function. Avoids input destruction.
+	// Output is in extended form.
 
-	for (; NumoProblems > 0; NumoProblems >>= 1) {
-		int jFirst, j = 0;
-		for (jFirst = 0; jFirst < PARAM_N; jFirst = j + NumoProblems) {
-			sdigit_t W = (sdigit_t) w[jTwiddle++];
-			for (j = jFirst; j < jFirst + NumoProblems; j++) {
-				int32_t temp = reduce((int64_t) W * a[j + NumoProblems]);
-#if defined(_qTESLA_p_I_)
-				a[j + NumoProblems] = a[j] - temp;
-				a[j + NumoProblems] += (a[j + NumoProblems] >> (RADIX32 - 1)) & PARAM_Q; // If result < 0 then add q
-				a[j] = a[j] + temp - PARAM_Q;
-				a[j] += (a[j] >> (RADIX32 - 1)) & PARAM_Q; // If result >= q then subtract q
-#else
-				a[j + NumoProblems] = barr_reduce(a[j] - temp);
-				a[j] = barr_reduce(temp + a[j]);
-#endif
-			}
-		}
-	}
+	poly_ntt_asm(x_ntt, x, zeta);
 }
 
-static void nttinv(poly a, const poly w) { // Inverse NTT transform
-	int NumoProblems = 1, jTwiddle = 0;
-	for (NumoProblems = 1; NumoProblems < PARAM_N; NumoProblems *= 2) {
-		int jFirst, j = 0;
-		for (jFirst = 0; jFirst < PARAM_N; jFirst = j + NumoProblems) {
-			sdigit_t W = (sdigit_t) w[jTwiddle++];
-			for (j = jFirst; j < jFirst + NumoProblems; j++) {
-				int32_t temp = a[j];
-				a[j] = barr_reduce(temp + a[j + NumoProblems]);
-				a[j + NumoProblems] = reduce((int64_t) W * (temp - a[j + NumoProblems]));
-			}
-		}
-	}
-}
-
-static void poly_pointwise(poly result, const poly x, const poly y) { // Pointwise polynomial multiplication result = x.y
-
-	for (int i = 0; i < PARAM_N; i++)
-		result[i] = reduce((int64_t) x[i] * y[i]);
-}
-
-static void poly_ntt(poly x_ntt, const poly x) { // Call to NTT function. Avoids input destruction
-
-	for (int i = 0; i < PARAM_N; i++)
-		x_ntt[i] = x[i];
-	ntt(x_ntt, zeta);
-}
-
-static void poly_mul(poly result, const poly x, const poly y) { // Polynomial multiplication result = x*y, with in place reduction for (X^N+1)
+static void poly_mul(poly result, const poly x, const poly2x y) { // Polynomial multiplication result = x*y, with in place reduction for (X^N+1)
 	// The inputs x and y are assumed to be in NTT form
+	// Input y is in extended form.
+	poly2x prod;
 
-	poly_pointwise(result, x, y);
-	nttinv(result, zetainv);
+	poly_pmul_asm(prod, x, y);
+	poly_intt_asm(result, prod, zetainv);
 }
 
 static void poly_add(poly result, const poly x, const poly y) { // Polynomial addition result = x+y

@@ -131,10 +131,11 @@ static int check_ES(poly p, unsigned int bound) { // Checks the generated polyno
 *              - unsigned char *sk: secret key
 * Returns:     0 for successful execution
 **********************************************************/
-static int crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
+int crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
 	unsigned char randomness[CRYPTO_RANDOMBYTES], randomness_extended[(PARAM_K + 3) * CRYPTO_SEEDBYTES];
-	poly s, s_ntt;
+	poly s;
 	poly_k e, a, t;
+	poly2x s_ntt;
 	int k, nonce = 0; // Initialize domain separator for error and secret polynomials
 #ifdef STATS
 	ctr_keygen = 0;
@@ -189,12 +190,13 @@ static int crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
 *              - unsigned long long *smlen: signature length*
 * Returns:     0 for successful execution
 ***************************************************************/
-static int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
+int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsigned char *m, unsigned long long mlen, const unsigned char *sk) {
 	unsigned char c[CRYPTO_C_BYTES], randomness[CRYPTO_SEEDBYTES], randomness_input[CRYPTO_RANDOMBYTES + CRYPTO_SEEDBYTES + HM_BYTES];
 	uint32_t pos_list[PARAM_H];
 	int16_t sign_list[PARAM_H];
-	poly y, y_ntt, Sc, z;
+	poly y, Sc, z;
 	poly_k v, Ec, a;
+	poly2x y_ntt;
 	int k, rsp, nonce = 0; // Initialize domain separator for sampling y
 #ifdef STATS
 	ctr_sign = 0;
@@ -247,7 +249,7 @@ static int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsig
 		// Copy message to signature package, and pack signature
 		/* OQS note: we return the signature directly in OQS
     for (unsigned long long i = 0; i < mlen; i++)
-          sm[CRYPTO_BYTES+i] = m[i];
+       sm[CRYPTO_BYTES+i] = m[i];
     */
 		*smlen = CRYPTO_BYTES /* + mlen */;
 		encode_sig(sm, c, z);
@@ -268,13 +270,14 @@ static int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsig
 * Returns:     0 for valid signature
 *              <0 for invalid signature
 ************************************************************/
-static int crypto_sign_open(unsigned char *m, unsigned long long /* * */ mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
+int crypto_sign_open(unsigned char *m, unsigned long long mlen, const unsigned char *sm, unsigned long long smlen, const unsigned char *pk) {
 	unsigned char c[CRYPTO_C_BYTES], c_sig[CRYPTO_C_BYTES], seed[CRYPTO_SEEDBYTES], hm[HM_BYTES];
 	uint32_t pos_list[PARAM_H];
 	int16_t sign_list[PARAM_H];
 	int32_t pk_t[PARAM_N * PARAM_K];
 	poly_k w, a, Tc;
-	poly z, z_ntt;
+	poly z;
+	poly2x z_ntt;
 	int k;
 
 	if (smlen < CRYPTO_BYTES)
@@ -304,6 +307,7 @@ static int crypto_sign_open(unsigned char *m, unsigned long long /* * */ mlen, c
   *mlen = smlen-CRYPTO_BYTES;
   for (unsigned long long i = 0; i < *mlen; i++)
     m[i] = sm[CRYPTO_BYTES+i];
-  */
+
+	*/
 	return 0;
 }
