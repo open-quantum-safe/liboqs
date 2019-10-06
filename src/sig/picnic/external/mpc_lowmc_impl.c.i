@@ -26,8 +26,6 @@
 #define SBOX_VERIFY mpc_sbox_layer_bitsliced_verify_uint64_1
 #endif
 
-#define copy(d, s) memcpy(BLOCK(d, 0), CONST_BLOCK(s, 0), LOWMC_N / 8)
-
 #if defined(FN_ATTR)
 FN_ATTR
 #endif
@@ -43,18 +41,18 @@ static void N_SIGN(mpc_lowmc_key_t const* lowmc_key, mzd_local_t const* p, view_
 #define shares SC_PROOF
 #define sbox SBOX_SIGN
 
-  MPC_LOOP_SHARED_1(copy, in_out_shares->s, lowmc_key, SC_PROOF);
+  MPC_LOOP_SHARED_1(COPY, in_out_shares->s, lowmc_key, SC_PROOF);
   ++in_out_shares;
 
   mzd_local_t x[SC_PROOF][((LOWMC_N) + 255) / 256];
   mzd_local_t y[SC_PROOF][((LOWMC_N) + 255) / 256];
 
-  MPC_LOOP_CONST(MUL, x, lowmc_key, CONCAT(LOWMC_INSTANCE.k0, matrix_postfix), reduced_shares);
+  MPC_LOOP_CONST(MUL, x, lowmc_key, LOWMC_INSTANCE.k0_matrix, reduced_shares);
   MPC_LOOP_CONST_C(XOR, x, x, p, reduced_shares, ch);
 
   #include "mpc_lowmc_loop.c.i"
 
-  MPC_LOOP_SHARED_1(copy, in_out_shares->s, x, SC_PROOF);
+  MPC_LOOP_SHARED_1(COPY, in_out_shares->s, x, SC_PROOF);
 
 #undef reduced_shares
 #undef RECOVER_FROM_STATE
@@ -82,12 +80,12 @@ static void N_VERIFY(mzd_local_t const* p, view_t* views, in_out_shares_t* in_ou
   mzd_local_t x[SC_VERIFY][((LOWMC_N) + 255) / 256];
   mzd_local_t y[SC_VERIFY][((LOWMC_N) + 255) / 256];
 
-  MPC_LOOP_CONST(MUL, x, lowmc_key, CONCAT(LOWMC_INSTANCE.k0, matrix_postfix), SC_VERIFY);
+  MPC_LOOP_CONST(MUL, x, lowmc_key, LOWMC_INSTANCE.k0_matrix, SC_VERIFY);
   MPC_LOOP_CONST_C(XOR, x, x, p, SC_VERIFY, ch);
 
 #include "mpc_lowmc_loop.c.i"
 
-  MPC_LOOP_SHARED_1(copy, in_out_shares->s, x, SC_VERIFY);
+  MPC_LOOP_SHARED_1(COPY, in_out_shares->s, x, SC_VERIFY);
 
 #undef sbox
 #undef reduced_shares
@@ -104,6 +102,5 @@ static void N_VERIFY(mzd_local_t const* p, view_t* views, in_out_shares_t* in_ou
 #undef RANDTAPE
 #undef SBOX
 #undef LOWMC_M
-#undef copy
 
 // vim: ft=c

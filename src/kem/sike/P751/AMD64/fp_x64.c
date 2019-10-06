@@ -4,14 +4,13 @@
 * Abstract: modular arithmetic optimized for x64 platforms for P751
 *********************************************************************************************/
 
-/* OQS note: not needed since this file is #included in another source file
 #include "../P751_internal.h"
 
-
+/* OQS note: this file is #include'd with the defs of these consts; removed to avoid re-defs
 // Global constants
 extern const uint64_t p751[NWORDS_FIELD];
-extern const uint64_t p751p1[NWORDS_FIELD]; 
-extern const uint64_t p751x2[NWORDS_FIELD]; 
+extern const uint64_t p751p1[NWORDS_FIELD];
+extern const uint64_t p751x2[NWORDS_FIELD];
 */
 
 __inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p751.
@@ -522,7 +521,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 #endif
 }
 
-void rdc_mont(const digit_t *ma, digit_t *mc) { // Efficient Montgomery reduction using comba and exploiting the special form of the prime p751.
+void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
                                                 // mc = ma*R^-1 mod p751x2, where R = 2^768.
                                                 // If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
                                                 // ma is assumed to be in Montgomery representation.

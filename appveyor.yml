@@ -12,24 +12,30 @@ branches:
     - /.*nist.*/
     - /master-new-.*/
 
+init:
+  - set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
+
+
 configuration:
   - Debug
   - DebugDLL
   - Release
   - ReleaseDLL
 
+before_test:
+- cmd: >-
+    python -m pip install pytest pytest-xdist
+
+    mkdir %APPVEYOR_BUILD_FOLDER%\test-results\pytest
+
 test_script:
 - cmd: >-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\test_kem.exe
+    cd %APPVEYOR_BUILD_FOLDER%
 
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\test_sig.exe
+    python -m pytest --verbose --numprocesses=auto --junitxml=test-results\pytest\results.xml
 
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\example_kem.exe
+after_test:
+- ps: >-
+    $wc = New-Object 'System.Net.WebClient'
 
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\kat_kem.exe
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\kat-check.bat
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\speed_kem.exe
-
-    %APPVEYOR_BUILD_FOLDER%\VisualStudio\%PLATFORM%\%CONFIGURATION%\speed_sig.exe
+    $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results\pytest\results.xml))

@@ -1,24 +1,16 @@
 AUTOMAKE_OPTIONS = foreign
 noinst_LTLIBRARIES  = libkemkyber.la
-noinst_LTLIBRARIES += libkemkyber_512_cca.la libkemkyber_768_cca.la libkemkyber_1024_cca.la
+noinst_LTLIBRARIES += libkemkyber_512.la libkemkyber_768.la libkemkyber_1024.la 
 
-libkemkyber_la_LIBADD  = libkemkyber_512_cca.la libkemkyber_768_cca.la libkemkyber_1024_cca.la
-libkemkyber_la_SOURCES = kem_kyber.c
+libkemkyber_la_LIBADD  = libkemkyber_512.la libkemkyber_768.la libkemkyber_1024.la 
+libkemkyber_la_SOURCES = 
 
-COMMON_FLAGS = $(AM_CFLAGS) -include functions_renaming.h
-libkemkyber_la_CFLAGS = $(COMMON_FLAGS)
+libkemkyber_512_la_SOURCES = kem_kyber_512.c pqclean_kyber512_clean/cbd.c pqclean_kyber512_clean/indcpa.c pqclean_kyber512_clean/kem.c pqclean_kyber512_clean/ntt.c pqclean_kyber512_clean/poly.c pqclean_kyber512_clean/polyvec.c pqclean_kyber512_clean/reduce.c pqclean_kyber512_clean/verify.c pqclean_kyber512_clean/symmetric-fips202.c 
+libkemkyber_512_la_CFLAGS  = $(AM_CFLAGS) -I../../common/pqclean_shims
 
-KYBER_SRC_DIR = ref
+libkemkyber_768_la_SOURCES = kem_kyber_768.c pqclean_kyber768_clean/cbd.c pqclean_kyber768_clean/indcpa.c pqclean_kyber768_clean/kem.c pqclean_kyber768_clean/ntt.c pqclean_kyber768_clean/poly.c pqclean_kyber768_clean/polyvec.c pqclean_kyber768_clean/reduce.c pqclean_kyber768_clean/verify.c pqclean_kyber768_clean/symmetric-fips202.c 
+libkemkyber_768_la_CFLAGS  = $(AM_CFLAGS) -I../../common/pqclean_shims
 
-KYBER_CSRCS  = $(KYBER_SRC_DIR)/cbd.c $(KYBER_SRC_DIR)/indcpa.c $(KYBER_SRC_DIR)/kem.c
-KYBER_CSRCS += $(KYBER_SRC_DIR)/ntt.c $(KYBER_SRC_DIR)/poly.c $(KYBER_SRC_DIR)/polyvec.c
-KYBER_CSRCS += $(KYBER_SRC_DIR)/precomp.c $(KYBER_SRC_DIR)/reduce.c $(KYBER_SRC_DIR)/verify.c
+libkemkyber_1024_la_SOURCES = kem_kyber_1024.c pqclean_kyber1024_clean/cbd.c pqclean_kyber1024_clean/indcpa.c pqclean_kyber1024_clean/kem.c pqclean_kyber1024_clean/ntt.c pqclean_kyber1024_clean/poly.c pqclean_kyber1024_clean/polyvec.c pqclean_kyber1024_clean/reduce.c pqclean_kyber1024_clean/verify.c pqclean_kyber1024_clean/symmetric-fips202.c 
+libkemkyber_1024_la_CFLAGS  = $(AM_CFLAGS) -I../../common/pqclean_shims
 
-libkemkyber_512_cca_la_SOURCES  = $(KYBER_CSRCS)
-libkemkyber_1024_cca_la_SOURCES = $(KYBER_CSRCS)
-
-libkemkyber_512_cca_la_CFLAGS  = $(COMMON_FLAGS) -DKYBER_K=2 -DFUNC_PREFIX=OQS_KEM_kyber_512_cca_kem
-libkemkyber_1024_cca_la_CFLAGS = $(COMMON_FLAGS) -DKYBER_K=4 -DFUNC_PREFIX=OQS_KEM_kyber_1024_cca_kem
-
-libkemkyber_768_cca_la_SOURCES  = pqclean_kyber768_clean/cbd.c pqclean_kyber768_clean/indcpa.c pqclean_kyber768_clean/kem.c pqclean_kyber768_clean/ntt.c pqclean_kyber768_clean/poly.c pqclean_kyber768_clean/polyvec.c pqclean_kyber768_clean/precomp.c pqclean_kyber768_clean/reduce.c pqclean_kyber768_clean/verify.c
-libkemkyber_768_cca_la_CFLAGS  = $(COMMON_FLAGS) -I../../common/pqclean_shims

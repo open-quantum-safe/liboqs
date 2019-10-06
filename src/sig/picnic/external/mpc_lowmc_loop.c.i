@@ -21,7 +21,7 @@ lowmc_round_t const* round = LOWMC_INSTANCE.rounds;
 #if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
   MPC_LOOP_CONST_C(XOR, x, x, LOWMC_INSTANCE.precomputed_constant_linear, reduced_shares, ch);
   MPC_LOOP_CONST(MUL_MC, nl_part, lowmc_key,
-                 CONCAT(LOWMC_INSTANCE.precomputed_non_linear_part, matrix_postfix), reduced_shares);
+                 LOWMC_INSTANCE.precomputed_non_linear_part_matrix, reduced_shares);
   MPC_LOOP_CONST_C(XOR_MC, nl_part, nl_part, LOWMC_INSTANCE.precomputed_constant_non_linear, reduced_shares, ch);
   for (unsigned i = 0; i < (LOWMC_R-1); ++i, ++views, ++round) {
     RANDTAPE;
@@ -39,13 +39,13 @@ lowmc_round_t const* round = LOWMC_INSTANCE.rounds;
       BLOCK(y[k], 0)->w64[(LOWMC_N) / (sizeof(word) * 8) - 1] ^= (nl << ((20-(i%21))*3)) & WORD_C(0xE000000000000000);
 #endif
     }
-    MPC_LOOP_CONST(MUL_Z, x, y, CONCAT(round->z, matrix_postfix), reduced_shares);
+    MPC_LOOP_CONST(MUL_Z, x, y, round->z_matrix, reduced_shares);
 
     for(unsigned int k = 0; k < reduced_shares; ++k) {
       MZD_SHUFFLE(y[k], round->r_mask);
     }
 
-    MPC_LOOP_CONST(MUL_R, x, y, CONCAT(round->r, matrix_postfix), reduced_shares);
+    MPC_LOOP_CONST(ADDMUL_R, x, y, round->r_matrix, reduced_shares);
     for(unsigned int k = 0; k < reduced_shares; ++k) {
 #if defined(M_FIXED_10)
       BLOCK(y[k], 0)->w64[(LOWMC_N) / (sizeof(word) * 8) - 1] &= WORD_C(0x00000003FFFFFFFF); //clear nl part
@@ -72,11 +72,11 @@ lowmc_round_t const* round = LOWMC_INSTANCE.rounds;
     BLOCK(y[k], 0)->w64[(LOWMC_N) / (sizeof(word) * 8) - 1] ^= (nl << ((20-(i%21))*3)) & WORD_C(0xE000000000000000);
 #endif
   }
-  MPC_LOOP_CONST(MUL, x, y, CONCAT(LOWMC_INSTANCE.zr, matrix_postfix), reduced_shares);
+  MPC_LOOP_CONST(MUL, x, y, LOWMC_INSTANCE.zr_matrix, reduced_shares);
 #else
   MPC_LOOP_CONST_C(XOR, x, x, LOWMC_INSTANCE.precomputed_constant_linear, reduced_shares, ch);
   MPC_LOOP_CONST(MUL_MC, nl_part, lowmc_key,
-                 CONCAT(LOWMC_INSTANCE.precomputed_non_linear_part, matrix_postfix), reduced_shares);
+                 LOWMC_INSTANCE.precomputed_non_linear_part_matrix, reduced_shares);
   MPC_LOOP_CONST_C(XOR_MC, nl_part, nl_part, LOWMC_INSTANCE.precomputed_constant_non_linear, reduced_shares, ch);
   for (unsigned i = 0; i < (LOWMC_R); ++i, ++views, ++round) {
     RANDTAPE;
@@ -94,7 +94,7 @@ lowmc_round_t const* round = LOWMC_INSTANCE.rounds;
       BLOCK(y[k], 0)->w64[(LOWMC_N) / (sizeof(word) * 8) - 1] ^= (nl << ((20-(i%21))*3)) & WORD_C(0xE000000000000000);
 #endif
     }
-    MPC_LOOP_CONST(MUL, x, y, CONCAT(round->l, matrix_postfix), reduced_shares);
+    MPC_LOOP_CONST(MUL, x, y, round->l_matrix, reduced_shares);
   }
 #endif
 #else
@@ -104,9 +104,9 @@ for (unsigned i = 0; i < (LOWMC_R); ++i, ++views, ++round) {
   RECOVER_FROM_STATE(x, i);
 #endif
   SBOX(sbox, y, x, views, r, LOWMC_N, shares, reduced_shares);
-  MPC_LOOP_CONST(MUL, x, y, CONCAT(round->l, matrix_postfix), reduced_shares);
+  MPC_LOOP_CONST(MUL, x, y, round->l_matrix, reduced_shares);
   MPC_LOOP_CONST_C(XOR, x, x, round->constant, reduced_shares, ch);
-  MPC_LOOP_CONST(ADDMUL, x, lowmc_key, CONCAT(round->k, matrix_postfix), reduced_shares);
+  MPC_LOOP_CONST(ADDMUL, x, lowmc_key, round->k_matrix, reduced_shares);
 }
 #endif
 #if defined(RECOVER_FROM_STATE)

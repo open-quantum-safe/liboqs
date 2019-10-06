@@ -11,25 +11,6 @@
 #define reg_p2  rsi
 #define reg_p3  rdx
 
-// p751 + 1
-#define p751p1_5   0xEEB0000000000000
-#define p751p1_6   0xE3EC968549F878A8
-#define p751p1_7   0xDA959B1A13F7CC76
-#define p751p1_8   0x084E9867D6EBE876
-#define p751p1_9   0x8562B5045CB25748
-#define p751p1_10  0x0E12909F97BADC66
-#define p751p1_11  0x00006FE5D541F71C
-// p751 x 2
-#define p751x2_0   0xFFFFFFFFFFFFFFFE
-#define p751x2_1   0xFFFFFFFFFFFFFFFF
-#define p751x2_5   0xDD5FFFFFFFFFFFFF
-#define p751x2_6   0xC7D92D0A93F0F151
-#define p751x2_7   0xB52B363427EF98ED
-#define p751x2_8   0x109D30CFADD7D0ED
-#define p751x2_9   0x0AC56A08B964AE90
-#define p751x2_10  0x1C25213F2F75B8CD
-#define p751x2_11  0x0000DFCBAA83EE38
-
 
 .text
 //***********************************************************************
@@ -71,20 +52,20 @@ fpadd751_asm:
   adc    rax, [reg_p2+88] 
   mov    [reg_p3+88], rax
 
-  movq   rax, p751x2_0
+  mov    rax, [rip+p751x2]
   sub    r8, rax
-  movq   rax, p751x2_1
+  mov    rax, [rip+p751x2+8]
   sbb    r9, rax
   sbb    r10, rax
   sbb    r11, rax
   sbb    r12, rax
-  movq   rax, p751x2_5
+  mov    rax, [rip+p751x2+40]
   sbb    r13, rax
-  movq   rax, p751x2_6
+  mov    rax, [rip+p751x2+48]
   sbb    r14, rax
-  movq   rax, p751x2_7
+  mov    rax, [rip+p751x2+56]
   sbb    r15, rax
-  movq   rax, p751x2_8
+  mov    rax, [rip+p751x2+64]
   sbb    rcx, rax
   mov    [reg_p3], r8
   mov    [reg_p3+8], r9
@@ -98,74 +79,66 @@ fpadd751_asm:
   mov    r8, [reg_p3+72]
   mov    r9, [reg_p3+80]
   mov    r10, [reg_p3+88]
-  movq   rax, p751x2_9
+  mov    rax, [rip+p751x2+72]
   sbb    r8, rax
-  movq   rax, p751x2_10
+  mov    rax, [rip+p751x2+80]
   sbb    r9, rax
-  movq   rax, p751x2_11
+  mov    rax, [rip+p751x2+88]
   sbb    r10, rax
   mov    [reg_p3+72], r8
   mov    [reg_p3+80], r9
   mov    [reg_p3+88], r10
-  movq   rax, 0
+  mov    rax, 0
   sbb    rax, 0
   
-  mov    rsi, p751x2_0
+  mov    rsi, [rip+p751x2]
   and    rsi, rax
-  mov    r8, p751x2_1
+  mov    r8, [rip+p751x2+8]
   and    r8, rax
-  movq   r9, p751x2_5
+  mov    r9, [rip+p751x2+40]
   and    r9, rax
-  movq   r10, p751x2_6
+  mov    r10, [rip+p751x2+48]
   and    r10, rax
-  movq   r11, p751x2_7
+  mov    r11, [rip+p751x2+56]
   and    r11, rax
-  movq   r12, p751x2_8
+  mov    r12, [rip+p751x2+64]
   and    r12, rax
-  movq   r13, p751x2_9
+  mov    r13, [rip+p751x2+72]
   and    r13, rax
-  movq   r14, p751x2_10
+  mov    r14, [rip+p751x2+80]
   and    r14, rax
-  movq   r15, p751x2_11
+  mov    r15, [rip+p751x2+88]
   and    r15, rax
   
-  mov    rax, [reg_p3]
-  add    rax, rsi  
-  mov    [reg_p3], rax
+  add    rsi, [reg_p3]  
+  mov    [reg_p3], rsi
   mov    rax, [reg_p3+8]
   adc    rax, r8 
   mov    [reg_p3+8], rax  
   mov    rax, [reg_p3+16]
   adc    rax, r8 
-  mov    [reg_p3+16], rax  
+  mov    [reg_p3+16], rax
   mov    rax, [reg_p3+24]  
   adc    rax, r8 
   mov    [reg_p3+24], rax 
   mov    rax, [reg_p3+32]  
   adc    rax, r8 
   mov    [reg_p3+32], rax 
-  mov    rax, [reg_p3+40]    
-  adc    rax, r9 
-  mov    [reg_p3+40], rax 
-  mov    rax, [reg_p3+48]   
-  adc    rax, r10 
-  mov    [reg_p3+48], rax 
-  mov    rax, [reg_p3+56]   
-  adc    rax, r11  
-  mov    [reg_p3+56], rax 
-  mov    rax, [reg_p3+64]  
-  adc    rax, r12 
-  mov    [reg_p3+64], rax 
-  mov    rax, [reg_p3+72]   
-  adc    rax, r13 
-  mov    [reg_p3+72], rax 
-  mov    rax, [reg_p3+80]   
-  adc    rax, r14 
-  mov    [reg_p3+80], rax 
-  mov    rax, [reg_p3+88]   
-  adc    rax, r15
-  mov    [reg_p3+88], rax 
-  
+  adc    r9, [reg_p3+40]
+  adc    r10, [reg_p3+48]
+  adc    r11, [reg_p3+56]
+  adc    r12, [reg_p3+64]
+  adc    r13, [reg_p3+72] 
+  adc    r14, [reg_p3+80]
+  adc    r15, [reg_p3+88]
+  mov    [reg_p3+40], r9 
+  mov    [reg_p3+48], r10 
+  mov    [reg_p3+56], r11 
+  mov    [reg_p3+64], r12  
+  mov    [reg_p3+72], r13 
+  mov    [reg_p3+80], r14 
+  mov    [reg_p3+88], r15 
+
   pop    r15
   pop    r14
   pop    r13
@@ -220,26 +193,26 @@ fpsub751_asm:
   mov    rax, [reg_p1+88]
   sbb    rax, [reg_p2+88] 
   mov    [reg_p3+88], rax
-  movq   rax, 0
+  mov    rax, 0
   sbb    rax, 0
   
-  mov    rsi, p751x2_0
+  mov    rsi, [rip+p751x2]
   and    rsi, rax
-  mov    r8, p751x2_1
+  mov    r8, [rip+p751x2+8]
   and    r8, rax
-  movq   r9, p751x2_5
+  mov    r9, [rip+p751x2+40]
   and    r9, rax
-  movq   r10, p751x2_6
+  mov    r10, [rip+p751x2+48]
   and    r10, rax
-  movq   r11, p751x2_7
+  mov    r11, [rip+p751x2+56]
   and    r11, rax
-  movq   r12, p751x2_8
+  mov    r12, [rip+p751x2+64]
   and    r12, rax
-  movq   r13, p751x2_9
+  mov    r13, [rip+p751x2+72]
   and    r13, rax
-  movq   r14, p751x2_10
+  mov    r14, [rip+p751x2+80]
   and    r14, rax
-  movq   r15, p751x2_11
+  mov    r15, [rip+p751x2+88]
   and    r15, rax
   
   mov    rax, [reg_p3]
@@ -257,44 +230,38 @@ fpsub751_asm:
   mov    rax, [reg_p3+32]  
   adc    rax, r8 
   mov    [reg_p3+32], rax 
-  mov    rax, [reg_p3+40]    
-  adc    rax, r9 
-  mov    [reg_p3+40], rax 
-  mov    rax, [reg_p3+48]   
-  adc    rax, r10 
-  mov    [reg_p3+48], rax 
-  mov    rax, [reg_p3+56]   
-  adc    rax, r11  
-  mov    [reg_p3+56], rax 
-  mov    rax, [reg_p3+64]  
-  adc    rax, r12 
-  mov    [reg_p3+64], rax 
-  mov    rax, [reg_p3+72]   
-  adc    rax, r13 
-  mov    [reg_p3+72], rax 
-  mov    rax, [reg_p3+80]   
-  adc    rax, r14 
-  mov    [reg_p3+80], rax 
-  mov    rax, [reg_p3+88]   
-  adc    rax, r15
-  mov    [reg_p3+88], rax 
+  adc    r9, [reg_p3+40] 
+  adc    r10, [reg_p3+48] 
+  adc    r11, [reg_p3+56]
+  adc    r12, [reg_p3+64] 
+  adc    r13, [reg_p3+72]
+  adc    r14, [reg_p3+80]
+  adc    r15, [reg_p3+88]
+  mov    [reg_p3+40], r9 
+  mov    [reg_p3+48], r10
+  mov    [reg_p3+56], r11 
+  mov    [reg_p3+64], r12
+  mov    [reg_p3+72], r13 
+  mov    [reg_p3+80], r14  
+  mov    [reg_p3+88], r15 
   
   pop    r15
   pop    r14
   pop    r13
   pop    r12
-  ret
+  ret 
 
 
-  #ifdef _MULX_	
+#ifdef _MULX_
 
-///////////////////////////////////////////////////////////////// MACRO
+/////////////////////////////////////////////////////////////////////////// MACRO
 // Schoolbook integer multiplication
 // Inputs:  memory pointers M0 and M1
 // Outputs: memory pointer C
-// Temps:   stack pointer for 15 64-bit values, regs T0:T7
-/////////////////////////////////////////////////////////////////
-#if _ADX_
+// Temps:   stack space for two 64-bit values (case w/o _ADX_), regs T0:T7
+///////////////////////////////////////////////////////////////////////////
+#ifdef _ADX_
+
 .macro MUL384_SCHOOL M0, M1, C, S, T0, T1, T2, T3, T4, T5, T6, T7 
     mov    rdx, \M0
     mulx   \T0, \T1, \M1    
@@ -311,17 +278,18 @@ fpsub751_asm:
     mulx   \T3, \T7, 40\M1    
     adox   \T5, \T7       
     adox   \T3, rax        
-	
+    
     mov    rdx, 8\M0 
     mulx   \T6, \T7, \M1 
+    xor    rax, rax
     adcx   \T0, \T7 
     mov    8\C, \T0            // C1_final 
     adcx   \T2, \T6     
     mulx   \T6, \T7, 8\M1
-    mov    \S, \T7             // store T7
+    adox   \T2, \T7 
     adcx   \T4, \T6        
-    mulx   \T0, \T6, 16\M1   
-    mov    8\S, \T6            // store T6 
+    mulx   \T0, \T6, 16\M1 
+    adox   \T4, \T6  
     adcx   \T0, \T1     
     mulx   \T1, \T7, 24\M1   
     adcx   \T1, \T5  
@@ -329,25 +297,23 @@ fpsub751_asm:
     adcx   \T3, \T5   
     mulx   \T5, rdx, 40\M1
     adcx   \T5, rax 
-		
-    xor    rax, rax
-    adox   \T2, \S 
-    adox   \T4, 8\S  
+        
     adox   \T0, \T7  
     adox   \T1, \T6  
     adox   \T3, rdx  
     adox   \T5, rax         
-	
+    
     mov    rdx, 16\M0 
-    mulx   \T6, \T7, \M1 
+    mulx   \T6, \T7, \M1
+    xor    rax, rax 
     adcx   \T2, \T7 
     mov    16\C, \T2           // C2_final 
     adcx   \T4, \T6     
     mulx   \T6, \T7, 8\M1
-    mov    \S, \T7             // store T7
+    adox   \T4, \T7 
     adcx   \T0, \T6        
-    mulx   \T2, \T6, 16\M1   
-    mov    8\S, \T6            // store T6 
+    mulx   \T2, \T6, 16\M1
+    adox   \T0, \T6 
     adcx   \T1, \T2     
     mulx   \T2, \T7, 24\M1   
     adcx   \T3, \T2  
@@ -355,25 +321,23 @@ fpsub751_asm:
     adcx   \T5, \T2   
     mulx   \T2, rdx, 40\M1     
     adcx   \T2, rax 
-		
-    xor    rax, rax
-    adox   \T4, \S 
-    adox   \T0, 8\S  
+         
     adox   \T1, \T7  
     adox   \T3, \T6  
     adox   \T5, rdx 
     adox   \T2, rax           
-	
+    
     mov    rdx, 24\M0 
-    mulx   \T6, \T7, \M1 
+    mulx   \T6, \T7, \M1
+    xor    rax, rax 
     adcx   \T4, \T7 
     mov    24\C, \T4           // C3_final 
     adcx   \T0, \T6     
     mulx   \T6, \T7, 8\M1
-    mov    \S, \T7             // store T7
+    adox   \T0, \T7
     adcx   \T1, \T6        
-    mulx   \T4, \T6, 16\M1   
-    mov    8\S, \T6            // store T6 
+    mulx   \T4, \T6, 16\M1
+    adox   \T1, \T6  
     adcx   \T3, \T4     
     mulx   \T4, \T7, 24\M1   
     adcx   \T5, \T4  
@@ -381,25 +345,23 @@ fpsub751_asm:
     adcx   \T2, \T4   
     mulx   \T4, rdx, 40\M1     
     adcx   \T4, rax
-		
-    xor    rax, rax
-    adox   \T0, \S 
-    adox   \T1, 8\S  
+        
     adox   \T3, \T7  
     adox   \T5, \T6  
     adox   \T2, rdx  
     adox   \T4, rax         
-	
+    
     mov    rdx, 32\M0 
     mulx   \T6, \T7, \M1 
+    xor    rax, rax
     adcx   \T0, \T7 
     mov    32\C, \T0           // C4_final 
     adcx   \T1, \T6     
     mulx   \T6, \T7, 8\M1
-    mov    \S, \T7             // store T7
+    adox   \T1, \T7 
     adcx   \T3, \T6        
-    mulx   \T0, \T6, 16\M1   
-    mov    8\S, \T6            // store T6 
+    mulx   \T0, \T6, 16\M1 
+    adox   \T3, \T6 
     adcx   \T5, \T0     
     mulx   \T0, \T7, 24\M1   
     adcx   \T2, \T0  
@@ -407,25 +369,23 @@ fpsub751_asm:
     adcx   \T4, \T0   
     mulx   \T0, rdx, 40\M1     
     adcx   \T0, rax 
-		
-    xor    rax, rax
-    adox   \T1, \S 
-    adox   \T3, 8\S  
+         
     adox   \T5, \T7  
     adox   \T2, \T6  
     adox   \T4, rdx  
     adox   \T0, rax           
-	
+    
     mov    rdx, 40\M0 
     mulx   \T6, \T7, \M1 
+    xor    rax, rax
     adcx   \T1, \T7 
     mov    40\C, \T1           // C5_final 
     adcx   \T3, \T6     
     mulx   \T6, \T7, 8\M1
-    mov    \S, \T7             // store T7
+    adox   \T3, \T7 
     adcx   \T5, \T6        
-    mulx   \T1, \T6, 16\M1   
-    mov    8\S, \T6            // store T6 
+    mulx   \T1, \T6, 16\M1
+    adox   \T5, \T6 
     adcx   \T2, \T1     
     mulx   \T1, \T7, 24\M1   
     adcx   \T4, \T1  
@@ -433,13 +393,11 @@ fpsub751_asm:
     adcx   \T0, \T1   
     mulx   \T1, rdx, 40\M1     
     adcx   \T1, rax 
-		
-    add    \T3, \S 
-    adc    \T5, 8\S  
-    adc    \T2, \T7 
-    adc    \T4, \T6 
-    adc    \T0, rdx 
-    adc    \T1, 0 
+         
+    adox   \T2, \T7 
+    adox   \T4, \T6 
+    adox   \T0, rdx 
+    adox   \T1, rax 
     mov    48\C, \T3 
     mov    56\C, \T5 
     mov    64\C, \T2 
@@ -455,6 +413,7 @@ fpsub751_asm:
     mulx   \T0, \T1, \M1    
     mulx   \T2, \T3, 8\M1
     mov    \C, \T1             // C0_final 
+    xor    rax, rax
     mulx   \T4, \T5, 16\M1 
     add    \T0, \T3               
     adc    \T2, \T5     
@@ -464,8 +423,8 @@ fpsub751_asm:
     adc    \T1, \T6        
     mulx   \T3, \T7, 40\M1    
     adc    \T5, \T7       
-    adc    \T3, 0         
-	
+    adc    \T3, rax        
+    
     mov    rdx, 8\M0 
     mulx   \T6, \T7, \M1 
     add    \T0, \T7 
@@ -477,20 +436,21 @@ fpsub751_asm:
     mulx   \T0, \T6, 16\M1   
     mov    8\S, \T6            // store T6 
     adc    \T0, \T1     
-    mulx   \T1, rax, 24\M1   
+    mulx   \T1, \T7, 24\M1   
     adc    \T1, \T5  
-    mulx   \T5, \T7, 32\M1     
+    mulx   \T5, \T6, 32\M1     
     adc    \T3, \T5   
-    mulx   \T5, \T6, 40\M1     
-    adc    \T5, 0 
-		
+    mulx   \T5, rdx, 40\M1
+    adc    \T5, rax 
+        
+    xor    rax, rax
     add    \T2, \S 
     adc    \T4, 8\S  
-    adc    \T0, rax  
-    adc    \T1, \T7  
-    adc    \T3, \T6  
-    adc    \T5, 0          
-	
+    adc    \T0, \T7  
+    adc    \T1, \T6  
+    adc    \T3, rdx  
+    adc    \T5, rax         
+    
     mov    rdx, 16\M0 
     mulx   \T6, \T7, \M1 
     add    \T2, \T7 
@@ -502,20 +462,21 @@ fpsub751_asm:
     mulx   \T2, \T6, 16\M1   
     mov    8\S, \T6            // store T6 
     adc    \T1, \T2     
-    mulx   \T2, rax, 24\M1   
+    mulx   \T2, \T7, 24\M1   
     adc    \T3, \T2  
-    mulx   \T2, \T7, 32\M1     
+    mulx   \T2, \T6, 32\M1     
     adc    \T5, \T2   
-    mulx   \T2, \T6, 40\M1     
-    adc    \T2, 0 
-		
+    mulx   \T2, rdx, 40\M1     
+    adc    \T2, rax 
+        
+    xor    rax, rax
     add    \T4, \S 
     adc    \T0, 8\S  
-    adc    \T1, rax  
-    adc    \T3, \T7  
-    adc    \T5, \T6  
-    adc    \T2, 0           
-	
+    adc    \T1, \T7  
+    adc    \T3, \T6  
+    adc    \T5, rdx 
+    adc    \T2, rax           
+    
     mov    rdx, 24\M0 
     mulx   \T6, \T7, \M1 
     add    \T4, \T7 
@@ -527,20 +488,21 @@ fpsub751_asm:
     mulx   \T4, \T6, 16\M1   
     mov    8\S, \T6            // store T6 
     adc    \T3, \T4     
-    mulx   \T4, rax, 24\M1   
+    mulx   \T4, \T7, 24\M1   
     adc    \T5, \T4  
-    mulx   \T4, \T7, 32\M1     
+    mulx   \T4, \T6, 32\M1     
     adc    \T2, \T4   
-    mulx   \T4, \T6, 40\M1     
-    adc    \T4, 0 
-		
+    mulx   \T4, rdx, 40\M1     
+    adc    \T4, rax
+        
+    xor    rax, rax
     add    \T0, \S 
     adc    \T1, 8\S  
-    adc    \T3, rax  
-    adc    \T5, \T7  
-    adc    \T2, \T6  
-    adc    \T4, 0         
-	
+    adc    \T3, \T7  
+    adc    \T5, \T6  
+    adc    \T2, rdx  
+    adc    \T4, rax         
+    
     mov    rdx, 32\M0 
     mulx   \T6, \T7, \M1 
     add    \T0, \T7 
@@ -552,20 +514,21 @@ fpsub751_asm:
     mulx   \T0, \T6, 16\M1   
     mov    8\S, \T6            // store T6 
     adc    \T5, \T0     
-    mulx   \T0, rax, 24\M1   
+    mulx   \T0, \T7, 24\M1   
     adc    \T2, \T0  
-    mulx   \T0, \T7, 32\M1     
+    mulx   \T0, \T6, 32\M1     
     adc    \T4, \T0   
-    mulx   \T0, \T6, 40\M1     
-    adc    \T0, 0 
-		
+    mulx   \T0, rdx, 40\M1     
+    adc    \T0, rax 
+        
+    xor    rax, rax
     add    \T1, \S 
     adc    \T3, 8\S  
-    adc    \T5, rax  
-    adc    \T2, \T7  
-    adc    \T4, \T6  
-    adc    \T0, 0           
-	
+    adc    \T5, \T7  
+    adc    \T2, \T6  
+    adc    \T4, rdx  
+    adc    \T0, rax           
+    
     mov    rdx, 40\M0 
     mulx   \T6, \T7, \M1 
     add    \T1, \T7 
@@ -577,26 +540,27 @@ fpsub751_asm:
     mulx   \T1, \T6, 16\M1   
     mov    8\S, \T6            // store T6 
     adc    \T2, \T1     
-    mulx   \T1, rax, 24\M1   
+    mulx   \T1, \T7, 24\M1   
     adc    \T4, \T1  
-    mulx   \T1, \T7, 32\M1     
+    mulx   \T1, \T6, 32\M1     
     adc    \T0, \T1   
-    mulx   \T1, \T6, 40\M1     
-    adc    \T1, 0 
-		
+    mulx   \T1, rdx, 40\M1     
+    adc    \T1, rax 
+        
     add    \T3, \S 
+    adc    \T5, 8\S  
+    adc    \T2, \T7 
+    adc    \T4, \T6 
+    adc    \T0, rdx 
+    adc    \T1, 0 
     mov    48\C, \T3 
-    adc    \T5, 8\S 
-    mov    56\C, \T5  
-    adc    \T2, rax
-    mov    64\C, \T2  
-    adc    \T4, \T7  
+    mov    56\C, \T5 
+    mov    64\C, \T2 
     mov    72\C, \T4
-    adc    \T0, \T6 
     mov    80\C, \T0 
-    adc    \T1, 0
     mov    88\C, \T1 
 .endm
+
 #endif
 
 
@@ -1765,6 +1729,376 @@ mul751_asm:
 
 #endif
 
+
+#ifdef _MULX_
+
+///////////////////////////////////////////////////////////////// MACRO
+// Schoolbook integer multiplication
+// Inputs:  memory pointers M0 and M1
+// Outputs: memory locations C, C+8, C+16, and regs T0:T7
+// Temps:   memory locations regs T7:T9
+/////////////////////////////////////////////////////////////////
+#ifdef _ADX_
+
+.macro MUL256x448_SCHOOL M0, M1, C, T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10 
+    mov    rdx, \M0
+    mulx   \T0, \T1, \M1    
+    mulx   \T2, \T3, 8\M1
+    mov    \C, \T1             // C0_final 
+    xor    rax, rax
+    mulx   \T4, \T5, 16\M1 
+    adox   \T0, \T3               
+    adox   \T2, \T5     
+    mulx   \T1, \T3, 24\M1
+    adox   \T4, \T3         
+    mulx   \T5, \T6, 32\M1 
+    adox   \T1, \T6        
+    mulx   \T3, \T7, 40\M1    
+    adox   \T5, \T7          
+    mulx   \T6, \T8, 48\M1    
+    adox   \T3, \T8          
+    adox   \T6, rax  
+    
+    mov    rdx, 8\M0 
+    mulx   \T8, \T7, \M1 
+    xor    rax, rax 
+    adcx   \T0, \T7 
+    mov    8\C, \T0            // C1_final 
+    adcx   \T2, \T8     
+    mulx   \T7, \T8, 8\M1
+    adox   \T2, \T8 
+    adcx   \T4, \T7        
+    mulx   \T0, \T8, 16\M1  
+    adox   \T4, \T8  
+    adcx   \T0, \T1     
+    mulx   \T1, \T7, 24\M1   
+    adcx   \T1, \T5  
+    mulx   \T5, \T8, 32\M1     
+    adcx   \T3, \T5   
+    mulx   \T5, \T9, 40\M1    
+    adcx   \T6, \T5   
+    mulx   \T5, rdx, 48\M1
+    adcx   \T5, rax 
+        
+    adox   \T0, \T7  
+    adox   \T1, \T8  
+    adox   \T3, \T9  
+    adox   \T6, rdx    
+    adox   \T5, rax      
+    
+    mov    rdx, 16\M0 
+    mulx   \T8, \T7, \M1 
+    xor    rax, rax 
+    adcx   \T2, \T7 
+    mov    16\C, \T2           // C2_final 
+    adcx   \T4, \T8     
+    mulx   \T8, \T7, 8\M1
+    adox   \T4, \T7 
+    adcx   \T0, \T8        
+    mulx   \T2, \T8, 16\M1 
+    adox   \T0, \T8 
+    adcx   \T1, \T2     
+    mulx   \T2, \T7, 24\M1   
+    adcx   \T3, \T2  
+    mulx   \T2, \T8, 32\M1     
+    adcx   \T6, \T2  
+    mulx   \T2, \T9, 40\M1    
+    adcx   \T5, \T2   
+    mulx   \T2, rdx, 48\M1     
+    adcx   \T2, rax 
+         
+    adox   \T1, \T7  
+    adox   \T3, \T8   
+    adox   \T6, \T9  
+    adox   \T5, rdx 
+    adox   \T2, rax        
+    
+    mov    rdx, 24\M0 
+    mulx   \T8, \T7, \M1
+    xor    rax, rax
+    adcx   \T7, \T4 
+    adcx   \T0, \T8                 
+    mulx   \T8, \T10, 8\M1
+    adox   \T0, \T10 
+    adcx   \T1, \T8        
+    mulx   \T4, \T8, 16\M1
+    adox   \T1, \T8  
+    adcx   \T3, \T4     
+    mulx   \T4, \T10, 24\M1   
+    adcx   \T6, \T4  
+    mulx   \T4, \T8, 32\M1     
+    adcx   \T5, \T4  
+    mulx   \T4, \T9, 40\M1    
+    adcx   \T2, \T4   
+    mulx   \T4, rdx, 48\M1     
+    adcx   \T4, rax 
+        
+    adox   \T3, \T10  
+    adox   \T6, \T8   
+    adox   \T5, \T9  
+    adox   \T2, rdx 
+    adox   \T4, rax      
+.endm
+
+#else
+
+.macro MUL256x448_SCHOOL M0, M1, C, T0, T1, T2, T3, T4, T5, T6, T7, T8, T9, T10 
+    mov    rdx, \M0
+    mulx   \T0, \T1, \M1    
+    mulx   \T2, \T3, 8\M1
+    mov    \C, \T1             // C0_final 
+    xor    rax, rax
+    mulx   \T4, \T5, 16\M1 
+    add    \T0, \T3               
+    adc    \T2, \T5     
+    mulx   \T1, \T3, 24\M1
+    adc    \T4, \T3         
+    mulx   \T5, \T6, 32\M1 
+    adc    \T1, \T6        
+    mulx   \T3, \T7, 40\M1    
+    adc    \T5, \T7          
+    mulx   \T6, \T8, 48\M1    
+    adc    \T3, \T8          
+    adc    \T6, rax   
+    
+    mov    rdx, 8\M0 
+    mulx   \T8, \T7, \M1 
+    add    \T0, \T7 
+    mov    8\C, \T0            // C1_final 
+    adc    \T2, \T8     
+    mulx   \T7, \T8, 8\M1
+    mov    32\C, \T8           // store
+    adc    \T4, \T7        
+    mulx   \T0, \T8, 16\M1   
+    mov    40\C, \T8           // store 
+    adc    \T0, \T1     
+    mulx   \T1, \T7, 24\M1   
+    adc    \T1, \T5  
+    mulx   \T5, \T8, 32\M1     
+    adc    \T3, \T5   
+    mulx   \T5, \T9, 40\M1    
+    adc    \T6, \T5   
+    mulx   \T5, rdx, 48\M1
+    adc    \T5, rax 
+        
+    xor    rax, rax
+    add    \T2, 32\C 
+    adc    \T4, 40\C  
+    adc    \T0, \T7  
+    adc    \T1, \T8  
+    adc    \T3, \T9  
+    adc    \T6, rdx    
+    adc    \T5, rax        
+    
+    mov    rdx, 16\M0 
+    mulx   \T8, \T7, \M1
+    add    \T2, \T7 
+    mov    16\C, \T2           // C2_final 
+    adc    \T4, \T8     
+    mulx   \T8, \T7, 8\M1
+    mov    32\C, \T7           // store
+    adc    \T0, \T8        
+    mulx   \T2, \T8, 16\M1   
+    mov    40\C, \T8           // store 
+    adc    \T1, \T2     
+    mulx   \T2, \T7, 24\M1   
+    adc    \T3, \T2  
+    mulx   \T2, \T8, 32\M1     
+    adc    \T6, \T2  
+    mulx   \T2, \T9, 40\M1    
+    adc    \T5, \T2   
+    mulx   \T2, rdx, 48\M1     
+    adc    \T2, rax 
+        
+    xor    rax, rax
+    add    \T4, 32\C 
+    adc    \T0, 40\C  
+    adc    \T1, \T7  
+    adc    \T3, \T8   
+    adc    \T6, \T9  
+    adc    \T5, rdx 
+    adc    \T2, rax        
+    
+    mov    rdx, 24\M0 
+    mulx   \T8, \T7, \M1
+    add    \T7, \T4 
+    adc    \T0, \T8                 
+    mulx   \T8, \T10, 8\M1
+    mov    32\C, \T10          // store
+    adc    \T1, \T8        
+    mulx   \T4, \T8, 16\M1   
+    mov    40\C, \T8           // store 
+    adc    \T3, \T4     
+    mulx   \T4, \T10, 24\M1   
+    adc    \T6, \T4  
+    mulx   \T4, \T8, 32\M1     
+    adc    \T5, \T4  
+    mulx   \T4, \T9, 40\M1    
+    adc    \T2, \T4   
+    mulx   \T4, rdx, 48\M1     
+    adc    \T4, rax 
+        
+    xor    rax, rax
+    add    \T0, 32\C 
+    adc    \T1, 40\C  
+    adc    \T3, \T10  
+    adc    \T6, \T8   
+    adc    \T5, \T9  
+    adc    \T2, rdx 
+    adc    \T4, rax      
+.endm
+
+#endif
+
+  
+//**************************************************************************************
+//  Montgomery reduction
+//  Based on method described in Faz-Hernandez et al. https://eprint.iacr.org/2017/1015  
+//  Operation: c [reg_p2] = a [reg_p1]
+//  NOTE: a=c is not allowed
+//************************************************************************************** 
+.global rdc751_asm
+rdc751_asm:
+    push   rbx
+    push   rbp
+    push   r12
+    push   r13 
+    push   r14 
+    push   r15  
+
+    // a[0-3] x p751p1_nz --> result: [reg_p2+48], [reg_p2+56], [reg_p2+64], and rbp, r8:r14 
+    MUL256x448_SCHOOL [reg_p1], [rip+p751p1+40], [reg_p2+48], r8, r9, r13, r10, r14, r12, r11, rbp, rbx, rcx, r15     
+
+    xor    r15, r15
+    mov    rax, [reg_p2+48]
+    mov    rdx, [reg_p2+56]
+    mov    rbx, [reg_p2+64]
+    add    rax, [reg_p1+40]  
+    adc    rdx, [reg_p1+48]  
+    adc    rbx, [reg_p1+56]
+    mov    [reg_p1+40], rax
+    mov    [reg_p1+48], rdx 
+    mov    [reg_p1+56], rbx  
+    adc    rbp, [reg_p1+64]
+    adc    r8, [reg_p1+72]  
+    adc    r9, [reg_p1+80]  
+    adc    r10, [reg_p1+88]   
+    adc    r11, [reg_p1+96]   
+    adc    r12, [reg_p1+104]   
+    adc    r13, [reg_p1+112]   
+    adc    r14, [reg_p1+120]  
+    adc    r15, [reg_p1+128]
+    mov    [reg_p1+64], rbp   
+    mov    [reg_p1+72], r8  
+    mov    [reg_p1+80], r9  
+    mov    [reg_p1+88], r10  
+    mov    [reg_p1+96], r11  
+    mov    [reg_p1+104], r12  
+    mov    [reg_p1+112], r13  
+    mov    [reg_p1+120], r14
+    mov    [reg_p1+128], r15   
+    mov    r8, [reg_p1+136]  
+    mov    r9, [reg_p1+144]  
+    mov    r10, [reg_p1+152]
+    mov    r11, [reg_p1+160]
+    mov    r12, [reg_p1+168]
+    mov    r13, [reg_p1+176]
+    mov    r14, [reg_p1+184] 
+    adc    r8, 0
+    adc    r9, 0
+    adc    r10, 0
+    adc    r11, 0
+    adc    r12, 0
+    adc    r13, 0
+    adc    r14, 0  
+    mov    [reg_p1+136], r8  
+    mov    [reg_p1+144], r9  
+    mov    [reg_p1+152], r10  
+    mov    [reg_p1+160], r11  
+    mov    [reg_p1+168], r12  
+    mov    [reg_p1+176], r13  
+    mov    [reg_p1+184], r14
+
+    // a[4-7] x p751p1_nz --> result: [reg_p2+48], [reg_p2+56], [reg_p2+64], and rbp, r8:r14 
+    MUL256x448_SCHOOL [reg_p1+32], [rip+p751p1+40], [reg_p2+48], r8, r9, r13, r10, r14, r12, r11, rbp, rbx, rcx, r15 
+
+    xor    r15, r15
+    mov    rax, [reg_p2+48]
+    mov    rdx, [reg_p2+56]
+    mov    rbx, [reg_p2+64]
+    add    rax, [reg_p1+72]  
+    adc    rdx, [reg_p1+80]  
+    adc    rbx, [reg_p1+88]
+    mov    [reg_p1+72], rax
+    mov    [reg_p1+80], rdx 
+    mov    [reg_p1+88], rbx
+    adc    rbp, [reg_p1+96]
+    adc    r8, [reg_p1+104]  
+    adc    r9, [reg_p1+112]  
+    adc    r10, [reg_p1+120]   
+    adc    r11, [reg_p1+128]  
+    adc    r12, [reg_p1+136]   
+    adc    r13, [reg_p1+144]   
+    adc    r14, [reg_p1+152]  
+    adc    r15, [reg_p1+160]
+    mov    [reg_p2], rbp       // Final result c0    
+    mov    [reg_p1+104], r8  
+    mov    [reg_p1+112], r9  
+    mov    [reg_p1+120], r10  
+    mov    [reg_p1+128], r11   
+    mov    [reg_p1+136], r12  
+    mov    [reg_p1+144], r13  
+    mov    [reg_p1+152], r14
+    mov    [reg_p1+160], r15
+    mov    r12, [reg_p1+168]
+    mov    r13, [reg_p1+176]
+    mov    r14, [reg_p1+184] 
+    adc    r12, 0
+    adc    r13, 0
+    adc    r14, 0   
+    mov    [reg_p1+168], r12  
+    mov    [reg_p1+176], r13  
+    mov    [reg_p1+184], r14 
+
+    // a[8-11] x p751p1_nz --> result: [reg_p2+48], [reg_p2+56], [reg_p2+64], and rbp, r8:r14 
+    MUL256x448_SCHOOL [reg_p1+64], [rip+p751p1+40], [reg_p2+48], r8, r9, r13, r10, r14, r12, r11, rbp, rbx, rcx, r15 
+
+    // Final result c1:c11
+    mov    rax, [reg_p2+48]
+    mov    rdx, [reg_p2+56]
+    mov    rbx, [reg_p2+64] 
+    add    rax, [reg_p1+104] 
+    adc    rdx, [reg_p1+112] 
+    adc    rbx, [reg_p1+120]
+    mov    [reg_p2+8], rax
+    mov    [reg_p2+16], rdx
+    mov    [reg_p2+24], rbx
+    adc    rbp, [reg_p1+128] 
+    adc    r8, [reg_p1+136]  
+    adc    r9, [reg_p1+144] 
+    adc    r10, [reg_p1+152]
+    adc    r11, [reg_p1+160]
+    adc    r12, [reg_p1+168]
+    adc    r13, [reg_p1+176]
+    adc    r14, [reg_p1+184]
+    mov    [reg_p2+32], rbp
+    mov    [reg_p2+40], r8
+    mov    [reg_p2+48], r9
+    mov    [reg_p2+56], r10
+    mov    [reg_p2+64], r11
+    mov    [reg_p2+72], r12
+    mov    [reg_p2+80], r13
+    mov    [reg_p2+88], r14 
+
+    pop    r15
+    pop    r14
+    pop    r13
+    pop    r12
+    pop    rbp
+    pop    rbx
+   ret
+
+  #else
   
 //***********************************************************************
 //  Montgomery reduction
@@ -1780,7 +2114,7 @@ rdc751_asm:
   push   r15 
 
   mov    r11, [reg_p1]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    r11
   xor    r8, r8
   add    rax, [reg_p1+40]
@@ -1788,14 +2122,14 @@ rdc751_asm:
   adc    r8, rdx
   
   xor    r9, r9
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    r11
   xor    r10, r10
   add    r8, rax
   adc    r9, rdx
 
   mov    r12, [reg_p1+8]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
@@ -1806,20 +2140,20 @@ rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    r11
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    r12
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
   mov    r13, [reg_p1+16]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
@@ -1830,26 +2164,26 @@ rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    r12
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    r13
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
   mov    r14, [reg_p1+24]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
@@ -1860,32 +2194,32 @@ rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    r11
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    r13
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    r14
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
   mov    r15, [reg_p1+32]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
@@ -1896,38 +2230,38 @@ rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r11
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    r12
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    r14
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    r15
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
   mov    rcx, [reg_p2+40]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
@@ -1938,44 +2272,44 @@ rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r12
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    r13
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    r15
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    rcx
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
   mov    r11, [reg_p2+48]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
@@ -1986,44 +2320,44 @@ rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r13
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    r14
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    rcx
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    r11
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
   mov    r12, [reg_p2+56]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
@@ -2034,44 +2368,44 @@ rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r14
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  movq   rax, p751p1_9
+  mov    rax, [rip+p751p1+72]
   mul    r15
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  movq   rax, p751p1_8
+  mov    rax, [rip+p751p1+64]
   mul    rcx
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  movq   rax, p751p1_7
+  mov    rax, [rip+p751p1+56]
   mul    r11
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  movq   rax, p751p1_6
+  mov    rax, [rip+p751p1+48]
   mul    r12
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
   mov    r13, [reg_p2+64]
-  movq   rax, p751p1_5
+  mov    rax, [rip+p751p1+40]
   mul    r13
   add    r9, rax
   adc    r10, rdx
@@ -2082,44 +2416,44 @@ rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r15
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    rcx
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    r12
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    r13
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
   mov    r14, [reg_p2+72]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
@@ -2130,44 +2464,44 @@ rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    rcx
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    r11
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    r13
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    r14
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
   mov    r15, [reg_p2+80]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
@@ -2178,44 +2512,44 @@ rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r11
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    r12
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    r14
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    r15
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
   mov    rcx, [reg_p2+88]
-  movq   rax, p751p1_5 
+  mov    rax, [rip+p751p1+40] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
@@ -2226,37 +2560,37 @@ rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r12
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    r13
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    r15
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_6 
+  mov    rax, [rip+p751p1+48] 
   mul    rcx
   add    r10, rax
   adc    r8, rdx
@@ -2267,31 +2601,31 @@ rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r13
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    r14
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  movq   rax, p751p1_7 
+  mov    rax, [rip+p751p1+56] 
   mul    rcx
   add    r8, rax
   adc    r9, rdx
@@ -2302,25 +2636,25 @@ rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r14
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    r15
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  movq   rax, p751p1_8 
+  mov    rax, [rip+p751p1+64] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
@@ -2331,19 +2665,19 @@ rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    r15
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  movq   rax, p751p1_9 
+  mov    rax, [rip+p751p1+72] 
   mul    rcx
   add    r10, rax
   adc    r8, rdx
@@ -2354,13 +2688,13 @@ rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
 
-  movq   rax, p751p1_10 
+  mov    rax, [rip+p751p1+80] 
   mul    rcx
   add    r8, rax
   adc    r9, rdx
@@ -2370,7 +2704,7 @@ rdc751_asm:
   adc    r9, 0
   adc    r10, 0
   
-  movq   rax, p751p1_11 
+  mov    rax, [rip+p751p1+88] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
@@ -2386,189 +2720,228 @@ rdc751_asm:
   pop    r12
   ret
 
+  #endif
+
 
 //***********************************************************************
 //  751-bit multiprecision addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
 .global mp_add751_asm
-mp_add751_asm:
-  push   r12
-  push   r13
-  push   r14
-  push   r15
-  push   rbx
-  
+mp_add751_asm:  
   mov    r8, [reg_p1]
   mov    r9, [reg_p1+8]
   mov    r10, [reg_p1+16]
   mov    r11, [reg_p1+24]
-  mov    r12, [reg_p1+32]
-  mov    r13, [reg_p1+40]
-  mov    r14, [reg_p1+48]
-  mov    r15, [reg_p1+56] 
-  mov    rax, [reg_p1+64]
-  mov    rbx, [reg_p1+72] 
-  mov    rcx, [reg_p1+80]  
-  mov    rdi, [reg_p1+88] 
-
+  mov    rax, [reg_p1+32]
+  mov    rcx, [reg_p1+40]
   add    r8, [reg_p2] 
   adc    r9, [reg_p2+8] 
   adc    r10, [reg_p2+16] 
   adc    r11, [reg_p2+24] 
-  adc    r12, [reg_p2+32] 
-  adc    r13, [reg_p2+40] 
-  adc    r14, [reg_p2+48] 
-  adc    r15, [reg_p2+56]
-  adc    rax, [reg_p2+64] 
-  adc    rbx, [reg_p2+72]
-  adc    rcx, [reg_p2+80]
-  adc    rdi, [reg_p2+88]
-
+  adc    rax, [reg_p2+32] 
+  adc    rcx, [reg_p2+40] 
   mov    [reg_p3], r8
   mov    [reg_p3+8], r9
   mov    [reg_p3+16], r10
   mov    [reg_p3+24], r11
-  mov    [reg_p3+32], r12
-  mov    [reg_p3+40], r13
-  mov    [reg_p3+48], r14
-  mov    [reg_p3+56], r15
-  mov    [reg_p3+64], rax
-  mov    [reg_p3+72], rbx
-  mov    [reg_p3+80], rcx
-  mov    [reg_p3+88], rdi
-  
-  pop    rbx
-  pop    r15
-  pop    r14
-  pop    r13
-  pop    r12
+  mov    [reg_p3+32], rax
+  mov    [reg_p3+40], rcx
+
+  mov    r8, [reg_p1+48]
+  mov    r9, [reg_p1+56] 
+  mov    r10, [reg_p1+64]
+  mov    r11, [reg_p1+72] 
+  mov    rax, [reg_p1+80]  
+  mov    rcx, [reg_p1+88] 
+  adc    r8, [reg_p2+48] 
+  adc    r9, [reg_p2+56]
+  adc    r10, [reg_p2+64] 
+  adc    r11, [reg_p2+72]
+  adc    rax, [reg_p2+80]
+  adc    rcx, [reg_p2+88]
+  mov    [reg_p3+48], r8
+  mov    [reg_p3+56], r9
+  mov    [reg_p3+64], r10
+  mov    [reg_p3+72], r11
+  mov    [reg_p3+80], rax
+  mov    [reg_p3+88], rcx
   ret
 
 
 //***********************************************************************
-//  2x751-bit multiprecision addition
-//  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
+//  2x751-bit multiprecision subtraction/addition
+//  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p751*2^768
 //*********************************************************************** 
-.global mp_add751x2_asm
-mp_add751x2_asm:
+.global mp_subadd751x2_asm
+mp_subadd751x2_asm:
   push   r12
-  push   r13
-  push   r14
+  push   r13 
+  push   r14 
   push   r15
   push   rbx
-  
+  xor    rax, rax
   mov    r8, [reg_p1]
   mov    r9, [reg_p1+8]
   mov    r10, [reg_p1+16]
   mov    r11, [reg_p1+24]
-  mov    r12, [reg_p1+32]
-  mov    r13, [reg_p1+40]
-  mov    r14, [reg_p1+48]
-  mov    r15, [reg_p1+56] 
-  mov    rax, [reg_p1+64]
-  mov    rbx, [reg_p1+72] 
-  mov    rcx, [reg_p1+80] 
-
-  add    r8, [reg_p2] 
-  adc    r9, [reg_p2+8] 
-  adc    r10, [reg_p2+16] 
-  adc    r11, [reg_p2+24] 
-  adc    r12, [reg_p2+32] 
-  adc    r13, [reg_p2+40] 
-  adc    r14, [reg_p2+48] 
-  adc    r15, [reg_p2+56]
-  adc    rax, [reg_p2+64] 
-  adc    rbx, [reg_p2+72]
-  adc    rcx, [reg_p2+80]
-
+  mov    rcx, [reg_p1+32]
+  sub    r8, [reg_p2] 
+  sbb    r9, [reg_p2+8] 
+  sbb    r10, [reg_p2+16] 
+  sbb    r11, [reg_p2+24] 
+  sbb    rcx, [reg_p2+32] 
   mov    [reg_p3], r8
   mov    [reg_p3+8], r9
   mov    [reg_p3+16], r10
   mov    [reg_p3+24], r11
-  mov    [reg_p3+32], r12
-  mov    [reg_p3+40], r13
-  mov    [reg_p3+48], r14
-  mov    [reg_p3+56], r15
-  mov    [reg_p3+64], rax
-  mov    [reg_p3+72], rbx
-  mov    [reg_p3+80], rcx 
-  mov    rax, [reg_p1+88] 
-  adc    rax, [reg_p2+88]
-  mov    [reg_p3+88], rax
+  mov    [reg_p3+32], rcx
+
+  mov    r8, [reg_p1+40]
+  mov    r9, [reg_p1+48]
+  mov    r10, [reg_p1+56] 
+  mov    r11, [reg_p1+64]
+  mov    rcx, [reg_p1+72] 
+  sbb    r8, [reg_p2+40] 
+  sbb    r9, [reg_p2+48] 
+  sbb    r10, [reg_p2+56]
+  sbb    r11, [reg_p2+64] 
+  sbb    rcx, [reg_p2+72]
+  mov    [reg_p3+40], r8
+  mov    [reg_p3+48], r9
+  mov    [reg_p3+56], r10
+  mov    [reg_p3+64], r11
+  mov    [reg_p3+72], rcx
   
-  mov    r8, [reg_p1+96]
-  mov    r9, [reg_p1+104]
-  mov    r10, [reg_p1+112]
-  mov    r11, [reg_p1+120]
-  mov    r12, [reg_p1+128]
-  mov    r13, [reg_p1+136]
-  mov    r14, [reg_p1+144]
-  mov    r15, [reg_p1+152] 
-  mov    rax, [reg_p1+160]
-  mov    rbx, [reg_p1+168] 
-  mov    rcx, [reg_p1+176]  
-  mov    rdi, [reg_p1+184] 
-
-  adc    r8, [reg_p2+96] 
-  adc    r9, [reg_p2+104] 
-  adc    r10, [reg_p2+112] 
-  adc    r11, [reg_p2+120] 
-  adc    r12, [reg_p2+128] 
-  adc    r13, [reg_p2+136] 
-  adc    r14, [reg_p2+144] 
-  adc    r15, [reg_p2+152]
-  adc    rax, [reg_p2+160] 
-  adc    rbx, [reg_p2+168]
-  adc    rcx, [reg_p2+176]
-  adc    rdi, [reg_p2+184]
-
-  mov    [reg_p3+96], r8
-  mov    [reg_p3+104], r9
-  mov    [reg_p3+112], r10
-  mov    [reg_p3+120], r11
+  mov    r8, [reg_p1+80]
+  mov    r9, [reg_p1+88] 
+  mov    r10, [reg_p1+96]
+  mov    r11, [reg_p1+104]
+  mov    rcx, [reg_p1+112]
+  sbb    r8, [reg_p2+80]
+  sbb    r9, [reg_p2+88]
+  sbb    r10, [reg_p2+96] 
+  sbb    r11, [reg_p2+104] 
+  sbb    rcx, [reg_p2+112]
+  mov    [reg_p3+80], r8 
+  mov    [reg_p3+88], r9
+  mov    [reg_p3+96], r10
+  mov    [reg_p3+104], r11
+  mov    [reg_p3+112], rcx
+  
+  mov    r8, [reg_p1+120]
+  mov    r9, [reg_p1+128]
+  mov    r10, [reg_p1+136]
+  mov    r11, [reg_p1+144]
+  mov    rcx, [reg_p1+152]
+  sbb    r8, [reg_p2+120] 
+  sbb    r9, [reg_p2+128] 
+  sbb    r10, [reg_p2+136] 
+  sbb    r11, [reg_p2+144] 
+  sbb    rcx, [reg_p2+152]
+  mov    [reg_p3+120], r8
+  mov    [reg_p3+128], r9
+  mov    [reg_p3+136], r10
+  mov    [reg_p3+144], r11
+  mov    [reg_p3+152], rcx  
+   
+  mov    r8, [reg_p1+160]
+  mov    r9, [reg_p1+168] 
+  mov    r10, [reg_p1+176]  
+  mov    r11, [reg_p1+184]
+  sbb    r8, [reg_p2+160]
+  sbb    r9, [reg_p2+168]
+  sbb    r10, [reg_p2+176]
+  sbb    r11, [reg_p2+184]
+  sbb    rax, 0
+  
+  // Add p751 anded with the mask in rax 
+  mov    r12, [rip+p751]
+  mov    r13, [rip+p751+40]
+  mov    r14, [rip+p751+48]
+  mov    r15, [rip+p751+56]
+  mov    rdi, [rip+p751+64]
+  mov    rsi, [rip+p751+72]
+  mov    rbx, [rip+p751+80]
+  mov    rcx, [rip+p751+88]
+  and    r12, rax
+  and    r13, rax
+  and    r14, rax
+  and    r15, rax
+  and    rdi, rax
+  and    rsi, rax
+  and    rbx, rax
+  and    rcx, rax
+  mov    rax, [reg_p3+96]
+  add    rax, r12
+  mov    [reg_p3+96], rax
+  mov    rax, [reg_p3+104]
+  adc    rax, r12
+  mov    [reg_p3+104], rax
+  mov    rax, [reg_p3+112]
+  adc    rax, r12
+  mov    [reg_p3+112], rax
+  mov    rax, [reg_p3+120]
+  adc    rax, r12
+  mov    [reg_p3+120], rax
+  adc    r12, [reg_p3+128]
+  adc    r13, [reg_p3+136]
   mov    [reg_p3+128], r12
   mov    [reg_p3+136], r13
-  mov    [reg_p3+144], r14
-  mov    [reg_p3+152], r15
-  mov    [reg_p3+160], rax
-  mov    [reg_p3+168], rbx
-  mov    [reg_p3+176], rcx
-  mov    [reg_p3+184], rdi
+  mov    r12, [reg_p3+144]
+  mov    r13, [reg_p3+152]
+  adc    r12, r14
+  adc    r13, r15
+  adc    r8, rdi
+  adc    r9, rsi
+  adc    r10, rbx
+  adc    r11, rcx
   
+  mov    [reg_p3+144], r12
+  mov    [reg_p3+152], r13
+  mov    [reg_p3+160], r8
+  mov    [reg_p3+168], r9
+  mov    [reg_p3+176], r10
+  mov    [reg_p3+184], r11
   pop    rbx
   pop    r15
   pop    r14
   pop    r13
   pop    r12
   ret
+  ret
 
 
 //***********************************************************************
-//  2x751-bit multiprecision subtraction
-//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]. Returns borrow mask
+//  Double 2x751-bit multiprecision subtraction
+//  Operation: c [reg_p3] = c [reg_p3] - a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global mp_sub751x2_asm
-mp_sub751x2_asm:
+.global mp_dblsub751x2_asm
+mp_dblsub751x2_asm:
   push   r12
   push   r13
   push   r14
   push   r15
-  push   rbx
   
-  mov    r8, [reg_p1]
-  mov    r9, [reg_p1+8]
-  mov    r10, [reg_p1+16]
-  mov    r11, [reg_p1+24]
-  mov    r12, [reg_p1+32]
-  mov    r13, [reg_p1+40]
-  mov    r14, [reg_p1+48]
-  mov    r15, [reg_p1+56] 
-  mov    rax, [reg_p1+64]
-  mov    rbx, [reg_p1+72] 
-  mov    rcx, [reg_p1+80] 
-
-  sub    r8, [reg_p2] 
+  xor    rax, rax
+  mov    r8, [reg_p3]
+  mov    r9, [reg_p3+8]
+  mov    r10, [reg_p3+16]
+  mov    r11, [reg_p3+24]
+  mov    r12, [reg_p3+32]
+  mov    r13, [reg_p3+40]
+  mov    r14, [reg_p3+48]
+  mov    r15, [reg_p3+56]
+  sub    r8, [reg_p1]
+  sbb    r9, [reg_p1+8] 
+  sbb    r10, [reg_p1+16] 
+  sbb    r11, [reg_p1+24] 
+  sbb    r12, [reg_p1+32] 
+  sbb    r13, [reg_p1+40] 
+  sbb    r14, [reg_p1+48] 
+  sbb    r15, [reg_p1+56]
+  adc    rax, 0
+  sub    r8, [reg_p2]
   sbb    r9, [reg_p2+8] 
   sbb    r10, [reg_p2+16] 
   sbb    r11, [reg_p2+24] 
@@ -2576,10 +2949,7 @@ mp_sub751x2_asm:
   sbb    r13, [reg_p2+40] 
   sbb    r14, [reg_p2+48] 
   sbb    r15, [reg_p2+56]
-  sbb    rax, [reg_p2+64] 
-  sbb    rbx, [reg_p2+72]
-  sbb    rcx, [reg_p2+80]
-
+  adc    rax, 0  
   mov    [reg_p3], r8
   mov    [reg_p3+8], r9
   mov    [reg_p3+16], r10
@@ -2588,55 +2958,78 @@ mp_sub751x2_asm:
   mov    [reg_p3+40], r13
   mov    [reg_p3+48], r14
   mov    [reg_p3+56], r15
-  mov    [reg_p3+64], rax
-  mov    [reg_p3+72], rbx
-  mov    [reg_p3+80], rcx 
-  mov    rax, [reg_p1+88] 
-  sbb    rax, [reg_p2+88]
-  mov    [reg_p3+88], rax
+    
+  xor    rcx, rcx
+  mov    r8, [reg_p3+64]
+  mov    r9, [reg_p3+72]
+  mov    r10, [reg_p3+80]
+  mov    r11, [reg_p3+88]
+  mov    r12, [reg_p3+96]
+  mov    r13, [reg_p3+104]
+  mov    r14, [reg_p3+112]
+  mov    r15, [reg_p3+120]
+  sub    r8, rax 
+  sbb    r8, [reg_p1+64] 
+  sbb    r9, [reg_p1+72] 
+  sbb    r10, [reg_p1+80] 
+  sbb    r11, [reg_p1+88] 
+  sbb    r12, [reg_p1+96] 
+  sbb    r13, [reg_p1+104] 
+  sbb    r14, [reg_p1+112] 
+  sbb    r15, [reg_p1+120]
+  adc    rcx, 0
+  sub    r8, [reg_p2+64] 
+  sbb    r9, [reg_p2+72] 
+  sbb    r10, [reg_p2+80] 
+  sbb    r11, [reg_p2+88] 
+  sbb    r12, [reg_p2+96] 
+  sbb    r13, [reg_p2+104] 
+  sbb    r14, [reg_p2+112] 
+  sbb    r15, [reg_p2+120]
+  adc    rcx, 0
+  mov    [reg_p3+64], r8
+  mov    [reg_p3+72], r9
+  mov    [reg_p3+80], r10
+  mov    [reg_p3+88], r11
+  mov    [reg_p3+96], r12
+  mov    [reg_p3+104], r13
+  mov    [reg_p3+112], r14
+  mov    [reg_p3+120], r15
   
-  mov    r8, [reg_p1+96]
-  mov    r9, [reg_p1+104]
-  mov    r10, [reg_p1+112]
-  mov    r11, [reg_p1+120]
-  mov    r12, [reg_p1+128]
-  mov    r13, [reg_p1+136]
-  mov    r14, [reg_p1+144]
-  mov    r15, [reg_p1+152] 
-  mov    rax, [reg_p1+160]
-  mov    rbx, [reg_p1+168] 
-  mov    rcx, [reg_p1+176]  
-  mov    rdi, [reg_p1+184] 
-
-  sbb    r8, [reg_p2+96] 
-  sbb    r9, [reg_p2+104] 
-  sbb    r10, [reg_p2+112] 
-  sbb    r11, [reg_p2+120] 
-  sbb    r12, [reg_p2+128] 
-  sbb    r13, [reg_p2+136] 
-  sbb    r14, [reg_p2+144] 
-  sbb    r15, [reg_p2+152]
-  sbb    rax, [reg_p2+160]
-  sbb    rbx, [reg_p2+168]
-  sbb    rcx, [reg_p2+176]
-  sbb    rdi, [reg_p2+184]
-
-  mov    [reg_p3+96], r8
-  mov    [reg_p3+104], r9
-  mov    [reg_p3+112], r10
-  mov    [reg_p3+120], r11
-  mov    [reg_p3+128], r12
-  mov    [reg_p3+136], r13
-  mov    [reg_p3+144], r14
-  mov    [reg_p3+152], r15
-  mov    [reg_p3+160], rax 
-  mov    rax, 0
-  sbb    rax, 0
-  mov    [reg_p3+168], rbx
-  mov    [reg_p3+176], rcx
-  mov    [reg_p3+184], rdi
+  mov    r8, [reg_p3+128]
+  mov    r9, [reg_p3+136]
+  mov    r10, [reg_p3+144]
+  mov    r11, [reg_p3+152]
+  mov    r12, [reg_p3+160]
+  mov    r13, [reg_p3+168]
+  mov    r14, [reg_p3+176]
+  mov    r15, [reg_p3+184]  
+  sub    r8, rcx 
+  sbb    r8, [reg_p1+128] 
+  sbb    r9, [reg_p1+136] 
+  sbb    r10, [reg_p1+144] 
+  sbb    r11, [reg_p1+152] 
+  sbb    r12, [reg_p1+160] 
+  sbb    r13, [reg_p1+168] 
+  sbb    r14, [reg_p1+176] 
+  sbb    r15, [reg_p1+184]
+  sub    r8, [reg_p2+128] 
+  sbb    r9, [reg_p2+136] 
+  sbb    r10, [reg_p2+144] 
+  sbb    r11, [reg_p2+152] 
+  sbb    r12, [reg_p2+160] 
+  sbb    r13, [reg_p2+168] 
+  sbb    r14, [reg_p2+176] 
+  sbb    r15, [reg_p2+184]
+  mov    [reg_p3+128], r8
+  mov    [reg_p3+136], r9
+  mov    [reg_p3+144], r10
+  mov    [reg_p3+152], r11
+  mov    [reg_p3+160], r12
+  mov    [reg_p3+168], r13
+  mov    [reg_p3+176], r14
+  mov    [reg_p3+184], r15
   
-  pop    rbx
   pop    r15
   pop    r14
   pop    r13

@@ -5,6 +5,7 @@ include
 
 # Object files
 *.o
+*.o.tmp
 *.ko
 *.obj
 *.elf
@@ -39,11 +40,12 @@ tests/speed_sig
 tests/test_kem
 tests/test_sig
 tests/test_aes
+tests/test_hash
 tests/test_sha3
 
 #kat
 tests/kat_kem
-kat_kem_rsp/
+tests/kat_sig
 
 # Debug files
 *.dSYM/
@@ -95,6 +97,8 @@ missing
 stamp-h1
 .libs
 .dirstamp
+confdefs*
+conftest*
 
 #params
 sample_params
@@ -107,3 +111,11 @@ src/oqsconfig.h
 # Misc (master branch)
 .objs_upstream
 *.geany
+.tags*
+__pycache__
+test-results
+.pytest_cache
+.cache
+
+# IDEs
+.idea

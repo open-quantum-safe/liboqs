@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="DebugDLL|Win32">
@@ -35,19 +35,40 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h" />
-    <ClInclude Include="..\..\src\kem\newhopenist\kem_newhopenist.h" />
     <ClInclude Include="..\..\src\kem\kem.h" />
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_START -->
+    <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h" />
+    <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h" />
+    <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h" />
+    <ClInclude Include="..\..\src\kem\saber\kem_saber.h" />
+    <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h" />
+    <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h" />
+    <ClInclude Include="..\..\src\sig\sphincs\sig_sphincs.h" />
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
+    <ClInclude Include="..\..\src\kem\frodokem\kem_frodokem.h" />
     <ClInclude Include="..\..\src\kem\sike\kem_sike.h" />
+    <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
+    <ClInclude Include="..\..\src\kem\sike\P434\P434_api.h" />
+    <ClInclude Include="..\..\src\kem\sike\P434\P434_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P434\P434.c" />
+    <ClCompile Include="..\..\src\kem\sike\P434\P434_compressed.c" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P503\P503_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
+    <ClCompile Include="..\..\src\kem\sike\P503\P503_compressed.c" />
+    <ClInclude Include="..\..\src\kem\sike\P610\P610_api.h" />
+    <ClInclude Include="..\..\src\kem\sike\P610\P610_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P610\P610.c" />
+    <ClCompile Include="..\..\src\kem\sike\P610\P610_compressed.c" />
     <ClInclude Include="..\..\src\kem\sike\P751\P751_api.h" />
     <ClInclude Include="..\..\src\kem\sike\P751\P751_internal.h" />
+    <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
+    <ClCompile Include="..\..\src\kem\sike\P751\P751_compressed.c" />
     <ClInclude Include="..\..\src\oqs.h" />
     <ClInclude Include="..\..\src\common\common.h" />
     <ClInclude Include="..\..\src\common\rand.h" />
     <ClInclude Include="..\..\src\crypto\aes\aes.h" />
-    <ClInclude Include="..\..\src\crypto\aes\aes_local.h" />
+    <ClInclude Include="..\..\src\crypto\sha2\sha2.h" />
     <ClInclude Include="..\..\src\crypto\sha3\sha3.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\bitstream.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\compat.h" />
@@ -68,10 +89,19 @@
     <ClInclude Include="..\..\src\sig\picnic\external\mpc_lowmc.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\mzd_additional.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\picnic.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_impl.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_simulate.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_simulate_mul.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_tree.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\picnic2_types.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\picnic_impl.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\sha3\KeccakHashtimes4.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\sha3\KeccakSpongeWidth1600.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\sha3\KeccakSpongeWidth1600times4.h" />
+    <ClInclude Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-SnP.h" />
     <ClInclude Include="..\..\src\sig\picnic\external\simd.h" />
     <ClInclude Include="..\..\src\sig\picnic\sig_picnic.h" />
+    <ClInclude Include="..\..\src\sig\qtesla\sig_qtesla.h" />
     <ClInclude Include="..\..\src\sig\sig.h" />
     <ClInclude Include="..\winconfig.h" />
   </ItemGroup>
@@ -79,51 +109,476 @@
     <ClCompile Include="..\..\src\common\common.c" />
     <ClCompile Include="..\..\src\common\rand.c" />
     <ClCompile Include="..\..\src\common\rand_nist.c" />
-    <ClCompile Include="..\..\src\crypto\aes\aes.c" />
     <ClCompile Include="..\..\src\crypto\aes\aes_c.c" />
-    <ClCompile Include="..\..\src\crypto\aes\aes_ni.c" />
-    <ClCompile Include="..\..\src\crypto\sha3\sha3.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\matrix_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640aes_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\matrix_shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem640shake_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\matrix_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976aes_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\matrix_shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem976shake_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\matrix_aes.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344aes_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\kem.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\matrix_shake.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\noise.c" />
-    <ClCompile Include="..\..\src\kem\frodokem\pqclean_frodokem1344shake_clean\util.c" />
-    <ClCompile Include="..\..\src\kem\kyber\kem_kyber.c" />
-    <ClCompile Include="..\..\src\kem\kyber\win_kyber1024.c" />
-    <ClCompile Include="..\..\src\kem\kyber\win_kyber512.c" />
-    <ClCompile Include="..\..\src\kem\kyber\win_kyber768.c" />
-    <ClCompile Include="..\..\src\kem\newhopenist\kem_newhopenist.c" />
+    <ClCompile Include="..\..\src\crypto\sha2\sha2_c.c" />
+    <ClCompile Include="..\..\src\crypto\sha3\sha3_c.c" />
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_START -->
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_512.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_768.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_1024.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope_512cca.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\cpapke.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\precomp.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\newhope\kem_newhope_1024cca.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\cpapke.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\precomp.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope1024cca_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hps2048509.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\crypto_sort.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048509_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hps2048677.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\crypto_sort.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps2048677_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hps4096821.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\crypto_sort.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhps4096821_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\ntru\kem_ntru_hrss701.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\owcpa.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\pack3.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\packq.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\sample.c" />
+    <ClCompile Include="..\..\src\kem\ntru\pqclean_ntruhrss701_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\saber\kem_saber_lightsaber.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\pack_unpack.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\poly_mul.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\SABER_indcpa.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_lightsaber_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\saber\kem_saber_saber.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\pack_unpack.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\poly_mul.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\SABER_indcpa.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_saber_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\saber\kem_saber_firesaber.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\pack_unpack.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\poly_mul.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\SABER_indcpa.c" />
+    <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\verify.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_2.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\poly.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\packing.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\ntt.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\reduce.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\rounding.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\symmetric.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_3.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\poly.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\packing.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\ntt.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\reduce.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\rounding.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\symmetric.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_4.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\poly.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\packing.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\ntt.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\reduce.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\rounding.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\symmetric.c" />
+    <ClCompile Include="..\..\src\sig\mqdss\sig_mqdss_31_48.c" />
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\gf31.c" />
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\mq.c" />
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\mqdss\sig_mqdss_31_64.c" />
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\gf31.c" />
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\mq.c" />
+    <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-64_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128f-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_128s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-128s-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_192f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_192f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192f-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_192s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_192s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-192s-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_256f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_256f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256f-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_256s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\thash_haraka_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-robust_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_haraka_256s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\hash_haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\thash_haraka_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-haraka-256s-simple_clean\haraka.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128f-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_128s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-128s-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192f-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_192s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-192s-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256f-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\thash_sha256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-robust_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_sha256_256s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\hash_sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\thash_sha256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-sha256-256s-simple_clean\sha256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_128f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_128f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128f-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_128s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_128s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-128s-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_192f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_192f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192f-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_192s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_192s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-192s-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_256f_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_256f_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256f-simple_clean\thash_shake256_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_256s_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-robust_clean\thash_shake256_robust.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\sig_sphincs_shake256_256s_simple.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\address.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\wots.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\utils.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\fors.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\hash_shake256.c" />
+    <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\thash_shake256_simple.c" />
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\kem.c" />
-    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope1024cca.c" />
-    <ClCompile Include="..\..\src\kem\newhopenist\win_newhope512cca.c" />
-    <ClCompile Include="..\..\src\kem\sike\kem_sike.c" />
-    <ClCompile Include="..\..\src\kem\sike\P503\P503.c" />
-    <ClCompile Include="..\..\src\kem\sike\P751\P751.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem976shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem1344shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo640aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo640shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo976aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo976shake.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344aes.c" />
+    <ClCompile Include="..\..\src\kem\frodokem\external\frodo1344shake.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\aligned_alloc.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\bitstream.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\cpu.c" />
@@ -135,15 +590,25 @@
     <ClCompile Include="..\..\src\sig\picnic\external\lowmc_192_192_30.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\lowmc_256_256_363.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\lowmc_256_256_38.c" />
-    <ClCompile Include="..\..\src\sig\picnic\external\lowmc_pars.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\mpc_lowmc.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\mzd_additional.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\picnic.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_impl.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_simulate.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_simulate_mul.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_tree.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\picnic2_types.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\picnic_impl.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\KeccakHash.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\sha3\KeccakHashtimes4.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\KeccakSpongeWidth1600.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\sha3\KeccakSpongeWidth1600times4.c" />
     <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-opt64.c" />
+    <ClCompile Include="..\..\src\sig\picnic\external\sha3\opt64\KeccakP-1600-times4-on1.c" />
     <ClCompile Include="..\..\src\sig\picnic\sig_picnic.c" />
+    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_I.c" />
+    <ClCompile Include="..\..\src\sig\qtesla\qtesla_p_III.c" />
+    <ClCompile Include="..\..\src\sig\qtesla\sig_qtesla.c" />
     <ClCompile Include="..\..\src\sig\sig.c" />
   </ItemGroup>
   <ItemGroup>
@@ -274,7 +739,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -282,6 +747,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -289,16 +755,23 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
@@ -309,7 +782,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -318,6 +791,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -325,16 +799,23 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -345,7 +826,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_AMD64_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_POPCNT;WITH_SSE2;WITH_AVX2;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
@@ -354,6 +835,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <SubSystem>Windows</SubSystem>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -361,19 +843,27 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
+      <StackReserveSize>8192000</StackReserveSize>
     </Lib>
     <PostBuildEvent>
     </PostBuildEvent>
@@ -386,7 +876,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_AMD64_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_POPCNT;WITH_SSE2;WITH_AVX2;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
@@ -397,6 +887,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -404,19 +895,27 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
+      <StackReserveSize>8192000</StackReserveSize>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -429,7 +928,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -439,6 +938,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -446,16 +946,23 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
@@ -468,7 +975,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_X86_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;REDUCED_LINEAR_LAYER;AES_DISABLE_NI;CONSTANT_TIME;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
@@ -479,6 +986,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <ModuleDefinitionFile>dll.def</ModuleDefinitionFile>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -486,16 +994,23 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -508,7 +1023,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_AMD64_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_POPCNT;WITH_SSE2;WITH_AVX2;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
@@ -519,6 +1034,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -526,19 +1042,27 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
+      <StackReserveSize>8192000</StackReserveSize>
     </Lib>
     <PostBuildEvent>
     </PostBuildEvent>
@@ -553,7 +1077,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>_AMD64_;inline=__inline;PICNIC_STATIC;OPTIMIZED_LINEAR_LAYER_EVALUATION;REDUCED_ROUND_KEY_COMPUTATION;WITH_LOWMC_128_128_20;WITH_LOWMC_192_192_30;WITH_LOWMC_256_256_38;WITH_OPT;WITH_POPCNT;WITH_SSE2;WITH_AVX2;REDUCED_LINEAR_LAYER;_CRT_NONSTDC_NO_DEPRECATE;_CRT_SECURE_NO_DEPRECATE;_CRT_SECURE_NO_WARNINGS;CONSTANT_TIME;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\;$(SolutionDir)..\src\kem\newhopenist</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include;$(SolutionDir)..\src\common\pqclean_shims\;$(SolutionDir)..\src\sig\picnic\external\;$(SolutionDir)..\src\sig\picnic\external\sha3\;$(SolutionDir)..\src\sig\picnic\external\sha3\opt64\</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWarningAsError>false</TreatWarningAsError>
       <ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>
@@ -566,6 +1090,7 @@ copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"
       <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_START-->
       <Command>mkdir "$(SolutionDir)include\oqs"
 del /Q "$(SolutionDir)include\oqs\*.*"
 copy "$(SolutionDir)winconfig.h" "$(SolutionDir)include\oqs\"
@@ -573,19 +1098,27 @@ copy "$(SolutionDir)..\src\oqs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\common.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\common\rand.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\aes\aes.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\crypto\sha2\sha2.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\crypto\sha3\sha3.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\bike\kem_bike.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
-copy "$(SolutionDir)..\src\kem\newhopenist\kem_newhopenist.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
+      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
+      <StackReserveSize>8192000</StackReserveSize>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

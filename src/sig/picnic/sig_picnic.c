@@ -1,6 +1,6 @@
 #include <oqs/sig.h>
 
-#if defined(OQS_SIG_alg_picnic_L1_UR) || defined(OQS_SIG_alg_picnic_L1_FS) || defined(OQS_SIG_alg_picnic_L3_UR) || defined(OQS_SIG_alg_picnic_L3_FS) || defined(OQS_SIG_alg_picnic_L5_UR) || defined(OQS_SIG_alg_picnic_L5_FS)
+#if defined(OQS_SIG_alg_picnic_L1_UR) || defined(OQS_SIG_alg_picnic_L1_FS) || defined(OQS_SIG_alg_picnic_L3_UR) || defined(OQS_SIG_alg_picnic_L3_FS) || defined(OQS_SIG_alg_picnic_L5_UR) || defined(OQS_SIG_alg_picnic_L5_FS) || defined(OQS_SIG_alg_picnic2_L1_FS) || defined(OQS_SIG_alg_picnic2_L3_FS) || defined(OQS_SIG_alg_picnic2_L5_FS)
 
 #include <string.h>
 #include <oqs/common.h>
@@ -14,7 +14,11 @@ static size_t PRIV_KEY_LEN[] = {
     PICNIC_PRIVATE_KEY_SIZE(Picnic_L3_FS),
     PICNIC_PRIVATE_KEY_SIZE(Picnic_L3_UR),
     PICNIC_PRIVATE_KEY_SIZE(Picnic_L5_FS),
-    PICNIC_PRIVATE_KEY_SIZE(Picnic_L5_UR)};
+    PICNIC_PRIVATE_KEY_SIZE(Picnic_L5_UR),
+    PICNIC_PRIVATE_KEY_SIZE(Picnic2_L1_FS),
+    PICNIC_PRIVATE_KEY_SIZE(Picnic2_L3_FS),
+    PICNIC_PRIVATE_KEY_SIZE(Picnic2_L5_FS),
+};
 static size_t PUB_KEY_LEN[] = {
     0,
     PICNIC_PUBLIC_KEY_SIZE(Picnic_L1_FS),
@@ -22,7 +26,23 @@ static size_t PUB_KEY_LEN[] = {
     PICNIC_PUBLIC_KEY_SIZE(Picnic_L3_FS),
     PICNIC_PUBLIC_KEY_SIZE(Picnic_L3_UR),
     PICNIC_PUBLIC_KEY_SIZE(Picnic_L5_FS),
-    PICNIC_PUBLIC_KEY_SIZE(Picnic_L5_UR)};
+    PICNIC_PUBLIC_KEY_SIZE(Picnic_L5_UR),
+    PICNIC_PUBLIC_KEY_SIZE(Picnic2_L1_FS),
+    PICNIC_PUBLIC_KEY_SIZE(Picnic2_L3_FS),
+    PICNIC_PUBLIC_KEY_SIZE(Picnic2_L5_FS),
+};
+static size_t SIG_LEN[] = {
+    0,
+    PICNIC_SIGNATURE_SIZE(Picnic_L1_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic_L1_UR),
+    PICNIC_SIGNATURE_SIZE(Picnic_L3_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic_L3_UR),
+    PICNIC_SIGNATURE_SIZE(Picnic_L5_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic_L5_UR),
+    PICNIC_SIGNATURE_SIZE(Picnic2_L1_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic2_L3_FS),
+    PICNIC_SIGNATURE_SIZE(Picnic2_L5_FS),
+};
 
 static OQS_STATUS common_picnic_keypair(picnic_params_t parameters, uint8_t *priv, uint8_t *pub) {
 	if (priv == NULL || pub == NULL) {
@@ -55,6 +75,9 @@ static OQS_STATUS common_picnic_sign(picnic_params_t parameters, const uint8_t *
 		return OQS_ERROR;
 	}
 	picnic_privatekey_t sk;
+	// picnic2's signature code checks that the sig_len value is large enough, but the OQS
+	// API treats this as an output parameters, so we set it here
+	*sig_len = SIG_LEN[parameters];
 	// deserialize the private key
 	if (picnic_read_private_key(&sk, priv, PRIV_KEY_LEN[parameters]) != 0) {
 		return OQS_ERROR;
@@ -90,7 +113,7 @@ OQS_SIG *OQS_SIG_picnic_L1_FS_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L1_FS;
-	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
+	sig->alg_version = "https://github.com/IAIK/Picnic/tree/v2.1.1";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
@@ -129,7 +152,7 @@ OQS_SIG *OQS_SIG_picnic_L1_UR_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L1_UR;
-	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
+	sig->alg_version = "https://github.com/IAIK/Picnic/tree/v2.1.1";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
@@ -168,7 +191,7 @@ OQS_SIG *OQS_SIG_picnic_L3_FS_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L3_FS;
-	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
+	sig->alg_version = "https://github.com/IAIK/Picnic/tree/v2.1.1";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
@@ -207,7 +230,7 @@ OQS_SIG *OQS_SIG_picnic_L3_UR_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L3_UR;
-	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
+	sig->alg_version = "https://github.com/IAIK/Picnic/tree/v2.1.1";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
@@ -246,7 +269,7 @@ OQS_SIG *OQS_SIG_picnic_L5_FS_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_picnic_L5_FS;
-	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
+	sig->alg_version = "https://github.com/IAIK/Picnic/tree/v2.1.1";
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;
@@ -286,7 +309,7 @@ OQS_SIG *OQS_SIG_picnic_L5_UR_new() {
 	}
 
 	sig->method_name = OQS_SIG_alg_picnic_L5_UR;
-	sig->alg_version = "https://github.com/IAIK/Picnic/commit/423b5da7036ac3b090d50bdff1e9a8ea34e37d11";
+	sig->alg_version = "https://github.com/IAIK/Picnic/tree/v2.1.1";
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;
@@ -312,6 +335,119 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L5_UR_sign(uint8_t *signature, size_t *signatu
 
 OQS_API OQS_STATUS OQS_SIG_picnic_L5_UR_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	return common_picnic_verify(Picnic_L5_UR, public_key, message, message_len, signature, signature_len);
+}
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_picnic2_L1_FS
+OQS_SIG *OQS_SIG_picnic2_L1_FS_new() {
+	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	if (sig == NULL) {
+		return NULL;
+	}
+	sig->method_name = OQS_SIG_alg_picnic2_L1_FS;
+	sig->alg_version = "https://github.com/IAIK/Picnic/tree/v2.1.1";
+
+	sig->claimed_nist_level = 1;
+	sig->euf_cma = true;
+
+	sig->length_public_key = OQS_SIG_picnic2_L1_FS_length_public_key;
+	sig->length_secret_key = OQS_SIG_picnic2_L1_FS_length_secret_key;
+	sig->length_signature = OQS_SIG_picnic2_L1_FS_length_signature;
+
+	sig->keypair = OQS_SIG_picnic2_L1_FS_keypair;
+	sig->sign = OQS_SIG_picnic2_L1_FS_sign;
+	sig->verify = OQS_SIG_picnic2_L1_FS_verify;
+
+	return sig;
+}
+
+OQS_API OQS_STATUS OQS_SIG_picnic2_L1_FS_keypair(uint8_t *public_key, uint8_t *secret_key) {
+	return common_picnic_keypair(Picnic2_L1_FS, secret_key, public_key);
+}
+
+OQS_API OQS_STATUS OQS_SIG_picnic2_L1_FS_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+	return common_picnic_sign(Picnic2_L1_FS, secret_key, message, message_len, signature, signature_len);
+}
+
+OQS_API OQS_STATUS OQS_SIG_picnic2_L1_FS_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+	return common_picnic_verify(Picnic2_L1_FS, public_key, message, message_len, signature, signature_len);
+}
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_picnic2_L3_FS
+
+OQS_SIG *OQS_SIG_picnic2_L3_FS_new() {
+	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	if (sig == NULL) {
+		return NULL;
+	}
+	sig->method_name = OQS_SIG_alg_picnic2_L3_FS;
+	sig->alg_version = "https://github.com/IAIK/Picnic/tree/v2.1.1";
+
+	sig->claimed_nist_level = 3;
+	sig->euf_cma = true;
+
+	sig->length_public_key = OQS_SIG_picnic2_L3_FS_length_public_key;
+	sig->length_secret_key = OQS_SIG_picnic2_L3_FS_length_secret_key;
+	sig->length_signature = OQS_SIG_picnic2_L3_FS_length_signature;
+
+	sig->keypair = OQS_SIG_picnic2_L3_FS_keypair;
+	sig->sign = OQS_SIG_picnic2_L3_FS_sign;
+	sig->verify = OQS_SIG_picnic2_L3_FS_verify;
+
+	return sig;
+}
+
+OQS_API OQS_STATUS OQS_SIG_picnic2_L3_FS_keypair(uint8_t *public_key, uint8_t *secret_key) {
+	return common_picnic_keypair(Picnic2_L3_FS, secret_key, public_key);
+}
+
+OQS_API OQS_STATUS OQS_SIG_picnic2_L3_FS_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+	return common_picnic_sign(Picnic2_L3_FS, secret_key, message, message_len, signature, signature_len);
+}
+
+OQS_API OQS_STATUS OQS_SIG_picnic2_L3_FS_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+	return common_picnic_verify(Picnic2_L3_FS, public_key, message, message_len, signature, signature_len);
+}
+
+#endif
+
+#ifdef OQS_ENABLE_SIG_picnic2_L5_FS
+
+OQS_SIG *OQS_SIG_picnic2_L5_FS_new() {
+	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
+	if (sig == NULL) {
+		return NULL;
+	}
+	sig->method_name = OQS_SIG_alg_picnic2_L5_FS;
+	sig->alg_version = "https://github.com/IAIK/Picnic/tree/v2.1.1";
+
+	sig->claimed_nist_level = 5;
+	sig->euf_cma = true;
+
+	sig->length_public_key = OQS_SIG_picnic2_L5_FS_length_public_key;
+	sig->length_secret_key = OQS_SIG_picnic2_L5_FS_length_secret_key;
+	sig->length_signature = OQS_SIG_picnic2_L5_FS_length_signature;
+
+	sig->keypair = OQS_SIG_picnic2_L5_FS_keypair;
+	sig->sign = OQS_SIG_picnic2_L5_FS_sign;
+	sig->verify = OQS_SIG_picnic2_L5_FS_verify;
+
+	return sig;
+}
+
+OQS_API OQS_STATUS OQS_SIG_picnic2_L5_FS_keypair(uint8_t *public_key, uint8_t *secret_key) {
+	return common_picnic_keypair(Picnic2_L5_FS, secret_key, public_key);
+}
+
+OQS_API OQS_STATUS OQS_SIG_picnic2_L5_FS_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
+	return common_picnic_sign(Picnic2_L5_FS, secret_key, message, message_len, signature, signature_len);
+}
+
+OQS_API OQS_STATUS OQS_SIG_picnic2_L5_FS_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+	return common_picnic_verify(Picnic2_L5_FS, public_key, message, message_len, signature, signature_len);
 }
 
 #endif
