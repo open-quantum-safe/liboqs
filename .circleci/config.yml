@@ -1,0 +1,145 @@
+version: 2
+
+.oqsjob: &oqsjob
+  docker:
+    - image: ${IMAGE}
+  steps:
+    - checkout
+    - run:
+        name: Configure
+        command: autoreconf -i && ./configure --enable-silent-rules ${CONFIGURE_ARGS}
+    - run: 
+        name: Build
+        command: make -j && make check
+    - run:
+        name: Run tests
+        command: mkdir -p test-results/pytest && python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto
+    - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
+        path: test-results
+
+.emulatedjob: &emulatedjob
+  machine:
+    image: ubuntu-1604:201903-01
+  steps:
+    - checkout
+    - run:
+        name: Install the emulation handlers
+        command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+    - run: # Skipping sig-sphincs because it exhausts memory on CircleCI
+        name: Run the tests in a container
+        command: |
+          docker run -e SKIP_TESTS=style --rm -v `pwd`:`pwd` -w `pwd` dstebila/liboqs:debian-buster-${ARCH}-0.1.0 /bin/bash -c "
+          uname -a &&
+          file /bin/ls &&
+          autoreconf -i &&
+          ./configure --enable-silent-rules ${CONFIGURE_ARGS} &&
+          make &&
+          make check &&
+          mkdir -p test-results/pytest &&
+          python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto
+          "
+    - store_test_results:
+        path: test-results
+
+jobs:
+  debian-buster-amd64:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:debian-buster-amd64-0.1.0
+      CONFIGURE_ARGS: --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+      SKIP_TESTS: style
+  debian-buster-aarch64:
+    <<: *emulatedjob
+    environment:
+      ARCH: aarch64
+      CONFIGURE_ARGS: --disable-sig-sphincs # sig-sphincs exhausts memory on CircleCI servers
+  debian-buster-armhf:
+    <<: *emulatedjob
+    environment:
+      ARCH: armhf
+      CONFIGURE_ARGS: --disable-sig-sphincs --disable-sig-qtesla # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armhf
+  debian-buster-armel:
+    <<: *emulatedjob
+    environment:
+      ARCH: armel
+      CONFIGURE_ARGS: --disable-sig-sphincs --disable-sig-qtesla # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armel
+  ubuntu-xenial-x86_64-gcc49:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
+      CC: gcc-4.9
+      CONFIGURE_ARGS: --disable-sig-picnic --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+  ubuntu-xenial-x86_64-gcc5:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
+      CC: gcc-5
+      CONFIGURE_ARGS: --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+  ubuntu-xenial-x86_64-gcc6:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
+      CC: gcc-6
+      CONFIGURE_ARGS: --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+  ubuntu-xenial-x86_64-gcc7:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
+      CC: gcc-7
+      CONFIGURE_ARGS: --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+  ubuntu-xenial-x86_64-gcc8:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
+      CC: gcc-8
+      CONFIGURE_ARGS: --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+  ubuntu-xenial-x86_64-gcc8-noopenssl:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
+      CC: gcc-8
+      CONFIGURE_ARGS: --without-openssl --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+  ubuntu-xenial-x86_64-gcc8-noshared:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
+      CC: gcc-8
+      CONFIGURE_ARGS: --disable-shared --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+  ubuntu-bionic-x86_64-gcc7:
+    <<: *oqsjob
+    environment:
+      IMAGE: dstebila/liboqs:ubuntu-bionic-x86_64-0.1.0
+      CC: gcc-7
+      CONFIGURE_ARGS: --disable-kem-bike # FIXME: BIKE doesn't work on CircleCI due to symbol _CMP_LT_OS not being defined
+      SKIP_TESTS: style
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - debian-buster-amd64
+      - ubuntu-xenial-x86_64-gcc8
+      - ubuntu-xenial-x86_64-gcc8-noopenssl
+      - ubuntu-xenial-x86_64-gcc8-noshared
+      - ubuntu-bionic-x86_64-gcc7
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 0 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - debian-buster-amd64
+      - debian-buster-aarch64
+      - debian-buster-armhf
+      - debian-buster-armel
+      - ubuntu-xenial-x86_64-gcc49
+      - ubuntu-xenial-x86_64-gcc5
+      - ubuntu-xenial-x86_64-gcc6
+      - ubuntu-xenial-x86_64-gcc7
+      - ubuntu-xenial-x86_64-gcc8
+      - ubuntu-xenial-x86_64-gcc8-noopenssl
+      - ubuntu-xenial-x86_64-gcc8-noshared
+      - ubuntu-bionic-x86_64-gcc7

@@ -1,5 +1,5 @@
-liboqs nist-branch algorithm datasheet: `kem_bike`
-======================================================
+liboqs algorithm datasheet: `kem_bike`
+======================================
 
 Summary
 -------

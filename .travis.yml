@@ -5,24 +5,6 @@ sudo: true
 matrix:
   include:
   - os: linux
-    compiler: gcc
-    env:
-    - CC_OVERRIDE=gcc
-    - ENABLE_SIG_PICNIC=0
-    - USE_OPENSSL=1
-    - CHECK_STYLE=true
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - doxygen
-        - graphviz
-    before_install:
-    - sh .travis/install-clang-format-linux.sh
-    script:
-    - .travis/all-tests.sh
-  - os: linux
     compiler: arm-linux-gnueabi-gcc
     addons:
       apt:
@@ -33,71 +15,41 @@ matrix:
     script:
     - scripts/arm-cross-compile.sh
     - scripts/arm-run-tests-qemu.sh
-  - os: linux
-    compiler: gcc
-    env:
-    - CC_OVERRIDE=gcc-4.9
-    - ENABLE_SIG_PICNIC=0
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - gcc-4.9
-        - doxygen
-        - graphviz
-    before_install:
-    - sh .travis/install-clang-format-linux.sh
-    script:
-    - .travis/all-tests.sh
-  - os: linux
-    compiler: gcc
-    env: CC_OVERRIDE=gcc-5
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - gcc-5
-        - doxygen
-        - graphviz
-    script:
-    - .travis/all-tests.sh
-  - os: linux
-    compiler: gcc
-    env:
-    - CC_OVERRIDE=gcc-6
-    - USE_OPENSSL=1
-    addons:
-      apt:
-        sources:
-        - ubuntu-toolchain-r-test
-        packages:
-        - gcc-6
-        - libssl-dev
-        - doxygen
-        - graphviz
-    script:
-    - .travis/all-tests.sh
   - os: osx
     compiler: clang
     env:
-    - CC_OVERRIDE=clang
-    - AES_NI=0
-    - USE_OPENSSL=1
-    - OPENSSL_DIR=/usr/local/opt/openssl # openssl is a keg-only package
+    - WITH_OPENSSL=1
+    - SKIP_TESTS=style
+    - HOMEBREW_NO_AUTO_UPDATE=1
     before_install:
-    - brew update
-    - brew install libsodium doxygen graphviz
-    script:
-    - .travis/all-tests.sh
-  - os: osx
-    compiler: clang
-    env:
-    - CC_OVERRIDE=clang
-    - AES_NI=0
-    before_install:
-    - brew update
     - brew install doxygen graphviz
+    - pip3 install pytest pytest-xdist
     script:
-    - .travis/all-tests.sh
+    - autoreconf -i
+    - ./configure --enable-silent-rules
+    - make
+    - make test
+    - ./configure --enable-silent-rules --disable-shared
+    - make clean
+    - make
+    - make check
+    - python3 -m pytest --verbose --numprocesses=auto
+  - os: osx
+    compiler: clang
+    env:
+    - WITH_OPENSSL=0
+    - SKIP_TESTS=style
+    - HOMEBREW_NO_AUTO_UPDATE=1
+    before_install:
+    - brew install doxygen graphviz
+    - pip3 install pytest pytest-xdist
+    script:
+    - autoreconf -i
+    - ./configure --enable-silent-rules --without-openssl
+    - make
+    - make test
+    - ./configure --enable-silent-rules --disable-shared
+    - make clean
+    - make
+    - make check
+    - python3 -m pytest --verbose --numprocesses=auto

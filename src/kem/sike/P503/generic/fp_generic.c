@@ -4,9 +4,9 @@
 * Abstract: portable modular arithmetic for P503
 *********************************************************************************************/
 
-/* OQS note: not needed since this file is #included in another source file
 #include "../P503_internal.h"
 
+/* OQS note: this file is #include'd with the defs of these consts; removed to avoid re-defs
 // Global constants
 extern const uint64_t p503[NWORDS_FIELD];
 extern const uint64_t p503p1[NWORDS_FIELD];

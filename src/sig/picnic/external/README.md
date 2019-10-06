@@ -3,12 +3,10 @@ Picnic: Post-Quantum Signatures
 
 The Picnic signature scheme is a family of digital signature schemes secure against attacks by quantum computers. This repository contains an optimized implementation of these schemes. The scheme and parameter sets are specified in the [Picnic Specification Document](https://github.com/Microsoft/Picnic/blob/master/spec.pdf). The public API of the library and the serialization format is compatible with the [reference implementation](https://github.com/Microsoft/Picnic).
 
-A research paper describing the signature scheme is also available:
+Research paper describing the signature scheme and the optimizations are also available:
 * **Post-Quantum Zero-Knowledge and Signatures from Symmetric-Key Primitives** Melissa Chase and David Derler and Steven Goldfeder and Claudio Orlandi and Sebastian Ramacher and Christian Rechberger and Daniel Slamanig and Greg Zaverucha. *In Proceedings of ACM CCS 2017*. *[Cryptology ePrint Archive: Report 2017/279](http://eprint.iacr.org/2017/279)*
-
-Preprints describing the LowMC optimizations are available too:
-* **Improvements to the Linear Operations of LowMC: A Faster Picnic** Daniel Kales and Léo Perrin and Angela Promitzer and Sebastian Ramacher and Christian Rechberger. *[Cryptology ePrint Archive: Report 2017/1148](http://eprint.iacr.org/2017/1148)*
-* **Linear Equivalence of Block Ciphers with Partial Non-Linear Layers: Application to LowMC** Itai Dinur. *[Cryptology ePrint Archive: Report 2018/772](http://eprint.iacr.org/2018/772)*
+* **Improved Non-Interactive Zero Knowledge with Applications to Post-Quantum Signatures** Jonathan Katz and Vladimir Kolesnikov and Xiao Wang. *In Proceedings of ACM CCS 2018*. *[Cryptology ePrint Archive: Report 2018/475](http://eprint.iacr.org/2018/475)*
+* **Linear Equivalence of Block Ciphers with Partial Non-Linear Layers: Application to LowMC** Itai Dinur and Daniel Kales and Angela Promitzer and Sebastian Ramacher and Christian Rechberger. *In Proceedings of Eurocrypt 2019*. *[Cryptology ePrint Archive: Report 2018/772](http://eprint.iacr.org/2018/772)*
 
 Packages
 --------
@@ -33,7 +31,6 @@ The cmake based build system supports the following flags:
 * ``WITH_NEON``: Use NEON if available.
 * ``WITH_MARCH_NATIVE``: Build with -march=native -mtune=native (if supported).
 * ``WITH_LTO``: Enable link-time optimization (if supported).
-* ``WITH_MUL_M4RI``: Use methods of four russians for matrix multiplication.
 * ``WITH_LOWMC_OPT={OFF,ORKC,OLLE}``: Enable optimized round key computation (ORKC) or optimized linear layer evaluation (OLLE) optimizations.
 * ``WITH_LOWMC_M1``: Enable LowMC instances with 1 Sbox minimizing the signature sizes.
 

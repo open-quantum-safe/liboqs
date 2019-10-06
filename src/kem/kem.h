@@ -25,6 +25,10 @@
 
 #include <oqs/oqs.h>
 
+#if defined(__cplusplus)
+extern "C" {
+#endif
+
 /** Algorithm identifier for default KEM algorithm. */
 #define OQS_KEM_alg_default "DEFAULT"
 /** Algorithm identifier for BIKE1-L1 KEM. */
@@ -45,6 +49,32 @@
 #define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
 /** Algorithm identifier for BIKE3-L5 KEM. */
 #define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
+/** Algorithm identifier for Kyber512 KEM. */
+#define OQS_KEM_alg_kyber_512 "Kyber512"
+/** Algorithm identifier for Kyber768 KEM. */
+#define OQS_KEM_alg_kyber_768 "Kyber768"
+/** Algorithm identifier for Kyber1024 KEM. */
+#define OQS_KEM_alg_kyber_1024 "Kyber1024"
+/** Algorithm identifier for NewHope-512-CCA KEM. */
+#define OQS_KEM_alg_newhope_512cca "NewHope-512-CCA"
+/** Algorithm identifier for NewHope-1024-CCA KEM. */
+#define OQS_KEM_alg_newhope_1024cca "NewHope-1024-CCA"
+/** Algorithm identifier for NTRU-HPS-2048-509 KEM. */
+#define OQS_KEM_alg_ntru_hps2048509 "NTRU-HPS-2048-509"
+/** Algorithm identifier for NTRU-HPS-2048-677 KEM. */
+#define OQS_KEM_alg_ntru_hps2048677 "NTRU-HPS-2048-677"
+/** Algorithm identifier for NTRU-HPS-4096-821 KEM. */
+#define OQS_KEM_alg_ntru_hps4096821 "NTRU-HPS-4096-821"
+/** Algorithm identifier for NTRU-HRSS-701 KEM. */
+#define OQS_KEM_alg_ntru_hrss701 "NTRU-HRSS-701"
+/** Algorithm identifier for LightSaber-KEM KEM. */
+#define OQS_KEM_alg_saber_lightsaber "LightSaber-KEM"
+/** Algorithm identifier for Saber-KEM KEM. */
+#define OQS_KEM_alg_saber_saber "Saber-KEM"
+/** Algorithm identifier for FireSaber-KEM KEM. */
+#define OQS_KEM_alg_saber_firesaber "FireSaber-KEM"
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
 /** Algorithm identifier for FrodoKEM-640-SHAKE KEM. */
@@ -57,29 +87,43 @@
 #define OQS_KEM_alg_frodokem_1344_aes "FrodoKEM-1344-AES"
 /** Algorithm identifier for FrodoKEM-1344-SHAKE KEM. */
 #define OQS_KEM_alg_frodokem_1344_shake "FrodoKEM-1344-SHAKE"
-/** Algorithm identifier for NewHope-512-CCA-KEM KEM. */
-#define OQS_KEM_alg_newhope_512_cca_kem "NewHope-512-CCA-KEM"
-/** Algorithm identifier for NewHope-1024-CCA-KEM KEM. */
-#define OQS_KEM_alg_newhope_1024_cca_kem "NewHope-1024-CCA-KEM"
-/** Algorithm identifier for Kyber-512-CCA-KEM KEM. */
-#define OQS_KEM_alg_kyber_512_cca_kem "Kyber-512-CCA-KEM"
-/** Algorithm identifier for Kyber-768-CCA-KEM KEM. */
-#define OQS_KEM_alg_kyber_768_cca_kem "Kyber-768-CCA-KEM"
-/** Algorithm identifier for Kyber-1024-CCA-KEM KEM. */
-#define OQS_KEM_alg_kyber_1024_cca_kem "Kyber-1024-CCA-KEM"
-/** Algorithm identifier for Sidh p503 KEM. */
-#define OQS_KEM_alg_sidh_p503 "Sidh-p503"
-/** Algorithm identifier for Sidh p751 KEM. */
-#define OQS_KEM_alg_sidh_p751 "Sidh-p751"
-/** Algorithm identifier for Sike p503 KEM. */
-#define OQS_KEM_alg_sike_p503 "Sike-p503"
-/** Algorithm identifier for Sike p751 KEM. */
-#define OQS_KEM_alg_sike_p751 "Sike-p751"
+/** Algorithm identifier for SIDH p434 KEM. */
+#define OQS_KEM_alg_sidh_p434 "SIDH-p434"
+/** Algorithm identifier for SIDH p434 compressed KEM. */
+#define OQS_KEM_alg_sidh_p434_compressed "SIDH-p434-compressed"
+/** Algorithm identifier for SIDH p503 KEM. */
+#define OQS_KEM_alg_sidh_p503 "SIDH-p503"
+/** Algorithm identifier for SIDH p503 compressed KEM. */
+#define OQS_KEM_alg_sidh_p503_compressed "SIDH-p503-compressed"
+/** Algorithm identifier for SIDH p610 KEM. */
+#define OQS_KEM_alg_sidh_p610 "SIDH-p610"
+/** Algorithm identifier for SIDH p610 compressed KEM. */
+#define OQS_KEM_alg_sidh_p610_compressed "SIDH-p610-compressed"
+/** Algorithm identifier for SIDH p751 KEM. */
+#define OQS_KEM_alg_sidh_p751 "SIDH-p751"
+/** Algorithm identifier for SIDH p751 compressed KEM. */
+#define OQS_KEM_alg_sidh_p751_compressed "SIDH-p751-compressed"
+/** Algorithm identifier for SIKE p434 KEM. */
+#define OQS_KEM_alg_sike_p434 "SIKE-p434"
+/** Algorithm identifier for SIKE p434 compressed KEM. */
+#define OQS_KEM_alg_sike_p434_compressed "SIKE-p434-compressed"
+/** Algorithm identifier for SIKE p503 KEM. */
+#define OQS_KEM_alg_sike_p503 "SIKE-p503"
+/** Algorithm identifier for SIKE p503 compressed KEM. */
+#define OQS_KEM_alg_sike_p503_compressed "SIKE-p503-compressed"
+/** Algorithm identifier for SIKE p610 KEM. */
+#define OQS_KEM_alg_sike_p610 "SIKE-p610"
+/** Algorithm identifier for SIKE p610 compressed KEM. */
+#define OQS_KEM_alg_sike_p610_compressed "SIKE-p610-compressed"
+/** Algorithm identifier for SIKE p751 KEM. */
+#define OQS_KEM_alg_sike_p751 "SIKE-p751"
+/** Algorithm identifier for SIKE p751 compressed KEM. */
+#define OQS_KEM_alg_sike_p751_compressed "SIKE-p751-compressed"
 // EDIT-WHEN-ADDING-KEM
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 25
-/** The default KEM. */
-#define OQS_KEM_DEFAULT OQS_KEM_alg_sike_p503
+#define OQS_KEM_algs_length 44
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -101,6 +145,14 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i);
  * @return The number of key encapsulation mechanisms.
  */
 OQS_API int OQS_KEM_alg_count();
+
+/**
+ * Indicates whether the specified algorithm was enabled at compile-time or not.
+ *
+ * @param[in] method_name Name of the desired algorithm; one of the names in `OQS_KEM_algs`.
+ * @return 1 if enabled, 0 if disabled or not found
+ */
+OQS_API int OQS_KEM_alg_is_enabled(const char *method_name);
 
 /**
  * Key encapsulation mechanism object
@@ -242,10 +294,18 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
 OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
 #include <oqs/kem_bike.h>
-#include <oqs/kem_frodokem.h>
-#include <oqs/kem_newhopenist.h>
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
 #include <oqs/kem_kyber.h>
+#include <oqs/kem_newhope.h>
+#include <oqs/kem_ntru.h>
+#include <oqs/kem_saber.h>
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
+#include <oqs/kem_frodokem.h>
 #include <oqs/kem_sike.h>
 // EDIT-WHEN-ADDING-KEM
+
+#if defined(__cplusplus)
+} // extern "C"
+#endif
 
 #endif // __OQS_KEM_H

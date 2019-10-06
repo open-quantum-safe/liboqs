@@ -7,6 +7,10 @@
  *  SPDX-License-Identifier: MIT
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "cpu.h"
 
 /* If cmake checks were not run, define some known values. */
@@ -31,7 +35,7 @@ static unsigned int init_caps(void) {
   return caps;
 }
 
-#elif (defined(__x86_64__) || defined(__i386__)) && (defined(__GNUC__) || defined(_MSC_VER))
+#elif (defined(__x86_64__) || defined(__i386__) || defined(_M_IX86) || defined(_M_AMD64)) && (defined(__GNUC__) || defined(_MSC_VER))
 
 #ifdef _MSC_VER
 #include <intrin.h>

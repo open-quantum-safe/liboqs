@@ -25,11 +25,10 @@ cd ..
 autoreconf -i
 hacks=(
 	gcc_cv_compiler=true	# Detecting at this phase isn't good for cross compilation
-	--disable-aes-ni	# This should be conditionalized on x86 host
-    --disable-sig-picnic
 	CFLAGS=-D_ARM_		# Several files aren't using the right define
+	--disable-sig-picnic	# Problems building Picnic using cross compilation
 )
 
-./configure --disable-shared --enable-static --host="${CHOST}" --build="$CBUILD" CC="${CHOST}-gcc" --with-openssl-dir="${PREFIX}" "${hacks[@]}"
+./configure --disable-shared --enable-static --host="${CHOST}" --build="$CBUILD" CC="${CHOST}-gcc" --with-openssl="${PREFIX}" "${hacks[@]}"
 make -j
-make -j check LDFLAGS="-L${PREFIX}/lib -static"
+make -j check LDFLAGS="-L${PREFIX}/lib -static -pthread"

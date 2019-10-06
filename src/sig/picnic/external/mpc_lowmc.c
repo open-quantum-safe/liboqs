@@ -7,6 +7,10 @@
  *  SPDX-License-Identifier: MIT
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "lowmc_pars.h"
 #include "mpc_lowmc.h"
 #include "mzd_additional.h"
@@ -257,131 +261,20 @@ static void mpc_sbox_layer_bitsliced_verify_uint64_1(uint64_t* in, view_t* view,
 #define R_uint64 const uint64_t* r = rvec[i].t
 
 // uint64 based implementation
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_uint64_128, oqs_sig_picnic_mzd_addmul_vl_uint64_128)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_128, oqs_sig_picnic_mzd_mul_vl_uint64_128)
-#define XOR oqs_sig_picnic_mzd_xor_uint64_128
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_128
-
-#define SIGN_SBOX mpc_sbox_layer_bitsliced
-#define VERIFY_SBOX mpc_sbox_layer_bitsliced_verify
-
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_128_576, oqs_sig_picnic_mzd_mul_vl_uint64_128_576)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_128_640, oqs_sig_picnic_mzd_mul_vl_uint64_128_640)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_uint64_3_128
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_uint64_30_128
-#define MUL_Z_1 oqs_sig_picnic_mzd_mul_v_parity_uint64_128_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_128_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_uint64_576
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_uint64_640
-
-#define LOWMC_N LOWMC_L1_N
-#define LOWMC_R_10 LOWMC_L1_R
-#define LOWMC_R_1 LOWMC_L1_1_R
-#if defined(WITH_LOWMC_128_128_20)
-#define LOWMC_INSTANCE_10 lowmc_128_128_20
-#endif
-#if defined(WITH_LOWMC_128_128_182)
-#define LOWMC_INSTANCE_1 lowmc_128_128_182
-#endif
+#include "lowmc_fns_uint64_L1.h"
 #define SIGN mpc_lowmc_call_uint64_128
 #define VERIFY mpc_lowmc_call_verify_uint64_128
 #include "mpc_lowmc.c.i"
 
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_uint64_192, oqs_sig_picnic_mzd_addmul_vl_uint64_192)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_192, oqs_sig_picnic_mzd_mul_vl_uint64_192)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_192
-#define XOR oqs_sig_picnic_mzd_xor_uint64_192
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_192_896, oqs_sig_picnic_mzd_mul_vl_uint64_192_896)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_192_960, oqs_sig_picnic_mzd_mul_vl_uint64_192_960)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_uint64_3_192
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_uint64_30_192
-#define MUL_Z_1 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_uint64_896
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_uint64_960
-
-#undef LOWMC_N
-#undef LOWMC_R_10
-#undef LOWMC_R_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_INSTANCE_1
-
-#define LOWMC_N LOWMC_L3_N
-#define LOWMC_R_10 LOWMC_L3_R
-#define LOWMC_R_1 LOWMC_L3_1_R
-#if defined(WITH_LOWMC_192_192_30)
-#define LOWMC_INSTANCE_10 lowmc_192_192_30
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-#define LOWMC_INSTANCE_1 lowmc_192_192_284
-#endif
+#include "lowmc_fns_uint64_L3.h"
 #define SIGN mpc_lowmc_call_uint64_192
 #define VERIFY mpc_lowmc_call_verify_uint64_192
 #include "mpc_lowmc.c.i"
 
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_uint64_256, oqs_sig_picnic_mzd_addmul_vl_uint64_256)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_256, oqs_sig_picnic_mzd_mul_vl_uint64_256)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_256
-#define XOR oqs_sig_picnic_mzd_xor_uint64_256
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_256_1152, oqs_sig_picnic_mzd_mul_vl_uint64_256_1152)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_uint64_256_1216, oqs_sig_picnic_mzd_mul_vl_uint64_256_1216)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_uint64_3_256
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_uint64_30_256
-#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_256_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_256_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_uint64_1152
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_uint64_1216
-
-#undef LOWMC_N
-#undef LOWMC_R_10
-#undef LOWMC_R_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_INSTANCE_1
-
-#define LOWMC_N LOWMC_L5_N
-#define LOWMC_R_10 LOWMC_L5_R
-#define LOWMC_R_1 LOWMC_L5_1_R
-#if defined(WITH_LOWMC_256_256_38)
-#define LOWMC_INSTANCE_10 lowmc_256_256_38
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-#define LOWMC_INSTANCE_1 lowmc_256_256_363
-#endif
+#include "lowmc_fns_uint64_L5.h"
 #define SIGN mpc_lowmc_call_uint64_256
 #define VERIFY mpc_lowmc_call_verify_uint64_256
 #include "mpc_lowmc.c.i"
-
-#undef LOWMC_N
-#undef LOWMC_R_10
-#undef LOWMC_R_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_INSTANCE_1
 
 #if defined(WITH_OPT)
 #if defined(WITH_SSE2) || defined(WITH_NEON)
@@ -390,146 +283,19 @@ static void mpc_sbox_layer_bitsliced_verify_uint64_1(uint64_t* in, view_t* view,
 #endif
 
 // L1 using SSE2/NEON
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_128, oqs_sig_picnic_mzd_addmul_vl_s128_128)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128, oqs_sig_picnic_mzd_mul_vl_s128_128)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_128
-#define XOR oqs_sig_picnic_mzd_xor_s128_128
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_128_128_20)
-#define LOWMC_INSTANCE_10 lowmc_128_128_20
-#endif
-#if defined(WITH_LOWMC_128_128_182)
-#define LOWMC_INSTANCE_1 lowmc_128_128_182
-#endif
-#define LOWMC_N LOWMC_L1_N
-#define LOWMC_R_10 LOWMC_L1_R
-#define LOWMC_R_1 LOWMC_L1_1_R
-
-#undef SIGN_SBOX
-#undef VERIFY_SBOX
-#define SIGN_SBOX mpc_sbox_layer_bitsliced_128_sse
-#define VERIFY_SBOX mpc_sbox_layer_bitsliced_verify_128_sse
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128_640, oqs_sig_picnic_mzd_mul_vl_s128_128_640)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128_640, oqs_sig_picnic_mzd_mul_vl_s128_128_640)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s128_3_128
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_128
-#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_128_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_128_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_640
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_640
+#include "lowmc_fns_s128_L1.h"
 #define SIGN mpc_lowmc_call_s128_128
 #define VERIFY mpc_lowmc_call_verify_s128_128
 #include "mpc_lowmc.c.i"
 
 // L3 using SSE2/NEON
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_192, oqs_sig_picnic_mzd_addmul_vl_s128_192)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192, oqs_sig_picnic_mzd_mul_vl_s128_192)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_192
-#define XOR oqs_sig_picnic_mzd_xor_s128_256
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_192_192_30)
-#define LOWMC_INSTANCE_10 lowmc_192_192_30
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-#define LOWMC_INSTANCE_1 lowmc_192_192_284
-#endif
-#define LOWMC_N LOWMC_L3_N
-#define LOWMC_R_10 LOWMC_L3_R
-#define LOWMC_R_1 LOWMC_L3_1_R
-
-#undef SIGN_SBOX
-#undef VERIFY_SBOX
-#define SIGN_SBOX mpc_sbox_layer_bitsliced_256_sse
-#define VERIFY_SBOX mpc_sbox_layer_bitsliced_verify_256_sse
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192_896, oqs_sig_picnic_mzd_mul_vl_s128_192_896)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192_1024, oqs_sig_picnic_mzd_mul_vl_s128_192_1024)
-#define MUL_R_1 oqs_sig_picnic_mzd_addmul_v_s128_3_192
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_192
-#define MUL_Z_1 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_896
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_1024
-
+#include "lowmc_fns_s128_L3.h"
 #define SIGN mpc_lowmc_call_s128_192
 #define VERIFY mpc_lowmc_call_verify_s128_192
 #include "mpc_lowmc.c.i"
 
 // L5 using SSE2/NEON
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_256, oqs_sig_picnic_mzd_addmul_vl_s128_256)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256, oqs_sig_picnic_mzd_mul_vl_s128_256)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_256
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_256_256_38)
-#define LOWMC_INSTANCE_10 lowmc_256_256_38
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-#define LOWMC_INSTANCE_1 lowmc_256_256_363
-#endif
-#define LOWMC_N LOWMC_L5_N
-#define LOWMC_R_10 LOWMC_L5_R
-#define LOWMC_R_1 LOWMC_L5_1_R
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256_1152, oqs_sig_picnic_mzd_mul_vl_s128_256_1152)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256_1280, oqs_sig_picnic_mzd_mul_vl_s128_256_1280)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s128_3_256
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_256
-#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_256_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_256_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_1152
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_1280
-
+#include "lowmc_fns_s128_L5.h"
 #define SIGN mpc_lowmc_call_s128_256
 #define VERIFY mpc_lowmc_call_verify_s128_256
 #include "mpc_lowmc.c.i"
@@ -537,494 +303,44 @@ static void mpc_sbox_layer_bitsliced_verify_uint64_1(uint64_t* in, view_t* view,
 #undef FN_ATTR
 #endif
 
-#if defined(WITH_SSE2) && defined(WITH_POPCNT)
-#define FN_ATTR ATTR_TARGET("sse2,popcnt")
-
-// L1 using SSE2 and POPCNT
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_128, oqs_sig_picnic_mzd_addmul_vl_s128_128)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128, oqs_sig_picnic_mzd_mul_vl_s128_128)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_128
-#define XOR oqs_sig_picnic_mzd_xor_s128_128
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_128_128_20)
-#define LOWMC_INSTANCE_10 lowmc_128_128_20
-#endif
-#if defined(WITH_LOWMC_128_128_182)
-#define LOWMC_INSTANCE_1 lowmc_128_128_182
-#endif
-#define LOWMC_N LOWMC_L1_N
-#define LOWMC_R_10 LOWMC_L1_R
-#define LOWMC_R_1 LOWMC_L1_1_R
-
-#undef SIGN_SBOX
-#undef VERIFY_SBOX
-#define SIGN_SBOX mpc_sbox_layer_bitsliced_128_sse
-#define VERIFY_SBOX mpc_sbox_layer_bitsliced_verify_128_sse
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128_640, oqs_sig_picnic_mzd_mul_vl_s128_128_640)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_128_640, oqs_sig_picnic_mzd_mul_vl_s128_128_640)
-#define MUL_R_1 oqs_sig_picnic_mzd_addmul_v_s128_3_128
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_128
-#define MUL_Z_1 oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_640
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_640
-
-#define SIGN mpc_lowmc_call_s128_popcnt_128
-#define VERIFY mpc_lowmc_call_verify_s128_popcnt_128
-#include "mpc_lowmc.c.i"
-
-// L3 using SSE2 and POPCNT
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_192, oqs_sig_picnic_mzd_addmul_vl_s128_192)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192, oqs_sig_picnic_mzd_mul_vl_s128_192)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_192
-#define XOR oqs_sig_picnic_mzd_xor_s128_256
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_192_192_30)
-#define LOWMC_INSTANCE_10 lowmc_192_192_30
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-#define LOWMC_INSTANCE_1 lowmc_192_192_284
-#endif
-#define LOWMC_N LOWMC_L3_N
-#define LOWMC_R_10 LOWMC_L3_R
-#define LOWMC_R_1 LOWMC_L3_1_R
-
-#undef SIGN_SBOX
-#undef VERIFY_SBOX
-#define SIGN_SBOX mpc_sbox_layer_bitsliced_256_sse
-#define VERIFY_SBOX mpc_sbox_layer_bitsliced_verify_256_sse
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192_896, oqs_sig_picnic_mzd_mul_vl_s128_192_896)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_192_1024, oqs_sig_picnic_mzd_mul_vl_s128_192_1024)
-#define MUL_R_1 oqs_sig_picnic_mzd_addmul_v_s128_3_192
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_192
-#define MUL_Z_1 oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_896
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_1024
-
-#define SIGN mpc_lowmc_call_s128_popcnt_192
-#define VERIFY mpc_lowmc_call_verify_s128_popcnt_192
-#include "mpc_lowmc.c.i"
-
-// L5 using SSE2 and POPCNT
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s128_256, oqs_sig_picnic_mzd_addmul_vl_s128_256)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256, oqs_sig_picnic_mzd_mul_vl_s128_256)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_256
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_256_256_38)
-#define LOWMC_INSTANCE_10 lowmc_256_256_38
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-#define LOWMC_INSTANCE_1 lowmc_256_256_363
-#endif
-#define LOWMC_N LOWMC_L5_N
-#define LOWMC_R_10 LOWMC_L5_R
-#define LOWMC_R_1 LOWMC_L5_1_R
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256_1152, oqs_sig_picnic_mzd_mul_vl_s128_256_1152)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s128_256_1280, oqs_sig_picnic_mzd_mul_vl_s128_256_1280)
-#define MUL_R_1 oqs_sig_picnic_mzd_addmul_v_s128_3_256
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s128_30_256
-#define MUL_Z_1 oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s128_1152
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s128_1280
-
-#define SIGN mpc_lowmc_call_s128_popcnt_256
-#define VERIFY mpc_lowmc_call_verify_s128_popcnt_256
-#include "mpc_lowmc.c.i"
-
-#undef FN_ATTR
-#endif
-
 #if defined(WITH_AVX2)
-#undef SHUFFLE
 #define FN_ATTR ATTR_TARGET_AVX2
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext
 
 // L1 using AVX2
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_128, oqs_sig_picnic_mzd_addmul_vl_s256_128)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128, oqs_sig_picnic_mzd_mul_vl_s256_128)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_128
-#define XOR oqs_sig_picnic_mzd_xor_s256_128
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_128_128_20)
-#define LOWMC_INSTANCE_10 lowmc_128_128_20
-#endif
-#if defined(WITH_LOWMC_128_128_182)
-#define LOWMC_INSTANCE_1 lowmc_128_128_182
-#endif
-#define LOWMC_N LOWMC_L1_N
-#define LOWMC_R_10 LOWMC_L1_R
-#define LOWMC_R_1 LOWMC_L1_1_R
-
-#undef SIGN_SBOX
-#undef VERIFY_SBOX
-#define SIGN_SBOX mpc_sbox_layer_bitsliced_128_sse
-#define VERIFY_SBOX mpc_sbox_layer_bitsliced_verify_128_sse
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128_768, oqs_sig_picnic_mzd_mul_vl_s256_128_768)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128_768, oqs_sig_picnic_mzd_mul_vl_s256_128_768)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_128
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_128
-#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_128_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_128_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_768
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_768
-
+#include "lowmc_fns_s256_L1.h"
 #define SIGN mpc_lowmc_call_s256_128
 #define VERIFY mpc_lowmc_call_verify_s256_128
 #include "mpc_lowmc.c.i"
 
 // L3 using AVX2
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_192, oqs_sig_picnic_mzd_addmul_vl_s256_192)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192, oqs_sig_picnic_mzd_mul_vl_s256_192)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_192
-#define XOR oqs_sig_picnic_mzd_xor_s256_256
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_192_192_30)
-#define LOWMC_INSTANCE_10 lowmc_192_192_30
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-#define LOWMC_INSTANCE_1 lowmc_192_192_284
-#endif
-#define LOWMC_N LOWMC_L3_N
-#define LOWMC_R_10 LOWMC_L3_R
-#define LOWMC_R_1 LOWMC_L3_1_R
-
-#undef SIGN_SBOX
-#undef VERIFY_SBOX
-#define SIGN_SBOX mpc_sbox_layer_bitsliced_256_avx
-#define VERIFY_SBOX mpc_sbox_layer_bitsliced_verify_256_avx
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192_1024, oqs_sig_picnic_mzd_mul_vl_s256_192_1024)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192_1024, oqs_sig_picnic_mzd_mul_vl_s256_192_1024)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_192
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_192
-#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_192_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_1024
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_1024
-
+#include "lowmc_fns_s256_L3.h"
 #define SIGN mpc_lowmc_call_s256_192
 #define VERIFY mpc_lowmc_call_verify_s256_192
 #include "mpc_lowmc.c.i"
 
 // L5 using AVX2
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_256, oqs_sig_picnic_mzd_addmul_vl_s256_256)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256, oqs_sig_picnic_mzd_mul_vl_s256_256)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_256
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_256_256_38)
-#define LOWMC_INSTANCE_10 lowmc_256_256_38
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-#define LOWMC_INSTANCE_1 lowmc_256_256_363
-#endif
-#define LOWMC_N LOWMC_L5_N
-#define LOWMC_R_10 LOWMC_L5_R
-#define LOWMC_R_1 LOWMC_L5_1_R
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256_1280, oqs_sig_picnic_mzd_mul_vl_s256_256_1280)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256_1280, oqs_sig_picnic_mzd_mul_vl_s256_256_1280)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_256
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_256
-#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_uint64_256_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_uint64_256_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_1280
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_1280
-
+#include "lowmc_fns_s256_L5.h"
 #define SIGN mpc_lowmc_call_s256_256
 #define VERIFY mpc_lowmc_call_verify_s256_256
 #include "mpc_lowmc.c.i"
 
 #undef FN_ATTR
 
-#if defined(WITH_POPCNT)
-#define FN_ATTR ATTR_TARGET("avx2,bmi2,popcnt")
-
-// L1 using AVX2
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_128, oqs_sig_picnic_mzd_addmul_vl_s256_128)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128, oqs_sig_picnic_mzd_mul_vl_s256_128)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_128
-#define XOR oqs_sig_picnic_mzd_xor_s256_128
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_128_128_20)
-#define LOWMC_INSTANCE_10 lowmc_128_128_20
-#endif
-#if defined(WITH_LOWMC_128_128_182)
-#define LOWMC_INSTANCE_1 lowmc_128_128_182
-#endif
-#define LOWMC_N LOWMC_L1_N
-#define LOWMC_R_10 LOWMC_L1_R
-#define LOWMC_R_1 LOWMC_L1_1_R
-
-#undef SIGN_SBOX
-#undef VERIFY_SBOX
-#define SIGN_SBOX mpc_sbox_layer_bitsliced_128_sse
-#define VERIFY_SBOX mpc_sbox_layer_bitsliced_verify_128_sse
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128_768, oqs_sig_picnic_mzd_mul_vl_s256_128_768)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_128_768, oqs_sig_picnic_mzd_mul_vl_s256_128_768)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_128
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_128
-#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_128_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_768
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_768
-
-#define SIGN mpc_lowmc_call_s256_popcnt_128
-#define VERIFY mpc_lowmc_call_verify_s256_popcnt_128
-#include "mpc_lowmc.c.i"
-
-// L3 using AVX2
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#undef XOR
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_192, oqs_sig_picnic_mzd_addmul_vl_s256_192)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192, oqs_sig_picnic_mzd_mul_vl_s256_192)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_192
-#define XOR oqs_sig_picnic_mzd_xor_s256_256
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_192_192_30)
-#define LOWMC_INSTANCE_10 lowmc_192_192_30
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-#define LOWMC_INSTANCE_1 lowmc_192_192_284
-#endif
-#define LOWMC_N LOWMC_L3_N
-#define LOWMC_R_10 LOWMC_L3_R
-#define LOWMC_R_1 LOWMC_L3_1_R
-
-#undef SIGN_SBOX
-#undef VERIFY_SBOX
-#define SIGN_SBOX mpc_sbox_layer_bitsliced_256_avx
-#define VERIFY_SBOX mpc_sbox_layer_bitsliced_verify_256_avx
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192_1024, oqs_sig_picnic_mzd_mul_vl_s256_192_1024)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_192_1024, oqs_sig_picnic_mzd_mul_vl_s256_192_1024)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_192
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_192
-#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_192_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_1024
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_1024
-
-#define SIGN mpc_lowmc_call_s256_popcnt_192
-#define VERIFY mpc_lowmc_call_verify_s256_popcnt_192
-#include "mpc_lowmc.c.i"
-
-// L5 using AVX2
-#undef ADDMUL
-#undef MUL
-#undef SHUFFLE
-#define ADDMUL SELECT_V_VL(oqs_sig_picnic_mzd_addmul_v_s256_256, oqs_sig_picnic_mzd_addmul_vl_s256_256)
-#define MUL SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256, oqs_sig_picnic_mzd_mul_vl_s256_256)
-#define SHUFFLE oqs_sig_picnic_mzd_shuffle_pext_256
-
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
-#undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
-#if defined(WITH_LOWMC_256_256_38)
-#define LOWMC_INSTANCE_10 lowmc_256_256_38
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-#define LOWMC_INSTANCE_1 lowmc_256_256_363
-#endif
-#define LOWMC_N LOWMC_L5_N
-#define LOWMC_R_10 LOWMC_L5_R
-#define LOWMC_R_1 LOWMC_L5_1_R
-
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef MUL_R_1
-#undef MUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
-#undef XOR_MC_1
-#undef XOR_MC_10
-#define MUL_MC_1 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256_1280, oqs_sig_picnic_mzd_mul_vl_s256_256_1280)
-#define MUL_MC_10 SELECT_V_VL(oqs_sig_picnic_mzd_mul_v_s256_256_1280, oqs_sig_picnic_mzd_mul_vl_s256_256_1280)
-#define MUL_R_1  oqs_sig_picnic_mzd_addmul_v_s256_3_256
-#define MUL_R_10 oqs_sig_picnic_mzd_addmul_v_s256_30_256
-#define MUL_Z_1  oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_3
-#define MUL_Z_10 oqs_sig_picnic_mzd_mul_v_parity_popcnt_256_30
-#define XOR_MC_1 oqs_sig_picnic_mzd_xor_s256_1280
-#define XOR_MC_10 oqs_sig_picnic_mzd_xor_s256_1280
-
-#define SIGN mpc_lowmc_call_s256_popcnt_256
-#define VERIFY mpc_lowmc_call_verify_s256_popcnt_256
-#include "mpc_lowmc.c.i"
-
-#undef FN_ATTR
-#endif
-
-#undef SHUFFLE
-#define SHUFFLE mzd_shuffle
 #endif
 #endif
 
-zkbpp_lowmc_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_implementation(const lowmc_t* lowmc) {
+zkbpp_lowmc_implementation_f get_zkbpp_lowmc_implementation(const lowmc_t* lowmc) {
+#if defined(WITH_LOWMC_M1)
   ASSUME(lowmc->m == 10 || lowmc->m == 1);
+#else
+  ASSUME(lowmc->m == 10);
+#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   if (CPU_SUPPORTS_AVX2) {
     if (lowmc->m == 10) {
-#if defined(WITH_POPCNT)
-      if (CPU_SUPPORTS_POPCNT) {
-        switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_20)
-        case 128:
-          return mpc_lowmc_call_s256_popcnt_128_10;
-#endif
-#if defined(WITH_LOWMC_192_192_30)
-        case 192:
-          return mpc_lowmc_call_s256_popcnt_192_10;
-#endif
-#if defined(WITH_LOWMC_256_256_38)
-        case 256:
-          return mpc_lowmc_call_s256_popcnt_256_10;
-#endif
-        }
-      }
-#endif
       switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_20)
       case 128:
@@ -1042,24 +358,6 @@ zkbpp_lowmc_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_implementation(const
     }
 #if defined(WITH_LOWMC_M1)
     if (lowmc->m == 1) {
-#if defined(WITH_POPCNT)
-      if (CPU_SUPPORTS_POPCNT) {
-        switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-        case 128:
-          return mpc_lowmc_call_s256_popcnt_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-        case 192:
-          return mpc_lowmc_call_s256_popcnt_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-        case 256:
-          return mpc_lowmc_call_s256_popcnt_256_1;
-#endif
-        }
-      }
-#endif
       switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_182)
       case 128:
@@ -1081,24 +379,6 @@ zkbpp_lowmc_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_implementation(const
 #if defined(WITH_SSE2) || defined(WITH_NEON)
   if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
     if (lowmc->m == 10) {
-#if defined(WITH_POPCNT)
-      if (CPU_SUPPORTS_POPCNT) {
-        switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_20)
-        case 128:
-          return mpc_lowmc_call_s128_popcnt_128_10;
-#endif
-#if defined(WITH_LOWMC_192_192_30)
-        case 192:
-          return mpc_lowmc_call_s128_popcnt_192_10;
-#endif
-#if defined(WITH_LOWMC_256_256_38)
-        case 256:
-          return mpc_lowmc_call_s128_popcnt_256_10;
-#endif
-        }
-      }
-#endif
       switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_20)
       case 128:
@@ -1116,24 +396,6 @@ zkbpp_lowmc_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_implementation(const
     }
 #if defined(WITH_LOWMC_M1)
     if (lowmc->m == 1) {
-#if defined(WITH_POPCNT)
-      if (CPU_SUPPORTS_POPCNT) {
-        switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-        case 128:
-          return mpc_lowmc_call_s128_popcnt_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-        case 192:
-          return mpc_lowmc_call_s128_popcnt_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-        case 256:
-          return mpc_lowmc_call_s128_popcnt_256_1;
-#endif
-        }
-      }
-#endif
       switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_182)
       case 128:
@@ -1193,32 +455,18 @@ zkbpp_lowmc_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_implementation(const
   return NULL;
 }
 
-zkbpp_lowmc_verify_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_verify_implementation(const lowmc_t* lowmc) {
+zkbpp_lowmc_verify_implementation_f get_zkbpp_lowmc_verify_implementation(const lowmc_t* lowmc) {
+#if defined(WITH_LOWMC_M1)
   ASSUME(lowmc->m == 10 || lowmc->m == 1);
+#else
+  ASSUME(lowmc->m == 10);
+#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   if (CPU_SUPPORTS_AVX2) {
     if (lowmc->m == 10) {
-#if defined(WITH_POPCNT)
-      if (CPU_SUPPORTS_POPCNT) {
-        switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_20)
-        case 128:
-          return mpc_lowmc_call_verify_s256_popcnt_128_10;
-#endif
-#if defined(WITH_LOWMC_192_192_30)
-        case 192:
-          return mpc_lowmc_call_verify_s256_popcnt_192_10;
-#endif
-#if defined(WITH_LOWMC_256_256_38)
-        case 256:
-          return mpc_lowmc_call_verify_s256_popcnt_256_10;
-#endif
-        }
-      }
-#endif
       switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_20)
       case 128:
@@ -1236,24 +484,6 @@ zkbpp_lowmc_verify_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_verify_implem
     }
 #if defined(WITH_LOWMC_M1)
     if (lowmc->m == 1) {
-#if defined(WITH_POPCNT)
-      if (CPU_SUPPORTS_POPCNT) {
-        switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-        case 128:
-          return mpc_lowmc_call_verify_s256_popcnt_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-        case 192:
-          return mpc_lowmc_call_verify_s256_popcnt_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-        case 256:
-          return mpc_lowmc_call_verify_s256_popcnt_256_1;
-#endif
-        }
-      }
-#endif
       switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_182)
       case 128:
@@ -1275,24 +505,6 @@ zkbpp_lowmc_verify_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_verify_implem
 #if defined(WITH_SSE2) || defined(WITH_NEON)
   if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
     if (lowmc->m == 10) {
-#if defined(WITH_POPCNT)
-      if (CPU_SUPPORTS_POPCNT) {
-        switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_20)
-        case 128:
-          return mpc_lowmc_call_verify_s128_popcnt_128_10;
-#endif
-#if defined(WITH_LOWMC_192_192_30)
-        case 192:
-          return mpc_lowmc_call_verify_s128_popcnt_192_10;
-#endif
-#if defined(WITH_LOWMC_256_256_38)
-        case 256:
-          return mpc_lowmc_call_verify_s128_popcnt_256_10;
-#endif
-        }
-      }
-#endif
       switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_20)
       case 128:
@@ -1310,24 +522,6 @@ zkbpp_lowmc_verify_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_verify_implem
     }
 #if defined(WITH_LOWMC_M1)
     if (lowmc->m == 1) {
-#if defined(WITH_POPCNT)
-      if (CPU_SUPPORTS_POPCNT) {
-        switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-        case 128:
-          return mpc_lowmc_call_verify_s128_popcnt_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-        case 192:
-          return mpc_lowmc_call_verify_s128_popcnt_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-        case 256:
-          return mpc_lowmc_call_verify_s128_popcnt_256_1;
-#endif
-        }
-      }
-#endif
       switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_182)
       case 128:
@@ -1427,53 +621,53 @@ zkbpp_lowmc_verify_implementation_f oqs_sig_picnic_get_zkbpp_lowmc_verify_implem
 
 static void mzd_share_uint64_128(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
                                  const mzd_local_t* v3) {
-  oqs_sig_picnic_mzd_xor_uint64_128(r, v1, v2);
-  oqs_sig_picnic_mzd_xor_uint64_128(r, r, v3);
+  mzd_xor_uint64_128(r, v1, v2);
+  mzd_xor_uint64_128(r, r, v3);
 }
 
 static void mzd_share_uint64_192(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
                                  const mzd_local_t* v3) {
-  oqs_sig_picnic_mzd_xor_uint64_192(r, v1, v2);
-  oqs_sig_picnic_mzd_xor_uint64_192(r, r, v3);
+  mzd_xor_uint64_192(r, v1, v2);
+  mzd_xor_uint64_192(r, r, v3);
 }
 
 static void mzd_share_uint64_256(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
                                  const mzd_local_t* v3) {
-  oqs_sig_picnic_mzd_xor_uint64_256(r, v1, v2);
-  oqs_sig_picnic_mzd_xor_uint64_256(r, r, v3);
+  mzd_xor_uint64_256(r, v1, v2);
+  mzd_xor_uint64_256(r, r, v3);
 }
 
 #if defined(WITH_OPT)
 #if defined(WITH_SSE2) || defined(WITH_NEON)
 static void mzd_share_s128_128(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                              const mzd_local_t* v3) {
-  oqs_sig_picnic_mzd_xor_s128_128(r, v1, v2);
-  oqs_sig_picnic_mzd_xor_s128_128(r, r, v3);
+                               const mzd_local_t* v3) {
+  mzd_xor_s128_128(r, v1, v2);
+  mzd_xor_s128_128(r, r, v3);
 }
 
 static void mzd_share_s128_256(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                              const mzd_local_t* v3) {
-  oqs_sig_picnic_mzd_xor_s128_256(r, v1, v2);
-  oqs_sig_picnic_mzd_xor_s128_256(r, r, v3);
+                               const mzd_local_t* v3) {
+  mzd_xor_s128_256(r, v1, v2);
+  mzd_xor_s128_256(r, r, v3);
 }
 #endif
 
 #if defined(WITH_AVX2)
 static void mzd_share_s256_128(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                              const mzd_local_t* v3) {
-  oqs_sig_picnic_mzd_xor_s256_128(r, v1, v2);
-  oqs_sig_picnic_mzd_xor_s256_128(r, r, v3);
+                               const mzd_local_t* v3) {
+  mzd_xor_s256_128(r, v1, v2);
+  mzd_xor_s256_128(r, r, v3);
 }
 
 static void mzd_share_s256_256(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                              const mzd_local_t* v3) {
-  oqs_sig_picnic_mzd_xor_s256_256(r, v1, v2);
-  oqs_sig_picnic_mzd_xor_s256_256(r, r, v3);
+                               const mzd_local_t* v3) {
+  mzd_xor_s256_256(r, v1, v2);
+  mzd_xor_s256_256(r, r, v3);
 }
 #endif
 #endif
 
-zkbpp_share_implementation_f oqs_sig_picnic_get_zkbpp_share_implentation(const lowmc_t* lowmc) {
+zkbpp_share_implementation_f get_zkbpp_share_implentation(const lowmc_t* lowmc) {
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   if (CPU_SUPPORTS_AVX2) {

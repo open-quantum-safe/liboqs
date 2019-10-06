@@ -1,0 +1,4 @@
+{% for family in instructions['kems'] %}{% for scheme in family['schemes'] %}
+/** Algorithm identifier for {{ scheme['pretty_name_full'] }} KEM. */
+#define OQS_KEM_alg_{{ family['name'] }}_{{ scheme['scheme'] }} "{{ scheme['pretty_name_full'] }}"{% endfor %}{% endfor %}
+

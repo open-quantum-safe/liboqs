@@ -4,8 +4,8 @@
 * Abstract: internal header file for P751
 *********************************************************************************************/
 
-#ifndef __P751_INTERNAL_H__
-#define __P751_INTERNAL_H__
+#ifndef P751_INTERNAL_H
+#define P751_INTERNAL_H
 
 #include "../config.h"
 
@@ -33,7 +33,6 @@
 #define NWORDS_ORDER ((NBITS_ORDER + RADIX - 1) / RADIX) // Number of words of oA and oB, where oA and oB are the subgroup orders of Alice and Bob, resp.
 #define NWORDS64_ORDER ((NBITS_ORDER + 63) / 64)         // Number of 64-bit words of a 384-bit element
 #define MAXBITS_ORDER NBITS_ORDER
-#define MAXWORDS_ORDER ((MAXBITS_ORDER + RADIX - 1) / RADIX) // Max. number of words to represent elements in [1, oA-1] or [1, oB].
 #define ALICE 0
 #define BOB 1
 #define OALICE_BITS 372
@@ -42,7 +41,7 @@
 #define MASK_ALICE 0x0F
 #define MASK_BOB 0x03
 #define PRIME p751
-#define PARAM_A 0
+#define PARAM_A 6
 #define PARAM_C 1
 // Fixed parameters for isogeny tree computation
 #define MAX_INT_POINTS_ALICE 8
@@ -50,9 +49,37 @@
 #define MAX_Alice 186
 #define MAX_Bob 239
 #define MSG_BYTES 32
-#define SECRETKEY_A_BYTES (OALICE_BITS + 7) / 8
-#define SECRETKEY_B_BYTES (OBOB_BITS + 7) / 8
+#define SECRETKEY_A_BYTES ((OALICE_BITS + 7) / 8)
+#define SECRETKEY_B_BYTES ((OBOB_BITS - 1 + 7) / 8)
 #define FP2_ENCODED_BYTES 2 * ((NBITS_FIELD + 7) / 8)
+
+#ifdef COMPRESS
+#define MASK2_BOB 0x00
+#define MASK3_BOB 0xFF
+#define ORDER_A_ENCODED_BYTES SECRETKEY_A_BYTES
+#define ORDER_B_ENCODED_BYTES SECRETKEY_B_BYTES
+#define COMPRESSED_CHUNK_CT (3 * ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 2)
+#define UNCOMPRESSEDPK_BYTES 564
+// Table sizes used by the Entangled basis generation
+#define TABLE_R_LEN 17
+#define TABLE_V_LEN 34
+// Parameters for discrete log computations
+// Binary Pohlig-Hellman reduced to smaller logs of order ell^W
+#define W_2 4
+#define W_3 5
+// ell^w
+#define ELL2_W (1 << W_2)
+#define ELL3_W 243 // W_3 = 5
+// ell^(e mod w)
+#define ELL2_EMODW (1 << (OALICE_BITS % W_2))
+#define ELL3_EMODW 81
+// # of digits in the discrete log
+#define DLEN_2 93 // ceil(eA/W_2)
+#define DLEN_3 48 // ceil(eB/W_3)
+// Length of the optimal strategy path for Pohlig-Hellman
+#define PLEN_2 94
+#define PLEN_3 49
+#endif
 
 // SIDH's basic element definitions and point representations
 
@@ -66,6 +93,23 @@ typedef struct {
 } point_proj; // Point representation in projective XZ Montgomery coordinates.
 typedef point_proj point_proj_t[1];
 
+#ifdef COMPRESS
+typedef struct {
+	f2elm_t X;
+	f2elm_t Y;
+	f2elm_t Z;
+} point_full_proj; // Point representation in full projective XYZ Montgomery coordinates
+typedef point_full_proj point_full_proj_t[1];
+
+typedef struct {
+	f2elm_t x;
+	f2elm_t y;
+} point_affine; // Point representation in affine coordinates.
+typedef point_affine point_t[1];
+
+typedef f2elm_t publickey_t[3];
+#endif
+
 /**************** Function prototypes ****************/
 /************* Multiprecision functions **************/
 
@@ -78,15 +122,16 @@ static unsigned int mp_add(const digit_t *a, const digit_t *b, digit_t *c, const
 // 751-bit multiprecision addition, c = a+b
 static void mp_add751(const digit_t *a, const digit_t *b, digit_t *c);
 static void mp_add751_asm(const digit_t *a, const digit_t *b, digit_t *c);
-//void mp_addmask751_asm(const digit_t* a, const digit_t mask, digit_t* c);
-
-// 2x751-bit multiprecision addition, c = a+b
-static void mp_add751x2(const digit_t *a, const digit_t *b, digit_t *c);
-static void mp_add751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision subtraction, c = a-b, where lng(a) = lng(b) = nwords. Returns the borrow bit
 static unsigned int mp_sub(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords);
-static digit_t mp_sub751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+
+// 2x751-bit multiprecision subtraction followed by addition with p751*2^768, c = a-b+(p751*2^768) if a-b < 0, otherwise c=a-b
+static void mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+static void mp_subadd751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+
+// Double 2x751-bit multiprecision subtraction, c = c-a-b, where c > a and c > b
+static void mp_dblsub751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision left shift
 static void mp_shiftleft(digit_t *x, unsigned int shift, const unsigned int nwords);
@@ -115,15 +160,15 @@ static void fpzero751(digit_t *a);
 static bool fpequal751_non_constant_time(const digit_t *a, const digit_t *b);
 
 // Modular addition, c = a+b mod p751
-static void fpadd751(const digit_t *a, const digit_t *b, digit_t *c);
+extern void fpadd751(const digit_t *a, const digit_t *b, digit_t *c);
 extern void fpadd751_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular subtraction, c = a-b mod p751
-static void fpsub751(const digit_t *a, const digit_t *b, digit_t *c);
+extern void fpsub751(const digit_t *a, const digit_t *b, digit_t *c);
 extern void fpsub751_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular negation, a = -a mod p751
-static void fpneg751(digit_t *a);
+extern void fpneg751(digit_t *a);
 
 // Modular division by two, c = a/2 mod p751.
 static void fpdiv2_751(const digit_t *a, digit_t *c);
@@ -169,10 +214,10 @@ static void fp2zero751(f2elm_t a);
 static void fp2neg751(f2elm_t a);
 
 // GF(p751^2) addition, c = a+b in GF(p751^2)
-static void fp2add751(const f2elm_t a, const f2elm_t b, f2elm_t c);
+extern void fp2add751(const f2elm_t a, const f2elm_t b, f2elm_t c);
 
 // GF(p751^2) subtraction, c = a-b in GF(p751^2)
-static void fp2sub751(const f2elm_t a, const f2elm_t b, f2elm_t c);
+extern void fp2sub751(const f2elm_t a, const f2elm_t b, f2elm_t c);
 
 // GF(p751^2) division by two, c = a/2  in GF(p751^2)
 static void fp2div2_751(const f2elm_t a, f2elm_t c);

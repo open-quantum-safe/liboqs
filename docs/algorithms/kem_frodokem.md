@@ -1,4 +1,4 @@
-liboqs master branch algorithm datasheet: `kem_frodokem`
+liboqs algorithm datasheet: `kem_frodokem`
 ========================================================
 
 Summary
@@ -22,13 +22,13 @@ Parameter sets
 | FrodoKEM-976-AES    |     IND-CCA    |              3              |          15632          |          31296          |          15744          |             24             |
 | FrodoKEM-976-SHAKE  |     IND-CCA    |              3              |          15632          |          31296          |          15744          |             24             |
 | FrodoKEM-1344-AES   |     IND-CCA    |              5              |          21520          |          43088          |          21632          |             32             |
-| FrodoKEM-1344-SHAKE |     IND-CCA    |              5              |          15632          |          43088          |          21632          |             32             |
+| FrodoKEM-1344-SHAKE |     IND-CCA    |              5              |          21520          |          43088          |          21632          |             32             |
 
 Implementation
 --------------
 
-- **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE/
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/e72fd489baaef597715aa4335ceeea4362301b55
+- **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE/ via https://github.com/PQClean/PQClean
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/ba04db65d7d21e52dea59651bfff4ad28653852d
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes

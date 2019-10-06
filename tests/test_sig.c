@@ -8,6 +8,8 @@
 
 #include <oqs/oqs.h>
 
+#include "system_info.c"
+
 static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	OQS_SIG *sig = NULL;
@@ -21,7 +23,8 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
-		return OQS_SUCCESS;
+		// should always succeed since we don't call this function on KEMs that aren't enabled
+		return OQS_ERROR;
 	}
 
 	printf("================================================================================\n");
@@ -65,7 +68,6 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
 		goto err;
 	}
-
 	printf("verification passes as expected\n");
 	ret = OQS_SUCCESS;
 	goto cleanup;
@@ -85,19 +87,33 @@ cleanup:
 	return ret;
 }
 
-int main() {
-	int ret = EXIT_SUCCESS;
-	OQS_STATUS rc;
+int main(int argc, char **argv) {
+
+	if (argc != 2) {
+		fprintf(stderr, "Usage: test_sig algname\n");
+		fprintf(stderr, "  algname: ");
+		for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
+			if (i > 0) {
+				fprintf(stderr, ", ");
+			}
+			fprintf(stderr, "%s", OQS_SIG_alg_identifier(i));
+		}
+		fprintf(stderr, "\n");
+		return EXIT_FAILURE;
+	}
+
+	print_system_info();
 
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
-	for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
-		rc = sig_test_correctness(OQS_SIG_alg_identifier(i));
-		if (rc != OQS_SUCCESS) {
-			ret = EXIT_FAILURE;
-		}
+	char *alg_name = argv[1];
+	if (!OQS_SIG_alg_is_enabled(alg_name)) {
+		return EXIT_FAILURE;
 	}
-
-	return ret;
+	OQS_STATUS rc = sig_test_correctness(alg_name);
+	if (rc != OQS_SUCCESS) {
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
 }

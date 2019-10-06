@@ -5,6 +5,8 @@
 
 #include <oqs/oqs.h>
 
+#include "system_info.c"
+
 /* Displays hexadecimal strings */
 void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
@@ -38,7 +40,8 @@ OQS_STATUS kem_test_correctness(const char *method_name) {
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
-		return OQS_SUCCESS;
+		// should always succeed since we don't call this function on KEMs that aren't enabled
+		return OQS_ERROR;
 	}
 
 	printf("================================================================================\n");
@@ -120,20 +123,33 @@ cleanup:
 	return ret;
 }
 
-int main() {
+int main(int argc, char **argv) {
 
-	int ret = EXIT_SUCCESS;
-	OQS_STATUS rc;
+	if (argc != 2) {
+		fprintf(stderr, "Usage: test_kem algname\n");
+		fprintf(stderr, "  algname: ");
+		for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
+			if (i > 0) {
+				fprintf(stderr, ", ");
+			}
+			fprintf(stderr, "%s", OQS_KEM_alg_identifier(i));
+		}
+		fprintf(stderr, "\n");
+		return EXIT_FAILURE;
+	}
+
+	print_system_info();
 
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
-	for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
-		rc = kem_test_correctness(OQS_KEM_alg_identifier(i));
-		if (rc != OQS_SUCCESS) {
-			ret = EXIT_FAILURE;
-		}
+	char *alg_name = argv[1];
+	if (!OQS_KEM_alg_is_enabled(alg_name)) {
+		return EXIT_FAILURE;
 	}
-
-	return ret;
+	OQS_STATUS rc = kem_test_correctness(alg_name);
+	if (rc != OQS_SUCCESS) {
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
 }
