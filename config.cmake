@@ -18,7 +18,6 @@ if (USE_AES_OPENSSL OR
     set(USE_OPENSSL ON)
 endif ()
 
-# FrodoKEM
 option(OQS_ENABLE_KEM_frodokem_640_aes "Enable FrodoKEM 640-AES." ON)
 option(OQS_ENABLE_KEM_frodokem_640_shake "Enable FrodoKEM 640-SHAKE." ON)
 
@@ -35,4 +34,44 @@ if (OQS_ENABLE_KEM_frodokem_640_aes OR
     OQS_ENABLE_KEM_frodokem_1344_aes OR
     OQS_ENABLE_KEM_frodokem_1344_shake)
     set(ENABLE_KEM_FRODOKEM ON)
+endif ()
+
+option(OQS_ENABLE_KEM_kyber_512 "Enable Kyber 512" ON)
+option(OQS_ENABLE_KEM_kyber_768 "Enable Kyber 768" ON)
+option(OQS_ENABLE_KEM_kyber_1024 "Enable Kyber 1024" ON)
+set(ENABLE_KEM_KYBER OFF)
+if (OQS_ENABLE_KEM_kyber_512 OR
+    OQS_ENABLE_KEM_kyber_768 OR
+    OQS_ENABLE_KEM_kyber_1024)
+    set(ENABLE_KEM_KYBER ON)
+endif ()
+
+option(OQS_ENABLE_KEM_newhope_512cca "Enable NewHope 512" ON)
+option(OQS_ENABLE_KEM_newhope_1024cca "Enable NewHope 1024" ON)
+set(ENABLE_KEM_NEWHOPE OFF)
+if (OQS_ENABLE_KEM_newhope_512cca OR
+    OQS_ENABLE_KEM_newhope_2014cca)
+    set(ENABLE_KEM_NEWHOPE ON)
+endif ()
+
+option(OQS_ENABLE_KEM_ntru_hps2048509 "Enable NTRU-HPS2048509" ON)
+option(OQS_ENABLE_KEM_ntru_hps2048677 "Enable NTRU-HPS2048677" ON)
+option(OQS_ENABLE_KEM_ntru_hps4096821 "Enable NTRU-HPS4096821" ON)
+option(OQS_ENABLE_KEM_ntru_hrss701 "Enable NTRU-HRSS701" ON)
+set(ENABLE_KEM_NTRU OFF)
+if (OQS_ENABLE_KEM_ntru_hps2048509 OR
+    OQS_ENABLE_KEM_ntru_hps2048677 OR
+    OQS_ENABLE_KEM_ntru_hps4096821 OR
+    OQS_ENABLE_KEM_ntru_hrss701)
+    set(ENABLE_KEM_NTRU ON)
+endif ()
+
+option(OQS_ENABLE_KEM_saber_lightsaber "Enable Saber-Lightsaber" ON)
+option(OQS_ENABLE_KEM_saber_saber "Enable Saber-Saber" ON)
+option(OQS_ENABLE_KEM_saber_firesaber "Enable Saber-Firesaber" ON)
+set(ENABLE_KEM_SABER OFF)
+if (OQS_ENABLE_KEM_saber_lightsaber OR
+    OQS_ENABLE_KEM_saber_saber OR
+    OQS_ENABLE_KEM_saber_firesaber)
+    set(ENABLE_KEM_SABER ON)
 endif ()
