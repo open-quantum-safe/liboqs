@@ -20,7 +20,7 @@ COMMON_CSRCS += $(BIKE_DIR)/gf2x_mul.c
 if USE_AVX512F_INSTRUCTIONS
   COMMON_CSRCS += $(BIKE_DIR)/converts.S $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx512.S
   COMMON_CSRCS += $(BIKE_DIR)/sampling_avx512.S $(BIKE_DIR)/gf_mul.S $(BIKE_DIR)/gf_add.S 
- COMMON_FLAGS += -DAVX512
+  COMMON_FLAGS += -DAVX512
 else
 if USE_AVX2_INSTRUCTIONS
   COMMON_CSRCS += $(BIKE_DIR)/converts.S $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx2.S
