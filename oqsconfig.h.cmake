@@ -1,0 +1,72 @@
+#cmakedefine OQS_VERSION_TEXT "@OQS_VERSION_TEXT@"
+
+#cmakedefine OQS_KEM_DEFAULT @OQS_KEM_DEFAULT@
+
+#cmakedefine USE_AES_C
+#cmakedefine USE_AES_INSTRUCTIONS
+#cmakedefine USE_AES_OPENSSL
+
+#cmakedefine USE_AVX2_INSTRUCTIONS
+
+#cmakedefine USE_SHA2_OPENSSL
+#cmakedefine USE_SHA3_C
+#cmakedefine USE_SHA3_OPENSSL
+
+#cmakedefine USE_OPENSSL
+
+#cmakedefine OQS_ENABLE_KEM_bike1_l1
+#cmakedefine OQS_ENABLE_KEM_bike1_l3
+#cmakedefine OQS_ENABLE_KEM_bike1_l5
+#cmakedefine OQS_ENABLE_KEM_bike2_l1
+#cmakedefine OQS_ENABLE_KEM_bike2_l3
+#cmakedefine OQS_ENABLE_KEM_bike2_l5
+#cmakedefine OQS_ENABLE_KEM_bike3_l1
+#cmakedefine OQS_ENABLE_KEM_bike3_l3
+#cmakedefine OQS_ENABLE_KEM_bike3_l5
+#cmakedefine ENABLE_KEM_BIKE
+
+#cmakedefine OQS_ENABLE_KEM_frodokem_640_aes
+#cmakedefine OQS_ENABLE_KEM_frodokem_640_shake
+#cmakedefine OQS_ENABLE_KEM_frodokem_976_aes
+#cmakedefine OQS_ENABLE_KEM_frodokem_976_shake
+#cmakedefine OQS_ENABLE_KEM_frodokem_1344_aes
+#cmakedefine OQS_ENABLE_KEM_frodokem_1344_shake
+#cmakedefine ENABLE_KEM_FRODOKEM
+
+#cmakedefine OQS_ENABLE_KEM_kyber_512
+#cmakedefine OQS_ENABLE_KEM_kyber_768
+#cmakedefine OQS_ENABLE_KEM_kyber_1024
+#cmakedefine ENABLE_KEM_KYBER
+
+#cmakedefine OQS_ENABLE_KEM_newhope_512cca
+#cmakedefine OQS_ENABLE_KEM_newhope_1024cca
+#cmakedefine ENABLE_KEM_NEWHOPE
+
+#cmakedefine OQS_ENABLE_KEM_ntru_hps2048509
+#cmakedefine OQS_ENABLE_KEM_ntru_hps2048677
+#cmakedefine OQS_ENABLE_KEM_ntru_hps4096821
+#cmakedefine OQS_ENABLE_KEM_ntru_hrss701
+#cmakedefine ENABLE_KEM_NTRU
+
+#cmakedefine OQS_ENABLE_KEM_saber_lightsaber
+#cmakedefine OQS_ENABLE_KEM_saber_saber
+#cmakedefine OQS_ENABLE_KEM_saber_firesaber
+#cmakedefine ENABLE_KEM_SABER
+
+#cmakedefine OQS_ENABLE_KEM_sidh_p434
+#cmakedefine OQS_ENABLE_KEM_sidh_p434_compressed
+#cmakedefine OQS_ENABLE_KEM_sidh_p503
+#cmakedefine OQS_ENABLE_KEM_sidh_p503_compressed
+#cmakedefine OQS_ENABLE_KEM_sidh_p610
+#cmakedefine OQS_ENABLE_KEM_sidh_p610_compressed
+#cmakedefine OQS_ENABLE_KEM_sidh_p751
+#cmakedefine OQS_ENABLE_KEM_sidh_p751_compressed
+#cmakedefine OQS_ENABLE_KEM_sike_p434
+#cmakedefine OQS_ENABLE_KEM_sike_p434_compressed
+#cmakedefine OQS_ENABLE_KEM_sike_p503
+#cmakedefine OQS_ENABLE_KEM_sike_p503_compressed
+#cmakedefine OQS_ENABLE_KEM_sike_p610
+#cmakedefine OQS_ENABLE_KEM_sike_p610_compressed
+#cmakedefine OQS_ENABLE_KEM_sike_p751
+#cmakedefine OQS_ENABLE_KEM_sike_p751_compressed
+#cmakedefine ENABLE_KEM_SIKE

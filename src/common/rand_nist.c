@@ -11,7 +11,7 @@
 
 #include <oqs/common.h>
 
-#if USE_OPENSSL
+#ifdef USE_OPENSSL
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>

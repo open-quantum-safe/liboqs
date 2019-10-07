@@ -9,11 +9,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#if defined(_WIN32)
-#include <oqs/winconfig.h>
-#else
 #include <oqs/oqsconfig.h>
-#endif
 
 #if defined(__cplusplus)
 extern "C" {

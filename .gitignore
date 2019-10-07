@@ -122,3 +122,6 @@ test-results
 
 # CMake
 build/
+
+# Others
+tags
