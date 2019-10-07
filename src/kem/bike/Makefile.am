@@ -22,14 +22,14 @@ COMMON_CSRCS += $(BIKE_DIR)/gf2x_mul.c $(BIKE_DIR)/openssl_utils.c
 #  COMMON_CSRCS += $(BIKE_DIR)/sampling_avx512.S $(BIKE_DIR)/gf_mul.S $(BIKE_DIR)/gf_add.S 
 # COMMON_FLAGS += -DAVX512
 #else
-#if USE_AVX2_INSTRUCTIONS
-#  COMMON_CSRCS += $(BIKE_DIR)/converts.S $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx2.S
-#  COMMON_CSRCS += $(BIKE_DIR)/sampling_avx2.S $(BIKE_DIR)/gf_mul.S $(BIKE_DIR)/gf_add.S 
-#  COMMON_FLAGS += -DAVX2
-#else
+if USE_AVX2_INSTRUCTIONS
+  COMMON_CSRCS += $(BIKE_DIR)/converts.S $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx2.S
+  COMMON_CSRCS += $(BIKE_DIR)/sampling_avx2.S $(BIKE_DIR)/gf_mul.S $(BIKE_DIR)/gf_add.S 
+  COMMON_FLAGS += -DAVX2
+else
   COMMON_CSRCS += $(BIKE_DIR)/sampling_portable.c $(BIKE_DIR)/converts_portable.c
   COMMON_FLAGS += -DPORTABLE
-#endif
+endif
 #endif
 
 libkembike_la_CFLAGS = $(COMMON_FLAGS)
