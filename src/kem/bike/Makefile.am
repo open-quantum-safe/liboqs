@@ -15,7 +15,7 @@ BIKE_DIR=additional
 COMMON_CSRCS  = $(BIKE_DIR)/decode.c $(BIKE_DIR)/gf2x_portable.c $(BIKE_DIR)/sampling.c
 COMMON_CSRCS += $(BIKE_DIR)/parallel_hash.c $(BIKE_DIR)/secure_decode_portable.c 
 COMMON_CSRCS += $(BIKE_DIR)/utilities.c $(BIKE_DIR)/aes_ctr_prf.c $(BIKE_DIR)/error.c
-COMMON_CSRCS += $(BIKE_DIR)/gf2x_mul.c $(BIKE_DIR)/openssl_utils.c
+COMMON_CSRCS += $(BIKE_DIR)/gf2x_mul.c 
 
 if USE_AVX512F_INSTRUCTIONS
   COMMON_CSRCS += $(BIKE_DIR)/converts.S $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx512.S
@@ -30,6 +30,10 @@ else
   COMMON_CSRCS += $(BIKE_DIR)/sampling_portable.c $(BIKE_DIR)/converts_portable.c
   COMMON_FLAGS += -DPORTABLE
 endif
+endif
+
+if USE_OPENSSL
+  COMMON_CSRCS += $(BIKE_DIR)/openssl_utils.c
 endif
 
 libkembike_la_CFLAGS = $(COMMON_FLAGS)
