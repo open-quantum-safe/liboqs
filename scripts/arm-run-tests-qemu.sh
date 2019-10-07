@@ -8,15 +8,10 @@ CHOST=arm-linux-gnueabi
 
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/example_kem
 
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE1-L1
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE1-L3
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE1-L5
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE2-L1
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE2-L3
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE2-L5
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE3-L1
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE3-L3
-qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE3-L5
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE1-L1-CPA
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE1-L3-CPA
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE1-L1-FO
+qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem BIKE1-L3-FO
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Kyber512
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Kyber768
 qemu-arm -cpu cortex-a8 -L /usr/arm-linux-gnueabi tests/test_kem Kyber1024
