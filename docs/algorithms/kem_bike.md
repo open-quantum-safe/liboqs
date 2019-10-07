@@ -17,10 +17,10 @@ Parameter sets
 
 | Parameter set       | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
 |---------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| BIKE1_L1_CPA        |     IND-CPA    |              1              |           2542          |          4670          |           2542          |             32             |
-| BIKE1_L3_CPA        |     IND-CPA    |              3              |           4964          |          8116          |           4964          |             32             |
-| BIKE1_L1_FO         |     IND-CPA    |              1              |           2946          |          8020          |           2946          |             32             |
-| BIKE1_L3_FO         |     IND-CPA    |              3              |           6206          |         15564          |           6206          |             32             |
+| BIKE1-L1-CPA        |     IND-CPA    |              1              |           2542          |          4670          |           2542          |             32             |
+| BIKE1-L3-CPA        |     IND-CPA    |              3              |           4964          |          8116          |           4964          |             32             |
+| BIKE1-L1-FO         |     IND-CPA    |              1              |           2946          |          8020          |           2946          |             32             |
+| BIKE1-L3-FO         |     IND-CPA    |              3              |           6206          |         15564          |           6206          |             32             |
 
 
 Implementation

@@ -22,14 +22,7 @@
 
 #include "aes_ctr_prf.h"
 #include "utilities.h"
-
-#ifdef USE_NIST_RAND
-#include "FromNIST/rng.h"
-#endif
-
-#if !defined(USE_NIST_RAND)
-#include <stdlib.h>
-#endif
+#include <oqs/rand.h>
 
 typedef enum {
 	NO_RESTRICTION = 0,
@@ -38,15 +31,7 @@ typedef enum {
 
 _INLINE_ void
 get_seeds(OUT seeds_t *seeds) {
-#ifdef USE_NIST_RAND
-	randombytes((uint8_t *) seeds, NUM_OF_SEEDS * sizeof(seed_t));
-#else
-	for (uint32_t i = 0; i < NUM_OF_SEEDS; ++i) {
-		for (uint32_t j = 0; j < sizeof(seed_t); ++j) {
-			seeds->seed[i].raw[j] = rand();
-		}
-	}
-#endif
+	OQS_randombytes((uint8_t *) seeds, NUM_OF_SEEDS * sizeof(seed_t));
 	for (uint32_t i = 0; i < NUM_OF_SEEDS; ++i) {
 		print("s: ", (uint64_t *) &seeds->seed[i], sizeof(seed_t) * 8);
 	}

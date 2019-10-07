@@ -10,7 +10,7 @@ libkembike_la_SOURCES = kem_bike.c
 
 COMMON_FLAGS = $(AM_CFLAGS) -include functions_renaming.h
 
-BIKE_DIR=fo
+BIKE_DIR=additional
 
 COMMON_CSRCS  = $(BIKE_DIR)/decode.c $(BIKE_DIR)/gf2x_portable.c $(BIKE_DIR)/sampling.c
 COMMON_CSRCS += $(BIKE_DIR)/parallel_hash.c $(BIKE_DIR)/secure_decode_portable.c 

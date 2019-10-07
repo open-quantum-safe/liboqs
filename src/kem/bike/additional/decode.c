@@ -197,9 +197,9 @@ ret_t decode(OUT e_t *e,
 	s.dup2 = original_s->dup1;
 
 	for (uint32_t iter = 0; iter < MAX_IT; iter++) {
-		MSG("    Iteration: %d\n", iter);
-		MSG("    Weight of e: %lu\n", count_ones(e->raw, sizeof(*e)));
-		MSG("    Weight of syndrome: %lu\n", count_ones(s.dup1.raw, sizeof(s.dup1)));
+		DMSG("    Iteration: %d\n", iter);
+		DMSG("    Weight of e: %lu\n", count_ones(e->raw, sizeof(*e)));
+		DMSG("    Weight of syndrome: %lu\n", count_ones(s.dup1.raw, sizeof(s.dup1)));
 
 		// Step 1: standrad BitFlip iteration
 		calc_upc(upc, (uint8_t *) &s, &inv_h_compressed[0], &inv_h_compressed[1]);
@@ -208,16 +208,16 @@ ret_t decode(OUT e_t *e,
 		find_error1(e, &black_e, &gray_e, upc, threshold, threshold - MAX_DELTA + 1);
 		GUARD(recompute_syndrome(&s, ct, sk, e));
 
-		MSG("    Weight of e: %lu\n", count_ones(e->raw, sizeof(*e)));
-		MSG("    Weight of syndrome: %lu\n", count_ones(s.dup1.raw, sizeof(s.dup1)));
+		DMSG("    Weight of e: %lu\n", count_ones(e->raw, sizeof(*e)));
+		DMSG("    Weight of syndrome: %lu\n", count_ones(s.dup1.raw, sizeof(s.dup1)));
 
 		// Step II: Unflip positions that still have high number of UPC associated
 		calc_upc(upc, (uint8_t *) &s, &inv_h_compressed[0], &inv_h_compressed[1]);
 		find_error2(e, &black_e, upc, ((DV + 1) / 2) + 1);
 		GUARD(recompute_syndrome(&s, ct, sk, e));
 
-		MSG("    Weight of e: %lu\n", count_ones(e->raw, sizeof(*e)));
-		MSG("    Weight of syndrome: %lu\n", count_ones(s.dup1.raw, sizeof(s.dup1)));
+		DMSG("    Weight of e: %lu\n", count_ones(e->raw, sizeof(*e)));
+		DMSG("    Weight of syndrome: %lu\n", count_ones(s.dup1.raw, sizeof(s.dup1)));
 
 		// Step III: Flip all gray positions associated to high number of UPC
 		calc_upc(upc, (uint8_t *) &s, &inv_h_compressed[0], &inv_h_compressed[1]);
