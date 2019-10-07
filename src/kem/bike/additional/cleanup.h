@@ -19,10 +19,10 @@
  */
 
 #pragma once
+#include <oqs/common.h>
 
 #include "types.h"
 #include <string.h>
-#include <oqs/common.h>
 
 /* Runs _thecleanup function on _thealloc once _thealloc went out of scope */
 #define DEFER_CLEANUP(_thealloc, _thecleanup) \

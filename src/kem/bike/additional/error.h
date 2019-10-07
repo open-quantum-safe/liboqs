@@ -21,6 +21,7 @@
 #pragma once
 
 #include "defs.h"
+#include <oqs/common.h>
 
 #define SUCCESS OQS_SUCCESS
 #define FAIL OQS_ERROR
