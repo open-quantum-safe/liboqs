@@ -72,5 +72,6 @@
 #define gf2x_add_avx2 RENAME_FUNC_NAME(gf2x_add_avx2)
 #define gf2_muladd_4x4 RENAME_FUNC_NAME(gf2_muladd_4x4)
 #define red RENAME_FUNC_NAME(red)
+#define _gf2x_mul_1x1 RENAME_FUNC_NAME(_gf2x_mul_1x1)
 
 #endif //__FUNCTIONS_RENAMING_H_INCLUDED__
