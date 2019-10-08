@@ -37,7 +37,7 @@ static void sample_y(poly y, const unsigned char *seed, int nonce) { // Sample p
 static void encode_c(uint32_t *pos_list, int16_t *sign_list, unsigned char *c_bin) { // Encoding of c' by mapping the output of the hash function H to an N-element vector with entries {-1,0,1}
 	int i, pos, cnt = 0;
 	int16_t c[PARAM_N];
-	unsigned char r[SHAKE128_RATE];
+	unsigned char r[OQS_SHAKE_SHAKE128_RATE];
 	uint16_t dmsp = 0;
 
 	// Use the hash value as key to generate some randomness
