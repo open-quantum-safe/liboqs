@@ -22,6 +22,7 @@ def test_kem(kem_name):
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig(sig_name):
+    # qtesla's avx2 implementation uses an optimized sampling method that results in different KAT values. We disable the NIST KAT check when that option is enabled
     if sig_name.startswith('qTesla') and helpers.is_use_option_enabled_by_name('AVX2_INSTRUCTION'): pytest.skip('KATs not available for qTesla when using AVX2')
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
