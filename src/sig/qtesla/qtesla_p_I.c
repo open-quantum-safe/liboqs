@@ -6,7 +6,7 @@
 
 #define _qTESLA_p_I_
 
-#ifdef WITH_AVX2
+#if defined(WITH_AVX2) && !defined(_WIN32)
 #define poly_ntt_asm oqs_sig_qteslapi_poly_ntt_asm
 #define poly_pmul_asm oqs_sig_qteslapi_poly_pmul_asm
 #define poly_intt_asm oqs_sig_qteslapi_poly_intt_asm
