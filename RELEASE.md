@@ -1,4 +1,4 @@
-liboqs version 0.2.0 (release candidate 3)
+liboqs version 0.2.0
 ====================
 
 About
@@ -24,7 +24,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This release of liboqs was released on TODO.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs/releases/tag/master-0.2.0.
+This release of liboqs was released on October 9, 2019.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs/releases/tag/0.2.0.
 
 What's New
 ----------
