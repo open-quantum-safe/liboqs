@@ -34,6 +34,7 @@ endif
 
 if USE_OPENSSL
   COMMON_CSRCS += $(BIKE_DIR)/openssl_utils.c
+  COMMON_FLAGS += -DUSE_OPENSSL
 endif
 
 libkembike_la_CFLAGS = $(COMMON_FLAGS)
