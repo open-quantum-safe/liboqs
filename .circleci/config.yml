@@ -8,7 +8,7 @@ version: 2
     - run:
         name: Configure
         command: scripts/git_no_checkin_in_last_day.sh || (autoreconf -i && ./configure --enable-silent-rules ${CONFIGURE_ARGS})
-    - run: 
+    - run:
         name: Build
         command: scripts/git_no_checkin_in_last_day.sh || (source ~/.bashrc && make -j && make check)
     - run:

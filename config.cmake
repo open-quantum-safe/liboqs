@@ -4,11 +4,13 @@ if(NOT WIN32)
     option(USE_OPENSSL "Use OpenSSL helpers in liboqs." ON)
 
     option(USE_AES_INSTRUCTIONS "Use x86 AES-NI instructions." OFF)
+    option(USE_AES_C "Use liboqs's AES implementation." ON)
     option(USE_AES_OPENSSL "Use OpenSSL's AES implementation." OFF)
 
     option(USE_AVX2_INSTRUCTIONS "Use x86 AVX2 instructions." OFF)
 
     option(USE_SHA2_OPENSSL "Use OpenSSL's SHA-2 implementation." OFF)
+    option(USE_SHA3_C "Use liboqs's SHA3 implementation." ON)
     option(USE_SHA3_OPENSSL "Use OpenSSL's SHA-3 implementation." OFF)
 
     option(OQS_ENABLE_KEM_bike1_l1 "Enable BIKE1-L1." ON)

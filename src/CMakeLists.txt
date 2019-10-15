@@ -34,6 +34,10 @@ add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 $<TARGET_OBJECTS:common>
                 $<TARGET_OBJECTS:crypto>)
+set_target_properties(oqs
+                      PROPERTIES
+                      ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+                      LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 if(USE_OPENSSL)
     target_include_directories(oqs PRIVATE "${OPENSSL_INCLUDE_DIR}")

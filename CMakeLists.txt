@@ -1,7 +1,8 @@
-cmake_minimum_required (VERSION 3.0)
+cmake_minimum_required (VERSION 3.12)
 
 project(liboqs NONE)
 set(OQS_VERSION_TEXT "0.2.0-dev")
+set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 
 enable_language(C)
 set(CMAKE_C_STANDARD 11)
@@ -31,8 +32,9 @@ endif()
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID STREQUAL "Clang")
-    # Disabling until SIKE issues are fixed.
-    #set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Werror -Wimplicit -Wcomment -Wchar-subscripts -Wuninitialized -Wshadow -Wformat-security -fvisibility=hidden")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
+    # Disabling the following until SIKE issues are fixed.
+    #-Wall -Wextra -Werror -Wimplicit -Wcomment -Wchar-subscripts -Wuninitialized -Wshadow -Wformat-security")
 endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wnewline-eof -fcolor-diagnostics")
@@ -72,8 +74,10 @@ if(ENABLE_KEM_SIKE)
     set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/sike/kem_sike.h)
 endif()
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/include/oqs)
-configure_file(oqsconfig.h.cmake ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig.h)
 execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${HEADERS} ${PROJECT_BINARY_DIR}/include/oqs)
+
+configure_file(oqsconfig.h.cmake ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig.h)
+
 include_directories(${PROJECT_BINARY_DIR}/include)
 
 if(BUILD_SHARED_LIBS)

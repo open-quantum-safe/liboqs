@@ -4,8 +4,7 @@ else()
     set(ROOT "ref")
 endif()
 
-set(SRCS kem_bike.c
-         ${ROOT}/kem.c
+set(SRCS ${ROOT}/kem.c
          ${ROOT}/aes_ctr_prf.c
          ${ROOT}/parallel_hash.c
          ${ROOT}/sampling.c
@@ -14,6 +13,7 @@ set(SRCS kem_bike.c
          ${ROOT}/openssl_utils.c)
 
 if(USE_AVX2_INSTRUCTIONS)
+    add_compile_definitions(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
     set(SRCS ${SRCS} ${ROOT}/aes.c
                      ${ROOT}/sha.c
                      ${ROOT}/sha-mb.c
@@ -33,11 +33,14 @@ endif()
 add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
 add_compile_definitions(CONSTANT_TIME)
 
+add_library(kem_bike OBJECT kem_bike.c)
+set(_BIKE_OBJS $<TARGET_OBJECTS:kem_bike>)
+
 # L1 variants
 if(OQS_ENABLE_KEM_bike1_l1)
     add_library(bike1_l1 OBJECT ${SRCS})
     target_compile_definitions(bike1_l1 PRIVATE LEVEL=1 BIKE_VER=1 FUNC_PREFIX=OQS_KEM_bike1_l1)
-    set(_BIKE_OBJS $<TARGET_OBJECTS:bike1_l1>)
+    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1>)
 endif()
 
 if(OQS_ENABLE_KEM_bike2_l1)
