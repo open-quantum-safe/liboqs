@@ -5,12 +5,12 @@ AC_DEFUN([SET_AM_CFLAGS],
 
   # Basic set of errors
   AM_CFLAGS=${AM_CFLAGS}" -Wall -Wextra -Werror "
-  
+
   #TODO: undisabled
   #AM_CFLAGS=${AM_CFLAGS}" -Wpedantic -Wcast-qual "
 
   # Add extra warnings
-  AM_CFLAGS=${AM_CFLAGS}" -Wimplicit -Wunused -Wcomment -Wchar-subscripts -Wuninitialized "
+  AM_CFLAGS=${AM_CFLAGS}" -Wimplicit -Wunused -Wcomment -Wchar-subscripts -Wuninitialized -Wstrict-prototypes"
   AM_CFLAGS=${AM_CFLAGS}" -Wshadow -Wformat-security -Wwrite-strings "
 
   # Disable, due to bugs in GCC 4.8/4.9
@@ -20,7 +20,7 @@ AC_DEFUN([SET_AM_CFLAGS],
 
   # For shared objects
   AM_CFLAGS=${AM_CFLAGS}" -fPIC "
-  
+
   # Hidding all unneeded symbols.
   AM_CFLAGS=${AM_CFLAGS}" -fvisibility=hidden "
 

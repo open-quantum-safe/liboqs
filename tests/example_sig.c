@@ -20,7 +20,7 @@
  * indicating which algorithms were enabled when this instance of liboqs
  * was compiled.
  */
-static OQS_STATUS example_stack() {
+static OQS_STATUS example_stack(void) {
 
 #ifdef OQS_ENABLE_SIG_qTesla_p_I
 
@@ -77,7 +77,7 @@ cleanup:
  * algorithm in question was enabled at compile-time; instead, the caller
  * must check that the OQS_SIG object returned is not NULL.
  */
-static OQS_STATUS example_heap() {
+static OQS_STATUS example_heap(void) {
 
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -141,7 +141,7 @@ cleanup:
 	return ret;
 }
 
-int main() {
+int main(void) {
 	example_stack();
 	example_heap();
 }

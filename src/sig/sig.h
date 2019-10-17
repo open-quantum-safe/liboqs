@@ -162,7 +162,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i);
  *
  * @return The number of signature mechanisms.
  */
-OQS_API int OQS_SIG_alg_count();
+OQS_API int OQS_SIG_alg_count(void);
 
 /**
  * Indicates whether the specified algorithm was enabled at compile-time or not.

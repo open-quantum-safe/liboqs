@@ -63,7 +63,7 @@ cleanup:
 	return ret;
 }
 
-OQS_STATUS printAlgs() {
+OQS_STATUS printAlgs(void) {
 	for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
 		OQS_KEM *kem = OQS_KEM_new(OQS_KEM_alg_identifier(i));
 		if (kem == NULL) {
