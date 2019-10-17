@@ -36,7 +36,7 @@ More information on OQS can be found [here](https://openquantumsafe.org/) and in
 
 #### Key encapsulation mechanisms
 
-- **BIKE**: BIKE1-L1, BIKE1-L3, BIKE1-L5, BIKE2-L1, BIKE2-L3, BIKE2-L5, BIKE3-L1, BIKE3-L3, BIKE3-L5 (NIST Round 1 version)
+- **BIKE**: BIKE1-L1-CPA, BIKE1-L3-CPA, BIKE1-L1-FO, BIKE1-L3-FO
 - **FrodoKEM**: FrodoKEM-640-AES, FrodoKEM-640-SHAKE, FrodoKEM-976-AES, FrodoKEM-976-SHAKE, FrodoKEM-1344-AES, FrodoKEM-1344-SHAKE
 - **Kyber**: Kyber512, Kyber768, Kyber1024
 - **NewHope**: NewHope-512-CCA, NewHope-1024-CCA
