@@ -33,7 +33,7 @@ This release continues from the 0.2.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- TBA
+- Update BIKE to Round 2 submission; removes `BIKE2-*`, `BIKE3-*`, `BIKE1-L5`, renames `BIKE1-L1` and `BIKE1-L3` to `BIKE1-L1-CPA` and `BIKE1-L3-CPA`, and adds `BIKE1-L1-FO` and `BIKE-L3-FO`
 
 ### Digital signature schemes
 
