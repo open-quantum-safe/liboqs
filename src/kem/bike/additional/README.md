@@ -25,36 +25,3 @@ Nir Drucker, Shay Gueron, and Dusan Kostic, "On constant-time QC-MDPC decoding w
 
 The code is due to Nir Drucker, Shay Gueron (and Dusan Kostic for the Round-2 flows).
 
-BUILD
------
-
-To compile:
-    make
-
-Default is BIKE-1 (Round-2 variant) at Level-1 (64-bit quantum security) without AVX2/512 support (portable).
-This compilation assumes that AES_NI, POPCNT, and PCLMULQDQ instructions are available, for other platforms use USE_OPENSSL=1.
-
-Additional compilation flags:
- - USE_NIST_RAND - Using the RDBG of NIST and generate the KATs.
- - USE_OPENSSL   - Use OpenSSL for AES/SHA and GF2X multiplication. 
-                   OpenSSL must be installed on the platform.
- - OPENSSL_DIR   - Set the path of the OpenSSL include/lib directories.
- - FIXED_SEED    - Using a fixed seed, for debug purposes.
- - RDTSC         - Measure time in cycles rather than in mseconds.
- - VERBOSE       - Add verbose (level:1-4 default:1).
- - NUM_OF_TESTS  - Set the number of tests to be run.
- - AVX2          - Compile with AVX2 support (to compile use GCC).
- - AVX512        - Compile with AVX512 support (to compile use GCC).
- - LEVEL         - Security level (1/3/5).
- 
-To clean:
-    make clean.
-
-Note: a "clean" is required prior to compilation with modified flags.
-
-Example: 
-    make AVX2=1 USE_OPENSSL=1 VERBOSE=2
-
-The package was compiled and tested with gcc (version 4.8.0 or above) in 64-bit mode. 
-Tests were run on a Linux (Ubuntu 16.04.3 LTS) OS. 
-Compilation on other platforms may require some adjustments.
