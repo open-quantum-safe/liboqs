@@ -1,16 +1,21 @@
 #ifndef INDCPA_H
 #define INDCPA_H
 
-void PQCLEAN_KYBER768_CLEAN_indcpa_keypair(unsigned char *pk,
-        unsigned char *sk);
+#include <stdint.h>
 
-void PQCLEAN_KYBER768_CLEAN_indcpa_enc(unsigned char *c,
-                                       const unsigned char *m,
-                                       const unsigned char *pk,
-                                       const unsigned char *coins);
+void PQCLEAN_KYBER768_CLEAN_indcpa_keypair(
+    uint8_t *pk,
+    uint8_t *sk);
 
-void PQCLEAN_KYBER768_CLEAN_indcpa_dec(unsigned char *m,
-                                       const unsigned char *c,
-                                       const unsigned char *sk);
+void PQCLEAN_KYBER768_CLEAN_indcpa_enc(
+    uint8_t *c,
+    const uint8_t *m,
+    const uint8_t *pk,
+    const uint8_t *coins);
+
+void PQCLEAN_KYBER768_CLEAN_indcpa_dec(
+    uint8_t *m,
+    const uint8_t *c,
+    const uint8_t *sk);
 
 #endif

@@ -1,8 +1,8 @@
 #ifndef SPX_UTILS_H
 #define SPX_UTILS_H
 
-#include "params.h"
 #include "hash_state.h"
+#include "params.h"
 #include <stddef.h>
 #include <stdint.h>
 

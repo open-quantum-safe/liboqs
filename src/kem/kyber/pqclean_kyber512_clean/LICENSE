@@ -1,3 +1,4 @@
+kyber-20170627
 Public Domain
 Authors: Joppe Bos,
          Léo Ducas,
@@ -10,6 +11,5 @@ Authors: Joppe Bos,
          Damien Stehlé
 
 For Keccak and AES we are using public-domain
-code from sources and by authors listed in 
+code from sources and by authors listed in
 comments on top of the respective files.
-

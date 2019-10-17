@@ -1,8 +1,8 @@
 #ifndef SPX_WOTS_H
 #define SPX_WOTS_H
 
-#include "params.h"
 #include "hash_state.h"
+#include "params.h"
 #include <stdint.h>
 
 /**

@@ -6,19 +6,18 @@
 #include "verify.h"
 
 #include <stdlib.h>
-
 /*************************************************
 * Name:        crypto_kem_keypair
 *
 * Description: Generates public and private key
 *              for CCA-secure Kyber key encapsulation mechanism
 *
-* Arguments:   - unsigned char *pk: pointer to output public key (an already allocated array of CRYPTO_PUBLICKEYBYTES bytes)
-*              - unsigned char *sk: pointer to output private key (an already allocated array of CRYPTO_SECRETKEYBYTES bytes)
+* Arguments:   - uint8_t *pk: pointer to output public key (an already allocated array of CRYPTO_PUBLICKEYBYTES bytes)
+*              - uint8_t *sk: pointer to output private key (an already allocated array of CRYPTO_SECRETKEYBYTES bytes)
 *
 * Returns 0 (success)
 **************************************************/
-int PQCLEAN_KYBER1024_CLEAN_crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
+int PQCLEAN_KYBER1024_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
     size_t i;
     PQCLEAN_KYBER1024_CLEAN_indcpa_keypair(pk, sk);
     for (i = 0; i < KYBER_INDCPA_PUBLICKEYBYTES; i++) {
@@ -35,15 +34,15 @@ int PQCLEAN_KYBER1024_CLEAN_crypto_kem_keypair(unsigned char *pk, unsigned char 
 * Description: Generates cipher text and shared
 *              secret for given public key
 *
-* Arguments:   - unsigned char *ct:       pointer to output cipher text (an already allocated array of CRYPTO_CIPHERTEXTBYTES bytes)
-*              - unsigned char *ss:       pointer to output shared secret (an already allocated array of CRYPTO_BYTES bytes)
-*              - const unsigned char *pk: pointer to input public key (an already allocated array of CRYPTO_PUBLICKEYBYTES bytes)
+* Arguments:   - uint8_t *ct:       pointer to output cipher text (an already allocated array of CRYPTO_CIPHERTEXTBYTES bytes)
+*              - uint8_t *ss:       pointer to output shared secret (an already allocated array of CRYPTO_BYTES bytes)
+*              - const uint8_t *pk: pointer to input public key (an already allocated array of CRYPTO_PUBLICKEYBYTES bytes)
 *
 * Returns 0 (success)
 **************************************************/
-int PQCLEAN_KYBER1024_CLEAN_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) {
-    unsigned char  kr[2 * KYBER_SYMBYTES];                                   /* Will contain key, coins */
-    unsigned char buf[2 * KYBER_SYMBYTES];
+int PQCLEAN_KYBER1024_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk) {
+    uint8_t  kr[2 * KYBER_SYMBYTES];                                   /* Will contain key, coins */
+    uint8_t buf[2 * KYBER_SYMBYTES];
 
     randombytes(buf, KYBER_SYMBYTES);
     hash_h(buf, buf, KYBER_SYMBYTES);                                        /* Don't release system RNG output */
@@ -64,21 +63,21 @@ int PQCLEAN_KYBER1024_CLEAN_crypto_kem_enc(unsigned char *ct, unsigned char *ss,
 * Description: Generates shared secret for given
 *              cipher text and private key
 *
-* Arguments:   - unsigned char *ss:       pointer to output shared secret (an already allocated array of CRYPTO_BYTES bytes)
-*              - const unsigned char *ct: pointer to input cipher text (an already allocated array of CRYPTO_CIPHERTEXTBYTES bytes)
-*              - const unsigned char *sk: pointer to input private key (an already allocated array of CRYPTO_SECRETKEYBYTES bytes)
+* Arguments:   - uint8_t *ss:       pointer to output shared secret (an already allocated array of CRYPTO_BYTES bytes)
+*              - const uint8_t *ct: pointer to input cipher text (an already allocated array of CRYPTO_CIPHERTEXTBYTES bytes)
+*              - const uint8_t *sk: pointer to input private key (an already allocated array of CRYPTO_SECRETKEYBYTES bytes)
 *
 * Returns 0.
 *
 * On failure, ss will contain a pseudo-random value.
 **************************************************/
-int PQCLEAN_KYBER1024_CLEAN_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) {
+int PQCLEAN_KYBER1024_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk) {
     size_t i;
-    unsigned char fail;
-    unsigned char cmp[KYBER_CIPHERTEXTBYTES];
-    unsigned char buf[2 * KYBER_SYMBYTES];
-    unsigned char kr[2 * KYBER_SYMBYTES];                                    /* Will contain key, coins */
-    const unsigned char *pk = sk + KYBER_INDCPA_SECRETKEYBYTES;
+    uint8_t fail;
+    uint8_t cmp[KYBER_CIPHERTEXTBYTES];
+    uint8_t buf[2 * KYBER_SYMBYTES];
+    uint8_t kr[2 * KYBER_SYMBYTES];                                    /* Will contain key, coins */
+    const uint8_t *pk = sk + KYBER_INDCPA_SECRETKEYBYTES;
 
     PQCLEAN_KYBER1024_CLEAN_indcpa_dec(buf, ct, sk);
 
