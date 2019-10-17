@@ -1,8 +1,8 @@
 #ifndef SPX_THASH_H
 #define SPX_THASH_H
 
-#include <stdint.h>
 #include "hash_state.h"
+#include <stdint.h>
 
 void PQCLEAN_SPHINCSSHAKE256256FSIMPLE_CLEAN_thash_1(
     unsigned char *out, const unsigned char *in,

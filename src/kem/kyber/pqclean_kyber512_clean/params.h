@@ -1,7 +1,6 @@
 #ifndef PARAMS_H
 #define PARAMS_H
 
-#define KYBER_K 2 /* Change this for different security strengths */
 
 /* Don't change parameters below this line */
 
@@ -16,6 +15,8 @@
 #define KYBER_POLYBYTES              384
 #define KYBER_POLYVECBYTES           (KYBER_K * KYBER_POLYBYTES)
 
+
+#define KYBER_K 2
 #define KYBER_POLYCOMPRESSEDBYTES    96
 #define KYBER_POLYVECCOMPRESSEDBYTES (KYBER_K * 320)
 

@@ -58,7 +58,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/PQClean/PQClean
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/83c974e45b7ddca7832c8c6edd895e7d26d03351
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/298dd2cf223cff50cc53bea534474796f9960653
 - **License:** CC0 1.0 Universal
 - **Language:** C
 - **Constant-time:** Yes

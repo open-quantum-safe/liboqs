@@ -11,7 +11,7 @@
 /* For SHAKE256, there is no immediate reason to initialize at the start,
    so this function is an empty operation. */
 void PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_initialize_hash_function(
-    hash_state *hash_state_seeded,
+    hash_state *hash_state_seeded, // NOLINT(readability-non-const-parameter)
     const unsigned char *pub_seed, const unsigned char *sk_seed) {
     (void)hash_state_seeded; /* Suppress an 'unused parameter' warning. */
     (void)pub_seed; /* Suppress an 'unused parameter' warning. */

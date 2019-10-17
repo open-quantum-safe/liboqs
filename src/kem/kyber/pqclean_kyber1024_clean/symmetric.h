@@ -1,14 +1,18 @@
 #ifndef SYMMETRIC_H
 #define SYMMETRIC_H
 
-#include "fips202.h"
 #include "params.h"
 
-#include <stdlib.h>
 
-void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_absorb(shake128ctx *s, const unsigned char *input, unsigned char x, unsigned char y);
-void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_squeezeblocks(unsigned char *output, size_t nblocks, shake128ctx *s);
-void PQCLEAN_KYBER1024_CLEAN_shake256_prf(unsigned char *output, size_t outlen, const unsigned char *key, unsigned char nonce);
+#include "fips202.h"
+
+#include <stdint.h>
+
+typedef shake128ctx keccak_state;
+
+void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_absorb(keccak_state *s, const uint8_t *input, uint8_t x, uint8_t y);
+void PQCLEAN_KYBER1024_CLEAN_kyber_shake128_squeezeblocks(uint8_t *output, size_t nblocks, keccak_state *s);
+void PQCLEAN_KYBER1024_CLEAN_shake256_prf(uint8_t *output, size_t outlen, const uint8_t *key, uint8_t nonce);
 
 #define hash_h(OUT, IN, INBYTES) sha3_256(OUT, IN, INBYTES)
 #define hash_g(OUT, IN, INBYTES) sha3_512(OUT, IN, INBYTES)
@@ -19,6 +23,7 @@ void PQCLEAN_KYBER1024_CLEAN_shake256_prf(unsigned char *output, size_t outlen, 
 
 #define XOF_BLOCKBYTES 168
 
-typedef shake128ctx xof_state;
+typedef keccak_state xof_state;
+
 
 #endif /* SYMMETRIC_H */
