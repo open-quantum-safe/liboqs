@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_NEWHOPE_H
-#define __OQS_KEM_NEWHOPE_H
+#ifndef OQS_KEM_NEWHOPE_H
+#define OQS_KEM_NEWHOPE_H
 
 #include <oqs/oqs.h>
 
@@ -25,4 +25,4 @@ OQS_API OQS_STATUS OQS_KEM_newhope_1024cca_encaps(uint8_t *ciphertext, uint8_t *
 OQS_API OQS_STATUS OQS_KEM_newhope_1024cca_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
 
-#endif
+#endif // OQS_KEM_NEWHOPE_H

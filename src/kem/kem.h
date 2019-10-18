@@ -16,8 +16,8 @@
  * compile-time, the programmer should check that the OQS_KEM object is not `NULL`.
  */
 
-#ifndef __OQS_KEM_H
-#define __OQS_KEM_H
+#ifndef OQS_KEM_H
+#define OQS_KEM_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -298,4 +298,4 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 } // extern "C"
 #endif
 
-#endif // __OQS_KEM_H
+#endif // OQS_KEM_H

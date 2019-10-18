@@ -525,4 +525,4 @@ void OQS_SHA3_shake128_4x(uint8_t *output0, uint8_t *output1, uint8_t *output2, 
 } // extern "C"
 #endif
 
-#endif
+#endif // OQS_SHA3_H

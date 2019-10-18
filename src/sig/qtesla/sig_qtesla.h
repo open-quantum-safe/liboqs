@@ -1,5 +1,5 @@
-#ifndef __OQS_SIG_QTESLA_H
-#define __OQS_SIG_QTESLA_H
+#ifndef OQS_SIG_QTESLA_H
+#define OQS_SIG_QTESLA_H
 
 #include <oqs/oqs.h>
 
@@ -31,4 +31,4 @@ OQS_API OQS_STATUS OQS_SIG_qTesla_p_III_verify(const uint8_t *message, size_t me
 
 #endif
 
-#endif
+#endif // OQS_SIG_QTESLA_H

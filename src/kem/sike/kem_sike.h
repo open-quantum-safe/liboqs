@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_SIKE_H
-#define __OQS_KEM_SIKE_H
+#ifndef OQS_KEM_SIKE_H
+#define OQS_KEM_SIKE_H
 
 #include <oqs/oqs.h>
 
@@ -243,4 +243,4 @@ OQS_API OQS_STATUS OQS_KEM_sidh_p751_compressed_decaps(uint8_t *shared_secret, c
 
 #endif
 
-#endif
+#endif // OQS_KEM_SIKE_H

@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_FRODOKEM_H
-#define __OQS_KEM_FRODOKEM_H
+#ifndef OQS_KEM_FRODOKEM_H
+#define OQS_KEM_FRODOKEM_H
 
 #include <oqs/oqs.h>
 
@@ -69,4 +69,4 @@ OQS_API OQS_STATUS OQS_KEM_frodokem_1344_shake_encaps(uint8_t *ciphertext, uint8
 OQS_API OQS_STATUS OQS_KEM_frodokem_1344_shake_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
 
-#endif
+#endif // OQS_KEM_FRODOKEM_H

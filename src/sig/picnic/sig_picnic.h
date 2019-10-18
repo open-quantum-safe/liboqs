@@ -1,5 +1,5 @@
-#ifndef __OQS_SIG_PICNIC_H
-#define __OQS_SIG_PICNIC_H
+#ifndef OQS_SIG_PICNIC_H
+#define OQS_SIG_PICNIC_H
 
 #include <oqs/oqs.h>
 
@@ -129,4 +129,4 @@ OQS_API OQS_STATUS OQS_SIG_picnic2_L5_FS_verify(const uint8_t *message, size_t m
 
 #endif
 
-#endif
+#endif // OQS_SIG_PICNIC_H

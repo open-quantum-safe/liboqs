@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_KYBER_H
-#define __OQS_KEM_KYBER_H
+#ifndef OQS_KEM_KYBER_H
+#define OQS_KEM_KYBER_H
 
 #include <oqs/oqs.h>
 
@@ -36,4 +36,4 @@ OQS_API OQS_STATUS OQS_KEM_kyber_1024_encaps(uint8_t *ciphertext, uint8_t *share
 OQS_API OQS_STATUS OQS_KEM_kyber_1024_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
 
-#endif
+#endif // OQS_KEM_KYBER_H

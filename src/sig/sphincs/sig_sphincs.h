@@ -1,5 +1,5 @@
-#ifndef __OQS_SIG_SPHINCS_H
-#define __OQS_SIG_SPHINCS_H
+#ifndef OQS_SIG_SPHINCS_H
+#define OQS_SIG_SPHINCS_H
 
 #include <oqs/oqs.h>
 
@@ -399,4 +399,4 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_256s_simple_sign(uint8_t *signature,
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_256s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#endif
+#endif // OQS_SIG_SPHINCS_H

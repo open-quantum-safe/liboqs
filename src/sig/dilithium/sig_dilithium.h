@@ -1,5 +1,5 @@
-#ifndef __OQS_SIG_DILITHIUM_H
-#define __OQS_SIG_DILITHIUM_H
+#ifndef OQS_SIG_DILITHIUM_H
+#define OQS_SIG_DILITHIUM_H
 
 #include <oqs/oqs.h>
 
@@ -36,4 +36,4 @@ OQS_API OQS_STATUS OQS_SIG_dilithium_4_sign(uint8_t *signature, size_t *signatur
 OQS_API OQS_STATUS OQS_SIG_dilithium_4_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#endif
+#endif // OQS_SIG_DILITHIUM_H
