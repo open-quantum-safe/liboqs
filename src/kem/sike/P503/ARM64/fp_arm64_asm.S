@@ -44,8 +44,8 @@ p503p1_nz_s8:
 //  Field addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global fpadd503_asm
-fpadd503_asm:
+.global oqs_kem_sike_fpadd503_asm
+oqs_kem_sike_fpadd503_asm:
     ldp     x3, x4,   [x0,#0]
     ldp     x5, x6,   [x0,#16]
     ldp     x11, x12, [x1,#0]
@@ -112,8 +112,8 @@ fpadd503_asm:
 //  Field subtraction
 //  Operation: c [x2] = a [x0] - b [x1]
 //*********************************************************************** 
-.global fpsub503_asm
-fpsub503_asm:
+.global oqs_kem_sike_fpsub503_asm
+oqs_kem_sike_fpsub503_asm:
     ldp     x3, x4,   [x0,#0]
     ldp     x5, x6,   [x0,#16]
     ldp     x11, x12, [x1,#0]
@@ -267,8 +267,8 @@ fpsub503_asm:
 //  512-bit integer multiplication using Karatsuba (two levels), Comba (lower level)
 //  Operation: c [x2] = a [x0] * b [x1]
 //*********************************************************************************** 
-.global mul503_asm
-mul503_asm:
+.global oqs_kem_sike_mul503_asm
+oqs_kem_sike_mul503_asm:
     sub     sp, sp, #96
     stp     x19, x20, [sp,#0]
     stp     x21, x22, [sp,#16]
@@ -454,8 +454,8 @@ mul503_asm:
 //  Operation: mc [x1] = ma [x0]
 //  NOTE: ma=mc is not allowed
 //************************************************************************************** 
-.global rdc503_asm
-rdc503_asm:
+.global oqs_kem_sike_rdc503_asm
+oqs_kem_sike_rdc503_asm:
     sub     sp, sp, #96
     stp     x19, x20, [sp]
     stp     x21, x22, [sp, #16]
@@ -622,8 +622,8 @@ rdc503_asm:
 //  503-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global mp_add503_asm
-mp_add503_asm:
+.global oqs_kem_sike_mp_add503_asm
+oqs_kem_sike_mp_add503_asm:
     ldp     x3, x4,   [x0,#0]
     ldp     x5, x6,   [x0,#16]
     ldp     x11, x12, [x1,#0]
@@ -653,8 +653,8 @@ mp_add503_asm:
 //  2x503-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global mp_add503x2_asm
-mp_add503x2_asm:
+.global oqs_kem_sike_mp_add503x2_asm
+oqs_kem_sike_mp_add503x2_asm:
     ldp     x3, x4,   [x0,#0]
     ldp     x5, x6,   [x0,#16]
     ldp     x11, x12, [x1,#0]
@@ -705,8 +705,8 @@ mp_add503x2_asm:
 //  2x503-bit multiprecision subtraction/addition
 //  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p503*2^512
 //*********************************************************************** 
-.global mp_subadd503x2_asm
-mp_subadd503x2_asm:
+.global oqs_kem_sike_mp_subadd503x2_asm
+oqs_kem_sike_mp_subadd503x2_asm:
     ldp     x3, x4,   [x0,#0]
     ldp     x11, x12, [x1,#0]
     ldp     x5, x6,   [x0,#16]
@@ -778,8 +778,8 @@ mp_subadd503x2_asm:
 //  Double 2x503-bit multiprecision subtraction
 //  Operation: c [x2] = c [x2] - a [x0] - b [x1]
 //*********************************************************************** 
-.global mp_dblsub503x2_asm
-mp_dblsub503x2_asm:
+.global oqs_kem_sike_mp_dblsub503x2_asm
+oqs_kem_sike_mp_dblsub503x2_asm:
     sub     sp, sp, #32
     stp     x27, x28, [sp, #0]
     stp     x29, x30, [sp, #16]

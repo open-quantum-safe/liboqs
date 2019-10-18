@@ -121,17 +121,17 @@ static unsigned int mp_add(const digit_t *a, const digit_t *b, digit_t *c, const
 
 // 434-bit multiprecision addition, c = a+b
 static void mp_add434(const digit_t *a, const digit_t *b, digit_t *c);
-static void mp_add434_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_add434_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision subtraction, c = a-b, where lng(a) = lng(b) = nwords. Returns the borrow bit
 static unsigned int mp_sub(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords);
 
 // 2x434-bit multiprecision subtraction followed by addition with p434*2^448, c = a-b+(p434*2^448) if a-b < 0, otherwise c=a-b
-static void mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);
-static void mp_subadd434x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_subadd434x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Double 2x434-bit multiprecision subtraction, c = c-a-b, where c > a and c > b
-static void mp_dblsub434x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_dblsub434x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision left shift
 static void mp_shiftleft(digit_t *x, unsigned int shift, const unsigned int nwords);
@@ -161,11 +161,11 @@ static bool fpequal434_non_constant_time(const digit_t *a, const digit_t *b);
 
 // Modular addition, c = a+b mod p434
 extern void fpadd434(const digit_t *a, const digit_t *b, digit_t *c);
-extern void fpadd434_asm(const digit_t *a, const digit_t *b, digit_t *c);
+extern void oqs_kem_sike_fpadd434_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular subtraction, c = a-b mod p434
 extern void fpsub434(const digit_t *a, const digit_t *b, digit_t *c);
-extern void fpsub434_asm(const digit_t *a, const digit_t *b, digit_t *c);
+extern void oqs_kem_sike_fpsub434_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular negation, a = -a mod p434
 extern void fpneg434(digit_t *a);
@@ -181,8 +181,8 @@ static void rdc_mont(const digit_t *a, digit_t *c);
 
 // Field multiplication using Montgomery arithmetic, c = a*b*R^-1 mod p434, where R=2^768
 static void fpmul434_mont(const digit_t *a, const digit_t *b, digit_t *c);
-static void mul434_asm(const digit_t *a, const digit_t *b, digit_t *c);
-static void rdc434_asm(const digit_t *ma, digit_t *mc);
+void oqs_kem_sike_mul434_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_rdc434_asm(const digit_t *ma, digit_t *mc);
 
 // Field squaring using Montgomery arithmetic, c = a*b*R^-1 mod p434, where R=2^768
 static void fpsqr434_mont(const digit_t *ma, digit_t *mc);

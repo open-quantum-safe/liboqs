@@ -20,11 +20,11 @@
 // Curve isogeny system "SIDHp503". Base curve: Montgomery curve By^2 = Cx^3 + Ax^2 + Cx defined over GF(p503^2), where A=6, B=1, C=1 and p503 = 2^250*3^159-1
 //
 
-static const uint64_t p503[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xABFFFFFFFFFFFFFF,
+const uint64_t p503[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xABFFFFFFFFFFFFFF,
                                               0x13085BDA2211E7A0, 0x1B9BF6C87B7E7DAF, 0x6045C6BDDA77A4D0, 0x004066F541811E1E};
-static const uint64_t p503p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xAC00000000000000,
+const uint64_t p503p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xAC00000000000000,
                                                 0x13085BDA2211E7A0, 0x1B9BF6C87B7E7DAF, 0x6045C6BDDA77A4D0, 0x004066F541811E1E};
-static const uint64_t p503x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x57FFFFFFFFFFFFFF,
+const uint64_t p503x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x57FFFFFFFFFFFFFF,
                                                 0x2610B7B44423CF41, 0x3737ED90F6FCFB5E, 0xC08B8D7BB4EF49A0, 0x0080CDEA83023C3C};
 // Order of Alice's subgroup
 static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0400000000000000};
@@ -105,9 +105,9 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define fp2inv_mont fp2inv503_mont
 #define fp2inv_mont_bingcd fp2inv503_mont_bingcd
 #define fpequal_non_constant_time fpequal503_non_constant_time
-#define mp_add_asm mp_add503_asm
-#define mp_subaddx2_asm mp_subadd503x2_asm
-#define mp_dblsubx2_asm mp_dblsub503x2_asm
+#define mp_add_asm oqs_kem_sike_mp_add503_asm
+#define mp_subaddx2_asm oqs_kem_sike_mp_subadd503x2_asm
+#define mp_dblsubx2_asm oqs_kem_sike_mp_dblsub503x2_asm
 #define crypto_kem_keypair OQS_KEM_sike_p503_keypair
 #define crypto_kem_enc OQS_KEM_sike_p503_encaps
 #define crypto_kem_dec OQS_KEM_sike_p503_decaps
@@ -120,10 +120,8 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"
-// #include "AMD64/fp_x64_asm.S" FIXMEOQS
 #elif defined(ARM64)
 #include "ARM64/fp_arm64.c"
-// #include "ARM64/fp_arm64_asm.S"  FIXMEOQS
 #else
 #include "generic/fp_generic.c"
 #endif

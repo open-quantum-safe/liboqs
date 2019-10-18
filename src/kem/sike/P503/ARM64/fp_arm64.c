@@ -16,14 +16,14 @@ __inline void fpadd503(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 	                                                                     // Inputs: a, b in [0, 2*p503-1]
 	                                                                     // Output: c in [0, 2*p503-1]
 
-	fpadd503_asm(a, b, c);
+	oqs_kem_sike_fpadd503_asm(a, b, c);
 }
 
 __inline void fpsub503(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p503.
 	                                                                     // Inputs: a, b in [0, 2*p503-1]
 	                                                                     // Output: c in [0, 2*p503-1]
 
-	fpsub503_asm(a, b, c);
+	oqs_kem_sike_fpsub503_asm(a, b, c);
 }
 
 __inline void fpneg503(digit_t *a) { // Modular negation, a = -a mod p503.
@@ -68,7 +68,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 
 	UNREFERENCED_PARAMETER(nwords);
 
-	mul503_asm(a, b, c);
+	oqs_kem_sike_mul503_asm(a, b, c);
 }
 
 void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
@@ -76,5 +76,5 @@ void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiti
 	                                            // If ma < 2^512*p503, the output mc is in the range [0, 2*p503-1].
 	                                            // ma is assumed to be in Montgomery representation.
 
-	rdc503_asm(ma, mc);
+	oqs_kem_sike_rdc503_asm(ma, mc);
 }

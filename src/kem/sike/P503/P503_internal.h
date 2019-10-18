@@ -121,17 +121,17 @@ static unsigned int mp_add(const digit_t *a, const digit_t *b, digit_t *c, const
 
 // 503-bit multiprecision addition, c = a+b
 static void mp_add503(const digit_t *a, const digit_t *b, digit_t *c);
-static void mp_add503_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_add503_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision subtraction, c = a-b, where lng(a) = lng(b) = nwords. Returns the borrow bit
 static unsigned int mp_sub(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords);
 
 // 2x503-bit multiprecision subtraction followed by addition with p503*2^512, c = a-b+(p503*2^512) if a-b < 0, otherwise c=a-b
-static void mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);
-static void mp_subadd503x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_subadd503x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Double 2x503-bit multiprecision subtraction, c = c-a-b, where c > a and c > b
-static void mp_dblsub503x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_dblsub503x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision left shift
 static void mp_shiftleft(digit_t *x, unsigned int shift, const unsigned int nwords);
@@ -161,13 +161,13 @@ static bool fpequal503_non_constant_time(const digit_t *a, const digit_t *b);
 
 // Modular addition, c = a+b mod p503
 extern void fpadd503(const digit_t *a, const digit_t *b, digit_t *c);
-extern void fpadd503_asm(const digit_t *a, const digit_t *b, digit_t *c);
-static void fpadd503_inline_asm(const digit_t *a, const digit_t *b, const digit_t *p, digit_t *c);
+extern void oqs_kem_sike_fpadd503_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_fpadd503_inline_asm(const digit_t *a, const digit_t *b, const digit_t *p, digit_t *c);
 
 // Modular subtraction, c = a-b mod p503
 extern void fpsub503(const digit_t *a, const digit_t *b, digit_t *c);
-extern void fpsub503_asm(const digit_t *a, const digit_t *b, digit_t *c);
-static void fpsub503_inline_asm(const digit_t *a, const digit_t *b, const digit_t *p, digit_t *c);
+extern void oqs_kem_sike_fpsub503_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_fpsub503_inline_asm(const digit_t *a, const digit_t *b, const digit_t *p, digit_t *c);
 
 // Modular negation, a = -a mod p503
 extern void fpneg503(digit_t *a);
@@ -180,13 +180,13 @@ static void fpcorrection503(digit_t *a);
 
 // 503-bit Montgomery reduction, c = a mod p
 static void rdc_mont(const digit_t *a, digit_t *c);
-static void rdc503_asm(const digit_t *ma, digit_t *mc);
-static void rdc503_inline_asm(const felm_t ma, felm_t mb, felm_t mc);
+void oqs_kem_sike_rdc503_asm(const digit_t *ma, digit_t *mc);
+void oqs_kem_sike_rdc503_inline_asm(const felm_t ma, felm_t mb, felm_t mc);
 
 // Field multiplication using Montgomery arithmetic, c = a*b*R^-1 mod p503, where R=2^768
 static void fpmul503_mont(const digit_t *a, const digit_t *b, digit_t *c);
-static void mul503_asm(const digit_t *a, const digit_t *b, digit_t *c);
-static void mul503_inline_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mul503_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mul503_inline_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Field squaring using Montgomery arithmetic, c = a*b*R^-1 mod p503, where R=2^768
 static void fpsqr503_mont(const digit_t *ma, digit_t *mc);

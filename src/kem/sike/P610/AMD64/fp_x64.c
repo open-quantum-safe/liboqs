@@ -38,7 +38,7 @@ __inline void fpadd610(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 
 #elif (OS_TARGET == OS_LINUX)
 
-	fpadd610_asm(a, b, c);
+	oqs_kem_sike_fpadd610_asm(a, b, c);
 
 #endif
 }
@@ -63,7 +63,7 @@ __inline void fpsub610(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 
 #elif (OS_TARGET == OS_LINUX)
 
-	fpsub610_asm(a, b, c);
+	oqs_kem_sike_fpsub610_asm(a, b, c);
 
 #endif
 }
@@ -408,7 +408,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 
 #elif (OS_TARGET == OS_LINUX)
 
-	mul610_asm(a, b, c);
+	oqs_kem_sike_mul610_asm(a, b, c);
 
 #endif
 }
@@ -661,7 +661,7 @@ void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiti
 
 #elif (OS_TARGET == OS_LINUX)
 
-	rdc610_asm(ma, mc);
+	oqs_kem_sike_rdc610_asm(ma, mc);
 
 #endif
 }

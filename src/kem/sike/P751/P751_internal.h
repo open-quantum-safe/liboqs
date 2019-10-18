@@ -121,17 +121,17 @@ static unsigned int mp_add(const digit_t *a, const digit_t *b, digit_t *c, const
 
 // 751-bit multiprecision addition, c = a+b
 static void mp_add751(const digit_t *a, const digit_t *b, digit_t *c);
-static void mp_add751_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_add751_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision subtraction, c = a-b, where lng(a) = lng(b) = nwords. Returns the borrow bit
 static unsigned int mp_sub(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords);
 
 // 2x751-bit multiprecision subtraction followed by addition with p751*2^768, c = a-b+(p751*2^768) if a-b < 0, otherwise c=a-b
-static void mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);
-static void mp_subadd751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_subadd751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Double 2x751-bit multiprecision subtraction, c = c-a-b, where c > a and c > b
-static void mp_dblsub751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_dblsub751x2_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision left shift
 static void mp_shiftleft(digit_t *x, unsigned int shift, const unsigned int nwords);
@@ -161,11 +161,11 @@ static bool fpequal751_non_constant_time(const digit_t *a, const digit_t *b);
 
 // Modular addition, c = a+b mod p751
 extern void fpadd751(const digit_t *a, const digit_t *b, digit_t *c);
-extern void fpadd751_asm(const digit_t *a, const digit_t *b, digit_t *c);
+extern void oqs_kem_sike_fpadd751_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular subtraction, c = a-b mod p751
 extern void fpsub751(const digit_t *a, const digit_t *b, digit_t *c);
-extern void fpsub751_asm(const digit_t *a, const digit_t *b, digit_t *c);
+extern void oqs_kem_sike_fpsub751_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Modular negation, a = -a mod p751
 extern void fpneg751(digit_t *a);
@@ -181,8 +181,8 @@ static void rdc_mont(const digit_t *a, digit_t *c);
 
 // Field multiplication using Montgomery arithmetic, c = a*b*R^-1 mod p751, where R=2^768
 static void fpmul751_mont(const digit_t *a, const digit_t *b, digit_t *c);
-static void mul751_asm(const digit_t *a, const digit_t *b, digit_t *c);
-static void rdc751_asm(const digit_t *ma, digit_t *mc);
+void oqs_kem_sike_mul751_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_rdc751_asm(const digit_t *ma, digit_t *mc);
 
 // Field squaring using Montgomery arithmetic, c = a*b*R^-1 mod p751, where R=2^768
 static void fpsqr751_mont(const digit_t *ma, digit_t *mc);

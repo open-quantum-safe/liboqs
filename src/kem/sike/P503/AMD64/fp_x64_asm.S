@@ -36,8 +36,8 @@
 //  Field addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global fpadd503_asm
-fpadd503_asm:
+.global oqs_kem_sike_fpadd503_asm
+oqs_kem_sike_fpadd503_asm:
   push   r12
   push   r13
   push   r14
@@ -125,8 +125,8 @@ fpadd503_asm:
 //  Field subtraction
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global fpsub503_asm
-fpsub503_asm:
+.global oqs_kem_sike_fpsub503_asm
+oqs_kem_sike_fpsub503_asm:
   push   r12
   push   r13
   push   r14
@@ -350,8 +350,8 @@ fpsub503_asm:
 //*****************************************************************************
 //  503-bit multiplication using Karatsuba (one level), schoolbook (one level)
 //***************************************************************************** 
-.global mul503_asm
-mul503_asm:    
+.global oqs_kem_sike_mul503_asm
+oqs_kem_sike_mul503_asm:
     push   r12
     push   r13 
     push   r14 
@@ -512,8 +512,8 @@ mul503_asm:
 //  Operation: c [reg_p3] = a [reg_p1] * b [reg_p2]
 //  NOTE: a=c or b=c are not allowed
 //***********************************************************************
-.global mul503_asm
-mul503_asm:
+.global oqs_kem_sike_mul503_asm
+oqs_kem_sike_mul503_asm:
   push   r12
   push   r13
   push   r14
@@ -1029,8 +1029,8 @@ mul503_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //************************************************************************************** 
-.global rdc503_asm
-rdc503_asm:
+.global oqs_kem_sike_rdc503_asm
+oqs_kem_sike_rdc503_asm:
     push   rbx
     push   r12
     push   r13 
@@ -1161,8 +1161,8 @@ rdc503_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //*********************************************************************** 
-.global rdc503_asm
-rdc503_asm:
+.global oqs_kem_sike_rdc503_asm
+oqs_kem_sike_rdc503_asm:
   push   r12
   push   r13 
   push   r14 
@@ -1484,8 +1484,8 @@ rdc503_asm:
 //  503-bit multiprecision addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global mp_add503_asm
-mp_add503_asm: 
+.global oqs_kem_sike_mp_add503_asm
+oqs_kem_sike_mp_add503_asm: 
   mov    r8, [reg_p1]
   mov    r9, [reg_p1+8]
   mov    r10, [reg_p1+16]
@@ -1518,8 +1518,8 @@ mp_add503_asm:
 //  2x503-bit multiprecision subtraction/addition
 //  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p503*2^512
 //*********************************************************************** 
-.global mp_subadd503x2_asm
-mp_subadd503x2_asm:
+.global oqs_kem_sike_mp_subadd503x2_asm
+oqs_kem_sike_mp_subadd503x2_asm:
   push   r12
   push   r13 
   push   r14 
@@ -1619,8 +1619,8 @@ mp_subadd503x2_asm:
 //  Double 2x503-bit multiprecision subtraction
 //  Operation: c [reg_p3] = c [reg_p3] - a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global mp_dblsub503x2_asm
-mp_dblsub503x2_asm:
+.global oqs_kem_sike_mp_dblsub503x2_asm
+oqs_kem_sike_mp_dblsub503x2_asm:
   push   r12
   push   r13
   push   r14

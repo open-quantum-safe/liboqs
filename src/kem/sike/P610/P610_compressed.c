@@ -352,9 +352,9 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] =
 #define fp2inv_mont fp2inv610_mont
 #define fp2inv_mont_bingcd fp2inv610_mont_bingcd
 #define fpequal_non_constant_time fpequal610_non_constant_time
-#define mp_add_asm mp_add610_asm
-#define mp_subaddx2_asm mp_subadd610x2_asm
-#define mp_dblsubx2_asm mp_dblsub610x2_asm
+#define mp_add_asm oqs_kem_sike_mp_add610_asm
+#define mp_subaddx2_asm oqs_kem_sike_mp_subadd610x2_asm
+#define mp_dblsubx2_asm oqs_kem_sike_mp_dblsub610x2_asm
 #define crypto_kem_keypair OQS_KEM_sike_p610_compressed_keypair
 #define crypto_kem_enc OQS_KEM_sike_p610_compressed_encaps
 #define crypto_kem_dec OQS_KEM_sike_p610_compressed_decaps
@@ -367,7 +367,6 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] =
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"
-// #include "AMD64/fp_x64_asm.S" FIXMEOQS
 #else
 #include "generic/fp_generic.c"
 #endif
