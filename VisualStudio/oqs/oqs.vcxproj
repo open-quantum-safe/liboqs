@@ -42,6 +42,7 @@
     <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h" />
     <ClInclude Include="..\..\src\kem\saber\kem_saber.h" />
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h" />
+    <ClInclude Include="..\..\src\sig\falcon\sig_falcon.h" />
     <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h" />
     <ClInclude Include="..\..\src\sig\sphincs\sig_sphincs.h" />
     <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLINCLUDE_END -->
@@ -245,6 +246,26 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\reduce.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\rounding.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\symmetric.c" />
+    <ClCompile Include="..\..\src\sig\falcon\sig_falcon_512.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\codec.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\common.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\fft.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\fpr.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\keygen.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\pqclean.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\rng.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\vrfy.c" />
+    <ClCompile Include="..\..\src\sig\falcon\sig_falcon_1024.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\codec.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\common.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\fft.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\fpr.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\keygen.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\pqclean.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\rng.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\sign.c" />
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\vrfy.c" />
     <ClCompile Include="..\..\src\sig\mqdss\sig_mqdss_31_48.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\gf31.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\mq.c" />
@@ -767,6 +788,7 @@ copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\o
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -811,6 +833,7 @@ copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\o
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -855,6 +878,7 @@ copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\o
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -907,6 +931,7 @@ copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\o
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -958,6 +983,7 @@ copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\o
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -1006,6 +1032,7 @@ copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\o
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -1054,6 +1081,7 @@ copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\o
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
@@ -1110,6 +1138,7 @@ copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\o
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\dilithium\sig_dilithium.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\sig\falcon\sig_falcon.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"

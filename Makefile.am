@@ -48,6 +48,9 @@ endif
 if ENABLE_SIG_DILITHIUM
 liboqs_la_LIBADD += src/sig/dilithium/libsigdilithium.la
 endif
+if ENABLE_SIG_FALCON
+liboqs_la_LIBADD += src/sig/falcon/libsigfalcon.la
+endif
 if ENABLE_SIG_MQDSS
 liboqs_la_LIBADD += src/sig/mqdss/libsigmqdss.la
 endif
@@ -85,6 +88,7 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
 	src/sig/dilithium/sig_dilithium.h \
+	src/sig/falcon/sig_falcon.h \
 	src/sig/mqdss/sig_mqdss.h \
 	src/sig/sphincs/sig_sphincs.h \
 	src/sig/picnic/sig_picnic.h \
@@ -114,6 +118,7 @@ links:
 	cp -f src/kem/ntru/kem_ntru.h include/oqs
 	cp -f src/kem/saber/kem_saber.h include/oqs
 	cp -f src/sig/dilithium/sig_dilithium.h include/oqs
+	cp -f src/sig/falcon/sig_falcon.h include/oqs
 	cp -f src/sig/mqdss/sig_mqdss.h include/oqs
 	cp -f src/sig/sphincs/sig_sphincs.h include/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_END

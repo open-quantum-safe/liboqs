@@ -129,6 +129,26 @@ sigs:
         signed_msg_order: sig_then_msg
         visual_studio_guid: fb8c21f2-891b-46fb-8a45-17f69dfa31bd
   - 
+    name: falcon
+    visual_studio_guid: 52DB99FF-AD65-4D23-BE03-27F377CE26EE
+    schemes:
+      - 
+        scheme: "512"
+        pqclean_scheme: falcon-512
+        pretty_name_full: Falcon-512
+        implementation: clean
+        sources: ['codec.c', 'common.c', 'fft.c', 'fpr.c', 'keygen.c', 'pqclean.c', 'rng.c', 'sign.c', 'vrfy.c']
+        signed_msg_order: falcon
+        visual_studio_guid: 88A051BE-35AF-4011-BEB8-4130068FE84E
+      - 
+        scheme: "1024"
+        pqclean_scheme: falcon-1024
+        pretty_name_full: Falcon-1024
+        implementation: clean
+        sources: ['codec.c', 'common.c', 'fft.c', 'fpr.c', 'keygen.c', 'pqclean.c', 'rng.c', 'sign.c', 'vrfy.c']
+        signed_msg_order: falcon
+        visual_studio_guid: 44E34CAC-F389-4A16-999F-C6B6A7A10FB6
+  - 
     name: mqdss
     visual_studio_guid: ac98bd77-73db-4889-b91f-75dc49769226
     schemes:

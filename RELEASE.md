@@ -37,7 +37,7 @@ This release continues from the 0.2.0 release of liboqs.
 
 ### Digital signature schemes
 
-- TBA
+- Add Falcon-512 and Falcon-1024
 
 ### Other changes
 

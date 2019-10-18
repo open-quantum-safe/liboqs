@@ -35,6 +35,14 @@ void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	fprintf(fp, "\n");
 }
 
+static inline uint16_t UINT16_TO_BE(const uint16_t x) {
+	uint16_t y;
+	uint8_t *z = (uint8_t *) &y;
+	z[0] = x >> 8;
+	z[1] = x & 0xFF;
+	return y;
+}
+
 static inline uint32_t UINT32_TO_LE(const uint32_t x) {
 	uint32_t y;
 	uint8_t *z = (uint8_t *) &y;
@@ -99,6 +107,44 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		}
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Falcon-512")) {
+		// see src/sig/falcon/pqclean_falcon-512_clean/pqclean.c for signature format
+		uint8_t header_byte = signature[0] - 16;
+		const uint8_t *nonce = &signature[1];
+		size_t nonce_len = 40;
+		const uint8_t *sig_value = &signature[41];
+		size_t sig_value_len = signature_len - 1 - 40;
+		*signed_msg_len = 2 + nonce_len + msg_len + 1 + sig_value_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		uint16_t sig_len_be = UINT16_TO_BE(1 + (uint16_t) sig_value_len);
+		memcpy(*signed_msg, &sig_len_be, 2);
+		memcpy(*signed_msg + 2, nonce, nonce_len);
+		memcpy(*signed_msg + 2 + nonce_len, msg, msg_len);
+		memcpy(*signed_msg + 2 + nonce_len + msg_len, &header_byte, 1);
+		memcpy(*signed_msg + 2 + nonce_len + msg_len + 1, sig_value, sig_value_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Falcon-1024")) {
+		// see src/sig/falcon/pqclean_falcon-512_clean/pqclean.c for signature format
+		uint8_t header_byte = signature[0] - 16;
+		const uint8_t *nonce = &signature[1];
+		size_t nonce_len = 40;
+		const uint8_t *sig_value = &signature[41];
+		size_t sig_value_len = signature_len - 1 - 40;
+		*signed_msg_len = 2 + nonce_len + msg_len + 1 + sig_value_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		uint16_t sig_len_be = UINT16_TO_BE(1 + (uint16_t) sig_value_len);
+		memcpy(*signed_msg, &sig_len_be, 2);
+		memcpy(*signed_msg + 2, nonce, nonce_len);
+		memcpy(*signed_msg + 2 + nonce_len, msg, msg_len);
+		memcpy(*signed_msg + 2 + nonce_len + msg_len, &header_byte, 1);
+		memcpy(*signed_msg + 2 + nonce_len + msg_len + 1, sig_value, sig_value_len);
 		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "MQDSS-31-48")) {
 		// signed_msg = signature || msg

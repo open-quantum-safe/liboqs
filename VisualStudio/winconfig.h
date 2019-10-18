@@ -53,6 +53,8 @@
 #define OQS_ENABLE_SIG_dilithium_2
 #define OQS_ENABLE_SIG_dilithium_3
 #define OQS_ENABLE_SIG_dilithium_4
+#define OQS_ENABLE_SIG_falcon_512
+#define OQS_ENABLE_SIG_falcon_1024
 #define OQS_ENABLE_SIG_mqdss_31_48
 #define OQS_ENABLE_SIG_mqdss_31_64
 #define OQS_ENABLE_SIG_sphincs_haraka_128f_robust

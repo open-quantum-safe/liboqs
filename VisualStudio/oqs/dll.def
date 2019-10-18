@@ -125,6 +125,12 @@ EXPORTS
 	OQS_SIG_dilithium_4_keypair
 	OQS_SIG_dilithium_4_sign
 	OQS_SIG_dilithium_4_verify
+	OQS_SIG_falcon_512_keypair
+	OQS_SIG_falcon_512_sign
+	OQS_SIG_falcon_512_verify
+	OQS_SIG_falcon_1024_keypair
+	OQS_SIG_falcon_1024_sign
+	OQS_SIG_falcon_1024_verify
 	OQS_SIG_mqdss_31_48_keypair
 	OQS_SIG_mqdss_31_48_sign
 	OQS_SIG_mqdss_31_48_verify

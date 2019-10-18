@@ -419,6 +419,66 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\symmetric.c">
       <Filter>dilithium\4</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\sig_falcon_512.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\codec.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\common.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\fft.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\fpr.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\keygen.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\pqclean.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\rng.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\sign.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-512_clean\vrfy.c">
+      <Filter>falcon\512</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\sig_falcon_1024.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\codec.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\common.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\fft.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\fpr.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\keygen.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\pqclean.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\rng.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\sign.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\sig\falcon\pqclean_falcon-1024_clean\vrfy.c">
+      <Filter>falcon\1024</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\sig\mqdss\sig_mqdss_31_48.c">
       <Filter>mqdss\31_48</Filter>
     </ClCompile>
@@ -1562,6 +1622,9 @@
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h">
       <Filter>dilithium</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\sig\falcon\sig_falcon.h">
+      <Filter>falcon</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h">
       <Filter>mqdss</Filter>
     </ClInclude>
@@ -1799,6 +1862,15 @@
     </Filter>
     <Filter Include="dilithium\4">
       <UniqueIdentifier>{fb8c21f2-891b-46fb-8a45-17f69dfa31bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="falcon">
+      <UniqueIdentifier>{52DB99FF-AD65-4D23-BE03-27F377CE26EE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="falcon\512">
+      <UniqueIdentifier>{88A051BE-35AF-4011-BEB8-4130068FE84E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="falcon\1024">
+      <UniqueIdentifier>{44E34CAC-F389-4A16-999F-C6B6A7A10FB6}</UniqueIdentifier>
     </Filter>
     <Filter Include="mqdss">
       <UniqueIdentifier>{ac98bd77-73db-4889-b91f-75dc49769226}</UniqueIdentifier>

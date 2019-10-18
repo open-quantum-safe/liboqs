@@ -20,6 +20,25 @@
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
 		return OQS_SUCCESS;
+{%- elif scheme['signed_msg_order'] == 'falcon' %}
+		// see src/sig/falcon/pqclean_falcon-512_clean/pqclean.c for signature format
+		uint8_t header_byte = signature[0] - 16; // -16 to change header byte from 0011nnnn to 0010nnnn
+		const uint8_t *nonce = &signature[1];
+		size_t nonce_len = 40;
+		const uint8_t *sig_value = &signature[41];
+		size_t sig_value_len = signature_len - 1 - 40;
+		*signed_msg_len = 2 + nonce_len + msg_len + 1 + sig_value_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		uint16_t sig_len_be = UINT16_TO_BE(1 + (uint16_t) sig_value_len);
+		memcpy(*signed_msg, &sig_len_be, 2);
+		memcpy(*signed_msg + 2, nonce, nonce_len);
+		memcpy(*signed_msg + 2 + nonce_len, msg, msg_len);
+		memcpy(*signed_msg + 2 + nonce_len + msg_len, &header_byte, 1);
+		memcpy(*signed_msg + 2 + nonce_len + msg_len + 1, sig_value, sig_value_len);
+		return OQS_SUCCESS;
 {%- else %}
 		// not yet implemented
 		return OQS_ERROR;
