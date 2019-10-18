@@ -1,4 +1,4 @@
 {% set unary %}{% for family in instructions['kems'] %}{% for scheme in family['schemes'] %}1{% endfor %}{% endfor %}{% endset %}
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length {{ unary|length + 32 }}
+#define OQS_KEM_algs_length {{ unary|length + 27 }}
 

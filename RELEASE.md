@@ -1,5 +1,5 @@
-liboqs version 0.2.0 (release candidate 3)
-====================
+liboqs version 0.2.1-dev
+========================
 
 About
 -----
@@ -24,31 +24,24 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This release of liboqs was released on TODO.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs/releases/tag/master-0.2.0.
+This release of liboqs was released on TODO.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs/releases/tag/0.2.1.
 
 What's New
 ----------
 
-This release continues from the 0.1.0 release of liboqs "master branch".  
+This release continues from the 0.2.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- Update FrodoKEM, NewHope, and SIDH/SIKE to NIST Round 2 submissions
-- Add Kyber, NTRU, and Saber NIST Round 2 submissions
+- Update BIKE to Round 2 submission; removes `BIKE2-*`, `BIKE3-*`, `BIKE1-L5`, renames `BIKE1-L1` and `BIKE1-L3` to `BIKE1-L1-CPA` and `BIKE1-L3-CPA`, and adds `BIKE1-L1-FO` and `BIKE-L3-FO`
 
 ### Digital signature schemes
 
-- Update Picnic to NIST Round 2 submissions
-- Add Dilithium, MQDSS, Rainbow, and SPHINCS+ NIST Round 2 submissions
+- TBA
 
 ### Other changes
 
-- Add support for cross-compilation on ARM
-- Add more extensive continuous integration testing
-- Use OpenSSL for AES, SHA-2, and SHA-3 where available
-- Add functions for runtime detection of whether KEM and signature scheme algorithms are enabled
-
-Previous releases of liboqs differentiated between "master branch" and "nist-branch", with nist-branch supporting more algorithms.  As of this release, nist-branch will no longer be developed or released, and all future releases are planned to be based on master branch.
+- TBA
 
 Future work
 -----------

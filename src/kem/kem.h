@@ -31,24 +31,14 @@ extern "C" {
 
 /** Algorithm identifier for default KEM algorithm. */
 #define OQS_KEM_alg_default "DEFAULT"
-/** Algorithm identifier for BIKE1-L1 KEM. */
-#define OQS_KEM_alg_bike1_l1 "BIKE1-L1"
-/** Algorithm identifier for BIKE1-L3 KEM. */
-#define OQS_KEM_alg_bike1_l3 "BIKE1-L3"
-/** Algorithm identifier for BIKE1-L5 KEM. */
-#define OQS_KEM_alg_bike1_l5 "BIKE1-L5"
-/** Algorithm identifier for BIKE2-L1 KEM. */
-#define OQS_KEM_alg_bike2_l1 "BIKE2-L1"
-/** Algorithm identifier for BIKE2-L3 KEM. */
-#define OQS_KEM_alg_bike2_l3 "BIKE2-L3"
-/** Algorithm identifier for BIKE2-L5 KEM. */
-#define OQS_KEM_alg_bike2_l5 "BIKE2-L5"
-/** Algorithm identifier for BIKE3-L1 KEM. */
-#define OQS_KEM_alg_bike3_l1 "BIKE3-L1"
-/** Algorithm identifier for BIKE3-L3 KEM. */
-#define OQS_KEM_alg_bike3_l3 "BIKE3-L3"
-/** Algorithm identifier for BIKE3-L5 KEM. */
-#define OQS_KEM_alg_bike3_l5 "BIKE3-L5"
+/** Algorithm identifier for BIKE1-L1-CPA KEM. */
+#define OQS_KEM_alg_bike1_l1_cpa "BIKE1-L1-CPA"
+/** Algorithm identifier for BIKE1-L3-CPA KEM. */
+#define OQS_KEM_alg_bike1_l3_cpa "BIKE1-L3-CPA"
+/** Algorithm identifier for BIKE1-L1-FO KEM. */
+#define OQS_KEM_alg_bike1_l1_fo "BIKE1-L1-FO"
+/** Algorithm identifier for BIKE1-L3-FO KEM. */
+#define OQS_KEM_alg_bike1_l3_fo "BIKE1-L3-FO"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for Kyber512 KEM. */
 #define OQS_KEM_alg_kyber_512 "Kyber512"
@@ -122,7 +112,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 44
+#define OQS_KEM_algs_length 39
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
