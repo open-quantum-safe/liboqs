@@ -119,17 +119,23 @@ void OQS_AES256_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 	return OQS_AES128_ECB_dec_sch(ciphertext, ciphertext_len, schedule, plaintext);
 }
 
-void OQS_AES256_CTR_sch(const uint8_t *iv, const void *schedule, uint8_t *out, size_t out_len) {
+void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	struct key_schedule *ks = (struct key_schedule *) schedule;
 	if (ks->ctr_ctx == NULL) {
 		ks->ctr_ctx = EVP_CIPHER_CTX_new();
 		assert(ks->ctr_ctx != NULL);
 		uint8_t iv_ctr[16];
-		memcpy(iv_ctr, iv, 12);
-		iv_ctr[12] = 0;
-		iv_ctr[13] = 0;
-		iv_ctr[14] = 0;
-		iv_ctr[15] = 1;
+		if (iv_len == 12) {
+			memcpy(iv_ctr, iv, 12);
+			iv_ctr[12] = 0;
+			iv_ctr[13] = 0;
+			iv_ctr[14] = 0;
+			iv_ctr[15] = 0;
+		} else if (iv_len == 16) {
+			memcpy(iv_ctr, iv, 16);
+		} else {
+			assert(0);
+		}
 		assert(1 == EVP_EncryptInit_ex(ks->ctr_ctx, EVP_aes_256_ctr(), NULL, ks->key, iv_ctr));
 	}
 	memset(out, 0, out_len);

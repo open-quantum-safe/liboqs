@@ -22,6 +22,7 @@ typedef void * aes256ctx;
 
 #define aes256_keyexp(r, key) OQS_AES256_load_schedule((key), (r), 1);
 #define aes256_ecb(out, in, nblocks, ctx) OQS_AES256_ECB_enc_sch((in), (nblocks) * AES_BLOCKBYTES, *(ctx), (out));
+#define aes256_ctr(out, outlen, iv, ctx) OQS_AES256_CTR_sch((iv), 12, *(ctx), (out), (outlen))
 #define aes256_ctx_release(ctx) OQS_AES256_free_schedule(*(ctx));
 
 #endif
