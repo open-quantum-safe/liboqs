@@ -15,15 +15,10 @@
 
 #cmakedefine USE_OPENSSL
 
-#cmakedefine OQS_ENABLE_KEM_bike1_l1
-#cmakedefine OQS_ENABLE_KEM_bike1_l3
-#cmakedefine OQS_ENABLE_KEM_bike1_l5
-#cmakedefine OQS_ENABLE_KEM_bike2_l1
-#cmakedefine OQS_ENABLE_KEM_bike2_l3
-#cmakedefine OQS_ENABLE_KEM_bike2_l5
-#cmakedefine OQS_ENABLE_KEM_bike3_l1
-#cmakedefine OQS_ENABLE_KEM_bike3_l3
-#cmakedefine OQS_ENABLE_KEM_bike3_l5
+#cmakedefine OQS_ENABLE_KEM_bike1_l1_cpa
+#cmakedefine OQS_ENABLE_KEM_bike1_l3_cpa
+#cmakedefine OQS_ENABLE_KEM_bike1_l1_fo
+#cmakedefine OQS_ENABLE_KEM_bike1_l3_fo
 #cmakedefine ENABLE_KEM_BIKE
 
 #cmakedefine OQS_ENABLE_KEM_frodokem_640_aes

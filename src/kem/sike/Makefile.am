@@ -21,7 +21,7 @@ endif # ARM
 endif # X86_64
 endif # X86
 
-libkemsike_la_CFLAGS = $(AM_CFLAGS) $(SIKE_FLAGS) -w
+libkemsike_la_CFLAGS = $(AM_CFLAGS) $(SIKE_FLAGS)
 
 P434/P434.c: sike.c sidh.c
 P434/P434_compressed.c: sike.c sidh.c

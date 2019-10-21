@@ -31,17 +31,25 @@ else()
 endif()
 
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
-   CMAKE_C_COMPILER_ID STREQUAL "Clang")
+   CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
+   CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden")
-    # Disabling the following until SIKE issues are fixed.
-    #-Wall -Wextra -Werror -Wimplicit -Wcomment -Wchar-subscripts -Wuninitialized -Wshadow -Wformat-security")
 endif()
-if(CMAKE_C_COMPILER_ID STREQUAL "Clang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wnewline-eof -fcolor-diagnostics")
+if(CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
+   CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics")
 endif()
 
 include(config.cmake)
+
 if(USE_OPENSSL)
+    if(NOT DEFINED OPENSSL_ROOT_DIR)
+        if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
+            set(OPENSSL_ROOT_DIR "/usr/local/opt/openssl@1.1")
+        elseif(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux")
+            set(OPENSSL_ROOT_DIR "/usr")
+        endif()
+    endif()
     find_package(OpenSSL REQUIRED)
 endif()
 

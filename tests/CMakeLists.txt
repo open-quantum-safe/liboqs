@@ -1,3 +1,7 @@
+if(USE_OPENSSL)
+    include_directories(${OPENSSL_INCLUDE_DIR})
+endif()
+
 if(NOT WIN32)
     # Common crypto tests.
     # These test functions not part of

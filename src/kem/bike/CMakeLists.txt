@@ -1,33 +1,34 @@
-if(USE_AVX2_INSTRUCTIONS)
-    set(ROOT "x86_64")
+set(SRCS additional/decode.c
+         additional/gf2x_portable.c
+         additional/sampling.c
+         additional/parallel_hash.c
+         additional/secure_decode_portable.c
+         additional/utilities.c
+         additional/aes_ctr_prf.c
+         additional/error.c
+         additional/gf2x_mul.c)
+
+if(NOT ${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin" AND (USE_AVX512F_INSTRUCTIONS OR USE_AVX_INSTRUCTIONS))
+    set(SRCS ${SRCS} additional/converts.S
+                     additional/red.S
+                     additional/secure_decode_avx512.S
+                     additional/sampling_avx512.S
+                     additional/gf_mul.S
+                     additional/gf_add.S)
+    if(USE_AVX512_F_INSTRUCTIONS)
+        add_compile_definitions(AVX512)
+    elseif(USE_AVX2_INSTRUCTIONS)
+        add_compile_definitions(AVX2)
+    endif()
 else()
-    set(ROOT "ref")
+    set(SRCS ${SRCS} additional/sampling_portable.c
+                     additional/converts_portable.c)
+    add_compile_definitions(PORTABLE)
 endif()
 
-set(SRCS ${ROOT}/kem.c
-         ${ROOT}/aes_ctr_prf.c
-         ${ROOT}/parallel_hash.c
-         ${ROOT}/sampling.c
-         ${ROOT}/utilities.c
-         ${ROOT}/decode.c
-         ${ROOT}/openssl_utils.c)
-
-if(USE_AVX2_INSTRUCTIONS)
-    add_compile_definitions(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION)
-    set(SRCS ${SRCS} ${ROOT}/aes.c
-                     ${ROOT}/sha.c
-                     ${ROOT}/sha-mb.c
-                     ${ROOT}/gf2x_mul.c
-                     ${ROOT}/vaes256_key_expansion.S
-                     ${ROOT}/gf_add.S
-                     ${ROOT}/converts.S
-                     ${ROOT}/gf_mul.S
-                     ${ROOT}/sha384_update_mb.S
-                     ${ROOT}/red.S
-                     ${ROOT}/sampling_x86_64.S
-                     ${ROOT}/decode_x86_64.S)
-else()
-    set(SRCS ${SRCS} ${ROOT}/conversions.c)
+if(USE_OPENSSL)
+    include_directories(${OPENSSL_INCLUDE_DIR})
+    set(SRCS ${SRCS} additional/openssl_utils.c)
 endif()
 
 add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
@@ -36,61 +37,30 @@ add_compile_definitions(CONSTANT_TIME)
 add_library(kem_bike OBJECT kem_bike.c)
 set(_BIKE_OBJS $<TARGET_OBJECTS:kem_bike>)
 
-# L1 variants
-if(OQS_ENABLE_KEM_bike1_l1)
-    add_library(bike1_l1 OBJECT ${SRCS})
-    target_compile_definitions(bike1_l1 PRIVATE LEVEL=1 BIKE_VER=1 FUNC_PREFIX=OQS_KEM_bike1_l1)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1>)
+# CPA variants
+if(OQS_ENABLE_KEM_bike1_l1_cpa)
+    add_library(bike1_l1_cpa OBJECT additional/kem_cpa.c ${SRCS})
+    target_compile_definitions(bike1_l1_cpa PRIVATE INDCPA=1 LEVEL=1 FUNC_PREFIX=OQS_KEM_bike1_l1_cpa)
+    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1_cpa>)
 endif()
 
-if(OQS_ENABLE_KEM_bike2_l1)
-    add_library(bike2_l1 OBJECT ${SRCS})
-    target_compile_definitions(bike2_l1 PRIVATE LEVEL=1 BIKE_VER=2 FUNC_PREFIX=OQS_KEM_bike2_l1)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike2_l1>)
+if(OQS_ENABLE_KEM_bike1_l3_cpa)
+    add_library(bike1_l3_cpa OBJECT additional/kem_cpa.c ${SRCS})
+    target_compile_definitions(bike1_l3_cpa PRIVATE INDCPA=1 LEVEL=3 FUNC_PREFIX=OQS_KEM_bike1_l3_cpa)
+    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l3_cpa>)
 endif()
 
-if(OQS_ENABLE_KEM_bike3_l1)
-    add_library(bike3_l1 OBJECT ${SRCS})
-    target_compile_definitions(bike3_l1 PRIVATE LEVEL=1 BIKE_VER=3 FUNC_PREFIX=OQS_KEM_bike3_l1)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike3_l1>)
+# FO variants
+if(OQS_ENABLE_KEM_bike1_l1_fo)
+    add_library(bike1_l1_fo OBJECT additional/kem.c ${SRCS})
+    target_compile_definitions(bike1_l1_fo PRIVATE LEVEL=1 FUNC_PREFIX=OQS_KEM_bike1_l1_fo)
+    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1_fo>)
 endif()
 
-# L3 variants
-if(OQS_ENABLE_KEM_bike1_l3)
-    add_library(bike1_l3 OBJECT ${SRCS})
-    target_compile_definitions(bike1_l3 PRIVATE LEVEL=3 BIKE_VER=1 FUNC_PREFIX=OQS_KEM_bike1_l3)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l3>)
-endif()
-
-if(OQS_ENABLE_KEM_bike2_l3)
-    add_library(bike2_l3 OBJECT ${SRCS})
-    target_compile_definitions(bike2_l3 PRIVATE LEVEL=3 BIKE_VER=2 FUNC_PREFIX=OQS_KEM_bike2_l3)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike2_l3>)
-endif()
-
-if(OQS_ENABLE_KEM_bike3_l3)
-    add_library(bike3_l3 OBJECT ${SRCS})
-    target_compile_definitions(bike3_l3 PRIVATE LEVEL=3 BIKE_VER=3 FUNC_PREFIX=OQS_KEM_bike3_l3)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike3_l3>)
-endif()
-
-# L5 variants
-if(OQS_ENABLE_KEM_bike1_l5)
-    add_library(bike1_l5 OBJECT ${SRCS})
-    target_compile_definitions(bike1_l5 PRIVATE LEVEL=5 BIKE_VER=1 FUNC_PREFIX=OQS_KEM_bike1_l5)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l5>)
-endif()
-
-if(OQS_ENABLE_KEM_bike2_l5)
-    add_library(bike2_l5 OBJECT ${SRCS})
-    target_compile_definitions(bike2_l5 PRIVATE LEVEL=5 BIKE_VER=2 FUNC_PREFIX=OQS_KEM_bike2_l5)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike2_l5>)
-endif()
-
-if(OQS_ENABLE_KEM_bike3_l5)
-    add_library(bike3_l5 OBJECT ${SRCS})
-    target_compile_definitions(bike3_l5 PRIVATE LEVEL=5 BIKE_VER=3 FUNC_PREFIX=OQS_KEM_bike3_l5)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike3_l5>)
+if(OQS_ENABLE_KEM_bike1_l3_fo)
+    add_library(bike1_l3_fo OBJECT additional/kem.c ${SRCS})
+    target_compile_definitions(bike1_l3_fo PRIVATE LEVEL=3 FUNC_PREFIX=OQS_KEM_bike1_l3_fo)
+    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l3_fo>)
 endif()
 
 set(BIKE_OBJS ${_BIKE_OBJS} PARENT_SCOPE)

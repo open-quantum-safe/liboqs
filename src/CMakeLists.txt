@@ -27,7 +27,7 @@ if(ENABLE_KEM_SABER)
 endif()
 if(ENABLE_KEM_SIKE)
     add_subdirectory(kem/sike)
-    set(KEM_OBJS ${KEM_OBJS} $<TARGET_OBJECTS:sike>)
+    set(KEM_OBJS ${KEM_OBJS} ${SIKE_OBJS})
 endif()
 
 add_library(oqs kem/kem.c
@@ -40,6 +40,5 @@ set_target_properties(oqs
                       LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
 if(USE_OPENSSL)
-    target_include_directories(oqs PRIVATE "${OPENSSL_INCLUDE_DIR}")
     target_link_libraries(oqs ${OPENSSL_CRYPTO_LIBRARY})
 endif()
