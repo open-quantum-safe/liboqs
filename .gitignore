@@ -119,3 +119,6 @@ test-results
 
 # IDEs
 .idea
+
+# CMake
+build/
