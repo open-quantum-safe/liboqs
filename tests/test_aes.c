@@ -101,7 +101,6 @@ static int test_aes256ctr_correctness(void) {
 	return EXIT_SUCCESS;
 }
 
-
 static void speed_aes128(void) {
 	uint8_t plaintext[16], ciphertext[16];
 	void *schedule = NULL, *schedule_dec = NULL;
