@@ -3,8 +3,8 @@
  * \brief Header defining the API for OQS AES
  */
 
-#ifndef __OQS_AES_H
-#define __OQS_AES_H
+#ifndef OQS_AES_H
+#define OQS_AES_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -125,4 +125,4 @@ void OQS_AES256_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 } // extern "C"
 #endif
 
-#endif
+#endif // OQS_AES_H

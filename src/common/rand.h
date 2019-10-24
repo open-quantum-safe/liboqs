@@ -3,8 +3,8 @@
  * \brief Random number generator.
  */
 
-#ifndef __OQS_RANDOM_H
-#define __OQS_RANDOM_H
+#ifndef OQS_RANDOM_H
+#define OQS_RANDOM_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -68,4 +68,4 @@ OQS_API void OQS_randombytes_nist_kat_init(const uint8_t *entropy_input, const u
 } // extern "C"
 #endif
 
-#endif // __OQS_RANDOM_H
+#endif // OQS_RANDOM_H

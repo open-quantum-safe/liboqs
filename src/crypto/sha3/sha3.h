@@ -200,7 +200,7 @@ typedef struct {
  * Absorb and finalize an input seed byte array.
  * Should be used in conjunction with the shake128_squeezeblocks function.
  *
- * \warning Finalizes the seed state, should not be used in consecutive calls. \n
+ * \warning Finalizes the seed state, should not be used in consecutive calls.
  * State must be allocated by the caller.
  *
  * \param state The function state; must be allocated
@@ -260,7 +260,7 @@ void OQS_SHA3_shake128_inc_finalize(OQS_SHA3_shake128_inc_ctx *s_inc);
  *
  * \param output output buffer
  * \param outlen bytes of outbut buffer
- * \param s_inc
+ * \param s_inc The function state; must be initialized
  */
 void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake128_inc_ctx *s_inc);
 
@@ -290,7 +290,7 @@ typedef struct {
  * Absorb and finalize an input seed byte array.
  * Should be used in conjunction with the shake256_squeezeblocks function.
  *
- * \warning Finalizes the seed state, should not be used in consecutive calls. \n
+ * \warning Finalizes the seed state, should not be used in consecutive calls.
  * State must be initialized (and zeroed) by the caller.
  *
  * \param state The function state; must be pre-initialized
@@ -408,7 +408,7 @@ void OQS_SHA3_cshake128_inc_finalize(OQS_SHA3_shake128_inc_ctx *state);
  *
  * \param output output buffer
  * \param outlen bytes of outbut buffer
- * \param state
+ * \param state The function state; must be initialized
  */
 void OQS_SHA3_cshake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake128_inc_ctx *state);
 
@@ -465,7 +465,7 @@ void OQS_SHA3_cshake256_inc_finalize(OQS_SHA3_shake256_inc_ctx *state);
  *
  * \param output output buffer
  * \param outlen bytes of outbut buffer
- * \param state
+ * \param state The function state, must be initialized
  */
 void OQS_SHA3_cshake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake256_inc_ctx *state);
 
@@ -508,9 +508,9 @@ void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
  * \warning The output array length must not be zero.
  *
  * \param output0 The first output byte array
- * \param output0 The second output byte array
- * \param output0 The third output byte array
- * \param output0 The fourth output byte array
+ * \param output1 The second output byte array
+ * \param output2 The third output byte array
+ * \param output3 The fourth output byte array
  * \param outlen The number of output bytes to generate in every output array
  * \param in0 The first input seed byte array
  * \param in1 The second input seed byte array
@@ -525,4 +525,4 @@ void OQS_SHA3_shake128_4x(uint8_t *output0, uint8_t *output1, uint8_t *output2, 
 } // extern "C"
 #endif
 
-#endif
+#endif // OQS_SHA3_H

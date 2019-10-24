@@ -3,8 +3,8 @@
  * \brief Utility functions for use in liboqs.
  */
 
-#ifndef __OQS_COMMON_H
-#define __OQS_COMMON_H
+#ifndef OQS_COMMON_H
+#define OQS_COMMON_H
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -107,4 +107,4 @@ OQS_API void OQS_MEM_insecure_free(void *ptr);
 } // extern "C"
 #endif
 
-#endif // __OQS_COMMON_H
+#endif // OQS_COMMON_H
