@@ -182,7 +182,7 @@ static void cshake128_simple_absorb4x(__m256i *s, uint16_t cstm0, uint16_t cstm1
 
 /* N is assumed to be empty; S is assumed to have at most 2 characters */
 void OQS_SHA3_cshake128_simple4x(unsigned char *output0, unsigned char *output1, unsigned char *output2, unsigned char *output3, unsigned long long outlen,
-				 uint16_t cstm0, uint16_t cstm1, uint16_t cstm2, uint16_t cstm3, const unsigned char *in, unsigned long long inlen) {
+                                 uint16_t cstm0, uint16_t cstm1, uint16_t cstm2, uint16_t cstm3, const unsigned char *in, unsigned long long inlen) {
 	__m256i s[25];
 	unsigned char t0[SHAKE128_RATE];
 	unsigned char t1[SHAKE128_RATE];
