@@ -8,8 +8,6 @@
 #include "sample.h"
 #include "params.h"
 #include <oqs/sha3.h>
-#include "fips202x4.h" /* FIXMEOQS: move this to OQS's sha3 */
-#include "fips202x4.c"
 
 #define NBLOCKS_SHAKE (SHAKE_RATE / (((PARAM_B_BITS + 1) + 7) / 8))
 #define BPLUS1BYTES (((PARAM_B_BITS + 1) + 7) / 8)
@@ -21,7 +19,7 @@ static void sample_y(poly y, const unsigned char *seed, int nonce) { // Sample p
 	int16_t dmsp = (int16_t)(nonce << 8);
 	int32_t y_t[4];
 
-	cshake128_simple4x((uint8_t *) buf, (uint8_t *) buf + (PARAM_N * nbytes / 4), (uint8_t *) buf + (2 * PARAM_N * nbytes / 4), (uint8_t *) buf + (3 * PARAM_N * nbytes / 4), PARAM_N * nbytes / 4, dmsp, dmsp + 1, dmsp + 2, dmsp + 3, seed, CRYPTO_RANDOMBYTES);
+	OQS_SHA3_cshake128_simple4x((uint8_t *) buf, (uint8_t *) buf + (PARAM_N * nbytes / 4), (uint8_t *) buf + (2 * PARAM_N * nbytes / 4), (uint8_t *) buf + (3 * PARAM_N * nbytes / 4), PARAM_N * nbytes / 4, dmsp, dmsp + 1, dmsp + 2, dmsp + 3, seed, CRYPTO_RANDOMBYTES);
 	dmsp += 4;
 
 	while (i < PARAM_N) {
