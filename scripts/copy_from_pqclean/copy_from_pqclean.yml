@@ -24,6 +24,27 @@ kems:
         implementation: clean
         sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
         visual_studio_guid: fd3c9627-9462-409f-9cdb-0c6566370dbe
+      - 
+        scheme: "512_90s"
+        pqclean_scheme: kyber512-90s
+        pretty_name_full: Kyber512-90s
+        implementation: clean
+        sources: ['aes256ctr.c', 'cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c']
+        visual_studio_guid: 3a0bdf41-9c04-4a5a-a3b9-102278648b98
+      - 
+        scheme: "768_90s"
+        pqclean_scheme: kyber768-90s
+        pretty_name_full: Kyber768-90s
+        implementation: clean
+        sources: ['aes256ctr.c', 'cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c']
+        visual_studio_guid: 7e606f54-ab14-442b-b580-d7538fabb69a
+      - 
+        scheme: "1024_90s"
+        pqclean_scheme: kyber1024-90s
+        pretty_name_full: Kyber1024-90s
+        implementation: clean
+        sources: ['aes256ctr.c', 'cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c']
+        visual_studio_guid: 96d51be2-f934-430a-8556-b2d33efadc94
   - 
     name: newhope
     visual_studio_guid: 21ea4719-b334-4625-8d3c-3f48de67f6f2

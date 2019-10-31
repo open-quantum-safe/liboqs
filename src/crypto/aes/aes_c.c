@@ -488,3 +488,44 @@ void OQS_AES256_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 		oqs_aes256_dec_sch_block_c(ciphertext + (16 * block), schedule, plaintext + (16 * block));
 	}
 }
+
+static inline uint32_t UINT32_TO_BE(const uint32_t x) {
+	uint32_t y;
+	uint8_t *z = (uint8_t *) &y;
+	z[0] = (x >> 24) & 0xFF;
+	z[1] = (x >> 16) & 0xFF;
+	z[2] = (x >> 8) & 0xFF;
+	z[3] = x & 0xFF;
+	return y;
+}
+#define BE_TO_UINT32(n) ((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
+
+void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+	uint8_t block[16];
+	uint32_t ctr;
+	uint32_t ctr_be;
+	memcpy(block, iv, 12);
+	if (iv_len == 12) {
+		ctr = 0;
+	} else if (iv_len == 16) {
+		memcpy(&ctr_be, &iv[12], 4);
+		ctr = BE_TO_UINT32(ctr_be);
+	} else {
+		assert(0);
+	}
+	while (out_len >= 16) {
+		ctr_be = UINT32_TO_BE(ctr);
+		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
+		oqs_aes256_enc_sch_block_c(block, schedule, out);
+		out += 16;
+		out_len -= 16;
+		ctr++;
+	}
+	if (out_len > 0) {
+		uint8_t tmp[16];
+		ctr_be = UINT32_TO_BE(ctr);
+		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
+		oqs_aes256_enc_sch_block_c(block, schedule, tmp);
+		memcpy(out, tmp, out_len);
+	}
+}
