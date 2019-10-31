@@ -4,10 +4,21 @@
 * Abstract: supersingular isogeny parameters and generation of functions for P434_compressed
 *********************************************************************************************/
 
+#include <oqs/rand.h>
 #include "../oqs_namespace_sike_compressed.h"
 #include "P434_compressed_api.h"
 #define COMPRESS
 #include "P434_internal.h"
+
+// defines moved from P434_compressed_api.h
+#define CRYPTO_SECRETKEYBYTES 239 // MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES bytes
+#define CRYPTO_PUBLICKEYBYTES 196 // 3*ORDER_B_ENCODED_BYTES + FP2_ENCODED_BYTES + 2 bytes for shared elligator
+#define CRYPTO_BYTES 16
+#define CRYPTO_CIPHERTEXTBYTES 209 // COMPRESSED_CHUNK_CT + MSG_BYTES bytes
+#define SIDH_SECRETKEYBYTES_A 27
+#define SIDH_SECRETKEYBYTES_B 28
+#define SIDH_PUBLICKEYBYTES 196
+#define SIDH_BYTES 110
 
 // Encoding of field elements, elements over Z_order, elements over GF(p^2) and elliptic curve points:
 // --------------------------------------------------------------------------------------------------

@@ -4,9 +4,20 @@
 * Abstract: supersingular isogeny parameters and generation of functions for P503
 *********************************************************************************************/
 
+#include <oqs/rand.h>
 #include "../oqs_namespace_sike.h"
 #include "P503_api.h"
 #include "P503_internal.h"
+
+// defines moved from P503_api.h
+#define CRYPTO_SECRETKEYBYTES 434 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes
+#define CRYPTO_PUBLICKEYBYTES 378
+#define CRYPTO_BYTES 24
+#define CRYPTO_CIPHERTEXTBYTES 402 // CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes
+#define SIDH_SECRETKEYBYTES_A 32
+#define SIDH_SECRETKEYBYTES_B 32
+#define SIDH_PUBLICKEYBYTES 378
+#define SIDH_BYTES 126
 
 // Encoding of field elements, elements over Z_order, elements over GF(p^2) and elliptic curve points:
 // --------------------------------------------------------------------------------------------------
