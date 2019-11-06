@@ -110,7 +110,7 @@ static void decode_pk(int32_t *pk, unsigned char *seedA, const unsigned char *pk
 
 static void encode_sig(unsigned char *sm, unsigned char *c, poly z) { // Encode signature sm
 	unsigned int i, j = 0;
-	uint64_t *t = (uint64_t *) z;
+	uint32_t *t = (uint32_t *) z;
 	uint32_t *pt = (uint32_t *) sm;
 
 	for (i = 0; i < (PARAM_N * (PARAM_B_BITS + 1) / 32); i += 10) {
@@ -214,7 +214,7 @@ static void decode_pk(int32_t *pk, unsigned char *seedA, const unsigned char *pk
 
 static void encode_sig(unsigned char *sm, unsigned char *c, poly z) { // Encode signature sm
 	unsigned int i, j = 0;
-	uint64_t *t = (uint64_t *) z;
+	uint32_t *t = (uint32_t *) z;
 	uint32_t *pt = (uint32_t *) sm;
 
 	for (i = 0; i < (PARAM_N * (PARAM_B_BITS + 1) / 32); i += 11) {

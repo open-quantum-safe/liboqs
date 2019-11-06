@@ -9,8 +9,8 @@
 #include "params.h"
 #include <oqs/sha3.h>
 
-#define NBLOCKS_SHAKE SHAKE_RATE / (((PARAM_B_BITS + 1) + 7) / 8)
-#define BPLUS1BYTES ((PARAM_B_BITS + 1) + 7) / 8
+#define NBLOCKS_SHAKE (SHAKE_RATE / (((PARAM_B_BITS + 1) + 7) / 8))
+#define BPLUS1BYTES (((PARAM_B_BITS + 1) + 7) / 8)
 
 static void sample_y(poly y, const unsigned char *seed, int nonce) { // Sample polynomial y, such that each coefficient is in the range [-B,B]
 	unsigned int i = 0, pos = 0, nblocks = PARAM_N;

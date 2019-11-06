@@ -519,6 +519,28 @@ void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
  * \param inlen The number of seed bytes to process from every input array
  */
 void OQS_SHA3_shake128_4x(uint8_t *output0, uint8_t *output1, uint8_t *output2, uint8_t *output3, size_t outlen, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen);
+
+/**
+* \brief Seed 4 parallel cSHAKE-128 instances, and generate 4 arrays of pseudo-random output, using a "simplified" customization string.
+* Uses a vectorized (AVX2) implementation of cSHAKE-128.
+* Permutes and extracts the state to an output byte array.
+* The "simplified" customization string procedure is ad hoc but used in several NIST candidates.
+*
+* \warning This function has a counter period of 2^16.
+*
+* \param output0 The first output byte array
+* \param output1 The second output byte array
+* \param output2 The third output byte array
+* \param output3 The fourth output byte array
+* \param outlen The number of output bytes to generate in every output array
+* \param cstm0 The first 16bit customization integer
+* \param cstm1 The second 16bit customization integer
+* \param cstm2 The third 16bit customization integer
+* \param cstm3 The fourth 16bit customization integer
+* \param input The input seed byte array
+* \param inplen The number of seed bytes to process
+*/
+void OQS_SHA3_cshake128_simple4x(uint8_t *output0, uint8_t *output1, uint8_t *output2, uint8_t *output3, size_t outlen, uint16_t cstm0, uint16_t cstm1, uint16_t cstm2, uint16_t cstm3, const uint8_t *in, size_t inlen);
 #endif
 
 #if defined(__cplusplus)
