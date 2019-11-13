@@ -19,12 +19,17 @@ Parameter sets
 | Kyber512      |     IND-CCA    |              1              |           800           |          1632           |            736          |             32             |
 | Kyber768      |     IND-CCA    |              3              |          1184           |          2400           |           1088          |             32             |
 | Kyber1024     |     IND-CCA    |              5              |          1568           |          3168           |           1568          |             32             |
+| Parameter set | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
+|---------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
+| Kyber512-90s  |     IND-CCA    |              1              |           800           |          1632           |            736          |             32             |
+| Kyber768-90s  |     IND-CCA    |              3              |          1184           |          2400           |           1088          |             32             |
+| Kyber1024-90s |     IND-CCA    |              5              |          1568           |          3168           |           1568          |             32             |
 
 Implementation
 --------------
 
 - **Source of implementation:** https://github.com/PQClean/PQClean
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/33e1ed5d7da7bb67b7e7bfc0e9c54abf35f786f8
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/298dd2cf223cff50cc53bea534474796f9960653
 - **License:** Public domain
 - **Language:** C
 - **Constant-time:** Yes

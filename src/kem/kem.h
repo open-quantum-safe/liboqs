@@ -16,8 +16,8 @@
  * compile-time, the programmer should check that the OQS_KEM object is not `NULL`.
  */
 
-#ifndef __OQS_KEM_H
-#define __OQS_KEM_H
+#ifndef OQS_KEM_H
+#define OQS_KEM_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -46,6 +46,12 @@ extern "C" {
 #define OQS_KEM_alg_kyber_768 "Kyber768"
 /** Algorithm identifier for Kyber1024 KEM. */
 #define OQS_KEM_alg_kyber_1024 "Kyber1024"
+/** Algorithm identifier for Kyber512-90s KEM. */
+#define OQS_KEM_alg_kyber_512_90s "Kyber512-90s"
+/** Algorithm identifier for Kyber768-90s KEM. */
+#define OQS_KEM_alg_kyber_768_90s "Kyber768-90s"
+/** Algorithm identifier for Kyber1024-90s KEM. */
+#define OQS_KEM_alg_kyber_1024_90s "Kyber1024-90s"
 /** Algorithm identifier for NewHope-512-CCA KEM. */
 #define OQS_KEM_alg_newhope_512cca "NewHope-512-CCA"
 /** Algorithm identifier for NewHope-1024-CCA KEM. */
@@ -112,7 +118,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 39
+#define OQS_KEM_algs_length 42
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -134,7 +140,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i);
  *
  * @return The number of key encapsulation mechanisms.
  */
-OQS_API int OQS_KEM_alg_count();
+OQS_API int OQS_KEM_alg_count(void);
 
 /**
  * Indicates whether the specified algorithm was enabled at compile-time or not.
@@ -298,4 +304,4 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 } // extern "C"
 #endif
 
-#endif // __OQS_KEM_H
+#endif // OQS_KEM_H

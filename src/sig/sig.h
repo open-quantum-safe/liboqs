@@ -16,8 +16,8 @@
  * compile-time, the programmer should check that the OQS_SIG object is not `NULL`.
  */
 
-#ifndef __OQS_SIG_H
-#define __OQS_SIG_H
+#ifndef OQS_SIG_H
+#define OQS_SIG_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -162,7 +162,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i);
  *
  * @return The number of signature mechanisms.
  */
-OQS_API int OQS_SIG_alg_count();
+OQS_API int OQS_SIG_alg_count(void);
 
 /**
  * Indicates whether the specified algorithm was enabled at compile-time or not.
@@ -322,4 +322,4 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 } // extern "C"
 #endif
 
-#endif // __OQS_SIG_H
+#endif // OQS_SIG_H

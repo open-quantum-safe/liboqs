@@ -4,15 +4,17 @@
 #include "params.h"
 #include "poly.h"
 
+#include <stdint.h>
+
 typedef struct {
     poly vec[KYBER_K];
 } polyvec;
 
-void PQCLEAN_KYBER512_CLEAN_polyvec_compress(unsigned char *r, polyvec *a);
-void PQCLEAN_KYBER512_CLEAN_polyvec_decompress(polyvec *r, const unsigned char *a);
+void PQCLEAN_KYBER512_CLEAN_polyvec_compress(uint8_t *r, polyvec *a);
+void PQCLEAN_KYBER512_CLEAN_polyvec_decompress(polyvec *r, const uint8_t *a);
 
-void PQCLEAN_KYBER512_CLEAN_polyvec_tobytes(unsigned char *r, polyvec *a);
-void PQCLEAN_KYBER512_CLEAN_polyvec_frombytes(polyvec *r, const unsigned char *a);
+void PQCLEAN_KYBER512_CLEAN_polyvec_tobytes(uint8_t *r, polyvec *a);
+void PQCLEAN_KYBER512_CLEAN_polyvec_frombytes(polyvec *r, const uint8_t *a);
 
 void PQCLEAN_KYBER512_CLEAN_polyvec_ntt(polyvec *r);
 void PQCLEAN_KYBER512_CLEAN_polyvec_invntt(polyvec *r);

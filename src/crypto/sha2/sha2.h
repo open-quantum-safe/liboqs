@@ -100,4 +100,4 @@ void OQS_SHA2_sha256_inc_finalize(uint8_t *out, void *state, const uint8_t *in, 
 } // extern "C"
 #endif
 
-#endif
+#endif // OQS_SHA2_H

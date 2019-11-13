@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_SABER_H
-#define __OQS_KEM_SABER_H
+#ifndef OQS_KEM_SABER_H
+#define OQS_KEM_SABER_H
 
 #include <oqs/oqs.h>
 
@@ -8,7 +8,7 @@
 #define OQS_KEM_saber_lightsaber_length_secret_key 1568
 #define OQS_KEM_saber_lightsaber_length_ciphertext 736
 #define OQS_KEM_saber_lightsaber_length_shared_secret 32
-OQS_KEM *OQS_KEM_saber_lightsaber_new();
+OQS_KEM *OQS_KEM_saber_lightsaber_new(void);
 OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
@@ -19,7 +19,7 @@ OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_decaps(uint8_t *shared_secret, const
 #define OQS_KEM_saber_saber_length_secret_key 2304
 #define OQS_KEM_saber_saber_length_ciphertext 1088
 #define OQS_KEM_saber_saber_length_shared_secret 32
-OQS_KEM *OQS_KEM_saber_saber_new();
+OQS_KEM *OQS_KEM_saber_saber_new(void);
 OQS_API OQS_STATUS OQS_KEM_saber_saber_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_saber_saber_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_saber_saber_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
@@ -30,10 +30,10 @@ OQS_API OQS_STATUS OQS_KEM_saber_saber_decaps(uint8_t *shared_secret, const unsi
 #define OQS_KEM_saber_firesaber_length_secret_key 3040
 #define OQS_KEM_saber_firesaber_length_ciphertext 1472
 #define OQS_KEM_saber_firesaber_length_shared_secret 32
-OQS_KEM *OQS_KEM_saber_firesaber_new();
+OQS_KEM *OQS_KEM_saber_firesaber_new(void);
 OQS_API OQS_STATUS OQS_KEM_saber_firesaber_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_saber_firesaber_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
 OQS_API OQS_STATUS OQS_KEM_saber_firesaber_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
 
-#endif
+#endif // OQS_KEM_SABER_H

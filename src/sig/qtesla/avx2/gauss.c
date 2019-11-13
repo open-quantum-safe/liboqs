@@ -90,13 +90,45 @@
 #define MINMAX4(swap, diff, a_u, a_v) MINMAX3(swap, diff, a_u, a_v)
 #endif
 
-#if CDT_COLS <= 5
-// TODO: improve MINIMAX performance:
+#if CDT_COLS > 5
+#define MINMAX5(swap, diff, a_u, a_v)     \
+	{                                     \
+		PRODIFF(diff, a_u, a_v, 5);       \
+		MINMAX4(swap, diff, a_u, a_v);    \
+		PROSWAP(swap, diff, a_u, a_v, 5); \
+	}
+#else
+#define MINMAX5(swap, diff, a_u, a_v) MINMAX4(swap, diff, a_u, a_v)
+#endif
+
+#if CDT_COLS > 6
+#define MINMAX6(swap, diff, a_u, a_v)     \
+	{                                     \
+		PRODIFF(diff, a_u, a_v, 6);       \
+		MINMAX5(swap, diff, a_u, a_v);    \
+		PROSWAP(swap, diff, a_u, a_v, 6); \
+	}
+#else
+#define MINMAX6(swap, diff, a_u, a_v) MINMAX5(swap, diff, a_u, a_v)
+#endif
+
+#if CDT_COLS > 7
+#define MINMAX7(swap, diff, a_u, a_v)     \
+	{                                     \
+		PRODIFF(diff, a_u, a_v, 7);       \
+		MINMAX6(swap, diff, a_u, a_v);    \
+		PROSWAP(swap, diff, a_u, a_v, 7); \
+	}
+#else
+#define MINMAX7(swap, diff, a_u, a_v) MINMAX6(swap, diff, a_u, a_v)
+#endif
+
+#if CDT_COLS <= 8
 #define MINIMAX(a_u, a_v, g_u, g_v)      \
 	{                                    \
 		sdigit_t diff = 0, swapa;        \
 		int32_t swapg;                   \
-		MINMAX4(swapa, diff, a_u, a_v);  \
+		MINMAX7(swapa, diff, a_u, a_v);  \
 		PROSWAPG(swapg, diff, g_u, g_v); \
 	}
 #else
@@ -173,7 +205,7 @@ static void knuthMergeExchangeG(int32_t a[/*n*/], size_t n) {
 	}
 }
 
-static void kmxGauss(int64_t z[/*CHUNK_SIZE*/], const unsigned char *seed, int nonce) { // Generate CHUNK_SIZE samples from the normal distribution in constant-time
+static void kmxGauss(int32_t z[/*CHUNK_SIZE*/], const unsigned char *seed, int nonce) { // Generate CHUNK_SIZE samples from the normal distribution in constant-time
 	sdigit_t sampk[(CHUNK_SIZE + CDT_ROWS) * CDT_COLS];
 	int32_t sampg[CHUNK_SIZE + CDT_ROWS];
 
@@ -206,7 +238,7 @@ static void kmxGauss(int64_t z[/*CHUNK_SIZE*/], const unsigned char *seed, int n
 
 	// Discard the trailing entries (corresponding to the CDT) and sample the signs
 	for (int i = 0; i < CHUNK_SIZE; i++) {
-		z[i] = (int64_t)((sampg[i] << (RADIX32 - 16)) >> (RADIX32 - 16));
+		z[i] = (sampg[i] << (RADIX32 - 16)) >> (RADIX32 - 16);
 	}
 }
 

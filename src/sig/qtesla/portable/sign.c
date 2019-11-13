@@ -291,7 +291,7 @@ static int crypto_sign_open(unsigned char *m, unsigned long long /* * */ mlen, c
 	for (k = 0; k < PARAM_K; k++) { // Compute w = az - tc
 		sparse_mul32(&Tc[k * PARAM_N], &pk_t[k * PARAM_N], pos_list, sign_list);
 		poly_mul(&w[k * PARAM_N], &a[k * PARAM_N], z_ntt);
-		poly_sub(&w[k * PARAM_N], &w[k * PARAM_N], &Tc[k * PARAM_N]);
+		poly_sub_reduce(&w[k * PARAM_N], &w[k * PARAM_N], &Tc[k * PARAM_N]);
 	}
 	SHAKE(hm, HM_BYTES, m /*sm+CRYPTO_BYTES*/, mlen /*smlen-CRYPTO_BYTES*/);
 	hash_H(c_sig, w, hm);
