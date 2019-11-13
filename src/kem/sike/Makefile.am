@@ -9,20 +9,24 @@ if X86
 SIKE_FLAGS += -D_GENERIC_ -D_X86_
 else
 if X86_64
-libkemsike_la_SOURCES += P503/AMD64/fp_x64_asm.S P751/AMD64/fp_x64_asm.S
 SIKE_FLAGS += -D_AMD64_
+if !ON_DARWIN
+libkemsike_la_SOURCES += P503/AMD64/fp_x64_asm.S P751/AMD64/fp_x64_asm.S
 if USE_BMI2_INSTRUCTIONS
 # preprocessed assembly files (.S) are passed CPP flags
 AM_CPPFLAGS += -D_MULX_
 libkemsike_la_SOURCES += P434/AMD64/fp_x64_asm.S P610/AMD64/fp_x64_asm.S
 endif #USE_BMI2_INSTRUCTIONS
+endif #!ON_DARWIN
 else
 if ARM
 SIKE_FLAGS += -D_GENERIC_ -D_ARM_
 else
 if ARM64
-libkemsike_la_SOURCES += P503/ARM64/fp_arm64_asm.S P751/ARM64/fp_arm64_asm.S
 SIKE_FLAGS += -D_ARM64_
+if !ON_DARWIN
+libkemsike_la_SOURCES += P503/ARM64/fp_arm64_asm.S P751/ARM64/fp_arm64_asm.S
+endif #!ON_DARWIN
 endif # ARM64
 endif # ARM
 endif # X86_64
