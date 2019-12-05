@@ -29,7 +29,7 @@ static const uint8_t test_aes256_plaintext[] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x
 static const uint8_t test_aes256_key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f};
 static const uint8_t test_aes256_ciphertext[] = {0x8e, 0xa2, 0xb7, 0xca, 0x51, 0x67, 0x45, 0xbf, 0xea, 0xfc, 0x49, 0x90, 0x4b, 0x49, 0x60, 0x89};
 
-static int test_aes128_correctness() {
+static int test_aes128_correctness(void) {
 	uint8_t derived_plaintext[16], derived_ciphertext[16];
 	void *schedule = NULL;
 	OQS_AES128_load_schedule(test_aes128_key, &schedule, 1);
@@ -53,7 +53,7 @@ static int test_aes128_correctness() {
 	return EXIT_SUCCESS;
 }
 
-static int test_aes256_correctness() {
+static int test_aes256_correctness(void) {
 	uint8_t derived_plaintext[16], derived_ciphertext[16];
 	void *schedule = NULL;
 	OQS_AES256_load_schedule(test_aes256_key, &schedule, 1);
@@ -77,7 +77,31 @@ static int test_aes256_correctness() {
 	return EXIT_SUCCESS;
 }
 
-static void speed_aes128() {
+// test vector #9 from https://tools.ietf.org/html/rfc3686#section-6
+static const uint8_t test_aes256ctr_key[] = {0xFF, 0x7A, 0x61, 0x7C, 0xE6, 0x91, 0x48, 0xE4, 0xF1, 0x72, 0x6E, 0x2F, 0x43, 0x58, 0x1D, 0xE2, 0xAA, 0x62, 0xD9, 0xF8, 0x05, 0x53, 0x2E, 0xDF, 0xF1, 0xEE, 0xD6, 0x87, 0xFB, 0x54, 0x15, 0x3D};
+static const uint8_t test_aes256ctr_iv[] = {0x00, 0x1C, 0xC5, 0xB7, 0x51, 0xA5, 0x1D, 0x70, 0xA1, 0xC1, 0x11, 0x48, 0x00, 0x00, 0x00, 0x01};
+static const uint8_t test_aes256ctr_plaintext[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23};
+static const uint8_t test_aes256ctr_ciphertext[] = {0xEB, 0x6C, 0x52, 0x82, 0x1D, 0x0B, 0xBB, 0xF7, 0xCE, 0x75, 0x94, 0x46, 0x2A, 0xCA, 0x4F, 0xAA, 0xB4, 0x07, 0xDF, 0x86, 0x65, 0x69, 0xFD, 0x07, 0xF4, 0x8C, 0xC0, 0xB5, 0x83, 0xD6, 0x07, 0x1F, 0x1E, 0xC0, 0xE6, 0xB8};
+
+static int test_aes256ctr_correctness(void) {
+	uint8_t derived_ciphertext[36];
+	void *schedule = NULL;
+	OQS_AES256_load_schedule(test_aes256ctr_key, &schedule, 1);
+	OQS_AES256_CTR_sch(test_aes256ctr_iv, sizeof(test_aes256ctr_iv), schedule, derived_ciphertext, sizeof(derived_ciphertext));
+	for (size_t i = 0; i < sizeof(derived_ciphertext); i++) {
+		derived_ciphertext[i] ^= test_aes256ctr_plaintext[i];
+	}
+	if (memcmp(test_aes256ctr_ciphertext, derived_ciphertext, 36) != 0) {
+		printf("test_aes256ctr_correctness ciphertext does not match\n");
+		OQS_print_hex_string("expected ciphertext", test_aes256ctr_ciphertext, 36);
+		OQS_print_hex_string("derived  ciphertext", derived_ciphertext, 36);
+		return EXIT_FAILURE;
+	}
+	OQS_AES256_free_schedule(schedule);
+	return EXIT_SUCCESS;
+}
+
+static void speed_aes128(void) {
 	uint8_t plaintext[16], ciphertext[16];
 	void *schedule = NULL, *schedule_dec = NULL;
 	TIME_OPERATION_SECONDS({ OQS_AES128_load_schedule(test_aes128_key, &schedule, 1); OQS_AES128_free_schedule(schedule); }, "OQS_AES128_load+free_schedule", BENCH_DURATION);
@@ -92,7 +116,7 @@ static void speed_aes128() {
 	OQS_AES128_free_schedule(schedule_dec);
 }
 
-static void speed_aes256() {
+static void speed_aes256(void) {
 	uint8_t plaintext[16], ciphertext[16];
 	void *schedule = NULL, *schedule_dec = NULL;
 	TIME_OPERATION_SECONDS({ OQS_AES256_load_schedule(test_aes256_key, &schedule, 1); OQS_AES256_free_schedule(schedule); }, "OQS_AES256_load+free_schedule", BENCH_DURATION);
@@ -135,6 +159,9 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 	if (test_aes256_correctness() != EXIT_SUCCESS) {
+		return EXIT_FAILURE;
+	}
+	if (test_aes256ctr_correctness() != EXIT_SUCCESS) {
 		return EXIT_FAILURE;
 	}
 	printf("Tests passed.\n\n");

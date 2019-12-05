@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 
-extern int16_t PQCLEAN_KYBER512_CLEAN_zetas[128];
-extern int16_t PQCLEAN_KYBER512_CLEAN_zetas_inv[128];
+extern const int16_t PQCLEAN_KYBER512_CLEAN_zetas[128];
+extern const int16_t PQCLEAN_KYBER512_CLEAN_zetasinv[128];
 
 void PQCLEAN_KYBER512_CLEAN_ntt(int16_t *poly);
 void PQCLEAN_KYBER512_CLEAN_invntt(int16_t *poly);

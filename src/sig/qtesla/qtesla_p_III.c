@@ -6,12 +6,25 @@
 
 #define _qTESLA_p_III_
 
-#include "external/consts.c"
-#include "external/gauss.c"
-#include "external/pack.c"
-#include "external/poly.c"
-#include "external/sample.c"
-#include "external/sign.c"
+#if defined(WITH_AVX2) && !defined(_WIN32)
+#define poly_ntt_asm oqs_sig_qteslapiii_poly_ntt_asm
+#define poly_pmul_asm oqs_sig_qteslapiii_poly_pmul_asm
+#define poly_intt_asm oqs_sig_qteslapiii_poly_intt_asm
+#include "avx2/consts.c"
+#include "avx2/s_consts.c"
+#include "avx2/gauss.c"
+#include "avx2/pack.c"
+#include "avx2/poly.c"
+#include "avx2/sample.c"
+#include "avx2/sign.c"
+#else
+#include "portable/consts.c"
+#include "portable/gauss.c"
+#include "portable/pack.c"
+#include "portable/poly.c"
+#include "portable/sample.c"
+#include "portable/sign.c"
+#endif
 
 OQS_API OQS_STATUS OQS_SIG_qTesla_p_III_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	int rv = crypto_sign_keypair(public_key, secret_key);

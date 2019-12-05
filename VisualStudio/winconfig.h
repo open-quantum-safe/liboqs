@@ -6,6 +6,9 @@
 #define OQS_ENABLE_KEM_kyber_512
 #define OQS_ENABLE_KEM_kyber_768
 #define OQS_ENABLE_KEM_kyber_1024
+#define OQS_ENABLE_KEM_kyber_512_90s
+#define OQS_ENABLE_KEM_kyber_768_90s
+#define OQS_ENABLE_KEM_kyber_1024_90s
 #define OQS_ENABLE_KEM_newhope_512cca
 #define OQS_ENABLE_KEM_newhope_1024cca
 #define OQS_ENABLE_KEM_ntru_hps2048509
@@ -96,7 +99,7 @@
 #define OQS_SIG_DEFAULT OQS_SIG_alg_picnic_L1_FS
 
 #define OQS_MASTER_BRANCH /**/
-#define OQS_VERSION_NUMBER 0x00200003L
-#define OQS_VERSION_TEXT "0.2.0-rc3"
+#define OQS_VERSION_NUMBER 0x00201000L
+#define OQS_VERSION_TEXT "0.2.1-dev"
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef __OQS_SIG_QTESLA_H
-#define __OQS_SIG_QTESLA_H
+#ifndef OQS_SIG_QTESLA_H
+#define OQS_SIG_QTESLA_H
 
 #include <oqs/oqs.h>
 
@@ -9,7 +9,7 @@
 #define OQS_SIG_qTesla_p_I_length_secret_key 5184
 #define OQS_SIG_qTesla_p_I_length_signature 2592
 
-OQS_SIG *OQS_SIG_qTesla_p_I_new();
+OQS_SIG *OQS_SIG_qTesla_p_I_new(void);
 
 OQS_API OQS_STATUS OQS_SIG_qTesla_p_I_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_qTesla_p_I_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
@@ -23,7 +23,7 @@ OQS_API OQS_STATUS OQS_SIG_qTesla_p_I_verify(const uint8_t *message, size_t mess
 #define OQS_SIG_qTesla_p_III_length_secret_key 12352
 #define OQS_SIG_qTesla_p_III_length_signature 5664
 
-OQS_SIG *OQS_SIG_qTesla_p_III_new();
+OQS_SIG *OQS_SIG_qTesla_p_III_new(void);
 
 OQS_API OQS_STATUS OQS_SIG_qTesla_p_III_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_SIG_qTesla_p_III_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
@@ -31,4 +31,4 @@ OQS_API OQS_STATUS OQS_SIG_qTesla_p_III_verify(const uint8_t *message, size_t me
 
 #endif
 
-#endif
+#endif // OQS_SIG_QTESLA_H

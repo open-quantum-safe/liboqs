@@ -78,7 +78,12 @@ EXPORTS
 	OQS_SIG_picnic2_L5_FS_keypair
 	OQS_SIG_picnic2_L5_FS_sign
 	OQS_SIG_picnic2_L5_FS_verify
-	{%- for family in instructions['sigs'] %}{% for scheme in family['schemes'] %}
+	OQS_SIG_qTesla_p_I_keypair
+	OQS_SIG_qTesla_p_I_sign
+	OQS_SIG_qTesla_p_I_verify
+	OQS_SIG_qTesla_p_III_keypair
+	OQS_SIG_qTesla_p_III_sign
+	OQS_SIG_qTesla_p_III_verify	{%- for family in instructions['sigs'] %}{% for scheme in family['schemes'] %}
 	OQS_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_keypair
 	OQS_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_sign
 	OQS_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_verify{% endfor %}{% endfor %}

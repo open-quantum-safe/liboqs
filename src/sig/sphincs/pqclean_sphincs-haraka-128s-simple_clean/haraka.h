@@ -1,8 +1,8 @@
 #ifndef SPX_HARAKA_H
 #define SPX_HARAKA_H
 
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 typedef struct {
     uint64_t tweaked512_rc64[10][8];

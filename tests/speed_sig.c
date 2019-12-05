@@ -64,7 +64,7 @@ cleanup:
 	return ret;
 }
 
-OQS_STATUS printAlgs() {
+OQS_STATUS printAlgs(void) {
 	for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
 		OQS_SIG *sig = OQS_SIG_new(OQS_SIG_alg_identifier(i));
 		if (sig == NULL) {

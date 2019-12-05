@@ -3,8 +3,8 @@
  * \brief Random number generator.
  */
 
-#ifndef __OQS_RANDOM_H
-#define __OQS_RANDOM_H
+#ifndef OQS_RANDOM_H
+#define OQS_RANDOM_H
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -59,7 +59,8 @@ OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read);
  * Initializes the NIST DRBG with a given seed.
  *
  * @param[in] entropy_input The seed; must be exactly 48 bytes
- * @param[in] personalization_string An optional personalization string; may be NULL
+ * @param[in] personalization_string An optional personalization string; 
+ * may be NULL; if not NULL, must be at least 48 bytes long
  * @param[in] security_strength The required security strength; must be 256
  */
 OQS_API void OQS_randombytes_nist_kat_init(const uint8_t *entropy_input, const uint8_t *personalization_string, int security_strength);
@@ -68,4 +69,4 @@ OQS_API void OQS_randombytes_nist_kat_init(const uint8_t *entropy_input, const u
 } // extern "C"
 #endif
 
-#endif // __OQS_RANDOM_H
+#endif // OQS_RANDOM_H

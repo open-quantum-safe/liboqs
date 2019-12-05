@@ -143,6 +143,36 @@
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\reduce.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\verify.c" />
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024_clean\symmetric-fips202.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_512_90s.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512-90s_clean\aes256ctr.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512-90s_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512-90s_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512-90s_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512-90s_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512-90s_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512-90s_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512-90s_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber512-90s_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_768_90s.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768-90s_clean\aes256ctr.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768-90s_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768-90s_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768-90s_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768-90s_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768-90s_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768-90s_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768-90s_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber768-90s_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\kyber\kem_kyber_1024_90s.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\aes256ctr.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\cbd.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\indcpa.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\ntt.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\poly.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\polyvec.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\reduce.c" />
+    <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\verify.c" />
     <ClCompile Include="..\..\src\kem\newhope\kem_newhope_512cca.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\cpapke.c" />
     <ClCompile Include="..\..\src\kem\newhope\pqclean_newhope512cca_clean\kem.c" />
@@ -565,7 +595,7 @@
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\sign.c" />
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\hash_shake256.c" />
     <ClCompile Include="..\..\src\sig\sphincs\pqclean_sphincs-shake256-256s-simple_clean\thash_shake256_simple.c" />
-    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
+<!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_CLCOMPILE_END -->
     <ClCompile Include="..\..\src\kem\kem.c" />
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640aes.c" />
     <ClCompile Include="..\..\src\kem\frodokem\kem_frodokem640shake.c" />
@@ -771,7 +801,7 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">
@@ -815,7 +845,7 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -859,7 +889,7 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUG_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -911,7 +941,7 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_DEBUGDLL_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -962,7 +992,7 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">
@@ -1010,7 +1040,7 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_WIN32_END -->
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -1058,7 +1088,7 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASE_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
@@ -1114,7 +1144,7 @@ copy "$(SolutionDir)..\src\sig\mqdss\sig_mqdss.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sphincs\sig_sphincs.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\picnic\sig_picnic.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\qtesla\sig_qtesla.h" "$(SolutionDir)include\oqs\"</Command>
-      <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_END -->
+    <!-- OQS_COPY_FROM_PQCLEAN_FRAGMENT_PREBUILD_EVENT_COMMAND_RELEASEDLL_X64_END -->
     </PreBuildEvent>
     <Lib>
       <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>

@@ -3,9 +3,8 @@
 #include "params.h"
 
 #include <stdint.h>
-
 /*************************************************
-* Name:        PQCLEAN_KYBER1024_CLEAN_montgomery_reduce
+* Name:        montgomery_reduce
 *
 * Description: Montgomery reduction; given a 32-bit integer a, computes
 *              16-bit integer congruent to a * R^-1 mod q,
@@ -27,7 +26,7 @@ int16_t PQCLEAN_KYBER1024_CLEAN_montgomery_reduce(int32_t a) {
 }
 
 /*************************************************
-* Name:        PQCLEAN_KYBER1024_CLEAN_barrett_reduce
+* Name:        barrett_reduce
 *
 * Description: Barrett reduction; given a 16-bit integer a, computes
 *              16-bit integer congruent to a mod q in {0,...,q}
@@ -43,15 +42,15 @@ int16_t PQCLEAN_KYBER1024_CLEAN_barrett_reduce(int16_t a) {
     t = v * a;
     t >>= 26;
     t *= KYBER_Q;
-    return (int16_t)(a - t);
+    return a - (int16_t)t;
 }
 
 /*************************************************
-* Name:        PQCLEAN_KYBER1024_CLEAN_csubq
+* Name:        csubq
 *
 * Description: Conditionallly subtract q
 *
-* Arguments:   - int16_t x: input integer
+* Arguments:   - int16_t a: input integer
 *
 * Returns:     a - q if a >= q, else a
 **************************************************/

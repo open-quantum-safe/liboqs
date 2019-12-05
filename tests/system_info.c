@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 // based on macros in https://sourceforge.net/p/predef/wiki/Compilers/
-static void print_compiler_info() {
+static void print_compiler_info(void) {
 #if defined(__clang__)
 	printf("Compiler:         clang (%s)\n", __clang_version__);
 #elif defined(__GNUC_PATCHLEVEL__)
@@ -20,7 +20,7 @@ static void print_compiler_info() {
 }
 
 // based on macros in https://sourceforge.net/p/predef/wiki/Architectures/
-static void print_platform_info() {
+static void print_platform_info(void) {
 #if defined(OQS_COMPILE_BUILD_TARGET)
 	printf("Target platform:  %s\n", OQS_COMPILE_BUILD_TARGET);
 #elif defined(_WIN64)
@@ -36,7 +36,7 @@ static void print_platform_info() {
 #include <openssl/opensslv.h>
 #endif
 
-static void print_oqs_configuration() {
+static void print_oqs_configuration(void) {
 	printf("OQS version:      %s\n", OQS_VERSION_TEXT);
 #if defined(OQS_COMPILE_GIT_COMMIT)
 	printf("Git commit:       %s\n", OQS_COMPILE_GIT_COMMIT);
@@ -69,7 +69,7 @@ static void print_oqs_configuration() {
 #endif
 }
 
-static void print_system_info() {
+static void print_system_info(void) {
 	printf("Configuration info\n");
 	printf("==================\n");
 	print_platform_info();

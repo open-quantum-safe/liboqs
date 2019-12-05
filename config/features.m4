@@ -27,12 +27,6 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   # 3) Compilation param name
   # 4) Compilation directory
 
-  #BIKE depends on OpenSSL
-  AM_COND_IF([USE_OPENSSL],
-    [ARG_DISBL_SET_WRAP([kem-bike], [kem_bike], [ENABLE_KEM_BIKE], [src/kem/bike] )],
-    [AM_CONDITIONAL(ENABLE_KEM_BIKE, [false])]
-  )
-
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_START
   ARG_DISBL_SET_WRAP([kem-kyber], [kem_kyber], [ENABLE_KEM_KYBER], [src/kem/kyber])
   ARG_DISBL_SET_WRAP([kem-newhope], [kem_newhope], [ENABLE_KEM_NEWHOPE], [src/kem/newhope])
@@ -42,6 +36,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([sig-mqdss], [sig_mqdss], [ENABLE_SIG_MQDSS], [src/sig/mqdss])
   ARG_DISBL_SET_WRAP([sig-sphincs], [sig_sphincs], [ENABLE_SIG_SPHINCS], [src/sig/sphincs])
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ARG_DISBL_SET_WRAP_END
+  ARG_DISBL_SET_WRAP([kem-bike], [kem_bike], [ENABLE_KEM_BIKE], [src/kem/bike])
   ARG_DISBL_SET_WRAP([kem-frodokem], [kem_frodokem], [ENABLE_KEM_FRODOKEM], [src/kem/frodokem])
   ARG_DISBL_SET_WRAP([kem-sike],  [kem_sike],  [ENABLE_KEM_SIKE],  [src/kem/sike])
   ARG_DISBL_SET_WRAP([sig-picnic], [sig_picnic], [ENABLE_SIG_PICNIC], [src/sig/picnic])
@@ -57,24 +52,10 @@ AC_DEFUN([CONFIG_FEATURES],
   AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [false])
 
   AM_COND_IF([ENABLE_KEM_BIKE], [
-    AC_DEFINE(OQS_ENABLE_KEM_bike1_l1, 1, "Define to 1 when BIKE1-L1 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_bike1_l3, 1, "Define to 1 when BIKE1-L3 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_bike1_l5, 1, "Define to 1 when BIKE1-L5 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_bike2_l1, 1, "Define to 1 when BIKE2-L1 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_bike2_l3, 1, "Define to 1 when BIKE2-L3 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_bike2_l5, 1, "Define to 1 when BIKE2-L5 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_bike3_l1, 1, "Define to 1 when BIKE3-L1 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_bike3_l3, 1, "Define to 1 when BIKE3-L3 enabled")
-    AC_DEFINE(OQS_ENABLE_KEM_bike3_l5, 1, "Define to 1 when BIKE3-L5 enabled")
-
-    AM_COND_IF([USE_AES_INSTRUCTIONS],
-      [AM_COND_IF([USE_AVX512F_INSTRUCTIONS],
-        [
-          AM_CONDITIONAL([BIKE_ADDITIONAL_IMPL], [test x$gcc_cv_compiler = xtrue])
-          AM_COND_IF([BIKE_ADDITIONAL_IMPL], [AC_DEFINE(OQS_KEM_BIKE_ADDITIONAL_IMPLEMENTATION, 1, "Define to 1 when BIKE uses the additional implementation")])
-        ]
-      )]
-    )
+    AC_DEFINE(OQS_ENABLE_KEM_bike1_l1_cpa, 1, "Define to 1 when BIKE1-L1-CPA enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_bike1_l3_cpa, 1, "Define to 1 when BIKE1-L3-CPA enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_bike1_l1_fo, 1, "Define to 1 when BIKE1-L1-FO enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_bike1_l3_fo, 1, "Define to 1 when BIKE1-L3-FO enabled")
   ])
 
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_AM_COND_IF_START
@@ -82,6 +63,9 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_kyber_512, 1, "Define to 1 when Kyber512 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_kyber_768, 1, "Define to 1 when Kyber768 enabled")
     AC_DEFINE(OQS_ENABLE_KEM_kyber_1024, 1, "Define to 1 when Kyber1024 enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_512_90s, 1, "Define to 1 when Kyber512-90s enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_768_90s, 1, "Define to 1 when Kyber768-90s enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_kyber_1024_90s, 1, "Define to 1 when Kyber1024-90s enabled")
   ])
   AM_COND_IF([ENABLE_KEM_NEWHOPE], [
     AC_DEFINE(OQS_ENABLE_KEM_newhope_512cca, 1, "Define to 1 when NewHope-512-CCA enabled")

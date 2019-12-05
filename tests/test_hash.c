@@ -46,7 +46,7 @@ static void print_hex(uint8_t *s, size_t l) {
 	printf("\n");
 }
 
-int do_sha256() {
+int do_sha256(void) {
 	// read message from stdin
 	uint8_t *msg;
 	size_t msg_len;
