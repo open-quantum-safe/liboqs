@@ -4,6 +4,8 @@
 * Abstract: ephemeral supersingular isogeny Diffie-Hellman key exchange (SIDH) using compression
 **************************************************************************************************/
 
+#include <string.h>
+
 static void init_basis(digit_t *gen, f2elm_t XP, f2elm_t XQ, f2elm_t XR) { // Initialization of basis points
 
 	fpcopy(gen, XP[0]);
@@ -474,6 +476,7 @@ static void FullIsogeny_A_dual(const unsigned char *PrivateKeyA, f2elm_t As[][5]
 	point_proj_t R, pts[MAX_INT_POINTS_ALICE];
 	f2elm_t XPA, XQA, XRA, coeff[5], A24 = {0}, C24 = {0}, A = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_ALICE], npts = 0, ii = 0;
+	digit_t SecretKeyA[NWORDS_ORDER] = {0};
 
 	// Initialize basis points
 	init_basis((digit_t *) A_gen, XPA, XQA, XRA);
@@ -486,7 +489,8 @@ static void FullIsogeny_A_dual(const unsigned char *PrivateKeyA, f2elm_t As[][5]
 	fp2add(C24, C24, A24);
 
 	// Retrieve kernel point
-	LADDER3PT(XPA, XQA, XRA, (digit_t *) PrivateKeyA, ALICE, R, A);
+	memcpy((unsigned char*)SecretKeyA, PrivateKeyA, SECRETKEY_A_BYTES);
+	LADDER3PT(XPA, XQA, XRA, SecretKeyA, ALICE, R, A);
 
 #if (OALICE_BITS % 2 == 1)
 	point_proj_t S;
@@ -848,6 +852,7 @@ static void FullIsogeny_B_dual(const unsigned char *PrivateKeyB, f2elm_t Ds[][2]
 	point_proj_t R, Q3 = {0}, pts[MAX_INT_POINTS_BOB];
 	f2elm_t XPB, XQB, XRB, coeff[3], A24plus = {0}, A24minus = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_BOB], npts = 0, ii = 0;
+	digit_t SecretKeyB[NWORDS_ORDER] = {0};
 
 	// Initialize basis points
 	init_basis((digit_t *) B_gen, XPB, XQB, XRB);
@@ -863,7 +868,8 @@ static void FullIsogeny_B_dual(const unsigned char *PrivateKeyB, f2elm_t Ds[][2]
 	fp2add(A24minus, A24minus, A24plus);
 
 	// Retrieve kernel point
-	LADDER3PT(XPB, XQB, XRB, (digit_t *) PrivateKeyB, BOB, R, A);
+	memcpy((unsigned char*)SecretKeyB, PrivateKeyB, SECRETKEY_B_BYTES);
+	LADDER3PT(XPB, XQB, XRB, SecretKeyB, BOB, R, A);
 
 	// Traverse tree
 	index = 0;
@@ -1046,8 +1052,7 @@ static void Compress_PKB_dual(digit_t *d0, digit_t *c0, digit_t *d1, digit_t *c1
 int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *CompressedPKB) { // Bob's ephemeral public key generation using compression
 	unsigned char qnr, ind;
 	int D[DLEN_2];
-	digit_t c0[NWORDS_ORDER] = {0}, d0[NWORDS_ORDER] = {0},
-	        c1[NWORDS_ORDER] = {0}, d1[NWORDS_ORDER] = {0};
+	digit_t c0[NWORDS_ORDER] = {0}, d0[NWORDS_ORDER] = {0}, c1[NWORDS_ORDER] = {0}, d1[NWORDS_ORDER] = {0};
 	f2elm_t Ds[MAX_Bob][2], f[4], A = {0};
 	point_full_proj_t Rs[2];
 	point_t Pw, Qw;
