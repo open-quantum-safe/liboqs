@@ -902,12 +902,12 @@ static void mul3(unsigned char *a) { // Computes a = 3*a
 	                                 // The input is assumed to be OBOB_BITS-2 bits long and stored in SECRETKEY_B_BYTES
 	digit_t temp1[NWORDS_ORDER] = {0}, temp2[NWORDS_ORDER] = {0};
 
-	memcpy((unsigned char*)temp1, a, SECRETKEY_B_BYTES);
-	mp_add(temp1, temp1, temp2, NWORDS_ORDER);               // temp2 = 2*a
-	mp_add(temp1, temp2, temp1, NWORDS_ORDER);               // temp1 = 3*a
-	memcpy(a, (unsigned char*)temp1, SECRETKEY_B_BYTES);
+	memcpy((unsigned char *) temp1, a, SECRETKEY_B_BYTES);
+	mp_add(temp1, temp1, temp2, NWORDS_ORDER); // temp2 = 2*a
+	mp_add(temp1, temp2, temp1, NWORDS_ORDER); // temp1 = 3*a
+	memcpy(a, (unsigned char *) temp1, SECRETKEY_B_BYTES);
 	clear_words((void *) temp1, NWORDS_ORDER);
-	clear_words((void*) temp2, NWORDS_ORDER);
+	clear_words((void *) temp2, NWORDS_ORDER);
 }
 
 static unsigned int mod3(digit_t *a) { // Computes the input modulo 3

@@ -51,7 +51,7 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 	fp2add(C24, C24, A24plus);
 
 	// Retrieve kernel point
-	memcpy((unsigned char*)SecretKeyA, PrivateKeyA, SECRETKEY_A_BYTES);
+	memcpy((unsigned char *) SecretKeyA, PrivateKeyA, SECRETKEY_A_BYTES);
 	LADDER3PT(XPA, XQA, XRA, SecretKeyA, ALICE, R, A);
 
 #if (OALICE_BITS % 2 == 1)
@@ -132,7 +132,7 @@ int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *Pu
 	fp2add(A24minus, A24minus, A24plus);
 
 	// Retrieve kernel point
-	memcpy((unsigned char*)SecretKeyB, PrivateKeyB, SECRETKEY_B_BYTES);
+	memcpy((unsigned char *) SecretKeyB, PrivateKeyB, SECRETKEY_B_BYTES);
 	LADDER3PT(XPB, XQB, XRB, SecretKeyB, BOB, R, A);
 
 	// Traverse tree
@@ -202,7 +202,7 @@ int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned 
 	fpadd(C24[0], C24[0], C24[0]);
 
 	// Retrieve kernel point
-	memcpy((unsigned char*)SecretKeyA, PrivateKeyA, SECRETKEY_A_BYTES);
+	memcpy((unsigned char *) SecretKeyA, PrivateKeyA, SECRETKEY_A_BYTES);
 	LADDER3PT(PKB[0], PKB[1], PKB[2], SecretKeyA, ALICE, R, A);
 
 #if (OALICE_BITS % 2 == 1)
@@ -269,7 +269,7 @@ int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned 
 	fp2sub(A, A24minus, A24minus);
 
 	// Retrieve kernel point
-	memcpy((unsigned char*)SecretKeyB, PrivateKeyB, SECRETKEY_B_BYTES);
+	memcpy((unsigned char *) SecretKeyB, PrivateKeyB, SECRETKEY_B_BYTES);
 	LADDER3PT(PKB[0], PKB[1], PKB[2], SecretKeyB, BOB, R, A);
 
 	// Traverse tree

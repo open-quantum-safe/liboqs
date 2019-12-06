@@ -147,22 +147,22 @@ static void get_3_isog(const point_proj_t P, f2elm_t A24minus, f2elm_t A24plus, 
 	                                                                                              // Output: the 3-isogenous Montgomery curve with projective coefficient A/C.
 	f2elm_t t0, t1, t2, t3, t4;
 
-	fp2sub(P->X, P->Z, coeff[0]);   // coeff0 = X-Z
-	fp2sqr_mont(coeff[0], t0);      // t0 = (X-Z)^2
-	fp2add(P->X, P->Z, coeff[1]);   // coeff1 = X+Z
-	fp2sqr_mont(coeff[1], t1);      // t1 = (X+Z)^2
-	fp2add(P->X, P->X, t3);         // t3 = 2*X
-	fp2sqr_mont(t3, t3);            // t3 = 4*X^2
-	fp2sub(t3, t0, t2);             // t2 = 4*X^2 - (X-Z)^2
-	fp2sub(t3, t1, t3);             // t3 = 4*X^2 - (X+Z)^2
-	fp2add(t0, t3, t4);             // t4 = 4*X^2 - (X+Z)^2 + (X-Z)^2
-	fp2add(t4, t4, t4);             // t4 = 2(4*X^2 - (X+Z)^2 + (X-Z)^2)
-	fp2add(t1, t4, t4);             // t4 = 8*X^2 - (X+Z)^2 + 2*(X-Z)^2
-	fp2mul_mont(t2, t4, A24minus);  // A24minus = [4*X^2 - (X-Z)^2]*[8*X^2 - (X+Z)^2 + 2*(X-Z)^2]
-	fp2add(t1, t2, t4);             // t4 = 4*X^2 + (X+Z)^2 - (X-Z)^2
-	fp2add(t4, t4, t4);             // t4 = 2(4*X^2 + (X+Z)^2 - (X-Z)^2)
-	fp2add(t0, t4, t4);             // t4 = 8*X^2 + 2*(X+Z)^2 - (X-Z)^2
-	fp2mul_mont(t3, t4, A24plus);   // A24plus = [4*X^2 - (X+Z)^2]*[8*X^2 + 2*(X+Z)^2 - (X-Z)^2]
+	fp2sub(P->X, P->Z, coeff[0]);  // coeff0 = X-Z
+	fp2sqr_mont(coeff[0], t0);     // t0 = (X-Z)^2
+	fp2add(P->X, P->Z, coeff[1]);  // coeff1 = X+Z
+	fp2sqr_mont(coeff[1], t1);     // t1 = (X+Z)^2
+	fp2add(P->X, P->X, t3);        // t3 = 2*X
+	fp2sqr_mont(t3, t3);           // t3 = 4*X^2
+	fp2sub(t3, t0, t2);            // t2 = 4*X^2 - (X-Z)^2
+	fp2sub(t3, t1, t3);            // t3 = 4*X^2 - (X+Z)^2
+	fp2add(t0, t3, t4);            // t4 = 4*X^2 - (X+Z)^2 + (X-Z)^2
+	fp2add(t4, t4, t4);            // t4 = 2(4*X^2 - (X+Z)^2 + (X-Z)^2)
+	fp2add(t1, t4, t4);            // t4 = 8*X^2 - (X+Z)^2 + 2*(X-Z)^2
+	fp2mul_mont(t2, t4, A24minus); // A24minus = [4*X^2 - (X-Z)^2]*[8*X^2 - (X+Z)^2 + 2*(X-Z)^2]
+	fp2add(t1, t2, t4);            // t4 = 4*X^2 + (X+Z)^2 - (X-Z)^2
+	fp2add(t4, t4, t4);            // t4 = 2(4*X^2 + (X+Z)^2 - (X-Z)^2)
+	fp2add(t0, t4, t4);            // t4 = 8*X^2 + 2*(X+Z)^2 - (X-Z)^2
+	fp2mul_mont(t3, t4, A24plus);  // A24plus = [4*X^2 - (X+Z)^2]*[8*X^2 + 2*(X+Z)^2 - (X-Z)^2]
 }
 
 static void eval_3_isog(point_proj_t Q, const f2elm_t *coeff) { // Computes the 3-isogeny R=phi(X:Z), given projective point (X3:Z3) of order 3 on a Montgomery curve and
@@ -247,10 +247,10 @@ static void xDBLADD(point_proj_t P, point_proj_t Q, const f2elm_t xPQ, const f2e
 	                                                                                        // Output: projective Montgomery points P <- 2*P = (X2P:Z2P) such that x(2P)=X2P/Z2P, and Q <- P+Q = (XQP:ZQP) such that = x(Q+P)=XQP/ZQP.
 	f2elm_t t0, t1, t2;
 
-	fp2add(P->X, P->Z, t0); // t0 = XP+ZP
-	fp2sub(P->X, P->Z, t1); // t1 = XP-ZP
-	fp2sqr_mont(t0, P->X);  // XP = (XP+ZP)^2
-	fp2sub(Q->X, Q->Z, t2); // t2 = XQ-ZQ
+	fp2add(P->X, P->Z, t0);        // t0 = XP+ZP
+	fp2sub(P->X, P->Z, t1);        // t1 = XP-ZP
+	fp2sqr_mont(t0, P->X);         // XP = (XP+ZP)^2
+	fp2sub(Q->X, Q->Z, t2);        // t2 = XQ-ZQ
 	fp2add(Q->X, Q->Z, Q->X);      // XQ = XQ+ZQ
 	fp2mul_mont(t0, t2, t0);       // t0 = (XP+ZP)*(XQ-ZQ)
 	fp2sqr_mont(t1, P->Z);         // ZP = (XP-ZP)^2

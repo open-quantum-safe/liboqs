@@ -489,7 +489,7 @@ static void FullIsogeny_A_dual(const unsigned char *PrivateKeyA, f2elm_t As[][5]
 	fp2add(C24, C24, A24);
 
 	// Retrieve kernel point
-	memcpy((unsigned char*)SecretKeyA, PrivateKeyA, SECRETKEY_A_BYTES);
+	memcpy((unsigned char *) SecretKeyA, PrivateKeyA, SECRETKEY_A_BYTES);
 	LADDER3PT(XPA, XQA, XRA, SecretKeyA, ALICE, R, A);
 
 #if (OALICE_BITS % 2 == 1)
@@ -868,7 +868,7 @@ static void FullIsogeny_B_dual(const unsigned char *PrivateKeyB, f2elm_t Ds[][2]
 	fp2add(A24minus, A24minus, A24plus);
 
 	// Retrieve kernel point
-	memcpy((unsigned char*)SecretKeyB, PrivateKeyB, SECRETKEY_B_BYTES);
+	memcpy((unsigned char *) SecretKeyB, PrivateKeyB, SECRETKEY_B_BYTES);
 	LADDER3PT(XPB, XQB, XRB, SecretKeyB, BOB, R, A);
 
 	// Traverse tree
