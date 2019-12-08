@@ -51,10 +51,8 @@ merge_e(OUT e_t *e, IN const split_e_t *splitted_e) {
 		     (splitted_e->val[1].raw[i - 1] >> LAST_R_BYTE_TRAIL));
 	}
 
-	// Fix corner case
-	if (N_SIZE < (2ULL * R_SIZE)) {
-		e->raw[N_SIZE - 1] = splitted_e->val[1].raw[R_SIZE - 1] >> LAST_R_BYTE_TRAIL;
-	}
+	// Mask last byte
+	e->raw[N_SIZE - 1] = (splitted_e->val[1].raw[R_SIZE - 1] >> LAST_R_BYTE_TRAIL);
 }
 
 _INLINE_ ret_t
@@ -257,7 +255,7 @@ ret_t decaps(OUT unsigned char *ss,
 	// Force zero initialization
 	DEFER_CLEANUP(syndrome_t syndrome = {0}, syndrome_cleanup);
 	DEFER_CLEANUP(split_e_t e, split_e_cleanup);
-	DEFER_CLEANUP(e_t merged_e, e_cleanup);
+	DEFER_CLEANUP(e_t merged_e = {0}, e_cleanup);
 
 	DMSG("  Computing s.\n");
 	GUARD(compute_syndrome(&syndrome, l_ct, l_sk));
@@ -272,10 +270,6 @@ ret_t decaps(OUT unsigned char *ss,
 	}
 
 	merge_e(&merged_e, &e);
-	split_e(&e, &merged_e);
-
-	print("e0: ", (uint64_t *) e.val[0].raw, R_BITS);
-	print("e1: ", (uint64_t *) e.val[1].raw, R_BITS);
 	get_ss(l_ss, &merged_e);
 
 	DMSG("  Exit crypto_kem_dec.\n");
