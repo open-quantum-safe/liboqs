@@ -18,7 +18,7 @@ COMMON_CSRCS += $(BIKE_DIR)/utilities.c $(BIKE_DIR)/aes_ctr_prf.c $(BIKE_DIR)/er
 COMMON_CSRCS += $(BIKE_DIR)/gf2x_mul.c 
 
 if ON_DARWIN
-COMMON_CSRCS += $(BIKE_DIR)/sampling_portable.c
+COMMON_CSRCS += $(BIKE_DIR)/sampling_portable.c $(BIKE_DIR)/secure_decode_portable.c 
 COMMON_FLAGS += -DPORTABLE
 else
 if USE_AVX512F_INSTRUCTIONS
