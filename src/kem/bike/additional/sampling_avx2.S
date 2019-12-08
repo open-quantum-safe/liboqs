@@ -47,10 +47,6 @@ DWORDS_INC:
 #}
 #
 
-#This function is optimized to weight % 3 = 0! (When LEVEL=5)
-#and to len % 64 = 0!
-#other sizes will cause buffer overflows.
-
 #ABI
 #define a      %rdi
 #define wlist  %rsi
@@ -85,12 +81,8 @@ DWORDS_INC:
 .macro LOAD_POS i
         mov $1, bit_mask
 
-        mov 0x8*\i(wlist, w_itr, 8), dword_pos
-        mov 0x8*\i(wlist, w_itr, 8), bit_pos
-
-        #mask the bit mask if needed.
-        #wlist elements are 4bytes value and 4 bytes mask.
-        and (0x8 * \i) + 0x4(wlist, w_itr, 8), bit_mask
+        mov 0x4*\i(wlist, w_itr, 4), dword_pos
+        mov 0x4*\i(wlist, w_itr, 4), bit_pos
 
         shr $5, dword_pos
         and $31, bit_pos
@@ -170,9 +162,6 @@ secure_set_bits:
     cmp weight, w_itr
     jle .wloop
 
-#Do the rest if requried. (<3).
-#if LEVEL < 5
-
     #restore
     add $3, weight
     cmp weight, w_itr
@@ -210,8 +199,6 @@ secure_set_bits:
     cmp weight, w_itr
     jl .rest_wloop
         
-#endif
-
 .exit:
     add $2*8, %rsp
     pop w_itr

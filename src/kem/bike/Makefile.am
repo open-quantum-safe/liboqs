@@ -13,25 +13,25 @@ COMMON_FLAGS = $(AM_CFLAGS) -include functions_renaming.h
 BIKE_DIR=additional
 
 COMMON_CSRCS  = $(BIKE_DIR)/decode.c $(BIKE_DIR)/gf2x_portable.c $(BIKE_DIR)/sampling.c
-COMMON_CSRCS += $(BIKE_DIR)/parallel_hash.c $(BIKE_DIR)/secure_decode_portable.c 
+COMMON_CSRCS += $(BIKE_DIR)/parallel_hash.c
 COMMON_CSRCS += $(BIKE_DIR)/utilities.c $(BIKE_DIR)/aes_ctr_prf.c $(BIKE_DIR)/error.c
 COMMON_CSRCS += $(BIKE_DIR)/gf2x_mul.c 
 
 if ON_DARWIN
-COMMON_CSRCS += $(BIKE_DIR)/sampling_portable.c $(BIKE_DIR)/converts_portable.c
+COMMON_CSRCS += $(BIKE_DIR)/sampling_portable.c
 COMMON_FLAGS += -DPORTABLE
 else
 if USE_AVX512F_INSTRUCTIONS
-COMMON_CSRCS += $(BIKE_DIR)/converts.S $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx512.S
-COMMON_CSRCS += $(BIKE_DIR)/sampling_avx512.S $(BIKE_DIR)/gf_mul.S $(BIKE_DIR)/gf_add.S 
+COMMON_CSRCS += $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx512.c
+COMMON_CSRCS += $(BIKE_DIR)/sampling_avx512.S $(BIKE_DIR)/gf_mul.S 
 COMMON_FLAGS += -DAVX512
 else
 if USE_AVX2_INSTRUCTIONS
-COMMON_CSRCS += $(BIKE_DIR)/converts.S $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx2.S
-COMMON_CSRCS += $(BIKE_DIR)/sampling_avx2.S $(BIKE_DIR)/gf_mul.S $(BIKE_DIR)/gf_add.S 
+COMMON_CSRCS += $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx2.c
+COMMON_CSRCS += $(BIKE_DIR)/sampling_avx2.S $(BIKE_DIR)/gf_mul.S 
 COMMON_FLAGS += -DAVX2
 else
-COMMON_CSRCS += $(BIKE_DIR)/sampling_portable.c $(BIKE_DIR)/converts_portable.c
+COMMON_CSRCS += $(BIKE_DIR)/sampling_portable.c $(BIKE_DIR)/secure_decode_portable.c 
 COMMON_FLAGS += -DPORTABLE
 endif
 endif

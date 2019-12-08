@@ -22,31 +22,18 @@
 
 #include "types.h"
 
-void split_e(OUT split_e_t *split_e_, IN const e_t *e);
-
 ret_t compute_syndrome(OUT syndrome_t *syndrome, IN const ct_t *ct, IN const sk_t *sk);
 
 // e should be zeroed before calling the decoder.
-ret_t decode(OUT e_t *e, IN OUT syndrome_t *s, IN const ct_t *ct, IN const sk_t *sk);
+ret_t decode(OUT split_e_t *e,
+             IN const syndrome_t *s,
+             IN const ct_t *ct,
+             IN const sk_t *sk);
 
-//////////////////////
-// Internal functions
-//////////////////////
-
-EXTERNC void
-calc_upc(OUT uint8_t upc[N_BITS],
-         IN const uint8_t s[N_BITS],
-         IN const compressed_idx_dv_t *inv_h0_compressed,
-         IN const compressed_idx_dv_t *inv_h1_compressed);
-
-void find_error1(IN OUT e_t *e,
-                 OUT e_t *black_e,
-                 OUT e_t *gray_e,
-                 IN const uint8_t *upc,
-                 IN const uint32_t black_th,
-                 IN const uint32_t gray_th);
-
-void find_error2(IN OUT e_t *e,
-                 OUT e_t *pos_e,
-                 IN const uint8_t *upc,
-                 IN const uint32_t threshold);
+// Rotate right the first R_BITS of a syndrome.
+// Assumption: the syndrome contains three R_BITS duplications.
+// The output syndrome contains only one R_BITS rotation, the other
+// (2 * R_BITS) bits are undefined.
+void rotate_right(OUT syndrome_t *out,
+                  IN const syndrome_t *in,
+                  IN const uint32_t bitcount);

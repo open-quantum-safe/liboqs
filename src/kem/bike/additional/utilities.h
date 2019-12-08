@@ -66,6 +66,9 @@ secure_cmp(IN const uint8_t *a, IN const uint8_t *b, IN const uint32_t size) {
 	return (0 == res);
 }
 
+uint64_t
+r_bits_vector_weight(IN const r_t *in);
+
 // Constant time
 _INLINE_ uint32_t
 iszero(IN const uint8_t *s, IN const uint32_t len) {

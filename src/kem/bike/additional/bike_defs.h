@@ -38,8 +38,10 @@
 #define R_BITS 24821
 #endif
 #define DV 103
-#define FAKE_DV 197
 #define T1 199
+
+#define THRESHOLD_COEFF0 15.932
+#define THRESHOLD_COEFF1 0.0052936
 
 // The gfm code is optimized to a block size in this case:
 #define BLOCK_SIZE 32768
@@ -51,13 +53,15 @@
 #define R_BITS 11779
 #endif
 #define DV 71
-#define FAKE_DV 133
 #define T1 134
+
+#define THRESHOLD_COEFF0 13.530
+#define THRESHOLD_COEFF1 0.0069721
 
 // The gfm code is optimized to a block size in this case:
 #define BLOCK_SIZE (16384)
 #else
-#error "Bad level, choose one of 1/3/5"
+#error "Bad level, choose one of 1/3"
 #endif
 
 #ifdef INDCPA
@@ -70,7 +74,10 @@
 // SIZE suffix, is the number of bytes (uint8_t).
 #define N_BITS (R_BITS * N0)
 #define R_SIZE DIVIDE_AND_CEIL(R_BITS, 8)
-#define R_QW DIVIDE_AND_CEIL(R_BITS, 64)
+#define R_QW DIVIDE_AND_CEIL(R_BITS, 8 * QW_SIZE)
+#define R_YMM DIVIDE_AND_CEIL(R_BITS, 8 * YMM_SIZE)
+#define R_ZMM DIVIDE_AND_CEIL(R_BITS, 8 * ZMM_SIZE)
+
 #define N_SIZE DIVIDE_AND_CEIL(N_BITS, 8)
 
 #define R_BLOCKS DIVIDE_AND_CEIL(R_BITS, BLOCK_SIZE)
@@ -82,8 +89,6 @@
 #define N_PADDED (N_BLOCKS * BLOCK_SIZE)
 #define N_PADDED_SIZE (N_PADDED / 8)
 #define N_PADDED_QW (N_PADDED / 64)
-
-#define R_DQWORDS DIVIDE_AND_CEIL(R_SIZE, 16)
 
 #ifdef AVX512
 #define R_QDQWORDS_BITS (DIVIDE_AND_CEIL(R_BITS, ALL_ZMM_SIZE) * ALL_ZMM_SIZE)
@@ -113,3 +118,10 @@ bike_static_assert((N_BITS % ALL_YMM_SIZE != 0), nbits_512_err);
 // BIKE auxiliary functions parameters:
 #define ELL_K_BITS 256
 #define ELL_K_SIZE (ELL_K_BITS / 8)
+
+////////////////////////////////
+// Parameters for the BG decoder.
+////////////////////////////////
+#define BGF_DECODER
+#define DELTA 3
+#define SLICES (LOG2_MSB(DV) + 1)

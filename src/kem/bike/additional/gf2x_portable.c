@@ -104,14 +104,4 @@ void red(uint64_t *a) {
 	secure_clean((uint8_t *) &a[R_QW], sizeof(uint64_t) * R_QW);
 }
 
-ret_t gf2x_add(OUT uint8_t *res,
-               IN const uint8_t *a,
-               IN const uint8_t *b,
-               IN const uint64_t size) {
-	for (uint64_t i = 0; i < size; i++) {
-		res[i] = a[i] ^ b[i];
-	}
-	return SUCCESS;
-}
-
 #endif

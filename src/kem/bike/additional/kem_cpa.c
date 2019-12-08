@@ -1,27 +1,67 @@
 /***************************************************************************
-* Additional implementation of "BIKE: Bit Flipping Key Encapsulation". 
-* Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-*
-* Written by Nir Drucker and Shay Gueron
-* AWS Cryptographic Algorithms Group
-* (ndrucker@amazon.com, gueron@amazon.com)
-*
-* The license is detailed in the file LICENSE.md, and applies to this file.
-* ***************************************************************************/
+ * Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
+ * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ *
+ * Written by Nir Drucker and Shay Gueron
+ * AWS Cryptographic Algorithms Group
+ * (ndrucker@amazon.com, gueron@amazon.com)
+ *
+ * The license is detailed in the file LICENSE.md, and applies to this file.
+ * ***************************************************************************/
 
 #include <string.h>
 
-#include "sampling.h"
-#include "parallel_hash.h"
-#include "gf2x.h"
-#include "converts.h"
-#include "sampling.h"
 #include "decode.h"
+#include "gf2x.h"
+#include "parallel_hash.h"
+#include "sampling.h"
 
-_INLINE_ ret_t encrypt(OUT ct_t *ct,
-                       IN const pk_t *pk,
-                       IN const seed_t *seed,
-                       IN const split_e_t *splitted_e) {
+_INLINE_ void
+split_e(OUT split_e_t *splitted_e, IN const e_t *e) {
+	// Copy lower bytes (e0)
+	memcpy(splitted_e->val[0].raw, e->raw, R_SIZE);
+
+	// Now load second value
+	for (uint32_t i = R_SIZE; i < N_SIZE; ++i) {
+		splitted_e->val[1].raw[i - R_SIZE] =
+		    ((e->raw[i] << LAST_R_BYTE_TRAIL) | (e->raw[i - 1] >> LAST_R_BYTE_LEAD));
+	}
+
+	// Fix corner case
+	if (N_SIZE < (2ULL * R_SIZE)) {
+		splitted_e->val[1].raw[R_SIZE - 1] = (e->raw[N_SIZE - 1] >> LAST_R_BYTE_LEAD);
+	}
+
+	// Fix last value
+	splitted_e->val[0].raw[R_SIZE - 1] &= LAST_R_BYTE_MASK;
+	splitted_e->val[1].raw[R_SIZE - 1] &= LAST_R_BYTE_MASK;
+}
+
+_INLINE_ void
+merge_e(OUT e_t *e, IN const split_e_t *splitted_e) {
+	memcpy(e->raw, splitted_e->val[0].raw, R_SIZE);
+
+	e->raw[R_SIZE - 1] = ((splitted_e->val[1].raw[0] << LAST_R_BYTE_LEAD) |
+	                      (e->raw[R_SIZE - 1] & LAST_R_BYTE_MASK));
+
+	// Now load second value
+	for (uint32_t i = 1; i < R_SIZE; ++i) {
+		e->raw[R_SIZE + i - 1] =
+		    ((splitted_e->val[1].raw[i] << LAST_R_BYTE_LEAD) |
+		     (splitted_e->val[1].raw[i - 1] >> LAST_R_BYTE_TRAIL));
+	}
+
+	// Fix corner case
+	if (N_SIZE < (2ULL * R_SIZE)) {
+		e->raw[N_SIZE - 1] = splitted_e->val[1].raw[R_SIZE - 1] >> LAST_R_BYTE_TRAIL;
+	}
+}
+
+_INLINE_ ret_t
+encrypt(OUT ct_t *ct,
+        IN const pk_t *pk,
+        IN const seed_t *seed,
+        IN const split_e_t *splitted_e) {
 	DEFER_CLEANUP(padded_r_t m = {0}, padded_r_cleanup);
 	DEFER_CLEANUP(dbl_pad_ct_t p_ct, dbl_pad_ct_cleanup);
 
@@ -31,21 +71,19 @@ _INLINE_ ret_t encrypt(OUT ct_t *ct,
 	p_pk[1].val = pk->val[1];
 
 	DMSG("    Sampling m.\n");
-	GUARD(sample_uniform_r_bits(m.val.raw, seed, NO_RESTRICTION));
+	GUARD(sample_uniform_r_bits(&m.val, seed, NO_RESTRICTION));
 
 	DMSG("    Calculating the ciphertext.\n");
 
-	GUARD(
-	    gf2x_mod_mul((uint64_t *) &p_ct[0], (uint64_t *) &m, (uint64_t *) &p_pk[0]));
-	GUARD(
-	    gf2x_mod_mul((uint64_t *) &p_ct[1], (uint64_t *) &m, (uint64_t *) &p_pk[1]));
+	GUARD(gf2x_mod_mul((uint64_t *) &p_ct[0], (uint64_t *) &m, (uint64_t *) &p_pk[0]));
+	GUARD(gf2x_mod_mul((uint64_t *) &p_ct[1], (uint64_t *) &m, (uint64_t *) &p_pk[1]));
 
 	DMSG("    Addding Error to the ciphertext.\n");
 
-	GUARD(gf2x_add(p_ct[0].val.raw, p_ct[0].val.raw, splitted_e->val[0].raw,
-	               R_SIZE));
-	GUARD(gf2x_add(p_ct[1].val.raw, p_ct[1].val.raw, splitted_e->val[1].raw,
-	               R_SIZE));
+	GUARD(
+	    gf2x_add(p_ct[0].val.raw, p_ct[0].val.raw, splitted_e->val[0].raw, R_SIZE));
+	GUARD(
+	    gf2x_add(p_ct[1].val.raw, p_ct[1].val.raw, splitted_e->val[1].raw, R_SIZE));
 
 	// Copy the data outside
 	ct->val[0] = p_ct[0].val;
@@ -67,7 +105,7 @@ calc_pk(OUT pk_t *pk, IN const seed_t *g_seed, IN const pad_sk_t p_sk) {
 	// Intialized padding to zero
 	DEFER_CLEANUP(padded_r_t g = {0}, padded_r_cleanup);
 
-	GUARD(sample_uniform_r_bits(g.val.raw, g_seed, MUST_BE_ODD));
+	GUARD(sample_uniform_r_bits(&g.val, g_seed, MUST_BE_ODD));
 
 	// Calculate (g0, g1) = (g*h1, g*h0)
 	GUARD(gf2x_mod_mul((uint64_t *) &p_pk[0], (const uint64_t *) &g,
@@ -87,7 +125,8 @@ calc_pk(OUT pk_t *pk, IN const seed_t *g_seed, IN const pad_sk_t p_sk) {
 }
 
 // Generate the Shared Secret (K(e))
-_INLINE_ void get_ss(OUT ss_t *out, IN const e_t *e) {
+_INLINE_ void
+get_ss(OUT ss_t *out, IN const e_t *e) {
 	DMSG("    Enter get_ss.\n");
 
 	// Calculate the hash
@@ -102,8 +141,8 @@ _INLINE_ void get_ss(OUT ss_t *out, IN const e_t *e) {
 }
 
 ////////////////////////////////////////////////////////////////
-//The three APIs below (keygeneration, encapsulate, decapsulate) are defined by NIST:
-//In addition there are two KAT versions of this API as defined.
+// The three APIs below (keygeneration, encapsulate, decapsulate) are defined by
+// NIST: In addition there are two KAT versions of this API as defined.
 ////////////////////////////////////////////////////////////////
 ret_t keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	// Convert to this implementation types
@@ -128,13 +167,13 @@ ret_t keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 
 	// Make sure that the wlists are zeroed for the KATs.
 	memset(l_sk, 0, sizeof(sk_t));
-	GUARD(generate_sparse_fake_rep((uint64_t *) &p_sk[0], l_sk->wlist[0].val,
-	                               sizeof(p_sk[0]), &h_prf_state));
+	GUARD(generate_sparse_rep((uint64_t *) &p_sk[0], l_sk->wlist[0].val, DV, R_BITS,
+	                          sizeof(p_sk[0]), &h_prf_state));
 	// Copy data
 	l_sk->bin[0] = p_sk[0].val;
 
-	GUARD(generate_sparse_fake_rep((uint64_t *) &p_sk[1], l_sk->wlist[1].val,
-	                               sizeof(p_sk[1]), &h_prf_state));
+	GUARD(generate_sparse_rep((uint64_t *) &p_sk[1], l_sk->wlist[1].val, DV, R_BITS,
+	                          sizeof(p_sk[1]), &h_prf_state));
 
 	// Copy data
 	l_sk->bin[1] = p_sk[1].val;
@@ -155,9 +194,7 @@ ret_t keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 // Encapsulate - pk is the public key,
 //               ct is a key encapsulation message (ciphertext),
 //               ss is the shared secret.
-ret_t encaps(OUT unsigned char *ct,
-             OUT unsigned char *ss,
-             IN const unsigned char *pk) {
+ret_t encaps(OUT unsigned char *ct, OUT unsigned char *ss, IN const unsigned char *pk) {
 	DMSG("  Enter crypto_kem_enc.\n");
 
 	// Convert to this implementation types
@@ -179,7 +216,8 @@ ret_t encaps(OUT unsigned char *ct,
 
 	DMSG("    Generating error.\n");
 	compressed_idx_t_t dummy;
-	GUARD(generate_sparse_rep((uint64_t *) &e, dummy.val, T1, N_BITS, sizeof(e), &e_prf_state));
+	GUARD(generate_sparse_rep((uint64_t *) &e, dummy.val, T1, N_BITS, sizeof(e),
+	                          &e_prf_state));
 
 	print("e:  ", (uint64_t *) &e.val, sizeof(e) * 8);
 
@@ -218,7 +256,8 @@ ret_t decaps(OUT unsigned char *ss,
 
 	// Force zero initialization
 	DEFER_CLEANUP(syndrome_t syndrome = {0}, syndrome_cleanup);
-	DEFER_CLEANUP(e_t e = {0}, e_cleanup);
+	DEFER_CLEANUP(split_e_t e, split_e_cleanup);
+	DEFER_CLEANUP(e_t merged_e, e_cleanup);
 
 	DMSG("  Computing s.\n");
 	GUARD(compute_syndrome(&syndrome, l_ct, l_sk));
@@ -227,12 +266,17 @@ ret_t decaps(OUT unsigned char *ss,
 	GUARD(decode(&e, &syndrome, l_ct, l_sk));
 
 	// Check if the error weight equals T1
-	if (count_ones(e.raw, sizeof(e)) != T1) {
+	if (T1 != r_bits_vector_weight(&e.val[0]) + r_bits_vector_weight(&e.val[1])) {
 		MSG("    Error weight is not t\n");
 		BIKE_ERROR(E_ERROR_WEIGHT_IS_NOT_T);
 	}
 
-	get_ss(l_ss, &e);
+	merge_e(&merged_e, &e);
+	split_e(&e, &merged_e);
+
+	print("e0: ", (uint64_t *) e.val[0].raw, R_BITS);
+	print("e1: ", (uint64_t *) e.val[1].raw, R_BITS);
+	get_ss(l_ss, &merged_e);
 
 	DMSG("  Exit crypto_kem_dec.\n");
 	return SUCCESS;

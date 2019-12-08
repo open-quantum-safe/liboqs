@@ -20,7 +20,6 @@
 
 #include "gf2x.h"
 #include "gf2x_internal.h"
-#include "utilities.h"
 #include <stdlib.h>
 #include <string.h>
 

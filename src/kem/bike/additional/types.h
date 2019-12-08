@@ -59,13 +59,10 @@ typedef generic_param_n_t ct_t;
 typedef generic_param_n_t pk_t;
 typedef generic_param_n_t split_e_t;
 
-typedef struct idx_s {
-	uint32_t val;
-	uint32_t used;
-} idx_t;
+typedef uint32_t idx_t;
 
 typedef struct compressed_idx_dv_s {
-	idx_t val[FAKE_DV];
+	idx_t val[DV];
 } compressed_idx_dv_t;
 
 typedef compressed_idx_dv_t compressed_idx_dv_ar_t[N0];
@@ -78,7 +75,7 @@ typedef struct compressed_idx_t_t {
 // the compression in the decaps stage
 typedef struct sk_s {
 	r_t bin[N0];
-	compressed_idx_dv_t wlist[N0];
+	compressed_idx_dv_ar_t wlist;
 #ifndef INDCPA
 	r_t sigma0;
 	r_t sigma1;
@@ -117,32 +114,22 @@ typedef struct ss_s {
 	uint8_t raw[ELL_K_SIZE];
 } ss_t;
 
-// R in redundant representation
-typedef struct red_r_s {
-	uint8_t raw[R_BITS];
-} red_r_t;
-
-// N in redundant representation
-typedef struct red_n_s {
-	uint8_t raw[N0 * R_BITS];
-} red_n_t;
-
-// E in redundant representation
-typedef struct red_e_s {
-	uint8_t raw[N_BITS];
-} red_e_t;
-
 // For optimization purposes
 //  1- For a faster rotate we duplicate the syndrome (dup1/2)
 //  2- We extend it to fit the boundary of DDQW
-typedef ALIGN(16) struct syndrome_s {
-	red_r_t dup1;
-	red_r_t dup2;
-#ifdef AVX512
-	uint8_t reserved[N_QDQWORDS_BITS - N_BITS];
-#else
-	uint8_t reserved[N_DDQWORDS_BITS - N_BITS];
-#endif
+typedef ALIGN(64) struct syndrome_s {
+	uint64_t qw[3 * R_QW];
 } syndrome_t;
+
+typedef struct upc_slice_s {
+	union {
+		padded_r_t r;
+		uint64_t qw[sizeof(padded_r_t) / 8];
+	} u;
+} upc_slice_t;
+
+typedef struct upc_s {
+	upc_slice_t slice[SLICES];
+} upc_t;
 
 #pragma pack(pop)
