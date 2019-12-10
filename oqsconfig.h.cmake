@@ -2,6 +2,7 @@
 #cmakedefine OQS_COMPILE_BUILD_TARGET "@OQS_COMPILE_BUILD_TARGET@"
 
 #cmakedefine OQS_KEM_DEFAULT @OQS_KEM_DEFAULT@
+#cmakedefine OQS_SIG_DEFAULT @OQS_SIG_DEFAULT@
 
 #cmakedefine USE_AES_C
 #cmakedefine USE_AES_INSTRUCTIONS
@@ -30,8 +31,11 @@
 #cmakedefine ENABLE_KEM_FRODOKEM
 
 #cmakedefine OQS_ENABLE_KEM_kyber_512
+#cmakedefine OQS_ENABLE_KEM_kyber_512_90s
 #cmakedefine OQS_ENABLE_KEM_kyber_768
+#cmakedefine OQS_ENABLE_KEM_kyber_768_90s
 #cmakedefine OQS_ENABLE_KEM_kyber_1024
+#cmakedefine OQS_ENABLE_KEM_kyber_1024_90s
 #cmakedefine ENABLE_KEM_KYBER
 
 #cmakedefine OQS_ENABLE_KEM_newhope_512cca
@@ -66,3 +70,68 @@
 #cmakedefine OQS_ENABLE_KEM_sike_p751
 #cmakedefine OQS_ENABLE_KEM_sike_p751_compressed
 #cmakedefine ENABLE_KEM_SIKE
+
+#cmakedefine OQS_ENABLE_SIG_dilithium_2
+#cmakedefine OQS_ENABLE_SIG_dilithium_3
+#cmakedefine OQS_ENABLE_SIG_dilithium_4
+#cmakedefine ENABLE_SIG_DILITHIUM
+
+#cmakedefine OQS_ENABLE_SIG_mqdss_31_48
+#cmakedefine OQS_ENABLE_SIG_mqdss_31_64
+#cmakedefine ENABLE_SIG_MQDSS
+
+#cmakedefine OQS_ENABLE_SIG_picnic_L1_UR
+#cmakedefine OQS_ENABLE_SIG_picnic_L1_FS
+#cmakedefine OQS_ENABLE_SIG_picnic_L3_UR
+#cmakedefine OQS_ENABLE_SIG_picnic_L3_FS
+#cmakedefine OQS_ENABLE_SIG_picnic_L5_UR
+#cmakedefine OQS_ENABLE_SIG_picnic_L5_FS
+#cmakedefine OQS_ENABLE_SIG_picnic2_L1_FS
+#cmakedefine OQS_ENABLE_SIG_picnic2_L3_FS
+#cmakedefine OQS_ENABLE_SIG_picnic2_L5_FS
+#cmakedefine ENABLE_SIG_PICNIC
+
+#cmakedefine OQS_ENABLE_SIG_qTesla_p_I
+#cmakedefine OQS_ENABLE_SIG_qTesla_p_III
+#cmakedefine ENABLE_SIG_QTESLA
+
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_128f_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_128f_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_128s_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_128s_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_192f_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_192f_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_192s_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_192s_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_256f_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_256f_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_256s_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_haraka_256s_simple
+
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_128f_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_128f_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_128s_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_128s_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_192f_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_192f_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_192s_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_192s_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_256f_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_256f_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_256s_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_sha256_256s_simple
+
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128f_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128f_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128s_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128s_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192f_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192f_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192s_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192s_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256f_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256f_simple
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256s_robust
+#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256s_simple
+
+#cmakedefine ENABLE_SIG_SPHINCS

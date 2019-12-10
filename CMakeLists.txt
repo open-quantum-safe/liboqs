@@ -59,7 +59,8 @@ set(HEADERS ${PROJECT_SOURCE_DIR}/src/oqs.h
             ${PROJECT_SOURCE_DIR}/src/crypto/aes/aes.h
             ${PROJECT_SOURCE_DIR}/src/crypto/sha2/sha2.h
             ${PROJECT_SOURCE_DIR}/src/crypto/sha3/sha3.h
-            ${PROJECT_SOURCE_DIR}/src/kem/kem.h)
+            ${PROJECT_SOURCE_DIR}/src/kem/kem.h
+            ${PROJECT_SOURCE_DIR}/src/sig/sig.h)
 if(ENABLE_KEM_BIKE)
     set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/bike/kem_bike.h)
 endif()
@@ -81,6 +82,23 @@ endif()
 if(ENABLE_KEM_SIKE)
     set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/sike/kem_sike.h)
 endif()
+
+if(ENABLE_SIG_DILITHIUM)
+    set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/dilithium/sig_dilithium.h)
+endif()
+if(ENABLE_SIG_MQDSS)
+    set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/mqdss/sig_mqdss.h)
+endif()
+if(ENABLE_SIG_PICNIC)
+    set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/picnic/sig_picnic.h)
+endif()
+if(ENABLE_SIG_QTESLA)
+    set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/qtesla/sig_qtesla.h)
+endif()
+if(ENABLE_SIG_SPHINCS)
+    set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/sphincs/sig_sphincs.h)
+endif()
+
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/include/oqs)
 execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${HEADERS} ${PROJECT_BINARY_DIR}/include/oqs)
 

@@ -1,0 +1,21 @@
+if(${ARCH} STREQUAL "x86")
+    add_compile_definitions(_X86_)
+elseif(${ARCH} STREQUAL "x86_64")
+    add_compile_definitions(_AMD64_)
+elseif(${ARCH} STREQUAL "arm")
+    add_compile_definitions(_ARM_)
+elseif(${ARCH} STREQUAL "arm64")
+    add_compile_definitions(_ARM64_)
+endif()
+
+set (SRCS sig_qtesla.c)
+
+if(OQS_ENABLE_SIG_qTesla_p_I)
+    set(SRCS ${SRCS} qtesla_p_I.c)
+endif()
+if(OQS_ENABLE_SIG_qTesla_p_III)
+    set(SRCS ${SRCS} qtesla_p_III.c)
+endif()
+
+add_library(qTesla OBJECT ${SRCS})
+target_include_directories(qTesla PRIVATE external)

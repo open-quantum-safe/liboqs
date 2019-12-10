@@ -3,6 +3,9 @@ if(USE_OPENSSL)
 endif()
 
 if(NOT WIN32)
+    execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT_HASH)
+    add_compile_definitions(OQS_COMPILE_GIT_COMMIT="${GIT_COMMIT_HASH}")
+
     # Common crypto tests.
     # These test functions not part of
     # the liboqs API.
@@ -37,5 +40,23 @@ target_link_libraries(example_kem ${LIBS})
 add_executable(kat_kem kat_kem.c)
 target_link_libraries(kat_kem ${LIBS})
 
+add_executable(test_kem test_kem.c)
+target_link_libraries(test_kem ${LIBS})
+
 add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem ${LIBS})
+
+# SIG API tests
+add_executable(example_sig example_sig.c)
+target_link_libraries(example_sig ${LIBS})
+
+add_executable(kat_sig kat_sig.c)
+target_link_libraries(kat_sig ${LIBS})
+
+add_executable(test_sig test_sig.c)
+target_link_libraries(test_sig ${LIBS})
+
+add_executable(speed_sig speed_sig.c)
+target_link_libraries(speed_sig ${LIBS})
+
+#TODO: Add python tests
