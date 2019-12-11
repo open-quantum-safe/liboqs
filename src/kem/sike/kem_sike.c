@@ -32,16 +32,6 @@ OQS_KEM *OQS_KEM_sike_p434_new() {
 
 #endif
 
-// Preventing redefinition of symbols in P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
-
 #ifdef OQS_ENABLE_KEM_sike_p434_compressed
 
 #include "P434/P434_compressed_api.h"
@@ -71,16 +61,6 @@ OQS_KEM *OQS_KEM_sike_p434_compressed_new() {
 }
 
 #endif
-
-// Preventing redefinition of symbols in P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
 
 #ifdef OQS_ENABLE_KEM_sike_p503
 
@@ -112,16 +92,6 @@ OQS_KEM *OQS_KEM_sike_p503_new() {
 
 #endif
 
-// Preventing redefinition of symbols in P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
-
 #ifdef OQS_ENABLE_KEM_sike_p503_compressed
 
 #include "P503/P503_compressed_api.h"
@@ -151,16 +121,6 @@ OQS_KEM *OQS_KEM_sike_p503_compressed_new() {
 }
 
 #endif
-
-// Preventing redefinition of symbols in P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
 
 #ifdef OQS_ENABLE_KEM_sike_p610
 
@@ -192,16 +152,6 @@ OQS_KEM *OQS_KEM_sike_p610_new() {
 
 #endif
 
-// Preventing redefinition of symbols in P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
-
 #ifdef OQS_ENABLE_KEM_sike_p610_compressed
 
 #include "P610/P610_compressed_api.h"
@@ -231,16 +181,6 @@ OQS_KEM *OQS_KEM_sike_p610_compressed_new() {
 }
 
 #endif
-
-// Preventing redefinition of symbols in P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
 
 #ifdef OQS_ENABLE_KEM_sike_p751
 
@@ -272,16 +212,6 @@ OQS_KEM *OQS_KEM_sike_p751_new() {
 
 #endif
 
-// Preventing redefinition of symbols in P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
-
 #ifdef OQS_ENABLE_KEM_sike_p751_compressed
 
 #include "P751/P751_compressed_api.h"
@@ -311,16 +241,6 @@ OQS_KEM *OQS_KEM_sike_p751_compressed_new() {
 }
 
 #endif
-
-// Preventing redefinition of symbols in P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
 
 #ifdef OQS_ENABLE_KEM_sidh_p434
 
@@ -392,16 +312,6 @@ OQS_API OQS_STATUS OQS_KEM_sidh_p434_decaps(uint8_t *shared_secret, const unsign
 
 #endif
 
-// Preventing redefinition of symbols in P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
-
 #ifdef OQS_ENABLE_KEM_sidh_p434_compressed
 
 #include "P434/P434_compressed_api.h"
@@ -471,16 +381,6 @@ OQS_API OQS_STATUS OQS_KEM_sidh_p434_compressed_decaps(uint8_t *shared_secret, c
 }
 
 #endif
-
-// Preventing redefinition of symbols P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
 
 #ifdef OQS_ENABLE_KEM_sidh_p503
 
@@ -552,16 +452,6 @@ OQS_API OQS_STATUS OQS_KEM_sidh_p503_decaps(uint8_t *shared_secret, const unsign
 
 #endif
 
-// Preventing redefinition of symbols P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
-
 #ifdef OQS_ENABLE_KEM_sidh_p503_compressed
 
 #include "P503/P503_compressed_api.h"
@@ -631,16 +521,6 @@ OQS_API OQS_STATUS OQS_KEM_sidh_p503_compressed_decaps(uint8_t *shared_secret, c
 }
 
 #endif
-
-// Preventing redefinition of symbols P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
 
 #ifdef OQS_ENABLE_KEM_sidh_p610
 
@@ -712,16 +592,6 @@ OQS_API OQS_STATUS OQS_KEM_sidh_p610_decaps(uint8_t *shared_secret, const unsign
 
 #endif
 
-// Preventing redefinition of symbols P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
-
 #ifdef OQS_ENABLE_KEM_sidh_p610_compressed
 
 #include "P610/P610_compressed_api.h"
@@ -792,16 +662,6 @@ OQS_API OQS_STATUS OQS_KEM_sidh_p610_compressed_decaps(uint8_t *shared_secret, c
 
 #endif
 
-// Preventing redefinition of symbols P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
-
 #ifdef OQS_ENABLE_KEM_sidh_p751
 
 #include "P751/P751_api.h"
@@ -871,16 +731,6 @@ OQS_API OQS_STATUS OQS_KEM_sidh_p751_decaps(uint8_t *shared_secret, const unsign
 }
 
 #endif
-
-// Preventing redefinition of symbols P*_api.h
-#undef OQS_SIDH_MSR_CRYPTO_SECRETKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_PUBLICKEYBYTES
-#undef OQS_SIDH_MSR_CRYPTO_BYTES
-#undef OQS_SIDH_MSR_CRYPTO_CIPHERTEXTBYTES
-#undef OQS_SIDH_MSR_CRYPTO_ALGNAME
-#undef SIDH_SECRETKEYBYTES
-#undef SIDH_PUBLICKEYBYTES
-#undef SIDH_BYTES
 
 #ifdef OQS_ENABLE_KEM_sidh_p751_compressed
 

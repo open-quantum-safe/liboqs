@@ -9,13 +9,7 @@
 
 /*********************** Key encapsulation mechanism API ***********************/
 
-#define CRYPTO_SECRETKEYBYTES 434 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes
-#define CRYPTO_PUBLICKEYBYTES 378
-#define CRYPTO_BYTES 24
-#define CRYPTO_CIPHERTEXTBYTES 402 // CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes
-
-// Algorithm name
-#define CRYPTO_ALGNAME "SIKEp503"
+// OQS note: size #defines moved to P503.c to avoid redefinitions across parameters
 
 // SIKE's key generation
 // It produces a private key sk and computes the public key pk.
@@ -47,11 +41,6 @@ int OQS_KEM_sike_p503_decaps(unsigned char *ss, const unsigned char *ct, const u
 // Shared keys ss consist of a value of 24 octets.
 
 /*********************** Ephemeral key exchange API ***********************/
-
-#define SIDH_SECRETKEYBYTES_A 32
-#define SIDH_SECRETKEYBYTES_B 32
-#define SIDH_PUBLICKEYBYTES 378
-#define SIDH_BYTES 126
 
 // SECURITY NOTE: SIDH supports ephemeral Diffie-Hellman key exchange. It is NOT secure to use it with static keys.
 // See "On the Security of Supersingular Isogeny Cryptosystems", S.D. Galbraith, C. Petit, B. Shani and Y.B. Ti, in ASIACRYPT 2016, 2016.
