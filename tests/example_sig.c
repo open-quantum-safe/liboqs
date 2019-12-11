@@ -1,3 +1,10 @@
+/*
+ * example_sig.c
+ *
+ * Minimal example of using a post-quantum signature implemented in liboqs.
+ *
+*/
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,6 +13,13 @@
 #include <oqs/oqs.h>
 
 #define MESSAGE_LEN 50
+
+/* Cleaning up memory etc */
+void cleanup_stack(uint8_t *secret_key, size_t secret_key_len);
+
+void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
+                  uint8_t *message, uint8_t *signature,
+                  OQS_SIG *sig);
 
 /* This function gives an example of the signing operations
  * using only compile-time macros and allocating variables
@@ -25,7 +39,6 @@ static OQS_STATUS example_stack(void) {
 #ifdef OQS_ENABLE_SIG_qTesla_p_I
 
 	OQS_STATUS rc;
-	OQS_STATUS ret = OQS_ERROR;
 
 	uint8_t public_key[OQS_SIG_qTesla_p_I_length_public_key];
 	uint8_t secret_key[OQS_SIG_qTesla_p_I_length_secret_key];
@@ -34,35 +47,33 @@ static OQS_STATUS example_stack(void) {
 	size_t message_len = MESSAGE_LEN;
 	size_t signature_len;
 
+	// let's create a random test message to sign
 	OQS_randombytes(message, message_len);
 
 	rc = OQS_SIG_qTesla_p_I_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_qTesla_p_I_keypair failed!\n");
-		goto err;
+		cleanup_stack(secret_key, OQS_SIG_qTesla_p_I_length_secret_key);
+		return OQS_ERROR;
 	}
 	rc = OQS_SIG_qTesla_p_I_sign(signature, &signature_len, message, message_len, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_qTesla_p_I_sign failed!\n");
-		goto err;
+		cleanup_stack(secret_key, OQS_SIG_qTesla_p_I_length_secret_key);
+		return OQS_ERROR;
 	}
 	rc = OQS_SIG_qTesla_p_I_verify(message, message_len, signature, signature_len, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_qTesla_p_I_verify failed!\n");
-		goto err;
+		cleanup_stack(secret_key, OQS_SIG_qTesla_p_I_length_secret_key);
+		return OQS_ERROR;
 	}
 	printf("[example_stack] OQS_SIG_qTesla_p_I operations completed.\n");
-	ret = OQS_SUCCESS; // success!
-	goto cleanup;
 
-err:
-	ret = OQS_ERROR;
-
-cleanup:
-	OQS_MEM_cleanse(secret_key, OQS_SIG_qTesla_p_I_length_secret_key);
-	return ret;
+	return OQS_SUCCESS; // success!
 
 #else
+
 	printf("[example_stack] OQS_SIG_qTesla_p_I was not enabled at compile-time.\n");
 	return OQS_ERROR;
 
@@ -87,7 +98,6 @@ static OQS_STATUS example_heap(void) {
 	size_t message_len = MESSAGE_LEN;
 	size_t signature_len;
 	OQS_STATUS rc;
-	OQS_STATUS ret = OQS_ERROR;
 
 	sig = OQS_SIG_new(OQS_SIG_alg_qTesla_p_I);
 	if (sig == NULL) {
@@ -101,47 +111,56 @@ static OQS_STATUS example_heap(void) {
 	signature = malloc(sig->length_signature);
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed!\n");
-		goto err;
+		cleanup_heap(public_key, secret_key, message, signature, sig);
+		return OQS_ERROR;
 	}
 
+	// let's create a random test message to sign
 	OQS_randombytes(message, message_len);
 
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_keypair failed!\n");
-		goto err;
+		cleanup_heap(public_key, secret_key, message, signature, sig);
+		return OQS_ERROR;
 	}
 	rc = OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_sign failed!\n");
-		goto err;
+		cleanup_heap(public_key, secret_key, message, signature, sig);
+		return OQS_ERROR;
 	}
 	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify failed!\n");
-		goto err;
+		cleanup_heap(public_key, secret_key, message, signature, sig);
+		return OQS_ERROR;
 	}
 
 	printf("[example_heap]  OQS_SIG_qTesla_p_I operations completed.\n");
-	ret = OQS_SUCCESS; // success
-	goto cleanup;
+	return OQS_SUCCESS; // success
+}
 
-err:
-	ret = OQS_ERROR;
+int main(void) {
+	if (example_stack() == OQS_SUCCESS && example_heap() == OQS_SUCCESS) {
+		return EXIT_SUCCESS;
+	} else {
+		return EXIT_FAILURE;
+	}
+}
 
-cleanup:
+void cleanup_stack(uint8_t *secret_key, size_t secret_key_len) {
+	OQS_MEM_cleanse(secret_key, secret_key_len);
+}
+
+void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
+                  uint8_t *message, uint8_t *signature,
+                  OQS_SIG *sig) {
 	if (sig != NULL) {
 		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
 	}
 	OQS_MEM_insecure_free(public_key);
-	OQS_MEM_insecure_free(signature);
 	OQS_MEM_insecure_free(message);
+	OQS_MEM_insecure_free(signature);
 	OQS_SIG_free(sig);
-
-	return ret;
-}
-
-int main(void) {
-	example_stack();
-	example_heap();
 }
