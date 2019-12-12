@@ -8,18 +8,26 @@ set(SRCS additional/decode.c
          additional/error.c
          additional/gf2x_mul.c)
 
-if(NOT ${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin" AND (USE_AVX512F_INSTRUCTIONS OR USE_AVX_INSTRUCTIONS))
+if(NOT ${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
+    set(SRCS ${SRCS} additional/sampling_portable.c
+                     additional/converts_portable.c)
+    add_compile_definitions(PORTABLE)
+elseif(USE_AVX512F_INSTRUCTIONS)
     set(SRCS ${SRCS} additional/converts.S
                      additional/red.S
                      additional/secure_decode_avx512.S
                      additional/sampling_avx512.S
                      additional/gf_mul.S
                      additional/gf_add.S)
-    if(USE_AVX512_F_INSTRUCTIONS)
-        add_compile_definitions(AVX512)
-    elseif(USE_AVX2_INSTRUCTIONS)
-        add_compile_definitions(AVX2)
-    endif()
+    add_compile_definitions(AVX512)
+elseif(USE_AVX2_INSTRUCTIONS)
+    set(SRCS ${SRCS} additional/converts.S
+                     additional/red.S
+                     additional/secure_decode_avx2.S
+                     additional/sampling_avx2.S
+                     additional/gf_mul.S
+                     additional/gf_add.S)
+    add_compile_definitions(AVX2)
 else()
     set(SRCS ${SRCS} additional/sampling_portable.c
                      additional/converts_portable.c)
@@ -32,7 +40,6 @@ if(USE_OPENSSL)
 endif()
 
 add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
-add_compile_definitions(CONSTANT_TIME)
 
 add_library(kem_bike OBJECT kem_bike.c)
 set(_BIKE_OBJS $<TARGET_OBJECTS:kem_bike>)
