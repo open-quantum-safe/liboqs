@@ -47,7 +47,7 @@ __inline void fpsub434(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
                                                                          // Inputs: a, b in [0, 2*p434-1]
                                                                          // Output: c in [0, 2*p434-1]
 
-#if (OS_TARGET == OS_WIN)
+#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
 	unsigned int i, borrow = 0;
 	digit_t mask;
 
