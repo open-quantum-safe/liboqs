@@ -21,6 +21,9 @@
 #define OS_TARGET OS_WIN
 #elif defined(__APPLE__) // darwin
 #define OS_TARGET OS_DARWIN
+#ifndef _GENERIC_ // default to generic implementation on darwin for now
+#define _GENERIC_
+#endif
 #else
 #define OS_TARGET OS_LINUX // default to Linux
 #endif
@@ -73,9 +76,9 @@ typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 // Extended datatype support
 #if defined(GENERIC_IMPLEMENTATION)
 typedef uint64_t uint128_t[2];
-#elif (TARGET == TARGET_AMD64 && (OS_TARGET == OS_LINUX || OS_TARGET == OS_DARWIN))
+#elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_LINUX)
 typedef unsigned uint128_t __attribute__((mode(TI)));
-#elif (TARGET == TARGET_ARM64 && (OS_TARGET == OS_LINUX || OS_TARGET == OS_DARWIN))
+#elif (TARGET == TARGET_ARM64 && OS_TARGET == OS_LINUX)
 typedef unsigned uint128_t __attribute__((mode(TI)));
 #elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_WIN)
 typedef uint64_t uint128_t[2];
@@ -178,7 +181,7 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) { // Is 
 		ADC128(addend, product, carry, result);                    \
 	}
 
-#elif ((TARGET == TARGET_AMD64 || TARGET == TARGET_ARM64) && (OS_TARGET == OS_LINUX || OS_TARGET == OS_DARWIN))
+#elif ((TARGET == TARGET_AMD64 || TARGET == TARGET_ARM64) && OS_TARGET == OS_LINUX)
 
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo)                                    \
