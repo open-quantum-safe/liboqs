@@ -140,7 +140,7 @@ def available_use_options_by_name():
     with open(os.path.join('include', 'oqs', 'oqsconfig.h')) as fh:
         for line in fh:
             if line.startswith("#define USE_") and line.endswith("1\n"):
-                option_name = line.split(' ')[1][len("USE_"):-1]
+                option_name = line.split(' ')[1][len("USE_"):]
                 enabled_use_options.append(option_name)
     return enabled_use_options
 
