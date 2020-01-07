@@ -84,7 +84,7 @@
 // SIDH's basic element definitions and point representations
 
 typedef digit_t felm_t[NWORDS_FIELD];      // Datatype for representing 503-bit field elements (512-bit max.)
-typedef digit_t dfelm_t[2 * NWORDS_FIELD]; // Datatype for representing double-precision 2x503-bit field elements (512-bit max.)
+typedef digit_t dfelm_t[2 * NWORDS_FIELD]; // Datatype for representing double-precision 2x503-bit field elements (2x512-bit max.)
 typedef felm_t f2elm_t[2];                 // Datatype for representing quadratic extension field elements GF(p503^2)
 
 typedef struct {

@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_sike_p434_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p434;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -43,7 +43,7 @@ OQS_KEM *OQS_KEM_sike_p434_compressed_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p434_compressed;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
@@ -73,7 +73,7 @@ OQS_KEM *OQS_KEM_sike_p503_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p503;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 2;
 	kem->ind_cca = true;
@@ -103,7 +103,7 @@ OQS_KEM *OQS_KEM_sike_p503_compressed_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p503_compressed;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 2;
 	kem->ind_cca = true;
@@ -133,7 +133,7 @@ OQS_KEM *OQS_KEM_sike_p610_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p610;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -163,7 +163,7 @@ OQS_KEM *OQS_KEM_sike_p610_compressed_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p610_compressed;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -193,7 +193,7 @@ OQS_KEM *OQS_KEM_sike_p751_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p751;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;
@@ -223,7 +223,7 @@ OQS_KEM *OQS_KEM_sike_p751_compressed_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p751_compressed;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;
@@ -253,7 +253,7 @@ OQS_KEM *OQS_KEM_sidh_p434_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sidh_p434;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = false;
@@ -323,7 +323,7 @@ OQS_KEM *OQS_KEM_sidh_p434_compressed_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sidh_p434_compressed;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = false;
@@ -393,7 +393,7 @@ OQS_KEM *OQS_KEM_sidh_p503_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sidh_p503;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 2;
 	kem->ind_cca = false;
@@ -463,7 +463,7 @@ OQS_KEM *OQS_KEM_sidh_p503_compressed_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sidh_p503_compressed;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 2;
 	kem->ind_cca = false;
@@ -533,7 +533,7 @@ OQS_KEM *OQS_KEM_sidh_p610_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sidh_p610;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = false;
@@ -603,7 +603,7 @@ OQS_KEM *OQS_KEM_sidh_p610_compressed_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sidh_p610_compressed;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = false;
@@ -673,7 +673,7 @@ OQS_KEM *OQS_KEM_sidh_p751_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sidh_p751;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
@@ -743,7 +743,7 @@ OQS_KEM *OQS_KEM_sidh_p751_compressed_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sidh_p751_compressed;
-	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/tree/v3.2";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = false;
