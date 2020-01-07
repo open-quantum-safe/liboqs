@@ -900,13 +900,14 @@ static __inline unsigned int is_felm_zero(const felm_t x) { // Is x = 0? return 
 
 static void mul3(unsigned char *a) { // Computes a = 3*a
 	                                 // The input is assumed to be OBOB_BITS-2 bits long and stored in SECRETKEY_B_BYTES
-	unsigned char temp1[NWORDS_ORDER * RADIX / 8] = {0};
+	digit_t temp1[NWORDS_ORDER] = {0}, temp2[NWORDS_ORDER] = {0};
 
-	memcpy(temp1, a, SECRETKEY_B_BYTES);
-	mp_shiftl1((digit_t *) temp1, NWORDS_ORDER);                           // temp1 = 2*a
-	mp_add((digit_t *) a, (digit_t *) temp1, (digit_t *) a, NWORDS_ORDER); // a <- 2*a + a
-
+	memcpy((unsigned char *) temp1, a, SECRETKEY_B_BYTES);
+	mp_add(temp1, temp1, temp2, NWORDS_ORDER); // temp2 = 2*a
+	mp_add(temp1, temp2, temp1, NWORDS_ORDER); // temp1 = 3*a
+	memcpy(a, (unsigned char *) temp1, SECRETKEY_B_BYTES);
 	clear_words((void *) temp1, NWORDS_ORDER);
+	clear_words((void *) temp2, NWORDS_ORDER);
 }
 
 static unsigned int mod3(digit_t *a) { // Computes the input modulo 3

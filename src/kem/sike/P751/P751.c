@@ -4,9 +4,20 @@
 * Abstract: supersingular isogeny parameters and generation of functions for P751
 *********************************************************************************************/
 
+#include <oqs/rand.h>
 #include "../oqs_namespace_sike.h"
 #include "P751_api.h"
 #include "P751_internal.h"
+
+// defines moved from P751_api.h
+#define CRYPTO_SECRETKEYBYTES 644 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes
+#define CRYPTO_PUBLICKEYBYTES 564
+#define CRYPTO_BYTES 32
+#define CRYPTO_CIPHERTEXTBYTES 596 // CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes
+#define SIDH_SECRETKEYBYTES_A 47
+#define SIDH_SECRETKEYBYTES_B 48
+#define SIDH_PUBLICKEYBYTES 564
+#define SIDH_BYTES 188
 
 // Encoding of field elements, elements over Z_order, elements over GF(p^2) and elliptic curve points:
 // --------------------------------------------------------------------------------------------------

@@ -4,6 +4,8 @@
 * Abstract: ephemeral supersingular isogeny Diffie-Hellman key exchange (SIDH)
 *********************************************************************************************/
 
+#include <string.h>
+
 static void init_basis(digit_t *gen, f2elm_t XP, f2elm_t XQ, f2elm_t XR) { // Initialization of basis points
 
 	fpcopy(gen, XP[0]);
@@ -32,6 +34,7 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_ALICE];
 	f2elm_t XPA, XQA, XRA, coeff[3], A24plus = {0}, C24 = {0}, A = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_ALICE], npts = 0, ii = 0;
+	digit_t SecretKeyA[NWORDS_ORDER] = {0};
 
 	// Initialize basis points
 	init_basis((digit_t *) A_gen, XPA, XQA, XRA);
@@ -48,7 +51,8 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 	fp2add(C24, C24, A24plus);
 
 	// Retrieve kernel point
-	LADDER3PT(XPA, XQA, XRA, (digit_t *) PrivateKeyA, ALICE, R, A);
+	memcpy((unsigned char *) SecretKeyA, PrivateKeyA, SECRETKEY_A_BYTES);
+	LADDER3PT(XPA, XQA, XRA, SecretKeyA, ALICE, R, A);
 
 #if (OALICE_BITS % 2 == 1)
 	point_proj_t S;
@@ -111,6 +115,7 @@ int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *Pu
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_BOB];
 	f2elm_t XPB, XQB, XRB, coeff[3], A24plus = {0}, A24minus = {0}, A = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_BOB], npts = 0, ii = 0;
+	digit_t SecretKeyB[NWORDS_ORDER] = {0};
 
 	// Initialize basis points
 	init_basis((digit_t *) B_gen, XPB, XQB, XRB);
@@ -127,7 +132,8 @@ int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *Pu
 	fp2add(A24minus, A24minus, A24plus);
 
 	// Retrieve kernel point
-	LADDER3PT(XPB, XQB, XRB, (digit_t *) PrivateKeyB, BOB, R, A);
+	memcpy((unsigned char *) SecretKeyB, PrivateKeyB, SECRETKEY_B_BYTES);
+	LADDER3PT(XPB, XQB, XRB, SecretKeyB, BOB, R, A);
 
 	// Traverse tree
 	index = 0;
@@ -182,6 +188,7 @@ int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned 
 	f2elm_t coeff[3], PKB[3], jinv;
 	f2elm_t A24plus = {0}, C24 = {0}, A = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_ALICE], npts = 0, ii = 0;
+	digit_t SecretKeyA[NWORDS_ORDER] = {0};
 
 	// Initialize images of Bob's basis
 	fp2_decode(PublicKeyB, PKB[0]);
@@ -195,7 +202,8 @@ int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned 
 	fpadd(C24[0], C24[0], C24[0]);
 
 	// Retrieve kernel point
-	LADDER3PT(PKB[0], PKB[1], PKB[2], (digit_t *) PrivateKeyA, ALICE, R, A);
+	memcpy((unsigned char *) SecretKeyA, PrivateKeyA, SECRETKEY_A_BYTES);
+	LADDER3PT(PKB[0], PKB[1], PKB[2], SecretKeyA, ALICE, R, A);
 
 #if (OALICE_BITS % 2 == 1)
 	point_proj_t S;
@@ -247,6 +255,7 @@ int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned 
 	f2elm_t coeff[3], PKB[3], jinv;
 	f2elm_t A24plus = {0}, A24minus = {0}, A = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_BOB], npts = 0, ii = 0;
+	digit_t SecretKeyB[NWORDS_ORDER] = {0};
 
 	// Initialize images of Alice's basis
 	fp2_decode(PublicKeyA, PKB[0]);
@@ -260,7 +269,8 @@ int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned 
 	fp2sub(A, A24minus, A24minus);
 
 	// Retrieve kernel point
-	LADDER3PT(PKB[0], PKB[1], PKB[2], (digit_t *) PrivateKeyB, BOB, R, A);
+	memcpy((unsigned char *) SecretKeyB, PrivateKeyB, SECRETKEY_B_BYTES);
+	LADDER3PT(PKB[0], PKB[1], PKB[2], SecretKeyB, BOB, R, A);
 
 	// Traverse tree
 	index = 0;

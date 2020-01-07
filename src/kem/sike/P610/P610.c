@@ -4,9 +4,20 @@
 * Abstract: supersingular isogeny parameters and generation of functions for P610
 *********************************************************************************************/
 
+#include <oqs/rand.h>
 #include "../oqs_namespace_sike.h"
 #include "P610_api.h"
 #include "P610_internal.h"
+
+// defines moved from P610_api.h
+#define CRYPTO_SECRETKEYBYTES 524 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes
+#define CRYPTO_PUBLICKEYBYTES 462
+#define CRYPTO_BYTES 24
+#define CRYPTO_CIPHERTEXTBYTES 486 // CRYPTO_PUBLICKEYBYTES + MSG_BYTES bytes
+#define SIDH_SECRETKEYBYTES_A 39
+#define SIDH_SECRETKEYBYTES_B 38
+#define SIDH_PUBLICKEYBYTES 462
+#define SIDH_BYTES 154
 
 // Encoding of field elements, elements over Z_order, elements over GF(p^2) and elliptic curve points:
 // --------------------------------------------------------------------------------------------------

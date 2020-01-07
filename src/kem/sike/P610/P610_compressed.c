@@ -4,10 +4,21 @@
 * Abstract: supersingular isogeny parameters and generation of functions for P610_compressed
 *********************************************************************************************/
 
+#include <oqs/rand.h>
 #include "../oqs_namespace_sike_compressed.h"
 #include "P610_compressed_api.h"
 #define COMPRESS
 #include "P610_internal.h"
+
+// defines moved from P610_compressed_api.h
+#define CRYPTO_SECRETKEYBYTES 336 // MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES bytes
+#define CRYPTO_PUBLICKEYBYTES 273 // 3*ORDER_B_ENCODED_BYTES + FP2_ENCODED_BYTES + 2 bytes for shared elligator
+#define CRYPTO_BYTES 24
+#define CRYPTO_CIPHERTEXTBYTES 297 // COMPRESSED_CHUNK_CT + MSG_BYTES bytes
+#define SIDH_SECRETKEYBYTES_A 39
+#define SIDH_SECRETKEYBYTES_B 38
+#define SIDH_PUBLICKEYBYTES 273
+#define SIDH_BYTES 154
 
 // Encoding of field elements, elements over Z_order, elements over GF(p^2) and elliptic curve points:
 // --------------------------------------------------------------------------------------------------
