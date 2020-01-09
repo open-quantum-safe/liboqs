@@ -1,13 +1,22 @@
-/***************************************************************************
- * Additional implementation of "BIKE: Bit Flipping Key Encapsulation".
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/*
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
- * Written by Nir Drucker and Shay Gueron
- * AWS Cryptographic Algorithms Group
- * (ndrucker@amazon.com, gueron@amazon.com)
+ * Licensed under the Apache License, Version 2.0 (the "License").
+ * You may not use this file except in compliance with the License.
+ * A copy of the License is located at
  *
+ * http://aws.amazon.com/apache2.0
+ *
+ * or in the "license" file accompanying this file. This file is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing
+ * permissions and limitations under the License.
  * The license is detailed in the file LICENSE.md, and applies to this file.
- * ***************************************************************************/
+ *
+ * Written by Nir Drucker, Shay Gueron, and Dusan Kostic,
+ * AWS Cryptographic Algorithms Group.
+ * (ndrucker@amazon.com, gueron@amazon.com, dkostic@amazon.com)
+ */
 
 #include <string.h>
 
@@ -52,7 +61,10 @@ merge_e(OUT e_t *e, IN const split_e_t *splitted_e) {
 	}
 
 	// Mask last byte
-	e->raw[N_SIZE - 1] = (splitted_e->val[1].raw[R_SIZE - 1] >> LAST_R_BYTE_TRAIL);
+	if (N_SIZE == (2ULL * R_SIZE)) {
+		e->raw[N_SIZE - 1] =
+		    (splitted_e->val[1].raw[R_SIZE - 1] >> LAST_R_BYTE_TRAIL);
+	}
 }
 
 _INLINE_ ret_t
