@@ -6,6 +6,9 @@ version: 2
   steps:
     - checkout
     - run:
+        name: Testing needed?
+        command: r=`git log --name-only --since="1 day ago" -n 2`; if [ "x$r" == "x" ]; then echo "No. Exiting."; exit -1; else echo "Yes."; fi
+    - run:
         name: Configure
         command: autoreconf -i && ./configure --enable-silent-rules ${CONFIGURE_ARGS}
     - run: 
@@ -22,6 +25,9 @@ version: 2
     image: ubuntu-1604:201903-01
   steps:
     - checkout
+    - run:
+        name: Testing needed?
+        command: r=`git log --name-only --since="1 day ago" -n 2`; if [ "x$r" == "x" ]; then echo "No. Exiting."; exit -1; else echo "Yes."; fi
     - run:
         name: Install the emulation handlers
         command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
@@ -106,16 +112,46 @@ jobs:
       IMAGE: dstebila/liboqs:ubuntu-bionic-x86_64-0.1.0
       CC: gcc-7
       SKIP_TESTS: style
+  osx:
+    macos:
+        xcode: "11.3.0"
+    environment:
+      CONFIGURE_ARGS: --without-openssl
+    steps:
+        - checkout
+        - run:
+            name: Testing needed?
+            command: r=`git log --name-only --since="1 day ago" -n 2`; if [ "x$r" == "x" ]; then echo "No. Exiting."; exit -1; else echo "Yes."; fi
+        - run:
+            name: Prep env
+            command: brew update; brew unlink python@2; brew install autoconf automake libtool wget doxygen graphviz clang-format; pip3 install pytest
+        - run:
+            name: Configure
+            command: autoreconf -i && ./configure ${CONFIGURE_ARGS}
+        - run:
+            name: Build
+            command: make && make check
+        - run:
+            name: Recon
+            command: sysctl -a | grep machdep.cpu; cat src/kem/sike/Makefile; ls -l tests; ./tests/example_kem
+        - run:
+            name: Run tests
+            command: mkdir -p test-results/pytest && python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml
+        - store_test_results:
+             path: test-results
+
 
 workflows:
   version: 2
   build:
     jobs:
+      - osx
       - debian-buster-amd64
-      - ubuntu-xenial-x86_64-gcc8
-      - ubuntu-xenial-x86_64-gcc8-noopenssl
-      - ubuntu-xenial-x86_64-gcc8-noshared
-      - ubuntu-bionic-x86_64-gcc7
+        # Tested by cron:
+        #- ubuntu-xenial-x86_64-gcc8
+        #- ubuntu-xenial-x86_64-gcc8-noopenssl
+        #- ubuntu-xenial-x86_64-gcc8-noshared
+        #- ubuntu-bionic-x86_64-gcc7
   nightly:
     triggers:
       - schedule:
@@ -125,7 +161,7 @@ workflows:
               only:
                 - master
     jobs:
-      - debian-buster-amd64
+            #- debian-buster-amd64 # tested at checkin
       - debian-buster-aarch64
       - debian-buster-armhf
       - debian-buster-armel
