@@ -8,7 +8,7 @@ set(SRCS additional/decode.c
          additional/error.c
          additional/gf2x_mul.c)
 
-if(NOT ${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
+if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
     set(SRCS ${SRCS} additional/sampling_portable.c
                      additional/converts_portable.c)
     add_compile_definitions(PORTABLE)
