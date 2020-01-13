@@ -3,6 +3,10 @@ noinst_LTLIBRARIES = libkemsike.la
 
 libkemsike_la_SOURCES = kem_sike.c P434/P434.c P434/P434_compressed.c P503/P503.c P503/P503_compressed.c P610/P610.c P610/P610_compressed.c P751/P751.c P751/P751_compressed.c
 
+if ON_DARWIN
+exit -1
+endif
+
 AM_CPPFLAGS =
 SIKE_FLAGS =
 if X86
