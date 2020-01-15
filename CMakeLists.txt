@@ -18,9 +18,10 @@ endif()
 if(BUILD_SHARED_LIBS)
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 endif()
-include(config/cpu-extensions.cmake)
 
+include(config/cpu-extensions.cmake)
 include(config/alg-support.cmake)
+
 if(USE_OPENSSL)
     if(NOT DEFINED OPENSSL_ROOT_DIR)
         if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
@@ -31,6 +32,7 @@ if(USE_OPENSSL)
     endif()
     find_package(OpenSSL REQUIRED)
 endif()
+
 set(HEADERS ${PROJECT_SOURCE_DIR}/src/oqs.h
             ${PROJECT_SOURCE_DIR}/src/common/common.h
             ${PROJECT_SOURCE_DIR}/src/common/rand.h
@@ -86,3 +88,14 @@ include_directories(${PROJECT_BINARY_DIR}/include)
 add_subdirectory(src)
 
 add_subdirectory(tests)
+
+find_package(Doxygen)
+if(DOXYGEN_FOUND)
+    set(DOXYFILE ${PROJECT_SOURCE_DIR}/docs/.Doxyfile)
+    add_custom_target(
+        gen_docs
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        USES_TERMINAL)
+endif()

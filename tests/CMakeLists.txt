@@ -61,7 +61,7 @@ add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig ${LIBS})
 
 add_custom_target(
-    test
+    run_tests
     COMMAND ${Python3_EXECUTABLE} -m pytest --verbose --junitxml=${CMAKE_BINARY_DIR}/test-results.xml
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS oqs kat_kem kat_sig test_kem test_sig
