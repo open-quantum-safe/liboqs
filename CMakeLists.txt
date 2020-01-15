@@ -1,7 +1,7 @@
 cmake_minimum_required (VERSION 3.12)
 
 project(liboqs C ASM)
-set(OQS_VERSION_TEXT "0.2.0-dev")
+set(OQS_VERSION_TEXT "0.2.1-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 
 set(CMAKE_C_STANDARD 11)
@@ -9,7 +9,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
    CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden -Wall -Wextra")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden -Wall -Wextra -g")
 endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
    CMAKE_C_COMPILER_ID STREQUAL "AppleClang")

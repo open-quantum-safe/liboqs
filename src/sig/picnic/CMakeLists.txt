@@ -34,8 +34,8 @@ target_compile_definitions(picnic PRIVATE PICNIC_STATIC
                                           OPTIMIZED_LINEAR_LAYER_EVALUATION
                                           REDUCED_ROUND_KEY_COMPUTATION
                                           WITH_LOWMC_128_128_20
-                                          DWITH_LOWMC_192_192_30
-                                          DWITH_LOWMC_256_256_38
+                                          WITH_LOWMC_192_192_30
+                                          WITH_LOWMC_256_256_38
                                           WITH_OPT
                                           WITH_POPCNT
                                           HAVE_POSIX_MEMALIGN)

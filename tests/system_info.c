@@ -46,20 +46,20 @@ static void print_oqs_configuration(void) {
 #else
 	printf("OpenSSL enabled:  No\n");
 #endif
-#if defined(USE_AES_C)
-	printf("AES:              C\n");
-#elif defined(USE_AES_OPENSSL)
+#if defined(USE_AES_OPENSSL)
 	printf("AES:              OpenSSL\n");
+#else
+	printf("AES:              C\n");
 #endif
-#if defined(USE_SHA2_C)
-	printf("SHA-2:            C\n");
-#elif defined(USE_SHA2_OPENSSL)
+#if defined(USE_SHA2_OPENSSL)
 	printf("SHA-2:            OpenSSL\n");
+#else
+	printf("SHA-2:            C\n");
 #endif
-#if defined(USE_SHA3_C)
-	printf("SHA-3:            C\n");
-#elif defined(USE_SHA3_OPENSSL)
+#if defined(USE_SHA3_OPENSSL)
 	printf("SHA-3:            OpenSSL\n");
+#else
+	printf("SHA-3:            C\n");
 #endif
 #if defined(OQS_COMPILE_CFLAGS)
 	printf("CFLAGS:           %s\n", OQS_COMPILE_CFLAGS);

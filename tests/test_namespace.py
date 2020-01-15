@@ -9,7 +9,7 @@ import sys
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 def test_namespace():
     out = helpers.run_subprocess(
-        ['nm', '-g', '.libs/liboqs.a']
+        ['nm', '-g', 'build/lib/liboqs.a']
     )
 
     lines = out.strip().split("\n")
@@ -35,7 +35,7 @@ def test_namespace():
     if len(non_namespaced) > 0:
         for symbol in non_namespaced:
             print("Non-namespaced symbol: {}".format(symbol))
-    
+
     assert(len(non_namespaced) == 0)
 
 if __name__ == "__main__":

@@ -1,3 +1,5 @@
+find_package(Python3 COMPONENTS Interpreter)
+
 if(USE_OPENSSL)
     include_directories(${OPENSSL_INCLUDE_DIR})
     set(LIBS ${OPENSSL_CRYPTO_LIBRARY})
@@ -5,8 +7,8 @@ endif()
 
 if(NOT WIN32)
     set(LIBS ${LIBS} m)
-    execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT_HASH)
-    add_compile_definitions(OQS_COMPILE_GIT_COMMIT="${GIT_COMMIT_HASH}")
+    execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT)
+    add_compile_definitions(OQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
 
     # Common crypto tests.
     # These test functions not part of
@@ -58,4 +60,9 @@ target_link_libraries(test_sig ${LIBS})
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig ${LIBS})
 
-#TODO: Add python tests
+add_custom_target(
+    test
+    COMMAND ${Python3_EXECUTABLE} -m pytest --verbose --junitxml=${CMAKE_BINARY_DIR}/test-results.xml
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    DEPENDS oqs kat_kem kat_sig test_kem test_sig
+    USES_TERMINAL)
