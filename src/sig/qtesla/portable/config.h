@@ -11,16 +11,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-// Definition of operating system
-
-#define OS_WIN 1
-#define OS_LINUX 2
-
-#if defined(_WIN32) // Microsoft Windows OS
-#define OS_TARGET OS_WIN
-#else
-#define OS_TARGET OS_LINUX // default to Linux
-#endif
+// Definition of operating system (removed in OQS)
 
 // Definition of compiler (removed in OQS)
 
