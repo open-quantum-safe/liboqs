@@ -40,9 +40,8 @@ target_compile_definitions(picnic PRIVATE PICNIC_STATIC
                                           WITH_POPCNT
                                           HAVE_POSIX_MEMALIGN)
 
-if(USE_AVX2_INSTRUCTIONS)
+# TODO: We can't have one without the other
+if(USE_AVX2_INSTRUCTIONS AND USE_SSE2_INSTRUCTIONS)
     target_compile_definitions(picnic PRIVATE WITH_AVX2)
-endif()
-if(USE_SSE2_INSTRUCTIONS)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
 endif()

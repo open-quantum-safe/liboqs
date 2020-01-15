@@ -5,12 +5,8 @@
 #cmakedefine OQS_SIG_DEFAULT @OQS_SIG_DEFAULT@
 
 #cmakedefine USE_OPENSSL
-
-#cmakedefine USE_AES_C
 #cmakedefine USE_AES_OPENSSL
-
 #cmakedefine USE_SHA2_OPENSSL
-#cmakedefine USE_SHA3_C
 #cmakedefine USE_SHA3_OPENSSL
 
 #cmakedefine USE_AES_INSTRUCTIONS
@@ -20,16 +16,14 @@
 #cmakedefine USE_AVX512DQ_INSTRUCTIONS
 #cmakedefine USE_AVX512F_INSTRUCTIONS
 #cmakedefine USE_BMI_INSTRUCTIONS
-#cmakedefine USE_FMA4_INSTRUCTIONS
 #cmakedefine USE_FMA_INSTRUCTIONS
+#cmakedefine USE_FMA4_INSTRUCTIONS
 #cmakedefine USE_MMX_INSTRUCTIONS
 #cmakedefine USE_POPCNT_INSTRUCTIONS
 #cmakedefine USE_SSE_INSTRUCTIONS
 #cmakedefine USE_SSE2_INSTRUCTIONS
 #cmakedefine USE_SSE3_INSTRUCTIONS
 #cmakedefine USE_SSE4A_INSTRUCTIONS
-#cmakedefine USE_SSE4_1_INSTRUCTIONS
-#cmakedefine USE_SSE4_2_INSTRUCTIONS
 
 #cmakedefine OQS_ENABLE_KEM_bike1_l1_cpa
 #cmakedefine OQS_ENABLE_KEM_bike1_l3_cpa

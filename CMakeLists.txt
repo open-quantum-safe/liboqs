@@ -1,6 +1,6 @@
 cmake_minimum_required (VERSION 3.12)
 
-project(liboqs C)
+project(liboqs C ASM)
 set(OQS_VERSION_TEXT "0.2.0-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 

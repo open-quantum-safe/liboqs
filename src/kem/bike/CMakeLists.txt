@@ -8,6 +8,8 @@ set(SRCS additional/decode.c
          additional/error.c
          additional/gf2x_mul.c)
 
+add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
+
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
     set(SRCS ${SRCS} additional/sampling_portable.c
                      additional/converts_portable.c)
@@ -39,8 +41,6 @@ if(USE_OPENSSL)
     set(SRCS ${SRCS} additional/openssl_utils.c)
 endif()
 
-add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
-
 add_library(kem_bike OBJECT kem_bike.c)
 set(_BIKE_OBJS $<TARGET_OBJECTS:kem_bike>)
 
@@ -52,20 +52,20 @@ if(OQS_ENABLE_KEM_bike1_l1_cpa)
 endif()
 
 if(OQS_ENABLE_KEM_bike1_l3_cpa)
-    add_library(bike1_l3_cpa OBJECT additional/kem_cpa.c ${SRCS})
+    add_library(bike1_l3_cpa OBJECT ${SRCS} additional/kem_cpa.c)
     target_compile_definitions(bike1_l3_cpa PRIVATE INDCPA=1 LEVEL=3 FUNC_PREFIX=OQS_KEM_bike1_l3_cpa)
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l3_cpa>)
 endif()
 
 # FO variants
 if(OQS_ENABLE_KEM_bike1_l1_fo)
-    add_library(bike1_l1_fo OBJECT additional/kem.c ${SRCS})
+    add_library(bike1_l1_fo OBJECT ${SRCS} additional/kem.c)
     target_compile_definitions(bike1_l1_fo PRIVATE LEVEL=1 FUNC_PREFIX=OQS_KEM_bike1_l1_fo)
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1_fo>)
 endif()
 
 if(OQS_ENABLE_KEM_bike1_l3_fo)
-    add_library(bike1_l3_fo OBJECT additional/kem.c ${SRCS})
+    add_library(bike1_l3_fo OBJECT ${SRCS} additional/kem.c)
     target_compile_definitions(bike1_l3_fo PRIVATE LEVEL=3 FUNC_PREFIX=OQS_KEM_bike1_l3_fo)
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l3_fo>)
 endif()
