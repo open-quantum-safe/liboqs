@@ -17,5 +17,16 @@ if(OQS_ENABLE_SIG_qTesla_p_III)
     set(SRCS ${SRCS} qtesla_p_III.c)
 endif()
 
+if(NOT ${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin"
+   AND USE_AVX2_INSTRUCTIONS
+   AND USE_AES_INSTRUCTIONS)
+        add_compile_definitions(WITH_AVX2)
+        include_directories(avx2)
+        set(SRCS ${SRCS} avx2/poly_mul1024.S
+                         avx2/poly_mul2048.S)
+else()
+    add_compile_definitions(portable)
+endif()
+
 add_library(qTesla OBJECT ${SRCS})
 target_include_directories(qTesla PRIVATE external)

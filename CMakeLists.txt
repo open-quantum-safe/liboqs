@@ -59,7 +59,7 @@ endif()
 if(ENABLE_KEM_SABER)
     set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/saber/kem_saber.h)
 endif()
-if(ENABLE_KEM_SIKE)
+if(ENABLE_KEM_SIKE OR ENABLE_KEM_SIDH)
     set(HEADERS ${HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/sike/kem_sike.h)
 endif()
 
@@ -96,6 +96,6 @@ if(DOXYGEN_FOUND)
         gen_docs
         COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
         WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        COMMENT "Generating API documentation with Doxygen"
+        COMMENT "Generate API documentation with Doxygen."
         USES_TERMINAL)
 endif()

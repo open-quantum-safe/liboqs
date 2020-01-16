@@ -37,10 +37,11 @@ target_compile_definitions(picnic PRIVATE PICNIC_STATIC
                                           WITH_LOWMC_192_192_30
                                           WITH_LOWMC_256_256_38
                                           WITH_OPT
-                                          WITH_POPCNT
-                                          HAVE_POSIX_MEMALIGN)
+                                          WITH_POPCNT)
+if(NOT WIN32)
+    target_compile_definitions(picnic PRIVATE HAVE_POSIX_MEMALIGN)
+endif()
 
-# TODO: We can't have one without the other
 if(USE_AVX2_INSTRUCTIONS AND USE_SSE2_INSTRUCTIONS)
     target_compile_definitions(picnic PRIVATE WITH_AVX2)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)

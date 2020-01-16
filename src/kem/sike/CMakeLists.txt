@@ -1,52 +1,22 @@
+set(SRCS kem_sike.c
+         P434/P434.c
+         P434/P434_compressed.c
+         P503/P503.c P503/P503_compressed.c
+         P610/P610.c
+         P610/P610_compressed.c
+         P751/P751.c
+         P751/P751_compressed.c)
+
+add_library(sike OBJECT ${SRCS})
+
 # FIXMEOQS: enable FAST mode, assembly
-add_compile_definitions(_GENERIC_)
+target_compile_definitions(sike PRIVATE _GENERIC_)
 if(${ARCH} STREQUAL "x86")
-    add_compile_definitions(_X86_)
+    target_compile_definitions(sike PRIVATE _X86_)
 elseif(${ARCH} STREQUAL "x86_64")
-    add_compile_definitions(_AMD64_)
+    target_compile_definitions(sike PRIVATE _AMD64_)
 elseif(${ARCH} STREQUAL "arm")
-    add_compile_definitions(_ARM_)
+    target_compile_definitions(sike PRIVATE _ARM_)
 elseif(${ARCH} STREQUAL "arm64")
-    add_compile_definitions(_ARM64_)
+    target_compile_definitions(sike PRIVATE _ARM64_)
 endif()
-
-add_library(kem_sike OBJECT kem_sike.c)
-set(_SIKE_OBJS $<TARGET_OBJECTS:kem_sike>)
-
-if(OQS_ENABLE_SI_P434)
-    add_library(p434 OBJECT P434/P434.c)
-    set(_SIKE_OBJS ${_SIKE_OBJS} $<TARGET_OBJECTS:p434>)
-endif()
-if(OQS_ENABLE_SI_P434_COMPRESSED)
-    add_library(p434_compressed OBJECT P434/P434_compressed.c)
-    set(_SIKE_OBJS ${_SIKE_OBJS} $<TARGET_OBJECTS:p434_compressed>)
-endif()
-
-if(OQS_ENABLE_SI_P503)
-    add_library(p503 OBJECT P503/P503.c)
-    set(_SIKE_OBJS ${_SIKE_OBJS} $<TARGET_OBJECTS:p503>)
-endif()
-if(OQS_ENABLE_SI_P503_COMPRESSED)
-    add_library(p503_compressed OBJECT P503/P503_compressed.c)
-    set(_SIKE_OBJS ${_SIKE_OBJS} $<TARGET_OBJECTS:p503_compressed>)
-endif()
-
-if(OQS_ENABLE_SI_P610)
-    add_library(p610 OBJECT P610/P610.c)
-    set(_SIKE_OBJS ${_SIKE_OBJS} $<TARGET_OBJECTS:p610>)
-endif()
-if(OQS_ENABLE_SI_P503_COMPRESSED)
-    add_library(p610_compressed OBJECT P610/P610_compressed.c)
-    set(_SIKE_OBJS ${_SIKE_OBJS} $<TARGET_OBJECTS:p610_compressed>)
-endif()
-
-if(OQS_ENABLE_SI_P751)
-    add_library(p751 OBJECT P751/P751.c)
-    set(_SIKE_OBJS ${_SIKE_OBJS} $<TARGET_OBJECTS:p751>)
-endif()
-if(OQS_ENABLE_SI_P751_COMPRESSED)
-    add_library(p751_compressed OBJECT P751/P751_compressed.c)
-    set(_SIKE_OBJS ${_SIKE_OBJS} $<TARGET_OBJECTS:p751_compressed>)
-endif()
-
-set(SIKE_OBJS ${_SIKE_OBJS} PARENT_SCOPE)
