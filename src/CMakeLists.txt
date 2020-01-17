@@ -44,7 +44,7 @@ if(ENABLE_SIG_PICNIC)
 endif()
 if(ENABLE_SIG_QTESLA)
     add_subdirectory(sig/qtesla)
-    set(SIG_OBJS ${SIG_OBJS} $<TARGET_OBJECTS:qTesla>)
+    set(SIG_OBJS ${SIG_OBJS} $<TARGET_OBJECTS:qtesla>)
 endif()
 if(ENABLE_SIG_SPHINCS)
     add_subdirectory(sig/sphincs)
@@ -55,9 +55,17 @@ add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 sig/sig.c
                 ${SIG_OBJS}
-                $<TARGET_OBJECTS:common>
-                $<TARGET_OBJECTS:crypto>)
+                $<TARGET_OBJECTS:crypto>
+                $<TARGET_OBJECTS:common>)
+
 set_target_properties(oqs
-                      PROPERTIES
-                      ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-                      LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+    PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+
+install(TARGETS oqs
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib)
+
+install(FILES ${PUBLIC_HEADERS}
+        DESTINATION include/oqs)

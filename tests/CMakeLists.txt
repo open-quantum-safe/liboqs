@@ -10,9 +10,8 @@ if(NOT WIN32)
     execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT)
     add_compile_definitions(OQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
 
-    # Common crypto tests.
-    # These test functions not part of
-    # the liboqs API.
+    # These functions tested here are
+    # not part of the liboqs API.
     get_directory_property(AES_IMPL
                            DIRECTORY ${PROJECT_SOURCE_DIR}/src/crypto
                            DEFINITION AES_IMPL)
@@ -62,7 +61,7 @@ target_link_libraries(speed_sig ${LIBS})
 
 add_custom_target(
     run_tests
-    COMMAND ${Python3_EXECUTABLE} -m pytest --verbose --junitxml=${CMAKE_BINARY_DIR}/test-results.xml
+    COMMAND ${Python3_EXECUTABLE} -m pytest --verbose --junitxml=${CMAKE_BINARY_DIR}/test-results.xml --build_tool=${CMAKE_MAKE_PROGRAM}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS oqs kat_kem kat_sig test_kem test_sig
     USES_TERMINAL)

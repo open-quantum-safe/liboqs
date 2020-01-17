@@ -99,6 +99,7 @@ stamp-h1
 .dirstamp
 confdefs*
 conftest*
+!tests/conftest.py
 
 #params
 sample_params
