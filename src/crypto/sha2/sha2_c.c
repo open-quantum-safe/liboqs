@@ -589,6 +589,9 @@ void OQS_SHA2_sha256_inc_finalize(uint8_t *out, void *_state, const uint8_t *in,
 	for (size_t i = 0; i < 32; ++i) {
 		out[i] = state->ctx[i];
 	}
+}
+
+void OQS_SHA2_sha256_inc_destroy(void *_state) {
 	OQS_MEM_secure_free(state, sizeof(sha256ctx));
 }
 
@@ -654,6 +657,7 @@ void OQS_SHA2_sha256(uint8_t *out, const uint8_t *in, size_t inlen) {
 
 	OQS_SHA2_sha256_inc_init((void **) &state);
 	OQS_SHA2_sha256_inc_finalize(out, state, in, inlen);
+	OQS_SHA2_sha256_inc_destroy(state);
 }
 
 void OQS_SHA2_sha384(uint8_t *out, const uint8_t *in, size_t inlen) {

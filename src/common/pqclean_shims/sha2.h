@@ -12,6 +12,7 @@ typedef void * sha256ctx;
 #define sha256_inc_init OQS_SHA2_sha256_inc_init
 #define sha256_inc_blocks(state, in, inblocks) OQS_SHA2_sha256_inc_blocks(*(state), in, inblocks)
 #define sha256_inc_finalize(out, state, in, inlen) OQS_SHA2_sha256_inc_finalize(out, *(state), in, inlen)
+#define sha256_inc_destroy(state) OQS_SHA2_sha256_inc_destroy(*(state))
 #define sha256_inc_clone_state(stateout, statein) OQS_SHA2_sha256_inc_clone_state(stateout, *(statein))
 
 #endif
