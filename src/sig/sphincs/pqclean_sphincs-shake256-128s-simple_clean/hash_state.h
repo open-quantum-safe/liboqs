@@ -16,12 +16,14 @@
  * allows for reuse of the intermediate SHA-256 state after the initial call to
  * the compression function which improves performance.
  *
+ * We pass this hash state around in functions, because otherwise we need to
+ * have a global variable.
+ *
  * SHAKE256 does not need this state. Because this implementation is generated
  * from a shared code base, we still need to specify some hash_state as it is
  * still passed around. We chose to use an `int` as a placeholder for this
  * purpose.
  */
-
 
 #define hash_state int
 

@@ -1,5 +1,5 @@
-#ifndef SPX_FORS_H
-#define SPX_FORS_H
+#ifndef PQCLEAN_SPHINCSSHAKE256256SROBUST_CLEAN_FORS_H
+#define PQCLEAN_SPHINCSSHAKE256256SROBUST_CLEAN_FORS_H
 
 #include <stdint.h>
 
@@ -8,7 +8,7 @@
 
 /**
  * Signs a message m, deriving the secret key from sk_seed and the FTS address.
- * Assumes m contains at least SPX_FORS_HEIGHT * SPX_FORS_TREES bits.
+ * Assumes m contains at least PQCLEAN_SPHINCSSHAKE256256SROBUST_CLEAN_FORS_HEIGHT * PQCLEAN_SPHINCSSHAKE256256SROBUST_CLEAN_FORS_TREES bits.
  */
 void PQCLEAN_SPHINCSSHAKE256256SROBUST_CLEAN_fors_sign(
     unsigned char *sig, unsigned char *pk,
@@ -21,7 +21,7 @@ void PQCLEAN_SPHINCSSHAKE256256SROBUST_CLEAN_fors_sign(
  * This can be used for verification by comparing to a known public key, or to
  * subsequently verify a signature on the derived public key. The latter is the
  * typical use-case when used as an FTS below an OTS in a hypertree.
- * Assumes m contains at least SPX_FORS_HEIGHT * SPX_FORS_TREES bits.
+ * Assumes m contains at least PQCLEAN_SPHINCSSHAKE256256SROBUST_CLEAN_FORS_HEIGHT * PQCLEAN_SPHINCSSHAKE256256SROBUST_CLEAN_FORS_TREES bits.
  */
 void PQCLEAN_SPHINCSSHAKE256256SROBUST_CLEAN_fors_pk_from_sig(
     unsigned char *pk,

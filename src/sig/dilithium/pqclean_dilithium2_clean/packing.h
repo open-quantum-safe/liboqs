@@ -1,31 +1,42 @@
-#ifndef PACKING_H
-#define PACKING_H
+#ifndef PQCLEAN_DILITHIUM2_CLEAN_PACKING_H
+#define PQCLEAN_DILITHIUM2_CLEAN_PACKING_H
 
+#include "api.h"
 #include "params.h"
 #include "polyvec.h"
 
-void PQCLEAN_DILITHIUM2_CLEAN_pack_pk(unsigned char pk[CRYPTO_PUBLICKEYBYTES],
-                                      const unsigned char rho[SEEDBYTES], const polyveck *t1);
-void PQCLEAN_DILITHIUM2_CLEAN_pack_sk(unsigned char sk[CRYPTO_SECRETKEYBYTES],
-                                      const unsigned char rho[SEEDBYTES],
-                                      const unsigned char key[SEEDBYTES],
-                                      const unsigned char tr[CRHBYTES],
-                                      const polyvecl *s1,
-                                      const polyveck *s2,
-                                      const polyveck *t0);
-void PQCLEAN_DILITHIUM2_CLEAN_pack_sig(unsigned char sig[CRYPTO_BYTES],
-                                       const polyvecl *z, const polyveck *h, const poly *c);
+void PQCLEAN_DILITHIUM2_CLEAN_pack_pk(
+    uint8_t pk[PQCLEAN_DILITHIUM2_CLEAN_CRYPTO_PUBLICKEYBYTES],
+    const uint8_t rho[SEEDBYTES],
+    const polyveck *t1);
+void PQCLEAN_DILITHIUM2_CLEAN_pack_sk(
+    uint8_t sk[PQCLEAN_DILITHIUM2_CLEAN_CRYPTO_SECRETKEYBYTES],
+    const uint8_t rho[SEEDBYTES],
+    const uint8_t key[SEEDBYTES],
+    const uint8_t tr[SEEDBYTES],
+    const polyvecl *s1,
+    const polyveck *s2,
+    const polyveck *t0);
+void PQCLEAN_DILITHIUM2_CLEAN_pack_sig(
+    uint8_t sig[PQCLEAN_DILITHIUM2_CLEAN_CRYPTO_SECRETKEYBYTES],
+    const polyvecl *z, const polyveck *h, const poly *c);
 
-void PQCLEAN_DILITHIUM2_CLEAN_unpack_pk(unsigned char rho[SEEDBYTES], polyveck *t1,
-                                        const unsigned char pk[CRYPTO_PUBLICKEYBYTES]);
-void PQCLEAN_DILITHIUM2_CLEAN_unpack_sk(unsigned char rho[SEEDBYTES],
-                                        unsigned char key[SEEDBYTES],
-                                        unsigned char tr[CRHBYTES],
-                                        polyvecl *s1,
-                                        polyveck *s2,
-                                        polyveck *t0,
-                                        const unsigned char sk[CRYPTO_SECRETKEYBYTES]);
-int PQCLEAN_DILITHIUM2_CLEAN_unpack_sig(polyvecl *z, polyveck *h, poly *c,
-                                        const unsigned char sig[CRYPTO_BYTES]);
+void PQCLEAN_DILITHIUM2_CLEAN_unpack_pk(
+    uint8_t rho[SEEDBYTES],
+    polyveck *t1,
+    const uint8_t pk[PQCLEAN_DILITHIUM2_CLEAN_CRYPTO_PUBLICKEYBYTES]);
+void PQCLEAN_DILITHIUM2_CLEAN_unpack_sk(
+    uint8_t rho[SEEDBYTES],
+    uint8_t key[SEEDBYTES],
+    uint8_t tr[CRHBYTES],
+    polyvecl *s1,
+    polyveck *s2,
+    polyveck *t0,
+    const uint8_t *sk);
+int PQCLEAN_DILITHIUM2_CLEAN_unpack_sig(
+    polyvecl *z,
+    polyveck *h,
+    poly *c,
+    const uint8_t sig[PQCLEAN_DILITHIUM2_CLEAN_CRYPTO_BYTES]);
 
 #endif

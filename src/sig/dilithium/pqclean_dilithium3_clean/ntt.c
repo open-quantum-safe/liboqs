@@ -1,11 +1,12 @@
-#include "ntt.h"
-#include "params.h"
-#include "poly.h"
-#include "reduce.h"
 #include <stdint.h>
 
-/* Roots of unity in order needed by forward ntt */
-static const uint32_t zetas[N] = {
+#include "params.h"
+#include "ntt.h"
+#include "poly.h"
+#include "reduce.h"
+
+/* Roots of unity in order needed by forward PQCLEAN_DILITHIUM3_CLEAN_ntt */
+static const uint32_t PQCLEAN_DILITHIUM3_CLEAN_zetas[N] = {
     0, 25847, 5771523, 7861508, 237124, 7602457, 7504169, 466468, 1826347,
     2353451, 8021166, 6288512, 3119733, 5495562, 3111497, 2680103, 2725464,
     1024112, 7300517, 3585928, 7830929, 7260833, 2619752, 6271868, 6262231,
@@ -40,8 +41,8 @@ static const uint32_t zetas[N] = {
     8332111, 7018208, 3937738, 1400424, 7534263, 1976782
 };
 
-/* Roots of unity in order needed by inverse ntt */
-static const uint32_t zetas_inv[N] = {
+/* Roots of unity in order needed by inverse PQCLEAN_DILITHIUM3_CLEAN_ntt */
+static const uint32_t PQCLEAN_DILITHIUM3_CLEAN_zetas_inv[N] = {
     6403635, 846154, 6979993, 4442679, 1362209, 48306, 4460757, 554416,
     3545687, 6767575, 976891, 8196974, 2286327, 420899, 2235985, 2939036,
     3833893, 260646, 1104333, 1667432, 6470041, 1803090, 6656817, 426683,
@@ -77,7 +78,7 @@ static const uint32_t zetas_inv[N] = {
 };
 
 /*************************************************
-* Name:        ntt
+* Name:        PQCLEAN_DILITHIUM3_CLEAN_ntt
 *
 * Description: Forward NTT, in-place. No modular reduction is performed after
 *              additions or subtractions. Hence output coefficients can be up
@@ -87,15 +88,15 @@ static const uint32_t zetas_inv[N] = {
 * Arguments:   - uint32_t p[N]: input/output coefficient array
 **************************************************/
 void PQCLEAN_DILITHIUM3_CLEAN_ntt(uint32_t p[N]) {
-    unsigned int len, start, j, k;
+    size_t k, j;
     uint32_t zeta, t;
 
     k = 1;
-    for (len = 128; len > 0; len >>= 1) {
-        for (start = 0; start < N; start = j + len) {
-            zeta = zetas[k++];
+    for (size_t len = 128; len > 0; len >>= 1) {
+        for (size_t start = 0; start < N; start = j + len) {
+            zeta = PQCLEAN_DILITHIUM3_CLEAN_zetas[k++];
             for (j = start; j < start + len; ++j) {
-                t = PQCLEAN_DILITHIUM3_CLEAN_montgomery_reduce((uint64_t)zeta * p[j + len]);
+                t = PQCLEAN_DILITHIUM3_CLEAN_montgomery_reduce((uint64_t) zeta * p[j + len]);
                 p[j + len] = p[j] + 2 * Q - t;
                 p[j] = p[j] + t;
             }
@@ -104,7 +105,7 @@ void PQCLEAN_DILITHIUM3_CLEAN_ntt(uint32_t p[N]) {
 }
 
 /*************************************************
-* Name:        invntt_frominvmont
+* Name:        PQCLEAN_DILITHIUM3_CLEAN_invntt_frominvmont
 *
 * Description: Inverse NTT and multiplication by Montgomery factor 2^32.
 *              In-place. No modular reductions after additions or
@@ -114,24 +115,24 @@ void PQCLEAN_DILITHIUM3_CLEAN_ntt(uint32_t p[N]) {
 * Arguments:   - uint32_t p[N]: input/output coefficient array
 **************************************************/
 void PQCLEAN_DILITHIUM3_CLEAN_invntt_frominvmont(uint32_t p[N]) {
-    unsigned int start, len, j, k;
+    size_t start, len, j, k;
     uint32_t t, zeta;
     const uint32_t f = (((uint64_t)MONT * MONT % Q) * (Q - 1) % Q) * ((Q - 1) >> 8) % Q;
 
     k = 0;
     for (len = 1; len < N; len <<= 1) {
         for (start = 0; start < N; start = j + len) {
-            zeta = zetas_inv[k++];
+            zeta = PQCLEAN_DILITHIUM3_CLEAN_zetas_inv[k++];
             for (j = start; j < start + len; ++j) {
                 t = p[j];
                 p[j] = t + p[j + len];
                 p[j + len] = t + 256 * Q - p[j + len];
-                p[j + len] = PQCLEAN_DILITHIUM3_CLEAN_montgomery_reduce((uint64_t)zeta * p[j + len]);
+                p[j + len] = PQCLEAN_DILITHIUM3_CLEAN_montgomery_reduce((uint64_t) zeta * p[j + len]);
             }
         }
     }
 
     for (j = 0; j < N; ++j) {
-        p[j] = PQCLEAN_DILITHIUM3_CLEAN_montgomery_reduce((uint64_t)f * p[j]);
+        p[j] = PQCLEAN_DILITHIUM3_CLEAN_montgomery_reduce((uint64_t) f * p[j]);
     }
 }

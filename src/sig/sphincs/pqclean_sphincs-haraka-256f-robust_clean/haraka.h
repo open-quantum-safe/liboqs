@@ -1,5 +1,5 @@
-#ifndef SPX_HARAKA_H
-#define SPX_HARAKA_H
+#ifndef PQCLEAN_SPHINCSHARAKA256FROBUST_CLEAN_HARAKA_H
+#define PQCLEAN_SPHINCSHARAKA256FROBUST_CLEAN_HARAKA_H
 
 #include <stddef.h>
 #include <stdint.h>

@@ -1,7 +1,8 @@
 #include "params.h"
 #include "rounding.h"
+
 /*************************************************
-* Name:        power2round
+* Name:        PQCLEAN_DILITHIUM4_CLEAN_power2round
 *
 * Description: For finite field element a, compute a0, a1 such that
 *              a mod Q = a1*2^D + a0 with -2^{D-1} < a0 <= 2^{D-1}.
@@ -17,16 +18,16 @@ uint32_t PQCLEAN_DILITHIUM4_CLEAN_power2round(uint32_t a, uint32_t *a0)  {
 
     /* Centralized remainder mod 2^D */
     t = a & ((1U << D) - 1);
-    t -= ((1U << (D - 1)) + 1);
-    t += ((uint32_t)((int32_t)t >> 31) & (1U << D));
-    t -= ((1U << (D - 1)) - 1);
-    *a0 = (Q + t);
+    t -= (1U << (D - 1)) + 1;
+    t += ((uint32_t)((int32_t)t >> 31) & (1 << D));
+    t -= (1U << (D - 1)) - 1;
+    *a0 = Q + t;
     a = (a - t) >> D;
     return a;
 }
 
 /*************************************************
-* Name:        decompose
+* Name:        PQCLEAN_DILITHIUM4_CLEAN_decompose
 *
 * Description: For finite field element a, compute high and low bits a0, a1 such
 *              that a mod Q = a1*ALPHA + a0 with -ALPHA/2 < a0 <= ALPHA/2 except
@@ -41,28 +42,29 @@ uint32_t PQCLEAN_DILITHIUM4_CLEAN_power2round(uint32_t a, uint32_t *a0)  {
 **************************************************/
 uint32_t PQCLEAN_DILITHIUM4_CLEAN_decompose(uint32_t a, uint32_t *a0) {
     int32_t t, u;
+
     /* Centralized remainder mod ALPHA */
-    t = a & 0x7FFFF;
-    t += (int32_t) ((a >> 19) << 9);
+    t = a & 0x7FFFFu;
+    t += (int32_t)((a >> 19u) << 9u);
     t -= ALPHA / 2 + 1;
     t += (t >> 31) & ALPHA;
     t -= ALPHA / 2 - 1;
-    a -= (uint32_t) t;
+    a -= (uint32_t)t;
 
     /* Divide by ALPHA (possible to avoid) */
-    u = (int32_t) a - 1;
+    u = (int32_t)(a - 1);
     u >>= 31;
     a = (a >> 19) + 1;
     a -= u & 1;
 
     /* Border case */
-    *a0 = Q + (uint32_t)t - (a >> 4);
-    a &= 0xF;
+    *a0 = (uint32_t)(Q + t - (int32_t)(a >> 4u));
+    a &= 0xFu;
     return a;
 }
 
 /*************************************************
-* Name:        make_hint
+* Name:        PQCLEAN_DILITHIUM4_CLEAN_make_hint
 *
 * Description: Compute hint bit indicating whether the low bits of the
 *              input element overflow into the high bits. Inputs assumed to be
@@ -82,7 +84,7 @@ unsigned int PQCLEAN_DILITHIUM4_CLEAN_make_hint(uint32_t a0, uint32_t a1) {
 }
 
 /*************************************************
-* Name:        use_hint
+* Name:        PQCLEAN_DILITHIUM4_CLEAN_use_hint
 *
 * Description: Correct high bits according to hint.
 *
@@ -101,5 +103,15 @@ uint32_t PQCLEAN_DILITHIUM4_CLEAN_use_hint(uint32_t a, unsigned int hint) {
     if (a0 > Q) {
         return (a1 + 1) & 0xF;
     }
+
     return (a1 - 1) & 0xF;
+
+    /* If PQCLEAN_DILITHIUM4_CLEAN_decompose does not divide out ALPHA:
+    if(hint == 0)
+      return a1;
+    else if(a0 > Q)
+      return (a1 + ALPHA) % (Q - 1);
+    else
+      return (a1 - ALPHA) % (Q - 1);
+    */
 }
