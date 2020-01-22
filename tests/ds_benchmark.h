@@ -249,10 +249,10 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 #define HIGH_PREC_HEADER "CPU cycles: mean         "
 #endif
 
-#define PRINT_TIMER_HEADER                                                                                                                                                                            \
-	printf("Started at ");                                                                                                                                                                            \
-	PRINT_CURRENT_TIME                                                                                                                                                                                \
-	printf("\n");                                                                                                                                                                                     \
+#define PRINT_TIMER_HEADER                                                                                                                                                                          \
+	printf("Started at ");                                                                                                                                                                          \
+	PRINT_CURRENT_TIME                                                                                                                                                                              \
+	printf("\n");                                                                                                                                                                                   \
 	printf("%-30s | %10s | %14s | %15s | %10s | %25s | %10s\n", "Operation                     ", "Iterations", "Total time (s)", "Time (us): mean", "pop. stdev", HIGH_PREC_HEADER, "pop. stdev"); \
 	printf("%-30s | %10s:| %14s:| %15s:| %10s:| %25s:| %10s:\n", "------------------------------", "----------", "--------------", "---------------", "----------", "-------------------------", "----------");
 /* colons are used in above to right-align cell contents in Markdown */
