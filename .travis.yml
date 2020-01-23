@@ -22,7 +22,7 @@ matrix:
     - SKIP_TESTS=style
     - HOMEBREW_NO_AUTO_UPDATE=1
     before_install:
-    - brew install doxygen graphviz
+    - brew install doxygen graphviz openssl@1.1
     - pip3 install pytest pytest-xdist
     script:
     - autoreconf -i

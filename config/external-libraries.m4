@@ -29,7 +29,7 @@ AC_DEFUN([ADD_EXTERNAL_LIB],[
     [test "x${with_openssl}" = "xno"],
     [AC_MSG_RESULT([no])],
     [
-      AC_MSG_RESULT([${with_openssl}])
+      AC_MSG_RESULT([yes (${with_openssl})])
       # set OPENSSL_DIR based on value provided
       AC_SUBST([OPENSSL_DIR], [${with_openssl}])
     ]
@@ -40,6 +40,34 @@ AC_DEFUN([ADD_EXTERNAL_LIB],[
   AM_COND_IF(USE_OPENSSL,
     [AC_DEFINE(USE_OPENSSL, 1, [Defined to 1 if using OpenSSL in liboqs])]
   )
+
+  AS_IF(
+    [test "x${with_openssl}" != "xno"],
+    [
+      AC_MSG_CHECKING([OpenSSL version])
+      AC_LANG_PUSH([C])
+      OLDCFLAGS=${CFLAGS}
+      CFLAGS=-I${with_openssl}/include
+      OPENSSL_VERSION=`${with_openssl}/bin/openssl version -v`
+      AC_RUN_IFELSE(
+        [AC_LANG_PROGRAM(
+          [#include <openssl/opensslv.h>],
+          [
+            #if defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER >= 0x1010000fL
+              return 0;
+            #else
+              return 1;
+            #endif
+          ]
+        )],
+        CFLAGS=${OLDCFLAGS}
+        [AC_MSG_RESULT([ok (${OPENSSL_VERSION})])],
+        [AC_MSG_FAILURE([too old (found ${OPENSSL_VERSION}, need >= 1.1.0)])]
+      )
+      AC_LANG_POP([C])
+    ]
+  )
+
 
   AC_ARG_WITH([m4ri-dir],
     [AS_HELP_STRING(
