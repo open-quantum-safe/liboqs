@@ -8,26 +8,26 @@
 #include "fips202.h"
 
 /**
- * Takes an array of inblocks concatenated arrays of SPX_N bytes.
+ * Takes an array of inblocks concatenated arrays of PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N bytes.
  */
 static void PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_thash(
     unsigned char *out, unsigned char *buf,
     const unsigned char *in, unsigned int inblocks,
     const unsigned char *pub_seed, uint32_t addr[8]) {
 
-    unsigned char *bitmask = buf + SPX_N + SPX_ADDR_BYTES;
+    unsigned char *bitmask = buf + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_ADDR_BYTES;
     unsigned int i;
 
-    memcpy(buf, pub_seed, SPX_N);
-    PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_addr_to_bytes(buf + SPX_N, addr);
+    memcpy(buf, pub_seed, PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N);
+    PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_addr_to_bytes(buf + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N, addr);
 
-    shake256(bitmask, inblocks * SPX_N, buf, SPX_N + SPX_ADDR_BYTES);
+    shake256(bitmask, inblocks * PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N, buf, PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_ADDR_BYTES);
 
-    for (i = 0; i < inblocks * SPX_N; i++) {
-        buf[SPX_N + SPX_ADDR_BYTES + i] = in[i] ^ bitmask[i];
+    for (i = 0; i < inblocks * PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N; i++) {
+        buf[PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_ADDR_BYTES + i] = in[i] ^ bitmask[i];
     }
 
-    shake256(out, SPX_N, buf, SPX_N + SPX_ADDR_BYTES + inblocks * SPX_N);
+    shake256(out, PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N, buf, PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_ADDR_BYTES + inblocks * PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N);
 }
 
 /* The wrappers below ensure that we use fixed-size buffers on the stack */
@@ -37,7 +37,7 @@ void PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_thash_1(
     const unsigned char *pub_seed, uint32_t addr[8],
     const hash_state *hash_state_seeded) {
 
-    unsigned char buf[SPX_N + SPX_ADDR_BYTES + 1 * SPX_N];
+    unsigned char buf[PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_ADDR_BYTES + 1 * PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N];
     PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_thash(
         out, buf, in, 1, pub_seed, addr);
 
@@ -49,7 +49,7 @@ void PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_thash_2(
     const unsigned char *pub_seed, uint32_t addr[8],
     const hash_state *hash_state_seeded) {
 
-    unsigned char buf[SPX_N + SPX_ADDR_BYTES + 2 * SPX_N];
+    unsigned char buf[PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_ADDR_BYTES + 2 * PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N];
     PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_thash(
         out, buf, in, 2, pub_seed, addr);
 
@@ -61,9 +61,9 @@ void PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_thash_WOTS_LEN(
     const unsigned char *pub_seed, uint32_t addr[8],
     const hash_state *hash_state_seeded) {
 
-    unsigned char buf[SPX_N + SPX_ADDR_BYTES + SPX_WOTS_LEN * SPX_N];
+    unsigned char buf[PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_ADDR_BYTES + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_WOTS_LEN * PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N];
     PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_thash(
-        out, buf, in, SPX_WOTS_LEN, pub_seed, addr);
+        out, buf, in, PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_WOTS_LEN, pub_seed, addr);
 
     (void)hash_state_seeded;  /* Avoid unused parameter warning. */
 }
@@ -73,9 +73,9 @@ void PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_thash_FORS_TREES(
     const unsigned char *pub_seed, uint32_t addr[8],
     const hash_state *hash_state_seeded) {
 
-    unsigned char buf[SPX_N + SPX_ADDR_BYTES + SPX_FORS_TREES * SPX_N];
+    unsigned char buf[PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_ADDR_BYTES + PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_FORS_TREES * PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_N];
     PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_thash(
-        out, buf, in, SPX_FORS_TREES, pub_seed, addr);
+        out, buf, in, PQCLEAN_SPHINCSSHAKE256128SROBUST_CLEAN_FORS_TREES, pub_seed, addr);
 
     (void)hash_state_seeded;  /* Avoid unused parameter warning. */
 }

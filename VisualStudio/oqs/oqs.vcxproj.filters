@@ -452,7 +452,7 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\rounding.c">
       <Filter>dilithium\2</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\symmetric.c">
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\stream.c">
       <Filter>dilithium\2</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_3.c">
@@ -479,7 +479,7 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\rounding.c">
       <Filter>dilithium\3</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\symmetric.c">
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\stream.c">
       <Filter>dilithium\3</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_4.c">
@@ -506,7 +506,7 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\rounding.c">
       <Filter>dilithium\4</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\symmetric.c">
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\stream.c">
       <Filter>dilithium\4</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\mqdss\sig_mqdss_31_48.c">

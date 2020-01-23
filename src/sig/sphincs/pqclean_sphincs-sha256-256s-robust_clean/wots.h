@@ -1,5 +1,5 @@
-#ifndef SPX_WOTS_H
-#define SPX_WOTS_H
+#ifndef PQCLEAN_SPHINCSSHA256256SROBUST_CLEAN_WOTS_H
+#define PQCLEAN_SPHINCSSHA256256SROBUST_CLEAN_WOTS_H
 
 #include "hash_state.h"
 #include "params.h"

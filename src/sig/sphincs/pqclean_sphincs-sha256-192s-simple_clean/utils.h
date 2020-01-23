@@ -1,5 +1,5 @@
-#ifndef SPX_UTILS_H
-#define SPX_UTILS_H
+#ifndef PQCLEAN_SPHINCSSHA256192SSIMPLE_CLEAN_UTILS_H
+#define PQCLEAN_SPHINCSSHA256192SSIMPLE_CLEAN_UTILS_H
 
 #include "hash_state.h"
 #include "params.h"
@@ -33,7 +33,7 @@ void PQCLEAN_SPHINCSSHA256192SSIMPLE_CLEAN_compute_root(
  * For a given leaf index, computes the authentication path and the resulting
  * root node using Merkle's TreeHash algorithm.
  * Expects the layer and tree parts of the tree_addr to be set, as well as the
- * tree type (i.e. SPX_ADDR_TYPE_HASHTREE or SPX_ADDR_TYPE_FORSTREE).
+ * tree type (i.e. PQCLEAN_SPHINCSSHA256192SSIMPLE_CLEAN_ADDR_TYPE_HASHTREE or PQCLEAN_SPHINCSSHA256192SSIMPLE_CLEAN_ADDR_TYPE_FORSTREE).
  * Applies the offset idx_offset to indices before building addresses, so that
  * it is possible to continue counting indices across trees.
  */

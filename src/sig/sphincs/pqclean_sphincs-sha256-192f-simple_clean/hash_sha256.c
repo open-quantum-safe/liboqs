@@ -18,20 +18,25 @@ void PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_initialize_hash_function(
     (void)sk_seed; /* Suppress an 'unused parameter' warning. */
 }
 
+/* Clean up hash state */
+void PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_destroy_hash_function(hash_state *hash_state_seeded) {
+    sha256_inc_destroy(hash_state_seeded);
+}
+
 /*
- * Computes PRF(key, addr), given a secret key of SPX_N bytes and an address
+ * Computes PRF(key, addr), given a secret key of PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N bytes and an address
  */
 void PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_prf_addr(
     unsigned char *out, const unsigned char *key, const uint32_t addr[8],
     const hash_state *hash_state_seeded) {
-    unsigned char buf[SPX_N + SPX_SHA256_ADDR_BYTES];
-    unsigned char outbuf[SPX_SHA256_OUTPUT_BYTES];
+    unsigned char buf[PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_ADDR_BYTES];
+    unsigned char outbuf[PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_OUTPUT_BYTES];
 
-    memcpy(buf, key, SPX_N);
-    PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_compress_address(buf + SPX_N, addr);
+    memcpy(buf, key, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N);
+    PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_compress_address(buf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N, addr);
 
-    sha256(outbuf, buf, SPX_N + SPX_SHA256_ADDR_BYTES);
-    memcpy(out, outbuf, SPX_N);
+    sha256(outbuf, buf, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_ADDR_BYTES);
+    memcpy(out, outbuf, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N);
 
     (void)hash_state_seeded; /* Prevent unused parameter warning. */
 }
@@ -39,7 +44,7 @@ void PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_prf_addr(
 /**
  * Computes the message-dependent randomness R, using a secret seed as a key
  * for HMAC, and an optional randomization value prefixed to the message.
- * This requires m to have at least SPX_SHA256_BLOCK_BYTES + SPX_N space
+ * This requires m to have at least PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N space
  * available in front of the pointer, i.e. before the message to use for the
  * prefix. This is necessary to prevent having to move the message around (and
  * allocate memory for it).
@@ -48,44 +53,44 @@ void PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_gen_message_random(
     unsigned char *R,
     const unsigned char *sk_prf, const unsigned char *optrand,
     const unsigned char *m, size_t mlen, const hash_state *hash_state_seeded) {
-    unsigned char buf[SPX_SHA256_BLOCK_BYTES + SPX_SHA256_OUTPUT_BYTES];
+    unsigned char buf[PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_OUTPUT_BYTES];
     sha256ctx state;
     int i;
 
     /* This implements HMAC-SHA256 */
-    for (i = 0; i < SPX_N; i++) {
+    for (i = 0; i < PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N; i++) {
         buf[i] = 0x36 ^ sk_prf[i];
     }
-    memset(buf + SPX_N, 0x36, SPX_SHA256_BLOCK_BYTES - SPX_N);
+    memset(buf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N, 0x36, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N);
 
     sha256_inc_init(&state);
     sha256_inc_blocks(&state, buf, 1);
 
-    memcpy(buf, optrand, SPX_N);
+    memcpy(buf, optrand, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N);
 
     /* If optrand + message cannot fill up an entire block */
-    if (SPX_N + mlen < SPX_SHA256_BLOCK_BYTES) {
-        memcpy(buf + SPX_N, m, mlen);
-        sha256_inc_finalize(buf + SPX_SHA256_BLOCK_BYTES, &state,
-                            buf, mlen + SPX_N);
+    if (PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N + mlen < PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES) {
+        memcpy(buf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N, m, mlen);
+        sha256_inc_finalize(buf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES, &state,
+                            buf, mlen + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N);
     }
     /* Otherwise first fill a block, so that finalize only uses the message */
     else {
-        memcpy(buf + SPX_N, m, SPX_SHA256_BLOCK_BYTES - SPX_N);
+        memcpy(buf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N, m, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N);
         sha256_inc_blocks(&state, buf, 1);
 
-        m += SPX_SHA256_BLOCK_BYTES - SPX_N;
-        mlen -= SPX_SHA256_BLOCK_BYTES - SPX_N;
-        sha256_inc_finalize(buf + SPX_SHA256_BLOCK_BYTES, &state, m, mlen);
+        m += PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N;
+        mlen -= PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N;
+        sha256_inc_finalize(buf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES, &state, m, mlen);
     }
 
-    for (i = 0; i < SPX_N; i++) {
+    for (i = 0; i < PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N; i++) {
         buf[i] = 0x5c ^ sk_prf[i];
     }
-    memset(buf + SPX_N, 0x5c, SPX_SHA256_BLOCK_BYTES - SPX_N);
+    memset(buf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N, 0x5c, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N);
 
-    sha256(buf, buf, SPX_SHA256_BLOCK_BYTES + SPX_SHA256_OUTPUT_BYTES);
-    memcpy(R, buf, SPX_N);
+    sha256(buf, buf, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_OUTPUT_BYTES);
+    memcpy(R, buf, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N);
 
     (void)hash_state_seeded; /* Prevent unused parameter warning. */
 }
@@ -100,58 +105,58 @@ void PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_hash_message(
     const unsigned char *R, const unsigned char *pk,
     const unsigned char *m, size_t mlen,
     const hash_state *hash_state_seeded) {
-#define SPX_TREE_BITS (SPX_TREE_HEIGHT * (SPX_D - 1))
-#define SPX_TREE_BYTES ((SPX_TREE_BITS + 7) / 8)
-#define SPX_LEAF_BITS SPX_TREE_HEIGHT
-#define SPX_LEAF_BYTES ((SPX_LEAF_BITS + 7) / 8)
-#define SPX_DGST_BYTES (SPX_FORS_MSG_BYTES + SPX_TREE_BYTES + SPX_LEAF_BYTES)
+#define PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_TREE_BITS (PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_TREE_HEIGHT * (PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_D - 1))
+#define PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_TREE_BYTES ((PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_TREE_BITS + 7) / 8)
+#define PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_LEAF_BITS PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_TREE_HEIGHT
+#define PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_LEAF_BYTES ((PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_LEAF_BITS + 7) / 8)
+#define PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_DGST_BYTES (PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_FORS_MSG_BYTES + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_TREE_BYTES + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_LEAF_BYTES)
 
-    unsigned char seed[SPX_SHA256_OUTPUT_BYTES + 4];
+    unsigned char seed[PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_OUTPUT_BYTES + 4];
 
-    /* Round to nearest multiple of SPX_SHA256_BLOCK_BYTES */
-#define SPX_INBLOCKS (((SPX_N + SPX_PK_BYTES + SPX_SHA256_BLOCK_BYTES - 1) & \
-                       -SPX_SHA256_BLOCK_BYTES) / SPX_SHA256_BLOCK_BYTES)
-    unsigned char inbuf[SPX_INBLOCKS * SPX_SHA256_BLOCK_BYTES];
+    /* Round to nearest multiple of PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES */
+#define PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_INBLOCKS (((PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_PK_BYTES + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES - 1) & \
+        -PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES) / PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES)
+    unsigned char inbuf[PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_INBLOCKS * PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES];
 
-    unsigned char buf[SPX_DGST_BYTES];
+    unsigned char buf[PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_DGST_BYTES];
     unsigned char *bufp = buf;
     sha256ctx state;
 
     sha256_inc_init(&state);
 
-    memcpy(inbuf, R, SPX_N);
-    memcpy(inbuf + SPX_N, pk, SPX_PK_BYTES);
+    memcpy(inbuf, R, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N);
+    memcpy(inbuf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N, pk, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_PK_BYTES);
 
     /* If R + pk + message cannot fill up an entire block */
-    if (SPX_N + SPX_PK_BYTES + mlen < SPX_INBLOCKS * SPX_SHA256_BLOCK_BYTES) {
-        memcpy(inbuf + SPX_N + SPX_PK_BYTES, m, mlen);
-        sha256_inc_finalize(seed, &state, inbuf, SPX_N + SPX_PK_BYTES + mlen);
+    if (PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_PK_BYTES + mlen < PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_INBLOCKS * PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES) {
+        memcpy(inbuf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_PK_BYTES, m, mlen);
+        sha256_inc_finalize(seed, &state, inbuf, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_PK_BYTES + mlen);
     }
     /* Otherwise first fill a block, so that finalize only uses the message */
     else {
-        memcpy(inbuf + SPX_N + SPX_PK_BYTES, m,
-               SPX_INBLOCKS * SPX_SHA256_BLOCK_BYTES - SPX_N - SPX_PK_BYTES);
-        sha256_inc_blocks(&state, inbuf, SPX_INBLOCKS);
+        memcpy(inbuf + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N + PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_PK_BYTES, m,
+               PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_INBLOCKS * PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_PK_BYTES);
+        sha256_inc_blocks(&state, inbuf, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_INBLOCKS);
 
-        m += SPX_INBLOCKS * SPX_SHA256_BLOCK_BYTES - SPX_N - SPX_PK_BYTES;
-        mlen -= SPX_INBLOCKS * SPX_SHA256_BLOCK_BYTES - SPX_N - SPX_PK_BYTES;
+        m += PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_INBLOCKS * PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_PK_BYTES;
+        mlen -= PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_INBLOCKS * PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_BLOCK_BYTES - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_N - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_PK_BYTES;
         sha256_inc_finalize(seed, &state, m, mlen);
     }
 
     /* By doing this in two steps, we prevent hashing the message twice;
        otherwise each iteration in MGF1 would hash the message again. */
-    PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_mgf1(bufp, SPX_DGST_BYTES, seed, SPX_SHA256_OUTPUT_BYTES);
+    PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_mgf1(bufp, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_DGST_BYTES, seed, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_SHA256_OUTPUT_BYTES);
 
-    memcpy(digest, bufp, SPX_FORS_MSG_BYTES);
-    bufp += SPX_FORS_MSG_BYTES;
+    memcpy(digest, bufp, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_FORS_MSG_BYTES);
+    bufp += PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_FORS_MSG_BYTES;
 
-    *tree = PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_bytes_to_ull(bufp, SPX_TREE_BYTES);
-    *tree &= (~(uint64_t)0) >> (64 - SPX_TREE_BITS);
-    bufp += SPX_TREE_BYTES;
+    *tree = PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_bytes_to_ull(bufp, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_TREE_BYTES);
+    *tree &= (~(uint64_t)0) >> (64 - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_TREE_BITS);
+    bufp += PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_TREE_BYTES;
 
     *leaf_idx = (uint32_t)PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_bytes_to_ull(
-                    bufp, SPX_LEAF_BYTES);
-    *leaf_idx &= (~(uint32_t)0) >> (32 - SPX_LEAF_BITS);
+                    bufp, PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_LEAF_BYTES);
+    *leaf_idx &= (~(uint32_t)0) >> (32 - PQCLEAN_SPHINCSSHA256192FSIMPLE_CLEAN_LEAF_BITS);
 
     (void)hash_state_seeded; /* Prevent unused parameter warning. */
 }

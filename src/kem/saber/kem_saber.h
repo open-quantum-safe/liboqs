@@ -1,5 +1,5 @@
-#ifndef OQS_KEM_SABER_H
-#define OQS_KEM_SABER_H
+#ifndef _OQS_KEM_SABER_H
+#define _OQS_KEM_SABER_H
 
 #include <oqs/oqs.h>
 
@@ -36,4 +36,4 @@ OQS_API OQS_STATUS OQS_KEM_saber_firesaber_encaps(uint8_t *ciphertext, uint8_t *
 OQS_API OQS_STATUS OQS_KEM_saber_firesaber_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
 
-#endif // OQS_KEM_SABER_H
+#endif

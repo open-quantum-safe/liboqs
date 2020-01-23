@@ -130,7 +130,7 @@ sigs:
         pqclean_scheme: dilithium2
         pretty_name_full: DILITHIUM_2
         implementation: clean
-        sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'symmetric.c']
+        sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'stream.c']
         signed_msg_order: sig_then_msg
         visual_studio_guid: 1f5e5dbe-8082-4756-9e90-c7d84198d682
       - 
@@ -138,7 +138,7 @@ sigs:
         pqclean_scheme: dilithium3
         pretty_name_full: DILITHIUM_3
         implementation: clean
-        sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'symmetric.c']
+        sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'stream.c']
         signed_msg_order: sig_then_msg
         visual_studio_guid: 8a93b308-7b77-41e7-88a5-275994b62322
       - 
@@ -146,7 +146,7 @@ sigs:
         pqclean_scheme: dilithium4
         pretty_name_full: DILITHIUM_4
         implementation: clean
-        sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'symmetric.c']
+        sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'stream.c']
         signed_msg_order: sig_then_msg
         visual_studio_guid: fb8c21f2-891b-46fb-8a45-17f69dfa31bd
   - 

@@ -29,7 +29,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/PQClean/PQClean
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/298dd2cf223cff50cc53bea534474796f9960653
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/7729c76b3e41c1bbecafdf9c05efdcfe5e9b2f52
 - **License:** Public domain
 - **Language:** C
 - **Constant-time:** Yes

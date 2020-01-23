@@ -63,6 +63,9 @@ void OQS_SHA2_sha256_inc_finalize(uint8_t *out, void *state, const uint8_t *in, 
 		EVP_DigestUpdate((EVP_MD_CTX *) state, in, inlen);
 	}
 	EVP_DigestFinal_ex((EVP_MD_CTX *) state, out, &md_len);
+}
+
+void OQS_SHA2_sha256_inc_destroy(void *state) {
 	EVP_MD_CTX_destroy((EVP_MD_CTX *) state);
 }
 
