@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ get_seeds(OUT seeds_t *seeds) {
 // No restrictions exist for the top or bottom bits -
 // in case an odd number is requried then set must_be_odd=1
 // Uses the provided prf context
-ret_t sample_uniform_r_bits_with_fixed_prf_context(OUT uint8_t *r,
+ret_t sample_uniform_r_bits_with_fixed_prf_context(OUT r_t *r,
                                                    IN OUT
                                                        aes_ctr_prf_state_t *prf_state,
                                                    IN const must_be_odd_t must_be_odd);
@@ -50,7 +50,7 @@ ret_t sample_uniform_r_bits_with_fixed_prf_context(OUT uint8_t *r,
 // No restrictions exist for the top or bottom bits -
 // in case an odd number is  requried then set must_be_odd=1
 _INLINE_ ret_t
-sample_uniform_r_bits(OUT uint8_t *r,
+sample_uniform_r_bits(OUT r_t *r,
                       IN const seed_t *seed,
                       IN const must_be_odd_t must_be_odd) {
 	// For the seedexpander
@@ -64,14 +64,6 @@ sample_uniform_r_bits(OUT uint8_t *r,
 
 	return SUCCESS;
 }
-
-// Generate a pseudorandom r of length len with a set DV
-// Using the pseudorandom ctx supplied
-// Outputs also a compressed (not ordered) list of indices
-ret_t generate_sparse_fake_rep(OUT uint64_t *a,
-                               OUT idx_t wlist[],
-                               IN const uint32_t padded_len,
-                               IN OUT aes_ctr_prf_state_t *prf_state);
 
 // Generate a pseudorandom r of length len with a set weight
 // Using the pseudorandom ctx supplied

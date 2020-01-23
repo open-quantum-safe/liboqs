@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -66,6 +66,9 @@ secure_cmp(IN const uint8_t *a, IN const uint8_t *b, IN const uint32_t size) {
 	return (0 == res);
 }
 
+uint64_t
+r_bits_vector_weight(IN const r_t *in);
+
 // Constant time
 _INLINE_ uint32_t
 iszero(IN const uint8_t *s, IN const uint32_t len) {
@@ -127,8 +130,8 @@ _INLINE_ uint32_t
 secure_l32_mask(IN const uint32_t v1, IN const uint32_t v2) {
 #if defined(__aarch64__)
 	uint32_t res;
-	__asm__ __volatile__("cmp  %w1, %w2; \n "
-	                     "cset %w0, LS; \n"
+	__asm__ __volatile__("cmp  %w2, %w1; \n "
+	                     "cset %w0, HI; \n"
 	                     : "=r"(res)
 	                     : "r"(v1), "r"(v2)
 	                     :);
