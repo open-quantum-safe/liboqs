@@ -70,7 +70,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 	On Ubuntu:
 
-		sudo apt install autoconf automake libtool gcc libssl-dev python3-pytest unzip xsltproc doxygen graphviz
+		sudo apt install cmake doxygen gcc ninja libssl-dev python3-pytest python3-pytest-xdist
 
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
@@ -86,16 +86,13 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 	and build:
 
-		autoreconf -i
-		./configure
-		make clean
-		make -j
-		
-	Various options can be passed to configure to disable algorithms, use different implementations, specify which OpenSSL library to use, or cross-compile.  See `./configure --help` for details.
+		mkdir build && cd build
+		cmake -GNinja ..
+		ninja
 
-	(If on macOS you encounter an error like `Can't exec "libtoolize": No such file or directory at ...`, try running with `LIBTOOLIZE=glibtoolize autoreconf -i`.)
+	Various options can be passed to configure to disable algorithms, use different implementations, specify whether to use OpenSSL, etc..  Run `cmake -LAH ..` in the `build` directory` for a list of all the options.
 
-3. The main build result is `liboqs.a`, a static library.  (This may be placed in the `.libs` directory.) There are also a variety of programs built under the `tests` directory:
+3. The main build result is `liboqs.a`, a static library. There are also a variety of programs built under the `tests` directory:
 
 	- `test_kem`: Simple test harness for key encapsulation mechanisms
 	- `test_sig`: Simple test harness for key signature schemes
@@ -109,13 +106,13 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 	A range of tests (including all `test_*` and `kat_*` programs above) can be run using
 
-		python3 -m pytest
+		ninja run_tests
 
 4. To generate HTML documentation of the API, run:
 
-		make docs
+		ninja gen_docs
 
-	Then open `docs/doxygen/html/index.html` in your web browser.
+	Then open `build/docs/doxygen/html/index.html` in your web browser.
 
 ### Windows
 

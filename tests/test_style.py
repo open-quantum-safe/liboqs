@@ -34,7 +34,7 @@ def test_style():
     assert 'version 3.9' in version, 'Invalid clang-format version (' + version + ')'
 
     helpers.run_subprocess(
-        ['make', 'prettyprint'],
+        ['tests/test_style.sh'],
         env = {'CLANGFORMAT': found_clang_format},
     )
 
