@@ -97,7 +97,7 @@ installheader_HEADERS= src/oqs.h \
 
 
 test: check
-	python3 -m pytest -v
+	python3 -m pytest --verbose --numprocesses=auto
 
 links:
 	$(MKDIR_P) include/oqs
