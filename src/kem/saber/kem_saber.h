@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_SABER_H
-#define __OQS_KEM_SABER_H
+#ifndef _OQS_KEM_SABER_H
+#define _OQS_KEM_SABER_H
 
 #include <oqs/oqs.h>
 

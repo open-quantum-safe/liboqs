@@ -1,5 +1,5 @@
-#ifndef __OQS_SIG_SPHINCS_H
-#define __OQS_SIG_SPHINCS_H
+#ifndef _OQS_SIG_SPHINCS_H
+#define _OQS_SIG_SPHINCS_H
 
 #include <oqs/oqs.h>
 

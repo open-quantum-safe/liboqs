@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_NEWHOPE_H
-#define __OQS_KEM_NEWHOPE_H
+#ifndef _OQS_KEM_NEWHOPE_H
+#define _OQS_KEM_NEWHOPE_H
 
 #include <oqs/oqs.h>
 

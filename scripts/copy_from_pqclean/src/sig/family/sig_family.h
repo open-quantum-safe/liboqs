@@ -1,5 +1,5 @@
-#ifndef __OQS_SIG_{{ family|upper }}_H
-#define __OQS_SIG_{{ family|upper }}_H
+#ifndef _OQS_SIG_{{ family|upper }}_H
+#define _OQS_SIG_{{ family|upper }}_H
 
 #include <oqs/oqs.h>
 
