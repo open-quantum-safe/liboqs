@@ -21,7 +21,7 @@ if ON_DARWIN
 COMMON_CSRCS += $(BIKE_DIR)/sampling_portable.c $(BIKE_DIR)/secure_decode_portable.c 
 COMMON_FLAGS += -DPORTABLE
 else
-if USE_AVX512F_INSTRUCTIONS
+if USE_AVX512_INSTRUCTIONS
 COMMON_CSRCS += $(BIKE_DIR)/red.S $(BIKE_DIR)/secure_decode_avx512.c
 COMMON_CSRCS += $(BIKE_DIR)/sampling_avx512.S $(BIKE_DIR)/gf_mul.S 
 COMMON_FLAGS += -DAVX512

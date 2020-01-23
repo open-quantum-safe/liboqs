@@ -37,6 +37,7 @@
 
 #define R_YMM_HALF_LOG2 UPTOPOW2(R_YMM / 2)
 
+_INLINE_
 void rotate256_big(OUT syndrome_t *out, IN const syndrome_t *in, IN size_t ymm_num) {
 	// For preventing overflows (comparison in bytes)
 	bike_static_assert(sizeof(*out) > (YMM_SIZE * (R_YMM + (2 * R_YMM_HALF_LOG2))),
