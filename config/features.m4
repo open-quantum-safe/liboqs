@@ -32,6 +32,7 @@ AC_DEFUN([CONFIG_FEATURE_FLAGS],
   ARG_DISBL_SET_WRAP([kem-newhope], [kem_newhope], [ENABLE_KEM_NEWHOPE], [src/kem/newhope])
   ARG_DISBL_SET_WRAP([kem-ntru], [kem_ntru], [ENABLE_KEM_NTRU], [src/kem/ntru])
   ARG_DISBL_SET_WRAP([kem-saber], [kem_saber], [ENABLE_KEM_SABER], [src/kem/saber])
+  ARG_DISBL_SET_WRAP([kem-threebears], [kem_threebears], [ENABLE_KEM_THREEBEARS], [src/kem/threebears])
   ARG_DISBL_SET_WRAP([sig-dilithium], [sig_dilithium], [ENABLE_SIG_DILITHIUM], [src/sig/dilithium])
   ARG_DISBL_SET_WRAP([sig-mqdss], [sig_mqdss], [ENABLE_SIG_MQDSS], [src/sig/mqdss])
   ARG_DISBL_SET_WRAP([sig-sphincs], [sig_sphincs], [ENABLE_SIG_SPHINCS], [src/sig/sphincs])
@@ -78,6 +79,14 @@ AC_DEFUN([CONFIG_FEATURES],
     AC_DEFINE(OQS_ENABLE_KEM_saber_lightsaber, 1, "Define to 1 when LightSaber-KEM enabled")
     AC_DEFINE(OQS_ENABLE_KEM_saber_saber, 1, "Define to 1 when Saber-KEM enabled")
     AC_DEFINE(OQS_ENABLE_KEM_saber_firesaber, 1, "Define to 1 when FireSaber-KEM enabled")
+  ])
+  AM_COND_IF([ENABLE_KEM_THREEBEARS], [
+    AC_DEFINE(OQS_ENABLE_KEM_threebears_babybear, 1, "Define to 1 when BabyBear enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_threebears_babybear_ephem, 1, "Define to 1 when BabyBearEphem enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_threebears_mamabear, 1, "Define to 1 when MamaBear enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_threebears_mamabear_ephem, 1, "Define to 1 when MamaBearEphem enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_threebears_papabear, 1, "Define to 1 when PapaBear enabled")
+    AC_DEFINE(OQS_ENABLE_KEM_threebears_papabear_ephem, 1, "Define to 1 when PapaBearEphem enabled")
   ])
   AM_COND_IF([ENABLE_SIG_DILITHIUM], [
     AC_DEFINE(OQS_ENABLE_SIG_dilithium_2, 1, "Define to 1 when DILITHIUM_2 enabled")

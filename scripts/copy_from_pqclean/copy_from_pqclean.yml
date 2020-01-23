@@ -120,6 +120,52 @@ kems:
         implementation: clean
         sources: ['cbd.c', 'kem.c', 'pack_unpack.c', 'poly.c', 'poly_mul.c', 'SABER_indcpa.c', 'verify.c']
         visual_studio_guid: f7014d1d-26fc-4fa6-87b2-0c4552cdc0d2
+  - 
+    name: threebears
+    visual_studio_guid: 0ab14af0-e934-4edf-a5c7-f40d2a93c4a8
+    schemes:
+      - 
+        scheme: babybear
+        pqclean_scheme: babybear
+        pretty_name_full: BabyBear
+        implementation: clean
+        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
+        visual_studio_guid: 12290f9d-11b0-496a-9b92-70fb25faba0c
+      - 
+        scheme: babybear_ephem
+        pqclean_scheme: babybear-ephem
+        pretty_name_full: BabyBearEphem
+        implementation: clean
+        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
+        visual_studio_guid: b88beaee-0c59-4466-b2ce-d1dfc389f571
+      - 
+        scheme: mamabear
+        pqclean_scheme: mamabear
+        pretty_name_full: MamaBear
+        implementation: clean
+        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
+        visual_studio_guid: 30ae4ff0-6225-4480-abbb-29b8557acd8a
+      - 
+        scheme: mamabear_ephem
+        pqclean_scheme: mamabear-ephem
+        pretty_name_full: MamaBearEphem
+        implementation: clean
+        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
+        visual_studio_guid: b64eb66a-9072-441d-a4d8-41edd390a46c
+      - 
+        scheme: papabear
+        pqclean_scheme: papabear
+        pretty_name_full: PapaBear
+        implementation: clean
+        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
+        visual_studio_guid: 51f44ce3-1121-4b55-9c36-5c99dab92c72
+      - 
+        scheme: papabear_ephem
+        pqclean_scheme: papabear-ephem
+        pretty_name_full: PapaBearEphem
+        implementation: clean
+        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
+        visual_studio_guid: 2edd08e6-19f4-46d8-8590-06ffe20c0e75
 sigs:
   - 
     name: dilithium

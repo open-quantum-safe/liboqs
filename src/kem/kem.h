@@ -70,6 +70,18 @@ extern "C" {
 #define OQS_KEM_alg_saber_saber "Saber-KEM"
 /** Algorithm identifier for FireSaber-KEM KEM. */
 #define OQS_KEM_alg_saber_firesaber "FireSaber-KEM"
+/** Algorithm identifier for BabyBear KEM. */
+#define OQS_KEM_alg_threebears_babybear "BabyBear"
+/** Algorithm identifier for BabyBearEphem KEM. */
+#define OQS_KEM_alg_threebears_babybear_ephem "BabyBearEphem"
+/** Algorithm identifier for MamaBear KEM. */
+#define OQS_KEM_alg_threebears_mamabear "MamaBear"
+/** Algorithm identifier for MamaBearEphem KEM. */
+#define OQS_KEM_alg_threebears_mamabear_ephem "MamaBearEphem"
+/** Algorithm identifier for PapaBear KEM. */
+#define OQS_KEM_alg_threebears_papabear "PapaBear"
+/** Algorithm identifier for PapaBearEphem KEM. */
+#define OQS_KEM_alg_threebears_papabear_ephem "PapaBearEphem"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
@@ -118,7 +130,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 42
+#define OQS_KEM_algs_length 48
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -295,6 +307,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_newhope.h>
 #include <oqs/kem_ntru.h>
 #include <oqs/kem_saber.h>
+#include <oqs/kem_threebears.h>
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 #include <oqs/kem_frodokem.h>
 #include <oqs/kem_sike.h>

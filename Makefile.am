@@ -44,6 +44,9 @@ endif
 if ENABLE_KEM_SABER
 liboqs_la_LIBADD += src/kem/saber/libkemsaber.la
 endif
+if ENABLE_KEM_THREEBEARS
+liboqs_la_LIBADD += src/kem/threebears/libkemthreebears.la
+endif
 
 if ENABLE_SIG_DILITHIUM
 liboqs_la_LIBADD += src/sig/dilithium/libsigdilithium.la
@@ -81,6 +84,7 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/newhope/kem_newhope.h \
 	src/kem/ntru/kem_ntru.h \
 	src/kem/saber/kem_saber.h \
+	src/kem/threebears/kem_threebears.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
@@ -113,6 +117,7 @@ links:
 	cp -f src/kem/newhope/kem_newhope.h include/oqs
 	cp -f src/kem/ntru/kem_ntru.h include/oqs
 	cp -f src/kem/saber/kem_saber.h include/oqs
+	cp -f src/kem/threebears/kem_threebears.h include/oqs
 	cp -f src/sig/dilithium/sig_dilithium.h include/oqs
 	cp -f src/sig/mqdss/sig_mqdss.h include/oqs
 	cp -f src/sig/sphincs/sig_sphincs.h include/oqs

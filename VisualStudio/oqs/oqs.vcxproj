@@ -41,6 +41,7 @@
     <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h" />
     <ClInclude Include="..\..\src\kem\ntru\kem_ntru.h" />
     <ClInclude Include="..\..\src\kem\saber\kem_saber.h" />
+    <ClInclude Include="..\..\src\kem\threebears\kem_threebears.h" />
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h" />
     <ClInclude Include="..\..\src\sig\mqdss\sig_mqdss.h" />
     <ClInclude Include="..\..\src\sig\sphincs\sig_sphincs.h" />
@@ -248,6 +249,36 @@
     <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\poly_mul.c" />
     <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\SABER_indcpa.c" />
     <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\verify.c" />
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_babybear.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear_clean\melas_fec.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear_clean\ring.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear_clean\threebears.c" />
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_babybear_ephem.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear-ephem_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear-ephem_clean\melas_fec.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear-ephem_clean\ring.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear-ephem_clean\threebears.c" />
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_mamabear.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear_clean\melas_fec.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear_clean\ring.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear_clean\threebears.c" />
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_mamabear_ephem.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear-ephem_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear-ephem_clean\melas_fec.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear-ephem_clean\ring.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear-ephem_clean\threebears.c" />
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_papabear.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear_clean\melas_fec.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear_clean\ring.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear_clean\threebears.c" />
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_papabear_ephem.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear-ephem_clean\kem.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear-ephem_clean\melas_fec.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear-ephem_clean\ring.c" />
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear-ephem_clean\threebears.c" />
     <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_2.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\sign.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\polyvec.c" />
@@ -793,6 +824,7 @@ copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\threebears\kem_threebears.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
@@ -837,6 +869,7 @@ copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\threebears\kem_threebears.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
@@ -881,6 +914,7 @@ copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\threebears\kem_threebears.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
@@ -933,6 +967,7 @@ copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\threebears\kem_threebears.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
@@ -984,6 +1019,7 @@ copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\threebears\kem_threebears.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
@@ -1032,6 +1068,7 @@ copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\threebears\kem_threebears.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
@@ -1080,6 +1117,7 @@ copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\threebears\kem_threebears.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"
@@ -1136,6 +1174,7 @@ copy "$(SolutionDir)..\src\kem\kyber\kem_kyber.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\newhope\kem_newhope.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\ntru\kem_ntru.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\saber\kem_saber.h" "$(SolutionDir)include\oqs\"
+copy "$(SolutionDir)..\src\kem\threebears\kem_threebears.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\frodokem\kem_frodokem.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\kem\sike\kem_sike.h" "$(SolutionDir)include\oqs\"
 copy "$(SolutionDir)..\src\sig\sig.h" "$(SolutionDir)include\oqs\"

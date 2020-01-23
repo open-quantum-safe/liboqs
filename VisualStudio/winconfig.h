@@ -18,6 +18,12 @@
 #define OQS_ENABLE_KEM_saber_lightsaber
 #define OQS_ENABLE_KEM_saber_saber
 #define OQS_ENABLE_KEM_saber_firesaber
+#define OQS_ENABLE_KEM_threebears_babybear
+#define OQS_ENABLE_KEM_threebears_babybear_ephem
+#define OQS_ENABLE_KEM_threebears_mamabear
+#define OQS_ENABLE_KEM_threebears_mamabear_ephem
+#define OQS_ENABLE_KEM_threebears_papabear
+#define OQS_ENABLE_KEM_threebears_papabear_ephem
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_KEMS_END
 #define OQS_ENABLE_KEM_frodokem_640_aes
 #define OQS_ENABLE_KEM_frodokem_640_shake
