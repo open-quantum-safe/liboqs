@@ -17,18 +17,17 @@ Parameter sets
 
 | Parameter set       | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
 |---------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| BIKE1-L1-CPA        |     IND-CPA    |              1              |           2542          |          4670          |           2542          |             32             |
-| BIKE1-L3-CPA        |     IND-CPA    |              3              |           4964          |          8116          |           4964          |             32             |
-| BIKE1-L1-FO         |     IND-CPA    |              1              |           2946          |          8020          |           2946          |             32             |
-| BIKE1-L3-FO         |     IND-CPA    |              3              |           6206          |         15564          |           6206          |             32             |
+| BIKE1-L1-CPA        |     IND-CPA    |              1              |           2542          |          3110          |           2542          |             32             |
+| BIKE1-L3-CPA        |     IND-CPA    |              3              |           4964          |          5788          |           4964          |             32             |
+| BIKE1-L1-FO         |     IND-CPA    |              1              |           2946          |          6460          |           2946          |             32             |
+| BIKE1-L3-FO         |     IND-CPA    |              3              |           6206          |         13236          |           6206          |             32             |
 
 
 Implementation
 --------------
 
 - **Source of implementation:** https://bikesuite.org/additional.html
-- **Implementation version:** BIKE1_L1/3_CPA: 05/23/2018; BIKE1_L1/3_FO: 05/23/2018;
+- **Implementation version:** BIKE-1 L1/3 with the BGF decoder (as defined in "QC-MDPC decoders with several shades of gray" at https://eprint.iacr.org/2019/1423)
 - **License:** Apache 2.0 License
 - **Language:** C
 - **Constant-time:** Yes
-- **Architectures supported in liboqs nist-branch**: x86, x64

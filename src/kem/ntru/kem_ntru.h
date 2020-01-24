@@ -1,5 +1,5 @@
-#ifndef OQS_KEM_NTRU_H
-#define OQS_KEM_NTRU_H
+#ifndef _OQS_KEM_NTRU_H
+#define _OQS_KEM_NTRU_H
 
 #include <oqs/oqs.h>
 
@@ -47,4 +47,4 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hrss701_encaps(uint8_t *ciphertext, uint8_t *sha
 OQS_API OQS_STATUS OQS_KEM_ntru_hrss701_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
 
-#endif // OQS_KEM_NTRU_H
+#endif

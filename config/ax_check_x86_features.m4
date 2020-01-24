@@ -74,4 +74,16 @@ AC_DEFUN([AX_CHECK_X86_FEATURES],
   m4_ifval([$1],[$1],
     [CFLAGS="$CFLAGS $X86_FEATURE_CFLAGS"])
   $2
+  #Liboqs requires avx512f/bw/dq to run AVX512 code
+  AM_COND_IF([USE_AVX512F_INSTRUCTIONS],
+    [AM_COND_IF([USE_AVX512BW_INSTRUCTIONS],
+      [AM_COND_IF([USE_AVX512DQ_INSTRUCTIONS],
+        [use_avx512_all=yes],
+        [use_avx512_all=no])],
+      [use_avx512_all=no])],
+    [use_avx512_all=no])
+
+  AM_CONDITIONAL(USE_AVX512_INSTRUCTIONS, [test x$use_avx512_all = xyes])
 ])
+
+

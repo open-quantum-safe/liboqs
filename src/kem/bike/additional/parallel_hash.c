@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ void parallel_hash(OUT sha_hash_t *out_hash, IN const uint8_t *m, IN const uint3
 #endif
 
 	for (uint32_t i = 0; i < MAX_MB_SLICES; i++) {
-		print("X[i]:", (uint64_t *) &yx.x[i], sizeof(yx.x[i]) * 8);
+		print("X[i]:", (uint64_t *) &yx.x[i], SIZEOF_BITS(yx.x[i]));
 	}
 
 	// Copy the reminder (Y)

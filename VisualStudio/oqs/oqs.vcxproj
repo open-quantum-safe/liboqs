@@ -256,7 +256,7 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\ntt.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\reduce.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\rounding.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\symmetric.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium2_clean\stream.c" />
     <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_3.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\sign.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\polyvec.c" />
@@ -265,7 +265,7 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\ntt.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\reduce.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\rounding.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\symmetric.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium3_clean\stream.c" />
     <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_4.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\sign.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\polyvec.c" />
@@ -274,7 +274,7 @@
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\ntt.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\reduce.c" />
     <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\rounding.c" />
-    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\symmetric.c" />
+    <ClCompile Include="..\..\src\sig\dilithium\pqclean_dilithium4_clean\stream.c" />
     <ClCompile Include="..\..\src\sig\mqdss\sig_mqdss_31_48.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\gf31.c" />
     <ClCompile Include="..\..\src\sig\mqdss\pqclean_mqdss-48_clean\mq.c" />

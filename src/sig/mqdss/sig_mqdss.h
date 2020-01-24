@@ -1,5 +1,5 @@
-#ifndef OQS_SIG_MQDSS_H
-#define OQS_SIG_MQDSS_H
+#ifndef _OQS_SIG_MQDSS_H
+#define _OQS_SIG_MQDSS_H
 
 #include <oqs/oqs.h>
 
@@ -25,4 +25,4 @@ OQS_API OQS_STATUS OQS_SIG_mqdss_31_64_sign(uint8_t *signature, size_t *signatur
 OQS_API OQS_STATUS OQS_SIG_mqdss_31_64_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#endif // OQS_SIG_MQDSS_H
+#endif

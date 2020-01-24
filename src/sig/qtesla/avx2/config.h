@@ -11,10 +11,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-// Definition of operating system
-
-#define OS_LINUX 1
-#define OS_TARGET OS_LINUX
+// Definition of operating system (removed in OQS)
 
 // Definition of compiler (removed in OQS)
 

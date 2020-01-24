@@ -2,33 +2,39 @@
 #include <string.h>
 
 #include "address.h"
+#include "haraka.h"
 #include "hash.h"
 #include "params.h"
 #include "utils.h"
 
-#include "haraka.h"
-
 void PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_initialize_hash_function(
     hash_state *hash_state_seeded,
     const unsigned char *pub_seed, const unsigned char *sk_seed) {
-    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_tweak_constants(hash_state_seeded, pub_seed, sk_seed, SPX_N);
+    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_tweak_constants(hash_state_seeded, pub_seed, sk_seed, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N);
+}
+
+/* The haraka implementation is stack based and won't be replaced in PQClean/OQS,
+   so we don't need to do anything */
+void PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_destroy_hash_function(
+    hash_state *hash_state_seeded) { // NOLINT(readability-non-const-parameter)
+    (void)hash_state_seeded;
 }
 
 /*
- * Computes PRF(key, addr), given a secret key of SPX_N bytes and an address
+ * Computes PRF(key, addr), given a secret key of PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N bytes and an address
  */
 void PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_prf_addr(
     unsigned char *out, const unsigned char *key, const uint32_t addr[8],
     const hash_state *hash_state_seeded) {
-    unsigned char buf[SPX_ADDR_BYTES];
-    /* Since SPX_N may be smaller than 32, we need a temporary buffer. */
+    unsigned char buf[PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_ADDR_BYTES];
+    /* Since PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N may be smaller than 32, we need a temporary buffer. */
     unsigned char outbuf[32];
 
     (void)key; /* Suppress an 'unused parameter' warning. */
 
     PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_addr_to_bytes(buf, addr);
     PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka256_sk(outbuf, buf, hash_state_seeded);
-    memcpy(out, outbuf, SPX_N);
+    memcpy(out, outbuf, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N);
 }
 
 /**
@@ -43,11 +49,11 @@ void PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_gen_message_random(
     uint8_t s_inc[65];
 
     PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_init(s_inc);
-    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, sk_prf, SPX_N, hash_state_seeded);
-    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, optrand, SPX_N, hash_state_seeded);
+    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, sk_prf, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N, hash_state_seeded);
+    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, optrand, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N, hash_state_seeded);
     PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, m, mlen, hash_state_seeded);
     PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_finalize(s_inc);
-    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_squeeze(R, SPX_N, s_inc, hash_state_seeded);
+    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_squeeze(R, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N, s_inc, hash_state_seeded);
 }
 
 /**
@@ -60,31 +66,31 @@ void PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_hash_message(
     const unsigned char *R, const unsigned char *pk,
     const unsigned char *m, size_t mlen,
     const hash_state *hash_state_seeded) {
-#define SPX_TREE_BITS (SPX_TREE_HEIGHT * (SPX_D - 1))
-#define SPX_TREE_BYTES ((SPX_TREE_BITS + 7) / 8)
-#define SPX_LEAF_BITS SPX_TREE_HEIGHT
-#define SPX_LEAF_BYTES ((SPX_LEAF_BITS + 7) / 8)
-#define SPX_DGST_BYTES (SPX_FORS_MSG_BYTES + SPX_TREE_BYTES + SPX_LEAF_BYTES)
+#define PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_TREE_BITS (PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_TREE_HEIGHT * (PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_D - 1))
+#define PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_TREE_BYTES ((PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_TREE_BITS + 7) / 8)
+#define PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_LEAF_BITS PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_TREE_HEIGHT
+#define PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_LEAF_BYTES ((PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_LEAF_BITS + 7) / 8)
+#define PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_DGST_BYTES (PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_FORS_MSG_BYTES + PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_TREE_BYTES + PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_LEAF_BYTES)
 
-    unsigned char buf[SPX_DGST_BYTES];
+    unsigned char buf[PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_DGST_BYTES];
     unsigned char *bufp = buf;
     uint8_t s_inc[65];
 
     PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_init(s_inc);
-    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, R, SPX_N, hash_state_seeded);
-    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, pk + SPX_N, SPX_N, hash_state_seeded);
+    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, R, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N, hash_state_seeded);
+    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, pk + PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_N, hash_state_seeded);
     PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_absorb(s_inc, m, mlen, hash_state_seeded);
     PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_finalize(s_inc);
-    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_squeeze(buf, SPX_DGST_BYTES, s_inc, hash_state_seeded);
+    PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_haraka_S_inc_squeeze(buf, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_DGST_BYTES, s_inc, hash_state_seeded);
 
-    memcpy(digest, bufp, SPX_FORS_MSG_BYTES);
-    bufp += SPX_FORS_MSG_BYTES;
+    memcpy(digest, bufp, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_FORS_MSG_BYTES);
+    bufp += PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_FORS_MSG_BYTES;
 
-    *tree = PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_bytes_to_ull(bufp, SPX_TREE_BYTES);
-    *tree &= (~(uint64_t)0) >> (64 - SPX_TREE_BITS);
-    bufp += SPX_TREE_BYTES;
+    *tree = PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_bytes_to_ull(bufp, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_TREE_BYTES);
+    *tree &= (~(uint64_t)0) >> (64 - PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_TREE_BITS);
+    bufp += PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_TREE_BYTES;
 
     *leaf_idx = (uint32_t)PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_bytes_to_ull(
-                    bufp, SPX_LEAF_BYTES);
-    *leaf_idx &= (~(uint32_t)0) >> (32 - SPX_LEAF_BITS);
+                    bufp, PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_LEAF_BYTES);
+    *leaf_idx &= (~(uint32_t)0) >> (32 - PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_LEAF_BITS);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -32,6 +32,18 @@ print_newline(IN const uint64_t qw_pos) {
 		printf("\n    ");
 	}
 #endif
+}
+
+// This function is stitched for R_BITS vector
+uint64_t
+r_bits_vector_weight(IN const r_t *in) {
+	uint64_t acc = 0;
+	for (size_t i = 0; i < (R_SIZE - 1); i++) {
+		acc += __builtin_popcount(in->raw[i]);
+	}
+
+	acc += __builtin_popcount(in->raw[R_SIZE - 1] & LAST_R_BYTE_MASK);
+	return acc;
 }
 
 // Prints a QW in LE/BE in win/linux format

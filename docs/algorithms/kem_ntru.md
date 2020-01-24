@@ -24,7 +24,7 @@ Implementation
 --------------
 
 - **Source of implementation:** NIST Round 2 submission, via https://github.com/PQClean/PQClean
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/b536f7324c90fd524bbd964c9c4a4d375ad30448
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/7729c76b3e41c1bbecafdf9c05efdcfe5e9b2f52
 - **License:** Public domain
 - **Language:** C
 - **Architectures supported in liboqs master branch**: x86, x64
