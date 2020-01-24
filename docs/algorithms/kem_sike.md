@@ -35,8 +35,3 @@ Implementation
 - **Language:** C
 - **Constant-time:** Yes
 - **Architectures supported in liboqs master branch**: x86, x64
-
-Additional comments
--------------------
-
-The original Sike implementation includes optimizations that are not currently being built in liboqs. See src/kem/sike/upstream/README for details.
