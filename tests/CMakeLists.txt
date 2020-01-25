@@ -63,5 +63,5 @@ add_custom_target(
     run_tests
     COMMAND ${Python3_EXECUTABLE} -m pytest --verbose --junitxml=${CMAKE_BINARY_DIR}/test-results.xml --numprocesses=auto --build_tool=${CMAKE_MAKE_PROGRAM}
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS oqs kat_kem kat_sig test_kem test_sig
+    DEPENDS oqs kat_kem kat_sig test_kem test_sig test_hash
     USES_TERMINAL)
