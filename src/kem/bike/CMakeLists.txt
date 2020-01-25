@@ -2,7 +2,6 @@ set(SRCS additional/decode.c
          additional/gf2x_portable.c
          additional/sampling.c
          additional/parallel_hash.c
-         additional/secure_decode_portable.c
          additional/utilities.c
          additional/aes_ctr_prf.c
          additional/error.c
@@ -12,27 +11,23 @@ add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
     set(SRCS ${SRCS} additional/sampling_portable.c
-                     additional/converts_portable.c)
+                     additional/secure_decode_portable.c)
     add_compile_definitions(PORTABLE)
 elseif(USE_AVX512F_INSTRUCTIONS)
-    set(SRCS ${SRCS} additional/converts.S
-                     additional/red.S
-                     additional/secure_decode_avx512.S
+    set(SRCS ${SRCS} additional/red.S
+                     additional/secure_decode_avx512.c
                      additional/sampling_avx512.S
-                     additional/gf_mul.S
-                     additional/gf_add.S)
+                     additional/gf_mul.S)
     add_compile_definitions(AVX512)
 elseif(USE_AVX2_INSTRUCTIONS)
-    set(SRCS ${SRCS} additional/converts.S
-                     additional/red.S
-                     additional/secure_decode_avx2.S
+    set(SRCS ${SRCS} additional/red.S
+                     additional/secure_decode_avx2.c
                      additional/sampling_avx2.S
-                     additional/gf_mul.S
-                     additional/gf_add.S)
+                     additional/gf_mul.S)
     add_compile_definitions(AVX2)
 else()
     set(SRCS ${SRCS} additional/sampling_portable.c
-                     additional/converts_portable.c)
+                     additional/secure_decode_portable.c)
     add_compile_definitions(PORTABLE)
 endif()
 

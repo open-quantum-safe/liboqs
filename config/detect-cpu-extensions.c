@@ -25,6 +25,9 @@ int main(void) {
     if(__builtin_cpu_supports("bmi")) {
         printf("BMI;");
     }
+    if(__builtin_cpu_supports("bmi2")) {
+        printf("BMI2;");
+    }
     if(__builtin_cpu_supports("fma")) {
         printf("FMA;");
     }

@@ -7,7 +7,7 @@ if(OQS_ENABLE_SIG_dilithium_2)
              pqclean_dilithium2_clean/ntt.c
              pqclean_dilithium2_clean/reduce.c
              pqclean_dilithium2_clean/rounding.c
-             pqclean_dilithium2_clean/symmetric.c)
+             pqclean_dilithium2_clean/stream.c)
 endif()
 if(OQS_ENABLE_SIG_dilithium_3)
     set(SRCS ${SRCS} sig_dilithium_3.c
@@ -18,7 +18,7 @@ if(OQS_ENABLE_SIG_dilithium_3)
                      pqclean_dilithium3_clean/ntt.c
                      pqclean_dilithium3_clean/reduce.c
                      pqclean_dilithium3_clean/rounding.c
-                     pqclean_dilithium3_clean/symmetric.c)
+                     pqclean_dilithium3_clean/stream.c)
 endif()
 if(OQS_ENABLE_SIG_dilithium_4)
     set(SRCS ${SRCS} sig_dilithium_4.c
@@ -29,7 +29,7 @@ if(OQS_ENABLE_SIG_dilithium_4)
                      pqclean_dilithium4_clean/ntt.c
                      pqclean_dilithium4_clean/reduce.c
                      pqclean_dilithium4_clean/rounding.c
-                     pqclean_dilithium4_clean/symmetric.c)
+                     pqclean_dilithium4_clean/stream.c)
 endif()
 
 add_library(dilithium OBJECT ${SRCS})
