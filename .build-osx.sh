@@ -2,7 +2,7 @@
 
 set -o xtrace
 
-r=`git log --name-only --since="1 day ago" -n 2`
+r=`git log --name-only --since="1 minute ago" -n 2`
 if [ "x$r" == "x" ]; then 
 	echo "No checkin in the last day. No build/test required. Exiting."
        	exit 0
