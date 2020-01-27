@@ -159,7 +159,7 @@ workflows:
               only:
                 - osx
     jobs:
-       -osx
+      - osx
             #- debian-buster-amd64 # tested at checkin
             #- debian-buster-aarch64
             #- debian-buster-armhf
