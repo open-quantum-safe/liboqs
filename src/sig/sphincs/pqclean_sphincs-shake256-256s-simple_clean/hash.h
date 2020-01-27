@@ -1,5 +1,5 @@
-#ifndef SPX_HASH_H
-#define SPX_HASH_H
+#ifndef PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_HASH_H
+#define PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_HASH_H
 
 #include "hash_state.h"
 
@@ -9,6 +9,8 @@
 void PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_initialize_hash_function(
     hash_state *hash_state_seeded,
     const unsigned char *pub_seed, const unsigned char *sk_seed);
+
+void PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_destroy_hash_function(hash_state *hash_state_seeded);
 
 void PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_prf_addr(
     unsigned char *out, const unsigned char *key, const uint32_t addr[8],

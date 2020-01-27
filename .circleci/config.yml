@@ -13,11 +13,13 @@ version: 2
         command: autoreconf -i && ./configure --enable-silent-rules ${CONFIGURE_ARGS}
     - run: 
         name: Build
-        command: make -j && make check
+        command: source ~/.bashrc && make -j && make check
     - run:
         name: Run tests
         command: mkdir -p test-results/pytest && python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto
     - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
+        path: test-results
+    - store_artifacts: 
         path: test-results
 
 .emulatedjob: &emulatedjob
@@ -45,6 +47,8 @@ version: 2
           python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto
           "
     - store_test_results:
+        path: test-results
+    - store_artifacts: 
         path: test-results
 
 jobs:
@@ -112,40 +116,24 @@ jobs:
       IMAGE: dstebila/liboqs:ubuntu-bionic-x86_64-0.1.0
       CC: gcc-7
       SKIP_TESTS: style
-  osx:
-    macos:
-        xcode: "11.3.0"
+  centos-7:
+    <<: *oqsjob
     environment:
-      CONFIGURE_ARGS: --without-openssl
-    steps:
-        - checkout
-        - run:
-            name: Testing needed?
-            command: r=`git log --name-only --since="1 day ago" -n 2`; if [ "x$r" == "x" ]; then echo "No. Exiting."; exit -1; else echo "Yes."; fi
-        - run:
-            name: Prep env
-            command: brew update; brew unlink python@2; brew install autoconf automake libtool wget doxygen graphviz clang-format; pip3 install pytest
-        - run:
-            name: Configure
-            command: autoreconf -i && ./configure ${CONFIGURE_ARGS}
-        - run:
-            name: Build
-            command: make && make check
-        - run:
-            name: Recon
-            command: sysctl -a | grep machdep.cpu; cat src/kem/sike/Makefile; ls -l tests; ./tests/example_kem
-        - run:
-            name: Run tests
-            command: mkdir -p test-results/pytest && python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml
-        - store_test_results:
-             path: test-results
-
+      IMAGE: openqsafe/ci-centos-7
+      CONFIGURE_ARGS: --with-openssl=/usr/local/ssl 
+      SKIP_TESTS: style
+  centos-8:
+    <<: *oqsjob
+    environment:
+      IMAGE: openqsafe/ci-centos-8
+      SKIP_TESTS: style
 
 workflows:
   version: 2
   build:
     jobs:
-      - osx
+      - centos-7
+      - centos-8
       - debian-buster-amd64
         # Tested by cron:
         #- ubuntu-xenial-x86_64-gcc8

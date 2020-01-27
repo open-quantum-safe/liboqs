@@ -9,7 +9,7 @@
 #include "haraka.h"
 
 /**
- * Takes an array of inblocks concatenated arrays of SPX_N bytes.
+ * Takes an array of inblocks concatenated arrays of PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N bytes.
  */
 static void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash(
     unsigned char *out, unsigned char *buf,
@@ -17,7 +17,7 @@ static void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash(
     const unsigned char *pub_seed, uint32_t addr[8],
     const hash_state *hash_state_seeded) {
 
-    unsigned char *bitmask = buf + SPX_ADDR_BYTES;
+    unsigned char *bitmask = buf + PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_ADDR_BYTES;
     unsigned char outbuf[32];
     unsigned char buf_tmp[64];
     unsigned int i;
@@ -26,28 +26,28 @@ static void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash(
 
     if (inblocks == 1) {
         /* F function */
-        /* Since SPX_N may be smaller than 32, we need a temporary buffer. */
+        /* Since PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N may be smaller than 32, we need a temporary buffer. */
         memset(buf_tmp, 0, 64);
         PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_addr_to_bytes(buf_tmp, addr);
 
         PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka256(outbuf, buf_tmp, hash_state_seeded);
-        for (i = 0; i < inblocks * SPX_N; i++) {
-            buf_tmp[SPX_ADDR_BYTES + i] = in[i] ^ outbuf[i];
+        for (i = 0; i < inblocks * PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N; i++) {
+            buf_tmp[PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_ADDR_BYTES + i] = in[i] ^ outbuf[i];
         }
         PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka512(outbuf, buf_tmp, hash_state_seeded);
-        memcpy(out, outbuf, SPX_N);
+        memcpy(out, outbuf, PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N);
     } else {
         /* All other tweakable hashes*/
         PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_addr_to_bytes(buf, addr);
         PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka_S(
-            bitmask, inblocks * SPX_N, buf, SPX_ADDR_BYTES, hash_state_seeded);
+            bitmask, inblocks * PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N, buf, PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_ADDR_BYTES, hash_state_seeded);
 
-        for (i = 0; i < inblocks * SPX_N; i++) {
-            buf[SPX_ADDR_BYTES + i] = in[i] ^ bitmask[i];
+        for (i = 0; i < inblocks * PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N; i++) {
+            buf[PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_ADDR_BYTES + i] = in[i] ^ bitmask[i];
         }
 
         PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_haraka_S(
-            out, SPX_N, buf, SPX_ADDR_BYTES + inblocks * SPX_N, hash_state_seeded);
+            out, PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N, buf, PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_ADDR_BYTES + inblocks * PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N, hash_state_seeded);
     }
 }
 
@@ -58,7 +58,7 @@ void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash_1(
     const unsigned char *pub_seed, uint32_t addr[8],
     const hash_state *hash_state_seeded) {
 
-    unsigned char buf[SPX_ADDR_BYTES + 1 * SPX_N];
+    unsigned char buf[PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_ADDR_BYTES + 1 * PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N];
     PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash(
         out, buf, in, 1, pub_seed, addr, hash_state_seeded);
 }
@@ -68,7 +68,7 @@ void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash_2(
     const unsigned char *pub_seed, uint32_t addr[8],
     const hash_state *hash_state_seeded) {
 
-    unsigned char buf[SPX_ADDR_BYTES + 2 * SPX_N];
+    unsigned char buf[PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_ADDR_BYTES + 2 * PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N];
     PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash(
         out, buf, in, 2, pub_seed, addr, hash_state_seeded);
 }
@@ -78,9 +78,9 @@ void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash_WOTS_LEN(
     const unsigned char *pub_seed, uint32_t addr[8],
     const hash_state *hash_state_seeded) {
 
-    unsigned char buf[SPX_ADDR_BYTES + SPX_WOTS_LEN * SPX_N];
+    unsigned char buf[PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_ADDR_BYTES + PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_WOTS_LEN * PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N];
     PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash(
-        out, buf, in, SPX_WOTS_LEN, pub_seed, addr, hash_state_seeded);
+        out, buf, in, PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_WOTS_LEN, pub_seed, addr, hash_state_seeded);
 }
 
 void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash_FORS_TREES(
@@ -88,7 +88,7 @@ void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash_FORS_TREES(
     const unsigned char *pub_seed, uint32_t addr[8],
     const hash_state *hash_state_seeded) {
 
-    unsigned char buf[SPX_ADDR_BYTES + SPX_FORS_TREES * SPX_N];
+    unsigned char buf[PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_ADDR_BYTES + PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_FORS_TREES * PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_N];
     PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_thash(
-        out, buf, in, SPX_FORS_TREES, pub_seed, addr, hash_state_seeded);
+        out, buf, in, PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_FORS_TREES, pub_seed, addr, hash_state_seeded);
 }

@@ -1,5 +1,5 @@
-#ifndef REDUCE_H
-#define REDUCE_H
+#ifndef PQCLEAN_DILITHIUM2_CLEAN_REDUCE_H
+#define PQCLEAN_DILITHIUM2_CLEAN_REDUCE_H
 
 #include <stdint.h>
 

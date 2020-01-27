@@ -1,8 +1,11 @@
-#ifndef SYMMETRIC_H
-#define SYMMETRIC_H
+#ifndef PQCLEAN_DILITHIUM3_CLEAN_SYMMETRIC_H
+#define PQCLEAN_DILITHIUM3_CLEAN_SYMMETRIC_H
+
+#include "params.h"
+#include "stream.h"
+
 
 #include "fips202.h"
-#include "params.h"
 
 #define crh(OUT, IN, INBYTES) shake256(OUT, CRHBYTES, IN, INBYTES)
 #define stream128_init(STATE, SEED, NONCE) PQCLEAN_DILITHIUM3_CLEAN_shake128_stream_init(STATE, SEED, NONCE)
@@ -13,11 +16,8 @@
 #define STREAM128_BLOCKBYTES SHAKE128_RATE
 #define STREAM256_BLOCKBYTES SHAKE256_RATE
 
-void PQCLEAN_DILITHIUM3_CLEAN_shake128_stream_init(shake128ctx *state,
-        const unsigned char *seed,
-        uint16_t nonce);
-void PQCLEAN_DILITHIUM3_CLEAN_shake256_stream_init(shake256ctx *state,
-        const unsigned char *seed,
-        uint16_t nonce);
+typedef shake128ctx stream128_state;
+typedef shake256ctx stream256_state;
+
 
 #endif

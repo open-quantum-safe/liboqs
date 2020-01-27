@@ -1,5 +1,5 @@
-#ifndef SPX_WOTS_H
-#define SPX_WOTS_H
+#ifndef PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_WOTS_H
+#define PQCLEAN_SPHINCSHARAKA192FROBUST_CLEAN_WOTS_H
 
 #include "hash_state.h"
 #include "params.h"

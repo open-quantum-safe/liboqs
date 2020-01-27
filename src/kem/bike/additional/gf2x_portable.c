@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -102,16 +102,6 @@ void red(uint64_t *a) {
 
 	// Clean the secrets from the upper half of a.
 	secure_clean((uint8_t *) &a[R_QW], sizeof(uint64_t) * R_QW);
-}
-
-ret_t gf2x_add(OUT uint8_t *res,
-               IN const uint8_t *a,
-               IN const uint8_t *b,
-               IN const uint64_t size) {
-	for (uint64_t i = 0; i < size; i++) {
-		res[i] = a[i] ^ b[i];
-	}
-	return SUCCESS;
 }
 
 #endif

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@
 #endif
 
 // Divide by the divider and round up to next integer
-#define DIVIDE_AND_CEIL(x, divider) ((x + divider) / divider)
+#define DIVIDE_AND_CEIL(x, divider) ((x + (divider)) / (divider))
 
 // Bit manipations
 // Linux Assemblies except for Ubuntu can't understand what ULL mean.
@@ -68,12 +68,40 @@
 #define MASK(len) (BIT(len) - 1)
 #define SIZEOF_BITS(b) (sizeof(b) * 8)
 
+#define QW_SIZE 0x8
 #define XMM_SIZE 0x10
 #define YMM_SIZE 0x20
 #define ZMM_SIZE 0x40
 
 #define ALL_YMM_SIZE (16 * YMM_SIZE)
 #define ALL_ZMM_SIZE (32 * ZMM_SIZE)
+
+// Copied from (Kaz answer)
+// https://stackoverflow.com/questions/466204/rounding-up-to-next-power-of-2
+#define UPTOPOW2_0(v) ((v) -1)
+#define UPTOPOW2_1(v) (UPTOPOW2_0(v) | (UPTOPOW2_0(v) >> 1))
+#define UPTOPOW2_2(v) (UPTOPOW2_1(v) | (UPTOPOW2_1(v) >> 2))
+#define UPTOPOW2_3(v) (UPTOPOW2_2(v) | (UPTOPOW2_2(v) >> 4))
+#define UPTOPOW2_4(v) (UPTOPOW2_3(v) | (UPTOPOW2_3(v) >> 8))
+#define UPTOPOW2_5(v) (UPTOPOW2_4(v) | (UPTOPOW2_4(v) >> 16))
+
+#define UPTOPOW2(v) (UPTOPOW2_5(v) + 1)
+
+// Works only for v < 512
+#define LOG2_MSB(v)                                         \
+	(v < 2                                                  \
+	     ? 1                                                \
+	     : (v < 4                                           \
+	            ? 2                                         \
+	            : (v < 8 ? 3                                \
+	                     : (v < 16                          \
+	                            ? 4                         \
+	                            : (v < 32                   \
+	                                   ? 5                  \
+	                                   : (v < 64 ? 6        \
+	                                             : (v < 128 \
+	                                                    ? 7 \
+	                                                    : (v < 256 ? 8 : 9))))))))
 
 ////////////////////////////////////////////
 //             Debug

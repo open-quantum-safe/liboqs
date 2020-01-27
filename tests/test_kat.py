@@ -2,6 +2,7 @@ import helpers
 import os
 import os.path
 import pytest
+import platform
 
 @helpers.filtered_test
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
@@ -28,11 +29,11 @@ def test_sig(sig_name):
     )
     output = output.replace("\r\n", "\n")
     kats = []
-    avx2_aes_enabled = helpers.is_use_option_enabled_by_name('AVX2_INSTRUCTIONS') and helpers.is_use_option_enabled_by_name('AES_INSTRUCTIONS')
+    avx2_aes_enabled_on_linux = helpers.is_use_option_enabled_by_name('AVX2_INSTRUCTIONS') and helpers.is_use_option_enabled_by_name('AES_INSTRUCTIONS') and platform.system() == 'Linux'
     for filename in os.listdir(os.path.join('tests', 'KATs', 'sig')):
         if filename.startswith(sig_name + '.') and filename.endswith('.kat'):
             # qtesla's avx2 implementation uses an optimized sampling method that results in different KAT values; we use the correct one (if avx2/aes instructions are available)
-            if not (sig_name.startswith('qTesla')) or any([avx2_aes_enabled and 'avx2' in filename, not avx2_aes_enabled and not 'avx2' in filename]):
+            if not (sig_name.startswith('qTesla')) or any([avx2_aes_enabled_on_linux and 'avx2' in filename, not avx2_aes_enabled_on_linux and not 'avx2' in filename]):
                 with open(os.path.join('tests', 'KATs', 'sig', filename), 'r') as myfile:
                     kats.append(myfile.read())
     assert(output in kats)

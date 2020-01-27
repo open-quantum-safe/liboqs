@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -100,6 +100,11 @@ dbl_pad_syndrome_cleanup(IN OUT dbl_pad_syndrome_t *o) {
 }
 
 _INLINE_ void
+compressed_idx_t_cleanup(IN OUT compressed_idx_t_t *o) {
+	secure_clean((uint8_t *) o, sizeof(*o));
+}
+
+_INLINE_ void
 compressed_idx_dv_ar_cleanup(IN OUT compressed_idx_dv_ar_t *o) {
 	for (int i = 0; i < N0; i++) {
 		secure_clean((uint8_t *) &(*o)[i], sizeof((*o)[0]));
@@ -116,4 +121,9 @@ seeds_cleanup(IN OUT seeds_t *o) {
 	for (int i = 0; i < NUM_OF_SEEDS; i++) {
 		seed_cleanup(&(o->seed[i]));
 	}
+}
+
+_INLINE_ void
+upc_cleanup(IN OUT upc_t *o) {
+	secure_clean((uint8_t *) o, sizeof(*o));
 }
