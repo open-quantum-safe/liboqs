@@ -23,4 +23,5 @@ if [ $? -ne 0 ]; then
 fi
 sysctl -a | grep machdep.cpu; cat src/kem/sike/Makefile; ls -l tests; ./tests/example_kem
 # Test result becomes exit code for whole build
+export SKIP_TESTS=style
 mkdir -p test-results/pytest && python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml
