@@ -121,6 +121,16 @@ jobs:
     environment:
       IMAGE: openqsafe/ci-centos-8
       SKIP_TESTS: style
+  osx:
+    macos:
+        xcode: "11.3.0"
+    environment:
+        CONFIGURE_ARGS: --without-openssl
+    steps:
+        - checkout
+        - run:
+            name: Do All
+            command: ./.build-osx.sh
 
 workflows:
   version: 2
@@ -142,6 +152,7 @@ workflows:
               only:
                 - master
     jobs:
+      - osx
       - debian-buster-amd64
       - debian-buster-aarch64
       - debian-buster-armhf
