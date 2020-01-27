@@ -8,7 +8,6 @@ if [ "x$r" == "x" ]; then
        	exit 0
 fi
 
-CONFIGURE_ARGS=--without-openssl
 # New stuff found: Testing _is_ needed:
 brew update; brew unlink python@2; brew install autoconf automake libtool wget doxygen graphviz clang-format; pip3 install pytest
 autoreconf -i && ./configure ${CONFIGURE_ARGS}

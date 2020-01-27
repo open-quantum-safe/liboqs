@@ -127,14 +127,24 @@ jobs:
     environment:
       IMAGE: openqsafe/ci-centos-8
       SKIP_TESTS: style
+  osx:
+    macos:
+        xcode: "11.3.0"
+    environment:
+        CONFIGURE_ARGS: --without-openssl
+    steps:
+        - checkout
+        - run:
+            name: Do All
+            command: ./.build-osx.sh
 
 workflows:
   version: 2
   build:
     jobs:
       - centos-7
-      - centos-8
-      - debian-buster-amd64
+        #- centos-8
+        #- debian-buster-amd64
         # Tested by cron:
         #- ubuntu-xenial-x86_64-gcc8
         #- ubuntu-xenial-x86_64-gcc8-noopenssl
@@ -143,21 +153,22 @@ workflows:
   nightly:
     triggers:
       - schedule:
-          cron: "0 0 * * *"
+          cron: "50 6 * * *"
           filters:
             branches:
               only:
-                - master
+                - osx
     jobs:
+       -osx
             #- debian-buster-amd64 # tested at checkin
-      - debian-buster-aarch64
-      - debian-buster-armhf
-      - debian-buster-armel
-      - ubuntu-xenial-x86_64-gcc49
-      - ubuntu-xenial-x86_64-gcc5
-      - ubuntu-xenial-x86_64-gcc6
-      - ubuntu-xenial-x86_64-gcc7
-      - ubuntu-xenial-x86_64-gcc8
-      - ubuntu-xenial-x86_64-gcc8-noopenssl
-      - ubuntu-xenial-x86_64-gcc8-noshared
-      - ubuntu-bionic-x86_64-gcc7
+            #- debian-buster-aarch64
+            #- debian-buster-armhf
+            #- debian-buster-armel
+            #- ubuntu-xenial-x86_64-gcc49
+            #- ubuntu-xenial-x86_64-gcc5
+            #- ubuntu-xenial-x86_64-gcc6
+            #- ubuntu-xenial-x86_64-gcc7
+            #- ubuntu-xenial-x86_64-gcc8
+            #- ubuntu-xenial-x86_64-gcc8-noopenssl
+            #- ubuntu-xenial-x86_64-gcc8-noshared
+            #- ubuntu-bionic-x86_64-gcc7
