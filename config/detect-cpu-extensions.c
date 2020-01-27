@@ -52,5 +52,11 @@ int main(void) {
     if(__builtin_cpu_supports("sse4a")) {
         printf("SSE4A;");
     }
+    if(__builtin_cpu_supports("sse4.1")) {
+        printf("SSE4_1;");
+    }
+    if(__builtin_cpu_supports("sse4.2")) {
+        printf("SSE4_2;");
+    }
     return EXIT_SUCCESS;
 }

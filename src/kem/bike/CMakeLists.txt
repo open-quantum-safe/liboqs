@@ -13,7 +13,7 @@ if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
     set(SRCS ${SRCS} additional/sampling_portable.c
                      additional/secure_decode_portable.c)
     add_compile_definitions(PORTABLE)
-elseif(USE_AVX512F_INSTRUCTIONS)
+elseif(USE_AVX512_INSTRUCTIONS)
     set(SRCS ${SRCS} additional/red.S
                      additional/secure_decode_avx512.c
                      additional/sampling_avx512.S

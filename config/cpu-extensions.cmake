@@ -47,6 +47,11 @@ if(ARCH STREQUAL "x86" OR
     if(USE_AVX512F_INSTRUCTIONS)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mavx512f")
     endif()
+    if(USE_AVX512BW_INSTRUCTIONS AND
+       USE_AVX512DQ_INSTRUCTIONS AND
+       USE_AVX512F_INSTRUCTIONS)
+        set(USE_AVX512_INSTRUCTIONS ON)
+    endif()
     if(USE_BMI_INSTRUCTIONS)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -mbmi")
     endif()
@@ -76,5 +81,11 @@ if(ARCH STREQUAL "x86" OR
     endif()
     if(USE_SSE4A_INSTRUCTIONS)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse4a")
+    endif()
+    if(USE_SSE4_1_INSTRUCTIONS)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse4.1")
+    endif()
+    if(USE_SSE4_2_INSTRUCTIONS)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -msse4.2")
     endif()
 endif()
