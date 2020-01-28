@@ -45,29 +45,15 @@ AC_DEFUN([ADD_EXTERNAL_LIB],[
     [test "x${with_openssl}" != "xno"],
     [
       AC_MSG_CHECKING([OpenSSL version])
-      AC_LANG_PUSH([C])
-      OLDCFLAGS=${CFLAGS}
-      CFLAGS=-I${with_openssl}/include
-      OPENSSL_VERSION=`${with_openssl}/bin/openssl version -v`
-      AC_RUN_IFELSE(
-        [AC_LANG_PROGRAM(
-          [#include <openssl/opensslv.h>],
-          [
-            #if defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER >= 0x1010000fL
-              return 0;
-            #else
-              return 1;
-            #endif
-          ]
-        )],
-        CFLAGS=${OLDCFLAGS}
+      OPENSSL_VERSION=`grep OPENSSL_VERSION_TEXT ${with_openssl}/include/openssl/opensslv.h | head -n 1 | sed -e 's/.*OpenSSL //' | sed -e 's/ .*//'`
+      OPENSSL_MAJOR_VERSION=`echo ${OPENSSL_VERSION} | cut -c 1-3`
+      AS_IF(
+        [test "x${OPENSSL_MAJOR_VERSION}" == "x1.1"],
         [AC_MSG_RESULT([ok (${OPENSSL_VERSION})])],
         [AC_MSG_FAILURE([too old (found ${OPENSSL_VERSION}, need >= 1.1.0)])]
       )
-      AC_LANG_POP([C])
     ]
   )
-
 
   AC_ARG_WITH([m4ri-dir],
     [AS_HELP_STRING(
