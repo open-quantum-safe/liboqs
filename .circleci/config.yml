@@ -115,7 +115,7 @@ jobs:
               brew update && 
               brew unlink python@2 && 
               brew install autoconf automake libtool wget doxygen graphviz clang-format && 
-              pip3 install pytest
+              pip3 install pytest pytest-xdist
               )
         - run:
             name: Configure
