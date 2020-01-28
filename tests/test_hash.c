@@ -71,7 +71,6 @@ int do_sha256(void) {
 	} else {
 		OQS_SHA2_sha256_inc_finalize(output_inc, state, msg, msg_len);
 	}
-	OQS_SHA2_sha256_inc_destroy(state);
 	if (memcmp(output, output_inc, 32) != 0) {
 		free(msg);
 		fprintf(stderr, "ERROR: Incremental API does not match main API\n");
@@ -84,7 +83,6 @@ int do_sha256(void) {
 	} else {
 		OQS_SHA2_sha256_inc_finalize(output_inc, state2, msg, msg_len);
 	}
-	OQS_SHA2_sha256_inc_destroy(state2);
 	free(msg);
 	if (memcmp(output, output_inc, 32) != 0) {
 		fprintf(stderr, "ERROR: Incremental API with cloned state does not match main API\n");
