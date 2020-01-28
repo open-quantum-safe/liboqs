@@ -107,6 +107,7 @@ jobs:
         CONFIGURE_ARGS: --without-openssl
         SKIP_TESTS: style
     steps:
+        - checkout
         - run:
             name: Install dependencies
             command: |
