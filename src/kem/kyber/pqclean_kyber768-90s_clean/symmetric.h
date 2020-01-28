@@ -11,6 +11,7 @@
 #define hash_g(OUT, IN, INBYTES) sha512(OUT, IN, INBYTES)
 #define xof_absorb(STATE, IN, X, Y) PQCLEAN_KYBER76890S_CLEAN_aes256xof_absorb(STATE, IN, X, Y)
 #define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) PQCLEAN_KYBER76890S_CLEAN_aes256xof_squeezeblocks(OUT, OUTBLOCKS, STATE)
+#define xof_release(STATE) OQS_AES256_free_schedule((STATE.sk_exp));
 #define prf(OUT, OUTBYTES, KEY, NONCE) PQCLEAN_KYBER76890S_CLEAN_aes256_prf(OUT, OUTBYTES, KEY, NONCE)
 #define kdf(OUT, IN, INBYTES) sha256(OUT, IN, INBYTES)
 

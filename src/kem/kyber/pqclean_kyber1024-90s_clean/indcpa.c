@@ -167,6 +167,7 @@ static void gen_matrix(polyvec *a, const uint8_t *seed, int transposed) {
                 xof_squeezeblocks(buf, 1, &state);
                 ctr += rej_uniform(a[i].vec[j].coeffs + ctr, KYBER_N - ctr, buf, XOF_BLOCKBYTES);
             }
+            xof_release(state);
         }
     }
 }
