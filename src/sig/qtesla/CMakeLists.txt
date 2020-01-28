@@ -1,11 +1,11 @@
 if(${ARCH} STREQUAL "x86")
-    add_compile_definitions(_X86_)
+    set(CPP_DEFS _X86_)
 elseif(${ARCH} STREQUAL "x86_64")
-    add_compile_definitions(_AMD64_)
+    set(CPP_DEFS _AMD64_)
 elseif(${ARCH} STREQUAL "arm")
-    add_compile_definitions(_ARM_)
+    set(CPP_DEFS _ARM_)
 elseif(${ARCH} STREQUAL "arm64")
-    add_compile_definitions(_ARM64_)
+    set(CPP_DEFS _ARM64_)
 endif()
 
 set (SRCS sig_qtesla.c)
@@ -20,13 +20,14 @@ endif()
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux"
    AND USE_AVX2_INSTRUCTIONS
    AND USE_AES_INSTRUCTIONS)
-    add_compile_definitions(WITH_AVX2)
+    set(CPP_DEFS ${CPP_DEFS} WITH_AVX2)
     include_directories(avx2)
     set(SRCS ${SRCS} avx2/poly_mul1024.S
                      avx2/poly_mul2048.S)
 else()
-    add_compile_definitions(portable)
+    set(CPP_DEFS ${CPP_DEFS} portable)
 endif()
 
 add_library(qtesla OBJECT ${SRCS})
 target_include_directories(qtesla PRIVATE external)
+target_compile_definitions(qtesla PRIVATE ${CPP_DEFS})

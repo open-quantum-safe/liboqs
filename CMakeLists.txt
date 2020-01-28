@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.12)
+cmake_minimum_required (VERSION 3.6)
 
 project(liboqs C ASM)
 set(OQS_VERSION_TEXT "0.2.1-dev")

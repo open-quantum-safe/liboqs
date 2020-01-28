@@ -1,5 +1,3 @@
-find_package(Python3 COMPONENTS Interpreter)
-
 if(USE_OPENSSL)
     include_directories(${OPENSSL_INCLUDE_DIR})
     set(LIBS ${OPENSSL_CRYPTO_LIBRARY})
@@ -8,7 +6,7 @@ endif()
 if(NOT WIN32)
     set(LIBS ${LIBS} m)
     execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT)
-    add_compile_definitions(OQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
+    add_definitions(-DOQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
 
     # These functions tested here are
     # not part of the liboqs API.
@@ -29,6 +27,14 @@ if(NOT WIN32)
                            DEFINITION SHA3_IMPL)
     add_executable(test_sha3 test_sha3.c ${SHA3_IMPL} ${PROJECT_SOURCE_DIR}/src/common/common.c)
     target_link_libraries(test_sha3 ${LIBS})
+
+    # TODO: Get CMake to find python.
+    add_custom_target(
+        run_tests
+        COMMAND python3 -m pytest --verbose --junitxml=${CMAKE_BINARY_DIR}/test-results.xml --numprocesses=auto --build_tool=${CMAKE_MAKE_PROGRAM}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        DEPENDS oqs kat_kem kat_sig test_kem test_sig test_hash
+        USES_TERMINAL)
 endif()
 
 set(LIBS oqs ${LIBS})
@@ -58,10 +64,3 @@ target_link_libraries(test_sig ${LIBS})
 
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig ${LIBS})
-
-add_custom_target(
-    run_tests
-    COMMAND ${Python3_EXECUTABLE} -m pytest --verbose --junitxml=${CMAKE_BINARY_DIR}/test-results.xml --numprocesses=auto --build_tool=${CMAKE_MAKE_PROGRAM}
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS oqs kat_kem kat_sig test_kem test_sig test_hash
-    USES_TERMINAL)
