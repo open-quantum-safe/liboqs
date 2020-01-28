@@ -37,8 +37,7 @@ void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
 static OQS_STATUS example_stack(void) {
 
 #ifdef OQS_ENABLE_SIG_dilithium_2
-
-	OQS_STATUS rc;
+	OQS_STATUS rc = OQS_ERROR;
 
 	uint8_t public_key[OQS_SIG_dilithium_2_length_public_key];
 	uint8_t secret_key[OQS_SIG_dilithium_2_length_secret_key];
@@ -53,24 +52,24 @@ static OQS_STATUS example_stack(void) {
 	rc = OQS_SIG_dilithium_2_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_dilithium_2_keypair failed!\n");
-		cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
-		return OQS_ERROR;
+		goto done;
 	}
 	rc = OQS_SIG_dilithium_2_sign(signature, &signature_len, message, message_len, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_dilithium_2_sign failed!\n");
-		cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
-		return OQS_ERROR;
+		goto done;
 	}
 	rc = OQS_SIG_dilithium_2_verify(message, message_len, signature, signature_len, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_dilithium_2_verify failed!\n");
-		cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
-		return OQS_ERROR;
+		goto done;
 	}
 	printf("[example_stack] OQS_SIG_dilithium_2 operations completed.\n");
+	rc = OQS_SUCCESS;
 
-	return OQS_SUCCESS; // success!
+done:
+	cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
+	return rc;
 
 #else
 
@@ -97,12 +96,12 @@ static OQS_STATUS example_heap(void) {
 	uint8_t *signature = NULL;
 	size_t message_len = MESSAGE_LEN;
 	size_t signature_len;
-	OQS_STATUS rc;
+	OQS_STATUS rc = OQS_ERROR;
 
 	sig = OQS_SIG_new(OQS_SIG_alg_dilithium_2);
 	if (sig == NULL) {
 		printf("[example_heap]  OQS_SIG_alg_dilithium_2 was not enabled at compile-time.\n");
-		return OQS_ERROR;
+		goto done;
 	}
 
 	public_key = malloc(sig->length_public_key);
@@ -111,8 +110,7 @@ static OQS_STATUS example_heap(void) {
 	signature = malloc(sig->length_signature);
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed!\n");
-		cleanup_heap(public_key, secret_key, message, signature, sig);
-		return OQS_ERROR;
+		goto done;
 	}
 
 	// let's create a random test message to sign
@@ -121,24 +119,25 @@ static OQS_STATUS example_heap(void) {
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_keypair failed!\n");
-		cleanup_heap(public_key, secret_key, message, signature, sig);
-		return OQS_ERROR;
+		goto done;
 	}
 	rc = OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_sign failed!\n");
-		cleanup_heap(public_key, secret_key, message, signature, sig);
-		return OQS_ERROR;
+		goto done;
 	}
 	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify failed!\n");
-		cleanup_heap(public_key, secret_key, message, signature, sig);
-		return OQS_ERROR;
+		goto done;
 	}
 
 	printf("[example_heap]  OQS_SIG_dilithium_2 operations completed.\n");
-	return OQS_SUCCESS; // success
+	rc = OQS_SUCCESS;
+
+done:
+	cleanup_heap(public_key, secret_key, message, signature, sig);
+	return rc;
 }
 
 int main(void) {
