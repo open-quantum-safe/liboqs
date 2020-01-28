@@ -59,6 +59,9 @@ _INLINE_ void
 rotate512_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t bitscount) {
 	__m512i previous = _mm512_setzero_si512();
 	const uint64_t count64 = bitscount & 0x3f;
+	const __m512i count64_512 = _mm512_set1_epi64(count64);
+	const __m512i count64_512r = _mm512_set1_epi64(64 - count64);
+
 	const __m512i num_full_qw = _mm512_set1_epi8(bitscount >> 6);
 	const __m512i one = _mm512_set1_epi64(1);
 	__m512i a0, a1;
@@ -79,8 +82,8 @@ rotate512_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t bitscount) 
 		a0 = _mm512_permutex2var_epi64(in512, idx, previous);
 		a1 = _mm512_permutex2var_epi64(in512, idx1, previous);
 
-		a0 = _mm512_srli_epi64(a0, count64);
-		a1 = _mm512_slli_epi64(a1, 64 - count64);
+		a0 = _mm512_srlv_epi64(a0, count64_512);
+		a1 = _mm512_sllv_epi64(a1, count64_512r);
 
 		// Shift less than 64 (quadwords internal)
 		const __m512i out512 = _mm512_or_si512(a0, a1);
