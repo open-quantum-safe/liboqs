@@ -384,6 +384,9 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] =
 #define EphemeralKeyGeneration_B oqs_kem_sidh_p751_compressed_EphemeralKeyGeneration_B
 #define EphemeralSecretAgreement_A oqs_kem_sidh_p751_compressed_EphemeralSecretAgreement_A
 #define EphemeralSecretAgreement_B oqs_kem_sidh_p751_compressed_EphemeralSecretAgreement_B
+#ifdef USE_SIKEP751_ASM
+#define USE_SIKE_ASM
+#endif
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"

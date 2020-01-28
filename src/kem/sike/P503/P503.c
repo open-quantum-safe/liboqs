@@ -128,6 +128,9 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define EphemeralKeyGeneration_B oqs_kem_sidh_p503_EphemeralKeyGeneration_B
 #define EphemeralSecretAgreement_A oqs_kem_sidh_p503_EphemeralSecretAgreement_A
 #define EphemeralSecretAgreement_B oqs_kem_sidh_p503_EphemeralSecretAgreement_B
+#ifdef USE_SIKEP503_ASM
+#define USE_SIKE_ASM
+#endif
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"
