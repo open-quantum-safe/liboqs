@@ -78,6 +78,11 @@ PRINT_TIMER_FOOTER
  *    (Max OS X: use http://www.rugarciap.com/turbo-boost-switcher-for-os-x/)
  *  - run when the computer is idle (e.g., shut down all other applications, disable network access if possible, ...)
  */
+
+/* On Raspberry Pi, you need to additionally define the macro _RASPBERRY_PI since
+ * the high-precision cycle count register is not available to user-space programs.
+ */
+
 #endif
 
 #ifndef _DS_BENCHMARK_H
@@ -121,7 +126,7 @@ static uint64_t _bench_rdtsc(void) {
 	__asm__ volatile(".byte 0x0f, 0x31"
 	                 : "=A"(x));
 	return x;
-#elif defined(__arm__)
+#elif defined(__arm__) && !defined(_RASPBERRY_PI)
 	/* Use the ARM performance counters. */
 	unsigned int value;
 	/* Read CCNT Register */
@@ -129,13 +134,14 @@ static uint64_t _bench_rdtsc(void) {
 	             : "=r"(value));
 	return value;
 #else
+#define USING_TIME_RATHER_THAN_CYCLES
 	struct timespec time;
 	clock_gettime(CLOCK_REALTIME, &time);
 	return (int64_t)(time.tv_sec * 1e9 + time.tv_nsec);
 #endif
 }
 
-#if defined(__arm__)
+#if defined(__arm__) && !defined(_RASPBERRY_PI)
 static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 	/* In general enable all counters (including cycle counter) */
 	int32_t value = 1;
@@ -171,7 +177,7 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 	double _bench_cycles_x, _bench_cycles_mean, _bench_cycles_delta, _bench_cycles_M2, _bench_cycles_stdev; \
 	double _bench_time_x, _bench_time_mean, _bench_time_delta, _bench_time_M2, _bench_time_stdev;
 
-#if defined(__arm__)
+#if defined(__arm__) && !defined(_RASPBERRY_PI)
 #define INITIALIZE_TIMER            \
 	_bench_init_perfcounters(1, 0); \
 	_bench_iterations = 0;          \
@@ -237,12 +243,18 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 		printf("%s", _bench_time_buff);                                                   \
 	}
 
-#define PRINT_TIMER_HEADER                                                                                                                                                                            \
-	printf("Started at ");                                                                                                                                                                            \
-	PRINT_CURRENT_TIME                                                                                                                                                                                \
-	printf("\n");                                                                                                                                                                                     \
-	printf("%-30s | %10s | %14s | %15s | %10s | %16s | %10s\n", "Operation                     ", "Iterations", "Total time (s)", "Time (us): mean", "pop. stdev", "CPU cycles: mean", "pop. stdev"); \
-	printf("%-30s | %10s:| %14s:| %15s:| %10s:| %16s:| %10s:\n", "------------------------------", "----------", "--------------", "---------------", "----------", "----------------", "----------");
+#ifdef USING_TIME_RATHER_THAN_CYCLES
+#define HIGH_PREC_HEADER "High-prec time (ns): mean"
+#else
+#define HIGH_PREC_HEADER "CPU cycles: mean         "
+#endif
+
+#define PRINT_TIMER_HEADER                                                                                                                                                                          \
+	printf("Started at ");                                                                                                                                                                          \
+	PRINT_CURRENT_TIME                                                                                                                                                                              \
+	printf("\n");                                                                                                                                                                                   \
+	printf("%-30s | %10s | %14s | %15s | %10s | %25s | %10s\n", "Operation                     ", "Iterations", "Total time (s)", "Time (us): mean", "pop. stdev", HIGH_PREC_HEADER, "pop. stdev"); \
+	printf("%-30s | %10s:| %14s:| %15s:| %10s:| %25s:| %10s:\n", "------------------------------", "----------", "--------------", "---------------", "----------", "-------------------------", "----------");
 /* colons are used in above to right-align cell contents in Markdown */
 
 #define PRINT_TIMER_FOOTER \
@@ -251,7 +263,7 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 	printf("\n");
 
 #define PRINT_TIMER_AVG(op_name) \
-	printf("%-30s | %10" PRIu64 " | %14.3f | %15.3f | %10.3f | %16.0f | %10.0f\n", (op_name), _bench_iterations, ((double) _bench_time_cumulative) / 1000000.0, _bench_time_mean, _bench_time_stdev, ((double) _bench_cycles_cumulative) / (double) _bench_iterations, _bench_cycles_stdev);
+	printf("%-30s | %10" PRIu64 " | %14.3f | %15.3f | %10.3f | %25.0f | %10.0f\n", (op_name), _bench_iterations, ((double) _bench_time_cumulative) / 1000000.0, _bench_time_mean, _bench_time_stdev, ((double) _bench_cycles_cumulative) / (double) _bench_iterations, _bench_cycles_stdev);
 
 #define TIME_OPERATION_ITERATIONS(op, op_name, it) \
 	{                                              \

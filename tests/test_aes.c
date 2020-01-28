@@ -5,6 +5,9 @@
 
 #include <oqs/oqs.h>
 
+#if defined(USE_RASPBERRY_PI)
+#define _RASPBERRY_PI
+#endif
 #include "ds_benchmark.h"
 #include "system_info.c"
 
