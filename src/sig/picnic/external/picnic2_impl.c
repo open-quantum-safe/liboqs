@@ -141,7 +141,7 @@ void sbox_layer_10_uint64_aux(uint64_t* d, randomTape_t* tapes) {
   *d = (in & MASK_MASK) ^ (t0 >> 2) ^ (t1 >> 1) ^ t2;
 }
 
-/* Input is the tapes for one parallel repitition; i.e., tapes[t]
+/* Input is the tapes for one parallel repetition; i.e., tapes[t]
  * Updates the random tapes of all players with the mask values for the output of
  * AND gates, and computes the N-th party's share such that the AND gate invariant
  * holds on the mask values.
@@ -488,7 +488,7 @@ int verify_picnic2(signature2_t* sig, const uint32_t* pubKey, const uint32_t* pl
     }
     /* Commit */
 
-    /* Compute random tapes for all parties.  One party for each repitition
+    /* Compute random tapes for all parties.  One party for each repetition
      * challengeC will have a bogus seed; but we won't use that party's
      * random tape. */
     createRandomTapes(&tapes[t], getLeaves(seeds[t]), sig->salt, t, params);
