@@ -140,6 +140,7 @@ workflows:
       - centos-7
       - centos-8
       - debian-buster-amd64
+      - osx
       - ubuntu-bionic-x86_64-gcc7
       - ubuntu-bionic-x86_64-gcc7-noopenssl
       - ubuntu-bionic-x86_64-gcc7-noshared
