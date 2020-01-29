@@ -172,6 +172,7 @@ __inline static void mp_subaddfast(const digit_t *a, const digit_t *b, digit_t *
 	digit_t mask = 0 - (digit_t) mp_sub(a, b, c, 2 * NWORDS_FIELD);
 	for (int i = 0; i < NWORDS_FIELD; i++)
 		t1[i] = ((digit_t *) PRIME)[i] & mask;
+	mp_addfast((digit_t *) &c[NWORDS_FIELD], t1, (digit_t *) &c[NWORDS_FIELD]);
 #endif
 }
 
