@@ -32,7 +32,16 @@ AC_DEFUN([SET_AM_CFLAGS],
   # Optimization level
   AM_CFLAGS=${AM_CFLAGS}" -O3 "
 
-  AM_CFLAGS=${AM_CFLAGS}" -fomit-frame-pointer "
+  # Sanitizer build
+  AC_ARG_WITH(sanitizer,
+    [  --with-sanitizer        enable the ASAN and UBSAN],
+    with_sanitizer=$withval,
+    with_sanitizer=yes)
+  AS_IF([test "x$with_sanitizer" = "xyes"], [
+    AM_CFLAGS=${AM_CFLAGS}" -fsanitize=undefined -fsanitize=address -fno-omit-frame-pointer"
+  ], [
+    AM_CFLAGS=${AM_CFLAGS}" -fomit-frame-pointer "
+  ])
 
   # Extra flags
   AM_CFLAGS=${AM_CFLAGS}" -DCONSTANT_TIME "
