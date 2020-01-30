@@ -39,6 +39,7 @@ AC_DEFUN([SET_AM_CFLAGS],
     with_sanitizer=yes)
   AS_IF([test "x$with_sanitizer" = "xyes"], [
     AM_CFLAGS=${AM_CFLAGS}" -fsanitize=undefined -fsanitize=address -fno-omit-frame-pointer"
+    AM_CFLAGS=${AM_CFLAGS}" -DNO_MISALIGNED_ACCESSES "
   ], [
     AM_CFLAGS=${AM_CFLAGS}" -fomit-frame-pointer "
   ])
