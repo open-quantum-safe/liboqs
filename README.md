@@ -74,8 +74,10 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
-		brew install autoconf automake libtool openssl wget doxygen graphviz
+		brew install autoconf automake libtool openssl@1.1 wget doxygen graphviz
 		pip3 install pytest
+	
+	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL version 1.1.0 or higher.
 
 2. Get the source:
 

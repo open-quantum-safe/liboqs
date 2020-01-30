@@ -66,50 +66,28 @@ jobs:
     environment:
       ARCH: armel
       CONFIGURE_ARGS: --disable-sig-sphincs --disable-sig-qtesla # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armel
-  ubuntu-xenial-x86_64-gcc49:
-    <<: *oqsjob
-    environment:
-      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
-      CC: gcc-4.9
-      CONFIGURE_ARGS: --disable-sig-picnic 
-  ubuntu-xenial-x86_64-gcc5:
-    <<: *oqsjob
-    environment:
-      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
-      CC: gcc-5
-  ubuntu-xenial-x86_64-gcc6:
-    <<: *oqsjob
-    environment:
-      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
-      CC: gcc-6
-  ubuntu-xenial-x86_64-gcc7:
-    <<: *oqsjob
-    environment:
-      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
-      CC: gcc-7
-  ubuntu-xenial-x86_64-gcc8:
-    <<: *oqsjob
-    environment:
-      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
-      CC: gcc-8
-  ubuntu-xenial-x86_64-gcc8-noopenssl:
-    <<: *oqsjob
-    environment:
-      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
-      CC: gcc-8
-      CONFIGURE_ARGS: --without-openssl
-  ubuntu-xenial-x86_64-gcc8-noshared:
-    <<: *oqsjob
-    environment:
-      IMAGE: dstebila/liboqs:ubuntu-xenial-x86_64-0.1.0
-      CC: gcc-8
-      CONFIGURE_ARGS: --disable-shared 
   ubuntu-bionic-x86_64-gcc7:
     <<: *oqsjob
     environment:
-      IMAGE: dstebila/liboqs:ubuntu-bionic-x86_64-0.1.0
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      SKIP_TESTS: style
+  ubuntu-bionic-x86_64-gcc7-noopenssl:
+    <<: *oqsjob
+    environment:
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      CC: gcc-7
+      CONFIGURE_ARGS: --without-openssl
+  ubuntu-bionic-x86_64-gcc7-noshared:
+    <<: *oqsjob
+    environment:
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      CC: gcc-7
+      CONFIGURE_ARGS: --disable-shared 
+  ubuntu-bionic-x86_64-gcc8:
+    <<: *oqsjob
+    environment:
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      CC: gcc-8
   centos-7:
     <<: *oqsjob
     environment:
@@ -129,10 +107,9 @@ workflows:
       - centos-7
       - centos-8
       - debian-buster-amd64
-      - ubuntu-xenial-x86_64-gcc8
-      - ubuntu-xenial-x86_64-gcc8-noopenssl
-      - ubuntu-xenial-x86_64-gcc8-noshared
       - ubuntu-bionic-x86_64-gcc7
+      - ubuntu-bionic-x86_64-gcc7-noopenssl
+      - ubuntu-bionic-x86_64-gcc7-noshared
   nightly:
     triggers:
       - schedule:
@@ -142,15 +119,13 @@ workflows:
               only:
                 - master
     jobs:
+      - centos-7
+      - centos-8
       - debian-buster-amd64
       - debian-buster-aarch64
       - debian-buster-armhf
       - debian-buster-armel
-      - ubuntu-xenial-x86_64-gcc49
-      - ubuntu-xenial-x86_64-gcc5
-      - ubuntu-xenial-x86_64-gcc6
-      - ubuntu-xenial-x86_64-gcc7
-      - ubuntu-xenial-x86_64-gcc8
-      - ubuntu-xenial-x86_64-gcc8-noopenssl
-      - ubuntu-xenial-x86_64-gcc8-noshared
       - ubuntu-bionic-x86_64-gcc7
+      - ubuntu-bionic-x86_64-gcc7-noopenssl
+      - ubuntu-bionic-x86_64-gcc7-noshared
+      - ubuntu-bionic-x86_64-gcc8

@@ -29,7 +29,7 @@ AC_DEFUN([ADD_EXTERNAL_LIB],[
     [test "x${with_openssl}" = "xno"],
     [AC_MSG_RESULT([no])],
     [
-      AC_MSG_RESULT([${with_openssl}])
+      AC_MSG_RESULT([yes (${with_openssl})])
       # set OPENSSL_DIR based on value provided
       AC_SUBST([OPENSSL_DIR], [${with_openssl}])
     ]
@@ -39,6 +39,20 @@ AC_DEFUN([ADD_EXTERNAL_LIB],[
   # define C macro USE_OPENSSL
   AM_COND_IF(USE_OPENSSL,
     [AC_DEFINE(USE_OPENSSL, 1, [Defined to 1 if using OpenSSL in liboqs])]
+  )
+
+  AS_IF(
+    [test "x${with_openssl}" != "xno"],
+    [
+      AC_MSG_CHECKING([OpenSSL version])
+      OPENSSL_VERSION=`grep OPENSSL_VERSION_TEXT ${with_openssl}/include/openssl/opensslv.h | head -n 1 | sed -e 's/.*OpenSSL //' | sed -e 's/ .*//'`
+      OPENSSL_MAJOR_VERSION=`echo ${OPENSSL_VERSION} | cut -c 1-3`
+      AS_IF(
+        [test "x${OPENSSL_MAJOR_VERSION}" == "x1.1"],
+        [AC_MSG_RESULT([ok (${OPENSSL_VERSION})])],
+        [AC_MSG_FAILURE([too old (found ${OPENSSL_VERSION}, need >= 1.1.0)])]
+      )
+    ]
   )
 
   AC_ARG_WITH([m4ri-dir],

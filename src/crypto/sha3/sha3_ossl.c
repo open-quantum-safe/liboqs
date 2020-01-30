@@ -14,20 +14,20 @@
 static void do_hash(uint8_t *output, const uint8_t *input, size_t inplen, const EVP_MD *md) {
 	EVP_MD_CTX *mdctx;
 	unsigned int outlen;
-	mdctx = EVP_MD_CTX_create();
+	mdctx = EVP_MD_CTX_new();
 	EVP_DigestInit_ex(mdctx, md, NULL);
 	EVP_DigestUpdate(mdctx, input, inplen);
 	EVP_DigestFinal_ex(mdctx, output, &outlen);
-	EVP_MD_CTX_destroy(mdctx);
+	EVP_MD_CTX_free(mdctx);
 }
 
 static void do_xof(uint8_t *output, size_t outlen, const uint8_t *input, size_t inplen, const EVP_MD *md) {
 	EVP_MD_CTX *mdctx;
-	mdctx = EVP_MD_CTX_create();
+	mdctx = EVP_MD_CTX_new();
 	EVP_DigestInit_ex(mdctx, md, NULL);
 	EVP_DigestUpdate(mdctx, input, inplen);
 	EVP_DigestFinalXOF(mdctx, output, outlen);
-	EVP_MD_CTX_destroy(mdctx);
+	EVP_MD_CTX_free(mdctx);
 }
 
 void OQS_SHA3_sha3_256(uint8_t *output, const uint8_t *input, size_t inplen) {
