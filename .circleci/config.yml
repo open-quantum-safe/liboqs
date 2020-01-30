@@ -69,24 +69,24 @@ jobs:
   ubuntu-bionic-x86_64-gcc7:
     <<: *oqsjob
     environment:
-      IMAGE: openquantumsafe/ubuntu-bionic-x86_64:latest
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
   ubuntu-bionic-x86_64-gcc7-noopenssl:
     <<: *oqsjob
     environment:
-      IMAGE: openquantumsafe/ubuntu-bionic-x86_64:latest
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
       CONFIGURE_ARGS: --without-openssl
   ubuntu-bionic-x86_64-gcc7-noshared:
     <<: *oqsjob
     environment:
-      IMAGE: openquantumsafe/ubuntu-bionic-x86_64:latest
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
       CONFIGURE_ARGS: --disable-shared 
   ubuntu-bionic-x86_64-gcc8:
     <<: *oqsjob
     environment:
-      IMAGE: openquantumsafe/ubuntu-bionic-x86_64:latest
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-8
   centos-7:
     <<: *oqsjob
