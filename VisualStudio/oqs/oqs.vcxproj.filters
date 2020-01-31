@@ -203,6 +203,105 @@
     <ClCompile Include="..\..\src\kem\kyber\pqclean_kyber1024-90s_clean\verify.c">
       <Filter>kyber\1024_90s</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\kem_ledacrypt_ledakemlt12.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\bf_decoding.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\dfr_test.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\gf2x_arith_mod_xPplusOne.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\gf2x_arith.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\H_Q_matrices_generation.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\kem.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\niederreiter.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\rng.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\sort.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt12_leaktime\utils.c">
+      <Filter>ledacrypt\ledakemlt12</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\kem_ledacrypt_ledakemlt32.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\bf_decoding.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\dfr_test.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\gf2x_arith_mod_xPplusOne.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\gf2x_arith.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\H_Q_matrices_generation.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\kem.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\niederreiter.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\rng.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\sort.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt32_leaktime\utils.c">
+      <Filter>ledacrypt\ledakemlt32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\kem_ledacrypt_ledakemlt52.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\bf_decoding.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\dfr_test.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\gf2x_arith_mod_xPplusOne.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\gf2x_arith.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\H_Q_matrices_generation.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\kem.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\niederreiter.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\rng.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\sort.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\ledacrypt\pqclean_ledakemlt52_leaktime\utils.c">
+      <Filter>ledacrypt\ledakemlt52</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\src\kem\newhope\kem_newhope_512cca.c">
       <Filter>newhope\512cca</Filter>
     </ClCompile>
@@ -427,6 +526,96 @@
     </ClCompile>
     <ClCompile Include="..\..\src\kem\saber\pqclean_firesaber_clean\verify.c">
       <Filter>saber\firesaber</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_babybear.c">
+      <Filter>threebears\babybear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear_clean\kem.c">
+      <Filter>threebears\babybear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear_clean\melas_fec.c">
+      <Filter>threebears\babybear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear_clean\ring.c">
+      <Filter>threebears\babybear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear_clean\threebears.c">
+      <Filter>threebears\babybear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_babybear_ephem.c">
+      <Filter>threebears\babybear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear-ephem_clean\kem.c">
+      <Filter>threebears\babybear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear-ephem_clean\melas_fec.c">
+      <Filter>threebears\babybear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear-ephem_clean\ring.c">
+      <Filter>threebears\babybear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_babybear-ephem_clean\threebears.c">
+      <Filter>threebears\babybear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_mamabear.c">
+      <Filter>threebears\mamabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear_clean\kem.c">
+      <Filter>threebears\mamabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear_clean\melas_fec.c">
+      <Filter>threebears\mamabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear_clean\ring.c">
+      <Filter>threebears\mamabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear_clean\threebears.c">
+      <Filter>threebears\mamabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_mamabear_ephem.c">
+      <Filter>threebears\mamabear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear-ephem_clean\kem.c">
+      <Filter>threebears\mamabear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear-ephem_clean\melas_fec.c">
+      <Filter>threebears\mamabear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear-ephem_clean\ring.c">
+      <Filter>threebears\mamabear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_mamabear-ephem_clean\threebears.c">
+      <Filter>threebears\mamabear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_papabear.c">
+      <Filter>threebears\papabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear_clean\kem.c">
+      <Filter>threebears\papabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear_clean\melas_fec.c">
+      <Filter>threebears\papabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear_clean\ring.c">
+      <Filter>threebears\papabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear_clean\threebears.c">
+      <Filter>threebears\papabear</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\kem_threebears_papabear_ephem.c">
+      <Filter>threebears\papabear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear-ephem_clean\kem.c">
+      <Filter>threebears\papabear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear-ephem_clean\melas_fec.c">
+      <Filter>threebears\papabear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear-ephem_clean\ring.c">
+      <Filter>threebears\papabear_ephem</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\kem\threebears\pqclean_papabear-ephem_clean\threebears.c">
+      <Filter>threebears\papabear_ephem</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\sig\dilithium\sig_dilithium_2.c">
       <Filter>dilithium\2</Filter>
@@ -1640,6 +1829,9 @@
     <ClInclude Include="..\..\src\kem\kyber\kem_kyber.h">
       <Filter>kyber</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\kem\ledacrypt\kem_ledacrypt.h">
+      <Filter>ledacrypt</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\src\kem\newhope\kem_newhope.h">
       <Filter>newhope</Filter>
     </ClInclude>
@@ -1648,6 +1840,9 @@
     </ClInclude>
     <ClInclude Include="..\..\src\kem\saber\kem_saber.h">
       <Filter>saber</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\kem\threebears\kem_threebears.h">
+      <Filter>threebears</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\sig\dilithium\sig_dilithium.h">
       <Filter>dilithium</Filter>
@@ -1851,6 +2046,18 @@
     <Filter Include="kyber\1024_90s">
       <UniqueIdentifier>{96d51be2-f934-430a-8556-b2d33efadc94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ledacrypt">
+      <UniqueIdentifier>{dd1f08d2-6e1a-40cc-a17c-df27c91e8280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ledacrypt\ledakemlt12">
+      <UniqueIdentifier>{5208145f-9c1e-42ce-9531-defb74fed20e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ledacrypt\ledakemlt32">
+      <UniqueIdentifier>{a7296d8f-77f1-4bcd-93df-02dfb04118b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ledacrypt\ledakemlt52">
+      <UniqueIdentifier>{ddaaf20d-4201-483f-9440-f2a35e65840e}</UniqueIdentifier>
+    </Filter>
     <Filter Include="newhope">
       <UniqueIdentifier>{21ea4719-b334-4625-8d3c-3f48de67f6f2}</UniqueIdentifier>
     </Filter>
@@ -1886,6 +2093,27 @@
     </Filter>
     <Filter Include="saber\firesaber">
       <UniqueIdentifier>{f7014d1d-26fc-4fa6-87b2-0c4552cdc0d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threebears">
+      <UniqueIdentifier>{0ab14af0-e934-4edf-a5c7-f40d2a93c4a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threebears\babybear">
+      <UniqueIdentifier>{12290f9d-11b0-496a-9b92-70fb25faba0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threebears\babybear_ephem">
+      <UniqueIdentifier>{b88beaee-0c59-4466-b2ce-d1dfc389f571}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threebears\mamabear">
+      <UniqueIdentifier>{30ae4ff0-6225-4480-abbb-29b8557acd8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threebears\mamabear_ephem">
+      <UniqueIdentifier>{b64eb66a-9072-441d-a4d8-41edd390a46c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threebears\papabear">
+      <UniqueIdentifier>{51f44ce3-1121-4b55-9c36-5c99dab92c72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threebears\papabear_ephem">
+      <UniqueIdentifier>{2edd08e6-19f4-46d8-8590-06ffe20c0e75}</UniqueIdentifier>
     </Filter>
     <Filter Include="dilithium">
       <UniqueIdentifier>{2a035f7e-7c7e-4ca3-94ac-140aac970a73}</UniqueIdentifier>

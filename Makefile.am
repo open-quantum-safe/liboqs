@@ -35,6 +35,9 @@ endif
 if ENABLE_KEM_KYBER
 liboqs_la_LIBADD += src/kem/kyber/libkemkyber.la
 endif
+if ENABLE_KEM_LEDACRYPT
+liboqs_la_LIBADD += src/kem/ledacrypt/libkemledacrypt.la
+endif
 if ENABLE_KEM_NEWHOPE
 liboqs_la_LIBADD += src/kem/newhope/libkemnewhope.la
 endif
@@ -43,6 +46,9 @@ liboqs_la_LIBADD += src/kem/ntru/libkemntru.la
 endif
 if ENABLE_KEM_SABER
 liboqs_la_LIBADD += src/kem/saber/libkemsaber.la
+endif
+if ENABLE_KEM_THREEBEARS
+liboqs_la_LIBADD += src/kem/threebears/libkemthreebears.la
 endif
 
 if ENABLE_SIG_DILITHIUM
@@ -78,9 +84,11 @@ installheader_HEADERS= src/oqs.h \
 	src/kem/kem.h \
 	src/kem/bike/kem_bike.h \
 	src/kem/kyber/kem_kyber.h \
+	src/kem/ledacrypt/kem_ledacrypt.h \
 	src/kem/newhope/kem_newhope.h \
 	src/kem/ntru/kem_ntru.h \
 	src/kem/saber/kem_saber.h \
+	src/kem/threebears/kem_threebears.h \
 	src/kem/frodokem/kem_frodokem.h \
 	src/kem/sike/kem_sike.h \
 	src/sig/sig.h \
@@ -93,7 +101,7 @@ installheader_HEADERS= src/oqs.h \
 
 
 test: check
-	python3 -m pytest -v
+	python3 -m pytest --verbose --numprocesses=auto
 
 links:
 	$(MKDIR_P) include/oqs
@@ -110,9 +118,11 @@ links:
 	cp -f src/kem/bike/kem_bike.h include/oqs
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_LINKS_START
 	cp -f src/kem/kyber/kem_kyber.h include/oqs
+	cp -f src/kem/ledacrypt/kem_ledacrypt.h include/oqs
 	cp -f src/kem/newhope/kem_newhope.h include/oqs
 	cp -f src/kem/ntru/kem_ntru.h include/oqs
 	cp -f src/kem/saber/kem_saber.h include/oqs
+	cp -f src/kem/threebears/kem_threebears.h include/oqs
 	cp -f src/sig/dilithium/sig_dilithium.h include/oqs
 	cp -f src/sig/mqdss/sig_mqdss.h include/oqs
 	cp -f src/sig/sphincs/sig_sphincs.h include/oqs
