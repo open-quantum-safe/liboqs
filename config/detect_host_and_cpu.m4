@@ -70,5 +70,22 @@ AC_DEFUN([DETECT_HOST_AND_CPU], [
   )
   
   AX_CHECK_X86_FEATURES
+  
+  # adapted from https://stackoverflow.com/a/20337780
+  AC_MSG_CHECKING([if build is on Raspberry Pi])
+  if test -f "/proc/cpuinfo"; then
+    grep --silent Raspberry /proc/cpuinfo
+    if test "x$?" == "x0"; then
+      on_rpi="yes"
+    else
+      on_rpi="no"
+    fi
+  else
+    on_rpi="no"
+  fi
+  AC_MSG_RESULT($on_rpi)
+  if test "x$on_rpi" == "xyes"; then
+    AC_DEFINE(USE_RASPBERRY_PI, 1, "Define to 1 when on a Raspberry Pi")
+  fi
 
 ])

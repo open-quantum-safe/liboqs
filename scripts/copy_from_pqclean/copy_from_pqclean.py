@@ -61,7 +61,7 @@ def load_instructions():
         family['family'] = family['name']
         for scheme in family['schemes']:
             scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_kem', scheme['pqclean_scheme'], 'META.yml')))
-            scheme['metadata']['ind_cca'] = 'true'
+            scheme['metadata']['ind_cca'] = 'true' if (scheme['metadata']['claimed-security'] == "IND-CCA2") else 'false'
             scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
             scheme['scheme_c'] = scheme['scheme'].replace('-', '')
     for family in instructions['sigs']:

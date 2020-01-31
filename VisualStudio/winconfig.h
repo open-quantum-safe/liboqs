@@ -9,6 +9,9 @@
 #define OQS_ENABLE_KEM_kyber_512_90s
 #define OQS_ENABLE_KEM_kyber_768_90s
 #define OQS_ENABLE_KEM_kyber_1024_90s
+#define OQS_ENABLE_KEM_ledacrypt_ledakemlt12
+#define OQS_ENABLE_KEM_ledacrypt_ledakemlt32
+#define OQS_ENABLE_KEM_ledacrypt_ledakemlt52
 #define OQS_ENABLE_KEM_newhope_512cca
 #define OQS_ENABLE_KEM_newhope_1024cca
 #define OQS_ENABLE_KEM_ntru_hps2048509
@@ -18,6 +21,12 @@
 #define OQS_ENABLE_KEM_saber_lightsaber
 #define OQS_ENABLE_KEM_saber_saber
 #define OQS_ENABLE_KEM_saber_firesaber
+#define OQS_ENABLE_KEM_threebears_babybear
+#define OQS_ENABLE_KEM_threebears_babybear_ephem
+#define OQS_ENABLE_KEM_threebears_mamabear
+#define OQS_ENABLE_KEM_threebears_mamabear_ephem
+#define OQS_ENABLE_KEM_threebears_papabear
+#define OQS_ENABLE_KEM_threebears_papabear_ephem
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_KEMS_END
 #define OQS_ENABLE_KEM_frodokem_640_aes
 #define OQS_ENABLE_KEM_frodokem_640_shake
