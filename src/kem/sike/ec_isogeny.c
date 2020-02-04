@@ -318,7 +318,7 @@ static void LADDER3PT(const f2elm_t xP, const f2elm_t xQ, const f2elm_t xPQ, con
 
 	// Main loop
 	for (i = 0; i < nbits; i++) {
-		bit = (m[i >> LOG2RADIX] >> (i & (RADIX - 1))) & 1;
+		bit = int (m[i >> LOG2RADIX] >> (i & (RADIX - 1))) & 1;
 		swap = bit ^ prevbit;
 		prevbit = bit;
 		mask = 0 - (digit_t) swap;
