@@ -32,6 +32,11 @@ cmake_dependent_option(OQS_ENABLE_KEM_kyber_768_90s "" ON "ENABLE_KEM_KYBER" OFF
 cmake_dependent_option(OQS_ENABLE_KEM_kyber_1024 "" ON "ENABLE_KEM_KYBER" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_kyber_1024_90s "" ON "ENABLE_KEM_KYBER" OFF)
 
+option(ENABLE_KEM_LEDACRYPT "" ON)
+cmake_dependent_option(OQS_ENABLE_KEM_ledakemlt12 "" ON "ENABLE_KEM_LEDACRYPT" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_ledakemlt32 "" ON "ENABLE_KEM_LEDACRYPT" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_ledakemlt52 "" ON "ENABLE_KEM_LEDACRYPT" OFF)
+
 option(ENABLE_KEM_NEWHOPE "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_newhope_512cca "" ON "ENABLE_KEM_NEWHOPE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_newhope_1024cca "" ON "ENABLE_KEM_NEWHOPE" OFF)

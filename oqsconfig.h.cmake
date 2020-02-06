@@ -49,6 +49,11 @@
 #cmakedefine OQS_ENABLE_KEM_kyber_1024
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_90s
 
+#cmakedefine ENABLE_KEM_LEDACRYPT
+#cmakedefine OQS_ENABLE_KEM_ledakemlt12
+#cmakedefine OQS_ENABLE_KEM_ledakemlt32
+#cmakedefine OQS_ENABLE_KEM_ledakemlt52
+
 #cmakedefine ENABLE_KEM_NEWHOPE
 #cmakedefine OQS_ENABLE_KEM_newhope_512cca
 #cmakedefine OQS_ENABLE_KEM_newhope_1024cca
