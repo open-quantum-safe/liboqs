@@ -72,6 +72,14 @@ cmake_dependent_option(OQS_ENABLE_KEM_sidh_p610_compressed "" ON "ENABLE_KEM_SID
 cmake_dependent_option(OQS_ENABLE_KEM_sidh_p751 "" ON "ENABLE_KEM_SIDH" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_sidh_p751_compressed "" ON "ENABLE_KEM_SIDH" OFF)
 
+option(ENABLE_KEM_THREEBEARS "" ON)
+cmake_dependent_option(OQS_ENABLE_KEM_threebears_babybear "" ON "ENABLE_KEM_THREEBEARS" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_threebears_babybear_ephem "" ON "ENABLE_KEM_THREEBEARS" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_threebears_mamabear "" ON "ENABLE_KEM_THREEBEARS" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_threebears_mamabear_ephem "" ON "ENABLE_KEM_THREEBEARS" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_threebears_papabear "" ON "ENABLE_KEM_THREEBEARS" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_threebears_papabear_ephem "" ON "ENABLE_KEM_THREEBEARS" OFF)
+
 option(ENABLE_SIG_DILITHIUM "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2 "" ON "ENABLE_SIG_DILITHIUM" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_dilithium_3 "" ON "ENABLE_SIG_DILITHIUM" OFF)

@@ -66,7 +66,7 @@ if(ENABLE_KEM_SIKE OR ENABLE_KEM_SIDH)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/sike/kem_sike.h)
 endif()
 if(ENABLE_KEM_THREEBEARS)
-    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/threebears/kem_saber.h)
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/threebears/kem_threebears.h)
 endif()
 
 if(ENABLE_SIG_DILITHIUM)
