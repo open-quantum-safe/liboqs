@@ -18,11 +18,11 @@
  * (ndrucker@amazon.com, gueron@amazon.com)
  */
 
+#include "cleanup.h"
 #include "gf2x.h"
 #include "gf2x_internal.h"
 #include <stdlib.h>
 #include <string.h>
-#include "cleanup.h"
 
 #ifndef USE_OPENSSL_GF2M
 

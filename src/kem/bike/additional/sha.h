@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include "cleanup.h"
 #include "types.h"
 #include "utilities.h"
 #include <oqs/sha2.h>
@@ -41,15 +42,15 @@ typedef struct sha384_hash_s {
 
 typedef sha384_hash_t sha_hash_t;
 
+_INLINE_ void
+sha_hash_cleanup(IN OUT sha_hash_t *o) {
+	secure_clean(o->u.raw, sizeof(*o));
+}
+
 _INLINE_ int
 sha(OUT sha_hash_t *hash_out, IN const uint32_t byte_len, IN const uint8_t *msg) {
 	OQS_SHA2_sha384(hash_out->u.raw, msg, byte_len);
 	return 1;
-}
-
-_INLINE_ void
-sha_hash_cleanup(IN OUT sha_hash_t *o) {
-	secure_clean(o->u.raw, sizeof(*o));
 }
 
 _INLINE_ void
