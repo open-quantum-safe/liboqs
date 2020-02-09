@@ -58,9 +58,9 @@ rotate512_big(OUT syndrome_t *out, IN const syndrome_t *in, size_t zmm_num) {
 _INLINE_ void
 rotate512_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t bitscount) {
 	__m512i previous = _mm512_setzero_si512();
-	const uint64_t count64 = bitscount & 0x3f;
+	const int count64 = (int) bitscount & 0x3f;
 	const __m512i count64_512 = _mm512_set1_epi64(count64);
-	const __m512i count64_512r = _mm512_set1_epi64(64 - count64);
+	const __m512i count64_512r = _mm512_set1_epi64((int) 64 - count64);
 
 	const __m512i num_full_qw = _mm512_set1_epi8(bitscount >> 6);
 	const __m512i one = _mm512_set1_epi64(1);

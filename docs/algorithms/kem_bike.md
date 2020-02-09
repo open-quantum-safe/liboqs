@@ -27,7 +27,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://bikesuite.org/additional.html
-- **Implementation version:** BIKE-1 L1/3 with the BGF decoder (as defined in "QC-MDPC decoders with several shades of gray" at https://eprint.iacr.org/2019/1423)
+- **Implementation version:** BIKE-1 L1/3 with the BGF decoder (as defined in "QC-MDPC decoders with several shades of gray" at https://eprint.iacr.org/2019/1423) that matches [BIKE's v3.2](https://bikesuite.org/files/round2/spec/BIKE-Spec-2020.02.07.1.pdf)
 - **License:** Apache 2.0 License
 - **Language:** C
 - **Constant-time:** Yes

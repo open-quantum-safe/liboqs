@@ -27,10 +27,10 @@
 #endif
 
 // Printing values in Little Endian
-void print_LE(IN const uint64_t *in, IN const uint32_t bits_num);
+void print_LE(IN const uint64_t *in, IN uint32_t bits_num);
 
 // Printing values in Big Endian
-void print_BE(IN const uint64_t *in, IN const uint32_t bits_num);
+void print_BE(IN const uint64_t *in, IN uint32_t bits_num);
 
 // Printing number is required only in verbose level 2 or above
 #if VERBOSE >= 2
