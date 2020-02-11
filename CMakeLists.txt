@@ -13,6 +13,7 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb3")
     else()
+        include(config/cpu-extensions.cmake)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fomit-frame-pointer")
     endif()
 endif()
@@ -24,7 +25,6 @@ if(BUILD_SHARED_LIBS)
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 endif()
 
-include(config/cpu-extensions.cmake)
 include(config/alg-support.cmake)
 
 if(USE_OPENSSL)

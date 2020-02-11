@@ -106,7 +106,7 @@ jobs:
     macos:
         xcode: "11.3.0"
     environment:
-        CONFIGURE_ARGS: -DUSE_OPENSSL=OFF
+        CONFIGURE_ARGS: -DUSE_OPENSSL=OFF -DCMAKE_BUILD_TYPE=Debug
         SKIP_TESTS: style
     steps:
         - checkout
@@ -145,13 +145,10 @@ workflows:
       - centos-7-amd64
       - centos-8-amd64
       - debian-buster-amd64
-      - debian-buster-arm64 #temp
-      - debian-buster-armhf #temp
-      - debian-buster-armel #temp
       - macOS
       - ubuntu-bionic-x86_64-gcc7
       - ubuntu-bionic-x86_64-gcc7-noopenssl
-      - ubuntu-bionic-x86_64-gcc7-noshared
+      - ubuntu-bionic-x86_64-gcc7-shared
   nightly:
     triggers:
       - schedule:

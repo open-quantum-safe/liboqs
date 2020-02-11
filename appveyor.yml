@@ -4,23 +4,23 @@ image: Visual Studio 2017
 
 platform: x64
 
-build:
-  verbosity: minimal
-
 branches:
-  except:
-    - /.*nist.*/
-    - /master-new-.*/
+  only:
+    - master
 
 init:
   - set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
 
-
 configuration:
   - Debug
-  - DebugDLL
   - Release
-  - ReleaseDLL
+
+before_build:
+  - cmake . -G"Visual Studio 15 2017"
+
+build:
+  project: ALL_BUILD.vcxproj
+  verbosity: minimal
 
 before_test:
 - cmd: >-
