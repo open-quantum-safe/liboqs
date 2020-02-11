@@ -23,7 +23,7 @@ before_build:
     cmake .. -G"Visual Studio 15 2017"
 
 build:
-  project: build\liboqs.sln
+  project: build\ALL_BUILD.vcxproj
   verbosity: minimal
 
 before_test:
