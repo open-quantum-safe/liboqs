@@ -70,12 +70,12 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 	On Ubuntu:
 
-		sudo apt install cmake doxygen gcc ninja libssl-dev python3-pytest python3-pytest-xdist
+		 sudo apt install cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz
 
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
-		brew install autoconf automake libtool openssl@1.1 wget doxygen graphviz
-		pip3 install pytest
+		brew install cmake ninja openssl@1.1 wget doxygen graphviz
+		pip3 install pytest pytest-xdist
 	
 	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL version 1.1.0 or higher.
 
@@ -90,9 +90,9 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 		cmake -GNinja ..
 		ninja
 
-	Various options can be passed to configure to disable algorithms, use different implementations, specify whether to use OpenSSL, etc..  Run `cmake -LAH ..` in the `build` directory` for a list of all the options.
+	Various options can be passed to `cmake` to disable algorithms, use different implementations, specify whether to use OpenSSL, etc..  All supported options are listed in the `config/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory`. All subsequent instructions assume we are in this directory.
 
-3. The main build result is `liboqs.a`, a static library. There are also a variety of programs built under the `tests` directory:
+3. The main build result is `lib/liboqs.a`, a static library. There are also a variety of programs built under the `tests` directory:
 
 	- `test_kem`: Simple test harness for key encapsulation mechanisms
 	- `test_sig`: Simple test harness for key signature schemes
@@ -104,7 +104,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 	- `example_sig`: Minimal runnable example showing the usage of the signature API
 	- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 
-	A range of tests (including all `test_*` and `kat_*` programs above) can be run using
+	The test suite can be run using
 
 		ninja run_tests
 
@@ -116,11 +116,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 ### Windows
 
-Binaries can be generated using the Visual Studio solution in the `VisualStudio` folder. The supported schemes are defined in the project's `winconfig.h` file.
-
-### Others
-
-Instructions for building on OpenBSD and ARM can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki/Building).
+Binaries can be generated using Visual Studio 2017 or higher with the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) extension installed.
 
 ## Documentation
 
@@ -156,5 +152,4 @@ liboqs includes some third party libraries or modules that are licensed differen
 Various companies, including Amazon Web Services, evolutionQ, Microsoft Research, and Cisco Systems, have dedicated programmer time to contribute source code to OQS. [Various people](CONTRIBUTORS) have contributed source code to liboqs.
 
 Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services and the Tutte Institute for Mathematics and Computing.
-
 Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.

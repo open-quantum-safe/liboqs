@@ -6,7 +6,6 @@ platform: x64
 
 branches:
     except:
-        - /.*nist.*/
         - /master-new-.*/
 
 init:
