@@ -7,7 +7,7 @@ version: 2
     - checkout
     - run:
         name: Configure
-        command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build  && cmake -GNinja -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} ${CONFIGURE_ARGS} ..)
+        command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build  && cmake -GNinja ${CONFIGURE_ARGS} ..)
     - run:
         name: Build
         command: ../scripts/git_no_checkin_in_last_day.sh || (source ~/.bashrc && ninja)
@@ -29,11 +29,11 @@ version: 2
     - run:
         name: Install the emulation handlers
         command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - run: # Skipping sig-sphincs because it exhausts memory on CircleCI
+    - run:
         name: Run the tests in a container
         command: |
-          scripts/git_no_checkin_in_last_day.sh &&
-          docker run -e SKIP_TESTS=style --rm -v `pwd`:`pwd` -w `pwd` xvzcf/ci-debian-buster-${ARCH}:1 /bin/bash -c "
+          scripts/git_no_checkin_in_last_day.sh ||
+          docker run -e SKIP_TESTS=style --rm -v `pwd`:`pwd` -w `pwd` openquantumsafe/ci-debian-buster-${ARCH}:latest /bin/bash -c "
           uname -a &&
           file /bin/ls &&
           mkdir build &&
@@ -53,20 +53,17 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-centos-7-amd64:latest
       CONFIGURE_ARGS: -DOPENSSL_ROOT_DIR=/usr/local/ssl
-      BUILD_SHARED_LIBS: ON
       SKIP_TESTS: style
   centos-8-amd64:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-centos-8-amd64:latest
       SKIP_TESTS: style
-      BUILD_SHARED_LIBS: ON
   debian-buster-amd64:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-debian-buster-amd64:latest
       SKIP_TESTS: style
-      BUILD_SHARED_LIBS: ON
   debian-buster-arm64:
     <<: *emulatedjob
     environment:
@@ -85,27 +82,26 @@ jobs:
   ubuntu-bionic-x86_64-gcc7:
     <<: *oqsjob
     environment:
-      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:2
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      BUILD_SHARED_LIBS: ON
   ubuntu-bionic-x86_64-gcc7-noopenssl:
     <<: *oqsjob
     environment:
-      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:2
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
       CONFIGURE_ARGS: -DUSE_OPENSSL=OFF
-      BUILD_SHARED_LIBS: ON
-  ubuntu-bionic-x86_64-gcc7-noshared:
+  ubuntu-bionic-x86_64-gcc7-shared:
     <<: *oqsjob
     environment:
-      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:2
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
+      CONFIGURE_ARGS: -DBUILD_SHARED_LIBS=ON -DUSE_OPENSSL=OFF
+      SKIP_TESTS: namespace #_init and _fini will trip this
   ubuntu-bionic-x86_64-gcc8:
     <<: *oqsjob
     environment:
-      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:2
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-8
-      BUILD_SHARED_LIBS: ON
   macOS:
     macos:
         xcode: "11.3.0"
@@ -136,6 +132,7 @@ jobs:
         - run:
             name: Run tests
             command: ../scripts/git_no_checkin_in_last_day.sh || ninja run_tests
+            working_directory: build
         - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
             path: build/test-results
         - store_artifacts:
@@ -148,6 +145,9 @@ workflows:
       - centos-7-amd64
       - centos-8-amd64
       - debian-buster-amd64
+      - debian-buster-arm64 #temp
+      - debian-buster-armhf #temp
+      - debian-buster-armel #temp
       - macOS
       - ubuntu-bionic-x86_64-gcc7
       - ubuntu-bionic-x86_64-gcc7-noopenssl
@@ -163,6 +163,10 @@ workflows:
     jobs:
       - centos-7-amd64
       - centos-8-amd64
+      - debian-buster-amd64
+      - debian-buster-arm64
+      - debian-buster-armhf
+      - debian-buster-armel
       - macOS
       - ubuntu-bionic-x86_64-gcc7
       - ubuntu-bionic-x86_64-gcc7-noopenssl
