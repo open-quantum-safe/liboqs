@@ -95,8 +95,9 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      CONFIGURE_ARGS: -DBUILD_SHARED_LIBS=ON -DUSE_OPENSSL=OFF
-      SKIP_TESTS: namespace #_init and _fini will trip this
+      CONFIGURE_ARGS: -DBUILD_SHARED_LIBS=ON
+      #TODO: _init and _fini trip test_namespace.py
+      SKIP_TESTS: namespace
   ubuntu-bionic-x86_64-gcc8:
     <<: *oqsjob
     environment:
@@ -106,6 +107,7 @@ jobs:
     macos:
         xcode: "11.3.0"
     environment:
+        #TODO: Make tests work without CMAKE_BUILD_TYPE flag
         CONFIGURE_ARGS: -DUSE_OPENSSL=OFF -DCMAKE_BUILD_TYPE=Debug
         SKIP_TESTS: style
     steps:
