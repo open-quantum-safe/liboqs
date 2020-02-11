@@ -17,10 +17,13 @@ configuration:
   - Release
 
 before_build:
-  - cmake . -G"Visual Studio 15 2017"
+- cmd: |-
+    mkdir build
+    cd build
+    cmake .. -G"Visual Studio 15 2017"
 
 build:
-  project: ALL_BUILD.vcxproj
+  project: %APPVEYOR_BUILD_FOLDER%\build\liboqs.sln
   verbosity: minimal
 
 before_test:
