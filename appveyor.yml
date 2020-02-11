@@ -5,8 +5,9 @@ image: Visual Studio 2017
 platform: x64
 
 branches:
-  only:
-    - master
+    except:
+        - /.*nist.*/
+        - /master-new-.*/
 
 init:
   - set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
