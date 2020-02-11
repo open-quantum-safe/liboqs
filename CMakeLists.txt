@@ -4,6 +4,29 @@ project(liboqs C ASM)
 set(OQS_VERSION_TEXT "0.2.1-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" OR
+   CMAKE_SYSTEM_PROCESSOR STREQUAL "amd64")
+    set(ARCH "x86_64")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64")
+    # cmake reports AMD64 on Windows, but we might be building for 32-bit.
+    if(CMAKE_CL_64)
+        set(ARCH "x86_64")
+    else()
+        set(ARCH "x86")
+    endif()
+elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86" OR
+       CMAKE_SYSTEM_PROCESSOR STREQUAL "i386" OR
+       CMAKE_SYSTEM_PROCESSOR STREQUAL "i686")
+    set(ARCH "x86")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" OR
+       CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+    set(ARCH "arm64")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
+    set(ARCH "arm")
+else()
+    message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR})
+endif()
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
@@ -39,13 +62,13 @@ if(USE_OPENSSL)
 endif()
 
 set(PUBLIC_HEADERS ${PROJECT_SOURCE_DIR}/src/oqs.h
-            ${PROJECT_SOURCE_DIR}/src/common/common.h
-            ${PROJECT_SOURCE_DIR}/src/common/rand.h
-            ${PROJECT_SOURCE_DIR}/src/crypto/aes/aes.h
-            ${PROJECT_SOURCE_DIR}/src/crypto/sha2/sha2.h
-            ${PROJECT_SOURCE_DIR}/src/crypto/sha3/sha3.h
-            ${PROJECT_SOURCE_DIR}/src/kem/kem.h
-            ${PROJECT_SOURCE_DIR}/src/sig/sig.h)
+                   ${PROJECT_SOURCE_DIR}/src/common/common.h
+                   ${PROJECT_SOURCE_DIR}/src/common/rand.h
+                   ${PROJECT_SOURCE_DIR}/src/crypto/aes/aes.h
+                   ${PROJECT_SOURCE_DIR}/src/crypto/sha2/sha2.h
+                   ${PROJECT_SOURCE_DIR}/src/crypto/sha3/sha3.h
+                   ${PROJECT_SOURCE_DIR}/src/kem/kem.h
+                   ${PROJECT_SOURCE_DIR}/src/sig/sig.h)
 if(ENABLE_KEM_BIKE)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/bike/kem_bike.h)
 endif()

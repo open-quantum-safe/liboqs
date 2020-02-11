@@ -1,26 +1,3 @@
-if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" OR
-   CMAKE_SYSTEM_PROCESSOR STREQUAL "amd64")
-    set(ARCH "x86_64")
-elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64")
-    # cmake reports AMD64 on Windows, but we might be building for 32-bit.
-    if(CMAKE_CL_64)
-        set(ARCH "x86_64")
-    else()
-        set(ARCH "x86")
-    endif()
-elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86" OR
-       CMAKE_SYSTEM_PROCESSOR STREQUAL "i386" OR
-       CMAKE_SYSTEM_PROCESSOR STREQUAL "i686")
-    set(ARCH "x86")
-elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" OR
-       CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
-    set(ARCH "arm64")
-elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
-    set(ARCH "arm")
-else()
-    message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR})
-endif()
-
 if(ARCH STREQUAL "x86" OR
    ARCH STREQUAL "x86_64")
     try_run(RUN_RESULT COMPILE_RESULT

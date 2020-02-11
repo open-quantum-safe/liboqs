@@ -9,7 +9,7 @@ set(SRCS additional/decode.c
 
 add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
 
-if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
     set(SRCS ${SRCS} additional/sampling_portable.c
                      additional/secure_decode_portable.c)
     set(CPP_DEFS PORTABLE)

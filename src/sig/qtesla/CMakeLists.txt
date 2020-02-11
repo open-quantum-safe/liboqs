@@ -1,10 +1,10 @@
-if(${ARCH} STREQUAL "x86")
+if(ARCH STREQUAL "x86")
     set(CPP_DEFS _X86_)
-elseif(${ARCH} STREQUAL "x86_64")
+elseif(ARCH STREQUAL "x86_64")
     set(CPP_DEFS _AMD64_)
-elseif(${ARCH} STREQUAL "arm")
+elseif(ARCH STREQUAL "arm")
     set(CPP_DEFS _ARM_)
-elseif(${ARCH} STREQUAL "arm64")
+elseif(ARCH STREQUAL "arm64")
     set(CPP_DEFS _ARM64_)
 endif()
 
@@ -17,7 +17,7 @@ if(OQS_ENABLE_SIG_qTesla_p_III)
     set(SRCS ${SRCS} qtesla_p_III.c)
 endif()
 
-if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux"
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux"
    AND USE_AVX2_INSTRUCTIONS
    AND USE_AES_INSTRUCTIONS)
     set(CPP_DEFS ${CPP_DEFS} WITH_AVX2)
