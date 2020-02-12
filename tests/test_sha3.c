@@ -7,7 +7,7 @@
 
 #include "system_info.c"
 
-#if defined(WINDOWS)
+#if defined(_WIN32)
 #define UNUSED
 #else
 #define UNUSED __attribute__((unused))

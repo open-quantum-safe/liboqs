@@ -1,7 +1,7 @@
 #include <stdio.h>
 #if defined(_WIN32)
 #include <windows.h>
-#include <Wincrypt.h>
+#include <wincrypt.h>
 #include <assert.h>
 #define strcasecmp _stricmp
 #else
