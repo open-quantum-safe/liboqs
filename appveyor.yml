@@ -26,14 +26,13 @@ build_script:
   - ninja
 
 before_test:
-  - set PATH="%APPVEYOR_BUILD_FOLDER%\build\bin";%PATH%
   - python -m pip install pytest pytest-xdist
 
 test_script:
   - cmd: >-
       cd %APPVEYOR_BUILD_FOLDER%\build
 
-      ninja run_tests
+      set PATH=%cd%\bin;%PATH% && ninja run_tests
 
 after_test:
   - ps: >-
