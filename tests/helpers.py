@@ -119,7 +119,6 @@ def path_to_executable(program_name):
             os.environ['APPVEYOR_BUILD_FOLDER'],
             'build',
             'tests',
-            os.environ['CONFIGURATION'],
             program_name + ".EXE"
         )
     else:
