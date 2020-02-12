@@ -21,16 +21,16 @@ before_build:
   - cmd: |-
       mkdir build
       cd build
-      cmake .. -G"Visual Studio 16 2019" -DBUILD_SHARED_LIBS=%BUILD_SHARED%
-build:
-  project: build\ALL_BUILD.vcxproj
-  verbosity: minimal
+      cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=%BUILD_SHARED%
+build_script:
+  - ninja
 
 before_test:
   - python -m pip install pytest pytest-xdist
+  - set PATH="%APPVEYOR_BUILD_FOLDER%\build\bin";%PATH%
 
 test_script:
-  - msbuild %APPVEYOR_BUILD_FOLDER%\build\run_tests.vcxproj
+  - cd build && ninja run_tests
 
 after_test:
   - ps: >-

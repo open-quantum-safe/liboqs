@@ -46,7 +46,7 @@ if(CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
 endif()
 if(BUILD_SHARED_LIBS)
   if(WIN32)
-      # TODO: This is a hack for Windows DLL's. We should use
+      # TODO: This is a hack for Windows DLLs. We should use
       # __declspec(dllexport) eventually.
       set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
   endif()
