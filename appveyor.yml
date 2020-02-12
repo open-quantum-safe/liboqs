@@ -1,6 +1,6 @@
 version: 1.0.{build}
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 platform: x64
 
@@ -19,7 +19,7 @@ before_build:
 - cmd: |-
     mkdir build
     cd build
-    cmake .. -G"Visual Studio 15 2017"
+    cmake .. -G"Visual Studio 16 2019"
 
 build:
   project: build\ALL_BUILD.vcxproj
