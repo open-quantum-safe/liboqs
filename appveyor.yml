@@ -10,7 +10,7 @@ branches:
     - /master-new-.*/
 
 init:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
 
 environment:
