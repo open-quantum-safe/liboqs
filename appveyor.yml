@@ -15,7 +15,6 @@ init:
 
 environment:
   matrix:
-    - BUILD_SHARED: OFF
     - BUILD_SHARED: ON
 
 before_build:
@@ -27,7 +26,7 @@ build_script:
   - ninja
 
 before_test:
-  - set PATH="%APPVEYOR_BUILD_FOLDER%\build\bin"
+  - set PATH="%APPVEYOR_BUILD_FOLDER%\build\bin";%PATH%
   - python -m pip install pytest pytest-xdist
 
 test_script:
