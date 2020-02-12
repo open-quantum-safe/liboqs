@@ -30,7 +30,10 @@ before_test:
   - python -m pip install pytest pytest-xdist
 
 test_script:
-  - cd build && ninja run_tests
+  - cmd: >-
+      cd %APPVEYOR_BUILD_FOLDER%\build
+
+      ninja run_tests
 
 after_test:
   - ps: >-
