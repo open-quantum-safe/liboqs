@@ -39,4 +39,4 @@ after_test:
   - ps: >-
       $wc = New-Object 'System.Net.WebClient'
 
-      $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results\pytest\results.xml))
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results\pytest\test-results.xml))

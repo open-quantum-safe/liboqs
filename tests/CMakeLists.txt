@@ -29,7 +29,11 @@ if(NOT WIN32)
     target_link_libraries(test_sha3 ${LIBS})
 
     set(NON_WIN32_TESTS test_aes test_hash test_sha3)
+    set(PYTHON3_EXEC python3)
+else()
+    set(PYTHON3_EXEC python)
 endif()
+
 
 set(LIBS oqs ${LIBS})
 
@@ -62,15 +66,10 @@ target_link_libraries(speed_sig ${LIBS})
 if(BUILD_SHARED_LIBS)
     set(USE_LIBOQS_SO --use_liboqs_so)
 endif()
-if(WIN32)
-    set(PYTHON3_EXEC python)
-else()
-    set(PYTHON3_EXEC python3)
-endif()
 # TODO: Get CMake to find python.
 add_custom_target(
     run_tests
-    COMMAND ${PYTHON3_EXEC} -m pytest --verbose --junitxml=${CMAKE_BINARY_DIR}/test-results/pytest/test-results.xml --numprocesses=auto --build_tool=${CMAKE_MAKE_PROGRAM} ${USE_LIBOQS_SO}
+    COMMAND ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --build_tool=${CMAKE_MAKE_PROGRAM} ${USE_LIBOQS_SO} --junitxml=${CMAKE_BINARY_DIR}/test-results/pytest/test-results.xml
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS oqs example_kem kat_kem test_kem example_sig kat_sig test_sig ${NON_WIN32_TESTS}
     USES_TERMINAL)
