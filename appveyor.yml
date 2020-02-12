@@ -10,7 +10,7 @@ branches:
     - /master-new-.*/
 
 init:
-- set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
+  - set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
 
 environment:
   matrix:
@@ -18,29 +18,22 @@ environment:
     - BUILD_SHARED: ON
 
 before_build:
-- cmd: |-
-    mkdir build
-    cd build
-    cmake .. -G"Visual Studio 16 2019" -DBUILD_SHARED_LIBS=%BUILD_SHARED%
-
+  - cmd: |-
+      mkdir build
+      cd build
+      cmake .. -G"Visual Studio 16 2019" -DBUILD_SHARED_LIBS=%BUILD_SHARED%
 build:
   project: build\ALL_BUILD.vcxproj
   verbosity: minimal
 
 before_test:
-- cmd: >-
-    python -m pip install pytest pytest-xdist
-
-    mkdir %APPVEYOR_BUILD_FOLDER%\test-results\pytest
+  - python -m pip install pytest pytest-xdist
 
 test_script:
-- cmd: >-
-    cd %APPVEYOR_BUILD_FOLDER%
-
-    python -m pytest --verbose --numprocesses=auto --junitxml=test-results\pytest\results.xml
+  - msbuild %APPVEYOR_BUILD_FOLDER%\build\run_tests.vcxproj
 
 after_test:
-- ps: >-
-    $wc = New-Object 'System.Net.WebClient'
+  - ps: >-
+      $wc = New-Object 'System.Net.WebClient'
 
-    $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results\pytest\results.xml))
+      $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\build\test-results\pytest\results.xml))
