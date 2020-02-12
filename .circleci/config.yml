@@ -73,11 +73,11 @@ jobs:
     <<: *emulatedjob
     environment:
       ARCH: armhf
-      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF -ENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armhf
+      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF -DENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armhf
   debian-buster-armel:
     <<: *emulatedjob
     environment:
-      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF -ENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armel
+      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF -DENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armel
       ARCH: armel
   ubuntu-bionic-x86_64-gcc7:
     <<: *oqsjob
@@ -107,7 +107,7 @@ jobs:
     macos:
         xcode: "11.3.0"
     environment:
-        #TODO: Make tests work without CMAKE_BUILD_TYPE flag
+        #TODO: Make tests pass with Release build
         CONFIGURE_ARGS: -DUSE_OPENSSL=OFF -DCMAKE_BUILD_TYPE=Debug
         SKIP_TESTS: style
     steps:

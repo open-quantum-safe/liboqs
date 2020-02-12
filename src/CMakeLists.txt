@@ -66,11 +66,6 @@ add_library(oqs kem/kem.c
                 $<TARGET_OBJECTS:crypto>
                 $<TARGET_OBJECTS:common>)
 
-set_target_properties(oqs
-    PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
-
 install(TARGETS oqs
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)

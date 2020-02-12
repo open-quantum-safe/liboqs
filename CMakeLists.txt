@@ -45,6 +45,11 @@ if(CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics -Wno-missing-braces")
 endif()
 if(BUILD_SHARED_LIBS)
+  if(WIN32)
+      # TODO: This is a hack for Windows DLL's. We should use
+      # __declspec(dllexport) eventually.
+      set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS TRUE)
+  endif()
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 endif()
 
