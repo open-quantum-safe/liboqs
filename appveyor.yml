@@ -1,25 +1,27 @@
 version: 1.0.{build}
 
+# TODO: Support Visual Studio 2017
 image: Visual Studio 2019
 
 platform: x64
 
 branches:
-    except:
-        - /master-new-.*/
+  except:
+    - /master-new-.*/
 
 init:
-  - set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
+- set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
 
-configuration:
-  - Debug
-  - Release
+environment:
+  matrix:
+    - BUILD_SHARED: OFF
+    - BUILD_SHARED: ON
 
 before_build:
 - cmd: |-
     mkdir build
     cd build
-    cmake .. -G"Visual Studio 16 2019"
+    cmake .. -G"Visual Studio 16 2019" -DBUILD_SHARED_LIBS=%BUILD_SHARED%
 
 build:
   project: build\ALL_BUILD.vcxproj
