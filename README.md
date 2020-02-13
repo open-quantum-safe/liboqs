@@ -39,10 +39,12 @@ More information on OQS can be found [here](https://openquantumsafe.org/) and in
 - **BIKE**: BIKE1-L1-CPA, BIKE1-L3-CPA, BIKE1-L1-FO, BIKE1-L3-FO
 - **FrodoKEM**: FrodoKEM-640-AES, FrodoKEM-640-SHAKE, FrodoKEM-976-AES, FrodoKEM-976-SHAKE, FrodoKEM-1344-AES, FrodoKEM-1344-SHAKE
 - **Kyber**: Kyber512, Kyber768, Kyber1024, Kyber512-90s, Kyber768-90s, Kyber1024-90s
+- **LEDAcrypt**: LEDAcryptKEM-LT12, LEDAcryptKEM-LT32, LEDAcryptKEM-LT52
 - **NewHope**: NewHope-512-CCA, NewHope-1024-CCA
 - **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-821, NTRU-HRSS-701
 - **SABER**: LightSaber-KEM, Saber-KEM, FireSaber-KEM
 - **SIKE**: SIDH-p434, SIDH-p503, SIDH-p610, SIDH-p751, SIKE-p434, SIKE-p503, SIKE-p610, SIKE-p751, SIDH-p434-compressed, SIDH-p503-compressed, SIDH-p610-compressed, SIDH-p751-compressed, SIKE-p434-compressed, SIKE-p503-compressed, SIKE-p610-compressed, SIKE-p751-compressed
+-- **ThreeBears**: BabyBearEphem, BabyBear, MamaBearEphem, MamaBear, PapaBearEphem, PapaBear
 
 #### Signature schemes
 
@@ -116,7 +118,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 ### Windows
 
-Binaries can be generated using Visual Studio 2017 or higher with the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) extension installed.
+Binaries can be generated using Visual Studio 2019 with the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) extension installed.
 
 ## Documentation
 
@@ -132,6 +134,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
+- `config/CMakeDependentOption.cmake`: BSD 3-Clause License
 - `src/crypto/aes/aes_c.c`: public domain
 - `src/crypto/sha2/sha2_c.c`: public domain
 - `src/crypto/sha3/fips202.c`: CC0 (public domain)
