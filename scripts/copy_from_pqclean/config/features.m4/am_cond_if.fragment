@@ -1,8 +1,0 @@
-{% for family in instructions['kems'] %}
-  AM_COND_IF([ENABLE_KEM_{{ family['name']|upper }}], [{% for scheme in family['schemes'] %}
-    AC_DEFINE(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}, 1, "Define to 1 when {{ scheme['pretty_name_full'] }} enabled"){% endfor %}
-  ]){% endfor %}{% for family in instructions['sigs'] %}
-  AM_COND_IF([ENABLE_SIG_{{ family['name']|upper }}], [{% for scheme in family['schemes'] %}
-    AC_DEFINE(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}, 1, "Define to 1 when {{ scheme['pretty_name_full'] }} enabled"){% endfor %}
-  ]){% endfor %}
-

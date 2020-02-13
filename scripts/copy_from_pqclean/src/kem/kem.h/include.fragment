@@ -1,3 +1,5 @@
 {% for family in instructions['kems'] %}
-#include <oqs/kem_{{ family['name'] }}.h>{% endfor %}
+#ifdef ENABLE_KEM_{{ family['name']|upper }}
+#include <oqs/kem_{{ family['name'] }}.h>
+#endif /* ENABLE_KEM_{{ family['name']|upper }} */{% endfor %}
 

@@ -1,5 +1,0 @@
-{% for family in instructions['kems'] %}
-	cp -f src/kem/{{ family['name'] }}/kem_{{ family['name'] }}.h include/oqs{% endfor %}
-{%- for family in instructions['sigs'] %}
-	cp -f src/sig/{{ family['name'] }}/sig_{{ family['name'] }}.h include/oqs{% endfor %}
-

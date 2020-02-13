@@ -1,9 +1,0 @@
- -->{% for family in instructions['kems'] %}{% for scheme in family['schemes'] %}
-    <ClCompile Include="..\..\src\kem\{{ family['name'] }}\kem_{{ family['name'] }}_{{ scheme['scheme_c'] }}.c" />
-{%- for file in scheme['sources'] %}
-    <ClCompile Include="..\..\src\kem\{{ family['name'] }}\pqclean_{{ scheme['pqclean_scheme'] }}_{{ scheme['implementation'] }}\{{ file }}" />{% endfor %}{% endfor %}{% endfor %}
-{%- for family in instructions['sigs'] %}{% for scheme in family['schemes'] %}
-    <ClCompile Include="..\..\src\sig\{{ family['name'] }}\sig_{{ family['name'] }}_{{ scheme['scheme_c'] }}.c" />
-{%- for file in scheme['sources'] %}
-    <ClCompile Include="..\..\src\sig\{{ family['name'] }}\pqclean_{{ scheme['pqclean_scheme'] }}_{{ scheme['implementation'] }}\{{ file }}" />{% endfor %}{% endfor %}{% endfor %}
-

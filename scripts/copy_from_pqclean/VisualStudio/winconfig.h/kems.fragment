@@ -1,3 +1,0 @@
-{%- for family in instructions['kems'] %}{% for scheme in family['schemes'] %}
-#define OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}{% endfor %}{% endfor %}
-

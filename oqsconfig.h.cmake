@@ -41,34 +41,6 @@
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_aes
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_shake
 
-#cmakedefine ENABLE_KEM_KYBER
-#cmakedefine OQS_ENABLE_KEM_kyber_512
-#cmakedefine OQS_ENABLE_KEM_kyber_512_90s
-#cmakedefine OQS_ENABLE_KEM_kyber_768
-#cmakedefine OQS_ENABLE_KEM_kyber_768_90s
-#cmakedefine OQS_ENABLE_KEM_kyber_1024
-#cmakedefine OQS_ENABLE_KEM_kyber_1024_90s
-
-#cmakedefine ENABLE_KEM_LEDACRYPT
-#cmakedefine OQS_ENABLE_KEM_ledakemlt12
-#cmakedefine OQS_ENABLE_KEM_ledakemlt32
-#cmakedefine OQS_ENABLE_KEM_ledakemlt52
-
-#cmakedefine ENABLE_KEM_NEWHOPE
-#cmakedefine OQS_ENABLE_KEM_newhope_512cca
-#cmakedefine OQS_ENABLE_KEM_newhope_1024cca
-
-#cmakedefine ENABLE_KEM_NTRU
-#cmakedefine OQS_ENABLE_KEM_ntru_hps2048509
-#cmakedefine OQS_ENABLE_KEM_ntru_hps2048677
-#cmakedefine OQS_ENABLE_KEM_ntru_hps4096821
-#cmakedefine OQS_ENABLE_KEM_ntru_hrss701
-
-#cmakedefine ENABLE_KEM_SABER
-#cmakedefine OQS_ENABLE_KEM_saber_lightsaber
-#cmakedefine OQS_ENABLE_KEM_saber_saber
-#cmakedefine OQS_ENABLE_KEM_saber_firesaber
-
 #cmakedefine ENABLE_KEM_SIDH
 #cmakedefine OQS_ENABLE_KEM_sidh_p434
 #cmakedefine OQS_ENABLE_KEM_sidh_p434_compressed
@@ -89,15 +61,6 @@
 #cmakedefine OQS_ENABLE_KEM_sike_p751
 #cmakedefine OQS_ENABLE_KEM_sike_p751_compressed
 
-#cmakedefine ENABLE_SIG_DILITHIUM
-#cmakedefine OQS_ENABLE_SIG_dilithium_2
-#cmakedefine OQS_ENABLE_SIG_dilithium_3
-#cmakedefine OQS_ENABLE_SIG_dilithium_4
-
-#cmakedefine ENABLE_SIG_MQDSS
-#cmakedefine OQS_ENABLE_SIG_mqdss_31_48
-#cmakedefine OQS_ENABLE_SIG_mqdss_31_64
-
 #cmakedefine ENABLE_SIG_PICNIC
 #cmakedefine OQS_ENABLE_SIG_picnic_L1_UR
 #cmakedefine OQS_ENABLE_SIG_picnic_L1_FS
@@ -112,6 +75,52 @@
 #cmakedefine ENABLE_SIG_QTESLA
 #cmakedefine OQS_ENABLE_SIG_qTesla_p_I
 #cmakedefine OQS_ENABLE_SIG_qTesla_p_III
+
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
+#cmakedefine ENABLE_KEM_KYBER
+#cmakedefine OQS_ENABLE_KEM_kyber_512
+#cmakedefine OQS_ENABLE_KEM_kyber_768
+#cmakedefine OQS_ENABLE_KEM_kyber_1024
+#cmakedefine OQS_ENABLE_KEM_kyber_512_90s
+#cmakedefine OQS_ENABLE_KEM_kyber_768_90s
+#cmakedefine OQS_ENABLE_KEM_kyber_1024_90s
+
+#cmakedefine ENABLE_KEM_LEDACRYPT
+#cmakedefine OQS_ENABLE_KEM_ledacrypt_ledakemlt12
+#cmakedefine OQS_ENABLE_KEM_ledacrypt_ledakemlt32
+#cmakedefine OQS_ENABLE_KEM_ledacrypt_ledakemlt52
+
+#cmakedefine ENABLE_KEM_NEWHOPE
+#cmakedefine OQS_ENABLE_KEM_newhope_512cca
+#cmakedefine OQS_ENABLE_KEM_newhope_1024cca
+
+#cmakedefine ENABLE_KEM_NTRU
+#cmakedefine OQS_ENABLE_KEM_ntru_hps2048509
+#cmakedefine OQS_ENABLE_KEM_ntru_hps2048677
+#cmakedefine OQS_ENABLE_KEM_ntru_hps4096821
+#cmakedefine OQS_ENABLE_KEM_ntru_hrss701
+
+#cmakedefine ENABLE_KEM_SABER
+#cmakedefine OQS_ENABLE_KEM_saber_lightsaber
+#cmakedefine OQS_ENABLE_KEM_saber_saber
+#cmakedefine OQS_ENABLE_KEM_saber_firesaber
+
+#cmakedefine ENABLE_KEM_THREEBEARS
+#cmakedefine OQS_ENABLE_KEM_threebears_babybear
+#cmakedefine OQS_ENABLE_KEM_threebears_babybear_ephem
+#cmakedefine OQS_ENABLE_KEM_threebears_mamabear
+#cmakedefine OQS_ENABLE_KEM_threebears_mamabear_ephem
+#cmakedefine OQS_ENABLE_KEM_threebears_papabear
+#cmakedefine OQS_ENABLE_KEM_threebears_papabear_ephem
+
+#cmakedefine ENABLE_SIG_DILITHIUM
+#cmakedefine OQS_ENABLE_SIG_dilithium_2
+#cmakedefine OQS_ENABLE_SIG_dilithium_3
+#cmakedefine OQS_ENABLE_SIG_dilithium_4
+
+#cmakedefine ENABLE_SIG_MQDSS
+#cmakedefine OQS_ENABLE_SIG_mqdss_31_48
+#cmakedefine OQS_ENABLE_SIG_mqdss_31_64
 
 #cmakedefine ENABLE_SIG_SPHINCS
 #cmakedefine OQS_ENABLE_SIG_sphincs_haraka_128f_robust
@@ -150,3 +159,4 @@
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256f_simple
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256s_robust
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256s_simple
+///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END

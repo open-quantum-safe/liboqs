@@ -114,7 +114,6 @@ def filtered_test(func):
 def path_to_executable(program_name):
     if sys.platform.startswith("win"):
         if 'APPVEYOR_BUILD_FOLDER' not in os.environ: os.environ['APPVEYOR_BUILD_FOLDER'] = "."
-        if 'CONFIGURATION' not in os.environ: os.environ['CONFIGURATION'] = "Debug"
         return os.path.join(
             os.environ['APPVEYOR_BUILD_FOLDER'],
             'build',

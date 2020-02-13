@@ -1,0 +1,11 @@
+{%- for family in instructions['kems'] %}
+if(ENABLE_KEM_{{ family['name']|upper }})
+    add_subdirectory(kem/{{ family['name'] }})
+    set(KEM_OBJS ${KEM_OBJS} $<TARGET_OBJECTS:{{ family['name'] }}>)
+endif(){% endfor %}
+{%- for family in instructions['sigs'] %}
+if(ENABLE_SIG_{{ family['name']|upper }})
+    add_subdirectory(sig/{{ family['name'] }})
+    set(SIG_OBJS ${SIG_OBJS} $<TARGET_OBJECTS:{{ family['name'] }}>)
+endif(){% endfor %}
+

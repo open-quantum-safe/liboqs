@@ -34,7 +34,6 @@ else()
     set(PYTHON3_EXEC python)
 endif()
 
-
 set(LIBS oqs ${LIBS})
 
 # KEM API tests
@@ -67,6 +66,8 @@ if(BUILD_SHARED_LIBS)
     set(USE_LIBOQS_SO --use_liboqs_so)
 endif()
 # TODO: Get CMake to find python.
+# and set PATH variable in Windows
+# for DLL builds.
 add_custom_target(
     run_tests
     COMMAND ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --build_tool=${CMAKE_MAKE_PROGRAM} ${USE_LIBOQS_SO} --junitxml=${CMAKE_BINARY_DIR}/test-results/pytest/test-results.xml

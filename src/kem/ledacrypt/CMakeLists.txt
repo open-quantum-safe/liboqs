@@ -1,4 +1,4 @@
-if(OQS_ENABLE_KEM_ledakemlt12)
+if(OQS_ENABLE_KEM_ledacrypt_ledakemlt12)
     set(SRCS kem_ledacrypt_ledakemlt12.c
              pqclean_ledakemlt12_leaktime/bf_decoding.c
              pqclean_ledakemlt12_leaktime/dfr_test.c
@@ -11,7 +11,7 @@ if(OQS_ENABLE_KEM_ledakemlt12)
              pqclean_ledakemlt12_leaktime/sort.c
              pqclean_ledakemlt12_leaktime/utils.c)
 endif()
-if(OQS_ENABLE_KEM_ledakemlt32)
+if(OQS_ENABLE_KEM_ledacrypt_ledakemlt32)
     set(SRCS ${SRCS} kem_ledacrypt_ledakemlt32.c
                      pqclean_ledakemlt32_leaktime/bf_decoding.c
                      pqclean_ledakemlt32_leaktime/dfr_test.c
@@ -24,7 +24,7 @@ if(OQS_ENABLE_KEM_ledakemlt32)
                      pqclean_ledakemlt32_leaktime/sort.c
                      pqclean_ledakemlt32_leaktime/utils.c)
 endif()
-if(OQS_ENABLE_KEM_ledakemlt52)
+if(OQS_ENABLE_KEM_ledacrypt_ledakemlt52)
     set(SRCS ${SRCS} kem_ledacrypt_ledakemlt52.c
                      pqclean_ledakemlt52_leaktime/bf_decoding.c
                      pqclean_ledakemlt52_leaktime/dfr_test.c
