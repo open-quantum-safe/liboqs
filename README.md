@@ -79,7 +79,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 		brew install cmake ninja openssl@1.1 wget doxygen graphviz
 		pip3 install pytest pytest-xdist
 	
-	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL version 1.1.0 or higher.
+	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL version 1.1.1 or higher.
 
 2. Get the source:
 
@@ -93,6 +93,8 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 		ninja
 
 	Various options can be passed to `cmake` to disable algorithms, use different implementations, specify whether to use OpenSSL, etc..  All supported options are listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory`. All subsequent instructions assume we are in this directory.
+
+If the build fails on macOS, you might have to run `cmake -GNinja -DCMAKE_BUILD_TYPE="Debug .."` before calling `ninja`.
 
 3. The main build result is `lib/liboqs.a`, a static library. There are also a variety of programs built under the `tests` directory:
 
