@@ -1,4 +1,0 @@
-{% for family in instructions['kems'] %}
-  ARG_DISBL_SET_WRAP([kem-{{ family['name'] }}], [kem_{{ family['name'] }}], [ENABLE_KEM_{{ family['name']|upper }}], [src/kem/{{ family['name'] }}]){% endfor %}{% for family in instructions['sigs'] %}
-  ARG_DISBL_SET_WRAP([sig-{{ family['name'] }}], [sig_{{ family['name'] }}], [ENABLE_SIG_{{ family['name']|upper }}], [src/sig/{{ family['name'] }}]){% endfor %}
-

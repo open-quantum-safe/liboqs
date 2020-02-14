@@ -49,9 +49,6 @@ def replacer(filename, instructions, delimiter):
         contents = preamble + identifier_start + jinja2.Template(template).render({'instructions': instructions}) + postamble
     file_put_contents(filename, contents)
 
-def unix2dos(filename):
-    subprocess.run(['unix2dos', filename])
-
 def load_instructions():
     instructions = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', 'copy_from_pqclean.yml'), encoding='utf-8')
     instructions = yaml.safe_load(instructions)
@@ -101,8 +98,8 @@ for family in instructions['kems'] + instructions['sigs']:
     )
 
     generator(
-        os.path.join('src', family['type'], family['name'], 'Makefile.am'),
-        os.path.join('src', family['type'], 'family', 'Makefile.am'),
+        os.path.join('src', family['type'], family['name'], 'CMakeLists.txt'),
+        os.path.join('src', family['type'], 'family', 'CMakeLists.txt'),
         family,
         None,
     )
@@ -115,19 +112,12 @@ for family in instructions['kems'] + instructions['sigs']:
             scheme,
         )
 
-
-replacer('config/features.m4', instructions, '#####')
-replacer('configure.ac', instructions, '#####')
-replacer('Makefile.am', instructions, '#####')
+replacer('.CMake/config-oqs-alg-support.cmake', instructions, '#####')
+replacer('CMakeLists.txt', instructions, '#####')
+replacer('src/oqsconfig.h.cmake', instructions, '/////')
+replacer('src/CMakeLists.txt', instructions, '#####')
 replacer('src/kem/kem.c', instructions, '/////')
 replacer('src/kem/kem.h', instructions, '/////')
 replacer('src/sig/sig.c', instructions, '/////')
 replacer('src/sig/sig.h', instructions, '/////')
 replacer('tests/kat_sig.c', instructions, '/////')
-replacer('VisualStudio/winconfig.h', instructions, '/////')
-generator_all('VisualStudio/oqs/dll.def', instructions)
-unix2dos('VisualStudio/oqs/dll.def')
-replacer('VisualStudio/oqs/oqs.vcxproj', instructions, '<!--')
-unix2dos('VisualStudio/oqs/oqs.vcxproj')
-replacer('VisualStudio/oqs/oqs.vcxproj.filters', instructions, '<!--')
-unix2dos('VisualStudio/oqs/oqs.vcxproj.filters')

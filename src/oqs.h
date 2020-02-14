@@ -9,11 +9,7 @@
 #ifndef OQS_H
 #define OQS_H
 
-#if !defined(_WIN32)
 #include <oqs/oqsconfig.h>
-#else
-#include <oqs/winconfig.h>
-#endif
 
 #include <oqs/common.h>
 #include <oqs/aes.h>

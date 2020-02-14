@@ -307,17 +307,35 @@ OQS_API OQS_STATUS OQS_KEM_decaps(const OQS_KEM *kem, uint8_t *shared_secret, co
  */
 OQS_API void OQS_KEM_free(OQS_KEM *kem);
 
+#ifdef ENABLE_KEM_BIKE
 #include <oqs/kem_bike.h>
+#endif /* ENABLE_KEM_BIKE */
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
+#ifdef ENABLE_KEM_KYBER
 #include <oqs/kem_kyber.h>
+#endif /* ENABLE_KEM_KYBER */
+#ifdef ENABLE_KEM_LEDACRYPT
 #include <oqs/kem_ledacrypt.h>
+#endif /* ENABLE_KEM_LEDACRYPT */
+#ifdef ENABLE_KEM_NEWHOPE
 #include <oqs/kem_newhope.h>
+#endif /* ENABLE_KEM_NEWHOPE */
+#ifdef ENABLE_KEM_NTRU
 #include <oqs/kem_ntru.h>
+#endif /* ENABLE_KEM_NTRU */
+#ifdef ENABLE_KEM_SABER
 #include <oqs/kem_saber.h>
+#endif /* ENABLE_KEM_SABER */
+#ifdef ENABLE_KEM_THREEBEARS
 #include <oqs/kem_threebears.h>
+#endif /* ENABLE_KEM_THREEBEARS */
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
+#ifdef ENABLE_KEM_FRODOKEM
 #include <oqs/kem_frodokem.h>
+#endif /* ENABLE_KEM_FRODOKEM */
+#ifdef ENABLE_KEM_SIKE
 #include <oqs/kem_sike.h>
+#endif /* ENABLE_KEM_SIKE */
 // EDIT-WHEN-ADDING-KEM
 
 #if defined(__cplusplus)

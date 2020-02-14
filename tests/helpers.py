@@ -56,10 +56,7 @@ def is_kem_enabled_by_name(name):
                     symbol = kem_symbol
                     break
     if symbol == None: return False
-    if sys.platform.startswith("win"):
-        header = os.path.join('VisualStudio', 'winconfig.h')
-    else:
-        header = os.path.join('include', 'oqs', 'oqsconfig.h')
+    header = os.path.join('build', 'include', 'oqs', 'oqsconfig.h')
     with open(header) as fh:
         for line in fh:
             if line.startswith("#define OQS_ENABLE_KEM_"):
@@ -93,10 +90,7 @@ def is_sig_enabled_by_name(name):
                     symbol = sig_symbol
                     break
     if symbol == None: return False
-    if sys.platform.startswith("win"):
-        header = os.path.join('VisualStudio', 'winconfig.h')
-    else:
-        header = os.path.join('include', 'oqs', 'oqsconfig.h')
+    header = os.path.join('build', 'include', 'oqs', 'oqsconfig.h')
     with open(header) as fh:
         for line in fh:
             if line.startswith("#define OQS_ENABLE_SIG_"):
@@ -120,27 +114,21 @@ def filtered_test(func):
 def path_to_executable(program_name):
     if sys.platform.startswith("win"):
         if 'APPVEYOR_BUILD_FOLDER' not in os.environ: os.environ['APPVEYOR_BUILD_FOLDER'] = "."
-        if 'PLATFORM' not in os.environ: os.environ['PLATFORM'] = "x64"
-        if 'CONFIGURATION' not in os.environ: os.environ['CONFIGURATION'] = "Debug"
         return os.path.join(
             os.environ['APPVEYOR_BUILD_FOLDER'],
-            'VisualStudio',
-            os.environ['PLATFORM'],
-            os.environ['CONFIGURATION'],
+            'build',
+            'tests',
             program_name + ".EXE"
         )
     else:
-        return os.path.join("tests", program_name)
+        return os.path.join("build", "tests", program_name)
 
 def available_use_options_by_name():
     enabled_use_options = []
-    if sys.platform.startswith("win"):
-        # Windows doesn't have access to the options config file, so return an empty list
-        return enabled_use_options
-    with open(os.path.join('include', 'oqs', 'oqsconfig.h')) as fh:
+    with open(os.path.join('build', 'include', 'oqs', 'oqsconfig.h')) as fh:
         for line in fh:
-            if line.startswith("#define USE_") and line.endswith("1\n"):
-                option_name = line.split(' ')[1][len("USE_"):]
+            if line.startswith("#define USE_"):
+                option_name = line.split(' ')[1][len("USE_"):].strip('\n')
                 enabled_use_options.append(option_name)
     return enabled_use_options
 

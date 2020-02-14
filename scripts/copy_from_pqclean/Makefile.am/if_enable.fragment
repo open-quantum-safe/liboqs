@@ -1,9 +1,0 @@
-{% for family in instructions['kems'] %}
-if ENABLE_KEM_{{ family['name']|upper }}
-liboqs_la_LIBADD += src/kem/{{ family['name'] }}/libkem{{ family['name'] }}.la
-endif{% endfor %}
-{% for family in instructions['sigs'] %}
-if ENABLE_SIG_{{ family['name']|upper }}
-liboqs_la_LIBADD += src/sig/{{ family['name'] }}/libsig{{ family['name'] }}.la
-endif{% endfor %}
-

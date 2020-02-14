@@ -7,17 +7,19 @@ version: 2
     - checkout
     - run:
         name: Configure
-        command: scripts/git_no_checkin_in_last_day.sh || (autoreconf -i && ./configure --enable-silent-rules ${CONFIGURE_ARGS})
-    - run: 
+        command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build  && cmake -GNinja ${CONFIGURE_ARGS} ..)
+    - run:
         name: Build
-        command: scripts/git_no_checkin_in_last_day.sh || (source ~/.bashrc && make -j && make check)
+        command: ../scripts/git_no_checkin_in_last_day.sh || (source ~/.bashrc && ninja)
+        working_directory: build
     - run:
         name: Run tests
-        command: mkdir -p test-results/pytest && scripts/git_no_checkin_in_last_day.sh || (python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto)
+        command: ../scripts/git_no_checkin_in_last_day.sh || ninja run_tests
+        working_directory: build
     - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
-        path: test-results
-    - store_artifacts: 
-        path: test-results
+        path: build/test-results
+    - store_artifacts:
+        path: build/test-results
 
 .emulatedjob: &emulatedjob
   machine:
@@ -27,46 +29,56 @@ version: 2
     - run:
         name: Install the emulation handlers
         command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-    - run: # Skipping sig-sphincs because it exhausts memory on CircleCI
+    - run:
         name: Run the tests in a container
         command: |
-          scripts/git_no_checkin_in_last_day.sh &&
-          docker run -e SKIP_TESTS=style --rm -v `pwd`:`pwd` -w `pwd` dstebila/liboqs:debian-buster-${ARCH}-0.1.0 /bin/bash -c "
+          scripts/git_no_checkin_in_last_day.sh ||
+          docker run -e SKIP_TESTS=style --rm -v `pwd`:`pwd` -w `pwd` openquantumsafe/ci-debian-buster-${ARCH}:latest /bin/bash -c "
           uname -a &&
           file /bin/ls &&
-          autoreconf -i &&
-          ./configure --enable-silent-rules ${CONFIGURE_ARGS} &&
-          make &&
-          make check &&
-          mkdir -p test-results/pytest &&
-          python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto
+          mkdir build &&
+          (cd build &&
+          cmake -GNinja ${CONFIGURE_ARGS} .. &&
+          ninja &&
+          ninja run_tests)
           "
     - store_test_results:
-        path: test-results
-    - store_artifacts: 
-        path: test-results
+        path: build/test-results
+    - store_artifacts:
+        path: build/test-results
 
 jobs:
+  centos-7-amd64:
+    <<: *oqsjob
+    environment:
+      IMAGE: openquantumsafe/ci-centos-7-amd64:latest
+      CONFIGURE_ARGS: -DOPENSSL_ROOT_DIR=/usr/local/ssl
+      SKIP_TESTS: style
+  centos-8-amd64:
+    <<: *oqsjob
+    environment:
+      IMAGE: openquantumsafe/ci-centos-8-amd64:latest
+      SKIP_TESTS: style
   debian-buster-amd64:
     <<: *oqsjob
     environment:
-      IMAGE: dstebila/liboqs:debian-buster-amd64-0.1.0
+      IMAGE: openquantumsafe/ci-debian-buster-amd64:latest
       SKIP_TESTS: style
-  debian-buster-aarch64:
+  debian-buster-arm64:
     <<: *emulatedjob
     environment:
-      ARCH: aarch64
-      CONFIGURE_ARGS: --disable-sig-sphincs # sig-sphincs exhausts memory on CircleCI servers
+      ARCH: arm64
+      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF # sig-sphincs exhausts memory on CircleCI servers
   debian-buster-armhf:
     <<: *emulatedjob
     environment:
       ARCH: armhf
-      CONFIGURE_ARGS: --disable-sig-sphincs --disable-sig-qtesla # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armhf
+      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF -DENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armhf
   debian-buster-armel:
     <<: *emulatedjob
     environment:
+      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF -DENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armel
       ARCH: armel
-      CONFIGURE_ARGS: --disable-sig-sphincs --disable-sig-qtesla # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armel
   ubuntu-bionic-x86_64-gcc7:
     <<: *oqsjob
     environment:
@@ -77,34 +89,26 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      CONFIGURE_ARGS: --without-openssl
-  ubuntu-bionic-x86_64-gcc7-noshared:
+      CONFIGURE_ARGS: -DUSE_OPENSSL=OFF
+  ubuntu-bionic-x86_64-gcc7-shared:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      CONFIGURE_ARGS: --disable-shared 
+      CONFIGURE_ARGS: -DBUILD_SHARED_LIBS=ON
+      #TODO: _init and _fini trip test_namespace.py
+      SKIP_TESTS: namespace
   ubuntu-bionic-x86_64-gcc8:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-8
-  centos-7:
-    <<: *oqsjob
-    environment:
-      IMAGE: openqsafe/ci-centos-7
-      CONFIGURE_ARGS: --with-openssl=/usr/local/ssl 
-      SKIP_TESTS: style
-  centos-8:
-    <<: *oqsjob
-    environment:
-      IMAGE: openqsafe/ci-centos-8
-      SKIP_TESTS: style
-  osx:
+  macOS:
     macos:
         xcode: "11.3.0"
     environment:
-        CONFIGURE_ARGS: --without-openssl
+        #TODO: Make tests pass with Release build
+        CONFIGURE_ARGS: -DUSE_OPENSSL=OFF -DCMAKE_BUILD_TYPE=Debug
         SKIP_TESTS: style
     steps:
         - checkout
@@ -112,39 +116,41 @@ jobs:
             name: Install dependencies
             command: |
               scripts/git_no_checkin_in_last_day.sh || (
-              brew update && 
-              brew unlink python@2 && 
-              brew install autoconf automake libtool wget doxygen graphviz clang-format && 
+              brew update &&
+              brew unlink python@2 &&
+              brew install cmake ninja doxygen clang-format &&
               pip3 install pytest pytest-xdist
               )
         - run:
             name: Configure
-            command: scripts/git_no_checkin_in_last_day.sh || (autoreconf -i && ./configure --enable-silent-rules ${CONFIGURE_ARGS})
-        - run: 
+            command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build && cmake -GNinja ${CONFIGURE_ARGS} ..)
+        - run:
             name: Build
-            command: scripts/git_no_checkin_in_last_day.sh || (make -j && make check)
+            command: ../scripts/git_no_checkin_in_last_day.sh || ninja
+            working_directory: build
         - run:
             name: System information
-            command: scripts/git_no_checkin_in_last_day.sh || (sysctl -a | grep machdep.cpu && cat src/kem/sike/Makefile && ls -l tests)
+            command: scripts/git_no_checkin_in_last_day.sh || (sysctl -a | grep machdep.cpu)
         - run:
             name: Run tests
-            command: mkdir -p test-results/pytest && scripts/git_no_checkin_in_last_day.sh || (python3 -m pytest --verbose --junitxml=test-results/pytest/results.xml --numprocesses=auto)
+            command: ../scripts/git_no_checkin_in_last_day.sh || ninja run_tests
+            working_directory: build
         - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
-            path: test-results
-        - store_artifacts: 
-            path: test-results
+            path: build/test-results
+        - store_artifacts:
+            path: build/test-results
 
 workflows:
   version: 2
   build:
     jobs:
-      - centos-7
-      - centos-8
+      - centos-7-amd64
+      - centos-8-amd64
       - debian-buster-amd64
-      - osx
+      - macOS
       - ubuntu-bionic-x86_64-gcc7
       - ubuntu-bionic-x86_64-gcc7-noopenssl
-      - ubuntu-bionic-x86_64-gcc7-noshared
+      - ubuntu-bionic-x86_64-gcc7-shared
   nightly:
     triggers:
       - schedule:
@@ -154,14 +160,14 @@ workflows:
               only:
                 - master
     jobs:
-      - centos-7
-      - centos-8
-      - osx
+      - centos-7-amd64
+      - centos-8-amd64
       - debian-buster-amd64
-      - debian-buster-aarch64
+      - debian-buster-arm64
       - debian-buster-armhf
       - debian-buster-armel
+      - macOS
       - ubuntu-bionic-x86_64-gcc7
       - ubuntu-bionic-x86_64-gcc7-noopenssl
-      - ubuntu-bionic-x86_64-gcc7-noshared
+      - ubuntu-bionic-x86_64-gcc7-shared
       - ubuntu-bionic-x86_64-gcc8

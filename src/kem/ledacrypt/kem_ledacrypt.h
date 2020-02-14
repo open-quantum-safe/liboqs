@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_LEDACRYPT_H
-#define __OQS_KEM_LEDACRYPT_H
+#ifndef _OQS_KEM_LEDACRYPT_H
+#define _OQS_KEM_LEDACRYPT_H
 
 #include <oqs/oqs.h>
 
