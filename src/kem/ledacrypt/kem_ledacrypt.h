@@ -37,4 +37,3 @@ OQS_API OQS_STATUS OQS_KEM_ledacrypt_ledakemlt52_decaps(uint8_t *shared_secret, 
 #endif
 
 #endif
-

@@ -70,4 +70,3 @@ OQS_API OQS_STATUS OQS_KEM_threebears_papabear_ephem_decaps(uint8_t *shared_secr
 #endif
 
 #endif
-

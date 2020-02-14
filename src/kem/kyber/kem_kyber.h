@@ -70,4 +70,3 @@ OQS_API OQS_STATUS OQS_KEM_kyber_1024_90s_decaps(uint8_t *shared_secret, const u
 #endif
 
 #endif
-
