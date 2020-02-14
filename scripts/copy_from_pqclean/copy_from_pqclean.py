@@ -114,7 +114,7 @@ for family in instructions['kems'] + instructions['sigs']:
 
 replacer('config/config-oqs-alg-support.cmake', instructions, '#####')
 replacer('CMakeLists.txt', instructions, '#####')
-replacer('oqsconfig.h.cmake', instructions, '/////')
+replacer('src/oqsconfig.h.cmake', instructions, '/////')
 replacer('src/CMakeLists.txt', instructions, '#####')
 replacer('src/kem/kem.c', instructions, '/////')
 replacer('src/kem/kem.h', instructions, '/////')
