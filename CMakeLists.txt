@@ -66,7 +66,7 @@ if(USE_OPENSSL)
             set(OPENSSL_ROOT_DIR "/usr")
         endif()
     endif()
-    find_package(OpenSSL REQUIRED)
+    find_package(OpenSSL 1.1.1 REQUIRED)
 endif()
 
 set(PUBLIC_HEADERS ${PROJECT_SOURCE_DIR}/src/oqs.h
