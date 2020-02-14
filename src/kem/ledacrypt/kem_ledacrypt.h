@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_LEDACRYPT_H
-#define __OQS_KEM_LEDACRYPT_H
+#ifndef _OQS_KEM_LEDACRYPT_H
+#define _OQS_KEM_LEDACRYPT_H
 
 #include <oqs/oqs.h>
 
@@ -37,3 +37,4 @@ OQS_API OQS_STATUS OQS_KEM_ledacrypt_ledakemlt52_decaps(uint8_t *shared_secret, 
 #endif
 
 #endif
+

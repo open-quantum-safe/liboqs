@@ -37,3 +37,4 @@ OQS_API OQS_STATUS OQS_KEM_saber_firesaber_decaps(uint8_t *shared_secret, const 
 #endif
 
 #endif
+

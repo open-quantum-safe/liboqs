@@ -1,5 +1,5 @@
-#ifndef OQS_KEM_{{ family|upper }}_H
-#define OQS_KEM_{{ family|upper }}_H
+#ifndef _OQS_KEM_{{ family|upper }}_H
+#define _OQS_KEM_{{ family|upper }}_H
 
 #include <oqs/oqs.h>
 
@@ -18,4 +18,5 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 {% endfor -%}
 
 #endif
+
 

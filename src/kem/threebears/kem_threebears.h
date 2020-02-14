@@ -1,5 +1,5 @@
-#ifndef __OQS_KEM_THREEBEARS_H
-#define __OQS_KEM_THREEBEARS_H
+#ifndef _OQS_KEM_THREEBEARS_H
+#define _OQS_KEM_THREEBEARS_H
 
 #include <oqs/oqs.h>
 
@@ -70,3 +70,4 @@ OQS_API OQS_STATUS OQS_KEM_threebears_papabear_ephem_decaps(uint8_t *shared_secr
 #endif
 
 #endif
+

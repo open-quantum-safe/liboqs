@@ -18,3 +18,4 @@ OQS_API OQS_STATUS OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_verify(const uint
 {% endfor -%}
 
 #endif
+
