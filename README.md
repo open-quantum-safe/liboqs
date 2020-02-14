@@ -92,7 +92,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 		cmake -GNinja ..
 		ninja
 
-	Various options can be passed to `cmake` to disable algorithms, use different implementations, specify whether to use OpenSSL, etc..  All supported options are listed in the `config/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory`. All subsequent instructions assume we are in this directory.
+	Various options can be passed to `cmake` to disable algorithms, use different implementations, specify whether to use OpenSSL, etc..  All supported options are listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory`. All subsequent instructions assume we are in this directory.
 
 3. The main build result is `lib/liboqs.a`, a static library. There are also a variety of programs built under the `tests` directory:
 
@@ -134,7 +134,7 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
-- `config/CMakeDependentOption.cmake`: BSD 3-Clause License
+- `.CMake/CMakeDependentOption.cmake`: BSD 3-Clause License
 - `src/crypto/aes/aes_c.c`: public domain
 - `src/crypto/sha2/sha2_c.c`: public domain
 - `src/crypto/sha3/fips202.c`: CC0 (public domain)
