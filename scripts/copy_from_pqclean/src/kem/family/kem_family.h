@@ -19,3 +19,4 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 
 #endif
 
+
