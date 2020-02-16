@@ -25,7 +25,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/PQClean/PQClean/ based on https://github.com/LEDAcrypt/LEDAcrypt
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/dcad0bd878eb32d60e3296628c5267ecc401064c
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/6de728361e33ad3a5a6997e0896ff9fe8e44a999
 - **License:** Public domain
 - **Language:** C
 - **Constant-time:** No

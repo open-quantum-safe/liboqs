@@ -38,6 +38,7 @@ static void uniform(gf_t matrix, const uint8_t *seed, uint8_t iv) {
     cshake256_inc_absorb(&ctx, &iv, 1);
     cshake256_inc_finalize(&ctx);
     cshake256_inc_squeeze(c, sizeof(c), &ctx);
+    cshake256_inc_ctx_release(&ctx);
     PQCLEAN_PAPABEAR_CLEAN_expand(matrix, c);
 }
 
@@ -56,13 +57,14 @@ static void noise(gf_t x, const shake256incctx *ctx, uint8_t iv) {
     uint8_t c[DIGITS];
     shake256incctx ctx2;
 
-    memcpy(&ctx2, ctx, sizeof(ctx2));
+    cshake256_inc_ctx_clone(&ctx2, ctx);
     cshake256_inc_absorb(&ctx2, &iv, 1);
     cshake256_inc_finalize(&ctx2);
     cshake256_inc_squeeze(c, DIGITS, &ctx2);
     for (size_t i = 0; i < DIGITS; i++) {
         x[i] = (limb_t)(psi(c[i]) + PQCLEAN_PAPABEAR_CLEAN_modulus(i));
     }
+    cshake256_inc_ctx_release(&ctx2);
 }
 
 /* Expand public key from private key */
@@ -74,9 +76,10 @@ void PQCLEAN_PAPABEAR_CLEAN_get_pubkey(uint8_t *pk, const uint8_t *sk) {
     threebears_hash_init(&ctx, HASH_PURPOSE_KEYGEN);
     cshake256_inc_absorb(&ctx, sk, PRIVATE_KEY_BYTES);
 
-    memcpy(&ctx2, &ctx, sizeof(ctx2));
+    cshake256_inc_ctx_clone(&ctx2, &ctx);
     cshake256_inc_finalize(&ctx2);
     cshake256_inc_squeeze(pk, MATRIX_SEED_BYTES, &ctx2);
+    cshake256_inc_ctx_release(&ctx2);
 
     for (uint8_t i = 0; i < DIM; i++) {
         noise(sk_expanded[i], &ctx, i);
@@ -89,6 +92,7 @@ void PQCLEAN_PAPABEAR_CLEAN_get_pubkey(uint8_t *pk, const uint8_t *sk) {
         }
         PQCLEAN_PAPABEAR_CLEAN_contract(&pk[MATRIX_SEED_BYTES + i * GF_BYTES], c);
     }
+    cshake256_inc_ctx_release(&ctx);
 }
 
 /* Encapsulate a shared secret and return it */
@@ -147,6 +151,7 @@ void PQCLEAN_PAPABEAR_CLEAN_encapsulate(
 
     cshake256_inc_finalize(&ctx);
     cshake256_inc_squeeze(shared_secret, SHARED_SECRET_BYTES, &ctx);
+    cshake256_inc_ctx_release(&ctx);
 }
 
 /* Decapsulate a shared secret and return it */
@@ -210,6 +215,7 @@ void PQCLEAN_PAPABEAR_CLEAN_decapsulate(
     cshake256_inc_absorb(&ctx, &sep, 1);
     cshake256_inc_finalize(&ctx);
     cshake256_inc_squeeze(prfk, PRF_KEY_BYTES, &ctx);
+    cshake256_inc_ctx_release(&ctx);
 
     /* Calculate PRF */
     threebears_hash_init(&ctx, HASH_PURPOSE_PRF);
@@ -217,6 +223,7 @@ void PQCLEAN_PAPABEAR_CLEAN_decapsulate(
     cshake256_inc_absorb(&ctx, capsule, CAPSULE_BYTES);
     cshake256_inc_finalize(&ctx);
     cshake256_inc_squeeze(prfout, SHARED_SECRET_BYTES, &ctx);
+    cshake256_inc_ctx_release(&ctx);
 
     for (size_t i = 0; i < SHARED_SECRET_BYTES; i++) {
         shared_secret[i] = (uint8_t)((shared_secret[i] & ok) | (prfout[i] & ~ok));

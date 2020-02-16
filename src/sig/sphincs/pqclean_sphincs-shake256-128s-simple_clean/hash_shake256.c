@@ -57,6 +57,7 @@ void PQCLEAN_SPHINCSSHAKE256128SSIMPLE_CLEAN_gen_message_random(
     shake256_inc_absorb(&state, m, mlen);
     shake256_inc_finalize(&state);
     shake256_inc_squeeze(R, PQCLEAN_SPHINCSSHAKE256128SSIMPLE_CLEAN_N, &state);
+    shake256_inc_ctx_release(&state);
 
     (void)hash_state_seeded; /* Prevent unused parameter warning. */
 }
@@ -87,6 +88,7 @@ void PQCLEAN_SPHINCSSHAKE256128SSIMPLE_CLEAN_hash_message(
     shake256_inc_absorb(&state, m, mlen);
     shake256_inc_finalize(&state);
     shake256_inc_squeeze(buf, PQCLEAN_SPHINCSSHAKE256128SSIMPLE_CLEAN_DGST_BYTES, &state);
+    shake256_inc_ctx_release(&state);
 
     memcpy(digest, bufp, PQCLEAN_SPHINCSSHAKE256128SSIMPLE_CLEAN_FORS_MSG_BYTES);
     bufp += PQCLEAN_SPHINCSSHAKE256128SSIMPLE_CLEAN_FORS_MSG_BYTES;

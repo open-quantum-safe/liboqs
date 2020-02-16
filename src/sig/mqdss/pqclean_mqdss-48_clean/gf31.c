@@ -63,6 +63,7 @@ void PQCLEAN_MQDSS48_CLEAN_gf31_nrand(gf31 *out, int len, const unsigned char *s
             }
         }
     }
+    shake256_ctx_release(&shakestate);
 }
 
 /* Given a seed, samples len gf31 elements, transposed into unsigned range,
@@ -84,6 +85,7 @@ void PQCLEAN_MQDSS48_CLEAN_gf31_nrand_schar(signed char *out, int len, const uns
             }
         }
     }
+    shake256_ctx_release(&shakestate);
 }
 
 /* Unpacks an array of packed GF31 elements to one element per gf31.
