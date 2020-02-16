@@ -71,64 +71,64 @@ static void store_bigendian_64(uint8_t *x, uint64_t u) {
 #define M_64(w0, w14, w9, w1) w0 = sigma1_64(w14) + (w9) + sigma0_64(w1) + (w0);
 
 #define EXPAND_32           \
-	M_32(w0, w14, w9, w1)   \
-	M_32(w1, w15, w10, w2)  \
-	M_32(w2, w0, w11, w3)   \
-	M_32(w3, w1, w12, w4)   \
-	M_32(w4, w2, w13, w5)   \
-	M_32(w5, w3, w14, w6)   \
-	M_32(w6, w4, w15, w7)   \
-	M_32(w7, w5, w0, w8)    \
-	M_32(w8, w6, w1, w9)    \
-	M_32(w9, w7, w2, w10)   \
-	M_32(w10, w8, w3, w11)  \
-	M_32(w11, w9, w4, w12)  \
-	M_32(w12, w10, w5, w13) \
-	M_32(w13, w11, w6, w14) \
-	M_32(w14, w12, w7, w15) \
-	M_32(w15, w13, w8, w0)
+    M_32(w0, w14, w9, w1)   \
+    M_32(w1, w15, w10, w2)  \
+    M_32(w2, w0, w11, w3)   \
+    M_32(w3, w1, w12, w4)   \
+    M_32(w4, w2, w13, w5)   \
+    M_32(w5, w3, w14, w6)   \
+    M_32(w6, w4, w15, w7)   \
+    M_32(w7, w5, w0, w8)    \
+    M_32(w8, w6, w1, w9)    \
+    M_32(w9, w7, w2, w10)   \
+    M_32(w10, w8, w3, w11)  \
+    M_32(w11, w9, w4, w12)  \
+    M_32(w12, w10, w5, w13) \
+    M_32(w13, w11, w6, w14) \
+    M_32(w14, w12, w7, w15) \
+    M_32(w15, w13, w8, w0)
 
 #define EXPAND_64           \
-	M_64(w0, w14, w9, w1)   \
-	M_64(w1, w15, w10, w2)  \
-	M_64(w2, w0, w11, w3)   \
-	M_64(w3, w1, w12, w4)   \
-	M_64(w4, w2, w13, w5)   \
-	M_64(w5, w3, w14, w6)   \
-	M_64(w6, w4, w15, w7)   \
-	M_64(w7, w5, w0, w8)    \
-	M_64(w8, w6, w1, w9)    \
-	M_64(w9, w7, w2, w10)   \
-	M_64(w10, w8, w3, w11)  \
-	M_64(w11, w9, w4, w12)  \
-	M_64(w12, w10, w5, w13) \
-	M_64(w13, w11, w6, w14) \
-	M_64(w14, w12, w7, w15) \
-	M_64(w15, w13, w8, w0)
+    M_64(w0, w14, w9, w1)   \
+    M_64(w1, w15, w10, w2)  \
+    M_64(w2, w0, w11, w3)   \
+    M_64(w3, w1, w12, w4)   \
+    M_64(w4, w2, w13, w5)   \
+    M_64(w5, w3, w14, w6)   \
+    M_64(w6, w4, w15, w7)   \
+    M_64(w7, w5, w0, w8)    \
+    M_64(w8, w6, w1, w9)    \
+    M_64(w9, w7, w2, w10)   \
+    M_64(w10, w8, w3, w11)  \
+    M_64(w11, w9, w4, w12)  \
+    M_64(w12, w10, w5, w13) \
+    M_64(w13, w11, w6, w14) \
+    M_64(w14, w12, w7, w15) \
+    M_64(w15, w13, w8, w0)
 
 #define F_32(w, k)                                   \
-	T1 = h + Sigma1_32(e) + Ch(e, f, g) + (k) + (w); \
-	T2 = Sigma0_32(a) + Maj(a, b, c);                \
-	h = g;                                           \
-	g = f;                                           \
-	f = e;                                           \
-	e = d + T1;                                      \
-	d = c;                                           \
-	c = b;                                           \
-	b = a;                                           \
-	a = T1 + T2;
+    T1 = h + Sigma1_32(e) + Ch(e, f, g) + (k) + (w); \
+    T2 = Sigma0_32(a) + Maj(a, b, c);                \
+    h = g;                                           \
+    g = f;                                           \
+    f = e;                                           \
+    e = d + T1;                                      \
+    d = c;                                           \
+    c = b;                                           \
+    b = a;                                           \
+    a = T1 + T2;
 
 #define F_64(w, k)                                   \
-	T1 = h + Sigma1_64(e) + Ch(e, f, g) + (k) + (w); \
-	T2 = Sigma0_64(a) + Maj(a, b, c);                \
-	h = g;                                           \
-	g = f;                                           \
-	f = e;                                           \
-	e = d + T1;                                      \
-	d = c;                                           \
-	c = b;                                           \
-	b = a;                                           \
-	a = T1 + T2;
+    T1 = h + Sigma1_64(e) + Ch(e, f, g) + (k) + (w); \
+    T2 = Sigma0_64(a) + Maj(a, b, c);                \
+    h = g;                                           \
+    g = f;                                           \
+    f = e;                                           \
+    e = d + T1;                                      \
+    d = c;                                           \
+    c = b;                                           \
+    b = a;                                           \
+    a = T1 + T2;
 
 static size_t crypto_hashblocks_sha256(uint8_t *statebytes,
                                        const uint8_t *in, size_t inlen) {
@@ -464,26 +464,29 @@ static size_t crypto_hashblocks_sha512(uint8_t *statebytes,
 }
 
 static const uint8_t iv_256[32] = {
-    0x6a, 0x09, 0xe6, 0x67, 0xbb, 0x67, 0xae, 0x85,
-    0x3c, 0x6e, 0xf3, 0x72, 0xa5, 0x4f, 0xf5, 0x3a,
-    0x51, 0x0e, 0x52, 0x7f, 0x9b, 0x05, 0x68, 0x8c,
-    0x1f, 0x83, 0xd9, 0xab, 0x5b, 0xe0, 0xcd, 0x19};
+	0x6a, 0x09, 0xe6, 0x67, 0xbb, 0x67, 0xae, 0x85,
+	0x3c, 0x6e, 0xf3, 0x72, 0xa5, 0x4f, 0xf5, 0x3a,
+	0x51, 0x0e, 0x52, 0x7f, 0x9b, 0x05, 0x68, 0x8c,
+	0x1f, 0x83, 0xd9, 0xab, 0x5b, 0xe0, 0xcd, 0x19
+};
 
 static const uint8_t iv_384[64] = {
-    0xcb, 0xbb, 0x9d, 0x5d, 0xc1, 0x05, 0x9e, 0xd8, 0x62, 0x9a, 0x29,
-    0x2a, 0x36, 0x7c, 0xd5, 0x07, 0x91, 0x59, 0x01, 0x5a, 0x30, 0x70,
-    0xdd, 0x17, 0x15, 0x2f, 0xec, 0xd8, 0xf7, 0x0e, 0x59, 0x39, 0x67,
-    0x33, 0x26, 0x67, 0xff, 0xc0, 0x0b, 0x31, 0x8e, 0xb4, 0x4a, 0x87,
-    0x68, 0x58, 0x15, 0x11, 0xdb, 0x0c, 0x2e, 0x0d, 0x64, 0xf9, 0x8f,
-    0xa7, 0x47, 0xb5, 0x48, 0x1d, 0xbe, 0xfa, 0x4f, 0xa4};
+	0xcb, 0xbb, 0x9d, 0x5d, 0xc1, 0x05, 0x9e, 0xd8, 0x62, 0x9a, 0x29,
+	0x2a, 0x36, 0x7c, 0xd5, 0x07, 0x91, 0x59, 0x01, 0x5a, 0x30, 0x70,
+	0xdd, 0x17, 0x15, 0x2f, 0xec, 0xd8, 0xf7, 0x0e, 0x59, 0x39, 0x67,
+	0x33, 0x26, 0x67, 0xff, 0xc0, 0x0b, 0x31, 0x8e, 0xb4, 0x4a, 0x87,
+	0x68, 0x58, 0x15, 0x11, 0xdb, 0x0c, 0x2e, 0x0d, 0x64, 0xf9, 0x8f,
+	0xa7, 0x47, 0xb5, 0x48, 0x1d, 0xbe, 0xfa, 0x4f, 0xa4
+};
 
 static const uint8_t iv_512[64] = {
-    0x6a, 0x09, 0xe6, 0x67, 0xf3, 0xbc, 0xc9, 0x08, 0xbb, 0x67, 0xae,
-    0x85, 0x84, 0xca, 0xa7, 0x3b, 0x3c, 0x6e, 0xf3, 0x72, 0xfe, 0x94,
-    0xf8, 0x2b, 0xa5, 0x4f, 0xf5, 0x3a, 0x5f, 0x1d, 0x36, 0xf1, 0x51,
-    0x0e, 0x52, 0x7f, 0xad, 0xe6, 0x82, 0xd1, 0x9b, 0x05, 0x68, 0x8c,
-    0x2b, 0x3e, 0x6c, 0x1f, 0x1f, 0x83, 0xd9, 0xab, 0xfb, 0x41, 0xbd,
-    0x6b, 0x5b, 0xe0, 0xcd, 0x19, 0x13, 0x7e, 0x21, 0x79};
+	0x6a, 0x09, 0xe6, 0x67, 0xf3, 0xbc, 0xc9, 0x08, 0xbb, 0x67, 0xae,
+	0x85, 0x84, 0xca, 0xa7, 0x3b, 0x3c, 0x6e, 0xf3, 0x72, 0xfe, 0x94,
+	0xf8, 0x2b, 0xa5, 0x4f, 0xf5, 0x3a, 0x5f, 0x1d, 0x36, 0xf1, 0x51,
+	0x0e, 0x52, 0x7f, 0xad, 0xe6, 0x82, 0xd1, 0x9b, 0x05, 0x68, 0x8c,
+	0x2b, 0x3e, 0x6c, 0x1f, 0x1f, 0x83, 0xd9, 0xab, 0xfb, 0x41, 0xbd,
+	0x6b, 0x5b, 0xe0, 0xcd, 0x19, 0x13, 0x7e, 0x21, 0x79
+};
 
 typedef struct {
 	uint8_t ctx[40];

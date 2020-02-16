@@ -12,13 +12,15 @@
 static void pack_sk(unsigned char *sk, poly s, poly_k e, unsigned char *seeds) { // Pack secret key sk
 	unsigned int i, k;
 
-	for (i = 0; i < PARAM_N; i++)
+	for (i = 0; i < PARAM_N; i++) {
 		sk[i] = (unsigned char) s[i];
+	}
 
 	sk += PARAM_N;
 	for (k = 0; k < PARAM_K; k++)
-		for (i = 0; i < PARAM_N; i++)
+		for (i = 0; i < PARAM_N; i++) {
 			sk[k * PARAM_N + i] = (unsigned char) e[k * PARAM_N + i];
+		}
 
 	memcpy(&sk[PARAM_K * PARAM_N], seeds, 2 * CRYPTO_SEEDBYTES);
 }

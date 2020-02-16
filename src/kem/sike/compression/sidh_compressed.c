@@ -23,7 +23,7 @@ static void FormatPrivKey_B(unsigned char *skB) {
 }
 
 void random_mod_order_A(unsigned char *random_digits) { // Generation of Alice's secret key
-	                                                    // Outputs random value in [0, 2^eA - 1]
+	// Outputs random value in [0, 2^eA - 1]
 
 	memset(random_digits, 0, SECRETKEY_A_BYTES);
 	OQS_randombytes(random_digits, SECRETKEY_A_BYTES);
@@ -32,7 +32,7 @@ void random_mod_order_A(unsigned char *random_digits) { // Generation of Alice's
 }
 
 void random_mod_order_B(unsigned char *random_digits) { // Generation of Bob's secret key
-	                                                    // Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]
+	// Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]
 
 	OQS_randombytes(random_digits, SECRETKEY_B_BYTES);
 	FormatPrivKey_B(random_digits);
@@ -73,7 +73,7 @@ static void Ladder3pt_dual(const point_proj_t *Rs, const digit_t *m, const unsig
 }
 
 static void Elligator2(const f2elm_t a24, const unsigned int r, f2elm_t x) { // Generate an x-coordinate of a point on curve with (affine) coefficient a24
-	                                                                         // Use the counter r
+	// Use the counter r
 	int i;
 	felm_t one_fp, a2, b2, N, temp0, temp1;
 	f2elm_t A, y2, *t_ptr;
@@ -118,11 +118,13 @@ static void make_positive(f2elm_t x) {
 
 	from_fp2mont(x, x);
 	if (memcmp(x[0], zero, (size_t) nbytes) != 0) {
-		if ((x[0][0] & 1) == 1)
+		if ((x[0][0] & 1) == 1) {
 			fp2neg(x);
+		}
 	} else {
-		if ((x[1][0] & 1) == 1)
+		if ((x[1][0] & 1) == 1) {
 			fp2neg(x);
+		}
 	}
 	to_fp2mont(x, x);
 }
@@ -295,10 +297,12 @@ static void FinalExpo3(f2elm_t gX, f2elm_t gZ) {
 	fpneg(gX[1]);
 	fp2mul_mont(gX, gZ, gX);
 	fp2mul_mont(gX, f_, gX);
-	for (i = 0; i < OALICE_BITS; i++)
+	for (i = 0; i < OALICE_BITS; i++) {
 		fp2sqr_mont(gX, gX);
-	for (i = 0; i < OBOB_EXPON - 1; i++)
+	}
+	for (i = 0; i < OBOB_EXPON - 1; i++) {
 		cube_Fp2_cycl(gX, (digit_t *) Montgomery_one);
+	}
 }
 
 static void FinalExpo3_2way(f2elm_t *gX, f2elm_t *gZ) {
@@ -315,10 +319,12 @@ static void FinalExpo3_2way(f2elm_t *gX, f2elm_t *gZ) {
 		fpneg(gX[i][1]);
 		fp2mul_mont(gX[i], gZ[i], gX[i]);
 		fp2mul_mont(gX[i], finv[i], gX[i]);
-		for (j = 0; j < OALICE_BITS; j++)
+		for (j = 0; j < OALICE_BITS; j++) {
 			fp2sqr_mont(gX[i], gX[i]);
-		for (j = 0; j < OBOB_EXPON - 1; j++)
+		}
+		for (j = 0; j < OBOB_EXPON - 1; j++) {
 			cube_Fp2_cycl(gX[i], (digit_t *) &Montgomery_one);
+		}
 	}
 }
 
@@ -346,32 +352,36 @@ static bool FirstPoint_dual(const point_proj_t P, point_full_proj_t R, unsigned 
 	// Do small DLog with respect to g_R3_S3
 	fp2correction(gX[0]);
 	fp2correction(gX[1]);
-	if (memcmp(gX[0][1], zero, (size_t) nbytes) == 0) // = 1
+	if (memcmp(gX[0][1], zero, (size_t) nbytes) == 0) { // = 1
 		alpha = 0;
-	else if (memcmp(gX[0][1], (digit_t *) g_R_S_im, (size_t) nbytes) == 0) // = g_R3_S3
+	} else if (memcmp(gX[0][1], (digit_t *) g_R_S_im, (size_t) nbytes) == 0) { // = g_R3_S3
 		alpha = 1;
-	else // = g_R3_S3^2
+	} else { // = g_R3_S3^2
 		alpha = 2;
+	}
 
-	if (memcmp(gX[1][1], zero, (size_t) nbytes) == 0) // = 1
+	if (memcmp(gX[1][1], zero, (size_t) nbytes) == 0) { // = 1
 		beta = 0;
-	else if (memcmp(gX[1][1], (digit_t *) g_R_S_im, (size_t) nbytes) == 0) // = g_R3_S3
+	} else if (memcmp(gX[1][1], (digit_t *) g_R_S_im, (size_t) nbytes) == 0) { // = g_R3_S3
 		beta = 1;
-	else // = g_R3_S3^2
+	} else { // = g_R3_S3^2
 		beta = 2;
+	}
 
-	if (alpha == 0 && beta == 0) // Not full order
+	if (alpha == 0 && beta == 0) { // Not full order
 		return false;
+	}
 
 	// Return the 3-torsion point that R lies above
-	if (alpha == 0) // Lies above R3
+	if (alpha == 0) { // Lies above R3
 		*ind = 0;
-	else if (beta == 0) // Lies above S3
+	} else if (beta == 0) { // Lies above S3
 		*ind = 1;
-	else if (alpha + beta == 3) // Lies above R3+S3
+	} else if (alpha + beta == 3) { // Lies above R3+S3
 		*ind = 3;
-	else // Lies above R3-S3
+	} else { // Lies above R3-S3
 		*ind = 2;
+	}
 
 	return true;
 }
@@ -393,10 +403,11 @@ static bool SecondPoint_dual(const point_proj_t P, point_full_proj_t R, unsigned
 	FinalExpo3(gX, gZ);
 
 	fp2correction(gX);
-	if (memcmp(gX[1], zero, (size_t) nbytes) != 0) // Not equal to 1
+	if (memcmp(gX[1], zero, (size_t) nbytes) != 0) { // Not equal to 1
 		return true;
-	else
+	} else {
 		return false;
+	}
 }
 
 static void FirstPoint3n(const f2elm_t a24, const f2elm_t As[][5], f2elm_t x, point_full_proj_t R, unsigned int *r, unsigned char *ind) {
@@ -451,8 +462,9 @@ static void makeDiff(const point_full_proj_t R, point_full_proj_t S, const point
 	fp2mul_mont(D->X, t0, t0);
 	fp2correction(t0);
 	fp2correction(t1);
-	if (memcmp(t0[0], t1[0], (size_t) nbytes) == 0 && memcmp(t0[1], t1[1], (size_t) nbytes) == 0)
+	if (memcmp(t0[0], t1[0], (size_t) nbytes) == 0 && memcmp(t0[1], t1[1], (size_t) nbytes) == 0) {
 		fp2neg(S->Y);
+	}
 }
 
 static void BuildOrdinary3nBasis_dual(const f2elm_t a24, const f2elm_t As[][5], point_full_proj_t *R, unsigned int *r) {
@@ -688,10 +700,10 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Co
 }
 
 int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned char *PKA, unsigned char *SharedSecretB) { // Bob's ephemeral shared secret computation using compression
-	                                                                                                                       // It produces a shared secret key SharedSecretB using his secret key PrivateKeyB and Alice's decompressed data point_R and param_A
-	                                                                                                                       // Inputs: Bob's PrivateKeyB is an integer in the range [1, oB-1], where oB = 3^OBOB_EXP.
-	                                                                                                                       //         Alice's decompressed data consists of point_R in (X:Z) coordinates and the curve parameter param_A in GF(p^2).
-	                                                                                                                       // Output: a shared secret SharedSecretB that consists of one element in GF(p^2).
+	// It produces a shared secret key SharedSecretB using his secret key PrivateKeyB and Alice's decompressed data point_R and param_A
+	// Inputs: Bob's PrivateKeyB is an integer in the range [1, oB-1], where oB = 3^OBOB_EXP.
+	//         Alice's decompressed data consists of point_R in (X:Z) coordinates and the curve parameter param_A in GF(p^2).
+	// Output: a shared secret SharedSecretB that consists of one element in GF(p^2).
 	unsigned int i, ii = 0, row, m, index = 0, pts_index[MAX_INT_POINTS_BOB], npts = 0;
 	f2elm_t A24plus = {0}, A24minus = {0};
 	point_proj_t R, pts[MAX_INT_POINTS_BOB];
@@ -764,10 +776,11 @@ static void BuildEntangledXonly(const f2elm_t A, point_proj_t *R, unsigned char 
 	} while (!is_sqr_fp2(t, s));
 	*ind -= 1;
 
-	if (*qnr)
+	if (*qnr) {
 		fpcopy((digit_t *) table_r_qnr[*ind], r[0]);
-	else
+	} else {
 		fpcopy((digit_t *) table_r_qr[*ind], r[0]);
+	}
 
 	// Get x1
 	fp2add(R[0]->X, A, R[1]->X);
@@ -847,8 +860,8 @@ static void BuildOrdinary2nBasis_dual(const f2elm_t A, const f2elm_t Ds[][2], po
 }
 
 static void FullIsogeny_B_dual(const unsigned char *PrivateKeyB, f2elm_t Ds[][2], f2elm_t A) { // Bob's ephemeral public key generation
-	                                                                                           // Input:  a private key PrivateKeyB in the range [0, 2^Floor(Log(2,oB)) - 1].
-	                                                                                           // Output: the public key PublicKeyB consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
+	// Input:  a private key PrivateKeyB in the range [0, 2^Floor(Log(2,oB)) - 1].
+	// Output: the public key PublicKeyB consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
 	point_proj_t R, Q3 = {0}, pts[MAX_INT_POINTS_BOB];
 	f2elm_t XPB, XQB, XRB, coeff[3], A24plus = {0}, A24minus = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_BOB], npts = 0, ii = 0;
@@ -920,10 +933,11 @@ static void BuildEntangledXonly_Decomp(const f2elm_t A, point_proj_t *R, unsigne
 	f2elm_t *t_ptr, r, t;
 
 	// Select the correct table
-	if (qnr == 1)
+	if (qnr == 1) {
 		t_ptr = (f2elm_t *) table_v_qnr;
-	else
+	} else {
 		t_ptr = (f2elm_t *) table_v_qr;
+	}
 
 	// Get x0
 	fp2mul_mont(A, t_ptr[ind], R[0]->X); // x1 =  A*v
@@ -933,10 +947,11 @@ static void BuildEntangledXonly_Decomp(const f2elm_t A, point_proj_t *R, unsigne
 	fpadd(t[0], (digit_t *) Montgomery_one, t[0]);
 	fp2mul_mont(R[0]->X, t, t); // t = R[0]->X^3 + A*R[0]->X^2 + R[0]->X
 
-	if (qnr == 1)
+	if (qnr == 1) {
 		fpcopy((digit_t *) table_r_qnr[ind], r[0]);
-	else
+	} else {
 		fpcopy((digit_t *) table_r_qr[ind], r[0]);
+	}
 
 	// Get x1
 	fp2add(R[0]->X, A, R[1]->X);
@@ -1082,10 +1097,10 @@ int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *Co
 }
 
 int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned char *PKB, unsigned char *SharedSecretA) { // Alice's ephemeral shared secret computation using compression
-	                                                                                                                       // It produces a shared secret key SharedSecretA using her secret key PrivateKeyA and Bob's decompressed data point_R and param_A
-	                                                                                                                       // Inputs: Alice's PrivateKeyA is an even integer in the range [2, oA-2], where oA = 2^OALICE_BITS.
-	                                                                                                                       //         Bob's decompressed data consists of point_R in (X:Z) coordinates and the curve parameter param_A in GF(p^2).
-	                                                                                                                       // Output: a shared secret SharedSecretA that consists of one element in GF(p^2).
+	// It produces a shared secret key SharedSecretA using her secret key PrivateKeyA and Bob's decompressed data point_R and param_A
+	// Inputs: Alice's PrivateKeyA is an even integer in the range [2, oA-2], where oA = 2^OALICE_BITS.
+	//         Bob's decompressed data consists of point_R in (X:Z) coordinates and the curve parameter param_A in GF(p^2).
+	// Output: a shared secret SharedSecretA that consists of one element in GF(p^2).
 	unsigned int i, ii = 0, row, m, index = 0, pts_index[MAX_INT_POINTS_ALICE], npts = 0;
 	f2elm_t A24plus = {0}, C24 = {0};
 	point_proj_t R, pts[MAX_INT_POINTS_ALICE];

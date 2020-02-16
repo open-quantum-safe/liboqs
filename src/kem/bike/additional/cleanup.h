@@ -26,7 +26,7 @@
 
 /* Runs _thecleanup function on _thealloc once _thealloc went out of scope */
 #define DEFER_CLEANUP(_thealloc, _thecleanup) \
-	__attribute__((cleanup(_thecleanup))) _thealloc
+    __attribute__((cleanup(_thecleanup))) _thealloc
 
 /* Creates cleanup function for pointers from function func which accepts a
  * pointer. This is useful for DEFER_CLEANUP as it passes &_thealloc into
@@ -34,12 +34,12 @@
  * so if _thealloc is a pointer _thecleanup will receive a pointer to a
  * pointer.*/
 #define DEFINE_POINTER_CLEANUP_FUNC(type, func)  \
-	static inline void func##_pointer(type *p) { \
-		if (p && *p) {                           \
-			func(*p);                            \
-		}                                        \
-	}                                            \
-	struct __useless_struct_to_allow_trailing_semicolon__
+    static inline void func##_pointer(type *p) { \
+        if (p && *p) {                           \
+            func(*p);                            \
+        }                                        \
+    }                                            \
+    struct __useless_struct_to_allow_trailing_semicolon__
 
 // len is bytes length of in
 #define secure_clean OQS_MEM_cleanse
@@ -107,7 +107,7 @@ compressed_idx_t_cleanup(IN OUT compressed_idx_t_t *o) {
 _INLINE_ void
 compressed_idx_dv_ar_cleanup(IN OUT compressed_idx_dv_ar_t *o) {
 	for (int i = 0; i < N0; i++) {
-		secure_clean((uint8_t *) &(*o)[i], sizeof((*o)[0]));
+		secure_clean((uint8_t *) & (*o)[i], sizeof((*o)[0]));
 	}
 }
 

@@ -5,7 +5,7 @@
 *********************************************************************************************/
 
 static void from_base(int *D, digit_t *r, int Dlen, int base) { // Convert a number in base "base": (D[k-1]D[k-2]...D[1]D[0])_base < 2^(NWORDS_ORDER*RADIX)into decimal
-	                                                            // Output: r = D[k-1]*base^(k-1) + ... + D[1]*base + D[0]
+	// Output: r = D[k-1]*base^(k-1) + ... + D[1]*base + D[0]
 	digit_t ell[NWORDS_ORDER] = {0}, digit[NWORDS_ORDER] = {0}, temp[NWORDS_ORDER] = {0};
 	int ellw;
 
@@ -33,8 +33,8 @@ static void from_base(int *D, digit_t *r, int Dlen, int base) { // Convert a num
 }
 
 static void Traverse_w_div_e(const f2elm_t r, int j, int k, int z, const unsigned int *P, const f2elm_t *T, int *D, int Dlen, int ell, int w) { // Traverse a Pohlig-Hellman optimal strategy to solve a discrete log in a group of order ell^e
-	                                                                                                                                            // The leaves of the tree will be used to recover the digits which are numbers from 0 to ell^w-1
-	                                                                                                                                            // Assume the integer w divides the exponent e
+	// The leaves of the tree will be used to recover the digits which are numbers from 0 to ell^w-1
+	// Assume the integer w divides the exponent e
 	f2elm_t rp = {0};
 
 	if (z > 1) {
@@ -42,11 +42,13 @@ static void Traverse_w_div_e(const f2elm_t r, int j, int k, int z, const unsigne
 		fp2copy(r, rp);
 		for (int i = 0; i < z - t; i++) {
 			if ((ell & 1) == 0) {
-				for (int ii = 0; ii < w; ii++)
+				for (int ii = 0; ii < w; ii++) {
 					sqr_Fp2_cycl(rp, (digit_t *) &Montgomery_one);
+				}
 			} else {
-				for (int ii = 0; ii < w; ii++)
+				for (int ii = 0; ii < w; ii++) {
 					cube_Fp2_cycl(rp, (digit_t *) &Montgomery_one);
+				}
 			}
 		}
 		Traverse_w_div_e(rp, j + (z - t), k, t, P, T, D, Dlen, ell, w);
@@ -69,8 +71,8 @@ static void Traverse_w_div_e(const f2elm_t r, int j, int k, int z, const unsigne
 }
 
 static void Traverse_w_notdiv_e(const f2elm_t r, int j, int k, int z, const unsigned int *P, const f2elm_t *T1, const f2elm_t *T2, int *D, int Dlen, int ell, int ellw, int ell_emodw, int w, int e) { // Traverse a Pohlig-Hellman optimal strategy to solve a discrete log in a group of order ell^e
-	                                                                                                                                                                                                   // Leaves are used to recover the digits which are numbers from 0 to ell^w-1 except by the last leaf that gives a digit between 0 and ell^(e mod w)
-	                                                                                                                                                                                                   // Assume w does not divide the exponent e
+	// Leaves are used to recover the digits which are numbers from 0 to ell^w-1 except by the last leaf that gives a digit between 0 and ell^(e mod w)
+	// Assume w does not divide the exponent e
 	f2elm_t rp = {0};
 
 	if (z > 1) {
@@ -79,20 +81,22 @@ static void Traverse_w_notdiv_e(const f2elm_t r, int j, int k, int z, const unsi
 
 		goleft = (j > 0) ? w * (z - t) : (e % w) + w * (z - t - 1);
 		for (int i = 0; i < goleft; i++) {
-			if ((ell & 1) == 0)
+			if ((ell & 1) == 0) {
 				sqr_Fp2_cycl(rp, (digit_t *) &Montgomery_one);
-			else
+			} else {
 				cube_Fp2_cycl(rp, (digit_t *) &Montgomery_one);
+			}
 		}
 
 		Traverse_w_notdiv_e(rp, j + (z - t), k, t, P, T1, T2, D, Dlen, ell, ellw, ell_emodw, w, e);
 
 		fp2copy(r, rp);
 		for (int h = k; h < k + t; h++) {
-			if (j > 0)
+			if (j > 0) {
 				fp2mul_mont(rp, (const felm_t *) &T2[ellw * (j + h)][2 * D[h]], rp);
-			else
+			} else {
 				fp2mul_mont(rp, (const felm_t *) &T1[ellw * (j + h)][2 * D[h]], rp);
+			}
 		}
 
 		Traverse_w_notdiv_e(rp, j, k + t, z - t, P, T1, T2, D, Dlen, ell, ellw, ell_emodw, w, e);
@@ -118,7 +122,7 @@ static void Traverse_w_notdiv_e(const f2elm_t r, int j, int k, int z, const unsi
 }
 
 static void solve_dlog(const f2elm_t r, int *D, digit_t *d, int ell) { // Computes the discrete log of input r = g^d where g = e(P,Q)^ell^e, and P,Q are torsion generators in the initial curve
-	                                                                   // Return the integer d
+	// Return the integer d
 	if (ell == 2) {
 #if (OALICE_BITS % W_2 == 0)
 		Traverse_w_div_e(r, 0, 0, PLEN_2 - 1, ph2_path, (const f2elm_t *) &ph2_T, D, DLEN_2, ELL2_W, W_2);
@@ -137,7 +141,7 @@ static void solve_dlog(const f2elm_t r, int *D, digit_t *d, int ell) { // Comput
 }
 
 static void ph2(const point_full_proj_t phiP, const point_full_proj_t phiQ, const point_t PS, const point_t QS, const f2elm_t A, digit_t *c0, digit_t *d0, digit_t *c1, digit_t *d1) { // Computes the 4 coefficients of the change of basis matrix between the bases {phiP,phiQ} and {PS, QS}
-	                                                                                                                                                                                   // Assume both bases generate the full 2^eA torsion
+	// Assume both bases generate the full 2^eA torsion
 	f2elm_t n[4] = {0};
 	int D[DLEN_2];
 
@@ -153,7 +157,7 @@ static void ph2(const point_full_proj_t phiP, const point_full_proj_t phiQ, cons
 }
 
 static void ph3(point_full_proj_t phiP, point_full_proj_t phiQ, point_full_proj_t PS, point_full_proj_t QS, f2elm_t A, digit_t *c0, digit_t *d0, digit_t *c1, digit_t *d1) { // Computes the 4 coefficients of the change of basis matrix between the bases {phiP,phiQ} and {PS, QS}
-	                                                                                                                                                                         // Assume both bases generate the full 3^eA torsion
+	// Assume both bases generate the full 3^eA torsion
 	f2elm_t n[4] = {0};
 	int D[DLEN_3];
 

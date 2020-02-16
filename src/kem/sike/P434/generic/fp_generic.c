@@ -14,8 +14,8 @@ extern const uint64_t p434x2[NWORDS_FIELD];
 */
 
 __inline void fpadd434(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p434.
-	                                                                     // Inputs: a, b in [0, 2*p434-1]
-	                                                                     // Output: c in [0, 2*p434-1]
+	// Inputs: a, b in [0, 2*p434-1]
+	// Output: c in [0, 2*p434-1]
 	unsigned int i, carry = 0;
 	digit_t mask;
 
@@ -36,8 +36,8 @@ __inline void fpadd434(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 }
 
 __inline void fpsub434(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p434.
-	                                                                     // Inputs: a, b in [0, 2*p434-1]
-	                                                                     // Output: c in [0, 2*p434-1]
+	// Inputs: a, b in [0, 2*p434-1]
+	// Output: c in [0, 2*p434-1]
 	unsigned int i, borrow = 0;
 	digit_t mask;
 
@@ -53,7 +53,7 @@ __inline void fpsub434(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 }
 
 __inline void fpneg434(digit_t *a) { // Modular negation, a = -a mod p434.
-	                                 // Input/output: a in [0, 2*p434-1]
+	// Input/output: a in [0, 2*p434-1]
 	unsigned int i, borrow = 0;
 
 	for (i = 0; i < NWORDS_FIELD; i++) {
@@ -62,8 +62,8 @@ __inline void fpneg434(digit_t *a) { // Modular negation, a = -a mod p434.
 }
 
 void fpdiv2_434(const digit_t *a, digit_t *c) { // Modular division by two, c = a/2 mod p434.
-	                                            // Input : a in [0, 2*p434-1]
-	                                            // Output: c in [0, 2*p434-1]
+	// Input : a in [0, 2*p434-1]
+	// Output: c in [0, 2*p434-1]
 	unsigned int i, carry = 0;
 	digit_t mask;
 
@@ -156,9 +156,9 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 }
 
 void rdc_mont(const digit_t *ma, digit_t *mc) { // Efficient Montgomery reduction using comba and exploiting the special form of the prime p434.
-	                                            // mc = ma*R^-1 mod p434x2, where R = 2^448.
-	                                            // If ma < 2^448*p434, the output mc is in the range [0, 2*p434-1].
-	                                            // ma is assumed to be in Montgomery representation.
+	// mc = ma*R^-1 mod p434x2, where R = 2^448.
+	// If ma < 2^448*p434, the output mc is in the range [0, 2*p434-1].
+	// ma is assumed to be in Montgomery representation.
 	unsigned int i, j, carry, count = p434_ZERO_WORDS;
 	digit_t UV[2], t = 0, u = 0, v = 0;
 

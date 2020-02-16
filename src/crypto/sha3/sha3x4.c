@@ -110,8 +110,9 @@ static void keccak_squeezeblocks4x(unsigned char *h0, unsigned char *h1, unsigne
 static void shake128_absorb4x(__m256i *s, const unsigned char *in0, const unsigned char *in1, const unsigned char *in2, const unsigned char *in3, unsigned long long inlen) {
 	unsigned int i;
 
-	for (i = 0; i < 25; i++)
-		s[i] = _mm256_xor_si256(s[i], s[i]); // zero state
+	for (i = 0; i < 25; i++) {
+		s[i] = _mm256_xor_si256(s[i], s[i]);    // zero state
+	}
 
 	/* Absorb input */
 	keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
@@ -153,8 +154,9 @@ static void cshake128_simple_absorb4x(__m256i *s, uint16_t cstm0, uint16_t cstm1
 	unsigned char *sep = (unsigned char *) s;
 	unsigned int i;
 
-	for (i = 0; i < 25; i++)
-		s[i] = _mm256_xor_si256(s[i], s[i]); // zero state
+	for (i = 0; i < 25; i++) {
+		s[i] = _mm256_xor_si256(s[i], s[i]);    // zero state
+	}
 
 	/* Absorb customization (domain-separation) string */
 	for (i = 0; i < 4; i++) {

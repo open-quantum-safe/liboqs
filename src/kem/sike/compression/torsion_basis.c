@@ -5,7 +5,7 @@
 *********************************************************************************************/
 
 static void get_2_torsion_entangled_basis_compression(const f2elm_t A, point_t S1, point_t S2, unsigned char *bit, unsigned char *entry) { // Build an entangled basis for E[2^m].
-	                                                                                                                                       // At first glance this is similar to the Elligator 2 technique, but the field element u is a *square* here, not a non-square.
+	// At first glance this is similar to the Elligator 2 technique, but the field element u is a *square* here, not a non-square.
 	unsigned int i, index, isSqrA = 0;
 	felm_t r = {0}, s, z, alpha, twoalphainv, beta;
 	f2elm_t t, u, u0, one = {0}, *t_ptr;
@@ -36,10 +36,11 @@ static void get_2_torsion_entangled_basis_compression(const f2elm_t A, point_t S
 	} while (!is_sqr_fp2(t, s));
 	*entry = ((unsigned char) index - 2) / 2; // This table entry will also be transmitted along with the PubKey to speedup decompression
 
-	if (isSqrA)
+	if (isSqrA) {
 		copy_words((const digit_t *) table_r_qnr[(index - 2) / 2], r, NWORDS_FIELD);
-	else
+	} else {
 		copy_words((const digit_t *) table_r_qr[(index - 2) / 2], r, NWORDS_FIELD);
+	}
 
 	// Finish sqrt computation for y1 = sqrt(x1^3+A*x1^2+x1)
 	fpadd(t[0], s, z);
@@ -97,10 +98,11 @@ static void get_2_torsion_entangled_basis_decompression(const f2elm_t A, point_t
 	fp2mul_mont(x1, t, t); // t = x1^3 + A*x1^2 + x1 = x1(x1(x1 + A) + 1)
 	is_sqr_fp2(t, s);
 
-	if (isASqr)
+	if (isASqr) {
 		copy_words((const digit_t *) table_r_qnr[entry], r, NWORDS_FIELD);
-	else
+	} else {
 		copy_words((const digit_t *) table_r_qr[entry], r, NWORDS_FIELD);
+	}
 
 	// Finish sqrt computation for y1 = sqrt(x1^3+A*x1^2+x1)
 	fpadd(t[0], s, z);
@@ -153,8 +155,9 @@ static void sqrtinv2(const f2elm_t v, const f2elm_t z, f2elm_t s, f2elm_t invz) 
 		fpadd(av2, bv2, Nv);
 
 		fpcopy(Nv, r);
-		for (j = 0; j < OALICE_BITS - 2; j++)
+		for (j = 0; j < OALICE_BITS - 2; j++) {
 			fpsqr_mont(r, r);
+		}
 		for (j = 0; j < OBOB_EXPON; j++) {
 			fpsqr_mont(r, t);
 			fpmul_mont(r, t, r);
@@ -165,14 +168,16 @@ static void sqrtinv2(const f2elm_t v, const f2elm_t z, f2elm_t s, f2elm_t invz) 
 		if (memcmp(t, Nv, NBITS_TO_NBYTES(NBITS_FIELD)) == 0) {
 			mp_add(av, r, r, NWORDS_FIELD);
 
-			if ((r[0] & 0x01) != 0)
+			if ((r[0] & 0x01) != 0) {
 				mp_add(r, (digit_t *) &PRIME, r, NWORDS_FIELD);
+			}
 
 			mp_shiftr1(r, NWORDS_FIELD);
 
 			fpcopy(r, x);
-			for (j = 0; j < OALICE_BITS - 2; j++)
+			for (j = 0; j < OALICE_BITS - 2; j++) {
 				fpsqr_mont(x, x);
+			}
 			for (j = 0; j < OBOB_EXPON; j++) {
 				fpsqr_mont(x, t);
 				fpmul_mont(x, t, x);
@@ -229,8 +234,9 @@ static void sqrtinv2(const f2elm_t v, const f2elm_t z, f2elm_t s, f2elm_t invz) 
 		}
 	} else {
 		fpcopy(av, r);
-		for (j = 0; j < OALICE_BITS - 2; j++)
+		for (j = 0; j < OALICE_BITS - 2; j++) {
 			fpsqr_mont(r, r);
+		}
 		for (j = 0; j < OBOB_EXPON; j++) {
 			fpsqr_mont(r, t);
 			fpmul_mont(r, t, r);
@@ -282,7 +288,7 @@ static void CompleteMPoint(const f2elm_t A, point_proj_t P, point_full_proj_t R)
 }
 
 static void BasePoint3n(f2elm_t A, unsigned int *r, point_proj_t P, point_proj_t Q) { // xz-only construction of a point of order 3^n in the Montgomery curve y^2 = x^3 + A*x^2 + x from base counter r.
-	                                                                                  // This is essentially the Elligator 2 technique coupled with cofactor multiplication and LI checking.
+	// This is essentially the Elligator 2 technique coupled with cofactor multiplication and LI checking.
 	int i;
 	felm_t a2, b2, N, temp0, temp1;
 	f2elm_t A2, A24, two = {0}, x, y2, one_fp2 = {0}, *t_ptr;
@@ -334,7 +340,7 @@ static void BasePoint3n(f2elm_t A, unsigned int *r, point_proj_t P, point_proj_t
 }
 
 static void BasePoint3n_decompression(f2elm_t A, const unsigned char r, point_proj_t P) { // Deterministic xz-only construction of a point of order 3^n in the Montgomery curve y^2 = x^3 + A*x^2 + x from counter r1.
-	                                                                                      // Notice that the Elligator 2 counter r was generated beforehand during key compression without linear independence testing
+	// Notice that the Elligator 2 counter r was generated beforehand during key compression without linear independence testing
 	int i;
 	felm_t a2, b2, N, temp0, temp1;
 	f2elm_t A2, A24, two = {0}, x, y2, one_fp2 = {0};

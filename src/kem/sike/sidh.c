@@ -17,20 +17,20 @@ static void init_basis(digit_t *gen, f2elm_t XP, f2elm_t XQ, f2elm_t XR) { // In
 }
 
 void random_mod_order_A(unsigned char *random_digits) { // Generation of Alice's secret key
-	                                                    // Outputs random value in [0, 2^eA - 1]
+	// Outputs random value in [0, 2^eA - 1]
 	OQS_randombytes(random_digits, SECRETKEY_A_BYTES);
 	random_digits[SECRETKEY_A_BYTES - 1] &= MASK_ALICE; // Masking last byte
 }
 
 void random_mod_order_B(unsigned char *random_digits) { // Generation of Bob's secret key
-	                                                    // Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]
+	// Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]
 	OQS_randombytes(random_digits, SECRETKEY_B_BYTES);
 	random_digits[SECRETKEY_B_BYTES - 1] &= MASK_BOB; // Masking last byte
 }
 
 int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA) { // Alice's ephemeral public key generation
-	                                                                                        // Input:  a private key PrivateKeyA in the range [0, 2^eA - 1].
-	                                                                                        // Output: the public key PublicKeyA consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
+	// Input:  a private key PrivateKeyA in the range [0, 2^eA - 1].
+	// Output: the public key PublicKeyA consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_ALICE];
 	f2elm_t XPA, XQA, XRA, coeff[3], A24plus = {0}, C24 = {0}, A = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_ALICE], npts = 0, ii = 0;
@@ -110,8 +110,8 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 }
 
 int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *PublicKeyB) { // Bob's ephemeral public key generation
-	                                                                                        // Input:  a private key PrivateKeyB in the range [0, 2^Floor(Log(2,oB)) - 1].
-	                                                                                        // Output: the public key PublicKeyB consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
+	// Input:  a private key PrivateKeyB in the range [0, 2^Floor(Log(2,oB)) - 1].
+	// Output: the public key PublicKeyB consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_BOB];
 	f2elm_t XPB, XQB, XRB, coeff[3], A24plus = {0}, A24minus = {0}, A = {0};
 	unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_BOB], npts = 0, ii = 0;
@@ -180,10 +180,10 @@ int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *Pu
 }
 
 int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned char *PublicKeyB, unsigned char *SharedSecretA) { // Alice's ephemeral shared secret computation
-	                                                                                                                              // It produces a shared secret key SharedSecretA using her secret key PrivateKeyA and Bob's public key PublicKeyB
-	                                                                                                                              // Inputs: Alice's PrivateKeyA is an integer in the range [0, oA-1].
-	                                                                                                                              //         Bob's PublicKeyB consists of 3 elements in GF(p^2) encoded by removing leading 0 bytes.
-	                                                                                                                              // Output: a shared secret SharedSecretA that consists of one element in GF(p^2) encoded by removing leading 0 bytes.
+	// It produces a shared secret key SharedSecretA using her secret key PrivateKeyA and Bob's public key PublicKeyB
+	// Inputs: Alice's PrivateKeyA is an integer in the range [0, oA-1].
+	//         Bob's PublicKeyB consists of 3 elements in GF(p^2) encoded by removing leading 0 bytes.
+	// Output: a shared secret SharedSecretA that consists of one element in GF(p^2) encoded by removing leading 0 bytes.
 	point_proj_t R, pts[MAX_INT_POINTS_ALICE];
 	f2elm_t coeff[3], PKB[3], jinv;
 	f2elm_t A24plus = {0}, C24 = {0}, A = {0};
@@ -247,10 +247,10 @@ int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned 
 }
 
 int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned char *PublicKeyA, unsigned char *SharedSecretB) { // Bob's ephemeral shared secret computation
-	                                                                                                                              // It produces a shared secret key SharedSecretB using his secret key PrivateKeyB and Alice's public key PublicKeyA
-	                                                                                                                              // Inputs: Bob's PrivateKeyB is an integer in the range [0, 2^Floor(Log(2,oB)) - 1].
-	                                                                                                                              //         Alice's PublicKeyA consists of 3 elements in GF(p^2) encoded by removing leading 0 bytes.
-	                                                                                                                              // Output: a shared secret SharedSecretB that consists of one element in GF(p^2) encoded by removing leading 0 bytes.
+	// It produces a shared secret key SharedSecretB using his secret key PrivateKeyB and Alice's public key PublicKeyA
+	// Inputs: Bob's PrivateKeyB is an integer in the range [0, 2^Floor(Log(2,oB)) - 1].
+	//         Alice's PublicKeyA consists of 3 elements in GF(p^2) encoded by removing leading 0 bytes.
+	// Output: a shared secret SharedSecretB that consists of one element in GF(p^2) encoded by removing leading 0 bytes.
 	point_proj_t R, pts[MAX_INT_POINTS_BOB];
 	f2elm_t coeff[3], PKB[3], jinv;
 	f2elm_t A24plus = {0}, A24minus = {0}, A = {0};

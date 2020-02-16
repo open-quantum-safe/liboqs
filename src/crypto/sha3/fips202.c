@@ -45,18 +45,19 @@ static void store64(uint8_t *x, uint64_t u) {
 
 /* Keccak round constants */
 static const uint64_t KeccakF_RoundConstants[NROUNDS] = {
-    0x0000000000000001ULL, 0x0000000000008082ULL,
-    0x800000000000808aULL, 0x8000000080008000ULL,
-    0x000000000000808bULL, 0x0000000080000001ULL,
-    0x8000000080008081ULL, 0x8000000000008009ULL,
-    0x000000000000008aULL, 0x0000000000000088ULL,
-    0x0000000080008009ULL, 0x000000008000000aULL,
-    0x000000008000808bULL, 0x800000000000008bULL,
-    0x8000000000008089ULL, 0x8000000000008003ULL,
-    0x8000000000008002ULL, 0x8000000000000080ULL,
-    0x000000000000800aULL, 0x800000008000000aULL,
-    0x8000000080008081ULL, 0x8000000000008080ULL,
-    0x0000000080000001ULL, 0x8000000080008008ULL};
+	0x0000000000000001ULL, 0x0000000000008082ULL,
+	0x800000000000808aULL, 0x8000000080008000ULL,
+	0x000000000000808bULL, 0x0000000080000001ULL,
+	0x8000000080008081ULL, 0x8000000000008009ULL,
+	0x000000000000008aULL, 0x0000000000000088ULL,
+	0x0000000080008009ULL, 0x000000008000000aULL,
+	0x000000008000808bULL, 0x800000000000008bULL,
+	0x8000000000008089ULL, 0x8000000000008003ULL,
+	0x8000000000008002ULL, 0x8000000000000080ULL,
+	0x000000000000800aULL, 0x800000008000000aULL,
+	0x8000000080008081ULL, 0x8000000000008080ULL,
+	0x0000000080000001ULL, 0x8000000080008008ULL
+};
 
 /*************************************************
  * Name:        KeccakF1600_StatePermute
@@ -440,7 +441,7 @@ static void keccak_inc_absorb(uint64_t *s_inc, uint32_t r, const uint8_t *m,
 	while (mlen + s_inc[25] >= r) {
 		for (i = 0; i < r - s_inc[25]; i++) {
 			/* Take the i'th byte from message
-               xor with the s_inc[25] + i'th byte of the state; little-endian */
+			   xor with the s_inc[25] + i'th byte of the state; little-endian */
 			s_inc[(s_inc[25] + i) >> 3] ^= (uint64_t) m[i] << (8 * ((s_inc[25] + i) & 0x07));
 		}
 		mlen -= (size_t)(r - s_inc[25]);
@@ -471,7 +472,7 @@ static void keccak_inc_absorb(uint64_t *s_inc, uint32_t r, const uint8_t *m,
  **************************************************/
 static void keccak_inc_finalize(uint64_t *s_inc, uint32_t r, uint8_t p) {
 	/* After keccak_inc_absorb, we are guaranteed that s_inc[25] < r,
-       so we can always use one more byte for p in the current state. */
+	   so we can always use one more byte for p in the current state. */
 	s_inc[s_inc[25] >> 3] ^= (uint64_t) p << (8 * (s_inc[25] & 0x07));
 	s_inc[(r - 1) >> 3] ^= (uint64_t) 128 << (8 * ((r - 1) & 0x07));
 	s_inc[25] = 0;
@@ -497,7 +498,7 @@ static void keccak_inc_squeeze(uint8_t *h, size_t outlen,
 	/* First consume any bytes we still have sitting around */
 	for (i = 0; i < outlen && i < s_inc[25]; i++) {
 		/* There are s_inc[25] bytes left, so r - s_inc[25] is the first
-           available byte. We consume from there, i.e., up to r. */
+		   available byte. We consume from there, i.e., up to r. */
 		h[i] = (uint8_t)(s_inc[(r - s_inc[25] + i) >> 3] >> (8 * ((r - s_inc[25] + i) & 0x07)));
 	}
 	h += i;

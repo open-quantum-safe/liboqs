@@ -22,115 +22,115 @@
 #define DFIELD ((sdigit_t)(~(digit_t) 0 >> 1))
 
 #define PRODIFF(diff, a_u, a_v, k)                                            \
-	{                                                                         \
-		diff = (diff + (a_v[k] & DFIELD) - (a_u[k] & DFIELD)) >> (RADIX - 1); \
-	}
+    {                                                                         \
+        diff = (diff + (a_v[k] & DFIELD) - (a_u[k] & DFIELD)) >> (RADIX - 1); \
+    }
 
 #define PROSWAP(swap, diff, a_u, a_v, k) \
-	{                                    \
-		swap = (a_u[k] ^ a_v[k]) & diff; \
-		a_u[k] ^= swap;                  \
-		a_v[k] ^= swap;                  \
-	}
+    {                                    \
+        swap = (a_u[k] ^ a_v[k]) & diff; \
+        a_u[k] ^= swap;                  \
+        a_v[k] ^= swap;                  \
+    }
 
 #define PROSWAPG(swap, diff, g_u, g_v)       \
-	{                                        \
-		swap = (g_u ^ g_v) & (int32_t) diff; \
-		g_u ^= swap;                         \
-		g_v ^= swap;                         \
-	}
+    {                                        \
+        swap = (g_u ^ g_v) & (int32_t) diff; \
+        g_u ^= swap;                         \
+        g_v ^= swap;                         \
+    }
 
 #define MINMAX0(swap, diff, a_u, a_v)     \
-	{                                     \
-		PRODIFF(diff, a_u, a_v, 0);       \
-		PROSWAP(swap, diff, a_u, a_v, 0); \
-	}
+    {                                     \
+        PRODIFF(diff, a_u, a_v, 0);       \
+        PROSWAP(swap, diff, a_u, a_v, 0); \
+    }
 
 #if CDT_COLS > 1
 #define MINMAX1(swap, diff, a_u, a_v)     \
-	{                                     \
-		PRODIFF(diff, a_u, a_v, 1);       \
-		MINMAX0(swap, diff, a_u, a_v);    \
-		PROSWAP(swap, diff, a_u, a_v, 1); \
-	}
+    {                                     \
+        PRODIFF(diff, a_u, a_v, 1);       \
+        MINMAX0(swap, diff, a_u, a_v);    \
+        PROSWAP(swap, diff, a_u, a_v, 1); \
+    }
 #else
 #define MINMAX1(swap, diff, a_u, a_v) MINMAX0(swap, diff, a_u, a_v)
 #endif
 
 #if CDT_COLS > 2
 #define MINMAX2(swap, diff, a_u, a_v)     \
-	{                                     \
-		PRODIFF(diff, a_u, a_v, 2);       \
-		MINMAX1(swap, diff, a_u, a_v);    \
-		PROSWAP(swap, diff, a_u, a_v, 2); \
-	}
+    {                                     \
+        PRODIFF(diff, a_u, a_v, 2);       \
+        MINMAX1(swap, diff, a_u, a_v);    \
+        PROSWAP(swap, diff, a_u, a_v, 2); \
+    }
 #else
 #define MINMAX2(swap, diff, a_u, a_v) MINMAX1(swap, diff, a_u, a_v)
 #endif
 
 #if CDT_COLS > 3
 #define MINMAX3(swap, diff, a_u, a_v)     \
-	{                                     \
-		PRODIFF(diff, a_u, a_v, 3);       \
-		MINMAX2(swap, diff, a_u, a_v);    \
-		PROSWAP(swap, diff, a_u, a_v, 3); \
-	}
+    {                                     \
+        PRODIFF(diff, a_u, a_v, 3);       \
+        MINMAX2(swap, diff, a_u, a_v);    \
+        PROSWAP(swap, diff, a_u, a_v, 3); \
+    }
 #else
 #define MINMAX3(swap, diff, a_u, a_v) MINMAX2(swap, diff, a_u, a_v)
 #endif
 
 #if CDT_COLS > 4
 #define MINMAX4(swap, diff, a_u, a_v)     \
-	{                                     \
-		PRODIFF(diff, a_u, a_v, 4);       \
-		MINMAX3(swap, diff, a_u, a_v);    \
-		PROSWAP(swap, diff, a_u, a_v, 4); \
-	}
+    {                                     \
+        PRODIFF(diff, a_u, a_v, 4);       \
+        MINMAX3(swap, diff, a_u, a_v);    \
+        PROSWAP(swap, diff, a_u, a_v, 4); \
+    }
 #else
 #define MINMAX4(swap, diff, a_u, a_v) MINMAX3(swap, diff, a_u, a_v)
 #endif
 
 #if CDT_COLS > 5
 #define MINMAX5(swap, diff, a_u, a_v)     \
-	{                                     \
-		PRODIFF(diff, a_u, a_v, 5);       \
-		MINMAX4(swap, diff, a_u, a_v);    \
-		PROSWAP(swap, diff, a_u, a_v, 5); \
-	}
+    {                                     \
+        PRODIFF(diff, a_u, a_v, 5);       \
+        MINMAX4(swap, diff, a_u, a_v);    \
+        PROSWAP(swap, diff, a_u, a_v, 5); \
+    }
 #else
 #define MINMAX5(swap, diff, a_u, a_v) MINMAX4(swap, diff, a_u, a_v)
 #endif
 
 #if CDT_COLS > 6
 #define MINMAX6(swap, diff, a_u, a_v)     \
-	{                                     \
-		PRODIFF(diff, a_u, a_v, 6);       \
-		MINMAX5(swap, diff, a_u, a_v);    \
-		PROSWAP(swap, diff, a_u, a_v, 6); \
-	}
+    {                                     \
+        PRODIFF(diff, a_u, a_v, 6);       \
+        MINMAX5(swap, diff, a_u, a_v);    \
+        PROSWAP(swap, diff, a_u, a_v, 6); \
+    }
 #else
 #define MINMAX6(swap, diff, a_u, a_v) MINMAX5(swap, diff, a_u, a_v)
 #endif
 
 #if CDT_COLS > 7
 #define MINMAX7(swap, diff, a_u, a_v)     \
-	{                                     \
-		PRODIFF(diff, a_u, a_v, 7);       \
-		MINMAX6(swap, diff, a_u, a_v);    \
-		PROSWAP(swap, diff, a_u, a_v, 7); \
-	}
+    {                                     \
+        PRODIFF(diff, a_u, a_v, 7);       \
+        MINMAX6(swap, diff, a_u, a_v);    \
+        PROSWAP(swap, diff, a_u, a_v, 7); \
+    }
 #else
 #define MINMAX7(swap, diff, a_u, a_v) MINMAX6(swap, diff, a_u, a_v)
 #endif
 
 #if CDT_COLS <= 8
 #define MINIMAX(a_u, a_v, g_u, g_v)      \
-	{                                    \
-		sdigit_t diff = 0, swapa;        \
-		int32_t swapg;                   \
-		MINMAX7(swapa, diff, a_u, a_v);  \
-		PROSWAPG(swapg, diff, g_u, g_v); \
-	}
+    {                                    \
+        sdigit_t diff = 0, swapa;        \
+        int32_t swapg;                   \
+        MINMAX7(swapa, diff, a_u, a_v);  \
+        PROSWAPG(swapg, diff, g_u, g_v); \
+    }
 #else
 #error "Unsupported precision"
 #endif
@@ -169,12 +169,12 @@ static void knuthMergeExchangeKG(sdigit_t a[/*n*CDT_COLS*/], int32_t g[/*n*/], s
 }
 
 #define MINMAXG(a_u, a_v)                                                            \
-	{                                                                                \
-		int32_t diff = ((a_v & 0x7FFFFFFFL) - (a_u & 0x7FFFFFFFL)) >> (RADIX32 - 1); \
-		int32_t swap = (a_u ^ a_v) & diff;                                           \
-		a_u ^= swap;                                                                 \
-		a_v ^= swap;                                                                 \
-	}
+    {                                                                                \
+        int32_t diff = ((a_v & 0x7FFFFFFFL) - (a_u & 0x7FFFFFFFL)) >> (RADIX32 - 1); \
+        int32_t swap = (a_u ^ a_v) & diff;                                           \
+        a_u ^= swap;                                                                 \
+        a_v ^= swap;                                                                 \
+    }
 
 /*
  * Sort the sampling order array using Knuth's iterative merge-exchange sorting.
@@ -214,11 +214,13 @@ static void kmxGauss(int32_t z[/*CHUNK_SIZE*/], const unsigned char *seed, int n
 	memcpy(sampk + CHUNK_SIZE * CDT_COLS, cdt_v, CDT_ROWS * CDT_COLS * sizeof(sdigit_t));
 
 	// Keep track each entry's sampling order
-	for (int32_t i = 0; i < CHUNK_SIZE; i++)
+	for (int32_t i = 0; i < CHUNK_SIZE; i++) {
 		sampg[i] = i << 16;
+	}
 	// Append the CDT Gaussian indices (prefixed with a sentinel)
-	for (int32_t i = 0; i < CDT_ROWS; i++)
+	for (int32_t i = 0; i < CDT_ROWS; i++) {
 		sampg[CHUNK_SIZE + i] = 0xFFFF0000L ^ i;
+	}
 
 	// Constant-time sorting according to the uniformly random sorting key
 	knuthMergeExchangeKG(sampk, sampg, CHUNK_SIZE + CDT_ROWS);

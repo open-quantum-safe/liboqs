@@ -28,8 +28,8 @@
 
 #define ret_t int __attribute__((warn_unused_result))
 #define GUARD(x)        \
-	if ((x) != SUCCESS) \
-	return FAIL
+    if ((x) != SUCCESS) \
+    return FAIL
 
 enum _bike_err {
 	E_ERROR_WEIGHT_IS_NOT_T = 1,
@@ -43,7 +43,7 @@ typedef enum _bike_err _bike_err_t;
 
 extern __thread _bike_err_t bike_errno;
 #define BIKE_ERROR(x)     \
-	do {                  \
-		bike_errno = (x); \
-		return FAIL;      \
-	} while (0)
+    do {                  \
+        bike_errno = (x); \
+        return FAIL;      \
+    } while (0)

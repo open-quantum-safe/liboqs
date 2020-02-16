@@ -37,17 +37,17 @@ void print_BE(IN const uint64_t *in, IN const uint32_t bits_num);
 #ifdef PRINT_IN_BE
 // Print in Big Endian
 #define print(name, in, bits_num) \
-	do {                          \
-		EDMSG(name);              \
-		print_BE(in, bits_num);   \
-	} while (0)
+    do {                          \
+        EDMSG(name);              \
+        print_BE(in, bits_num);   \
+    } while (0)
 #else
 // Print in Little Endian
 #define print(name, in, bits_num) \
-	do {                          \
-		EDMSG(name);              \
-		print_LE(in, bits_num);   \
-	} while (0)
+    do {                          \
+        EDMSG(name);              \
+        print_LE(in, bits_num);   \
+    } while (0)
 #endif
 #else
 // No prints at all

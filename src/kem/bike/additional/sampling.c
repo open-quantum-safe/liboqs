@@ -57,9 +57,9 @@ make_odd_weight(IN OUT r_t *r) {
 
 // IN: must_be_odd - 1 true, 0 not
 ret_t sample_uniform_r_bits_with_fixed_prf_context(OUT r_t *r,
-                                                   IN OUT
-                                                       aes_ctr_prf_state_t *prf_state,
-                                                   IN const must_be_odd_t must_be_odd) {
+        IN OUT
+        aes_ctr_prf_state_t *prf_state,
+        IN const must_be_odd_t must_be_odd) {
 	// Generate random data
 	GUARD(aes_ctr_prf(r->raw, prf_state, R_SIZE));
 

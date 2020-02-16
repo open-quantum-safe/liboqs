@@ -46,14 +46,17 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 	int len;
 
 	/* Create and initialise the context */
-	if (!(ctx = EVP_CIPHER_CTX_new()))
+	if (!(ctx = EVP_CIPHER_CTX_new())) {
 		handleErrors();
+	}
 
-	if (1 != EVP_EncryptInit_ex(ctx, EVP_aes_256_ecb(), NULL, key, NULL))
+	if (1 != EVP_EncryptInit_ex(ctx, EVP_aes_256_ecb(), NULL, key, NULL)) {
 		handleErrors();
+	}
 
-	if (1 != EVP_EncryptUpdate(ctx, buffer, &len, ctr, 16))
+	if (1 != EVP_EncryptUpdate(ctx, buffer, &len, ctr, 16)) {
 		handleErrors();
+	}
 
 	/* Clean up */
 	EVP_CIPHER_CTX_free(ctx);
@@ -71,8 +74,9 @@ OQS_API void OQS_randombytes_nist_kat_init(unsigned char *entropy_input, unsigne
 	assert(security_strength == 256);
 	memcpy(seed_material, entropy_input, 48);
 	if (personalization_string)
-		for (int i = 0; i < 48; i++)
+		for (int i = 0; i < 48; i++) {
 			seed_material[i] ^= personalization_string[i];
+		}
 	memset(DRBG_ctx.Key, 0x00, 32);
 	memset(DRBG_ctx.V, 0x00, 16);
 	AES256_CTR_DRBG_Update(seed_material, DRBG_ctx.Key, DRBG_ctx.V);
@@ -86,9 +90,9 @@ void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen) {
 	while (xlen > 0) {
 		//increment V
 		for (int j = 15; j >= 0; j--) {
-			if (DRBG_ctx.V[j] == 0xff)
+			if (DRBG_ctx.V[j] == 0xff) {
 				DRBG_ctx.V[j] = 0x00;
-			else {
+			} else {
 				DRBG_ctx.V[j]++;
 				break;
 			}
@@ -113,9 +117,9 @@ static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *
 	for (int i = 0; i < 3; i++) {
 		//increment V
 		for (int j = 15; j >= 0; j--) {
-			if (V[j] == 0xff)
+			if (V[j] == 0xff) {
 				V[j] = 0x00;
-			else {
+			} else {
 				V[j]++;
 				break;
 			}
@@ -124,8 +128,9 @@ static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *
 		AES256_ECB(Key, V, temp + 16 * i);
 	}
 	if (provided_data != NULL)
-		for (int i = 0; i < 48; i++)
+		for (int i = 0; i < 48; i++) {
 			temp[i] ^= provided_data[i];
+		}
 	memcpy(Key, temp, 32);
 	memcpy(V, temp + 32, 16);
 }
