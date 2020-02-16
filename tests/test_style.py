@@ -8,11 +8,15 @@ def test_style():
 
     result = helpers.run_subprocess(
 <<<<<<< HEAD
+<<<<<<< HEAD
         ['tests/test_style.sh']
 =======
         ['tests/test_style.sh'],
         env = {'CLANGFORMAT': found_clang_format},
 >>>>>>> 1b0f08f6... Initial format with astyle
+=======
+        ['tests/test_style.sh']
+>>>>>>> 72918a1f... Remove old line
     )
     assert 'Formatted' not in result
 
