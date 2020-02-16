@@ -7,8 +7,7 @@ import sys
 def test_style():
 
     result = helpers.run_subprocess(
-        ['tests/test_style.sh'],
-        env = {'CLANGFORMAT': found_clang_format},
+        ['tests/test_style.sh']
     )
     assert 'Formatted' not in result
 
