@@ -14,6 +14,9 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_default,
 		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 3ffc99c5... Fix templating to match
 		OQS_SIG_alg_dilithium_2,
 		OQS_SIG_alg_dilithium_3,
 		OQS_SIG_alg_dilithium_4,
@@ -55,6 +58,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_sphincs_shake256_256f_simple,
 		OQS_SIG_alg_sphincs_shake256_256s_robust,
 		OQS_SIG_alg_sphincs_shake256_256s_simple,
+<<<<<<< HEAD
 		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 		OQS_SIG_alg_picnic_L1_FS,
 		OQS_SIG_alg_picnic_L1_UR,
@@ -75,6 +79,20 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_picnic_L1_FS, OQS_SIG_alg_picnic_L1_UR, OQS_SIG_alg_picnic_L3_FS, OQS_SIG_alg_picnic_L3_UR, OQS_SIG_alg_picnic_L5_FS, OQS_SIG_alg_picnic_L5_UR, OQS_SIG_alg_picnic2_L1_FS, OQS_SIG_alg_picnic2_L3_FS, OQS_SIG_alg_picnic2_L5_FS,
 		OQS_SIG_alg_qTesla_p_I, OQS_SIG_alg_qTesla_p_III
 >>>>>>> 1b0f08f6... Initial format with astyle
+=======
+		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
+		OQS_SIG_alg_picnic_L1_FS,
+		OQS_SIG_alg_picnic_L1_UR,
+		OQS_SIG_alg_picnic_L3_FS,
+		OQS_SIG_alg_picnic_L3_UR,
+		OQS_SIG_alg_picnic_L5_FS,
+		OQS_SIG_alg_picnic_L5_UR,
+		OQS_SIG_alg_picnic2_L1_FS,
+		OQS_SIG_alg_picnic2_L3_FS,
+		OQS_SIG_alg_picnic2_L5_FS,
+		OQS_SIG_alg_qTesla_p_I,
+		OQS_SIG_alg_qTesla_p_III
+>>>>>>> 3ffc99c5... Fix templating to match
 	};
 	if (i >= OQS_SIG_algs_length) {
 		return NULL;
