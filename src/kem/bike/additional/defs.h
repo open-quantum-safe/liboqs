@@ -50,7 +50,7 @@
 #define bike_static_assert(COND, MSG) static_assert(COND, "MSG")
 #else
 #define bike_static_assert(COND, MSG) \
-	typedef char static_assertion_##MSG[(COND) ? 1 : -1] BIKE_UNUSED_ATT
+    typedef char static_assertion_##MSG[(COND) ? 1 : -1] BIKE_UNUSED_ATT
 #endif
 
 // Divide by the divider and round up to next integer
@@ -89,19 +89,19 @@
 
 // Works only for v < 512
 #define LOG2_MSB(v)                                         \
-	(v < 2                                                  \
-	     ? 1                                                \
-	     : (v < 4                                           \
-	            ? 2                                         \
-	            : (v < 8 ? 3                                \
-	                     : (v < 16                          \
-	                            ? 4                         \
-	                            : (v < 32                   \
-	                                   ? 5                  \
-	                                   : (v < 64 ? 6        \
-	                                             : (v < 128 \
-	                                                    ? 7 \
-	                                                    : (v < 256 ? 8 : 9))))))))
+    (v < 2                                                  \
+         ? 1                                                \
+         : (v < 4                                           \
+                ? 2                                         \
+                : (v < 8 ? 3                                \
+                         : (v < 16                          \
+                                ? 4                         \
+                                : (v < 32                   \
+                                       ? 5                  \
+                                       : (v < 64 ? 6        \
+                                                 : (v < 128 \
+                                                        ? 7 \
+                                                        : (v < 256 ? 8 : 9))))))))
 
 ////////////////////////////////////////////
 //             Debug
@@ -116,33 +116,33 @@
 
 #if (VERBOSE == 4)
 #define MSG(...)             \
-	{                        \
-		printf(__VA_ARGS__); \
-	}
+    {                        \
+        printf(__VA_ARGS__); \
+    }
 #define DMSG(...) MSG(__VA_ARGS__)
 #define EDMSG(...) MSG(__VA_ARGS__)
 #define SEDMSG(...) MSG(__VA_ARGS__)
 #elif (VERBOSE == 3)
 #define MSG(...)             \
-	{                        \
-		printf(__VA_ARGS__); \
-	}
+    {                        \
+        printf(__VA_ARGS__); \
+    }
 #define DMSG(...) MSG(__VA_ARGS__)
 #define EDMSG(...) MSG(__VA_ARGS__)
 #define SEDMSG(...)
 #elif (VERBOSE == 2)
 #define MSG(...)             \
-	{                        \
-		printf(__VA_ARGS__); \
-	}
+    {                        \
+        printf(__VA_ARGS__); \
+    }
 #define DMSG(...) MSG(__VA_ARGS__)
 #define EDMSG(...)
 #define SEDMSG(...)
 #elif (VERBOSE == 1)
 #define MSG(...)             \
-	{                        \
-		printf(__VA_ARGS__); \
-	}
+    {                        \
+        printf(__VA_ARGS__); \
+    }
 #define DMSG(...)
 #define EDMSG(...)
 #define SEDMSG(...)

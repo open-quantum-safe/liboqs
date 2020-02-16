@@ -7,8 +7,8 @@
 #define t_points 2
 
 static void get_A_compression(const f2elm_t xP, const f2elm_t xQ, const f2elm_t xR, f2elm_t A) { // Given the x-coordinates of P, Q, and R, returns the value A corresponding to the Montgomery curve E_A: y^2=x^3+A*x^2+x such that R=Q-P on E_A.
-	                                                                                             // Input:  the x-coordinates xP, xQ, and xR of the points P, Q and R.
-	                                                                                             // Output: the coefficient A corresponding to the curve E_A: y^2=x^3+A*x^2+x.
+	// Input:  the x-coordinates xP, xQ, and xR of the points P, Q and R.
+	// Output: the coefficient A corresponding to the curve E_A: y^2=x^3+A*x^2+x.
 	f2elm_t t0, t1, one = {0};
 
 	fpcopy((digit_t *) &Montgomery_one, one[0]);
@@ -28,7 +28,7 @@ static void get_A_compression(const f2elm_t xP, const f2elm_t xQ, const f2elm_t 
 }
 
 static void recover_y(const publickey_t PK, point_full_proj_t phiP, point_full_proj_t phiQ, point_full_proj_t phiX, f2elm_t A) { // Recover the y-coordinates of the public key
-	                                                                                                                             // The three resulting points are (simultaneously) correct up to sign
+	// The three resulting points are (simultaneously) correct up to sign
 	f2elm_t tmp, phiXY, one = {0};
 
 	fpcopy((digit_t *) &Montgomery_one, one[0]);
@@ -146,9 +146,9 @@ static void Tate_pairings_2_torsion(const point_full_proj_t P, point_full_proj_t
 	mont_n_way_inv(n, t_points, h);
 	for (int j = 0; j < t_points; j++) {
 		fp2correction(Qj[j]->Z);
-		if (is_felm_zero(Qj[j]->Z[0]) && is_felm_zero(Qj[j]->Z[1]))
+		if (is_felm_zero(Qj[j]->Z[0]) && is_felm_zero(Qj[j]->Z[1])) {
 			fp2copy(one, n[j]);
-		else {
+		} else {
 			final_exponentiation_2_torsion(n[j], h[j], n[j]);
 		}
 	}
@@ -198,7 +198,7 @@ static void PointMonty2Weier(const point_full_proj_t PM, point_full_proj_t PW, c
 }
 
 static void Tate_4_pairings_2_torsion(const point_full_proj_t P, const point_full_proj_t Q, const point_t S1, const point_t S2, const f2elm_t A, f2elm_t *n) { // The doubling only 2-torsion Tate pairing of order 2^eA, consisting of the doubling only Miller loop and the final exponentiation.]
-	                                                                                                                                                           // Computes 4 pairings at once: e(P, S1), e(P, S2), e(Q, S1), e(Q, S2).
+	// Computes 4 pairings at once: e(P, S1), e(P, S2), e(Q, S1), e(Q, S2).
 	point_full_proj_t Qj[2], PW, QW, QjW[2];
 	f2elm_t a, b, one = {0};
 
@@ -240,7 +240,7 @@ static void final_exponentiation_3_torsion(f2elm_t f, const f2elm_t finv, f2elm_
 }
 
 static void Tate_pairings_3_torsion(const point_full_proj_t P, point_full_proj_t *Qj, f2elm_t a, f2elm_t *n) { // The tripling only 3-torsion Tate pairing of order 3^eB, consisting of the tripling only Miller loop and the final exponentiation.
-	                                                                                                           // Computes 4 pairings at once: e(P, R1), e(P, R2), e(Q, R1), e(Q, R2).
+	// Computes 4 pairings at once: e(P, R1), e(P, R2), e(Q, R1), e(Q, R2).
 	f2elm_t h[t_points], one = {0};
 	f2elm_t X, Y, Z, X2, Y2, Y4, M, S, T;
 	f2elm_t Xp, Yp, Zp, Tp, D, U, Up, Fp;
@@ -352,16 +352,16 @@ static void Tate_pairings_3_torsion(const point_full_proj_t P, point_full_proj_t
 	mont_n_way_inv(n, t_points, h);
 	for (int j = 0; j < t_points; j++) {
 		fp2correction(Qj[j]->Z);
-		if (is_felm_zero(Qj[j]->Z[0]) && is_felm_zero(Qj[j]->Z[1]))
+		if (is_felm_zero(Qj[j]->Z[0]) && is_felm_zero(Qj[j]->Z[1])) {
 			fp2copy(one, n[j]);
-		else {
+		} else {
 			final_exponentiation_3_torsion(n[j], h[j], n[j]);
 		}
 	}
 }
 
 static void Tate_4_pairings_3_torsion(const point_full_proj_t P, const point_full_proj_t Q, const point_full_proj_t R1, const point_full_proj_t R2, const f2elm_t A, f2elm_t *n) { // The tripling only 3-torsion Tate pairing of order 3^eB, consisting of the tripling only Miller loop and the final exponentiation.
-	                                                                                                                                                                               // Computes 4 pairings at once: e(P, S1), e(P, S2), e(Q, S1), e(Q,S2).
+	// Computes 4 pairings at once: e(P, S1), e(P, S2), e(Q, S1), e(Q,S2).
 	point_full_proj_t Qj[2] = {0}, PW, QW, QjW[2] = {0};
 	f2elm_t a, b;
 

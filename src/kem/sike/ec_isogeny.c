@@ -5,8 +5,8 @@
 *********************************************************************************************/
 
 static void xDBL(const point_proj_t P, point_proj_t Q, const f2elm_t A24plus, const f2elm_t C24) { // Doubling of a Montgomery point in projective coordinates (X:Z).
-	                                                                                               // Input: projective Montgomery x-coordinates P = (X1:Z1), where x1=X1/Z1 and Montgomery curve constants A+2C and 4C.
-	                                                                                               // Output: projective Montgomery x-coordinates Q = 2*P = (X2:Z2).
+	// Input: projective Montgomery x-coordinates P = (X1:Z1), where x1=X1/Z1 and Montgomery curve constants A+2C and 4C.
+	// Output: projective Montgomery x-coordinates Q = 2*P = (X2:Z2).
 	f2elm_t t0, t1;
 
 	fp2sub(P->X, P->Z, t0);       // t0 = X1-Z1
@@ -22,8 +22,8 @@ static void xDBL(const point_proj_t P, point_proj_t Q, const f2elm_t A24plus, co
 }
 
 static void xDBLe(const point_proj_t P, point_proj_t Q, const f2elm_t A24plus, const f2elm_t C24, const int e) { // Computes [2^e](X:Z) on Montgomery curve with projective constant via e repeated doublings.
-	                                                                                                             // Input: projective Montgomery x-coordinates P = (XP:ZP), such that xP=XP/ZP and Montgomery curve constants A+2C and 4C.
-	                                                                                                             // Output: projective Montgomery x-coordinates Q <- (2^e)*P.
+	// Input: projective Montgomery x-coordinates P = (XP:ZP), such that xP=XP/ZP and Montgomery curve constants A+2C and 4C.
+	// Output: projective Montgomery x-coordinates Q <- (2^e)*P.
 	int i;
 
 	copy_words((digit_t *) P, (digit_t *) Q, 2 * 2 * NWORDS_FIELD);
@@ -36,8 +36,8 @@ static void xDBLe(const point_proj_t P, point_proj_t Q, const f2elm_t A24plus, c
 #if (OALICE_BITS % 2 == 1)
 
 static void get_2_isog(const point_proj_t P, f2elm_t A, f2elm_t C) { // Computes the corresponding 2-isogeny of a projective Montgomery point (X2:Z2) of order 2.
-	                                                                 // Input:  projective point of order two P = (X2:Z2).
-	                                                                 // Output: the 2-isogenous Montgomery curve with projective coefficients A/C.
+	// Input:  projective point of order two P = (X2:Z2).
+	// Output: the 2-isogenous Montgomery curve with projective coefficients A/C.
 
 	fp2sqr_mont(P->X, A); // A = X2^2
 	fp2sqr_mont(P->Z, C); // C = Z2^2
@@ -45,8 +45,8 @@ static void get_2_isog(const point_proj_t P, f2elm_t A, f2elm_t C) { // Computes
 }
 
 static void eval_2_isog(point_proj_t P, point_proj_t Q) { // Evaluates the isogeny at the point (X:Z) in the domain of the isogeny, given a 2-isogeny phi.
-	                                                      // Inputs: the projective point P = (X:Z) and the 2-isogeny kernel projetive point Q = (X2:Z2).
-	                                                      // Output: the projective point P = phi(P) = (X:Z) in the codomain.
+	// Inputs: the projective point P = (X:Z) and the 2-isogeny kernel projetive point Q = (X2:Z2).
+	// Output: the projective point P = phi(P) = (X:Z) in the codomain.
 	f2elm_t t0, t1, t2, t3;
 
 	fp2add(Q->X, Q->Z, t0);      // t0 = X2+Z2
@@ -64,9 +64,9 @@ static void eval_2_isog(point_proj_t P, point_proj_t Q) { // Evaluates the isoge
 #endif
 
 static void get_4_isog(const point_proj_t P, f2elm_t A24plus, f2elm_t C24, f2elm_t *coeff) { // Computes the corresponding 4-isogeny of a projective Montgomery point (X4:Z4) of order 4.
-	                                                                                         // Input:  projective point of order four P = (X4:Z4).
-	                                                                                         // Output: the 4-isogenous Montgomery curve with projective coefficients A+2C/4C and the 3 coefficients
-	                                                                                         //         that are used to evaluate the isogeny at a point in eval_4_isog().
+	// Input:  projective point of order four P = (X4:Z4).
+	// Output: the 4-isogenous Montgomery curve with projective coefficients A+2C/4C and the 3 coefficients
+	//         that are used to evaluate the isogeny at a point in eval_4_isog().
 
 	fp2sub(P->X, P->Z, coeff[1]);         // coeff[1] = X4-Z4
 	fp2add(P->X, P->Z, coeff[2]);         // coeff[2] = X4+Z4
@@ -80,9 +80,9 @@ static void get_4_isog(const point_proj_t P, f2elm_t A24plus, f2elm_t C24, f2elm
 }
 
 static void eval_4_isog(point_proj_t P, f2elm_t *coeff) { // Evaluates the isogeny at the point (X:Z) in the domain of the isogeny, given a 4-isogeny phi defined
-	                                                      // by the 3 coefficients in coeff (computed in the function get_4_isog()).
-	                                                      // Inputs: the coefficients defining the isogeny, and the projective point P = (X:Z).
-	                                                      // Output: the projective point P = phi(P) = (X:Z) in the codomain.
+	// by the 3 coefficients in coeff (computed in the function get_4_isog()).
+	// Inputs: the coefficients defining the isogeny, and the projective point P = (X:Z).
+	// Output: the projective point P = phi(P) = (X:Z) in the codomain.
 	f2elm_t t0, t1;
 
 	fp2add(P->X, P->Z, t0);          // t0 = X+Z
@@ -102,8 +102,8 @@ static void eval_4_isog(point_proj_t P, f2elm_t *coeff) { // Evaluates the isoge
 }
 
 static void xTPL(const point_proj_t P, point_proj_t Q, const f2elm_t A24minus, const f2elm_t A24plus) { // Tripling of a Montgomery point in projective coordinates (X:Z).
-	                                                                                                    // Input: projective Montgomery x-coordinates P = (X:Z), where x=X/Z and Montgomery curve constants A24plus = A+2C and A24minus = A-2C.
-	                                                                                                    // Output: projective Montgomery x-coordinates Q = 3*P = (X3:Z3).
+	// Input: projective Montgomery x-coordinates P = (X:Z), where x=X/Z and Montgomery curve constants A24plus = A+2C and A24minus = A-2C.
+	// Output: projective Montgomery x-coordinates Q = 3*P = (X3:Z3).
 	f2elm_t t0, t1, t2, t3, t4, t5, t6;
 
 	fp2sub(P->X, P->Z, t0);        // t0 = X-Z
@@ -131,8 +131,8 @@ static void xTPL(const point_proj_t P, point_proj_t Q, const f2elm_t A24minus, c
 }
 
 static void xTPLe(const point_proj_t P, point_proj_t Q, const f2elm_t A24minus, const f2elm_t A24plus, const int e) { // Computes [3^e](X:Z) on Montgomery curve with projective constant via e repeated triplings.
-	                                                                                                                  // Input: projective Montgomery x-coordinates P = (XP:ZP), such that xP=XP/ZP and Montgomery curve constants A24plus = A+2C and A24minus = A-2C.
-	                                                                                                                  // Output: projective Montgomery x-coordinates Q <- (3^e)*P.
+	// Input: projective Montgomery x-coordinates P = (XP:ZP), such that xP=XP/ZP and Montgomery curve constants A24plus = A+2C and A24minus = A-2C.
+	// Output: projective Montgomery x-coordinates Q <- (3^e)*P.
 	int i;
 
 	copy_words((digit_t *) P, (digit_t *) Q, 2 * 2 * NWORDS_FIELD);
@@ -143,8 +143,8 @@ static void xTPLe(const point_proj_t P, point_proj_t Q, const f2elm_t A24minus, 
 }
 
 static void get_3_isog(const point_proj_t P, f2elm_t A24minus, f2elm_t A24plus, f2elm_t *coeff) { // Computes the corresponding 3-isogeny of a projective Montgomery point (X3:Z3) of order 3.
-	                                                                                              // Input:  projective point of order three P = (X3:Z3).
-	                                                                                              // Output: the 3-isogenous Montgomery curve with projective coefficient A/C.
+	// Input:  projective point of order three P = (X3:Z3).
+	// Output: the 3-isogenous Montgomery curve with projective coefficient A/C.
 	f2elm_t t0, t1, t2, t3, t4;
 
 	fp2sub(P->X, P->Z, coeff[0]);  // coeff0 = X-Z
@@ -166,9 +166,9 @@ static void get_3_isog(const point_proj_t P, f2elm_t A24minus, f2elm_t A24plus, 
 }
 
 static void eval_3_isog(point_proj_t Q, const f2elm_t *coeff) { // Computes the 3-isogeny R=phi(X:Z), given projective point (X3:Z3) of order 3 on a Montgomery curve and
-	                                                            // a point P with 2 coefficients in coeff (computed in the function get_3_isog()).
-	                                                            // Inputs: projective points P = (X3:Z3) and Q = (X:Z).
-	                                                            // Output: the projective point Q <- phi(Q) = (X3:Z3).
+	// a point P with 2 coefficients in coeff (computed in the function get_3_isog()).
+	// Inputs: projective points P = (X3:Z3) and Q = (X:Z).
+	// Output: the projective point Q <- phi(Q) = (X3:Z3).
 	f2elm_t t0, t1, t2;
 
 	fp2add(Q->X, Q->Z, t0);        // t0 = X+Z
@@ -184,8 +184,8 @@ static void eval_3_isog(point_proj_t Q, const f2elm_t *coeff) { // Computes the 
 }
 
 static void inv_3_way(f2elm_t z1, f2elm_t z2, f2elm_t z3) { // 3-way simultaneous inversion
-	                                                        // Input:  z1,z2,z3
-	                                                        // Output: 1/z1,1/z2,1/z3 (override inputs).
+	// Input:  z1,z2,z3
+	// Output: 1/z1,1/z2,1/z3 (override inputs).
 	f2elm_t t0, t1, t2, t3;
 
 	fp2mul_mont(z1, z2, t0); // t0 = z1*z2
@@ -199,8 +199,8 @@ static void inv_3_way(f2elm_t z1, f2elm_t z2, f2elm_t z3) { // 3-way simultaneou
 }
 
 static void get_A(const f2elm_t xP, const f2elm_t xQ, const f2elm_t xR, f2elm_t A) { // Given the x-coordinates of P, Q, and R, returns the value A corresponding to the Montgomery curve E_A: y^2=x^3+A*x^2+x such that R=Q-P on E_A.
-	                                                                                 // Input:  the x-coordinates xP, xQ, and xR of the points P, Q and R.
-	                                                                                 // Output: the coefficient A corresponding to the curve E_A: y^2=x^3+A*x^2+x.
+	// Input:  the x-coordinates xP, xQ, and xR of the points P, Q and R.
+	// Output: the coefficient A corresponding to the curve E_A: y^2=x^3+A*x^2+x.
 	f2elm_t t0, t1, one = {0};
 
 	fpcopy((digit_t *) &Montgomery_one, one[0]);
@@ -220,8 +220,8 @@ static void get_A(const f2elm_t xP, const f2elm_t xQ, const f2elm_t xR, f2elm_t 
 }
 
 static void j_inv(const f2elm_t A, const f2elm_t C, f2elm_t jinv) { // Computes the j-invariant of a Montgomery curve with projective constant.
-	                                                                // Input: A,C in GF(p^2).
-	                                                                // Output: j=256*(A^2-3*C^2)^3/(C^4*(A^2-4*C^2)), which is the j-invariant of the Montgomery curve B*y^2=x^3+(A/C)*x^2+x or (equivalently) j-invariant of B'*y^2=C*x^3+A*x^2+C*x.
+	// Input: A,C in GF(p^2).
+	// Output: j=256*(A^2-3*C^2)^3/(C^4*(A^2-4*C^2)), which is the j-invariant of the Montgomery curve B*y^2=x^3+(A/C)*x^2+x or (equivalently) j-invariant of B'*y^2=C*x^3+A*x^2+C*x.
 	f2elm_t t0, t1;
 
 	fp2sqr_mont(A, jinv);        // jinv = A^2
@@ -243,8 +243,8 @@ static void j_inv(const f2elm_t A, const f2elm_t C, f2elm_t jinv) { // Computes 
 }
 
 static void xDBLADD(point_proj_t P, point_proj_t Q, const f2elm_t xPQ, const f2elm_t A24) { // Simultaneous doubling and differential addition.
-	                                                                                        // Input: projective Montgomery points P=(XP:ZP) and Q=(XQ:ZQ) such that xP=XP/ZP and xQ=XQ/ZQ, affine difference xPQ=x(P-Q) and Montgomery curve constant A24=(A+2)/4.
-	                                                                                        // Output: projective Montgomery points P <- 2*P = (X2P:Z2P) such that x(2P)=X2P/Z2P, and Q <- P+Q = (XQP:ZQP) such that = x(Q+P)=XQP/ZQP.
+	// Input: projective Montgomery points P=(XP:ZP) and Q=(XQ:ZQ) such that xP=XP/ZP and xQ=XQ/ZQ, affine difference xPQ=x(P-Q) and Montgomery curve constant A24=(A+2)/4.
+	// Output: projective Montgomery points P <- 2*P = (X2P:Z2P) such that x(2P)=X2P/Z2P, and Q <- P+Q = (XQP:ZQP) such that = x(Q+P)=XQP/ZQP.
 	f2elm_t t0, t1, t2;
 
 	fp2add(P->X, P->Z, t0);        // t0 = XP+ZP
@@ -268,7 +268,7 @@ static void xDBLADD(point_proj_t P, point_proj_t Q, const f2elm_t xPQ, const f2e
 }
 
 static void swap_points(point_proj_t P, point_proj_t Q, const digit_t option) { // Swap points.
-	                                                                            // If option = 0 then P <- P and Q <- Q, else if option = 0xFF...FF then P <- Q and Q <- P
+	// If option = 0 then P <- P and Q <- Q, else if option = 0xFF...FF then P <- Q and Q <- P
 	digit_t temp;
 	unsigned int i;
 
@@ -335,8 +335,8 @@ static void LADDER3PT(const f2elm_t xP, const f2elm_t xQ, const f2elm_t xPQ, con
 #ifdef COMPRESS
 
 static void Double(point_proj_t P, point_proj_t Q, f2elm_t A24, const int k) { // Doubling of a Montgomery point in projective coordinates (X:Z) over affine curve coefficient A.
-	                                                                           // Input: projective Montgomery x-coordinates P = (X1:Z1), where x1=X1/Z1 and Montgomery curve constants (A+2)/4.
-	                                                                           // Output: projective Montgomery x-coordinates Q = 2*P = (X2:Z2).
+	// Input: projective Montgomery x-coordinates P = (X1:Z1), where x1=X1/Z1 and Montgomery curve constants (A+2)/4.
+	// Output: projective Montgomery x-coordinates Q = 2*P = (X2:Z2).
 	f2elm_t temp, a, b, c, aa, bb;
 
 	fp2copy(P->X, Q->X);
@@ -356,8 +356,8 @@ static void Double(point_proj_t P, point_proj_t Q, f2elm_t A24, const int k) { /
 }
 
 static void xTPL_fast(const point_proj_t P, point_proj_t Q, const f2elm_t A2) { // Montgomery curve (E: y^2 = x^3 + A*x^2 + x) x-only tripling at a cost 5M + 6S + 9A = 27p + 61a.
-	                                                                            // Input : projective Montgomery x-coordinates P = (X:Z), where x=X/Z and Montgomery curve constant A/2.
-	                                                                            // Output: projective Montgomery x-coordinates Q = 3*P = (X3:Z3).
+	// Input : projective Montgomery x-coordinates P = (X:Z), where x=X/Z and Montgomery curve constant A/2.
+	// Output: projective Montgomery x-coordinates Q = 3*P = (X3:Z3).
 	f2elm_t t1, t2, t3, t4;
 
 	fp2sqr_mont(P->X, t1);       // t1 = x^2
@@ -383,8 +383,8 @@ static void xTPL_fast(const point_proj_t P, point_proj_t Q, const f2elm_t A2) { 
 }
 
 static void xTPLe_fast(point_proj_t P, point_proj_t Q, const f2elm_t A2, int e) { // Computes [3^e](X:Z) on Montgomery curve with projective constant via e repeated triplings. e triplings in E costs k*(5M + 6S + 9A)
-	                                                                              // Input: projective Montgomery x-coordinates P = (X:Z), where x=X/Z, Montgomery curve constant A2 = A/2 and the number of triplings e.
-	                                                                              // Output: projective Montgomery x-coordinates Q <- [3^e]P.
+	// Input: projective Montgomery x-coordinates P = (X:Z), where x=X/Z, Montgomery curve constant A2 = A/2 and the number of triplings e.
+	// Output: projective Montgomery x-coordinates Q <- [3^e]P.
 	point_proj_t T;
 	copy_words((digit_t *) P, (digit_t *) T, 2 * 2 * NWORDS_FIELD);
 
@@ -395,8 +395,8 @@ static void xTPLe_fast(point_proj_t P, point_proj_t Q, const f2elm_t A2, int e) 
 }
 
 static void ADD(const point_full_proj_t P, const f2elm_t QX, const f2elm_t QY, const f2elm_t QZ, const f2elm_t A, point_full_proj_t R) { // General addition.
-	                                                                                                                                     // Input: projective Montgomery points P=(XP:YP:ZP) and Q=(XQ:YQ:ZQ).
-	                                                                                                                                     // Output: projective Montgomery point R <- P+Q = (XQP:YQP:ZQP).
+	// Input: projective Montgomery points P=(XP:YP:ZP) and Q=(XQ:YQ:ZQ).
+	// Output: projective Montgomery point R <- P+Q = (XQP:YQP:ZQP).
 	f2elm_t t0 = {0}, t1 = {0}, t2 = {0}, t3 = {0}, t4 = {0}, t5 = {0}, t6 = {0}, t7 = {0};
 
 	fp2mul_mont(QX, P->Z, t0);   // t0 = x2*Z1
@@ -440,12 +440,12 @@ static void ADD(const point_full_proj_t P, const f2elm_t QX, const f2elm_t QY, c
 }
 
 static void Mont_ladder(const f2elm_t x, const digit_t *m, point_proj_t P, point_proj_t Q, const f2elm_t A24, const unsigned int order_bits, const unsigned int order_fullbits) { // The Montgomery ladder
-	                                                                                                                                                                              // Inputs: the affine x-coordinate of a point P on E: B*y^2=x^3+A*x^2+x,
-	                                                                                                                                                                              //         scalar m
-	                                                                                                                                                                              //         curve constant A24 = (A+2)/4
-	                                                                                                                                                                              //         order_bits = subgroup order bitlength
-	                                                                                                                                                                              //         order_fullbits = smallest multiple of 32 larger than the order bitlength
-	                                                                                                                                                                              // Output: P = m*(x:1)
+	// Inputs: the affine x-coordinate of a point P on E: B*y^2=x^3+A*x^2+x,
+	//         scalar m
+	//         curve constant A24 = (A+2)/4
+	//         order_bits = subgroup order bitlength
+	//         order_fullbits = smallest multiple of 32 larger than the order bitlength
+	// Output: P = m*(x:1)
 	unsigned int bit = 0, owords = NBITS_TO_NWORDS(order_fullbits);
 	digit_t mask, scalar[NWORDS_ORDER];
 	int i;

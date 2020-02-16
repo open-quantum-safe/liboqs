@@ -199,8 +199,6 @@ typedef struct OQS_KEM {
 	/** The (maximum) length, in bytes, of shared secrets for this KEM. */
 	size_t length_shared_secret;
 
-	// clang-format off
-
 	/**
 	 * Keypair generation algorithm.
 	 *
@@ -241,7 +239,6 @@ typedef struct OQS_KEM {
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
 	OQS_STATUS (*decaps)(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
-	// clang-format on
 
 } OQS_KEM;
 

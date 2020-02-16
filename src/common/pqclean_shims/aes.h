@@ -12,13 +12,13 @@
 #define AESCTR_NONCEBYTES 12
 #define AES_BLOCKBYTES 16
 
-typedef void * aes128ctx;
+typedef void *aes128ctx;
 
 #define aes128_keyexp(r, key) OQS_AES128_load_schedule((key), (r), 1);
 #define aes128_ecb(out, in, nblocks, ctx) OQS_AES128_ECB_enc_sch((in), (nblocks) * AES_BLOCKBYTES, *(ctx), (out));
 #define aes128_ctx_release(ctx) OQS_AES128_free_schedule(*(ctx));
 
-typedef void * aes256ctx;
+typedef void *aes256ctx;
 
 #define aes256_keyexp(r, key) OQS_AES256_load_schedule((key), (r), 1);
 #define aes256_ecb(out, in, nblocks, ctx) OQS_AES256_ECB_enc_sch((in), (nblocks) * AES_BLOCKBYTES, *(ctx), (out));

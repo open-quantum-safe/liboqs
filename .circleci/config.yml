@@ -118,7 +118,7 @@ jobs:
               scripts/git_no_checkin_in_last_day.sh || (
               brew update &&
               brew unlink python@2 &&
-              brew install cmake ninja doxygen clang-format &&
+              brew install cmake ninja doxygen astyle &&
               pip3 install pytest pytest-xdist
               )
         - run:

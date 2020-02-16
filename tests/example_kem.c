@@ -112,7 +112,7 @@ OQS_STATUS example_heap(void) {
 	shared_secret_e = malloc(kem->length_shared_secret);
 	shared_secret_d = malloc(kem->length_shared_secret);
 	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) ||
-	    (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
+	        (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed!\n");
 		cleanup_heap(secret_key, shared_secret_e, shared_secret_d, public_key,
 		             ciphertext, kem);

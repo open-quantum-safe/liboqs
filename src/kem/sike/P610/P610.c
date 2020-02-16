@@ -32,11 +32,14 @@
 //
 
 static const uint64_t p610[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x6E01FFFFFFFFFFFF,
-                                              0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768};
+                                              0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768
+                                             };
 static const uint64_t p610p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x6E02000000000000,
-                                                0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768};
+                                                0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768
+                                               };
 static const uint64_t p610x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xDC03FFFFFFFFFFFF,
-                                                0x62F09BD154B5605C, 0x35CF7E8A091FF357, 0x64AB65F421884A55, 0x03202184A3CFB119, 0x00000004F7ED4ED1};
+                                                0x62F09BD154B5605C, 0x35CF7E8A091FF357, 0x64AB65F421884A55, 0x03202184A3CFB119, 0x00000004F7ED4ED1
+                                               };
 // Order of Alice's subgroup
 static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0002000000000000};
 // Order of Bob's subgroup
@@ -53,7 +56,8 @@ static const uint64_t A_gen[6 * NWORDS64_FIELD] = {0x5019EC96A75AC57A, 0x8AEA0E7
                                                    0x261DD0782CEC958D, 0xC25B3AE64BBC0311, 0x9F21B8A8981B15FE, 0xA3C0B52CD5FFC45B, 0x5D2E65A016702C6A,
                                                    0x8C5586CA98722EDE, 0x61490A967A6B4B1A, 0xFA64E30231F719AF, 0x9CEAB8B6301BB2DF, 0x00000000CF5AEA7D, // XRA0
                                                    0xB980435A77B912C0, 0x2B4A97F70E0FC873, 0x415C7FA4DE96F43C, 0xE5EED95643E443FD, 0xCBE18DB57C51B354,
-                                                   0x51C96C3FFABD2D46, 0x5C14637B9A5765D6, 0x45D2369C4D0199A5, 0x25A1F9C5BBF1E683, 0x000000025AD7A11B}; // XRA1
+                                                   0x51C96C3FFABD2D46, 0x5C14637B9A5765D6, 0x45D2369C4D0199A5, 0x25A1F9C5BBF1E683, 0x000000025AD7A11B
+                                                  }; // XRA1
 // Bob's generator values {XPB0, XQB0, XRB0 + XRB1*i} in GF(p610^2), expressed in Montgomery representation
 static const uint64_t B_gen[6 * NWORDS64_FIELD] = {0xC6C8E180E41884BA, 0x2161D2F4FBC32B95, 0xCBF83091BDB34092, 0xD742CC0AD4CC7E38, 0x61A1FA7E1B14FBD7,
                                                    0xF0E5FC70137597C4, 0x1F0C8F2585E20B1F, 0xC68E44A1C032A4C2, 0xE3C65FB8AF155A0D, 0x00000001409EE8D5, // XPB0
@@ -66,32 +70,37 @@ static const uint64_t B_gen[6 * NWORDS64_FIELD] = {0xC6C8E180E41884BA, 0x2161D2F
                                                    0x7A87897A0C4C3FD7, 0x3C1879ECD4D33D76, 0x595C28A36FFBA1A0, 0xF53FF66A2A7FD0FB, 0xB39F5A91230E56FA,
                                                    0x81F21610DA3EA8B5, 0xEBB3B9A627428A90, 0x8661123B35748010, 0xE196173B9C48781D, 0x00000002198166AC, // XRB0
                                                    0x5E3CC79B37006D6A, 0xE0358A9AB2EA7923, 0x3B725CB595180951, 0x0724637F1DD0C191, 0x7BB031B67DAB9D19,
-                                                   0x53CCB8BECEDD3435, 0xEE5DF7FFEBFA7A0A, 0x899EDB7D8B9694C4, 0x0CA38EB4AE5506B6, 0x00000001489DE1CD}; // XRB1
+                                                   0x53CCB8BECEDD3435, 0xEE5DF7FFEBFA7A0A, 0x899EDB7D8B9694C4, 0x0CA38EB4AE5506B6, 0x00000001489DE1CD
+                                                  }; // XRB1
 // Montgomery constant Montgomery_R2 = (2^640)^2 mod p610
 static const uint64_t Montgomery_R2[NWORDS64_FIELD] = {0xE75F5D201A197727, 0xE0B85963B627392E, 0x6BC1707818DE493D, 0xDC7F419940D1A0C5, 0x7358030979EDE54A,
-                                                       0x84F4BEBDEED75A5C, 0x7ECCA66E13427B47, 0xC5BB4E65280080B3, 0x7019950F516DA19A, 0x000000008E290FF3};
+                                                       0x84F4BEBDEED75A5C, 0x7ECCA66E13427B47, 0xC5BB4E65280080B3, 0x7019950F516DA19A, 0x000000008E290FF3
+                                                      };
 // Value one in Montgomery representation
 static const uint64_t Montgomery_one[NWORDS64_FIELD] = {0x00000000670CC8E6, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x9A34000000000000,
-                                                        0x4D99C2BD28717A3F, 0x0A4A1839A323D41C, 0xD2B62215D06AD1E2, 0x1369026E862CAF3D, 0x000000010894E964};
+                                                        0x4D99C2BD28717A3F, 0x0A4A1839A323D41C, 0xD2B62215D06AD1E2, 0x1369026E862CAF3D, 0x000000010894E964
+                                                       };
 
 // Fixed parameters for isogeny tree computation
 static const unsigned int strat_Alice[MAX_Alice - 1] = {
-    67, 37, 21, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1, 1, 1,
-    2, 1, 1, 1, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 16, 9,
-    5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1,
-    1, 4, 2, 1, 1, 2, 1, 1, 33, 16, 8, 5, 2, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 2, 1,
-    1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 1, 2, 1, 1,
-    4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1};
+	67, 37, 21, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1, 1, 1,
+	2, 1, 1, 1, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 16, 9,
+	5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1,
+	1, 4, 2, 1, 1, 2, 1, 1, 33, 16, 8, 5, 2, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 2, 1,
+	1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 1, 2, 1, 1,
+	4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1
+};
 
 static const unsigned int strat_Bob[MAX_Bob - 1] = {
-    86, 48, 27, 15, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 7, 4, 2, 1, 1, 2, 1,
-    1, 3, 2, 1, 1, 1, 1, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1,
-    1, 1, 2, 1, 1, 1, 21, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1,
-    1, 1, 2, 1, 1, 1, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 38,
-    21, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1,
-    9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 17, 9, 5, 3, 2, 1, 1,
-    1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2,
-    1, 1};
+	86, 48, 27, 15, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 7, 4, 2, 1, 1, 2, 1,
+	1, 3, 2, 1, 1, 1, 1, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1,
+	1, 1, 2, 1, 1, 1, 21, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1,
+	1, 1, 2, 1, 1, 1, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 38,
+	21, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1,
+	9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 17, 9, 5, 3, 2, 1, 1,
+	1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2,
+	1, 1
+};
 
 // Setting up macro defines and including GF(p), GF(p^2), curve, isogeny and kex functions
 #define fpcopy fpcopy610

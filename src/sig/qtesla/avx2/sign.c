@@ -81,8 +81,9 @@ static int test_correctness(poly v) { // Check bounds for w = v - ec during sign
 		// If (Abs(val) < (1<<(PARAM_D-1))-PARAM_E) then t1 = 0, else t1 = 1
 		t1 = (uint32_t)(~(Abs(val) - ((1 << (PARAM_D - 1)) - PARAM_E))) >> (RADIX32 - 1);
 
-		if ((t0 | t1) == 1) // Returns 1 if any of the two tests failed
+		if ((t0 | t1) == 1) { // Returns 1 if any of the two tests failed
 			return 1;
+		}
 	}
 	return 0;
 }
@@ -91,8 +92,9 @@ static int test_z(poly z) { // Check bounds for signature vector z during signat
 	// Returns 0 if valid, otherwise outputs 1 if invalid (rejected)
 
 	for (int i = 0; i < PARAM_N; i++) {
-		if (z[i] < -(PARAM_B - PARAM_S) || z[i] > (PARAM_B - PARAM_S))
+		if (z[i] < -(PARAM_B - PARAM_S) || z[i] > (PARAM_B - PARAM_S)) {
 			return 1;
+		}
 	}
 	return 0;
 }
@@ -102,8 +104,9 @@ static int check_ES(poly p, unsigned int bound) { // Checks the generated polyno
 	unsigned int i, j, sum = 0, limit = PARAM_N;
 	int32_t temp, mask, list[PARAM_N];
 
-	for (j = 0; j < PARAM_N; j++)
+	for (j = 0; j < PARAM_N; j++) {
 		list[j] = Abs((int32_t) p[j]);
+	}
 
 	for (j = 0; j < PARAM_H; j++) {
 		for (i = 0; i < limit - 1; i++) {
@@ -117,8 +120,9 @@ static int check_ES(poly p, unsigned int bound) { // Checks the generated polyno
 		limit -= 1;
 	}
 
-	if (sum > bound)
+	if (sum > bound) {
 		return 1;
+	}
 	return 0;
 }
 
@@ -218,8 +222,9 @@ int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsigned cha
 #endif
 		sample_y(y, randomness, ++nonce); // Sample y uniformly at random from [-B,B]
 		poly_ntt(y_ntt, y);
-		for (k = 0; k < PARAM_K; k++)
+		for (k = 0; k < PARAM_K; k++) {
 			poly_mul(&v[k * PARAM_N], &a[k * PARAM_N], y_ntt);
+		}
 		hash_H(c, v, randomness_input + CRYPTO_RANDOMBYTES + CRYPTO_SEEDBYTES);
 		encode_c(pos_list, sign_list, c); // Generate c = Enc(c'), where c' is the hashing of v together with m
 		sparse_mul8(Sc, sk, pos_list, sign_list);
@@ -243,14 +248,15 @@ int crypto_sign(unsigned char *sm, unsigned long long *smlen, const unsigned cha
 				break;
 			}
 		}
-		if (rsp != 0)
+		if (rsp != 0) {
 			continue;
+		}
 
 		// Copy message to signature package, and pack signature
 		/* OQS note: we return the signature directly in OQS
-    for (unsigned long long i = 0; i < mlen; i++)
-       sm[CRYPTO_BYTES+i] = m[i];
-    */
+		for (unsigned long long i = 0; i < mlen; i++)
+		sm[CRYPTO_BYTES+i] = m[i];
+		*/
 		*smlen = CRYPTO_BYTES /* + mlen */;
 		encode_sig(sm, c, z);
 
@@ -280,12 +286,14 @@ int crypto_sign_open(unsigned char *m, unsigned long long mlen, const unsigned c
 	poly2x z_ntt;
 	int k;
 
-	if (smlen < CRYPTO_BYTES)
+	if (smlen < CRYPTO_BYTES) {
 		return -1;
+	}
 
 	decode_sig(c, z, sm);
-	if (test_z(z) != 0)
-		return -2; // Check norm of z
+	if (test_z(z) != 0) {
+		return -2;    // Check norm of z
+	}
 	decode_pk(pk_t, seed, pk);
 	poly_uniform(a, seed);
 	encode_c(pos_list, sign_list, c);
@@ -300,13 +308,14 @@ int crypto_sign_open(unsigned char *m, unsigned long long mlen, const unsigned c
 	hash_H(c_sig, w, hm);
 
 	// Check if the calculated c matches c from the signature
-	if (memcmp(c, c_sig, CRYPTO_C_BYTES))
+	if (memcmp(c, c_sig, CRYPTO_C_BYTES)) {
 		return -3;
+	}
 
 	/* OQS note: the message isn't included in the signature in OQS
-  *mlen = smlen-CRYPTO_BYTES;
-  for (unsigned long long i = 0; i < *mlen; i++)
-    m[i] = sm[CRYPTO_BYTES+i];
+	*mlen = smlen-CRYPTO_BYTES;
+	for (unsigned long long i = 0; i < *mlen; i++)
+	m[i] = sm[CRYPTO_BYTES+i];
 
 	*/
 	return 0;

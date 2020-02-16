@@ -78,7 +78,7 @@ print_last_block(IN const uint8_t *last_bytes,
 
 	// We read byte byte and not the whole QW to avoid reading bad memory address
 	const uint32_t bytes_num = ((rem_bits % 8) == 0) ? rem_bits / BITS_IN_BYTE
-	                                                 : 1 + rem_bits / BITS_IN_BYTE;
+	                           : 1 + rem_bits / BITS_IN_BYTE;
 
 	// Must be signed for the LE loop
 	int i;
@@ -89,8 +89,8 @@ print_last_block(IN const uint8_t *last_bytes,
 
 	// Mask unneeded bits
 	const uint8_t last_byte = (rem_bits % 8 == 0)
-	                              ? last_bytes[bytes_num - 1]
-	                              : last_bytes[bytes_num - 1] & MASK(rem_bits % 8);
+	                          ? last_bytes[bytes_num - 1]
+	                          : last_bytes[bytes_num - 1] & MASK(rem_bits % 8);
 	// BE
 	if (0 == endien) {
 		for (i = 0; (uint32_t) i < (bytes_num - 1); i++) {

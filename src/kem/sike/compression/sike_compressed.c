@@ -9,8 +9,8 @@
 #include <oqs/sha3.h>
 
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // SIKE's key generation using compression
-	                                                           // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
-	                                                           //          public key pk_comp (CRYPTO_PUBLICKEYBYTES bytes)
+	// Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
+	//          public key pk_comp (CRYPTO_PUBLICKEYBYTES bytes)
 
 	// Generate lower portion of secret key sk <- s||SK
 	OQS_randombytes(sk, MSG_BYTES);
@@ -26,9 +26,9 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk) { // SIKE's key gen
 }
 
 int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) { // SIKE's encapsulation using compression
-	                                                                                // Input:   public key pk              (CRYPTO_PUBLICKEYBYTES bytes)
-	                                                                                // Outputs: shared secret ss           (CRYPTO_BYTES bytes)
-	                                                                                //          ciphertext message ct      (CRYPTO_CIPHERTEXTBYTES = COMPRESSED_CHUNK_CT + MSG_BYTES bytes)
+	// Input:   public key pk              (CRYPTO_PUBLICKEYBYTES bytes)
+	// Outputs: shared secret ss           (CRYPTO_BYTES bytes)
+	//          ciphertext message ct      (CRYPTO_CIPHERTEXTBYTES = COMPRESSED_CHUNK_CT + MSG_BYTES bytes)
 	unsigned char ephemeralsk[SECRETKEY_B_BYTES] = {0};
 	unsigned char jinvariant[FP2_ENCODED_BYTES] = {0};
 	unsigned char h[MSG_BYTES];
@@ -56,9 +56,9 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
 }
 
 int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) { // SIKE's decapsulation using compression
-	                                                                                      // Input:   secret key sk                         (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
-	                                                                                      //          compressed ciphertext message ct      (CRYPTO_CIPHERTEXTBYTES = COMPRESSED_CHUNK_CT + MSG_BYTES bytes)
-	                                                                                      // Outputs: shared secret ss                      (CRYPTO_BYTES bytes)
+	// Input:   secret key sk                         (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
+	//          compressed ciphertext message ct      (CRYPTO_CIPHERTEXTBYTES = COMPRESSED_CHUNK_CT + MSG_BYTES bytes)
+	// Outputs: shared secret ss                      (CRYPTO_BYTES bytes)
 	unsigned char ephemeralsk_[SECRETKEY_B_BYTES] = {0};
 	unsigned char jinvariant_[FP2_ENCODED_BYTES] = {0}, h_[MSG_BYTES];
 	unsigned char c0_comp_[COMPRESSED_CHUNK_CT] = {0};

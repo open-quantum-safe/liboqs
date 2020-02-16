@@ -248,9 +248,9 @@ int keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 
 	// Sample the sigmas
 	GUARD(sample_uniform_r_bits_with_fixed_prf_context(&l_sk->sigma0, &s_prf_state,
-	                                                   NO_RESTRICTION));
+	        NO_RESTRICTION));
 	GUARD(sample_uniform_r_bits_with_fixed_prf_context(&l_sk->sigma1, &s_prf_state,
-	                                                   NO_RESTRICTION));
+	        NO_RESTRICTION));
 
 	GUARD(generate_sparse_rep((uint64_t *) &p_sk[1], l_sk->wlist[1].val, DV, R_BITS,
 	                          sizeof(p_sk[1]), &h_prf_state));
@@ -339,7 +339,7 @@ int decaps(OUT unsigned char *ss,
 	volatile uint32_t success_cond;
 	success_cond = dec_ret;
 	success_cond &= secure_cmp32(T1, r_bits_vector_weight(&e.val[0]) +
-	                                     r_bits_vector_weight(&e.val[1]));
+	                             r_bits_vector_weight(&e.val[1]));
 	success_cond &= secure_cmp((uint8_t *) &e, (uint8_t *) &e2, sizeof(e));
 
 	ss_t ss_succ = {0};
@@ -349,8 +349,9 @@ int decaps(OUT unsigned char *ss,
 	get_ss(&ss_fail, &l_sk->sigma0, &l_sk->sigma1, l_ct);
 
 	uint8_t mask = ~secure_l32_mask(0, success_cond);
-	for (uint32_t i = 0; i < sizeof(*l_ss); i++)
+	for (uint32_t i = 0; i < sizeof(*l_ss); i++) {
 		l_ss->raw[i] = (mask & ss_succ.raw[i]) | (~mask & ss_fail.raw[i]);
+	}
 
 	DMSG("  Exit crypto_kem_dec.\n");
 	return SUCCESS;

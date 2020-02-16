@@ -26,13 +26,13 @@
  *     the early submission of CAKE (due to N. Sandrier and R Misoczki).
  *
  * [3] The analysis for the constant time implementation is given in
- *     Drucker, Nir, Shay Gueron, and Dusan Kostic. 2019. 
- *     “On Constant-Time QC-MDPC Decoding with Negligible Failure Rate.” 
+ *     Drucker, Nir, Shay Gueron, and Dusan Kostic. 2019.
+ *     “On Constant-Time QC-MDPC Decoding with Negligible Failure Rate.”
  *     Cryptology EPrint Archive, 2019. https://eprint.iacr.org/2019/1289.
  *
  * [4] it was adapted to BGF in:
- *     Drucker, Nir, Shay Gueron, and Dusan Kostic. 2019. 
- *     “QC-MDPC decoders with several shades of gray.” 
+ *     Drucker, Nir, Shay Gueron, and Dusan Kostic. 2019.
+ *     “QC-MDPC decoders with several shades of gray.”
  *     Cryptology EPrint Archive, 2019. To be published.
  *
  * [5] Chou, T.: QcBits: Constant-Time Small-Key Code-Based Cryptography.

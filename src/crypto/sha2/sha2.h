@@ -65,7 +65,7 @@ void OQS_SHA2_sha256_inc_init(void **state);
 /**
  * \brief Duplicate state for the SHA-256 incremental hashing API.
  *
- * \warning The new stateout must be released by the OQS_SHA2_sha256_inc_destroy 
+ * \warning The new stateout must be released by the OQS_SHA2_sha256_inc_destroy
  * function or the OQS_SHA2_sha256_inc_finalize function..
  *
  * \param stateout Pointer to the duplicated state
@@ -87,8 +87,8 @@ void OQS_SHA2_sha256_inc_blocks(void *state, const uint8_t *in, size_t inblocks)
 /**
  * \brief Process more message bytes with SHA-256 and return the hash code in the output byte array.
  *
- * \warning The output array must be at least 32 bytes in length. The state is 
- * deallocated by this function and can not be used again after calling 
+ * \warning The output array must be at least 32 bytes in length. The state is
+ * deallocated by this function and can not be used again after calling
  * this function without calling OQS_SHA2_sha256_inc_init again.
  *
  * \param out The output byte array
@@ -101,7 +101,7 @@ void OQS_SHA2_sha256_inc_finalize(uint8_t *out, void *state, const uint8_t *in, 
 /**
  * \brief Destroy state.
  *
- * \warning The state is deallocated by this function and can not be used again after calling 
+ * \warning The state is deallocated by this function and can not be used again after calling
  * this function without calling OQS_SHA2_sha256_inc_init again.
  *
  * \param state The state

@@ -56,7 +56,7 @@ void rotate256_big(OUT syndrome_t *out, IN const syndrome_t *in, IN size_t ymm_n
 			// We use _mm256_maskload_epi32 instead of _mm256_loadu_si256 to avoid
 			// casting alignment issues (from 64 bits to 256)
 			const __m256i a = _mm256_maskload_epi32(
-			    (const int *) &out->qw[4 * (i + idx)], all_one_mask);
+			                      (const int *) &out->qw[4 * (i + idx)], all_one_mask);
 			__m256i b =
 			    _mm256_maskload_epi32((const int *) &out->qw[4 * i], all_one_mask);
 			b = _mm256_blendv_epi8(b, a, blend_mask);
@@ -77,9 +77,9 @@ rotate256_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t count) {
 	const __m256i count_vet = _mm256_set1_epi8(count_mask);
 
 	__m256i zero_mask2 = _mm256_setr_epi8(
-	    0x86, 0x86, 0x86, 0x86, 0x86, 0x86, 0x86, 0x86, 0x84, 0x84, 0x84, 0x84,
-	    0x84, 0x84, 0x84, 0x84, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82,
-	    0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80);
+	                         0x86, 0x86, 0x86, 0x86, 0x86, 0x86, 0x86, 0x86, 0x84, 0x84, 0x84, 0x84,
+	                         0x84, 0x84, 0x84, 0x84, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82,
+	                         0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80);
 
 	zero_mask2 = _mm256_sub_epi8(zero_mask2, count_vet);
 	idx = _mm256_add_epi8(idx, count_vet);

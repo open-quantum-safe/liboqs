@@ -32,11 +32,14 @@
 //
 
 static const uint64_t p503[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xABFFFFFFFFFFFFFF,
-                                              0x13085BDA2211E7A0, 0x1B9BF6C87B7E7DAF, 0x6045C6BDDA77A4D0, 0x004066F541811E1E};
+                                              0x13085BDA2211E7A0, 0x1B9BF6C87B7E7DAF, 0x6045C6BDDA77A4D0, 0x004066F541811E1E
+                                             };
 static const uint64_t p503p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xAC00000000000000,
-                                                0x13085BDA2211E7A0, 0x1B9BF6C87B7E7DAF, 0x6045C6BDDA77A4D0, 0x004066F541811E1E};
+                                                0x13085BDA2211E7A0, 0x1B9BF6C87B7E7DAF, 0x6045C6BDDA77A4D0, 0x004066F541811E1E
+                                               };
 static const uint64_t p503x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x57FFFFFFFFFFFFFF,
-                                                0x2610B7B44423CF41, 0x3737ED90F6FCFB5E, 0xC08B8D7BB4EF49A0, 0x0080CDEA83023C3C};
+                                                0x2610B7B44423CF41, 0x3737ED90F6FCFB5E, 0xC08B8D7BB4EF49A0, 0x0080CDEA83023C3C
+                                               };
 // Order of Alice's subgroup
 static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0400000000000000};
 // Order of Bob's subgroup
@@ -53,7 +56,8 @@ static const uint64_t A_gen[6 * NWORDS64_FIELD] = {0x5D083011589AD893, 0xADFD8D2
                                                    0x1D9D32D2DC877C17, 0x5517CD8F71D5B02B, 0x395AFB8F6B60C117, 0x3AE31AC85F9098C8,
                                                    0x5F5341C198450848, 0xF8C609DBEA435C6A, 0xD832BC7EDC7BA5E4, 0x002AD98AA6968BF5, // XRA0
                                                    0xC466CAB0F73C2E5B, 0x7B1817148FB2CF9C, 0x873E87C099E470A0, 0xBB17AC6D17A7BAC1,
-                                                   0xA146FDCD0F2E2A58, 0x88B311E9CEAB6201, 0x37604CF5C7951757, 0x0006804071C74BF9}; // XRA1
+                                                   0xA146FDCD0F2E2A58, 0x88B311E9CEAB6201, 0x37604CF5C7951757, 0x0006804071C74BF9
+                                                  }; // XRA1
 // Bob's generator values {XPB0, XQB0, XRB0 + XRB1*i} in GF(p503^2), expressed in Montgomery representation
 static const uint64_t B_gen[6 * NWORDS64_FIELD] = {0xDF630FC5FB2468DB, 0xC30C5541C102040E, 0x3CDC9987B76511FC, 0xF54B5A09353D0CDD,
                                                    0x3ADBA8E00703C42F, 0x8253F9303DDC95D0, 0x62D30778763ABFD7, 0x001CD00FB581CD55, // XPB0
@@ -66,30 +70,35 @@ static const uint64_t B_gen[6 * NWORDS64_FIELD] = {0xDF630FC5FB2468DB, 0xC30C554
                                                    0x2E08BB99413D2952, 0xD3021467CD088D72, 0x21017AF859752245, 0x26314ED8FFD9DE5C,
                                                    0x4AF43C73344B6686, 0xCFA1F91149DF0993, 0xF327A95365587A89, 0x000DBF54E03D3906, // XRB0
                                                    0x03E03FF342F5F304, 0x993D604D7B4B6E56, 0x80412F4D9280E71F, 0x0FFDC9EF990B3982,
-                                                   0xE584E64C51604931, 0x1374F42AC8B0BBD7, 0x07D5BC37DFA41A5F, 0x00396CCFD61FD34C}; // XRB1
+                                                   0xE584E64C51604931, 0x1374F42AC8B0BBD7, 0x07D5BC37DFA41A5F, 0x00396CCFD61FD34C
+                                                  }; // XRB1
 
 // Montgomery constant Montgomery_R2 = (2^512)^2 mod p503
 static const uint64_t Montgomery_R2[NWORDS64_FIELD] = {0x5289A0CF641D011F, 0x9B88257189FED2B9, 0xA3B365D58DC8F17A, 0x5BC57AB6EFF168EC,
-                                                       0x9E51998BD84D4423, 0xBF8999CBAC3B5695, 0x46E9127BCE14CDB6, 0x003F6CFCE8B81771};
+                                                       0x9E51998BD84D4423, 0xBF8999CBAC3B5695, 0x46E9127BCE14CDB6, 0x003F6CFCE8B81771
+                                                      };
 // Value one in Montgomery representation
 static const uint64_t Montgomery_one[NWORDS64_FIELD] = {0x00000000000003F9, 0x0000000000000000, 0x0000000000000000, 0xB400000000000000,
-                                                        0x63CB1A6EA6DED2B4, 0x51689D8D667EB37D, 0x8ACD77C71AB24142, 0x0026FBAEC60F5953};
+                                                        0x63CB1A6EA6DED2B4, 0x51689D8D667EB37D, 0x8ACD77C71AB24142, 0x0026FBAEC60F5953
+                                                       };
 
 // Fixed parameters for isogeny tree computation
 static const unsigned int strat_Alice[MAX_Alice - 1] = {
-    61, 32, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1,
-    4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1,
-    1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 29, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1,
-    1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 13, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2,
-    1, 1, 2, 1, 1, 5, 4, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1};
+	61, 32, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1,
+	4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1,
+	1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 29, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1,
+	1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 13, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2,
+	1, 1, 2, 1, 1, 5, 4, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1
+};
 
 static const unsigned int strat_Bob[MAX_Bob - 1] = {
-    71, 38, 21, 13, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 5, 4, 2, 1, 1, 2, 1,
-    1, 2, 1, 1, 1, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 17, 9,
-    5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 1, 2, 1,
-    1, 4, 2, 1, 1, 2, 1, 1, 33, 17, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1,
-    2, 1, 1, 8, 4, 2, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 1, 2,
-    1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1};
+	71, 38, 21, 13, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 5, 4, 2, 1, 1, 2, 1,
+	1, 2, 1, 1, 1, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 17, 9,
+	5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 1, 2, 1,
+	1, 4, 2, 1, 1, 2, 1, 1, 33, 17, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1,
+	2, 1, 1, 8, 4, 2, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 1, 2,
+	1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1
+};
 
 // Setting up macro defines and including GF(p), GF(p^2), curve, isogeny and kex functions
 #define fpcopy fpcopy503

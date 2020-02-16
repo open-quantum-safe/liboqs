@@ -35,14 +35,18 @@ static void poly_uniform(poly_k a, const unsigned char *seed) { // Generation of
 		pos += nbytes;
 		val4 = (*(uint32_t *) (buf + pos)) & mask;
 		pos += nbytes;
-		if (val1 < PARAM_Q && i < PARAM_K * PARAM_N)
+		if (val1 < PARAM_Q && i < PARAM_K * PARAM_N) {
 			a[i++] = reduce((int64_t) val1 * PARAM_R2_INVN);
-		if (val2 < PARAM_Q && i < PARAM_K * PARAM_N)
+		}
+		if (val2 < PARAM_Q && i < PARAM_K * PARAM_N) {
 			a[i++] = reduce((int64_t) val2 * PARAM_R2_INVN);
-		if (val3 < PARAM_Q && i < PARAM_K * PARAM_N)
+		}
+		if (val3 < PARAM_Q && i < PARAM_K * PARAM_N) {
 			a[i++] = reduce((int64_t) val3 * PARAM_R2_INVN);
-		if (val4 < PARAM_Q && i < PARAM_K * PARAM_N)
+		}
+		if (val4 < PARAM_Q && i < PARAM_K * PARAM_N) {
 			a[i++] = reduce((int64_t) val4 * PARAM_R2_INVN);
+		}
 	}
 }
 
@@ -105,14 +109,16 @@ static void nttinv(poly a, const poly w) { // Inverse NTT transform
 
 static void poly_pointwise(poly result, const poly x, const poly y) { // Pointwise polynomial multiplication result = x.y
 
-	for (int i = 0; i < PARAM_N; i++)
+	for (int i = 0; i < PARAM_N; i++) {
 		result[i] = reduce((int64_t) x[i] * y[i]);
+	}
 }
 
 static void poly_ntt(poly x_ntt, const poly x) { // Call to NTT function. Avoids input destruction
 
-	for (int i = 0; i < PARAM_N; i++)
+	for (int i = 0; i < PARAM_N; i++) {
 		x_ntt[i] = x[i];
+	}
 	ntt(x_ntt, zeta);
 }
 
@@ -125,8 +131,9 @@ static void poly_mul(poly result, const poly x, const poly y) { // Polynomial mu
 
 static void poly_add(poly result, const poly x, const poly y) { // Polynomial addition result = x+y
 
-	for (int i = 0; i < PARAM_N; i++)
+	for (int i = 0; i < PARAM_N; i++) {
 		result[i] = x[i] + y[i];
+	}
 }
 
 static void poly_add_correct(poly result, const poly x, const poly y) { // Polynomial addition result = x+y with correction
@@ -141,14 +148,16 @@ static void poly_add_correct(poly result, const poly x, const poly y) { // Polyn
 
 static void poly_sub(poly result, const poly x, const poly y) { // Polynomial subtraction result = x-y
 
-	for (int i = 0; i < PARAM_N; i++)
+	for (int i = 0; i < PARAM_N; i++) {
 		result[i] = x[i] - y[i];
+	}
 }
 
 static void poly_sub_reduce(poly result, const poly x, const poly y) { // Polynomial subtraction result = x-y
 
-	for (int i = 0; i < PARAM_N; i++)
+	for (int i = 0; i < PARAM_N; i++) {
 		result[i] = barr_reduce(x[i] - y[i]);
+	}
 }
 
 /********************************************************************************************
@@ -167,8 +176,9 @@ static void sparse_mul8(poly prod, const unsigned char *s, const uint32_t pos_li
 	int i, j, pos;
 	int8_t *t = (int8_t *) s;
 
-	for (i = 0; i < PARAM_N; i++)
+	for (i = 0; i < PARAM_N; i++) {
 		prod[i] = 0;
+	}
 
 	for (i = 0; i < PARAM_H; i++) {
 		pos = pos_list[i];
@@ -183,7 +193,7 @@ static void sparse_mul8(poly prod, const unsigned char *s, const uint32_t pos_li
 
 /********************************************************************************************
 * Name:        sparse_mul32
-* Description: performs sparse polynomial multiplication 
+* Description: performs sparse polynomial multiplication
 * Parameters:  inputs:
 *              - const int32_t* pk: part of the public key
 *              - const uint32_t pos_list[PARAM_H]: list of indices of nonzero elements in c
@@ -204,6 +214,7 @@ static void sparse_mul32(poly prod, const int32_t *pk, const uint32_t pos_list[P
 			temp[j] = temp[j] + sign_list[i] * pk[j - pos];
 		}
 	}
-	for (i = 0; i < PARAM_N; i++)
+	for (i = 0; i < PARAM_N; i++) {
 		prod[i] = (int32_t) barr_reduce64(temp[i]);
+	}
 }

@@ -35,7 +35,7 @@ endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
    CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden -Wall -Wextra -Wpedantic -Wimplicit -Wunused -Wcomment -Wchar-subscripts -Wuninitialized -Wstrict-prototypes -Wshadow -Wformat-security -Wwrite-strings -Wno-newline-eof")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden -Wall -Wextra -Wpedantic -Wimplicit -Wunused -Wcomment -Wchar-subscripts -Wuninitialized -Wstrict-prototypes -Wshadow -Wformat-security -Wwrite-strings")
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb3")
     else()
@@ -142,3 +142,9 @@ if(DOXYGEN_FOUND)
         COMMENT "Generate API documentation with Doxygen."
         USES_TERMINAL)
 endif()
+
+add_custom_target(
+    prettyprint
+    COMMAND find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --options=.astylerc
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    USES_TERMINAL)

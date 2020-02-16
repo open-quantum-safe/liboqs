@@ -1,2 +1,2 @@
 #!/bin/bash
-find src tests -name '*.c' -o -name '*.h' | grep -v picnic/external* | grep -v frodokem/external* | grep -v pqclean | xargs ${CLANGFORMAT} -style=file -i
+find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --dry-run --options=.astylerc

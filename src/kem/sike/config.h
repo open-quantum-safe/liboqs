@@ -109,105 +109,105 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) { // Is 
 
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo) \
-	digit_x_digit((multiplier), (multiplicand), &(lo));
+    digit_x_digit((multiplier), (multiplicand), &(lo));
 
 // Digit addition with carry
 #define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                                           \
-	{                                                                                                               \
-		digit_t tempReg = (addend1) + (digit_t)(carryIn);                                                           \
-		(sumOut) = (addend2) + tempReg;                                                                             \
-		(carryOut) = (is_digit_lessthan_ct(tempReg, (digit_t)(carryIn)) | is_digit_lessthan_ct((sumOut), tempReg)); \
-	}
+    {                                                                                                               \
+        digit_t tempReg = (addend1) + (digit_t)(carryIn);                                                           \
+        (sumOut) = (addend2) + tempReg;                                                                             \
+        (carryOut) = (is_digit_lessthan_ct(tempReg, (digit_t)(carryIn)) | is_digit_lessthan_ct((sumOut), tempReg)); \
+    }
 
 // Digit subtraction with borrow
 #define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut)                                                       \
-	{                                                                                                                       \
-		digit_t tempReg = (minuend) - (subtrahend);                                                                         \
-		unsigned int borrowReg = (is_digit_lessthan_ct((minuend), (subtrahend)) | ((borrowIn) &is_digit_zero_ct(tempReg))); \
-		(differenceOut) = tempReg - (digit_t)(borrowIn);                                                                    \
-		(borrowOut) = borrowReg;                                                                                            \
-	}
+    {                                                                                                                       \
+        digit_t tempReg = (minuend) - (subtrahend);                                                                         \
+        unsigned int borrowReg = (is_digit_lessthan_ct((minuend), (subtrahend)) | ((borrowIn) &is_digit_zero_ct(tempReg))); \
+        (differenceOut) = tempReg - (digit_t)(borrowIn);                                                                    \
+        (borrowOut) = borrowReg;                                                                                            \
+    }
 
 // Shift right with flexible datatype
 #define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize) \
-	(shiftOut) = ((lowIn) >> (shift)) ^ ((highIn) << (DigitSize - (shift)));
+    (shiftOut) = ((lowIn) >> (shift)) ^ ((highIn) << (DigitSize - (shift)));
 
 // Shift left with flexible datatype
 #define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize) \
-	(shiftOut) = ((highIn) << (shift)) ^ ((lowIn) >> (DigitSize - (shift)));
+    (shiftOut) = ((highIn) << (shift)) ^ ((lowIn) >> (DigitSize - (shift)));
 
 #elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_WIN)
 
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo) \
-	(lo) = _umul128((multiplier), (multiplicand), (hi));
+    (lo) = _umul128((multiplier), (multiplicand), (hi));
 
 // Digit addition with carry
 #define ADDC(carryIn, addend1, addend2, carryOut, sumOut) \
-	(carryOut) = _addcarry_u64((carryIn), (addend1), (addend2), &(sumOut));
+    (carryOut) = _addcarry_u64((carryIn), (addend1), (addend2), &(sumOut));
 
 // Digit subtraction with borrow
 #define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut) \
-	(borrowOut) = _subborrow_u64((borrowIn), (minuend), (subtrahend), &(differenceOut));
+    (borrowOut) = _subborrow_u64((borrowIn), (minuend), (subtrahend), &(differenceOut));
 
 // Digit shift right
 #define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize) \
-	(shiftOut) = __shiftright128((lowIn), (highIn), (shift));
+    (shiftOut) = __shiftright128((lowIn), (highIn), (shift));
 
 // Digit shift left
 #define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize) \
-	(shiftOut) = __shiftleft128((lowIn), (highIn), (shift));
+    (shiftOut) = __shiftleft128((lowIn), (highIn), (shift));
 
 // 64x64-bit multiplication
 #define MUL128(multiplier, multiplicand, product) \
-	(product)[0] = _umul128((multiplier), (multiplicand), &(product)[1]);
+    (product)[0] = _umul128((multiplier), (multiplicand), &(product)[1]);
 
 // 128-bit addition with output carry
 #define ADC128(addend1, addend2, carry, addition)                           \
-	(carry) = _addcarry_u64(0, (addend1)[0], (addend2)[0], &(addition)[0]); \
-	(carry) = _addcarry_u64((carry), (addend1)[1], (addend2)[1], &(addition)[1]);
+    (carry) = _addcarry_u64(0, (addend1)[0], (addend2)[0], &(addition)[0]); \
+    (carry) = _addcarry_u64((carry), (addend1)[1], (addend2)[1], &(addition)[1]);
 
 #define MULADD128(multiplier, multiplicand, addend, carry, result) \
-	;                                                              \
-	{                                                              \
-		uint128_t product;                                         \
-		MUL128(multiplier, multiplicand, product);                 \
-		ADC128(addend, product, carry, result);                    \
-	}
+    ;                                                              \
+    {                                                              \
+        uint128_t product;                                         \
+        MUL128(multiplier, multiplicand, product);                 \
+        ADC128(addend, product, carry, result);                    \
+    }
 
 #elif ((TARGET == TARGET_AMD64 || TARGET == TARGET_ARM64) && OS_TARGET == OS_LINUX)
 
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo)                                    \
-	{                                                                            \
-		uint128_t tempReg = (uint128_t)(multiplier) * (uint128_t)(multiplicand); \
-		*(hi) = (digit_t)(tempReg >> RADIX);                                     \
-		(lo) = (digit_t) tempReg;                                                \
-	}
+    {                                                                            \
+        uint128_t tempReg = (uint128_t)(multiplier) * (uint128_t)(multiplicand); \
+        *(hi) = (digit_t)(tempReg >> RADIX);                                     \
+        (lo) = (digit_t) tempReg;                                                \
+    }
 
 // Digit addition with carry
 #define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                       \
-	{                                                                                           \
-		uint128_t tempReg = (uint128_t)(addend1) + (uint128_t)(addend2) + (uint128_t)(carryIn); \
-		(carryOut) = (digit_t)(tempReg >> RADIX);                                               \
-		(sumOut) = (digit_t) tempReg;                                                           \
-	}
+    {                                                                                           \
+        uint128_t tempReg = (uint128_t)(addend1) + (uint128_t)(addend2) + (uint128_t)(carryIn); \
+        (carryOut) = (digit_t)(tempReg >> RADIX);                                               \
+        (sumOut) = (digit_t) tempReg;                                                           \
+    }
 
 // Digit subtraction with borrow
 #define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut)                               \
-	{                                                                                               \
-		uint128_t tempReg = (uint128_t)(minuend) - (uint128_t)(subtrahend) - (uint128_t)(borrowIn); \
-		(borrowOut) = (digit_t)(tempReg >> (sizeof(uint128_t) * 8 - 1));                            \
-		(differenceOut) = (digit_t) tempReg;                                                        \
-	}
+    {                                                                                               \
+        uint128_t tempReg = (uint128_t)(minuend) - (uint128_t)(subtrahend) - (uint128_t)(borrowIn); \
+        (borrowOut) = (digit_t)(tempReg >> (sizeof(uint128_t) * 8 - 1));                            \
+        (differenceOut) = (digit_t) tempReg;                                                        \
+    }
 
 // Digit shift right
 #define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize) \
-	(shiftOut) = ((lowIn) >> (shift)) ^ ((highIn) << (RADIX - (shift)));
+    (shiftOut) = ((lowIn) >> (shift)) ^ ((highIn) << (RADIX - (shift)));
 
 // Digit shift left
 #define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize) \
-	(shiftOut) = ((highIn) << (shift)) ^ ((lowIn) >> (RADIX - (shift)));
+    (shiftOut) = ((highIn) << (shift)) ^ ((lowIn) >> (RADIX - (shift)));
 
 #endif
 

@@ -201,8 +201,6 @@ typedef struct OQS_SIG {
 	/** The (maximum) length, in bytes, of signatures for this signature scheme. */
 	size_t length_signature;
 
-	// clang-format off
-
 	/**
 	 * Keypair generation algorithm.
 	 *
@@ -243,7 +241,6 @@ typedef struct OQS_SIG {
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
 	OQS_STATUS (*verify)(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-	// clang-format on
 
 } OQS_SIG;
 
