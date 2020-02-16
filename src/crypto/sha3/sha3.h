@@ -105,7 +105,7 @@ void OQS_SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_
 /**
  * \brief Process a message with SHA3-384 and return the hash code in the output byte array.
  *
- * \warning The output array must be at least 32 bytes in length.
+ * \warning The output array must be at least 48 bytes in length.
  *
  * \param output The output byte array
  * \param input The message input byte array
@@ -182,7 +182,7 @@ void OQS_SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_
 /**
  * \brief Process a message with SHA3-512 and return the hash code in the output byte array.
  *
- * \warning The output array must be at least 32 bytes in length.
+ * \warning The output array must be at least 64 bytes in length.
  *
  * \param output The output byte array
  * \param input The message input byte array
