@@ -12,15 +12,10 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-KEM
 	const char *a[OQS_KEM_algs_length] = {
 		OQS_KEM_alg_default,
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 3ffc99c5... Fix templating to match
 		OQS_KEM_alg_bike1_l1_cpa,
 		OQS_KEM_alg_bike1_l3_cpa,
 		OQS_KEM_alg_bike1_l1_fo,
 		OQS_KEM_alg_bike1_l3_fo,
-<<<<<<< HEAD
 		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 		OQS_KEM_alg_kyber_512,
 		OQS_KEM_alg_kyber_768,
@@ -69,67 +64,6 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 		OQS_KEM_alg_sike_p503_compressed,
 		OQS_KEM_alg_sike_p610_compressed,
 		OQS_KEM_alg_sike_p751_compressed,
-=======
-		OQS_KEM_alg_bike1_l1_cpa, OQS_KEM_alg_bike1_l3_cpa, OQS_KEM_alg_bike1_l1_fo, OQS_KEM_alg_bike1_l3_fo,
-=======
->>>>>>> 3ffc99c5... Fix templating to match
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
-		OQS_KEM_alg_kyber_512,
-		OQS_KEM_alg_kyber_768,
-		OQS_KEM_alg_kyber_1024,
-		OQS_KEM_alg_kyber_512_90s,
-		OQS_KEM_alg_kyber_768_90s,
-		OQS_KEM_alg_kyber_1024_90s,
-		OQS_KEM_alg_ledacrypt_ledakemlt12,
-		OQS_KEM_alg_ledacrypt_ledakemlt32,
-		OQS_KEM_alg_ledacrypt_ledakemlt52,
-		OQS_KEM_alg_newhope_512cca,
-		OQS_KEM_alg_newhope_1024cca,
-		OQS_KEM_alg_ntru_hps2048509,
-		OQS_KEM_alg_ntru_hps2048677,
-		OQS_KEM_alg_ntru_hps4096821,
-		OQS_KEM_alg_ntru_hrss701,
-		OQS_KEM_alg_saber_lightsaber,
-		OQS_KEM_alg_saber_saber,
-		OQS_KEM_alg_saber_firesaber,
-		OQS_KEM_alg_threebears_babybear,
-		OQS_KEM_alg_threebears_babybear_ephem,
-		OQS_KEM_alg_threebears_mamabear,
-		OQS_KEM_alg_threebears_mamabear_ephem,
-		OQS_KEM_alg_threebears_papabear,
-		OQS_KEM_alg_threebears_papabear_ephem,
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
-<<<<<<< HEAD
-		OQS_KEM_alg_frodokem_640_aes, OQS_KEM_alg_frodokem_640_shake, OQS_KEM_alg_frodokem_976_aes, OQS_KEM_alg_frodokem_976_shake, OQS_KEM_alg_frodokem_1344_aes, OQS_KEM_alg_frodokem_1344_shake,
-		OQS_KEM_alg_sidh_p434, OQS_KEM_alg_sidh_p503, OQS_KEM_alg_sidh_p610, OQS_KEM_alg_sidh_p751,
-		OQS_KEM_alg_sidh_p434_compressed, OQS_KEM_alg_sidh_p503_compressed, OQS_KEM_alg_sidh_p610_compressed, OQS_KEM_alg_sidh_p751_compressed,
-		OQS_KEM_alg_sike_p434, OQS_KEM_alg_sike_p503, OQS_KEM_alg_sike_p610, OQS_KEM_alg_sike_p751,
-		OQS_KEM_alg_sike_p434_compressed, OQS_KEM_alg_sike_p503_compressed, OQS_KEM_alg_sike_p610_compressed, OQS_KEM_alg_sike_p751_compressed,
->>>>>>> 1b0f08f6... Initial format with astyle
-=======
-		OQS_KEM_alg_frodokem_640_aes,
-		OQS_KEM_alg_frodokem_640_shake,
-		OQS_KEM_alg_frodokem_976_aes,
-		OQS_KEM_alg_frodokem_976_shake,
-		OQS_KEM_alg_frodokem_1344_aes,
-		OQS_KEM_alg_frodokem_1344_shake,
-		OQS_KEM_alg_sidh_p434,
-		OQS_KEM_alg_sidh_p503,
-		OQS_KEM_alg_sidh_p610,
-		OQS_KEM_alg_sidh_p751,
-		OQS_KEM_alg_sidh_p434_compressed,
-		OQS_KEM_alg_sidh_p503_compressed,
-		OQS_KEM_alg_sidh_p610_compressed,
-		OQS_KEM_alg_sidh_p751_compressed,
-		OQS_KEM_alg_sike_p434,
-		OQS_KEM_alg_sike_p503,
-		OQS_KEM_alg_sike_p610,
-		OQS_KEM_alg_sike_p751,
-		OQS_KEM_alg_sike_p434_compressed,
-		OQS_KEM_alg_sike_p503_compressed,
-		OQS_KEM_alg_sike_p610_compressed,
-		OQS_KEM_alg_sike_p751_compressed,
->>>>>>> 3ffc99c5... Fix templating to match
 	};
 	if (i >= OQS_KEM_algs_length) {
 		return NULL;
