@@ -97,7 +97,7 @@ void OQS_SHA2_sha256_inc_ctx_release(OQS_SHA2_sha256_ctx *state);
 /**
  * \brief Process a message with SHA-384 and return the hash code in the output byte array.
  *
- * \warning The output array must be at least 32 bytes in length.
+ * \warning The output array must be at least 48 bytes in length.
  *
  * \param output The output byte array
  * \param input The message input byte array
@@ -147,7 +147,7 @@ void OQS_SHA2_sha384_inc_blocks(OQS_SHA2_sha384_ctx *state, const uint8_t *in, s
 /**
  * \brief Process more message bytes with SHA-384 and return the hash code in the output byte array.
  *
- * \warning The output array must be at least 32 bytes in length. The state is
+ * \warning The output array must be at least 48 bytes in length. The state is
  * deallocated by this function and can not be used again after calling
  * this function without calling OQS_SHA2_sha384_inc_init again.
  *
@@ -171,7 +171,7 @@ void OQS_SHA2_sha384_inc_ctx_release(OQS_SHA2_sha384_ctx *state);
 /**
  * \brief Process a message with SHA-512 and return the hash code in the output byte array.
  *
- * \warning The output array must be at least 32 bytes in length.
+ * \warning The output array must be at least 64 bytes in length.
  *
  * \param output The output byte array
  * \param input The message input byte array
@@ -221,7 +221,7 @@ void OQS_SHA2_sha512_inc_blocks(OQS_SHA2_sha512_ctx *state, const uint8_t *in, s
 /**
  * \brief Process more message bytes with SHA-512 and return the hash code in the output byte array.
  *
- * \warning The output array must be at least 32 bytes in length. The state is
+ * \warning The output array must be at least 64 bytes in length. The state is
  * deallocated by this function and can not be used again after calling
  * this function without calling OQS_SHA2_sha512_inc_init again.
  *
