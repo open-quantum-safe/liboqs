@@ -169,6 +169,7 @@ static void gen_matrix(polyvec *a, const uint8_t *seed, int transposed) {
             }
         }
     }
+    xof_ctx_release(&state);
 }
 
 /*************************************************

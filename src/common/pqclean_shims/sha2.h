@@ -7,12 +7,25 @@
 #define sha384 OQS_SHA2_sha384
 #define sha512 OQS_SHA2_sha512
 
-typedef void *sha256ctx;
-
+#define sha256ctx OQS_SHA2_sha256_ctx
 #define sha256_inc_init OQS_SHA2_sha256_inc_init
-#define sha256_inc_blocks(state, in, inblocks) OQS_SHA2_sha256_inc_blocks(*(state), in, inblocks)
-#define sha256_inc_finalize(out, state, in, inlen) OQS_SHA2_sha256_inc_finalize(out, *(state), in, inlen)
-#define sha256_inc_destroy(state) OQS_SHA2_sha256_inc_destroy(*(state))
-#define sha256_inc_clone_state(stateout, statein) OQS_SHA2_sha256_inc_clone_state(stateout, *(statein))
+#define sha256_inc_ctx_clone OQS_SHA2_sha256_inc_ctx_clone
+#define sha256_inc_ctx_release OQS_SHA2_sha256_inc_ctx_release
+#define sha256_inc_blocks OQS_SHA2_sha256_inc_blocks
+#define sha256_inc_finalize OQS_SHA2_sha256_inc_finalize
+
+#define sha384ctx OQS_SHA2_sha384_ctx
+#define sha384_inc_init OQS_SHA2_sha384_inc_init
+#define sha384_inc_ctx_clone OQS_SHA2_sha384_inc_ctx_clone
+#define sha384_inc_ctx_release OQS_SHA2_sha384_inc_ctx_release
+#define sha384_inc_blocks OQS_SHA2_sha384_inc_blocks
+#define sha384_inc_finalize OQS_SHA2_sha384_inc_finalize
+
+#define sha512ctx OQS_SHA2_sha512_ctx
+#define sha512_inc_init OQS_SHA2_sha512_inc_init
+#define sha512_inc_ctx_clone OQS_SHA2_sha512_inc_ctx_clone
+#define sha512_inc_ctx_release OQS_SHA2_sha512_inc_ctx_release
+#define sha512_inc_blocks OQS_SHA2_sha512_inc_blocks
+#define sha512_inc_finalize OQS_SHA2_sha512_inc_finalize
 
 #endif

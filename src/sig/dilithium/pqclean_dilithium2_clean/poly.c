@@ -315,6 +315,7 @@ void PQCLEAN_DILITHIUM2_CLEAN_poly_uniform(poly *a,
         stream128_squeezeblocks(buf + off, 1, &state);
         ctr += rej_uniform(a->coeffs + ctr, N - ctr, buf, buflen);
     }
+    stream128_ctx_release(&state);
 }
 
 /*************************************************
@@ -385,6 +386,7 @@ void PQCLEAN_DILITHIUM2_CLEAN_poly_uniform_eta(poly *a,
         stream128_squeezeblocks(buf, 1, &state);
         ctr += rej_eta(a->coeffs + ctr, N - ctr, buf, STREAM128_BLOCKBYTES);
     }
+    stream128_ctx_release(&state);
 }
 
 /*************************************************
@@ -472,6 +474,7 @@ void PQCLEAN_DILITHIUM2_CLEAN_poly_uniform_gamma1m1(poly *a,
         stream256_squeezeblocks(buf + off, 1, &state);
         ctr += rej_gamma1m1(a->coeffs + ctr, N - ctr, buf, buflen);
     }
+    stream256_ctx_release(&state);
 }
 
 /*************************************************

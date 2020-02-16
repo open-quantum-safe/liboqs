@@ -92,7 +92,7 @@ void OQS_AES256_load_schedule(const uint8_t *key, void **schedule, int for_encry
 
 void OQS_AES256_free_schedule(void *schedule) {
 	// actually same code as AES 128
-	return OQS_AES128_free_schedule(schedule);
+	OQS_AES128_free_schedule(schedule);
 }
 
 void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
@@ -111,12 +111,12 @@ void OQS_AES256_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, 
 
 void OQS_AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	// actually same code as AES 128
-	return OQS_AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
+	OQS_AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
 }
 
 void OQS_AES256_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
 	// actually same code as AES 128
-	return OQS_AES128_ECB_dec_sch(ciphertext, ciphertext_len, schedule, plaintext);
+	OQS_AES128_ECB_dec_sch(ciphertext, ciphertext_len, schedule, plaintext);
 }
 
 void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {

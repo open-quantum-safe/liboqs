@@ -455,6 +455,7 @@ int shake_128_kat_test(void) {
 	clear8(hash, OQS_SHA3_SHAKE128_RATE * 4);
 	OQS_SHA3_shake128_absorb(&state, msg1600, 200);
 	OQS_SHA3_shake128_squeezeblocks(hash, 4, &state);
+	OQS_SHA3_shake128_ctx_release(&state);
 
 	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
@@ -589,6 +590,7 @@ int shake_256_kat_test(void) {
 	clear8(hash, OQS_SHA3_SHAKE256_RATE * 4);
 	OQS_SHA3_shake256_absorb(&state, msg1600, 200);
 	OQS_SHA3_shake256_squeezeblocks(hash, 4, &state);
+	OQS_SHA3_shake256_ctx_release(&state);
 
 	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;

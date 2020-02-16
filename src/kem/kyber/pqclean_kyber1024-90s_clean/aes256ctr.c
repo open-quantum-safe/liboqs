@@ -93,3 +93,8 @@ void PQCLEAN_KYBER102490S_CLEAN_aes256xof_squeezeblocks(uint8_t *out, size_t nbl
     aes256_ctr_xof(out, nblocks * 64, s->iv, s->ctr, &s->sk_exp);
     s->ctr += (uint32_t) (4 * nblocks);
 }
+
+/** Free the AES ctx **/
+void PQCLEAN_KYBER102490S_CLEAN_aes256xof_ctx_release(aes256xof_ctx *s) {
+    aes256_ctx_release(&s->sk_exp);
+}

@@ -20,7 +20,7 @@ void PQCLEAN_SPHINCSSHA256256SROBUST_CLEAN_initialize_hash_function(
 
 /* Clean up hash state */
 void PQCLEAN_SPHINCSSHA256256SROBUST_CLEAN_destroy_hash_function(hash_state *hash_state_seeded) {
-    sha256_inc_destroy(hash_state_seeded);
+    sha256_inc_ctx_release(hash_state_seeded);
 }
 
 /*

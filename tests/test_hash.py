@@ -26,6 +26,11 @@ def test_sha256(msg):
         input = msg.encode(),
     )
     assert(output.rstrip() == hashlib.sha256(msg.encode()).hexdigest())
+    output = helpers.run_subprocess(
+        [helpers.path_to_executable('test_hash'), 'sha256inc'],
+        input = msg.encode(),
+    )
+    assert(output.rstrip() == hashlib.sha256(msg.encode()).hexdigest())
 
 @helpers.filtered_test
 @pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
@@ -36,6 +41,11 @@ def test_sha384(msg):
         input = msg.encode(),
     )
     assert(output.rstrip() == hashlib.sha384(msg.encode()).hexdigest())
+    output = helpers.run_subprocess(
+        [helpers.path_to_executable('test_hash'), 'sha384inc'],
+        input = msg.encode(),
+    )
+    assert(output.rstrip() == hashlib.sha384(msg.encode()).hexdigest())
 
 @helpers.filtered_test
 @pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
@@ -43,6 +53,11 @@ def test_sha384(msg):
 def test_sha512(msg):
     output = helpers.run_subprocess(
         [helpers.path_to_executable('test_hash'), 'sha512'],
+        input = msg.encode(),
+    )
+    assert(output.rstrip() == hashlib.sha512(msg.encode()).hexdigest())
+    output = helpers.run_subprocess(
+        [helpers.path_to_executable('test_hash'), 'sha512inc'],
         input = msg.encode(),
     )
     assert(output.rstrip() == hashlib.sha512(msg.encode()).hexdigest())

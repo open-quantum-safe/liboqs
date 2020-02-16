@@ -120,6 +120,7 @@ int PQCLEAN_MQDSS48_CLEAN_crypto_sign_signature(
     shake256_inc_absorb(&state, m, mlen);
     shake256_inc_finalize(&state);
     shake256_inc_squeeze(sig, HASH_BYTES, &state); // Compute R.
+    shake256_inc_ctx_release(&state);
 
     memcpy(pk, skbuf, SEED_BYTES);
     PQCLEAN_MQDSS48_CLEAN_gf31_nrand(sk_gf31, N, skbuf + SEED_BYTES, SEED_BYTES);
@@ -133,6 +134,7 @@ int PQCLEAN_MQDSS48_CLEAN_crypto_sign_signature(
     shake256_inc_absorb(&state, m, mlen);
     shake256_inc_finalize(&state);
     shake256_inc_squeeze(D, HASH_BYTES, &state);
+    shake256_inc_ctx_release(&state);
 
     sig += HASH_BYTES;  // Compensate for prefixed R.
 
@@ -193,6 +195,8 @@ int PQCLEAN_MQDSS48_CLEAN_crypto_sign_signature(
         PQCLEAN_MQDSS48_CLEAN_vgf31_shorten_unique(t1 + i * N, t1 + i * N);
         PQCLEAN_MQDSS48_CLEAN_vgf31_shorten_unique(e1 + i * N, e1 + i * N);
     }
+    shake256_ctx_release(&shakestate);
+
     PQCLEAN_MQDSS48_CLEAN_gf31_npack(t1packed, t1, N * ROUNDS);
     PQCLEAN_MQDSS48_CLEAN_gf31_npack(e1packed, e1, M * ROUNDS);
 
@@ -264,6 +268,7 @@ int PQCLEAN_MQDSS48_CLEAN_crypto_sign_verify(
     shake256_inc_absorb(&state, m, mlen);
     shake256_inc_finalize(&state);
     shake256_inc_squeeze(D, HASH_BYTES, &state);
+    shake256_inc_ctx_release(&state);
 
     sig += HASH_BYTES;
 
@@ -328,6 +333,7 @@ int PQCLEAN_MQDSS48_CLEAN_crypto_sign_verify(
         memcpy(c + HASH_BYTES * (2 * i + (1 - b)), sig + NPACKED_BYTES, HASH_BYTES);
         sig += NPACKED_BYTES + 2 * HASH_BYTES;
     }
+    shake256_ctx_release(&shakestate);
 
     H(c, c, HASH_BYTES * ROUNDS * 2);
     if (memcmp(c, sigma0, HASH_BYTES) != 0) {

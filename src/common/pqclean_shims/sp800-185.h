@@ -10,12 +10,16 @@
 #define cshake128_inc_absorb OQS_SHA3_cshake128_inc_absorb
 #define cshake128_inc_finalize OQS_SHA3_cshake128_inc_finalize
 #define cshake128_inc_squeeze OQS_SHA3_cshake128_inc_squeeze
+#define cshake128_inc_ctx_release OQS_SHA3_cshake128_inc_ctx_release
+#define cshake128_inc_ctx_clone OQS_SHA3_cshake128_inc_ctx_clone
 #define cshake128 OQS_SHA3_cshake128
 
 #define cshake256_inc_init OQS_SHA3_cshake256_inc_init
 #define cshake256_inc_absorb OQS_SHA3_cshake256_inc_absorb
 #define cshake256_inc_finalize OQS_SHA3_cshake256_inc_finalize
 #define cshake256_inc_squeeze OQS_SHA3_cshake256_inc_squeeze
+#define cshake256_inc_ctx_release OQS_SHA3_cshake256_inc_ctx_release
+#define cshake256_inc_ctx_clone OQS_SHA3_cshake256_inc_ctx_clone
 #define cshake256 OQS_SHA3_cshake256
 
 #endif
