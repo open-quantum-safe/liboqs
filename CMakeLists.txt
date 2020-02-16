@@ -53,6 +53,8 @@ endif()
 
 include(.CMake/config-oqs-alg-support.cmake)
 
+include(.CMake/sanitizers.cmake)
+
 if(USE_OPENSSL)
     if(NOT DEFINED OPENSSL_ROOT_DIR)
         if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")

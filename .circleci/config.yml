@@ -103,6 +103,12 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-8
+  ubuntu-bionic-x86_64-asan:
+    <<: *oqsjob
+    environment:
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      CC: clang-9
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
   macOS:
     macos:
         xcode: "11.3.0"
