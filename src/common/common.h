@@ -24,7 +24,7 @@ extern "C" {
  * Example: OQS_API return_value function_name(void);
  */
 #if defined(_WIN32)
-#define OQS_API
+#define OQS_API __declspec(dllexport)
 #else
 #define OQS_API __attribute__((visibility("default")))
 #endif

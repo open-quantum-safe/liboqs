@@ -66,6 +66,9 @@ add_library(oqs kem/kem.c
                 ${SIG_OBJS}
                 $<TARGET_OBJECTS:crypto>
                 $<TARGET_OBJECTS:common>)
+if(USE_OPENSSL)
+    target_link_libraries(oqs ${OPENSSL_CRYPTO_LIBRARY})
+endif()
 
 set_target_properties(oqs
     PROPERTIES
