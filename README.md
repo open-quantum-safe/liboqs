@@ -49,6 +49,7 @@ More information on OQS can be found [here](https://openquantumsafe.org/) and in
 #### Signature schemes
 
 - **Dilithium**: Dilithium2, Dilithium3, Dilithium4
+- **Falcon**: Falcon-512, Falcon-1024
 - **MQDSS**: MQDSS-31-48, MQDSS-31-64
 - **Picnic**: Picnic-L1-FS, Picnic-L1-UR, Picnic-L3-FS, Picnic-L3-UR, Picnic-L5-FS, Picnic-L5-UR, Picnic2-L1-FS, Picnic2-L3-FS, Picnic2-L5-FS
 - **qTesla**: qTesla-p-I, qTesla-p-III
