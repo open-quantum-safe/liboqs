@@ -122,6 +122,17 @@ If the build fails on macOS, you might have to run `cmake -GNinja -DCMAKE_BUILD_
 
 Binaries can be generated using Visual Studio 2019 with the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) extension installed.
 
+### Cross compilation
+
+You can cross compile liboqs for various platform by supplying CMake with an appropriate [toolchain](https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html) file.  
+
+For example, to cross compile for a Raspberry Pi from Ubuntu Bionic:
+
+	apt install gcc-8-arm-linux-gnueabihf
+	mkdir build && cd build
+	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain-rasppi.cmake -DUSE_OPENSSL=OFF ..
+	ninja
+
 ## Documentation
 
 Further information can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
