@@ -101,6 +101,10 @@ cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2 "" ON "ENABLE_SIG_DILITHIUM" O
 cmake_dependent_option(OQS_ENABLE_SIG_dilithium_3 "" ON "ENABLE_SIG_DILITHIUM" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_dilithium_4 "" ON "ENABLE_SIG_DILITHIUM" OFF)
 
+option(ENABLE_SIG_FALCON "" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_falcon_512 "" ON "ENABLE_SIG_FALCON" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_falcon_1024 "" ON "ENABLE_SIG_FALCON" OFF)
+
 option(ENABLE_SIG_MQDSS "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_48 "" ON "ENABLE_SIG_MQDSS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_64 "" ON "ENABLE_SIG_MQDSS" OFF)
