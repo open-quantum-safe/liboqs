@@ -12,7 +12,7 @@ liboqs is an open source C library for quantum-safe cryptographic algorithms.
 - [Quickstart](#quickstart)
   * [Linux / macOS](#linuxmacOS)
   * [Windows](#windows)
-  * [Others](#others)
+  * [Cross compilation](#cross-compilation)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
 - [License](#license)
@@ -92,11 +92,15 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 		cmake -GNinja ..
 		ninja
 
-	Various options can be passed to `cmake` to disable algorithms, use different implementations, specify whether to use OpenSSL, etc..  All supported options are listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory`. All subsequent instructions assume we are in this directory.
+Various options can be passed to `cmake` to customize the build. Some of them include:
 
-If the build fails on macOS, you might have to run `cmake -GNinja -DCMAKE_BUILD_TYPE="Debug .."` before calling `ninja`.
+	- `-DUSE_OPENSSL=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
+	- `-DBUILD_SHARED_LIBS=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, CMake generates instructions for building a shared library, otherwise it generates instructions for building a static library.
+	- `OPENSSL_ROOT_DIR=<val>`: `<val>` specifies the directory in which CMake will look for OpenSSL.
 
-3. The main build result is `lib/liboqs.a`, a static library. There are also a variety of programs built under the `tests` directory:
+All supported options are listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory`. All subsequent instructions assume we are in `build`.
+
+3. The main build result is `lib/liboqs.a`, a static library. The public headers are located in the `include` directory. There are also a variety of programs built under the `tests` directory:
 
 	- `test_kem`: Simple test harness for key encapsulation mechanisms
 	- `test_sig`: Simple test harness for key signature schemes
@@ -118,13 +122,15 @@ If the build fails on macOS, you might have to run `cmake -GNinja -DCMAKE_BUILD_
 
 	Then open `build/docs/doxygen/html/index.html` in your web browser.
 
+4. Finally, `ninja install` can be run to move the `lib/liboqs.a` and `include` files to a location of choice, which can be specified by passing the `-DCMAKE_INSTALL_PREFIX=<val>` option to `cmake` at configure time.
+
 ### Windows
 
 Binaries can be generated using Visual Studio 2019 with the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) extension installed.
 
 ### Cross compilation
 
-You can cross compile liboqs for various platform by supplying CMake with an appropriate [toolchain](https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html) file.  
+You can cross compile liboqs for various platform by supplying CMake with an appropriate [toolchain](https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html) file.
 
 For example, to cross compile for a Raspberry Pi from Ubuntu Bionic:
 
