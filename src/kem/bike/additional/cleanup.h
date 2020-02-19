@@ -34,13 +34,13 @@
  * so if _thealloc is a pointer _thecleanup will receive a pointer to a
  * pointer.*/
 #define DEFINE_POINTER_CLEANUP_FUNC(type, func)       \
-	/* NOLINTNEXTLINE (bugprone-macro-parentheses) */ \
-	static inline void func##_pointer(type *p) {      \
-		if (p && *p) {                                \
-			func(*p);                                 \
-		}                                             \
-	}                                                 \
-	struct __useless_struct_to_allow_trailing_semicolon__
+    /* NOLINTNEXTLINE (bugprone-macro-parentheses) */ \
+    static inline void func##_pointer(type *p) {      \
+        if (p && *p) {                                \
+            func(*p);                                 \
+        }                                             \
+    }                                                 \
+    struct __useless_struct_to_allow_trailing_semicolon__
 
 // len is bytes length of in
 #define secure_clean OQS_MEM_cleanse

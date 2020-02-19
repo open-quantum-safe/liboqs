@@ -42,9 +42,9 @@ get_seeds(OUT seeds_t *seeds) {
 // in case an odd number is requried then set must_be_odd=1
 // Uses the provided prf context
 ret_t sample_uniform_r_bits_with_fixed_prf_context(OUT r_t *r,
-                                                   IN OUT
-                                                       aes_ctr_prf_state_t *prf_state,
-                                                   IN must_be_odd_t must_be_odd);
+        IN OUT
+        aes_ctr_prf_state_t *prf_state,
+        IN must_be_odd_t must_be_odd);
 
 // Return's an array of r pseudorandom bits
 // No restrictions exist for the top or bottom bits -
