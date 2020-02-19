@@ -40,7 +40,7 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb3")
     else()
         include(.CMake/add-cpu-extension-flags.cmake)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fomit-frame-pointer")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fomit-frame-pointer -march=native")
     endif()
 endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang" OR

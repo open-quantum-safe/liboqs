@@ -120,7 +120,7 @@ jobs:
         xcode: "11.3.0"
     environment:
         #TODO: Make tests pass with Release build
-        CONFIGURE_ARGS: -DUSE_OPENSSL=OFF -DCMAKE_BUILD_TYPE=Debug
+        CONFIGURE_ARGS: -DUSE_OPENSSL=OFF
         SKIP_TESTS: style
     steps:
         - checkout
