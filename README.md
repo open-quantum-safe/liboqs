@@ -94,9 +94,9 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 Various options can be passed to `cmake` to customize the build. Some of them include:
 
-	- `-DUSE_OPENSSL=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
-	- `-DBUILD_SHARED_LIBS=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, CMake generates instructions for building a shared library, otherwise it generates instructions for building a static library.
-	- `OPENSSL_ROOT_DIR=<val>`: `<val>` specifies the directory in which CMake will look for OpenSSL.
+- `-DUSE_OPENSSL=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
+- `-DBUILD_SHARED_LIBS=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, CMake generates instructions for building a shared library, otherwise it generates instructions for building a static library.
+- `OPENSSL_ROOT_DIR=<val>`: `<val>` specifies the directory in which CMake will look for OpenSSL.
 
 All supported options are listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory`. All subsequent instructions assume we are in `build`.
 
