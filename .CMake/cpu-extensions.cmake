@@ -1,3 +1,4 @@
+# TODO: Use cpu_features instead of list-cpu-extensions.c
 if(ARCH STREQUAL "x86" OR
    ARCH STREQUAL "x86_64")
     try_run(RUN_RESULT COMPILE_RESULT
