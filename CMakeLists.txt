@@ -39,8 +39,8 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb3")
     else()
-        include(.CMake/add-cpu-extension-flags.cmake)
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fomit-frame-pointer")
+        include(.CMake/cpu-extensions.cmake)
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fomit-frame-pointer -march=native")
     endif()
 endif()
 if(CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
@@ -51,7 +51,7 @@ if(BUILD_SHARED_LIBS)
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 endif()
 
-include(.CMake/config-oqs-alg-support.cmake)
+include(.CMake/alg-support.cmake)
 
 include(.CMake/sanitizers.cmake)
 
