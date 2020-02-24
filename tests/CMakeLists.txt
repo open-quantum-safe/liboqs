@@ -5,7 +5,7 @@ endif()
 if(NOT WIN32 OR MINGW OR MSYS OR CYGWIN)
     set(LIBM m)
 
-    if(USE_OPENSSL)
+    if(OQS_USE_OPENSSL)
         include_directories(${OPENSSL_INCLUDE_DIR})
         set(INTERNAL_TEST_DEPS ${OPENSSL_CRYPTO_LIBRARY} ${LIBM})
     else()

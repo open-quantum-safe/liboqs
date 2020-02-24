@@ -22,7 +22,7 @@
 
 #include "types.h"
 
-#ifdef USE_OPENSSL
+#ifdef OQS_USE_OPENSSL
 #include "openssl_utils.h"
 #endif
 

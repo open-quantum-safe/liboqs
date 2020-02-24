@@ -5,7 +5,7 @@
 
 #include <oqs/oqs.h>
 
-#ifdef USE_SHA3_OPENSSL
+#ifdef OQS_USE_SHA3_OPENSSL
 
 #include "sha3.h"
 

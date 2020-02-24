@@ -68,16 +68,16 @@ jobs:
     <<: *emulatedjob
     environment:
       ARCH: arm64
-      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF # sig-sphincs exhausts memory on CircleCI servers
+      CONFIGURE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF # sig-sphincs exhausts memory on CircleCI servers
   debian-buster-armhf:
     <<: *emulatedjob
     environment:
       ARCH: armhf
-      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF -DENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armhf
+      CONFIGURE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_ENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armhf
   debian-buster-armel:
     <<: *emulatedjob
     environment:
-      CONFIGURE_ARGS: -DENABLE_SIG_SPHINCS=OFF -DENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armel
+      CONFIGURE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_ENABLE_SIG_QTESLA=OFF # sig-sphincs exhausts memory on CircleCI servers; qTesla fails on armel
       ARCH: armel
   ubuntu-bionic-x86_64-gcc7:
     <<: *oqsjob
@@ -89,7 +89,7 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      CONFIGURE_ARGS: -DUSE_OPENSSL=OFF
+      CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
   ubuntu-bionic-x86_64-gcc7-shared:
     <<: *oqsjob
     environment:
@@ -120,7 +120,7 @@ jobs:
         xcode: "11.3.0"
     environment:
         #TODO: Make tests pass with Release build
-        CONFIGURE_ARGS: -DUSE_OPENSSL=OFF
+        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
         SKIP_TESTS: style
     steps:
         - checkout

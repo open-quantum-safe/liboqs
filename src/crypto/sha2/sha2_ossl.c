@@ -7,7 +7,7 @@
 
 #include <oqs/oqs.h>
 
-#ifdef USE_SHA2_OPENSSL
+#ifdef OQS_USE_SHA2_OPENSSL
 
 #include "sha2.h"
 

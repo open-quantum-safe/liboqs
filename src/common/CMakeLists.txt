@@ -4,6 +4,6 @@ set(SRCS common.c
 
 add_library(common OBJECT ${SRCS})
 
-if(USE_OPENSSL)
+if(OQS_USE_OPENSSL)
     target_include_directories(common PRIVATE ${OPENSSL_INCLUDE_DIR})
 endif()
