@@ -42,7 +42,7 @@ if(NOT WIN32)
     target_compile_definitions(picnic PRIVATE HAVE_POSIX_MEMALIGN)
 endif()
 
-if(USE_AVX2_INSTRUCTIONS AND USE_SSE2_INSTRUCTIONS)
+if(OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_SSE2_INSTRUCTIONS)
     target_compile_definitions(picnic PRIVATE WITH_AVX2)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
 endif()

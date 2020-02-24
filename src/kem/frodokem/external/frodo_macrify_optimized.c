@@ -10,7 +10,7 @@
 
 #include <oqs/oqs.h>
 
-#if defined(USE_AVX2_INSTRUCTIONS)
+#if defined(OQS_USE_AVX2_INSTRUCTIONS)
     #include <immintrin.h>
 #endif
 
@@ -51,7 +51,7 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
 
         OQS_AES128_ECB_enc_sch((uint8_t*)a_row_temp, 4*PARAMS_N*sizeof(int16_t), aes_key_schedule, (uint8_t*)a_row);
 #elif defined (USE_SHAKE128_FOR_A)
-#if !(defined(USE_AVX2_INSTRUCTIONS) && defined(USE_AES_INSTRUCTIONS))
+#if !(defined(OQS_USE_AVX2_INSTRUCTIONS) && defined(OQS_USE_AES_INSTRUCTIONS))
     uint8_t seed_A_separated[2 + BYTES_SEED_A];
     uint16_t* seed_A_origin = (uint16_t*)&seed_A_separated;
     memcpy(&seed_A_separated[2], seed_A, BYTES_SEED_A);
@@ -147,7 +147,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             }
         } 
 
-#ifndef USE_AVX2_INSTRUCTIONS
+#ifndef OQS_USE_AVX2_INSTRUCTIONS
         for (i = 0; i < PARAMS_NBAR; i++) {
             for (k = 0; k < PARAMS_STRIPE_STEP; k += PARAMS_PARALLEL) {
                 uint16_t sum[PARAMS_PARALLEL] = {0};
@@ -207,7 +207,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
     ALIGN_HEADER(32) uint16_t a_cols[4*PARAMS_N] ALIGN_FOOTER(32) = {0};
 
 /* Use vectorized SHAKE 4x if AVX2 and AES instructions available */
-#if !(defined(USE_AVX2_INSTRUCTIONS) && defined(USE_AES_INSTRUCTIONS))
+#if !(defined(OQS_USE_AVX2_INSTRUCTIONS) && defined(OQS_USE_AES_INSTRUCTIONS))
     uint8_t seed_A_separated[2 + BYTES_SEED_A];
     uint16_t* seed_A_origin = (uint16_t*)&seed_A_separated;
     memcpy(&seed_A_separated[2], seed_A, BYTES_SEED_A);
@@ -245,7 +245,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
                         (unsigned long long)(2*PARAMS_N), seed_A_separated_0, seed_A_separated_1, seed_A_separated_2, seed_A_separated_3, 2 + BYTES_SEED_A);
 #endif
 /* Use vectorized matrix multiplicate if AVX2 instructions available */
-#ifndef USE_AVX2_INSTRUCTIONS
+#ifndef OQS_USE_AVX2_INSTRUCTIONS
         for (i = 0; i < PARAMS_NBAR; i++) {
             uint16_t sum[PARAMS_N] = {0};
             for (j = 0; j < 4; j++) {
