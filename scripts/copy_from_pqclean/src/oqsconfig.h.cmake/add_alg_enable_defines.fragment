@@ -1,11 +1,11 @@
 {% for family in instructions['kems'] %}
-#cmakedefine ENABLE_KEM_{{ family['name']|upper }} 1
+#cmakedefine OQS_ENABLE_KEM_{{ family['name']|upper }} 1
 {%- for scheme in family['schemes'] %}
 #cmakedefine OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }} 1{%- endfor %}
 {% endfor -%}
 
 {% for family in instructions['sigs'] %}
-#cmakedefine ENABLE_SIG_{{ family['name']|upper }}
+#cmakedefine OQS_ENABLE_SIG_{{ family['name']|upper }}
 {%- for scheme in family['schemes'] %}
 #cmakedefine OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }} 1{%- endfor %}
 {% endfor %}

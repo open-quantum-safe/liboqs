@@ -1,0 +1,10 @@
+{% for family in instructions['kems'] %}
+option(OQS_ENABLE_KEM_{{ family['name']|upper }} "" ON)
+{%- for scheme in family['schemes'] %}
+cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_KEM_{{ family['name']|upper }}" OFF){% endfor %}
+{% endfor -%}
+{% for family in instructions['sigs'] %}
+option(OQS_ENABLE_SIG_{{ family['name']|upper }} "" ON)
+{%- for scheme in family['schemes'] %}
+cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_SIG_{{ family['name']|upper }}" OFF){% endfor %}
+{% endfor %}
