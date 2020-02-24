@@ -98,7 +98,7 @@ PRINT_TIMER_FOOTER
 #include <time.h>
 
 #if defined(_WIN32)
-#include <Windows.h>
+#include <windows.h>
 
 int gettimeofday(struct timeval *tp, struct timezone *tzp) {
 	// Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's

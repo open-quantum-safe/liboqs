@@ -1,4 +1,8 @@
-if(NOT WIN32)
+if (MINGW OR MSYS OR CYGWIN)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__USE_MINGW_ANSI_STDIO=1 -Wno-unknown-pragmas -Wno-unused-parameter")
+endif()
+
+if(NOT WIN32 OR MINGW OR MSYS OR CYGWIN)
     set(LIBM m)
 
     if(USE_OPENSSL)
