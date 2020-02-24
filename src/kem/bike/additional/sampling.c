@@ -74,7 +74,7 @@ ret_t sample_uniform_r_bits_with_fixed_prf_context(OUT r_t *r,
 }
 
 _INLINE_ int
-is_new(IN idx_t wlist[], IN const uint32_t ctr) {
+is_new(IN const idx_t wlist[], IN const uint32_t ctr) {
 	for (uint32_t i = 0; i < ctr; i++) {
 		if (wlist[i] == wlist[ctr]) {
 			return 0;

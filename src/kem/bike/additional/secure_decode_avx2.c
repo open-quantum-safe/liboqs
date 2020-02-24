@@ -37,8 +37,8 @@
 
 #define R_YMM_HALF_LOG2 UPTOPOW2(R_YMM / 2)
 
-_INLINE_
-void rotate256_big(OUT syndrome_t *out, IN const syndrome_t *in, IN size_t ymm_num) {
+_INLINE_ void
+rotate256_big(OUT syndrome_t *out, IN const syndrome_t *in, IN size_t ymm_num) {
 	// For preventing overflows (comparison in bytes)
 	bike_static_assert(sizeof(*out) > (YMM_SIZE * (R_YMM + (2 * R_YMM_HALF_LOG2))),
 	                   rotr_big_err);
@@ -68,7 +68,7 @@ void rotate256_big(OUT syndrome_t *out, IN const syndrome_t *in, IN size_t ymm_n
 _INLINE_ void
 rotate256_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t count) {
 	__m256i carry_in = _mm256_setzero_si256();
-	const uint64_t count64 = count & 0x3f;
+	const int count64 = (int) count & 0x3f;
 	const uint64_t count_mask = (count >> 5) & 0xe;
 
 	__m256i idx = _mm256_setr_epi32(0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7);
@@ -99,7 +99,7 @@ rotate256_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t count) {
 		inner_carry = _mm256_permute4x64_epi64(inner_carry, 0x39);
 		const __m256i out256 =
 		    _mm256_or_si256(_mm256_srli_epi64(in256, count64),
-		                    _mm256_slli_epi64(inner_carry, 64 - count64));
+		                    _mm256_slli_epi64(inner_carry, (int) 64 - count64));
 
 		// Store the rotated value
 		_mm256_maskstore_epi32((int *) &out->qw[4 * i], all_one_mask, out256);
@@ -109,9 +109,9 @@ rotate256_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t count) {
 
 void rotate_right(OUT syndrome_t *out,
                   IN const syndrome_t *in,
-                  IN const uint32_t bitcount) {
+                  IN const uint32_t bitscount) {
 	// 1) Rotate in granularity of 256 bits blocks using YMMs
-	rotate256_big(out, in, (bitcount / 256));
+	rotate256_big(out, in, (bitscount / 256));
 	// 2) Rotate in smaller granularity (less than 256 bits) using YMMs
-	rotate256_small(out, out, (bitcount % 256));
+	rotate256_small(out, out, (bitscount % 256));
 }
