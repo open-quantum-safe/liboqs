@@ -94,7 +94,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 Various options can be passed to `cmake` to customize the build. Some of them include:
 
-- `-DUSE_OPENSSL=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
+- `-DOQS_USE_OPENSSL=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
 - `-DBUILD_SHARED_LIBS=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, CMake generates instructions for building a shared library, otherwise it generates instructions for building a static library.
 - `OPENSSL_ROOT_DIR=<dir>`: `<dir>` specifies the directory in which CMake will look for OpenSSL.
 
@@ -120,7 +120,7 @@ All supported options are listed in the `.CMake/alg-support.cmake` file, and can
 
 		ninja gen_docs
 
-	Then open `build/docs/doxygen/html/index.html` in your web browser.
+	Then open `docs/doxygen/html/index.html` in your web browser.
 
 4. Finally, `ninja install` can be run to install the built library and `include` files to a location of choice, which can be specified by passing the `-DCMAKE_INSTALL_PREFIX=<dir>` option to `cmake` at configure time.
 
@@ -136,7 +136,7 @@ For example, to cross compile for a Raspberry Pi from Ubuntu Bionic:
 
 	apt install gcc-8-arm-linux-gnueabihf
 	mkdir build && cd build
-	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain-rasppi.cmake -DUSE_OPENSSL=OFF ..
+	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain-rasppi.cmake -DOQS_USE_OPENSSL=OFF ..
 	ninja
 
 ## Documentation
