@@ -50,6 +50,7 @@ endif()
 if(BUILD_SHARED_LIBS)
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 endif()
+set(OQS_COMPILE_CFLAGS ${CMAKE_C_FLAGS})
 
 include(.CMake/alg-support.cmake)
 
