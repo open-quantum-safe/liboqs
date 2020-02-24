@@ -5,10 +5,10 @@
 #cmakedefine OQS_KEM_DEFAULT @OQS_KEM_DEFAULT@
 #cmakedefine OQS_SIG_DEFAULT @OQS_SIG_DEFAULT@
 
-#cmakedefine USE_OPENSSL 1
-#cmakedefine USE_AES_OPENSSL 1
-#cmakedefine USE_SHA2_OPENSSL 1
-#cmakedefine USE_SHA3_OPENSSL 1
+#cmakedefine OQS_USE_OPENSSL 1
+#cmakedefine OQS_USE_AES_OPENSSL 1
+#cmakedefine OQS_USE_SHA2_OPENSSL 1
+#cmakedefine OQS_USE_SHA3_OPENSSL 1
 
 #cmakedefine USE_AES_INSTRUCTIONS 1
 #cmakedefine USE_AVX_INSTRUCTIONS 1

@@ -56,7 +56,7 @@ include(.CMake/alg-support.cmake)
 
 include(.CMake/sanitizers.cmake)
 
-if(USE_OPENSSL)
+if(OQS_USE_OPENSSL)
     if(NOT DEFINED OPENSSL_ROOT_DIR)
         if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
             set(OPENSSL_ROOT_DIR "/usr/local/opt/openssl@1.1")

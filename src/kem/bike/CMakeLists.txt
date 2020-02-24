@@ -31,7 +31,7 @@ else()
     set(CPP_DEFS PORTABLE)
 endif()
 
-if(USE_OPENSSL)
+if(OQS_USE_OPENSSL)
     include_directories(${OPENSSL_INCLUDE_DIR})
     set(SRCS ${SRCS} additional/openssl_utils.c)
 endif()

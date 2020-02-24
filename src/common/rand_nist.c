@@ -11,7 +11,7 @@
 
 #include <oqs/common.h>
 
-#ifdef USE_OPENSSL
+#ifdef OQS_USE_OPENSSL
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
@@ -28,7 +28,7 @@ typedef struct {
 static AES256_CTR_DRBG_struct DRBG_ctx;
 static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V);
 
-#ifdef USE_OPENSSL
+#ifdef OQS_USE_OPENSSL
 static void handleErrors(void) {
 	ERR_print_errors_fp(stderr);
 	abort();
@@ -40,7 +40,7 @@ static void handleErrors(void) {
 //    ctr - a 128-bit plaintext value
 //    buffer - a 128-bit ciphertext value
 static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *buffer) {
-#ifdef USE_OPENSSL
+#ifdef OQS_USE_OPENSSL
 	EVP_CIPHER_CTX *ctx;
 
 	int len;
