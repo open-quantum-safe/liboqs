@@ -9,7 +9,7 @@ if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" OR
     set(ARCH "x86_64")
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64")
     # cmake reports AMD64 on Windows, but we might be building for 32-bit.
-    if(CMAKE_CL_64)
+    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
         set(ARCH "x86_64")
     else()
         set(ARCH "x86")
