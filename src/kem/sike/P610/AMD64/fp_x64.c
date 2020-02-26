@@ -14,10 +14,10 @@ extern const uint64_t p610x2[NWORDS_FIELD];
 */
 
 __inline void fpadd610(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p610.
-	// Inputs: a, b in [0, 2*p610-1]
-	// Output: c in [0, 2*p610-1]
+                                                                         // Inputs: a, b in [0, 2*p610-1]
+                                                                         // Output: c in [0, 2*p610-1]
 
-#if (OS_TARGET == OS_WIN)
+#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
 	unsigned int i, carry = 0;
 	digit_t mask;
 
@@ -38,16 +38,16 @@ __inline void fpadd610(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 
 #elif (OS_TARGET == OS_LINUX)
 
-	fpadd610_asm(a, b, c);
+	oqs_kem_sike_fpadd610_asm(a, b, c);
 
 #endif
 }
 
 __inline void fpsub610(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p610.
-	// Inputs: a, b in [0, 2*p610-1]
-	// Output: c in [0, 2*p610-1]
+                                                                         // Inputs: a, b in [0, 2*p610-1]
+                                                                         // Output: c in [0, 2*p610-1]
 
-#if (OS_TARGET == OS_WIN)
+#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
 	unsigned int i, borrow = 0;
 	digit_t mask;
 
@@ -63,13 +63,13 @@ __inline void fpsub610(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 
 #elif (OS_TARGET == OS_LINUX)
 
-	fpsub610_asm(a, b, c);
+	oqs_kem_sike_fpsub610_asm(a, b, c);
 
 #endif
 }
 
 __inline void fpneg610(digit_t *a) { // Modular negation, a = -a mod p610.
-	// Input/output: a in [0, 2*p610-1]
+	                                 // Input/output: a in [0, 2*p610-1]
 	unsigned int i, borrow = 0;
 
 	for (i = 0; i < NWORDS_FIELD; i++) {
@@ -78,8 +78,8 @@ __inline void fpneg610(digit_t *a) { // Modular negation, a = -a mod p610.
 }
 
 void fpdiv2_610(const digit_t *a, digit_t *c) { // Modular division by two, c = a/2 mod p610.
-	// Input : a in [0, 2*p610-1]
-	// Output: c in [0, 2*p610-1]
+	                                            // Input : a in [0, 2*p610-1]
+	                                            // Output: c in [0, 2*p610-1]
 	unsigned int i, carry = 0;
 	digit_t mask;
 
@@ -110,7 +110,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 
 	UNREFERENCED_PARAMETER(nwords);
 
-#if (OS_TARGET == OS_WIN)
+#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
 	digit_t t = 0;
 	uint128_t uv = {0};
 	unsigned int carry = 0;
@@ -408,17 +408,17 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 
 #elif (OS_TARGET == OS_LINUX)
 
-	mul610_asm(a, b, c);
+	oqs_kem_sike_mul610_asm(a, b, c);
 
 #endif
 }
 
-void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
-	// mc = ma*R^-1 mod p610x2, where R = 2^640.
-	// If ma < 2^640*p610, the output mc is in the range [0, 2*p610-1].
-	// ma is assumed to be in Montgomery representation.
+void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
+                                          // mc = ma*R^-1 mod p610x2, where R = 2^640.
+                                          // If ma < 2^640*p610, the output mc is in the range [0, 2*p610-1].
+                                          // ma is assumed to be in Montgomery representation.
 
-#if (OS_TARGET == OS_WIN)
+#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
 	unsigned int carry;
 	digit_t t = 0;
 	uint128_t uv = {0};
@@ -661,7 +661,7 @@ void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiti
 
 #elif (OS_TARGET == OS_LINUX)
 
-	rdc610_asm(ma, mc);
+	oqs_kem_sike_rdc610_asm(ma, mc);
 
 #endif
 }

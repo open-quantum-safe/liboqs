@@ -13,21 +13,21 @@ extern const uint64_t p751x2[NWORDS_FIELD];
 */
 
 __inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p751.
-	// Inputs: a, b in [0, 2*p751-1]
-	// Output: c in [0, 2*p751-1]
+	                                                                     // Inputs: a, b in [0, 2*p751-1]
+	                                                                     // Output: c in [0, 2*p751-1]
 
-	fpadd751_asm(a, b, c);
+	oqs_kem_sike_fpadd751_asm(a, b, c);
 }
 
 __inline void fpsub751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p751.
-	// Inputs: a, b in [0, 2*p751-1]
-	// Output: c in [0, 2*p751-1]
+	                                                                     // Inputs: a, b in [0, 2*p751-1]
+	                                                                     // Output: c in [0, 2*p751-1]
 
-	fpsub751_asm(a, b, c);
+	oqs_kem_sike_fpsub751_asm(a, b, c);
 }
 
 __inline void fpneg751(digit_t *a) { // Modular negation, a = -a mod p751.
-	// Input/output: a in [0, 2*p751-1]
+	                                 // Input/output: a in [0, 2*p751-1]
 	unsigned int i, borrow = 0;
 
 	for (i = 0; i < NWORDS_FIELD; i++) {
@@ -36,8 +36,8 @@ __inline void fpneg751(digit_t *a) { // Modular negation, a = -a mod p751.
 }
 
 void fpdiv2_751(const digit_t *a, digit_t *c) { // Modular division by two, c = a/2 mod p751.
-	// Input : a in [0, 2*p751-1]
-	// Output: c in [0, 2*p751-1]
+	                                            // Input : a in [0, 2*p751-1]
+	                                            // Output: c in [0, 2*p751-1]
 	unsigned int i, carry = 0;
 	digit_t mask;
 
@@ -68,13 +68,13 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 
 	UNREFERENCED_PARAMETER(nwords);
 
-	mul751_asm(a, b, c);
+	oqs_kem_sike_mul751_asm(a, b, c);
 }
 
-void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
-	// mc = ma*R^-1 mod p751x2, where R = 2^768.
-	// If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
-	// ma is assumed to be in Montgomery representation.
+void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
+	                                  // mc = ma*R^-1 mod p751x2, where R = 2^768.
+	                                  // If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
+	                                  // ma is assumed to be in Montgomery representation.
 
-	rdc751_asm(ma, mc);
+	oqs_kem_sike_rdc751_asm(ma, mc);
 }

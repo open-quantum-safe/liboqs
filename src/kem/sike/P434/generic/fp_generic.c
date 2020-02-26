@@ -155,7 +155,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 	c[2 * nwords - 1] = v;
 }
 
-void rdc_mont(const digit_t *ma, digit_t *mc) { // Efficient Montgomery reduction using comba and exploiting the special form of the prime p434.
+void rdc_mont(digit_t *ma, digit_t *mc) { // Efficient Montgomery reduction using comba and exploiting the special form of the prime p434.
 	// mc = ma*R^-1 mod p434x2, where R = 2^448.
 	// If ma < 2^448*p434, the output mc is in the range [0, 2*p434-1].
 	// ma is assumed to be in Montgomery representation.

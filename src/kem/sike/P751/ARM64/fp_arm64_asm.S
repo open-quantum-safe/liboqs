@@ -43,8 +43,8 @@ p751p1_nz_s32:
 //  Field addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global fpadd751_asm
-fpadd751_asm:
+.global oqs_kem_sike_fpadd751_asm
+oqs_kem_sike_fpadd751_asm:
     sub     sp, sp, #16
     stp     x19, x20, [sp]
 
@@ -141,8 +141,8 @@ fpadd751_asm:
 //  Field subtraction
 //  Operation: c [x2] = a [x0] - b [x1]
 //*********************************************************************** 
-.global fpsub751_asm
-fpsub751_asm:
+.global oqs_kem_sike_fpsub751_asm
+oqs_kem_sike_fpsub751_asm:
     sub     sp, sp, #16
     str     x19, [sp]
 
@@ -472,8 +472,8 @@ fpsub751_asm:
 //  768-bit integer multiplication using Karatsuba (two levels), Comba (lower level)
 //  Operation: c [x2] = a [x0] * b [x1]
 //*********************************************************************************** 
-.global mul751_asm
-mul751_asm:
+.global oqs_kem_sike_mul751_asm
+oqs_kem_sike_mul751_asm:
     sub     sp, sp, #96
     stp     x19, x20, [sp,#0]
     stp     x21, x22, [sp,#16]
@@ -827,8 +827,8 @@ mul751_asm:
 //  Operation: mc [x1] = ma [x0]
 //  NOTE: ma=mc is not allowed
 //************************************************************************************** 
-.global rdc751_asm
-rdc751_asm:
+.global oqs_kem_sike_rdc751_asm
+oqs_kem_sike_rdc751_asm:
     sub     sp, sp, #96
     stp     x19, x20, [sp]
     stp     x21, x22, [sp,#16]
@@ -1019,8 +1019,8 @@ rdc751_asm:
 //  751-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global mp_add751_asm
-mp_add751_asm:
+.global oqs_kem_sike_mp_add751_asm
+oqs_kem_sike_mp_add751_asm:
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -1060,8 +1060,8 @@ mp_add751_asm:
 //  2x751-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global mp_add751x2_asm
-mp_add751x2_asm:
+.global oqs_kem_sike_mp_add751x2_asm
+oqs_kem_sike_mp_add751x2_asm:
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -1134,8 +1134,8 @@ mp_add751x2_asm:
 //  2x751-bit multiprecision subtraction/addition
 //  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p751*2^768
 //*********************************************************************** 
-.global mp_subadd751x2_asm
-mp_subadd751x2_asm:
+.global oqs_kem_sike_mp_subadd751x2_asm
+oqs_kem_sike_mp_subadd751x2_asm:
     sub sp, sp, #16
     stp x19, x20, [sp]
 
@@ -1242,8 +1242,8 @@ mp_subadd751x2_asm:
 //  Double 2x751-bit multiprecision subtraction
 //  Operation: c [x2] = c [x2] - a [x0] - b [x1]
 //*********************************************************************** 
-.global mp_dblsub751x2_asm
-mp_dblsub751x2_asm:
+.global oqs_kem_sike_mp_dblsub751x2_asm
+oqs_kem_sike_mp_dblsub751x2_asm:
     sub sp, sp, #96
     stp x19, x20, [sp]
     stp x21, x22, [sp, #16]

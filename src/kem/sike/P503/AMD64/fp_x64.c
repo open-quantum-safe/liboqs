@@ -17,7 +17,7 @@ __inline void fpadd503(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 	// Inputs: a, b in [0, 2*p503-1]
 	// Output: c in [0, 2*p503-1]
 
-#if (OS_TARGET == OS_WIN)
+#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
 	unsigned int i, carry = 0;
 	digit_t mask;
 
@@ -38,7 +38,7 @@ __inline void fpadd503(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 
 #elif (OS_TARGET == OS_LINUX)
 
-	fpadd503_asm(a, b, c);
+	oqs_kem_sike_fpadd503_asm(a, b, c);
 
 #endif
 }
@@ -47,7 +47,7 @@ __inline void fpsub503(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 	// Inputs: a, b in [0, 2*p503-1]
 	// Output: c in [0, 2*p503-1]
 
-#if (OS_TARGET == OS_WIN)
+#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
 	unsigned int i, borrow = 0;
 	digit_t mask;
 
@@ -63,7 +63,7 @@ __inline void fpsub503(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 
 #elif (OS_TARGET == OS_LINUX)
 
-	fpsub503_asm(a, b, c);
+	oqs_kem_sike_fpsub503_asm(a, b, c);
 
 #endif
 }
@@ -110,7 +110,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 
 	UNREFERENCED_PARAMETER(nwords);
 
-#if (OS_TARGET == OS_WIN)
+#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
 	digit_t t = 0;
 	uint128_t uv = {0};
 	unsigned int carry = 0;
@@ -316,17 +316,17 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 
 #elif (OS_TARGET == OS_LINUX)
 
-	mul503_asm(a, b, c);
+	oqs_kem_sike_mul503_asm(a, b, c);
 
 #endif
 }
 
-void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
+void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
 	// mc = ma*R^-1 mod p503x2, where R = 2^512.
 	// If ma < 2^512*p503, the output mc is in the range [0, 2*p503-1].
 	// ma is assumed to be in Montgomery representation.
 
-#if (OS_TARGET == OS_WIN)
+#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
 	unsigned int carry;
 	digit_t t = 0;
 	uint128_t uv = {0};
@@ -504,7 +504,7 @@ void rdc_mont(const digit_t *ma, digit_t *mc) { // Montgomery reduction exploiti
 
 #elif (OS_TARGET == OS_LINUX)
 
-	rdc503_asm(ma, mc);
+	oqs_kem_sike_rdc503_asm(ma, mc);
 
 #endif
 }

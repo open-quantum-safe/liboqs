@@ -11,6 +11,9 @@
 
 // OQS note: size #defines moved to P434.c to avoid redefinitions across parameters
 
+// Algorithm name
+#define CRYPTO_ALGNAME "SIKEp434"
+
 // SIKE's key generation
 // It produces a private key sk and computes the public key pk.
 // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = 374 bytes)

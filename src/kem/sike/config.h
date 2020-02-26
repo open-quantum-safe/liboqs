@@ -15,9 +15,15 @@
 
 #define OS_WIN 1
 #define OS_LINUX 2
+#define OS_DARWIN 3
 
 #if defined(_WIN32) // Microsoft Windows OS
 #define OS_TARGET OS_WIN
+#elif defined(__APPLE__) // darwin
+#define OS_TARGET OS_DARWIN
+#ifndef _GENERIC_ // default to generic implementation on darwin for now (FIXMEOQS: still needed?)
+#define _GENERIC_
+#endif
 #else
 #define OS_TARGET OS_LINUX // default to Linux
 #endif

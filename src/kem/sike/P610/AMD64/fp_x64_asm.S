@@ -6,6 +6,7 @@
 
 .intel_syntax noprefix 
 
+
 // Registers that are used for parameter passing:
 #define reg_p1  rdi
 #define reg_p2  rsi
@@ -17,8 +18,8 @@
 //  Field addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global fpadd610_asm
-fpadd610_asm:
+.global oqs_kem_sike_fpadd610_asm
+oqs_kem_sike_fpadd610_asm:
   push   r12
   push   r13
   push   r14
@@ -123,8 +124,8 @@ fpadd610_asm:
 //  Field subtraction
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global fpsub610_asm
-fpsub610_asm:
+.global oqs_kem_sike_fpsub610_asm
+oqs_kem_sike_fpsub610_asm:
   push   r12
   push   r13
   push   r14
@@ -426,8 +427,8 @@ fpsub610_asm:
 //*****************************************************************************
 //  610-bit multiplication using Karatsuba (one level), schoolbook (two levels)
 //***************************************************************************** 
-.global mul610_asm
-mul610_asm:    
+.global oqs_kem_sike_mul610_asm
+oqs_kem_sike_mul610_asm:    
     push   r12
     push   r13 
     push   r14 
@@ -621,8 +622,8 @@ mul610_asm:
 //  Operation: c [reg_p3] = a [reg_p1] * b [reg_p2]
 //  NOTE: a=c or b=c are not allowed
 //***********************************************************************
-.global mul610_asm
-mul610_asm:
+.global oqs_kem_sike_mul610_asm
+oqs_kem_sike_mul610_asm:
 
   ret
 
@@ -757,8 +758,8 @@ mul610_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //************************************************************************************** 
-.global rdc610_asm
-rdc610_asm:
+.global oqs_kem_sike_rdc610_asm
+oqs_kem_sike_rdc610_asm:
     push   r12
     push   r13 
     push   r14 
@@ -939,8 +940,8 @@ rdc610_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //*********************************************************************** 
-.global rdc610_asm
-rdc610_asm:
+.global oqs_kem_sike_rdc610_asm
+oqs_kem_sike_rdc610_asm:
 
   ret
 
@@ -953,8 +954,8 @@ rdc610_asm:
 //  610-bit multiprecision addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global mp_add610_asm
-mp_add610_asm:  
+.global oqs_kem_sike_mp_add610_asm
+oqs_kem_sike_mp_add610_asm:  
   mov    r8, [reg_p1]
   mov    r9, [reg_p1+8]
   mov    r10, [reg_p1+16]
@@ -993,8 +994,8 @@ mp_add610_asm:
 //  2x610-bit multiprecision subtraction/addition
 //  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p610*2^640
 //*********************************************************************** 
-.global mp_subadd610x2_asm
-mp_subadd610x2_asm:
+.global oqs_kem_sike_mp_subadd610x2_asm
+oqs_kem_sike_mp_subadd610x2_asm:
   push   r12
   push   r13 
   push   r14 
@@ -1112,8 +1113,8 @@ mp_subadd610x2_asm:
 //  Double 2x610-bit multiprecision subtraction
 //  Operation: c [reg_p3] = c [reg_p3] - a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global mp_dblsub610x2_asm
-mp_dblsub610x2_asm:
+.global oqs_kem_sike_mp_dblsub610x2_asm
+oqs_kem_sike_mp_dblsub610x2_asm:
   push   r12
   push   r13
   push   r14

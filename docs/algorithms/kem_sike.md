@@ -30,13 +30,8 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/Microsoft/PQCrypto-SIDH
-- **Implementation version:** v3.2 (https://github.com/microsoft/PQCrypto-SIDH/commit/ebd1c80a8ac35e9ca2ef9680291a8a43b95a3bfa)
+- **Implementation version:** v3.2 (https://github.com/microsoft/PQCrypto-SIDH/commit/fde210a7cf03e835cceb1d5ff34ccf58625d0311)
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes
 - **Architectures supported in liboqs master branch**: x86, x64
-
-Additional comments
--------------------
-
-The original Sike implementation includes optimizations that are not currently being built in liboqs. See src/kem/sike/upstream/README for details.
