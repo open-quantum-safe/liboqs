@@ -38,6 +38,8 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden -Wall -Wextra -Wpedantic -Wimplicit -Wunused -Wcomment -Wchar-subscripts -Wuninitialized -Wstrict-prototypes -Wshadow -Wformat-security -Wwrite-strings")
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb3")
+    elseif(CMAKE_BUILD_TYPE STREQUAL "Generic")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fomit-frame-pointer ")
     else()
         include(.CMake/cpu-extensions.cmake)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fomit-frame-pointer -march=native")
