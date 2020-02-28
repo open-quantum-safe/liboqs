@@ -13,7 +13,7 @@ extern const uint64_t p434p1[NWORDS_FIELD];
 extern const uint64_t p434x2[NWORDS_FIELD];
 */
 
-__inline void fpadd434(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p434.
+void fpadd434(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p434.
 	// Inputs: a, b in [0, 2*p434-1]
 	// Output: c in [0, 2*p434-1]
 	unsigned int i, carry = 0;
@@ -35,7 +35,7 @@ __inline void fpadd434(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 	}
 }
 
-__inline void fpsub434(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p434.
+void fpsub434(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p434.
 	// Inputs: a, b in [0, 2*p434-1]
 	// Output: c in [0, 2*p434-1]
 	unsigned int i, borrow = 0;
@@ -52,7 +52,7 @@ __inline void fpsub434(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 	}
 }
 
-__inline void fpneg434(digit_t *a) { // Modular negation, a = -a mod p434.
+void fpneg434(digit_t *a) { // Modular negation, a = -a mod p434.
 	// Input/output: a in [0, 2*p434-1]
 	unsigned int i, borrow = 0;
 
