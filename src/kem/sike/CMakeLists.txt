@@ -1,4 +1,19 @@
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-function -Wno-pedantic ")
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
+   CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
+   CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
+    # The way various files are #include'd in the SIKE implementations leads to unused functions
+    # We will not raise warnings for these
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-function ")
+    # GCC reports warnings about missing const related to how f2elm_t is typedef'd
+    # Technically GCC is correct, but we will not raise warnings for these
+    if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-pedantic ")
+        # On GCC 4.9 those warnings can't be turned off, so we disable -Werror
+        if(CMAKE_C_COMPILER_VERSION VERSION_LESS "5")
+            set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-error ")
+        endif()
+    endif()
+endif()
 
 set(SRCS kem_sike.c
          P434/P434.c
