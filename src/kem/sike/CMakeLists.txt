@@ -1,4 +1,4 @@
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-function ")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-function -Wno-pedantic ")
 
 set(SRCS kem_sike.c
          P434/P434.c
