@@ -41,9 +41,9 @@ static const uint64_t p434x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFF
                                                 0xF78CB8F062B15D47, 0xD9F8BFAD038A40AC, 0x0004683E4E2EE688
                                                };
 // Order of Alice's subgroup
-static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000001000000};
+// static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000001000000};
 // Order of Bob's subgroup
-static const uint64_t Bob_order[NWORDS64_ORDER] = {0x58AEA3FDC1767AE3, 0xC520567BC65C7831, 0x1773446CFC5FD681, 0x0000000002341F27};
+// static const uint64_t Bob_order[NWORDS64_ORDER] = {0x58AEA3FDC1767AE3, 0xC520567BC65C7831, 0x1773446CFC5FD681, 0x0000000002341F27};
 // Alice's generator values {XPA0 + XPA1*i, XQA0 + xQA1*i, XRA0 + XRA1*i} in GF(p434^2), expressed in Montgomery representation
 static const uint64_t A_gen[6 * NWORDS64_FIELD] = {0x05ADF455C5C345BF, 0x91935C5CC767AC2B, 0xAFE4E879951F0257, 0x70E792DC89FA27B1,
                                                    0xF797F526BB48C8CD, 0x2181DB6131AF621F, 0x00000A1C08B1ECC4, // XPA0

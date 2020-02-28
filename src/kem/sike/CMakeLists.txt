@@ -1,3 +1,5 @@
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unused-function ")
+
 set(SRCS kem_sike.c
          P434/P434.c
          P434/P434_compressed.c

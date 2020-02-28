@@ -110,9 +110,9 @@ typedef __m256i word256;
 #define mm256_xor(l, r) _mm256_xor_si256(l, r)
 #define mm256_and(l, r) _mm256_and_si256(l, r)
 
-apply_region(mm256_xor_region, word256, mm256_xor, FN_ATTRIBUTES_AVX2);
-apply_mask_region(mm256_xor_mask_region, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2);
-apply_mask(mm256_xor_mask, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2_CONST);
+apply_region(mm256_xor_region, word256, mm256_xor, FN_ATTRIBUTES_AVX2)
+apply_mask_region(mm256_xor_mask_region, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2)
+apply_mask(mm256_xor_mask, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2_CONST)
 #endif
 
 #if defined(WITH_SSE2)
@@ -122,11 +122,11 @@ typedef __m128i word128;
 #define mm128_xor(l, r) _mm_xor_si128(l, r)
 #define mm128_and(l, r) _mm_and_si128(l, r)
 
-apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_SSE2);
-apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2);
-apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2_CONST);
-apply_array(mm256_xor_sse, word128, mm128_xor, 2, FN_ATTRIBUTES_SSE2);
-apply_array(mm256_and_sse, word128, mm128_and, 2, FN_ATTRIBUTES_SSE2);
+apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_SSE2)
+apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2)
+apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2_CONST)
+apply_array(mm256_xor_sse, word128, mm128_xor, 2, FN_ATTRIBUTES_SSE2)
+apply_array(mm256_and_sse, word128, mm128_and, 2, FN_ATTRIBUTES_SSE2)
 #endif
 
 #if defined(WITH_NEON)

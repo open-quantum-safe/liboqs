@@ -100,21 +100,6 @@ static const uint64_t A_basis_zero[8 * NWORDS64_FIELD] = {0x3353B596D45A9D99, 0x
                                                           0x97FCE091A32E2501, 0x838C61141A0FB449, 0xA4B61F965220A71F, 0x16978E2D5FBE08
                                                          };
 
-/* Basis for Bob on A = 0, expressed in Montgomery representation */
-static const uint64_t B_basis_zero[8 * NWORDS64_FIELD] = {0x4256C520FB388820, 0x744FD7C3BAAF0A13, 0x4B6A2DDDB12CBCB8, 0xE46826E27F427DF8,
-                                                          0xFE4A663CD505A61B, 0xD6B3A1BAF025C695, 0x7C3BB62B8FCC00BD, 0x3AFDDE4A35746C,
-                                                          0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-                                                          0x440192590061240E, 0x60C942451EC3E20D, 0x2195638E3B7632CA, 0xBA84AC322AA59D16,
-                                                          0x3751CBF97048E02D, 0x6A583E4C816EAC44, 0x7A984D4F477762C1, 0x27B5AB2E503D63,
-                                                          0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-                                                          0xBDA93ADF04C777DF, 0x8BB0283C4550F5EC, 0xB495D2224ED34347, 0xC797D91D80BD8207,
-                                                          0x14BDF59D4D0C4184, 0x44E8550D8B58B719, 0xE40A10924AABA412, 0x56916F74BA9B1,
-                                                          0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-                                                          0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
-                                                          0x440192590061240E, 0x60C942451EC3E20D, 0x2195638E3B7632CA, 0xBA84AC322AA59D16,
-                                                          0x3751CBF97048E02D, 0x6A583E4C816EAC44, 0x7A984D4F477762C1, 0x27B5AB2E503D63
-                                                         };
-
 /* Full 3-torsion for Bob on A = 0, expressed in Montgomery representation */
 static const uint64_t B_gen_3_tors[16 * NWORDS64_FIELD] = {0xAA6FCA1A7DB3B9C1, 0x8D12C496B3D530CE, 0x909089D6DB66CE9F, 0x26979B12182E911,
                                                            0xD838DEA96EFB14F2, 0xC70C12A9DB5E8DEB, 0xBB4D79F4A6E1AEEA, 0x2F6E7532C0487D,
@@ -149,7 +134,6 @@ static const uint64_t g_R_S_im[NWORDS64_FIELD] = {0xF74CEB25BB76E955, 0x12040D29
                                                   0xEF53270066899336, 0xA235B168E9C24121, 0x813113E8A462D7E0, 0x2C1B13A2B9155C
                                                  };
 
-static const uint64_t Montgomery_R[NWORDS64_FIELD] = {0};
 // Montgomery constant Montgomery_R2 = (2^512)^2 mod p503
 static const uint64_t Montgomery_R2[NWORDS64_FIELD] = {0x5289A0CF641D011F, 0x9B88257189FED2B9, 0xA3B365D58DC8F17A, 0x5BC57AB6EFF168EC,
                                                        0x9E51998BD84D4423, 0xBF8999CBAC3B5695, 0x46E9127BCE14CDB6, 0x003F6CFCE8B81771
