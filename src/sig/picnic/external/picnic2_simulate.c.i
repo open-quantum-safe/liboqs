@@ -148,6 +148,7 @@ static int SIM_ONLINE(mzd_local_t* maskedKey, shares_t* mask_shares, randomTape_
   broadcast(mask_shares, msgs);
   msgsTranspose(msgs);
 
+Exit:
   free(unopened_msgs);
   mzd_local_free(state);
   mzd_local_free(state2);
@@ -157,6 +158,5 @@ static int SIM_ONLINE(mzd_local_t* maskedKey, shares_t* mask_shares, randomTape_
   freeShares(mask2_shares);
   freeShares(nl_part_masks);
 
-Exit:
   return ret;
 }
