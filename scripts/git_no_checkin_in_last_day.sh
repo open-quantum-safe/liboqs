@@ -4,6 +4,10 @@
 # branch. Returns 1 if there has been a commit, 0 if there has not.
 
 r=`git log --name-only --since="1 day ago" -n 2`
+if [ "x${CIRCLE_BUILD_NUM}" == "x" ]; then
+	echo "Running locally, so always build."
+	exit 1
+fi
 if [ "x$r" == "x" ]; then 
 	echo "No commit in the last day. No build/test required. Exiting."
 	exit 0
