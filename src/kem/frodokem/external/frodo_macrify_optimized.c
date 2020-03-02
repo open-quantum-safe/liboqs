@@ -153,10 +153,10 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
                 uint16_t sum[PARAMS_PARALLEL] = {0};
                 for (j = 0; j < PARAMS_N; j++) {                // Matrix-vector multiplication
                     uint16_t sp = s[i*PARAMS_N + j];
-                    sum[0] += sp * a_cols_t[(k+0)*PARAMS_N + j];
-                    sum[1] += sp * a_cols_t[(k+1)*PARAMS_N + j];
-                    sum[2] += sp * a_cols_t[(k+2)*PARAMS_N + j];
-                    sum[3] += sp * a_cols_t[(k+3)*PARAMS_N + j];
+                    sum[0] += (uint16_t) ((uint32_t) sp * (uint32_t) a_cols_t[(k+0)*PARAMS_N + j]);
+                    sum[1] += (uint16_t) ((uint32_t) sp * (uint32_t) a_cols_t[(k+1)*PARAMS_N + j]);
+                    sum[2] += (uint16_t) ((uint32_t) sp * (uint32_t) a_cols_t[(k+2)*PARAMS_N + j]);
+                    sum[3] += (uint16_t) ((uint32_t) sp * (uint32_t) a_cols_t[(k+3)*PARAMS_N + j]);
                 }
                 out[i*PARAMS_N + kk + k + 0] += sum[0];
                 out[i*PARAMS_N + kk + k + 2] += sum[2];
