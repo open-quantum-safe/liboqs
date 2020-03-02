@@ -85,6 +85,7 @@ void PQCLEAN_DILITHIUM3_CLEAN_challenge(poly *c,
         c->coeffs[b] ^= -((int32_t)signs & 1) & (1 ^ (Q - 1));
         signs >>= 1;
     }
+    shake256_ctx_release(&state);
 }
 
 /*************************************************
@@ -192,6 +193,7 @@ int PQCLEAN_DILITHIUM3_CLEAN_crypto_sign_signature(
     shake256_inc_absorb(&state, msg, mlen);
     shake256_inc_finalize(&state);
     shake256_inc_squeeze(mu, CRHBYTES, &state);
+    shake256_inc_ctx_release(&state);
 
     crh(rhoprime, key, SEEDBYTES + CRHBYTES);
 
@@ -341,6 +343,7 @@ int PQCLEAN_DILITHIUM3_CLEAN_crypto_sign_verify(
     shake256_inc_absorb(&state, m, mlen);
     shake256_inc_finalize(&state);
     shake256_inc_squeeze(mu, CRHBYTES, &state);
+    shake256_inc_ctx_release(&state);
 
     /* Matrix-vector multiplication; compute Az - c2^dt1 */
     PQCLEAN_DILITHIUM3_CLEAN_expand_mat(mat, rho);
