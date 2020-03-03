@@ -30,7 +30,7 @@ function(append value)
 endfunction()
 
 if(USE_SANITIZER)
-  append("-fno-omit-frame-pointer" CMAKE_C_FLAGS CMAKE_CXX_FLAGS)
+  append("-fno-omit-frame-pointer -g3" CMAKE_C_FLAGS CMAKE_CXX_FLAGS)
 
   if(UNIX)
 
