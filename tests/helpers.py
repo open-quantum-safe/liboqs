@@ -112,16 +112,18 @@ def filtered_test(func):
     return wrapper
 
 def path_to_executable(program_name):
+    path = "."
     if sys.platform.startswith("win"):
         if 'APPVEYOR_BUILD_FOLDER' not in os.environ: os.environ['APPVEYOR_BUILD_FOLDER'] = "."
-        return os.path.join(
-            os.environ['APPVEYOR_BUILD_FOLDER'],
-            'build',
-            'tests',
-            program_name + ".EXE"
-        )
-    else:
-        return os.path.join("build", "tests", program_name)
+        path = os.path.join(path, os.environ['APPVEYOR_BUILD_FOLDER'])
+    path = os.path.join(path, "build", "tests")
+    for executable in [
+        os.path.join(path, program_name),
+        os.path.join(path, program_name + ".EXE"),
+        os.path.join(path, program_name + ".exe")]:
+            if os.path.isfile(executable):
+                return executable
+    assert False, "Unable to find executable file {}".format(program_name)
 
 def available_use_options_by_name():
     enabled_use_options = []
