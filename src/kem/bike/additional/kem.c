@@ -1,17 +1,5 @@
-/*
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- * The license is detailed in the file LICENSE.md, and applies to this file.
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0"
  *
  * Written by Nir Drucker, Shay Gueron, and Dusan Kostic,
  * AWS Cryptographic Algorithms Group.
@@ -68,18 +56,18 @@ calc_pk(OUT pk_t *pk, IN const seed_t *g_seed, IN const pad_sk_t p_sk) {
 	GUARD(sample_uniform_r_bits(&g.val, g_seed, MUST_BE_ODD));
 
 	// Calculate (g0, g1) = (g*h1, g*h0)
-	GUARD(gf2x_mod_mul((uint64_t *) &p_pk[0], (const uint64_t *) &g,
-	                   (const uint64_t *) &p_sk[1]));
-	GUARD(gf2x_mod_mul((uint64_t *) &p_pk[1], (const uint64_t *) &g,
-	                   (const uint64_t *) &p_sk[0]));
+	GUARD(gf2x_mod_mul((uint64_t *)&p_pk[0], (const uint64_t *)&g,
+	                   (const uint64_t *)&p_sk[1]));
+	GUARD(gf2x_mod_mul((uint64_t *)&p_pk[1], (const uint64_t *)&g,
+	                   (const uint64_t *)&p_sk[0]));
 
 	// Copy the data to the output parameters.
 	pk->val[0] = p_pk[0].val;
 	pk->val[1] = p_pk[1].val;
 
-	print("g:  ", (uint64_t *) g.val.raw, R_BITS);
-	print("g0: ", (uint64_t *) &p_pk[0], R_BITS);
-	print("g1: ", (uint64_t *) &p_pk[1], R_BITS);
+	print("g:  ", (uint64_t *)g.val.raw, R_BITS);
+	print("g0: ", (uint64_t *)&p_pk[0], R_BITS);
+	print("g1: ", (uint64_t *)&p_pk[1], R_BITS);
 
 	return SUCCESS;
 }
@@ -98,7 +86,7 @@ function_h(OUT split_e_t *splitted_e, IN const r_t *in0, IN const r_t *in1) {
 	tmp.val[1] = *in1;
 
 	// Hash (m*f0, m*f1) to generate a seed:
-	sha(&hash_seed, sizeof(tmp), (uint8_t *) &tmp);
+	sha(&hash_seed, sizeof(tmp), (uint8_t *)&tmp);
 
 	// Format the seed as a 32-bytes input:
 	translate_hash_to_seed(&seed_for_hash, &hash_seed);
@@ -110,7 +98,7 @@ function_h(OUT split_e_t *splitted_e, IN const r_t *in0, IN const r_t *in1) {
 	DEFER_CLEANUP(padded_e_t e, padded_e_cleanup);
 	DEFER_CLEANUP(compressed_idx_t_t dummy, compressed_idx_t_cleanup);
 
-	GUARD(generate_sparse_rep((uint64_t *) &e, dummy.val, T1, N_BITS, sizeof(e),
+	GUARD(generate_sparse_rep((uint64_t *)&e, dummy.val, T1, N_BITS, sizeof(e),
 	                          &prf_state));
 	split_e(splitted_e, &e.val);
 
@@ -126,21 +114,21 @@ encrypt(OUT ct_t *ct, OUT split_e_t *mf, IN const pk_t *pk, IN const seed_t *see
 
 	// Pad the public key
 	pad_pk_t p_pk = {0};
-	p_pk[0].val = pk->val[0];
-	p_pk[1].val = pk->val[1];
+	p_pk[0].val   = pk->val[0];
+	p_pk[1].val   = pk->val[1];
 
 	// Pad the ciphertext
 	pad_ct_t p_ct = {0};
-	p_ct[0].val = ct->val[0];
-	p_ct[1].val = ct->val[1];
+	p_ct[0].val   = ct->val[0];
+	p_ct[1].val   = ct->val[1];
 
 	DEFER_CLEANUP(dbl_pad_ct_t mf_int = {0}, dbl_pad_ct_cleanup);
 
 	DMSG("    Computing m*f0 and m*f1.\n");
 	GUARD(
-	    gf2x_mod_mul((uint64_t *) &mf_int[0], (uint64_t *) &m, (uint64_t *) &p_pk[0]));
+	    gf2x_mod_mul((uint64_t *)&mf_int[0], (uint64_t *)&m, (uint64_t *)&p_pk[0]));
 	GUARD(
-	    gf2x_mod_mul((uint64_t *) &mf_int[1], (uint64_t *) &m, (uint64_t *) &p_pk[1]));
+	    gf2x_mod_mul((uint64_t *)&mf_int[1], (uint64_t *)&m, (uint64_t *)&p_pk[1]));
 
 	DEFER_CLEANUP(split_e_t splitted_e, split_e_cleanup);
 
@@ -161,10 +149,10 @@ encrypt(OUT ct_t *ct, OUT split_e_t *mf, IN const pk_t *pk, IN const seed_t *see
 	mf->val[0] = mf_int[0].val;
 	mf->val[1] = mf_int[1].val;
 
-	print("e0: ", (uint64_t *) splitted_e.val[0].raw, R_BITS);
-	print("e1: ", (uint64_t *) splitted_e.val[1].raw, R_BITS);
-	print("c0: ", (uint64_t *) p_ct[0].val.raw, R_BITS);
-	print("c1: ", (uint64_t *) p_ct[1].val.raw, R_BITS);
+	print("e0: ", (uint64_t *)splitted_e.val[0].raw, R_BITS);
+	print("e1: ", (uint64_t *)splitted_e.val[1].raw, R_BITS);
+	print("c0: ", (uint64_t *)p_ct[0].val.raw, R_BITS);
+	print("c1: ", (uint64_t *)p_ct[1].val.raw, R_BITS);
 
 	return SUCCESS;
 }
@@ -210,10 +198,12 @@ get_ss(OUT ss_t *out, IN const r_t *in0, IN const r_t *in1, IN const ct_t *ct) {
 ////////////////////////////////////////////////////////////////////////////////
 // The three APIs below (keypair, encapsulate, decapsulate) are defined by NIST:
 ////////////////////////////////////////////////////////////////////////////////
-int keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
+int
+keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	// Convert to this implementation types
-	sk_t *l_sk = (sk_t *) sk;
-	pk_t *l_pk = (pk_t *) pk;
+	pk_t *l_pk = (pk_t *)pk;
+
+	DEFER_CLEANUP(sk_t l_sk = {0}, sk_cleanup);
 
 	// For DRBG and AES_PRF
 	DEFER_CLEANUP(seeds_t seeds = {0}, seeds_cleanup);
@@ -237,37 +227,34 @@ int keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	// sigma0/1/2 use the same context.
 	GUARD(init_aes_ctr_prf_state(&s_prf_state, MAX_AES_INVOKATION, &seeds.seed[2]));
 
-	// Make sure that the wlists are zeroed for the KATs.
-	memset(l_sk, 0, sizeof(sk_t));
-
-	GUARD(generate_sparse_rep((uint64_t *) &p_sk[0], l_sk->wlist[0].val, DV, R_BITS,
+	GUARD(generate_sparse_rep((uint64_t *)&p_sk[0], l_sk.wlist[0].val, DV, R_BITS,
 	                          sizeof(p_sk[0]), &h_prf_state));
 
-	// Copy data
-	l_sk->bin[0] = p_sk[0].val;
-
 	// Sample the sigmas
-	GUARD(sample_uniform_r_bits_with_fixed_prf_context(&l_sk->sigma0, &s_prf_state,
+	GUARD(sample_uniform_r_bits_with_fixed_prf_context(&l_sk.sigma0, &s_prf_state,
 	        NO_RESTRICTION));
-	GUARD(sample_uniform_r_bits_with_fixed_prf_context(&l_sk->sigma1, &s_prf_state,
+	GUARD(sample_uniform_r_bits_with_fixed_prf_context(&l_sk.sigma1, &s_prf_state,
 	        NO_RESTRICTION));
 
-	GUARD(generate_sparse_rep((uint64_t *) &p_sk[1], l_sk->wlist[1].val, DV, R_BITS,
+	GUARD(generate_sparse_rep((uint64_t *)&p_sk[1], l_sk.wlist[1].val, DV, R_BITS,
 	                          sizeof(p_sk[1]), &h_prf_state));
 
 	// Copy data
-	l_sk->bin[1] = p_sk[1].val;
+	l_sk.bin[0] = p_sk[0].val;
+	l_sk.bin[1] = p_sk[1].val;
 
 	DMSG("    Calculating the public key.\n");
 
 	GUARD(calc_pk(l_pk, &seeds.seed[1], p_sk));
 
-	print("h0: ", (uint64_t *) &l_sk->bin[0], R_BITS);
-	print("h1: ", (uint64_t *) &l_sk->bin[1], R_BITS);
-	print("h0c:", (uint64_t *) &l_sk->wlist[0], SIZEOF_BITS(compressed_idx_dv_t));
-	print("h1c:", (uint64_t *) &l_sk->wlist[1], SIZEOF_BITS(compressed_idx_dv_t));
-	print("sigma0: ", (uint64_t *) l_sk->sigma0.raw, R_BITS);
-	print("sigma1: ", (uint64_t *) l_sk->sigma1.raw, R_BITS);
+	memcpy(sk, &l_sk, sizeof(l_sk));
+
+	print("h0: ", (uint64_t *)&l_sk.bin[0], R_BITS);
+	print("h1: ", (uint64_t *)&l_sk.bin[1], R_BITS);
+	print("h0c:", (uint64_t *)&l_sk.wlist[0], SIZEOF_BITS(compressed_idx_dv_t));
+	print("h1c:", (uint64_t *)&l_sk.wlist[1], SIZEOF_BITS(compressed_idx_dv_t));
+	print("sigma0: ", (uint64_t *)l_sk.sigma0.raw, R_BITS);
+	print("sigma1: ", (uint64_t *)l_sk.sigma1.raw, R_BITS);
 
 	DMSG("  Exit crypto_kem_keypair.\n");
 
@@ -277,13 +264,14 @@ int keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 // Encapsulate - pk is the public key,
 //               ct is a key encapsulation message (ciphertext),
 //               ss is the shared secret.
-int encaps(OUT unsigned char *ct, OUT unsigned char *ss, IN const unsigned char *pk) {
+int
+encaps(OUT unsigned char *ct, OUT unsigned char *ss, IN const unsigned char *pk) {
 	DMSG("  Enter crypto_kem_enc.\n");
 
 	// Convert to the types that are used by this implementation
-	const pk_t *l_pk = (const pk_t *) pk;
-	ct_t *l_ct = (ct_t *) ct;
-	ss_t *l_ss = (ss_t *) ss;
+	const pk_t *l_pk = (const pk_t *)pk;
+	ct_t       *l_ct = (ct_t *)ct;
+	ss_t       *l_ss = (ss_t *)ss;
 
 	// For NIST DRBG_CTR
 	DEFER_CLEANUP(seeds_t seeds = {0}, seeds_cleanup);
@@ -301,7 +289,7 @@ int encaps(OUT unsigned char *ct, OUT unsigned char *ss, IN const unsigned char 
 	DMSG("    Generating shared secret.\n");
 	get_ss(l_ss, &mf.val[0], &mf.val[1], l_ct);
 
-	print("ss: ", (uint64_t *) l_ss->raw, SIZEOF_BITS(*l_ss));
+	print("ss: ", (uint64_t *)l_ss->raw, SIZEOF_BITS(*l_ss));
 	DMSG("  Exit crypto_kem_enc.\n");
 	return SUCCESS;
 }
@@ -309,25 +297,28 @@ int encaps(OUT unsigned char *ct, OUT unsigned char *ss, IN const unsigned char 
 // Decapsulate - ct is a key encapsulation message (ciphertext),
 //               sk is the private key,
 //               ss is the shared secret
-int decaps(OUT unsigned char *ss,
-           IN const unsigned char *ct,
-           IN const unsigned char *sk) {
+int
+decaps(OUT unsigned char      *ss,
+       IN const unsigned char *ct,
+       IN const unsigned char *sk) {
 	DMSG("  Enter crypto_kem_dec.\n");
 
 	// Convert to the types used by this implementation
-	const sk_t *l_sk = (const sk_t *) sk;
-	const ct_t *l_ct = (const ct_t *) ct;
-	ss_t *l_ss = (ss_t *) ss;
+	const ct_t *l_ct = (const ct_t *)ct;
+	ss_t       *l_ss = (ss_t *)ss;
+
+	DEFER_CLEANUP(sk_t l_sk, sk_cleanup);
+	memcpy(&l_sk, sk, sizeof(l_sk));
 
 	// Force zero initialization.
 	DEFER_CLEANUP(syndrome_t syndrome = {0}, syndrome_cleanup);
 	DEFER_CLEANUP(split_e_t e, split_e_cleanup);
 
 	DMSG("  Computing s.\n");
-	GUARD(compute_syndrome(&syndrome, l_ct, l_sk));
+	GUARD(compute_syndrome(&syndrome, l_ct, &l_sk));
 
 	DMSG("  Decoding.\n");
-	uint32_t dec_ret = decode(&e, &syndrome, l_ct, l_sk) != SUCCESS ? 0 : 1;
+	uint32_t dec_ret = decode(&e, &syndrome, l_ct, &l_sk) != SUCCESS ? 0 : 1;
 
 	DEFER_CLEANUP(split_e_t e2, split_e_cleanup);
 	DEFER_CLEANUP(pad_ct_t ce, pad_ct_cleanup);
@@ -340,13 +331,13 @@ int decaps(OUT unsigned char *ss,
 	success_cond = dec_ret;
 	success_cond &= secure_cmp32(T1, r_bits_vector_weight(&e.val[0]) +
 	                             r_bits_vector_weight(&e.val[1]));
-	success_cond &= secure_cmp((uint8_t *) &e, (uint8_t *) &e2, sizeof(e));
+	success_cond &= secure_cmp((uint8_t *)&e, (uint8_t *)&e2, sizeof(e));
 
 	ss_t ss_succ = {0};
 	ss_t ss_fail = {0};
 
 	get_ss(&ss_succ, &ce[0].val, &ce[1].val, l_ct);
-	get_ss(&ss_fail, &l_sk->sigma0, &l_sk->sigma1, l_ct);
+	get_ss(&ss_fail, &l_sk.sigma0, &l_sk.sigma1, l_ct);
 
 	uint8_t mask = ~secure_l32_mask(0, success_cond);
 	for (uint32_t i = 0; i < sizeof(*l_ss); i++) {

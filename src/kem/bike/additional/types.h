@@ -1,17 +1,5 @@
-/*
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- * The license is detailed in the file LICENSE.md, and applies to this file.
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0"
  *
  * Written by Nir Drucker and Shay Gueron
  * AWS Cryptographic Algorithms Group.
@@ -26,7 +14,7 @@
 
 typedef struct uint128_s {
 	union {
-		uint8_t bytes[16];
+		uint8_t  bytes[16];
 		uint32_t dw[4];
 		uint64_t qw[2];
 	} u;
@@ -74,38 +62,38 @@ typedef struct compressed_idx_t_t {
 // The secret key holds both representation for avoiding
 // the compression in the decaps stage
 typedef struct sk_s {
-	r_t bin[N0];
 	compressed_idx_dv_ar_t wlist;
+	r_t                    bin[N0];
 #ifndef INDCPA
-	r_t sigma0;
-	r_t sigma1;
+	r_t                    sigma0;
+	r_t                    sigma1;
 #endif
 } sk_t;
 
 // Pad e to the next Block
 typedef ALIGN(8) struct padded_e_s {
-	e_t val;
+	e_t     val;
 	uint8_t pad[N_PADDED_SIZE - N_SIZE];
 } padded_e_t;
 
 // Pad r to the next Block
 typedef ALIGN(8) struct padded_r_s {
-	r_t val;
+	r_t     val;
 	uint8_t pad[R_PADDED_SIZE - R_SIZE];
 } padded_r_t;
 
-typedef padded_r_t padded_param_n_t[N0];
+typedef padded_r_t       padded_param_n_t[N0];
 typedef padded_param_n_t pad_sk_t;
 typedef padded_param_n_t pad_pk_t;
 typedef padded_param_n_t pad_ct_t;
 
 // Need to allocate twice the room for the results
 typedef ALIGN(8) struct dbl_padded_r_s {
-	r_t val;
+	r_t     val;
 	uint8_t pad[(2 * R_PADDED_SIZE) - R_SIZE];
 } dbl_padded_r_t;
 
-typedef dbl_padded_r_t dbl_padded_param_n_t[N0];
+typedef dbl_padded_r_t       dbl_padded_param_n_t[N0];
 typedef dbl_padded_param_n_t dbl_pad_pk_t;
 typedef dbl_padded_param_n_t dbl_pad_ct_t;
 typedef dbl_padded_param_n_t dbl_pad_syndrome_t;
@@ -124,7 +112,7 @@ typedef ALIGN(64) struct syndrome_s {
 typedef struct upc_slice_s {
 	union {
 		padded_r_t r;
-		uint64_t qw[sizeof(padded_r_t) / 8];
+		uint64_t   qw[sizeof(padded_r_t) / 8];
 	} u;
 } upc_slice_t;
 

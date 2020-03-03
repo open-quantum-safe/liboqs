@@ -1,17 +1,5 @@
-/*
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- * The license is detailed in the file LICENSE.md, and applies to this file.
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0"
  *
  * Written by Nir Drucker and Shay Gueron
  * AWS Cryptographic Algorithms Group.
@@ -21,7 +9,7 @@
 #include "utilities.h"
 #include <inttypes.h>
 
-#define BITS_IN_QW 64ULL
+#define BITS_IN_QW   64ULL
 #define BITS_IN_BYTE 8ULL
 
 // Print a new line only if we prints in qw blocks
@@ -93,17 +81,17 @@ print_last_block(IN const uint8_t *last_bytes,
 	                          : last_bytes[bytes_num - 1] & MASK(rem_bits % 8);
 	// BE
 	if (0 == endien) {
-		for (i = 0; (uint32_t) i < (bytes_num - 1); i++) {
+		for (i = 0; (uint32_t)i < (bytes_num - 1); i++) {
 			printf("%.2x", last_bytes[i]);
 		}
 
 		printf("%.2x", last_byte);
 
-		for (i++; (uint32_t) i < sizeof(uint64_t); i++) {
+		for (i++; (uint32_t)i < sizeof(uint64_t); i++) {
 			printf("__");
 		}
 	} else {
-		for (i = sizeof(uint64_t) - 1; (uint32_t) i >= bytes_num; i--) {
+		for (i = sizeof(uint64_t) - 1; (uint32_t)i >= bytes_num; i--) {
 			printf("__");
 		}
 
@@ -121,14 +109,15 @@ print_last_block(IN const uint8_t *last_bytes,
 	return 1;
 }
 
-void print_LE(IN const uint64_t *in, IN const uint32_t bits_num) {
+void
+print_LE(IN const uint64_t *in, IN const uint32_t bits_num) {
 	const uint32_t qw_num = bits_num / BITS_IN_QW;
 
 	// Print the MSB QW
-	uint32_t qw_pos = print_last_block((const uint8_t *) &in[qw_num], bits_num, 1);
+	uint32_t qw_pos = print_last_block((const uint8_t *)&in[qw_num], bits_num, 1);
 
 	// Print each 8 bytes separated by space (if required)
-	for (int i = ((int) qw_num) - 1; i >= 0; i--, qw_pos++) {
+	for (int i = ((int)qw_num) - 1; i >= 0; i--, qw_pos++) {
 		print_uint64(in[i]);
 		print_newline(qw_pos);
 	}
@@ -136,7 +125,8 @@ void print_LE(IN const uint64_t *in, IN const uint32_t bits_num) {
 	printf("\n");
 }
 
-void print_BE(IN const uint64_t *in, IN const uint32_t bits_num) {
+void
+print_BE(IN const uint64_t *in, IN const uint32_t bits_num) {
 	const uint32_t qw_num = bits_num / BITS_IN_QW;
 
 	// Print each 16 numbers separatly
@@ -146,7 +136,7 @@ void print_BE(IN const uint64_t *in, IN const uint32_t bits_num) {
 	}
 
 	// Print the MSB QW
-	print_last_block((const uint8_t *) &in[qw_num], bits_num, 0);
+	print_last_block((const uint8_t *)&in[qw_num], bits_num, 0);
 
 	printf("\n");
 }

@@ -1,17 +1,5 @@
-/*
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- * The license is detailed in the file LICENSE.md, and applies to this file.
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0"
  *
  * Written by Nir Drucker and Shay Gueron
  * AWS Cryptographic Algorithms Group.
@@ -45,7 +33,7 @@ rotate512_big(OUT syndrome_t *out, IN const syndrome_t *in, size_t zmm_num) {
 
 	for (uint32_t idx = R_ZMM_HALF_LOG2; idx >= 1; idx >>= 1) {
 		const uint8_t mask = secure_l32_mask(zmm_num, idx);
-		zmm_num = zmm_num - (idx & mask);
+		zmm_num            = zmm_num - (idx & mask);
 
 		for (size_t i = 0; i < (R_ZMM + idx); i++) {
 			const __m512i a = _mm512_loadu_si512(&out->qw[8 * (i + idx)]);
@@ -57,20 +45,20 @@ rotate512_big(OUT syndrome_t *out, IN const syndrome_t *in, size_t zmm_num) {
 // The rotate512_small funciton is a derivative of the code described in [1]
 _INLINE_ void
 rotate512_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t bitscount) {
-	__m512i previous = _mm512_setzero_si512();
-	const int count64 = (int) bitscount & 0x3f;
-	const __m512i count64_512 = _mm512_set1_epi64(count64);
-	const __m512i count64_512r = _mm512_set1_epi64((int) 64 - count64);
+	__m512i       previous     = _mm512_setzero_si512();
+	const int     count64      = (int)bitscount & 0x3f;
+	const __m512i count64_512  = _mm512_set1_epi64(count64);
+	const __m512i count64_512r = _mm512_set1_epi64((int)64 - count64);
 
 	const __m512i num_full_qw = _mm512_set1_epi8(bitscount >> 6);
-	const __m512i one = _mm512_set1_epi64(1);
-	__m512i a0, a1;
+	const __m512i one         = _mm512_set1_epi64(1);
+	__m512i       a0, a1;
 
 	__m512i idx = _mm512_setr_epi64(0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7);
 
 	// Positions above 7 are taken from the second register in
 	// _mm512_permutex2var_epi64
-	idx = _mm512_add_epi64(idx, num_full_qw);
+	idx          = _mm512_add_epi64(idx, num_full_qw);
 	__m512i idx1 = _mm512_add_epi64(idx, one);
 
 	for (int i = R_ZMM; i >= 0; i--) {
@@ -94,9 +82,10 @@ rotate512_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t bitscount) 
 	}
 }
 
-void rotate_right(OUT syndrome_t *out,
-                  IN const syndrome_t *in,
-                  IN const uint32_t bitscount) {
+void
+rotate_right(OUT syndrome_t *out,
+             IN const syndrome_t *in,
+             IN const uint32_t    bitscount) {
 	// 1) Rotate in granularity of 512 bits blocks using ZMMs
 	rotate512_big(out, in, (bitscount / 512));
 	// 2) Rotate in smaller granularity (less than 512 bits) using ZMMs
