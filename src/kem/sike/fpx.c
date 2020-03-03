@@ -140,7 +140,7 @@ static void fp2correction(f2elm_t a) { // Modular correction, a = a in GF(p^2).
 __inline static void mp_addfast(const digit_t *a, const digit_t *b, digit_t *c) { // Multiprecision addition, c = a+b.
 #if USE_SIKE_ASM
 	mp_add_asm(a, b, c);
-#else 
+#else
 	mp_add(a, b, c, NWORDS_FIELD);
 #endif
 }

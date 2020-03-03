@@ -32,14 +32,14 @@
 //
 
 const uint64_t p434[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFDC1767AE2FFFFFF,
-                                              0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344
-                                             };
+                                       0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344
+                                      };
 const uint64_t p434p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xFDC1767AE3000000,
-                                                0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344
-                                               };
+                                         0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344
+                                        };
 const uint64_t p434x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFB82ECF5C5FFFFFF,
-                                                0xF78CB8F062B15D47, 0xD9F8BFAD038A40AC, 0x0004683E4E2EE688
-                                               };
+                                         0xF78CB8F062B15D47, 0xD9F8BFAD038A40AC, 0x0004683E4E2EE688
+                                        };
 // Order of Alice's subgroup
 static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000001000000};
 // Order of Bob's subgroup
