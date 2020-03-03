@@ -157,8 +157,9 @@ get_ss(OUT ss_t *out, IN const e_t *e) {
 ret_t
 keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	// Convert to this implementation types
-	sk_t *l_sk = (sk_t *)sk;
 	pk_t *l_pk = (pk_t *)pk;
+
+	DEFER_CLEANUP(sk_t l_sk = {0}, sk_cleanup);
 
 	// For DRBG and AES_PRF
 	DEFER_CLEANUP(seeds_t seeds = {0}, seeds_cleanup);
@@ -176,27 +177,27 @@ keypair(OUT unsigned char *pk, OUT unsigned char *sk) {
 	// h0 and h1 use the same context
 	GUARD(init_aes_ctr_prf_state(&h_prf_state, MAX_AES_INVOKATION, &seeds.seed[0]));
 
-	// Make sure that the wlists are zeroed for the KATs.
-	memset(l_sk, 0, sizeof(sk_t));
-	GUARD(generate_sparse_rep((uint64_t *)&p_sk[0], l_sk->wlist[0].val, DV, R_BITS,
+	GUARD(generate_sparse_rep((uint64_t *)&p_sk[0], l_sk.wlist[0].val, DV, R_BITS,
 	                          sizeof(p_sk[0]), &h_prf_state));
 	// Copy data
-	l_sk->bin[0] = p_sk[0].val;
+	l_sk.bin[0] = p_sk[0].val;
 
-	GUARD(generate_sparse_rep((uint64_t *)&p_sk[1], l_sk->wlist[1].val, DV, R_BITS,
+	GUARD(generate_sparse_rep((uint64_t *)&p_sk[1], l_sk.wlist[1].val, DV, R_BITS,
 	                          sizeof(p_sk[1]), &h_prf_state));
 
 	// Copy data
-	l_sk->bin[1] = p_sk[1].val;
+	l_sk.bin[1] = p_sk[1].val;
 
 	DMSG("    Calculating the public key.\n");
 
 	GUARD(calc_pk(l_pk, &seeds.seed[1], p_sk));
 
-	print("h0: ", (uint64_t *)&l_sk->bin[0], R_BITS);
-	print("h1: ", (uint64_t *)&l_sk->bin[1], R_BITS);
-	print("h0c:", (uint64_t *)&l_sk->wlist[0], SIZEOF_BITS(compressed_idx_dv_t));
-	print("h1c:", (uint64_t *)&l_sk->wlist[1], SIZEOF_BITS(compressed_idx_dv_t));
+	memcpy(sk, &l_sk, sizeof(l_sk));
+
+	print("h0: ", (uint64_t *)&l_sk.bin[0], R_BITS);
+	print("h1: ", (uint64_t *)&l_sk.bin[1], R_BITS);
+	print("h0c:", (uint64_t *)&l_sk.wlist[0], SIZEOF_BITS(compressed_idx_dv_t));
+	print("h1c:", (uint64_t *)&l_sk.wlist[1], SIZEOF_BITS(compressed_idx_dv_t));
 	DMSG("  Exit crypto_kem_keypair.\n");
 
 	return SUCCESS;
@@ -263,9 +264,11 @@ decaps(OUT unsigned char      *ss,
 	DMSG("  Enter crypto_kem_dec.\n");
 
 	// Convert to this implementation types
-	const sk_t *l_sk = (const sk_t *)sk;
 	const ct_t *l_ct = (const ct_t *)ct;
 	ss_t       *l_ss = (ss_t *)ss;
+
+	DEFER_CLEANUP(sk_t l_sk, sk_cleanup);
+	memcpy(&l_sk, sk, sizeof(l_sk));
 
 	// Force zero initialization
 	DEFER_CLEANUP(syndrome_t syndrome = {0}, syndrome_cleanup);
@@ -273,10 +276,10 @@ decaps(OUT unsigned char      *ss,
 	DEFER_CLEANUP(e_t merged_e = {0}, e_cleanup);
 
 	DMSG("  Computing s.\n");
-	GUARD(compute_syndrome(&syndrome, l_ct, l_sk));
+	GUARD(compute_syndrome(&syndrome, l_ct, &l_sk));
 
 	DMSG("  Decoding.\n");
-	GUARD(decode(&e, &syndrome, l_ct, l_sk));
+	GUARD(decode(&e, &syndrome, l_ct, &l_sk));
 
 	// Check if the error weight equals T1
 	if (T1 != r_bits_vector_weight(&e.val[0]) + r_bits_vector_weight(&e.val[1])) {
