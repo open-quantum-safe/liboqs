@@ -10,7 +10,7 @@
 
 #include "types.h"
 
-#ifdef USE_OPENSSL
+#ifdef OQS_USE_OPENSSL
 #  include <openssl/bn.h>
 #  ifndef OPENSSL_NO_EC2M
 #    define USE_OPENSSL_GF2M 1
