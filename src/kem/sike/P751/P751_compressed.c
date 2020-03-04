@@ -396,9 +396,9 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] = {
 #define fp2inv_mont fp2inv751_mont
 #define fp2inv_mont_bingcd fp2inv751_mont_bingcd
 #define fpequal_non_constant_time fpequal751_non_constant_time
-#define mp_add_asm mp_add751_asm
-#define mp_subaddx2_asm mp_subadd751x2_asm
-#define mp_dblsubx2_asm mp_dblsub751x2_asm
+#define mp_add_asm oqs_kem_sike_mp_add751_asm
+#define mp_subaddx2_asm oqs_kem_sike_mp_subadd751x2_asm
+#define mp_dblsubx2_asm oqs_kem_sike_mp_dblsub751x2_asm
 #define crypto_kem_keypair OQS_KEM_sike_p751_compressed_keypair
 #define crypto_kem_enc OQS_KEM_sike_p751_compressed_encaps
 #define crypto_kem_dec OQS_KEM_sike_p751_compressed_decaps
@@ -408,10 +408,12 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] = {
 #define EphemeralKeyGeneration_B oqs_kem_sidh_p751_compressed_EphemeralKeyGeneration_B
 #define EphemeralSecretAgreement_A oqs_kem_sidh_p751_compressed_EphemeralSecretAgreement_A
 #define EphemeralSecretAgreement_B oqs_kem_sidh_p751_compressed_EphemeralSecretAgreement_B
+#ifdef USE_SIKEP751_ASM
+#define USE_SIKE_ASM
+#endif
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"
-// #include "AMD64/fp_x64_asm.S" FIXMEOQS
 #elif defined(ARM64)
 #include "ARM64/fp_arm64.c"
 #else

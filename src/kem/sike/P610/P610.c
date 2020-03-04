@@ -31,15 +31,15 @@
 // Curve isogeny system "SIDHp610". Base curve: Montgomery curve By^2 = Cx^3 + Ax^2 + Cx defined over GF(p610^2), where A=6, B=1, C=1 and p610 = 2^305*3^192-1
 //
 
-static const uint64_t p610[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x6E01FFFFFFFFFFFF,
-                                              0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768
-                                             };
-static const uint64_t p610p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x6E02000000000000,
-                                                0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768
-                                               };
-static const uint64_t p610x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xDC03FFFFFFFFFFFF,
-                                                0x62F09BD154B5605C, 0x35CF7E8A091FF357, 0x64AB65F421884A55, 0x03202184A3CFB119, 0x00000004F7ED4ED1
-                                               };
+const uint64_t p610[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x6E01FFFFFFFFFFFF,
+                                       0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768
+                                      };
+const uint64_t p610p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x6E02000000000000,
+                                         0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768
+                                        };
+const uint64_t p610x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xDC03FFFFFFFFFFFF,
+                                         0x62F09BD154B5605C, 0x35CF7E8A091FF357, 0x64AB65F421884A55, 0x03202184A3CFB119, 0x00000004F7ED4ED1
+                                        };
 // Order of Alice's subgroup
 static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0002000000000000};
 // Order of Bob's subgroup
@@ -127,9 +127,9 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define fp2inv_mont fp2inv610_mont
 #define fp2inv_mont_bingcd fp2inv610_mont_bingcd
 #define fpequal_non_constant_time fpequal610_non_constant_time
-#define mp_add_asm mp_add610_asm
-#define mp_subaddx2_asm mp_subadd610x2_asm
-#define mp_dblsubx2_asm mp_dblsub610x2_asm
+#define mp_add_asm oqs_kem_sike_mp_add610_asm
+#define mp_subaddx2_asm oqs_kem_sike_mp_subadd610x2_asm
+#define mp_dblsubx2_asm oqs_kem_sike_mp_dblsub610x2_asm
 #define crypto_kem_keypair OQS_KEM_sike_p610_keypair
 #define crypto_kem_enc OQS_KEM_sike_p610_encaps
 #define crypto_kem_dec OQS_KEM_sike_p610_decaps
@@ -139,10 +139,12 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define EphemeralKeyGeneration_B oqs_kem_sidh_p610_EphemeralKeyGeneration_B
 #define EphemeralSecretAgreement_A oqs_kem_sidh_p610_EphemeralSecretAgreement_A
 #define EphemeralSecretAgreement_B oqs_kem_sidh_p610_EphemeralSecretAgreement_B
+#ifdef USE_SIKEP610_ASM
+#define USE_SIKE_ASM
+#endif
 
 #if defined(X86_64)
 #include "AMD64/fp_x64.c"
-// #include "AMD64/fp_x64_asm.S" FIXMEOQS
 #else
 #include "generic/fp_generic.c"
 #endif
