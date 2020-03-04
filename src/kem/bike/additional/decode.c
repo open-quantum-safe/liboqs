@@ -1,17 +1,5 @@
-/*
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- * The license is detailed in the file LICENSE.md, and applies to this file.
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0"
  *
  * Written by Nir Drucker, Shay Gueron, and Dusan Kostic,
  * AWS Cryptographic Algorithms Group.
@@ -54,25 +42,25 @@
 
 // Decoding (bit-flipping) parameter
 #ifdef BG_DECODER
-#if (LEVEL == 1)
-#define MAX_IT 3
-#elif (LEVEL == 3)
-#define MAX_IT 4
-#elif (LEVEL == 5)
-#define MAX_IT 7
-#else
-#error "Level can only be 1/3/5"
-#endif
+#  if(LEVEL == 1)
+#    define MAX_IT 3
+#  elif(LEVEL == 3)
+#    define MAX_IT 4
+#  elif(LEVEL == 5)
+#    define MAX_IT 7
+#  else
+#    error "Level can only be 1/3/5"
+#  endif
 #elif defined(BGF_DECODER)
-#if (LEVEL == 1)
-#define MAX_IT 5
-#elif (LEVEL == 3)
-#define MAX_IT 6
-#elif (LEVEL == 5)
-#define MAX_IT 7
-#else
-#error "Level can only be 1/3/5"
-#endif
+#  if(LEVEL == 1)
+#    define MAX_IT 5
+#  elif(LEVEL == 3)
+#    define MAX_IT 6
+#  elif(LEVEL == 5)
+#    define MAX_IT 7
+#  else
+#    error "Level can only be 1/3/5"
+#  endif
 #endif
 
 // Duplicates the first R_BITS of the syndrome three times
@@ -91,7 +79,8 @@ dup(IN OUT syndrome_t *s) {
 	}
 }
 
-ret_t compute_syndrome(OUT syndrome_t *syndrome, IN const ct_t *ct, IN const sk_t *sk) {
+ret_t
+compute_syndrome(OUT syndrome_t *syndrome, IN const ct_t *ct, IN const sk_t *sk) {
 	// gf2x_mod_mul requires the values to be 64bit padded and extra (dbl) space
 	// for the results
 	DEFER_CLEANUP(dbl_pad_syndrome_t pad_s, dbl_pad_syndrome_cleanup);
@@ -104,14 +93,14 @@ ret_t compute_syndrome(OUT syndrome_t *syndrome, IN const ct_t *ct, IN const sk_
 	pad_ct[1].val = ct->val[1];
 
 	// Compute s = c0*h0 + c1*h1:
-	GUARD(gf2x_mod_mul((uint64_t *) &pad_s[0], (uint64_t *) &pad_ct[0],
-	                   (uint64_t *) &pad_sk[0]));
-	GUARD(gf2x_mod_mul((uint64_t *) &pad_s[1], (uint64_t *) &pad_ct[1],
-	                   (uint64_t *) &pad_sk[1]));
+	GUARD(gf2x_mod_mul((uint64_t *)&pad_s[0], (uint64_t *)&pad_ct[0],
+	                   (uint64_t *)&pad_sk[0]));
+	GUARD(gf2x_mod_mul((uint64_t *)&pad_s[1], (uint64_t *)&pad_ct[1],
+	                   (uint64_t *)&pad_sk[1]));
 
 	GUARD(gf2x_add(pad_s[0].val.raw, pad_s[0].val.raw, pad_s[1].val.raw, R_SIZE));
 
-	memcpy((uint8_t *) syndrome->qw, pad_s[0].val.raw, R_SIZE);
+	memcpy((uint8_t *)syndrome->qw, pad_s[0].val.raw, R_SIZE);
 	dup(syndrome);
 
 	return SUCCESS;
@@ -140,7 +129,7 @@ _INLINE_ uint8_t
 get_threshold(IN const syndrome_t *s) {
 	bike_static_assert(sizeof(*s) >= sizeof(r_t), syndrome_is_large_enough);
 
-	const uint32_t syndrome_weight = r_bits_vector_weight((const r_t *) s->qw);
+	const uint32_t syndrome_weight = r_bits_vector_weight((const r_t *)s->qw);
 
 	// The equations below are defined in BIKE's specification:
 	// https://bikesuite.org/files/round2/spec/BIKE-Spec-Round2.2019.03.30.pdf
@@ -156,7 +145,7 @@ get_threshold(IN const syndrome_t *s) {
 _INLINE_ void
 bit_sliced_adder(OUT upc_t *upc,
                  IN OUT syndrome_t *rotated_syndrome,
-                 IN const size_t num_of_slices) {
+                 IN const size_t    num_of_slices) {
 	// From cache-memory perspective this loop should be the outside loop
 	for (size_t j = 0; j < num_of_slices; j++) {
 		for (size_t i = 0; i < R_QW; i++) {
@@ -190,11 +179,11 @@ bit_slice_full_subtract(OUT upc_t *upc, IN uint8_t val) {
 		// br = abc + abc + abc + abc = abc + ((a+b))c
 
 		for (size_t i = 0; i < R_QW; i++) {
-			const uint64_t a = upc->slice[j].u.qw[i];
-			const uint64_t b = lsb_mask;
-			const uint64_t tmp = ((~a) & b & (~br[i])) | ((((~a) | b) & br[i]));
+			const uint64_t a      = upc->slice[j].u.qw[i];
+			const uint64_t b      = lsb_mask;
+			const uint64_t tmp    = ((~a) & b & (~br[i])) | ((((~a) | b) & br[i]));
 			upc->slice[j].u.qw[i] = a ^ b ^ br[i];
-			br[i] = tmp;
+			br[i]                 = tmp;
 		}
 	}
 }
@@ -206,9 +195,9 @@ _INLINE_ void
 find_err1(OUT split_e_t *e,
           OUT split_e_t *black_e,
           OUT split_e_t *gray_e,
-          IN const syndrome_t *syndrome,
+          IN const syndrome_t            *syndrome,
           IN const compressed_idx_dv_ar_t wlist,
-          IN const uint8_t threshold) {
+          IN const uint8_t                threshold) {
 	// This function uses the bit-slice-adder methodology of [5]:
 	DEFER_CLEANUP(syndrome_t rotated_syndrome = {0}, syndrome_cleanup);
 	DEFER_CLEANUP(upc_t upc, upc_cleanup);
@@ -234,7 +223,7 @@ find_err1(OUT split_e_t *e,
 		//    errors Of the previous iteration.
 		const r_t *last_slice = &(upc.slice[SLICES - 1].u.r.val);
 		for (size_t j = 0; j < R_SIZE; j++) {
-			const uint8_t sum_msb = (~last_slice->raw[j]);
+			const uint8_t sum_msb  = (~last_slice->raw[j]);
 			black_e->val[i].raw[j] = sum_msb;
 			e->val[i].raw[j] ^= sum_msb;
 		}
@@ -246,7 +235,7 @@ find_err1(OUT split_e_t *e,
 		// 4) Calculate the gray error array by adding "DELTA" to the UPC array.
 		//    For that we reuse the rotated_syndrome variable setting it to all "1".
 		for (size_t l = 0; l < DELTA; l++) {
-			memset((uint8_t *) rotated_syndrome.qw, 0xff, R_SIZE);
+			memset((uint8_t *)rotated_syndrome.qw, 0xff, R_SIZE);
 			bit_sliced_adder(&upc, &rotated_syndrome, SLICES);
 		}
 
@@ -264,9 +253,9 @@ find_err1(OUT split_e_t *e,
 _INLINE_ void
 find_err2(OUT split_e_t *e,
           IN split_e_t *pos_e,
-          IN const syndrome_t *syndrome,
+          IN const syndrome_t            *syndrome,
           IN const compressed_idx_dv_ar_t wlist,
-          IN const uint8_t threshold) {
+          IN const uint8_t                threshold) {
 	DEFER_CLEANUP(syndrome_t rotated_syndrome = {0}, syndrome_cleanup);
 	DEFER_CLEANUP(upc_t upc, upc_cleanup);
 
@@ -299,12 +288,13 @@ find_err2(OUT split_e_t *e,
 	}
 }
 
-ret_t decode(OUT split_e_t *e,
-             IN const syndrome_t *original_s,
-             IN const ct_t *ct,
-             IN const sk_t *sk) {
-	split_e_t black_e = {0};
-	split_e_t gray_e = {0};
+ret_t
+decode(OUT split_e_t *e,
+       IN const syndrome_t *original_s,
+       IN const ct_t *ct,
+       IN const sk_t *sk) {
+	split_e_t  black_e = {0};
+	split_e_t  gray_e  = {0};
 	syndrome_t s;
 
 	// Reset (init) the error because it is xored in the find_err funcitons.
@@ -318,7 +308,7 @@ ret_t decode(OUT split_e_t *e,
 		DMSG("    Iteration: %d\n", iter);
 		DMSG("    Weight of e: %lu\n",
 		     r_bits_vector_weight(&e->val[0]) + r_bits_vector_weight(&e->val[1]));
-		DMSG("    Weight of syndrome: %lu\n", r_bits_vector_weight((r_t *) s.qw));
+		DMSG("    Weight of syndrome: %lu\n", r_bits_vector_weight((r_t *)s.qw));
 
 		find_err1(e, &black_e, &gray_e, &s, sk->wlist, threshold);
 		GUARD(recompute_syndrome(&s, ct, sk, e));
@@ -329,20 +319,20 @@ ret_t decode(OUT split_e_t *e,
 #endif
 		DMSG("    Weight of e: %lu\n",
 		     r_bits_vector_weight(&e->val[0]) + r_bits_vector_weight(&e->val[1]));
-		DMSG("    Weight of syndrome: %lu\n", r_bits_vector_weight((r_t *) s.qw));
+		DMSG("    Weight of syndrome: %lu\n", r_bits_vector_weight((r_t *)s.qw));
 
 		find_err2(e, &black_e, &s, sk->wlist, ((DV + 1) / 2) + 1);
 		GUARD(recompute_syndrome(&s, ct, sk, e));
 
 		DMSG("    Weight of e: %lu\n",
 		     r_bits_vector_weight(&e->val[0]) + r_bits_vector_weight(&e->val[1]));
-		DMSG("    Weight of syndrome: %lu\n", r_bits_vector_weight((r_t *) s.qw));
+		DMSG("    Weight of syndrome: %lu\n", r_bits_vector_weight((r_t *)s.qw));
 
 		find_err2(e, &gray_e, &s, sk->wlist, ((DV + 1) / 2) + 1);
 		GUARD(recompute_syndrome(&s, ct, sk, e));
 	}
 
-	if (r_bits_vector_weight((r_t *) s.qw) > 0) {
+	if (r_bits_vector_weight((r_t *)s.qw) > 0) {
 		BIKE_ERROR(E_DECODING_FAILURE);
 	}
 

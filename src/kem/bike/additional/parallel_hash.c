@@ -49,14 +49,15 @@ compute_slice_len(IN const uint64_t la) {
 }
 
 // This function assumes that m is of N_BITS length.
-void parallel_hash(OUT sha_hash_t *out_hash, IN const uint8_t *m, IN const uint32_t la) {
+void
+parallel_hash(OUT sha_hash_t *out_hash, IN const uint8_t *m, IN const uint32_t la) {
 	DMSG("    Enter parallel_hash.\n");
 
 	// Calculating how many bytes will go to "parallel" hashing
 	// and how many will remind as a tail for later on
-	const uint32_t ls = compute_slice_len(la);
+	const uint32_t ls   = compute_slice_len(la);
 	const uint32_t lrem = (uint32_t)(la - (ls * MAX_MB_SLICES));
-	yx_t yx = {0};
+	yx_t           yx   = {0};
 
 #ifdef WIN32
 	DMSG("    Len=%u splits into %I64u logical streams (A1..A8) of length %u "
@@ -74,7 +75,7 @@ void parallel_hash(OUT sha_hash_t *out_hash, IN const uint8_t *m, IN const uint3
 	     la, MAX_MB_SLICES, ls, lrem);
 #endif
 
-	print("    The (original) buffer is:\n    ", (const uint64_t *) m, la * 8);
+	print("    The (original) buffer is:\n    ", (const uint64_t *)m, la * 8);
 	DMSG("\n");
 	EDMSG("    The 8 SHA digests:\n");
 
@@ -87,7 +88,7 @@ void parallel_hash(OUT sha_hash_t *out_hash, IN const uint8_t *m, IN const uint3
 #endif
 
 	for (uint32_t i = 0; i < MAX_MB_SLICES; i++) {
-		print("X[i]:", (uint64_t *) &yx.x[i], SIZEOF_BITS(yx.x[i]));
+		print("X[i]:", (uint64_t *)&yx.x[i], SIZEOF_BITS(yx.x[i]));
 	}
 
 	// Copy the reminder (Y)
@@ -95,12 +96,12 @@ void parallel_hash(OUT sha_hash_t *out_hash, IN const uint8_t *m, IN const uint3
 
 	// Compute the final hash (on YX). We explicitly use lrem instead of
 	// sizeof(yx.y) because yx.y is padded with zeros.
-	sha(out_hash, sizeof(yx.x) + lrem, (uint8_t *) &yx);
+	sha(out_hash, sizeof(yx.x) + lrem, (uint8_t *)&yx);
 
-	print("\nY:  ", (uint64_t *) yx.y, lrem * 8);
+	print("\nY:  ", (uint64_t *)yx.y, lrem * 8);
 
 	// yx might contain secrets
-	secure_clean((uint8_t *) &yx, sizeof(yx));
+	secure_clean((uint8_t *)&yx, sizeof(yx));
 
 	DMSG("    Exit parallel_hash.\n");
 }

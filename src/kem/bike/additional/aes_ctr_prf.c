@@ -1,17 +1,5 @@
-/*
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- * The license is detailed in the file LICENSE.md, and applies to this file.
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0"
  *
  * Written by Nir Drucker and Shay Gueron
  * AWS Cryptographic Algorithms Group.
@@ -22,9 +10,10 @@
 #include "utilities.h"
 #include <string.h>
 
-ret_t init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
-                             IN const uint32_t max_invokations,
-                             IN const seed_t *seed) {
+ret_t
+init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
+                       IN const uint32_t        max_invokations,
+                       IN const seed_t *seed) {
 	if (0 == max_invokations) {
 		BIKE_ERROR(E_AES_CTR_PRF_INIT_FAIL);
 	}
@@ -39,12 +28,12 @@ ret_t init_aes_ctr_prf_state(OUT aes_ctr_prf_state_t *s,
 	GUARD(aes256_key_expansion(&s->ks_ptr, &key));
 
 	// Initialize buffer and counter
-	s->ctr.u.qw[0] = 0;
-	s->ctr.u.qw[1] = 0;
+	s->ctr.u.qw[0]    = 0;
+	s->ctr.u.qw[1]    = 0;
 	s->buffer.u.qw[0] = 0;
 	s->buffer.u.qw[1] = 0;
 
-	s->pos = AES256_BLOCK_SIZE;
+	s->pos             = AES256_BLOCK_SIZE;
 	s->rem_invokations = max_invokations;
 
 	SEDMSG("    Init aes_prf_ctr state:\n");
@@ -74,7 +63,8 @@ perform_aes(OUT uint8_t *ct, IN OUT aes_ctr_prf_state_t *s) {
 	return SUCCESS;
 }
 
-ret_t aes_ctr_prf(OUT uint8_t *a, IN OUT aes_ctr_prf_state_t *s, IN const uint32_t len) {
+ret_t
+aes_ctr_prf(OUT uint8_t *a, IN OUT aes_ctr_prf_state_t *s, IN const uint32_t len) {
 	// When Len is smaller than whats left in the buffer
 	// No need in additional AES
 	if ((len + s->pos) <= AES256_BLOCK_SIZE) {

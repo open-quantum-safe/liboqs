@@ -1,19 +1,7 @@
-/*
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0"
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- * The license is detailed in the file LICENSE.md, and applies to this file.
- *
- * Written by Nir Drucker and Shay Gueron
+ * Written by Nir Drucker and Shay Gueron,
  * AWS Cryptographic Algorithms Group.
  * (ndrucker@amazon.com, gueron@amazon.com)
  */
@@ -26,7 +14,7 @@
 
 #ifdef USE_OPENSSL_GF2M
 
-#define MAX_OPENSSL_INV_TRIALS 1000
+#  define MAX_OPENSSL_INV_TRIALS 1000
 
 _INLINE_ void
 BN_CTX_cleanup(BN_CTX *ctx) {
@@ -46,8 +34,8 @@ reverse_endian(OUT uint8_t *res, IN const uint8_t *in, IN const uint32_t n) {
 	uint64_t tmp;
 
 	for (i = 0; i < (n / 2); i++) {
-		tmp = in[i];
-		res[i] = in[n - 1 - i];
+		tmp            = in[i];
+		res[i]         = in[n - 1 - i];
 		res[n - 1 - i] = tmp;
 	}
 
@@ -86,9 +74,10 @@ ossl_bin2bn(IN BIGNUM *out, OUT const uint8_t *in, IN const uint32_t size) {
 	return SUCCESS;
 }
 
-ret_t ossl_add(OUT uint8_t res_bin[R_SIZE],
-               IN const uint8_t a_bin[R_SIZE],
-               IN const uint8_t b_bin[R_SIZE]) {
+ret_t
+ossl_add(OUT uint8_t      res_bin[R_SIZE],
+         IN const uint8_t a_bin[R_SIZE],
+         IN const uint8_t b_bin[R_SIZE]) {
 	DEFER_CLEANUP(BN_CTX *bn_ctx = BN_CTX_new(), BN_CTX_cleanup_pointer);
 	BIGNUM *r = NULL;
 	BIGNUM *a = NULL;
@@ -125,7 +114,7 @@ _INLINE_ ret_t
 ossl_cyclic_product(OUT BIGNUM *r,
                     IN const BIGNUM *a,
                     IN const BIGNUM *b,
-                    BN_CTX *bn_ctx) {
+                    BN_CTX          *bn_ctx) {
 	BIGNUM *m = BN_CTX_get(bn_ctx);
 	if (NULL == m) {
 		BIKE_ERROR(EXTERNAL_LIB_ERROR_OPENSSL);
@@ -145,9 +134,10 @@ ossl_cyclic_product(OUT BIGNUM *r,
 }
 
 // Perform a cyclic product by using OpenSSL.
-ret_t cyclic_product(OUT uint8_t res_bin[R_SIZE],
-                     IN const uint8_t a_bin[R_SIZE],
-                     IN const uint8_t b_bin[R_SIZE]) {
+ret_t
+cyclic_product(OUT uint8_t      res_bin[R_SIZE],
+               IN const uint8_t a_bin[R_SIZE],
+               IN const uint8_t b_bin[R_SIZE]) {
 	DEFER_CLEANUP(BN_CTX *bn_ctx = BN_CTX_new(), BN_CTX_cleanup_pointer);
 	BIGNUM *r = NULL;
 	BIGNUM *a = NULL;

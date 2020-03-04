@@ -1,17 +1,5 @@
-/*
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- * The license is detailed in the file LICENSE.md, and applies to this file.
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0"
  *
  * Written by Nir Drucker and Shay Gueron
  * AWS Cryptographic Algorithms Group.
@@ -23,35 +11,39 @@
 #include "cleanup.h"
 
 #ifndef bswap_64
-#define bswap_64(x) __builtin_bswap64(x)
+#  define bswap_64(x) __builtin_bswap64(x)
 #endif
 
 // Printing values in Little Endian
-void print_LE(IN const uint64_t *in, IN uint32_t bits_num);
+void
+print_LE(IN const uint64_t *in, IN uint32_t bits_num);
 
 // Printing values in Big Endian
-void print_BE(IN const uint64_t *in, IN uint32_t bits_num);
+void
+print_BE(IN const uint64_t *in, IN uint32_t bits_num);
 
 // Printing number is required only in verbose level 2 or above
 #if VERBOSE >= 2
-#ifdef PRINT_IN_BE
+#  ifdef PRINT_IN_BE
 // Print in Big Endian
-#define print(name, in, bits_num) \
-    do {                          \
-        EDMSG(name);              \
-        print_BE(in, bits_num);   \
-    } while (0)
-#else
+#    define print(name, in, bits_num) \
+      do                              \
+      {                               \
+        EDMSG(name);                  \
+        print_BE(in, bits_num);       \
+      } while(0)
+#  else
 // Print in Little Endian
-#define print(name, in, bits_num) \
-    do {                          \
-        EDMSG(name);              \
-        print_LE(in, bits_num);   \
-    } while (0)
-#endif
+#    define print(name, in, bits_num) \
+      do                              \
+      {                               \
+        EDMSG(name);                  \
+        print_LE(in, bits_num);       \
+      } while(0)
+#  endif
 #else
 // No prints at all
-#define print(name, in, bits_num)
+#  define print(name, in, bits_num)
 #endif
 
 // Comparing value in a constant time manner
@@ -153,6 +145,6 @@ secure_l32_mask(IN const uint32_t v1, IN const uint32_t v2) {
 	// If v1 >= v2 then the subtraction result is 0^32||(v1-v2)
 	// else it will be 1^32||(v2-v1+1). Subsequently, negating the upper
 	// 32 bits gives 0 if v1 < v2 and otherwise (-1).
-	return ~((uint32_t)(((uint64_t) v1 - (uint64_t) v2) >> 32));
+	return ~((uint32_t)(((uint64_t)v1 - (uint64_t)v2) >> 32));
 #endif
 }

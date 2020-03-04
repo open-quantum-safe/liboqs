@@ -1,19 +1,7 @@
-/*
- * Copyright 2020 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+/* Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * SPDX-License-Identifier: Apache-2.0"
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
- *
- * http://aws.amazon.com/apache2.0
- *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
- * The license is detailed in the file LICENSE.md, and applies to this file.
- *
- * Written by Nir Drucker and Shay Gueron
+ * Written by Nir Drucker and Shay Gueron,
  * AWS Cryptographic Algorithms Group.
  * (ndrucker@amazon.com, gueron@amazon.com)
  */
@@ -30,28 +18,28 @@
 // is stored on a secure buffer, so that it can be easily cleaned up later.
 // The secure buffer required is: 3n/2 (alah|blbh|tmp) in a recursive way.
 // 3n/2 + 3n/4 + 3n/8 = 3(n/2 + n/4 + n/8) < 3n
-#define SECURE_BUFFER_SIZE (3 * R_PADDED_SIZE)
+#  define SECURE_BUFFER_SIZE (3 * R_PADDED_SIZE)
 
 // This functions assumes that n is even.
 _INLINE_ void
 karatzuba(OUT uint64_t *res,
           IN const uint64_t *a,
           IN const uint64_t *b,
-          IN const uint64_t n,
-          uint64_t *secure_buf) {
-#ifdef PORTABLE
+          IN const uint64_t  n,
+          uint64_t          *secure_buf) {
+#  ifdef PORTABLE
 	if (1 == n) {
 		gf2x_mul_1x1(res, a[0], b[0]);
 		return;
 	}
-#else
+#  else
 	// If n=4 then calculate 256bitx256bit (4*64)
 	// in schoolbook mode.
 	if (4 == n) {
 		gf2_muladd_4x4(res, a, b);
 		return;
 	}
-#endif
+#  endif
 
 	const uint64_t half_n = n >> 1;
 
@@ -68,7 +56,7 @@ karatzuba(OUT uint64_t *res,
 	// All of them are in size half n
 	uint64_t *alah = secure_buf;
 	uint64_t *blbh = alah + half_n;
-	uint64_t *tmp = blbh + half_n;
+	uint64_t *tmp  = blbh + half_n;
 
 	// Place the secure buffer ptr in the first free location,
 	// so the recursive function can use it.
@@ -89,16 +77,16 @@ karatzuba(OUT uint64_t *res,
 	karatzuba_add2(res1, res2, res, tmp, half_n);
 }
 
-ret_t gf2x_mod_mul(OUT uint64_t *res, IN const uint64_t *a, IN const uint64_t *b) {
+ret_t
+gf2x_mod_mul(OUT uint64_t *res, IN const uint64_t *a, IN const uint64_t *b) {
 	bike_static_assert((R_PADDED_QW % 2 == 0), karatzuba_n_is_odd);
 
-	ALIGN(sizeof(uint64_t))
-	uint8_t secure_buffer[SECURE_BUFFER_SIZE];
+	ALIGN(sizeof(uint64_t)) uint8_t secure_buffer[SECURE_BUFFER_SIZE];
 	/* make sure we have the correct size allocation. */
 	bike_static_assert(sizeof(secure_buffer) % sizeof(uint64_t) == 0,
 	                   secure_buffer_not_eligable_for_uint64_t);
 
-	karatzuba(res, a, b, R_PADDED_QW, (uint64_t *) secure_buffer);
+	karatzuba(res, a, b, R_PADDED_QW, (uint64_t *)secure_buffer);
 
 	// This function implicitly assumes that the size of res is 2*R_PADDED_QW.
 	red(res);
