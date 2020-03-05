@@ -144,6 +144,11 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) { // Is 
 
 #elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_WIN)
 
+#if defined(__MINGW64__)
+#include <x86intrin.h>
+#include <psdk_inc/intrin-impl.h>
+#endif
+
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo) \
     (lo) = _umul128((multiplier), (multiplicand), (hi));
