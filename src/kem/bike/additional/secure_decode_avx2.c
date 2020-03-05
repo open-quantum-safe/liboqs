@@ -31,7 +31,7 @@ rotate256_big(OUT syndrome_t *out, IN const syndrome_t *in, IN size_t ymm_num) {
 	bike_static_assert(sizeof(*out) > (YMM_SIZE * (R_YMM + (2 * R_YMM_HALF_LOG2))),
 	                   rotr_big_err);
 
-	const __m256i all_one_mask = _mm256_set1_epi8(0xff);
+	const __m256i all_one_mask = _mm256_set1_epi8((char) 0xff);
 	memcpy(out, in, sizeof(*in));
 
 	for (uint32_t idx = R_YMM_HALF_LOG2; idx >= 1; idx >>= 1) {
@@ -61,13 +61,13 @@ rotate256_small(OUT syndrome_t *out, IN const syndrome_t *in, size_t count) {
 
 	__m256i       idx = _mm256_setr_epi32(0x0, 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7);
 	const __m256i zero_mask    = _mm256_setr_epi64x(0, -1, -1, -1);
-	const __m256i all_one_mask = _mm256_set1_epi8(0xff);
+	const __m256i all_one_mask = _mm256_set1_epi8((char) 0xff);
 	const __m256i count_vet    = _mm256_set1_epi8(count_mask);
 
 	__m256i zero_mask2 = _mm256_setr_epi8(
-	                         0x86, 0x86, 0x86, 0x86, 0x86, 0x86, 0x86, 0x86, 0x84, 0x84, 0x84, 0x84,
-	                         0x84, 0x84, 0x84, 0x84, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82, 0x82,
-	                         0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80);
+	                         (char) 0x86, (char) 0x86, (char) 0x86, (char) 0x86, (char) 0x86, (char) 0x86, (char) 0x86, (char) 0x86, (char) 0x84, (char) 0x84, (char) 0x84, (char) 0x84,
+	                         (char) 0x84, (char) 0x84, (char) 0x84, (char) 0x84, (char) 0x82, (char) 0x82, (char) 0x82, (char) 0x82, (char) 0x82, (char) 0x82, (char) 0x82, (char) 0x82,
+	                         (char) 0x80, (char) 0x80, (char) 0x80, (char) 0x80, (char) 0x80, (char) 0x80, (char) 0x80, (char) 0x80);
 
 	zero_mask2 = _mm256_sub_epi8(zero_mask2, count_vet);
 	idx        = _mm256_add_epi8(idx, count_vet);

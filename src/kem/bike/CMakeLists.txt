@@ -1,3 +1,10 @@
+# GCC 4.9 erroneously reports warnings for certain valid code in BIKE
+# https://stackoverflow.com/questions/13746033/how-to-repair-warning-missing-braces-around-initializer
+# We will disable warnings for these
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_LESS "5")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-missing-braces -Wno-missing-field-initializers")
+endif()
+
 set(SRCS additional/decode.c
          additional/gf2x_portable.c
          additional/sampling.c
