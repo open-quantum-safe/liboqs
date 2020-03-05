@@ -17,15 +17,19 @@ if(OQS_ENABLE_SIG_qTesla_p_III)
     set(SRCS ${SRCS} qtesla_p_III.c)
 endif()
 
-if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux"
-   AND OQS_USE_AVX2_INSTRUCTIONS
-   AND OQS_USE_AES_INSTRUCTIONS)
-    set(CPP_DEFS ${CPP_DEFS} WITH_AVX2)
-    include_directories(avx2)
-    set(SRCS ${SRCS} avx2/poly_mul1024.S
-                     avx2/poly_mul2048.S)
-else()
+if(OQS_PORTABLE)
     set(CPP_DEFS ${CPP_DEFS} portable)
+else()
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux"
+      AND OQS_USE_AVX2_INSTRUCTIONS
+      AND OQS_USE_AES_INSTRUCTIONS)
+        set(CPP_DEFS ${CPP_DEFS} WITH_AVX2)
+        include_directories(avx2)
+        set(SRCS ${SRCS} avx2/poly_mul1024.S
+                         avx2/poly_mul2048.S)
+    else()
+        set(CPP_DEFS ${CPP_DEFS} portable)
+    endif()
 endif()
 
 add_library(qtesla OBJECT ${SRCS})
