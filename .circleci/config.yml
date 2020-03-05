@@ -119,7 +119,6 @@ jobs:
     macos:
         xcode: "11.3.0"
     environment:
-        #TODO: Make tests pass with Release build
         CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
         SKIP_TESTS: style
     steps:

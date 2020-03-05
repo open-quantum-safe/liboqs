@@ -1,5 +1,24 @@
-add_subdirectory(common)
-add_subdirectory(crypto)
+# The *_IMPL variables are absolute paths
+# as they are needed in the tests/ sub-directory.
+if(OQS_USE_AES_OPENSSL)
+    set(AES_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/aes/aes_ossl.c)
+else()
+    set(AES_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/aes/aes_c.c)
+endif()
+
+if(OQS_USE_SHA2_OPENSSL)
+    set(SHA2_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/sha2/sha2_ossl.c)
+else()
+    set(SHA2_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/sha2/sha2_c.c)
+endif()
+
+set(SHA3_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/sha3/sha3_c.c)
+if(OQS_USE_SHA3_OPENSSL)
+    set(SHA3_IMPL ${SHA3_IMPL} ${CMAKE_CURRENT_LIST_DIR}/crypto/sha3/sha3_ossl.c)
+endif()
+if(OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS)
+    set(SHA3_IMPL ${SHA3_IMPL} ${CMAKE_CURRENT_LIST_DIR}/crypto/sha3/sha3x4.c)
+endif()
 
 if(OQS_ENABLE_KEM_BIKE)
     add_subdirectory(kem/bike)
@@ -64,10 +83,15 @@ add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 sig/sig.c
                 ${SIG_OBJS}
-                $<TARGET_OBJECTS:crypto>
-                $<TARGET_OBJECTS:common>)
+                ${AES_IMPL}
+                ${SHA2_IMPL}
+                ${SHA3_IMPL}
+                common/common.c
+                common/rand.c
+                common/rand_nist.c)
 if(OQS_USE_OPENSSL)
-    target_link_libraries(oqs ${OPENSSL_CRYPTO_LIBRARY})
+    target_link_libraries(oqs PUBLIC ${OPENSSL_CRYPTO_LIBRARY})
+    target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})
 endif()
 
 set_target_properties(oqs
@@ -78,6 +102,8 @@ set_target_properties(oqs
     SOVERSION 0
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
+add_library(OQS::oqs ALIAS oqs)
 
 install(TARGETS oqs
         LIBRARY DESTINATION lib

@@ -98,7 +98,7 @@ echo "Building in directory $BUILDDIR"
 
 # Build
 mkdir $BUILDDIR && cd $BUILDDIR
-cmake -DUSE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Release \
+cmake -DUSE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Generic \
     -DCMAKE_TOOLCHAIN_FILE=$NDK/build/cmake/android.toolchain.cmake \
     -DANDROID_ABI=$ABI -DANDROID_NATIVE_API_LEVEL=$MINSDKVERSION -DENABLE_SIG_PICNIC=OFF ..
 cmake --build ./

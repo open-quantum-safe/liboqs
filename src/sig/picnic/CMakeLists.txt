@@ -1,7 +1,6 @@
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
-   CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
-   CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unguarded-availability-new")
+   CMAKE_C_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wno-unguarded-availability-new)
 endif()
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux" AND

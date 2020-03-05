@@ -1,25 +1,16 @@
-cmake_minimum_required (VERSION 3.6)
+cmake_minimum_required (VERSION 3.5)
 
 project(liboqs C ASM)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
 set(OQS_VERSION_TEXT "0.2.1-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 
-if(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" OR
-   CMAKE_SYSTEM_PROCESSOR STREQUAL "amd64")
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|amd64|AMD64")
     set(ARCH "x86_64")
-elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "AMD64")
-    # cmake reports AMD64 on Windows, but we might be building for 32-bit.
-    if(CMAKE_SIZEOF_VOID_P EQUAL 8)
-        set(ARCH "x86_64")
-    else()
-        set(ARCH "x86")
-    endif()
-elseif(CMAKE_SYSTEM_PROCESSOR STREQUAL "x86" OR
-       CMAKE_SYSTEM_PROCESSOR STREQUAL "i386" OR
-       CMAKE_SYSTEM_PROCESSOR STREQUAL "i686")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86|i386|i686")
     set(ARCH "x86")
-elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64" OR
-       CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
     set(ARCH "arm64")
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
     set(ARCH "arm")
@@ -27,47 +18,24 @@ else()
     message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR})
 endif()
 
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
+if(DEFINED OQS_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE ${OQS_BUILD_TYPE})
+endif()
 if(WIN32)
     set(CMAKE_GENERATOR_CC cl)
-endif()
-if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
-   CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
-   CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fvisibility=hidden -Werror -Wall -Wextra -Wpedantic -Wimplicit -Wunused -Wcomment -Wchar-subscripts -Wuninitialized -Wstrict-prototypes -Wshadow -Wformat-security -Wwrite-strings")
-    if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_LESS "5")
-        # GCC 4.9 erroneously reports warnings for certain valid code in BIKE
-        # https://stackoverflow.com/questions/13746033/how-to-repair-warning-missing-braces-around-initializer
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-missing-braces -Wno-missing-field-initializers")
-    endif()
-    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ggdb3")
-    elseif(CMAKE_BUILD_TYPE STREQUAL "Generic")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fomit-frame-pointer ")
-    else()
-        if (NOT CMAKE_SYSTEM_NAME STREQUAL "Android")
-           include(.CMake/cpu-extensions.cmake)
-           set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -fomit-frame-pointer -march=native")
-	   set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} -march=native")
-        endif()
-    endif()
-endif()
-if(CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
-   CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fcolor-diagnostics -Wno-missing-braces -Wno-missing-field-initializers")
-endif()
-if(MINGW OR MSYS OR CYGWIN)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-maybe-uninitialized")
 endif()
 if(BUILD_SHARED_LIBS)
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 endif()
-set(OQS_COMPILE_CFLAGS ${CMAKE_C_FLAGS})
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+endif()
+include(.CMake/compiler-flags.cmake)
+if(CMAKE_BUILD_TYPE STREQUAL "Optimized")
+    include(.CMake/cpu-extensions.cmake)
+endif()
 
 include(.CMake/alg-support.cmake)
-
-include(.CMake/sanitizers.cmake)
 
 if(OQS_USE_OPENSSL)
     if(NOT DEFINED OPENSSL_ROOT_DIR)
@@ -141,23 +109,25 @@ set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig
 include_directories(${PROJECT_BINARY_DIR}/include)
 add_subdirectory(src)
 
-add_subdirectory(tests)
+if(NOT CMAKE_BUILD_TYPE STREQUAL "Dependency")
+    add_subdirectory(tests)
 
-find_package(Doxygen)
-if(DOXYGEN_FOUND)
-    set(DOXYFILE ${PROJECT_SOURCE_DIR}/docs/.Doxyfile)
-    add_custom_target(
-        gen_docs
-        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
-        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-        COMMENT "Generate API documentation with Doxygen."
-        USES_TERMINAL)
-endif()
+    find_package(Doxygen)
+    if(DOXYGEN_FOUND)
+        set(DOXYFILE ${PROJECT_SOURCE_DIR}/docs/.Doxyfile)
+        add_custom_target(
+            gen_docs
+            COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
+            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+            COMMENT "Generate API documentation with Doxygen."
+            USES_TERMINAL)
+    endif()
 
-if(NOT WIN32)
-    add_custom_target(
-        prettyprint
-        COMMAND find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --options=.astylerc
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        USES_TERMINAL)
+    if(NOT WIN32)
+        add_custom_target(
+            prettyprint
+            COMMAND find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --options=.astylerc
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            USES_TERMINAL)
+    endif()
 endif()
