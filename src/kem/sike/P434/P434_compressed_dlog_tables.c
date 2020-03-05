@@ -1735,10 +1735,10 @@ static const uint64_t ph2_T[DLEN_2 * ELL2_W * 2 * NWORDS64_FIELD] = {
 	0x4ECC0C645C8AB896, 0x2DD42C054D5638DB, 0xE52E2A447CEA474D, 0x32BF52C92E831087, 0xDC0EBBAA482DB8A0, 0x21E3A039E1179A64, 0x1AD4DF754B17
 };
 
-static const uint64_t *ph2_T1 = {0};
-static const uint64_t *ph2_T2 = {0};
+// static const uint64_t *ph2_T1 = {0};
+// static const uint64_t *ph2_T2 = {0};
 // Assume W_3 = 5 therefore only using ph3_T1 and ph3_T2
-static const uint64_t *ph3_T = {0};
+// static const uint64_t *ph3_T = {0};
 
 static const uint64_t ph3_T1[DLEN_3 * ELL3_W * 2 * NWORDS64_FIELD] = {
 	0x742C, 0x0, 0x0, 0xB90FF404FC000000, 0xD801A4FB559FACD4, 0xE93254545F77410C, 0xECEEA7BD2EDA,

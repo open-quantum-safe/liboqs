@@ -280,9 +280,9 @@ void OQS_SHA3_cshake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS
 
 void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen) {
 
-	OQS_SHA3_shake128_inc_ctx state;
+	shake128incctx state;
 
-	OQS_SHA3_shake128_inc_init(&state);
+	oqs_sha3_shake128_inc_init(&state);
 
 	/* Note: This function doesn't align exactly to cSHAKE (SP800-185 3.2), which should produce
 	SHAKE output if S and N = zero (sort of a customized custom-SHAKE function).
@@ -300,25 +300,25 @@ void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
 	sep[6] = cstm & 0xFF;
 	sep[7] = cstm >> 8;
 
-	((shake128incctx *) &state)->ctx[0] = load64(sep);
+	state.ctx[0] = load64(sep);
 
 	/* transform the domain string */
 	KeccakF1600_StatePermute(state.ctx);
 
 	/* absorb the state */
-	OQS_SHA3_cshake128_inc_absorb(&state, input, inplen);
+	oqs_sha3_cshake128_inc_absorb(&state, input, inplen);
 
 	/* generate output */
-	OQS_SHA3_cshake128_inc_finalize(&state);
-	OQS_SHA3_cshake128_inc_squeeze(output, outlen, &state);
-	OQS_SHA3_shake128_inc_ctx_release(&state);
+	oqs_sha3_cshake128_inc_finalize(&state);
+	oqs_sha3_cshake128_inc_squeeze(output, outlen, &state);
+	oqs_sha3_shake128_inc_ctx_release(&state);
 }
 
 void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen) {
 
-	OQS_SHA3_shake256_inc_ctx state;
+	shake256incctx state;
 
-	OQS_SHA3_shake256_inc_init(&state);
+	oqs_sha3_shake256_inc_init(&state);
 
 	/* Note: This function doesn't align exactly to cSHAKE (SP800-185 3.2), which should produce
 	SHAKE output if S and N = zero (sort of a customized custom-SHAKE function).
@@ -336,16 +336,16 @@ void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
 	sep[6] = cstm & 0xFF;
 	sep[7] = cstm >> 8;
 
-	((shake256incctx *) &state)->ctx[0] = load64(sep);
+	state.ctx[0] = load64(sep);
 
 	/* transform the domain string */
 	KeccakF1600_StatePermute(state.ctx);
 
 	/* absorb the state */
-	OQS_SHA3_cshake256_inc_absorb(&state, input, inplen);
+	oqs_sha3_cshake256_inc_absorb(&state, input, inplen);
 
 	/* generate output */
-	OQS_SHA3_cshake256_inc_finalize(&state);
-	OQS_SHA3_cshake256_inc_squeeze(output, outlen, &state);
-	OQS_SHA3_shake256_inc_ctx_release(&state);
+	oqs_sha3_cshake256_inc_finalize(&state);
+	oqs_sha3_cshake256_inc_squeeze(output, outlen, &state);
+	oqs_sha3_shake256_inc_ctx_release(&state);
 }
