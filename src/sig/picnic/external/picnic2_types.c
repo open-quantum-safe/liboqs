@@ -10,12 +10,17 @@
  *  SPDX-License-Identifier: MIT
  */
 
-#include "picnic2_types.h"
-#include "compat.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "picnic2_types.h"
+#include "compat.h"
 
 shares_t* allocateShares(size_t count) {
   shares_t* shares = malloc(sizeof(shares_t));
@@ -108,32 +113,6 @@ void freeSignature2(signature2_t* sig, const picnic_instance_t* params) {
     freeProof2(&sig->proofs[i]);
   }
   free(sig->proofs);
-}
-
-commitments_t* allocateCommitments(const picnic_instance_t* params, size_t numCommitments) {
-  commitments_t* commitments = malloc(params->num_rounds * sizeof(commitments_t));
-
-  commitments->nCommitments = (numCommitments) ? numCommitments : params->num_MPC_parties;
-
-  uint8_t* slab = malloc(params->num_rounds * (commitments->nCommitments * params->digest_size +
-                                               commitments->nCommitments * sizeof(uint8_t*)));
-
-  for (uint32_t i = 0; i < params->num_rounds; i++) {
-    commitments[i].hashes = (uint8_t**)slab;
-    slab += commitments->nCommitments * sizeof(uint8_t*);
-
-    for (uint32_t j = 0; j < commitments->nCommitments; j++) {
-      commitments[i].hashes[j] = slab;
-      slab += params->digest_size;
-    }
-  }
-
-  return commitments;
-}
-
-void freeCommitments(commitments_t* commitments) {
-  free(commitments[0].hashes);
-  free(commitments);
 }
 
 /* Allocate one commitments_t object with capacity for numCommitments values */

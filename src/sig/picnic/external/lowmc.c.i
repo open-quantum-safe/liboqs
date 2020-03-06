@@ -21,11 +21,14 @@
 #define XOR_MC XOR_MC_10
 #include "lowmc_impl.c.i"
 
+#if defined(WITH_ZKBPP)
 #undef N_LOWMC
 #define N_LOWMC CONCAT(LOWMC, store_10)
 #define RECORD_STATE
 #include "lowmc_impl.c.i"
+#endif
 
+#if defined(WITH_KKW)
 #undef N_LOWMC
 #undef RECORD_STATE
 #undef SBOX
@@ -34,6 +37,7 @@
 #define N_LOWMC CONCAT(LOWMC, compute_aux_10)
 #define PICNIC2_AUX_COMPUTATION
 #include "lowmc_impl.c.i"
+#endif
 
 #undef LOWMC_INSTANCE
 #undef LOWMC_M
@@ -64,10 +68,12 @@
 #define XOR_MC XOR_MC_1
 #include "lowmc_impl.c.i"
 
+#if defined(WITH_ZKBPP)
 #undef N_LOWMC
 #define N_LOWMC CONCAT(LOWMC, store_1)
 #define RECORD_STATE
 #include "lowmc_impl.c.i"
+#endif
 
 #undef LOWMC_INSTANCE
 #undef LOWMC_M

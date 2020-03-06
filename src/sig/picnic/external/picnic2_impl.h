@@ -15,7 +15,7 @@
 
 #include <stdint.h>
 #include <stddef.h>
-#include "picnic_impl.h"
+#include "picnic_instances.h"
 
 typedef struct proof2_t {
   uint16_t unOpenedIndex; // P[t], index of the party that is not opened.

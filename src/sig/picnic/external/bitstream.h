@@ -8,6 +8,7 @@
  */
 
 #ifndef BITSTREAM_H
+#define BITSTREAM_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -24,7 +25,9 @@ typedef struct {
 uint64_t bitstream_get_bits(bitstream_t* bs, unsigned int num_bits);
 uint8_t bitstream_get_bits_8(bitstream_t* bs, unsigned int num_bits);
 uint32_t bitstream_get_bits_32(bitstream_t* bs, unsigned int num_bits);
+#if defined(PICNIC_STATIC)
 void bitstream_put_bits(bitstream_t* bs, uint64_t value, unsigned int num_bits);
+#endif
 void bitstream_put_bits_8(bitstream_t* bs, uint8_t value, unsigned int num_bits);
 void bitstream_put_bits_32(bitstream_t* bs, uint32_t value, unsigned int num_bits);
 

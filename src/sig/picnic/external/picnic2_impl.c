@@ -10,6 +10,10 @@
  *  SPDX-License-Identifier: MIT
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <assert.h>
 #include <stdbool.h>
 #include <stdint.h>
@@ -25,11 +29,16 @@
 #include "picnic2_simulate_mul.h"
 #include "picnic2_tree.h"
 #include "picnic2_types.h"
-#include "picnic_impl.h"
 
 #define LOWMC_MAX_KEY_BITS 256
 #define LOWMC_MAX_AND_GATES (3 * 38 * 10 + 4) /* Rounded to nearest byte */
 #define MAX_AUX_BYTES ((LOWMC_MAX_AND_GATES + LOWMC_MAX_KEY_BITS) / 8 + 1)
+
+#if defined(__WIN32__)
+#define SIZET_FMT "%Iu"
+#else
+#define SIZET_FMT "%zu"
+#endif
 
 /* Helper functions */
 
@@ -47,23 +56,15 @@ static void createRandomTapes(randomTape_t* tapes, uint8_t** seeds, uint8_t* sal
   allocateRandomTape(tapes, params);
   assert(params->num_MPC_parties % 4 == 0);
   for (size_t i = 0; i < params->num_MPC_parties; i += 4) {
-    hash_init_x4(&ctx, params);
+    hash_init_x4(&ctx, params->digest_size);
 
     const uint8_t* seeds_ptr[4] = {seeds[i], seeds[i + 1], seeds[i + 2], seeds[i + 3]};
     hash_update_x4(&ctx, seeds_ptr, params->seed_size);
     const uint8_t* salt_ptr[4] = {salt, salt, salt, salt};
     hash_update_x4(&ctx, salt_ptr, SALT_SIZE);
-    uint16_t tLE              = htole16((uint16_t)t);
-    const uint8_t* tLE_ptr[4] = {(const uint8_t*)&tLE, (const uint8_t*)&tLE, (const uint8_t*)&tLE,
-                                 (const uint8_t*)&tLE};
-    hash_update_x4(&ctx, tLE_ptr, sizeof(uint16_t));
-    uint16_t iLE0             = htole16((uint16_t)(i + 0));
-    uint16_t iLE1             = htole16((uint16_t)(i + 1));
-    uint16_t iLE2             = htole16((uint16_t)(i + 2));
-    uint16_t iLE3             = htole16((uint16_t)(i + 3));
-    const uint8_t* iLE_ptr[4] = {(const uint8_t*)&iLE0, (const uint8_t*)&iLE1,
-                                 (const uint8_t*)&iLE2, (const uint8_t*)&iLE3};
-    hash_update_x4(&ctx, iLE_ptr, sizeof(uint16_t));
+    hash_update_x4_uint16_le(&ctx, t);
+    const uint16_t i_arr[4] = {i + 0, i + 1, i + 2, i + 3};
+    hash_update_x4_uint16s_le(&ctx, i_arr);
     hash_final_x4(&ctx);
 
     uint8_t* out_ptr[4] = {tapes->tape[i], tapes->tape[i + 1], tapes->tape[i + 2],
@@ -141,7 +142,7 @@ void sbox_layer_10_uint64_aux(uint64_t* d, randomTape_t* tapes) {
   *d = (in & MASK_MASK) ^ (t0 >> 2) ^ (t1 >> 1) ^ t2;
 }
 
-/* Input is the tapes for one parallel repetition; i.e., tapes[t]
+/* Input is the tapes for one parallel repitition; i.e., tapes[t]
  * Updates the random tapes of all players with the mask values for the output of
  * AND gates, and computes the N-th party's share such that the AND gate invariant
  * holds on the mask values.
@@ -178,17 +179,15 @@ static void commit(uint8_t* digest, const uint8_t* seed, const uint8_t* aux, con
   /* Compute C[t][j];  as digest = H(seed||[aux]) aux is optional */
   hash_context ctx;
 
-  hash_init(&ctx, params);
+  hash_init(&ctx, params->digest_size);
   hash_update(&ctx, seed, params->seed_size);
   if (aux != NULL) {
     size_t tapeLenBytes = params->view_size;
     hash_update(&ctx, aux, tapeLenBytes);
   }
   hash_update(&ctx, salt, SALT_SIZE);
-  const uint16_t tLE = htole16((uint16_t)t);
-  hash_update(&ctx, (const uint8_t*)&tLE, sizeof(uint16_t));
-  const uint16_t jLE = htole16((uint16_t)j);
-  hash_update(&ctx, (const uint8_t*)&jLE, sizeof(uint16_t));
+  hash_update_uint16_le(&ctx, t);
+  hash_update_uint16_le(&ctx, j);
   hash_final(&ctx);
   hash_squeeze(&ctx, digest, params->digest_size);
 }
@@ -198,21 +197,13 @@ static void commit_x4(uint8_t** digest, const uint8_t** seed, const uint8_t* sal
   /* Compute C[t][j];  as digest = H(seed||[aux]) aux is optional */
   hash_context_x4 ctx;
 
-  hash_init_x4(&ctx, params);
+  hash_init_x4(&ctx, params->digest_size);
   hash_update_x4(&ctx, seed, params->seed_size);
   const uint8_t* salt_ptr[4] = {salt, salt, salt, salt};
   hash_update_x4(&ctx, salt_ptr, SALT_SIZE);
-  const uint16_t tLE        = htole16((uint16_t)t);
-  const uint8_t* tLE_ptr[4] = {(const uint8_t*)&tLE, (const uint8_t*)&tLE, (const uint8_t*)&tLE,
-                               (const uint8_t*)&tLE};
-  hash_update_x4(&ctx, tLE_ptr, sizeof(uint16_t));
-  const uint16_t jLE0       = htole16((uint16_t)(j + 0));
-  const uint16_t jLE1       = htole16((uint16_t)(j + 1));
-  const uint16_t jLE2       = htole16((uint16_t)(j + 2));
-  const uint16_t jLE3       = htole16((uint16_t)(j + 3));
-  const uint8_t* jLE_ptr[4] = {(const uint8_t*)&jLE0, (const uint8_t*)&jLE1, (const uint8_t*)&jLE2,
-                               (const uint8_t*)&jLE3};
-  hash_update_x4(&ctx, jLE_ptr, sizeof(uint16_t));
+  hash_update_x4_uint16_le(&ctx, t);
+  const uint16_t j_arr[4]                     = {j + 0, j + 1, j + 2, j + 3};
+  hash_update_x4_uint16s_le(&ctx, j_arr);
   hash_final_x4(&ctx);
   hash_squeeze_x4(&ctx, digest, params->digest_size);
 }
@@ -220,7 +211,7 @@ static void commit_x4(uint8_t** digest, const uint8_t** seed, const uint8_t* sal
 static void commit_h(uint8_t* digest, const commitments_t* C, const picnic_instance_t* params) {
   hash_context ctx;
 
-  hash_init(&ctx, params);
+  hash_init(&ctx, params->digest_size);
   for (size_t i = 0; i < params->num_MPC_parties; i++) {
     hash_update(&ctx, C->hashes[i], params->digest_size);
   }
@@ -231,7 +222,7 @@ static void commit_h(uint8_t* digest, const commitments_t* C, const picnic_insta
 static void commit_h_x4(uint8_t** digest, const commitments_t* C, const picnic_instance_t* params) {
   hash_context_x4 ctx;
 
-  hash_init_x4(&ctx, params);
+  hash_init_x4(&ctx, params->digest_size);
   for (size_t i = 0; i < params->num_MPC_parties; i++) {
     const uint8_t* data[4] = {
         C[0].hashes[i],
@@ -250,7 +241,7 @@ static void commit_v(uint8_t* digest, const uint8_t* input, const msgs_t* msgs,
                      const picnic_instance_t* params) {
   hash_context ctx;
 
-  hash_init(&ctx, params);
+  hash_init(&ctx, params->digest_size);
   hash_update(&ctx, input, params->input_size);
   for (size_t i = 0; i < params->num_MPC_parties; i++) {
     hash_update(&ctx, msgs->msgs[i], numBytes(msgs->pos));
@@ -263,7 +254,7 @@ static void commit_v_x4(uint8_t** digest, const uint8_t** input, const msgs_t* m
                         const picnic_instance_t* params) {
   hash_context_x4 ctx;
 
-  hash_init_x4(&ctx, params);
+  hash_init_x4(&ctx, params->digest_size);
   hash_update_x4(&ctx, input, params->input_size);
   for (size_t i = 0; i < params->num_MPC_parties; i++) {
     assert(msgs[0].pos == msgs[1].pos && msgs[2].pos == msgs[3].pos && msgs[0].pos == msgs[2].pos);
@@ -353,7 +344,7 @@ static void HCP(uint16_t* challengeC, uint16_t* challengeP, commitments_t* Ch, u
 
   assert(params->num_opened_rounds < params->num_rounds);
 
-  hash_init(&ctx, params);
+  hash_init(&ctx, params->digest_size);
   for (size_t t = 0; t < params->num_rounds; t++) {
     hash_update(&ctx, Ch->hashes[t], params->digest_size);
   }
@@ -369,7 +360,8 @@ static void HCP(uint16_t* challengeC, uint16_t* challengeP, commitments_t* Ch, u
   // Populate C
   uint32_t bitsPerChunkC = ceil_log2(params->num_rounds);
   uint32_t bitsPerChunkP = ceil_log2(params->num_MPC_parties);
-  uint16_t* chunks       = calloc(params->digest_size * 8 / MIN(bitsPerChunkP,bitsPerChunkC), sizeof(uint16_t));
+  uint16_t* chunks =
+      calloc(params->digest_size * 8 / MIN(bitsPerChunkP, bitsPerChunkC), sizeof(uint16_t));
 
   size_t countC = 0;
   while (countC < params->num_opened_rounds) {
@@ -383,7 +375,7 @@ static void HCP(uint16_t* challengeC, uint16_t* challengeP, commitments_t* Ch, u
       }
     }
 
-    hash_init_prefix(&ctx, params, HASH_PREFIX_1);
+    hash_init_prefix(&ctx, params->digest_size, HASH_PREFIX_1);
     hash_update(&ctx, h, params->digest_size);
     hash_final(&ctx);
     hash_squeeze(&ctx, h, params->digest_size);
@@ -404,7 +396,7 @@ static void HCP(uint16_t* challengeC, uint16_t* challengeP, commitments_t* Ch, u
       }
     }
 
-    hash_init_prefix(&ctx, params, HASH_PREFIX_1);
+    hash_init_prefix(&ctx, params->digest_size, HASH_PREFIX_1);
     hash_update(&ctx, h, params->digest_size);
     hash_final(&ctx);
     hash_squeeze(&ctx, h, params->digest_size);
@@ -431,7 +423,7 @@ static uint16_t* getMissingLeavesList(uint16_t* challengeC, const picnic_instanc
 int verify_picnic2(signature2_t* sig, const uint32_t* pubKey, const uint32_t* plaintext,
                    const uint8_t* message, size_t messageByteLength,
                    const picnic_instance_t* params) {
-  commitments_t C[4]        = {0,};
+  commitments_t C[4];
   allocateCommitments2(&C[0], params, params->num_MPC_parties);
   allocateCommitments2(&C[1], params, params->num_MPC_parties);
   allocateCommitments2(&C[2], params, params->num_MPC_parties);
@@ -446,14 +438,14 @@ int verify_picnic2(signature2_t* sig, const uint32_t* pubKey, const uint32_t* pl
   tree_t* iSeedsTree        = createTree(params->num_rounds, params->seed_size);
   int ret = reconstructSeeds(iSeedsTree, sig->challengeC, params->num_opened_rounds, sig->iSeedInfo,
                              sig->iSeedInfoLen, sig->salt, 0, params);
-  const size_t last = params->num_MPC_parties - 1;
+  const size_t last                      = params->num_MPC_parties - 1;
   lowmc_simulate_online_f simulateOnline = params->impls.lowmc_simulate_online;
 
-  commitments_t Ch          = {0};
+  commitments_t Ch;
   allocateCommitments2(&Ch, params, params->num_rounds);
-  commitments_t Cv          = {0};
+  commitments_t Cv;
   allocateCommitments2(&Cv, params, params->num_rounds);
-  shares_t* mask_shares = allocateShares(params->lowmc->n);
+  shares_t* mask_shares    = allocateShares(params->lowmc->n);
   mzd_local_t* m_plaintext = mzd_local_init_ex(1, params->lowmc->n, false);
   mzd_local_t* m_maskedKey = mzd_local_init_ex(1, params->lowmc->k, false);
   mzd_from_char_array(m_plaintext, (const uint8_t*)plaintext, params->output_size);
@@ -480,7 +472,7 @@ int verify_picnic2(signature2_t* sig, const uint32_t* pubKey, const uint32_t* pl
                              sig->proofs[t].seedInfoLen, sig->salt, t, params);
       if (ret != 0) {
 #if !defined(NDEBUG)
-        printf("Failed to reconstruct seeds for round %lu\n", t);
+        printf("Failed to reconstruct seeds for round " SIZET_FMT "\n", t);
 #endif
         ret = -1;
         goto Exit;
@@ -488,11 +480,10 @@ int verify_picnic2(signature2_t* sig, const uint32_t* pubKey, const uint32_t* pl
     }
     /* Commit */
 
-    /* Compute random tapes for all parties.  One party for each repetition
+    /* Compute random tapes for all parties.  One party for each repitition
      * challengeC will have a bogus seed; but we won't use that party's
      * random tape. */
     createRandomTapes(&tapes[t], getLeaves(seeds[t]), sig->salt, t, params);
-
 
     if (!contains(sig->challengeC, params->num_opened_rounds, t)) {
       /* We're given iSeed, have expanded the seeds, compute aux from scratch so we can comnpte
@@ -501,9 +492,9 @@ int verify_picnic2(signature2_t* sig, const uint32_t* pubKey, const uint32_t* pl
       for (size_t j = 0; j < params->num_MPC_parties; j += 4) {
         const uint8_t* seed_ptr[4] = {getLeaf(seeds[t], j + 0), getLeaf(seeds[t], j + 1),
                                       getLeaf(seeds[t], j + 2), getLeaf(seeds[t], j + 3)};
-        commit_x4(C[t%4].hashes + j, seed_ptr, sig->salt, t, j, params);
+        commit_x4(C[t % 4].hashes + j, seed_ptr, sig->salt, t, j, params);
       }
-      commit(C[t%4].hashes[last], getLeaf(seeds[t], last), tapes[t].aux_bits, sig->salt, t, last,
+      commit(C[t % 4].hashes[last], getLeaf(seeds[t], last), tapes[t].aux_bits, sig->salt, t, last,
              params);
       /* after we have checked the tape, we do not need it anymore for this opened iteration */
       freeRandomTape(&tapes[t]);
@@ -514,18 +505,18 @@ int verify_picnic2(signature2_t* sig, const uint32_t* pubKey, const uint32_t* pl
       for (size_t j = 0; j < params->num_MPC_parties; j += 4) {
         const uint8_t* seed_ptr[4] = {getLeaf(seeds[t], j + 0), getLeaf(seeds[t], j + 1),
                                       getLeaf(seeds[t], j + 2), getLeaf(seeds[t], j + 3)};
-        commit_x4(C[t%4].hashes + j, seed_ptr, sig->salt, t, j, params);
+        commit_x4(C[t % 4].hashes + j, seed_ptr, sig->salt, t, j, params);
       }
       if (last != unopened) {
-        commit(C[t%4].hashes[last], getLeaf(seeds[t], last), sig->proofs[t].aux, sig->salt, t, last,
-               params);
+        commit(C[t % 4].hashes[last], getLeaf(seeds[t], last), sig->proofs[t].aux, sig->salt, t,
+               last, params);
       }
 
-      memcpy(C[t%4].hashes[unopened], sig->proofs[t].C, params->digest_size);
+      memcpy(C[t % 4].hashes[unopened], sig->proofs[t].C, params->digest_size);
     }
     /* hash commitments every four iterations if possible, for the last few do single commitments */
-    if(t >= params->num_rounds / 4 * 4) {
-      commit_h(Ch.hashes[t], &C[t%4], params);
+    if (t >= params->num_rounds / 4 * 4) {
+      commit_h(Ch.hashes[t], &C[t % 4], params);
     } else if ((t + 1) % 4 == 0) {
       size_t t4 = t / 4 * 4;
       commit_h_x4(&Ch.hashes[t4], &C[0], params);
@@ -548,13 +539,12 @@ int verify_picnic2(signature2_t* sig, const uint32_t* pubKey, const uint32_t* pl
 
       tapesToWords(mask_shares, &tapes[t]);
       mzd_from_char_array(m_maskedKey, sig->proofs[t].input, params->input_size);
-      ret = simulateOnline(m_maskedKey, mask_shares, &tapes[t], msgs,
-                           m_plaintext, pubKey, params);
+      ret = simulateOnline(m_maskedKey, mask_shares, &tapes[t], msgs, m_plaintext, pubKey, params);
 
       freeRandomTape(&tapes[t]);
       if (ret != 0) {
 #if !defined(NDEBUG)
-        printf("MPC simulation failed for round %lu, signature invalid\n", t);
+        printf("MPC simulation failed for round " SIZET_FMT ", signature invalid\n", t);
 #endif
         ret = -1;
         goto Exit;
@@ -624,13 +614,12 @@ static void computeSaltAndRootSeed(uint8_t* saltAndRoot, size_t saltAndRootLengt
                                    const picnic_instance_t* params) {
   hash_context ctx;
 
-  hash_init(&ctx, params);
+  hash_init(&ctx, params->digest_size);
   hash_update(&ctx, (const uint8_t*)privateKey, params->input_size);
   hash_update(&ctx, message, messageByteLength);
   hash_update(&ctx, (const uint8_t*)pubKey, params->input_size);
   hash_update(&ctx, (const uint8_t*)plaintext, params->input_size);
-  const uint16_t stateSizeLE = htole16((uint16_t)params->lowmc->n);
-  hash_update(&ctx, (const uint8_t*)&stateSizeLE, sizeof(uint16_t));
+  hash_update_uint16_le(&ctx, (uint16_t)params->lowmc->n);
   hash_final(&ctx);
   hash_squeeze(&ctx, saltAndRoot, saltAndRootLength);
 }
@@ -673,7 +662,6 @@ int sign_picnic2(uint32_t* privateKey, uint32_t* pubKey, uint32_t* plaintext,
 
   mzd_from_char_array(m_plaintext, (const uint8_t*)plaintext, params->output_size);
 
-
   for (size_t t = 0; t < params->num_rounds; t++) {
     seeds[t] = generateSeeds(params->num_MPC_parties, iSeeds[t], sig->salt, t, params);
     createRandomTapes(&tapes[t], getLeaves(seeds[t]), sig->salt, t, params);
@@ -684,10 +672,10 @@ int sign_picnic2(uint32_t* privateKey, uint32_t* pubKey, uint32_t* plaintext,
     for (size_t j = 0; j < params->num_MPC_parties; j += 4) {
       const uint8_t* seed_ptr[4] = {getLeaf(seeds[t], j + 0), getLeaf(seeds[t], j + 1),
                                     getLeaf(seeds[t], j + 2), getLeaf(seeds[t], j + 3)};
-      commit_x4(C[t%4].hashes + j, seed_ptr, sig->salt, t, j, params);
+      commit_x4(C[t % 4].hashes + j, seed_ptr, sig->salt, t, j, params);
     }
     const size_t last = params->num_MPC_parties - 1;
-    commit(C[t%4].hashes[last], getLeaf(seeds[t], last), tapes[t].aux_bits, sig->salt, t, last,
+    commit(C[t % 4].hashes[last], getLeaf(seeds[t], last), tapes[t].aux_bits, sig->salt, t, last,
            params);
 
     /* Simulate the online phase of the MPC */
@@ -699,26 +687,26 @@ int sign_picnic2(uint32_t* privateKey, uint32_t* pubKey, uint32_t* plaintext,
                    (params->input_size / 4)); // maskedKey += privateKey
     mzd_from_char_array(m_maskedKey, (const uint8_t*)maskedKey, params->input_size);
 
-    int rv = simulateOnline(m_maskedKey, mask_shares, &tapes[t], &msgs[t], m_plaintext, pubKey, params);
+    int rv =
+        simulateOnline(m_maskedKey, mask_shares, &tapes[t], &msgs[t], m_plaintext, pubKey, params);
     if (rv != 0) {
 #if !defined(NDEBUG)
       printf("MPC simulation failed, aborting signature\n");
 #endif
       ret = -1;
     }
-    /* free the expanded random tape and associated buffers to reduce memory usage, 
-	   however, we are keeping the calculated aux bits for later (hence partial) */
+    /* free the expanded random tape and associated buffers to reduce memory usage,
+     however, we are keeping the calculated aux bits for later (hence partial) */
     partialFreeRandomTape(&tapes[t]);
     /* hash commitments every four iterations if possible, for the last few do single commitments */
-    if(t >= params->num_rounds / 4 * 4) {
-      commit_h(Ch.hashes[t], &C[t%4], params);
+    if (t >= params->num_rounds / 4 * 4) {
+      commit_h(Ch.hashes[t], &C[t % 4], params);
       commit_v(Cv.hashes[t], inputs[t], &msgs[t], params);
     } else if ((t + 1) % 4 == 0) {
       size_t t4 = t / 4 * 4;
       commit_h_x4(&Ch.hashes[t4], &C[0], params);
       commit_v_x4(&Cv.hashes[t4], (const uint8_t**)&inputs[t4], &msgs[t4], params);
     }
-
   }
   freeShares(mask_shares);
   mzd_local_free(m_maskedKey);
@@ -776,12 +764,12 @@ int sign_picnic2(uint32_t* privateKey, uint32_t* pubKey, uint32_t* plaintext,
 
       /* recompute commitment of unopened party since we did not store it for memory optimization */
       if (proofs[t].unOpenedIndex == params->num_MPC_parties - 1) {
-        commit(proofs[t].C, getLeaf(seeds[t], proofs[t].unOpenedIndex),
-               tapes[t].aux_bits, sig->salt, t, proofs[t].unOpenedIndex, params);
+        commit(proofs[t].C, getLeaf(seeds[t], proofs[t].unOpenedIndex), tapes[t].aux_bits,
+               sig->salt, t, proofs[t].unOpenedIndex, params);
       } else {
-        commit(proofs[t].C, getLeaf(seeds[t], proofs[t].unOpenedIndex),
-               NULL, sig->salt, t, proofs[t].unOpenedIndex, params);
-	  }
+        commit(proofs[t].C, getLeaf(seeds[t], proofs[t].unOpenedIndex), NULL, sig->salt, t,
+               proofs[t].unOpenedIndex, params);
+      }
     }
   }
 
@@ -907,7 +895,7 @@ static int deserializeSignature2(signature2_t* sig, const uint8_t* sigBytes, siz
   /* Fail if the signature does not have the exact number of bytes we expect */
   if (sigBytesLen != bytesRequired) {
 #if !defined(NDEBUG)
-    printf("%s: sigBytesLen = %lu, expected bytesRequired = %lu\n", __func__, sigBytesLen,
+    printf("%s: sigBytesLen = " SIZET_FMT ", expected bytesRequired = " SIZET_FMT "\n", __func__, sigBytesLen,
            bytesRequired);
 #endif
     return EXIT_FAILURE;

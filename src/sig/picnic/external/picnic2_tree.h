@@ -12,6 +12,9 @@
 
 #ifndef PICNIC2_TREE_H
 #define PICNIC2_TREE_H
+
+#include "picnic_instances.h"
+
 /*
  * Represents a (nearly) complete binary tree, stored in memory as an array.
  * The root is at nodes[0], and the left child of node k is 2k + 1, the right

@@ -24,7 +24,7 @@
 #if defined(HAVE_ALIGNED_ALLOC)
 #include <stdlib.h>
 
-#define aligned_free free
+#define aligned_free(ptr) free((ptr))
 #else
 #include <stddef.h>
 

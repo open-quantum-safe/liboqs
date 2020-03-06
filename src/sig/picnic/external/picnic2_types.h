@@ -53,9 +53,6 @@ void finalFreeRandomTape(randomTape_t* tape);
 void allocateProof2(proof2_t* proof, const picnic_instance_t* params);
 void freeProof2(proof2_t* proof);
 
-commitments_t* allocateCommitments(const picnic_instance_t* params, size_t nCommitments);
-void freeCommitments(commitments_t* commitments);
-
 void allocateCommitments2(commitments_t* commitments, const picnic_instance_t* params,
                           size_t nCommitments);
 void freeCommitments2(commitments_t* commitments);

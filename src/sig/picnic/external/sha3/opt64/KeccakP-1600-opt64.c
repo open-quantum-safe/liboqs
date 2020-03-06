@@ -353,21 +353,6 @@ void KeccakP1600_Permute_24rounds(void *state)
 
 /* ---------------------------------------------------------------- */
 
-void KeccakP1600_Permute_12rounds(void *state)
-{
-    declareABCDE
-    #ifndef KeccakP1600_fullUnrolling
-    unsigned int i;
-    #endif
-    UINT64 *stateAsLanes = (UINT64*)state;
-
-    copyFromState(A, stateAsLanes)
-    rounds12
-    copyToState(stateAsLanes, A)
-}
-
-/* ---------------------------------------------------------------- */
-
 void KeccakP1600_ExtractBytesInLane(const void *state, unsigned int lanePosition, unsigned char *data, unsigned int offset, unsigned int length)
 {
     UINT64 lane = ((UINT64*)state)[lanePosition];
@@ -533,29 +518,6 @@ size_t KeccakF1600_FastLoop_Absorb(void *state, unsigned int laneCount, const un
     while(dataByteLen >= laneCount*8) {
         addInput(A, inDataAsLanes, laneCount)
         rounds24
-        inDataAsLanes += laneCount;
-        dataByteLen -= laneCount*8;
-    }
-    copyToState(stateAsLanes, A)
-    return originalDataByteLen - dataByteLen;
-}
-
-/* ---------------------------------------------------------------- */
-
-size_t KeccakP1600_12rounds_FastLoop_Absorb(void *state, unsigned int laneCount, const unsigned char *data, size_t dataByteLen)
-{
-    size_t originalDataByteLen = dataByteLen;
-    declareABCDE
-    #ifndef KeccakP1600_fullUnrolling
-    unsigned int i;
-    #endif
-    UINT64 *stateAsLanes = (UINT64*)state;
-    UINT64 *inDataAsLanes = (UINT64*)data;
-
-    copyFromState(A, stateAsLanes)
-    while(dataByteLen >= laneCount*8) {
-        addInput(A, inDataAsLanes, laneCount)
-        rounds12
         inDataAsLanes += laneCount;
         dataByteLen -= laneCount*8;
     }

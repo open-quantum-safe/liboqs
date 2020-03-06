@@ -13,7 +13,6 @@
 #include <stdbool.h>
 
 #include "lowmc.h"
-#include "lowmc_pars.h"
 
 /* Share count for proofs */
 #define SC_PROOF 3
@@ -31,8 +30,8 @@ typedef struct {
   mzd_local_t* s[SC_PROOF];
 } in_out_shares_t;
 
-typedef void (*zkbpp_lowmc_implementation_f)(mpc_lowmc_key_t const*, mzd_local_t const*, view_t*,
-                                             in_out_shares_t*, rvec_t*, recorded_state_t*);
+typedef void (*zkbpp_lowmc_implementation_f)(mzd_local_t const*, view_t*, in_out_shares_t*, rvec_t*,
+					     recorded_state_t*);
 typedef void (*zkbpp_lowmc_verify_implementation_f)(mzd_local_t const*, view_t*, in_out_shares_t*,
                                                     rvec_t*, unsigned int);
 typedef void (*zkbpp_share_implementation_f)(mzd_local_t*, const mzd_local_t*, const mzd_local_t*,

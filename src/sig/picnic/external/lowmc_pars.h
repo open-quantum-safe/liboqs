@@ -16,6 +16,11 @@
 
 typedef mzd_local_t lowmc_key_t;
 
+#define MAX_LOWMC_BLOCK_SIZE 32
+#define MAX_LOWMC_BLOCK_SIZE_BITS (MAX_LOWMC_BLOCK_SIZE * 8)
+#define MAX_LOWMC_KEY_SIZE MAX_LOWMC_BLOCK_SIZE
+#define MAX_LOWMC_KEY_SIZE_BITS (MAX_LOWMC_KEY_SIZE * 8)
+
 /**
  * Masks for 10 S-boxes.
  */
