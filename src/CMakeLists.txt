@@ -1,25 +1,3 @@
-# The *_IMPL variables are absolute paths
-# as they are needed in the tests/ sub-directory.
-if(OQS_USE_AES_OPENSSL)
-    set(AES_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/aes/aes_ossl.c)
-else()
-    set(AES_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/aes/aes_c.c)
-endif()
-
-if(OQS_USE_SHA2_OPENSSL)
-    set(SHA2_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/sha2/sha2_ossl.c)
-else()
-    set(SHA2_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/sha2/sha2_c.c)
-endif()
-
-set(SHA3_IMPL ${CMAKE_CURRENT_LIST_DIR}/crypto/sha3/sha3_c.c)
-if(OQS_USE_SHA3_OPENSSL)
-    set(SHA3_IMPL ${SHA3_IMPL} ${CMAKE_CURRENT_LIST_DIR}/crypto/sha3/sha3_ossl.c)
-endif()
-if(OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS)
-    set(SHA3_IMPL ${SHA3_IMPL} ${CMAKE_CURRENT_LIST_DIR}/crypto/sha3/sha3x4.c)
-endif()
-
 if(OQS_ENABLE_KEM_BIKE)
     add_subdirectory(kem/bike)
     set(KEM_OBJS ${BIKE_OBJS})
@@ -78,6 +56,7 @@ if(OQS_ENABLE_SIG_SPHINCS)
     set(SIG_OBJS ${SIG_OBJS} $<TARGET_OBJECTS:sphincs>)
 endif()
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_OBJECTS_END
+include(crypto/sources.cmake)
 
 add_library(oqs kem/kem.c
                 ${KEM_OBJS}
