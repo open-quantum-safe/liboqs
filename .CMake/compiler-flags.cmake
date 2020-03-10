@@ -64,7 +64,6 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
             add_compile_options(-Wl,--gc-sections)
         endif ()
     else() #Build type = Generic/Dependency
-        add_compile_options(-D_FORTIFY_SOURCE=2)
         add_compile_options(-O3)
         add_compile_options(-fomit-frame-pointer)
         add_compile_options(-fdata-sections)
