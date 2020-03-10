@@ -8,10 +8,10 @@
 
 #include "system_info.c"
 
-#if defined(_WIN32)
-#define UNUSED
-#else
+#ifdef __GNUC__
 #define UNUSED __attribute__((unused))
+#else
+#define UNUSED
 #endif
 
 /**

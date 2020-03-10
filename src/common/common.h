@@ -92,11 +92,11 @@ OQS_API void OQS_MEM_insecure_free(void *ptr);
  * an API specification but when an implementation doesn't actually use the argument
  * and we'd get a compiler warning otherwise.
  */
-#if defined(_WIN32)
-#define UNUSED
-// __attribute__ not supported in VS
-#else
+#ifdef __GNUC__
 #define UNUSED __attribute__((unused))
+#else
+// __attribute__ not supported in VS
+#define UNUSED
 #endif
 
 #if defined(__cplusplus)

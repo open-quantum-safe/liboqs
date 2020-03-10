@@ -8,35 +8,32 @@ platform: x64
 branches:
   except:
     - /master-new-.*/
-
-init:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - set PATH="C:\\Python37";"C:\\Python37\Scripts";%PATH%
-
+    
 environment:
   matrix:
     - BUILD_SHARED: OFF
+      COMPILER: msvc2019
     - BUILD_SHARED: ON
+      COMPILER: msvc2019
+    - BUILD_SHARED: OFF
+      COMPILER: msys2
+    - BUILD_SHARED: ON
+      COMPILER: msys2
 
-before_build:
-  - cmd: |-
-      mkdir build
-      cd build
-      cmake .. -G"Ninja" -DBUILD_SHARED_LIBS=%BUILD_SHARED%
 build_script:
-  - ninja
-
+  - cmd: '%APPVEYOR_BUILD_FOLDER%\appveyor-build.bat'
+  
 before_test:
-  - python -m pip install pytest pytest-xdist
-
+  - cmd: |-
+         SET "PATH=C:\Python37;C:\Python37\Scripts;%PATH%"
+         pip.exe install pytest pytest-xdist
+    
 test_script:
-  - cmd: >-
-      cd %APPVEYOR_BUILD_FOLDER%\build
-
-      set PATH=%cd%\bin;%PATH% && ninja run_tests
+  - cmd: |-
+         cd %APPVEYOR_BUILD_FOLDER%\build
+         set PATH=%cd%\bin;%PATH% && ninja run_tests
 
 after_test:
-  - ps: >-
-      $wc = New-Object 'System.Net.WebClient'
-
-      $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results\pytest\test-results.xml))
+  - ps: |-
+        $wc = New-Object 'System.Net.WebClient'
+        $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results\pytest\test-results.xml))
