@@ -7,6 +7,27 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(OQS_VERSION_TEXT "0.2.1-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 
+configure_file(CMakeLists.txt.in cpu_features-download/CMakeLists.txt)
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cpu_features-download )
+if(result)
+    message(FATAL_ERROR "CMake step for cpu_features failed: ${result}")
+endif()
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+    RESULT_VARIABLE result
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cpu_features-download )
+if(result)
+    message(FATAL_ERROR "Build step for cpu_features failed: ${result}")
+endif()
+
+set(CPUFEATURES_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/cpu_features-src/include")
+find_library(CPUFEATURES_LIBRARY 
+    NAMES cpu_features
+    PATHS "${CMAKE_CURRENT_BINARY_DIR}/cpu_features-build")
+add_library(CPUFEATURES UNKNOWN IMPORTED GLOBAL)
+set_target_properties(CPUFEATURES PROPERTIES IMPORTED_LOCATION "${CPUFEATURES_LIBRARY}")
+
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|amd64|AMD64")
     set(ARCH "x86_64")
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86|i386|i686")
