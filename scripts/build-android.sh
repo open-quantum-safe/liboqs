@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 show_help() {
     echo ""
@@ -34,7 +35,7 @@ cd "$parent_path/.."
 
 NDK=$1
 # Verify NDK is valid directory
-if [ -d $NDK ]
+if [ -d "$NDK" ]
 then
     echo "Valid directory for NDK at $NDK"
 else
@@ -54,6 +55,7 @@ do
         a) ABI=$OPTARG;;
         s) MINSDKVERSION=$OPTARG;;
         b) BUILDDIR=$OPTARG;;
+        *) exit 1
     esac
 done
 
@@ -62,8 +64,8 @@ valid_abis=("armeabi-v7a" "arm64-v8a" "x86" "x86_64")
 abi_match=false
 for i in "${valid_abis[@]}"
 do
-   : 
-   if [ $ABI == $i ]
+   :
+   if [ "$ABI" == "$i" ]
    then abi_match=true
    fi
 done
@@ -73,13 +75,13 @@ then
 else
     echo "Invalid Android ABI of $ABI"
     echo "Valid ABIs are:"
-    printf "%s\n" "${valid_abis[@]}"
+    printf "%s\\n" "${valid_abis[@]}"
     exit 1
 fi
 
 # Check SDK version is supported
 highestSdkVersion=29
-if (( 1 <= $MINSDKVERSION && $MINSDKVERSION <= $highestSdkVersion ))
+if (( 1 <= MINSDKVERSION && MINSDKVERSION <= highestSdkVersion ))
 then
     echo "Compiling for SDK $MINSDKVERSION"
 else
@@ -88,19 +90,22 @@ else
 fi
 
 # Remove build directory if it exists
-if [ -d $BUILDDIR ]
+if [ -d "$BUILDDIR" ]
 then
     echo "Cleaning up previous build"
-    rm -r $BUILDDIR
+    rm -r "$BUILDDIR"
 fi
 
 echo "Building in directory $BUILDDIR"
 
 # Build
-mkdir $BUILDDIR && cd $BUILDDIR
-cmake -DUSE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_BUILD_TYPE=Generic \
-    -DCMAKE_TOOLCHAIN_FILE=$NDK/build/cmake/android.toolchain.cmake \
-    -DANDROID_ABI=$ABI -DANDROID_NATIVE_API_LEVEL=$MINSDKVERSION -DENABLE_SIG_PICNIC=OFF ..
+mkdir "$BUILDDIR" && cd "$BUILDDIR"
+cmake .. -DUSE_OPENSSL=OFF \
+         -DBUILD_SHARED_LIBS=ON  \
+         -DCMAKE_TOOLCHAIN_FILE="$NDK"/build/cmake/android.toolchain.cmake \
+         -DANDROID_ABI="$ABI" \
+         -DANDROID_NATIVE_API_LEVEL="$MINSDKVERSION" \
+         -DENABLE_SIG_PICNIC=OFF
 cmake --build ./
 
 # Provide rudimentary information following build

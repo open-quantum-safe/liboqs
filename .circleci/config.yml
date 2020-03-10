@@ -58,11 +58,13 @@ jobs:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-centos-8-amd64:latest
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized
       SKIP_TESTS: style
   debian-buster-amd64:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-debian-buster-amd64:latest
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized
       SKIP_TESTS: style
   debian-buster-arm64:
     <<: *emulatedjob
@@ -89,13 +91,13 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized -DOQS_USE_OPENSSL=OFF
   ubuntu-bionic-x86_64-gcc7-shared:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      CONFIGURE_ARGS: -DBUILD_SHARED_LIBS=ON
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized -DBUILD_SHARED_LIBS=ON
       #TODO: _init and _fini trip test_namespace.py
       SKIP_TESTS: namespace
   ubuntu-bionic-x86_64-gcc8:
@@ -103,6 +105,7 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-8
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized
   ubuntu-bionic-x86_64-asan:
     <<: *oqsjob
     environment:
@@ -119,7 +122,7 @@ jobs:
     macos:
         xcode: "11.3.0"
     environment:
-        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
+        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF -DCMAKE_BUILD_TYPE=Optimized
         SKIP_TESTS: style
     steps:
         - checkout
