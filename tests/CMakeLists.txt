@@ -1,6 +1,7 @@
 if (MINGW OR MSYS OR CYGWIN)
     add_definitions(-D__USE_MINGW_ANSI_STDIO=1)
-    add_compile_options(-Wno-unknown-pragmas -Wno-unused-parameter)
+    add_compile_options(-Wno-unknown-pragmas)
+    add_compile_options(-Wno-unused-parameter)
 endif()
 
 if(NOT WIN32)

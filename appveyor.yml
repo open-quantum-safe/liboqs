@@ -8,7 +8,7 @@ platform: x64
 branches:
   except:
     - /master-new-.*/
-    
+
 environment:
   matrix:
     - BUILD_SHARED: OFF
@@ -22,12 +22,12 @@ environment:
 
 build_script:
   - cmd: '%APPVEYOR_BUILD_FOLDER%\appveyor-build.bat'
-  
+
 before_test:
   - cmd: |-
          SET "PATH=C:\Python37;C:\Python37\Scripts;%PATH%"
          pip.exe install pytest pytest-xdist
-    
+
 test_script:
   - cmd: |-
          cd %APPVEYOR_BUILD_FOLDER%\build

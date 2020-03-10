@@ -75,4 +75,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
             add_compile_options(-Wl,--gc-sections)
         endif ()
     endif()
+
+elseif(MINGW OR MSYS OR CYGWIN)
+    add_compile_options(-Wno-maybe-uninitialized)
 endif()
