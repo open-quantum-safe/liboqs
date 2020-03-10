@@ -82,8 +82,7 @@ if(PICNIC_WITH_AVX2)
     target_compile_definitions(picnic PRIVATE WITH_AVX2
                                               WITH_KECCAK_X4)
 endif()
-#FIXMEOQS: enable NEON detection
-#if(OQS_USE_NEON_INSTRUCTIONS)
-#    target_compile_definitions(picnic PRIVATE WITH_NEON)
-#endif()
+if(OQS_USE_NEON_INSTRUCTIONS)
+    target_compile_definitions(picnic PRIVATE WITH_NEON)
+endif()
 
