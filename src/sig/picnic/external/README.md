@@ -11,7 +11,7 @@ Research paper describing the signature scheme and the optimizations are also av
 Packages
 --------
 
-Packages for Ubuntu bionic and cosmis are available via a [PPA](https://launchpad.net/~s-ramacher/+archive/ubuntu/picnic/).
+Packages for Ubuntu bionic, disco, and eoan are available via a [PPA](https://launchpad.net/~s-ramacher/+archive/ubuntu/picnic/).
 
 Building
 --------
@@ -25,6 +25,8 @@ make
 ```
 
 The cmake based build system supports the following flags:
+* ``WITH_ZKBPP``: Enable ZKB++-based Picnic instances.
+* ``WITH_KKW``: Enable KKW-based Picnic instances.
 * ``WITH_SIMD_OPT``: Enable SIMD optimizations.
 * ``WITH_AVX2``: Use AVX2 if available.
 * ``WITH_SSE2``: Use SSE2 if available.
@@ -32,7 +34,7 @@ The cmake based build system supports the following flags:
 * ``WITH_MARCH_NATIVE``: Build with -march=native -mtune=native (if supported).
 * ``WITH_LTO``: Enable link-time optimization (if supported).
 * ``WITH_LOWMC_OPT={OFF,ORKC,OLLE}``: Enable optimized round key computation (ORKC) or optimized linear layer evaluation (OLLE) optimizations.
-* ``WITH_LOWMC_M1``: Enable LowMC instances with 1 Sbox minimizing the signature sizes.
+* ``WITH_LOWMC_M1``: Enable LowMC instances with 1 Sbox minimizing the signature sizes (only useful if built with ``WITH_ZKBPP`` on).
 
 Building on Windows
 -------------------
@@ -59,6 +61,8 @@ SET(CMAKE_C_COMPILER x86_64-w64-mingw32-gcc)
 SET(CMAKE_CXX_COMPILER x86_64-w64-mingw32-g++)
 SET(CMAKE_RC_COMPILER x86_64-w64-mingw32-windres)
 SET(CMAKE_DLLTOOL x86_64-w64-mingw32-dlltool)
+# use wine to execute tests
+set(CMAKE_CROSSCOMPILING_EMULATOR wine)
 
 # target environment
 SET(CMAKE_FIND_ROOT_PATH /usr/x86_64-w64-mingw32/)

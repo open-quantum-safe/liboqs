@@ -200,7 +200,7 @@ static inline uint64_t parity64_uint64(uint64_t in) {
 }
 #endif
 
-/* helper functions to ocmpute number of leading zeroes */
+/* helper functions to compute number of leading zeroes */
 #if GNUC_CHECK(4, 7) || __has_builtin(__builtin_clz)
 ATTR_CONST
 static inline uint32_t clz(uint32_t x) {

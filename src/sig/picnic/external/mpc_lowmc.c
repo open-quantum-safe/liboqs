@@ -11,7 +11,6 @@
 #include <config.h>
 #endif
 
-#include "lowmc_pars.h"
 #include "mpc_lowmc.h"
 #include "mzd_additional.h"
 
@@ -639,26 +638,38 @@ static void mzd_share_uint64_256(mzd_local_t* r, const mzd_local_t* v1, const mz
 
 #if defined(WITH_OPT)
 #if defined(WITH_SSE2) || defined(WITH_NEON)
+#if defined(WITH_SSE2)
+#define FN_ATTR ATTR_TARGET_SSE2
+#else
+#define FN_ATTR
+#endif
+
+FN_ATTR
 static void mzd_share_s128_128(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
                                const mzd_local_t* v3) {
   mzd_xor_s128_128(r, v1, v2);
   mzd_xor_s128_128(r, r, v3);
 }
 
+FN_ATTR
 static void mzd_share_s128_256(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
                                const mzd_local_t* v3) {
   mzd_xor_s128_256(r, v1, v2);
   mzd_xor_s128_256(r, r, v3);
 }
+
+#undef FN_ATTR
 #endif
 
 #if defined(WITH_AVX2)
+ATTR_TARGET_AVX2
 static void mzd_share_s256_128(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
                                const mzd_local_t* v3) {
   mzd_xor_s256_128(r, v1, v2);
   mzd_xor_s256_128(r, r, v3);
 }
 
+ATTR_TARGET_AVX2
 static void mzd_share_s256_256(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
                                const mzd_local_t* v3) {
   mzd_xor_s256_256(r, v1, v2);

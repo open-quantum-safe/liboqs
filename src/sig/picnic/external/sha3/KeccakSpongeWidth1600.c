@@ -34,21 +34,3 @@ http://creativecommons.org/publicdomain/zero/1.0/
     #undef SnP_Permute
     #undef SnP_FastLoop_Absorb
 #endif
-
-#ifndef KeccakP1600_excluded
-    #include "KeccakP-1600-SnP.h"
-
-    #define prefix KeccakWidth1600_12rounds
-    #define SnP KeccakP1600
-    #define SnP_width 1600
-    #define SnP_Permute KeccakP1600_Permute_12rounds
-    #if defined(KeccakP1600_12rounds_FastLoop_supported)
-        #define SnP_FastLoop_Absorb KeccakP1600_12rounds_FastLoop_Absorb
-    #endif
-        #include "KeccakSponge.inc"
-    #undef prefix
-    #undef SnP
-    #undef SnP_width
-    #undef SnP_Permute
-    #undef SnP_FastLoop_Absorb
-#endif

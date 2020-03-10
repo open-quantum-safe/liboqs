@@ -18,6 +18,7 @@
 # void KeccakP1600_Initialize(void *state);
 #
 .globl  KeccakP1600_Initialize
+.hidden KeccakP1600_Initialize
 .type   KeccakP1600_Initialize,@function
 .align  32
 KeccakP1600_Initialize:
@@ -38,6 +39,7 @@ KeccakP1600_Initialize:
 #                                %rdi                 %rsi               %rdx
 #
 .globl  KeccakP1600_AddByte
+.hidden KeccakP1600_AddByte
 .type   KeccakP1600_AddByte,@function
 .align  32
 KeccakP1600_AddByte:
@@ -58,6 +60,7 @@ KeccakP1600_AddByte:
 #                                %rdi                         %rsi               %rdx                 %rcx
 #
 .globl  KeccakP1600_AddBytes
+.hidden KeccakP1600_AddBytes
 .type   KeccakP1600_AddBytes,@function
 .align  32
 KeccakP1600_AddBytes:
@@ -117,6 +120,7 @@ KeccakP1600_AddBytes_Exit:
 #                                       %rdi                        %rsi               %rdx                 %rcx
 #
 .globl  KeccakP1600_OverwriteBytes
+.hidden KeccakP1600_OverwriteBytes
 .type   KeccakP1600_OverwriteBytes,@function
 .align  32
 KeccakP1600_OverwriteBytes:
@@ -176,6 +180,7 @@ KeccakP1600_OverwriteBytes_Exit:
 #                                            %rdi                %rsi
 #
 .globl  KeccakP1600_OverwriteWithZeroes
+.hidden KeccakP1600_OverwriteWithZeroes
 .type   KeccakP1600_OverwriteWithZeroes,@function
 .align  32
 KeccakP1600_OverwriteWithZeroes:
@@ -211,6 +216,7 @@ KeccakP1600_OverwriteWithZeroes_Exit:
 #                                           %rdi                  %rsi               %rdx                 %rcx
 #
 .globl  KeccakP1600_ExtractBytes
+.hidden KeccakP1600_ExtractBytes
 .type   KeccakP1600_ExtractBytes,@function
 .align  32
 KeccakP1600_ExtractBytes:
@@ -273,6 +279,7 @@ KeccakP1600_ExtractBytes_Exit:
 #                                                 %rdi                        %rsi                  %rdx                 %rcx                  %r8
 #
 .globl  KeccakP1600_ExtractAndAddBytes
+.hidden KeccakP1600_ExtractAndAddBytes
 .type   KeccakP1600_ExtractAndAddBytes,@function
 .align  32
 KeccakP1600_ExtractAndAddBytes:
@@ -486,6 +493,7 @@ __KeccakF1600:
 
 
 .globl  KeccakP1600_Permute_24rounds
+.hidden KeccakP1600_Permute_24rounds
 .type   KeccakP1600_Permute_24rounds,@function
 .align  32
 KeccakP1600_Permute_24rounds:
@@ -514,36 +522,8 @@ KeccakP1600_Permute_24rounds:
     ret
 .size   KeccakP1600_Permute_24rounds,.-KeccakP1600_Permute_24rounds
 
-.globl  KeccakP1600_Permute_12rounds
-.type   KeccakP1600_Permute_12rounds,@function
-.align  32
-KeccakP1600_Permute_12rounds:
-    lea             rhotates_left+96(%rip),%r8
-    lea             rhotates_right+96(%rip),%r9
-    lea             iotas+12*4*8(%rip),%r10
-    mov             $12,%eax
-    lea             96(%rdi),%rdi
-    vzeroupper
-    vpbroadcastq    -96(%rdi),%ymm0         # load A[5][5]
-    vmovdqu         8+32*0-96(%rdi),%ymm1
-    vmovdqu         8+32*1-96(%rdi),%ymm2
-    vmovdqu         8+32*2-96(%rdi),%ymm3
-    vmovdqu         8+32*3-96(%rdi),%ymm4
-    vmovdqu         8+32*4-96(%rdi),%ymm5
-    vmovdqu         8+32*5-96(%rdi),%ymm6
-    call            __KeccakF1600
-    vmovq           %xmm0,-96(%rdi)
-    vmovdqu         %ymm1,8+32*0-96(%rdi)
-    vmovdqu         %ymm2,8+32*1-96(%rdi)
-    vmovdqu         %ymm3,8+32*2-96(%rdi)
-    vmovdqu         %ymm4,8+32*3-96(%rdi)
-    vmovdqu         %ymm5,8+32*4-96(%rdi)
-    vmovdqu         %ymm6,8+32*5-96(%rdi)
-    vzeroupper
-    ret
-.size   KeccakP1600_Permute_12rounds,.-KeccakP1600_Permute_12rounds
-
 .globl  KeccakP1600_Permute_Nrounds
+.hidden KeccakP1600_Permute_Nrounds
 .type   KeccakP1600_Permute_Nrounds,@function
 .align  32
 KeccakP1600_Permute_Nrounds:
@@ -580,6 +560,7 @@ KeccakP1600_Permute_Nrounds:
 #                                          %rdi                %rsi                            %rdx         %rcx
 #
 .globl  KeccakF1600_FastLoop_Absorb
+.hidden KeccakF1600_FastLoop_Absorb
 .type   KeccakF1600_FastLoop_Absorb,@function
 .align  32
 KeccakF1600_FastLoop_Absorb:
@@ -742,175 +723,6 @@ KeccakF1600_FastLoop_Absorb_LanesAddLoop:
     jae             KeccakF1600_FastLoop_Absorb_Not17Lanes
     jmp             KeccakF1600_FastLoop_Absorb_Exit
 .size   KeccakF1600_FastLoop_Absorb,.-KeccakF1600_FastLoop_Absorb
-
-# -----------------------------------------------------------------------------
-#
-# size_t KeccakP1600_12rounds_FastLoop_Absorb(void *state, unsigned int laneCount, const unsigned char *data, size_t dataByteLen);
-#                                          %rdi                %rsi                            %rdx         %rcx
-#
-.globl  KeccakP1600_12rounds_FastLoop_Absorb
-.type   KeccakP1600_12rounds_FastLoop_Absorb,@function
-.align  32
-KeccakP1600_12rounds_FastLoop_Absorb:
-    push            %rbx
-    push            %r10
-    shr             $3, %rcx                # rcx = data length in lanes
-    mov             %rdx, %rbx              # rbx = initial data pointer
-    cmp             %rsi, %rcx
-    jb              KeccakP1600_12rounds_FastLoop_Absorb_Exit
-    vzeroupper
-    cmp             $21, %rsi    
-    jnz             KeccakP1600_12rounds_FastLoop_Absorb_Not21Lanes
-    sub             $21, %rcx
-    lea             rhotates_left+96(%rip),%r8
-    lea             rhotates_right+96(%rip),%r9
-    lea             96(%rdi),%rdi
-    vpbroadcastq    -96(%rdi),%ymm0         # load A[5][5]
-    vmovdqu         8+32*0-96(%rdi),%ymm1
-    vmovdqu         8+32*1-96(%rdi),%ymm2
-    vmovdqu         8+32*2-96(%rdi),%ymm3
-    vmovdqu         8+32*3-96(%rdi),%ymm4
-    vmovdqu         8+32*4-96(%rdi),%ymm5
-    vmovdqu         8+32*5-96(%rdi),%ymm6
-KeccakP1600_12rounds_FastLoop_Absorb_Loop21Lanes:    
-    vpbroadcastq    (%rdx),%ymm7
-    vmovdqu         8(%rdx),%ymm8
-
-    vmovdqa         map2(%rip), %xmm15
-    vpcmpeqq        %ymm14, %ymm14, %ymm14    
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm9
-
-    vmovdqa         mask3_21(%rip), %ymm14
-    vpxor           %ymm10, %ymm10, %ymm10
-    vmovdqa         map3(%rip), %xmm15
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm10
-
-    vmovdqa         mask4_21(%rip), %ymm14
-    vpxor           %ymm11, %ymm11, %ymm11
-    vmovdqa         map4(%rip), %xmm15
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm11
-
-    vmovdqa         mask5_21(%rip), %ymm14
-    vpxor           %ymm12, %ymm12, %ymm12
-    vmovdqa         map5(%rip), %xmm15
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm12
-
-    vmovdqa         mask6_21(%rip), %ymm14
-    vpxor           %ymm13, %ymm13, %ymm13
-    vmovdqa         map6(%rip), %xmm15
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm13
-
-    vpxor           %ymm7,%ymm0,%ymm0
-    vpxor           %ymm8,%ymm1,%ymm1
-    vpxor           %ymm9,%ymm2,%ymm2
-    vpxor           %ymm10,%ymm3,%ymm3
-    vpxor           %ymm11,%ymm4,%ymm4
-    vpxor           %ymm12,%ymm5,%ymm5
-    vpxor           %ymm13,%ymm6,%ymm6
-    add             $21*8, %rdx
-    lea             iotas+12*4*8(%rip),%r10
-    mov             $12,%eax
-    call            __KeccakF1600
-    sub             $21, %rcx
-    jnc             KeccakP1600_12rounds_FastLoop_Absorb_Loop21Lanes
-KeccakP1600_12rounds_FastLoop_Absorb_SaveAndExit:
-    vmovq           %xmm0,-96(%rdi)
-    vmovdqu         %ymm1,8+32*0-96(%rdi)
-    vmovdqu         %ymm2,8+32*1-96(%rdi)
-    vmovdqu         %ymm3,8+32*2-96(%rdi)
-    vmovdqu         %ymm4,8+32*3-96(%rdi)
-    vmovdqu         %ymm5,8+32*4-96(%rdi)
-    vmovdqu         %ymm6,8+32*5-96(%rdi)
-KeccakP1600_12rounds_FastLoop_Absorb_Exit:
-    vzeroupper
-    mov             %rdx, %rax               # return number of bytes processed
-    sub             %rbx, %rax
-    pop             %r10
-    pop             %rbx
-    ret
-KeccakP1600_12rounds_FastLoop_Absorb_Not21Lanes:
-    cmp             $17, %rsi    
-    jnz             KeccakP1600_12rounds_FastLoop_Absorb_Not17Lanes
-    sub             $17, %rcx
-    lea             rhotates_left+96(%rip),%r8
-    lea             rhotates_right+96(%rip),%r9
-    lea             96(%rdi),%rdi
-    vpbroadcastq    -96(%rdi),%ymm0         # load A[5][5]
-    vmovdqu         8+32*0-96(%rdi),%ymm1
-    vmovdqu         8+32*1-96(%rdi),%ymm2
-    vmovdqu         8+32*2-96(%rdi),%ymm3
-    vmovdqu         8+32*3-96(%rdi),%ymm4
-    vmovdqu         8+32*4-96(%rdi),%ymm5
-    vmovdqu         8+32*5-96(%rdi),%ymm6
-KeccakP1600_12rounds_FastLoop_Absorb_Loop17Lanes:    
-    vpbroadcastq    (%rdx),%ymm7
-    vmovdqu         8(%rdx),%ymm8
-
-    vmovdqa         mask2_17(%rip), %ymm14
-    vpxor           %ymm9, %ymm9, %ymm9
-    vmovdqa         map2(%rip), %xmm15
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm9
-
-    vmovdqa         mask3_17(%rip), %ymm14
-    vpxor           %ymm10, %ymm10, %ymm10
-    vmovdqa         map3(%rip), %xmm15
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm10
-
-    vmovdqa         mask4_17(%rip), %ymm14
-    vpxor           %ymm11, %ymm11, %ymm11
-    vmovdqa         map4(%rip), %xmm15
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm11
-
-    vmovdqa         mask5_17(%rip), %ymm14
-    vpxor           %ymm12, %ymm12, %ymm12
-    vmovdqa         map5(%rip), %xmm15
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm12
-
-    vmovdqa         mask6_17(%rip), %ymm14
-    vpxor           %ymm13, %ymm13, %ymm13
-    vmovdqa         map6(%rip), %xmm15
-    vpgatherdq      %ymm14, (%rdx, %xmm15, 1), %ymm13
-
-    vpxor           %ymm7,%ymm0,%ymm0
-    vpxor           %ymm8,%ymm1,%ymm1
-    vpxor           %ymm9,%ymm2,%ymm2
-    vpxor           %ymm10,%ymm3,%ymm3
-    vpxor           %ymm11,%ymm4,%ymm4
-    vpxor           %ymm12,%ymm5,%ymm5
-    vpxor           %ymm13,%ymm6,%ymm6
-    add             $17*8, %rdx
-    lea             iotas+12*4*8(%rip),%r10
-    mov             $12,%eax
-    call            __KeccakF1600
-    sub             $17, %rcx
-    jnc             KeccakP1600_12rounds_FastLoop_Absorb_Loop17Lanes
-    jmp             KeccakP1600_12rounds_FastLoop_Absorb_SaveAndExit
-KeccakP1600_12rounds_FastLoop_Absorb_Not17Lanes:
-    lea             mapState(%rip), %r9
-    mov             %rsi, %rax
-KeccakP1600_12rounds_FastLoop_Absorb_LanesAddLoop:
-    mov             (%rdx), %r8
-    add             $8, %rdx
-    mov             (%r9), %r10
-    add             $8, %r9
-    add             %rdi, %r10
-    xor             %r8, (%r10)
-    sub             $1, %rax
-    jnz             KeccakP1600_12rounds_FastLoop_Absorb_LanesAddLoop
-    sub             %rsi, %rcx
-    push            %rdi
-    push            %rsi
-    push            %rdx
-    push            %rcx
-    call            KeccakP1600_Permute_12rounds@PLT
-    pop             %rcx
-    pop             %rdx
-    pop             %rsi
-    pop             %rdi
-    cmp             %rsi, %rcx
-    jae             KeccakP1600_12rounds_FastLoop_Absorb_Not17Lanes
-    jmp             KeccakP1600_12rounds_FastLoop_Absorb_Exit
-.size   KeccakP1600_12rounds_FastLoop_Absorb,.-KeccakP1600_12rounds_FastLoop_Absorb
 
 .equ    ALLON,        0xFFFFFFFFFFFFFFFF
 

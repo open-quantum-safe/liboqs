@@ -16,7 +16,6 @@
 #include "io.h"
 #include "kdf_shake.h"
 #include "lowmc.h"
-#include "lowmc_pars.h"
 #include "mpc_lowmc.h"
 #include "picnic_impl.h"
 #include <oqs/rand.h>
@@ -44,14 +43,6 @@ typedef struct {
   proof_round_t* round;
   unsigned int round_number;
 } sorting_helper_t;
-
-// Prefix values for domain separation
-const uint8_t HASH_PREFIX_0 = 0;
-const uint8_t HASH_PREFIX_1 = 1;
-const uint8_t HASH_PREFIX_2 = 2;
-const uint8_t HASH_PREFIX_3 = 3;
-const uint8_t HASH_PREFIX_4 = 4;
-const uint8_t HASH_PREFIX_5 = 5;
 
 /**
  * Collapse challenge from one char per challenge to bit array.
@@ -243,73 +234,54 @@ static void proof_free(sig_proof_t* prf) {
   free(prf);
 }
 
-static void kdf_shake_update_key_intLE(kdf_shake_t* kdf, uint16_t x) {
-  const uint16_t x_le = htole16(x);
-  kdf_shake_update_key(kdf, (const uint8_t*)&x_le, sizeof(x_le));
-}
-
-static void kdf_shake_x4_update_key_intLE(kdf_shake_x4_t* kdf, uint16_t x) {
-  const uint16_t x_le   = htole16(x);
-  const uint8_t* ptr[4] = {(const uint8_t*)&x_le, (const uint8_t*)&x_le, (const uint8_t*)&x_le,
-                           (const uint8_t*)&x_le};
-  kdf_shake_x4_update_key(kdf, ptr, sizeof(x_le));
-}
-
-static void kdf_shake_x4_update_key_intLE_round(kdf_shake_x4_t* kdf, const uint16_t x[4]) {
-
-  const uint16_t x0_le  = htole16(x[0]);
-  const uint16_t x1_le  = htole16(x[1]);
-  const uint16_t x2_le  = htole16(x[2]);
-  const uint16_t x3_le  = htole16(x[3]);
-  const uint8_t* ptr[4] = {(const uint8_t*)&x0_le, (const uint8_t*)&x1_le, (const uint8_t*)&x2_le,
-                           (const uint8_t*)&x3_le};
-  kdf_shake_x4_update_key(kdf, ptr, sizeof(x0_le));
-}
-
 static void kdf_init_from_seed(kdf_shake_t* kdf, const uint8_t* seed, const uint8_t* salt,
                                uint16_t round_number, uint16_t player_number,
                                bool include_input_size, const picnic_instance_t* pp) {
+  const size_t digest_size = pp->digest_size;
+
   // Hash the seed with H_2.
-  kdf_shake_init_prefix(kdf, pp, HASH_PREFIX_2);
+  kdf_shake_init_prefix(kdf, digest_size, HASH_PREFIX_2);
   kdf_shake_update_key(kdf, seed, pp->seed_size);
   kdf_shake_finalize_key(kdf);
 
   uint8_t tmp[MAX_DIGEST_SIZE];
-  kdf_shake_get_randomness(kdf, tmp, pp->digest_size);
+  kdf_shake_get_randomness(kdf, tmp, digest_size);
   kdf_shake_clear(kdf);
 
   // Initialize KDF with H_2(seed) || salt || round_number || player_number || output_size.
-  kdf_shake_init(kdf, pp);
-  kdf_shake_update_key(kdf, tmp, pp->digest_size);
+  kdf_shake_init(kdf, digest_size);
+  kdf_shake_update_key(kdf, tmp, digest_size);
   kdf_shake_update_key(kdf, salt, SALT_SIZE);
-  kdf_shake_update_key_intLE(kdf, round_number);
-  kdf_shake_update_key_intLE(kdf, player_number);
-  kdf_shake_update_key_intLE(kdf, pp->view_size + (include_input_size ? pp->input_size : 0));
+  kdf_shake_update_key_uint16_le(kdf, round_number);
+  kdf_shake_update_key_uint16_le(kdf, player_number);
+  kdf_shake_update_key_uint16_le(kdf, pp->view_size + (include_input_size ? pp->input_size : 0));
   kdf_shake_finalize_key(kdf);
 }
 
 static void kdf_init_x4_from_seed(kdf_shake_x4_t* kdf, const uint8_t** seed, const uint8_t* salt,
                                   const uint16_t round_number[4], const uint16_t player_number,
                                   bool include_input_size, const picnic_instance_t* pp) {
+  const size_t digest_size = pp->digest_size;
+
   // Hash the seed with H_2.
-  kdf_shake_x4_init_prefix(kdf, pp, HASH_PREFIX_2);
+  kdf_shake_x4_init_prefix(kdf, digest_size, HASH_PREFIX_2);
   kdf_shake_x4_update_key(kdf, seed, pp->seed_size);
   kdf_shake_x4_finalize_key(kdf);
 
   uint8_t tmp[4][MAX_DIGEST_SIZE];
   uint8_t* tmpptr[4]             = {tmp[0], tmp[1], tmp[2], tmp[3]};
   const uint8_t* tmpptr_const[4] = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  kdf_shake_x4_get_randomness(kdf, tmpptr, pp->digest_size);
+  kdf_shake_x4_get_randomness(kdf, tmpptr, digest_size);
   kdf_shake_x4_clear(kdf);
 
   // Initialize KDF with H_2(seed) || salt || round_number || player_number || output_size.
-  kdf_shake_x4_init(kdf, pp);
-  kdf_shake_x4_update_key(kdf, tmpptr_const, pp->digest_size);
+  kdf_shake_x4_init(kdf, digest_size);
+  kdf_shake_x4_update_key(kdf, tmpptr_const, digest_size);
   const uint8_t* saltptr[4] = {salt, salt, salt, salt};
   kdf_shake_x4_update_key(kdf, saltptr, SALT_SIZE);
-  kdf_shake_x4_update_key_intLE_round(kdf, round_number);
-  kdf_shake_x4_update_key_intLE(kdf, player_number);
-  kdf_shake_x4_update_key_intLE(kdf, pp->view_size + (include_input_size ? pp->input_size : 0));
+  kdf_shake_x4_update_key_uint16s_le(kdf, round_number);
+  kdf_shake_x4_update_key_uint16_le(kdf, player_number);
+  kdf_shake_x4_update_key_uint16_le(kdf, pp->view_size + (include_input_size ? pp->input_size : 0));
   kdf_shake_x4_finalize_key(kdf);
 }
 
@@ -399,14 +371,14 @@ static void hash_commitment(const picnic_instance_t* pp, proof_round_t* prf_roun
 
   hash_context ctx;
   // hash the seed
-  hash_init_prefix(&ctx, pp, HASH_PREFIX_4);
+  hash_init_prefix(&ctx, hashlen, HASH_PREFIX_4);
   hash_update(&ctx, prf_round->seeds[vidx], pp->seed_size);
   hash_final(&ctx);
   uint8_t tmp[MAX_DIGEST_SIZE];
   hash_squeeze(&ctx, tmp, hashlen);
 
   // compute H_0(H_4(seed), view)
-  hash_init_prefix(&ctx, pp, HASH_PREFIX_0);
+  hash_init_prefix(&ctx, hashlen, HASH_PREFIX_0);
   hash_update(&ctx, tmp, hashlen);
   // hash input share
   hash_update(&ctx, prf_round->input_shares[vidx], pp->input_size);
@@ -427,7 +399,7 @@ static void hash_commitment_x4(const picnic_instance_t* pp, proof_round_t* prf_r
 
   hash_context_x4 ctx;
   // hash the seed
-  hash_init_prefix_x4(&ctx, pp, HASH_PREFIX_4);
+  hash_init_prefix_x4(&ctx, hashlen, HASH_PREFIX_4);
   const uint8_t* seeds[4] = {prf_round[0].seeds[vidx], prf_round[1].seeds[vidx],
                              prf_round[2].seeds[vidx], prf_round[3].seeds[vidx]};
   hash_update_x4(&ctx, seeds, pp->seed_size);
@@ -438,7 +410,7 @@ static void hash_commitment_x4(const picnic_instance_t* pp, proof_round_t* prf_r
   hash_squeeze_x4(&ctx, tmpptr, hashlen);
 
   // compute H_0(H_4(seed), view)
-  hash_init_prefix_x4(&ctx, pp, HASH_PREFIX_0);
+  hash_init_prefix_x4(&ctx, hashlen, HASH_PREFIX_0);
   hash_update_x4(&ctx, tmpptr_const, hashlen);
   // hash input share
   const uint8_t* input_shares[4] = {
@@ -469,7 +441,7 @@ static void hash_commitment_x4_verify(const picnic_instance_t* pp, const sorting
 
   hash_context_x4 ctx;
   // hash the seed
-  hash_init_prefix_x4(&ctx, pp, HASH_PREFIX_4);
+  hash_init_prefix_x4(&ctx, hashlen, HASH_PREFIX_4);
   const uint8_t* seeds[4] = {helper[0].round->seeds[vidx], helper[1].round->seeds[vidx],
                              helper[2].round->seeds[vidx], helper[3].round->seeds[vidx]};
   hash_update_x4(&ctx, seeds, pp->seed_size);
@@ -480,7 +452,7 @@ static void hash_commitment_x4_verify(const picnic_instance_t* pp, const sorting
   hash_squeeze_x4(&ctx, tmpptr, hashlen);
 
   // compute H_0(H_4(seed), view)
-  hash_init_prefix_x4(&ctx, pp, HASH_PREFIX_0);
+  hash_init_prefix_x4(&ctx, hashlen, HASH_PREFIX_0);
   hash_update_x4(&ctx, tmpptr_const, hashlen);
   // hash input share
   const uint8_t* input_shares[4] = {
@@ -517,7 +489,7 @@ static void H3_compute(const picnic_instance_t* pp, uint8_t* hash, uint8_t* ch) 
   while (ch < eof) {
     if (bit_idx >= digest_size_bits) {
       hash_context ctx;
-      hash_init_prefix(&ctx, pp, HASH_PREFIX_1);
+      hash_init_prefix(&ctx, digest_size, HASH_PREFIX_1);
       hash_update(&ctx, hash, digest_size);
       hash_final(&ctx);
       hash_squeeze(&ctx, hash, digest_size);
@@ -557,7 +529,7 @@ static void H3_verify(const picnic_instance_t* pp, sig_proof_t* prf, const uint8
   const size_t output_size = pp->output_size;
 
   hash_context ctx;
-  hash_init_prefix(&ctx, pp, HASH_PREFIX_1);
+  hash_init_prefix(&ctx, digest_size, HASH_PREFIX_1);
 
   // hash output shares
   proof_round_t* round = prf->round;
@@ -655,7 +627,7 @@ static void H3(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t* cir
   const size_t num_rounds = pp->num_rounds;
 
   hash_context ctx;
-  hash_init_prefix(&ctx, pp, HASH_PREFIX_1);
+  hash_init_prefix(&ctx, pp->digest_size, HASH_PREFIX_1);
 
   // hash output shares
   hash_update(&ctx, prf->round[0].output_shares[0], pp->output_size * num_rounds * SC_PROOF);
@@ -681,16 +653,14 @@ static void H3(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t* cir
  */
 static void unruh_G(const picnic_instance_t* pp, proof_round_t* prf_round, unsigned int vidx,
                     bool include_is) {
-  hash_context ctx;
-
   const size_t outputlen =
       include_is ? pp->unruh_with_input_bytes_size : pp->unruh_without_input_bytes_size;
-  const uint16_t size_le   = htole16(outputlen);
   const size_t digest_size = pp->digest_size;
   const size_t seedlen     = pp->seed_size;
 
   // Hash the seed with H_5, store digest in output
-  hash_init_prefix(&ctx, pp, HASH_PREFIX_5);
+  hash_context ctx;
+  hash_init_prefix(&ctx, digest_size, HASH_PREFIX_5);
   hash_update(&ctx, prf_round->seeds[vidx], seedlen);
   hash_final(&ctx);
 
@@ -698,13 +668,13 @@ static void unruh_G(const picnic_instance_t* pp, proof_round_t* prf_round, unsig
   hash_squeeze(&ctx, tmp, digest_size);
 
   // Hash H_5(seed), the view, and the length
-  hash_init(&ctx, pp);
+  hash_init(&ctx, digest_size);
   hash_update(&ctx, tmp, digest_size);
   if (include_is) {
     hash_update(&ctx, prf_round->input_shares[vidx], pp->input_size);
   }
   hash_update(&ctx, prf_round->communicated_bits[vidx], pp->view_size);
-  hash_update(&ctx, (const uint8_t*)&size_le, sizeof(uint16_t));
+  hash_update_uint16_le(&ctx, outputlen);
   hash_final(&ctx);
   hash_squeeze(&ctx, prf_round->gs[vidx], outputlen);
 }
@@ -714,16 +684,14 @@ static void unruh_G(const picnic_instance_t* pp, proof_round_t* prf_round, unsig
  */
 static void unruh_G_x4(const picnic_instance_t* pp, proof_round_t* prf_round, unsigned int vidx,
                        bool include_is) {
-  hash_context_x4 ctx;
-
   const size_t outputlen =
       include_is ? pp->unruh_with_input_bytes_size : pp->unruh_without_input_bytes_size;
-  const uint16_t size_le   = htole16(outputlen);
   const size_t digest_size = pp->digest_size;
   const size_t seedlen     = pp->seed_size;
 
   // Hash the seed with H_5, store digest in output
-  hash_init_prefix_x4(&ctx, pp, HASH_PREFIX_5);
+  hash_context_x4 ctx;
+  hash_init_prefix_x4(&ctx, digest_size, HASH_PREFIX_5);
   const uint8_t* seeds[4] = {prf_round[0].seeds[vidx], prf_round[1].seeds[vidx],
                              prf_round[2].seeds[vidx], prf_round[3].seeds[vidx]};
   hash_update_x4(&ctx, seeds, seedlen);
@@ -735,7 +703,7 @@ static void unruh_G_x4(const picnic_instance_t* pp, proof_round_t* prf_round, un
   hash_squeeze_x4(&ctx, tmpptr, digest_size);
 
   // Hash H_5(seed), the view, and the length
-  hash_init_x4(&ctx, pp);
+  hash_init_x4(&ctx, digest_size);
   hash_update_x4(&ctx, tmpptr_const, digest_size);
   if (include_is) {
     const uint8_t* input_shares[4] = {
@@ -750,9 +718,7 @@ static void unruh_G_x4(const picnic_instance_t* pp, proof_round_t* prf_round, un
       prf_round[3].communicated_bits[vidx],
   };
   hash_update_x4(&ctx, communicated_bits, pp->view_size);
-  const uint8_t* sizes[4] = {(const uint8_t*)&size_le, (const uint8_t*)&size_le,
-                             (const uint8_t*)&size_le, (const uint8_t*)&size_le};
-  hash_update_x4(&ctx, sizes, sizeof(uint16_t));
+  hash_update_x4_uint16_le(&ctx, outputlen);
   hash_final_x4(&ctx);
   uint8_t* gs[4] = {prf_round[0].gs[vidx], prf_round[1].gs[vidx], prf_round[2].gs[vidx],
                     prf_round[3].gs[vidx]};
@@ -764,16 +730,14 @@ static void unruh_G_x4(const picnic_instance_t* pp, proof_round_t* prf_round, un
  */
 static void unruh_G_x4_verify(const picnic_instance_t* pp, const sorting_helper_t* helper,
                               unsigned int vidx, bool include_is) {
-  hash_context_x4 ctx;
-
   const size_t outputlen =
       include_is ? pp->unruh_with_input_bytes_size : pp->unruh_without_input_bytes_size;
-  const uint16_t size_le   = htole16(outputlen);
   const size_t digest_size = pp->digest_size;
   const size_t seedlen     = pp->seed_size;
 
   // Hash the seed with H_5, store digest in output
-  hash_init_prefix_x4(&ctx, pp, HASH_PREFIX_5);
+  hash_context_x4 ctx;
+  hash_init_prefix_x4(&ctx, digest_size, HASH_PREFIX_5);
   const uint8_t* seeds[4] = {helper[0].round->seeds[vidx], helper[1].round->seeds[vidx],
                              helper[2].round->seeds[vidx], helper[3].round->seeds[vidx]};
   hash_update_x4(&ctx, seeds, seedlen);
@@ -785,7 +749,7 @@ static void unruh_G_x4_verify(const picnic_instance_t* pp, const sorting_helper_
   hash_squeeze_x4(&ctx, tmpptr, digest_size);
 
   // Hash H_5(seed), the view, and the length
-  hash_init_x4(&ctx, pp);
+  hash_init_x4(&ctx, digest_size);
   hash_update_x4(&ctx, tmpptr_const, digest_size);
   if (include_is) {
     const uint8_t* input_shares[4] = {
@@ -800,9 +764,7 @@ static void unruh_G_x4_verify(const picnic_instance_t* pp, const sorting_helper_
       helper[3].round->communicated_bits[vidx],
   };
   hash_update_x4(&ctx, communicated_bits, pp->view_size);
-  const uint8_t* sizes[4] = {(const uint8_t*)&size_le, (const uint8_t*)&size_le,
-                             (const uint8_t*)&size_le, (const uint8_t*)&size_le};
-  hash_update_x4(&ctx, sizes, sizeof(uint16_t));
+  hash_update_x4_uint16_le(&ctx, outputlen);
   hash_final_x4(&ctx);
   uint8_t* gs[4] = {helper[0].round->gs[vidx], helper[1].round->gs[vidx], helper[2].round->gs[vidx],
                     helper[3].round->gs[vidx]};
@@ -982,17 +944,16 @@ static void generate_seeds(const picnic_instance_t* pp, const uint8_t* private_k
   const size_t lowmc_n     = lowmc->n;
 
   kdf_shake_t ctx;
-  kdf_shake_init(&ctx, pp);
+  kdf_shake_init(&ctx, pp->digest_size);
   // sk || m || C || p
   kdf_shake_update_key(&ctx, private_key, input_size);
   kdf_shake_update_key(&ctx, m, m_len);
   kdf_shake_update_key(&ctx, public_key, output_size);
   kdf_shake_update_key(&ctx, plaintext, output_size);
   // N as 16 bit LE integer
-  const uint16_t size_le = htole16(lowmc_n);
-  kdf_shake_update_key(&ctx, (const uint8_t*)&size_le, sizeof(size_le));
+  kdf_shake_update_key_uint16_le(&ctx, lowmc_n);
 #if defined(WITH_EXTRA_RANDOMNESS)
-  // Add extra randomn bytes for fault attack mitigation
+  // Add extra random bytes for fault attack mitigation
   unsigned char buffer[2 * MAX_DIGEST_SIZE];
   OQS_randombytes(buffer, 2 * seed_size);
   kdf_shake_update_key(&ctx, buffer, 2 * seed_size);
@@ -1036,17 +997,14 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
   in_out_shares_t in_out_shares[2];
   mzd_local_init_multiple_ex(in_out_shares[0].s, SC_PROOF, 1, lowmc_k, false);
   mzd_local_init_multiple_ex(in_out_shares[1].s, SC_PROOF, 1, lowmc_n, false);
+  mpc_lowmc_key_t const* shared_key = &in_out_shares->s[0];
 
   // Generate seeds
   generate_seeds(pp, private_key, plaintext, public_key, m, m_len, prf->round[0].seeds[0],
                  prf->salt);
 
-  mzd_local_t* shared_key[SC_PROOF];
-  mzd_local_init_multiple(shared_key, SC_PROOF, 1, lowmc_k);
-
   rvec_t* rvec = calloc(sizeof(rvec_t), lowmc_r); // random tapes for AND-gates
 
-  uint8_t* tape_bytes  = malloc(view_size);
   proof_round_t* round = prf->round;
   // use 4 parallel instances of keccak for speedup
   uint8_t* tape_bytes_x4[SC_PROOF][4];
@@ -1091,7 +1049,7 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
       }
 
       // perform ZKB++ LowMC evaluation
-      lowmc_impl(shared_key, p, views, in_out_shares, rvec, &recorded_state);
+      lowmc_impl(p, views, in_out_shares, rvec, &recorded_state);
 
       for (unsigned int j = 0; j < SC_PROOF; ++j) {
         mzd_to_char_array(round[round_offset].output_shares[j], in_out_shares[1].s[j], output_size);
@@ -1128,6 +1086,7 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
 
     // compute random tapes
     for (unsigned int j = 0; j < SC_PROOF; ++j) {
+      uint8_t tape_bytes[MAX_VIEW_SIZE];
       kdf_shake_get_randomness(&kdfs[j], tape_bytes, view_size);
       decompress_random_tape(rvec, pp, tape_bytes, j);
     }
@@ -1137,7 +1096,7 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
     }
 
     // perform ZKB++ LowMC evaluation
-    lowmc_impl(shared_key, p, views, in_out_shares, rvec, &recorded_state);
+    lowmc_impl(p, views, in_out_shares, rvec, &recorded_state);
 
     // commitments
     for (unsigned int j = 0; j < SC_PROOF; ++j) {
@@ -1163,10 +1122,8 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
       free(tape_bytes_x4[k][j]);
     }
   }
-  free(tape_bytes);
   free(rvec);
   free(views);
-  mzd_local_free_multiple(shared_key);
   mzd_local_free_multiple(in_out_shares[1].s);
   mzd_local_free_multiple(in_out_shares[0].s);
   proof_free(prf);
@@ -1204,7 +1161,6 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
   mzd_local_init_multiple_ex(in_out_shares[1].s, SC_PROOF, 1, lowmc_n, false);
   view_t* views       = calloc(sizeof(view_t), view_count);
   rvec_t* rvec        = calloc(sizeof(rvec_t), lowmc_r); // random tapes for and-gates
-  uint8_t* tape_bytes = malloc(view_size);
 
   // sort the different challenge rounds based on their H3 index, so we can use the 4x Keccak when
   // verifying since all of this is public information, there is no leakage
@@ -1321,6 +1277,7 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
 
       // compute random tapes
       for (unsigned int j = 0; j < SC_VERIFY; ++j) {
+        uint8_t tape_bytes[MAX_VIEW_SIZE];
         kdf_shake_get_randomness(&kdfs[j], tape_bytes, view_size);
         decompress_random_tape(rvec, pp, tape_bytes, j);
       }
@@ -1362,7 +1319,6 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
       free(tape_bytes_x4[i][j]);
     }
   }
-  free(tape_bytes);
   free(rvec);
   free(views);
   mzd_local_free_multiple(in_out_shares[1].s);
@@ -1376,8 +1332,8 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
 int impl_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
               const uint8_t* public_key, const uint8_t* msg, size_t msglen, uint8_t* sig,
               size_t* siglen) {
-  mzd_local_t* m_plaintext  = mzd_local_init_ex(1, pp->lowmc->n, false);
-  mzd_local_t* m_privatekey = mzd_local_init_ex(1, pp->lowmc->k, false);
+  mzd_local_t m_plaintext[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
+  mzd_local_t m_privatekey[(MAX_LOWMC_KEY_SIZE_BITS + 255) / 256];
 
   mzd_from_char_array(m_plaintext, plaintext, pp->output_size);
   mzd_from_char_array(m_privatekey, private_key, pp->input_size);
@@ -1385,16 +1341,13 @@ int impl_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8
   const int result = sign_impl(pp, private_key, m_privatekey, plaintext, m_plaintext, public_key,
                                msg, msglen, sig, siglen);
 
-  mzd_local_free(m_privatekey);
-  mzd_local_free(m_plaintext);
-
   return result;
 }
 
 int impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
                 const uint8_t* msg, size_t msglen, const uint8_t* sig, size_t siglen) {
-  mzd_local_t* m_plaintext = mzd_local_init_ex(1, pp->lowmc->n, false);
-  mzd_local_t* m_publickey = mzd_local_init_ex(1, pp->lowmc->n, false);
+  mzd_local_t m_plaintext[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
+  mzd_local_t m_publickey[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
 
   mzd_from_char_array(m_plaintext, plaintext, pp->output_size);
   mzd_from_char_array(m_publickey, public_key, pp->output_size);
@@ -1402,130 +1355,7 @@ int impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uin
   const int result =
       verify_impl(pp, plaintext, m_plaintext, public_key, m_publickey, msg, msglen, sig, siglen);
 
-  mzd_local_free(m_publickey);
-  mzd_local_free(m_plaintext);
-
   return result;
 }
 
-/* cropped unused visualize_signature */
-
-// instance handling
-
-// L1, L3, and L5 LowMC instances
-#if defined(WITH_LOWMC_128_128_20)
-#include "lowmc_128_128_20.h"
-#define LOWMC_L1_OR_NULL &lowmc_128_128_20
-#else
-#define LOWMC_L1_OR_NULL NULL
-#endif
-#if defined(WITH_LOWMC_192_192_30)
-#include "lowmc_192_192_30.h"
-#define LOWMC_L3_OR_NULL &lowmc_192_192_30
-#else
-#define LOWMC_L3_OR_NULL NULL
-#endif
-#if defined(WITH_LOWMC_256_256_38)
-#include "lowmc_256_256_38.h"
-#define LOWMC_L5_OR_NULL &lowmc_256_256_38
-#else
-#define LOWMC_L5_OR_NULL NULL
-#endif
-
-// L1, L3, and L5 lowmc instances with 1 SBOX
-#if defined(WITH_LOWMC_128_128_182)
-#include "lowmc_128_128_182.h"
-#define LOWMC_L1_1_OR_NULL &lowmc_128_128_182
-#else
-#define LOWMC_L1_1_OR_NULL NULL
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-#include "lowmc_192_192_284.h"
-#define LOWMC_L3_1_OR_NULL &lowmc_192_192_284
-#else
-#define LOWMC_L3_1_OR_NULL NULL
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-#include "lowmc_256_256_363.h"
-#define LOWMC_L5_1_OR_NULL &lowmc_256_256_363
-#else
-#define LOWMC_L5_1_OR_NULL NULL
-#endif
-
-#define NULL_FNS                                                                                   \
-  { NULL, NULL, NULL, NULL, NULL, NULL, NULL }
-
-static picnic_instance_t instances[PARAMETER_SET_MAX_INDEX] = {
-    {NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, PARAMETER_SET_INVALID, TRANSFORM_FS, NULL_FNS},
-    {LOWMC_L1_OR_NULL, 32, 16, 219, 219, 3, 16, 16, 75, 30, 55, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic_L1_FS, Picnic_L1_FS, TRANSFORM_FS, NULL_FNS},
-    {LOWMC_L1_OR_NULL, 32, 16, 219, 219, 3, 16, 16, 75, 30, 55, 91, 107,
-     PICNIC_SIGNATURE_SIZE_Picnic_L1_UR, Picnic_L1_UR, TRANSFORM_UR, NULL_FNS},
-    {LOWMC_L3_OR_NULL, 48, 24, 329, 329, 3, 24, 24, 113, 30, 83, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic_L3_FS, Picnic_L3_FS, TRANSFORM_FS, NULL_FNS},
-    {LOWMC_L3_OR_NULL, 48, 24, 329, 329, 3, 24, 24, 113, 30, 83, 137, 161,
-     PICNIC_SIGNATURE_SIZE_Picnic_L3_UR, Picnic_L3_UR, TRANSFORM_UR, NULL_FNS},
-    {LOWMC_L5_OR_NULL, 64, 32, 438, 438, 3, 32, 32, 143, 30, 110, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic_L5_FS, Picnic_L5_FS, TRANSFORM_FS, NULL_FNS},
-    {LOWMC_L5_OR_NULL, 64, 32, 438, 438, 3, 32, 32, 143, 30, 110, 175, 207,
-     PICNIC_SIGNATURE_SIZE_Picnic_L5_UR, Picnic_L5_UR, TRANSFORM_UR, NULL_FNS},
-    // Picnic2 params
-    {LOWMC_L1_OR_NULL, 32, 16, 343, 27, 64, 16, 16, 75, 30, 55, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic2_L1_FS, Picnic2_L1_FS, TRANSFORM_FS, NULL_FNS},
-    {LOWMC_L3_OR_NULL, 48, 24, 570, 39, 64, 24, 24, 113, 30, 83, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic2_L3_FS, Picnic2_L3_FS, TRANSFORM_FS, NULL_FNS},
-    {LOWMC_L5_OR_NULL, 64, 32, 803, 50, 64, 32, 32, 143, 30, 110, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic2_L5_FS, Picnic2_L5_FS, TRANSFORM_FS, NULL_FNS},
-    // Picnic with LowMC with m=1
-    {LOWMC_L1_1_OR_NULL, 32, 16, 219, 219, 3, 16, 16, 69, 3, 55, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic_L1_1_FS, Picnic_L1_1_FS, TRANSFORM_FS, NULL_FNS},
-    {LOWMC_L1_1_OR_NULL, 32, 16, 219, 219, 3, 16, 16, 69, 3, 55, 87, 103,
-     PICNIC_SIGNATURE_SIZE_Picnic_L1_1_UR, Picnic_L1_1_UR, TRANSFORM_UR, NULL_FNS},
-    {LOWMC_L3_1_OR_NULL, 48, 24, 329, 329, 3, 24, 24, 107, 3, 83, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic_L3_1_FS, Picnic_L3_1_FS, TRANSFORM_FS, NULL_FNS},
-    {LOWMC_L3_1_OR_NULL, 48, 24, 329, 329, 3, 24, 24, 107, 3, 83, 131, 155,
-     PICNIC_SIGNATURE_SIZE_Picnic_L3_1_UR, Picnic_L3_1_UR, TRANSFORM_UR, NULL_FNS},
-    {LOWMC_L5_1_OR_NULL, 64, 32, 438, 438, 3, 32, 32, 137, 3, 110, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic_L5_1_FS, Picnic_L5_1_FS, TRANSFORM_FS, NULL_FNS},
-    {LOWMC_L5_1_OR_NULL, 64, 32, 438, 438, 3, 32, 32, 137, 3, 110, 169, 201,
-     PICNIC_SIGNATURE_SIZE_Picnic_L5_1_UR, Picnic_L5_1_UR, TRANSFORM_UR, NULL_FNS}};
-static bool instance_initialized[PARAMETER_SET_MAX_INDEX];
-
-static bool create_instance(picnic_instance_t* pp) {
-  if (!pp->lowmc) {
-    return false;
-  }
-
-  pp->impls.lowmc                 = lowmc_get_implementation(pp->lowmc);
-  pp->impls.lowmc_store           = lowmc_store_get_implementation(pp->lowmc);
-  pp->impls.zkbpp_lowmc           = get_zkbpp_lowmc_implementation(pp->lowmc);
-  pp->impls.zkbpp_lowmc_verify    = get_zkbpp_lowmc_verify_implementation(pp->lowmc);
-  pp->impls.mzd_share             = get_zkbpp_share_implentation(pp->lowmc);
-  pp->impls.lowmc_aux             = lowmc_compute_aux_get_implementation(pp->lowmc);
-  pp->impls.lowmc_simulate_online = lowmc_simulate_online_get_implementation(pp->lowmc);
-
-  return true;
-}
-
-const picnic_instance_t* picnic_instance_get(picnic_params_t param) {
-  if (param <= PARAMETER_SET_INVALID || param >= PARAMETER_SET_MAX_INDEX) {
-    return NULL;
-  }
-
-  if (!instance_initialized[param]) {
-    if (!create_instance(&instances[param])) {
-      return NULL;
-    }
-    instance_initialized[param] = true;
-  }
-
-  return &instances[param];
-}
-
-ATTR_DTOR static void clear_instances(void) {
-  for (unsigned int p = PARAMETER_SET_INVALID + 1; p < PARAMETER_SET_MAX_INDEX; ++p) {
-    if (instance_initialized[p]) {
-      instance_initialized[p] = false;
-    }
-  }
-}
+/* OQS note: cropped unused visualization functions */

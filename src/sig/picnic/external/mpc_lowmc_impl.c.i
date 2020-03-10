@@ -29,8 +29,8 @@
 #if defined(FN_ATTR)
 FN_ATTR
 #endif
-static void N_SIGN(mpc_lowmc_key_t const* lowmc_key, mzd_local_t const* p, view_t* views,
-                   in_out_shares_t* in_out_shares, rvec_t* rvec, recorded_state_t* recorded_state) {
+static void N_SIGN(mzd_local_t const* p, view_t* views, in_out_shares_t* in_out_shares,
+		   rvec_t* rvec, recorded_state_t* recorded_state) {
 #define reduced_shares (SC_PROOF - 1)
 #define MPC_LOOP_CONST_C(function, result, first, second, sc, c)                                   \
   MPC_LOOP_CONST_C_0(function, result, first, second, sc)
@@ -41,7 +41,7 @@ static void N_SIGN(mpc_lowmc_key_t const* lowmc_key, mzd_local_t const* p, view_
 #define shares SC_PROOF
 #define sbox SBOX_SIGN
 
-  MPC_LOOP_SHARED_1(COPY, in_out_shares->s, lowmc_key, SC_PROOF);
+  mpc_lowmc_key_t const* lowmc_key = &in_out_shares->s[0];
   ++in_out_shares;
 
   mzd_local_t x[SC_PROOF][((LOWMC_N) + 255) / 256];
