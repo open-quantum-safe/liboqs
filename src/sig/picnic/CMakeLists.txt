@@ -10,10 +10,10 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     endif()
 endif()
 
-if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux" AND
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
    OQS_USE_AVX2_INSTRUCTIONS AND
    OQS_USE_BMI2_INSTRUCTIONS)
-     set(PICNIC_WITH_AVX2 "ON")
+     set(PICNIC_WITH_AVX2 ON)
 endif()
 
 set(SRCS sig_picnic.c
@@ -54,15 +54,15 @@ add_library(picnic OBJECT ${SRCS})
 target_include_directories(picnic PRIVATE external
                                           external/sha3)
 if(PICNIC_WITH_AVX2)
-  target_include_directories(picnic PRIVATE external/sha3/avx2)
+    target_include_directories(picnic PRIVATE external/sha3/avx2)
 else()
-  target_include_directories(picnic PRIVATE external/sha3/opt64)
+    target_include_directories(picnic PRIVATE external/sha3/opt64)
 endif()
 target_compile_definitions(picnic PRIVATE PICNIC_STATIC
                                           OPTIMIZED_LINEAR_LAYER_EVALUATION
                                           REDUCED_ROUND_KEY_COMPUTATION
-					  WITH_ZKBPP
-					  WITH_KKW
+                                          WITH_ZKBPP
+                                          WITH_KKW
                                           WITH_LOWMC_128_128_20
                                           WITH_LOWMC_192_192_30
                                           WITH_LOWMC_256_256_38
