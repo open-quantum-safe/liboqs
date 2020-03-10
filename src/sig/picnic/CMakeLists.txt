@@ -4,6 +4,12 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unguarded-availability-new")
 endif()
 
+if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux" AND
+   OQS_USE_AVX2_INSTRUCTIONS AND
+   OQS_USE_BMI2_INSTRUCTIONS)
+     set(PICNIC_WITH_AVX2 "ON")
+endif()
+
 set(SRCS sig_picnic.c
          external/aligned_alloc.c
          external/bitstream.c
@@ -28,7 +34,7 @@ set(SRCS sig_picnic.c
          external/picnic2_types.c
          external/sha3/KeccakHash.c
          external/sha3/KeccakSpongeWidth1600.c)
-if(OQS_USE_AVX2_INSTRUCTIONS)
+if(PICNIC_WITH_AVX2)
   set(SRCS ${SRCS}
            external/sha3/avx2/KeccakP-1600-AVX2.s
            external/sha3/avx2/KeccakP-1600-times4-SIMD256.c
@@ -41,7 +47,7 @@ endif()
 add_library(picnic OBJECT ${SRCS})
 target_include_directories(picnic PRIVATE external
                                           external/sha3)
-if(OQS_USE_AVX2_INSTRUCTIONS)
+if(PICNIC_WITH_AVX2)
   target_include_directories(picnic PRIVATE external/sha3/avx2)
 else()
   target_include_directories(picnic PRIVATE external/sha3/opt64)
@@ -62,8 +68,9 @@ endif()
 if(OQS_USE_SSE2_INSTRUCTIONS)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
 endif()
-if(OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS)
-    target_compile_definitions(picnic PRIVATE WITH_AVX2)
+if(PICNIC_WITH_AVX2)
+    target_compile_definitions(picnic PRIVATE WITH_AVX2
+                                              WITH_KECCAK_X4)
 endif()
 #FIXMEOQS: enable NEON detection
 #if(OQS_USE_NEON_INSTRUCTIONS)
