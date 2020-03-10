@@ -5,7 +5,7 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND
     add_compile_options(-Wno-missing-braces)
     add_compile_options(-Wno-missing-field-initializers)
 elseif(CMAKE_C_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wno-missing-braces)
+    add_compile_options(-Wno-missing-braces -Wno-missing-field-initializers)
 endif()
 
 set(SRCS additional/decode.c

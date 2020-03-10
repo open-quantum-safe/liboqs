@@ -13,6 +13,11 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
         endif()
     endif()
 endif()
+if(CMAKE_C_COMPILER_ID MATCHES "Clang")
+    # Clang emits spurious warnings where
+    # the "{0}" structure initializer is used.
+    add_compile_options(-Wno-missing-braces)
+endif()
 
 set(SRCS kem_sike.c
          P434/P434.c
@@ -24,11 +29,11 @@ set(SRCS kem_sike.c
          P751/P751_compressed.c)
 
 add_library(sike OBJECT ${SRCS})
-if(${ARCH} STREQUAL "x86")
+if(ARCH STREQUAL "x86")
   target_compile_definitions(sike PRIVATE _GENERIC_ _X86_)
-elseif(${ARCH} STREQUAL "x86_64")
+elseif(ARCH STREQUAL "x86_64")
   target_compile_definitions(sike PRIVATE _AMD64_)
-  if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux")
+  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
     set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
                      P751/AMD64/fp_x64_asm.S)
     if(USE_BMI2_INSTRUCTIONS)
@@ -37,11 +42,11 @@ elseif(${ARCH} STREQUAL "x86_64")
                        P610/AMD64/fp_x64_asm.S)
     endif()
   endif()
-elseif(${ARCH} STREQUAL "arm")
+elseif(ARCH STREQUAL "arm")
   target_compile_definitions(sike PRIVATE _GENERIC_ _ARM_)
-elseif(${ARCH} STREQUAL "arm64")
+elseif(ARCH STREQUAL "arm64")
   target_compile_definitions(sike PRIVATE _ARM64_)
-  if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux")
+  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
     set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
                      P751/AMD64/fp_x64_asm.S)
   endif()

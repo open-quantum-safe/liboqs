@@ -1,6 +1,13 @@
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wno-unguarded-availability-new)
+    add_compile_options(-Wno-missing-braces)
+endif()
+if(CMAKE_C_COMPILER_ID MATCHES "Clang")
+    if(CMAKE_C_COMPILER_VERSION VERSION_GREATER "3.9")
+        add_compile_options(-Wno-unguarded-availability-new)
+    else() #Wno-unguarded-availability-new won't be recognized
+        add_compile_options(-Wno-error)
+    endif()
 endif()
 
 if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux" AND
