@@ -136,7 +136,7 @@ For example, to cross compile for a Raspberry Pi from Ubuntu Bionic:
 
 	apt install gcc-8-arm-linux-gnueabihf
 	mkdir build && cd build
-	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain-rasppi.cmake -DOQS_USE_OPENSSL=OFF ..
+	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_rasppi.cmake -DOQS_USE_OPENSSL=OFF ..
 	ninja
 
 ## Documentation

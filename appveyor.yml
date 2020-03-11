@@ -21,7 +21,7 @@ environment:
       COMPILER: msys2
 
 build_script:
-  - cmd: '%APPVEYOR_BUILD_FOLDER%\appveyor-build.bat'
+  - cmd: '%APPVEYOR_BUILD_FOLDER%\appveyor_build.bat'
 
 before_test:
   - cmd: |-
