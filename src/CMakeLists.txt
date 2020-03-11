@@ -1,6 +1,3 @@
-add_subdirectory(common)
-add_subdirectory(crypto)
-
 if(OQS_ENABLE_KEM_BIKE)
     add_subdirectory(kem/bike)
     set(KEM_OBJS ${BIKE_OBJS})
@@ -59,15 +56,21 @@ if(OQS_ENABLE_SIG_SPHINCS)
     set(SIG_OBJS ${SIG_OBJS} $<TARGET_OBJECTS:sphincs>)
 endif()
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_OBJECTS_END
+include(crypto/sources.cmake)
 
 add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 sig/sig.c
                 ${SIG_OBJS}
-                $<TARGET_OBJECTS:crypto>
-                $<TARGET_OBJECTS:common>)
+                ${AES_IMPL}
+                ${SHA2_IMPL}
+                ${SHA3_IMPL}
+                common/common.c
+                common/rand.c
+                common/rand_nist.c)
 if(OQS_USE_OPENSSL)
-    target_link_libraries(oqs ${OPENSSL_CRYPTO_LIBRARY})
+    target_link_libraries(oqs PUBLIC ${OPENSSL_CRYPTO_LIBRARY})
+    target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})
 endif()
 
 set_target_properties(oqs
@@ -78,6 +81,8 @@ set_target_properties(oqs
     SOVERSION 0
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+
+add_library(OQS::oqs ALIAS oqs)
 
 install(TARGETS oqs
         LIBRARY DESTINATION lib

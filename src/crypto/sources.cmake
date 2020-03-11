@@ -19,9 +19,3 @@ endif()
 if(OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_AES_INSTRUCTIONS)
     set(SHA3_IMPL ${SHA3_IMPL} ${CMAKE_CURRENT_LIST_DIR}/sha3/sha3x4.c)
 endif()
-
-add_library(crypto OBJECT ${AES_IMPL} ${SHA2_IMPL} ${SHA3_IMPL})
-
-if(OQS_USE_OPENSSL)
-    target_include_directories(crypto PRIVATE ${OPENSSL_INCLUDE_DIR})
-endif()

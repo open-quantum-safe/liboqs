@@ -61,12 +61,6 @@ static void print_oqs_configuration(void) {
 #else
 	printf("SHA-3:            C\n");
 #endif
-#if defined(OQS_COMPILE_CFLAGS)
-	printf("CFLAGS:           %s\n", OQS_COMPILE_CFLAGS);
-#endif
-#if defined(OQS_COMPILE_LDFLAGS)
-	printf("LDFLAGS:          %s\n", OQS_COMPILE_LDFLAGS);
-#endif
 }
 
 static void print_system_info(void) {

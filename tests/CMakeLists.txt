@@ -1,5 +1,7 @@
 if (MINGW OR MSYS OR CYGWIN)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__USE_MINGW_ANSI_STDIO=1 -Wno-unknown-pragmas -Wno-unused-parameter")
+    add_definitions(-D__USE_MINGW_ANSI_STDIO=1)
+    add_compile_options(-Wno-unknown-pragmas)
+    add_compile_options(-Wno-unused-parameter)
 endif()
 
 if(NOT WIN32)
@@ -17,25 +19,18 @@ if(NOT WIN32)
 
     # These functions tested here are
     # not part of the liboqs API.
-    get_directory_property(AES_IMPL
-                           DIRECTORY ${PROJECT_SOURCE_DIR}/src/crypto
-                           DEFINITION AES_IMPL)
+    include(${PROJECT_SOURCE_DIR}/src/crypto/sources.cmake)
+
     add_executable(test_aes test_aes.c ${AES_IMPL} ${PROJECT_SOURCE_DIR}/src/common/common.c)
-    target_link_libraries(test_aes ${INTERNAL_TEST_DEPS})
+    target_link_libraries(test_aes PRIVATE ${INTERNAL_TEST_DEPS})
 
-    get_directory_property(SHA2_IMPL
-                           DIRECTORY ${PROJECT_SOURCE_DIR}/src/crypto
-                           DEFINITION SHA2_IMPL)
     add_executable(test_hash test_hash.c ${SHA2_IMPL} ${PROJECT_SOURCE_DIR}/src/common/common.c)
-    target_link_libraries(test_hash ${INTERNAL_TEST_DEPS})
+    target_link_libraries(test_hash PRIVATE ${INTERNAL_TEST_DEPS})
 
-    get_directory_property(SHA3_IMPL
-                           DIRECTORY ${PROJECT_SOURCE_DIR}/src/crypto
-                           DEFINITION SHA3_IMPL)
     add_executable(test_sha3 test_sha3.c ${SHA3_IMPL} ${PROJECT_SOURCE_DIR}/src/common/common.c)
-    target_link_libraries(test_sha3 ${INTERNAL_TEST_DEPS})
-
+    target_link_libraries(test_sha3 PRIVATE ${INTERNAL_TEST_DEPS})
     set(UNIX_TESTS test_aes test_hash test_sha3)
+
     set(PYTHON3_EXEC python3)
     if(BUILD_SHARED_LIBS)
         set(USE_LIBOQS_SO --use_liboqs_so)
@@ -48,29 +43,29 @@ set(API_TEST_DEPS oqs ${LIBM})
 
 # KEM API tests
 add_executable(example_kem example_kem.c)
-target_link_libraries(example_kem ${API_TEST_DEPS})
+target_link_libraries(example_kem PRIVATE ${API_TEST_DEPS})
 
 add_executable(kat_kem kat_kem.c)
-target_link_libraries(kat_kem ${API_TEST_DEPS})
+target_link_libraries(kat_kem PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_kem test_kem.c)
-target_link_libraries(test_kem ${API_TEST_DEPS})
+target_link_libraries(test_kem PRIVATE ${API_TEST_DEPS})
 
 add_executable(speed_kem speed_kem.c)
-target_link_libraries(speed_kem ${API_TEST_DEPS})
+target_link_libraries(speed_kem PRIVATE ${API_TEST_DEPS})
 
 # SIG API tests
 add_executable(example_sig example_sig.c)
-target_link_libraries(example_sig ${API_TEST_DEPS})
+target_link_libraries(example_sig PRIVATE ${API_TEST_DEPS})
 
 add_executable(kat_sig kat_sig.c)
-target_link_libraries(kat_sig ${API_TEST_DEPS})
+target_link_libraries(kat_sig PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_sig test_sig.c)
-target_link_libraries(test_sig ${API_TEST_DEPS})
+target_link_libraries(test_sig PRIVATE ${API_TEST_DEPS})
 
 add_executable(speed_sig speed_sig.c)
-target_link_libraries(speed_sig ${API_TEST_DEPS})
+target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
 
 # TODO: Get CMake to find python.
 # and set PATH variable in Windows

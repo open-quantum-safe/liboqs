@@ -1,13 +1,19 @@
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
-   CMAKE_C_COMPILER_ID STREQUAL "Clang" OR
-   CMAKE_C_COMPILER_ID STREQUAL "AppleClang")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-unguarded-availability-new")
+   CMAKE_C_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wno-missing-braces)
+endif()
+if(CMAKE_C_COMPILER_ID MATCHES "Clang")
+    if(CMAKE_C_COMPILER_VERSION VERSION_GREATER "3.9")
+        add_compile_options(-Wno-unguarded-availability-new)
+    else() #Wno-unguarded-availability-new won't be recognized
+        add_compile_options(-Wno-error)
+    endif()
 endif()
 
-if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux" AND
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
    OQS_USE_AVX2_INSTRUCTIONS AND
    OQS_USE_BMI2_INSTRUCTIONS)
-     set(PICNIC_WITH_AVX2 "ON")
+     set(PICNIC_WITH_AVX2 ON)
 endif()
 
 set(SRCS sig_picnic.c
@@ -48,15 +54,15 @@ add_library(picnic OBJECT ${SRCS})
 target_include_directories(picnic PRIVATE external
                                           external/sha3)
 if(PICNIC_WITH_AVX2)
-  target_include_directories(picnic PRIVATE external/sha3/avx2)
+    target_include_directories(picnic PRIVATE external/sha3/avx2)
 else()
-  target_include_directories(picnic PRIVATE external/sha3/opt64)
+    target_include_directories(picnic PRIVATE external/sha3/opt64)
 endif()
 target_compile_definitions(picnic PRIVATE PICNIC_STATIC
                                           OPTIMIZED_LINEAR_LAYER_EVALUATION
                                           REDUCED_ROUND_KEY_COMPUTATION
-					  WITH_ZKBPP
-					  WITH_KKW
+                                          WITH_ZKBPP
+                                          WITH_KKW
                                           WITH_LOWMC_128_128_20
                                           WITH_LOWMC_192_192_30
                                           WITH_LOWMC_256_256_38

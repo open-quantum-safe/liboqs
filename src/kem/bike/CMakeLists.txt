@@ -1,8 +1,11 @@
-# GCC 4.9 erroneously reports warnings for certain valid code in BIKE
-# https://stackoverflow.com/questions/13746033/how-to-repair-warning-missing-braces-around-initializer
-# We will disable warnings for these
-if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND CMAKE_C_COMPILER_VERSION VERSION_LESS "5")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wno-missing-braces -Wno-missing-field-initializers")
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND
+   CMAKE_C_COMPILER_VERSION VERSION_LESS "5")
+    # GCC 4.9 erroneously reports warnings for certain valid code in BIKE
+    # https://stackoverflow.com/questions/13746033/how-to-repair-warning-missing-braces-around-initializer
+    add_compile_options(-Wno-missing-braces)
+    add_compile_options(-Wno-missing-field-initializers)
+elseif(CMAKE_C_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wno-missing-braces -Wno-missing-field-initializers)
 endif()
 
 set(SRCS additional/decode.c
@@ -13,8 +16,6 @@ set(SRCS additional/decode.c
          additional/aes_ctr_prf.c
          additional/error.c
          additional/gf2x_mul.c)
-
-add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
 
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
     set(SRCS ${SRCS} additional/sampling_portable.c
@@ -38,7 +39,10 @@ else()
     set(CPP_DEFS PORTABLE)
 endif()
 
+add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
+
 if(OQS_USE_OPENSSL)
+    # TODO: Find a way to eliminate this include_directories() call
     include_directories(${OPENSSL_INCLUDE_DIR})
     set(SRCS ${SRCS} additional/openssl_utils.c)
 endif()
