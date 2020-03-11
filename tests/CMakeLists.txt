@@ -19,7 +19,7 @@ if(NOT WIN32)
 
     # These functions tested here are
     # not part of the liboqs API.
-    include(${PROJECT_SOURCE_DIR}/src/crypto/sources.cmake)
+    include(${PROJECT_SOURCE_DIR}/src/common/crypto_impl.cmake)
 
     add_executable(test_aes test_aes.c ${AES_IMPL} ${PROJECT_SOURCE_DIR}/src/common/common.c)
     target_link_libraries(test_aes PRIVATE ${INTERNAL_TEST_DEPS})

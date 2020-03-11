@@ -56,7 +56,7 @@ if(OQS_ENABLE_SIG_SPHINCS)
     set(SIG_OBJS ${SIG_OBJS} $<TARGET_OBJECTS:sphincs>)
 endif()
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_OBJECTS_END
-include(crypto/sources.cmake)
+include(common/crypto_impl.cmake)
 
 add_library(oqs kem/kem.c
                 ${KEM_OBJS}
@@ -66,8 +66,8 @@ add_library(oqs kem/kem.c
                 ${SHA2_IMPL}
                 ${SHA3_IMPL}
                 common/common.c
-                common/rand.c
-                common/rand_nist.c)
+                common/rand/rand.c
+                common/rand/rand_nist.c)
 if(OQS_USE_OPENSSL)
     target_link_libraries(oqs PUBLIC ${OPENSSL_CRYPTO_LIBRARY})
     target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})
