@@ -6,7 +6,7 @@ tags
 .tags*
 
 # CMake
-build/
+/build*
 
 # Misc
 __pycache__
