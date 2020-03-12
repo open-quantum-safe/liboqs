@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include <oqs/common.h>
+#include <oqs/rand.h>
 
 #ifdef OQS_USE_OPENSSL
 #include <openssl/conf.h>
@@ -18,6 +19,8 @@
 #else
 #include <oqs/aes.h>
 #endif
+
+void OQS_randombytes_nist_kat(unsigned char *x, size_t xlen);
 
 typedef struct {
 	unsigned char Key[32];
@@ -29,6 +32,7 @@ static AES256_CTR_DRBG_struct DRBG_ctx;
 static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V);
 
 #ifdef OQS_USE_OPENSSL
+__attribute__((noreturn))
 static void handleErrors(void) {
 	ERR_print_errors_fp(stderr);
 	abort();
@@ -68,7 +72,7 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 #endif
 }
 
-OQS_API void OQS_randombytes_nist_kat_init(unsigned char *entropy_input, unsigned char *personalization_string, int security_strength) {
+OQS_API void OQS_randombytes_nist_kat_init(const uint8_t *entropy_input, const uint8_t *personalization_string, int security_strength) {
 	unsigned char seed_material[48];
 
 	assert(security_strength == 256);

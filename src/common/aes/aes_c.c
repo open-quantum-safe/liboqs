@@ -499,15 +499,17 @@ void OQS_AES256_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 }
 
 static inline uint32_t UINT32_TO_BE(const uint32_t x) {
-	uint32_t y;
-	uint8_t *z = (uint8_t *) &y;
-	z[0] = (x >> 24) & 0xFF;
-	z[1] = (x >> 16) & 0xFF;
-	z[2] = (x >> 8) & 0xFF;
-	z[3] = x & 0xFF;
-	return y;
+	union {
+		uint32_t val;
+		uint8_t bytes[4];
+	} y;
+	y.bytes[0] = (x >> 24) & 0xFF;
+	y.bytes[1] = (x >> 16) & 0xFF;
+	y.bytes[2] = (x >> 8) & 0xFF;
+	y.bytes[3] = x & 0xFF;
+	return y.val;
 }
-#define BE_TO_UINT32(n) ((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
+#define BE_TO_UINT32(n) (uint32_t)((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
 
 void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	uint8_t block[16];

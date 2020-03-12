@@ -1,5 +1,5 @@
-#ifndef _OQS_KEM_{{ family|upper }}_H
-#define _OQS_KEM_{{ family|upper }}_H
+#ifndef OQS_KEM_{{ family|upper }}_H
+#define OQS_KEM_{{ family|upper }}_H
 
 #include <oqs/oqs.h>
 

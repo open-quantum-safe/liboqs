@@ -818,7 +818,7 @@ void OQS_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 }
 
 void OQS_SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_sha256_ctx *src) {
-	oqs_sha2_sha256_inc_ctx_clone((sha256ctx *) dest, (sha256ctx *) src);
+	oqs_sha2_sha256_inc_ctx_clone((sha256ctx *) dest, (const sha256ctx *) src);
 }
 
 void OQS_SHA2_sha256_inc_ctx_release(OQS_SHA2_sha256_ctx *state) {
@@ -838,7 +838,7 @@ void OQS_SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
 }
 
 void OQS_SHA2_sha384_inc_ctx_clone(OQS_SHA2_sha384_ctx *dest, const OQS_SHA2_sha384_ctx *src) {
-	oqs_sha2_sha384_inc_ctx_clone((sha384ctx *) dest, (sha384ctx *) src);
+	oqs_sha2_sha384_inc_ctx_clone((sha384ctx *) dest, (const sha384ctx *) src);
 }
 
 void OQS_SHA2_sha384_inc_ctx_release(OQS_SHA2_sha384_ctx *state) {
@@ -858,7 +858,7 @@ void OQS_SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state) {
 }
 
 void OQS_SHA2_sha512_inc_ctx_clone(OQS_SHA2_sha512_ctx *dest, const OQS_SHA2_sha512_ctx *src) {
-	oqs_sha2_sha512_inc_ctx_clone((sha512ctx *) dest, (sha512ctx *) src);
+	oqs_sha2_sha512_inc_ctx_clone((sha512ctx *) dest, (const sha512ctx *) src);
 }
 
 void OQS_SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state) {

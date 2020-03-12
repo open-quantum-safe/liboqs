@@ -1,3 +1,5 @@
+add_subdirectory(common)
+
 if(OQS_ENABLE_KEM_BIKE)
     add_subdirectory(kem/bike)
     set(KEM_OBJS ${BIKE_OBJS})
@@ -74,12 +76,7 @@ add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 sig/sig.c
                 ${SIG_OBJS}
-                ${AES_IMPL}
-                ${SHA2_IMPL}
-                ${SHA3_IMPL}
-                common/common.c
-                common/rand/rand.c
-                common/rand/rand_nist.c)
+                $<TARGET_OBJECTS:common>)
 if(OQS_USE_OPENSSL)
     target_link_libraries(oqs PUBLIC ${OPENSSL_CRYPTO_LIBRARY})
     target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})

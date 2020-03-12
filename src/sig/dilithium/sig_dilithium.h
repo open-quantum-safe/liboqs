@@ -1,5 +1,5 @@
-#ifndef _OQS_SIG_DILITHIUM_H
-#define _OQS_SIG_DILITHIUM_H
+#ifndef OQS_SIG_DILITHIUM_H
+#define OQS_SIG_DILITHIUM_H
 
 #include <oqs/oqs.h>
 

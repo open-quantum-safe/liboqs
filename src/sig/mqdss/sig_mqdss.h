@@ -1,5 +1,5 @@
-#ifndef _OQS_SIG_MQDSS_H
-#define _OQS_SIG_MQDSS_H
+#ifndef OQS_SIG_MQDSS_H
+#define OQS_SIG_MQDSS_H
 
 #include <oqs/oqs.h>
 
