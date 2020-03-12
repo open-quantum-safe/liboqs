@@ -39,11 +39,9 @@ int main(void) {
     if(features.fma3) {
         printf("FMA;");
     }
-    /*
-    if(__builtin_cpu_supports("fma4")) {
+    if(features.fma4) {
         printf("FMA4;");
     }
-    */
     if(features.mmx) {
         printf("MMX;");
     }
@@ -59,11 +57,9 @@ int main(void) {
     if(features.sse3) {
         printf("SSE3;");
     }
-    /*
-    if(__builtin_cpu_supports("sse4a")) {
+    if(features.sse4a) {
         printf("SSE4A;");
     }
-    */
 #elif defined(CPU_FEATURES_ARCH_ARM)
     const ArmFeatures features = GetArmInfo().features;
     

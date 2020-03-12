@@ -5,9 +5,11 @@ project(cpu_features-download NONE)
 include(ExternalProject)
 ExternalProject_Add(cpu_features
     GIT_REPOSITORY    https://github.com/google/cpu_features.git
-    GIT_TAG           v0.4.1
     SOURCE_DIR        "${CMAKE_CURRENT_BINARY_DIR}/cpu_features-src"
     BINARY_DIR        "${CMAKE_CURRENT_BINARY_DIR}/cpu_features-build"
+    CMAKE_ARGS
+        -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS}
+        -DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE
     INSTALL_COMMAND   ""
     TEST_COMMAND      ""
 )
