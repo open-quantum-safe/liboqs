@@ -46,6 +46,9 @@ PQCLEAN_FALCON1024_CLEAN_prng_init(prng *p, inner_shake256_context *src) {
     uint64_t th, tl;
     int i;
 
+    uint32_t *d32 = (uint32_t *) p->state.d;
+    uint64_t *d64 = (uint64_t *) p->state.d;
+
     inner_shake256_extract(src, tmp, 56);
     for (i = 0; i < 14; i ++) {
         uint32_t w;
@@ -54,11 +57,11 @@ PQCLEAN_FALCON1024_CLEAN_prng_init(prng *p, inner_shake256_context *src) {
             | ((uint32_t)tmp[(i << 2) + 1] << 8)
             | ((uint32_t)tmp[(i << 2) + 2] << 16)
             | ((uint32_t)tmp[(i << 2) + 3] << 24);
-        *(uint32_t *)(p->state.d + (i << 2)) = w;
+        d32[i] = w;
     }
-    tl = *(uint32_t *)(p->state.d + 48);
-    th = *(uint32_t *)(p->state.d + 52);
-    *(uint64_t *)(p->state.d + 48) = tl + (th << 32);
+    tl = d32[48 / sizeof(uint32_t)];
+    th = d32[52 / sizeof(uint32_t)];
+    d64[48 / sizeof(uint64_t)] = tl + (th << 32);
     PQCLEAN_FALCON1024_CLEAN_prng_refill(p);
 }
 
@@ -86,11 +89,14 @@ PQCLEAN_FALCON1024_CLEAN_prng_refill(prng *p) {
     uint64_t cc;
     size_t u;
 
+    uint32_t *d32 = (uint32_t *) p->state.d;
+    uint64_t *d64 = (uint64_t *) p->state.d;
+
     /*
      * State uses local endianness. Only the output bytes must be
      * converted to little endian (if used on a big-endian machine).
      */
-    cc = *(uint64_t *)(p->state.d + 48);
+    cc = d64[48 / sizeof(uint64_t)];
     for (u = 0; u < 8; u ++) {
         uint32_t state[16];
         size_t v;
@@ -134,12 +140,10 @@ PQCLEAN_FALCON1024_CLEAN_prng_refill(prng *p) {
             state[v] += CW[v];
         }
         for (v = 4; v < 14; v ++) {
-            state[v] += ((uint32_t *)p->state.d)[v - 4];
+            state[v] += d32[v - 4];
         }
-        state[14] += ((uint32_t *)p->state.d)[10]
-                     ^ (uint32_t)cc;
-        state[15] += ((uint32_t *)p->state.d)[11]
-                     ^ (uint32_t)(cc >> 32);
+        state[14] += d32[10] ^ (uint32_t)cc;
+        state[15] += d32[11] ^ (uint32_t)(cc >> 32);
         cc ++;
 
         /*
@@ -157,7 +161,7 @@ PQCLEAN_FALCON1024_CLEAN_prng_refill(prng *p) {
                 (uint8_t)(state[v] >> 24);
         }
     }
-    *(uint64_t *)(p->state.d + 48) = cc;
+    d64[48 / sizeof(uint64_t)] = cc;
 
 
     p->ptr = 0;
