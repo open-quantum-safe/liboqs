@@ -112,7 +112,7 @@ for family in instructions['kems'] + instructions['sigs']:
             scheme,
         )
 
-replacer('.CMake/alg-support.cmake', instructions, '#####')
+replacer('.CMake/alg_support.cmake', instructions, '#####')
 replacer('CMakeLists.txt', instructions, '#####')
 replacer('src/oqsconfig.h.cmake', instructions, '/////')
 replacer('src/CMakeLists.txt', instructions, '#####')
