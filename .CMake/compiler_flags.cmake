@@ -3,8 +3,6 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wall)
     add_compile_options(-Wextra)
     add_compile_options(-Wpedantic)
-    # TODO: Uncomment these lines
-    #add_compile_options(-Wreserved-id-macro)
     #add_compile_options(-Wbad-function-cast)
     add_compile_options(-fvisibility=hidden)
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")

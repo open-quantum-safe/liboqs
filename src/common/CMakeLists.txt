@@ -1,5 +1,9 @@
 include(crypto_impl.cmake)
 
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
+   CMAKE_C_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wbad-function-cast)
+endif()
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wcast-qual)
     add_compile_options(-Wnarrowing)
