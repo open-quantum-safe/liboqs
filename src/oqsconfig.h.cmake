@@ -115,6 +115,10 @@
 #cmakedefine OQS_ENABLE_SIG_dilithium_3 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_4 1
 
+#cmakedefine OQS_ENABLE_SIG_FALCON
+#cmakedefine OQS_ENABLE_SIG_falcon_512 1
+#cmakedefine OQS_ENABLE_SIG_falcon_1024 1
+
 #cmakedefine OQS_ENABLE_SIG_MQDSS
 #cmakedefine OQS_ENABLE_SIG_mqdss_31_48 1
 #cmakedefine OQS_ENABLE_SIG_mqdss_31_64 1

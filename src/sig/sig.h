@@ -60,6 +60,10 @@ extern "C" {
 #define OQS_SIG_alg_dilithium_3 "DILITHIUM_3"
 /** Algorithm identifier for DILITHIUM_4 */
 #define OQS_SIG_alg_dilithium_4 "DILITHIUM_4"
+/** Algorithm identifier for Falcon-512 */
+#define OQS_SIG_alg_falcon_512 "Falcon-512"
+/** Algorithm identifier for Falcon-1024 */
+#define OQS_SIG_alg_falcon_1024 "Falcon-1024"
 /** Algorithm identifier for MQDSS-31-48 */
 #define OQS_SIG_alg_mqdss_31_48 "MQDSS-31-48"
 /** Algorithm identifier for MQDSS-31-64 */
@@ -140,7 +144,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 53
+#define OQS_SIG_algs_length 55
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -316,6 +320,9 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_DILITHIUM
 #include <oqs/sig_dilithium.h>
 #endif /* OQS_ENABLE_SIG_DILITHIUM */
+#ifdef OQS_ENABLE_SIG_FALCON
+#include <oqs/sig_falcon.h>
+#endif /* OQS_ENABLE_SIG_FALCON */
 #ifdef OQS_ENABLE_SIG_MQDSS
 #include <oqs/sig_mqdss.h>
 #endif /* OQS_ENABLE_SIG_MQDSS */

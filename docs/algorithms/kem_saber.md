@@ -25,7 +25,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/PQClean/PQClean/ based on https://github.com/KULeuven-COSIC/SABER/commit/14ede83f1ff3bcc41f0464543542366c68b55871
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/6de728361e33ad3a5a6997e0896ff9fe8e44a999
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/9023fef55861faccd82146cf599b9e46fb9606aa
 - **License:** Public domain
 - **Language:** C
 - **Constant-time:** Yes

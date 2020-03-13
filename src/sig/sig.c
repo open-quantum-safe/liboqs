@@ -17,6 +17,8 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_dilithium_2,
 		OQS_SIG_alg_dilithium_3,
 		OQS_SIG_alg_dilithium_4,
+		OQS_SIG_alg_falcon_512,
+		OQS_SIG_alg_falcon_1024,
 		OQS_SIG_alg_mqdss_31_48,
 		OQS_SIG_alg_mqdss_31_64,
 		OQS_SIG_alg_sphincs_haraka_128f_robust,
@@ -100,6 +102,18 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_4)) {
 #ifdef OQS_ENABLE_SIG_dilithium_4
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_falcon_512)) {
+#ifdef OQS_ENABLE_SIG_falcon_512
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_falcon_1024)) {
+#ifdef OQS_ENABLE_SIG_falcon_1024
 		return 1;
 #else
 		return 0;
@@ -427,6 +441,18 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_4)) {
 #ifdef OQS_ENABLE_SIG_dilithium_4
 		return OQS_SIG_dilithium_4_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_falcon_512)) {
+#ifdef OQS_ENABLE_SIG_falcon_512
+		return OQS_SIG_falcon_512_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_falcon_1024)) {
+#ifdef OQS_ENABLE_SIG_falcon_1024
+		return OQS_SIG_falcon_1024_new();
 #else
 		return NULL;
 #endif

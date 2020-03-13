@@ -1,7 +1,6 @@
 kems:
   - 
     name: kyber
-    visual_studio_guid: 8db00bac-a963-4875-b0a1-945bfed08037
     schemes:
       - 
         scheme: "512"
@@ -9,45 +8,38 @@ kems:
         pretty_name_full: Kyber512
         implementation: clean
         sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
-        visual_studio_guid: 80001dfa-c3e2-478f-8705-95bafd3f33d3
       - 
         scheme: "768"
         pqclean_scheme: kyber768
         pretty_name_full: Kyber768
         implementation: clean
         sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
-        visual_studio_guid: 815e88b5-b5d7-43c6-b0c0-2a045a0c7aa6
       - 
         scheme: "1024"
         pqclean_scheme: kyber1024
         pretty_name_full: Kyber1024
         implementation: clean
         sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
-        visual_studio_guid: fd3c9627-9462-409f-9cdb-0c6566370dbe
       - 
         scheme: "512_90s"
         pqclean_scheme: kyber512-90s
         pretty_name_full: Kyber512-90s
         implementation: clean
         sources: ['aes256ctr.c', 'cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c']
-        visual_studio_guid: 3a0bdf41-9c04-4a5a-a3b9-102278648b98
       - 
         scheme: "768_90s"
         pqclean_scheme: kyber768-90s
         pretty_name_full: Kyber768-90s
         implementation: clean
         sources: ['aes256ctr.c', 'cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c']
-        visual_studio_guid: 7e606f54-ab14-442b-b580-d7538fabb69a
       - 
         scheme: "1024_90s"
         pqclean_scheme: kyber1024-90s
         pretty_name_full: Kyber1024-90s
         implementation: clean
         sources: ['aes256ctr.c', 'cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c']
-        visual_studio_guid: 96d51be2-f934-430a-8556-b2d33efadc94
   - 
     name: ledacrypt
-    visual_studio_guid: dd1f08d2-6e1a-40cc-a17c-df27c91e8280
     schemes:
       - 
         scheme: ledakemlt12
@@ -55,24 +47,20 @@ kems:
         pretty_name_full: LEDAcryptKEM-LT12
         implementation: leaktime
         sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
-        visual_studio_guid: 5208145f-9c1e-42ce-9531-defb74fed20e
       - 
         scheme: ledakemlt32
         pqclean_scheme: ledakemlt32
         pretty_name_full: LEDAcryptKEM-LT32
         implementation: leaktime
         sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
-        visual_studio_guid: a7296d8f-77f1-4bcd-93df-02dfb04118b6
       - 
         scheme: ledakemlt52
         pqclean_scheme: ledakemlt52
         pretty_name_full: LEDAcryptKEM-LT52
         implementation: leaktime
         sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
-        visual_studio_guid: ddaaf20d-4201-483f-9440-f2a35e65840e
   - 
     name: newhope
-    visual_studio_guid: 21ea4719-b334-4625-8d3c-3f48de67f6f2
     schemes:
       - 
         scheme: "512cca"
@@ -80,17 +68,14 @@ kems:
         pretty_name_full: NewHope-512-CCA
         implementation: clean
         sources: ['cpapke.c', 'kem.c', 'ntt.c', 'poly.c', 'precomp.c', 'reduce.c', 'verify.c']
-        visual_studio_guid: fec2e0b7-ccf0-434e-a1ae-4b3bb767e915
       - 
         scheme: "1024cca"
         pqclean_scheme: newhope1024cca
         pretty_name_full: NewHope-1024-CCA
         implementation: clean
         sources: ['cpapke.c', 'kem.c', 'ntt.c', 'poly.c', 'precomp.c', 'reduce.c', 'verify.c']
-        visual_studio_guid: f26d63a8-92e8-4968-90b1-48aa2b4a9b97
   - 
     name: ntru
-    visual_studio_guid: c75e702c-9706-4807-9ff5-ed29ebc3367c
     schemes:
       - 
         scheme: hps2048509
@@ -98,31 +83,26 @@ kems:
         pretty_name_full: NTRU-HPS-2048-509
         implementation: clean
         sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
-        visual_studio_guid: bafe52e5-36c3-462c-9471-147904f60836
       - 
         scheme: hps2048677
         pqclean_scheme: ntruhps2048677
         pretty_name_full: NTRU-HPS-2048-677
         implementation: clean
         sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
-        visual_studio_guid: bc485581-d690-4659-b686-ff11c5280698
       - 
         scheme: hps4096821
         pqclean_scheme: ntruhps4096821
         pretty_name_full: NTRU-HPS-4096-821
         implementation: clean
         sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
-        visual_studio_guid: e89f8171-bf1d-4ebf-925b-9572af2e4200
       - 
         scheme: hrss701
         pqclean_scheme: ntruhrss701
         pretty_name_full: NTRU-HRSS-701
         implementation: clean
         sources: ['kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
-        visual_studio_guid: 96485f85-7dd5-4df3-a1cd-769da06d3ada
   - 
     name: saber
-    visual_studio_guid: 281a0a06-959f-43bb-afc3-d72cf9816fc5
     schemes:
       - 
         scheme: lightsaber
@@ -130,24 +110,20 @@ kems:
         pretty_name_full: LightSaber-KEM
         implementation: clean
         sources: ['cbd.c', 'kem.c', 'pack_unpack.c', 'poly.c', 'poly_mul.c', 'SABER_indcpa.c', 'verify.c']
-        visual_studio_guid: 64918521-b019-48f6-89c3-ad2ce40a8c72
       - 
         scheme: saber
         pqclean_scheme: saber
         pretty_name_full: Saber-KEM
         implementation: clean
         sources: ['cbd.c', 'kem.c', 'pack_unpack.c', 'poly.c', 'poly_mul.c', 'SABER_indcpa.c', 'verify.c']
-        visual_studio_guid: 3cbb7630-a3ce-4d70-a37d-8fd780a20aba
       - 
         scheme: firesaber
         pqclean_scheme: firesaber
         pretty_name_full: FireSaber-KEM
         implementation: clean
         sources: ['cbd.c', 'kem.c', 'pack_unpack.c', 'poly.c', 'poly_mul.c', 'SABER_indcpa.c', 'verify.c']
-        visual_studio_guid: f7014d1d-26fc-4fa6-87b2-0c4552cdc0d2
   - 
     name: threebears
-    visual_studio_guid: 0ab14af0-e934-4edf-a5c7-f40d2a93c4a8
     schemes:
       - 
         scheme: babybear
@@ -155,46 +131,39 @@ kems:
         pretty_name_full: BabyBear
         implementation: clean
         sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
-        visual_studio_guid: 12290f9d-11b0-496a-9b92-70fb25faba0c
       - 
         scheme: babybear_ephem
         pqclean_scheme: babybear-ephem
         pretty_name_full: BabyBearEphem
         implementation: clean
         sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
-        visual_studio_guid: b88beaee-0c59-4466-b2ce-d1dfc389f571
       - 
         scheme: mamabear
         pqclean_scheme: mamabear
         pretty_name_full: MamaBear
         implementation: clean
         sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
-        visual_studio_guid: 30ae4ff0-6225-4480-abbb-29b8557acd8a
       - 
         scheme: mamabear_ephem
         pqclean_scheme: mamabear-ephem
         pretty_name_full: MamaBearEphem
         implementation: clean
         sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
-        visual_studio_guid: b64eb66a-9072-441d-a4d8-41edd390a46c
       - 
         scheme: papabear
         pqclean_scheme: papabear
         pretty_name_full: PapaBear
         implementation: clean
         sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
-        visual_studio_guid: 51f44ce3-1121-4b55-9c36-5c99dab92c72
       - 
         scheme: papabear_ephem
         pqclean_scheme: papabear-ephem
         pretty_name_full: PapaBearEphem
         implementation: clean
         sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
-        visual_studio_guid: 2edd08e6-19f4-46d8-8590-06ffe20c0e75
 sigs:
   - 
     name: dilithium
-    visual_studio_guid: 2a035f7e-7c7e-4ca3-94ac-140aac970a73
     schemes:
       - 
         scheme: "2"
@@ -203,7 +172,6 @@ sigs:
         implementation: clean
         sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'stream.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 1f5e5dbe-8082-4756-9e90-c7d84198d682
       - 
         scheme: "3"
         pqclean_scheme: dilithium3
@@ -211,7 +179,6 @@ sigs:
         implementation: clean
         sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'stream.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 8a93b308-7b77-41e7-88a5-275994b62322
       - 
         scheme: "4"
         pqclean_scheme: dilithium4
@@ -219,10 +186,25 @@ sigs:
         implementation: clean
         sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'stream.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: fb8c21f2-891b-46fb-8a45-17f69dfa31bd
+  - 
+    name: falcon
+    schemes:
+      - 
+        scheme: "512"
+        pqclean_scheme: falcon-512
+        pretty_name_full: Falcon-512
+        implementation: clean
+        sources: ['codec.c', 'common.c', 'fft.c', 'fpr.c', 'keygen.c', 'pqclean.c', 'rng.c', 'sign.c', 'vrfy.c']
+        signed_msg_order: falcon
+      - 
+        scheme: "1024"
+        pqclean_scheme: falcon-1024
+        pretty_name_full: Falcon-1024
+        implementation: clean
+        sources: ['codec.c', 'common.c', 'fft.c', 'fpr.c', 'keygen.c', 'pqclean.c', 'rng.c', 'sign.c', 'vrfy.c']
+        signed_msg_order: falcon
   - 
     name: mqdss
-    visual_studio_guid: ac98bd77-73db-4889-b91f-75dc49769226
     schemes:
       - 
         scheme: "31_48"
@@ -231,7 +213,6 @@ sigs:
         implementation: clean
         sources: ['gf31.c', 'mq.c', 'sign.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: f640e0c6-bcdd-4964-951b-5af45229036f
       - 
         scheme: "31_64"
         pqclean_scheme: mqdss-64
@@ -239,10 +220,8 @@ sigs:
         implementation: clean
         sources: ['gf31.c', 'mq.c', 'sign.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: cb56a63a-35d6-4825-92fa-07094d96d063
   # - 
   #   name: rainbow
-  #   visual_studio_guid: 154bc1c9-3ffa-43b4-87f6-7833358925ca
   #   schemes:
   #     - 
   #       scheme: "Ia_classic"
@@ -251,7 +230,6 @@ sigs:
   #       implementation: clean
   #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
   #       signed_msg_order: msg_then_sig
-  #       visual_studio_guid: 383a4b2f-3be2-4fdc-890c-2c0b96dd407b
   #     - 
   #       scheme: "Ia_cyclic"
   #       pqclean_scheme: rainbowIa-cyclic
@@ -259,7 +237,6 @@ sigs:
   #       implementation: clean
   #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
   #       signed_msg_order: msg_then_sig
-  #       visual_studio_guid: 1d381fda-5d72-4e75-bda7-425da26fafd3
   #     - 
   #       scheme: "Ia_cyclic_compressed"
   #       pqclean_scheme: rainbowIa-cyclic-compressed
@@ -267,7 +244,6 @@ sigs:
   #       implementation: clean
   #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
   #       signed_msg_order: msg_then_sig
-  #       visual_studio_guid: 105adf1c-d79a-4fe1-b83a-bbee5f3fe9e3
   #     - 
   #       scheme: "IIIc_classic"
   #       pqclean_scheme: rainbowIIIc-classic
@@ -275,7 +251,6 @@ sigs:
   #       implementation: clean
   #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
   #       signed_msg_order: msg_then_sig
-  #       visual_studio_guid: 66f609bd-ef1c-4f8c-bccd-6d1ec0a00d32
   #     - 
   #       scheme: "IIIc_cyclic"
   #       pqclean_scheme: rainbowIIIc-cyclic
@@ -283,7 +258,6 @@ sigs:
   #       implementation: clean
   #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
   #       signed_msg_order: msg_then_sig
-  #       visual_studio_guid: d5b8951d-3341-422d-ad44-d170cd3050c2
   #     - 
   #       scheme: "IIIc_cyclic_compressed"
   #       pqclean_scheme: rainbowIIIc-cyclic-compressed
@@ -291,7 +265,6 @@ sigs:
   #       implementation: clean
   #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
   #       signed_msg_order: msg_then_sig
-  #       visual_studio_guid: f85b2351-3730-4c73-86dd-326824670cb8
   #     - 
   #       scheme: "Vc_classic"
   #       pqclean_scheme: rainbowVc-classic
@@ -299,7 +272,6 @@ sigs:
   #       implementation: clean
   #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
   #       signed_msg_order: msg_then_sig
-  #       visual_studio_guid: fb503919-3b72-4053-99c6-efa69fcf99d3
   #     - 
   #       scheme: "Vc_cyclic"
   #       pqclean_scheme: rainbowVc-cyclic
@@ -307,7 +279,6 @@ sigs:
   #       implementation: clean
   #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
   #       signed_msg_order: msg_then_sig
-  #       visual_studio_guid: 0fbffeac-d3be-4222-b886-86438bfa94f5
   #     - 
   #       scheme: "Vc_cyclic_compressed"
   #       pqclean_scheme: rainbowVc-cyclic-compressed
@@ -315,10 +286,8 @@ sigs:
   #       implementation: clean
   #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
   #       signed_msg_order: msg_then_sig
-  #       visual_studio_guid: 6ebf00fe-7db0-44ae-99f8-c694388c8514
   - 
     name: sphincs
-    visual_studio_guid: 72502a10-312e-422b-80b9-b1b08abfe5e7
     schemes:
       - 
         scheme: haraka_128f_robust
@@ -327,7 +296,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_robust.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: f28067e3-d180-49a5-b81f-6d1bbed7f73f
       - 
         scheme: haraka_128f_simple
         pqclean_scheme: sphincs-haraka-128f-simple
@@ -335,7 +303,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_simple.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: ddf06c77-d5a9-4a22-8fce-edf40c19d05b
       - 
         scheme: haraka_128s_robust
         pqclean_scheme: sphincs-haraka-128s-robust
@@ -343,7 +310,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_robust.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 335d0fde-786a-4330-8424-568ae5ed397a
       - 
         scheme: haraka_128s_simple
         pqclean_scheme: sphincs-haraka-128s-simple
@@ -351,7 +317,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_simple.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: fe675ab1-41ca-4d68-b48c-9280e6c6d7a7
       - 
         scheme: haraka_192f_robust
         pqclean_scheme: sphincs-haraka-192f-robust
@@ -359,7 +324,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_robust.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 639c7f38-8f45-42e8-ba10-719be3327f42
       - 
         scheme: haraka_192f_simple
         pqclean_scheme: sphincs-haraka-192f-simple
@@ -367,7 +331,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_simple.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: d070d7e6-62d9-4eb7-ac1d-4335f96d4c11
       - 
         scheme: haraka_192s_robust
         pqclean_scheme: sphincs-haraka-192s-robust
@@ -375,7 +338,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_robust.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 0d10051e-7028-46c4-9f75-e5b81cedc319
       - 
         scheme: haraka_192s_simple
         pqclean_scheme: sphincs-haraka-192s-simple
@@ -383,7 +345,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_simple.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 5003532b-6331-4c02-8f2c-92202fc34201
       - 
         scheme: haraka_256f_robust
         pqclean_scheme: sphincs-haraka-256f-robust
@@ -391,7 +352,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_robust.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 03f32b30-7c85-43f7-b73a-122204095d02
       - 
         scheme: haraka_256f_simple
         pqclean_scheme: sphincs-haraka-256f-simple
@@ -399,7 +359,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_simple.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 7eabbd0c-e455-4f04-9f2d-3c70a8527faf
       - 
         scheme: haraka_256s_robust
         pqclean_scheme: sphincs-haraka-256s-robust
@@ -407,7 +366,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_robust.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 4a8872e5-b50c-493b-b5d8-cad423406df5
       - 
         scheme: haraka_256s_simple
         pqclean_scheme: sphincs-haraka-256s-simple
@@ -415,7 +373,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_haraka.c', 'thash_haraka_simple.c', 'haraka.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 40b4c623-511f-4235-be9b-9ff675457fe5
       - 
         scheme: sha256_128f_robust
         pqclean_scheme: sphincs-sha256-128f-robust
@@ -423,7 +380,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: f569c3b0-c6ba-4157-a858-a5fc52d51515
       - 
         scheme: sha256_128f_simple
         pqclean_scheme: sphincs-sha256-128f-simple
@@ -431,7 +387,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 1be5ba25-e61c-4218-a949-129b3422d6d8
       - 
         scheme: sha256_128s_robust
         pqclean_scheme: sphincs-sha256-128s-robust
@@ -439,7 +394,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: c2b7b42f-bebf-4a92-8f97-e12740a2f287
       - 
         scheme: sha256_128s_simple
         pqclean_scheme: sphincs-sha256-128s-simple
@@ -447,7 +401,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: b380048d-601c-46d6-acb8-591a2c4e1854
       - 
         scheme: sha256_192f_robust
         pqclean_scheme: sphincs-sha256-192f-robust
@@ -455,7 +408,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 639a3ad2-1d05-445a-b9ea-9112fe8a6e7d
       - 
         scheme: sha256_192f_simple
         pqclean_scheme: sphincs-sha256-192f-simple
@@ -463,7 +415,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: eea572d4-7c0a-4d63-bd4d-5d038223a922
       - 
         scheme: sha256_192s_robust
         pqclean_scheme: sphincs-sha256-192s-robust
@@ -471,7 +422,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 1972ed56-876a-4eca-aadd-91886adfe290
       - 
         scheme: sha256_192s_simple
         pqclean_scheme: sphincs-sha256-192s-simple
@@ -479,7 +429,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 10d0a3dd-b2b8-4e74-b59c-dc94ea84b7c1
       - 
         scheme: sha256_256f_robust
         pqclean_scheme: sphincs-sha256-256f-robust
@@ -487,7 +436,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 945476fd-8435-4df8-9b4b-c04e74aa6d03
       - 
         scheme: sha256_256f_simple
         pqclean_scheme: sphincs-sha256-256f-simple
@@ -495,7 +443,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: d70d780f-3ff0-4146-a6ce-8801bc157f83
       - 
         scheme: sha256_256s_robust
         pqclean_scheme: sphincs-sha256-256s-robust
@@ -503,7 +450,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_robust.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: fd789855-13bb-40e9-a09f-9086dd62ab93
       - 
         scheme: sha256_256s_simple
         pqclean_scheme: sphincs-sha256-256s-simple
@@ -511,7 +457,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_sha256.c', 'thash_sha256_simple.c', 'sha256.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 4823fa89-43de-45b0-ac13-3de5345ce48b
       - 
         scheme: shake256_128f_robust
         pqclean_scheme: sphincs-shake256-128f-robust
@@ -519,7 +464,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_robust.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: cf170e69-4718-4efd-a7ba-2388a826193c
       - 
         scheme: shake256_128f_simple
         pqclean_scheme: sphincs-shake256-128f-simple
@@ -527,7 +471,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_simple.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: a183d0b7-a7dc-44e4-8577-948bd7a516cb
       - 
         scheme: shake256_128s_robust
         pqclean_scheme: sphincs-shake256-128s-robust
@@ -535,7 +478,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_robust.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 5fbd3732-43bc-456e-85f8-9ff0a93ac6c0
       - 
         scheme: shake256_128s_simple
         pqclean_scheme: sphincs-shake256-128s-simple
@@ -543,7 +485,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_simple.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 1607d9a5-827c-40df-a812-fea78d0bead4
       - 
         scheme: shake256_192f_robust
         pqclean_scheme: sphincs-shake256-192f-robust
@@ -551,7 +492,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_robust.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 0114e06e-a276-44a1-b3f9-00ca7982cf9c
       - 
         scheme: shake256_192f_simple
         pqclean_scheme: sphincs-shake256-192f-simple
@@ -559,7 +499,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_simple.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: c8a461d3-a602-4c5a-ad36-8fac1419e69d
       - 
         scheme: shake256_192s_robust
         pqclean_scheme: sphincs-shake256-192s-robust
@@ -567,7 +506,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_robust.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: b0f877cc-b94b-4c7d-b269-ce13dc05c192
       - 
         scheme: shake256_192s_simple
         pqclean_scheme: sphincs-shake256-192s-simple
@@ -575,7 +513,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_simple.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 44779d3c-2259-44b3-9baf-ef872f76dac0
       - 
         scheme: shake256_256f_robust
         pqclean_scheme: sphincs-shake256-256f-robust
@@ -583,7 +520,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_robust.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 419733dc-f994-4ad9-9760-c3db8d4b1446
       - 
         scheme: shake256_256f_simple
         pqclean_scheme: sphincs-shake256-256f-simple
@@ -591,7 +527,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_simple.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 727b895c-b0e5-4f8e-b48a-f7aa5d06b21e
       - 
         scheme: shake256_256s_robust
         pqclean_scheme: sphincs-shake256-256s-robust
@@ -599,7 +534,6 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_robust.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: 42ed0428-e979-45de-9514-b201675ae69f
       - 
         scheme: shake256_256s_simple
         pqclean_scheme: sphincs-shake256-256s-simple
@@ -607,4 +541,3 @@ sigs:
         implementation: clean
         sources: ['address.c', 'wots.c', 'utils.c', 'fors.c', 'sign.c', 'hash_shake256.c', 'thash_shake256_simple.c']
         signed_msg_order: sig_then_msg
-        visual_studio_guid: a7c0f5cd-c1e4-4880-9c9a-98d0b09d03ab
