@@ -70,7 +70,6 @@ if(OQS_ENABLE_SIG_SPHINCS)
     set(SIG_OBJS ${SIG_OBJS} $<TARGET_OBJECTS:sphincs>)
 endif()
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_OBJECTS_END
-include(common/crypto_impl.cmake)
 
 add_library(oqs kem/kem.c
                 ${KEM_OBJS}
