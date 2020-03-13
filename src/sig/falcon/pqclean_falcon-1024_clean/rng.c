@@ -88,7 +88,6 @@ PQCLEAN_FALCON1024_CLEAN_prng_refill(prng *p) {
 
     uint64_t cc;
     size_t u;
-
     uint32_t *d32 = (uint32_t *) p->state.d;
     uint64_t *d64 = (uint64_t *) p->state.d;
 
