@@ -4,7 +4,6 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wcast-qual)
     add_compile_options(-Wnarrowing)
     add_compile_options(-Wconversion)
-    #add_compile_options(-Wno-missing-prototypes) #TODO: Remove
 endif()
 
 add_library(common OBJECT ${AES_IMPL}

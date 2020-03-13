@@ -85,8 +85,8 @@ PRINT_TIMER_FOOTER
 
 #endif
 
-#ifndef _DS_BENCHMARK_H
-#define _DS_BENCHMARK_H
+#ifndef DS_BENCHMARK_H
+#define DS_BENCHMARK_H
 
 #include <inttypes.h>
 #include <stdio.h>
@@ -172,7 +172,7 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 #define DEFINE_TIMER_VARIABLES                                                                              \
     volatile uint64_t _bench_cycles_start, _bench_cycles_end;                                               \
     uint64_t _bench_cycles_cumulative = 0;                                                                  \
-    int64_t _bench_cycles_diff;                                                                             \
+    uint64_t _bench_cycles_diff;                                                                             \
     struct timeval _bench_timeval_start, _bench_timeval_end;                                                \
     uint64_t _bench_iterations, _bench_time_cumulative;                                                     \
     double _bench_cycles_x, _bench_cycles_mean, _bench_cycles_delta, _bench_cycles_M2, _bench_cycles_stdev; \

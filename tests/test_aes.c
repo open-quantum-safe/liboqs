@@ -17,7 +17,7 @@
 static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
 	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
+		printf("%02X", str[i]);
 	}
 	printf("\n");
 }

@@ -12,7 +12,7 @@
 #include "ds_benchmark.h"
 #include "system_info.c"
 
-static OQS_STATUS sig_speed_wrapper(const char *method_name, int duration, bool printInfo) {
+static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, bool printInfo) {
 
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -20,7 +20,7 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, int duration, bool 
 	uint8_t *message = NULL;
 	uint8_t *signature = NULL;
 	size_t message_len = 50;
-	size_t signature_len;
+	size_t signature_len = 0;
 	OQS_STATUS ret = OQS_ERROR;
 
 	sig = OQS_SIG_new(method_name);
@@ -67,7 +67,7 @@ cleanup:
 	return ret;
 }
 
-OQS_STATUS printAlgs(void) {
+static OQS_STATUS printAlgs(void) {
 	for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
 		OQS_SIG *sig = OQS_SIG_new(OQS_SIG_alg_identifier(i));
 		if (sig == NULL) {
@@ -86,7 +86,7 @@ int main(int argc, char **argv) {
 	OQS_STATUS rc;
 
 	bool printUsage = false;
-	int duration = 3;
+	uint64_t duration = 3;
 	bool printSigInfo = false;
 
 	OQS_SIG *single_sig = NULL;
@@ -103,7 +103,7 @@ int main(int argc, char **argv) {
 			}
 		} else if ((strcmp(argv[i], "--duration") == 0) || (strcmp(argv[i], "-d") == 0)) {
 			if (i < argc - 1) {
-				duration = (int) strtol(argv[i + 1], NULL, 10);
+				duration = (uint64_t)strtol(argv[i + 1], NULL, 10);
 				if (duration > 0) {
 					i += 1;
 					continue;

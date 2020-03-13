@@ -18,7 +18,7 @@
 void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
 	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
+		printf("%02X", str[i]);
 	}
 	printf("\n");
 }
@@ -36,13 +36,15 @@ void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 }
 
 static inline uint32_t UINT32_TO_LE(const uint32_t x) {
-	uint32_t y;
-	uint8_t *z = (uint8_t *) &y;
-	z[0] = x & 0xFF;
-	z[1] = x >> 8;
-	z[2] = x >> 16;
-	z[3] = x >> 24;
-	return y;
+	union {
+		uint32_t val;
+		uint8_t bytes[4];
+	} y;
+	y.bytes[0] = x & 0xFF;
+	y.bytes[1] = (x >> 8) & 0xFF;
+	y.bytes[2] = (x >> 16) & 0xFF;
+	y.bytes[3] = (x >> 24) & 0xFF;
+	return y.val;
 }
 
 static inline uint16_t UINT16_TO_BE(const uint16_t x) {
@@ -639,7 +641,7 @@ OQS_STATUS sig_kat(const char *method_name) {
 		goto algo_not_enabled;
 	}
 
-	for (size_t i = 0; i < 48; i++) {
+	for (uint8_t i = 0; i < 48; i++) {
 		entropy_input[i] = i;
 	}
 

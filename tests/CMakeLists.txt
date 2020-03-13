@@ -1,3 +1,8 @@
+if(CMAKE_C_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wnarrowing)
+    add_compile_options(-Wconversion)
+    add_compile_options(-Wcast-qual)
+endif()
 if (MINGW OR MSYS OR CYGWIN)
     add_definitions(-D__USE_MINGW_ANSI_STDIO=1)
     add_compile_options(-Wno-unknown-pragmas)
