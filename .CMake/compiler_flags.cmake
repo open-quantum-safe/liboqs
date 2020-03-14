@@ -87,4 +87,5 @@ endif()
 
 if(MINGW OR MSYS OR CYGWIN)
     add_compile_options(-Wno-maybe-uninitialized)
+    add_link_options(-Wl,--stack,16777216)
 endif()
