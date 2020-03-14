@@ -74,6 +74,18 @@
 #cmakedefine OQS_ENABLE_SIG_qTesla_p_III 1
 
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
+#cmakedefine OQS_ENABLE_KEM_CLASSIC_MCELIECE 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_348864 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_348864f 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_460896 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_460896f 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_6688128 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_6688128f 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_6960119 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_6960119f 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_8192128 1
+#cmakedefine OQS_ENABLE_KEM_classic_mceliece_8192128f 1
+
 #cmakedefine OQS_ENABLE_KEM_KYBER 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512 1
 #cmakedefine OQS_ENABLE_KEM_kyber_768 1
