@@ -28,7 +28,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://sourceforge.net/p/threebears/code/ci/f4ce0ebfc84a5e01a75bfc8297b6d175e993cfa4/
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/6de728361e33ad3a5a6997e0896ff9fe8e44a999
+- **Implementation version:** https://github.com/PQClean/PQClean/commit/9023fef55861faccd82146cf599b9e46fb9606aa
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes
