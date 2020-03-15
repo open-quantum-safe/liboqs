@@ -60,6 +60,18 @@ cmake_dependent_option(OQS_ENABLE_SIG_qTesla_p_I "" ON "OQS_ENABLE_SIG_QTESLA" O
 cmake_dependent_option(OQS_ENABLE_SIG_qTesla_p_III "" ON "OQS_ENABLE_SIG_QTESLA" OFF)
 
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ENABLE_BY_ALG_START
+option(OQS_ENABLE_KEM_CLASSIC_MCELIECE "" ON)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_348864 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_348864f "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_460896 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_460896f "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_6688128 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_6688128f "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_6960119 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_6960119f "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_8192128 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_8192128f "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
+
 option(OQS_ENABLE_KEM_KYBER "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_kyber_512 "" ON "OQS_ENABLE_KEM_KYBER" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_kyber_768 "" ON "OQS_ENABLE_KEM_KYBER" OFF)

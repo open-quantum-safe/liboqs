@@ -74,8 +74,18 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
             add_compile_options(-Wl,--gc-sections)
         endif ()
     endif()
+
+elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    # Warning C4146 is raised when a unary minus operator is applied to an
+    # unsigned type; this has nonetheless been standard and portable for as
+    # long as there has been a C standard, and we need it for constant-time
+    # computations. Thus, we disable that spurious warning.
+    add_compile_options(/wd4146)
+    # Need a larger stack for Classic McEliece
+    add_link_options(/STACK:8192000)
 endif()
 
 if(MINGW OR MSYS OR CYGWIN)
     add_compile_options(-Wno-maybe-uninitialized)
+    add_link_options(-Wl,--stack,16777216)
 endif()

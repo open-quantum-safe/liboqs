@@ -40,6 +40,26 @@ extern "C" {
 /** Algorithm identifier for BIKE1-L3-FO KEM. */
 #define OQS_KEM_alg_bike1_l3_fo "BIKE1-L3-FO"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
+/** Algorithm identifier for Classic-McEliece-348864 KEM. */
+#define OQS_KEM_alg_classic_mceliece_348864 "Classic-McEliece-348864"
+/** Algorithm identifier for Classic-McEliece-348864f KEM. */
+#define OQS_KEM_alg_classic_mceliece_348864f "Classic-McEliece-348864f"
+/** Algorithm identifier for Classic-McEliece-460896 KEM. */
+#define OQS_KEM_alg_classic_mceliece_460896 "Classic-McEliece-460896"
+/** Algorithm identifier for Classic-McEliece-460896f KEM. */
+#define OQS_KEM_alg_classic_mceliece_460896f "Classic-McEliece-460896f"
+/** Algorithm identifier for Classic-McEliece-6688128 KEM. */
+#define OQS_KEM_alg_classic_mceliece_6688128 "Classic-McEliece-6688128"
+/** Algorithm identifier for Classic-McEliece-6688128f KEM. */
+#define OQS_KEM_alg_classic_mceliece_6688128f "Classic-McEliece-6688128f"
+/** Algorithm identifier for Classic-McEliece-6960119 KEM. */
+#define OQS_KEM_alg_classic_mceliece_6960119 "Classic-McEliece-6960119"
+/** Algorithm identifier for Classic-McEliece-6960119f KEM. */
+#define OQS_KEM_alg_classic_mceliece_6960119f "Classic-McEliece-6960119f"
+/** Algorithm identifier for Classic-McEliece-8192128 KEM. */
+#define OQS_KEM_alg_classic_mceliece_8192128 "Classic-McEliece-8192128"
+/** Algorithm identifier for Classic-McEliece-8192128f KEM. */
+#define OQS_KEM_alg_classic_mceliece_8192128f "Classic-McEliece-8192128f"
 /** Algorithm identifier for Kyber512 KEM. */
 #define OQS_KEM_alg_kyber_512 "Kyber512"
 /** Algorithm identifier for Kyber768 KEM. */
@@ -136,7 +156,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 51
+#define OQS_KEM_algs_length 61
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -308,6 +328,9 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #include <oqs/kem_bike.h>
 #endif /* OQS_ENABLE_KEM_BIKE */
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
+#ifdef OQS_ENABLE_KEM_CLASSIC_MCELIECE
+#include <oqs/kem_classic_mceliece.h>
+#endif /* OQS_ENABLE_KEM_CLASSIC_MCELIECE */
 #ifdef OQS_ENABLE_KEM_KYBER
 #include <oqs/kem_kyber.h>
 #endif /* OQS_ENABLE_KEM_KYBER */
