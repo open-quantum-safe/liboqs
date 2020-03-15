@@ -160,6 +160,96 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg, signature, signature_len);
 		memcpy(*signed_msg + signature_len, msg, msg_len);
 		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Ia-Classic")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Ia-Cyclic")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Ia-Cyclic-Compressed")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-IIIc-Classic")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-IIIc-Cyclic")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-IIIc-Cyclic-Compressed")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Vc-Classic")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Vc-Cyclic")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
+	} else if (0 == strcmp(sig->method_name, "Rainbow-Vc-Cyclic-Compressed")) {
+		// signed_msg = msg || signature
+		*signed_msg_len = msg_len + signature_len;
+		*signed_msg = malloc(*signed_msg_len);
+		if (*signed_msg == NULL) {
+			return OQS_ERROR;
+		}
+		memcpy(*signed_msg, msg, msg_len);
+		memcpy(*signed_msg + msg_len, signature, signature_len);
+		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "SPHINCS+-Haraka-128f-robust")) {
 		// signed_msg = signature || msg
 		*signed_msg_len = signature_len + msg_len;

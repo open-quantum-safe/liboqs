@@ -283,72 +283,72 @@ sigs:
         implementation: clean
         sources: ['gf31.c', 'mq.c', 'sign.c']
         signed_msg_order: sig_then_msg
-  # - 
-  #   name: rainbow
-  #   schemes:
-  #     - 
-  #       scheme: "Ia_classic"
-  #       pqclean_scheme: rainbowIa-classic
-  #       pretty_name_full: Rainbow-Ia-Classic
-  #       implementation: clean
-  #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
-  #       signed_msg_order: msg_then_sig
-  #     - 
-  #       scheme: "Ia_cyclic"
-  #       pqclean_scheme: rainbowIa-cyclic
-  #       pretty_name_full: Rainbow-Ia-Cyclic
-  #       implementation: clean
-  #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
-  #       signed_msg_order: msg_then_sig
-  #     - 
-  #       scheme: "Ia_cyclic_compressed"
-  #       pqclean_scheme: rainbowIa-cyclic-compressed
-  #       pretty_name_full: Rainbow-Ia-Cyclic-Compressed
-  #       implementation: clean
-  #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
-  #       signed_msg_order: msg_then_sig
-  #     - 
-  #       scheme: "IIIc_classic"
-  #       pqclean_scheme: rainbowIIIc-classic
-  #       pretty_name_full: Rainbow-IIIc-Classic
-  #       implementation: clean
-  #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
-  #       signed_msg_order: msg_then_sig
-  #     - 
-  #       scheme: "IIIc_cyclic"
-  #       pqclean_scheme: rainbowIIIc-cyclic
-  #       pretty_name_full: Rainbow-IIIc-Cyclic
-  #       implementation: clean
-  #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
-  #       signed_msg_order: msg_then_sig
-  #     - 
-  #       scheme: "IIIc_cyclic_compressed"
-  #       pqclean_scheme: rainbowIIIc-cyclic-compressed
-  #       pretty_name_full: Rainbow-IIIc-Cyclic-Compressed
-  #       implementation: clean
-  #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
-  #       signed_msg_order: msg_then_sig
-  #     - 
-  #       scheme: "Vc_classic"
-  #       pqclean_scheme: rainbowVc-classic
-  #       pretty_name_full: Rainbow-Vc-Classic
-  #       implementation: clean
-  #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
-  #       signed_msg_order: msg_then_sig
-  #     - 
-  #       scheme: "Vc_cyclic"
-  #       pqclean_scheme: rainbowVc-cyclic
-  #       pretty_name_full: Rainbow-Vc-Cyclic
-  #       implementation: clean
-  #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
-  #       signed_msg_order: msg_then_sig
-  #     - 
-  #       scheme: "Vc_cyclic_compressed"
-  #       pqclean_scheme: rainbowVc-cyclic-compressed
-  #       pretty_name_full: Rainbow-Vc-Cyclic-Compressed
-  #       implementation: clean
-  #       sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas_u32.c', 'gf.c']
-  #       signed_msg_order: msg_then_sig
+  - 
+    name: rainbow
+    schemes:
+      - 
+        scheme: "Ia_classic"
+        pqclean_scheme: rainbowIa-classic
+        pretty_name_full: Rainbow-Ia-Classic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
+        signed_msg_order: msg_then_sig
+      - 
+        scheme: "Ia_cyclic"
+        pqclean_scheme: rainbowIa-cyclic
+        pretty_name_full: Rainbow-Ia-Cyclic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
+        signed_msg_order: msg_then_sig
+      - 
+        scheme: "Ia_cyclic_compressed"
+        pqclean_scheme: rainbowIa-cyclic-compressed
+        pretty_name_full: Rainbow-Ia-Cyclic-Compressed
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
+        signed_msg_order: msg_then_sig
+      - 
+        scheme: "IIIc_classic"
+        pqclean_scheme: rainbowIIIc-classic
+        pretty_name_full: Rainbow-IIIc-Classic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
+        signed_msg_order: msg_then_sig
+      - 
+        scheme: "IIIc_cyclic"
+        pqclean_scheme: rainbowIIIc-cyclic
+        pretty_name_full: Rainbow-IIIc-Cyclic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
+        signed_msg_order: msg_then_sig
+      - 
+        scheme: "IIIc_cyclic_compressed"
+        pqclean_scheme: rainbowIIIc-cyclic-compressed
+        pretty_name_full: Rainbow-IIIc-Cyclic-Compressed
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
+        signed_msg_order: msg_then_sig
+      - 
+        scheme: "Vc_classic"
+        pqclean_scheme: rainbowVc-classic
+        pretty_name_full: Rainbow-Vc-Classic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
+        signed_msg_order: msg_then_sig
+      - 
+        scheme: "Vc_cyclic"
+        pqclean_scheme: rainbowVc-cyclic
+        pretty_name_full: Rainbow-Vc-Cyclic
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
+        signed_msg_order: msg_then_sig
+      - 
+        scheme: "Vc_cyclic_compressed"
+        pqclean_scheme: rainbowVc-cyclic-compressed
+        pretty_name_full: Rainbow-Vc-Cyclic-Compressed
+        implementation: clean
+        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
+        signed_msg_order: msg_then_sig
   - 
     name: sphincs
     schemes:

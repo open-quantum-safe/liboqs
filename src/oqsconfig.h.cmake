@@ -135,6 +135,17 @@
 #cmakedefine OQS_ENABLE_SIG_mqdss_31_48 1
 #cmakedefine OQS_ENABLE_SIG_mqdss_31_64 1
 
+#cmakedefine OQS_ENABLE_SIG_RAINBOW
+#cmakedefine OQS_ENABLE_SIG_rainbow_Ia_classic 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_Ia_cyclic 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_Ia_cyclic_compressed 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_IIIc_classic 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_IIIc_cyclic 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_IIIc_cyclic_compressed 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_Vc_classic 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_Vc_cyclic 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_Vc_cyclic_compressed 1
+
 #cmakedefine OQS_ENABLE_SIG_SPHINCS
 #cmakedefine OQS_ENABLE_SIG_sphincs_haraka_128f_robust 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_haraka_128f_simple 1
