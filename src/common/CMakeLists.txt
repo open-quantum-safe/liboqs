@@ -1,5 +1,3 @@
-include(crypto_impl.cmake)
-
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wbad-function-cast)
@@ -9,6 +7,8 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wnarrowing)
     add_compile_options(-Wconversion)
 endif()
+
+include(crypto_impl.cmake)
 
 add_library(common OBJECT ${AES_IMPL}
                           ${SHA2_IMPL}
