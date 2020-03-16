@@ -1,5 +1,5 @@
-#ifndef _OQS_KEM_NTRU_H
-#define _OQS_KEM_NTRU_H
+#ifndef OQS_KEM_NTRU_H
+#define OQS_KEM_NTRU_H
 
 #include <oqs/oqs.h>
 

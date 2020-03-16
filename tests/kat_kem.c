@@ -15,15 +15,15 @@
 #include "system_info.c"
 
 /* Displays hexadecimal strings */
-void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
+static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
 	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
+		printf("%02X", str[i]);
 	}
 	printf("\n");
 }
 
-void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
+static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	size_t i;
 	fprintf(fp, "%s", S);
 	for (i = 0; i < L; i++) {
@@ -35,7 +35,7 @@ void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 	fprintf(fp, "\n");
 }
 
-OQS_STATUS kem_kat(const char *method_name) {
+static OQS_STATUS kem_kat(const char *method_name) {
 
 	uint8_t entropy_input[48];
 	uint8_t seed[48];
@@ -55,7 +55,7 @@ OQS_STATUS kem_kat(const char *method_name) {
 		goto algo_not_enabled;
 	}
 
-	for (size_t i = 0; i < 48; i++) {
+	for (uint8_t i = 0; i < 48; i++) {
 		entropy_input[i] = i;
 	}
 

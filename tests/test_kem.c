@@ -8,10 +8,10 @@
 #include "system_info.c"
 
 /* Displays hexadecimal strings */
-void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
+static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
 	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
+		printf("%02X", str[i]);
 	}
 	printf("\n");
 }
@@ -20,7 +20,7 @@ typedef struct magic_s {
 	uint8_t val[32];
 } magic_t;
 
-OQS_STATUS kem_test_correctness(const char *method_name) {
+static OQS_STATUS kem_test_correctness(const char *method_name) {
 
 	OQS_KEM *kem = NULL;
 	uint8_t *public_key = NULL;

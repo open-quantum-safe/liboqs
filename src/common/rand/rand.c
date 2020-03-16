@@ -84,16 +84,16 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 		}
 	} while (handle == NULL);
 
-	int bytes_last_read, bytes_total_read, bytes_left_to_read;
+	size_t bytes_last_read, bytes_total_read, bytes_left_to_read;
 	bytes_total_read = 0;
 	bytes_left_to_read = bytes_to_read;
 	while (bytes_left_to_read > 0) {
 		do {
 			bytes_last_read = fread(random_array + bytes_total_read, 1, bytes_left_to_read, handle);
-			if (bytes_last_read <= 0) {
+			if (bytes_last_read == 0) {
 				delay(0xFFFF);
 			}
-		} while (bytes_last_read <= 0);
+		} while (bytes_last_read == 0);
 		bytes_total_read += bytes_last_read;
 		bytes_left_to_read -= bytes_last_read;
 	}
@@ -114,8 +114,9 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 #ifdef OQS_USE_OPENSSL
 void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read) {
 	int rc;
+	SIZE_T_TO_INT_OR_ABORT(bytes_to_read, bytes_to_read_int)
 	do {
-		rc = RAND_bytes(random_array, bytes_to_read);
+		rc = RAND_bytes(random_array, bytes_to_read_int);
 	} while (rc != 1);
 }
 #endif

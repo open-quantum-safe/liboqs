@@ -8,12 +8,27 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #include <oqs/oqsconfig.h>
 
 #if defined(__cplusplus)
 extern "C" {
 #endif
+
+/**
+ * Certain functions (such as OQS_randombytes_openssl in
+ * src/rand/rand.c) take in a size_t parameter, but can
+ * only handle values up to INT_MAX for those parameters.
+ * This macro is a temporary workaround for such functions.
+ */
+#define SIZE_T_TO_INT_OR_ABORT(size_t_var_name, int_var_name) \
+    int int_var_name = 0;                            \
+    if(size_t_var_name <= INT_MAX) {                 \
+        int_var_name = (int)size_t_var_name;         \
+    } else {                                         \
+        abort();                                     \
+    }
 
 /**
  * Defines which functions should be exposed outside the LibOQS library

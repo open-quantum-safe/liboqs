@@ -1,5 +1,5 @@
-#ifndef _OQS_KEM_KYBER_H
-#define _OQS_KEM_KYBER_H
+#ifndef OQS_KEM_KYBER_H
+#define OQS_KEM_KYBER_H
 
 #include <oqs/oqs.h>
 

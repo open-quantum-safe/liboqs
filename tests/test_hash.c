@@ -18,11 +18,14 @@ static int read_stdin(uint8_t **msg, size_t *msg_len) {
 		return -1;
 	}
 	uint8_t *msg_next_read = *msg;
-	size_t bytes_read;
+	ssize_t bytes_read;
 	*msg_len = 0;
 	while (1) {
 		bytes_read = read(0, msg_next_read, BUFFER_SIZE);
-		*msg_len += bytes_read;
+		if (bytes_read == -1) {
+			return -1;
+		}
+		*msg_len += (size_t)bytes_read;
 		if (bytes_read < BUFFER_SIZE) {
 			break;
 		} else {
@@ -46,7 +49,7 @@ static void print_hex(uint8_t *s, size_t l) {
 	printf("\n");
 }
 
-int do_sha256(void) {
+static int do_sha256(void) {
 	// read message from stdin
 	uint8_t *msg;
 	size_t msg_len;
@@ -93,7 +96,7 @@ int do_sha256(void) {
 	return 0;
 }
 
-int do_sha384(void) {
+static int do_sha384(void) {
 	// read message from stdin
 	uint8_t *msg;
 	size_t msg_len;
@@ -140,7 +143,7 @@ int do_sha384(void) {
 	return 0;
 }
 
-int do_sha512(void) {
+static int do_sha512(void) {
 	// read message from stdin
 	uint8_t *msg;
 	size_t msg_len;
@@ -187,7 +190,7 @@ int do_sha512(void) {
 	return 0;
 }
 
-int do_arbitrary_hash(void (*hash)(uint8_t *, const uint8_t *, size_t), size_t hash_len) {
+static int do_arbitrary_hash(void (*hash)(uint8_t *, const uint8_t *, size_t), size_t hash_len) {
 	// read message from stdin
 	uint8_t *msg;
 	size_t msg_len;

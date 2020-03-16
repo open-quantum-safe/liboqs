@@ -18,7 +18,7 @@
 void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
 	printf("%-20s (%4zu bytes):  ", label, len);
 	for (size_t i = 0; i < (len); i++) {
-		printf("%02X", ((unsigned char *) (str))[i]);
+		printf("%02X", str[i]);
 	}
 	printf("\n");
 }
@@ -36,21 +36,25 @@ void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 }
 
 static inline uint32_t UINT32_TO_LE(const uint32_t x) {
-	uint32_t y;
-	uint8_t *z = (uint8_t *) &y;
-	z[0] = x & 0xFF;
-	z[1] = x >> 8;
-	z[2] = x >> 16;
-	z[3] = x >> 24;
-	return y;
+	union {
+		uint32_t val;
+		uint8_t bytes[4];
+	} y;
+	y.bytes[0] = x & 0xFF;
+	y.bytes[1] = (x >> 8) & 0xFF;
+	y.bytes[2] = (x >> 16) & 0xFF;
+	y.bytes[3] = (x >> 24) & 0xFF;
+	return y.val;
 }
 
 static inline uint16_t UINT16_TO_BE(const uint16_t x) {
-	uint16_t y;
-	uint8_t *z = (uint8_t *) &y;
-	z[0] = x >> 8;
-	z[1] = x & 0xFF;
-	return y;
+	union {
+		uint16_t val;
+		uint8_t bytes[2];
+	} y;
+	y.bytes[0] = (x >> 8) & 0xFF;
+	y.bytes[1] = x & 0xFF;
+	return y.val;
 }
 
 OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_len, const uint8_t *msg, size_t msg_len, const uint8_t *signature, size_t signature_len, const OQS_SIG *sig) {
@@ -110,15 +114,19 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "Falcon-512")) {
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x29 || sig
-		*signed_msg_len = 2 + signature_len + msg_len;
+		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
+		*signed_msg_len = 2 + signature_len_uint16 + msg_len;
 		*signed_msg = malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;
 		}
 		const uint8_t *falc_salt = &signature[1];
 		const uint8_t *falc_sig = &signature[41];
-		uint16_t signature_len_be = UINT16_TO_BE(signature_len - 40);
-		memcpy(*signed_msg, (uint8_t *) &signature_len_be, 2);
+		union {
+			uint16_t val;
+			uint8_t bytes[2];
+		} signature_len_be = {.val = UINT16_TO_BE(signature_len_uint16 - 40)};
+		memcpy(*signed_msg, &signature_len_be, 2);
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
 		(*signed_msg)[42 + msg_len] = 0x29;
@@ -126,6 +134,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "Falcon-1024")) {
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x2A || sig
+		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
 		*signed_msg_len = 2 + signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
@@ -133,8 +142,11 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		}
 		const uint8_t *falc_salt = &signature[1];
 		const uint8_t *falc_sig = &signature[41];
-		uint16_t signature_len_be = UINT16_TO_BE(signature_len - 40);
-		memcpy(*signed_msg, (uint8_t *) &signature_len_be, 2);
+		union {
+			uint16_t val;
+			uint8_t bytes[2];
+		} signature_len_be = {.val = UINT16_TO_BE(signature_len_uint16 - 40)};
+		memcpy(*signed_msg, &signature_len_be, 2);
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
 		(*signed_msg)[42 + msg_len] = 0x2A;
@@ -639,7 +651,7 @@ OQS_STATUS sig_kat(const char *method_name) {
 		goto algo_not_enabled;
 	}
 
-	for (size_t i = 0; i < 48; i++) {
+	for (uint8_t i = 0; i < 48; i++) {
 		entropy_input[i] = i;
 	}
 

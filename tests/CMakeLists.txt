@@ -1,3 +1,12 @@
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
+   CMAKE_C_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wbad-function-cast)
+endif()
+if(CMAKE_C_COMPILER_ID MATCHES "Clang")
+    add_compile_options(-Wcast-qual)
+    add_compile_options(-Wnarrowing)
+    add_compile_options(-Wconversion)
+endif()
 if (MINGW OR MSYS OR CYGWIN)
     add_definitions(-D__USE_MINGW_ANSI_STDIO=1)
     add_compile_options(-Wno-unknown-pragmas)

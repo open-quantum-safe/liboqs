@@ -1,5 +1,5 @@
-#ifndef _OQS_KEM_THREEBEARS_H
-#define _OQS_KEM_THREEBEARS_H
+#ifndef OQS_KEM_THREEBEARS_H
+#define OQS_KEM_THREEBEARS_H
 
 #include <oqs/oqs.h>
 

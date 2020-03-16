@@ -59,18 +59,20 @@ void OQS_AES128_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, 
 void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
 	int outlen;
-	struct key_schedule *ks = (struct key_schedule *) schedule;
-	assert(1 == EVP_EncryptUpdate(ks->ecb_ctx, ciphertext, &outlen, plaintext, plaintext_len));
-	assert((size_t) outlen == plaintext_len);
+	const struct key_schedule *ks = (const struct key_schedule *) schedule;
+	SIZE_T_TO_INT_OR_ABORT(plaintext_len, plaintext_len_int)
+	assert(1 == EVP_EncryptUpdate(ks->ecb_ctx, ciphertext, &outlen, plaintext, plaintext_len_int));
+	assert(outlen == plaintext_len_int);
 	assert(1 == EVP_EncryptFinal_ex(ks->ecb_ctx, ciphertext, &outlen));
 }
 
 void OQS_AES128_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
 	assert(ciphertext_len % 16 == 0);
 	int outlen;
-	struct key_schedule *ks = (struct key_schedule *) schedule;
-	assert(1 == EVP_DecryptUpdate(ks->ecb_ctx, plaintext, &outlen, ciphertext, ciphertext_len));
-	assert((size_t) outlen == ciphertext_len);
+	const struct key_schedule *ks = (const struct key_schedule *) schedule;
+	SIZE_T_TO_INT_OR_ABORT(ciphertext_len, ciphertext_len_int)
+	assert(1 == EVP_DecryptUpdate(ks->ecb_ctx, plaintext, &outlen, ciphertext, ciphertext_len_int));
+	assert(outlen == ciphertext_len_int);
 	assert(1 == EVP_DecryptFinal_ex(ks->ecb_ctx, plaintext, &outlen));
 }
 
@@ -120,10 +122,14 @@ void OQS_AES256_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 }
 
 void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
-	struct key_schedule *ks = (struct key_schedule *) schedule;
-	if (ks->ctr_ctx == NULL) {
-		ks->ctr_ctx = EVP_CIPHER_CTX_new();
-		assert(ks->ctr_ctx != NULL);
+	// TODO: Remove this semantics-altering hack
+	// to work around the const-ness of schedule.
+	const struct key_schedule *ks_ = (const struct key_schedule *) schedule;
+	struct key_schedule ks = *ks_;
+
+	if (ks.ctr_ctx == NULL) {
+		ks.ctr_ctx = EVP_CIPHER_CTX_new();
+		assert(ks.ctr_ctx != NULL);
 		uint8_t iv_ctr[16];
 		if (iv_len == 12) {
 			memcpy(iv_ctr, iv, 12);
@@ -136,10 +142,11 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, 
 		} else {
 			assert(0);
 		}
-		assert(1 == EVP_EncryptInit_ex(ks->ctr_ctx, EVP_aes_256_ctr(), NULL, ks->key, iv_ctr));
+		assert(1 == EVP_EncryptInit_ex(ks.ctr_ctx, EVP_aes_256_ctr(), NULL, ks.key, iv_ctr));
 	}
-	memset(out, 0, out_len);
-	int outlen;
-	assert(1 == EVP_EncryptUpdate(ks->ctr_ctx, out, &outlen, out, out_len));
-	assert(1 == EVP_EncryptFinal_ex(ks->ctr_ctx, out + outlen, &outlen));
+	SIZE_T_TO_INT_OR_ABORT(out_len, out_len_input_int)
+	memset(out, 0, (size_t)out_len_input_int);
+	int out_len_output;
+	assert(1 == EVP_EncryptUpdate(ks.ctr_ctx, out, &out_len_output, out, out_len_input_int));
+	assert(1 == EVP_EncryptFinal_ex(ks.ctr_ctx, out + out_len_output, &out_len_output));
 }
