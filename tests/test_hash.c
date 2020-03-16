@@ -22,7 +22,7 @@ static int read_stdin(uint8_t **msg, size_t *msg_len) {
 	*msg_len = 0;
 	while (1) {
 		bytes_read = read(0, msg_next_read, BUFFER_SIZE);
-		if(bytes_read == -1) {
+		if (bytes_read == -1) {
 			return -1;
 		}
 		*msg_len += (size_t)bytes_read;

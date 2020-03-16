@@ -23,12 +23,12 @@ extern "C" {
  * This macro is a temporary workaround for such functions.
  */
 #define SIZE_T_TO_INT_OR_ABORT(size_t_var_name, int_var_name) \
-	int int_var_name = 0; 							\
-	if(size_t_var_name <= INT_MAX) { 				 \
-		int_var_name = (int)size_t_var_name; 		 \
-	} else { 										 \
-		abort(); 									 \
-	}
+    int int_var_name = 0;                            \
+    if(size_t_var_name <= INT_MAX) {                 \
+        int_var_name = (int)size_t_var_name;         \
+    } else {                                         \
+        abort();                                     \
+    }
 
 /**
  * Defines which functions should be exposed outside the LibOQS library
