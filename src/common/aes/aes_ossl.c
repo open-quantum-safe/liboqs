@@ -122,8 +122,8 @@ void OQS_AES256_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 }
 
 void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
-	// TODO: Remove this hack to work around
-	// the const-ness of schedule.
+	// TODO: Remove this semantics-altering hack
+	// to work around the const-ness of schedule.
 	const struct key_schedule *ks_ = (const struct key_schedule *) schedule;
 	struct key_schedule ks = *ks_;
 
