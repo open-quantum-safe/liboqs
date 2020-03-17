@@ -10,6 +10,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     endif()
 endif()
 if(WIN32)
+    # ignore some warnings. picnic team confirmed these are safe to ignore; will be fixed eventually
     add_compile_options(/wd4244 /wd4267 /wd4334)
 endif()
 

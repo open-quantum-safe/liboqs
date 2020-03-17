@@ -19,6 +19,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wno-missing-braces)
 endif()
 if(WIN32)
+    # ignore warning about cast from int to OQS_STATUS
     add_compile_options(/wd4133)
 endif()
 

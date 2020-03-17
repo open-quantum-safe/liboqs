@@ -13,7 +13,8 @@ if (MINGW OR MSYS OR CYGWIN)
     add_compile_options(-Wno-unused-parameter)
 endif()
 if(WIN32)
-    add_compile_options(/wd4244 /wd4996)
+    # ignore warning for test apps
+    add_compile_options(/wd4996 /wd4244)
 endif()
 
 if(NOT WIN32)
