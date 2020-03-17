@@ -1,3 +1,5 @@
+
+
 if(ARCH STREQUAL "x86")
     set(CPP_DEFS _X86_)
 elseif(ARCH STREQUAL "x86_64")
@@ -27,7 +29,11 @@ if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux"
 else()
     set(CPP_DEFS ${CPP_DEFS} portable)
 endif()
+if(WIN32)
+    add_compile_options(/wd4244)
+endif()
 
 add_library(qtesla OBJECT ${SRCS})
 target_include_directories(qtesla PRIVATE external)
 target_compile_definitions(qtesla PRIVATE ${CPP_DEFS})
+

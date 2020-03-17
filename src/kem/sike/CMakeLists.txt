@@ -18,6 +18,9 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     # the "{0}" structure initializer is used.
     add_compile_options(-Wno-missing-braces)
 endif()
+if(WIN32)
+    add_compile_options(/wd4133)
+endif()
 
 set(SRCS kem_sike.c
          P434/P434.c
