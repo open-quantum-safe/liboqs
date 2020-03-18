@@ -6,7 +6,7 @@
 #ifdef OQS_ENABLE_SIG_qTesla_p_I
 
 #define OQS_SIG_qTesla_p_I_length_public_key 14880
-#define OQS_SIG_qTesla_p_I_length_secret_key 5184
+#define OQS_SIG_qTesla_p_I_length_secret_key 5224
 #define OQS_SIG_qTesla_p_I_length_signature 2592
 
 OQS_SIG *OQS_SIG_qTesla_p_I_new(void);
@@ -20,7 +20,7 @@ OQS_API OQS_STATUS OQS_SIG_qTesla_p_I_verify(const uint8_t *message, size_t mess
 #ifdef OQS_ENABLE_SIG_qTesla_p_III
 
 #define OQS_SIG_qTesla_p_III_length_public_key 38432
-#define OQS_SIG_qTesla_p_III_length_secret_key 12352
+#define OQS_SIG_qTesla_p_III_length_secret_key 12392
 #define OQS_SIG_qTesla_p_III_length_signature 5664
 
 OQS_SIG *OQS_SIG_qTesla_p_III_new(void);
