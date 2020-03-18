@@ -9,7 +9,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
         add_compile_options(-Wno-error)
     endif()
 endif()
-if(WIN32)
+if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
     # ignore some warnings. picnic team confirmed these are safe to ignore; will be fixed eventually
     add_compile_options(/wd4244 /wd4267 /wd4334)
 endif()
