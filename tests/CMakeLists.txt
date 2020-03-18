@@ -12,6 +12,10 @@ if (MINGW OR MSYS OR CYGWIN)
     add_compile_options(-Wno-unknown-pragmas)
     add_compile_options(-Wno-unused-parameter)
 endif()
+if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
+    # ignore warning for test apps
+    add_compile_options(/wd4996 /wd4244)
+endif()
 
 if(NOT WIN32)
     set(LIBM m)

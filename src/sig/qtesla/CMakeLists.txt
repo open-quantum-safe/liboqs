@@ -1,3 +1,5 @@
+
+
 if(ARCH STREQUAL "x86")
     set(CPP_DEFS _X86_)
 elseif(ARCH STREQUAL "x86_64")
@@ -31,3 +33,4 @@ endif()
 add_library(qtesla OBJECT ${SRCS})
 target_include_directories(qtesla PRIVATE external)
 target_compile_definitions(qtesla PRIVATE ${CPP_DEFS})
+

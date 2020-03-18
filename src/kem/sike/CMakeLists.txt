@@ -18,6 +18,10 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     # the "{0}" structure initializer is used.
     add_compile_options(-Wno-missing-braces)
 endif()
+if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
+    # ignore warning about cast from int to OQS_STATUS
+    add_compile_options(/wd4133)
+endif()
 
 set(SRCS kem_sike.c
          P434/P434.c
