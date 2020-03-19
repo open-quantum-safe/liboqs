@@ -37,6 +37,10 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
         add_compile_options(-fomit-frame-pointer)
     endif()
 
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    set(OQS_USE_PTHREADS_IN_TESTS 1)
+
 elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Werror)
     add_compile_options(-Wall)
@@ -74,6 +78,10 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
             add_compile_options(-Wl,--gc-sections)
         endif ()
     endif()
+
+    set(THREADS_PREFER_PTHREAD_FLAG ON)
+    find_package(Threads REQUIRED)
+    set(OQS_USE_PTHREADS_IN_TESTS 1)
 
 elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
     # Warning C4146 is raised when a unary minus operator is applied to an

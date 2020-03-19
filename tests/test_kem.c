@@ -5,6 +5,10 @@
 
 #include <oqs/oqs.h>
 
+#if OQS_USE_PTHREADS_IN_TESTS
+#include <pthread.h>
+#endif
+
 #include "system_info.c"
 
 /* Displays hexadecimal strings */
@@ -43,8 +47,8 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
-		// should always succeed since we don't call this function on KEMs that aren't enabled
-		return OQS_ERROR;
+		fprintf(stderr, "ERROR: OQS_KEM_new failed\n");
+		goto err;
 	}
 
 	printf("================================================================================\n");
@@ -123,6 +127,10 @@ cleanup:
 	OQS_MEM_insecure_free(ciphertext);
 	OQS_KEM_free(kem);
 
+#ifdef OQS_USE_PTHREADS_IN_TESTS
+	pthread_exit((void *) ret);
+#endif
+
 	return ret;
 }
 
@@ -150,7 +158,20 @@ int main(int argc, char **argv) {
 	if (!OQS_KEM_alg_is_enabled(alg_name)) {
 		return EXIT_FAILURE;
 	}
-	OQS_STATUS rc = kem_test_correctness(alg_name);
+	OQS_STATUS rc;
+#if OQS_USE_PTHREADS_IN_TESTS
+	pthread_t thread;
+	void *status;
+	int trc = pthread_create(&thread, NULL, (void *(*)(void *)) &kem_test_correctness, alg_name);
+	if (trc) {
+		fprintf(stderr, "ERROR: Creating pthread\n");
+		return EXIT_FAILURE;
+	}
+	pthread_join(thread, &status);
+	rc = (OQS_STATUS) status;
+#else
+	rc = kem_test_correctness(alg_name);
+#endif
 	if (rc != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
