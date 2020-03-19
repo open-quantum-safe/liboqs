@@ -127,12 +127,18 @@ cleanup:
 	OQS_MEM_insecure_free(ciphertext);
 	OQS_KEM_free(kem);
 
-#ifdef OQS_USE_PTHREADS_IN_TESTS
-	pthread_exit((void *) ret);
-#endif
-
 	return ret;
 }
+
+#if OQS_USE_PTHREADS_IN_TESTS
+
+void *test_wrapper(void *arg) {
+	OQS_STATUS rc = kem_test_correctness((char *) arg);
+	long lrc = (long) rc;
+	pthread_exit((void *) lrc);
+	return (void *) lrc;
+}
+#endif
 
 int main(int argc, char **argv) {
 
@@ -162,7 +168,7 @@ int main(int argc, char **argv) {
 #if OQS_USE_PTHREADS_IN_TESTS
 	pthread_t thread;
 	void *status;
-	int trc = pthread_create(&thread, NULL, (void *(*)(void *)) &kem_test_correctness, alg_name);
+	int trc = pthread_create(&thread, NULL, test_wrapper, alg_name);
 	if (trc) {
 		fprintf(stderr, "ERROR: Creating pthread\n");
 		return EXIT_FAILURE;
