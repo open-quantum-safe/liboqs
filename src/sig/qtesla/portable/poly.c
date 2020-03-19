@@ -84,8 +84,8 @@ static void ntt(poly a, const poly w) { // Forward NTT transform
 				a[j] = a[j] + temp - PARAM_Q;
 				a[j] += (a[j] >> (RADIX32 - 1)) & PARAM_Q; // If result >= q then subtract q
 #else
-				a[j + NumoProblems] = barr_reduce(a[j] - temp);
-				a[j] = barr_reduce(temp + a[j]);
+				a[j + NumoProblems] = (int32_t) barr_reduce(a[j] - temp);
+				a[j] = (int32_t) barr_reduce(temp + a[j]);
 #endif
 			}
 		}
@@ -100,7 +100,7 @@ static void nttinv(poly a, const poly w) { // Inverse NTT transform
 			sdigit_t W = (sdigit_t) w[jTwiddle++];
 			for (j = jFirst; j < jFirst + NumoProblems; j++) {
 				int32_t temp = a[j];
-				a[j] = barr_reduce(temp + a[j + NumoProblems]);
+				a[j] = (int32_t) barr_reduce(temp + a[j + NumoProblems]);
 				a[j + NumoProblems] = reduce((int64_t) W * (temp - a[j + NumoProblems]));
 			}
 		}
@@ -156,7 +156,7 @@ static void poly_sub(poly result, const poly x, const poly y) { // Polynomial su
 static void poly_sub_reduce(poly result, const poly x, const poly y) { // Polynomial subtraction result = x-y
 
 	for (int i = 0; i < PARAM_N; i++) {
-		result[i] = barr_reduce(x[i] - y[i]);
+		result[i] = (int32_t) barr_reduce(x[i] - y[i]);
 	}
 }
 

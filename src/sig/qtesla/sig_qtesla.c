@@ -11,7 +11,7 @@ OQS_SIG *OQS_SIG_qTesla_p_I_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_qTesla_p_I;
-	sig->alg_version = "https://github.com/microsoft/qTESLA-Library/commit/a5e60927e08d9f2fefea74138f208d14514ba5d1";
+	sig->alg_version = "https://github.com/microsoft/qTESLA-Library/commit/98b43cda4bbd9f3f0b1343a873a2a6076ddb9a2b";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
@@ -38,7 +38,7 @@ OQS_SIG *OQS_SIG_qTesla_p_III_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_qTesla_p_III;
-	sig->alg_version = "https://github.com/microsoft/qTESLA-Library/commit/a5e60927e08d9f2fefea74138f208d14514ba5d1";
+	sig->alg_version = "https://github.com/microsoft/qTESLA-Library/commit/98b43cda4bbd9f3f0b1343a873a2a6076ddb9a2b";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;

@@ -9,7 +9,7 @@
 #include "params.h"
 #include "poly.h"
 
-static void pack_sk(unsigned char *sk, poly s, poly_k e, unsigned char *seeds) { // Pack secret key sk
+static void encode_sk(unsigned char *sk, const poly s, const poly_k e, const unsigned char *seeds, const unsigned char *hash_pk) { // Encode secret key sk
 	unsigned int i, k;
 
 	for (i = 0; i < PARAM_N; i++) {
@@ -23,6 +23,7 @@ static void pack_sk(unsigned char *sk, poly s, poly_k e, unsigned char *seeds) {
 		}
 
 	memcpy(&sk[PARAM_K * PARAM_N], seeds, 2 * CRYPTO_SEEDBYTES);
+	memcpy(&sk[PARAM_K * PARAM_N + 2 * CRYPTO_SEEDBYTES], hash_pk, HM_BYTES);
 }
 
 #if defined(_qTESLA_p_I_)
