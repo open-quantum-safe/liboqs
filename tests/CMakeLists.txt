@@ -26,7 +26,6 @@ if(NOT WIN32)
     else()
         set(INTERNAL_TEST_DEPS ${LIBM})
     endif()
-
     execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT)
     add_definitions(-DOQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
 
@@ -35,13 +34,13 @@ if(NOT WIN32)
     include(${PROJECT_SOURCE_DIR}/src/common/crypto_impl.cmake)
 
     add_executable(test_aes test_aes.c ${AES_IMPL} ${PROJECT_SOURCE_DIR}/src/common/common.c)
-    target_link_libraries(test_aes PRIVATE ${INTERNAL_TEST_DEPS})
+    target_link_libraries(test_aes PRIVATE ${INTERNAL_TEST_DEPS} ${SANITIZER_LD_FLAGS})
 
     add_executable(test_hash test_hash.c ${SHA2_IMPL} ${PROJECT_SOURCE_DIR}/src/common/common.c)
-    target_link_libraries(test_hash PRIVATE ${INTERNAL_TEST_DEPS})
+    target_link_libraries(test_hash PRIVATE ${INTERNAL_TEST_DEPS} ${SANITIZER_LD_FLAGS})
 
     add_executable(test_sha3 test_sha3.c ${SHA3_IMPL} ${PROJECT_SOURCE_DIR}/src/common/common.c)
-    target_link_libraries(test_sha3 PRIVATE ${INTERNAL_TEST_DEPS})
+    target_link_libraries(test_sha3 PRIVATE ${INTERNAL_TEST_DEPS} ${SANITIZER_LD_FLAGS})
     set(UNIX_TESTS test_aes test_hash test_sha3)
 
     set(PYTHON3_EXEC python3)
