@@ -222,7 +222,7 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
     _bench_time_delta = _bench_time_x - _bench_time_mean;                                                                                                                   \
     _bench_time_mean += _bench_time_delta / (double) _bench_iterations;                                                                                                     \
     _bench_time_M2 += _bench_time_delta * (_bench_time_x - _bench_time_mean);                                                                                               \
-    _bench_time_cumulative += _bench_time_x;
+    _bench_time_cumulative += (uint64_t) _bench_time_x;
 
 #define FINALIZE_TIMER                                                             \
     if (_bench_iterations == 2) {                                                  \
