@@ -76,6 +76,9 @@ add_library(oqs kem/kem.c
                 sig/sig.c
                 ${SIG_OBJS}
                 $<TARGET_OBJECTS:common>)
+if(DEFINED SANITIZER_LD_FLAGS)
+    target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
+endif()
 if(OQS_USE_OPENSSL)
     target_link_libraries(oqs PUBLIC ${OPENSSL_CRYPTO_LIBRARY})
     target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})

@@ -26,7 +26,9 @@ if(NOT WIN32)
     else()
         set(INTERNAL_TEST_DEPS ${LIBM})
     endif()
-
+    if(DEFINED SANITIZER_LD_FLAGS)
+        set(INTERNAL_TEST_DEPS "${INTERNAL_TEST_DEPS} ${SANITIZER_LD_FLAGS}")
+    endif()
     execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT)
     add_definitions(-DOQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
 
