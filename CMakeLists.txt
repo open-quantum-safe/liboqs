@@ -7,7 +7,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(OQS_VERSION_TEXT "0.2.1-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 
-configure_file(CMakeLists.txt.in cpu_features-download/CMakeLists.txt)
+configure_file(third_party/cpu_features/CMakeLists.txt.in cpu_features-download/CMakeLists.txt)
 execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .
     RESULT_VARIABLE result
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cpu_features-download )
