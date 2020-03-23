@@ -14,7 +14,7 @@
 int main(void) {
 #if defined(CPU_FEATURES_ARCH_X86)
     const X86Features features = GetX86Info().features;
-    
+
     if(features.avx) {
         printf("AVX;");
     }
@@ -62,21 +62,18 @@ int main(void) {
     }
 #elif defined(CPU_FEATURES_ARCH_ARM)
     const ArmFeatures features = GetArmInfo().features;
-    
     if(features.neon) {
         printf("NEON;");
     }
 #elif defined(CPU_FEATURES_ARCH_AARCH64)
     const Aarch64Features features = GetAarch64Info().features;
-    
     if(features.asimd) {
         printf("NEON;");
     }
 #endif
-    
     if(features.aes) {
         printf("AES;");
     }
-    
+
     return EXIT_SUCCESS;
 }

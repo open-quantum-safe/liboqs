@@ -1,37 +1,13 @@
 cmake_minimum_required (VERSION 3.5)
+cmake_policy(SET CMP0063 NEW)
 
 project(liboqs C ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(OQS_VERSION_TEXT "0.2.1-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
-
-configure_file(third_party/cpu_features/CMakeLists.txt.in cpu_features-download/CMakeLists.txt)
-execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .
-    RESULT_VARIABLE result
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cpu_features-download )
-if(result)
-    message(FATAL_ERROR "CMake step for cpu_features failed: ${result}")
-endif()
-execute_process(COMMAND ${CMAKE_COMMAND} --build .
-    RESULT_VARIABLE result
-    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cpu_features-download )
-if(result)
-    message(FATAL_ERROR "Build step for cpu_features failed: ${result}")
-endif()
-
-set(CPUFEATURES_INCLUDE_DIR "${CMAKE_CURRENT_BINARY_DIR}/cpu_features-src/include")
-find_library(CPUFEATURES_LIBRARY 
-    NAMES cpu_features
-    PATHS "${CMAKE_CURRENT_BINARY_DIR}/cpu_features-build"
-    NO_DEFAULT_PATH)
-add_library(CPUFEATURES UNKNOWN IMPORTED GLOBAL)
-set_target_properties(CPUFEATURES PROPERTIES IMPORTED_LOCATION "${CPUFEATURES_LIBRARY}")
-
-if(BUILD_SHARED_LIBS AND (WIN32 OR MINGW OR MSYS OR CYGWIN))
-    set(ENV{PATH} "${CMAKE_CURRENT_BINARY_DIR}/cpu_features-build;$ENV{PATH}")
-endif()
 
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|amd64|AMD64")
     set(ARCH "x86_64")
@@ -44,6 +20,7 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
 else()
     message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR})
 endif()
+include(third_party/cpu_features/add_lib.cmake)
 
 if(DEFINED OQS_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE ${OQS_BUILD_TYPE})
