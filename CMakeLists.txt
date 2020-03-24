@@ -1,9 +1,11 @@
 cmake_minimum_required (VERSION 3.5)
+cmake_policy(SET CMP0063 NEW)
 
 project(liboqs C ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(OQS_VERSION_TEXT "0.2.1-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 
@@ -18,6 +20,7 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
 else()
     message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR})
 endif()
+include(third_party/cpu_features/add_lib.cmake)
 
 if(DEFINED OQS_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE ${OQS_BUILD_TYPE})

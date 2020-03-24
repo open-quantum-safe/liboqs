@@ -23,6 +23,7 @@
 #cmakedefine OQS_USE_SSE2_INSTRUCTIONS 1
 #cmakedefine OQS_USE_SSE3_INSTRUCTIONS 1
 #cmakedefine OQS_USE_SSE4A_INSTRUCTIONS 1
+#cmakedefine OQS_USE_NEON_INSTRUCTIONS 1
 
 #cmakedefine OQS_ENABLE_KEM_BIKE 1
 #cmakedefine OQS_ENABLE_KEM_bike1_l1_cpa 1
