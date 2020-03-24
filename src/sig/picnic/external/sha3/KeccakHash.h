@@ -14,6 +14,8 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifndef _KeccakHashInterface_h_
 #define _KeccakHashInterface_h_
 
+#include "../../oqs_namespace_picnic.h"
+
 #ifndef KeccakP1600_excluded
 
 #include "KeccakSpongeWidth1600.h"

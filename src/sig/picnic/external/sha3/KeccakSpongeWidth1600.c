@@ -20,7 +20,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifndef KeccakP1600_excluded
     #include "KeccakP-1600-SnP.h"
 
-    #define prefix KeccakWidth1600
+    #define prefix oqs_sig_picnic_KeccakWidth1600
     #define SnP KeccakP1600
     #define SnP_width 1600
     #define SnP_Permute KeccakP1600_Permute_24rounds

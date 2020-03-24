@@ -21,7 +21,7 @@ Please refer to LowLevel.build for the exact list of other files it must be comb
 
 #include "KeccakP-1600-SnP.h"
 
-#define prefix                          KeccakP1600times4
+#define prefix                          oqs_sig_picnic_KeccakP1600times4
 #define PlSnP_baseParallelism           1
 #define PlSnP_targetParallelism         4
 #define SnP_laneLengthInBytes           8
