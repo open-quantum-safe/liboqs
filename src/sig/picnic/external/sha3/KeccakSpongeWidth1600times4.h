@@ -33,8 +33,8 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #ifndef KeccakP1600times4_excluded
     #include "KeccakP-1600-times4-SnP.h"
-    KCP_DeclareSpongeStructuretimes4(KeccakWidth1600times4, KeccakP1600times4_statesSizeInBytes, KeccakP1600times4_statesAlignment)
-    KCP_DeclareSpongeFunctionstimes4(KeccakWidth1600times4)
+    KCP_DeclareSpongeStructuretimes4(oqs_sig_picnic_KeccakWidth1600times4, KeccakP1600times4_statesSizeInBytes, KeccakP1600times4_statesAlignment)
+    KCP_DeclareSpongeFunctionstimes4(oqs_sig_picnic_KeccakWidth1600times4)
 #endif
 
 #endif
