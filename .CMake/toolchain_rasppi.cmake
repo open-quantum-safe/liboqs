@@ -1,5 +1,5 @@
 # apt install gcc-8-arm-linux-gnueabihf
-# cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain-rasppi.cmake -DUSE_OPENSSL=OFF ..
+# cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_rasppi.cmake -DUSE_OPENSSL=OFF ..
 
 set(CMAKE_SYSTEM_NAME Linux)
 set(CMAKE_SYSTEM_PROCESSOR arm)
