@@ -9,7 +9,6 @@ IF %COMPILER%==msvc2019 (
     CALL "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
     mkdir build
     cd build
-    rem TODO: Re-activate Optimized build again
     cmake .. -GNinja -DCMAKE_BUILD_TYPE=Optimized -DBUILD_SHARED_LIBS=%BUILD_SHARED%
     ninja
 )
