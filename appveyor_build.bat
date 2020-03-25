@@ -10,6 +10,6 @@ IF %COMPILER%==msvc2019 (
     mkdir build
     cd build
     rem TODO: Re-activate Optimized build again
-    cmake .. -GNinja -DBUILD_SHARED_LIBS=%BUILD_SHARED%
+    cmake .. -GNinja -DCMAKE_BUILD_TYPE=Optimized -DBUILD_SHARED_LIBS=%BUILD_SHARED%
     ninja
 )
