@@ -31,7 +31,6 @@ def file_put_contents(filename, s, encoding=None):
 def generator(destination_filename, template_filename, family, scheme_desired):
     template = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', template_filename))
     f = copy.deepcopy(family)
-    #if (destination_filename == "src/kem/kyber/kem_kyber_512.c"): 
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
         assert(len(f['schemes']) == 1)
