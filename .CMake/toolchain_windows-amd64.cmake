@@ -1,3 +1,4 @@
+# apt install gcc-mingw-w64
 # cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake ..
 
 set(CMAKE_SYSTEM_NAME Windows)
