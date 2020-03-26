@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS_IN_TESTS
 	// don't run Rainbow IIIc and Vc in threads because of large stack usage
-	if ((strnstr(alg_name, "Rainbow-IIIc", 12) == NULL) && (strnstr(alg_name, "Rainbow-Vc", 10) == NULL)) {
+	if ((strstr(alg_name, "Rainbow-IIIc") == NULL) && (strstr(alg_name, "Rainbow-Vc") == NULL)) {
 		pthread_t thread;
 		void *status;
 		int trc = pthread_create(&thread, NULL, test_wrapper, alg_name);

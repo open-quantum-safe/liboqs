@@ -167,7 +167,7 @@ int main(int argc, char **argv) {
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS_IN_TESTS
 	// don't run Classic McEliece or LEDAcryptKEM-LT52 in threads because of large stack usage
-	if ((strnstr(alg_name, "Classic-McEliece", 16) == NULL) && (strnstr(alg_name, "LEDAcryptKEM-LT52", 17) == NULL)) {
+	if ((strstr(alg_name, "Classic-McEliece") == NULL) && (strstr(alg_name, "LEDAcryptKEM-LT52") == NULL)) {
 		pthread_t thread;
 		void *status;
 		int trc = pthread_create(&thread, NULL, test_wrapper, alg_name);
