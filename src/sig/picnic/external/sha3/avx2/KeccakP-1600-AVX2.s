@@ -31,7 +31,7 @@ oqs_sig_picnic_KeccakP1600_Initialize:
     vmovdqa     %ymm0,5*32(%rdi)
     movq        $0,6*32(%rdi)
     ret
-.size   KeccakP1600_Initialize,.-KeccakP1600_Initialize
+.size   oqs_sig_picnic_KeccakP1600_Initialize,.-oqs_sig_picnic_KeccakP1600_Initialize
 
 # -----------------------------------------------------------------------------
 #
@@ -52,7 +52,7 @@ oqs_sig_picnic_KeccakP1600_AddByte:
     add         %rax, %rdi
     xorb        %sil, (%rdi)
     ret
-.size   KeccakP1600_AddByte,.-KeccakP1600_AddByte
+.size   oqs_sig_picnic_KeccakP1600_AddByte,.-oqs_sig_picnic_KeccakP1600_AddByte
 
 # -----------------------------------------------------------------------------
 #
@@ -112,7 +112,7 @@ KeccakP1600_AddBytes_LastIncompleteLaneLoop:
     jnz         KeccakP1600_AddBytes_LastIncompleteLaneLoop
 KeccakP1600_AddBytes_Exit:
     ret
-.size   KeccakP1600_AddBytes,.-KeccakP1600_AddBytes
+.size   oqs_sig_picnic_KeccakP1600_AddBytes,.-oqs_sig_picnic_KeccakP1600_AddBytes
 
 # -----------------------------------------------------------------------------
 #
@@ -172,7 +172,7 @@ KeccakP1600_OverwriteBytes_LastIncompleteLaneLoop:
     jnz         KeccakP1600_OverwriteBytes_LastIncompleteLaneLoop
 KeccakP1600_OverwriteBytes_Exit:
     ret
-.size   KeccakP1600_OverwriteBytes,.-KeccakP1600_OverwriteBytes
+.size   oqs_sig_picnic_KeccakP1600_OverwriteBytes,.-oqs_sig_picnic_KeccakP1600_OverwriteBytes
 
 # -----------------------------------------------------------------------------
 #
@@ -208,7 +208,7 @@ KeccakP1600_OverwriteWithZeroes_LastIncompleteLaneLoop:
     jnz         KeccakP1600_OverwriteWithZeroes_LastIncompleteLaneLoop
 KeccakP1600_OverwriteWithZeroes_Exit:
     ret
-.size   KeccakP1600_OverwriteWithZeroes,.-KeccakP1600_OverwriteWithZeroes
+.size   oqs_sig_picnic_KeccakP1600_OverwriteWithZeroes,.-oqs_sig_picnic_KeccakP1600_OverwriteWithZeroes
 
 # -----------------------------------------------------------------------------
 #
@@ -271,7 +271,7 @@ KeccakP1600_ExtractBytes_LastIncompleteLaneLoop:
 KeccakP1600_ExtractBytes_Exit:
     pop         %rbx
     ret
-.size   KeccakP1600_ExtractBytes,.-KeccakP1600_ExtractBytes
+.size   oqs_sig_picnic_KeccakP1600_ExtractBytes,.-oqs_sig_picnic_KeccakP1600_ExtractBytes
 
 # -----------------------------------------------------------------------------
 #
@@ -342,7 +342,7 @@ KeccakP1600_ExtractAndAddBytes_Exit:
     pop         %r10
     pop         %rbx
     ret
-.size   KeccakP1600_ExtractAndAddBytes,.-KeccakP1600_ExtractAndAddBytes
+.size   oqs_sig_picnic_KeccakP1600_ExtractAndAddBytes,.-oqs_sig_picnic_KeccakP1600_ExtractAndAddBytes
 
 # -----------------------------------------------------------------------------
 #
@@ -520,7 +520,7 @@ oqs_sig_picnic_KeccakP1600_Permute_24rounds:
     vmovdqu         %ymm6,8+32*5-96(%rdi)
     vzeroupper
     ret
-.size   KeccakP1600_Permute_24rounds,.-KeccakP1600_Permute_24rounds
+.size   oqs_sig_picnic_KeccakP1600_Permute_24rounds,.-oqs_sig_picnic_KeccakP1600_Permute_24rounds
 
 .globl  oqs_sig_picnic_KeccakP1600_Permute_Nrounds
 .hidden oqs_sig_picnic_KeccakP1600_Permute_Nrounds
@@ -552,7 +552,7 @@ oqs_sig_picnic_KeccakP1600_Permute_Nrounds:
     vmovdqu         %ymm6,8+32*5-96(%rdi)
     vzeroupper
     ret
-.size   KeccakP1600_Permute_Nrounds,.-KeccakP1600_Permute_Nrounds
+.size   oqs_sig_picnic_KeccakP1600_Permute_Nrounds,.-oqs_sig_picnic_KeccakP1600_Permute_Nrounds
 
 # -----------------------------------------------------------------------------
 #
@@ -722,7 +722,7 @@ KeccakF1600_FastLoop_Absorb_LanesAddLoop:
     cmp             %rsi, %rcx
     jae             KeccakF1600_FastLoop_Absorb_Not17Lanes
     jmp             KeccakF1600_FastLoop_Absorb_Exit
-.size   KeccakF1600_FastLoop_Absorb,.-KeccakF1600_FastLoop_Absorb
+.size   oqs_sig_picnic_KeccakF1600_FastLoop_Absorb,.-oqs_sig_picnic_KeccakF1600_FastLoop_Absorb
 
 .equ    ALLON,        0xFFFFFFFFFFFFFFFF
 
