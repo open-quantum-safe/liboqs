@@ -62,7 +62,7 @@ add_executable(kat_kem kat_kem.c)
 target_link_libraries(kat_kem PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_kem test_kem.c)
-target_link_libraries(test_kem PRIVATE ${API_TEST_DEPS})
+target_link_libraries(test_kem PRIVATE ${API_TEST_DEPS} Threads::Threads)
 
 add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${API_TEST_DEPS})
@@ -75,7 +75,7 @@ add_executable(kat_sig kat_sig.c)
 target_link_libraries(kat_sig PRIVATE ${API_TEST_DEPS})
 
 add_executable(test_sig test_sig.c)
-target_link_libraries(test_sig PRIVATE ${API_TEST_DEPS})
+target_link_libraries(test_sig PRIVATE ${API_TEST_DEPS} Threads::Threads)
 
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
