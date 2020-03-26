@@ -126,8 +126,17 @@ int main(int argc, char **argv) {
 	}
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS_IN_TESTS
+#define MAX_LEN_SIG_NAME_ 64
 	// don't run Rainbow IIIc and Vc in threads because of large stack usage
-	if ((strstr(alg_name, "Rainbow-IIIc") == NULL) && (strstr(alg_name, "Rainbow-Vc") == NULL)) {
+	char not_thread_sigs[][MAX_LEN_SIG_NAME_]  = {"Rainbow-IIIc", "Rainbow-Vc"};
+	int test_in_thread = 1;
+	for (size_t i = 0 ; i < sizeof(not_thread_sigs) / MAX_LEN_SIG_NAME_; ++i) {
+		if (strstr(alg_name, not_thread_sigs[i]) != NULL) {
+			test_in_thread = 0;
+			break;
+		}
+	}
+	if (test_in_thread) {
 		pthread_t thread;
 		void *status;
 		int trc = pthread_create(&thread, NULL, test_wrapper, alg_name);
