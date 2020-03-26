@@ -17,7 +17,7 @@ Please refer to SnP-documentation.h for more details.
 #define _KeccakP_1600_SnP_h_
 
 #include <stddef.h>
-#include "../../../oqs_picnic_macros.h"
+#include "oqs_picnic_macros.h"
 
 #define KeccakP1600_implementation      "AVX2 optimized implementation"
 #define KeccakP1600_stateSizeInBytes    200

@@ -10,7 +10,7 @@
 #ifndef PICNIC_INSTANCES_H
 #define PICNIC_INSTANCES_H
 
-#include "../oqs_picnic_macros.h"
+#include "oqs_picnic_macros.h"
 
 #include "lowmc.h"
 #if defined(WITH_ZKBPP)
