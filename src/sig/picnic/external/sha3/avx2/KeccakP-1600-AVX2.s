@@ -38,11 +38,11 @@ oqs_sig_picnic_KeccakP1600_Initialize:
 # void KeccakP1600_AddByte(void *state, unsigned char data, unsigned int offset);
 #                                %rdi                 %rsi               %rdx
 #
-.globl  oqs_sig_picnic_KeccakP1600_AddByte
-.hidden oqs_sig_picnic_KeccakP1600_AddByte
-.type   oqs_sig_picnic_KeccakP1600_AddByte,@function
+.globl  KeccakP1600_AddByte
+.hidden KeccakP1600_AddByte
+.type   KeccakP1600_AddByte,@function
 .align  32
-oqs_sig_picnic_KeccakP1600_AddByte:
+KeccakP1600_AddByte:
     mov         %rdx, %rax
     and         $7, %rax
     and         $0xFFFFFFF8, %edx
@@ -52,7 +52,7 @@ oqs_sig_picnic_KeccakP1600_AddByte:
     add         %rax, %rdi
     xorb        %sil, (%rdi)
     ret
-.size   oqs_sig_picnic_KeccakP1600_AddByte,.-oqs_sig_picnic_KeccakP1600_AddByte
+.size   KeccakP1600_AddByte,.-KeccakP1600_AddByte
 
 # -----------------------------------------------------------------------------
 #
