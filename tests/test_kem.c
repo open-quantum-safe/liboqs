@@ -157,21 +157,23 @@ int main(int argc, char **argv) {
 
 	print_system_info();
 
+	char *alg_name = argv[1];
+	if (!OQS_KEM_alg_is_enabled(alg_name)) {
+		printf("KEM algorithm %s not enabled!\n", alg_name);
+		return EXIT_FAILURE;
+	}
+
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
-	char *alg_name = argv[1];
-	if (!OQS_KEM_alg_is_enabled(alg_name)) {
-		return EXIT_FAILURE;
-	}
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS_IN_TESTS
 #define MAX_LEN_KEM_NAME_ 64
 	// don't run Classic McEliece or LEDAcryptKEM-LT52 in threads because of large stack usage
-	char not_thread_kems[][MAX_LEN_KEM_NAME_]  = {"Classic-McEliece", "LEDAcryptKEM-LT52"};
+	char no_thread_kem_patterns[][MAX_LEN_KEM_NAME_]  = {"Classic-McEliece", "LEDAcryptKEM-LT52"};
 	int test_in_thread = 1;
-	for (size_t i = 0 ; i < sizeof(not_thread_kems) / MAX_LEN_KEM_NAME_; ++i) {
-		if (strstr(alg_name, not_thread_kems[i]) != NULL) {
+	for (size_t i = 0 ; i < sizeof(no_thread_kem_patterns) / MAX_LEN_KEM_NAME_; ++i) {
+		if (strstr(alg_name, no_thread_kem_patterns[i]) != NULL) {
 			test_in_thread = 0;
 			break;
 		}

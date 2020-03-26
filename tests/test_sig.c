@@ -117,21 +117,23 @@ int main(int argc, char **argv) {
 
 	print_system_info();
 
+	char *alg_name = argv[1];
+	if (!OQS_SIG_alg_is_enabled(alg_name)) {
+		printf("Signature algorithm %s not enabled!\n", alg_name);
+		return EXIT_FAILURE;
+	}
+
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
-	char *alg_name = argv[1];
-	if (!OQS_SIG_alg_is_enabled(alg_name)) {
-		return EXIT_FAILURE;
-	}
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS_IN_TESTS
 #define MAX_LEN_SIG_NAME_ 64
 	// don't run Rainbow IIIc and Vc in threads because of large stack usage
-	char not_thread_sigs[][MAX_LEN_SIG_NAME_]  = {"Rainbow-IIIc", "Rainbow-Vc"};
+	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"Rainbow-IIIc", "Rainbow-Vc"};
 	int test_in_thread = 1;
-	for (size_t i = 0 ; i < sizeof(not_thread_sigs) / MAX_LEN_SIG_NAME_; ++i) {
-		if (strstr(alg_name, not_thread_sigs[i]) != NULL) {
+	for (size_t i = 0 ; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
+		if (strstr(alg_name, no_thread_sig_patterns[i]) != NULL) {
 			test_in_thread = 0;
 			break;
 		}
