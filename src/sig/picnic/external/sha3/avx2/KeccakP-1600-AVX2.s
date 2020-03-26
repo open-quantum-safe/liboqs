@@ -17,11 +17,11 @@
 #
 # void KeccakP1600_Initialize(void *state);
 #
-.globl  KeccakP1600_Initialize
-.hidden KeccakP1600_Initialize
-.type   KeccakP1600_Initialize,@function
+.globl  oqs_sig_picnic_KeccakP1600_Initialize
+.hidden oqs_sig_picnic_KeccakP1600_Initialize
+.type   oqs_sig_picnic_KeccakP1600_Initialize,@function
 .align  32
-KeccakP1600_Initialize:
+oqs_sig_picnic_KeccakP1600_Initialize:
     vpxor       %ymm0,%ymm0,%ymm0
     vmovdqa     %ymm0,0*32(%rdi)
     vmovdqa     %ymm0,1*32(%rdi)
@@ -38,11 +38,11 @@ KeccakP1600_Initialize:
 # void KeccakP1600_AddByte(void *state, unsigned char data, unsigned int offset);
 #                                %rdi                 %rsi               %rdx
 #
-.globl  KeccakP1600_AddByte
-.hidden KeccakP1600_AddByte
-.type   KeccakP1600_AddByte,@function
+.globl  oqs_sig_picnic_KeccakP1600_AddByte
+.hidden oqs_sig_picnic_KeccakP1600_AddByte
+.type   oqs_sig_picnic_KeccakP1600_AddByte,@function
 .align  32
-KeccakP1600_AddByte:
+oqs_sig_picnic_KeccakP1600_AddByte:
     mov         %rdx, %rax
     and         $7, %rax
     and         $0xFFFFFFF8, %edx
@@ -59,11 +59,11 @@ KeccakP1600_AddByte:
 # void KeccakP1600_AddBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length);
 #                                %rdi                         %rsi               %rdx                 %rcx
 #
-.globl  KeccakP1600_AddBytes
-.hidden KeccakP1600_AddBytes
-.type   KeccakP1600_AddBytes,@function
+.globl  oqs_sig_picnic_KeccakP1600_AddBytes
+.hidden oqs_sig_picnic_KeccakP1600_AddBytes
+.type   oqs_sig_picnic_KeccakP1600_AddBytes,@function
 .align  32
-KeccakP1600_AddBytes:
+oqs_sig_picnic_KeccakP1600_AddBytes:
     cmp         $0, %rcx
     jz          KeccakP1600_AddBytes_Exit
     mov         %rdx, %rax                              # rax offset in lane
@@ -119,11 +119,11 @@ KeccakP1600_AddBytes_Exit:
 # void KeccakP1600_OverwriteBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length);
 #                                       %rdi                        %rsi               %rdx                 %rcx
 #
-.globl  KeccakP1600_OverwriteBytes
-.hidden KeccakP1600_OverwriteBytes
-.type   KeccakP1600_OverwriteBytes,@function
+.globl  oqs_sig_picnic_KeccakP1600_OverwriteBytes
+.hidden oqs_sig_picnic_KeccakP1600_OverwriteBytes
+.type   oqs_sig_picnic_KeccakP1600_OverwriteBytes,@function
 .align  32
-KeccakP1600_OverwriteBytes:
+oqs_sig_picnic_KeccakP1600_OverwriteBytes:
     cmp         $0, %rcx
     jz          KeccakP1600_OverwriteBytes_Exit
     mov         %rdx, %rax                              # rax offset in lane
@@ -179,11 +179,11 @@ KeccakP1600_OverwriteBytes_Exit:
 # void KeccakP1600_OverwriteWithZeroes(void *state, unsigned int byteCount);
 #                                            %rdi                %rsi
 #
-.globl  KeccakP1600_OverwriteWithZeroes
-.hidden KeccakP1600_OverwriteWithZeroes
-.type   KeccakP1600_OverwriteWithZeroes,@function
+.globl  oqs_sig_picnic_KeccakP1600_OverwriteWithZeroes
+.hidden oqs_sig_picnic_KeccakP1600_OverwriteWithZeroes
+.type   oqs_sig_picnic_KeccakP1600_OverwriteWithZeroes,@function
 .align  32
-KeccakP1600_OverwriteWithZeroes:
+oqs_sig_picnic_KeccakP1600_OverwriteWithZeroes:
     cmp         $0, %rsi
     jz          KeccakP1600_OverwriteWithZeroes_Exit
     lea         mapState(%rip), %rdx                          # rdx pointer into state index mapper
@@ -215,11 +215,11 @@ KeccakP1600_OverwriteWithZeroes_Exit:
 # void KeccakP1600_ExtractBytes(const void *state, unsigned char *data, unsigned int offset, unsigned int length);
 #                                           %rdi                  %rsi               %rdx                 %rcx
 #
-.globl  KeccakP1600_ExtractBytes
-.hidden KeccakP1600_ExtractBytes
-.type   KeccakP1600_ExtractBytes,@function
+.globl  oqs_sig_picnic_KeccakP1600_ExtractBytes
+.hidden oqs_sig_picnic_KeccakP1600_ExtractBytes
+.type   oqs_sig_picnic_KeccakP1600_ExtractBytes,@function
 .align  32
-KeccakP1600_ExtractBytes:
+oqs_sig_picnic_KeccakP1600_ExtractBytes:
     push        %rbx
     cmp         $0, %rcx
     jz          KeccakP1600_ExtractBytes_Exit
@@ -278,11 +278,11 @@ KeccakP1600_ExtractBytes_Exit:
 # void KeccakP1600_ExtractAndAddBytes(const void *state, const unsigned char *input, unsigned char *output, unsigned int offset, unsigned int length);
 #                                                 %rdi                        %rsi                  %rdx                 %rcx                  %r8
 #
-.globl  KeccakP1600_ExtractAndAddBytes
-.hidden KeccakP1600_ExtractAndAddBytes
-.type   KeccakP1600_ExtractAndAddBytes,@function
+.globl  oqs_sig_picnic_KeccakP1600_ExtractAndAddBytes
+.hidden oqs_sig_picnic_KeccakP1600_ExtractAndAddBytes
+.type   oqs_sig_picnic_KeccakP1600_ExtractAndAddBytes,@function
 .align  32
-KeccakP1600_ExtractAndAddBytes:
+oqs_sig_picnic_KeccakP1600_ExtractAndAddBytes:
     push        %rbx
     push        %r10
     cmp         $0, %r8
@@ -492,11 +492,11 @@ __KeccakF1600:
 
 
 
-.globl  KeccakP1600_Permute_24rounds
-.hidden KeccakP1600_Permute_24rounds
-.type   KeccakP1600_Permute_24rounds,@function
+.globl  oqs_sig_picnic_KeccakP1600_Permute_24rounds
+.hidden oqs_sig_picnic_KeccakP1600_Permute_24rounds
+.type   oqs_sig_picnic_KeccakP1600_Permute_24rounds,@function
 .align  32
-KeccakP1600_Permute_24rounds:
+oqs_sig_picnic_KeccakP1600_Permute_24rounds:
     lea             rhotates_left+96(%rip),%r8
     lea             rhotates_right+96(%rip),%r9
     lea             iotas(%rip),%r10
@@ -522,11 +522,11 @@ KeccakP1600_Permute_24rounds:
     ret
 .size   KeccakP1600_Permute_24rounds,.-KeccakP1600_Permute_24rounds
 
-.globl  KeccakP1600_Permute_Nrounds
-.hidden KeccakP1600_Permute_Nrounds
-.type   KeccakP1600_Permute_Nrounds,@function
+.globl  oqs_sig_picnic_KeccakP1600_Permute_Nrounds
+.hidden oqs_sig_picnic_KeccakP1600_Permute_Nrounds
+.type   oqs_sig_picnic_KeccakP1600_Permute_Nrounds,@function
 .align  32
-KeccakP1600_Permute_Nrounds:
+oqs_sig_picnic_KeccakP1600_Permute_Nrounds:
     lea             rhotates_left+96(%rip),%r8
     lea             rhotates_right+96(%rip),%r9
     lea             iotas+24*4*8(%rip),%r10
@@ -559,11 +559,11 @@ KeccakP1600_Permute_Nrounds:
 # size_t KeccakF1600_FastLoop_Absorb(void *state, unsigned int laneCount, const unsigned char *data, size_t dataByteLen);
 #                                          %rdi                %rsi                            %rdx         %rcx
 #
-.globl  KeccakF1600_FastLoop_Absorb
-.hidden KeccakF1600_FastLoop_Absorb
-.type   KeccakF1600_FastLoop_Absorb,@function
+.globl  oqs_sig_picnic_KeccakF1600_FastLoop_Absorb
+.hidden oqs_sig_picnic_KeccakF1600_FastLoop_Absorb
+.type   oqs_sig_picnic_KeccakF1600_FastLoop_Absorb,@function
 .align  32
-KeccakF1600_FastLoop_Absorb:
+oqs_sig_picnic_KeccakF1600_FastLoop_Absorb:
     push            %rbx
     push            %r10
     shr             $3, %rcx                # rcx = data length in lanes
