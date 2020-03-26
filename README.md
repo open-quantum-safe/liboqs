@@ -141,6 +141,13 @@ For example, to cross compile for a Raspberry Pi from Ubuntu Bionic:
 	mkdir build && cd build
 	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_rasppi.cmake -DOQS_USE_OPENSSL=OFF ..
 	ninja
+	
+Or to compile for Windows AMD64 from Ubuntu Bionic:
+
+	apt install gcc-mingw-w64
+	mkdir build && cd build
+	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake ..
+	ninja
 
 ## Documentation
 
