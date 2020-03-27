@@ -52,7 +52,7 @@ void PQCLEAN_KYBER76890S_CLEAN_aes256_prf(uint8_t *output, size_t outlen, const 
     iv[0] = nonce;
 
     aes256ctx ctx;
-    aes256_keyexp(&ctx, key);
+    aes256_ctr_keyexp(&ctx, key);
     aes256_ctr(output, outlen, iv, &ctx);
     aes256_ctx_release(&ctx);
 }
@@ -70,7 +70,7 @@ void PQCLEAN_KYBER76890S_CLEAN_aes256_prf(uint8_t *output, size_t outlen, const 
 *              - uint8_t y:           second additional byte to "absorb"
 **************************************************/
 void PQCLEAN_KYBER76890S_CLEAN_aes256xof_absorb(aes256xof_ctx *s, const uint8_t *key, uint8_t x, uint8_t y) {
-    aes256_keyexp(&s->sk_exp, key);
+    aes256_ctr_keyexp(&s->sk_exp, key);
     for (int i = 2; i < 12; i++) {
         s->iv[i] = 0;
     }

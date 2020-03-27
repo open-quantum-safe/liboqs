@@ -32,7 +32,7 @@ typedef void *aes256_ks_t;
 
 _INLINE_ ret_t
 aes256_key_expansion(OUT aes256_ks_t *ks, IN const aes256_key_t *key) {
-	OQS_AES256_load_schedule(key->raw, ks, 1);
+	OQS_AES256_ECB_load_schedule(key->raw, ks, 1);
 	return SUCCESS;
 }
 

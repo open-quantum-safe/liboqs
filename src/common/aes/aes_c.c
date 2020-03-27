@@ -219,7 +219,7 @@ static void key_schedule_core(byte *a, int i) {
 
 // Expand the 16-byte key to 11 round keys (176 bytes)
 // http://en.wikipedia.org/wiki/Rijndael_key_schedule#The_key_schedule
-void OQS_AES128_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
+void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
 	*_schedule = malloc(16 * 11);
 	assert(*_schedule != NULL);
 	uint8_t *schedule = (uint8_t *) *_schedule;
@@ -247,6 +247,10 @@ void OQS_AES128_load_schedule(const uint8_t *key, void **_schedule, UNUSED int f
 	}
 }
 
+void OQS_AES128_CTR_load_schedule(const uint8_t *key, void **_schedule) {
+	OQS_AES128_ECB_load_schedule(key, _schedule);
+}
+
 void OQS_AES128_free_schedule(void *schedule) {
 	if (schedule != NULL) {
 		OQS_MEM_secure_free(schedule, 176);
@@ -255,7 +259,7 @@ void OQS_AES128_free_schedule(void *schedule) {
 
 // Expand the 16-byte key to 15 round keys (240 bytes)
 // http://en.wikipedia.org/wiki/Rijndael_key_schedule#The_key_schedule
-void OQS_AES256_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
+void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
 	*_schedule = malloc(16 * 15);
 	assert(*_schedule != NULL);
 	uint8_t *schedule = (uint8_t *) *_schedule;
@@ -285,6 +289,10 @@ void OQS_AES256_load_schedule(const uint8_t *key, void **_schedule, UNUSED int f
 			memcpy(schedule + 4 * i, t, 4);       // This becomes the next 4 bytes in the expanded key
 		}
 	}
+}
+
+void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **_schedule) {
+	OQS_AES256_ECB_load_schedule(key, _schedule);
 }
 
 void OQS_AES256_free_schedule(void *schedule) {
@@ -444,7 +452,7 @@ void oqs_aes256_dec_sch_block_c(const uint8_t *ciphertext, const void *_schedule
 
 void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
-	OQS_AES128_load_schedule(key, &schedule, 1);
+	OQS_AES128_ECB_load_schedule(key, &schedule, 1);
 	OQS_AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
 	OQS_AES128_free_schedule(schedule);
 }
@@ -458,7 +466,7 @@ void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 
 void OQS_AES128_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext) {
 	void *schedule = NULL;
-	OQS_AES128_load_schedule(key, &schedule, 0);
+	OQS_AES128_ECB_load_schedule(key, &schedule, 0);
 	OQS_AES128_ECB_dec_sch(ciphertext, ciphertext_len, schedule, plaintext);
 	OQS_AES128_free_schedule(schedule);
 }
@@ -472,7 +480,7 @@ void OQS_AES128_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 
 void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
-	OQS_AES256_load_schedule(key, &schedule, 1);
+	OQS_AES256_ECB_load_schedule(key, &schedule, 1);
 	OQS_AES256_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
 	OQS_AES256_free_schedule(schedule);
 }
@@ -486,7 +494,7 @@ void OQS_AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 
 void OQS_AES256_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext) {
 	void *schedule = NULL;
-	OQS_AES256_load_schedule(key, &schedule, 0);
+	OQS_AES256_ECB_load_schedule(key, &schedule, 0);
 	OQS_AES256_ECB_dec_sch(ciphertext, ciphertext_len, schedule, plaintext);
 	OQS_AES256_free_schedule(schedule);
 }

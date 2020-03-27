@@ -7,7 +7,7 @@ void PQCLEAN_MCELIECE6960119_VEC_aes256ctr(
     const uint8_t key[AES256_KEYBYTES]) {
 
     aes256ctx state;
-    aes256_keyexp(&state, key);
+    aes256_ctr_keyexp(&state, key);
     aes256_ctr(out, outlen, nonce, &state);
     aes256_ctx_release(&state);
 }
