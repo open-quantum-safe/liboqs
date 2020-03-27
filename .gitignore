@@ -8,6 +8,9 @@ tags
 # CMake
 /build*
 
+# CLion
+/cmake-build*
+
 # Misc
 __pycache__
 .pytest_cache

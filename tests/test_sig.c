@@ -8,6 +8,10 @@
 
 #include <oqs/oqs.h>
 
+#if OQS_USE_PTHREADS_IN_TESTS
+#include <pthread.h>
+#endif
+
 #include "system_info.c"
 
 static OQS_STATUS sig_test_correctness(const char *method_name) {
@@ -23,8 +27,8 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
-		// should always succeed since we don't call this function on KEMs that aren't enabled
-		return OQS_ERROR;
+		fprintf(stderr, "ERROR: OQS_SIG_new failed\n");
+		goto err;
 	}
 
 	printf("================================================================================\n");
@@ -87,6 +91,19 @@ cleanup:
 	return ret;
 }
 
+#if OQS_USE_PTHREADS_IN_TESTS
+struct thread_data {
+	char *alg_name;
+	OQS_STATUS rc;
+};
+
+void *test_wrapper(void *arg) {
+	struct thread_data *td = arg;
+	td->rc = sig_test_correctness(td->alg_name);
+	return NULL;
+}
+#endif
+
 int main(int argc, char **argv) {
 
 	if (argc != 2) {
@@ -104,14 +121,44 @@ int main(int argc, char **argv) {
 
 	print_system_info();
 
+	char *alg_name = argv[1];
+	if (!OQS_SIG_alg_is_enabled(alg_name)) {
+		printf("Signature algorithm %s not enabled!\n", alg_name);
+		return EXIT_FAILURE;
+	}
+
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
-	char *alg_name = argv[1];
-	if (!OQS_SIG_alg_is_enabled(alg_name)) {
-		return EXIT_FAILURE;
+	OQS_STATUS rc;
+#if OQS_USE_PTHREADS_IN_TESTS
+#define MAX_LEN_SIG_NAME_ 64
+	// don't run Rainbow IIIc and Vc in threads because of large stack usage
+	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"Rainbow-IIIc", "Rainbow-Vc"};
+	int test_in_thread = 1;
+	for (size_t i = 0 ; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
+		if (strstr(alg_name, no_thread_sig_patterns[i]) != NULL) {
+			test_in_thread = 0;
+			break;
+		}
 	}
-	OQS_STATUS rc = sig_test_correctness(alg_name);
+	if (test_in_thread) {
+		pthread_t thread;
+		struct thread_data td;
+		td.alg_name = alg_name;
+		int trc = pthread_create(&thread, NULL, test_wrapper, &td);
+		if (trc) {
+			fprintf(stderr, "ERROR: Creating pthread\n");
+			return EXIT_FAILURE;
+		}
+		pthread_join(thread, NULL);
+		rc = td.rc;
+	} else {
+		rc = sig_test_correctness(alg_name);
+	}
+#else
+	rc = sig_test_correctness(alg_name);
+#endif
 	if (rc != OQS_SUCCESS) {
 		return EXIT_FAILURE;
 	}
