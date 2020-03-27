@@ -92,11 +92,15 @@ cleanup:
 }
 
 #if OQS_USE_PTHREADS_IN_TESTS
+struct thread_data {
+	char *alg_name;
+	OQS_STATUS rc;
+};
+
 void *test_wrapper(void *arg) {
-	OQS_STATUS rc = sig_test_correctness((char *) arg);
-	long lrc = (long) rc;
-	pthread_exit((void *) lrc);
-	return (void *) lrc;
+	struct thread_data *td = arg;
+	td->rc = sig_test_correctness(td->alg_name);
+	return NULL;
 }
 #endif
 
@@ -140,14 +144,15 @@ int main(int argc, char **argv) {
 	}
 	if (test_in_thread) {
 		pthread_t thread;
-		void *status;
-		int trc = pthread_create(&thread, NULL, test_wrapper, alg_name);
+		struct thread_data td;
+		td.alg_name = alg_name;
+		int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 		if (trc) {
 			fprintf(stderr, "ERROR: Creating pthread\n");
 			return EXIT_FAILURE;
 		}
-		pthread_join(thread, &status);
-		rc = (OQS_STATUS) status;
+		pthread_join(thread, NULL);
+		rc = td.rc;
 	} else {
 		rc = sig_test_correctness(alg_name);
 	}
