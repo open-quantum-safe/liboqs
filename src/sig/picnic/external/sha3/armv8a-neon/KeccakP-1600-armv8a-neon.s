@@ -253,8 +253,8 @@ KeccakP1600_Permute_RoundConstants0:
 // void KeccakP1600_Initialize(void *state)
 //
 .align 8
-.global   KeccakP1600_Initialize
-KeccakP1600_Initialize:
+.global   oqs_sig_picnic_KeccakP1600_Initialize
+oqs_sig_picnic_KeccakP1600_Initialize:
     movi    v0.2d, #0
     movi    v1.2d, #0
     movi    v2.2d, #0
@@ -284,8 +284,8 @@ KeccakP1600_AddByte:
 //  void KeccakP1600_AddBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length)
 //
 .align 8
-.global   KeccakP1600_AddBytes
-KeccakP1600_AddBytes:
+.global   oqs_sig_picnic_KeccakP1600_AddBytes
+oqs_sig_picnic_KeccakP1600_AddBytes:
     add     x0, x0, x2
     subs    w4, w3, #1
     b.cc    KeccakP1600_AddBytes_Exit // length 0, move along
@@ -328,8 +328,8 @@ KeccakP1600_AddBytes_Exit:
 //  void KeccakP1600_OverwriteBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length)
 //
 .align 8
-.global   KeccakP1600_OverwriteBytes
-KeccakP1600_OverwriteBytes:
+.global   oqs_sig_picnic_KeccakP1600_OverwriteBytes
+oqs_sig_picnic_KeccakP1600_OverwriteBytes:
     add     x0, x0, x2
     subs    w4, w3, #1
     b.cc    KeccakP1600_OverwriteBytes_Exit
@@ -364,8 +364,8 @@ KeccakP1600_OverwriteBytes_Exit:
 // void KeccakP1600_OverwriteWithZeroes(void *state, unsigned int byteCount)
 //
 .align 8
-.global   KeccakP1600_OverwriteWithZeroes
-KeccakP1600_OverwriteWithZeroes:
+.global   oqs_sig_picnic_KeccakP1600_OverwriteWithZeroes
+oqs_sig_picnic_KeccakP1600_OverwriteWithZeroes:
     subs    w2, w1, #1
     b.cc    KeccakP1600_OverwriteWithZeroes_Exit
     movi    v0.2d, #0
@@ -401,8 +401,8 @@ KeccakP1600_OverwriteWithZeroes_Exit:
 //  void KeccakP1600_ExtractBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length)
 //
 .align 8
-.global   KeccakP1600_ExtractBytes
-KeccakP1600_ExtractBytes:
+.global   oqs_sig_picnic_KeccakP1600_ExtractBytes
+oqs_sig_picnic_KeccakP1600_ExtractBytes:
     add     x0, x0, x2
     subs    w4, w3, #1
     b.cc    KeccakP1600_ExtractBytes_Exit
@@ -437,8 +437,8 @@ KeccakP1600_ExtractBytes_Exit:
 //  void KeccakP800_ExtractAndAddBytes(void *state, const unsigned char *input, unsigned char *output, unsigned int offset, unsigned int length)
 //
 .align 8
-.global   KeccakP1600_ExtractAndAddBytes
-KeccakP1600_ExtractAndAddBytes:
+.global   oqs_sig_picnic_KeccakP1600_ExtractAndAddBytes
+oqs_sig_picnic_KeccakP1600_ExtractAndAddBytes:
     add     x0, x0, x3
     subs    w5, w4, #1
     b.cc    KeccakP1600_ExtractAndAddBytes_Exit
@@ -481,8 +481,8 @@ KeccakP1600_ExtractAndAddBytes_Exit:
 //  void KeccakP1600_Permute_Nrounds( void *state, unsigned int nrounds )
 //
 .align 8
-.global   KeccakP1600_Permute_Nrounds
-KeccakP1600_Permute_Nrounds:
+.global   oqs_sig_picnic_KeccakP1600_Permute_Nrounds
+oqs_sig_picnic_KeccakP1600_Permute_Nrounds:
     mov     x2, x1
     adr     x1, KeccakP1600_Permute_RoundConstants0
 	lsl		x3, x2, #3
@@ -494,8 +494,8 @@ KeccakP1600_Permute_Nrounds:
 //  void KeccakP1600_Permute_12rounds( void *state )
 //
 .align 8
-.global   KeccakP1600_Permute_12rounds
-KeccakP1600_Permute_12rounds:
+.global   oqs_sig_picnic_KeccakP1600_Permute_12rounds
+oqs_sig_picnic_KeccakP1600_Permute_12rounds:
     adr     x1, KeccakP1600_Permute_RoundConstants12
     mov     x2, #12
     b       KeccakP1600_Permute
@@ -506,8 +506,8 @@ KeccakP1600_Permute_12rounds:
 //  void KeccakP1600_Permute_24rounds( void *state )
 //
 .align 8
-.global   KeccakP1600_Permute_24rounds
-KeccakP1600_Permute_24rounds:
+.global   oqs_sig_picnic_KeccakP1600_Permute_24rounds
+oqs_sig_picnic_KeccakP1600_Permute_24rounds:
     adr     x1, KeccakP1600_Permute_RoundConstants24
     mov     x2, #24
     b       KeccakP1600_Permute
@@ -517,8 +517,8 @@ KeccakP1600_Permute_24rounds:
 // void KeccakP1600_Permute( void *state, uint64_t *rc, unsigned int nrounds )
 //
 .align 8
-.global   KeccakP1600_Permute
-KeccakP1600_Permute:
+.global   oqs_sig_picnic_KeccakP1600_Permute
+oqs_sig_picnic_KeccakP1600_Permute:
     LoadState
 KeccakP1600_Permute_RoundLoop:
     KeccakRound

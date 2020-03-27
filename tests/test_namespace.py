@@ -23,8 +23,8 @@ def test_namespace(use_liboqs_so):
         if ' T ' in line or ' D ' in line or ' S ' in line:
             symbols.append(line)
 
-    # ideally this would be just ['oqs', 'pqclean'] but the Picnic implementation has a few more symbols
-    namespaces = ['oqs', 'pqclean', 'keccak', 'picnic', 'aligned_alloc', 'aligned_free']
+    # ideally this would be just ['oqs', 'pqclean']
+    namespaces = ['oqs', 'pqclean', 'keccak', 'aligned_alloc', 'aligned_free']
     non_namespaced = []
 
     for symbolstr in symbols:

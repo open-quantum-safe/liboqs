@@ -18,14 +18,14 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #ifndef KeccakP1600_excluded
     #include "KeccakP-1600-SnP.h"
-    KCP_DeclareSpongeStructure(KeccakWidth1600, KeccakP1600_stateSizeInBytes, KeccakP1600_stateAlignment)
-    KCP_DeclareSpongeFunctions(KeccakWidth1600)
+    KCP_DeclareSpongeStructure(oqs_sig_picnic_KeccakWidth1600, KeccakP1600_stateSizeInBytes, KeccakP1600_stateAlignment)
+    KCP_DeclareSpongeFunctions(oqs_sig_picnic_KeccakWidth1600)
 #endif
 
 #ifndef KeccakP1600_excluded
     #include "KeccakP-1600-SnP.h"
-    KCP_DeclareSpongeStructure(KeccakWidth1600_12rounds, KeccakP1600_stateSizeInBytes, KeccakP1600_stateAlignment)
-    KCP_DeclareSpongeFunctions(KeccakWidth1600_12rounds)
+    KCP_DeclareSpongeStructure(oqs_sig_picnic_KeccakWidth1600_12rounds, KeccakP1600_stateSizeInBytes, KeccakP1600_stateAlignment)
+    KCP_DeclareSpongeFunctions(oqs_sig_picnic_KeccakWidth1600_12rounds)
 #endif
 
 #endif

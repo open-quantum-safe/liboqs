@@ -5,6 +5,7 @@
 #include <string.h>
 #include <oqs/common.h>
 #include "sig_picnic.h"
+#include "oqs_picnic_macros.h"
 #include "external/picnic.h"
 
 static size_t PRIV_KEY_LEN[] = {
