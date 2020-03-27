@@ -45,14 +45,14 @@ void OQS_AES128_free_schedule(void *schedule) {
 	if (schedule != NULL) {
 		struct key_schedule *ks = (struct key_schedule *) schedule;
 		switch (ks->type) {
-			case ECB:
-				if (ks->ctx != NULL) {
-					EVP_CIPHER_CTX_free(ks->ctx);
-				}
-				break;
-			case CTR:
-				OQS_MEM_cleanse(ks->key, 16);
-				break;
+		case ECB:
+			if (ks->ctx != NULL) {
+				EVP_CIPHER_CTX_free(ks->ctx);
+			}
+			break;
+		case CTR:
+			OQS_MEM_cleanse(ks->key, 16);
+			break;
 		}
 		OQS_MEM_secure_free(ks, sizeof(struct key_schedule));
 	}
@@ -119,14 +119,14 @@ void OQS_AES256_free_schedule(void *schedule) {
 	if (schedule != NULL) {
 		struct key_schedule *ks = (struct key_schedule *) schedule;
 		switch (ks->type) {
-			case ECB:
-				if (ks->ctx != NULL) {
-					EVP_CIPHER_CTX_free(ks->ctx);
-				}
-				break;
-			case CTR:
-				OQS_MEM_cleanse(ks->key, 32);
-				break;
+		case ECB:
+			if (ks->ctx != NULL) {
+				EVP_CIPHER_CTX_free(ks->ctx);
+			}
+			break;
+		case CTR:
+			OQS_MEM_cleanse(ks->key, 32);
+			break;
 		}
 		OQS_MEM_secure_free(ks, sizeof(struct key_schedule));
 	}
