@@ -5,7 +5,7 @@ static const uint32_t qinv = 12287; // -inverse_mod(p,2^18)
 static const uint32_t rlog = 18;
 
 /*************************************************
-* Name:        verify
+* Name:        montgomery_reduce
 *
 * Description: Montgomery reduction; given a 32-bit integer a, computes
 *              16-bit integer congruent to a * R^-1 mod q,

@@ -135,7 +135,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 	} else if (0 == strcmp(sig->method_name, "Falcon-1024")) {
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x2A || sig
 		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
-		*signed_msg_len = 2 + signature_len + msg_len;
+		*signed_msg_len = 2 + signature_len_uint16 + msg_len;
 		*signed_msg = malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
 			return OQS_ERROR;

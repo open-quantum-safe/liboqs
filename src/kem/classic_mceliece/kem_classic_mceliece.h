@@ -1,5 +1,5 @@
-#ifndef _OQS_KEM_CLASSIC_MCELIECE_H
-#define _OQS_KEM_CLASSIC_MCELIECE_H
+#ifndef OQS_KEM_CLASSIC_MCELIECE_H
+#define OQS_KEM_CLASSIC_MCELIECE_H
 
 #include <oqs/oqs.h>
 

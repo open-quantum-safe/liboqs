@@ -22,7 +22,7 @@ int PQCLEAN_NEWHOPE512CCA_CLEAN_verify(const unsigned char *a, const unsigned ch
         r |= a[i] ^ b[i];
     }
 
-    r = (-(int64_t)r) >> 63;
+    r = (uint64_t)(-(int64_t)r) >> 63;
     return (int)r;
 }
 
