@@ -1,3 +1,15 @@
+set(CPU_FEATURES-ARGS -DCMAKE_POLICY_DEFAULT_CMP0063=NEW
+                      -DCMAKE_C_VISIBILITY_PRESET=hidden
+                      -DCMAKE_POSITION_INDEPENDENT_CODE=ON)
+if(CMAKE_CROSSCOMPILING)
+    set(CPU_FEATURES-ARGS ${CPU_FEATURES-ARGS}
+                          -DCMAKE_SYSTEM_NAME=${CMAKE_SYSTEM_NAME}
+                          -DCMAKE_SYSTEM_PROCESSOR=${CMAKE_SYSTEM_PROCESSOR})
+    if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+        set(CPU_FEATURES-ARGS ${CPU_FEATURES-ARGS}
+                              -DCMAKE_RC_COMPILER=${CMAKE_RC_COMPILER})
+    endif()
+endif()
 configure_file(${CMAKE_CURRENT_LIST_DIR}/CMakeLists.txt.in ${CMAKE_CURRENT_BINARY_DIR}/cpu_features-download/CMakeLists.txt)
 
 execute_process(COMMAND ${CMAKE_COMMAND} -G ${CMAKE_GENERATOR} .
