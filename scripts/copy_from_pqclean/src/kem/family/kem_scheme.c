@@ -49,8 +49,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 #else
 // Assume CLEAN always compiles
 	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_CLEAN_crypto_kem_keypair(public_key, secret_key);
-{% else -%}
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
+{% else %}	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
 {% endif -%}
 {% if scheme['metadata']['implementations']|length > 1 -%}
 #endif
@@ -71,8 +70,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 #else
 // Assume CLEAN always compiles
 	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
-{% else -%}
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
+{% else %}	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
 {% endif -%}
 {% if scheme['metadata']['implementations']|length > 1 -%}
 #endif
@@ -93,8 +91,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 #else
 // Assume CLEAN always compiles
 	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
-{% else -%}
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+{% else %}	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 {% endif -%}
 {% if scheme['metadata']['implementations']|length > 1 -%}
 #endif

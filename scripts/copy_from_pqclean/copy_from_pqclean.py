@@ -139,7 +139,7 @@ for family in instructions['kems'] + instructions['sigs']:
                                if (i < len(req['required_flags'])-1):
                                  defs = defs + " && "
                                  comp_opts = comp_opts + " "
-                      impl['required_defines'] = defs
+                      impl['required_defines'] = defs.rstrip()
                       impl['compile_options'] = comp_opts
                except KeyError as ke:
                       if (impl['name'] != "clean"):
