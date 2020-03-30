@@ -16,80 +16,80 @@
 extern "C" {
 #endif
 
-/** 
+/**
  * Runtime CPU feature flag indicating AES support
  */
- int OQS_RT_AES_INSTRUCTIONS ;
+int OQS_RT_AES_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating AVX support
  */
- int OQS_RT_AVX_INSTRUCTIONS ;
+int OQS_RT_AVX_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating AVX2 support
  */
- int OQS_RT_AVX2_INSTRUCTIONS ;
+int OQS_RT_AVX2_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating AVX512 support
  */
- int OQS_RT_AVX512_INSTRUCTIONS ;
+int OQS_RT_AVX512_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating BMI support
  */
- int OQS_RT_BMI_INSTRUCTIONS ;
+int OQS_RT_BMI_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating BMI2 support
  */
- int OQS_RT_BMI2_INSTRUCTIONS ;
+int OQS_RT_BMI2_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating FMA support
  */
- int OQS_RT_FMA_INSTRUCTIONS ;
+int OQS_RT_FMA_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating FMA4 support
  */
- int OQS_RT_FMA4_INSTRUCTIONS ;
+int OQS_RT_FMA4_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating MMX support
  */
- int OQS_RT_MMX_INSTRUCTIONS ;
+int OQS_RT_MMX_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating POPCNT support
  */
- int OQS_RT_POPCNT_INSTRUCTIONS ;
+int OQS_RT_POPCNT_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating SSE support
  */
- int OQS_RT_SSE_INSTRUCTIONS ;
+int OQS_RT_SSE_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating SSE2 support
  */
- int OQS_RT_SSE2_INSTRUCTIONS ;
+int OQS_RT_SSE2_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating SSE3 support
  */
- int OQS_RT_SSE3_INSTRUCTIONS ;
+int OQS_RT_SSE3_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating SSE4A support
  */
- int OQS_RT_SSE4A_INSTRUCTIONS ;
+int OQS_RT_SSE4A_INSTRUCTIONS ;
 
-/** 
+/**
  * Runtime CPU feature flag indicating NEON support
  */
- int OQS_RT_NEON_INSTRUCTIONS;
+int OQS_RT_NEON_INSTRUCTIONS;
 
 
 /**
