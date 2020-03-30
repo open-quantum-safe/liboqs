@@ -8,6 +8,10 @@ tags
 # CMake
 /build*
 
+# MSVC
+.vs
+/out*
+
 # CLion
 /cmake-build*
 
