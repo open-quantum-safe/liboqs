@@ -1,4 +1,7 @@
-version: 2
+version: 2.1
+
+orbs:
+  win: circleci/windows@2.2.0
 
 # CircleCI doesn't handle large file sets properly for local builds
 # https://github.com/CircleCI-Public/circleci-cli/issues/281#issuecomment-472808051
@@ -56,6 +59,36 @@ localCheckout: &localCheckout
         path: build/test-results
     - store_artifacts:
         path: build/test-results
+
+.winjob: &winjob
+    executor:
+      name: win/default
+    steps:
+        - checkout
+        - run:            
+           name: Install ninja
+           command: $ProgressPreference="SilentlyContinue" ; Invoke-RestMethod -Uri https://github.com/ninja-build/ninja/releases/download/v1.10.0/ninja-win.zip -Method Get -OutFile ninja.zip; Expand-Archive ninja.zip 
+           shell: powershell.exe
+        - run:
+            name: Install dependencies
+            command: |
+              scripts/git_no_checkin_in_last_day.sh || (
+              pip install pytest pytest-xdist
+              )
+            shell: bash.exe
+        - run:
+            name: Configure & Build
+            command: PATH=C:\Users\circleci\project\ninja;%PATH% & call C:\PROGRA~2\MICROS~2\2019\Community\VC\Auxiliary\Build\vcvars64.bat & mkdir build & cd build & cmake -GNinja ${CONFIGURE_ARGS} .. & ninja
+            shell: cmd.exe
+        - run:
+            name: Run tests
+            command: PATH=C:\Users\circleci\project\ninja;%PATH% & ninja run_tests
+            working_directory: build
+            shell: cmd.exe
+        - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
+            path: build/test-results
+        - store_artifacts:
+            path: build/test-results
 
 jobs:
   centos-7-amd64:
@@ -163,18 +196,29 @@ jobs:
             path: build/test-results
         - store_artifacts:
             path: build/test-results
+  win-static:
+    <<: *winjob
+    environment:
+        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF 
+        SKIP_TESTS: style
+  win-shared:
+    <<: *winjob
+    environment:
+        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
+        SKIP_TESTS: style
 
 workflows:
   version: 2
   build:
     jobs:
-      - centos-7-amd64
-      - centos-8-amd64
-      - debian-buster-amd64
-      - macOS
-      - ubuntu-bionic-x86_64-gcc7
-      - ubuntu-bionic-x86_64-gcc7-noopenssl
-      - ubuntu-bionic-x86_64-gcc7-shared
+      - win-shared
+      #- centos-7-amd64
+      #- centos-8-amd64
+      #- debian-buster-amd64
+      #- macOS
+      #- ubuntu-bionic-x86_64-gcc7
+      #- ubuntu-bionic-x86_64-gcc7-noopenssl
+      #- ubuntu-bionic-x86_64-gcc7-shared
   nightly:
     triggers:
       - schedule:
