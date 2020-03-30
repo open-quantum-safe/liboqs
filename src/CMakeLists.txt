@@ -79,6 +79,10 @@ add_library(oqs kem/kem.c
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
 endif()
+if(DEFINED CPUFEATURES_LIBRARY)
+    target_link_libraries(oqs PRIVATE ${CPUFEATURES_LIBRARY})
+endif()
+
 if(OQS_USE_OPENSSL)
     target_link_libraries(oqs PUBLIC ${OPENSSL_CRYPTO_LIBRARY})
     target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})

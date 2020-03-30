@@ -16,6 +16,26 @@
 extern "C" {
 #endif
 
+/** Runtime CPU feature flags mirroring the compile time flags
+ *
+ */
+ int OQS_RT_AES_INSTRUCTIONS ;
+ int OQS_RT_AVX_INSTRUCTIONS ;
+ int OQS_RT_AVX2_INSTRUCTIONS ;
+ int OQS_RT_AVX512_INSTRUCTIONS ;
+ int OQS_RT_BMI_INSTRUCTIONS ;
+ int OQS_RT_BMI2_INSTRUCTIONS ;
+ int OQS_RT_FMA_INSTRUCTIONS ;
+ int OQS_RT_FMA4_INSTRUCTIONS ;
+ int OQS_RT_MMX_INSTRUCTIONS ;
+ int OQS_RT_POPCNT_INSTRUCTIONS ;
+ int OQS_RT_SSE_INSTRUCTIONS ;
+ int OQS_RT_SSE2_INSTRUCTIONS ;
+ int OQS_RT_SSE3_INSTRUCTIONS ;
+ int OQS_RT_SSE4A_INSTRUCTIONS ;
+ int OQS_RT_NEON_INSTRUCTIONS;
+
+
 /**
  * Certain functions (such as OQS_randombytes_openssl in
  * src/rand/rand.c) take in a size_t parameter, but can
@@ -66,6 +86,12 @@ typedef enum {
 	/** Used to indicate failures in external libraries (e.g., OpenSSL). */
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
+
+/**
+ * Initialization function.
+ * For now, it sets the CPU runtime feature flags
+ */
+OQS_API void OQS_init(void);
 
 /**
  * Zeros out `len` bytes of memory starting at `ptr`.

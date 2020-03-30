@@ -16,6 +16,9 @@ add_library(common OBJECT ${AES_IMPL}
                           common.c
                           rand/rand.c
                           rand/rand_nist.c)
+if(DEFINED CPUFEATURES_INCLUDE_DIR)
+    target_include_directories(common PUBLIC ${CPUFEATURES_INCLUDE_DIR})
+endif()
 if(OQS_USE_OPENSSL)
     target_include_directories(common PRIVATE ${OPENSSL_INCLUDE_DIR})
 endif()
