@@ -212,13 +212,13 @@ workflows:
   build:
     jobs:
       - win-shared
-      #- centos-7-amd64
-      #- centos-8-amd64
-      #- debian-buster-amd64
-      #- macOS
-      #- ubuntu-bionic-x86_64-gcc7
-      #- ubuntu-bionic-x86_64-gcc7-noopenssl
-      #- ubuntu-bionic-x86_64-gcc7-shared
+      - centos-7-amd64
+      - centos-8-amd64
+      - debian-buster-amd64
+      - macOS
+      - ubuntu-bionic-x86_64-gcc7
+      - ubuntu-bionic-x86_64-gcc7-noopenssl
+      - ubuntu-bionic-x86_64-gcc7-shared
   nightly:
     triggers:
       - schedule:
@@ -235,6 +235,7 @@ workflows:
       - debian-buster-armhf
       - debian-buster-armel
       - macOS
+      - win-static
       - ubuntu-bionic-x86_64-gcc7
       - ubuntu-bionic-x86_64-gcc7-noopenssl
       - ubuntu-bionic-x86_64-gcc7-shared
