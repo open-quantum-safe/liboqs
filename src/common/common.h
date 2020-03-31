@@ -17,6 +17,82 @@ extern "C" {
 #endif
 
 /**
+ * Runtime CPU feature flag indicating AES support
+ */
+int OQS_RT_AES_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating AVX support
+ */
+int OQS_RT_AVX_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating AVX2 support
+ */
+int OQS_RT_AVX2_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating AVX512 support
+ */
+int OQS_RT_AVX512_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating BMI support
+ */
+int OQS_RT_BMI_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating BMI2 support
+ */
+int OQS_RT_BMI2_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating FMA support
+ */
+int OQS_RT_FMA_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating FMA4 support
+ */
+int OQS_RT_FMA4_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating MMX support
+ */
+int OQS_RT_MMX_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating POPCNT support
+ */
+int OQS_RT_POPCNT_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating SSE support
+ */
+int OQS_RT_SSE_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating SSE2 support
+ */
+int OQS_RT_SSE2_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating SSE3 support
+ */
+int OQS_RT_SSE3_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating SSE4A support
+ */
+int OQS_RT_SSE4A_INSTRUCTIONS ;
+
+/**
+ * Runtime CPU feature flag indicating NEON support
+ */
+int OQS_RT_NEON_INSTRUCTIONS;
+
+
+/**
  * Certain functions (such as OQS_randombytes_openssl in
  * src/rand/rand.c) take in a size_t parameter, but can
  * only handle values up to INT_MAX for those parameters.
@@ -66,6 +142,12 @@ typedef enum {
 	/** Used to indicate failures in external libraries (e.g., OpenSSL). */
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
+
+/**
+ * Initialization function.
+ * For now, it sets the CPU runtime feature flags
+ */
+OQS_API void OQS_init(void);
 
 /**
  * Zeros out `len` bytes of memory starting at `ptr`.
