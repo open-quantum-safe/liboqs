@@ -41,7 +41,7 @@ typedef __m256i V256;
 #if defined(KeccakP1600times4_useAVX2)
 #define ANDnu256(a, b) _mm256_andnot_si256(a, b)
 #define CONST256(a) _mm256_load_si256((const V256 *) &(a))
-#define CONST256_64(a) (V256) _mm256_broadcast_sd((const double *) (&a))
+#define CONST256_64(a) _mm256_castpd_si256(_mm256_broadcast_sd((const double *) (&a)))
 #define LOAD256(a) _mm256_load_si256((const V256 *) &(a))
 #define LOAD256u(a) _mm256_loadu_si256((const V256 *) &(a))
 #define LOAD4_64(a, b, c, d) _mm256_set_epi64x((UINT64)(a), (UINT64)(b), (UINT64)(c), (UINT64)(d))

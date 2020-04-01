@@ -75,5 +75,5 @@ int main(void) {
         printf("AES;");
     }
 
-    return EXIT_SUCCESS;
+    return 0;
 }
