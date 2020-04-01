@@ -18,55 +18,6 @@
 #include <cpuinfo_aarch64.h>
 #endif
 
-/**
- * CPU runtime detection flags
- */
-typedef struct {
-	///< Runtime CPU feature flag indicating AES support
-	int AES_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating AVX support
-	int AVX_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating AVX2 support
-	int AVX2_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating AVX512 support
-	int AVX512_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating BMI support
-	int BMI_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating BMI2 support
-	int BMI2_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating FMA support
-	int FMA_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating FMA4 support
-	int FMA4_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating MMX support
-	int MMX_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating POPCNT support
-	int POPCNT_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating SSE support
-	int SSE_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating SSE2 support
-	int SSE2_INSTRUCTIONS;
-
-	///<  Runtime CPU feature flag indicating SSE3 support
-	int SSE3_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating SSE4A support
-	int SSE4A_INSTRUCTIONS;
-
-	///< Runtime CPU feature flag indicating NEON support
-	int NEON_INSTRUCTIONS;
-} OQS_RT;
 static OQS_RT rt_cpu_flags = {0};
 
 OQS_API void OQS_init(void) {
