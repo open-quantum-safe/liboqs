@@ -6,9 +6,9 @@
 #ifndef OQS_COMMON_H
 #define OQS_COMMON_H
 
+#include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <limits.h>
 
 #include <oqs/oqsconfig.h>
 
@@ -17,94 +17,18 @@ extern "C" {
 #endif
 
 /**
- * Runtime CPU feature flag indicating AES support
- */
-int OQS_RT_AES_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating AVX support
- */
-int OQS_RT_AVX_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating AVX2 support
- */
-int OQS_RT_AVX2_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating AVX512 support
- */
-int OQS_RT_AVX512_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating BMI support
- */
-int OQS_RT_BMI_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating BMI2 support
- */
-int OQS_RT_BMI2_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating FMA support
- */
-int OQS_RT_FMA_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating FMA4 support
- */
-int OQS_RT_FMA4_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating MMX support
- */
-int OQS_RT_MMX_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating POPCNT support
- */
-int OQS_RT_POPCNT_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating SSE support
- */
-int OQS_RT_SSE_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating SSE2 support
- */
-int OQS_RT_SSE2_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating SSE3 support
- */
-int OQS_RT_SSE3_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating SSE4A support
- */
-int OQS_RT_SSE4A_INSTRUCTIONS ;
-
-/**
- * Runtime CPU feature flag indicating NEON support
- */
-int OQS_RT_NEON_INSTRUCTIONS;
-
-
-/**
  * Certain functions (such as OQS_randombytes_openssl in
  * src/rand/rand.c) take in a size_t parameter, but can
  * only handle values up to INT_MAX for those parameters.
  * This macro is a temporary workaround for such functions.
  */
-#define SIZE_T_TO_INT_OR_ABORT(size_t_var_name, int_var_name) \
-    int int_var_name = 0;                            \
-    if(size_t_var_name <= INT_MAX) {                 \
-        int_var_name = (int)size_t_var_name;         \
-    } else {                                         \
-        abort();                                     \
-    }
+#define SIZE_T_TO_INT_OR_ABORT(size_t_var_name, int_var_name)                  \
+  int int_var_name = 0;                                                        \
+  if (size_t_var_name <= INT_MAX) {                                            \
+    int_var_name = (int)size_t_var_name;                                       \
+  } else {                                                                     \
+    abort();                                                                   \
+  }
 
 /**
  * Defines which functions should be exposed outside the LibOQS library
@@ -144,16 +68,59 @@ typedef enum {
 } OQS_STATUS;
 
 /**
+ * CPU runtime detection flags
+ */
+typedef struct {
+	int AES_INSTRUCTIONS; ///< Runtime CPU feature flag indicating AES support
+
+	int AVX_INSTRUCTIONS; ///< Runtime CPU feature flag indicating AVX support
+
+	int AVX2_INSTRUCTIONS; ///< Runtime CPU feature flag indicating AVX2 support
+
+	int AVX512_INSTRUCTIONS; ///< Runtime CPU feature flag indicating AVX512 support
+
+	int BMI_INSTRUCTIONS; ///< Runtime CPU feature flag indicating BMI support
+
+	int BMI2_INSTRUCTIONS; ///< Runtime CPU feature flag indicating BMI2 support
+
+	int FMA_INSTRUCTIONS; ///< Runtime CPU feature flag indicating FMA support
+
+	int FMA4_INSTRUCTIONS; ///< Runtime CPU feature flag indicating FMA4 support
+
+	int MMX_INSTRUCTIONS; ///< Runtime CPU feature flag indicating MMX support
+
+	int POPCNT_INSTRUCTIONS; ///< Runtime CPU feature flag indicating POPCNT support
+
+	int SSE_INSTRUCTIONS; ///< Runtime CPU feature flag indicating SSE support
+
+	int SSE2_INSTRUCTIONS;  ///< Runtime CPU feature flag indicating SSE2 support
+
+	int SSE3_INSTRUCTIONS; ///<  Runtime CPU feature flag indicating SSE3 support
+
+	int SSE4A_INSTRUCTIONS; ///< Runtime CPU feature flag indicating SSE4A support
+
+	int NEON_INSTRUCTIONS; ///< Runtime CPU feature flag indicating NEON support
+} OQS_RT;
+
+/**
  * Initialization function.
  * For now, it sets the CPU runtime feature flags
  */
 OQS_API void OQS_init(void);
 
 /**
+ * CPU runtime detection flags
+ *
+ * \return Struct of type OQS_RT containing the CPU runtime detection flags
+ */
+OQS_API OQS_RT OQS_RT_cpu_flags(void);
+
+/**
  * Zeros out `len` bytes of memory starting at `ptr`.
  *
- * Designed to be protected against optimizing compilers which try to remove "unnecessary"
- * operations.  Should be used for all buffers containing secret data.
+ * Designed to be protected against optimizing compilers which try to remove
+ * "unnecessary" operations.  Should be used for all buffers containing secret
+ * data.
  *
  * @param[in] ptr The start of the memory to zero out.
  * @param[in] len The number of bytes to zero out.
@@ -165,8 +132,9 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len);
  *
  * Can be called with `ptr = NULL`, in which case no operation is performed.
  *
- * Designed to be protected against optimizing compilers which try to remove "unnecessary"
- * operations.  Should be used for all buffers containing secret data.
+ * Designed to be protected against optimizing compilers which try to remove
+ * "unnecessary" operations.  Should be used for all buffers containing secret
+ * data.
  *
  * @param[in] ptr The start of the memory to zero out and free.
  * @param[in] len The number of bytes to zero out.
@@ -186,8 +154,8 @@ OQS_API void OQS_MEM_insecure_free(void *ptr);
 
 /**
  * Macros that indicates a function argument may be unused.  Used to comply with
- * an API specification but when an implementation doesn't actually use the argument
- * and we'd get a compiler warning otherwise.
+ * an API specification but when an implementation doesn't actually use the
+ * argument and we'd get a compiler warning otherwise.
  */
 #ifdef __GNUC__
 #define UNUSED __attribute__((unused))
