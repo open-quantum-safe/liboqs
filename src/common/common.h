@@ -67,6 +67,7 @@ typedef enum {
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
 
+#ifdef OQS_ENABLE_CPUFEATURES
 /**
  * CPU runtime detection flags
  */
@@ -103,17 +104,19 @@ typedef struct {
 } OQS_RT;
 
 /**
- * Initialization function.
- * For now, it sets the CPU runtime feature flags
- */
-OQS_API void OQS_init(void);
-
-/**
  * CPU runtime detection flags
  *
  * \return Struct of type OQS_RT containing the CPU runtime detection flags
  */
 OQS_API OQS_RT OQS_RT_cpu_flags(void);
+
+#endif /* OQS_ENABLE_CPUFEATURES */
+
+/**
+ * Initialization function.
+ * For now, it sets the CPU runtime feature flags
+ */
+OQS_API void OQS_init(void);
 
 /**
  * Zeros out `len` bytes of memory starting at `ptr`.

@@ -10,6 +10,7 @@
 #cmakedefine OQS_USE_SHA3_OPENSSL 1
 
 #cmakedefine OQS_USE_PTHREADS_IN_TESTS 1
+#cmakedefine OQS_ENABLE_CPUFEATURES 1
 
 #cmakedefine OQS_USE_AES_INSTRUCTIONS 1
 #cmakedefine OQS_USE_AVX_INSTRUCTIONS 1
