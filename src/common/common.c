@@ -9,6 +9,7 @@
 #include <windows.h>
 #endif
 
+#ifdef OQS_ENABLE_CPUFEATURES
 #include <cpu_features_macros.h>
 
 #if defined(CPU_FEATURES_ARCH_X86)
@@ -85,6 +86,10 @@ OQS_API void OQS_init(void) {
 OQS_API OQS_RT OQS_RT_cpu_flags(void) {
 	return rt_cpu_flags;
 }
+#else /* OQS_ENABLE_CPUFEATURES */
+OQS_API void OQS_init(void) {
+}
+#endif /* OQS_ENABLE_CPUFEATURES */
 
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 #if defined(_WIN32)
