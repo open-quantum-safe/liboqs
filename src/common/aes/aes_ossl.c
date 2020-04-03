@@ -28,14 +28,14 @@ void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **schedule, int for_e
 	EVP_CIPHER_CTX_set_padding(ks->ctx, 0);
 }
 
-void OQS_AES128_free_schedule(UNUSED void *schedule) {
+void OQS_AES128_free_schedule(void *schedule) {
 	if (schedule != NULL) {
 		struct key_schedule *ks = (struct key_schedule *) schedule;
 		if (ks->ctx != NULL) {
 			EVP_CIPHER_CTX_free(ks->ctx);
 		}
 		OQS_MEM_cleanse(ks->key, 32);
-		OQS_MEM_secure_free(ks, sizeof(struct key_schedule));
+		OQS_MEM_secure_free(schedule, sizeof(struct key_schedule));
 	}
 }
 
@@ -149,5 +149,5 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, 
 	int out_len_output;
 	assert(1 == EVP_EncryptUpdate(ctr_ctx, out, &out_len_output, out, out_len_input_int));
 	assert(1 == EVP_EncryptFinal_ex(ctr_ctx, out + out_len_output, &out_len_output));
-	// EVP_CIPHER_CTX_free(ctr_ctx);
+	EVP_CIPHER_CTX_free(ctr_ctx);
 }
