@@ -1,5 +1,5 @@
-#ifndef _OQS_SIG_FALCON_H
-#define _OQS_SIG_FALCON_H
+#ifndef OQS_SIG_FALCON_H
+#define OQS_SIG_FALCON_H
 
 #include <oqs/oqs.h>
 
