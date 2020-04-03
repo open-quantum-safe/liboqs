@@ -288,7 +288,7 @@ void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **_schedule, UNUSED i
 }
 
 void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **_schedule) {
-	OQS_AES256_ECB_load_schedule(key, _schedule);
+	OQS_AES256_ECB_load_schedule(key, _schedule, 1);
 }
 
 void OQS_AES256_free_schedule(void *schedule) {
