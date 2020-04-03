@@ -66,7 +66,7 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 	EVP_CIPHER_CTX_free(ctx);
 #else
 	void *schedule = NULL;
-	OQS_AES256_load_schedule(key, &schedule, 1);
+	OQS_AES256_ECB_load_schedule(key, &schedule, 1);
 	OQS_AES256_ECB_enc(ctr, 16, key, buffer);
 	OQS_AES256_free_schedule(schedule);
 #endif
