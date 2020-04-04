@@ -1,5 +1,5 @@
-#ifndef _OQS_SIG_RAINBOW_H
-#define _OQS_SIG_RAINBOW_H
+#ifndef OQS_SIG_RAINBOW_H
+#define OQS_SIG_RAINBOW_H
 
 #include <oqs/oqs.h>
 

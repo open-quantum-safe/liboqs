@@ -72,7 +72,7 @@ int PQCLEAN_LEDAKEMLT52_LEAKTIME_seedexpander(AES_XOF_struct *ctx, uint8_t *x, s
         return RNG_BAD_REQ_LEN;
     }
 
-    aes256_keyexp(&ctx256, ctx->key);
+    aes256_ecb_keyexp(&ctx256, ctx->key);
     ctx->length_remaining -= xlen;
 
     offset = 0;

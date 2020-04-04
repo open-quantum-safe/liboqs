@@ -14,7 +14,7 @@ static void prng_update(const unsigned char *provided_data,
                         unsigned char *V) {
     unsigned char temp[48];
     aes256ctx ctx;
-    aes256_keyexp(&ctx, Key);
+    aes256_ecb_keyexp(&ctx, Key);
     for (int i = 0; i < 3; i++) {
         //increment V
         for (int j = 15; j >= 0; j--) {
@@ -51,7 +51,7 @@ static int randombytes_with_state(prng_t *state,
     int i = 0;
 
     aes256ctx ctx;
-    aes256_keyexp(&ctx, state->Key);
+    aes256_ecb_keyexp(&ctx, state->Key);
 
     while (xlen > 0) {
         //increment V
