@@ -69,38 +69,26 @@ kems:
         scheme: "512"
         pqclean_scheme: kyber512
         pretty_name_full: Kyber512
-        implementation: clean
-        sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
       - 
         scheme: "768"
         pqclean_scheme: kyber768
         pretty_name_full: Kyber768
-        implementation: clean
-        sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
       - 
         scheme: "1024"
         pqclean_scheme: kyber1024
         pretty_name_full: Kyber1024
-        implementation: clean
-        sources: ['cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c', 'symmetric-fips202.c']
       - 
         scheme: "512_90s"
         pqclean_scheme: kyber512-90s
         pretty_name_full: Kyber512-90s
-        implementation: clean
-        sources: ['aes256ctr.c', 'cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c']
       - 
         scheme: "768_90s"
         pqclean_scheme: kyber768-90s
         pretty_name_full: Kyber768-90s
-        implementation: clean
-        sources: ['aes256ctr.c', 'cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c']
       - 
         scheme: "1024_90s"
         pqclean_scheme: kyber1024-90s
         pretty_name_full: Kyber1024-90s
-        implementation: clean
-        sources: ['aes256ctr.c', 'cbd.c', 'indcpa.c', 'kem.c', 'ntt.c', 'poly.c', 'polyvec.c', 'reduce.c', 'verify.c']
   - 
     name: ledacrypt
     schemes:
@@ -232,22 +220,16 @@ sigs:
         scheme: "2"
         pqclean_scheme: dilithium2
         pretty_name_full: DILITHIUM_2
-        implementation: clean
-        sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'stream.c']
         signed_msg_order: sig_then_msg
       - 
         scheme: "3"
         pqclean_scheme: dilithium3
         pretty_name_full: DILITHIUM_3
-        implementation: clean
-        sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'stream.c']
         signed_msg_order: sig_then_msg
       - 
         scheme: "4"
         pqclean_scheme: dilithium4
         pretty_name_full: DILITHIUM_4
-        implementation: clean
-        sources: ['sign.c', 'polyvec.c', 'poly.c', 'packing.c', 'ntt.c', 'reduce.c', 'rounding.c', 'stream.c']
         signed_msg_order: sig_then_msg
   - 
     name: falcon
