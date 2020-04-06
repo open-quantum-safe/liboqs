@@ -412,7 +412,7 @@ static ALIGN(KeccakP1600times4_statesAlignment) const UINT64 KeccakF1600RoundCon
 #endif
 #include "KeccakP-1600-unrolling.macros"
 
-static void KeccakP1600times4_PermuteAll_24rounds(void *states) {
+void KeccakP1600times4_PermuteAll_24rounds(void *states) {
 	V256 *statesAsLanes = (V256 *) states;
 	declareABCDE
 #ifndef KeccakP1600times4_fullUnrolling

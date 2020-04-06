@@ -815,7 +815,7 @@ static ALIGN(KeccakP1600times4_statesAlignment) const UINT64 KeccakF1600RoundCon
 #include "KeccakP-1600-unrolling.macros"
 
 ATTRIBUTE_TARGET_AVX2
-void KeccakP1600times4_PermuteAll_24rounds(void *states)
+void oqs_picnic_KeccakP1600times4_PermuteAll_24rounds(void *states)
 {
     V256 *statesAsLanes = (V256 *)states;
     declareABCDE
@@ -904,7 +904,7 @@ size_t KeccakF1600times4_FastLoop_Absorb(void *states, unsigned int laneCount, u
             Xor_In( 20 );
             #undef  Xor_In
             #undef  Xor_In4
-            KeccakP1600times4_PermuteAll_24rounds(states);
+            oqs_picnic_KeccakP1600times4_PermuteAll_24rounds(states);
             curData0 += laneOffsetSerial;
             curData1 += laneOffsetSerial;
             curData2 += laneOffsetSerial;
@@ -963,7 +963,7 @@ size_t KeccakF1600times4_FastLoop_Absorb(void *states, unsigned int laneCount, u
 
         while(dataByteLen >= (laneOffsetParallel*3 + laneCount)*8) {
             KeccakP1600times4_AddLanesAll(states, data, laneCount, laneOffsetParallel);
-            KeccakP1600times4_PermuteAll_24rounds(states);
+            oqs_picnic_KeccakP1600times4_PermuteAll_24rounds(states);
             data += laneOffsetSerial*8;
             dataByteLen -= laneOffsetSerial*8;
         }
