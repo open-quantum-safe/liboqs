@@ -3,7 +3,7 @@
 
 if(OQS_ENABLE_KEM_threebears_babybear)
     
-        set(SRCS_THREEBEARS_BABYBEAR_CLEAN_SRCS pqclean_babybear_clean/threebears.c pqclean_babybear_clean/kem.c pqclean_babybear_clean/ring.c pqclean_babybear_clean/melas_fec.c)
+        set(SRCS_THREEBEARS_BABYBEAR_CLEAN_SRCS pqclean_babybear_clean/kem.c pqclean_babybear_clean/melas_fec.c pqclean_babybear_clean/ring.c pqclean_babybear_clean/threebears.c)
     
 
 set(SRCS_THREEBEARS_BABYBEAR_CLEAN_SRCS ${SRCS_THREEBEARS_BABYBEAR_CLEAN_SRCS} kem_threebears_babybear.c )
@@ -12,7 +12,7 @@ endif()
 
 if(OQS_ENABLE_KEM_threebears_babybear_ephem)
     
-        set(SRCS_THREEBEARS_BABYBEAR_EPHEM_CLEAN_SRCS pqclean_babybear_ephem_clean/threebears.c pqclean_babybear_ephem_clean/kem.c pqclean_babybear_ephem_clean/ring.c pqclean_babybear_ephem_clean/melas_fec.c)
+        set(SRCS_THREEBEARS_BABYBEAR_EPHEM_CLEAN_SRCS pqclean_babybear_ephem_clean/kem.c pqclean_babybear_ephem_clean/melas_fec.c pqclean_babybear_ephem_clean/ring.c pqclean_babybear_ephem_clean/threebears.c)
     
 
 set(SRCS_THREEBEARS_BABYBEAR_EPHEM_CLEAN_SRCS ${SRCS_THREEBEARS_BABYBEAR_EPHEM_CLEAN_SRCS} kem_threebears_babybear_ephem.c )
@@ -21,7 +21,7 @@ endif()
 
 if(OQS_ENABLE_KEM_threebears_mamabear)
     
-        set(SRCS_THREEBEARS_MAMABEAR_CLEAN_SRCS pqclean_mamabear_clean/threebears.c pqclean_mamabear_clean/kem.c pqclean_mamabear_clean/ring.c pqclean_mamabear_clean/melas_fec.c)
+        set(SRCS_THREEBEARS_MAMABEAR_CLEAN_SRCS pqclean_mamabear_clean/kem.c pqclean_mamabear_clean/melas_fec.c pqclean_mamabear_clean/ring.c pqclean_mamabear_clean/threebears.c)
     
 
 set(SRCS_THREEBEARS_MAMABEAR_CLEAN_SRCS ${SRCS_THREEBEARS_MAMABEAR_CLEAN_SRCS} kem_threebears_mamabear.c )
@@ -30,7 +30,7 @@ endif()
 
 if(OQS_ENABLE_KEM_threebears_mamabear_ephem)
     
-        set(SRCS_THREEBEARS_MAMABEAR_EPHEM_CLEAN_SRCS pqclean_mamabear_ephem_clean/threebears.c pqclean_mamabear_ephem_clean/kem.c pqclean_mamabear_ephem_clean/ring.c pqclean_mamabear_ephem_clean/melas_fec.c)
+        set(SRCS_THREEBEARS_MAMABEAR_EPHEM_CLEAN_SRCS pqclean_mamabear_ephem_clean/kem.c pqclean_mamabear_ephem_clean/melas_fec.c pqclean_mamabear_ephem_clean/ring.c pqclean_mamabear_ephem_clean/threebears.c)
     
 
 set(SRCS_THREEBEARS_MAMABEAR_EPHEM_CLEAN_SRCS ${SRCS_THREEBEARS_MAMABEAR_EPHEM_CLEAN_SRCS} kem_threebears_mamabear_ephem.c )
@@ -39,7 +39,7 @@ endif()
 
 if(OQS_ENABLE_KEM_threebears_papabear)
     
-        set(SRCS_THREEBEARS_PAPABEAR_CLEAN_SRCS pqclean_papabear_clean/threebears.c pqclean_papabear_clean/kem.c pqclean_papabear_clean/ring.c pqclean_papabear_clean/melas_fec.c)
+        set(SRCS_THREEBEARS_PAPABEAR_CLEAN_SRCS pqclean_papabear_clean/kem.c pqclean_papabear_clean/melas_fec.c pqclean_papabear_clean/ring.c pqclean_papabear_clean/threebears.c)
     
 
 set(SRCS_THREEBEARS_PAPABEAR_CLEAN_SRCS ${SRCS_THREEBEARS_PAPABEAR_CLEAN_SRCS} kem_threebears_papabear.c )
@@ -48,7 +48,7 @@ endif()
 
 if(OQS_ENABLE_KEM_threebears_papabear_ephem)
     
-        set(SRCS_THREEBEARS_PAPABEAR_EPHEM_CLEAN_SRCS pqclean_papabear_ephem_clean/threebears.c pqclean_papabear_ephem_clean/kem.c pqclean_papabear_ephem_clean/ring.c pqclean_papabear_ephem_clean/melas_fec.c)
+        set(SRCS_THREEBEARS_PAPABEAR_EPHEM_CLEAN_SRCS pqclean_papabear_ephem_clean/kem.c pqclean_papabear_ephem_clean/melas_fec.c pqclean_papabear_ephem_clean/ring.c pqclean_papabear_ephem_clean/threebears.c)
     
 
 set(SRCS_THREEBEARS_PAPABEAR_EPHEM_CLEAN_SRCS ${SRCS_THREEBEARS_PAPABEAR_EPHEM_CLEAN_SRCS} kem_threebears_papabear_ephem.c )

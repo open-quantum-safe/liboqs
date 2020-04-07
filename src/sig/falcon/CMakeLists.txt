@@ -3,7 +3,7 @@
 
 if(OQS_ENABLE_SIG_falcon_512)
     
-        set(SRCS_FALCON_512_CLEAN_SRCS pqclean_falcon_512_clean/keygen.c pqclean_falcon_512_clean/fpr.c pqclean_falcon_512_clean/sign.c pqclean_falcon_512_clean/vrfy.c pqclean_falcon_512_clean/rng.c pqclean_falcon_512_clean/pqclean.c pqclean_falcon_512_clean/fft.c pqclean_falcon_512_clean/common.c pqclean_falcon_512_clean/codec.c)
+        set(SRCS_FALCON_512_CLEAN_SRCS pqclean_falcon_512_clean/codec.c pqclean_falcon_512_clean/common.c pqclean_falcon_512_clean/fft.c pqclean_falcon_512_clean/fpr.c pqclean_falcon_512_clean/keygen.c pqclean_falcon_512_clean/pqclean.c pqclean_falcon_512_clean/rng.c pqclean_falcon_512_clean/sign.c pqclean_falcon_512_clean/vrfy.c)
     
 
 set(SRCS_FALCON_512_CLEAN_SRCS ${SRCS_FALCON_512_CLEAN_SRCS} sig_falcon_512.c )
@@ -12,7 +12,7 @@ endif()
 
 if(OQS_ENABLE_SIG_falcon_1024)
     
-        set(SRCS_FALCON_1024_CLEAN_SRCS pqclean_falcon_1024_clean/keygen.c pqclean_falcon_1024_clean/fpr.c pqclean_falcon_1024_clean/sign.c pqclean_falcon_1024_clean/vrfy.c pqclean_falcon_1024_clean/rng.c pqclean_falcon_1024_clean/pqclean.c pqclean_falcon_1024_clean/fft.c pqclean_falcon_1024_clean/common.c pqclean_falcon_1024_clean/codec.c)
+        set(SRCS_FALCON_1024_CLEAN_SRCS pqclean_falcon_1024_clean/codec.c pqclean_falcon_1024_clean/common.c pqclean_falcon_1024_clean/fft.c pqclean_falcon_1024_clean/fpr.c pqclean_falcon_1024_clean/keygen.c pqclean_falcon_1024_clean/pqclean.c pqclean_falcon_1024_clean/rng.c pqclean_falcon_1024_clean/sign.c pqclean_falcon_1024_clean/vrfy.c)
     
 
 set(SRCS_FALCON_1024_CLEAN_SRCS ${SRCS_FALCON_1024_CLEAN_SRCS} sig_falcon_1024.c )

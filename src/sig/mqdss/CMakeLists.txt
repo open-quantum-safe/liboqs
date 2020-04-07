@@ -3,7 +3,7 @@
 
 if(OQS_ENABLE_SIG_mqdss_31_48)
     
-        set(SRCS_MQDSS_31_48_CLEAN_SRCS pqclean_mqdss_48_clean/mq.c pqclean_mqdss_48_clean/gf31.c pqclean_mqdss_48_clean/sign.c)
+        set(SRCS_MQDSS_31_48_CLEAN_SRCS pqclean_mqdss_48_clean/gf31.c pqclean_mqdss_48_clean/mq.c pqclean_mqdss_48_clean/sign.c)
     
 
 set(SRCS_MQDSS_31_48_CLEAN_SRCS ${SRCS_MQDSS_31_48_CLEAN_SRCS} sig_mqdss_31_48.c )
@@ -12,7 +12,7 @@ endif()
 
 if(OQS_ENABLE_SIG_mqdss_31_64)
     
-        set(SRCS_MQDSS_31_64_CLEAN_SRCS pqclean_mqdss_64_clean/mq.c pqclean_mqdss_64_clean/gf31.c pqclean_mqdss_64_clean/sign.c)
+        set(SRCS_MQDSS_31_64_CLEAN_SRCS pqclean_mqdss_64_clean/gf31.c pqclean_mqdss_64_clean/mq.c pqclean_mqdss_64_clean/sign.c)
     
 
 set(SRCS_MQDSS_31_64_CLEAN_SRCS ${SRCS_MQDSS_31_64_CLEAN_SRCS} sig_mqdss_31_64.c )

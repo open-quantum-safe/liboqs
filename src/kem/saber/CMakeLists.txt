@@ -3,7 +3,7 @@
 
 if(OQS_ENABLE_KEM_saber_lightsaber)
     
-        set(SRCS_SABER_LIGHTSABER_CLEAN_SRCS pqclean_lightsaber_clean/kem.c pqclean_lightsaber_clean/verify.c pqclean_lightsaber_clean/poly.c pqclean_lightsaber_clean/SABER_indcpa.c pqclean_lightsaber_clean/pack_unpack.c pqclean_lightsaber_clean/cbd.c pqclean_lightsaber_clean/poly_mul.c)
+        set(SRCS_SABER_LIGHTSABER_CLEAN_SRCS pqclean_lightsaber_clean/cbd.c pqclean_lightsaber_clean/kem.c pqclean_lightsaber_clean/pack_unpack.c pqclean_lightsaber_clean/poly.c pqclean_lightsaber_clean/poly_mul.c pqclean_lightsaber_clean/SABER_indcpa.c pqclean_lightsaber_clean/verify.c)
     
 
 set(SRCS_SABER_LIGHTSABER_CLEAN_SRCS ${SRCS_SABER_LIGHTSABER_CLEAN_SRCS} kem_saber_lightsaber.c )
@@ -12,7 +12,7 @@ endif()
 
 if(OQS_ENABLE_KEM_saber_saber)
     
-        set(SRCS_SABER_SABER_CLEAN_SRCS pqclean_saber_clean/kem.c pqclean_saber_clean/verify.c pqclean_saber_clean/poly.c pqclean_saber_clean/SABER_indcpa.c pqclean_saber_clean/pack_unpack.c pqclean_saber_clean/cbd.c pqclean_saber_clean/poly_mul.c)
+        set(SRCS_SABER_SABER_CLEAN_SRCS pqclean_saber_clean/cbd.c pqclean_saber_clean/kem.c pqclean_saber_clean/pack_unpack.c pqclean_saber_clean/poly.c pqclean_saber_clean/poly_mul.c pqclean_saber_clean/SABER_indcpa.c pqclean_saber_clean/verify.c)
     
 
 set(SRCS_SABER_SABER_CLEAN_SRCS ${SRCS_SABER_SABER_CLEAN_SRCS} kem_saber_saber.c )
@@ -21,7 +21,7 @@ endif()
 
 if(OQS_ENABLE_KEM_saber_firesaber)
     
-        set(SRCS_SABER_FIRESABER_CLEAN_SRCS pqclean_firesaber_clean/kem.c pqclean_firesaber_clean/verify.c pqclean_firesaber_clean/poly.c pqclean_firesaber_clean/SABER_indcpa.c pqclean_firesaber_clean/pack_unpack.c pqclean_firesaber_clean/cbd.c pqclean_firesaber_clean/poly_mul.c)
+        set(SRCS_SABER_FIRESABER_CLEAN_SRCS pqclean_firesaber_clean/cbd.c pqclean_firesaber_clean/kem.c pqclean_firesaber_clean/pack_unpack.c pqclean_firesaber_clean/poly.c pqclean_firesaber_clean/poly_mul.c pqclean_firesaber_clean/SABER_indcpa.c pqclean_firesaber_clean/verify.c)
     
 
 set(SRCS_SABER_FIRESABER_CLEAN_SRCS ${SRCS_SABER_FIRESABER_CLEAN_SRCS} kem_saber_firesaber.c )

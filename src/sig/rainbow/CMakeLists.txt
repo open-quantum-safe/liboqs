@@ -3,7 +3,7 @@
 
 if(OQS_ENABLE_SIG_rainbow_Ia_classic)
     
-        set(SRCS_RAINBOW_IA_CLASSIC_CLEAN_SRCS pqclean_rainbowIa_classic_clean/blas_comm.c pqclean_rainbowIa_classic_clean/parallel_matrix_op.c pqclean_rainbowIa_classic_clean/rainbow_keypair_computation.c pqclean_rainbowIa_classic_clean/utils_prng.c pqclean_rainbowIa_classic_clean/gf.c pqclean_rainbowIa_classic_clean/sign.c pqclean_rainbowIa_classic_clean/utils_hash.c pqclean_rainbowIa_classic_clean/rainbow.c pqclean_rainbowIa_classic_clean/rainbow_keypair.c pqclean_rainbowIa_classic_clean/blas.c)
+        set(SRCS_RAINBOW_IA_CLASSIC_CLEAN_SRCS pqclean_rainbowIa_classic_clean/blas.c pqclean_rainbowIa_classic_clean/blas_comm.c pqclean_rainbowIa_classic_clean/gf.c pqclean_rainbowIa_classic_clean/parallel_matrix_op.c pqclean_rainbowIa_classic_clean/rainbow.c pqclean_rainbowIa_classic_clean/rainbow_keypair.c pqclean_rainbowIa_classic_clean/rainbow_keypair_computation.c pqclean_rainbowIa_classic_clean/sign.c pqclean_rainbowIa_classic_clean/utils_hash.c pqclean_rainbowIa_classic_clean/utils_prng.c)
     
 
 set(SRCS_RAINBOW_IA_CLASSIC_CLEAN_SRCS ${SRCS_RAINBOW_IA_CLASSIC_CLEAN_SRCS} sig_rainbow_Ia_classic.c )
@@ -12,7 +12,7 @@ endif()
 
 if(OQS_ENABLE_SIG_rainbow_Ia_cyclic)
     
-        set(SRCS_RAINBOW_IA_CYCLIC_CLEAN_SRCS pqclean_rainbowIa_cyclic_clean/blas_comm.c pqclean_rainbowIa_cyclic_clean/parallel_matrix_op.c pqclean_rainbowIa_cyclic_clean/rainbow_keypair_computation.c pqclean_rainbowIa_cyclic_clean/utils_prng.c pqclean_rainbowIa_cyclic_clean/gf.c pqclean_rainbowIa_cyclic_clean/sign.c pqclean_rainbowIa_cyclic_clean/utils_hash.c pqclean_rainbowIa_cyclic_clean/rainbow.c pqclean_rainbowIa_cyclic_clean/rainbow_keypair.c pqclean_rainbowIa_cyclic_clean/blas.c)
+        set(SRCS_RAINBOW_IA_CYCLIC_CLEAN_SRCS pqclean_rainbowIa_cyclic_clean/blas.c pqclean_rainbowIa_cyclic_clean/blas_comm.c pqclean_rainbowIa_cyclic_clean/gf.c pqclean_rainbowIa_cyclic_clean/parallel_matrix_op.c pqclean_rainbowIa_cyclic_clean/rainbow.c pqclean_rainbowIa_cyclic_clean/rainbow_keypair.c pqclean_rainbowIa_cyclic_clean/rainbow_keypair_computation.c pqclean_rainbowIa_cyclic_clean/sign.c pqclean_rainbowIa_cyclic_clean/utils_hash.c pqclean_rainbowIa_cyclic_clean/utils_prng.c)
     
 
 set(SRCS_RAINBOW_IA_CYCLIC_CLEAN_SRCS ${SRCS_RAINBOW_IA_CYCLIC_CLEAN_SRCS} sig_rainbow_Ia_cyclic.c )
@@ -21,7 +21,7 @@ endif()
 
 if(OQS_ENABLE_SIG_rainbow_Ia_cyclic_compressed)
     
-        set(SRCS_RAINBOW_IA_CYCLIC_COMPRESSED_CLEAN_SRCS pqclean_rainbowIa_cyclic_compressed_clean/blas_comm.c pqclean_rainbowIa_cyclic_compressed_clean/parallel_matrix_op.c pqclean_rainbowIa_cyclic_compressed_clean/rainbow_keypair_computation.c pqclean_rainbowIa_cyclic_compressed_clean/utils_prng.c pqclean_rainbowIa_cyclic_compressed_clean/gf.c pqclean_rainbowIa_cyclic_compressed_clean/sign.c pqclean_rainbowIa_cyclic_compressed_clean/utils_hash.c pqclean_rainbowIa_cyclic_compressed_clean/rainbow.c pqclean_rainbowIa_cyclic_compressed_clean/rainbow_keypair.c pqclean_rainbowIa_cyclic_compressed_clean/blas.c)
+        set(SRCS_RAINBOW_IA_CYCLIC_COMPRESSED_CLEAN_SRCS pqclean_rainbowIa_cyclic_compressed_clean/blas.c pqclean_rainbowIa_cyclic_compressed_clean/blas_comm.c pqclean_rainbowIa_cyclic_compressed_clean/gf.c pqclean_rainbowIa_cyclic_compressed_clean/parallel_matrix_op.c pqclean_rainbowIa_cyclic_compressed_clean/rainbow.c pqclean_rainbowIa_cyclic_compressed_clean/rainbow_keypair.c pqclean_rainbowIa_cyclic_compressed_clean/rainbow_keypair_computation.c pqclean_rainbowIa_cyclic_compressed_clean/sign.c pqclean_rainbowIa_cyclic_compressed_clean/utils_hash.c pqclean_rainbowIa_cyclic_compressed_clean/utils_prng.c)
     
 
 set(SRCS_RAINBOW_IA_CYCLIC_COMPRESSED_CLEAN_SRCS ${SRCS_RAINBOW_IA_CYCLIC_COMPRESSED_CLEAN_SRCS} sig_rainbow_Ia_cyclic_compressed.c )
@@ -30,7 +30,7 @@ endif()
 
 if(OQS_ENABLE_SIG_rainbow_IIIc_classic)
     
-        set(SRCS_RAINBOW_IIIC_CLASSIC_CLEAN_SRCS pqclean_rainbowIIIc_classic_clean/blas_comm.c pqclean_rainbowIIIc_classic_clean/parallel_matrix_op.c pqclean_rainbowIIIc_classic_clean/rainbow_keypair_computation.c pqclean_rainbowIIIc_classic_clean/utils_prng.c pqclean_rainbowIIIc_classic_clean/gf.c pqclean_rainbowIIIc_classic_clean/sign.c pqclean_rainbowIIIc_classic_clean/utils_hash.c pqclean_rainbowIIIc_classic_clean/rainbow.c pqclean_rainbowIIIc_classic_clean/rainbow_keypair.c pqclean_rainbowIIIc_classic_clean/blas.c)
+        set(SRCS_RAINBOW_IIIC_CLASSIC_CLEAN_SRCS pqclean_rainbowIIIc_classic_clean/blas.c pqclean_rainbowIIIc_classic_clean/blas_comm.c pqclean_rainbowIIIc_classic_clean/gf.c pqclean_rainbowIIIc_classic_clean/parallel_matrix_op.c pqclean_rainbowIIIc_classic_clean/rainbow.c pqclean_rainbowIIIc_classic_clean/rainbow_keypair.c pqclean_rainbowIIIc_classic_clean/rainbow_keypair_computation.c pqclean_rainbowIIIc_classic_clean/sign.c pqclean_rainbowIIIc_classic_clean/utils_hash.c pqclean_rainbowIIIc_classic_clean/utils_prng.c)
     
 
 set(SRCS_RAINBOW_IIIC_CLASSIC_CLEAN_SRCS ${SRCS_RAINBOW_IIIC_CLASSIC_CLEAN_SRCS} sig_rainbow_IIIc_classic.c )
@@ -39,7 +39,7 @@ endif()
 
 if(OQS_ENABLE_SIG_rainbow_IIIc_cyclic)
     
-        set(SRCS_RAINBOW_IIIC_CYCLIC_CLEAN_SRCS pqclean_rainbowIIIc_cyclic_clean/blas_comm.c pqclean_rainbowIIIc_cyclic_clean/parallel_matrix_op.c pqclean_rainbowIIIc_cyclic_clean/rainbow_keypair_computation.c pqclean_rainbowIIIc_cyclic_clean/utils_prng.c pqclean_rainbowIIIc_cyclic_clean/gf.c pqclean_rainbowIIIc_cyclic_clean/sign.c pqclean_rainbowIIIc_cyclic_clean/utils_hash.c pqclean_rainbowIIIc_cyclic_clean/rainbow.c pqclean_rainbowIIIc_cyclic_clean/rainbow_keypair.c pqclean_rainbowIIIc_cyclic_clean/blas.c)
+        set(SRCS_RAINBOW_IIIC_CYCLIC_CLEAN_SRCS pqclean_rainbowIIIc_cyclic_clean/blas.c pqclean_rainbowIIIc_cyclic_clean/blas_comm.c pqclean_rainbowIIIc_cyclic_clean/gf.c pqclean_rainbowIIIc_cyclic_clean/parallel_matrix_op.c pqclean_rainbowIIIc_cyclic_clean/rainbow.c pqclean_rainbowIIIc_cyclic_clean/rainbow_keypair.c pqclean_rainbowIIIc_cyclic_clean/rainbow_keypair_computation.c pqclean_rainbowIIIc_cyclic_clean/sign.c pqclean_rainbowIIIc_cyclic_clean/utils_hash.c pqclean_rainbowIIIc_cyclic_clean/utils_prng.c)
     
 
 set(SRCS_RAINBOW_IIIC_CYCLIC_CLEAN_SRCS ${SRCS_RAINBOW_IIIC_CYCLIC_CLEAN_SRCS} sig_rainbow_IIIc_cyclic.c )
@@ -48,7 +48,7 @@ endif()
 
 if(OQS_ENABLE_SIG_rainbow_IIIc_cyclic_compressed)
     
-        set(SRCS_RAINBOW_IIIC_CYCLIC_COMPRESSED_CLEAN_SRCS pqclean_rainbowIIIc_cyclic_compressed_clean/blas_comm.c pqclean_rainbowIIIc_cyclic_compressed_clean/parallel_matrix_op.c pqclean_rainbowIIIc_cyclic_compressed_clean/rainbow_keypair_computation.c pqclean_rainbowIIIc_cyclic_compressed_clean/utils_prng.c pqclean_rainbowIIIc_cyclic_compressed_clean/gf.c pqclean_rainbowIIIc_cyclic_compressed_clean/sign.c pqclean_rainbowIIIc_cyclic_compressed_clean/utils_hash.c pqclean_rainbowIIIc_cyclic_compressed_clean/rainbow.c pqclean_rainbowIIIc_cyclic_compressed_clean/rainbow_keypair.c pqclean_rainbowIIIc_cyclic_compressed_clean/blas.c)
+        set(SRCS_RAINBOW_IIIC_CYCLIC_COMPRESSED_CLEAN_SRCS pqclean_rainbowIIIc_cyclic_compressed_clean/blas.c pqclean_rainbowIIIc_cyclic_compressed_clean/blas_comm.c pqclean_rainbowIIIc_cyclic_compressed_clean/gf.c pqclean_rainbowIIIc_cyclic_compressed_clean/parallel_matrix_op.c pqclean_rainbowIIIc_cyclic_compressed_clean/rainbow.c pqclean_rainbowIIIc_cyclic_compressed_clean/rainbow_keypair.c pqclean_rainbowIIIc_cyclic_compressed_clean/rainbow_keypair_computation.c pqclean_rainbowIIIc_cyclic_compressed_clean/sign.c pqclean_rainbowIIIc_cyclic_compressed_clean/utils_hash.c pqclean_rainbowIIIc_cyclic_compressed_clean/utils_prng.c)
     
 
 set(SRCS_RAINBOW_IIIC_CYCLIC_COMPRESSED_CLEAN_SRCS ${SRCS_RAINBOW_IIIC_CYCLIC_COMPRESSED_CLEAN_SRCS} sig_rainbow_IIIc_cyclic_compressed.c )
@@ -57,7 +57,7 @@ endif()
 
 if(OQS_ENABLE_SIG_rainbow_Vc_classic)
     
-        set(SRCS_RAINBOW_VC_CLASSIC_CLEAN_SRCS pqclean_rainbowVc_classic_clean/blas_comm.c pqclean_rainbowVc_classic_clean/parallel_matrix_op.c pqclean_rainbowVc_classic_clean/rainbow_keypair_computation.c pqclean_rainbowVc_classic_clean/utils_prng.c pqclean_rainbowVc_classic_clean/gf.c pqclean_rainbowVc_classic_clean/sign.c pqclean_rainbowVc_classic_clean/utils_hash.c pqclean_rainbowVc_classic_clean/rainbow.c pqclean_rainbowVc_classic_clean/rainbow_keypair.c pqclean_rainbowVc_classic_clean/blas.c)
+        set(SRCS_RAINBOW_VC_CLASSIC_CLEAN_SRCS pqclean_rainbowVc_classic_clean/blas.c pqclean_rainbowVc_classic_clean/blas_comm.c pqclean_rainbowVc_classic_clean/gf.c pqclean_rainbowVc_classic_clean/parallel_matrix_op.c pqclean_rainbowVc_classic_clean/rainbow.c pqclean_rainbowVc_classic_clean/rainbow_keypair.c pqclean_rainbowVc_classic_clean/rainbow_keypair_computation.c pqclean_rainbowVc_classic_clean/sign.c pqclean_rainbowVc_classic_clean/utils_hash.c pqclean_rainbowVc_classic_clean/utils_prng.c)
     
 
 set(SRCS_RAINBOW_VC_CLASSIC_CLEAN_SRCS ${SRCS_RAINBOW_VC_CLASSIC_CLEAN_SRCS} sig_rainbow_Vc_classic.c )
@@ -66,7 +66,7 @@ endif()
 
 if(OQS_ENABLE_SIG_rainbow_Vc_cyclic)
     
-        set(SRCS_RAINBOW_VC_CYCLIC_CLEAN_SRCS pqclean_rainbowVc_cyclic_clean/blas_comm.c pqclean_rainbowVc_cyclic_clean/parallel_matrix_op.c pqclean_rainbowVc_cyclic_clean/rainbow_keypair_computation.c pqclean_rainbowVc_cyclic_clean/utils_prng.c pqclean_rainbowVc_cyclic_clean/gf.c pqclean_rainbowVc_cyclic_clean/sign.c pqclean_rainbowVc_cyclic_clean/utils_hash.c pqclean_rainbowVc_cyclic_clean/rainbow.c pqclean_rainbowVc_cyclic_clean/rainbow_keypair.c pqclean_rainbowVc_cyclic_clean/blas.c)
+        set(SRCS_RAINBOW_VC_CYCLIC_CLEAN_SRCS pqclean_rainbowVc_cyclic_clean/blas.c pqclean_rainbowVc_cyclic_clean/blas_comm.c pqclean_rainbowVc_cyclic_clean/gf.c pqclean_rainbowVc_cyclic_clean/parallel_matrix_op.c pqclean_rainbowVc_cyclic_clean/rainbow.c pqclean_rainbowVc_cyclic_clean/rainbow_keypair.c pqclean_rainbowVc_cyclic_clean/rainbow_keypair_computation.c pqclean_rainbowVc_cyclic_clean/sign.c pqclean_rainbowVc_cyclic_clean/utils_hash.c pqclean_rainbowVc_cyclic_clean/utils_prng.c)
     
 
 set(SRCS_RAINBOW_VC_CYCLIC_CLEAN_SRCS ${SRCS_RAINBOW_VC_CYCLIC_CLEAN_SRCS} sig_rainbow_Vc_cyclic.c )
@@ -75,7 +75,7 @@ endif()
 
 if(OQS_ENABLE_SIG_rainbow_Vc_cyclic_compressed)
     
-        set(SRCS_RAINBOW_VC_CYCLIC_COMPRESSED_CLEAN_SRCS pqclean_rainbowVc_cyclic_compressed_clean/blas_comm.c pqclean_rainbowVc_cyclic_compressed_clean/parallel_matrix_op.c pqclean_rainbowVc_cyclic_compressed_clean/rainbow_keypair_computation.c pqclean_rainbowVc_cyclic_compressed_clean/utils_prng.c pqclean_rainbowVc_cyclic_compressed_clean/gf.c pqclean_rainbowVc_cyclic_compressed_clean/sign.c pqclean_rainbowVc_cyclic_compressed_clean/utils_hash.c pqclean_rainbowVc_cyclic_compressed_clean/rainbow.c pqclean_rainbowVc_cyclic_compressed_clean/rainbow_keypair.c pqclean_rainbowVc_cyclic_compressed_clean/blas.c)
+        set(SRCS_RAINBOW_VC_CYCLIC_COMPRESSED_CLEAN_SRCS pqclean_rainbowVc_cyclic_compressed_clean/blas.c pqclean_rainbowVc_cyclic_compressed_clean/blas_comm.c pqclean_rainbowVc_cyclic_compressed_clean/gf.c pqclean_rainbowVc_cyclic_compressed_clean/parallel_matrix_op.c pqclean_rainbowVc_cyclic_compressed_clean/rainbow.c pqclean_rainbowVc_cyclic_compressed_clean/rainbow_keypair.c pqclean_rainbowVc_cyclic_compressed_clean/rainbow_keypair_computation.c pqclean_rainbowVc_cyclic_compressed_clean/sign.c pqclean_rainbowVc_cyclic_compressed_clean/utils_hash.c pqclean_rainbowVc_cyclic_compressed_clean/utils_prng.c)
     
 
 set(SRCS_RAINBOW_VC_CYCLIC_COMPRESSED_CLEAN_SRCS ${SRCS_RAINBOW_VC_CYCLIC_COMPRESSED_CLEAN_SRCS} sig_rainbow_Vc_cyclic_compressed.c )
