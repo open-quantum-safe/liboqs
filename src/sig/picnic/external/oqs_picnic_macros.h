@@ -4,7 +4,9 @@
 #include <oqs/common.h>
 
 /* avoid printing debug output */
+#ifndef NDEBUG
 #define NDEBUG
+#endif
 
 /* use OQS's free function */
 #define free OQS_MEM_insecure_free
