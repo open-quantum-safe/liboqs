@@ -21,6 +21,7 @@
 #endif
 
 static OQS_RT rt_cpu_flags = {0};
+static int rt_cpu_flags_initialized = 0;
 
 OQS_API void OQS_init(void) {
 #if defined(CPU_FEATURES_ARCH_X86)
@@ -84,6 +85,10 @@ OQS_API void OQS_init(void) {
 }
 
 OQS_API OQS_RT OQS_RT_cpu_flags(void) {
+	if (!rt_cpu_flags_initialized) {
+		OQS_init();
+		rt_cpu_flags_initialized = 1;
+	}
 	return rt_cpu_flags;
 }
 #else /* OQS_ENABLE_CPUFEATURES */

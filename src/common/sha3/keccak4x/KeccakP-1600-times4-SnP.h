@@ -34,6 +34,6 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #define KeccakP1600times4_StaticInitialize()
 #define KeccakP1600times4_AddByte(states, instanceIndex, byte, offset) \
     ((unsigned char *) (states))[(instanceIndex) *8 + ((offset) / 8) * 4 * 8 + (offset) % 8] ^= (byte)
-static void KeccakP1600times4_PermuteAll_24rounds(void *states);
+void KeccakP1600times4_PermuteAll_24rounds(void *states);
 
 #endif

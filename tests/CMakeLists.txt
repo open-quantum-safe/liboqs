@@ -77,9 +77,15 @@ set(API_TEST_DEPS oqs ${LIBM})
 # KEM API tests
 add_executable(example_kem example_kem.c)
 target_link_libraries(example_kem PRIVATE ${API_TEST_DEPS})
+if(DEFINED CPUFEATURES_LIBRARY)
+    target_link_libraries(example_kem PUBLIC ${CPUFEATURES_LIBRARY})
+endif()
 
 add_executable(kat_kem kat_kem.c)
 target_link_libraries(kat_kem PRIVATE ${API_TEST_DEPS})
+if(DEFINED CPUFEATURES_LIBRARY)
+    target_link_libraries(kat_kem PRIVATE ${CPUFEATURES_LIBRARY})
+endif()
 
 add_executable(test_kem test_kem.c)
 if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
@@ -87,16 +93,28 @@ if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU")
 else ()
     target_link_libraries(test_kem PRIVATE ${API_TEST_DEPS})
 endif()
+if(DEFINED CPUFEATURES_LIBRARY)
+    target_link_libraries(test_kem PRIVATE ${CPUFEATURES_LIBRARY})
+endif()
 
 add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${API_TEST_DEPS})
+if(DEFINED CPUFEATURES_LIBRARY)
+    target_link_libraries(speed_kem PRIVATE ${CPUFEATURES_LIBRARY})
+endif()
 
 # SIG API tests
 add_executable(example_sig example_sig.c)
 target_link_libraries(example_sig PRIVATE ${API_TEST_DEPS})
+if(DEFINED CPUFEATURES_LIBRARY)
+    target_link_libraries(example_sig PRIVATE ${CPUFEATURES_LIBRARY})
+endif()
 
 add_executable(kat_sig kat_sig.c)
 target_link_libraries(kat_sig PRIVATE ${API_TEST_DEPS})
+if(DEFINED CPUFEATURES_LIBRARY)
+    target_link_libraries(kat_sig PRIVATE ${CPUFEATURES_LIBRARY})
+endif()
 
 add_executable(test_sig test_sig.c)
 if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
@@ -104,9 +122,15 @@ if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU")
 else ()
     target_link_libraries(test_sig PRIVATE ${API_TEST_DEPS})
 endif()
+if(DEFINED CPUFEATURES_LIBRARY)
+    target_link_libraries(test_sig PRIVATE ${CPUFEATURES_LIBRARY})
+endif()
 
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
+if(DEFINED CPUFEATURES_LIBRARY)
+    target_link_libraries(speed_sig PRIVATE ${CPUFEATURES_LIBRARY})
+endif()
 
 # TODO: Get CMake to find python.
 # and set PATH variable in Windows

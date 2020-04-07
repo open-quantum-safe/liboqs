@@ -140,8 +140,6 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	OQS_init();
-
 	print_system_info();
 
 	printf("Speed test\n");
