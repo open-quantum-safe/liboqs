@@ -43,8 +43,6 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 	printf("%-30s | %10s | %14s | %15s | %10s | %25s | %10s\n", sig->method_name, "", "", "", "", "", "");
 	TIME_OPERATION_SECONDS(OQS_SIG_keypair(sig, public_key, secret_key), "keypair", duration)
 	TIME_OPERATION_SECONDS(OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key), "sign", duration)
-//message[0]=0;
-//	printf("verify result = %d\n", OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key));
 	TIME_OPERATION_SECONDS(OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key), "verify", duration)
 
 	if (printInfo) {
