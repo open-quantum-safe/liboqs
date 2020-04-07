@@ -6,7 +6,7 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }})
 {%- if impl['name']|upper != "CLEAN" %}
 if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }})
 {%- endif %}
-        set(SRCS_{{ family|upper }}_{{ scheme['scheme']|upper }}_{{ impl['name']|upper }}_SRCS {% for source in impl['sources'] %}pqclean_{{ scheme['pqclean_scheme'].replace('-','_') }}_{{ impl['name'] }}/{{ source }}{% if not loop.last %} {% endif %}{% endfor %})
+        set(SRCS_{{ family|upper }}_{{ scheme['scheme']|upper }}_{{ impl['name']|upper }}_SRCS {% for source in impl['sources']|sort %}pqclean_{{ scheme['pqclean_scheme'].replace('-','_') }}_{{ impl['name'] }}/{{ source }}{% if not loop.last %} {% endif %}{% endfor %})
 {%- if impl['name']|upper != "CLEAN" %}
 else()
         set(SRCS_{{ family|upper }}_{{ scheme['scheme']|upper }}_{{ impl['name']|upper }}_SRCS pqclean_{{ family }}{{ scheme['scheme'] }}_{{ impl['name'] }}/oqs_unsupported.c )

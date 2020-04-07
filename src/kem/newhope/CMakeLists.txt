@@ -3,7 +3,7 @@
 
 if(OQS_ENABLE_KEM_newhope_512cca)
     
-        set(SRCS_NEWHOPE_512CCA_CLEAN_SRCS pqclean_newhope512cca_clean/kem.c pqclean_newhope512cca_clean/verify.c pqclean_newhope512cca_clean/cpapke.c pqclean_newhope512cca_clean/poly.c pqclean_newhope512cca_clean/ntt.c pqclean_newhope512cca_clean/precomp.c pqclean_newhope512cca_clean/reduce.c)
+        set(SRCS_NEWHOPE_512CCA_CLEAN_SRCS pqclean_newhope512cca_clean/cpapke.c pqclean_newhope512cca_clean/kem.c pqclean_newhope512cca_clean/ntt.c pqclean_newhope512cca_clean/poly.c pqclean_newhope512cca_clean/precomp.c pqclean_newhope512cca_clean/reduce.c pqclean_newhope512cca_clean/verify.c)
     
 
 set(SRCS_NEWHOPE_512CCA_CLEAN_SRCS ${SRCS_NEWHOPE_512CCA_CLEAN_SRCS} kem_newhope_512cca.c )
@@ -12,7 +12,7 @@ endif()
 
 if(OQS_ENABLE_KEM_newhope_1024cca)
     
-        set(SRCS_NEWHOPE_1024CCA_CLEAN_SRCS pqclean_newhope1024cca_clean/kem.c pqclean_newhope1024cca_clean/verify.c pqclean_newhope1024cca_clean/cpapke.c pqclean_newhope1024cca_clean/poly.c pqclean_newhope1024cca_clean/ntt.c pqclean_newhope1024cca_clean/precomp.c pqclean_newhope1024cca_clean/reduce.c)
+        set(SRCS_NEWHOPE_1024CCA_CLEAN_SRCS pqclean_newhope1024cca_clean/cpapke.c pqclean_newhope1024cca_clean/kem.c pqclean_newhope1024cca_clean/ntt.c pqclean_newhope1024cca_clean/poly.c pqclean_newhope1024cca_clean/precomp.c pqclean_newhope1024cca_clean/reduce.c pqclean_newhope1024cca_clean/verify.c)
     
 
 set(SRCS_NEWHOPE_1024CCA_CLEAN_SRCS ${SRCS_NEWHOPE_1024CCA_CLEAN_SRCS} kem_newhope_1024cca.c )

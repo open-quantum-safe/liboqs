@@ -3,10 +3,10 @@
 
 if(OQS_ENABLE_SIG_dilithium_2)
     
-        set(SRCS_DILITHIUM_2_CLEAN_SRCS pqclean_dilithium2_clean/stream.c pqclean_dilithium2_clean/packing.c pqclean_dilithium2_clean/sign.c pqclean_dilithium2_clean/poly.c pqclean_dilithium2_clean/rounding.c pqclean_dilithium2_clean/ntt.c pqclean_dilithium2_clean/reduce.c pqclean_dilithium2_clean/polyvec.c)
+        set(SRCS_DILITHIUM_2_CLEAN_SRCS pqclean_dilithium2_clean/ntt.c pqclean_dilithium2_clean/packing.c pqclean_dilithium2_clean/poly.c pqclean_dilithium2_clean/polyvec.c pqclean_dilithium2_clean/reduce.c pqclean_dilithium2_clean/rounding.c pqclean_dilithium2_clean/sign.c pqclean_dilithium2_clean/stream.c)
     
 if(OQS_ENABLE_SIG_dilithium_2_avx2)
-        set(SRCS_DILITHIUM_2_AVX2_SRCS pqclean_dilithium2_avx2/stream.c pqclean_dilithium2_avx2/packing.c pqclean_dilithium2_avx2/pointwise.S pqclean_dilithium2_avx2/invntt.S pqclean_dilithium2_avx2/sign.c pqclean_dilithium2_avx2/rejsample.c pqclean_dilithium2_avx2/reduce.S pqclean_dilithium2_avx2/poly.c pqclean_dilithium2_avx2/ntt.S pqclean_dilithium2_avx2/nttconsts.c pqclean_dilithium2_avx2/rounding.c pqclean_dilithium2_avx2/fips202x4.c pqclean_dilithium2_avx2/polyvec.c)
+        set(SRCS_DILITHIUM_2_AVX2_SRCS pqclean_dilithium2_avx2/fips202x4.c pqclean_dilithium2_avx2/invntt.S pqclean_dilithium2_avx2/ntt.S pqclean_dilithium2_avx2/nttconsts.c pqclean_dilithium2_avx2/packing.c pqclean_dilithium2_avx2/pointwise.S pqclean_dilithium2_avx2/poly.c pqclean_dilithium2_avx2/polyvec.c pqclean_dilithium2_avx2/reduce.S pqclean_dilithium2_avx2/rejsample.c pqclean_dilithium2_avx2/rounding.c pqclean_dilithium2_avx2/sign.c pqclean_dilithium2_avx2/stream.c)
 else()
         set(SRCS_DILITHIUM_2_AVX2_SRCS pqclean_dilithium2_avx2/oqs_unsupported.c )
 endif()
@@ -17,10 +17,10 @@ endif()
 
 if(OQS_ENABLE_SIG_dilithium_3)
     
-        set(SRCS_DILITHIUM_3_CLEAN_SRCS pqclean_dilithium3_clean/stream.c pqclean_dilithium3_clean/packing.c pqclean_dilithium3_clean/sign.c pqclean_dilithium3_clean/poly.c pqclean_dilithium3_clean/rounding.c pqclean_dilithium3_clean/ntt.c pqclean_dilithium3_clean/reduce.c pqclean_dilithium3_clean/polyvec.c)
+        set(SRCS_DILITHIUM_3_CLEAN_SRCS pqclean_dilithium3_clean/ntt.c pqclean_dilithium3_clean/packing.c pqclean_dilithium3_clean/poly.c pqclean_dilithium3_clean/polyvec.c pqclean_dilithium3_clean/reduce.c pqclean_dilithium3_clean/rounding.c pqclean_dilithium3_clean/sign.c pqclean_dilithium3_clean/stream.c)
     
 if(OQS_ENABLE_SIG_dilithium_3_avx2)
-        set(SRCS_DILITHIUM_3_AVX2_SRCS pqclean_dilithium3_avx2/stream.c pqclean_dilithium3_avx2/packing.c pqclean_dilithium3_avx2/pointwise.S pqclean_dilithium3_avx2/invntt.S pqclean_dilithium3_avx2/sign.c pqclean_dilithium3_avx2/rejsample.c pqclean_dilithium3_avx2/reduce.S pqclean_dilithium3_avx2/poly.c pqclean_dilithium3_avx2/ntt.S pqclean_dilithium3_avx2/nttconsts.c pqclean_dilithium3_avx2/rounding.c pqclean_dilithium3_avx2/fips202x4.c pqclean_dilithium3_avx2/polyvec.c)
+        set(SRCS_DILITHIUM_3_AVX2_SRCS pqclean_dilithium3_avx2/fips202x4.c pqclean_dilithium3_avx2/invntt.S pqclean_dilithium3_avx2/ntt.S pqclean_dilithium3_avx2/nttconsts.c pqclean_dilithium3_avx2/packing.c pqclean_dilithium3_avx2/pointwise.S pqclean_dilithium3_avx2/poly.c pqclean_dilithium3_avx2/polyvec.c pqclean_dilithium3_avx2/reduce.S pqclean_dilithium3_avx2/rejsample.c pqclean_dilithium3_avx2/rounding.c pqclean_dilithium3_avx2/sign.c pqclean_dilithium3_avx2/stream.c)
 else()
         set(SRCS_DILITHIUM_3_AVX2_SRCS pqclean_dilithium3_avx2/oqs_unsupported.c )
 endif()
@@ -31,10 +31,10 @@ endif()
 
 if(OQS_ENABLE_SIG_dilithium_4)
     
-        set(SRCS_DILITHIUM_4_CLEAN_SRCS pqclean_dilithium4_clean/stream.c pqclean_dilithium4_clean/packing.c pqclean_dilithium4_clean/sign.c pqclean_dilithium4_clean/poly.c pqclean_dilithium4_clean/rounding.c pqclean_dilithium4_clean/ntt.c pqclean_dilithium4_clean/reduce.c pqclean_dilithium4_clean/polyvec.c)
+        set(SRCS_DILITHIUM_4_CLEAN_SRCS pqclean_dilithium4_clean/ntt.c pqclean_dilithium4_clean/packing.c pqclean_dilithium4_clean/poly.c pqclean_dilithium4_clean/polyvec.c pqclean_dilithium4_clean/reduce.c pqclean_dilithium4_clean/rounding.c pqclean_dilithium4_clean/sign.c pqclean_dilithium4_clean/stream.c)
     
 if(OQS_ENABLE_SIG_dilithium_4_avx2)
-        set(SRCS_DILITHIUM_4_AVX2_SRCS pqclean_dilithium4_avx2/stream.c pqclean_dilithium4_avx2/packing.c pqclean_dilithium4_avx2/pointwise.S pqclean_dilithium4_avx2/invntt.S pqclean_dilithium4_avx2/sign.c pqclean_dilithium4_avx2/rejsample.c pqclean_dilithium4_avx2/reduce.S pqclean_dilithium4_avx2/poly.c pqclean_dilithium4_avx2/ntt.S pqclean_dilithium4_avx2/nttconsts.c pqclean_dilithium4_avx2/rounding.c pqclean_dilithium4_avx2/fips202x4.c pqclean_dilithium4_avx2/polyvec.c)
+        set(SRCS_DILITHIUM_4_AVX2_SRCS pqclean_dilithium4_avx2/fips202x4.c pqclean_dilithium4_avx2/invntt.S pqclean_dilithium4_avx2/ntt.S pqclean_dilithium4_avx2/nttconsts.c pqclean_dilithium4_avx2/packing.c pqclean_dilithium4_avx2/pointwise.S pqclean_dilithium4_avx2/poly.c pqclean_dilithium4_avx2/polyvec.c pqclean_dilithium4_avx2/reduce.S pqclean_dilithium4_avx2/rejsample.c pqclean_dilithium4_avx2/rounding.c pqclean_dilithium4_avx2/sign.c pqclean_dilithium4_avx2/stream.c)
 else()
         set(SRCS_DILITHIUM_4_AVX2_SRCS pqclean_dilithium4_avx2/oqs_unsupported.c )
 endif()

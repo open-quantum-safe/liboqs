@@ -3,7 +3,7 @@
 
 if(OQS_ENABLE_SIG_sphincs_haraka_128f_robust)
     
-        set(SRCS_SPHINCS_HARAKA_128F_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_128f_robust_clean/haraka.c pqclean_sphincs_haraka_128f_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_128f_robust_clean/utils.c pqclean_sphincs_haraka_128f_robust_clean/sign.c pqclean_sphincs_haraka_128f_robust_clean/hash_haraka.c pqclean_sphincs_haraka_128f_robust_clean/wots.c pqclean_sphincs_haraka_128f_robust_clean/fors.c pqclean_sphincs_haraka_128f_robust_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_128F_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_128f_robust_clean/address.c pqclean_sphincs_haraka_128f_robust_clean/fors.c pqclean_sphincs_haraka_128f_robust_clean/haraka.c pqclean_sphincs_haraka_128f_robust_clean/hash_haraka.c pqclean_sphincs_haraka_128f_robust_clean/sign.c pqclean_sphincs_haraka_128f_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_128f_robust_clean/utils.c pqclean_sphincs_haraka_128f_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_128F_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_128F_ROBUST_CLEAN_SRCS} sig_sphincs_haraka_128f_robust.c )
@@ -12,7 +12,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_128f_simple)
     
-        set(SRCS_SPHINCS_HARAKA_128F_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_128f_simple_clean/haraka.c pqclean_sphincs_haraka_128f_simple_clean/utils.c pqclean_sphincs_haraka_128f_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_128f_simple_clean/sign.c pqclean_sphincs_haraka_128f_simple_clean/hash_haraka.c pqclean_sphincs_haraka_128f_simple_clean/wots.c pqclean_sphincs_haraka_128f_simple_clean/fors.c pqclean_sphincs_haraka_128f_simple_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_128F_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_128f_simple_clean/address.c pqclean_sphincs_haraka_128f_simple_clean/fors.c pqclean_sphincs_haraka_128f_simple_clean/haraka.c pqclean_sphincs_haraka_128f_simple_clean/hash_haraka.c pqclean_sphincs_haraka_128f_simple_clean/sign.c pqclean_sphincs_haraka_128f_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_128f_simple_clean/utils.c pqclean_sphincs_haraka_128f_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_128F_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_128F_SIMPLE_CLEAN_SRCS} sig_sphincs_haraka_128f_simple.c )
@@ -21,7 +21,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_128s_robust)
     
-        set(SRCS_SPHINCS_HARAKA_128S_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_128s_robust_clean/haraka.c pqclean_sphincs_haraka_128s_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_128s_robust_clean/utils.c pqclean_sphincs_haraka_128s_robust_clean/sign.c pqclean_sphincs_haraka_128s_robust_clean/hash_haraka.c pqclean_sphincs_haraka_128s_robust_clean/wots.c pqclean_sphincs_haraka_128s_robust_clean/fors.c pqclean_sphincs_haraka_128s_robust_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_128S_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_128s_robust_clean/address.c pqclean_sphincs_haraka_128s_robust_clean/fors.c pqclean_sphincs_haraka_128s_robust_clean/haraka.c pqclean_sphincs_haraka_128s_robust_clean/hash_haraka.c pqclean_sphincs_haraka_128s_robust_clean/sign.c pqclean_sphincs_haraka_128s_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_128s_robust_clean/utils.c pqclean_sphincs_haraka_128s_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_128S_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_128S_ROBUST_CLEAN_SRCS} sig_sphincs_haraka_128s_robust.c )
@@ -30,7 +30,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_128s_simple)
     
-        set(SRCS_SPHINCS_HARAKA_128S_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_128s_simple_clean/haraka.c pqclean_sphincs_haraka_128s_simple_clean/utils.c pqclean_sphincs_haraka_128s_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_128s_simple_clean/sign.c pqclean_sphincs_haraka_128s_simple_clean/hash_haraka.c pqclean_sphincs_haraka_128s_simple_clean/wots.c pqclean_sphincs_haraka_128s_simple_clean/fors.c pqclean_sphincs_haraka_128s_simple_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_128S_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_128s_simple_clean/address.c pqclean_sphincs_haraka_128s_simple_clean/fors.c pqclean_sphincs_haraka_128s_simple_clean/haraka.c pqclean_sphincs_haraka_128s_simple_clean/hash_haraka.c pqclean_sphincs_haraka_128s_simple_clean/sign.c pqclean_sphincs_haraka_128s_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_128s_simple_clean/utils.c pqclean_sphincs_haraka_128s_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_128S_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_128S_SIMPLE_CLEAN_SRCS} sig_sphincs_haraka_128s_simple.c )
@@ -39,7 +39,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_192f_robust)
     
-        set(SRCS_SPHINCS_HARAKA_192F_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_192f_robust_clean/haraka.c pqclean_sphincs_haraka_192f_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_192f_robust_clean/utils.c pqclean_sphincs_haraka_192f_robust_clean/sign.c pqclean_sphincs_haraka_192f_robust_clean/hash_haraka.c pqclean_sphincs_haraka_192f_robust_clean/wots.c pqclean_sphincs_haraka_192f_robust_clean/fors.c pqclean_sphincs_haraka_192f_robust_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_192F_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_192f_robust_clean/address.c pqclean_sphincs_haraka_192f_robust_clean/fors.c pqclean_sphincs_haraka_192f_robust_clean/haraka.c pqclean_sphincs_haraka_192f_robust_clean/hash_haraka.c pqclean_sphincs_haraka_192f_robust_clean/sign.c pqclean_sphincs_haraka_192f_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_192f_robust_clean/utils.c pqclean_sphincs_haraka_192f_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_192F_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_192F_ROBUST_CLEAN_SRCS} sig_sphincs_haraka_192f_robust.c )
@@ -48,7 +48,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_192f_simple)
     
-        set(SRCS_SPHINCS_HARAKA_192F_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_192f_simple_clean/haraka.c pqclean_sphincs_haraka_192f_simple_clean/utils.c pqclean_sphincs_haraka_192f_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_192f_simple_clean/sign.c pqclean_sphincs_haraka_192f_simple_clean/hash_haraka.c pqclean_sphincs_haraka_192f_simple_clean/wots.c pqclean_sphincs_haraka_192f_simple_clean/fors.c pqclean_sphincs_haraka_192f_simple_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_192F_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_192f_simple_clean/address.c pqclean_sphincs_haraka_192f_simple_clean/fors.c pqclean_sphincs_haraka_192f_simple_clean/haraka.c pqclean_sphincs_haraka_192f_simple_clean/hash_haraka.c pqclean_sphincs_haraka_192f_simple_clean/sign.c pqclean_sphincs_haraka_192f_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_192f_simple_clean/utils.c pqclean_sphincs_haraka_192f_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_192F_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_192F_SIMPLE_CLEAN_SRCS} sig_sphincs_haraka_192f_simple.c )
@@ -57,7 +57,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_192s_robust)
     
-        set(SRCS_SPHINCS_HARAKA_192S_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_192s_robust_clean/haraka.c pqclean_sphincs_haraka_192s_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_192s_robust_clean/utils.c pqclean_sphincs_haraka_192s_robust_clean/sign.c pqclean_sphincs_haraka_192s_robust_clean/hash_haraka.c pqclean_sphincs_haraka_192s_robust_clean/wots.c pqclean_sphincs_haraka_192s_robust_clean/fors.c pqclean_sphincs_haraka_192s_robust_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_192S_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_192s_robust_clean/address.c pqclean_sphincs_haraka_192s_robust_clean/fors.c pqclean_sphincs_haraka_192s_robust_clean/haraka.c pqclean_sphincs_haraka_192s_robust_clean/hash_haraka.c pqclean_sphincs_haraka_192s_robust_clean/sign.c pqclean_sphincs_haraka_192s_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_192s_robust_clean/utils.c pqclean_sphincs_haraka_192s_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_192S_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_192S_ROBUST_CLEAN_SRCS} sig_sphincs_haraka_192s_robust.c )
@@ -66,7 +66,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_192s_simple)
     
-        set(SRCS_SPHINCS_HARAKA_192S_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_192s_simple_clean/haraka.c pqclean_sphincs_haraka_192s_simple_clean/utils.c pqclean_sphincs_haraka_192s_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_192s_simple_clean/sign.c pqclean_sphincs_haraka_192s_simple_clean/hash_haraka.c pqclean_sphincs_haraka_192s_simple_clean/wots.c pqclean_sphincs_haraka_192s_simple_clean/fors.c pqclean_sphincs_haraka_192s_simple_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_192S_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_192s_simple_clean/address.c pqclean_sphincs_haraka_192s_simple_clean/fors.c pqclean_sphincs_haraka_192s_simple_clean/haraka.c pqclean_sphincs_haraka_192s_simple_clean/hash_haraka.c pqclean_sphincs_haraka_192s_simple_clean/sign.c pqclean_sphincs_haraka_192s_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_192s_simple_clean/utils.c pqclean_sphincs_haraka_192s_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_192S_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_192S_SIMPLE_CLEAN_SRCS} sig_sphincs_haraka_192s_simple.c )
@@ -75,7 +75,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_256f_robust)
     
-        set(SRCS_SPHINCS_HARAKA_256F_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_256f_robust_clean/haraka.c pqclean_sphincs_haraka_256f_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_256f_robust_clean/utils.c pqclean_sphincs_haraka_256f_robust_clean/sign.c pqclean_sphincs_haraka_256f_robust_clean/hash_haraka.c pqclean_sphincs_haraka_256f_robust_clean/wots.c pqclean_sphincs_haraka_256f_robust_clean/fors.c pqclean_sphincs_haraka_256f_robust_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_256F_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_256f_robust_clean/address.c pqclean_sphincs_haraka_256f_robust_clean/fors.c pqclean_sphincs_haraka_256f_robust_clean/haraka.c pqclean_sphincs_haraka_256f_robust_clean/hash_haraka.c pqclean_sphincs_haraka_256f_robust_clean/sign.c pqclean_sphincs_haraka_256f_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_256f_robust_clean/utils.c pqclean_sphincs_haraka_256f_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_256F_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_256F_ROBUST_CLEAN_SRCS} sig_sphincs_haraka_256f_robust.c )
@@ -84,7 +84,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_256f_simple)
     
-        set(SRCS_SPHINCS_HARAKA_256F_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_256f_simple_clean/haraka.c pqclean_sphincs_haraka_256f_simple_clean/utils.c pqclean_sphincs_haraka_256f_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_256f_simple_clean/sign.c pqclean_sphincs_haraka_256f_simple_clean/hash_haraka.c pqclean_sphincs_haraka_256f_simple_clean/wots.c pqclean_sphincs_haraka_256f_simple_clean/fors.c pqclean_sphincs_haraka_256f_simple_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_256F_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_256f_simple_clean/address.c pqclean_sphincs_haraka_256f_simple_clean/fors.c pqclean_sphincs_haraka_256f_simple_clean/haraka.c pqclean_sphincs_haraka_256f_simple_clean/hash_haraka.c pqclean_sphincs_haraka_256f_simple_clean/sign.c pqclean_sphincs_haraka_256f_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_256f_simple_clean/utils.c pqclean_sphincs_haraka_256f_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_256F_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_256F_SIMPLE_CLEAN_SRCS} sig_sphincs_haraka_256f_simple.c )
@@ -93,7 +93,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_256s_robust)
     
-        set(SRCS_SPHINCS_HARAKA_256S_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_256s_robust_clean/haraka.c pqclean_sphincs_haraka_256s_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_256s_robust_clean/utils.c pqclean_sphincs_haraka_256s_robust_clean/sign.c pqclean_sphincs_haraka_256s_robust_clean/hash_haraka.c pqclean_sphincs_haraka_256s_robust_clean/wots.c pqclean_sphincs_haraka_256s_robust_clean/fors.c pqclean_sphincs_haraka_256s_robust_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_256S_ROBUST_CLEAN_SRCS pqclean_sphincs_haraka_256s_robust_clean/address.c pqclean_sphincs_haraka_256s_robust_clean/fors.c pqclean_sphincs_haraka_256s_robust_clean/haraka.c pqclean_sphincs_haraka_256s_robust_clean/hash_haraka.c pqclean_sphincs_haraka_256s_robust_clean/sign.c pqclean_sphincs_haraka_256s_robust_clean/thash_haraka_robust.c pqclean_sphincs_haraka_256s_robust_clean/utils.c pqclean_sphincs_haraka_256s_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_256S_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_256S_ROBUST_CLEAN_SRCS} sig_sphincs_haraka_256s_robust.c )
@@ -102,7 +102,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_haraka_256s_simple)
     
-        set(SRCS_SPHINCS_HARAKA_256S_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_256s_simple_clean/haraka.c pqclean_sphincs_haraka_256s_simple_clean/utils.c pqclean_sphincs_haraka_256s_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_256s_simple_clean/sign.c pqclean_sphincs_haraka_256s_simple_clean/hash_haraka.c pqclean_sphincs_haraka_256s_simple_clean/wots.c pqclean_sphincs_haraka_256s_simple_clean/fors.c pqclean_sphincs_haraka_256s_simple_clean/address.c)
+        set(SRCS_SPHINCS_HARAKA_256S_SIMPLE_CLEAN_SRCS pqclean_sphincs_haraka_256s_simple_clean/address.c pqclean_sphincs_haraka_256s_simple_clean/fors.c pqclean_sphincs_haraka_256s_simple_clean/haraka.c pqclean_sphincs_haraka_256s_simple_clean/hash_haraka.c pqclean_sphincs_haraka_256s_simple_clean/sign.c pqclean_sphincs_haraka_256s_simple_clean/thash_haraka_simple.c pqclean_sphincs_haraka_256s_simple_clean/utils.c pqclean_sphincs_haraka_256s_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_HARAKA_256S_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_HARAKA_256S_SIMPLE_CLEAN_SRCS} sig_sphincs_haraka_256s_simple.c )
@@ -111,7 +111,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_128f_robust)
     
-        set(SRCS_SPHINCS_SHA256_128F_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_128f_robust_clean/utils.c pqclean_sphincs_sha256_128f_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_128f_robust_clean/sign.c pqclean_sphincs_sha256_128f_robust_clean/hash_sha256.c pqclean_sphincs_sha256_128f_robust_clean/sha256.c pqclean_sphincs_sha256_128f_robust_clean/wots.c pqclean_sphincs_sha256_128f_robust_clean/fors.c pqclean_sphincs_sha256_128f_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_128F_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_128f_robust_clean/address.c pqclean_sphincs_sha256_128f_robust_clean/fors.c pqclean_sphincs_sha256_128f_robust_clean/hash_sha256.c pqclean_sphincs_sha256_128f_robust_clean/sha256.c pqclean_sphincs_sha256_128f_robust_clean/sign.c pqclean_sphincs_sha256_128f_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_128f_robust_clean/utils.c pqclean_sphincs_sha256_128f_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_128F_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_128F_ROBUST_CLEAN_SRCS} sig_sphincs_sha256_128f_robust.c )
@@ -120,7 +120,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_128f_simple)
     
-        set(SRCS_SPHINCS_SHA256_128F_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_128f_simple_clean/utils.c pqclean_sphincs_sha256_128f_simple_clean/sign.c pqclean_sphincs_sha256_128f_simple_clean/hash_sha256.c pqclean_sphincs_sha256_128f_simple_clean/sha256.c pqclean_sphincs_sha256_128f_simple_clean/wots.c pqclean_sphincs_sha256_128f_simple_clean/fors.c pqclean_sphincs_sha256_128f_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_128f_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_128F_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_128f_simple_clean/address.c pqclean_sphincs_sha256_128f_simple_clean/fors.c pqclean_sphincs_sha256_128f_simple_clean/hash_sha256.c pqclean_sphincs_sha256_128f_simple_clean/sha256.c pqclean_sphincs_sha256_128f_simple_clean/sign.c pqclean_sphincs_sha256_128f_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_128f_simple_clean/utils.c pqclean_sphincs_sha256_128f_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_128F_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_128F_SIMPLE_CLEAN_SRCS} sig_sphincs_sha256_128f_simple.c )
@@ -129,7 +129,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_128s_robust)
     
-        set(SRCS_SPHINCS_SHA256_128S_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_128s_robust_clean/utils.c pqclean_sphincs_sha256_128s_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_128s_robust_clean/sign.c pqclean_sphincs_sha256_128s_robust_clean/hash_sha256.c pqclean_sphincs_sha256_128s_robust_clean/sha256.c pqclean_sphincs_sha256_128s_robust_clean/wots.c pqclean_sphincs_sha256_128s_robust_clean/fors.c pqclean_sphincs_sha256_128s_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_128S_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_128s_robust_clean/address.c pqclean_sphincs_sha256_128s_robust_clean/fors.c pqclean_sphincs_sha256_128s_robust_clean/hash_sha256.c pqclean_sphincs_sha256_128s_robust_clean/sha256.c pqclean_sphincs_sha256_128s_robust_clean/sign.c pqclean_sphincs_sha256_128s_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_128s_robust_clean/utils.c pqclean_sphincs_sha256_128s_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_128S_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_128S_ROBUST_CLEAN_SRCS} sig_sphincs_sha256_128s_robust.c )
@@ -138,7 +138,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_128s_simple)
     
-        set(SRCS_SPHINCS_SHA256_128S_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_128s_simple_clean/utils.c pqclean_sphincs_sha256_128s_simple_clean/sign.c pqclean_sphincs_sha256_128s_simple_clean/hash_sha256.c pqclean_sphincs_sha256_128s_simple_clean/sha256.c pqclean_sphincs_sha256_128s_simple_clean/wots.c pqclean_sphincs_sha256_128s_simple_clean/fors.c pqclean_sphincs_sha256_128s_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_128s_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_128S_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_128s_simple_clean/address.c pqclean_sphincs_sha256_128s_simple_clean/fors.c pqclean_sphincs_sha256_128s_simple_clean/hash_sha256.c pqclean_sphincs_sha256_128s_simple_clean/sha256.c pqclean_sphincs_sha256_128s_simple_clean/sign.c pqclean_sphincs_sha256_128s_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_128s_simple_clean/utils.c pqclean_sphincs_sha256_128s_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_128S_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_128S_SIMPLE_CLEAN_SRCS} sig_sphincs_sha256_128s_simple.c )
@@ -147,7 +147,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_192f_robust)
     
-        set(SRCS_SPHINCS_SHA256_192F_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_192f_robust_clean/utils.c pqclean_sphincs_sha256_192f_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_192f_robust_clean/sign.c pqclean_sphincs_sha256_192f_robust_clean/hash_sha256.c pqclean_sphincs_sha256_192f_robust_clean/sha256.c pqclean_sphincs_sha256_192f_robust_clean/wots.c pqclean_sphincs_sha256_192f_robust_clean/fors.c pqclean_sphincs_sha256_192f_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_192F_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_192f_robust_clean/address.c pqclean_sphincs_sha256_192f_robust_clean/fors.c pqclean_sphincs_sha256_192f_robust_clean/hash_sha256.c pqclean_sphincs_sha256_192f_robust_clean/sha256.c pqclean_sphincs_sha256_192f_robust_clean/sign.c pqclean_sphincs_sha256_192f_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_192f_robust_clean/utils.c pqclean_sphincs_sha256_192f_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_192F_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_192F_ROBUST_CLEAN_SRCS} sig_sphincs_sha256_192f_robust.c )
@@ -156,7 +156,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_192f_simple)
     
-        set(SRCS_SPHINCS_SHA256_192F_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_192f_simple_clean/utils.c pqclean_sphincs_sha256_192f_simple_clean/sign.c pqclean_sphincs_sha256_192f_simple_clean/hash_sha256.c pqclean_sphincs_sha256_192f_simple_clean/sha256.c pqclean_sphincs_sha256_192f_simple_clean/wots.c pqclean_sphincs_sha256_192f_simple_clean/fors.c pqclean_sphincs_sha256_192f_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_192f_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_192F_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_192f_simple_clean/address.c pqclean_sphincs_sha256_192f_simple_clean/fors.c pqclean_sphincs_sha256_192f_simple_clean/hash_sha256.c pqclean_sphincs_sha256_192f_simple_clean/sha256.c pqclean_sphincs_sha256_192f_simple_clean/sign.c pqclean_sphincs_sha256_192f_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_192f_simple_clean/utils.c pqclean_sphincs_sha256_192f_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_192F_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_192F_SIMPLE_CLEAN_SRCS} sig_sphincs_sha256_192f_simple.c )
@@ -165,7 +165,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_192s_robust)
     
-        set(SRCS_SPHINCS_SHA256_192S_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_192s_robust_clean/utils.c pqclean_sphincs_sha256_192s_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_192s_robust_clean/sign.c pqclean_sphincs_sha256_192s_robust_clean/hash_sha256.c pqclean_sphincs_sha256_192s_robust_clean/sha256.c pqclean_sphincs_sha256_192s_robust_clean/wots.c pqclean_sphincs_sha256_192s_robust_clean/fors.c pqclean_sphincs_sha256_192s_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_192S_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_192s_robust_clean/address.c pqclean_sphincs_sha256_192s_robust_clean/fors.c pqclean_sphincs_sha256_192s_robust_clean/hash_sha256.c pqclean_sphincs_sha256_192s_robust_clean/sha256.c pqclean_sphincs_sha256_192s_robust_clean/sign.c pqclean_sphincs_sha256_192s_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_192s_robust_clean/utils.c pqclean_sphincs_sha256_192s_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_192S_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_192S_ROBUST_CLEAN_SRCS} sig_sphincs_sha256_192s_robust.c )
@@ -174,7 +174,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_192s_simple)
     
-        set(SRCS_SPHINCS_SHA256_192S_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_192s_simple_clean/utils.c pqclean_sphincs_sha256_192s_simple_clean/sign.c pqclean_sphincs_sha256_192s_simple_clean/hash_sha256.c pqclean_sphincs_sha256_192s_simple_clean/sha256.c pqclean_sphincs_sha256_192s_simple_clean/wots.c pqclean_sphincs_sha256_192s_simple_clean/fors.c pqclean_sphincs_sha256_192s_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_192s_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_192S_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_192s_simple_clean/address.c pqclean_sphincs_sha256_192s_simple_clean/fors.c pqclean_sphincs_sha256_192s_simple_clean/hash_sha256.c pqclean_sphincs_sha256_192s_simple_clean/sha256.c pqclean_sphincs_sha256_192s_simple_clean/sign.c pqclean_sphincs_sha256_192s_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_192s_simple_clean/utils.c pqclean_sphincs_sha256_192s_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_192S_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_192S_SIMPLE_CLEAN_SRCS} sig_sphincs_sha256_192s_simple.c )
@@ -183,7 +183,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_256f_robust)
     
-        set(SRCS_SPHINCS_SHA256_256F_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_256f_robust_clean/utils.c pqclean_sphincs_sha256_256f_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_256f_robust_clean/sign.c pqclean_sphincs_sha256_256f_robust_clean/hash_sha256.c pqclean_sphincs_sha256_256f_robust_clean/sha256.c pqclean_sphincs_sha256_256f_robust_clean/wots.c pqclean_sphincs_sha256_256f_robust_clean/fors.c pqclean_sphincs_sha256_256f_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_256F_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_256f_robust_clean/address.c pqclean_sphincs_sha256_256f_robust_clean/fors.c pqclean_sphincs_sha256_256f_robust_clean/hash_sha256.c pqclean_sphincs_sha256_256f_robust_clean/sha256.c pqclean_sphincs_sha256_256f_robust_clean/sign.c pqclean_sphincs_sha256_256f_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_256f_robust_clean/utils.c pqclean_sphincs_sha256_256f_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_256F_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_256F_ROBUST_CLEAN_SRCS} sig_sphincs_sha256_256f_robust.c )
@@ -192,7 +192,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_256f_simple)
     
-        set(SRCS_SPHINCS_SHA256_256F_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_256f_simple_clean/utils.c pqclean_sphincs_sha256_256f_simple_clean/sign.c pqclean_sphincs_sha256_256f_simple_clean/hash_sha256.c pqclean_sphincs_sha256_256f_simple_clean/sha256.c pqclean_sphincs_sha256_256f_simple_clean/wots.c pqclean_sphincs_sha256_256f_simple_clean/fors.c pqclean_sphincs_sha256_256f_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_256f_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_256F_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_256f_simple_clean/address.c pqclean_sphincs_sha256_256f_simple_clean/fors.c pqclean_sphincs_sha256_256f_simple_clean/hash_sha256.c pqclean_sphincs_sha256_256f_simple_clean/sha256.c pqclean_sphincs_sha256_256f_simple_clean/sign.c pqclean_sphincs_sha256_256f_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_256f_simple_clean/utils.c pqclean_sphincs_sha256_256f_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_256F_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_256F_SIMPLE_CLEAN_SRCS} sig_sphincs_sha256_256f_simple.c )
@@ -201,7 +201,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_256s_robust)
     
-        set(SRCS_SPHINCS_SHA256_256S_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_256s_robust_clean/utils.c pqclean_sphincs_sha256_256s_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_256s_robust_clean/sign.c pqclean_sphincs_sha256_256s_robust_clean/hash_sha256.c pqclean_sphincs_sha256_256s_robust_clean/sha256.c pqclean_sphincs_sha256_256s_robust_clean/wots.c pqclean_sphincs_sha256_256s_robust_clean/fors.c pqclean_sphincs_sha256_256s_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_256S_ROBUST_CLEAN_SRCS pqclean_sphincs_sha256_256s_robust_clean/address.c pqclean_sphincs_sha256_256s_robust_clean/fors.c pqclean_sphincs_sha256_256s_robust_clean/hash_sha256.c pqclean_sphincs_sha256_256s_robust_clean/sha256.c pqclean_sphincs_sha256_256s_robust_clean/sign.c pqclean_sphincs_sha256_256s_robust_clean/thash_sha256_robust.c pqclean_sphincs_sha256_256s_robust_clean/utils.c pqclean_sphincs_sha256_256s_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_256S_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_256S_ROBUST_CLEAN_SRCS} sig_sphincs_sha256_256s_robust.c )
@@ -210,7 +210,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_sha256_256s_simple)
     
-        set(SRCS_SPHINCS_SHA256_256S_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_256s_simple_clean/utils.c pqclean_sphincs_sha256_256s_simple_clean/sign.c pqclean_sphincs_sha256_256s_simple_clean/hash_sha256.c pqclean_sphincs_sha256_256s_simple_clean/sha256.c pqclean_sphincs_sha256_256s_simple_clean/wots.c pqclean_sphincs_sha256_256s_simple_clean/fors.c pqclean_sphincs_sha256_256s_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_256s_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHA256_256S_SIMPLE_CLEAN_SRCS pqclean_sphincs_sha256_256s_simple_clean/address.c pqclean_sphincs_sha256_256s_simple_clean/fors.c pqclean_sphincs_sha256_256s_simple_clean/hash_sha256.c pqclean_sphincs_sha256_256s_simple_clean/sha256.c pqclean_sphincs_sha256_256s_simple_clean/sign.c pqclean_sphincs_sha256_256s_simple_clean/thash_sha256_simple.c pqclean_sphincs_sha256_256s_simple_clean/utils.c pqclean_sphincs_sha256_256s_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHA256_256S_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHA256_256S_SIMPLE_CLEAN_SRCS} sig_sphincs_sha256_256s_simple.c )
@@ -219,7 +219,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_128f_robust)
     
-        set(SRCS_SPHINCS_SHAKE256_128F_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_128f_robust_clean/hash_shake256.c pqclean_sphincs_shake256_128f_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_128f_robust_clean/utils.c pqclean_sphincs_shake256_128f_robust_clean/sign.c pqclean_sphincs_shake256_128f_robust_clean/wots.c pqclean_sphincs_shake256_128f_robust_clean/fors.c pqclean_sphincs_shake256_128f_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_128F_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_128f_robust_clean/address.c pqclean_sphincs_shake256_128f_robust_clean/fors.c pqclean_sphincs_shake256_128f_robust_clean/hash_shake256.c pqclean_sphincs_shake256_128f_robust_clean/sign.c pqclean_sphincs_shake256_128f_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_128f_robust_clean/utils.c pqclean_sphincs_shake256_128f_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_128F_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_128F_ROBUST_CLEAN_SRCS} sig_sphincs_shake256_128f_robust.c )
@@ -228,7 +228,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_128f_simple)
     
-        set(SRCS_SPHINCS_SHAKE256_128F_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_128f_simple_clean/hash_shake256.c pqclean_sphincs_shake256_128f_simple_clean/utils.c pqclean_sphincs_shake256_128f_simple_clean/sign.c pqclean_sphincs_shake256_128f_simple_clean/wots.c pqclean_sphincs_shake256_128f_simple_clean/fors.c pqclean_sphincs_shake256_128f_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_128f_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_128F_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_128f_simple_clean/address.c pqclean_sphincs_shake256_128f_simple_clean/fors.c pqclean_sphincs_shake256_128f_simple_clean/hash_shake256.c pqclean_sphincs_shake256_128f_simple_clean/sign.c pqclean_sphincs_shake256_128f_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_128f_simple_clean/utils.c pqclean_sphincs_shake256_128f_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_128F_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_128F_SIMPLE_CLEAN_SRCS} sig_sphincs_shake256_128f_simple.c )
@@ -237,7 +237,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_128s_robust)
     
-        set(SRCS_SPHINCS_SHAKE256_128S_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_128s_robust_clean/hash_shake256.c pqclean_sphincs_shake256_128s_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_128s_robust_clean/utils.c pqclean_sphincs_shake256_128s_robust_clean/sign.c pqclean_sphincs_shake256_128s_robust_clean/wots.c pqclean_sphincs_shake256_128s_robust_clean/fors.c pqclean_sphincs_shake256_128s_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_128S_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_128s_robust_clean/address.c pqclean_sphincs_shake256_128s_robust_clean/fors.c pqclean_sphincs_shake256_128s_robust_clean/hash_shake256.c pqclean_sphincs_shake256_128s_robust_clean/sign.c pqclean_sphincs_shake256_128s_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_128s_robust_clean/utils.c pqclean_sphincs_shake256_128s_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_128S_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_128S_ROBUST_CLEAN_SRCS} sig_sphincs_shake256_128s_robust.c )
@@ -246,7 +246,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_128s_simple)
     
-        set(SRCS_SPHINCS_SHAKE256_128S_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_128s_simple_clean/hash_shake256.c pqclean_sphincs_shake256_128s_simple_clean/utils.c pqclean_sphincs_shake256_128s_simple_clean/sign.c pqclean_sphincs_shake256_128s_simple_clean/wots.c pqclean_sphincs_shake256_128s_simple_clean/fors.c pqclean_sphincs_shake256_128s_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_128s_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_128S_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_128s_simple_clean/address.c pqclean_sphincs_shake256_128s_simple_clean/fors.c pqclean_sphincs_shake256_128s_simple_clean/hash_shake256.c pqclean_sphincs_shake256_128s_simple_clean/sign.c pqclean_sphincs_shake256_128s_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_128s_simple_clean/utils.c pqclean_sphincs_shake256_128s_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_128S_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_128S_SIMPLE_CLEAN_SRCS} sig_sphincs_shake256_128s_simple.c )
@@ -255,7 +255,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_192f_robust)
     
-        set(SRCS_SPHINCS_SHAKE256_192F_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_192f_robust_clean/hash_shake256.c pqclean_sphincs_shake256_192f_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_192f_robust_clean/utils.c pqclean_sphincs_shake256_192f_robust_clean/sign.c pqclean_sphincs_shake256_192f_robust_clean/wots.c pqclean_sphincs_shake256_192f_robust_clean/fors.c pqclean_sphincs_shake256_192f_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_192F_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_192f_robust_clean/address.c pqclean_sphincs_shake256_192f_robust_clean/fors.c pqclean_sphincs_shake256_192f_robust_clean/hash_shake256.c pqclean_sphincs_shake256_192f_robust_clean/sign.c pqclean_sphincs_shake256_192f_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_192f_robust_clean/utils.c pqclean_sphincs_shake256_192f_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_192F_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_192F_ROBUST_CLEAN_SRCS} sig_sphincs_shake256_192f_robust.c )
@@ -264,7 +264,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_192f_simple)
     
-        set(SRCS_SPHINCS_SHAKE256_192F_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_192f_simple_clean/hash_shake256.c pqclean_sphincs_shake256_192f_simple_clean/utils.c pqclean_sphincs_shake256_192f_simple_clean/sign.c pqclean_sphincs_shake256_192f_simple_clean/wots.c pqclean_sphincs_shake256_192f_simple_clean/fors.c pqclean_sphincs_shake256_192f_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_192f_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_192F_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_192f_simple_clean/address.c pqclean_sphincs_shake256_192f_simple_clean/fors.c pqclean_sphincs_shake256_192f_simple_clean/hash_shake256.c pqclean_sphincs_shake256_192f_simple_clean/sign.c pqclean_sphincs_shake256_192f_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_192f_simple_clean/utils.c pqclean_sphincs_shake256_192f_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_192F_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_192F_SIMPLE_CLEAN_SRCS} sig_sphincs_shake256_192f_simple.c )
@@ -273,7 +273,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_192s_robust)
     
-        set(SRCS_SPHINCS_SHAKE256_192S_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_192s_robust_clean/hash_shake256.c pqclean_sphincs_shake256_192s_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_192s_robust_clean/utils.c pqclean_sphincs_shake256_192s_robust_clean/sign.c pqclean_sphincs_shake256_192s_robust_clean/wots.c pqclean_sphincs_shake256_192s_robust_clean/fors.c pqclean_sphincs_shake256_192s_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_192S_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_192s_robust_clean/address.c pqclean_sphincs_shake256_192s_robust_clean/fors.c pqclean_sphincs_shake256_192s_robust_clean/hash_shake256.c pqclean_sphincs_shake256_192s_robust_clean/sign.c pqclean_sphincs_shake256_192s_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_192s_robust_clean/utils.c pqclean_sphincs_shake256_192s_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_192S_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_192S_ROBUST_CLEAN_SRCS} sig_sphincs_shake256_192s_robust.c )
@@ -282,7 +282,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_192s_simple)
     
-        set(SRCS_SPHINCS_SHAKE256_192S_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_192s_simple_clean/hash_shake256.c pqclean_sphincs_shake256_192s_simple_clean/utils.c pqclean_sphincs_shake256_192s_simple_clean/sign.c pqclean_sphincs_shake256_192s_simple_clean/wots.c pqclean_sphincs_shake256_192s_simple_clean/fors.c pqclean_sphincs_shake256_192s_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_192s_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_192S_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_192s_simple_clean/address.c pqclean_sphincs_shake256_192s_simple_clean/fors.c pqclean_sphincs_shake256_192s_simple_clean/hash_shake256.c pqclean_sphincs_shake256_192s_simple_clean/sign.c pqclean_sphincs_shake256_192s_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_192s_simple_clean/utils.c pqclean_sphincs_shake256_192s_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_192S_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_192S_SIMPLE_CLEAN_SRCS} sig_sphincs_shake256_192s_simple.c )
@@ -291,7 +291,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_256f_robust)
     
-        set(SRCS_SPHINCS_SHAKE256_256F_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_256f_robust_clean/hash_shake256.c pqclean_sphincs_shake256_256f_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_256f_robust_clean/utils.c pqclean_sphincs_shake256_256f_robust_clean/sign.c pqclean_sphincs_shake256_256f_robust_clean/wots.c pqclean_sphincs_shake256_256f_robust_clean/fors.c pqclean_sphincs_shake256_256f_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_256F_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_256f_robust_clean/address.c pqclean_sphincs_shake256_256f_robust_clean/fors.c pqclean_sphincs_shake256_256f_robust_clean/hash_shake256.c pqclean_sphincs_shake256_256f_robust_clean/sign.c pqclean_sphincs_shake256_256f_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_256f_robust_clean/utils.c pqclean_sphincs_shake256_256f_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_256F_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_256F_ROBUST_CLEAN_SRCS} sig_sphincs_shake256_256f_robust.c )
@@ -300,7 +300,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_256f_simple)
     
-        set(SRCS_SPHINCS_SHAKE256_256F_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_256f_simple_clean/hash_shake256.c pqclean_sphincs_shake256_256f_simple_clean/utils.c pqclean_sphincs_shake256_256f_simple_clean/sign.c pqclean_sphincs_shake256_256f_simple_clean/wots.c pqclean_sphincs_shake256_256f_simple_clean/fors.c pqclean_sphincs_shake256_256f_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_256f_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_256F_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_256f_simple_clean/address.c pqclean_sphincs_shake256_256f_simple_clean/fors.c pqclean_sphincs_shake256_256f_simple_clean/hash_shake256.c pqclean_sphincs_shake256_256f_simple_clean/sign.c pqclean_sphincs_shake256_256f_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_256f_simple_clean/utils.c pqclean_sphincs_shake256_256f_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_256F_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_256F_SIMPLE_CLEAN_SRCS} sig_sphincs_shake256_256f_simple.c )
@@ -309,7 +309,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_256s_robust)
     
-        set(SRCS_SPHINCS_SHAKE256_256S_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_256s_robust_clean/hash_shake256.c pqclean_sphincs_shake256_256s_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_256s_robust_clean/utils.c pqclean_sphincs_shake256_256s_robust_clean/sign.c pqclean_sphincs_shake256_256s_robust_clean/wots.c pqclean_sphincs_shake256_256s_robust_clean/fors.c pqclean_sphincs_shake256_256s_robust_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_256S_ROBUST_CLEAN_SRCS pqclean_sphincs_shake256_256s_robust_clean/address.c pqclean_sphincs_shake256_256s_robust_clean/fors.c pqclean_sphincs_shake256_256s_robust_clean/hash_shake256.c pqclean_sphincs_shake256_256s_robust_clean/sign.c pqclean_sphincs_shake256_256s_robust_clean/thash_shake256_robust.c pqclean_sphincs_shake256_256s_robust_clean/utils.c pqclean_sphincs_shake256_256s_robust_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_256S_ROBUST_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_256S_ROBUST_CLEAN_SRCS} sig_sphincs_shake256_256s_robust.c )
@@ -318,7 +318,7 @@ endif()
 
 if(OQS_ENABLE_SIG_sphincs_shake256_256s_simple)
     
-        set(SRCS_SPHINCS_SHAKE256_256S_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_256s_simple_clean/hash_shake256.c pqclean_sphincs_shake256_256s_simple_clean/utils.c pqclean_sphincs_shake256_256s_simple_clean/sign.c pqclean_sphincs_shake256_256s_simple_clean/wots.c pqclean_sphincs_shake256_256s_simple_clean/fors.c pqclean_sphincs_shake256_256s_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_256s_simple_clean/address.c)
+        set(SRCS_SPHINCS_SHAKE256_256S_SIMPLE_CLEAN_SRCS pqclean_sphincs_shake256_256s_simple_clean/address.c pqclean_sphincs_shake256_256s_simple_clean/fors.c pqclean_sphincs_shake256_256s_simple_clean/hash_shake256.c pqclean_sphincs_shake256_256s_simple_clean/sign.c pqclean_sphincs_shake256_256s_simple_clean/thash_shake256_simple.c pqclean_sphincs_shake256_256s_simple_clean/utils.c pqclean_sphincs_shake256_256s_simple_clean/wots.c)
     
 
 set(SRCS_SPHINCS_SHAKE256_256S_SIMPLE_CLEAN_SRCS ${SRCS_SPHINCS_SHAKE256_256S_SIMPLE_CLEAN_SRCS} sig_sphincs_shake256_256s_simple.c )
