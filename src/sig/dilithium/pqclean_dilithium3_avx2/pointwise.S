@@ -1,0 +1,192 @@
+#include "params.h"
+#include "cdecl.inc"
+
+.global cdecl(PQCLEAN_DILITHIUM3_AVX2_pointwise_avx)
+cdecl(PQCLEAN_DILITHIUM3_AVX2_pointwise_avx):
+#consts
+vmovdqa		cdecl(_PQCLEAN_DILITHIUM3_AVX2_8xqinv)(%rip),%ymm0
+vmovdqa		cdecl(_PQCLEAN_DILITHIUM3_AVX2_8xq)(%rip),%ymm1
+
+xor		%eax,%eax
+_looptop1:
+#load
+vmovdqa		(%rsi),%ymm2
+vmovdqa		32(%rsi),%ymm4
+vmovdqa		64(%rsi),%ymm6
+vmovdqa		(%rdx),%ymm10
+vmovdqa		32(%rdx),%ymm12
+vmovdqa		64(%rdx),%ymm14
+vpsrlq		$32,%ymm2,%ymm3
+vpsrlq		$32,%ymm4,%ymm5
+vpsrlq		$32,%ymm6,%ymm7
+vpsrlq		$32,%ymm10,%ymm11
+vpsrlq		$32,%ymm12,%ymm13
+vpsrlq		$32,%ymm14,%ymm15
+
+#mul
+vpmuludq	%ymm2,%ymm10,%ymm2
+vpmuludq	%ymm3,%ymm11,%ymm3
+vpmuludq	%ymm4,%ymm12,%ymm4
+vpmuludq	%ymm5,%ymm13,%ymm5
+vpmuludq	%ymm6,%ymm14,%ymm6
+vpmuludq	%ymm7,%ymm15,%ymm7
+
+#reduce
+vpmuludq	%ymm0,%ymm2,%ymm10
+vpmuludq	%ymm0,%ymm3,%ymm11
+vpmuludq	%ymm0,%ymm4,%ymm12
+vpmuludq	%ymm0,%ymm5,%ymm13
+vpmuludq	%ymm0,%ymm6,%ymm14
+vpmuludq	%ymm0,%ymm7,%ymm15
+vpmuludq	%ymm1,%ymm10,%ymm10
+vpmuludq	%ymm1,%ymm11,%ymm11
+vpmuludq	%ymm1,%ymm12,%ymm12
+vpmuludq	%ymm1,%ymm13,%ymm13
+vpmuludq	%ymm1,%ymm14,%ymm14
+vpmuludq	%ymm1,%ymm15,%ymm15
+vpaddq		%ymm2,%ymm10,%ymm2
+vpaddq		%ymm3,%ymm11,%ymm3
+vpaddq		%ymm4,%ymm12,%ymm4
+vpaddq		%ymm5,%ymm13,%ymm5
+vpaddq		%ymm6,%ymm14,%ymm6
+vpaddq		%ymm7,%ymm15,%ymm7
+vpsrlq		$32,%ymm2,%ymm2
+vpsrlq		$32,%ymm4,%ymm4
+vpsrlq		$32,%ymm6,%ymm6
+
+#store
+vpblendd	$0xAA,%ymm3,%ymm2,%ymm2
+vpblendd	$0xAA,%ymm5,%ymm4,%ymm4
+vpblendd	$0xAA,%ymm7,%ymm6,%ymm6
+vmovdqa		%ymm2,(%rdi)
+vmovdqa		%ymm4,32(%rdi)
+vmovdqa		%ymm6,64(%rdi)
+
+add		$96,%rdi
+add		$96,%rsi
+add		$96,%rdx
+add		$1,%eax
+cmp		$10,%eax
+jb _looptop1
+
+vmovdqa		(%rsi),%ymm2
+vmovdqa		32(%rsi),%ymm4
+vmovdqa		(%rdx),%ymm10
+vmovdqa		32(%rdx),%ymm12
+vpsrlq		$32,%ymm2,%ymm3
+vpsrlq		$32,%ymm4,%ymm5
+vpsrlq		$32,%ymm10,%ymm11
+vpsrlq		$32,%ymm12,%ymm13
+
+#mul
+vpmuludq	%ymm2,%ymm10,%ymm2
+vpmuludq	%ymm3,%ymm11,%ymm3
+vpmuludq	%ymm4,%ymm12,%ymm4
+vpmuludq	%ymm5,%ymm13,%ymm5
+
+#reduce
+vpmuludq	%ymm0,%ymm2,%ymm10
+vpmuludq	%ymm0,%ymm3,%ymm11
+vpmuludq	%ymm0,%ymm4,%ymm12
+vpmuludq	%ymm0,%ymm5,%ymm13
+vpmuludq	%ymm1,%ymm10,%ymm10
+vpmuludq	%ymm1,%ymm11,%ymm11
+vpmuludq	%ymm1,%ymm12,%ymm12
+vpmuludq	%ymm1,%ymm13,%ymm13
+vpaddq		%ymm2,%ymm10,%ymm2
+vpaddq		%ymm3,%ymm11,%ymm3
+vpaddq		%ymm4,%ymm12,%ymm4
+vpaddq		%ymm5,%ymm13,%ymm5
+vpsrlq		$32,%ymm2,%ymm2
+vpsrlq		$32,%ymm4,%ymm4
+
+#store
+vpblendd	$0x55,%ymm2,%ymm3,%ymm2
+vpblendd	$0x55,%ymm4,%ymm5,%ymm4
+vmovdqa		%ymm2,(%rdi)
+vmovdqa		%ymm4,32(%rdi)
+
+ret
+
+.macro pointwise off
+#load
+vmovdqa		\off(%rsi),%ymm6
+vmovdqa		\off+32(%rsi),%ymm8
+vmovdqa		\off(%rdx),%ymm10
+vmovdqa		\off+32(%rdx),%ymm12
+vpsrlq		$32,%ymm6,%ymm7
+vpsrlq		$32,%ymm8,%ymm9
+vpsrlq		$32,%ymm10,%ymm11
+vpsrlq		$32,%ymm12,%ymm13
+
+#mul
+vpmuludq	%ymm6,%ymm10,%ymm6
+vpmuludq	%ymm7,%ymm11,%ymm7
+vpmuludq	%ymm8,%ymm12,%ymm8
+vpmuludq	%ymm9,%ymm13,%ymm9
+.endm
+
+.macro acc
+vpaddq		%ymm6,%ymm2,%ymm2
+vpaddq		%ymm7,%ymm3,%ymm3
+vpaddq		%ymm8,%ymm4,%ymm4
+vpaddq		%ymm9,%ymm5,%ymm5
+.endm
+
+.global cdecl(PQCLEAN_DILITHIUM3_AVX2_pointwise_acc_avx)
+cdecl(PQCLEAN_DILITHIUM3_AVX2_pointwise_acc_avx):
+#consts
+vmovdqa		cdecl(_PQCLEAN_DILITHIUM3_AVX2_8xqinv)(%rip),%ymm0
+vmovdqa		cdecl(_PQCLEAN_DILITHIUM3_AVX2_8xq)(%rip),%ymm1
+
+xor		%eax,%eax
+_looptop2:
+pointwise	0
+
+#mov
+vmovdqa		%ymm6,%ymm2
+vmovdqa		%ymm7,%ymm3
+vmovdqa		%ymm8,%ymm4
+vmovdqa		%ymm9,%ymm5
+
+pointwise	1024
+acc
+
+pointwise	2048
+acc
+
+pointwise	3072
+acc
+
+
+#reduce
+vpmuludq	%ymm0,%ymm2,%ymm6
+vpmuludq	%ymm0,%ymm3,%ymm7
+vpmuludq	%ymm0,%ymm4,%ymm8
+vpmuludq	%ymm0,%ymm5,%ymm9
+vpmuludq	%ymm1,%ymm6,%ymm6
+vpmuludq	%ymm1,%ymm7,%ymm7
+vpmuludq	%ymm1,%ymm8,%ymm8
+vpmuludq	%ymm1,%ymm9,%ymm9
+vpaddq		%ymm2,%ymm6,%ymm2
+vpaddq		%ymm3,%ymm7,%ymm3
+vpaddq		%ymm4,%ymm8,%ymm4
+vpaddq		%ymm5,%ymm9,%ymm5
+vpsrlq		$32,%ymm2,%ymm2
+vpsrlq		$32,%ymm4,%ymm4
+
+#store
+vpblendd	$0xAA,%ymm3,%ymm2,%ymm2
+vpblendd	$0xAA,%ymm5,%ymm4,%ymm4
+
+vmovdqa		%ymm2,(%rdi)
+vmovdqa		%ymm4,32(%rdi)
+
+add		$64,%rsi
+add		$64,%rdx
+add		$64,%rdi
+add		$1,%eax
+cmp		$16,%eax
+jb _looptop2
+
+ret
