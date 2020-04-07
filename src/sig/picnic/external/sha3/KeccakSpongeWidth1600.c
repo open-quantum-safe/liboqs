@@ -23,7 +23,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
     #define prefix oqs_sig_picnic_KeccakWidth1600
     #define SnP KeccakP1600
     #define SnP_width 1600
-    #define SnP_Permute KeccakP1600_Permute_24rounds
+    #define SnP_Permute oqs_sig_picnic_KeccakP1600_Permute_24rounds
     #if defined(KeccakF1600_FastLoop_supported)
         #define SnP_FastLoop_Absorb KeccakF1600_FastLoop_Absorb
     #endif

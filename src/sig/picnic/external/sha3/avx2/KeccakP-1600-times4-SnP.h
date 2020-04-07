@@ -17,6 +17,7 @@ Please refer to PlSnP-documentation.h for more details.
 #define _KeccakP_1600_times4_SnP_h_
 
 #include <stdint.h>
+#include "oqs_picnic_macros.h"
 #include "SIMD256-config.h"
 
 #define KeccakP1600times4_implementation        "256-bit SIMD implementation (" KeccakP1600times4_implementation_config ")"
