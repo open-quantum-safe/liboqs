@@ -130,7 +130,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
 		(*signed_msg)[42 + msg_len] = 0x29;
-		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 40);
+		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 41);
 		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "Falcon-1024")) {
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x2A || sig
@@ -150,7 +150,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
 		(*signed_msg)[42 + msg_len] = 0x2A;
-		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 40);
+		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 41);
 		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "MQDSS-31-48")) {
 		// signed_msg = signature || msg

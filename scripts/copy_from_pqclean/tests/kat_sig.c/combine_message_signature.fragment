@@ -38,7 +38,7 @@
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
 		(*signed_msg)[42 + msg_len] = 0x29;
-		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 40);
+		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 41);
 		return OQS_SUCCESS;
 {%- elif scheme['pretty_name_full'] == "Falcon-1024" %}
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x2A || sig
@@ -58,7 +58,7 @@
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
 		(*signed_msg)[42 + msg_len] = 0x2A;
-		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 40);
+		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 41);
 		return OQS_SUCCESS;
 {%- else %}
 		// not yet implemented
