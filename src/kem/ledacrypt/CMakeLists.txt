@@ -2,65 +2,24 @@
 # scripts/copy_from_pqclean/copy_from_pqclean.py
 
 if(OQS_ENABLE_KEM_ledacrypt_ledakemlt12)
-    
-if(OQS_ENABLE_KEM_ledacrypt_ledakemlt12_leaktime)
-        set(SRCS_LEDACRYPT_LEDAKEMLT12_LEAKTIME_SRCS pqclean_ledakemlt12_leaktime/bf_decoding.c pqclean_ledakemlt12_leaktime/dfr_test.c pqclean_ledakemlt12_leaktime/gf2x_arith.c pqclean_ledakemlt12_leaktime/gf2x_arith_mod_xPplusOne.c pqclean_ledakemlt12_leaktime/H_Q_matrices_generation.c pqclean_ledakemlt12_leaktime/kem.c pqclean_ledakemlt12_leaktime/niederreiter.c pqclean_ledakemlt12_leaktime/rng.c pqclean_ledakemlt12_leaktime/sort.c pqclean_ledakemlt12_leaktime/utils.c)
-else()
-	set(SRCS_LEDACRYPT_LEDAKEMLT12_LEAKTIME_SRCS pqclean_ledacryptledakemlt12_leaktime/oqs_unsupported.c )
-endif()
-    
-
-set(SRCS_LEDACRYPT_LEDAKEMLT12_LEAKTIME_SRCS ${SRCS_LEDACRYPT_LEDAKEMLT12_LEAKTIME_SRCS} kem_ledacrypt_ledakemlt12.c )
-
+    add_library(ledacrypt_ledakemlt12_leaktime OBJECT kem_ledacrypt_ledakemlt12.c pqclean_ledakemlt12_leaktime/bf_decoding.c pqclean_ledakemlt12_leaktime/dfr_test.c pqclean_ledakemlt12_leaktime/gf2x_arith.c pqclean_ledakemlt12_leaktime/gf2x_arith_mod_xPplusOne.c pqclean_ledakemlt12_leaktime/H_Q_matrices_generation.c pqclean_ledakemlt12_leaktime/kem.c pqclean_ledakemlt12_leaktime/niederreiter.c pqclean_ledakemlt12_leaktime/rng.c pqclean_ledakemlt12_leaktime/sort.c pqclean_ledakemlt12_leaktime/utils.c)
+    target_include_directories(ledacrypt_ledakemlt12_leaktime PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(ledacrypt_ledakemlt12_leaktime PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ledakemlt12_leaktime)
+    set(_LEDACRYPT_OBJS ${_LEDACRYPT_OBJS} $<TARGET_OBJECTS:ledacrypt_ledakemlt12_leaktime>)
 endif()
 
 if(OQS_ENABLE_KEM_ledacrypt_ledakemlt32)
-    
-if(OQS_ENABLE_KEM_ledacrypt_ledakemlt32_leaktime)
-        set(SRCS_LEDACRYPT_LEDAKEMLT32_LEAKTIME_SRCS pqclean_ledakemlt32_leaktime/bf_decoding.c pqclean_ledakemlt32_leaktime/dfr_test.c pqclean_ledakemlt32_leaktime/gf2x_arith.c pqclean_ledakemlt32_leaktime/gf2x_arith_mod_xPplusOne.c pqclean_ledakemlt32_leaktime/H_Q_matrices_generation.c pqclean_ledakemlt32_leaktime/kem.c pqclean_ledakemlt32_leaktime/niederreiter.c pqclean_ledakemlt32_leaktime/rng.c pqclean_ledakemlt32_leaktime/sort.c pqclean_ledakemlt32_leaktime/utils.c)
-else()
-	set(SRCS_LEDACRYPT_LEDAKEMLT32_LEAKTIME_SRCS pqclean_ledacryptledakemlt32_leaktime/oqs_unsupported.c )
-endif()
-    
-
-set(SRCS_LEDACRYPT_LEDAKEMLT32_LEAKTIME_SRCS ${SRCS_LEDACRYPT_LEDAKEMLT32_LEAKTIME_SRCS} kem_ledacrypt_ledakemlt32.c )
-
+    add_library(ledacrypt_ledakemlt32_leaktime OBJECT kem_ledacrypt_ledakemlt32.c pqclean_ledakemlt32_leaktime/bf_decoding.c pqclean_ledakemlt32_leaktime/dfr_test.c pqclean_ledakemlt32_leaktime/gf2x_arith.c pqclean_ledakemlt32_leaktime/gf2x_arith_mod_xPplusOne.c pqclean_ledakemlt32_leaktime/H_Q_matrices_generation.c pqclean_ledakemlt32_leaktime/kem.c pqclean_ledakemlt32_leaktime/niederreiter.c pqclean_ledakemlt32_leaktime/rng.c pqclean_ledakemlt32_leaktime/sort.c pqclean_ledakemlt32_leaktime/utils.c)
+    target_include_directories(ledacrypt_ledakemlt32_leaktime PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(ledacrypt_ledakemlt32_leaktime PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ledakemlt32_leaktime)
+    set(_LEDACRYPT_OBJS ${_LEDACRYPT_OBJS} $<TARGET_OBJECTS:ledacrypt_ledakemlt32_leaktime>)
 endif()
 
 if(OQS_ENABLE_KEM_ledacrypt_ledakemlt52)
-    
-if(OQS_ENABLE_KEM_ledacrypt_ledakemlt52_leaktime)
-        set(SRCS_LEDACRYPT_LEDAKEMLT52_LEAKTIME_SRCS pqclean_ledakemlt52_leaktime/bf_decoding.c pqclean_ledakemlt52_leaktime/dfr_test.c pqclean_ledakemlt52_leaktime/gf2x_arith.c pqclean_ledakemlt52_leaktime/gf2x_arith_mod_xPplusOne.c pqclean_ledakemlt52_leaktime/H_Q_matrices_generation.c pqclean_ledakemlt52_leaktime/kem.c pqclean_ledakemlt52_leaktime/niederreiter.c pqclean_ledakemlt52_leaktime/rng.c pqclean_ledakemlt52_leaktime/sort.c pqclean_ledakemlt52_leaktime/utils.c)
-else()
-	set(SRCS_LEDACRYPT_LEDAKEMLT52_LEAKTIME_SRCS pqclean_ledacryptledakemlt52_leaktime/oqs_unsupported.c )
-endif()
-    
-
-set(SRCS_LEDACRYPT_LEDAKEMLT52_LEAKTIME_SRCS ${SRCS_LEDACRYPT_LEDAKEMLT52_LEAKTIME_SRCS} kem_ledacrypt_ledakemlt52.c )
-
+    add_library(ledacrypt_ledakemlt52_leaktime OBJECT kem_ledacrypt_ledakemlt52.c pqclean_ledakemlt52_leaktime/bf_decoding.c pqclean_ledakemlt52_leaktime/dfr_test.c pqclean_ledakemlt52_leaktime/gf2x_arith.c pqclean_ledakemlt52_leaktime/gf2x_arith_mod_xPplusOne.c pqclean_ledakemlt52_leaktime/H_Q_matrices_generation.c pqclean_ledakemlt52_leaktime/kem.c pqclean_ledakemlt52_leaktime/niederreiter.c pqclean_ledakemlt52_leaktime/rng.c pqclean_ledakemlt52_leaktime/sort.c pqclean_ledakemlt52_leaktime/utils.c)
+    target_include_directories(ledacrypt_ledakemlt52_leaktime PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(ledacrypt_ledakemlt52_leaktime PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ledakemlt52_leaktime)
+    set(_LEDACRYPT_OBJS ${_LEDACRYPT_OBJS} $<TARGET_OBJECTS:ledacrypt_ledakemlt52_leaktime>)
 endif()
 
-
-
-    
-add_library(ledacrypt_ledakemlt12_leaktime OBJECT ${SRCS_LEDACRYPT_LEDAKEMLT12_LEAKTIME_SRCS})
-target_include_directories(ledacrypt_ledakemlt12_leaktime PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(ledacrypt_ledakemlt12_leaktime PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/ledacrypt/pqclean_ledacryptledakemlt12_leaktime)
-target_compile_options(ledacrypt_ledakemlt12_leaktime PUBLIC )
-    
-
-    
-add_library(ledacrypt_ledakemlt32_leaktime OBJECT ${SRCS_LEDACRYPT_LEDAKEMLT32_LEAKTIME_SRCS})
-target_include_directories(ledacrypt_ledakemlt32_leaktime PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(ledacrypt_ledakemlt32_leaktime PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/ledacrypt/pqclean_ledacryptledakemlt32_leaktime)
-target_compile_options(ledacrypt_ledakemlt32_leaktime PUBLIC )
-    
-
-    
-add_library(ledacrypt_ledakemlt52_leaktime OBJECT ${SRCS_LEDACRYPT_LEDAKEMLT52_LEAKTIME_SRCS})
-target_include_directories(ledacrypt_ledakemlt52_leaktime PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(ledacrypt_ledakemlt52_leaktime PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/ledacrypt/pqclean_ledacryptledakemlt52_leaktime)
-target_compile_options(ledacrypt_ledakemlt52_leaktime PUBLIC )
-    
-
-
+set(LEDACRYPT_OBJS ${_LEDACRYPT_OBJS} PARENT_SCOPE)

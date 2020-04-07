@@ -3,7 +3,7 @@
 #include <oqs/kem_{{ family }}.h>
 
 {% for scheme in schemes -%}
-#ifdef OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }})
 
 OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new() {
 
@@ -29,103 +29,67 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new() {
 	return kem;
 }
 
-{% for impl in scheme['metadata']['implementations'] %}
-{% if impl['name']|upper != "CLEAN" -%}
+int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
+int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
+int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
-{% endif -%}
 int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
 int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
 int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
-{% if impl['name']|upper != "CLEAN" -%}
 #endif
-{% endif -%}
-{% endfor %}
+    {%- endfor %}
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
-{% if scheme['metadata']['implementations']|length > 1 -%}
-{% for impl in scheme['metadata']['implementations'] -%}
-{% if impl['name'] != 'clean' -%}
-#ifdef OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}
-#ifdef OQS_ENABLE_CPUFEATURES
-	if ({{ impl['rt_options'] }}) {
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if ({%- for flag in impl['required_flags'] -%}available_cpu_extensions.{{ flag|upper }}_ENABLED{%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
 	} else {
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_keypair(public_key, secret_key);
 	}
 #else
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
+    {%- endfor %}
+	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_keypair(public_key, secret_key);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
-{% endif -%}
-{% endfor -%}
-{% endif -%}
-{% if scheme['metadata']['implementations']|length > 1 -%}
-#else
-// Assume CLEAN always compiles
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_CLEAN_crypto_kem_keypair(public_key, secret_key);
-{% else %}
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
-{% endif -%}
-{% if scheme['metadata']['implementations']|length > 1 -%}
-#endif
-{% endif -%}
+    {%- endif %}
 }
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-{% if scheme['metadata']['implementations']|length > 1 -%}
-{% for impl in scheme['metadata']['implementations'] -%}
-{% if impl['name'] != 'clean' -%}
-#ifdef OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}
-#ifdef OQS_ENABLE_CPUFEATURES
-	if ({{ impl['rt_options'] }}) {
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if ({%- for flag in impl['required_flags'] -%}available_cpu_extensions.{{ flag|upper }}_ENABLED{%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
 	} else {
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
 	}
 #else
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
+    {%- endfor %}
+	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
-{% endif -%}
-{% endfor -%}
-{% endif -%}
-{% if scheme['metadata']['implementations']|length > 1 -%}
-#else
-// Assume CLEAN always compiles
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
-{% else %}
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
-{% endif -%}
-{% if scheme['metadata']['implementations']|length > 1 -%}
-#endif
-{% endif -%}
+    {%- endif %}
 }
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
-{% if scheme['metadata']['implementations']|length > 1 -%}
-{% for impl in scheme['metadata']['implementations'] -%}
-{% if impl['name'] != 'clean' -%}
-#ifdef OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}
-#ifdef OQS_ENABLE_CPUFEATURES
-	if ({{ impl['rt_options'] }}) {
+    {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+#if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if ({%- for flag in impl['required_flags'] -%}available_cpu_extensions.{{ flag|upper }}_ENABLED{%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 	} else {
-		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 	}
 #else
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+    {%- endfor %}
+	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+    {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
-{% endif -%}
-{% endfor -%}
-{% endif -%}
-{% if scheme['metadata']['implementations']|length > 1 -%}
-#else
-// Assume CLEAN always compiles
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
-{% else %}
-	return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['metadata']['implementations'][0]['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
-{% endif -%}
-{% if scheme['metadata']['implementations']|length > 1 -%}
-#endif
-{% endif -%}
+    {%- endif %}
 }
 
 #endif

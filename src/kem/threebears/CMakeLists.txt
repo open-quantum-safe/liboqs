@@ -2,101 +2,45 @@
 # scripts/copy_from_pqclean/copy_from_pqclean.py
 
 if(OQS_ENABLE_KEM_threebears_babybear)
-    
-        set(SRCS_THREEBEARS_BABYBEAR_CLEAN_SRCS pqclean_babybear_clean/kem.c pqclean_babybear_clean/melas_fec.c pqclean_babybear_clean/ring.c pqclean_babybear_clean/threebears.c)
-    
-
-set(SRCS_THREEBEARS_BABYBEAR_CLEAN_SRCS ${SRCS_THREEBEARS_BABYBEAR_CLEAN_SRCS} kem_threebears_babybear.c )
-
+    add_library(threebears_babybear_clean OBJECT kem_threebears_babybear.c pqclean_babybear_clean/kem.c pqclean_babybear_clean/melas_fec.c pqclean_babybear_clean/ring.c pqclean_babybear_clean/threebears.c)
+    target_include_directories(threebears_babybear_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(threebears_babybear_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_babybear_clean)
+    set(_THREEBEARS_OBJS ${_THREEBEARS_OBJS} $<TARGET_OBJECTS:threebears_babybear_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_threebears_babybear_ephem)
-    
-        set(SRCS_THREEBEARS_BABYBEAR_EPHEM_CLEAN_SRCS pqclean_babybear_ephem_clean/kem.c pqclean_babybear_ephem_clean/melas_fec.c pqclean_babybear_ephem_clean/ring.c pqclean_babybear_ephem_clean/threebears.c)
-    
-
-set(SRCS_THREEBEARS_BABYBEAR_EPHEM_CLEAN_SRCS ${SRCS_THREEBEARS_BABYBEAR_EPHEM_CLEAN_SRCS} kem_threebears_babybear_ephem.c )
-
+    add_library(threebears_babybear_ephem_clean OBJECT kem_threebears_babybear_ephem.c pqclean_babybear-ephem_clean/kem.c pqclean_babybear-ephem_clean/melas_fec.c pqclean_babybear-ephem_clean/ring.c pqclean_babybear-ephem_clean/threebears.c)
+    target_include_directories(threebears_babybear_ephem_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(threebears_babybear_ephem_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_babybear-ephem_clean)
+    set(_THREEBEARS_OBJS ${_THREEBEARS_OBJS} $<TARGET_OBJECTS:threebears_babybear_ephem_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_threebears_mamabear)
-    
-        set(SRCS_THREEBEARS_MAMABEAR_CLEAN_SRCS pqclean_mamabear_clean/kem.c pqclean_mamabear_clean/melas_fec.c pqclean_mamabear_clean/ring.c pqclean_mamabear_clean/threebears.c)
-    
-
-set(SRCS_THREEBEARS_MAMABEAR_CLEAN_SRCS ${SRCS_THREEBEARS_MAMABEAR_CLEAN_SRCS} kem_threebears_mamabear.c )
-
+    add_library(threebears_mamabear_clean OBJECT kem_threebears_mamabear.c pqclean_mamabear_clean/kem.c pqclean_mamabear_clean/melas_fec.c pqclean_mamabear_clean/ring.c pqclean_mamabear_clean/threebears.c)
+    target_include_directories(threebears_mamabear_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(threebears_mamabear_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_mamabear_clean)
+    set(_THREEBEARS_OBJS ${_THREEBEARS_OBJS} $<TARGET_OBJECTS:threebears_mamabear_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_threebears_mamabear_ephem)
-    
-        set(SRCS_THREEBEARS_MAMABEAR_EPHEM_CLEAN_SRCS pqclean_mamabear_ephem_clean/kem.c pqclean_mamabear_ephem_clean/melas_fec.c pqclean_mamabear_ephem_clean/ring.c pqclean_mamabear_ephem_clean/threebears.c)
-    
-
-set(SRCS_THREEBEARS_MAMABEAR_EPHEM_CLEAN_SRCS ${SRCS_THREEBEARS_MAMABEAR_EPHEM_CLEAN_SRCS} kem_threebears_mamabear_ephem.c )
-
+    add_library(threebears_mamabear_ephem_clean OBJECT kem_threebears_mamabear_ephem.c pqclean_mamabear-ephem_clean/kem.c pqclean_mamabear-ephem_clean/melas_fec.c pqclean_mamabear-ephem_clean/ring.c pqclean_mamabear-ephem_clean/threebears.c)
+    target_include_directories(threebears_mamabear_ephem_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(threebears_mamabear_ephem_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_mamabear-ephem_clean)
+    set(_THREEBEARS_OBJS ${_THREEBEARS_OBJS} $<TARGET_OBJECTS:threebears_mamabear_ephem_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_threebears_papabear)
-    
-        set(SRCS_THREEBEARS_PAPABEAR_CLEAN_SRCS pqclean_papabear_clean/kem.c pqclean_papabear_clean/melas_fec.c pqclean_papabear_clean/ring.c pqclean_papabear_clean/threebears.c)
-    
-
-set(SRCS_THREEBEARS_PAPABEAR_CLEAN_SRCS ${SRCS_THREEBEARS_PAPABEAR_CLEAN_SRCS} kem_threebears_papabear.c )
-
+    add_library(threebears_papabear_clean OBJECT kem_threebears_papabear.c pqclean_papabear_clean/kem.c pqclean_papabear_clean/melas_fec.c pqclean_papabear_clean/ring.c pqclean_papabear_clean/threebears.c)
+    target_include_directories(threebears_papabear_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(threebears_papabear_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_papabear_clean)
+    set(_THREEBEARS_OBJS ${_THREEBEARS_OBJS} $<TARGET_OBJECTS:threebears_papabear_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_threebears_papabear_ephem)
-    
-        set(SRCS_THREEBEARS_PAPABEAR_EPHEM_CLEAN_SRCS pqclean_papabear_ephem_clean/kem.c pqclean_papabear_ephem_clean/melas_fec.c pqclean_papabear_ephem_clean/ring.c pqclean_papabear_ephem_clean/threebears.c)
-    
-
-set(SRCS_THREEBEARS_PAPABEAR_EPHEM_CLEAN_SRCS ${SRCS_THREEBEARS_PAPABEAR_EPHEM_CLEAN_SRCS} kem_threebears_papabear_ephem.c )
-
+    add_library(threebears_papabear_ephem_clean OBJECT kem_threebears_papabear_ephem.c pqclean_papabear-ephem_clean/kem.c pqclean_papabear-ephem_clean/melas_fec.c pqclean_papabear-ephem_clean/ring.c pqclean_papabear-ephem_clean/threebears.c)
+    target_include_directories(threebears_papabear_ephem_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(threebears_papabear_ephem_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_papabear-ephem_clean)
+    set(_THREEBEARS_OBJS ${_THREEBEARS_OBJS} $<TARGET_OBJECTS:threebears_papabear_ephem_clean>)
 endif()
 
-
-
-    
-add_library(threebears_babybear_clean OBJECT ${SRCS_THREEBEARS_BABYBEAR_CLEAN_SRCS})
-target_include_directories(threebears_babybear_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(threebears_babybear_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/threebears/pqclean_threebearsbabybear_clean)
-target_compile_options(threebears_babybear_clean PUBLIC )
-    
-
-    
-add_library(threebears_babybear_ephem_clean OBJECT ${SRCS_THREEBEARS_BABYBEAR_EPHEM_CLEAN_SRCS})
-target_include_directories(threebears_babybear_ephem_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(threebears_babybear_ephem_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/threebears/pqclean_threebearsbabybear_ephem_clean)
-target_compile_options(threebears_babybear_ephem_clean PUBLIC )
-    
-
-    
-add_library(threebears_mamabear_clean OBJECT ${SRCS_THREEBEARS_MAMABEAR_CLEAN_SRCS})
-target_include_directories(threebears_mamabear_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(threebears_mamabear_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/threebears/pqclean_threebearsmamabear_clean)
-target_compile_options(threebears_mamabear_clean PUBLIC )
-    
-
-    
-add_library(threebears_mamabear_ephem_clean OBJECT ${SRCS_THREEBEARS_MAMABEAR_EPHEM_CLEAN_SRCS})
-target_include_directories(threebears_mamabear_ephem_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(threebears_mamabear_ephem_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/threebears/pqclean_threebearsmamabear_ephem_clean)
-target_compile_options(threebears_mamabear_ephem_clean PUBLIC )
-    
-
-    
-add_library(threebears_papabear_clean OBJECT ${SRCS_THREEBEARS_PAPABEAR_CLEAN_SRCS})
-target_include_directories(threebears_papabear_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(threebears_papabear_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/threebears/pqclean_threebearspapabear_clean)
-target_compile_options(threebears_papabear_clean PUBLIC )
-    
-
-    
-add_library(threebears_papabear_ephem_clean OBJECT ${SRCS_THREEBEARS_PAPABEAR_EPHEM_CLEAN_SRCS})
-target_include_directories(threebears_papabear_ephem_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(threebears_papabear_ephem_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/threebears/pqclean_threebearspapabear_ephem_clean)
-target_compile_options(threebears_papabear_ephem_clean PUBLIC )
-    
-
-
+set(THREEBEARS_OBJS ${_THREEBEARS_OBJS} PARENT_SCOPE)

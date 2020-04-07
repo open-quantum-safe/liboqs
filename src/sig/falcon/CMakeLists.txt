@@ -2,37 +2,17 @@
 # scripts/copy_from_pqclean/copy_from_pqclean.py
 
 if(OQS_ENABLE_SIG_falcon_512)
-    
-        set(SRCS_FALCON_512_CLEAN_SRCS pqclean_falcon_512_clean/codec.c pqclean_falcon_512_clean/common.c pqclean_falcon_512_clean/fft.c pqclean_falcon_512_clean/fpr.c pqclean_falcon_512_clean/keygen.c pqclean_falcon_512_clean/pqclean.c pqclean_falcon_512_clean/rng.c pqclean_falcon_512_clean/sign.c pqclean_falcon_512_clean/vrfy.c)
-    
-
-set(SRCS_FALCON_512_CLEAN_SRCS ${SRCS_FALCON_512_CLEAN_SRCS} sig_falcon_512.c )
-
+    add_library(falcon_512_clean OBJECT sig_falcon_512.c pqclean_falcon-512_clean/codec.c pqclean_falcon-512_clean/common.c pqclean_falcon-512_clean/fft.c pqclean_falcon-512_clean/fpr.c pqclean_falcon-512_clean/keygen.c pqclean_falcon-512_clean/pqclean.c pqclean_falcon-512_clean/rng.c pqclean_falcon-512_clean/sign.c pqclean_falcon-512_clean/vrfy.c)
+    target_include_directories(falcon_512_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(falcon_512_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-512_clean)
+    set(_FALCON_OBJS ${_FALCON_OBJS} $<TARGET_OBJECTS:falcon_512_clean>)
 endif()
 
 if(OQS_ENABLE_SIG_falcon_1024)
-    
-        set(SRCS_FALCON_1024_CLEAN_SRCS pqclean_falcon_1024_clean/codec.c pqclean_falcon_1024_clean/common.c pqclean_falcon_1024_clean/fft.c pqclean_falcon_1024_clean/fpr.c pqclean_falcon_1024_clean/keygen.c pqclean_falcon_1024_clean/pqclean.c pqclean_falcon_1024_clean/rng.c pqclean_falcon_1024_clean/sign.c pqclean_falcon_1024_clean/vrfy.c)
-    
-
-set(SRCS_FALCON_1024_CLEAN_SRCS ${SRCS_FALCON_1024_CLEAN_SRCS} sig_falcon_1024.c )
-
+    add_library(falcon_1024_clean OBJECT sig_falcon_1024.c pqclean_falcon-1024_clean/codec.c pqclean_falcon-1024_clean/common.c pqclean_falcon-1024_clean/fft.c pqclean_falcon-1024_clean/fpr.c pqclean_falcon-1024_clean/keygen.c pqclean_falcon-1024_clean/pqclean.c pqclean_falcon-1024_clean/rng.c pqclean_falcon-1024_clean/sign.c pqclean_falcon-1024_clean/vrfy.c)
+    target_include_directories(falcon_1024_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(falcon_1024_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_falcon-1024_clean)
+    set(_FALCON_OBJS ${_FALCON_OBJS} $<TARGET_OBJECTS:falcon_1024_clean>)
 endif()
 
-
-
-    
-add_library(falcon_512_clean OBJECT ${SRCS_FALCON_512_CLEAN_SRCS})
-target_include_directories(falcon_512_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(falcon_512_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/falcon/pqclean_falcon512_clean)
-target_compile_options(falcon_512_clean PUBLIC )
-    
-
-    
-add_library(falcon_1024_clean OBJECT ${SRCS_FALCON_1024_CLEAN_SRCS})
-target_include_directories(falcon_1024_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(falcon_1024_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/falcon/pqclean_falcon1024_clean)
-target_compile_options(falcon_1024_clean PUBLIC )
-    
-
-
+set(FALCON_OBJS ${_FALCON_OBJS} PARENT_SCOPE)

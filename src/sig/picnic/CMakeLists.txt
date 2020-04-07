@@ -77,10 +77,12 @@ endif()
 
 if(OQS_USE_SSE2_INSTRUCTIONS)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
+    add_compile_options(-msse2)
 endif()
 if(PICNIC_WITH_AVX2)
     target_compile_definitions(picnic PRIVATE WITH_AVX2
                                               WITH_KECCAK_X4)
+    add_compile_options(picnic PRIVATE -mavx2)
 endif()
 if(OQS_USE_NEON_INSTRUCTIONS)
     target_compile_definitions(picnic PRIVATE WITH_NEON)

@@ -9,13 +9,6 @@ import subprocess
 import yaml
 from pathlib import Path
 
-INSTR_MAP = { 
-  "avx2": "OQS_USE_AVX2_INSTRUCTIONS",
-  "bmi2": "OQS_USE_BMI2_INSTRUCTIONS",
-  "aes": "OQS_USE_AES_INSTRUCTIONS",
-  "popcnt": "OQS_USE_POPCNT_INSTRUCTIONS"
-  }
-
 if 'PQCLEAN_DIR' not in os.environ:
     print("Must set environment variable PQCLEAN_DIR")
     exit(1)
@@ -67,6 +60,7 @@ def load_instructions():
             scheme['metadata']['ind_cca'] = 'true' if (scheme['metadata']['claimed-security'] == "IND-CCA2") else 'false'
             scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
             scheme['scheme_c'] = scheme['scheme'].replace('-', '')
+            scheme['default_implementation'] = family['default_implementation']
     for family in instructions['sigs']:
         family['type'] = 'sig'
         family['pqclean_type'] = 'sign'
@@ -76,27 +70,27 @@ def load_instructions():
             scheme['metadata']['euf_cma'] = 'true'
             scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
             scheme['scheme_c'] = scheme['scheme'].replace('-', '')
+            scheme['default_implementation'] = family['default_implementation']
     return instructions
 
 # Copy over all files for a given impl in a family using scheme
 # Returns list of all relative source files
 def handle_implementation(impl, family, scheme):
-        shutil.rmtree(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'].replace('-','_'), impl)), ignore_errors=True)
-        srcfolder = os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'].replace('-','_'), impl))
+        shutil.rmtree(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], impl)), ignore_errors=True)
+        srcfolder = os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], impl))
         subprocess.run([
             'cp',
             '-pr',
             os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_' + family['pqclean_type'], scheme['pqclean_scheme'], impl),
             srcfolder
         ])
-        try: 
-            os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'].replace('-','_'), impl), 'Makefile'))
-            os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'].replace('-','_'), impl), 'Makefile.Microsoft_nmake'))
+        try:
+            os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], impl), 'Makefile'))
+            os.remove(os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'], impl), 'Makefile.Microsoft_nmake'))
         except FileNotFoundError:
-           pass 
+           pass
         extensions = [ '.c', '.s' ]
         return [str(x.relative_to(srcfolder)) for x in Path(srcfolder).iterdir() if x.suffix.lower() in extensions]
-        
 
 
 instructions = load_instructions()
@@ -107,51 +101,28 @@ for family in instructions['kems'] + instructions['sigs']:
             os.mkdir(os.path.join('src', family['type'], family['name']))
         except:
             pass
-        # If no scheme['implementation'] given, get the list from META.yml and add all implementations
-        try:
-           impl = scheme['implementation']
-        except KeyError:
-           impl = None
-        if (impl):
+        if 'implementation' in scheme:
+            impl = scheme['implementation']
             srcs = handle_implementation(impl, family, scheme)
             if (scheme['sources']):
                assert(len(scheme['sources']) == len(srcs))
-            # in any case: add 'sources' to implementation(s) 
+            # in any case: add 'sources' to implementation(s)
             # Only retain this 1 implementation:
             scheme['metadata']['implementations'] = [imp for imp in scheme['metadata']['implementations'] if imp['name'] == impl]
             scheme['metadata']['implementations'][0]['sources'] = srcs
-
         else:
+            # If no scheme['implementation'] given, get the list from META.yml and add all implementations
            for impl in scheme['metadata']['implementations']:
                srcs = handle_implementation(impl['name'], family, scheme)
-               # in any case: add 'sources' to implementation(s) 
+               # in any case: add 'sources' to implementation(s)
                impl['sources'] = srcs
-               # generate 'oqs_unsupported.c' files to permit building also on platforms where the optimized code cannot compile
-               if (impl['name'] != 'clean'):
-                   unsupported_filename = os.path.join('src', family['type'], family['name'], 'pqclean_{}_{}'.format(scheme['pqclean_scheme'].replace('-','_'), impl['name']) , 'oqs_unsupported.c')
-                   with open(unsupported_filename, 'w') as gen_file:
-                       gen_file.write('int {}_{}_unsupported=1;\n'.format(scheme['pqclean_scheme'].replace('-','_'), impl['name']))
                # also add suitable defines:
-               try: 
-                      comp_opts = ""
-                      rt_opts = ""
-                      cmake_opts = ""
+               try:
                       for i in range(len(impl['supported_platforms'])):
                          req = impl['supported_platforms'][i]
-                         if (req['architecture'] == "x86_64"):
-                            for i in range(len(req['required_flags'])):
-                               rt_opts = rt_opts + "OQS_RT_cpu_flags()."+req['required_flags'][i].upper()+"_INSTRUCTIONS "
-                               cmake_opts = cmake_opts + INSTR_MAP[req['required_flags'][i]] + " "
-                               comp_opts = comp_opts + "-m"+req['required_flags'][i]
-                               if (i < len(req['required_flags'])-1):
-                                 rt_opts = rt_opts + " && "
-                                 cmake_opts = cmake_opts + " AND "
-                                 comp_opts = comp_opts + " "
-                      impl['compile_options'] = comp_opts
-                      impl['rt_options'] = rt_opts
-                      impl['cmake_options'] = cmake_opts
+                         impl['required_flags'] = req['required_flags']
                except KeyError as ke:
-                      if (impl['name'] != "clean"):
+                      if (impl['name'] != family['default_implementation']):
                           print("No required flags found for %s (KeyError %s on impl %s)\n" % (scheme['scheme'], str(ke), impl['name']))
                       pass
 

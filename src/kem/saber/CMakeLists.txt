@@ -2,53 +2,24 @@
 # scripts/copy_from_pqclean/copy_from_pqclean.py
 
 if(OQS_ENABLE_KEM_saber_lightsaber)
-    
-        set(SRCS_SABER_LIGHTSABER_CLEAN_SRCS pqclean_lightsaber_clean/cbd.c pqclean_lightsaber_clean/kem.c pqclean_lightsaber_clean/pack_unpack.c pqclean_lightsaber_clean/poly.c pqclean_lightsaber_clean/poly_mul.c pqclean_lightsaber_clean/SABER_indcpa.c pqclean_lightsaber_clean/verify.c)
-    
-
-set(SRCS_SABER_LIGHTSABER_CLEAN_SRCS ${SRCS_SABER_LIGHTSABER_CLEAN_SRCS} kem_saber_lightsaber.c )
-
+    add_library(saber_lightsaber_clean OBJECT kem_saber_lightsaber.c pqclean_lightsaber_clean/cbd.c pqclean_lightsaber_clean/kem.c pqclean_lightsaber_clean/pack_unpack.c pqclean_lightsaber_clean/poly.c pqclean_lightsaber_clean/poly_mul.c pqclean_lightsaber_clean/SABER_indcpa.c pqclean_lightsaber_clean/verify.c)
+    target_include_directories(saber_lightsaber_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(saber_lightsaber_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_lightsaber_clean)
+    set(_SABER_OBJS ${_SABER_OBJS} $<TARGET_OBJECTS:saber_lightsaber_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_saber_saber)
-    
-        set(SRCS_SABER_SABER_CLEAN_SRCS pqclean_saber_clean/cbd.c pqclean_saber_clean/kem.c pqclean_saber_clean/pack_unpack.c pqclean_saber_clean/poly.c pqclean_saber_clean/poly_mul.c pqclean_saber_clean/SABER_indcpa.c pqclean_saber_clean/verify.c)
-    
-
-set(SRCS_SABER_SABER_CLEAN_SRCS ${SRCS_SABER_SABER_CLEAN_SRCS} kem_saber_saber.c )
-
+    add_library(saber_saber_clean OBJECT kem_saber_saber.c pqclean_saber_clean/cbd.c pqclean_saber_clean/kem.c pqclean_saber_clean/pack_unpack.c pqclean_saber_clean/poly.c pqclean_saber_clean/poly_mul.c pqclean_saber_clean/SABER_indcpa.c pqclean_saber_clean/verify.c)
+    target_include_directories(saber_saber_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(saber_saber_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_saber_clean)
+    set(_SABER_OBJS ${_SABER_OBJS} $<TARGET_OBJECTS:saber_saber_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_saber_firesaber)
-    
-        set(SRCS_SABER_FIRESABER_CLEAN_SRCS pqclean_firesaber_clean/cbd.c pqclean_firesaber_clean/kem.c pqclean_firesaber_clean/pack_unpack.c pqclean_firesaber_clean/poly.c pqclean_firesaber_clean/poly_mul.c pqclean_firesaber_clean/SABER_indcpa.c pqclean_firesaber_clean/verify.c)
-    
-
-set(SRCS_SABER_FIRESABER_CLEAN_SRCS ${SRCS_SABER_FIRESABER_CLEAN_SRCS} kem_saber_firesaber.c )
-
+    add_library(saber_firesaber_clean OBJECT kem_saber_firesaber.c pqclean_firesaber_clean/cbd.c pqclean_firesaber_clean/kem.c pqclean_firesaber_clean/pack_unpack.c pqclean_firesaber_clean/poly.c pqclean_firesaber_clean/poly_mul.c pqclean_firesaber_clean/SABER_indcpa.c pqclean_firesaber_clean/verify.c)
+    target_include_directories(saber_firesaber_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(saber_firesaber_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_firesaber_clean)
+    set(_SABER_OBJS ${_SABER_OBJS} $<TARGET_OBJECTS:saber_firesaber_clean>)
 endif()
 
-
-
-    
-add_library(saber_lightsaber_clean OBJECT ${SRCS_SABER_LIGHTSABER_CLEAN_SRCS})
-target_include_directories(saber_lightsaber_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(saber_lightsaber_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/saber/pqclean_saberlightsaber_clean)
-target_compile_options(saber_lightsaber_clean PUBLIC )
-    
-
-    
-add_library(saber_saber_clean OBJECT ${SRCS_SABER_SABER_CLEAN_SRCS})
-target_include_directories(saber_saber_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(saber_saber_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/saber/pqclean_sabersaber_clean)
-target_compile_options(saber_saber_clean PUBLIC )
-    
-
-    
-add_library(saber_firesaber_clean OBJECT ${SRCS_SABER_FIRESABER_CLEAN_SRCS})
-target_include_directories(saber_firesaber_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(saber_firesaber_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/saber/pqclean_saberfiresaber_clean)
-target_compile_options(saber_firesaber_clean PUBLIC )
-    
-
-
+set(SABER_OBJS ${_SABER_OBJS} PARENT_SCOPE)

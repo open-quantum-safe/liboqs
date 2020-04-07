@@ -68,54 +68,51 @@ typedef enum {
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
 
-#ifdef OQS_ENABLE_CPUFEATURES
+#if defined(OQS_OPTIMIZED_BUILD)
+
+/**
+ * Architecture macros.
+ */
+#if (defined(_M_X64) || defined(__x86_64__))
+#define ARCH_X86_64
+#elif (defined(__arm__) || defined(_M_ARM) || defined(__aarch64__))
+#define ARCH_ARM_ANY
+#endif
+
 /**
  * CPU runtime detection flags
  */
+#if defined(ARCH_X86_64)
 typedef struct {
-	int AES_INSTRUCTIONS; ///< Runtime CPU feature flag indicating AES support
-
-	int AVX_INSTRUCTIONS; ///< Runtime CPU feature flag indicating AVX support
-
-	int AVX2_INSTRUCTIONS; ///< Runtime CPU feature flag indicating AVX2 support
-
-	int AVX512_INSTRUCTIONS; ///< Runtime CPU feature flag indicating AVX512 support
-
-	int BMI_INSTRUCTIONS; ///< Runtime CPU feature flag indicating BMI support
-
-	int BMI2_INSTRUCTIONS; ///< Runtime CPU feature flag indicating BMI2 support
-
-	int FMA_INSTRUCTIONS; ///< Runtime CPU feature flag indicating FMA support
-
-	int FMA4_INSTRUCTIONS; ///< Runtime CPU feature flag indicating FMA4 support
-
-	int MMX_INSTRUCTIONS; ///< Runtime CPU feature flag indicating MMX support
-
-	int POPCNT_INSTRUCTIONS; ///< Runtime CPU feature flag indicating POPCNT support
-
-	int SSE_INSTRUCTIONS; ///< Runtime CPU feature flag indicating SSE support
-
-	int SSE2_INSTRUCTIONS;  ///< Runtime CPU feature flag indicating SSE2 support
-
-	int SSE3_INSTRUCTIONS; ///<  Runtime CPU feature flag indicating SSE3 support
-
-	int SSE4A_INSTRUCTIONS; ///< Runtime CPU feature flag indicating SSE4A support
-
-	int NEON_INSTRUCTIONS; ///< Runtime CPU feature flag indicating NEON support
-} OQS_RT;
+	unsigned int AES_ENABLED;
+	unsigned int AVX_ENABLED;
+	unsigned int AVX2_ENABLED;
+	unsigned int AVX512_ENABLED;
+	unsigned int BMI_ENABLED;
+	unsigned int BMI2_ENABLED;
+	unsigned int POPCNT_ENABLED;
+	unsigned int SSE_ENABLED;
+	unsigned int SSE2_ENABLED;
+	unsigned int SSE3_ENABLED;
+} OQS_CPU_EXTENSIONS;
+#elif defined(ARCH_ARM_ANY)
+typedef struct {
+	unsigned int NEON_ENABLED;
+} OQS_CPU_EXTENSIONS;
+#endif
 
 /**
- * CPU runtime detection flags
+ * Returns a list of available CPU extensions.
  *
- * \return Struct of type OQS_RT containing the CPU runtime detection flags
+ * \return Struct of type OQS_CPU_EXTENSIONS containing flags for runtime CPU extension detection.
  */
-OQS_API OQS_RT OQS_RT_cpu_flags(void);
+OQS_API OQS_CPU_EXTENSIONS OQS_get_available_CPU_extensions(void);
 
-#endif /* OQS_ENABLE_CPUFEATURES */
+#endif /* OQS_OPTIMIZED_BUILD */
 
 /**
- * Initialization function.
- * For now, it sets the CPU runtime feature flags
+ * This currently only sets the values in the OQS_CPU_EXTENSIONS,
+ * and so has effect only when OQS_OPTIMIZED_BUILD is set.
  */
 OQS_API void OQS_init(void);
 

@@ -1,7 +1,17 @@
 cmake_minimum_required (VERSION 3.5)
-cmake_policy(SET CMP0063 NEW)
+# option() honors normal variables.
+# see: https://cmake.org/cmake/help/git-stage/policy/CMP0077.html
+if(POLICY CMP0077)
+    cmake_policy(SET CMP0077 NEW)
+endif()
+# Honor symbol visibility properties for all target types.
+# see: https://cmake.org/cmake/help/git-stage/policy/CMP0063.html
+if(POLICY CMP0063)
+    cmake_policy(SET CMP0063 NEW)
+endif()
 
 project(liboqs C ASM)
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -11,8 +21,6 @@ set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|amd64|AMD64")
     set(ARCH "x86_64")
-elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "x86|i386|i686")
-    set(ARCH "x86")
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm64|aarch64")
     set(ARCH "arm64")
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
@@ -30,11 +38,10 @@ endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
-include(.CMake/compiler_flags.cmake)
 if(CMAKE_BUILD_TYPE STREQUAL "Optimized")
-    include(third_party/cpu_features/add_lib.cmake)
-    include(.CMake/cpu_extensions.cmake)
+    set(OQS_OPTIMIZED_BUILD ON)
 endif()
+include(.CMake/compiler_opts.cmake)
 
 include(.CMake/alg_support.cmake)
 
@@ -136,7 +143,7 @@ if(NOT CMAKE_BUILD_TYPE STREQUAL "Dependency")
     if(NOT WIN32)
         add_custom_target(
             prettyprint
-            COMMAND find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --options=.astylerc
+            COMMAND find src tests .CMake -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --options=.astylerc
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             USES_TERMINAL)
     endif()

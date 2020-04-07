@@ -17,11 +17,13 @@ static uint64_t load64(const unsigned char *x) {
 }
 
 static void store64(uint8_t *x, uint64_t u) {
-	unsigned int i;
-
-	for (i = 0; i < 8; ++i) {
-		x[i] = u;
-		u >>= 8;
+	union {
+		uint64_t val;
+		uint8_t bytes[8];
+	} v;
+	v.val = u;
+	for (unsigned int i = 0; i < 8; ++i) {
+		x[i] = v.bytes[i];
 	}
 }
 

@@ -2,69 +2,31 @@
 # scripts/copy_from_pqclean/copy_from_pqclean.py
 
 if(OQS_ENABLE_KEM_ntru_hps2048509)
-    
-        set(SRCS_NTRU_HPS2048509_CLEAN_SRCS pqclean_ntruhps2048509_clean/crypto_sort.c pqclean_ntruhps2048509_clean/kem.c pqclean_ntruhps2048509_clean/owcpa.c pqclean_ntruhps2048509_clean/pack3.c pqclean_ntruhps2048509_clean/packq.c pqclean_ntruhps2048509_clean/poly.c pqclean_ntruhps2048509_clean/sample.c pqclean_ntruhps2048509_clean/verify.c)
-    
-
-set(SRCS_NTRU_HPS2048509_CLEAN_SRCS ${SRCS_NTRU_HPS2048509_CLEAN_SRCS} kem_ntru_hps2048509.c )
-
+    add_library(ntru_hps2048509_clean OBJECT kem_ntru_hps2048509.c pqclean_ntruhps2048509_clean/crypto_sort.c pqclean_ntruhps2048509_clean/kem.c pqclean_ntruhps2048509_clean/owcpa.c pqclean_ntruhps2048509_clean/pack3.c pqclean_ntruhps2048509_clean/packq.c pqclean_ntruhps2048509_clean/poly.c pqclean_ntruhps2048509_clean/sample.c pqclean_ntruhps2048509_clean/verify.c)
+    target_include_directories(ntru_hps2048509_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(ntru_hps2048509_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ntruhps2048509_clean)
+    set(_NTRU_OBJS ${_NTRU_OBJS} $<TARGET_OBJECTS:ntru_hps2048509_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_ntru_hps2048677)
-    
-        set(SRCS_NTRU_HPS2048677_CLEAN_SRCS pqclean_ntruhps2048677_clean/crypto_sort.c pqclean_ntruhps2048677_clean/kem.c pqclean_ntruhps2048677_clean/owcpa.c pqclean_ntruhps2048677_clean/pack3.c pqclean_ntruhps2048677_clean/packq.c pqclean_ntruhps2048677_clean/poly.c pqclean_ntruhps2048677_clean/sample.c pqclean_ntruhps2048677_clean/verify.c)
-    
-
-set(SRCS_NTRU_HPS2048677_CLEAN_SRCS ${SRCS_NTRU_HPS2048677_CLEAN_SRCS} kem_ntru_hps2048677.c )
-
+    add_library(ntru_hps2048677_clean OBJECT kem_ntru_hps2048677.c pqclean_ntruhps2048677_clean/crypto_sort.c pqclean_ntruhps2048677_clean/kem.c pqclean_ntruhps2048677_clean/owcpa.c pqclean_ntruhps2048677_clean/pack3.c pqclean_ntruhps2048677_clean/packq.c pqclean_ntruhps2048677_clean/poly.c pqclean_ntruhps2048677_clean/sample.c pqclean_ntruhps2048677_clean/verify.c)
+    target_include_directories(ntru_hps2048677_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(ntru_hps2048677_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ntruhps2048677_clean)
+    set(_NTRU_OBJS ${_NTRU_OBJS} $<TARGET_OBJECTS:ntru_hps2048677_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_ntru_hps4096821)
-    
-        set(SRCS_NTRU_HPS4096821_CLEAN_SRCS pqclean_ntruhps4096821_clean/crypto_sort.c pqclean_ntruhps4096821_clean/kem.c pqclean_ntruhps4096821_clean/owcpa.c pqclean_ntruhps4096821_clean/pack3.c pqclean_ntruhps4096821_clean/packq.c pqclean_ntruhps4096821_clean/poly.c pqclean_ntruhps4096821_clean/sample.c pqclean_ntruhps4096821_clean/verify.c)
-    
-
-set(SRCS_NTRU_HPS4096821_CLEAN_SRCS ${SRCS_NTRU_HPS4096821_CLEAN_SRCS} kem_ntru_hps4096821.c )
-
+    add_library(ntru_hps4096821_clean OBJECT kem_ntru_hps4096821.c pqclean_ntruhps4096821_clean/crypto_sort.c pqclean_ntruhps4096821_clean/kem.c pqclean_ntruhps4096821_clean/owcpa.c pqclean_ntruhps4096821_clean/pack3.c pqclean_ntruhps4096821_clean/packq.c pqclean_ntruhps4096821_clean/poly.c pqclean_ntruhps4096821_clean/sample.c pqclean_ntruhps4096821_clean/verify.c)
+    target_include_directories(ntru_hps4096821_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(ntru_hps4096821_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ntruhps4096821_clean)
+    set(_NTRU_OBJS ${_NTRU_OBJS} $<TARGET_OBJECTS:ntru_hps4096821_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_ntru_hrss701)
-    
-        set(SRCS_NTRU_HRSS701_CLEAN_SRCS pqclean_ntruhrss701_clean/kem.c pqclean_ntruhrss701_clean/owcpa.c pqclean_ntruhrss701_clean/pack3.c pqclean_ntruhrss701_clean/packq.c pqclean_ntruhrss701_clean/poly.c pqclean_ntruhrss701_clean/sample.c pqclean_ntruhrss701_clean/verify.c)
-    
-
-set(SRCS_NTRU_HRSS701_CLEAN_SRCS ${SRCS_NTRU_HRSS701_CLEAN_SRCS} kem_ntru_hrss701.c )
-
+    add_library(ntru_hrss701_clean OBJECT kem_ntru_hrss701.c pqclean_ntruhrss701_clean/kem.c pqclean_ntruhrss701_clean/owcpa.c pqclean_ntruhrss701_clean/pack3.c pqclean_ntruhrss701_clean/packq.c pqclean_ntruhrss701_clean/poly.c pqclean_ntruhrss701_clean/sample.c pqclean_ntruhrss701_clean/verify.c)
+    target_include_directories(ntru_hrss701_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(ntru_hrss701_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ntruhrss701_clean)
+    set(_NTRU_OBJS ${_NTRU_OBJS} $<TARGET_OBJECTS:ntru_hrss701_clean>)
 endif()
 
-
-
-    
-add_library(ntru_hps2048509_clean OBJECT ${SRCS_NTRU_HPS2048509_CLEAN_SRCS})
-target_include_directories(ntru_hps2048509_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(ntru_hps2048509_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/ntru/pqclean_ntruhps2048509_clean)
-target_compile_options(ntru_hps2048509_clean PUBLIC )
-    
-
-    
-add_library(ntru_hps2048677_clean OBJECT ${SRCS_NTRU_HPS2048677_CLEAN_SRCS})
-target_include_directories(ntru_hps2048677_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(ntru_hps2048677_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/ntru/pqclean_ntruhps2048677_clean)
-target_compile_options(ntru_hps2048677_clean PUBLIC )
-    
-
-    
-add_library(ntru_hps4096821_clean OBJECT ${SRCS_NTRU_HPS4096821_CLEAN_SRCS})
-target_include_directories(ntru_hps4096821_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(ntru_hps4096821_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/ntru/pqclean_ntruhps4096821_clean)
-target_compile_options(ntru_hps4096821_clean PUBLIC )
-    
-
-    
-add_library(ntru_hrss701_clean OBJECT ${SRCS_NTRU_HRSS701_CLEAN_SRCS})
-target_include_directories(ntru_hrss701_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(ntru_hrss701_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/ntru/pqclean_ntruhrss701_clean)
-target_compile_options(ntru_hrss701_clean PUBLIC )
-    
-
-
+set(NTRU_OBJS ${_NTRU_OBJS} PARENT_SCOPE)

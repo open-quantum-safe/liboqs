@@ -2,83 +2,48 @@
 # scripts/copy_from_pqclean/copy_from_pqclean.py
 
 if(OQS_ENABLE_SIG_dilithium_2)
-    
-        set(SRCS_DILITHIUM_2_CLEAN_SRCS pqclean_dilithium2_clean/ntt.c pqclean_dilithium2_clean/packing.c pqclean_dilithium2_clean/poly.c pqclean_dilithium2_clean/polyvec.c pqclean_dilithium2_clean/reduce.c pqclean_dilithium2_clean/rounding.c pqclean_dilithium2_clean/sign.c pqclean_dilithium2_clean/stream.c)
-    
-if(OQS_ENABLE_SIG_dilithium_2_avx2)
-        set(SRCS_DILITHIUM_2_AVX2_SRCS pqclean_dilithium2_avx2/fips202x4.c pqclean_dilithium2_avx2/invntt.S pqclean_dilithium2_avx2/ntt.S pqclean_dilithium2_avx2/nttconsts.c pqclean_dilithium2_avx2/packing.c pqclean_dilithium2_avx2/pointwise.S pqclean_dilithium2_avx2/poly.c pqclean_dilithium2_avx2/polyvec.c pqclean_dilithium2_avx2/reduce.S pqclean_dilithium2_avx2/rejsample.c pqclean_dilithium2_avx2/rounding.c pqclean_dilithium2_avx2/sign.c pqclean_dilithium2_avx2/stream.c)
-else()
-        set(SRCS_DILITHIUM_2_AVX2_SRCS pqclean_dilithium2_avx2/oqs_unsupported.c )
+    add_library(dilithium_2_clean OBJECT sig_dilithium_2.c pqclean_dilithium2_clean/ntt.c pqclean_dilithium2_clean/packing.c pqclean_dilithium2_clean/poly.c pqclean_dilithium2_clean/polyvec.c pqclean_dilithium2_clean/reduce.c pqclean_dilithium2_clean/rounding.c pqclean_dilithium2_clean/sign.c pqclean_dilithium2_clean/stream.c)
+    target_include_directories(dilithium_2_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(dilithium_2_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_dilithium2_clean)
+    set(_DILITHIUM_OBJS ${_DILITHIUM_OBJS} $<TARGET_OBJECTS:dilithium_2_clean>)
 endif()
-    
-set(SRCS_DILITHIUM_2_CLEAN_SRCS ${SRCS_DILITHIUM_2_CLEAN_SRCS} sig_dilithium_2.c )
 
+if(OQS_ENABLE_SIG_dilithium_2_avx2)
+    add_library(dilithium_2_avx2 OBJECT pqclean_dilithium2_avx2/fips202x4.c pqclean_dilithium2_avx2/invntt.S pqclean_dilithium2_avx2/ntt.S pqclean_dilithium2_avx2/nttconsts.c pqclean_dilithium2_avx2/packing.c pqclean_dilithium2_avx2/pointwise.S pqclean_dilithium2_avx2/poly.c pqclean_dilithium2_avx2/polyvec.c pqclean_dilithium2_avx2/reduce.S pqclean_dilithium2_avx2/rejsample.c pqclean_dilithium2_avx2/rounding.c pqclean_dilithium2_avx2/sign.c pqclean_dilithium2_avx2/stream.c)
+    target_include_directories(dilithium_2_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(dilithium_2_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_dilithium2_avx2)
+    target_compile_options(dilithium_2_avx2 PRIVATE -mavx2 -mbmi2)
+    set(_DILITHIUM_OBJS ${_DILITHIUM_OBJS} $<TARGET_OBJECTS:dilithium_2_avx2>)
 endif()
 
 if(OQS_ENABLE_SIG_dilithium_3)
-    
-        set(SRCS_DILITHIUM_3_CLEAN_SRCS pqclean_dilithium3_clean/ntt.c pqclean_dilithium3_clean/packing.c pqclean_dilithium3_clean/poly.c pqclean_dilithium3_clean/polyvec.c pqclean_dilithium3_clean/reduce.c pqclean_dilithium3_clean/rounding.c pqclean_dilithium3_clean/sign.c pqclean_dilithium3_clean/stream.c)
-    
-if(OQS_ENABLE_SIG_dilithium_3_avx2)
-        set(SRCS_DILITHIUM_3_AVX2_SRCS pqclean_dilithium3_avx2/fips202x4.c pqclean_dilithium3_avx2/invntt.S pqclean_dilithium3_avx2/ntt.S pqclean_dilithium3_avx2/nttconsts.c pqclean_dilithium3_avx2/packing.c pqclean_dilithium3_avx2/pointwise.S pqclean_dilithium3_avx2/poly.c pqclean_dilithium3_avx2/polyvec.c pqclean_dilithium3_avx2/reduce.S pqclean_dilithium3_avx2/rejsample.c pqclean_dilithium3_avx2/rounding.c pqclean_dilithium3_avx2/sign.c pqclean_dilithium3_avx2/stream.c)
-else()
-        set(SRCS_DILITHIUM_3_AVX2_SRCS pqclean_dilithium3_avx2/oqs_unsupported.c )
+    add_library(dilithium_3_clean OBJECT sig_dilithium_3.c pqclean_dilithium3_clean/ntt.c pqclean_dilithium3_clean/packing.c pqclean_dilithium3_clean/poly.c pqclean_dilithium3_clean/polyvec.c pqclean_dilithium3_clean/reduce.c pqclean_dilithium3_clean/rounding.c pqclean_dilithium3_clean/sign.c pqclean_dilithium3_clean/stream.c)
+    target_include_directories(dilithium_3_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(dilithium_3_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_dilithium3_clean)
+    set(_DILITHIUM_OBJS ${_DILITHIUM_OBJS} $<TARGET_OBJECTS:dilithium_3_clean>)
 endif()
-    
-set(SRCS_DILITHIUM_3_CLEAN_SRCS ${SRCS_DILITHIUM_3_CLEAN_SRCS} sig_dilithium_3.c )
 
+if(OQS_ENABLE_SIG_dilithium_3_avx2)
+    add_library(dilithium_3_avx2 OBJECT pqclean_dilithium3_avx2/fips202x4.c pqclean_dilithium3_avx2/invntt.S pqclean_dilithium3_avx2/ntt.S pqclean_dilithium3_avx2/nttconsts.c pqclean_dilithium3_avx2/packing.c pqclean_dilithium3_avx2/pointwise.S pqclean_dilithium3_avx2/poly.c pqclean_dilithium3_avx2/polyvec.c pqclean_dilithium3_avx2/reduce.S pqclean_dilithium3_avx2/rejsample.c pqclean_dilithium3_avx2/rounding.c pqclean_dilithium3_avx2/sign.c pqclean_dilithium3_avx2/stream.c)
+    target_include_directories(dilithium_3_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(dilithium_3_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_dilithium3_avx2)
+    target_compile_options(dilithium_3_avx2 PRIVATE -mavx2 -mbmi2)
+    set(_DILITHIUM_OBJS ${_DILITHIUM_OBJS} $<TARGET_OBJECTS:dilithium_3_avx2>)
 endif()
 
 if(OQS_ENABLE_SIG_dilithium_4)
-    
-        set(SRCS_DILITHIUM_4_CLEAN_SRCS pqclean_dilithium4_clean/ntt.c pqclean_dilithium4_clean/packing.c pqclean_dilithium4_clean/poly.c pqclean_dilithium4_clean/polyvec.c pqclean_dilithium4_clean/reduce.c pqclean_dilithium4_clean/rounding.c pqclean_dilithium4_clean/sign.c pqclean_dilithium4_clean/stream.c)
-    
+    add_library(dilithium_4_clean OBJECT sig_dilithium_4.c pqclean_dilithium4_clean/ntt.c pqclean_dilithium4_clean/packing.c pqclean_dilithium4_clean/poly.c pqclean_dilithium4_clean/polyvec.c pqclean_dilithium4_clean/reduce.c pqclean_dilithium4_clean/rounding.c pqclean_dilithium4_clean/sign.c pqclean_dilithium4_clean/stream.c)
+    target_include_directories(dilithium_4_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(dilithium_4_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_dilithium4_clean)
+    set(_DILITHIUM_OBJS ${_DILITHIUM_OBJS} $<TARGET_OBJECTS:dilithium_4_clean>)
+endif()
+
 if(OQS_ENABLE_SIG_dilithium_4_avx2)
-        set(SRCS_DILITHIUM_4_AVX2_SRCS pqclean_dilithium4_avx2/fips202x4.c pqclean_dilithium4_avx2/invntt.S pqclean_dilithium4_avx2/ntt.S pqclean_dilithium4_avx2/nttconsts.c pqclean_dilithium4_avx2/packing.c pqclean_dilithium4_avx2/pointwise.S pqclean_dilithium4_avx2/poly.c pqclean_dilithium4_avx2/polyvec.c pqclean_dilithium4_avx2/reduce.S pqclean_dilithium4_avx2/rejsample.c pqclean_dilithium4_avx2/rounding.c pqclean_dilithium4_avx2/sign.c pqclean_dilithium4_avx2/stream.c)
-else()
-        set(SRCS_DILITHIUM_4_AVX2_SRCS pqclean_dilithium4_avx2/oqs_unsupported.c )
-endif()
-    
-set(SRCS_DILITHIUM_4_CLEAN_SRCS ${SRCS_DILITHIUM_4_CLEAN_SRCS} sig_dilithium_4.c )
-
+    add_library(dilithium_4_avx2 OBJECT pqclean_dilithium4_avx2/fips202x4.c pqclean_dilithium4_avx2/invntt.S pqclean_dilithium4_avx2/ntt.S pqclean_dilithium4_avx2/nttconsts.c pqclean_dilithium4_avx2/packing.c pqclean_dilithium4_avx2/pointwise.S pqclean_dilithium4_avx2/poly.c pqclean_dilithium4_avx2/polyvec.c pqclean_dilithium4_avx2/reduce.S pqclean_dilithium4_avx2/rejsample.c pqclean_dilithium4_avx2/rounding.c pqclean_dilithium4_avx2/sign.c pqclean_dilithium4_avx2/stream.c)
+    target_include_directories(dilithium_4_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(dilithium_4_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_dilithium4_avx2)
+    target_compile_options(dilithium_4_avx2 PRIVATE -mavx2 -mbmi2)
+    set(_DILITHIUM_OBJS ${_DILITHIUM_OBJS} $<TARGET_OBJECTS:dilithium_4_avx2>)
 endif()
 
-
-
-    
-add_library(dilithium_2_clean OBJECT ${SRCS_DILITHIUM_2_CLEAN_SRCS})
-target_include_directories(dilithium_2_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(dilithium_2_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/dilithium/pqclean_dilithium2_clean)
-target_compile_options(dilithium_2_clean PUBLIC )
-    
-add_library(dilithium_2_avx2 OBJECT ${SRCS_DILITHIUM_2_AVX2_SRCS})
-target_include_directories(dilithium_2_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(dilithium_2_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/dilithium/pqclean_dilithium2_avx2)
-target_compile_options(dilithium_2_avx2 PUBLIC -mavx2 -mbmi2)
-    
-
-    
-add_library(dilithium_3_clean OBJECT ${SRCS_DILITHIUM_3_CLEAN_SRCS})
-target_include_directories(dilithium_3_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(dilithium_3_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/dilithium/pqclean_dilithium3_clean)
-target_compile_options(dilithium_3_clean PUBLIC )
-    
-add_library(dilithium_3_avx2 OBJECT ${SRCS_DILITHIUM_3_AVX2_SRCS})
-target_include_directories(dilithium_3_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(dilithium_3_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/dilithium/pqclean_dilithium3_avx2)
-target_compile_options(dilithium_3_avx2 PUBLIC -mavx2 -mbmi2)
-    
-
-    
-add_library(dilithium_4_clean OBJECT ${SRCS_DILITHIUM_4_CLEAN_SRCS})
-target_include_directories(dilithium_4_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(dilithium_4_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/dilithium/pqclean_dilithium4_clean)
-target_compile_options(dilithium_4_clean PUBLIC )
-    
-add_library(dilithium_4_avx2 OBJECT ${SRCS_DILITHIUM_4_AVX2_SRCS})
-target_include_directories(dilithium_4_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(dilithium_4_avx2 PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/dilithium/pqclean_dilithium4_avx2)
-target_compile_options(dilithium_4_avx2 PUBLIC -mavx2 -mbmi2)
-    
-
-
+set(DILITHIUM_OBJS ${_DILITHIUM_OBJS} PARENT_SCOPE)
