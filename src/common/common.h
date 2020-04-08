@@ -3,6 +3,7 @@
  * \brief Utility functions for use in liboqs.
  */
 
+
 #ifndef OQS_COMMON_H
 #define OQS_COMMON_H
 
