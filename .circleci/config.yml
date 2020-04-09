@@ -211,7 +211,16 @@ workflows:
   version: 2
   build:
     jobs:
-      - win-shared
+      - win-static:
+          filters:  
+            branches:
+              only:  
+                - /mb-.*/
+      - win-shared:
+          filters:  
+            branches:
+              only:  
+                - /mb-.*/
       - centos-7-amd64
       - centos-8-amd64
       - debian-buster-amd64
@@ -235,7 +244,6 @@ workflows:
       - debian-buster-armhf
       - debian-buster-armel
       - macOS
-      - win-static
       - ubuntu-bionic-x86_64-gcc7
       - ubuntu-bionic-x86_64-gcc7-noopenssl
       - ubuntu-bionic-x86_64-gcc7-shared
