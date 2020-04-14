@@ -32,26 +32,30 @@ set(SRCS kem_sike.c
          P751/P751.c
          P751/P751_compressed.c)
 
+if(ARCH STREQUAL "x86_64")
+  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+    set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
+                     P751/AMD64/fp_x64_asm.S)
+    if(USE_BMI2_INSTRUCTIONS)
+      set(SRCS ${SRCS} P434/AMD64/fp_x64_asm.S
+                       P610/AMD64/fp_x64_asm.S)
+      add_compile_options(-mbmi2)
+    endif()
+  endif()
+elseif(ARCH STREQUAL "arm64")
+  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+    set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
+                     P751/AMD64/fp_x64_asm.S)
+  endif()
+endif()
+
 add_library(sike OBJECT ${SRCS})
 if(ARCH STREQUAL "x86")
   target_compile_definitions(sike PRIVATE _GENERIC_ _X86_)
 elseif(ARCH STREQUAL "x86_64")
   target_compile_definitions(sike PRIVATE _AMD64_)
-  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-    set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
-                     P751/AMD64/fp_x64_asm.S)
-    if(USE_BMI2_INSTRUCTIONS)
-      target_compile_definitions(sike PRIVATE _MULX_ _ADX_)
-      set(SRCS ${SRCS} P434/AMD64/fp_x64_asm.S
-                       P610/AMD64/fp_x64_asm.S)
-    endif()
-  endif()
 elseif(ARCH STREQUAL "arm")
   target_compile_definitions(sike PRIVATE _GENERIC_ _ARM_)
 elseif(ARCH STREQUAL "arm64")
   target_compile_definitions(sike PRIVATE _ARM64_)
-  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-    set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
-                     P751/AMD64/fp_x64_asm.S)
-  endif()
 endif()

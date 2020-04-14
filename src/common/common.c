@@ -4,97 +4,92 @@
 #include <stdio.h>
 #include <string.h>
 
-
 #if defined(_WIN32)
 #include <windows.h>
 #endif
 
-#ifdef OQS_ENABLE_CPUFEATURES
-#include <cpu_features_macros.h>
+#if defined(OQS_OPTIMIZED_BUILD)
 
-#if defined(CPU_FEATURES_ARCH_X86)
-#include <cpuinfo_x86.h>
-#elif defined(CPU_FEATURES_ARCH_ARM)
-#include <cpuinfo_arm.h>
-#elif defined(CPU_FEATURES_ARCH_AARCH64)
-#include <cpuinfo_aarch64.h>
-#endif
+static OQS_CPU_EXTENSIONS available_cpu_extensions = { 0 };
+static unsigned int available_cpu_extensions_set = 0;
 
-static OQS_RT rt_cpu_flags = {0};
-static int rt_cpu_flags_initialized = 0;
+#if defined(ARCH_X86_64)
+
+/* The code here, including x86_64_helpers.h, has been taken from:
+ * https://github.com/vectorclass/version2
+ * https://github.com/google/cpu_features/blob/master/src/cpuinfo_x86.c
+ */
+
+#include "x86_64_helpers.h"
+
+static void set_available_cpu_extensions_x86_64(void) {
+	cpuid_out leaf_1;
+	cpuid(&leaf_1, 1);
+	if (leaf_1.eax == 0) {
+		return;
+	}
+
+	cpuid_out leaf_7;
+	cpuid(&leaf_7, 7);
+
+	const unsigned int has_xsave = is_bit_set(leaf_1.ecx, 26);
+	const unsigned int has_osxsave = is_bit_set(leaf_1.ecx, 27);
+	const uint32_t xcr0_eax = (has_xsave && has_osxsave) ? xgetbv_eax(0) : 0;
+
+	available_cpu_extensions.AES_ENABLED = is_bit_set(leaf_1.ecx, 25);
+	if (has_mask(xcr0_eax, MASK_XMM | MASK_YMM)) {
+		available_cpu_extensions.AVX_ENABLED = is_bit_set(leaf_1.ecx, 28);
+		available_cpu_extensions.AVX2_ENABLED = is_bit_set(leaf_7.ebx, 5);
+	}
+	available_cpu_extensions.POPCNT_ENABLED = is_bit_set(leaf_1.ecx, 23);
+	available_cpu_extensions.BMI_ENABLED = is_bit_set(leaf_7.ebx, 3);
+	available_cpu_extensions.BMI2_ENABLED = is_bit_set(leaf_7.ebx, 8);
+
+	if (has_mask(xcr0_eax, MASK_XMM)) {
+		available_cpu_extensions.SSE_ENABLED = is_bit_set(leaf_1.edx, 25);
+		available_cpu_extensions.SSE2_ENABLED = is_bit_set(leaf_1.edx, 26);
+		available_cpu_extensions.SSE3_ENABLED = is_bit_set(leaf_1.ecx, 0);
+	}
+
+	if (has_mask(xcr0_eax, MASK_XMM | MASK_YMM | MASK_MASKREG | MASK_ZMM0_15 | MASK_ZMM16_31)) {
+		unsigned int avx512f = is_bit_set(leaf_7.ebx, 16);
+		unsigned int avx512bw = is_bit_set(leaf_7.ebx, 30);
+		unsigned int avx512dq = is_bit_set(leaf_7.ebx, 17);
+		if (avx512f && avx512bw && avx512dq) {
+			available_cpu_extensions.AVX512_ENABLED = 1;
+		}
+	}
+}
+#elif defined(ARCH_ARM_ANY)
+static void set_available_cpu_extensions_arm(void) {
+	//TODO
+}
+#endif /* ARCH_X86_64 or ARCH_ARM_ANY */
+OQS_API OQS_CPU_EXTENSIONS OQS_get_available_CPU_extensions(void) {
+	if (!available_cpu_extensions_set) {
+#if defined(ARCH_X86_64)
+		set_available_cpu_extensions_x86_64();
+#elif defined(ARCH_ARM_ANY)
+		set_available_cpu_extensions_arm();
+#endif /* ARCH_X86_64 or ARCH_ARM_ANY */
+		available_cpu_extensions_set = 1;
+	}
+	return available_cpu_extensions;
+}
+#endif /* OQS_OPTIMIZED_BUILD */
 
 OQS_API void OQS_init(void) {
-#if defined(CPU_FEATURES_ARCH_X86)
-	const X86Features features = GetX86Info().features;
-
-	if (features.avx) {
-		rt_cpu_flags.AVX_INSTRUCTIONS = 1;
+#if defined(OQS_OPTIMIZED_BUILD)
+	if (!available_cpu_extensions_set) {
+#if defined(ARCH_X86_64)
+		set_available_cpu_extensions_x86_64();
+#elif defined(ARCH_ARM_ANY)
+		set_available_cpu_extensions_arm();
+#endif /* ARCH_X86_64 or ARCH_ARM_ANY */
+		available_cpu_extensions_set = 1;
 	}
-	if (features.avx2) {
-		rt_cpu_flags.AVX2_INSTRUCTIONS = 1;
-	}
-	if (features.avx512bw & features.avx512dq & features.avx512f) {
-		rt_cpu_flags.AVX512_INSTRUCTIONS = 1;
-	}
-	if (features.bmi1) {
-		rt_cpu_flags.BMI_INSTRUCTIONS = 1;
-	}
-	if (features.bmi2) {
-		rt_cpu_flags.BMI2_INSTRUCTIONS = 1;
-	}
-	if (features.fma3) {
-		rt_cpu_flags.FMA_INSTRUCTIONS = 1;
-	}
-	if (features.fma4) {
-		rt_cpu_flags.FMA4_INSTRUCTIONS = 1;
-	}
-	if (features.mmx) {
-		rt_cpu_flags.MMX_INSTRUCTIONS = 1;
-	}
-	if (features.popcnt) {
-		rt_cpu_flags.POPCNT_INSTRUCTIONS = 1;
-	}
-	if (features.sse) {
-		rt_cpu_flags.SSE_INSTRUCTIONS = 1;
-	}
-	if (features.sse2) {
-		rt_cpu_flags.SSE2_INSTRUCTIONS = 1;
-	}
-	if (features.sse3) {
-		rt_cpu_flags.SSE3_INSTRUCTIONS = 1;
-	}
-	if (features.sse4a) {
-		rt_cpu_flags.SSE4A_INSTRUCTIONS = 1;
-	}
-#elif defined(CPU_FEATURES_ARCH_ARM)
-	const ArmFeatures features = GetArmInfo().features;
-
-	if (features.neon) {
-		rt_cpu_flags.NEON_INSTRUCTIONS = 1;
-	}
-#elif defined(CPU_FEATURES_ARCH_AARCH64)
-	const Aarch64Features features = GetAarch64Info().features;
-
-	if (features.asimd) {
-		rt_cpu_flags.NEON_INSTRUCTIONS = 1;
-	}
-#endif
-	if (features.aes) {
-		rt_cpu_flags.AES_INSTRUCTIONS = 1;
-	}
+#endif /* OQS_OPTIMIZED_BUILD */
 }
-
-OQS_API OQS_RT OQS_RT_cpu_flags(void) {
-	if (!rt_cpu_flags_initialized) {
-		OQS_init();
-		rt_cpu_flags_initialized = 1;
-	}
-	return rt_cpu_flags;
-}
-#else /* OQS_ENABLE_CPUFEATURES */
-OQS_API void OQS_init(void) {
-}
-#endif /* OQS_ENABLE_CPUFEATURES */
 
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 #if defined(_WIN32)

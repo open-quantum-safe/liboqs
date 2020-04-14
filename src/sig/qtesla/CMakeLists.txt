@@ -1,5 +1,3 @@
-
-
 if(ARCH STREQUAL "x86")
     set(CPP_DEFS _X86_)
 elseif(ARCH STREQUAL "x86_64")
@@ -19,13 +17,15 @@ if(OQS_ENABLE_SIG_qTesla_p_III)
     set(SRCS ${SRCS} qtesla_p_III.c)
 endif()
 
-if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux"
-   AND OQS_USE_AVX2_INSTRUCTIONS
-   AND OQS_USE_AES_INSTRUCTIONS)
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
+   OQS_USE_AVX2_INSTRUCTIONS AND
+   OQS_USE_AES_INSTRUCTIONS)
     set(CPP_DEFS ${CPP_DEFS} WITH_AVX2)
     include_directories(avx2)
     set(SRCS ${SRCS} avx2/poly_mul1024.S
                      avx2/poly_mul2048.S)
+    add_compile_options(-mavx2)
+    add_compile_options(-maes)
 else()
     set(CPP_DEFS ${CPP_DEFS} portable)
 endif()

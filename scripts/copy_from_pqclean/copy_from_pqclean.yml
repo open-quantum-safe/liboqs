@@ -1,20 +1,21 @@
 kems:
-  - 
+  -
     name: classic_mceliece
+    default_implementation: vec
     schemes:
-      - 
+      -
         scheme: "348864"
         pqclean_scheme: mceliece348864
         pretty_name_full: Classic-McEliece-348864
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
-      - 
+      -
         scheme: "348864f"
         pqclean_scheme: mceliece348864f
         pretty_name_full: Classic-McEliece-348864f
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
-      - 
+      -
         scheme: "460896"
         pqclean_scheme: mceliece460896
         pretty_name_full: Classic-McEliece-460896
@@ -26,50 +27,51 @@ kems:
         pretty_name_full: Classic-McEliece-460896f
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
-      - 
+      -
         scheme: "6688128"
         pqclean_scheme: mceliece6688128
         pretty_name_full: Classic-McEliece-6688128
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
-      - 
+      -
         scheme: "6688128f"
         pqclean_scheme: mceliece6688128f
         pretty_name_full: Classic-McEliece-6688128f
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
-      - 
+      -
         scheme: "6960119"
         pqclean_scheme: mceliece6960119
         pretty_name_full: Classic-McEliece-6960119
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
-      - 
+      -
         scheme: "6960119f"
         pqclean_scheme: mceliece6960119f
         pretty_name_full: Classic-McEliece-6960119f
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
-      - 
+      -
         scheme: "8192128"
         pqclean_scheme: mceliece8192128
         pretty_name_full: Classic-McEliece-8192128
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
-      - 
+      -
         scheme: "8192128f"
         pqclean_scheme: mceliece8192128f
         pretty_name_full: Classic-McEliece-8192128f
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
-  - 
+  -
     name: kyber
+    default_implementation: clean
     schemes:
-      - 
+      -
         scheme: "512"
         pqclean_scheme: kyber512
         pretty_name_full: Kyber512
-      - 
+      -
         scheme: "768"
         pqclean_scheme: kyber768
         pretty_name_full: Kyber768
@@ -89,10 +91,11 @@ kems:
         scheme: "1024_90s"
         pqclean_scheme: kyber1024-90s
         pretty_name_full: Kyber1024-90s
-  - 
+  -
     name: ledacrypt
+    default_implementation: leaktime
     schemes:
-      - 
+      -
         scheme: ledakemlt12
         pqclean_scheme: ledakemlt12
         pretty_name_full: LEDAcryptKEM-LT12
@@ -112,6 +115,7 @@ kems:
         sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
   - 
     name: newhope
+    default_implementation: clean
     schemes:
       - 
         scheme: "512cca"
@@ -127,6 +131,7 @@ kems:
         sources: ['cpapke.c', 'kem.c', 'ntt.c', 'poly.c', 'precomp.c', 'reduce.c', 'verify.c']
   - 
     name: ntru
+    default_implementation: clean
     schemes:
       - 
         scheme: hps2048509
@@ -154,6 +159,7 @@ kems:
         sources: ['kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
   - 
     name: saber
+    default_implementation: clean
     schemes:
       - 
         scheme: lightsaber
@@ -175,6 +181,7 @@ kems:
         sources: ['cbd.c', 'kem.c', 'pack_unpack.c', 'poly.c', 'poly_mul.c', 'SABER_indcpa.c', 'verify.c']
   - 
     name: threebears
+    default_implementation: clean
     schemes:
       - 
         scheme: babybear
@@ -213,8 +220,9 @@ kems:
         implementation: clean
         sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
 sigs:
-  - 
+  -
     name: dilithium
+    default_implementation: clean
     schemes:
       - 
         scheme: "2"
@@ -233,6 +241,7 @@ sigs:
         signed_msg_order: sig_then_msg
   - 
     name: falcon
+    default_implementation: clean
     schemes:
       - 
         scheme: "512"
@@ -250,6 +259,7 @@ sigs:
         signed_msg_order: falcon
   - 
     name: mqdss
+    default_implementation: clean
     schemes:
       - 
         scheme: "31_48"
@@ -267,6 +277,7 @@ sigs:
         signed_msg_order: sig_then_msg
   - 
     name: rainbow
+    default_implementation: clean
     schemes:
       - 
         scheme: "Ia_classic"
@@ -333,6 +344,7 @@ sigs:
         signed_msg_order: msg_then_sig
   - 
     name: sphincs
+    default_implementation: clean
     schemes:
       - 
         scheme: haraka_128f_robust

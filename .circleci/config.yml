@@ -65,9 +65,9 @@ localCheckout: &localCheckout
       name: win/default
     steps:
         - checkout
-        - run:            
+        - run:
            name: Install ninja
-           command: $ProgressPreference="SilentlyContinue" ; Invoke-RestMethod -Uri https://github.com/ninja-build/ninja/releases/download/v1.10.0/ninja-win.zip -Method Get -OutFile ninja.zip; Expand-Archive ninja.zip 
+           command: $ProgressPreference="SilentlyContinue" ; Invoke-RestMethod -Uri https://github.com/ninja-build/ninja/releases/download/v1.10.0/ninja-win.zip -Method Get -OutFile ninja.zip; Expand-Archive ninja.zip
            shell: powershell.exe
         - run:
             name: Install dependencies
@@ -199,7 +199,7 @@ jobs:
   win-static:
     <<: *winjob
     environment:
-        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF 
+        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
         SKIP_TESTS: style
   win-shared:
     <<: *winjob
@@ -212,14 +212,14 @@ workflows:
   build:
     jobs:
       - win-static:
-          filters:  
+          filters:
             branches:
-              only:  
+              only:
                 - /mb-.*/
       - win-shared:
-          filters:  
+          filters:
             branches:
-              only:  
+              only:
                 - /mb-.*/
       - centos-7-amd64
       - centos-8-amd64

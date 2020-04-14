@@ -2,37 +2,17 @@
 # scripts/copy_from_pqclean/copy_from_pqclean.py
 
 if(OQS_ENABLE_SIG_mqdss_31_48)
-    
-        set(SRCS_MQDSS_31_48_CLEAN_SRCS pqclean_mqdss_48_clean/gf31.c pqclean_mqdss_48_clean/mq.c pqclean_mqdss_48_clean/sign.c)
-    
-
-set(SRCS_MQDSS_31_48_CLEAN_SRCS ${SRCS_MQDSS_31_48_CLEAN_SRCS} sig_mqdss_31_48.c )
-
+    add_library(mqdss_31_48_clean OBJECT sig_mqdss_31_48.c pqclean_mqdss-48_clean/gf31.c pqclean_mqdss-48_clean/mq.c pqclean_mqdss-48_clean/sign.c)
+    target_include_directories(mqdss_31_48_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(mqdss_31_48_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_mqdss-48_clean)
+    set(_MQDSS_OBJS ${_MQDSS_OBJS} $<TARGET_OBJECTS:mqdss_31_48_clean>)
 endif()
 
 if(OQS_ENABLE_SIG_mqdss_31_64)
-    
-        set(SRCS_MQDSS_31_64_CLEAN_SRCS pqclean_mqdss_64_clean/gf31.c pqclean_mqdss_64_clean/mq.c pqclean_mqdss_64_clean/sign.c)
-    
-
-set(SRCS_MQDSS_31_64_CLEAN_SRCS ${SRCS_MQDSS_31_64_CLEAN_SRCS} sig_mqdss_31_64.c )
-
+    add_library(mqdss_31_64_clean OBJECT sig_mqdss_31_64.c pqclean_mqdss-64_clean/gf31.c pqclean_mqdss-64_clean/mq.c pqclean_mqdss-64_clean/sign.c)
+    target_include_directories(mqdss_31_64_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(mqdss_31_64_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_mqdss-64_clean)
+    set(_MQDSS_OBJS ${_MQDSS_OBJS} $<TARGET_OBJECTS:mqdss_31_64_clean>)
 endif()
 
-
-
-    
-add_library(mqdss_31_48_clean OBJECT ${SRCS_MQDSS_31_48_CLEAN_SRCS})
-target_include_directories(mqdss_31_48_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(mqdss_31_48_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/mqdss/pqclean_mqdss31_48_clean)
-target_compile_options(mqdss_31_48_clean PUBLIC )
-    
-
-    
-add_library(mqdss_31_64_clean OBJECT ${SRCS_MQDSS_31_64_CLEAN_SRCS})
-target_include_directories(mqdss_31_64_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(mqdss_31_64_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/sig/mqdss/pqclean_mqdss31_64_clean)
-target_compile_options(mqdss_31_64_clean PUBLIC )
-    
-
-
+set(MQDSS_OBJS ${_MQDSS_OBJS} PARENT_SCOPE)

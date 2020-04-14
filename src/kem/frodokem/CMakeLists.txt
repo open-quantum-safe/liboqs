@@ -20,3 +20,6 @@ if(OQS_ENABLE_KEM_frodokem_1344_shake)
 endif()
 
 add_library(frodokem OBJECT ${SRCS})
+if(OQS_USE_AES_INSTRUCTIONS AND OQS_USE_AVX2_INSTRUCTIONS)
+    target_compile_options(frodokem PRIVATE -maes -mavx2)
+endif()

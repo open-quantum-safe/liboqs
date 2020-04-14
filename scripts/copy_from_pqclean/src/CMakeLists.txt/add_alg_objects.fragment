@@ -1,9 +1,11 @@
 {%- for family in instructions['kems'] %}
 if(OQS_ENABLE_KEM_{{ family['name']|upper }})
     add_subdirectory(kem/{{ family['name'] }})
+    set(KEM_OBJS ${KEM_OBJS} {% raw -%}${{%- endraw-%}{{ family['name']|upper }}_OBJS})
 endif(){% endfor %}
 {%- for family in instructions['sigs'] %}
 if(OQS_ENABLE_SIG_{{ family['name']|upper }})
     add_subdirectory(sig/{{ family['name'] }})
+    set(SIG_OBJS ${SIG_OBJS} {% raw -%}${{%- endraw-%}{{ family['name']|upper }}_OBJS})
 endif(){% endfor %}
 

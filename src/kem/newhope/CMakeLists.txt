@@ -2,37 +2,17 @@
 # scripts/copy_from_pqclean/copy_from_pqclean.py
 
 if(OQS_ENABLE_KEM_newhope_512cca)
-    
-        set(SRCS_NEWHOPE_512CCA_CLEAN_SRCS pqclean_newhope512cca_clean/cpapke.c pqclean_newhope512cca_clean/kem.c pqclean_newhope512cca_clean/ntt.c pqclean_newhope512cca_clean/poly.c pqclean_newhope512cca_clean/precomp.c pqclean_newhope512cca_clean/reduce.c pqclean_newhope512cca_clean/verify.c)
-    
-
-set(SRCS_NEWHOPE_512CCA_CLEAN_SRCS ${SRCS_NEWHOPE_512CCA_CLEAN_SRCS} kem_newhope_512cca.c )
-
+    add_library(newhope_512cca_clean OBJECT kem_newhope_512cca.c pqclean_newhope512cca_clean/cpapke.c pqclean_newhope512cca_clean/kem.c pqclean_newhope512cca_clean/ntt.c pqclean_newhope512cca_clean/poly.c pqclean_newhope512cca_clean/precomp.c pqclean_newhope512cca_clean/reduce.c pqclean_newhope512cca_clean/verify.c)
+    target_include_directories(newhope_512cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(newhope_512cca_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_newhope512cca_clean)
+    set(_NEWHOPE_OBJS ${_NEWHOPE_OBJS} $<TARGET_OBJECTS:newhope_512cca_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_newhope_1024cca)
-    
-        set(SRCS_NEWHOPE_1024CCA_CLEAN_SRCS pqclean_newhope1024cca_clean/cpapke.c pqclean_newhope1024cca_clean/kem.c pqclean_newhope1024cca_clean/ntt.c pqclean_newhope1024cca_clean/poly.c pqclean_newhope1024cca_clean/precomp.c pqclean_newhope1024cca_clean/reduce.c pqclean_newhope1024cca_clean/verify.c)
-    
-
-set(SRCS_NEWHOPE_1024CCA_CLEAN_SRCS ${SRCS_NEWHOPE_1024CCA_CLEAN_SRCS} kem_newhope_1024cca.c )
-
+    add_library(newhope_1024cca_clean OBJECT kem_newhope_1024cca.c pqclean_newhope1024cca_clean/cpapke.c pqclean_newhope1024cca_clean/kem.c pqclean_newhope1024cca_clean/ntt.c pqclean_newhope1024cca_clean/poly.c pqclean_newhope1024cca_clean/precomp.c pqclean_newhope1024cca_clean/reduce.c pqclean_newhope1024cca_clean/verify.c)
+    target_include_directories(newhope_1024cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    target_include_directories(newhope_1024cca_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_newhope1024cca_clean)
+    set(_NEWHOPE_OBJS ${_NEWHOPE_OBJS} $<TARGET_OBJECTS:newhope_1024cca_clean>)
 endif()
 
-
-
-    
-add_library(newhope_512cca_clean OBJECT ${SRCS_NEWHOPE_512CCA_CLEAN_SRCS})
-target_include_directories(newhope_512cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(newhope_512cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/newhope/pqclean_newhope512cca_clean)
-target_compile_options(newhope_512cca_clean PUBLIC )
-    
-
-    
-add_library(newhope_1024cca_clean OBJECT ${SRCS_NEWHOPE_1024CCA_CLEAN_SRCS})
-target_include_directories(newhope_1024cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-target_include_directories(newhope_1024cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/kem/newhope/pqclean_newhope1024cca_clean)
-target_compile_options(newhope_1024cca_clean PUBLIC )
-    
-
-
+set(NEWHOPE_OBJS ${_NEWHOPE_OBJS} PARENT_SCOPE)

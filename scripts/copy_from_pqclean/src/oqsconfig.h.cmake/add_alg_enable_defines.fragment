@@ -1,23 +1,22 @@
 {% for family in instructions['kems'] %}
+
 #cmakedefine OQS_ENABLE_KEM_{{ family['name']|upper }} 1
-{%- for scheme in family['schemes'] %}
+    {%- for scheme in family['schemes'] %}
 #cmakedefine OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }} 1
-{% for impl in scheme['metadata']['implementations'] -%}
-{% if impl['name']|upper != "CLEAN" -%}
+        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] %}
 #cmakedefine OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'] }} 1
-{%- endif -%}
-{% endfor -%}
-{% endfor %}
+        {%- endfor -%}
+    {%- endfor -%}
 {% endfor -%}
 
 {% for family in instructions['sigs'] %}
-#cmakedefine OQS_ENABLE_SIG_{{ family['name']|upper }}
-{%- for scheme in family['schemes'] %}
+
+#cmakedefine OQS_ENABLE_SIG_{{ family['name']|upper }} 1
+    {%- for scheme in family['schemes'] %}
 #cmakedefine OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }} 1
-{% for impl in scheme['metadata']['implementations'] -%}
-{% if impl['name']|upper != "CLEAN" -%}
+        {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] %}
 #cmakedefine OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name'] }} 1
-{%- endif -%}
-{% endfor -%}
+        {%- endfor -%}
+    {%- endfor -%}
 {% endfor %}
-{% endfor %}
+

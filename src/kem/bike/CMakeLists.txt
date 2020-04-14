@@ -27,12 +27,14 @@ elseif(OQS_USE_AVX512_INSTRUCTIONS)
                      additional/sampling_avx512.S
                      additional/gf_mul.S)
     set(CPP_DEFS AVX512)
+    add_compile_options(-mavx512bw -mavx512dq -mavx512f)
 elseif(OQS_USE_AVX2_INSTRUCTIONS)
     set(SRCS ${SRCS} additional/red.S
                      additional/secure_decode_avx2.c
                      additional/sampling_avx2.S
                      additional/gf_mul.S)
     set(CPP_DEFS AVX2)
+    add_compile_options(-mavx2)
 else()
     set(SRCS ${SRCS} additional/sampling_portable.c
                      additional/secure_decode_portable.c)
@@ -52,7 +54,7 @@ set(_BIKE_OBJS $<TARGET_OBJECTS:kem_bike>)
 
 # CPA variants
 if(OQS_ENABLE_KEM_bike1_l1_cpa)
-    add_library(bike1_l1_cpa OBJECT additional/kem_cpa.c ${SRCS})
+    add_library(bike1_l1_cpa OBJECT ${SRCS} additional/kem_cpa.c)
     target_compile_definitions(bike1_l1_cpa PRIVATE INDCPA=1 LEVEL=1 FUNC_PREFIX=OQS_KEM_bike1_l1_cpa ${CPP_DEFS})
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1_cpa>)
 endif()
