@@ -36,7 +36,7 @@ if(ARCH STREQUAL "x86_64")
   if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
     set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
                      P751/AMD64/fp_x64_asm.S)
-    if(USE_BMI2_INSTRUCTIONS)
+    if(USE_BMI2_INSTRUCTIONS AND OQS_PORTABLE_BUILD)
       set(SRCS ${SRCS} P434/AMD64/fp_x64_asm.S
                        P610/AMD64/fp_x64_asm.S)
       add_compile_options(-mbmi2)

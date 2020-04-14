@@ -40,12 +40,16 @@ int PQCLEAN_KYBER51290S_AVX2_crypto_kem_dec(unsigned char *ss, const unsigned ch
 
 OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_kyber_512_90s_avx2)
+#if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
 	if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+#endif /* OQS_PORTABLE_BUILD */
 		return (OQS_STATUS) PQCLEAN_KYBER51290S_AVX2_crypto_kem_keypair(public_key, secret_key);
+#if defined(OQS_PORTABLE_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_KYBER51290S_CLEAN_crypto_kem_keypair(public_key, secret_key);
 	}
+#endif /* OQS_PORTABLE_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_KYBER51290S_CLEAN_crypto_kem_keypair(public_key, secret_key);
 #endif
@@ -53,12 +57,16 @@ OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_keypair(uint8_t *public_key, uint8_t *s
 
 OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_KEM_kyber_512_90s_avx2)
+#if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
 	if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+#endif /* OQS_PORTABLE_BUILD */
 		return (OQS_STATUS) PQCLEAN_KYBER51290S_AVX2_crypto_kem_enc(ciphertext, shared_secret, public_key);
+#if defined(OQS_PORTABLE_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_KYBER51290S_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
 	}
+#endif /* OQS_PORTABLE_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_KYBER51290S_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
 #endif
@@ -66,12 +74,16 @@ OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_encaps(uint8_t *ciphertext, uint8_t *sh
 
 OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_kyber_512_90s_avx2)
+#if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
 	if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+#endif /* OQS_PORTABLE_BUILD */
 		return (OQS_STATUS) PQCLEAN_KYBER51290S_AVX2_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+#if defined(OQS_PORTABLE_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_KYBER51290S_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 	}
+#endif /* OQS_PORTABLE_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_KYBER51290S_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 #endif
