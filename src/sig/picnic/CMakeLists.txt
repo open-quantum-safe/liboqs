@@ -16,7 +16,8 @@ endif()
 
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
    OQS_USE_AVX2_INSTRUCTIONS AND
-   OQS_USE_BMI2_INSTRUCTIONS)
+   OQS_USE_BMI2_INSTRUCTIONS AND
+   NOT OQS_PORTABLE_BUILD)
      set(PICNIC_WITH_AVX2 ON)
 endif()
 
@@ -75,7 +76,7 @@ if(NOT WIN32)
     target_compile_definitions(picnic PRIVATE HAVE_POSIX_MEMALIGN)
 endif()
 
-if(OQS_USE_SSE2_INSTRUCTIONS)
+if(OQS_USE_SSE2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
     add_compile_options(-msse2)
 endif()
