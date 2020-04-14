@@ -44,7 +44,7 @@ cmake_dependent_option(OQS_ENABLE_KEM_sidh_p610_compressed "" ON "OQS_ENABLE_KEM
 cmake_dependent_option(OQS_ENABLE_KEM_sidh_p751 "" ON "OQS_ENABLE_KEM_SIDH" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_sidh_p751_compressed "" ON "OQS_ENABLE_KEM_SIDH" OFF)
 
-option(OQS_ENABLE_SIG_PICNIC "" OFF)
+option(OQS_ENABLE_SIG_PICNIC "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_picnic_L1_UR "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_picnic_L1_FS "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_picnic_L3_UR "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
@@ -55,7 +55,7 @@ cmake_dependent_option(OQS_ENABLE_SIG_picnic2_L1_FS "" ON "OQS_ENABLE_SIG_PICNIC
 cmake_dependent_option(OQS_ENABLE_SIG_picnic2_L3_FS "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_picnic2_L5_FS "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
 
-option(OQS_ENABLE_SIG_QTESLA "" OFF)
+option(OQS_ENABLE_SIG_QTESLA "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_qTesla_p_I "" ON "OQS_ENABLE_SIG_QTESLA" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_qTesla_p_III "" ON "OQS_ENABLE_SIG_QTESLA" OFF)
 
