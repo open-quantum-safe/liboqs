@@ -37,9 +37,10 @@ if(WIN32)
 endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-endif()
-if(CMAKE_BUILD_TYPE STREQUAL "Optimized")
-    set(OQS_OPTIMIZED_BUILD ON)
+else()
+    option(OQS_USE_CPU_EXTENSIONS "Enable compile and run-time support for CPU extensions such as AVX2, SSE, etc." ON)
+    option(OQS_PORTABLE_BUILD "Ensure the resulting library is portable. This also implies having run-time checks for CPU extensions." ON)
+    option(OQS_BUILD_TESTS "Build liboqs test programs." ON)
 endif()
 include(.CMake/compiler_opts.cmake)
 
@@ -126,7 +127,7 @@ set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig
 include_directories(${PROJECT_BINARY_DIR}/include)
 add_subdirectory(src)
 
-if(NOT CMAKE_BUILD_TYPE STREQUAL "Dependency")
+if(OQS_BUILD_TESTS)
     add_subdirectory(tests)
 
     find_package(Doxygen)

@@ -8,7 +8,7 @@
 #include <windows.h>
 #endif
 
-#if defined(OQS_OPTIMIZED_BUILD)
+#if (defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD))
 
 static OQS_CPU_EXTENSIONS available_cpu_extensions = { 0 };
 static unsigned int available_cpu_extensions_set = 0;
@@ -76,10 +76,10 @@ OQS_API OQS_CPU_EXTENSIONS OQS_get_available_CPU_extensions(void) {
 	}
 	return available_cpu_extensions;
 }
-#endif /* OQS_OPTIMIZED_BUILD */
+#endif /* OQS_USE_CPU_EXTENSIONS && OQS_PORTABLE_BUILD */
 
 OQS_API void OQS_init(void) {
-#if defined(OQS_OPTIMIZED_BUILD)
+#if (defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD))
 	if (!available_cpu_extensions_set) {
 #if defined(ARCH_X86_64)
 		set_available_cpu_extensions_x86_64();
@@ -88,7 +88,7 @@ OQS_API void OQS_init(void) {
 #endif /* ARCH_X86_64 or ARCH_ARM_ANY */
 		available_cpu_extensions_set = 1;
 	}
-#endif /* OQS_OPTIMIZED_BUILD */
+#endif /* OQS_USE_CPU_EXTENSIONS && OQS_PORTABLE_BUILD */
 }
 
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
