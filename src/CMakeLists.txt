@@ -1,4 +1,11 @@
 add_subdirectory(common)
+set(_COMMON_OBJS $<TARGET_OBJECTS:common>)
+if(OQS_USE_AVX2_INSTRUCTIONS)
+add_subdirectory(common_avx2)
+set(_COMMON_OBJS ${_COMMON_OBJS} $<TARGET_OBJECTS:common_avx2>)
+endif()
+set(COMMON_OBJS ${_COMMON_OBJS} PARENT_SCOPE)
+
 
 if(OQS_ENABLE_KEM_BIKE)
     add_subdirectory(kem/bike)
@@ -75,7 +82,7 @@ add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 sig/sig.c
                 ${SIG_OBJS}
-                $<TARGET_OBJECTS:common>)
+                ${_COMMON_OBJS})
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
 endif()

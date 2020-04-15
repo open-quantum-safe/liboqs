@@ -108,116 +108,485 @@ typedef struct {
 
 #include "fips202.c"
 
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+void oqs_avx2_sha3_sha3_256_inc_init(sha3_256incctx *state);
+void oqs_avx2_sha3_sha3_256_inc_absorb(sha3_256incctx *state, const uint8_t *input, size_t inlen);
+void oqs_avx2_sha3_sha3_256_inc_finalize(uint8_t *output, sha3_256incctx *state) ;
+void oqs_avx2_sha3_sha3_256_inc_ctx_release(sha3_256incctx *state);
+void oqs_avx2_sha3_sha3_256_inc_ctx_clone(sha3_256incctx *dest, const sha3_256incctx *src);
+void oqs_avx2_sha3_sha3_384_inc_init(sha3_384incctx *state);
+void oqs_avx2_sha3_sha3_384_inc_ctx_clone(sha3_384incctx *dest, const sha3_384incctx *src);
+void oqs_avx2_sha3_sha3_384_inc_absorb(sha3_384incctx *state, const uint8_t *input, size_t inlen);
+void oqs_avx2_sha3_sha3_384_inc_ctx_release(sha3_384incctx *state);
+void oqs_avx2_sha3_sha3_384_inc_finalize(uint8_t *output, sha3_384incctx *state) ;
+void oqs_avx2_sha3_sha3_512_inc_init(sha3_512incctx *state) ;
+void oqs_avx2_sha3_sha3_512_inc_ctx_clone(sha3_512incctx *dest, const sha3_512incctx *src);
+void oqs_avx2_sha3_sha3_512_inc_absorb(sha3_512incctx *state, const uint8_t *input, size_t inlen) ;
+void oqs_avx2_sha3_sha3_512_inc_ctx_release(sha3_512incctx *state) ;
+void oqs_avx2_sha3_sha3_512_inc_finalize(uint8_t *output, sha3_512incctx *state) ;
+void oqs_avx2_sha3_shake128_inc_init(shake128incctx *state) ;
+void oqs_avx2_sha3_shake128_inc_absorb(shake128incctx *state, const uint8_t *input, size_t inlen);
+void oqs_avx2_sha3_shake128_inc_finalize(shake128incctx *state);
+void oqs_avx2_sha3_shake128_inc_squeeze(uint8_t *output, size_t outlen, shake128incctx *state) ;
+void oqs_avx2_sha3_shake128_inc_ctx_clone(shake128incctx *dest, const shake128incctx *src) ;
+void oqs_avx2_sha3_shake128_inc_ctx_release(shake128incctx *state);
+void oqs_avx2_sha3_shake256_inc_init(shake256incctx *state) ;
+void oqs_avx2_sha3_shake256_inc_absorb(shake256incctx *state, const uint8_t *input, size_t inlen) ;
+void oqs_avx2_sha3_shake256_inc_finalize(shake256incctx *state);
+void oqs_avx2_sha3_shake256_inc_squeeze(uint8_t *output, size_t outlen, shake256incctx *state) ;
+void oqs_avx2_sha3_shake256_inc_ctx_clone(shake256incctx *dest, const shake256incctx *src);
+void oqs_avx2_sha3_shake256_inc_ctx_release(shake256incctx *state) ;
+void oqs_avx2_sha3_shake128_absorb(shake128ctx *state, const uint8_t *input, size_t inlen) ;
+void oqs_avx2_sha3_shake128_squeezeblocks(uint8_t *output, size_t nblocks, shake128ctx *state);
+void oqs_avx2_sha3_shake128_ctx_clone(shake128ctx *dest, const shake128ctx *src);
+void oqs_avx2_sha3_shake128_ctx_release(shake128ctx *state);
+void oqs_avx2_sha3_shake256_absorb(shake256ctx *state, const uint8_t *input, size_t inlen) ;
+void oqs_avx2_sha3_shake256_squeezeblocks(uint8_t *output, size_t nblocks, shake256ctx *state) ;
+void oqs_avx2_sha3_shake256_ctx_clone(shake256ctx *dest, const shake256ctx *src) ;
+void oqs_avx2_sha3_shake256_ctx_release(shake256ctx *state) ;
+
+void oqs_avx2_sha3_cshake128_inc_init(shake128incctx *state, const uint8_t *name, size_t namelen, const uint8_t *cstm, size_t cstmlen) ;
+void oqs_avx2_sha3_cshake128_inc_absorb(shake128incctx *state, const uint8_t *input, size_t inlen);
+void oqs_avx2_sha3_cshake128_inc_finalize(shake128incctx *state);
+void oqs_avx2_sha3_cshake128_inc_squeeze(uint8_t *output, size_t outlen, shake128incctx *state);
+void oqs_avx2_sha3_cshake128_inc_ctx_release(shake128incctx *state);
+void oqs_avx2_sha3_cshake128_inc_ctx_clone(shake128incctx *dest, const shake128incctx *src);
+void oqs_avx2_sha3_cshake256_inc_init(shake256incctx *state, const uint8_t *name, size_t namelen, const uint8_t *cstm, size_t cstmlen);
+void oqs_avx2_sha3_cshake256_inc_absorb(shake256incctx *state, const uint8_t *input, size_t inlen);
+void oqs_avx2_sha3_cshake256_inc_finalize(shake256incctx *state);
+void oqs_avx2_sha3_cshake256_inc_squeeze(uint8_t *output, size_t outlen, shake256incctx *state);
+void oqs_avx2_sha3_cshake256_inc_ctx_release(shake256incctx *state);
+void oqs_avx2_sha3_cshake256_inc_ctx_clone(shake256incctx *dest, const shake256incctx *src);
+
+
+#endif
+
+
 void OQS_SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+        OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions(); \
+        if (available_cpu_extensions.AVX2_ENABLED) { \
+		oqs_avx2_sha3_sha3_256_inc_init((sha3_256incctx *) state);
+	} else {
+		oqs_sha3_sha3_256_inc_init((sha3_256incctx *) state);
+	}
+#else
 	oqs_sha3_sha3_256_inc_init((sha3_256incctx *) state);
+#endif
 }
 void OQS_SHA3_sha3_256_inc_absorb(OQS_SHA3_sha3_256_inc_ctx *state, const uint8_t *input, size_t inlen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_256_inc_absorb((sha3_256incctx *) state, input, inlen);
+	} else {
+		oqs_sha3_sha3_256_inc_absorb((sha3_256incctx *) state, input, inlen);
+	}
+#else
 	oqs_sha3_sha3_256_inc_absorb((sha3_256incctx *) state, input, inlen);
+#endif
 }
 void OQS_SHA3_sha3_256_inc_finalize(uint8_t *output, OQS_SHA3_sha3_256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_256_inc_finalize(output, (sha3_256incctx *) state);
+	} else {
+		oqs_sha3_sha3_256_inc_finalize(output, (sha3_256incctx *) state);
+	}
+#else
 	oqs_sha3_sha3_256_inc_finalize(output, (sha3_256incctx *) state);
+#endif
 }
 void OQS_SHA3_sha3_256_inc_ctx_release(OQS_SHA3_sha3_256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_256_inc_ctx_release((sha3_256incctx *) state);
+	} else {
+		oqs_sha3_sha3_256_inc_ctx_release((sha3_256incctx *) state);
+	}
+#else
 	oqs_sha3_sha3_256_inc_ctx_release((sha3_256incctx *) state);
+#endif
 }
 void OQS_SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_SHA3_sha3_256_inc_ctx *src) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_256_inc_ctx_clone((sha3_256incctx *) dest, (const sha3_256incctx *) src);
+	} else {
+		oqs_sha3_sha3_256_inc_ctx_clone((sha3_256incctx *) dest, (const sha3_256incctx *) src);
+	}
+#else
 	oqs_sha3_sha3_256_inc_ctx_clone((sha3_256incctx *) dest, (const sha3_256incctx *) src);
+#endif
 }
 
 void OQS_SHA3_sha3_384_inc_init(OQS_SHA3_sha3_384_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_384_inc_init((sha3_384incctx *) state);
+	} else {
+		oqs_sha3_sha3_384_inc_init((sha3_384incctx *) state);
+	}
+#else
 	oqs_sha3_sha3_384_inc_init((sha3_384incctx *) state);
+#endif
 }
 void OQS_SHA3_sha3_384_inc_absorb(OQS_SHA3_sha3_384_inc_ctx *state, const uint8_t *input, size_t inlen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_384_inc_absorb((sha3_384incctx *) state, input, inlen);
+	} else {
+		oqs_sha3_sha3_384_inc_absorb((sha3_384incctx *) state, input, inlen);
+	}
+#else
 	oqs_sha3_sha3_384_inc_absorb((sha3_384incctx *) state, input, inlen);
+#endif
 }
 void OQS_SHA3_sha3_384_inc_finalize(uint8_t *output, OQS_SHA3_sha3_384_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_384_inc_finalize(output, (sha3_384incctx *) state);
+	} else {
+		oqs_sha3_sha3_384_inc_finalize(output, (sha3_384incctx *) state);
+	}
+#else
 	oqs_sha3_sha3_384_inc_finalize(output, (sha3_384incctx *) state);
+#endif
 }
 void OQS_SHA3_sha3_384_inc_ctx_release(OQS_SHA3_sha3_384_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_384_inc_ctx_release((sha3_384incctx *) state);
+	} else {
+		oqs_sha3_sha3_384_inc_ctx_release((sha3_384incctx *) state);
+	}
+#else
 	oqs_sha3_sha3_384_inc_ctx_release((sha3_384incctx *) state);
+#endif
 }
 void OQS_SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_SHA3_sha3_384_inc_ctx *src) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_384_inc_ctx_clone((sha3_384incctx *) dest, (const sha3_384incctx *) src);
+	} else {
+		oqs_sha3_sha3_384_inc_ctx_clone((sha3_384incctx *) dest, (const sha3_384incctx *) src);
+	}
+#else
 	oqs_sha3_sha3_384_inc_ctx_clone((sha3_384incctx *) dest, (const sha3_384incctx *) src);
+#endif
 }
 
 void OQS_SHA3_sha3_512_inc_init(OQS_SHA3_sha3_512_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_512_inc_init((sha3_512incctx *) state);
+	} else {
+		oqs_sha3_sha3_512_inc_init((sha3_512incctx *) state);
+	}
+#else
 	oqs_sha3_sha3_512_inc_init((sha3_512incctx *) state);
+#endif
 }
 void OQS_SHA3_sha3_512_inc_absorb(OQS_SHA3_sha3_512_inc_ctx *state, const uint8_t *input, size_t inlen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_512_inc_absorb((sha3_512incctx *) state, input, inlen);
+	} else {
+		oqs_sha3_sha3_512_inc_absorb((sha3_512incctx *) state, input, inlen);
+	}
+#else
 	oqs_sha3_sha3_512_inc_absorb((sha3_512incctx *) state, input, inlen);
+#endif
 }
 void OQS_SHA3_sha3_512_inc_finalize(uint8_t *output, OQS_SHA3_sha3_512_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_512_inc_finalize(output, (sha3_512incctx *) state);
+	} else {
+		oqs_sha3_sha3_512_inc_finalize(output, (sha3_512incctx *) state);
+	}
+#else
 	oqs_sha3_sha3_512_inc_finalize(output, (sha3_512incctx *) state);
+#endif
 }
 void OQS_SHA3_sha3_512_inc_ctx_release(OQS_SHA3_sha3_512_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_512_inc_ctx_release((sha3_512incctx *) state);
+	} else {
+		oqs_sha3_sha3_512_inc_ctx_release((sha3_512incctx *) state);
+	}
+#else
 	oqs_sha3_sha3_512_inc_ctx_release((sha3_512incctx *) state);
+#endif
 }
 void OQS_SHA3_sha3_512_inc_ctx_clone(OQS_SHA3_sha3_512_inc_ctx *dest, const OQS_SHA3_sha3_512_inc_ctx *src) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_sha3_512_inc_ctx_clone((sha3_512incctx *) dest, (const sha3_512incctx *) src);
+	} else {
+		oqs_sha3_sha3_512_inc_ctx_clone((sha3_512incctx *) dest, (const sha3_512incctx *) src);
+	}
+#else
 	oqs_sha3_sha3_512_inc_ctx_clone((sha3_512incctx *) dest, (const sha3_512incctx *) src);
+#endif
 }
 
 void OQS_SHA3_shake128_absorb(OQS_SHA3_shake128_ctx *state, const uint8_t *input, size_t inplen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_absorb((shake128ctx *) state, input, inplen);
+	} else {
+		oqs_sha3_shake128_absorb((shake128ctx *) state, input, inplen);
+	}
+#else
 	oqs_sha3_shake128_absorb((shake128ctx *) state, input, inplen);
+#endif
 }
 void OQS_SHA3_shake128_squeezeblocks(uint8_t *output, size_t nblocks, OQS_SHA3_shake128_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_squeezeblocks(output, nblocks, (shake128ctx *) state);
+	} else {
+		oqs_sha3_shake128_squeezeblocks(output, nblocks, (shake128ctx *) state);
+	}
+#else
 	oqs_sha3_shake128_squeezeblocks(output, nblocks, (shake128ctx *) state);
+#endif
 }
 void OQS_SHA3_shake128_ctx_release(OQS_SHA3_shake128_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_ctx_release((shake128ctx *) state);
+	} else {
+		oqs_sha3_shake128_ctx_release((shake128ctx *) state);
+	}
+#else
 	oqs_sha3_shake128_ctx_release((shake128ctx *) state);
+#endif
 }
 void OQS_SHA3_shake128_ctx_clone(OQS_SHA3_shake128_ctx *dest, const OQS_SHA3_shake128_ctx *src) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_ctx_clone((shake128ctx *) dest, (const shake128ctx *) src);
+	} else {
+		oqs_sha3_shake128_ctx_clone((shake128ctx *) dest, (const shake128ctx *) src);
+	}
+#else
 	oqs_sha3_shake128_ctx_clone((shake128ctx *) dest, (const shake128ctx *) src);
+#endif
 }
 
 void OQS_SHA3_shake128_inc_init(OQS_SHA3_shake128_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_inc_init((shake128incctx *) state);
+	} else {
+		oqs_sha3_shake128_inc_init((shake128incctx *) state);
+	}
+#else
 	oqs_sha3_shake128_inc_init((shake128incctx *) state);
+#endif
 }
 void OQS_SHA3_shake128_inc_absorb(OQS_SHA3_shake128_inc_ctx *state, const uint8_t *input, size_t inlen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_inc_absorb((shake128incctx *) state, input, inlen);
+	} else {
+		oqs_sha3_shake128_inc_absorb((shake128incctx *) state, input, inlen);
+	}
+#else
 	oqs_sha3_shake128_inc_absorb((shake128incctx *) state, input, inlen);
+#endif
 }
 void OQS_SHA3_shake128_inc_finalize(OQS_SHA3_shake128_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_inc_finalize((shake128incctx *) state);
+	} else {
+		oqs_sha3_shake128_inc_finalize((shake128incctx *) state);
+	}
+#else
 	oqs_sha3_shake128_inc_finalize((shake128incctx *) state);
+#endif
 }
 void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake128_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_inc_squeeze(output, outlen, (shake128incctx *) state);
+	} else {
+		oqs_sha3_shake128_inc_squeeze(output, outlen, (shake128incctx *) state);
+	}
+#else
 	oqs_sha3_shake128_inc_squeeze(output, outlen, (shake128incctx *) state);
+#endif
 }
 void OQS_SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_inc_ctx_release((shake128incctx *) state);
+	} else {
+		oqs_sha3_shake128_inc_ctx_release((shake128incctx *) state);
+	}
+#else
 	oqs_sha3_shake128_inc_ctx_release((shake128incctx *) state);
+#endif
 }
 void OQS_SHA3_shake128_inc_ctx_clone(OQS_SHA3_shake128_inc_ctx *dest, const OQS_SHA3_shake128_inc_ctx *src) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake128_inc_ctx_clone((shake128incctx *) dest, (const shake128incctx *) src);
+	} else {
+		oqs_sha3_shake128_inc_ctx_clone((shake128incctx *) dest, (const shake128incctx *) src);
+	}
+#else
 	oqs_sha3_shake128_inc_ctx_clone((shake128incctx *) dest, (const shake128incctx *) src);
+#endif
 }
 
 void OQS_SHA3_shake256_absorb(OQS_SHA3_shake256_ctx *state, const uint8_t *input, size_t inplen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_absorb((shake256ctx *) state, input, inplen);
+	} else {
+		oqs_sha3_shake256_absorb((shake256ctx *) state, input, inplen);
+	}
+#else
 	oqs_sha3_shake256_absorb((shake256ctx *) state, input, inplen);
+#endif
 }
 void OQS_SHA3_shake256_squeezeblocks(uint8_t *output, size_t nblocks, OQS_SHA3_shake256_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_squeezeblocks(output, nblocks, (shake256ctx *) state);
+	} else {
+		oqs_sha3_shake256_squeezeblocks(output, nblocks, (shake256ctx *) state);
+	}
+#else
 	oqs_sha3_shake256_squeezeblocks(output, nblocks, (shake256ctx *) state);
+#endif
 }
 void OQS_SHA3_shake256_ctx_release(OQS_SHA3_shake256_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_ctx_release((shake256ctx *) state);
+	} else {
+		oqs_sha3_shake256_ctx_release((shake256ctx *) state);
+	}
+#else
 	oqs_sha3_shake256_ctx_release((shake256ctx *) state);
+#endif
 }
 void OQS_SHA3_shake256_ctx_clone(OQS_SHA3_shake256_ctx *dest, const OQS_SHA3_shake256_ctx *src) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_ctx_clone((shake256ctx *) dest, (const shake256ctx *) src);
+	} else {
+		oqs_sha3_shake256_ctx_clone((shake256ctx *) dest, (const shake256ctx *) src);
+	}
+#else
 	oqs_sha3_shake256_ctx_clone((shake256ctx *) dest, (const shake256ctx *) src);
+#endif
 }
 
 void OQS_SHA3_shake256_inc_init(OQS_SHA3_shake256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_inc_init((shake256incctx *) state);
+	} else {
+		oqs_sha3_shake256_inc_init((shake256incctx *) state);
+	}
+#else
 	oqs_sha3_shake256_inc_init((shake256incctx *) state);
+#endif
 }
 void OQS_SHA3_shake256_inc_absorb(OQS_SHA3_shake256_inc_ctx *state, const uint8_t *input, size_t inlen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_inc_absorb((shake256incctx *) state, input, inlen);
+	} else {
+		oqs_sha3_shake256_inc_absorb((shake256incctx *) state, input, inlen);
+	}
+#else
 	oqs_sha3_shake256_inc_absorb((shake256incctx *) state, input, inlen);
+#endif
 }
 void OQS_SHA3_shake256_inc_finalize(OQS_SHA3_shake256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_inc_finalize((shake256incctx *) state);
+	} else {
+		oqs_sha3_shake256_inc_finalize((shake256incctx *) state);
+	}
+#else
 	oqs_sha3_shake256_inc_finalize((shake256incctx *) state);
+#endif
 }
 void OQS_SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_inc_squeeze(output, outlen, (shake256incctx *) state);
+	} else {
+		oqs_sha3_shake256_inc_squeeze(output, outlen, (shake256incctx *) state);
+	}
+#else
 	oqs_sha3_shake256_inc_squeeze(output, outlen, (shake256incctx *) state);
+#endif
 }
 void OQS_SHA3_shake256_inc_ctx_release(OQS_SHA3_shake256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_inc_ctx_release((shake256incctx *) state);
+	} else {
+		oqs_sha3_shake256_inc_ctx_release((shake256incctx *) state);
+	}
+#else
 	oqs_sha3_shake256_inc_ctx_release((shake256incctx *) state);
+#endif
 }
 void OQS_SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_SHA3_shake256_inc_ctx *src) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_shake256_inc_ctx_clone((shake256incctx *) dest, (const shake256incctx *) src);
+	} else {
+		oqs_sha3_shake256_inc_ctx_clone((shake256incctx *) dest, (const shake256incctx *) src);
+	}
+#else
 	oqs_sha3_shake256_inc_ctx_clone((shake256incctx *) dest, (const shake256incctx *) src);
+#endif
 }
 
 #define cshake128 OQS_SHA3_cshake128
@@ -241,41 +610,149 @@ void OQS_SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_
 #include "sp800-185.c"
 
 void OQS_SHA3_cshake128_inc_init(OQS_SHA3_shake128_inc_ctx *state, const uint8_t *name, size_t namelen, const uint8_t *cstm, size_t cstmlen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake128_inc_init((shake128incctx *) state, name, namelen, cstm, cstmlen);
+	} else {
+		oqs_sha3_cshake128_inc_init((shake128incctx *) state, name, namelen, cstm, cstmlen);
+	}
+#else
 	oqs_sha3_cshake128_inc_init((shake128incctx *) state, name, namelen, cstm, cstmlen);
+#endif
 }
 void OQS_SHA3_cshake128_inc_absorb(OQS_SHA3_shake128_inc_ctx *state, const uint8_t *input, size_t inlen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake128_inc_absorb((shake128incctx *) state, input, inlen);
+	} else {
+		oqs_sha3_cshake128_inc_absorb((shake128incctx *) state, input, inlen);
+	}
+#else
 	oqs_sha3_cshake128_inc_absorb((shake128incctx *) state, input, inlen);
+#endif
 }
 void OQS_SHA3_cshake128_inc_finalize(OQS_SHA3_shake128_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake128_inc_finalize((shake128incctx *) state);
+	} else {
+		oqs_sha3_cshake128_inc_finalize((shake128incctx *) state);
+	}
+#else
 	oqs_sha3_cshake128_inc_finalize((shake128incctx *) state);
+#endif
 }
 void OQS_SHA3_cshake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake128_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake128_inc_squeeze(output, outlen, (shake128incctx *) state);
+	} else {
+		oqs_sha3_cshake128_inc_squeeze(output, outlen, (shake128incctx *) state);
+	}
+#else
 	oqs_sha3_cshake128_inc_squeeze(output, outlen, (shake128incctx *) state);
+#endif
 }
 void OQS_SHA3_cshake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake128_inc_ctx_release((shake128incctx *) state);
+	} else {
+		oqs_sha3_cshake128_inc_ctx_release((shake128incctx *) state);
+	}
+#else
 	oqs_sha3_cshake128_inc_ctx_release((shake128incctx *) state);
+#endif
 }
 void OQS_SHA3_cshake128_inc_ctx_clone(OQS_SHA3_shake128_inc_ctx *dest, const OQS_SHA3_shake128_inc_ctx *src) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake128_inc_ctx_clone((shake128incctx *) dest, (const shake128incctx *) src);
+	} else {
+		oqs_sha3_cshake128_inc_ctx_clone((shake128incctx *) dest, (const shake128incctx *) src);
+	}
+#else
 	oqs_sha3_cshake128_inc_ctx_clone((shake128incctx *) dest, (const shake128incctx *) src);
+#endif
 }
 
 void OQS_SHA3_cshake256_inc_init(OQS_SHA3_shake256_inc_ctx *state, const uint8_t *name, size_t namelen, const uint8_t *cstm, size_t cstmlen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake256_inc_init((shake256incctx *) state, name, namelen, cstm, cstmlen);
+	} else {
+		oqs_sha3_cshake256_inc_init((shake256incctx *) state, name, namelen, cstm, cstmlen);
+	}
+#else
 	oqs_sha3_cshake256_inc_init((shake256incctx *) state, name, namelen, cstm, cstmlen);
+#endif
 }
 void OQS_SHA3_cshake256_inc_absorb(OQS_SHA3_shake256_inc_ctx *state, const uint8_t *input, size_t inlen) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake256_inc_absorb((shake256incctx *) state, input, inlen);
+	} else {
+		oqs_sha3_cshake256_inc_absorb((shake256incctx *) state, input, inlen);
+	}
+#else
 	oqs_sha3_cshake256_inc_absorb((shake256incctx *) state, input, inlen);
+#endif
 }
 void OQS_SHA3_cshake256_inc_finalize(OQS_SHA3_shake256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake256_inc_finalize((shake256incctx *) state);
+	} else {
+		oqs_sha3_cshake256_inc_finalize((shake256incctx *) state);
+	}
+#else
 	oqs_sha3_cshake256_inc_finalize((shake256incctx *) state);
+#endif
 }
 void OQS_SHA3_cshake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shake256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake256_inc_squeeze(output, outlen, (shake256incctx *) state);
+	} else {
+		oqs_sha3_cshake256_inc_squeeze(output, outlen, (shake256incctx *) state);
+	}
+#else
 	oqs_sha3_cshake256_inc_squeeze(output, outlen, (shake256incctx *) state);
+#endif
 }
 void OQS_SHA3_cshake256_inc_ctx_release(OQS_SHA3_shake256_inc_ctx *state) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake256_inc_ctx_release((shake256incctx *) state);
+	} else {
+		oqs_sha3_cshake256_inc_ctx_release((shake256incctx *) state);
+	}
+#else
 	oqs_sha3_cshake256_inc_ctx_release((shake256incctx *) state);
+#endif
 }
 void OQS_SHA3_cshake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_SHA3_shake256_inc_ctx *src) {
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
+		oqs_avx2_sha3_cshake256_inc_ctx_clone((shake256incctx *) dest, (const shake256incctx *) src);
+	} else {
+		oqs_sha3_cshake256_inc_ctx_clone((shake256incctx *) dest, (const shake256incctx *) src);
+	}
+#else
 	oqs_sha3_cshake256_inc_ctx_clone((shake256incctx *) dest, (const shake256incctx *) src);
+#endif
 }
 
 void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen) {
