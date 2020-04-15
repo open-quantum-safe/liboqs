@@ -4,7 +4,7 @@ option(OQS_ENABLE_KEM_{{ family['name']|upper }} "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_KEM_{{ family['name']|upper }}" OFF)
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and impl['supported_platforms'] -%}
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'x86_64' %}
-if(ARCH STREQUAL "x86_64" AND CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}" {%- if platform['required_flags'] %} AND {% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}{%- endif -%})
+if(ARCH STREQUAL "x86_64" AND {% if platform['operating_systems'] %}CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}"{% endif -%}{%- if platform['required_flags'] %} AND {% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}{%- endif -%})
     cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
 endif()
             {%- endfor -%}
@@ -18,7 +18,7 @@ option(OQS_ENABLE_SIG_{{ family['name']|upper }} "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }} "" ON "OQS_ENABLE_SIG_{{ family['name']|upper }}" OFF)
         {%- for impl in scheme['metadata']['implementations'] if impl['name'] != family['default_implementation'] and impl['supported_platforms'] -%}
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'x86_64' %}
-if(ARCH STREQUAL "x86_64" AND CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}" {%- if platform['required_flags'] %} AND {% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}{%- endif -%})
+if(ARCH STREQUAL "x86_64" {%- if platform['operating_systems'] %} AND CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}"{% endif -%}{%- if platform['required_flags'] %} AND {% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}{%- endif -%})
     cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
 endif()
             {%- endfor -%}
