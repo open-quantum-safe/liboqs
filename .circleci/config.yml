@@ -10,7 +10,7 @@ localCheckout: &localCheckout
     PROJECT_PATH=$(cd ${CIRCLE_WORKING_DIRECTORY}; pwd)
     mkdir -p ${PROJECT_PATH}
     cd /tmp/_circleci_local_build_repo
-    git ls-files -z | xargs -0 -s 2090860 tar -c | tar -x -C ${PROJECT_PATH} 
+    git ls-files -z | xargs -0 -s 2090860 tar -c | tar -x -C ${PROJECT_PATH}
     cp -a /tmp/_circleci_local_build_repo/.git ${PROJECT_PATH}
 
 .oqsjob: &oqsjob
@@ -20,10 +20,10 @@ localCheckout: &localCheckout
     - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
     - run:
         name: Configure
-        command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build  && cmake -GNinja ${CONFIGURE_ARGS} ..)
+        command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build && source ~/.bashrc && cmake -GNinja ${CONFIGURE_ARGS} ..)
     - run:
         name: Build
-        command: ../scripts/git_no_checkin_in_last_day.sh || (source ~/.bashrc && ninja)
+        command: ../scripts/git_no_checkin_in_last_day.sh || ninja
         working_directory: build
     - run:
         name: Run tests
@@ -101,13 +101,12 @@ jobs:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-centos-8-amd64:latest
-      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized
+      CONFIGURE_ARGS: -DOQS_PORTABLE_BUILD=OFF
       SKIP_TESTS: style
   debian-buster-amd64:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-debian-buster-amd64:latest
-      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized
       SKIP_TESTS: style
   debian-buster-arm64:
     <<: *emulatedjob
@@ -134,13 +133,13 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized -DOQS_USE_OPENSSL=OFF
+      CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
   ubuntu-bionic-x86_64-gcc7-shared:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized -DBUILD_SHARED_LIBS=ON
+      CONFIGURE_ARGS: -DBUILD_SHARED_LIBS=ON
       #TODO: _init and _fini trip test_namespace.py
       SKIP_TESTS: namespace
   ubuntu-bionic-x86_64-gcc8:
@@ -148,7 +147,7 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-8
-      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Optimized
+      CONFIGURE_ARGS: -DOQS_PORTABLE_BUILD=OFF
   ubuntu-bionic-x86_64-asan:
     <<: *oqsjob
     environment:
@@ -165,7 +164,7 @@ jobs:
     macos:
         xcode: "11.3.0"
     environment:
-        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF -DCMAKE_BUILD_TYPE=Optimized
+        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
         SKIP_TESTS: style
     steps:
         - checkout
