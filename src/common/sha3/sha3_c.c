@@ -164,8 +164,8 @@ void oqs_avx2_sha3_cshake256_inc_ctx_clone(shake256incctx *dest, const shake256i
 
 void OQS_SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
 #ifdef OQS_USE_AVX2_INSTRUCTIONS
-        OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions(); \
-        if (available_cpu_extensions.AVX2_ENABLED) { \
+	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+	if (available_cpu_extensions.AVX2_ENABLED) {
 		oqs_avx2_sha3_sha3_256_inc_init((sha3_256incctx *) state);
 	} else {
 		oqs_sha3_sha3_256_inc_init((sha3_256incctx *) state);
