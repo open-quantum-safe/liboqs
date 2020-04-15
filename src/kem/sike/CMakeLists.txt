@@ -44,8 +44,8 @@ if(ARCH STREQUAL "x86_64")
   endif()
 elseif(ARCH STREQUAL "arm64")
   if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-    set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
-                     P751/AMD64/fp_x64_asm.S)
+    set(SRCS ${SRCS} P503/ARM64/fp_arm64_asm.S
+                     P751/ARM64/fp_arm64_asm.S)
   endif()
 endif()
 
