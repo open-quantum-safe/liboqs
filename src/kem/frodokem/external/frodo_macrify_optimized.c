@@ -51,6 +51,7 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
     uint8_t seed_A_separated[2 + BYTES_SEED_A];
     uint16_t* seed_A_origin = (uint16_t*)&seed_A_separated;
     memcpy(&seed_A_separated[2], seed_A, BYTES_SEED_A);
+#if defined(OQS_OPTIMIZED_BUILD)
     // AVX variables
     uint8_t seed_A_separated_0[2 + BYTES_SEED_A];
     uint8_t seed_A_separated_1[2 + BYTES_SEED_A];
@@ -65,8 +66,11 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
     memcpy(&seed_A_separated_2[2], seed_A, BYTES_SEED_A);
     memcpy(&seed_A_separated_3[2], seed_A, BYTES_SEED_A);
     OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+#endif
     for (i = 0; i < PARAMS_N; i += 4) {
+#if defined(OQS_OPTIMIZED_BUILD)
         if (!available_cpu_extensions.AVX2_ENABLED) {
+#endif
             seed_A_origin[0] = UINT16_TO_LE(i + 0);
             OQS_SHA3_shake128((unsigned char*)(a_row + 0*PARAMS_N), (unsigned long long)(2*PARAMS_N), seed_A_separated, 2 + BYTES_SEED_A);
             seed_A_origin[0] = UINT16_TO_LE(i + 1);
@@ -75,6 +79,7 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             OQS_SHA3_shake128((unsigned char*)(a_row + 2*PARAMS_N), (unsigned long long)(2*PARAMS_N), seed_A_separated, 2 + BYTES_SEED_A);
             seed_A_origin[0] = UINT16_TO_LE(i + 3);
             OQS_SHA3_shake128((unsigned char*)(a_row + 3*PARAMS_N), (unsigned long long)(2*PARAMS_N), seed_A_separated, 2 + BYTES_SEED_A);
+#if defined(OQS_OPTIMIZED_BUILD)
         } else {
             seed_A_origin_0[0] = UINT16_TO_LE(i + 0);
             seed_A_origin_1[0] = UINT16_TO_LE(i + 1);
@@ -83,6 +88,7 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             OQS_SHA3_shake128_4x((unsigned char*)(a_row), (unsigned char*)(a_row + PARAMS_N), (unsigned char*)(a_row + 2*PARAMS_N), (unsigned char*)(a_row + 3*PARAMS_N), 
                         (unsigned long long)(2*PARAMS_N), seed_A_separated_0, seed_A_separated_1, seed_A_separated_2, seed_A_separated_3, 2 + BYTES_SEED_A);
         }
+#endif
 #endif
         for (k = 0; k < 4 * PARAMS_N; k++) {
             a_row[k] = LE_TO_UINT16(a_row[k]);
@@ -132,6 +138,10 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
         a_cols_temp[j] = UINT16_TO_LE(i);                       // Loading values in the little-endian order
     }
 
+#if defined(OQS_OPTIMIZED_BUILD)
+    OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+#endif
+
     for (kk = 0; kk < PARAMS_N; kk += PARAMS_STRIPE_STEP) {     // Go through A's columns, 8 (== PARAMS_STRIPE_STEP) columns at a time.       
         for (i = 0; i < (PARAMS_N*PARAMS_STRIPE_STEP); i += PARAMS_STRIPE_STEP) {
             a_cols_temp[i + 1] = UINT16_TO_LE(kk);              // Loading values in the little-endian order
@@ -145,8 +155,9 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             }
         } 
 
-        OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+#if defined(OQS_OPTIMIZED_BUILD)
         if (!available_cpu_extensions.AVX2_ENABLED) {
+#endif
             for (i = 0; i < PARAMS_NBAR; i++) {
                 for (k = 0; k < PARAMS_STRIPE_STEP; k += PARAMS_PARALLEL) {
                     uint16_t sum[PARAMS_PARALLEL] = {0};
@@ -163,6 +174,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
                     out[i*PARAMS_N + kk + k + 3] += sum[3];
                 }
             }
+#if defined(OQS_OPTIMIZED_BUILD)
         } else {
             for (i = 0; i < PARAMS_NBAR; i++) {
                 for (k = 0; k < PARAMS_STRIPE_STEP; k += PARAMS_PARALLEL) {
@@ -198,6 +210,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
                 }
             }
         }
+#endif
     }
     OQS_AES128_free_schedule(aes_key_schedule);
 
@@ -209,6 +222,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
     uint8_t seed_A_separated[2 + BYTES_SEED_A];
     uint16_t* seed_A_origin = (uint16_t*)&seed_A_separated;
     memcpy(&seed_A_separated[2], seed_A, BYTES_SEED_A);
+#if defined(OQS_OPTIMIZED_BUILD)
     uint8_t seed_A_separated_0[2 + BYTES_SEED_A];
     uint8_t seed_A_separated_1[2 + BYTES_SEED_A];
     uint8_t seed_A_separated_2[2 + BYTES_SEED_A];
@@ -222,8 +236,11 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
     memcpy(&seed_A_separated_2[2], seed_A, BYTES_SEED_A);
     memcpy(&seed_A_separated_3[2], seed_A, BYTES_SEED_A);
     OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+#endif
     for (kk = 0; kk < PARAMS_N; kk+=4) {
+#if defined(OQS_OPTIMIZED_BUILD)
         if (!available_cpu_extensions.AVX2_ENABLED) {
+#endif
             seed_A_origin[0] = UINT16_TO_LE(kk + 0);
             OQS_SHA3_shake128((unsigned char*)(a_cols + 0*PARAMS_N), (unsigned long long)(2*PARAMS_N), seed_A_separated, 2 + BYTES_SEED_A);
             seed_A_origin[0] = UINT16_TO_LE(kk + 1);
@@ -235,6 +252,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             for (i = 0; i < 4 * PARAMS_N; i++) {
                 a_cols[i] = LE_TO_UINT16(a_cols[i]);
             }
+#if defined(OQS_OPTIMIZED_BUILD)
         } else {
             seed_A_origin_0[0] = UINT16_TO_LE(kk + 0);
             seed_A_origin_1[0] = UINT16_TO_LE(kk + 1);
@@ -243,8 +261,11 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
             OQS_SHA3_shake128_4x((unsigned char*)(a_cols), (unsigned char*)(a_cols + PARAMS_N), (unsigned char*)(a_cols + 2*PARAMS_N), (unsigned char*)(a_cols + 3*PARAMS_N), 
                         (unsigned long long)(2*PARAMS_N), seed_A_separated_0, seed_A_separated_1, seed_A_separated_2, seed_A_separated_3, 2 + BYTES_SEED_A);
         }
+#endif
         /* Use vectorized matrix multiplicate if AVX2 instructions available */
+#if defined(OQS_OPTIMIZED_BUILD)
         if (!available_cpu_extensions.AVX2_ENABLED) {
+#endif
             for (i = 0; i < PARAMS_NBAR; i++) {
                 uint16_t sum[PARAMS_N] = {0};
                 for (j = 0; j < 4; j++) {
@@ -257,6 +278,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
                     out[i*PARAMS_N + k] += sum[k];
                 }
             }
+#if defined(OQS_OPTIMIZED_BUILD)
         } else {
             for (i = 0; i < PARAMS_NBAR; i++) {
                 __m256i a, b0, b1, b2, b3, acc[PARAMS_N/16];
@@ -284,6 +306,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
                 }
             }
         }
+#endif
     }
 #endif
     
