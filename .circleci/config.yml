@@ -123,11 +123,11 @@ jobs:
     environment:
       CONFIGURE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF # sig-sphincs exhausts memory on CircleCI servers
       ARCH: armel
-  ubuntu-bionic-x86_64-gcc7:
+  ubuntu-bionic-x86_64-gcc8:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      CC: gcc-7
+      CC: gcc-8
   ubuntu-bionic-x86_64-gcc7-noopenssl:
     <<: *oqsjob
     environment:
@@ -142,12 +142,12 @@ jobs:
       CONFIGURE_ARGS: -DBUILD_SHARED_LIBS=ON
       #TODO: _init and _fini trip test_namespace.py
       SKIP_TESTS: namespace
-  ubuntu-bionic-x86_64-gcc8:
+  ubuntu-bionic-x86_64-clang9:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      CC: gcc-8
-      CONFIGURE_ARGS: -DOQS_PORTABLE_BUILD=OFF
+      CC: clang-9
+      #TODO: Adding -DOQS_PORTABLE_BUILD=OFF causes kat_sig picnic to fail
   ubuntu-bionic-x86_64-asan:
     <<: *oqsjob
     environment:
@@ -224,8 +224,8 @@ workflows:
       - centos-8-amd64
       - debian-buster-amd64
       - macOS
-      - ubuntu-bionic-x86_64-gcc7
-      - ubuntu-bionic-x86_64-gcc7-noopenssl
+      - ubuntu-bionic-x86_64-gcc8
+      - ubuntu-bionic-x86_64-clang9
       - ubuntu-bionic-x86_64-gcc7-shared
   nightly:
     triggers:
@@ -243,8 +243,8 @@ workflows:
       - debian-buster-armhf
       - debian-buster-armel
       - macOS
-      - ubuntu-bionic-x86_64-gcc7
       - ubuntu-bionic-x86_64-gcc7-noopenssl
       - ubuntu-bionic-x86_64-gcc7-shared
       - ubuntu-bionic-x86_64-gcc8
+      - ubuntu-bionic-x86_64-clang9
       - ubuntu-bionic-x86_64-asan
