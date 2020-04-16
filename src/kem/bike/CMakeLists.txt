@@ -1,11 +1,10 @@
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND
-   CMAKE_C_COMPILER_VERSION VERSION_LESS "5")
+   CMAKE_C_COMPILER_VERSION VERSION_LESS "5" OR
+   CMAKE_C_COMPILER_ID MATCHES "Clang")
     # GCC 4.9 erroneously reports warnings for certain valid code in BIKE
     # https://stackoverflow.com/questions/13746033/how-to-repair-warning-missing-braces-around-initializer
     add_compile_options(-Wno-missing-braces)
     add_compile_options(-Wno-missing-field-initializers)
-elseif(CMAKE_C_COMPILER_ID MATCHES "Clang")
-    add_compile_options(-Wno-missing-braces -Wno-missing-field-initializers)
 endif()
 
 set(SRCS additional/decode.c
@@ -21,14 +20,14 @@ if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
     set(SRCS ${SRCS} additional/sampling_portable.c
                      additional/secure_decode_portable.c)
     set(CPP_DEFS PORTABLE)
-elseif(OQS_USE_AVX512_INSTRUCTIONS)
+elseif(OQS_USE_AVX512_INSTRUCTIONS AND NOT OQS_BUILD_PORTABLE)
     set(SRCS ${SRCS} additional/red.S
                      additional/secure_decode_avx512.c
                      additional/sampling_avx512.S
                      additional/gf_mul.S)
     set(CPP_DEFS AVX512)
     add_compile_options(-mavx512bw -mavx512dq -mavx512f)
-elseif(OQS_USE_AVX2_INSTRUCTIONS)
+elseif(OQS_USE_AVX2_INSTRUCTIONS AND NOT OQS_BUILD_PORTABLE)
     set(SRCS ${SRCS} additional/red.S
                      additional/secure_decode_avx2.c
                      additional/sampling_avx2.S

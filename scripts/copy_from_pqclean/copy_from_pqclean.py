@@ -67,6 +67,13 @@ def load_instructions():
         family['family'] = family['name']
         for scheme in family['schemes']:
             scheme['metadata'] = yaml.safe_load(file_get_contents(os.path.join(os.environ['PQCLEAN_DIR'], 'crypto_sign', scheme['pqclean_scheme'], 'META.yml')))
+            # This is a temporary hack to work around the fact that
+            # the PQClean's META.ymls for the Dilithium AVX2 variants
+            # are not properly specified.
+            if scheme['pretty_name_full'].startswith('DILITHIUM_'):
+                scheme['metadata']['implementations'][1]['supported_platforms'][0]['operating_systems'] = ['Linux']
+                scheme['metadata']['implementations'][1]['supported_platforms'][0]['required_flags'] = ['avx2', 'bmi', 'popcnt']
+
             scheme['metadata']['euf_cma'] = 'true'
             scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
             scheme['scheme_c'] = scheme['scheme'].replace('-', '')

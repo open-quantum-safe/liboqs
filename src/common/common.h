@@ -68,7 +68,7 @@ typedef enum {
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
 
-#if defined(OQS_OPTIMIZED_BUILD)
+#if (defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD))
 
 /**
  * Architecture macros.
@@ -108,11 +108,12 @@ typedef struct {
  */
 OQS_API OQS_CPU_EXTENSIONS OQS_get_available_CPU_extensions(void);
 
-#endif /* OQS_OPTIMIZED_BUILD */
+#endif /* OQS_USE_CPU_EXTENSIONS && OQS_PORTABLE_BUILD */
 
 /**
  * This currently only sets the values in the OQS_CPU_EXTENSIONS,
- * and so has effect only when OQS_OPTIMIZED_BUILD is set.
+ * and so has effect only when OQS_USE_CPU_EXTENSIONS and
+ * OQS_PORTABLE_BUILD are set.
  */
 OQS_API void OQS_init(void);
 

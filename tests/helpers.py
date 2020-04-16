@@ -136,3 +136,10 @@ def available_use_options_by_name():
 
 def is_use_option_enabled_by_name(name):
     return name in available_use_options_by_name()
+
+def is_build_portable():
+    with open(os.path.join('build', 'include', 'oqs', 'oqsconfig.h')) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_PORTABLE_BUILD"):
+                return True
+    return False

@@ -33,7 +33,16 @@ def test_sig(sig_name):
     for filename in os.listdir(os.path.join('tests', 'KATs', 'sig')):
         if filename.startswith(sig_name + '.') and filename.endswith('.kat'):
             # qtesla's avx2 implementation uses an optimized sampling method that results in different KAT values; we use the correct one (if avx2/aes instructions are available)
-            if not (sig_name.startswith('qTesla')) or any([avx2_aes_enabled_on_linux and 'avx2' in filename, not avx2_aes_enabled_on_linux and not 'avx2' in filename]):
+            append_kat = False
+            if sig_name.startswith('qTesla'):
+                if 'avx2' in filename:
+                    if avx2_aes_enabled_on_linux and not helpers.is_build_portable():
+                        append_kat = True
+                else:
+                    append_kat = True
+            else:
+                append_kat = True
+            if append_kat:
                 with open(os.path.join('tests', 'KATs', 'sig', filename), 'r') as myfile:
                     kats.append(myfile.read())
     assert(output in kats)

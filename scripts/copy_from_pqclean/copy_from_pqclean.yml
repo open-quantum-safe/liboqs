@@ -224,58 +224,58 @@ sigs:
     name: dilithium
     default_implementation: clean
     schemes:
-      - 
+      -
         scheme: "2"
         pqclean_scheme: dilithium2
         pretty_name_full: DILITHIUM_2
         signed_msg_order: sig_then_msg
-      - 
+      -
         scheme: "3"
         pqclean_scheme: dilithium3
         pretty_name_full: DILITHIUM_3
         signed_msg_order: sig_then_msg
-      - 
+      -
         scheme: "4"
         pqclean_scheme: dilithium4
         pretty_name_full: DILITHIUM_4
         signed_msg_order: sig_then_msg
-  - 
+  -
     name: falcon
     default_implementation: clean
     schemes:
-      - 
+      -
         scheme: "512"
         pqclean_scheme: falcon-512
         pretty_name_full: Falcon-512
         implementation: clean
         sources: ['codec.c', 'common.c', 'fft.c', 'fpr.c', 'keygen.c', 'pqclean.c', 'rng.c', 'sign.c', 'vrfy.c']
         signed_msg_order: falcon
-      - 
+      -
         scheme: "1024"
         pqclean_scheme: falcon-1024
         pretty_name_full: Falcon-1024
         implementation: clean
         sources: ['codec.c', 'common.c', 'fft.c', 'fpr.c', 'keygen.c', 'pqclean.c', 'rng.c', 'sign.c', 'vrfy.c']
         signed_msg_order: falcon
-  - 
+  -
     name: mqdss
     default_implementation: clean
     schemes:
-      - 
+      -
         scheme: "31_48"
         pqclean_scheme: mqdss-48
         pretty_name_full: MQDSS-31-48
         implementation: clean
         sources: ['gf31.c', 'mq.c', 'sign.c']
         signed_msg_order: sig_then_msg
-      - 
+      -
         scheme: "31_64"
         pqclean_scheme: mqdss-64
         pretty_name_full: MQDSS-31-64
         implementation: clean
         sources: ['gf31.c', 'mq.c', 'sign.c']
         signed_msg_order: sig_then_msg
-  - 
+  -
     name: rainbow
     default_implementation: clean
     schemes:
