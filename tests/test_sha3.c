@@ -1169,7 +1169,7 @@ int main(UNUSED int argc, UNUSED char **argv) {
 		ret = EXIT_FAILURE;
 	}
 
-#if defined(OQS_USE_AVX2_INSTRUCTIONS) && defined(OQS_USE_AES_INSTRUCTIONS)
+#if !defined(OQS_PORTABLE_BUILD) && defined(OQS_USE_AVX2_INSTRUCTIONS) && defined(OQS_USE_AES_INSTRUCTIONS)
 	printf("*** Testing SHA3 vectorized (AVX2) implementations *** \n");
 
 	if (shake_128_4x_kat_test() == EXIT_SUCCESS) {
@@ -1185,7 +1185,7 @@ int main(UNUSED int argc, UNUSED char **argv) {
 		printf("Failure! failed simple cshake-128 known answer tests \n");
 		ret = EXIT_FAILURE;
 	}
-#endif
+#endif /* !OQS_PORTABLE_BUILD && OQS_USE_AVX2_INSTRUCTIONS && OQS_USE_AES_INSTRUCTIONS */
 
 	return ret;
 }
