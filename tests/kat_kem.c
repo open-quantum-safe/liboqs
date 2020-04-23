@@ -63,7 +63,7 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	if (rc != OQS_SUCCESS) {
 		goto err;
 	}
-	OQS_randombytes_nist_kat_init(entropy_input, NULL, 256);
+	OQS_randombytes_nist_kat_init_256bit(entropy_input, NULL);
 
 	fh = stdout;
 
@@ -71,7 +71,7 @@ static OQS_STATUS kem_kat(const char *method_name) {
 	OQS_randombytes(seed, 48);
 	fprintBstr(fh, "seed = ", seed, 48);
 
-	OQS_randombytes_nist_kat_init(seed, NULL, 256);
+	OQS_randombytes_nist_kat_init_256bit(seed, NULL);
 
 	public_key = malloc(kem->length_public_key);
 	secret_key = malloc(kem->length_secret_key);
