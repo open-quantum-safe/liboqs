@@ -28,15 +28,15 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new() {
 	return sig;
 }
 
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
 
 #if defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 #endif
     {%- endfor %}
 

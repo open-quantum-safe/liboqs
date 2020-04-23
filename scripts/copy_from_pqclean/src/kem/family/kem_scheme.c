@@ -29,15 +29,15 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new() {
 	return kem;
 }
 
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ scheme['default_implementation']|upper }}_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
 
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
-int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
 #endif
     {%- endfor %}
 

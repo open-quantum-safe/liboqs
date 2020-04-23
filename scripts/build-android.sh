@@ -100,12 +100,13 @@ echo "Building in directory $BUILDDIR"
 
 # Build
 mkdir "$BUILDDIR" && cd "$BUILDDIR"
-cmake .. -DUSE_OPENSSL=OFF \
+cmake .. -DOQS_USE_OPENSSL=OFF \
+         -DOQS_USE_CPU_EXTENSIONS=OFF \
          -DBUILD_SHARED_LIBS=ON  \
          -DCMAKE_TOOLCHAIN_FILE="$NDK"/build/cmake/android.toolchain.cmake \
          -DANDROID_ABI="$ABI" \
          -DANDROID_NATIVE_API_LEVEL="$MINSDKVERSION" \
-         -DENABLE_SIG_PICNIC=OFF
+         -DOQS_ENABLE_SIG_PICNIC=OFF
 cmake --build ./
 
 # Provide rudimentary information following build

@@ -15,7 +15,7 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }})
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }})
         {%- if impl['name'] != scheme['default_implementation'] and impl['required_flags'] %}
-    target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {%- for flag in impl['required_flags'] %} -m{{ flag }} {%- endfor -%})
+    target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {%- for flag in impl['required_flags'] %} -m{%- if flag == 'bmi1' -%} bmi {%- elif flag == 'sse4_1' -%} sse4.1 {%- else -%}{{ flag }}{%- endif -%}{%- endfor -%})
         {%- endif %}
     set(_{{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} $<TARGET_OBJECTS:{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}>)
 endif()
