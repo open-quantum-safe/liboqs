@@ -33,29 +33,32 @@ set(SRCS kem_sike.c
          P751/P751_compressed.c)
 
 if(ARCH STREQUAL "x86_64")
-  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-    set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
-                     P751/AMD64/fp_x64_asm.S)
-    if(USE_BMI2_INSTRUCTIONS AND OQS_PORTABLE_BUILD)
-      set(SRCS ${SRCS} P434/AMD64/fp_x64_asm.S
-                       P610/AMD64/fp_x64_asm.S)
-      add_compile_options(-mbmi2)
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+        set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
+                         P751/AMD64/fp_x64_asm.S)
+        if(USE_BMI2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
+            set(SRCS ${SRCS} P434/AMD64/fp_x64_asm.S
+            P610/AMD64/fp_x64_asm.S)
+            add_compile_options(-mbmi2)
+        endif()
     endif()
-  endif()
 elseif(ARCH STREQUAL "arm64")
-  if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-    set(SRCS ${SRCS} P503/ARM64/fp_arm64_asm.S
-                     P751/ARM64/fp_arm64_asm.S)
-  endif()
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+        set(SRCS ${SRCS} P503/ARM64/fp_arm64_asm.S
+                         P751/ARM64/fp_arm64_asm.S)
+    endif()
 endif()
 
 add_library(sike OBJECT ${SRCS})
 if(ARCH STREQUAL "x86")
-  target_compile_definitions(sike PRIVATE _GENERIC_ _X86_)
+    target_compile_definitions(sike PRIVATE _GENERIC_ _X86_)
 elseif(ARCH STREQUAL "x86_64")
-  target_compile_definitions(sike PRIVATE _AMD64_)
+    target_compile_definitions(sike PRIVATE _AMD64_)
+    if(USE_BMI2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
+        target_compile_definitions(sike PRIVATE _MULX_ _ADX_)
+    endif()
 elseif(ARCH STREQUAL "arm")
-  target_compile_definitions(sike PRIVATE _GENERIC_ _ARM_)
+    target_compile_definitions(sike PRIVATE _GENERIC_ _ARM_)
 elseif(ARCH STREQUAL "arm64")
-  target_compile_definitions(sike PRIVATE _ARM64_)
+    target_compile_definitions(sike PRIVATE _ARM64_)
 endif()
