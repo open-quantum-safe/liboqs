@@ -5,7 +5,7 @@
 #define M N
 #define F_LEN (M * (((N * (N + 1)) >> 1) + N)) /* Number of elements in F */
 
-#define ROUNDS 202
+#define ROUNDS 277
 
 /* Number of bytes that N, M and F_LEN elements require when packed into a byte
    array, 5-bit elements packed continuously. */

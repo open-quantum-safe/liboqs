@@ -11,7 +11,7 @@ OQS_SIG *OQS_SIG_mqdss_31_64_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_mqdss_31_64;
-	sig->alg_version = "https://github.com/joostrijneveld/MQDSS/commit/0c64d4d67a37051c1299a3049a5bb8984ca27ecc";
+	sig->alg_version = "https://github.com/joostrijneveld/MQDSS/commit/00608d7610262ff07b1834885d32bc3fd27ef5e1";
 
 	sig->claimed_nist_level = 3;
 	sig->euf_cma = true;
