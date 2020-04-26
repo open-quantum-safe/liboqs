@@ -356,6 +356,9 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_SIKE
 #include <oqs/kem_sike.h>
 #endif /* OQS_ENABLE_KEM_SIKE */
+#ifdef OQS_ENABLE_KEM_SIDH
+#include <oqs/kem_sike.h>
+#endif /* OQS_ENABLE_KEM_SIDH */
 // EDIT-WHEN-ADDING-KEM
 
 #if defined(__cplusplus)
