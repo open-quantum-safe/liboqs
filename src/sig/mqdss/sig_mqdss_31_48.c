@@ -27,9 +27,9 @@ OQS_SIG *OQS_SIG_mqdss_31_48_new() {
 	return sig;
 }
 
-int PQCLEAN_MQDSS48_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
-int PQCLEAN_MQDSS48_CLEAN_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
-int PQCLEAN_MQDSS48_CLEAN_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
+extern int PQCLEAN_MQDSS48_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_MQDSS48_CLEAN_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
+extern int PQCLEAN_MQDSS48_CLEAN_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 
 OQS_API OQS_STATUS OQS_SIG_mqdss_31_48_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return (OQS_STATUS) PQCLEAN_MQDSS48_CLEAN_crypto_sign_keypair(public_key, secret_key);
