@@ -221,7 +221,7 @@ static void key_schedule_core(byte *a, int i) {
 // http://en.wikipedia.org/wiki/Rijndael_key_schedule#The_key_schedule
 void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
 	*_schedule = malloc(16 * 11);
-	assert(*_schedule != NULL);
+	OQS_EXIT_IF_NULLPTR(*_schedule);
 	uint8_t *schedule = (uint8_t *) *_schedule;
 	int bytes = 16;            // The count of how many bytes we've created so far
 	int i = 1;                 // The rcon iteration value i is set to 1
@@ -257,7 +257,7 @@ void OQS_AES128_free_schedule(void *schedule) {
 // http://en.wikipedia.org/wiki/Rijndael_key_schedule#The_key_schedule
 void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
 	*_schedule = malloc(16 * 15);
-	assert(*_schedule != NULL);
+	OQS_EXIT_IF_NULLPTR(*_schedule);
 	uint8_t *schedule = (uint8_t *) *_schedule;
 	int i = 0;    // The count of how many iterations we've done
 	uint8_t t[4]; // Temporary working area
@@ -526,7 +526,7 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, 
 		memcpy(&ctr_be, &iv[12], 4);
 		ctr = BE_TO_UINT32(ctr_be);
 	} else {
-		assert(0);
+		exit(EXIT_FAILURE);
 	}
 	while (out_len >= 16) {
 		ctr_be = UINT32_TO_BE(ctr);

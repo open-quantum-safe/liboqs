@@ -36,7 +36,7 @@ endif()
 
 option(OQS_USE_CPU_EXTENSIONS "Enable compile and run-time support for CPU extensions such as AVX2, SSE, etc." ON)
 option(OQS_PORTABLE_BUILD "Ensure the resulting library is portable. This implies having run-time checks for CPU extensions." ON)
-option(OQS_BUILD_TESTS "Build liboqs test programs." ON)
+option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
 include(.CMake/compiler_opts.cmake)
 
 include(.CMake/alg_support.cmake)
@@ -122,7 +122,7 @@ set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig
 include_directories(${PROJECT_BINARY_DIR}/include)
 add_subdirectory(src)
 
-if(OQS_BUILD_TESTS)
+if(NOT OQS_BUILD_ONLY_LIB)
     add_subdirectory(tests)
 
     find_package(Doxygen)

@@ -101,7 +101,7 @@ jobs:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-centos-8-amd64:latest
-      CONFIGURE_ARGS: -DOQS_PORTABLE_BUILD=OFF
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
       SKIP_TESTS: style
   debian-buster-amd64:
     <<: *oqsjob
@@ -121,7 +121,7 @@ jobs:
   debian-buster-armel:
     <<: *emulatedjob
     environment:
-      CONFIGURE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF # sig-sphincs exhausts memory on CircleCI servers
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_ENABLE_SIG_SPHINCS=OFF # sig-sphincs exhausts memory on CircleCI servers
       ARCH: armel
   ubuntu-bionic-x86_64-gcc8:
     <<: *oqsjob
@@ -133,7 +133,7 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: gcc-7
-      CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
   ubuntu-bionic-x86_64-gcc7-shared:
     <<: *oqsjob
     environment:
@@ -148,6 +148,7 @@ jobs:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: clang-9
       #TODO: Adding -DOQS_PORTABLE_BUILD=OFF causes kat_sig picnic to fail
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release
   ubuntu-bionic-x86_64-asan:
     <<: *oqsjob
     environment:

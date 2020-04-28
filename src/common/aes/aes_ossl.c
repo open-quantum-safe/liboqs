@@ -15,15 +15,15 @@ struct key_schedule {
 
 void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **schedule, int for_encryption) {
 	*schedule = malloc(sizeof(struct key_schedule));
-	assert(*schedule != NULL);
+	OQS_EXIT_IF_NULLPTR(*schedule);
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
 	ks->for_ECB = 1;
 	ks->ctx = EVP_CIPHER_CTX_new();
-	assert(ks->ctx != NULL);
+	OQS_EXIT_IF_NULLPTR(ks->ctx);
 	if (for_encryption) {
-		assert(1 == EVP_EncryptInit_ex(ks->ctx, EVP_aes_128_ecb(), NULL, key, NULL));
+		OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, EVP_aes_128_ecb(), NULL, key, NULL));
 	} else {
-		assert(1 == EVP_DecryptInit_ex(ks->ctx, EVP_aes_128_ecb(), NULL, key, NULL));
+		OQS_OPENSSL_GUARD(EVP_DecryptInit_ex(ks->ctx, EVP_aes_128_ecb(), NULL, key, NULL));
 	}
 	EVP_CIPHER_CTX_set_padding(ks->ctx, 0);
 }
@@ -57,40 +57,40 @@ void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 	assert(plaintext_len % 16 == 0);
 	int outlen;
 	const struct key_schedule *ks = (const struct key_schedule *) schedule;
-	SIZE_T_TO_INT_OR_ABORT(plaintext_len, plaintext_len_int)
-	assert(1 == EVP_EncryptUpdate(ks->ctx, ciphertext, &outlen, plaintext, plaintext_len_int));
+	SIZE_T_TO_INT_OR_EXIT(plaintext_len, plaintext_len_int)
+	OQS_OPENSSL_GUARD(EVP_EncryptUpdate(ks->ctx, ciphertext, &outlen, plaintext, plaintext_len_int));
 	assert(outlen == plaintext_len_int);
-	assert(1 == EVP_EncryptFinal_ex(ks->ctx, ciphertext, &outlen));
+	OQS_OPENSSL_GUARD(EVP_EncryptFinal_ex(ks->ctx, ciphertext, &outlen));
 }
 
 void OQS_AES128_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
 	assert(ciphertext_len % 16 == 0);
 	int outlen;
 	const struct key_schedule *ks = (const struct key_schedule *) schedule;
-	SIZE_T_TO_INT_OR_ABORT(ciphertext_len, ciphertext_len_int)
-	assert(1 == EVP_DecryptUpdate(ks->ctx, plaintext, &outlen, ciphertext, ciphertext_len_int));
+	SIZE_T_TO_INT_OR_EXIT(ciphertext_len, ciphertext_len_int)
+	OQS_OPENSSL_GUARD(EVP_DecryptUpdate(ks->ctx, plaintext, &outlen, ciphertext, ciphertext_len_int));
 	assert(outlen == ciphertext_len_int);
-	assert(1 == EVP_DecryptFinal_ex(ks->ctx, plaintext, &outlen));
+	OQS_OPENSSL_GUARD(EVP_DecryptFinal_ex(ks->ctx, plaintext, &outlen));
 }
 
 void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **schedule, int for_encryption) {
 	*schedule = malloc(sizeof(struct key_schedule));
-	assert(*schedule != NULL);
+	OQS_EXIT_IF_NULLPTR(*schedule);
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
 	ks->for_ECB = 1;
 	ks->ctx = EVP_CIPHER_CTX_new();
-	assert(ks->ctx != NULL);
+	OQS_EXIT_IF_NULLPTR(ks->ctx);
 	if (for_encryption) {
-		assert(1 == EVP_EncryptInit_ex(ks->ctx, EVP_aes_256_ecb(), NULL, key, NULL));
+		OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, EVP_aes_256_ecb(), NULL, key, NULL));
 	} else {
-		assert(1 == EVP_DecryptInit_ex(ks->ctx, EVP_aes_256_ecb(), NULL, key, NULL));
+		OQS_OPENSSL_GUARD(EVP_DecryptInit_ex(ks->ctx, EVP_aes_256_ecb(), NULL, key, NULL));
 	}
 	EVP_CIPHER_CTX_set_padding(ks->ctx, 0);
 }
 
 void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **schedule) {
 	*schedule = malloc(sizeof(struct key_schedule));
-	assert(*schedule != NULL);
+	OQS_EXIT_IF_NULLPTR(*schedule);
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
 	ks->for_ECB = 0;
 	ks->ctx = NULL;
@@ -139,15 +139,15 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, 
 	} else if (iv_len == 16) {
 		memcpy(iv_ctr, iv, 16);
 	} else {
-		assert(0);
+		exit(EXIT_FAILURE);
 	}
 	const struct key_schedule *ks = (const struct key_schedule *) schedule;
-	assert(1 == EVP_EncryptInit_ex(ctr_ctx, EVP_aes_256_ctr(), NULL, ks->key, iv_ctr));
+	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ctr_ctx, EVP_aes_256_ctr(), NULL, ks->key, iv_ctr));
 
-	SIZE_T_TO_INT_OR_ABORT(out_len, out_len_input_int)
+	SIZE_T_TO_INT_OR_EXIT(out_len, out_len_input_int)
 	memset(out, 0, (size_t)out_len_input_int);
 	int out_len_output;
-	assert(1 == EVP_EncryptUpdate(ctr_ctx, out, &out_len_output, out, out_len_input_int));
-	assert(1 == EVP_EncryptFinal_ex(ctr_ctx, out + out_len_output, &out_len_output));
+	OQS_OPENSSL_GUARD(EVP_EncryptUpdate(ctr_ctx, out, &out_len_output, out, out_len_input_int));
+	OQS_OPENSSL_GUARD(EVP_EncryptFinal_ex(ctr_ctx, out + out_len_output, &out_len_output));
 	EVP_CIPHER_CTX_free(ctr_ctx);
 }
