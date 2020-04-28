@@ -18,18 +18,46 @@ extern "C" {
 #endif
 
 /**
+ * Macro for terminating the program if x is
+ * a null pointer.
+ */
+#define OQS_EXIT_IF_NULLPTR(x)  \
+    do {                        \
+        if ( (x) == (void*)0 )  \
+            exit(EXIT_FAILURE); \
+    } while (0)
+
+/**
+ * This macro is intended to replace those assert()s
+ * involving side-effecting statements in aes/aes_ossl.c.
+ *
+ * assert() becomes a no-op when -DNDEBUG is defined,
+ * which causes compilation failures when the statement
+ * being checked also results in side-effects.
+ *
+ * This is a temporary workaround until a better error
+ * handling strategy is developed.
+ */
+#define OQS_OPENSSL_GUARD(x)    \
+    do {                        \
+        if( 1 != (x) ) {        \
+            exit(EXIT_FAILURE); \
+        }                       \
+    } while (0)
+
+/**
  * Certain functions (such as OQS_randombytes_openssl in
  * src/rand/rand.c) take in a size_t parameter, but can
  * only handle values up to INT_MAX for those parameters.
  * This macro is a temporary workaround for such functions.
  */
-#define SIZE_T_TO_INT_OR_ABORT(size_t_var_name, int_var_name)                  \
-  int int_var_name = 0;                                                        \
-  if (size_t_var_name <= INT_MAX) {                                            \
-    int_var_name = (int)size_t_var_name;                                       \
-  } else {                                                                     \
-    abort();                                                                   \
-  }
+#define SIZE_T_TO_INT_OR_EXIT(size_t_var_name, int_var_name)  \
+    int int_var_name = 0;                                     \
+    if (size_t_var_name <= INT_MAX) {                         \
+        int_var_name = (int)size_t_var_name;                  \
+    } else {                                                  \
+        exit(EXIT_FAILURE);                                   \
+    }
 
 /**
  * Defines which functions should be exposed outside the LibOQS library

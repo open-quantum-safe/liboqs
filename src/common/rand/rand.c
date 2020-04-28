@@ -2,10 +2,8 @@
 #if defined(_WIN32)
 #include <windows.h>
 #include <wincrypt.h>
-#include <assert.h>
 #define strcasecmp _stricmp
 #else
-#include <stdlib.h>
 #include <unistd.h>
 #include <strings.h>
 #if defined(__APPLE__)
@@ -15,6 +13,7 @@
 #endif
 #endif
 #include <fcntl.h>
+#include <stdlib.h>
 
 #include <oqs/oqs.h>
 
@@ -31,7 +30,6 @@ static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_o
 #else
 static void (*oqs_randombytes_algorithm)(uint8_t *, size_t) = &OQS_randombytes_system;
 #endif
-
 OQS_API OQS_STATUS OQS_randombytes_switch_algorithm(const char *algorithm) {
 	if (0 == strcasecmp(OQS_RAND_alg_system, algorithm)) {
 		oqs_randombytes_algorithm = &OQS_randombytes_system;
@@ -105,7 +103,7 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 	HCRYPTPROV hCryptProv;
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
 	        !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
-		assert(0); // no other way to return an error; better fail than return bad random data
+		exit(EXIT_FAILURE); // better to fail than to return bad random data
 	}
 	CryptReleaseContext(hCryptProv, 0);
 }
@@ -114,7 +112,7 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 #ifdef OQS_USE_OPENSSL
 void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read) {
 	int rc;
-	SIZE_T_TO_INT_OR_ABORT(bytes_to_read, bytes_to_read_int)
+	SIZE_T_TO_INT_OR_EXIT(bytes_to_read, bytes_to_read_int)
 	do {
 		rc = RAND_bytes(random_array, bytes_to_read_int);
 	} while (rc != 1);

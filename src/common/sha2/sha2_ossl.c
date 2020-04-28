@@ -3,8 +3,6 @@
  * \brief Implementation of the OQS SHA2 API via calls to OpenSSL's SHA-2 functions
  */
 
-#include <assert.h>
-
 #include <oqs/oqs.h>
 
 #ifdef OQS_USE_SHA2_OPENSSL
@@ -47,7 +45,7 @@ void OQS_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
 	md = EVP_sha256();
-	assert(md != NULL);
+	OQS_EXIT_IF_NULLPTR(md);
 	mdctx = EVP_MD_CTX_new();
 	EVP_DigestInit_ex(mdctx, md, NULL);
 	state->ctx = mdctx;
@@ -79,7 +77,7 @@ void OQS_SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
 	md = EVP_sha384();
-	assert(md != NULL);
+	OQS_EXIT_IF_NULLPTR(md);
 	mdctx = EVP_MD_CTX_new();
 	EVP_DigestInit_ex(mdctx, md, NULL);
 	state->ctx = mdctx;
@@ -111,7 +109,7 @@ void OQS_SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
 	md = EVP_sha512();
-	assert(md != NULL);
+	OQS_EXIT_IF_NULLPTR(md);
 	mdctx = EVP_MD_CTX_new();
 	EVP_DigestInit_ex(mdctx, md, NULL);
 	state->ctx = mdctx;
