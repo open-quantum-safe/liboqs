@@ -28,9 +28,9 @@ OQS_KEM *OQS_KEM_threebears_mamabear_new() {
 	return kem;
 }
 
-int PQCLEAN_MAMABEAR_CLEAN_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
-int PQCLEAN_MAMABEAR_CLEAN_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
-int PQCLEAN_MAMABEAR_CLEAN_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int PQCLEAN_MAMABEAR_CLEAN_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
+extern int PQCLEAN_MAMABEAR_CLEAN_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
+extern int PQCLEAN_MAMABEAR_CLEAN_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
 
 OQS_API OQS_STATUS OQS_KEM_threebears_mamabear_keypair(uint8_t *public_key, uint8_t *secret_key) {
 	return (OQS_STATUS) PQCLEAN_MAMABEAR_CLEAN_crypto_kem_keypair(public_key, secret_key);
