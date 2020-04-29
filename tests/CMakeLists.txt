@@ -87,12 +87,20 @@ endif()
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
 
+# See https://github.com/open-quantum-safe/liboqs/issues/738#issuecomment-621394744
+if("$ENV{CIRCLE_JOB}" STREQUAL "ubuntu-bionic-x86_64-asan" AND
+   DEFINED ENV{CIRCLE_BUILD_NUM})
+    set(NUMPROCESSES 1)
+else()
+    set(NUMPROCESSES auto)
+endif()
+
 # TODO: Get CMake to find python.
 # and set PATH variable in Windows
 # for DLL builds.
 add_custom_target(
     run_tests
-    COMMAND ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --build_tool=${CMAKE_MAKE_PROGRAM} ${USE_LIBOQS_SO} --junitxml=${CMAKE_BINARY_DIR}/test-results/pytest/test-results.xml
+    COMMAND ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=${NUMPROCESSES} --build_tool=${CMAKE_MAKE_PROGRAM} ${USE_LIBOQS_SO} --junitxml=${CMAKE_BINARY_DIR}/test-results/pytest/test-results.xml
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS oqs example_kem kat_kem test_kem example_sig kat_sig test_sig ${UNIX_TESTS}
     USES_TERMINAL)
