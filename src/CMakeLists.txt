@@ -94,8 +94,21 @@ set_target_properties(oqs
 add_library(OQS::oqs ALIAS oqs)
 
 install(TARGETS oqs
+        EXPORT oqs
         LIBRARY DESTINATION lib
         ARCHIVE DESTINATION lib)
+
+install(
+    EXPORT oqs
+    NAMESPACE oqs::
+    DESTINATION lib
+)
+
+#export(
+#    TARGETS oqs
+#    NAMESPACE ${PROJECT_NAME}::
+#    FILE ...nothing  
+#)
 
 install(FILES ${PUBLIC_HEADERS}
         DESTINATION include/oqs)
