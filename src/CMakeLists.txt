@@ -82,6 +82,8 @@ if(OQS_USE_OPENSSL)
     target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})
 endif()
 
+
+
 set_target_properties(oqs
     PROPERTIES
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
@@ -92,6 +94,10 @@ set_target_properties(oqs
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 add_library(OQS::oqs ALIAS oqs)
+
+target_include_directories(oqs PUBLIC
+    $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/include>
+)
 
 install(TARGETS oqs
         EXPORT oqsTargets
