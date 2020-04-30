@@ -104,11 +104,5 @@ install(
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/oqs
 )
 
-#export(
-#    TARGETS oqs
-#    NAMESPACE ${PROJECT_NAME}::
-#    FILE ...nothing  
-#)
-
 install(FILES ${PUBLIC_HEADERS}
         DESTINATION include/oqs)
