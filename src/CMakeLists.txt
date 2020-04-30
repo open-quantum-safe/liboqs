@@ -99,7 +99,7 @@ install(TARGETS oqs
         ARCHIVE DESTINATION lib)
 
 install(
-    EXPORT oqs
+    EXPORT oqsTargets
     NAMESPACE oqs::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/oqs
 )
