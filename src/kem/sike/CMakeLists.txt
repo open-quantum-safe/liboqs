@@ -23,14 +23,19 @@ if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
     add_compile_options(/wd4133)
 endif()
 
-set(SRCS kem_sike.c
-         P434/P434.c
+set(SRCS P434/P434.c
          P434/P434_compressed.c
          P503/P503.c P503/P503_compressed.c
          P610/P610.c
          P610/P610_compressed.c
          P751/P751.c
          P751/P751_compressed.c)
+if(OQS_ENABLE_KEM_SIKE)
+    set(SRCS ${SRCS} kem_sike.c)
+endif()
+if(OQS_ENABLE_KEM_SIDH)
+    set(SRCS ${SRCS} kem_sidh.c)
+endif()
 
 if(ARCH STREQUAL "x86_64")
     if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
@@ -38,7 +43,7 @@ if(ARCH STREQUAL "x86_64")
                          P751/AMD64/fp_x64_asm.S)
         if(USE_BMI2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
             set(SRCS ${SRCS} P434/AMD64/fp_x64_asm.S
-            P610/AMD64/fp_x64_asm.S)
+                             P610/AMD64/fp_x64_asm.S)
             add_compile_options(-mbmi2)
         endif()
     endif()

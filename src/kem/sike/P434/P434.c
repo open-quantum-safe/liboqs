@@ -125,6 +125,9 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define crypto_kem_keypair OQS_KEM_sike_p434_keypair
 #define crypto_kem_enc OQS_KEM_sike_p434_encaps
 #define crypto_kem_dec OQS_KEM_sike_p434_decaps
+#define OQS_KEM_sidh_keypair OQS_KEM_sidh_p434_keypair
+#define OQS_KEM_sidh_encaps OQS_KEM_sidh_p434_encaps
+#define OQS_KEM_sidh_decaps OQS_KEM_sidh_p434_decaps
 #define random_mod_order_A oqs_kem_sidh_p434_random_mod_order_A
 #define random_mod_order_B oqs_kem_sidh_p434_random_mod_order_B
 #define EphemeralKeyGeneration_A oqs_kem_sidh_p434_EphemeralKeyGeneration_A
@@ -144,4 +147,4 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #include "../fpx.c"
 #include "../ec_isogeny.c"
 #include "../sidh.c"
-#include "../sike.c"
+#include "../kem.c"

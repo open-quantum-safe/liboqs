@@ -374,6 +374,9 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] = {
 #define crypto_kem_keypair OQS_KEM_sike_p503_compressed_keypair
 #define crypto_kem_enc OQS_KEM_sike_p503_compressed_encaps
 #define crypto_kem_dec OQS_KEM_sike_p503_compressed_decaps
+#define OQS_KEM_sidh_keypair OQS_KEM_sidh_p503_compressed_keypair
+#define OQS_KEM_sidh_encaps OQS_KEM_sidh_p503_compressed_encaps
+#define OQS_KEM_sidh_decaps OQS_KEM_sidh_p503_compressed_decaps
 #define random_mod_order_A oqs_kem_sidh_p503_compressed_random_mod_order_A
 #define random_mod_order_B oqs_kem_sidh_p503_compressed_random_mod_order_B
 #define EphemeralKeyGeneration_A oqs_kem_sidh_p503_compressed_EphemeralKeyGeneration_A
@@ -400,4 +403,4 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] = {
 #include "P503_compressed_dlog_tables.c"
 #include "../compression/dlog.c"
 #include "../compression/sidh_compressed.c"
-#include "../compression/sike_compressed.c"
+#include "../kem.c"
