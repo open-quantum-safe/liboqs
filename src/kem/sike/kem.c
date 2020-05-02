@@ -1,4 +1,4 @@
-#include <oqs/oqs.h>
+#include <oqs/common.h>
 
 #ifdef OQS_ENABLE_KEM_SIKE
 
