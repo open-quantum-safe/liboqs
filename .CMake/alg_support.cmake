@@ -1,7 +1,11 @@
 include(CMakeDependentOption)
 
-set(OQS_KEM_DEFAULT "OQS_KEM_alg_frodokem_640_aes")
-set(OQS_SIG_DEFAULT "OQS_SIG_alg_dilithium_2")
+if(NOT DEFINED OQS_KEM_DEFAULT)
+    set(OQS_KEM_DEFAULT "OQS_KEM_alg_frodokem_640_aes")
+endif()
+if(NOT DEFINED OQS_SIG_DEFAULT)
+    set(OQS_SIG_DEFAULT "OQS_SIG_alg_dilithium_2")
+endif()
 
 if(NOT WIN32)
     option(OQS_USE_OPENSSL "" ON)
