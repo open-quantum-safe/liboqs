@@ -76,31 +76,7 @@ static unsigned init_caps(void) {
   return caps;
 }
 #else
-#if defined(SUPERCOP)
-// SUPERCOP places a cpuid.h on the include search path before the system
-// provided cpuid.h. We hack around that by assuming that cpuid always exists
-// and defining __get_cpuid on our own.
-
-static int __get_cpuid(unsigned int leaf, unsigned int* reax, unsigned int* rebx,
-                       unsigned int* recx, unsigned int* redx) {
-
-  unsigned int eax, ebx, ecx, edx;
-  __asm__("cpuid\n" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "0"(leaf & 0x80000000));
-  if (eax == 0 || eax < leaf) {
-    return 0;
-  }
-
-  __asm__("cpuid\n" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "0"(leaf));
-  *reax = eax;
-  *rebx = ebx;
-  *recx = ecx;
-  *redx = edx;
-
-  return 1;
-}
-#else
 #include <cpuid.h>
-#endif
 
 static unsigned init_caps(void) {
   unsigned int caps = 0;

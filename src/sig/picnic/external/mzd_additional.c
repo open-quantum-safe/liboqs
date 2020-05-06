@@ -574,7 +574,7 @@ void mzd_addmul_v_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t con
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
-  word256 cval[2] ATTR_ALIGNED(alignof(word256)) = {_mm256_castsi128_si256(cblock->w128[0]),
+  word256 cval[2] ATTR_ALIGNED(alignof(word256)) = {_mm256_setr_m128i(cblock->w128[0], mm128_zero),
                                                     mm256_zero};
   for (unsigned int w = 2; w; --w, ++vptr) {
     word idx = *vptr;
@@ -1013,7 +1013,7 @@ void mzd_addmul_v_s256_30_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t 
   word idx              = vblock->w64[1] >> 34;
 
   word256 cval[2] ATTR_ALIGNED(alignof(word256));
-  cval[0] = mm256_xor_mask(_mm256_castsi128_si256(cblock->w128[0]), Ablock[0].w256,
+  cval[0] = mm256_xor_mask(_mm256_setr_m128i(cblock->w128[0], mm128_zero), Ablock[0].w256,
                            mm256_compute_mask_2(idx, 0));
   cval[1] = mm256_and(Ablock[1].w256, mm256_compute_mask_2(idx, 2));
   idx >>= 4;
