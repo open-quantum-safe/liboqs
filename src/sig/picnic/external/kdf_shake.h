@@ -12,6 +12,13 @@
 
 #include <stdint.h>
 
+#include "macros.h"
+#include "endian_compat.h"
+
+#if defined(WITH_SHAKE_S390_CPACF)
+/* use the KIMD/KLMD instructions from CPACF for SHAKE support on S390 */
+#include "sha3/s390_cpacf.h"
+#else
 #if !defined(KeccakP200_excluded)
 #define KeccakP200_excluded
 #endif
@@ -25,20 +32,20 @@
 #endif
 
 #if !defined(SUPERCOP)
+/* use SHAKE implementation in sha3/ */
 #include "sha3/KeccakHash.h"
 #if defined(WITH_KECCAK_X4)
+/* use the Keccakx4 implementation */
 #include "sha3/KeccakHashtimes4.h"
 #endif
 #else
+/* use SUPERCOP implementation */
 #include <libkeccak.a.headers/KeccakHash.h>
 #if defined(WITH_KECCAK_X4)
 /* Keccakx4 is not fully supported by SUPERCOP, so we need to ship it ourselves. */
 #include "KeccakHashtimes4.h"
 #endif
 #endif
-
-#include "macros.h"
-#include "endian_compat.h"
 
 typedef Keccak_HashInstance hash_context ATTR_ALIGNED(32);
 
@@ -58,6 +65,15 @@ static inline void hash_update(hash_context* ctx, const uint8_t* data, size_t si
   Keccak_HashUpdate(ctx, data, size << 3);
 }
 
+static inline void hash_final(hash_context* ctx) {
+  Keccak_HashFinal(ctx, NULL);
+}
+
+static inline void hash_squeeze(hash_context* ctx, uint8_t* buffer, size_t buflen) {
+  Keccak_HashSqueeze(ctx, buffer, buflen << 3);
+}
+#endif
+
 static inline void hash_update_uint16_le(hash_context* ctx, uint16_t data) {
   const uint16_t data_le = htole16(data);
   hash_update(ctx, (const uint8_t*)&data_le, sizeof(data_le));
@@ -67,14 +83,6 @@ static inline void hash_init_prefix(hash_context* ctx, size_t digest_size,
                                     const uint8_t prefix) {
   hash_init(ctx, digest_size);
   hash_update(ctx, &prefix, sizeof(prefix));
-}
-
-static inline void hash_final(hash_context* ctx) {
-  Keccak_HashFinal(ctx, NULL);
-}
-
-static inline void hash_squeeze(hash_context* ctx, uint8_t* buffer, size_t buflen) {
-  Keccak_HashSqueeze(ctx, buffer, buflen << 3);
 }
 
 typedef hash_context kdf_shake_t;
@@ -182,4 +190,5 @@ typedef hash_context_x4 kdf_shake_x4_t;
 #define kdf_shake_x4_finalize_key(ctx) hash_final_x4((ctx))
 #define kdf_shake_x4_get_randomness(ctx, dst, count) hash_squeeze_x4((ctx), (dst), (count))
 #define kdf_shake_x4_clear(ctx)
+
 #endif

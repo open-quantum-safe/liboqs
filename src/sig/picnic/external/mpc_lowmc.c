@@ -141,45 +141,6 @@ static void mpc_and_verify_uint64(uint64_t* res, uint64_t const* first, uint64_t
     }                                                                                              \
   } while (0)
 
-#define bitsliced_step_1_uint64_1(sc)                                                              \
-  uint64_t r0m[sc];                                                                                \
-  uint64_t r0s[sc];                                                                                \
-  uint64_t r1m[sc];                                                                                \
-  uint64_t r1s[sc];                                                                                \
-  uint64_t r2m[sc];                                                                                \
-  uint64_t x0s[sc];                                                                                \
-  uint64_t x1s[sc];                                                                                \
-  uint64_t x2m[sc];                                                                                \
-  do {                                                                                             \
-    for (unsigned int m = 0; m < (sc); ++m) {                                                      \
-      const uint64_t inm   = in[m];                                                                \
-      const uint64_t rvecm = rvec[m];                                                              \
-                                                                                                   \
-      x0s[m] = (inm & MASK_X0I_1) << 2;                                                            \
-      x1s[m] = (inm & MASK_X1I_1) << 1;                                                            \
-      x2m[m] = inm & MASK_X2I_1;                                                                   \
-                                                                                                   \
-      r0m[m] = rvecm & MASK_X0I_1;                                                                 \
-      r1m[m] = rvecm & MASK_X1I_1;                                                                 \
-      r2m[m] = rvecm & MASK_X2I_1;                                                                 \
-                                                                                                   \
-      r0s[m] = r0m[m] << 2;                                                                        \
-      r1s[m] = r1m[m] << 1;                                                                        \
-    }                                                                                              \
-  } while (0)
-
-#define bitsliced_step_2_uint64_1(sc)                                                              \
-  do {                                                                                             \
-    for (unsigned int m = 0; m < (sc); ++m) {                                                      \
-      const uint64_t tmp1 = r2m[m] ^ x0s[m];                                                       \
-      const uint64_t tmp2 = x0s[m] ^ x1s[m];                                                       \
-      const uint64_t tmp3 = tmp2 ^ r1m[m];                                                         \
-      const uint64_t tmp4 = tmp2 ^ r0m[m] ^ x2m[m];                                                \
-                                                                                                   \
-      in[m] = (in[m] & MASK_MASK_1) ^ (tmp4) ^ (tmp1 >> 2) ^ (tmp3 >> 1);                          \
-    }                                                                                              \
-  } while (0)
-
 static void mpc_sbox_layer_bitsliced_uint64_10(uint64_t* in, view_t* view, uint64_t const* rvec) {
   bitsliced_step_1_uint64_10(SC_PROOF);
 
@@ -201,29 +162,6 @@ static void mpc_sbox_layer_bitsliced_verify_uint64_10(uint64_t* in, view_t* view
   bitsliced_step_2_uint64_10(SC_VERIFY);
 }
 
-#if defined(WITH_LOWMC_M1)
-static void mpc_sbox_layer_bitsliced_uint64_1(uint64_t* in, view_t* view, uint64_t const* rvec) {
-  bitsliced_step_1_uint64_1(SC_PROOF);
-
-  mpc_and_uint64(r0m, x0s, x1s, r2m, view, 0);
-  mpc_and_uint64(r2m, x1s, x2m, r1s, view, 1);
-  mpc_and_uint64(r1m, x0s, x2m, r0s, view, 2);
-
-  bitsliced_step_2_uint64_1(SC_PROOF - 1);
-}
-
-static void mpc_sbox_layer_bitsliced_verify_uint64_1(uint64_t* in, view_t* view,
-                                                     uint64_t const* rvec) {
-  bitsliced_step_1_uint64_1(SC_VERIFY);
-
-  mpc_and_verify_uint64(r0m, x0s, x1s, r2m, view, MASK_X2I_1, 0);
-  mpc_and_verify_uint64(r2m, x1s, x2m, r1s, view, MASK_X2I_1, 1);
-  mpc_and_verify_uint64(r1m, x0s, x2m, r0s, view, MASK_X2I_1, 2);
-
-  bitsliced_step_2_uint64_1(SC_VERIFY);
-}
-#endif
-
 #if defined(WITH_LOWMC_128_128_20)
 #include "lowmc_128_128_20.h"
 #endif
@@ -232,15 +170,6 @@ static void mpc_sbox_layer_bitsliced_verify_uint64_1(uint64_t* in, view_t* view,
 #endif
 #if defined(WITH_LOWMC_256_256_38)
 #include "lowmc_256_256_38.h"
-#endif
-#if defined(WITH_LOWMC_128_128_182)
-#include "lowmc_128_128_182.h"
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-#include "lowmc_192_192_284.h"
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-#include "lowmc_256_256_363.h"
 #endif
 
 #define SBOX_uint64(sbox, y, x, views, r, n, shares, shares2)                                      \
@@ -259,6 +188,7 @@ static void mpc_sbox_layer_bitsliced_verify_uint64_1(uint64_t* in, view_t* view,
 
 #define R_uint64 const uint64_t* r = rvec[i].t
 
+#if !defined(NO_UINT64_FALLBACK)
 // uint64 based implementation
 #include "lowmc_fns_uint64_L1.h"
 #define SIGN mpc_lowmc_call_uint64_128
@@ -274,6 +204,7 @@ static void mpc_sbox_layer_bitsliced_verify_uint64_1(uint64_t* in, view_t* view,
 #define SIGN mpc_lowmc_call_uint64_256
 #define VERIFY mpc_lowmc_call_verify_uint64_256
 #include "mpc_lowmc.c.i"
+#endif
 
 #if defined(WITH_OPT)
 #if defined(WITH_SSE2) || defined(WITH_NEON)
@@ -329,11 +260,7 @@ static void mpc_sbox_layer_bitsliced_verify_uint64_1(uint64_t* in, view_t* view,
 #endif
 
 zkbpp_lowmc_implementation_f get_zkbpp_lowmc_implementation(const lowmc_t* lowmc) {
-#if defined(WITH_LOWMC_M1)
-  ASSUME(lowmc->m == 10 || lowmc->m == 1);
-#else
   ASSUME(lowmc->m == 10);
-#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
 #if defined(WITH_OPT)
@@ -355,24 +282,6 @@ zkbpp_lowmc_implementation_f get_zkbpp_lowmc_implementation(const lowmc_t* lowmc
 #endif
       }
     }
-#if defined(WITH_LOWMC_M1)
-    if (lowmc->m == 1) {
-      switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-      case 128:
-        return mpc_lowmc_call_s256_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-      case 192:
-        return mpc_lowmc_call_s256_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-      case 256:
-        return mpc_lowmc_call_s256_256_1;
-#endif
-      }
-    }
-#endif
   }
 #endif
 #if defined(WITH_SSE2) || defined(WITH_NEON)
@@ -393,28 +302,11 @@ zkbpp_lowmc_implementation_f get_zkbpp_lowmc_implementation(const lowmc_t* lowmc
 #endif
       }
     }
-#if defined(WITH_LOWMC_M1)
-    if (lowmc->m == 1) {
-      switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-      case 128:
-        return mpc_lowmc_call_s128_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-      case 192:
-        return mpc_lowmc_call_s128_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-      case 256:
-        return mpc_lowmc_call_s128_256_1;
-#endif
-      }
-    }
-#endif
   }
 #endif
 #endif
 
+#if !defined(NO_UINT64_FALLBACK)
   if (lowmc->m == 10) {
     switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_20)
@@ -432,34 +324,13 @@ zkbpp_lowmc_implementation_f get_zkbpp_lowmc_implementation(const lowmc_t* lowmc
     }
   }
 
-#if defined(WITH_LOWMC_M1)
-  if (lowmc->m == 1) {
-    switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-    case 128:
-      return mpc_lowmc_call_uint64_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-    case 192:
-      return mpc_lowmc_call_uint64_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-    case 256:
-      return mpc_lowmc_call_uint64_256_1;
-#endif
-    }
-  }
 #endif
 
   return NULL;
 }
 
 zkbpp_lowmc_verify_implementation_f get_zkbpp_lowmc_verify_implementation(const lowmc_t* lowmc) {
-#if defined(WITH_LOWMC_M1)
-  ASSUME(lowmc->m == 10 || lowmc->m == 1);
-#else
   ASSUME(lowmc->m == 10);
-#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
 #if defined(WITH_OPT)
@@ -481,24 +352,6 @@ zkbpp_lowmc_verify_implementation_f get_zkbpp_lowmc_verify_implementation(const 
 #endif
       }
     }
-#if defined(WITH_LOWMC_M1)
-    if (lowmc->m == 1) {
-      switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-      case 128:
-        return mpc_lowmc_call_verify_s256_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-      case 192:
-        return mpc_lowmc_call_verify_s256_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-      case 256:
-        return mpc_lowmc_call_verify_s256_256_1;
-#endif
-      }
-    }
-#endif
   }
 #endif
 #if defined(WITH_SSE2) || defined(WITH_NEON)
@@ -519,24 +372,6 @@ zkbpp_lowmc_verify_implementation_f get_zkbpp_lowmc_verify_implementation(const 
 #endif
       }
     }
-#if defined(WITH_LOWMC_M1)
-    if (lowmc->m == 1) {
-      switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-      case 128:
-        return mpc_lowmc_call_verify_s128_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-      case 192:
-        return mpc_lowmc_call_verify_s128_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-      case 256:
-        return mpc_lowmc_call_verify_s128_256_1;
-#endif
-      }
-    }
-#endif
   }
 #endif
 #if defined(WITH_NEON)
@@ -557,28 +392,11 @@ zkbpp_lowmc_verify_implementation_f get_zkbpp_lowmc_verify_implementation(const 
 #endif
       }
     }
-#if defined(WITH_LOWMC_M1)
-    if (lowmc->m == 1) {
-      switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-      case 128:
-        return mpc_lowmc_call_verify_s128_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-      case 192:
-        return mpc_lowmc_call_verify_s128_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-      case 256:
-        return mpc_lowmc_call_verify_s128_256_1;
-#endif
-      }
-    }
-#endif
   }
 #endif
 #endif
 
+#if !defined(NO_UINT64_FALLBACK)
   if (lowmc->m == 10) {
     switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_20)
@@ -595,29 +413,12 @@ zkbpp_lowmc_verify_implementation_f get_zkbpp_lowmc_verify_implementation(const 
 #endif
     }
   }
-
-#if defined(WITH_LOWMC_M1)
-  if (lowmc->m == 1) {
-    switch (lowmc->n) {
-#if defined(WITH_LOWMC_128_128_182)
-    case 128:
-      return mpc_lowmc_call_verify_uint64_128_1;
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-    case 192:
-      return mpc_lowmc_call_verify_uint64_192_1;
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-    case 256:
-      return mpc_lowmc_call_verify_uint64_256_1;
-#endif
-    }
-  }
 #endif
 
   return NULL;
 }
 
+#if !defined(NO_UINT64_FALLBACK)
 static void mzd_share_uint64_128(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
                                  const mzd_local_t* v3) {
   mzd_xor_uint64_128(r, v1, v2);
@@ -635,6 +436,7 @@ static void mzd_share_uint64_256(mzd_local_t* r, const mzd_local_t* v1, const mz
   mzd_xor_uint64_256(r, v1, v2);
   mzd_xor_uint64_256(r, r, v3);
 }
+#endif
 
 #if defined(WITH_OPT)
 #if defined(WITH_SSE2) || defined(WITH_NEON)
@@ -702,6 +504,7 @@ zkbpp_share_implementation_f get_zkbpp_share_implentation(const lowmc_t* lowmc) 
 #endif
 #endif
 
+#if !defined(NO_UINT64_FALLBACK)
   switch (lowmc->n) {
   case 128:
     return mzd_share_uint64_128;
@@ -710,4 +513,5 @@ zkbpp_share_implementation_f get_zkbpp_share_implentation(const lowmc_t* lowmc) 
   default:
     return mzd_share_uint64_256;
   }
+#endif
 }

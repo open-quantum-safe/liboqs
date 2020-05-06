@@ -10,27 +10,17 @@
 #define RANDTAPE R_uint64
 #define SBOX SBOX_uint64
 
-#if defined(M_FIXED_10)
+#define LOWMC_M 10
 #undef SBOX_SIGN
 #undef SBOX_VERIFY
-
-#define LOWMC_M 10
 #define SBOX_SIGN mpc_sbox_layer_bitsliced_uint64_10
 #define SBOX_VERIFY mpc_sbox_layer_bitsliced_verify_uint64_10
-#elif defined(M_FIXED_1)
-#define LOWMC_M 1
-#undef SBOX_SIGN
-#undef SBOX_VERIFY
-
-#define SBOX_SIGN mpc_sbox_layer_bitsliced_uint64_1
-#define SBOX_VERIFY mpc_sbox_layer_bitsliced_verify_uint64_1
-#endif
 
 #if defined(FN_ATTR)
 FN_ATTR
 #endif
 static void N_SIGN(mzd_local_t const* p, view_t* views, in_out_shares_t* in_out_shares,
-		   rvec_t* rvec, recorded_state_t* recorded_state) {
+                   rvec_t* rvec, recorded_state_t* recorded_state) {
 #define reduced_shares (SC_PROOF - 1)
 #define MPC_LOOP_CONST_C(function, result, first, second, sc, c)                                   \
   MPC_LOOP_CONST_C_0(function, result, first, second, sc)

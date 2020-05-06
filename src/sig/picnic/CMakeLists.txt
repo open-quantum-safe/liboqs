@@ -28,11 +28,8 @@ set(SRCS sig_picnic.c
          external/io.c
          external/lowmc.c
          external/lowmc_128_128_20.c
-         external/lowmc_128_128_182.c
-         external/lowmc_192_192_284.c
          external/lowmc_192_192_30.c
          external/lowmc_256_256_38.c
-         external/lowmc_256_256_363.c
          external/mpc_lowmc.c
          external/mzd_additional.c
          external/picnic.c

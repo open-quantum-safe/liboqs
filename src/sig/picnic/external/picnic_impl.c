@@ -293,14 +293,6 @@ static uint64_t uint64_from_bitstream_10(bitstream_t* bs) {
   return ((uint64_t)bitstream_get_bits_32(bs, 30)) << (64 - 30);
 }
 
-static void uint64_to_bitstream_1(bitstream_t* bs, const uint64_t v) {
-  bitstream_put_bits_8(bs, v >> (64 - 3), 3);
-}
-
-static uint64_t uint64_from_bitstream_1(bitstream_t* bs) {
-  return ((uint64_t)bitstream_get_bits_8(bs, 3)) << (64 - 3);
-}
-
 static void compress_view(uint8_t* dst, const picnic_instance_t* pp, const view_t* views,
                           const unsigned int idx) {
   const size_t num_views = pp->lowmc->r;
@@ -310,14 +302,8 @@ static void compress_view(uint8_t* dst, const picnic_instance_t* pp, const view_
   bs.position = 0;
 
   const view_t* v = &views[0];
-  if (pp->lowmc->m == 10) {
-    for (size_t i = 0; i < num_views; ++i, ++v) {
-      uint64_to_bitstream_10(&bs, v->t[idx]);
-    }
-  } else if (pp->lowmc->m == 1) {
-    for (size_t i = 0; i < num_views; ++i, ++v) {
-      uint64_to_bitstream_1(&bs, v->t[idx]);
-    }
+  for (size_t i = 0; i < num_views; ++i, ++v) {
+    uint64_to_bitstream_10(&bs, v->t[idx]);
   }
 }
 
@@ -330,14 +316,8 @@ static void decompress_view(view_t* views, const picnic_instance_t* pp, const ui
   bs.position = 0;
 
   view_t* v = &views[0];
-  if (pp->lowmc->m == 10) {
-    for (size_t i = 0; i < num_views; ++i, ++v) {
-      v->t[idx] = uint64_from_bitstream_10(&bs);
-    }
-  } else if (pp->lowmc->m == 1) {
-    for (size_t i = 0; i < num_views; ++i, ++v) {
-      v->t[idx] = uint64_from_bitstream_1(&bs);
-    }
+  for (size_t i = 0; i < num_views; ++i, ++v) {
+    v->t[idx] = uint64_from_bitstream_10(&bs);
   }
 }
 
@@ -350,15 +330,8 @@ static void decompress_random_tape(rvec_t* rvec, const picnic_instance_t* pp, co
   bs.position = 0;
 
   rvec_t* rv = &rvec[0];
-
-  if (pp->lowmc->m == 10) {
-    for (size_t i = 0; i < num_views; ++i, ++rv) {
-      rv->t[idx] = uint64_from_bitstream_10(&bs);
-    }
-  } else if (pp->lowmc->m == 1) {
-    for (size_t i = 0; i < num_views; ++i, ++rv) {
-      rv->t[idx] = uint64_from_bitstream_1(&bs);
-    }
+  for (size_t i = 0; i < num_views; ++i, ++rv) {
+    rv->t[idx] = uint64_from_bitstream_10(&bs);
   }
 }
 

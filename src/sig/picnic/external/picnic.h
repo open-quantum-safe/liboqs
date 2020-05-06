@@ -88,13 +88,6 @@ typedef enum {
   Picnic2_L1_FS, // 7
   Picnic2_L3_FS, // 8
   Picnic2_L5_FS, // 9
-  /* Instances with LowMC m=1 */
-  Picnic_L1_1_FS, // 10
-  Picnic_L1_1_UR, // 11
-  Picnic_L3_1_FS, // 12
-  Picnic_L3_1_UR, // 13
-  Picnic_L5_1_FS, // 14
-  Picnic_L5_1_UR, // 15
   PARAMETER_SET_MAX_INDEX
 } picnic_params_t;
 

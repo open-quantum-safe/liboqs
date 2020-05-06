@@ -39,7 +39,7 @@ static_assert(((sizeof(mzd_local_t) + 0x1f) & ~0x1f) == 32, "sizeof mzd_local_t 
 #endif
 static const unsigned int align_bound = 128 / (8 * sizeof(word));
 
-static uint32_t calculate_rowstride(uint32_t width) {
+static size_t calculate_rowstride(size_t width) {
   // As soon as we hit the AVX bound, use 32 byte alignment. Otherwise use 16
   // byte alignment for SSE2 and 128 bit vectors.
   if (width > align_bound) {
@@ -49,7 +49,7 @@ static uint32_t calculate_rowstride(uint32_t width) {
   }
 }
 
-static uint32_t calculate_width(uint32_t c) {
+static size_t calculate_width(size_t c) {
   return (c + sizeof(word) * 8 - 1) / (sizeof(word) * 8);
 }
 
@@ -62,8 +62,7 @@ static uint32_t calculate_width(uint32_t c) {
 // memory block.
 
 mzd_local_t* mzd_local_init_ex(uint32_t r, uint32_t c, bool clear) {
-  const uint32_t width     = calculate_width(c);
-  const uint32_t rowstride = calculate_rowstride(width);
+  const size_t rowstride = calculate_rowstride(calculate_width(c));
 
   const size_t buffer_size = r * rowstride * sizeof(word);
   const size_t alloc_size  = (buffer_size + 31) & ~31;
@@ -84,8 +83,7 @@ void mzd_local_free(mzd_local_t* v) {
 }
 
 void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, uint32_t r, uint32_t c, bool clear) {
-  const uint32_t width     = calculate_width(c);
-  const uint32_t rowstride = calculate_rowstride(width);
+  const size_t rowstride = calculate_rowstride(calculate_width(c));
 
   const size_t buffer_size   = r * rowstride * sizeof(word);
   const size_t size_per_elem = (buffer_size + 31) & ~31;
@@ -194,22 +192,8 @@ void mzd_xor_s128_640(mzd_local_t* res, mzd_local_t const* first, mzd_local_t co
 }
 
 ATTR_TARGET_S128
-void mzd_xor_s128_896(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
-  BLOCK(res, 3)->w128[0] =
-      mm128_xor(CONST_BLOCK(first, 3)->w128[0], CONST_BLOCK(second, 3)->w128[0]);
-}
-
-ATTR_TARGET_S128
 void mzd_xor_s128_1024(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
   mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
-}
-
-ATTR_TARGET_S128
-void mzd_xor_s128_1152(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  mzd_xor_s128_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
-  BLOCK(res, 4)->w128[0] =
-      mm128_xor(CONST_BLOCK(first, 4)->w128[0], CONST_BLOCK(second, 4)->w128[0]);
 }
 
 ATTR_TARGET_S128
@@ -282,29 +266,14 @@ void mzd_xor_uint64_256(mzd_local_t* res, mzd_local_t const* first, mzd_local_t 
   mzd_xor_uint64_block(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
 }
 
-void mzd_xor_uint64_576(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
-  mzd_xor_uint64_block(BLOCK(res, 2), CONST_BLOCK(first, 2), CONST_BLOCK(second, 2), 1);
-}
-
 void mzd_xor_uint64_640(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
   mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 2);
   mzd_xor_uint64_block(BLOCK(res, 2), CONST_BLOCK(first, 2), CONST_BLOCK(second, 2), 2);
 }
 
-void mzd_xor_uint64_896(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
-  mzd_xor_uint64_block(BLOCK(res, 3), CONST_BLOCK(first, 3), CONST_BLOCK(second, 3), 2);
-}
-
 void mzd_xor_uint64_960(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
   mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 3);
   mzd_xor_uint64_block(BLOCK(res, 3), CONST_BLOCK(first, 3), CONST_BLOCK(second, 3), 3);
-}
-
-void mzd_xor_uint64_1152(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
-  mzd_xor_uint64_blocks(BLOCK(res, 0), CONST_BLOCK(first, 0), CONST_BLOCK(second, 0), 4);
-  mzd_xor_uint64_block(BLOCK(res, 4), CONST_BLOCK(first, 4), CONST_BLOCK(second, 4), 2);
 }
 
 void mzd_xor_uint64_1216(mzd_local_t* res, mzd_local_t const* first, mzd_local_t const* second) {
@@ -360,63 +329,6 @@ void mzd_mul_v_parity_uint64_256_30(mzd_local_t* c, mzd_local_t const* v, mzd_lo
   word res = 0;
   for (unsigned int i = 30; i; --i) {
     const block_t* Ablock = CONST_BLOCK(At, 30 - i);
-    const word parity =
-        parity64_uint64((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]) ^
-                        (vblock->w64[2] & Ablock->w64[2]) ^ (vblock->w64[3] & Ablock->w64[3]));
-    res |= parity << (64 - i);
-  }
-  cblock->w64[3] = res;
-}
-
-void mzd_mul_v_parity_uint64_128_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* vblock = CONST_BLOCK(v, 0);
-
-  cblock->w64[0] = 0;
-
-  const block_t* Ablock1 = CONST_BLOCK(At, 0);
-  const block_t* Ablock2 = CONST_BLOCK(At, 1);
-
-  const word parity1 =
-      parity64_uint64((vblock->w64[0] & Ablock1->w64[0]) ^ (vblock->w64[1] & Ablock1->w64[1]));
-  const word parity2 =
-      parity64_uint64((vblock->w64[0] & Ablock1->w64[2]) ^ (vblock->w64[1] & Ablock1->w64[3]));
-  const word parity3 =
-      parity64_uint64((vblock->w64[0] & Ablock2->w64[0]) ^ (vblock->w64[1] & Ablock2->w64[1]));
-
-  cblock->w64[1] = (parity1 | (parity2 << 1) | (parity3 << 2)) << 61;
-}
-
-void mzd_mul_v_parity_uint64_192_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* vblock = CONST_BLOCK(v, 0);
-
-  for (unsigned int j = 0; j < 3; j++) {
-    cblock->w64[j] = 0;
-  }
-
-  word res = 0;
-  for (unsigned int i = 3; i; --i) {
-    const block_t* Ablock = CONST_BLOCK(At, 3 - i);
-    const word parity =
-        parity64_uint64((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]) ^
-                        (vblock->w64[2] & Ablock->w64[2]));
-    res |= parity << (64 - i);
-  }
-  cblock->w64[2] = res;
-}
-
-void mzd_mul_v_parity_uint64_256_3(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* vblock = CONST_BLOCK(v, 0);
-
-  for (unsigned int j = 0; j < 3; j++) {
-    cblock->w64[j] = 0;
-  }
-
-  word res = 0;
-  for (unsigned int i = 3; i; --i) {
-    const block_t* Ablock = CONST_BLOCK(At, 3 - i);
     const word parity =
         parity64_uint64((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]) ^
                         (vblock->w64[2] & Ablock->w64[2]) ^ (vblock->w64[3] & Ablock->w64[3]));
@@ -574,37 +486,6 @@ void mzd_mul_v_s128_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t co
 }
 
 ATTR_TARGET_S128
-void mzd_mul_v_s128_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  const word* vptr      = CONST_BLOCK(v, 0)->w64;
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-
-  word128 cval[7] ATTR_ALIGNED(alignof(word128)) = {mm128_zero, mm128_zero, mm128_zero, mm128_zero,
-                                                    mm128_zero, mm128_zero, mm128_zero};
-  for (unsigned int w = 3; w; --w, ++vptr) {
-    word idx = *vptr;
-    for (unsigned int i = sizeof(word) * 8; i; i -= 1, idx >>= 1, Ablock += 4) {
-      const word128 mask = mm128_compute_mask(idx, 0);
-      mm128_xor_mask_region(&cval[0], Ablock[0].w128, mask, 2);
-      mm128_xor_mask_region(&cval[2], Ablock[1].w128, mask, 2);
-      mm128_xor_mask_region(&cval[4], Ablock[2].w128, mask, 2);
-      cval[6] = mm128_xor_mask(cval[6], Ablock[3].w128[0], mask);
-    }
-  }
-
-  block_t* cblock1 = BLOCK(c, 0);
-  block_t* cblock2 = BLOCK(c, 1);
-  block_t* cblock3 = BLOCK(c, 2);
-  block_t* cblock4 = BLOCK(c, 3);
-  cblock1->w128[0] = cval[0];
-  cblock1->w128[1] = cval[1];
-  cblock2->w128[0] = cval[2];
-  cblock2->w128[1] = cval[3];
-  cblock3->w128[0] = cval[4];
-  cblock3->w128[1] = cval[5];
-  cblock4->w128[0] = cval[6];
-}
-
-ATTR_TARGET_S128
 void mzd_mul_v_s128_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -634,42 +515,6 @@ void mzd_mul_v_s128_192_1024(mzd_local_t* c, mzd_local_t const* v, mzd_local_t c
   cblock3->w128[1] = cval[5];
   cblock4->w128[0] = cval[6];
   cblock4->w128[1] = cval[7];
-}
-
-ATTR_TARGET_S128
-void mzd_mul_v_s128_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  const word* vptr      = CONST_BLOCK(v, 0)->w64;
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-
-  word128 cval[9] ATTR_ALIGNED(alignof(word128)) = {mm128_zero, mm128_zero, mm128_zero,
-                                                    mm128_zero, mm128_zero, mm128_zero,
-                                                    mm128_zero, mm128_zero, mm128_zero};
-  for (unsigned int w = 4; w; --w, ++vptr) {
-    word idx = *vptr;
-    for (unsigned int i = sizeof(word) * 8; i; i -= 1, idx >>= 1, Ablock += 5) {
-      const word128 mask = mm128_compute_mask(idx, 0);
-      mm128_xor_mask_region(&cval[0], Ablock[0].w128, mask, 2);
-      mm128_xor_mask_region(&cval[2], Ablock[1].w128, mask, 2);
-      mm128_xor_mask_region(&cval[4], Ablock[2].w128, mask, 2);
-      mm128_xor_mask_region(&cval[6], Ablock[3].w128, mask, 2);
-      cval[8] = mm128_xor_mask(cval[8], Ablock[4].w128[0], mask);
-    }
-  }
-
-  block_t* cblock1 = BLOCK(c, 0);
-  block_t* cblock2 = BLOCK(c, 1);
-  block_t* cblock3 = BLOCK(c, 2);
-  block_t* cblock4 = BLOCK(c, 3);
-  block_t* cblock5 = BLOCK(c, 4);
-  cblock1->w128[0] = cval[0];
-  cblock1->w128[1] = cval[1];
-  cblock2->w128[0] = cval[2];
-  cblock2->w128[1] = cval[3];
-  cblock3->w128[0] = cval[4];
-  cblock3->w128[1] = cval[5];
-  cblock4->w128[0] = cval[6];
-  cblock4->w128[1] = cval[7];
-  cblock5->w128[0] = cval[8];
 }
 
 ATTR_TARGET_S128
@@ -987,25 +832,6 @@ void mzd_mul_v_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t cons
   mzd_addmul_v_uint64_256(c, v, A);
 }
 
-void mzd_mul_v_uint64_128_576(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  const word* vptr      = CONST_BLOCK(v, 0)->w64;
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-
-  clear_uint64_blocks(BLOCK(c, 0), 2);
-  clear_uint64_block(BLOCK(c, 2), 1);
-
-  for (unsigned int w = 2; w; --w, ++vptr) {
-    word idx = *vptr;
-    for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
-      const uint64_t mask = -(idx & 1);
-      for (unsigned int j = 0; j < 2; ++j, ++Ablock) {
-        mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
-      }
-      mzd_xor_mask_uint64_block(BLOCK(c, 2), Ablock, mask, 1);
-    }
-  }
-}
-
 void mzd_mul_v_uint64_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -1025,25 +851,6 @@ void mzd_mul_v_uint64_128_640(mzd_local_t* c, mzd_local_t const* v, mzd_local_t 
   }
 }
 
-void mzd_mul_v_uint64_192_896(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  const word* vptr      = CONST_BLOCK(v, 0)->w64;
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-
-  clear_uint64_blocks(BLOCK(c, 0), 3);
-  clear_uint64_block(BLOCK(c, 3), 2);
-
-  for (unsigned int w = 3; w; --w, ++vptr) {
-    word idx = *vptr;
-    for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
-      const uint64_t mask = -(idx & 1);
-      for (unsigned int j = 0; j < 3; ++j, ++Ablock) {
-        mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
-      }
-      mzd_xor_mask_uint64_block(BLOCK(c, 3), Ablock, mask, 2);
-    }
-  }
-}
-
 void mzd_mul_v_uint64_192_960(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   const word* vptr      = CONST_BLOCK(v, 0)->w64;
   const block_t* Ablock = CONST_BLOCK(A, 0);
@@ -1059,25 +866,6 @@ void mzd_mul_v_uint64_192_960(mzd_local_t* c, mzd_local_t const* v, mzd_local_t 
         mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
       }
       mzd_xor_mask_uint64_block(BLOCK(c, 3), Ablock, mask, 3);
-    }
-  }
-}
-
-void mzd_mul_v_uint64_256_1152(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  const word* vptr      = CONST_BLOCK(v, 0)->w64;
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-
-  clear_uint64_blocks(BLOCK(c, 0), 4);
-  clear_uint64_block(BLOCK(c, 4), 2);
-
-  for (unsigned int w = 4; w; --w, ++vptr) {
-    word idx = *vptr;
-    for (unsigned int i = sizeof(word) * 8; i; --i, idx >>= 1, ++Ablock) {
-      const uint64_t mask = -(idx & 1);
-      for (unsigned int j = 0; j < 4; ++j, ++Ablock) {
-        mzd_xor_mask_uint64_block(BLOCK(c, j), Ablock, mask, 4);
-      }
-      mzd_xor_mask_uint64_block(BLOCK(c, 4), Ablock, mask, 2);
     }
   }
 }
@@ -1130,24 +918,6 @@ void mzd_shuffle_256_30(mzd_local_t* x, const word mask) {
   mzd_shuffle_30_idx(x, mask, 3);
 }
 
-static inline void mzd_shuffle_3_idx(mzd_local_t* x, const word mask, unsigned int idx) {
-  const word w          = CONST_BLOCK(x, 0)->w64[idx];
-  const word a          = extract_bits(w, mask) << 61;
-  BLOCK(x, 0)->w64[idx] = a | extract_bits(w, ~mask);
-}
-
-void mzd_shuffle_128_3(mzd_local_t* x, const word mask) {
-  mzd_shuffle_3_idx(x, mask, 1);
-}
-
-void mzd_shuffle_192_3(mzd_local_t* x, const word mask) {
-  mzd_shuffle_3_idx(x, mask, 2);
-}
-
-void mzd_shuffle_256_3(mzd_local_t* x, const word mask) {
-  mzd_shuffle_3_idx(x, mask, 3);
-}
-
 // no SIMD
 void mzd_addmul_v_uint64_30_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
   block_t* cblock       = BLOCK(c, 0);
@@ -1180,44 +950,6 @@ void mzd_addmul_v_uint64_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_
 
   word idx = CONST_BLOCK(v, 0)->w64[3] >> 34;
   for (unsigned int i = 30; i; --i, idx >>= 1, ++Ablock) {
-    const uint64_t mask = -(idx & 1);
-    mzd_xor_mask_uint64_block(cblock, Ablock, mask, 4);
-  }
-}
-
-void mzd_addmul_v_uint64_3_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  block_t* cblock        = BLOCK(c, 0);
-  const block_t* Ablock1 = CONST_BLOCK(A, 0);
-  const block_t* Ablock2 = CONST_BLOCK(A, 1);
-
-  const word idx       = CONST_BLOCK(v, 0)->w64[1] >> 61;
-  const uint64_t mask1 = -(idx & 1);
-  const uint64_t mask2 = -((idx >> 1) & 1);
-  const uint64_t mask3 = -((idx >> 2) & 1);
-
-  for (unsigned int j = 0; j < 2; ++j) {
-    cblock->w64[j] ^=
-        (Ablock1->w64[j] & mask1) ^ (Ablock1->w64[j + 2] & mask2) ^ (Ablock2->w64[j] & mask3);
-  }
-}
-
-void mzd_addmul_v_uint64_3_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-
-  word idx = CONST_BLOCK(v, 0)->w64[2] >> 61;
-  for (unsigned int i = 3; i; --i, idx >>= 1, ++Ablock) {
-    const uint64_t mask = -(idx & 1);
-    mzd_xor_mask_uint64_block(cblock, Ablock, mask, 3);
-  }
-}
-
-void mzd_addmul_v_uint64_3_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-
-  word idx = CONST_BLOCK(v, 0)->w64[3] >> 61;
-  for (unsigned int i = 3; i; --i, idx >>= 1, ++Ablock) {
     const uint64_t mask = -(idx & 1);
     mzd_xor_mask_uint64_block(cblock, Ablock, mask, 4);
   }
@@ -1270,43 +1002,6 @@ void mzd_addmul_v_s128_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t 
   mzd_addmul_v_s128_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 34);
 }
 
-ATTR_TARGET_S128
-void mzd_addmul_v_s128_3_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-  const word idx        = CONST_BLOCK(v, 0)->w64[1] >> 61;
-
-  word128 cval[2] ATTR_ALIGNED(alignof(word128));
-  cval[0]         = mm128_xor_mask(cblock->w128[0], Ablock[0].w128[0], mm128_compute_mask(idx, 0));
-  cval[1]         = mm128_and(Ablock[0].w128[1], mm128_compute_mask(idx, 1));
-  cval[0]         = mm128_xor_mask(cval[0], Ablock[1].w128[0], mm128_compute_mask(idx, 2));
-  cblock->w128[0] = mm128_xor(cval[0], cval[1]);
-}
-
-ATTR_TARGET_S128
-static void mzd_addmul_v_s128_3_256_idx(mzd_local_t* c, mzd_local_t const* A, const word idx) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-
-  word128 cval[4] ATTR_ALIGNED(alignof(word128)) = {cblock->w128[0], cblock->w128[1], mm128_zero,
-                                                    mm128_zero};
-  mm128_xor_mask_region(&cval[0], Ablock[0].w128, mm128_compute_mask(idx, 0), 2);
-  mm128_xor_mask_region(&cval[2], Ablock[1].w128, mm128_compute_mask(idx, 1), 2);
-  mm128_xor_mask_region(&cval[0], Ablock[2].w128, mm128_compute_mask(idx, 2), 2);
-
-  cblock->w128[0] = mm128_xor(cval[0], cval[2]);
-  cblock->w128[1] = mm128_xor(cval[1], cval[3]);
-}
-
-ATTR_TARGET_S128
-void mzd_addmul_v_s128_3_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  mzd_addmul_v_s128_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 61);
-}
-
-ATTR_TARGET_S128
-void mzd_addmul_v_s128_3_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  mzd_addmul_v_s128_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 61);
-}
 #endif
 
 #if defined(WITH_AVX2)
@@ -1367,41 +1062,6 @@ void mzd_addmul_v_s256_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t 
   mzd_addmul_v_s256_30_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 34);
 }
 
-ATTR_TARGET_AVX2
-void mzd_addmul_v_s256_3_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-  const word idx        = CONST_BLOCK(v, 0)->w64[1] >> 61;
-
-  word128 cval[2] ATTR_ALIGNED(alignof(word128));
-  cval[0]         = mm128_xor_mask(cblock->w128[0], Ablock[0].w128[0], mm128_compute_mask(idx, 0));
-  cval[1]         = mm128_and(Ablock[0].w128[1], mm128_compute_mask(idx, 1));
-  cval[0]         = mm128_xor_mask(cval[0], Ablock[1].w128[0], mm128_compute_mask(idx, 2));
-  cblock->w128[0] = mm128_xor(cval[0], cval[1]);
-}
-
-ATTR_TARGET_AVX2
-static inline void mzd_addmul_v_s256_3_256_idx(mzd_local_t* c, mzd_local_t const* A, const word idx) {
-  block_t* cblock       = BLOCK(c, 0);
-  const block_t* Ablock = CONST_BLOCK(A, 0);
-
-  word256 cval[2] ATTR_ALIGNED(alignof(word256));
-  cval[0]      = mm256_xor_mask(cblock->w256, Ablock[0].w256, mm256_compute_mask(idx, 0));
-  cval[1]      = mm256_and(Ablock[1].w256, mm256_compute_mask(idx, 1));
-  cval[0]      = mm256_xor_mask(cval[0], Ablock[2].w256, mm256_compute_mask(idx, 2));
-  cblock->w256 = mm256_xor(cval[0], cval[1]);
-}
-
-ATTR_TARGET_AVX2
-void mzd_addmul_v_s256_3_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  mzd_addmul_v_s256_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[2] >> 61);
-}
-
-ATTR_TARGET_AVX2
-void mzd_addmul_v_s256_3_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) {
-  mzd_addmul_v_s256_3_256_idx(c, A, CONST_BLOCK(v, 0)->w64[3] >> 61);
-}
-
 #if !defined(__x86_64__) && !defined(_M_X64)
 ATTR_TARGET_AVX2 ATTR_CONST static uint8_t popcount_32(uint32_t value) {
   uint64_t result =
@@ -1440,28 +1100,6 @@ void mzd_shuffle_pext_192_30(mzd_local_t* x, const word mask) {
 ATTR_TARGET_AVX2
 void mzd_shuffle_pext_256_30(mzd_local_t* x, const word mask) {
   mzd_shuffle_pext_30_idx(x, mask, 3);
-}
-
-ATTR_TARGET_AVX2
-static inline void mzd_shuffle_pext_3_idx(mzd_local_t* x, const word mask, unsigned int idx) {
-  const word w          = CONST_BLOCK(x, 0)->w64[idx];
-  const word a          = _pext_u64(w, mask) << 61;
-  BLOCK(x, 0)->w64[idx] = a | _pext_u64(w, ~mask);
-}
-
-ATTR_TARGET_AVX2
-void mzd_shuffle_pext_128_3(mzd_local_t* x, const word mask) {
-  mzd_shuffle_pext_3_idx(x, mask, 1);
-}
-
-ATTR_TARGET_AVX2
-void mzd_shuffle_pext_192_3(mzd_local_t* x, const word mask) {
-  mzd_shuffle_pext_3_idx(x, mask, 2);
-}
-
-ATTR_TARGET_AVX2
-void mzd_shuffle_pext_256_3(mzd_local_t* x, const word mask) {
-  mzd_shuffle_pext_3_idx(x, mask, 3);
 }
 #endif
 #endif

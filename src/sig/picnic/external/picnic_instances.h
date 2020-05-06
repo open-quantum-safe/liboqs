@@ -22,8 +22,6 @@
 #include "picnic.h"
 
 #define SALT_SIZE 32
-#define MAX_LOWMC_ROUNDS 38
-#define MAX_LOWMC_SBOXES 10
 #define MAX_DIGEST_SIZE 64
 #define MAX_NUM_ROUNDS 438
 #define MAX_VIEW_SIZE 143
