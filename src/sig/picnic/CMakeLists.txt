@@ -36,14 +36,6 @@ set(SRCS sig_picnic.c
          external/sha3/KeccakHash.c
          external/sha3/KeccakSpongeWidth1600.c)
 
-# TODO: The optimized Picnic code, when
-# compiled with clang-9 and clang-10, results
-# in signing and verification failures.
-if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR OQS_PORTABLE_BUILD)
-    set(USE_OPTIMIZATIONS OFF)
-else()
-    set(USE_OPTIMIZATIONS ON)
-endif()
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
    OQS_USE_AVX2_INSTRUCTIONS AND
    OQS_USE_BMI2_INSTRUCTIONS AND
