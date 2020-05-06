@@ -70,9 +70,6 @@ target_compile_definitions(picnic PRIVATE PICNIC_STATIC
                                           WITH_LOWMC_192_192_30
                                           WITH_LOWMC_256_256_38
                                           WITH_OPT)
-if(NOT WIN32)
-    target_compile_definitions(picnic PRIVATE HAVE_POSIX_MEMALIGN)
-endif()
 
 if(OQS_USE_SSE2_INSTRUCTIONS AND USE_OPTIMIZATIONS)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
