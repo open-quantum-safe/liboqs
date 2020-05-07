@@ -38,8 +38,7 @@ set(SRCS sig_picnic.c
 
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
    OQS_USE_AVX2_INSTRUCTIONS AND
-   OQS_USE_BMI2_INSTRUCTIONS AND
-   USE_OPTIMIZATIONS)
+   OQS_USE_BMI2_INSTRUCTIONS)
     set(USE_AVX2 ON)
 endif()
 
@@ -71,7 +70,7 @@ target_compile_definitions(picnic PRIVATE PICNIC_STATIC
                                           WITH_LOWMC_256_256_38
                                           WITH_OPT)
 
-if(OQS_USE_SSE2_INSTRUCTIONS AND USE_OPTIMIZATIONS)
+if(OQS_USE_SSE2_INSTRUCTIONS)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
     add_compile_options(-msse2)
 endif()
