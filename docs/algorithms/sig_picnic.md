@@ -31,7 +31,7 @@ Implementation
 --------------
 
 - **Source of implementation:** https://github.com/IAIK/Picnic
-- **Implementation version:** https://github.com/IAIK/Picnic/tree/v2.1.2
+- **Implementation version:** https://github.com/IAIK/Picnic/commit/9917e33194d0b540c09706c68fb707c4912edeed (v2.2 + bug fix)
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes

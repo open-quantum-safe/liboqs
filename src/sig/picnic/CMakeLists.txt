@@ -21,11 +21,8 @@ set(SRCS sig_picnic.c
          external/io.c
          external/lowmc.c
          external/lowmc_128_128_20.c
-         external/lowmc_128_128_182.c
-         external/lowmc_192_192_284.c
          external/lowmc_192_192_30.c
          external/lowmc_256_256_38.c
-         external/lowmc_256_256_363.c
          external/mpc_lowmc.c
          external/mzd_additional.c
          external/picnic.c
@@ -39,18 +36,9 @@ set(SRCS sig_picnic.c
          external/sha3/KeccakHash.c
          external/sha3/KeccakSpongeWidth1600.c)
 
-# TODO: The optimized Picnic code, when
-# compiled with clang-9 and clang-10, results
-# in signing and verification failures.
-if(CMAKE_C_COMPILER_ID MATCHES "Clang" OR OQS_PORTABLE_BUILD)
-    set(USE_OPTIMIZATIONS OFF)
-else()
-    set(USE_OPTIMIZATIONS ON)
-endif()
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
    OQS_USE_AVX2_INSTRUCTIONS AND
-   OQS_USE_BMI2_INSTRUCTIONS AND
-   USE_OPTIMIZATIONS)
+   OQS_USE_BMI2_INSTRUCTIONS)
     set(USE_AVX2 ON)
 endif()
 
@@ -81,11 +69,8 @@ target_compile_definitions(picnic PRIVATE PICNIC_STATIC
                                           WITH_LOWMC_192_192_30
                                           WITH_LOWMC_256_256_38
                                           WITH_OPT)
-if(NOT WIN32)
-    target_compile_definitions(picnic PRIVATE HAVE_POSIX_MEMALIGN)
-endif()
 
-if(OQS_USE_SSE2_INSTRUCTIONS AND USE_OPTIMIZATIONS)
+if(OQS_USE_SSE2_INSTRUCTIONS)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
     add_compile_options(-msse2)
 endif()

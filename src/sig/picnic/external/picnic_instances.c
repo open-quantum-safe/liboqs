@@ -43,26 +43,6 @@ const uint8_t HASH_PREFIX_5 = 5;
 #define LOWMC_L5_OR_NULL NULL
 #endif
 
-// L1, L3, and L5 lowmc instances with 1 SBOX
-#if defined(WITH_LOWMC_128_128_182)
-#include "lowmc_128_128_182.h"
-#define LOWMC_L1_1_OR_NULL &lowmc_128_128_182
-#else
-#define LOWMC_L1_1_OR_NULL NULL
-#endif
-#if defined(WITH_LOWMC_192_192_284)
-#include "lowmc_192_192_284.h"
-#define LOWMC_L3_1_OR_NULL &lowmc_192_192_284
-#else
-#define LOWMC_L3_1_OR_NULL NULL
-#endif
-#if defined(WITH_LOWMC_256_256_363)
-#include "lowmc_256_256_363.h"
-#define LOWMC_L5_1_OR_NULL &lowmc_256_256_363
-#else
-#define LOWMC_L5_1_OR_NULL NULL
-#endif
-
 #if defined(WITH_ZKBPP)
 #define ENABLE_ZKBPP(x) x
 #else
@@ -81,9 +61,11 @@ const uint8_t HASH_PREFIX_5 = 5;
 #elif defined(WITH_ZKBPP)
 #define NULL_FNS                                                                                   \
   { NULL, NULL, NULL, NULL, NULL }
-#else
+#elif defined(WITH_KKW)
 #define NULL_FNS                                                                                   \
-  { NULL }
+  { NULL, NULL, NULL }
+#else
+#error "At least one of WITH_ZKBPP and WITH_KKW have to be defined!"
 #endif
 
 static picnic_instance_t instances[PARAMETER_SET_MAX_INDEX] = {
@@ -107,19 +89,7 @@ static picnic_instance_t instances[PARAMETER_SET_MAX_INDEX] = {
      PICNIC_SIGNATURE_SIZE_Picnic2_L3_FS, Picnic2_L3_FS, TRANSFORM_FS, NULL_FNS},
     {ENABLE_KKW(LOWMC_L5_OR_NULL), 64, 32, 803, 50, 64, 32, 32, 143, 30, 110, 0, 0,
      PICNIC_SIGNATURE_SIZE_Picnic2_L5_FS, Picnic2_L5_FS, TRANSFORM_FS, NULL_FNS},
-    // Picnic with LowMC with m=1
-    {ENABLE_ZKBPP(LOWMC_L1_1_OR_NULL), 32, 16, 219, 219, 3, 16, 16, 69, 3, 55, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic_L1_1_FS, Picnic_L1_1_FS, TRANSFORM_FS, NULL_FNS},
-    {ENABLE_ZKBPP(LOWMC_L1_1_OR_NULL), 32, 16, 219, 219, 3, 16, 16, 69, 3, 55, 87, 103,
-     PICNIC_SIGNATURE_SIZE_Picnic_L1_1_UR, Picnic_L1_1_UR, TRANSFORM_UR, NULL_FNS},
-    {ENABLE_ZKBPP(LOWMC_L3_1_OR_NULL), 48, 24, 329, 329, 3, 24, 24, 107, 3, 83, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic_L3_1_FS, Picnic_L3_1_FS, TRANSFORM_FS, NULL_FNS},
-    {ENABLE_ZKBPP(LOWMC_L3_1_OR_NULL), 48, 24, 329, 329, 3, 24, 24, 107, 3, 83, 131, 155,
-     PICNIC_SIGNATURE_SIZE_Picnic_L3_1_UR, Picnic_L3_1_UR, TRANSFORM_UR, NULL_FNS},
-    {ENABLE_ZKBPP(LOWMC_L5_1_OR_NULL), 64, 32, 438, 438, 3, 32, 32, 137, 3, 110, 0, 0,
-     PICNIC_SIGNATURE_SIZE_Picnic_L5_1_FS, Picnic_L5_1_FS, TRANSFORM_FS, NULL_FNS},
-    {ENABLE_ZKBPP(LOWMC_L5_1_OR_NULL), 64, 32, 438, 438, 3, 32, 32, 137, 3, 110, 169, 201,
-     PICNIC_SIGNATURE_SIZE_Picnic_L5_1_UR, Picnic_L5_1_UR, TRANSFORM_UR, NULL_FNS}};
+};
 static bool instance_initialized[PARAMETER_SET_MAX_INDEX];
 
 static bool create_instance(picnic_instance_t* pp) {

@@ -21,11 +21,11 @@
 #endif
 
 /* compatibility with clang and other compilers */
-#ifndef __has_attribute
+#if !defined(__has_attribute)
 #define __has_attribute(a) 0
 #endif
 
-#ifndef __has_builtin
+#if !defined(__has_builtin)
 #define __has_builtin(b) 0
 #endif
 
@@ -83,8 +83,10 @@
 /* note that C11's alignas will only do the job once DR 444 is implemented */
 #if GNUC_CHECK(4, 9) || __has_attribute(aligned)
 #define ATTR_ALIGNED(i) __attribute__((aligned((i))))
+#define HAVE_USEFUL_ATTR_ALIGNED
 /* #elif defined(_MSC_VER)
-#define ATTR_ALIGNED(i) __declspec(align((i))) */
+#define ATTR_ALIGNED(i) __declspec(align((i)))
+#define HAVE_USEFUL_ATTR_ALIGNED */
 #else
 #define ATTR_ALIGNED(i)
 #endif
@@ -103,7 +105,7 @@
 /* assume aligned builtin */
 #if GNUC_CHECK(4, 9) || __has_builtin(__builtin_assume_aligned)
 #define ASSUME_ALIGNED(p, a) __builtin_assume_aligned((p), (a))
-#elif defined(UNREACHABLE)
+#elif defined(UNREACHABLE) && defined(HAVE_USEFUL_ATTR_ALIGNED)
 #define ASSUME_ALIGNED(p, a) (((((uintptr_t)(p)) % (a)) == 0) ? (p) : (UNREACHABLE, (p)))
 #else
 #define ASSUME_ALIGNED(p, a) (p)
@@ -248,5 +250,11 @@ static inline uint32_t ceil_log2(uint32_t x) {
   }
   return 32 - clz(x - 1);
 }
+
+#if defined(__WIN32__)
+#define SIZET_FMT "%Iu"
+#else
+#define SIZET_FMT "%zu"
+#endif
 
 #endif

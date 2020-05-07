@@ -261,18 +261,6 @@ int PICNIC_CALLING_CONVENTION picnic_verify(const picnic_publickey_t* pk, const 
 
 const char* PICNIC_CALLING_CONVENTION picnic_get_param_name(picnic_params_t parameters) {
   switch (parameters) {
-  case Picnic_L1_1_FS:
-    return "Picnic_L1_1_FS";
-  case Picnic_L1_1_UR:
-    return "Picnic_L1_1_UR";
-  case Picnic_L3_1_FS:
-    return "Picnic_L3_1_FS";
-  case Picnic_L3_1_UR:
-    return "Picnic_L3_1_UR";
-  case Picnic_L5_1_FS:
-    return "Picnic_L5_1_FS";
-  case Picnic_L5_1_UR:
-    return "Picnic_L5_1_UR";
   case Picnic_L1_FS:
     return "Picnic_L1_FS";
   case Picnic_L1_UR:

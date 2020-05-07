@@ -1,7 +1,15 @@
+Version 2.2 -- 2020-04-08
+---------------------------
+
+* Fix Picnic2 implementation on big endian systems
+* Add support for SHA3/SHAKE3 instructions on IBM z.
+* Various small improvements and bug fixes.
+* Remove LowMC instances with m=1.
+
 Version 2.1.2 -- 2019-10-03
 ---------------------------
 
-* Enable to build with ZKB++- or KKW-based instances only.
+* Add options to build with ZKB++- or KKW-based instances only.
 * Fix ARM NEON optimizations.
 * Slightly reduce heap usage.
 * Remove more unused code.

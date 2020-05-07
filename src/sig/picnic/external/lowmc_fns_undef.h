@@ -9,19 +9,13 @@
 
 #undef ADDMUL
 #undef COPY
-#undef LOWMC_INSTANCE_1
-#undef LOWMC_INSTANCE_10
+#undef LOWMC_INSTANCE
 #undef LOWMC_N
-#undef LOWMC_R_1
-#undef LOWMC_R_10
+#undef LOWMC_R
 #undef MUL
-#undef MUL_MC_1
-#undef MUL_MC_10
-#undef ADDMUL_R_1
-#undef ADDMUL_R_10
-#undef MUL_Z_1
-#undef MUL_Z_10
+#undef MUL_MC
+#undef ADDMUL_R
+#undef MUL_Z
 #undef SHUFFLE
 #undef XOR
-#undef XOR_MC_1
-#undef XOR_MC_10
+#undef XOR_MC

@@ -93,7 +93,7 @@ static uint8_t mpc_AND(uint8_t a, uint8_t b, uint64_t mask_a, uint64_t mask_b, r
 
 static void mpc_sbox(mzd_local_t* statein, shares_t* state_masks, randomTape_t* tapes, msgs_t* msgs,
                      uint8_t* unopenened_msg, const picnic_instance_t* params) {
-  uint8_t state[32];
+  uint8_t state[MAX_LOWMC_BLOCK_SIZE];
   mzd_to_char_array(state, statein, params->lowmc->n / 8);
   for (size_t i = 0; i < params->lowmc->m * 3; i += 3) {
     uint8_t a       = getBit((uint8_t*)state, i + 2);
@@ -173,6 +173,7 @@ static void mpc_xor_masks(shares_t* out, const shares_t* a, const shares_t* b) {
 }
 #endif
 
+#if !defined(NO_UINT64_FALLBACK)
 /* PICNIC2_L1_FS */
 #define XOR mzd_xor_uint64_128
 #define MPC_MUL mpc_matrix_mul_uint64_128
@@ -247,6 +248,7 @@ static void mpc_xor_masks(shares_t* out, const shares_t* a, const shares_t* b) {
 #undef LOWMC_R
 #undef LOWMC_INSTANCE
 #undef SIM_ONLINE
+#endif
 
 #if defined(WITH_OPT)
 #if defined(WITH_SSE2) || defined(WITH_NEON)
@@ -413,11 +415,7 @@ static void mpc_xor_masks(shares_t* out, const shares_t* a, const shares_t* b) {
 #endif // WITH_OPT
 
 lowmc_simulate_online_f lowmc_simulate_online_get_implementation(const lowmc_t* lowmc) {
-#if defined(WITH_LOWMC_M1)
-  ASSUME(lowmc->m == 10 || lowmc->m == 1);
-#else
   ASSUME(lowmc->m == 10);
-#endif
   ASSUME(lowmc->n == 128 || lowmc->n == 192 || lowmc->n == 256);
 
 #if defined(WITH_OPT)
@@ -441,6 +439,7 @@ lowmc_simulate_online_f lowmc_simulate_online_get_implementation(const lowmc_t* 
     }
   }
 #endif
+
 #if defined(WITH_SSE2) || defined(WITH_NEON)
   if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
     if (lowmc->m == 10) {
@@ -462,6 +461,8 @@ lowmc_simulate_online_f lowmc_simulate_online_get_implementation(const lowmc_t* 
   }
 #endif
 #endif
+
+#if !defined(NO_UINT64_FALLBACK)
   if (lowmc->m == 10) {
     switch (lowmc->n) {
 #if defined(WITH_LOWMC_128_128_20)
@@ -478,6 +479,7 @@ lowmc_simulate_online_f lowmc_simulate_online_get_implementation(const lowmc_t* 
 #endif
     }
   }
+#endif
 
   return NULL;
 }
