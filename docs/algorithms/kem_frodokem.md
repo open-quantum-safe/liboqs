@@ -27,8 +27,8 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE/ via https://github.com/PQClean/PQClean
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/ba04db65d7d21e52dea59651bfff4ad28653852d
+- **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE
+- **Implementation version:** https://github.com/Microsoft/PQCrypto-LWEKE/commit/d5bbd0417ba111b08a959c0042a1dcc65fb14a89
 - **License:** MIT License
 - **Language:** C
 - **Constant-time:** Yes
@@ -40,5 +40,4 @@ Additional comments
 The original FrodoKEM implementation includes optimizations that are not currently being built in liboqs:
 
 - ARM
-- AVX2
 - cSHAKE 4-way hashing
