@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef PACK_H
 #define PACK_H
 

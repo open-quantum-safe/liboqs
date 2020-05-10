@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 /* qTesla-p-I */
 
 #include "sig_qtesla.h"
