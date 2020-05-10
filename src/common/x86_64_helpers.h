@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Apache-2.0
+
 #include <stdint.h>
 
 #if defined(_MSC_VER)

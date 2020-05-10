@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #include <oqs/common.h>
 
 #include <stdint.h>
@@ -18,6 +20,7 @@ static unsigned int available_cpu_extensions_set = 0;
 /* The code here, including x86_64_helpers.h, has been taken from:
  * https://github.com/vectorclass/version2
  * https://github.com/google/cpu_features/blob/master/src/cpuinfo_x86.c
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #include "x86_64_helpers.h"

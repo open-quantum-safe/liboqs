@@ -1,6 +1,8 @@
 /**
  * \file sha3_ossl.c
  * \brief Implementation of the OQS SHA3 API via calls to OpenSSL's SHA-3 functions
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 #include <oqs/oqs.h>
