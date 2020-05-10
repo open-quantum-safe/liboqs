@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #include <oqs/sig.h>
 
 #if defined(OQS_SIG_alg_picnic_L1_UR) || defined(OQS_SIG_alg_picnic_L1_FS) || defined(OQS_SIG_alg_picnic_L3_UR) || defined(OQS_SIG_alg_picnic_L3_FS) || defined(OQS_SIG_alg_picnic_L5_UR) || defined(OQS_SIG_alg_picnic_L5_FS) || defined(OQS_SIG_alg_picnic2_L1_FS) || defined(OQS_SIG_alg_picnic2_L3_FS) || defined(OQS_SIG_alg_picnic2_L5_FS)
