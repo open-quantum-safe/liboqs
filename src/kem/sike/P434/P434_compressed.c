@@ -2,6 +2,8 @@
 * Supersingular Isogeny Key Encapsulation Library
 *
 * Abstract: supersingular isogeny parameters and generation of functions for P434_compressed
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include <oqs/rand.h>

@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: modular arithmetic optimized for 64-bit ARMv8 platforms for P503
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include "../P503_internal.h"

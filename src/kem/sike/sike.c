@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: supersingular isogeny key encapsulation (SIKE) protocol
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include <string.h>

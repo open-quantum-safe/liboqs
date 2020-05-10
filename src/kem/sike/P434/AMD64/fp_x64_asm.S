@@ -2,6 +2,8 @@
 // SIDH: an efficient supersingular isogeny cryptography library
 //
 // Abstract: field arithmetic in x64 assembly for P434 on Linux
+//
+// SPDX-License-Identifier: MIT
 //*******************************************************************************************  
 
 .intel_syntax noprefix 

@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: configuration file and platform-dependent macros
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #ifndef SIKE_CONFIG_H

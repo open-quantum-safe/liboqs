@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: elliptic curve and isogeny functions
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 static void xDBL(const point_proj_t P, point_proj_t Q, const f2elm_t A24plus, const f2elm_t C24) { // Doubling of a Montgomery point in projective coordinates (X:Z).
