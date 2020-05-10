@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 try_run(RUN_RESULT COMPILE_RESULT
         "${CMAKE_BINARY_DIR}" "${PROJECT_SOURCE_DIR}/.CMake/detect_gcc_clang_intrinsics.c"
         COMPILE_DEFINITIONS -march=native
