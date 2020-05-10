@@ -14,6 +14,8 @@
  * malloc'ed by the programmer, with sizes indicated using the corresponding length
  * member of the OQS_KEM object in question.  Since algorithms can be disabled at
  * compile-time, the programmer should check that the OQS_KEM object is not `NULL`.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 #ifndef OQS_KEM_H
