@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef OQS_SIG_SPHINCS_H
 #define OQS_SIG_SPHINCS_H
 
