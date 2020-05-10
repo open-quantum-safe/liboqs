@@ -16,6 +16,8 @@
  * Written by Nir Drucker and Shay Gueron
  * AWS Cryptographic Algorithms Group.
  * (ndrucker@amazon.com, gueron@amazon.com)
+ *
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 #pragma once
