@@ -4,7 +4,8 @@
  * Minimal example of a Diffie-Hellman-style post-quantum key encapsulation
  * implemented in liboqs.
  *
-*/
+ * SPDX-License-Identifier: MIT
+ */
 
 #include <stdbool.h>
 #include <stdio.h>

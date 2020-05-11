@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 // This KAT test only generates a subset of the NIST KAT files.
 // To extract the subset from a submission file, use the command:
 //     cat PQCsignKAT_whatever.rsp | head -n 10 | tail -n 8
