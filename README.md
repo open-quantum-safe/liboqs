@@ -173,8 +173,10 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/common/crypto/sha2/sha2_c.c`: public domain
 - `src/common/crypto/sha3/fips202.c`: public domain
 - `src/common/crypto/sha3/keccak4x`: CC0 (public domain), except `brg_endian.h`
-- `src/kem/bike/x86_64`: Apache License v2.0
+- `src/kem/bike/additional`: Apache License v2.0
+- `src/kem/classic_mceliece/pqclean_*`: public domain
 - `src/kem/kyber/pqclean_*`: public domain
+- `src/kem/ledacrypt/pqclean_*`: public domain
 - `src/kem/newhope/pqclean_*`: public domain
 - `src/kem/ntru/pqclean_*`: public domain
 - `src/kem/saber/pqclean_*`: public domain
