@@ -1,4 +1,8 @@
-// SPDX-License-Identifier: Apache-2.0
+/* This file has been written using:
+ * https://github.com/vectorclass/version2/blob/master/instrset_detect.cpp
+ * https://github.com/google/cpu_features/blob/master/src/cpuinfo_x86.c
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
 #include <stdint.h>
 

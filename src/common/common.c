@@ -17,14 +17,13 @@ static unsigned int available_cpu_extensions_set = 0;
 
 #if defined(ARCH_X86_64)
 
-/* The code here, including x86_64_helpers.h, has been taken from:
- * https://github.com/vectorclass/version2
- * https://github.com/google/cpu_features/blob/master/src/cpuinfo_x86.c
- * SPDX-License-Identifier: Apache-2.0
- */
 
 #include "x86_64_helpers.h"
 
+/* set_available_cpu_extensions_x86_64() has been written using:
+ * https://github.com/google/cpu_features/blob/master/src/cpuinfo_x86.c
+ * SPDX-License-Identifier: Apache-2.0
+ */
 static void set_available_cpu_extensions_x86_64(void) {
 	cpuid_out leaf_1;
 	cpuid(&leaf_1, 1);
