@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 cmake_minimum_required (VERSION 3.5)
 # option() honors normal variables.
 # see: https://cmake.org/cmake/help/git-stage/policy/CMP0077.html

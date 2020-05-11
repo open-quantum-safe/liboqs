@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
     # The way various files are #include'd in the SIKE implementations leads to unused functions
