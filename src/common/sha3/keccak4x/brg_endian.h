@@ -24,6 +24,8 @@
  ---------------------------------------------------------------------------
  Issue Date: 20/12/2007
  Changes for ARM 9/9/2010
+ 
+ SPDX-License-Identifier: Unknown
 */
 
 #ifndef _BRG_ENDIAN_H
