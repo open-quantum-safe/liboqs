@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: MIT
-
 #ifndef SAMPLE_H
 #define SAMPLE_H
 

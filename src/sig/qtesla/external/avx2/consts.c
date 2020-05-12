@@ -2,8 +2,6 @@
 * qTESLA: an efficient post-quantum signature scheme based on the R-LWE problem
 *
 * Abstract: constants for the NTT
-*
-* SPDX-License-Identifier: MIT
 **************************************************************************************/
 
 #include <stdint.h>

@@ -2,8 +2,6 @@
 * qTESLA: an efficient post-quantum signature scheme based on the R-LWE problem
 *
 * Abstract: portable, constant-time Gaussian sampler
-*
-* SPDX-License-Identifier: MIT
 **************************************************************************************/
 
 #include <string.h>

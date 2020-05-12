@@ -3,8 +3,6 @@
 //
 // Abstract: optimized polynomial multiplication for case N = 1024 written in 
 //           x64 assembly with AVX2 support for Linux 
-//
-// SPDX-License-Identifier: MIT
 //************************************************************************************
 
 .intel_syntax noprefix 
