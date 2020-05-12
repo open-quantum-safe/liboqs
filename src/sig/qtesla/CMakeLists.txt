@@ -24,13 +24,13 @@ if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
    OQS_USE_AES_INSTRUCTIONS AND
    NOT OQS_PORTABLE_BUILD)
     set(CPP_DEFS ${CPP_DEFS} WITH_AVX2)
-    include_directories(avx2)
-    set(SRCS ${SRCS} avx2/poly_mul1024.S
-                     avx2/poly_mul2048.S)
+    include_directories(external/avx2)
+    set(SRCS ${SRCS} external/avx2/poly_mul1024.S
+                     external/avx2/poly_mul2048.S)
     add_compile_options(-mavx2)
     add_compile_options(-maes)
 else()
-    set(CPP_DEFS ${CPP_DEFS} portable)
+    include_directories(external/portable)
 endif()
 
 add_library(qtesla OBJECT ${SRCS})
