@@ -30,7 +30,7 @@ if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
     add_compile_options(-mavx2)
     add_compile_options(-maes)
 else()
-    set(CPP_DEFS ${CPP_DEFS} external/portable)
+    include_directories(external/portable)
 endif()
 
 add_library(qtesla OBJECT ${SRCS})
