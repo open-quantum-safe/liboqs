@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef RANDOMBYTES_H
 #define RANDOMBYTES_H
 

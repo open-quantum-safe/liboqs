@@ -3,7 +3,8 @@
  *
  * Minimal example of using a post-quantum signature implemented in liboqs.
  *
-*/
+ * SPDX-License-Identifier: MIT
+ */
 
 #include <stdbool.h>
 #include <stdio.h>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef POLY_H
 #define POLY_H
 

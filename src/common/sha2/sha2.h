@@ -8,6 +8,8 @@
  * functions, but external consumers of liboqs should not use these functions.</b>
  *
  * \author Douglas Stebila
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 #ifndef OQS_SHA2_H

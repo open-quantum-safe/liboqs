@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: core functions over GF(p) and GF(p^2)
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 static void clear_words(void *mem, digit_t nwords) { // Clear digits from memory. "nwords" indicates the number of digits to be zeroed.

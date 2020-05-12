@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: modular arithmetic optimized for x64 platforms for P610
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include "../P610_internal.h"

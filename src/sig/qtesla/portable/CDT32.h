@@ -2,6 +2,8 @@
 * qTESLA: an efficient post-quantum signature scheme based on the R-LWE problem
 *
 * Abstract: CDT constants for the Gaussian sampler
+*
+* SPDX-License-Identifier: MIT
 **************************************************************************************/
 
 #ifndef CDTSAMP

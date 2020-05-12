@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: Torsion basis generation for compression
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 static void get_2_torsion_entangled_basis_compression(const f2elm_t A, point_t S1, point_t S2, unsigned char *bit, unsigned char *entry) { // Build an entangled basis for E[2^m].

@@ -6,6 +6,7 @@
 // http://en.wikipedia.org/wiki/Rijndael_mix_columns
 // http://en.wikipedia.org/wiki/Rijndael_S-box
 // This code is public domain, or any OSI-approved license, your choice. No warranty.
+// SPDX-License-Identifier: MIT
 
 #include <assert.h>
 #include <stdio.h>

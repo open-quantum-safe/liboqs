@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Public domain
+
 #include <oqs/oqs.h>
 
 #include "sha2.h"

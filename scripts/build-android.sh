@@ -1,4 +1,7 @@
 #!/bin/bash
+
+# SPDX-License-Identifier: MIT
+
 set -e
 
 show_help() {

@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: ephemeral supersingular isogeny Diffie-Hellman key exchange (SIDH)
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include <string.h>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 // rename exported functions for OQS global namespace
 
 // p434

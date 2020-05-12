@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef OQS_KEM_NEWHOPE_H
 #define OQS_KEM_NEWHOPE_H
 

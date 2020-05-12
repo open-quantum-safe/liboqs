@@ -1,6 +1,8 @@
 /**
  * \file sha2_ossl.c
  * \brief Implementation of the OQS SHA2 API via calls to OpenSSL's SHA-2 functions
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 #include <oqs/oqs.h>
