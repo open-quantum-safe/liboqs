@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef OQS_SIG_{{ family|upper }}_H
 #define OQS_SIG_{{ family|upper }}_H
 

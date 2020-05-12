@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 import helpers
 import os
 import pytest

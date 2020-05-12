@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 if(ARCH STREQUAL "x86")
     set(CPP_DEFS _X86_)
 elseif(ARCH STREQUAL "x86_64")

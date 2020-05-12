@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: API header file for P503 using compression
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #ifndef P503_COMPRESSED_API_H

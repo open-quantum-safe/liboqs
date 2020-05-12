@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: portable modular arithmetic for P503
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include "../P503_internal.h"

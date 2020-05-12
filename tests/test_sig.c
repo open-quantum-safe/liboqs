@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #if defined(_WIN32)
 #pragma warning(disable : 4244 4293)
 #endif

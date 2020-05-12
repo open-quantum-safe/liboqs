@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #include <stdlib.h>
 
 #include <oqs/sig_falcon.h>

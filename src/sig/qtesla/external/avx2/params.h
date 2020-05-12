@@ -2,6 +2,8 @@
 * qTESLA: an efficient post-quantum signature scheme based on the R-LWE problem
 *
 * Abstract: provably-secure qTESLA parameters
+*
+* SPDX-License-Identifier: MIT
 **************************************************************************************/
 
 #ifndef PARAMS_H

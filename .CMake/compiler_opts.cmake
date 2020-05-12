@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Werror)
     add_compile_options(-Wall)

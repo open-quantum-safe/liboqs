@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef __GAUSS_H
 #define __GAUSS_H
 

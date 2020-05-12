@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef AES_H
 #define AES_H
 

@@ -14,6 +14,8 @@
  * malloc'ed by the programmer, with sizes indicated using the corresponding length
  * member of the OQS_SIG object in question.  Since algorithms can be disabled at
  * compile-time, the programmer should check that the OQS_SIG object is not `NULL`.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 #ifndef OQS_SIG_H

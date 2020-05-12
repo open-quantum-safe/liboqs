@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: precomputed tables for Pohlig-Hellman when using compression
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 static const uint64_t ph2_T[DLEN_2 * ELL2_W * 2 * NWORDS64_FIELD] = {

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: MIT
+
 # Get the SHA-1 hash of the current git commit, if any
 # based on https://stackoverflow.com/questions/8215785/how-can-i-use-ac-revision-with-git
 

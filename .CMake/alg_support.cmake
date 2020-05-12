@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 include(CMakeDependentOption)
 
 if(NOT DEFINED OQS_KEM_DEFAULT)

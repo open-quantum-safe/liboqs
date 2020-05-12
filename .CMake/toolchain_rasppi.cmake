@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: MIT
+
+# How to use:
 # apt install gcc-8-arm-linux-gnueabihf
 # cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_rasppi.cmake -DOQS_USE_OPENSSL=OFF ..
 

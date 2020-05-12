@@ -2,6 +2,8 @@
 * qTESLA: an efficient post-quantum signature scheme based on the R-LWE problem
 *
 * Abstract: constants for x64 assembly implementation
+*
+* SPDX-License-Identifier: MIT
 **************************************************************************************/
 
 #include "params.h"

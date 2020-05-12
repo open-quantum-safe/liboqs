@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #include <oqs/oqs.h>
 
 #include <stdio.h>

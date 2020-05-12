@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: supersingular isogeny parameters and generation of functions for P751
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include <oqs/rand.h>
