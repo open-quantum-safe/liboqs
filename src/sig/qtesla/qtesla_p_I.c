@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 /* qTesla-p-I */
 
 #include "sig_qtesla.h"
@@ -10,20 +12,20 @@
 #define poly_ntt_asm oqs_sig_qteslapi_poly_ntt_asm
 #define poly_pmul_asm oqs_sig_qteslapi_poly_pmul_asm
 #define poly_intt_asm oqs_sig_qteslapi_poly_intt_asm
-#include "avx2/consts.c"
-#include "avx2/s_consts.c"
-#include "avx2/gauss.c"
-#include "avx2/pack.c"
-#include "avx2/poly.c"
-#include "avx2/sample.c"
-#include "avx2/sign.c"
+#include "external/avx2/consts.c"
+#include "external/avx2/s_consts.c"
+#include "external/avx2/gauss.c"
+#include "external/avx2/pack.c"
+#include "external/avx2/poly.c"
+#include "external/avx2/sample.c"
+#include "external/avx2/sign.c"
 #else
-#include "portable/consts.c"
-#include "portable/gauss.c"
-#include "portable/pack.c"
-#include "portable/poly.c"
-#include "portable/sample.c"
-#include "portable/sign.c"
+#include "external/portable/consts.c"
+#include "external/portable/gauss.c"
+#include "external/portable/pack.c"
+#include "external/portable/poly.c"
+#include "external/portable/sample.c"
+#include "external/portable/sign.c"
 #endif
 
 OQS_API OQS_STATUS OQS_SIG_qTesla_p_I_keypair(uint8_t *public_key, uint8_t *secret_key) {

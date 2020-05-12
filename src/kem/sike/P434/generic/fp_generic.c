@@ -2,6 +2,8 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: portable modular arithmetic for P434
+*
+* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include "../P434_internal.h"

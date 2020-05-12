@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 if(OQS_ENABLE_KEM_frodokem_640_aes)
     set(SRCS kem_frodokem640aes.c external/frodo640aes.c)
 endif()

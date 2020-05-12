@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #include <immintrin.h>
 #include <stdint.h>
 #include <assert.h>

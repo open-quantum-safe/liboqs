@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 import functools
 import os
 import os.path

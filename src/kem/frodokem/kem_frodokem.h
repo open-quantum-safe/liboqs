@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef OQS_KEM_FRODOKEM_H
 #define OQS_KEM_FRODOKEM_H
 

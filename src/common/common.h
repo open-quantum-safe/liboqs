@@ -1,6 +1,8 @@
 /**
  * \file common.h
  * \brief Utility functions for use in liboqs.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 

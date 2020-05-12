@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# SPDX-License-Identifier: MIT
+
 # Detects whether there has been a Git commit in the last day on this
 # branch. Returns 1 if there has been a commit, 0 if there has not.
 # Always returns 1 if running in circleci local

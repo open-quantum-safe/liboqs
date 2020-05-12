@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 add_subdirectory(common)
 
 if(OQS_ENABLE_KEM_BIKE)

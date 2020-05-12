@@ -4,6 +4,8 @@
  *
  * C programs using liboqs can include just this one file, and it will include all
  * other necessary headers from liboqs.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 #ifndef OQS_H

@@ -12,7 +12,9 @@
  *   this list of conditions and the following disclaimer.
  *
  * * Redistributions in binary form must reproduce the above copyright
- *   notice, this list of conditions and the following disclaimer in the
+ *   notice, this list of conditions and the follow
+ *
+ * SPDX-License-Identifier: BSD-3-Clauseing disclaimer in the
  *   documentation and/or other materials provided with the distribution.
  *
  * * The names of the contributors may not be used to endorse or promote
@@ -30,6 +32,8 @@
  * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
  ******************************************************************************/
 
 #ifndef __FUNCTIONS_RENAMING_H_INCLUDED__

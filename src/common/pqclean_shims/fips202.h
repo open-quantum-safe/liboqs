@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef FIPS202_H
 #define FIPS202_H
 

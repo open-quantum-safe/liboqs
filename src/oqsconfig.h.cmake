@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #cmakedefine OQS_VERSION_TEXT "@OQS_VERSION_TEXT@"
 #cmakedefine OQS_COMPILE_BUILD_TARGET "@OQS_COMPILE_BUILD_TARGET@"
 #cmakedefine OQS_PORTABLE_BUILD 1

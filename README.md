@@ -168,12 +168,15 @@ liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/o
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
 - `.CMake/CMakeDependentOption.cmake`: BSD 3-Clause License
-- `src/crypto/aes/aes_c.c`: public domain
-- `src/crypto/sha2/sha2_c.c`: public domain
-- `src/crypto/sha3/fips202.c`: CC0 (public domain)
-- `src/crypto/sha3/keccak4x`: CC0 (public domain), except `brg_endian.h`
-- `src/kem/bike/x86_64`: Apache License v2.0
+- `src/common/common.c`: includes portions which are Apache License v2.0
+- `src/common/crypto/aes/aes_c.c`: public domain or any OSI-approved license
+- `src/common/crypto/sha2/sha2_c.c`: public domain
+- `src/common/crypto/sha3/fips202.c`: public domain
+- `src/common/crypto/sha3/keccak4x`: CC0 (public domain), except `brg_endian.h`
+- `src/kem/bike/additional`: Apache License v2.0
+- `src/kem/classic_mceliece/pqclean_*`: public domain
 - `src/kem/kyber/pqclean_*`: public domain
+- `src/kem/ledacrypt/pqclean_*`: public domain
 - `src/kem/newhope/pqclean_*`: public domain
 - `src/kem/ntru/pqclean_*`: public domain
 - `src/kem/saber/pqclean_*`: public domain

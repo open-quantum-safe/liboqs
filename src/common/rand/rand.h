@@ -1,6 +1,8 @@
 /**
  * \file rand.h
  * \brief Random number generator.
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 #ifndef OQS_RANDOM_H

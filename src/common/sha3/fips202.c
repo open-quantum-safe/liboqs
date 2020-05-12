@@ -3,7 +3,9 @@
  * by Ronny Van Keer
  * and the public domain "TweetFips202" implementation
  * from https://twitter.com/tweetfips202
- * by Gilles Van Assche, Daniel J. Bernstein, and Peter Schwabe */
+ * by Gilles Van Assche, Daniel J. Bernstein, and Peter Schwabe
+ * SPDX-License-Identifier: Public domain
+ */
 
 #include <stddef.h>
 #include <stdint.h>

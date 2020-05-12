@@ -1,6 +1,8 @@
 /**
  * \file aes.h
  * \brief Header defining the API for OQS AES
+ *
+ * SPDX-License-Identifier: MIT
  */
 
 #ifndef OQS_AES_H
