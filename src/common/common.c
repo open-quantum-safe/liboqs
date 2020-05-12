@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: Apache-2.0 AND MIT
 
 #include <oqs/common.h>
 
@@ -22,7 +22,6 @@ static unsigned int available_cpu_extensions_set = 0;
 
 /* set_available_cpu_extensions_x86_64() has been written using:
  * https://github.com/google/cpu_features/blob/master/src/cpuinfo_x86.c
- * SPDX-License-Identifier: Apache-2.0
  */
 static void set_available_cpu_extensions_x86_64(void) {
 	cpuid_out leaf_1;
