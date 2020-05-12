@@ -23,9 +23,9 @@ Parameter sets
 Implementation
 --------------
 
-- **Source of implementation:** https://github.com/qtesla/qTesla
+- **Source of implementation:** https://github.com/microsoft/qTESLA-Library
 - **Implementation version:** https://github.com/microsoft/qTESLA-Library/commit/98b43cda4bbd9f3f0b1343a873a2a6076ddb9a2b
-- **License:** public domain
+- **License:** MIT
 - **Language:** C
 - **Constant-time:** Yes
 - **Architectures supported in liboqs master branch**: x86, x64
