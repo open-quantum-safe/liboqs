@@ -120,6 +120,7 @@ static OQS_STATUS kem_kat(const char *method_name) {
 
 err:
 	ret = OQS_ERROR;
+	goto cleanup;
 
 algo_not_enabled:
 	ret = OQS_SUCCESS;
