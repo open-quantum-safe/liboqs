@@ -34,6 +34,8 @@ More information on OQS can be found [here](https://openquantumsafe.org/) and in
 
 ### Supported Algorithms
 
+Details on each supported algorithm can be found in the [docs/algorithms folder](https://github.com/open-quantum-safe/liboqs/tree/master/docs/algorithms).
+
 #### Key encapsulation mechanisms
 
 - **BIKE**: BIKE1-L1-CPA, BIKE1-L3-CPA, BIKE1-L1-FO, BIKE1-L3-FO

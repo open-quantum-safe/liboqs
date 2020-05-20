@@ -1,5 +1,5 @@
 liboqs algorithm datasheet: `kem_frodokem`
-========================================================
+==========================================
 
 Summary
 -------
@@ -9,8 +9,7 @@ Summary
 - **Main cryptographic assumption**: learning with errors (LWE)
 - **Scheme authors**: Michael Naehrig, Erdem Alkim, Joppe Bos, Léo Ducas, Karen Easterbrook, Brian LaMacchia, Patrick Longa, Ilya Mironov, Valeria Nikolaenko, Christopher Peikert, Ananth Raghunathan, Douglas Stebila
 - **Authors' website**: https://frodokem.org/
-- **Added to liboqs by**: Douglas Stebila
-- **NIST Round 2 submission**
+- **Version**: NIST Round 2 submission
 
 Parameter sets
 --------------
@@ -30,14 +29,5 @@ Implementation
 - **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE
 - **Implementation version:** https://github.com/Microsoft/PQCrypto-LWEKE/commit/d5bbd0417ba111b08a959c0042a1dcc65fb14a89
 - **License:** MIT License
-- **Language:** C
 - **Constant-time:** Yes
-- **Architectures supported in liboqs master branch**: x86, x64
-
-Additional comments
--------------------
-
-The original FrodoKEM implementation includes optimizations that are not currently being built in liboqs:
-
-- ARM
-- cSHAKE 4-way hashing
+- **Optimizations**: Portable C with optional use (selected at compile-time) of AVX2 and AESNI instructions
