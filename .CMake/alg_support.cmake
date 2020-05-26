@@ -104,11 +104,6 @@ if(ARCH STREQUAL "x86_64" AND CMAKE_SYSTEM_NAME MATCHES "Linux" AND OQS_USE_AES_
     cmake_dependent_option(OQS_ENABLE_KEM_kyber_1024_90s_avx2 "" ON "OQS_ENABLE_KEM_kyber_1024_90s" OFF)
 endif()
 
-option(OQS_ENABLE_KEM_LEDACRYPT "" ON)
-cmake_dependent_option(OQS_ENABLE_KEM_ledacrypt_ledakemlt12 "" ON "OQS_ENABLE_KEM_LEDACRYPT" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_ledacrypt_ledakemlt32 "" ON "OQS_ENABLE_KEM_LEDACRYPT" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_ledacrypt_ledakemlt52 "" ON "OQS_ENABLE_KEM_LEDACRYPT" OFF)
-
 option(OQS_ENABLE_KEM_NEWHOPE "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_newhope_512cca "" ON "OQS_ENABLE_KEM_NEWHOPE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_newhope_1024cca "" ON "OQS_ENABLE_KEM_NEWHOPE" OFF)

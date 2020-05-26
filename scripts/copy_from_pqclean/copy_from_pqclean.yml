@@ -91,28 +91,28 @@ kems:
         scheme: "1024_90s"
         pqclean_scheme: kyber1024-90s
         pretty_name_full: Kyber1024-90s
-  -
-    name: ledacrypt
-    default_implementation: leaktime
-    schemes:
-      -
-        scheme: ledakemlt12
-        pqclean_scheme: ledakemlt12
-        pretty_name_full: LEDAcryptKEM-LT12
-        implementation: leaktime
-        sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
-      -
-        scheme: ledakemlt32
-        pqclean_scheme: ledakemlt32
-        pretty_name_full: LEDAcryptKEM-LT32
-        implementation: leaktime
-        sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
-      -
-        scheme: ledakemlt52
-        pqclean_scheme: ledakemlt52
-        pretty_name_full: LEDAcryptKEM-LT52
-        implementation: leaktime
-        sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
+  # -
+  #   name: ledacrypt
+  #   default_implementation: leaktime
+  #   schemes:
+  #     -
+  #       scheme: ledakemlt12
+  #       pqclean_scheme: ledakemlt12
+  #       pretty_name_full: LEDAcryptKEM-LT12
+  #       implementation: leaktime
+  #       sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
+  #     -
+  #       scheme: ledakemlt32
+  #       pqclean_scheme: ledakemlt32
+  #       pretty_name_full: LEDAcryptKEM-LT32
+  #       implementation: leaktime
+  #       sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
+  #     -
+  #       scheme: ledakemlt52
+  #       pqclean_scheme: ledakemlt52
+  #       pretty_name_full: LEDAcryptKEM-LT52
+  #       implementation: leaktime
+  #       sources: ['bf_decoding.c', 'dfr_test.c', 'gf2x_arith_mod_xPplusOne.c', 'gf2x_arith.c', 'H_Q_matrices_generation.c', 'kem.c', 'niederreiter.c', 'rng.c', 'sort.c', 'utils.c']
   -
     name: newhope
     default_implementation: clean
