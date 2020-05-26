@@ -1,15 +1,20 @@
-liboqs algorithm datasheet: `kem_frodokem`
-==========================================
+FrodoKEM
+========
 
-Summary
--------
-
-- **Name**: FrodoKEM
 - **Algorithm type**: key encapsulation mechanism
 - **Main cryptographic assumption**: learning with errors (LWE)
 - **Scheme authors**: Michael Naehrig, Erdem Alkim, Joppe Bos, Léo Ducas, Karen Easterbrook, Brian LaMacchia, Patrick Longa, Ilya Mironov, Valeria Nikolaenko, Christopher Peikert, Ananth Raghunathan, Douglas Stebila
 - **Authors' website**: https://frodokem.org/
 - **Version**: NIST Round 2 submission
+
+Implementation
+--------------
+
+- **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE
+- **Implementation version:** https://github.com/Microsoft/PQCrypto-LWEKE/commit/d5bbd0417ba111b08a959c0042a1dcc65fb14a89
+- **License:** MIT License
+- **Constant-time:** Yes
+- **Optimizations**: Portable C with optional use (selected at compile-time) of AVX2 and AESNI instructions
 
 Parameter sets
 --------------
@@ -22,12 +27,3 @@ Parameter sets
 | FrodoKEM-976-SHAKE  |     IND-CCA    |              3              |          15632          |          31296          |          15744          |             24             |
 | FrodoKEM-1344-AES   |     IND-CCA    |              5              |          21520          |          43088          |          21632          |             32             |
 | FrodoKEM-1344-SHAKE |     IND-CCA    |              5              |          21520          |          43088          |          21632          |             32             |
-
-Implementation
---------------
-
-- **Source of implementation:** https://github.com/Microsoft/PQCrypto-LWEKE
-- **Implementation version:** https://github.com/Microsoft/PQCrypto-LWEKE/commit/d5bbd0417ba111b08a959c0042a1dcc65fb14a89
-- **License:** MIT License
-- **Constant-time:** Yes
-- **Optimizations**: Portable C with optional use (selected at compile-time) of AVX2 and AESNI instructions
