@@ -36,9 +36,6 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 		OQS_KEM_alg_kyber_512_90s,
 		OQS_KEM_alg_kyber_768_90s,
 		OQS_KEM_alg_kyber_1024_90s,
-		OQS_KEM_alg_ledacrypt_ledakemlt12,
-		OQS_KEM_alg_ledacrypt_ledakemlt32,
-		OQS_KEM_alg_ledacrypt_ledakemlt52,
 		OQS_KEM_alg_newhope_512cca,
 		OQS_KEM_alg_newhope_1024cca,
 		OQS_KEM_alg_ntru_hps2048509,
@@ -212,24 +209,6 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_kyber_1024_90s)) {
 #ifdef OQS_ENABLE_KEM_kyber_1024_90s
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledacrypt_ledakemlt12)) {
-#ifdef OQS_ENABLE_KEM_ledacrypt_ledakemlt12
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledacrypt_ledakemlt32)) {
-#ifdef OQS_ENABLE_KEM_ledacrypt_ledakemlt32
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledacrypt_ledakemlt52)) {
-#ifdef OQS_ENABLE_KEM_ledacrypt_ledakemlt52
 		return 1;
 #else
 		return 0;
@@ -587,24 +566,6 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_kyber_1024_90s)) {
 #ifdef OQS_ENABLE_KEM_kyber_1024_90s
 		return OQS_KEM_kyber_1024_90s_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledacrypt_ledakemlt12)) {
-#ifdef OQS_ENABLE_KEM_ledacrypt_ledakemlt12
-		return OQS_KEM_ledacrypt_ledakemlt12_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledacrypt_ledakemlt32)) {
-#ifdef OQS_ENABLE_KEM_ledacrypt_ledakemlt32
-		return OQS_KEM_ledacrypt_ledakemlt32_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ledacrypt_ledakemlt52)) {
-#ifdef OQS_ENABLE_KEM_ledacrypt_ledakemlt52
-		return OQS_KEM_ledacrypt_ledakemlt52_new();
 #else
 		return NULL;
 #endif
