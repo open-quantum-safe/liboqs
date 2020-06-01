@@ -1,16 +1,21 @@
-liboqs algorithm datasheet: `sig_picnic`
-========================================
+Picnic
+======
 
-Summary
--------
-
-- **Name**: Picnic
 - **Algorithm type**: signature
 - **Main cryptographic assumption**: hash function security (ROM/QROM), key recovery attacks on the lowMC block cipher
-- **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/Picnic-Round2.zip
-- **Submitters (to NIST competition)**: Greg Zaverucha, Melissa Chase, David Derler, Steven Goldfeder, Claudio Orlandi, Sebastian Ramacher, Christian Rechberger, Daniel Slamanig, Jonathan Katz, Xiao Wang, Vladmir Kolesnikov
-- **Submitters' website**: https://microsoft.github.io/Picnic/
+- **Scheme authors**: Greg Zaverucha, Melissa Chase, David Derler, Steven Goldfeder, Claudio Orlandi, Sebastian Ramacher, Christian Rechberger, Daniel Slamanig, Jonathan Katz, Xiao Wang, Vladmir Kolesnikov
+- **Authors' website**: https://microsoft.github.io/Picnic/
+- **Version**: 2.2 + bug fix
 - **Added to liboqs by**: Christian Paquin
+
+Implementation
+--------------
+
+- **Source of implementation**: https://github.com/IAIK/Picnic
+- **Implementation version**: https://github.com/IAIK/Picnic/commit/9917e33194d0b540c09706c68fb707c4912edeed (v2.2 + bug fix)
+- **License**: MIT License
+- **Constant-time**: Yes
+- **Optimizations**: Portable C with optional use of AVX2 and SSE2 instructions (selected at compile-time, enabled by default if available)
 
 Parameter sets
 --------------
@@ -27,17 +32,7 @@ Parameter sets
 | picnic2_L3_FS   |     EUF-CMA    |              3              |            49           |            73           |          29754         |
 | picnic2_L5_FS   |     EUF-CMA    |              5              |            65           |            97           |          54736         |
 
-Implementation
---------------
-
-- **Source of implementation:** https://github.com/IAIK/Picnic
-- **Implementation version:** https://github.com/IAIK/Picnic/commit/9917e33194d0b540c09706c68fb707c4912edeed (v2.2 + bug fix)
-- **License:** MIT License
-- **Language:** C
-- **Constant-time:** Yes
-- **Architectures supported in liboqs master branch**: x86, x64
-
 Additional comments
 -------------------
 
-The original Picnic implementation includes optimizations that are not currently being built in liboqs. See src/sig/picnic/upstream/README for details.
+The original Picnic implementation includes optimizations that are not currently being built in liboqs. See src/sig/picnic/external/README.md for details.

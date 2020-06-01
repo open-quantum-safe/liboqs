@@ -15,7 +15,7 @@ Implementation
 - **Implementation version**: v3.2 (https://github.com/microsoft/PQCrypto-SIDH/commit/fde210a7cf03e835cceb1d5ff34ccf58625d0311)
 - **License**: MIT License
 - **Constant-time**: Yes
-- **Optimizations**: Portable C, with assembly optimizations on AMD64 and selected parameter sets on ARM64
+- **Optimizations**: Portable C, with assembly optimizations on AMD64 and selected parameter sets on ARM64 (selected at compile-time, enabled by default if available)
 
 Parameter sets
 --------------
