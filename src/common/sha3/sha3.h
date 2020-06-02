@@ -693,7 +693,7 @@ void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
 */
 void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen);
 
-#if defined(OQS_USE_AVX2_INSTRUCTIONS) && defined(OQS_USE_AES_INSTRUCTIONS)
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
 /**
  * \brief Seed 4 parallel SHAKE-128 instances, and generate 4 arrays of pseudo-random bytes.
  *
