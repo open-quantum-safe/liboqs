@@ -1,0 +1,37 @@
+version: 1.0.{build}
+
+image: Visual Studio 2019
+
+platform: x64
+
+environment:
+  LIBOQS_INSTALL_PATH: C:\liboqs
+  LIBOQS_BUILD_DIR: C:\liboqs\build
+  LIBOQS_DLL_DIR: C:\liboqs\build\bin
+
+install:
+  - cmd: |-
+      @echo on
+      set "PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%LIBOQS_DLL_DIR%;%PATH%"
+      call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+      git clone https://github.com/open-quantum-safe/liboqs %LIBOQS_INSTALL_PATH%
+      mkdir %LIBOQS_BUILD_DIR%
+      cd %LIBOQS_BUILD_DIR%
+      cmake .. -DCMAKE_BUILD_TYPE=Optimized -DBUILD_SHARED_LIBS=ON -G"Ninja"
+      ninja 1> nul
+
+build_script:
+  - cmd: |-
+      cd %APPVEYOR_BUILD_FOLDER%
+      python -m venv venv
+      venv\Scripts\activate.bat
+      python setup.py install
+      pip install nose rednose
+      python examples/kem.py
+      python examples/rand.py
+      python examples/sig.py
+
+test_script:
+  - cmd: |-
+      cd %APPVEYOR_BUILD_FOLDER%
+      python -m nose --rednose --verbose

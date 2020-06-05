@@ -1,0 +1,54 @@
+version: 2
+
+.my_job: &myjob
+  docker:
+    - image: ${IMAGE}
+  general:
+    branches:
+      only:
+        - master
+  steps:
+    - checkout
+    - run:
+        name: Clone liboqs-master
+        command: .circleci/git_no_checkin_in_last_day.sh || (cd /root && git clone --branch master --single-branch https://github.com/open-quantum-safe/liboqs)
+    - run:
+        name: Build liboqs-master
+        command: .circleci/git_no_checkin_in_last_day.sh || (cd /root/liboqs && mkdir build && cd build && cmake -GNinja -DBUILD_SHARED_LIBS=ON .. && ninja)
+    - run:
+        name: Run liboqs-python unit tests
+        environment:
+          PYTHONPATH: /root/project
+        command: |
+          export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/root/liboqs/build/lib
+          mkdir -p test-results && .circleci/git_no_checkin_in_last_day.sh || (python3 -m nose --rednose --verbose --with-xunit --xunit-file=test-results/nosetests.xml)
+    - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
+        path: test-results
+
+jobs:
+  debian-buster-amd64:
+    <<: *myjob
+    environment:
+      IMAGE: openquantumsafe/ci-debian-buster-amd64:latest
+  ubuntu-bionic-x86_64:
+    <<: *myjob
+    environment:
+      IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - debian-buster-amd64
+      - ubuntu-bionic-x86_64
+  nightly:
+    triggers:
+      - schedule:
+          cron: "0 1 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - debian-buster-amd64
+      - ubuntu-bionic-x86_64
