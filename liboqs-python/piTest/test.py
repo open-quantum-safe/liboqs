@@ -9,4 +9,3 @@ signature = sig.generate_keypair()
 
 print (signature )
 
-print (publicKey)
