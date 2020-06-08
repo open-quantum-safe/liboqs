@@ -283,8 +283,9 @@ class Signature(ct.Structure):
         If needed, the secret key can be obtained with export_secret_key().
         """
         public_key = ct.create_string_buffer(self._sig.contents.length_public_key)
-        print ("Printing public key")
-        print (public_key)
+        f = f.open("test.txt","W")
+        f.write(public_key)
+        f.close()
         self.secret_key = ct.create_string_buffer(self._sig.contents.length_secret_key)
         private_key = self.secret_key
         print ("Printing private key")
