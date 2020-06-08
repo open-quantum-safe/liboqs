@@ -284,8 +284,9 @@ class Signature(ct.Structure):
         """
         public_key = ct.create_string_buffer(self._sig.contents.length_public_key)
         self.secret_key = ct.create_string_buffer(self._sig.contents.length_secret_key)
+        private_key = self.secret_key
         rv = native().OQS_SIG_keypair(self._sig, ct.byref(public_key), ct.byref(self.secret_key))
-        return bytes(public_key) if rv == OQS_SUCCESS else 0
+        return bytes(public_key,private_key) if rv == OQS_SUCCESS else 0
 
     def export_secret_key(self):
         """Exports the secret key."""
