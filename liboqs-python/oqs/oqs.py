@@ -283,13 +283,8 @@ class Signature(ct.Structure):
         If needed, the secret key can be obtained with export_secret_key().
         """
         public_key = ct.create_string_buffer(self._sig.contents.length_public_key)
-        f = f.open("test.txt","W")
-        f.write(public_key)
-        f.close()
         self.secret_key = ct.create_string_buffer(self._sig.contents.length_secret_key)
         private_key = self.secret_key
-        print ("Printing private key")
-        print (private_key)
         rv = native().OQS_SIG_keypair(self._sig, ct.byref(public_key), ct.byref(self.secret_key))
         return bytes(public_key) if rv == OQS_SUCCESS else 0
 
