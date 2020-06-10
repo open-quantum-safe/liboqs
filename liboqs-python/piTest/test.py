@@ -10,7 +10,7 @@ privateKey = sig.export_secret_key()
 ##print (oqs._enabled_sigs)
 
 print ("current algorithm")
-print (oqs.Signature.details)
+print (oqs.Signature.alg_name)
 
 print (publicKey)
 print ()
