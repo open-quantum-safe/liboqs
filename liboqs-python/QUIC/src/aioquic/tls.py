@@ -40,6 +40,9 @@ from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 
 from .buffer import Buffer
 
+##MOD 
+import oqs
+
 binding = Binding()
 binding.init_static_locks()
 ffi = binding.ffi
