@@ -11,4 +11,3 @@ privateKey = sig.export_secret_key()
 print (signature)
 print ()
 ##print (privateKey)
-base64.b64decode
