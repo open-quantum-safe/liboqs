@@ -10,4 +10,4 @@ privateKey = sig.export_secret_key()
 
 print (signature)
 print ()
-##print (privateKey)
+print (privateKey)
