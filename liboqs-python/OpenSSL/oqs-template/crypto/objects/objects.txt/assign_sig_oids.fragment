@@ -1,0 +1,9 @@
+{%- for sig in config['sigs'] %}
+    {%- for variant in sig['variants'] %}
+{{ variant['oid']|replace('.', ' ') }} : {{ variant['name'] }} : {{ variant['name'] }}
+        {%- for classical_alg in variant['mix_with'] %}
+{{ classical_alg['oid']|replace('.', ' ') }} : {{ classical_alg['name'] }}_{{ variant['name'] }} : {{ classical_alg['name'] }}_{{ variant['name'] }}
+        {%- endfor %}
+    {%- endfor %}
+{%- endfor %}
+
