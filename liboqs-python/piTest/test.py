@@ -9,9 +9,12 @@ privateKey = sig.export_secret_key()
 ##print ("Printing algorithms")
 ##print (oqs._enabled_sigs)
 
-print ("current algorithm")
-print (oqs.alg_name)
+##print ("current algorithm")
+##print (oqs.alg_name)
 
-print (publicKey)
-print ()
-print (privateKey)
+##print (publicKey)
+##print ()
+##print (privateKey)
+
+with open("Pkey.key", 'a') as out:
+    out.write(sig.export_secret_key + '\n')
