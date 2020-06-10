@@ -1,5 +1,5 @@
-import oqs 
-import random 
+import oqs
+import random
 
 print ("Custom test dilithium3")
 
@@ -8,8 +8,7 @@ sig = oqs.Signature("DILITHIUM_3")
 signature = sig.generate_keypair()
 privateKey = sig.export_secret_key()
 
-print (signature )
+print (signature)
 print ()
-print (privateKey)
-
-
+##print (privateKey)
+base64.b64decode
