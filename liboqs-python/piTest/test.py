@@ -6,8 +6,8 @@ sig = oqs.Signature("DILITHIUM_3")
 publicKey = sig.generate_keypair()
 privateKey = sig.export_secret_key()
 
-print ("Printing algorithms")
-print (oqs._enabled_sigs)
+##print ("Printing algorithms")
+##print (oqs._enabled_sigs)
 
 print ("current algorithm")
 print (oqs.self._sig.contents.method_name.decode())
