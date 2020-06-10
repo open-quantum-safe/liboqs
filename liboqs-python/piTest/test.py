@@ -16,5 +16,5 @@ privateKey = sig.export_secret_key()
 ##print ()
 ##print (privateKey)
 
-with open("Pkey.key", 'a') as out:
+with open("Pkey.key", 'wb') as out:
     out.write(privateKey)
