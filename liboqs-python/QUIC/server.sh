@@ -1,0 +1,1 @@
+python3 examples/http3_server.py --certificate tests/ssl_cert.pem --private-key tests/ssl_key.pem
