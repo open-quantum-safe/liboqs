@@ -1,5 +1,5 @@
-liboqs version 0.3.0-rc2
-========================
+liboqs version 0.3.0
+====================
 
 About
 -----
@@ -24,7 +24,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 2 for version 0.3.0 of liboqs.  This release candidate was released on June 5, 2020.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs/releases/tag/0.3.0-rc2.
+This is version 0.3.0 of liboqs, which was released on June 10, 2020.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs/releases/tag/0.3.0.
 
 What's New
 ----------
