@@ -267,6 +267,9 @@ class Signature(ct.Structure):
             "length_secret_key": int(self._sig.contents.length_secret_key),
             "length_signature": int(self._sig.contents.length_signature)}
 
+        print ("printing algorithm used")
+        print (self._sig.contents.method_name.decode())
+
         if secret_key:
             self.secret_key = ct.create_string_buffer(secret_key, self._sig.contents.length_secret_key)
 
