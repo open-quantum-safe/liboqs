@@ -1,5 +1,6 @@
 import oqs
 import random
+import base64
 
 message = bytes(random.getrandbits(8) for _ in range (100))
 sig = oqs.Signature("DILITHIUM_3")
