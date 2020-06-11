@@ -263,11 +263,8 @@ def verify_certificate(
     # verify subject
     print ("In TLS: class State verify certificate verify subject HERE!!!!!!!!!\n")
     if server_name is not None:
-        print ("SERVER NAME IS NOT NONE !!!!!!")
         subject = []
         subjectAltName: List[Tuple[str, str]] = []
-        print ("FInding OID name\n")
-        print (x509.NameOID.COMMON_NAME)
         for attr in certificate.subject:
             if attr.oid == x509.NameOID.COMMON_NAME:
                 subject.append((("commonName", attr.value),))
@@ -418,6 +415,7 @@ class SignatureAlgorithm(IntEnum):
     RSA_PSS_RSAE_SHA384 = 0x0805
     RSA_PSS_RSAE_SHA512 = 0x0806
     ##Add new PQ algorithms here
+    DILITHIUM_2 = 0x04EC
 
     # legacy
     RSA_PKCS1_SHA1 = 0x0201
@@ -1089,6 +1087,7 @@ CIPHER_SUITES = {
 }
 
 SIGNATURE_ALGORITHMS: Dict = {
+    ##STOCK
     SignatureAlgorithm.ECDSA_SECP256R1_SHA256: (None, hashes.SHA256),
     SignatureAlgorithm.ECDSA_SECP384R1_SHA384: (None, hashes.SHA384),
     SignatureAlgorithm.ECDSA_SECP521R1_SHA512: (None, hashes.SHA512),
@@ -1099,6 +1098,8 @@ SIGNATURE_ALGORITHMS: Dict = {
     SignatureAlgorithm.RSA_PSS_RSAE_SHA256: (padding.PSS, hashes.SHA256),
     SignatureAlgorithm.RSA_PSS_RSAE_SHA384: (padding.PSS, hashes.SHA384),
     SignatureAlgorithm.RSA_PSS_RSAE_SHA512: (padding.PSS, hashes.SHA512),
+    ##Adding OQS
+    SignatureAlgorithm.DILITHIUM_2: (None,hashes.SHA256)
 }
 
 GROUP_TO_CURVE: Dict = {
