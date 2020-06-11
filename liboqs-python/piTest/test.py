@@ -22,4 +22,4 @@ privateKey = sig.export_secret_key()
 
 ##trying to decode text 
 encryptedText = base64.b64decode(privateKey)
-decrypt = data_protector.decrypt_text(encryptedText)
+print (encryptedText)
