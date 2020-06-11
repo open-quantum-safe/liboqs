@@ -261,7 +261,7 @@ def verify_certificate(
         raise AlertCertificateExpired("Certificate is no longer valid")
 
     # verify subject
-    print ("In TLS: class State verify certificate verify subject")
+    print ("In TLS: class State verify certificate verify subject HERE!!!!!!!!!\n")
     if server_name is not None:
         subject = []
         subjectAltName: List[Tuple[str, str]] = []
