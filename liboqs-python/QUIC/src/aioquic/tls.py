@@ -267,6 +267,9 @@ def verify_certificate(
         subjectAltName: List[Tuple[str, str]] = []
         for attr in certificate.subject:
             if attr.oid == x509.NameOID.COMMON_NAME:
+                print ("FInding OID name ")
+                print ()
+                print (x509.NameOID.COMMON_NAME)
                 subject.append((("commonName", attr.value),))
         for ext in certificate.extensions:
             if isinstance(ext.value, x509.SubjectAlternativeName):
