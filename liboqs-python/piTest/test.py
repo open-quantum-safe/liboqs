@@ -12,9 +12,13 @@ privateKey = sig.export_secret_key()
 ##print ("current algorithm")
 ##print (oqs.alg_name)
 
-print (publicKey)
+##print (publicKey)
 ##print ()
-print (privateKey)
+##print (privateKey)
 
 ##with open("Pkey.key", 'wb') as out:
 ##    out.write(privateKey)
+
+##trying to decode text 
+encryptedText = base64.b64decode(privateKey)
+decrypt = data_protector.decrypt_text(encryptedText)
