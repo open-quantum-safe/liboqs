@@ -263,6 +263,7 @@ def verify_certificate(
     # verify subject
     print ("In TLS: class State verify certificate verify subject HERE!!!!!!!!!\n")
     if server_name is not None:
+        print ("SERVER NAME IS NOT NONE !!!!!!")
         subject = []
         subjectAltName: List[Tuple[str, str]] = []
         print ("FInding OID name\n")
