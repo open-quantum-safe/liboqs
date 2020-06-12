@@ -15,7 +15,7 @@ pprint(sigs, compact="True")
 message = "This is the message to sign".encode()
 
 # create signer and verifier with default signature mechanisms
-sigalg = "DEFAULT"
+sigalg = "DILITHIUM_2"
 with oqs.Signature(sigalg) as signer:
     with oqs.Signature(sigalg) as verifier:
         print("\nSignature details:")
