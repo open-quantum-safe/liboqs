@@ -1283,6 +1283,7 @@ class Context:
             SignatureAlgorithm.ECDSA_SECP256R1_SHA256,
             SignatureAlgorithm.RSA_PKCS1_SHA256,
             SignatureAlgorithm.RSA_PKCS1_SHA1,
+            SignatureAlgorithm.DILITHIUM_2,
         ]
         self._supported_groups = [Group.SECP256R1]
         if default_backend().x25519_supported():
