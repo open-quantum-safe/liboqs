@@ -42,6 +42,7 @@ from .buffer import Buffer
 
 ##MOD 
 import oqs
+##from oqs import test
 
 binding = Binding()
 binding.init_static_locks()

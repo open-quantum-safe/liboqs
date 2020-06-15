@@ -21,7 +21,6 @@ dil2_privateKey = dil2.export_secret_key()
 ##print (publicKey)
 ##print ()
 ##print (privateKey)
-
 print (dil2_privateKey)
 
 ##with open("Pkey.txt", 'wb') as out:
