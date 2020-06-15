@@ -3,15 +3,13 @@ import random
 import base64
 
 message = bytes(random.getrandbits(8) for _ in range (100))
-sig = oqs.Signature("DILITHIUM_2")
 dil2 = oqs.Signature("DILITHIUM_2")
-dil3 = oqs.Signature("DILITHIUM_3")
+
 
 def gen_dili2_private_key(dil2):
-    pkey = dil2.export_secret_key()
+    pubKey = dil2.generate_keypair()
+    pKey = dil2.export_secret_key()
+    
+    return pKey
 
-    return pkey
-
-test = gen_dili2_private_key()
-
-print (test)
+print (gen_dili2_private_key(dil2))
