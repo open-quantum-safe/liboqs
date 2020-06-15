@@ -12,3 +12,6 @@ def gen_dili2_private_key(dil2):
 
     return pkey
 
+test = gen_dili2_private_key()
+
+print (test)
