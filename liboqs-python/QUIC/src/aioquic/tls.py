@@ -982,6 +982,8 @@ def push_certificate_verify(buf: Buffer, verify: CertificateVerify) -> None:
     with push_block(buf, 3):
         buf.push_uint16(verify.algorithm)
         push_opaque(buf, 2, verify.signature)
+    print ("in PUSH!!!!!!!! cert verify printing algorythm!!!!\n")
+    print (verify.algorithm)
 
 @dataclass
 class Finished:
