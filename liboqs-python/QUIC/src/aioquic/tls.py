@@ -188,7 +188,7 @@ def hkdf_extract(
 
 def load_pem_private_key(
     data: bytes, password: Optional[bytes]
-) -> Union[dsa.DSAPrivateKey, ec.EllipticCurvePrivateKey, rsa.RSAPrivateKey]:
+) -> Union[dsa.DSAPrivateKey, ec.EllipticCurvePrivateKey, rsa.RSAPrivateKey, oqs.Signature("DILITHIUM_2").export_secret_key()]:
     print("In TLS: class State load pem private key")
     """
     Load a PEM-encoded private key.
