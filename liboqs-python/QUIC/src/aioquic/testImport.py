@@ -1,5 +1,4 @@
 import oqs
-from test import gen_dili2_private_key
+import test
 
-
-print (gen_dili2_private_key())
+print (test.gen_dili2_private_key)
