@@ -1,16 +1,20 @@
-liboqs algorithm datasheet: `sig_sphincs`
-=====================================================
+SPHINCS+
+========
 
-Summary
--------
-
-- **Name**: SPHINCS+
 - **Algorithm type**: signature
 - **Main cryptographic assumption**: hash-based signatures
-- **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/SPHINCS-Round2.zip
-- **Submitters (to NIST competition)**: Andreas Hulsing, Daniel J. Bernstein, Christoph Dobraunig, Maria Eichlseder, Scott Fluhrer, Stefan-Lukas Gazdag, Panos Kampanakis, Stefan Kolbl, Tanja Lange, Martin M Lauridsen, Florian Mendel, Ruben Niederhagen, Christian Rechberger, Joost Rijneveld, Peter Schwabe, Jean-Philippe Aumasson
-- **Submitters' website**: https://sphincs.org/
-- **Added to liboqs by**: Thom Wiggers and Douglas Stebila
+- **Scheme authors**: Andreas Hulsing, Daniel J. Bernstein, Christoph Dobraunig, Maria Eichlseder, Scott Fluhrer, Stefan-Lukas Gazdag, Panos Kampanakis, Stefan Kolbl, Tanja Lange, Martin M Lauridsen, Florian Mendel, Ruben Niederhagen, Christian Rechberger, Joost Rijneveld, Peter Schwabe, Jean-Philippe Aumasson
+- **Authors' website**: https://sphincs.org/
+- **Version**: NIST Round 2 submission
+
+Implementation
+--------------
+
+- **Source of implementation**: https://github.com/sphincs/sphincsplus
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/9023fef55861faccd82146cf599b9e46fb9606aa
+- **License**: CC0 1.0 Universal
+- **Constant-time**: Yes
+- **Optimizations**: Portable C with AESNI and AVX2 instructions (if available at run-time)
 
 Parameter sets
 --------------
@@ -53,13 +57,3 @@ Parameter sets
 | SPHINCS+-SHAKE256-256f-simple |     EUF-CMA    |              5              |            64           |            128          |          49216         |
 | SPHINCS+-SHAKE256-256s-robust |     EUF-CMA    |              5              |            64           |            128          |          29792         |
 | SPHINCS+-SHAKE256-256s-simple |     EUF-CMA    |              5              |            64           |            128          |          29792         |
-
-Implementation
---------------
-
-- **Source of implementation:** https://github.com/PQClean/PQClean
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/9023fef55861faccd82146cf599b9e46fb9606aa
-- **License:** CC0 1.0 Universal
-- **Language:** C
-- **Constant-time:** Yes
-- **Architectures supported in liboqs master branch**: x86, x64

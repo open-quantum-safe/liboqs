@@ -1,17 +1,21 @@
-liboqs algorithm datasheet: `sig_rainbow`
-=========================================
+Rainbow
+=======
 
- Summary
--------
-
- - **Name**: Rainbow
 - **Algorithm type**: signature
 - **Main cryptographic assumption**: multivariable polynomials, unbalanced oil and vinegatr
-- **NIST submission URL**: https://csrc.nist.gov/CSRC/media/Projects/Post-Quantum-Cryptography/documents/round-2/submissions/Rainbow-Round2.zip
-- **Submitters (to NIST competition)**: Jintai Ding, Ming-Shing Chen, Albrecht Petzoldt, Dieter Schmidt, Bo-Yin Yang
-- **Added to liboqs by**: Douglas Stebila
+- **Scheme authors**: Jintai Ding, Ming-Shing Chen, Albrecht Petzoldt, Dieter Schmidt, Bo-Yin Yang
+- **Version**: NIST Round 2 submission
 
- Parameter sets
+Implementation
+--------------
+
+- **Source of implementation**: https://github.com/fast-crypto-lab/rainbow-submission-round2
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/9023fef55861faccd82146cf599b9e46fb9606aa
+- **License**: CC0 1.0
+- **Constant-time**: Yes
+- **Optimizations**: Portable C
+
+Parameter sets
 --------------
 
 | Parameter set                  | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
@@ -25,12 +29,3 @@ liboqs algorithm datasheet: `sig_rainbow`
 | Rainbow-Vc-Classic             |     EUF-CMA    |              5              |         1705536         |         1227104         |           204          |
 | Rainbow-Vc-Cyclic              |     EUF-CMA    |              5              |          491936         |         1227104         |           204          |
 | Rainbow-Vc-Cyclic-Compressed   |     EUF-CMA    |              5              |          491936         |            64           |           204          |
-
- Implementation
---------------
-
- - **Source of implementation:** https://github.com/PQClean/PQClean
-- **Implementation version:** https://github.com/PQClean/PQClean/commit/9023fef55861faccd82146cf599b9e46fb9606aa
-- **License:** CC0 1.0
-- **Language:** C
-- **Constant-time:** Yes
