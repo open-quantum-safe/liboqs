@@ -1666,8 +1666,8 @@ class Context:
 
         # PQ
         print ("TESTING OQS IMPORT HERE!!!!!\n")
-        print (test.gen_dili2_private_key("DILITHIUM_2"))
-
+        Toqs = test.gen_dili2_private_key("DILITHIUM_2")
+        print (Toqs)
 
         try:
             self._peer_certificate.public_key().verify(
