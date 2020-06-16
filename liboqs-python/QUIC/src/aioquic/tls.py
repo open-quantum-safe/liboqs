@@ -1664,6 +1664,10 @@ class Context:
         # check signature
         print ("In TLS: class Context client client handle certificate verify checking cert")
 
+        # PQ
+        print ("TESTING OQS IMPORT HERE!!!!!\n")
+        print (test.gen_dili2_private_key("DILITHIUM_2"))
+
 
         try:
             self._peer_certificate.public_key().verify(
