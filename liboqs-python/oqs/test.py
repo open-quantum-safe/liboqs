@@ -9,3 +9,5 @@ def gen_dili2_private_key(dil2):
     pKey = alg.export_secret_key()
     
     return pKey
+
+print (gen_dili2_private_key("DILITHIUM_2"))
