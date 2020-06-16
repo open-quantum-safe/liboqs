@@ -1,5 +1,6 @@
 import oqs
-from oqs.test import gen_dili2_private_key
+sys.path.insert(1,'/home/pi/PQQUIC/modLiboqs/liboqs/liboqs-python/oqs')
+import test
 
-sig = oqs.Signature("DILITHIUM_2")
-tP = test.gen_dili2_private_key(sig)
+print ("TEST PRINTING OQS KEYS\n")
+print (test.gen_dili2_private_key("DILITHIUM_2"))

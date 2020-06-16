@@ -1661,11 +1661,7 @@ class Context:
         print (verify.algorithm)
         # check signature
         print ("In TLS: class Context client client handle certificate verify checking cert")
-        import oqs
-        sys.path.insert(1,'/home/pi/PQQUIC/modLiboqs/liboqs/liboqs-python/oqs')
-        import test
-        print ("TEST PRINTING OQS KEYS\n")
-        print (test.gen_dili2_private_key("DILITHIUM_2"))
+
 
         try:
             self._peer_certificate.public_key().verify(
