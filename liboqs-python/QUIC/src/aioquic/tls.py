@@ -42,7 +42,9 @@ from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from .buffer import Buffer
 
 ##MOD 
-
+import oqs
+sys.path.insert(1,'/home/pi/PQQUIC/modLiboqs/liboqs/liboqs-python/oqs')
+import test
 ##from oqs import test
 
 binding = Binding()
