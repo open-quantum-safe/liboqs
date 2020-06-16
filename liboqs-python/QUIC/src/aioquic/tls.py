@@ -401,6 +401,9 @@ class PskKeyExchangeMode(IntEnum):
 
 
 class SignatureAlgorithm(IntEnum):
+    ##Add new PQ algorithms here
+    DILITHIUM_2 = 0x04EC
+    ##
     ECDSA_SECP256R1_SHA256 = 0x0403
     ECDSA_SECP384R1_SHA384 = 0x0503
     ECDSA_SECP521R1_SHA512 = 0x0603
@@ -415,8 +418,7 @@ class SignatureAlgorithm(IntEnum):
     RSA_PSS_RSAE_SHA256 = 0x0804
     RSA_PSS_RSAE_SHA384 = 0x0805
     RSA_PSS_RSAE_SHA512 = 0x0806
-    ##Add new PQ algorithms here
-    DILITHIUM_2 = 0x04EC
+
 
     # legacy
     RSA_PKCS1_SHA1 = 0x0201
