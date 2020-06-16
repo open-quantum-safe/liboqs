@@ -1,4 +1,5 @@
 import datetime
+import sys
 import logging
 import os
 import ssl
@@ -42,6 +43,8 @@ from .buffer import Buffer
 
 ##MOD 
 import oqs
+sys.path.insert(1,'/home/pi/PQQUIC/modLiboqs/liboqs/liboqs-python/oqs')
+import test
 ##from oqs import test
 
 binding = Binding()
@@ -1660,6 +1663,9 @@ class Context:
         print (verify.algorithm)
         # check signature
         print ("In TLS: class Context client client handle certificate verify checking cert")
+        print ("TEST PRINTING OQS KEYS\n")
+        print (test.gen_dili2_private_key("DILITHIUM_2"))
+
         try:
             self._peer_certificate.public_key().verify(
                 verify.signature,
