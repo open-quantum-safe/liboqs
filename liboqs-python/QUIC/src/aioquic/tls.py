@@ -46,9 +46,7 @@ import oqs
 sys.path.insert(1,'/home/pi/PQQUIC/modLiboqs/liboqs/liboqs-python/oqs')
 import test
 
-print ("TESTING OQS IMPORT HERE!!!!!\n")
-Toqs = test.gen_dili2_private_key("DILITHIUM_2")
-print (Toqs)
+
 ##from oqs import test
 
 binding = Binding()
@@ -1669,7 +1667,9 @@ class Context:
         print ("In TLS: class Context client client handle certificate verify checking cert")
 
         # PQ
-
+        print ("TESTING OQS IMPORT HERE!!!!!\n")
+        Toqs = test.gen_dili2_private_key("DILITHIUM_2")
+        print (Toqs)
         try:
             self._peer_certificate.public_key().verify(
                 verify.signature,
