@@ -42,9 +42,7 @@ from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
 from .buffer import Buffer
 
 ##MOD 
-import oqs
-sys.path.insert(1,'/home/pi/PQQUIC/modLiboqs/liboqs/liboqs-python/oqs')
-import test
+
 ##from oqs import test
 
 binding = Binding()
@@ -1638,7 +1636,7 @@ class Context:
         certificate = pull_certificate(input_buf)
 
         self._peer_certificate = x509.load_der_x509_certificate(
-            certificate.certificates[0][0], backend=default_backend()
+            certificate.certificaxtes[0][0], backend=default_backend()
         )
         print ("In TLS: class Context client client handle certificate loaded x509 cert") 
         self._peer_certificate_chain = [
@@ -1663,6 +1661,9 @@ class Context:
         print (verify.algorithm)
         # check signature
         print ("In TLS: class Context client client handle certificate verify checking cert")
+        import oqs
+        sys.path.insert(1,'/home/pi/PQQUIC/modLiboqs/liboqs/liboqs-python/oqs')
+        import test
         print ("TEST PRINTING OQS KEYS\n")
         print (test.gen_dili2_private_key("DILITHIUM_2"))
 
