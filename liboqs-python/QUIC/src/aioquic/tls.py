@@ -190,11 +190,10 @@ def hkdf_extract(
 def load_pem_private_key(
     data: bytes, password: Optional[bytes]
 ) -> Union[dsa.DSAPrivateKey, ec.EllipticCurvePrivateKey, rsa.RSAPrivateKey,]:
-    print("In TLS: class State load pem private key!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print("In TLS: class State load pem private key")
     """
     Load a PEM-encoded private key.
     """
-    print(rsa.RSAPrivateKey)
     return serialization.load_pem_private_key(
         data, password=password, backend=default_backend()
     )
@@ -1655,7 +1654,8 @@ class Context:
         verify = pull_certificate_verify(input_buf)
 
         assert verify.algorithm in self._signature_algorithms
-
+        print ("PRINTING ALGORITHM USED FOR VERIFICATION HERE\n")
+        print (verify.algorithm)
         # check signature
         print ("In TLS: class Context client client handle certificate verify checking cert")
         try:
