@@ -1638,7 +1638,7 @@ class Context:
         certificate = pull_certificate(input_buf)
 
         self._peer_certificate = x509.load_der_x509_certificate(
-            certificate.certificaxtes[0][0], backend=default_backend()
+            certificate.certificates[0][0], backend=default_backend()
         )
         print ("In TLS: class Context client client handle certificate loaded x509 cert") 
         self._peer_certificate_chain = [
