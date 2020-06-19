@@ -400,8 +400,10 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] = {
 #define USE_SIKE_ASM
 #endif
 
-#if defined(X86_64)
+#if defined(_AMD64_)
 #include "AMD64/fp_x64.c"
+#elif defined(_ARM64_)
+#include "ARM64/fp_arm64.c"
 #else
 #include "generic/fp_generic.c"
 #endif

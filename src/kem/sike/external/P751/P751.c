@@ -155,9 +155,9 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define USE_SIKE_ASM
 #endif
 
-#if defined(X86_64)
+#if defined(_AMD64_)
 #include "AMD64/fp_x64.c"
-#elif defined(ARM64)
+#elif defined(_ARM64_)
 #include "ARM64/fp_arm64.c"
 #else
 #include "generic/fp_generic.c"
