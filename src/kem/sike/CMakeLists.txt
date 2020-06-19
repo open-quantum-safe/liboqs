@@ -36,7 +36,7 @@ set(SRCS kem_sike.c
          external/P751/P751_compressed.c)
 
 if(ARCH STREQUAL "x86_64")
-    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
         set(SRCS ${SRCS} external/P503/AMD64/fp_x64_asm.S
                          external/P751/AMD64/fp_x64_asm.S)
         if(OQS_USE_BMI2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
