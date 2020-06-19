@@ -31,7 +31,7 @@ __inline void mp_sub434_p2(const digit_t* a, const digit_t* b, digit_t* c)
 
 #elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
 
-  mp_sub434_p2_asm(a, b, c);
+  oqs_kem_sike_mp_sub434_p2_asm(a, b, c);
 
   #endif
 }
@@ -54,7 +54,7 @@ __inline void mp_sub434_p4(const digit_t* a, const digit_t* b, digit_t* c)
 
 #elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
 
-  mp_sub434_p4_asm(a, b, c);
+  oqs_kem_sike_mp_sub434_p4_asm(a, b, c);
 
   #endif
 }

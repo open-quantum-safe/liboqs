@@ -17,14 +17,14 @@ extern const uint64_t p610x4[NWORDS_FIELD];
 __inline void mp_sub610_p2(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 2*p, c = a-b+2p. 
     
-    mp_sub610_p2_asm(a, b, c); 
+    oqs_kem_sike_mp_sub610_p2_asm(a, b, c); 
 } 
 
 
 __inline void mp_sub610_p4(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 4*p, c = a-b+4p. 
     
-    mp_sub610_p4_asm(a, b, c);
+    oqs_kem_sike_mp_sub610_p4_asm(a, b, c);
 }
 
 
@@ -33,7 +33,7 @@ __inline void fpadd610(const digit_t* a, const digit_t* b, digit_t* c)
   // Inputs: a, b in [0, 2*p610-1] 
   // Output: c in [0, 2*p610-1]
 
-    fpadd610_asm(a, b, c);
+    oqs_kem_sike_fpadd610_asm(a, b, c);
 } 
 
 
@@ -42,7 +42,7 @@ __inline void fpsub610(const digit_t* a, const digit_t* b, digit_t* c)
   // Inputs: a, b in [0, 2*p610-1] 
   // Output: c in [0, 2*p610-1] 
 
-    fpsub610_asm(a, b, c);
+    oqs_kem_sike_fpsub610_asm(a, b, c);
 }
 
 
@@ -95,7 +95,7 @@ void mp_mul(const digit_t* a, const digit_t* b, digit_t* c, const unsigned int n
 
     UNREFERENCED_PARAMETER(nwords);
 
-    mul610_asm(a, b, c);
+    oqs_kem_sike_mul610_asm(a, b, c);
 }
 
 
@@ -106,5 +106,5 @@ void rdc_mont(digit_t* ma, digit_t* mc)
   // If ma < 2^512*p610, the output mc is in the range [0, 2*p610-1].
   // ma is assumed to be in Montgomery representation.
   
-    rdc610_asm(ma, mc);
+    oqs_kem_sike_rdc610_asm(ma, mc);
 }

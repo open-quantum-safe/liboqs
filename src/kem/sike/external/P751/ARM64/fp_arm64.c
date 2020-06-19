@@ -17,14 +17,14 @@ extern const uint64_t p751x4[NWORDS_FIELD];
 __inline void mp_sub751_p2(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 2*p, c = a-b+2p. 
     
-    mp_sub751_p2_asm(a, b, c); 
+    oqs_kem_sike_mp_sub751_p2_asm(a, b, c); 
 } 
 
 
 __inline void mp_sub751_p4(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 4*p, c = a-b+4p. 
     
-    mp_sub751_p4_asm(a, b, c);
+    oqs_kem_sike_mp_sub751_p4_asm(a, b, c);
 }
 
 __inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p751.

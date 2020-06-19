@@ -124,8 +124,8 @@ static unsigned int mp_sub(const digit_t *a, const digit_t *b, digit_t *c, const
 // 434-bit multiprecision subtraction, c = a-b+2p or c = a-b+4p
 extern void mp_sub434_p2(const digit_t* a, const digit_t* b, digit_t* c);
 extern void mp_sub434_p4(const digit_t* a, const digit_t* b, digit_t* c);
-void mp_sub434_p2_asm(const digit_t* a, const digit_t* b, digit_t* c); 
-void mp_sub434_p4_asm(const digit_t* a, const digit_t* b, digit_t* c); 
+void oqs_kem_sike_mp_sub434_p2_asm(const digit_t* a, const digit_t* b, digit_t* c); 
+void oqs_kem_sike_mp_sub434_p4_asm(const digit_t* a, const digit_t* b, digit_t* c); 
 
 // 2x434-bit multiprecision subtraction followed by addition with p434*2^448, c = a-b+(p434*2^448) if a-b < 0, otherwise c=a-b
 void oqs_kem_sike_mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);
