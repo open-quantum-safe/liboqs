@@ -13,6 +13,8 @@
 void frodo_pack(unsigned char *out, const size_t outlen, const uint16_t *in, const size_t inlen, const unsigned char lsb);
 void frodo_unpack(uint16_t *out, const size_t outlen, const unsigned char *in, const size_t inlen, const unsigned char lsb);
 void frodo_sample_n(uint16_t *s, const size_t n);
+int8_t ct_verify(const uint16_t *a, const uint16_t *b, size_t len);
+void ct_select(uint8_t *r, const uint8_t *a, const uint8_t *b, size_t len, int8_t selector);
 
 int frodo_mul_add_as_plus_e(uint16_t *b, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
 int frodo_mul_add_sa_plus_e(uint16_t *b, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
