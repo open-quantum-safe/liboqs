@@ -37,6 +37,8 @@
 #define frodo_sample_n oqs_kem_frodokem_976_shake_sample_n
 #define frodo_pack oqs_kem_frodokem_976_shake_pack
 #define frodo_unpack oqs_kem_frodokem_976_shake_unpack
+#define ct_select oqs_kem_frodokem_976_shake_ct_select
+#define ct_verify oqs_kem_frodokem_976_shake_ct_verify
 
 #define frodo_mul_add_as_plus_e oqs_kem_frodokem_976_shake_mul_add_as_plus_e
 #define frodo_mul_add_sa_plus_e oqs_kem_frodokem_976_shake_mul_add_sa_plus_e
