@@ -2,12 +2,10 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: supersingular isogeny parameters and generation of functions for P610
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include <oqs/rand.h>
-#include "../oqs_namespace_sike.h"
+#include "../../oqs_namespace_sike.h"
 #include "P610_api.h"
 #include "P610_internal.h"
 
@@ -36,12 +34,19 @@
 const uint64_t p610[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0x6E01FFFFFFFFFFFF,
                                        0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768
                                       };
-const uint64_t p610p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x6E02000000000000,
-                                         0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768
-                                        };
 const uint64_t p610x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xDC03FFFFFFFFFFFF,
                                          0x62F09BD154B5605C, 0x35CF7E8A091FF357, 0x64AB65F421884A55, 0x03202184A3CFB119, 0x00000004F7ED4ED1
                                         };
+const uint64_t p610x4[NWORDS64_FIELD]            = { 0xFFFFFFFFFFFFFFFC, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xB807FFFFFFFFFFFF, 
+                                                     0xC5E137A2A96AC0B9, 0x6B9EFD14123FE6AE, 0xC956CBE8431094AA, 0x06404309479F6232, 0x00000009EFDA9DA2 };
+const uint64_t p610p1[NWORDS64_FIELD]            = { 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x6E02000000000000,
+                                                     0xB1784DE8AA5AB02E, 0x9AE7BF45048FF9AB, 0xB255B2FA10C4252A, 0x819010C251E7D88C, 0x000000027BF6A768 };   
+/* OQS note: commented out to avoid unused error
+static const uint64_t p610x16p[2*NWORDS64_FIELD]        = { 0x0000000000000010, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x3FC0000000000000, 
+                                                     0xD0F642EAB4A9FA32, 0xA308175F6E00CA89, 0xB549A0BDE77B5AAC, 0xCDFDE7B5C304EE69, 0x7FDB7FF0812B12EF, 
+                                                     0xE09BA529B9FE1167, 0xD249C196DAB8CD7F, 0xD4E22754A3F20928, 0x97825638B19A7CCE, 0x05E04550FC4CCE0D, 
+                                                     0x8FB5DA1152CDE50C, 0xF9649BA3EA408644, 0x4473C93E6441063D, 0xBE190269D1337B7B, 0x0000000000000062 }; 
+*/
 // Order of Alice's subgroup
 // static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0002000000000000};
 // Order of Bob's subgroup
@@ -121,6 +126,9 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define fp2zero fp2zero610
 #define fp2add fp2add610
 #define fp2sub fp2sub610
+#define mp_sub_p2 mp_sub610_p2
+#define mp_sub_p4 mp_sub610_p4
+#define sub_p4 mp_sub_p4
 #define fp2neg fp2neg610
 #define fp2div2 fp2div2_610
 #define fp2correction fp2correction610

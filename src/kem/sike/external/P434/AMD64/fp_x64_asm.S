@@ -2,11 +2,16 @@
 // SIDH: an efficient supersingular isogeny cryptography library
 //
 // Abstract: field arithmetic in x64 assembly for P434 on Linux
-//
-// SPDX-License-Identifier: MIT
 //*******************************************************************************************  
 
 .intel_syntax noprefix 
+
+// Format function and variable names for Mac OS X
+#if defined(__APPLE__)
+    #define fmt(f)    _oqs_kem_sike_##f
+#else
+    #define fmt(f)    oqs_kem_sike_##f
+#endif
 
 // Registers that are used for parameter passing:
 #define reg_p1  rdi
@@ -38,8 +43,8 @@
 //  Field addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_fpadd434_asm
-oqs_kem_sike_fpadd434_asm:
+.global fmt(fpadd434_asm)
+fmt(fpadd434_asm):
   push   r12
   push   r13
   push   r14
@@ -63,18 +68,18 @@ oqs_kem_sike_fpadd434_asm:
   adc    r13, [reg_p2+40] 
   adc    r14, [reg_p2+48]
 
-  mov    rbx, [rip+p434x2]
+  mov    rbx, [rip+fmt(p434x2)]
   sub    r8, rbx
-  mov    rcx, [rip+p434x2+8]
+  mov    rcx, [rip+fmt(p434x2)+8]
   sbb    r9, rcx
   sbb    r10, rcx
-  mov    rdi, [rip+p434x2+24]
+  mov    rdi, [rip+fmt(p434x2)+24]
   sbb    r11, rdi
-  mov    rsi, [rip+p434x2+32]
+  mov    rsi, [rip+fmt(p434x2)+32]
   sbb    r12, rsi
-  mov    rbp, [rip+p434x2+40]
+  mov    rbp, [rip+fmt(p434x2)+40]
   sbb    r13, rbp
-  mov    r15, [rip+p434x2+48]
+  mov    r15, [rip+fmt(p434x2)+48]
   sbb    r14, r15
   sbb    rax, 0
   
@@ -113,8 +118,8 @@ oqs_kem_sike_fpadd434_asm:
 //  Field subtraction
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_fpsub434_asm
-oqs_kem_sike_fpsub434_asm:
+.global fmt(fpsub434_asm)
+fmt(fpsub434_asm):
   push   r12
   push   r13
   push   r14
@@ -136,9 +141,9 @@ oqs_kem_sike_fpsub434_asm:
   sbb    r14, [reg_p2+48]
   sbb    rax, 0
   
-  mov    rcx, [rip+p434x2]
-  mov    rdi, [rip+p434x2+8]
-  mov    rsi, [rip+p434x2+24]
+  mov    rcx, [rip+fmt(p434x2)]
+  mov    rdi, [rip+fmt(p434x2)+8]
+  mov    rsi, [rip+fmt(p434x2)+24]
   and    rcx, rax
   and    rdi, rax
   and    rsi, rax  
@@ -152,9 +157,9 @@ oqs_kem_sike_fpsub434_asm:
   mov    [reg_p3+24], r11 
   setc   cl  
 
-  mov    r8, [rip+p434x2+32]
-  mov    rdi, [rip+p434x2+40]
-  mov    rsi, [rip+p434x2+48]
+  mov    r8, [rip+fmt(p434x2)+32]
+  mov    rdi, [rip+fmt(p434x2)+40]
+  mov    rsi, [rip+fmt(p434x2)+48]
   and    r8, rax
   and    rdi, rax
   and    rsi, rax  
@@ -172,13 +177,81 @@ oqs_kem_sike_fpsub434_asm:
   ret
 
 
+///////////////////////////////////////////////////////////////// MACRO
+.macro SUB434_PX  P0
+  push   r12
+  push   r13
+  
+  mov    r8, [reg_p1]
+  mov    r9, [reg_p1+8]
+  mov    r10, [reg_p1+16]
+  mov    r11, [reg_p1+24]
+  mov    r12, [reg_p1+32]
+  mov    r13, [reg_p1+40]
+  mov    rcx, [reg_p1+48]
+  sub    r8, [reg_p2] 
+  sbb    r9, [reg_p2+8] 
+  sbb    r10, [reg_p2+16] 
+  sbb    r11, [reg_p2+24] 
+  sbb    r12, [reg_p2+32] 
+  sbb    r13, [reg_p2+40] 
+  sbb    rcx, [reg_p2+48]
+
+  mov    rax, [rip+\P0]
+  mov    rdi, [rip+\P0+8]
+  mov    rsi, [rip+\P0+24]
+  add    r8, rax
+  mov    rax, [rip+\P0+32]  
+  adc    r9, rdi  
+  adc    r10, rdi 
+  adc    r11, rsi 
+  mov    rdi, [rip+\P0+40]
+  mov    rsi, [rip+\P0+48]
+  adc    r12, rax   
+  adc    r13, rdi  
+  adc    rcx, rsi
+  mov    [reg_p3], r8
+  mov    [reg_p3+8], r9 
+  mov    [reg_p3+16], r10 
+  mov    [reg_p3+24], r11
+  mov    [reg_p3+32], r12 
+  mov    [reg_p3+40], r13
+  mov    [reg_p3+48], rcx
+  
+  pop    r13
+  pop    r12
+  .endm
+
+
+//***********************************************************************
+//  Multiprecision subtraction with correction with 2*p434
+//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 2*p434
+//*********************************************************************** 
+.global fmt(mp_sub434_p2_asm)
+fmt(mp_sub434_p2_asm):
+
+  SUB434_PX  fmt(p434x2)
+  ret
+
+
+//***********************************************************************
+//  Multiprecision subtraction with correction with 4*p434
+//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 4*p434
+//*********************************************************************** 
+.global fmt(mp_sub434_p4_asm)
+fmt(mp_sub434_p4_asm):
+
+  SUB434_PX  fmt(p434x4)
+  ret
+
+
 #ifdef _MULX_
     
 ///////////////////////////////////////////////////////////////// MACRO
-// Schoolbook integer multiplication, a full row at a time
+// Schoolbook integer multiplication
 // Inputs:  memory pointers M0 and M1
-// Outputs: memory pointer C
-// Temps:   regs T0:T9
+// Outputs: memory pointer C and regs T1, T3, rax
+// Temps:   regs T0:T6
 /////////////////////////////////////////////////////////////////
 
 #ifdef _ADX_
@@ -219,11 +292,15 @@ oqs_kem_sike_fpsub434_asm:
     adcx   \T0, rax
     adox   \T1, \T2
     adox   \T3, \T4
-    adox   \T0, rax
-    mov    24\C, \T1         // C3_final
-    mov    32\C, \T3         // C4_final
-    mov    40\C, \T0         // C5_final
+    adox   rax, \T0
 .endm 
+    
+///////////////////////////////////////////////////////////////// MACRO
+// Schoolbook integer multiplication
+// Inputs:  memory pointers M0 and M1
+// Outputs: memory pointer C
+// Temps:   regs T0:T9
+/////////////////////////////////////////////////////////////////
 
 .macro MUL256_SCHOOL M0, M1, C, T0, T1, T2, T3, T4, T5, T6, T7, T8, T9
     mov    rdx, \M0
@@ -315,28 +392,25 @@ oqs_kem_sike_fpsub434_asm:
     mov    8\C, \T4          // C1_final
     adc    \T3, \T1  
     adc    \T5, \T2	    
-    mulx   \T0, \T1, 16\M1   // T0:T1 = A1*B2
-    adc    \T0, 0    
+    mulx   \T2, \T1, 16\M1   // T2:T1 = A1*B2
+    adc    \T2, 0    
 
     add    \T3, \T6  
     adc    \T5, \T1     
-    adc    \T0, 0
+    adc    \T2, 0
     
     mov    rdx, 16\M0
-    mulx   \T1, \T2, \M1     // T1:T2 = A2*B0
-    add    \T2, \T3   
-    mov    16\C, \T2         // C2_final 
+    mulx   \T1, \T0, \M1     // T1:T0 = A2*B0
+    add    \T0, \T3   
+    mov    16\C, \T0         // C2_final 
     mulx   \T4, \T6, 8\M1    // T4:T6 = A2*B1
     adc    \T1, \T5    
-    adc    \T0, \T4 
-    mulx   \T2, \T3, 16\M1   // T0:T3 = A2*B2 
-    adc    \T2, 0
+    adc    \T2, \T4 
+    mulx   rax, \T3, 16\M1   // rax:T3 = A2*B2 
+    adc    rax, 0
     add    \T1, \T6
-    adc    \T0, \T3
-    adc    \T2, 0
-    mov    24\C, \T1         // C3_final
-    mov    32\C, \T0         // C4_final
-    mov    40\C, \T2         // C5_final
+    adc    \T3, \T2
+    adc    rax, 0
 .endm 
 
 .macro MUL256_SCHOOL M0, M1, C, T0, T1, T2, T3, T4, T5, T6, T7, T8, T9
@@ -412,8 +486,8 @@ oqs_kem_sike_fpsub434_asm:
 //*****************************************************************************
 //  434-bit multiplication using Karatsuba (one level), schoolbook (one level)
 //***************************************************************************** 
-.global oqs_kem_sike_mul434_asm
-oqs_kem_sike_mul434_asm:
+.global fmt(mul434_asm)
+fmt(mul434_asm):    
     push   r12
     push   r13 
     push   r14 
@@ -467,7 +541,7 @@ oqs_kem_sike_mul434_asm:
     and    r10, rbx
     and    r11, rbx
 
-    // r8-r11 <- masked (AH + AL) + masked (BH + BL)
+    // r8-r11 <- masked (AH + AL) + masked (AH + AL)
     add    r8, r12
     adc    r9, r13
     adc    r10, r14
@@ -483,24 +557,24 @@ oqs_kem_sike_mul434_asm:
     // [rcx] <- AL x BL
     MUL256_SCHOOL  [reg_p1], [reg_p2], [rcx], r8, r9, r10, r11, r12, r13, r14, r15, rbx, rbp     // Result C0-C3
 
-    // [rcx+64] <- AH x BH
-    MUL192_SCHOOL  [reg_p1+32], [reg_p2+32], [rcx+64], r8, r9, r10, r11, r12, r13, r14
+    // [rcx+64], rbx, rbp, rax <- AH x BH 
+    MUL192_SCHOOL  [reg_p1+32], [reg_p2+32], [rcx+64], r8, rbx, r10, rbp, r12, r13, r14
     
     // r8-r11 <- (AH+AL) x (BH+BL), final step
     mov    r8, [rsp+64]
     mov    r9, [rsp+72]
     mov    r10, [rsp+80]
     mov    r11, [rsp+88]
-    mov    rax, [rsp+32]
-    add    r8, rax
-    mov    rax, [rsp+40]
-    adc    r9, rax
-    mov    rax, [rsp+48]
-    adc    r10, rax
-    mov    rax, [rsp+56]
-    adc    r11, rax
+    mov    rdx, [rsp+32]
+    add    r8, rdx
+    mov    rdx, [rsp+40]
+    adc    r9, rdx
+    mov    rdx, [rsp+48]
+    adc    r10, rdx
+    mov    rdx, [rsp+56]
+    adc    r11, rdx
     
-    // [rsp], x3-x5 <- (AH+AL) x (BH+BL) - ALxBL
+    // r8-r15 <- (AH+AL) x (BH+BL) - ALxBL
     mov    r12, [rsp]
     mov    r13, [rsp+8]
     mov    r14, [rsp+16]
@@ -518,9 +592,9 @@ oqs_kem_sike_mul434_asm:
     sub    r12, [rcx+64]
     sbb    r13, [rcx+72]
     sbb    r14, [rcx+80]
-    sbb    r15, [rcx+88]
-    sbb    r8, [rcx+96]
-    sbb    r9, [rcx+104]
+    sbb    r15, rbx
+    sbb    r8, rbp
+    sbb    r9, rax
     sbb    r10, 0
     sbb    r11, 0
     
@@ -538,14 +612,12 @@ oqs_kem_sike_mul434_asm:
     mov    [rcx+72], r9 
     adc    r10, [rcx+80]
     mov    [rcx+80], r10
-    adc    r11, [rcx+88]
+    adc    r11, rbx
     mov    [rcx+88], r11
-    mov    r12, [rcx+96]
-    adc    r12, 0
-    mov    [rcx+96], r12 
-    mov    r13, [rcx+104]
-    adc    r13, 0
-    mov    [rcx+104], r13
+    adc    rbp, 0
+    mov    [rcx+96], rbp 
+    adc    rax, 0
+    mov    [rcx+104], rax
     
     add    rsp, 96    
     pop    rbp  
@@ -558,17 +630,6 @@ oqs_kem_sike_mul434_asm:
 
 #else
 
-//***********************************************************************                       
-//  Integer multiplication
-//  Based on Karatsuba method
-//  Operation: c [reg_p3] = a [reg_p1] * b [reg_p2]
-//  NOTE: a=c or b=c are not allowed
-//***********************************************************************
-.global oqs_kem_sike_mul434_asm
-oqs_kem_sike_mul434_asm:
-
-  ret
-
 # error "CONFIGURATION NOT SUPPORTED. TRY USE_MULX=TRUE"
 
 #endif
@@ -578,13 +639,11 @@ oqs_kem_sike_mul434_asm:
 
 ///////////////////////////////////////////////////////////////// MACRO
 // Schoolbook integer multiplication
-// Inputs:  memory pointers M0 and M1
-// Outputs: regs T0:T5
-// Temps:   regs T7:T6
+// Inputs:  reg I0 and memory pointer M1
+// Outputs: regs T0:T4
+// Temps:   regs T0:T5
 /////////////////////////////////////////////////////////////////
-.macro MUL64x256_SCHOOL M0, M1, T0, T1, T2, T3, T4, T5 
-    mov    rdx, \M0
-    mulx   \T1, \T0, \M1       // T0 <- C0_final    
+.macro MUL64x256_SCHOOL I0, M1, T0, T1, T2, T3, T4, T5 
     mulx   \T2, \T4, 8\M1
     xor    rax, rax
     mulx   \T3, \T5, 16\M1 
@@ -595,10 +654,15 @@ oqs_kem_sike_mul434_asm:
     ADC1   \T4, rax            // T4 <- C4_final
 .endm
 
+///////////////////////////////////////////////////////////////// MACRO
+// Schoolbook integer multiplication
+// Inputs:  regs I0 and I1, and memory pointer M1
+// Outputs: regs T0:T5
+// Temps:   regs T0:T5
+/////////////////////////////////////////////////////////////////
+
 #ifdef _ADX_
-.macro MUL128x256_SCHOOL M0, M1, T0, T1, T2, T3, T4, T5, T6 
-    mov    rdx, \M0
-    mulx   \T1, \T0, \M1       // T0 <- C0_final    
+.macro MUL128x256_SCHOOL I0, I1, M1, T0, T1, T2, T3, T4, T5
     mulx   \T2, \T4, 8\M1
     xor    rax, rax
     mulx   \T3, \T5, 16\M1 
@@ -609,27 +673,25 @@ oqs_kem_sike_mul434_asm:
     ADC1   \T4, rax   
     
     xor    rax, rax
-    mov    rdx, 8\M0 
-    mulx   \T6, \T5, \M1 
+    mov    rdx, \I1 
+    mulx   \I1, \T5, \M1 
     ADD2   \T1, \T5            // T1 <- C1_final 
-    ADC2   \T2, \T6     
-    mulx   \T5, \T6, 8\M1
+    ADC2   \T2, \I1     
+    mulx   \T5, \I1, 8\M1
     ADC2   \T3, \T5 
-    ADD1   \T2, \T6        
-    mulx   \T5, \T6, 16\M1
+    ADD1   \T2, \I1        
+    mulx   \T5, \I1, 16\M1
     ADC2   \T4, \T5 
-    ADC1   \T3, \T6     
-    mulx   \T5, \T6, 24\M1   
+    ADC1   \T3, \I1     
+    mulx   \T5, \I1, 24\M1   
     ADC2   \T5, rax         
-    ADC1   \T4, \T6  
+    ADC1   \T4, \I1  
     ADC1   \T5, rax 
 .endm
 
 #else
 
-.macro MUL128x256_SCHOOL M0, M1, T0, T1, T2, T3, T4, T5, T6 
-    mov    rdx, \M0
-    mulx   \T1, \T0, \M1       // T0 <- C0_final    
+.macro MUL128x256_SCHOOL I0, I1, M1, T0, T1, T2, T3, T4, T5 
     mulx   \T2, \T4, 8\M1
     mulx   \T3, \T5, 16\M1 
     add    \T1, \T4               
@@ -638,17 +700,17 @@ oqs_kem_sike_mul434_asm:
     adc    \T3, \T5 
     adc    \T4, 0   
     
-    mov    rdx, 8\M0 
-    mulx   \T6, \T5, \M1 
+    mov    rdx, \I1 
+    mulx   \I1, \T5, \M1 
     add    \T1, \T5            // T1 <- C1_final 
-    adc    \T2, \T6     
-    mulx   \T5, \T6, 8\M1
+    adc    \T2, \I1     
+    mulx   \T5, \I1, 8\M1
     adc    \T3, \T5       
     mulx   \T5, rax, 16\M1
     adc    \T4, \T5     
     mulx   \T5, rdx, 24\M1 
     adc    \T5, 0
-    add    \T2, \T6  
+    add    \T2, \I1  
     adc    \T3, rax        
     adc    \T4, rdx  
     adc    \T5, 0 
@@ -660,121 +722,106 @@ oqs_kem_sike_mul434_asm:
 //  Montgomery reduction
 //  Based on method described in Faz-Hernandez et al. https://eprint.iacr.org/2017/1015
 //  Operation: c [reg_p2] = a [reg_p1]
-//  NOTE: a=c is not allowed
 //************************************************************************************** 
-.global oqs_kem_sike_rdc434_asm
-oqs_kem_sike_rdc434_asm:
-    push   r12
-    push   r13 
+.global fmt(rdc434_asm)
+fmt(rdc434_asm):
+    push   r14
 
     // a[0-1] x p434p1_nz --> result: r8:r13 
-    MUL128x256_SCHOOL [reg_p1], [rip+p434p1+24], r8, r9, r10, r11, r12, r13, rcx     
+    mov    rdx, [reg_p1]
+    mov    r14, [reg_p1+8]  
+    mulx   r9, r8, [rip+fmt(p434p1)+24]   // result r8    
+    push   r12
+    push   r13
+    push   r15
+    push   rbp
+    push   rbx 
+    MUL128x256_SCHOOL rdx, r14, [rip+fmt(p434p1)+24], r8, r9, r10, r11, r12, r13     
 
-    xor    rcx, rcx
+    mov    rdx, [reg_p1+16]   
+    mov    rcx, [reg_p1+72]
     add    r8, [reg_p1+24]  
     adc    r9, [reg_p1+32]  
     adc    r10, [reg_p1+40]   
     adc    r11, [reg_p1+48]   
     adc    r12, [reg_p1+56]   
-    adc    r13, [reg_p1+64]   
-    adc    rcx, [reg_p1+72]  
-    mov    [reg_p1+24], r8  
-    mov    [reg_p1+32], r9  
-    mov    [reg_p1+40], r10  
-    mov    [reg_p1+48], r11  
-    mov    [reg_p1+56], r12  
-    mov    [reg_p1+64], r13  
-    mov    [reg_p1+72], rcx  
-    mov    r8, [reg_p1+80]  
-    mov    r9, [reg_p1+88]  
-    mov    r10, [reg_p1+96]
-    mov    r11, [reg_p1+104]
-    adc    r8, 0
+    adc    r13, [reg_p1+64] 
+    adc    rcx, 0 
+    mulx   rbp, rbx, [rip+fmt(p434p1)+24]   // result rbx
+    mov    [reg_p2], r9  
+    mov    [reg_p2+8], r10  
+    mov    [reg_p2+16], r11  
+    mov    [reg_p2+24], r12  
+    mov    [reg_p2+32], r13 
+    mov    r9, [reg_p1+80]  
+    mov    r10, [reg_p1+88]  
+    mov    r11, [reg_p1+96]
+    mov    rdi, [reg_p1+104]
     adc    r9, 0
     adc    r10, 0
     adc    r11, 0
-    mov    [reg_p1+80], r8  
-    mov    [reg_p1+88], r9  
-    mov    [reg_p1+96], r10
-    mov    [reg_p1+104], r11
+    adc    rdi, 0
 
-    // a[2-3] x p434p1_nz --> result: r8:r13
-    MUL128x256_SCHOOL [reg_p1+16], [rip+p434p1+24], r8, r9, r10, r11, r12, r13, rcx 
+    // a[2-3] x p434p1_nz --> result: rbx, rbp, r12:r15
+    MUL128x256_SCHOOL rdx, r8, [rip+fmt(p434p1)+24], rbx, rbp, r12, r13, r14, r15
 
-    xor    rcx, rcx
-    add    r8, [reg_p1+40]  
-    adc    r9, [reg_p1+48]  
-    adc    r10, [reg_p1+56]   
-    adc    r11, [reg_p1+64]  
-    adc    r12, [reg_p1+72]   
-    adc    r13, [reg_p1+80]   
-    adc    rcx, [reg_p1+88]
-    mov    [reg_p1+40], r8  
-    mov    [reg_p1+48], r9  
-    mov    [reg_p1+56], r10  
-    mov    [reg_p1+64], r11   
-    mov    [reg_p1+72], r12  
-    mov    [reg_p1+80], r13  
-    mov    [reg_p1+88], rcx
-    mov    r8, [reg_p1+96]
-    mov    r9, [reg_p1+104]
-    adc    r8, 0
-    adc    r9, 0 
-    mov    [reg_p1+96], r8  
-    mov    [reg_p1+104], r9
+    mov    rdx, [reg_p2]
+    add    rbx, [reg_p2+8]  
+    adc    rbp, [reg_p2+16]  
+    adc    r12, [reg_p2+24]   
+    adc    r13, [reg_p2+32]  
+    adc    r14, rcx  
+    mov    rcx, 0 
+    adc    r15, r9
+    adc    rcx, r10
+    mulx   r9, r8, [rip+fmt(p434p1)+24]   // result r8
+    mov    [reg_p2], rbp 
+    mov    [reg_p2+8], r12  
+    mov    [reg_p2+16], r13 
+    adc    r11, 0
+    adc    rdi, 0 
 
     // a[4-5] x p434p1_nz --> result: r8:r13
-    MUL128x256_SCHOOL [reg_p1+32], [rip+p434p1+24], r8, r9, r10, r11, r12, r13, rcx  
+    MUL128x256_SCHOOL rdx, rbx, [rip+fmt(p434p1)+24], r8, r9, r10, rbp, r12, r13  
 
-    xor    rcx, rcx
-    add    r8, [reg_p1+56]  
-    adc    r9, [reg_p1+64]  
-    adc    r10, [reg_p1+72]   
-    adc    r11, [reg_p1+80]  
-    adc    r12, [reg_p1+88]   
-    adc    r13, [reg_p1+96]   
-    adc    rcx, [reg_p1+104]
+    mov    rdx, [reg_p2]
+    add    r8, [reg_p2+8]  
+    adc    r9, [reg_p2+16]  
+    adc    r10, r14   
+    adc    rbp, r15 
+    adc    r12, rcx 
+    adc    r13, r11   
+    adc    rdi, 0  
+    mulx   r15, r14, [rip+fmt(p434p1)+24]  // result r14 
     mov    [reg_p2], r8        // Final result c0-c1
-    mov    [reg_p2+8], r9         
-    mov    [reg_p1+72], r10 
-    mov    [reg_p1+80], r11   
-    mov    [reg_p1+88], r12  
-    mov    [reg_p1+96], r13  
-    mov    [reg_p1+104], rcx
+    mov    [reg_p2+8], r9    
 
-    // a[6-7] x p434p1_nz --> result: r8:r12
-    MUL64x256_SCHOOL [reg_p1+48], [rip+p434p1+24], r8, r9, r10, r11, r12, r13  
+    // a[6-7] x p434p1_nz --> result: r14:r15, r8:r9, r11
+    MUL64x256_SCHOOL rdx, [rip+fmt(p434p1)+24], r14, r15, r8, r9, r11, rcx  
     
     // Final result c2:c6
-    add    r8, [reg_p1+72]  
-    adc    r9, [reg_p1+80]  
-    adc    r10, [reg_p1+88]   
-    adc    r11, [reg_p1+96]  
-    adc    r12, [reg_p1+104] 
-    mov    [reg_p2+16], r8  
-    mov    [reg_p2+24], r9  
-    mov    [reg_p2+32], r10  
-    mov    [reg_p2+40], r11   
-    mov    [reg_p2+48], r12
-
+    add    r14, r10  
+    adc    r15, rbp 
+    pop    rbx
+    pop    rbp 
+    adc    r8, r12   
+    adc    r9, r13  
+    adc    r11, rdi 
+    mov    [reg_p2+16], r14  
+    mov    [reg_p2+24], r15  
+    pop    r15
     pop    r13
+    mov    [reg_p2+32], r8  
+    mov    [reg_p2+40], r9  
+    mov    [reg_p2+48], r11
+
     pop    r12
+    pop    r14
     ret
 
   #else
-  
-//***********************************************************************
-//  Montgomery reduction
-//  Based on comba method
-//  Operation: c [reg_p2] = a [reg_p1]                                                      
-//  NOTE: a=c is not allowed
-//*********************************************************************** 
-.global oqs_kem_sike_rdc434_asm
-oqs_kem_sike_rdc434_asm:
 
-  ret
-
-# error "CONFIGURATION NOT SUPPORTED. TRY USE_MULX=TRUE"
+  # error "CONFIGURATION NOT SUPPORTED. TRY USE_MULX=TRUE"
 
   #endif
 
@@ -783,8 +830,8 @@ oqs_kem_sike_rdc434_asm:
 //  434-bit multiprecision addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_add434_asm
-oqs_kem_sike_mp_add434_asm:
+.global fmt(mp_add434_asm)
+fmt(mp_add434_asm): 
   mov    r8, [reg_p1]
   mov    r9, [reg_p1+8]
   mov    r10, [reg_p1+16]
@@ -810,12 +857,12 @@ oqs_kem_sike_mp_add434_asm:
   ret
 
 
-//***********************************************************************
+//***************************************************************************
 //  2x434-bit multiprecision subtraction/addition
-//  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p434*2^448
-//*********************************************************************** 
-.global oqs_kem_sike_mp_subadd434x2_asm
-oqs_kem_sike_mp_subadd434x2_asm:
+//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]. If c < 0, add p434*2^448
+//*************************************************************************** 
+.global fmt(mp_subadd434x2_asm)
+fmt(mp_subadd434x2_asm):
   push   r12
   push   r13 
   push   r14 
@@ -862,11 +909,11 @@ oqs_kem_sike_mp_subadd434x2_asm:
   sbb    rax, 0
   
   // Add p434 anded with the mask in rax 
-  mov    r8, [rip+p434]
-  mov    r9, [rip+p434+24]
-  mov    r10, [rip+p434+32]
-  mov    rdi, [rip+p434+40]
-  mov    rsi, [rip+p434+48]
+  mov    r8, [rip+fmt(p434)]
+  mov    r9, [rip+fmt(p434)+24]
+  mov    r10, [rip+fmt(p434)+32]
+  mov    rdi, [rip+fmt(p434)+40]
+  mov    rsi, [rip+fmt(p434)+48]
   and    r8, rax
   and    r9, rax
   and    r10, rax
@@ -899,42 +946,42 @@ oqs_kem_sike_mp_subadd434x2_asm:
 //  Double 2x434-bit multiprecision subtraction
 //  Operation: c [reg_p3] = c [reg_p3] - a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_dblsub434x2_asm
-oqs_kem_sike_mp_dblsub434x2_asm:
+.global fmt(mp_dblsub434x2_asm)
+fmt(mp_dblsub434x2_asm):
   push   r12
   push   r13
+  push   r14
   
-  xor    rax, rax
   mov    r8, [reg_p3]
   mov    r9, [reg_p3+8]
   mov    r10, [reg_p3+16]
   mov    r11, [reg_p3+24]
   mov    r12, [reg_p3+32]
   mov    r13, [reg_p3+40]
-  mov    rcx, [reg_p3+48]
+  mov    r14, [reg_p3+48]
   sub    r8, [reg_p1]
   sbb    r9, [reg_p1+8] 
   sbb    r10, [reg_p1+16] 
   sbb    r11, [reg_p1+24] 
   sbb    r12, [reg_p1+32] 
   sbb    r13, [reg_p1+40] 
-  sbb    rcx, [reg_p1+48]
-  adc    rax, 0
+  sbb    r14, [reg_p1+48]
+  setc   al  
   sub    r8, [reg_p2]
   sbb    r9, [reg_p2+8] 
   sbb    r10, [reg_p2+16] 
   sbb    r11, [reg_p2+24] 
   sbb    r12, [reg_p2+32] 
   sbb    r13, [reg_p2+40] 
-  sbb    rcx, [reg_p2+48]
-  adc    rax, 0  
+  sbb    r14, [reg_p2+48]
+  setc   cl  
   mov    [reg_p3], r8
   mov    [reg_p3+8], r9
   mov    [reg_p3+16], r10
   mov    [reg_p3+24], r11
   mov    [reg_p3+32], r12
   mov    [reg_p3+40], r13
-  mov    [reg_p3+48], rcx
+  mov    [reg_p3+48], r14
     
   mov    r8, [reg_p3+56]
   mov    r9, [reg_p3+64]
@@ -942,30 +989,32 @@ oqs_kem_sike_mp_dblsub434x2_asm:
   mov    r11, [reg_p3+80]
   mov    r12, [reg_p3+88]
   mov    r13, [reg_p3+96]
-  mov    rcx, [reg_p3+104]
-  sub    r8, rax 
+  mov    r14, [reg_p3+104]
+  bt     rax, 0  
   sbb    r8, [reg_p1+56] 
   sbb    r9, [reg_p1+64] 
   sbb    r10, [reg_p1+72] 
   sbb    r11, [reg_p1+80] 
   sbb    r12, [reg_p1+88] 
   sbb    r13, [reg_p1+96] 
-  sbb    rcx, [reg_p1+104]
-  sub    r8, [reg_p2+56] 
+  sbb    r14, [reg_p1+104]
+  bt     rcx, 0  
+  sbb    r8, [reg_p2+56] 
   sbb    r9, [reg_p2+64] 
   sbb    r10, [reg_p2+72] 
   sbb    r11, [reg_p2+80] 
   sbb    r12, [reg_p2+88] 
   sbb    r13, [reg_p2+96] 
-  sbb    rcx, [reg_p2+104] 
+  sbb    r14, [reg_p2+104] 
   mov    [reg_p3+56], r8
   mov    [reg_p3+64], r9
   mov    [reg_p3+72], r10
   mov    [reg_p3+80], r11
   mov    [reg_p3+88], r12
   mov    [reg_p3+96], r13
-  mov    [reg_p3+104], rcx
+  mov    [reg_p3+104], r14
   
+  pop    r14
   pop    r13
   pop    r12
   ret

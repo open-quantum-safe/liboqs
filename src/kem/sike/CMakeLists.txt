@@ -26,28 +26,31 @@ if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
 endif()
 
 set(SRCS kem_sike.c
-         P434/P434.c
-         P434/P434_compressed.c
-         P503/P503.c P503/P503_compressed.c
-         P610/P610.c
-         P610/P610_compressed.c
-         P751/P751.c
-         P751/P751_compressed.c)
+         external/P434/P434.c
+         external/P434/P434_compressed.c
+         external/P503/P503.c
+	 external/P503/P503_compressed.c
+         external/P610/P610.c
+         external/P610/P610_compressed.c
+         external/P751/P751.c
+         external/P751/P751_compressed.c)
 
 if(ARCH STREQUAL "x86_64")
     if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-        set(SRCS ${SRCS} P503/AMD64/fp_x64_asm.S
-                         P751/AMD64/fp_x64_asm.S)
+        set(SRCS ${SRCS} external/P503/AMD64/fp_x64_asm.S
+                         external/P751/AMD64/fp_x64_asm.S)
         if(OQS_USE_BMI2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
-            set(SRCS ${SRCS} P434/AMD64/fp_x64_asm.S
-                             P610/AMD64/fp_x64_asm.S)
+            set(SRCS ${SRCS} external/P434/AMD64/fp_x64_asm.S
+                             external/P610/AMD64/fp_x64_asm.S)
             add_compile_options(-mbmi2)
         endif()
     endif()
 elseif(ARCH STREQUAL "arm64")
     if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-        set(SRCS ${SRCS} P503/ARM64/fp_arm64_asm.S
-                         P751/ARM64/fp_arm64_asm.S)
+        set(SRCS ${SRCS} external/P434/ARM64/fp_arm64_asm.S
+                         external/P503/ARM64/fp_arm64_asm.S
+                         external/P610/ARM64/fp_arm64_asm.S
+                         external/P751/ARM64/fp_arm64_asm.S)
     endif()
 endif()
 
@@ -72,7 +75,14 @@ elseif(ARCH STREQUAL "arm")
 elseif(ARCH STREQUAL "arm64")
     target_compile_definitions(sike PRIVATE _ARM64_)
     if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
-        target_compile_definitions(sike PRIVATE USE_SIKEP503_ASM
+        target_compile_definitions(sike PRIVATE USE_SIKEP434_ASM
+                                                USE_SIKEP503_ASM
+                                                USE_SIKEP610_ASM
                                                 USE_SIKEP751_ASM)
     endif()
 endif()
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    target_compile_definitions(sike PRIVATE COMPILER_GCC)
+elseif(CMAKE_C_COMPILER_ID MATCHES "Clang")
+    target_compile_definitions(sike PRIVATE COMPILER_CLANG)
+ endif()

@@ -2,8 +2,6 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: internal header file for P610
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #ifndef P610_INTERNAL_H
@@ -11,18 +9,12 @@
 
 #include "../config.h"
 
-#if (TARGET == TARGET_AMD64)
+#if (TARGET == TARGET_AMD64) || (TARGET == TARGET_ARM64) || (TARGET == TARGET_S390X)
 #define NWORDS_FIELD 10   // Number of words of a 610-bit field element
 #define p610_ZERO_WORDS 4 // Number of "0" digits in the least significant part of p610 + 1
-#elif (TARGET == TARGET_x86)
+#elif (TARGET == TARGET_x86) || (TARGET == TARGET_ARM)
 #define NWORDS_FIELD 20
 #define p610_ZERO_WORDS 9
-#elif (TARGET == TARGET_ARM)
-#define NWORDS_FIELD 20
-#define p610_ZERO_WORDS 9
-#elif (TARGET == TARGET_ARM64)
-#define NWORDS_FIELD 10
-#define p610_ZERO_WORDS 4
 #endif
 
 // Basic constants
@@ -60,6 +52,7 @@
 #define MASK3_BOB 0xFF
 #define ORDER_A_ENCODED_BYTES SECRETKEY_A_BYTES
 #define ORDER_B_ENCODED_BYTES (SECRETKEY_B_BYTES + 1)
+#define PARTIALLY_COMPRESSED_CHUNK_CT (4*ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 2)
 #define COMPRESSED_CHUNK_CT (3 * ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 2)
 #define UNCOMPRESSEDPK_BYTES 480
 // Table sizes used by the Entangled basis generation
@@ -68,19 +61,19 @@
 // Parameters for discrete log computations
 // Binary Pohlig-Hellman reduced to smaller logs of order ell^W
 #define W_2 5
-#define W_3 6
+#define W_3 4
 // ell^w
 #define ELL2_W (1 << W_2)
-#define ELL3_W 729
+#define ELL3_W 81
 // ell^(e mod w)
 #define ELL2_EMODW (1 << (OALICE_BITS % W_2))
 #define ELL3_EMODW 1
 // # of digits in the discrete log
 #define DLEN_2 61 // Ceil(eA/W_2)
-#define DLEN_3 32 // Ceil(eB/W_3)
+#define DLEN_3 48 // Ceil(eB/W_3)
 // Length of the optimal strategy path for Pohlig-Hellman
 #define PLEN_2 62
-#define PLEN_3 33
+#define PLEN_3 49
 #endif
 
 // SIDH's basic element definitions and point representations
@@ -127,6 +120,12 @@ void oqs_kem_sike_mp_add610_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // Multiprecision subtraction, c = a-b, where lng(a) = lng(b) = nwords. Returns the borrow bit
 static unsigned int mp_sub(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords);
+
+// 610-bit multiprecision subtraction, c = a-b+2p or c = a-b+4p
+extern void mp_sub610_p2(const digit_t* a, const digit_t* b, digit_t* c);
+extern void mp_sub610_p4(const digit_t* a, const digit_t* b, digit_t* c);
+void mp_sub610_p2_asm(const digit_t* a, const digit_t* b, digit_t* c); 
+void mp_sub610_p4_asm(const digit_t* a, const digit_t* b, digit_t* c); 
 
 // 2x610-bit multiprecision subtraction followed by addition with p610*2^640, c = a-b+(p610*2^640) if a-b < 0, otherwise c=a-b
 void oqs_kem_sike_mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);

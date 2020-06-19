@@ -2,8 +2,6 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: API header file for P434
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #ifndef P434_API_H

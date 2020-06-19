@@ -2,8 +2,6 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: precomputed tables for pairing computation on E0: y^2 = x^3 + x when using compression
-*
-* SPDX-License-Identifier: MIT
 ***************************************************************************************************/
 
 // T_tate3 contains 6*(eB-1)+4 elements from Fp. There are (eB-1) 6-tuples (l1,l2,n1,n2,x23,x2p3), each corresponding to a single step in the Miller loop.

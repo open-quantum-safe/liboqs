@@ -2,8 +2,6 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: configuration file and platform-dependent macros
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #ifndef SIKE_CONFIG_H
@@ -16,18 +14,18 @@
 // Definition of operating system
 
 #define OS_WIN 1
-#define OS_LINUX 2
+#define OS_NIX 2
 #define OS_DARWIN 3
 
 #if defined(_WIN32) // Microsoft Windows OS
 #define OS_TARGET OS_WIN
 #elif defined(__APPLE__) // darwin
 #define OS_TARGET OS_DARWIN
-#ifndef _GENERIC_ // default to generic implementation on darwin for now (FIXMEOQS: still needed?)
+#ifndef _GENERIC_ // default to generic implementation on darwin for now
 #define _GENERIC_
 #endif
 #else
-#define OS_TARGET OS_LINUX // default to Linux
+#define OS_TARGET OS_NIX // default to Linux
 #endif
 
 // Definition of compiler (removed in OQS)
@@ -36,8 +34,9 @@
 
 #define TARGET_AMD64 1
 #define TARGET_x86 2
-#define TARGET_ARM 3
-#define TARGET_ARM64 4
+#define TARGET_S390X 3
+#define TARGET_ARM 4
+#define TARGET_ARM64 5
 
 #if defined(_AMD64_)
 #define TARGET TARGET_AMD64
@@ -51,6 +50,12 @@ typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 #define LOG2RADIX 5
 typedef uint32_t digit_t;  // Unsigned 32-bit digit
 typedef uint16_t hdigit_t; // Unsigned 16-bit digit
+#elif defined(_S390X_)
+#define TARGET TARGET_S390X
+#define RADIX           64
+#define LOG2RADIX       6
+typedef uint64_t digit_t;  // Unsigned 64-bit digit
+typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 #elif defined(_ARM_)
 #define TARGET TARGET_ARM
 #define RADIX 32
@@ -78,9 +83,9 @@ typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 // Extended datatype support
 #if defined(GENERIC_IMPLEMENTATION)
 typedef uint64_t uint128_t[2];
-#elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_LINUX)
+#elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_NIX)
 typedef unsigned uint128_t __attribute__((mode(TI)));
-#elif (TARGET == TARGET_ARM64 && OS_TARGET == OS_LINUX)
+#elif (TARGET == TARGET_ARM64 && OS_TARGET == OS_NIX)
 typedef unsigned uint128_t __attribute__((mode(TI)));
 #elif (TARGET == TARGET_AMD64 && OS_TARGET == OS_WIN)
 typedef uint64_t uint128_t[2];
@@ -94,6 +99,38 @@ typedef uint64_t uint128_t[2];
 
 // Macro to avoid compiler warnings when detecting unreferenced parameters
 #define UNREFERENCED_PARAMETER(PAR) ((void) (PAR))
+
+// Macros for endianness
+// 32-bit byte swap
+#if defined(COMPILER_GCC) || defined(COMPILER_CLANG)
+#define BSWAP32(i) __builtin_bswap32((i))
+#else
+#define BSWAP32(i) ((((i) >> 24) & 0xff) | (((i) >> 8) & 0xff00) | (((i) & 0xff00) << 8) | ((i) << 24))
+#endif
+
+// 64-bit byte swap
+#if defined(COMPILER_GCC) || defined(COMPILER_CLANG)
+#define BSWAP64(i) __builtin_bswap64((i))
+#else
+#define BSWAP64(i) ((BSWAP32((i) >> 32) & 0xffffffff) | (BSWAP32(i) << 32))
+#endif
+
+#if RADIX == 32
+#define BSWAP_DIGIT(i) BSWAP32((i))
+#elif RADIX == 64
+#define BSWAP_DIGIT(i) BSWAP64((i))
+#endif
+
+// Host to little endian, little endian to host
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+    #define _BIG_ENDIAN_
+#define HTOLE_64(i) BSWAP64((i))
+#define LETOH_64(i) BSWAP64((i))
+#else
+    #define _LITTLE_ENDIAN_
+#define HTOLE_64(i) (i)
+#define LETOH_64(i) (i)
+#endif
 
 /********************** Constant-time unsigned comparisons ***********************/
 
@@ -188,7 +225,7 @@ static __inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) { // Is 
         ADC128(addend, product, carry, result);                    \
     }
 
-#elif ((TARGET == TARGET_AMD64 || TARGET == TARGET_ARM64) && OS_TARGET == OS_LINUX)
+#elif ((TARGET == TARGET_AMD64 || TARGET == TARGET_ARM64) && OS_TARGET == OS_NIX)
 
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo)                                    \

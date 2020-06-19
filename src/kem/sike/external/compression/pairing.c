@@ -2,8 +2,6 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: pairing computation for compression
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #define t_points 2

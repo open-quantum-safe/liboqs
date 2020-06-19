@@ -2,24 +2,22 @@
 * Supersingular Isogeny Key Encapsulation Library
 *
 * Abstract: supersingular isogeny parameters and generation of functions for P751_compressed
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include <oqs/rand.h>
-#include "../oqs_namespace_sike_compressed.h"
+#include "../../oqs_namespace_sike_compressed.h"
 #include "P751_compressed_api.h"
 #define COMPRESS
 #include "P751_internal.h"
 
 // defines moved from P751_compressed_api.h
-#define CRYPTO_SECRETKEYBYTES 413 // MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES bytes
-#define CRYPTO_PUBLICKEYBYTES 334 // 3*ORDER_B_ENCODED_BYTES + FP2_ENCODED_BYTES + 2 bytes for shared elligator
+#define CRYPTO_SECRETKEYBYTES 602 // MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES + FP2_ENCODED_BYTES bytes
+#define CRYPTO_PUBLICKEYBYTES 335 // 3*ORDER_B_ENCODED_BYTES + FP2_ENCODED_BYTES + 3 bytes for shared elligator
 #define CRYPTO_BYTES 32
-#define CRYPTO_CIPHERTEXTBYTES 363 // COMPRESSED_CHUNK_CT + MSG_BYTES bytes
+#define CRYPTO_CIPHERTEXTBYTES 410 // PARTIALLY_COMPRESSED_CHUNK_CT + MSG_BYTES bytes     
 #define SIDH_SECRETKEYBYTES_A 47
 #define SIDH_SECRETKEYBYTES_B 48
-#define SIDH_PUBLICKEYBYTES 334
+#define SIDH_PUBLICKEYBYTES 335
 #define SIDH_BYTES 188
 
 // Encoding of field elements, elements over Z_order, elements over GF(p^2) and elliptic curve points:
@@ -34,15 +32,22 @@
 // Curve isogeny system "SIDHp751". Base curve: Montgomery curve By^2 = Cx^3 + Ax^2 + Cx defined over GF(p751^2), where A=6, B=1, C=1 and p751 = 2^372*3^239-1
 //
 
-static const uint64_t p751[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xEEAFFFFFFFFFFFFF,
+const uint64_t p751[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xEEAFFFFFFFFFFFFF,
                                               0xE3EC968549F878A8, 0xDA959B1A13F7CC76, 0x084E9867D6EBE876, 0x8562B5045CB25748, 0x0E12909F97BADC66, 0x00006FE5D541F71C
                                              };
-static const uint64_t p751p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xEEB0000000000000,
-                                                0xE3EC968549F878A8, 0xDA959B1A13F7CC76, 0x084E9867D6EBE876, 0x8562B5045CB25748, 0x0E12909F97BADC66, 0x00006FE5D541F71C
-                                               };
-static const uint64_t p751x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xDD5FFFFFFFFFFFFF,
+const uint64_t p751x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xDD5FFFFFFFFFFFFF,
                                                 0xC7D92D0A93F0F151, 0xB52B363427EF98ED, 0x109D30CFADD7D0ED, 0x0AC56A08B964AE90, 0x1C25213F2F75B8CD, 0x0000DFCBAA83EE38
                                                };
+const uint64_t p751x4[NWORDS64_FIELD]            = { 0xFFFFFFFFFFFFFFFC, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xBABFFFFFFFFFFFFF, 
+                                                     0x8FB25A1527E1E2A3, 0x6A566C684FDF31DB, 0x213A619F5BAFA1DB, 0x158AD41172C95D20, 0x384A427E5EEB719A, 0x0001BF975507DC70 }; 
+const uint64_t p751p1[NWORDS64_FIELD]            = { 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xEEB0000000000000,
+                                                     0xE3EC968549F878A8, 0xDA959B1A13F7CC76, 0x084E9867D6EBE876, 0x8562B5045CB25748, 0x0E12909F97BADC66, 0x00006FE5D541F71C };   
+/* OQS note: commented out to avoid unused error
+static const uint64_t p751x16p[2*NWORDS64_FIELD]        = { 0x0000000000000010, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x2A00000000000000, 
+                                                     0x826D2F56C0F0EAE2, 0xAD4C9CBD81067123, 0xF62CF3052282F124, 0x53A95F7469B516FE, 0x3DADEC0D08A4732F, 0x58AD934557C11C7E, 
+                                                     0x7F731B89B2DA43F2, 0x51AE9F5F5F6AFF3B, 0xD74319A6C9BCA375, 0x5BAB790796CF84D4, 0xA421554FE2E49CA8, 0x20AD617C8DF437CF, 
+                                                     0x3AB06E7A12F5FF7B, 0x70A25E037E40347E, 0x51F1D323FB4C1151, 0xAE0D99AA4835FED9, 0xDF5429960D2536B6, 0x000000030E91D466 }; 
+*/
 // Order of Alice's subgroup
 static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0010000000000000};
 // Order of Bob's subgroup
@@ -190,10 +195,14 @@ static const unsigned int ph2_path[PLEN_2] = { // w_2 = 4
 	52, 53, 54, 55, 56, 57, 58, 59, 59, 59, 59, 59, 59, 59
 };
 
-static const unsigned int ph3_path[PLEN_3] = { // w_3 = 5
-	0, 0, 1, 2, 3, 4, 5, 5, 6, 6, 7, 8, 8, 9, 10, 11, 11, 12, 13, 14, 15, 15, 16,
-	17, 18, 19, 20, 20, 20, 21, 22, 23, 24, 25, 26, 26, 26, 26, 27, 28, 29, 30,
-	31, 32, 33, 34, 34, 34, 34
+static const unsigned int ph3_path[PLEN_3] = { 
+#if W_3 == 4 
+	0, 0, 1, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 11, 12, 13, 14, 14, 14, 15, 16, 17, 18, 19, 19, 19, 19, 20, 21, 22, 23, 24, 25, 26, 26, 26, 26, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 36, 36, 36, 36, 36, 37, 38, 39, 40, 41
+#elif W_3 == 5  
+ 	0, 0, 1, 2, 3, 4, 5, 5, 6, 6, 7, 8, 8, 9, 10, 11, 11, 12, 13, 14, 15, 15, 16, 
+ 	17, 18, 19, 20, 20, 20, 21, 22, 23, 24, 25, 26, 26, 26, 26, 27, 28, 29, 30, 
+ 	31, 32, 33, 34, 34, 34, 34    
+#endif     
 };
 
 // Entangled bases related static tables and parameters
@@ -375,6 +384,9 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] = {
 #define fp2zero fp2zero751
 #define fp2add fp2add751
 #define fp2sub fp2sub751
+#define mp_sub_p2 mp_sub751_p2
+#define mp_sub_p4 mp_sub751_p4
+#define sub_p4 mp_sub_p4
 #define fp2neg fp2neg751
 #define fp2div2 fp2div2_751
 #define fp2correction fp2correction751

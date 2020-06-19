@@ -2,8 +2,6 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: Pohlig-Hellman with optimal strategy
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 static void from_base(int *D, digit_t *r, int Dlen, int base) { // Convert a number in base "base": (D[k-1]D[k-2]...D[1]D[0])_base < 2^(NWORDS_ORDER*RADIX)into decimal

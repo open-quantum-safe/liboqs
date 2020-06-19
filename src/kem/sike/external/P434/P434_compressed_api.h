@@ -2,8 +2,6 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: API header file for P434 using compression
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #ifndef P434_COMPRESSED_API_H
@@ -15,19 +13,19 @@
 
 // SIKE's key generation
 // It produces a private key sk and computes the public key pk.
-// Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = 239 bytes)
-//          public key pk (CRYPTO_PUBLICKEYBYTES = 196 bytes)
+// Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = 350 bytes)
+//          public key pk (CRYPTO_PUBLICKEYBYTES = 197 bytes)
 int OQS_KEM_sike_p434_compressed_keypair(unsigned char *pk, unsigned char *sk);
 
 // SIKE's encapsulation
-// Input:   public key pk         (CRYPTO_PUBLICKEYBYTES = 196 bytes)
+// Input:   public key pk         (CRYPTO_PUBLICKEYBYTES = 197 bytes)
 // Outputs: shared secret ss      (CRYPTO_BYTES = 16 bytes)
-//          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 209 bytes)
+//          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 236 bytes)
 int OQS_KEM_sike_p434_compressed_encaps(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
 
 // SIKE's decapsulation
-// Input:   secret key sk         (CRYPTO_SECRETKEYBYTES = 239 bytes)
-//          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 209 bytes)
+// Input:   secret key sk         (CRYPTO_SECRETKEYBYTES = 350 bytes)
+//          ciphertext message ct (CRYPTO_CIPHERTEXTBYTES = 236 bytes)
 // Outputs: shared secret ss      (CRYPTO_BYTES = 16 bytes)
 int OQS_KEM_sike_p434_compressed_decaps(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
 
@@ -37,10 +35,10 @@ int OQS_KEM_sike_p434_compressed_decaps(unsigned char *ss, const unsigned char *
 // Elements (a+b*i) over GF(p434^2), where a and b are defined over GF(p434), are encoded as {a, b}, with a in the lowest memory portion.
 //
 // Private keys sk consist of the concatenation of a 16-byte random value, a value in the range [0, 2^216-1] and the public key pk. In the SIKE API,
-// private keys are encoded in 239 octets in little endian format.
-// Public keys pk consist of 3 values of length OBOB_BITS, one element in GF(p434^2) and 2 bytes. In the SIKE API, pk is encoded in 196 octets.
+// private keys are encoded in 350 octets in little endian format.
+// Public keys pk consist of 3 values of length OBOB_BITS, one element in GF(p434^2) and 2 bytes. In the SIKE API, pk is encoded in 197 octets.
 // Ciphertexts ct consist of the concatenation of 3 values of length OALICE_BITS, one element in GF(p434^2), 2 bytes and a 16-byte value. In the SIKE API,
-// ct is encoded in 3*27 + 110 + 2 + 16 = 209 octets.
+// ct is encoded in 3*27 + 110 + 2 + 16 = 236 octets.
 // Shared keys ss consist of a value of 16 octets.
 
 /*********************** Ephemeral key exchange API ***********************/
@@ -59,26 +57,26 @@ void oqs_kem_sidh_p434_compressed_random_mod_order_B(unsigned char *random_digit
 
 // Alice's ephemeral public key generation
 // Input:  a private key PrivateKeyA in the range [0, 2^216 - 1], stored in 27 bytes.
-// Output: the public key PublicKeyA consisting of 3 values of length OALICE_BITS, one element in GF(p434^2) and 2 bytes encoded in 196 bytes.
+// Output: the public key PublicKeyA consisting of 3 values of length OALICE_BITS, one element in GF(p434^2) and 2 bytes encoded in 197 bytes.
 int oqs_kem_sidh_p434_compressed_EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA);
 
 // Bob's ephemeral key-pair generation
 // It produces a private key PrivateKeyB and computes the public key PublicKeyB.
 // The private key is an integer in the range [0, 2^Floor(Log(2,3^137)) - 1], stored in 28 bytes.
-// The public key consists of 3 values of length OALICE_BITS, one element in GF(p434^2) and 2 bytes encoded in 196 bytes.
+// The public key consists of 3 values of length OALICE_BITS, one element in GF(p434^2) and 2 bytes encoded in 197 bytes.
 int oqs_kem_sidh_p434_compressed_EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *PublicKeyB);
 
 // Alice's ephemeral shared secret computation
 // It produces a shared secret key SharedSecretA using her secret key PrivateKeyA and Bob's public key PublicKeyB
 // Inputs: Alice's PrivateKeyA is an integer in the range [0, 2^216 - 1], stored in 27 bytes.
-//         Bob's PublicKeyB consists of 3 values of length OALICE_BITS, one element in GF(p434^2) and 2 bytes encoded in 196 bytes.
+//         Bob's PublicKeyB consists of 3 values of length OALICE_BITS, one element in GF(p434^2) and 2 bytes encoded in 197 bytes.
 // Output: a shared secret SharedSecretA that consists of one element in GF(p434^2) encoded in 110 bytes.
 int oqs_kem_sidh_p434_compressed_EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned char *PublicKeyB, unsigned char *SharedSecretA);
 
 // Bob's ephemeral shared secret computation
 // It produces a shared secret key SharedSecretB using his secret key PrivateKeyB and Alice's public key PublicKeyA
 // Inputs: Bob's PrivateKeyB is an integer in the range [0, 2^Floor(Log(2,3^137)) - 1], stored in 28 bytes.
-//         Alice's PublicKeyA consists of 3 values of length OALICE_BITS, one element in GF(p434^2) and 2 bytes encoded in 196 bytes.
+//         Alice's PublicKeyA consists of 3 values of length OALICE_BITS, one element in GF(p434^2) and 2 bytes encoded in 197 bytes.
 // Output: a shared secret SharedSecretB that consists of one element in GF(p434^2) encoded in 110 bytes.
 int oqs_kem_sidh_p434_compressed_EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned char *PublicKeyA, unsigned char *SharedSecretB);
 
@@ -89,7 +87,7 @@ int oqs_kem_sidh_p434_compressed_EphemeralSecretAgreement_B(const unsigned char 
 //
 // Private keys PrivateKeyA and PrivateKeyB can have values in the range [0, 2^216-1] and [0, 2^Floor(Log(2,3^137)) - 1], resp. In the SIDH API,
 // Alice's and Bob's private keys are encoded in 27 and 28 octets, resp., in little endian format.
-// Public keys pk consist of 3 values of length OBOB_BITS, one element in GF(p434^2) and 2 bytes. In the SIKE API, pk is encoded in 196 octets.
+// Public keys pk consist of 3 values of length OBOB_BITS, one element in GF(p434^2) and 2 bytes. In the SIKE API, pk is encoded in 197 octets.
 // Shared keys SharedSecretA and SharedSecretB consist of one element in GF(p434^2). In the SIDH API, they are encoded in 110 octets.
 
 #endif

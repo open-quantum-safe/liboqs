@@ -2,12 +2,10 @@
 * SIDH: an efficient supersingular isogeny cryptography library
 *
 * Abstract: supersingular isogeny parameters and generation of functions for P751
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include <oqs/rand.h>
-#include "../oqs_namespace_sike.h"
+#include "../../oqs_namespace_sike.h"
 #include "P751_api.h"
 #include "P751_internal.h"
 
@@ -36,12 +34,19 @@
 const uint64_t p751[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xEEAFFFFFFFFFFFFF,
                                        0xE3EC968549F878A8, 0xDA959B1A13F7CC76, 0x084E9867D6EBE876, 0x8562B5045CB25748, 0x0E12909F97BADC66, 0x00006FE5D541F71C
                                       };
-const uint64_t p751p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xEEB0000000000000,
-                                         0xE3EC968549F878A8, 0xDA959B1A13F7CC76, 0x084E9867D6EBE876, 0x8562B5045CB25748, 0x0E12909F97BADC66, 0x00006FE5D541F71C
-                                        };
 const uint64_t p751x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xDD5FFFFFFFFFFFFF,
                                          0xC7D92D0A93F0F151, 0xB52B363427EF98ED, 0x109D30CFADD7D0ED, 0x0AC56A08B964AE90, 0x1C25213F2F75B8CD, 0x0000DFCBAA83EE38
                                         };
+const uint64_t p751x4[NWORDS64_FIELD]            = { 0xFFFFFFFFFFFFFFFC, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xBABFFFFFFFFFFFFF, 
+                                                     0x8FB25A1527E1E2A3, 0x6A566C684FDF31DB, 0x213A619F5BAFA1DB, 0x158AD41172C95D20, 0x384A427E5EEB719A, 0x0001BF975507DC70 }; 
+const uint64_t p751p1[NWORDS64_FIELD]            = { 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xEEB0000000000000,
+                                                     0xE3EC968549F878A8, 0xDA959B1A13F7CC76, 0x084E9867D6EBE876, 0x8562B5045CB25748, 0x0E12909F97BADC66, 0x00006FE5D541F71C };   
+/* OQS note: commented out to avoid unused error
+static const uint64_t p751x16p[2*NWORDS64_FIELD]        = { 0x0000000000000010, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x2A00000000000000, 
+                                                     0x826D2F56C0F0EAE2, 0xAD4C9CBD81067123, 0xF62CF3052282F124, 0x53A95F7469B516FE, 0x3DADEC0D08A4732F, 0x58AD934557C11C7E, 
+                                                     0x7F731B89B2DA43F2, 0x51AE9F5F5F6AFF3B, 0xD74319A6C9BCA375, 0x5BAB790796CF84D4, 0xA421554FE2E49CA8, 0x20AD617C8DF437CF, 
+                                                     0x3AB06E7A12F5FF7B, 0x70A25E037E40347E, 0x51F1D323FB4C1151, 0xAE0D99AA4835FED9, 0xDF5429960D2536B6, 0x000000030E91D466 };
+*/
 // Order of Alice's subgroup
 // static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0010000000000000};
 // Order of Bob's subgroup
@@ -123,6 +128,9 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #define fp2zero fp2zero751
 #define fp2add fp2add751
 #define fp2sub fp2sub751
+#define mp_sub_p2 mp_sub751_p2
+#define mp_sub_p4 mp_sub751_p4
+#define sub_p4 mp_sub_p4
 #define fp2neg fp2neg751
 #define fp2div2 fp2div2_751
 #define fp2correction fp2correction751

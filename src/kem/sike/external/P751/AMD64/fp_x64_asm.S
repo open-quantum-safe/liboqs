@@ -2,12 +2,16 @@
 // SIDH: an efficient supersingular isogeny cryptography library
 //
 // Abstract: field arithmetic in x64 assembly for P751 on Linux 
-//
-// SPDX-License-Identifier: MIT
 //*******************************************************************************************  
 
 .intel_syntax noprefix 
 
+// Format function and variable names for Mac OS X
+#if defined(__APPLE__)
+    #define fmt(f)    _oqs_kem_sike_##f
+#else
+    #define fmt(f)    oqs_kem_sike_##f
+#endif
 
 // Registers that are used for parameter passing:
 #define reg_p1  rdi
@@ -20,8 +24,8 @@
 //  Field addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_fpadd751_asm
-oqs_kem_sike_fpadd751_asm:
+.global fmt(fpadd751_asm)
+fmt(fpadd751_asm):
   push   r12
   push   r13
   push   r14
@@ -55,20 +59,20 @@ oqs_kem_sike_fpadd751_asm:
   adc    rax, [reg_p2+88] 
   mov    [reg_p3+88], rax
 
-  mov    rax, [rip+p751x2]
+  mov    rax, [rip+fmt(p751x2)]
   sub    r8, rax
-  mov    rax, [rip+p751x2+8]
+  mov    rax, [rip+fmt(p751x2)+8]
   sbb    r9, rax
   sbb    r10, rax
   sbb    r11, rax
   sbb    r12, rax
-  mov    rax, [rip+p751x2+40]
+  mov    rax, [rip+fmt(p751x2)+40]
   sbb    r13, rax
-  mov    rax, [rip+p751x2+48]
+  mov    rax, [rip+fmt(p751x2)+48]
   sbb    r14, rax
-  mov    rax, [rip+p751x2+56]
+  mov    rax, [rip+fmt(p751x2)+56]
   sbb    r15, rax
-  mov    rax, [rip+p751x2+64]
+  mov    rax, [rip+fmt(p751x2)+64]
   sbb    rcx, rax
   mov    [reg_p3], r8
   mov    [reg_p3+8], r9
@@ -82,11 +86,11 @@ oqs_kem_sike_fpadd751_asm:
   mov    r8, [reg_p3+72]
   mov    r9, [reg_p3+80]
   mov    r10, [reg_p3+88]
-  mov    rax, [rip+p751x2+72]
+  mov    rax, [rip+fmt(p751x2)+72]
   sbb    r8, rax
-  mov    rax, [rip+p751x2+80]
+  mov    rax, [rip+fmt(p751x2)+80]
   sbb    r9, rax
-  mov    rax, [rip+p751x2+88]
+  mov    rax, [rip+fmt(p751x2)+88]
   sbb    r10, rax
   mov    [reg_p3+72], r8
   mov    [reg_p3+80], r9
@@ -94,23 +98,23 @@ oqs_kem_sike_fpadd751_asm:
   mov    rax, 0
   sbb    rax, 0
   
-  mov    rsi, [rip+p751x2]
+  mov    rsi, [rip+fmt(p751x2)]
   and    rsi, rax
-  mov    r8, [rip+p751x2+8]
+  mov    r8, [rip+fmt(p751x2)+8]
   and    r8, rax
-  mov    r9, [rip+p751x2+40]
+  mov    r9, [rip+fmt(p751x2)+40]
   and    r9, rax
-  mov    r10, [rip+p751x2+48]
+  mov    r10, [rip+fmt(p751x2)+48]
   and    r10, rax
-  mov    r11, [rip+p751x2+56]
+  mov    r11, [rip+fmt(p751x2)+56]
   and    r11, rax
-  mov    r12, [rip+p751x2+64]
+  mov    r12, [rip+fmt(p751x2)+64]
   and    r12, rax
-  mov    r13, [rip+p751x2+72]
+  mov    r13, [rip+fmt(p751x2)+72]
   and    r13, rax
-  mov    r14, [rip+p751x2+80]
+  mov    r14, [rip+fmt(p751x2)+80]
   and    r14, rax
-  mov    r15, [rip+p751x2+88]
+  mov    r15, [rip+fmt(p751x2)+88]
   and    r15, rax
   
   add    rsi, [reg_p3]  
@@ -153,8 +157,8 @@ oqs_kem_sike_fpadd751_asm:
 //  Field subtraction
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_fpsub751_asm
-oqs_kem_sike_fpsub751_asm:
+.global fmt(fpsub751_asm)
+fmt(fpsub751_asm):
   push   r12
   push   r13
   push   r14
@@ -199,23 +203,23 @@ oqs_kem_sike_fpsub751_asm:
   mov    rax, 0
   sbb    rax, 0
   
-  mov    rsi, [rip+p751x2]
+  mov    rsi, [rip+fmt(p751x2)]
   and    rsi, rax
-  mov    r8, [rip+p751x2+8]
+  mov    r8, [rip+fmt(p751x2)+8]
   and    r8, rax
-  mov    r9, [rip+p751x2+40]
+  mov    r9, [rip+fmt(p751x2)+40]
   and    r9, rax
-  mov    r10, [rip+p751x2+48]
+  mov    r10, [rip+fmt(p751x2)+48]
   and    r10, rax
-  mov    r11, [rip+p751x2+56]
+  mov    r11, [rip+fmt(p751x2)+56]
   and    r11, rax
-  mov    r12, [rip+p751x2+64]
+  mov    r12, [rip+fmt(p751x2)+64]
   and    r12, rax
-  mov    r13, [rip+p751x2+72]
+  mov    r13, [rip+fmt(p751x2)+72]
   and    r13, rax
-  mov    r14, [rip+p751x2+80]
+  mov    r14, [rip+fmt(p751x2)+80]
   and    r14, rax
-  mov    r15, [rip+p751x2+88]
+  mov    r15, [rip+fmt(p751x2)+88]
   and    r15, rax
   
   mov    rax, [reg_p3]
@@ -252,6 +256,107 @@ oqs_kem_sike_fpsub751_asm:
   pop    r14
   pop    r13
   pop    r12
+  ret 
+
+
+///////////////////////////////////////////////////////////////// MACRO
+.macro SUB751_PX  P0 
+  push   r12
+  push   r13
+  push   r14
+  push   r15
+  
+  mov    r8, [reg_p1]
+  mov    r9, [reg_p1+8]
+  mov    r10, [reg_p1+16]
+  mov    r11, [reg_p1+24]
+  mov    r12, [reg_p1+32]
+  mov    r13, [reg_p1+40]
+  sub    r8, [reg_p2] 
+  sbb    r9, [reg_p2+8] 
+  sbb    r10, [reg_p2+16] 
+  sbb    r11, [reg_p2+24] 
+  sbb    r12, [reg_p2+32] 
+  sbb    r13, [reg_p2+40]
+  setc   al
+
+  mov    r14, [rip+\P0]
+  mov    r15, [rip+\P0+8]
+  add    r8, r14  
+  adc    r9, r15  
+  adc    r10, r15 
+  adc    r11, r15 
+  adc    r12, r15   
+  mov    r14, [rip+\P0+40]
+  adc    r13, r14   
+  mov    [reg_p3], r8
+  mov    [reg_p3+8], r9 
+  mov    [reg_p3+16], r10 
+  mov    [reg_p3+24], r11
+  mov    [reg_p3+32], r12 
+  mov    [reg_p3+40], r13
+  setc   cl
+
+  bt     rax, 0 
+  mov    r8, [reg_p1+48]
+  mov    r9, [reg_p1+56]
+  mov    r10, [reg_p1+64]
+  mov    r11, [reg_p1+72]
+  mov    r12, [reg_p1+80]
+  mov    r13, [reg_p1+88]
+  sbb    r8, [reg_p2+48] 
+  sbb    r9, [reg_p2+56] 
+  sbb    r10, [reg_p2+64] 
+  sbb    r11, [reg_p2+72] 
+  sbb    r12, [reg_p2+80] 
+  sbb    r13, [reg_p2+88] 
+
+  bt     rcx, 0
+  mov    r14, [rip+\P0+48]
+  mov    r15, [rip+\P0+56]
+  adc    r8, r14  
+  adc    r9, r15  
+  mov    r14, [rip+\P0+64]
+  mov    r15, [rip+\P0+72]
+  adc    r10, r14 
+  adc    r11, r15    
+  mov    r14, [rip+\P0+80]
+  mov    r15, [rip+\P0+88]
+  adc    r12, r14 
+  adc    r13, r15  
+  mov    [reg_p3+48], r8
+  mov    [reg_p3+56], r9 
+  mov    [reg_p3+64], r10 
+  mov    [reg_p3+72], r11
+  mov    [reg_p3+80], r12 
+  mov    [reg_p3+88], r13
+  
+  pop    r15
+  pop    r14
+  pop    r13
+  pop    r12
+  .endm
+
+
+//***********************************************************************
+//  Multiprecision subtraction with correction with 2*p751
+//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 2*p751
+//*********************************************************************** 
+.global fmt(mp_sub751_p2_asm)
+fmt(mp_sub751_p2_asm):
+
+  SUB751_PX  fmt(p751x2)
+  ret 
+
+
+//***********************************************************************
+//  Multiprecision subtraction with correction with 4*p751
+//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 4*p751
+//*********************************************************************** 
+.global fmt(mp_sub751_p4_asm)
+fmt(mp_sub751_p4_asm):
+
+  SUB751_PX  fmt(p751x4)
   ret 
 
 
@@ -570,8 +675,8 @@ oqs_kem_sike_fpsub751_asm:
 //*****************************************************************************
 //  751-bit multiplication using Karatsuba (one level), schoolbook (two levels)
 //***************************************************************************** 
-.global oqs_kem_sike_mul751_asm
-oqs_kem_sike_mul751_asm:    
+.global fmt(mul751_asm)
+fmt(mul751_asm):    
     push   r12
     push   r13 
     push   r14 
@@ -794,8 +899,8 @@ oqs_kem_sike_mul751_asm:
 //  Operation: c [reg_p3] = a [reg_p1] * b [reg_p2]
 //  NOTE: a=c or b=c are not allowed
 //***********************************************************************
-.global oqs_kem_sike_mul751_asm
-oqs_kem_sike_mul751_asm:
+.global fmt(mul751_asm)
+fmt(mul751_asm):
   push   r12
   push   r13
   push   r14
@@ -1960,8 +2065,8 @@ oqs_kem_sike_mul751_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //************************************************************************************** 
-.global oqs_kem_sike_rdc751_asm
-oqs_kem_sike_rdc751_asm:
+.global fmt(rdc751_asm)
+fmt(rdc751_asm):
     push   rbx
     push   rbp
     push   r12
@@ -1970,7 +2075,7 @@ oqs_kem_sike_rdc751_asm:
     push   r15  
 
     // a[0-3] x p751p1_nz --> result: [reg_p2+48], [reg_p2+56], [reg_p2+64], and rbp, r8:r14 
-    MUL256x448_SCHOOL [reg_p1], [rip+p751p1+40], [reg_p2+48], r8, r9, r13, r10, r14, r12, r11, rbp, rbx, rcx, r15     
+    MUL256x448_SCHOOL [reg_p1], [rip+fmt(p751p1)+40], [reg_p2+48], r8, r9, r13, r10, r14, r12, r11, rbp, rbx, rcx, r15     
 
     xor    r15, r15
     mov    rax, [reg_p2+48]
@@ -2023,7 +2128,7 @@ oqs_kem_sike_rdc751_asm:
     mov    [reg_p1+184], r14
 
     // a[4-7] x p751p1_nz --> result: [reg_p2+48], [reg_p2+56], [reg_p2+64], and rbp, r8:r14 
-    MUL256x448_SCHOOL [reg_p1+32], [rip+p751p1+40], [reg_p2+48], r8, r9, r13, r10, r14, r12, r11, rbp, rbx, rcx, r15 
+    MUL256x448_SCHOOL [reg_p1+32], [rip+fmt(p751p1)+40], [reg_p2+48], r8, r9, r13, r10, r14, r12, r11, rbp, rbx, rcx, r15 
 
     xor    r15, r15
     mov    rax, [reg_p2+48]
@@ -2064,7 +2169,7 @@ oqs_kem_sike_rdc751_asm:
     mov    [reg_p1+184], r14 
 
     // a[8-11] x p751p1_nz --> result: [reg_p2+48], [reg_p2+56], [reg_p2+64], and rbp, r8:r14 
-    MUL256x448_SCHOOL [reg_p1+64], [rip+p751p1+40], [reg_p2+48], r8, r9, r13, r10, r14, r12, r11, rbp, rbx, rcx, r15 
+    MUL256x448_SCHOOL [reg_p1+64], [rip+fmt(p751p1)+40], [reg_p2+48], r8, r9, r13, r10, r14, r12, r11, rbp, rbx, rcx, r15 
 
     // Final result c1:c11
     mov    rax, [reg_p2+48]
@@ -2109,15 +2214,15 @@ oqs_kem_sike_rdc751_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //*********************************************************************** 
-.global oqs_kem_sike_rdc751_asm
-oqs_kem_sike_rdc751_asm:
+.global fmt(rdc751_asm)
+fmt(rdc751_asm):
   push   r12
   push   r13 
   push   r14 
   push   r15 
 
   mov    r11, [reg_p1]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    r11
   xor    r8, r8
   add    rax, [reg_p1+40]
@@ -2125,14 +2230,14 @@ oqs_kem_sike_rdc751_asm:
   adc    r8, rdx
   
   xor    r9, r9
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    r11
   xor    r10, r10
   add    r8, rax
   adc    r9, rdx
 
   mov    r12, [reg_p1+8]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
@@ -2143,20 +2248,20 @@ oqs_kem_sike_rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    r11
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    r12
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
   mov    r13, [reg_p1+16]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
@@ -2167,26 +2272,26 @@ oqs_kem_sike_rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    r12
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    r13
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
   mov    r14, [reg_p1+24]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
@@ -2197,32 +2302,32 @@ oqs_kem_sike_rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    r11
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    r13
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    r14
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
   mov    r15, [reg_p1+32]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
@@ -2233,38 +2338,38 @@ oqs_kem_sike_rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r11
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    r12
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    r14
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    r15
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
   mov    rcx, [reg_p2+40]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
@@ -2275,44 +2380,44 @@ oqs_kem_sike_rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r12
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    r13
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    r15
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    rcx
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
   mov    r11, [reg_p2+48]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
@@ -2323,44 +2428,44 @@ oqs_kem_sike_rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r13
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    r14
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    rcx
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    r11
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
   mov    r12, [reg_p2+56]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
@@ -2371,44 +2476,44 @@ oqs_kem_sike_rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r14
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  mov    rax, [rip+p751p1+72]
+  mov    rax, [rip+fmt(p751p1)+72]
   mul    r15
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  mov    rax, [rip+p751p1+64]
+  mov    rax, [rip+fmt(p751p1)+64]
   mul    rcx
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  mov    rax, [rip+p751p1+56]
+  mov    rax, [rip+fmt(p751p1)+56]
   mul    r11
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
 
-  mov    rax, [rip+p751p1+48]
+  mov    rax, [rip+fmt(p751p1)+48]
   mul    r12
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
   mov    r13, [reg_p2+64]
-  mov    rax, [rip+p751p1+40]
+  mov    rax, [rip+fmt(p751p1)+40]
   mul    r13
   add    r9, rax
   adc    r10, rdx
@@ -2419,44 +2524,44 @@ oqs_kem_sike_rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r15
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    rcx
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    r12
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    r13
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
   mov    r14, [reg_p2+72]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
@@ -2467,44 +2572,44 @@ oqs_kem_sike_rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    rcx
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    r11
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    r13
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    r14
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
   mov    r15, [reg_p2+80]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
@@ -2515,44 +2620,44 @@ oqs_kem_sike_rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r11
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    r12
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    r14
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    r15
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
   mov    rcx, [reg_p2+88]
-  mov    rax, [rip+p751p1+40] 
+  mov    rax, [rip+fmt(p751p1)+40] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
@@ -2563,37 +2668,37 @@ oqs_kem_sike_rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r11
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r12
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    r13
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    r15
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+48] 
+  mov    rax, [rip+fmt(p751p1)+48] 
   mul    rcx
   add    r10, rax
   adc    r8, rdx
@@ -2604,31 +2709,31 @@ oqs_kem_sike_rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r12
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r13
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    r14
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+56] 
+  mov    rax, [rip+fmt(p751p1)+56] 
   mul    rcx
   add    r8, rax
   adc    r9, rdx
@@ -2639,25 +2744,25 @@ oqs_kem_sike_rdc751_asm:
   adc    r10, 0
   
   xor    r8, r8
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r13
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r14
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    r15
   add    r9, rax
   adc    r10, rdx
   adc    r8, 0
   
-  mov    rax, [rip+p751p1+64] 
+  mov    rax, [rip+fmt(p751p1)+64] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
@@ -2668,19 +2773,19 @@ oqs_kem_sike_rdc751_asm:
   adc    r8, 0
   
   xor    r9, r9
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r14
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    r15
   add    r10, rax
   adc    r8, rdx
   adc    r9, 0
   
-  mov    rax, [rip+p751p1+72] 
+  mov    rax, [rip+fmt(p751p1)+72] 
   mul    rcx
   add    r10, rax
   adc    r8, rdx
@@ -2691,13 +2796,13 @@ oqs_kem_sike_rdc751_asm:
   adc    r9, 0
   
   xor    r10, r10
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    r15
   add    r8, rax
   adc    r9, rdx
   adc    r10, 0
 
-  mov    rax, [rip+p751p1+80] 
+  mov    rax, [rip+fmt(p751p1)+80] 
   mul    rcx
   add    r8, rax
   adc    r9, rdx
@@ -2707,7 +2812,7 @@ oqs_kem_sike_rdc751_asm:
   adc    r9, 0
   adc    r10, 0
   
-  mov    rax, [rip+p751p1+88] 
+  mov    rax, [rip+fmt(p751p1)+88] 
   mul    rcx
   add    r9, rax
   adc    r10, rdx
@@ -2730,8 +2835,8 @@ oqs_kem_sike_rdc751_asm:
 //  751-bit multiprecision addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_add751_asm
-oqs_kem_sike_mp_add751_asm:  
+.global fmt(mp_add751_asm)
+fmt(mp_add751_asm):  
   mov    r8, [reg_p1]
   mov    r9, [reg_p1+8]
   mov    r10, [reg_p1+16]
@@ -2776,8 +2881,8 @@ oqs_kem_sike_mp_add751_asm:
 //  2x751-bit multiprecision subtraction/addition
 //  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p751*2^768
 //*********************************************************************** 
-.global oqs_kem_sike_mp_subadd751x2_asm
-oqs_kem_sike_mp_subadd751x2_asm:
+.global fmt(mp_subadd751x2_asm)
+fmt(mp_subadd751x2_asm):
   push   r12
   push   r13 
   push   r14 
@@ -2859,14 +2964,14 @@ oqs_kem_sike_mp_subadd751x2_asm:
   sbb    rax, 0
   
   // Add p751 anded with the mask in rax 
-  mov    r12, [rip+p751]
-  mov    r13, [rip+p751+40]
-  mov    r14, [rip+p751+48]
-  mov    r15, [rip+p751+56]
-  mov    rdi, [rip+p751+64]
-  mov    rsi, [rip+p751+72]
-  mov    rbx, [rip+p751+80]
-  mov    rcx, [rip+p751+88]
+  mov    r12, [rip+fmt(p751)]
+  mov    r13, [rip+fmt(p751)+40]
+  mov    r14, [rip+fmt(p751)+48]
+  mov    r15, [rip+fmt(p751)+56]
+  mov    rdi, [rip+fmt(p751)+64]
+  mov    rsi, [rip+fmt(p751)+72]
+  mov    rbx, [rip+fmt(p751)+80]
+  mov    rcx, [rip+fmt(p751)+88]
   and    r12, rax
   and    r13, rax
   and    r14, rax
@@ -2919,14 +3024,13 @@ oqs_kem_sike_mp_subadd751x2_asm:
 //  Double 2x751-bit multiprecision subtraction
 //  Operation: c [reg_p3] = c [reg_p3] - a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_dblsub751x2_asm
-oqs_kem_sike_mp_dblsub751x2_asm:
+.global fmt(mp_dblsub751x2_asm)
+fmt(mp_dblsub751x2_asm):
   push   r12
   push   r13
   push   r14
   push   r15
   
-  xor    rax, rax
   mov    r8, [reg_p3]
   mov    r9, [reg_p3+8]
   mov    r10, [reg_p3+16]
@@ -2943,7 +3047,7 @@ oqs_kem_sike_mp_dblsub751x2_asm:
   sbb    r13, [reg_p1+40] 
   sbb    r14, [reg_p1+48] 
   sbb    r15, [reg_p1+56]
-  adc    rax, 0
+  setc   al
   sub    r8, [reg_p2]
   sbb    r9, [reg_p2+8] 
   sbb    r10, [reg_p2+16] 
@@ -2952,7 +3056,7 @@ oqs_kem_sike_mp_dblsub751x2_asm:
   sbb    r13, [reg_p2+40] 
   sbb    r14, [reg_p2+48] 
   sbb    r15, [reg_p2+56]
-  adc    rax, 0  
+  setc   cl
   mov    [reg_p3], r8
   mov    [reg_p3+8], r9
   mov    [reg_p3+16], r10
@@ -2962,7 +3066,6 @@ oqs_kem_sike_mp_dblsub751x2_asm:
   mov    [reg_p3+48], r14
   mov    [reg_p3+56], r15
     
-  xor    rcx, rcx
   mov    r8, [reg_p3+64]
   mov    r9, [reg_p3+72]
   mov    r10, [reg_p3+80]
@@ -2971,7 +3074,7 @@ oqs_kem_sike_mp_dblsub751x2_asm:
   mov    r13, [reg_p3+104]
   mov    r14, [reg_p3+112]
   mov    r15, [reg_p3+120]
-  sub    r8, rax 
+  bt     rax, 0 
   sbb    r8, [reg_p1+64] 
   sbb    r9, [reg_p1+72] 
   sbb    r10, [reg_p1+80] 
@@ -2980,8 +3083,9 @@ oqs_kem_sike_mp_dblsub751x2_asm:
   sbb    r13, [reg_p1+104] 
   sbb    r14, [reg_p1+112] 
   sbb    r15, [reg_p1+120]
-  adc    rcx, 0
-  sub    r8, [reg_p2+64] 
+  setc   al 
+  bt     rcx, 0  
+  sbb    r8, [reg_p2+64] 
   sbb    r9, [reg_p2+72] 
   sbb    r10, [reg_p2+80] 
   sbb    r11, [reg_p2+88] 
@@ -2989,7 +3093,7 @@ oqs_kem_sike_mp_dblsub751x2_asm:
   sbb    r13, [reg_p2+104] 
   sbb    r14, [reg_p2+112] 
   sbb    r15, [reg_p2+120]
-  adc    rcx, 0
+  setc   cl 
   mov    [reg_p3+64], r8
   mov    [reg_p3+72], r9
   mov    [reg_p3+80], r10
@@ -3006,8 +3110,8 @@ oqs_kem_sike_mp_dblsub751x2_asm:
   mov    r12, [reg_p3+160]
   mov    r13, [reg_p3+168]
   mov    r14, [reg_p3+176]
-  mov    r15, [reg_p3+184]  
-  sub    r8, rcx 
+  mov    r15, [reg_p3+184]
+  bt     rax, 0 
   sbb    r8, [reg_p1+128] 
   sbb    r9, [reg_p1+136] 
   sbb    r10, [reg_p1+144] 
@@ -3016,7 +3120,8 @@ oqs_kem_sike_mp_dblsub751x2_asm:
   sbb    r13, [reg_p1+168] 
   sbb    r14, [reg_p1+176] 
   sbb    r15, [reg_p1+184]
-  sub    r8, [reg_p2+128] 
+  bt     rcx, 0 
+  sbb    r8, [reg_p2+128] 
   sbb    r9, [reg_p2+136] 
   sbb    r10, [reg_p2+144] 
   sbb    r11, [reg_p2+152] 

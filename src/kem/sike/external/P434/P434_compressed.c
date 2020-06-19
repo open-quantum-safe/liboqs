@@ -2,24 +2,22 @@
 * Supersingular Isogeny Key Encapsulation Library
 *
 * Abstract: supersingular isogeny parameters and generation of functions for P434_compressed
-*
-* SPDX-License-Identifier: MIT
 *********************************************************************************************/
 
 #include <oqs/rand.h>
-#include "../oqs_namespace_sike_compressed.h"
+#include "../../oqs_namespace_sike_compressed.h"
 #include "P434_compressed_api.h"
 #define COMPRESS
 #include "P434_internal.h"
 
 // defines moved from P434_compressed_api.h
-#define CRYPTO_SECRETKEYBYTES 239 // MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES bytes
-#define CRYPTO_PUBLICKEYBYTES 196 // 3*ORDER_B_ENCODED_BYTES + FP2_ENCODED_BYTES + 2 bytes for shared elligator
-#define CRYPTO_BYTES 16
-#define CRYPTO_CIPHERTEXTBYTES 209 // COMPRESSED_CHUNK_CT + MSG_BYTES bytes
+#define CRYPTO_SECRETKEYBYTES     350      // MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES + FP2_ENCODED_BYTES bytes
+#define CRYPTO_PUBLICKEYBYTES     197      // 3*ORDER_B_ENCODED_BYTES + FP2_ENCODED_BYTES + 3 bytes for shared elligator 
+#define CRYPTO_BYTES               16
+#define CRYPTO_CIPHERTEXTBYTES    236      // PARTIALLY_COMPRESSED_CHUNK_CT + MSG_BYTES bytes
 #define SIDH_SECRETKEYBYTES_A 27
 #define SIDH_SECRETKEYBYTES_B 28
-#define SIDH_PUBLICKEYBYTES 196
+#define SIDH_PUBLICKEYBYTES 197
 #define SIDH_BYTES 110
 
 // Encoding of field elements, elements over Z_order, elements over GF(p^2) and elliptic curve points:
@@ -34,15 +32,22 @@
 // Curve isogeny system "SIDHp434". Base curve: Montgomery curve By^2 = Cx^3 + Ax^2 + Cx defined over GF(p434^2), where A=6, B=1, C=1 and p434 = 2^216*3^137-1
 //
 
-static const uint64_t p434[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFDC1767AE2FFFFFF,
+const uint64_t p434[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFDC1767AE2FFFFFF,
                                               0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344
                                              };
-static const uint64_t p434p1[NWORDS64_FIELD] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xFDC1767AE3000000,
-                                                0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344
-                                               };
-static const uint64_t p434x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFB82ECF5C5FFFFFF,
+const uint64_t p434x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFB82ECF5C5FFFFFF,
                                                 0xF78CB8F062B15D47, 0xD9F8BFAD038A40AC, 0x0004683E4E2EE688
                                                };
+const uint64_t p434x4[NWORDS64_FIELD]            = { 0xFFFFFFFFFFFFFFFC, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xF705D9EB8BFFFFFF, 
+                                                     0xEF1971E0C562BA8F, 0xB3F17F5A07148159, 0x0008D07C9C5DCD11 }; 
+const uint64_t p434p1[NWORDS64_FIELD]            = { 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xFDC1767AE3000000,
+                                                     0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344 };  
+/* OQS note: commented out to avoid unused error
+static const uint64_t p434x16p[2*NWORDS64_FIELD]        = { 0x0000000000000010, 0x0000000000000000, 0x0000000000000000, 0x47D130A3A0000000, 
+                                                     0x873470F9D4EA2B80, 0x6074052FC75BF530, 0x54497C1B1D119772, 0xC55F373D2CDCA412, 
+                                                     0x732CA2221C664B96, 0x6445AB96AF6359A5, 0x221708AB42ABE1B4, 0xAE3D3D0063244F01, 
+                                                     0x18B920F2ECF68816, 0x0000004DB194809D }; 
+*/
 // Order of Alice's subgroup
 static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000001000000};
 // Order of Bob's subgroup
@@ -175,8 +180,12 @@ static const unsigned int ph2_path[PLEN_2] = { // w_2 = 4
 	27, 27, 28, 28, 28, 28, 28, 29, 30, 31, 32, 33, 34, 34, 35
 };
 
-static const unsigned int ph3_path[PLEN_3] = { // w_3 = 5
+static const unsigned int ph3_path[PLEN_3] = {
+#if W_3 == 4
+	0, 0, 1, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 11, 12, 13, 14, 14, 14, 15, 16, 17, 18, 19, 19, 19, 19, 20, 21, 22, 23, 24, 25
+#elif W_3 == 5        
 	0, 0, 1, 2, 3, 4, 5, 5, 6, 6, 7, 8, 8, 9, 10, 11, 11, 12, 13, 14, 15, 15, 16, 17, 18, 19, 20, 20, 20
+#endif
 };
 
 // Entangled bases related static tables and parameters
@@ -352,6 +361,9 @@ static const uint64_t v_3_torsion[20][2 * NWORDS64_FIELD] = {
 #define fp2zero fp2zero434
 #define fp2add fp2add434
 #define fp2sub fp2sub434
+#define mp_sub_p2 mp_sub434_p2
+#define mp_sub_p4 mp_sub434_p4
+#define sub_p4 mp_sub_p4
 #define fp2neg fp2neg434
 #define fp2div2 fp2div2_434
 #define fp2correction fp2correction434

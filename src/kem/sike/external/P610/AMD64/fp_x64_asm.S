@@ -2,12 +2,16 @@
 // SIDH: an efficient supersingular isogeny cryptography library
 //
 // Abstract: field arithmetic in x64 assembly for P610 on Linux 
-//
-// SPDX-License-Identifier: MIT
 //*******************************************************************************************  
 
 .intel_syntax noprefix 
 
+// Format function and variable names for Mac OS X
+#if defined(__APPLE__)
+    #define fmt(f)    _oqs_kem_sike##f
+#else
+    #define fmt(f)    oqs_kem_sike##f
+#endif
 
 // Registers that are used for parameter passing:
 #define reg_p1  rdi
@@ -20,8 +24,8 @@
 //  Field addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_fpadd610_asm
-oqs_kem_sike_fpadd610_asm:
+.global fmt(fpadd610_asm)
+fmt(fpadd610_asm):
   push   r12
   push   r13
   push   r14
@@ -48,32 +52,32 @@ oqs_kem_sike_fpadd610_asm:
   adc    rcx, [reg_p2+64]
   adc    rdi, [reg_p2+72]
 
-  mov    rax, [rip+p610x2]
+  mov    rax, [rip+fmt(p610x2)]
   sub    r8, rax
-  mov    rax, [rip+p610x2+8]
+  mov    rax, [rip+fmt(p610x2)+8]
   sbb    r9, rax
   sbb    r10, rax
   sbb    r11, rax
-  mov    rax, [rip+p610x2+32]
+  mov    rax, [rip+fmt(p610x2)+32]
   sbb    r12, rax
-  mov    rax, [rip+p610x2+40]
+  mov    rax, [rip+fmt(p610x2)+40]
   sbb    r13, rax
-  mov    rax, [rip+p610x2+48]
+  mov    rax, [rip+fmt(p610x2)+48]
   sbb    r14, rax
-  mov    rax, [rip+p610x2+56]
+  mov    rax, [rip+fmt(p610x2)+56]
   sbb    r15, rax
-  mov    rax, [rip+p610x2+64]
+  mov    rax, [rip+fmt(p610x2)+64]
   sbb    rcx, rax
-  mov    rax, [rip+p610x2+72]
+  mov    rax, [rip+fmt(p610x2)+72]
   sbb    rdi, rax
   mov    [reg_p3+64], rcx
   mov    [reg_p3+72], rdi
   mov    rax, 0
   sbb    rax, 0
   
-  mov    rsi, [rip+p610x2]
+  mov    rsi, [rip+fmt(p610x2)]
   and    rsi, rax
-  mov    rdi, [rip+p610x2+8]
+  mov    rdi, [rip+fmt(p610x2)+8]
   and    rdi, rax
   
   add    r8, rsi  
@@ -86,17 +90,17 @@ oqs_kem_sike_fpadd610_asm:
   mov    [reg_p3+24], r11 
   setc   cl
   
-  mov    rdi, [rip+p610x2+32]
+  mov    rdi, [rip+fmt(p610x2)+32]
   and    rdi, rax
-  mov    rsi, [rip+p610x2+40]
+  mov    rsi, [rip+fmt(p610x2)+40]
   and    rsi, rax
-  mov    r8, [rip+p610x2+48]
+  mov    r8, [rip+fmt(p610x2)+48]
   and    r8, rax
-  mov    r9, [rip+p610x2+56]
+  mov    r9, [rip+fmt(p610x2)+56]
   and    r9, rax
-  mov    r10, [rip+p610x2+64]
+  mov    r10, [rip+fmt(p610x2)+64]
   and    r10, rax
-  mov    r11, [rip+p610x2+72]
+  mov    r11, [rip+fmt(p610x2)+72]
   and    r11, rax
   
   bt     rcx, 0
@@ -126,8 +130,8 @@ oqs_kem_sike_fpadd610_asm:
 //  Field subtraction
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_fpsub610_asm
-oqs_kem_sike_fpsub610_asm:
+.global fmt(fpsub610_asm)
+fmt(fpsub610_asm):
   push   r12
   push   r13
   push   r14
@@ -158,9 +162,9 @@ oqs_kem_sike_fpsub610_asm:
   mov    rax, 0
   sbb    rax, 0
     
-  mov    rsi, [rip+p610x2]
+  mov    rsi, [rip+fmt(p610x2)]
   and    rsi, rax
-  mov    rdi, [rip+p610x2+8]
+  mov    rdi, [rip+fmt(p610x2)+8]
   and    rdi, rax
   
   add    r8, rsi  
@@ -173,17 +177,17 @@ oqs_kem_sike_fpsub610_asm:
   mov    [reg_p3+24], r11 
   setc   cl
   
-  mov    rdi, [rip+p610x2+32]
+  mov    rdi, [rip+fmt(p610x2)+32]
   and    rdi, rax
-  mov    rsi, [rip+p610x2+40]
+  mov    rsi, [rip+fmt(p610x2)+40]
   and    rsi, rax
-  mov    r8, [rip+p610x2+48]
+  mov    r8, [rip+fmt(p610x2)+48]
   and    r8, rax
-  mov    r9, [rip+p610x2+56]
+  mov    r9, [rip+fmt(p610x2)+56]
   and    r9, rax
-  mov    r10, [rip+p610x2+64]
+  mov    r10, [rip+fmt(p610x2)+64]
   and    r10, rax
-  mov    r11, [rip+p610x2+72]
+  mov    r11, [rip+fmt(p610x2)+72]
   and    r11, rax
   
   bt     rcx, 0
@@ -207,6 +211,92 @@ oqs_kem_sike_fpsub610_asm:
   pop    r13
   pop    r12
   ret 
+
+
+///////////////////////////////////////////////////////////////// MACRO
+.macro SUB610_PX  P0
+  push   r12
+  push   r13
+  push   r14
+  push   r15
+  
+  mov    r8, [reg_p1]
+  mov    r9, [reg_p1+8]
+  mov    r10, [reg_p1+16]
+  mov    r11, [reg_p1+24]
+  mov    r12, [reg_p1+32]
+  mov    r13, [reg_p1+40]
+  mov    r14, [reg_p1+48]
+  mov    r15, [reg_p1+56]
+  mov    rax, [reg_p1+64]
+  mov    rcx, [reg_p1+72]
+  sub    r8, [reg_p2] 
+  sbb    r9, [reg_p2+8] 
+  sbb    r10, [reg_p2+16] 
+  sbb    r11, [reg_p2+24] 
+  sbb    r12, [reg_p2+32] 
+  sbb    r13, [reg_p2+40]
+  sbb    r14, [reg_p2+48] 
+  sbb    r15, [reg_p2+56] 
+  sbb    rax, [reg_p2+64] 
+  sbb    rcx, [reg_p2+72] 
+
+  mov    rdi, [rip+\P0]
+  mov    rsi, [rip+\P0+8]
+  add    r8, rdi  
+  adc    r9, rsi  
+  adc    r10, rsi 
+  adc    r11, rsi 
+  mov    rdi, [rip+\P0+32]
+  mov    rsi, [rip+\P0+40]
+  adc    r12, rdi   
+  adc    r13, rsi   
+  mov    [reg_p3], r8
+  mov    [reg_p3+8], r9 
+  mov    [reg_p3+16], r10 
+  mov    [reg_p3+24], r11
+  mov    [reg_p3+32], r12 
+  mov    [reg_p3+40], r13
+  mov    rdi, [rip+\P0+48]
+  mov    rsi, [rip+\P0+56]
+  adc    r14, rdi  
+  adc    r15, rsi  
+  mov    rdi, [rip+\P0+64]
+  mov    rsi, [rip+\P0+72]
+  adc    rax, rdi 
+  adc    rcx, rsi  
+  mov    [reg_p3+48], r14
+  mov    [reg_p3+56], r15 
+  mov    [reg_p3+64], rax 
+  mov    [reg_p3+72], rcx
+  
+  pop    r15
+  pop    r14
+  pop    r13
+  pop    r12
+  .endm
+
+
+//***********************************************************************
+//  Multiprecision subtraction with correction with 2*p610
+//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 2*p610
+//*********************************************************************** 
+.global fmt(mp_sub610_p2_asm)
+fmt(mp_sub610_p2_asm):
+
+  SUB610_PX  fmt(p610x2)
+  ret
+
+
+//***********************************************************************
+//  Multiprecision subtraction with correction with 4*p610
+//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 4*p610
+//*********************************************************************** 
+.global fmt(mp_sub610_p4_asm)
+fmt(mp_sub610_p4_asm):
+
+  SUB610_PX  fmt(p610x4)
+  ret
 
 
 #ifdef _MULX_
@@ -429,8 +519,8 @@ oqs_kem_sike_fpsub610_asm:
 //*****************************************************************************
 //  610-bit multiplication using Karatsuba (one level), schoolbook (two levels)
 //***************************************************************************** 
-.global oqs_kem_sike_mul610_asm
-oqs_kem_sike_mul610_asm:    
+.global fmt(mul610_asm)
+fmt(mul610_asm):    
     push   r12
     push   r13 
     push   r14 
@@ -624,8 +714,8 @@ oqs_kem_sike_mul610_asm:
 //  Operation: c [reg_p3] = a [reg_p1] * b [reg_p2]
 //  NOTE: a=c or b=c are not allowed
 //***********************************************************************
-.global oqs_kem_sike_mul610_asm
-oqs_kem_sike_mul610_asm:
+.global fmt(mul610_asm)
+fmt(mul610_asm):
 
   ret
 
@@ -760,15 +850,15 @@ oqs_kem_sike_mul610_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //************************************************************************************** 
-.global oqs_kem_sike_rdc610_asm
-oqs_kem_sike_rdc610_asm:
+.global fmt(rdc610_asm)
+fmt(rdc610_asm):
     push   r12
     push   r13 
     push   r14 
     push   r15  
 
     // a[0-1] x p610p1_nz --> result: r8:r15 
-    MUL128x384_SCHOOL [reg_p1], [rip+p610p1+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx     
+    MUL128x384_SCHOOL [reg_p1], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx     
 
     xor    rcx, rcx
     add    r8, [reg_p1+32]  
@@ -812,7 +902,7 @@ oqs_kem_sike_rdc610_asm:
     mov    [reg_p1+152], r14
 
     // a[2-3] x p610p1_nz --> result: r8:r15
-    MUL128x384_SCHOOL [reg_p1+16], [rip+p610p1+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx 
+    MUL128x384_SCHOOL [reg_p1+16], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx 
 
     xor    rcx, rcx
     add    r8, [reg_p1+48]  
@@ -850,7 +940,7 @@ oqs_kem_sike_rdc610_asm:
     mov    [reg_p1+152], r12 
 
     // a[4-5] x p610p1_nz --> result: r8:r15
-    MUL128x384_SCHOOL [reg_p1+32], [rip+p610p1+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx 
+    MUL128x384_SCHOOL [reg_p1+32], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx 
 
     xor    rcx, rcx
     add    r8, [reg_p1+64]  
@@ -882,7 +972,7 @@ oqs_kem_sike_rdc610_asm:
     mov    [reg_p1+152], r10 
 
     // a[6-7] x p610p1_nz --> result: r8:r15
-    MUL128x384_SCHOOL [reg_p1+48], [rip+p610p1+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx 
+    MUL128x384_SCHOOL [reg_p1+48], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx 
 
     xor    rcx, rcx
     add    r8, [reg_p1+80]  
@@ -908,7 +998,7 @@ oqs_kem_sike_rdc610_asm:
     mov    [reg_p1+152], r8
 
     // a[8-9] x p610p1_nz --> result: r8:r15
-    MUL128x384_SCHOOL [reg_p1+64], [rip+p610p1+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx
+    MUL128x384_SCHOOL [reg_p1+64], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx
     
     // Final result C2:C9
     add    r8, [reg_p1+96]  
@@ -942,8 +1032,8 @@ oqs_kem_sike_rdc610_asm:
 //  Operation: c [reg_p2] = a [reg_p1]
 //  NOTE: a=c is not allowed
 //*********************************************************************** 
-.global oqs_kem_sike_rdc610_asm
-oqs_kem_sike_rdc610_asm:
+.global fmt(rdc610_asm)
+fmt(rdc610_asm):
 
   ret
 
@@ -956,8 +1046,8 @@ oqs_kem_sike_rdc610_asm:
 //  610-bit multiprecision addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_add610_asm
-oqs_kem_sike_mp_add610_asm:  
+.global fmt(mp_add610_asm)
+fmt(mp_add610_asm):  
   mov    r8, [reg_p1]
   mov    r9, [reg_p1+8]
   mov    r10, [reg_p1+16]
@@ -996,8 +1086,8 @@ oqs_kem_sike_mp_add610_asm:
 //  2x610-bit multiprecision subtraction/addition
 //  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p610*2^640
 //*********************************************************************** 
-.global oqs_kem_sike_mp_subadd610x2_asm
-oqs_kem_sike_mp_subadd610x2_asm:
+.global fmt(mp_subadd610x2_asm)
+fmt(mp_subadd610x2_asm):
   push   r12
   push   r13 
   push   r14 
@@ -1065,13 +1155,13 @@ oqs_kem_sike_mp_subadd610x2_asm:
   sbb    rax, 0
   
   // Add p610 anded with the mask in rax 
-  mov    r12, [rip+p610]
-  mov    r13, [rip+p610+32]
-  mov    r14, [rip+p610+40]
-  mov    r15, [rip+p610+48]
-  mov    rdi, [rip+p610+56]
-  mov    rsi, [rip+p610+64]
-  mov    rbx, [rip+p610+72]
+  mov    r12, [rip+fmt(p610)]
+  mov    r13, [rip+fmt(p610)+32]
+  mov    r14, [rip+fmt(p610)+40]
+  mov    r15, [rip+fmt(p610)+48]
+  mov    rdi, [rip+fmt(p610)+56]
+  mov    rsi, [rip+fmt(p610)+64]
+  mov    rbx, [rip+fmt(p610)+72]
   and    r12, rax
   and    r13, rax
   and    r14, rax
@@ -1115,15 +1205,13 @@ oqs_kem_sike_mp_subadd610x2_asm:
 //  Double 2x610-bit multiprecision subtraction
 //  Operation: c [reg_p3] = c [reg_p3] - a [reg_p1] - b [reg_p2]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_dblsub610x2_asm
-oqs_kem_sike_mp_dblsub610x2_asm:
+.global fmt(mp_dblsub610x2_asm)
+fmt(mp_dblsub610x2_asm):
   push   r12
   push   r13
   push   r14
   push   r15
-  push   rbx
   
-  xor    rax, rax
   mov    r8, [reg_p3]
   mov    r9, [reg_p3+8]
   mov    r10, [reg_p3+16]
@@ -1132,8 +1220,6 @@ oqs_kem_sike_mp_dblsub610x2_asm:
   mov    r13, [reg_p3+40]
   mov    r14, [reg_p3+48]
   mov    r15, [reg_p3+56]
-  mov    rbx, [reg_p3+64]
-  mov    rcx, [reg_p3+72]
   sub    r8, [reg_p1]
   sbb    r9, [reg_p1+8] 
   sbb    r10, [reg_p1+16] 
@@ -1142,9 +1228,7 @@ oqs_kem_sike_mp_dblsub610x2_asm:
   sbb    r13, [reg_p1+40] 
   sbb    r14, [reg_p1+48] 
   sbb    r15, [reg_p1+56]
-  sbb    rbx, [reg_p1+64]
-  sbb    rcx, [reg_p1+72]
-  adc    rax, 0
+  setc   al
   sub    r8, [reg_p2]
   sbb    r9, [reg_p2+8] 
   sbb    r10, [reg_p2+16] 
@@ -1153,9 +1237,7 @@ oqs_kem_sike_mp_dblsub610x2_asm:
   sbb    r13, [reg_p2+40] 
   sbb    r14, [reg_p2+48] 
   sbb    r15, [reg_p2+56]
-  sbb    rbx, [reg_p2+64]
-  sbb    rcx, [reg_p2+72]
-  adc    rax, 0  
+  setc   cl
   mov    [reg_p3], r8
   mov    [reg_p3+8], r9
   mov    [reg_p3+16], r10
@@ -1164,52 +1246,63 @@ oqs_kem_sike_mp_dblsub610x2_asm:
   mov    [reg_p3+40], r13
   mov    [reg_p3+48], r14
   mov    [reg_p3+56], r15
-  mov    [reg_p3+64], rbx
-  mov    [reg_p3+72], rcx
     
-  mov    r8, [reg_p3+80]
-  mov    r9, [reg_p3+88]
-  mov    r10, [reg_p3+96]
-  mov    r11, [reg_p3+104]
-  mov    r12, [reg_p3+112]
-  mov    r13, [reg_p3+120]
-  mov    r14, [reg_p3+128]
-  mov    r15, [reg_p3+136]
-  mov    rbx, [reg_p3+144]
-  mov    rcx, [reg_p3+152]
-  sub    r8, rax 
-  sbb    r8, [reg_p1+80] 
-  sbb    r9, [reg_p1+88] 
-  sbb    r10, [reg_p1+96] 
-  sbb    r11, [reg_p1+104] 
-  sbb    r12, [reg_p1+112] 
-  sbb    r13, [reg_p1+120] 
-  sbb    r14, [reg_p1+128] 
-  sbb    r15, [reg_p1+136]
-  sbb    rbx, [reg_p1+144]
-  sbb    rcx, [reg_p1+152]
-  sub    r8, [reg_p2+80] 
-  sbb    r9, [reg_p2+88] 
-  sbb    r10, [reg_p2+96] 
-  sbb    r11, [reg_p2+104] 
-  sbb    r12, [reg_p2+112] 
-  sbb    r13, [reg_p2+120] 
-  sbb    r14, [reg_p2+128] 
-  sbb    r15, [reg_p2+136]
-  sbb    rbx, [reg_p2+144]
-  sbb    rcx, [reg_p2+152]
-  mov    [reg_p3+80], r8
-  mov    [reg_p3+88], r9
-  mov    [reg_p3+96], r10
-  mov    [reg_p3+104], r11
-  mov    [reg_p3+112], r12
-  mov    [reg_p3+120], r13
-  mov    [reg_p3+128], r14
-  mov    [reg_p3+136], r15
-  mov    [reg_p3+144], rbx
-  mov    [reg_p3+152], rcx
+  mov    r8, [reg_p3+64]
+  mov    r9, [reg_p3+72]
+  mov    r10, [reg_p3+80]
+  mov    r11, [reg_p3+88]
+  mov    r12, [reg_p3+96]
+  mov    r13, [reg_p3+104]
+  mov    r14, [reg_p3+112]
+  mov    r15, [reg_p3+120]
+  bt     rax, 0 
+  sbb    r8, [reg_p1+64] 
+  sbb    r9, [reg_p1+72] 
+  sbb    r10, [reg_p1+80] 
+  sbb    r11, [reg_p1+88] 
+  sbb    r12, [reg_p1+96] 
+  sbb    r13, [reg_p1+104] 
+  sbb    r14, [reg_p1+112] 
+  sbb    r15, [reg_p1+120]
+  setc   al 
+  bt     rcx, 0  
+  sbb    r8, [reg_p2+64] 
+  sbb    r9, [reg_p2+72] 
+  sbb    r10, [reg_p2+80] 
+  sbb    r11, [reg_p2+88] 
+  sbb    r12, [reg_p2+96] 
+  sbb    r13, [reg_p2+104] 
+  sbb    r14, [reg_p2+112] 
+  sbb    r15, [reg_p2+120]
+  setc   cl 
+  mov    [reg_p3+64], r8
+  mov    [reg_p3+72], r9
+  mov    [reg_p3+80], r10
+  mov    [reg_p3+88], r11
+  mov    [reg_p3+96], r12
+  mov    [reg_p3+104], r13
+  mov    [reg_p3+112], r14
+  mov    [reg_p3+120], r15
   
-  pop    rbx
+  mov    r8, [reg_p3+128]
+  mov    r9, [reg_p3+136]
+  mov    r10, [reg_p3+144]
+  mov    r11, [reg_p3+152]
+  bt     rax, 0 
+  sbb    r8, [reg_p1+128] 
+  sbb    r9, [reg_p1+136] 
+  sbb    r10, [reg_p1+144] 
+  sbb    r11, [reg_p1+152]
+  bt     rcx, 0 
+  sbb    r8, [reg_p2+128] 
+  sbb    r9, [reg_p2+136] 
+  sbb    r10, [reg_p2+144] 
+  sbb    r11, [reg_p2+152]
+  mov    [reg_p3+128], r8
+  mov    [reg_p3+136], r9
+  mov    [reg_p3+144], r10
+  mov    [reg_p3+152], r11
+  
   pop    r15
   pop    r14
   pop    r13
