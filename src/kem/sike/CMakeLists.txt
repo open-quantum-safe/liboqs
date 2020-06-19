@@ -46,7 +46,7 @@ if(ARCH STREQUAL "x86_64")
         endif()
     endif()
 elseif(ARCH STREQUAL "arm64")
-    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
         set(SRCS ${SRCS} external/P434/ARM64/fp_arm64_asm.S
                          external/P503/ARM64/fp_arm64_asm.S
                          external/P610/ARM64/fp_arm64_asm.S
@@ -62,7 +62,7 @@ elseif(ARCH STREQUAL "x86_64")
     if(OQS_USE_BMI2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
         target_compile_definitions(sike PRIVATE _MULX_ _ADX_)
     endif()
-    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
         target_compile_definitions(sike PRIVATE USE_SIKEP503_ASM
                                                 USE_SIKEP751_ASM)
         if(OQS_USE_BMI2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
@@ -74,7 +74,7 @@ elseif(ARCH STREQUAL "arm")
     target_compile_definitions(sike PRIVATE _GENERIC_ _ARM_)
 elseif(ARCH STREQUAL "arm64")
     target_compile_definitions(sike PRIVATE _ARM64_)
-    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
+    if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
         target_compile_definitions(sike PRIVATE USE_SIKEP434_ASM
                                                 USE_SIKEP503_ASM
                                                 USE_SIKEP610_ASM
