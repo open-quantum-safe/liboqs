@@ -21,9 +21,6 @@
 #define OS_TARGET OS_WIN
 #elif defined(__APPLE__) // darwin
 #define OS_TARGET OS_DARWIN
-#ifndef _GENERIC_ // default to generic implementation on darwin for now
-#define _GENERIC_
-#endif
 #else
 #define OS_TARGET OS_NIX // default to Linux
 #endif

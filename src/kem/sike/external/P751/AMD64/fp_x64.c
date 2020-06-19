@@ -16,7 +16,7 @@ extern const uint64_t p751x4[NWORDS_FIELD];
 
 __inline void mp_sub751_p2(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 2*p, c = a-b+2p.    
-#if (OS_TARGET == OS_WIN  || OS_TARGET == OS_DARWIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && NBITS_FIELD == 751)
+#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && NBITS_FIELD == 751)
     unsigned int i, borrow = 0;
 
     for (i = 0; i < NWORDS_FIELD; i++) {
@@ -28,7 +28,7 @@ __inline void mp_sub751_p2(const digit_t* a, const digit_t* b, digit_t* c)
         ADDC(borrow, c[i], ((digit_t*)p751x2)[i], borrow, c[i]); 
     }
     
-#elif (OS_TARGET == OS_NIX)                 
+#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
     
     mp_sub751_p2_asm(a, b, c);    
 
@@ -38,7 +38,7 @@ __inline void mp_sub751_p2(const digit_t* a, const digit_t* b, digit_t* c)
 
 __inline void mp_sub751_p4(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 4*p, c = a-b+4p.    
-#if (OS_TARGET == OS_WIN  || OS_TARGET == OS_DARWIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && NBITS_FIELD == 751)
+#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && NBITS_FIELD == 751)
     unsigned int i, borrow = 0;
 
     for (i = 0; i < NWORDS_FIELD; i++) {
@@ -50,7 +50,7 @@ __inline void mp_sub751_p4(const digit_t* a, const digit_t* b, digit_t* c)
         ADDC(borrow, c[i], ((digit_t*)p751x4)[i], borrow, c[i]); 
     }
     
-#elif (OS_TARGET == OS_NIX)                 
+#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
     
     mp_sub751_p4_asm(a, b, c);    
 
@@ -61,7 +61,7 @@ __inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 	// Inputs: a, b in [0, 2*p751-1]
 	// Output: c in [0, 2*p751-1]
 
-#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
+#if (OS_TARGET == OS_WIN)
 	unsigned int i, carry = 0;
 	digit_t mask;
 
@@ -80,7 +80,7 @@ __inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 		ADDC(carry, c[i], ((digit_t *) p751x2)[i] & mask, carry, c[i]);
 	}
 
-#elif (OS_TARGET == OS_NIX)
+#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
 
 	oqs_kem_sike_fpadd751_asm(a, b, c);
 
@@ -91,7 +91,7 @@ __inline void fpsub751(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 	// Inputs: a, b in [0, 2*p751-1]
 	// Output: c in [0, 2*p751-1]
 
-#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
+#if (OS_TARGET == OS_WIN)
 	unsigned int i, borrow = 0;
 	digit_t mask;
 
@@ -105,7 +105,7 @@ __inline void fpsub751(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 		ADDC(borrow, c[i], ((digit_t *) p751x2)[i] & mask, borrow, c[i]);
 	}
 
-#elif (OS_TARGET == OS_NIX)
+#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
 
 	oqs_kem_sike_fpsub751_asm(a, b, c);
 
@@ -154,7 +154,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 
 	UNREFERENCED_PARAMETER(nwords);
 
-#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
+#if (OS_TARGET == OS_WIN)
 	digit_t t = 0;
 	uint128_t uv = {0};
 	unsigned int carry = 0;
@@ -558,7 +558,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 	c[22] = uv[0];
 	c[23] = uv[1];
 
-#elif (OS_TARGET == OS_NIX)
+#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
 
 	oqs_kem_sike_mul751_asm(a, b, c);
 
@@ -570,7 +570,7 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	// If ma < 2^768*p751, the output mc is in the range [0, 2*p751-1].
 	// ma is assumed to be in Montgomery representation.
 
-#if (OS_TARGET == OS_WIN || OS_TARGET == OS_DARWIN)
+#if (OS_TARGET == OS_WIN)
 	unsigned int carry;
 	digit_t t = 0;
 	uint128_t uv = {0};
@@ -884,7 +884,7 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	ADDC(carry, uv[1], 0, carry, uv[1]);
 	ADDC(0, uv[1], ma[23], carry, mc[11]);
 
-#elif (OS_TARGET == OS_NIX)
+#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
 
 	oqs_kem_sike_rdc751_asm(ma, mc);
 
