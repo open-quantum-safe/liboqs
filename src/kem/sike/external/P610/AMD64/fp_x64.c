@@ -28,7 +28,7 @@ __inline void mp_sub610_p2(const digit_t* a, const digit_t* b, digit_t* c)
         ADDC(borrow, c[i], ((digit_t*)p610x2)[i], borrow, c[i]); 
     }
     
-#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
+#elif (OS_TARGET == OS_NIX)
     
     oqs_kem_sike_mp_sub610_p2_asm(a, b, c);    
 
@@ -50,7 +50,7 @@ __inline void mp_sub610_p4(const digit_t* a, const digit_t* b, digit_t* c)
         ADDC(borrow, c[i], ((digit_t*)p610x4)[i], borrow, c[i]); 
     }
     
-#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
+#elif (OS_TARGET == OS_NIX)
     
     oqs_kem_sike_mp_sub610_p4_asm(a, b, c);    
 
@@ -80,7 +80,7 @@ __inline void fpadd610(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 		ADDC(carry, c[i], ((digit_t *) p610x2)[i] & mask, carry, c[i]);
 	}
 
-#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
+#elif (OS_TARGET == OS_NIX)
 
 	oqs_kem_sike_fpadd610_asm(a, b, c);
 
@@ -105,7 +105,7 @@ __inline void fpsub610(const digit_t *a, const digit_t *b, digit_t *c) { // Modu
 		ADDC(borrow, c[i], ((digit_t *) p610x2)[i] & mask, borrow, c[i]);
 	}
 
-#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
+#elif (OS_TARGET == OS_NIX)
 
 	oqs_kem_sike_fpsub610_asm(a, b, c);
 
@@ -450,7 +450,7 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 	c[18] = uv[0];
 	c[19] = uv[1];
 
-#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
+#elif (OS_TARGET == OS_NIX)
 
 	oqs_kem_sike_mul610_asm(a, b, c);
 
@@ -703,7 +703,7 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	ADDC(carry, uv[1], 0, carry, uv[1]);
 	ADDC(0, uv[1], ma[19], carry, mc[9]);
 
-#elif (OS_TARGET == OS_NIX || OS_TARGET == OS_DARWIN)
+#elif (OS_TARGET == OS_NIX)
 
 	oqs_kem_sike_rdc610_asm(ma, mc);
 

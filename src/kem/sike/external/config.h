@@ -15,13 +15,10 @@
 
 #define OS_WIN 1
 #define OS_NIX 2
-#define OS_DARWIN 3
 
 #if defined(_WIN32) // Microsoft Windows OS
 #define OS_TARGET OS_WIN
-#elif defined(__APPLE__) // darwin
-#define OS_TARGET OS_DARWIN
-#else
+#else // included Darwin
 #define OS_TARGET OS_NIX // default to Linux
 #endif
 
