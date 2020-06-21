@@ -160,6 +160,7 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 #else
 #include "generic/fp_generic.c"
 #endif
+
 #include "../fpx.c"
 #include "../ec_isogeny.c"
 #include "../sidh.c"
