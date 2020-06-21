@@ -20,6 +20,7 @@
 #define p503p1 oqs_kem_sike_p503p1
 #define p503x2 oqs_kem_sike_p503x2
 #define p503x4 oqs_kem_sike_p503x4
+#define p503p1x64 oqs_kem_sike_p503p1x64
 #define fpadd503 oqs_kem_sike_fpadd503
 #define fpsub503 oqs_kem_sike_fpsub503
 #define fpneg503 oqs_kem_sike_fpneg503
