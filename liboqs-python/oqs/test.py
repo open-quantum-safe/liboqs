@@ -24,7 +24,7 @@ class Test:
        self.private = " "
        self.public = " "
 
-global t = Test()
+global t 
 
 # This function returns an object of Test 
 def gen_dili2_private_key(dil2):
@@ -34,8 +34,6 @@ def gen_dili2_private_key(dil2):
     t.private = private
     t.public = public
 
-
-gen_dili2_private_key("DILITHIUM_2")
-print(t.private)
+t = Test()
 
 # Driver code to test above method 
