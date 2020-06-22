@@ -21,14 +21,17 @@ import oqs
 # values from a method using class 
 class Test: 
     def __init__(self): 
-        self.str = "geeksforgeeks"
-        self.x = 20  
+        self.private
+        self.public
   
 # This function returns an object of Test 
-def fun(): 
-    return Test() 
+def gen_dili2_private_key(dil2):
+    alg = oqs.Signature(dil2)
+    self.public = alg.generate_keypair()
+    self.private = alg.export_secret_key()
+    
       
 # Driver code to test above method 
-t = fun()  
-print(t.str) 
-print(t.x) 
+t = Test()  
+print(t.private) 
+print(t.public) 
