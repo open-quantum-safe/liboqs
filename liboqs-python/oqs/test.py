@@ -21,11 +21,10 @@ import oqs
 # values from a method using class 
 class Test: 
     def __init__(self): 
-        self.private
-        self.public
+        self.private =" "
+        self.public = " "
   
 # This function returns an object of Test 
-dil2 = "DILITHIUM_2"
 def gen_dili2_private_key(dil2):
     alg = oqs.Signature(dil2)
     self.public = alg.generate_keypair()
@@ -33,6 +32,6 @@ def gen_dili2_private_key(dil2):
     
       
 # Driver code to test above method 
-t = Test()  
+t = gen_dili2_private_key("DILITHIUM_2")  
 print(t.private) 
 print(t.public) 
