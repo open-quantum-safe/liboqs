@@ -29,12 +29,9 @@ def gen_dili2_private_key(dil2):
     alg = oqs.Signature(dil2)
     public = alg.generate_keypair()
     private = alg.export_secret_key()
-    t = Test()
-    t.public = public
-    t.private = private
-    print (t.private)
-    print (t.public)
-
+    Test.private = private
+    Test.public = public
+t = Test()
+print(t.private)
 
 # Driver code to test above method 
-gen_dili2_private_key("DILITHIUM_2")
