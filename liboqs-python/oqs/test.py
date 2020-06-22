@@ -32,6 +32,7 @@ def gen_dili2_private_key(dil2):
     Test.private = private
     Test.public = public
 t = Test()
+gen_dili2_private_key("DILITHIUM_2")
 print(t.private)
 
 # Driver code to test above method 
