@@ -5,3 +5,6 @@ import test
 
 print ("TEST PRINTING OQS KEYS\n")
 print (test.gen_dili2_private_key("DILITHIUM_2"))
+
+print ("TESTING PUBLIC KEYS")
+print (test.gen_dili2_public_key)
