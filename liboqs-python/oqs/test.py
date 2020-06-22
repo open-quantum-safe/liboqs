@@ -31,7 +31,7 @@ class Test:
         alg = oqs.Signature("DILITHIUM_2")
         public = alg.generate_keypair()
         private = alg.export_secret_key()
-        t.private = private
-        t.public = public
+        self.private = private
+        self.public = public
 
 # Driver code to test above method 
