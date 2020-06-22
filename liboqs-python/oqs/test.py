@@ -32,8 +32,9 @@ def gen_dili2_private_key(dil2):
     t = Test()
     t.public = public
     t.private = private
+    print (t.private)
+    print (t.public)
+
 
 # Driver code to test above method 
 gen_dili2_private_key("DILITHIUM_2")
-print(t.private) 
-print(t.public) 
