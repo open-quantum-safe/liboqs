@@ -29,7 +29,6 @@ localCheckout: &localCheckout
         name: Run tests
         command: ../scripts/git_no_checkin_in_last_day.sh || ninja run_tests
         working_directory: build
-        no_output_timeout: 30m
     - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
         path: build/test-results
     - store_artifacts:
@@ -56,7 +55,6 @@ localCheckout: &localCheckout
           ninja &&
           ninja run_tests)
           "
-        no_output_timeout: 30m
     - store_test_results:
         path: build/test-results
     - store_artifacts:
@@ -87,7 +85,6 @@ localCheckout: &localCheckout
             command: PATH=C:\Users\circleci\project\ninja;%PATH% & ninja run_tests
             working_directory: build
             shell: cmd.exe
-            no_output_timeout: 30m
         - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
             path: build/test-results
         - store_artifacts:
@@ -194,7 +191,6 @@ jobs:
             name: Run tests
             command: ../scripts/git_no_checkin_in_last_day.sh || ninja run_tests
             working_directory: build
-            no_output_timeout: 30m
         - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
             path: build/test-results
         - store_artifacts:
