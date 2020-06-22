@@ -25,6 +25,7 @@ class Test:
         self.public
   
 # This function returns an object of Test 
+dil2 = "DILITHIUM_2"
 def gen_dili2_private_key(dil2):
     alg = oqs.Signature(dil2)
     self.public = alg.generate_keypair()
