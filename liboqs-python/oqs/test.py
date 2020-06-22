@@ -21,8 +21,8 @@ import oqs
 # values from a method using class 
 class Test: 
     def __init__(self): 
-        self.private 
-        self.public   
+        self.str = "geeksforgeeks"
+        self.x = 20  
   
 # This function returns an object of Test 
 def fun(): 
