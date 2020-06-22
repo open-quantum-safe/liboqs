@@ -24,14 +24,17 @@ class Test:
        self.private = " "
        self.public = " "
 
+global t = Test()
+
 # This function returns an object of Test 
 def gen_dili2_private_key(dil2):
     alg = oqs.Signature(dil2)
     public = alg.generate_keypair()
     private = alg.export_secret_key()
-    Test.private = private
-    Test.public = public
-t = Test()
+    t.private = private
+    t.public = public
+
+
 gen_dili2_private_key("DILITHIUM_2")
 print(t.private)
 
