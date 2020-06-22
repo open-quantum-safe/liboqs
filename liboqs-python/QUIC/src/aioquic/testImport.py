@@ -6,5 +6,7 @@ import test
 print ("TEST PRINTING OQS KEYS\n")
 test.gen_dili2_private_key("DILITHIUM_2")
 
-print (test.Test(private))
-print ("")
+t = test.Test()
+
+print (t.private)
+print (t.public)
