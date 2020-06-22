@@ -27,8 +27,8 @@ class Test:
     global t 
 
 # This function returns an object of Test 
-    def gen_dili2_private_key(dil2):
-        alg = oqs.Signature(dil2)
+    def gen_dili2_private_key():
+        alg = oqs.Signature("DILITHIUM_2")
         public = alg.generate_keypair()
         private = alg.export_secret_key()
         t.private = private
