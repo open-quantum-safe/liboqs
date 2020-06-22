@@ -24,16 +24,14 @@ class Test:
        self.private = " "
        self.public = " "
 
-global t 
+    global t 
 
 # This function returns an object of Test 
-def gen_dili2_private_key(dil2):
-    alg = oqs.Signature(dil2)
-    public = alg.generate_keypair()
-    private = alg.export_secret_key()
-    t.private = private
-    t.public = public
-
-t = Test()
+    def gen_dili2_private_key(dil2):
+        alg = oqs.Signature(dil2)
+        public = alg.generate_keypair()
+        private = alg.export_secret_key()
+        t.private = private
+        t.public = public
 
 # Driver code to test above method 
