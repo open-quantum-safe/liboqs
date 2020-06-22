@@ -18,7 +18,6 @@ extern const uint64_t p434x4[NWORDS_FIELD];
 __inline void mp_sub434_p2(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 2*p, c = a-b+2p.
 #if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && NBITS_FIELD == 610)
-  // FIXMEOQS: probably need to check that condition
   unsigned int i, borrow = 0;
 
   for (i = 0; i < NWORDS_FIELD; i++) {
@@ -41,7 +40,6 @@ __inline void mp_sub434_p2(const digit_t* a, const digit_t* b, digit_t* c)
 __inline void mp_sub434_p4(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 4*p, c = a-b+4p.
 #if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && NBITS_FIELD == 610)
-  // FIXMEOQS: probably need to check that condition
   unsigned int i, borrow = 0;
 
   for (i = 0; i < NWORDS_FIELD; i++) {
