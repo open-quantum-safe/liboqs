@@ -38,7 +38,7 @@ int OQS_KEM_sike_p751_compressed_decaps(unsigned char *ss, const unsigned char *
 // private keys are encoded in 414 octets in little endian format.
 // Public keys pk consist of 3 values of length OBOB_BITS, one element in GF(p751^2) and 2 bytes. In the SIKE API, pk is encoded in 335 octets.
 // Ciphertexts ct consist of the concatenation of 4 values of length OALICE_BITS, one element in GF(p751^2), 2 bytes and a 32-byte value. In the SIKE API,
-// ct is encoded in 3*47 + 188 + 2 + 32 = 410 octets.
+// ct is encoded in 4*47 + 188 + 2 + 32 = 410 octets.
 // Shared keys ss consist of a value of 32 octets.
 
 /*********************** Ephemeral key exchange API ***********************/

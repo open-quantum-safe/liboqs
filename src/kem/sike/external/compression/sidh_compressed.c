@@ -1370,8 +1370,8 @@ int EphemeralSecretAgreement_A(const unsigned char* PrivateKeyA, const unsigned 
 }
 
 
-static int validate_ciphertext(const unsigned char* ephemeralsk_, const unsigned char* CompressedPKB, const unsigned char* xKA, const unsigned char* tphiBKA_t)
-{
+static int8_t validate_ciphertext(const unsigned char* ephemeralsk_, const unsigned char* CompressedPKB, const unsigned char* xKA, const unsigned char* tphiBKA_t)
+{ // If ct validation passes returns 0, otherwise returns -1.
     point_proj_t phis[3] = {0}, R, S, pts[MAX_INT_POINTS_BOB];
     f2elm_t XPB, XQB, XRB, coeff[3], A24plus = {0}, A24minus = {0}, A = {0}, comp1 = {0}, comp2 = {0}, one = {0};
     unsigned int i, row, m, index = 0, pts_index[MAX_INT_POINTS_BOB], npts = 0, ii = 0;
@@ -1433,8 +1433,5 @@ static int validate_ciphertext(const unsigned char* ephemeralsk_, const unsigned
         
     fp2mul_mont(R->X, S->Z, comp1);
     fp2mul_mont(R->Z, S->X, comp2);             
-    if (cmp_f2elm(comp1, comp2)) {
-        return 0;    
-    }
-    return 1;
+    return (cmp_f2elm(comp1, comp2));
 }

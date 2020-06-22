@@ -9,6 +9,7 @@
 #include "P610_compressed_api.h"
 #define COMPRESS
 #include "P610_internal.h"
+#include "../internal.h"
 
 // defines moved from P610_compressed_api.h
 #define CRYPTO_SECRETKEYBYTES 491 // MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES + FP2_ENCODED_BYTES bytes

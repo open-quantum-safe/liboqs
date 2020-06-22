@@ -8,6 +8,7 @@
 #include "../../oqs_namespace_sike.h"
 #include "P503_api.h"
 #include "P503_internal.h"
+#include "../internal.h"
 
 // defines moved from P503_api.h
 #define CRYPTO_SECRETKEYBYTES 434 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes

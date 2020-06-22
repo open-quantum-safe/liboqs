@@ -8,6 +8,7 @@
 #include "../../oqs_namespace_sike.h"
 #include "P610_api.h"
 #include "P610_internal.h"
+#include "../internal.h"
 
 // defines moved from P610_api.h
 #define CRYPTO_SECRETKEYBYTES 524 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes

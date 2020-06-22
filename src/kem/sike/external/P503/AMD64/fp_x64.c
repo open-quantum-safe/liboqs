@@ -5,6 +5,7 @@
 *********************************************************************************************/
 
 #include "../P503_internal.h"
+#include "../../internal.h"
 
 /* OQS note: this file is #include'd with the defs of these consts; removed to avoid re-defs
 // Global constants

@@ -8,6 +8,7 @@
 #include "../../oqs_namespace_sike.h"
 #include "P434_api.h"
 #include "P434_internal.h"
+#include "../internal.h"
 
 // defines moved from P434_api.h
 #define CRYPTO_SECRETKEYBYTES 374 // MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes

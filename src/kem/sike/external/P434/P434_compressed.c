@@ -9,6 +9,7 @@
 #include "P434_compressed_api.h"
 #define COMPRESS
 #include "P434_internal.h"
+#include "../internal.h"
 
 // defines moved from P434_compressed_api.h
 #define CRYPTO_SECRETKEYBYTES     350      // MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES + FP2_ENCODED_BYTES bytes

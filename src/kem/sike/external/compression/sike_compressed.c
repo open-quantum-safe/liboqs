@@ -82,13 +82,12 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
     OQS_SHA3_shake256(ephemeralsk_, SECRETKEY_B_BYTES, temp, MSG_BYTES + CRYPTO_PUBLICKEYBYTES);
     FormatPrivKey_B(ephemeralsk_);
     
-    // Generate shared secret ss <- H(m||ct) or output ss <- H(s||ct)
+    // Generate shared secret ss <- H(m||ct), or output ss <- H(s||ct) in case of ct verification failure
     // No need to recompress, just check if x(phi(P) + t*phi(Q)) == x((a0 + t*a1)*R1 + (b0 + t*b1)*R2)    
-    if (validate_ciphertext(ephemeralsk_, ct, &sk[MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES], tphiBKA_t) == 0) {
-        memcpy(temp, sk, MSG_BYTES);
-    }
-    
-    memcpy(&temp[MSG_BYTES], ct, CRYPTO_CIPHERTEXTBYTES);    
+    int8_t selector = validate_ciphertext(ephemeralsk_, ct, &sk[MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES], tphiBKA_t);
+    // If ct validation passes (selector = 0) then do ss = H(m||ct), otherwise (selector = -1) load s to do ss = H(s||ct)
+    ct_cmov(temp, sk, MSG_BYTES, selector);
+    memcpy(&temp[MSG_BYTES], ct, CRYPTO_CIPHERTEXTBYTES);
     OQS_SHA3_shake256(ss, CRYPTO_BYTES, temp, CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
 
     return 0;

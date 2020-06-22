@@ -17,6 +17,25 @@ static void clear_words(void* mem, digit_t nwords)
     }
 }
 
+static int8_t ct_compare(const uint8_t *a, const uint8_t *b, unsigned int len)
+{ // Compare two byte arrays in constant time.
+  // Returns 0 if the byte arrays are equal, -1 otherwise.
+  uint8_t r = 0;
+
+  for (unsigned int i = 0; i < len; i++)
+    r |= a[i] ^ b[i];
+
+  return (-(int8_t)r) >> (8*sizeof(uint8_t)-1);
+}
+
+
+static void ct_cmov(uint8_t *r, const uint8_t *a, unsigned int len, int8_t selector)
+{ // Conditional move in constant time.
+  // If selector = -1 then load r with a, else if selector = 0 then keep r.
+
+  for (unsigned int i = 0; i < len; i++)
+    r[i] ^= selector & (a[i] ^ r[i]);
+}
 
 __inline static void encode_to_bytes(const digit_t* x, unsigned char* enc, int nbytes)
 { // Encoding digits to bytes according to endianness
@@ -987,21 +1006,19 @@ static __inline void power2_setup(digit_t* x, int mark, const unsigned int nword
 }
 
 
-static unsigned int cmp_f2elm(const f2elm_t x, const f2elm_t y)
-{ // Is x != y? return 1 (TRUE) if condition is true, 0 (FALSE) otherwise.
-  // SECURITY NOTE: This function does not run in constant-time.
+static int8_t cmp_f2elm(const f2elm_t x, const f2elm_t y)
+{ // Comparison of two GF(p^2) elements in constant time.
+  // Is x != y? return -1 if condition is true, 0 otherwise.
     f2elm_t a, b;
+    uint8_t r = 0;
     
     fp2copy(x, a);
     fp2copy(y, b);
     fp2correction(a);
-    fp2correction(b);    
-
-    for (int i = NWORDS_FIELD-1; i >= 0; i--) {
-        if (a[0][i] != b[0][i] || a[1][i] != b[1][i] )
-            return 1;
-    }
-    return 0;
+    fp2correction(b);
+    for (int i = NWORDS_FIELD-1; i >= 0; i--)
+      r |= (a[0][i] ^ b[0][i]) | (a[1][i] ^ b[1][i]);
+    return (-(int8_t)r) >> (8*sizeof(uint8_t)-1);
 }
 
 
