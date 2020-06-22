@@ -9,6 +9,9 @@ def gen_dili2_private_key(dil2):
     
     return pKey
 
+gen_dili2_private_key("DILITHIUM_2")
+print (public)
+
 def gen_dili2_public_key(public)
 
     return public
