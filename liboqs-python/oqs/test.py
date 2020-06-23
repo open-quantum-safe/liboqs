@@ -13,5 +13,5 @@ def pqPrivate():
     private = alg.export_secret_key()
     return private
 
-print (pqPublic())
-print (pqPrivate())
+##print (pqPublic())
+##print (pqPrivate())
