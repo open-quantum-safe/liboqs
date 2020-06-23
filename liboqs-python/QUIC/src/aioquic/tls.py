@@ -44,8 +44,9 @@ from .buffer import Buffer
 ##MOD 
 import oqs
 sys.path.insert(1,'/home/pi/PQQUIC/modLiboqs/liboqs/liboqs-python/oqs')
-import test
+import Dilithium2Test
 
+dil2Pub=Dilithium2Test.pqPublic()
 
 ##from oqs import test
 
@@ -194,7 +195,7 @@ def hkdf_extract(
 
 def load_pem_private_key(
     data: bytes, password: Optional[bytes]
-) -> Union[dsa.DSAPrivateKey, ec.EllipticCurvePrivateKey, rsa.RSAPrivateKey,]:
+) -> Union[dsa.DSAPrivateKey, ec.EllipticCurvePrivateKey, rsa.RSAPrivateKey, Dilithium2Test.pqPrivate]:
     print("In TLS: class State load pem private key")
     """
     Load a PEM-encoded private key.
@@ -1109,7 +1110,7 @@ SIGNATURE_ALGORITHMS: Dict = {
     SignatureAlgorithm.RSA_PSS_RSAE_SHA384: (padding.PSS, hashes.SHA384),
     SignatureAlgorithm.RSA_PSS_RSAE_SHA512: (padding.PSS, hashes.SHA512),
     ##Adding OQS
-    SignatureAlgorithm.DILITHIUM_2: (None,hashes.SHA256),
+    SignatureAlgorithm.DILITHIUM_2: (None,hashes.SHA512),
 }
 
 GROUP_TO_CURVE: Dict = {
@@ -1261,7 +1262,7 @@ class Context:
         self.certificate: Optional[x509.Certificate] = None
         self.certificate_chain: List[x509.Certificate] = []
         self.certificate_private_key: Optional[
-            Union[dsa.DSAPrivateKey, ec.EllipticCurvePrivateKey, rsa.RSAPrivateKey]
+            Union[dsa.DSAPrivateKey, ec.EllipticCurvePrivateKey, rsa.RSAPrivateKey, Dilithium2Test.pqPrivate]
         ] = None
         self.handshake_extensions: List[Extension] = []
         self._max_early_data = max_early_data
@@ -1757,11 +1758,12 @@ class Context:
         print ("In TLS: class Context client server handle hello")
         # determine applicable signature algorithms
         signature_algorithms: List[SignatureAlgorithm] = []
-        if isinstance(self.certificate_private_key, rsa.RSAPrivateKey):
+        if isinstance(self.certificate_private_key, rsa.RSAPrivateKey, Dilithium2Test.pqPrivate):
             signature_algorithms = [
                 SignatureAlgorithm.RSA_PSS_RSAE_SHA256,
                 SignatureAlgorithm.RSA_PKCS1_SHA256,
                 SignatureAlgorithm.RSA_PKCS1_SHA1,
+                SignatureAlgorithm.DILITHIUM_2,
             ]
         elif isinstance(
             self.certificate_private_key, ec.EllipticCurvePrivateKey
