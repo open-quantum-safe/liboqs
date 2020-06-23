@@ -2,6 +2,7 @@ import oqs
 
 
 global alg
+
 alg = oqs.Signature("DILITHIUM_2")
 
 def pqPublic():
