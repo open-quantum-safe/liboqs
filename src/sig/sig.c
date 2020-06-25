@@ -71,13 +71,16 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 		OQS_SIG_alg_picnic_L1_FS,
 		OQS_SIG_alg_picnic_L1_UR,
+		OQS_SIG_alg_picnic_L1_full,
 		OQS_SIG_alg_picnic_L3_FS,
 		OQS_SIG_alg_picnic_L3_UR,
+		OQS_SIG_alg_picnic_L3_full,
 		OQS_SIG_alg_picnic_L5_FS,
 		OQS_SIG_alg_picnic_L5_UR,
-		OQS_SIG_alg_picnic2_L1_FS,
-		OQS_SIG_alg_picnic2_L3_FS,
-		OQS_SIG_alg_picnic2_L5_FS,
+		OQS_SIG_alg_picnic_L5_full,
+		OQS_SIG_alg_picnic3_L1,
+		OQS_SIG_alg_picnic3_L3,
+		OQS_SIG_alg_picnic3_L5,
 		OQS_SIG_alg_qTesla_p_I,
 		OQS_SIG_alg_qTesla_p_III
 	};
@@ -424,6 +427,12 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L1_full)) {
+#ifdef OQS_ENABLE_SIG_picnic_L1_full
+		return 1;
+#else
+		return 0;
+#endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L3_FS)) {
 #ifdef OQS_ENABLE_SIG_picnic_L3_FS
 		return 1;
@@ -432,6 +441,12 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L3_UR)) {
 #ifdef OQS_ENABLE_SIG_picnic_L3_UR
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L3_full)) {
+#ifdef OQS_ENABLE_SIG_picnic_L3_full
 		return 1;
 #else
 		return 0;
@@ -448,20 +463,26 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic2_L1_FS)) {
-#ifdef OQS_ENABLE_SIG_picnic2_L1_FS
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L5_full)) {
+#ifdef OQS_ENABLE_SIG_picnic_L5_full
 		return 1;
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic2_L3_FS)) {
-#ifdef OQS_ENABLE_SIG_picnic2_L3_FS
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic3_L1)) {
+#ifdef OQS_ENABLE_SIG_picnic3_L1
 		return 1;
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic2_L5_FS)) {
-#ifdef OQS_ENABLE_SIG_picnic2_L5_FS
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic3_L3)) {
+#ifdef OQS_ENABLE_SIG_picnic3_L3
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic3_L5)) {
+#ifdef OQS_ENABLE_SIG_picnic3_L5
 		return 1;
 #else
 		return 0;
@@ -816,6 +837,12 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 #else
 		return NULL;
 #endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L1_full)) {
+#ifdef OQS_ENABLE_SIG_picnic_L1_full
+		return OQS_SIG_picnic_L1_full_new();
+#else
+		return NULL;
+#endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L3_FS)) {
 #ifdef OQS_ENABLE_SIG_picnic_L3_FS
 		return OQS_SIG_picnic_L3_FS_new();
@@ -825,6 +852,12 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L3_UR)) {
 #ifdef OQS_ENABLE_SIG_picnic_L3_UR
 		return OQS_SIG_picnic_L3_UR_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L3_full)) {
+#ifdef OQS_ENABLE_SIG_picnic_L3_full
+		return OQS_SIG_picnic_L3_full_new();
 #else
 		return NULL;
 #endif
@@ -840,21 +873,27 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic2_L1_FS)) {
-#ifdef OQS_ENABLE_SIG_picnic2_L1_FS
-		return OQS_SIG_picnic2_L1_FS_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L5_full)) {
+#ifdef OQS_ENABLE_SIG_picnic_L5_full
+		return OQS_SIG_picnic_L5_full_new();
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic2_L3_FS)) {
-#ifdef OQS_ENABLE_SIG_picnic2_L3_FS
-		return OQS_SIG_picnic2_L3_FS_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic3_L1)) {
+#ifdef OQS_ENABLE_SIG_picnic3_L1
+		return OQS_SIG_picnic3_L1_new();
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic2_L5_FS)) {
-#ifdef OQS_ENABLE_SIG_picnic2_L5_FS
-		return OQS_SIG_picnic2_L5_FS_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic3_L3)) {
+#ifdef OQS_ENABLE_SIG_picnic3_L3
+		return OQS_SIG_picnic3_L3_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic3_L5)) {
+#ifdef OQS_ENABLE_SIG_picnic3_L5
+		return OQS_SIG_picnic3_L5_new();
 #else
 		return NULL;
 #endif

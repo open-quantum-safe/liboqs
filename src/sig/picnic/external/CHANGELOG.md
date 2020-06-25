@@ -1,3 +1,11 @@
+Version 3.0 -- 2020-04-15
+-------------------------
+
+* Implement new Picnic 3 parameter set. This implementation replaces the Picnic 2 parameter set.
+* Implement new Picnic instances with full Sbox layer.
+* Various small improvements and bug fixes.
+* Remove all optimizations for partial LowMC instances except for OLLE.
+
 Version 2.2 -- 2020-04-08
 ---------------------------
 

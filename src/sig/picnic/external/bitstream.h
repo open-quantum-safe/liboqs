@@ -12,6 +12,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "mzd_additional.h"
 #include "oqs_picnic_macros.h"
 
 typedef struct {
@@ -30,5 +31,9 @@ void bitstream_put_bits(bitstream_t* bs, uint64_t value, unsigned int num_bits);
 #endif
 void bitstream_put_bits_8(bitstream_t* bs, uint8_t value, unsigned int num_bits);
 void bitstream_put_bits_32(bitstream_t* bs, uint32_t value, unsigned int num_bits);
+#if defined(WITH_LOWMC_129_129_4) || defined(WITH_LOWMC_192_192_4) || defined(WITH_LOWMC_255_255_4)
+void mzd_to_bitstream(bitstream_t* bs, const mzd_local_t* v, const size_t width, const size_t size);
+void mzd_from_bitstream(bitstream_t* bs, mzd_local_t* v, const size_t width, const size_t size);
+#endif
 
 #endif

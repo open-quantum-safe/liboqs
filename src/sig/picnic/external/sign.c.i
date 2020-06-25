@@ -13,19 +13,46 @@
 #include "picnic.h"
 
 #include <string.h>
+#include <assert.h>
 
 int crypto_sign_keypair(unsigned char* pk, unsigned char* sk) {
-  return picnic_keygen(PICNIC_INSTANCE, (picnic_publickey_t*)pk, (picnic_privatekey_t*)sk);
+  picnic_publickey_t ppk;
+  picnic_privatekey_t psk;
+
+  int ret = picnic_keygen(PICNIC_INSTANCE, &ppk, &psk);
+  if (ret) {
+    return ret;
+  }
+
+  ret = picnic_write_public_key(&ppk, pk, PICNIC_PUBLIC_KEY_SIZE(PICNIC_INSTANCE));
+  if (ret < 0) {
+    return ret;
+  }
+
+  ret = picnic_write_private_key(&psk, sk, PICNIC_PRIVATE_KEY_SIZE(PICNIC_INSTANCE));
+  if (ret < 0) {
+    return ret;
+  }
+
+  return 0;
 }
 
 int crypto_sign(unsigned char* sm, unsigned long long* smlen, const unsigned char* m,
                 unsigned long long mlen, const unsigned char* sk) {
-
   size_t signature_len = PICNIC_SIGNATURE_SIZE(PICNIC_INSTANCE);
   uint32_t len         = 0;
 
-  const int ret =
-      picnic_sign((const picnic_privatekey_t*)sk, m, mlen, sm + sizeof(len) + mlen, &signature_len);
+#if !defined(SUPERCOP)
+  assert(signature_len + sizeof(len) == CRYPTO_BYTES);
+#endif
+
+  picnic_privatekey_t psk;
+  int ret = picnic_read_private_key(&psk, sk, PICNIC_PRIVATE_KEY_SIZE(PICNIC_INSTANCE));
+  if (ret < 0) {
+    return ret;
+  }
+
+  ret = picnic_sign(&psk, m, mlen, sm + sizeof(len) + mlen, &signature_len);
   if (ret) {
     return ret;
   }
@@ -56,8 +83,13 @@ int crypto_sign_open(unsigned char* m, unsigned long long* mlen, const unsigned 
   const uint8_t* message   = sm + sizeof(signature_len);
   const uint8_t* sig       = sm + sizeof(signature_len) + message_len;
 
-  const int ret =
-      picnic_verify((const picnic_publickey_t*)pk, message, message_len, sig, signature_len);
+  picnic_publickey_t ppk;
+  int ret = picnic_read_public_key(&ppk, pk, PICNIC_PUBLIC_KEY_SIZE(PICNIC_INSTANCE));
+  if (ret < 0) {
+    return ret;
+  }
+
+  ret = picnic_verify(&ppk, message, message_len, sig, signature_len);
   if (ret) {
     return ret;
   }

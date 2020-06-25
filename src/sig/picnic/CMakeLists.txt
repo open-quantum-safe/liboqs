@@ -25,16 +25,19 @@ set(SRCS sig_picnic.c
          external/lowmc_128_128_20.c
          external/lowmc_192_192_30.c
          external/lowmc_256_256_38.c
+         external/lowmc_129_129_4.c
+         external/lowmc_192_192_4.c
+         external/lowmc_255_255_4.c
          external/mpc_lowmc.c
          external/mzd_additional.c
          external/picnic.c
          external/picnic_impl.c
          external/picnic_instances.c
-         external/picnic2_impl.c
-         external/picnic2_simulate.c
-         external/picnic2_simulate_mul.c
-         external/picnic2_tree.c
-         external/picnic2_types.c
+         external/picnic3_impl.c
+         external/picnic3_simulate.c
+         external/picnic3_tree.c
+         external/picnic3_types.c
+         external/randomness.c
          external/sha3/KeccakHash.c
          external/sha3/KeccakSpongeWidth1600.c)
 
@@ -63,13 +66,15 @@ else()
     target_include_directories(picnic PRIVATE external/sha3/opt64)
 endif()
 target_compile_definitions(picnic PRIVATE PICNIC_STATIC
-                                          OPTIMIZED_LINEAR_LAYER_EVALUATION
-                                          REDUCED_ROUND_KEY_COMPUTATION
                                           WITH_ZKBPP
+                                          WITH_UNRUH
                                           WITH_KKW
                                           WITH_LOWMC_128_128_20
                                           WITH_LOWMC_192_192_30
                                           WITH_LOWMC_256_256_38
+                                          WITH_LOWMC_129_129_4
+                                          WITH_LOWMC_192_192_4
+                                          WITH_LOWMC_255_255_4
                                           WITH_OPT)
 
 if(OQS_USE_SSE2_INSTRUCTIONS)
