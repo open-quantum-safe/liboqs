@@ -9,27 +9,28 @@
 #include "aes.h"
 #include "aes_local.h"
 
+#if defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD)
+#define C_OR_NI(stmt_c, stmt_ni) \
+    OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions(); \
+    if (available_cpu_extensions.AES_ENABLED) { \
+        stmt_ni; \
+    } else { \
+        stmt_c; \
+    }
+#elif defined(OQS_USE_CPU_EXTENSIONS) /* && !defined(OQS_PORTABLE_BUILD) */
+#define  C_OR_NI(stmt_c, stmt_ni) \
+    stmt_ni;
+#else /* !defined(OQS_USE_CPU_EXTENSIONS) */
+#define  C_OR_NI(stmt_c, stmt_ni) \
+    stmt_c;
+#endif
+
 void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
-#if defined(OQS_USE_CPU_EXTENSIONS)
-
-#if defined(OQS_PORTABLE_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AES_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
-		oqs_aes128_load_schedule_ni(key, _schedule);
-#if defined(OQS_PORTABLE_BUILD)
-	} else {
-		oqs_aes128_load_schedule_c(key, _schedule, for_encryption);
-	}
-#endif /* OQS_PORTABLE_BUILD */
-
-#else /* not defined(OQS_USE_CPU_EXTENSIONS) */
-	oqs_aes128_load_schedule_c(key, _schedule, for_encryption);
-
-#endif /* OQS_USE_CPU_EXTENSIONS */
+	C_OR_NI(oqs_aes128_load_schedule_c(key, _schedule, for_encryption), oqs_aes128_load_schedule_ni(key, _schedule))
 }
 
-void OQS_AES128_free_schedule(UNUSED void *schedule) {
+void OQS_AES128_free_schedule(void *schedule) {
+	C_OR_NI(oqs_aes128_free_schedule_c(schedule), oqs_aes128_free_schedule_ni(schedule))
 }
 
 void OQS_AES256_ECB_load_schedule(UNUSED const uint8_t *key, UNUSED void **_schedule, UNUSED int for_encryption) {
