@@ -10,31 +10,36 @@
 #include "aes_local.h"
 
 void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
-	#if defined(OQS_USE_AES_INSTRUCTIONS)
-	oqs_aes128_load_schedule_ni(key, _schedule);
-	#elif defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_USE_CPU_EXTENSIONS)
+
+#if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
 	if (available_cpu_extensions.AES_ENABLED) {
+#endif /* OQS_PORTABLE_BUILD */
 		oqs_aes128_load_schedule_ni(key, _schedule);
+#if defined(OQS_PORTABLE_BUILD)
 	} else {
 		oqs_aes128_load_schedule_c(key, _schedule, for_encryption);
 	}
-	#else
+#endif /* OQS_PORTABLE_BUILD */
+
+#else /* not defined(OQS_USE_CPU_EXTENSIONS) */
 	oqs_aes128_load_schedule_c(key, _schedule, for_encryption);
-	#endif
+
+#endif /* OQS_USE_CPU_EXTENSIONS */
 }
 
-void OQS_AES128_free_schedule(void *schedule) {
+void OQS_AES128_free_schedule(UNUSED void *schedule) {
 }
 
-void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
+void OQS_AES256_ECB_load_schedule(UNUSED const uint8_t *key, UNUSED void **_schedule, UNUSED int for_encryption) {
 }
 
 void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **_schedule) {
 	OQS_AES256_ECB_load_schedule(key, _schedule, 1);
 }
 
-void OQS_AES256_free_schedule(void *schedule) {
+void OQS_AES256_free_schedule(UNUSED void *schedule) {
 }
 
 void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
