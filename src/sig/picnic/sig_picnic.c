@@ -337,15 +337,15 @@ OQS_SIG *OQS_SIG_picnic_L3_full_new() {
 }
 
 OQS_API OQS_STATUS OQS_SIG_picnic_L3_full_keypair(uint8_t *public_key, uint8_t *secret_key) {
-	return common_picnic_keypair(Picnic_L3_FS, secret_key, public_key);
+	return common_picnic_keypair(Picnic_L3_full, secret_key, public_key);
 }
 
 OQS_API OQS_STATUS OQS_SIG_picnic_L3_full_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-	return common_picnic_sign(Picnic_L3_FS, secret_key, message, message_len, signature, signature_len);
+	return common_picnic_sign(Picnic_L3_full, secret_key, message, message_len, signature, signature_len);
 }
 
 OQS_API OQS_STATUS OQS_SIG_picnic_L3_full_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-	return common_picnic_verify(Picnic_L3_FS, public_key, message, message_len, signature, signature_len);
+	return common_picnic_verify(Picnic_L3_full, public_key, message, message_len, signature, signature_len);
 }
 
 #endif
@@ -455,15 +455,15 @@ OQS_SIG *OQS_SIG_picnic_L5_full_new() {
 }
 
 OQS_API OQS_STATUS OQS_SIG_picnic_L5_full_keypair(uint8_t *public_key, uint8_t *secret_key) {
-	return common_picnic_keypair(Picnic_L5_FS, secret_key, public_key);
+	return common_picnic_keypair(Picnic_L5_full, secret_key, public_key);
 }
 
 OQS_API OQS_STATUS OQS_SIG_picnic_L5_full_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
-	return common_picnic_sign(Picnic_L5_FS, secret_key, message, message_len, signature, signature_len);
+	return common_picnic_sign(Picnic_L5_full, secret_key, message, message_len, signature, signature_len);
 }
 
 OQS_API OQS_STATUS OQS_SIG_picnic_L5_full_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-	return common_picnic_verify(Picnic_L5_FS, public_key, message, message_len, signature, signature_len);
+	return common_picnic_verify(Picnic_L5_full, public_key, message, message_len, signature, signature_len);
 }
 
 #endif
