@@ -161,7 +161,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic3_L3_verify(const uint8_t *message, size_t mess
 
 #ifdef OQS_ENABLE_SIG_picnic3_L5
 
-#define OQS_SIG_picnic3_L5_length_public_key 65 
+#define OQS_SIG_picnic3_L5_length_public_key 65
 #define OQS_SIG_picnic3_L5_length_secret_key 97
 #define OQS_SIG_picnic3_L5_length_signature 61028
 
