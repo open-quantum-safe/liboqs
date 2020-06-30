@@ -103,7 +103,7 @@ Various options can be passed to `cmake` to customize the build. Some of them in
 
 - `-DOQS_USE_OPENSSL=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
 - `-DBUILD_SHARED_LIBS=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, CMake generates instructions for building a shared library, otherwise it generates instructions for building a static library.
-- `OPENSSL_ROOT_DIR=<dir>`: `<dir>` specifies the directory in which CMake will look for OpenSSL.
+- `-DOPENSSL_ROOT_DIR=<dir>`: `<dir>` specifies the directory in which CMake will look for OpenSSL.
 
 All supported options are listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory. They are also listed and explained in [the wiki](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs).
 
@@ -152,7 +152,7 @@ Or to compile for Windows AMD64 from Ubuntu Bionic:
 
 	apt install gcc-mingw-w64
 	mkdir build && cd build
-	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake ..
+	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DOQS_USE_CPU_EXTENSIONS=OFF ..
 	ninja
 
 ## Documentation
@@ -190,7 +190,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 
 ## Acknowledgements
 
-Various companies, including Amazon Web Services, evolutionQ, Microsoft Research, Cisco Systems, and IBM Research have dedicated programmer time to contribute source code to OQS. [Various people](CONTRIBUTORS) have contributed source code to liboqs.
+Various companies, including Amazon Web Services, Cisco Systems, evolutionQ, IBM Research, and Microsoft Research have dedicated programmer time to contribute source code to OQS. [Various people](CONTRIBUTORS) have contributed source code to liboqs.
 
 Financial support for the development of Open Quantum Safe has been provided by Amazon Web Services and the Tutte Institute for Mathematics and Computing.
 Research projects which developed specific components of OQS have been supported by various research grants, including funding from the Natural Sciences and Engineering Research Council of Canada (NSERC); see the source papers for funding acknowledgments.
