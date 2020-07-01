@@ -1,1 +1,0 @@
-apps/openssl s_time -cipher RSA -connect 10.0.0.155:44330 -cafile pycacert.pem

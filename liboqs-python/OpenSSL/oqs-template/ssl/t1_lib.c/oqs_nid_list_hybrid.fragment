@@ -1,4 +1,0 @@
-{% for kem in config['kems'] %}
-    {NID_p256_{{ kem['name_group'] }}, {{ kem['bit_security'] }}, TLS_CURVE_CUSTOM}, /* p256 + {{ kem['name_group'] }} hybrid ({{ kem['nid'] }}) */
-{%- endfor %}
-

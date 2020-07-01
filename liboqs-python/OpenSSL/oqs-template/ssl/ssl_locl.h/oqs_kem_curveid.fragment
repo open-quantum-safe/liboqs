@@ -1,9 +1,0 @@
-
-#define OQS_KEM_CURVEID(nid) \
-  (nid == NID_oqs_kem_default ? 0x01FF : \
-{%- for kem in config['kems'] %}
-  (nid == NID_{{ kem['name_group'] }} ? {{ kem['nid'] }} : \
-{%- endfor %}
-  0 \
-  {% for kem in config['kems'] %}){% endfor %})
-
