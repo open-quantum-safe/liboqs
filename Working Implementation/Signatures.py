@@ -8,15 +8,15 @@ available_algorithms = [
 	'Falcon-1024',
 	'MQDSS-31-48',
 	'MQDSS-31-64',
-	'Picnic-L1-FS',
-	'Picnic-L1-UR',
-	'Picnic-L3-FS',
-	'Picnic-L3-UR',
-	'Picnic-L5-FS',
-	'Picnic-L5-UR',
-	'Picnic2-L1-FS',
-	'Picnic2-L3-FS',
-	'Picnic2-L5-FS',
+	'picnic-L1-FS',
+	'picnic-L1-UR',
+	'picnic-L3-FS',
+	'picnic-L3-UR',
+	'picnic-L5-FS',
+	'picnic-L5-UR',
+	'picnic2-L1-FS',
+	'picnic2-L3-FS',
+	'picnic2-L5-FS',
 	'qTesla-p-I',
 	'qTesla-p-III',
 	'Rainbow-Ia-Classic',
@@ -82,7 +82,7 @@ def generate(algorithm):
 
 
 # Testing code
-userAlg = input("Choose PQ algorithm")
+userAlg = input("Choose PQ algorithm: ")
 result = generate(userAlg)
 print('Public key:')
 print(result['public'])
