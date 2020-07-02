@@ -1,15 +1,22 @@
 #include <iostream>
+#include <string>
 #include <oqs/oqs.h>
 
 class Signature {
 public:
-	static std::string generate() {
+	static std::string generate(char* algorithm) {
+		OQS_SIG *sig = NULL;
+		
+		sig = OQS_SIG_new(algorithm);
+
+		//return OQS_SIG_alg_is_enabled(algorithm) ? "true" : "false";
+		//sig = OQS_SIG_new("Dilithium2");
 		return "Hello World";
 	}
 };
 
 int main() {
-	std::string algorithms[] = {
+	/*std::string algorithms[] = {
 		"Dilithium2",
 		"Dilithium3",
 		"Dilithium4",
@@ -73,9 +80,9 @@ int main() {
 		"SPHINCS+-SHAKE256-256f-simple",
 		"SPHINCS+-SHAKE256-256s-robust",
 		"SPHINCS+-SHAKE256-256s-simple"
-	};
+	};*/
 	std::cout << std::endl;
-	std::cout << Signature::generate();
+	std::cout << Signature::generate("DILITHIUM2");
 	std::cout << std::endl;
 	std::cout << std::endl;
 	return 0;
