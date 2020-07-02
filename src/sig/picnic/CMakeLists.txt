@@ -19,7 +19,6 @@ endif()
 set(SRCS sig_picnic.c
          external/aligned_alloc.c
          external/bitstream.c
-         external/cpu.c
          external/io.c
          external/lowmc.c
          external/lowmc_128_128_20.c
@@ -37,6 +36,11 @@ set(SRCS sig_picnic.c
          external/picnic2_types.c
          external/sha3/KeccakHash.c
          external/sha3/KeccakSpongeWidth1600.c)
+
+# Avoid generating no symbols:
+if (NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+   set(SRCS ${SRCS} external/cpu.c)
+endif()
 
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
    OQS_USE_AVX2_INSTRUCTIONS AND

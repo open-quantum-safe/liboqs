@@ -10,13 +10,11 @@ if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND
 endif()
 
 set(SRCS additional/decode.c
-         additional/gf2x_portable.c
          additional/sampling.c
          additional/parallel_hash.c
          additional/utilities.c
          additional/aes_ctr_prf.c
-         additional/error.c
-         additional/gf2x_mul.c)
+         additional/error.c)
 
 if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
     set(SRCS ${SRCS} additional/sampling_portable.c
@@ -48,6 +46,8 @@ if(OQS_USE_OPENSSL)
     # TODO: Find a way to eliminate this include_directories() call
     include_directories(${OPENSSL_INCLUDE_DIR})
     set(SRCS ${SRCS} additional/openssl_utils.c)
+else()
+    set(SRCS ${SRCS} additional/gf2x_portable.c additional/gf2x_mul.c)
 endif()
 
 add_library(kem_bike OBJECT kem_bike.c)
