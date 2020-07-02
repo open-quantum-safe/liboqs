@@ -82,7 +82,8 @@ def generate(algorithm):
 
 
 # Testing code
-result = generate('SPHINCS+-Haraka-128s-simple')
+userAlg = input("Choose PQ algorithm")
+result = generate(userAlg)
 print('Public key:')
 print(result['public'])
 print()
