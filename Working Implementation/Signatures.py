@@ -1,9 +1,9 @@
 import oqs
 
 available_algorithms = [
-	'Dilithium2',
-	'Dilithium3',
-	'Dilithium4',
+	'DILITHIUM_2',
+	'DILITHIUM_3',
+	'DILITHIUM_4',
 	'Falcon-512',
 	'Falcon-1024',
 	'MQDSS-31-48',
