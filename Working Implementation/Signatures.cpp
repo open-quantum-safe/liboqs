@@ -144,7 +144,7 @@ int main() {
 
 	std::cout << "Verifying message and signature: ";
 
-	message[0]++; // Modify the message to fail verification
+	//message[0]++; // Modify the message to fail verification
 	//signature[0]++; // Modify the signature to fail verification
 
 	bool result = sigmanager.verify(message, signature);
