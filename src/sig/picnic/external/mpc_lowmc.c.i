@@ -8,14 +8,12 @@
  */
 
 #if defined(LOWMC_INSTANCE)
-#define N_SIGN CONCAT(SIGN, 10)
-#define N_VERIFY CONCAT(VERIFY, 10)
+#define N_SIGN CONCAT(mpc_lowmc_prove, CONCAT(IMPL, LOWMC_INSTANCE))
+#define N_VERIFY CONCAT(mpc_lowmc_verify, CONCAT(IMPL, LOWMC_INSTANCE))
 #include "mpc_lowmc_impl.c.i"
 #endif
 
 #undef N_SIGN
 #undef N_VERIFY
-#undef SIGN
-#undef VERIFY
 
 // vim: ft=c

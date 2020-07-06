@@ -63,13 +63,16 @@
 #cmakedefine OQS_ENABLE_SIG_PICNIC 1
 #cmakedefine OQS_ENABLE_SIG_picnic_L1_UR 1
 #cmakedefine OQS_ENABLE_SIG_picnic_L1_FS 1
+#cmakedefine OQS_ENABLE_SIG_picnic_L1_full 1
 #cmakedefine OQS_ENABLE_SIG_picnic_L3_UR 1
 #cmakedefine OQS_ENABLE_SIG_picnic_L3_FS 1
+#cmakedefine OQS_ENABLE_SIG_picnic_L3_full 1
 #cmakedefine OQS_ENABLE_SIG_picnic_L5_UR 1
 #cmakedefine OQS_ENABLE_SIG_picnic_L5_FS 1
-#cmakedefine OQS_ENABLE_SIG_picnic2_L1_FS 1
-#cmakedefine OQS_ENABLE_SIG_picnic2_L3_FS 1
-#cmakedefine OQS_ENABLE_SIG_picnic2_L5_FS 1
+#cmakedefine OQS_ENABLE_SIG_picnic_L5_full 1
+#cmakedefine OQS_ENABLE_SIG_picnic3_L1 1
+#cmakedefine OQS_ENABLE_SIG_picnic3_L3 1
+#cmakedefine OQS_ENABLE_SIG_picnic3_L5 1
 
 #cmakedefine OQS_ENABLE_SIG_QTESLA 1
 #cmakedefine OQS_ENABLE_SIG_qTesla_p_I 1

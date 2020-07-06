@@ -33,7 +33,6 @@ The cmake based build system supports the following flags:
 * ``WITH_NEON``: Use NEON if available.
 * ``WITH_MARCH_NATIVE``: Build with -march=native -mtune=native (if supported).
 * ``WITH_LTO``: Enable link-time optimization (if supported).
-* ``WITH_LOWMC_OPT={OFF,ORKC,OLLE}``: Enable optimized round key computation (ORKC) or optimized linear layer evaluation (OLLE) optimizations.
 * ``WITH_SHA3_IMPL={opt64,avx2,armv8a-neon,s390-cpacf}``: Select SHA3 implementation opt64 (the default, from Keccak code package), avx2 (for AVX2 capable x86-64 systems, from Keccak code package), armv8a-neon (for NEON capable ARM systems, from Keccak code package), s390-cpacf (for IBM z14 and newer systems supporting SHAKE)
 
 Building on Windows

@@ -13,6 +13,7 @@
 
 #include "picnic.h"
 
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -23,9 +24,9 @@
 #include "picnic_impl.h"
 #endif
 #if defined(WITH_KKW)
-#include "picnic2_impl.h"
+#include "picnic3_impl.h"
 #endif
-#include <oqs/rand.h>
+#include "randomness.h"
 
 // Public and private keys are serialized as follows:
 // - public key: instance || C || p
@@ -97,9 +98,13 @@ int PICNIC_CALLING_CONVENTION picnic_keygen(picnic_params_t param, picnic_public
   // generate private key
   sk->data[0] = param;
   // random secret key
-  OQS_randombytes(sk_sk, input_size);
+  if (rand_bits(sk_sk, instance->lowmc.k)) {
+    return -1;
+  }
   // random plain text
-  OQS_randombytes(sk_pt, output_size);
+  if (rand_bits(sk_pt, instance->lowmc.n)) {
+    return -1;
+  }
   // encrypt plaintext under secret key
   if (picnic_sk_to_pk(sk, pk)) {
     return -1;
@@ -208,9 +213,9 @@ int PICNIC_CALLING_CONVENTION picnic_sign(const picnic_privatekey_t* sk, const u
   const uint8_t* sk_c  = SK_C(sk);
   const uint8_t* sk_pt = SK_PT(sk);
 
-  if (param == Picnic2_L1_FS || param == Picnic2_L3_FS || param == Picnic2_L5_FS) {
+  if (param == Picnic3_L1 || param == Picnic3_L3 || param == Picnic3_L5) {
 #if defined(WITH_KKW)
-    return impl_sign_picnic2(instance, sk_pt, sk_sk, sk_c, message, message_len, signature,
+    return impl_sign_picnic3(instance, sk_pt, sk_sk, sk_c, message, message_len, signature,
                              signature_len);
 #else
     return -1;
@@ -242,9 +247,9 @@ int PICNIC_CALLING_CONVENTION picnic_verify(const picnic_publickey_t* pk, const 
   const uint8_t* pk_c  = PK_C(pk);
   const uint8_t* pk_pt = PK_PT(pk);
 
-  if (param == Picnic2_L1_FS || param == Picnic2_L3_FS || param == Picnic2_L5_FS) {
+  if (param == Picnic3_L1 || param == Picnic3_L3 || param == Picnic3_L5) {
 #if defined(WITH_KKW)
-    return impl_verify_picnic2(instance, pk_pt, pk_c, message, message_len, signature,
+    return impl_verify_picnic3(instance, pk_pt, pk_c, message, message_len, signature,
                                signature_len);
 #else
     return -1;
@@ -273,12 +278,18 @@ const char* PICNIC_CALLING_CONVENTION picnic_get_param_name(picnic_params_t para
     return "Picnic_L5_FS";
   case Picnic_L5_UR:
     return "Picnic_L5_UR";
-  case Picnic2_L1_FS:
-    return "Picnic2_L1_FS";
-  case Picnic2_L3_FS:
-    return "Picnic2_L3_FS";
-  case Picnic2_L5_FS:
-    return "Picnic2_L5_FS";
+  case Picnic3_L1:
+    return "Picnic3_L1";
+  case Picnic3_L3:
+    return "Picnic3_L3";
+  case Picnic3_L5:
+    return "Picnic3_L5";
+  case Picnic_L1_full:
+    return "Picnic_L1_full";
+  case Picnic_L3_full:
+    return "Picnic_L3_full";
+  case Picnic_L5_full:
+    return "Picnic_L5_full";
   default:
     return "Unknown parameter set";
   }
@@ -322,6 +333,15 @@ int PICNIC_CALLING_CONVENTION picnic_read_public_key(picnic_publickey_t* key, co
   const size_t bytes_required = 1 + 2 * output_size;
   if (buflen < bytes_required) {
     return -1;
+  }
+
+  if (param == Picnic_L1_full || param == Picnic_L5_full || param == Picnic3_L1 ||
+      param == Picnic3_L5) {
+    const unsigned int diff = output_size * 8 - instance->lowmc.n;
+    if (check_padding_bits(buf[1 + output_size - 1], diff) ||
+        check_padding_bits(buf[1 + 2 * output_size - 1], diff)) {
+      return -1;
+    }
   }
 
   memcpy(key->data, buf, bytes_required);
@@ -370,8 +390,66 @@ int PICNIC_CALLING_CONVENTION picnic_read_private_key(picnic_privatekey_t* key, 
     return -1;
   }
 
+  if (param == Picnic_L1_full || param == Picnic_L5_full || param == Picnic3_L1 ||
+      param == Picnic3_L5) {
+    const unsigned int diff = output_size * 8 - instance->lowmc.n;
+    assert(diff == input_size * 8 - instance->lowmc.k);
+    if (check_padding_bits(buf[1 + input_size - 1], diff) ||
+        check_padding_bits(buf[1 + input_size + output_size - 1], diff) ||
+        check_padding_bits(buf[1 + input_size + 2 * output_size - 1], diff)) {
+      return -1;
+    }
+  }
+
   memcpy(key->data, buf, bytes_required);
   return 0;
 }
 
-/* OQS note: cropped unused visualization functions */
+/* unused
+#if defined(PICNIC_STATIC) && defined(WITH_ZKBPP)
+void picnic_visualize_keys(FILE* out, const picnic_privatekey_t* sk, const picnic_publickey_t* pk) {
+  if (!sk || !pk) {
+    return;
+  }
+
+  if (sk->data[0] != pk->data[0]) {
+    return;
+  }
+
+  const picnic_params_t param       = sk->data[0];
+  const picnic_instance_t* instance = picnic_instance_get(param);
+  if (!instance) {
+    return;
+  }
+
+  const size_t output_size = instance->output_size;
+  const size_t input_size  = instance->input_size;
+
+  printf("sk: ");
+  print_hex(out, SK_SK(sk), input_size);
+  printf("\npk: ");
+  print_hex(out, PK_C(pk), output_size);
+  print_hex(out, PK_PT(pk), output_size);
+  printf("\npk_p: ");
+  print_hex(out, PK_PT(pk), output_size);
+  printf("\npk_C: ");
+  print_hex(out, PK_C(pk), output_size);
+  printf("\n");
+}
+
+void picnic_visualize(FILE* out, const picnic_publickey_t* public_key, const uint8_t* msg,
+                      size_t msglen, const uint8_t* sig, size_t siglen) {
+  if (!public_key) {
+    return;
+  }
+
+  const picnic_params_t param       = public_key->data[0];
+  const picnic_instance_t* instance = picnic_instance_get(param);
+  if (!instance) {
+    return;
+  }
+
+  visualize_signature(out, instance, msg, msglen, sig, siglen);
+}
+#endif
+*/
