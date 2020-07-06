@@ -139,7 +139,7 @@ static uint64_t _bench_rdtsc(void) {
 #define USING_TIME_RATHER_THAN_CYCLES
 	struct timespec time;
 	clock_gettime(CLOCK_REALTIME, &time);
-	return (int64_t)(time.tv_sec * 1e9 + time.tv_nsec);
+	return (uint64_t)(time.tv_sec * 1e9 + time.tv_nsec);
 #endif
 }
 
