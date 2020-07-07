@@ -45,7 +45,8 @@ def test_sig(sig_name):
                     if avx2_aes_enabled_on_linux and not helpers.is_build_portable():
                         append_kat = True
                 else:
-                    append_kat = True
+                    if not(avx2_aes_enabled_on_linux and not helpers.is_build_portable()):
+                        append_kat = True
             else:
                 append_kat = True
             if append_kat:
