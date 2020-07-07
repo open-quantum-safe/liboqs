@@ -47,13 +47,13 @@ typedef union {
  */
 typedef block_t mzd_local_t;
 
-mzd_local_t* mzd_local_init_ex(uint32_t r, uint32_t c, bool clear) ATTR_ASSUME_ALIGNED(32);
+mzd_local_t* mzd_local_init_ex(unsigned int r, unsigned int c, bool clear) ATTR_ASSUME_ALIGNED(32);
 
 #define mzd_local_init(r, c) mzd_local_init_ex(r, c, true)
 
 void mzd_local_free(mzd_local_t* v);
 
-void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, uint32_t r, uint32_t c, bool clear)
+void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, unsigned int r, unsigned int c, bool clear)
     ATTR_NONNULL_ARG(1);
 
 #define mzd_local_init_multiple(dst, n, r, c) mzd_local_init_multiple_ex(dst, n, r, c, true)
@@ -71,6 +71,9 @@ void mzd_copy_s128_256(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;
 void mzd_copy_s256_128(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;
 void mzd_copy_s256_256(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;
 
+/**
+ * mzd_xor variants
+ */
 void mzd_xor_uint64_128(mzd_local_t* res, mzd_local_t const* first,
                         mzd_local_t const* second) ATTR_NONNULL;
 void mzd_xor_uint64_192(mzd_local_t* res, mzd_local_t const* first,
@@ -105,9 +108,47 @@ void mzd_xor_s256_1280(mzd_local_t* res, mzd_local_t const* first,
                        mzd_local_t const* second) ATTR_NONNULL;
 
 /**
+ * mzd_and variants
+ */
+void mzd_and_uint64_128(mzd_local_t* res, mzd_local_t const* first,
+                        mzd_local_t const* second) ATTR_NONNULL;
+void mzd_and_uint64_192(mzd_local_t* res, mzd_local_t const* first,
+                        mzd_local_t const* second) ATTR_NONNULL;
+void mzd_and_uint64_256(mzd_local_t* res, mzd_local_t const* first,
+                        mzd_local_t const* second) ATTR_NONNULL;
+void mzd_and_s128_128(mzd_local_t* res, mzd_local_t const* first,
+                      mzd_local_t const* second) ATTR_NONNULL;
+void mzd_and_s128_256(mzd_local_t* res, mzd_local_t const* first,
+                      mzd_local_t const* second) ATTR_NONNULL;
+void mzd_and_s256_128(mzd_local_t* res, mzd_local_t const* first,
+                      mzd_local_t const* second) ATTR_NONNULL;
+void mzd_and_s256_256(mzd_local_t* res, mzd_local_t const* first,
+                      mzd_local_t const* second) ATTR_NONNULL;
+
+/**
+ * shifts and rotations
+ */
+void mzd_shift_left_uint64_128(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_shift_right_uint64_128(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_shift_left_uint64_192(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_shift_right_uint64_192(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_shift_left_uint64_256(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_shift_right_uint64_256(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+#if defined(PICNIC_STATIC)
+/* only needed for tests */
+void mzd_rotate_left_uint64_128(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_rotate_right_uint64_128(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_rotate_left_uint64_192(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_rotate_right_uint64_192(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_rotate_left_uint64_256(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+void mzd_rotate_right_uint64_256(mzd_local_t* res, const mzd_local_t* val, unsigned int count);
+#endif
+
+/**
  * Compute v * A optimized for v being a vector.
  */
 void mzd_mul_v_uint64_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) ATTR_NONNULL;
+void mzd_mul_v_uint64_129(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) ATTR_NONNULL;
 void mzd_mul_v_uint64_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) ATTR_NONNULL;
 void mzd_mul_v_uint64_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* At) ATTR_NONNULL;
 void mzd_mul_v_uint64_128_640(mzd_local_t* c, mzd_local_t const* v,
@@ -117,6 +158,7 @@ void mzd_mul_v_uint64_192_960(mzd_local_t* c, mzd_local_t const* v,
 void mzd_mul_v_uint64_256_1216(mzd_local_t* c, mzd_local_t const* v,
                                mzd_local_t const* At) ATTR_NONNULL;
 void mzd_mul_v_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
+void mzd_mul_v_s128_129(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_mul_v_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_mul_v_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_mul_v_s128_128_640(mzd_local_t* c, mzd_local_t const* v,
@@ -126,6 +168,7 @@ void mzd_mul_v_s128_192_1024(mzd_local_t* c, mzd_local_t const* v,
 void mzd_mul_v_s128_256_1280(mzd_local_t* c, mzd_local_t const* v,
                              mzd_local_t const* A) ATTR_NONNULL;
 void mzd_mul_v_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
+void mzd_mul_v_s256_129(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_mul_v_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_mul_v_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_mul_v_s256_128_768(mzd_local_t* c, mzd_local_t const* v,
@@ -181,14 +224,18 @@ void mzd_mul_v_parity_uint64_256_30(mzd_local_t* c, mzd_local_t const* v,
  */
 void mzd_addmul_v_uint64_128(mzd_local_t* c, mzd_local_t const* v,
                              mzd_local_t const* A) ATTR_NONNULL;
+void mzd_addmul_v_uint64_129(mzd_local_t* c, mzd_local_t const* v,
+                             mzd_local_t const* A) ATTR_NONNULL;
 void mzd_addmul_v_uint64_192(mzd_local_t* c, mzd_local_t const* v,
                              mzd_local_t const* A) ATTR_NONNULL;
 void mzd_addmul_v_uint64_256(mzd_local_t* c, mzd_local_t const* v,
                              mzd_local_t const* A) ATTR_NONNULL;
 void mzd_addmul_v_s128_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
+void mzd_addmul_v_s128_129(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_addmul_v_s128_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_addmul_v_s128_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_addmul_v_s256_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
+void mzd_addmul_v_s256_129(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_addmul_v_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 void mzd_addmul_v_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 

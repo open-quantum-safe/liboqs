@@ -21,7 +21,6 @@ typedef mzd_local_t lowmc_key_t;
 #define MAX_LOWMC_KEY_SIZE MAX_LOWMC_BLOCK_SIZE
 #define MAX_LOWMC_KEY_SIZE_BITS (MAX_LOWMC_KEY_SIZE * 8)
 #define MAX_LOWMC_ROUNDS 38
-#define MAX_LOWMC_SBOXES 10
 
 /**
  * Masks for 10 S-boxes.
@@ -32,59 +31,54 @@ typedef mzd_local_t lowmc_key_t;
 #define MASK_MASK UINT64_C(0x00000003ffffffff)
 
 /**
- * LowMC instances
+ * LowMC parameters
  */
-#define LOWMC_L1_N 128
-#define LOWMC_L1_M 10
-#define LOWMC_L1_K LOWMC_L1_N
-#define LOWMC_L1_R 20
-
-#define LOWMC_L3_N 192
-#define LOWMC_L3_M 10
-#define LOWMC_L3_K LOWMC_L3_N
-#define LOWMC_L3_R 30
-
-#define LOWMC_L5_N 256
-#define LOWMC_L5_M 10
-#define LOWMC_L5_K LOWMC_L5_N
-#define LOWMC_L5_R 38
-
 typedef struct {
-#if !defined(REDUCED_ROUND_KEY_COMPUTATION)
+  unsigned int m;
+  unsigned int n;
+  unsigned int r;
+  unsigned int k;
+} lowmc_parameters_t;
+
+/**
+ * LowMC round with full Sblox layer
+ */
+typedef struct {
   const mzd_local_t* k_matrix;
-#endif
-#if !defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
   const mzd_local_t* l_matrix;
-#else
-  const mzd_local_t* z_matrix;
-  const mzd_local_t* r_matrix;
-  const word r_mask;
-#endif
-#if !defined(REDUCED_ROUND_KEY_COMPUTATION)
+  const mzd_local_t* li_matrix;
   const mzd_local_t* constant;
-#endif
 } lowmc_round_t;
 
 /**
- * LowMC definition
+ * LowMC definition with full Sbox layer
  */
 typedef struct {
-  uint32_t m;
-  uint32_t n;
-  uint32_t r;
-  uint32_t k;
-
-  const mzd_local_t* k0_matrix; // K_0 or K_0 + precomputed if reduced_linear_layer is set
-#if defined(OPTIMIZED_LINEAR_LAYER_EVALUATION)
-  const mzd_local_t* zr_matrix; // combined linear layers
-#endif
+  const mzd_local_t* k0_matrix; // K_0
+  const mzd_local_t* ki0_matrix; // inverse of K_0
   const lowmc_round_t* rounds;
+} lowmc_t;
 
-#if defined(REDUCED_ROUND_KEY_COMPUTATION)
+/**
+ * LowMC round with partial Sblox layer
+ */
+typedef struct {
+  const mzd_local_t* z_matrix;
+  const mzd_local_t* r_matrix;
+  const word r_mask;
+} lowmc_partial_round_t;
+
+/**
+ * LowMC definition with partial Sbox layer
+ */
+typedef struct {
+  const mzd_local_t* k0_matrix; // K_0 + precomputed
+  const mzd_local_t* zr_matrix; // combined linear layers
+  const lowmc_partial_round_t* rounds;
+
   const mzd_local_t* precomputed_non_linear_part_matrix;
   const mzd_local_t* precomputed_constant_linear;
   const mzd_local_t* precomputed_constant_non_linear;
-#endif
-} lowmc_t;
+} lowmc_partial_t;
 
 #endif

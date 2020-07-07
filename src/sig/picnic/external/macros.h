@@ -141,12 +141,19 @@
 #define ATTR_TARGET(x)
 #endif
 
+/* artificial attribute */
+#if GNUC_CHECK(4, 7) || __has_attribute(__artificial__)
+#define ATTR_ARTIFICIAL __attribute__((__artificial__))
+#else
+#define ATTR_ARTIFICIAL
+#endif
+
 #define ATTR_TARGET_AVX2 ATTR_TARGET("avx2,bmi2")
 #define ATTR_TARGET_SSE2 ATTR_TARGET("sse2")
 
-#define FN_ATTRIBUTES_AVX2 ATTR_ALWAYS_INLINE ATTR_TARGET_AVX2
-#define FN_ATTRIBUTES_SSE2 ATTR_ALWAYS_INLINE ATTR_TARGET_SSE2
-#define FN_ATTRIBUTES_NEON ATTR_ALWAYS_INLINE
+#define FN_ATTRIBUTES_AVX2 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_AVX2
+#define FN_ATTRIBUTES_SSE2 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_SSE2
+#define FN_ATTRIBUTES_NEON ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE
 
 #define FN_ATTRIBUTES_AVX2_PURE FN_ATTRIBUTES_AVX2 ATTR_PURE
 #define FN_ATTRIBUTES_SSE2_PURE FN_ATTRIBUTES_SSE2 ATTR_PURE
@@ -167,6 +174,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+ATTR_ARTIFICIAL
 static inline bool sub_overflow_size_t(const size_t x, const size_t y, size_t* diff) {
   *diff = x - y;
   return x < y;
@@ -177,24 +185,31 @@ static inline bool sub_overflow_size_t(const size_t x, const size_t y, size_t* d
 
 /* helper functions for parity computations */
 #if GNUC_CHECK(4, 9) || __has_builtin(__builtin_parity)
-ATTR_CONST
-static inline uint8_t parity64_uint8(uint8_t in) {
+ATTR_CONST ATTR_ARTIFICIAL static inline uint8_t parity64_uint8(uint8_t in) {
   return __builtin_parity(in);
 }
 
-ATTR_CONST
-static inline uint64_t parity64_uint64(uint64_t in) {
+ATTR_CONST ATTR_ARTIFICIAL static inline uint16_t parity64_uint16(uint16_t in) {
+  return __builtin_parity(in);
+}
+
+ATTR_CONST ATTR_ARTIFICIAL static inline uint64_t parity64_uint64(uint64_t in) {
   return __builtin_parityll(in);
 }
 #else
-ATTR_CONST
-static inline uint8_t parity64_uint8(uint8_t in) {
+ATTR_CONST ATTR_ARTIFICIAL static inline uint8_t parity64_uint8(uint8_t in) {
   /* byte parity from: https://graphics.stanford.edu/~seander/bithacks.html#ParityWith64Bits */
   return (((in * UINT64_C(0x0101010101010101)) & UINT64_C(0x8040201008040201)) % 0x1FF) & 1;
 }
 
-ATTR_CONST
-static inline uint64_t parity64_uint64(uint64_t in) {
+ATTR_CONST ATTR_ARTIFICIAL static inline uint16_t parity64_uint16(uint16_t in) {
+  in ^= in >> 1;
+  in ^= in >> 2;
+  in = (in & 0x1111) * 0x1111;
+  return (in >> 12) & 1;
+}
+
+ATTR_CONST ATTR_ARTIFICIAL static inline uint64_t parity64_uint64(uint64_t in) {
   in ^= in >> 1;
   in ^= in >> 2;
   in = (in & 0x1111111111111111) * 0x1111111111111111;
@@ -204,8 +219,7 @@ static inline uint64_t parity64_uint64(uint64_t in) {
 
 /* helper functions to compute number of leading zeroes */
 #if GNUC_CHECK(4, 7) || __has_builtin(__builtin_clz)
-ATTR_CONST
-static inline uint32_t clz(uint32_t x) {
+ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t clz(uint32_t x) {
   return x ? __builtin_clz(x) : 32;
 }
 #else
@@ -214,8 +228,7 @@ static inline uint32_t clz(uint32_t x) {
  * H.S. Warren, *Hacker's Delight*, Pearson Education, 2003.
  * http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
  */
-ATTR_CONST
-static inline uint32_t clz(uint32_t x) {
+ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t clz(uint32_t x) {
   if (!x) {
     return 32;
   }
@@ -243,8 +256,7 @@ static inline uint32_t clz(uint32_t x) {
 }
 #endif
 
-ATTR_CONST
-static inline uint32_t ceil_log2(uint32_t x) {
+ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t ceil_log2(uint32_t x) {
   if (!x) {
     return 0;
   }

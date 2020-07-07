@@ -90,6 +90,39 @@ localCheckout: &localCheckout
         - store_artifacts:
             path: build/test-results
 
+.macjob: &macjob
+    macos:
+        xcode: "11.3.0"
+    steps:
+        - checkout
+        - run:
+            name: Install dependencies
+            command: |
+              scripts/git_no_checkin_in_last_day.sh || (
+              brew update &&
+              brew unlink python@2 &&
+              brew install cmake ninja doxygen astyle &&
+              pip3 install pytest pytest-xdist
+              )
+        - run:
+            name: Configure
+            command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build && cmake -GNinja ${CONFIGURE_ARGS} ..)
+        - run:
+            name: Build
+            command: ../scripts/git_no_checkin_in_last_day.sh || ninja
+            working_directory: build
+        - run:
+            name: System information
+            command: scripts/git_no_checkin_in_last_day.sh || (sysctl -a | grep machdep.cpu)
+        - run:
+            name: Run tests
+            command: ../scripts/git_no_checkin_in_last_day.sh || ninja run_tests
+            working_directory: build
+        - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
+            path: build/test-results
+        - store_artifacts:
+            path: build/test-results
+
 jobs:
   centos-7-amd64:
     <<: *oqsjob
@@ -123,6 +156,18 @@ jobs:
     environment:
       CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_ENABLE_SIG_SPHINCS=OFF # sig-sphincs exhausts memory on CircleCI servers
       ARCH: armel
+  alpine-amd64-static:
+    <<: *oqsjob
+    environment:
+      IMAGE: openquantumsafe/ci-alpine-amd64:latest
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
+      SKIP_TESTS: style,doxygen # not installed in alpine, no news anyway
+  alpine-amd64-shared:
+    <<: *oqsjob
+    environment:
+      IMAGE: openquantumsafe/ci-alpine-amd64:latest
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+      SKIP_TESTS: style,doxygen # not installed in alpine, no news anyway
   ubuntu-bionic-x86_64-gcc8:
     <<: *oqsjob
     environment:
@@ -160,41 +205,16 @@ jobs:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: clang-9
       CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Undefined
-  macOS:
-    macos:
-        xcode: "11.3.0"
+  macOS-static-noopenssl:
+    <<: *macjob
     environment:
         CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
         SKIP_TESTS: style
-    steps:
-        - checkout
-        - run:
-            name: Install dependencies
-            command: |
-              scripts/git_no_checkin_in_last_day.sh || (
-              brew update &&
-              brew unlink python@2 &&
-              brew install cmake ninja doxygen astyle &&
-              pip3 install pytest pytest-xdist
-              )
-        - run:
-            name: Configure
-            command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build && cmake -GNinja ${CONFIGURE_ARGS} ..)
-        - run:
-            name: Build
-            command: ../scripts/git_no_checkin_in_last_day.sh || ninja
-            working_directory: build
-        - run:
-            name: System information
-            command: scripts/git_no_checkin_in_last_day.sh || (sysctl -a | grep machdep.cpu)
-        - run:
-            name: Run tests
-            command: ../scripts/git_no_checkin_in_last_day.sh || ninja run_tests
-            working_directory: build
-        - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
-            path: build/test-results
-        - store_artifacts:
-            path: build/test-results
+  macOS-shared-openssl:
+    <<: *macjob
+    environment:
+        CONFIGURE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+        SKIP_TESTS: style
   win-static:
     <<: *winjob
     environment:
@@ -223,7 +243,10 @@ workflows:
       - centos-7-amd64
       - centos-8-amd64
       - debian-buster-amd64
-      - macOS
+      - alpine-amd64-static
+      - macOS-static-noopenssl
+      - alpine-amd64-shared
+      - macOS-shared-openssl
       - ubuntu-bionic-x86_64-gcc8
       - ubuntu-bionic-x86_64-clang9
       - ubuntu-bionic-x86_64-gcc7-shared
@@ -242,7 +265,6 @@ workflows:
       - debian-buster-arm64
       - debian-buster-armhf
       - debian-buster-armel
-      - macOS
       - ubuntu-bionic-x86_64-gcc7-noopenssl
       - ubuntu-bionic-x86_64-gcc7-shared
       - ubuntu-bionic-x86_64-gcc8

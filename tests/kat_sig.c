@@ -61,7 +61,7 @@ static inline uint16_t UINT16_TO_BE(const uint16_t x) {
 
 OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_len, const uint8_t *msg, size_t msg_len, const uint8_t *signature, size_t signature_len, const OQS_SIG *sig) {
 	if (0) {
-	} else if ((0 == strcmp(sig->method_name, "picnic_L1_FS")) || (0 == strcmp(sig->method_name, "picnic_L1_UR")) || (0 == strcmp(sig->method_name, "picnic_L3_FS")) || (0 == strcmp(sig->method_name, "picnic_L3_UR")) || (0 == strcmp(sig->method_name, "picnic_L5_FS")) || (0 == strcmp(sig->method_name, "picnic_L5_UR")) || (0 == strcmp(sig->method_name, "picnic2_L1_FS")) || (0 == strcmp(sig->method_name, "picnic2_L3_FS")) || (0 == strcmp(sig->method_name, "picnic2_L5_FS"))) {
+	} else if ((0 == strcmp(sig->method_name, "picnic_L1_FS")) || (0 == strcmp(sig->method_name, "picnic_L1_UR")) || (0 == strcmp(sig->method_name, "picnic_L1_full")) || (0 == strcmp(sig->method_name, "picnic_L3_FS")) || (0 == strcmp(sig->method_name, "picnic_L3_UR")) || (0 == strcmp(sig->method_name, "picnic_L3_full")) || (0 == strcmp(sig->method_name, "picnic_L5_FS")) || (0 == strcmp(sig->method_name, "picnic_L5_UR")) || (0 == strcmp(sig->method_name, "picnic_L5_full")) || (0 == strcmp(sig->method_name, "picnic3_L1")) || (0 == strcmp(sig->method_name, "picnic3_L3")) || (0 == strcmp(sig->method_name, "picnic3_L5"))) {
 		// signed_msg = 4 byte signature length in little endian || msg || signature
 		*signed_msg_len = 4 + signature_len + msg_len;
 		*signed_msg = malloc(*signed_msg_len);

@@ -71,6 +71,30 @@
 #define restrict __restrict
 #endif
 
+#if defined(WITH_SSE2)
+#define ATTR_TARGET_S128 ATTR_TARGET_SSE2
+#else
+#define ATTR_TARGET_S128
+#endif
+
+#if defined(WITH_AVX2)
+#define ATTR_TARGET_S256 ATTR_TARGET_AVX2
+#else
+#define ATTR_TARGET_S256
+#endif
+
+#if defined(WITH_SSE2)
+/* backwards compatibility macros for GCC 4.8 and 4.9
+ *
+ * bs{l,r}i was introduced in GCC 5 and in clang as macros sometime in 2015.
+ * */
+#if (!defined(__clang__) && defined(__GNUC__) && __GNUC__ < 5) ||                                  \
+    ((defined(__clang__) || defined(_MSC_VER)) && !defined(_mm_bslli_si128))
+#define _mm_bslli_si128(a, imm) _mm_slli_si128((a), (imm))
+#define _mm_bsrli_si128(a, imm) _mm_srli_si128((a), (imm))
+#endif
+#endif
+
 #define apply_region(name, type, xor, attributes)                                                  \
   static inline void attributes name(type* restrict dst, type const* restrict src,                 \
                                      unsigned int count) {                                         \
@@ -120,9 +144,33 @@ typedef __m256i word256;
 apply_region(mm256_xor_region, word256, mm256_xor, FN_ATTRIBUTES_AVX2)
 apply_mask_region(mm256_xor_mask_region, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2)
 apply_mask(mm256_xor_mask, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2_CONST)
+
+#define mm256_shift_left(data, count)                                                              \
+  _mm256_or_si256(_mm256_slli_epi64(data, count),                                                  \
+                  _mm256_blend_epi32(mm256_zero,                                                   \
+                                     _mm256_permute4x64_epi64(_mm256_srli_epi64(data, 64 - count), \
+                                                              _MM_SHUFFLE(2, 1, 0, 0)),            \
+                                     _MM_SHUFFLE(3, 3, 3, 0)))
+
+#define mm256_shift_right(data, count)                                                             \
+  _mm256_or_si256(_mm256_srli_epi64(data, count),                                                  \
+                  _mm256_blend_epi32(mm256_zero,                                                   \
+                                     _mm256_permute4x64_epi64(_mm256_slli_epi64(data, 64 - count), \
+                                                              _MM_SHUFFLE(0, 3, 2, 1)),            \
+                                     _MM_SHUFFLE(0, 3, 3, 3)))
+
+#define mm256_rotate_left(data, count)                                                             \
+  _mm256_or_si256(                                                                                 \
+      _mm256_slli_epi64(data, count),                                                              \
+      _mm256_permute4x64_epi64(_mm256_srli_epi64(data, 64 - count), _MM_SHUFFLE(2, 1, 0, 3)))
+
+#define mm256_rotate_right(data, count)                                                            \
+  _mm256_or_si256(                                                                                 \
+      _mm256_srli_epi64(data, count),                                                              \
+      _mm256_permute4x64_epi64(_mm256_slli_epi64(data, 64 - count), _MM_SHUFFLE(0, 3, 2, 1)))
 #endif
 
-#if defined(WITH_SSE2)
+#if defined(WITH_SSE2) || defined(WITH_AVX2)
 typedef __m128i word128;
 
 #define mm128_zero _mm_setzero_si128()
@@ -137,8 +185,73 @@ typedef __m128i word128;
 apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_SSE2)
 apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2)
 apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2_CONST)
-apply_array(mm256_xor_sse, word128, mm128_xor, 2, FN_ATTRIBUTES_SSE2)
-apply_array(mm256_and_sse, word128, mm128_and, 2, FN_ATTRIBUTES_SSE2)
+apply_array(mm128_xor_256, word128, mm128_xor, 2, FN_ATTRIBUTES_SSE2)
+apply_array(mm128_and_256, word128, mm128_and, 2, FN_ATTRIBUTES_SSE2)
+
+#define mm128_shift_left(data, count)                                                              \
+  _mm_or_si128(_mm_slli_epi64(data, count), _mm_srli_epi64(_mm_bslli_si128(data, 8), 64 - count))
+
+#define mm128_shift_right(data, count)                                                             \
+  _mm_or_si128(_mm_srli_epi64(data, count), _mm_slli_epi64(_mm_bsrli_si128(data, 8), 64 - count))
+
+#define mm128_rotate_left(data, count)                                                             \
+  _mm_or_si128(_mm_slli_epi64(data, count),                                                        \
+               _mm_shuffle_epi32(_mm_srli_epi64(data, 64 - count), _MM_SHUFFLE(1, 0, 3, 2)))
+
+#define mm128_rotate_right(data, count)                                                            \
+  _mm_or_si128(_mm_srli_epi64(data, count),                                                        \
+               _mm_shuffle_epi32(_mm_slli_epi64(data, 64 - count), _MM_SHUFFLE(1, 0, 3, 2)))
+
+static inline void FN_ATTRIBUTES_SSE2 mm128_shift_right_256(__m128i res[2], __m128i const data[2],
+                                                            const unsigned int count) {
+  __m128i total_carry = _mm_bslli_si128(data[1], 8);
+  total_carry         = _mm_slli_epi64(total_carry, 64 - count);
+  for (unsigned int i = 0; i < 2; ++i) {
+    __m128i carry = _mm_bsrli_si128(data[i], 8);
+    carry         = _mm_slli_epi64(carry, 64 - count);
+    res[i]        = _mm_srli_epi64(data[i], count);
+    res[i]        = _mm_or_si128(res[i], carry);
+  }
+  res[0] = _mm_or_si128(res[0], total_carry);
+}
+
+static inline void FN_ATTRIBUTES_SSE2 mm128_shift_left_256(__m128i res[2], __m128i const data[2],
+                                                           const unsigned int count) {
+  __m128i total_carry = _mm_bsrli_si128(data[0], 8);
+  total_carry         = _mm_srli_epi64(total_carry, 64 - count);
+
+  for (unsigned int i = 0; i < 2; ++i) {
+    __m128i carry = _mm_bslli_si128(data[i], 8);
+
+    carry  = _mm_srli_epi64(carry, 64 - count);
+    res[i] = _mm_slli_epi64(data[i], count);
+    res[i] = _mm_or_si128(res[i], carry);
+  }
+  res[1] = _mm_or_si128(res[1], total_carry);
+}
+
+/* shift left by 64 to 127 bits */
+#define mm128_shift_left_64_127(data, count) _mm_slli_epi64(_mm_bslli_si128(data, 8), count - 64)
+/* shift right by 64 to 127 bits */
+#define mm128_shift_right_64_127(data, count) _mm_srli_epi64(_mm_bsrli_si128(data, 8), count - 64)
+
+static inline void FN_ATTRIBUTES_SSE2 mm128_rotate_left_256(__m128i res[2], __m128i const data[2],
+                                                            const unsigned int count) {
+  const __m128i carry = mm128_shift_right_64_127(data[0], 128 - count);
+
+  res[0] = _mm_or_si128(mm128_shift_left(data[0], count),
+                        mm128_shift_right_64_127(data[1], 128 - count));
+  res[1] = _mm_or_si128(mm128_shift_left(data[1], count), carry);
+}
+
+static inline void FN_ATTRIBUTES_SSE2 mm128_rotate_right_256(__m128i res[2], __m128i const data[2],
+                                                             const unsigned int count) {
+  const __m128i carry = mm128_shift_left_64_127(data[0], 128 - count);
+
+  res[0] = _mm_or_si128(mm128_shift_right(data[0], count),
+                        mm128_shift_left_64_127(data[1], 128 - count));
+  res[1] = _mm_or_si128(mm128_shift_right(data[1], count), carry);
+}
 #endif
 
 #if defined(WITH_NEON)
@@ -150,14 +263,67 @@ typedef uint64x2_t word128;
 /* !l & r, requires l to be an immediate */
 #define mm128_nand(l, r) vbicq_u64((r), (l))
 #define mm128_broadcast_u64(x) vdupq_n_u64((x))
-#define mm128_sl_u64(x, s) vshlq_n_u64((x), (s))
-#define mm128_sr_u64(x, s) vshrq_n_u64((x), (s))
+#define mm128_sl_u64(x, s)                                                                         \
+  (__builtin_constant_p(s) ? vshlq_n_u64((x), (s)) : vshlq_u64((x), vdupq_n_s64(s)))
+#define mm128_sr_u64(x, s)                                                                         \
+  (__builtin_constant_p(s) ? vshrq_n_u64((x), (s)) : vshlq_u64((x), vdupq_n_s64(-(int64_t)(s))))
 
 apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_NEON)
 apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_NEON)
 apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_NEON_CONST)
-apply_array(mm256_xor, word128, mm128_xor, 2, FN_ATTRIBUTES_NEON)
-apply_array(mm256_and, word128, mm128_and, 2, FN_ATTRIBUTES_NEON)
+apply_array(mm128_xor_256, word128, mm128_xor, 2, FN_ATTRIBUTES_NEON)
+apply_array(mm128_and_256, word128, mm128_and, 2, FN_ATTRIBUTES_NEON)
+
+/* shift left by 64 to 127 bits */
+#define mm128_shift_left_64_127(data, count)                                                       \
+  mm128_sl_u64(vextq_u64(mm128_zero, data, 1), count - 64)
+/* shift right by 64 to 127 bits */
+#define mm128_shift_right_64_127(data, count)                                                      \
+  mm128_sr_u64(vextq_u64(data, mm128_zero, 1), count - 64)
+
+#define mm128_shift_left(data, count)                                                              \
+  vorrq_u64(mm128_sl_u64(data, count), mm128_sr_u64(vextq_u64(mm128_zero, data, 1), 64 - count))
+
+#define mm128_shift_right(data, count)                                                             \
+  vorrq_u64(mm128_sr_u64(data, count), mm128_sl_u64(vextq_u64(data, mm128_zero, 1), 64 - count))
+
+#define mm128_rotate_left(data, count)                                                             \
+  vorrq_u64(mm128_shift_left(data, count), mm128_shift_right_64_127(data, 128 - count))
+
+#define mm128_rotate_right(data, count)                                                            \
+  vorrq_u64(mm128_shift_right(data, count), mm128_shift_left_64_127(data, 128 - count))
+
+static inline void FN_ATTRIBUTES_NEON mm128_shift_left_256(word128 res[2], word128 const data[2],
+                                                           const unsigned int count) {
+  res[1] =
+      vorrq_u64(mm128_shift_left(data[1], count), mm128_shift_right_64_127(data[0], 128 - count));
+  res[0] = mm128_shift_left(data[0], count);
+}
+
+static inline void FN_ATTRIBUTES_NEON mm128_shift_right_256(word128 res[2], word128 const data[2],
+                                                            const unsigned int count) {
+  res[0] =
+      vorrq_u64(mm128_shift_right(data[0], count), mm128_shift_left_64_127(data[1], 128 - count));
+  res[1] = mm128_shift_right(data[1], count);
+}
+
+static inline void FN_ATTRIBUTES_NEON mm128_rotate_left_256(word128 res[2], word128 const data[2],
+                                                            const unsigned int count) {
+  const word128 carry = mm128_shift_right_64_127(data[1], 128 - count);
+
+  res[1] =
+      vorrq_u64(mm128_shift_left(data[1], count), mm128_shift_right_64_127(data[0], 128 - count));
+  res[0] = vorrq_u64(mm128_shift_left(data[0], count), carry);
+}
+
+static inline void FN_ATTRIBUTES_NEON mm128_rotate_right_256(word128 res[2], word128 const data[2],
+                                                             const unsigned int count) {
+  const word128 carry = mm128_shift_left_64_127(data[0], 128 - count);
+
+  res[0] =
+      vorrq_u64(mm128_shift_right(data[0], count), mm128_shift_left_64_127(data[1], 128 - count));
+  res[1] = vorrq_u64(mm128_shift_right(data[1], count), carry);
+}
 #endif
 
 #if defined(_MSC_VER)

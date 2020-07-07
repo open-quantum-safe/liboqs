@@ -37,20 +37,26 @@ extern "C" {
 #define OQS_SIG_alg_picnic_L1_FS "picnic_L1_FS"
 /** Algorithm identifier for picnic_L1_UR */
 #define OQS_SIG_alg_picnic_L1_UR "picnic_L1_UR"
+/** Algorithm identifier for picnic_L1_full */
+#define OQS_SIG_alg_picnic_L1_full "picnic_L1_full"
 /** Algorithm identifier for picnic_L3_FS */
 #define OQS_SIG_alg_picnic_L3_FS "picnic_L3_FS"
 /** Algorithm identifier for picnic_L3_UR */
 #define OQS_SIG_alg_picnic_L3_UR "picnic_L3_UR"
+/** Algorithm identifier for picnic_L3_full */
+#define OQS_SIG_alg_picnic_L3_full "picnic_L3_full"
 /** Algorithm identifier for picnic_L5_FS */
 #define OQS_SIG_alg_picnic_L5_FS "picnic_L5_FS"
 /** Algorithm identifier for picnic_L5_FS */
 #define OQS_SIG_alg_picnic_L5_UR "picnic_L5_UR"
-/** Algorithm identifier for picnic2_L1_FS */
-#define OQS_SIG_alg_picnic2_L1_FS "picnic2_L1_FS"
-/** Algorithm identifier for picnic2_L3_FS */
-#define OQS_SIG_alg_picnic2_L3_FS "picnic2_L3_FS"
-/** Algorithm identifier for picnic2_L5_FS */
-#define OQS_SIG_alg_picnic2_L5_FS "picnic2_L5_FS"
+/** Algorithm identifier for picnic_L5_full */
+#define OQS_SIG_alg_picnic_L5_full "picnic_L5_full"
+/** Algorithm identifier for picnic3_L1 */
+#define OQS_SIG_alg_picnic3_L1 "picnic3_L1"
+/** Algorithm identifier for picnic3_L3 */
+#define OQS_SIG_alg_picnic3_L3 "picnic3_L3"
+/** Algorithm identifier for picnic3_L5 */
+#define OQS_SIG_alg_picnic3_L5 "picnic3_L5"
 /** Algorithm identifier for qTesla-p-I */
 #define OQS_SIG_alg_qTesla_p_I "qTesla-p-I"
 /** Algorithm identifier for qTesla-p-III */
@@ -164,7 +170,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 64
+#define OQS_SIG_algs_length 67
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
