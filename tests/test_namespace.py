@@ -11,9 +11,14 @@ import sys
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 def test_namespace(use_liboqs_so):
     if use_liboqs_so:
-        out = helpers.run_subprocess(
-            ['nm', '-D', 'build/lib/liboqs.so']
-        )
+        if sys.platform == "darwin":
+            out = helpers.run_subprocess(
+                ['nm', '-g', 'build/lib/liboqs.dylib']
+            )
+        else:
+            out = helpers.run_subprocess(
+                ['nm', '-D', 'build/lib/liboqs.so']
+            )
     else:
         out = helpers.run_subprocess(
             ['nm', '-g', 'build/lib/liboqs.a']
