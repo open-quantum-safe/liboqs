@@ -6,6 +6,11 @@ import os.path
 import pytest
 import subprocess
 import sys
+import json
+
+kats = {}
+kats["kem"] = None
+kats["sig"] = None
 
 def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, input=None):
     """
@@ -145,3 +150,9 @@ def is_build_portable():
             if line.startswith("#define OQS_PORTABLE_BUILD"):
                 return True
     return False
+
+def get_kats(t):
+   if kats[t] is None:
+     with open(os.path.join('tests', 'KATs', t, 'kats.json'), 'r') as fp:
+      kats[t] = json.load(fp)
+   return kats[t]
