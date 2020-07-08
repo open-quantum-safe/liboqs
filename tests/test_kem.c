@@ -113,6 +113,14 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		goto err;
 	}
 
+	// test invalid encapsulation (call should either fail or result in invalid shared secret)
+	OQS_randombytes(ciphertext, kem->length_ciphertext);
+	rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
+	if (rc == OQS_SUCCESS && memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret) == 0) {
+		fprintf(stderr, "ERROR: OQS_KEM_decaps succeeded on wrong input\n");
+		goto err;
+	}
+
 	ret = OQS_SUCCESS;
 	goto cleanup;
 
