@@ -5,15 +5,15 @@
 
 if(OQS_ENABLE_SIG_mqdss_31_48)
     add_library(mqdss_31_48_clean OBJECT sig_mqdss_31_48.c pqclean_mqdss-48_clean/gf31.c pqclean_mqdss-48_clean/mq.c pqclean_mqdss-48_clean/sign.c)
-    target_include_directories(mqdss_31_48_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_include_directories(mqdss_31_48_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_mqdss-48_clean)
+    target_include_directories(mqdss_31_48_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_MQDSS_OBJS ${_MQDSS_OBJS} $<TARGET_OBJECTS:mqdss_31_48_clean>)
 endif()
 
 if(OQS_ENABLE_SIG_mqdss_31_64)
     add_library(mqdss_31_64_clean OBJECT sig_mqdss_31_64.c pqclean_mqdss-64_clean/gf31.c pqclean_mqdss-64_clean/mq.c pqclean_mqdss-64_clean/sign.c)
-    target_include_directories(mqdss_31_64_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_include_directories(mqdss_31_64_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_mqdss-64_clean)
+    target_include_directories(mqdss_31_64_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_MQDSS_OBJS ${_MQDSS_OBJS} $<TARGET_OBJECTS:mqdss_31_64_clean>)
 endif()
 

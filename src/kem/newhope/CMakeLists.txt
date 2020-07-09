@@ -5,15 +5,15 @@
 
 if(OQS_ENABLE_KEM_newhope_512cca)
     add_library(newhope_512cca_clean OBJECT kem_newhope_512cca.c pqclean_newhope512cca_clean/cpapke.c pqclean_newhope512cca_clean/kem.c pqclean_newhope512cca_clean/ntt.c pqclean_newhope512cca_clean/poly.c pqclean_newhope512cca_clean/precomp.c pqclean_newhope512cca_clean/reduce.c pqclean_newhope512cca_clean/verify.c)
-    target_include_directories(newhope_512cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_include_directories(newhope_512cca_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_newhope512cca_clean)
+    target_include_directories(newhope_512cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_NEWHOPE_OBJS ${_NEWHOPE_OBJS} $<TARGET_OBJECTS:newhope_512cca_clean>)
 endif()
 
 if(OQS_ENABLE_KEM_newhope_1024cca)
     add_library(newhope_1024cca_clean OBJECT kem_newhope_1024cca.c pqclean_newhope1024cca_clean/cpapke.c pqclean_newhope1024cca_clean/kem.c pqclean_newhope1024cca_clean/ntt.c pqclean_newhope1024cca_clean/poly.c pqclean_newhope1024cca_clean/precomp.c pqclean_newhope1024cca_clean/reduce.c pqclean_newhope1024cca_clean/verify.c)
-    target_include_directories(newhope_1024cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     target_include_directories(newhope_1024cca_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_newhope1024cca_clean)
+    target_include_directories(newhope_1024cca_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
     set(_NEWHOPE_OBJS ${_NEWHOPE_OBJS} $<TARGET_OBJECTS:newhope_1024cca_clean>)
 endif()
 
