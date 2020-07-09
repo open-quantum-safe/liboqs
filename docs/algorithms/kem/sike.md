@@ -12,7 +12,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://github.com/Microsoft/PQCrypto-SIDH
-- **Implementation version**: v3.3 + fixes (https://github.com/microsoft/PQCrypto-SIDH/commit/521aabbaa8c65124d2c143ce6537c98f55eda242)
+- **Implementation version**: v3.3 + fixes (https://github.com/microsoft/PQCrypto-SIDH/commit/011e11f350f9dc39b367c4a30c52002f803513d6)
 - **License**: MIT License
 - **Constant-time**: Yes
 - **Optimizations**: Portable C, with assembly optimizations on AMD64 and selected parameter sets on ARM64 (selected at compile-time, enabled by default if available)

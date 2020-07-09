@@ -1109,6 +1109,9 @@ static void fpinv_mont_bingcd(felm_t a)
     felm_t x, t;
     unsigned int k;
 
+    if (is_felm_zero(a) == true)
+        return;
+
     fpinv_mont_bingcd_partial(a, x, &k);
     if (k < MAXBITS_FIELD) { 
         fpmul_mont(x, (digit_t*)&Montgomery_R2, x);
