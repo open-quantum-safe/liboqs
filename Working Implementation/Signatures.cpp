@@ -1,6 +1,8 @@
-#include <iostream>
-#include <oqs/oqs.h>
 #include <ctime>
+#include <fstream>
+#include <iostream>
+#include <string>
+#include <oqs/oqs.h>
 
 /*
 	algorithm: What algorithm the instance of the class is using
@@ -102,35 +104,80 @@ public:
 
 
 
-int main() {
+// Return the header row for the CSV file
+std::string benchmarkLogHeader() {
+	std::string row = "";
+	row += "Name,";
+	row += "Public Key Length (bytes),";
+	row += "Private Key Length (bytes),";
+	row += "Signature Length (bytes),";
+	row += "Public+Signature (bytes),";
+	row += "Number of samples,";
+	row += "Sample input message,";
+	row += "Average clocks,";
+	row += "Average milliseconds,";
+	return row;
+}
+
+// Given an algorithm name, run a benchmark n times and return its CSV row
+std::string benchmarkLog(std::string algorithm, int n) {
+	std::string message = "Hello, World!";
+
+	std::clock_t start = std::clock();
+	for(int i = 0; i < n; i++) {
+    	SignatureManager sigmanager(algorithm);
+		sigmanager.generate_keypair();
+		unsigned char* signature = sigmanager.sign(message);
+		bool result = sigmanager.verify(message, signature);
+	}
+	std::clock_t end = std::clock();
+
+	double clocks = (end - start) / (double)n;
+	double duration = (end - start) / (double)(CLOCKS_PER_SEC / 1000) / (double)n;
+
+    SignatureManager sigmanager(algorithm);
+
+ 	std::cout << "Seconds: " << duration << " ms\t";
+	std::cout << "Bytes: " << (sigmanager.public_key_length + sigmanager.signature_length) << "\t";
+	std::cout << algorithm;
+	std::cout << std::endl;
+
+
+	std::string row = "";
+	row += "\"" + algorithm + "\",";
+	row += std::to_string(sigmanager.public_key_length) + ",";
+	row += std::to_string(sigmanager.private_key_length) + ",";
+	row += std::to_string(sigmanager.signature_length) + ",";
+	row += std::to_string(sigmanager.public_key_length + sigmanager.signature_length) + ",";
+	row += std::to_string(n) + ",";
+	row += "\"" + message + "\",";
+	row += std::to_string(clocks) + ",";
+	row += std::to_string(duration) + ",";
+	return row;
+}
+
+int main(int argc, char** argv) {
+	std::string fileName = "Algorithm_benchmark.csv";
+	int numSamples = 30;
+
+	std::ofstream outputFile;
+	outputFile.open(fileName);
+
+	outputFile << benchmarkLogHeader() << std::endl;
 	
 	std::cout << "Listing available algorithms:"<<"\n";
 
-	// listing out all available algorithms
+	// A list of all available algorithms
 	const char *availAlgs[63]={"DILITHIUM_2","DILITHIUM_3","DILITHIUM_4","Falcon-512","Falcon-1024","MQDSS-31-48","MQDSS-31-64","Rainbow-Ia-Classic","Rainbow-Ia-Cyclic","Rainbow-Ia-Cyclic-Compressed","Rainbow-IIIc-Classic","Rainbow-IIIc-Cyclic","Rainbow-IIIc-Cyclic-Compressed","Rainbow-Vc-Classic","Rainbow-Vc-Cyclic","Rainbow-Vc-Cyclic-Compressed","SPHINCS+-Haraka-128f-robust","SPHINCS+-Haraka-128f-simple","SPHINCS+-Haraka-128s-robust","SPHINCS+-Haraka-128s-simple","SPHINCS+-Haraka-192f-robust","SPHINCS+-Haraka-192f-simple","SPHINCS+-Haraka-192s-robust","SPHINCS+-Haraka-192s-simple","SPHINCS+-Haraka-256f-robust","SPHINCS+-Haraka-256f-simple","SPHINCS+-Haraka-256s-robust","SPHINCS+-Haraka-256s-simple","SPHINCS+-SHA256-128f-robust","SPHINCS+-SHA256-128f-simple","SPHINCS+-SHA256-128s-robust","SPHINCS+-SHA256-128s-simple","SPHINCS+-SHA256-192f-robust","SPHINCS+-SHA256-192f-simple","SPHINCS+-SHA256-192s-robust","SPHINCS+-SHA256-192s-simple","SPHINCS+-SHA256-256f-robust","SPHINCS+-SHA256-256f-simple","SPHINCS+-SHA256-256s-robust","SPHINCS+-SHA256-256s-simple","SPHINCS+-SHAKE256-128f-robust","SPHINCS+-SHAKE256-128f-simple","SPHINCS+-SHAKE256-128s-robust","SPHINCS+-SHAKE256-128s-simple","SPHINCS+-SHAKE256-192f-robust","SPHINCS+-SHAKE256-192f-simple","SPHINCS+-SHAKE256-192s-robust","SPHINCS+-SHAKE256-192s-simple","SPHINCS+-SHAKE256-256f-robust","SPHINCS+-SHAKE256-256f-simple","SPHINCS+-SHAKE256-256s-robust","SPHINCS+-SHAKE256-256s-simple","picnic_L1_FS","picnic_L1_UR","picnic_L3_FS","picnic_L3_UR","picnic_L5_FS","picnic_L5_UR","picnic2_L1_FS","picnic2_L3_FS","picnic2_L5_FS","qTesla-p-I","qTesla-p-III"};
+    
     for (int i = 0; i <63; i++) {
-    	std::string message = "Hello, World!";
     	std::string algorithm = availAlgs[i];
-
-    	std::clock_t start = std::clock();
-
-    	for(int j = 0; j < 10; j++) {
-	    	SignatureManager sigmanager(algorithm);
-			sigmanager.generate_keypair();
-			unsigned char* signature = sigmanager.sign(message);
-			bool result = sigmanager.verify(message, signature);
-		}
-
-    	std::clock_t end = std::clock();
-    	std::clock_t duration = (end - start) / (double)(CLOCKS_PER_SEC / 1000) / 10;
-
-	    SignatureManager sigmanager(algorithm);
-     	std::cout << "Time: " << duration << " ms\t";
-		std::cout << "Bytes: " << (sigmanager.public_key_length + sigmanager.signature_length) << "\t";
-		std::cout << algorithm;
-		std::cout << std::endl;
+    	std::string row = benchmarkLog(algorithm, numSamples);
+		outputFile << row << std::endl;
     }
-	//		std::cout << availAlgs[i] << "\n";
+
+    outputFile.close();
+    std::cout << std::endl << "All data has been successfully saved to " << fileName << "!" << std::endl;
 
 	//getting user choice for the algorithm
 	std::string userChoice;
@@ -148,11 +195,9 @@ int main() {
 	sigmanager.generate_keypair();
 
 	std::cout << "Public key (" << sigmanager.public_key_length << " bytes):" << std::endl << sigmanager.get_public_key() << std::endl;
-
 	std::cout << std::endl;
 
 	std::cout << "Private key (" << sigmanager.private_key_length << " bytes):" << std::endl << sigmanager.get_private_key() << std::endl;
-
 	std::cout << std::endl;
 
 	std::cout << "Signing message \"" << message << "\" to get signature (" << sigmanager.signature_length << " bytes)" << std::endl;
