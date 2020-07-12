@@ -1113,7 +1113,7 @@ static void fpinv_mont_bingcd(felm_t a)
         return;
 
     fpinv_mont_bingcd_partial(a, x, &k);
-    if (k < MAXBITS_FIELD) { 
+    if (k <= MAXBITS_FIELD) {
         fpmul_mont(x, (digit_t*)&Montgomery_R2, x);
         k += MAXBITS_FIELD;
     }
@@ -1154,7 +1154,7 @@ static void mont_n_way_inv(const f2elm_t* vec, const int n, f2elm_t* out)
     fp2inv_mont_bingcd(t1);
     
     for (i = n-1; i >= 1; i--) {
-        fp2mul_mont(out[i-1], t1, out[i]);// out[i] = t1*out[i-1]
+        fp2mul_mont(out[i-1], t1, out[i]);        // out[i] = t1*out[i-1]
         fp2mul_mont(t1, vec[i], t1);              // t1 = t1*vec[i]
     }
     fp2copy(t1, out[0]);                          // out[0] = t1
@@ -1344,12 +1344,17 @@ static __inline void Montgomery_inversion_mod_order_bingcd_partial(const digit_t
 
 
 static void Montgomery_inversion_mod_order_bingcd(const digit_t* a, digit_t* c, const digit_t* order, const digit_t* Montgomery_rprime, const digit_t* Montgomery_Rprime)
-{// Montgomery inversion modulo order, a = a^(-1)*R mod order.
-    digit_t x[NWORDS_ORDER], t[NWORDS_ORDER];
+{// Montgomery inversion modulo order, c = a^(-1)*R mod order.
+  digit_t x[NWORDS_ORDER], t[NWORDS_ORDER] = {0};
     unsigned int k;
 
+    if (is_zero((digit_t*)a, NWORDS_ORDER) == true) {
+        copy_words(t, c, NWORDS_ORDER);
+        return;
+    }
+
     Montgomery_inversion_mod_order_bingcd_partial(a, x, &k, order);
-    if (k < NBITS_ORDER) {
+    if (k <= NBITS_ORDER) {
         Montgomery_multiply_mod_order(x, Montgomery_Rprime, x, order, Montgomery_rprime);
         k += NBITS_ORDER;
     }
@@ -1361,8 +1366,9 @@ static void Montgomery_inversion_mod_order_bingcd(const digit_t* a, digit_t* c, 
 
 
 static void inv_mod_orderA(const digit_t* a, digit_t* c)
-{ // Inversion modulo an even integer of the form 2^m.
+{ // Inversion of an odd integer modulo an even integer of the form 2^m.
   // Algorithm 3: Explicit Quadratic Modular inverse modulo 2^m from Dumas'12: http://arxiv.org/pdf/1209.6626.pdf
+  // If the input is invalid (even), the function outputs c = a.
     unsigned int i, f, s = 0;
     digit_t am1[NWORDS_ORDER] = {0};
     digit_t tmp1[NWORDS_ORDER] = {0};
@@ -1370,18 +1376,15 @@ static void inv_mod_orderA(const digit_t* a, digit_t* c)
     digit_t one[NWORDS_ORDER] = {0};
     digit_t order[NWORDS_ORDER] = {0};
     digit_t mask = (digit_t)((uint64_t)(-1) >> (NBITS_ORDER - OALICE_BITS));
-    bool equal = true;
 
     order[NWORDS_ORDER-1] = (digit_t)((uint64_t)1 << (64 - (NBITS_ORDER - OALICE_BITS)));  // Load most significant digit of Alice's order
     one[0] = 1;
 
-    for (i = 0; i < NWORDS_ORDER; i++) {
-        if (a[i] != one[0]) equal = false;
-    }
-    if (equal) {
+    mp_sub(a, one, am1, NWORDS_ORDER);                   // am1 = a-1
+    if (((a[0] & (digit_t)1) == 0) || (is_zero(am1, NWORDS_ORDER) == true)) {  // Check if the input is even or one
         copy_words(a, c, NWORDS_ORDER);
+        c[NWORDS_ORDER-1] &= mask;                       // mod 2^m
     } else {
-        mp_sub(a, one, am1, NWORDS_ORDER);               // am1 = a-1
         mp_sub(order, am1, c, NWORDS_ORDER);
         mp_add(c, one, c, NWORDS_ORDER);                 // c = 2^m - a + 2
 
@@ -1391,16 +1394,16 @@ static void inv_mod_orderA(const digit_t* a, digit_t* c)
             mp_shiftr1(tmp1, NWORDS_ORDER);
         }
 
-        f = OALICE_BITS / s;
+        if (s !=0) { f = OALICE_BITS / s; }
         for (i = 1; i < f; i <<= 1) {
             multiply(am1, am1, tmp2, NWORDS_ORDER);            // tmp2 = am1^2  
             copy_words(tmp2, am1, NWORDS_ORDER);
-            am1[NWORDS_ORDER-1] &= mask;                       // am1 = tmp2 mod 2^e
+            am1[NWORDS_ORDER-1] &= mask;                       // am1 = tmp2 mod 2^m
             mp_add(am1, one, tmp1, NWORDS_ORDER);              // tmp1 = am1 + 1
-            tmp1[NWORDS_ORDER-1] &= mask;                      // mod 2^e
+            tmp1[NWORDS_ORDER-1] &= mask;                      // mod 2^m
             multiply(c, tmp1, tmp2, NWORDS_ORDER);             // c = c*tmp1
             copy_words(tmp2, c, NWORDS_ORDER);
-            c[NWORDS_ORDER-1] &= mask;                         // mod 2^e
+            c[NWORDS_ORDER-1] &= mask;                         // mod 2^m
         }
     }
 }
