@@ -1394,7 +1394,7 @@ static void inv_mod_orderA(const digit_t* a, digit_t* c)
             mp_shiftr1(tmp1, NWORDS_ORDER);
         }
 
-        if (s !=0) { f = OALICE_BITS / s; }
+        f = OALICE_BITS / s;
         for (i = 1; i < f; i <<= 1) {
             multiply(am1, am1, tmp2, NWORDS_ORDER);            // tmp2 = am1^2  
             copy_words(tmp2, am1, NWORDS_ORDER);
