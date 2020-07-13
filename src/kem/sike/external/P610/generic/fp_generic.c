@@ -9,10 +9,10 @@
 
 /* OQS note: this file is #include'd with the defs of these consts; removed to avoid re-defs
 // Global constants
-extern const uint64_t p610[NWORDS_FIELD];
-extern const uint64_t p610p1[NWORDS_FIELD];
-extern const uint64_t p610x2[NWORDS_FIELD];
-extern const uint64_t p610x4[NWORDS_FIELD];
+extern const uint64_t p610[NWORDS64_FIELD];
+extern const uint64_t p610p1[NWORDS64_FIELD];
+extern const uint64_t p610x2[NWORDS64_FIELD];
+extern const uint64_t p610x4[NWORDS64_FIELD];
 */
 
 __inline void mp_sub610_p2(const digit_t* a, const digit_t* b, digit_t* c)

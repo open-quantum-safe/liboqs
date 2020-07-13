@@ -215,7 +215,7 @@ oqs_kem_sike_mp_sub434_p4_asm:
   SUB434_PX  p434x4
   ret
 
-	
+
 //////////////////////////////////////////// MACRO
 .macro MUL192_COMBA_CUT  A0, A1, A2, B0, B1, B2, C0, C1, C2, C3, C4, C5, T0, T1
     mul     \C4, \A1, \B0
@@ -258,65 +258,6 @@ oqs_kem_sike_mp_sub434_p4_asm:
     umulh   \C5, \A2, \B2
     adds    \C4, \C4, \T0
     adc     \C5, \C5, \T1
-.endm
-	
-	
-//////////////////////////////////////////// MACRO
-.macro MUL192_COMBA_CUT_UNSAT  A0, A1, A2, B0, B1, B2, C0, C1, C2, C3, C4, C5, T0, T1, T2
-    mul     \C4, \A1, \B0
-    umulh   \C5, \A1, \B0
-    adds    \C1, \C1, \C3
-    adc     \C2, \C2, xzr
-    
-    mul     \T1, \A1, \B1
-    umulh   \C3, \A1, \B1
-    adds    \C1, \C1, \C4
-    adcs    \C2, \C2, \C5
-    adc     \C3, \C3, xzr
-    
-    mul     \C4, \A0, \B2
-    umulh   \C5, \A0, \B2
-    adds    \C2, \C2, \T1
-    adc     \C3, \C3, xzr
-    
-    mul     \T0, \A2, \B0
-    umulh   \T1, \A2, \B0
-	adds    \C4, \C4, \T0
-	adc     \C5, \C5, \T1
-    
-    mul     \T0, \A1, \B2
-    umulh   \T1, \A1, \B2
-    adds    \C5, \C5, \T0
-    adc     \T1, \T1, xzr
-    
-    mul     \T0, \A2, \B1
-    umulh   \T2, \A2, \B1
-    adds    \C5, \C5, \T0
-	and     \T0, \T0, xzr
-    adc     \T1, \T1, \T2
-	
-	bfi     \T0, \C4, #60, #4
-	lsr     \C4, \C4, #4
-	bfi     \C4, \C5, #60, #4
-	lsr     \C5, \C5, #4
-	bfi     \C5, \T1, #60, #4
-	lsr     \T1, \T1, #4
-	
-    adds    \C1, \C1, \T0
-    adcs    \C2, \C2, \C4
-    adcs    \C3, \C3, \C5
-    adc     \T1, \T1, xzr
-    
-    mul     \C4, \A2, \B2
-    umulh   \C5, \A2, \B2
-	bfi     \T0, \C4, #56, #8
-	lsr     \C4, \C4, #8
-	bfi     \C4, \C5, #56, #8
-	lsr     \C5, \C5, #8
-	
-    adds    \C3, \C3, \T0
-    adcs    \C4, \C4, \T1
-    adc     \C5, \C5, xzr
 .endm
 
     
@@ -472,7 +413,7 @@ oqs_kem_sike_mul434_asm:
     adcs    x15, x15, x20
     adcs    x16, x16, x21
     stp     x26, x27, [x2,#0]
-    adcs    x17, x17, x22
+    adc    x17, x17, x22
     
     // x8-x9, x30, x19-x23 <- (AH+AL) x (BH+BL), low part
     MUL256_KARATSUBA_COMBA  x2, x26, x27, x28, x29, x11, x12, x13, x14, x8, x9, x30, x19, x20, x21, x22, x23, x24, x25  
@@ -483,7 +424,7 @@ oqs_kem_sike_mul434_asm:
     adcs    x15, x15, x21
     adcs    x16, x16, x22
     ldp     x13, x14, [x1,#16]
-    adcs    x17, x17, x23
+    adc    x17, x17, x23
 
     // x20-x27 <- AL x BL
     MUL256_KARATSUBA_COMBA  x0, x3, x4, x5, x6, x11, x12, x13, x14, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29
@@ -506,7 +447,7 @@ oqs_kem_sike_mul434_asm:
     umulh   x23, x3, x11
     sbcs    x15, x15, x25
     sbcs    x16, x16, x26
-    sbcs    x17, x17, x27
+    sbc     x17, x17, x27
 
     // x20-x23, x28-x29 <- AH x BH
     MUL192_COMBA_CUT  x3, x4, x5, x11, x12, x13, x20, x21, x22, x23, x28, x29, x6, x0
@@ -519,7 +460,7 @@ oqs_kem_sike_mul434_asm:
     sbcs    x10, x10, x28
     sbcs    x15, x15, x29
     sbcs    x16, x16, xzr
-    sbcs    x17, x17, xzr	
+    sbc     x17, x17, xzr
 
     adds    x8, x8, x24 
     adcs    x9, x9, x25
@@ -770,7 +711,7 @@ oqs_kem_sike_mp_add434x2_asm:
     ldp     x11, x12, [x1,#64]
     ldp     x5, x6,   [x0,#80]
     ldp     x13, x14, [x1,#80]
-	
+
     ldp     x7, x8,   [x0,#96]
     ldp     x15, x16, [x1,#96]
     adcs    x3, x3, x11
@@ -795,7 +736,7 @@ oqs_kem_sike_mp_subadd434x2_asm:
     ldp     x11, x12, [x1,#0]
     ldp     x5, x6,   [x0,#16]
     ldp     x13, x14, [x1,#16]
-	
+
     ldp     x7, x8,   [x0,#32]
     subs    x3, x3, x11
     sbcs    x4, x4, x12
@@ -810,14 +751,14 @@ oqs_kem_sike_mp_subadd434x2_asm:
     sbcs    x8, x8, x12
     stp     x7, x8,   [x2,#32]
     sbcs    x9, x9, x15
-    sbcs    x10, x10, x16	
+    sbcs    x10, x10, x16
     str     x9,       [x2,#48]
     
     ldp     x3, x4,   [x0,#64]
     ldp     x11, x12, [x1,#64]
     ldp     x5, x6,   [x0,#80]
     ldp     x13, x14, [x1,#80]
-	
+
     ldp     x7, x8,   [x0,#96]
     ldp     x15, x16, [x1,#96]
     sbcs    x3, x3, x11
@@ -839,16 +780,16 @@ oqs_kem_sike_mp_subadd434x2_asm:
     and     x13, x13, x0 
     and     x14, x14, x0 
     and     x15, x15, x0 
-	adds    x10, x10, x11  
+    adds    x10, x10, x11  
     str     x10,      [x2,#56] 
-	adcs    x3, x3, x11    
-	adcs    x4, x4, x11  
+    adcs    x3, x3, x11    
+    adcs    x4, x4, x11  
     stp     x3, x4,   [x2,#64] 
-	adcs    x5, x5, x12   
-	adcs    x6, x6, x13  
+    adcs    x5, x5, x12   
+    adcs    x6, x6, x13  
     stp     x5, x6,   [x2,#80] 
-	adcs    x7, x7, x14   
-	adc     x8, x8, x15 	
+    adcs    x7, x7, x14   
+    adc     x8, x8, x15
     stp     x7, x8,   [x2,#96]
     ret
 
@@ -864,7 +805,7 @@ oqs_kem_sike_mp_dblsub434x2_asm:
     stp     x29, x30, [sp, #16]
     ldp     x3, x4,   [x2,#0]
     ldp     x5, x6,   [x2,#16]
-	
+
     ldp     x27, x28, [x0,#0]
     ldp     x29, x30, [x0,#16]
     ldp     x7, x8,   [x2,#32]
