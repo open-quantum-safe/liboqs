@@ -114,8 +114,10 @@ std::string benchmarkLogHeader() {
 	row += "Public+Signature (bytes),";
 	row += "Number of samples,";
 	row += "Sample input message,";
-	row += "Average clocks,";
-	row += "Average milliseconds,";
+	row += "Initialization milliseconds,";
+	row += "Key generation milliseconds,";
+	row += "Signing milliseconds,";
+	row += "Verifying milliseconds,";
 	return row;
 }
 
@@ -123,21 +125,42 @@ std::string benchmarkLogHeader() {
 std::string benchmarkLog(std::string algorithm, int n) {
 	std::string message = "Hello, World!";
 
-	std::clock_t start = std::clock();
+	double clocks_initialization = 0;
+	double clocks_keypair_generation = 0;
+	double clocks_signing = 0;
+	double clocks_verifying = 0;
 	for(int i = 0; i < n; i++) {
-    	SignatureManager sigmanager(algorithm);
-		sigmanager.generate_keypair();
-		unsigned char* signature = sigmanager.sign(message);
-		bool result = sigmanager.verify(message, signature);
+
+		std::clock_t t1 = std::clock();
+    		SignatureManager sigmanager(algorithm);
+		std::clock_t t2 = std::clock();
+			sigmanager.generate_keypair();
+		std::clock_t t3 = std::clock();
+			unsigned char* signature = sigmanager.sign(message);
+		std::clock_t t4 = std::clock();
+			bool result = sigmanager.verify(message, signature);
+		std::clock_t t5 = std::clock();
+
+		clocks_initialization += (t2 - t1);
+		clocks_keypair_generation += (t3 - t2);
+		clocks_signing += (t4 - t3);
+		clocks_verifying += (t5 - t4);
 	}
-	std::clock_t end = std::clock();
 
-	double clocks = (end - start) / (double)n;
-	double duration = (end - start) / (double)(CLOCKS_PER_SEC / 1000) / (double)n;
+	clocks_initialization /= (double)n;
+	clocks_keypair_generation /= (double)n;
+	clocks_signing /= (double)n;
+	clocks_verifying /= (double)n;
 
+	double ms_initialization = clocks_initialization / (double)(CLOCKS_PER_SEC / 1000);
+	double ms_keypair_generation = clocks_keypair_generation / (double)(CLOCKS_PER_SEC / 1000);
+	double ms_signing = clocks_signing / (double)(CLOCKS_PER_SEC / 1000);
+	double ms_verifying =  clocks_verifying / (double)(CLOCKS_PER_SEC / 1000);
+
+	// Used to quickly grab the key and signature lengths
     SignatureManager sigmanager(algorithm);
 
- 	std::cout << "Seconds: " << duration << " ms\t";
+ 	std::cout << "Seconds: i-" << ms_initialization << "/k-" << clocks_keypair_generation << "/s-" << clocks_signing << "/v-" << clocks_verifying << " ms\t";
 	std::cout << "Bytes: " << (sigmanager.public_key_length + sigmanager.signature_length) << "\t";
 	std::cout << algorithm;
 	std::cout << std::endl;
@@ -151,14 +174,16 @@ std::string benchmarkLog(std::string algorithm, int n) {
 	row += std::to_string(sigmanager.public_key_length + sigmanager.signature_length) + ",";
 	row += std::to_string(n) + ",";
 	row += "\"" + message + "\",";
-	row += std::to_string(clocks) + ",";
-	row += std::to_string(duration) + ",";
+	row += std::to_string(ms_initialization) + ",";
+	row += std::to_string(ms_keypair_generation) + ",";
+	row += std::to_string(ms_signing) + ",";
+	row += std::to_string(ms_verifying) + ",";
 	return row;
 }
 
 int main(int argc, char** argv) {
 	std::string fileName = "Algorithm_benchmark.csv";
-	int numSamples = 30;
+	int numSamples = 100;
 
 	std::ofstream outputFile;
 	outputFile.open(fileName);
