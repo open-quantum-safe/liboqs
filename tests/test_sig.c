@@ -68,7 +68,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	}
 
 	/* modify the signature to invalidate it */
-	signature[0]++;
+	OQS_randombytes(signature, signature_len);
 	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
 	if (rc != OQS_ERROR) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
