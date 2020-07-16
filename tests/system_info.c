@@ -38,6 +38,22 @@ static void print_platform_info(void) {
 #include <openssl/opensslv.h>
 #endif
 
+#if defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD)
+#define C_OR_NI(stmt_c, stmt_ni) \
+    OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions(); \
+    if (available_cpu_extensions.AES_ENABLED) { \
+        stmt_ni; \
+    } else { \
+        stmt_c; \
+    }
+#elif defined(OQS_USE_CPU_EXTENSIONS) /* && !defined(OQS_PORTABLE_BUILD) */
+#define  C_OR_NI(stmt_c, stmt_ni) \
+    stmt_ni;
+#else /* !defined(OQS_USE_CPU_EXTENSIONS) */
+#define  C_OR_NI(stmt_c, stmt_ni) \
+    stmt_c;
+#endif
+
 static void print_oqs_configuration(void) {
 	printf("OQS version:      %s\n", OQS_VERSION_TEXT);
 #if defined(OQS_COMPILE_GIT_COMMIT)
@@ -51,7 +67,10 @@ static void print_oqs_configuration(void) {
 #if defined(OQS_USE_AES_OPENSSL)
 	printf("AES:              OpenSSL\n");
 #else
-	printf("AES:              C\n");
+	C_OR_NI(
+	    printf("AES:              C\n"),
+	    printf("AES:              NI\n")
+	)
 #endif
 #if defined(OQS_USE_SHA2_OPENSSL)
 	printf("SHA-2:            OpenSSL\n");
