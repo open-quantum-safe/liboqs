@@ -70,26 +70,32 @@ kems:
       -
         scheme: "512"
         pqclean_scheme: kyber512
+        upstream_location: KYBER
         pretty_name_full: Kyber512
       -
         scheme: "768"
         pqclean_scheme: kyber768
+        upstream_location: KYBER
         pretty_name_full: Kyber768
       -
         scheme: "1024"
         pqclean_scheme: kyber1024
+        upstream_location: KYBER
         pretty_name_full: Kyber1024
       -
         scheme: "512_90s"
         pqclean_scheme: kyber512-90s
+        upstream_location: KYBER
         pretty_name_full: Kyber512-90s
       -
         scheme: "768_90s"
         pqclean_scheme: kyber768-90s
+        upstream_location: KYBER
         pretty_name_full: Kyber768-90s
       -
         scheme: "1024_90s"
         pqclean_scheme: kyber1024-90s
+        upstream_location: KYBER
         pretty_name_full: Kyber1024-90s
   # -
   #   name: ledacrypt
@@ -227,16 +233,19 @@ sigs:
       -
         scheme: "2"
         pqclean_scheme: dilithium2
+        upstream_location: DILITHIUM
         pretty_name_full: DILITHIUM_2
         signed_msg_order: sig_then_msg
       -
         scheme: "3"
         pqclean_scheme: dilithium3
+        upstream_location: DILITHIUM
         pretty_name_full: DILITHIUM_3
         signed_msg_order: sig_then_msg
       -
         scheme: "4"
         pqclean_scheme: dilithium4
+        upstream_location: DILITHIUM
         pretty_name_full: DILITHIUM_4
         signed_msg_order: sig_then_msg
   -
