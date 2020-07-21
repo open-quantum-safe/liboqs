@@ -213,6 +213,8 @@ int main(int argc, char** argv) {
     outputFile.close();
     std::cout << std::endl << "All data has been successfully saved to " << fileName << "!" << std::endl;
 
+    return 0;
+
 	//getting user choice for the algorithm
 	std::string userChoice;
 	std::cout << "Enter algorithm of choice: ";
