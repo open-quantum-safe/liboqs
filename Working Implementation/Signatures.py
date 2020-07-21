@@ -85,7 +85,9 @@ def generate(algorithm):
 userAlg = input("Choose PQ algorithm: ")
 result = generate(userAlg)
 print('Public key:')
-print(result['public'])
+Pbytes = result['public']
+print(Pbytes.hex())
 print()
 print('Private key:')
-print(result['private'])
+Prbytes = result['private']
+print (Prbytes.hex())
