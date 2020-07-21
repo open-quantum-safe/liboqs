@@ -1,11 +1,13 @@
-#ifndef PQCLEAN_DILITHIUM4_CLEAN_NTT_H
-#define PQCLEAN_DILITHIUM4_CLEAN_NTT_H
+#ifndef NTT_H
+#define NTT_H
 
 #include <stdint.h>
-
 #include "params.h"
 
-void PQCLEAN_DILITHIUM4_CLEAN_ntt(uint32_t p[N]);
-void PQCLEAN_DILITHIUM4_CLEAN_invntt_frominvmont(uint32_t p[N]);
+#define ntt DILITHIUM_NAMESPACE(_ntt)
+void ntt(uint32_t p[N]);
+
+#define invntt_tomont DILITHIUM_NAMESPACE(_invntt_tomont)
+void invntt_tomont(uint32_t p[N]);
 
 #endif

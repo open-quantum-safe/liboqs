@@ -1,12 +1,16 @@
 #ifndef ROUNDING_H
 #define ROUNDING_H
 
-#include "params.h"
 #include <stdint.h>
+#include "params.h"
 
-uint32_t PQCLEAN_DILITHIUM4_AVX2_power2round(uint32_t a, uint32_t *a0);
-uint32_t PQCLEAN_DILITHIUM4_AVX2_decompose(uint32_t a, uint32_t *a0);
-unsigned int PQCLEAN_DILITHIUM4_AVX2_make_hint(uint32_t a0, uint32_t a1);
-uint32_t PQCLEAN_DILITHIUM4_AVX2_use_hint(uint32_t a, unsigned int hint);
+#define power2round_avx DILITHIUM_NAMESPACE(_power2round_avx)
+void power2round_avx(uint32_t a1[N], uint32_t a0[N], const uint32_t a[N]);
+#define decompose_avx DILITHIUM_NAMESPACE(_decompose_avx)
+void decompose_avx(uint32_t a1[N], uint32_t a0[N], const uint32_t a[N]);
+#define make_hint_avx DILITHIUM_NAMESPACE(_make_hint_avx)
+unsigned int make_hint_avx(uint32_t h[N], const uint32_t a0[N], const uint32_t a1[N]);
+#define use_hint_avx DILITHIUM_NAMESPACE(_use_hint_avx)
+void use_hint_avx(uint32_t b[N], const uint32_t a[N], const uint32_t hint[N]);
 
 #endif

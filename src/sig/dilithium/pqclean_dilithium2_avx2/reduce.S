@@ -1,9 +1,11 @@
-#include "cdecl.inc"
+#include "params.h"
+#include "consts.h"
 
-.global cdecl(PQCLEAN_DILITHIUM2_AVX2_reduce_avx)
-cdecl(PQCLEAN_DILITHIUM2_AVX2_reduce_avx):
+.text
+.global cdecl(reduce_avx)
+cdecl(reduce_avx):
 #consts
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM2_AVX2_8x23ones)(%rip),%ymm0
+vmovdqa		_8X23ONES*4(%rsi),%ymm0
 
 xor		%eax,%eax
 _looptop_rdc32:
@@ -48,10 +50,10 @@ jb _looptop_rdc32
 
 ret
 
-.global cdecl(PQCLEAN_DILITHIUM2_AVX2_csubq_avx)
-cdecl(PQCLEAN_DILITHIUM2_AVX2_csubq_avx):
+.global cdecl(csubq_avx)
+cdecl(csubq_avx):
 #consts
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM2_AVX2_8xq)(%rip),%ymm0
+vmovdqa		_8XQ*4(%rsi),%ymm0
 
 xor		%eax,%eax
 _looptop_csubq:
@@ -61,7 +63,7 @@ vmovdqa		32(%rdi),%ymm3
 vmovdqa		64(%rdi),%ymm5
 vmovdqa		96(%rdi),%ymm7
 
-#cdecl(PQCLEAN_DILITHIUM2_AVX2_csubq)
+#csubq
 vpsubd		%ymm0,%ymm1,%ymm1
 vpsubd		%ymm0,%ymm3,%ymm3
 vpsubd		%ymm0,%ymm5,%ymm5
