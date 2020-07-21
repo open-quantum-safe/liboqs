@@ -183,7 +183,7 @@ std::string benchmarkLog(std::string algorithm, int n) {
 
 int main(int argc, char** argv) {
 	std::string fileName = "Algorithm_benchmark.csv";
-	int numSamples = 100;
+	int numSamples = 0;
 
 	std::ofstream outputFile;
 	outputFile.open(fileName);
