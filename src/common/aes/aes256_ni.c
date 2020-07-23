@@ -67,13 +67,21 @@ static inline void aes256ni_setkey_encrypt(const unsigned char *key, __m128i rke
 // From crypto_core/aes256decrypt/dolbeau/aesenc-int
 static inline void aes256ni_setkey_decrypt(const unsigned char *key, __m128i rkeys[15]) {
 	__m128i tkeys[15];
-	int i;
 	aes256ni_setkey_encrypt(key, tkeys);
 	rkeys[0] = tkeys[14];
-#pragma unroll(13)
-	for (i = 1 ; i < 14 ; i++) {
-		rkeys[i] = _mm_aesimc_si128(tkeys[14 - i]);
-	}
+	rkeys[1] = _mm_aesimc_si128(tkeys[13]);
+	rkeys[2] = _mm_aesimc_si128(tkeys[12]);
+	rkeys[3] = _mm_aesimc_si128(tkeys[11]);
+	rkeys[4] = _mm_aesimc_si128(tkeys[10]);
+	rkeys[5] = _mm_aesimc_si128(tkeys[9]);
+	rkeys[6] = _mm_aesimc_si128(tkeys[8]);
+	rkeys[7] = _mm_aesimc_si128(tkeys[7]);
+	rkeys[8] = _mm_aesimc_si128(tkeys[6]);
+	rkeys[9] = _mm_aesimc_si128(tkeys[5]);
+	rkeys[10] = _mm_aesimc_si128(tkeys[4]);
+	rkeys[11] = _mm_aesimc_si128(tkeys[3]);
+	rkeys[12] = _mm_aesimc_si128(tkeys[2]);
+	rkeys[13] = _mm_aesimc_si128(tkeys[1]);
 	rkeys[14] = tkeys[0];
 }
 
@@ -97,12 +105,20 @@ void oqs_aes256_free_schedule_ni(void *schedule) {
 // From crypto_core/aes256encrypt/dolbeau/aesenc-int
 static inline void aes256ni_encrypt(const __m128i rkeys[15], const unsigned char *n, unsigned char *out) {
 	__m128i nv = _mm_load_si128((const __m128i *)n);
-	int i;
 	__m128i temp = _mm_xor_si128(nv, rkeys[0]);
-#pragma unroll(13)
-	for (i = 1 ; i < 14 ; i++) {
-		temp = _mm_aesenc_si128(temp, rkeys[i]);
-	}
+	temp = _mm_aesenc_si128(temp, rkeys[1]);
+	temp = _mm_aesenc_si128(temp, rkeys[2]);
+	temp = _mm_aesenc_si128(temp, rkeys[3]);
+	temp = _mm_aesenc_si128(temp, rkeys[4]);
+	temp = _mm_aesenc_si128(temp, rkeys[5]);
+	temp = _mm_aesenc_si128(temp, rkeys[6]);
+	temp = _mm_aesenc_si128(temp, rkeys[7]);
+	temp = _mm_aesenc_si128(temp, rkeys[8]);
+	temp = _mm_aesenc_si128(temp, rkeys[9]);
+	temp = _mm_aesenc_si128(temp, rkeys[10]);
+	temp = _mm_aesenc_si128(temp, rkeys[11]);
+	temp = _mm_aesenc_si128(temp, rkeys[12]);
+	temp = _mm_aesenc_si128(temp, rkeys[13]);
 	temp = _mm_aesenclast_si128(temp, rkeys[14]);
 	_mm_store_si128((__m128i *)(out), temp);
 }
@@ -115,12 +131,20 @@ void oqs_aes256_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule
 // From crypto_core/aes256decrypt/dolbeau/aesenc-int
 static inline void aes256ni_decrypt(const __m128i rkeys[15], const unsigned char *n, unsigned char *out) {
 	__m128i nv = _mm_load_si128((const __m128i *)n);
-	int i;
 	__m128i temp = _mm_xor_si128(nv, rkeys[0]);
-#pragma unroll(13)
-	for (i = 1 ; i < 14 ; i++) {
-		temp = _mm_aesdec_si128(temp, rkeys[i]);
-	}
+	temp = _mm_aesdec_si128(temp, rkeys[1]);
+	temp = _mm_aesdec_si128(temp, rkeys[2]);
+	temp = _mm_aesdec_si128(temp, rkeys[3]);
+	temp = _mm_aesdec_si128(temp, rkeys[4]);
+	temp = _mm_aesdec_si128(temp, rkeys[5]);
+	temp = _mm_aesdec_si128(temp, rkeys[6]);
+	temp = _mm_aesdec_si128(temp, rkeys[7]);
+	temp = _mm_aesdec_si128(temp, rkeys[8]);
+	temp = _mm_aesdec_si128(temp, rkeys[9]);
+	temp = _mm_aesdec_si128(temp, rkeys[10]);
+	temp = _mm_aesdec_si128(temp, rkeys[11]);
+	temp = _mm_aesdec_si128(temp, rkeys[12]);
+	temp = _mm_aesdec_si128(temp, rkeys[13]);
 	temp = _mm_aesdeclast_si128(temp, rkeys[14]);
 	_mm_store_si128((__m128i *)(out), temp);
 }
