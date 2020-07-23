@@ -241,6 +241,8 @@ workflows:
             branches:
               only:
                 - /mb-.*/
+      - alpine-amd64-static
+      - alpine-amd64-shared
       - centos-7-amd64
       - centos-8-amd64
       - debian-buster-amd64
