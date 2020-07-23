@@ -12,7 +12,7 @@ kats = {}
 kats["kem"] = None
 kats["sig"] = None
 
-def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, input=None):
+def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, input=None, ignore_returncode=False):
     """
     Helper function to run a shell command and report success/failure
     depending on the exit status of the shell command.
@@ -34,7 +34,7 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
         cwd=working_dir,
         env=env,
     )
-    if result.returncode != expected_returncode:
+    if not(ignore_returncode) and (result.returncode != expected_returncode):
         print(result.stdout.decode('utf-8'))
         assert False, "Got unexpected return code {}".format(result.returncode)
     return result.stdout.decode('utf-8')

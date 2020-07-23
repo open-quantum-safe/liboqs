@@ -12,7 +12,7 @@ import sys
 def test_free():
     files = helpers.run_subprocess(['find', 'src', '-name', '*.c'])
     files = helpers.run_subprocess(['grep', '-v', 'picnic/external'], input=files.encode('utf8'))
-    lines = helpers.run_subprocess(['xargs', 'grep', '[^_]free('], input=files.encode('utf8'))
+    lines = helpers.run_subprocess(['xargs', 'grep', '[^_]free('], input=files.encode('utf8'), ignore_returncode=True)
     lines = lines.split("\n")
     okay = True
     for line in lines:
