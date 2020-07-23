@@ -1,11 +1,12 @@
 #include "params.h"
-#include "cdecl.inc"
+#include "consts.h"
 
-.global cdecl(PQCLEAN_DILITHIUM3_AVX2_pointwise_avx)
-cdecl(PQCLEAN_DILITHIUM3_AVX2_pointwise_avx):
+.text
+.global cdecl(pointwise_avx)
+cdecl(pointwise_avx):
 #consts
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM3_AVX2_8xqinv)(%rip),%ymm0
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM3_AVX2_8xq)(%rip),%ymm1
+vmovdqa		_8XQINV*4(%rcx),%ymm0
+vmovdqa		_8XQ*4(%rcx),%ymm1
 
 xor		%eax,%eax
 _looptop1:
@@ -67,7 +68,7 @@ add		$96,%rsi
 add		$96,%rdx
 add		$1,%eax
 cmp		$10,%eax
-jb _looptop1
+jb 		_looptop1
 
 vmovdqa		(%rsi),%ymm2
 vmovdqa		32(%rsi),%ymm4
@@ -133,11 +134,11 @@ vpaddq		%ymm8,%ymm4,%ymm4
 vpaddq		%ymm9,%ymm5,%ymm5
 .endm
 
-.global cdecl(PQCLEAN_DILITHIUM3_AVX2_pointwise_acc_avx)
-cdecl(PQCLEAN_DILITHIUM3_AVX2_pointwise_acc_avx):
+.global cdecl(pointwise_acc_avx)
+cdecl(pointwise_acc_avx):
 #consts
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM3_AVX2_8xqinv)(%rip),%ymm0
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM3_AVX2_8xq)(%rip),%ymm1
+vmovdqa		_8XQINV*4(%rcx),%ymm0
+vmovdqa		_8XQ*4(%rcx),%ymm1
 
 xor		%eax,%eax
 _looptop2:
@@ -152,12 +153,20 @@ vmovdqa		%ymm9,%ymm5
 pointwise	1024
 acc
 
+#if L >= 3
 pointwise	2048
 acc
+#endif
 
+#if L >= 4
 pointwise	3072
 acc
+#endif
 
+#if L >= 5
+pointwise	4096
+acc
+#endif
 
 #reduce
 vpmuludq	%ymm0,%ymm2,%ymm6

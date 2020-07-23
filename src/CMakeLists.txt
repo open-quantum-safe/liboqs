@@ -95,7 +95,8 @@ add_library(OQS::oqs ALIAS oqs)
 
 install(TARGETS oqs
         LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib)
+        ARCHIVE DESTINATION lib
+	RUNTIME DESTINATION bin)
 
 install(FILES ${PUBLIC_HEADERS}
         DESTINATION include/oqs)
