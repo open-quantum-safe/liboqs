@@ -1,5 +1,5 @@
+#include "consts.h"
 .include "shuffle.inc"
-#include "cdecl.inc"
 
 .macro butterfly rl0,rl1,rl2,rl3,rh0,rh1,rh2,rh3,z0=3,z1=3,z2=3,z3=3
 #mul
@@ -41,13 +41,8 @@ vpsubd		%ymm14,%ymm\rh2,%ymm\rh2
 vpsubd		%ymm15,%ymm\rh3,%ymm\rh3
 .endm
 
-.global cdecl(PQCLEAN_DILITHIUM2_AVX2_ntt_levels0t2_avx)
-cdecl(PQCLEAN_DILITHIUM2_AVX2_ntt_levels0t2_avx):
-#consts
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM2_AVX2_8xqinv)(%rip),%ymm0
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM2_AVX2_8xq)(%rip),%ymm1
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM2_AVX2_8x2q)(%rip),%ymm2
-
+.text
+ntt_levels0t2_avx:
 level0:
 #zetas
 vpbroadcastd	(%rdx),%ymm3
@@ -65,14 +60,14 @@ vpmovzxdq	896(%rsi),%ymm11
 butterfly	4,5,6,7,8,9,10,11
 
 level1:
-#PQCLEAN_DILITHIUM2_AVX2_zetas
+#zetas
 vpbroadcastd	4(%rdx),%ymm12
 vpbroadcastd	8(%rdx),%ymm13
 
 butterfly	4,5,8,9,6,7,10,11,12,12,13,13
 
 level2:
-#PQCLEAN_DILITHIUM2_AVX2_zetas
+#zetas
 vpbroadcastd	12(%rdx),%ymm12
 vpbroadcastd	16(%rdx),%ymm13
 vpbroadcastd	20(%rdx),%ymm14
@@ -92,13 +87,7 @@ vmovdqa		%ymm11,1792(%rdi)
 
 ret
 
-.global cdecl(PQCLEAN_DILITHIUM2_AVX2_ntt_levels3t8_avx)
-cdecl(PQCLEAN_DILITHIUM2_AVX2_ntt_levels3t8_avx):
-#consts
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM2_AVX2_8xqinv)(%rip),%ymm0
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM2_AVX2_8xq)(%rip),%ymm1
-vmovdqa		cdecl(_PQCLEAN_DILITHIUM2_AVX2_8x2q)(%rip),%ymm2
-
+ntt_levels3t8_avx:
 #load
 vmovdqa		(%rsi),%ymm4
 vmovdqa		32(%rsi),%ymm5
@@ -116,7 +105,7 @@ vpbroadcastd	(%rdx),%ymm3
 butterfly	4,5,6,7,8,9,10,11
 
 level4:
-#PQCLEAN_DILITHIUM2_AVX2_zetas
+#zetas
 vpbroadcastd	4(%rdx),%ymm12
 vpbroadcastd	8(%rdx),%ymm13
 vpblendd	$0xF0,%ymm13,%ymm12,%ymm12
@@ -177,3 +166,51 @@ vmovdqa		%ymm7,64(%rdi)
 vmovdqa		%ymm4,96(%rdi)
 
 ret
+
+.global cdecl(ntt_avx)
+cdecl(ntt_avx):
+#entry
+mov		%rsp,%r10
+mov		%rsp,%rax
+and		$31,%rax
+sub		%rax,%rsp
+sub		$2048,%rsp
+
+#consts
+vmovdqa		_8XQINV*4(%rsi),%ymm0
+vmovdqa		_8XQ*4(%rsi),%ymm1
+vmovdqa		_8X2Q*4(%rsi),%ymm2
+
+#levels0t2
+mov		%rsi,%rcx
+lea		(_ZETAS+1)*4(%rsi),%rdx
+mov		%rdi,%rsi
+mov		%rsp,%rdi
+xor		%eax,%eax
+_looptop1:
+call		ntt_levels0t2_avx
+add		$32,%rdi
+add		$16,%rsi
+add		$32,%eax
+cmp		$256,%eax
+jne		_looptop1
+
+#levels3t8
+sub		$128,%rsi
+mov		%rsi,%rdi
+mov		%rsp,%rsi
+add		$28,%rdx
+xor		%eax,%eax
+_looptop2:
+call		ntt_levels3t8_avx
+add		$128,%rdi
+add		$256,%rsi
+add		$124,%rdx
+add		$32,%eax
+cmp		$256,%eax
+jne		_looptop2
+
+#return
+mov		%r10,%rsp
+ret
+

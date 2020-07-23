@@ -9,6 +9,8 @@ vpunpckhqdq	%ymm\r1,%ymm\r0,%ymm\r3
 .endm
 
 .macro shuffle2 r0,r1,r2,r3
+#vshufps	$0x20,%ymm\r1,%ymm\r0,%ymm\r2
+#vshufps	$0x31,%ymm\r1,%ymm\r0,%ymm\r3
 vpsllq		$32,%ymm\r1,%ymm12
 vpsrlq		$32,%ymm\r0,%ymm13
 vpblendd	$0xAA,%ymm12,%ymm\r0,%ymm\r2

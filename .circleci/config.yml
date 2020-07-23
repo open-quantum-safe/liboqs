@@ -135,6 +135,7 @@ jobs:
     environment:
       IMAGE: openquantumsafe/ci-centos-8-amd64:latest
       CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
+      CC: clang
       SKIP_TESTS: style
   debian-buster-amd64:
     <<: *oqsjob
