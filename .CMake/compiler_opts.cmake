@@ -104,3 +104,7 @@ if(MINGW OR MSYS OR CYGWIN)
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,1677216")
     endif()
 endif()
+
+if(CMAKE_C_IMPLICIT_LINK_DIRECTORIES MATCHES "alpine-linux-musl")
+    add_link_options(-Wl,-z,stack-size=16777216)
+endif()
