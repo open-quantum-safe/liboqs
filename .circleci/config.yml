@@ -241,6 +241,8 @@ workflows:
             branches:
               only:
                 - /mb-.*/
+      - alpine-amd64-static
+      - alpine-amd64-shared
       - centos-7-amd64
       - centos-8-amd64
       - debian-buster-amd64
@@ -267,8 +269,7 @@ workflows:
       - ubuntu-bionic-x86_64-gcc7-shared
       - ubuntu-bionic-x86_64-gcc8
       - ubuntu-bionic-x86_64-clang9
-        # ToDo: Tests failing: need to understand&fix (issue #785)
-        #- alpine-amd64-static
-        #- alpine-amd64-shared
+      - alpine-amd64-static
+      - alpine-amd64-shared
       - macOS-static-noopenssl
       - ubuntu-bionic-x86_64-asan
