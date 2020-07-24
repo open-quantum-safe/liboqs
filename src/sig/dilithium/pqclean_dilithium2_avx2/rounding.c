@@ -4,6 +4,32 @@
 #include "rounding.h"
 #include "consts.h"
 
+// copied from pqclean_dilithium2_clean/rounding.c
+/*************************************************
+* Name:        power2round
+*
+* Description: For finite field element a, compute a0, a1 such that
+*              a mod Q = a1*2^D + a0 with -2^{D-1} < a0 <= 2^{D-1}.
+*              Assumes a to be standard representative.
+*
+* Arguments:   - uint32_t a: input element
+*              - uint32_t *a0: pointer to output element Q + a0
+*
+* Returns a1.
+**************************************************/
+static inline uint32_t power2round(uint32_t a, uint32_t *a0)  {
+  int32_t t;
+
+  /* Centralized remainder mod 2^D */
+  t = a & ((1U << D) - 1);
+  t -= (1U << (D-1)) + 1;
+  t += (t >> 31) & (1U << D);
+  t -= (1U << (D-1)) - 1;
+  *a0 = Q + t;
+  a = (a - t) >> D;
+  return a;
+}
+
 /*************************************************
 * Name:        power2round
 *
@@ -18,6 +44,13 @@
 **************************************************/
 void power2round_avx(uint32_t * restrict a1, uint32_t * restrict a0, const uint32_t * restrict a)
 {
+  // temporarily use plain C version of power2round
+  // https://github.com/open-quantum-safe/liboqs/issues/793
+  // https://github.com/pq-crystals/dilithium/issues/31
+  for (size_t i = 0; i < N; i++) {
+    a1[i] = power2round(a[i], &a0[i]);
+  }
+#if 0
   unsigned int i;
   __m256i f,f0,f1;
   const __m256i q = _mm256_load_si256((__m256i *)&qdata[_8XQ]);
@@ -34,6 +67,7 @@ void power2round_avx(uint32_t * restrict a1, uint32_t * restrict a0, const uint3
     _mm256_store_si256((__m256i *)&a1[8*i], f1);
     _mm256_store_si256((__m256i *)&a0[8*i], f0);
   }
+#endif
 }
 
 /*************************************************
