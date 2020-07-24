@@ -172,6 +172,7 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `.CMake/CMakeDependentOption.cmake`: BSD 3-Clause License
 - `src/common/common.c`: includes portions which are Apache License v2.0
 - `src/common/crypto/aes/aes_c.c`: public domain or any OSI-approved license
+- `src/common/crypto/aes/aes*_ni.c`: public domain
 - `src/common/crypto/sha2/sha2_c.c`: public domain
 - `src/common/crypto/sha3/fips202.c`: public domain
 - `src/common/crypto/sha3/keccak4x`: CC0 (public domain), except `brg_endian.h`

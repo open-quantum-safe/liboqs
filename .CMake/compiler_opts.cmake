@@ -1,5 +1,8 @@
 # SPDX-License-Identifier: MIT
 
+option(OQS_PORTABLE_BUILD "Ensure the resulting library is portable. This implies having run-time checks for CPU extensions." ON)
+option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
+
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Werror)
     add_compile_options(-Wall)
@@ -13,6 +16,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
         set(OQS_USE_PTHREADS_IN_TESTS 1)
     endif()
 
+    option(OQS_USE_CPU_EXTENSIONS "Enable compile and run-time support for CPU extensions such as AVX2, SSE, etc." ON)
     if(OQS_USE_CPU_EXTENSIONS)
         include(${CMAKE_CURRENT_LIST_DIR}/gcc_clang_intrinsics.cmake)
     endif()
@@ -67,6 +71,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
         set(OQS_USE_PTHREADS_IN_TESTS 1)
     endif()
 
+    option(OQS_USE_CPU_EXTENSIONS "Enable compile and run-time support for CPU extensions such as AVX2, SSE, etc." ON)
     if(OQS_USE_CPU_EXTENSIONS)
         include(${CMAKE_CURRENT_LIST_DIR}/gcc_clang_intrinsics.cmake)
     endif()
