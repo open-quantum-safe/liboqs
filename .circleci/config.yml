@@ -161,7 +161,7 @@ jobs:
     <<: *oqsjob
     environment:
       IMAGE: openquantumsafe/ci-alpine-amd64:latest
-      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
+      CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON
       SKIP_TESTS: style,doxygen # not installed in alpine, no news anyway
   alpine-amd64-shared:
     <<: *oqsjob
