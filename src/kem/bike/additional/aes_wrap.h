@@ -38,7 +38,9 @@ aes256_key_expansion(OUT aes256_ks_t *ks, IN const aes256_key_t *key) {
 
 _INLINE_ ret_t
 aes256_enc(OUT uint8_t *ct, IN const uint8_t *pt, IN const aes256_ks_t ks) {
-	OQS_AES256_ECB_enc_sch(pt, AES256_BLOCK_SIZE, ks, ct);
+	ALIGN(16) uint8_t out[AES256_BLOCK_SIZE];
+	OQS_AES256_ECB_enc_sch(pt, AES256_BLOCK_SIZE, ks, out);
+	memcpy(ct, out, AES256_BLOCK_SIZE);
 	return SUCCESS;
 }
 
