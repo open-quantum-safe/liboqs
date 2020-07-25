@@ -11,7 +11,7 @@
 
 // From crypto_core/aes128ncrypt/dolbeau/aesenc-int
 static inline void aes128ni_setkey_encrypt(const unsigned char *key, __m128i rkeys[11]) {
-	__m128i key0 = _mm_loadu_si128((const __m128i_u *)(key + 0));
+	__m128i key0 = _mm_loadu_si128((const __m128i *)(key + 0));
 	__m128i temp0, temp1, temp4;
 	int idx = 0;
 
