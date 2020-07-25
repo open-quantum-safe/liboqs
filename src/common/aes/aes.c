@@ -28,7 +28,7 @@
 void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
 	C_OR_NI(
 	    oqs_aes128_load_schedule_c(key, _schedule, for_encryption),
-	    oqs_aes128_load_schedule_ni(key, _schedule)
+	    oqs_aes128_load_schedule_ni(key, _schedule, for_encryption)
 	)
 }
 
