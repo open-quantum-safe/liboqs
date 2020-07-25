@@ -1,5 +1,5 @@
-liboqs version 0.3.0
-====================
+liboqs version 0.4.0-dev
+========================
 
 About
 -----
@@ -24,33 +24,27 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is version 0.3.0 of liboqs, which was released on June 10, 2020.  Its release page on GitHub is https://github.com/open-quantum-safe/liboqs/releases/tag/0.3.0.
+This is the development version 0.4.0 of liboqs.  Its project page on GitHub is at https://github.com/open-quantum-safe/liboqs/projects/13.
 
 What's New
 ----------
 
-This release continues from the 0.2.0 release of liboqs.
+This release continues from the 0.3.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- BIKE: Update to Round 2 submission; removes `BIKE2-*`, `BIKE3-*`, `BIKE1-L5`, renames `BIKE1-L1` and `BIKE1-L3` to `BIKE1-L1-CPA` and `BIKE1-L3-CPA`, and adds `BIKE1-L1-FO` and `BIKE-L3-FO`
-- Classic McEliece: Newly added
-- Kyber: Add "90s variants": `Kyber512-90s`, `Kyber768-90s`, `Kyber1024-90s`
-- LEDAcrypt: Newly added
-- ThreeBears: Newly added
+- SIKE: Update to version 3.3
 
 ### Digital signature schemes
 
-- Falcon: Newly added
-- MQDSS: Update to v2.1
-- Picnic: Update to v2.2
-- qTesla: Update to v1.0
-- Rainbow: Newly added
-- SPHINCS+: Add AVX2 and AESNI implementations
+- Dilithium: Use version directly from PQCrystals GitHub
+- Picnic: Update to v3.0
 
 ### Other changes
 
-- Switch build system to CMake
-- Add support for building via Mingw on Windows
-- Support cross compilation via CMake to Raspberry Pi, Android, Windows, and more
-- Most optimizations dependent on specific CPU features are automatically detected at runtime, rather than being selected at compile-time
+- AES-NI support when liboqs does not use OpenSSL for AES
+
+Deprecations
+------------
+
+As a result of NIST's announcement of Round 3 of the Post-Quantum Cryptography Standardization Project, the 0.4.x series will be the last release(s) of liboqs that contain algorithms from Round 2 that are not Round 3 finalists or alternate candidates.  Those algorithms will be removed in the 0.5.0 release.  The algorithms in question are: NewHope, ThreeBears, MQDSS, and qTesla.  These algorithms are considered deprecated within liboqs and are no longer receiving updates.
