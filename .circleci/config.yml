@@ -20,7 +20,7 @@ localCheckout: &localCheckout
     - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
     - run:
         name: Configure
-        command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build && source ~/.bashrc && cmake -GNinja ${CONFIGURE_ARGS} ..)
+        command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build && source ~/.bashrc && cmake -GNinja ${CONFIGURE_ARGS} .. && cmake -LA ..)
     - run:
         name: Build
         command: ../scripts/git_no_checkin_in_last_day.sh || ninja
@@ -52,6 +52,7 @@ localCheckout: &localCheckout
           mkdir build &&
           (cd build &&
           cmake -GNinja ${CONFIGURE_ARGS} .. &&
+          cmake -LA .. &&
           ninja &&
           ninja run_tests)
           "
@@ -78,7 +79,7 @@ localCheckout: &localCheckout
             shell: bash.exe
         - run:
             name: Configure & Build
-            command: PATH=C:\Users\circleci\project\ninja;%PATH% & call C:\PROGRA~2\MICROS~2\2019\Community\VC\Auxiliary\Build\vcvars64.bat & mkdir build & cd build & cmake -GNinja ${CONFIGURE_ARGS} .. & ninja
+            command: PATH=C:\Users\circleci\project\ninja;%PATH% & call C:\PROGRA~2\MICROS~2\2019\Community\VC\Auxiliary\Build\vcvars64.bat & mkdir build & cd build & cmake -GNinja ${CONFIGURE_ARGS} .. & cmake -LA .. & ninja
             shell: cmd.exe
         - run:
             name: Run tests
@@ -106,7 +107,7 @@ localCheckout: &localCheckout
               )
         - run:
             name: Configure
-            command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build && cmake -GNinja ${CONFIGURE_ARGS} ..)
+            command: scripts/git_no_checkin_in_last_day.sh || (mkdir build && cd build && cmake -GNinja ${CONFIGURE_ARGS} .. && cmake -LA ..)
         - run:
             name: Build
             command: ../scripts/git_no_checkin_in_last_day.sh || ninja
