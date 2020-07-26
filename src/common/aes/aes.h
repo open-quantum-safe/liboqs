@@ -40,7 +40,6 @@ void OQS_AES128_free_schedule(void *schedule);
  * @param key           Key to be used for encryption.
  * @param ciphertext    Pointer to a block of memory which >= in size to the plaintext block. The result will be written here.
  * @warning plaintext_len must be a multiple of 16.
- * @warning ciphertext must be aligned to a 16-byte boundary when use AES-NI instructions.
  */
 void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext);
 
@@ -53,7 +52,6 @@ void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
  * @param key            Key to be used for encryption.
  * @param plaintext      Pointer to a block of memory which >= in size to the ciphertext block. The result will be written here.
  * @warning ciphertext_len must be a multiple of 16.
- * @warning plaintext must be aligned to a 16-byte boundary when use AES-NI instructions.
  */
 void OQS_AES128_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext);
 
@@ -107,7 +105,6 @@ void OQS_AES256_free_schedule(void *schedule);
  * @param key           Key to be used for encryption.
  * @param ciphertext    Pointer to a block of memory which >= in size to the plaintext block. The result will be written here.
  * @warning plaintext_len must be a multiple of 16.
- * @warning ciphertext must be aligned to a 16-byte boundary when use AES-NI instructions.
  */
 void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext);
 
@@ -120,7 +117,6 @@ void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
  * @param key            Key to be used for encryption.
  * @param plaintext      Pointer to a block of memory which >= in size to the ciphertext block. The result will be written here.
  * @warning ciphertext_len must be a multiple of 16.
- * @warning plaintext must be aligned to a 16-byte boundary when use AES-NI instructions.
  */
 void OQS_AES256_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext);
 

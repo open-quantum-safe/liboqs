@@ -77,7 +77,7 @@ void oqs_aes128_free_schedule_ni(void *schedule) {
 
 // From crypto_core/aes128encrypt/dolbeau/aesenc-int
 static inline void aes128ni_encrypt(const __m128i rkeys[11], const unsigned char *n, unsigned char *out) {
-	__m128i nv = _mm_load_si128((const __m128i *)n);
+	__m128i nv = _mm_loadu_si128((const __m128i *)n);
 	__m128i temp = _mm_xor_si128(nv, rkeys[0]);
 	temp = _mm_aesenc_si128(temp, rkeys[1]);
 	temp = _mm_aesenc_si128(temp, rkeys[2]);
@@ -89,7 +89,7 @@ static inline void aes128ni_encrypt(const __m128i rkeys[11], const unsigned char
 	temp = _mm_aesenc_si128(temp, rkeys[8]);
 	temp = _mm_aesenc_si128(temp, rkeys[9]);
 	temp = _mm_aesenclast_si128(temp, rkeys[10]);
-	_mm_store_si128((__m128i *)(out), temp);
+	_mm_storeu_si128((__m128i *)(out), temp);
 }
 
 void oqs_aes128_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
@@ -99,7 +99,7 @@ void oqs_aes128_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule
 
 // From crypto_core/aes128decrypt/dolbeau/aesenc-int
 static inline void aes128ni_decrypt(const __m128i rkeys[11], const unsigned char *n, unsigned char *out) {
-	__m128i nv = _mm_load_si128((const __m128i *)n);
+	__m128i nv = _mm_loadu_si128((const __m128i *)n);
 	__m128i temp = _mm_xor_si128(nv, rkeys[0]);
 	temp = _mm_aesdec_si128(temp, rkeys[1]);
 	temp = _mm_aesdec_si128(temp, rkeys[2]);
@@ -111,7 +111,7 @@ static inline void aes128ni_decrypt(const __m128i rkeys[11], const unsigned char
 	temp = _mm_aesdec_si128(temp, rkeys[8]);
 	temp = _mm_aesdec_si128(temp, rkeys[9]);
 	temp = _mm_aesdeclast_si128(temp, rkeys[10]);
-	_mm_store_si128((__m128i *)(out), temp);
+	_mm_storeu_si128((__m128i *)(out), temp);
 }
 
 void oqs_aes128_dec_sch_block_ni(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext) {
