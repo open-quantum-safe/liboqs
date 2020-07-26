@@ -39,6 +39,7 @@ void OQS_AES128_free_schedule(void *schedule);
  * @param plaintext_len Length on the plaintext in bytes. Must be a multiple of 16.
  * @param key           Key to be used for encryption.
  * @param ciphertext    Pointer to a block of memory which >= in size to the plaintext block. The result will be written here.
+ * @warning plaintext_len must be a multiple of 16.
  */
 void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext);
 
@@ -50,6 +51,7 @@ void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
  * @param ciphertext_len Length on the ciphertext in bytes. Must be a multiple of 16.
  * @param key            Key to be used for encryption.
  * @param plaintext      Pointer to a block of memory which >= in size to the ciphertext block. The result will be written here.
+ * @warning ciphertext_len must be a multiple of 16.
  */
 void OQS_AES128_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext);
 
@@ -102,6 +104,7 @@ void OQS_AES256_free_schedule(void *schedule);
  * @param plaintext_len Length on the plaintext in bytes. Must be a multiple of 16.
  * @param key           Key to be used for encryption.
  * @param ciphertext    Pointer to a block of memory which >= in size to the plaintext block. The result will be written here.
+ * @warning plaintext_len must be a multiple of 16.
  */
 void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext);
 
@@ -113,6 +116,7 @@ void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
  * @param ciphertext_len Length on the ciphertext in bytes. Must be a multiple of 16.
  * @param key            Key to be used for encryption.
  * @param plaintext      Pointer to a block of memory which >= in size to the ciphertext block. The result will be written here.
+ * @warning ciphertext_len must be a multiple of 16.
  */
 void OQS_AES256_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext);
 
