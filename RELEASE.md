@@ -33,6 +33,8 @@ This release continues from the 0.3.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
+- HQC: Added version 2019/08/24
+- NewHope: Update to version 1.1
 - SIKE: Update to version 3.3
 
 ### Digital signature schemes
@@ -47,4 +49,4 @@ This release continues from the 0.3.0 release of liboqs.
 Deprecations
 ------------
 
-As a result of NIST's announcement of Round 3 of the Post-Quantum Cryptography Standardization Project, the 0.4.x series will be the last release(s) of liboqs that contain algorithms from Round 2 that are not Round 3 finalists or alternate candidates.  Those algorithms will be removed in the 0.5.0 release.  The algorithms in question are: NewHope, ThreeBears, MQDSS, and qTesla.  These algorithms are considered deprecated within liboqs and are no longer receiving updates.
+As a result of NIST's announcement of Round 3 of the Post-Quantum Cryptography Standardization Project, the 0.4.x series will be the last release(s) of liboqs that contain algorithms from Round 2 that are not Round 3 finalists or alternate candidates.  Those algorithms will be removed in the 0.5.0 release.  The algorithms in question are: NewHope, ThreeBears, MQDSS, and qTesla.  These algorithms are considered deprecated within liboqs and will receive no updates after this release.
