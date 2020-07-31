@@ -150,7 +150,13 @@ cmake_dependent_option(OQS_ENABLE_SIG_falcon_1024 "" ON "OQS_ENABLE_SIG_FALCON" 
 
 option(OQS_ENABLE_SIG_MQDSS "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_48 "" ON "OQS_ENABLE_SIG_MQDSS" OFF)
+if(ARCH STREQUAL "x86_64" AND OQS_USE_AVX2_INSTRUCTIONS)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_48_avx2 "" ON "OQS_ENABLE_SIG_mqdss_31_48" OFF)
+endif()
 cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_64 "" ON "OQS_ENABLE_SIG_MQDSS" OFF)
+if(ARCH STREQUAL "x86_64" AND OQS_USE_AVX2_INSTRUCTIONS)
+    cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_64_avx2 "" ON "OQS_ENABLE_SIG_mqdss_31_64" OFF)
+endif()
 
 option(OQS_ENABLE_SIG_RAINBOW "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_rainbow_Ia_classic "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)

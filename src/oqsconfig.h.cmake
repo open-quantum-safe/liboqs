@@ -143,7 +143,9 @@
 
 #cmakedefine OQS_ENABLE_SIG_MQDSS 1
 #cmakedefine OQS_ENABLE_SIG_mqdss_31_48 1
+#cmakedefine OQS_ENABLE_SIG_mqdss_31_48_avx2 1
 #cmakedefine OQS_ENABLE_SIG_mqdss_31_64 1
+#cmakedefine OQS_ENABLE_SIG_mqdss_31_64_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_RAINBOW 1
 #cmakedefine OQS_ENABLE_SIG_rainbow_Ia_classic 1
