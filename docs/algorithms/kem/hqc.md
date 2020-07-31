@@ -19,6 +19,11 @@ Implementation
 Parameter sets
 --------------
 
-| Parameter set     | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
-|-------------------|----------------|-----------------------------|-------------------------|-------------------------|-------------------------|----------------------------|
-| HQC-128-1-CCA2    | IND-CCA        | 1                           | 3125                    | 3165                    | 6234                    | 64                         |
+| Parameter set  | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
+|----------------|----------------|-----------------------------|-------------------------|-------------------------|-------------------------|----------------------------|
+| HQC-128-1-CCA2 | IND-CCA        | 1                           | 3125                    | 3165                    | 6234                    | 64                         |
+| HQC-192-1-CCA2 | IND-CCA        | 3                           | 5499                    | 5539                    | 10981                   | 64                         |
+| HQC-192-2-CCA2 | IND-CCA        | 3                           | 5884                    | 5924                    | 11749                   | 64                         |
+| HQC-256-1-CCA2 | IND-CCA        | 5                           | 7989                    | 8029                    | 15961                   | 64                         |
+| HQC-256-2-CCA2 | IND-CCA        | 5                           | 8503                    | 8543                    | 16985                   | 64                         |
+| HQC-256-3-CCA2 | IND-CCA        | 5                           | 8897                    | 8937                    | 17777                   | 64                         |

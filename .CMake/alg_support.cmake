@@ -83,6 +83,11 @@ cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_8192128f "" ON "OQS_ENABL
 
 option(OQS_ENABLE_KEM_HQC "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_hqc_128_1_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_hqc_192_1_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_hqc_192_2_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_hqc_256_1_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_hqc_256_2_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_hqc_256_3_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
 
 option(OQS_ENABLE_KEM_KYBER "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_kyber_512 "" ON "OQS_ENABLE_KEM_KYBER" OFF)
