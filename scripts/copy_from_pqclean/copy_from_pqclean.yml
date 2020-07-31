@@ -105,14 +105,10 @@ kems:
         scheme: "512cca"
         pqclean_scheme: newhope512cca
         pretty_name_full: NewHope-512-CCA
-        implementation: clean
-        sources: ['cpapke.c', 'kem.c', 'ntt.c', 'poly.c', 'precomp.c', 'reduce.c', 'verify.c']
       -
         scheme: "1024cca"
         pqclean_scheme: newhope1024cca
         pretty_name_full: NewHope-1024-CCA
-        implementation: clean
-        sources: ['cpapke.c', 'kem.c', 'ntt.c', 'poly.c', 'precomp.c', 'reduce.c', 'verify.c']
   -
     name: ntru
     default_implementation: clean
@@ -121,26 +117,18 @@ kems:
         scheme: hps2048509
         pqclean_scheme: ntruhps2048509
         pretty_name_full: NTRU-HPS-2048-509
-        implementation: clean
-        sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
       -
         scheme: hps2048677
         pqclean_scheme: ntruhps2048677
         pretty_name_full: NTRU-HPS-2048-677
-        implementation: clean
-        sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
       -
         scheme: hps4096821
         pqclean_scheme: ntruhps4096821
         pretty_name_full: NTRU-HPS-4096-821
-        implementation: clean
-        sources: ['crypto_sort.c', 'kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
       -
         scheme: hrss701
         pqclean_scheme: ntruhrss701
         pretty_name_full: NTRU-HRSS-701
-        implementation: clean
-        sources: ['kem.c', 'owcpa.c', 'pack3.c', 'packq.c', 'poly.c', 'sample.c', 'verify.c']
   -
     name: saber
     default_implementation: clean
@@ -149,20 +137,14 @@ kems:
         scheme: lightsaber
         pqclean_scheme: lightsaber
         pretty_name_full: LightSaber-KEM
-        implementation: clean
-        sources: ['cbd.c', 'kem.c', 'pack_unpack.c', 'poly.c', 'poly_mul.c', 'SABER_indcpa.c', 'verify.c']
       -
         scheme: saber
         pqclean_scheme: saber
         pretty_name_full: Saber-KEM
-        implementation: clean
-        sources: ['cbd.c', 'kem.c', 'pack_unpack.c', 'poly.c', 'poly_mul.c', 'SABER_indcpa.c', 'verify.c']
       -
         scheme: firesaber
         pqclean_scheme: firesaber
         pretty_name_full: FireSaber-KEM
-        implementation: clean
-        sources: ['cbd.c', 'kem.c', 'pack_unpack.c', 'poly.c', 'poly_mul.c', 'SABER_indcpa.c', 'verify.c']
   -
     name: threebears
     default_implementation: clean
@@ -171,38 +153,26 @@ kems:
         scheme: babybear
         pqclean_scheme: babybear
         pretty_name_full: BabyBear
-        implementation: clean
-        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
       -
         scheme: babybear_ephem
         pqclean_scheme: babybear-ephem
         pretty_name_full: BabyBearEphem
-        implementation: clean
-        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
       -
         scheme: mamabear
         pqclean_scheme: mamabear
         pretty_name_full: MamaBear
-        implementation: clean
-        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
       -
         scheme: mamabear_ephem
         pqclean_scheme: mamabear-ephem
         pretty_name_full: MamaBearEphem
-        implementation: clean
-        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
       -
         scheme: papabear
         pqclean_scheme: papabear
         pretty_name_full: PapaBear
-        implementation: clean
-        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
       -
         scheme: papabear_ephem
         pqclean_scheme: papabear-ephem
         pretty_name_full: PapaBearEphem
-        implementation: clean
-        sources: ['kem.c', 'melas_fec.c', 'ring.c', 'threebears.c']
 sigs:
   -
     name: dilithium
@@ -262,64 +232,46 @@ sigs:
         scheme: "Ia_classic"
         pqclean_scheme: rainbowIa-classic
         pretty_name_full: Rainbow-Ia-Classic
-        implementation: clean
-        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
         signed_msg_order: msg_then_sig
       -
         scheme: "Ia_cyclic"
         pqclean_scheme: rainbowIa-cyclic
         pretty_name_full: Rainbow-Ia-Cyclic
-        implementation: clean
-        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
         signed_msg_order: msg_then_sig
       -
         scheme: "Ia_cyclic_compressed"
         pqclean_scheme: rainbowIa-cyclic-compressed
         pretty_name_full: Rainbow-Ia-Cyclic-Compressed
-        implementation: clean
-        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
         signed_msg_order: msg_then_sig
       -
         scheme: "IIIc_classic"
         pqclean_scheme: rainbowIIIc-classic
         pretty_name_full: Rainbow-IIIc-Classic
-        implementation: clean
-        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
         signed_msg_order: msg_then_sig
       -
         scheme: "IIIc_cyclic"
         pqclean_scheme: rainbowIIIc-cyclic
         pretty_name_full: Rainbow-IIIc-Cyclic
-        implementation: clean
-        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
         signed_msg_order: msg_then_sig
       -
         scheme: "IIIc_cyclic_compressed"
         pqclean_scheme: rainbowIIIc-cyclic-compressed
         pretty_name_full: Rainbow-IIIc-Cyclic-Compressed
-        implementation: clean
-        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
         signed_msg_order: msg_then_sig
       -
         scheme: "Vc_classic"
         pqclean_scheme: rainbowVc-classic
         pretty_name_full: Rainbow-Vc-Classic
-        implementation: clean
-        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
         signed_msg_order: msg_then_sig
       -
         scheme: "Vc_cyclic"
         pqclean_scheme: rainbowVc-cyclic
         pretty_name_full: Rainbow-Vc-Cyclic
-        implementation: clean
-        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
         signed_msg_order: msg_then_sig
       -
         scheme: "Vc_cyclic_compressed"
         pqclean_scheme: rainbowVc-cyclic-compressed
         pretty_name_full: Rainbow-Vc-Cyclic-Compressed
-        implementation: clean
-        sources: ['blas_comm.c', 'parallel_matrix_op.c', 'rainbow.c', 'rainbow_keypair.c', 'rainbow_keypair_computation.c', 'sign.c', 'utils_hash.c', 'utils_prng.c', 'blas.c', 'gf.c']
         signed_msg_order: msg_then_sig
   -
     name: sphincs
