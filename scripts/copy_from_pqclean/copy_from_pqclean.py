@@ -276,6 +276,6 @@ replacer('tests/kat_sig.c', instructions, '/////')
 # Finally store KATS away again
 for t in ["kem", "sig"]:
    with open(os.path.join('tests', 'KATs', t, 'kats.json'), "w") as f:
-      json.dump(kats[t], f)
+      json.dump(kats[t], f, indent=2, sort_keys=True)
 
 

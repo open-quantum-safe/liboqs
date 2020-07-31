@@ -101,8 +101,9 @@ void PQCLEAN_NEWHOPE1024CCA_CLEAN_cpapke_keypair(unsigned char *pk,
     unsigned char *publicseed = z;
     unsigned char *noiseseed = z + NEWHOPE_SYMBYTES;
 
-    randombytes(z, NEWHOPE_SYMBYTES);
-    shake256(z, 2 * NEWHOPE_SYMBYTES, z, NEWHOPE_SYMBYTES);
+    z[0] = 0x01;
+    randombytes(z + 1, NEWHOPE_SYMBYTES);
+    shake256(z, 2 * NEWHOPE_SYMBYTES, z, NEWHOPE_SYMBYTES + 1);
 
     gen_a(&ahat, publicseed);
 
