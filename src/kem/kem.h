@@ -62,6 +62,8 @@ extern "C" {
 #define OQS_KEM_alg_classic_mceliece_8192128 "Classic-McEliece-8192128"
 /** Algorithm identifier for Classic-McEliece-8192128f KEM. */
 #define OQS_KEM_alg_classic_mceliece_8192128f "Classic-McEliece-8192128f"
+/** Algorithm identifier for HQC-128-1-CCA2 KEM. */
+#define OQS_KEM_alg_hqc_128_1_cca2 "HQC-128-1-CCA2"
 /** Algorithm identifier for Kyber512 KEM. */
 #define OQS_KEM_alg_kyber_512 "Kyber512"
 /** Algorithm identifier for Kyber768 KEM. */
@@ -152,7 +154,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 58
+#define OQS_KEM_algs_length 59
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -327,6 +329,9 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_CLASSIC_MCELIECE
 #include <oqs/kem_classic_mceliece.h>
 #endif /* OQS_ENABLE_KEM_CLASSIC_MCELIECE */
+#ifdef OQS_ENABLE_KEM_HQC
+#include <oqs/kem_hqc.h>
+#endif /* OQS_ENABLE_KEM_HQC */
 #ifdef OQS_ENABLE_KEM_KYBER
 #include <oqs/kem_kyber.h>
 #endif /* OQS_ENABLE_KEM_KYBER */

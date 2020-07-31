@@ -42,6 +42,7 @@ add_library(common OBJECT ${AES_IMPL}
                           ${SHA2_IMPL}
                           ${SHA3_IMPL}
                           common.c
+                          pqclean_shims/nistseedexpander.c
                           rand/rand.c
                           rand/rand_nist.c)
 if(OQS_USE_OPENSSL)
