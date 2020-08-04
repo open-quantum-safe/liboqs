@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://sourceforge.net/projects/threebears/
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/9023fef55861faccd82146cf599b9e46fb9606aa
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/90630db2ebada4bacceb5331b0a1a9a356ba65b9
 - **License**: MIT License
 - **Constant-time**: Yes
 - **Optimizations**: Portable C

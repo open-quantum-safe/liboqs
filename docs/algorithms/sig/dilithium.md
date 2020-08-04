@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://github.com/pq-crystals/dilithium
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/9023fef55861faccd82146cf599b9e46fb9606aa
+- **Implementation version**: https://github.com/pq-crystals/dilithium/tree/497a98bc7efe48cb0d18fd20d6d9a4b5629406ef
 - **License**: public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AVX2, BMI1, and POPCNT instructions (if available at run-time)

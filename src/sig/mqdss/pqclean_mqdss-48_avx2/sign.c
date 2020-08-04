@@ -44,7 +44,7 @@ static void com_1(unsigned char *c,
 /*
  * Generates an MQDSS key pair.
  */
-int PQCLEAN_MQDSS64_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+int PQCLEAN_MQDSS48_AVX2_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     signed char F[F_LEN];
     unsigned char skbuf[SEED_BYTES * 2];
     gf31 sk_gf31[N];
@@ -57,11 +57,11 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     shake256(skbuf, SEED_BYTES * 2, sk, SEED_BYTES);
 
     memcpy(pk, skbuf, SEED_BYTES);
-    PQCLEAN_MQDSS64_CLEAN_gf31_nrand_schar(F, F_LEN, pk, SEED_BYTES);
-    PQCLEAN_MQDSS64_CLEAN_gf31_nrand(sk_gf31, N, skbuf + SEED_BYTES, SEED_BYTES);
-    PQCLEAN_MQDSS64_CLEAN_MQ(pk_gf31, sk_gf31, F);
-    PQCLEAN_MQDSS64_CLEAN_vgf31_unique(pk_gf31, pk_gf31);
-    PQCLEAN_MQDSS64_CLEAN_gf31_npack(pk + SEED_BYTES, pk_gf31, M);
+    PQCLEAN_MQDSS48_AVX2_gf31_nrand_schar(F, F_LEN, pk, SEED_BYTES);
+    PQCLEAN_MQDSS48_AVX2_gf31_nrand(sk_gf31, N, skbuf + SEED_BYTES, SEED_BYTES);
+    PQCLEAN_MQDSS48_AVX2_MQ(pk_gf31, sk_gf31, F);
+    PQCLEAN_MQDSS48_AVX2_vgf31_unique(pk_gf31, pk_gf31);
+    PQCLEAN_MQDSS48_AVX2_gf31_npack(pk + SEED_BYTES, pk_gf31, M);
 
     return 0;
 }
@@ -69,7 +69,7 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 /**
  * Returns an array containing a detached signature.
  */
-int PQCLEAN_MQDSS64_CLEAN_crypto_sign_signature(
+int PQCLEAN_MQDSS48_AVX2_crypto_sign_signature(
     uint8_t *sig, size_t *siglen,
     const uint8_t *m, size_t mlen, const uint8_t *sk) {
 
@@ -112,7 +112,7 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_signature(
 
     shake256(skbuf, SEED_BYTES * 4, sk, SEED_BYTES);
 
-    PQCLEAN_MQDSS64_CLEAN_gf31_nrand_schar(F, F_LEN, skbuf, SEED_BYTES);
+    PQCLEAN_MQDSS48_AVX2_gf31_nrand_schar(F, F_LEN, skbuf, SEED_BYTES);
 
     shake256_inc_init(&state);
     shake256_inc_absorb(&state, sk, SEED_BYTES);
@@ -122,10 +122,10 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_signature(
     shake256_inc_ctx_release(&state);
 
     memcpy(pk, skbuf, SEED_BYTES);
-    PQCLEAN_MQDSS64_CLEAN_gf31_nrand(sk_gf31, N, skbuf + SEED_BYTES, SEED_BYTES);
-    PQCLEAN_MQDSS64_CLEAN_MQ(pk_gf31, sk_gf31, F);
-    PQCLEAN_MQDSS64_CLEAN_vgf31_unique(pk_gf31, pk_gf31);
-    PQCLEAN_MQDSS64_CLEAN_gf31_npack(pk + SEED_BYTES, pk_gf31, M);
+    PQCLEAN_MQDSS48_AVX2_gf31_nrand(sk_gf31, N, skbuf + SEED_BYTES, SEED_BYTES);
+    PQCLEAN_MQDSS48_AVX2_MQ(pk_gf31, sk_gf31, F);
+    PQCLEAN_MQDSS48_AVX2_vgf31_unique(pk_gf31, pk_gf31);
+    PQCLEAN_MQDSS48_AVX2_gf31_npack(pk + SEED_BYTES, pk_gf31, M);
 
     shake256_inc_init(&state);
     shake256_inc_absorb(&state, pk, PK_BYTES);
@@ -143,26 +143,26 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_signature(
 
     memcpy(rnd_seed, skbuf + 3 * SEED_BYTES, SEED_BYTES);
     memcpy(rnd_seed + SEED_BYTES, D, HASH_BYTES);
-    PQCLEAN_MQDSS64_CLEAN_gf31_nrand(rnd, (2 * N + M) * ROUNDS, rnd_seed, SEED_BYTES + HASH_BYTES);
+    PQCLEAN_MQDSS48_AVX2_gf31_nrand(rnd, (2 * N + M) * ROUNDS, rnd_seed, SEED_BYTES + HASH_BYTES);
 
     for (i = 0; i < ROUNDS; i++) {
         for (j = 0; j < N; j++) {
             r1[j + i * N] = (gf31)(31 + sk_gf31[j] - r0[j + i * N]);
         }
-        PQCLEAN_MQDSS64_CLEAN_G(gx + i * M, t0 + i * N, r1 + i * N, F);
+        PQCLEAN_MQDSS48_AVX2_G(gx + i * M, t0 + i * N, r1 + i * N, F);
     }
     for (i = 0; i < ROUNDS * M; i++) {
         gx[i] = (gf31)(gx[i] + e0[i]);
     }
     for (i = 0; i < ROUNDS; i++) {
-        PQCLEAN_MQDSS64_CLEAN_gf31_npack(packbuf0, r0 + i * N, N);
-        PQCLEAN_MQDSS64_CLEAN_gf31_npack(packbuf1, t0 + i * N, N);
-        PQCLEAN_MQDSS64_CLEAN_gf31_npack(packbuf2, e0 + i * M, M);
+        PQCLEAN_MQDSS48_AVX2_gf31_npack(packbuf0, r0 + i * N, N);
+        PQCLEAN_MQDSS48_AVX2_gf31_npack(packbuf1, t0 + i * N, N);
+        PQCLEAN_MQDSS48_AVX2_gf31_npack(packbuf2, e0 + i * M, M);
         com_0(c + HASH_BYTES * (2 * i + 0), rho0 + i * HASH_BYTES, packbuf0, packbuf1, packbuf2);
-        PQCLEAN_MQDSS64_CLEAN_vgf31_shorten_unique(r1 + i * N, r1 + i * N);
-        PQCLEAN_MQDSS64_CLEAN_vgf31_shorten_unique(gx + i * M, gx + i * M);
-        PQCLEAN_MQDSS64_CLEAN_gf31_npack(packbuf0, r1 + i * N, N);
-        PQCLEAN_MQDSS64_CLEAN_gf31_npack(packbuf1, gx + i * M, M);
+        PQCLEAN_MQDSS48_AVX2_vgf31_shorten_unique(r1 + i * N, r1 + i * N);
+        PQCLEAN_MQDSS48_AVX2_vgf31_shorten_unique(gx + i * M, gx + i * M);
+        PQCLEAN_MQDSS48_AVX2_gf31_npack(packbuf0, r1 + i * N, N);
+        PQCLEAN_MQDSS48_AVX2_gf31_npack(packbuf1, gx + i * M, M);
         com_1(c + HASH_BYTES * (2 * i + 1), rho1 + i * HASH_BYTES, packbuf0, packbuf1);
     }
 
@@ -187,17 +187,17 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_signature(
         for (j = 0; j < N; j++) {
             t1[i * N + j] = (gf31)(alpha * r0[j + i * N] - t0[j + i * N] + 31);
         }
-        PQCLEAN_MQDSS64_CLEAN_MQ(e1 + i * M, r0 + i * N, F);
+        PQCLEAN_MQDSS48_AVX2_MQ(e1 + i * M, r0 + i * N, F);
         for (j = 0; j < N; j++) {
             e1[i * N + j] = (gf31)(alpha * e1[j + i * M] - e0[j + i * M] + 31);
         }
-        PQCLEAN_MQDSS64_CLEAN_vgf31_shorten_unique(t1 + i * N, t1 + i * N);
-        PQCLEAN_MQDSS64_CLEAN_vgf31_shorten_unique(e1 + i * N, e1 + i * N);
+        PQCLEAN_MQDSS48_AVX2_vgf31_shorten_unique(t1 + i * N, t1 + i * N);
+        PQCLEAN_MQDSS48_AVX2_vgf31_shorten_unique(e1 + i * N, e1 + i * N);
     }
     shake256_ctx_release(&shakestate);
 
-    PQCLEAN_MQDSS64_CLEAN_gf31_npack(t1packed, t1, N * ROUNDS);
-    PQCLEAN_MQDSS64_CLEAN_gf31_npack(e1packed, e1, M * ROUNDS);
+    PQCLEAN_MQDSS48_AVX2_gf31_npack(t1packed, t1, N * ROUNDS);
+    PQCLEAN_MQDSS48_AVX2_gf31_npack(e1packed, e1, M * ROUNDS);
 
     memcpy(sig, t1packed, NPACKED_BYTES * ROUNDS);
     sig += NPACKED_BYTES * ROUNDS;
@@ -209,9 +209,9 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_signature(
     for (i = 0; i < ROUNDS; i++) {
         b = (h1[(i >> 3)] >> (i & 7)) & 1;
         if (b == 0) {
-            PQCLEAN_MQDSS64_CLEAN_gf31_npack(sig, r0 + i * N, N);
+            PQCLEAN_MQDSS48_AVX2_gf31_npack(sig, r0 + i * N, N);
         } else if (b == 1) {
-            PQCLEAN_MQDSS64_CLEAN_gf31_npack(sig, r1 + i * N, N);
+            PQCLEAN_MQDSS48_AVX2_gf31_npack(sig, r1 + i * N, N);
         }
         memcpy(sig + NPACKED_BYTES, c + HASH_BYTES * (2 * i + (1 - b)), HASH_BYTES);
         memcpy(sig + NPACKED_BYTES + HASH_BYTES, rho + (i + b * ROUNDS) * HASH_BYTES, HASH_BYTES);
@@ -225,7 +225,7 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_signature(
 /**
  * Verifies a detached signature and message under a given public key.
  */
-int PQCLEAN_MQDSS64_CLEAN_crypto_sign_verify(
+int PQCLEAN_MQDSS48_AVX2_crypto_sign_verify(
     const uint8_t *sig, size_t siglen,
     const uint8_t *m, size_t mlen, const uint8_t *pk) {
 
@@ -271,9 +271,9 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_verify(
 
     sig += HASH_BYTES;
 
-    PQCLEAN_MQDSS64_CLEAN_gf31_nrand_schar(F, F_LEN, pk, SEED_BYTES);
+    PQCLEAN_MQDSS48_AVX2_gf31_nrand_schar(F, F_LEN, pk, SEED_BYTES);
     pk += SEED_BYTES;
-    PQCLEAN_MQDSS64_CLEAN_gf31_nunpack(pk_gf31, pk, M);
+    PQCLEAN_MQDSS48_AVX2_gf31_nunpack(pk_gf31, pk, M);
 
     memcpy(sigma0, sig, HASH_BYTES);
 
@@ -302,31 +302,31 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_verify(
         } while (alpha == 31);
         b = (h1[(i >> 3)] >> (i & 7)) & 1;
 
-        PQCLEAN_MQDSS64_CLEAN_gf31_nunpack(r, sig, N);
-        PQCLEAN_MQDSS64_CLEAN_gf31_nunpack(t, t1packed + NPACKED_BYTES * i, N);
-        PQCLEAN_MQDSS64_CLEAN_gf31_nunpack(e, e1packed + MPACKED_BYTES * i, M);
+        PQCLEAN_MQDSS48_AVX2_gf31_nunpack(r, sig, N);
+        PQCLEAN_MQDSS48_AVX2_gf31_nunpack(t, t1packed + NPACKED_BYTES * i, N);
+        PQCLEAN_MQDSS48_AVX2_gf31_nunpack(e, e1packed + MPACKED_BYTES * i, M);
 
         if (b == 0) {
-            PQCLEAN_MQDSS64_CLEAN_MQ(y, r, F);
+            PQCLEAN_MQDSS48_AVX2_MQ(y, r, F);
             for (j = 0; j < N; j++) {
                 x[j] = (gf31)(alpha * r[j] - t[j] + 31);
             }
             for (j = 0; j < N; j++) {
                 y[j] = (gf31)(alpha * y[j] - e[j] + 31);
             }
-            PQCLEAN_MQDSS64_CLEAN_vgf31_shorten_unique(x, x);
-            PQCLEAN_MQDSS64_CLEAN_vgf31_shorten_unique(y, y);
-            PQCLEAN_MQDSS64_CLEAN_gf31_npack(packbuf0, x, N);
-            PQCLEAN_MQDSS64_CLEAN_gf31_npack(packbuf1, y, M);
+            PQCLEAN_MQDSS48_AVX2_vgf31_shorten_unique(x, x);
+            PQCLEAN_MQDSS48_AVX2_vgf31_shorten_unique(y, y);
+            PQCLEAN_MQDSS48_AVX2_gf31_npack(packbuf0, x, N);
+            PQCLEAN_MQDSS48_AVX2_gf31_npack(packbuf1, y, M);
             com_0(c + HASH_BYTES * (2 * i + 0), sig + HASH_BYTES + NPACKED_BYTES, sig, packbuf0, packbuf1);
         } else {
-            PQCLEAN_MQDSS64_CLEAN_MQ(y, r, F);
-            PQCLEAN_MQDSS64_CLEAN_G(z, t, r, F);
+            PQCLEAN_MQDSS48_AVX2_MQ(y, r, F);
+            PQCLEAN_MQDSS48_AVX2_G(z, t, r, F);
             for (j = 0; j < N; j++) {
                 y[j] = (gf31)(alpha * (31 + pk_gf31[j] - y[j]) - z[j] - e[j] + 62);
             }
-            PQCLEAN_MQDSS64_CLEAN_vgf31_shorten_unique(y, y);
-            PQCLEAN_MQDSS64_CLEAN_gf31_npack(packbuf0, y, M);
+            PQCLEAN_MQDSS48_AVX2_vgf31_shorten_unique(y, y);
+            PQCLEAN_MQDSS48_AVX2_gf31_npack(packbuf0, y, M);
             com_1(c + HASH_BYTES * (2 * i + 1), sig + HASH_BYTES + NPACKED_BYTES, sig, packbuf0);
         }
         memcpy(c + HASH_BYTES * (2 * i + (1 - b)), sig + NPACKED_BYTES, HASH_BYTES);
@@ -345,12 +345,12 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_verify(
 /**
  * Returns an array containing the signature followed by the message.
  */
-int PQCLEAN_MQDSS64_CLEAN_crypto_sign(
+int PQCLEAN_MQDSS48_AVX2_crypto_sign(
     uint8_t *sm, size_t *smlen,
     const uint8_t *m, size_t mlen, const uint8_t *sk) {
     size_t siglen;
 
-    PQCLEAN_MQDSS64_CLEAN_crypto_sign_signature(
+    PQCLEAN_MQDSS48_AVX2_crypto_sign_signature(
         sm, &siglen, m, mlen, sk);
 
     memmove(sm + SIG_LEN, m, mlen);
@@ -362,7 +362,7 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign(
 /**
  * Verifies a given signature-message pair under a given public key.
  */
-int PQCLEAN_MQDSS64_CLEAN_crypto_sign_open(
+int PQCLEAN_MQDSS48_AVX2_crypto_sign_open(
     uint8_t *m, size_t *mlen,
     const uint8_t *sm, size_t smlen, const uint8_t *pk) {
     /* The API caller does not necessarily know what size a signature should be
@@ -375,7 +375,7 @@ int PQCLEAN_MQDSS64_CLEAN_crypto_sign_open(
 
     *mlen = smlen - SIG_LEN;
 
-    if (PQCLEAN_MQDSS64_CLEAN_crypto_sign_verify(
+    if (PQCLEAN_MQDSS48_AVX2_crypto_sign_verify(
                 sm, SIG_LEN, sm + SIG_LEN, *mlen, pk)) {
         memset(m, 0, smlen);
         *mlen = 0;
