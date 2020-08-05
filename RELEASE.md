@@ -1,4 +1,4 @@
-liboqs version 0.4.0-dev
+liboqs version 0.4.0-rc1
 ========================
 
 About
@@ -24,7 +24,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is the development version 0.4.0 of liboqs.  Its project page on GitHub is at https://github.com/open-quantum-safe/liboqs/projects/13.
+This is the first release candidate of version 0.4.0 of liboqs.  It was released on August 4, 2020.  Its project page on GitHub is at https://github.com/open-quantum-safe/liboqs/milestone/9.
 
 What's New
 ----------
