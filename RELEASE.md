@@ -1,5 +1,5 @@
-liboqs version 0.4.0-rc1
-========================
+liboqs version 0.4.0
+====================
 
 About
 -----
@@ -17,14 +17,15 @@ liboqs can be used with the following Open Quantum Safe application integrations
 liboqs can also be used in the following programming languages via language-specific wrappers:
 
 - C++, via https://github.com/open-quantum-safe/liboqs-cpp
-- Go, via https://github.com/thales-e-security/goliboqs
+- Go, via https://github.com/open-quantum-safe/liboqs-go
+- Java, via https://github.com/open-quantum-safe/liboqs-java
 - .NET, via https://github.com/open-quantum-safe/liboqs-dotnet
 - Python 3, via https://github.com/open-quantum-safe/liboqs-python
 
 Release notes
 =============
 
-This is the first release candidate of version 0.4.0 of liboqs.  It was released on August 4, 2020.  Its project page on GitHub is at https://github.com/open-quantum-safe/liboqs/milestone/9.
+This is version 0.4.0 of liboqs.  It was released on August 11, 2020.
 
 What's New
 ----------
