@@ -57,10 +57,6 @@ extern "C" {
 #define OQS_SIG_alg_picnic3_L3 "picnic3_L3"
 /** Algorithm identifier for picnic3_L5 */
 #define OQS_SIG_alg_picnic3_L5 "picnic3_L5"
-/** Algorithm identifier for qTesla-p-I */
-#define OQS_SIG_alg_qTesla_p_I "qTesla-p-I"
-/** Algorithm identifier for qTesla-p-III */
-#define OQS_SIG_alg_qTesla_p_III "qTesla-p-III"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for DILITHIUM_2 */
 #define OQS_SIG_alg_dilithium_2 "DILITHIUM_2"
@@ -72,10 +68,6 @@ extern "C" {
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */
 #define OQS_SIG_alg_falcon_1024 "Falcon-1024"
-/** Algorithm identifier for MQDSS-31-48 */
-#define OQS_SIG_alg_mqdss_31_48 "MQDSS-31-48"
-/** Algorithm identifier for MQDSS-31-64 */
-#define OQS_SIG_alg_mqdss_31_64 "MQDSS-31-64"
 /** Algorithm identifier for Rainbow-Ia-Classic */
 #define OQS_SIG_alg_rainbow_Ia_classic "Rainbow-Ia-Classic"
 /** Algorithm identifier for Rainbow-Ia-Cyclic */
@@ -170,7 +162,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 67
+#define OQS_SIG_algs_length 63
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -339,9 +331,6 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_PICNIC
 #include <oqs/sig_picnic.h>
 #endif /* OQS_ENABLE_SIG_PICNIC */
-#ifdef OQS_ENABLE_SIG_QTESLA
-#include <oqs/sig_qtesla.h>
-#endif /* OQS_ENABLE_SIG_QTESLA */
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
 #ifdef OQS_ENABLE_SIG_DILITHIUM
 #include <oqs/sig_dilithium.h>
@@ -349,9 +338,6 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_FALCON
 #include <oqs/sig_falcon.h>
 #endif /* OQS_ENABLE_SIG_FALCON */
-#ifdef OQS_ENABLE_SIG_MQDSS
-#include <oqs/sig_mqdss.h>
-#endif /* OQS_ENABLE_SIG_MQDSS */
 #ifdef OQS_ENABLE_SIG_RAINBOW
 #include <oqs/sig_rainbow.h>
 #endif /* OQS_ENABLE_SIG_RAINBOW */

@@ -42,8 +42,6 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 		OQS_KEM_alg_kyber_512_90s,
 		OQS_KEM_alg_kyber_768_90s,
 		OQS_KEM_alg_kyber_1024_90s,
-		OQS_KEM_alg_newhope_512cca,
-		OQS_KEM_alg_newhope_1024cca,
 		OQS_KEM_alg_ntru_hps2048509,
 		OQS_KEM_alg_ntru_hps2048677,
 		OQS_KEM_alg_ntru_hps4096821,
@@ -51,12 +49,6 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 		OQS_KEM_alg_saber_lightsaber,
 		OQS_KEM_alg_saber_saber,
 		OQS_KEM_alg_saber_firesaber,
-		OQS_KEM_alg_threebears_babybear,
-		OQS_KEM_alg_threebears_babybear_ephem,
-		OQS_KEM_alg_threebears_mamabear,
-		OQS_KEM_alg_threebears_mamabear_ephem,
-		OQS_KEM_alg_threebears_papabear,
-		OQS_KEM_alg_threebears_papabear_ephem,
 		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 		OQS_KEM_alg_frodokem_640_aes,
 		OQS_KEM_alg_frodokem_640_shake,
@@ -255,18 +247,6 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_512cca)) {
-#ifdef OQS_ENABLE_KEM_newhope_512cca
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_1024cca)) {
-#ifdef OQS_ENABLE_KEM_newhope_1024cca
-		return 1;
-#else
-		return 0;
-#endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntru_hps2048509)) {
 #ifdef OQS_ENABLE_KEM_ntru_hps2048509
 		return 1;
@@ -305,42 +285,6 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_saber_firesaber)) {
 #ifdef OQS_ENABLE_KEM_saber_firesaber
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_babybear)) {
-#ifdef OQS_ENABLE_KEM_threebears_babybear
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_babybear_ephem)) {
-#ifdef OQS_ENABLE_KEM_threebears_babybear_ephem
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_mamabear)) {
-#ifdef OQS_ENABLE_KEM_threebears_mamabear
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_mamabear_ephem)) {
-#ifdef OQS_ENABLE_KEM_threebears_mamabear_ephem
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_papabear)) {
-#ifdef OQS_ENABLE_KEM_threebears_papabear
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_papabear_ephem)) {
-#ifdef OQS_ENABLE_KEM_threebears_papabear_ephem
 		return 1;
 #else
 		return 0;
@@ -647,18 +591,6 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_512cca)) {
-#ifdef OQS_ENABLE_KEM_newhope_512cca
-		return OQS_KEM_newhope_512cca_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_newhope_1024cca)) {
-#ifdef OQS_ENABLE_KEM_newhope_1024cca
-		return OQS_KEM_newhope_1024cca_new();
-#else
-		return NULL;
-#endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntru_hps2048509)) {
 #ifdef OQS_ENABLE_KEM_ntru_hps2048509
 		return OQS_KEM_ntru_hps2048509_new();
@@ -698,42 +630,6 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_saber_firesaber)) {
 #ifdef OQS_ENABLE_KEM_saber_firesaber
 		return OQS_KEM_saber_firesaber_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_babybear)) {
-#ifdef OQS_ENABLE_KEM_threebears_babybear
-		return OQS_KEM_threebears_babybear_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_babybear_ephem)) {
-#ifdef OQS_ENABLE_KEM_threebears_babybear_ephem
-		return OQS_KEM_threebears_babybear_ephem_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_mamabear)) {
-#ifdef OQS_ENABLE_KEM_threebears_mamabear
-		return OQS_KEM_threebears_mamabear_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_mamabear_ephem)) {
-#ifdef OQS_ENABLE_KEM_threebears_mamabear_ephem
-		return OQS_KEM_threebears_mamabear_ephem_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_papabear)) {
-#ifdef OQS_ENABLE_KEM_threebears_papabear
-		return OQS_KEM_threebears_papabear_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_threebears_papabear_ephem)) {
-#ifdef OQS_ENABLE_KEM_threebears_papabear_ephem
-		return OQS_KEM_threebears_papabear_ephem_new();
 #else
 		return NULL;
 #endif

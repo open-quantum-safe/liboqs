@@ -86,10 +86,6 @@ extern "C" {
 #define OQS_KEM_alg_kyber_768_90s "Kyber768-90s"
 /** Algorithm identifier for Kyber1024-90s KEM. */
 #define OQS_KEM_alg_kyber_1024_90s "Kyber1024-90s"
-/** Algorithm identifier for NewHope-512-CCA KEM. */
-#define OQS_KEM_alg_newhope_512cca "NewHope-512-CCA"
-/** Algorithm identifier for NewHope-1024-CCA KEM. */
-#define OQS_KEM_alg_newhope_1024cca "NewHope-1024-CCA"
 /** Algorithm identifier for NTRU-HPS-2048-509 KEM. */
 #define OQS_KEM_alg_ntru_hps2048509 "NTRU-HPS-2048-509"
 /** Algorithm identifier for NTRU-HPS-2048-677 KEM. */
@@ -104,18 +100,6 @@ extern "C" {
 #define OQS_KEM_alg_saber_saber "Saber-KEM"
 /** Algorithm identifier for FireSaber-KEM KEM. */
 #define OQS_KEM_alg_saber_firesaber "FireSaber-KEM"
-/** Algorithm identifier for BabyBear KEM. */
-#define OQS_KEM_alg_threebears_babybear "BabyBear"
-/** Algorithm identifier for BabyBearEphem KEM. */
-#define OQS_KEM_alg_threebears_babybear_ephem "BabyBearEphem"
-/** Algorithm identifier for MamaBear KEM. */
-#define OQS_KEM_alg_threebears_mamabear "MamaBear"
-/** Algorithm identifier for MamaBearEphem KEM. */
-#define OQS_KEM_alg_threebears_mamabear_ephem "MamaBearEphem"
-/** Algorithm identifier for PapaBear KEM. */
-#define OQS_KEM_alg_threebears_papabear "PapaBear"
-/** Algorithm identifier for PapaBearEphem KEM. */
-#define OQS_KEM_alg_threebears_papabear_ephem "PapaBearEphem"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
@@ -164,7 +148,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 64
+#define OQS_KEM_algs_length 56
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -345,18 +329,12 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_KYBER
 #include <oqs/kem_kyber.h>
 #endif /* OQS_ENABLE_KEM_KYBER */
-#ifdef OQS_ENABLE_KEM_NEWHOPE
-#include <oqs/kem_newhope.h>
-#endif /* OQS_ENABLE_KEM_NEWHOPE */
 #ifdef OQS_ENABLE_KEM_NTRU
 #include <oqs/kem_ntru.h>
 #endif /* OQS_ENABLE_KEM_NTRU */
 #ifdef OQS_ENABLE_KEM_SABER
 #include <oqs/kem_saber.h>
 #endif /* OQS_ENABLE_KEM_SABER */
-#ifdef OQS_ENABLE_KEM_THREEBEARS
-#include <oqs/kem_threebears.h>
-#endif /* OQS_ENABLE_KEM_THREEBEARS */
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
 #ifdef OQS_ENABLE_KEM_FRODOKEM
 #include <oqs/kem_frodokem.h>

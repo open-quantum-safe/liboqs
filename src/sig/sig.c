@@ -21,8 +21,6 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_dilithium_4,
 		OQS_SIG_alg_falcon_512,
 		OQS_SIG_alg_falcon_1024,
-		OQS_SIG_alg_mqdss_31_48,
-		OQS_SIG_alg_mqdss_31_64,
 		OQS_SIG_alg_rainbow_Ia_classic,
 		OQS_SIG_alg_rainbow_Ia_cyclic,
 		OQS_SIG_alg_rainbow_Ia_cyclic_compressed,
@@ -80,9 +78,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_picnic_L5_full,
 		OQS_SIG_alg_picnic3_L1,
 		OQS_SIG_alg_picnic3_L3,
-		OQS_SIG_alg_picnic3_L5,
-		OQS_SIG_alg_qTesla_p_I,
-		OQS_SIG_alg_qTesla_p_III
+		OQS_SIG_alg_picnic3_L5
 	};
 	if (i >= OQS_SIG_algs_length) {
 		return NULL;
@@ -128,18 +124,6 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_falcon_1024)) {
 #ifdef OQS_ENABLE_SIG_falcon_1024
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqdss_31_48)) {
-#ifdef OQS_ENABLE_SIG_mqdss_31_48
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqdss_31_64)) {
-#ifdef OQS_ENABLE_SIG_mqdss_31_64
 		return 1;
 #else
 		return 0;
@@ -487,18 +471,6 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTesla_p_I)) {
-#ifdef OQS_ENABLE_SIG_qTesla_p_I
-		return 1;
-#else
-		return 0;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTesla_p_III)) {
-#ifdef OQS_ENABLE_SIG_qTesla_p_III
-		return 1;
-#else
-		return 0;
-#endif
 		// EDIT-WHEN-ADDING-SIG
 	} else {
 		return 0;
@@ -539,18 +511,6 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_falcon_1024)) {
 #ifdef OQS_ENABLE_SIG_falcon_1024
 		return OQS_SIG_falcon_1024_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqdss_31_48)) {
-#ifdef OQS_ENABLE_SIG_mqdss_31_48
-		return OQS_SIG_mqdss_31_48_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_mqdss_31_64)) {
-#ifdef OQS_ENABLE_SIG_mqdss_31_64
-		return OQS_SIG_mqdss_31_64_new();
 #else
 		return NULL;
 #endif
@@ -894,18 +854,6 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic3_L5)) {
 #ifdef OQS_ENABLE_SIG_picnic3_L5
 		return OQS_SIG_picnic3_L5_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTesla_p_I)) {
-#ifdef OQS_ENABLE_SIG_qTesla_p_I
-		return OQS_SIG_qTesla_p_I_new();
-#else
-		return NULL;
-#endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_qTesla_p_III)) {
-#ifdef OQS_ENABLE_SIG_qTesla_p_III
-		return OQS_SIG_qTesla_p_III_new();
 #else
 		return NULL;
 #endif

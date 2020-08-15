@@ -33,11 +33,6 @@ def test_sig(sig_name):
     output = output.replace("\r\n", "\n")
     h256 = sha256()
     h256.update(output.encode())
-    # qtesla's avx2 implementation uses an optimized sampling method that results in 
-    # different KAT values; we use the correct one (if avx2/aes instructions are available)
-    avx2_aes_enabled_on_linux = helpers.is_use_option_enabled_by_name('AVX2_INSTRUCTIONS') and helpers.is_use_option_enabled_by_name('AES_INSTRUCTIONS') and platform.system() == 'Linux'
-    if sig_name.startswith('qTesla') and avx2_aes_enabled_on_linux and not helpers.is_build_portable():
-       sig_name = sig_name+".avx2"
 
     assert(kats[sig_name] == h256.hexdigest())
 
