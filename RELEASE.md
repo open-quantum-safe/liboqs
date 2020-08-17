@@ -1,5 +1,5 @@
-liboqs version 0.4.0
-====================
+liboqs version 0.5.0-dev
+========================
 
 About
 -----
@@ -25,29 +25,24 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is version 0.4.0 of liboqs.  It was released on August 11, 2020.
+This is the development branch for future version 0.5.0 of liboqs.
 
 What's New
 ----------
 
-This release continues from the 0.3.0 release of liboqs.
+This release continues from the 0.4.0 release of liboqs.
+
+### Deprecations
+
+As a result of NIST's announcement of Round 3 of the Post-Quantum Cryptography Standardization Project, the 0.4.x series was the last release of liboqs that contain algorithms from Round 2 that are not Round 3 finalists or alternate candidates.  Those algorithms have be removed in the 0.5.0 series.  The algorithms in question are: NewHope, ThreeBears, MQDSS, and qTesla.
+
 
 ### Key encapsulation mechanisms
 
-- HQC: Added version 2019/08/24
-- NewHope: Update to version 1.1
-- SIKE: Update to version 3.3
 
 ### Digital signature schemes
 
-- Dilithium: Use version directly from PQCrystals GitHub
-- Picnic: Update to v3.0
 
 ### Other changes
 
-- AES-NI support when liboqs does not use OpenSSL for AES
 
-Deprecations
-------------
-
-As a result of NIST's announcement of Round 3 of the Post-Quantum Cryptography Standardization Project, the 0.4.x series will be the last release(s) of liboqs that contain algorithms from Round 2 that are not Round 3 finalists or alternate candidates.  Those algorithms will be removed in the 0.5.0 release.  The algorithms in question are: NewHope, ThreeBears, MQDSS, and qTesla.  These algorithms are considered deprecated within liboqs and will receive no updates after this release.

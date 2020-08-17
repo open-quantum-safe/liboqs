@@ -64,10 +64,6 @@ cmake_dependent_option(OQS_ENABLE_SIG_picnic3_L1 "" ON "OQS_ENABLE_SIG_PICNIC" O
 cmake_dependent_option(OQS_ENABLE_SIG_picnic3_L3 "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_picnic3_L5 "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
 
-option(OQS_ENABLE_SIG_QTESLA "" ON)
-cmake_dependent_option(OQS_ENABLE_SIG_qTesla_p_I "" ON "OQS_ENABLE_SIG_QTESLA" OFF)
-cmake_dependent_option(OQS_ENABLE_SIG_qTesla_p_III "" ON "OQS_ENABLE_SIG_QTESLA" OFF)
-
 ##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ENABLE_BY_ALG_START
 option(OQS_ENABLE_KEM_CLASSIC_MCELIECE "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_348864 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
@@ -115,10 +111,6 @@ if(ARCH STREQUAL "x86_64" AND CMAKE_SYSTEM_NAME MATCHES "Linux" AND OQS_USE_AES_
     cmake_dependent_option(OQS_ENABLE_KEM_kyber_1024_90s_avx2 "" ON "OQS_ENABLE_KEM_kyber_1024_90s" OFF)
 endif()
 
-option(OQS_ENABLE_KEM_NEWHOPE "" ON)
-cmake_dependent_option(OQS_ENABLE_KEM_newhope_512cca "" ON "OQS_ENABLE_KEM_NEWHOPE" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_newhope_1024cca "" ON "OQS_ENABLE_KEM_NEWHOPE" OFF)
-
 option(OQS_ENABLE_KEM_NTRU "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps2048509 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_ntru_hps2048677 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
@@ -129,14 +121,6 @@ option(OQS_ENABLE_KEM_SABER "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_saber_lightsaber "" ON "OQS_ENABLE_KEM_SABER" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_saber_saber "" ON "OQS_ENABLE_KEM_SABER" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_saber_firesaber "" ON "OQS_ENABLE_KEM_SABER" OFF)
-
-option(OQS_ENABLE_KEM_THREEBEARS "" ON)
-cmake_dependent_option(OQS_ENABLE_KEM_threebears_babybear "" ON "OQS_ENABLE_KEM_THREEBEARS" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_threebears_babybear_ephem "" ON "OQS_ENABLE_KEM_THREEBEARS" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_threebears_mamabear "" ON "OQS_ENABLE_KEM_THREEBEARS" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_threebears_mamabear_ephem "" ON "OQS_ENABLE_KEM_THREEBEARS" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_threebears_papabear "" ON "OQS_ENABLE_KEM_THREEBEARS" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_threebears_papabear_ephem "" ON "OQS_ENABLE_KEM_THREEBEARS" OFF)
 
 option(OQS_ENABLE_SIG_DILITHIUM "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2 "" ON "OQS_ENABLE_SIG_DILITHIUM" OFF)
@@ -155,16 +139,6 @@ endif()
 option(OQS_ENABLE_SIG_FALCON "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_falcon_512 "" ON "OQS_ENABLE_SIG_FALCON" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_falcon_1024 "" ON "OQS_ENABLE_SIG_FALCON" OFF)
-
-option(OQS_ENABLE_SIG_MQDSS "" ON)
-cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_48 "" ON "OQS_ENABLE_SIG_MQDSS" OFF)
-if(ARCH STREQUAL "x86_64" AND OQS_USE_AVX2_INSTRUCTIONS)
-    cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_48_avx2 "" ON "OQS_ENABLE_SIG_mqdss_31_48" OFF)
-endif()
-cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_64 "" ON "OQS_ENABLE_SIG_MQDSS" OFF)
-if(ARCH STREQUAL "x86_64" AND OQS_USE_AVX2_INSTRUCTIONS)
-    cmake_dependent_option(OQS_ENABLE_SIG_mqdss_31_64_avx2 "" ON "OQS_ENABLE_SIG_mqdss_31_64" OFF)
-endif()
 
 option(OQS_ENABLE_SIG_RAINBOW "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_rainbow_Ia_classic "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)

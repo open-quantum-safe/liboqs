@@ -74,10 +74,6 @@
 #cmakedefine OQS_ENABLE_SIG_picnic3_L3 1
 #cmakedefine OQS_ENABLE_SIG_picnic3_L5 1
 
-#cmakedefine OQS_ENABLE_SIG_QTESLA 1
-#cmakedefine OQS_ENABLE_SIG_qTesla_p_I 1
-#cmakedefine OQS_ENABLE_SIG_qTesla_p_III 1
-
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
 
 #cmakedefine OQS_ENABLE_KEM_CLASSIC_MCELIECE 1
@@ -114,10 +110,6 @@
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_90s 1
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_90s_avx2 1
 
-#cmakedefine OQS_ENABLE_KEM_NEWHOPE 1
-#cmakedefine OQS_ENABLE_KEM_newhope_512cca 1
-#cmakedefine OQS_ENABLE_KEM_newhope_1024cca 1
-
 #cmakedefine OQS_ENABLE_KEM_NTRU 1
 #cmakedefine OQS_ENABLE_KEM_ntru_hps2048509 1
 #cmakedefine OQS_ENABLE_KEM_ntru_hps2048677 1
@@ -128,14 +120,6 @@
 #cmakedefine OQS_ENABLE_KEM_saber_lightsaber 1
 #cmakedefine OQS_ENABLE_KEM_saber_saber 1
 #cmakedefine OQS_ENABLE_KEM_saber_firesaber 1
-
-#cmakedefine OQS_ENABLE_KEM_THREEBEARS 1
-#cmakedefine OQS_ENABLE_KEM_threebears_babybear 1
-#cmakedefine OQS_ENABLE_KEM_threebears_babybear_ephem 1
-#cmakedefine OQS_ENABLE_KEM_threebears_mamabear 1
-#cmakedefine OQS_ENABLE_KEM_threebears_mamabear_ephem 1
-#cmakedefine OQS_ENABLE_KEM_threebears_papabear 1
-#cmakedefine OQS_ENABLE_KEM_threebears_papabear_ephem 1
 
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1
@@ -148,12 +132,6 @@
 #cmakedefine OQS_ENABLE_SIG_FALCON 1
 #cmakedefine OQS_ENABLE_SIG_falcon_512 1
 #cmakedefine OQS_ENABLE_SIG_falcon_1024 1
-
-#cmakedefine OQS_ENABLE_SIG_MQDSS 1
-#cmakedefine OQS_ENABLE_SIG_mqdss_31_48 1
-#cmakedefine OQS_ENABLE_SIG_mqdss_31_48_avx2 1
-#cmakedefine OQS_ENABLE_SIG_mqdss_31_64 1
-#cmakedefine OQS_ENABLE_SIG_mqdss_31_64_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_RAINBOW 1
 #cmakedefine OQS_ENABLE_SIG_rainbow_Ia_classic 1

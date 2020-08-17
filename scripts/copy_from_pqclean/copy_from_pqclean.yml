@@ -126,18 +126,6 @@ kems:
         upstream_location: KYBER
         pretty_name_full: Kyber1024-90s
   -
-    name: newhope
-    default_implementation: clean
-    schemes:
-      -
-        scheme: "512cca"
-        pqclean_scheme: newhope512cca
-        pretty_name_full: NewHope-512-CCA
-      -
-        scheme: "1024cca"
-        pqclean_scheme: newhope1024cca
-        pretty_name_full: NewHope-1024-CCA
-  -
     name: ntru
     default_implementation: clean
     schemes:
@@ -173,34 +161,6 @@ kems:
         scheme: firesaber
         pqclean_scheme: firesaber
         pretty_name_full: FireSaber-KEM
-  -
-    name: threebears
-    default_implementation: clean
-    schemes:
-      -
-        scheme: babybear
-        pqclean_scheme: babybear
-        pretty_name_full: BabyBear
-      -
-        scheme: babybear_ephem
-        pqclean_scheme: babybear-ephem
-        pretty_name_full: BabyBearEphem
-      -
-        scheme: mamabear
-        pqclean_scheme: mamabear
-        pretty_name_full: MamaBear
-      -
-        scheme: mamabear_ephem
-        pqclean_scheme: mamabear-ephem
-        pretty_name_full: MamaBearEphem
-      -
-        scheme: papabear
-        pqclean_scheme: papabear
-        pretty_name_full: PapaBear
-      -
-        scheme: papabear_ephem
-        pqclean_scheme: papabear-ephem
-        pretty_name_full: PapaBearEphem
 sigs:
   -
     name: dilithium
@@ -238,20 +198,6 @@ sigs:
         pqclean_scheme: falcon-1024
         pretty_name_full: Falcon-1024
         signed_msg_order: falcon
-  -
-    name: mqdss
-    default_implementation: clean
-    schemes:
-      -
-        scheme: "31_48"
-        pqclean_scheme: mqdss-48
-        pretty_name_full: MQDSS-31-48
-        signed_msg_order: sig_then_msg
-      -
-        scheme: "31_64"
-        pqclean_scheme: mqdss-64
-        pretty_name_full: MQDSS-31-64
-        signed_msg_order: sig_then_msg
   -
     name: rainbow
     default_implementation: clean
