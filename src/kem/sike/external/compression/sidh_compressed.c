@@ -1017,6 +1017,8 @@ static void BuildEntangledXonly_Decomp(const f2elm_t A, point_proj_t *R, unsigne
     else
         t_ptr = (f2elm_t *)table_v_qr;
 
+    if (ind >= TABLE_V_LEN/2)
+        ind = 0;
     // Get x0 
     fp2mul_mont(A, t_ptr[ind], R[0]->X);    // x1 =  A*v
     fp2neg(R[0]->X);                        // R[0]->X = -A*v
@@ -1045,7 +1047,7 @@ static void BuildEntangledXonly_Decomp(const f2elm_t A, point_proj_t *R, unsigne
 }
 
 
-static void PKBDecompression_dual_extended(const unsigned char* SecretKeyA, const unsigned char* CompressedPKB, point_proj_t R, f2elm_t A, unsigned char* tphiBKA_t)
+static void PKBDecompression_extended(const unsigned char* SecretKeyA, const unsigned char* CompressedPKB, point_proj_t R, f2elm_t A, unsigned char* tphiBKA_t)
 { // Bob's PK decompression -- SIKE protocol
     uint64_t mask = (digit_t)(-1);
     unsigned char qnr, ind;
@@ -1148,7 +1150,7 @@ static void Compress_PKB_dual_extended(digit_t *d0, digit_t *c0, digit_t *d1, di
 }
 
 
-static void PKBDecompression_dual(const unsigned char* SecretKeyA, const unsigned char* CompressedPKB, point_proj_t R, f2elm_t A)
+static void PKBDecompression(const unsigned char* SecretKeyA, const unsigned char* CompressedPKB, point_proj_t R, f2elm_t A)
 { // Bob's PK decompression -- SIDH protocol
     uint64_t mask = (digit_t)(-1);
     unsigned char bit,qnr,ind;
@@ -1308,9 +1310,9 @@ static int EphemeralSecretAgreement_A_extended(const unsigned char* PrivateKeyA,
     f2elm_t param_A = {0};
 
     if (sike == 1)
-        PKBDecompression_dual_extended(PrivateKeyA, PKB, R, param_A, SharedSecretA+FP2_ENCODED_BYTES);
+        PKBDecompression_extended(PrivateKeyA, PKB, R, param_A, SharedSecretA+FP2_ENCODED_BYTES);
     else
-        PKBDecompression_dual(PrivateKeyA, PKB, R, param_A);
+        PKBDecompression(PrivateKeyA, PKB, R, param_A);
     
     fp2copy(param_A, A);    
     fpadd((digit_t*)&Montgomery_one, (digit_t*)&Montgomery_one, C24[0]);
