@@ -58,6 +58,7 @@
 // Table sizes used by the Entangled basis generation
 #define TABLE_R_LEN 17
 #define TABLE_V_LEN 34
+#define TABLE_V3_LEN 20
 // Parameters for discrete log computations
 // Binary Pohlig-Hellman reduced to smaller logs of order ell^W
 #define W_2 5

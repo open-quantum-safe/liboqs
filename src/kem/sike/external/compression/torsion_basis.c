@@ -332,7 +332,10 @@ static void BasePoint3n_decompression(f2elm_t A, const unsigned char r, point_pr
     fp2div2(A24,A24);
     fp2div2(A24,A24);
 
-    fp2mul_mont(A, (felm_t*)&v_3_torsion[r-1], x);  // x =  A*v;
+    if ( (r-1) < TABLE_V3_LEN)
+        fp2mul_mont(A, (felm_t*)&v_3_torsion[r-1], x);  // x =  A*v;
+    else // If the index r is out of range, just use a default (0)
+        fp2mul_mont(A, (felm_t*)&v_3_torsion[0], x);  // x =  A*v0;
     fp2neg(x);                                      // x = -A*v;
     fp2add(x,A,y2);                                 // y2 = x + A             
     fp2mul_mont(x,y2,y2);                           // y2 = x*(x + A)
