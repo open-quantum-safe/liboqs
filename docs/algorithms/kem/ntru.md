@@ -11,10 +11,10 @@ Implementation
 --------------
 
 - **Source of implementation**: NIST Round 2 submission
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/90630db2ebada4bacceb5331b0a1a9a356ba65b9
+- **Implementation version**: https://github.com/jschanck/ntru/tree/ba431bb8
 - **License**: Public domain
 - **Constant-time**: Yes
-- **Optimizations**: Portable C
+- **Optimizations**: Portable C, AVX2
 
 Parameter sets
 --------------

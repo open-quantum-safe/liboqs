@@ -47,7 +47,7 @@ static void karatsuba_simple(const uint16_t *a_1, const uint16_t *b_1, uint16_t 
 
             acc7 = acc5 + acc6; //b01
             acc8 = acc1 + acc2; //a01
-            d01[i + j] = d01[i + j] + acc7 * acc8;
+            d01[i + j] = d01[i + j] + (uint16_t)(acc7 * (uint64_t)acc8);
             //--------------------------------------------------------
 
             acc7 = b_1[j + 2 * KARATSUBA_N / 4]; //b2

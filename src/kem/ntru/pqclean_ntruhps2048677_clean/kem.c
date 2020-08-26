@@ -1,11 +1,10 @@
-#include <stdint.h>
-
 #include "api.h"
+#include "cmov.h"
 #include "fips202.h"
 #include "owcpa.h"
 #include "params.h"
 #include "randombytes.h"
-#include "verify.h"
+#include "sample.h"
 
 // API FUNCTIONS
 int PQCLEAN_NTRUHPS2048677_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
@@ -20,15 +19,20 @@ int PQCLEAN_NTRUHPS2048677_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
 }
 
 int PQCLEAN_NTRUHPS2048677_CLEAN_crypto_kem_enc(uint8_t *c, uint8_t *k, const uint8_t *pk) {
+    poly r, m;
     uint8_t rm[NTRU_OWCPA_MSGBYTES];
     uint8_t rm_seed[NTRU_SAMPLE_RM_BYTES];
 
     randombytes(rm_seed, NTRU_SAMPLE_RM_BYTES);
-    PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_samplemsg(rm, rm_seed);
 
+    PQCLEAN_NTRUHPS2048677_CLEAN_sample_rm(&r, &m, rm_seed);
+
+    PQCLEAN_NTRUHPS2048677_CLEAN_poly_S3_tobytes(rm, &r);
+    PQCLEAN_NTRUHPS2048677_CLEAN_poly_S3_tobytes(rm + NTRU_PACK_TRINARY_BYTES, &m);
     sha3_256(k, rm, NTRU_OWCPA_MSGBYTES);
 
-    PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_enc(c, rm, pk);
+    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Z3_to_Zq(&r);
+    PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_enc(c, &r, &m, pk);
 
     return 0;
 }
@@ -38,8 +42,13 @@ int PQCLEAN_NTRUHPS2048677_CLEAN_crypto_kem_dec(uint8_t *k, const uint8_t *c, co
     uint8_t rm[NTRU_OWCPA_MSGBYTES];
     uint8_t buf[NTRU_PRFKEYBYTES + NTRU_CIPHERTEXTBYTES];
 
-    fail = PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_dec(rm, c, sk);
-    /* If fail = 0 then c = Enc(h, rm), there is no need to re-encapsulate. */
+    fail = 0;
+
+    /* Check that unused bits of last byte of ciphertext are zero */
+    fail |= c[NTRU_CIPHERTEXTBYTES - 1] & (0xff << (8 - (7 & (NTRU_LOGQ * NTRU_PACK_DEG))));
+
+    fail |= PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_dec(rm, c, sk);
+    /* If fail = 0 then c = Enc(h, rm). There is no need to re-encapsulate. */
     /* See comment in PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_dec for details.                                */
 
     sha3_256(k, rm, NTRU_OWCPA_MSGBYTES);

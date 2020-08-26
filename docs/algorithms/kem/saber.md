@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://github.com/KULeuven-COSIC/SABER
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/90630db2ebada4bacceb5331b0a1a9a356ba65b9
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/193b4a80648fbc73ca17714e304942be1eab64bc
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C
