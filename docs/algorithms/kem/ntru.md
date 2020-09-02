@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: NIST Round 2 submission
-- **Implementation version**: https://github.com/jschanck/ntru/tree/ba431bb8
+- **Implementation version**: https://github.com/jschanck/ntru/tree/b43afe59
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C, AVX2

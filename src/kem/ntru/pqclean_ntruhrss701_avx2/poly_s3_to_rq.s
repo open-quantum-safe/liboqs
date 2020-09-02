@@ -3113,6 +3113,6 @@ vpand const_1s(%rip), %ymm3, %ymm3
 vpor %ymm3, %ymm2, %ymm3
 vmovdqa %ymm3, 1376(%rsp)
 mov %rsp, %rsi
-call PQCLEAN_NTRUHRSS701_AVX2_poly_Rq_mul_x_minus_1
+call PQCLEAN_NTRUHRSS701_AVX2_poly_Rq_mul_x_minus_1@plt
 mov %r8, %rsp
 ret
