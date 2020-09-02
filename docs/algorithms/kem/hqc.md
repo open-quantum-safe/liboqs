@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: http://pqc-hqc.org/doc/hqc-submission_2019-08-24.zip
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/90630db2ebada4bacceb5331b0a1a9a356ba65b9
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/c50bc64a40ce83639cff54419fce60483a30c430
 - **License**: Public domain
 - **Constant-time**: No
 - **Optimizations**: Portable C
