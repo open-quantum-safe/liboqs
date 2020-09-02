@@ -14,10 +14,6 @@ environment:
       COMPILER: msvc2019
     - BUILD_SHARED: ON
       COMPILER: msvc2019
-#    - BUILD_SHARED: OFF
-#      COMPILER: msys2
-#    - BUILD_SHARED: ON
-#      COMPILER: msys2
 
 build_script:
   - cmd: '%APPVEYOR_BUILD_FOLDER%\appveyor_build.bat'
