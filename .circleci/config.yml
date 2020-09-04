@@ -207,6 +207,7 @@ jobs:
       IMAGE: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       CC: clang-9
       CONFIGURE_ARGS: -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Undefined
+      RUN_TESTS_PARALLEL: FALSE
   macOS-static-noopenssl:
     <<: *macjob
     environment:
@@ -216,6 +217,7 @@ jobs:
     <<: *macjob
     environment:
         CONFIGURE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+        RUN_TESTS_PARALLEL: FALSE
         SKIP_TESTS: style
   win-static:
     <<: *winjob

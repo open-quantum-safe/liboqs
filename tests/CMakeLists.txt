@@ -90,8 +90,7 @@ add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
 
 # See https://github.com/open-quantum-safe/liboqs/issues/738#issuecomment-621394744
-if("$ENV{CIRCLE_JOB}" STREQUAL "ubuntu-bionic-x86_64-asan" AND
-   DEFINED ENV{CIRCLE_BUILD_NUM})
+if("$ENV{RUN_TESTS_PARALLEL}" STREQUAL "FALSE")
     set(NUMPROCESSES 1)
 else()
     set(NUMPROCESSES auto)
