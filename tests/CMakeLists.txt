@@ -99,7 +99,7 @@ endif()
 
 # Record compile options -- from target speed_kem - don't set any options only for speed_kem!
 get_property(OQS_COMPILE_OPTIONS TARGET speed_kem PROPERTY COMPILE_OPTIONS)
-add_compile_definitions(OQS_COMPILE_OPTIONS="[${OQS_COMPILE_OPTIONS}]")
+add_definitions(-DOQS_COMPILE_OPTIONS="[${OQS_COMPILE_OPTIONS}]")
 
 # TODO: Get CMake to find python.
 # and set PATH variable in Windows
