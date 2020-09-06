@@ -60,25 +60,29 @@ static void print_platform_info(void) {
 /* Display all active CPU extensions: */
 static void print_cpu_extensions(void) {
 #if defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD)
-/* Make CPU features struct iterable */
-typedef union ext_u
-{
-    OQS_CPU_EXTENSIONS ext_x;
-    unsigned int ext_a[sizeof(OQS_CPU_EXTENSIONS)/sizeof(unsigned int)];
-} OQS_CPU_EXTENSIONS_UNION;
+	/* Make CPU features struct iterable */
+	typedef union ext_u {
+		OQS_CPU_EXTENSIONS ext_x;
+		unsigned int ext_a[sizeof(OQS_CPU_EXTENSIONS) / sizeof(unsigned int)];
+	} OQS_CPU_EXTENSIONS_UNION;
 
-    OQS_CPU_EXTENSIONS_UNION ext_u;
-    ext_u.ext_x = OQS_get_available_CPU_extensions(); 
-    printf("CPU exts active:  ");
-    unsigned int it = sizeof(ext_u.ext_a)/sizeof(ext_u.ext_a[0]);
-    for(unsigned int i=0;i<it;i++) {
-       if (ext_u.ext_a[i]) printf("%s", OQS_get_cpu_extension_name(i));
-       else printf("n/a");
-       if (i!=it-1) printf("-");
-    }
-    printf("\n");
+	OQS_CPU_EXTENSIONS_UNION ext_u;
+	ext_u.ext_x = OQS_get_available_CPU_extensions();
+	printf("CPU exts active:  ");
+	unsigned int it = sizeof(ext_u.ext_a) / sizeof(ext_u.ext_a[0]);
+	for (unsigned int i = 0; i < it; i++) {
+		if (ext_u.ext_a[i]) {
+			printf("%s", OQS_get_cpu_extension_name(i));
+		} else {
+			printf("n/a");
+		}
+		if (i != it - 1) {
+			printf("-");
+		}
+	}
+	printf("\n");
 #else /* no extensions active */
-    printf("CPU exts active:  None\n");
+	printf("CPU exts active:  None\n");
 #endif
 }
 
@@ -118,6 +122,6 @@ static void print_system_info(void) {
 	print_platform_info();
 	print_compiler_info();
 	print_oqs_configuration();
-        print_cpu_extensions();
+	print_cpu_extensions();
 	printf("\n");
 }

@@ -144,7 +144,7 @@ OQS_API OQS_CPU_EXTENSIONS OQS_get_available_CPU_extensions(void);
  *
  * \return name of extension indexed by struct entry number
  */
-OQS_API const char* OQS_get_cpu_extension_name(int i);
+OQS_API const char *OQS_get_cpu_extension_name(unsigned int i);
 
 #endif /* OQS_USE_CPU_EXTENSIONS && OQS_PORTABLE_BUILD */
 

@@ -20,21 +20,21 @@ static unsigned int available_cpu_extensions_set = 0;
 
 #include "x86_64_helpers.h"
 
-const char* const X64_EXTENSIONS_NAMES[] = {
-        "AES",
-        "AVX",
-        "AVX2",
-        "AVX512",
-        "BMI",
-        "BMI2",
-        "POPCNT",
-        "SSE",
-        "SSE2",
-        "SSE3"
+const char *const X64_EXTENSIONS_NAMES[] = {
+	"AES",
+	"AVX",
+	"AVX2",
+	"AVX512",
+	"BMI",
+	"BMI2",
+	"POPCNT",
+	"SSE",
+	"SSE2",
+	"SSE3"
 };
 
-OQS_API const char* OQS_get_cpu_extension_name(int i) {
-   return X64_EXTENSIONS_NAMES[i];
+OQS_API const char *OQS_get_cpu_extension_name(unsigned int i) {
+	return X64_EXTENSIONS_NAMES[i];
 }
 /* set_available_cpu_extensions_x86_64() has been written using:
  * https://github.com/google/cpu_features/blob/master/src/cpuinfo_x86.c
@@ -82,12 +82,12 @@ static void set_available_cpu_extensions_arm(void) {
 	//TODO
 }
 
-const char* const ARM_EXTENSIONS_NAMES[] = {
-        "NEON"
+const char *const ARM_EXTENSIONS_NAMES[] = {
+	"NEON"
 };
 
-OQS_API const char* OQS_get_cpu_extension_name(int i) {
-   return ARM_EXTENSIONS_NAMES[i];
+OQS_API const char *OQS_get_cpu_extension_name(unsigned int i) {
+	return ARM_EXTENSIONS_NAMES[i];
 }
 #endif /* ARCH_X86_64 or ARCH_ARM_ANY */
 
