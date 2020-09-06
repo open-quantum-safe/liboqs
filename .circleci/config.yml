@@ -236,12 +236,12 @@ workflows:
           filters:
             branches:
               only:
-                - /mb-.*/
+                - /win-.*/
       - win-shared:
           filters:
             branches:
               only:
-                - /mb-.*/
+                - /win-.*/
       - alpine-amd64-static
       - alpine-amd64-shared
       - centos-7-amd64
