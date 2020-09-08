@@ -130,6 +130,7 @@ typedef struct {
 	unsigned int NEON_ENABLED;
 } OQS_CPU_EXTENSIONS;
 #endif
+/* Keep in sync with name array in common.c ! */
 
 /**
  * Returns a list of available CPU extensions.
@@ -137,6 +138,13 @@ typedef struct {
  * \return Struct of type OQS_CPU_EXTENSIONS containing flags for runtime CPU extension detection.
  */
 OQS_API OQS_CPU_EXTENSIONS OQS_get_available_CPU_extensions(void);
+
+/**
+ * Returns name of available CPU extension.
+ *
+ * \return name of extension indexed by struct entry number
+ */
+OQS_API const char *OQS_get_cpu_extension_name(unsigned int i);
 
 #endif /* OQS_USE_CPU_EXTENSIONS && OQS_PORTABLE_BUILD */
 

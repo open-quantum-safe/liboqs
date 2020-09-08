@@ -19,6 +19,9 @@ static void print_compiler_info(void) {
 #else
 	printf("Compiler:         Unknown"\n);
 #endif
+#if defined(OQS_COMPILE_OPTIONS)
+	printf("Compile options:  %s\n", OQS_COMPILE_OPTIONS);
+#endif
 }
 
 // based on macros in https://sourceforge.net/p/predef/wiki/Architectures/
@@ -53,6 +56,33 @@ static void print_platform_info(void) {
 #define  C_OR_NI(stmt_c, stmt_ni) \
     stmt_c;
 #endif
+
+/* Display all active CPU extensions: */
+static void print_cpu_extensions(void) {
+#if defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD)
+	/* Make CPU features struct iterable */
+	typedef union ext_u {
+		OQS_CPU_EXTENSIONS ext_x;
+		unsigned int ext_a[sizeof(OQS_CPU_EXTENSIONS) / sizeof(unsigned int)];
+	} OQS_CPU_EXTENSIONS_UNION;
+
+	OQS_CPU_EXTENSIONS_UNION ext_u;
+	ext_u.ext_x = OQS_get_available_CPU_extensions();
+	printf("CPU exts active:  ");
+	unsigned int it = sizeof(ext_u.ext_a) / sizeof(ext_u.ext_a[0]);
+	for (unsigned int i = 0; i < it; i++) {
+		if (ext_u.ext_a[i]) {
+			printf("%s", OQS_get_cpu_extension_name(i));
+			if (i != it - 1) {
+				printf("-");
+			}
+		}
+	}
+	printf("\n");
+#else /* no extensions active */
+	printf("CPU exts active:  None\n");
+#endif
+}
 
 static void print_oqs_configuration(void) {
 	printf("OQS version:      %s\n", OQS_VERSION_TEXT);
@@ -90,5 +120,6 @@ static void print_system_info(void) {
 	print_platform_info();
 	print_compiler_info();
 	print_oqs_configuration();
+	print_cpu_extensions();
 	printf("\n");
 }
