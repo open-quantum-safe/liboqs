@@ -15,7 +15,7 @@
 #else
 /* in case cmake checks were not run, define HAVE_* for known good configurations */
 #if !defined(HAVE_ALIGNED_ALLOC) && !defined(__APPLE__) && !defined(__MINGW32__) &&                \
-    !defined(__MINGW64__) &&                                                                       \
+    !defined(__MINGW64__) && !defined(_MSC_VER) &&                                                 \
     (defined(_ISOC11_SOURCE) || (defined(__STDC_VERSION__) && __STDC_VERSION__ >= 201112L))
 #define HAVE_ALIGNED_ALLOC
 #endif
