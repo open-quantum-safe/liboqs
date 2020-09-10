@@ -13,7 +13,7 @@ static int owcpa_check_r(const poly *r) {
         t |= c & (NTRU_Q - 4); /* 0 if c is in {0,1,2,3} */
         t |= (c + 1) & 0x4;   /* 0 if c is in {0,1,2} */
     }
-    t |= r->coeffs[NTRU_N - 1]; /* Coefficient n-1 must be zero */
+    t |= MODQ(r->coeffs[NTRU_N - 1]); /* Coefficient n-1 must be zero */
     t = (~t + 1); // two's complement
     t >>= 63;
     return (int) t;
@@ -38,16 +38,6 @@ static int owcpa_check_m(const poly *m) {
     return (int) t;
 }
 
-void PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_samplemsg(unsigned char msg[NTRU_OWCPA_MSGBYTES],
-        const unsigned char seed[NTRU_SAMPLE_RM_BYTES]) {
-    poly r, m;
-
-    PQCLEAN_NTRUHPS2048677_CLEAN_sample_rm(&r, &m, seed);
-
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_S3_tobytes(msg, &r);
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_S3_tobytes(msg + NTRU_PACK_TRINARY_BYTES, &m);
-}
-
 void PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_keypair(unsigned char *pk,
         unsigned char *sk,
         const unsigned char seed[NTRU_SAMPLE_FG_BYTES]) {
@@ -55,9 +45,8 @@ void PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_keypair(unsigned char *pk,
 
     poly x1, x2, x3, x4, x5;
 
-    poly *f = &x1, *invf_mod3 = &x2;
-    poly *g = &x3, *G = &x2;
-    poly *Gf = &x3, *invGf = &x4, *tmp = &x5;
+    poly *f = &x1, *g = &x2, *invf_mod3 = &x3;
+    poly *gf = &x3, *invgf = &x4, *tmp = &x5;
     poly *invh = &x3, *h = &x3;
 
     PQCLEAN_NTRUHPS2048677_CLEAN_sample_fg(f, g, seed);
@@ -70,45 +59,42 @@ void PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_keypair(unsigned char *pk,
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_Z3_to_Zq(f);
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_Z3_to_Zq(g);
 
-    /* G = 3*g */
+
+    /* g = 3*g */
     for (i = 0; i < NTRU_N; i++) {
-        G->coeffs[i] = MODQ(3 * g->coeffs[i]);
+        g->coeffs[i] = 3 * g->coeffs[i];
     }
 
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(Gf, G, f);
+    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(gf, g, f);
 
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_inv(invGf, Gf);
+    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_inv(invgf, gf);
 
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(tmp, invGf, f);
+    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(tmp, invgf, f);
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_Sq_mul(invh, tmp, f);
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_Sq_tobytes(sk + 2 * NTRU_PACK_TRINARY_BYTES, invh);
 
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(tmp, invGf, G);
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(h, tmp, G);
+    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(tmp, invgf, g);
+    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(h, tmp, g);
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_sum_zero_tobytes(pk, h);
 }
 
 
 void PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_enc(unsigned char *c,
-        const unsigned char *rm,
+        const poly *r,
+        const poly *m,
         const unsigned char *pk) {
     int i;
-    poly x1, x2, x3;
+    poly x1, x2;
     poly *h = &x1, *liftm = &x1;
-    poly *r = &x2, *m = &x2;
-    poly *ct = &x3;
+    poly *ct = &x2;
 
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_sum_zero_frombytes(h, pk);
 
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_S3_frombytes(r, rm);
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_Z3_to_Zq(r);
-
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(ct, r, h);
 
-    PQCLEAN_NTRUHPS2048677_CLEAN_poly_S3_frombytes(m, rm + NTRU_PACK_TRINARY_BYTES);
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_lift(liftm, m);
     for (i = 0; i < NTRU_N; i++) {
-        ct->coeffs[i] = MODQ(ct->coeffs[i] + liftm->coeffs[i]);
+        ct->coeffs[i] = ct->coeffs[i] + liftm->coeffs[i];
     }
 
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_sum_zero_tobytes(c, ct);
@@ -147,7 +133,7 @@ int PQCLEAN_NTRUHPS2048677_CLEAN_owcpa_dec(unsigned char *rm,
     /* b = c - Lift(m) mod (q, x^n - 1) */
     PQCLEAN_NTRUHPS2048677_CLEAN_poly_lift(liftm, m);
     for (i = 0; i < NTRU_N; i++) {
-        b->coeffs[i] = MODQ(c->coeffs[i] - liftm->coeffs[i]);
+        b->coeffs[i] = c->coeffs[i] - liftm->coeffs[i];
     }
 
     /* r = b / h mod (q, Phi_n) */

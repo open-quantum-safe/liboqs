@@ -1,28 +1,19 @@
 #include "sample.h"
-#include "fips202.h"
 
 void PQCLEAN_NTRUHRSS701_CLEAN_sample_fg(poly *f, poly *g, const unsigned char uniformbytes[NTRU_SAMPLE_FG_BYTES]) {
     PQCLEAN_NTRUHRSS701_CLEAN_sample_iid_plus(f, uniformbytes);
     PQCLEAN_NTRUHRSS701_CLEAN_sample_iid_plus(g, uniformbytes + NTRU_SAMPLE_IID_BYTES);
+
 }
 
 void PQCLEAN_NTRUHRSS701_CLEAN_sample_rm(poly *r, poly *m, const unsigned char uniformbytes[NTRU_SAMPLE_RM_BYTES]) {
     PQCLEAN_NTRUHRSS701_CLEAN_sample_iid(r, uniformbytes);
     PQCLEAN_NTRUHRSS701_CLEAN_sample_iid(m, uniformbytes + NTRU_SAMPLE_IID_BYTES);
-}
 
-void PQCLEAN_NTRUHRSS701_CLEAN_sample_iid(poly *r, const unsigned char uniformbytes[NTRU_SAMPLE_IID_BYTES]) {
-    int i;
-    /* {0,1,...,255} -> {0,1,2}; Pr[0] = 86/256, Pr[1] = Pr[-1] = 85/256 */
-    for (i = 0; i < NTRU_N - 1; i++) {
-        r->coeffs[i] = PQCLEAN_NTRUHRSS701_CLEAN_mod3(uniformbytes[i]);
-    }
-
-    r->coeffs[NTRU_N - 1] = 0;
 }
 
 void PQCLEAN_NTRUHRSS701_CLEAN_sample_iid_plus(poly *r, const unsigned char uniformbytes[NTRU_SAMPLE_IID_BYTES]) {
-    /* Sample r using sample_iid then conditionally flip    */
+    /* Sample r using PQCLEAN_NTRUHRSS701_CLEAN_sample_iid then conditionally flip    */
     /* signs of even index coefficients so that <x*r, r> >= 0.      */
 
     int i;
@@ -52,3 +43,4 @@ void PQCLEAN_NTRUHRSS701_CLEAN_sample_iid_plus(poly *r, const unsigned char unif
         r->coeffs[i] = 3 & (r->coeffs[i] ^ (r->coeffs[i] >> 15));
     }
 }
+

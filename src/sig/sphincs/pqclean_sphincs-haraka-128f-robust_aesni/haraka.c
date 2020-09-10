@@ -14,7 +14,7 @@ Plain C implementation of the Haraka256 and Haraka512 permutations.
 #define u64 uint64_t
 #define u128 __m128i
 
-#define LOAD(src) _mm_load_si128((u128 *)(src))
+#define LOAD(src) _mm_loadu_si128((u128 *)(src))
 #define STORE(dest,src) _mm_storeu_si128((u128 *)(dest),src)
 
 #define XOR128(a, b) _mm_xor_si128(a, b)
