@@ -212,7 +212,7 @@ jobs:
     <<: *macjob
     environment:
         CONFIGURE_ARGS: -DOQS_USE_OPENSSL=OFF
-        SKIP_TESTS: style
+        SKIP_TESTS: style,doxygen
   macOS-shared-openssl:
     <<: *macjob
     environment:
