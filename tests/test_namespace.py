@@ -3,25 +3,26 @@
 import helpers
 import pytest
 import sys
+import glob
 
 # Check if liboqs contains any non-namespaced global symbols
 # See https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for function naming conventions
 
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
-def test_namespace(use_liboqs_so):
-    if use_liboqs_so:
-        if sys.platform == "darwin":
-            out = helpers.run_subprocess(
-                ['nm', '-g', 'build/lib/liboqs.dylib']
-            )
-        else:
-            out = helpers.run_subprocess(
-                ['nm', '-D', 'build/lib/liboqs.so']
-            )
+def test_namespace():
+    liboqs = glob.glob('build/lib/liboqs.*')[0]
+    if liboqs == 'build/lib/liboqs.dylib':
+        out = helpers.run_subprocess(
+            ['nm', '-g', liboqs]
+        )
+    elif liboqs == 'build/lib/liboqs.so':
+        out = helpers.run_subprocess(
+            ['nm', '-D', liboqs]
+        )
     else:
         out = helpers.run_subprocess(
-            ['nm', '-g', 'build/lib/liboqs.a']
+            ['nm', '-g', liboqs]
         )
 
     lines = out.strip().split("\n")
