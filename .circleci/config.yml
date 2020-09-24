@@ -1,10 +1,5 @@
 version: 2.1
 
-exclude_master: &exclude_master
-  filters:
-    branches:
-      ignore: master
-
 require_stylecheck: &require_stylecheck
   requires:
     - stylecheck
@@ -46,6 +41,8 @@ jobs:
       PYTEST_ARGS:
         description: "Arguments to pass to pytest."
         type: string
+        # Not every executor handles --numprocesses=auto being passed to pytest well
+        # See https://github.com/open-quantum-safe/liboqs/issues/738#issuecomment-621394744
         default: --numprocesses=auto
     docker:
       - image: << parameters.CONTAINER >>
@@ -140,74 +137,80 @@ jobs:
       - run:
           name: Trigger OQS-OpenSSL CI
           command: |
-            curl -u ${BUILD_TRIGGER_TOKEN}: -X POST --header "Content-Type: application/json" -d '{"branch": "OQS-OpenSSL_1_1_1-stable"}' https://circleci.com/api/v2/project/gh/open-quantum-safe/openssl/pipeline
+            curl -u ${BUILD_TRIGGER_TOKEN}: \
+                 -X POST \
+                 --header "Content-Type: application/json" \
+                 -d "{ 'branch': 'OQS-OpenSSL_1_1_1-stable'
+                       'parameters': { 'run_downstream_tests': true } }" \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/openssl/pipeline
       - run:
           name: Trigger OQS-BoringSSL CI
           command: |
-            curl -u ${BUILD_TRIGGER_TOKEN}: -X POST --header "Content-Type: application/json" -d '{"branch": "master"}' https://circleci.com/api/v2/project/gh/open-quantum-safe/boringssl/pipeline
+            curl -u ${BUILD_TRIGGER_TOKEN}: \
+                 -X POST \
+                 --header "Content-Type: application/json" \
+                 -d "{ 'branch': 'master'
+                       'parameters': { 'run_downstream_tests': true } }" \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/boringssl/pipeline
       - run:
           name: Trigger OQS-OpenSSH CI
           command: |
-            curl -u ${BUILD_TRIGGER_TOKEN}: -X POST --header "Content-Type: application/json" -d '{"branch": "OQS-master"}' https://circleci.com/api/v2/project/gh/open-quantum-safe/openssh/pipeline
+            curl -u ${BUILD_TRIGGER_TOKEN}: \
+                 -X POST \
+                 --header "Content-Type: application/json" \
+                 -d "{ 'branch': 'master'
+                       'parameters': { 'run_downstream_tests': true } }" \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/openssh/pipeline
 
 workflows:
-  version: 2
+  version: 2.1
   build:
+    when:
+      not:
+        equal: [ master, << pipeline.git.branch >> ]
     jobs:
-      - stylecheck:
-          <<: *exclude_master
-      # Not every executor handles --numprocesses=auto being passed to pytest well
-      # See https://github.com/open-quantum-safe/liboqs/issues/738#issuecomment-621394744
+      - stylecheck
       - linux_x64:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: alpine-noopenssl
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
       - linux_x64:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: alpine
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
       - linux_x64:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: centos-7
           CONTAINER: openquantumsafe/ci-centos-7-amd64:latest
           CMAKE_ARGS: -DOPENSSL_ROOT_DIR=/usr/local/ssl
       - linux_x64:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: centos-8
           CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
       - linux_x64:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: debian-buster
           CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
       - linux_x64:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: ubuntu-bionic-noopenssl
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
       - linux_x64:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: ubuntu-bionic-shared-noopenssl
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
           PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
       - linux_x64:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: ubuntu-bionic-clang9
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9
       - linux_x64:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: address-sanitizer
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
@@ -226,37 +229,33 @@ workflows:
       # SPHINCS exhausts memory on CircleCI servers
       # for these configurations.
       - arm_emulated:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: arm64
           ARCH: arm64
           CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF
       - arm_emulated:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: armhf
           ARCH: armhf
           CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF
       - arm_emulated:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: armel
           ARCH: armel
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release  -DOQS_ENABLE_SIG_SPHINCS=OFF
 
       - macOS:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: macOS-noopenssl
           CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
       - macOS:
-          <<: *exclude_master
           <<: *require_stylecheck
           name: macOS-shared
           CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON
 
+  commit-to-master:
+    when:
+      equal: [ master, << pipeline.git.branch >> ]
+    jobs:
       - trigger-downstream-ci:
           context: openquantumsafe
-          filters:
-            branches:
-              only: master
