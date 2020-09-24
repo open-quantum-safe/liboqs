@@ -30,10 +30,10 @@ before_test:
 
 test_script:
   - cmd: |-
-         cd %APPVEYOR_BUILD_FOLDER%\build
-         set PATH=%cd%\bin;%PATH% && ninja run_tests
+         cd %APPVEYOR_BUILD_FOLDER%
+         set PATH=%cd%\build\bin;%PATH% && python -m pytest --numprocesses=auto --verbose --ignore=tests/test_code_conventions.py --junitxml=build\test-results\pytest\test-results.xml
 
 after_test:
   - ps: |-
         $wc = New-Object 'System.Net.WebClient'
-        $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\test-results\pytest\test-results.xml))
+        $wc.UploadFile("https://ci.appveyor.com/api/testresults/xunit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\build\test-results\pytest\test-results.xml))
