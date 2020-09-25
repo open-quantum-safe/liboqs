@@ -140,8 +140,7 @@ jobs:
             curl -u ${BUILD_TRIGGER_TOKEN}: \
                  -X POST \
                  --header "Content-Type: application/json" \
-                 -d "{ 'branch': 'OQS-OpenSSL_1_1_1-stable'
-                       'parameters': { 'run_downstream_tests': true } }" \
+                 -d '{ "branch": "OQS-OpenSSL_1_1_1-stable", "parameters": { "run_downstream_tests": true } }' \
                  https://circleci.com/api/v2/project/gh/open-quantum-safe/openssl/pipeline
       - run:
           name: Trigger OQS-BoringSSL CI
@@ -149,8 +148,7 @@ jobs:
             curl -u ${BUILD_TRIGGER_TOKEN}: \
                  -X POST \
                  --header "Content-Type: application/json" \
-                 -d "{ 'branch': 'master'
-                       'parameters': { 'run_downstream_tests': true } }" \
+                 -d '{ "branch": "master", "parameters": { "run_downstream_tests": true } }' \
                  https://circleci.com/api/v2/project/gh/open-quantum-safe/boringssl/pipeline
       - run:
           name: Trigger OQS-OpenSSH CI
@@ -158,8 +156,7 @@ jobs:
             curl -u ${BUILD_TRIGGER_TOKEN}: \
                  -X POST \
                  --header "Content-Type: application/json" \
-                 -d "{ 'branch': 'master'
-                       'parameters': { 'run_downstream_tests': true } }" \
+                 -d '{ "branch": "OQS-master", "parameters": { "run_downstream_tests": true } }' \
                  https://circleci.com/api/v2/project/gh/open-quantum-safe/openssh/pipeline
 
 workflows:
