@@ -179,11 +179,6 @@ workflows:
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
       - linux_x64:
           <<: *require_stylecheck
-          name: centos-7
-          CONTAINER: openquantumsafe/ci-centos-7-amd64:latest
-          CMAKE_ARGS: -DOPENSSL_ROOT_DIR=/usr/local/ssl
-      - linux_x64:
-          <<: *require_stylecheck
           name: centos-8
           CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
