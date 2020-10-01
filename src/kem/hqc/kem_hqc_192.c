@@ -44,7 +44,7 @@ OQS_API OQS_STATUS OQS_KEM_hqc_192_keypair(uint8_t *public_key, uint8_t *secret_
 #if defined(OQS_ENABLE_KEM_hqc_192_avx2)
 #if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED) {
+	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI1_ENABLED && available_cpu_extensions.PCLMUL_ENABLED) {
 #endif /* OQS_PORTABLE_BUILD */
 		return (OQS_STATUS) PQCLEAN_HQC192_AVX2_crypto_kem_keypair(public_key, secret_key);
 #if defined(OQS_PORTABLE_BUILD)
@@ -61,7 +61,7 @@ OQS_API OQS_STATUS OQS_KEM_hqc_192_encaps(uint8_t *ciphertext, uint8_t *shared_s
 #if defined(OQS_ENABLE_KEM_hqc_192_avx2)
 #if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED) {
+	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI1_ENABLED && available_cpu_extensions.PCLMUL_ENABLED) {
 #endif /* OQS_PORTABLE_BUILD */
 		return (OQS_STATUS) PQCLEAN_HQC192_AVX2_crypto_kem_enc(ciphertext, shared_secret, public_key);
 #if defined(OQS_PORTABLE_BUILD)
@@ -78,7 +78,7 @@ OQS_API OQS_STATUS OQS_KEM_hqc_192_decaps(uint8_t *shared_secret, const unsigned
 #if defined(OQS_ENABLE_KEM_hqc_192_avx2)
 #if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED) {
+	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI1_ENABLED && available_cpu_extensions.PCLMUL_ENABLED) {
 #endif /* OQS_PORTABLE_BUILD */
 		return (OQS_STATUS) PQCLEAN_HQC192_AVX2_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 #if defined(OQS_PORTABLE_BUILD)
