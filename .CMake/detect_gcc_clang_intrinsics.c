@@ -30,6 +30,9 @@ int main(void) {
 #if defined(__FMA__)
 	printf("FMA;");
 #endif
+#if defined(__PCLMUL__)
+	printf("PCLMUL;");
+#endif
 #if defined(__POPCNT__)
 	printf("POPCNT;");
 #endif
