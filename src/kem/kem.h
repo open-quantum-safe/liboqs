@@ -62,18 +62,18 @@ extern "C" {
 #define OQS_KEM_alg_classic_mceliece_8192128 "Classic-McEliece-8192128"
 /** Algorithm identifier for Classic-McEliece-8192128f KEM. */
 #define OQS_KEM_alg_classic_mceliece_8192128f "Classic-McEliece-8192128f"
-/** Algorithm identifier for HQC-128-1-CCA2 KEM. */
-#define OQS_KEM_alg_hqc_128_1_cca2 "HQC-128-1-CCA2"
-/** Algorithm identifier for HQC-192-1-CCA2 KEM. */
-#define OQS_KEM_alg_hqc_192_1_cca2 "HQC-192-1-CCA2"
-/** Algorithm identifier for HQC-192-2-CCA2 KEM. */
-#define OQS_KEM_alg_hqc_192_2_cca2 "HQC-192-2-CCA2"
-/** Algorithm identifier for HQC-256-1-CCA2 KEM. */
-#define OQS_KEM_alg_hqc_256_1_cca2 "HQC-256-1-CCA2"
-/** Algorithm identifier for HQC-256-2-CCA2 KEM. */
-#define OQS_KEM_alg_hqc_256_2_cca2 "HQC-256-2-CCA2"
-/** Algorithm identifier for HQC-256-3-CCA2 KEM. */
-#define OQS_KEM_alg_hqc_256_3_cca2 "HQC-256-3-CCA2"
+/** Algorithm identifier for HQC-128 KEM. */
+#define OQS_KEM_alg_hqc_128 "HQC-128"
+/** Algorithm identifier for HQC-192 KEM. */
+#define OQS_KEM_alg_hqc_192 "HQC-192"
+/** Algorithm identifier for HQC-256 KEM. */
+#define OQS_KEM_alg_hqc_256 "HQC-256"
+/** Algorithm identifier for HQC-RMRS-128 KEM. */
+#define OQS_KEM_alg_hqc_rmrs_128 "HQC-RMRS-128"
+/** Algorithm identifier for HQC-RMRS-192 KEM. */
+#define OQS_KEM_alg_hqc_rmrs_192 "HQC-RMRS-192"
+/** Algorithm identifier for HQC-RMRS-256 KEM. */
+#define OQS_KEM_alg_hqc_rmrs_256 "HQC-RMRS-256"
 /** Algorithm identifier for Kyber512 KEM. */
 #define OQS_KEM_alg_kyber_512 "Kyber512"
 /** Algorithm identifier for Kyber768 KEM. */

@@ -443,7 +443,10 @@ PQCLEAN_FALCON512_CLEAN_comp_decode(
                 return 0;
             }
         }
-        x[u] = (int16_t)(s ? -(int)m : (int)m);
+        x[u] = (int16_t) m;
+        if (s) {
+            x[u] = (int16_t) - x[u];
+        }
     }
     return v;
 }

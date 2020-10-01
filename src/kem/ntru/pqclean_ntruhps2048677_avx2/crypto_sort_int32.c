@@ -1,8 +1,8 @@
+#include "crypto_sort_int32.h"
+#include <immintrin.h>
 // Based on supercop-20200820/crypto_sort/int32/avx2
 
-#include "crypto_sort_int32.h"
 
-#include <immintrin.h>
 #define int32 int32_t
 
 typedef __m256i int32x8;
@@ -469,8 +469,11 @@ static void int32_sort_2power(int32 *x, size_t n, int flagdown) {
             }
 
             q = n >> 3;
-            flip = (p << 1 == q);
-            flipflip = !flip;
+            flip = 0;
+            if (p << 1 == q) {
+                flip = 1;
+            }
+            flipflip = 1 - flip;
             for (j = 0; j < q; j += p + p) {
                 for (k = j; k < j + p + p; k += p) {
                     for (i = k; i < k + p; i += 8) {

@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://falcon-sign.info/impl/falcon.h.html
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/c50bc64a40ce83639cff54419fce60483a30c430
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/383874f4082ab26a234e0e3428ee0f419e008765
 - **License**: CC0 1.0 Universal
 - **Constant-time**: Yes
 - **Optimizations**: Portable C

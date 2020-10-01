@@ -63,9 +63,13 @@ void PQCLEAN_SPHINCSSHA256192FSIMPLE_AVX2_sha256_update8x(sha256ctxx8 *ctx,
         const unsigned char *d7,
         unsigned long long len) {
     unsigned long long i = 0;
+    unsigned long long bytes_to_copy;
 
     while (i < len) {
-        unsigned long long bytes_to_copy = (len - i) > 64 ? 64 : (len - i);
+        bytes_to_copy = len - i;
+        if (bytes_to_copy > 64) {
+            bytes_to_copy = 64;
+        }
         memcpy(&ctx->msgblocks[64 * 0], d0 + i, bytes_to_copy);
         memcpy(&ctx->msgblocks[64 * 1], d1 + i, bytes_to_copy);
         memcpy(&ctx->msgblocks[64 * 2], d2 + i, bytes_to_copy);

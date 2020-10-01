@@ -183,7 +183,7 @@ int main(int argc, char **argv) {
 #if OQS_USE_PTHREADS_IN_TESTS
 #define MAX_LEN_KEM_NAME_ 64
 	// don't run Classic McEliece in threads because of large stack usage
-	char no_thread_kem_patterns[][MAX_LEN_KEM_NAME_]  = {"Classic-McEliece", "HQC-256-"};
+	char no_thread_kem_patterns[][MAX_LEN_KEM_NAME_]  = {"Classic-McEliece"};
 	int test_in_thread = 1;
 	for (size_t i = 0 ; i < sizeof(no_thread_kem_patterns) / MAX_LEN_KEM_NAME_; ++i) {
 		if (strstr(alg_name, no_thread_kem_patterns[i]) != NULL) {
