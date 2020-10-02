@@ -830,6 +830,16 @@ static __inline unsigned int is_felm_zero(const felm_t x)
     return 1;
 }
 
+static __inline unsigned int is_felm_one(const felm_t x)
+{ // Is x = 0? return 1 (TRUE) if condition is true, 0 (FALSE) otherwise.
+  // SECURITY NOTE: This function does not run in constant-time.
+  unsigned int i;
+
+  for (i = 0; i < NWORDS_FIELD; i++) {
+    if (x[i] != 0) return 0;
+  }
+  return 1;
+}
 
 static void mul3(unsigned char *a) 
 { // Computes a = 3*a
@@ -1040,6 +1050,21 @@ static __inline unsigned int is_felm_lt(const felm_t x, const felm_t y)
         }
     }
     return false;
+}
+
+
+static __inline unsigned int is_orderelm_lt(const digit_t *x, const digit_t *y)
+{ // Is x < y? return 1 (TRUE) if condition is true, 0 (FALSE) otherwise.
+  // SECURITY NOTE: This function does not run in constant-time.
+
+  for (int i = NWORDS_ORDER-1; i >= 0; i--) {
+    if (x[i] < y[i]) {
+      return true;
+    } else if (x[i] > y[i]) {
+      return false;
+    }
+  }
+  return false;
 }
 
 
@@ -1438,5 +1463,5 @@ static void recover_os(const f2elm_t X1, const f2elm_t Z1, const f2elm_t X2, con
     fp2mul_mont(t0, Z2, t0);       // t0 = Z2*[(X1+x*Z1+2*A*Z1)*(X1*x+Z1)-2*A*Z1^2]
     fp2sub(t0, t1, Y3);            // Y3 = Z2*[(X1+x*Z1+2*A*Z1)*(X1*x+Z1)-2*A*Z1^2] - (X1-x*Z1)^2*X2
 }
-
+// Closing COMPRESSED
 #endif
