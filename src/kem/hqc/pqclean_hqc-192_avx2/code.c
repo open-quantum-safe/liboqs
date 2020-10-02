@@ -43,7 +43,7 @@ void PQCLEAN_HQC192_AVX2_code_encode(uint64_t *em, const uint64_t *m) {
 
     __m256i *colonne, y, aux0;
     __m256i msg = _mm256_lddqu_si256((const __m256i *) m);
-    colonne = ((__m256i *) gen_matrix);
+    colonne = ((__m256i *) PQCLEAN_HQC192_AVX2_gen_matrix);
 
     pos_r = 0;
     for (i = 0; i < PARAM_N1 - PARAM_K; i++) {
