@@ -25,7 +25,7 @@ const char *const X64_EXTENSIONS_NAMES[] = {
 	"AVX",
 	"AVX2",
 	"AVX512",
-	"BMI",
+	"BMI1",
 	"BMI2",
 	"PCLMUL",
 	"POPCNT",
@@ -61,7 +61,7 @@ static void set_available_cpu_extensions_x86_64(void) {
 	}
 	available_cpu_extensions.PCLMUL_ENABLED = is_bit_set(leaf_1.ecx, 1);
 	available_cpu_extensions.POPCNT_ENABLED = is_bit_set(leaf_1.ecx, 23);
-	available_cpu_extensions.BMI_ENABLED = is_bit_set(leaf_7.ebx, 3);
+	available_cpu_extensions.BMI1_ENABLED = is_bit_set(leaf_7.ebx, 3);
 	available_cpu_extensions.BMI2_ENABLED = is_bit_set(leaf_7.ebx, 8);
 
 	if (has_mask(xcr0_eax, MASK_XMM)) {

@@ -22,7 +22,7 @@ int main(void) {
 	printf("AVX512F;");
 #endif
 #if defined(__BMI__)
-	printf("BMI;");
+	printf("BMI1;");
 #endif
 #if defined(__BMI2__)
 	printf("BMI2;");
