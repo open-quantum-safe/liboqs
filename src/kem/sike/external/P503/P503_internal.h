@@ -62,19 +62,33 @@
 // Parameters for discrete log computations
 // Binary Pohlig-Hellman reduced to smaller logs of order ell^W
 #define W_2 5
-#define W_3 4
+#define W_3 3
 // ell^w
 #define ELL2_W (1 << W_2)
-#define ELL3_W 81
+#define ELL3_W 27
 // ell^(e mod w)
 #define ELL2_EMODW (1 << (OALICE_BITS % W_2))
-#define ELL3_EMODW 40
+#define ELL3_EMODW 1
 // # of digits in the discrete log
-#define DLEN_2 50 // ceil(eA/W_2)
-#define DLEN_3 40 // ceil(eB/W_3)
+#define DLEN_2 ((OALICE_BITS + W_2 - 1) / W_2) // ceil(eA/W_2)
+#define DLEN_3 ((OBOB_EXPON + W_3 - 1) / W_3) // ceil(eB/W_3)
+// Use compressed tables: FULL_SIGNED
+#define COMPRESSED_TABLES
+#define ELL2_FULL_SIGNED    // Uses signed digits to reduce table size by half
+#define ELL3_FULL_SIGNED    // Uses signed digits to reduce table size by half
 // Length of the optimal strategy path for Pohlig-Hellman
-#define PLEN_2 51
-#define PLEN_3 41
+#ifdef COMPRESSED_TABLES
+  #ifdef ELL2_FULL_SIGNED
+    #if W_2 == 5
+      #define PLEN_2 51
+    #endif
+  #endif
+  #ifdef ELL3_FULL_SIGNED
+    #if W_3 == 3
+      #define PLEN_3 54
+    #endif
+  #endif
+#endif
 #endif
 
 // SIDH's basic element definitions and point representations

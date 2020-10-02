@@ -184,18 +184,24 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 
 // Fixed traversal strategies for Pohlig-Hellman discrete logs
 
-static const unsigned int ph2_path[PLEN_2] = { // w_2 = 5
-	0, 0, 1, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 11, 12, 13, 13, 14, 14, 15, 16,
-	17, 18, 18, 18, 19, 20, 20, 21, 22, 23, 24, 25, 25, 25, 25, 26, 27, 28, 29, 29,
-	30, 31, 32, 33, 34, 35, 35
+static const unsigned int ph2_path[PLEN_2] = {
+#ifdef COMPRESSED_TABLES
+  #ifdef ELL2_FULL_SIGNED
+    #if W_2 == 5
+      0, 0, 1, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 11, 12, 13, 13, 14, 14, 15, 16, 17, 18, 18, 18, 19, 20, 20, 21, 22, 23, 24, 25, 25, 25, 25, 26, 27, 28, 29, 29, 30, 31, 32, 33, 34, 35, 35
+    #endif
+  #endif
+#endif
 };
 
 static const unsigned int ph3_path[PLEN_3] = { 
-#if W_3 == 4
-  0, 0, 1, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 11, 12, 13, 14, 14, 14, 15, 16, 17, 18, 19, 19, 19, 19, 20, 21, 22, 23, 24, 25, 26, 26, 26, 26, 26
-#elif W_3 == 6    
-	0, 0, 1, 2, 3, 4, 5, 6, 6, 7, 7, 8, 9, 9, 10, 11, 12, 12, 13, 14, 15, 16, 16, 17, 18, 19, 20, 21
-#endif        
+#ifdef COMPRESSED_TABLES
+  #ifdef ELL3_FULL_SIGNED
+    #if W_3 == 3
+      0, 0, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 9, 10, 11, 12, 13, 13, 13, 13, 14, 15, 16, 17, 18, 19, 19, 19, 19, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 28, 28, 28, 28, 28, 28, 29, 30, 31, 32, 33, 34
+    #endif
+  #endif
+#endif
 };
 
 // Entangled bases related static tables and parameters
