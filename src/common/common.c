@@ -21,16 +21,56 @@ static unsigned int available_cpu_extensions_set = 0;
 #include "x86_64_helpers.h"
 
 const char *const X64_EXTENSIONS_NAMES[] = {
+#ifdef OQS_USE_AES_INSTRUCTIONS
 	"AES",
+#else
+        "",
+#endif
+#ifdef OQS_USE_AVX_INSTRUCTIONS
 	"AVX",
+#else
+        "",
+#endif
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
 	"AVX2",
+#else
+        "",
+#endif
+#ifdef OQS_USE_AVX512_INSTRUCTIONS
 	"AVX512",
+#else
+        "",
+#endif
+#ifdef OQS_USE_BMI_INSTRUCTIONS
 	"BMI",
+#else
+        "",
+#endif
+#ifdef OQS_USE_BMI2_INSTRUCTIONS
 	"BMI2",
+#else
+        "",
+#endif
+#ifdef OQS_USE_POPCNT_INSTRUCTIONS
 	"POPCNT",
+#else
+        "",
+#endif
+#ifdef OQS_USE_SSE_INSTRUCTIONS
 	"SSE",
+#else
+        "",
+#endif
+#ifdef OQS_USE_SSE2_INSTRUCTIONS
 	"SSE2",
+#else
+        "",
+#endif
+#ifdef OQS_USE_SSE3_INSTRUCTIONS
 	"SSE3"
+#else
+        "",
+#endif
 };
 
 OQS_API const char *OQS_get_cpu_extension_name(unsigned int i) {

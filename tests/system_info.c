@@ -3,6 +3,7 @@
 #include <oqs/oqs.h>
 
 #include <stdio.h>
+#include <string.h>
 
 // based on macros in https://sourceforge.net/p/predef/wiki/Compilers/
 static void print_compiler_info(void) {
@@ -72,9 +73,12 @@ static void print_cpu_extensions(void) {
 	unsigned int it = sizeof(ext_u.ext_a) / sizeof(ext_u.ext_a[0]);
 	for (unsigned int i = 0; i < it; i++) {
 		if (ext_u.ext_a[i]) {
-			printf("%s", OQS_get_cpu_extension_name(i));
-			if (i != it - 1) {
-				printf("-");
+			const char *aname = OQS_get_cpu_extension_name(i);
+			if ((strlen(aname)>0) && (i != it - 1)) {
+				printf("%s-", aname);
+			}
+                        else {
+				printf("%s", aname);
 			}
 		}
 	}
