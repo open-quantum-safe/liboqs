@@ -74,10 +74,9 @@ static void print_cpu_extensions(void) {
 	for (unsigned int i = 0; i < it; i++) {
 		if (ext_u.ext_a[i]) {
 			const char *aname = OQS_get_cpu_extension_name(i);
-			if ((strlen(aname)>0) && (i != it - 1)) {
+			if ((strlen(aname) > 0) && (i != it - 1)) {
 				printf("%s-", aname);
-			}
-                        else {
+			} else {
 				printf("%s", aname);
 			}
 		}
