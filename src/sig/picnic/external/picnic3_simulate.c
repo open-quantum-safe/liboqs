@@ -23,6 +23,7 @@
 #include <stdalign.h>
 #endif
 
+#include "compat.h"
 #include "bitstream.h"
 #include "io.h"
 #include "picnic3_simulate.h"

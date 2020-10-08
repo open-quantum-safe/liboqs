@@ -4,7 +4,7 @@
 #define CRYPTO_SECRETKEYBYTES (1 + 2 * 32 + 32)
 #define CRYPTO_PUBLICKEYBYTES (1 + 2 * 32)
 #define CRYPTO_BYTES (4 + 61024)
-#define CRYPTO_ALGNAME "picnic3l5fs"
+#define CRYPTO_ALGNAME "picnic3l5"
 #define CRYPTO_DETERMINISTIC 1
 
 int crypto_sign_keypair(unsigned char* pk, unsigned char* sk);

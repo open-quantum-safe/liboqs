@@ -336,6 +336,8 @@ static void HCP(uint8_t* sigH, uint16_t* challengeC, uint16_t* challengeP, commi
   hash_update(&ctx, message, messageByteLength);
   hash_final(&ctx);
   hash_squeeze(&ctx, sigH, params->digest_size);
+  /* parts of this hash will be published as challenge so is public anyway */
+  picnic_declassify(sigH, params->digest_size);
 
   expandChallenge(challengeC, challengeP, sigH, params);
 }
@@ -904,13 +906,13 @@ static int serializeSignature2(const signature2_t* sig, uint8_t* sigBytes, size_
 int impl_sign_picnic3(const picnic_instance_t* instance, const uint8_t* plaintext,
                       const uint8_t* private_key, const uint8_t* public_key, const uint8_t* msg,
                       size_t msglen, uint8_t* signature, size_t* signature_len) {
-  int ret;
   signature2_t* sig = (signature2_t*)malloc(sizeof(signature2_t));
   allocateSignature2(sig, instance);
   if (sig == NULL) {
     return -1;
   }
-  ret = sign_picnic3(private_key, public_key, plaintext, msg, msglen, sig, instance);
+  int ret = sign_picnic3(private_key, public_key, plaintext, msg, msglen, sig, instance);
+  picnic_declassify(&ret, sizeof(ret));
   if (ret != EXIT_SUCCESS) {
 #if !defined(NDEBUG)
     fprintf(stderr, "Failed to create signature\n");

@@ -271,8 +271,8 @@ oqs_sig_picnic_KeccakP1600_Initialize:
 //  void KeccakP1600_AddByte(void *state, unsigned char byte, unsigned int offset)
 //
 .align 8
-.global   KeccakP1600_AddByte
-KeccakP1600_AddByte:
+.global   oqs_sig_picnic_KeccakP1600_AddByte
+oqs_sig_picnic_KeccakP1600_AddByte:
     ldrb    w3, [x0, x2]
     eor     w3, w3, w1
     strb    w3, [x0, x2]

@@ -38,7 +38,9 @@ set(SRCS sig_picnic.c
          external/picnic3_types.c
          external/randomness.c
          external/sha3/KeccakHash.c
-         external/sha3/KeccakSpongeWidth1600.c)
+         external/sha3/KeccakSponge.c
+	 external/sha3/KeccakSpongetimes4.c
+	 external/sha3/KeccakHashtimes4.c)
 
 # Avoid generating no symbols:
 if (NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
@@ -54,12 +56,11 @@ endif()
 if(USE_AVX2)
   set(SRCS ${SRCS}
            external/sha3/avx2/KeccakP-1600-AVX2.s
-           external/sha3/avx2/KeccakP-1600-times4-SIMD256.c
-           external/sha3/KeccakSpongeWidth1600times4.c
-           external/sha3/KeccakHashtimes4.c)
+           external/sha3/avx2/KeccakP-1600-times4-SIMD256.c)
 else()
   set(SRCS ${SRCS}
-           external/sha3/opt64/KeccakP-1600-opt64.c)
+           external/sha3/opt64/KeccakP-1600-opt64.c
+           external/sha3/opt64/KeccakP-1600-times4-on1.c)
 endif()
 add_library(picnic OBJECT ${SRCS})
 target_include_directories(picnic PRIVATE external

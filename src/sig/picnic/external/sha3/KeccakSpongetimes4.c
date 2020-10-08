@@ -11,10 +11,9 @@ and related or neighboring rights to the source code in this file.
 http://creativecommons.org/publicdomain/zero/1.0/
 */
 
-#include "KeccakSpongeWidth1600times4.h"
+#include "KeccakSpongetimes4.h"
 
-
-#ifndef KeccakP1600times4_excluded
+#ifdef XKCP_has_KeccakP1600
 #include "KeccakP-1600-times4-SnP.h"
 
 #define prefix oqs_sig_picnic_KeccakWidth1600times4

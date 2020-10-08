@@ -39,11 +39,6 @@ typedef struct msgs_t {
   int unopened; // Index of the unopened party, or -1 if all parties opened (when signing)
 } msgs_t;
 
-typedef struct shares_t {
-  uint16_t* shares;
-  size_t numWords;
-} shares_t;
-
 #define UNUSED_PARAMETER(x) (void)(x)
 
 void allocateRandomTape(randomTape_t* tape, const picnic_instance_t* params);

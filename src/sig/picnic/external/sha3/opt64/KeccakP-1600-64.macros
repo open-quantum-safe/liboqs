@@ -1,9 +1,12 @@
 /*
-Implementation by the Keccak Team, namely, Guido Bertoni, Joan Daemen,
-Michaël Peeters, Gilles Van Assche and Ronny Van Keer,
-hereby denoted as "the implementer".
+The eXtended Keccak Code Package (XKCP)
+https://github.com/XKCP/XKCP
 
-For more information, feedback or questions, please refer to our website:
+The Keccak-p permutations, designed by Guido Bertoni, Joan Daemen, Michaël Peeters and Gilles Van Assche.
+
+Implementation by Gilles Van Assche and Ronny Van Keer, hereby denoted as "the implementer".
+
+For more information, feedback or questions, please refer to the Keccak Team website:
 https://keccak.team/
 
 To the extent possible under law, the implementer has waived all copyright
@@ -12,23 +15,23 @@ http://creativecommons.org/publicdomain/zero/1.0/
 */
 
 #define declareABCDE \
-    UINT64 Aba, Abe, Abi, Abo, Abu; \
-    UINT64 Aga, Age, Agi, Ago, Agu; \
-    UINT64 Aka, Ake, Aki, Ako, Aku; \
-    UINT64 Ama, Ame, Ami, Amo, Amu; \
-    UINT64 Asa, Ase, Asi, Aso, Asu; \
-    UINT64 Bba, Bbe, Bbi, Bbo, Bbu; \
-    UINT64 Bga, Bge, Bgi, Bgo, Bgu; \
-    UINT64 Bka, Bke, Bki, Bko, Bku; \
-    UINT64 Bma, Bme, Bmi, Bmo, Bmu; \
-    UINT64 Bsa, Bse, Bsi, Bso, Bsu; \
-    UINT64 Ca, Ce, Ci, Co, Cu; \
-    UINT64 Da, De, Di, Do, Du; \
-    UINT64 Eba, Ebe, Ebi, Ebo, Ebu; \
-    UINT64 Ega, Ege, Egi, Ego, Egu; \
-    UINT64 Eka, Eke, Eki, Eko, Eku; \
-    UINT64 Ema, Eme, Emi, Emo, Emu; \
-    UINT64 Esa, Ese, Esi, Eso, Esu; \
+    uint64_t Aba, Abe, Abi, Abo, Abu; \
+    uint64_t Aga, Age, Agi, Ago, Agu; \
+    uint64_t Aka, Ake, Aki, Ako, Aku; \
+    uint64_t Ama, Ame, Ami, Amo, Amu; \
+    uint64_t Asa, Ase, Asi, Aso, Asu; \
+    uint64_t Bba, Bbe, Bbi, Bbo, Bbu; \
+    uint64_t Bga, Bge, Bgi, Bgo, Bgu; \
+    uint64_t Bka, Bke, Bki, Bko, Bku; \
+    uint64_t Bma, Bme, Bmi, Bmo, Bmu; \
+    uint64_t Bsa, Bse, Bsi, Bso, Bsu; \
+    uint64_t Ca, Ce, Ci, Co, Cu; \
+    uint64_t Da, De, Di, Do, Du; \
+    uint64_t Eba, Ebe, Ebi, Ebo, Ebu; \
+    uint64_t Ega, Ege, Egi, Ego, Egu; \
+    uint64_t Eka, Eke, Eki, Eko, Eku; \
+    uint64_t Ema, Eme, Emi, Emo, Emu; \
+    uint64_t Esa, Ese, Esi, Eso, Esu; \
 
 #define prepareTheta \
     Ca = Aba^Aga^Aka^Ama^Asa; \

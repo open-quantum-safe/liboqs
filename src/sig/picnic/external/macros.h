@@ -37,6 +37,37 @@
 #define GNUC_CHECK(maj, min) 0
 #endif
 
+/* glibc version check macro */
+#if defined(__GLIBC__)
+#define GLIBC_CHECK(maj, min) __GLIBC_PREREQ(maj, min)
+#else
+#define GLIBC_CHECK(maj, min) 0
+#endif
+
+/* FreeBSD version check macro */
+#if defined(__FreeBSD__)
+#define FREEBSD_CHECK(maj, min) (__FreeBSD__ >= (maj))
+#else
+#define FREEBSD_CHECK(maj, min) 0
+#endif
+
+/* NetBSD version check macro */
+#if defined(__NetBSD__)
+#include <sys/param.h>
+#define NETBSD_CHECK(maj, min) (__NetBSD_Version__ >= ((maj)*1000000000 + (min)*10000000))
+#else
+#define NETBSD_CHECK(maj, min) 0
+#endif
+
+/* Apple version check macro */
+#if defined(__APPLE__)
+  #include <Availability.h>
+#define MACOSX_CHECK(maj, min, rev)                                                                \
+  (__MAC_OS_X_VERSION_MIN_REQUIRED >= ((maj)*10000 + (min)*100 + (rev)))
+#else
+#define MACOSX_CHECK(maj, min, rev) 0
+#endif
+
 #ifndef MIN
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #endif
@@ -267,6 +298,17 @@ ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t ceil_log2(uint32_t x) {
 #define SIZET_FMT "%Iu"
 #else
 #define SIZET_FMT "%zu"
+#endif
+
+/* crypto_declassify wrapper */
+#if defined(TIMECOP)
+#include "crypto_declassify.h"
+#define picnic_declassify(x, len) crypto_declassify(x, len)
+#elif defined(WITH_VALGRIND)
+#include <valgrind/memcheck.h>
+#define picnic_declassify(x, len) VALGRIND_MAKE_MEM_DEFINED(x, len)
+#else
+#define picnic_declassify(x, len)
 #endif
 
 #endif

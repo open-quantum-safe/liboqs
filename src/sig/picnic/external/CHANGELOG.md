@@ -1,3 +1,17 @@
+Version 3.0.2 -- 2020-10-06
+---------------------------
+
+* Update SHAKE3 implementation
+* Add support to check constant time implementation with TIMECOP
+* Slightly reduce memory consumption
+* Add support for BSD variants
+
+Version 3.0.1 -- 2020-08-11
+---------------------------
+
+* Expose picnic_sk_to_pk as part of the public API
+* Add picnic_clear_private_key to clear the private key
+
 Version 3.0 -- 2020-04-15
 -------------------------
 
