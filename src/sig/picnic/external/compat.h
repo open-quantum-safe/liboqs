@@ -98,7 +98,7 @@ static inline void explicit_bzero(void* a, size_t len) {
   SecureZeroMemory(a, len);
   #else
   volatile char* p = a;
-  for (; len; ++a, --len) {
+  for (; len; ++p, --len) {
     *p = 0;
   }
   #endif
