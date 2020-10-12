@@ -180,7 +180,7 @@ void KeccakP1600_AddLanes(void *state, const unsigned char *data, unsigned int l
 /* ---------------------------------------------------------------- */
 
 #if (PLATFORM_BYTE_ORDER != IS_LITTLE_ENDIAN)
-void KeccakP1600_AddByte(void *state, unsigned char byte, unsigned int offset)
+void oqs_sig_picnic_KeccakP1600_AddByte(void *state, unsigned char byte, unsigned int offset)
 {
     uint64_t lane = byte;
     lane <<= (offset%8)*8;
