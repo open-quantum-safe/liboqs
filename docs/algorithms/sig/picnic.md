@@ -5,14 +5,14 @@ Picnic
 - **Main cryptographic assumption**: hash function security (ROM/QROM), key recovery attacks on the lowMC block cipher
 - **Scheme authors**: Greg Zaverucha, Melissa Chase, David Derler, Steven Goldfeder, Claudio Orlandi, Sebastian Ramacher, Christian Rechberger, Daniel Slamanig, Jonathan Katz, Xiao Wang, Vladmir Kolesnikov
 - **Authors' website**: https://microsoft.github.io/Picnic/
-- **Version**: 3.0
+- **Version**: 3.0.3
 - **Added to liboqs by**: Christian Paquin
 
 Implementation
 --------------
 
 - **Source of implementation**: https://github.com/IAIK/Picnic
-- **Implementation version**: https://github.com/IAIK/Picnic/tree/v3.0.2
+- **Implementation version**: https://github.com/IAIK/Picnic/tree/v3.0.3
 - **License**: MIT License
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with optional use of AVX2 and SSE2 instructions (selected at compile-time, enabled by default if available)

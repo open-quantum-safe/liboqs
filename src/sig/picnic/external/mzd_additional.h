@@ -53,16 +53,6 @@ mzd_local_t* mzd_local_init_ex(unsigned int r, unsigned int c, bool clear) ATTR_
 
 void mzd_local_free(mzd_local_t* v);
 
-void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, unsigned int r, unsigned int c,
-				bool clear) ATTR_NONNULL_ARG(1);
-
-#define mzd_local_init_multiple(dst, n, r, c) mzd_local_init_multiple_ex(dst, n, r, c, true)
-
-/**
- * mzd_local_free for mzd_local_init_multiple.
- */
-void mzd_local_free_multiple(mzd_local_t** vs);
-
 void mzd_copy_uint64_128(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;
 void mzd_copy_uint64_192(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;
 void mzd_copy_uint64_256(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;

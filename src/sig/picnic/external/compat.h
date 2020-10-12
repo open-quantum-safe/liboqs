@@ -10,11 +10,12 @@
 #ifndef PICNIC_COMPAT_H
 #define PICNIC_COMPAT_H
 
+#include <stddef.h>
+
 #if defined(HAVE_CONFIG_H)
 #include <config.h>
 #else
 /* in case cmake checks were not run, define HAVE_* for known good configurations */
-
 #include "macros.h"
 #if defined(__OpenBSD__)
 #include <sys/param.h>
@@ -34,11 +35,6 @@
 #define HAVE_EXPLICIT_BZERO
 #endif /* HAVE_EXPLICIT_BZERO */
 
-#if !defined(HAVE_CONSTTIME_MEMEQUAL) && NETBSD_CHECK(7, 0)
-/* consttime_memequal was introduced in NetBSD 7.0 */
-#define HAVE_CONSTTIME_MEMEQUAL
-#endif /* HAVE_CONSTTIME_MEMEQUAL */
-
 #if !defined(HAVE_TIMINGSAFE_BCMP) && ((defined(__OpenBSD__) && OpenBSD >= 201105) ||              \
 				       FREEBSD_CHECK(12, 0) || MACOSX_CHECK(10, 12, 1))
 /* timingsafe_bcmp was introduced in OpenBSD 4.9, FreeBSD 12.0, and MacOS X 10.12 */
@@ -51,7 +47,6 @@
 
 #define aligned_free(ptr) free((ptr))
 #else
-#include <stddef.h>
 
 /**
  * Compatibility implementation of aligned_alloc from ISO C 2011.
@@ -70,39 +65,14 @@ void aligned_free(void* ptr);
 /**
  * Compatibility implementation of timingsafe_bcmp from OpenBSD 4.9 and FreeBSD 12.0.
  */
-static inline int timingsafe_bcmp(const void* a, const void* b, size_t len) {
-#if defined(HAVE_CONSTTIME_MEMEQUAL)
-  return !consttime_memequal(a, b, len);
-  #else
-  const unsigned char* p1 = a;
-  const unsigned char* p2 = b;
-
-  unsigned int res = 0;
-  for (; len; --len, ++p1, ++p2) {
-    res |= *p1 ^ *p2;
-  }
-  return res;
-  #endif
-}
+int timingsafe_bcmp(const void* a, const void* b, size_t len);
 #endif /* HAVE_TIMINGSAFE_BCMP */
 
 #if !defined(HAVE_EXPLICIT_BZERO)
-#if defined(_WIN32)
-#include <windows.h>
-#endif
 /**
  * Compatibility implementation of explicit_bzero
  */
-static inline void explicit_bzero(void* a, size_t len) {
-#if defined(_WIN32)
-  SecureZeroMemory(a, len);
-  #else
-  volatile char* p = a;
-  for (; len; ++p, --len) {
-    *p = 0;
-  }
-  #endif
-}
+void explicit_bzero(void* a, size_t len);
 #endif /* HAVE_EXPLICIT_BZERO */
 
 #endif

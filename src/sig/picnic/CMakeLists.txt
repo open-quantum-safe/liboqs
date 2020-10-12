@@ -17,8 +17,8 @@ if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
 endif()
 
 set(SRCS sig_picnic.c
-         external/aligned_alloc.c
          external/bitstream.c
+         external/compat.c
          external/io.c
          external/lowmc.c
          external/lowmc_128_128_20.c

@@ -1,3 +1,9 @@
+Version 3.0.3 -- 2020-10-12
+---------------------------
+
+* Fix explicit_bzero fallback implementation
+* Remove some unused code
+
 Version 3.0.2 -- 2020-10-06
 ---------------------------
 
