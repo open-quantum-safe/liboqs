@@ -41,10 +41,10 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifdef XKCP_has_KeccakP400
     #include "KeccakP-400-SnP.h"
 
-    #define prefix KeccakWidth400
+    #define prefix oqs_sig_picnic_KeccakWidth400
     #define SnP KeccakP400
     #define SnP_width 400
-    #define SnP_Permute KeccakP400_Permute_20rounds
+    #define SnP_Permute oqs_sig_picnic_KeccakP400_Permute_20rounds
     #if defined(KeccakF400_FastLoop_supported)
         #define SnP_FastLoop_Absorb KeccakF400_FastLoop_Absorb
     #endif
@@ -59,10 +59,10 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifdef XKCP_has_KeccakP800
     #include "KeccakP-800-SnP.h"
 
-    #define prefix KeccakWidth800
+    #define prefix oqs_sig_picnic_KeccakWidth800
     #define SnP KeccakP800
     #define SnP_width 800
-    #define SnP_Permute KeccakP800_Permute_22rounds
+    #define SnP_Permute oqs_sig_picnic_KeccakP800_Permute_22rounds
     #if defined(KeccakF800_FastLoop_supported)
         #define SnP_FastLoop_Absorb KeccakF800_FastLoop_Absorb
     #endif
@@ -77,10 +77,10 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifdef XKCP_has_KeccakP1600
     #include "KeccakP-1600-SnP.h"
 
-    #define prefix KeccakWidth1600
+    #define prefix oqs_sig_picnic_KeccakWidth1600
     #define SnP KeccakP1600
     #define SnP_width 1600
-    #define SnP_Permute KeccakP1600_Permute_24rounds
+    #define SnP_Permute oqs_sig_picnic_KeccakP1600_Permute_24rounds
     #if defined(KeccakF1600_FastLoop_supported)
         #define SnP_FastLoop_Absorb KeccakF1600_FastLoop_Absorb
     #endif
@@ -95,10 +95,10 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifdef XKCP_has_KeccakP1600
     #include "KeccakP-1600-SnP.h"
 
-    #define prefix KeccakWidth1600_12rounds
+    #define prefix oqs_sig_picnic_KeccakWidth1600_12rounds
     #define SnP KeccakP1600
     #define SnP_width 1600
-    #define SnP_Permute KeccakP1600_Permute_12rounds
+    #define SnP_Permute oqs_sig_picnic_KeccakP1600_Permute_12rounds
     #if defined(KeccakP1600_12rounds_FastLoop_supported)
         #define SnP_FastLoop_Absorb KeccakP1600_12rounds_FastLoop_Absorb
     #endif
