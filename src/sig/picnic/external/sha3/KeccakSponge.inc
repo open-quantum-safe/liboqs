@@ -27,10 +27,10 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #define SnP_stateSizeInBytes            JOIN(SnP, _stateSizeInBytes)
 #define SnP_stateAlignment              JOIN(SnP, _stateAlignment)
 #define SnP_StaticInitialize            JOIN(SnP, _StaticInitialize)
-#define SnP_Initialize                  JOIN(SnP, _Initialize)
-#define SnP_AddByte                     JOIN(SnP, _AddByte)
-#define SnP_AddBytes                    JOIN(SnP, _AddBytes)
-#define SnP_ExtractBytes                JOIN(SnP, _ExtractBytes)
+#define SnP_Initialize                  JOIN(oqs_SnP, _Initialize)
+#define SnP_AddByte                     JOIN(oqs_SnP, _AddByte)
+#define SnP_AddBytes                    JOIN(oqs_SnP, _AddBytes)
+#define SnP_ExtractBytes                JOIN(oqs_SnP, _ExtractBytes)
 
 int Sponge(unsigned int rate, unsigned int capacity, const unsigned char *input, size_t inputByteLen, unsigned char suffix, unsigned char *output, size_t outputByteLen)
 {

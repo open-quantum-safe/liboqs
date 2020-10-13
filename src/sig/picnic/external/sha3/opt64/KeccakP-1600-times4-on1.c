@@ -25,13 +25,13 @@ Please refer to LowLevel.build for the exact list of other files it must be comb
 #define PlSnP_baseParallelism           1
 #define PlSnP_targetParallelism         4
 #define SnP_laneLengthInBytes           8
-#define SnP                             KeccakP1600
-#define SnP_Permute                     KeccakP1600_Permute_24rounds
-#define SnP_Permute_12rounds            KeccakP1600_Permute_12rounds
-#define SnP_Permute_Nrounds             KeccakP1600_Permute_Nrounds
-#define PlSnP_PermuteAll                KeccakP1600times4_PermuteAll_24rounds
-#define PlSnP_PermuteAll_12rounds       KeccakP1600times4_PermuteAll_12rounds
-#define PlSnP_PermuteAll_6rounds        KeccakP1600times4_PermuteAll_6rounds
-#define PlSnP_PermuteAll_4rounds        KeccakP1600times4_PermuteAll_4rounds
+#define SnP                             oqs_sig_picnic_KeccakP1600
+#define SnP_Permute                     oqs_sig_picnic_KeccakP1600_Permute_24rounds
+#define SnP_Permute_12rounds            oqs_sig_picnic_KeccakP1600_Permute_12rounds
+#define SnP_Permute_Nrounds             oqs_sig_picnic_KeccakP1600_Permute_Nrounds
+#define PlSnP_PermuteAll                oqs_sig_picnic_KeccakP1600times4_PermuteAll_24rounds
+#define PlSnP_PermuteAll_12rounds       oqs_sig_picnic_KeccakP1600times4_PermuteAll_12rounds
+#define PlSnP_PermuteAll_6rounds        oqs_sig_picnic_KeccakP1600times4_PermuteAll_6rounds
+#define PlSnP_PermuteAll_4rounds        oqs_sig_picnic_KeccakP1600times4_PermuteAll_4rounds
 
 #include "PlSnP-Fallback.inc"
