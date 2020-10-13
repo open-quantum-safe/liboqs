@@ -32,7 +32,7 @@ Please refer to SnP-documentation.h for more details.
 
 #include <stddef.h>
 
-#define KeccakP1600_StaticInitialize()
+#define oqs_sig_picnic_KeccakP1600_StaticInitialize()
 void KeccakP1600_Initialize(void *state);
 #if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
 #ifdef KeccakP1600_AddByte
