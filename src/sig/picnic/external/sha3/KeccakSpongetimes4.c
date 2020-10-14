@@ -17,7 +17,7 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #include "KeccakP-1600-times4-SnP.h"
 
 #define prefix oqs_sig_picnic_KeccakWidth1600times4
-#define PlSnP KeccakP1600times4
+#define PlSnP oqs_sig_picnic_KeccakP1600times4
 #define PlSnP_width 1600
 #define PlSnP_Permute oqs_sig_picnic_KeccakP1600times4_PermuteAll_24rounds
 #if defined(KeccakF1600times4_FastLoop_supported)

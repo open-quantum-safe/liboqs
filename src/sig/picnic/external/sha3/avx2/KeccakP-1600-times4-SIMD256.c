@@ -89,7 +89,7 @@ static const uint64_t rho56[4] = {0x0007060504030201, 0x080F0E0D0C0B0A09, 0x1017
 ATTRIBUTE_TARGET_AVX2
 void KeccakP1600times4_InitializeAll(void *states)
 {
-    memset(states, 0, KeccakP1600times4_statesSizeInBytes);
+    memset(states, 0, oqs_sig_picnic_KeccakP1600times4_statesSizeInBytes);
 }
 
 ATTRIBUTE_TARGET_AVX2
@@ -701,7 +701,7 @@ void KeccakP1600times4_ExtractAndAddLanesAll(const void *states, const unsigned 
     E##su = XOR256(Bsu, ANDnu256(Bsa, Bse)); \
 \
 
-static ALIGN(KeccakP1600times4_statesAlignment) const uint64_t KeccakF1600RoundConstants[24] = {
+static ALIGN(oqs_sig_picnic_KeccakP1600times4_statesAlignment) const uint64_t KeccakF1600RoundConstants[24] = {
     0x0000000000000001ULL,
     0x0000000000008082ULL,
     0x800000000000808aULL,

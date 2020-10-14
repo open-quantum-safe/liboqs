@@ -22,19 +22,22 @@ Please refer to PlSnP-documentation.h for more details.
 #include "oqs_picnic_macros.h"
 #include "SIMD256-config.h"
 
-#define KeccakP1600times4_implementation        "256-bit SIMD implementation (" KeccakP1600times4_implementation_config ")"
-#define KeccakP1600times4_statesSizeInBytes     800
-#define KeccakP1600times4_statesAlignment       32
+#define oqs_sig_picnic_KeccakP1600times4_implementation        "256-bit SIMD implementation (" KeccakP1600times4_implementation_config ")"
+#define oqs_sig_picnic_KeccakP1600times4_statesSizeInBytes     800
+#define oqs_sig_picnic_KeccakP1600times4_statesAlignment       32
 #define KeccakF1600times4_FastLoop_supported
 #define KeccakP1600times4_12rounds_FastLoop_supported
 #define KeccakF1600times4_FastKravatte_supported
 
 #include <stddef.h>
 
-#define KeccakP1600times4_StaticInitialize()
+#define oqs_sig_picnic_KeccakP1600times4_StaticInitialize()
 void KeccakP1600times4_InitializeAll(void *states);
-#define KeccakP1600times4_AddByte(states, instanceIndex, byte, offset) \
+#ifdef KeccakP1600times4_AddByte
+  #undef KeccakP1600times4_AddByte
+  #define oqs_sig_picnic_KeccakP1600times4_AddByte(states, instanceIndex, byte, offset) \
     ((unsigned char*)(states))[(instanceIndex)*8 + ((offset)/8)*4*8 + (offset)%8] ^= (byte)
+#endif
 void KeccakP1600times4_AddBytes(void *states, unsigned int instanceIndex, const unsigned char *data, unsigned int offset, unsigned int length);
 void KeccakP1600times4_AddLanesAll(void *states, const unsigned char *data, unsigned int laneCount, unsigned int laneOffset);
 void KeccakP1600times4_OverwriteBytes(void *states, unsigned int instanceIndex, const unsigned char *data, unsigned int offset, unsigned int length);
