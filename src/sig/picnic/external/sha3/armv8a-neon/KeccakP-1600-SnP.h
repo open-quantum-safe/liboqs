@@ -4,9 +4,9 @@
 /** For the documentation, see SnP-documentation.h.
  */
 
-#define KeccakP1600_implementation      "64-bit optimized ARMv8a assembler implementation"
-#define KeccakP1600_stateSizeInBytes    200
-#define KeccakP1600_stateAlignment      64
+#define oqs_sig_picnic_KeccakP1600_implementation      "64-bit optimized ARMv8a assembler implementation"
+#define oqs_sig_picnic_KeccakP1600_stateSizeInBytes    200
+#define oqs_sig_picnic_KeccakP1600_stateAlignment      64
 
 #define oqs_sig_picnic_KeccakP1600_StaticInitialize()
 void KeccakP1600_Initialize(void *state);

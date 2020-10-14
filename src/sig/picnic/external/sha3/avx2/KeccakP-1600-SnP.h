@@ -24,9 +24,9 @@ Please refer to SnP-documentation.h for more details.
 #include <stddef.h>
 #include "oqs_picnic_macros.h"
 
-#define KeccakP1600_implementation      "AVX2 optimized implementation"
-#define KeccakP1600_stateSizeInBytes    200
-#define KeccakP1600_stateAlignment      32
+#define oqs_sig_picnic_KeccakP1600_implementation      "AVX2 optimized implementation"
+#define oqs_sig_picnic_KeccakP1600_stateSizeInBytes    200
+#define oqs_sig_picnic_KeccakP1600_stateAlignment      32
 #define KeccakF1600_FastLoop_supported
 #define KeccakP1600_12rounds_FastLoop_supported
 

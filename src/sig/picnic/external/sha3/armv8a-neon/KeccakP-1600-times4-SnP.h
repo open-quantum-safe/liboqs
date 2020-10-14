@@ -20,10 +20,10 @@ Please refer to PlSnP-documentation.h for more details.
 
 #include "KeccakP-1600-SnP.h"
 
-#define KeccakP1600times4_implementation        "fallback on serial implementation (" KeccakP1600_implementation ")"
-#define KeccakP1600times4_statesSizeInBytes     (((KeccakP1600_stateSizeInBytes+(KeccakP1600_stateAlignment-1))/KeccakP1600_stateAlignment)*KeccakP1600_stateAlignment*4)
-#define KeccakP1600times4_statesAlignment       KeccakP1600_stateAlignment
-#define KeccakP1600times4_isFallback
+#define oqs_sig_picnic_KeccakP1600times4_implementation        "fallback on serial implementation (" KeccakP1600_implementation ")"
+#define oqs_sig_picnic_KeccakP1600times4_statesSizeInBytes     (((oqs_sig_picnic_KeccakP1600_stateSizeInBytes+(oqs_sig_picnic_KeccakP1600_stateAlignment-1))/oqs_sig_picnic_KeccakP1600_stateAlignment)*oqs_sig_picnic_KeccakP1600_stateAlignment*4)
+#define oqs_sig_picnic_KeccakP1600times4_statesAlignment       oqs_sig_picnic_KeccakP1600_stateAlignment
+#define oqs_sig_picnic_KeccakP1600times4_isFallback
 
 void KeccakP1600times4_StaticInitialize( void );
 void KeccakP1600times4_InitializeAll(void *states);

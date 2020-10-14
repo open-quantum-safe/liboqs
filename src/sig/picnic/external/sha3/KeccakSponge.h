@@ -41,36 +41,36 @@ http://creativecommons.org/publicdomain/zero/1.0/
 
 #ifdef XKCP_has_KeccakP200
     #include "KeccakP-200-SnP.h"
-    XKCP_DeclareSpongeStructure(KeccakWidth200, KeccakP200_stateSizeInBytes, KeccakP200_stateAlignment)
-    XKCP_DeclareSpongeFunctions(KeccakWidth200)
+    XKCP_DeclareSpongeStructure(oqs_sig_picnic_KeccakWidth200, oqs_sig_picnic_KeccakP200_stateSizeInBytes, oqs_sig_picnic_KeccakP200_stateAlignment)
+    XKCP_DeclareSpongeFunctions(oqs_sig_picnic_KeccakWidth200)
     #define XKCP_has_Sponge_Keccak_width200
 #endif
 
 #ifdef XKCP_has_KeccakP400
     #include "KeccakP-400-SnP.h"
-    XKCP_DeclareSpongeStructure(KeccakWidth400, KeccakP400_stateSizeInBytes, KeccakP400_stateAlignment)
-    XKCP_DeclareSpongeFunctions(KeccakWidth400)
+    XKCP_DeclareSpongeStructure(oqs_sig_picnic_KeccakWidth400, oqs_sig_picnic_KeccakP400_stateSizeInBytes, oqs_sig_picnic_KeccakP400_stateAlignment)
+    XKCP_DeclareSpongeFunctions(oqs_sig_picnic_KeccakWidth400)
     #define XKCP_has_Sponge_Keccak_width400
 #endif
 
 #ifdef XKCP_has_KeccakP800
     #include "KeccakP-800-SnP.h"
-    XKCP_DeclareSpongeStructure(KeccakWidth800, KeccakP800_stateSizeInBytes, KeccakP800_stateAlignment)
-    XKCP_DeclareSpongeFunctions(KeccakWidth800)
+    XKCP_DeclareSpongeStructure(oqs_sig_picnic_KeccakWidth800, oqs_sig_picnic_KeccakP800_stateSizeInBytes, oqs_sig_picnic_KeccakP800_stateAlignment)
+    XKCP_DeclareSpongeFunctions(oqs_sig_picnic_KeccakWidth800)
     #define XKCP_has_Sponge_Keccak_width800
 #endif
 
 #ifdef XKCP_has_KeccakP1600
     #include "KeccakP-1600-SnP.h"
-    XKCP_DeclareSpongeStructure(KeccakWidth1600, KeccakP1600_stateSizeInBytes, KeccakP1600_stateAlignment)
-    XKCP_DeclareSpongeFunctions(KeccakWidth1600)
+    XKCP_DeclareSpongeStructure(oqs_sig_picnic_KeccakWidth1600, oqs_sig_picnic_KeccakP1600_stateSizeInBytes, oqs_sig_picnic_KeccakP1600_stateAlignment)
+    XKCP_DeclareSpongeFunctions(oqs_sig_picnic_KeccakWidth1600)
     #define XKCP_has_Sponge_Keccak_width1600
 #endif
 
 #ifdef XKCP_has_KeccakP1600
     #include "KeccakP-1600-SnP.h"
-    XKCP_DeclareSpongeStructure(KeccakWidth1600_12rounds, KeccakP1600_stateSizeInBytes, KeccakP1600_stateAlignment)
-    XKCP_DeclareSpongeFunctions(KeccakWidth1600_12rounds)
+    XKCP_DeclareSpongeStructure(oqs_sig_picnic_KeccakWidth1600_12rounds, oqs_sig_picnic_KeccakP1600_stateSizeInBytes, oqs_sig_picnic_KeccakP1600_stateAlignment)
+    XKCP_DeclareSpongeFunctions(oqs_sig_picnic_KeccakWidth1600_12rounds)
 #endif
 
 #endif
