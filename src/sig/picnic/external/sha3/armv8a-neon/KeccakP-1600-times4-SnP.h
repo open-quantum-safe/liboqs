@@ -25,7 +25,7 @@ Please refer to PlSnP-documentation.h for more details.
 #define oqs_sig_picnic_KeccakP1600times4_statesAlignment       oqs_sig_picnic_KeccakP1600_stateAlignment
 #define oqs_sig_picnic_KeccakP1600times4_isFallback
 
-void KeccakP1600times4_StaticInitialize( void );
+void oqs_sig_picnic_KeccakP1600times4_StaticInitialize( void );
 void KeccakP1600times4_InitializeAll(void *states);
 void KeccakP1600times4_AddByte(void *states, unsigned int instanceIndex, unsigned char data, unsigned int offset);
 void KeccakP1600times4_AddBytes(void *states, unsigned int instanceIndex, const unsigned char *data, unsigned int offset, unsigned int length);
