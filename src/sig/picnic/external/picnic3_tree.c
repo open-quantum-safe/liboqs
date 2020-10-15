@@ -17,6 +17,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "endian_compat.h"
 #include "kdf_shake.h"
