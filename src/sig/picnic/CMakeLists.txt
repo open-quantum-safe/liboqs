@@ -87,8 +87,7 @@ if(OQS_USE_SSE2_INSTRUCTIONS)
     add_compile_options(-msse2)
 endif()
 if(USE_AVX2)
-    target_compile_definitions(picnic PRIVATE WITH_AVX2
-                                              WITH_KECCAK_X4)
-    add_compile_options(picnic PRIVATE -mavx2)
+    target_compile_definitions(picnic PRIVATE WITH_AVX2)
+    add_compile_options(picnic PRIVATE -mavx2 -mbmi2)
 endif()
 
