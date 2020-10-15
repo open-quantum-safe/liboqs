@@ -82,7 +82,56 @@ typedef hash_context kdf_shake_t;
 #define kdf_shake_get_randomness(ctx, dst, count) hash_squeeze((ctx), (dst), (count))
 #define kdf_shake_clear(ctx) hash_clear((ctx))
 
-#if !defined(WITH_KECCAK_X4)
+#if defined(WITH_KECCAK_X4)
+/* Instances that work with 4 states in parallel. */
+typedef Keccak_HashInstancetimes4 hash_context_x4 ATTR_ALIGNED(32);
+
+static inline void hash_init_x4(hash_context_x4* ctx, size_t digest_size) {
+  if (digest_size == 32) {
+    Keccak_HashInitializetimes4_SHAKE128(ctx);
+  } else {
+    Keccak_HashInitializetimes4_SHAKE256(ctx);
+  }
+}
+
+static inline void hash_update_x4(hash_context_x4* ctx, const uint8_t** data, size_t size) {
+  Keccak_HashUpdatetimes4(ctx, data, size << 3);
+}
+
+static inline void hash_update_x4_4(hash_context_x4* ctx, const uint8_t* data0,
+				    const uint8_t* data1, const uint8_t* data2,
+				    const uint8_t* data3, size_t size) {
+  const uint8_t* data[4] = { data0, data1, data2, data3 };
+  hash_update_x4(ctx, data, size);
+}
+
+static inline void hash_update_x4_1(hash_context_x4* ctx, const uint8_t* data, size_t size) {
+  const uint8_t* tmp[4] = { data, data, data, data };
+  hash_update_x4(ctx, tmp, size);
+}
+
+static inline void hash_init_prefix_x4(hash_context_x4* ctx, size_t digest_size,
+                                       const uint8_t prefix) {
+  hash_init_x4(ctx, digest_size);
+  hash_update_x4_1(ctx, &prefix, sizeof(prefix));
+}
+
+static inline void hash_final_x4(hash_context_x4* ctx) {
+  Keccak_HashFinaltimes4(ctx, NULL);
+}
+
+static inline void hash_squeeze_x4(hash_context_x4* ctx, uint8_t** buffer, size_t buflen) {
+  Keccak_HashSqueezetimes4(ctx, buffer, buflen << 3);
+}
+
+static inline void hash_squeeze_x4_4(hash_context_x4* ctx, uint8_t* buffer0, uint8_t* buffer1,
+				     uint8_t* buffer2, uint8_t* buffer3, size_t buflen) {
+  uint8_t* buffer[4] = { buffer0, buffer1, buffer2, buffer3 };
+  hash_squeeze_x4(ctx, buffer, buflen);
+}
+
+#define hash_clear_x4(ctx)
+#else
 /* Instances that work with 4 states in parallel using the base Keccak implementation. */
 typedef struct hash_context_x4_s {
   hash_context instances[4];
@@ -140,55 +189,6 @@ static inline void hash_squeeze_x4_4(hash_context_x4* ctx, uint8_t* buffer0, uin
   hash_squeeze(&ctx->instances[1], buffer1, buflen);
   hash_squeeze(&ctx->instances[2], buffer2, buflen);
   hash_squeeze(&ctx->instances[3], buffer3, buflen);
-}
-
-#define hash_clear_x4(ctx)
-#else
-/* Instances that work with 4 states in parallel. */
-typedef Keccak_HashInstancetimes4 hash_context_x4 ATTR_ALIGNED(32);
-
-static inline void hash_init_x4(hash_context_x4* ctx, size_t digest_size) {
-  if (digest_size == 32) {
-    Keccak_HashInitializetimes4_SHAKE128(ctx);
-  } else {
-    Keccak_HashInitializetimes4_SHAKE256(ctx);
-  }
-}
-
-static inline void hash_update_x4(hash_context_x4* ctx, const uint8_t** data, size_t size) {
-  Keccak_HashUpdatetimes4(ctx, data, size << 3);
-}
-
-static inline void hash_update_x4_4(hash_context_x4* ctx, const uint8_t* data0,
-				    const uint8_t* data1, const uint8_t* data2,
-				    const uint8_t* data3, size_t size) {
-  const uint8_t* data[4] = { data0, data1, data2, data3 };
-  hash_update_x4(ctx, data, size);
-}
-
-static inline void hash_update_x4_1(hash_context_x4* ctx, const uint8_t* data, size_t size) {
-  const uint8_t* tmp[4] = { data, data, data, data };
-  hash_update_x4(ctx, tmp, size);
-}
-
-static inline void hash_init_prefix_x4(hash_context_x4* ctx, size_t digest_size,
-                                       const uint8_t prefix) {
-  hash_init_x4(ctx, digest_size);
-  hash_update_x4_1(ctx, &prefix, sizeof(prefix));
-}
-
-static inline void hash_final_x4(hash_context_x4* ctx) {
-  Keccak_HashFinaltimes4(ctx, NULL);
-}
-
-static inline void hash_squeeze_x4(hash_context_x4* ctx, uint8_t** buffer, size_t buflen) {
-  Keccak_HashSqueezetimes4(ctx, buffer, buflen << 3);
-}
-
-static inline void hash_squeeze_x4_4(hash_context_x4* ctx, uint8_t* buffer0, uint8_t* buffer1,
-				     uint8_t* buffer2, uint8_t* buffer3, size_t buflen) {
-  uint8_t* buffer[4] = { buffer0, buffer1, buffer2, buffer3 };
-  hash_squeeze_x4(ctx, buffer, buflen);
 }
 
 #define hash_clear_x4(ctx)
