@@ -156,4 +156,6 @@ static inline void hash_squeeze(hash_context* ctx, uint8_t* buffer, size_t bufle
   }
 }
 
+#define hash_clear(ctx)
+
 #endif

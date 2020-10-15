@@ -57,6 +57,8 @@ static inline void hash_final(hash_context* ctx) {
 static inline void hash_squeeze(hash_context* ctx, uint8_t* buffer, size_t buflen) {
   Keccak_HashSqueeze(ctx, buffer, buflen << 3);
 }
+
+#define hash_clear(ctx)
 #endif
 
 static inline void hash_update_uint16_le(hash_context* ctx, uint16_t data) {
@@ -78,7 +80,7 @@ typedef hash_context kdf_shake_t;
 #define kdf_shake_update_key_uint16_le(ctx, key) hash_update_uint16_le((ctx), (key))
 #define kdf_shake_finalize_key(ctx) hash_final((ctx))
 #define kdf_shake_get_randomness(ctx, dst, count) hash_squeeze((ctx), (dst), (count))
-#define kdf_shake_clear(ctx)
+#define kdf_shake_clear(ctx) hash_clear((ctx))
 
 #if !defined(WITH_KECCAK_X4)
 /* Instances that work with 4 states in parallel using the base Keccak implementation. */
@@ -139,6 +141,8 @@ static inline void hash_squeeze_x4_4(hash_context_x4* ctx, uint8_t* buffer0, uin
   hash_squeeze(&ctx->instances[2], buffer2, buflen);
   hash_squeeze(&ctx->instances[3], buffer3, buflen);
 }
+
+#define hash_clear_x4(ctx)
 #else
 /* Instances that work with 4 states in parallel. */
 typedef Keccak_HashInstancetimes4 hash_context_x4 ATTR_ALIGNED(32);
@@ -186,6 +190,8 @@ static inline void hash_squeeze_x4_4(hash_context_x4* ctx, uint8_t* buffer0, uin
   uint8_t* buffer[4] = { buffer0, buffer1, buffer2, buffer3 };
   hash_squeeze_x4(ctx, buffer, buflen);
 }
+
+#define hash_clear_x4(ctx)
 #endif
 
 static inline void hash_update_x4_uint16_le(hash_context_x4* ctx, uint16_t data) {
@@ -217,6 +223,6 @@ typedef hash_context_x4 kdf_shake_x4_t;
 #define kdf_shake_x4_get_randomness(ctx, dst, count) hash_squeeze_x4((ctx), (dst), (count))
 #define kdf_shake_x4_get_randomness_4(ctx, dst0, dst1, dst2, dst3, count)                          \
   hash_squeeze_x4_4((ctx), (dst0), (dst1), (dst2), (dst3), (count))
-#define kdf_shake_x4_clear(ctx)
+#define kdf_shake_x4_clear(ctx) hash_clear_x4((ctx))
 
 #endif
