@@ -76,6 +76,58 @@ static inline void hash_clear(hash_context* ctx) {
   }
 }
 
+#if defined(OQS_USE_AVX2_INSTRUCTIONS)
+#include "../../../common/sha3/keccak4x/KeccakHashtimes4.h"
+
+/* Instances that work with 4 states in parallel from OQS */
+typedef oqs_Keccak_HashInstancetimes4 hash_context_x4 ATTR_ALIGNED(32);
+
+static inline void hash_init_x4(hash_context_x4* ctx, size_t digest_size) {
+  if (digest_size == 32) {
+    oqs_Keccak_HashInitializetimes4_SHAKE128(ctx);
+  } else {
+    oqs_Keccak_HashInitializetimes4_SHAKE256(ctx);
+  }
+}
+
+static inline void hash_update_x4(hash_context_x4* ctx, const uint8_t** data, size_t size) {
+  oqs_Keccak_HashUpdatetimes4(ctx, data, size << 3);
+}
+
+static inline void hash_update_x4_4(hash_context_x4* ctx, const uint8_t* data0,
+                                    const uint8_t* data1, const uint8_t* data2,
+                                    const uint8_t* data3, size_t size) {
+  const uint8_t* data[4] = { data0, data1, data2, data3 };
+  hash_update_x4(ctx, data, size);
+}
+
+static inline void hash_update_x4_1(hash_context_x4* ctx, const uint8_t* data, size_t size) {
+  const uint8_t* tmp[4] = { data, data, data, data };
+  hash_update_x4(ctx, tmp, size);
+}
+
+static inline void hash_init_prefix_x4(hash_context_x4* ctx, size_t digest_size,
+                                       const uint8_t prefix) {
+  hash_init_x4(ctx, digest_size);
+  hash_update_x4_1(ctx, &prefix, sizeof(prefix));
+}
+
+static inline void hash_final_x4(hash_context_x4* ctx) {
+  oqs_Keccak_HashFinaltimes4(ctx, NULL);
+}
+
+static inline void hash_squeeze_x4(hash_context_x4* ctx, uint8_t** buffer, size_t buflen) {
+  oqs_Keccak_HashSqueezetimes4(ctx, buffer, buflen << 3);
+}
+
+static inline void hash_squeeze_x4_4(hash_context_x4* ctx, uint8_t* buffer0, uint8_t* buffer1,
+                                     uint8_t* buffer2, uint8_t* buffer3, size_t buflen) {
+  uint8_t* buffer[4] = { buffer0, buffer1, buffer2, buffer3 };
+  hash_squeeze_x4(ctx, buffer, buflen);
+}
+
+#define hash_clear_x4(ctx)
+#else
 /* Instances that work with 4 states in parallel using the base implementation. */
 typedef struct hash_context_x4_oqs_s {
   union {
@@ -84,7 +136,6 @@ typedef struct hash_context_x4_oqs_s {
   };
   unsigned int shake256;
 } hash_context_x4;
-
 
 static inline void hash_init_x4(hash_context_x4* ctx, size_t digest_size) {
   if (digest_size == 32) {
@@ -208,6 +259,7 @@ static inline void hash_clear_x4(hash_context_x4* ctx) {
     }
   }
 }
+#endif
 #else
 #if !defined(SUPERCOP)
 /* use SHAKE implementation in sha3/ */
@@ -289,8 +341,8 @@ static inline void hash_update_x4(hash_context_x4* ctx, const uint8_t** data, si
 }
 
 static inline void hash_update_x4_4(hash_context_x4* ctx, const uint8_t* data0,
-				    const uint8_t* data1, const uint8_t* data2,
-				    const uint8_t* data3, size_t size) {
+            const uint8_t* data1, const uint8_t* data2,
+            const uint8_t* data3, size_t size) {
   const uint8_t* data[4] = { data0, data1, data2, data3 };
   hash_update_x4(ctx, data, size);
 }
@@ -315,7 +367,7 @@ static inline void hash_squeeze_x4(hash_context_x4* ctx, uint8_t** buffer, size_
 }
 
 static inline void hash_squeeze_x4_4(hash_context_x4* ctx, uint8_t* buffer0, uint8_t* buffer1,
-				     uint8_t* buffer2, uint8_t* buffer3, size_t buflen) {
+             uint8_t* buffer2, uint8_t* buffer3, size_t buflen) {
   uint8_t* buffer[4] = { buffer0, buffer1, buffer2, buffer3 };
   hash_squeeze_x4(ctx, buffer, buflen);
 }
@@ -340,8 +392,8 @@ static inline void hash_update_x4(hash_context_x4* ctx, const uint8_t** data, si
 }
 
 static inline void hash_update_x4_4(hash_context_x4* ctx, const uint8_t* data0,
-				    const uint8_t* data1, const uint8_t* data2,
-				    const uint8_t* data3, size_t size) {
+            const uint8_t* data1, const uint8_t* data2,
+            const uint8_t* data3, size_t size) {
   hash_update(&ctx->instances[0], data0, size);
   hash_update(&ctx->instances[1], data1, size);
   hash_update(&ctx->instances[2], data2, size);
@@ -374,7 +426,7 @@ static inline void hash_squeeze_x4(hash_context_x4* ctx, uint8_t** buffer, size_
 }
 
 static inline void hash_squeeze_x4_4(hash_context_x4* ctx, uint8_t* buffer0, uint8_t* buffer1,
-				     uint8_t* buffer2, uint8_t* buffer3, size_t buflen) {
+             uint8_t* buffer2, uint8_t* buffer3, size_t buflen) {
   hash_squeeze(&ctx->instances[0], buffer0, buflen);
   hash_squeeze(&ctx->instances[1], buffer1, buflen);
   hash_squeeze(&ctx->instances[2], buffer2, buflen);
