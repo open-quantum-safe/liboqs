@@ -1254,7 +1254,7 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
                                         &tape_bytes_x4[(j * 4 + 1) * aview_size],
                                         &tape_bytes_x4[(j * 4 + 2) * aview_size],
                                         &tape_bytes_x4[(j * 4 + 3) * aview_size], view_size);
-          kdf_shake_clear(&kdfs[j]);
+          kdf_shake_x4_clear(&kdfs[j]);
         }
       }
 
