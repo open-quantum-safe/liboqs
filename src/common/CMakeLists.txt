@@ -34,7 +34,7 @@ if(OQS_USE_SHA3_OPENSSL)
 endif()
 if(OQS_USE_AVX2_INSTRUCTIONS AND
    NOT OQS_BUILD_PORTABLE)
-    set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3x4.c)
+    set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3x4.c sha3/keccak4x/KeccakHashtimes4.c sha3/keccak4x/KeccakSpongetimes4.c)
     add_compile_options(-mavx2)
 endif()
 

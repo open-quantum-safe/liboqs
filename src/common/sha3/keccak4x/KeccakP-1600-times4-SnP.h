@@ -34,8 +34,11 @@ SPDX-License-Identifier: CC0-1.0
 #include <stddef.h>
 
 #define KeccakP1600times4_StaticInitialize()
+void KeccakP1600times4_InitializeAll(void *states);
 #define KeccakP1600times4_AddByte(states, instanceIndex, byte, offset) \
     ((unsigned char *) (states))[(instanceIndex) *8 + ((offset) / 8) * 4 * 8 + (offset) % 8] ^= (byte)
+void KeccakP1600times4_AddBytes(void *states, unsigned int instanceIndex, const unsigned char *data, unsigned int offset, unsigned int length);
 void KeccakP1600times4_PermuteAll_24rounds(void *states);
+void KeccakP1600times4_ExtractBytes(const void *states, unsigned int instanceIndex, unsigned char *data, unsigned int offset, unsigned int length);
 
 #endif
