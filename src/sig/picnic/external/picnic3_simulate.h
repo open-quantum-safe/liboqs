@@ -13,7 +13,6 @@
 #include "lowmc_pars.h"
 
 typedef struct randomTape_t randomTape_t;
-typedef struct shares_t shares_t;
 typedef struct msgs_t msgs_t;
 typedef struct picnic_instance_t picnic_instance_t;
 

@@ -27,8 +27,6 @@
 
 /* CPU supports SSE2 */
 #define CPU_CAP_SSE2 0x00000001
-/* CPU supports popcnt */
-#define CPU_CAP_POPCNT 0x00000002
 /* CPU supports AVX2 */
 #define CPU_CAP_AVX2 0x00000004
 /* CPU supports BMI2 */

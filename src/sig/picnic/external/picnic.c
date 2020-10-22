@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "compat.h"
 #include "io.h"
 #include "lowmc.h"
 #include "picnic_instances.h"
@@ -222,7 +223,16 @@ int PICNIC_CALLING_CONVENTION picnic_sign(const picnic_privatekey_t* sk, const u
 #endif
   } else {
 #if defined(WITH_ZKBPP)
-    return impl_sign(instance, sk_pt, sk_sk, sk_c, message, message_len, signature, signature_len);
+    picnic_context_t context;
+    mzd_from_char_array(context.m_plaintext, sk_pt, output_size);
+    mzd_from_char_array(context.m_key, sk_sk, input_size);
+    context.plaintext   = sk_pt;
+    context.private_key = sk_sk;
+    context.public_key  = sk_c;
+    context.msg         = message;
+    context.msglen      = message_len;
+
+    return impl_sign(instance, &context, signature, signature_len);
 #else
     return -1;
 #endif
@@ -256,11 +266,19 @@ int PICNIC_CALLING_CONVENTION picnic_verify(const picnic_publickey_t* pk, const 
 #endif
   } else {
 #if defined(WITH_ZKBPP)
-    return impl_verify(instance, pk_pt, pk_c, message, message_len, signature, signature_len);
+    picnic_context_t context;
+    mzd_from_char_array(context.m_plaintext, pk_pt, output_size);
+    mzd_from_char_array(context.m_key, pk_c, output_size);
+    context.plaintext   = pk_pt;
+    context.private_key = NULL;
+    context.public_key  = pk_c;
+    context.msg         = message;
+    context.msglen      = message_len;
+
+    return impl_verify(instance, &context, signature, signature_len);
 #else
     return -1;
 #endif
-
   }
 }
 
@@ -394,15 +412,22 @@ int PICNIC_CALLING_CONVENTION picnic_read_private_key(picnic_privatekey_t* key, 
       param == Picnic3_L5) {
     const unsigned int diff = output_size * 8 - instance->lowmc.n;
     assert(diff == input_size * 8 - instance->lowmc.k);
-    if (check_padding_bits(buf[1 + input_size - 1], diff) ||
-        check_padding_bits(buf[1 + input_size + output_size - 1], diff) ||
-        check_padding_bits(buf[1 + input_size + 2 * output_size - 1], diff)) {
+    /* sanity check of public data: padding bits need to be 0 */
+    const int check = check_padding_bits(buf[1 + input_size - 1], diff) |
+                      check_padding_bits(buf[1 + input_size + output_size - 1], diff) |
+                      check_padding_bits(buf[1 + input_size + 2 * output_size - 1], diff);
+    picnic_declassify(&check, sizeof(check));
+    if (check) {
       return -1;
     }
   }
 
   memcpy(key->data, buf, bytes_required);
   return 0;
+}
+
+void PICNIC_CALLING_CONVENTION picnic_clear_private_key(picnic_privatekey_t* key) {
+  explicit_bzero(key, sizeof(picnic_privatekey_t));
 }
 
 /* unused

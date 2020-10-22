@@ -41,8 +41,8 @@ typedef union {
  * Representation of matrices and vectors
  *
  * The basic memory unit is a block of 256 bit. Each row is stored in (possible multiple) blocks
- * depending on the number of columns. Matrices with up to 128 columns are the only excpetion. In
- * this case a block actually contains two rows. The row with even index is contained in w64[0] and
+ * depending on the number of columns. Matrices with up to 128 columns are the only exception. In
+ * this case, a block actually contains two rows. The row with even index is contained in w64[0] and
  * w61[1], the row with odd index is contained in w64[2] and w64[3].
  */
 typedef block_t mzd_local_t;
@@ -52,16 +52,6 @@ mzd_local_t* mzd_local_init_ex(unsigned int r, unsigned int c, bool clear) ATTR_
 #define mzd_local_init(r, c) mzd_local_init_ex(r, c, true)
 
 void mzd_local_free(mzd_local_t* v);
-
-void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, unsigned int r, unsigned int c, bool clear)
-    ATTR_NONNULL_ARG(1);
-
-#define mzd_local_init_multiple(dst, n, r, c) mzd_local_init_multiple_ex(dst, n, r, c, true)
-
-/**
- * mzd_local_free for mzd_local_init_multiple.
- */
-void mzd_local_free_multiple(mzd_local_t** vs);
 
 void mzd_copy_uint64_128(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;
 void mzd_copy_uint64_192(mzd_local_t* dst, mzd_local_t const* src) ATTR_NONNULL;
@@ -240,7 +230,7 @@ void mzd_addmul_v_s256_192(mzd_local_t* c, mzd_local_t const* v, mzd_local_t con
 void mzd_addmul_v_s256_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t const* A) ATTR_NONNULL;
 
 /**
- * Shuffle vector x according to info in mask. Needed for OLLE optimiztaions.
+ * Shuffle vector x according to info in mask. Needed for OLLE optimizations.
  */
 void mzd_shuffle_128_30(mzd_local_t* x, const word mask) ATTR_NONNULL;
 void mzd_shuffle_192_30(mzd_local_t* x, const word mask) ATTR_NONNULL;

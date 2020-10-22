@@ -1,7 +1,12 @@
 /*
+The eXtended Keccak Code Package (XKCP)
+https://github.com/XKCP/XKCP
+
+The Keccak-p permutations, designed by Guido Bertoni, Joan Daemen, Michaël Peeters and Gilles Van Assche.
+
 Implementation by Ronny Van Keer, hereby denoted as "the implementer".
 
-For more information, feedback or questions, please refer to our website:
+For more information, feedback or questions, please refer to the Keccak Team website:
 https://keccak.team/
 
 To the extent possible under law, the implementer has waived all copyright
@@ -19,13 +24,13 @@ Please refer to SnP-documentation.h for more details.
 #include <stddef.h>
 #include "oqs_picnic_macros.h"
 
-#define KeccakP1600_implementation      "AVX2 optimized implementation"
-#define KeccakP1600_stateSizeInBytes    200
-#define KeccakP1600_stateAlignment      32
+#define oqs_sig_picnic_KeccakP1600_implementation      "AVX2 optimized implementation"
+#define oqs_sig_picnic_KeccakP1600_stateSizeInBytes    200
+#define oqs_sig_picnic_KeccakP1600_stateAlignment      32
 #define KeccakF1600_FastLoop_supported
 #define KeccakP1600_12rounds_FastLoop_supported
 
-#define KeccakP1600_StaticInitialize()
+#define oqs_sig_picnic_KeccakP1600_StaticInitialize()
 void KeccakP1600_Initialize(void *state);
 void KeccakP1600_AddByte(void *state, unsigned char data, unsigned int offset);
 void KeccakP1600_AddBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length);

@@ -14,10 +14,11 @@ http://creativecommons.org/publicdomain/zero/1.0/
 #ifndef _KeccakHashInterfacetimes4_h_
 #define _KeccakHashInterfacetimes4_h_
 
-#ifndef KeccakP1600times4_excluded
+#include "config.h"
+#ifdef XKCP_has_KeccakP1600times4
 
 #include "KeccakHash.h"
-#include "KeccakSpongeWidth1600times4.h"
+#include "KeccakSpongetimes4.h"
 
 typedef struct {
     KeccakWidth1600times4_SpongeInstance sponge;
@@ -100,6 +101,8 @@ HashReturn Keccak_HashFinaltimes4(Keccak_HashInstancetimes4 *hashInstance, BitSe
   */
 HashReturn Keccak_HashSqueezetimes4(Keccak_HashInstancetimes4 *hashInstance, BitSequence **data, BitLength databitlen);
 
+#else
+#error This requires an implementation of Keccak-p[1600]x4
 #endif
 
 #endif

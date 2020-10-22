@@ -1,12 +1,13 @@
 /*
-Implementation by the Keccak, Keyak and Ketje Teams, namely, Guido Bertoni,
-Joan Daemen, Michaël Peeters, Gilles Van Assche and Ronny Van Keer, hereby
-denoted as "the implementer".
+The eXtended Keccak Code Package (XKCP)
+https://github.com/XKCP/XKCP
 
-For more information, feedback or questions, please refer to our websites:
-http://keccak.noekeon.org/
-http://keyak.noekeon.org/
-http://ketje.noekeon.org/
+Keccak, designed by Guido Bertoni, Joan Daemen, Michaël Peeters and Gilles Van Assche.
+
+Implementation by the designers, hereby denoted as "the implementer".
+
+For more information, feedback or questions, please refer to the Keccak Team website:
+https://keccak.team/
 
 To the extent possible under law, the implementer has waived all copyright
 and related or neighboring rights to the source code in this file.

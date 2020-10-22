@@ -10,6 +10,7 @@
 #include "randomness.h"
 #include <oqs/rand.h>
 
+/* OQS note: random functions using OQS's */
 int rand_bits(uint8_t* dst, size_t num_bits) {
   const size_t num_bytes = (num_bits + 7) / 8;
   const size_t num_extra_bits = num_bits % 8;

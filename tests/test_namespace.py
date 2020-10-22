@@ -31,8 +31,8 @@ def test_namespace():
         if ' T ' in line or ' D ' in line or ' S ' in line:
             symbols.append(line)
 
-    # ideally this would be just ['oqs', 'pqclean']
-    namespaces = ['oqs', 'pqclean', 'keccak', 'pqcrystals', 'aligned_alloc', 'aligned_free', 'init', 'fini', 'seedexpander']
+    # ideally this would be just ['oqs', 'pqclean'], but contains exceptions (e.g., providing compat implementations of unavailable platform functions)
+    namespaces = ['oqs', 'pqclean', 'keccak', 'pqcrystals', 'aligned_alloc', 'aligned_free', 'explicit_bzero', 'timingsafe_bcmp', 'init', 'fini', 'seedexpander']
     non_namespaced = []
 
     for symbolstr in symbols:

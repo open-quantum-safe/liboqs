@@ -65,20 +65,25 @@ typedef struct {
 } proof_round_t;
 
 typedef struct {
+  uint8_t salt[SALT_SIZE];
   uint8_t* challenge;
-  uint8_t* salt;
   proof_round_t round[];
 } sig_proof_t;
 
 typedef struct {
   proof_round_t* round;
-  unsigned int round_number;
 } sorting_helper_t;
+
+#if defined(WITH_UNRUH)
+static bool is_unruh(const picnic_instance_t* pp) {
+  return pp->params == Picnic_L1_UR || pp->params == Picnic_L3_UR || pp->params == Picnic_L5_UR;
+}
+#endif
 
 static inline void clear_padding_bits(uint8_t* v, const unsigned int diff) {
 #if defined(WITH_LOWMC_129_129_4) || defined(WITH_LOWMC_255_255_4)
   *v &= UINT8_C(0xff) << diff;
-#else
+#else // OQS note: mark unused params explicitely to avoid warnings
   UNUSED_PARAMETER(v);
   UNUSED_PARAMETER(diff);
 #endif
@@ -126,12 +131,12 @@ static bool expand_challenge(uint8_t* challenge, const picnic_instance_t* pp,
 }
 
 static sig_proof_t* proof_new(const picnic_instance_t* pp) {
-  const size_t digest_size                    = pp->digest_size;
-  const size_t seed_size                      = pp->seed_size;
-  const size_t num_rounds                     = pp->num_rounds;
-  const size_t input_size                     = pp->input_size;
-  const size_t output_size                    = pp->output_size;
-  const size_t view_size                      = ALIGNU64T(pp->view_size);
+  const size_t digest_size = pp->digest_size;
+  const size_t seed_size   = pp->seed_size;
+  const size_t num_rounds  = pp->num_rounds;
+  const size_t input_size  = pp->input_size;
+  const size_t output_size = pp->output_size;
+  const size_t view_size   = ALIGNU64T(pp->view_size);
 #if defined(WITH_UNRUH)
   const size_t unruh_with_input_bytes_size    = pp->unruh_with_input_bytes_size;
   const size_t unruh_without_input_bytes_size = pp->unruh_without_input_bytes_size;
@@ -145,7 +150,7 @@ static sig_proof_t* proof_new(const picnic_instance_t* pp) {
   size_t per_round_mem =
       SC_PROOF * (seed_size + digest_size + input_size + output_size + view_size);
 #if defined(WITH_UNRUH)
-  if (pp->transform == TRANSFORM_UR) {
+  if (is_unruh(pp)) {
     per_round_mem += (SC_PROOF - 1) * unruh_without_input_bytes_size + unruh_with_input_bytes_size;
   }
 #endif
@@ -173,8 +178,6 @@ static sig_proof_t* proof_new(const picnic_instance_t* pp) {
       slab += seed_size;
     }
   }
-  prf->salt = slab;
-  slab += SALT_SIZE;
 
   for (uint32_t r = 0; r < num_rounds; ++r) {
     for (uint32_t i = 0; i < SC_PROOF; ++i) {
@@ -205,7 +208,7 @@ static sig_proof_t* proof_new(const picnic_instance_t* pp) {
   }
 
 #if defined(WITH_UNRUH)
-  if (pp->transform == TRANSFORM_UR) {
+  if (is_unruh(pp)) {
     for (uint32_t r = 0; r < num_rounds; ++r) {
       for (uint32_t i = 0; i < SC_PROOF - 1; ++i) {
         prf->round[r].gs[i] = slab;
@@ -221,14 +224,11 @@ static sig_proof_t* proof_new(const picnic_instance_t* pp) {
 }
 
 static sig_proof_t* proof_new_verify(const picnic_instance_t* pp, uint8_t** rslab) {
-  const size_t digest_size                 = pp->digest_size;
-  const size_t num_rounds                  = pp->num_rounds;
-  const size_t input_size                  = pp->input_size;
-  const size_t output_size                 = pp->output_size;
-  const size_t view_size                   = ALIGNU64T(pp->view_size);
-#if defined(WITH_UNRUH)
-  const size_t unruh_with_input_bytes_size = pp->unruh_with_input_bytes_size;
-#endif
+  const size_t digest_size = pp->digest_size;
+  const size_t num_rounds  = pp->num_rounds;
+  const size_t input_size  = pp->input_size;
+  const size_t output_size = pp->output_size;
+  const size_t view_size   = ALIGNU64T(pp->view_size);
 
   sig_proof_t* proof = calloc(1, sizeof(sig_proof_t) + num_rounds * sizeof(proof_round_t));
   if (!proof) {
@@ -237,19 +237,17 @@ static sig_proof_t* proof_new_verify(const picnic_instance_t* pp, uint8_t** rsla
 
   size_t per_round_mem = SC_VERIFY * digest_size;
 #if defined(WITH_UNRUH)
-  if (pp->transform == TRANSFORM_UR) {
+  const size_t unruh_with_input_bytes_size = pp->unruh_with_input_bytes_size;
+  if (is_unruh(pp)) {
     // we don't know what we actually need, so allocate more than needed
-    per_round_mem += SC_VERIFY * pp->unruh_with_input_bytes_size;
+    per_round_mem += SC_VERIFY * unruh_with_input_bytes_size;
   }
 #endif
   per_round_mem += SC_VERIFY * input_size + SC_PROOF * output_size + view_size;
 
-  uint8_t* slab    = calloc(1, num_rounds * per_round_mem + ALIGNU64T(num_rounds) + SALT_SIZE);
+  uint8_t* slab    = calloc(1, num_rounds * per_round_mem + ALIGNU64T(num_rounds));
   proof->challenge = slab;
   slab += ALIGNU64T(num_rounds);
-
-  proof->salt = slab;
-  slab += SALT_SIZE;
 
   for (uint32_t r = 0; r < num_rounds; ++r) {
     for (uint32_t i = 0; i < SC_VERIFY; ++i) {
@@ -273,7 +271,7 @@ static sig_proof_t* proof_new_verify(const picnic_instance_t* pp, uint8_t** rsla
   }
 
 #if defined(WITH_UNRUH)
-  if (pp->transform == TRANSFORM_UR) {
+  if (is_unruh(pp)) {
     for (uint32_t r = 0; r < num_rounds; ++r) {
       for (uint32_t i = 0; i < SC_VERIFY; ++i) {
         proof->round[r].gs[i] = slab;
@@ -327,16 +325,13 @@ static void kdf_init_x4_from_seed(kdf_shake_x4_t* kdf, const uint8_t** seed, con
   kdf_shake_x4_finalize_key(kdf);
 
   uint8_t tmp[4][MAX_DIGEST_SIZE];
-  uint8_t* tmpptr[4]             = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  const uint8_t* tmpptr_const[4] = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  kdf_shake_x4_get_randomness(kdf, tmpptr, digest_size);
+  kdf_shake_x4_get_randomness_4(kdf, tmp[0], tmp[1], tmp[2], tmp[3], digest_size);
   kdf_shake_x4_clear(kdf);
 
   // Initialize KDF with H_2(seed) || salt || round_number || player_number || output_size.
   kdf_shake_x4_init(kdf, digest_size);
-  kdf_shake_x4_update_key(kdf, tmpptr_const, digest_size);
-  const uint8_t* saltptr[4] = {salt, salt, salt, salt};
-  kdf_shake_x4_update_key(kdf, saltptr, SALT_SIZE);
+  kdf_shake_x4_update_key_4(kdf, tmp[0], tmp[1], tmp[2], tmp[3], digest_size);
+  kdf_shake_x4_update_key_1(kdf, salt, SALT_SIZE);
   kdf_shake_x4_update_key_uint16s_le(kdf, round_number);
   kdf_shake_x4_update_key_uint16_le(kdf, player_number);
   kdf_shake_x4_update_key_uint16_le(kdf, pp->view_size + (include_input_size ? pp->input_size : 0));
@@ -454,38 +449,32 @@ static void hash_commitment_x4(const picnic_instance_t* pp, proof_round_t* prf_r
   hash_context_x4 ctx;
   // hash the seed
   hash_init_prefix_x4(&ctx, hashlen, HASH_PREFIX_4);
-  const uint8_t* seeds[4] = {prf_round[0].seeds[vidx], prf_round[1].seeds[vidx],
-                             prf_round[2].seeds[vidx], prf_round[3].seeds[vidx]};
-  hash_update_x4(&ctx, seeds, pp->seed_size);
+  hash_update_x4_4(&ctx, prf_round[0].seeds[vidx], prf_round[1].seeds[vidx],
+                   prf_round[2].seeds[vidx], prf_round[3].seeds[vidx], pp->seed_size);
   hash_final_x4(&ctx);
   uint8_t tmp[4][MAX_DIGEST_SIZE];
-  uint8_t* tmpptr[4]             = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  const uint8_t* tmpptr_const[4] = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  hash_squeeze_x4(&ctx, tmpptr, hashlen);
+  hash_squeeze_x4_4(&ctx, tmp[0], tmp[1], tmp[2], tmp[3], hashlen);
 
   // compute H_0(H_4(seed), view)
   hash_init_prefix_x4(&ctx, hashlen, HASH_PREFIX_0);
-  hash_update_x4(&ctx, tmpptr_const, hashlen);
+  hash_update_x4_4(&ctx, tmp[0], tmp[1], tmp[2], tmp[3], hashlen);
   // hash input share
-  const uint8_t* input_shares[4] = {
-      prf_round[0].input_shares[vidx], prf_round[1].input_shares[vidx],
-      prf_round[2].input_shares[vidx], prf_round[3].input_shares[vidx]};
-  hash_update_x4(&ctx, input_shares, pp->input_size);
+  hash_update_x4_4(&ctx, prf_round[0].input_shares[vidx], prf_round[1].input_shares[vidx],
+                   prf_round[2].input_shares[vidx], prf_round[3].input_shares[vidx],
+                   pp->input_size);
   // hash communicated bits
-  const uint8_t* communicated_bits[4] = {
-      prf_round[0].communicated_bits[vidx], prf_round[1].communicated_bits[vidx],
-      prf_round[2].communicated_bits[vidx], prf_round[3].communicated_bits[vidx]};
-  hash_update_x4(&ctx, communicated_bits, pp->view_size);
+  hash_update_x4_4(&ctx, prf_round[0].communicated_bits[vidx], prf_round[1].communicated_bits[vidx],
+                   prf_round[2].communicated_bits[vidx], prf_round[3].communicated_bits[vidx],
+                   pp->view_size);
   // hash output share
-  const uint8_t* output_shares[4] = {
-      prf_round[0].output_shares[vidx], prf_round[1].output_shares[vidx],
-      prf_round[2].output_shares[vidx], prf_round[3].output_shares[vidx]};
-  hash_update_x4(&ctx, output_shares, pp->output_size);
+  hash_update_x4_4(&ctx, prf_round[0].output_shares[vidx], prf_round[1].output_shares[vidx],
+                   prf_round[2].output_shares[vidx], prf_round[3].output_shares[vidx],
+                   pp->output_size);
   hash_final_x4(&ctx);
-  uint8_t* commitments[4] = {prf_round[0].commitments[vidx], prf_round[1].commitments[vidx],
-                             prf_round[2].commitments[vidx], prf_round[3].commitments[vidx]};
-  hash_squeeze_x4(&ctx, commitments, hashlen);
+  hash_squeeze_x4_4(&ctx, prf_round[0].commitments[vidx], prf_round[1].commitments[vidx],
+                    prf_round[2].commitments[vidx], prf_round[3].commitments[vidx], hashlen);
 }
+
 /**
  * Compute commitment to 4 views, for verification
  */
@@ -496,38 +485,32 @@ static void hash_commitment_x4_verify(const picnic_instance_t* pp, const sorting
   hash_context_x4 ctx;
   // hash the seed
   hash_init_prefix_x4(&ctx, hashlen, HASH_PREFIX_4);
-  const uint8_t* seeds[4] = {helper[0].round->seeds[vidx], helper[1].round->seeds[vidx],
-                             helper[2].round->seeds[vidx], helper[3].round->seeds[vidx]};
-  hash_update_x4(&ctx, seeds, pp->seed_size);
+  hash_update_x4_4(&ctx, helper[0].round->seeds[vidx], helper[1].round->seeds[vidx],
+                   helper[2].round->seeds[vidx], helper[3].round->seeds[vidx], pp->seed_size);
   hash_final_x4(&ctx);
   uint8_t tmp[4][MAX_DIGEST_SIZE];
-  uint8_t* tmpptr[4]             = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  const uint8_t* tmpptr_const[4] = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  hash_squeeze_x4(&ctx, tmpptr, hashlen);
+  hash_squeeze_x4_4(&ctx, tmp[0], tmp[1], tmp[2], tmp[3], hashlen);
 
   // compute H_0(H_4(seed), view)
   hash_init_prefix_x4(&ctx, hashlen, HASH_PREFIX_0);
-  hash_update_x4(&ctx, tmpptr_const, hashlen);
+  hash_update_x4_4(&ctx, tmp[0], tmp[1], tmp[2], tmp[3], hashlen);
   // hash input share
-  const uint8_t* input_shares[4] = {
-      helper[0].round->input_shares[vidx], helper[1].round->input_shares[vidx],
-      helper[2].round->input_shares[vidx], helper[3].round->input_shares[vidx]};
-  hash_update_x4(&ctx, input_shares, pp->input_size);
+  hash_update_x4_4(&ctx, helper[0].round->input_shares[vidx], helper[1].round->input_shares[vidx],
+                   helper[2].round->input_shares[vidx], helper[3].round->input_shares[vidx],
+                   pp->input_size);
   // hash communicated bits
-  const uint8_t* communicated_bits[4] = {
-      helper[0].round->communicated_bits[vidx], helper[1].round->communicated_bits[vidx],
-      helper[2].round->communicated_bits[vidx], helper[3].round->communicated_bits[vidx]};
-  hash_update_x4(&ctx, communicated_bits, pp->view_size);
+  hash_update_x4_4(&ctx, helper[0].round->communicated_bits[vidx],
+                   helper[1].round->communicated_bits[vidx],
+                   helper[2].round->communicated_bits[vidx],
+                   helper[3].round->communicated_bits[vidx], pp->view_size);
   // hash output share
-  const uint8_t* output_shares[4] = {
-      helper[0].round->output_shares[vidx], helper[1].round->output_shares[vidx],
-      helper[2].round->output_shares[vidx], helper[3].round->output_shares[vidx]};
-  hash_update_x4(&ctx, output_shares, pp->output_size);
+  hash_update_x4_4(&ctx, helper[0].round->output_shares[vidx], helper[1].round->output_shares[vidx],
+                   helper[2].round->output_shares[vidx], helper[3].round->output_shares[vidx],
+                   pp->output_size);
   hash_final_x4(&ctx);
-  uint8_t* commitments[4] = {helper[0].round->commitments[vidx], helper[1].round->commitments[vidx],
-                             helper[2].round->commitments[vidx],
-                             helper[3].round->commitments[vidx]};
-  hash_squeeze_x4(&ctx, commitments, hashlen);
+  hash_squeeze_x4_4(&ctx, helper[0].round->commitments[vidx], helper[1].round->commitments[vidx],
+                    helper[2].round->commitments[vidx], helper[3].round->commitments[vidx],
+                    hashlen);
 }
 
 /**
@@ -562,22 +545,21 @@ static void H3_compute(const picnic_instance_t* pp, uint8_t* hash, uint8_t* ch) 
  * Hash public key, salt and message
  */
 static void H3_public_key_message(hash_context* ctx, const picnic_instance_t* pp,
-                                  const uint8_t* salt, const uint8_t* circuit_output,
-                                  const uint8_t* circuit_input, const uint8_t* m, size_t m_len) {
+                                  const uint8_t* salt, const picnic_context_t* context) {
   // hash circuit out and input (public key)
-  hash_update(ctx, circuit_output, pp->output_size);
-  hash_update(ctx, circuit_input, pp->input_size);
+  hash_update(ctx, context->public_key, pp->output_size);
+  hash_update(ctx, context->plaintext, pp->input_size);
   // hash salt
   hash_update(ctx, salt, SALT_SIZE);
   // hash message
-  hash_update(ctx, m, m_len);
+  hash_update(ctx, context->msg, context->msglen);
 }
 
 /**
  * Re-compute challenge for verification
  */
-static void H3_verify(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t* circuit_output,
-                      const uint8_t* circuit_input, const uint8_t* m, size_t m_len, uint8_t* ch) {
+static void H3_verify(const picnic_instance_t* pp, sig_proof_t* prf,
+                      const picnic_context_t* context, uint8_t* ch) {
   const size_t digest_size = pp->digest_size;
   const size_t num_rounds  = pp->num_rounds;
   const size_t output_size = pp->output_size;
@@ -636,7 +618,7 @@ static void H3_verify(const picnic_instance_t* pp, sig_proof_t* prf, const uint8
   }
 
 #if defined(WITH_UNRUH)
-  if (pp->transform == TRANSFORM_UR) {
+  if (is_unruh(pp)) {
     const size_t without_input_bytes_size = pp->unruh_without_input_bytes_size;
     const size_t with_input_bytes_size    = pp->unruh_with_input_bytes_size;
 
@@ -668,7 +650,7 @@ static void H3_verify(const picnic_instance_t* pp, sig_proof_t* prf, const uint8
 #endif
 
   // hash public key, salt, and message
-  H3_public_key_message(&ctx, pp, prf->salt, circuit_output, circuit_input, m, m_len);
+  H3_public_key_message(&ctx, pp, prf->salt, context);
   hash_final(&ctx);
 
   uint8_t hash[MAX_DIGEST_SIZE];
@@ -679,8 +661,7 @@ static void H3_verify(const picnic_instance_t* pp, sig_proof_t* prf, const uint8
 /**
  * Compute challenge
  */
-static void H3(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t* circuit_output,
-               const uint8_t* circuit_input, const uint8_t* m, size_t m_len) {
+static void H3(const picnic_instance_t* pp, sig_proof_t* prf, const picnic_context_t* context) {
   const size_t num_rounds = pp->num_rounds;
 
   hash_context ctx;
@@ -691,7 +672,7 @@ static void H3(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t* cir
   // hash all commitments C
   hash_update(&ctx, prf->round[0].commitments[0], pp->digest_size * num_rounds * SC_PROOF);
 #if defined(WITH_UNRUH)
-  if (pp->transform == TRANSFORM_UR) {
+  if (is_unruh(pp)) {
     // hash all commitments G
     hash_update(&ctx, prf->round[0].gs[0],
                 num_rounds * ((SC_PROOF - 1) * pp->unruh_without_input_bytes_size +
@@ -699,11 +680,13 @@ static void H3(const picnic_instance_t* pp, sig_proof_t* prf, const uint8_t* cir
   }
 #endif
   // hash public key, salt, and message
-  H3_public_key_message(&ctx, pp, prf->salt, circuit_output, circuit_input, m, m_len);
+  H3_public_key_message(&ctx, pp, prf->salt, context);
   hash_final(&ctx);
 
   uint8_t hash[MAX_DIGEST_SIZE];
   hash_squeeze(&ctx, hash, pp->digest_size);
+  /* parts of this hash will be published as challenge so is public anyway */
+  picnic_declassify(hash, MAX_DIGEST_SIZE);
   H3_compute(pp, hash, prf->challenge);
 }
 
@@ -752,37 +735,28 @@ static void unruh_G_x4(const picnic_instance_t* pp, proof_round_t* prf_round, un
   // Hash the seed with H_5, store digest in output
   hash_context_x4 ctx;
   hash_init_prefix_x4(&ctx, digest_size, HASH_PREFIX_5);
-  const uint8_t* seeds[4] = {prf_round[0].seeds[vidx], prf_round[1].seeds[vidx],
-                             prf_round[2].seeds[vidx], prf_round[3].seeds[vidx]};
-  hash_update_x4(&ctx, seeds, seedlen);
+  hash_update_x4_4(&ctx, prf_round[0].seeds[vidx], prf_round[1].seeds[vidx],
+                   prf_round[2].seeds[vidx], prf_round[3].seeds[vidx], seedlen);
   hash_final_x4(&ctx);
 
   uint8_t tmp[4][MAX_DIGEST_SIZE];
-  uint8_t* tmpptr[4]             = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  const uint8_t* tmpptr_const[4] = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  hash_squeeze_x4(&ctx, tmpptr, digest_size);
+  hash_squeeze_x4_4(&ctx, tmp[0], tmp[1], tmp[2], tmp[3], digest_size);
 
   // Hash H_5(seed), the view, and the length
   hash_init_x4(&ctx, digest_size);
-  hash_update_x4(&ctx, tmpptr_const, digest_size);
+  hash_update_x4_4(&ctx, tmp[0], tmp[1], tmp[2], tmp[3], digest_size);
   if (include_is) {
-    const uint8_t* input_shares[4] = {
-        prf_round[0].input_shares[vidx], prf_round[1].input_shares[vidx],
-        prf_round[2].input_shares[vidx], prf_round[3].input_shares[vidx]};
-    hash_update_x4(&ctx, input_shares, pp->input_size);
+    hash_update_x4_4(&ctx, prf_round[0].input_shares[vidx], prf_round[1].input_shares[vidx],
+                     prf_round[2].input_shares[vidx], prf_round[3].input_shares[vidx],
+                     pp->input_size);
   }
-  const uint8_t* communicated_bits[4] = {
-      prf_round[0].communicated_bits[vidx],
-      prf_round[1].communicated_bits[vidx],
-      prf_round[2].communicated_bits[vidx],
-      prf_round[3].communicated_bits[vidx],
-  };
-  hash_update_x4(&ctx, communicated_bits, pp->view_size);
+  hash_update_x4_4(&ctx, prf_round[0].communicated_bits[vidx], prf_round[1].communicated_bits[vidx],
+                   prf_round[2].communicated_bits[vidx], prf_round[3].communicated_bits[vidx],
+                   pp->view_size);
   hash_update_x4_uint16_le(&ctx, outputlen);
   hash_final_x4(&ctx);
-  uint8_t* gs[4] = {prf_round[0].gs[vidx], prf_round[1].gs[vidx], prf_round[2].gs[vidx],
-                    prf_round[3].gs[vidx]};
-  hash_squeeze_x4(&ctx, gs, outputlen);
+  hash_squeeze_x4_4(&ctx, prf_round[0].gs[vidx], prf_round[1].gs[vidx], prf_round[2].gs[vidx],
+                    prf_round[3].gs[vidx], outputlen);
 }
 
 /*
@@ -798,55 +772,45 @@ static void unruh_G_x4_verify(const picnic_instance_t* pp, const sorting_helper_
   // Hash the seed with H_5, store digest in output
   hash_context_x4 ctx;
   hash_init_prefix_x4(&ctx, digest_size, HASH_PREFIX_5);
-  const uint8_t* seeds[4] = {helper[0].round->seeds[vidx], helper[1].round->seeds[vidx],
-                             helper[2].round->seeds[vidx], helper[3].round->seeds[vidx]};
-  hash_update_x4(&ctx, seeds, seedlen);
+  hash_update_x4_4(&ctx, helper[0].round->seeds[vidx], helper[1].round->seeds[vidx],
+                   helper[2].round->seeds[vidx], helper[3].round->seeds[vidx], seedlen);
   hash_final_x4(&ctx);
 
   uint8_t tmp[4][MAX_DIGEST_SIZE];
-  uint8_t* tmpptr[4]             = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  const uint8_t* tmpptr_const[4] = {tmp[0], tmp[1], tmp[2], tmp[3]};
-  hash_squeeze_x4(&ctx, tmpptr, digest_size);
+  hash_squeeze_x4_4(&ctx, tmp[0], tmp[1], tmp[2], tmp[3], digest_size);
 
   // Hash H_5(seed), the view, and the length
   hash_init_x4(&ctx, digest_size);
-  hash_update_x4(&ctx, tmpptr_const, digest_size);
+  hash_update_x4_4(&ctx, tmp[0], tmp[1], tmp[2], tmp[3], digest_size);
   if (include_is) {
-    const uint8_t* input_shares[4] = {
-        helper[0].round->input_shares[vidx], helper[1].round->input_shares[vidx],
-        helper[2].round->input_shares[vidx], helper[3].round->input_shares[vidx]};
-    hash_update_x4(&ctx, input_shares, pp->input_size);
+    hash_update_x4_4(&ctx, helper[0].round->input_shares[vidx], helper[1].round->input_shares[vidx],
+                     helper[2].round->input_shares[vidx], helper[3].round->input_shares[vidx],
+                     pp->input_size);
   }
-  const uint8_t* communicated_bits[4] = {
-      helper[0].round->communicated_bits[vidx],
-      helper[1].round->communicated_bits[vidx],
-      helper[2].round->communicated_bits[vidx],
-      helper[3].round->communicated_bits[vidx],
-  };
-  hash_update_x4(&ctx, communicated_bits, pp->view_size);
+  hash_update_x4_4(&ctx, helper[0].round->communicated_bits[vidx],
+                   helper[1].round->communicated_bits[vidx],
+                   helper[2].round->communicated_bits[vidx],
+                   helper[3].round->communicated_bits[vidx], pp->view_size);
   hash_update_x4_uint16_le(&ctx, outputlen);
   hash_final_x4(&ctx);
-  uint8_t* gs[4] = {helper[0].round->gs[vidx], helper[1].round->gs[vidx], helper[2].round->gs[vidx],
-                    helper[3].round->gs[vidx]};
-  hash_squeeze_x4(&ctx, gs, outputlen);
+  hash_squeeze_x4_4(&ctx, helper[0].round->gs[vidx], helper[1].round->gs[vidx],
+                    helper[2].round->gs[vidx], helper[3].round->gs[vidx], outputlen);
 }
 #endif
 
 // serilization helper functions
 static int sig_proof_to_char_array(const picnic_instance_t* pp, const sig_proof_t* prf,
                                    uint8_t* result, size_t* siglen) {
-  const uint32_t num_rounds                   = pp->num_rounds;
-  const uint32_t seed_size                    = pp->seed_size;
-  const uint32_t challenge_size               = pp->collapsed_challenge_size;
-  const uint32_t digest_size                  = pp->digest_size;
-#if defined(WITH_UNRUH)
-  const transform_t transform                 = pp->transform;
-#endif
-  const size_t view_size                      = pp->view_size;
-  const size_t input_size                     = pp->input_size;
+  const uint32_t num_rounds     = pp->num_rounds;
+  const uint32_t seed_size      = pp->seed_size;
+  const uint32_t challenge_size = pp->collapsed_challenge_size;
+  const uint32_t digest_size    = pp->digest_size;
+  const size_t view_size        = pp->view_size;
+  const size_t input_size       = pp->input_size;
 #if defined(WITH_UNRUH)
   const size_t unruh_with_input_bytes_size    = pp->unruh_with_input_bytes_size;
   const size_t unruh_without_input_bytes_size = pp->unruh_without_input_bytes_size;
+  const bool unruh                            = is_unruh(pp);
 #endif
 
   uint8_t* tmp = result;
@@ -871,7 +835,7 @@ static int sig_proof_to_char_array(const picnic_instance_t* pp, const sig_proof_
 
 #if defined(WITH_UNRUH)
     // write unruh G
-    if (transform == TRANSFORM_UR) {
+    if (unruh) {
       const uint32_t unruh_g_size =
           a ? unruh_without_input_bytes_size : unruh_with_input_bytes_size;
       memcpy(tmp, round->gs[c], unruh_g_size);
@@ -902,19 +866,19 @@ static int sig_proof_to_char_array(const picnic_instance_t* pp, const sig_proof_
 
 static sig_proof_t* sig_proof_from_char_array(const picnic_instance_t* pp, const uint8_t* data,
                                               size_t len) {
-  const size_t digest_size              = pp->digest_size;
-  const size_t seed_size                = pp->seed_size;
-  const size_t num_rounds               = pp->num_rounds;
-  const size_t challenge_size           = pp->collapsed_challenge_size;
+  const size_t digest_size            = pp->digest_size;
+  const size_t seed_size              = pp->seed_size;
+  const size_t num_rounds             = pp->num_rounds;
+  const size_t challenge_size         = pp->collapsed_challenge_size;
+  const size_t input_size             = pp->input_size;
+  const size_t view_size              = pp->view_size;
+  const unsigned int view_diff        = pp->view_size * 8 - pp->view_round_size * pp->lowmc.r;
+  const unsigned int input_share_diff = pp->input_size * 8 - pp->lowmc.k;
 #if defined(WITH_UNRUH)
-  const transform_t transform           = pp->transform;
-#endif
-  const size_t input_size               = pp->input_size;
-  const size_t view_size                = pp->view_size;
   const size_t without_input_bytes_size = pp->unruh_without_input_bytes_size;
   const size_t with_input_bytes_size    = pp->unruh_with_input_bytes_size;
-  const unsigned int view_diff          = pp->view_size * 8 - pp->view_round_size * pp->lowmc.r;
-  const unsigned int input_share_diff   = pp->input_size * 8 - pp->lowmc.k;
+  const bool unruh                      = is_unruh(pp);
+#endif
 
   uint8_t* slab      = NULL;
   sig_proof_t* proof = proof_new_verify(pp, &slab);
@@ -944,9 +908,13 @@ static sig_proof_t* sig_proof_from_char_array(const picnic_instance_t* pp, const
   const size_t base_size = digest_size + view_size + 2 * seed_size;
   proof_round_t* round   = proof->round;
   for (unsigned int i = 0; i < num_rounds; ++i, ++round) {
-    const unsigned char ch      = proof->challenge[i];
-    const size_t unruh_g_len    = ch ? without_input_bytes_size : with_input_bytes_size;
-    const size_t requested_size = base_size + unruh_g_len + (ch ? input_size : 0);
+    const unsigned char ch = proof->challenge[i];
+    size_t requested_size  = base_size + (ch ? input_size : 0);
+#if defined(WITH_UNRUH)
+    const size_t unruh_g_len = ch ? without_input_bytes_size : with_input_bytes_size;
+    requested_size += unruh_g_len;
+#endif
+
     if (sub_overflow_size_t(remaining_len, requested_size, &remaining_len)) {
       goto err;
     }
@@ -957,7 +925,7 @@ static sig_proof_t* sig_proof_from_char_array(const picnic_instance_t* pp, const
 
 #if defined(WITH_UNRUH)
     // read unruh G
-    if (transform == TRANSFORM_UR) {
+    if (unruh) {
       round->gs[2] = (uint8_t*)tmp;
       tmp += unruh_g_len;
     }
@@ -1015,9 +983,8 @@ err:
   return NULL;
 }
 
-static void generate_seeds(const picnic_instance_t* pp, const uint8_t* private_key,
-                           const uint8_t* plaintext, const uint8_t* public_key, const uint8_t* m,
-                           size_t m_len, uint8_t* seeds, uint8_t* salt) {
+static void generate_seeds(const picnic_instance_t* pp, const picnic_context_t* context,
+                           uint8_t* seeds, uint8_t* salt) {
   const size_t seed_size   = pp->seed_size;
   const size_t num_rounds  = pp->num_rounds;
   const size_t input_size  = pp->input_size;
@@ -1027,10 +994,10 @@ static void generate_seeds(const picnic_instance_t* pp, const uint8_t* private_k
   kdf_shake_t ctx;
   kdf_shake_init(&ctx, pp->digest_size);
   // sk || m || C || p
-  kdf_shake_update_key(&ctx, private_key, input_size);
-  kdf_shake_update_key(&ctx, m, m_len);
-  kdf_shake_update_key(&ctx, public_key, output_size);
-  kdf_shake_update_key(&ctx, plaintext, output_size);
+  kdf_shake_update_key(&ctx, context->private_key, input_size);
+  kdf_shake_update_key(&ctx, context->msg, context->msglen);
+  kdf_shake_update_key(&ctx, context->public_key, output_size);
+  kdf_shake_update_key(&ctx, context->plaintext, output_size);
   // N as 16 bit LE integer
   kdf_shake_update_key_uint16_le(&ctx, lowmc_n);
 #if defined(WITH_EXTRA_RANDOMNESS)
@@ -1047,19 +1014,18 @@ static void generate_seeds(const picnic_instance_t* pp, const uint8_t* private_k
   kdf_shake_clear(&ctx);
 }
 
-static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
-                     const lowmc_key_t* lowmc_key, const uint8_t* plaintext, const mzd_local_t* p,
-                     const uint8_t* public_key, const uint8_t* m, size_t m_len, uint8_t* sig,
-                     size_t* siglen) {
-  const size_t num_rounds     = pp->num_rounds;
+int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint8_t* sig,
+              size_t* siglen) {
+  const size_t num_rounds  = pp->num_rounds;
+  const size_t input_size  = pp->input_size;
+  const size_t output_size = pp->output_size;
+  const size_t lowmc_r     = pp->lowmc.r;
+  const size_t view_size   = pp->view_size;
+  const size_t aview_size  = ALIGNU64T(view_size);
+  const unsigned int diff  = input_size * 8 - pp->lowmc.n;
 #if defined(WITH_UNRUH)
-  const transform_t transform = pp->transform;
+  const bool unruh = is_unruh(pp);
 #endif
-  const size_t input_size     = pp->input_size;
-  const size_t output_size    = pp->output_size;
-  const size_t lowmc_r        = pp->lowmc.r;
-  const size_t view_size      = pp->view_size;
-  const unsigned int diff     = input_size * 8 - pp->lowmc.n;
 
   const zkbpp_lowmc_implementation_f lowmc_impl       = pp->impls.zkbpp_lowmc;
   const lowmc_store_implementation_f lowmc_store_impl = pp->impls.lowmc_store;
@@ -1067,7 +1033,7 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
 
   // Perform LowMC evaluation and record state before AND gates
   recorded_state_t* recorded_state = aligned_alloc(32, sizeof(recorded_state_t) * (lowmc_r + 1));
-  lowmc_store_impl(lowmc_key, p, recorded_state);
+  lowmc_store_impl(context->m_key, context->m_plaintext, recorded_state);
 
   sig_proof_t* prf = proof_new(pp);
   view_t* views    = aligned_alloc(32, sizeof(view_t) * lowmc_r);
@@ -1075,40 +1041,39 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
   in_out_shares_t in_out_shares[2];
 
   // Generate seeds
-  generate_seeds(pp, private_key, plaintext, public_key, m, m_len, prf->round[0].seeds[0],
-                 prf->salt);
+  generate_seeds(pp, context, prf->round[0].seeds[0], prf->salt);
 
   rvec_t* rvec = aligned_alloc(32, sizeof(rvec_t) * lowmc_r); // random tapes for AND-gates
+  uint8_t* tape_bytes_x4 = aligned_alloc(sizeof(uint64_t), SC_PROOF * 4 * aview_size);
 
   proof_round_t* round = prf->round;
-  // use 4 parallel instances of keccak for speedup
-  uint8_t* tape_bytes_x4[SC_PROOF][4];
-  for (unsigned int k = 0; k < SC_PROOF; k++) {
-    for (unsigned int j = 0; j < 4; j++) {
-      tape_bytes_x4[k][j] = malloc(view_size);
-    }
-  }
-  unsigned int i = 0;
+  unsigned int i       = 0;
   for (; i < (num_rounds / 4) * 4; i += 4, round += 4) {
-    kdf_shake_x4_t kdfs[SC_PROOF];
-    for (unsigned int j = 0; j < SC_PROOF; ++j) {
-      const bool include_input_size   = (j != SC_PROOF - 1);
-      const uint8_t* seeds[4]         = {round[0].seeds[j], round[1].seeds[j], round[2].seeds[j],
-                                 round[3].seeds[j]};
-      const uint16_t round_numbers[4] = {i, i + 1, i + 2, i + 3};
-      kdf_init_x4_from_seed(&kdfs[j], seeds, prf->salt, round_numbers, j, include_input_size, pp);
-    }
+    // use 4 parallel instances of keccak for speedup
+    {
+      kdf_shake_x4_t kdfs[SC_PROOF];
+      for (unsigned int j = 0; j < SC_PROOF; ++j) {
+        const bool include_input_size   = (j != SC_PROOF - 1);
+        const uint8_t* seeds[4]         = {round[0].seeds[j], round[1].seeds[j], round[2].seeds[j],
+                                   round[3].seeds[j]};
+        const uint16_t round_numbers[4] = {i, i + 1, i + 2, i + 3};
+        kdf_init_x4_from_seed(&kdfs[j], seeds, prf->salt, round_numbers, j, include_input_size, pp);
+      }
 
-    // compute sharing
-    for (unsigned int j = 0; j < SC_PROOF - 1; ++j) {
-      uint8_t* input_shares[4] = {round[0].input_shares[j], round[1].input_shares[j],
-                                  round[2].input_shares[j], round[3].input_shares[j]};
-      kdf_shake_x4_get_randomness(&kdfs[j], input_shares, input_size);
-    }
-    // compute random tapes
-    for (unsigned int j = 0; j < SC_PROOF; ++j) {
-      kdf_shake_x4_get_randomness(&kdfs[j], tape_bytes_x4[j], view_size);
-      kdf_shake_x4_clear(&kdfs[j]);
+      // compute sharing
+      for (unsigned int j = 0; j < SC_PROOF - 1; ++j) {
+        kdf_shake_x4_get_randomness_4(&kdfs[j], round[0].input_shares[j], round[1].input_shares[j],
+                                      round[2].input_shares[j], round[3].input_shares[j],
+                                      input_size);
+      }
+      // compute random tapes
+      for (unsigned int j = 0; j < SC_PROOF; ++j) {
+        kdf_shake_x4_get_randomness_4(&kdfs[j], &tape_bytes_x4[(j * 4 + 0) * aview_size],
+                                      &tape_bytes_x4[(j * 4 + 1) * aview_size],
+                                      &tape_bytes_x4[(j * 4 + 2) * aview_size],
+                                      &tape_bytes_x4[(j * 4 + 3) * aview_size], view_size);
+        kdf_shake_x4_clear(&kdfs[j]);
+      }
     }
 
     for (unsigned int round_offset = 0; round_offset < 4; round_offset++) {
@@ -1116,16 +1081,17 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
         clear_padding_bits(&round[round_offset].input_shares[j][input_size - 1], diff);
         mzd_from_char_array(in_out_shares[0].s[j], round[round_offset].input_shares[j], input_size);
       }
-      mzd_share(in_out_shares[0].s[2], in_out_shares[0].s[0], in_out_shares[0].s[1], lowmc_key);
+      mzd_share(in_out_shares[0].s[2], in_out_shares[0].s[0], in_out_shares[0].s[1],
+                context->m_key);
       mzd_to_char_array(round[round_offset].input_shares[SC_PROOF - 1],
                         in_out_shares[0].s[SC_PROOF - 1], input_size);
 
       for (unsigned int j = 0; j < SC_PROOF; ++j) {
-        decompress_random_tape(rvec, pp, tape_bytes_x4[j][round_offset], j);
+        decompress_random_tape(rvec, pp, &tape_bytes_x4[(j * 4 + round_offset) * aview_size], j);
       }
 
       // perform ZKB++ LowMC evaluation
-      lowmc_impl(p, views, in_out_shares, rvec, recorded_state);
+      lowmc_impl(context->m_plaintext, views, in_out_shares, rvec, recorded_state);
 
       for (unsigned int j = 0; j < SC_PROOF; ++j) {
         mzd_to_char_array(round[round_offset].output_shares[j], in_out_shares[1].s[j], output_size);
@@ -1140,7 +1106,7 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
 
 #if defined(WITH_UNRUH)
     // unruh G
-    if (transform == TRANSFORM_UR) {
+    if (unruh) {
       for (unsigned int j = 0; j < SC_PROOF; ++j) {
         unruh_G_x4(pp, round, j, j == SC_PROOF - 1);
       }
@@ -1148,36 +1114,39 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
 #endif
   }
   for (; i < num_rounds; ++i, ++round) {
-    kdf_shake_t kdfs[SC_PROOF];
-    for (unsigned int j = 0; j < SC_PROOF; ++j) {
-      const bool include_input_size = (j != SC_PROOF - 1);
-      kdf_init_from_seed(&kdfs[j], round->seeds[j], prf->salt, i, j, include_input_size, pp);
-    }
+    {
+      kdf_shake_t kdfs[SC_PROOF];
+      for (unsigned int j = 0; j < SC_PROOF; ++j) {
+        const bool include_input_size = (j != SC_PROOF - 1);
+        kdf_init_from_seed(&kdfs[j], round->seeds[j], prf->salt, i, j, include_input_size, pp);
+      }
 
-    // compute sharing
-    for (unsigned int j = 0; j < SC_PROOF - 1; ++j) {
-      kdf_shake_get_randomness(&kdfs[j], round->input_shares[j], input_size);
-      clear_padding_bits(&round->input_shares[j][input_size - 1], diff);
-      mzd_from_char_array(in_out_shares[0].s[j], round->input_shares[j], input_size);
-    }
-    mzd_share(in_out_shares[0].s[2], in_out_shares[0].s[0], in_out_shares[0].s[1], lowmc_key);
-    mzd_to_char_array(round->input_shares[SC_PROOF - 1], in_out_shares[0].s[SC_PROOF - 1],
-                      input_size);
+      // compute sharing
+      for (unsigned int j = 0; j < SC_PROOF - 1; ++j) {
+        kdf_shake_get_randomness(&kdfs[j], round->input_shares[j], input_size);
+        clear_padding_bits(&round->input_shares[j][input_size - 1], diff);
+        mzd_from_char_array(in_out_shares[0].s[j], round->input_shares[j], input_size);
+      }
+      mzd_share(in_out_shares[0].s[2], in_out_shares[0].s[0], in_out_shares[0].s[1],
+                context->m_key);
+      mzd_to_char_array(round->input_shares[SC_PROOF - 1], in_out_shares[0].s[SC_PROOF - 1],
+                        input_size);
 
-    // compute random tapes
-    for (unsigned int j = 0; j < SC_PROOF; ++j) {
-      assert(view_size <= MAX_VIEW_SIZE);
-      uint8_t tape_bytes[MAX_VIEW_SIZE];
-      kdf_shake_get_randomness(&kdfs[j], tape_bytes, view_size);
-      decompress_random_tape(rvec, pp, tape_bytes, j);
-    }
+      // compute random tapes
+      for (unsigned int j = 0; j < SC_PROOF; ++j) {
+        assert(view_size <= MAX_VIEW_SIZE);
+        uint8_t tape_bytes[MAX_VIEW_SIZE];
+        kdf_shake_get_randomness(&kdfs[j], tape_bytes, view_size);
+        decompress_random_tape(rvec, pp, tape_bytes, j);
+      }
 
-    for (unsigned int j = 0; j < SC_PROOF; ++j) {
-      kdf_shake_clear(&kdfs[j]);
+      for (unsigned int j = 0; j < SC_PROOF; ++j) {
+        kdf_shake_clear(&kdfs[j]);
+      }
     }
 
     // perform ZKB++ LowMC evaluation
-    lowmc_impl(p, views, in_out_shares, rvec, recorded_state);
+    lowmc_impl(context->m_plaintext, views, in_out_shares, rvec, recorded_state);
 
     // commitments
     for (unsigned int j = 0; j < SC_PROOF; ++j) {
@@ -1188,23 +1157,19 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
 
 #if defined(WITH_UNRUH)
     // unruh G
-    if (transform == TRANSFORM_UR) {
+    if (unruh) {
       for (unsigned int j = 0; j < SC_PROOF; ++j) {
         unruh_G(pp, round, j, j == SC_PROOF - 1);
       }
     }
 #endif
   }
-  H3(pp, prf, public_key, plaintext, m, m_len);
+  H3(pp, prf, context);
 
   const int ret = sig_proof_to_char_array(pp, prf, sig, siglen);
 
   // clean up
-  for (unsigned int k = 0; k < SC_PROOF; ++k) {
-    for (unsigned int j = 0; j < 4; ++j) {
-      free(tape_bytes_x4[k][j]);
-    }
-  }
+  aligned_free(tape_bytes_x4);
   aligned_free(rvec);
   aligned_free(views);
   proof_free(prf);
@@ -1212,18 +1177,18 @@ static int sign_impl(const picnic_instance_t* pp, const uint8_t* private_key,
   return ret;
 }
 
-static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mzd_local_t const* p,
-                       const uint8_t* ciphertext, mzd_local_t const* c, const uint8_t* m,
-                       size_t m_len, const uint8_t* sig, size_t siglen) {
-  const size_t num_rounds     = pp->num_rounds;
+int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, const uint8_t* sig,
+                size_t siglen) {
+  const size_t num_rounds  = pp->num_rounds;
+  const size_t input_size  = pp->input_size;
+  const size_t output_size = pp->output_size;
+  const size_t lowmc_r     = pp->lowmc.r;
+  const size_t view_size   = pp->view_size;
+  const size_t aview_size  = ALIGNU64T(view_size);
+  const unsigned int diff  = input_size * 8 - pp->lowmc.n;
 #if defined(WITH_UNRUH)
-  const transform_t transform = pp->transform;
+  const bool unruh = is_unruh(pp);
 #endif
-  const size_t input_size     = pp->input_size;
-  const size_t output_size    = pp->output_size;
-  const size_t lowmc_r        = pp->lowmc.r;
-  const size_t view_size      = pp->view_size;
-  const unsigned int diff     = input_size * 8 - pp->lowmc.n;
 
   const zkbpp_lowmc_verify_implementation_f lowmc_verify_impl = pp->impls.zkbpp_lowmc_verify;
   const zkbpp_share_implementation_f mzd_share                = pp->impls.mzd_share;
@@ -1239,19 +1204,14 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
 
   // sort the different challenge rounds based on their H3 index, so we can use the 4x Keccak when
   // verifying since all of this is public information, there is no leakage
-  uint8_t* tape_bytes_x4[SC_VERIFY][4];
-  for (unsigned int i = 0; i < SC_VERIFY; i++) {
-    for (unsigned int j = 0; j < 4; j++) {
-      tape_bytes_x4[i][j] = malloc(view_size);
-    }
-  }
   sorting_helper_t* sorted_rounds = malloc(sizeof(sorting_helper_t) * num_rounds);
+
+  uint8_t* tape_bytes_x4 = aligned_alloc(sizeof(uint64_t), SC_VERIFY * 4 * aview_size);
   for (unsigned int current_chal = 0; current_chal < 3; current_chal++) {
     unsigned int num_current_rounds = 0;
     for (unsigned int r = 0; r < num_rounds; r++) {
       if (prf->challenge[r] == current_chal) {
-        sorted_rounds[num_current_rounds].round        = &prf->round[r];
-        sorted_rounds[num_current_rounds].round_number = r;
+        sorted_rounds[num_current_rounds].round = &prf->round[r];
         num_current_rounds++;
       }
     }
@@ -1262,36 +1222,41 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
       const unsigned int b_i = (a_i + 1) % 3;
       const unsigned int c_i = (a_i + 2) % 3;
 
-      kdf_shake_x4_t kdfs[SC_VERIFY];
-      for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-        const bool include_input_size    = (j == 0 && b_i) || (j == 1 && c_i);
-        const unsigned int player_number = (j == 0) ? a_i : b_i;
-        const uint8_t* seeds[4]          = {helper[0].round->seeds[j], helper[1].round->seeds[j],
-                                   helper[2].round->seeds[j], helper[3].round->seeds[j]};
-        const uint16_t round_numbers[4]  = {helper[0].round_number, helper[1].round_number,
-                                           helper[2].round_number, helper[3].round_number};
-        kdf_init_x4_from_seed(&kdfs[j], seeds, prf->salt, round_numbers, player_number,
-                              include_input_size, pp);
+      {
+        kdf_shake_x4_t kdfs[SC_VERIFY];
+        const uint16_t round_numbers[4] = {
+            helper[0].round - prf->round, helper[1].round - prf->round,
+            helper[2].round - prf->round, helper[3].round - prf->round};
+        for (unsigned int j = 0; j < SC_VERIFY; ++j) {
+          const bool include_input_size    = (j == 0 && b_i) || (j == 1 && c_i);
+          const unsigned int player_number = (j == 0) ? a_i : b_i;
+          const uint8_t* seeds[4]          = {helper[0].round->seeds[j], helper[1].round->seeds[j],
+                                     helper[2].round->seeds[j], helper[3].round->seeds[j]};
+          kdf_init_x4_from_seed(&kdfs[j], seeds, prf->salt, round_numbers, player_number,
+                                include_input_size, pp);
+        }
+
+        // compute input shares if necessary
+        if (b_i) {
+          kdf_shake_x4_get_randomness_4(
+              &kdfs[0], helper[0].round->input_shares[0], helper[1].round->input_shares[0],
+              helper[2].round->input_shares[0], helper[3].round->input_shares[0], input_size);
+        }
+        if (c_i) {
+          kdf_shake_x4_get_randomness_4(
+              &kdfs[1], helper[0].round->input_shares[1], helper[1].round->input_shares[1],
+              helper[2].round->input_shares[1], helper[3].round->input_shares[1], input_size);
+        }
+        // compute random tapes
+        for (unsigned int j = 0; j < SC_VERIFY; ++j) {
+          kdf_shake_x4_get_randomness_4(&kdfs[j], &tape_bytes_x4[(j * 4 + 0) * aview_size],
+                                        &tape_bytes_x4[(j * 4 + 1) * aview_size],
+                                        &tape_bytes_x4[(j * 4 + 2) * aview_size],
+                                        &tape_bytes_x4[(j * 4 + 3) * aview_size], view_size);
+          kdf_shake_clear(&kdfs[j]);
+        }
       }
 
-      // compute input shares if necessary
-      if (b_i) {
-        uint8_t* input_shares[4] = {
-            helper[0].round->input_shares[0], helper[1].round->input_shares[0],
-            helper[2].round->input_shares[0], helper[3].round->input_shares[0]};
-        kdf_shake_x4_get_randomness(&kdfs[0], input_shares, input_size);
-      }
-      if (c_i) {
-        uint8_t* input_shares[4] = {
-            helper[0].round->input_shares[1], helper[1].round->input_shares[1],
-            helper[2].round->input_shares[1], helper[3].round->input_shares[1]};
-        kdf_shake_x4_get_randomness(&kdfs[1], input_shares, input_size);
-      }
-      // compute random tapes
-      for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-        kdf_shake_x4_get_randomness(&kdfs[j], tape_bytes_x4[j], view_size);
-        kdf_shake_clear(&kdfs[j]);
-      }
       for (unsigned int round_offset = 0; round_offset < 4; round_offset++) {
         if (b_i) {
           clear_padding_bits(&helper[round_offset].round->input_shares[0][input_size - 1], diff);
@@ -1305,15 +1270,16 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
                             input_size);
 
         for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-          decompress_random_tape(rvec, pp, tape_bytes_x4[j][round_offset], j);
+          decompress_random_tape(rvec, pp, &tape_bytes_x4[(j * 4 + round_offset) * aview_size], j);
         }
 
         decompress_view(views, pp, helper[round_offset].round->communicated_bits[1], 1);
         // perform ZKB++ LowMC evaluation
-        lowmc_verify_impl(p, views, in_out_shares, rvec, a_i);
+        lowmc_verify_impl(context->m_plaintext, views, in_out_shares, rvec, a_i);
         compress_view(helper[round_offset].round->communicated_bits[0], pp, views, 0);
 
-        mzd_share(in_out_shares[1].s[2], in_out_shares[1].s[0], in_out_shares[1].s[1], c);
+        mzd_share(in_out_shares[1].s[2], in_out_shares[1].s[0], in_out_shares[1].s[1],
+                  context->m_key);
         // recompute commitments
         for (unsigned int j = 0; j < SC_VERIFY; ++j) {
           mzd_to_char_array(helper[round_offset].round->output_shares[j], in_out_shares[1].s[j],
@@ -1326,7 +1292,7 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
         hash_commitment_x4_verify(pp, helper, j);
       }
 #if defined(WITH_UNRUH)
-      if (transform == TRANSFORM_UR) {
+      if (unruh) {
         // apply Unruh G permutation
         for (unsigned int j = 0; j < SC_VERIFY; ++j) {
           unruh_G_x4_verify(pp, helper, j, (a_i == 1 && j == 1) || (a_i == 2 && j == 0));
@@ -1339,45 +1305,49 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
       const unsigned int b_i = (a_i + 1) % 3;
       const unsigned int c_i = (a_i + 2) % 3;
 
-      kdf_shake_t kdfs[SC_VERIFY];
-      for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-        const bool include_input_size    = (j == 0 && b_i) || (j == 1 && c_i);
-        const unsigned int player_number = (j == 0) ? a_i : b_i;
-        kdf_init_from_seed(&kdfs[j], helper->round->seeds[j], prf->salt, helper->round_number,
-                           player_number, include_input_size, pp);
-      }
+      {
+        kdf_shake_t kdfs[SC_VERIFY];
+        const uint16_t round_number = helper->round - prf->round;
+        for (unsigned int j = 0; j < SC_VERIFY; ++j) {
+          const bool include_input_size    = (j == 0 && b_i) || (j == 1 && c_i);
+          const unsigned int player_number = (j == 0) ? a_i : b_i;
+          kdf_init_from_seed(&kdfs[j], helper->round->seeds[j], prf->salt, round_number,
+                             player_number, include_input_size, pp);
+        }
 
-      // compute input shares if necessary
-      if (b_i) {
-        kdf_shake_get_randomness(&kdfs[0], helper->round->input_shares[0], input_size);
-        clear_padding_bits(&helper->round->input_shares[0][input_size - 1], diff);
-      }
-      if (c_i) {
-        kdf_shake_get_randomness(&kdfs[1], helper->round->input_shares[1], input_size);
-        clear_padding_bits(&helper->round->input_shares[1][input_size - 1], diff);
-      }
+        // compute input shares if necessary
+        if (b_i) {
+          kdf_shake_get_randomness(&kdfs[0], helper->round->input_shares[0], input_size);
+          clear_padding_bits(&helper->round->input_shares[0][input_size - 1], diff);
+        }
+        if (c_i) {
+          kdf_shake_get_randomness(&kdfs[1], helper->round->input_shares[1], input_size);
+          clear_padding_bits(&helper->round->input_shares[1][input_size - 1], diff);
+        }
 
-      mzd_from_char_array(in_out_shares[0].s[0], helper->round->input_shares[0], input_size);
-      mzd_from_char_array(in_out_shares[0].s[1], helper->round->input_shares[1], input_size);
+        mzd_from_char_array(in_out_shares[0].s[0], helper->round->input_shares[0], input_size);
+        mzd_from_char_array(in_out_shares[0].s[1], helper->round->input_shares[1], input_size);
 
-      // compute random tapes
-      for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-        assert(view_size <= MAX_VIEW_SIZE);
-        uint8_t tape_bytes[MAX_VIEW_SIZE];
-        kdf_shake_get_randomness(&kdfs[j], tape_bytes, view_size);
-        decompress_random_tape(rvec, pp, tape_bytes, j);
-      }
+        // compute random tapes
+        for (unsigned int j = 0; j < SC_VERIFY; ++j) {
+          assert(view_size <= MAX_VIEW_SIZE);
+          uint8_t tape_bytes[MAX_VIEW_SIZE];
+          kdf_shake_get_randomness(&kdfs[j], tape_bytes, view_size);
+          decompress_random_tape(rvec, pp, tape_bytes, j);
+        }
 
-      for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-        kdf_shake_clear(&kdfs[j]);
+        for (unsigned int j = 0; j < SC_VERIFY; ++j) {
+          kdf_shake_clear(&kdfs[j]);
+        }
       }
 
       decompress_view(views, pp, helper->round->communicated_bits[1], 1);
       // perform ZKB++ LowMC evaluation
-      lowmc_verify_impl(p, views, in_out_shares, rvec, a_i);
+      lowmc_verify_impl(context->m_plaintext, views, in_out_shares, rvec, a_i);
       compress_view(helper->round->communicated_bits[0], pp, views, 0);
 
-      mzd_share(in_out_shares[1].s[2], in_out_shares[1].s[0], in_out_shares[1].s[1], c);
+      mzd_share(in_out_shares[1].s[2], in_out_shares[1].s[0], in_out_shares[1].s[1],
+                context->m_key);
       // recompute commitments
       for (unsigned int j = 0; j < SC_VERIFY; ++j) {
         mzd_to_char_array(helper->round->output_shares[j], in_out_shares[1].s[j], output_size);
@@ -1387,7 +1357,7 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
                         output_size);
 
 #if defined(WITH_UNRUH)
-      if (transform == TRANSFORM_UR) {
+      if (unruh) {
         // apply Unruh G permutation
         for (unsigned int j = 0; j < SC_VERIFY; ++j) {
           unruh_G(pp, helper->round, j, (a_i == 1 && j == 1) || (a_i == 2 && j == 0));
@@ -1399,16 +1369,12 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
 
   assert(pp->num_rounds <= MAX_NUM_ROUNDS);
   unsigned char challenge[MAX_NUM_ROUNDS] = {0};
-  H3_verify(pp, prf, ciphertext, plaintext, m, m_len, challenge);
+  H3_verify(pp, prf, context, challenge);
   const int success_status = memcmp(challenge, prf->challenge, pp->num_rounds);
 
   // clean up
+  aligned_free(tape_bytes_x4);
   free(sorted_rounds);
-  for (unsigned int i = 0; i < SC_VERIFY; i++) {
-    for (unsigned int j = 0; j < 4; j++) {
-      free(tape_bytes_x4[i][j]);
-    }
-  }
   aligned_free(rvec);
   aligned_free(views);
 
@@ -1417,116 +1383,4 @@ static int verify_impl(const picnic_instance_t* pp, const uint8_t* plaintext, mz
   return success_status;
 }
 
-int impl_sign(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* private_key,
-              const uint8_t* public_key, const uint8_t* msg, size_t msglen, uint8_t* sig,
-              size_t* siglen) {
-  mzd_local_t m_plaintext[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
-  mzd_local_t m_privatekey[(MAX_LOWMC_KEY_SIZE_BITS + 255) / 256];
-
-  mzd_from_char_array(m_plaintext, plaintext, pp->output_size);
-  mzd_from_char_array(m_privatekey, private_key, pp->input_size);
-
-  const int result = sign_impl(pp, private_key, m_privatekey, plaintext, m_plaintext, public_key,
-                               msg, msglen, sig, siglen);
-
-  return result;
-}
-
-int impl_verify(const picnic_instance_t* pp, const uint8_t* plaintext, const uint8_t* public_key,
-                const uint8_t* msg, size_t msglen, const uint8_t* sig, size_t siglen) {
-  mzd_local_t m_plaintext[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
-  mzd_local_t m_publickey[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
-
-  mzd_from_char_array(m_plaintext, plaintext, pp->output_size);
-  mzd_from_char_array(m_publickey, public_key, pp->output_size);
-
-  const int result =
-      verify_impl(pp, plaintext, m_plaintext, public_key, m_publickey, msg, msglen, sig, siglen);
-
-  return result;
-}
-
-/* unused
-#if defined(PICNIC_STATIC)
-void visualize_signature(FILE* out, const picnic_instance_t* pp, const uint8_t* msg, size_t msglen,
-                         const uint8_t* sig, size_t siglen) {
-  const size_t digest_size    = pp->digest_size;
-  const size_t seed_size      = pp->seed_size;
-  const size_t num_rounds     = pp->num_rounds;
-  const size_t challenge_size = pp->collapsed_challenge_size;
-#if defined(WITH_UNRUH)
-  const transform_t transform = pp->transform;
-#endif
-  const size_t input_size     = pp->input_size;
-  const size_t view_size      = pp->view_size;
-
-  sig_proof_t* proof = sig_proof_from_char_array(pp, sig, siglen);
-
-  fprintf(out, "message: ");
-  print_hex(out, msg, msglen);
-  fprintf(out, "\nsignature: ");
-  print_hex(out, sig, siglen);
-  fprintf(out, "\n\n");
-
-  fprintf(out, "challenge: ");
-  print_hex(out, sig, challenge_size);
-  fprintf(out, "\n\n");
-
-  fprintf(out, "salt: ");
-  print_hex(out, proof->salt, SALT_SIZE);
-  fprintf(out, "\n\n");
-
-  proof_round_t* round = proof->round;
-  for (unsigned int i = 0; i < num_rounds; ++i, ++round) {
-    fprintf(out, "Iteration t: %d\n", i);
-
-    // print challenge
-    const unsigned char ch = proof->challenge[i];
-    fprintf(out, "e_%d: %u\n", i, (unsigned int)ch);
-
-    // print commitment
-    fprintf(out, "b_%d: ", i);
-    print_hex(out, round->commitments[2], digest_size);
-    fprintf(out, "\n");
-
-#if defined(WITH_UNRUH)
-    // print unruh G
-    if (transform == TRANSFORM_UR) {
-      const size_t unruh_g_len =
-          ch ? pp->unruh_without_input_bytes_size : pp->unruh_with_input_bytes_size;
-
-      fprintf(out, "G_%d: ", i);
-      print_hex(out, round->gs[2], unruh_g_len);
-      fprintf(out, "\n");
-    }
-#endif
-
-    // print view
-    fprintf(out, "transcript: ");
-    print_hex(out, round->communicated_bits[1], view_size);
-    fprintf(out, "\n");
-
-    // print seeds
-    fprintf(out, "seed1: ");
-    print_hex(out, round->seeds[0], seed_size);
-    fprintf(out, "\nseed2: ");
-    print_hex(out, round->seeds[1], seed_size);
-    fprintf(out, "\n");
-
-    // print input shares
-    if (ch == 1) {
-      fprintf(out, "inputShare: ");
-      print_hex(out, round->input_shares[1], input_size);
-      fprintf(out, "\n");
-    } else if (ch == 2) {
-      fprintf(out, "inputShare: ");
-      print_hex(out, round->input_shares[0], input_size);
-      fprintf(out, "\n");
-    }
-    fprintf(out, "\n");
-  }
-
-  proof_free(proof);
-}
-#endif
-*/
+/* OQS note: cropped unused visualization functions */

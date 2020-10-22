@@ -75,7 +75,7 @@ int SpongeAbsorb(SpongeInstance *instance, const unsigned char **data, size_t da
             if ((rateInBytes % (PlSnP_width/200)) == 0) {
                 /* fast lane: whole lane rate */
                 for(unsigned int instanceIndex = 0; instanceIndex < 4; instanceIndex++) {
-                    j = PlSnP_FastLoop_Absorb(instance->state, rateInBytes/(PlSnP_width/200), curData[instanceIndex], dataByteLen - i);
+                    j = PlSnP_FastLoop_Absorb(instance->state, rateInBytes/(PlSnP_width/200), 0, 0, curData[instanceIndex], dataByteLen - i);
                     curData[instanceIndex] += j;
                 }
                 i += j;

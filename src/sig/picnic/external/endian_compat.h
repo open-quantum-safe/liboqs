@@ -59,14 +59,21 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #endif
 #endif
 
-/* OS X / OpenBSD */
-#if defined(__APPLE__) || defined(__OpenBSD__)
+/* OS X */
+#if defined(__APPLE__)
 #include <machine/endian.h>
+#endif
+
+/* OpenBSD */
+#if defined(__OpenBSD__)
+#include <machine/endian.h>
+#define HAVE_HOSTSWAP
 #endif
 
 /* other BSDs */
 #if defined(__FreeBSD__) || defined(__NETBSD__) || defined(__NetBSD__)
 #include <sys/endian.h>
+#define HAVE_HOSTSWAP
 #endif
 
 #if !defined(PICNIC_IS_LITTLE_ENDIAN) && !defined(PICNIC_IS_BIG_ENDIAN)

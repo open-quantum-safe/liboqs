@@ -39,6 +39,12 @@ int crypto_sign_keypair(unsigned char* pk, unsigned char* sk) {
 
 int crypto_sign(unsigned char* sm, unsigned long long* smlen, const unsigned char* m,
                 unsigned long long mlen, const unsigned char* sk) {
+  /* the first byte encodes the parameter set and is public */
+  picnic_declassify(&sk[0], sizeof(unsigned char));
+  if (sk[0] != PICNIC_INSTANCE) {
+    return -3;
+  }
+
   size_t signature_len = PICNIC_SIGNATURE_SIZE(PICNIC_INSTANCE);
   uint32_t len         = 0;
 
@@ -71,6 +77,10 @@ int crypto_sign(unsigned char* sm, unsigned long long* smlen, const unsigned cha
 
 int crypto_sign_open(unsigned char* m, unsigned long long* mlen, const unsigned char* sm,
                      unsigned long long smlen, const unsigned char* pk) {
+  if (pk[0] != PICNIC_INSTANCE) {
+    return -3;
+  }
+
   uint32_t signature_len;
   memcpy(&signature_len, sm, sizeof(signature_len));
   signature_len = le32toh(signature_len);

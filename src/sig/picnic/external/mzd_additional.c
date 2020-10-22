@@ -11,15 +11,15 @@
 #include <config.h>
 #endif
 
-#include "compat.h"
-#include "mzd_additional.h"
-
 #if !defined(_MSC_VER)
 #include <stdalign.h>
 #endif
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "compat.h"
+#include "mzd_additional.h"
 
 #if !defined(_MSC_VER) && !defined(static_assert)
 #define static_assert _Static_assert
@@ -73,28 +73,6 @@ mzd_local_t* mzd_local_init_ex(unsigned int r, unsigned int c, bool clear) {
 
 void mzd_local_free(mzd_local_t* v) {
   aligned_free(v);
-}
-
-void mzd_local_init_multiple_ex(mzd_local_t** dst, size_t n, unsigned int r, unsigned int c, bool clear) {
-  const size_t rowstride = calculate_rowstride(calculate_width(c));
-
-  const size_t buffer_size   = r * rowstride * sizeof(word);
-  const size_t size_per_elem = (buffer_size + 31) & ~31;
-
-  unsigned char* full_buffer = aligned_alloc(32, size_per_elem * n);
-  if (clear) {
-    memset(full_buffer, 0, size_per_elem * n);
-  }
-
-  for (size_t s = 0; s < n; ++s, full_buffer += size_per_elem) {
-    dst[s] = (mzd_local_t*)full_buffer;
-  }
-}
-
-void mzd_local_free_multiple(mzd_local_t** vs) {
-  if (vs) {
-    aligned_free(vs[0]);
-  }
 }
 
 /* implementation of copy */
@@ -499,8 +477,6 @@ void mzd_mul_v_parity_uint64_128_30(mzd_local_t* c, mzd_local_t const* v, mzd_lo
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
 
-  cblock->w64[0] = 0;
-
   word res = 0;
   for (unsigned int i = 15; i; --i) {
     const block_t* Ablock = CONST_BLOCK(At, 15 - i);
@@ -510,6 +486,7 @@ void mzd_mul_v_parity_uint64_128_30(mzd_local_t* c, mzd_local_t const* v, mzd_lo
         parity64_uint64((vblock->w64[0] & Ablock->w64[2]) ^ (vblock->w64[1] & Ablock->w64[3]));
     res |= (parity1 | (parity2 << 1)) << (64 - (2 * i));
   }
+  cblock->w64[0] = 0;
   cblock->w64[1] = res;
 }
 #endif
@@ -519,10 +496,6 @@ void mzd_mul_v_parity_uint64_192_30(mzd_local_t* c, mzd_local_t const* v, mzd_lo
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
 
-  for (unsigned int j = 0; j < 2; j++) {
-    cblock->w64[j] = 0;
-  }
-
   word res = 0;
   for (unsigned int i = 30; i; --i) {
     const block_t* Ablock = CONST_BLOCK(At, 30 - i);
@@ -530,6 +503,9 @@ void mzd_mul_v_parity_uint64_192_30(mzd_local_t* c, mzd_local_t const* v, mzd_lo
         parity64_uint64((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]) ^
                         (vblock->w64[2] & Ablock->w64[2]));
     res |= parity << (64 - i);
+  }
+  for (unsigned int j = 0; j < 2; j++) {
+    cblock->w64[j] = 0;
   }
   cblock->w64[2] = res;
 }
@@ -540,10 +516,6 @@ void mzd_mul_v_parity_uint64_256_30(mzd_local_t* c, mzd_local_t const* v, mzd_lo
   block_t* cblock       = BLOCK(c, 0);
   const block_t* vblock = CONST_BLOCK(v, 0);
 
-  for (unsigned int j = 0; j < 3; j++) {
-    cblock->w64[j] = 0;
-  }
-
   word res = 0;
   for (unsigned int i = 30; i; --i) {
     const block_t* Ablock = CONST_BLOCK(At, 30 - i);
@@ -551,6 +523,9 @@ void mzd_mul_v_parity_uint64_256_30(mzd_local_t* c, mzd_local_t const* v, mzd_lo
         parity64_uint64((vblock->w64[0] & Ablock->w64[0]) ^ (vblock->w64[1] & Ablock->w64[1]) ^
                         (vblock->w64[2] & Ablock->w64[2]) ^ (vblock->w64[3] & Ablock->w64[3]));
     res |= parity << (64 - i);
+  }
+  for (unsigned int j = 0; j < 3; j++) {
+    cblock->w64[j] = 0;
   }
   cblock->w64[3] = res;
 }

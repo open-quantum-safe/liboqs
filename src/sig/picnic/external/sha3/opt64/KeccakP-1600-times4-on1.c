@@ -1,9 +1,9 @@
 /*
-Implementation by the Keccak Team, namely, Guido Bertoni, Joan Daemen,
-Michaël Peeters, Gilles Van Assche and Ronny Van Keer,
-hereby denoted as "the implementer".
+The Keccak-p permutations, designed by Guido Bertoni, Joan Daemen, Michaël Peeters and Gilles Van Assche.
 
-For more information, feedback or questions, please refer to our website:
+Implementation by Gilles Van Assche, hereby denoted as "the implementer".
+
+For more information, feedback or questions, please refer to the Keccak Team website:
 https://keccak.team/
 
 To the extent possible under law, the implementer has waived all copyright
@@ -25,13 +25,13 @@ Please refer to LowLevel.build for the exact list of other files it must be comb
 #define PlSnP_baseParallelism           1
 #define PlSnP_targetParallelism         4
 #define SnP_laneLengthInBytes           8
-#define SnP                             KeccakP1600
-#define SnP_Permute                     KeccakP1600_Permute_24rounds
-#define SnP_Permute_12rounds            KeccakP1600_Permute_12rounds
-#define SnP_Permute_Nrounds             KeccakP1600_Permute_Nrounds
-#define PlSnP_PermuteAll                KeccakP1600times4_PermuteAll_24rounds
-#define PlSnP_PermuteAll_12rounds       KeccakP1600times4_PermuteAll_12rounds
-#define PlSnP_PermuteAll_6rounds        KeccakP1600times4_PermuteAll_6rounds
-#define PlSnP_PermuteAll_4rounds        KeccakP1600times4_PermuteAll_4rounds
+#define SnP                             oqs_sig_picnic_KeccakP1600
+#define SnP_Permute                     oqs_sig_picnic_KeccakP1600_Permute_24rounds
+#define SnP_Permute_12rounds            oqs_sig_picnic_KeccakP1600_Permute_12rounds
+#define SnP_Permute_Nrounds             oqs_sig_picnic_KeccakP1600_Permute_Nrounds
+#define PlSnP_PermuteAll                oqs_sig_picnic_KeccakP1600times4_PermuteAll_24rounds
+#define PlSnP_PermuteAll_12rounds       oqs_sig_picnic_KeccakP1600times4_PermuteAll_12rounds
+#define PlSnP_PermuteAll_6rounds        oqs_sig_picnic_KeccakP1600times4_PermuteAll_6rounds
+#define PlSnP_PermuteAll_4rounds        oqs_sig_picnic_KeccakP1600times4_PermuteAll_4rounds
 
 #include "PlSnP-Fallback.inc"
