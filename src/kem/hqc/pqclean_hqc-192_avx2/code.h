@@ -6,8 +6,6 @@
  * @file code.h
  * Header file of code.c
  */
-
-#include "parameters.h"
 #include "parameters.h"
 #include <stddef.h>
 #include <stdint.h>

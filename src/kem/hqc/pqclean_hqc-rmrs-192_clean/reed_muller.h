@@ -6,8 +6,6 @@
  * @file reed_muller.h
  * Header file of reed_muller.c
  */
-
-#include "parameters.h"
 #include "parameters.h"
 #include <stddef.h>
 #include <stdint.h>

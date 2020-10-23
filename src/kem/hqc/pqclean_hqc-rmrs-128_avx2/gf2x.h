@@ -9,8 +9,6 @@
 
 #include <stdint.h>
 
-#include <stdint.h>
-
 void PQCLEAN_HQCRMRS128_AVX2_vect_mul(uint64_t *o, const uint64_t *a1, const uint64_t *a2);
 
 

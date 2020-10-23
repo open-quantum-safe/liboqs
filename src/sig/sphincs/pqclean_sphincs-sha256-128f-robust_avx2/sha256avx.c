@@ -62,11 +62,11 @@ void PQCLEAN_SPHINCSSHA256128FROBUST_AVX2_sha256_update8x(sha256ctxx8 *ctx,
         const unsigned char *d6,
         const unsigned char *d7,
         unsigned long long len) {
-    unsigned long long i = 0;
-    unsigned long long bytes_to_copy;
+    size_t i = 0;
+    size_t bytes_to_copy;
 
     while (i < len) {
-        bytes_to_copy = len - i;
+        bytes_to_copy = (size_t)len - i;
         if (bytes_to_copy > 64) {
             bytes_to_copy = 64;
         }

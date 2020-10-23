@@ -6,8 +6,6 @@
  * @file reed_solomon.h
  * Header file of reed_solomon.c
  */
-
-#include "parameters.h"
 #include "parameters.h"
 #include <stddef.h>
 #include <stdint.h>

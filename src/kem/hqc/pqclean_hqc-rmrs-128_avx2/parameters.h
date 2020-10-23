@@ -6,8 +6,6 @@
  * @file parameters.h
  * @brief Parameters of the HQC_KEM IND-CCA2 scheme
  */
-
-#include "api.h"
 #include "api.h"
 
 

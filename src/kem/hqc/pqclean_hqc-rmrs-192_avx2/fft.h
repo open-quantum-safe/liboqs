@@ -7,9 +7,6 @@
  * Header file of fft.c
  */
 
-
-#include <stddef.h>
-
 #include <stddef.h>
 #include <stdint.h>
 

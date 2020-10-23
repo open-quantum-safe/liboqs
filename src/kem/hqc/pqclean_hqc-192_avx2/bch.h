@@ -6,8 +6,6 @@
  * @file bch.h
  * Header file of bch.c
  */
-
-#include "parameters.h"
 #include "parameters.h"
 #include <stddef.h>
 #include <stdint.h>

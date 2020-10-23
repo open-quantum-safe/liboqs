@@ -9,8 +9,6 @@
 
 #include <stdint.h>
 
-#include <stdint.h>
-
 void PQCLEAN_HQCRMRS192_CLEAN_store8(unsigned char *out, uint64_t in);
 
 uint64_t PQCLEAN_HQCRMRS192_CLEAN_load8(const unsigned char *in);

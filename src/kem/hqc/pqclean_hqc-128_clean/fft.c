@@ -162,7 +162,7 @@ static void radix_t_big(uint16_t *f, const uint16_t *f0, const uint16_t *f1, uin
 /**
  * @brief Recursively computes syndromes of family w
  *
- * This function is a subroutine of the function fft_t
+ * This function is a subroutine of the function PQCLEAN_HQC128_CLEAN_fft_t
  *
  * @param[out] f Array receiving the syndromes
  * @param[in] w Array storing the family
@@ -426,7 +426,7 @@ static void radix_big(uint16_t *f0, uint16_t *f1, const uint16_t *f, uint32_t m_
 /**
  * @brief Evaluates f at all subset sums of a given set
  *
- * This function is a subroutine of the function fft.
+ * This function is a subroutine of the function PQCLEAN_HQC128_CLEAN_fft.
  *
  * @param[out] w Array
  * @param[in] f Array

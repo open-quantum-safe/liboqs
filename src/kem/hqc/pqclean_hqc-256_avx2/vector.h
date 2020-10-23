@@ -6,8 +6,6 @@
  * @file vector.h
  * @brief Header file for vector.c
  */
-
-#include "nistseedexpander.h"
 #include "nistseedexpander.h"
 #include "randombytes.h"
 #include <stdint.h>

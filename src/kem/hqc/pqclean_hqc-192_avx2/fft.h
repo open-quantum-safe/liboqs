@@ -8,8 +8,6 @@
  */
 
 #include <stddef.h>
-
-#include <stddef.h>
 #include <stdint.h>
 
 void PQCLEAN_HQC192_AVX2_fft(uint16_t *w, const uint16_t *f, size_t f_coeffs);

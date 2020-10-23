@@ -9,8 +9,6 @@
 
 #include <stdint.h>
 
-#include <stdint.h>
-
 void PQCLEAN_HQCRMRS256_CLEAN_hqc_pke_keygen(unsigned char *pk, unsigned char *sk);
 
 void PQCLEAN_HQCRMRS256_CLEAN_hqc_pke_encrypt(uint64_t *u, uint64_t *v, uint8_t *m, unsigned char *theta, const unsigned char *pk);

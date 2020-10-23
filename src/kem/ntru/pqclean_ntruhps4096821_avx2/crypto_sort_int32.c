@@ -1,8 +1,8 @@
-#include "crypto_sort_int32.h"
-#include <immintrin.h>
 // Based on supercop-20200820/crypto_sort/int32/avx2
 
+#include "crypto_sort_int32.h"
 
+#include <immintrin.h>
 #define int32 int32_t
 
 typedef __m256i int32x8;

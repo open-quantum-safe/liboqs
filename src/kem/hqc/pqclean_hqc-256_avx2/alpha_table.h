@@ -6,8 +6,6 @@
  * @file alpha_table.h
  * Header file that contain precomputed power of alpha the root of the generator poly og GF(2^PARAM_M)
  */
-
-#include "parameters.h"
 #include "parameters.h"
 
 

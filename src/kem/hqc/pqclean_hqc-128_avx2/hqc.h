@@ -9,8 +9,6 @@
 
 #include <stdint.h>
 
-#include <stdint.h>
-
 void PQCLEAN_HQC128_AVX2_hqc_pke_keygen(unsigned char *pk, unsigned char *sk);
 
 void PQCLEAN_HQC128_AVX2_hqc_pke_encrypt(uint64_t *u, uint64_t *v, uint64_t *m, unsigned char *theta, const unsigned char *pk);

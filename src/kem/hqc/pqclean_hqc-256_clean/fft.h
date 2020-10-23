@@ -8,8 +8,6 @@
  */
 
 #include <stddef.h>
-
-#include <stddef.h>
 #include <stdint.h>
 
 void PQCLEAN_HQC256_CLEAN_fft_t(uint16_t *f, const uint16_t *w, size_t f_coeffs);
