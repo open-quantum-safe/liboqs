@@ -139,54 +139,6 @@ void PQCLEAN_HQC1281CCA2_LEAKTIME_vect_set_random_fixed_weight(AES_XOF_struct *c
     }
 }
 
-void PQCLEAN_HQC1281CCA2_LEAKTIME_vect_set_random_fixed_weight(AES_XOF_struct *ctx, uint8_t *v, uint16_t weight) {
-
-    size_t random_bytes_size = 3 * weight;
-    uint8_t rand_bytes[3 * PARAM_OMEGA_R] = {0}; // weight is expected to be <= PARAM_OMEGA_R
-    uint32_t random_data = 0;
-    uint32_t tmp[PARAM_OMEGA_R] = {0};
-    uint8_t exist = 0;
-    size_t j = 0;
-
-    seedexpander(ctx, rand_bytes, random_bytes_size);
-
-    for (uint32_t i = 0; i < weight; ++i) {
-        exist = 0;
-        do {
-            if (j == random_bytes_size) {
-                seedexpander(ctx, rand_bytes, random_bytes_size);
-                j = 0;
-            }
-
-            random_data  = ((uint32_t) rand_bytes[j++]) << 16;
-            random_data |= ((uint32_t) rand_bytes[j++]) << 8;
-            random_data |= rand_bytes[j++];
-
-        } while (random_data >= UTILS_REJECTION_THRESHOLD);
-
-        random_data = random_data % PARAM_N;
-
-        for (uint32_t k = 0; k < i; k++) {
-            if (tmp[k] == random_data) {
-                exist = 1;
-            }
-        }
-
-        if (exist == 1) {
-            i--;
-        } else {
-            tmp[i] = random_data;
-        }
-    }
-
-    for (uint16_t i = 0; i < weight; ++i) {
-        int32_t index = tmp[i] / 8;
-        int32_t pos = tmp[i] % 8;
-        v[index] |= 1 << pos;
-    }
-}
-
-
 /**
  * @brief Generates a random vector of dimension <b>PARAM_N</b>
  *
