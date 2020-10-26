@@ -83,74 +83,73 @@ static const UINT64 rho56[4] = {0x0007060504030201, 0x080F0E0D0C0B0A09, 0x101716
 #endif
 
 #define SnP_laneLengthInBytes 8
-void KeccakP1600times4_InitializeAll(void *states)
-{
-    memset(states, 0, KeccakP1600times4_statesSizeInBytes);
+void KeccakP1600times4_InitializeAll(void *states) {
+	memset(states, 0, KeccakP1600times4_statesSizeInBytes);
 }
 
-void KeccakP1600times4_AddBytes(void *states, unsigned int instanceIndex, const unsigned char *data, unsigned int offset, unsigned int length)
-{
-    unsigned int sizeLeft = length;
-    unsigned int lanePosition = offset/SnP_laneLengthInBytes;
-    unsigned int offsetInLane = offset%SnP_laneLengthInBytes;
-    const unsigned char *curData = data;
-    uint64_t *statesAsLanes = (uint64_t *)states;
+void KeccakP1600times4_AddBytes(void *states, unsigned int instanceIndex, const unsigned char *data, unsigned int offset, unsigned int length) {
+	unsigned int sizeLeft = length;
+	unsigned int lanePosition = offset / SnP_laneLengthInBytes;
+	unsigned int offsetInLane = offset % SnP_laneLengthInBytes;
+	const unsigned char *curData = data;
+	uint64_t *statesAsLanes = (uint64_t *)states;
 
-    if ((sizeLeft > 0) && (offsetInLane != 0)) {
-        unsigned int bytesInLane = SnP_laneLengthInBytes - offsetInLane;
-        uint64_t lane = 0;
-        if (bytesInLane > sizeLeft)
-            bytesInLane = sizeLeft;
-        memcpy((unsigned char*)&lane + offsetInLane, curData, bytesInLane);
-        statesAsLanes[laneIndex(instanceIndex, lanePosition)] ^= lane;
-        sizeLeft -= bytesInLane;
-        lanePosition++;
-        curData += bytesInLane;
-    }
+	if ((sizeLeft > 0) && (offsetInLane != 0)) {
+		unsigned int bytesInLane = SnP_laneLengthInBytes - offsetInLane;
+		uint64_t lane = 0;
+		if (bytesInLane > sizeLeft) {
+			bytesInLane = sizeLeft;
+		}
+		memcpy((unsigned char *)&lane + offsetInLane, curData, bytesInLane);
+		statesAsLanes[laneIndex(instanceIndex, lanePosition)] ^= lane;
+		sizeLeft -= bytesInLane;
+		lanePosition++;
+		curData += bytesInLane;
+	}
 
-    while(sizeLeft >= SnP_laneLengthInBytes) {
-        uint64_t lane = *((const uint64_t*)curData);
-        statesAsLanes[laneIndex(instanceIndex, lanePosition)] ^= lane;
-        sizeLeft -= SnP_laneLengthInBytes;
-        lanePosition++;
-        curData += SnP_laneLengthInBytes;
-    }
+	while (sizeLeft >= SnP_laneLengthInBytes) {
+		uint64_t lane = *((const uint64_t *)curData);
+		statesAsLanes[laneIndex(instanceIndex, lanePosition)] ^= lane;
+		sizeLeft -= SnP_laneLengthInBytes;
+		lanePosition++;
+		curData += SnP_laneLengthInBytes;
+	}
 
-    if (sizeLeft > 0) {
-        uint64_t lane = 0;
-        memcpy(&lane, curData, sizeLeft);
-        statesAsLanes[laneIndex(instanceIndex, lanePosition)] ^= lane;
-    }
+	if (sizeLeft > 0) {
+		uint64_t lane = 0;
+		memcpy(&lane, curData, sizeLeft);
+		statesAsLanes[laneIndex(instanceIndex, lanePosition)] ^= lane;
+	}
 }
 
-void KeccakP1600times4_ExtractBytes(const void *states, unsigned int instanceIndex, unsigned char *data, unsigned int offset, unsigned int length)
-{
-    unsigned int sizeLeft = length;
-    unsigned int lanePosition = offset/SnP_laneLengthInBytes;
-    unsigned int offsetInLane = offset%SnP_laneLengthInBytes;
-    unsigned char *curData = data;
-    const uint64_t *statesAsLanes = (const uint64_t *)states;
+void KeccakP1600times4_ExtractBytes(const void *states, unsigned int instanceIndex, unsigned char *data, unsigned int offset, unsigned int length) {
+	unsigned int sizeLeft = length;
+	unsigned int lanePosition = offset / SnP_laneLengthInBytes;
+	unsigned int offsetInLane = offset % SnP_laneLengthInBytes;
+	unsigned char *curData = data;
+	const uint64_t *statesAsLanes = (const uint64_t *)states;
 
-    if ((sizeLeft > 0) && (offsetInLane != 0)) {
-        unsigned int bytesInLane = SnP_laneLengthInBytes - offsetInLane;
-        if (bytesInLane > sizeLeft)
-            bytesInLane = sizeLeft;
-        memcpy( curData, ((unsigned char *)&statesAsLanes[laneIndex(instanceIndex, lanePosition)]) + offsetInLane, bytesInLane);
-        sizeLeft -= bytesInLane;
-        lanePosition++;
-        curData += bytesInLane;
-    }
+	if ((sizeLeft > 0) && (offsetInLane != 0)) {
+		unsigned int bytesInLane = SnP_laneLengthInBytes - offsetInLane;
+		if (bytesInLane > sizeLeft) {
+			bytesInLane = sizeLeft;
+		}
+		memcpy( curData, ((unsigned char *)&statesAsLanes[laneIndex(instanceIndex, lanePosition)]) + offsetInLane, bytesInLane);
+		sizeLeft -= bytesInLane;
+		lanePosition++;
+		curData += bytesInLane;
+	}
 
-    while(sizeLeft >= SnP_laneLengthInBytes) {
-        *(uint64_t*)curData = statesAsLanes[laneIndex(instanceIndex, lanePosition)];
-        sizeLeft -= SnP_laneLengthInBytes;
-        lanePosition++;
-        curData += SnP_laneLengthInBytes;
-    }
+	while (sizeLeft >= SnP_laneLengthInBytes) {
+		*(uint64_t *)curData = statesAsLanes[laneIndex(instanceIndex, lanePosition)];
+		sizeLeft -= SnP_laneLengthInBytes;
+		lanePosition++;
+		curData += SnP_laneLengthInBytes;
+	}
 
-    if (sizeLeft > 0) {
-        memcpy( curData, &statesAsLanes[laneIndex(instanceIndex, lanePosition)], sizeLeft);
-    }
+	if (sizeLeft > 0) {
+		memcpy( curData, &statesAsLanes[laneIndex(instanceIndex, lanePosition)], sizeLeft);
+	}
 }
 
 #define declareABCDE              \
