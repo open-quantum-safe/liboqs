@@ -134,7 +134,7 @@ void KeccakP1600times4_ExtractBytes(const void *states, unsigned int instanceInd
 		if (bytesInLane > sizeLeft) {
 			bytesInLane = sizeLeft;
 		}
-		memcpy( curData, ((unsigned char *)&statesAsLanes[laneIndex(instanceIndex, lanePosition)]) + offsetInLane, bytesInLane);
+		memcpy( curData, ((const unsigned char *)&statesAsLanes[laneIndex(instanceIndex, lanePosition)]) + offsetInLane, bytesInLane);
 		sizeLeft -= bytesInLane;
 		lanePosition++;
 		curData += bytesInLane;
