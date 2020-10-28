@@ -120,7 +120,7 @@ typedef struct {
 	unsigned int AVX512_ENABLED;
 	unsigned int BMI1_ENABLED;
 	unsigned int BMI2_ENABLED;
-    unsigned int PCLMUL_ENABLED;
+	unsigned int PCLMUL_ENABLED;
 	unsigned int POPCNT_ENABLED;
 	unsigned int SSE_ENABLED;
 	unsigned int SSE2_ENABLED;
