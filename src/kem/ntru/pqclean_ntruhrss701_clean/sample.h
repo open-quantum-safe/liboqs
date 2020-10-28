@@ -4,6 +4,7 @@
 #include "params.h"
 #include "poly.h"
 
+
 void PQCLEAN_NTRUHRSS701_CLEAN_sample_fg(poly *f, poly *g, const unsigned char uniformbytes[NTRU_SAMPLE_FG_BYTES]);
 void PQCLEAN_NTRUHRSS701_CLEAN_sample_rm(poly *r, poly *m, const unsigned char uniformbytes[NTRU_SAMPLE_RM_BYTES]);
 

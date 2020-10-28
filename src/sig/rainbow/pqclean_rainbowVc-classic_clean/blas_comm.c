@@ -72,7 +72,7 @@ static unsigned int gf256mat_gauss_elim_ref(uint8_t *mat, unsigned int h, unsign
 
         for (unsigned int j = i + 1; j < h; j++) {
             uint8_t *aj = mat + w * j;
-            PQCLEAN_RAINBOWVCCLASSIC_CLEAN_gf256v_predicated_add(ai + skip_len_align4, !PQCLEAN_RAINBOWVCCLASSIC_CLEAN_gf256_is_nonzero(ai[i]), aj + skip_len_align4, w - skip_len_align4);
+            PQCLEAN_RAINBOWVCCLASSIC_CLEAN_gf256v_predicated_add(ai + skip_len_align4, 1 ^ PQCLEAN_RAINBOWVCCLASSIC_CLEAN_gf256_is_nonzero(ai[i]), aj + skip_len_align4, w - skip_len_align4);
         }
         r8 &= PQCLEAN_RAINBOWVCCLASSIC_CLEAN_gf256_is_nonzero(ai[i]);
         uint8_t pivot = ai[i];
