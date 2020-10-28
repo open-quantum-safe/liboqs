@@ -90,6 +90,15 @@ def upstream_check(scheme):
 def load_instructions():
     instructions = file_get_contents(os.path.join('scripts', 'copy_from_pqclean', 'copy_from_pqclean.yml'), encoding='utf-8')
     instructions = yaml.safe_load(instructions)
+    # drop instructions selectively if not ready
+    if ("NOT_READY" in os.environ):
+        not_ready=os.environ['NOT_READY'].split(" ")
+        for family in instructions['kems']:
+            if family['name'] in not_ready:
+                instructions["kems"].remove(family)
+        for family in instructions['sigs']:
+            if family['name'] in not_ready:
+                instructions["sigs"].remove(family)
     for family in instructions['kems']:
         family['type'] = 'kem'
         family['pqclean_type'] = 'kem'
