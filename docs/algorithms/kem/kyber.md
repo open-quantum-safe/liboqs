@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://github.com/pq-crystals/kyber
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/c50bc64a40ce83639cff54419fce60483a30c430
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/b4078aae55f9efbc7b3ab7b3c702be376f7a7987
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AVX2 instructions (if available at run-time)
