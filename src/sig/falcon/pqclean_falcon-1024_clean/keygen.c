@@ -1902,7 +1902,11 @@ zint_add_scaled_mul_small(uint32_t *x, size_t xlen,
          * Get the next word of y (scaled).
          */
         v = u - sch;
-        wy = v < ylen ? y[v] : ysign;
+        if (v < ylen) {
+            wy = y[v];
+        } else {
+            wy = ysign;
+        }
         wys = ((wy << scl) & 0x7FFFFFFF) | tw;
         tw = wy >> (31 - scl);
 
@@ -1960,7 +1964,11 @@ zint_sub_scaled(uint32_t *x, size_t xlen,
          * Get the next word of y (scaled).
          */
         v = u - sch;
-        wy = v < ylen ? y[v] : ysign;
+        if (v < ylen) {
+            wy = y[v];
+        } else {
+            wy = ysign;
+        }
         wys = ((wy << scl) & 0x7FFFFFFF) | tw;
         tw = wy >> (31 - scl);
 
@@ -2648,10 +2656,18 @@ make_fg(uint32_t *data, const int8_t *f, const int8_t *g,
         return;
     }
 
-    for (d = 0; d < depth; d ++) {
-        make_fg_step(data, logn - d, d,
-                     d != 0, (d + 1) < depth || out_ntt);
+    if (depth == 0) {
+        return;
     }
+    if (depth == 1) {
+        make_fg_step(data, logn, 0, 0, out_ntt);
+        return;
+    }
+    make_fg_step(data, logn, 0, 0, 1);
+    for (d = 1; d + 1 < depth; d ++) {
+        make_fg_step(data, logn - d, d, 1, 1);
+    }
+    make_fg_step(data, logn - depth + 1, depth - 1, 1, out_ntt);
 }
 
 /*
@@ -3028,7 +3044,10 @@ solve_NTRU_intermediate(unsigned logn_top,
      * computed so that average maximum length will fall in the
      * middle or the upper half of these top 10 words.
      */
-    rlen = (slen > 10) ? 10 : slen;
+    rlen = slen;
+    if (rlen > 10) {
+        rlen = 10;
+    }
     poly_big_to_fp(rt3, ft + slen - rlen, rlen, slen, logn);
     poly_big_to_fp(rt4, gt + slen - rlen, rlen, slen, logn);
 
@@ -3102,7 +3121,10 @@ solve_NTRU_intermediate(unsigned logn_top,
          * Convert current F and G into floating-point. We apply
          * scaling if the current length is more than 10 words.
          */
-        rlen = (FGlen > 10) ? 10 : FGlen;
+        rlen = FGlen;
+        if (rlen > 10) {
+            rlen = 10;
+        }
         scale_FG = 31 * (int)(FGlen - rlen);
         poly_big_to_fp(rt1, Ft + FGlen - rlen, rlen, llen, logn);
         poly_big_to_fp(rt2, Gt + FGlen - rlen, rlen, llen, logn);

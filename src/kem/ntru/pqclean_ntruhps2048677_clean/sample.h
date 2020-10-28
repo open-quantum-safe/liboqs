@@ -4,6 +4,8 @@
 #include "params.h"
 #include "poly.h"
 
+#include "crypto_sort_int32.h"
+
 void PQCLEAN_NTRUHPS2048677_CLEAN_sample_fg(poly *f, poly *g, const unsigned char uniformbytes[NTRU_SAMPLE_FG_BYTES]);
 void PQCLEAN_NTRUHPS2048677_CLEAN_sample_rm(poly *r, poly *m, const unsigned char uniformbytes[NTRU_SAMPLE_RM_BYTES]);
 

@@ -1,4 +1,3 @@
-#include "crypto_sort_int32.h"
 #include "sample.h"
 
 void PQCLEAN_NTRUHPS2048509_AVX2_sample_fg(poly *f, poly *g, const unsigned char uniformbytes[NTRU_SAMPLE_FG_BYTES]) {
@@ -25,7 +24,7 @@ void PQCLEAN_NTRUHPS2048509_AVX2_sample_fixed_type(poly *r, const unsigned char 
         s[4 * i + 0] =                              (u[15 * i + 0] << 2) + (u[15 * i + 1] << 10) + (u[15 * i + 2] << 18) + ((uint32_t) u[15 * i + 3] << 26);
         s[4 * i + 1] = ((u[15 * i + 3] & 0xc0) >> 4) + (u[15 * i + 4] << 4) + (u[15 * i + 5] << 12) + (u[15 * i + 6] << 20) + ((uint32_t) u[15 * i + 7] << 28);
         s[4 * i + 2] = ((u[15 * i + 7] & 0xf0) >> 2) + (u[15 * i + 8] << 6) + (u[15 * i + 9] << 14) + (u[15 * i + 10] << 22) + ((uint32_t) u[15 * i + 11] << 30);
-        s[4 * i + 3] =  (u[15 * i + 11] & 0xfc)       + (u[15 * i + 12] << 8) + (u[15 * i + 13] << 15) + ((uint32_t) u[15 * i + 14] << 24);
+        s[4 * i + 3] =  (u[15 * i + 11] & 0xfc)       + (u[15 * i + 12] << 8) + (u[15 * i + 13] << 16) + ((uint32_t) u[15 * i + 14] << 24);
     }
 
     for (i = 0; i < NTRU_WEIGHT / 2; i++) {

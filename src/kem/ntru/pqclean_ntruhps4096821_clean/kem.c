@@ -42,12 +42,7 @@ int PQCLEAN_NTRUHPS4096821_CLEAN_crypto_kem_dec(uint8_t *k, const uint8_t *c, co
     uint8_t rm[NTRU_OWCPA_MSGBYTES];
     uint8_t buf[NTRU_PRFKEYBYTES + NTRU_CIPHERTEXTBYTES];
 
-    fail = 0;
-
-    /* Check that unused bits of last byte of ciphertext are zero */
-    fail |= c[NTRU_CIPHERTEXTBYTES - 1] & (0xff << (8 - (7 & (NTRU_LOGQ * NTRU_PACK_DEG))));
-
-    fail |= PQCLEAN_NTRUHPS4096821_CLEAN_owcpa_dec(rm, c, sk);
+    fail = PQCLEAN_NTRUHPS4096821_CLEAN_owcpa_dec(rm, c, sk);
     /* If fail = 0 then c = Enc(h, rm). There is no need to re-encapsulate. */
     /* See comment in PQCLEAN_NTRUHPS4096821_CLEAN_owcpa_dec for details.                                */
 

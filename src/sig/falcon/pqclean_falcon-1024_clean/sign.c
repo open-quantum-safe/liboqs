@@ -1189,9 +1189,11 @@ PQCLEAN_FALCON1024_CLEAN_sign_tree(int16_t *sig, inner_shake256_context *rng,
          * Normal sampling. We use a fast PRNG seeded from our
          * SHAKE context ('rng').
          */
-        spc.sigma_min = (logn == 10)
-                        ? fpr_sigma_min_10
-                        : fpr_sigma_min_9;
+        if (logn == 10) {
+            spc.sigma_min = fpr_sigma_min_10;
+        } else {
+            spc.sigma_min = fpr_sigma_min_9;
+        }
         PQCLEAN_FALCON1024_CLEAN_prng_init(&spc.p, rng);
         samp = PQCLEAN_FALCON1024_CLEAN_sampler;
         samp_ctx = &spc;
@@ -1234,9 +1236,11 @@ PQCLEAN_FALCON1024_CLEAN_sign_dyn(int16_t *sig, inner_shake256_context *rng,
          * Normal sampling. We use a fast PRNG seeded from our
          * SHAKE context ('rng').
          */
-        spc.sigma_min = (logn == 10)
-                        ? fpr_sigma_min_10
-                        : fpr_sigma_min_9;
+        if (logn == 10) {
+            spc.sigma_min = fpr_sigma_min_10;
+        } else {
+            spc.sigma_min = fpr_sigma_min_9;
+        }
         PQCLEAN_FALCON1024_CLEAN_prng_init(&spc.p, rng);
         samp = PQCLEAN_FALCON1024_CLEAN_sampler;
         samp_ctx = &spc;
