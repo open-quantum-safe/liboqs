@@ -22,13 +22,16 @@ int main(void) {
 	printf("AVX512F;");
 #endif
 #if defined(__BMI__)
-	printf("BMI;");
+	printf("BMI1;");
 #endif
 #if defined(__BMI2__)
 	printf("BMI2;");
 #endif
 #if defined(__FMA__)
 	printf("FMA;");
+#endif
+#if defined(__PCLMUL__)
+	printf("PCLMUL;");
 #endif
 #if defined(__POPCNT__)
 	printf("POPCNT;");
