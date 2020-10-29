@@ -124,7 +124,7 @@ def load_instructions():
                # are not properly specified.
                if scheme['pretty_name_full'].startswith('DILITHIUM_'):
                    scheme['metadata']['implementations'][1]['supported_platforms'][0]['operating_systems'] = ['Linux']
-                   scheme['metadata']['implementations'][1]['supported_platforms'][0]['required_flags'] = ['avx2', 'bmi', 'popcnt']
+                   scheme['metadata']['implementations'][1]['supported_platforms'][0]['required_flags'] = ['avx2', 'bmi1', 'popcnt']
 
             scheme['metadata']['euf_cma'] = 'true'
             scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')

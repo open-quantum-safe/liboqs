@@ -36,7 +36,7 @@ static void keccak_absorb4x(__m256i *s,
                             const unsigned char *m1,
                             const unsigned char *m2,
                             const unsigned char *m3,
-                            unsigned long long int mlen,
+                            size_t mlen,
                             unsigned char p) {
     unsigned char t0[200] = {0};
     unsigned char t1[200] = {0};
@@ -138,7 +138,7 @@ void PQCLEAN_SPHINCSSHAKE256128FROBUST_AVX2_shake128x4(unsigned char *out0,
     }
 
     /* absorb 4 message of identical length in parallel */
-    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, inlen, 0x1F);
+    keccak_absorb4x(s, SHAKE128_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
 
     /* Squeeze output */
     keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE128_RATE, s, SHAKE128_RATE);
@@ -183,7 +183,7 @@ void PQCLEAN_SPHINCSSHAKE256128FROBUST_AVX2_shake256x4(unsigned char *out0,
     }
 
     /* absorb 4 message of identical length in parallel */
-    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, inlen, 0x1F);
+    keccak_absorb4x(s, SHAKE256_RATE, in0, in1, in2, in3, (size_t)inlen, 0x1F);
 
     /* Squeeze output */
     keccak_squeezeblocks4x(out0, out1, out2, out3, outlen / SHAKE256_RATE, s, SHAKE256_RATE);

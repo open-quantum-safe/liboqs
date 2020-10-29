@@ -469,8 +469,11 @@ static void int32_sort_2power(int32 *x, size_t n, int flagdown) {
             }
 
             q = n >> 3;
-            flip = (p << 1 == q);
-            flipflip = !flip;
+            flip = 0;
+            if (p << 1 == q) {
+                flip = 1;
+            }
+            flipflip = 1 - flip;
             for (j = 0; j < q; j += p + p) {
                 for (k = j; k < j + p + p; k += p) {
                     for (i = k; i < k + p; i += 8) {
