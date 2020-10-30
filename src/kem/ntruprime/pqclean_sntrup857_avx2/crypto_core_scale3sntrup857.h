@@ -1,0 +1,11 @@
+#ifndef PQCLEAN_SNTRUP857_AVX2_CRYPTO_CORE_SCALE3SNTRUP857_H
+#define PQCLEAN_SNTRUP857_AVX2_CRYPTO_CORE_SCALE3SNTRUP857_H
+
+#include <stdint.h>
+#define PQCLEAN_SNTRUP857_AVX2_crypto_core_scale3sntrup857_OUTPUTBYTES 1714
+#define PQCLEAN_SNTRUP857_AVX2_crypto_core_scale3sntrup857_INPUTBYTES 1714
+#define PQCLEAN_SNTRUP857_AVX2_crypto_core_scale3sntrup857_KEYBYTES 0
+#define PQCLEAN_SNTRUP857_AVX2_crypto_core_scale3sntrup857_CONSTBYTES 0
+
+int PQCLEAN_SNTRUP857_AVX2_crypto_core_scale3sntrup857(unsigned char *outbytes, const unsigned char *inbytes);
+#endif

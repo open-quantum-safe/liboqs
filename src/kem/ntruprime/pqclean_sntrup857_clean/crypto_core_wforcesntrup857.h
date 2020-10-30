@@ -1,0 +1,11 @@
+#ifndef PQCLEAN_SNTRUP857_CLEAN_CRYPTO_CORE_WFORCESNTRUP857_H
+#define PQCLEAN_SNTRUP857_CLEAN_CRYPTO_CORE_WFORCESNTRUP857_H
+
+#include <stdint.h>
+#define PQCLEAN_SNTRUP857_CLEAN_crypto_core_wforcesntrup857_OUTPUTBYTES 857
+#define PQCLEAN_SNTRUP857_CLEAN_crypto_core_wforcesntrup857_INPUTBYTES 857
+#define PQCLEAN_SNTRUP857_CLEAN_crypto_core_wforcesntrup857_KEYBYTES 0
+#define PQCLEAN_SNTRUP857_CLEAN_crypto_core_wforcesntrup857_CONSTBYTES 0
+
+int PQCLEAN_SNTRUP857_CLEAN_crypto_core_wforcesntrup857(unsigned char *outbytes, const unsigned char *inbytes);
+#endif

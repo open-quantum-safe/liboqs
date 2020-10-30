@@ -1,0 +1,11 @@
+#ifndef PQCLEAN_SNTRUP761_CLEAN_CRYPTO_CORE_SCALE3SNTRUP761_H
+#define PQCLEAN_SNTRUP761_CLEAN_CRYPTO_CORE_SCALE3SNTRUP761_H
+
+#include <stdint.h>
+#define PQCLEAN_SNTRUP761_CLEAN_crypto_core_scale3sntrup761_OUTPUTBYTES 1522
+#define PQCLEAN_SNTRUP761_CLEAN_crypto_core_scale3sntrup761_INPUTBYTES 1522
+#define PQCLEAN_SNTRUP761_CLEAN_crypto_core_scale3sntrup761_KEYBYTES 0
+#define PQCLEAN_SNTRUP761_CLEAN_crypto_core_scale3sntrup761_CONSTBYTES 0
+
+int PQCLEAN_SNTRUP761_CLEAN_crypto_core_scale3sntrup761(unsigned char *outbytes, const unsigned char *inbytes);
+#endif
