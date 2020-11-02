@@ -19,6 +19,9 @@ jobs:
     description: Validate formatting of code and documentation
     docker:
       - image: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
     steps:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
@@ -46,6 +49,9 @@ jobs:
         default: --numprocesses=auto
     docker:
       - image: << parameters.CONTAINER >>
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
     steps:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
@@ -130,9 +136,13 @@ jobs:
           path: build/test-results
       - store_artifacts:
           path: build/test-results
+
   trigger-downstream-ci:
     docker:
       - image: cimg/base:2020.01
+        auth:
+          username: $DOCKER_LOGIN
+          password: $DOCKER_PASSWORD
     steps:
       - run:
           name: Trigger OQS-OpenSSL CI
@@ -170,41 +180,49 @@ workflows:
       - linux_x64:
           <<: *require_stylecheck
           name: alpine-noopenssl
+          context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
       - linux_x64:
           <<: *require_stylecheck
           name: alpine
+          context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
       - linux_x64:
           <<: *require_stylecheck
           name: centos-8
+          context: openquantumsafe
           CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
       - linux_x64:
           <<: *require_stylecheck
           name: debian-buster
+          context: openquantumsafe
           CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
       - linux_x64:
           <<: *require_stylecheck
           name: ubuntu-bionic-noopenssl
+          context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
       - linux_x64:
           <<: *require_stylecheck
           name: ubuntu-bionic-shared-noopenssl
+          context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
           PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
       - linux_x64:
           <<: *require_stylecheck
           name: ubuntu-bionic-clang9
+          context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9
       - linux_x64:
           <<: *require_stylecheck
           name: address-sanitizer
+          context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
       # Disabling for now due to bunch of persistent failures.
@@ -212,6 +230,7 @@ workflows:
       #    <<: *exclude_master
       #    <<: *require_stylecheck
       #    name: undefined-sanitizer
+      #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Undefined
       #    Normally the linux tests are run with 35 processes, but that
