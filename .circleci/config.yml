@@ -168,6 +168,30 @@ jobs:
                  --header "Content-Type: application/json" \
                  -d '{ "branch": "OQS-master", "parameters": { "run_downstream_tests": true } }' \
                  https://circleci.com/api/v2/project/gh/open-quantum-safe/openssh/pipeline
+      - run:
+          name: Trigger liboqs-dotnet CI
+          command: |
+            curl -u ${BUILD_TRIGGER_TOKEN}: \
+                 -X POST \
+                 --header "Content-Type: application/json" \
+                 -d '{ "branch": "master" }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-dotnet/pipeline
+      - run:
+          name: Trigger liboqs-java CI
+          command: |
+            curl -u ${BUILD_TRIGGER_TOKEN}: \
+                 -X POST \
+                 --header "Content-Type: application/json" \
+                 -d '{ "branch": "master" }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-java/pipeline
+      - run:
+          name: Trigger liboqs-python CI
+          command: |
+            curl -u ${BUILD_TRIGGER_TOKEN}: \
+                 -X POST \
+                 --header "Content-Type: application/json" \
+                 -d '{ "branch": "master" }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-python/pipeline
 
 workflows:
   version: 2.1
