@@ -1,0 +1,10 @@
+#ifndef PQCLEAN_SNTRUP653_AVX2_CRYPTO_ENCODE_653XINT16_H
+#define PQCLEAN_SNTRUP653_AVX2_CRYPTO_ENCODE_653XINT16_H
+
+#include <stdint.h>
+#define PQCLEAN_SNTRUP653_AVX2_crypto_encode_653xint16_STRBYTES 1306
+#define PQCLEAN_SNTRUP653_AVX2_crypto_encode_653xint16_ITEMBYTES 2
+#define PQCLEAN_SNTRUP653_AVX2_crypto_encode_653xint16_ITEMS 653
+
+void PQCLEAN_SNTRUP653_AVX2_crypto_encode_653xint16(unsigned char *s, const void *v);
+#endif

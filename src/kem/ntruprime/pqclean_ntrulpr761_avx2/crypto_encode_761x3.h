@@ -1,0 +1,10 @@
+#ifndef PQCLEAN_NTRULPR761_AVX2_CRYPTO_ENCODE_761X3_H
+#define PQCLEAN_NTRULPR761_AVX2_CRYPTO_ENCODE_761X3_H
+
+#include <stdint.h>
+#define PQCLEAN_NTRULPR761_AVX2_crypto_encode_761x3_STRBYTES 191
+#define PQCLEAN_NTRULPR761_AVX2_crypto_encode_761x3_ITEMS 761
+#define PQCLEAN_NTRULPR761_AVX2_crypto_encode_761x3_ITEMBYTES 1
+
+void PQCLEAN_NTRULPR761_AVX2_crypto_encode_761x3(unsigned char *s, const void *v);
+#endif

@@ -1,0 +1,10 @@
+#ifndef PQCLEAN_SNTRUP653_CLEAN_CRYPTO_DECODE_653XINT16_H
+#define PQCLEAN_SNTRUP653_CLEAN_CRYPTO_DECODE_653XINT16_H
+
+#include <stdint.h>
+#define PQCLEAN_SNTRUP653_CLEAN_crypto_decode_653xint16_STRBYTES 1306
+#define PQCLEAN_SNTRUP653_CLEAN_crypto_decode_653xint16_ITEMBYTES 2
+#define PQCLEAN_SNTRUP653_CLEAN_crypto_decode_653xint16_ITEMS 653
+
+void PQCLEAN_SNTRUP653_CLEAN_crypto_decode_653xint16(void *v, const unsigned char *s);
+#endif

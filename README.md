@@ -44,6 +44,7 @@ Details on each supported algorithm can be found in the [docs/algorithms folder]
 - **HQC**: HQC-128-1-CCA2, HQC-192-1-CCA2, HQC-192-2-CCA2, HQC-256-1-CCA2†, HQC-256-2-CCA2†, HQC-256-3-CCA2†
 - **Kyber**: Kyber512, Kyber768, Kyber1024, Kyber512-90s, Kyber768-90s, Kyber1024-90s
 - **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-821, NTRU-HRSS-701
+- **NTRU-Prime**: ntrulpr653, ntrulpr761, ntrulpr857, sntrup653, sntrup761, sntrup857
 - **SABER**: LightSaber-KEM, Saber-KEM, FireSaber-KEM
 - **SIKE**: SIDH-p434, SIDH-p503, SIDH-p610, SIDH-p751, SIKE-p434, SIKE-p503, SIKE-p610, SIKE-p751, SIDH-p434-compressed, SIDH-p503-compressed, SIDH-p610-compressed, SIDH-p751-compressed, SIKE-p434-compressed, SIKE-p503-compressed, SIKE-p610-compressed, SIKE-p751-compressed
 
