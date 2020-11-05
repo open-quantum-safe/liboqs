@@ -83,18 +83,16 @@ set_target_properties(oqs
     # For Windows DLLs
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
-include(GNUInstallDirs)
-
 install(TARGETS oqs EXPORT liboqsConfig
-        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include)
 
 install(EXPORT liboqsConfig
         NAMESPACE OQS::
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/liboqs
+        DESTINATION lib/cmake/liboqs
 )
 
 install(FILES ${PUBLIC_HEADERS}
-        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/oqs)
+        DESTINATION include/oqs)
