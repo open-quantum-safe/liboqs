@@ -198,7 +198,7 @@ workflows:
   build:
     when:
       not:
-        equal: [ master, << pipeline.git.branch >> ]
+        equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - stylecheck
       - linux_x64:
@@ -251,7 +251,6 @@ workflows:
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
       # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
       #- linux_x64:
-      #    <<: *exclude_master
       #    name: undefined-sanitizer
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
@@ -287,9 +286,9 @@ workflows:
           name: macOS-shared
           CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON
 
-  commit-to-master:
+  commit-to-main:
     when:
-      equal: [ master, << pipeline.git.branch >> ]
+      equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - trigger-downstream-ci:
           context: openquantumsafe

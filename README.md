@@ -1,4 +1,4 @@
-[AppVeyor](https://ci.appveyor.com/project/dstebila/liboqs): ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/master?svg=true), [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/master.svg?style=svg)
+[AppVeyor](https://ci.appveyor.com/project/dstebila/liboqs): ![Build status image](https://ci.appveyor.com/api/projects/status/9d2ts78x88r8wnii/branch/main?svg=true), [CircleCI](https://circleci.com/gh/open-quantum-safe/liboqs/tree/main): ![Build status image](https://circleci.com/gh/open-quantum-safe/liboqs/tree/main.svg?style=svg)
 
 liboqs
 ======================
@@ -34,7 +34,7 @@ More information on OQS can be found [here](https://openquantumsafe.org/) and in
 
 ### Supported Algorithms
 
-Details on each supported algorithm can be found in the [docs/algorithms folder](https://github.com/open-quantum-safe/liboqs/tree/master/docs/algorithms).
+Details on each supported algorithm can be found in the [docs/algorithms folder](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms).
 
 #### Key encapsulation mechanisms
 
@@ -89,7 +89,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 2. Get the source:
 
-		git clone -b master https://github.com/open-quantum-safe/liboqs.git
+		git clone -b main https://github.com/open-quantum-safe/liboqs.git
 		cd liboqs
 
 	and build:
@@ -164,7 +164,7 @@ Contributions that meet the acceptance criteria are gratefully welcomed. See our
 
 ## License
 
-liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/master/LICENSE.txt) for details.
+liboqs is licensed under the MIT License; see [LICENSE.txt](https://github.com/open-quantum-safe/liboqs/blob/main/LICENSE.txt) for details.
 
 liboqs includes some third party libraries or modules that are licensed differently; the corresponding subfolder contains the license that applies in that case.  In particular:
 
