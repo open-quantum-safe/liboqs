@@ -5,16 +5,16 @@ Falcon
 - **Main cryptographic assumption**: hardness of NTRU lattice problems
 - **Scheme authors**: Thomas Prest, Pierre-Alain Fouque, Jeffrey Hoffstein, Paul Kirchner, Vadim Lyubashevsky, Thomas Pornin, Thomas Ricosset, Gregor Seiler, William Whyte, Zhenfei Zhang
 - **Authors' website**: https://falcon-sign.info
-- **Version**: 20190920
+- **Version**: 20201018
 
 Implementation
 --------------
 
-- **Source of implementation**: https://falcon-sign.info/impl/falcon.h.html
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/b4078aae55f9efbc7b3ab7b3c702be376f7a7987
+- **Source of implementation**: supercop-20201018 via https://github.com/jschanck/package-pqclean/tree/78831f03/falcon
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/3c8be3cb1f8ca0953f2df44ea665f118efb468d6
 - **License**: CC0 1.0 Universal
 - **Constant-time**: Yes
-- **Optimizations**: Portable C
+- **Optimizations**: Portable C, with AVX2 instructions (if available at runtime)
 
 Parameter sets
 --------------

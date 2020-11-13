@@ -5,13 +5,13 @@ NTRU
 - **Main cryptographic assumption**: NTRU
 - **Scheme authors**: John M. Schanck, Cong Chen, Oussama Danba, Jeffrey Hoffstein, Andreas Hülsing, Joost Rijneveld, Peter Schwabe, William Whyte, Zhenfei Zhang
 - **Authors' website**: https://ntru.org
-- **Version**: NIST Round 2 submission
+- **Version**: NIST Round 3 submission
 
 Implementation
 --------------
 
-- **Source of implementation**: NIST Round 2 submission
-- **Implementation version**: https://github.com/jschanck/ntru/tree/6d1f44f5
+- **Source of implementation**: https://github.com/jschanck/ntru/tree/60cc7277
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/3c8be3cb1f8ca0953f2df44ea665f118efb468d6
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C, AVX2

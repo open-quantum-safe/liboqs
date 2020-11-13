@@ -23,7 +23,15 @@ void PQCLEAN_NTRUHPS4096821_AVX2_poly_Sq_mul(poly *r, const poly *a, const poly 
 }
 
 void PQCLEAN_NTRUHPS4096821_AVX2_poly_S3_mul(poly *r, const poly *a, const poly *b) {
+    int i;
+
+    /* Our S3 multiplications do not overflow mod q,    */
+    /* so we can re-purpose PQCLEAN_NTRUHPS4096821_AVX2_poly_Rq_mul, as long as we  */
+    /* follow with an explicit reduction mod q.         */
     PQCLEAN_NTRUHPS4096821_AVX2_poly_Rq_mul(r, a, b);
+    for (i = 0; i < NTRU_N; i++) {
+        r->coeffs[i] = MODQ(r->coeffs[i]);
+    }
     PQCLEAN_NTRUHPS4096821_AVX2_poly_mod_3_Phi_n(r);
 }
 

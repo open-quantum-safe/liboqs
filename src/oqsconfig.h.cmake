@@ -129,8 +129,11 @@
 
 #cmakedefine OQS_ENABLE_KEM_SABER 1
 #cmakedefine OQS_ENABLE_KEM_saber_lightsaber 1
+#cmakedefine OQS_ENABLE_KEM_saber_lightsaber_avx2 1
 #cmakedefine OQS_ENABLE_KEM_saber_saber 1
+#cmakedefine OQS_ENABLE_KEM_saber_saber_avx2 1
 #cmakedefine OQS_ENABLE_KEM_saber_firesaber 1
+#cmakedefine OQS_ENABLE_KEM_saber_firesaber_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1
@@ -142,7 +145,9 @@
 
 #cmakedefine OQS_ENABLE_SIG_FALCON 1
 #cmakedefine OQS_ENABLE_SIG_falcon_512 1
+#cmakedefine OQS_ENABLE_SIG_falcon_512_avx2 1
 #cmakedefine OQS_ENABLE_SIG_falcon_1024 1
+#cmakedefine OQS_ENABLE_SIG_falcon_1024_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_RAINBOW 1
 #cmakedefine OQS_ENABLE_SIG_rainbow_Ia_classic 1

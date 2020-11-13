@@ -1,5 +1,6 @@
-#ifndef FALCON_INNER_H__
-#define FALCON_INNER_H__
+#ifndef PQCLEAN_FALCON1024_CLEAN_INNER_H
+#define PQCLEAN_FALCON1024_CLEAN_INNER_H
+
 
 /*
  * Internal functions for Falcon. This is not the API intended to be
@@ -72,8 +73,8 @@
  *    proper, or integer-based emulation is used, the set_fpu_cw()
  *    function does nothing, so it can be called systematically.
  */
-
-
+#include "fips202.h"
+#include "fpr.h"
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -115,7 +116,6 @@ set_fpu_cw(unsigned x) {
  */
 
 
-#include "fips202.h"
 
 #define inner_shake256_context                shake256incctx
 #define inner_shake256_init(sc)               shake256_inc_init(sc)
@@ -438,7 +438,6 @@ int PQCLEAN_FALCON1024_CLEAN_verify_recover(uint16_t *h,
  *   fpr fpr_mtwo63m1          -(2^63-1)
  *   fpr fpr_ptwo63            2^63
  */
-#include "fpr.h"
 
 /* ==================================================================== */
 /*

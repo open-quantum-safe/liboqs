@@ -1,96 +1,77 @@
 #include "SABER_indcpa.h"
 #include "SABER_params.h"
+#include "api.h"
 #include "fips202.h"
 #include "randombytes.h"
 #include "verify.h"
+#include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
-#include <string.h>
 
-int PQCLEAN_LIGHTSABER_CLEAN_crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
-    int i;
 
-    // sk[0:SABER_INDCPA_SECRETKEYBYTES-1] <-- sk
-    PQCLEAN_LIGHTSABER_CLEAN_indcpa_kem_keypair(pk, sk);
+int PQCLEAN_LIGHTSABER_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
+    size_t i;
 
-    // sk[SABER_INDCPA_SECRETKEYBYTES:SABER_INDCPA_SECRETKEYBYTES+SABER_INDCPA_SECRETKEYBYTES-1] <-- pk
+    PQCLEAN_LIGHTSABER_CLEAN_indcpa_kem_keypair(pk, sk); // sk[0:SABER_INDCPA_SECRETKEYBYTES-1] <-- sk
     for (i = 0; i < SABER_INDCPA_PUBLICKEYBYTES; i++) {
-        sk[i + SABER_INDCPA_SECRETKEYBYTES] = pk[i];
+        sk[i + SABER_INDCPA_SECRETKEYBYTES] = pk[i];    // sk[SABER_INDCPA_SECRETKEYBYTES:SABER_INDCPA_SECRETKEYBYTES+SABER_INDCPA_SECRETKEYBYTES-1] <-- pk
     }
 
-    // Then hash(pk) is appended.
-    sha3_256(sk + SABER_SECRETKEYBYTES - 64, pk, SABER_INDCPA_PUBLICKEYBYTES);
+    sha3_256(sk + SABER_SECRETKEYBYTES - 64, pk, SABER_INDCPA_PUBLICKEYBYTES); // Then hash(pk) is appended.
 
-    // Remaining part of sk contains a pseudo-random number.
-    // This is output when check in crypto_kem_dec() fails.
-    randombytes(sk + SABER_SECRETKEYBYTES - SABER_KEYBYTES, SABER_KEYBYTES );
+    randombytes(sk + SABER_SECRETKEYBYTES - SABER_KEYBYTES, SABER_KEYBYTES); // Remaining part of sk contains a pseudo-random number.
+    // This is output when check in PQCLEAN_LIGHTSABER_CLEAN_crypto_kem_dec() fails.
     return (0);
 }
 
-int PQCLEAN_LIGHTSABER_CLEAN_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk) {
-    // Will contain key, coins
-    unsigned char kr[64];
-    unsigned char buf[64];
+int PQCLEAN_LIGHTSABER_CLEAN_crypto_kem_enc(uint8_t *c, uint8_t *k, const uint8_t *pk) {
+
+    uint8_t kr[64]; // Will contain key, coins
+    uint8_t buf[64];
 
     randombytes(buf, 32);
 
-    // BUF[0:31] <-- random message (will be used as the key for client) Note: hash doesnot release system RNG output
-    sha3_256(buf, buf, 32);
+    sha3_256(buf, buf, 32); // BUF[0:31] <-- random message (will be used as the key for client) Note: hash doesnot release system RNG output
 
-    // BUF[32:63] <-- Hash(public key);  Multitarget countermeasure for coins + contributory KEM
-    sha3_256(buf + 32, pk, SABER_INDCPA_PUBLICKEYBYTES);
+    sha3_256(buf + 32, pk, SABER_INDCPA_PUBLICKEYBYTES); // BUF[32:63] <-- Hash(public key);  Multitarget countermeasure for coins + contributory KEM
 
-    // kr[0:63] <-- Hash(buf[0:63]);
-    sha3_512(kr, buf, 64);
-
+    sha3_512(kr, buf, 64);               // kr[0:63] <-- Hash(buf[0:63]);
     // K^ <-- kr[0:31]
     // noiseseed (r) <-- kr[32:63];
-    // buf[0:31] contains message; kr[32:63] contains randomness r;
-    PQCLEAN_LIGHTSABER_CLEAN_indcpa_kem_enc(buf, kr + 32, pk,  ct);
+    PQCLEAN_LIGHTSABER_CLEAN_indcpa_kem_enc(c, buf, kr + 32, pk); // buf[0:31] contains message; kr[32:63] contains randomness r;
 
-    sha3_256(kr + 32, ct, SABER_BYTES_CCA_DEC);
+    sha3_256(kr + 32, c, SABER_BYTES_CCA_DEC);
 
-    // hash concatenation of pre-k and h(c) to k
-    sha3_256(ss, kr, 64);
+    sha3_256(k, kr, 64); // hash concatenation of pre-k and h(c) to k
 
     return (0);
 }
 
+int PQCLEAN_LIGHTSABER_CLEAN_crypto_kem_dec(uint8_t *k, const uint8_t *c, const uint8_t *sk) {
+    size_t i;
+    uint8_t fail;
+    uint8_t cmp[SABER_BYTES_CCA_DEC];
+    uint8_t buf[64];
+    uint8_t kr[64]; // Will contain key, coins
+    const uint8_t *pk = sk + SABER_INDCPA_SECRETKEYBYTES;
 
-int PQCLEAN_LIGHTSABER_CLEAN_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk) {
-    int i;
-    unsigned char fail;
-    unsigned char cmp[SABER_BYTES_CCA_DEC];
-    unsigned char buf[64];
-
-    // Will contain key, coins
-    unsigned char kr[64];
-    const unsigned char *pk = sk + SABER_INDCPA_SECRETKEYBYTES;
-
-    // buf[0:31] <-- message
-    PQCLEAN_LIGHTSABER_CLEAN_indcpa_kem_dec(sk, ct, buf);
-
+    PQCLEAN_LIGHTSABER_CLEAN_indcpa_kem_dec(buf, sk, c); // buf[0:31] <-- message
 
     // Multitarget countermeasure for coins + contributory KEM
-    // Save hash by storing h(pk) in sk
-    for (i = 0; i < 32; i++) {
+    for (i = 0; i < 32; i++) { // Save hash by storing h(pk) in sk
         buf[32 + i] = sk[SABER_SECRETKEYBYTES - 64 + i];
     }
 
     sha3_512(kr, buf, 64);
 
-    PQCLEAN_LIGHTSABER_CLEAN_indcpa_kem_enc(buf, kr + 32, pk, cmp);
+    PQCLEAN_LIGHTSABER_CLEAN_indcpa_kem_enc(cmp, buf, kr + 32, pk);
 
+    fail = PQCLEAN_LIGHTSABER_CLEAN_verify(c, cmp, SABER_BYTES_CCA_DEC);
 
-    fail = PQCLEAN_LIGHTSABER_CLEAN_verify(ct, cmp, SABER_BYTES_CCA_DEC);
-
-    // overwrite coins in kr with h(c)
-    sha3_256(kr + 32, ct, SABER_BYTES_CCA_DEC);
+    sha3_256(kr + 32, c, SABER_BYTES_CCA_DEC); // overwrite coins in kr with h(c)
 
     PQCLEAN_LIGHTSABER_CLEAN_cmov(kr, sk + SABER_SECRETKEYBYTES - SABER_KEYBYTES, SABER_KEYBYTES, fail);
 
-    // hash concatenation of pre-k and h(c) to k
-    sha3_256(ss, kr, 64);
+    sha3_256(k, kr, 64); // hash concatenation of pre-k and h(c) to k
 
     return (0);
 }

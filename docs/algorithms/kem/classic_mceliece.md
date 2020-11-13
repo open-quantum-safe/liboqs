@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: SUPERCOP-20191221, "vec" implementation
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/b4078aae55f9efbc7b3ab7b3c702be376f7a7987
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/3c8be3cb1f8ca0953f2df44ea665f118efb468d6
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C

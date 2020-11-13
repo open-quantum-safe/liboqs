@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://github.com/sphincs/sphincsplus
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/b4078aae55f9efbc7b3ab7b3c702be376f7a7987
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/3c8be3cb1f8ca0953f2df44ea665f118efb468d6
 - **License**: CC0 1.0 Universal
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AESNI and AVX2 instructions (if available at run-time)
