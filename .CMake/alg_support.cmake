@@ -77,14 +77,6 @@ cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_6960119f "" ON "OQS_ENABL
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_8192128 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_8192128f "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
 
-option(OQS_ENABLE_KEM_HQC "" ON)
-cmake_dependent_option(OQS_ENABLE_KEM_hqc_128_1_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_hqc_192_1_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_hqc_192_2_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_hqc_256_1_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_hqc_256_2_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
-cmake_dependent_option(OQS_ENABLE_KEM_hqc_256_3_cca2 "" ON "OQS_ENABLE_KEM_HQC" OFF)
-
 option(OQS_ENABLE_KEM_KYBER "" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_kyber_512 "" ON "OQS_ENABLE_KEM_KYBER" OFF)
 if(ARCH STREQUAL "x86_64" AND CMAKE_SYSTEM_NAME MATCHES "Linux" AND OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS)
