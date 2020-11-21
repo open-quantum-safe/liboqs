@@ -89,6 +89,14 @@
 #cmakedefine OQS_ENABLE_KEM_classic_mceliece_8192128 1
 #cmakedefine OQS_ENABLE_KEM_classic_mceliece_8192128f 1
 
+#cmakedefine OQS_ENABLE_KEM_HQC 1
+#cmakedefine OQS_ENABLE_KEM_hqc_128 1
+#cmakedefine OQS_ENABLE_KEM_hqc_128_avx2 1
+#cmakedefine OQS_ENABLE_KEM_hqc_192 1
+#cmakedefine OQS_ENABLE_KEM_hqc_192_avx2 1
+#cmakedefine OQS_ENABLE_KEM_hqc_256 1
+#cmakedefine OQS_ENABLE_KEM_hqc_256_avx2 1
+
 #cmakedefine OQS_ENABLE_KEM_KYBER 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512_avx2 1

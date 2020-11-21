@@ -64,6 +64,22 @@ kems:
         implementation: vec
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
   -
+    name: hqc
+    default_implementation: clean
+    schemes:
+      -
+        scheme: "128"
+        pqclean_scheme: hqc-rmrs-128
+        pretty_name_full: HQC-128
+      -
+        scheme: "192"
+        pqclean_scheme: hqc-rmrs-192
+        pretty_name_full: HQC-192
+      -
+        scheme: "256"
+        pqclean_scheme: hqc-rmrs-256
+        pretty_name_full: HQC-256
+  -
     name: kyber
     default_implementation: clean
     schemes:
