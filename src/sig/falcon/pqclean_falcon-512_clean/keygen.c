@@ -1,3 +1,5 @@
+#include "inner.h"
+
 /*
  * Falcon key pair generation.
  *
@@ -29,7 +31,6 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
-#include "inner.h"
 
 #define MKN(logn)   ((size_t)1 << (logn))
 
@@ -2206,7 +2207,6 @@ get_rng_u64(inner_shake256_context *rng) {
            | ((uint64_t)tmp[6] << 48)
            | ((uint64_t)tmp[7] << 56);
 }
-
 
 /*
  * Table below incarnates a discrete Gaussian distribution:

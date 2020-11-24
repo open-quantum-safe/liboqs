@@ -1,3 +1,5 @@
+#include "inner.h"
+
 /*
  * Encoding/decoding of keys and signatures.
  *
@@ -29,7 +31,6 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
-#include "inner.h"
 
 /* see inner.h */
 size_t

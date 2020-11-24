@@ -1,3 +1,5 @@
+#include "verify.h"
+
 /*-------------------------------------------------
 This file has been adapted from the implementation
 (available at https://github.com/pq-crystals/kyber) of
@@ -5,26 +7,25 @@ This file has been adapted from the implementation
  by : Joppe Bos, Leo Ducas, Eike Kiltz, Tancrede Lepoint,
 Vadim Lyubashevsky, John M. Schanck, Peter Schwabe & Damien stehle
 ----------------------------------------------------*/
-#include "verify.h"
-#include <stdint.h>
+
 
 /* returns 0 for equal strings, 1 for non-equal strings */
-unsigned char PQCLEAN_FIRESABER_CLEAN_verify(const unsigned char *a, const unsigned char *b, size_t len) {
+uint8_t PQCLEAN_FIRESABER_CLEAN_verify(const uint8_t *a, const uint8_t *b, size_t len) {
     uint64_t r;
     size_t i;
-
     r = 0;
+
     for (i = 0; i < len; i++) {
         r |= a[i] ^ b[i];
     }
 
     r = (~r + 1); // Two's complement
     r >>= 63;
-    return (unsigned char)r;
+    return (uint8_t) r;
 }
 
 /* b = 1 means mov, b = 0 means don't mov*/
-void PQCLEAN_FIRESABER_CLEAN_cmov(unsigned char *r, const unsigned char *x, size_t len, unsigned char b) {
+void PQCLEAN_FIRESABER_CLEAN_cmov(uint8_t *r, const uint8_t *x, size_t len, uint8_t b) {
     size_t i;
 
     b = -b;

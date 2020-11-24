@@ -4,12 +4,9 @@
 #include "params.h"
 #include "poly.h"
 
-void PQCLEAN_NTRUHRSS701_AVX2_owcpa_samplemsg(unsigned char msg[NTRU_OWCPA_MSGBYTES],
-        const unsigned char seed[NTRU_SEEDBYTES]);
-
 void PQCLEAN_NTRUHRSS701_AVX2_owcpa_keypair(unsigned char *pk,
         unsigned char *sk,
-        const unsigned char seed[NTRU_SEEDBYTES]);
+        const unsigned char seed[NTRU_SAMPLE_FG_BYTES]);
 
 void PQCLEAN_NTRUHRSS701_AVX2_owcpa_enc(unsigned char *c,
                                         const poly *r,

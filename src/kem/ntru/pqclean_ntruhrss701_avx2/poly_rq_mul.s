@@ -303,23 +303,6 @@ mask_keephigh:
 .word 65535
 .word 65535
 .word 65535
-mask_mod8192:
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
-.word 8191
 .text
 .global PQCLEAN_NTRUHRSS701_AVX2_poly_Rq_mul
 .global _PQCLEAN_NTRUHRSS701_AVX2_poly_Rq_mul
@@ -5213,13 +5196,9 @@ vpand mask_keephigh(%rip), %ymm9, %ymm10
 vpor %ymm10, %ymm5, %ymm5
 vpaddw %ymm5, %ymm3, %ymm3
 vmovdqa %xmm9, 2560(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 0(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 352(%rdi)
-vpand mask_mod8192(%rip), %ymm3, %ymm3
 vmovdqu %ymm3, 704(%rdi)
-vpand mask_mod8192(%rip), %ymm4, %ymm4
 vmovdqu %ymm4, 1056(%rdi)
 vmovdqa 32(%rsp), %ymm5
 vpunpcklwd const0(%rip), %ymm5, %ymm8
@@ -5309,13 +5288,9 @@ vpand mask_keephigh(%rip), %ymm7, %ymm8
 vpor %ymm8, %ymm11, %ymm11
 vpaddw %ymm11, %ymm10, %ymm10
 vmovdqa %xmm7, 2592(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %ymm5, 88(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 440(%rdi)
-vpand mask_mod8192(%rip), %ymm10, %ymm10
 vmovdqu %ymm10, 792(%rdi)
-vpand mask_mod8192(%rip), %ymm9, %ymm9
 vmovdqu %ymm9, 1144(%rdi)
 vmovdqa 64(%rsp), %ymm11
 vpunpcklwd const0(%rip), %ymm11, %ymm4
@@ -5405,13 +5380,9 @@ vpand mask_keephigh(%rip), %ymm3, %ymm4
 vpor %ymm4, %ymm5, %ymm5
 vpaddw %ymm5, %ymm8, %ymm8
 vmovdqa %xmm3, 2624(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 176(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 528(%rdi)
-vpand mask_mod8192(%rip), %ymm8, %ymm8
 vmovdqu %ymm8, 880(%rdi)
-vpand mask_mod8192(%rip), %ymm7, %ymm7
 vmovdqu %ymm7, 1232(%rdi)
 vmovdqa 96(%rsp), %ymm5
 vpunpcklwd const0(%rip), %ymm5, %ymm9
@@ -5501,13 +5472,9 @@ vpand mask_keephigh(%rip), %ymm10, %ymm9
 vpor %ymm9, %ymm11, %ymm11
 vpaddw %ymm11, %ymm4, %ymm4
 vmovdqa %xmm10, 2656(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %ymm5, 264(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 616(%rdi)
-vpand mask_mod8192(%rip), %ymm4, %ymm4
 vmovdqu %ymm4, 968(%rdi)
-vpand mask_mod8192(%rip), %ymm3, %ymm3
 vmovdqu %ymm3, 1320(%rdi)
 vmovdqa 128(%rsp), %ymm11
 vpunpcklwd const0(%rip), %ymm11, %ymm7
@@ -5587,7 +5554,6 @@ vpand mask_keephigh(%rip), %ymm2, %ymm7
 vpor %ymm7, %ymm10, %ymm10
 vmovdqu 0(%rdi), %ymm7
 vpaddw %ymm10, %ymm7, %ymm7
-vpand mask_mod8192(%rip), %ymm7, %ymm7
 vmovdqu %ymm7, 0(%rdi)
 vmovdqa %xmm2, 1920(%rsp)
 vpshufb shuf48_16(%rip), %ymm4, %ymm4
@@ -5614,11 +5580,8 @@ vpand mask_keephigh(%rip), %ymm2, %ymm7
 vpor %ymm7, %ymm5, %ymm5
 vpaddw %ymm5, %ymm9, %ymm9
 vmovdqa %xmm2, 2688(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 352(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 704(%rdi)
-vpand mask_mod8192(%rip), %ymm9, %ymm9
 vmovdqu %ymm9, 1056(%rdi)
 vmovdqa 160(%rsp), %ymm5
 vpunpcklwd const0(%rip), %ymm5, %ymm3
@@ -5698,7 +5661,6 @@ vpand mask_keephigh(%rip), %ymm8, %ymm3
 vpor %ymm3, %ymm2, %ymm2
 vmovdqu 88(%rdi), %ymm3
 vpaddw %ymm2, %ymm3, %ymm3
-vpand mask_mod8192(%rip), %ymm3, %ymm3
 vmovdqu %ymm3, 88(%rdi)
 vmovdqa %xmm8, 1952(%rsp)
 vpshufb shuf48_16(%rip), %ymm9, %ymm9
@@ -5725,11 +5687,8 @@ vpand mask_keephigh(%rip), %ymm8, %ymm3
 vpor %ymm3, %ymm11, %ymm11
 vpaddw %ymm11, %ymm7, %ymm7
 vmovdqa %xmm8, 2720(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %ymm5, 440(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 792(%rdi)
-vpand mask_mod8192(%rip), %ymm7, %ymm7
 vmovdqu %ymm7, 1144(%rdi)
 vmovdqa 192(%rsp), %ymm11
 vpunpcklwd const0(%rip), %ymm11, %ymm10
@@ -5809,7 +5768,6 @@ vpand mask_keephigh(%rip), %ymm4, %ymm10
 vpor %ymm10, %ymm8, %ymm8
 vmovdqu 176(%rdi), %ymm10
 vpaddw %ymm8, %ymm10, %ymm10
-vpand mask_mod8192(%rip), %ymm10, %ymm10
 vmovdqu %ymm10, 176(%rdi)
 vmovdqa %xmm4, 1984(%rsp)
 vpshufb shuf48_16(%rip), %ymm7, %ymm7
@@ -5836,11 +5794,8 @@ vpand mask_keephigh(%rip), %ymm4, %ymm10
 vpor %ymm10, %ymm5, %ymm5
 vpaddw %ymm5, %ymm3, %ymm3
 vmovdqa %xmm4, 2752(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 528(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 880(%rdi)
-vpand mask_mod8192(%rip), %ymm3, %ymm3
 vmovdqu %ymm3, 1232(%rdi)
 vmovdqa 224(%rsp), %ymm5
 vpunpcklwd const0(%rip), %ymm5, %ymm2
@@ -5920,7 +5875,6 @@ vpand mask_keephigh(%rip), %ymm9, %ymm2
 vpor %ymm2, %ymm4, %ymm4
 vmovdqu 264(%rdi), %ymm2
 vpaddw %ymm4, %ymm2, %ymm2
-vpand mask_mod8192(%rip), %ymm2, %ymm2
 vmovdqu %ymm2, 264(%rdi)
 vmovdqa %xmm9, 2016(%rsp)
 vpshufb shuf48_16(%rip), %ymm3, %ymm3
@@ -5947,11 +5901,8 @@ vpand mask_keephigh(%rip), %ymm9, %ymm2
 vpor %ymm2, %ymm11, %ymm11
 vpaddw %ymm11, %ymm10, %ymm10
 vmovdqa %xmm9, 2784(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %ymm5, 616(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 968(%rdi)
-vpand mask_mod8192(%rip), %ymm10, %ymm10
 vmovdqu %ymm10, 1320(%rdi)
 vmovdqa 128(%r12), %ymm0
 vpsubw 224(%r12), %ymm0, %ymm0
@@ -6345,13 +6296,9 @@ vpor %ymm8, %ymm5, %ymm5
 vpaddw 2560(%rsp), %ymm2, %ymm2
 vpaddw %ymm5, %ymm2, %ymm2
 vmovdqa %xmm3, 2560(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 32(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 384(%rdi)
-vpand mask_mod8192(%rip), %ymm2, %ymm2
 vmovdqu %ymm2, 736(%rdi)
-vpand mask_mod8192(%rip), %ymm9, %ymm9
 vmovdqu %ymm9, 1088(%rdi)
 vmovdqa 32(%rsp), %ymm5
 vpunpcklwd const0(%rip), %ymm5, %ymm4
@@ -6444,13 +6391,9 @@ vpor %ymm4, %ymm11, %ymm11
 vpaddw 2592(%rsp), %ymm8, %ymm8
 vpaddw %ymm11, %ymm8, %ymm8
 vmovdqa %xmm10, 2592(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %ymm5, 120(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 472(%rdi)
-vpand mask_mod8192(%rip), %ymm8, %ymm8
 vmovdqu %ymm8, 824(%rdi)
-vpand mask_mod8192(%rip), %ymm3, %ymm3
 vmovdqu %ymm3, 1176(%rdi)
 vmovdqa 64(%rsp), %ymm11
 vpunpcklwd const0(%rip), %ymm11, %ymm9
@@ -6543,13 +6486,9 @@ vpor %ymm9, %ymm5, %ymm5
 vpaddw 2624(%rsp), %ymm4, %ymm4
 vpaddw %ymm5, %ymm4, %ymm4
 vmovdqa %xmm2, 2624(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 208(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 560(%rdi)
-vpand mask_mod8192(%rip), %ymm4, %ymm4
 vmovdqu %ymm4, 912(%rdi)
-vpand mask_mod8192(%rip), %ymm10, %ymm10
 vmovdqu %ymm10, 1264(%rdi)
 vmovdqa 96(%rsp), %ymm5
 vpunpcklwd const0(%rip), %ymm5, %ymm3
@@ -6642,13 +6581,9 @@ vpor %ymm3, %ymm11, %ymm11
 vpaddw 2656(%rsp), %ymm9, %ymm9
 vpaddw %ymm11, %ymm9, %ymm9
 vmovdqa %xmm8, 2656(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %ymm5, 296(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 648(%rdi)
-vpand mask_mod8192(%rip), %ymm9, %ymm9
 vmovdqu %ymm9, 1000(%rdi)
-vpand mask_mod8192(%rip), %ymm2, %ymm2
 vmovdqu %ymm2, 1352(%rdi)
 vmovdqa 128(%rsp), %ymm11
 vpunpcklwd const0(%rip), %ymm11, %ymm10
@@ -6729,7 +6664,6 @@ vpor %ymm10, %ymm8, %ymm8
 vmovdqu 32(%rdi), %ymm10
 vpaddw 1920(%rsp), %ymm10, %ymm10
 vpaddw %ymm8, %ymm10, %ymm10
-vpand mask_mod8192(%rip), %ymm10, %ymm10
 vmovdqu %ymm10, 32(%rdi)
 vmovdqa %xmm7, 1920(%rsp)
 vpshufb shuf48_16(%rip), %ymm9, %ymm9
@@ -6759,11 +6693,8 @@ vpor %ymm10, %ymm5, %ymm5
 vpaddw 2688(%rsp), %ymm3, %ymm3
 vpaddw %ymm5, %ymm3, %ymm3
 vmovdqa %xmm7, 2688(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 384(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 736(%rdi)
-vpand mask_mod8192(%rip), %ymm3, %ymm3
 vmovdqu %ymm3, 1088(%rdi)
 vmovdqa 160(%rsp), %ymm5
 vpunpcklwd const0(%rip), %ymm5, %ymm2
@@ -6844,7 +6775,6 @@ vpor %ymm2, %ymm7, %ymm7
 vmovdqu 120(%rdi), %ymm2
 vpaddw 1952(%rsp), %ymm2, %ymm2
 vpaddw %ymm7, %ymm2, %ymm2
-vpand mask_mod8192(%rip), %ymm2, %ymm2
 vmovdqu %ymm2, 120(%rdi)
 vmovdqa %xmm4, 1952(%rsp)
 vpshufb shuf48_16(%rip), %ymm3, %ymm3
@@ -6874,11 +6804,8 @@ vpor %ymm2, %ymm11, %ymm11
 vpaddw 2720(%rsp), %ymm10, %ymm10
 vpaddw %ymm11, %ymm10, %ymm10
 vmovdqa %xmm4, 2720(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %ymm5, 472(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 824(%rdi)
-vpand mask_mod8192(%rip), %ymm10, %ymm10
 vmovdqu %ymm10, 1176(%rdi)
 vmovdqa 192(%rsp), %ymm11
 vpunpcklwd const0(%rip), %ymm11, %ymm8
@@ -6959,7 +6886,6 @@ vpor %ymm8, %ymm4, %ymm4
 vmovdqu 208(%rdi), %ymm8
 vpaddw 1984(%rsp), %ymm8, %ymm8
 vpaddw %ymm4, %ymm8, %ymm8
-vpand mask_mod8192(%rip), %ymm8, %ymm8
 vmovdqu %ymm8, 208(%rdi)
 vmovdqa %xmm9, 1984(%rsp)
 vpshufb shuf48_16(%rip), %ymm10, %ymm10
@@ -6989,11 +6915,8 @@ vpor %ymm8, %ymm5, %ymm5
 vpaddw 2752(%rsp), %ymm2, %ymm2
 vpaddw %ymm5, %ymm2, %ymm2
 vmovdqa %xmm9, 2752(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 560(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 912(%rdi)
-vpand mask_mod8192(%rip), %ymm2, %ymm2
 vmovdqu %ymm2, 1264(%rdi)
 vmovdqa 224(%rsp), %ymm5
 vpunpcklwd const0(%rip), %ymm5, %ymm7
@@ -7074,7 +6997,6 @@ vpor %ymm7, %ymm9, %ymm9
 vmovdqu 296(%rdi), %ymm7
 vpaddw 2016(%rsp), %ymm7, %ymm7
 vpaddw %ymm9, %ymm7, %ymm7
-vpand mask_mod8192(%rip), %ymm7, %ymm7
 vmovdqu %ymm7, 296(%rdi)
 vmovdqa %xmm3, 2016(%rsp)
 vpshufb shuf48_16(%rip), %ymm2, %ymm2
@@ -7104,11 +7026,8 @@ vpor %ymm7, %ymm11, %ymm11
 vpaddw 2784(%rsp), %ymm8, %ymm8
 vpaddw %ymm11, %ymm8, %ymm8
 vmovdqa %xmm3, 2784(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %ymm5, 648(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %ymm6, 1000(%rdi)
-vpand mask_mod8192(%rip), %ymm8, %ymm8
 vmovdqu %ymm8, 1352(%rdi)
 vmovdqa 160(%r12), %ymm0
 vpsubw 256(%r12), %ymm0, %ymm0
@@ -7502,19 +7421,15 @@ vpor %ymm4, %ymm5, %ymm5
 vpaddw 2560(%rsp), %ymm7, %ymm7
 vpaddw %ymm5, %ymm7, %ymm7
 vmovdqa %xmm2, 2560(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %xmm11, 64(%rdi)
 vextracti128 $1, %ymm11, %xmm11
 vmovq %xmm11, 80(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %xmm6, 416(%rdi)
 vextracti128 $1, %ymm6, %xmm6
 vmovq %xmm6, 432(%rdi)
-vpand mask_mod8192(%rip), %ymm7, %ymm7
 vmovdqu %xmm7, 768(%rdi)
 vextracti128 $1, %ymm7, %xmm7
 vmovq %xmm7, 784(%rdi)
-vpand mask_mod8192(%rip), %ymm3, %ymm3
 vmovdqu %xmm3, 1120(%rdi)
 vextracti128 $1, %ymm3, %xmm3
 vmovq %xmm3, 1136(%rdi)
@@ -7609,19 +7524,15 @@ vpor %ymm9, %ymm11, %ymm11
 vpaddw 2592(%rsp), %ymm4, %ymm4
 vpaddw %ymm11, %ymm4, %ymm4
 vmovdqa %xmm8, 2592(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %xmm5, 152(%rdi)
 vextracti128 $1, %ymm5, %xmm5
 vmovq %xmm5, 168(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %xmm6, 504(%rdi)
 vextracti128 $1, %ymm6, %xmm6
 vmovq %xmm6, 520(%rdi)
-vpand mask_mod8192(%rip), %ymm4, %ymm4
 vmovdqu %xmm4, 856(%rdi)
 vextracti128 $1, %ymm4, %xmm4
 vmovq %xmm4, 872(%rdi)
-vpand mask_mod8192(%rip), %ymm2, %ymm2
 vmovdqu %xmm2, 1208(%rdi)
 vextracti128 $1, %ymm2, %xmm2
 vmovq %xmm2, 1224(%rdi)
@@ -7716,19 +7627,15 @@ vpor %ymm3, %ymm5, %ymm5
 vpaddw 2624(%rsp), %ymm9, %ymm9
 vpaddw %ymm5, %ymm9, %ymm9
 vmovdqa %xmm7, 2624(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %xmm11, 240(%rdi)
 vextracti128 $1, %ymm11, %xmm11
 vmovq %xmm11, 256(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %xmm6, 592(%rdi)
 vextracti128 $1, %ymm6, %xmm6
 vmovq %xmm6, 608(%rdi)
-vpand mask_mod8192(%rip), %ymm9, %ymm9
 vmovdqu %xmm9, 944(%rdi)
 vextracti128 $1, %ymm9, %xmm9
 vmovq %xmm9, 960(%rdi)
-vpand mask_mod8192(%rip), %ymm8, %ymm8
 vmovdqu %xmm8, 1296(%rdi)
 vextracti128 $1, %ymm8, %xmm8
 vmovq %xmm8, 1312(%rdi)
@@ -7823,25 +7730,21 @@ vpor %ymm2, %ymm11, %ymm11
 vpaddw 2656(%rsp), %ymm3, %ymm3
 vpaddw %ymm11, %ymm3, %ymm3
 vmovdqa %xmm4, 2656(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %xmm5, 328(%rdi)
 vextracti128 $1, %ymm5, %xmm5
 vmovq %xmm5, 344(%rdi)
 vpshufb shufmin1_mask3(%rip), %ymm5, %ymm5
 vmovdqa %xmm5, 1792(%rsp)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %xmm6, 680(%rdi)
 vextracti128 $1, %ymm6, %xmm6
 vmovq %xmm6, 696(%rdi)
 vpshufb shufmin1_mask3(%rip), %ymm6, %ymm6
 vmovdqa %xmm6, 1824(%rsp)
-vpand mask_mod8192(%rip), %ymm3, %ymm3
 vmovdqu %xmm3, 1032(%rdi)
 vextracti128 $1, %ymm3, %xmm3
 vmovq %xmm3, 1048(%rdi)
 vpshufb shufmin1_mask3(%rip), %ymm3, %ymm3
 vmovdqa %xmm3, 1856(%rsp)
-vpand mask_mod8192(%rip), %ymm7, %ymm7
 vmovdqu %xmm7, 1384(%rdi)
 vextracti128 $1, %ymm7, %xmm7
 vmovq %xmm7, 1400(%rdi)
@@ -7926,7 +7829,6 @@ vpor %ymm8, %ymm4, %ymm4
 vmovdqu 64(%rdi), %ymm8
 vpaddw 1920(%rsp), %ymm8, %ymm8
 vpaddw %ymm4, %ymm8, %ymm8
-vpand mask_mod8192(%rip), %ymm8, %ymm8
 vmovdqu %xmm8, 64(%rdi)
 vextracti128 $1, %ymm8, %xmm8
 vmovq %xmm8, 80(%rdi)
@@ -7958,15 +7860,12 @@ vpor %ymm8, %ymm5, %ymm5
 vpaddw 2688(%rsp), %ymm2, %ymm2
 vpaddw %ymm5, %ymm2, %ymm2
 vmovdqa %xmm10, 2688(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %xmm11, 416(%rdi)
 vextracti128 $1, %ymm11, %xmm11
 vmovq %xmm11, 432(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %xmm6, 768(%rdi)
 vextracti128 $1, %ymm6, %xmm6
 vmovq %xmm6, 784(%rdi)
-vpand mask_mod8192(%rip), %ymm2, %ymm2
 vmovdqu %xmm2, 1120(%rdi)
 vextracti128 $1, %ymm2, %xmm2
 vmovq %xmm2, 1136(%rdi)
@@ -8049,7 +7948,6 @@ vpor %ymm7, %ymm10, %ymm10
 vmovdqu 152(%rdi), %ymm7
 vpaddw 1952(%rsp), %ymm7, %ymm7
 vpaddw %ymm10, %ymm7, %ymm7
-vpand mask_mod8192(%rip), %ymm7, %ymm7
 vmovdqu %xmm7, 152(%rdi)
 vextracti128 $1, %ymm7, %xmm7
 vmovq %xmm7, 168(%rdi)
@@ -8081,15 +7979,12 @@ vpor %ymm7, %ymm11, %ymm11
 vpaddw 2720(%rsp), %ymm8, %ymm8
 vpaddw %ymm11, %ymm8, %ymm8
 vmovdqa %xmm9, 2720(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %xmm5, 504(%rdi)
 vextracti128 $1, %ymm5, %xmm5
 vmovq %xmm5, 520(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %xmm6, 856(%rdi)
 vextracti128 $1, %ymm6, %xmm6
 vmovq %xmm6, 872(%rdi)
-vpand mask_mod8192(%rip), %ymm8, %ymm8
 vmovdqu %xmm8, 1208(%rdi)
 vextracti128 $1, %ymm8, %xmm8
 vmovq %xmm8, 1224(%rdi)
@@ -8172,7 +8067,6 @@ vpor %ymm4, %ymm9, %ymm9
 vmovdqu 240(%rdi), %ymm4
 vpaddw 1984(%rsp), %ymm4, %ymm4
 vpaddw %ymm9, %ymm4, %ymm4
-vpand mask_mod8192(%rip), %ymm4, %ymm4
 vmovdqu %xmm4, 240(%rdi)
 vextracti128 $1, %ymm4, %xmm4
 vmovq %xmm4, 256(%rdi)
@@ -8204,15 +8098,12 @@ vpor %ymm4, %ymm5, %ymm5
 vpaddw 2752(%rsp), %ymm7, %ymm7
 vpaddw %ymm5, %ymm7, %ymm7
 vmovdqa %xmm3, 2752(%rsp)
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %xmm11, 592(%rdi)
 vextracti128 $1, %ymm11, %xmm11
 vmovq %xmm11, 608(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %xmm6, 944(%rdi)
 vextracti128 $1, %ymm6, %xmm6
 vmovq %xmm6, 960(%rdi)
-vpand mask_mod8192(%rip), %ymm7, %ymm7
 vmovdqu %xmm7, 1296(%rdi)
 vextracti128 $1, %ymm7, %xmm7
 vmovq %xmm7, 1312(%rdi)
@@ -8304,7 +8195,6 @@ vpor %ymm10, %ymm3, %ymm3
 vmovdqu 328(%rdi), %ymm10
 vpaddw 2016(%rsp), %ymm10, %ymm10
 vpaddw %ymm3, %ymm10, %ymm10
-vpand mask_mod8192(%rip), %ymm10, %ymm10
 vmovdqu %xmm10, 328(%rdi)
 vextracti128 $1, %ymm10, %xmm10
 vmovq %xmm10, 344(%rdi)
@@ -8338,119 +8228,92 @@ vpor %ymm10, %ymm11, %ymm11
 vpaddw 2784(%rsp), %ymm4, %ymm4
 vpaddw %ymm11, %ymm4, %ymm4
 vmovdqa %xmm2, 2784(%rsp)
-vpand mask_mod8192(%rip), %ymm5, %ymm5
 vmovdqu %xmm5, 680(%rdi)
 vextracti128 $1, %ymm5, %xmm5
 vmovq %xmm5, 696(%rdi)
-vpand mask_mod8192(%rip), %ymm6, %ymm6
 vmovdqu %xmm6, 1032(%rdi)
 vextracti128 $1, %ymm6, %xmm6
 vmovq %xmm6, 1048(%rdi)
-vpand mask_mod8192(%rip), %ymm4, %ymm4
 vmovdqu %xmm4, 1384(%rdi)
 vextracti128 $1, %ymm4, %xmm4
 vmovq %xmm4, 1400(%rdi)
 vmovdqu 0(%rdi), %ymm11
 vpaddw 1888(%rsp), %ymm11, %ymm11
 vpaddw 2816(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 0(%rdi)
 vmovdqu 352(%rdi), %ymm11
 vpaddw 2528(%rsp), %ymm11, %ymm11
 vpaddw 2848(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 352(%rdi)
 vmovdqu 704(%rdi), %ymm11
 vpaddw 2784(%rsp), %ymm11, %ymm11
 vpaddw 2880(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 704(%rdi)
 vmovdqu 88(%rdi), %ymm11
 vpaddw 2048(%rsp), %ymm11, %ymm11
 vpaddw 1920(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 88(%rdi)
 vmovdqu 440(%rdi), %ymm11
 vpaddw 2304(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 440(%rdi)
 vmovdqu 792(%rdi), %ymm11
 vpaddw 2560(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 792(%rdi)
 vmovdqu 176(%rdi), %ymm11
 vpaddw 2080(%rsp), %ymm11, %ymm11
 vpaddw 1952(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 176(%rdi)
 vmovdqu 528(%rdi), %ymm11
 vpaddw 2336(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 528(%rdi)
 vmovdqu 880(%rdi), %ymm11
 vpaddw 2592(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 880(%rdi)
 vmovdqu 264(%rdi), %ymm11
 vpaddw 2112(%rsp), %ymm11, %ymm11
 vpaddw 1984(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 264(%rdi)
 vmovdqu 616(%rdi), %ymm11
 vpaddw 2368(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 616(%rdi)
 vmovdqu 968(%rdi), %ymm11
 vpaddw 2624(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 968(%rdi)
 vmovdqu 352(%rdi), %ymm11
 vpaddw 2144(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 352(%rdi)
 vmovdqu 704(%rdi), %ymm11
 vpaddw 2400(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 704(%rdi)
 vmovdqu 1056(%rdi), %ymm11
 vpaddw 2656(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 1056(%rdi)
 vmovdqu 440(%rdi), %ymm11
 vpaddw 2176(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 440(%rdi)
 vmovdqu 792(%rdi), %ymm11
 vpaddw 2432(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 792(%rdi)
 vmovdqu 1144(%rdi), %ymm11
 vpaddw 2688(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 1144(%rdi)
 vmovdqu 528(%rdi), %ymm11
 vpaddw 2208(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 528(%rdi)
 vmovdqu 880(%rdi), %ymm11
 vpaddw 2464(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 880(%rdi)
 vmovdqu 1232(%rdi), %ymm11
 vpaddw 2720(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 1232(%rdi)
 vmovdqu 616(%rdi), %ymm11
 vpaddw 2240(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 616(%rdi)
 vmovdqu 968(%rdi), %ymm11
 vpaddw 2496(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 968(%rdi)
 vmovdqu 1320(%rdi), %ymm11
 vpaddw 2752(%rsp), %ymm11, %ymm11
-vpand mask_mod8192(%rip), %ymm11, %ymm11
 vmovdqu %ymm11, 1320(%rdi)
 mov %r8, %rsp
 pop %r12

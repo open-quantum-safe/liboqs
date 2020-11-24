@@ -1,3 +1,5 @@
+#include "inner.h"
+
 /*
  * Support functions for signatures (hash-to-point, norm).
  *
@@ -29,7 +31,6 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
-#include "inner.h"
 
 /* see inner.h */
 void

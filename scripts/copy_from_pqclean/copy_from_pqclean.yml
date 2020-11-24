@@ -65,32 +65,20 @@ kems:
         sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
   -
     name: hqc
-    default_implementation: leaktime
+    default_implementation: clean
     schemes:
       -
-        scheme: "128_1_cca2"
-        pqclean_scheme: hqc-128-1-cca2
-        pretty_name_full: HQC-128-1-CCA2
+        scheme: "128"
+        pqclean_scheme: hqc-rmrs-128
+        pretty_name_full: HQC-128
       -
-        scheme: "192_1_cca2"
-        pqclean_scheme: hqc-192-1-cca2
-        pretty_name_full: HQC-192-1-CCA2
+        scheme: "192"
+        pqclean_scheme: hqc-rmrs-192
+        pretty_name_full: HQC-192
       -
-        scheme: "192_2_cca2"
-        pqclean_scheme: hqc-192-2-cca2
-        pretty_name_full: HQC-192-2-CCA2
-      -
-        scheme: "256_1_cca2"
-        pqclean_scheme: hqc-256-1-cca2
-        pretty_name_full: HQC-256-1-CCA2
-      -
-        scheme: "256_2_cca2"
-        pqclean_scheme: hqc-256-2-cca2
-        pretty_name_full: HQC-256-2-CCA2
-      -
-        scheme: "256_3_cca2"
-        pqclean_scheme: hqc-256-3-cca2
-        pretty_name_full: HQC-256-3-CCA2
+        scheme: "256"
+        pqclean_scheme: hqc-rmrs-256
+        pretty_name_full: HQC-256
   -
     name: kyber
     default_implementation: clean

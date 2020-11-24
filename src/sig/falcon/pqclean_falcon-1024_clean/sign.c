@@ -1,3 +1,5 @@
+#include "inner.h"
+
 /*
  * Falcon signature generation.
  *
@@ -29,7 +31,6 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
-#include "inner.h"
 
 /* =================================================================== */
 
@@ -1081,8 +1082,8 @@ BerExp(prng *p, fpr x, fpr ccs) {
 int
 PQCLEAN_FALCON1024_CLEAN_sampler(void *ctx, fpr mu, fpr isigma) {
     sampler_context *spc;
-    int s;
-    fpr r, dss, ccs;
+    int s, z0, z, b;
+    fpr r, dss, ccs, x;
 
     spc = ctx;
 
@@ -1107,9 +1108,6 @@ PQCLEAN_FALCON1024_CLEAN_sampler(void *ctx, fpr mu, fpr isigma) {
      * We now need to sample on center r.
      */
     for (;;) {
-        int z0, z, b;
-        fpr x;
-
         /*
          * Sample z for a Gaussian distribution. Then get a
          * random bit b to turn the sampling into a bimodal

@@ -1,3 +1,6 @@
+#ifndef PQCLEAN_FALCON512_CLEAN_FPR_H
+#define PQCLEAN_FALCON512_CLEAN_FPR_H
+
 /*
  * Floating-point operations.
  *
@@ -467,4 +470,4 @@ extern const fpr fpr_gm_tab[];
 extern const fpr fpr_p2_tab[];
 
 /* ====================================================================== */
-
+#endif
