@@ -108,8 +108,8 @@ void *test_wrapper(void *arg) {
 
 int main(int argc, char **argv) {
 
-	if (argc != 2) {
-		fprintf(stderr, "Usage: test_sig algname\n");
+	if ((argc != 2) && !( (argc == 3) && !strncmp(argv[2], "-mem", 4) ))  {
+		fprintf(stderr, "Usage: test_sig algname [-mem]\n");
 		fprintf(stderr, "  algname: ");
 		for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
 			if (i > 0) {
@@ -144,7 +144,7 @@ int main(int argc, char **argv) {
 			break;
 		}
 	}
-	if (test_in_thread) {
+	if (test_in_thread && argc != 3) { // no pthread testing if -mem option has been set
 		pthread_t thread;
 		struct thread_data td;
 		td.alg_name = alg_name;
