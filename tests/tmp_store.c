@@ -29,7 +29,7 @@ static OQS_STATUS oqs_fload(const char *fname, uint8_t *data, size_t len) {
 		return OQS_ERROR;
 	}
 	if (fread(data, len, 1, fp) != 1) {
-		fprintf(stderr, "Couldn't read all %d bytes correctly (operations called in proper sequence?). Exiting.\n", (int)len);
+		fprintf(stderr, "Couldn't read all %zu bytes correctly (operations called in proper sequence?). Exiting.\n", len);
 		return OQS_ERROR;
 	}
 	fclose(fp);

@@ -94,7 +94,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 			goto err;
 		}
 		if (sig->length_signature != signature_len) {
-			fprintf(stderr, "WARNING: Unexpected signature length: %ld vs %ld\n", signature_len, sig->length_signature);
+			fprintf(stderr, "WARNING: Unexpected signature length: %zu vs %zu\n", signature_len, sig->length_signature);
 		}
 		if (oqs_fstore("ct", message, message_len) != OQS_SUCCESS) {
 			goto err;
