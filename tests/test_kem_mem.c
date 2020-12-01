@@ -212,7 +212,7 @@ int main(int argc, char **argv) {
 
 	OQS_STATUS rc;
 
-	rc = kem_test_correctness(alg_name, atoi(argv[2]));
+	rc = kem_test_correctness(alg_name, (unsigned int)atoi(argv[2]));
 
 	if (rc != OQS_SUCCESS) {
 		return EXIT_FAILURE;

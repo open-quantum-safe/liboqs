@@ -13,7 +13,7 @@
 #include "system_info.c"
 #include "tmp_store.c"
 
-typedef enum kem_ops {
+typedef enum sig_ops {
 	SIG_KEYGEN = 0,
 	SIG_SIGN   = 1,
 	SIG_VERIFY = 2
@@ -194,7 +194,7 @@ int main(int argc, char **argv) {
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
-	OQS_STATUS rc = sig_test_correctness(alg_name, atoi(argv[2]));
+	OQS_STATUS rc = sig_test_correctness(alg_name, (unsigned int)atoi(argv[2]));
 
 	if (rc != OQS_SUCCESS) {
 		return EXIT_FAILURE;
