@@ -8,6 +8,7 @@
 #include <oqs/oqs.h>
 
 #include "system_info.c"
+#include "tmp_store.c"
 
 /* Displays hexadecimal strings */
 static void OQS_print_hex_string(const char *label, const uint8_t *str, size_t len) {
@@ -24,41 +25,12 @@ typedef struct magic_s {
 
 typedef enum kem_ops {
 	KEM_KEYGEN    = 0,
-        KEM_ENCAPS    = 1,
-        KEM_DECAPS    = 2
+	KEM_ENCAPS    = 1,
+	KEM_DECAPS    = 2
 } KEM_OPS;
 
 #define STORE_PREFIX "/tmp/oqs-temp-file-"
 #define MAXPATHLEN 64
-
-static OQS_STATUS oqs_fstore(const char* fname, uint8_t *data, int len) {
-	char fpath[MAXPATHLEN];
-	strcpy(fpath,STORE_PREFIX);
-	FILE* fp = fopen(strcat(fpath,fname), "wb");
-	if (!fp) {
-		fprintf(stderr, "Couldn't open %s for writing.\n", fpath);
-		return OQS_ERROR;
-	}
-	fwrite(data,len,1,fp);
-	fclose(fp);
-	return OQS_SUCCESS;
-}
-
-static OQS_STATUS oqs_fload(const char* fname, uint8_t *data, int len) {
-	char fpath[MAXPATHLEN];
-	strcpy(fpath,STORE_PREFIX);
-	FILE* fp = fopen(strcat(fpath,fname), "r");
-	if (!fp) {
-		fprintf(stderr, "Couldn't open %s for reading.\n", fpath);
-		return OQS_ERROR;
-	}
-	if (fread(data,len,1,fp) != 1) {
-		fprintf(stderr, "Couldn't read all %d bytes correctly. Exiting.\n", len);
-		return OQS_ERROR;
-	}
-	fclose(fp);
-	return OQS_SUCCESS;
-}
 
 static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 
@@ -77,61 +49,104 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 		goto err;
 	}
 
-	printf("================================================================================\n");
-	printf("Sample computation for KEM %s\n", kem->method_name);
-	printf("================================================================================\n");
+	switch (op) {
+	case KEM_KEYGEN:
+		printf("================================================================================\n");
+		printf("Executing keygen for KEM %s\n", kem->method_name);
+		printf("================================================================================\n");
 
-	public_key = malloc(kem->length_public_key);
-	secret_key = malloc(kem->length_secret_key);
-	ciphertext = malloc(kem->length_ciphertext);
-	shared_secret_e = malloc(kem->length_shared_secret);
-	shared_secret_d = malloc(kem->length_shared_secret);
+		public_key = malloc(kem->length_public_key);
+		secret_key = malloc(kem->length_secret_key);
 
-	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
-		fprintf(stderr, "ERROR: malloc failed\n");
-		goto err;
-	}
+		if ((public_key == NULL) || (secret_key == NULL)) {
+			fprintf(stderr, "ERROR: malloc failed\n");
+			goto err;
+		}
 
-	if (op == KEM_KEYGEN) {
 		rc = OQS_KEM_keypair(kem, public_key, secret_key);
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_keypair failed\n");
 			goto err;
 		}
-		if (oqs_fstore("pk", public_key, kem->length_public_key) != OQS_SUCCESS) goto err;
-		if (oqs_fstore("sk", secret_key, kem->length_secret_key) != OQS_SUCCESS) goto err;
+		if (oqs_fstore("pk", public_key, kem->length_public_key) != OQS_SUCCESS) {
+			goto err;
+		}
+		if (oqs_fstore("sk", secret_key, kem->length_secret_key) != OQS_SUCCESS) {
+			goto err;
+		}
 		ret = OQS_SUCCESS;
 		goto cleanup;
-	}
-	else { // get it from file
-		if (oqs_fload("pk", public_key, kem->length_public_key) != OQS_SUCCESS) goto err;
-                if (oqs_fload("sk", secret_key, kem->length_secret_key) != OQS_SUCCESS) goto err;	
-	}
 
-	if (op == KEM_ENCAPS) {
+	case KEM_ENCAPS:
+		printf("================================================================================\n");
+		printf("Executing encaps for KEM %s\n", kem->method_name);
+		printf("================================================================================\n");
+
+		public_key = malloc(kem->length_public_key);
+		secret_key = malloc(kem->length_secret_key);
+		ciphertext = malloc(kem->length_ciphertext);
+		shared_secret_e = malloc(kem->length_shared_secret);
+
+		if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL)) {
+			fprintf(stderr, "ERROR: malloc failed\n");
+			goto err;
+		}
+
+		if (oqs_fload("pk", public_key, kem->length_public_key) != OQS_SUCCESS) {
+			goto err;
+		}
+		if (oqs_fload("sk", secret_key, kem->length_secret_key) != OQS_SUCCESS) {
+			goto err;
+		}
 		rc = OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key);
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_encaps failed\n");
 			goto err;
 		}
-		if (oqs_fstore("ct", ciphertext, kem->length_ciphertext) != OQS_SUCCESS) goto err;
-		if (oqs_fstore("se", shared_secret_e, kem->length_shared_secret) != OQS_SUCCESS) goto err;
+		if (oqs_fstore("ct", ciphertext, kem->length_ciphertext) != OQS_SUCCESS) {
+			goto err;
+		}
+		if (oqs_fstore("se", shared_secret_e, kem->length_shared_secret) != OQS_SUCCESS) {
+			goto err;
+		}
 		ret = OQS_SUCCESS;
 		goto cleanup;
-	}
-	else { // get it from file
-		if (oqs_fload("ct", ciphertext, kem->length_ciphertext) != OQS_SUCCESS) goto err;
-                if (oqs_fload("se", shared_secret_e, kem->length_shared_secret) != OQS_SUCCESS) goto err;	
-	}
 
-	if (op == KEM_DECAPS) {
+	case KEM_DECAPS:
+		printf("================================================================================\n");
+		printf("Executing decaps for KEM %s\n", kem->method_name);
+		printf("================================================================================\n");
+
+		public_key = malloc(kem->length_public_key);
+		secret_key = malloc(kem->length_secret_key);
+		ciphertext = malloc(kem->length_ciphertext);
+		shared_secret_e = malloc(kem->length_shared_secret);
+		shared_secret_d = malloc(kem->length_shared_secret);
+
+		if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
+			fprintf(stderr, "ERROR: malloc failed\n");
+			goto err;
+		}
+		if (oqs_fload("pk", public_key, kem->length_public_key) != OQS_SUCCESS) {
+			goto err;
+		}
+		if (oqs_fload("sk", secret_key, kem->length_secret_key) != OQS_SUCCESS) {
+			goto err;
+		}
+		if (oqs_fload("ct", ciphertext, kem->length_ciphertext) != OQS_SUCCESS) {
+			goto err;
+		}
+		if (oqs_fload("se", shared_secret_e, kem->length_shared_secret) != OQS_SUCCESS) {
+			goto err;
+		}
+
 		rc = OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key);
 		if (rc != OQS_SUCCESS) {
 			fprintf(stderr, "ERROR: OQS_KEM_decaps failed\n");
 			goto err;
 		}
 
-	 	rv = memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret);
+		rv = memcmp(shared_secret_e, shared_secret_d, kem->length_shared_secret);
 		if (rv != 0) {
 			fprintf(stderr, "ERROR: shared secrets are not equal\n");
 			OQS_print_hex_string("shared_secret_e", shared_secret_e, kem->length_shared_secret);
@@ -140,10 +155,14 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 		} else {
 			printf("shared secrets are equal\n");
 		}
+		ret = OQS_SUCCESS;
+		goto cleanup;
+
+	default:
+		fprintf(stderr, "Incorrect operation requested. Aborting.\n");
+		goto err;
 	}
 
-	ret = OQS_SUCCESS;
-	goto cleanup;
 
 err:
 	ret = OQS_ERROR;
@@ -154,8 +173,12 @@ cleanup:
 		OQS_MEM_secure_free(shared_secret_e, kem->length_shared_secret);
 		OQS_MEM_secure_free(shared_secret_d, kem->length_shared_secret);
 	}
-	OQS_MEM_insecure_free(public_key);
-	OQS_MEM_insecure_free(ciphertext);
+	if (public_key) {
+		OQS_MEM_insecure_free(public_key);
+	}
+	if (ciphertext) {
+		OQS_MEM_insecure_free(ciphertext);
+	}
 	OQS_KEM_free(kem);
 
 	return ret;

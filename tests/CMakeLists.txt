@@ -86,6 +86,9 @@ else ()
     target_link_libraries(test_sig PRIVATE ${API_TEST_DEPS})
 endif()
 
+add_executable(test_sig_mem test_sig_mem.c)
+target_link_libraries(test_sig_mem PRIVATE ${API_TEST_DEPS})
+
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
 
