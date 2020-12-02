@@ -29,9 +29,6 @@ typedef enum kem_ops {
 	KEM_DECAPS    = 2
 } KEM_OPS;
 
-#define STORE_PREFIX "/tmp/oqs-temp-file-"
-#define MAXPATHLEN 64
-
 static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 
 	OQS_KEM *kem = NULL;
@@ -69,10 +66,10 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 			fprintf(stderr, "ERROR: OQS_KEM_keypair failed\n");
 			goto err;
 		}
-		if (oqs_fstore("pk", public_key, kem->length_public_key) != OQS_SUCCESS) {
+		if (oqs_fstore("pk", method_name, public_key, kem->length_public_key) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fstore("sk", secret_key, kem->length_secret_key) != OQS_SUCCESS) {
+		if (oqs_fstore("sk", method_name, secret_key, kem->length_secret_key) != OQS_SUCCESS) {
 			goto err;
 		}
 		ret = OQS_SUCCESS;
@@ -93,10 +90,10 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 			goto err;
 		}
 
-		if (oqs_fload("pk", public_key, kem->length_public_key, &retlen) != OQS_SUCCESS) {
+		if (oqs_fload("pk", method_name, public_key, kem->length_public_key, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("sk", secret_key, kem->length_secret_key, &retlen) != OQS_SUCCESS) {
+		if (oqs_fload("sk", method_name, secret_key, kem->length_secret_key, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
 		rc = OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key);
@@ -104,10 +101,10 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 			fprintf(stderr, "ERROR: OQS_KEM_encaps failed\n");
 			goto err;
 		}
-		if (oqs_fstore("ct", ciphertext, kem->length_ciphertext) != OQS_SUCCESS) {
+		if (oqs_fstore("ct", method_name, ciphertext, kem->length_ciphertext) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fstore("se", shared_secret_e, kem->length_shared_secret) != OQS_SUCCESS) {
+		if (oqs_fstore("se", method_name, shared_secret_e, kem->length_shared_secret) != OQS_SUCCESS) {
 			goto err;
 		}
 		ret = OQS_SUCCESS;
@@ -128,16 +125,16 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 			fprintf(stderr, "ERROR: malloc failed\n");
 			goto err;
 		}
-		if (oqs_fload("pk", public_key, kem->length_public_key, &retlen) != OQS_SUCCESS) {
+		if (oqs_fload("pk", method_name, public_key, kem->length_public_key, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("sk", secret_key, kem->length_secret_key, &retlen) != OQS_SUCCESS) {
+		if (oqs_fload("sk", method_name, secret_key, kem->length_secret_key, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("ct", ciphertext, kem->length_ciphertext, &retlen) != OQS_SUCCESS) {
+		if (oqs_fload("ct", method_name, ciphertext, kem->length_ciphertext, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("se", shared_secret_e, kem->length_shared_secret, &retlen) != OQS_SUCCESS) {
+		if (oqs_fload("se", method_name, shared_secret_e, kem->length_shared_secret, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
 

@@ -5,11 +5,12 @@
 #include <string.h>
 
 #define STORE_PREFIX "/tmp/oqs-temp-file-"
-#define MAXPATHLEN 64
+#define MAXPATHLEN 128
 
-static OQS_STATUS oqs_fstore(const char *fname, uint8_t *data, size_t len) {
+static OQS_STATUS oqs_fstore(const char *fname, const char* mname, uint8_t *data, size_t len) {
 	char fpath[MAXPATHLEN];
 	strcpy(fpath, STORE_PREFIX);
+	strcat(fpath, mname);
 	FILE *fp = fopen(strcat(fpath, fname), "wb");
 	if (!fp) {
 		fprintf(stderr, "Couldn't open %s for writing.\n", fpath);
@@ -20,9 +21,10 @@ static OQS_STATUS oqs_fstore(const char *fname, uint8_t *data, size_t len) {
 	return OQS_SUCCESS;
 }
 
-static OQS_STATUS oqs_fload(const char *fname, uint8_t *data, size_t len, size_t *rcvd) {
+static OQS_STATUS oqs_fload(const char *fname, const char* mname, uint8_t *data, size_t len, size_t *rcvd) {
 	char fpath[MAXPATHLEN];
 	strcpy(fpath, STORE_PREFIX);
+	strcat(fpath, mname);
 	FILE *fp = fopen(strcat(fpath, fname), "r");
 	if (!fp) {
 		fprintf(stderr, "Couldn't open %s for reading.\n", fpath);

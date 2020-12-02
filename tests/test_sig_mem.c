@@ -19,9 +19,6 @@ typedef enum sig_ops {
 	SIG_VERIFY = 2
 } SIG_OPS;
 
-#define STORE_PREFIX "/tmp/oqs-temp-file-"
-#define MAXPATHLEN 64
-
 static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 
 	OQS_SIG *sig = NULL;
@@ -56,10 +53,10 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 			fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
 			goto err;
 		}
-		if (oqs_fstore("pk", public_key, sig->length_public_key) != OQS_SUCCESS) {
+		if (oqs_fstore("pk", method_name, public_key, sig->length_public_key) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fstore("sk", secret_key, sig->length_secret_key) != OQS_SUCCESS) {
+		if (oqs_fstore("sk", method_name, secret_key, sig->length_secret_key) != OQS_SUCCESS) {
 			goto err;
 		}
 		ret = OQS_SUCCESS;
@@ -79,10 +76,10 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 			fprintf(stderr, "ERROR: malloc failed\n");
 			goto err;
 		}
-		if (oqs_fload("pk", public_key, sig->length_public_key, &signature_len) != OQS_SUCCESS) {
+		if (oqs_fload("pk", method_name, public_key, sig->length_public_key, &signature_len) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("sk", secret_key, sig->length_secret_key, &signature_len) != OQS_SUCCESS) {
+		if (oqs_fload("sk", method_name, secret_key, sig->length_secret_key, &signature_len) != OQS_SUCCESS) {
 			goto err;
 		}
 
@@ -93,10 +90,10 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 			fprintf(stderr, "ERROR: OQS_SIG_sign failed\n");
 			goto err;
 		}
-		if (oqs_fstore("ct", message, message_len) != OQS_SUCCESS) {
+		if (oqs_fstore("ct", method_name, message, message_len) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fstore("se", signature, signature_len) != OQS_SUCCESS) {
+		if (oqs_fstore("se", method_name, signature, signature_len) != OQS_SUCCESS) {
 			goto err;
 		}
 		ret = OQS_SUCCESS;
@@ -116,16 +113,16 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 			fprintf(stderr, "ERROR: malloc failed\n");
 			goto err;
 		}
-		if (oqs_fload("pk", public_key, sig->length_public_key, &signature_len) != OQS_SUCCESS) {
+		if (oqs_fload("pk", method_name, public_key, sig->length_public_key, &signature_len) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("sk", secret_key, sig->length_secret_key, &signature_len) != OQS_SUCCESS) {
+		if (oqs_fload("sk", method_name, secret_key, sig->length_secret_key, &signature_len) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("ct", message, message_len, &signature_len) != OQS_SUCCESS) {
+		if (oqs_fload("ct", method_name, message, message_len, &signature_len) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("se", signature, sig->length_signature, &signature_len) != OQS_SUCCESS) {
+		if (oqs_fload("se", method_name, signature, sig->length_signature, &signature_len) != OQS_SUCCESS) {
 			goto err;
 		}
 
