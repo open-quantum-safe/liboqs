@@ -10,8 +10,8 @@ CRYSTALS-Kyber
 Implementation
 --------------
 
-- **Source of implementation**: https://github.com/pq-crystals/kyber
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/3c8be3cb1f8ca0953f2df44ea665f118efb468d6
+- **Source of implementation**: https://github.com/pq-crystals/kyber/commit/e7faae9f662f5b92fee4e966f09b2f23e1e91c65 via https://github.com/jschanck/package-pqclean/tree/231c9bec/kyber
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/168e3625988defacdf10812642e4d412fb295dc0
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AVX2 instructions (if available at run-time)
@@ -20,10 +20,10 @@ Parameter sets
 --------------
 
 | Parameter set | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
-|---------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| Kyber512      |     IND-CCA    |              1              |           800           |          1632           |            736          |             32             |
-| Kyber512-90s  |     IND-CCA    |              1              |           800           |          1632           |            736          |             32             |
-| Kyber768      |     IND-CCA    |              3              |          1184           |          2400           |           1088          |             32             |
-| Kyber768-90s  |     IND-CCA    |              3              |          1184           |          2400           |           1088          |             32             |
-| Kyber1024     |     IND-CCA    |              5              |          1568           |          3168           |           1568          |             32             |
-| Kyber1024-90s |     IND-CCA    |              5              |          1568           |          3168           |           1568          |             32             |
+|---------------|----------------|-----------------------------|-------------------------|-------------------------|-------------------------|----------------------------|
+| Kyber512      | IND-CCA        | 1                           | 800                     | 1632                    | 768                     | 32                         |
+| Kyber512-90s  | IND-CCA        | 1                           | 800                     | 1632                    | 768                     | 32                         |
+| Kyber768      | IND-CCA        | 3                           | 1184                    | 2400                    | 1088                    | 32                         |
+| Kyber768-90s  | IND-CCA        | 3                           | 1184                    | 2400                    | 1088                    | 32                         |
+| Kyber1024     | IND-CCA        | 5                           | 1568                    | 3168                    | 1568                    | 32                         |
+| Kyber1024-90s | IND-CCA        | 5                           | 1568                    | 3168                    | 1568                    | 32                         |

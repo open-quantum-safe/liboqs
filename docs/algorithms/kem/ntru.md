@@ -10,8 +10,8 @@ NTRU
 Implementation
 --------------
 
-- **Source of implementation**: https://github.com/jschanck/ntru/tree/60cc7277
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/3c8be3cb1f8ca0953f2df44ea665f118efb468d6
+- **Source of implementation**: https://github.com/jschanck/ntru/tree/a43a4457
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/168e3625988defacdf10812642e4d412fb295dc0
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C, AVX2
