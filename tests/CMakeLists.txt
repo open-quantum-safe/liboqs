@@ -66,6 +66,9 @@ else ()
     target_link_libraries(test_kem PRIVATE ${API_TEST_DEPS})
 endif()
 
+add_executable(test_kem_mem test_kem_mem.c)
+target_link_libraries(test_kem_mem PRIVATE ${API_TEST_DEPS})
+
 add_executable(speed_kem speed_kem.c)
 target_link_libraries(speed_kem PRIVATE ${API_TEST_DEPS})
 
@@ -83,6 +86,9 @@ else ()
     target_link_libraries(test_sig PRIVATE ${API_TEST_DEPS})
 endif()
 
+add_executable(test_sig_mem test_sig_mem.c)
+target_link_libraries(test_sig_mem PRIVATE ${API_TEST_DEPS})
+
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
 
@@ -95,7 +101,7 @@ add_definitions(-DOQS_COMPILE_OPTIONS="[${OQS_COMPILE_OPTIONS}]")
 # for DLL builds.
 add_custom_target(
     run_tests
-    COMMAND ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto
+    COMMAND mkdir -p tmp && ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS oqs example_kem kat_kem test_kem example_sig kat_sig test_sig ${UNIX_TESTS}
+    DEPENDS oqs example_kem kat_kem test_kem example_sig kat_sig test_sig test_sig_mem test_kem_mem ${UNIX_TESTS}
     USES_TERMINAL)
