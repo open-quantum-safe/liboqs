@@ -42,6 +42,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 	uint8_t *shared_secret_d = NULL;
 	OQS_STATUS rc, ret = OQS_ERROR;
 	int rv;
+	size_t retlen;
 
 	kem = OQS_KEM_new(method_name);
 	if (kem == NULL) {
@@ -92,10 +93,10 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 			goto err;
 		}
 
-		if (oqs_fload("pk", public_key, kem->length_public_key) != OQS_SUCCESS) {
+		if (oqs_fload("pk", public_key, kem->length_public_key, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("sk", secret_key, kem->length_secret_key) != OQS_SUCCESS) {
+		if (oqs_fload("sk", secret_key, kem->length_secret_key, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
 		rc = OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key);
@@ -127,16 +128,16 @@ static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
 			fprintf(stderr, "ERROR: malloc failed\n");
 			goto err;
 		}
-		if (oqs_fload("pk", public_key, kem->length_public_key) != OQS_SUCCESS) {
+		if (oqs_fload("pk", public_key, kem->length_public_key, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("sk", secret_key, kem->length_secret_key) != OQS_SUCCESS) {
+		if (oqs_fload("sk", secret_key, kem->length_secret_key, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("ct", ciphertext, kem->length_ciphertext) != OQS_SUCCESS) {
+		if (oqs_fload("ct", ciphertext, kem->length_ciphertext, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
-		if (oqs_fload("se", shared_secret_e, kem->length_shared_secret) != OQS_SUCCESS) {
+		if (oqs_fload("se", shared_secret_e, kem->length_shared_secret, &retlen) != OQS_SUCCESS) {
 			goto err;
 		}
 

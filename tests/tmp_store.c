@@ -20,7 +20,7 @@ static OQS_STATUS oqs_fstore(const char *fname, uint8_t *data, size_t len) {
 	return OQS_SUCCESS;
 }
 
-static OQS_STATUS oqs_fload(const char *fname, uint8_t *data, size_t len) {
+static OQS_STATUS oqs_fload(const char *fname, uint8_t *data, size_t len, size_t *rcvd) {
 	char fpath[MAXPATHLEN];
 	strcpy(fpath, STORE_PREFIX);
 	FILE *fp = fopen(strcat(fpath, fname), "r");
@@ -28,8 +28,9 @@ static OQS_STATUS oqs_fload(const char *fname, uint8_t *data, size_t len) {
 		fprintf(stderr, "Couldn't open %s for reading.\n", fpath);
 		return OQS_ERROR;
 	}
-	if (fread(data, len, 1, fp) != 1) {
-		fprintf(stderr, "Couldn't read all %zu bytes correctly (operations called in proper sequence?). Exiting.\n", len);
+	*rcvd = fread(data, 1, len, fp);
+	if (*rcvd < 1) {
+		fprintf(stderr, "Error reading data (operations called in proper sequence?). Expecting %zu. Exiting.\n", len);
 		return OQS_ERROR;
 	}
 	fclose(fp);
