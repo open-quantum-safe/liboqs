@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define STORE_PREFIX "/tmp/oqs-temp-file-"
+#define STORE_PREFIX "tmp/oqs-temp-file-"
 #define MAXPATHLEN 128
 
-static OQS_STATUS oqs_fstore(const char *fname, const char* mname, uint8_t *data, size_t len) {
+static OQS_STATUS oqs_fstore(const char *fname, const char *mname, uint8_t *data, size_t len) {
 	char fpath[MAXPATHLEN];
 	strcpy(fpath, STORE_PREFIX);
 	strcat(fpath, mname);
@@ -21,7 +21,7 @@ static OQS_STATUS oqs_fstore(const char *fname, const char* mname, uint8_t *data
 	return OQS_SUCCESS;
 }
 
-static OQS_STATUS oqs_fload(const char *fname, const char* mname, uint8_t *data, size_t len, size_t *rcvd) {
+static OQS_STATUS oqs_fload(const char *fname, const char *mname, uint8_t *data, size_t len, size_t *rcvd) {
 	char fpath[MAXPATHLEN];
 	strcpy(fpath, STORE_PREFIX);
 	strcat(fpath, mname);

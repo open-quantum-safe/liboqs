@@ -101,7 +101,7 @@ add_definitions(-DOQS_COMPILE_OPTIONS="[${OQS_COMPILE_OPTIONS}]")
 # for DLL builds.
 add_custom_target(
     run_tests
-    COMMAND ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto
+    COMMAND mkdir -p tmp && ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS oqs example_kem kat_kem test_kem example_sig kat_sig test_sig ${UNIX_TESTS}
+    DEPENDS oqs example_kem kat_kem test_kem example_sig kat_sig test_sig test_sig_mem test_kem_mem ${UNIX_TESTS}
     USES_TERMINAL)
