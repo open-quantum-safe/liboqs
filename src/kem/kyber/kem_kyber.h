@@ -8,7 +8,7 @@
 #ifdef OQS_ENABLE_KEM_kyber_512
 #define OQS_KEM_kyber_512_length_public_key 800
 #define OQS_KEM_kyber_512_length_secret_key 1632
-#define OQS_KEM_kyber_512_length_ciphertext 736
+#define OQS_KEM_kyber_512_length_ciphertext 768
 #define OQS_KEM_kyber_512_length_shared_secret 32
 OQS_KEM *OQS_KEM_kyber_512_new(void);
 OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair(uint8_t *public_key, uint8_t *secret_key);
@@ -41,7 +41,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_1024_decaps(uint8_t *shared_secret, const unsig
 #ifdef OQS_ENABLE_KEM_kyber_512_90s
 #define OQS_KEM_kyber_512_90s_length_public_key 800
 #define OQS_KEM_kyber_512_90s_length_secret_key 1632
-#define OQS_KEM_kyber_512_90s_length_ciphertext 736
+#define OQS_KEM_kyber_512_90s_length_ciphertext 768
 #define OQS_KEM_kyber_512_90s_length_shared_secret 32
 OQS_KEM *OQS_KEM_kyber_512_90s_new(void);
 OQS_API OQS_STATUS OQS_KEM_kyber_512_90s_keypair(uint8_t *public_key, uint8_t *secret_key);

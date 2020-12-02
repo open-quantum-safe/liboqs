@@ -1,8 +1,9 @@
-#include "aes256ctr.h"
-#include "aes.h"
+#include "symmetric-aes.h"
+#include "symmetric.h"
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+
 
 static inline void br_enc32be(unsigned char *dst, uint32_t x) {
     dst[3] = (unsigned char)x;
@@ -14,7 +15,7 @@ static inline void br_enc32be(unsigned char *dst, uint32_t x) {
 static void aes256_ctr_xof(unsigned char *out, size_t outlen, const unsigned char *iv, uint32_t ctr, const aes256ctx *ctx) {
     uint8_t ivw[16];
     uint8_t buf[AES_BLOCKBYTES];
-    size_t i;
+    size_t i = 0;
 
     memcpy(ivw, iv, AESCTR_NONCEBYTES);
     br_enc32be(ivw + AESCTR_NONCEBYTES, ctr);
@@ -44,7 +45,7 @@ static void aes256_ctr_xof(unsigned char *out, size_t outlen, const unsigned cha
 *              - const uint8_t *key:   pointer to 32-byte key
 *              - uint8_t nonce:        1-byte nonce (will be zero-padded to 12 bytes)
 **************************************************/
-void PQCLEAN_KYBER76890S_CLEAN_aes256_prf(uint8_t *output, size_t outlen, const uint8_t *key, uint8_t nonce) {
+void PQCLEAN_KYBER102490S_CLEAN_aes256ctr_prf(uint8_t *output, size_t outlen, const uint8_t *key, uint8_t nonce) {
     uint8_t iv[12];
     for (int i = 1; i < 12; i++) {
         iv[i] = 0;
@@ -58,7 +59,7 @@ void PQCLEAN_KYBER76890S_CLEAN_aes256_prf(uint8_t *output, size_t outlen, const 
 }
 
 /*************************************************
-* Name:        aes256xof_absorb
+* Name:        PQCLEAN_KYBER102490S_CLEAN_aes256xof_absorb
 *
 * Description: AES256 CTR used as a replacement for a XOF; this function
 *              "absorbs" a 32-byte key and two additional bytes that are zero-padded
@@ -69,7 +70,7 @@ void PQCLEAN_KYBER76890S_CLEAN_aes256_prf(uint8_t *output, size_t outlen, const 
 *              - uint8_t x:           first additional byte to "absorb"
 *              - uint8_t y:           second additional byte to "absorb"
 **************************************************/
-void PQCLEAN_KYBER76890S_CLEAN_aes256xof_absorb(aes256xof_ctx *s, const uint8_t *key, uint8_t x, uint8_t y) {
+void PQCLEAN_KYBER102490S_CLEAN_aes256xof_absorb(aes256xof_ctx *s, const uint8_t *key, uint8_t x, uint8_t y) {
     aes256_ecb_keyexp(&s->sk_exp, key);
     for (int i = 2; i < 12; i++) {
         s->iv[i] = 0;
@@ -80,7 +81,7 @@ void PQCLEAN_KYBER76890S_CLEAN_aes256xof_absorb(aes256xof_ctx *s, const uint8_t 
 }
 
 /*************************************************
-* Name:        aes256xof_squeezeblocks
+* Name:        PQCLEAN_KYBER102490S_CLEAN_aes256xof_squeezeblocks
 *
 * Description: AES256 CTR used as a replacement for a XOF; this function
 *              generates 4 blocks out AES256-CTR output
@@ -89,12 +90,11 @@ void PQCLEAN_KYBER76890S_CLEAN_aes256xof_absorb(aes256xof_ctx *s, const uint8_t 
 *              - size_t nblocks:        number of reqested 64-byte output blocks
 *              - aes256xof_ctx *s:      AES "state", i.e. expanded key and IV
 **************************************************/
-void PQCLEAN_KYBER76890S_CLEAN_aes256xof_squeezeblocks(uint8_t *out, size_t nblocks, aes256xof_ctx *s) {
+void PQCLEAN_KYBER102490S_CLEAN_aes256xof_squeezeblocks(uint8_t *out, size_t nblocks, aes256xof_ctx *s) {
     aes256_ctr_xof(out, nblocks * 64, s->iv, s->ctr, &s->sk_exp);
     s->ctr += (uint32_t) (4 * nblocks);
 }
 
-/** Free the AES ctx **/
-void PQCLEAN_KYBER76890S_CLEAN_aes256xof_ctx_release(aes256xof_ctx *s) {
+void PQCLEAN_KYBER102490S_CLEAN_aes256xof_ctx_release(aes256xof_ctx *s) {
     aes256_ctx_release(&s->sk_exp);
 }

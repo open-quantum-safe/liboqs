@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_kyber_768_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_kyber_768;
-	kem->alg_version = "https://github.com/pq-crystals/kyber/commit/46e283ab575ec92dfe82fb12229ae2d9d6246682";
+	kem->alg_version = "https://github.com/pq-crystals/kyber/commit/e7faae9f662f5b92fee4e966f09b2f23e1e91c65 via https://github.com/jschanck/package-pqclean/tree/231c9bec/kyber";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -44,7 +44,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair(uint8_t *public_key, uint8_t *secre
 #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
 #if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+	if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
 #endif /* OQS_PORTABLE_BUILD */
 		return (OQS_STATUS) PQCLEAN_KYBER768_AVX2_crypto_kem_keypair(public_key, secret_key);
 #if defined(OQS_PORTABLE_BUILD)
@@ -61,7 +61,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps(uint8_t *ciphertext, uint8_t *shared
 #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
 #if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+	if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
 #endif /* OQS_PORTABLE_BUILD */
 		return (OQS_STATUS) PQCLEAN_KYBER768_AVX2_crypto_kem_enc(ciphertext, shared_secret, public_key);
 #if defined(OQS_PORTABLE_BUILD)
@@ -78,7 +78,7 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_decaps(uint8_t *shared_secret, const unsign
 #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
 #if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+	if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
 #endif /* OQS_PORTABLE_BUILD */
 		return (OQS_STATUS) PQCLEAN_KYBER768_AVX2_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 #if defined(OQS_PORTABLE_BUILD)

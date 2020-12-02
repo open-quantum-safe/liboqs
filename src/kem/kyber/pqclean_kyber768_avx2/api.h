@@ -15,5 +15,4 @@ int PQCLEAN_KYBER768_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t
 
 int PQCLEAN_KYBER768_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
-
 #endif

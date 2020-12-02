@@ -1,12 +1,9 @@
+#include "cdecl.h"
 .include "fq.inc"
 .include "shuffle.inc"
 
-.global PQCLEAN_KYBER102490S_AVX2_nttunpack_avx
-PQCLEAN_KYBER102490S_AVX2_nttunpack_avx:
-#consts
-vmovdqa		PQCLEAN_KYBER102490S_AVX2_16xq(%rip),%ymm0
-vmovdqa		PQCLEAN_KYBER102490S_AVX2_16xv(%rip),%ymm1
-
+/*
+nttpack_avx:
 #load
 vmovdqa		(%rdi),%ymm4
 vmovdqa		32(%rdi),%ymm5
@@ -17,17 +14,50 @@ vmovdqa		160(%rdi),%ymm9
 vmovdqa		192(%rdi),%ymm10
 vmovdqa		224(%rdi),%ymm11
 
-/*
-#reduce
-red16		4 12
-red16		5 13
-red16		6 14
-red16		7 15
-red16		8 12
-red16		9 13
-red16		10 14
-red16		11 15
+shuffle1	4,5,3,5
+shuffle1	6,7,4,7
+shuffle1	8,9,6,9
+shuffle1	10,11,8,11
+
+shuffle2	3,4,10,4
+shuffle2	6,8,3,8
+shuffle2	5,7,6,7
+shuffle2	9,11,5,11
+
+shuffle4	10,3,9,3
+shuffle4	6,5,10,5
+shuffle4	4,8,6,8
+shuffle4	7,11,4,11
+
+shuffle8	9,10,7,10
+shuffle8	6,4,9,4
+shuffle8	3,5,6,5
+shuffle8	8,11,3,11
+
+#store
+vmovdqa		%ymm7,(%rdi)
+vmovdqa		%ymm9,32(%rdi)
+vmovdqa		%ymm6,64(%rdi)
+vmovdqa		%ymm3,96(%rdi)
+vmovdqa		%ymm10,128(%rdi)
+vmovdqa		%ymm4,160(%rdi)
+vmovdqa		%ymm5,192(%rdi)
+vmovdqa		%ymm11,224(%rdi)
+
+ret
 */
+
+.text
+nttunpack128_avx:
+#load
+vmovdqa		(%rdi),%ymm4
+vmovdqa		32(%rdi),%ymm5
+vmovdqa		64(%rdi),%ymm6
+vmovdqa		96(%rdi),%ymm7
+vmovdqa		128(%rdi),%ymm8
+vmovdqa		160(%rdi),%ymm9
+vmovdqa		192(%rdi),%ymm10
+vmovdqa		224(%rdi),%ymm11
 
 shuffle8	4,8,3,8
 shuffle8	5,9,4,9
@@ -61,11 +91,16 @@ vmovdqa		%ymm11,224(%rdi)
 
 ret
 
-.global PQCLEAN_KYBER102490S_AVX2_ntttobytes_avx
-PQCLEAN_KYBER102490S_AVX2_ntttobytes_avx:
-#consts
-vmovdqa		PQCLEAN_KYBER102490S_AVX2_16xq(%rip),%ymm0
+.global cdecl(PQCLEAN_KYBER102490S_AVX2_nttunpack_avx)
+.global _cdecl(PQCLEAN_KYBER102490S_AVX2_nttunpack_avx)
+cdecl(PQCLEAN_KYBER102490S_AVX2_nttunpack_avx):
+_cdecl(PQCLEAN_KYBER102490S_AVX2_nttunpack_avx):
+call		nttunpack128_avx
+add		$256,%rdi
+call		nttunpack128_avx
+ret
 
+ntttobytes128_avx:
 #load
 vmovdqa		(%rsi),%ymm5
 vmovdqa		32(%rsi),%ymm6
@@ -77,14 +112,14 @@ vmovdqa		192(%rsi),%ymm11
 vmovdqa		224(%rsi),%ymm12
 
 #csubq
-csubq		5 13
-csubq		6 14
-csubq		7 15
-csubq		8 1
-csubq		9 13
-csubq		10 14
-csubq		11 15
-csubq		12 1
+csubq		5,13
+csubq		6,13
+csubq		7,13
+csubq		8,13
+csubq		9,13
+csubq		10,13
+csubq		11,13
+csubq		12,13
 
 #bitpack
 vpsllw		$12,%ymm6,%ymm4
@@ -135,11 +170,19 @@ vmovdqu		%ymm9,160(%rdi)
 
 ret
 
-.global PQCLEAN_KYBER102490S_AVX2_nttfrombytes_avx
-PQCLEAN_KYBER102490S_AVX2_nttfrombytes_avx:
+.global cdecl(PQCLEAN_KYBER102490S_AVX2_ntttobytes_avx)
+.global _cdecl(PQCLEAN_KYBER102490S_AVX2_ntttobytes_avx)
+cdecl(PQCLEAN_KYBER102490S_AVX2_ntttobytes_avx):
+_cdecl(PQCLEAN_KYBER102490S_AVX2_ntttobytes_avx):
 #consts
-vmovdqa		PQCLEAN_KYBER102490S_AVX2_16xmask(%rip),%ymm0
+vmovdqa		_16XQ*2(%rdx),%ymm0
+call		ntttobytes128_avx
+add		$256,%rsi
+add		$192,%rdi
+call		ntttobytes128_avx
+ret
 
+nttfrombytes128_avx:
 #load
 vmovdqu		(%rsi),%ymm4
 vmovdqu		32(%rsi),%ymm5
@@ -203,4 +246,16 @@ vmovdqa		%ymm14,160(%rdi)
 vmovdqa		%ymm15,192(%rdi)
 vmovdqa		%ymm1,224(%rdi)
 
+ret
+
+.global cdecl(PQCLEAN_KYBER102490S_AVX2_nttfrombytes_avx)
+.global _cdecl(PQCLEAN_KYBER102490S_AVX2_nttfrombytes_avx)
+cdecl(PQCLEAN_KYBER102490S_AVX2_nttfrombytes_avx):
+_cdecl(PQCLEAN_KYBER102490S_AVX2_nttfrombytes_avx):
+#consts
+vmovdqa		_16XMASK*2(%rdx),%ymm0
+call		nttfrombytes128_avx
+add		$256,%rdi
+add		$192,%rsi
+call		nttfrombytes128_avx
 ret

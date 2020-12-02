@@ -1,180 +1,107 @@
-#include "params.h"
+#include "cdecl.h"
 
-.macro schoolbook off,sign
-#load
-vmovdqa		\off+32(%rsi),%ymm7	# b
-vmovdqa		\off+32(%rdx),%ymm8	# d
-vmovdqa		\off(%rsi),%ymm9	# a
-vmovdqa		\off(%rdx),%ymm10	# c
+.macro schoolbook off
+vmovdqa		_16XQINV*2(%rcx),%ymm0
+vmovdqa		(64*\off+ 0)*2(%rsi),%ymm1		# a0
+vmovdqa		(64*\off+16)*2(%rsi),%ymm2		# b0
+vmovdqa		(64*\off+32)*2(%rsi),%ymm3		# a1
+vmovdqa		(64*\off+48)*2(%rsi),%ymm4		# b1
 
-#mul
-vpmullw		%ymm7,%ymm8,%ymm11	# bd.lo
-vpmulhw		%ymm7,%ymm8,%ymm12	# bd.hi
-vpmullw		%ymm7,%ymm10,%ymm13	# bc.lo
-vpmulhw		%ymm7,%ymm10,%ymm7	# bc.hi
-vpmullw		%ymm9,%ymm8,%ymm14	# ad.lo
-vpmulhw		%ymm9,%ymm8,%ymm8	# ad.hi
-vpmullw		%ymm9,%ymm10,%ymm15	# ac.lo
-vpmulhw		%ymm9,%ymm10,%ymm9	# ac.hi
+vpmullw		%ymm0,%ymm1,%ymm9			# a0.lo
+vpmullw		%ymm0,%ymm2,%ymm10			# b0.lo
+vpmullw		%ymm0,%ymm3,%ymm11			# a1.lo
+vpmullw		%ymm0,%ymm4,%ymm12			# b1.lo
 
-#reduce
-vpmullw		%ymm1,%ymm11,%ymm11
-vpmulhw		%ymm0,%ymm11,%ymm11
-vpsubw		%ymm11,%ymm12,%ymm11	# bd
+vmovdqa		(64*\off+ 0)*2(%rdx),%ymm5		# c0
+vmovdqa		(64*\off+16)*2(%rdx),%ymm6		# d0
 
-#mul
-vpmullw		%ymm2,%ymm11,%ymm10	# rbd.lo
-vpmulhw		%ymm2,%ymm11,%ymm11	# rbd.hi
+vpmulhw		%ymm5,%ymm1,%ymm13			# a0c0.hi
+vpmulhw		%ymm6,%ymm1,%ymm1			# a0d0.hi
+vpmulhw		%ymm5,%ymm2,%ymm14			# b0c0.hi
+vpmulhw		%ymm6,%ymm2,%ymm2			# b0d0.hi
 
-#unpack
-vpunpcklwd	%ymm7,%ymm13,%ymm12	# bc0
-vpunpckhwd	%ymm7,%ymm13,%ymm7	# bc1
-vpunpcklwd	%ymm8,%ymm14,%ymm13	# ad0
-vpunpckhwd	%ymm8,%ymm14,%ymm8	# ad1
-vpunpcklwd	%ymm9,%ymm15,%ymm14	# ac0
-vpunpckhwd	%ymm9,%ymm15,%ymm9	# ac1
-vpunpcklwd	%ymm11,%ymm10,%ymm15	# rbd0
-vpunpckhwd	%ymm11,%ymm10,%ymm10	# rbd1
+vmovdqa		(64*\off+32)*2(%rdx),%ymm7		# c1
+vmovdqa		(64*\off+48)*2(%rdx),%ymm8		# d1
 
-#add
-.ifeq \sign
-vpaddd		%ymm14,%ymm15,%ymm14	# x0
-vpaddd		%ymm9,%ymm10,%ymm9	# x1
-.else
-vpsubd		%ymm15,%ymm14,%ymm14	# x0
-vpsubd		%ymm10,%ymm9,%ymm9	# x1
-.endif
-vpaddd		%ymm12,%ymm13,%ymm12	# y0
-vpaddd		%ymm7,%ymm8,%ymm7	# y1
+vpmulhw		%ymm7,%ymm3,%ymm15			# a1c1.hi
+vpmulhw		%ymm8,%ymm3,%ymm3			# a1d1.hi
+vpmulhw		%ymm7,%ymm4,%ymm0			# b1c1.hi
+vpmulhw		%ymm8,%ymm4,%ymm4			# b1d1.hi
+
+vmovdqa		%ymm13,(%rsp)
+
+vpmullw		%ymm5,%ymm9,%ymm13			# a0c0.lo
+vpmullw		%ymm6,%ymm9,%ymm9			# a0d0.lo
+vpmullw		%ymm5,%ymm10,%ymm5			# b0c0.lo
+vpmullw		%ymm6,%ymm10,%ymm10			# b0d0.lo
+
+vpmullw		%ymm7,%ymm11,%ymm6			# a1c1.lo
+vpmullw		%ymm8,%ymm11,%ymm11			# a1d1.lo
+vpmullw		%ymm7,%ymm12,%ymm7			# b1c1.lo
+vpmullw		%ymm8,%ymm12,%ymm12			# b1d1.lo
+
+vmovdqa		_16XQ*2(%rcx),%ymm8
+vpmulhw		%ymm8,%ymm13,%ymm13
+vpmulhw		%ymm8,%ymm9,%ymm9
+vpmulhw		%ymm8,%ymm5,%ymm5
+vpmulhw		%ymm8,%ymm10,%ymm10
+vpmulhw		%ymm8,%ymm6,%ymm6
+vpmulhw		%ymm8,%ymm11,%ymm11
+vpmulhw		%ymm8,%ymm7,%ymm7
+vpmulhw		%ymm8,%ymm12,%ymm12
+
+vpsubw		(%rsp),%ymm13,%ymm13			# -a0c0
+vpsubw		%ymm9,%ymm1,%ymm9			# a0d0
+vpsubw		%ymm5,%ymm14,%ymm5			# b0c0
+vpsubw		%ymm10,%ymm2,%ymm10			# b0d0
+
+vpsubw		%ymm6,%ymm15,%ymm6			# a1c1
+vpsubw		%ymm11,%ymm3,%ymm11			# a1d1
+vpsubw		%ymm7,%ymm0,%ymm7			# b1c1
+vpsubw		%ymm12,%ymm4,%ymm12			# b1d1
+
+vmovdqa		(%r9),%ymm0
+vmovdqa		32(%r9),%ymm1
+vpmullw		%ymm0,%ymm10,%ymm2
+vpmullw		%ymm0,%ymm12,%ymm3
+vpmulhw		%ymm1,%ymm10,%ymm10
+vpmulhw		%ymm1,%ymm12,%ymm12
+vpmulhw		%ymm8,%ymm2,%ymm2
+vpmulhw		%ymm8,%ymm3,%ymm3
+vpsubw		%ymm2,%ymm10,%ymm10			# rb0d0
+vpsubw		%ymm3,%ymm12,%ymm12			# rb1d1
+
+vpaddw		%ymm5,%ymm9,%ymm9
+vpaddw		%ymm7,%ymm11,%ymm11
+vpsubw		%ymm13,%ymm10,%ymm13
+vpsubw		%ymm12,%ymm6,%ymm6
+
+vmovdqa		%ymm13,(64*\off+ 0)*2(%rdi)
+vmovdqa		%ymm9,(64*\off+16)*2(%rdi)
+vmovdqa		%ymm6,(64*\off+32)*2(%rdi)
+vmovdqa		%ymm11,(64*\off+48)*2(%rdi)
 .endm
 
-.macro red a0,a1,b0,b1 x,y,z
-#pack
-vpxor		%ymm\x,%ymm\x,%ymm\x
-vpblendw	$0xAA,%ymm\x,%ymm\a0,%ymm\y
-vpblendw	$0xAA,%ymm\x,%ymm\a1,%ymm\z
-vpsrld		$16,%ymm\a0,%ymm\a0
-vpsrld		$16,%ymm\a1,%ymm\a1
-vpackusdw	%ymm\z,%ymm\y,%ymm\z
-vpackusdw	%ymm\a1,%ymm\a0,%ymm\a0
-vpblendw	$0xAA,%ymm\x,%ymm\b0,%ymm\y
-vpblendw	$0xAA,%ymm\x,%ymm\b1,%ymm\x
-vpsrld		$16,%ymm\b0,%ymm\b0
-vpsrld		$16,%ymm\b1,%ymm\b1
-vpackusdw	%ymm\x,%ymm\y,%ymm\y
-vpackusdw	%ymm\b1,%ymm\b0,%ymm\b0
+.text
+.global cdecl(PQCLEAN_KYBER76890S_AVX2_basemul_avx)
+.global _cdecl(PQCLEAN_KYBER76890S_AVX2_basemul_avx)
+cdecl(PQCLEAN_KYBER76890S_AVX2_basemul_avx):
+_cdecl(PQCLEAN_KYBER76890S_AVX2_basemul_avx):
+mov		%rsp,%r8
+and		$-32,%rsp
+sub		$32,%rsp
 
-#reduce
-vpmullw		%ymm1,%ymm\z,%ymm\z
-vpmullw		%ymm1,%ymm\y,%ymm\y
-vpmulhw		%ymm0,%ymm\z,%ymm\z
-vpmulhw		%ymm0,%ymm\y,%ymm\y
-vpsubw		%ymm\z,%ymm\a0,%ymm\a0
-vpsubw		%ymm\y,%ymm\b0,%ymm\b0
-.endm
+lea		(_ZETAS_EXP+176)*2(%rcx),%r9
+schoolbook	0
 
-.global PQCLEAN_KYBER76890S_AVX2_basemul_acc_avx
-PQCLEAN_KYBER76890S_AVX2_basemul_acc_avx:
-#consts
-vmovdqa		PQCLEAN_KYBER76890S_AVX2_16xq(%rip),%ymm0
-vmovdqa		PQCLEAN_KYBER76890S_AVX2_16xqinv(%rip),%ymm1
-vmovdqu		(%rcx),%ymm2
+add		$32*2,%r9
+schoolbook	1
 
-poly0.0:
-schoolbook	0,0
+add		$192*2,%r9
+schoolbook	2
 
-#mov
-vmovdqa		%ymm14,%ymm3
-vmovdqa		%ymm9,%ymm4
-vmovdqa		%ymm12,%ymm5
-vmovdqa		%ymm7,%ymm6
+add		$32*2,%r9
+schoolbook	3
 
-poly1.0:
-schoolbook	512,0
-
-#add
-vpaddd		%ymm14,%ymm3,%ymm3
-vpaddd		%ymm9,%ymm4,%ymm4
-vpaddd		%ymm12,%ymm5,%ymm5
-vpaddd		%ymm7,%ymm6,%ymm6
-
-poly2.0:
-schoolbook	1024,0
-
-#add
-vpaddd		%ymm14,%ymm3,%ymm3
-vpaddd		%ymm9,%ymm4,%ymm4
-vpaddd		%ymm12,%ymm5,%ymm5
-vpaddd		%ymm7,%ymm6,%ymm6
-
-
-#reduce
-red		3,4,5,6 7,8,9
-
-#store
-vmovdqa		%ymm3,(%rdi)
-vmovdqa		%ymm5,32(%rdi)
-
-poly0.1:
-schoolbook	64,1
-
-#mov
-vmovdqa		%ymm14,%ymm3
-vmovdqa		%ymm9,%ymm4
-vmovdqa		%ymm12,%ymm5
-vmovdqa		%ymm7,%ymm6
-
-poly1.1:
-schoolbook	576,1
-
-#add
-vpaddd		%ymm14,%ymm3,%ymm3
-vpaddd		%ymm9,%ymm4,%ymm4
-vpaddd		%ymm12,%ymm5,%ymm5
-vpaddd		%ymm7,%ymm6,%ymm6
-
-poly2.1:
-schoolbook	1088,1
-
-#add
-vpaddd		%ymm14,%ymm3,%ymm3
-vpaddd		%ymm9,%ymm4,%ymm4
-vpaddd		%ymm12,%ymm5,%ymm5
-vpaddd		%ymm7,%ymm6,%ymm6
-
-
-#reduce
-red		3,4,5,6 7,8,9
-
-#store
-vmovdqa		%ymm3,64(%rdi)
-vmovdqa		%ymm5,96(%rdi)
-
-ret
-
-.global PQCLEAN_KYBER76890S_AVX2_basemul_avx
-PQCLEAN_KYBER76890S_AVX2_basemul_avx:
-#consts
-vmovdqa		PQCLEAN_KYBER76890S_AVX2_16xq(%rip),%ymm0
-vmovdqa		PQCLEAN_KYBER76890S_AVX2_16xqinv(%rip),%ymm1
-vmovdqu		(%rcx),%ymm2
-
-schoolbook	0,0
-
-#reduce
-red		14,9,12,7 8,10,11
-
-#store
-vmovdqa		%ymm14,(%rdi)
-vmovdqa		%ymm12,32(%rdi)
-
-schoolbook	64,1
-
-#reduce
-red		14,9,12,7 8,10,11
-
-#store
-vmovdqa		%ymm14,64(%rdi)
-vmovdqa		%ymm12,96(%rdi)
-
+mov		%r8,%rsp
 ret
