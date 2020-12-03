@@ -1,356 +1,401 @@
+#include "align.h"
 #include "cbd.h"
+#include "consts.h"
 #include "ntt.h"
 #include "params.h"
 #include "poly.h"
 #include "reduce.h"
 #include "symmetric.h"
-
 #include <immintrin.h>
 #include <stdint.h>
 
 /*************************************************
-* Name:        poly_compress
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_compress
 *
-* Description: Compression and subsequent serialization of a polynomial
+* Description: Compression and subsequent serialization of a polynomial.
+*              The coefficients of the input polynomial are assumed to
+*              lie in the invertal [0,q], i.e. the polynomial must be reduced
+*              by PQCLEAN_KYBER1024_AVX2_poly_reduce().
 *
 * Arguments:   - uint8_t *r: pointer to output byte array
-*              - const poly *a:    pointer to input polynomial
+*                            (of length KYBER_POLYCOMPRESSEDBYTES)
+*              - const poly *a: pointer to input polynomial
 **************************************************/
-void PQCLEAN_KYBER1024_AVX2_poly_compress(uint8_t *r, poly *a) {
-    uint8_t t[8];
-    size_t i, j, k = 0;
-
-    PQCLEAN_KYBER1024_AVX2_poly_csubq(a);
-
-    for (i = 0; i < KYBER_N; i += 8) {
-        for (j = 0; j < 8; j++) {
-            t[j] = (uint8_t)(((((uint32_t)a->coeffs[i + j] << 5) + KYBER_Q / 2) / KYBER_Q) & 31);
-        }
-
-        r[k]     = (uint8_t)( t[0]       | (t[1] << 5));
-        r[k + 1] = (uint8_t)((t[1] >> 3) | (t[2] << 2) | (t[3] << 7));
-        r[k + 2] = (uint8_t)((t[3] >> 1) | (t[4] << 4));
-        r[k + 3] = (uint8_t)((t[4] >> 4) | (t[5] << 1) | (t[6] << 6));
-        r[k + 4] = (uint8_t)((t[6] >> 2) | (t[7] << 3));
-        k += 5;
-    }
-}
-
-/*************************************************
-* Name:        poly_decompress
-*
-* Description: De-serialization and subsequent decompression of a polynomial;
-*              approximate inverse of poly_compress
-*
-* Arguments:   - poly *r:                pointer to output polynomial
-*              - const uint8_t *a: pointer to input byte array
-**************************************************/
-void PQCLEAN_KYBER1024_AVX2_poly_decompress(poly *r, const uint8_t *a) {
+void PQCLEAN_KYBER1024_AVX2_poly_compress(uint8_t r[160], const poly *restrict a) {
     size_t i;
-    for (i = 0; i < KYBER_N; i += 8) {
-        r->coeffs[i + 0] = (int16_t)( (((a[0] & 31) * KYBER_Q) + 16) >> 5);
-        r->coeffs[i + 1] = (int16_t)(((((a[0] >> 5) | ((a[1] & 3) << 3)) * KYBER_Q) + 16) >> 5);
-        r->coeffs[i + 2] = (int16_t)(((((a[1] >> 2) & 31) * KYBER_Q) + 16) >> 5);
-        r->coeffs[i + 3] = (int16_t)(((((a[1] >> 7) | ((a[2] & 15) << 1)) * KYBER_Q) + 16) >> 5);
-        r->coeffs[i + 4] = (int16_t)(((((a[2] >> 4) | ((a[3] &  1) << 4)) * KYBER_Q) + 16) >> 5);
-        r->coeffs[i + 5] = (int16_t)(((((a[3] >> 1) & 31) * KYBER_Q) + 16) >> 5);
-        r->coeffs[i + 6] = (int16_t)(((((a[3] >> 6) | ((a[4] &  7) << 2)) * KYBER_Q) + 16) >> 5);
-        r->coeffs[i + 7] = (int16_t)( (((a[4] >> 3) * KYBER_Q) + 16) >> 5);
-        a += 5;
+    uint32_t low;
+    __m256i f0, f1;
+    __m128i t0, t1;
+    const __m256i v = _mm256_load_si256(&PQCLEAN_KYBER1024_AVX2_qdata.vec[_16XV / 16]);
+    const __m256i shift1 = _mm256_set1_epi16(1 << 10);
+    const __m256i mask = _mm256_set1_epi16(31);
+    const __m256i shift2 = _mm256_set1_epi16((32 << 8) + 1);
+    const __m256i shift3 = _mm256_set1_epi32((1024 << 16) + 1);
+    const __m256i sllvdidx = _mm256_set1_epi64x(12);
+    const __m256i shufbidx = _mm256_set_epi8( 8, -1, -1, -1, -1, -1, 4, 3, 2, 1, 0, -1, 12, 11, 10, 9,
+                             -1, 12, 11, 10, 9, 8, -1, -1, -1, -1, -1, 4, 3, 2, 1, 0);
+
+    for (i = 0; i < KYBER_N / 32; i++) {
+        f0 = _mm256_load_si256(&a->vec[2 * i + 0]);
+        f1 = _mm256_load_si256(&a->vec[2 * i + 1]);
+        f0 = _mm256_mulhi_epi16(f0, v);
+        f1 = _mm256_mulhi_epi16(f1, v);
+        f0 = _mm256_mulhrs_epi16(f0, shift1);
+        f1 = _mm256_mulhrs_epi16(f1, shift1);
+        f0 = _mm256_and_si256(f0, mask);
+        f1 = _mm256_and_si256(f1, mask);
+        f0 = _mm256_packus_epi16(f0, f1);
+        f0 = _mm256_maddubs_epi16(f0, shift2);  // a0 a1 a2 a3 b0 b1 b2 b3 a4 a5 a6 a7 b4 b5 b6 b7
+        f0 = _mm256_madd_epi16(f0, shift3);     // a0 a1 b0 b1 a2 a3 b2 b3
+        f0 = _mm256_sllv_epi32(f0, sllvdidx);
+        f0 = _mm256_srlv_epi64(f0, sllvdidx);
+        f0 = _mm256_shuffle_epi8(f0, shufbidx);
+        t0 = _mm256_castsi256_si128(f0);
+        t1 = _mm256_extracti128_si256(f0, 1);
+        t0 = _mm_blendv_epi8(t0, t1, _mm256_castsi256_si128(shufbidx));
+        _mm_storeu_si128((__m128i *)&r[20 * i + 0], t0);
+        _mm_store_ss((float *)&low, _mm_castsi128_ps(t1));
+        r[20 * i + 16] = (uint8_t)low;
+        r[20 * i + 17] = (uint8_t)(low >> 0x08);
+        r[20 * i + 18] = (uint8_t)(low >> 0x10);
+        r[20 * i + 19] = (uint8_t)(low >> 0x18);
     }
 }
 
+void PQCLEAN_KYBER1024_AVX2_poly_decompress(poly *restrict r, const uint8_t a[160]) {
+    unsigned int i;
+    int16_t h;
+    __m128i t;
+    __m256i f;
+    const __m256i q = _mm256_load_si256(&PQCLEAN_KYBER1024_AVX2_qdata.vec[_16XQ / 16]);
+    const __m256i shufbidx = _mm256_set_epi8(9, 9, 9, 8, 8, 8, 8, 7, 7, 6, 6, 6, 6, 5, 5, 5,
+                             4, 4, 4, 3, 3, 3, 3, 2, 2, 1, 1, 1, 1, 0, 0, 0);
+    const __m256i mask = _mm256_set_epi16(248, 1984, 62, 496, 3968, 124, 992, 31,
+                                          248, 1984, 62, 496, 3968, 124, 992, 31);
+    const __m256i shift = _mm256_set_epi16(128, 16, 512, 64, 8, 256, 32, 1024,
+                                           128, 16, 512, 64, 8, 256, 32, 1024);
+
+    for (i = 0; i < KYBER_N / 16; i++) {
+        t = _mm_loadl_epi64((__m128i *)&a[10 * i + 0]);
+        h = (a[10 * i + 9] << 8) + a[10 * i + 8];
+        t = _mm_insert_epi16(t, h, 4);
+        f = _mm256_broadcastsi128_si256(t);
+        f = _mm256_shuffle_epi8(f, shufbidx);
+        f = _mm256_and_si256(f, mask);
+        f = _mm256_mullo_epi16(f, shift);
+        f = _mm256_mulhrs_epi16(f, q);
+        _mm256_store_si256(&r->vec[i], f);
+    }
+}
+
+
 /*************************************************
-* Name:        poly_tobytes
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_tobytes
 *
-* Description: Serialization of a polynomial
+* Description: Serialization of a polynomial in NTT representation.
+*              The coefficients of the input polynomial are assumed to
+*              lie in the invertal [0,q], i.e. the polynomial must be reduced
+*              by PQCLEAN_KYBER1024_AVX2_poly_reduce(). The coefficients are orderd as output by
+*              PQCLEAN_KYBER1024_AVX2_poly_ntt(); the serialized output coefficients are in bitreversed
+*              order.
 *
 * Arguments:   - uint8_t *r: pointer to output byte array
-*              - const poly *a:    pointer to input polynomial
+*                            (needs space for KYBER_POLYBYTES bytes)
+*              - poly *a: pointer to input polynomial
 **************************************************/
-void PQCLEAN_KYBER1024_AVX2_poly_tobytes(uint8_t *r, poly *a) {
-    PQCLEAN_KYBER1024_AVX2_ntttobytes_avx(r, a->coeffs);
-    PQCLEAN_KYBER1024_AVX2_ntttobytes_avx(r + 192, a->coeffs + 128);
+void PQCLEAN_KYBER1024_AVX2_poly_tobytes(uint8_t r[KYBER_POLYBYTES], poly *a) {
+    PQCLEAN_KYBER1024_AVX2_ntttobytes_avx(r, a->vec, PQCLEAN_KYBER1024_AVX2_qdata.vec);
 }
 
 /*************************************************
-* Name:        poly_frombytes
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_frombytes
 *
 * Description: De-serialization of a polynomial;
-*              inverse of poly_tobytes
+*              inverse of PQCLEAN_KYBER1024_AVX2_poly_tobytes
 *
-* Arguments:   - poly *r:                pointer to output polynomial
+* Arguments:   - poly *r: pointer to output polynomial
 *              - const uint8_t *a: pointer to input byte array
+*                                  (of KYBER_POLYBYTES bytes)
 **************************************************/
-void PQCLEAN_KYBER1024_AVX2_poly_frombytes(poly *r, const uint8_t *a) {
-    PQCLEAN_KYBER1024_AVX2_nttfrombytes_avx(r->coeffs, a);
-    PQCLEAN_KYBER1024_AVX2_nttfrombytes_avx(r->coeffs + 128, a + 192);
+void PQCLEAN_KYBER1024_AVX2_poly_frombytes(poly *r, const uint8_t a[KYBER_POLYBYTES]) {
+    PQCLEAN_KYBER1024_AVX2_nttfrombytes_avx(r->vec, a, PQCLEAN_KYBER1024_AVX2_qdata.vec);
 }
 
 /*************************************************
-* Name:        poly_getnoise
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_frommsg
+*
+* Description: Convert 32-byte message to polynomial
+*
+* Arguments:   - poly *r: pointer to output polynomial
+*              - const uint8_t *msg: pointer to input message
+**************************************************/
+void PQCLEAN_KYBER1024_AVX2_poly_frommsg(poly *restrict r, const uint8_t msg[KYBER_INDCPA_MSGBYTES]) {
+    __m256i f, g0, g1, g2, g3, h0, h1, h2, h3;
+    const __m256i shift = _mm256_broadcastsi128_si256(_mm_set_epi32(0, 1, 2, 3));
+    const __m256i idx = _mm256_broadcastsi128_si256(_mm_set_epi8(15, 14, 11, 10, 7, 6, 3, 2, 13, 12, 9, 8, 5, 4, 1, 0));
+    const __m256i hqs = _mm256_set1_epi16((KYBER_Q + 1) / 2);
+
+#define FROMMSG64(i)                        \
+    g3 = _mm256_shuffle_epi32(f,0x55*(i));                \
+    g3 = _mm256_sllv_epi32(g3,shift);             \
+    g3 = _mm256_shuffle_epi8(g3,idx);             \
+    g0 = _mm256_slli_epi16(g3,12);                \
+    g1 = _mm256_slli_epi16(g3,8);                 \
+    g2 = _mm256_slli_epi16(g3,4);                 \
+    g0 = _mm256_srai_epi16(g0,15);                \
+    g1 = _mm256_srai_epi16(g1,15);                \
+    g2 = _mm256_srai_epi16(g2,15);                \
+    g3 = _mm256_srai_epi16(g3,15);                \
+    g0 = _mm256_and_si256(g0,hqs);  /* 19 18 17 16  3  2  1  0 */ \
+    g1 = _mm256_and_si256(g1,hqs);  /* 23 22 21 20  7  6  5  4 */ \
+    g2 = _mm256_and_si256(g2,hqs);  /* 27 26 25 24 11 10  9  8 */ \
+    g3 = _mm256_and_si256(g3,hqs);  /* 31 30 29 28 15 14 13 12 */ \
+    h0 = _mm256_unpacklo_epi64(g0,g1);                \
+    h2 = _mm256_unpackhi_epi64(g0,g1);                \
+    h1 = _mm256_unpacklo_epi64(g2,g3);                \
+    h3 = _mm256_unpackhi_epi64(g2,g3);                \
+    g0 = _mm256_permute2x128_si256(h0,h1,0x20);           \
+    g2 = _mm256_permute2x128_si256(h0,h1,0x31);           \
+    g1 = _mm256_permute2x128_si256(h2,h3,0x20);           \
+    g3 = _mm256_permute2x128_si256(h2,h3,0x31);           \
+    _mm256_store_si256(&r->vec[0+2*(i)+0],g0);    \
+    _mm256_store_si256(&r->vec[0+2*(i)+1],g1);    \
+    _mm256_store_si256(&r->vec[8+2*(i)+0],g2);    \
+    _mm256_store_si256(&r->vec[8+2*(i)+1],g3)
+
+    f = _mm256_loadu_si256((__m256i *)msg);
+    FROMMSG64(0);
+    FROMMSG64(1);
+    FROMMSG64(2);
+    FROMMSG64(3);
+}
+
+/*************************************************
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_tomsg
+*
+* Description: Convert polynomial to 32-byte message.
+*              The coefficients of the input polynomial are assumed to
+*              lie in the invertal [0,q], i.e. the polynomial must be reduced
+*              by PQCLEAN_KYBER1024_AVX2_poly_reduce().
+*
+* Arguments:   - uint8_t *msg: pointer to output message
+*              - poly *a: pointer to input polynomial
+**************************************************/
+void PQCLEAN_KYBER1024_AVX2_poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], poly *restrict a) {
+    unsigned int i;
+    uint32_t small;
+    __m256i f0, f1, g0, g1;
+    const __m256i hq = _mm256_set1_epi16((KYBER_Q - 1) / 2);
+    const __m256i hhq = _mm256_set1_epi16((KYBER_Q - 1) / 4);
+
+    for (i = 0; i < KYBER_N / 32; i++) {
+        f0 = _mm256_load_si256(&a->vec[2 * i + 0]);
+        f1 = _mm256_load_si256(&a->vec[2 * i + 1]);
+        f0 = _mm256_sub_epi16(hq, f0);
+        f1 = _mm256_sub_epi16(hq, f1);
+        g0 = _mm256_srai_epi16(f0, 15);
+        g1 = _mm256_srai_epi16(f1, 15);
+        f0 = _mm256_xor_si256(f0, g0);
+        f1 = _mm256_xor_si256(f1, g1);
+        f0 = _mm256_sub_epi16(f0, hhq);
+        f1 = _mm256_sub_epi16(f1, hhq);
+        f0 = _mm256_packs_epi16(f0, f1);
+        small = _mm256_movemask_epi8(f0);
+        msg[4 * i + 0] = small;
+        msg[4 * i + 1] = small >> 16;
+        msg[4 * i + 2] = small >>  8;
+        msg[4 * i + 3] = small >> 24;
+    }
+}
+
+/*************************************************
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_getnoise_eta1
 *
 * Description: Sample a polynomial deterministically from a seed and a nonce,
 *              with output polynomial close to centered binomial distribution
-*              with parameter KYBER_ETA
+*              with parameter KYBER_ETA1
 *
-* Arguments:   - poly *r:                   pointer to output polynomial
+* Arguments:   - poly *r: pointer to output polynomial
 *              - const uint8_t *seed: pointer to input seed
-*              - uint8_t nonce:       one-byte input nonce
+*                                     (of length KYBER_SYMBYTES bytes)
+*              - uint8_t nonce: one-byte input nonce
 **************************************************/
-void PQCLEAN_KYBER1024_AVX2_poly_getnoise(poly *r, const uint8_t *seed, uint8_t nonce) {
-    uint8_t buf[KYBER_ETA * KYBER_N / 4];
-
-    prf(buf, KYBER_ETA * KYBER_N / 4, seed, nonce);
-    PQCLEAN_KYBER1024_AVX2_cbd(r, buf);
+void PQCLEAN_KYBER1024_AVX2_poly_getnoise_eta1(poly *r, const uint8_t seed[KYBER_SYMBYTES], uint8_t nonce) {
+    ALIGNED_UINT8(KYBER_ETA1 * KYBER_N / 4 + 32) buf; // +32 bytes as required by PQCLEAN_KYBER1024_AVX2_poly_cbd_eta1
+    prf(buf.coeffs, KYBER_ETA1 * KYBER_N / 4, seed, nonce);
+    PQCLEAN_KYBER1024_AVX2_poly_cbd_eta1(r, buf.vec);
 }
 
-// FIXME
-void PQCLEAN_KYBER1024_AVX2_poly_getnoise4x(poly *r0,
+/*************************************************
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_getnoise_eta2
+*
+* Description: Sample a polynomial deterministically from a seed and a nonce,
+*              with output polynomial close to centered binomial distribution
+*              with parameter KYBER_ETA2
+*
+* Arguments:   - poly *r: pointer to output polynomial
+*              - const uint8_t *seed: pointer to input seed
+*                                     (of length KYBER_SYMBYTES bytes)
+*              - uint8_t nonce: one-byte input nonce
+**************************************************/
+void PQCLEAN_KYBER1024_AVX2_poly_getnoise_eta2(poly *r, const uint8_t seed[KYBER_SYMBYTES], uint8_t nonce) {
+    ALIGNED_UINT8(KYBER_ETA2 * KYBER_N / 4) buf;
+    prf(buf.coeffs, KYBER_ETA2 * KYBER_N / 4, seed, nonce);
+    PQCLEAN_KYBER1024_AVX2_poly_cbd_eta2(r, buf.vec);
+}
+
+#define NOISE_NBLOCKS ((KYBER_ETA1*KYBER_N/4+SHAKE256_RATE-1)/SHAKE256_RATE)
+void PQCLEAN_KYBER1024_AVX2_poly_getnoise_eta1_4x(poly *r0,
         poly *r1,
         poly *r2,
         poly *r3,
-        const uint8_t *seed,
+        const uint8_t seed[32],
         uint8_t nonce0,
         uint8_t nonce1,
         uint8_t nonce2,
         uint8_t nonce3) {
-    uint8_t buf[4][SHAKE256_RATE];
+    ALIGNED_UINT8(NOISE_NBLOCKS * SHAKE256_RATE) buf[4];
+    __m256i f;
+    keccakx4_state state;
 
-    PQCLEAN_KYBER1024_AVX2_shake256x4_prf(buf[0], buf[1], buf[2], buf[3], SHAKE256_RATE, seed, nonce0, nonce1, nonce2, nonce3);
+    f = _mm256_loadu_si256((__m256i *)seed);
+    _mm256_store_si256(buf[0].vec, f);
+    _mm256_store_si256(buf[1].vec, f);
+    _mm256_store_si256(buf[2].vec, f);
+    _mm256_store_si256(buf[3].vec, f);
 
-    PQCLEAN_KYBER1024_AVX2_cbd(r0, buf[0]);
-    PQCLEAN_KYBER1024_AVX2_cbd(r1, buf[1]);
-    PQCLEAN_KYBER1024_AVX2_cbd(r2, buf[2]);
-    PQCLEAN_KYBER1024_AVX2_cbd(r3, buf[3]);
+    buf[0].coeffs[32] = nonce0;
+    buf[1].coeffs[32] = nonce1;
+    buf[2].coeffs[32] = nonce2;
+    buf[3].coeffs[32] = nonce3;
+
+    PQCLEAN_KYBER1024_AVX2_shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 33);
+    PQCLEAN_KYBER1024_AVX2_shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, NOISE_NBLOCKS, &state);
+
+    PQCLEAN_KYBER1024_AVX2_poly_cbd_eta1(r0, buf[0].vec);
+    PQCLEAN_KYBER1024_AVX2_poly_cbd_eta1(r1, buf[1].vec);
+    PQCLEAN_KYBER1024_AVX2_poly_cbd_eta1(r2, buf[2].vec);
+    PQCLEAN_KYBER1024_AVX2_poly_cbd_eta1(r3, buf[3].vec);
 }
 
+
 /*************************************************
-* Name:        poly_ntt
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_ntt
 *
 * Description: Computes negacyclic number-theoretic transform (NTT) of
-*              a polynomial in place;
-*              inputs assumed to be in normal order, output in bitreversed order
+*              a polynomial in place.
+*              Input coefficients assumed to be in normal order,
+*              output coefficients are in special order that is natural
+*              for the vectorization. Input coefficients are assumed to be
+*              bounded by q in absolute value, output coefficients are bounded
+*              by 16118 in absolute value.
 *
-* Arguments:   - uint16_t *r: pointer to in/output polynomial
+* Arguments:   - poly *r: pointer to in/output polynomial
 **************************************************/
 void PQCLEAN_KYBER1024_AVX2_poly_ntt(poly *r) {
-    PQCLEAN_KYBER1024_AVX2_ntt_level0_avx(r->coeffs, PQCLEAN_KYBER1024_AVX2_zetas_exp);
-    PQCLEAN_KYBER1024_AVX2_ntt_level0_avx(r->coeffs + 64, PQCLEAN_KYBER1024_AVX2_zetas_exp);
-    PQCLEAN_KYBER1024_AVX2_ntt_levels1t6_avx(r->coeffs, PQCLEAN_KYBER1024_AVX2_zetas_exp + 4);
-    PQCLEAN_KYBER1024_AVX2_ntt_levels1t6_avx(r->coeffs + 128, PQCLEAN_KYBER1024_AVX2_zetas_exp + 200);
+    PQCLEAN_KYBER1024_AVX2_ntt_avx(r->vec, PQCLEAN_KYBER1024_AVX2_qdata.vec);
 }
 
 /*************************************************
-* Name:        poly_invntt
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_invntt_tomont
 *
-* Description: Computes inverse of negacyclic number-theoretic transform (NTT) of
-*              a polynomial in place;
-*              inputs assumed to be in bitreversed order, output in normal order
+* Description: Computes inverse of negacyclic number-theoretic transform (NTT)
+*              of a polynomial in place;
+*              Input coefficients assumed to be in special order from vectorized
+*              forward ntt, output in normal order. Input coefficients can be
+*              arbitrary 16-bit integers, output coefficients are bounded by 14870
+*              in absolute value.
 *
-* Arguments:   - uint16_t *a: pointer to in/output polynomial
+* Arguments:   - poly *a: pointer to in/output polynomial
 **************************************************/
-void PQCLEAN_KYBER1024_AVX2_poly_invntt(poly *r) {
-    PQCLEAN_KYBER1024_AVX2_invntt_levels0t5_avx(r->coeffs, PQCLEAN_KYBER1024_AVX2_zetas_inv_exp);
-    PQCLEAN_KYBER1024_AVX2_invntt_levels0t5_avx(r->coeffs + 128, PQCLEAN_KYBER1024_AVX2_zetas_inv_exp + 196);
-    PQCLEAN_KYBER1024_AVX2_invntt_level6_avx(r->coeffs, PQCLEAN_KYBER1024_AVX2_zetas_inv_exp + 392);
+void PQCLEAN_KYBER1024_AVX2_poly_invntt_tomont(poly *r) {
+    PQCLEAN_KYBER1024_AVX2_invntt_avx(r->vec, PQCLEAN_KYBER1024_AVX2_qdata.vec);
 }
 
-// FIXME
 void PQCLEAN_KYBER1024_AVX2_poly_nttunpack(poly *r) {
-    PQCLEAN_KYBER1024_AVX2_nttunpack_avx(r->coeffs);
-    PQCLEAN_KYBER1024_AVX2_nttunpack_avx(r->coeffs + 128);
-}
-
-//XXX Add comment
-void PQCLEAN_KYBER1024_AVX2_poly_basemul(poly *r, const poly *a, const poly *b) {
-    PQCLEAN_KYBER1024_AVX2_basemul_avx(r->coeffs,
-                                       a->coeffs,
-                                       b->coeffs,
-                                       PQCLEAN_KYBER1024_AVX2_zetas_exp + 152);
-    PQCLEAN_KYBER1024_AVX2_basemul_avx(r->coeffs + 64,
-                                       a->coeffs + 64,
-                                       b->coeffs + 64,
-                                       PQCLEAN_KYBER1024_AVX2_zetas_exp + 184);
-    PQCLEAN_KYBER1024_AVX2_basemul_avx(r->coeffs + 128,
-                                       a->coeffs + 128,
-                                       b->coeffs + 128,
-                                       PQCLEAN_KYBER1024_AVX2_zetas_exp + 348);
-    PQCLEAN_KYBER1024_AVX2_basemul_avx(r->coeffs + 192,
-                                       a->coeffs + 192,
-                                       b->coeffs + 192,
-                                       PQCLEAN_KYBER1024_AVX2_zetas_exp + 380);
-}
-
-// FIXME
-void PQCLEAN_KYBER1024_AVX2_poly_frommont(poly *r) {
-    PQCLEAN_KYBER1024_AVX2_frommont_avx(r->coeffs);
-    PQCLEAN_KYBER1024_AVX2_frommont_avx(r->coeffs + 128);
-}
-
-// FIXME
-void PQCLEAN_KYBER1024_AVX2_poly_reduce(poly *r) {
-    PQCLEAN_KYBER1024_AVX2_reduce_avx(r->coeffs);
-    PQCLEAN_KYBER1024_AVX2_reduce_avx(r->coeffs + 128);
-}
-
-// FIXME
-void PQCLEAN_KYBER1024_AVX2_poly_csubq(poly *r) {
-    PQCLEAN_KYBER1024_AVX2_csubq_avx(r->coeffs);
-    PQCLEAN_KYBER1024_AVX2_csubq_avx(r->coeffs + 128);
+    PQCLEAN_KYBER1024_AVX2_nttunpack_avx(r->vec, PQCLEAN_KYBER1024_AVX2_qdata.vec);
 }
 
 /*************************************************
-* Name:        poly_add
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_basemul_montgomery
 *
-* Description: Add two polynomials
+* Description: Multiplication of two polynomials in NTT domain.
+*              One of the input polynomials needs to have coefficients
+*              bounded by q, the other polynomial can have arbitrary
+*              coefficients. Output coefficients are bounded by 6656.
 *
-* Arguments: - poly *r:       pointer to output polynomial
+* Arguments:   - poly *r: pointer to output polynomial
+*              - const poly *a: pointer to first input polynomial
+*              - const poly *b: pointer to second input polynomial
+**************************************************/
+void PQCLEAN_KYBER1024_AVX2_poly_basemul_montgomery(poly *r, const poly *a, const poly *b) {
+    PQCLEAN_KYBER1024_AVX2_basemul_avx(r->vec, a->vec, b->vec, PQCLEAN_KYBER1024_AVX2_qdata.vec);
+}
+
+/*************************************************
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_tomont
+*
+* Description: Inplace conversion of all coefficients of a polynomial
+*              from normal domain to Montgomery domain
+*
+* Arguments:   - poly *r: pointer to input/output polynomial
+**************************************************/
+void PQCLEAN_KYBER1024_AVX2_poly_tomont(poly *r) {
+    PQCLEAN_KYBER1024_AVX2_tomont_avx(r->vec, PQCLEAN_KYBER1024_AVX2_qdata.vec);
+}
+
+/*************************************************
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_reduce
+*
+* Description: Applies Barrett reduction to all coefficients of a polynomial
+*              for details of the Barrett reduction see comments in reduce.c
+*
+* Arguments:   - poly *r: pointer to input/output polynomial
+**************************************************/
+void PQCLEAN_KYBER1024_AVX2_poly_reduce(poly *r) {
+    PQCLEAN_KYBER1024_AVX2_reduce_avx(r->vec, PQCLEAN_KYBER1024_AVX2_qdata.vec);
+}
+
+/*************************************************
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_add
+*
+* Description: Add two polynomials. No modular reduction
+*              is performed.
+*
+* Arguments: - poly *r: pointer to output polynomial
 *            - const poly *a: pointer to first input polynomial
 *            - const poly *b: pointer to second input polynomial
 **************************************************/
 void PQCLEAN_KYBER1024_AVX2_poly_add(poly *r, const poly *a, const poly *b) {
-    __m256i vec0, vec1;
+    unsigned int i;
+    __m256i f0, f1;
 
-    for (size_t i = 0; i < KYBER_N; i += 16) {
-        vec0 = _mm256_load_si256((__m256i *)&a->coeffs[i]);
-        vec1 = _mm256_load_si256((__m256i *)&b->coeffs[i]);
-        vec0 = _mm256_add_epi16(vec0, vec1);
-        _mm256_store_si256((__m256i *)&r->coeffs[i], vec0);
+    for (i = 0; i < KYBER_N / 16; i++) {
+        f0 = _mm256_load_si256(&a->vec[i]);
+        f1 = _mm256_load_si256(&b->vec[i]);
+        f0 = _mm256_add_epi16(f0, f1);
+        _mm256_store_si256(&r->vec[i], f0);
     }
 }
 
 /*************************************************
-* Name:        poly_sub
+* Name:        PQCLEAN_KYBER1024_AVX2_poly_sub
 *
-* Description: Subtract two polynomials
+* Description: Subtract two polynomials. No modular reduction
+*              is performed.
 *
-* Arguments: - poly *r:       pointer to output polynomial
+* Arguments: - poly *r: pointer to output polynomial
 *            - const poly *a: pointer to first input polynomial
 *            - const poly *b: pointer to second input polynomial
 **************************************************/
 void PQCLEAN_KYBER1024_AVX2_poly_sub(poly *r, const poly *a, const poly *b) {
-    __m256i vec0, vec1;
+    unsigned int i;
+    __m256i f0, f1;
 
-    for (size_t i = 0; i < KYBER_N; i += 16) {
-        vec0 = _mm256_load_si256((__m256i *)&a->coeffs[i]);
-        vec1 = _mm256_load_si256((__m256i *)&b->coeffs[i]);
-        vec0 = _mm256_sub_epi16(vec0, vec1);
-        _mm256_store_si256((__m256i *)&r->coeffs[i], vec0);
-    }
-}
-
-/*************************************************
-* Name:        poly_frommsg
-*
-* Description: Convert 32-byte message to polynomial
-*
-* Arguments:   - poly *r:                  pointer to output polynomial
-*              - const uint8_t *msg: pointer to input message
-**************************************************/
-void PQCLEAN_KYBER1024_AVX2_poly_frommsg(poly *r, const uint8_t msg[KYBER_SYMBYTES]) {
-    __m128i tmp;
-    __m256i a[4], d0, d1, d2, d3;
-    const __m256i shift = _mm256_set_epi32(7, 6, 5, 4, 3, 2, 1, 0);
-    const __m256i zeros = _mm256_setzero_si256();
-    const __m256i ones = _mm256_set1_epi32(1);
-    const __m256i hqs = _mm256_set1_epi32((KYBER_Q + 1) / 2);
-
-    tmp = _mm_loadu_si128((__m128i *)msg);
-    for (size_t i = 0; i < 4; i++) {
-        a[i] = _mm256_broadcastd_epi32(tmp);
-        tmp = _mm_srli_si128(tmp, 4);
-    }
-
-    for (size_t i = 0; i < 4; i++) {
-        d0 = _mm256_srlv_epi32(a[i], shift);
-        d1 = _mm256_srli_epi32(d0, 8);
-        d2 = _mm256_srli_epi32(d0, 16);
-        d3 = _mm256_srli_epi32(d0, 24);
-
-        d0 = _mm256_and_si256(d0, ones);
-        d1 = _mm256_and_si256(d1, ones);
-        d2 = _mm256_and_si256(d2, ones);
-        d3 = _mm256_and_si256(d3, ones);
-
-        d0 = _mm256_sub_epi32(zeros, d0);
-        d1 = _mm256_sub_epi32(zeros, d1);
-        d2 = _mm256_sub_epi32(zeros, d2);
-        d3 = _mm256_sub_epi32(zeros, d3);
-
-        d0 = _mm256_and_si256(hqs, d0);
-        d1 = _mm256_and_si256(hqs, d1);
-        d2 = _mm256_and_si256(hqs, d2);
-        d3 = _mm256_and_si256(hqs, d3);
-
-        d0 = _mm256_packus_epi32(d0, d1);
-        d2 = _mm256_packus_epi32(d2, d3);
-        d0 = _mm256_permute4x64_epi64(d0, 0xD8);
-        d2 = _mm256_permute4x64_epi64(d2, 0xD8);
-        _mm256_store_si256((__m256i *)&r->coeffs[32 * i + 0], d0);
-        _mm256_store_si256((__m256i *)&r->coeffs[32 * i + 16], d2);
-    }
-
-    tmp = _mm_loadu_si128((__m128i *)&msg[16]);
-    for (size_t i = 0; i < 4; i++) {
-        a[i] = _mm256_broadcastd_epi32(tmp);
-        tmp = _mm_srli_si128(tmp, 4);
-    }
-
-    for (size_t i = 0; i < 4; i++) {
-        d0 = _mm256_srlv_epi32(a[i], shift);
-        d1 = _mm256_srli_epi32(d0, 8);
-        d2 = _mm256_srli_epi32(d0, 16);
-        d3 = _mm256_srli_epi32(d0, 24);
-
-        d0 = _mm256_and_si256(d0, ones);
-        d1 = _mm256_and_si256(d1, ones);
-        d2 = _mm256_and_si256(d2, ones);
-        d3 = _mm256_and_si256(d3, ones);
-
-        d0 = _mm256_sub_epi32(zeros, d0);
-        d1 = _mm256_sub_epi32(zeros, d1);
-        d2 = _mm256_sub_epi32(zeros, d2);
-        d3 = _mm256_sub_epi32(zeros, d3);
-
-        d0 = _mm256_and_si256(hqs, d0);
-        d1 = _mm256_and_si256(hqs, d1);
-        d2 = _mm256_and_si256(hqs, d2);
-        d3 = _mm256_and_si256(hqs, d3);
-
-        d0 = _mm256_packus_epi32(d0, d1);
-        d2 = _mm256_packus_epi32(d2, d3);
-        d0 = _mm256_permute4x64_epi64(d0, 0xD8);
-        d2 = _mm256_permute4x64_epi64(d2, 0xD8);
-        _mm256_store_si256((__m256i *)&r->coeffs[128 + 32 * i + 0], d0);
-        _mm256_store_si256((__m256i *)&r->coeffs[128 + 32 * i + 16], d2);
-    }
-}
-
-/*************************************************
-* Name:        poly_tomsg
-*
-* Description: Convert polynomial to 32-byte message
-*
-* Arguments:   - uint8_t *msg: pointer to output message
-*              - const poly *a:      pointer to input polynomial
-**************************************************/
-void PQCLEAN_KYBER1024_AVX2_poly_tomsg(uint8_t msg[KYBER_SYMBYTES], poly *a) {
-    uint32_t small;
-    __m256i vec, tmp;
-    const __m256i hqs = _mm256_set1_epi16((KYBER_Q - 1) / 2);
-    const __m256i hhqs = _mm256_set1_epi16((KYBER_Q - 5) / 4);
-
-    for (size_t i = 0; i < KYBER_N / 16; i++) {
-        vec = _mm256_load_si256((__m256i *)&a->coeffs[16 * i]);
-        vec = _mm256_sub_epi16(hqs, vec);
-        tmp = _mm256_srai_epi16(vec, 15);
-        vec = _mm256_xor_si256(vec, tmp);
-        vec = _mm256_sub_epi16(hhqs, vec);
-        small = (uint32_t)_mm256_movemask_epi8(vec);
-        small = _pext_u32(small, 0xAAAAAAAA);
-        small = ~small;
-        msg[2 * i + 0] = (uint8_t)small;
-        msg[2 * i + 1] = (uint8_t)(small >> 8);
+    for (i = 0; i < KYBER_N / 16; i++) {
+        f0 = _mm256_load_si256(&a->vec[i]);
+        f1 = _mm256_load_si256(&b->vec[i]);
+        f0 = _mm256_sub_epi16(f0, f1);
+        _mm256_store_si256(&r->vec[i], f0);
     }
 }

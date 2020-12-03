@@ -178,13 +178,13 @@ static void toom4_k2x2_basemul(uint16_t r[18 * K], const uint16_t a[9 * K], cons
 static inline void schoolbook_KxK(uint16_t r[2 * K], const uint16_t a[K], const uint16_t b[K]) {
     size_t i, j;
     for (j = 0; j < K; j++) {
-        r[j] = a[0] * b[j];
+        r[j] = a[0] * (uint32_t)b[j];
     }
     for (i = 1; i < K; i++) {
         for (j = 0; j < K - 1; j++) {
-            r[i + j] += a[i] * b[j];
+            r[i + j] += a[i] * (uint32_t)b[j];
         }
-        r[i + K - 1] = a[i] * b[K - 1];
+        r[i + K - 1] = a[i] * (uint32_t)b[K - 1];
     }
     r[2 * K - 1] = 0;
 }
@@ -215,7 +215,7 @@ static void toom4_k2x2_interpolate(uint16_t r[2 * M], const uint16_t a[7 * 18 * 
         V0 = ((uint32_t)(P1[i] + Pm1[i])) >> 1;
         V0 = V0 - C0[i] - C6[i];
         V1 = ((uint32_t)(P2[i] + Pm2[i] - 2 * C0[i] - 128 * C6[i])) >> 3;
-        C4[i] = 43691 * (V1 - V0);
+        C4[i] = 43691 * (uint32_t)(V1 - V0);
         C2[i] = V0 - C4[i];
         P1[i] = ((uint32_t)(P1[i] - Pm1[i])) >> 1;
     }
@@ -226,11 +226,11 @@ static void toom4_k2x2_interpolate(uint16_t r[2 * M], const uint16_t a[7 * 18 * 
 
     for (i = 0; i < 2 * M; i++) {
         V0 = P1[i];
-        V1 = 43691 * ((((uint32_t)(P2[i] - Pm2[i])) >> 2) - V0);
-        V2 = 43691 * (P3[i] - C0[i] - 9 * (C2[i] + 9 * (C4[i] + 9 * C6[i])));
+        V1 = 43691 * (((uint32_t)(P2[i] - Pm2[i]) >> 2) - V0);
+        V2 = 43691 * (uint32_t)(P3[i] - C0[i] - 9 * (C2[i] + 9 * (C4[i] + 9 * C6[i])));
         V2 = ((uint32_t)(V2 - V0)) >> 3;
         V2 -= V1;
-        P3[i] = 52429 * V2;
+        P3[i] = 52429 * (uint32_t)V2;
         P2[i] = V1 - V2;
         P1[i] = V0 - P2[i] - P3[i];
     }

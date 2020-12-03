@@ -15,5 +15,4 @@ int PQCLEAN_KYBER76890S_CLEAN_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uin
 
 int PQCLEAN_KYBER76890S_CLEAN_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
-
 #endif

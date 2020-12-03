@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_kyber_768_90s_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_kyber_768_90s;
-	kem->alg_version = "https://github.com/pq-crystals/kyber/commit/46e283ab575ec92dfe82fb12229ae2d9d6246682";
+	kem->alg_version = "https://github.com/pq-crystals/kyber/commit/e7faae9f662f5b92fee4e966f09b2f23e1e91c65 via https://github.com/jschanck/package-pqclean/tree/231c9bec/kyber";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;

@@ -23,9 +23,6 @@
 #define T2_5W_256 (2 * T_5W_256)
 #define t5 (5 * T_5W / 64)
 
-uint64_t bloc64[PARAM_OMEGA_R]; // Allocation with the biggest possible weight
-uint64_t bit64[PARAM_OMEGA_R]; // Allocation with the biggest possible weight
-
 static inline void reduce(uint64_t *o, const __m256i *a);
 static inline void karat_mult_1(__m128i *C, const __m128i *A, const __m128i *B);
 static inline void karat_mult_2(__m256i *C, const __m256i *A, const __m256i *B);
