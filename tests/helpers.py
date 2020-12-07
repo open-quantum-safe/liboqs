@@ -26,18 +26,25 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
     # then print it, which pytest will then capture and
     # buffer appropriately
     print(working_dir + " > " + " ".join(command))
-    result = subprocess.run(
+    proc = subprocess.Popen(
         command,
-        input=input,
+        stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.STDOUT,
         cwd=working_dir,
         env=env,
     )
-    if not(ignore_returncode) and (result.returncode != expected_returncode):
-        print(result.stdout.decode('utf-8'))
-        assert False, "Got unexpected return code {}".format(result.returncode)
-    return result.stdout.decode('utf-8')
+
+    try:
+        out, _ = proc.communicate(input=input, timeout=480)
+    except subprocess.TimeoutExpired:
+        proc.kill()
+        out, _ = proc.communicate()
+
+    if not(ignore_returncode) and (proc.returncode != expected_returncode):
+        print(out.decode('utf-8'))
+        assert False, "Got unexpected return code {}".format(proc.returncode)
+    return out.decode('utf-8')
 
 def available_kems_by_name():
     available_names = []
