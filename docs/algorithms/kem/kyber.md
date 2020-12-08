@@ -5,7 +5,7 @@ CRYSTALS-Kyber
 - **Main cryptographic assumption**: module learning with errors (MLWE)
 - **Scheme authors**: Roberto Avanzi, Joppe Bos, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Vadim Lyubashevsky, John M. Schanck, Peter Schwabe, Gregor Seiler, Damien Stehle
 - **Authors' website**: https://pq-crystals.org/kyber
-- **Version**: NIST Round 2 submission
+- **Version**: NIST Round 3 submission
 
 Implementation
 --------------
