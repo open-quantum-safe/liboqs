@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define STORE_PREFIX "tmp/oqs-temp-file-"
+#define STORE_PREFIX "build/mem-benchmark/oqs-temp-file-"
 #define MAXPATHLEN 128
 
 static OQS_STATUS oqs_fstore(const char *fname, const char *mname, uint8_t *data, size_t len) {
