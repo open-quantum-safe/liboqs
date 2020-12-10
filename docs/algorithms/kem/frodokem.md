@@ -5,13 +5,13 @@ FrodoKEM
 - **Main cryptographic assumption**: learning with errors (LWE)
 - **Scheme authors**: Michael Naehrig, Erdem Alkim, Joppe Bos, Léo Ducas, Karen Easterbrook, Brian LaMacchia, Patrick Longa, Ilya Mironov, Valeria Nikolaenko, Christopher Peikert, Ananth Raghunathan, Douglas Stebila
 - **Authors' website**: https://frodokem.org/
-- **Version**: NIST Round 2 submission
+- **Version**: NIST Round 3 submission
 
 Implementation
 --------------
 
 - **Source of implementation**: https://github.com/Microsoft/PQCrypto-LWEKE
-- **Implementation version**: https://github.com/Microsoft/PQCrypto-LWEKE/commit/d5bbd0417ba111b08a959c0042a1dcc65fb14a89
+- **Implementation version**: https://github.com/microsoft/PQCrypto-LWEKE/commit/6a82d4d2b6bc32eeac3ad4f9c178c48072b506b3
 - **License**: MIT License
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with optional use of AVX2 and AESNI instructions (selected at compile-time, enabled by default if available)
