@@ -68,6 +68,24 @@ extern "C" {
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */
 #define OQS_SIG_alg_falcon_1024 "Falcon-1024"
+/** Algorithm identifier for Rainbow-I-Classic */
+#define OQS_SIG_alg_rainbow_I_classic "Rainbow-I-Classic"
+/** Algorithm identifier for Rainbow-I-Circumzenithal */
+#define OQS_SIG_alg_rainbow_I_circumzenithal "Rainbow-I-Circumzenithal"
+/** Algorithm identifier for Rainbow-I-Compressed */
+#define OQS_SIG_alg_rainbow_I_compressed "Rainbow-I-Compressed"
+/** Algorithm identifier for Rainbow-III-Classic */
+#define OQS_SIG_alg_rainbow_III_classic "Rainbow-III-Classic"
+/** Algorithm identifier for Rainbow-III-Circumzenithal */
+#define OQS_SIG_alg_rainbow_III_circumzenithal "Rainbow-III-Circumzenithal"
+/** Algorithm identifier for Rainbow-III-Compressed */
+#define OQS_SIG_alg_rainbow_III_compressed "Rainbow-III-Compressed"
+/** Algorithm identifier for Rainbow-V-Classic */
+#define OQS_SIG_alg_rainbow_V_classic "Rainbow-V-Classic"
+/** Algorithm identifier for Rainbow-V-Circumzenithal */
+#define OQS_SIG_alg_rainbow_V_circumzenithal "Rainbow-V-Circumzenithal"
+/** Algorithm identifier for Rainbow-V-Compressed */
+#define OQS_SIG_alg_rainbow_V_compressed "Rainbow-V-Compressed"
 /** Algorithm identifier for SPHINCS+-Haraka-128f-robust */
 #define OQS_SIG_alg_sphincs_haraka_128f_robust "SPHINCS+-Haraka-128f-robust"
 /** Algorithm identifier for SPHINCS+-Haraka-128f-simple */
@@ -144,7 +162,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 54
+#define OQS_SIG_algs_length 63
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -320,6 +338,9 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_FALCON
 #include <oqs/sig_falcon.h>
 #endif /* OQS_ENABLE_SIG_FALCON */
+#ifdef OQS_ENABLE_SIG_RAINBOW
+#include <oqs/sig_rainbow.h>
+#endif /* OQS_ENABLE_SIG_RAINBOW */
 #ifdef OQS_ENABLE_SIG_SPHINCS
 #include <oqs/sig_sphincs.h>
 #endif /* OQS_ENABLE_SIG_SPHINCS */

@@ -199,6 +199,17 @@ if(ARCH STREQUAL "x86_64" AND CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin" AND OQS_U
     cmake_dependent_option(OQS_ENABLE_SIG_falcon_1024_avx2 "" ON "OQS_ENABLE_SIG_falcon_1024" OFF)
 endif()
 
+option(OQS_ENABLE_SIG_RAINBOW "" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_rainbow_I_classic "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_rainbow_I_circumzenithal "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_rainbow_I_compressed "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_rainbow_III_classic "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_rainbow_III_circumzenithal "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_rainbow_III_compressed "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_rainbow_V_classic "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_rainbow_V_circumzenithal "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_rainbow_V_compressed "" ON "OQS_ENABLE_SIG_RAINBOW" OFF)
+
 option(OQS_ENABLE_SIG_SPHINCS "" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_sphincs_haraka_128f_robust "" ON "OQS_ENABLE_SIG_SPHINCS" OFF)
 if(ARCH STREQUAL "x86_64" AND OQS_USE_AES_INSTRUCTIONS)
