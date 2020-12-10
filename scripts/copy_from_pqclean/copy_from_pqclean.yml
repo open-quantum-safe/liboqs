@@ -215,55 +215,6 @@ sigs:
         pretty_name_full: Falcon-1024
         signed_msg_order: falcon
   -
-    name: rainbow
-    default_implementation: clean
-    schemes:
-      -
-        scheme: "Ia_classic"
-        pqclean_scheme: rainbowIa-classic
-        pretty_name_full: Rainbow-Ia-Classic
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "Ia_cyclic"
-        pqclean_scheme: rainbowIa-cyclic
-        pretty_name_full: Rainbow-Ia-Cyclic
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "Ia_cyclic_compressed"
-        pqclean_scheme: rainbowIa-cyclic-compressed
-        pretty_name_full: Rainbow-Ia-Cyclic-Compressed
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "IIIc_classic"
-        pqclean_scheme: rainbowIIIc-classic
-        pretty_name_full: Rainbow-IIIc-Classic
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "IIIc_cyclic"
-        pqclean_scheme: rainbowIIIc-cyclic
-        pretty_name_full: Rainbow-IIIc-Cyclic
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "IIIc_cyclic_compressed"
-        pqclean_scheme: rainbowIIIc-cyclic-compressed
-        pretty_name_full: Rainbow-IIIc-Cyclic-Compressed
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "Vc_classic"
-        pqclean_scheme: rainbowVc-classic
-        pretty_name_full: Rainbow-Vc-Classic
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "Vc_cyclic"
-        pqclean_scheme: rainbowVc-cyclic
-        pretty_name_full: Rainbow-Vc-Cyclic
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "Vc_cyclic_compressed"
-        pqclean_scheme: rainbowVc-cyclic-compressed
-        pretty_name_full: Rainbow-Vc-Cyclic-Compressed
-        signed_msg_order: msg_then_sig
-  -
     name: sphincs
     default_implementation: clean
     schemes:
