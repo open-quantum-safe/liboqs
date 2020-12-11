@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_frodokem_640_aes_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_frodokem_640_aes;
-	kem->alg_version = "https://github.com/Microsoft/PQCrypto-LWEKE/commit/d5bbd0417ba111b08a959c0042a1dcc65fb14a89";
+	kem->alg_version = "https://github.com/Microsoft/PQCrypto-LWEKE/commit/669522db63850fa64d1a24a47e138e80a59349db";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;

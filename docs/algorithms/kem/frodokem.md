@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://github.com/Microsoft/PQCrypto-LWEKE
-- **Implementation version**: https://github.com/microsoft/PQCrypto-LWEKE/commit/6a82d4d2b6bc32eeac3ad4f9c178c48072b506b3
+- **Implementation version**: https://github.com/microsoft/PQCrypto-LWEKE/commit/669522db63850fa64d1a24a47e138e80a59349db
 - **License**: MIT License
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with optional use of AVX2 and AESNI instructions (selected at compile-time, enabled by default if available)
