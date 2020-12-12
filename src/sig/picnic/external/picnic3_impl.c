@@ -435,7 +435,7 @@ static int verify_picnic3(signature2_t* sig, const uint8_t* pubKey, const uint8_
              params);
       /* after we have checked the tape, we do not need it anymore for this opened iteration */
     } else {
-      /* We're given all seeds and aux bits, execpt for the unopened
+      /* We're given all seeds and aux bits, except for the unopened
        * party, we get their commitment */
       size_t unopened = sig->challengeP[indexOf(sig->challengeC, params->num_opened_rounds, t)];
       for (size_t j = 0; j < params->num_MPC_parties; j += 4) {
