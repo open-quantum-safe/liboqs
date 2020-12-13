@@ -55,6 +55,9 @@ jobs:
     steps:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
+          name: Add Qemu (tmp)
+          command: apt update -y && apt-get install -y qemu
+      - run:
           name: Configure
           command: mkdir build && cd build && source ~/.bashrc && cmake -GNinja << parameters.CMAKE_ARGS >> .. && cmake -LA ..
       - run:
