@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: MIT
 
-option(OQS_PORTABLE_BUILD "Ensure the resulting library is portable. This implies having run-time checks for CPU extensions." OFF)
+option(OQS_PORTABLE_BUILD "Ensure the resulting library is portable. This implies having run-time checks for CPU extensions." ON)
 option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
 
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")

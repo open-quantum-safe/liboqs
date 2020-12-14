@@ -5,6 +5,10 @@ import pytest
 import platform
 from pathlib import Path
 
+MIN_CPUS = {}
+# set other CPU types for other architectures; Westmere supports cpuid but not avx2
+MIN_CPUS["x86_64"] = "Westmere"
+
 @helpers.filtered_test
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_kem(kem_name):
@@ -17,7 +21,8 @@ def test_kem(kem_name):
     Path('build/mem-benchmark').mkdir(parents=True, exist_ok=True)
 
     for i in range(3):
-       helpers.run_subprocess(["qemu-"+platform.machine(), helpers.path_to_executable('test_kem_mem'), kem_name, str(i)])
+       helpers.run_subprocess(["qemu-"+platform.machine(), "-cpu", MIN_CPUS[platform.machine()],
+                               helpers.path_to_executable('test_kem_mem'), kem_name, str(i)])
 
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
@@ -28,10 +33,14 @@ def test_sig(sig_name):
     if not(helpers.is_sig_enabled_by_name(sig_name)):
         pytest.skip('Not enabled')
 
+    if (sig_name.startswith("picnic")):
+        pytest.skip("Picnic portability known to not be given.")
+
     Path('build/mem-benchmark').mkdir(parents=True, exist_ok=True)
 
     for i in range(3):
-       helpers.run_subprocess(["qemu-"+platform.machine(), helpers.path_to_executable('test_sig_mem'), sig_name, str(i)])
+       helpers.run_subprocess(["qemu-"+platform.machine(), "-cpu", MIN_CPUS[platform.machine()],
+                               helpers.path_to_executable('test_sig_mem'), sig_name, str(i)])
 
 if __name__ == "__main__":
     import sys

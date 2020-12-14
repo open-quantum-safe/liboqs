@@ -34,13 +34,13 @@ if(NOT WIN32)
     execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT)
     add_definitions(-DOQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
 
-    add_executable(test_aes test_aes.c $<TARGET_OBJECTS:common>)
+    add_executable(test_aes test_aes.c ${COMMON_OBJS})
     target_link_libraries(test_aes PRIVATE ${INTERNAL_TEST_DEPS})
 
-    add_executable(test_hash test_hash.c $<TARGET_OBJECTS:common>)
+    add_executable(test_hash test_hash.c ${COMMON_OBJS})
     target_link_libraries(test_hash PRIVATE ${INTERNAL_TEST_DEPS})
 
-    add_executable(test_sha3 test_sha3.c $<TARGET_OBJECTS:common>)
+    add_executable(test_sha3 test_sha3.c ${COMMON_OBJS})
     target_link_libraries(test_sha3 PRIVATE ${INTERNAL_TEST_DEPS})
 
     set(UNIX_TESTS test_aes test_hash test_sha3)
