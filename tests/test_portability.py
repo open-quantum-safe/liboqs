@@ -20,11 +20,8 @@ def test_kem(kem_name):
     if not(helpers.is_kem_enabled_by_name(kem_name)):
         pytest.skip('Not enabled')
 
-    Path('build/mem-benchmark').mkdir(parents=True, exist_ok=True)
-
-    for i in range(3):
-       helpers.run_subprocess(["qemu-"+platform.machine(), "-cpu", MIN_CPUS[platform.machine()],
-                               helpers.path_to_executable('test_kem_mem'), kem_name, str(i)])
+    helpers.run_subprocess(["qemu-"+platform.machine(), "-cpu", MIN_CPUS[platform.machine()],
+                            helpers.path_to_executable('test_kem'), kem_name])
 
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
@@ -39,11 +36,8 @@ def test_sig(sig_name):
     if (sig_name.startswith("picnic")):
         pytest.skip("Picnic portability known to not be given.")
 
-    Path('build/mem-benchmark').mkdir(parents=True, exist_ok=True)
-
-    for i in range(3):
-       helpers.run_subprocess(["qemu-"+platform.machine(), "-cpu", MIN_CPUS[platform.machine()],
-                               helpers.path_to_executable('test_sig_mem'), sig_name, str(i)])
+    helpers.run_subprocess(["qemu-"+platform.machine(), "-cpu", MIN_CPUS[platform.machine()],
+                             helpers.path_to_executable('test_sig'), sig_name])
 
 if __name__ == "__main__":
     import sys
