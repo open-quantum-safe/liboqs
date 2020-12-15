@@ -3,6 +3,7 @@
 import helpers
 import pytest
 import platform
+import sys
 from pathlib import Path
 
 MIN_CPUS = {}
@@ -11,6 +12,7 @@ MIN_CPUS["x86_64"] = "Westmere"
 
 @helpers.filtered_test
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_kem(kem_name):
     if not(helpers.is_build_portable()):
         pytest.skip("Portability not enabled")
@@ -26,6 +28,7 @@ def test_kem(kem_name):
 
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_sig(sig_name):
     if not(helpers.is_build_portable()):
         pytest.skip("Portability not enabled")
