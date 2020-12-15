@@ -85,7 +85,7 @@ static void print_cpu_extensions(void) {
 	printf("CPU exts active:  None");
 #endif
 #if defined(OQS_PORTABLE_BUILD)
-        printf(" (portable build)\n");
+	printf(" (portable build)\n");
 #else
 	printf("\n");
 #endif
