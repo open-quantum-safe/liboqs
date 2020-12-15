@@ -59,6 +59,7 @@ static void createRandomTapes(randomTape_t* tapes, uint8_t** seeds, uint8_t* sal
     uint8_t* out_ptr[4] = {tapes->tape[i], tapes->tape[i + 1], tapes->tape[i + 2],
                            tapes->tape[i + 3]};
     hash_squeeze_x4(&ctx, out_ptr, tapeSizeBytes);
+    hash_clear_x4(&ctx);
   }
 }
 
@@ -113,6 +114,7 @@ static void commit(uint8_t* digest, const uint8_t* seed, const uint8_t* aux, con
   hash_update_uint16_le(&ctx, j);
   hash_final(&ctx);
   hash_squeeze(&ctx, digest, params->digest_size);
+  hash_clear(&ctx);
 }
 
 static void commit_x4(uint8_t** digest, const uint8_t** seed, const uint8_t* salt, size_t t,
@@ -129,6 +131,7 @@ static void commit_x4(uint8_t** digest, const uint8_t** seed, const uint8_t* sal
   hash_update_x4_uint16s_le(&ctx, j_arr);
   hash_final_x4(&ctx);
   hash_squeeze_x4(&ctx, digest, params->digest_size);
+  hash_clear_x4(&ctx);
 }
 
 static void commit_h(uint8_t* digest, const commitments_t* C, const picnic_instance_t* params) {
@@ -140,6 +143,7 @@ static void commit_h(uint8_t* digest, const commitments_t* C, const picnic_insta
   }
   hash_final(&ctx);
   hash_squeeze(&ctx, digest, params->digest_size);
+  hash_clear(&ctx);
 }
 
 static void commit_h_x4(uint8_t** digest, const commitments_t* C, const picnic_instance_t* params) {
@@ -157,6 +161,7 @@ static void commit_h_x4(uint8_t** digest, const commitments_t* C, const picnic_i
   }
   hash_final_x4(&ctx);
   hash_squeeze_x4(&ctx, digest, params->digest_size);
+  hash_clear_x4(&ctx);
 }
 
 // Commit to the views for one parallel rep
@@ -171,6 +176,7 @@ static void commit_v(uint8_t* digest, const uint8_t* input, const msgs_t* msgs,
   }
   hash_final(&ctx);
   hash_squeeze(&ctx, digest, params->digest_size);
+  hash_clear(&ctx);
 }
 
 static void commit_v_x4(uint8_t** digest, const uint8_t** input, const msgs_t* msgs,
@@ -191,6 +197,7 @@ static void commit_v_x4(uint8_t** digest, const uint8_t** input, const msgs_t* m
   }
   hash_final_x4(&ctx);
   hash_squeeze_x4(&ctx, digest, params->digest_size);
+  hash_clear_x4(&ctx);
 }
 
 static void xor_byte_array(uint8_t* out, const uint8_t* in1, const uint8_t* in2, uint32_t length) {
@@ -292,6 +299,7 @@ static void expandChallenge(uint16_t* challengeC, uint16_t* challengeP, const ui
     hash_update(&ctx, h, params->digest_size);
     hash_final(&ctx);
     hash_squeeze(&ctx, h, params->digest_size);
+    hash_clear(&ctx);
   }
 
   // Note that we always compute h = H(h) after setting C
@@ -313,6 +321,7 @@ static void expandChallenge(uint16_t* challengeC, uint16_t* challengeP, const ui
     hash_update(&ctx, h, params->digest_size);
     hash_final(&ctx);
     hash_squeeze(&ctx, h, params->digest_size);
+    hash_clear(&ctx);
   }
   free(chunks);
 }
@@ -336,6 +345,7 @@ static void HCP(uint8_t* sigH, uint16_t* challengeC, uint16_t* challengeP, commi
   hash_update(&ctx, message, messageByteLength);
   hash_final(&ctx);
   hash_squeeze(&ctx, sigH, params->digest_size);
+  hash_clear(&ctx);
   /* parts of this hash will be published as challenge so is public anyway */
   picnic_declassify(sigH, params->digest_size);
 
@@ -417,13 +427,13 @@ static int verify_picnic3(signature2_t* sig, const uint8_t* pubKey, const uint8_
     }
     /* Commit */
 
-    /* Compute random tapes for all parties.  One party for each repitition
+    /* Compute random tapes for all parties.  One party for each repetition
      * challengeC will have a bogus seed; but we won't use that party's
      * random tape. */
     createRandomTapes(&tapes[t], getLeaves(seed), sig->salt, t, params);
 
     if (!contains(sig->challengeC, params->num_opened_rounds, t)) {
-      /* We're given iSeed, have expanded the seeds, compute aux from scratch so we can comnpte
+      /* We're given iSeed, have expanded the seeds, compute aux from scratch so we can compute
        * Com[t] */
       computeAuxTape(&tapes[t], NULL, params);
       for (size_t j = 0; j < params->num_MPC_parties; j += 4) {
@@ -435,7 +445,7 @@ static int verify_picnic3(signature2_t* sig, const uint8_t* pubKey, const uint8_
              params);
       /* after we have checked the tape, we do not need it anymore for this opened iteration */
     } else {
-      /* We're given all seeds and aux bits, execpt for the unopened
+      /* We're given all seeds and aux bits, except for the unopened
        * party, we get their commitment */
       size_t unopened = sig->challengeP[indexOf(sig->challengeC, params->num_opened_rounds, t)];
       for (size_t j = 0; j < params->num_MPC_parties; j += 4) {
@@ -471,7 +481,7 @@ static int verify_picnic3(signature2_t* sig, const uint8_t* pubKey, const uint8_
   for (size_t i = 0; i < params->num_opened_rounds; i++) {
     /* 2. When t is in C, we have everything we need to re-compute the view, as an honest signer
      * would.
-     * We simulate the MPC with one fewer party; the unopned party's values are all set to zero.
+     * We simulate the MPC with one fewer party; the unopened party's values are all set to zero.
      */
     size_t t       = sig->challengeC[i];
     int unopened   = sig->challengeP[i];
@@ -559,6 +569,7 @@ static void computeSaltAndRootSeed(uint8_t* saltAndRoot, size_t saltAndRootLengt
   hash_update_uint16_le(&ctx, (uint16_t)params->lowmc.n);
   hash_final(&ctx);
   hash_squeeze(&ctx, saltAndRoot, saltAndRootLength);
+  hash_clear(&ctx);
 }
 
 static int sign_picnic3(const uint8_t* privateKey, const uint8_t* pubKey, const uint8_t* plaintext,
@@ -662,7 +673,7 @@ static int sign_picnic3(const uint8_t* privateKey, const uint8_t* pubKey, const 
   sig->cvInfoLen           = cvInfoLen;
   free(missingLeaves);
 
-  /* Reveal iSeeds for unopned rounds, those in {0..T-1} \ ChallengeC. */
+  /* Reveal iSeeds for unopened rounds, those in {0..T-1} \ ChallengeC. */
   sig->iSeedInfo    = malloc(params->num_rounds * params->seed_size);
   sig->iSeedInfoLen = revealSeeds(iSeedsTree, challengeC, params->num_opened_rounds, sig->iSeedInfo,
                                   params->num_rounds * params->seed_size, params);
