@@ -18,9 +18,14 @@
 #if defined(WITH_SHAKE_S390_CPACF)
 /* use the KIMD/KLMD instructions from CPACF for SHAKE support on S390 */
 #include "sha3/s390_cpacf.h"
-#elif defined(OQS) || defined(PQCLEAN)
-#if defined(OQS)
-/* use OQS's SHAKE implementation */
+#elif (0 && defined(OQS)) || defined(PQCLEAN)
+#if (0 && defined(OQS))
+/*use OQS's SHAKE implementation (disabled)
+ *
+ * OQS currently does not expose the AVX2-optimized version of Keccak or the Keccakx4
+ * implementation. Consequently we currently still use our copy of Keccak by default. Once these
+ * issues are fixed in OQS, this code path will be enabled by default.
+ */
 #include <oqs/sha3.h>
 #elif defined(PQCLEAN)
 /* PQClean's SHAKE implementation */
