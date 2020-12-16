@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: MIT
 
 # Purpose of this script is to find common code dependencies of all algorithms
 # as per https://github.com/open-quantum-safe/liboqs/issues/849

@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: MIT
 
 # Purpose of script: Output if a given symbol in symbols file 
 # (parameter 1) is found in files in a given directory (parameter 2)
