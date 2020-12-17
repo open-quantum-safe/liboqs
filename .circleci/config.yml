@@ -102,6 +102,26 @@ jobs:
       - store_artifacts:
           path: build/test-results
 
+  android_emulated:
+  description: A template for running liboqs tests on emulated Android VMs.
+  parameters:
+    ABI:
+      description: "The desired Android ABI to target"
+      type: string
+    SDK:
+      description: "The desired SDK version to target"
+      type: string
+  docker:
+    - image: circleci/android:api-30-ndk
+      auth:
+        username: $DOCKER_LOGIN
+        password: $DOCKER_PASSWORD
+  steps:
+    - checkout
+    - run:
+        name: Build
+        command: ./scripts/build-android.sh $NDK_HOME -a << parameters.ABI >> -s << parameters.SDK >>
+
   macOS:
     description: A template for running liboqs tests on macOS
     parameters:
@@ -277,6 +297,22 @@ workflows:
           name: armel
           ARCH: armel
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release  -DOQS_ENABLE_SIG_SPHINCS=OFF
+
+      - android_emulated:
+          <<: *require_stylecheck
+          name: x86_64
+          ABI: x86_64
+          SDK: "30"
+      - android_emulated:
+          <<: *require_stylecheck
+          name: armeabi-v7a
+          ABI: armeabi-v7a
+          SDK: "30"
+      - android_emulated:
+          <<: *require_stylecheck
+          name: arm64-v8a
+          ABI: arm64-v8a
+          SDK: "30"
 
       - macOS:
           <<: *require_stylecheck
