@@ -98,7 +98,7 @@ typedef enum {
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
 
-#if (defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD))
+#if defined(OQS_USE_CPU_EXTENSIONS)
 
 /**
  * Architecture macros.
@@ -147,7 +147,7 @@ OQS_API OQS_CPU_EXTENSIONS OQS_get_available_CPU_extensions(void);
  */
 OQS_API const char *OQS_get_cpu_extension_name(unsigned int i);
 
-#endif /* OQS_USE_CPU_EXTENSIONS && OQS_PORTABLE_BUILD */
+#endif /* OQS_USE_CPU_EXTENSIONS */
 
 /**
  * This currently only sets the values in the OQS_CPU_EXTENSIONS,

@@ -49,9 +49,17 @@ endif()
 
 # That being said, code that requires these functions must take care to ensure
 # that they fall-back appropriately.
+# What must be ensured, though, is that only sha3x4 is compiled with avx2;
+# all other code must be compiled without this extension if portability is requested
 if(OQS_USE_AVX2_INSTRUCTIONS)
+if(OQS_PORTABLE_BUILD)
+    add_library(sha3x4_avx2 OBJECT sha3/sha3x4.c)
+    target_compile_options(sha3x4_avx2 PRIVATE -mavx2)
+    set(_COMMON_OBJS $<TARGET_OBJECTS:sha3x4_avx2>)
+else()
     set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3x4.c)
     add_compile_options(-mavx2)
+endif()
 endif()
 
 add_library(common OBJECT ${AES_IMPL}
@@ -64,3 +72,6 @@ add_library(common OBJECT ${AES_IMPL}
 if(OQS_USE_OPENSSL)
     target_include_directories(common PRIVATE ${OPENSSL_INCLUDE_DIR})
 endif()
+
+set(_COMMON_OBJS ${_COMMON_OBJS} $<TARGET_OBJECTS:common>)
+set(COMMON_OBJS ${_COMMON_OBJS} PARENT_SCOPE)

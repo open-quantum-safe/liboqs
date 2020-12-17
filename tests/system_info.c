@@ -60,7 +60,7 @@ static void print_platform_info(void) {
 
 /* Display all active CPU extensions: */
 static void print_cpu_extensions(void) {
-#if defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_USE_CPU_EXTENSIONS)
 	/* Make CPU features struct iterable */
 	typedef union ext_u {
 		OQS_CPU_EXTENSIONS ext_x;
@@ -81,10 +81,15 @@ static void print_cpu_extensions(void) {
 			}
 		}
 	}
-	printf("\n");
 #else /* no extensions active */
-	printf("CPU exts active:  None\n");
+	printf("CPU exts active:  None");
 #endif
+#if defined(OQS_PORTABLE_BUILD)
+	printf(" (portable build)\n");
+#else
+	printf("\n");
+#endif
+
 }
 
 static void print_oqs_configuration(void) {
