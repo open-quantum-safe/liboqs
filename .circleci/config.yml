@@ -95,7 +95,7 @@ jobs:
             (cd build &&
             cmake -GNinja << parameters.CMAKE_ARGS >> .. && cmake -LA .. &&
             ninja) &&
-            mkdir -p tmp && python3 -m pytest --verbose --numprocesses=auto --ignore=tests/test_code_conventions.py --ignore=tests/test_portability.py --junitxml=build/test-results/pytest/test-results.xml
+            mkdir -p tmp && python3 -m pytest --verbose --numprocesses=auto --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml
             "
       - store_test_results:
           path: build/test-results
@@ -131,7 +131,7 @@ jobs:
           working_directory: build
       - run:
           name: Run tests
-          command: mkdir tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_portability.py --junitxml=build/test-results/pytest/test-results.xml << parameters.PYTEST_ARGS >>
+          command: mkdir tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml << parameters.PYTEST_ARGS >>
       - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
           path: build/test-results
       - store_artifacts:
@@ -207,14 +207,12 @@ workflows:
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
-          PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
       - linux_x64:
           <<: *require_stylecheck
           name: alpine
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
-          PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
       - linux_x64:
           <<: *require_stylecheck
           name: centos-8
@@ -226,7 +224,6 @@ workflows:
           name: debian-buster
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
-          PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
       - linux_x64:
           <<: *require_stylecheck
           name: ubuntu-bionic-noopenssl
