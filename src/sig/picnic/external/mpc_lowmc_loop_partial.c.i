@@ -10,7 +10,7 @@
 lowmc_partial_round_t const* round = LOWMC_INSTANCE.rounds;
   mzd_local_t nl_part[reduced_shares][(LOWMC_R * 32 + 255) / 256];
   MPC_LOOP_CONST_C(XOR, x, x, LOWMC_INSTANCE.precomputed_constant_linear, reduced_shares, ch);
-  MPC_LOOP_CONST(MUL_MC, nl_part, in_out_shares[0].s,
+  MPC_LOOP_CONST(MUL_MC, nl_part, in_out_shares->s,
                  LOWMC_INSTANCE.precomputed_non_linear_part_matrix, reduced_shares);
   MPC_LOOP_CONST_C(XOR_MC, nl_part, nl_part, LOWMC_INSTANCE.precomputed_constant_non_linear, reduced_shares, ch);
   for (unsigned i = 0; i < (LOWMC_R-1); ++i, ++views, ++round, ++rvec) {

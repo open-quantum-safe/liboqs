@@ -28,6 +28,7 @@ make
 
 The cmake based build system supports the following flags:
 * ``WITH_ZKBPP``: Enable ZKB++-based Picnic instances.
+* ``WITH_UNRUH``: Enables ZKB++-based Picnic instances using the Unruh transform (requires ``WITH_ZKBPP`` to be enabled).
 * ``WITH_KKW``: Enable KKW-based Picnic instances.
 * ``WITH_SIMD_OPT``: Enable SIMD optimizations.
 * ``WITH_AVX2``: Use AVX2 if available.
@@ -36,6 +37,14 @@ The cmake based build system supports the following flags:
 * ``WITH_MARCH_NATIVE``: Build with -march=native -mtune=native (if supported).
 * ``WITH_LTO``: Enable link-time optimization (if supported).
 * ``WITH_SHA3_IMPL={opt64,avx2,armv8a-neon,s390-cpacf}``: Select SHA3 implementation opt64 (the default, from Keccak code package), avx2 (for AVX2 capable x86-64 systems, from Keccak code package), armv8a-neon (for NEON capable ARM systems, from Keccak code package), s390-cpacf (for IBM z14 and newer systems supporting SHAKE)
+
+Furthermore, the availability of specific LowMC instances can be controlled with ``WITH_LOWMC_$n_$k_$r``. Note though, that at least one instance needs to be enabled, and if ``WITH_KKW`` is enabled, at least one of full Sbox layer instances needs to be enabled as well:
+* ``WITH_LOWMC_128_128_20``: Enable partial Sbox layer instance for L1.
+* ``WITH_LOWMC_192_192_30``: Enable partial Sbox layer instance for L3.
+* ``WITH_LOWMC_256_256_38``: Enable partial Sbox layer instance for L5.
+* ``WITH_LOWMC_129_129_4``: Enable full Sbox layer instance for L1.
+* ``WITH_LOWMC_192_192_4``: Enable full Sbox layer instance for L3.
+* ``WITH_LOWMC_255_255_4``: Enable full Sbox layer instance for L5.
 
 Building on Windows
 -------------------

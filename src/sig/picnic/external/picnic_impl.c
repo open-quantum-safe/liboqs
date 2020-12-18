@@ -18,7 +18,7 @@
 #include "lowmc.h"
 #include "mpc_lowmc.h"
 #include "picnic_impl.h"
-#include <oqs/rand.h>
+#include "randomness.h"
 
 #include <limits.h>
 #include <math.h>
@@ -1019,7 +1019,7 @@ static void generate_seeds(const picnic_instance_t* pp, const picnic_context_t* 
 #if defined(WITH_EXTRA_RANDOMNESS)
   // Add extra random bytes for fault attack mitigation
   unsigned char buffer[2 * MAX_DIGEST_SIZE];
-  OQS_randombytes(buffer, 2 * seed_size);
+  rand_bits(buffer, 2 * seed_size * 8);
   kdf_shake_update_key(&ctx, buffer, 2 * seed_size);
 #endif
   kdf_shake_finalize_key(&ctx);
@@ -1054,7 +1054,7 @@ int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint
   sig_proof_t* prf = proof_new(pp);
   view_t* views    = aligned_alloc(32, sizeof(view_t) * lowmc_r);
 
-  in_out_shares_t in_out_shares[2];
+  in_out_shares_t in_out_shares;
 
   // Generate seeds
   generate_seeds(pp, context, prf->round[0].seeds[0], prf->salt);
@@ -1095,22 +1095,22 @@ int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint
     for (unsigned int round_offset = 0; round_offset < 4; round_offset++) {
       for (unsigned int j = 0; j < SC_PROOF - 1; ++j) {
         clear_padding_bits(&round[round_offset].input_shares[j][input_size - 1], diff);
-        mzd_from_char_array(in_out_shares[0].s[j], round[round_offset].input_shares[j], input_size);
+        mzd_from_char_array(in_out_shares.s[j], round[round_offset].input_shares[j], input_size);
       }
-      mzd_share(in_out_shares[0].s[2], in_out_shares[0].s[0], in_out_shares[0].s[1],
+      mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1],
                 context->m_key);
       mzd_to_char_array(round[round_offset].input_shares[SC_PROOF - 1],
-                        in_out_shares[0].s[SC_PROOF - 1], input_size);
+                        in_out_shares.s[SC_PROOF - 1], input_size);
 
       for (unsigned int j = 0; j < SC_PROOF; ++j) {
         decompress_random_tape(rvec, pp, &tape_bytes_x4[(j * 4 + round_offset) * aview_size], j);
       }
 
       // perform ZKB++ LowMC evaluation
-      lowmc_impl(context->m_plaintext, views, in_out_shares, rvec, recorded_state);
+      lowmc_impl(context->m_plaintext, views, &in_out_shares, rvec, recorded_state);
 
       for (unsigned int j = 0; j < SC_PROOF; ++j) {
-        mzd_to_char_array(round[round_offset].output_shares[j], in_out_shares[1].s[j], output_size);
+        mzd_to_char_array(round[round_offset].output_shares[j], in_out_shares.s[j], output_size);
         compress_view(round[round_offset].communicated_bits[j], pp, views, j);
       }
     }
@@ -1141,11 +1141,11 @@ int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint
       for (unsigned int j = 0; j < SC_PROOF - 1; ++j) {
         kdf_shake_get_randomness(&kdfs[j], round->input_shares[j], input_size);
         clear_padding_bits(&round->input_shares[j][input_size - 1], diff);
-        mzd_from_char_array(in_out_shares[0].s[j], round->input_shares[j], input_size);
+        mzd_from_char_array(in_out_shares.s[j], round->input_shares[j], input_size);
       }
-      mzd_share(in_out_shares[0].s[2], in_out_shares[0].s[0], in_out_shares[0].s[1],
+      mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1],
                 context->m_key);
-      mzd_to_char_array(round->input_shares[SC_PROOF - 1], in_out_shares[0].s[SC_PROOF - 1],
+      mzd_to_char_array(round->input_shares[SC_PROOF - 1], in_out_shares.s[SC_PROOF - 1],
                         input_size);
 
       // compute random tapes
@@ -1162,11 +1162,11 @@ int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint
     }
 
     // perform ZKB++ LowMC evaluation
-    lowmc_impl(context->m_plaintext, views, in_out_shares, rvec, recorded_state);
+    lowmc_impl(context->m_plaintext, views, &in_out_shares, rvec, recorded_state);
 
     // commitments
     for (unsigned int j = 0; j < SC_PROOF; ++j) {
-      mzd_to_char_array(round->output_shares[j], in_out_shares[1].s[j], output_size);
+      mzd_to_char_array(round->output_shares[j], in_out_shares.s[j], output_size);
       compress_view(round->communicated_bits[j], pp, views, j);
       hash_commitment(pp, round, j);
     }
@@ -1214,7 +1214,7 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
     return -1;
   }
 
-  in_out_shares_t in_out_shares[2];
+  in_out_shares_t in_out_shares;
   view_t* views = aligned_alloc(32, sizeof(view_t) * lowmc_r);
   rvec_t* rvec  = aligned_alloc(32, sizeof(rvec_t) * lowmc_r); // random tapes for and-gates
 
@@ -1277,12 +1277,12 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
         if (b_i) {
           clear_padding_bits(&helper[round_offset].round->input_shares[0][input_size - 1], diff);
         }
-        mzd_from_char_array(in_out_shares[0].s[0], helper[round_offset].round->input_shares[0],
+        mzd_from_char_array(in_out_shares.s[0], helper[round_offset].round->input_shares[0],
                             input_size);
         if (c_i) {
           clear_padding_bits(&helper[round_offset].round->input_shares[1][input_size - 1], diff);
         }
-        mzd_from_char_array(in_out_shares[0].s[1], helper[round_offset].round->input_shares[1],
+        mzd_from_char_array(in_out_shares.s[1], helper[round_offset].round->input_shares[1],
                             input_size);
 
         for (unsigned int j = 0; j < SC_VERIFY; ++j) {
@@ -1291,18 +1291,18 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
 
         decompress_view(views, pp, helper[round_offset].round->communicated_bits[1], 1);
         // perform ZKB++ LowMC evaluation
-        lowmc_verify_impl(context->m_plaintext, views, in_out_shares, rvec, a_i);
+        lowmc_verify_impl(context->m_plaintext, views, &in_out_shares, rvec, a_i);
         compress_view(helper[round_offset].round->communicated_bits[0], pp, views, 0);
 
-        mzd_share(in_out_shares[1].s[2], in_out_shares[1].s[0], in_out_shares[1].s[1],
+        mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1],
                   context->m_key);
         // recompute commitments
         for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-          mzd_to_char_array(helper[round_offset].round->output_shares[j], in_out_shares[1].s[j],
+          mzd_to_char_array(helper[round_offset].round->output_shares[j], in_out_shares.s[j],
                             output_size);
         }
         mzd_to_char_array(helper[round_offset].round->output_shares[SC_VERIFY],
-                          in_out_shares[1].s[SC_VERIFY], output_size);
+                          in_out_shares.s[SC_VERIFY], output_size);
       }
       for (unsigned int j = 0; j < SC_VERIFY; ++j) {
         hash_commitment_x4_verify(pp, helper, j);
@@ -1341,8 +1341,8 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
           clear_padding_bits(&helper->round->input_shares[1][input_size - 1], diff);
         }
 
-        mzd_from_char_array(in_out_shares[0].s[0], helper->round->input_shares[0], input_size);
-        mzd_from_char_array(in_out_shares[0].s[1], helper->round->input_shares[1], input_size);
+        mzd_from_char_array(in_out_shares.s[0], helper->round->input_shares[0], input_size);
+        mzd_from_char_array(in_out_shares.s[1], helper->round->input_shares[1], input_size);
 
         // compute random tapes
         for (unsigned int j = 0; j < SC_VERIFY; ++j) {
@@ -1359,17 +1359,17 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
 
       decompress_view(views, pp, helper->round->communicated_bits[1], 1);
       // perform ZKB++ LowMC evaluation
-      lowmc_verify_impl(context->m_plaintext, views, in_out_shares, rvec, a_i);
+      lowmc_verify_impl(context->m_plaintext, views, &in_out_shares, rvec, a_i);
       compress_view(helper->round->communicated_bits[0], pp, views, 0);
 
-      mzd_share(in_out_shares[1].s[2], in_out_shares[1].s[0], in_out_shares[1].s[1],
+      mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1],
                 context->m_key);
       // recompute commitments
       for (unsigned int j = 0; j < SC_VERIFY; ++j) {
-        mzd_to_char_array(helper->round->output_shares[j], in_out_shares[1].s[j], output_size);
+        mzd_to_char_array(helper->round->output_shares[j], in_out_shares.s[j], output_size);
         hash_commitment(pp, helper->round, j);
       }
-      mzd_to_char_array(helper->round->output_shares[SC_VERIFY], in_out_shares[1].s[SC_VERIFY],
+      mzd_to_char_array(helper->round->output_shares[SC_VERIFY], in_out_shares.s[SC_VERIFY],
                         output_size);
 
 #if defined(WITH_UNRUH)

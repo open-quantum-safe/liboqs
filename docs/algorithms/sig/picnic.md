@@ -12,7 +12,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://github.com/IAIK/Picnic
-- **Implementation version**: https://github.com/IAIK/Picnic/commit/ca45b2e00c0297f5608cbd59132e8e178a465d00
+- **Implementation version**: https://github.com/IAIK/Picnic/tree/v3.0.4
 - **License**: MIT License
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with optional use of AVX2 and SSE2 instructions (selected at compile-time, enabled by default if available)

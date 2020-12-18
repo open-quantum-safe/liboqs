@@ -15,7 +15,7 @@ for (unsigned i = 0; i < (LOWMC_R); ++i, ++views, ++round, ++rvec) {
   SBOX(sbox, y, x, views, rvec, LOWMC_N, shares, reduced_shares);
   MPC_LOOP_CONST(MUL, x, y, round->l_matrix, reduced_shares);
   MPC_LOOP_CONST_C(XOR, x, x, round->constant, reduced_shares, ch);
-  MPC_LOOP_CONST(ADDMUL, x, in_out_shares[0].s, round->k_matrix, reduced_shares);
+  MPC_LOOP_CONST(ADDMUL, x, in_out_shares->s, round->k_matrix, reduced_shares);
 }
 #if defined(RECOVER_FROM_STATE)
 RECOVER_FROM_STATE(x, LOWMC_R);
