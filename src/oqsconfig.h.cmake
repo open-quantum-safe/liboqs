@@ -158,15 +158,15 @@
 #cmakedefine OQS_ENABLE_SIG_falcon_1024_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_RAINBOW 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_Ia_classic 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_Ia_cyclic 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_Ia_cyclic_compressed 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_IIIc_classic 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_IIIc_cyclic 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_IIIc_cyclic_compressed 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_Vc_classic 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_Vc_cyclic 1
-#cmakedefine OQS_ENABLE_SIG_rainbow_Vc_cyclic_compressed 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_I_classic 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_I_circumzenithal 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_I_compressed 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_III_classic 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_III_circumzenithal 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_III_compressed 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_V_classic 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_V_circumzenithal 1
+#cmakedefine OQS_ENABLE_SIG_rainbow_V_compressed 1
 
 #cmakedefine OQS_ENABLE_SIG_SPHINCS 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_haraka_128f_robust 1

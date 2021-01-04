@@ -5,103 +5,103 @@
 
 #include <oqs/oqs.h>
 
-#ifdef OQS_ENABLE_SIG_rainbow_Ia_classic
-#define OQS_SIG_rainbow_Ia_classic_length_public_key 148992
-#define OQS_SIG_rainbow_Ia_classic_length_secret_key 92960
-#define OQS_SIG_rainbow_Ia_classic_length_signature 64
+#ifdef OQS_ENABLE_SIG_rainbow_I_classic
+#define OQS_SIG_rainbow_I_classic_length_public_key 161600
+#define OQS_SIG_rainbow_I_classic_length_secret_key 103648
+#define OQS_SIG_rainbow_I_classic_length_signature 66
 
-OQS_SIG *OQS_SIG_rainbow_Ia_classic_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Ia_classic_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Ia_classic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Ia_classic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_SIG *OQS_SIG_rainbow_I_classic_new(void);
+OQS_API OQS_STATUS OQS_SIG_rainbow_I_classic_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_I_classic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_I_classic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_rainbow_Ia_cyclic
-#define OQS_SIG_rainbow_Ia_cyclic_length_public_key 58144
-#define OQS_SIG_rainbow_Ia_cyclic_length_secret_key 92960
-#define OQS_SIG_rainbow_Ia_cyclic_length_signature 64
+#ifdef OQS_ENABLE_SIG_rainbow_I_circumzenithal
+#define OQS_SIG_rainbow_I_circumzenithal_length_public_key 60192
+#define OQS_SIG_rainbow_I_circumzenithal_length_secret_key 103648
+#define OQS_SIG_rainbow_I_circumzenithal_length_signature 66
 
-OQS_SIG *OQS_SIG_rainbow_Ia_cyclic_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Ia_cyclic_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Ia_cyclic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Ia_cyclic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_SIG *OQS_SIG_rainbow_I_circumzenithal_new(void);
+OQS_API OQS_STATUS OQS_SIG_rainbow_I_circumzenithal_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_I_circumzenithal_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_I_circumzenithal_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_rainbow_Ia_cyclic_compressed
-#define OQS_SIG_rainbow_Ia_cyclic_compressed_length_public_key 58144
-#define OQS_SIG_rainbow_Ia_cyclic_compressed_length_secret_key 64
-#define OQS_SIG_rainbow_Ia_cyclic_compressed_length_signature 64
+#ifdef OQS_ENABLE_SIG_rainbow_I_compressed
+#define OQS_SIG_rainbow_I_compressed_length_public_key 60192
+#define OQS_SIG_rainbow_I_compressed_length_secret_key 64
+#define OQS_SIG_rainbow_I_compressed_length_signature 66
 
-OQS_SIG *OQS_SIG_rainbow_Ia_cyclic_compressed_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Ia_cyclic_compressed_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Ia_cyclic_compressed_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Ia_cyclic_compressed_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_SIG *OQS_SIG_rainbow_I_compressed_new(void);
+OQS_API OQS_STATUS OQS_SIG_rainbow_I_compressed_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_I_compressed_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_I_compressed_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_rainbow_IIIc_classic
-#define OQS_SIG_rainbow_IIIc_classic_length_public_key 710640
-#define OQS_SIG_rainbow_IIIc_classic_length_secret_key 511448
-#define OQS_SIG_rainbow_IIIc_classic_length_signature 156
+#ifdef OQS_ENABLE_SIG_rainbow_III_classic
+#define OQS_SIG_rainbow_III_classic_length_public_key 882080
+#define OQS_SIG_rainbow_III_classic_length_secret_key 626048
+#define OQS_SIG_rainbow_III_classic_length_signature 164
 
-OQS_SIG *OQS_SIG_rainbow_IIIc_classic_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_IIIc_classic_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_IIIc_classic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_IIIc_classic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_SIG *OQS_SIG_rainbow_III_classic_new(void);
+OQS_API OQS_STATUS OQS_SIG_rainbow_III_classic_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_III_classic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_III_classic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_rainbow_IIIc_cyclic
-#define OQS_SIG_rainbow_IIIc_cyclic_length_public_key 206744
-#define OQS_SIG_rainbow_IIIc_cyclic_length_secret_key 511448
-#define OQS_SIG_rainbow_IIIc_cyclic_length_signature 156
+#ifdef OQS_ENABLE_SIG_rainbow_III_circumzenithal
+#define OQS_SIG_rainbow_III_circumzenithal_length_public_key 264608
+#define OQS_SIG_rainbow_III_circumzenithal_length_secret_key 626048
+#define OQS_SIG_rainbow_III_circumzenithal_length_signature 164
 
-OQS_SIG *OQS_SIG_rainbow_IIIc_cyclic_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_IIIc_cyclic_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_IIIc_cyclic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_IIIc_cyclic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_SIG *OQS_SIG_rainbow_III_circumzenithal_new(void);
+OQS_API OQS_STATUS OQS_SIG_rainbow_III_circumzenithal_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_III_circumzenithal_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_III_circumzenithal_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_rainbow_IIIc_cyclic_compressed
-#define OQS_SIG_rainbow_IIIc_cyclic_compressed_length_public_key 206744
-#define OQS_SIG_rainbow_IIIc_cyclic_compressed_length_secret_key 64
-#define OQS_SIG_rainbow_IIIc_cyclic_compressed_length_signature 156
+#ifdef OQS_ENABLE_SIG_rainbow_III_compressed
+#define OQS_SIG_rainbow_III_compressed_length_public_key 264608
+#define OQS_SIG_rainbow_III_compressed_length_secret_key 64
+#define OQS_SIG_rainbow_III_compressed_length_signature 164
 
-OQS_SIG *OQS_SIG_rainbow_IIIc_cyclic_compressed_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_IIIc_cyclic_compressed_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_IIIc_cyclic_compressed_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_IIIc_cyclic_compressed_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_SIG *OQS_SIG_rainbow_III_compressed_new(void);
+OQS_API OQS_STATUS OQS_SIG_rainbow_III_compressed_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_III_compressed_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_III_compressed_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_rainbow_Vc_classic
-#define OQS_SIG_rainbow_Vc_classic_length_public_key 1705536
-#define OQS_SIG_rainbow_Vc_classic_length_secret_key 1227104
-#define OQS_SIG_rainbow_Vc_classic_length_signature 204
+#ifdef OQS_ENABLE_SIG_rainbow_V_classic
+#define OQS_SIG_rainbow_V_classic_length_public_key 1930600
+#define OQS_SIG_rainbow_V_classic_length_secret_key 1408736
+#define OQS_SIG_rainbow_V_classic_length_signature 212
 
-OQS_SIG *OQS_SIG_rainbow_Vc_classic_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Vc_classic_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Vc_classic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Vc_classic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_SIG *OQS_SIG_rainbow_V_classic_new(void);
+OQS_API OQS_STATUS OQS_SIG_rainbow_V_classic_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_V_classic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_V_classic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_rainbow_Vc_cyclic
-#define OQS_SIG_rainbow_Vc_cyclic_length_public_key 491936
-#define OQS_SIG_rainbow_Vc_cyclic_length_secret_key 1227104
-#define OQS_SIG_rainbow_Vc_cyclic_length_signature 204
+#ifdef OQS_ENABLE_SIG_rainbow_V_circumzenithal
+#define OQS_SIG_rainbow_V_circumzenithal_length_public_key 536136
+#define OQS_SIG_rainbow_V_circumzenithal_length_secret_key 1408736
+#define OQS_SIG_rainbow_V_circumzenithal_length_signature 212
 
-OQS_SIG *OQS_SIG_rainbow_Vc_cyclic_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Vc_cyclic_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Vc_cyclic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Vc_cyclic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_SIG *OQS_SIG_rainbow_V_circumzenithal_new(void);
+OQS_API OQS_STATUS OQS_SIG_rainbow_V_circumzenithal_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_V_circumzenithal_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_V_circumzenithal_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
-#ifdef OQS_ENABLE_SIG_rainbow_Vc_cyclic_compressed
-#define OQS_SIG_rainbow_Vc_cyclic_compressed_length_public_key 491936
-#define OQS_SIG_rainbow_Vc_cyclic_compressed_length_secret_key 64
-#define OQS_SIG_rainbow_Vc_cyclic_compressed_length_signature 204
+#ifdef OQS_ENABLE_SIG_rainbow_V_compressed
+#define OQS_SIG_rainbow_V_compressed_length_public_key 536136
+#define OQS_SIG_rainbow_V_compressed_length_secret_key 64
+#define OQS_SIG_rainbow_V_compressed_length_signature 212
 
-OQS_SIG *OQS_SIG_rainbow_Vc_cyclic_compressed_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Vc_cyclic_compressed_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Vc_cyclic_compressed_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_Vc_cyclic_compressed_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+OQS_SIG *OQS_SIG_rainbow_V_compressed_new(void);
+OQS_API OQS_STATUS OQS_SIG_rainbow_V_compressed_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_V_compressed_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_SIG_rainbow_V_compressed_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #endif

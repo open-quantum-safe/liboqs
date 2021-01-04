@@ -68,24 +68,24 @@ extern "C" {
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */
 #define OQS_SIG_alg_falcon_1024 "Falcon-1024"
-/** Algorithm identifier for Rainbow-Ia-Classic */
-#define OQS_SIG_alg_rainbow_Ia_classic "Rainbow-Ia-Classic"
-/** Algorithm identifier for Rainbow-Ia-Cyclic */
-#define OQS_SIG_alg_rainbow_Ia_cyclic "Rainbow-Ia-Cyclic"
-/** Algorithm identifier for Rainbow-Ia-Cyclic-Compressed */
-#define OQS_SIG_alg_rainbow_Ia_cyclic_compressed "Rainbow-Ia-Cyclic-Compressed"
-/** Algorithm identifier for Rainbow-IIIc-Classic */
-#define OQS_SIG_alg_rainbow_IIIc_classic "Rainbow-IIIc-Classic"
-/** Algorithm identifier for Rainbow-IIIc-Cyclic */
-#define OQS_SIG_alg_rainbow_IIIc_cyclic "Rainbow-IIIc-Cyclic"
-/** Algorithm identifier for Rainbow-IIIc-Cyclic-Compressed */
-#define OQS_SIG_alg_rainbow_IIIc_cyclic_compressed "Rainbow-IIIc-Cyclic-Compressed"
-/** Algorithm identifier for Rainbow-Vc-Classic */
-#define OQS_SIG_alg_rainbow_Vc_classic "Rainbow-Vc-Classic"
-/** Algorithm identifier for Rainbow-Vc-Cyclic */
-#define OQS_SIG_alg_rainbow_Vc_cyclic "Rainbow-Vc-Cyclic"
-/** Algorithm identifier for Rainbow-Vc-Cyclic-Compressed */
-#define OQS_SIG_alg_rainbow_Vc_cyclic_compressed "Rainbow-Vc-Cyclic-Compressed"
+/** Algorithm identifier for Rainbow-I-Classic */
+#define OQS_SIG_alg_rainbow_I_classic "Rainbow-I-Classic"
+/** Algorithm identifier for Rainbow-I-Circumzenithal */
+#define OQS_SIG_alg_rainbow_I_circumzenithal "Rainbow-I-Circumzenithal"
+/** Algorithm identifier for Rainbow-I-Compressed */
+#define OQS_SIG_alg_rainbow_I_compressed "Rainbow-I-Compressed"
+/** Algorithm identifier for Rainbow-III-Classic */
+#define OQS_SIG_alg_rainbow_III_classic "Rainbow-III-Classic"
+/** Algorithm identifier for Rainbow-III-Circumzenithal */
+#define OQS_SIG_alg_rainbow_III_circumzenithal "Rainbow-III-Circumzenithal"
+/** Algorithm identifier for Rainbow-III-Compressed */
+#define OQS_SIG_alg_rainbow_III_compressed "Rainbow-III-Compressed"
+/** Algorithm identifier for Rainbow-V-Classic */
+#define OQS_SIG_alg_rainbow_V_classic "Rainbow-V-Classic"
+/** Algorithm identifier for Rainbow-V-Circumzenithal */
+#define OQS_SIG_alg_rainbow_V_circumzenithal "Rainbow-V-Circumzenithal"
+/** Algorithm identifier for Rainbow-V-Compressed */
+#define OQS_SIG_alg_rainbow_V_compressed "Rainbow-V-Compressed"
 /** Algorithm identifier for SPHINCS+-Haraka-128f-robust */
 #define OQS_SIG_alg_sphincs_haraka_128f_robust "SPHINCS+-Haraka-128f-robust"
 /** Algorithm identifier for SPHINCS+-Haraka-128f-simple */

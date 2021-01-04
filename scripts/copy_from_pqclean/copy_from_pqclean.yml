@@ -219,49 +219,49 @@ sigs:
     default_implementation: clean
     schemes:
       -
-        scheme: "Ia_classic"
-        pqclean_scheme: rainbowIa-classic
-        pretty_name_full: Rainbow-Ia-Classic
+        scheme: "I_classic"
+        pqclean_scheme: rainbowI-classic
+        pretty_name_full: Rainbow-I-Classic
         signed_msg_order: msg_then_sig
       -
-        scheme: "Ia_cyclic"
-        pqclean_scheme: rainbowIa-cyclic
-        pretty_name_full: Rainbow-Ia-Cyclic
+        scheme: "I_circumzenithal"
+        pqclean_scheme: rainbowI-circumzenithal
+        pretty_name_full: Rainbow-I-Circumzenithal
         signed_msg_order: msg_then_sig
       -
-        scheme: "Ia_cyclic_compressed"
-        pqclean_scheme: rainbowIa-cyclic-compressed
-        pretty_name_full: Rainbow-Ia-Cyclic-Compressed
+        scheme: "I_compressed"
+        pqclean_scheme: rainbowI-compressed
+        pretty_name_full: Rainbow-I-Compressed
         signed_msg_order: msg_then_sig
       -
-        scheme: "IIIc_classic"
-        pqclean_scheme: rainbowIIIc-classic
-        pretty_name_full: Rainbow-IIIc-Classic
+        scheme: "III_classic"
+        pqclean_scheme: rainbowIII-classic
+        pretty_name_full: Rainbow-III-Classic
         signed_msg_order: msg_then_sig
       -
-        scheme: "IIIc_cyclic"
-        pqclean_scheme: rainbowIIIc-cyclic
-        pretty_name_full: Rainbow-IIIc-Cyclic
+        scheme: "III_circumzenithal"
+        pqclean_scheme: rainbowIII-circumzenithal
+        pretty_name_full: Rainbow-III-Circumzenithal
         signed_msg_order: msg_then_sig
       -
-        scheme: "IIIc_cyclic_compressed"
-        pqclean_scheme: rainbowIIIc-cyclic-compressed
-        pretty_name_full: Rainbow-IIIc-Cyclic-Compressed
+        scheme: "III_compressed"
+        pqclean_scheme: rainbowIII-compressed
+        pretty_name_full: Rainbow-III-Compressed
         signed_msg_order: msg_then_sig
       -
-        scheme: "Vc_classic"
-        pqclean_scheme: rainbowVc-classic
-        pretty_name_full: Rainbow-Vc-Classic
+        scheme: "V_classic"
+        pqclean_scheme: rainbowV-classic
+        pretty_name_full: Rainbow-V-Classic
         signed_msg_order: msg_then_sig
       -
-        scheme: "Vc_cyclic"
-        pqclean_scheme: rainbowVc-cyclic
-        pretty_name_full: Rainbow-Vc-Cyclic
+        scheme: "V_circumzenithal"
+        pqclean_scheme: rainbowV-circumzenithal
+        pretty_name_full: Rainbow-V-Circumzenithal
         signed_msg_order: msg_then_sig
       -
-        scheme: "Vc_cyclic_compressed"
-        pqclean_scheme: rainbowVc-cyclic-compressed
-        pretty_name_full: Rainbow-Vc-Cyclic-Compressed
+        scheme: "V_compressed"
+        pqclean_scheme: rainbowV-compressed
+        pretty_name_full: Rainbow-V-Compressed
         signed_msg_order: msg_then_sig
   -
     name: sphincs
