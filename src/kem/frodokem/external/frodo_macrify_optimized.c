@@ -51,7 +51,6 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
 
         OQS_AES128_ECB_enc_sch((uint8_t*)a_row_temp, 4*PARAMS_N*sizeof(int16_t), aes_key_schedule, (uint8_t*)a_row);
 #elif defined (USE_SHAKE128_FOR_A)
-#if (!defined(OQS_PORTABLE_BUILD) && defined(OQS_USE_AES_INSTRUCTIONS) && defined(OQS_USE_AVX2_INSTRUCTIONS))
     uint8_t seed_A_separated_0[2 + BYTES_SEED_A];
     uint8_t seed_A_separated_1[2 + BYTES_SEED_A];
     uint8_t seed_A_separated_2[2 + BYTES_SEED_A];
@@ -71,21 +70,6 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
         seed_A_origin_3[0] = UINT16_TO_LE(i + 3);
         OQS_SHA3_shake128_4x((unsigned char*)(a_row), (unsigned char*)(a_row + PARAMS_N), (unsigned char*)(a_row + 2*PARAMS_N), (unsigned char*)(a_row + 3*PARAMS_N),
                     (unsigned long long)(2*PARAMS_N), seed_A_separated_0, seed_A_separated_1, seed_A_separated_2, seed_A_separated_3, 2 + BYTES_SEED_A);
-
-#else
-        uint8_t seed_A_separated[2 + BYTES_SEED_A];
-    uint16_t* seed_A_origin = (uint16_t*)&seed_A_separated;
-    memcpy(&seed_A_separated[2], seed_A, BYTES_SEED_A);
-    for (i = 0; i < PARAMS_N; i += 4) {
-        seed_A_origin[0] = UINT16_TO_LE(i + 0);
-        OQS_SHA3_shake128((unsigned char*)(a_row + 0*PARAMS_N), (unsigned long long)(2*PARAMS_N), seed_A_separated, 2 + BYTES_SEED_A);
-        seed_A_origin[0] = UINT16_TO_LE(i + 1);
-        OQS_SHA3_shake128((unsigned char*)(a_row + 1*PARAMS_N), (unsigned long long)(2*PARAMS_N), seed_A_separated, 2 + BYTES_SEED_A);
-        seed_A_origin[0] = UINT16_TO_LE(i + 2);
-        OQS_SHA3_shake128((unsigned char*)(a_row + 2*PARAMS_N), (unsigned long long)(2*PARAMS_N), seed_A_separated, 2 + BYTES_SEED_A);
-        seed_A_origin[0] = UINT16_TO_LE(i + 3);
-        OQS_SHA3_shake128((unsigned char*)(a_row + 3*PARAMS_N), (unsigned long long)(2*PARAMS_N), seed_A_separated, 2 + BYTES_SEED_A);
-#endif
 #endif /* USE_AES128_FOR_A */
         for (k = 0; k < 4 * PARAMS_N; k++) {
             a_row[k] = LE_TO_UINT16(a_row[k]);
