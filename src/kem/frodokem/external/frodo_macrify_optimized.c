@@ -213,8 +213,9 @@ void frodo_key_encode(uint16_t *out, const uint16_t *in)
 
     for (i = 0; i < nwords; i++) {
         temp = 0;
-        for(j = 0; j < PARAMS_EXTRACTED_BITS; j++)
+        for(j = 0; j < PARAMS_EXTRACTED_BITS; j++) {
             temp |= ((uint64_t)((uint8_t*)in)[i*PARAMS_EXTRACTED_BITS + j]) << (8*j);
+        }
         for (j = 0; j < npieces_word; j++) {
             *pos = (uint16_t)((temp & mask) << (PARAMS_LOGQ - PARAMS_EXTRACTED_BITS));
             temp >>= PARAMS_EXTRACTED_BITS;
@@ -239,7 +240,8 @@ void frodo_key_decode(uint16_t *out, const uint16_t *in)
             templong |= ((uint64_t)(temp & maskex)) << (PARAMS_EXTRACTED_BITS * j);
             index++;
         }
-	for(j = 0; j < PARAMS_EXTRACTED_BITS; j++)
-	    pos[i*PARAMS_EXTRACTED_BITS + j] = (templong >> (8*j)) & 0xFF;
+        for (j = 0; j < PARAMS_EXTRACTED_BITS; j++) {
+            pos[i*PARAMS_EXTRACTED_BITS + j] = (templong >> (8*j)) & 0xFF;
+        }
     }
 }
