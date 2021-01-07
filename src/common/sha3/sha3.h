@@ -693,7 +693,6 @@ void OQS_SHA3_cshake128_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
 */
 void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, const uint8_t *input, size_t inplen);
 
-#ifdef OQS_USE_AVX2_INSTRUCTIONS
 /**
  * \brief Seed 4 parallel SHAKE-128 instances, and generate 4 arrays of pseudo-random bytes.
  *
@@ -714,6 +713,7 @@ void OQS_SHA3_cshake256_simple(uint8_t *output, size_t outlen, uint16_t cstm, co
  */
 void OQS_SHA3_shake128_4x(uint8_t *output0, uint8_t *output1, uint8_t *output2, uint8_t *output3, size_t outlen, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen);
 
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
 /**
 * \brief Seed 4 parallel cSHAKE-128 instances, and generate 4 arrays of pseudo-random output, using a "simplified" customization string.
 * Uses a vectorized (AVX2) implementation of cSHAKE-128.
