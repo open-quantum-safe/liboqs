@@ -1,3 +1,10 @@
+Version 3.0.4 -- 2020-12-17
+---------------------------
+
+* Slightly improve memory consumption
+* Initial work to support PQClean integration in the future
+* Add cmake options to control availability of specific LowMC instances
+
 Version 3.0.3 -- 2020-10-12
 ---------------------------
 

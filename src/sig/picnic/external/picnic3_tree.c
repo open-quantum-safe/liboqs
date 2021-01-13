@@ -17,6 +17,7 @@
 #include <assert.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "endian_compat.h"
 #include "kdf_shake.h"
@@ -127,6 +128,7 @@ static void hashSeed(uint8_t* digest, const uint8_t* inputSeed, uint8_t* salt, u
   hash_update_uint16_le(&ctx, nodeIndex);
   hash_final(&ctx);
   hash_squeeze(&ctx, digest, 2 * params->seed_size);
+  hash_clear(&ctx);
 }
 
 static void hashSeed_x4(uint8_t** digest, const uint8_t** inputSeed, uint8_t* salt,
@@ -146,6 +148,7 @@ static void hashSeed_x4(uint8_t** digest, const uint8_t** inputSeed, uint8_t* sa
 
   hash_final_x4(&ctx);
   hash_squeeze_x4(&ctx, digest, 2 * params->seed_size);
+  hash_clear_x4(&ctx);
 }
 
 static void expandSeeds(tree_t* tree, uint8_t* salt, size_t repIndex,
@@ -432,6 +435,7 @@ static void computeParentHash(tree_t* tree, size_t child, uint8_t* salt,
   hash_update_uint16_le(&ctx, parent);
   hash_final(&ctx);
   hash_squeeze(&ctx, tree->nodes[parent], params->digest_size);
+  hash_clear(&ctx);
   tree->haveNode[parent] = 1;
 }
 

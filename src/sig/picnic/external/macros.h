@@ -129,14 +129,17 @@
 /* unreachable builtin */
 #if GNUC_CHECK(4, 5) || __has_builtin(__builtin_unreachable)
 #define UNREACHABLE __builtin_unreachable()
+#define HAVE_USEFUL_UNREACHABLE
 /* #elif defined(_MSC_VER)
 #define UNREACHABLE __assume(0) */
+#else
+#define UNREACHABLE
 #endif
 
 /* assume aligned builtin */
 #if GNUC_CHECK(4, 9) || __has_builtin(__builtin_assume_aligned)
 #define ASSUME_ALIGNED(p, a) __builtin_assume_aligned((p), (a))
-#elif defined(UNREACHABLE) && defined(HAVE_USEFUL_ATTR_ALIGNED)
+#elif defined(HAVE_USEFUL_UNREACHABLE) && defined(HAVE_USEFUL_ATTR_ALIGNED)
 #define ASSUME_ALIGNED(p, a) (((((uintptr_t)(p)) % (a)) == 0) ? (p) : (UNREACHABLE, (p)))
 #else
 #define ASSUME_ALIGNED(p, a) (p)

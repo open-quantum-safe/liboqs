@@ -22,7 +22,18 @@
 #include "picnic.h"
 
 #define SALT_SIZE 32
+
+/* max digest and seed size */
+#if defined(WITH_LOWMC_255_255_4) || defined(WITH_LOWMC_256_256_38)
 #define MAX_DIGEST_SIZE 64
+#define MAX_SEED_SIZE 32
+#elif defined(WITH_LOWMC_192_192_4) || defined(WITH_LOWMC_192_192_30)
+#define MAX_DIGEST_SIZE 48
+#define MAX_SEED_SIZE 24
+#elif defined(WITH_LOWMC_129_129_4) || defined(WITH_LOWMC_128_128_20)
+#define MAX_DIGEST_SIZE 32
+#define MAX_SEED_SIZE 16
+#endif
 
 typedef struct picnic_instance_t {
   lowmc_parameters_t lowmc;

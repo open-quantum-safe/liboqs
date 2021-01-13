@@ -133,6 +133,16 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #endif
 
 #if !defined(PICNIC_IS_LITTLE_ENDIAN) && !defined(PICNIC_IS_BIG_ENDIAN)
+#if defined(__ORDER_BIG_ENDIAN__) && defined(__ORDER_LITTLE_ENDIAN__)
+#if defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
+#define PICNIC_IS_BIG_ENDIAN
+#elif defined(__BYTE_ORDER__) && __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
+#define PICNIC_IS_LITTLE_ENDIAN
+#endif
+#endif
+#endif
+
+#if !defined(PICNIC_IS_LITTLE_ENDIAN) && !defined(PICNIC_IS_BIG_ENDIAN)
 #error "Unknown platform!"
 #endif
 
