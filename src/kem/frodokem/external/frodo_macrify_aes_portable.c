@@ -1,4 +1,4 @@
-static inline int frodo_mul_add_sa_plus_e_aes_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A)
+int frodo_mul_add_sa_plus_e_aes_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A)
 { // Generate-and-multiply: generate matrix A (N x N) column-wise, multiply by s' on the left.
   // Inputs: s', e' (N_BAR x N)
   // Output: out = s'*A + e' (N_BAR x N)

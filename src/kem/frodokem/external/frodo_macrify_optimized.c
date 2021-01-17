@@ -92,21 +92,16 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
     return 1;
 }
 
-
 #if defined(USE_AES128_FOR_A)
- #if defined(OQS_PORTABLE_BUILD) || !(defined(OQS_USE_AES_INSTRUCTIONS) && defined(OQS_USE_AVX2_INSTRUCTIONS))
-  #include "frodo_mul_add_sa_plus_e_aes_portable.c"
- #endif
- #if defined(OQS_USE_AES_INSTRUCTIONS) && defined(OQS_USE_AVX2_INSTRUCTIONS)
-  #include "frodo_mul_add_sa_plus_e_aes_avx2.c"
- #endif
-#else // USE_SHAKE128_FOR_A
- #if defined(OQS_PORTABLE_BUILD) || !defined(OQS_USE_AVX2_INSTRUCTIONS)
-  #include "frodo_mul_add_sa_plus_e_shake_portable.c"
- #endif
- #if defined(OQS_USE_AVX2_INSTRUCTIONS)
-  #include "frodo_mul_add_sa_plus_e_shake_avx2.c"
- #endif
+int frodo_mul_add_sa_plus_e_aes_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
+#if defined(OQS_USE_AES_INSTRUCTIONS) && defined(OQS_USE_AVX2_INSTRUCTIONS)
+int frodo_mul_add_sa_plus_e_aes_avx2(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
+#endif
+#elif defined(USE_SHAKE128_FOR_A)
+int frodo_mul_add_sa_plus_e_shake_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
+#if defined(OQS_USE_AVX2_INSTRUCTIONS)
+int frodo_mul_add_sa_plus_e_shake_avx2(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
+#endif
 #endif
 
 int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A)

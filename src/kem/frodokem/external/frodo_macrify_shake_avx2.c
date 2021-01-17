@@ -1,4 +1,8 @@
-static inline int frodo_mul_add_sa_plus_e_shake_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A)
+#include <string.h>
+
+#include <immintrin.h>
+
+int frodo_mul_add_sa_plus_e_shake_avx2(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A)
 { // Generate-and-multiply: generate matrix A (N x N) column-wise, multiply by s' on the left.
   // Inputs: s', e' (N_BAR x N)
   // Output: out = s'*A + e' (N_BAR x N)
@@ -23,7 +27,7 @@ static inline int frodo_mul_add_sa_plus_e_shake_portable(uint16_t *out, const ui
     memcpy(&seed_A_separated_1[2], seed_A, BYTES_SEED_A);
     memcpy(&seed_A_separated_2[2], seed_A, BYTES_SEED_A);
     memcpy(&seed_A_separated_3[2], seed_A, BYTES_SEED_A);
-
+    
     for (kk = 0; kk < PARAMS_N; kk+=4) {
         seed_A_origin_0[0] = UINT16_TO_LE(kk + 0);
         seed_A_origin_1[0] = UINT16_TO_LE(kk + 1);
@@ -33,15 +37,28 @@ static inline int frodo_mul_add_sa_plus_e_shake_portable(uint16_t *out, const ui
         (unsigned long long)(2*PARAMS_N), seed_A_separated_0, seed_A_separated_1, seed_A_separated_2, seed_A_separated_3, 2 + BYTES_SEED_A);
 
         for (i = 0; i < PARAMS_NBAR; i++) {
-            uint16_t sum[PARAMS_N] = {0};
-            for (j = 0; j < 4; j++) {
-                uint16_t sp = s[i*PARAMS_N + kk + j];
-                for (int k = 0; k < PARAMS_N; k++) {                // Matrix-vector multiplication
-                    sum[k] += (uint16_t) ((uint32_t) sp * (uint32_t) a_cols[(t+j)*PARAMS_N + k]);
-                }
-             }
-            for (int k = 0; k < PARAMS_N; k++){
-                out[i*PARAMS_N + k] += sum[k];
+            __m256i a, b0, b1, b2, b3, acc[PARAMS_N/16];
+            b0 = _mm256_set1_epi16(s[i*PARAMS_N + kk + 0]);
+            b1 = _mm256_set1_epi16(s[i*PARAMS_N + kk + 1]);
+            b2 = _mm256_set1_epi16(s[i*PARAMS_N + kk + 2]);
+            b3 = _mm256_set1_epi16(s[i*PARAMS_N + kk + 3]);
+            for (j = 0; j < PARAMS_N; j+=16) {                  // Matrix-vector multiplication
+                acc[j/16] = _mm256_load_si256((__m256i*)&out[i*PARAMS_N + j]);
+                a = _mm256_load_si256((__m256i*)&a_cols[(t+0)*PARAMS_N + j]);
+                a = _mm256_mullo_epi16(a, b0);
+                acc[j/16] = _mm256_add_epi16(a, acc[j/16]);
+                a = _mm256_load_si256((__m256i*)&a_cols[(t+1)*PARAMS_N + j]);
+                a = _mm256_mullo_epi16(a, b1);
+                acc[j/16] = _mm256_add_epi16(a, acc[j/16]);
+                a = _mm256_load_si256((__m256i*)&a_cols[(t+2)*PARAMS_N + j]);
+                a = _mm256_mullo_epi16(a, b2);
+                acc[j/16] = _mm256_add_epi16(a, acc[j/16]);
+                a = _mm256_load_si256((__m256i*)&a_cols[(t+3)*PARAMS_N + j]);
+                a = _mm256_mullo_epi16(a, b3);
+                acc[j/16] = _mm256_add_epi16(a, acc[j/16]);
+            }
+            for (j = 0; j < PARAMS_N/16; j++) {
+                _mm256_store_si256((__m256i*)&out[i*PARAMS_N + 16*j], acc[j]);
             }
         }
     }
