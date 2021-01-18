@@ -28,36 +28,18 @@ else()
     set(SHA2_IMPL sha2/sha2_c.c)
 endif()
 
-set(SHA3_IMPL sha3/sha3_c.c)
+set(SHA3_IMPL sha3/sha3_c.c sha3/sha3x4.c)
 if(OQS_USE_SHA3_OPENSSL)
     set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3_ossl.c)
 endif()
 
-# If the code below is compiled in and run, the CPU will not have a
-# fallback in case it does not support AVX2.
-
-# At the moment, this cannot be helped: if AVX2 compilation is supported and
-# OQS_PORTABLE_BUILD is set, Kyber, SPHINCS, and Dilithium compile in code that
-# includes KeccakP1600times4_PermuteAll_24rounds from
-# src/common/sha3/keccak4x/KeccakP-1600-times4-SIMD256.c
-
-# However, this shouldn't affect portability since when OQS_PORTABLE_BUILD
-# is specified, the algorithms fallback to non-AVX2 code when necessary, which
-# does not make calls to the SHA3 AVX2 functions, which in turn means that the
-# inclusion of SHA3 AVX2 code in the binary even when OQS_PORTABLE_BUILD is
-# specified should not be a problem.
-
-# That being said, code that requires these functions must take care to ensure
-# that they fall-back appropriately.
-# What must be ensured, though, is that only sha3x4 is compiled with avx2;
-# all other code must be compiled without this extension if portability is requested
 if(OQS_USE_AVX2_INSTRUCTIONS)
 if(OQS_PORTABLE_BUILD)
-    add_library(sha3x4_avx2 OBJECT sha3/sha3x4.c)
+    add_library(sha3x4_avx2 OBJECT sha3/sha3x4_avx2.c)
     target_compile_options(sha3x4_avx2 PRIVATE -mavx2)
     set(_COMMON_OBJS $<TARGET_OBJECTS:sha3x4_avx2>)
 else()
-    set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3x4.c)
+    set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3x4_avx2.c)
     add_compile_options(-mavx2)
 endif()
 endif()

@@ -127,7 +127,7 @@ if(NOT OQS_BUILD_ONLY_LIB)
     if(NOT WIN32)
         add_custom_target(
             prettyprint
-            COMMAND ./scripts/run_astyle.sh
+            COMMAND find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --options=.astylerc
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             USES_TERMINAL)
     endif()
