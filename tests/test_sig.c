@@ -14,7 +14,29 @@
 #include <pthread.h>
 #endif
 
+#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
+#include <valgrind/memcheck.h>
+#define OQS_TEST_CT_CLASSIFY(addr, len)  VALGRIND_MAKE_MEM_UNDEFINED(addr, len)
+#define OQS_TEST_CT_DECLASSIFY(addr, len)  VALGRIND_MAKE_MEM_DEFINED(addr, len)
+#else
+#define OQS_TEST_CT_CLASSIFY(addr, len)
+#define OQS_TEST_CT_DECLASSIFY(addr, len)
+#endif
+
 #include "system_info.c"
+
+extern void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
+void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read);
+
+void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+	OQS_randombytes_system(random_array, bytes_to_read);
+
+	/* OQS_TEST_CT_CLASSIFY tells Valgrind's memcheck tool to issue a warning if
+	 * the program branches on any byte that depends on random_array. This helps us
+	 * identify timing side-channels, as these bytes often contain secret data.
+	 */
+	OQS_TEST_CT_CLASSIFY(random_array, bytes_to_read);
+}
 
 static OQS_STATUS sig_test_correctness(const char *method_name) {
 
@@ -48,20 +70,26 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	}
 
 	OQS_randombytes(message, message_len);
+	OQS_TEST_CT_DECLASSIFY(message, message_len);
 
 	rc = OQS_SIG_keypair(sig, public_key, secret_key);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
 		goto err;
 	}
 
 	rc = OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_sign failed\n");
 		goto err;
 	}
 
+	OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
+	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify failed\n");
 		goto err;
@@ -69,7 +97,9 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	/* modify the signature to invalidate it */
 	OQS_randombytes(signature, signature_len);
+	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
 	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_ERROR) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
 		goto err;
@@ -129,8 +159,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	// Use system RNG in this program
-	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
+	OQS_randombytes_custom_algorithm(&TEST_SIG_randombytes);
 
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS_IN_TESTS

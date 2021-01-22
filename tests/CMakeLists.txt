@@ -92,6 +92,15 @@ target_link_libraries(test_sig_mem PRIVATE ${API_TEST_DEPS})
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
 
+# Enable Valgrind-based timing side-channel analysis for test_kem and test_sig
+if(OQS_ENABLE_TEST_CONSTANT_TIME)
+  if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_definitions(-DOQS_ENABLE_TEST_CONSTANT_TIME)
+  else()
+    message(WARNING "OQS_ENABLE_TEST_CONSTANT_TIME needs CMAKE_BUILD_TYPE=Debug")
+  endif()
+endif()
+
 # Record compile options -- from target speed_kem - don't set any options only for speed_kem!
 get_property(OQS_COMPILE_OPTIONS TARGET speed_kem PROPERTY COMPILE_OPTIONS)
 add_definitions(-DOQS_COMPILE_OPTIONS="[${OQS_COMPILE_OPTIONS}]")

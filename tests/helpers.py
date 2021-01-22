@@ -163,3 +163,23 @@ def get_kats(t):
      with open(os.path.join('tests', 'KATs', t, 'kats.json'), 'r') as fp:
       kats[t] = json.load(fp)
    return kats[t]
+
+@functools.lru_cache()
+def get_valgrind_version():
+    try:
+        version = run_subprocess(['valgrind', '--version'])
+        x,y,z = map(int, version.replace("valgrind-","").split("."))
+    except:
+        x,y,z = 0,0,0
+    return x, y, z
+
+def test_requires_valgrind_version_at_least(x,y,z):
+    (X,Y,Z) = get_valgrind_version()
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            if (X>x) or (X>=x and Y>y) or (X>=x and Y>=y and Z>=z):
+                return func(*args, **kwargs)
+            pytest.skip('Test requires valgrind >= {}.{}.{}'.format(x,y,z))
+        return wrapper
+    return decorator
