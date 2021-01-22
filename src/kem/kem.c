@@ -19,7 +19,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 		OQS_KEM_alg_bike1_l3_cpa,
 		OQS_KEM_alg_bike1_l1_fo,
 		OQS_KEM_alg_bike1_l3_fo,
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_START
 		OQS_KEM_alg_classic_mceliece_348864,
 		OQS_KEM_alg_classic_mceliece_348864f,
 		OQS_KEM_alg_classic_mceliece_460896,
@@ -52,7 +52,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 		OQS_KEM_alg_saber_lightsaber,
 		OQS_KEM_alg_saber_saber,
 		OQS_KEM_alg_saber_firesaber,
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 		OQS_KEM_alg_frodokem_640_aes,
 		OQS_KEM_alg_frodokem_640_shake,
 		OQS_KEM_alg_frodokem_976_aes,
@@ -117,7 +117,7 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ENABLED_CASE_START
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_START
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_classic_mceliece_348864)) {
 #ifdef OQS_ENABLE_KEM_classic_mceliece_348864
 		return 1;
@@ -310,7 +310,7 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ENABLED_CASE_END
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_END
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_640_aes)) {
 #ifdef OQS_ENABLE_KEM_frodokem_640_aes
 		return 1;
@@ -479,7 +479,7 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_NEW_CASE_START
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_NEW_CASE_START
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_classic_mceliece_348864)) {
 #ifdef OQS_ENABLE_KEM_classic_mceliece_348864
 		return OQS_KEM_classic_mceliece_348864_new();
@@ -672,7 +672,7 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_NEW_CASE_END
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_NEW_CASE_END
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_640_aes)) {
 #ifdef OQS_ENABLE_KEM_frodokem_640_aes
 		return OQS_KEM_frodokem_640_aes_new();

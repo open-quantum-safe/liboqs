@@ -15,7 +15,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-SIG
 	const char *a[OQS_SIG_algs_length] = {
 		OQS_SIG_alg_default,
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_START
 		OQS_SIG_alg_dilithium_2,
 		OQS_SIG_alg_dilithium_3,
 		OQS_SIG_alg_dilithium_4,
@@ -66,7 +66,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_sphincs_shake256_256f_simple,
 		OQS_SIG_alg_sphincs_shake256_256s_robust,
 		OQS_SIG_alg_sphincs_shake256_256s_simple,
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 		OQS_SIG_alg_picnic_L1_FS,
 		OQS_SIG_alg_picnic_L1_UR,
 		OQS_SIG_alg_picnic_L1_full,
@@ -97,7 +97,7 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 	}
 	if (0 == strcasecmp(method_name, OQS_SIG_alg_default)) {
 		return OQS_SIG_alg_is_enabled(OQS_SIG_DEFAULT);
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ENABLED_CASE_START
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_START
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_2)) {
 #ifdef OQS_ENABLE_SIG_dilithium_2
 		return 1;
@@ -398,7 +398,7 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ENABLED_CASE_END
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_END
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L1_FS)) {
 #ifdef OQS_ENABLE_SIG_picnic_L1_FS
 		return 1;
@@ -483,7 +483,7 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	}
 	if (0 == strcasecmp(method_name, OQS_SIG_alg_default)) {
 		return OQS_SIG_new(OQS_SIG_DEFAULT);
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_NEW_CASE_START
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_NEW_CASE_START
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_2)) {
 #ifdef OQS_ENABLE_SIG_dilithium_2
 		return OQS_SIG_dilithium_2_new();
@@ -784,7 +784,7 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-		///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_NEW_CASE_END
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_NEW_CASE_END
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_picnic_L1_FS)) {
 #ifdef OQS_ENABLE_SIG_picnic_L1_FS
 		return OQS_SIG_picnic_L1_FS_new();

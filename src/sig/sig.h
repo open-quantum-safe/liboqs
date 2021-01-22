@@ -57,7 +57,7 @@ extern "C" {
 #define OQS_SIG_alg_picnic3_L3 "picnic3_L3"
 /** Algorithm identifier for picnic3_L5 */
 #define OQS_SIG_alg_picnic3_L5 "picnic3_L5"
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for DILITHIUM_2 */
 #define OQS_SIG_alg_dilithium_2 "DILITHIUM_2"
 /** Algorithm identifier for DILITHIUM_3 */
@@ -158,12 +158,12 @@ extern "C" {
 #define OQS_SIG_alg_sphincs_shake256_256s_robust "SPHINCS+-SHAKE256-256s-robust"
 /** Algorithm identifier for SPHINCS+-SHAKE256-256s-simple */
 #define OQS_SIG_alg_sphincs_shake256_256s_simple "SPHINCS+-SHAKE256-256s-simple"
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 // EDIT-WHEN-ADDING-SIG
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
 #define OQS_SIG_algs_length 63
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_new.
@@ -331,7 +331,7 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_PICNIC
 #include <oqs/sig_picnic.h>
 #endif /* OQS_ENABLE_SIG_PICNIC */
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_START
 #ifdef OQS_ENABLE_SIG_DILITHIUM
 #include <oqs/sig_dilithium.h>
 #endif /* OQS_ENABLE_SIG_DILITHIUM */
@@ -344,7 +344,7 @@ OQS_API void OQS_SIG_free(OQS_SIG *sig);
 #ifdef OQS_ENABLE_SIG_SPHINCS
 #include <oqs/sig_sphincs.h>
 #endif /* OQS_ENABLE_SIG_SPHINCS */
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 // EDIT-WHEN-ADDING-SIG
 
 #if defined(__cplusplus)

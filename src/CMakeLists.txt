@@ -21,7 +21,7 @@ if(OQS_ENABLE_SIG_PICNIC)
     add_subdirectory(sig/picnic)
     set(SIG_OBJS $<TARGET_OBJECTS:picnic>)
 endif()
-##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_OBJECTS_START
+##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_START
 if(OQS_ENABLE_KEM_CLASSIC_MCELIECE)
     add_subdirectory(kem/classic_mceliece)
     set(KEM_OBJS ${KEM_OBJS} ${CLASSIC_MCELIECE_OBJS})
@@ -62,7 +62,7 @@ if(OQS_ENABLE_SIG_SPHINCS)
     add_subdirectory(sig/sphincs)
     set(SIG_OBJS ${SIG_OBJS} ${SPHINCS_OBJS})
 endif()
-##### OQS_COPY_FROM_PQCLEAN_FRAGMENT_ADD_ALG_OBJECTS_END
+##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 add_library(oqs kem/kem.c
                 ${KEM_OBJS}
