@@ -1,0 +1,7 @@
+{
+   Indexing into "gf_exp" using potentially secret value
+   Memcheck:Value8
+   src:gf.c:20
+   # fun:PQCLEAN_HQCRMRS*_CLEAN_gf_mul
+}
+
