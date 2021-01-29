@@ -1,0 +1,36 @@
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:PKBDecompression
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:PKBDecompression_extended
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:PKADecompression_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:Tate?_pairings
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:BuildOrdinary?nBasis_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:solve_dlog
+}

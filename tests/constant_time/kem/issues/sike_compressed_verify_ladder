@@ -1,0 +1,10 @@
+{
+   Needs review: initializing j leaks number of leading zeros in m
+   Memcheck:Cond
+   src:ec_isogeny.c:654
+   # fun:Ladder
+   fun:validate_ciphertext
+   fun:OQS_KEM_sike_*_compressed_decaps
+   fun:OQS_KEM_decaps
+}
+
