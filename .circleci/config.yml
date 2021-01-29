@@ -19,9 +19,10 @@ jobs:
     description: Validate formatting of code and documentation
     docker:
       - image: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-        auth:
-          username: $DOCKER_LOGIN
-          password: $DOCKER_PASSWORD
+# Re-enable iff docker enforces rate limitations without auth:
+#        auth:
+#          username: $DOCKER_LOGIN
+#          password: $DOCKER_PASSWORD
     steps:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
@@ -49,9 +50,10 @@ jobs:
         default: --numprocesses=auto
     docker:
       - image: << parameters.CONTAINER >>
-        auth:
-          username: $DOCKER_LOGIN
-          password: $DOCKER_PASSWORD
+# Re-enable iff docker enforces rate limitations without auth:
+#        auth:
+#          username: $DOCKER_LOGIN
+#          password: $DOCKER_PASSWORD
     steps:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
@@ -140,9 +142,10 @@ jobs:
   trigger-downstream-ci:
     docker:
       - image: cimg/base:2020.01
-        auth:
-          username: $DOCKER_LOGIN
-          password: $DOCKER_PASSWORD
+# Re-enable iff docker enforces rate limitations without auth:
+#        auth:
+#          username: $DOCKER_LOGIN
+#          password: $DOCKER_PASSWORD
     steps:
       - run:
           name: Trigger OQS-OpenSSL CI
