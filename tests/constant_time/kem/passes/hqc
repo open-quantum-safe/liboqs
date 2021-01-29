@@ -1,0 +1,12 @@
+{
+    Rejection sampling for uniform indices
+    Memcheck:Cond
+    src:vector.c:50
+    # fun:PQCLEAN_HQCRMRS*_CLEAN_vect_set_random_fixed_weight_by_coordinates
+}
+{
+    Rejection sampling for unique indices
+    Memcheck:Cond
+    src:vector.c:56
+    # fun:PQCLEAN_HQCRMRS*_CLEAN_vect_set_random_fixed_weight_by_coordinates
+}
