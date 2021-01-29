@@ -1,0 +1,12 @@
+{
+   Rejection sampling to produce public "A" matrix
+   Memcheck:Cond
+   fun:rej_uniform
+   fun:PQCLEAN_KYBER*_CLEAN_gen_matrix
+}
+{
+   Rejection sampling to produce public "A" matrix
+   Memcheck:Cond
+   fun:PQCLEAN_KYBER*_AVX2_rej_uniform_avx
+   fun:PQCLEAN_KYBER*_AVX2_gen_matrix
+}
