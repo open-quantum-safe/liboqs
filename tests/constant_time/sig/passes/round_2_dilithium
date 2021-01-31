@@ -1,0 +1,54 @@
+{
+   Rejection sampling for uniformly distributed public A matrix
+   Memcheck:Cond
+   src:poly.c:343 # fun:rej_uniform
+   fun:pqcrystals_dilithium*_ref_poly_uniform
+   fun:pqcrystals_dilithium*_ref_expand_mat
+}
+{
+   Rejection sampling for s1 and s2
+   Memcheck:Cond
+   fun:rej_eta
+   fun:pqcrystals_dilithium*_ref_poly_uniform_eta
+   fun:pqcrystals_dilithium*_ref_keypair
+}
+{
+   Rejection sampling for y
+   Memcheck:Cond
+   fun:rej_gamma1m1
+   fun:pqcrystals_dilithium*_ref_poly_uniform_gamma1m1
+   fun:pqcrystals_dilithium*_ref_signature
+}
+{
+   Rejection sampling for challenge
+   Memcheck:Cond
+   fun:pqcrystals_dilithium*_ref_challenge
+   fun:pqcrystals_dilithium*_ref_signature
+}
+{
+   Rejection sampling for challenge
+   Memcheck:Value8
+   fun:pqcrystals_dilithium*_ref_challenge
+   fun:pqcrystals_dilithium*_ref_signature
+}
+{
+   Rejection sampling for signature distribution
+   Memcheck:Cond
+   fun:pqcrystals_dilithium*_ref_poly_chknorm
+   fun:pqcrystals_dilithium*_ref_polyvec*_chknorm
+   fun:pqcrystals_dilithium*_ref_signature
+}
+{
+   Rejection sampling for hint
+   Memcheck:Cond
+   fun:pqcrystals_dilithium*_ref_make_hint
+   fun:pqcrystals_dilithium*_ref_poly_make_hint
+   fun:pqcrystals_dilithium*_ref_polyveck_make_hint
+   fun:pqcrystals_dilithium*_ref_signature
+}
+{
+   Packing routines do not need to be constant time
+   Memcheck:Cond
+   fun:pqcrystals_dilithium*_ref_pack_sig
+   fun:pqcrystals_dilithium*_ref_signature
+}
