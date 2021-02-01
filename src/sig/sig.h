@@ -58,12 +58,18 @@ extern "C" {
 /** Algorithm identifier for picnic3_L5 */
 #define OQS_SIG_alg_picnic3_L5 "picnic3_L5"
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
-/** Algorithm identifier for DILITHIUM_2 */
-#define OQS_SIG_alg_dilithium_2 "DILITHIUM_2"
-/** Algorithm identifier for DILITHIUM_3 */
-#define OQS_SIG_alg_dilithium_3 "DILITHIUM_3"
-/** Algorithm identifier for DILITHIUM_4 */
-#define OQS_SIG_alg_dilithium_4 "DILITHIUM_4"
+/** Algorithm identifier for Dilithium_2 */
+#define OQS_SIG_alg_dilithium_2 "Dilithium_2"
+/** Algorithm identifier for Dilithium_3 */
+#define OQS_SIG_alg_dilithium_3 "Dilithium_3"
+/** Algorithm identifier for Dilithium_5 */
+#define OQS_SIG_alg_dilithium_5 "Dilithium_5"
+/** Algorithm identifier for Dilithium_2_AES */
+#define OQS_SIG_alg_dilithium_2_aes "Dilithium_2_AES"
+/** Algorithm identifier for Dilithium_3_AES */
+#define OQS_SIG_alg_dilithium_3_aes "Dilithium_3_AES"
+/** Algorithm identifier for Dilithium_5_AES */
+#define OQS_SIG_alg_dilithium_5_aes "Dilithium_5_AES"
 /** Algorithm identifier for Falcon-512 */
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */
@@ -162,7 +168,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 63
+#define OQS_SIG_algs_length 66
 ///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
 
 /**

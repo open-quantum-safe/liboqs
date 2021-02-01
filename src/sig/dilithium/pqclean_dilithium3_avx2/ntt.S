@@ -1,216 +1,199 @@
-#include "consts.h"
+#include "cdecl.h"
 .include "shuffle.inc"
 
-.macro butterfly rl0,rl1,rl2,rl3,rh0,rh1,rh2,rh3,z0=3,z1=3,z2=3,z3=3
-#mul
-vpmuludq	%ymm\z0,%ymm\rh0,%ymm\rh0
-vpmuludq	%ymm\z1,%ymm\rh1,%ymm\rh1
-vpmuludq	%ymm\z2,%ymm\rh2,%ymm\rh2
-vpmuludq	%ymm\z3,%ymm\rh3,%ymm\rh3
+.macro butterfly l,h,zl0=1,zl1=1,zh0=2,zh1=2
+vpmuldq		%ymm\zl0,%ymm\h,%ymm13
+vmovshdup	%ymm\h,%ymm12
+vpmuldq		%ymm\zl1,%ymm12,%ymm14
 
-#reduce
-vpmuludq	%ymm0,%ymm\rh0,%ymm12
-vpmuludq	%ymm0,%ymm\rh1,%ymm13
-vpmuludq	%ymm0,%ymm\rh2,%ymm14
-vpmuludq	%ymm0,%ymm\rh3,%ymm15
-vpmuludq	%ymm1,%ymm12,%ymm12
-vpmuludq	%ymm1,%ymm13,%ymm13
-vpmuludq	%ymm1,%ymm14,%ymm14
-vpmuludq	%ymm1,%ymm15,%ymm15
-vpaddq		%ymm\rh0,%ymm12,%ymm12
-vpaddq		%ymm\rh1,%ymm13,%ymm13
-vpaddq		%ymm\rh2,%ymm14,%ymm14
-vpaddq		%ymm\rh3,%ymm15,%ymm15
-vpsrlq		$32,%ymm12,%ymm12
-vpsrlq		$32,%ymm13,%ymm13
-vpsrlq		$32,%ymm14,%ymm14
-vpsrlq		$32,%ymm15,%ymm15
+vpmuldq		%ymm\zh0,%ymm\h,%ymm\h
+vpmuldq		%ymm\zh1,%ymm12,%ymm12
 
-#update
-vpaddd		%ymm2,%ymm\rl0,%ymm\rh0
-vpaddd		%ymm2,%ymm\rl1,%ymm\rh1
-vpaddd		%ymm2,%ymm\rl2,%ymm\rh2
-vpaddd		%ymm2,%ymm\rl3,%ymm\rh3
-vpaddd		%ymm12,%ymm\rl0,%ymm\rl0
-vpaddd		%ymm13,%ymm\rl1,%ymm\rl1
-vpaddd		%ymm14,%ymm\rl2,%ymm\rl2
-vpaddd		%ymm15,%ymm\rl3,%ymm\rl3
-vpsubd		%ymm12,%ymm\rh0,%ymm\rh0
-vpsubd		%ymm13,%ymm\rh1,%ymm\rh1
-vpsubd		%ymm14,%ymm\rh2,%ymm\rh2
-vpsubd		%ymm15,%ymm\rh3,%ymm\rh3
+vpmuldq		%ymm0,%ymm13,%ymm13
+vpmuldq		%ymm0,%ymm14,%ymm14
+
+vmovshdup	%ymm\h,%ymm\h
+vpblendd	$0xAA,%ymm12,%ymm\h,%ymm\h
+
+vpsubd		%ymm\h,%ymm\l,%ymm12
+vpaddd		%ymm\h,%ymm\l,%ymm\l
+
+vmovshdup	%ymm13,%ymm13
+vpblendd	$0xAA,%ymm14,%ymm13,%ymm13
+
+vpaddd		%ymm13,%ymm12,%ymm\h
+vpsubd		%ymm13,%ymm\l,%ymm\l
 .endm
 
-.text
-ntt_levels0t2_avx:
-level0:
-#zetas
-vpbroadcastd	(%rdx),%ymm3
+.macro levels0t1 off
+/* level 0 */
+vpbroadcastd	(_ZETAS_QINV+1)*4(%rsi),%ymm1
+vpbroadcastd	(_ZETAS+1)*4(%rsi),%ymm2
 
-#load
-vpmovzxdq	(%rsi),%ymm4
-vpmovzxdq	128(%rsi),%ymm5
-vpmovzxdq	256(%rsi),%ymm6
-vpmovzxdq	384(%rsi),%ymm7
-vpmovzxdq	512(%rsi),%ymm8
-vpmovzxdq	640(%rsi),%ymm9
-vpmovzxdq	768(%rsi),%ymm10
-vpmovzxdq	896(%rsi),%ymm11
+vmovdqa		  0+32*\off(%rdi),%ymm4
+vmovdqa		128+32*\off(%rdi),%ymm5
+vmovdqa		256+32*\off(%rdi),%ymm6
+vmovdqa	 	384+32*\off(%rdi),%ymm7
+vmovdqa		512+32*\off(%rdi),%ymm8
+vmovdqa		640+32*\off(%rdi),%ymm9
+vmovdqa		768+32*\off(%rdi),%ymm10
+vmovdqa	 	896+32*\off(%rdi),%ymm11
 
-butterfly	4,5,6,7,8,9,10,11
+butterfly	4,8
+butterfly	5,9
+butterfly	6,10
+butterfly	7,11
 
-level1:
-#zetas
-vpbroadcastd	4(%rdx),%ymm12
-vpbroadcastd	8(%rdx),%ymm13
+/* level 1 */
+vpbroadcastd	(_ZETAS_QINV+2)*4(%rsi),%ymm1
+vpbroadcastd	(_ZETAS+2)*4(%rsi),%ymm2
+butterfly	4,6
+butterfly	5,7
 
-butterfly	4,5,8,9,6,7,10,11,12,12,13,13
+vpbroadcastd	(_ZETAS_QINV+3)*4(%rsi),%ymm1
+vpbroadcastd	(_ZETAS+3)*4(%rsi),%ymm2
+butterfly	8,10
+butterfly	9,11
 
-level2:
-#zetas
-vpbroadcastd	12(%rdx),%ymm12
-vpbroadcastd	16(%rdx),%ymm13
-vpbroadcastd	20(%rdx),%ymm14
-vpbroadcastd	24(%rdx),%ymm15
+vmovdqa		%ymm4,  0+32*\off(%rdi)
+vmovdqa		%ymm5,128+32*\off(%rdi)
+vmovdqa		%ymm6,256+32*\off(%rdi)
+vmovdqa		%ymm7,384+32*\off(%rdi)
+vmovdqa		%ymm8,512+32*\off(%rdi)
+vmovdqa		%ymm9,640+32*\off(%rdi)
+vmovdqa		%ymm10,768+32*\off(%rdi)
+vmovdqa		%ymm11,896+32*\off(%rdi)
+.endm
 
-butterfly	4,6,8,10,5,7,9,11,12,13,14,15
+.macro levels2t7 off
+/* level 2 */
+vmovdqa		256*\off+  0(%rdi),%ymm4
+vmovdqa		256*\off+ 32(%rdi),%ymm5
+vmovdqa		256*\off+ 64(%rdi),%ymm6
+vmovdqa	 	256*\off+ 96(%rdi),%ymm7
+vmovdqa		256*\off+128(%rdi),%ymm8
+vmovdqa		256*\off+160(%rdi),%ymm9
+vmovdqa		256*\off+192(%rdi),%ymm10
+vmovdqa	 	256*\off+224(%rdi),%ymm11
 
-#store
-vmovdqa		%ymm4,(%rdi)
-vmovdqa		%ymm5,256(%rdi)
-vmovdqa		%ymm6,512(%rdi)
-vmovdqa		%ymm7,768(%rdi)
-vmovdqa		%ymm8,1024(%rdi)
-vmovdqa		%ymm9,1280(%rdi)
-vmovdqa		%ymm10,1536(%rdi)
-vmovdqa		%ymm11,1792(%rdi)
+vpbroadcastd	(_ZETAS_QINV+4+\off)*4(%rsi),%ymm1
+vpbroadcastd	(_ZETAS+4+\off)*4(%rsi),%ymm2
 
-ret
-
-ntt_levels3t8_avx:
-#load
-vmovdqa		(%rsi),%ymm4
-vmovdqa		32(%rsi),%ymm5
-vmovdqa		64(%rsi),%ymm6
-vmovdqa		96(%rsi),%ymm7
-vmovdqa		128(%rsi),%ymm8
-vmovdqa		160(%rsi),%ymm9
-vmovdqa		192(%rsi),%ymm10
-vmovdqa		224(%rsi),%ymm11
-
-level3:
-#zetas
-vpbroadcastd	(%rdx),%ymm3
-
-butterfly	4,5,6,7,8,9,10,11
-
-level4:
-#zetas
-vpbroadcastd	4(%rdx),%ymm12
-vpbroadcastd	8(%rdx),%ymm13
-vpblendd	$0xF0,%ymm13,%ymm12,%ymm12
+butterfly	4,8
+butterfly	5,9
+butterfly	6,10
+butterfly	7,11
 
 shuffle8	4,8,3,8
 shuffle8	5,9,4,9
 shuffle8	6,10,5,10
 shuffle8	7,11,6,11
 
-butterfly	3,8,4,9,5,10,6,11,12,12,12,12
+/* level 3 */
+vmovdqa		(_ZETAS_QINV+8+8*\off)*4(%rsi),%ymm1
+vmovdqa		(_ZETAS+8+8*\off)*4(%rsi),%ymm2
 
-level5:
-#zetas
-vpmovzxdq	12(%rdx),%ymm12
+butterfly	3,5
+butterfly	8,10
+butterfly	4,6
+butterfly	9,11
 
 shuffle4	3,5,7,5
 shuffle4	8,10,3,10
 shuffle4	4,6,8,6
 shuffle4	9,11,4,11
 
-butterfly	7,5,3,10,8,6,4,11,12,12,12,12
+/* level 4 */
+vmovdqa		(_ZETAS_QINV+40+8*\off)*4(%rsi),%ymm1
+vmovdqa		(_ZETAS+40+8*\off)*4(%rsi),%ymm2
 
-level6:
-#zetas
-vpmovzxdq	28(%rdx),%ymm12
-vpmovzxdq	44(%rdx),%ymm13
+butterfly	7,8
+butterfly	5,6
+butterfly	3,4
+butterfly	10,11
 
-butterfly	7,5,8,6,3,10,4,11,12,12,13,13
+shuffle2	7,8,9,8
+shuffle2	5,6,7,6
+shuffle2	3,4,5,4
+shuffle2	10,11,3,11
 
-level7:
-#zetas
-vpmovzxdq	60(%rdx),%ymm12
-vpmovzxdq	76(%rdx),%ymm13
-vpmovzxdq	92(%rdx),%ymm14
-vpmovzxdq	108(%rdx),%ymm15
+/* level 5 */
+vmovdqa		(_ZETAS_QINV+72+8*\off)*4(%rsi),%ymm1
+vmovdqa		(_ZETAS+72+8*\off)*4(%rsi),%ymm2
+vpsrlq		$32,%ymm1,%ymm10
+vmovshdup	%ymm2,%ymm15
 
-butterfly	7,3,8,4,5,10,6,11,12,13,14,15
+butterfly	9,5,1,10,2,15
+butterfly	8,4,1,10,2,15
+butterfly	7,3,1,10,2,15
+butterfly	6,11,1,10,2,15
 
-#store
-vpsllq		$32,%ymm5,%ymm5
-vpsllq		$32,%ymm10,%ymm10
-vpsllq		$32,%ymm6,%ymm6
-vpsllq		$32,%ymm11,%ymm11
-vpblendd	$0xAA,%ymm5,%ymm7,%ymm7
-vpblendd	$0xAA,%ymm10,%ymm3,%ymm3
-vpblendd	$0xAA,%ymm6,%ymm8,%ymm8
-vpblendd	$0xAA,%ymm11,%ymm4,%ymm4
+/* level 6 */
+vmovdqa		(_ZETAS_QINV+104+8*\off)*4(%rsi),%ymm1
+vmovdqa		(_ZETAS+104+8*\off)*4(%rsi),%ymm2
+vpsrlq		$32,%ymm1,%ymm10
+vmovshdup	%ymm2,%ymm15
+butterfly	9,7,1,10,2,15
+butterfly	8,6,1,10,2,15
 
-shuffle4	7,3,5,3
-shuffle4	8,4,7,4
+vmovdqa		(_ZETAS_QINV+104+8*\off+32)*4(%rsi),%ymm1
+vmovdqa		(_ZETAS+104+8*\off+32)*4(%rsi),%ymm2
+vpsrlq		$32,%ymm1,%ymm10
+vmovshdup	%ymm2,%ymm15
+butterfly	5,3,1,10,2,15
+butterfly	4,11,1,10,2,15
 
-shuffle8	5,7,6,7
-shuffle8	3,4,5,4
+/* level 7 */
+vmovdqa		(_ZETAS_QINV+168+8*\off)*4(%rsi),%ymm1
+vmovdqa		(_ZETAS+168+8*\off)*4(%rsi),%ymm2
+vpsrlq		$32,%ymm1,%ymm10
+vmovshdup	%ymm2,%ymm15
+butterfly	9,8,1,10,2,15
 
-vmovdqa		%ymm6,(%rdi)
-vmovdqa		%ymm5,32(%rdi)
-vmovdqa		%ymm7,64(%rdi)
-vmovdqa		%ymm4,96(%rdi)
+vmovdqa		(_ZETAS_QINV+168+8*\off+32)*4(%rsi),%ymm1
+vmovdqa		(_ZETAS+168+8*\off+32)*4(%rsi),%ymm2
+vpsrlq		$32,%ymm1,%ymm10
+vmovshdup	%ymm2,%ymm15
+butterfly	7,6,1,10,2,15
 
-ret
+vmovdqa		(_ZETAS_QINV+168+8*\off+64)*4(%rsi),%ymm1
+vmovdqa		(_ZETAS+168+8*\off+64)*4(%rsi),%ymm2
+vpsrlq		$32,%ymm1,%ymm10
+vmovshdup	%ymm2,%ymm15
+butterfly	5,4,1,10,2,15
 
-.global cdecl(ntt_avx)
-cdecl(ntt_avx):
-#entry
-mov		%rsp,%r10
-mov		%rsp,%rax
-and		$31,%rax
-sub		%rax,%rsp
-sub		$2048,%rsp
+vmovdqa		(_ZETAS_QINV+168+8*\off+96)*4(%rsi),%ymm1
+vmovdqa		(_ZETAS+168+8*\off+96)*4(%rsi),%ymm2
+vpsrlq		$32,%ymm1,%ymm10
+vmovshdup	%ymm2,%ymm15
+butterfly	3,11,1,10,2,15
 
-#consts
-vmovdqa		_8XQINV*4(%rsi),%ymm0
-vmovdqa		_8XQ*4(%rsi),%ymm1
-vmovdqa		_8X2Q*4(%rsi),%ymm2
+vmovdqa		%ymm9,256*\off+  0(%rdi)
+vmovdqa		%ymm8,256*\off+ 32(%rdi)
+vmovdqa		%ymm7,256*\off+ 64(%rdi)
+vmovdqa		%ymm6,256*\off+ 96(%rdi)
+vmovdqa		%ymm5,256*\off+128(%rdi)
+vmovdqa		%ymm4,256*\off+160(%rdi)
+vmovdqa		%ymm3,256*\off+192(%rdi)
+vmovdqa		%ymm11,256*\off+224(%rdi)
+.endm
 
-#levels0t2
-mov		%rsi,%rcx
-lea		(_ZETAS+1)*4(%rsi),%rdx
-mov		%rdi,%rsi
-mov		%rsp,%rdi
-xor		%eax,%eax
-_looptop1:
-call		ntt_levels0t2_avx
-add		$32,%rdi
-add		$16,%rsi
-add		$32,%eax
-cmp		$256,%eax
-jne		_looptop1
+.text
+.global cdecl(PQCLEAN_DILITHIUM3_AVX2_ntt_avx)
+.global _cdecl(PQCLEAN_DILITHIUM3_AVX2_ntt_avx)
+cdecl(PQCLEAN_DILITHIUM3_AVX2_ntt_avx):
+_cdecl(PQCLEAN_DILITHIUM3_AVX2_ntt_avx):
+vmovdqa		_8XQ*4(%rsi),%ymm0
 
-#levels3t8
-sub		$128,%rsi
-mov		%rsi,%rdi
-mov		%rsp,%rsi
-add		$28,%rdx
-xor		%eax,%eax
-_looptop2:
-call		ntt_levels3t8_avx
-add		$128,%rdi
-add		$256,%rsi
-add		$124,%rdx
-add		$32,%eax
-cmp		$256,%eax
-jne		_looptop2
+levels0t1	0
+levels0t1	1
+levels0t1	2
+levels0t1	3
 
-#return
-mov		%r10,%rsp
+levels2t7	0
+levels2t7	1
+levels2t7	2
+levels2t7	3
+
 ret
 

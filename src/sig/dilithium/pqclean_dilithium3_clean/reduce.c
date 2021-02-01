@@ -1,74 +1,69 @@
-#include <stdint.h>
 #include "params.h"
 #include "reduce.h"
+#include <stdint.h>
 
 /*************************************************
-* Name:        montgomery_reduce
+* Name:        PQCLEAN_DILITHIUM3_CLEAN_montgomery_reduce
 *
-* Description: For finite field element a with 0 <= a <= Q*2^32,
-*              compute r \equiv a*2^{-32} (mod Q) such that 0 <= r < 2*Q.
+* Description: For finite field element a with -2^{31}Q <= a <= Q*2^31,
+*              compute r \equiv a*2^{-32} (mod Q) such that -Q < r < Q.
 *
-* Arguments:   - uint64_t: finite field element a
+* Arguments:   - int64_t: finite field element a
 *
 * Returns r.
 **************************************************/
-uint32_t montgomery_reduce(uint64_t a) {
-  uint64_t t;
+int32_t PQCLEAN_DILITHIUM3_CLEAN_montgomery_reduce(int64_t a) {
+    int32_t t;
 
-  t = a * QINV;
-  t &= ((uint64_t)1 << 32) - 1;
-  t *= Q;
-  t = a + t;
-  t >>= 32;
-  return t;
+    t = (int32_t)((uint64_t)a * (uint64_t)QINV);
+    t = (a - (int64_t)t * Q) >> 32;
+    return t;
 }
 
 /*************************************************
-* Name:        reduce32
+* Name:        PQCLEAN_DILITHIUM3_CLEAN_reduce32
 *
-* Description: For finite field element a, compute r \equiv a (mod Q)
-*              such that 0 <= r < 2*Q.
+* Description: For finite field element a with a <= 2^{31} - 2^{22} - 1,
+*              compute r \equiv a (mod Q) such that -6283009 <= r <= 6283007.
 *
-* Arguments:   - uint32_t: finite field element a
+* Arguments:   - int32_t: finite field element a
 *
 * Returns r.
 **************************************************/
-uint32_t reduce32(uint32_t a) {
-  uint32_t t;
+int32_t PQCLEAN_DILITHIUM3_CLEAN_reduce32(int32_t a) {
+    int32_t t;
 
-  t = a & 0x7FFFFF;
-  a >>= 23;
-  t += (a << 13) - a;
-  return t;
+    t = (a + (1 << 22)) >> 23;
+    t = a - t * Q;
+    return t;
 }
 
 /*************************************************
-* Name:        csubq
+* Name:        PQCLEAN_DILITHIUM3_CLEAN_caddq
 *
-* Description: Subtract Q if input coefficient is bigger than Q.
+* Description: Add Q if input coefficient is negative.
 *
-* Arguments:   - uint32_t: finite field element a
+* Arguments:   - int32_t: finite field element a
 *
 * Returns r.
 **************************************************/
-uint32_t csubq(uint32_t a) {
-  a -= Q;
-  a += ((int32_t)a >> 31) & Q;
-  return a;
+int32_t PQCLEAN_DILITHIUM3_CLEAN_caddq(int32_t a) {
+    a += (a >> 31) & Q;
+    return a;
 }
 
 /*************************************************
-* Name:        freeze
+* Name:        PQCLEAN_DILITHIUM3_CLEAN_freeze
 *
 * Description: For finite field element a, compute standard
-*              representative r = a mod Q.
+*              representative r = a mod^+ Q.
 *
-* Arguments:   - uint32_t: finite field element a
+* Arguments:   - int32_t: finite field element a
 *
 * Returns r.
 **************************************************/
-uint32_t freeze(uint32_t a) {
-  a = reduce32(a);
-  a = csubq(a);
-  return a;
+int32_t PQCLEAN_DILITHIUM3_CLEAN_freeze(int32_t a) {
+    a = PQCLEAN_DILITHIUM3_CLEAN_reduce32(a);
+    a = PQCLEAN_DILITHIUM3_CLEAN_caddq(a);
+    return a;
 }

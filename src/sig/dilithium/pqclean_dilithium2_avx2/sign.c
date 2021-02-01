@@ -1,327 +1,249 @@
-#include <stdint.h>
-#include "params.h"
-#include "sign.h"
-#include "packing.h"
-#include "polyvec.h"
-#include "poly.h"
-#include "randombytes.h"
-#include "symmetric.h"
+#include "align.h"
 #include "fips202.h"
-#ifdef DILITHIUM_USE_AES
-#include "aes256ctr.h"
-#endif
+#include "packing.h"
+#include "params.h"
+#include "poly.h"
+#include "polyvec.h"
+#include "randombytes.h"
+#include "sign.h"
+#include "symmetric.h"
+#include <stdint.h>
+#include <string.h>
 
-/*************************************************
-* Name:        challenge
-*
-* Description: Implementation of H. Samples polynomial with 60 nonzero
-*              coefficients in {-1,1} using the output stream of
-*              SHAKE256(mu|w1).
-*
-* Arguments:   - poly *c: pointer to output polynomial
-*              - const uint8_t mu[]: byte array containing mu
-*              - const polyveck *w1: pointer to vector w1
-**************************************************/
-void challenge(poly *c,
-               const uint8_t mu[CRHBYTES],
-               const polyveck *w1)
-{
-  unsigned int i, b, pos;
-  uint64_t signs;
-  __attribute__((aligned(32)))
-  uint8_t buf[CRHBYTES + K*POLYW1_PACKEDBYTES];
-  keccak_state state;
-
-  for(i = 0; i < CRHBYTES; ++i)
-    buf[i] = mu[i];
-  for(i = 0; i < K; ++i)
-    polyw1_pack(buf + CRHBYTES + i*POLYW1_PACKEDBYTES, &w1->vec[i]);
-
-  shake256_init(&state);
-  shake256_absorb(&state, buf, sizeof(buf));
-  shake256_finalize(&state);
-  shake256_squeezeblocks(buf, 1, &state);
-
-  signs = 0;
-  for(i = 0; i < 8; ++i)
-    signs |= (uint64_t)buf[i] << 8*i;
-
-  pos = 8;
-
-  for(i = 0; i < N; ++i)
-    c->coeffs[i] = 0;
-
-  for(i = 196; i < 256; ++i) {
-    do {
-      if(pos >= SHAKE256_RATE) {
-        shake256_squeezeblocks(buf, 1, &state);
-        pos = 0;
-      }
-
-      b = buf[pos++];
-    } while(b > i);
-
-    c->coeffs[i] = c->coeffs[b];
-    c->coeffs[b] = 1;
-    c->coeffs[b] ^= -((uint32_t)signs & 1) & (1 ^ (Q-1));
-    signs >>= 1;
-  }
+static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], const uint8_t rho[SEEDBYTES], unsigned int i) {
+    switch (i) {
+    case 0:
+        PQCLEAN_DILITHIUM2_AVX2_polyvec_matrix_expand_row0(buf, buf + 1, rho);
+        *row = buf;
+        break;
+    case 1:
+        PQCLEAN_DILITHIUM2_AVX2_polyvec_matrix_expand_row1(buf + 1, buf, rho);
+        *row = buf + 1;
+        break;
+    case 2:
+        PQCLEAN_DILITHIUM2_AVX2_polyvec_matrix_expand_row2(buf, buf + 1, rho);
+        *row = buf;
+        break;
+    case 3:
+        PQCLEAN_DILITHIUM2_AVX2_polyvec_matrix_expand_row3(buf + 1, buf, rho);
+        *row = buf + 1;
+        break;
+    }
 }
 
 /*************************************************
-* Name:        crypto_sign_keypair
+* Name:        PQCLEAN_DILITHIUM2_AVX2_crypto_sign_keypair
 *
 * Description: Generates public and private key.
 *
 * Arguments:   - uint8_t *pk: pointer to output public key (allocated
-*                             array of CRYPTO_PUBLICKEYBYTES bytes)
+*                             array of PQCLEAN_DILITHIUM2_AVX2_CRYPTO_PUBLICKEYBYTES bytes)
 *              - uint8_t *sk: pointer to output private key (allocated
-*                             array of CRYPTO_SECRETKEYBYTES bytes)
+*                             array of PQCLEAN_DILITHIUM2_AVX2_CRYPTO_SECRETKEYBYTES bytes)
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
-  unsigned int i;
-  __attribute__((aligned(32)))
-  uint8_t seedbuf[3*SEEDBYTES];
-  __attribute__((aligned(32)))
-  uint8_t tr[CRHBYTES];
-  const uint8_t *rho, *rhoprime, *key;
-  polyvecl mat[K];
-  polyvecl s1, s1hat;
-  polyveck s2, t1, t0;
+int PQCLEAN_DILITHIUM2_AVX2_crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
+    unsigned int i;
+    uint8_t seedbuf[3 * SEEDBYTES];
+    const uint8_t *rho, *rhoprime, *key;
+    polyvecl rowbuf[2];
+    polyvecl s1, *row = rowbuf;
+    polyveck s2;
+    poly t1, t0;
 
-  /* Get randomness for rho, rhoprime and key */
-  randombytes(seedbuf, 3*SEEDBYTES);
-  rho = seedbuf;
-  rhoprime = seedbuf + SEEDBYTES;
-  key = seedbuf + 2*SEEDBYTES;
+    /* Get randomness for rho, rhoprime and key */
+    randombytes(seedbuf, SEEDBYTES);
+    shake256(seedbuf, 3 * SEEDBYTES, seedbuf, SEEDBYTES);
+    rho = seedbuf;
+    rhoprime = seedbuf + SEEDBYTES;
+    key = seedbuf + 2 * SEEDBYTES;
 
-  /* Expand matrix */
-  expand_mat(mat, rho);
+    /* Store rho, key */
+    memcpy(pk, rho, SEEDBYTES);
+    memcpy(sk, rho, SEEDBYTES);
+    memcpy(sk + SEEDBYTES, key, SEEDBYTES);
 
-  /* Sample short vectors s1 and s2 */
-#ifdef DILITHIUM_USE_AES
-  __attribute__((aligned(16)))
-  uint64_t nonce = 0;
-  aes256ctr_ctx aesctx;
-  aes256ctr_init(&aesctx, rhoprime, nonce++);
-  for(i = 0; i < L; ++i) {
-    poly_uniform_eta_preinit(&s1.vec[i], &aesctx);
-    aesctx.n = _mm_loadl_epi64((__m128i *)&nonce);
-    nonce++;
-  }
-  for(i = 0; i < K; ++i) {
-    poly_uniform_eta_preinit(&s2.vec[i], &aesctx);
-    aesctx.n = _mm_loadl_epi64((__m128i *)&nonce);
-    nonce++;
-  }
-#elif L == 2 && K == 3
-  poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s2.vec[0], &s2.vec[1], rhoprime,
-                      0, 1, 2, 3);
-  poly_uniform_eta(&s2.vec[2], rhoprime, 4);
-#elif L == 3 && K == 4
-  poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s2.vec[0], rhoprime,
-                      0, 1, 2, 3);
-  poly_uniform_eta_4x(&s2.vec[1], &s2.vec[2], &s2.vec[3], &t1.vec[0], rhoprime,
-                      4, 5, 6, 7);
-#elif L == 4 && K == 5
-  poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s1.vec[3], rhoprime,
-                      0, 1, 2, 3);
-  poly_uniform_eta_4x(&s2.vec[0], &s2.vec[1], &s2.vec[2], &s2.vec[3], rhoprime,
-                      4, 5, 6, 7);
-  poly_uniform_eta(&s2.vec[4], rhoprime, 8);
-#elif L == 5 && K == 6
-  poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s1.vec[3], rhoprime,
-                      0, 1, 2, 3);
-  poly_uniform_eta_4x(&s1.vec[4], &s2.vec[0], &s2.vec[1], &s2.vec[2], rhoprime,
-                      4, 5, 6, 7);
-  poly_uniform_eta_4x(&s2.vec[3], &s2.vec[4], &s2.vec[5], &t1.vec[0], rhoprime,
-                      8, 9, 10, 11);
-#else
-#error
-#endif
+    /* Sample short vectors s1 and s2 */
+    PQCLEAN_DILITHIUM2_AVX2_poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s1.vec[3], rhoprime, 0, 1, 2, 3);
+    PQCLEAN_DILITHIUM2_AVX2_poly_uniform_eta_4x(&s2.vec[0], &s2.vec[1], &s2.vec[2], &s2.vec[3], rhoprime, 4, 5, 6, 7);
 
-  /* Matrix-vector multiplication */
-  s1hat = s1;
-  polyvecl_ntt(&s1hat);
-  for(i = 0; i < K; ++i) {
-    polyvecl_pointwise_acc_montgomery(&t1.vec[i], &mat[i], &s1hat);
-    //poly_reduce(&t1.vec[i]);
-    poly_invntt_tomont(&t1.vec[i]);
-  }
+    /* Pack secret vectors */
+    for (i = 0; i < L; i++) {
+        PQCLEAN_DILITHIUM2_AVX2_polyeta_pack(sk + 2 * SEEDBYTES + CRHBYTES + i * POLYETA_PACKEDBYTES, &s1.vec[i]);
+    }
+    for (i = 0; i < K; i++) {
+        PQCLEAN_DILITHIUM2_AVX2_polyeta_pack(sk + 2 * SEEDBYTES + CRHBYTES + (L + i)*POLYETA_PACKEDBYTES, &s2.vec[i]);
+    }
 
-  /* Add error vector s2 */
-  polyveck_add(&t1, &t1, &s2);
+    /* Transform s1 */
+    PQCLEAN_DILITHIUM2_AVX2_polyvecl_ntt(&s1);
 
-  /* Extract t1 and write public key */
-  polyveck_freeze(&t1);
-  polyveck_power2round(&t1, &t0, &t1);
-  pack_pk(pk, rho, &t1);
 
-  /* Compute CRH(rho, t1) and write secret key */
-  crh(tr, pk, CRYPTO_PUBLICKEYBYTES);
-  pack_sk(sk, rho, key, tr, &s1, &s2, &t0);
+    for (i = 0; i < K; i++) {
+        /* Expand matrix row */
+        polyvec_matrix_expand_row(&row, rowbuf, rho, i);
 
-  return 0;
+        /* Compute inner-product */
+        PQCLEAN_DILITHIUM2_AVX2_polyvecl_pointwise_acc_montgomery(&t1, row, &s1);
+        PQCLEAN_DILITHIUM2_AVX2_poly_invntt_tomont(&t1);
+
+        /* Add error polynomial */
+        PQCLEAN_DILITHIUM2_AVX2_poly_add(&t1, &t1, &s2.vec[i]);
+
+        /* Round t and pack t1, t0 */
+        PQCLEAN_DILITHIUM2_AVX2_poly_caddq(&t1);
+        PQCLEAN_DILITHIUM2_AVX2_poly_power2round(&t1, &t0, &t1);
+        PQCLEAN_DILITHIUM2_AVX2_polyt1_pack(pk + SEEDBYTES + i * POLYT1_PACKEDBYTES, &t1);
+        PQCLEAN_DILITHIUM2_AVX2_polyt0_pack(sk + 2 * SEEDBYTES + CRHBYTES + (L + K)*POLYETA_PACKEDBYTES + i * POLYT0_PACKEDBYTES, &t0);
+    }
+
+    /* Compute CRH(rho, t1) and store in secret key */
+    crh(sk + 2 * SEEDBYTES, pk, PQCLEAN_DILITHIUM2_AVX2_CRYPTO_PUBLICKEYBYTES);
+
+    return 0;
 }
 
 /*************************************************
-* Name:        crypto_sign_signature
+* Name:        PQCLEAN_DILITHIUM2_AVX2_crypto_sign_signature
 *
 * Description: Computes signature.
 *
-* Arguments:   - uint8_t *sig: pointer to output signature (of length CRYPTO_BYTES)
-*              - size_t *siglen: pointer to output length of signed message
+* Arguments:   - uint8_t *sig: pointer to output signature (of length PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES)
+*              - size_t *siglen: pointer to output length of signature
 *              - uint8_t *m: pointer to message to be signed
 *              - size_t mlen: length of message
 *              - uint8_t *sk: pointer to bit-packed secret key
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_sign_signature(uint8_t *sig,
-                          size_t *siglen,
-                          const uint8_t *m,
-                          size_t mlen,
-                          const uint8_t *sk)
-{
-  unsigned int i, n;
-  __attribute__((aligned(32)))
-  uint8_t seedbuf[2*SEEDBYTES + 3*CRHBYTES];
-  uint8_t *rho, *tr, *key, *mu, *rhoprime;
-  __attribute__((aligned(16)))
-  uint64_t nonce = 0;
-  poly c;
-  polyvecl mat[K], s1, z;
-  polyveck t0, s2, w1, w0, h;
-  keccak_state state;
+int PQCLEAN_DILITHIUM2_AVX2_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk) {
+    unsigned int i, n, pos;
+    uint8_t seedbuf[2 * SEEDBYTES + 3 * CRHBYTES];
+    uint8_t *rho, *tr, *key, *mu, *rhoprime;
+    uint8_t hintbuf[N];
+    uint8_t *hint = sig + SEEDBYTES + L * POLYZ_PACKEDBYTES;
+    uint64_t nonce = 0;
+    polyvecl mat[K], s1, z;
+    polyveck t0, s2, w1;
+    poly c, tmp;
+    union {
+        polyvecl y;
+        polyveck w0;
+    } tmpv;
+    shake256incctx state;
 
-  rho = seedbuf;
-  tr = rho + SEEDBYTES;
-  key = tr + CRHBYTES;
-  mu = key + SEEDBYTES;
-  rhoprime = mu + CRHBYTES;
-  unpack_sk(rho, key, tr, &s1, &s2, &t0, sk);
+    rho = seedbuf;
+    tr = rho + SEEDBYTES;
+    key = tr + CRHBYTES;
+    mu = key + SEEDBYTES;
+    rhoprime = mu + CRHBYTES;
+    PQCLEAN_DILITHIUM2_AVX2_unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
 
-  /* Compute CRH(tr, msg) */
-  shake256_init(&state);
-  shake256_absorb(&state, tr, CRHBYTES);
-  shake256_absorb(&state, m, mlen);
-  shake256_finalize(&state);
-  shake256_squeeze(mu, CRHBYTES, &state);
+    /* Compute CRH(tr, msg) */
+    shake256_inc_init(&state);
+    shake256_inc_absorb(&state, tr, CRHBYTES);
+    shake256_inc_absorb(&state, m, mlen);
+    shake256_inc_finalize(&state);
+    shake256_inc_squeeze(mu, CRHBYTES, &state);
+    shake256_inc_ctx_release(&state);
 
-#ifdef DILITHIUM_RANDOMIZED_SIGNING
-  randombytes(rhoprime, CRHBYTES);
-#else
-  crh(rhoprime, key, SEEDBYTES + CRHBYTES);
-#endif
+    crh(rhoprime, key, SEEDBYTES + CRHBYTES);
 
-  /* Expand matrix and transform vectors */
-  expand_mat(mat, rho);
-  polyvecl_ntt(&s1);
-  polyveck_ntt(&s2);
-  polyveck_ntt(&t0);
+    /* Expand matrix and transform vectors */
+    PQCLEAN_DILITHIUM2_AVX2_polyvec_matrix_expand(mat, rho);
+    PQCLEAN_DILITHIUM2_AVX2_polyvecl_ntt(&s1);
+    PQCLEAN_DILITHIUM2_AVX2_polyveck_ntt(&s2);
+    PQCLEAN_DILITHIUM2_AVX2_polyveck_ntt(&t0);
 
-#ifdef DILITHIUM_USE_AES
-  aes256ctr_ctx aesctx;
-  aes256ctr_init(&aesctx, rhoprime, nonce++);
-#endif
 
 rej:
-  /* Sample intermediate vector y */
-#ifdef DILITHIUM_USE_AES
-  for(i = 0; i < L; ++i) {
-    poly_uniform_gamma1m1_preinit(&z.vec[i], &aesctx);
-    aesctx.n = _mm_loadl_epi64((__m128i *)&nonce);
-    nonce++;
-  }
-#elif L == 2
-  poly_uniform_gamma1m1_4x(&z.vec[0], &z.vec[1], &h.vec[0], &h.vec[1],
-                           rhoprime, nonce, nonce + 1, 0, 0);
-  nonce += 2;
-#elif L == 3
-  poly_uniform_gamma1m1_4x(&z.vec[0], &z.vec[1], &z.vec[2], &h.vec[0],
-                           rhoprime, nonce, nonce + 1, nonce + 2, 0);
-  nonce += 3;
-#elif L == 4
-  poly_uniform_gamma1m1_4x(&z.vec[0], &z.vec[1], &z.vec[2], &z.vec[3],
-                           rhoprime, nonce, nonce + 1, nonce + 2, nonce + 3);
-  nonce += 4;
-#elif L == 5
-  poly_uniform_gamma1m1_4x(&z.vec[0], &z.vec[1], &z.vec[2], &z.vec[3],
-                           rhoprime, nonce, nonce + 1, nonce + 2, nonce + 3);
-  poly_uniform_gamma1m1(&z.vec[4], rhoprime, nonce + 4);
-  nonce += 5;
-#else
-#error
-#endif
+    /* Sample intermediate vector y */
+    PQCLEAN_DILITHIUM2_AVX2_poly_uniform_gamma1_4x(&z.vec[0], &z.vec[1], &z.vec[2], &z.vec[3],
+            rhoprime, nonce, nonce + 1, nonce + 2, nonce + 3);
+    nonce += 4;
 
-  /* Matrix-vector multiplication */
-  polyvecl *tmpl = (polyvecl *)&h;
-  *tmpl = z;
-  polyvecl_ntt(tmpl);
-  for(i = 0; i < K; ++i) {
-    polyvecl_pointwise_acc_montgomery(&w1.vec[i], &mat[i], tmpl);
-    //poly_reduce(&w1.vec[i]);
-    poly_invntt_tomont(&w1.vec[i]);
-  }
+    /* Matrix-vector product */
+    tmpv.y = z;
+    PQCLEAN_DILITHIUM2_AVX2_polyvecl_ntt(&tmpv.y);
+    PQCLEAN_DILITHIUM2_AVX2_polyvec_matrix_pointwise_montgomery(&w1, mat, &tmpv.y);
+    PQCLEAN_DILITHIUM2_AVX2_polyveck_invntt_tomont(&w1);
 
-  /* Decompose w and call the random oracle */
-  polyveck_csubq(&w1);
-  polyveck_decompose(&w1, &w0, &w1);
-  challenge(&c, mu, &w1);
-  h.vec[K-1] = c;
-  poly_ntt(&h.vec[K-1]);
+    /* Decompose w and call the random oracle */
+    PQCLEAN_DILITHIUM2_AVX2_polyveck_caddq(&w1);
+    PQCLEAN_DILITHIUM2_AVX2_polyveck_decompose(&w1, &tmpv.w0, &w1);
+    PQCLEAN_DILITHIUM2_AVX2_polyveck_pack_w1(sig, &w1);
 
-  /* Compute z, reject if it reveals secret */
-  for(i = 0; i < L; ++i) {
-    poly_pointwise_montgomery(&h.vec[0], &h.vec[K-1], &s1.vec[i]);
-    poly_invntt_tomont(&h.vec[0]);
-    poly_add(&z.vec[i], &z.vec[i], &h.vec[0]);
-  }
-  polyvecl_freeze(&z);
-  if(polyvecl_chknorm(&z, GAMMA1 - BETA))
-    goto rej;
+    shake256_inc_init(&state);
+    shake256_inc_absorb(&state, mu, CRHBYTES);
+    shake256_inc_absorb(&state, sig, K * POLYW1_PACKEDBYTES);
+    shake256_inc_finalize(&state);
+    shake256_inc_squeeze(sig, SEEDBYTES, &state);
+    shake256_inc_ctx_release(&state);
+    PQCLEAN_DILITHIUM2_AVX2_poly_challenge(&c, sig);
+    PQCLEAN_DILITHIUM2_AVX2_poly_ntt(&c);
 
-  /* Check that subtracting cs2 does not change high bits of w and low bits
-   * do not reveal secret information */
-  for(i = 0; i < K; ++i) {
-    poly_pointwise_montgomery(&h.vec[0], &h.vec[K-1], &s2.vec[i]);
-    poly_invntt_tomont(&h.vec[0]);
-    poly_sub(&w0.vec[i], &w0.vec[i], &h.vec[0]);
-  }
-  polyveck_freeze(&w0);
-  if(polyveck_chknorm(&w0, GAMMA2 - BETA))
-    goto rej;
+    /* Compute z, reject if it reveals secret */
+    for (i = 0; i < L; i++) {
+        PQCLEAN_DILITHIUM2_AVX2_poly_pointwise_montgomery(&tmp, &c, &s1.vec[i]);
+        PQCLEAN_DILITHIUM2_AVX2_poly_invntt_tomont(&tmp);
+        PQCLEAN_DILITHIUM2_AVX2_poly_add(&z.vec[i], &z.vec[i], &tmp);
+        PQCLEAN_DILITHIUM2_AVX2_poly_reduce(&z.vec[i]);
+        if (PQCLEAN_DILITHIUM2_AVX2_poly_chknorm(&z.vec[i], GAMMA1 - BETA)) {
+            goto rej;
+        }
+    }
 
-  /* Compute hints for w1 */
-  for(i = 0; i < K; ++i) {
-    poly_pointwise_montgomery(&h.vec[i], &h.vec[K-1], &t0.vec[i]);
-    poly_invntt_tomont(&h.vec[i]);
-  }
-  polyveck_csubq(&h);
-  if(polyveck_chknorm(&h, GAMMA2))
-    goto rej;
+    /* Zero hint vector in signature */
+    pos = 0;
+    memset(hint, 0, OMEGA);
 
-  polyveck_add(&w0, &w0, &h);
-  polyveck_csubq(&w0);
-  n = polyveck_make_hint(&h, &w0, &w1);
-  if(n > OMEGA)
-    goto rej;
+    for (i = 0; i < K; i++) {
+        /* Check that subtracting cs2 does not change high bits of w and low bits
+         * do not reveal secret information */
+        PQCLEAN_DILITHIUM2_AVX2_poly_pointwise_montgomery(&tmp, &c, &s2.vec[i]);
+        PQCLEAN_DILITHIUM2_AVX2_poly_invntt_tomont(&tmp);
+        PQCLEAN_DILITHIUM2_AVX2_poly_sub(&tmpv.w0.vec[i], &tmpv.w0.vec[i], &tmp);
+        PQCLEAN_DILITHIUM2_AVX2_poly_reduce(&tmpv.w0.vec[i]);
+        if (PQCLEAN_DILITHIUM2_AVX2_poly_chknorm(&tmpv.w0.vec[i], GAMMA2 - BETA)) {
+            goto rej;
+        }
 
-  /* Write signature */
-  pack_sig(sig, &z, &h, &c);
-  *siglen = CRYPTO_BYTES;
-  return 0;
+        /* Compute hints */
+        PQCLEAN_DILITHIUM2_AVX2_poly_pointwise_montgomery(&tmp, &c, &t0.vec[i]);
+        PQCLEAN_DILITHIUM2_AVX2_poly_invntt_tomont(&tmp);
+        PQCLEAN_DILITHIUM2_AVX2_poly_reduce(&tmp);
+        if (PQCLEAN_DILITHIUM2_AVX2_poly_chknorm(&tmp, GAMMA2)) {
+            goto rej;
+        }
+
+        PQCLEAN_DILITHIUM2_AVX2_poly_add(&tmpv.w0.vec[i], &tmpv.w0.vec[i], &tmp);
+        n = PQCLEAN_DILITHIUM2_AVX2_poly_make_hint(hintbuf, &tmpv.w0.vec[i], &w1.vec[i]);
+        if (pos + n > OMEGA) {
+            goto rej;
+        }
+
+        /* Store hints in signature */
+        memcpy(&hint[pos], hintbuf, n);
+        hint[OMEGA + i] = pos = pos + n;
+    }
+
+    /* Pack z into signature */
+    for (i = 0; i < L; i++) {
+        PQCLEAN_DILITHIUM2_AVX2_polyz_pack(sig + SEEDBYTES + i * POLYZ_PACKEDBYTES, &z.vec[i]);
+    }
+
+    *siglen = PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES;
+    return 0;
 }
 
 /*************************************************
-* Name:        crypto_sign
+* Name:        PQCLEAN_DILITHIUM2_AVX2_crypto_sign
 *
 * Description: Compute signed message.
 *
 * Arguments:   - uint8_t *sm: pointer to output signed message (allocated
-*                             array with CRYPTO_BYTES + mlen bytes),
+*                             array with PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES + mlen bytes),
 *                             can be equal to m
 *              - size_t *smlen: pointer to output length of signed
 *                               message
@@ -331,23 +253,19 @@ rej:
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_sign(uint8_t *sm,
-                size_t *smlen,
-                const uint8_t *m,
-                size_t mlen,
-                const uint8_t *sk)
-{
-  size_t i;
+int PQCLEAN_DILITHIUM2_AVX2_crypto_sign(uint8_t *sm, size_t *smlen, const uint8_t *m, size_t mlen, const uint8_t *sk) {
+    size_t i;
 
-  for(i = 0; i < mlen; ++i)
-    sm[CRYPTO_BYTES + mlen - 1 - i] = m[mlen - 1 - i];
-  crypto_sign_signature(sm, smlen, sm + CRYPTO_BYTES, mlen, sk);
-  *smlen += mlen;
-  return 0;
+    for (i = 0; i < mlen; ++i) {
+        sm[PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES + mlen - 1 - i] = m[mlen - 1 - i];
+    }
+    PQCLEAN_DILITHIUM2_AVX2_crypto_sign_signature(sm, smlen, sm + PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES, mlen, sk);
+    *smlen += mlen;
+    return 0;
 }
 
 /*************************************************
-* Name:        crypto_sign_verify
+* Name:        PQCLEAN_DILITHIUM2_AVX2_crypto_sign_verify
 *
 * Description: Verifies signature.
 *
@@ -359,71 +277,103 @@ int crypto_sign(uint8_t *sm,
 *
 * Returns 0 if signature could be verified correctly and -1 otherwise
 **************************************************/
-int crypto_sign_verify(const uint8_t *sig,
-                       size_t siglen,
-                       const uint8_t *m,
-                       size_t mlen,
-                       const uint8_t *pk)
-{
-  unsigned int i;
-  __attribute__((aligned(32)))
-  uint8_t rho[SEEDBYTES];
-  __attribute__((aligned(32)))
-  uint8_t mu[CRHBYTES];
-  poly c, cp;
-  polyvecl mat[K], z;
-  polyveck t1, h, w1;
-  keccak_state state;
+int PQCLEAN_DILITHIUM2_AVX2_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk) {
+    unsigned int i, j, pos = 0;
+    /* PQCLEAN_DILITHIUM2_AVX2_polyw1_pack writes additional 14 bytes */
+    ALIGNED_UINT8(K * POLYW1_PACKEDBYTES + 14) buf;
+    uint8_t mu[CRHBYTES];
+    const uint8_t *hint = sig + SEEDBYTES + L * POLYZ_PACKEDBYTES;
+    polyvecl rowbuf[2];
+    polyvecl *row = rowbuf;
+    polyvecl z;
+    poly c, w1, h;
+    shake256incctx state;
 
-  if(siglen != CRYPTO_BYTES)
-    return -1;
+    if (siglen != PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES) {
+        return -1;
+    }
 
-  unpack_pk(rho, &t1, pk);
-  if(unpack_sig(&z, &h, &c, sig))
-    return -1;
-  if(polyvecl_chknorm(&z, GAMMA1 - BETA))
-    return -1;
+    /* Compute CRH(CRH(rho, t1), msg) */
+    crh(mu, pk, PQCLEAN_DILITHIUM2_AVX2_CRYPTO_PUBLICKEYBYTES);
+    shake256_inc_init(&state);
+    shake256_inc_absorb(&state, mu, CRHBYTES);
+    shake256_inc_absorb(&state, m, mlen);
+    shake256_inc_finalize(&state);
+    shake256_inc_squeeze(mu, CRHBYTES, &state);
+    shake256_inc_ctx_release(&state);
 
-  /* Compute CRH(CRH(rho, t1), msg) */
-  crh(mu, pk, CRYPTO_PUBLICKEYBYTES);
-  shake256_init(&state);
-  shake256_absorb(&state, mu, CRHBYTES);
-  shake256_absorb(&state, m, mlen);
-  shake256_finalize(&state);
-  shake256_squeeze(mu, CRHBYTES, &state);
+    /* Expand PQCLEAN_DILITHIUM2_AVX2_challenge */
+    PQCLEAN_DILITHIUM2_AVX2_poly_challenge(&c, sig);
+    PQCLEAN_DILITHIUM2_AVX2_poly_ntt(&c);
 
-  /* Matrix-vector multiplication; compute Az - c2^dt1 */
-  expand_mat(mat, rho);
-  polyvecl_ntt(&z);
-  for(i = 0; i < K ; ++i)
-    polyvecl_pointwise_acc_montgomery(&w1.vec[i], &mat[i], &z);
+    /* Unpack z; shortness follows from unpacking */
+    for (i = 0; i < L; i++) {
+        PQCLEAN_DILITHIUM2_AVX2_polyz_unpack(&z.vec[i], sig + SEEDBYTES + i * POLYZ_PACKEDBYTES);
+        PQCLEAN_DILITHIUM2_AVX2_poly_ntt(&z.vec[i]);
+    }
 
-  cp = c;
-  poly_ntt(&cp);
-  polyveck_shiftl(&t1);
-  polyveck_ntt(&t1);
-  for(i = 0; i < K; ++i)
-    poly_pointwise_montgomery(&t1.vec[i], &cp, &t1.vec[i]);
 
-  polyveck_sub(&w1, &w1, &t1);
-  polyveck_reduce(&w1);
-  polyveck_invntt_tomont(&w1);
+    for (i = 0; i < K; i++) {
+        /* Expand matrix row */
+        polyvec_matrix_expand_row(&row, rowbuf, pk, i);
 
-  /* Reconstruct w1 */
-  polyveck_csubq(&w1);
-  polyveck_use_hint(&w1, &w1, &h);
+        /* Compute i-th row of Az - c2^Dt1 */
+        PQCLEAN_DILITHIUM2_AVX2_polyvecl_pointwise_acc_montgomery(&w1, row, &z);
 
-  /* Call random oracle and verify challenge */
-  challenge(&cp, mu, &w1);
-  for(i = 0; i < N; ++i)
-    if(c.coeffs[i] != cp.coeffs[i])
-      return -1;
+        PQCLEAN_DILITHIUM2_AVX2_polyt1_unpack(&h, pk + SEEDBYTES + i * POLYT1_PACKEDBYTES);
+        PQCLEAN_DILITHIUM2_AVX2_poly_shiftl(&h);
+        PQCLEAN_DILITHIUM2_AVX2_poly_ntt(&h);
+        PQCLEAN_DILITHIUM2_AVX2_poly_pointwise_montgomery(&h, &c, &h);
 
-  return 0;
+        PQCLEAN_DILITHIUM2_AVX2_poly_sub(&w1, &w1, &h);
+        PQCLEAN_DILITHIUM2_AVX2_poly_reduce(&w1);
+        PQCLEAN_DILITHIUM2_AVX2_poly_invntt_tomont(&w1);
+
+        /* Get hint polynomial and reconstruct w1 */
+        memset(h.vec, 0, sizeof(poly));
+        if (hint[OMEGA + i] < pos || hint[OMEGA + i] > OMEGA) {
+            return -1;
+        }
+
+        for (j = pos; j < hint[OMEGA + i]; ++j) {
+            /* Coefficients are ordered for strong unforgeability */
+            if (j > pos && hint[j] <= hint[j - 1]) {
+                return -1;
+            }
+            h.coeffs[hint[j]] = 1;
+        }
+        pos = hint[OMEGA + i];
+
+        PQCLEAN_DILITHIUM2_AVX2_poly_caddq(&w1);
+        PQCLEAN_DILITHIUM2_AVX2_poly_use_hint(&w1, &w1, &h);
+        PQCLEAN_DILITHIUM2_AVX2_polyw1_pack(buf.coeffs + i * POLYW1_PACKEDBYTES, &w1);
+    }
+
+    /* Extra indices are zero for strong unforgeability */
+    for (j = pos; j < OMEGA; ++j) {
+        if (hint[j]) {
+            return -1;
+        }
+    }
+
+    /* Call random oracle and verify PQCLEAN_DILITHIUM2_AVX2_challenge */
+    shake256_inc_init(&state);
+    shake256_inc_absorb(&state, mu, CRHBYTES);
+    shake256_inc_absorb(&state, buf.coeffs, K * POLYW1_PACKEDBYTES);
+    shake256_inc_finalize(&state);
+    shake256_inc_squeeze(buf.coeffs, SEEDBYTES, &state);
+    shake256_inc_ctx_release(&state);
+    for (i = 0; i < SEEDBYTES; ++i) {
+        if (buf.coeffs[i] != sig[i]) {
+            return -1;
+        }
+    }
+
+    return 0;
 }
 
 /*************************************************
-* Name:        crypto_sign_open
+* Name:        PQCLEAN_DILITHIUM2_AVX2_crypto_sign_open
 *
 * Description: Verify signed message.
 *
@@ -436,33 +386,30 @@ int crypto_sign_verify(const uint8_t *sig,
 *
 * Returns 0 if signed message could be verified correctly and -1 otherwise
 **************************************************/
-int crypto_sign_open(uint8_t *m,
-                     size_t *mlen,
-                     const uint8_t *sm,
-                     size_t smlen,
-                     const uint8_t *pk)
-{
-  size_t i;
+int PQCLEAN_DILITHIUM2_AVX2_crypto_sign_open(uint8_t *m, size_t *mlen, const uint8_t *sm, size_t smlen, const uint8_t *pk) {
+    size_t i;
 
-  if(smlen < CRYPTO_BYTES)
-    goto badsig;
+    if (smlen < PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES) {
+        goto badsig;
+    }
 
-  *mlen = smlen - CRYPTO_BYTES;
-  if(crypto_sign_verify(sm, CRYPTO_BYTES, sm + CRYPTO_BYTES, *mlen, pk))
-    goto badsig;
-  else {
-    /* All good, copy msg, return 0 */
-    for(i = 0; i < *mlen; ++i)
-      m[i] = sm[CRYPTO_BYTES + i];
-
-    return 0;
-  }
+    *mlen = smlen - PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES;
+    if (PQCLEAN_DILITHIUM2_AVX2_crypto_sign_verify(sm, PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES, sm + PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES, *mlen, pk)) {
+        goto badsig;
+    } else {
+        /* All good, copy msg, return 0 */
+        for (i = 0; i < *mlen; ++i) {
+            m[i] = sm[PQCLEAN_DILITHIUM2_AVX2_CRYPTO_BYTES + i];
+        }
+        return 0;
+    }
 
 badsig:
-  /* Signature verification failed */
-  *mlen = -1;
-  for(i = 0; i < smlen; ++i)
-    m[i] = 0;
+    /* Signature verification failed */
+    *mlen = -1;
+    for (i = 0; i < smlen; ++i) {
+        m[i] = 0;
+    }
 
-  return -1;
+    return -1;
 }

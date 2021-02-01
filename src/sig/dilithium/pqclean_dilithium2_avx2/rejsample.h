@@ -1,23 +1,19 @@
-#ifndef REJSAMPLE_H
-#define REJSAMPLE_H
-
-#include <stdint.h>
+#ifndef PQCLEAN_DILITHIUM2_AVX2_REJSAMPLE_H
+#define PQCLEAN_DILITHIUM2_AVX2_REJSAMPLE_H
 #include "params.h"
+#include "symmetric.h"
+#include <stdint.h>
 
-#define rej_uniform_avx DILITHIUM_NAMESPACE(_rej_uniform_avx)
-unsigned int rej_uniform_avx(uint32_t *r, const uint8_t *buf);
+#define REJ_UNIFORM_NBLOCKS ((768+STREAM128_BLOCKBYTES-1)/STREAM128_BLOCKBYTES)
+#define REJ_UNIFORM_BUFLEN (REJ_UNIFORM_NBLOCKS*STREAM128_BLOCKBYTES)
 
+#define REJ_UNIFORM_ETA_NBLOCKS ((137+STREAM128_BLOCKBYTES-1)/STREAM128_BLOCKBYTES)
+#define REJ_UNIFORM_ETA_BUFLEN (REJ_UNIFORM_ETA_NBLOCKS*STREAM128_BLOCKBYTES)
 
-#define rej_eta_avx DILITHIUM_NAMESPACE(_rej_eta_avx)
-unsigned int rej_eta_avx(uint32_t *r,
-                         unsigned int len,
-                         const uint8_t *buf,
-                         unsigned int buflen);
+extern const uint8_t PQCLEAN_DILITHIUM2_AVX2_idxlut[256][8];
 
-#define rej_gamma1m1_avx DILITHIUM_NAMESPACE(_rej_uniform_gamma1m1_avx)
-unsigned int rej_gamma1m1_avx(uint32_t *r,
-                              unsigned int len,
-                              const uint8_t *buf,
-                              unsigned int buflen);
+unsigned int PQCLEAN_DILITHIUM2_AVX2_rej_uniform_avx(int32_t *r, const uint8_t buf[REJ_UNIFORM_BUFLEN + 8]);
+
+unsigned int PQCLEAN_DILITHIUM2_AVX2_rej_eta_avx(int32_t *r, const uint8_t buf[REJ_UNIFORM_BUFLEN]);
 
 #endif

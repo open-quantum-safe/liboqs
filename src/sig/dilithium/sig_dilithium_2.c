@@ -13,9 +13,9 @@ OQS_SIG *OQS_SIG_dilithium_2_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_dilithium_2;
-	sig->alg_version = "https://github.com/pq-crystals/dilithium/commit/40097237d92dbff3c5c869df9dfcaa32001776c2";
+	sig->alg_version = "https://github.com/pq-crystals/dilithium/commit/1e63a1e880401166f105ab44ec67464c9714a315 via https://github.com/jschanck/package-pqclean/tree/b158a891/dilithium";
 
-	sig->claimed_nist_level = 1;
+	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_dilithium_2_length_public_key;
@@ -29,30 +29,30 @@ OQS_SIG *OQS_SIG_dilithium_2_new() {
 	return sig;
 }
 
-extern int pqcrystals_dilithium2_ref_keypair(uint8_t *pk, uint8_t *sk);
-extern int pqcrystals_dilithium2_ref_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
-extern int pqcrystals_dilithium2_ref_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
+extern int PQCLEAN_DILITHIUM2_CLEAN_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_DILITHIUM2_CLEAN_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
+extern int PQCLEAN_DILITHIUM2_CLEAN_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 
 #if defined(OQS_ENABLE_SIG_dilithium_2_avx2)
-extern int pqcrystals_dilithium2_avx2_keypair(uint8_t *pk, uint8_t *sk);
-extern int pqcrystals_dilithium2_avx2_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
-extern int pqcrystals_dilithium2_avx2_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
+extern int PQCLEAN_DILITHIUM2_AVX2_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_DILITHIUM2_AVX2_crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk);
+extern int PQCLEAN_DILITHIUM2_AVX2_crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size_t mlen, const uint8_t *pk);
 #endif
 
 OQS_API OQS_STATUS OQS_SIG_dilithium_2_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_dilithium_2_avx2)
 #if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.AES_ENABLED && available_cpu_extensions.BMI1_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+	if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
 #endif /* OQS_PORTABLE_BUILD */
-		return (OQS_STATUS) pqcrystals_dilithium2_avx2_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCLEAN_DILITHIUM2_AVX2_crypto_sign_keypair(public_key, secret_key);
 #if defined(OQS_PORTABLE_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_dilithium2_ref_keypair(public_key, secret_key);
+		return (OQS_STATUS) PQCLEAN_DILITHIUM2_CLEAN_crypto_sign_keypair(public_key, secret_key);
 	}
 #endif /* OQS_PORTABLE_BUILD */
 #else
-	return (OQS_STATUS) pqcrystals_dilithium2_ref_keypair(public_key, secret_key);
+	return (OQS_STATUS) PQCLEAN_DILITHIUM2_CLEAN_crypto_sign_keypair(public_key, secret_key);
 #endif
 }
 
@@ -60,16 +60,16 @@ OQS_API OQS_STATUS OQS_SIG_dilithium_2_sign(uint8_t *signature, size_t *signatur
 #if defined(OQS_ENABLE_SIG_dilithium_2_avx2)
 #if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.AES_ENABLED && available_cpu_extensions.BMI1_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+	if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
 #endif /* OQS_PORTABLE_BUILD */
-		return (OQS_STATUS) pqcrystals_dilithium2_avx2_signature(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) PQCLEAN_DILITHIUM2_AVX2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_PORTABLE_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_dilithium2_ref_signature(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS) PQCLEAN_DILITHIUM2_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 	}
 #endif /* OQS_PORTABLE_BUILD */
 #else
-	return (OQS_STATUS) pqcrystals_dilithium2_ref_signature(signature, signature_len, message, message_len, secret_key);
+	return (OQS_STATUS) PQCLEAN_DILITHIUM2_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #endif
 }
 
@@ -77,16 +77,16 @@ OQS_API OQS_STATUS OQS_SIG_dilithium_2_verify(const uint8_t *message, size_t mes
 #if defined(OQS_ENABLE_SIG_dilithium_2_avx2)
 #if defined(OQS_PORTABLE_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.AES_ENABLED && available_cpu_extensions.BMI1_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+	if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
 #endif /* OQS_PORTABLE_BUILD */
-		return (OQS_STATUS) pqcrystals_dilithium2_avx2_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) PQCLEAN_DILITHIUM2_AVX2_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_PORTABLE_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_dilithium2_ref_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS) PQCLEAN_DILITHIUM2_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_PORTABLE_BUILD */
 #else
-	return (OQS_STATUS) pqcrystals_dilithium2_ref_verify(signature, signature_len, message, message_len, public_key);
+	return (OQS_STATUS) PQCLEAN_DILITHIUM2_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
 
