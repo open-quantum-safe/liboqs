@@ -185,20 +185,32 @@ sigs:
       -
         scheme: "2"
         pqclean_scheme: dilithium2
-        upstream_location: DILITHIUM
-        pretty_name_full: DILITHIUM_2
+        pretty_name_full: Dilithium_2
         signed_msg_order: sig_then_msg
       -
         scheme: "3"
         pqclean_scheme: dilithium3
-        upstream_location: DILITHIUM
-        pretty_name_full: DILITHIUM_3
+        pretty_name_full: Dilithium_3
         signed_msg_order: sig_then_msg
       -
-        scheme: "4"
-        pqclean_scheme: dilithium4
-        upstream_location: DILITHIUM
-        pretty_name_full: DILITHIUM_4
+        scheme: "5"
+        pqclean_scheme: dilithium5
+        pretty_name_full: Dilithium_5
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "2_aes"
+        pqclean_scheme: dilithium2aes
+        pretty_name_full: Dilithium_2_AES
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3_aes"
+        pqclean_scheme: dilithium3aes
+        pretty_name_full: Dilithium_3_AES
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5_aes"
+        pqclean_scheme: dilithium5aes
+        pretty_name_full: Dilithium_5_AES
         signed_msg_order: sig_then_msg
   -
     name: falcon
