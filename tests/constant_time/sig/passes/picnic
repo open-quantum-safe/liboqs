@@ -1,0 +1,57 @@
+{
+   Rejection sampling for challenge in {1,2,3}^t
+   Memcheck:Cond
+   src:picnic_impl.c:545 # fun:H3_compute
+   fun:H3
+   fun:oqs_sig_picnic_impl_sign
+   fun:oqs_sig_picnic_sign
+}
+{
+   The index to round->commitments is derived from the declassified value prf->challenge[i]
+   Memcheck:Value8
+   src:picnic_impl.c:849 # fun:sig_proof_to_char_array
+   fun:oqs_sig_picnic_impl_sign
+   fun:oqs_sig_picnic_sign
+}
+{
+   The value a is derived from the declassified value prf->challenge[i]
+   Memcheck:Cond
+   src:picnic_impl.c:855 # fun:sig_proof_to_char_array
+   fun:oqs_sig_picnic_impl_sign
+   fun:oqs_sig_picnic_sign
+}
+{
+   The index to round->gs is derived from the declassified value prf->challenge[i]
+   Memcheck:Value8
+   src:picnic_impl.c:857 # fun:sig_proof_to_char_array
+   fun:oqs_sig_picnic_impl_sign
+   fun:oqs_sig_picnic_sign
+}
+{
+   The index to round->communicated_bits is derived from the declassified value prf->challenge[i]
+   Memcheck:Value8
+   src:picnic_impl.c:863 # fun:sig_proof_to_char_array
+   fun:oqs_sig_picnic_impl_sign
+   fun:oqs_sig_picnic_sign
+}
+{
+   The index to round->seeds is derived from the declassified value prf->challenge[i]
+   Memcheck:Value8
+   src:picnic_impl.c:867 # fun:sig_proof_to_char_array
+   fun:oqs_sig_picnic_impl_sign
+   fun:oqs_sig_picnic_sign
+}
+{
+   The index to round->seeds is derived from the declassified value prf->challenge[i]
+   Memcheck:Value8
+   src:picnic_impl.c:869 # fun:sig_proof_to_char_array
+   fun:oqs_sig_picnic_impl_sign
+   fun:oqs_sig_picnic_sign
+}
+{
+   The value a is derived from the declassified value prf->challenge[i]
+   Memcheck:Cond
+   src:picnic_impl.c:872 # fun:sig_proof_to_char_array
+   fun:oqs_sig_picnic_impl_sign
+   fun:oqs_sig_picnic_sign
+}
