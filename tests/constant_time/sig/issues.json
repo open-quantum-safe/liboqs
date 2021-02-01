@@ -3,7 +3,7 @@
   "DILITHIUM_2": [],
   "DILITHIUM_3": [],
   "DILITHIUM_4": [],
-  "Falcon-1024": [],
+  "Falcon-1024": ["falcon_hash_to_point_vartime"],
   "Falcon-512": [],
   "Rainbow-I-Circumzenithal": [],
   "Rainbow-I-Classic": [],
