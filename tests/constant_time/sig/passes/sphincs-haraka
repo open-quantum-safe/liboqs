@@ -1,0 +1,15 @@
+{
+   Authentication path is not secret
+   Memcheck:Cond
+   # src:utilsx4.c lines 49 and 83
+   fun:PQCLEAN_SPHINCSHARAKA*_AESNI_treehashx4_FORS_HEIGHT
+   fun:PQCLEAN_SPHINCSHARAKA*_AESNI_fors_sign
+   fun:PQCLEAN_SPHINCSHARAKA*_AESNI_crypto_sign_signature
+}
+{
+   Starting position of chain is not secret
+   Memcheck:Cond
+   src:wots.c:69 # fun:gen_chain
+   fun:PQCLEAN_SPHINCSHARAKA*_AESNI_wots_sign
+   fun:PQCLEAN_SPHINCSHARAKA*_AESNI_crypto_sign_signature
+}

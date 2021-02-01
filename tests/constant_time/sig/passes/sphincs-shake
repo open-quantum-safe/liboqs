@@ -1,0 +1,7 @@
+{
+   Starting position of chain is not secret
+   Memcheck:Cond
+   src:wots.c:47 # fun:gen_chain
+   fun:PQCLEAN_SPHINCSSHAKE256*_CLEAN_wots_sign
+   fun:PQCLEAN_SPHINCSSHAKE256*_CLEAN_crypto_sign_signature
+}
