@@ -191,7 +191,6 @@ VALGRIND = ['valgrind',
             '--tool=memcheck',
             '--gen-suppressions=all',
             '--error-exitcode=1',
-            '--exit-on-first-error=yes',
             '--max-stackframe=20480000',
             '--num-callers=20',
             ]
