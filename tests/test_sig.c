@@ -25,19 +25,6 @@
 
 #include "system_info.c"
 
-extern void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read);
-void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read);
-
-void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
-	OQS_randombytes_system(random_array, bytes_to_read);
-
-	/* OQS_TEST_CT_CLASSIFY tells Valgrind's memcheck tool to issue a warning if
-	 * the program branches on any byte that depends on random_array. This helps us
-	 * identify timing side-channels, as these bytes often contain secret data.
-	 */
-	OQS_TEST_CT_CLASSIFY(random_array, bytes_to_read);
-}
-
 static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	OQS_SIG *sig = NULL;
@@ -123,6 +110,21 @@ cleanup:
 	return ret;
 }
 
+#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
+static void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
+	// We can't make direct calls to the system randombytes on some platforms,
+	// so we have to swap out the OQS_randombytes provider.
+	OQS_randombytes_switch_algorithm("system");
+	OQS_randombytes(random_array, bytes_to_read);
+	OQS_randombytes_custom_algorithm(&TEST_SIG_randombytes);
+
+	// OQS_TEST_CT_CLASSIFY tells Valgrind's memcheck tool to issue a warning if
+	// the program branches on any byte that depends on random_array. This helps us
+	// identify timing side-channels, as these bytes often contain secret data.
+	OQS_TEST_CT_CLASSIFY(random_array, bytes_to_read);
+}
+#endif
+
 #if OQS_USE_PTHREADS_IN_TESTS
 struct thread_data {
 	char *alg_name;
@@ -159,7 +161,11 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
+#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
 	OQS_randombytes_custom_algorithm(&TEST_SIG_randombytes);
+#else
+	OQS_randombytes_switch_algorithm("system");
+#endif
 
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS_IN_TESTS
