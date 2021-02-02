@@ -104,6 +104,7 @@ jobs:
           working_directory: build
       - run:
           name: Run tests
+          no_output_timeout: 1h
           command: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml << parameters.PYTEST_ARGS >>
       - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
           path: build/test-results
@@ -307,6 +308,28 @@ workflows:
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
           PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
+      - linux_x64:
+          <<: *require_stylecheck
+          name: constant-time-portable
+          filters:
+            branches:
+              only:
+                - /^audit.*/
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+          CMAKE_ARGS: -DOQS_PORTABLE_BUILD=ON -DOQS_USE_CPU_EXTENSIONS=OFF -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+          PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+      - linux_x64:
+          <<: *require_stylecheck
+          name: constant-time-x64-extensions
+          filters:
+            branches:
+              only:
+                - /^audit.*/
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+          CMAKE_ARGS: -DOQS_PORTABLE_BUILD=OFF -DOQS_USE_CPU_EXTENSIONS=ON -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+          PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
       #- linux_x64:
       #    name: undefined-sanitizer
