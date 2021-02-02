@@ -2,8 +2,8 @@
    Falcon 1024 uses hash_to_point_vartime instead of hash_to_point_ct
    # There's an upstream pull request to fix this: https://github.com/PQClean/PQClean/pull/370
    Memcheck:Cond
-   fun:PQCLEAN_FALCON1024_CLEAN_hash_to_point_vartime
+   fun:PQCLEAN_FALCON1024_*_hash_to_point_vartime
    fun:do_sign
-   fun:PQCLEAN_FALCON1024_CLEAN_crypto_sign_signature
+   fun:PQCLEAN_FALCON1024_*_crypto_sign_signature
 }
 
