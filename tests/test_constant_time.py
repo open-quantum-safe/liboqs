@@ -178,6 +178,14 @@ import os
 import pytest
 import sys
 
+REQ_LIBOQS_BUILD_OPTS = ['OQS_ENABLE_TEST_CONSTANT_TIME',
+                         'OQS_DEBUG_BUILD']
+
+# Error suppression based on file and line number was introduced in
+# Valgrind 3.14.0 (9 October 2018).
+# https://www.valgrind.org/docs/manual/dist.news.html
+MIN_VALGRIND_VERSION = [3, 14, 0]
+
 VALGRIND = ['valgrind',
             # '-v', # Turn on -v to see which suppression files are used
             '--tool=memcheck',
@@ -192,16 +200,12 @@ VALGRIND = ['valgrind',
 #   liboqs/tests/constant_time/{kem,sig}/{passes,issues}.json
 # into python dictionaries `ct_passes' and `ct_issues', which
 # are of the form
-# { "kem" : {
-#               "Kem Name 1" : ["list", "of", "filenames"],
-#               "Kem Name 2" : ["more", "filenames"],
-#               ...
-#           },
-#   "sig" : {   "Sig Name"   : ["list", "of", "filenames"], ... }
+# { 'kem' : { 'Kem Name'   : ['list', 'of', 'filenames'], ... },
+#   'sig' : {   'Sig Name' : ['list', 'of', 'filenames'], ... }
 # }
 
-ct_passes = {"kem": None, "sig": None}
-ct_issues = {"kem": None, "sig": None}
+ct_passes = {'kem': None, 'sig': None}
+ct_issues = {'kem': None, 'sig': None}
 
 def get_ct_passes(t, name):
     ct_t = os.path.join('tests', 'constant_time', t)
@@ -219,11 +223,10 @@ def get_ct_issues(t, name):
     issues = ct_issues[t].get(name,[])
     return [os.path.join(ct_t, 'issues', f) for f in issues]
 
-# Error suppression based on file and line number was introduced in
-# Valgrind 3.14.0 (9 October 2018).
-# https://www.valgrind.org/docs/manual/dist.news.html
-@helpers.test_requires_valgrind_version_at_least(3,14,0)
+
 @helpers.filtered_test
+@helpers.test_requires_build_options(*REQ_LIBOQS_BUILD_OPTS)
+@helpers.test_requires_valgrind_version_at_least(*MIN_VALGRIND_VERSION)
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_constant_time_kem(kem_name):
     passes = get_ct_passes('kem', kem_name)
@@ -237,8 +240,9 @@ def test_constant_time_kem(kem_name):
              ]
     )
 
-@helpers.test_requires_valgrind_version_at_least(3,14,0)
 @helpers.filtered_test
+@helpers.test_requires_build_options(*REQ_LIBOQS_BUILD_OPTS)
+@helpers.test_requires_valgrind_version_at_least(*MIN_VALGRIND_VERSION)
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_constant_time_sig(sig_name):
     passes = get_ct_passes('sig', sig_name)
@@ -252,12 +256,12 @@ def test_constant_time_sig(sig_name):
              ]
     )
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     pytest.main(sys.argv)
 
 # Unused/obsolete suppressions are a burden on reviewers. You can find out which suppressions
 # are used by passing the -v flag to valgrind. To find unused suppressions we have to extract
-# a list of available suppressions first. You can use awk to find lines that contain only a "{".
+# a list of available suppressions first. You can use awk to find lines that contain only a '{'.
 # Increment these line numbers by 1 to match the output of valgrind -v, then compare against
 # the used suppressions.
 #
