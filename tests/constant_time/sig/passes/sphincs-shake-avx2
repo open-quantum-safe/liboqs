@@ -1,0 +1,15 @@
+{
+   Starting position of chain is not secret
+   Memcheck:Cond
+   src:wots.c:69 # fun:gen_chain
+   fun:PQCLEAN_SPHINCSSHAKE*_AVX2_wots_sign
+   fun:PQCLEAN_SPHINCSSHAKE*_AVX2_crypto_sign_signature
+}
+{
+   Authentication path is not secret
+   Memcheck:Cond
+   fun:PQCLEAN_SPHINCSSHAKE*_AVX2_treehashx4_FORS_HEIGHT
+   fun:PQCLEAN_SPHINCSSHAKE*_AVX2_fors_sign
+   fun:PQCLEAN_SPHINCSSHAKE*_AVX2_crypto_sign_signature
+}
+
