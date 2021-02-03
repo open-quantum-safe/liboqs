@@ -473,6 +473,8 @@ def copy_from_upstream():
     if not keepdata:
         shutil.rmtree('repos')
 
+    print("Remember to update $LIBOQS_DIR/docs/algorithms/<family>/<scheme>.md")
+
 
 def verify_from_upstream():
     instructions = load_instructions()
