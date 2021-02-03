@@ -41,7 +41,7 @@ extern "C" {
 #define OQS_KEM_alg_bike1_l1_fo "BIKE1-L1-FO"
 /** Algorithm identifier for BIKE1-L3-FO KEM. */
 #define OQS_KEM_alg_bike1_l3_fo "BIKE1-L3-FO"
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_START
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for Classic-McEliece-348864 KEM. */
 #define OQS_KEM_alg_classic_mceliece_348864 "Classic-McEliece-348864"
 /** Algorithm identifier for Classic-McEliece-348864f KEM. */
@@ -106,7 +106,7 @@ extern "C" {
 #define OQS_KEM_alg_saber_saber "Saber-KEM"
 /** Algorithm identifier for FireSaber-KEM KEM. */
 #define OQS_KEM_alg_saber_firesaber "FireSaber-KEM"
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALG_IDENTIFIER_END
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
 /** Algorithm identifier for FrodoKEM-640-SHAKE KEM. */
@@ -152,10 +152,10 @@ extern "C" {
 /** Algorithm identifier for SIKE p751 compressed KEM. */
 #define OQS_KEM_alg_sike_p751_compressed "SIKE-p751-compressed"
 // EDIT-WHEN-ADDING-KEM
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_START
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
 #define OQS_KEM_algs_length 59
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_ALGS_LENGTH_END
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
  * Returns identifiers for available key encapsulation mechanisms in liboqs.  Used with OQS_KEM_new.
@@ -325,7 +325,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_BIKE
 #include <oqs/kem_bike.h>
 #endif /* OQS_ENABLE_KEM_BIKE */
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_START
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_START
 #ifdef OQS_ENABLE_KEM_CLASSIC_MCELIECE
 #include <oqs/kem_classic_mceliece.h>
 #endif /* OQS_ENABLE_KEM_CLASSIC_MCELIECE */
@@ -344,7 +344,7 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_SABER
 #include <oqs/kem_saber.h>
 #endif /* OQS_ENABLE_KEM_SABER */
-///// OQS_COPY_FROM_PQCLEAN_FRAGMENT_INCLUDE_END
+///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 #ifdef OQS_ENABLE_KEM_FRODOKEM
 #include <oqs/kem_frodokem.h>
 #endif /* OQS_ENABLE_KEM_FRODOKEM */

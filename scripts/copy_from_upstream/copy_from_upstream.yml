@@ -1,7 +1,34 @@
+upstreams:
+  -
+    name: pqclean
+    git_url: https://github.com/PQClean/PQClean.git
+    git_branch: master
+    git_commit: 3d7d2024fa892bd7f00dca3fff4122175f4a26dc
+    kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
+    sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
+    kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
+    sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
+  -
+    name: pqcrystals-kyber
+    git_url: https://github.com/bhess/kyber.git
+    git_branch: feat.commons
+    git_commit: e0912718a12731467cb7f79c57972af1c2469dad
+    kem_meta_path: '{pretty_name_full}_META.yml'
+    common_meta_path: 'Common_META.yml'
+    kem_scheme_path: '.'
+  -
+    name: pqcrystals-dilithium
+    git_url: https://github.com/bhess/dilithium.git
+    git_branch: feat.commons
+    git_commit: efe7ccccf71763560ce7075266bf7400764ffed2
+    sig_meta_path: '{pretty_name_full}_META.yml'
+    common_meta_path: 'Common_META.yml'
+    sig_scheme_path: '.'
 kems:
   -
     name: classic_mceliece
     default_implementation: vec
+    upstream_location: pqclean
     schemes:
       -
         scheme: "348864"
@@ -66,6 +93,7 @@ kems:
   -
     name: hqc
     default_implementation: clean
+    upstream_location: pqclean
     schemes:
       -
         scheme: "128"
@@ -81,41 +109,37 @@ kems:
         pretty_name_full: HQC-256
   -
     name: kyber
-    default_implementation: clean
+    default_implementation: ref
+    upstream_location: pqcrystals-kyber
     schemes:
       -
         scheme: "512"
         pqclean_scheme: kyber512
-        upstream_location: KYBER
         pretty_name_full: Kyber512
       -
         scheme: "768"
         pqclean_scheme: kyber768
-        upstream_location: KYBER
         pretty_name_full: Kyber768
       -
         scheme: "1024"
         pqclean_scheme: kyber1024
-        upstream_location: KYBER
         pretty_name_full: Kyber1024
       -
         scheme: "512_90s"
         pqclean_scheme: kyber512-90s
-        upstream_location: KYBER
         pretty_name_full: Kyber512-90s
       -
         scheme: "768_90s"
         pqclean_scheme: kyber768-90s
-        upstream_location: KYBER
         pretty_name_full: Kyber768-90s
       -
         scheme: "1024_90s"
         pqclean_scheme: kyber1024-90s
-        upstream_location: KYBER
         pretty_name_full: Kyber1024-90s
   -
     name: ntru
     default_implementation: clean
+    upstream_location: pqclean
     schemes:
       -
         scheme: hps2048509
@@ -136,6 +160,7 @@ kems:
   -
     name: ntruprime
     default_implementation: clean
+    upstream_location: pqclean
     schemes:
       -
         scheme: ntrulpr653
@@ -164,6 +189,7 @@ kems:
   -
     name: saber
     default_implementation: clean
+    upstream_location: pqclean
     schemes:
       -
         scheme: lightsaber
@@ -180,29 +206,43 @@ kems:
 sigs:
   -
     name: dilithium
-    default_implementation: clean
+    default_implementation: ref
+    upstream_location: pqcrystals-dilithium
     schemes:
       -
         scheme: "2"
         pqclean_scheme: dilithium2
-        upstream_location: DILITHIUM
-        pretty_name_full: DILITHIUM_2
+        pretty_name_full: Dilithium2
         signed_msg_order: sig_then_msg
       -
         scheme: "3"
         pqclean_scheme: dilithium3
-        upstream_location: DILITHIUM
-        pretty_name_full: DILITHIUM_3
+        pretty_name_full: Dilithium3
         signed_msg_order: sig_then_msg
       -
-        scheme: "4"
-        pqclean_scheme: dilithium4
-        upstream_location: DILITHIUM
-        pretty_name_full: DILITHIUM_4
+        scheme: "5"
+        pqclean_scheme: dilithium_5
+        pretty_name_full: Dilithium5
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "2_aes"
+        pqclean_scheme: dilithium2-aes
+        pretty_name_full: Dilithium2-AES
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "3_aes"
+        pqclean_scheme: dilithium3-aes
+        pretty_name_full: Dilithium3-AES
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "5_aes"
+        pqclean_scheme: dilithium_5-aes
+        pretty_name_full: Dilithium5-AES
         signed_msg_order: sig_then_msg
   -
     name: falcon
     default_implementation: clean
+    upstream_location: pqclean
     schemes:
       -
         scheme: "512"
@@ -217,6 +257,7 @@ sigs:
   -
     name: rainbow
     default_implementation: clean
+    upstream_location: pqclean
     schemes:
       -
         scheme: "I_classic"
@@ -266,6 +307,7 @@ sigs:
   -
     name: sphincs
     default_implementation: clean
+    upstream_location: pqclean
     schemes:
       -
         scheme: haraka_128f_robust
