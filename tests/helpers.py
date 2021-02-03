@@ -36,7 +36,7 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
     )
 
     try:
-        out, _ = proc.communicate(input=input, timeout=480)
+        out, _ = proc.communicate(input=input, timeout=960)
     except subprocess.TimeoutExpired:
         proc.kill()
         out, _ = proc.communicate()
