@@ -259,7 +259,7 @@ workflows:
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-          PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
+          PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
       #- linux_x64:
       #    name: undefined-sanitizer
