@@ -1,8 +1,0 @@
-{
-   (Needs review) Branching on return value of "timingsafe_bcmp"
-   Memcheck:Cond
-   src:picnic3_simulate.c.i:44 # fun:lowmc_simulate_online_s128_129_43
-   fun:sign_picnic3
-   fun:oqs_sig_picnic_impl_sign_picnic3
-   fun:oqs_sig_picnic_sign
-}
