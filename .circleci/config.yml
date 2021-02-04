@@ -255,10 +255,17 @@ workflows:
           PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
       - linux_x64:
           <<: *require_stylecheck
-          name: constant-time
+          name: constant-time-portable
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+          CMAKE_ARGS: -DOQS_PORTABLE_BUILD=ON -DOQS_USE_CPU_EXTENSIONS=OFF -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+          PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+      - linux_x64:
+          <<: *require_stylecheck
+          name: constant-time-x64-extensions
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+          CMAKE_ARGS: -DOQS_PORTABLE_BUILD=OFF -DOQS_USE_CPU_EXTENSIONS=ON -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
           PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
       #- linux_x64:
