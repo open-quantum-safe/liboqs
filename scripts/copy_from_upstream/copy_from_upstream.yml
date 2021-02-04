@@ -10,17 +10,17 @@ upstreams:
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
   -
     name: pqcrystals-kyber
-    git_url: https://github.com/bhess/kyber.git
-    git_branch: feat.commons
-    git_commit: e0912718a12731467cb7f79c57972af1c2469dad
+    git_url: https://github.com/pq-crystals/kyber.git
+    git_branch: master
+    git_commit: 28413dfbf523fdde181246451c2bd77199c0f7ff
     kem_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     kem_scheme_path: '.'
   -
     name: pqcrystals-dilithium
-    git_url: https://github.com/bhess/dilithium.git
-    git_branch: feat.commons
-    git_commit: efe7ccccf71763560ce7075266bf7400764ffed2
+    git_url: https://github.com/pq-crystals/dilithium.git
+    git_branch: master
+    git_commit: 71c1e9e912a6eb9bc7a40c9892aa4a382c968ead
     sig_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     sig_scheme_path: '.'

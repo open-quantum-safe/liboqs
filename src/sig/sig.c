@@ -18,7 +18,10 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_START
 		OQS_SIG_alg_dilithium_2,
 		OQS_SIG_alg_dilithium_3,
-		OQS_SIG_alg_dilithium_4,
+		OQS_SIG_alg_dilithium_5,
+		OQS_SIG_alg_dilithium_2_aes,
+		OQS_SIG_alg_dilithium_3_aes,
+		OQS_SIG_alg_dilithium_5_aes,
 		OQS_SIG_alg_falcon_512,
 		OQS_SIG_alg_falcon_1024,
 		OQS_SIG_alg_rainbow_I_classic,
@@ -110,8 +113,26 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_4)) {
-#ifdef OQS_ENABLE_SIG_dilithium_4
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_5)) {
+#ifdef OQS_ENABLE_SIG_dilithium_5
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_2_aes)) {
+#ifdef OQS_ENABLE_SIG_dilithium_2_aes
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_3_aes)) {
+#ifdef OQS_ENABLE_SIG_dilithium_3_aes
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_5_aes)) {
+#ifdef OQS_ENABLE_SIG_dilithium_5_aes
 		return 1;
 #else
 		return 0;
@@ -496,9 +517,27 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_4)) {
-#ifdef OQS_ENABLE_SIG_dilithium_4
-		return OQS_SIG_dilithium_4_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_5)) {
+#ifdef OQS_ENABLE_SIG_dilithium_5
+		return OQS_SIG_dilithium_5_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_2_aes)) {
+#ifdef OQS_ENABLE_SIG_dilithium_2_aes
+		return OQS_SIG_dilithium_2_aes_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_3_aes)) {
+#ifdef OQS_ENABLE_SIG_dilithium_3_aes
+		return OQS_SIG_dilithium_3_aes_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_5_aes)) {
+#ifdef OQS_ENABLE_SIG_dilithium_5_aes
+		return OQS_SIG_dilithium_5_aes_new();
 #else
 		return NULL;
 #endif

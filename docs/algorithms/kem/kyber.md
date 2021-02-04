@@ -10,11 +10,11 @@ CRYSTALS-Kyber
 Implementation
 --------------
 
-- **Source of implementation**: https://github.com/pq-crystals/kyber/commit/e7faae9f662f5b92fee4e966f09b2f23e1e91c65 via https://github.com/jschanck/package-pqclean/tree/231c9bec/kyber
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/168e3625988defacdf10812642e4d412fb295dc0
+- **Source of implementation**: https://github.com/pq-crystals/kyber
+- **Implementation version**: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
 - **License**: Public domain
 - **Constant-time**: Yes
-- **Optimizations**: Portable C with AVX2 instructions (if available at run-time)
+- **Optimizations**: Portable C with AES, AVX2, POPCNT, SSE2 and SSSE3 instructions (if available at run-time)
 
 Parameter sets
 --------------
