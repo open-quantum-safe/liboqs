@@ -148,8 +148,14 @@
 #cmakedefine OQS_ENABLE_SIG_dilithium_2_avx2 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_3 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_3_avx2 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_4 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_4_avx2 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_5 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_5_avx2 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_2_aes 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_2_aes_avx2 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_3_aes 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_3_aes_avx2 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_5_aes 1
+#cmakedefine OQS_ENABLE_SIG_dilithium_5_aes_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_FALCON 1
 #cmakedefine OQS_ENABLE_SIG_falcon_512 1
