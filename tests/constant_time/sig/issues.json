@@ -1,8 +1,11 @@
 
 {
-  "DILITHIUM_2": [],
-  "DILITHIUM_3": [],
-  "DILITHIUM_4": [],
+  "Dilithium2": [],
+  "Dilithium3": [],
+  "Dilithium5": [],
+  "Dilithium2-AES": [],
+  "Dilithium3-AES": [],
+  "Dilithium5-AES": [],
   "Falcon-1024": ["falcon_hash_to_point_vartime"],
   "Falcon-512": [],
   "Rainbow-I-Circumzenithal": [],

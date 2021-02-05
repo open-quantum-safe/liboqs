@@ -1,8 +1,11 @@
 
 {
-  "DILITHIUM_2": ["round_2_dilithium", "round_2_dilithium-avx2"],
-  "DILITHIUM_3": ["round_2_dilithium", "round_2_dilithium-avx2"],
-  "DILITHIUM_4": ["round_2_dilithium", "round_2_dilithium-avx2"],
+  "Dilithium2": ["dilithium", "dilithium-avx2"],
+  "Dilithium3": ["dilithium", "dilithium-avx2"],
+  "Dilithium5": ["dilithium", "dilithium-avx2"],
+  "Dilithium2-AES": ["dilithium", "dilithium-avx2", "dilithium-aes-avx2"],
+  "Dilithium3-AES": ["dilithium", "dilithium-avx2", "dilithium-aes-avx2"],
+  "Dilithium5-AES": ["dilithium", "dilithium-avx2", "dilithium-aes-avx2"],
   "Falcon-1024": ["falcon_keygen", "falcon_sign"],
   "Falcon-512": ["falcon_keygen", "falcon_sign"],
   "Rainbow-I-Circumzenithal": ["rainbow"],
