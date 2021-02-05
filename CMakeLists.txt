@@ -43,6 +43,17 @@ if(WIN32)
 endif()
 include(.CMake/compiler_opts.cmake)
 
+# As of Release 3.16.1 (June 2020), Valgrind does not support AVX512 instructions.
+# AVX512F is the foundation of the AVX512 set. If OQS_USE_AVX512F_INSTRUCTIONS=OFF,
+# then it's safe to assume that no AVX512 instructions are enabled.
+if(OQS_ENABLE_TEST_CONSTANT_TIME AND OQS_USE_AVX512F_INSTRUCTIONS)
+    message(WARNING "Disabling AVX512 instructions for compatibility with Valgrind / OQS_ENABLE_TEST_CONSTANT_TIME" )
+    set(OQS_USE_AVX512BW_INSTRUCTIONS OFF)
+    set(OQS_USE_AVX512DQ_INSTRUCTIONS OFF)
+    set(OQS_USE_AVX512F_INSTRUCTIONS OFF)
+    set(OQS_USE_AVX512_INSTRUCTIONS OFF)
+endif()
+
 include(.CMake/alg_support.cmake)
 if(OQS_USE_OPENSSL)
     if(NOT DEFINED OPENSSL_ROOT_DIR)
