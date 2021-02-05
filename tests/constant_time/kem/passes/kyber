@@ -2,20 +2,20 @@
    Rejection sampling to produce public "A" matrix
    Memcheck:Cond
    fun:rej_uniform
-   fun:PQCLEAN_KYBER*_CLEAN_gen_matrix
-   fun:PQCLEAN_KYBER*_CLEAN_indcpa_*
+   fun:pqcrystals_kyber*_ref_gen_matrix
+   fun:pqcrystals_kyber*_ref_indcpa_*
 }
 {
    Rejection sampling to produce public "A" matrix
    Memcheck:Cond
    ...
-   fun:PQCLEAN_KYBER*_AVX2_gen_matrix
-   fun:PQCLEAN_KYBER*_AVX2_indcpa_*
+   fun:pqcrystals_kyber*_avx2_gen_matrix
+   fun:pqcrystals_kyber*_avx2_indcpa_*
 }
 {
    Rejection sampling to produce public "A" matrix
    Memcheck:Value8
    ...
-   fun:PQCLEAN_KYBER*_AVX2_gen_matrix
-   fun:PQCLEAN_KYBER*_AVX2_indcpa_*
+   fun:pqcrystals_kyber*_avx2_gen_matrix
+   fun:pqcrystals_kyber*_avx2_indcpa_*
 }

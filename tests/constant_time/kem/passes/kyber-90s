@@ -2,28 +2,28 @@
    Rejection sampling to produce public "A" matrix
    Memcheck:Cond
    fun:rej_uniform
-   fun:PQCLEAN_KYBER*_CLEAN_gen_matrix
-   fun:PQCLEAN_KYBER*_CLEAN_indcpa_*
+   fun:pqcrystals_kyber*_ref_gen_matrix
+   fun:pqcrystals_kyber*_ref_indcpa_*
 }
 {
    Rejection sampling to produce public "A" matrix
    Memcheck:Cond
    ...
-   fun:PQCLEAN_KYBER*_AVX2_rej_uniform_avx
-   fun:PQCLEAN_KYBER*_AVX2_gen_matrix
-   fun:PQCLEAN_KYBER*_AVX2_indcpa_*
+   fun:pqcrystals_kyber*_avx2_rej_uniform_avx
+   fun:pqcrystals_kyber*_avx2_gen_matrix
+   fun:pqcrystals_kyber*_avx2_indcpa_*
 }
 {
    Rejection sampling to produce public "A" matrix
    Memcheck:Value8
    ...
-   fun:PQCLEAN_KYBER*_AVX2_rej_uniform_avx
-   fun:PQCLEAN_KYBER*_AVX2_gen_matrix
-   fun:PQCLEAN_KYBER*_AVX2_indcpa_*
+   fun:pqcrystals_kyber*_avx2_rej_uniform_avx
+   fun:pqcrystals_kyber*_avx2_gen_matrix
+   fun:pqcrystals_kyber*_avx2_indcpa_*
 }
 {
    Rejection sampling to produce public "A" matrix
    Memcheck:Cond
-   src:indcpa.c:194 # fun:PQCLEAN_KYBER*90S_AVX2_gen_matrix
-   fun:PQCLEAN_KYBER*90S_AVX2_indcpa_*
+   src:indcpa.c:195 # fun:pqcrystals_kyber*90s_avx2_gen_matrix
+   fun:pqcrystals_kyber*90s_avx2_indcpa_*
 }
