@@ -18,7 +18,7 @@ jobs:
   stylecheck:
     description: Validate formatting of code and documentation
     docker:
-      - image: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      - image: openquantumsafe/ci-ubuntu-focal-x86_64:latest
 # Re-enable iff docker enforces rate limitations without auth:
 #        auth:
 #          username: $DOCKER_LOGIN
@@ -229,35 +229,35 @@ workflows:
           CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
       - linux_x64:
           <<: *require_stylecheck
-          name: ubuntu-bionic-noopenssl
+          name: ubuntu-focal-noopenssl
           context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
       - linux_x64:
           <<: *require_stylecheck
-          name: ubuntu-bionic-shared-noopenssl
+          name: ubuntu-focal-shared-noopenssl
           context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
           PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
       - linux_x64:
           <<: *require_stylecheck
-          name: ubuntu-bionic-clang9
+          name: ubuntu-focal-clang9
           context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9
       - linux_x64:
           <<: *require_stylecheck
           name: address-sanitizer
           context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
           PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
       # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
       #- linux_x64:
       #    name: undefined-sanitizer
       #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      #    CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
       #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Undefined
            # Normally the linux tests are run with 35 processes, but that
            # exhausts memory for this test

@@ -112,11 +112,21 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 #endif
 
 #ifdef OQS_USE_OPENSSL
+#define OQS_RAND_POLL_RETRY 3 // in case failure to get randomness is a temporary problem, allow some repeats
 void OQS_randombytes_openssl(uint8_t *random_array, size_t bytes_to_read) {
-	int rc;
+	int rep = OQS_RAND_POLL_RETRY;
 	SIZE_T_TO_INT_OR_EXIT(bytes_to_read, bytes_to_read_int)
 	do {
-		rc = RAND_bytes(random_array, bytes_to_read_int);
-	} while (rc != 1);
+		if (RAND_status() == 1) {
+			break;
+		}
+		RAND_poll();
+	} while (rep-- >= 0);
+	if (RAND_bytes(random_array, bytes_to_read_int) != 1) {
+		fprintf(stderr, "No OpenSSL randomness retrieved. DRBG available?\n");
+		// because of void signature we have no other way to signal the problem
+		// we cannot possibly return without randomness
+		exit(EXIT_FAILURE);
+	}
 }
 #endif
