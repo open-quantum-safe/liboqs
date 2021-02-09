@@ -32,6 +32,34 @@ jobs:
           name: Check that doxygen can parse the documentation
           command: mkdir -p build/docs && doxygen docs/.Doxyfile
 
+  buildcheck:
+    description: Test that we can build a single KEM/Signature pair as part of a minimal build.
+    parameters:
+      CONTAINER:
+        description: "The docker container to use."
+        type: string
+      CMAKE_ARGS:
+        description: "Arguments to pass to CMake."
+        type: string
+        default: ''
+      KEM_NAME:
+        description: "The KEM to build."
+        type: string
+      SIG_NAME:
+        description: "The signature scheme to build."
+        type: string
+    docker:
+      - image: << parameters.CONTAINER >>
+    steps:
+      - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
+      - run:
+          name: Configure
+          command: mkdir build && cd build && source ~/.bashrc && cmake -GNinja << parameters.CMAKE_ARGS >> -DOQS_MINIMAL_BUILD=ON -DOQS_KEM_DEFAULT=OQS_KEM_alg_<< parameters.KEM_NAME >> -DOQS_SIG_DEFAULT=OQS_SIG_alg_<< parameters.SIG_NAME >> .. && cmake -LA ..
+      - run:
+          name: Build
+          command: ninja
+          working_directory: build
+
   linux_x64:
     description: A template for running liboqs tests on x64 Linux Docker VMs
     parameters:
@@ -204,6 +232,13 @@ workflows:
         equal: [ main, << pipeline.git.branch >> ]
     jobs:
       - stylecheck
+      - buildcheck:
+          <<: *require_stylecheck
+          name: ubuntu-focal-buildcheck
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+          KEM_NAME: kyber_768
+          SIG_NAME: dilithium_3
       - linux_x64:
           <<: *require_stylecheck
           name: alpine-noopenssl
