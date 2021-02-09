@@ -260,7 +260,7 @@ workflows:
           filters:
             branches:
               only:
-                - audit
+                - /^audit/
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DOQS_PORTABLE_BUILD=ON -DOQS_USE_CPU_EXTENSIONS=OFF -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
@@ -271,7 +271,7 @@ workflows:
           filters:
             branches:
               only:
-                - audit
+                - /^audit/
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DOQS_PORTABLE_BUILD=OFF -DOQS_USE_CPU_EXTENSIONS=ON -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
