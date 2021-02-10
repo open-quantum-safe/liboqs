@@ -11,7 +11,7 @@ Implementation
 --------------
 
 - **Source of implementation**: https://github.com/pq-crystals/kyber
-- **Implementation version**: https://github.com/pq-crystals/kyber/commit/28413dfbf523fdde181246451c2bd77199c0f7ff
+- **Implementation version**: https://github.com/pq-crystals/kyber/commit/8e9308bd0f25fa698e4f37aba216249261f8b352
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AES, AVX2, POPCNT, SSE2 and SSSE3 instructions (if available at run-time)
