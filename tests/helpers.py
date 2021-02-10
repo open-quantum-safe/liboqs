@@ -26,25 +26,32 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
     # then print it, which pytest will then capture and
     # buffer appropriately
     print(working_dir + " > " + " ".join(command))
-    proc = subprocess.Popen(
-        command,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        cwd=working_dir,
-        env=env,
-    )
 
-    try:
-        out, _ = proc.communicate(input=input, timeout=480)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        out, _ = proc.communicate()
+    while 1: # We might need to re-run the command
+        proc = subprocess.Popen(
+            command,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            cwd=working_dir,
+            env=env,
+        )
 
-    if not(ignore_returncode) and (proc.returncode != expected_returncode):
-        print(out.decode('utf-8'))
-        assert False, "Got unexpected return code {}".format(proc.returncode)
-    return out.decode('utf-8')
+        try:
+            out, _ = proc.communicate(input=input, timeout=480)
+        except subprocess.TimeoutExpired as T:
+            proc.kill()
+            assert False, str(T)
+
+        # circleCI is welcome to kill this python process, otherwise
+        # we'll keep trying the subprocess.
+        if env is not None and 'CIRCLECI' in env and proc.returncode == -9:
+            continue
+
+        if not(ignore_returncode) and (proc.returncode != expected_returncode):
+            print(out.decode('utf-8'))
+            assert False, "Got unexpected return code {}".format(proc.returncode)
+        return out.decode('utf-8')
 
 def available_kems_by_name():
     available_names = []
