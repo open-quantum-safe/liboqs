@@ -22,6 +22,13 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
         env_.update(env)
         env = env_
 
+    # Detect if we're running in CircleCI.
+    # https://circleci.com/docs/2.0/env-vars/
+    circleci = env is not None and 'CIRCLECI' in env
+
+    # CircleCI has its own timeout mechanism. Disable ours.
+    timeout = None if circleci else 10*60
+
     # Note we need to capture stdout/stderr from the subprocess,
     # then print it, which pytest will then capture and
     # buffer appropriately
@@ -38,14 +45,14 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
         )
 
         try:
-            out, _ = proc.communicate(input=input, timeout=480)
+            out, _ = proc.communicate(input=input, timeout=timeout)
         except subprocess.TimeoutExpired as T:
             proc.kill()
             assert False, str(T)
 
-        # circleCI is welcome to kill this python process, otherwise
+        # CircleCI is welcome to kill this python process, otherwise
         # we'll keep trying the subprocess.
-        if env is not None and 'CIRCLECI' in env and proc.returncode == -9:
+        if circleci and proc.returncode == -9:
             continue
 
         if not(ignore_returncode) and (proc.returncode != expected_returncode):
