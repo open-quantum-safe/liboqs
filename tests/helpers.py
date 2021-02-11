@@ -17,14 +17,14 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
     Helper function to run a shell command and report success/failure
     depending on the exit status of the shell command.
     """
+    env_ = os.environ.copy()
     if env is not None:
-        env_ = os.environ.copy()
         env_.update(env)
-        env = env_
+    env = env_
 
     # Detect if we're running in CircleCI.
     # https://circleci.com/docs/2.0/env-vars/
-    circleci = env is not None and 'CIRCLECI' in env
+    circleci = 'CIRCLECI' in env
 
     # CircleCI has its own timeout mechanism. Disable ours.
     timeout = None if circleci else 10*60
