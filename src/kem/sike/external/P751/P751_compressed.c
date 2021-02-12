@@ -157,11 +157,13 @@ static const uint64_t Montgomery_RB1[NWORDS64_FIELD] = {0x1A55482318541298, 0x70
 // constant Montgomery_RB2 = (-Bob_order)^-1 mod 2^NBITS_ORDER
 static const uint64_t Montgomery_RB2[NWORDS64_FIELD] = {0x48062A91D3AB563D, 0x6CE572751303C2F5, 0x5D1319F3F160EC9D, 0xE35554E8C2D5623A, 0xCA29300232BC79A5, 0x8AAD843D646D78C5};
 
+/* OQS note: unused
 // 1/3 mod p
 static const uint64_t threeinv[NWORDS64_FIELD] = {0x555555555556188F, 0x5555555555555555, 0x5555555555555555, 0x5555555555555555,
                                                   0x5555555555555555, 0x8105555555555555, 0x1C6290A167C97977, 0xCDD287EA6A6FB6F0,
                                                   0x42DF3D3B8EC96F64, 0x198C3C1346027872, 0xB0528624270642A3, 0xF1E61944CA0
                                                  };
+*/
 
 // Fixed parameters for isogeny tree computation
 static const unsigned int strat_Alice[MAX_Alice - 1] = {
@@ -190,7 +192,7 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 
 static const unsigned int ph2_path[PLEN_2] = { // w_2 = 4
 #ifdef COMPRESSED_TABLES
-  #ifdef ELL2_FULL_SIGNED
+  #ifdef ELL2_TORUS
     #if W_2 == 4
       0, 0, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 9, 10, 11, 12, 13, 13, 13, 14, 14, 15, 16, 17, 18, 19, 19, 19, 19, 20, 21, 22, 22, 23, 24, 25, 26, 27, 27, 28, 28, 28, 28, 28, 29, 30, 31, 32, 33, 34, 34, 35, 36, 37, 38, 39, 40, 40, 40, 40, 41, 42, 42, 42, 42, 42, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 52, 53, 54, 55, 56, 57, 58, 59, 59, 59, 59, 59, 59, 59
     #endif
@@ -217,6 +219,7 @@ static const unsigned int ph3_path[PLEN_3] = {
 // For the 3^eB-torsion basis generation:
 //      A table of size 20 for values v = 1/(1+U*r^2) where U = 4+i
 
+/* OQS note: unused
 static const uint64_t u_entang[2 * NWORDS64_FIELD] = {
 	0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000,
 	0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000,
@@ -230,6 +233,7 @@ static const uint64_t u0_entang[2 * NWORDS64_FIELD] = {
 	0x00000000000249ad, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x8310000000000000,
 	0x5527b1e4375c6c66, 0x697797bf3f4f24d0, 0xc89db7b2ac5c4e2e, 0x4ca4b439d2076956, 0x10f7926c7512c7e9, 0x00002d5b24bce5e2
 };
+*/
 
 // Tables for quadratic residues and quadratic non residues v with 17 elements each.
 

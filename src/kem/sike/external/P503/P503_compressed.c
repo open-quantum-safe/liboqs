@@ -159,10 +159,12 @@ static const uint64_t Montgomery_one[NWORDS64_FIELD] = {0x00000000000003F9, 0x00
                                                         0x63CB1A6EA6DED2B4, 0x51689D8D667EB37D, 0x8ACD77C71AB24142, 0x0026FBAEC60F5953
                                                        };
 
+/* OQS note: unused
 // 1/3 mod p
 static const uint64_t threeinv[NWORDS64_FIELD] = {
 	0x55555555555556A8, 0x5555555555555555, 0x5555555555555555, 0x7555555555555555, 0x7CF1276D98503E1C, 0xCF0186C74B5465B9, 0xA3B114D6FC634CB0, 0x227636AD3027D0
 };
+*/
 
 // Fixed parameters for isogeny tree computation
 static const unsigned int strat_Alice[MAX_Alice - 1] = {
@@ -186,7 +188,7 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 
 static const unsigned int ph2_path[PLEN_2] = {
 #ifdef COMPRESSED_TABLES
-  #ifdef ELL2_FULL_SIGNED
+  #ifdef ELL2_TORUS
     #if W_2 == 5
       0, 0, 1, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 11, 12, 13, 13, 14, 14, 15, 16, 17, 18, 18, 18, 19, 20, 20, 21, 22, 23, 24, 25, 25, 25, 25, 26, 27, 28, 29, 29, 30, 31, 32, 33, 34, 35, 35
     #endif
@@ -213,6 +215,7 @@ static const unsigned int ph3_path[PLEN_3] = {
 // For the 3^eB-torsion basis generation:
 //      A table of size 20 for values v = 1/(1+U*r^2)
 
+/* OQS note: unused
 static const uint64_t u_entang[2 * NWORDS64_FIELD] = {
 	0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x7F3, 0x0, 0x0, 0xBC00000000000000, 0xB48DD9032BABBDC8, 0x87354452517EE94B, 0xB55528D05AECDDB4, 0xD90684A9D9488
 };
@@ -221,6 +224,7 @@ static const uint64_t u0_entang[2 * NWORDS64_FIELD] = {
 	0x3F9, 0x0, 0x0, 0xB400000000000000, 0x63CB1A6EA6DED2B4, 0x51689D8D667EB37D, 0x8ACD77C71AB24142, 0x26FBAEC60F5953, 0x3F9, 0x0, 0x0, 0xB400000000000000,
 	0x63CB1A6EA6DED2B4, 0x51689D8D667EB37D, 0x8ACD77C71AB24142, 0x26FBAEC60F5953
 };
+*/
 
 // Tables for quadratic residues and quadratic non residues v with 17 elements each.
 

@@ -5,404 +5,479 @@
 *********************************************************************************************/
 
 
-static void get_2_torsion_entangled_basis_compression(const f2elm_t A, point_t S1, point_t S2, unsigned char *bit, unsigned char *entry) 
-{ // Build an entangled basis for E[2^m].
-  // At first glance this is similar to the Elligator 2 technique, but the field element u is a *square* here, not a non-square.
-    unsigned int i, index, isSqrA = 0;
-    felm_t r = {0}, s, z, alpha, twoalphainv, beta;
-    f2elm_t t, u, u0, one = {0}, *t_ptr;
-    felm_t *x1 = (felm_t*) S1->x, *y1 = (felm_t*) S1->y, *x2 = (felm_t*) S2->x, *y2 = (felm_t*) S2->y;
-     
-    fpcopy((digit_t*)&Montgomery_one, one[0]);    
-    copy_words((const digit_t *)u0_entang, u0[0], 2*NWORDS_FIELD);
-    copy_words((const digit_t *)u_entang, u[0], 2*NWORDS_FIELD);
-
-    // Select the correct table
-    if (is_sqr_fp2(A, s)) {
-        t_ptr = (f2elm_t *)table_v_qnr; 
-        isSqrA = 1;
-    } else {
-        t_ptr = (f2elm_t *)table_v_qr;
-    }
-    *bit = (unsigned char)isSqrA;  // This bit is transmitted along with the PK to speedup decompression
-
-    index = 0;
-    do {
-        fp2mul_mont(A, (felm_t *)*t_ptr++, x1); // x1 =  A*v
-        fp2neg(x1);                             // x1 = -A*v
-        fp2add(x1, A, t);
-        fp2mul_mont(x1, t, t);
-        fpadd(t[0], one[0], t[0]);
-        fp2mul_mont(x1, t, t);                  // t = x1^3 + A*x1^2 + x1 = x1(x1(x1 + A) + 1)
-        index += 2;
-    } while (!is_sqr_fp2(t, s));
-    *entry = ((unsigned char)index - 2)/2;  // This table entry will also be transmitted along with the PubKey to speedup decompression
-    
-    if (isSqrA)
-        copy_words((const digit_t *)table_r_qnr[(index-2)/2], r, NWORDS_FIELD);
-    else
-        copy_words((const digit_t *)table_r_qr[(index-2)/2], r, NWORDS_FIELD);
-    
-    // Finish sqrt computation for y1 = sqrt(x1^3+A*x1^2+x1)
-    fpadd(t[0],s,z);
-    fpdiv2(z,z);
-    fpcopy(z,alpha);
-    for (i = 0; i < OALICE_BITS - 2; i++) {         
-        fpsqr_mont(alpha, alpha);
-    }
-    for (i = 0; i < OBOB_EXPON; i++) {
-        fpsqr_mont(alpha, s);                                         
-        fpmul_mont(alpha, s, alpha);     // alpha = z^((p+1)/4)                                 
-    }
-
-    fpadd(alpha,alpha,twoalphainv); 
-    fpinv_mont_bingcd(twoalphainv);   
-    fpmul_mont(t[1],twoalphainv,beta);
-    fpsqr_mont(alpha, twoalphainv);
-    fpcorrection(twoalphainv);
-    fpcorrection(z);   
-    if (memcmp(twoalphainv, z, NBITS_TO_NBYTES(NBITS_FIELD)) == 0) {
-        fpcopy(alpha,y1[0]);
-        fpcopy(beta,y1[1]);
-    } else {
-        fpneg(beta);
-        fpcopy(beta,y1[0]);
-        fpneg(alpha);        
-        fpcopy(alpha,y1[1]);
-    }   
-    fp2add(x1, A, x2);
-    fp2neg(x2);                  // x2 = A*v - A
-    fp2mul_mont(u0,y1,y2);   
-    fpmul_mont(r,y2[0],y2[0]);
-    fpmul_mont(r,y2[1],y2[1]);   // y2 = u0*r*y1
-}
+#define COMPRESSION 0
+#define DECOMPRESSION 1
 
 
-static void get_2_torsion_entangled_basis_decompression(const f2elm_t A, point_t S1, point_t S2, unsigned char isASqr, unsigned char entry) 
-{ // Build an entangled basis for E[2^m] during decompression using the the entry and table already computed during compression
-    unsigned int i;
-    felm_t r = {0}, s, z, alpha, twoalphainv, beta;
-    f2elm_t t, u, u0, one = {0}, *t_ptr;
-    felm_t *x1 = (felm_t*) S1->x, *y1 = (felm_t*) S1->y, *x2 = (felm_t*) S2->x, *y2 = (felm_t*) S2->y;
-     
-    fpcopy((digit_t*)&Montgomery_one, one[0]);
-    
-    copy_words((const digit_t *)u0_entang, u0[0], 2*NWORDS_FIELD);
-    copy_words((const digit_t *)u_entang, u[0], 2*NWORDS_FIELD);
-
-    // Select the table
-    t_ptr = isASqr ? (f2elm_t *)table_v_qnr : (f2elm_t *)table_v_qr;
-
-    fp2mul_mont(A, t_ptr[entry], x1); // x1 =  A*v
-    fp2neg(x1);                       // x1 = -A*v
-    fp2add(x1, A, t);
-    fp2mul_mont(x1, t, t);
-    fpadd(t[0], one[0], t[0]);
-    fp2mul_mont(x1, t, t);            // t = x1^3 + A*x1^2 + x1 = x1(x1(x1 + A) + 1)
-    is_sqr_fp2(t, s);
-    
-    if (isASqr)
-        copy_words((const digit_t *)table_r_qnr[entry], r, NWORDS_FIELD);
-    else
-        copy_words((const digit_t *)table_r_qr[entry], r, NWORDS_FIELD);
-    
-    // Finish sqrt computation for y1 = sqrt(x1^3+A*x1^2+x1)
-    fpadd(t[0],s,z);
-    fpdiv2(z,z);
-    fpcopy(z,alpha);
-    for (i = 0; i < OALICE_BITS - 2; i++) {         
-        fpsqr_mont(alpha, alpha);
-    }
-    for (i = 0; i < OBOB_EXPON; i++) {
-        fpsqr_mont(alpha, s);                                         
-        fpmul_mont(alpha, s, alpha);     // alpha = z^((p+1)/4)                                 
-    }
-
-    fpadd(alpha,alpha,twoalphainv);   
-    fpinv_mont_bingcd(twoalphainv);   
-    fpmul_mont(t[1],twoalphainv,beta);
-    fpsqr_mont(alpha, twoalphainv);
-    fpcorrection(twoalphainv);
-    fpcorrection(z);
-    if (memcmp((unsigned char*)twoalphainv, (unsigned char*)z, NBITS_TO_NBYTES(NBITS_FIELD)) == 0) {
-        fpcopy(alpha,y1[0]);
-        fpcopy(beta,y1[1]);
-    } else {
-        fpneg(beta);
-        fpcopy(beta,y1[0]);
-        fpneg(alpha);        
-        fpcopy(alpha,y1[1]);
-    }
-    fp2add(x1, A, x2);
-    fp2neg(x2);                  // x2 = A*v - A
-    fp2mul_mont(u0,y1,y2);   
-    fpmul_mont(r,y2[0],y2[0]);
-    fpmul_mont(r,y2[1],y2[1]);   // y2 = u0*r*y1
-}
-
-
-static void sqrtinv2(const f2elm_t v, const f2elm_t z, f2elm_t s, f2elm_t invz)
-{ // Compute the square root of a field element v in F_{p^2} and invert a field element z.
-    int j;
-    felm_t az, bz, av, bv, Nz, Nv, av2, bv2, r, t, x, y, kk;
-    f2elm_t conjz, zero = {0};
-    
-    fpsqr_mont(z[0],az);
-    fpsqr_mont(z[1],bz);
-    fpadd(az,bz,Nz);    
-    fpcopy(v[0],av);
-    fpcopy(v[1],bv);
-
-    if (memcmp(bv,zero[0],NBITS_TO_NBYTES(NBITS_FIELD)) != 0) {
-        fpsqr_mont(av,av2);
-        fpsqr_mont(bv,bv2);
-        fpadd(av2,bv2,Nv);
-
-        fpcopy(Nv,r);
-        for (j = 0; j < OALICE_BITS - 2; j++)
-            fpsqr_mont(r,r);
-        for (j = 0; j < OBOB_EXPON; j++) {
-            fpsqr_mont(r,t);
-            fpmul_mont(r,t,r);
-        }        
-        fpsqr_mont(r,t);
-        fpcorrection(t);
-        fpcorrection(Nv);
-        if (memcmp(t,Nv,NBITS_TO_NBYTES(NBITS_FIELD)) == 0) {
-            mp_add(av,r,r,NWORDS_FIELD);            
-            
-            if ((r[0] & 0x01) != 0)
-                mp_add(r,(digit_t*)&PRIME,r,NWORDS_FIELD);
-            
-            mp_shiftr1(r,NWORDS_FIELD);
-
-            fpcopy(r,x);
-            for (j = 0; j < OALICE_BITS - 2; j++)
-                fpsqr_mont(x,x);
-            for (j = 0; j < OBOB_EXPON; j++) {
-                fpsqr_mont(x,t);
-                fpmul_mont(x,t,x);
-            }        
-            
-            if (memcmp(Nz,zero[0],NBITS_TO_NBYTES(NBITS_FIELD)) != 0) {
-                fpmul_mont(x,Nz,t);
-                fpadd(t,t,t);
-                fpinv_mont_bingcd(t); 
-                fpcopy(t,kk);
-                fpmul_mont(bv,Nz,y);
-                fpmul_mont(y,kk,y);
-                
-                fpsqr_mont(x,t);
-                fpcorrection(t);
-                fpcorrection(r);
-                if (memcmp(t,r,NBITS_TO_NBYTES(NBITS_FIELD)) == 0) {
-                    fpcopy(x,s[0]);
-                    fpcopy(y,s[1]);
-                } else {
-                    fpcopy(y,s[0]);
-                    fpcopy(x,s[1]);                    
-                }
-                fp2_conj(z,conjz);
-                fpmul_mont(x,kk,t);
-                fpadd(t,t,t);
-                fpmul_mont(t,conjz[0],invz[0]);
-                fpmul_mont(t,conjz[1],invz[1]);
-            } else {
-                fpadd(x,x,t);
-                fpinv_mont_bingcd(t);
-                fpmul_mont(bv,t,y);                
-                fpsqr_mont(x,t);
-                if (memcmp(t,r,NBITS_TO_NBYTES(NBITS_FIELD)) == 0) {
-                    fpcopy(x,s[0]);
-                    fpcopy(y,s[1]);
-                } else {
-                    fpcopy(y,s[0]);
-                    fpcopy(x,s[1]);                    
-                }
-                fp2copy(zero,invz);                
-            }
-
-        } else {
-            fp2copy(zero,s);
-            if (memcmp(Nz,zero[0],NBITS_TO_NBYTES(NBITS_FIELD)) != 0) {
-                fpinv_mont_bingcd(Nz);
-                fp2_conj(z,conjz);
-                fpmul_mont(Nz,conjz[0],invz[0]);
-                fpmul_mont(Nz,conjz[1],invz[1]);                
-            } else {
-                fp2copy(zero,invz);
-            }
-        }
-    } else {
-        fpcopy(av,r);
-        for (j = 0; j < OALICE_BITS - 2; j++)
-            fpsqr_mont(r,r);
-        for (j = 0; j < OBOB_EXPON; j++) {
-            fpsqr_mont(r,t);
-            fpmul_mont(r,t,r);
-        }            
-        fpsqr_mont(r,t);
-        if (memcmp(t,av,NBITS_TO_NBYTES(NBITS_FIELD)) == 0) {
-            fpcopy(r,s[0]);
-            fpcopy(zero[0],s[1]);
-        } else {
-            fpcopy(zero[0],s[0]);
-            fpcopy(r,s[1]);
-        }
-
-        if (memcmp(Nz,zero[0],NBITS_TO_NBYTES(NBITS_FIELD)) != 0) {
-            fp2_conj(z,conjz);
-            fpinv_mont_bingcd(Nz);
-            fpmul_mont(Nz,conjz[0],invz[0]);
-            fpmul_mont(Nz,conjz[1],invz[1]);            
-        } else {
-            fp2copy(zero,invz);
-        }
-    }
-}
-
-
-static void BasePoint3n(f2elm_t A, unsigned int *r, point_proj_t P, point_proj_t Q)
-{ // xz-only construction of a point of order 3^n in the Montgomery curve y^2 = x^3 + A*x^2 + x from base counter r.
-  // This is essentially the Elligator 2 technique coupled with cofactor multiplication and LI checking.
+static void Elligator2(const f2elm_t a24, const unsigned int r, f2elm_t x, unsigned char *bit, const unsigned char COMPorDEC)
+{ // Generate an x-coordinate of a point on curve with (affine) coefficient a24 
+  // Use the counter r
     int i;
-    felm_t a2, b2, N, temp0, temp1;
-    f2elm_t A2, A24, two = {0}, x, y2, one_fp2 = {0}, *t_ptr;
-    point_proj_t S;
+    felm_t one_fp, a2, b2, N, temp0, temp1;
+    f2elm_t A, y2, *t_ptr;
+
+    fpcopy((digit_t*)&Montgomery_one, one_fp);
+    fp2add(a24, a24, A);
+    fpsub(A[0], one_fp, A[0]);
+    fp2add(A, A, A);                       // A = 4*a24-2 
+
+    // Elligator computation
+    t_ptr = (f2elm_t *)&v_3_torsion[r];    
+    fp2mul_mont(A, (felm_t*)t_ptr, x);     // x = A*v; v := 1/(1 + U*r^2) table lookup
+    fp2neg(x);                             // x = -A*v;
     
-    fpcopy((digit_t*)&Montgomery_one, one_fp2[0]);
-    fp2div2(A,A2);
-    fpcopy(one_fp2[0],two[0]);
-    fpadd(two[0], two[0], two[0]);
-    fp2add(A,two,A24);
-    fp2div2(A24,A24);
-    fp2div2(A24,A24);
+    if (COMPorDEC == COMPRESSION) {
+        fp2add(A, x, y2);                      // y2 = x + A
+        fp2mul_mont(y2,  x,  y2);              // y2 = x*(x + A)
+        fpadd(y2[0],  one_fp,  y2[0]);         // y2 = x(x + A) + 1
+        fp2mul_mont(x, y2, y2);                // y2 = x*(x^2 + Ax + 1);
+        fpsqr_mont(y2[0], a2);
+        fpsqr_mont(y2[1], b2);
+        fpadd(a2, b2, N);                      // N := norm(y2);
 
-    t_ptr = (f2elm_t *)&v_3_torsion[*r];    
-    do {
-        *r += 1;        
-        fp2mul_mont(A,(felm_t*)t_ptr++,x); // x = A*v; v := 1/(1 + U*r^2) table lookup
-        fp2neg(x);                         // x = -A*v;
-        fp2add(A,x,y2);                    // y2 = x + A
-        fp2mul_mont(y2, x, y2);            // y2 = x*(x + A)
-        fpadd(y2[0], one_fp2[0], y2[0]);   // y2 = x(x + A) + 1
-        fp2mul_mont(x,y2,y2);              // y2 = x*(x^2 + Ax + 1);
-        fpsqr_mont(y2[0],a2);
-        fpsqr_mont(y2[1],b2);
-        fpadd(a2,b2,N);                    // N := norm(y2);
-
-        fpcopy(N,temp0);
+        fpcopy(N, temp0);
         for (i = 0; i < OALICE_BITS - 2; i++) {    
-            fpsqr_mont(temp0, temp0);
+            fpsqr_mont(temp0,  temp0);
         }
         for (i = 0; i < OBOB_EXPON; i++) {
-            fpsqr_mont(temp0, temp1);
-            fpmul_mont(temp0, temp1, temp0);
+            fpsqr_mont(temp0,  temp1);
+            fpmul_mont(temp0,  temp1,  temp0);
         }
-        fpsqr_mont(temp0,temp1);  // z = N^((p + 1) div 4);
+        fpsqr_mont(temp0, temp1);              // z = N^((p + 1) div 4);
         fpcorrection(temp1);
         fpcorrection(N);
-        if (memcmp(temp1,N,NBITS_TO_NBYTES(NBITS_FIELD)) != 0) {
+        if (memcmp(temp1, N, NBITS_TO_NBYTES(NBITS_FIELD)) != 0) {
             fp2neg(x);
-            fp2sub(x,A,x);        // x = -x - A;
+            fp2sub(x, A, x);                   // x = -x - A;
+            if (COMPorDEC == COMPRESSION)
+                *bit = 1;        
         }
-        fp2copy(x,S->X);
-        fp2copy(one_fp2,S->Z);
-        Double(S,P,A24,OALICE_BITS);   // x, z := Double(A24, x, 1, eA);
-        xTPLe_fast(P,Q,A2,OBOB_EXPON-1);  // t, w := Triple(A_2, x, z, eB-1);
-        fp2correction(Q->X);
-        fp2correction(Q->Z);
-    }   while (is_felm_zero(Q->Z[0]) && is_felm_zero(Q->Z[1]));
+    } else {
+        if (*bit) {
+            fp2neg(x);
+            fp2sub(x,A,x);                              // x = -x - A;
+        }       
+    }
 }
 
 
-static void BasePoint3n_decompression(f2elm_t A, const unsigned char r, point_proj_t P)
-{ // Deterministic xz-only construction of a point of order 3^n in the Montgomery curve y^2 = x^3 + A*x^2 + x from counter r1.
-  // Notice that the Elligator 2 counter r was generated beforehand during key compression without linear independence testing
-    int i;
-    felm_t a2, b2, N, temp0, temp1;
-    f2elm_t A2, A24, two = {0}, x, y2, one_fp2 = {0};
-    point_proj_t S;
-    
-    fpcopy((digit_t*)&Montgomery_one, one_fp2[0]);
-    fp2div2(A,A2);
-    fpcopy((digit_t*)&Montgomery_one,two[0]);
-    fpadd(two[0], two[0], two[0]);
-    fp2add(A,two,A24);
-    fp2div2(A24,A24);
-    fp2div2(A24,A24);
-
-    if ( (r-1) < TABLE_V3_LEN)
-        fp2mul_mont(A, (felm_t*)&v_3_torsion[r-1], x);  // x =  A*v;
-    else // If the index r is out of range, just use a default (0)
-        fp2mul_mont(A, (felm_t*)&v_3_torsion[0], x);  // x =  A*v0;
-    fp2neg(x);                                      // x = -A*v;
-    fp2add(x,A,y2);                                 // y2 = x + A             
-    fp2mul_mont(x,y2,y2);                           // y2 = x*(x + A)
-    fpadd(y2[0], one_fp2[0], y2[0]);                // y2 = x(x + A) + 1
-    fp2mul_mont(x, y2, y2);                         // y2 = x*(x^2 + A*x + 1);    
-    fpsqr_mont(y2[0],a2);
-    fpsqr_mont(y2[1],b2);
-    fpadd(a2,b2,N);                                 // N := Fp!norm(y2);
-
-    fpcopy(N,temp0);
-    for (i = 0; i < OALICE_BITS - 2; i++) {    
-        fpsqr_mont(temp0, temp0);
-    }
-    for (i = 0; i < OBOB_EXPON; i++) {
-        fpsqr_mont(temp0, temp1);
-        fpmul_mont(temp0, temp1, temp0);
-    }
-    fpsqr_mont(temp0,temp1);  // z = N^((p + 1) div 4);
-    fpcorrection(temp1);
-    fpcorrection(N);
-    if (memcmp(temp1,N,NBITS_TO_NBYTES(NBITS_FIELD)) != 0) {
-        fp2neg(x);
-        fp2sub(x,A,x);        // x = -x - A;
-    }
-    fp2copy(x,S->X);
-    fp2copy(one_fp2,S->Z);
-    Double(S,P,A24,OALICE_BITS);   // x, z := Double(A24, x, 1, eA);
+static void TripleAndParabola_proj(const point_full_proj_t R, f2elm_t l1x, f2elm_t l1z)
+{
+    fp2sqr_mont(R->X, l1z);
+    fp2add(l1z, l1z, l1x);
+    fp2add(l1x, l1z, l1x);
+    fpadd(l1x[0], (digit_t*)&Montgomery_one, l1x[0]);
+    fp2add(R->Y, R->Y, l1z);
 }
 
 
-static void BuildOrdinaryE3nBasis(f2elm_t A, point_full_proj_t R1, point_full_proj_t R2, unsigned int rs[2])
-{ // Generate a basis for the 3^eB torsion
-    unsigned int r = 0;
-    f2elm_t t2w1, t1w2;
-    point_proj_t P, Q, R, S;
+static void Tate3_proj(const point_full_proj_t P, const point_full_proj_t Q, f2elm_t gX, f2elm_t gZ)
+{
+    f2elm_t t0, l1x;
+
+    TripleAndParabola_proj(P, l1x, gZ);
+    fp2sub(Q->X, P->X, gX);
+    fp2mul_mont(l1x, gX, gX);
+    fp2sub(P->Y, Q->Y, t0);
+    fp2mul_mont(gZ, t0, t0);
+    fp2add(gX, t0, gX);
+}
+
+
+static void FinalExpo3_2way(f2elm_t *gX, f2elm_t *gZ)
+{
+    unsigned int i, j;
+    f2elm_t f_[2], finv[2];
+
+    for(i = 0; i < 2; i++) {
+        fp2copy(gZ[i], f_[i]);
+        fpneg(f_[i][1]);    // Conjugate
+        fp2mul_mont(gX[i], f_[i], f_[i]);
+    }
+    mont_n_way_inv(f_,2,finv);
+    for(i = 0; i < 2; i++) {
+        fpneg(gX[i][1]);
+        fp2mul_mont(gX[i], gZ[i], gX[i]);
+        fp2mul_mont(gX[i], finv[i], gX[i]);
+        for(j = 0; j < OALICE_BITS; j++)
+            fp2sqr_mont(gX[i], gX[i]);
+        for(j = 0; j < OBOB_EXPON-1; j++)
+            cube_Fp2_cycl(gX[i], (digit_t*)&Montgomery_one);
+    }
+}
+
+
+static void FinalExpo3(f2elm_t gX, f2elm_t gZ)
+{
+    unsigned int i;
+    f2elm_t f_;
+
+    fp2copy(gZ, f_);
+    fpneg(f_[1]);
+    fp2mul_mont(gX, f_, f_);
+    fp2inv_mont_bingcd(f_);
+    fpneg(gX[1]);
+    fp2mul_mont(gX,gZ, gX);
+    fp2mul_mont(gX,f_, gX);
+    for(i = 0; i < OALICE_BITS; i++)
+        fp2sqr_mont(gX, gX);
+    for(i = 0; i < OBOB_EXPON-1; i++)
+        cube_Fp2_cycl(gX, (digit_t*)Montgomery_one);
+}
+
+
+static void make_positive(f2elm_t x)
+{
+    unsigned long long nbytes = NBITS_TO_NBYTES(NBITS_FIELD);
+    felm_t zero = {0};
+
+    from_fp2mont(x, x);
+    if (memcmp(x[0], zero, (size_t)nbytes) != 0) {
+        if ((x[0][0] & 1) == 1)
+            fp2neg(x);
+    } else {
+        if ((x[1][0] & 1) == 1)
+            fp2neg(x);
+    }
+    to_fp2mont(x, x);
+}
+
+
+static bool FirstPoint_dual(const point_proj_t P, point_full_proj_t R, unsigned char *ind)
+{
+    point_full_proj_t R3,S3;
+    f2elm_t gX[2],gZ[2];
+    felm_t zero = {0};
+    unsigned long long nbytes = NBITS_TO_NBYTES(NBITS_FIELD);
+    unsigned char alpha,beta;
+
+    fpcopy((digit_t*)B_gen_3_tors + 0*NWORDS_FIELD, (R3->X)[0]);
+    fpcopy((digit_t*)B_gen_3_tors + 1*NWORDS_FIELD, (R3->X)[1]);
+    fpcopy((digit_t*)B_gen_3_tors + 2*NWORDS_FIELD, (R3->Y)[0]);
+    fpcopy((digit_t*)B_gen_3_tors + 3*NWORDS_FIELD, (R3->Y)[1]);
+    fpcopy((digit_t*)B_gen_3_tors + 4*NWORDS_FIELD, (S3->X)[0]);
+    fpcopy((digit_t*)B_gen_3_tors + 5*NWORDS_FIELD, (S3->X)[1]);
+    fpcopy((digit_t*)B_gen_3_tors + 6*NWORDS_FIELD, (S3->Y)[0]);
+    fpcopy((digit_t*)B_gen_3_tors + 7*NWORDS_FIELD, (S3->Y)[1]);
+
+    CompletePoint(P,R);
+    Tate3_proj(R3,R,gX[0],gZ[0]);
+    Tate3_proj(S3,R,gX[1],gZ[1]);
+    FinalExpo3_2way(gX,gZ);
+
+    // Do small DLog with respect to g_R3_S3
+    fp2correction(gX[0]);
+    fp2correction(gX[1]);
+    if (memcmp(gX[0][1], zero, (size_t)nbytes) == 0)    // = 1
+        alpha = 0;
+    else if (memcmp(gX[0][1], g_R_S_im, (size_t)nbytes) == 0)    // = g_R3_S3
+        alpha = 1;
+    else    // = g_R3_S3^2
+        alpha = 2;
+
+    if (memcmp(gX[1][1], zero, (size_t)nbytes) == 0)    // = 1
+        beta = 0;
+    else if (memcmp(gX[1][1], g_R_S_im, (size_t)nbytes) == 0)    // = g_R3_S3
+        beta = 1;
+    else    // = g_R3_S3^2
+        beta = 2;
+
+    if (alpha == 0 && beta == 0)   // Not full order
+        return false;
+
+    // Return the 3-torsion point that R lies above
+    if (alpha == 0)                // Lies above R3
+        *ind = 0;
+    else if (beta == 0)            // Lies above S3
+        *ind = 1;
+    else if (alpha + beta == 3)    // Lies above R3+S3
+        *ind = 3;
+    else                           // Lies above R3-S3
+        *ind = 2;
+
+    return true;
+}
+
+
+static bool SecondPoint_dual(const point_proj_t P, point_full_proj_t R, unsigned char ind)
+{
+    point_full_proj_t RS3;
+    f2elm_t gX, gZ;
+    felm_t zero = {0};
+    unsigned long long nbytes = NBITS_TO_NBYTES(NBITS_FIELD);
+
+    // Pair with 3-torsion point determined by first point
+    fpcopy((digit_t*)B_gen_3_tors + (4*ind + 0)*NWORDS_FIELD, (RS3->X)[0]);
+    fpcopy((digit_t*)B_gen_3_tors + (4*ind + 1)*NWORDS_FIELD, (RS3->X)[1]);
+    fpcopy((digit_t*)B_gen_3_tors + (4*ind + 2)*NWORDS_FIELD, (RS3->Y)[0]);
+    fpcopy((digit_t*)B_gen_3_tors + (4*ind + 3)*NWORDS_FIELD, (RS3->Y)[1]);
+
+    CompletePoint(P, R);
+    Tate3_proj(RS3, R, gX, gZ);
+    FinalExpo3(gX, gZ);
+
+    fp2correction(gX);
+    if (memcmp(gX[1], zero, (size_t)nbytes) != 0)    // Not equal to 1
+        return true;
+    else
+        return false;
+}
+
+
+static void FirstPoint3n(const f2elm_t a24, const f2elm_t As[][5], f2elm_t x, point_full_proj_t R, unsigned int *r, unsigned char *ind, unsigned char *bitEll)
+{
+    bool b = false;
+    point_proj_t P;
+    felm_t zero = {0};
+    *r = 0;
+
+    while (!b) {        
+        *bitEll = 0;
+        Elligator2(a24, *r, x, bitEll, COMPRESSION);    // Get x-coordinate on curve a24
+
+        fp2copy(x, P->X);
+        fpcopy((digit_t*)&Montgomery_one, (P->Z)[0]);
+        fpcopy(zero, (P->Z)[1]);
+        eval_full_dual_4_isog(As, P);    // Move x over to A = 0
+
+        b = FirstPoint_dual(P, R, ind);  // Compute DLog with 3-torsion points
+        *r = *r + 1;
+    }
+}
+
+
+static void SecondPoint3n(const f2elm_t a24, const f2elm_t As[][5], f2elm_t x, point_full_proj_t R, unsigned int *r, unsigned char ind, unsigned char *bitEll)
+{
+    bool b = false;
+    point_proj_t P;
+    felm_t zero = {0};
+
+    while (!b) {
+        *bitEll = 0;
+        Elligator2(a24, *r, x, bitEll, COMPRESSION);
+
+        fp2copy(x, P->X);
+        fpcopy((digit_t*)&Montgomery_one, (P->Z)[0]);
+        fpcopy(zero, (P->Z)[1]);
+        eval_full_dual_4_isog(As, P);    // Move x over to A = 0
+
+        b = SecondPoint_dual(P, R, ind);
+        *r = *r + 1;
+    }
+}
+
+
+static void makeDiff(const point_full_proj_t R, point_full_proj_t S, const point_proj_t D)
+{
+    f2elm_t t0, t1, t2;
+    unsigned long long nbytes = NBITS_TO_NBYTES(NBITS_FIELD);
+
+    fp2sub(R->X, S->X, t0);
+    fp2sub(R->Y, S->Y, t1);
+    fp2sqr_mont(t0, t0);
+    fp2sqr_mont(t1, t1);
+    fp2add(R->X, S->X, t2);
+    fp2mul_mont(t0, t2, t2);
+    fp2sub(t1, t2, t1);
+    fp2mul_mont(D->Z, t1, t1);
+    fp2mul_mont(D->X, t0, t0);
+    fp2correction(t0);
+    fp2correction(t1);
+    if (memcmp(t0[0], t1[0], (size_t)nbytes) == 0 && memcmp(t0[1], t1[1], (size_t)nbytes) == 0)
+        fp2neg(S->Y);
+}
+
+
+static void BiQuad_affine(const f2elm_t a24, const f2elm_t x0, const f2elm_t x1, point_proj_t R)
+{
+    f2elm_t Ap2, aa, bb, cc, t0, t1;
+
+    fp2add(a24, a24, Ap2);
+    fp2add(Ap2, Ap2, Ap2);    // Ap2 = a+2 = 4*a24
+
+    fp2sub(x0, x1, aa);
+    fp2sqr_mont(aa, aa);
+
+    fp2mul_mont(x0, x1, cc);
+    fpsub(cc[0], (digit_t*)Montgomery_one, cc[0]);
+    fp2sqr_mont(cc, cc);
+
+    fpsub(x0[0], (digit_t*)Montgomery_one, bb[0]);
+    fpcopy(x0[1], bb[1]);
+    fp2sqr_mont(bb, bb);
+    fp2mul_mont(Ap2, x0, t0);
+    fp2add(bb, t0, bb);
+    fp2mul_mont(x1, bb, bb);
+    fpsub(x1[0], (digit_t*)Montgomery_one, t0[0]);
+    fpcopy(x1[1], t0[1]);
+    fp2sqr_mont(t0, t0);
+    fp2mul_mont(Ap2, x1, t1);
+    fp2add(t0, t1, t0);
+    fp2mul_mont(x0, t0, t0);
+    fp2add(bb, t0, bb);
+    fp2add(bb, bb, bb);
+
+    fp2sqr_mont(bb, t0);
+    fp2mul_mont(aa, cc, t1);
+    fp2add(t1, t1, t1);
+    fp2add(t1, t1, t1);
+    fp2sub(t0, t1, t0);
+    sqrt_Fp2(t0, t0);
+    make_positive(t0);    // Make the sqrt "positive"
+    fp2add(bb, t0, R->X);
+    fp2add(aa, aa, R->Z);
+}
+
+
+static void BuildOrdinary3nBasis_dual(const f2elm_t a24, const f2elm_t As[][5], point_full_proj_t *R, unsigned int *r, unsigned int *bitsEll)
+{
+    point_proj_t D;
+    f2elm_t xs[2];
+    unsigned char ind, bit;
+
+    FirstPoint3n(a24, As, xs[0], R[0], r, &ind, &bit);
+    *bitsEll = (unsigned int)bit;
+    *(r+1) = *r;
+    SecondPoint3n(a24, As, xs[1], R[1], r+1, ind, &bit);
+    *bitsEll |= ((unsigned int)bit << 1);
+
+    // Get x-coordinate of difference
+    BiQuad_affine(a24, xs[0], xs[1], D);
+    eval_full_dual_4_isog(As, D);    // Move x over to A = 0
+    makeDiff(R[0], R[1], D);
+}
+
+
+static void BuildOrdinary3nBasis_Decomp_dual(const f2elm_t A24, point_proj_t *Rs, unsigned char *r, const unsigned char bitsEll)
+{
+    unsigned char bitEll[2];
     
-    // 1st basis point:
-    BasePoint3n(A,&r,P,Q);    
-    rs[0] = r;
+    bitEll[0] = bitsEll & 0x1;
+    bitEll[1] = (bitsEll >> 1) & 0x1;    
     
-    // 2nd basis point:
+    // Elligator2 both x-coordinates
+    Elligator2(A24, (unsigned int)r[0]-1, Rs[0]->X, &bitEll[0], DECOMPRESSION);
+    Elligator2(A24, (unsigned int)r[1]-1, Rs[1]->X, &bitEll[1], DECOMPRESSION);
+    // Get x-coordinate of difference
+    BiQuad_affine(A24, Rs[0]->X, Rs[1]->X, Rs[2]);
+}
+
+
+
+static void BuildEntangledXonly(const f2elm_t A, point_proj_t *R, unsigned char *qnr, unsigned char *ind)
+{
+    felm_t s;
+    f2elm_t *t_ptr, r, t;
+
+    // Select the correct table
+    if (is_sqr_fp2(A,  s)) {
+        t_ptr = (f2elm_t *)table_v_qnr; 
+        *qnr = 1;
+    } else {
+        t_ptr = (f2elm_t *)table_v_qr;
+        *qnr = 0;
+    }
+
+    // Get x0
+    *ind = 0;
     do {
-        BasePoint3n(A,&r,R,S);
-        fp2mul_mont(S->X,Q->Z,t2w1);
-        fp2mul_mont(Q->X,S->Z,t1w2);
-        fp2correction(t2w1);
-        fp2correction(t1w2);
-    } while (memcmp(t2w1[0],t1w2[0],NBITS_TO_NBYTES(NBITS_FIELD)) == 0 && memcmp(t2w1[1],t1w2[1],NBITS_TO_NBYTES(NBITS_FIELD)) == 0); // Pr[t2/w2 == t1/w1] = 1/4: E[loop length] = 4/3
-    rs[1] = r;
+        fp2mul_mont(A,  (felm_t *)*t_ptr++,  R[0]->X);    // R[0]->X =  A*v
+        fp2neg(R[0]->X);                                  // R[0]->X = -A*v
+        fp2add(R[0]->X,  A,  t);
+        fp2mul_mont(R[0]->X,  t,  t);
+        fpadd(t[0],  (digit_t*)Montgomery_one,  t[0]);
+        fp2mul_mont(R[0]->X,  t,  t);                     // t = R[0]->X^3 + A*R[0]->X^2 + R[0]->X
+        *ind += 1;
+    } while (!is_sqr_fp2(t,  s));
+    *ind -= 1;
 
-    // NB: ideally the following point completions could share one inversion at the cost of 3 products, but this is not implemented here.
-    CompleteMPoint(A,P,R1);    
-    CompleteMPoint(A,R,R2);      
+    if (*qnr)
+        fpcopy((digit_t*)table_r_qnr[*ind], r[0]);
+    else
+        fpcopy((digit_t*)table_r_qr[*ind], r[0]);
+
+    // Get x1
+    fp2add(R[0]->X, A, R[1]->X);
+    fp2neg(R[1]->X);    // R[1]->X = -R[0]->X-A
+
+    // Get difference x2,  z2
+    fp2sub(R[0]->X, R[1]->X, R[2]->Z);
+    fp2sqr_mont(R[2]->Z, R[2]->Z);
+
+    fpcopy(r[0], r[1]);    // (1+i)*ind
+    fpadd((digit_t*)Montgomery_one, r[0], r[0]);
+    fp2sqr_mont(r, r);
+    fp2mul_mont(t, r, R[2]->X);
 }
 
 
-static void BuildOrdinaryE3nBasis_decompression(f2elm_t A, point_full_proj_t R1, point_full_proj_t R2, const unsigned char r1, const unsigned char r2)
-{ // Generate a basis for the 3^eB torsion using shared information
-    point_proj_t P, R;
-    
-    // 1st basis point:
-    BasePoint3n_decompression(A,r1,P);
-    // 2nd basis point:
-    BasePoint3n_decompression(A,r2,R);
-    
-    // NB: ideally the following point completions could share one inversion at the cost of 3 products, but this is not implemented here.
-    CompleteMPoint(A,P,R1);    
-    CompleteMPoint(A,R,R2);   
+
+static void BuildOrdinary2nBasis_dual(const f2elm_t A, const f2elm_t Ds[][2], point_full_proj_t *Rs, unsigned char *qnr, unsigned char *ind)
+{
+    unsigned int i;
+    felm_t t0;
+    f2elm_t A6 = {0};
+    point_proj_t xs[3] = {0};
+
+    // Generate x-only entangled basis 
+    BuildEntangledXonly(A, xs, qnr, ind);
+    fpcopy((digit_t*)Montgomery_one, (xs[0]->Z)[0]);
+    fpcopy((digit_t*)Montgomery_one, (xs[1]->Z)[0]);
+
+    // Move them back to A = 6 
+    for(i = 0; i < MAX_Bob; i++) {
+        eval_3_isog(xs[0], Ds[MAX_Bob-1-i]);
+        eval_3_isog(xs[1], Ds[MAX_Bob-1-i]);
+        eval_3_isog(xs[2], Ds[MAX_Bob-1-i]);
+    }
+
+    // Recover y-coordinates with a single sqrt on A = 6
+    fpcopy((digit_t*)Montgomery_one, A6[0]);
+    fpadd(A6[0], A6[0], t0);
+    fpadd(t0, t0, A6[0]);
+    fpadd(A6[0], t0, A6[0]);
+
+    CompleteMPoint(A6, xs[0], Rs[0]);
+    RecoverY(A6, xs, Rs);
 }
- 
+
+
+
+static void BuildEntangledXonly_Decomp(const f2elm_t A, point_proj_t *R, unsigned char qnr, unsigned char ind)
+{
+    f2elm_t *t_ptr, r, t;
+    
+    // Select the correct table
+    if ( qnr == 1 )
+        t_ptr = (f2elm_t *)table_v_qnr; 
+    else
+        t_ptr = (f2elm_t *)table_v_qr;
+
+    if (ind >= TABLE_V_LEN/2)
+        ind = 0;
+    // Get x0     
+    fp2mul_mont(A, t_ptr[ind], R[0]->X);    // x1 =  A*v
+    fp2neg(R[0]->X);                        // R[0]->X = -A*v
+    fp2add(R[0]->X, A, t);
+    fp2mul_mont(R[0]->X, t, t);
+    fpadd(t[0], (digit_t*)Montgomery_one, t[0]);
+    fp2mul_mont(R[0]->X, t, t);             // t = R[0]->X^3 + A*R[0]->X^2 + R[0]->X
+
+    if (qnr == 1)
+        fpcopy((digit_t*)table_r_qnr[ind], r[0]);
+    else
+        fpcopy((digit_t*)table_r_qr[ind], r[0]);
+
+    // Get x1 
+    fp2add(R[0]->X, A, R[1]->X);
+    fp2neg(R[1]->X);    // R[1]->X = -R[0]->X-A
+
+    // Get difference x2,z2 
+    fp2sub(R[0]->X, R[1]->X, R[2]->Z);
+    fp2sqr_mont(R[2]->Z, R[2]->Z);
+
+    fpcopy(r[0],r[1]); // (1+i)*ind 
+    fpadd((digit_t*)Montgomery_one, r[0], r[0]);
+    fp2sqr_mont(r, r);
+    fp2mul_mont(t, r, R[2]->X);
+}
