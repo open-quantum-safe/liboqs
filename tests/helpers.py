@@ -17,34 +17,29 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
     Helper function to run a shell command and report success/failure
     depending on the exit status of the shell command.
     """
+    env_ = os.environ.copy()
     if env is not None:
-        env_ = os.environ.copy()
         env_.update(env)
-        env = env_
+    env = env_
 
     # Note we need to capture stdout/stderr from the subprocess,
     # then print it, which pytest will then capture and
     # buffer appropriately
     print(working_dir + " > " + " ".join(command))
-    proc = subprocess.Popen(
-        command,
-        stdin=subprocess.PIPE,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        cwd=working_dir,
-        env=env,
-    )
 
-    try:
-        out, _ = proc.communicate(input=input, timeout=480)
-    except subprocess.TimeoutExpired:
-        proc.kill()
-        out, _ = proc.communicate()
+    result = subprocess.run(
+            command,
+            input=input,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            cwd=working_dir,
+            env=env,
+        )
 
-    if not(ignore_returncode) and (proc.returncode != expected_returncode):
-        print(out.decode('utf-8'))
-        assert False, "Got unexpected return code {}".format(proc.returncode)
-    return out.decode('utf-8')
+    if not(ignore_returncode) and (result.returncode != expected_returncode):
+        print(result.stdout.decode('utf-8'))
+        assert False, "Got unexpected return code {}".format(result.returncode)
+    return result.stdout.decode('utf-8')
 
 def available_kems_by_name():
     available_names = []
