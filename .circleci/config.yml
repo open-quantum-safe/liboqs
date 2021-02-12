@@ -264,17 +264,19 @@ workflows:
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
-      - linux_x64:
-          <<: *require_buildcheck
-          name: centos-8
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
-      - linux_x64:
-          <<: *require_buildcheck
-          name: debian-buster
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
+      # Disabling centos-8 and debian-buster.
+      # Re-enable if specific configurations (package versions etc) that need to be tested are identified.
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: centos-8
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
+      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: debian-buster
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
       - linux_x64:
           <<: *require_buildcheck
           name: ubuntu-focal-noopenssl
