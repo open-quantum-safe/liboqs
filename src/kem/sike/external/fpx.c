@@ -1493,7 +1493,7 @@ int mod(int a, unsigned int b)
     unsigned int r; 
     if (b == 0) return 0; // avoid invalid operation
     r = a % b;
-    while (r < 0) r += b;
+    //    while (r < 0) r += b; OQS note: commented to avoid "always false" error
     return r;
 }
 
