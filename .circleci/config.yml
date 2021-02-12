@@ -298,6 +298,10 @@ workflows:
           <<: *require_buildcheck
           name: address-sanitizer
           context: openquantumsafe
+          filters:
+            branches:
+              only:
+                - /^audit.*/
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
           PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
