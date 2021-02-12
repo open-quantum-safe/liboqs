@@ -4,6 +4,17 @@ require_stylecheck: &require_stylecheck
   requires:
     - stylecheck
 
+require_buildcheck: &require_buildcheck
+  requires:
+    - stylecheck
+    - buildcheck
+
+require_testapproval: &require_testapproval
+  requires:
+    - stylecheck
+    - buildcheck
+    - testapproval
+
 # CircleCI doesn't handle large file sets properly for local builds
 # https://github.com/CircleCI-Public/circleci-cli/issues/281#issuecomment-472808051
 localCheckout: &localCheckout
@@ -234,55 +245,57 @@ workflows:
       - stylecheck
       - buildcheck:
           <<: *require_stylecheck
-          name: ubuntu-focal-buildcheck
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           KEM_NAME: kyber_768
           SIG_NAME: dilithium_3
+      - testapproval:
+          <<: *require_buildcheck
+          type: approval
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: alpine-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: alpine
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: centos-8
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: debian-buster
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: ubuntu-focal-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: ubuntu-focal-shared-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
           PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: ubuntu-focal-clang9
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: address-sanitizer
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
@@ -301,27 +314,27 @@ workflows:
       # SPHINCS exhausts memory on CircleCI servers
       # for these configurations.
       - arm_emulated:
-          <<: *require_stylecheck
+          <<: *require_testapproval
           name: arm64
           ARCH: arm64
           CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF
       - arm_emulated:
-          <<: *require_stylecheck
+          <<: *require_testapproval
           name: armhf
           ARCH: armhf
           CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF
       - arm_emulated:
-          <<: *require_stylecheck
+          <<: *require_testapproval
           name: armel
           ARCH: armel
           CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release  -DOQS_ENABLE_SIG_SPHINCS=OFF
 
       - macOS:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: macOS-noopenssl
           CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
       - macOS:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: macOS-shared
           CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON
 
