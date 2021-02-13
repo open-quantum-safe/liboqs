@@ -368,3 +368,42 @@ if(ARCH STREQUAL "x86_64" AND OQS_USE_AVX2_INSTRUCTIONS)
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256s_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_256s_simple" OFF)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
+
+if(OQS_MINIMAL_BUILD)
+  # Set every OQS_ENABLE_* variable =OFF unless it one of the following.
+  #  1. the switch for the default algorithm's family, e.g OQS_ENABLE_KEM_KYBER
+  #  2. the switch for the default algorithm, e.g. OQS_ENABLE_KEM_kyber_768.
+  #  3. the switch for platform-specific ("_aesni" or "_avx2") implementation of
+  #     the default algorithm, e.g. OQS_ENABLE_KEM_kyber_768_avx2.
+
+  string(REPLACE "OQS_KEM_alg_" "OQS_ENABLE_KEM_" default_kem_switch ${OQS_KEM_DEFAULT})
+  string(REPLACE "OQS_SIG_alg_" "OQS_ENABLE_SIG_" default_sig_switch ${OQS_SIG_DEFAULT})
+  string(TOUPPER ${default_kem_switch} default_kem_switch_upper) # The default kem's family is a prefix of this string.
+  string(TOUPPER ${default_sig_switch} default_sig_switch_upper)
+
+  get_cmake_property(_vars VARIABLES)
+  foreach (_var ${_vars})
+      if(_var MATCHES "^OQS_ENABLE_..._" AND NOT _var MATCHES "_AVAILABLE$")
+          set(${_var} OFF)
+          # Case 1, family name
+          if(${default_kem_switch_upper} MATCHES "^${_var}"
+          OR ${default_sig_switch_upper} MATCHES "^${_var}")
+              set(${_var} ON)
+          endif()
+          # Case 2, exact match
+          if(${_var}X STREQUAL ${default_kem_switch}X
+          OR ${_var}X STREQUAL ${default_sig_switch}X)
+              set(${_var} ON)
+          endif()
+          # Case 3, platform specific
+          string(REPLACE "_aesni" "" _var_base ${_var})
+          string(REPLACE "_avx2" "" _var_base ${_var_base})
+          if(${_var}_AVAILABLE)
+              if(${_var_base}X STREQUAL ${default_kem_switch}X
+              OR ${_var_base}X STREQUAL ${default_sig_switch}X)
+                  set(${_var} ON)
+              endif()
+          endif()
+      endif()
+  endforeach()
+endif()

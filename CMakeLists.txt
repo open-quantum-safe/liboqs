@@ -35,9 +35,14 @@ endif()
 if(WIN32)
     set(CMAKE_GENERATOR_CC cl)
 endif()
-include(.CMake/compiler_opts.cmake)
 
+option(OQS_PORTABLE_BUILD "Ensure the resulting library is portable. This implies having run-time checks for CPU extensions." ON)
+option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
+option(OQS_MINIMAL_BUILD  "Only build the default KEM and Signature schemes." OFF)
+
+include(.CMake/compiler_opts.cmake)
 include(.CMake/alg_support.cmake)
+
 if(OQS_USE_OPENSSL)
     if(NOT DEFINED OPENSSL_ROOT_DIR)
         if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
