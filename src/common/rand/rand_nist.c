@@ -33,7 +33,11 @@ static AES256_CTR_DRBG_struct DRBG_ctx;
 static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *Key, unsigned char *V);
 
 #ifdef OQS_USE_OPENSSL
+# if defined(_MSC_VER)
+__declspec(noreturn)
+# else
 __attribute__((noreturn))
+# endif
 static void handleErrors(void) {
 	ERR_print_errors_fp(stderr);
 	abort();
