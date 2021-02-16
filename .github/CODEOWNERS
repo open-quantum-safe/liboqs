@@ -1,0 +1,22 @@
+# https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
+
+* @dstebila @xvzcf
+/.circleci @jschanck @baentsch @xvzcf
+/.CMake @xvzcf
+/docs @dstebila
+/scripts @xvzcf
+/scripts/copy_from_upstream @baentsch @bhess @xvczf
+/src/common @dstebila
+/src/kem/bike @crockeea
+/src/kem/frodokem @dstebila
+/src/kem/kyber @jschanck
+/src/kem/ntru @jschanck
+/src/kem/sike @christianpaquin
+/src/oqsconfig.h.cmake @xvzcf
+/src/sig/dilithium @bhess
+/src/sig/picnic @christianpaquin
+/CONTRIBUTORS @dstebila
+/LICENSE.txt @dstebila
+/README.md @dstebila
+/RELEASE.md @dstebila
+CMakeLists.txt @xvzcf
