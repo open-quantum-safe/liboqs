@@ -13,6 +13,9 @@ environment:
   matrix:
     - BUILD_SHARED: OFF
       COMPILER: msvc2019
+    - BUILD_SHARED: OFF
+      COMPILER: msvc2019
+      OQS_USE_OPENSSL: ON
     - BUILD_SHARED: ON
       COMPILER: msvc2019
     - BUILD_SHARED: OFF
@@ -27,6 +30,9 @@ before_test:
   - cmd: |-
          SET "PATH=C:\Python37;C:\Python37\Scripts;%PATH%"
          pip.exe install pytest pytest-xdist
+  - cmd: |-
+         choco install openssl
+         SET "OPENSSL_ROOT_DIR=C:\Program Files\OpenSSL-Win64"
 
 test_script:
   - cmd: |-
