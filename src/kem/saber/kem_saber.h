@@ -16,6 +16,17 @@ OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_encaps(uint8_t *ciphertext, uint8_t 
 OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
 #endif
 
+#ifdef OQS_ENABLE_KEM_saber_halfdagger
+#define OQS_KEM_saber_halfdagger_length_public_key 896
+#define OQS_KEM_saber_halfdagger_length_secret_key 2208
+#define OQS_KEM_saber_halfdagger_length_ciphertext 960
+#define OQS_KEM_saber_halfdagger_length_shared_secret 32
+OQS_KEM *OQS_KEM_saber_halfdagger_new(void);
+OQS_API OQS_STATUS OQS_KEM_saber_halfdagger_keypair(uint8_t *public_key, uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_saber_halfdagger_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
+OQS_API OQS_STATUS OQS_KEM_saber_halfdagger_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+#endif
+
 #ifdef OQS_ENABLE_KEM_saber_saber
 #define OQS_KEM_saber_saber_length_public_key 992
 #define OQS_KEM_saber_saber_length_secret_key 2304
