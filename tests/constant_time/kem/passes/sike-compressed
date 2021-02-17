@@ -34,3 +34,20 @@
     ...
     fun:solve_dlog
 }
+{
+   Vartime binary gcd for inverse of final C24 is safe.
+   # Review: https://github.com/open-quantum-safe/liboqs/issues/888
+   Memcheck:Cond
+   ...
+   fun:fp2inv*_mont_bingcd
+   src:sidh_compressed.c:590 # fun:FullIsogeny_A_dual
+}
+
+{
+   Vartime binary gcd for inverse of final C24 is safe.
+   # Review: https://github.com/open-quantum-safe/liboqs/issues/888
+   Memcheck:Cond
+   ...
+   fun:fp2inv*_mont_bingcd
+   src:sidh_compressed.c:993 # fun:FullIsogeny_B_dual
+}
