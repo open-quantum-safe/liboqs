@@ -42,16 +42,15 @@ typedef __m256i V256;
 
 #if defined(KeccakP1600times4_useAVX2)
 #define ANDnu256(a, b) _mm256_andnot_si256(a, b)
-#define CONST256(a) _mm256_load_si256((const V256 *) &(a))
-#define CONST256_64(a) _mm256_castpd_si256(_mm256_broadcast_sd((const double *) (&a)))
+#define CONST256_64(a) _mm256_set1_epi64x((long long) (a))
 #define LOAD256(a) _mm256_load_si256((const V256 *) &(a))
 #define LOAD256u(a) _mm256_loadu_si256((const V256 *) &(a))
 #define LOAD4_64(a, b, c, d) _mm256_set_epi64x((UINT64)(a), (UINT64)(b), (UINT64)(c), (UINT64)(d))
 #define ROL64in256(d, a, o) d = _mm256_or_si256(_mm256_slli_epi64(a, o), _mm256_srli_epi64(a, 64 - (o)))
-#define ROL64in256_8(d, a) d = _mm256_shuffle_epi8(a, CONST256(rho8))
-#define ROL64in256_56(d, a) d = _mm256_shuffle_epi8(a, CONST256(rho56))
-static const UINT64 rho8[4] = {0x0605040302010007, 0x0E0D0C0B0A09080F, 0x1615141312111017, 0x1E1D1C1B1A19181F};
-static const UINT64 rho56[4] = {0x0007060504030201, 0x080F0E0D0C0B0A09, 0x1017161514131211, 0x181F1E1D1C1B1A19};
+#define ROL64in256_8(d, a) d = _mm256_shuffle_epi8(a, rho8.v)
+#define ROL64in256_56(d, a) d = _mm256_shuffle_epi8(a, rho56.v)
+static const union { UINT64 i[4]; V256 v; } rho8 = {{0x0605040302010007, 0x0E0D0C0B0A09080F, 0x1615141312111017, 0x1E1D1C1B1A19181F}};
+static const union { UINT64 i[4]; V256 v; } rho56 = {{0x0007060504030201, 0x080F0E0D0C0B0A09, 0x1017161514131211, 0x181F1E1D1C1B1A19}};
 #define STORE256(a, b) _mm256_store_si256((V256 *) &(a), b)
 #define STORE256u(a, b) _mm256_storeu_si256((V256 *) &(a), b)
 #define STORE2_128(ah, al, v) _mm256_storeu2_m128d((V128 *) &(ah), (V128 *) &(al), v)
