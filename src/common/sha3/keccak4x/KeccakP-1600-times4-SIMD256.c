@@ -53,13 +53,13 @@ static const union { UINT64 i[4]; V256 v; } rho8 = {{0x0605040302010007, 0x0E0D0
 static const union { UINT64 i[4]; V256 v; } rho56 = {{0x0007060504030201, 0x080F0E0D0C0B0A09, 0x1017161514131211, 0x181F1E1D1C1B1A19}};
 #define STORE256(a, b) _mm256_store_si256((V256 *) &(a), b)
 #define STORE256u(a, b) _mm256_storeu_si256((V256 *) &(a), b)
-#define STORE2_128(ah, al, v) _mm256_storeu2_m128d((V128 *) &(ah), (V128 *) &(al), v)
+#define STORE2_128(ah, al, v) _mm256_storeu2_m128i((V128 *) &(ah), (V128 *) &(al), v)
 #define XOR256(a, b) _mm256_xor_si256(a, b)
 #define XOReq256(a, b) a = _mm256_xor_si256(a, b)
 #define UNPACKL(a, b) _mm256_unpacklo_epi64((a), (b))
 #define UNPACKH(a, b) _mm256_unpackhi_epi64((a), (b))
-#define PERM128(a, b, c) (V256) _mm256_permute2f128_ps((__m256)(a), (__m256)(b), c)
-#define SHUFFLE64(a, b, c) (V256) _mm256_shuffle_pd((__m256d)(a), (__m256d)(b), c)
+#define PERM128(a, b, c) _mm256_permute2f128_si256((a), (b), c)
+#define SHUFFLE64(a, b, c) _mm256_castpd_si256(_mm256_shuffle_pd(_mm256_castsi256_pd(a), _mm256_castsi256_pd(b), c))
 
 #define UNINTLEAVE() lanesL01 = UNPACKL(lanes0, lanes1),         \
                      lanesH01 = UNPACKH(lanes0, lanes1),         \
