@@ -22,7 +22,7 @@ static void init_basis(digit_t *gen, f2elm_t XP, f2elm_t XQ, f2elm_t XR)
 }
 
 
-void FormatPrivKey_B(unsigned char *skB) 
+static void FormatPrivKey_B(unsigned char *skB) 
 {
     skB[SECRETKEY_B_BYTES-2] &= MASK3_BOB;
     skB[SECRETKEY_B_BYTES-1] &= MASK2_BOB;    // Clear necessary bits so that 3*ephemeralsk is still less than Bob_order
@@ -737,7 +737,7 @@ int EphemeralSecretAgreement_A(const unsigned char* PrivateKeyA, const unsigned 
 }
 
 
-int8_t validate_ciphertext(const unsigned char* ephemeralsk_, const unsigned char* CompressedPKB, const unsigned char* xKA, const unsigned char* tphiBKA_t)
+static int8_t validate_ciphertext(const unsigned char* ephemeralsk_, const unsigned char* CompressedPKB, const unsigned char* xKA, const unsigned char* tphiBKA_t)
 { // If ct validation passes returns 0, otherwise returns -1.
     point_proj_t phis[3] = {0}, R, S, pts[MAX_INT_POINTS_BOB];
     f2elm_t XPB, XQB, XRB, coeff[3], A24plus = {0}, A24minus = {0}, A = {0}, comp1 = {0}, comp2 = {0}, one = {0};

@@ -46,7 +46,7 @@ static void final_exponentiation_3_torsion(f2elm_t f, const f2elm_t finv, f2elm_
 }
 
 
-void Tate3_pairings(point_full_proj_t *Qj, f2elm_t* f)
+static void Tate3_pairings(point_full_proj_t *Qj, f2elm_t* f)
 {
     felm_t *x, *y, *l1, *l2, *n1, *n2, *x2, *x23, *x2p3;
     f2elm_t xQ2s[t_points], finv[2*t_points], one = {0};
@@ -153,7 +153,7 @@ void Tate3_pairings(point_full_proj_t *Qj, f2elm_t* f)
 }
 
 
-void Tate2_pairings(const point_t P, const point_t Q, point_full_proj_t *Qj, f2elm_t* f)
+static void Tate2_pairings(const point_t P, const point_t Q, point_full_proj_t *Qj, f2elm_t* f)
 {
     felm_t *x, *y, *x_, *y_, *l1;
     f2elm_t finv[2*t_points], one = {0};
