@@ -309,7 +309,7 @@ workflows:
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
           PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: constant-time-portable
           filters:
             branches:
@@ -320,7 +320,7 @@ workflows:
           CMAKE_ARGS: -DOQS_PORTABLE_BUILD=ON -DOQS_USE_CPU_EXTENSIONS=OFF -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
           PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       - linux_x64:
-          <<: *require_stylecheck
+          <<: *require_buildcheck
           name: constant-time-x64-extensions
           filters:
             branches:
