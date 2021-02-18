@@ -158,10 +158,12 @@ static const uint64_t Montgomery_one[NWORDS64_FIELD] = {0x00000000670CC8E6, 0x00
                                                         0x4D99C2BD28717A3F, 0x0A4A1839A323D41C, 0xD2B62215D06AD1E2, 0x1369026E862CAF3D, 0x000000010894E964
                                                        };
 
+/* OQS note: unused
 // 1/3 mod p
 static const uint64_t threeinv[NWORDS64_FIELD] = {
 	0x5555555577AEEDA2, 0x5555555555555555, 0x5555555555555555, 0x5555555555555555, 0xDE11555555555555, 0xC488963F0D7B28BF, 0xAE18B2BDE10BF15E, 0x463CB6074578F0A0, 0x5BCDAB7A2CB98FBF, 0x5831A321
 };
+*/
 
 // Fixed parameters for isogeny tree computation
 static const unsigned int strat_Alice[MAX_Alice - 1] = {
@@ -176,7 +178,7 @@ static const unsigned int strat_Bob[MAX_Bob - 1] = {
 
 static const unsigned int ph2_path[PLEN_2] = { // w_2 = 5
 #ifdef COMPRESSED_TABLES
-  #ifdef ELL2_FULL_SIGNED
+  #ifdef ELL2_TORUS
     #if (W_2 == 5)
       0, 0, 1, 2, 3, 4, 4, 5, 5, 6, 7, 7, 8, 9, 10, 10, 11, 12, 13, 13, 14, 14, 15, 16, 17, 18, 18, 18, 19, 20, 20, 21, 22, 23, 24, 25, 25, 25, 25, 26, 27, 28, 29, 29, 30, 31, 32, 33, 34, 35, 35, 35, 35, 35, 36, 37, 38, 39, 40, 41, 41, 42
     #endif
@@ -203,6 +205,7 @@ static const unsigned int ph3_path[PLEN_3] = {
 // For the 3^eB-torsion basis generation:
 //      A table of size 20 for values v = 1/(1+U*r^2) where U = 4+i
 
+/* OQS note: unused
 static const uint64_t u_entang[2 * NWORDS64_FIELD] = {
 	0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xCE1991CC, 0x0, 0x0, 0x0, 0x3468000000000000, 0x9B33857A50E2F47F, 0x149430734647A838, 0xA56C442BA0D5A3C4, 0x26D204DD0C595E7B, 0x21129D2C8
 };
@@ -211,6 +214,7 @@ static const uint64_t u0_entang[2 * NWORDS64_FIELD] = {
 	0x670CC8E6, 0x0, 0x0, 0x0, 0x9A34000000000000, 0x4D99C2BD28717A3F, 0xA4A1839A323D41C, 0xD2B62215D06AD1E2, 0x1369026E862CAF3D, 0x10894E964, 0x670CC8E6, 0x0, 0x0, 0x0, 0x9A34000000000000,
 	0x4D99C2BD28717A3F, 0xA4A1839A323D41C, 0xD2B62215D06AD1E2, 0x1369026E862CAF3D, 0x10894E964
 };
+*/
 
 // Tables for quadratic residues and quadratic non residues v with 17 elements each.
 

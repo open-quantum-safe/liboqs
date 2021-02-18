@@ -70,7 +70,7 @@ static void mont_n_way_inv(const f2elm_t* vec, const int n, f2elm_t* out);
 static void j_inv(const f2elm_t A, const f2elm_t C, f2elm_t jinv);
 
 // Simultaneous doubling and differential addition.
-static void xDBLADD(point_proj_t P, point_proj_t Q, const f2elm_t xPQ, const f2elm_t A24);
+static void xDBLADD(point_proj_t P, point_proj_t Q, const f2elm_t XPQ, const f2elm_t ZPQ, const f2elm_t A24);
 
 // Doubling of a Montgomery point in projective coordinates (X:Z).
 static void xDBL(const point_proj_t P, point_proj_t Q, const f2elm_t A24plus, const f2elm_t C24);
