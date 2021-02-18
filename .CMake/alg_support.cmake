@@ -9,6 +9,7 @@ if(NOT DEFINED OQS_SIG_DEFAULT)
     set(OQS_SIG_DEFAULT "OQS_SIG_alg_dilithium_2")
 endif()
 
+# Only enable OpenSSL by default on not-Windows
 if(NOT WIN32)
     option(OQS_USE_OPENSSL "Enable OpenSSL usage" ON)
 else()
@@ -18,7 +19,8 @@ cmake_dependent_option(OQS_USE_AES_OPENSSL "" ON "OQS_USE_OPENSSL" OFF)
 cmake_dependent_option(OQS_USE_SHA2_OPENSSL "" ON "OQS_USE_OPENSSL" OFF)
 cmake_dependent_option(OQS_USE_SHA3_OPENSSL "" ON "OQS_USE_OPENSSL" OFF)
 
-option(OQS_ENABLE_KEM_BIKE "" ON)
+# BIKE is not supported on Windows
+cmake_dependent_option(OQS_ENABLE_KEM_BIKE "" ON "NOT WIN32" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_bike1_l1_cpa "" ON "OQS_ENABLE_KEM_BIKE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_bike1_l1_fo "" ON "OQS_ENABLE_KEM_BIKE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_bike1_l3_cpa "" ON "OQS_ENABLE_KEM_BIKE" OFF)
