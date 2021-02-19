@@ -83,25 +83,6 @@ void poly_caddq(poly *a) {
 }
 
 /*************************************************
-* Name:        poly_freeze
-*
-* Description: Inplace reduction of all coefficients of polynomial to
-*              positive standard representatives. Assumes input
-*              coefficients to be at most 2^31 - 2^22 + 1 in
-*              absolute value.
-*
-* Arguments:   - poly *a: pointer to input/output polynomial
-**************************************************/
-void poly_freeze(poly *a) {
-  DBENCH_START();
-
-  poly_reduce(a);
-  poly_caddq(a);
-
-  DBENCH_STOP(*tred);
-}
-
-/*************************************************
 * Name:        poly_add
 *
 * Description: Add polynomials. No modular reduction is performed.
@@ -532,27 +513,27 @@ static unsigned int rej_eta(int32_t *a,
 *              or AES256CTR(seed,nonce).
 *
 * Arguments:   - poly *a: pointer to output polynomial
-*              - const uint8_t seed[]: byte array with seed of length  SEEDBYTES
+*              - const uint8_t seed[]: byte array with seed of length CRHBYTES
 *              - uint16_t nonce: 2-byte nonce
 **************************************************/
-void poly_uniform_eta_preinit(poly *a, stream128_state *state)
+void poly_uniform_eta_preinit(poly *a, stream256_state *state)
 {
   unsigned int ctr;
-  ALIGNED_UINT8(REJ_UNIFORM_BUFLEN*STREAM128_BLOCKBYTES) buf;
+  ALIGNED_UINT8(REJ_UNIFORM_ETA_BUFLEN) buf;
 
-  stream128_squeezeblocks(buf.coeffs, REJ_UNIFORM_ETA_NBLOCKS, state);
+  stream256_squeezeblocks(buf.coeffs, REJ_UNIFORM_ETA_NBLOCKS, state);
   ctr = rej_eta_avx(a->coeffs, buf.coeffs);
 
   while(ctr < N) {
-    stream128_squeezeblocks(buf.coeffs, 1, state);
-    ctr += rej_eta(a->coeffs + ctr, N - ctr, buf.coeffs, STREAM128_BLOCKBYTES);
+    stream256_squeezeblocks(buf.coeffs, 1, state);
+    ctr += rej_eta(a->coeffs + ctr, N - ctr, buf.coeffs, STREAM256_BLOCKBYTES);
   }
 }
 
-void poly_uniform_eta(poly *a, const uint8_t seed[SEEDBYTES], uint16_t nonce)
+void poly_uniform_eta(poly *a, const uint8_t seed[CRHBYTES], uint16_t nonce)
 {
-  stream128_state state;
-  stream128_init(&state, seed, nonce);
+  stream256_state state;
+  stream256_init(&state, seed, nonce);
   poly_uniform_eta_preinit(a, &state);
 }
 
@@ -561,7 +542,7 @@ void poly_uniform_eta_4x(poly *a0,
                          poly *a1,
                          poly *a2,
                          poly *a3,
-                         const uint8_t seed[32],
+                         const uint8_t seed[64],
                          uint16_t nonce0,
                          uint16_t nonce1,
                          uint16_t nonce2,
@@ -573,23 +554,28 @@ void poly_uniform_eta_4x(poly *a0,
   __m256i f;
   keccakx4_state state;
 
-  f = _mm256_loadu_si256((__m256i *)seed);
-  _mm256_store_si256(buf[0].vec,f);
-  _mm256_store_si256(buf[1].vec,f);
-  _mm256_store_si256(buf[2].vec,f);
-  _mm256_store_si256(buf[3].vec,f);
+  f = _mm256_loadu_si256((__m256i *)&seed[0]);
+  _mm256_store_si256(&buf[0].vec[0],f);
+  _mm256_store_si256(&buf[1].vec[0],f);
+  _mm256_store_si256(&buf[2].vec[0],f);
+  _mm256_store_si256(&buf[3].vec[0],f);
+  f = _mm256_loadu_si256((__m256i *)&seed[32]);
+  _mm256_store_si256(&buf[0].vec[1],f);
+  _mm256_store_si256(&buf[1].vec[1],f);
+  _mm256_store_si256(&buf[2].vec[1],f);
+  _mm256_store_si256(&buf[3].vec[1],f);
 
-  buf[0].coeffs[SEEDBYTES+0] = nonce0;
-  buf[0].coeffs[SEEDBYTES+1] = nonce0 >> 8;
-  buf[1].coeffs[SEEDBYTES+0] = nonce1;
-  buf[1].coeffs[SEEDBYTES+1] = nonce1 >> 8;
-  buf[2].coeffs[SEEDBYTES+0] = nonce2;
-  buf[2].coeffs[SEEDBYTES+1] = nonce2 >> 8;
-  buf[3].coeffs[SEEDBYTES+0] = nonce3;
-  buf[3].coeffs[SEEDBYTES+1] = nonce3 >> 8;
+  buf[0].coeffs[64] = nonce0;
+  buf[0].coeffs[65] = nonce0 >> 8;
+  buf[1].coeffs[64] = nonce1;
+  buf[1].coeffs[65] = nonce1 >> 8;
+  buf[2].coeffs[64] = nonce2;
+  buf[2].coeffs[65] = nonce2 >> 8;
+  buf[3].coeffs[64] = nonce3;
+  buf[3].coeffs[65] = nonce3 >> 8;
 
-  shake128x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, SEEDBYTES + 2);
-  shake128x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, REJ_UNIFORM_ETA_NBLOCKS, &state);
+  shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 66);
+  shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, REJ_UNIFORM_ETA_NBLOCKS, &state);
 
   ctr0 = rej_eta_avx(a0->coeffs, buf[0].coeffs);
   ctr1 = rej_eta_avx(a1->coeffs, buf[1].coeffs);
@@ -597,12 +583,12 @@ void poly_uniform_eta_4x(poly *a0,
   ctr3 = rej_eta_avx(a3->coeffs, buf[3].coeffs);
 
   while(ctr0 < N || ctr1 < N || ctr2 < N || ctr3 < N) {
-    shake128x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 1, &state);
+    shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 1, &state);
 
-    ctr0 += rej_eta(a0->coeffs + ctr0, N - ctr0, buf[0].coeffs, SHAKE128_RATE);
-    ctr1 += rej_eta(a1->coeffs + ctr1, N - ctr1, buf[1].coeffs, SHAKE128_RATE);
-    ctr2 += rej_eta(a2->coeffs + ctr2, N - ctr2, buf[2].coeffs, SHAKE128_RATE);
-    ctr3 += rej_eta(a3->coeffs + ctr3, N - ctr3, buf[3].coeffs, SHAKE128_RATE);
+    ctr0 += rej_eta(a0->coeffs + ctr0, N - ctr0, buf[0].coeffs, SHAKE256_RATE);
+    ctr1 += rej_eta(a1->coeffs + ctr1, N - ctr1, buf[1].coeffs, SHAKE256_RATE);
+    ctr2 += rej_eta(a2->coeffs + ctr2, N - ctr2, buf[2].coeffs, SHAKE256_RATE);
+    ctr3 += rej_eta(a3->coeffs + ctr3, N - ctr3, buf[3].coeffs, SHAKE256_RATE);
   }
 }
 #endif
@@ -639,7 +625,7 @@ void poly_uniform_gamma1_4x(poly *a0,
                             poly *a1,
                             poly *a2,
                             poly *a3,
-                            const uint8_t seed[48],
+                            const uint8_t seed[64],
                             uint16_t nonce0,
                             uint16_t nonce1,
                             uint16_t nonce2,
@@ -648,29 +634,28 @@ void poly_uniform_gamma1_4x(poly *a0,
   ALIGNED_UINT8(POLY_UNIFORM_GAMMA1_NBLOCKS*STREAM256_BLOCKBYTES+14) buf[4];
   keccakx4_state state;
   __m256i f;
-  __m128i g;
 
-  f = _mm256_loadu_si256((__m256i *)seed);
-  _mm256_store_si256(buf[0].vec,f);
-  _mm256_store_si256(buf[1].vec,f);
-  _mm256_store_si256(buf[2].vec,f);
-  _mm256_store_si256(buf[3].vec,f);
-  g = _mm_loadu_si128((__m128i *)&seed[32]);
-  _mm_store_si128((__m128i *)&buf[0].vec[1],g);
-  _mm_store_si128((__m128i *)&buf[1].vec[1],g);
-  _mm_store_si128((__m128i *)&buf[2].vec[1],g);
-  _mm_store_si128((__m128i *)&buf[3].vec[1],g);
+  f = _mm256_loadu_si256((__m256i *)&seed[0]);
+  _mm256_store_si256(&buf[0].vec[0],f);
+  _mm256_store_si256(&buf[1].vec[0],f);
+  _mm256_store_si256(&buf[2].vec[0],f);
+  _mm256_store_si256(&buf[3].vec[0],f);
+  f = _mm256_loadu_si256((__m256i *)&seed[32]);
+  _mm256_store_si256(&buf[0].vec[1],f);
+  _mm256_store_si256(&buf[1].vec[1],f);
+  _mm256_store_si256(&buf[2].vec[1],f);
+  _mm256_store_si256(&buf[3].vec[1],f);
 
-  buf[0].coeffs[CRHBYTES + 0] = nonce0;
-  buf[0].coeffs[CRHBYTES + 1] = nonce0 >> 8;
-  buf[1].coeffs[CRHBYTES + 0] = nonce1;
-  buf[1].coeffs[CRHBYTES + 1] = nonce1 >> 8;
-  buf[2].coeffs[CRHBYTES + 0] = nonce2;
-  buf[2].coeffs[CRHBYTES + 1] = nonce2 >> 8;
-  buf[3].coeffs[CRHBYTES + 0] = nonce3;
-  buf[3].coeffs[CRHBYTES + 1] = nonce3 >> 8;
+  buf[0].coeffs[64] = nonce0;
+  buf[0].coeffs[65] = nonce0 >> 8;
+  buf[1].coeffs[64] = nonce1;
+  buf[1].coeffs[65] = nonce1 >> 8;
+  buf[2].coeffs[64] = nonce2;
+  buf[2].coeffs[65] = nonce2 >> 8;
+  buf[3].coeffs[64] = nonce3;
+  buf[3].coeffs[65] = nonce3 >> 8;
 
-  shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, CRHBYTES + 2);
+  shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 66);
   shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, POLY_UNIFORM_GAMMA1_NBLOCKS, &state);
 
   polyz_unpack(a0, buf[0].coeffs);

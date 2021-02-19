@@ -18,9 +18,9 @@ upstreams:
     kem_scheme_path: '.'
   -
     name: pqcrystals-dilithium
-    git_url: https://github.com/pq-crystals/dilithium.git
+    git_url: https://github.com/bhess/dilithium.git
     git_branch: master
-    git_commit: 71c1e9e912a6eb9bc7a40c9892aa4a382c968ead
+    git_commit: cafa870d9bf8a4e26b73c4c3fd3df253413dcb05
     sig_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     sig_scheme_path: '.'

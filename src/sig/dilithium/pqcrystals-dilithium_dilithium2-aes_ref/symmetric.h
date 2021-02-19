@@ -20,7 +20,6 @@ void dilithium_aes256ctr_init(aes256ctr_ctx *state,
 #define STREAM128_BLOCKBYTES AES256CTR_BLOCKBYTES
 #define STREAM256_BLOCKBYTES AES256CTR_BLOCKBYTES
 
-#define crh(OUT, IN, INBYTES) shake256(OUT, CRHBYTES, IN, INBYTES)
 #define stream128_init(STATE, SEED, NONCE) \
         dilithium_aes256ctr_init(STATE, SEED, NONCE)
 #define stream128_squeezeblocks(OUT, OUTBLOCKS, STATE) \
@@ -50,7 +49,6 @@ void dilithium_shake256_stream_init(keccak_state *state,
 #define STREAM128_BLOCKBYTES SHAKE128_RATE
 #define STREAM256_BLOCKBYTES SHAKE256_RATE
 
-#define crh(OUT, IN, INBYTES) shake256(OUT, CRHBYTES, IN, INBYTES)
 #define stream128_init(STATE, SEED, NONCE) \
         dilithium_shake128_stream_init(STATE, SEED, NONCE)
 #define stream128_squeezeblocks(OUT, OUTBLOCKS, STATE) \

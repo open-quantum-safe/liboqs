@@ -11,7 +11,7 @@ void pack_pk(uint8_t pk[CRYPTO_PUBLICKEYBYTES], const uint8_t rho[SEEDBYTES], co
 #define pack_sk DILITHIUM_NAMESPACE(pack_sk)
 void pack_sk(uint8_t sk[CRYPTO_SECRETKEYBYTES],
              const uint8_t rho[SEEDBYTES],
-             const uint8_t tr[CRHBYTES],
+             const uint8_t tr[SEEDBYTES],
              const uint8_t key[SEEDBYTES],
              const polyveck *t0,
              const polyvecl *s1,
@@ -25,7 +25,7 @@ void unpack_pk(uint8_t rho[SEEDBYTES], polyveck *t1, const uint8_t pk[CRYPTO_PUB
 
 #define unpack_sk DILITHIUM_NAMESPACE(unpack_sk)
 void unpack_sk(uint8_t rho[SEEDBYTES],
-               uint8_t tr[CRHBYTES],
+               uint8_t tr[SEEDBYTES],
                uint8_t key[SEEDBYTES],
                polyveck *t0,
                polyvecl *s1,

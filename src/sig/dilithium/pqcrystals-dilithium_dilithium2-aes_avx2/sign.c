@@ -70,7 +70,7 @@ static inline void polyvec_matrix_expand_row(polyvecl **row, polyvecl buf[2], co
 **************************************************/
 int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
   unsigned int i;
-  uint8_t seedbuf[3*SEEDBYTES];
+  uint8_t seedbuf[2*SEEDBYTES + CRHBYTES];
   const uint8_t *rho, *rhoprime, *key;
 #ifdef DILITHIUM_USE_AES
   uint64_t nonce;
@@ -85,10 +85,10 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 
   /* Get randomness for rho, rhoprime and key */
   randombytes(seedbuf, SEEDBYTES);
-  shake256(seedbuf, 3*SEEDBYTES, seedbuf, SEEDBYTES);
+  shake256(seedbuf, 2*SEEDBYTES + CRHBYTES, seedbuf, SEEDBYTES);
   rho = seedbuf;
-  rhoprime = seedbuf + SEEDBYTES;
-  key = seedbuf + 2*SEEDBYTES;
+  rhoprime = rho + SEEDBYTES;
+  key = rhoprime + CRHBYTES;
 
   /* Store rho, key */
   memcpy(pk, rho, SEEDBYTES);
@@ -126,9 +126,9 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 
   /* Pack secret vectors */
   for(i = 0; i < L; i++)
-    polyeta_pack(sk + 2*SEEDBYTES + CRHBYTES + i*POLYETA_PACKEDBYTES, &s1.vec[i]);
+    polyeta_pack(sk + 3*SEEDBYTES + i*POLYETA_PACKEDBYTES, &s1.vec[i]);
   for(i = 0; i < K; i++)
-    polyeta_pack(sk + 2*SEEDBYTES + CRHBYTES + (L + i)*POLYETA_PACKEDBYTES, &s2.vec[i]);
+    polyeta_pack(sk + 3*SEEDBYTES + (L + i)*POLYETA_PACKEDBYTES, &s2.vec[i]);
 
   /* Transform s1 */
   polyvecl_ntt(&s1);
@@ -161,11 +161,11 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     poly_caddq(&t1);
     poly_power2round(&t1, &t0, &t1);
     polyt1_pack(pk + SEEDBYTES + i*POLYT1_PACKEDBYTES, &t1);
-    polyt0_pack(sk + 2*SEEDBYTES + CRHBYTES + (L+K)*POLYETA_PACKEDBYTES + i*POLYT0_PACKEDBYTES, &t0);
+    polyt0_pack(sk + 3*SEEDBYTES + (L+K)*POLYETA_PACKEDBYTES + i*POLYT0_PACKEDBYTES, &t0);
   }
 
-  /* Compute CRH(rho, t1) and store in secret key */
-  crh(sk + 2*SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
+  /* Compute H(rho, t1) and store in secret key */
+  shake256(sk + 2*SEEDBYTES, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
 
   return 0;
 }
@@ -185,7 +185,7 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 **************************************************/
 int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t mlen, const uint8_t *sk) {
   unsigned int i, n, pos;
-  uint8_t seedbuf[2*SEEDBYTES + 3*CRHBYTES];
+  uint8_t seedbuf[3*SEEDBYTES + 2*CRHBYTES];
   uint8_t *rho, *tr, *key, *mu, *rhoprime;
   uint8_t hintbuf[N];
   uint8_t *hint = sig + SEEDBYTES + L*POLYZ_PACKEDBYTES;
@@ -201,14 +201,14 @@ int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t
 
   rho = seedbuf;
   tr = rho + SEEDBYTES;
-  key = tr + CRHBYTES;
+  key = tr + SEEDBYTES;
   mu = key + SEEDBYTES;
   rhoprime = mu + CRHBYTES;
   unpack_sk(rho, tr, key, &t0, &s1, &s2, sk);
 
   /* Compute CRH(tr, msg) */
   shake256_init(&state);
-  shake256_absorb(&state, tr, CRHBYTES);
+  shake256_absorb(&state, tr, SEEDBYTES);
   shake256_absorb(&state, m, mlen);
   shake256_finalize(&state);
   shake256_squeeze(mu, CRHBYTES, &state);
@@ -216,7 +216,7 @@ int crypto_sign_signature(uint8_t *sig, size_t *siglen, const uint8_t *m, size_t
 #ifdef DILITHIUM_RANDOMIZED_SIGNING
   randombytes(rhoprime, CRHBYTES);
 #else
-  crh(rhoprime, key, SEEDBYTES + CRHBYTES);
+  shake256(rhoprime, CRHBYTES, key, SEEDBYTES + CRHBYTES);
 #endif
 
   /* Expand matrix and transform vectors */
@@ -385,10 +385,10 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
   if(siglen != CRYPTO_BYTES)
     return -1;
 
-  /* Compute CRH(CRH(rho, t1), msg) */
-  crh(mu, pk, CRYPTO_PUBLICKEYBYTES);
+  /* Compute CRH(H(rho, t1), msg) */
+  shake256(mu, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
   shake256_init(&state);
-  shake256_absorb(&state, mu, CRHBYTES);
+  shake256_absorb(&state, mu, SEEDBYTES);
   shake256_absorb(&state, m, mlen);
   shake256_finalize(&state);
   shake256_squeeze(mu, CRHBYTES, &state);

@@ -64,7 +64,7 @@ void unpack_pk(uint8_t rho[SEEDBYTES],
 **************************************************/
 void pack_sk(uint8_t sk[CRYPTO_SECRETKEYBYTES],
              const uint8_t rho[SEEDBYTES],
-             const uint8_t tr[CRHBYTES],
+             const uint8_t tr[SEEDBYTES],
              const uint8_t key[SEEDBYTES],
              const polyveck *t0,
              const polyvecl *s1,
@@ -80,9 +80,9 @@ void pack_sk(uint8_t sk[CRYPTO_SECRETKEYBYTES],
     sk[i] = key[i];
   sk += SEEDBYTES;
 
-  for(i = 0; i < CRHBYTES; ++i)
+  for(i = 0; i < SEEDBYTES; ++i)
     sk[i] = tr[i];
-  sk += CRHBYTES;
+  sk += SEEDBYTES;
 
   for(i = 0; i < L; ++i)
     polyeta_pack(sk + i*POLYETA_PACKEDBYTES, &s1->vec[i]);
@@ -110,7 +110,7 @@ void pack_sk(uint8_t sk[CRYPTO_SECRETKEYBYTES],
 *              - uint8_t sk[]: byte array containing bit-packed sk
 **************************************************/
 void unpack_sk(uint8_t rho[SEEDBYTES],
-               uint8_t tr[CRHBYTES],
+               uint8_t tr[SEEDBYTES],
                uint8_t key[SEEDBYTES],
                polyveck *t0,
                polyvecl *s1,
@@ -127,9 +127,9 @@ void unpack_sk(uint8_t rho[SEEDBYTES],
     key[i] = sk[i];
   sk += SEEDBYTES;
 
-  for(i = 0; i < CRHBYTES; ++i)
+  for(i = 0; i < SEEDBYTES; ++i)
     tr[i] = sk[i];
-  sk += CRHBYTES;
+  sk += SEEDBYTES;
 
   for(i=0; i < L; ++i)
     polyeta_unpack(&s1->vec[i], sk + i*POLYETA_PACKEDBYTES);
