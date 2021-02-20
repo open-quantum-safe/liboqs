@@ -28,20 +28,11 @@ else()
     set(SHA2_IMPL sha2/sha2_c.c)
 endif()
 
-set(SHA3_IMPL sha3/sha3_c.c sha3/sha3x4.c)
 if(OQS_USE_SHA3_OPENSSL)
-    set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3_ossl.c)
-endif()
-
-if(OQS_USE_AVX2_INSTRUCTIONS)
-if(OQS_PORTABLE_BUILD)
-    add_library(sha3x4_avx2 OBJECT sha3/sha3x4_avx2.c)
-    target_compile_options(sha3x4_avx2 PRIVATE -mavx2)
-    set(_COMMON_OBJS $<TARGET_OBJECTS:sha3x4_avx2>)
-else()
-    set(SHA3_IMPL ${SHA3_IMPL} sha3/sha3x4_avx2.c)
-    add_compile_options(-mavx2)
-endif()
+    set(SHA3_IMPL sha3/ossl_sha3.c sha3/ossl_sha3x4.c)
+else() # using XKCP
+    add_subdirectory(sha3/xkcp_low)
+    set(SHA3_IMPL sha3/xkcp_sha3.c sha3/xkcp_sha3x4.c ${XKCP_LOW_OBJS})
 endif()
 
 add_library(common OBJECT ${AES_IMPL}
@@ -51,8 +42,12 @@ add_library(common OBJECT ${AES_IMPL}
                           pqclean_shims/nistseedexpander.c
                           rand/rand.c
                           rand/rand_nist.c)
+
 if(OQS_USE_OPENSSL)
     target_include_directories(common PRIVATE ${OPENSSL_INCLUDE_DIR})
+else() # using XKCP
+    target_include_directories(common PRIVATE ${XKCP_LOW_INCLUDE_DIRS})
+    set(_COMMON_OBJS ${_COMMON_OBJS} ${XKCP_LOW_OBJS})
 endif()
 
 set(_COMMON_OBJS ${_COMMON_OBJS} $<TARGET_OBJECTS:common>)
