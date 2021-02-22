@@ -63,7 +63,9 @@ void OQS_SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_
 }
 
 void OQS_SHA3_sha3_256_inc_ctx_reset(OQS_SHA3_sha3_256_inc_ctx *state) {
-	EVP_MD_CTX_reset((EVP_MD_CTX *)state->ctx);
+	EVP_MD_CTX *s = state->ctx;
+	EVP_MD_CTX_reset(s);
+	EVP_DigestInit_ex(s, EVP_sha3_256(), NULL);
 }
 
 /* SHA3-384 */
@@ -95,7 +97,9 @@ void OQS_SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_
 }
 
 void OQS_SHA3_sha3_384_inc_ctx_reset(OQS_SHA3_sha3_384_inc_ctx *state) {
-	EVP_MD_CTX_reset((EVP_MD_CTX *)state->ctx);
+	EVP_MD_CTX *s = state->ctx;
+	EVP_MD_CTX_reset(s);
+	EVP_DigestInit_ex(s, EVP_sha3_384(), NULL);
 }
 
 /* SHA3-512 */
@@ -128,7 +132,9 @@ void OQS_SHA3_sha3_512_inc_ctx_clone(OQS_SHA3_sha3_512_inc_ctx *dest, const OQS_
 }
 
 void OQS_SHA3_sha3_512_inc_ctx_reset(OQS_SHA3_sha3_512_inc_ctx *state) {
-	EVP_MD_CTX_reset((EVP_MD_CTX *)state->ctx);
+	EVP_MD_CTX *s = state->ctx;
+	EVP_MD_CTX_reset(s);
+	EVP_DigestInit_ex(s, EVP_sha3_512(), NULL);
 }
 
 /* SHAKE-128 */
@@ -210,11 +216,14 @@ void OQS_SHA3_shake128_inc_ctx_clone(OQS_SHA3_shake128_inc_ctx *dest, const OQS_
 	intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)src->ctx;
 	intrn_shake128_inc_ctx *d = (intrn_shake128_inc_ctx *)dest->ctx;
 	EVP_MD_CTX_copy_ex(d->mdctx, s->mdctx);
+	d->n_out = s->n_out;
 }
 
 void OQS_SHA3_shake128_inc_ctx_reset(OQS_SHA3_shake128_inc_ctx *state) {
 	intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)state->ctx;
 	EVP_MD_CTX_reset(s->mdctx);
+	EVP_DigestInit_ex(s->mdctx, EVP_shake128(), NULL);
+	s->n_out = 0;
 }
 
 /* SHAKE-256 */
@@ -284,11 +293,14 @@ void OQS_SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_
 	intrn_shake256_inc_ctx *s = (intrn_shake256_inc_ctx *)src->ctx;
 	intrn_shake256_inc_ctx *d = (intrn_shake256_inc_ctx *)dest->ctx;
 	EVP_MD_CTX_copy_ex(d->mdctx, s->mdctx);
+	d->n_out = s->n_out;
 }
 
 void OQS_SHA3_shake256_inc_ctx_reset(OQS_SHA3_shake256_inc_ctx *state) {
 	intrn_shake256_inc_ctx *s = (intrn_shake256_inc_ctx *)state->ctx;
 	EVP_MD_CTX_reset(s->mdctx);
+	EVP_DigestInit_ex(s->mdctx, EVP_shake256(), NULL);
+	s->n_out = 0;
 }
 
 #endif

@@ -122,6 +122,7 @@ void OQS_SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	EVP_MD_CTX_reset(s->mdctx1);
 	EVP_MD_CTX_reset(s->mdctx2);
 	EVP_MD_CTX_reset(s->mdctx3);
+	s->n_out = 0;
 }
 
 /* SHAKE-256 */
@@ -235,6 +236,7 @@ void OQS_SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	EVP_MD_CTX_reset(s->mdctx1);
 	EVP_MD_CTX_reset(s->mdctx2);
 	EVP_MD_CTX_reset(s->mdctx3);
+	s->n_out = 0;
 }
 
 #endif

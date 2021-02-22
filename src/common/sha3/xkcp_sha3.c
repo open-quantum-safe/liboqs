@@ -30,7 +30,7 @@
 #define KECCAK_INC_CTX_ALIGNMENT KeccakP1600_stateAlignment
 
 /*************************************************
- * Name:        keccak_inc_init
+ * Name:        keccak_inc_reset
  *
  * Description: Initializes the incremental Keccak state to zero.
  *
@@ -39,7 +39,7 @@
  *                26th value represents either the number of absorbed bytes
  *                that have not been permuted, or not-yet-squeezed bytes.
  **************************************************/
-static void keccak_inc_init(uint64_t *s) {
+static void keccak_inc_reset(uint64_t *s) {
 	KeccakF1600_Initialize(s);
 	s[25] = 0;
 }
@@ -48,7 +48,7 @@ static void keccak_inc_init(uint64_t *s) {
  * Name:        keccak_inc_absorb
  *
  * Description: Incremental keccak absorb
- *              Preceded by keccak_inc_init, succeeded by keccak_inc_finalize
+ *              Preceded by keccak_inc_reset, succeeded by keccak_inc_finalize
  *
  * Arguments:   - uint64_t *s: pointer to input/output incremental state
  *                First 25 values represent Keccak state.
@@ -64,7 +64,7 @@ static void keccak_inc_absorb(uint64_t *s, uint32_t r, const uint8_t *m,
 
 	if (s[25] && mlen + s[25] >= r) {
 		c = r - s[25];
-		KeccakF1600_AddBytes(s, m, s[25], c);
+		KeccakF1600_AddBytes(s, m, (unsigned int)s[25], (unsigned int)c);
 		KeccakF1600_StatePermute(s);
 		mlen -= c;
 		m += c;
@@ -72,9 +72,11 @@ static void keccak_inc_absorb(uint64_t *s, uint32_t r, const uint8_t *m,
 	}
 
 #ifdef KeccakF1600_FastLoop_supported
-	c = KeccakF1600_FastLoop_Absorb(s, r / 8, m, mlen);
-	mlen -= c;
-	m += c;
+	if (mlen >= r) {
+		c = KeccakF1600_FastLoop_Absorb(s, r / 8, m, mlen);
+		mlen -= c;
+		m += c;
+	}
 #else
 	while (mlen >= r) {
 		KeccakF1600_AddBytes(s, m, 0, r);
@@ -84,7 +86,7 @@ static void keccak_inc_absorb(uint64_t *s, uint32_t r, const uint8_t *m,
 	}
 #endif
 
-	KeccakF1600_AddBytes(s, m, s[25], mlen);
+	KeccakF1600_AddBytes(s, m, (unsigned int)s[25], (unsigned int)mlen);
 	s[25] += mlen;
 }
 
@@ -104,8 +106,8 @@ static void keccak_inc_absorb(uint64_t *s, uint32_t r, const uint8_t *m,
 static void keccak_inc_finalize(uint64_t *s, uint32_t r, uint8_t p) {
 	/* After keccak_inc_absorb, we are guaranteed that s[25] < r,
 	   so we can always use one more byte for p in the current state. */
-	KeccakF1600_AddByte(s, p, s[25]);
-	KeccakF1600_AddByte(s, 0x80, r - 1);
+	KeccakF1600_AddByte(s, p, (unsigned int)s[25]);
+	KeccakF1600_AddByte(s, 0x80, (unsigned int)(r - 1));
 	s[25] = 0;
 }
 
@@ -125,13 +127,13 @@ static void keccak_inc_finalize(uint64_t *s, uint32_t r, uint8_t p) {
 static void keccak_inc_squeeze(uint8_t *h, size_t outlen,
                                uint64_t *s, uint32_t r) {
 	while (outlen > s[25]) {
-		KeccakF1600_ExtractBytes(s, h, r - s[25], s[25]);
+		KeccakF1600_ExtractBytes(s, h, (unsigned int)(r - s[25]), (unsigned int)s[25]);
 		KeccakF1600_StatePermute(s);
 		h += s[25];
 		outlen -= s[25];
 		s[25] = r;
 	}
-	KeccakF1600_ExtractBytes(s, h, r - s[25], outlen);
+	KeccakF1600_ExtractBytes(s, h, (unsigned int)(r - s[25]), (unsigned int)outlen);
 	s[25] -= outlen;
 }
 
@@ -150,7 +152,7 @@ void OQS_SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
 	if (state->ctx == NULL) {
 		exit(111);
 	}
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
 void OQS_SHA3_sha3_256_inc_absorb(OQS_SHA3_sha3_256_inc_ctx *state, const uint8_t *input, size_t inlen) {
@@ -171,7 +173,7 @@ void OQS_SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_
 }
 
 void OQS_SHA3_sha3_256_inc_ctx_reset(OQS_SHA3_sha3_256_inc_ctx *state) {
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
 /* SHA3-384 */
@@ -189,7 +191,7 @@ void OQS_SHA3_sha3_384_inc_init(OQS_SHA3_sha3_384_inc_ctx *state) {
 	if (state->ctx == NULL) {
 		exit(111);
 	}
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
 void OQS_SHA3_sha3_384_inc_absorb(OQS_SHA3_sha3_384_inc_ctx *state, const uint8_t *input, size_t inlen) {
@@ -210,7 +212,7 @@ void OQS_SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_
 }
 
 void OQS_SHA3_sha3_384_inc_ctx_reset(OQS_SHA3_sha3_384_inc_ctx *state) {
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
 /* SHA3-512 */
@@ -228,7 +230,7 @@ void OQS_SHA3_sha3_512_inc_init(OQS_SHA3_sha3_512_inc_ctx *state) {
 	if (state->ctx == NULL) {
 		exit(111);
 	}
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
 void OQS_SHA3_sha3_512_inc_absorb(OQS_SHA3_sha3_512_inc_ctx *state, const uint8_t *input, size_t inlen) {
@@ -249,7 +251,7 @@ void OQS_SHA3_sha3_512_inc_ctx_clone(OQS_SHA3_sha3_512_inc_ctx *dest, const OQS_
 }
 
 void OQS_SHA3_sha3_512_inc_ctx_reset(OQS_SHA3_sha3_512_inc_ctx *state) {
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
 /* SHAKE128 */
@@ -270,7 +272,7 @@ void OQS_SHA3_shake128_inc_init(OQS_SHA3_shake128_inc_ctx *state) {
 	if (state->ctx == NULL) {
 		exit(111);
 	}
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
 void OQS_SHA3_shake128_inc_absorb(OQS_SHA3_shake128_inc_ctx *state, const uint8_t *input, size_t inlen) {
@@ -294,7 +296,7 @@ void OQS_SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
 }
 
 void OQS_SHA3_shake128_inc_ctx_reset(OQS_SHA3_shake128_inc_ctx *state) {
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
 /* SHAKE256 */
@@ -315,7 +317,7 @@ void OQS_SHA3_shake256_inc_init(OQS_SHA3_shake256_inc_ctx *state) {
 	if (state->ctx == NULL) {
 		exit(111);
 	}
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }
 
 void OQS_SHA3_shake256_inc_absorb(OQS_SHA3_shake256_inc_ctx *state, const uint8_t *input, size_t inlen) {
@@ -339,5 +341,5 @@ void OQS_SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_
 }
 
 void OQS_SHA3_shake256_inc_ctx_reset(OQS_SHA3_shake256_inc_ctx *state) {
-	keccak_inc_init((uint64_t *)state->ctx);
+	keccak_inc_reset((uint64_t *)state->ctx);
 }

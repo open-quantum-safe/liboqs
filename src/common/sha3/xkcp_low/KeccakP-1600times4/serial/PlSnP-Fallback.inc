@@ -214,7 +214,7 @@ void PlSnP_ExtractBytes(void *states, unsigned int instanceIndex, unsigned char 
     #endif
 }
 
-void PlSnP_ExtractLanesAll(const void *states, unsigned char *data, unsigned int laneCount, unsigned int laneOffset)
+void PlSnP_ExtractLanesAll(void *states, unsigned char *data, unsigned int laneCount, unsigned int laneOffset)
 {
     unsigned int i;
 
@@ -237,7 +237,7 @@ void PlSnP_ExtractAndAddBytes(void *states, unsigned int instanceIndex, const un
     #endif
 }
 
-void PlSnP_ExtractAndAddLanesAll(const void *states, const unsigned char *input, unsigned char *output, unsigned int laneCount, unsigned int laneOffset)
+void PlSnP_ExtractAndAddLanesAll(void *states, const unsigned char *input, unsigned char *output, unsigned int laneCount, unsigned int laneOffset)
 {
     unsigned int i;
 

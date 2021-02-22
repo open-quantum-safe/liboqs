@@ -757,10 +757,10 @@ int shake_128_x4_kat_test(void) {
 	OQS_SHA3_shake128_x4_inc_ctx state;
 	OQS_SHA3_shake128_x4_inc_init(&state);
 	OQS_SHA3_shake128_x4_inc_absorb(&state, msg1600, msg1600, msg1600, msg1600, 32);
-	OQS_SHA3_shake128_x4_inc_absorb(&state, msg1600+32, msg1600+32, msg1600+32, msg1600+32, 168);
+	OQS_SHA3_shake128_x4_inc_absorb(&state, msg1600 + 32, msg1600 + 32, msg1600 + 32, msg1600 + 32, 168);
 	OQS_SHA3_shake128_x4_inc_finalize(&state);
 	OQS_SHA3_shake128_x4_inc_squeeze(output0, output1, output2, output3, 32, &state);
-	OQS_SHA3_shake128_x4_inc_squeeze(output0+32, output1+32, output2+32, output3+32, 480, &state);
+	OQS_SHA3_shake128_x4_inc_squeeze(output0 + 32, output1 + 32, output2 + 32, output3 + 32, 480, &state);
 	OQS_SHA3_shake128_x4_inc_ctx_release(&state);
 
 	if (are_equal8(output0, exp1600, 512) == EXIT_FAILURE
@@ -915,10 +915,10 @@ int shake_256_x4_kat_test(void) {
 	OQS_SHA3_shake256_x4_inc_ctx state;
 	OQS_SHA3_shake256_x4_inc_init(&state);
 	OQS_SHA3_shake256_x4_inc_absorb(&state, msg1600, msg1600, msg1600, msg1600, 64);
-	OQS_SHA3_shake256_x4_inc_absorb(&state, msg1600+64, msg1600+64, msg1600+64, msg1600+64, 136);
+	OQS_SHA3_shake256_x4_inc_absorb(&state, msg1600 + 64, msg1600 + 64, msg1600 + 64, msg1600 + 64, 136);
 	OQS_SHA3_shake256_x4_inc_finalize(&state);
 	OQS_SHA3_shake256_x4_inc_squeeze(output0, output1, output2, output3, 64, &state);
-	OQS_SHA3_shake256_x4_inc_squeeze(output0+64, output1+64, output2+64, output3+64, 448, &state);
+	OQS_SHA3_shake256_x4_inc_squeeze(output0 + 64, output1 + 64, output2 + 64, output3 + 64, 448, &state);
 	OQS_SHA3_shake256_x4_inc_ctx_release(&state);
 
 	if (are_equal8(output0, exp1600, 512) == EXIT_FAILURE

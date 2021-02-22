@@ -3,7 +3,7 @@
 set(_XKCP_LOW_OBJS "")
 set(_XKCP_LOW_INCLUDE_DIRS "")
 
-if(OQS_USE_AVX2_INSTRUCTIONS)
+if(OQS_USE_AVX2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
   add_library(xkcp_low_keccakp_1600_avx2 OBJECT KeccakP-1600/avx2/KeccakP-1600-AVX2.s)
   target_compile_options(xkcp_low_keccakp_1600_avx2 PRIVATE -mavx2)
   target_include_directories(xkcp_low_keccakp_1600_avx2 PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/KeccakP-1600/avx2)
