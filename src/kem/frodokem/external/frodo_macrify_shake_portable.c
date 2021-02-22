@@ -1,3 +1,5 @@
+#include <oqs/sha3x4.h>
+
 int frodo_mul_add_sa_plus_e_shake_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A)
 { // Generate-and-multiply: generate matrix A (N x N) column-wise, multiply by s' on the left.
   // Inputs: s', e' (N_BAR x N)
@@ -29,7 +31,7 @@ int frodo_mul_add_sa_plus_e_shake_portable(uint16_t *out, const uint16_t *s, con
         seed_A_origin_1[0] = UINT16_TO_LE(kk + 1);
         seed_A_origin_2[0] = UINT16_TO_LE(kk + 2);
         seed_A_origin_3[0] = UINT16_TO_LE(kk + 3);
-        OQS_SHA3_shake128_4x((unsigned char*)(a_cols), (unsigned char*)(a_cols + PARAMS_N), (unsigned char*)(a_cols + 2*PARAMS_N), (unsigned char*)(a_cols + 3*PARAMS_N),
+        OQS_SHA3_shake128_x4((unsigned char*)(a_cols), (unsigned char*)(a_cols + PARAMS_N), (unsigned char*)(a_cols + 2*PARAMS_N), (unsigned char*)(a_cols + 3*PARAMS_N),
         (unsigned long long)(2*PARAMS_N), seed_A_separated_0, seed_A_separated_1, seed_A_separated_2, seed_A_separated_3, 2 + BYTES_SEED_A);
 
         for (i = 0; i < PARAMS_NBAR; i++) {
