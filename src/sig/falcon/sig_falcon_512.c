@@ -13,7 +13,7 @@ OQS_SIG *OQS_SIG_falcon_512_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_falcon_512;
-	sig->alg_version = "supercop-20201018 via https://github.com/jschanck/package-pqclean/tree/78831f03/falcon";
+	sig->alg_version = "supercop-20201018 via https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;
