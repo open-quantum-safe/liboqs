@@ -78,7 +78,7 @@ def replacer(filename, instructions, delimiter):
     file_put_contents(os.path.join(os.environ['LIBOQS_DIR'], filename), contents)
 
 def load_instructions():
-    subprocess_stdout = subprocess.STDOUT if DEBUG > 0 else subprocess.DEVNULL
+    subprocess_stdout = None if DEBUG > 0 else subprocess.DEVNULL
     instructions = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', 'copy_from_upstream.yml'),
         encoding='utf-8')
@@ -203,13 +203,7 @@ def load_instructions():
             scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
             scheme['scheme_c'] = scheme['scheme'].replace('-', '')
             scheme['default_implementation'] = family['default_implementation']
-            # This is a temporary hack to work around the fact that
-            # the PQClean's META.ymls for the Dilithium AVX2 variants
-            # are not properly specified.
-            if scheme['pretty_name_full'].startswith('DILITHIUM_') and scheme['upstream_location'] == "pqclean":
-                scheme['metadata']['implementations'][1]['supported_platforms'][0]['operating_systems'] = ['Linux']
-                scheme['metadata']['implementations'][1]['supported_platforms'][0]['required_flags'] = ['avx2', 'bmi1',
-                                                                                                        'popcnt']
+
             for impl in scheme['metadata']['implementations']:
                 if 'common_dep' in impl:
                     cdeps_names = impl['common_dep'].split(" ")
@@ -376,7 +370,7 @@ def process_families(instructions, basedir, with_kat, with_generator):
                 srcs = handle_implementation(impl, family, scheme, basedir)
                 if DEBUG > 3:
                     print("SRCs found: %s" % (srcs))
-                if (scheme['sources']):
+                if ('sources' in scheme):
                     assert (len(scheme['sources']) == len(srcs))
                 # in any case: add 'sources' to implementation(s)
                 # Only retain this 1 implementation:
@@ -385,6 +379,14 @@ def process_families(instructions, basedir, with_kat, with_generator):
                 scheme['metadata']['implementations'][0]['sources'] = srcs
             else:
                 # If no scheme['implementation'] given, get the list from META.yml and add all implementations
+                # our code generator logic assumes only one default and one optimized implementation
+                # so, for mceliece, kill off "clean" and "sse" implementations until this is fixed TBD
+                if family['name'] == "classic_mceliece":
+                     mceimps = []
+                     for i in scheme['metadata']['implementations']:
+                        if i['name'] != "sse" and i['name'] != "clean":
+                           mceimps.append(i)
+                     scheme['metadata']['implementations'] = mceimps
                 for impl in scheme['metadata']['implementations']:
                     srcs = handle_implementation(impl['name'], family, scheme, basedir)
                     if DEBUG > 2:
@@ -401,6 +403,7 @@ def process_families(instructions, basedir, with_kat, with_generator):
                             print("No required flags found for %s (KeyError %s on impl %s)\n" % (
                                 scheme['scheme'], str(ke), impl['name']))
                         pass
+
 
             if with_kat:
                 if family in instructions['kems']:
