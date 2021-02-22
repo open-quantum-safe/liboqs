@@ -28,7 +28,7 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#include "../oqs_picnic_macros.h"
+#include "oqs_picnic_macros.h"
 
 #ifdef __cplusplus
 extern "C" {
