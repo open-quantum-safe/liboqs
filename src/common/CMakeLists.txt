@@ -32,7 +32,7 @@ if(OQS_USE_SHA3_OPENSSL)
     set(SHA3_IMPL sha3/ossl_sha3.c sha3/ossl_sha3x4.c)
 else() # using XKCP
     add_subdirectory(sha3/xkcp_low)
-    set(SHA3_IMPL sha3/xkcp_sha3.c sha3/xkcp_sha3x4.c ${XKCP_LOW_OBJS})
+    set(SHA3_IMPL sha3/xkcp_sha3.c sha3/xkcp_sha3x4.c)
 endif()
 
 add_library(common OBJECT ${AES_IMPL}
@@ -45,7 +45,9 @@ add_library(common OBJECT ${AES_IMPL}
 
 if(OQS_USE_OPENSSL)
     target_include_directories(common PRIVATE ${OPENSSL_INCLUDE_DIR})
-else() # using XKCP
+endif()
+
+if(NOT OQS_USE_SHA3_OPENSSL) # using XKCP
     target_include_directories(common PRIVATE ${XKCP_LOW_INCLUDE_DIRS})
     set(_COMMON_OBJS ${_COMMON_OBJS} ${XKCP_LOW_OBJS})
 endif()
