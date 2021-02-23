@@ -77,6 +77,10 @@ if(OQS_USE_OPENSSL)
     target_link_libraries(oqs PUBLIC ${OPENSSL_CRYPTO_LIBRARY})
     target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})
 endif()
+if(OQS_ENABLE_KEM_CLASSIC_MCELIECE)
+        # hack to enable AVX symbols to link
+target_link_options(oqs PRIVATE -Wl,-Bsymbolic)
+endif()
 
 set_target_properties(oqs
     PROPERTIES

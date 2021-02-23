@@ -263,7 +263,7 @@ workflows:
           name: alpine
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-          CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
       # Disabling centos-8 and debian-buster.
       # Re-enable if specific configurations (package versions etc) that need to be tested are identified.
       #- linux_x64:
@@ -288,7 +288,7 @@ workflows:
           name: ubuntu-focal-shared-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
           PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
       - linux_x64:
           <<: *require_buildcheck
