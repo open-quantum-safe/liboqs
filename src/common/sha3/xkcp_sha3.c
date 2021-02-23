@@ -7,13 +7,15 @@
 * SPDX-License-Identifier: MIT
 */
 
+#include "KeccakP-1600-SnP.h"
+#include "sha3.h"
+
+#include <oqs/common.h>
+
 #include <stddef.h>
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "KeccakP-1600-SnP.h"
-#include "sha3.h"
 
 #define KeccakF1600_Initialize KeccakP1600_Initialize
 #define KeccakF1600_ExtractBytes KeccakP1600_ExtractBytes
@@ -21,13 +23,15 @@
 #define KeccakF1600_AddBytes KeccakP1600_AddBytes
 #define KeccakF1600_StatePermute KeccakP1600_Permute_24rounds
 
+#define KECCAK_CTX_ALIGNMENT KeccakP1600_stateAlignment
 #if KeccakP1600_stateSizeInBytes == 200
-#define KECCAK_INC_CTX_BYTES (200+sizeof(uint64_t))
+#define _KECCAK_CTX_BYTES (200+sizeof(uint64_t))
+// Round up to a multiple of alignment for C11 aligned_alloc
+#define KECCAK_CTX_BYTES (KECCAK_CTX_ALIGNMENT * \
+  ((_KECCAK_CTX_BYTES + KECCAK_CTX_ALIGNMENT - 1)/KECCAK_CTX_ALIGNMENT))
 #else
 #error sha3_xkcp assumes 200 byte KeccakP1600 state
 #endif
-
-#define KECCAK_INC_CTX_ALIGNMENT KeccakP1600_stateAlignment
 
 /*************************************************
  * Name:        keccak_inc_reset
@@ -148,7 +152,7 @@ void OQS_SHA3_sha3_256(uint8_t *output, const uint8_t *input, size_t inlen) {
 }
 
 void OQS_SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
-	state->ctx = aligned_alloc(KECCAK_INC_CTX_ALIGNMENT, KECCAK_INC_CTX_BYTES);
+	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
 	}
@@ -165,11 +169,11 @@ void OQS_SHA3_sha3_256_inc_finalize(uint8_t *output, OQS_SHA3_sha3_256_inc_ctx *
 }
 
 void OQS_SHA3_sha3_256_inc_ctx_release(OQS_SHA3_sha3_256_inc_ctx *state) {
-	free(state->ctx); // IGNORE free-check
+	OQS_MEM_aligned_free(state->ctx);
 }
 
 void OQS_SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_SHA3_sha3_256_inc_ctx *src) {
-	memcpy(dest->ctx, src->ctx, KECCAK_INC_CTX_BYTES);
+	memcpy(dest->ctx, src->ctx, KECCAK_CTX_BYTES);
 }
 
 void OQS_SHA3_sha3_256_inc_ctx_reset(OQS_SHA3_sha3_256_inc_ctx *state) {
@@ -187,7 +191,7 @@ void OQS_SHA3_sha3_384(uint8_t *output, const uint8_t *input, size_t inlen) {
 }
 
 void OQS_SHA3_sha3_384_inc_init(OQS_SHA3_sha3_384_inc_ctx *state) {
-	state->ctx = aligned_alloc(KECCAK_INC_CTX_ALIGNMENT, KECCAK_INC_CTX_BYTES);
+	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
 	}
@@ -204,11 +208,11 @@ void OQS_SHA3_sha3_384_inc_finalize(uint8_t *output, OQS_SHA3_sha3_384_inc_ctx *
 }
 
 void OQS_SHA3_sha3_384_inc_ctx_release(OQS_SHA3_sha3_384_inc_ctx *state) {
-	free(state->ctx); // IGNORE free-check
+	OQS_MEM_aligned_free(state->ctx);
 }
 
 void OQS_SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_SHA3_sha3_384_inc_ctx *src) {
-	memcpy(dest->ctx, src->ctx, KECCAK_INC_CTX_BYTES);
+	memcpy(dest->ctx, src->ctx, KECCAK_CTX_BYTES);
 }
 
 void OQS_SHA3_sha3_384_inc_ctx_reset(OQS_SHA3_sha3_384_inc_ctx *state) {
@@ -226,7 +230,7 @@ void OQS_SHA3_sha3_512(uint8_t *output, const uint8_t *input, size_t inlen) {
 }
 
 void OQS_SHA3_sha3_512_inc_init(OQS_SHA3_sha3_512_inc_ctx *state) {
-	state->ctx = aligned_alloc(KECCAK_INC_CTX_ALIGNMENT, KECCAK_INC_CTX_BYTES);
+	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
 	}
@@ -243,11 +247,11 @@ void OQS_SHA3_sha3_512_inc_finalize(uint8_t *output, OQS_SHA3_sha3_512_inc_ctx *
 }
 
 void OQS_SHA3_sha3_512_inc_ctx_release(OQS_SHA3_sha3_512_inc_ctx *state) {
-	free(state->ctx); // IGNORE free-check
+	OQS_MEM_aligned_free(state->ctx);
 }
 
 void OQS_SHA3_sha3_512_inc_ctx_clone(OQS_SHA3_sha3_512_inc_ctx *dest, const OQS_SHA3_sha3_512_inc_ctx *src) {
-	memcpy(dest->ctx, src->ctx, KECCAK_INC_CTX_BYTES);
+	memcpy(dest->ctx, src->ctx, KECCAK_CTX_BYTES);
 }
 
 void OQS_SHA3_sha3_512_inc_ctx_reset(OQS_SHA3_sha3_512_inc_ctx *state) {
@@ -268,7 +272,7 @@ void OQS_SHA3_shake128(uint8_t *output, size_t outlen, const uint8_t *input, siz
 /* SHAKE128 incremental */
 
 void OQS_SHA3_shake128_inc_init(OQS_SHA3_shake128_inc_ctx *state) {
-	state->ctx = aligned_alloc(KECCAK_INC_CTX_ALIGNMENT, KECCAK_INC_CTX_BYTES);
+	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
 	}
@@ -288,11 +292,11 @@ void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shak
 }
 
 void OQS_SHA3_shake128_inc_ctx_clone(OQS_SHA3_shake128_inc_ctx *dest, const OQS_SHA3_shake128_inc_ctx *src) {
-	memcpy(dest->ctx, src->ctx, KECCAK_INC_CTX_BYTES);
+	memcpy(dest->ctx, src->ctx, KECCAK_CTX_BYTES);
 }
 
 void OQS_SHA3_shake128_inc_ctx_release(OQS_SHA3_shake128_inc_ctx *state) {
-	free(state->ctx); // IGNORE free-check
+	OQS_MEM_aligned_free(state->ctx);
 }
 
 void OQS_SHA3_shake128_inc_ctx_reset(OQS_SHA3_shake128_inc_ctx *state) {
@@ -313,7 +317,7 @@ void OQS_SHA3_shake256(uint8_t *output, size_t outlen, const uint8_t *input, siz
 /* SHAKE256 incremental */
 
 void OQS_SHA3_shake256_inc_init(OQS_SHA3_shake256_inc_ctx *state) {
-	state->ctx = aligned_alloc(KECCAK_INC_CTX_ALIGNMENT, KECCAK_INC_CTX_BYTES);
+	state->ctx = OQS_MEM_aligned_alloc(KECCAK_CTX_ALIGNMENT, KECCAK_CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
 	}
@@ -333,11 +337,11 @@ void OQS_SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shak
 }
 
 void OQS_SHA3_shake256_inc_ctx_release(OQS_SHA3_shake256_inc_ctx *state) {
-	free(state->ctx); // IGNORE free-check
+	OQS_MEM_aligned_free(state->ctx);
 }
 
 void OQS_SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_SHA3_shake256_inc_ctx *src) {
-	memcpy(dest->ctx, src->ctx, KECCAK_INC_CTX_BYTES);
+	memcpy(dest->ctx, src->ctx, KECCAK_CTX_BYTES);
 }
 
 void OQS_SHA3_shake256_inc_ctx_reset(OQS_SHA3_shake256_inc_ctx *state) {

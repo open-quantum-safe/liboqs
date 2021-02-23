@@ -2,6 +2,7 @@
 
 #include <oqs/common.h>
 
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
@@ -186,4 +187,34 @@ OQS_API void OQS_MEM_secure_free(void *ptr, size_t len) {
 
 OQS_API void OQS_MEM_insecure_free(void *ptr) {
 	free(ptr); // IGNORE free-check
+}
+
+void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
+#if defined(__MINGW32__) || defined(__MINGW64__)
+	return __mingw_aligned_malloc(size, alignment);
+#elif defined(_MSC_VER)
+	return _aligned_malloc(size, alignment);
+#elif defined(_ISOC11_SOURCE) // glibc
+	return aligned_alloc(alignment, size);
+#elif (defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200112L) || defined(__APPLE__)
+	void *ptr = NULL;
+	const int err = posix_memalign(&ptr, alignment, size);
+	if (err) {
+		errno = err;
+		ptr = NULL;
+	}
+	return ptr;
+#else // musl, maybe others.
+	return aligned_alloc(alignment, size);
+#endif
+}
+
+void OQS_MEM_aligned_free(void *ptr) {
+#if defined(__MINGW32__) || defined(__MINGW64__)
+	__mingw_aligned_free(ptr);
+#elif defined(_MSC_VER)
+	_aligned_free(ptr);
+#else
+	free(ptr); // IGNORE free-check
+#endif
 }
