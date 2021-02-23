@@ -10,8 +10,8 @@ Falcon
 Implementation
 --------------
 
-- **Source of implementation**: supercop-20201018 via https://github.com/jschanck/package-pqclean/tree/78831f03/falcon
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/3c8be3cb1f8ca0953f2df44ea665f118efb468d6
+- **Source of implementation**: supercop-20201018 via https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/ebcc71c51a30b6e5db4f1fade22999b346fdafce
 - **License**: CC0 1.0 Universal
 - **Constant-time**: Yes
 - **Optimizations**: Portable C, with AVX2 instructions (if available at runtime)

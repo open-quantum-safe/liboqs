@@ -3,7 +3,7 @@ upstreams:
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
-    git_commit: 3d7d2024fa892bd7f00dca3fff4122175f4a26dc
+    git_commit: ebcc71c51a30b6e5db4f1fade22999b346fdafce
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
@@ -34,62 +34,42 @@ kems:
         scheme: "348864"
         pqclean_scheme: mceliece348864
         pretty_name_full: Classic-McEliece-348864
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
       -
         scheme: "348864f"
         pqclean_scheme: mceliece348864f
         pretty_name_full: Classic-McEliece-348864f
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
       -
         scheme: "460896"
         pqclean_scheme: mceliece460896
         pretty_name_full: Classic-McEliece-460896
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
       -
         scheme: "460896f"
         pqclean_scheme: mceliece460896f
         pretty_name_full: Classic-McEliece-460896f
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
       -
         scheme: "6688128"
         pqclean_scheme: mceliece6688128
         pretty_name_full: Classic-McEliece-6688128
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
       -
         scheme: "6688128f"
         pqclean_scheme: mceliece6688128f
         pretty_name_full: Classic-McEliece-6688128f
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
       -
         scheme: "6960119"
         pqclean_scheme: mceliece6960119
         pretty_name_full: Classic-McEliece-6960119
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
       -
         scheme: "6960119f"
         pqclean_scheme: mceliece6960119f
         pretty_name_full: Classic-McEliece-6960119f
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
       -
         scheme: "8192128"
         pqclean_scheme: mceliece8192128
         pretty_name_full: Classic-McEliece-8192128
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
       -
         scheme: "8192128f"
         pqclean_scheme: mceliece8192128f
         pretty_name_full: Classic-McEliece-8192128f
-        implementation: vec
-        sources: ['aes256ctr.c', 'benes.c', 'bm.c', 'controlbits.c', 'decrypt.c', 'encrypt.c', 'fft.c', 'fft_tr.c', 'gf.c', 'operations.c', 'pk_gen.c', 'sk_gen.c', 'transpose.c', 'util.c', 'vec.c']
   -
     name: hqc
     default_implementation: clean

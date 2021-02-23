@@ -10,11 +10,11 @@ Classic McEliece
 Implementation
 --------------
 
-- **Source of implementation**: SUPERCOP-20191221, "vec" implementation
-- **Implementation version**: https://github.com/PQClean/PQClean/commit/3c8be3cb1f8ca0953f2df44ea665f118efb468d6
+- **Source of implementation**: SUPERCOP-20191221, "vec" implementation ("avx" implementation if OQS_USE_CPU_EXTENSIONS set)
+- **Implementation version**: https://github.com/PQClean/PQClean/commit/ebcc71c51a30b6e5db4f1fade22999b346fdafce
 - **License**: Public domain
 - **Constant-time**: Yes
-- **Optimizations**: Portable C
+- **Optimizations**: Portable C, wth AVX2, POPCNT, BMI1 instructions (if available at run-time)
 
 Parameter sets
 --------------

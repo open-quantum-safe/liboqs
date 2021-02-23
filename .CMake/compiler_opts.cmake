@@ -16,6 +16,8 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     option(OQS_USE_CPU_EXTENSIONS "Enable compile and run-time support for CPU extensions such as AVX2, SSE, etc." ON)
     if(OQS_USE_CPU_EXTENSIONS)
         include(${CMAKE_CURRENT_LIST_DIR}/gcc_clang_intrinsics.cmake)
+        # to allow McEliece AVX code to compile with clang9:
+        add_compile_options(-Wno-language-extension-token)
     endif()
 
     if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")

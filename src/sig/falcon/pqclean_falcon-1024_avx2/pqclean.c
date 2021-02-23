@@ -187,7 +187,7 @@ do_sign(uint8_t *nonce, uint8_t *sigbuf, size_t *sigbuflen,
     inner_shake256_inject(&sc, nonce, NONCELEN);
     inner_shake256_inject(&sc, m, mlen);
     inner_shake256_flip(&sc);
-    PQCLEAN_FALCON1024_AVX2_hash_to_point_vartime(&sc, r.hm, 10);
+    PQCLEAN_FALCON1024_AVX2_hash_to_point_ct(&sc, r.hm, 10, tmp.b);
     inner_shake256_ctx_release(&sc);
 
     /*

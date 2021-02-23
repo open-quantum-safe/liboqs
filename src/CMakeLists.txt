@@ -77,6 +77,10 @@ if(OQS_USE_OPENSSL)
     target_link_libraries(oqs PUBLIC ${OPENSSL_CRYPTO_LIBRARY})
     target_include_directories(oqs PUBLIC ${OPENSSL_INCLUDE_DIR})
 endif()
+if (CMAKE_SYSTEM_NAME MATCHES "Linux" AND OQS_USE_AVX2_INSTRUCTIONS AND OQS_ENABLE_KEM_CLASSIC_MCELIECE)
+        # hack to enable McEliece' AVX symbols to link on Linux
+target_link_options(oqs PRIVATE -Wl,-Bsymbolic)
+endif()
 
 set_target_properties(oqs
     PROPERTIES
