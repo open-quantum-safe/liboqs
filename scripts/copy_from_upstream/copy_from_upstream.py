@@ -13,6 +13,7 @@ import yaml
 from pathlib import Path
 import sys
 import json
+import mdformat
 
 # kats of all algs
 kats = {}
@@ -134,11 +135,14 @@ def load_instructions():
         family['family'] = family['name']
         family['common_deps'] = []
         family['common_deps_usedby'] = {}
+        family['all_required_flags'] = set()
         for scheme in family['schemes']:
             if not 'upstream_location' in scheme:
                 scheme['upstream_location'] = family['upstream_location']
             if not 'git_commit' in scheme:
                 scheme['git_commit'] = upstreams[scheme['upstream_location']]['git_commit']
+            if not 'git_branch' in scheme:
+                scheme['git_branch'] = upstreams[scheme['upstream_location']]['git_branch']
             if not 'git_url' in scheme:
                 scheme['git_url'] = upstreams[scheme['upstream_location']]['git_url']
             # upstream_check(scheme)
@@ -165,6 +169,8 @@ def load_instructions():
                     uloc = scheme['upstream_location']
                     for cdep_name in cdeps_names:
                         cdep = upstreams[uloc]['commons'][cdep_name]
+                        if 'required_flags' in cdep:
+                            family['all_required_flags'].update(cdep['required_flags'])
                         if not 'cdep_path' in cdep:
                             cdep['cdep_path'] = scheme['scheme_path']
                         if not cdep['name'] in family['common_deps_usedby']:
@@ -179,9 +185,12 @@ def load_instructions():
         family['family'] = family['name']
         family['common_deps'] = []
         family['common_deps_usedby'] = {}
+        family['all_required_flags'] = set()
         for scheme in family['schemes']:
             if not 'upstream_location' in scheme:
                 scheme['upstream_location'] = family['upstream_location']
+            if not 'git_branch' in scheme:
+                scheme['git_branch'] = upstreams[scheme['upstream_location']]['git_branch']
             if not 'git_commit' in scheme:
                 scheme['git_commit'] = upstreams[scheme['upstream_location']]['git_commit']
             if not 'git_url' in scheme:
@@ -211,6 +220,8 @@ def load_instructions():
                     uloc = scheme['upstream_location']
                     for cdep_name in cdeps_names:
                         cdep = upstreams[uloc]['commons'][cdep_name]
+                        if 'required_flags' in cdep:
+                            family['all_required_flags'].update(cdep['required_flags'])
                         if not 'cdep_path' in cdep:
                             cdep['cdep_path'] = scheme['scheme_path']
                         if not cdep['name'] in family['common_deps_usedby']:
@@ -218,6 +229,7 @@ def load_instructions():
                             family['common_deps_usedby'][cdep_name] = [{'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']}]
                         else:
                             family['common_deps_usedby'][cdep_name].append({'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']})
+
     return instructions
 
 # Copy over all files for a given impl in a family using scheme
@@ -398,6 +410,7 @@ def process_families(instructions, basedir, with_kat, with_generator):
                         for i in range(len(impl['supported_platforms'])):
                             req = impl['supported_platforms'][i]
                             impl['required_flags'] = req['required_flags']
+                            family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:
                         if (impl['name'] != family['default_implementation']):
                             print("No required flags found for %s (KeyError %s on impl %s)\n" % (
@@ -448,6 +461,15 @@ def process_families(instructions, basedir, with_kat, with_generator):
                     scheme,
                 )
 
+            generator(
+                os.path.join(os.environ['LIBOQS_DIR'], 'docs', 'algorithms', family['type'], '{}.md'.format(family['name'])),
+                os.path.join('docs', 'algorithms', family['type'], '{}.md'.format(family['name'])),
+                family,
+                None,
+            )
+            mdformat.file(os.path.join(os.environ['LIBOQS_DIR'], 'docs', 'algorithms', family['type'], '{}.md'.format(family['name'])),
+                          extensions={"tables"})
+
 
 def copy_from_upstream():
     for t in ["kem", "sig"]:
@@ -476,7 +498,7 @@ def copy_from_upstream():
     if not keepdata:
         shutil.rmtree('repos')
 
-    print("Remember to update $LIBOQS_DIR/docs/algorithms/<family>/<scheme>.md")
+    #print("Remember to update $LIBOQS_DIR/docs/algorithms/<family>/<scheme>.md")
 
 
 def verify_from_upstream():
