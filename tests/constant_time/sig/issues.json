@@ -6,7 +6,7 @@
   "Dilithium2-AES": [],
   "Dilithium3-AES": [],
   "Dilithium5-AES": [],
-  "Falcon-1024": ["falcon_hash_to_point_vartime"],
+  "Falcon-1024": [],
   "Falcon-512": [],
   "Rainbow-I-Circumzenithal": [],
   "Rainbow-I-Classic": [],
