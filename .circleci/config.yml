@@ -308,28 +308,29 @@ workflows:
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
           PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
-      - linux_x64:
-          <<: *require_buildcheck
-          name: constant-time-portable
-          filters:
-            branches:
-              only:
-                - /^audit.*/
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-          CMAKE_ARGS: -DOQS_PORTABLE_BUILD=ON -DOQS_USE_CPU_EXTENSIONS=OFF -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-          PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time and not BIKE'
-      - linux_x64:
-          <<: *require_buildcheck
-          name: constant-time-x64-extensions
-          filters:
-            branches:
-              only:
-                - /^audit.*/
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-          CMAKE_ARGS: -DOQS_PORTABLE_BUILD=OFF -DOQS_USE_CPU_EXTENSIONS=ON -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-          PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time and not BIKE'
+      # Disabling test_constant_time for now
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: constant-time-portable
+      #    filters:
+      #      branches:
+      #        only:
+      #          - /^audit.*/
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      #    CMAKE_ARGS: -DOQS_PORTABLE_BUILD=ON -DOQS_USE_CPU_EXTENSIONS=OFF -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+      #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: constant-time-x64-extensions
+      #    filters:
+      #      branches:
+      #        only:
+      #          - /^audit.*/
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      #    CMAKE_ARGS: -DOQS_PORTABLE_BUILD=OFF -DOQS_USE_CPU_EXTENSIONS=ON -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+      #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
       #- linux_x64:
       #    name: undefined-sanitizer
@@ -339,7 +340,6 @@ workflows:
            # Normally the linux tests are run with 35 processes, but that
            # exhausts memory for this test
       #    PYTEST_ARGS: --numprocesses=1
-
       # SPHINCS exhausts memory on CircleCI servers
       # for these configurations.
       - arm_emulated:
