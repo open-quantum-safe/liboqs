@@ -478,13 +478,12 @@ size_t KeccakF1600_FastLoop_Absorb(void *state, unsigned int laneCount, const un
 	size_t originalDataByteLen = dataByteLen;
 	declareABCDE
 	uint64_t *stateAsLanes = (uint64_t *)state;
-	const uint64_t *inDataAsLanes = (const uint64_t *)data;
 
 	copyFromState(A, stateAsLanes)
 	while (dataByteLen >= laneCount * 8) {
-		addInput(A, inDataAsLanes, laneCount)
+		addInput(A, data, laneCount)
 		rounds24
-		inDataAsLanes += laneCount;
+		data += laneCount * 8;
 		dataByteLen -= laneCount * 8;
 	}
 	copyToState(stateAsLanes, A)
@@ -497,13 +496,12 @@ size_t KeccakP1600_12rounds_FastLoop_Absorb(void *state, unsigned int laneCount,
 	size_t originalDataByteLen = dataByteLen;
 	declareABCDE
 	uint64_t *stateAsLanes = (uint64_t *)state;
-	const uint64_t *inDataAsLanes = (const uint64_t *)data;
 
 	copyFromState(A, stateAsLanes)
 	while (dataByteLen >= laneCount * 8) {
-		addInput(A, inDataAsLanes, laneCount)
+		addInput(A, data, laneCount)
 		rounds12
-		inDataAsLanes += laneCount;
+		data += laneCount * 8;
 		dataByteLen -= laneCount * 8;
 	}
 	copyToState(stateAsLanes, A)
