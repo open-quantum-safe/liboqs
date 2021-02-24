@@ -71,6 +71,7 @@ else()
     target_include_directories(picnic PRIVATE external/sha3/opt64)
 endif()
 target_compile_definitions(picnic PRIVATE PICNIC_STATIC
+                                          NO_MISALIGNED_ACCESSES
                                           WITH_ZKBPP
                                           WITH_UNRUH
                                           WITH_KKW
