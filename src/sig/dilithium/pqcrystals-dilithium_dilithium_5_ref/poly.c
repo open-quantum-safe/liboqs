@@ -54,24 +54,6 @@ void poly_caddq(poly *a) {
 }
 
 /*************************************************
-* Name:        poly_freeze
-*
-* Description: Inplace reduction of all coefficients of polynomial to
-*              standard representatives.
-*
-* Arguments:   - poly *a: pointer to input/output polynomial
-**************************************************/
-void poly_freeze(poly *a) {
-  unsigned int i;
-  DBENCH_START();
-
-  for(i = 0; i < N; ++i)
-    a->coeffs[i] = freeze(a->coeffs[i]);
-
-  DBENCH_STOP(*tred);
-}
-
-/*************************************************
 * Name:        poly_add
 *
 * Description: Add polynomials. No modular reduction is performed.
@@ -442,31 +424,31 @@ static unsigned int rej_eta(int32_t *a,
 *              output stream from SHAKE256(seed|nonce) or AES256CTR(seed,nonce).
 *
 * Arguments:   - poly *a: pointer to output polynomial
-*              - const uint8_t seed[]: byte array with seed of length SEEDBYTES
+*              - const uint8_t seed[]: byte array with seed of length CRHBYTES
 *              - uint16_t nonce: 2-byte nonce
 **************************************************/
 #if ETA == 2
-#define POLY_UNIFORM_ETA_NBLOCKS ((136 + STREAM128_BLOCKBYTES - 1)/STREAM128_BLOCKBYTES)
+#define POLY_UNIFORM_ETA_NBLOCKS ((136 + STREAM256_BLOCKBYTES - 1)/STREAM256_BLOCKBYTES)
 #elif ETA == 4
-#define POLY_UNIFORM_ETA_NBLOCKS ((227 + STREAM128_BLOCKBYTES - 1)/STREAM128_BLOCKBYTES)
+#define POLY_UNIFORM_ETA_NBLOCKS ((227 + STREAM256_BLOCKBYTES - 1)/STREAM256_BLOCKBYTES)
 #endif
 void poly_uniform_eta(poly *a,
-                      const uint8_t seed[SEEDBYTES],
+                      const uint8_t seed[CRHBYTES],
                       uint16_t nonce)
 {
   unsigned int ctr;
-  unsigned int buflen = POLY_UNIFORM_ETA_NBLOCKS*STREAM128_BLOCKBYTES;
-  uint8_t buf[POLY_UNIFORM_ETA_NBLOCKS*STREAM128_BLOCKBYTES];
-  stream128_state state;
+  unsigned int buflen = POLY_UNIFORM_ETA_NBLOCKS*STREAM256_BLOCKBYTES;
+  uint8_t buf[POLY_UNIFORM_ETA_NBLOCKS*STREAM256_BLOCKBYTES];
+  stream256_state state;
 
-  stream128_init(&state, seed, nonce);
-  stream128_squeezeblocks(buf, POLY_UNIFORM_ETA_NBLOCKS, &state);
+  stream256_init(&state, seed, nonce);
+  stream256_squeezeblocks(buf, POLY_UNIFORM_ETA_NBLOCKS, &state);
 
   ctr = rej_eta(a->coeffs, N, buf, buflen);
 
   while(ctr < N) {
-    stream128_squeezeblocks(buf, 1, &state);
-    ctr += rej_eta(a->coeffs + ctr, N - ctr, buf, STREAM128_BLOCKBYTES);
+    stream256_squeezeblocks(buf, 1, &state);
+    ctr += rej_eta(a->coeffs + ctr, N - ctr, buf, STREAM256_BLOCKBYTES);
   }
 }
 

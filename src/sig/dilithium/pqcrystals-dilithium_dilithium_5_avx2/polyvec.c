@@ -265,14 +265,14 @@ void polyvec_matrix_pointwise_montgomery(polyveck *t, const polyvecl mat[K], con
 /************ Vectors of polynomials of length L **************/
 /**************************************************************/
 
-void polyvecl_uniform_eta(polyvecl *v, const uint8_t seed[SEEDBYTES], uint16_t nonce) {
+void polyvecl_uniform_eta(polyvecl *v, const uint8_t seed[CRHBYTES], uint16_t nonce) {
   unsigned int i;
 
   for(i = 0; i < L; ++i)
     poly_uniform_eta(&v->vec[i], seed, nonce++);
 }
 
-void polyvecl_uniform_gamma1(polyvecl *v, const uint8_t seed[SEEDBYTES], uint16_t nonce) {
+void polyvecl_uniform_gamma1(polyvecl *v, const uint8_t seed[CRHBYTES], uint16_t nonce) {
   unsigned int i;
 
   for(i = 0; i < L; ++i)
@@ -284,21 +284,6 @@ void polyvecl_reduce(polyvecl *v) {
 
   for(i = 0; i < L; ++i)
     poly_reduce(&v->vec[i]);
-}
-
-/*************************************************
-* Name:        polyvecl_freeze
-*
-* Description: Reduce coefficients of polynomials in vector of length L
-*              to standard representatives.
-*
-* Arguments:   - polyvecl *v: pointer to input/output vector
-**************************************************/
-void polyvecl_freeze(polyvecl *v) {
-  unsigned int i;
-
-  for(i = 0; i < L; ++i)
-    poly_freeze(&v->vec[i]);
 }
 
 /*************************************************
@@ -388,7 +373,7 @@ int polyvecl_chknorm(const polyvecl *v, int32_t bound)  {
 /************ Vectors of polynomials of length K **************/
 /**************************************************************/
 
-void polyveck_uniform_eta(polyveck *v, const uint8_t seed[SEEDBYTES], uint16_t nonce) {
+void polyveck_uniform_eta(polyveck *v, const uint8_t seed[CRHBYTES], uint16_t nonce) {
   unsigned int i;
 
   for(i = 0; i < K; ++i)
@@ -423,21 +408,6 @@ void polyveck_caddq(polyveck *v) {
 
   for(i = 0; i < K; ++i)
     poly_caddq(&v->vec[i]);
-}
-
-/*************************************************
-* Name:        polyveck_freeze
-*
-* Description: Reduce coefficients of polynomials in vector of length K
-*              to standard representatives.
-*
-* Arguments:   - polyveck *v: pointer to input/output vector
-**************************************************/
-void polyveck_freeze(polyveck *v)  {
-  unsigned int i;
-
-  for(i = 0; i < K; ++i)
-    poly_freeze(&v->vec[i]);
 }
 
 /*************************************************

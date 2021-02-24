@@ -13,7 +13,7 @@ OQS_SIG *OQS_SIG_dilithium_2_aes_new() {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_dilithium_2_aes;
-	sig->alg_version = "https://github.com/pq-crystals/dilithium/commit/1e63a1e880401166f105ab44ec67464c9714a315";
+	sig->alg_version = "https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409";
 
 	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;

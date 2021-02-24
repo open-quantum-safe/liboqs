@@ -20,7 +20,7 @@ upstreams:
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
     git_branch: master
-    git_commit: 71c1e9e912a6eb9bc7a40c9892aa4a382c968ead
+    git_commit: 9dddb2a0537734e749ec2c8d4f952cb90cd9e67b
     sig_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     sig_scheme_path: '.'
