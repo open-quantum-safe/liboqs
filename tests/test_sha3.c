@@ -158,34 +158,31 @@ int sha3_256_kat_test(void) {
 	OQS_SHA3_sha3_256_inc_init(&state);
 	OQS_SHA3_sha3_256_inc_absorb(&state, msg0, 0);
 	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
-	OQS_SHA3_sha3_256_inc_ctx_release(&state);
 
 	if (are_equal8(hash, exp0, 32) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	clear8(hash, 200);
-	OQS_SHA3_sha3_256_inc_init(&state);
+	OQS_SHA3_sha3_256_inc_ctx_reset(&state);
 	OQS_SHA3_sha3_256_inc_absorb(&state, msg24, 3);
 	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
-	OQS_SHA3_sha3_256_inc_ctx_release(&state);
 
 	if (are_equal8(hash, exp24, 32) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	clear8(hash, 200);
-	OQS_SHA3_sha3_256_inc_init(&state);
+	OQS_SHA3_sha3_256_inc_ctx_reset(&state);
 	OQS_SHA3_sha3_256_inc_absorb(&state, msg448, 56);
 	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
-	OQS_SHA3_sha3_256_inc_ctx_release(&state);
 
 	if (are_equal8(hash, exp448, 32) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	clear8(hash, 200);
-	OQS_SHA3_sha3_256_inc_init(&state);
+	OQS_SHA3_sha3_256_inc_ctx_reset(&state);
 	OQS_SHA3_sha3_256_inc_absorb(&state, msg1600, 200);
 	OQS_SHA3_sha3_256_inc_finalize(hash, &state);
 	OQS_SHA3_sha3_256_inc_ctx_release(&state);
@@ -302,34 +299,31 @@ int sha3_512_kat_test(void) {
 	OQS_SHA3_sha3_512_inc_init(&state);
 	OQS_SHA3_sha3_512_inc_absorb(&state, msg0, 0);
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
-	OQS_SHA3_sha3_512_inc_ctx_release(&state);
 
 	if (are_equal8(hash, exp0, 64) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	clear8(hash, 200);
-	OQS_SHA3_sha3_512_inc_init(&state);
+	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
 	OQS_SHA3_sha3_512_inc_absorb(&state, msg24, 3);
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
-	OQS_SHA3_sha3_512_inc_ctx_release(&state);
 
 	if (are_equal8(hash, exp24, 64) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	clear8(hash, 200);
-	OQS_SHA3_sha3_512_inc_init(&state);
+	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
 	OQS_SHA3_sha3_512_inc_absorb(&state, msg448, 56);
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
-	OQS_SHA3_sha3_512_inc_ctx_release(&state);
 
 	if (are_equal8(hash, exp448, 64) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
 	clear8(hash, 200);
-	OQS_SHA3_sha3_512_inc_init(&state);
+	OQS_SHA3_sha3_512_inc_ctx_reset(&state);
 	OQS_SHA3_sha3_512_inc_absorb(&state, msg1600, 200);
 	OQS_SHA3_sha3_512_inc_finalize(hash, &state);
 	OQS_SHA3_sha3_512_inc_ctx_release(&state);
@@ -464,17 +458,73 @@ int shake_128_kat_test(void) {
 	OQS_SHA3_shake128_inc_ctx state;
 	uint8_t hash[OQS_SHA3_SHAKE128_RATE * 4];
 
-	clear8(hash, OQS_SHA3_SHAKE128_RATE * 4);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_shake128_inc_init(&state);
-	OQS_SHA3_shake128_inc_absorb(&state, msg1600, 200);
+	OQS_SHA3_shake128_inc_absorb(&state, msg1600, sizeof(msg1600));
 	OQS_SHA3_shake128_inc_finalize(&state);
-	OQS_SHA3_shake128_inc_squeeze(hash, OQS_SHA3_SHAKE128_RATE * 4, &state);
+	OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state);
 	OQS_SHA3_shake128_inc_ctx_release(&state);
 
 	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
+	/* Test small absorb calls */
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_shake128_inc_init(&state);
+	for (size_t i = 0; i < sizeof(msg1600); i += 8) {
+		OQS_SHA3_shake128_inc_absorb(&state, msg1600 + i, 8);
+	}
+	OQS_SHA3_shake128_inc_finalize(&state);
+	OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state);
+	OQS_SHA3_shake128_inc_ctx_release(&state);
+
+	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Test small small squeeze calls */
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_shake128_inc_init(&state);
+	OQS_SHA3_shake128_inc_absorb(&state, msg1600, sizeof(msg1600));
+	OQS_SHA3_shake128_inc_finalize(&state);
+	for (size_t i = 0; i < sizeof(hash); i += 8) {
+		OQS_SHA3_shake128_inc_squeeze(hash + i, 8, &state);
+	}
+	OQS_SHA3_shake128_inc_ctx_release(&state);
+
+	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Test clone */
+	OQS_SHA3_shake128_inc_ctx state2;
+
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_shake128_inc_init(&state);
+	OQS_SHA3_shake128_inc_absorb(&state, msg1600, sizeof(msg1600));
+	OQS_SHA3_shake128_inc_finalize(&state);
+
+	OQS_SHA3_shake128_inc_init(&state2);
+	OQS_SHA3_shake128_inc_ctx_clone(&state2, &state);
+	OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state2);
+	OQS_SHA3_shake128_inc_ctx_release(&state2);
+
+	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Test reset */
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_shake128_inc_ctx_reset(&state);
+	OQS_SHA3_shake128_inc_absorb(&state, msg1600, sizeof(msg1600));
+	OQS_SHA3_shake128_inc_finalize(&state);
+	OQS_SHA3_shake128_inc_squeeze(hash, sizeof(hash), &state);
+	OQS_SHA3_shake128_inc_ctx_release(&state);
+
+	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
 	return status;
 }
 
@@ -601,17 +651,73 @@ int shake_256_kat_test(void) {
 	OQS_SHA3_shake256_inc_ctx state;
 	uint8_t hash[OQS_SHA3_SHAKE256_RATE * 4];
 
-	clear8(hash, OQS_SHA3_SHAKE256_RATE * 4);
+	clear8(hash, sizeof(hash));
 	OQS_SHA3_shake256_inc_init(&state);
-	OQS_SHA3_shake256_inc_absorb(&state, msg1600, 200);
+	OQS_SHA3_shake256_inc_absorb(&state, msg1600, sizeof(msg1600));
 	OQS_SHA3_shake256_inc_finalize(&state);
-	OQS_SHA3_shake256_inc_squeeze(hash, OQS_SHA3_SHAKE256_RATE * 4, &state);
+	OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state);
 	OQS_SHA3_shake256_inc_ctx_release(&state);
 
 	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
 
+	/* Test small absorb calls */
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_shake256_inc_init(&state);
+	for (size_t i = 0; i < sizeof(msg1600); i += 8) {
+		OQS_SHA3_shake256_inc_absorb(&state, msg1600 + i, 8);
+	}
+	OQS_SHA3_shake256_inc_finalize(&state);
+	OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state);
+	OQS_SHA3_shake256_inc_ctx_release(&state);
+
+	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Test small small squeeze calls */
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_shake256_inc_init(&state);
+	OQS_SHA3_shake256_inc_absorb(&state, msg1600, sizeof(msg1600));
+	OQS_SHA3_shake256_inc_finalize(&state);
+	for (size_t i = 0; i < sizeof(hash); i += 8) {
+		OQS_SHA3_shake256_inc_squeeze(hash + i, 8, &state);
+	}
+	OQS_SHA3_shake256_inc_ctx_release(&state);
+
+	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Test clone */
+	OQS_SHA3_shake256_inc_ctx state2;
+
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_shake256_inc_init(&state);
+	OQS_SHA3_shake256_inc_absorb(&state, msg1600, sizeof(msg1600));
+	OQS_SHA3_shake256_inc_finalize(&state);
+
+	OQS_SHA3_shake256_inc_init(&state2);
+	OQS_SHA3_shake256_inc_ctx_clone(&state2, &state);
+	OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state2);
+	OQS_SHA3_shake256_inc_ctx_release(&state2);
+
+	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
+
+	/* Test reset */
+	clear8(hash, sizeof(hash));
+	OQS_SHA3_shake256_inc_ctx_reset(&state);
+	OQS_SHA3_shake256_inc_absorb(&state, msg1600, sizeof(msg1600));
+	OQS_SHA3_shake256_inc_finalize(&state);
+	OQS_SHA3_shake256_inc_squeeze(hash, sizeof(hash), &state);
+	OQS_SHA3_shake256_inc_ctx_release(&state);
+
+	if (are_equal8(hash, exp1600, 512) == EXIT_FAILURE) {
+		status = EXIT_FAILURE;
+	}
 	return status;
 }
 
