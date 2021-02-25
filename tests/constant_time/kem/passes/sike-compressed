@@ -1,0 +1,53 @@
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:PKBDecompression
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:PKBDecompression_extended
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:PKADecompression_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:Tate?_pairings
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:BuildOrdinary?nBasis_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:solve_dlog
+}
+{
+   Vartime binary gcd for inverse of final C24 is safe.
+   # Review: https://github.com/open-quantum-safe/liboqs/issues/888
+   Memcheck:Cond
+   ...
+   fun:fp2inv*_mont_bingcd
+   src:sidh_compressed.c:590 # fun:FullIsogeny_A_dual
+}
+
+{
+   Vartime binary gcd for inverse of final C24 is safe.
+   # Review: https://github.com/open-quantum-safe/liboqs/issues/888
+   Memcheck:Cond
+   ...
+   fun:fp2inv*_mont_bingcd
+   src:sidh_compressed.c:993 # fun:FullIsogeny_B_dual
+}

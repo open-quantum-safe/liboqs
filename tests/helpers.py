@@ -158,3 +158,29 @@ def get_kats(t):
      with open(os.path.join('tests', 'KATs', t, 'kats.json'), 'r') as fp:
       kats[t] = json.load(fp)
    return kats[t]
+
+@functools.lru_cache()
+def get_valgrind_version():
+    try:
+        version = run_subprocess(['valgrind', '--version'])
+        x,y,z = map(int, version.replace('valgrind-','').split('.'))
+    except:
+        x,y,z = 0,0,0
+    return x, y, z
+
+def test_requires_valgrind_version_at_least(x,y,z):
+    (X,Y,Z) = get_valgrind_version()
+    return pytest.mark.skipif((X < x) or (X == x and Y < y) or (X == x and Y == y and Z < z),
+                reason='Test requires Valgrind >= {}.{}.{}'.format(x,y,z))
+
+@functools.lru_cache()
+def test_requires_build_options(*options):
+    enabled = {opt : False for opt in options}
+    with open(os.path.join('build', 'include', 'oqs', 'oqsconfig.h')) as fh:
+        for line in fh:
+            opt = line.split(' ')[1] if line.startswith('#define ') else None
+            if opt in options:
+                enabled[opt] = True
+    missing = ', '.join([opt for opt in options if not enabled[opt]])
+    return pytest.mark.skipif(not all(enabled.values()),
+                reason='Test requires missing build options {}'.format(missing))

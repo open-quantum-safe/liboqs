@@ -1,0 +1,18 @@
+{
+   The implementation of BIKE in liboqs is not constant time
+   Memcheck:Cond
+   ...
+   fun:OQS_KEM_bike*
+}
+{
+   The implementation of BIKE in liboqs is not constant time
+   Memcheck:Value1
+   ...
+   fun:OQS_KEM_bike*
+}
+{
+   The implementation of BIKE in liboqs is not constant time
+   Memcheck:Value8
+   ...
+   fun:OQS_KEM_bike*
+}

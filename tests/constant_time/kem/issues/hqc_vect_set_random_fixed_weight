@@ -1,0 +1,6 @@
+{
+   Non-constant-time indexing into "v" using secret "tmp"
+   Memcheck:Value8
+   src:vector.c:90
+   # fun:PQCLEAN_HQCRMRS*_CLEAN_vect_set_random_fixed_weight
+}

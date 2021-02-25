@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
+option(OQS_ENABLE_TEST_CONSTANT_TIME "Build test suite with support for Valgrind-based detection of non-constant time behaviour." OFF)
+
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wbad-function-cast)
@@ -91,6 +93,12 @@ target_link_libraries(test_sig_mem PRIVATE ${API_TEST_DEPS})
 
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
+
+# Enable Valgrind-based timing side-channel analysis for test_kem and test_sig
+if(OQS_ENABLE_TEST_CONSTANT_TIME AND NOT OQS_DEBUG_BUILD)
+    message(WARNING "OQS_ENABLE_TEST_CONSTANT_TIME is incompatible with CMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}.")
+    set(OQS_ENABLE_TEST_CONSTANT_TIME OFF)
+endif()
 
 # Record compile options -- from target speed_kem - don't set any options only for speed_kem!
 get_property(OQS_COMPILE_OPTIONS TARGET speed_kem PROPERTY COMPILE_OPTIONS)

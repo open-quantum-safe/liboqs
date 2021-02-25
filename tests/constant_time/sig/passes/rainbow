@@ -1,0 +1,25 @@
+{
+   Rejection sampling for solvable first layer
+   Memcheck:Cond
+   src:rainbow.c:43 # fun:PQCLEAN_RAINBOW*_CLEAN_rainbow_sign
+   ...
+   fun:PQCLEAN_RAINBOW*_CLEAN_crypto_sign_signature
+}
+{
+   Rejection sampling for solvable second layer
+   Memcheck:Cond
+   src:rainbow.c:76 # fun:PQCLEAN_RAINBOW*_CLEAN_rainbow_sign
+   ...
+   fun:PQCLEAN_RAINBOW*_CLEAN_crypto_sign_signature
+}
+{
+   Number of random bytes consumed is not secret
+   Memcheck:Cond
+   src:utils_prng.c:21 # fun:prng_update
+   fun:randombytes_with_state
+}
+{
+   Number of random bytes consumed is not secret
+   Memcheck:Cond
+   src:utils_prng.c:59 # fun:randombytes_with_state
+}

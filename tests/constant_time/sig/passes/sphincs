@@ -1,0 +1,21 @@
+{
+   Starting position of chain is not secret
+   Memcheck:Cond
+   src:wots.c:47 # fun:gen_chain
+   fun:PQCLEAN_SPHINCS*_CLEAN_wots_sign
+   fun:PQCLEAN_SPHINCS*_CLEAN_crypto_sign_signature
+}
+{
+   Authentication path is not secret
+   Memcheck:Cond
+   src:utils.c:127 # fun:PQCLEAN_SPHINCS*_*_treehash
+   ...
+   fun:PQCLEAN_SPHINCS*_crypto_sign_signature
+}
+{
+   Authentication path is not secret
+   Memcheck:Cond
+   src:utils.c:150 # fun:PQCLEAN_SPHINCS*_*_treehash
+   ...
+   fun:PQCLEAN_SPHINCS*_crypto_sign_signature
+}

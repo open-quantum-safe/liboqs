@@ -1,0 +1,29 @@
+{
+   Rejection sampling to produce public "A" matrix
+   Memcheck:Cond
+   fun:rej_uniform
+   fun:pqcrystals_kyber*_ref_gen_matrix
+   fun:pqcrystals_kyber*_ref_indcpa_*
+}
+{
+   Rejection sampling to produce public "A" matrix
+   Memcheck:Cond
+   ...
+   fun:pqcrystals_kyber*_avx2_rej_uniform_avx
+   fun:pqcrystals_kyber*_avx2_gen_matrix
+   fun:pqcrystals_kyber*_avx2_indcpa_*
+}
+{
+   Rejection sampling to produce public "A" matrix
+   Memcheck:Value8
+   ...
+   fun:pqcrystals_kyber*_avx2_rej_uniform_avx
+   fun:pqcrystals_kyber*_avx2_gen_matrix
+   fun:pqcrystals_kyber*_avx2_indcpa_*
+}
+{
+   Rejection sampling to produce public "A" matrix
+   Memcheck:Cond
+   src:indcpa.c:195 # fun:pqcrystals_kyber*90s_avx2_gen_matrix
+   fun:pqcrystals_kyber*90s_avx2_indcpa_*
+}

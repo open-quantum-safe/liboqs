@@ -1,0 +1,122 @@
+{
+   The input to expandChallenge is declassified
+   Memcheck:Cond
+   ...
+   fun:expandChallenge
+   fun:HCP
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   The list of missing leaves is not secret
+   Memcheck:Cond
+   ...
+   fun:getMissingLeavesList
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   The list of revealed nodes is not secret
+   Memcheck:Cond
+   ...
+   fun:oqs_sig_picnic_revealSeeds
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   The list of revealed nodes is not secret
+   Memcheck:Value8
+   ...
+   fun:oqs_sig_picnic_revealSeeds
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   challengeC is declassified
+   Memcheck:Cond
+   fun:contains
+   src:picnic3_impl.c:685 # fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   challengeC is declassified
+   Memcheck:Cond
+   fun:indexOf
+   src:picnic3_impl.c:687 # fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   challengeP is declassified
+   Memcheck:Cond
+   src:picnic3_impl.c:698 # fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   challengeP is declassified
+   Memcheck:Value8
+   src:picnic3_impl.c:703 # fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   Index of the unopened party is declassified
+   Memcheck:Cond
+   src:picnic3_impl.c:707 # fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   Index of the unopened party is declassified
+   Memcheck:Cond
+   fun:oqs_sig_picnic_getLeaf
+   src:picnic3_impl.c:708 # fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   Index of the unopened party is declassified
+   Memcheck:Value8
+   fun:oqs_sig_picnic_getLeaf
+   src:picnic3_impl.c:708 # fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   Index of the unopened party is declassified
+   Memcheck:Cond
+   fun:oqs_sig_picnic_getLeaf
+   src:picnic3_impl.c:711 # fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   Index of the unopened party is declassified
+   Memcheck:Value8
+   fun:oqs_sig_picnic_getLeaf
+   src:picnic3_impl.c:711 # fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   The signature does not need to be serialized in constant time
+   Memcheck:Cond
+   ...
+   fun:serializeSignature2
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
+{
+   The return value of "timingsafe_bcmp" is declassified
+   Memcheck:Cond
+   src:picnic3_simulate.c.i:44 # fun:lowmc_simulate_online_s128_129_43
+   fun:sign_picnic3
+   fun:oqs_sig_picnic_impl_sign_picnic3
+   fun:oqs_sig_picnic_sign
+}
