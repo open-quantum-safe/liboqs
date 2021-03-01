@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
+set(_FRODOKEM_OBJS "")
+
 if(OQS_ENABLE_KEM_frodokem_640_aes)
     set(SRCS kem_frodokem640aes.c external/frodo640aes.c)
 endif()
@@ -22,6 +24,7 @@ if(OQS_ENABLE_KEM_frodokem_1344_shake)
 endif()
 
 add_library(frodokem OBJECT ${SRCS})
+set(_FRODOKEM_OBJS ${_FRODOKEM_OBJS} $<TARGET_OBJECTS:frodokem>)
 
 set(SRCS_AVX2 "")
 if(OQS_PORTABLE_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
@@ -47,4 +50,7 @@ if(OQS_PORTABLE_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
 
     add_library(frodokem_avx2 OBJECT ${SRCS_AVX2})
     target_compile_options(frodokem_avx2 PRIVATE -mavx2)
+    set(_FRODOKEM_OBJS ${_FRODOKEM_OBJS} $<TARGET_OBJECTS:frodokem_avx2>)
 endif()
+
+set(FRODOKEM_OBJS ${_FRODOKEM_OBJS} PARENT_SCOPE)
