@@ -5,6 +5,8 @@
 #cmakedefine OQS_PORTABLE_BUILD 1
 #cmakedefine OQS_PORTABLE_X86_64_BUILD 1
 #cmakedefine OQS_DEBUG_BUILD 1
+#cmakedefine ARCH_X86_64 1
+#cmakedefine ARCH_ARM_ANY 1
 
 #cmakedefine OQS_KEM_DEFAULT @OQS_KEM_DEFAULT@
 #cmakedefine OQS_SIG_DEFAULT @OQS_SIG_DEFAULT@
