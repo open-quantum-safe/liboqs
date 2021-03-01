@@ -14,6 +14,10 @@ endif()
 
 project(liboqs C ASM)
 
+option(OQS_PORTABLE_BUILD "Ensure the resulting library is portable. This implies having run-time checks for CPU extensions." ON)
+option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
+option(OQS_MINIMAL_BUILD  "Only build the default KEM and Signature schemes." OFF)
+
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
@@ -32,6 +36,10 @@ else()
     message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR})
 endif()
 
+if(OQS_PORTABLE_BUILD AND ARCH STREQUAL "x86_64")
+    set(OQS_PORTABLE_X86_64_BUILD ON)
+endif()
+
 if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
     set(OQS_DEBUG_BUILD ON)
 else()
@@ -41,10 +49,6 @@ endif()
 if(WIN32)
     set(CMAKE_GENERATOR_CC cl)
 endif()
-
-option(OQS_PORTABLE_BUILD "Ensure the resulting library is portable. This implies having run-time checks for CPU extensions." ON)
-option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
-option(OQS_MINIMAL_BUILD  "Only build the default KEM and Signature schemes." OFF)
 
 include(.CMake/compiler_opts.cmake)
 include(.CMake/alg_support.cmake)

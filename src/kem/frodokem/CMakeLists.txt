@@ -24,7 +24,7 @@ endif()
 add_library(frodokem OBJECT ${SRCS})
 
 set(SRCS_AVX2 "")
-if(OQS_PORTABLE_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
+if(OQS_PORTABLE_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
     if(OQS_ENABLE_KEM_frodokem_640_aes)
         set(SRCS_AVX2 ${SRCS_AVX2} external/frodo640aes_avx2.c)
     endif()
