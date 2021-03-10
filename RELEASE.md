@@ -1,5 +1,5 @@
-liboqs version 0.5.0-rc1
-========================
+liboqs version 0.5.0
+====================
 
 About
 -----
@@ -29,7 +29,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 for version 0.5.0 of liboqs.  It was released on February 27, 2021.
+This is version 0.5.0 of liboqs.  It was released on March 10, 2021.
 
 What's New
 ----------
