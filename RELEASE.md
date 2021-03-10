@@ -1,5 +1,5 @@
-liboqs version 0.5.0
-====================
+liboqs version 0.5.1-dev
+========================
 
 About
 -----
@@ -29,39 +29,15 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is version 0.5.0 of liboqs.  It was released on March 10, 2021.
+This is the development track for version 0.5.1 of liboqs.  It was released on XXX.
 
 What's New
 ----------
 
-This release continues from the 0.4.0 release of liboqs.  Its main goal is to incorporate updates submitted to Round 3 of the NIST Post-Quantum Cryptography Standardization Project.
-
-### Deprecations
-
-As a result of NIST's announcement of Round 3 of the Post-Quantum Cryptography Standardization Project, the 0.4.x series was the last release of liboqs to contain algorithms from Round 2 that are not Round 3 finalists or alternate candidates.  Those algorithms have been removed in the 0.5.0 series.  The algorithms in question are: NewHope, ThreeBears, MQDSS, and qTesla.
+This release continues from the 0.5.0 release of liboqs.
 
 ### Key encapsulation mechanisms
 
-- BIKE: No changes.
-- Classic McEliece: Added AVX2 implementation.
-- FrodoKEM: Incorporate upstream bug fixes and add runtime CPU feature detection for AVX2/AES-NI implementation.
-- HQC: Update to Round 3 version.
-- Kyber: Update to Round 3 version.
-- NTRU: Incorporate upstream bug fixes.
-- NTRUPrime: Add NTRUPrime.
-- Saber: Update to Round 3 version.
-- SIKE: Update to version 3.4.
-
 ### Digital signature schemes
 
-- Dilithium: Update to version 3.1.
-- Falcon: Update to Round 3 version.
-- Picnic: Update to Picnic v3.0.4.
-- Rainbow: Update to Round 3 version.
-- SPHINCS+: Incorporate upstream bug fixes.
-
 ### Other changes
-
-- Support for building liboqs with CPU extensions has been enhanced, and most implementations now have runtime CPU feature detection.
-- A tool for benchmarking memory usage has been added (`test_kem_mem` and `test_sig_mem`).
-- Valgrind is used to check for secret-dependent branch throughout the library. Note that not all implementations currently avoid secret-dependent branching; see `tests/constant_time` for details.
