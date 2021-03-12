@@ -101,15 +101,6 @@ typedef enum {
 #if defined(OQS_USE_CPU_EXTENSIONS)
 
 /**
- * Architecture macros.
- */
-#if (defined(_M_X64) || defined(__x86_64__))
-#define ARCH_X86_64
-#elif (defined(__arm__) || defined(_M_ARM) || defined(__aarch64__))
-#define ARCH_ARM_ANY
-#endif
-
-/**
  * CPU runtime detection flags
  */
 #if defined(ARCH_X86_64)

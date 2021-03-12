@@ -16,76 +16,61 @@
 
 #define frodo_mul_add_as_plus_e_actual frodo_mul_add_as_plus_e_portable
 #include "frodo_macrify_as_plus_e.c"
-#if defined(OQS_USE_AVX2_INSTRUCTIONS)
+
 int frodo_mul_add_as_plus_e_avx2(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
-#endif
+int frodo_mul_add_sa_plus_e_aes_avx2(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
+int frodo_mul_add_sa_plus_e_aes_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
+int frodo_mul_add_sa_plus_e_shake_avx2(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
+int frodo_mul_add_sa_plus_e_shake_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
 
 int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A)
 { // Generate-and-multiply: generate matrix A (N x N) row-wise, multiply by s on the right.
   // Inputs: s, e (N x N_BAR)
   // Output: out = A*s + e (N x N_BAR)
-#if defined(OQS_USE_AVX2_INSTRUCTIONS)
-  #if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_PORTABLE_X86_64_BUILD)
     OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
     if (available_cpu_extensions.AVX2_ENABLED) {
       return frodo_mul_add_as_plus_e_avx2(out, s, e, seed_A);
     } else {
       return frodo_mul_add_as_plus_e_portable(out, s, e, seed_A);
     }
-  #else // OQS_USE_AVX2_INSTRUCTIONS && !(OQS_PORTABLE_BUILD)
-    return frodo_mul_add_as_plus_e_avx2(out, s, e, seed_A);
-  #endif
-#else // !(OQS_USE_AVX2_INSTRUCTIONS)
+#elif defined(OQS_USE_AVX2_INSTRUCTIONS)
+  return frodo_mul_add_as_plus_e_avx2(out, s, e, seed_A);
+#else
   return frodo_mul_add_as_plus_e_portable(out, s, e, seed_A);
 #endif
 }
-
-#if defined(USE_AES128_FOR_A)
-int frodo_mul_add_sa_plus_e_aes_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
-#if defined(OQS_USE_AES_INSTRUCTIONS) && defined(OQS_USE_AVX2_INSTRUCTIONS)
-int frodo_mul_add_sa_plus_e_aes_avx2(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
-#endif
-#elif defined(USE_SHAKE128_FOR_A)
-int frodo_mul_add_sa_plus_e_shake_portable(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
-#if defined(OQS_USE_AVX2_INSTRUCTIONS)
-int frodo_mul_add_sa_plus_e_shake_avx2(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A);
-#endif
-#endif
 
 int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e, const uint8_t *seed_A)
 { // Generate-and-multiply: generate matrix A (N x N) column-wise, multiply by s' on the left.
   // Inputs: s', e' (N_BAR x N)
   // Output: out = s'*A + e' (N_BAR x N)
 #if defined(USE_AES128_FOR_A)
- #if defined(OQS_USE_AES_INSTRUCTIONS) && defined(OQS_USE_AVX2_INSTRUCTIONS)
-  #if defined(OQS_PORTABLE_BUILD)
+  #if defined(OQS_PORTABLE_X86_64_BUILD)
     OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-    if (available_cpu_extensions.AES_ENABLED && available_cpu_extensions.AVX2_ENABLED) {
+    if (available_cpu_extensions.AVX2_ENABLED) {
         return frodo_mul_add_sa_plus_e_aes_avx2(out, s, e, seed_A);
     } else {
         return frodo_mul_add_sa_plus_e_aes_portable(out, s, e, seed_A);
     }
-  #else // OQS_USE_AES_INSTRUCTIONS && OQS_USE_AVX2_INSTRUCTIONS && !(OQS_PORTABLE_BUILD)
+  #elif defined(OQS_USE_AVX2_INSTRUCTIONS)
     return frodo_mul_add_sa_plus_e_aes_avx2(out, s, e, seed_A);
-  #endif
- #else // !(OQS_USE_AES_INSTRUCTIONS && OQS_USE_AVX2_INSTRUCTIONS)
+  #else
     return frodo_mul_add_sa_plus_e_aes_portable(out, s, e, seed_A);
- #endif
-#else // USE_SHAKE128_FOR_A
- #if defined(OQS_USE_AVX2_INSTRUCTIONS)
-  #if defined(OQS_PORTABLE_BUILD)
-   OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-   if (available_cpu_extensions.AVX2_ENABLED) {
-       return frodo_mul_add_sa_plus_e_shake_avx2(out, s, e, seed_A);
-   } else {
-       return frodo_mul_add_sa_plus_e_shake_portable(out, s, e, seed_A);
-   }
-  #else // OQS_USE_AVX2_INSTRUCTIONS && !(OQS_PORTABLE_BUILD)
-   return frodo_mul_add_sa_plus_e_shake_avx2(out, s, e, seed_A);
   #endif
- #else // !(OQS_USE_AVX2_INSTRUCTIONS)
-   return frodo_mul_add_sa_plus_e_shake_portable(out, s, e, seed_A);
- #endif
+#elif defined(USE_SHAKE128_FOR_A)
+  #if defined(OQS_PORTABLE_X86_64_BUILD)
+    OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
+    if (available_cpu_extensions.AVX2_ENABLED) {
+        return frodo_mul_add_sa_plus_e_shake_avx2(out, s, e, seed_A);
+    } else {
+        return frodo_mul_add_sa_plus_e_shake_portable(out, s, e, seed_A);
+    }
+  #elif defined(OQS_USE_AVX2_INSTRUCTIONS)
+    return frodo_mul_add_sa_plus_e_shake_avx2(out, s, e, seed_A);
+  #else
+    return frodo_mul_add_sa_plus_e_shake_portable(out, s, e, seed_A);
+  #endif
 #endif
 }
 
