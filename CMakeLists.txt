@@ -40,6 +40,11 @@ else()
     message(FATAL_ERROR "Unknown or unsupported processor: " ${CMAKE_SYSTEM_PROCESSOR})
 endif()
 
+if(NOT OQS_USE_CPU_EXTENSIONS AND OQS_PORTABLE_BUILD)
+    message(WARNING "OQS_PORTABLE_BUILD requires OQS_USE_CPU_EXTENSIONS")
+    set(OQS_PORTABLE_BUILD OFF)
+endif()
+
 if(OQS_PORTABLE_BUILD AND ARCH_X86_64)
     set(OQS_PORTABLE_X86_64_BUILD ON)
 endif()
