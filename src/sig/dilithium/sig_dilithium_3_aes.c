@@ -42,8 +42,7 @@ extern int pqcrystals_dilithium3aes_avx2_verify(const uint8_t *sig, size_t sigle
 OQS_API OQS_STATUS OQS_SIG_dilithium_3_aes_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_dilithium_3_aes_avx2)
 #if defined(OQS_DIST_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.AES_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_AES) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) pqcrystals_dilithium3aes_avx2_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
@@ -59,8 +58,7 @@ OQS_API OQS_STATUS OQS_SIG_dilithium_3_aes_keypair(uint8_t *public_key, uint8_t 
 OQS_API OQS_STATUS OQS_SIG_dilithium_3_aes_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_dilithium_3_aes_avx2)
 #if defined(OQS_DIST_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.AES_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_AES) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) pqcrystals_dilithium3aes_avx2_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
@@ -76,8 +74,7 @@ OQS_API OQS_STATUS OQS_SIG_dilithium_3_aes_sign(uint8_t *signature, size_t *sign
 OQS_API OQS_STATUS OQS_SIG_dilithium_3_aes_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_SIG_dilithium_3_aes_avx2)
 #if defined(OQS_DIST_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.AES_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_AES) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) pqcrystals_dilithium3aes_avx2_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)

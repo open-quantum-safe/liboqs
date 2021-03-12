@@ -11,8 +11,7 @@
 
 #if defined(OQS_DIST_X86_64_BUILD)
 #define C_OR_NI(stmt_c, stmt_ni) \
-    OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions(); \
-    if (available_cpu_extensions.AES_ENABLED) { \
+    if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) { \
         stmt_ni; \
     } else { \
         stmt_c; \

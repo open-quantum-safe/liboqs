@@ -98,47 +98,34 @@ typedef enum {
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
 
-#if defined(OQS_DIST_BUILD)
-
 /**
  * CPU runtime detection flags
  */
-#if defined(ARCH_X86_64)
-typedef struct {
-	unsigned int AES_ENABLED;
-	unsigned int AVX_ENABLED;
-	unsigned int AVX2_ENABLED;
-	unsigned int AVX512_ENABLED;
-	unsigned int BMI1_ENABLED;
-	unsigned int BMI2_ENABLED;
-	unsigned int PCLMULQDQ_ENABLED;
-	unsigned int POPCNT_ENABLED;
-	unsigned int SSE_ENABLED;
-	unsigned int SSE2_ENABLED;
-	unsigned int SSE3_ENABLED;
-} OQS_CPU_EXTENSIONS;
-#elif defined(ARCH_ARM_ANY)
-typedef struct {
-	unsigned int NEON_ENABLED;
-} OQS_CPU_EXTENSIONS;
-#endif
-/* Keep in sync with name array in common.c ! */
+typedef enum {
+	OQS_CPU_EXT_INIT, /* Must be first */
+	/* Start extension list */
+	OQS_CPU_EXT_AES,
+	OQS_CPU_EXT_AVX,
+	OQS_CPU_EXT_AVX2,
+	OQS_CPU_EXT_AVX512,
+	OQS_CPU_EXT_BMI1,
+	OQS_CPU_EXT_BMI2,
+	OQS_CPU_EXT_PCLMULQDQ,
+	OQS_CPU_EXT_POPCNT,
+	OQS_CPU_EXT_SSE,
+	OQS_CPU_EXT_SSE2,
+	OQS_CPU_EXT_SSE3,
+	OQS_CPU_EXT_NEON,
+	/* End extension list */
+	OQS_CPU_EXT_COUNT, /* Must be last */
+} OQS_CPU_EXT;
 
 /**
- * Returns a list of available CPU extensions.
+ * Checks if the CPU supports a given extension
  *
- * \return Struct of type OQS_CPU_EXTENSIONS containing flags for runtime CPU extension detection.
+ * \return 1 if the given CPU extension is available, 0 otherwise.
  */
-OQS_API OQS_CPU_EXTENSIONS OQS_get_available_CPU_extensions(void);
-
-/**
- * Returns name of available CPU extension.
- *
- * \return name of extension indexed by struct entry number
- */
-OQS_API const char *OQS_get_cpu_extension_name(unsigned int i);
-
-#endif /* OQS_DIST_BUILD */
+OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext);
 
 /**
  * This currently only sets the values in the OQS_CPU_EXTENSIONS,

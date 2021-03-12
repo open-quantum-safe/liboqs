@@ -42,18 +42,17 @@ static void print_platform_info(void) {
 #include <openssl/opensslv.h>
 #endif
 
-#if defined(OQS_DIST_BUILD)
+#if defined(OQS_DIST_X86_64_BUILD)
 #define C_OR_NI(stmt_c, stmt_ni) \
-    OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions(); \
-    if (available_cpu_extensions.AES_ENABLED) { \
+    if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) { \
         stmt_ni; \
     } else { \
         stmt_c; \
     }
-#elif defined(OQS_USE_AES_INSTRUCTIONS) /* && !defined(OQS_DIST_BUILD) */
+#elif defined(OQS_USE_AES_INSTRUCTIONS)
 #define  C_OR_NI(stmt_c, stmt_ni) \
     stmt_ni;
-#else /* !defined(OQS_DIST_BUILD) */
+#else
 #define  C_OR_NI(stmt_c, stmt_ni) \
     stmt_c;
 #endif
@@ -61,31 +60,56 @@ static void print_platform_info(void) {
 /* Display all active CPU extensions: */
 static void print_cpu_extensions(void) {
 #if defined(OQS_DIST_BUILD)
-	/* Make CPU features struct iterable */
-	typedef union ext_u {
-		OQS_CPU_EXTENSIONS ext_x;
-		unsigned int ext_a[sizeof(OQS_CPU_EXTENSIONS) / sizeof(unsigned int)];
-	} OQS_CPU_EXTENSIONS_UNION;
-
-	OQS_CPU_EXTENSIONS_UNION ext_u;
-	ext_u.ext_x = OQS_get_available_CPU_extensions();
-	printf("CPU exts active:  ");
-	unsigned int it = sizeof(ext_u.ext_a) / sizeof(ext_u.ext_a[0]);
-	for (unsigned int i = 0; i < it; i++) {
-		if (ext_u.ext_a[i]) {
-			const char *aname = OQS_get_cpu_extension_name(i);
-			if ((strlen(aname) > 0) && (i != it - 1)) {
-				printf("%s-", aname);
-			} else {
-				printf("%s", aname);
-			}
-		}
-	}
-#else /* no extensions active */
-	printf("CPU exts active:  None");
+	printf("CPU exts active:  (portable build)\n");
+#else
+	printf("CPU exts active: ");
+#ifdef OQS_USE_AES_INSTRUCTIONS
+	printf(" AES");
+#endif
+#ifdef OQS_USE_AVX_INSTRUCTIONS
+	printf(" AVX");
+#endif
+#ifdef OQS_USE_AVX2_INSTRUCTIONS
+	printf(" AVX2");
+#endif
+#ifdef OQS_USE_AVX512_INSTRUCTIONS
+	printf(" AVX512");
+#endif
+#ifdef OQS_USE_BMI1_INSTRUCTIONS
+	printf(" BMI1");
+#endif
+#ifdef OQS_USE_BMI2_INSTRUCTIONS
+	printf(" BMI2");
+#endif
+#ifdef OQS_USE_PCLMUL_INSTRUCTIONS
+	printf(" PCLMUL");
+#endif
+#ifdef OQS_USE_POPCNT_INSTRUCTIONS
+	printf(" POPCNT");
+#endif
+#ifdef OQS_USE_SSE_INSTRUCTIONS
+	printf(" SSE");
+#endif
+#ifdef OQS_USE_SSE2_INSTRUCTIONS
+	printf(" SSE2");
+#endif
+#ifdef OQS_USE_SSE3_INSTRUCTIONS
+	printf(" SSE3");
+#endif
+#ifdef OQS_USE_ARM_AES_INSTRUCTIONS
+	printf(" AES");
+#endif
+#ifdef OQS_USE_ARM_SHA2_INSTRUCTIONS
+	printf(" SHA2");
+#endif
+#ifdef OQS_USE_ARM_SHA3_INSTRUCTIONS
+	printf(" SHA3");
+#endif
+#ifdef OQS_USE_ARM_NEON_INSTRUCTIONS
+	printf(" NEON");
 #endif
 	printf("\n");
-
+#endif
 }
 
 static void print_oqs_configuration(void) {

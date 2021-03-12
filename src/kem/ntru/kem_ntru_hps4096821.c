@@ -43,8 +43,7 @@ extern int PQCLEAN_NTRUHPS4096821_AVX2_crypto_kem_dec(unsigned char *ss, const u
 OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_ntru_hps4096821_avx2)
 #if defined(OQS_DIST_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_NTRUHPS4096821_AVX2_crypto_kem_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
@@ -60,8 +59,7 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_keypair(uint8_t *public_key, uint8_t 
 OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_KEM_ntru_hps4096821_avx2)
 #if defined(OQS_DIST_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_NTRUHPS4096821_AVX2_crypto_kem_enc(ciphertext, shared_secret, public_key);
 #if defined(OQS_DIST_BUILD)
@@ -77,8 +75,7 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_encaps(uint8_t *ciphertext, uint8_t *
 OQS_API OQS_STATUS OQS_KEM_ntru_hps4096821_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_ntru_hps4096821_avx2)
 #if defined(OQS_DIST_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI2_ENABLED) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_NTRUHPS4096821_AVX2_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)

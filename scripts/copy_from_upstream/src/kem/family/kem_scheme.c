@@ -84,8 +84,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
 #if defined(OQS_DIST_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if ({%- for flag in impl['required_flags'] -%}available_cpu_extensions.{{ flag|upper }}_ENABLED{%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
            {%- if impl['signature_keypair'] %}
 		return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
@@ -109,8 +108,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
 #if defined(OQS_DIST_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if ({%- for flag in impl['required_flags'] -%}available_cpu_extensions.{{ flag|upper }}_ENABLED{%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
            {%- if impl['signature_enc'] %}
 		return (OQS_STATUS) {{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
@@ -134,8 +132,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
 #if defined(OQS_DIST_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if ({%- for flag in impl['required_flags'] -%}available_cpu_extensions.{{ flag|upper }}_ENABLED{%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
+	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
            {%- if impl['signature_dec'] %}
 		return (OQS_STATUS) {{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
