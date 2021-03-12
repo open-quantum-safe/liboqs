@@ -2,7 +2,7 @@
  * \file kem.h
  * \brief Key encapsulation mechanisms
  *
- * The file `src/kem/example_kem.c` contains two examples on using the OQS_KEM API.
+ * The file `tests/example_kem.c` contains two examples on using the OQS_KEM API.
  *
  * The first example uses the individual scheme's algorithms directly and uses
  * no dynamic memory allocation -- all buffers are allocated on the stack, with
