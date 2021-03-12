@@ -432,6 +432,7 @@ if(OQS_MINIMAL_BUILD)
           # Case 3, platform specific
           string(REPLACE "_aesni" "" _var_base ${_var})
           string(REPLACE "_avx2" "" _var_base ${_var_base})
+          string(REPLACE "_avx" "" _var_base ${_var_base})
           if(${_var}_AVAILABLE)
               if(${_var_base}X STREQUAL ${default_kem_switch}X
               OR ${_var_base}X STREQUAL ${default_sig_switch}X)
