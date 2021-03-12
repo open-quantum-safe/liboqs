@@ -2,7 +2,7 @@
  * \file sig.h
  * \brief Signature schemes
  *
- * The file `src/sig/example_sig.c` contains two examples on using the OQS_SIG API.
+ * The file `tests/example_sig.c` contains two examples on using the OQS_SIG API.
  *
  * The first example uses the individual scheme's algorithms directly and uses
  * no dynamic memory allocation -- all buffers are allocated on the stack, with
