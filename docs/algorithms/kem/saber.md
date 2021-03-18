@@ -9,7 +9,7 @@
 ## Implementation
 
 - **Source of implementation**: https://github.com/KULeuven-COSIC/SABER/tree/509cc5ec3a7e12a751ccdd2ef5bd6e54e00bd350 via https://github.com/jschanck/package-pqclean/tree/1ae84c3c/saber
-- **Implementation version**: https://github.com/PQClean/PQClean.git, master, ebcc71c51a30b6e5db4f1fade22999b346fdafce
+- **Implementation version**: https://github.com/PQClean/PQClean.git, master, 865f0bd1d1dceb6624fc27e6395b14d2d03261ad
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AVX2 instructions (if available at run-time)
