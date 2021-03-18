@@ -1,0 +1,151 @@
+51a3f6b497710e4f1f561388a012a9c9c92744b5
+diff --git a/crypto_kem/mceliece348864/avx/int32_sort.c b/crypto_kem/mceliece348864/avx/int32_sort.c
+index f984819f..e58fad48 100644
+--- a/crypto_kem/mceliece348864/avx/int32_sort.c
++++ b/crypto_kem/mceliece348864/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
+diff --git a/crypto_kem/mceliece348864f/avx/int32_sort.c b/crypto_kem/mceliece348864f/avx/int32_sort.c
+index 3d00867d..6366953f 100644
+--- a/crypto_kem/mceliece348864f/avx/int32_sort.c
++++ b/crypto_kem/mceliece348864f/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
+diff --git a/crypto_kem/mceliece460896/avx/int32_sort.c b/crypto_kem/mceliece460896/avx/int32_sort.c
+index aae917bd..5cb32a03 100644
+--- a/crypto_kem/mceliece460896/avx/int32_sort.c
++++ b/crypto_kem/mceliece460896/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
+diff --git a/crypto_kem/mceliece460896f/avx/int32_sort.c b/crypto_kem/mceliece460896f/avx/int32_sort.c
+index d8c2b1c8..05e834f2 100644
+--- a/crypto_kem/mceliece460896f/avx/int32_sort.c
++++ b/crypto_kem/mceliece460896f/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
+diff --git a/crypto_kem/mceliece6688128/avx/int32_sort.c b/crypto_kem/mceliece6688128/avx/int32_sort.c
+index d55525e7..3140a486 100644
+--- a/crypto_kem/mceliece6688128/avx/int32_sort.c
++++ b/crypto_kem/mceliece6688128/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
+diff --git a/crypto_kem/mceliece6688128f/avx/int32_sort.c b/crypto_kem/mceliece6688128f/avx/int32_sort.c
+index f70f51dd..0de77a21 100644
+--- a/crypto_kem/mceliece6688128f/avx/int32_sort.c
++++ b/crypto_kem/mceliece6688128f/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
+diff --git a/crypto_kem/mceliece6960119/avx/int32_sort.c b/crypto_kem/mceliece6960119/avx/int32_sort.c
+index 02087a3e..21af880f 100644
+--- a/crypto_kem/mceliece6960119/avx/int32_sort.c
++++ b/crypto_kem/mceliece6960119/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
+diff --git a/crypto_kem/mceliece6960119f/avx/int32_sort.c b/crypto_kem/mceliece6960119f/avx/int32_sort.c
+index 73bf75a2..7aa3915a 100644
+--- a/crypto_kem/mceliece6960119f/avx/int32_sort.c
++++ b/crypto_kem/mceliece6960119f/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
+diff --git a/crypto_kem/mceliece8192128/avx/int32_sort.c b/crypto_kem/mceliece8192128/avx/int32_sort.c
+index 0e11f1c4..9af6cdd3 100644
+--- a/crypto_kem/mceliece8192128/avx/int32_sort.c
++++ b/crypto_kem/mceliece8192128/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
+diff --git a/crypto_kem/mceliece8192128f/avx/int32_sort.c b/crypto_kem/mceliece8192128f/avx/int32_sort.c
+index a35e886e..5e3059a6 100644
+--- a/crypto_kem/mceliece8192128f/avx/int32_sort.c
++++ b/crypto_kem/mceliece8192128f/avx/int32_sort.c
+@@ -4,8 +4,8 @@
+ #include <immintrin.h>
+ 
+ typedef __m256i int32x8;
+-#define int32x8_load(z) _mm256_loadu_si256((__m256i_u *) (z))
+-#define int32x8_store(z,i) _mm256_storeu_si256((__m256i_u *) (z),(i))
++#define int32x8_load(z) _mm256_loadu_si256((__m256i *) (z))
++#define int32x8_store(z,i) _mm256_storeu_si256((__m256i *) (z),(i))
+ #define int32x8_min _mm256_min_epi32
+ #define int32x8_max _mm256_max_epi32
+ 
