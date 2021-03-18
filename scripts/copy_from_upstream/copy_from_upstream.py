@@ -45,6 +45,11 @@ def file_put_contents(filename, s, encoding=None):
     with open(filename, mode='w', encoding=encoding) as fh:
         fh.write(s)
 
+def shell(command, expect=0):
+    subprocess_stdout = None if DEBUG > 0 else subprocess.DEVNULL
+    ret = subprocess.run(command, stdout=subprocess_stdout, stderr=subprocess_stdout)
+    if ret.returncode != expect:
+        raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
 def generator(destination_file_path, template_filename, family, scheme_desired):
     template = file_get_contents(
@@ -79,35 +84,39 @@ def replacer(filename, instructions, delimiter):
     file_put_contents(os.path.join(os.environ['LIBOQS_DIR'], filename), contents)
 
 def load_instructions():
-    subprocess_stdout = None if DEBUG > 0 else subprocess.DEVNULL
     instructions = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', 'copy_from_upstream.yml'),
         encoding='utf-8')
     instructions = yaml.safe_load(instructions)
     upstreams = {}
-    # drop instructions selectively if not ready
     for upstream in instructions['upstreams']:
         os.makedirs('repos', exist_ok=True)
         upstream_name = upstream['name']
         upstream_git_url = upstream['git_url']
         upstream_git_commit = upstream['git_commit']
         upstream_git_branch = upstream['git_branch']
-        ret = subprocess.run(
-            ['git', 'clone', '-b', upstream_git_branch, upstream_git_url, os.path.join('repos', upstream_name)],
-            stdout=subprocess_stdout, stderr=subprocess_stdout)
-        if ret.returncode != 0:
-            subprocess.run(
-                ['git', '--git-dir', os.path.join('repos', upstream_name, '.git'), '--work-tree',
-                 os.path.join('repos', upstream_name), 'fetch',
-                 'origin', upstream_git_branch], stdout=subprocess_stdout, stderr=subprocess_stdout)
-        subprocess.run(
-            ['git', '--git-dir', os.path.join('repos', upstream_name, '.git'), '--work-tree',
-             os.path.join('repos', upstream_name), 'checkout',
-             upstream_git_commit], stdout=subprocess_stdout, stderr=subprocess_stdout)
         upstreams[upstream_name] = upstream
+
+        work_dir = os.path.join('repos', upstream_name)
+        work_dotgit = os.path.join(work_dir, '.git')
+        if not os.path.exists(work_dotgit):
+            shell(['git', 'init', work_dir])
+            shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
+        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
+        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
+        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
+
+        if 'patches' in upstream:
+            for patch in upstream['patches']:
+                patch_file = os.path.join('patches', patch)
+                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'apply', '--directory', work_dir, patch_file])
+                # Make a commit in the temporary repo for each of our patches.
+                # Helpful when upstream changes and one of our patches cannot be applied.
+                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'add', '.'])
+                shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'commit', '-m', 'Applied {}'.format(patch_file)])
+
         if 'common_meta_path' in upstream:
-            common_meta_path_full = os.path.join('repos', upstream['name'],
-                                                    upstream['common_meta_path'])
+            common_meta_path_full = os.path.join(work_dir, upstream['common_meta_path'])
             common_deps = yaml.safe_load(
                 file_get_contents(common_meta_path_full))
             for common_dep in common_deps['commons']:
@@ -120,7 +129,7 @@ def load_instructions():
                         common_dep['required_flags'] = req['required_flags']
             upstream['commons'] = dict(map(lambda x: (x['name'], x), common_deps['commons'] ))
 
-
+    # drop instructions selectively if not ready
     if ("NOT_READY" in os.environ):
         not_ready = os.environ['NOT_READY'].split(" ")
         for family in instructions['kems']:
@@ -129,6 +138,7 @@ def load_instructions():
         for family in instructions['sigs']:
             if family['name'] in not_ready:
                 instructions["sigs"].remove(family)
+
     for family in instructions['kems']:
         family['type'] = 'kem'
         family['pqclean_type'] = 'kem'
@@ -544,7 +554,14 @@ def verify_from_upstream():
                         differ += 1
                         dinfo.append(scheme)
 
-    print("-----\nTotal schemes: {} - {} match with upstream, {} differ".format(validated + differ, validated, differ))
+    patch_list = []
+    for upstream in instructions['upstreams']:
+        if 'patches' in upstream:
+            patch_list.extend(upstream['patches'])
+
+    print("-----\nTotal schemes: {} - {} match upstream up to local patches, {} differ".format(validated + differ, validated, differ))
+    if len(patch_list):
+        print("-----\nPatches applied:\n\t{}".format("\n\t".join(patch_list)))
     if differ > 0:
         print("-----\nSchemes that differ from upstream:")
     for s in dinfo:
