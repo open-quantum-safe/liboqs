@@ -176,15 +176,15 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/common/crypto/aes/aes_c.c`: public domain or any OSI-approved license
 - `src/common/crypto/aes/aes*_ni.c`: public domain
 - `src/common/crypto/sha2/sha2_c.c`: public domain
-- `src/common/crypto/sha3/fips202.c`: public domain
-- `src/common/crypto/sha3/keccak4x`: CC0 (public domain), except `brg_endian.h`
+- `src/common/crypto/sha3/xkcp_low` : CC0 (public domain), except `brg_endian.h` and `KeccakP-1600-AVX2.s`
+- `src/common/crypto/sha3/xkcp_low/.../brg_endian.h` : BSD 3-Clause License
+- `src/common/crypto/sha3/xkcp_low/.../KeccakP-1600-AVX2.s` : BSD-like [CRYPTOGAMS license](http://www.openssl.org/~appro/cryptogams/)
 - `src/kem/bike/additional`: Apache License v2.0
 - `src/kem/classic_mceliece/pqclean_*`: public domain
 - `src/kem/kyber/pqclean_*`: public domain
 - `src/kem/ntru/pqclean_*`: public domain
 - `src/kem/saber/pqclean_*`: public domain
 - `src/sig/dilithium/pqclean_*`: public domain
-- `src/sig/picnic/external/sha3`: CC0 (public domain)
 - `src/sig/rainbow/pqclean_*`: CC0 (public domain)
 - `src/sig/sphincs/pqclean_*`: CC0 (public domain)
 
