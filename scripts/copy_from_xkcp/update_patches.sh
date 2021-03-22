@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-License-Identifier: MIT
 
 BASE=$(dirname "$0")
 BASE=$(cd "${BASE}" && pwd)
