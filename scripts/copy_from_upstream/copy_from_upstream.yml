@@ -17,6 +17,7 @@ upstreams:
     kem_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     kem_scheme_path: '.'
+    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake.patch, pqcrystals-kyber-avx2-shake.patch]
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
