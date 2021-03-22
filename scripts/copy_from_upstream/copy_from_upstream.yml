@@ -26,6 +26,7 @@ upstreams:
     sig_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     sig_scheme_path: '.'
+    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake.patch, pqcrystals-dilithium-avx2-shake.patch]
 kems:
   -
     name: classic_mceliece
