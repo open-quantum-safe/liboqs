@@ -185,6 +185,20 @@ OQS_API void OQS_MEM_secure_free(void *ptr, size_t len);
 OQS_API void OQS_MEM_insecure_free(void *ptr);
 
 /**
+ * Internal implementation of C11 aligned_alloc to work around compiler quirks.
+ *
+ * Allocates size bytes of uninitialized memory with a base pointer that is
+ * a multiple of alignment. Alignment must be a power of two and a multiple
+ * of sizeof(void *). Size must be a multiple of alignment.
+ */
+void *OQS_MEM_aligned_alloc(size_t alignment, size_t size);
+
+/**
+ * Free memory allocated with OQS_MEM_aligned_alloc.
+ */
+void OQS_MEM_aligned_free(void *ptr);
+
+/**
  * Macros that indicates a function argument may be unused.  Used to comply with
  * an API specification but when an implementation doesn't actually use the
  * argument and we'd get a compiler warning otherwise.

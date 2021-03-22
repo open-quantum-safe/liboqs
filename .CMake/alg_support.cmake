@@ -17,7 +17,9 @@ else()
 endif()
 cmake_dependent_option(OQS_USE_AES_OPENSSL "" ON "OQS_USE_OPENSSL" OFF)
 cmake_dependent_option(OQS_USE_SHA2_OPENSSL "" ON "OQS_USE_OPENSSL" OFF)
-cmake_dependent_option(OQS_USE_SHA3_OPENSSL "" ON "OQS_USE_OPENSSL" OFF)
+# Disable OpenSSL's SHA3 by default. The implementation is not complete
+# enough to support our incremental API.
+cmake_dependent_option(OQS_USE_SHA3_OPENSSL "" OFF "OQS_USE_OPENSSL" OFF)
 
 # BIKE is not supported on Windows
 cmake_dependent_option(OQS_ENABLE_KEM_BIKE "" ON "NOT WIN32" OFF)
