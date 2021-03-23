@@ -33,10 +33,10 @@ typedef aes256ctr_ctx xof_state;
 #include "fips202.h"
 #include "fips202x4.h"
 
-typedef keccak_state xof_state;
+typedef shake128incctx xof_state;
 
 #define kyber_shake128_absorb KYBER_NAMESPACE(kyber_shake128_absorb)
-void kyber_shake128_absorb(keccak_state *s,
+void kyber_shake128_absorb(shake128incctx *s,
                            const uint8_t seed[KYBER_SYMBYTES],
                            uint8_t x,
                            uint8_t y);

@@ -2,6 +2,7 @@
 #include <immintrin.h>
 #include <string.h>
 #include "align.h"
+#include "fips202x4.h"
 #include "params.h"
 #include "poly.h"
 #include "ntt.h"
@@ -412,7 +413,7 @@ void poly_getnoise_eta1_4x(poly *r0,
 {
   ALIGNED_UINT8(NOISE_NBLOCKS*SHAKE256_RATE) buf[4];
   __m256i f;
-  keccakx4_state state;
+  shake256x4incctx state;
 
   f = _mm256_loadu_si256((__m256i *)seed);
   _mm256_store_si256(buf[0].vec, f);
@@ -425,8 +426,10 @@ void poly_getnoise_eta1_4x(poly *r0,
   buf[2].coeffs[32] = nonce2;
   buf[3].coeffs[32] = nonce3;
 
+  shake256x4_inc_init(&state);
   shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 33);
   shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, NOISE_NBLOCKS, &state);
+  shake256x4_inc_ctx_release(&state);
 
   poly_cbd_eta1(r0, buf[0].vec);
   poly_cbd_eta1(r1, buf[1].vec);
@@ -447,7 +450,7 @@ void poly_getnoise_eta1122_4x(poly *r0,
 {
   ALIGNED_UINT8(NOISE_NBLOCKS*SHAKE256_RATE) buf[4];
   __m256i f;
-  keccakx4_state state;
+  shake256x4incctx state;
 
   f = _mm256_loadu_si256((__m256i *)seed);
   _mm256_store_si256(buf[0].vec, f);
@@ -460,8 +463,10 @@ void poly_getnoise_eta1122_4x(poly *r0,
   buf[2].coeffs[32] = nonce2;
   buf[3].coeffs[32] = nonce3;
 
+  shake256x4_inc_init(&state);
   shake256x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 33);
   shake256x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, NOISE_NBLOCKS, &state);
+  shake256x4_inc_ctx_release(&state);
 
   poly_cbd_eta1(r0, buf[0].vec);
   poly_cbd_eta1(r1, buf[1].vec);
