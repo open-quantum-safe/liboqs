@@ -6,16 +6,9 @@
 set(_DILITHIUM_OBJS "")
 
 if(OQS_ENABLE_SIG_dilithium_2 OR OQS_ENABLE_SIG_dilithium_3 OR OQS_ENABLE_SIG_dilithium_5 OR OQS_ENABLE_SIG_dilithium_2_aes OR OQS_ENABLE_SIG_dilithium_3_aes OR OQS_ENABLE_SIG_dilithium_5_aes)
-    add_library(dilithium_common_ref OBJECT pqcrystals-dilithium_common_ref/aes256ctr.c pqcrystals-dilithium_common_ref/fips202.c)
+    add_library(dilithium_common_ref OBJECT pqcrystals-dilithium_common_ref/aes256ctr.c)
     target_include_directories(dilithium_common_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqcrystals-dilithium_common_ref)
     set(_DILITHIUM_OBJS ${_DILITHIUM_OBJS} $<TARGET_OBJECTS:dilithium_common_ref>)
-endif()
-
-if(OQS_ENABLE_SIG_dilithium_2_avx2 OR OQS_ENABLE_SIG_dilithium_3_avx2 OR OQS_ENABLE_SIG_dilithium_5_avx2 OR OQS_ENABLE_SIG_dilithium_2_aes_avx2 OR OQS_ENABLE_SIG_dilithium_3_aes_avx2 OR OQS_ENABLE_SIG_dilithium_5_aes_avx2)
-    add_library(dilithium_common_avx2 OBJECT pqcrystals-dilithium_common_avx2/f1600x4.S pqcrystals-dilithium_common_avx2/fips202.c pqcrystals-dilithium_common_avx2/fips202x4.c)
-    target_include_directories(dilithium_common_avx2 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqcrystals-dilithium_common_avx2)
-    target_compile_options(dilithium_common_avx2 PRIVATE -mavx2 -mpopcnt)
-    set(_DILITHIUM_OBJS ${_DILITHIUM_OBJS} $<TARGET_OBJECTS:dilithium_common_avx2>)
 endif()
 
 if(OQS_ENABLE_SIG_dilithium_2_aes_avx2 OR OQS_ENABLE_SIG_dilithium_3_aes_avx2 OR OQS_ENABLE_SIG_dilithium_5_aes_avx2)
