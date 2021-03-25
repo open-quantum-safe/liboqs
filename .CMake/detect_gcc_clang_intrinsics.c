@@ -45,5 +45,17 @@ int main(void) {
 #if defined(__SSE3__)
 	printf("SSE3;");
 #endif
+#if defined(__ARM_FEATURE_AES)
+	printf("ARM_AES;");
+#endif
+#if defined(__ARM_FEATURE_SHA2)
+	printf("ARM_SHA2;");
+#endif
+#if defined(__ARM_FEATURE_SHA3)
+	printf("ARM_SHA3;");
+#endif
+#if defined(__ARM_NEON)
+	printf("ARM_NEON;");
+#endif
 	return 0;
 }
