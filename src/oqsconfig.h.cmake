@@ -2,11 +2,14 @@
 
 #cmakedefine OQS_VERSION_TEXT "@OQS_VERSION_TEXT@"
 #cmakedefine OQS_COMPILE_BUILD_TARGET "@OQS_COMPILE_BUILD_TARGET@"
-#cmakedefine OQS_PORTABLE_BUILD 1
-#cmakedefine OQS_PORTABLE_X86_64_BUILD 1
+#cmakedefine OQS_DIST_BUILD 1
+#cmakedefine OQS_DIST_X86_64_BUILD 1
+#cmakedefine OQS_DIST_ARM64v8_BUILD 1
+#cmakedefine OQS_DIST_ARM32v7_BUILD 1
 #cmakedefine OQS_DEBUG_BUILD 1
 #cmakedefine ARCH_X86_64 1
-#cmakedefine ARCH_ARM_ANY 1
+#cmakedefine ARCH_ARM64v8 1
+#cmakedefine ARCH_ARM32v7 1
 
 #cmakedefine OQS_KEM_DEFAULT @OQS_KEM_DEFAULT@
 #cmakedefine OQS_SIG_DEFAULT @OQS_SIG_DEFAULT@
@@ -17,7 +20,6 @@
 #cmakedefine OQS_USE_SHA3_OPENSSL 1
 
 #cmakedefine OQS_USE_PTHREADS_IN_TESTS 1
-#cmakedefine OQS_USE_CPU_EXTENSIONS 1
 
 #cmakedefine OQS_USE_AES_INSTRUCTIONS 1
 #cmakedefine OQS_USE_AVX_INSTRUCTIONS 1

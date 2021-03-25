@@ -272,7 +272,7 @@ workflows:
       #    name: centos-8
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
-      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
+      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DOQS_DIST_BUILD=OFF
       #- linux_x64:
       #    <<: *require_buildcheck
       #    name: debian-buster
@@ -311,14 +311,14 @@ workflows:
       # Disabling test_constant_time for now
       #- linux_x64:
       #    <<: *require_buildcheck
-      #    name: constant-time-portable
+      #    name: constant-time-x64
       #    filters:
       #      branches:
       #        only:
       #          - /^audit.*/
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      #    CMAKE_ARGS: -DOQS_PORTABLE_BUILD=ON -DOQS_USE_CPU_EXTENSIONS=OFF -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+      #    CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
       #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       #- linux_x64:
       #    <<: *require_buildcheck
@@ -329,7 +329,7 @@ workflows:
       #          - /^audit.*/
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      #    CMAKE_ARGS: -DOQS_PORTABLE_BUILD=OFF -DOQS_USE_CPU_EXTENSIONS=ON -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+      #    CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
       #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
       #- linux_x64:

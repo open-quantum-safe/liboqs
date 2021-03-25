@@ -98,7 +98,7 @@ typedef enum {
 	OQS_EXTERNAL_LIB_ERROR_OPENSSL = 50,
 } OQS_STATUS;
 
-#if defined(OQS_USE_CPU_EXTENSIONS)
+#if defined(OQS_DIST_BUILD)
 
 /**
  * CPU runtime detection flags
@@ -138,12 +138,11 @@ OQS_API OQS_CPU_EXTENSIONS OQS_get_available_CPU_extensions(void);
  */
 OQS_API const char *OQS_get_cpu_extension_name(unsigned int i);
 
-#endif /* OQS_USE_CPU_EXTENSIONS */
+#endif /* OQS_DIST_BUILD */
 
 /**
  * This currently only sets the values in the OQS_CPU_EXTENSIONS,
- * and so has effect only when OQS_USE_CPU_EXTENSIONS and
- * OQS_PORTABLE_BUILD are set.
+ * and so has effect only when OQS_DIST_BUILD is set.
  */
 OQS_API void OQS_init(void);
 

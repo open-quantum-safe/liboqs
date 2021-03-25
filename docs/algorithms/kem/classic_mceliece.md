@@ -8,7 +8,7 @@
 
 ## Implementation
 
-- **Source of implementation**: SUPERCOP-20191221, "vec" implementation ("avx" implementation if OQS_USE_CPU_EXTENSIONS set)
+- **Source of implementation**: SUPERCOP-20191221, "vec" and "avx" implementations
 - **Implementation version**: https://github.com/PQClean/PQClean.git, master, 865f0bd1d1dceb6624fc27e6395b14d2d03261ad
 - **License**: Public domain
 - **Constant-time**: Yes

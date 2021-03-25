@@ -20,14 +20,14 @@ if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
     set(SRCS ${SRCS} additional/sampling_portable.c
                      additional/secure_decode_portable.c)
     set(CPP_DEFS PORTABLE)
-elseif(OQS_USE_AVX512_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
+elseif(OQS_USE_AVX512_INSTRUCTIONS AND NOT OQS_DIST_BUILD)
     set(SRCS ${SRCS} additional/red.S
                      additional/secure_decode_avx512.c
                      additional/sampling_avx512.S
                      additional/gf_mul.S)
     set(CPP_DEFS AVX512)
     add_compile_options(-mavx512bw -mavx512dq -mavx512f)
-elseif(OQS_USE_AVX2_INSTRUCTIONS AND NOT OQS_PORTABLE_BUILD)
+elseif(OQS_USE_AVX2_INSTRUCTIONS AND NOT OQS_DIST_BUILD)
     set(SRCS ${SRCS} additional/red.S
                      additional/secure_decode_avx2.c
                      additional/sampling_avx2.S

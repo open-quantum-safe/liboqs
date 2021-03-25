@@ -41,16 +41,16 @@ extern int PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_crypto_sign_verify(const uint8
 
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_256s_simple_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_sphincs_shake256_256s_simple_avx2)
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
 	if (available_cpu_extensions.AVX2_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_crypto_sign_keypair(public_key, secret_key);
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_crypto_sign_keypair(public_key, secret_key);
 	}
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_crypto_sign_keypair(public_key, secret_key);
 #endif
@@ -58,16 +58,16 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_256s_simple_keypair(uint8_t *public_
 
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_256s_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_sphincs_shake256_256s_simple_avx2)
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
 	if (available_cpu_extensions.AVX2_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 	}
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #endif
@@ -75,16 +75,16 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_256s_simple_sign(uint8_t *signature,
 
 OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_256s_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_SIG_sphincs_shake256_256s_simple_avx2)
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
 	if (available_cpu_extensions.AVX2_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE256256SSIMPLE_AVX2_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 	}
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE256256SSIMPLE_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #endif

@@ -42,7 +42,7 @@ static void print_platform_info(void) {
 #include <openssl/opensslv.h>
 #endif
 
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 #define C_OR_NI(stmt_c, stmt_ni) \
     OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions(); \
     if (available_cpu_extensions.AES_ENABLED) { \
@@ -50,17 +50,17 @@ static void print_platform_info(void) {
     } else { \
         stmt_c; \
     }
-#elif defined(OQS_USE_CPU_EXTENSIONS) /* && !defined(OQS_PORTABLE_BUILD) */
+#elif defined(OQS_USE_AES_INSTRUCTIONS) /* && !defined(OQS_DIST_BUILD) */
 #define  C_OR_NI(stmt_c, stmt_ni) \
     stmt_ni;
-#else /* !defined(OQS_USE_CPU_EXTENSIONS) */
+#else /* !defined(OQS_DIST_BUILD) */
 #define  C_OR_NI(stmt_c, stmt_ni) \
     stmt_c;
 #endif
 
 /* Display all active CPU extensions: */
 static void print_cpu_extensions(void) {
-#if defined(OQS_USE_CPU_EXTENSIONS)
+#if defined(OQS_DIST_BUILD)
 	/* Make CPU features struct iterable */
 	typedef union ext_u {
 		OQS_CPU_EXTENSIONS ext_x;
@@ -84,11 +84,7 @@ static void print_cpu_extensions(void) {
 #else /* no extensions active */
 	printf("CPU exts active:  None");
 #endif
-#if defined(OQS_PORTABLE_BUILD)
-	printf(" (portable build)\n");
-#else
 	printf("\n");
-#endif
 
 }
 
