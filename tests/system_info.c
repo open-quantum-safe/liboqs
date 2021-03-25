@@ -42,7 +42,7 @@ static void print_platform_info(void) {
 #include <openssl/opensslv.h>
 #endif
 
-#if defined(OQS_USE_CPU_EXTENSIONS) && defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_PORTABLE_BUILD)
 #define C_OR_NI(stmt_c, stmt_ni) \
     OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions(); \
     if (available_cpu_extensions.AES_ENABLED) { \

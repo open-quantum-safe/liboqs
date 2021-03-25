@@ -31,7 +31,7 @@ int main(void) {
 	printf("FMA;");
 #endif
 #if defined(__PCLMUL__)
-	printf("PCLMUL;");
+	printf("PCLMULQDQ;");
 #endif
 #if defined(__POPCNT__)
 	printf("POPCNT;");
