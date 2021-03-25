@@ -24,14 +24,14 @@ typedef aes256ctr_ctx stream256_state;
 
 #include "fips202.h"
 
-typedef keccak_state stream128_state;
-typedef keccak_state stream256_state;
+typedef shake128incctx stream128_state;
+typedef shake256incctx stream256_state;
 
 #define dilithium_shake128_stream_init DILITHIUM_NAMESPACE(dilithium_shake128_stream_init)
-void dilithium_shake128_stream_init(keccak_state *state, const uint8_t seed[SEEDBYTES], uint16_t nonce);
+void dilithium_shake128_stream_init(shake128incctx *state, const uint8_t seed[SEEDBYTES], uint16_t nonce);
 
 #define dilithium_shake256_stream_init DILITHIUM_NAMESPACE(dilithium_shake256_stream_init)
-void dilithium_shake256_stream_init(keccak_state *state, const uint8_t seed[CRHBYTES], uint16_t nonce);
+void dilithium_shake256_stream_init(shake256incctx *state, const uint8_t seed[CRHBYTES], uint16_t nonce);
 
 #define STREAM128_BLOCKBYTES SHAKE128_RATE
 #define STREAM256_BLOCKBYTES SHAKE256_RATE

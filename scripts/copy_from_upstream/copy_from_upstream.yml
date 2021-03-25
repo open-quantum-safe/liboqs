@@ -8,7 +8,7 @@ upstreams:
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: ['mceliece_remove_mm256i_u.patch']
+    patches: ['mceliece_remove_mm256i_u.patch', 'pqclean-sphincs.patch']
   -
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
@@ -17,6 +17,7 @@ upstreams:
     kem_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     kem_scheme_path: '.'
+    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake.patch, pqcrystals-kyber-avx2-shake.patch]
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
@@ -25,6 +26,7 @@ upstreams:
     sig_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     sig_scheme_path: '.'
+    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake.patch, pqcrystals-dilithium-avx2-shake.patch]
 kems:
   -
     name: classic_mceliece

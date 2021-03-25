@@ -212,7 +212,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
   unsigned int ctr0, ctr1, ctr2, ctr3;
   ALIGNED_UINT8(REJ_UNIFORM_AVX_NBLOCKS*SHAKE128_RATE) buf[4];
   __m256i f;
-  keccakx4_state state;
+  shake128x4incctx state;
 
   f = _mm256_loadu_si256((__m256i *)seed);
   _mm256_store_si256(buf[0].vec, f);
@@ -241,6 +241,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
     buf[3].coeffs[33] = 1;
   }
 
+  shake128x4_inc_init(&state);
   shake128x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 34);
   shake128x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state);
 
@@ -262,6 +263,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
   poly_nttunpack(&a[0].vec[1]);
   poly_nttunpack(&a[1].vec[0]);
   poly_nttunpack(&a[1].vec[1]);
+  shake128x4_inc_ctx_release(&state);
 }
 #elif KYBER_K == 3
 void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
@@ -269,8 +271,8 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
   unsigned int ctr0, ctr1, ctr2, ctr3;
   ALIGNED_UINT8(REJ_UNIFORM_AVX_NBLOCKS*SHAKE128_RATE) buf[4];
   __m256i f;
-  keccakx4_state state;
-  keccak_state state1x;
+  shake128x4incctx state;
+  shake128incctx state1x;
 
   f = _mm256_loadu_si256((__m256i *)seed);
   _mm256_store_si256(buf[0].vec, f);
@@ -299,6 +301,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
     buf[3].coeffs[33] = 1;
   }
 
+  shake128x4_inc_init(&state);
   shake128x4_absorb_once(&state, buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, 34);
   shake128x4_squeezeblocks(buf[0].coeffs, buf[1].coeffs, buf[2].coeffs, buf[3].coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state);
 
@@ -364,6 +367,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
     ctr2 += rej_uniform(a[2].vec[0].coeffs + ctr2, KYBER_N - ctr2, buf[2].coeffs, SHAKE128_RATE);
     ctr3 += rej_uniform(a[2].vec[1].coeffs + ctr3, KYBER_N - ctr3, buf[3].coeffs, SHAKE128_RATE);
   }
+  shake128x4_inc_ctx_release(&state);
 
   poly_nttunpack(&a[1].vec[1]);
   poly_nttunpack(&a[1].vec[2]);
@@ -374,6 +378,8 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
   _mm256_store_si256(buf[0].vec, f);
   buf[0].coeffs[32] = 2;
   buf[0].coeffs[33] = 2;
+
+  shake128_inc_init(&state1x);
   shake128_absorb_once(&state1x, buf[0].coeffs, 34);
   shake128_squeezeblocks(buf[0].coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state1x);
   ctr0 = rej_uniform_avx(a[2].vec[2].coeffs, buf[0].coeffs);
@@ -381,6 +387,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
     shake128_squeezeblocks(buf[0].coeffs, 1, &state1x);
     ctr0 += rej_uniform(a[2].vec[2].coeffs + ctr0, KYBER_N - ctr0, buf[0].coeffs, SHAKE128_RATE);
   }
+  shake128_inc_ctx_release(&state1x);
 
   poly_nttunpack(&a[2].vec[2]);
 }
@@ -390,7 +397,8 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
   unsigned int i, ctr0, ctr1, ctr2, ctr3;
   ALIGNED_UINT8(REJ_UNIFORM_AVX_NBLOCKS*SHAKE128_RATE) buf[4];
   __m256i f;
-  keccakx4_state state;
+  shake128x4incctx state;
+  shake128x4_inc_init(&state);
 
   for(i=0;i<4;i++) {
     f = _mm256_loadu_si256((__m256i *)seed);
@@ -442,6 +450,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
     poly_nttunpack(&a[i].vec[2]);
     poly_nttunpack(&a[i].vec[3]);
   }
+  shake128x4_inc_ctx_release(&state);
 }
 #endif
 #endif
