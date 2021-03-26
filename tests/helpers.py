@@ -146,13 +146,6 @@ def available_use_options_by_name():
 def is_use_option_enabled_by_name(name):
     return name in available_use_options_by_name()
 
-def is_build_portable():
-    with open(os.path.join('build', 'include', 'oqs', 'oqsconfig.h')) as fh:
-        for line in fh:
-            if line.startswith("#define OQS_DIST_BUILD"):
-                return True
-    return False
-
 def get_kats(t):
    if kats[t] is None:
      with open(os.path.join('tests', 'KATs', t, 'kats.json'), 'r') as fp:
@@ -184,3 +177,14 @@ def test_requires_build_options(*options):
     missing = ', '.join([opt for opt in options if not enabled[opt]])
     return pytest.mark.skipif(not all(enabled.values()),
                 reason='Test requires missing build options {}'.format(missing))
+
+
+@functools.lru_cache()
+def test_requires_qemu(platform, mincpu):
+    no_qemu=False
+    try:
+        run_subprocess(["qemu-"+platform+"-static", "-cpu", mincpu, path_to_executable('test_kem')], ignore_returncode=True)
+    except:
+        no_qemu=True
+    return pytest.mark.skipif(no_qemu,
+                reason='Test requires qemu-{}-static -cpu {}'.format(platform, mincpu))
