@@ -63,12 +63,43 @@ static void set_available_cpu_extensions(void) {
 		}
 	}
 }
-#else
+#elif defined(OQS_DIST_ARM64v8_BUILD)
+#include <sys/auxv.h>
+#include <asm/hwcap.h>
 static void set_available_cpu_extensions(void) {
 	/* mark that this function has been called */
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
-
-	//TODO
+	unsigned long int hwcaps = getauxval(AT_HWCAP);
+	if (hwcaps & HWCAP_AES) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_AES] = 1;
+	}
+	if (hwcaps & HWCAP_SHA2) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
+	}
+	if (hwcaps & HWCAP_SHA3) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_SHA3] = 1;
+	}
+	if (hwcaps & HWCAP_ASIMD) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
+	}
+}
+#elif defined(OQS_DIST_ARM32v7_BUILD)
+#include <sys/auxv.h>
+#include <asm/hwcap.h>
+static void set_available_cpu_extensions(void) {
+	/* mark that this function has been called */
+	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+	unsigned long int hwcaps = getauxval(AT_HWCAP);
+	unsigned long int hwcaps2 = getauxval(AT_HWCAP2);
+	if (hwcaps2 & HWCAP2_AES) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_AES] = 1;
+	}
+	if (hwcaps2 & HWCAP2_SHA2) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
+	}
+	if (hwcaps & HWCAP_NEON) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
+	}
 }
 #endif
 
@@ -80,6 +111,8 @@ OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext) {
 	if (0 < ext && ext < OQS_CPU_EXT_COUNT) {
 		return (int)cpu_ext_data[ext];
 	}
+#else
+	(void)ext;
 #endif
 	return 0;
 }
