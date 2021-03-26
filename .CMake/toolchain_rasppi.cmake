@@ -5,7 +5,7 @@
 # cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_rasppi.cmake -DOQS_USE_OPENSSL=OFF ..
 
 set(CMAKE_SYSTEM_NAME Linux)
-set(CMAKE_SYSTEM_PROCESSOR arm)
+set(CMAKE_SYSTEM_PROCESSOR armhf)
 set(CMAKE_CROSSCOMPILING ON)
 
 set(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc-8)
