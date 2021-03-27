@@ -1,4 +1,4 @@
-liboqs version 0.5.1-dev
+liboqs version 0.6.0-dev
 ========================
 
 About
@@ -29,15 +29,14 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is the development track for version 0.5.1 of liboqs.  It was released on XXX.
+This is the development track for version 0.6.0 of liboqs.  It was released on XXX.
 
 What's New
 ----------
 
-This release continues from the 0.5.0 release of liboqs.
-
 ### Key encapsulation mechanisms
 
 ### Digital signature schemes
+This release includes the NIST PQC round 3 parameters for SPHINCS.
 
 ### Other changes
