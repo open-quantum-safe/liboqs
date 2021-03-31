@@ -712,7 +712,12 @@ static void correct_errors(uint8_t *cdw, const uint16_t *error_values) {
  * @param[in] cdw Array of size VEC_N1_SIZE_64 storing the received word
  */
 void PQCLEAN_HQCRMRS256_AVX2_reed_solomon_decode(uint8_t *msg, uint8_t *cdw) {
-    uint16_t syndromes[2 * PARAM_DELTA] = {0};
+    union {
+        uint16_t arr16[16 * CEIL_DIVIDE(2 * PARAM_DELTA, 16)];
+        __m256i dummy;
+    } syndromes_aligned = {0};
+    uint16_t *syndromes = syndromes_aligned.arr16;
+
     uint16_t sigma[1 << PARAM_FFT] = {0};
     uint8_t error[1 << PARAM_M] = {0};
     uint16_t z[PARAM_N1] = {0};

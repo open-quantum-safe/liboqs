@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_hqc_192_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_hqc_192;
-	kem->alg_version = "hqc-submission_2020-10-01 via https://github.com/jschanck/package-pqclean/tree/c9181076/hqc";
+	kem->alg_version = "hqc-submission_2020-10-01 via https://github.com/jschanck/package-pqclean/tree/a55f514e/hqc";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
