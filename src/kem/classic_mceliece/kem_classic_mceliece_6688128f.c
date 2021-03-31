@@ -42,16 +42,15 @@ extern int PQCLEAN_MCELIECE6688128F_AVX_crypto_kem_dec(unsigned char *ss, const 
 
 OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_classic_mceliece_6688128f_avx)
-#if defined(OQS_PORTABLE_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI1_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+#endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_MCELIECE6688128F_AVX_crypto_kem_keypair(public_key, secret_key);
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_MCELIECE6688128F_VEC_crypto_kem_keypair(public_key, secret_key);
 	}
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_MCELIECE6688128F_VEC_crypto_kem_keypair(public_key, secret_key);
 #endif
@@ -59,16 +58,15 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_keypair(uint8_t *public_key
 
 OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_KEM_classic_mceliece_6688128f_avx)
-#if defined(OQS_PORTABLE_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI1_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+#endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_MCELIECE6688128F_AVX_crypto_kem_enc(ciphertext, shared_secret, public_key);
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_MCELIECE6688128F_VEC_crypto_kem_enc(ciphertext, shared_secret, public_key);
 	}
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_MCELIECE6688128F_VEC_crypto_kem_enc(ciphertext, shared_secret, public_key);
 #endif
@@ -76,16 +74,15 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_encaps(uint8_t *ciphertext,
 
 OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6688128f_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_classic_mceliece_6688128f_avx)
-#if defined(OQS_PORTABLE_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AVX2_ENABLED && available_cpu_extensions.BMI1_ENABLED && available_cpu_extensions.POPCNT_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+#endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_MCELIECE6688128F_AVX_crypto_kem_dec(shared_secret, ciphertext, secret_key);
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_MCELIECE6688128F_VEC_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 	}
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_MCELIECE6688128F_VEC_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 #endif

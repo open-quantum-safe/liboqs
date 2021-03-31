@@ -6,7 +6,7 @@ cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'x86_64' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
 {% endif -%}
-if(OQS_PORTABLE_X86_64_BUILD OR (ARCH STREQUAL "x86_64" {%- if platform['required_flags'] %} AND {% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}{%- endif -%}))
+if(OQS_DIST_X86_64_BUILD OR ({% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}))
     cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
 endif()
 {% if platform['operating_systems'] %}endif()
@@ -24,7 +24,7 @@ cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'x86_64' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
 {% endif -%}
-if(OQS_PORTABLE_X86_64_BUILD OR (ARCH STREQUAL "x86_64" {%- if platform['required_flags'] %} AND {% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}{%- endif -%}))
+if(OQS_DIST_X86_64_BUILD OR ({% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}))
     cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
 endif()
 {% if platform['operating_systems'] %}endif()

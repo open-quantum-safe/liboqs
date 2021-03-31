@@ -10,7 +10,7 @@ Classic McEliece
 Implementation
 --------------
 
-- **Source of implementation**: SUPERCOP-20191221, "vec" implementation ("avx" implementation if OQS_USE_CPU_EXTENSIONS set)
+- **Source of implementation**: SUPERCOP-20191221, "vec" and "avx" implementations
 - **Implementation version**: {{ schemes[0]['git_url'] }}, {{ schemes[0]['git_branch'] }}, {{ schemes[0]['git_commit'] }}
 - **License**: Public domain
 - **Constant-time**: Yes

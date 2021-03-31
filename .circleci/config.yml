@@ -258,13 +258,13 @@ workflows:
           name: alpine-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-          CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
+          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
       - linux_x64:
           <<: *require_buildcheck
           name: alpine
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-          CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+          CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
       # Disabling centos-8 and debian-buster.
       # Re-enable if specific configurations (package versions etc) that need to be tested are identified.
       #- linux_x64:
@@ -272,7 +272,7 @@ workflows:
       #    name: centos-8
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
-      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Release -DOQS_PORTABLE_BUILD=OFF
+      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang
       #- linux_x64:
       #    <<: *require_buildcheck
       #    name: debian-buster
@@ -283,13 +283,13 @@ workflows:
           name: ubuntu-focal-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF
+          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DOQS_USE_OPENSSL=OFF
       - linux_x64:
           <<: *require_buildcheck
           name: ubuntu-focal-shared-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DCMAKE_BUILD_TYPE=Release -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
+          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DOQS_DIST_BUILD=ON -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
           PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
       - linux_x64:
           <<: *require_buildcheck
@@ -311,14 +311,14 @@ workflows:
       # Disabling test_constant_time for now
       #- linux_x64:
       #    <<: *require_buildcheck
-      #    name: constant-time-portable
+      #    name: constant-time-x64
       #    filters:
       #      branches:
       #        only:
       #          - /^audit.*/
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      #    CMAKE_ARGS: -DOQS_PORTABLE_BUILD=ON -DOQS_USE_CPU_EXTENSIONS=OFF -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+      #    CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
       #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       #- linux_x64:
       #    <<: *require_buildcheck
@@ -329,7 +329,7 @@ workflows:
       #          - /^audit.*/
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      #    CMAKE_ARGS: -DOQS_PORTABLE_BUILD=OFF -DOQS_USE_CPU_EXTENSIONS=ON -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+      #    CMAKE_ARGS: -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
       #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
       #- linux_x64:
@@ -346,7 +346,7 @@ workflows:
           <<: *require_testapproval
           name: arm64
           ARCH: arm64
-          CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF
+          CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_DIST_BUILD=ON
       - arm_emulated:
           <<: *require_testapproval
           name: armhf
@@ -356,7 +356,7 @@ workflows:
           <<: *require_testapproval
           name: armel
           ARCH: armel
-          CMAKE_ARGS: -DCMAKE_BUILD_TYPE=Release  -DOQS_ENABLE_SIG_SPHINCS=OFF
+          CMAKE_ARGS:  -DOQS_ENABLE_SIG_SPHINCS=OFF
 
       - macOS:
           <<: *require_buildcheck
@@ -365,7 +365,7 @@ workflows:
       - macOS:
           <<: *require_buildcheck
           name: macOS-shared
-          CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON
+          CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=ON
 
   commit-to-main:
     when:

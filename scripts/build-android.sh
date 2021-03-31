@@ -104,7 +104,6 @@ echo "Building in directory $BUILDDIR"
 # Build
 mkdir "$BUILDDIR" && cd "$BUILDDIR"
 cmake .. -DOQS_USE_OPENSSL=OFF \
-         -DOQS_USE_CPU_EXTENSIONS=OFF \
          -DBUILD_SHARED_LIBS=ON  \
          -DCMAKE_TOOLCHAIN_FILE="$NDK"/build/cmake/android.toolchain.cmake \
          -DANDROID_ABI="$ABI" \

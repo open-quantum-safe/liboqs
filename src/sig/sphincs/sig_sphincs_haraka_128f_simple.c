@@ -41,16 +41,15 @@ extern int PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_crypto_sign_verify(const uint8_
 
 OQS_API OQS_STATUS OQS_SIG_sphincs_haraka_128f_simple_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_sphincs_haraka_128f_simple_aesni)
-#if defined(OQS_PORTABLE_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AES_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) {
+#endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_crypto_sign_keypair(public_key, secret_key);
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_SPHINCSHARAKA128FSIMPLE_CLEAN_crypto_sign_keypair(public_key, secret_key);
 	}
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_SPHINCSHARAKA128FSIMPLE_CLEAN_crypto_sign_keypair(public_key, secret_key);
 #endif
@@ -58,16 +57,15 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_haraka_128f_simple_keypair(uint8_t *public_ke
 
 OQS_API OQS_STATUS OQS_SIG_sphincs_haraka_128f_simple_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_sphincs_haraka_128f_simple_aesni)
-#if defined(OQS_PORTABLE_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AES_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) {
+#endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_SPHINCSHARAKA128FSIMPLE_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 	}
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_SPHINCSHARAKA128FSIMPLE_CLEAN_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #endif
@@ -75,16 +73,15 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_haraka_128f_simple_sign(uint8_t *signature, s
 
 OQS_API OQS_STATUS OQS_SIG_sphincs_haraka_128f_simple_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_SIG_sphincs_haraka_128f_simple_aesni)
-#if defined(OQS_PORTABLE_BUILD)
-	OQS_CPU_EXTENSIONS available_cpu_extensions = OQS_get_available_CPU_extensions();
-	if (available_cpu_extensions.AES_ENABLED) {
-#endif /* OQS_PORTABLE_BUILD */
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) {
+#endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
-#if defined(OQS_PORTABLE_BUILD)
+#if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_SPHINCSHARAKA128FSIMPLE_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 	}
-#endif /* OQS_PORTABLE_BUILD */
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_SPHINCSHARAKA128FSIMPLE_CLEAN_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #endif

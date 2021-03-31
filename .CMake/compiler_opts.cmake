@@ -1,5 +1,54 @@
 # SPDX-License-Identifier: MIT
 
+# First we will determine the optimization target.
+#
+# If OQS_DIST_BUILD=ON we need to target a generic CPU for any code
+# that is not protected by runtime CPU feature detection.
+#
+# If OQS_DIST_BUILD=OFF then we will optimize all code for the CPU
+# specified by OQS_OPT_TARGET.
+#
+# If OQS_OPT_TARGET=auto we target the current CPU.
+# If OQS_OPT_TARGET=generic we target a generic CPU.
+# Otherwise we target the specified CPU.
+set(OQS_OPT_FLAG "")
+if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
+    if(OQS_DIST_BUILD)
+          set(OQS_OPT_TARGET "generic")
+    endif()
+
+    if(OQS_OPT_TARGET STREQUAL "generic")
+      if(ARCH_X86_64)
+        set(OQS_OPT_FLAG "-march=x86-64")
+      elseif(ARCH_ARM64v8)
+        set(OQS_OPT_FLAG "-mcpu=cortex-a53")
+      elseif(ARCH_ARM32v7)
+        set(OQS_OPT_FLAG "-mcpu=cortex-a5")
+      endif()
+    elseif(OQS_OPT_TARGET STREQUAL "auto")
+      if(ARCH_X86_64)
+          set(OQS_OPT_FLAG "-march=native")
+      elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND ARCH_ARM64v8)
+          set(OQS_OPT_FLAG "-mcpu=native")
+      else()
+          message(WARNING "Setting OQS_OPT_TARGET=AUTO may not produce optimized code on this system.")
+      endif()
+    else()
+      if(ARCH_X86_64)
+        set(OQS_OPT_FLAG "-march=${OQS_OPT_TARGET}")
+      elseif(ARCH_ARM64v8 OR ARCH_ARM32v7)
+        set(OQS_OPT_FLAG "-mcpu=${OQS_OPT_TARGET}")
+      endif()
+    endif()
+
+    add_compile_options(${OQS_OPT_FLAG})
+
+    # If this is not a dist build we also need to set the OQS_USE_[EXTENSION] flags
+    if(NOT OQS_DIST_BUILD)
+        include(${CMAKE_CURRENT_LIST_DIR}/gcc_clang_intrinsics.cmake)
+    endif()
+endif()
+
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Werror)
     add_compile_options(-Wall)
@@ -11,10 +60,6 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
         set(THREADS_PREFER_PTHREAD_FLAG ON)
         find_package(Threads REQUIRED)
         set(OQS_USE_PTHREADS_IN_TESTS 1)
-    endif()
-
-    if(OQS_USE_CPU_EXTENSIONS)
-        include(${CMAKE_CURRENT_LIST_DIR}/gcc_clang_intrinsics.cmake)
     endif()
 
     if(OQS_DEBUG_BUILD)
@@ -65,10 +110,6 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
         set(THREADS_PREFER_PTHREAD_FLAG ON)
         find_package(Threads REQUIRED)
         set(OQS_USE_PTHREADS_IN_TESTS 1)
-    endif()
-
-    if(OQS_USE_CPU_EXTENSIONS)
-        include(${CMAKE_CURRENT_LIST_DIR}/gcc_clang_intrinsics.cmake)
     endif()
 
     if(OQS_DEBUG_BUILD)
