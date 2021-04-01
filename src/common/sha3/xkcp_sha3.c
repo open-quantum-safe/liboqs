@@ -35,7 +35,9 @@ static KeccakExtractBytesFn *Keccak_ExtractBytes_ptr = NULL;
 static KeccakFastLoopAbsorbFn *Keccak_FastLoopAbsorb_ptr = NULL;
 
 static void Keccak_Dispatch(void *state) {
+// TODO: Simplify this when we have a Windows-compatible AVX2 implementation of SHA3
 #if defined(OQS_DIST_X86_64_BUILD)
+#if defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 		Keccak_Initialize_ptr = &KeccakP1600_Initialize_avx2;
 		Keccak_AddByte_ptr = &KeccakP1600_AddByte_avx2;
@@ -51,6 +53,14 @@ static void Keccak_Dispatch(void *state) {
 		Keccak_ExtractBytes_ptr = &KeccakP1600_ExtractBytes_plain64;
 		Keccak_FastLoopAbsorb_ptr = &KeccakF1600_FastLoop_Absorb_plain64;
 	}
+#else // Windows
+	Keccak_Initialize_ptr = &KeccakP1600_Initialize_plain64;
+	Keccak_AddByte_ptr = &KeccakP1600_AddByte_plain64;
+	Keccak_AddBytes_ptr = &KeccakP1600_AddBytes_plain64;
+	Keccak_Permute_ptr = &KeccakP1600_Permute_24rounds_plain64;
+	Keccak_ExtractBytes_ptr = &KeccakP1600_ExtractBytes_plain64;
+	Keccak_FastLoopAbsorb_ptr = &KeccakF1600_FastLoop_Absorb_plain64;
+#endif
 #else
 	Keccak_Initialize_ptr = &KeccakP1600_Initialize;
 	Keccak_AddByte_ptr = &KeccakP1600_AddByte;

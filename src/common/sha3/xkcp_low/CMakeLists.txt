@@ -27,7 +27,8 @@ if(BUILD_PLAIN64)
                                        $<TARGET_OBJECTS:xkcp_low_keccakp_1600times4_serial>)
 endif()
 
-if(BUILD_AVX2)
+# We currently do not have a SHA3 AVX2 implementation that works on Windows
+if(BUILD_AVX2 AND CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
   add_library(xkcp_low_keccakp_1600_avx2 OBJECT KeccakP-1600/avx2/KeccakP-1600-AVX2.S)
 
   add_library(xkcp_low_keccakp_1600times4_avx2 OBJECT KeccakP-1600times4/avx2/KeccakP-1600-times4-SIMD256.c)

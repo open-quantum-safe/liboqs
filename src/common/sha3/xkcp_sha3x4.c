@@ -29,7 +29,9 @@ static KeccakX4PermuteFn *Keccak_X4_Permute_ptr = NULL;
 static KeccakX4ExtractBytesFn *Keccak_X4_ExtractBytes_ptr = NULL;
 
 static void Keccak_X4_Dispatch(void *state) {
+// TODO: Simplify this when we have a Windows-compatible AVX2 implementation of SHA3
 #if defined(OQS_DIST_X86_64_BUILD)
+#if defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 		Keccak_X4_Initialize_ptr = &KeccakP1600times4_InitializeAll_avx2;
 		Keccak_X4_AddByte_ptr = &KeccakP1600times4_AddByte_avx2;
@@ -43,6 +45,13 @@ static void Keccak_X4_Dispatch(void *state) {
 		Keccak_X4_Permute_ptr = &KeccakP1600times4_PermuteAll_24rounds_serial;
 		Keccak_X4_ExtractBytes_ptr = &KeccakP1600times4_ExtractBytes_serial;
 	}
+#else // Windows
+	Keccak_X4_Initialize_ptr = &KeccakP1600times4_InitializeAll_serial;
+	Keccak_X4_AddByte_ptr = &KeccakP1600times4_AddByte_serial;
+	Keccak_X4_AddBytes_ptr = &KeccakP1600times4_AddBytes_serial;
+	Keccak_X4_Permute_ptr = &KeccakP1600times4_PermuteAll_24rounds_serial;
+	Keccak_X4_ExtractBytes_ptr = &KeccakP1600times4_ExtractBytes_serial;
+#endif
 #else
 	Keccak_X4_Initialize_ptr = &KeccakP1600times4_InitializeAll;
 	Keccak_X4_AddByte_ptr = &KeccakP1600times4_AddByte;
