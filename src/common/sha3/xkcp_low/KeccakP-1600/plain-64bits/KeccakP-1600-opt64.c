@@ -26,6 +26,7 @@ Please refer to LowLevel.build for the exact list of other files it must be comb
 #include <string.h>
 #include <stdlib.h>
 #include "brg_endian.h"
+#include "KeccakP-1600-SnP.h"
 #include "KeccakP-1600-opt64-config.h"
 
 #define UseBebigokimisa
@@ -74,6 +75,10 @@ static const uint64_t KeccakF1600RoundConstants[24] = {
 	0x0000000080000001ULL,
 	0x8000000080008008ULL
 };
+
+/* ---------------------------------------------------------------- */
+
+void KeccakP1600_StaticInitialize(void) { }
 
 /* ---------------------------------------------------------------- */
 
@@ -167,7 +172,11 @@ void KeccakP1600_AddLanes(void *state, const unsigned char *data, unsigned int l
 
 /* ---------------------------------------------------------------- */
 
-#if (PLATFORM_BYTE_ORDER != IS_LITTLE_ENDIAN)
+#if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
+void KeccakP1600_AddByte(void *state, unsigned char byte, unsigned int offset) {
+	((unsigned char *)state)[offset] ^= byte;
+}
+#else
 void KeccakP1600_AddByte(void *state, unsigned char byte, unsigned int offset) {
 	uint64_t lane = byte;
 	lane <<= (offset % 8) * 8;

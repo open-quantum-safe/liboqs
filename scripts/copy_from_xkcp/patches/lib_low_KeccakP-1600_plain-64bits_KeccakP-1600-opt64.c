@@ -1,6 +1,25 @@
 --- upstream/lib/low/KeccakP-1600/plain-64bits/KeccakP-1600-opt64.c
 +++ upstream-patched/lib/low/KeccakP-1600/plain-64bits/KeccakP-1600-opt64.c
-@@ -137,27 +137,27 @@
+@@ -26,6 +26,7 @@
+ #include <string.h>
+ #include <stdlib.h>
+ #include "brg_endian.h"
++#include "KeccakP-1600-SnP.h"
+ #include "KeccakP-1600-opt64-config.h"
+ 
+ #if defined(KeccakP1600_useLaneComplementing)
+@@ -82,6 +83,10 @@
+ 
+ /* ---------------------------------------------------------------- */
+ 
++void KeccakP1600_StaticInitialize(void) { }
++
++/* ---------------------------------------------------------------- */
++
+ void KeccakP1600_Initialize(void *state)
+ {
+     memset(state, 0, 200);
+@@ -137,27 +142,27 @@
      {
        /* Otherwise... */
        for( ; (i+8)<=laneCount; i+=8) {
@@ -43,7 +62,20 @@
        }
      }
  #else
-@@ -235,11 +235,11 @@
+@@ -179,7 +184,11 @@
+ 
+ /* ---------------------------------------------------------------- */
+ 
+-#if (PLATFORM_BYTE_ORDER != IS_LITTLE_ENDIAN)
++#if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
++void KeccakP1600_AddByte(void *state, unsigned char byte, unsigned int offset) {
++	((unsigned char*)state)[offset] ^= byte;
++}
++#else
+ void KeccakP1600_AddByte(void *state, unsigned char byte, unsigned int offset)
+ {
+     uint64_t lane = byte;
+@@ -235,11 +244,11 @@
  #ifdef KeccakP1600_useLaneComplementing
      unsigned int lanePosition;
  
@@ -59,7 +91,7 @@
  #else
      memcpy(state, data, laneCount*8);
  #endif
-@@ -282,7 +282,7 @@
+@@ -282,7 +291,7 @@
  
      for(lanePosition=0; lanePosition<byteCount/8; lanePosition++)
          if ((lanePosition == 1) || (lanePosition == 2) || (lanePosition == 8) || (lanePosition == 12) || (lanePosition == 17) || (lanePosition == 20))
@@ -68,7 +100,7 @@
          else
              ((uint64_t*)state)[lanePosition] = 0;
      if (byteCount%8 != 0) {
-@@ -371,7 +371,7 @@
+@@ -371,7 +380,7 @@
  
  void KeccakP1600_ExtractBytesInLane(const void *state, unsigned int lanePosition, unsigned char *data, unsigned int offset, unsigned int length)
  {
@@ -77,7 +109,7 @@
  #ifdef KeccakP1600_useLaneComplementing
      if ((lanePosition == 1) || (lanePosition == 2) || (lanePosition == 8) || (lanePosition == 12) || (lanePosition == 17) || (lanePosition == 20))
          lane = ~lane;
-@@ -409,30 +409,30 @@
+@@ -409,30 +418,30 @@
  #if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
      memcpy(data, state, laneCount*8);
  #else
@@ -117,7 +149,7 @@
  #endif
  }
  
-@@ -447,7 +447,7 @@
+@@ -447,7 +456,7 @@
  
  void KeccakP1600_ExtractAndAddBytesInLane(const void *state, unsigned int lanePosition, const unsigned char *input, unsigned char *output, unsigned int offset, unsigned int length)
  {
@@ -126,7 +158,7 @@
  #ifdef KeccakP1600_useLaneComplementing
      if ((lanePosition == 1) || (lanePosition == 2) || (lanePosition == 8) || (lanePosition == 12) || (lanePosition == 17) || (lanePosition == 20))
          lane = ~lane;
-@@ -455,10 +455,8 @@
+@@ -455,10 +464,8 @@
  #if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
      {
          unsigned int i;
@@ -138,7 +170,7 @@
      }
  #else
      unsigned int i;
-@@ -475,6 +473,7 @@
+@@ -475,6 +482,7 @@
  void KeccakP1600_ExtractAndAddLanes(const void *state, const unsigned char *input, unsigned char *output, unsigned int laneCount)
  {
      unsigned int i;
@@ -146,7 +178,7 @@
  #if (PLATFORM_BYTE_ORDER != IS_LITTLE_ENDIAN)
      unsigned char temp[8];
      unsigned int j;
-@@ -482,7 +481,9 @@
+@@ -482,7 +490,9 @@
  
      for(i=0; i<laneCount; i++) {
  #if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
@@ -157,7 +189,7 @@
  #else
          fromWordToBytes(temp, ((const uint64_t*)state)[i]);
          for(j=0; j<8; j++)
-@@ -490,24 +491,26 @@
+@@ -490,24 +500,26 @@
  #endif
      }
  #ifdef KeccakP1600_useLaneComplementing
@@ -190,7 +222,7 @@
  #endif
  }
  
-@@ -528,13 +531,12 @@
+@@ -528,13 +540,12 @@
      unsigned int i;
      #endif
      uint64_t *stateAsLanes = (uint64_t*)state;
@@ -206,7 +238,7 @@
          dataByteLen -= laneCount*8;
      }
      copyToState(stateAsLanes, A)
-@@ -551,13 +553,12 @@
+@@ -551,13 +562,12 @@
      unsigned int i;
      #endif
      uint64_t *stateAsLanes = (uint64_t*)state;

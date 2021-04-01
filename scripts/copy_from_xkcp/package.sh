@@ -58,8 +58,8 @@ cp -Lp "${BUILD_UPSTREAM}/lib/common/brg_endian.h" \
 
 OUT="${BUILD_XKCP}/KeccakP-1600/avx2"
 mkdir -p "${OUT}"
+cp -Lp "${BUILD_UPSTREAM}/lib/low/KeccakP-1600/AVX2/KeccakP-1600-AVX2.s" "${OUT}/KeccakP-1600-AVX2.S"
 cp -Lp "${BUILD_UPSTREAM}/lib/common/align.h" \
-       "${BUILD_UPSTREAM}/lib/low/KeccakP-1600/AVX2/KeccakP-1600-AVX2.s" \
        "${BUILD_UPSTREAM}/lib/low/KeccakP-1600/AVX2/KeccakP-1600-SnP.h" \
        "${OUT}"
 
