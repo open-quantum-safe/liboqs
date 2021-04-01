@@ -50,7 +50,6 @@ if(OQS_USE_OPENSSL)
 endif()
 
 if(NOT OQS_USE_SHA3_OPENSSL) # using XKCP
-    target_include_directories(common PRIVATE ${XKCP_LOW_INCLUDE_DIRS})
     set(_COMMON_OBJS ${_COMMON_OBJS} ${XKCP_LOW_OBJS})
 endif()
 
