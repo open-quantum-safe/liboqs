@@ -307,7 +307,7 @@ workflows:
                 - /^audit.*/
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
-          PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto
+          PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
       # Disabling test_constant_time for now
       #- linux_x64:
       #    <<: *require_buildcheck
