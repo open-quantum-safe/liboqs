@@ -403,6 +403,7 @@ void poly_uniform(poly *a, const uint8_t seed[SEEDBYTES], uint16_t nonce)
   stream128_state state;
   stream128_init(&state, seed, nonce);
   poly_uniform_preinit(a, &state);
+  stream128_release(&state);
 }
 
 #ifndef DILITHIUM_USE_AES
@@ -537,6 +538,7 @@ void poly_uniform_eta(poly *a, const uint8_t seed[CRHBYTES], uint16_t nonce)
   stream256_state state;
   stream256_init(&state, seed, nonce);
   poly_uniform_eta_preinit(a, &state);
+  stream256_release(&state);
 }
 
 #ifndef DILITHIUM_USE_AES
@@ -622,6 +624,7 @@ void poly_uniform_gamma1(poly *a, const uint8_t seed[CRHBYTES], uint16_t nonce)
   stream256_state state;
   stream256_init(&state, seed, nonce);
   poly_uniform_gamma1_preinit(a, &state);
+  stream256_release(&state);
 }
 
 #ifndef DILITHIUM_USE_AES
