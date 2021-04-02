@@ -363,7 +363,7 @@ static inline void karat_mult9(__m256i *C, const aligned_vec_t *A, const aligned
  * @param[in] a2 Pointer to a polynomial
  */
 void PQCLEAN_HQCRMRS128_AVX2_vect_mul(uint64_t *o, const aligned_vec_t *a1, const aligned_vec_t *a2) {
-    __m256i a1_times_a2[2 * PARAM_N_MULT + 1] = {0};
+    __m256i a1_times_a2[CEIL_DIVIDE(2 * PARAM_N_MULT + 1, 256)] = {0};
     karat_mult9(a1_times_a2, a1, a2);
     reduce(o, a1_times_a2);
 }

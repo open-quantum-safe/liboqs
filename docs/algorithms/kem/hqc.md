@@ -9,7 +9,7 @@
 ## Implementation
 
 - **Source of implementation**: hqc-submission_2020-10-01 via https://github.com/jschanck/package-pqclean/tree/c9181076/hqc
-- **Implementation version**: https://github.com/PQClean/PQClean.git, master, e463123b92a5b315531c883d0d6b7381731e9b1c
+- **Implementation version**: https://github.com/PQClean/PQClean.git, master, ef4ad5da02283ec0dd58b57a0684c98a1e33a531
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AVX2, BMI1, PCLMULQDQ instructions (if available at run-time)
