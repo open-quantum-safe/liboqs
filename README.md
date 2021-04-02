@@ -154,7 +154,7 @@ Or to compile for Windows AMD64 from Ubuntu Bionic:
 
 	apt install gcc-mingw-w64
 	mkdir build && cd build
-	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake ..
+	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DOQS_DIST_BUILD=ON ..
 	ninja
 
 ## Documentation
