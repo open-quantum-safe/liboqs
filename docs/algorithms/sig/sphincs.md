@@ -9,7 +9,7 @@
 ## Implementation
 
 - **Source of implementation**: https://github.com/sphincs/sphincsplus
-- **Implementation version**: https://github.com/PQClean/PQClean.git, master, 865f0bd1d1dceb6624fc27e6395b14d2d03261ad
+- **Implementation version**: https://github.com/PQClean/PQClean.git, master, ef4ad5da02283ec0dd58b57a0684c98a1e33a531
 - **License**: CC0 1.0 Universal
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AES, AVX2 instructions (if available at run-time)
