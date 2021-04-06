@@ -104,6 +104,7 @@ typedef enum {
 typedef enum {
 	OQS_CPU_EXT_INIT, /* Must be first */
 	/* Start extension list */
+	OQS_CPU_EXT_ADX,
 	OQS_CPU_EXT_AES,
 	OQS_CPU_EXT_AVX,
 	OQS_CPU_EXT_AVX2,

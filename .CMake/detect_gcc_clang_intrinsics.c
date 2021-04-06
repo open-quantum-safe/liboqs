@@ -3,6 +3,9 @@
 #include <stdio.h>
 
 int main(void) {
+#if defined(__ADX__)
+	printf("ADX;");
+#endif
 #if defined(__AES__)
 	printf("AES;");
 #endif

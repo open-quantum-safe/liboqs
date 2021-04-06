@@ -60,9 +60,60 @@ static void print_platform_info(void) {
 /* Display all active CPU extensions: */
 static void print_cpu_extensions(void) {
 #if defined(OQS_DIST_BUILD)
-	printf("CPU exts active:  (portable build)\n");
+	printf("CPU exts active: ");
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ADX)) {
+		printf(" ADX");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) {
+		printf(" AES");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX)) {
+		printf(" AVX");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
+		printf(" AVX2");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX512)) {
+		printf(" AVX512");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_BMI1)) {
+		printf(" BMI1");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_BMI2)) {
+		printf(" BMI2");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
+		printf(" PCLMULQDQ");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
+		printf(" POPCNT");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_SSE)) {
+		printf(" SSE");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_SSE2)) {
+		printf(" SSE2");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_SSE3)) {
+		printf(" SSE3");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_AES)) {
+		printf(" AES");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_SHA2)) {
+		printf(" SHA2");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_SHA3)) {
+		printf(" SHA3");
+	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
+		printf(" NEON");
+	}
 #else
 	printf("CPU exts active: ");
+#ifdef OQS_USE_ADX_INSTRUCTIONS
+	printf(" ADX");
+#endif
 #ifdef OQS_USE_AES_INSTRUCTIONS
 	printf(" AES");
 #endif
