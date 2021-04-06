@@ -47,6 +47,7 @@ static void set_available_cpu_extensions(void) {
 	cpu_ext_data[OQS_CPU_EXT_POPCNT] = is_bit_set(leaf_1.ecx, 23);
 	cpu_ext_data[OQS_CPU_EXT_BMI1] = is_bit_set(leaf_7.ebx, 3);
 	cpu_ext_data[OQS_CPU_EXT_BMI2] = is_bit_set(leaf_7.ebx, 8);
+	cpu_ext_data[OQS_CPU_EXT_ADX] = is_bit_set(leaf_7.ebx, 19);
 
 	if (has_mask(xcr0_eax, MASK_XMM)) {
 		cpu_ext_data[OQS_CPU_EXT_SSE] = is_bit_set(leaf_1.edx, 25);
