@@ -106,7 +106,11 @@ static void store64(unsigned char *out, uint64_t in) {
 }
 
 void KeccakP1600times4_InitializeAll(void *states) {
-	memset(states, 0, KeccakP1600times4_statesSizeInBytes);
+	memset(states, 0, KeccakP1600times4_statesSizeInBytes_avx2);
+}
+
+void KeccakP1600times4_AddByte(void *states, unsigned int instanceIndex, unsigned char byte, unsigned int offset) {
+	((unsigned char *)states)[instanceIndex * 8 + (offset / 8) * 4 * 8 + offset % 8] ^= byte;
 }
 
 void KeccakP1600times4_AddBytes(void *states, unsigned int instanceIndex, const unsigned char *data, unsigned int offset, unsigned int length) {
@@ -715,7 +719,7 @@ void KeccakP1600times4_ExtractAndAddLanesAll(const void *states, const unsigned 
     E##su = XOR256(Bsu, ANDnu256(Bsa, Bse)); \
 \
 
-static ALIGN(KeccakP1600times4_statesAlignment) const uint64_t KeccakF1600RoundConstants[24] = {
+static ALIGN(KeccakP1600times4_statesAlignment_avx2) const uint64_t KeccakF1600RoundConstants[24] = {
 	0x0000000000000001ULL,
 	0x0000000000008082ULL,
 	0x800000000000808aULL,

@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-#include "KeccakP-1600-times4-SnP.h"
 #include "sha3.h"
 #include "sha3x4.h"
+
+#include "xkcp_dispatch.h"
 
 #include <oqs/common.h>
 #include <oqs/oqsconfig.h>
@@ -12,25 +13,58 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define KECCAK_X4_CTX_ALIGNMENT KeccakP1600times4_statesAlignment
-
-#if KeccakP1600times4_statesSizeInBytes == 800
+#define KECCAK_X4_CTX_ALIGNMENT 32
 #define _KECCAK_X4_CTX_BYTES (800+sizeof(uint64_t))
-// Round up to a multiple of alignment for C11 aligned_alloc
 #define KECCAK_X4_CTX_BYTES (KECCAK_X4_CTX_ALIGNMENT * \
   ((_KECCAK_X4_CTX_BYTES + KECCAK_X4_CTX_ALIGNMENT - 1)/KECCAK_X4_CTX_ALIGNMENT))
+
+/* The first call to Keccak_Initialize will be routed through dispatch, which
+ * updates all of the function pointers used below.
+ */
+static KeccakX4InitFn Keccak_X4_Dispatch;
+static KeccakX4InitFn *Keccak_X4_Initialize_ptr = &Keccak_X4_Dispatch;
+static KeccakX4AddByteFn *Keccak_X4_AddByte_ptr = NULL;
+static KeccakX4AddBytesFn *Keccak_X4_AddBytes_ptr = NULL;
+static KeccakX4PermuteFn *Keccak_X4_Permute_ptr = NULL;
+static KeccakX4ExtractBytesFn *Keccak_X4_ExtractBytes_ptr = NULL;
+
+static void Keccak_X4_Dispatch(void *state) {
+// TODO: Simplify this when we have a Windows-compatible AVX2 implementation of SHA3
+#if defined(OQS_DIST_X86_64_BUILD)
+#if defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
+		Keccak_X4_Initialize_ptr = &KeccakP1600times4_InitializeAll_avx2;
+		Keccak_X4_AddByte_ptr = &KeccakP1600times4_AddByte_avx2;
+		Keccak_X4_AddBytes_ptr = &KeccakP1600times4_AddBytes_avx2;
+		Keccak_X4_Permute_ptr = &KeccakP1600times4_PermuteAll_24rounds_avx2;
+		Keccak_X4_ExtractBytes_ptr = &KeccakP1600times4_ExtractBytes_avx2;
+	} else {
+		Keccak_X4_Initialize_ptr = &KeccakP1600times4_InitializeAll_serial;
+		Keccak_X4_AddByte_ptr = &KeccakP1600times4_AddByte_serial;
+		Keccak_X4_AddBytes_ptr = &KeccakP1600times4_AddBytes_serial;
+		Keccak_X4_Permute_ptr = &KeccakP1600times4_PermuteAll_24rounds_serial;
+		Keccak_X4_ExtractBytes_ptr = &KeccakP1600times4_ExtractBytes_serial;
+	}
+#else // Windows
+	Keccak_X4_Initialize_ptr = &KeccakP1600times4_InitializeAll_serial;
+	Keccak_X4_AddByte_ptr = &KeccakP1600times4_AddByte_serial;
+	Keccak_X4_AddBytes_ptr = &KeccakP1600times4_AddBytes_serial;
+	Keccak_X4_Permute_ptr = &KeccakP1600times4_PermuteAll_24rounds_serial;
+	Keccak_X4_ExtractBytes_ptr = &KeccakP1600times4_ExtractBytes_serial;
+#endif
 #else
-#error sha3x4_xkcp assumes 800 byte KeccakP1600times4 state
+	Keccak_X4_Initialize_ptr = &KeccakP1600times4_InitializeAll;
+	Keccak_X4_AddByte_ptr = &KeccakP1600times4_AddByte;
+	Keccak_X4_AddBytes_ptr = &KeccakP1600times4_AddBytes;
+	Keccak_X4_Permute_ptr = &KeccakP1600times4_PermuteAll_24rounds;
+	Keccak_X4_ExtractBytes_ptr = &KeccakP1600times4_ExtractBytes;
 #endif
 
-#define KeccakF1600times4_InitializeAll KeccakP1600times4_InitializeAll
-#define KeccakF1600times4_ExtractBytes KeccakP1600times4_ExtractBytes
-#define KeccakF1600times4_AddByte KeccakP1600times4_AddByte
-#define KeccakF1600times4_AddBytes KeccakP1600times4_AddBytes
-#define KeccakF1600times4_StatePermuteAll KeccakP1600times4_PermuteAll_24rounds
+	(*Keccak_X4_Initialize_ptr)(state);
+}
 
 static void keccak_x4_inc_reset(uint64_t *s) {
-	KeccakF1600times4_InitializeAll(s);
+	(*Keccak_X4_Initialize_ptr)(s);
 	s[100] = 0;
 }
 
@@ -40,11 +74,11 @@ static void keccak_x4_inc_absorb(uint64_t *s, uint32_t r,
 
 	if (s[100] && inlen + s[100] >= r) {
 		c = r - s[100];
-		KeccakF1600times4_AddBytes(s, 0, in0, (unsigned int)s[100], (unsigned int)c);
-		KeccakF1600times4_AddBytes(s, 1, in1, (unsigned int)s[100], (unsigned int)c);
-		KeccakF1600times4_AddBytes(s, 2, in2, (unsigned int)s[100], (unsigned int)c);
-		KeccakF1600times4_AddBytes(s, 3, in3, (unsigned int)s[100], (unsigned int)c);
-		KeccakF1600times4_StatePermuteAll(s);
+		(*Keccak_X4_AddBytes_ptr)(s, 0, in0, (unsigned int)s[100], (unsigned int)c);
+		(*Keccak_X4_AddBytes_ptr)(s, 1, in1, (unsigned int)s[100], (unsigned int)c);
+		(*Keccak_X4_AddBytes_ptr)(s, 2, in2, (unsigned int)s[100], (unsigned int)c);
+		(*Keccak_X4_AddBytes_ptr)(s, 3, in3, (unsigned int)s[100], (unsigned int)c);
+		(*Keccak_X4_Permute_ptr)(s);
 		inlen -= c;
 		in0 += c;
 		in1 += c;
@@ -54,11 +88,11 @@ static void keccak_x4_inc_absorb(uint64_t *s, uint32_t r,
 	}
 
 	while (inlen >= r) {
-		KeccakF1600times4_AddBytes(s, 0, in0, 0, (unsigned int)r);
-		KeccakF1600times4_AddBytes(s, 1, in1, 0, (unsigned int)r);
-		KeccakF1600times4_AddBytes(s, 2, in2, 0, (unsigned int)r);
-		KeccakF1600times4_AddBytes(s, 3, in3, 0, (unsigned int)r);
-		KeccakF1600times4_StatePermuteAll(s);
+		(*Keccak_X4_AddBytes_ptr)(s, 0, in0, 0, (unsigned int)r);
+		(*Keccak_X4_AddBytes_ptr)(s, 1, in1, 0, (unsigned int)r);
+		(*Keccak_X4_AddBytes_ptr)(s, 2, in2, 0, (unsigned int)r);
+		(*Keccak_X4_AddBytes_ptr)(s, 3, in3, 0, (unsigned int)r);
+		(*Keccak_X4_Permute_ptr)(s);
 		inlen -= r;
 		in0 += r;
 		in1 += r;
@@ -66,23 +100,23 @@ static void keccak_x4_inc_absorb(uint64_t *s, uint32_t r,
 		in3 += r;
 	}
 
-	KeccakF1600times4_AddBytes(s, 0, in0, (unsigned int)s[100], (unsigned int)inlen);
-	KeccakF1600times4_AddBytes(s, 1, in1, (unsigned int)s[100], (unsigned int)inlen);
-	KeccakF1600times4_AddBytes(s, 2, in2, (unsigned int)s[100], (unsigned int)inlen);
-	KeccakF1600times4_AddBytes(s, 3, in3, (unsigned int)s[100], (unsigned int)inlen);
+	(*Keccak_X4_AddBytes_ptr)(s, 0, in0, (unsigned int)s[100], (unsigned int)inlen);
+	(*Keccak_X4_AddBytes_ptr)(s, 1, in1, (unsigned int)s[100], (unsigned int)inlen);
+	(*Keccak_X4_AddBytes_ptr)(s, 2, in2, (unsigned int)s[100], (unsigned int)inlen);
+	(*Keccak_X4_AddBytes_ptr)(s, 3, in3, (unsigned int)s[100], (unsigned int)inlen);
 	s[100] += inlen;
 }
 
 static void keccak_x4_inc_finalize(uint64_t *s, uint32_t r, uint8_t p) {
-	KeccakF1600times4_AddByte(s, 0, p, (unsigned int)s[100]);
-	KeccakF1600times4_AddByte(s, 1, p, (unsigned int)s[100]);
-	KeccakF1600times4_AddByte(s, 2, p, (unsigned int)s[100]);
-	KeccakF1600times4_AddByte(s, 3, p, (unsigned int)s[100]);
+	(*Keccak_X4_AddByte_ptr)(s, 0, p, (unsigned int)s[100]);
+	(*Keccak_X4_AddByte_ptr)(s, 1, p, (unsigned int)s[100]);
+	(*Keccak_X4_AddByte_ptr)(s, 2, p, (unsigned int)s[100]);
+	(*Keccak_X4_AddByte_ptr)(s, 3, p, (unsigned int)s[100]);
 
-	KeccakF1600times4_AddByte(s, 0, 0x80, (unsigned int)(r - 1));
-	KeccakF1600times4_AddByte(s, 1, 0x80, (unsigned int)(r - 1));
-	KeccakF1600times4_AddByte(s, 2, 0x80, (unsigned int)(r - 1));
-	KeccakF1600times4_AddByte(s, 3, 0x80, (unsigned int)(r - 1));
+	(*Keccak_X4_AddByte_ptr)(s, 0, 0x80, (unsigned int)(r - 1));
+	(*Keccak_X4_AddByte_ptr)(s, 1, 0x80, (unsigned int)(r - 1));
+	(*Keccak_X4_AddByte_ptr)(s, 2, 0x80, (unsigned int)(r - 1));
+	(*Keccak_X4_AddByte_ptr)(s, 3, 0x80, (unsigned int)(r - 1));
 
 	s[100] = 0;
 }
@@ -91,11 +125,11 @@ static void keccak_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, u
                                   size_t outlen, uint64_t *s, uint32_t r) {
 
 	while (outlen > s[100]) {
-		KeccakF1600times4_ExtractBytes(s, 0, out0, (unsigned int)(r - s[100]), (unsigned int)s[100]);
-		KeccakF1600times4_ExtractBytes(s, 1, out1, (unsigned int)(r - s[100]), (unsigned int)s[100]);
-		KeccakF1600times4_ExtractBytes(s, 2, out2, (unsigned int)(r - s[100]), (unsigned int)s[100]);
-		KeccakF1600times4_ExtractBytes(s, 3, out3, (unsigned int)(r - s[100]), (unsigned int)s[100]);
-		KeccakF1600times4_StatePermuteAll(s);
+		(*Keccak_X4_ExtractBytes_ptr)(s, 0, out0, (unsigned int)(r - s[100]), (unsigned int)s[100]);
+		(*Keccak_X4_ExtractBytes_ptr)(s, 1, out1, (unsigned int)(r - s[100]), (unsigned int)s[100]);
+		(*Keccak_X4_ExtractBytes_ptr)(s, 2, out2, (unsigned int)(r - s[100]), (unsigned int)s[100]);
+		(*Keccak_X4_ExtractBytes_ptr)(s, 3, out3, (unsigned int)(r - s[100]), (unsigned int)s[100]);
+		(*Keccak_X4_Permute_ptr)(s);
 		out0 += s[100];
 		out1 += s[100];
 		out2 += s[100];
@@ -104,10 +138,10 @@ static void keccak_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, u
 		s[100] = r;
 	}
 
-	KeccakF1600times4_ExtractBytes(s, 0, out0, (unsigned int)(r - s[100]), (unsigned int)outlen);
-	KeccakF1600times4_ExtractBytes(s, 1, out1, (unsigned int)(r - s[100]), (unsigned int)outlen);
-	KeccakF1600times4_ExtractBytes(s, 2, out2, (unsigned int)(r - s[100]), (unsigned int)outlen);
-	KeccakF1600times4_ExtractBytes(s, 3, out3, (unsigned int)(r - s[100]), (unsigned int)outlen);
+	(*Keccak_X4_ExtractBytes_ptr)(s, 0, out0, (unsigned int)(r - s[100]), (unsigned int)outlen);
+	(*Keccak_X4_ExtractBytes_ptr)(s, 1, out1, (unsigned int)(r - s[100]), (unsigned int)outlen);
+	(*Keccak_X4_ExtractBytes_ptr)(s, 2, out2, (unsigned int)(r - s[100]), (unsigned int)outlen);
+	(*Keccak_X4_ExtractBytes_ptr)(s, 3, out3, (unsigned int)(r - s[100]), (unsigned int)outlen);
 
 	s[100] -= outlen;
 }

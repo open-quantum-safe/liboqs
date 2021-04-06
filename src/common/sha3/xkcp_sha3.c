@@ -7,8 +7,9 @@
 * SPDX-License-Identifier: MIT
 */
 
-#include "KeccakP-1600-SnP.h"
 #include "sha3.h"
+
+#include "xkcp_dispatch.h"
 
 #include <oqs/common.h>
 
@@ -17,21 +18,60 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define KeccakF1600_Initialize KeccakP1600_Initialize
-#define KeccakF1600_ExtractBytes KeccakP1600_ExtractBytes
-#define KeccakF1600_AddByte KeccakP1600_AddByte
-#define KeccakF1600_AddBytes KeccakP1600_AddBytes
-#define KeccakF1600_StatePermute KeccakP1600_Permute_24rounds
-
-#define KECCAK_CTX_ALIGNMENT KeccakP1600_stateAlignment
-#if KeccakP1600_stateSizeInBytes == 200
+#define KECCAK_CTX_ALIGNMENT 32
 #define _KECCAK_CTX_BYTES (200+sizeof(uint64_t))
-// Round up to a multiple of alignment for C11 aligned_alloc
 #define KECCAK_CTX_BYTES (KECCAK_CTX_ALIGNMENT * \
   ((_KECCAK_CTX_BYTES + KECCAK_CTX_ALIGNMENT - 1)/KECCAK_CTX_ALIGNMENT))
-#else
-#error sha3_xkcp assumes 200 byte KeccakP1600 state
+
+/* The first call to Keccak_Initialize will be routed through dispatch, which
+ * updates all of the function pointers used below.
+ */
+static KeccakInitFn Keccak_Dispatch;
+static KeccakInitFn *Keccak_Initialize_ptr = &Keccak_Dispatch;
+static KeccakAddByteFn *Keccak_AddByte_ptr = NULL;
+static KeccakAddBytesFn *Keccak_AddBytes_ptr = NULL;
+static KeccakPermuteFn *Keccak_Permute_ptr = NULL;
+static KeccakExtractBytesFn *Keccak_ExtractBytes_ptr = NULL;
+static KeccakFastLoopAbsorbFn *Keccak_FastLoopAbsorb_ptr = NULL;
+
+static void Keccak_Dispatch(void *state) {
+// TODO: Simplify this when we have a Windows-compatible AVX2 implementation of SHA3
+#if defined(OQS_DIST_X86_64_BUILD)
+#if defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
+		Keccak_Initialize_ptr = &KeccakP1600_Initialize_avx2;
+		Keccak_AddByte_ptr = &KeccakP1600_AddByte_avx2;
+		Keccak_AddBytes_ptr = &KeccakP1600_AddBytes_avx2;
+		Keccak_Permute_ptr = &KeccakP1600_Permute_24rounds_avx2;
+		Keccak_ExtractBytes_ptr = &KeccakP1600_ExtractBytes_avx2;
+		Keccak_FastLoopAbsorb_ptr = &KeccakF1600_FastLoop_Absorb_avx2;
+	} else {
+		Keccak_Initialize_ptr = &KeccakP1600_Initialize_plain64;
+		Keccak_AddByte_ptr = &KeccakP1600_AddByte_plain64;
+		Keccak_AddBytes_ptr = &KeccakP1600_AddBytes_plain64;
+		Keccak_Permute_ptr = &KeccakP1600_Permute_24rounds_plain64;
+		Keccak_ExtractBytes_ptr = &KeccakP1600_ExtractBytes_plain64;
+		Keccak_FastLoopAbsorb_ptr = &KeccakF1600_FastLoop_Absorb_plain64;
+	}
+#else // Windows
+	Keccak_Initialize_ptr = &KeccakP1600_Initialize_plain64;
+	Keccak_AddByte_ptr = &KeccakP1600_AddByte_plain64;
+	Keccak_AddBytes_ptr = &KeccakP1600_AddBytes_plain64;
+	Keccak_Permute_ptr = &KeccakP1600_Permute_24rounds_plain64;
+	Keccak_ExtractBytes_ptr = &KeccakP1600_ExtractBytes_plain64;
+	Keccak_FastLoopAbsorb_ptr = &KeccakF1600_FastLoop_Absorb_plain64;
 #endif
+#else
+	Keccak_Initialize_ptr = &KeccakP1600_Initialize;
+	Keccak_AddByte_ptr = &KeccakP1600_AddByte;
+	Keccak_AddBytes_ptr = &KeccakP1600_AddBytes;
+	Keccak_Permute_ptr = &KeccakP1600_Permute_24rounds;
+	Keccak_ExtractBytes_ptr = &KeccakP1600_ExtractBytes;
+	Keccak_FastLoopAbsorb_ptr = &KeccakF1600_FastLoop_Absorb;
+#endif
+
+	(*Keccak_Initialize_ptr)(state);
+}
 
 /*************************************************
  * Name:        keccak_inc_reset
@@ -44,7 +84,7 @@
  *                that have not been permuted, or not-yet-squeezed bytes.
  **************************************************/
 static void keccak_inc_reset(uint64_t *s) {
-	KeccakF1600_Initialize(s);
+	(*Keccak_Initialize_ptr)(s);
 	s[25] = 0;
 }
 
@@ -68,8 +108,8 @@ static void keccak_inc_absorb(uint64_t *s, uint32_t r, const uint8_t *m,
 
 	if (s[25] && mlen + s[25] >= r) {
 		c = r - s[25];
-		KeccakF1600_AddBytes(s, m, (unsigned int)s[25], (unsigned int)c);
-		KeccakF1600_StatePermute(s);
+		(*Keccak_AddBytes_ptr)(s, m, (unsigned int)s[25], (unsigned int)c);
+		(*Keccak_Permute_ptr)(s);
 		mlen -= c;
 		m += c;
 		s[25] = 0;
@@ -77,20 +117,20 @@ static void keccak_inc_absorb(uint64_t *s, uint32_t r, const uint8_t *m,
 
 #ifdef KeccakF1600_FastLoop_supported
 	if (mlen >= r) {
-		c = KeccakF1600_FastLoop_Absorb(s, r / 8, m, mlen);
+		c = (*Keccak_FastLoop_Absorb_ptr)(s, r / 8, m, mlen);
 		mlen -= c;
 		m += c;
 	}
 #else
 	while (mlen >= r) {
-		KeccakF1600_AddBytes(s, m, 0, r);
-		KeccakF1600_StatePermute(s);
+		(*Keccak_AddBytes_ptr)(s, m, 0, r);
+		(*Keccak_Permute_ptr)(s);
 		mlen -= r;
 		m += r;
 	}
 #endif
 
-	KeccakF1600_AddBytes(s, m, (unsigned int)s[25], (unsigned int)mlen);
+	(*Keccak_AddBytes_ptr)(s, m, (unsigned int)s[25], (unsigned int)mlen);
 	s[25] += mlen;
 }
 
@@ -110,8 +150,8 @@ static void keccak_inc_absorb(uint64_t *s, uint32_t r, const uint8_t *m,
 static void keccak_inc_finalize(uint64_t *s, uint32_t r, uint8_t p) {
 	/* After keccak_inc_absorb, we are guaranteed that s[25] < r,
 	   so we can always use one more byte for p in the current state. */
-	KeccakF1600_AddByte(s, p, (unsigned int)s[25]);
-	KeccakF1600_AddByte(s, 0x80, (unsigned int)(r - 1));
+	(*Keccak_AddByte_ptr)(s, p, (unsigned int)s[25]);
+	(*Keccak_AddByte_ptr)(s, 0x80, (unsigned int)(r - 1));
 	s[25] = 0;
 }
 
@@ -131,13 +171,13 @@ static void keccak_inc_finalize(uint64_t *s, uint32_t r, uint8_t p) {
 static void keccak_inc_squeeze(uint8_t *h, size_t outlen,
                                uint64_t *s, uint32_t r) {
 	while (outlen > s[25]) {
-		KeccakF1600_ExtractBytes(s, h, (unsigned int)(r - s[25]), (unsigned int)s[25]);
-		KeccakF1600_StatePermute(s);
+		(*Keccak_ExtractBytes_ptr)(s, h, (unsigned int)(r - s[25]), (unsigned int)s[25]);
+		(*Keccak_Permute_ptr)(s);
 		h += s[25];
 		outlen -= s[25];
 		s[25] = r;
 	}
-	KeccakF1600_ExtractBytes(s, h, (unsigned int)(r - s[25]), (unsigned int)outlen);
+	(*Keccak_ExtractBytes_ptr)(s, h, (unsigned int)(r - s[25]), (unsigned int)outlen);
 	s[25] -= outlen;
 }
 
