@@ -40,3 +40,8 @@ What's New
 This release includes the NIST PQC round 3 parameters for SPHINCS.
 
 ### Other changes
+
+#### Build options changed
+
+By default, liboqs is now no longer built by default with CPU runtime feature detection and thus resulting executables may crash if not compiled suitably for the  CPU on which the code shall be executed. 
+For docker files, we recommend setting [OQS_DIST_BUILD](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs#OQS_DIST_BUILD) to obtain code able to handle different CPU feature sets. Also, [OQS_OPT_TARGET](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs#oqs_opt_target) can be used to target a specific CPU at compile time. As usual, these flags are documented in the [build options wiki](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs).
