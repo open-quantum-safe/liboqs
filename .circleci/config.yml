@@ -128,15 +128,18 @@ jobs:
           name: Install the emulation handlers
           command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - run:
-          name: Run the tests in a container
+          name: Build in an x86_64 container
           command: |
-            docker run -e SKIP_TESTS=style --rm -v `pwd`:`pwd` -w `pwd` openquantumsafe/ci-debian-buster-<< parameters.ARCH >>:latest /bin/bash -c "
-            uname -a &&
-            file /bin/ls &&
+            docker run --rm -v `pwd`:`pwd` -w `pwd` openquantumsafe/ci-debian-buster-amd64:latest /bin/bash -c "
             mkdir build &&
             (cd build &&
-            cmake -GNinja << parameters.CMAKE_ARGS >> .. && cmake -LA .. &&
-            ninja) &&
+            cmake -GNinja << parameters.CMAKE_ARGS >> -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_<< parameters.ARCH >>.cmake .. && cmake -LA .. &&
+            ninja)
+            "
+      - run:
+          name: Run the tests in an << parameters.ARCH >> container
+          command: |
+            docker run -e SKIP_TESTS=style,mem_kem,mem_sig --rm -v `pwd`:`pwd` -w `pwd` openquantumsafe/ci-debian-buster-<< parameters.ARCH >>:latest /bin/bash -c "
             mkdir -p tmp && python3 -m pytest --verbose --numprocesses=auto --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml
             "
       - store_test_results:
@@ -250,21 +253,22 @@ workflows:
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           KEM_NAME: kyber_768
           SIG_NAME: dilithium_3
-      - testapproval:
-          <<: *require_buildcheck
-          type: approval
-      - linux_x64:
-          <<: *require_buildcheck
-          name: alpine-noopenssl
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-      - linux_x64:
-          <<: *require_buildcheck
-          name: alpine
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-          CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+      # Disabling testapproval as no jobs currently need it.
+      #- testapproval:
+      #    <<: *require_buildcheck
+      #    type: approval
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: alpine-noopenssl
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-alpine-amd64:latest
+      #    CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: alpine
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-alpine-amd64:latest
+      #    CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
       # Disabling centos-8 and debian-buster.
       # Re-enable if specific configurations (package versions etc) that need to be tested are identified.
       #- linux_x64:
@@ -343,20 +347,21 @@ workflows:
       # SPHINCS exhausts memory on CircleCI servers
       # for these configurations.
       - arm_emulated:
-          <<: *require_testapproval
+          <<: *require_buildcheck
           name: arm64
           ARCH: arm64
           CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_DIST_BUILD=ON
       - arm_emulated:
-          <<: *require_testapproval
+          <<: *require_buildcheck
           name: armhf
           ARCH: armhf
-          CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF
-      - arm_emulated:
-          <<: *require_testapproval
-          name: armel
-          ARCH: armel
-          CMAKE_ARGS:  -DOQS_ENABLE_SIG_SPHINCS=OFF
+          CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+      # Disabling armel
+      #- arm_emulated:
+      #    <<: *require_buildcheck
+      #    name: armel
+      #    ARCH: armel
+      #    CMAKE_ARGS:  -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
 
       - macOS:
           <<: *require_buildcheck
