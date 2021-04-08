@@ -253,9 +253,10 @@ workflows:
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           KEM_NAME: kyber_768
           SIG_NAME: dilithium_3
-      - testapproval:
-          <<: *require_buildcheck
-          type: approval
+      # Disabling testapproval as no jobs currently need it.
+      #- testapproval:
+      #    <<: *require_buildcheck
+      #    type: approval
       #- linux_x64:
       #    <<: *require_buildcheck
       #    name: alpine-noopenssl
