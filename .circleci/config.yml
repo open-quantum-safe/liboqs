@@ -139,7 +139,7 @@ jobs:
       - run:
           name: Run the tests in an << parameters.ARCH >> container
           command: |
-            docker run -e SKIP_TESTS=style --rm -v `pwd`:`pwd` -w `pwd` openquantumsafe/ci-debian-buster-<< parameters.ARCH >>:latest /bin/bash -c "
+            docker run -e SKIP_TESTS=style,mem_kem,mem_sig --rm -v `pwd`:`pwd` -w `pwd` openquantumsafe/ci-debian-buster-<< parameters.ARCH >>:latest /bin/bash -c "
             mkdir -p tmp && python3 -m pytest --verbose --numprocesses=auto --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml
             "
       - store_test_results:

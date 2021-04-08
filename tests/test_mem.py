@@ -6,7 +6,7 @@ from pathlib import Path
 
 @helpers.filtered_test
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
-def test_kem(kem_name):
+def test_mem_kem(kem_name):
     if not(helpers.is_kem_enabled_by_name(kem_name)):
         pytest.skip('Not enabled')
 
@@ -17,7 +17,7 @@ def test_kem(kem_name):
 
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
-def test_sig(sig_name):
+def test_mem_sig(sig_name):
     if not(helpers.is_sig_enabled_by_name(sig_name)):
         pytest.skip('Not enabled')
 
