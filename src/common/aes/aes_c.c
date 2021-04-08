@@ -377,6 +377,7 @@ void oqs_aes128_enc_sch_block_c(const uint8_t *plaintext, const void *_schedule,
 	xor_round_key(ciphertext, schedule, 10);
 }
 
+#ifndef OQS_NO_AESDEC
 void oqs_aes128_dec_sch_block_c(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext) {
 	const uint8_t *schedule = (const uint8_t *) _schedule;
 	int i; // To count the rounds
@@ -398,6 +399,7 @@ void oqs_aes128_dec_sch_block_c(const uint8_t *ciphertext, const void *_schedule
 	// Reverse the first Round
 	xor_round_key(plaintext, schedule, 0);
 }
+#endif
 
 void oqs_aes256_enc_sch_block_c(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
 	const uint8_t *schedule = (const uint8_t *) _schedule;
@@ -421,6 +423,7 @@ void oqs_aes256_enc_sch_block_c(const uint8_t *plaintext, const void *_schedule,
 	xor_round_key(ciphertext, schedule, 14);
 }
 
+#ifndef OQS_NO_AESDEC
 void oqs_aes256_dec_sch_block_c(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext) {
 	const uint8_t *schedule = (const uint8_t *) _schedule;
 	int i; // To count the rounds
@@ -442,3 +445,4 @@ void oqs_aes256_dec_sch_block_c(const uint8_t *ciphertext, const void *_schedule
 	// Reverse the first Round
 	xor_round_key(plaintext, schedule, 0);
 }
+#endif

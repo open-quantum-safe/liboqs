@@ -86,13 +86,16 @@ void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 	)
 }
 
+#ifndef OQS_NO_AESDEC
 void oqs_aes128_ecb_dec_sch_c(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
 	assert(ciphertext_len % 16 == 0);
 	for (size_t block = 0; block < ciphertext_len / 16; block++) {
 		oqs_aes128_dec_sch_block_c(ciphertext + (16 * block), schedule, plaintext + (16 * block));
 	}
 }
+#endif
 
+#ifndef OQS_NO_AESDEC
 #if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_AES_INSTRUCTIONS)
 void oqs_aes128_ecb_dec_sch_ni(const uint8_t *ciphertext, const size_t ciphertext_len, const void *schedule, uint8_t *plaintext) {
 	assert(ciphertext_len % 16 == 0);
@@ -115,6 +118,7 @@ void OQS_AES128_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 	    oqs_aes128_ecb_dec_sch_ni(ciphertext, ciphertext_len, schedule, plaintext)
 	)
 }
+#endif /* #ifndef OQS_NO_AESDEC */
 
 void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
@@ -146,6 +150,7 @@ void OQS_AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 	)
 }
 
+#ifndef OQS_NO_AESDEC
 void OQS_AES256_ECB_dec(const uint8_t *ciphertext, const size_t ciphertext_len, const uint8_t *key, uint8_t *plaintext) {
 	void *schedule = NULL;
 	OQS_AES256_ECB_load_schedule(key, &schedule, 0);
@@ -175,6 +180,7 @@ void OQS_AES256_ECB_dec_sch(const uint8_t *ciphertext, const size_t ciphertext_l
 	    oqs_aes256_ecb_dec_sch_ni(ciphertext, ciphertext_len, schedule, plaintext)
 	)
 }
+#endif /* #ifndef OQS_NO_AESDEC */
 
 static uint32_t UINT32_TO_BE(const uint32_t x) {
 	union {
