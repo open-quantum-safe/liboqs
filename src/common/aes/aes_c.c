@@ -189,12 +189,14 @@ static void sub_bytes(byte *a, int n) {
 		a[i] = lookup_sbox[a[i]];
 	}
 }
+#ifndef OQS_NO_AESDEC
 static void sub_bytes_inv(byte *a, int n) {
 	int i;
 	for (i = 0; i < n; i++) {
 		a[i] = lookup_sbox_inv[a[i]];
 	}
 }
+#endif
 
 // Rotate the first four bytes of the input eight bits to the left
 static inline void rot_word(byte *a) {
@@ -304,6 +306,7 @@ static void shift_rows(byte *state) {
 		state[i] = temp[shift_rows_table[i]];
 	}
 }
+#ifndef OQS_NO_AESDEC
 static void shift_rows_inv(byte *state) {
 	int i;
 	byte temp[16];
@@ -312,6 +315,7 @@ static void shift_rows_inv(byte *state) {
 		state[i] = temp[shift_rows_table_inv[i]];
 	}
 }
+#endif
 
 // Perform the mix columns matrix on one column of 4 bytes
 // http://en.wikipedia.org/wiki/Rijndael_mix_columns
@@ -347,6 +351,7 @@ static void mix_col_inv(byte *state) {
 	state[3] = lookup_g14[a3] ^ lookup_g9[a2] ^ lookup_g13[a1] ^ lookup_g11[a0];
 }
 
+#ifndef OQS_NO_AESDEC
 // Perform the inverse mix columns matrix on each column of the 16 bytes
 static void mix_cols_inv(byte *state) {
 	mix_col_inv(state);
@@ -354,6 +359,7 @@ static void mix_cols_inv(byte *state) {
 	mix_col_inv(state + 8);
 	mix_col_inv(state + 12);
 }
+#endif
 
 void oqs_aes128_enc_sch_block_c(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
 	const uint8_t *schedule = (const uint8_t *) _schedule;
