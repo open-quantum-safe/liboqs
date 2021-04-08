@@ -356,11 +356,12 @@ workflows:
           name: armhf
           ARCH: armhf
           CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
-      - arm_emulated:
-          <<: *require_buildcheck
-          name: armel
-          ARCH: armel
-          CMAKE_ARGS:  -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+      # Disabling armel
+      #- arm_emulated:
+      #    <<: *require_buildcheck
+      #    name: armel
+      #    ARCH: armel
+      #    CMAKE_ARGS:  -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
 
       - macOS:
           <<: *require_buildcheck
