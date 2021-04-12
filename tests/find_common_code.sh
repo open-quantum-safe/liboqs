@@ -16,7 +16,7 @@ fi
 find build/src/common -name "*.o" -exec nm {} \; | grep " T " | awk '{ print $3 }' > ${COMMON_CODE_FILE} 
 
 # step 2 (conservative, possibly prune more than only OQS_API) also collect all #defines in common source code:
-find src/common -name "*.h" -exec grep \#define  {} \; | awk '{print $2}' | sed 's/(.*$//' | grep -v OQS_API  >> ${COMMON_CODE_FILE}
+find src/common -name "*.h" -exec grep \#define  {} \; | awk '{print $2}' | sed 's/(.*$//' | grep -v OQS_API | grep -v ALIGN | grep -v UNUSED >> ${COMMON_CODE_FILE}
 
 # step 3: Determine which of these symbols are referenced by which QSC algorithm code
 
@@ -25,3 +25,4 @@ find src/sig -maxdepth 1 -mindepth 1 -type d -exec tests/grep_symbols.sh ${COMMO
 
 # clean up
 rm ${COMMON_CODE_FILE}
+

@@ -14,10 +14,11 @@ if [ ! -d $2 ]; then
     exit 1
 fi
 
+echo "Found in $2:"
 while IFS= read -r line
 do
   grep -r "$line" $2 > /dev/null
   if [ $? == 0 ]; then
-    echo "found $line in $2"
+    echo "   $line"
   fi
 done < "$1"
