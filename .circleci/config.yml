@@ -257,18 +257,18 @@ workflows:
       #- testapproval:
       #    <<: *require_buildcheck
       #    type: approval
-      #- linux_x64:
-      #    <<: *require_buildcheck
-      #    name: alpine-noopenssl
-      #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-      #    CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-      #- linux_x64:
-      #    <<: *require_buildcheck
-      #    name: alpine
-      #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-      #    CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+      - linux_x64:
+          <<: *require_buildcheck
+          name: alpine-noopenssl
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-alpine-amd64:latest
+          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
+      - linux_x64:
+          <<: *require_buildcheck
+          name: alpine
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-alpine-amd64:latest
+          CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
       # Disabling centos-8 and debian-buster.
       # Re-enable if specific configurations (package versions etc) that need to be tested are identified.
       #- linux_x64:
