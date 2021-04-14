@@ -37,7 +37,7 @@ static const uint8_t test_aes256_ciphertext[] = {0x8e, 0xa2, 0xb7, 0xca, 0x51, 0
 static int test_aes128_correctness(void) {
 	uint8_t derived_ciphertext[16];
 	void *schedule = NULL;
-	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule, 1);
+	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule);
 	OQS_AES128_ECB_enc_sch(test_aes128_plaintext, sizeof(test_aes128_plaintext), schedule, derived_ciphertext);
 	if (memcmp(test_aes128_ciphertext, derived_ciphertext, 16) != 0) {
 		printf("test_aes128_correctness ciphertext does not match\n");
@@ -52,7 +52,7 @@ static int test_aes128_correctness(void) {
 static int test_aes256_correctness(void) {
 	uint8_t derived_ciphertext[16];
 	void *schedule = NULL;
-	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule, 1);
+	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule);
 	OQS_AES256_ECB_enc_sch(test_aes256_plaintext, sizeof(test_aes256_plaintext), schedule, derived_ciphertext);
 	if (memcmp(test_aes256_ciphertext, derived_ciphertext, 16) != 0) {
 		printf("test_aes256_correctness ciphertext does not match\n");
@@ -91,9 +91,9 @@ static int test_aes256ctr_correctness(void) {
 static void speed_aes128(void) {
 	uint8_t ciphertext[16];
 	void *schedule = NULL, *schedule_dec = NULL;
-	TIME_OPERATION_SECONDS({ OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule, 1); OQS_AES128_free_schedule(schedule); }, "OQS_AES128_ECB_load+free_sch", BENCH_DURATION);
+	TIME_OPERATION_SECONDS({ OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule); OQS_AES128_free_schedule(schedule); }, "OQS_AES128_ECB_load+free_sch", BENCH_DURATION);
 
-	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule, 1);
+	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule);
 	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc_sch(test_aes128_plaintext, sizeof(test_aes128_plaintext), schedule, ciphertext), "OQS_AES128_ECB_enc_sch", BENCH_DURATION);
 	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc(test_aes128_plaintext, sizeof(test_aes128_plaintext), test_aes128_key, ciphertext), "OQS_AES128_ECB_enc", BENCH_DURATION);
 	OQS_AES128_free_schedule(schedule);
@@ -103,9 +103,9 @@ static void speed_aes128(void) {
 static void speed_aes256(void) {
 	uint8_t ciphertext[16];
 	void *schedule = NULL, *schedule_dec = NULL;
-	TIME_OPERATION_SECONDS({ OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule, 1); OQS_AES256_free_schedule(schedule); }, "OQS_AES256_ECB_load+free_sch", BENCH_DURATION);
+	TIME_OPERATION_SECONDS({ OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule); OQS_AES256_free_schedule(schedule); }, "OQS_AES256_ECB_load+free_sch", BENCH_DURATION);
 
-	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule, 1);
+	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule);
 	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc_sch(test_aes256_plaintext, sizeof(test_aes256_plaintext), schedule, ciphertext), "OQS_AES256_ECB_enc_sch", BENCH_DURATION);
 
 	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc(test_aes256_plaintext, sizeof(test_aes256_plaintext), test_aes256_key, ciphertext), "OQS_AES256_ECB_enc", BENCH_DURATION);

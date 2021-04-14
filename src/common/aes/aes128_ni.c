@@ -41,32 +41,11 @@ static inline void aes128ni_setkey_encrypt(const unsigned char *key, __m128i rke
 	rkeys[idx++] = temp0;
 }
 
-// From crypto_core/aes128decrypt/dolbeau/aesenc-int
-static inline void aes128ni_setkey_decrypt(const unsigned char *key, __m128i rkeys[11]) {
-	__m128i tkeys[11];
-	aes128ni_setkey_encrypt(key, tkeys);
-	rkeys[0] = tkeys[10];
-	rkeys[1] = _mm_aesimc_si128(tkeys[9]);
-	rkeys[2] = _mm_aesimc_si128(tkeys[8]);
-	rkeys[3] = _mm_aesimc_si128(tkeys[7]);
-	rkeys[4] = _mm_aesimc_si128(tkeys[6]);
-	rkeys[5] = _mm_aesimc_si128(tkeys[5]);
-	rkeys[6] = _mm_aesimc_si128(tkeys[4]);
-	rkeys[7] = _mm_aesimc_si128(tkeys[3]);
-	rkeys[8] = _mm_aesimc_si128(tkeys[2]);
-	rkeys[9] = _mm_aesimc_si128(tkeys[1]);
-	rkeys[10] = tkeys[0];
-}
-
-void oqs_aes128_load_schedule_ni(const uint8_t *key, void **_schedule, int for_encryption) {
+void oqs_aes128_load_schedule_ni(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(11 * sizeof(__m128i));
 	assert(*_schedule != NULL);
 	__m128i *schedule = (__m128i *) *_schedule;
-	if (for_encryption) {
-		aes128ni_setkey_encrypt(key, schedule);
-	} else {
-		aes128ni_setkey_decrypt(key, schedule);
-	}
+	aes128ni_setkey_encrypt(key, schedule);
 }
 
 void oqs_aes128_free_schedule_ni(void *schedule) {

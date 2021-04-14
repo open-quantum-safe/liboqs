@@ -122,7 +122,7 @@ static void key_schedule_core(byte *a, int i) {
 
 // Expand the 16-byte key to 11 round keys (176 bytes)
 // http://en.wikipedia.org/wiki/Rijndael_key_schedule#The_key_schedule
-void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
+void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(16 * 11);
 	OQS_EXIT_IF_NULLPTR(*_schedule);
 	uint8_t *schedule = (uint8_t *) *_schedule;
@@ -158,7 +158,7 @@ void oqs_aes128_free_schedule_c(void *schedule) {
 
 // Expand the 16-byte key to 15 round keys (240 bytes)
 // http://en.wikipedia.org/wiki/Rijndael_key_schedule#The_key_schedule
-void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule, UNUSED int for_encryption) {
+void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(16 * 15);
 	OQS_EXIT_IF_NULLPTR(*_schedule);
 	uint8_t *schedule = (uint8_t *) *_schedule;

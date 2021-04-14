@@ -14,7 +14,7 @@ int frodo_mul_add_as_plus_e_actual(uint16_t *out, const uint16_t *s, const uint1
 #if defined(USE_AES128_FOR_A)
     int16_t a_row_temp[4*PARAMS_N] = {0};                       // Take four lines of A at once
     uint8_t *aes_key_schedule;
-    OQS_AES128_ECB_load_schedule(seed_A, (void **) &aes_key_schedule, 1);
+    OQS_AES128_ECB_load_schedule(seed_A, (void **) &aes_key_schedule);
 
     for (j = 0; j < PARAMS_N; j += PARAMS_STRIPE_STEP) {
         a_row_temp[j + 1 + 0*PARAMS_N] = UINT16_TO_LE(j);       // Loading values in the little-endian order

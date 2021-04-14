@@ -41,6 +41,8 @@ This release includes the NIST PQC round 3 parameters for SPHINCS.
 
 ### Other changes
 
+- Remove (unused) AES decryption code from common symmetric encryption code
+
 #### Build options changed
 
 By default, liboqs is now no longer built by default with CPU runtime feature detection and thus resulting executables may crash if not compiled suitably for the  CPU on which the code shall be executed. 

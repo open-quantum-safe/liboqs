@@ -29,7 +29,7 @@ int frodo_mul_add_as_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
     }
     
     uint8_t *aes_key_schedule;
-    OQS_AES128_ECB_load_schedule(seed_A, (void **) &aes_key_schedule, 1);
+    OQS_AES128_ECB_load_schedule(seed_A, (void **) &aes_key_schedule);
     OQS_AES128_ECB_enc_sch((uint8_t*)A, A_len, aes_key_schedule, (uint8_t*)A);
 #elif defined(USE_SHAKE128_FOR_A)  // Matrix A generation using SHAKE128, done per 16*N-bit row   
     uint8_t seed_A_separated[2 + BYTES_SEED_A];
@@ -79,7 +79,7 @@ int frodo_mul_add_sa_plus_e(uint16_t *out, const uint16_t *s, const uint16_t *e,
     }
     
     uint8_t *aes_key_schedule;
-    OQS_AES128_ECB_load_schedule(seed_A, (void **) &aes_key_schedule, 1);  
+    OQS_AES128_ECB_load_schedule(seed_A, (void **) &aes_key_schedule);
     OQS_AES128_ECB_enc_sch((uint8_t*)A, A_len, aes_key_schedule, (uint8_t*)A);
 #elif defined (USE_SHAKE128_FOR_A)  // Matrix A generation using SHAKE128, done per 16*N-bit row
     uint8_t seed_A_separated[2 + BYTES_SEED_A];

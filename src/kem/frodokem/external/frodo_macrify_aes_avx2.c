@@ -15,7 +15,7 @@ int frodo_mul_add_sa_plus_e_aes_avx2(uint16_t *out, const uint16_t *s, const uin
     ALIGN_HEADER(32) uint16_t a_cols_t[PARAMS_N*PARAMS_STRIPE_STEP] ALIGN_FOOTER(32) = {0};
     uint16_t a_cols_temp[PARAMS_N*PARAMS_STRIPE_STEP] = {0};
     uint8_t *aes_key_schedule;
-    OQS_AES128_ECB_load_schedule(seed_A, (void **) &aes_key_schedule, 1);
+    OQS_AES128_ECB_load_schedule(seed_A, (void **) &aes_key_schedule);
 
     for (i = 0, j = 0; i < PARAMS_N; i++, j += PARAMS_STRIPE_STEP) {
         a_cols_temp[j] = UINT16_TO_LE(i);                       // Loading values in the little-endian order

@@ -24,10 +24,10 @@
     stmt_c;
 #endif
 
-void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule, int for_encryption) {
+void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	C_OR_NI(
-	    oqs_aes128_load_schedule_c(key, _schedule, for_encryption),
-	    oqs_aes128_load_schedule_ni(key, _schedule, for_encryption)
+	    oqs_aes128_load_schedule_c(key, _schedule),
+	    oqs_aes128_load_schedule_ni(key, _schedule)
 	)
 }
 
@@ -38,15 +38,15 @@ void OQS_AES128_free_schedule(void *schedule) {
 	)
 }
 
-void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **_schedule, int for_encryption) {
+void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	C_OR_NI(
-	    oqs_aes256_load_schedule_c(key, _schedule, for_encryption),
-	    oqs_aes256_load_schedule_ni(key, _schedule, for_encryption)
+	    oqs_aes256_load_schedule_c(key, _schedule),
+	    oqs_aes256_load_schedule_ni(key, _schedule)
 	)
 }
 
 void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **_schedule) {
-	OQS_AES256_ECB_load_schedule(key, _schedule, 1);
+	OQS_AES256_ECB_load_schedule(key, _schedule);
 }
 
 void OQS_AES256_free_schedule(void *schedule) {
@@ -58,7 +58,7 @@ void OQS_AES256_free_schedule(void *schedule) {
 
 void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
-	OQS_AES128_ECB_load_schedule(key, &schedule, 1);
+	OQS_AES128_ECB_load_schedule(key, &schedule);
 	OQS_AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
 	OQS_AES128_free_schedule(schedule);
 }
@@ -88,7 +88,7 @@ void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 
 void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
-	OQS_AES256_ECB_load_schedule(key, &schedule, 1);
+	OQS_AES256_ECB_load_schedule(key, &schedule);
 	OQS_AES256_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
 	OQS_AES256_free_schedule(schedule);
 }

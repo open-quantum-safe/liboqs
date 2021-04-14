@@ -20,9 +20,8 @@ extern "C" {
  *
  * @param key            Initial Key.
  * @param schedule       Abstract data structure for a key schedule.
- * @param for_encryption 1 if key schedule is for encryption, 0 if for decryption.
  */
-void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **schedule, int for_encryption);
+void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **schedule);
 
 /**
  * Function to free a key schedule.
@@ -52,13 +51,12 @@ void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
 void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
 
 /**
- * Function to fill a key schedule given an initial key for use in ECB mode.
+ * Function to fill a key schedule given an initial key for use in ECB mode encryption.
  *
  * @param key            Initial Key.
  * @param schedule       Abstract data structure for a key schedule.
- * @param for_encryption 1 if key schedule is for encryption, 0 if for decryption.
  */
-void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **schedule, int for_encryption);
+void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **schedule);
 
 /**
  * Function to fill a key schedule given an initial key for use in CTR mode.
