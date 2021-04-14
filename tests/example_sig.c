@@ -16,9 +16,9 @@
 #define MESSAGE_LEN 50
 
 /* Cleaning up memory etc */
-void cleanup_stack(uint8_t *secret_key, size_t secret_key_len);
+static void cleanup_stack(uint8_t *secret_key, size_t secret_key_len);
 
-void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
+static void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
                   uint8_t *message, uint8_t *signature,
                   OQS_SIG *sig);
 
@@ -152,11 +152,11 @@ int main(void) {
 	}
 }
 
-void cleanup_stack(uint8_t *secret_key, size_t secret_key_len) {
+static void cleanup_stack(uint8_t *secret_key, size_t secret_key_len) {
 	OQS_MEM_cleanse(secret_key, secret_key_len);
 }
 
-void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
+static void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
                   uint8_t *message, uint8_t *signature,
                   OQS_SIG *sig) {
 	if (sig != NULL) {

@@ -180,7 +180,7 @@ struct thread_data {
 	OQS_STATUS rc;
 };
 
-void *test_wrapper(void *arg) {
+static void *test_wrapper(void *arg) {
 	struct thread_data *td = arg;
 	td->rc = kem_test_correctness(td->alg_name);
 	return NULL;

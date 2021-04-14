@@ -15,11 +15,11 @@
 #include <oqs/oqs.h>
 
 /* Cleaning up memory etc */
-void cleanup_stack(uint8_t *secret_key, size_t secret_key_len,
+static void cleanup_stack(uint8_t *secret_key, size_t secret_key_len,
                    uint8_t *shared_secret_e, uint8_t *shared_secret_d,
                    size_t shared_secret_len);
 
-void cleanup_heap(uint8_t *secret_key, uint8_t *shared_secret_e,
+static void cleanup_heap(uint8_t *secret_key, uint8_t *shared_secret_e,
                   uint8_t *shared_secret_d, uint8_t *public_key,
                   uint8_t *ciphertext, OQS_KEM *kem);
 
@@ -161,7 +161,7 @@ int main(void) {
 	}
 }
 
-void cleanup_stack(uint8_t *secret_key, size_t secret_key_len,
+static void cleanup_stack(uint8_t *secret_key, size_t secret_key_len,
                    uint8_t *shared_secret_e, uint8_t *shared_secret_d,
                    size_t shared_secret_len) {
 	OQS_MEM_cleanse(secret_key, secret_key_len);
@@ -169,7 +169,7 @@ void cleanup_stack(uint8_t *secret_key, size_t secret_key_len,
 	OQS_MEM_cleanse(shared_secret_d, shared_secret_len);
 }
 
-void cleanup_heap(uint8_t *secret_key, uint8_t *shared_secret_e,
+static void cleanup_heap(uint8_t *secret_key, uint8_t *shared_secret_e,
                   uint8_t *shared_secret_d, uint8_t *public_key,
                   uint8_t *ciphertext, OQS_KEM *kem) {
 	if (kem != NULL) {
