@@ -204,8 +204,8 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, 
 	}
 	void (*fn_ptr)(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext);
 	C_OR_NI(
-		fn_ptr = &oqs_aes256_enc_sch_block_c,
-		fn_ptr = &oqs_aes256_enc_sch_block_ni
+	    fn_ptr = &oqs_aes256_enc_sch_block_c,
+	    fn_ptr = &oqs_aes256_enc_sch_block_ni
 	)
 	while (out_len >= 16) {
 		ctr_be = UINT32_TO_BE(ctr);
