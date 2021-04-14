@@ -202,13 +202,15 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, 
 	} else {
 		exit(EXIT_FAILURE);
 	}
+	void (*fn_ptr)(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext);
+	C_OR_NI(
+	    fn_ptr = &oqs_aes256_enc_sch_block_c,
+	    fn_ptr = &oqs_aes256_enc_sch_block_ni
+	)
 	while (out_len >= 16) {
 		ctr_be = UINT32_TO_BE(ctr);
 		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		C_OR_NI(
-		    oqs_aes256_enc_sch_block_c(block, schedule, out),
-		    oqs_aes256_enc_sch_block_ni(block, schedule, out)
-		)
+		fn_ptr(block, schedule, out);
 		out += 16;
 		out_len -= 16;
 		ctr++;
@@ -217,10 +219,7 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, 
 		uint8_t tmp[16];
 		ctr_be = UINT32_TO_BE(ctr);
 		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		C_OR_NI(
-		    oqs_aes256_enc_sch_block_c(block, schedule, tmp),
-		    oqs_aes256_enc_sch_block_ni(block, schedule, tmp)
-		)
+		fn_ptr(block, schedule, tmp);
 		memcpy(out, tmp, out_len);
 	}
 }
