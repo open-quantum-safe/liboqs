@@ -35,11 +35,7 @@ static const uint8_t test_aes256_key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x
 static const uint8_t test_aes256_ciphertext[] = {0x8e, 0xa2, 0xb7, 0xca, 0x51, 0x67, 0x45, 0xbf, 0xea, 0xfc, 0x49, 0x90, 0x4b, 0x49, 0x60, 0x89};
 
 static int test_aes128_correctness(void) {
-#ifdef OQS_NO_AESDEC
 	uint8_t derived_ciphertext[16];
-#else
-	uint8_t derived_plaintext[16], derived_ciphertext[16];
-#endif
 	void *schedule = NULL;
 	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule, 1);
 	OQS_AES128_ECB_enc_sch(test_aes128_plaintext, sizeof(test_aes128_plaintext), schedule, derived_ciphertext);
@@ -50,26 +46,11 @@ static int test_aes128_correctness(void) {
 		return EXIT_FAILURE;
 	}
 	OQS_AES128_free_schedule(schedule);
-#ifndef OQS_NO_AESDEC
-	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule, 0);
-	OQS_AES128_ECB_dec_sch(test_aes128_ciphertext, sizeof(test_aes128_ciphertext), schedule, derived_plaintext);
-	if (memcmp(test_aes128_plaintext, derived_plaintext, 16) != 0) {
-		printf("test_aes128_correctness plaintext does not match\n");
-		OQS_print_hex_string("expected plaintext", test_aes128_plaintext, 16);
-		OQS_print_hex_string("derived  plaintext", derived_plaintext, 16);
-		return EXIT_FAILURE;
-	}
-	OQS_AES128_free_schedule(schedule);
-#endif
 	return EXIT_SUCCESS;
 }
 
 static int test_aes256_correctness(void) {
-#ifdef OQS_NO_AESDEC
 	uint8_t derived_ciphertext[16];
-#else
-	uint8_t derived_plaintext[16], derived_ciphertext[16];
-#endif
 	void *schedule = NULL;
 	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule, 1);
 	OQS_AES256_ECB_enc_sch(test_aes256_plaintext, sizeof(test_aes256_plaintext), schedule, derived_ciphertext);
@@ -80,19 +61,6 @@ static int test_aes256_correctness(void) {
 		return EXIT_FAILURE;
 	}
 	OQS_AES256_free_schedule(schedule);
-
-#ifndef OQS_NO_AESDEC
-	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule, 0);
-	OQS_AES256_ECB_dec_sch(test_aes256_ciphertext, sizeof(test_aes256_ciphertext), schedule, derived_plaintext);
-	if (memcmp(test_aes256_plaintext, derived_plaintext, 16) != 0) {
-		printf("test_aes256_correctness plaintext does not match\n");
-		OQS_print_hex_string("expected plaintext", test_aes256_plaintext, 16);
-		OQS_print_hex_string("derived  plaintext", derived_plaintext, 16);
-		return EXIT_FAILURE;
-	}
-	OQS_AES256_free_schedule(schedule);
-#endif
-
 	return EXIT_SUCCESS;
 }
 
@@ -121,52 +89,26 @@ static int test_aes256ctr_correctness(void) {
 }
 
 static void speed_aes128(void) {
-#ifdef OQS_NO_AESDEC
 	uint8_t ciphertext[16];
-#else
-	uint8_t plaintext[16], ciphertext[16];
-#endif
 	void *schedule = NULL, *schedule_dec = NULL;
 	TIME_OPERATION_SECONDS({ OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule, 1); OQS_AES128_free_schedule(schedule); }, "OQS_AES128_ECB_load+free_sch", BENCH_DURATION);
 
 	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule, 1);
-#ifndef OQS_NO_AESDEC
-	OQS_AES128_ECB_load_schedule(test_aes128_key, &schedule_dec, 0);
-#endif
 	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc_sch(test_aes128_plaintext, sizeof(test_aes128_plaintext), schedule, ciphertext), "OQS_AES128_ECB_enc_sch", BENCH_DURATION);
-#ifndef OQS_NO_AESDEC
-	TIME_OPERATION_SECONDS(OQS_AES128_ECB_dec_sch(test_aes128_ciphertext, sizeof(test_aes128_ciphertext), schedule_dec, ciphertext), "OQS_AES128_ECB_dec_sch", BENCH_DURATION);
-#endif
 	TIME_OPERATION_SECONDS(OQS_AES128_ECB_enc(test_aes128_plaintext, sizeof(test_aes128_plaintext), test_aes128_key, ciphertext), "OQS_AES128_ECB_enc", BENCH_DURATION);
-#ifndef OQS_NO_AESDEC
-	TIME_OPERATION_SECONDS(OQS_AES128_ECB_dec(test_aes128_ciphertext, sizeof(test_aes128_ciphertext), test_aes128_key, plaintext), "OQS_AES128_ECB_dec", BENCH_DURATION);
-#endif
 	OQS_AES128_free_schedule(schedule);
 	OQS_AES128_free_schedule(schedule_dec);
 }
 
 static void speed_aes256(void) {
-#ifdef OQS_NO_AESDEC
 	uint8_t ciphertext[16];
-#else
-	uint8_t plaintext[16], ciphertext[16];
-#endif
 	void *schedule = NULL, *schedule_dec = NULL;
 	TIME_OPERATION_SECONDS({ OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule, 1); OQS_AES256_free_schedule(schedule); }, "OQS_AES256_ECB_load+free_sch", BENCH_DURATION);
 
 	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule, 1);
-#ifndef OQS_NO_AESDEC
-	OQS_AES256_ECB_load_schedule(test_aes256_key, &schedule_dec, 0);
-#endif
 	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc_sch(test_aes256_plaintext, sizeof(test_aes256_plaintext), schedule, ciphertext), "OQS_AES256_ECB_enc_sch", BENCH_DURATION);
 
-#ifndef OQS_NO_AESDEC
-	TIME_OPERATION_SECONDS(OQS_AES256_ECB_dec_sch(test_aes256_ciphertext, sizeof(test_aes256_ciphertext), schedule_dec, ciphertext), "OQS_AES256_ECB_dec_sch", BENCH_DURATION);
-#endif
 	TIME_OPERATION_SECONDS(OQS_AES256_ECB_enc(test_aes256_plaintext, sizeof(test_aes256_plaintext), test_aes256_key, ciphertext), "OQS_AES256_ECB_enc", BENCH_DURATION);
-#ifndef OQS_NO_AESDEC
-	TIME_OPERATION_SECONDS(OQS_AES256_ECB_dec(test_aes256_ciphertext, sizeof(test_aes256_ciphertext), test_aes256_key, plaintext), "OQS_AES256_ECB_dec", BENCH_DURATION);
-#endif
 	OQS_AES256_free_schedule(schedule);
 	OQS_AES256_free_schedule(schedule_dec);
 }
