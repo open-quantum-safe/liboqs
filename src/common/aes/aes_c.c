@@ -228,15 +228,6 @@ static void mix_cols(byte *state) {
 	mix_col(state + 12);
 }
 
-// Perform the inverse mix columns matrix on each column of the 16 bytes
-static void mix_cols_inv(byte *state) {
-	mix_col_inv(state);
-	mix_col_inv(state + 4);
-	mix_col_inv(state + 8);
-	mix_col_inv(state + 12);
-}
-#endif
-
 void oqs_aes128_enc_sch_block_c(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
 	const uint8_t *schedule = (const uint8_t *) _schedule;
 	int i; // To count the rounds
