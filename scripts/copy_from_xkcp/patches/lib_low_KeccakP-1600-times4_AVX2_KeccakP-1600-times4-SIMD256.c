@@ -41,7 +41,7 @@
 +
 +static void store64(unsigned char *out, uint64_t in)
 +{
-+    memmove(out, &in, sizeof(uint64_t));
++    memcpy(out, &in, sizeof(uint64_t));
 +}
 +
  void KeccakP1600times4_InitializeAll(void *states)
