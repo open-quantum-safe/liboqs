@@ -75,6 +75,11 @@ extern "C" {
 #define OQS_API __attribute__((visibility("default")))
 #endif
 
+#if defined(OQS_SYS_UEFI)
+#undef OQS_API
+#define OQS_API
+#endif
+
 /**
  * Represents return values from functions.
  *
@@ -197,6 +202,11 @@ void OQS_MEM_aligned_free(void *ptr);
 #define UNUSED __attribute__((unused))
 #else
 // __attribute__ not supported in VS
+#define UNUSED
+#endif
+
+#if defined(OQS_SYS_UEFI)
+#undef UNUSED
 #define UNUSED
 #endif
 
