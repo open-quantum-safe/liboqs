@@ -574,7 +574,7 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 	} else if (iv_len == 16) {
 		br_range_dec32le(ivw, 4, iv);
 	} else {
-		assert(1 == 0);
+		exit(EXIT_FAILURE);
 	}
 	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
 	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));

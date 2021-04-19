@@ -103,28 +103,9 @@ void oqs_aes256_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule
 	aes256ni_encrypt(schedule, plaintext, ciphertext);
 }
 
-// From crypto_core/aes256decrypt/dolbeau/aesenc-int
-static inline void aes256ni_decrypt(const __m128i rkeys[15], const unsigned char *n, unsigned char *out) {
-	__m128i nv = _mm_loadu_si128((const __m128i *)n);
-	__m128i temp = _mm_xor_si128(nv, rkeys[0]);
-	temp = _mm_aesdec_si128(temp, rkeys[1]);
-	temp = _mm_aesdec_si128(temp, rkeys[2]);
-	temp = _mm_aesdec_si128(temp, rkeys[3]);
-	temp = _mm_aesdec_si128(temp, rkeys[4]);
-	temp = _mm_aesdec_si128(temp, rkeys[5]);
-	temp = _mm_aesdec_si128(temp, rkeys[6]);
-	temp = _mm_aesdec_si128(temp, rkeys[7]);
-	temp = _mm_aesdec_si128(temp, rkeys[8]);
-	temp = _mm_aesdec_si128(temp, rkeys[9]);
-	temp = _mm_aesdec_si128(temp, rkeys[10]);
-	temp = _mm_aesdec_si128(temp, rkeys[11]);
-	temp = _mm_aesdec_si128(temp, rkeys[12]);
-	temp = _mm_aesdec_si128(temp, rkeys[13]);
-	temp = _mm_aesdeclast_si128(temp, rkeys[14]);
-	_mm_storeu_si128((__m128i *)(out), temp);
-}
-
-void oqs_aes256_dec_sch_block_ni(const uint8_t *ciphertext, const void *_schedule, uint8_t *plaintext) {
-	const __m128i *schedule = (const __m128i *) _schedule;
-	aes256ni_decrypt(schedule, ciphertext, plaintext);
+void oqs_aes256_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
+	assert(plaintext_len % 16 == 0);
+	for (size_t block = 0; block < plaintext_len / 16; block++) {
+		oqs_aes256_enc_sch_block_ni(plaintext + (16 * block), schedule, ciphertext + (16 * block));
+	}
 }
