@@ -75,7 +75,7 @@ extern "C" {
 #define OQS_API __attribute__((visibility("default")))
 #endif
 
-#if defined(__UEFI__)
+#if defined(OQS_SYS_UEFI)
 #undef OQS_API
 #define OQS_API
 #endif
@@ -205,7 +205,7 @@ void OQS_MEM_aligned_free(void *ptr);
 #define UNUSED
 #endif
 
-#if defined(__UEFI__)
+#if defined(OQS_SYS_UEFI)
 #undef UNUSED
 #define UNUSED
 #endif
