@@ -77,6 +77,7 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 
 	FILE *handle;
+	size_t bytes_read;
 
 	handle = fopen("/dev/urandom", "rb");
 	if (!handle) {
@@ -84,8 +85,8 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 		exit(EXIT_FAILURE);
 	}
 
-	fread(random_array, 1, bytes_to_read, handle);
-	if (ferror(handle)) {
+	bytes_read = fread(random_array, 1, bytes_to_read, handle);
+	if (bytes_read < bytes_to_read || ferror(handle)) {
 		perror("OQS_randombytes");
 		exit(EXIT_FAILURE);
 	}
