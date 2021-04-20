@@ -60,13 +60,18 @@ OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 }
 
 #if !defined(_WIN32)
-#if defined(HAVE_GETENTROPY)
+#if defined(OQS_HAVE_GETENTROPY)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
-
-	int rc;
-	do {
-		rc = getentropy(random_array, bytes_to_read);
-	} while (rc != 0);
+	while(bytes_to_read > 256) {
+		if(getentropy(random_array, 256)) {
+			exit(EXIT_FAILURE);
+		}
+		random_array += 256;
+		bytes_to_read -= 256;
+	}
+	if(getentropy(random_array, bytes_to_read)) {
+		exit(EXIT_FAILURE);
+	}
 }
 #else
 static __inline void delay(unsigned int count) {
