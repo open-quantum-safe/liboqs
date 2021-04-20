@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: MIT
 
+include(CheckSymbolExists)
+
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wbad-function-cast)
@@ -47,6 +49,13 @@ add_library(common OBJECT ${AES_IMPL}
 
 if(OQS_USE_OPENSSL)
     target_include_directories(common PRIVATE ${OPENSSL_INCLUDE_DIR})
+endif()
+
+if(NOT OQS_USE_OPENSSL)
+    check_symbol_exists(getentropy "unistd.h;sys/random.h" CMAKE_HAVE_GETENTROPY)
+    if(${CMAKE_HAVE_GETENTROPY})
+        target_compile_definitions(common PRIVATE OQS_HAVE_GETENTROPY)
+    endif()
 endif()
 
 if(NOT OQS_USE_SHA3_OPENSSL) # using XKCP
