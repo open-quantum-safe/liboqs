@@ -62,46 +62,34 @@ OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 #if !defined(_WIN32)
 #if defined(OQS_HAVE_GETENTROPY)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
-	while(bytes_to_read > 256) {
-		if(getentropy(random_array, 256)) {
+	while (bytes_to_read > 256) {
+		if (getentropy(random_array, 256)) {
 			exit(EXIT_FAILURE);
 		}
 		random_array += 256;
 		bytes_to_read -= 256;
 	}
-	if(getentropy(random_array, bytes_to_read)) {
+	if (getentropy(random_array, bytes_to_read)) {
 		exit(EXIT_FAILURE);
 	}
 }
 #else
-static __inline void delay(unsigned int count) {
-	while (count--) {
-	}
-}
-
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 
 	FILE *handle;
-	do {
-		handle = fopen("/dev/urandom", "rb");
-		if (handle == NULL) {
-			delay(0xFFFFF);
-		}
-	} while (handle == NULL);
 
-	size_t bytes_last_read, bytes_total_read, bytes_left_to_read;
-	bytes_total_read = 0;
-	bytes_left_to_read = bytes_to_read;
-	while (bytes_left_to_read > 0) {
-		do {
-			bytes_last_read = fread(random_array + bytes_total_read, 1, bytes_left_to_read, handle);
-			if (bytes_last_read == 0) {
-				delay(0xFFFF);
-			}
-		} while (bytes_last_read == 0);
-		bytes_total_read += bytes_last_read;
-		bytes_left_to_read -= bytes_last_read;
+	handle = fopen("/dev/urandom", "rb");
+	if (!handle) {
+		perror("OQS_randombytes");
+		exit(EXIT_FAILURE);
 	}
+
+	fread(random_array, 1, bytes_to_read, handle);
+	if (ferror(handle)) {
+		perror("OQS_randombytes");
+		exit(EXIT_FAILURE);
+	}
+
 	fclose(handle);
 }
 #endif
