@@ -1,0 +1,351 @@
+name: Classic McEliece
+type: kem
+principal-submitters:
+- Daniel J. Bernstein
+- Tung Chou
+- Tanja Lange
+- Ingo von Maurich
+- Rafael Misoczki
+- Ruben Niederhagen
+- Edoardo Persichetti
+- Christiane Peters
+- Peter Schwabe
+- Nicolas Sendrier
+- Jakub Szefer
+- Wen Wang
+crypto-assumption: Niederreiter's dual version of McEliece's public key encryption
+  using binary Goppa codes
+website: https://classic.mceliece.org
+nist-round: 3
+spec-version: SUPERCOP-20191221
+spdx-license-identifier: Public domain
+upstream: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24
+upstream-ancestors:
+- SUPERCOP-20191221 "vec" and "avx" implementations
+parameter-sets:
+- name: Classic-McEliece-348864
+  claimed-nist-level: 1
+  claimed-security: IND-CCA2
+  length-public-key: 261120
+  length-ciphertext: 128
+  length-secret-key: 6452
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Classic-McEliece-348864f
+  claimed-nist-level: 1
+  claimed-security: IND-CCA2
+  length-public-key: 261120
+  length-ciphertext: 128
+  length-secret-key: 6452
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+      - bmi1
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Classic-McEliece-460896
+  claimed-nist-level: 3
+  claimed-security: IND-CCA2
+  length-public-key: 524160
+  length-ciphertext: 188
+  length-secret-key: 13568
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Classic-McEliece-460896f
+  claimed-nist-level: 3
+  claimed-security: IND-CCA2
+  length-public-key: 524160
+  length-ciphertext: 188
+  length-secret-key: 13568
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi1
+      - popcnt
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Classic-McEliece-6688128
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1044992
+  length-ciphertext: 240
+  length-secret-key: 13892
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Classic-McEliece-6688128f
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1044992
+  length-ciphertext: 240
+  length-secret-key: 13892
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi1
+      - popcnt
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Classic-McEliece-6960119
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1047319
+  length-ciphertext: 226
+  length-secret-key: 13908
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Classic-McEliece-6960119f
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1047319
+  length-ciphertext: 226
+  length-secret-key: 13908
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi1
+      - popcnt
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Classic-McEliece-8192128
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1357824
+  length-ciphertext: 240
+  length-secret-key: 14080
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Classic-McEliece-8192128f
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1357824
+  length-ciphertext: 240
+  length-secret-key: 14080
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: vec
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+      - bmi1
+    common-crypto:
+    - AES: liboqs
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+auxiliary-submitters: []

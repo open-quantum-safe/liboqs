@@ -1,23 +1,46 @@
 # SABER
 
-- **Algorithm type**: key encapsulation mechanism
-- **Main cryptographic assumption**: module learning with rounding
-- **Scheme authors**: Jan-Pieter D'Anvers, Angshuman Karmakar, Sujoy Sinha Roy, Frederic Vercauteren
-- **Authors' website**: https://www.esat.kuleuven.be/cosic/pqcrypto/saber/
-- **Version**: NIST Round 3 submission
+- **Algorithm type**: Key encapsulation mechanism.
+- **Main cryptographic assumption**: Module learning with rounding.
+- **Principal submitters**: Jan-Pieter D'Anvers, Angshuman Karmakar, Sujoy Sinha Roy, Frederik Vercauteren.
+- **Authors website**: https://www.esat.kuleuven.be/cosic/pqcrypto/saber/
+- **Specification version**: NIST Round 3 submission.
+- **Implementation source**: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24, which takes it from:
+  - https://github.com/jschanck/package-pqclean/tree/1ae84c3c/saber, which takes it from:
+  - https://github.com/KULeuven-COSIC/SABER/tree/509cc5ec3a7e12a751ccdd2ef5bd6e54e00bd350
+- **Implementation license (SPDX-Identifier)**: Public domain.
 
-## Implementation
+## Parameter set summary
 
-- **Source of implementation**: https://github.com/KULeuven-COSIC/SABER/tree/509cc5ec3a7e12a751ccdd2ef5bd6e54e00bd350 via https://github.com/jschanck/package-pqclean/tree/1ae84c3c/saber
-- **Implementation version**: https://github.com/PQClean/PQClean.git, master, 89d34613364deca88659f6c2dd38708279c6bd24
-- **License**: Public domain
-- **Constant-time**: Yes
-- **Optimizations**: Portable C with AVX2 instructions (if available at run-time)
+|  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
+|:---------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
+| LightSaber-KEM  | IND-CCA2         |                    1 |                       672 |                      1568 |                       736 |                           32 |
+|    Saber-KEM    | IND-CCA2         |                    3 |                       992 |                      2304 |                      1088 |                           32 |
+|  FireSaber-KEM  | IND-CCA2         |                    5 |                      1312 |                      3040 |                      1472 |                           32 |
 
-## Parameter sets
+## LightSaber-KEM implementation characteristics
 
-| Parameter set  | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
-| -------------- | -------------- | --------------------------- | ----------------------- | ----------------------- | ----------------------- | -------------------------- |
-| LightSaber-KEM | IND-CCA2       | 1                           | 672                     | 1568                    | 736                     | 32                         |
-| Saber-KEM      | IND-CCA2       | 3                           | 992                     | 2304                    | 1088                    | 32                         |
-| FireSaber-KEM  | IND-CCA2       | 5                           | 1312                    | 3040                    | 1472                    | 32                         |
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|           avx2           | x86_64                      | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## Saber-KEM implementation characteristics
+
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|           avx2           | x86_64                      | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## FireSaber-KEM implementation characteristics
+
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|           avx2           | x86_64                      | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.

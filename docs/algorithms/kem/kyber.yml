@@ -1,0 +1,217 @@
+name: Kyber
+type: kem
+principal-submitters:
+- Peter Schwabe
+auxiliary-submitters:
+- Roberto Avanzi
+- Joppe Bos
+- Léo Ducas
+- Eike Kiltz
+- Tancrède Lepoint
+- Vadim Lyubashevsky
+- John M. Schanck
+- Gregor Seiler
+- Damien Stehlé
+crypto-assumption: Module LWE+R with base ring Z[x]/(3329, x^256+1)
+website: https://pq-crystals.org/
+nist-round: 3
+spec-version: NIST Round 3 submission
+spdx-license-identifier: CC0-1.0
+upstream: https://github.com/pq-crystals/kyber/commit/8e9308bd with copy_from_upstream
+  patches
+parameter-sets:
+- name: Kyber512
+  claimed-nist-level: 1
+  claimed-security: IND-CCA2
+  length-public-key: 800
+  length-ciphertext: 768
+  length-secret-key: 1632
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Kyber512-90s
+  claimed-nist-level: 1
+  claimed-security: IND-CCA2
+  length-public-key: 800
+  length-ciphertext: 768
+  length-secret-key: 1632
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - AES: pqcrystals-kyber_common_ref
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - aes
+      - avx2
+      - bmi2
+      - popcnt
+    common-crypto:
+    - AES: pqcrystals-kyber_common_aes
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Kyber768
+  claimed-nist-level: 3
+  claimed-security: IND-CCA2
+  length-public-key: 1184
+  length-ciphertext: 1088
+  length-secret-key: 2400
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Kyber768-90s
+  claimed-nist-level: 3
+  claimed-security: IND-CCA2
+  length-public-key: 1184
+  length-ciphertext: 1088
+  length-secret-key: 2400
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - AES: pqcrystals-kyber_common_ref
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - aes
+      - avx2
+      - bmi2
+      - popcnt
+    common-crypto:
+    - AES: pqcrystals-kyber_common_aes
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Kyber1024
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1568
+  length-ciphertext: 1568
+  length-secret-key: 3168
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi2
+      - popcnt
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Kyber1024-90s
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1568
+  length-ciphertext: 1568
+  length-secret-key: 3168
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - AES: pqcrystals-kyber_common_ref
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - aes
+      - avx2
+      - bmi2
+      - popcnt
+    common-crypto:
+    - AES: pqcrystals-kyber_common_aes
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
