@@ -45,7 +45,7 @@ OQS_KEM *OQS_KEM_sike_p434_compressed_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_sike_p434_compressed;
-	Kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/67981447d36dfdcfc849d8d88963f727a31ba772";
+	kem->alg_version = "https://github.com/microsoft/PQCrypto-SIDH/commit/67981447d36dfdcfc849d8d88963f727a31ba772";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;
