@@ -110,7 +110,7 @@ static void print_cpu_extensions(void) {
 		printf(" NEON");
 	}
 #else
-	printf("CPU exts active: ");
+	printf("CPU exts compile-time: ");
 #ifdef OQS_USE_ADX_INSTRUCTIONS
 	printf(" ADX");
 #endif
