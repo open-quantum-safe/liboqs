@@ -72,17 +72,17 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	shared_secret_e = malloc(kem->length_shared_secret + sizeof(magic_t));
 	shared_secret_d = malloc(kem->length_shared_secret + sizeof(magic_t));
 
+	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		goto err;
+	}
+
 	//Set the magic numbers
 	memcpy(public_key + kem->length_public_key, magic.val, sizeof(magic_t));
 	memcpy(secret_key + kem->length_secret_key, magic.val, sizeof(magic_t));
 	memcpy(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_e + kem->length_shared_secret, magic.val, sizeof(magic_t));
 	memcpy(shared_secret_d + kem->length_shared_secret, magic.val, sizeof(magic_t));
-
-	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
-		fprintf(stderr, "ERROR: malloc failed\n");
-		goto err;
-	}
 
 	rc = OQS_KEM_keypair(kem, public_key, secret_key);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
