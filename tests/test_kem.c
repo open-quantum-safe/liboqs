@@ -61,11 +61,11 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 	printf("Sample computation for KEM %s\n", kem->method_name);
 	printf("================================================================================\n");
 
-	public_key = malloc(kem->length_public_key + 2*sizeof(magic_t));
-	secret_key = malloc(kem->length_secret_key + 2*sizeof(magic_t));
-	ciphertext = malloc(kem->length_ciphertext + 2*sizeof(magic_t));
-	shared_secret_e = malloc(kem->length_shared_secret + 2*sizeof(magic_t));
-	shared_secret_d = malloc(kem->length_shared_secret + 2*sizeof(magic_t));
+	public_key = malloc(kem->length_public_key + 2 * sizeof(magic_t));
+	secret_key = malloc(kem->length_secret_key + 2 * sizeof(magic_t));
+	ciphertext = malloc(kem->length_ciphertext + 2 * sizeof(magic_t));
+	shared_secret_e = malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
+	shared_secret_d = malloc(kem->length_shared_secret + 2 * sizeof(magic_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) || (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");
@@ -161,9 +161,9 @@ err:
 
 cleanup:
 	if (kem != NULL) {
-		OQS_MEM_secure_free(secret_key - sizeof(magic_t), kem->length_secret_key + 2*sizeof(magic_t));
-		OQS_MEM_secure_free(shared_secret_e - sizeof(magic_t), kem->length_shared_secret + 2*sizeof(magic_t));
-		OQS_MEM_secure_free(shared_secret_d - sizeof(magic_t), kem->length_shared_secret + 2*sizeof(magic_t));
+		OQS_MEM_secure_free(secret_key - sizeof(magic_t), kem->length_secret_key + 2 * sizeof(magic_t));
+		OQS_MEM_secure_free(shared_secret_e - sizeof(magic_t), kem->length_shared_secret + 2 * sizeof(magic_t));
+		OQS_MEM_secure_free(shared_secret_d - sizeof(magic_t), kem->length_shared_secret + 2 * sizeof(magic_t));
 	}
 	OQS_MEM_insecure_free(public_key - sizeof(magic_t));
 	OQS_MEM_insecure_free(ciphertext - sizeof(magic_t));
