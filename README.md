@@ -152,7 +152,7 @@ For example, to cross compile for a Raspberry Pi from Ubuntu Bionic:
 	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_rasppi.cmake -DOQS_USE_OPENSSL=OFF ..
 	ninja
 
-#### Cross compiling LIBOQS from Ubuntu to Raspberry Pi
+#### Cross compiling LIBOQS from Ubuntu to Windows
 
 To compile for Windows AMD64 from Ubuntu Bionic:
 
