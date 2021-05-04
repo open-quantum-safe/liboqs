@@ -143,19 +143,36 @@ Binaries can be generated using Visual Studio 2019 with the [CMake Tools](https:
 
 You can cross compile liboqs for various platform by supplying CMake with an appropriate [toolchain](https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html) file.
 
+#### Cross compiling LIBOQS from Ubuntu to Raspberry Pi
+
 For example, to cross compile for a Raspberry Pi from Ubuntu Bionic:
 
 	apt install gcc-8-arm-linux-gnueabihf
 	mkdir build && cd build
 	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_rasppi.cmake -DOQS_USE_OPENSSL=OFF ..
 	ninja
-	
-Or to compile for Windows AMD64 from Ubuntu Bionic:
+
+#### Cross compiling LIBOQS from Ubuntu to Raspberry Pi
+
+To compile for Windows AMD64 from Ubuntu Bionic:
 
 	apt install gcc-mingw-w64
 	mkdir build && cd build
 	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DOQS_DIST_BUILD=ON ..
 	ninja
+
+#### Cross compiling LIBOQS from Ubuntu to Windows as library
+
+To compile for Windows AMD64 from Ubuntu Bionic and create a `liboqs.dll` file
+
+	sudo apt install cmake gcc gcc-mingw-w64 ninja-build
+	git clone https://github.com/open-quantum-safe/liboqs
+	cd liboqs
+	mkdir build && cd build
+	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DOQS_DIST_BUILD=ON -DBUILD_SHARED_LIBS=ON ..
+	ninja
+
+The result of ninja process, will generate a `bin/liboqs.dll` file on project root directory that you will need to copy to Windows and configure it to be available via PATH environment variable
 
 ## Documentation
 
