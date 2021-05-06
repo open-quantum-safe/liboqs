@@ -9,7 +9,7 @@
 ## Implementation
 
 - **Source of implementation**: supercop-20201018 via https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon
-- **Implementation version**: https://github.com/PQClean/PQClean.git, master, ef4ad5da02283ec0dd58b57a0684c98a1e33a531
+- **Implementation version**: https://github.com/PQClean/PQClean.git, master, 19b438ba5c7c3a6f2194cd8bda14821dc33c64a3
 - **License**: CC0 1.0 Universal
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AVX2 instructions (if available at run-time)

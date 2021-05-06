@@ -198,6 +198,8 @@ void compute_syndromes(uint16_t *syndromes, uint8_t *cdw) {
         syndromes256[0] ^= PQCLEAN_HQCRMRS192_AVX2_gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), alpha_ij256_1[i]);
     }
 
+    syndromes256[1] = _mm256_set1_epi16(cdw[0]);
+
     for (size_t i = 0; i < PARAM_N1 - 1; ++i) {
         syndromes256[1] ^= PQCLEAN_HQCRMRS192_AVX2_gf_mul_vect(_mm256_set1_epi16(cdw[i + 1]), alpha_ij256_2[i]);
     }
