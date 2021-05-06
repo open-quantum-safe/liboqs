@@ -127,6 +127,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		printf("shared secrets are equal\n");
 	}
 
+#ifndef OQS_ENABLE_TEST_CONSTANT_TIME
 	rv = memcmp(public_key + kem->length_public_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key + kem->length_secret_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(ciphertext + kem->length_ciphertext, magic.val, sizeof(magic_t));
@@ -141,6 +142,7 @@ static OQS_STATUS kem_test_correctness(const char *method_name) {
 		fprintf(stderr, "ERROR: Magic numbers do not match\n");
 		goto err;
 	}
+#endif
 
 	// test invalid encapsulation (call should either fail or result in invalid shared secret)
 	OQS_randombytes(ciphertext, kem->length_ciphertext);

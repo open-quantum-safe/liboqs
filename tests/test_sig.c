@@ -39,7 +39,6 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	uint8_t *signature = NULL;
 	size_t signature_len;
 	OQS_STATUS rc, ret = OQS_ERROR;
-	int rv = 0;
 
 	//The magic numbers are random values.
 	//The length of the magic number was chosen to be 31 to break alignment
@@ -119,8 +118,9 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		goto err;
 	}
 
+#ifndef OQS_ENABLE_TEST_CONSTANT_TIME
 	/* check magic values */
-	rv = memcmp(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
+	int rv = memcmp(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(message + message_len, magic.val, sizeof(magic_t));
 	rv |= memcmp(signature + sig->length_signature, magic.val, sizeof(magic_t));
@@ -132,6 +132,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		fprintf(stderr, "ERROR: Magic numbers do not mtach\n");
 		goto err;
 	}
+#endif
 
 	printf("verification passes as expected\n");
 	ret = OQS_SUCCESS;
