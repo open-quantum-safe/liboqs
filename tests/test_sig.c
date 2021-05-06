@@ -25,6 +25,10 @@
 
 #include "system_info.c"
 
+typedef struct magic_s {
+	uint8_t val[31];
+} magic_t;
+
 static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	OQS_SIG *sig = NULL;
@@ -36,6 +40,11 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	size_t signature_len;
 	OQS_STATUS rc, ret = OQS_ERROR;
 
+	//The magic numbers are random values.
+	//The length of the magic number was chosen to be 31 to break alignment
+	magic_t magic;
+	OQS_randombytes(magic.val, sizeof(magic_t));
+
 	sig = OQS_SIG_new(method_name);
 	if (sig == NULL) {
 		fprintf(stderr, "ERROR: OQS_SIG_new failed\n");
@@ -46,15 +55,32 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	printf("Sample computation for signature %s\n", sig->method_name);
 	printf("================================================================================\n");
 
-	public_key = malloc(sig->length_public_key);
-	secret_key = malloc(sig->length_secret_key);
-	message = malloc(message_len);
-	signature = malloc(sig->length_signature);
+	public_key = malloc(sig->length_public_key + 2 * sizeof(magic_t));
+	secret_key = malloc(sig->length_secret_key + 2 * sizeof(magic_t));
+	message = malloc(message_len + 2 * sizeof(magic_t));
+	signature = malloc(sig->length_signature + 2 * sizeof(magic_t));
 
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");
 		goto err;
 	}
+
+	//Set the magic numbers before
+	memcpy(public_key, magic.val, sizeof(magic_t));
+	memcpy(secret_key, magic.val, sizeof(magic_t));
+	memcpy(message, magic.val, sizeof(magic_t));
+	memcpy(signature, magic.val, sizeof(magic_t));
+
+	public_key += sizeof(magic_t);
+	secret_key += sizeof(magic_t);
+	message += sizeof(magic_t);
+	signature += sizeof(magic_t);
+
+	// and after
+	memcpy(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
+	memcpy(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
+	memcpy(message + message_len, magic.val, sizeof(magic_t));
+	memcpy(signature + sig->length_signature, magic.val, sizeof(magic_t));
 
 	OQS_randombytes(message, message_len);
 	OQS_TEST_CT_DECLASSIFY(message, message_len);
@@ -91,6 +117,23 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify should have failed!\n");
 		goto err;
 	}
+
+#ifndef OQS_ENABLE_TEST_CONSTANT_TIME
+	/* check magic values */
+	int rv = memcmp(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
+	rv |= memcmp(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
+	rv |= memcmp(message + message_len, magic.val, sizeof(magic_t));
+	rv |= memcmp(signature + sig->length_signature, magic.val, sizeof(magic_t));
+	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(message - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(signature - sizeof(magic_t), magic.val, sizeof(magic_t));
+	if (rv) {
+		fprintf(stderr, "ERROR: Magic numbers do not mtach\n");
+		goto err;
+	}
+#endif
+
 	printf("verification passes as expected\n");
 	ret = OQS_SUCCESS;
 	goto cleanup;
@@ -100,11 +143,11 @@ err:
 
 cleanup:
 	if (sig != NULL) {
-		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
+		OQS_MEM_secure_free(secret_key - sizeof(magic_t), sig->length_secret_key + 2 * sizeof(magic_t));
 	}
-	OQS_MEM_insecure_free(public_key);
-	OQS_MEM_insecure_free(message);
-	OQS_MEM_insecure_free(signature);
+	OQS_MEM_insecure_free(public_key - sizeof(magic_t));
+	OQS_MEM_insecure_free(message - sizeof(magic_t));
+	OQS_MEM_insecure_free(signature - sizeof(magic_t));
 	OQS_SIG_free(sig);
 
 	return ret;
