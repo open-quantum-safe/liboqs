@@ -161,7 +161,7 @@ To compile for Windows AMD64 from Ubuntu Bionic:
 	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DOQS_DIST_BUILD=ON ..
 	ninja
 
-#### Cross compiling LIBOQS from Ubuntu to Windows as library
+#### Cross compiling liboqs from Ubuntu to Windows as library
 
 To compile for Windows AMD64 from Ubuntu Bionic and create a `liboqs.dll` file
 
