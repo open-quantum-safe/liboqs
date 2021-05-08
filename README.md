@@ -172,7 +172,7 @@ To compile for Windows AMD64 from Ubuntu Bionic and create a `liboqs.dll` file
 	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DOQS_DIST_BUILD=ON -DBUILD_SHARED_LIBS=ON ..
 	ninja
 
-The result of ninja process, will generate a `bin/liboqs.dll` file on project root directory that you will need to copy to Windows and configure it to be available via PATH environment variable
+This will generate a `bin/liboqs.dll` file in the `build` directory that you will need to copy to Windows. You should configure it to be available via the PATH environment variable.
 
 ## Documentation
 
