@@ -165,7 +165,7 @@ To compile for Windows AMD64 from Ubuntu Bionic:
 
 To compile for Windows AMD64 from Ubuntu Bionic and create a `liboqs.dll` file
 
-	sudo apt install cmake gcc gcc-mingw-w64 ninja-build
+	apt install cmake gcc gcc-mingw-w64 ninja-build
 	git clone https://github.com/open-quantum-safe/liboqs
 	cd liboqs
 	mkdir build && cd build
