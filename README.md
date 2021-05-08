@@ -143,7 +143,7 @@ Binaries can be generated using Visual Studio 2019 with the [CMake Tools](https:
 
 You can cross compile liboqs for various platform by supplying CMake with an appropriate [toolchain](https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html) file.
 
-#### Cross compiling LIBOQS from Ubuntu to Raspberry Pi
+#### Cross compiling liboqs from Ubuntu to Raspberry Pi
 
 For example, to cross compile for a Raspberry Pi from Ubuntu Bionic:
 
