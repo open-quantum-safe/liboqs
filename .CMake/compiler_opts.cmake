@@ -139,6 +139,8 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
     add_compile_options(/wd4146)
     # Need a larger stack for Classic McEliece
     add_link_options(/STACK:8192000)
+    # bring compile options in line with openssl options; link otherwise fails
+    add_compile_options(/MT)
 endif()
 
 if(MINGW OR MSYS OR CYGWIN)
