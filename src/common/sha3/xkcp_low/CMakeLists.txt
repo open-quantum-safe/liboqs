@@ -3,10 +3,10 @@
 set(_XKCP_LOW_OBJS "")
 
 # Determine which of the implementations we're building
-if(OQS_DIST_X86_64_BUILD)
+if(OQS_DIST_X86_64_BUILD AND OQS_ENABLE_SHA3_xkcp_low_avx2)
   set(BUILD_PLAIN64 ON)
   set(BUILD_AVX2 ON)
-elseif(OQS_USE_AVX2_INSTRUCTIONS)
+elseif(OQS_ENABLE_SHA3_xkcp_low_avx2)
   set(BUILD_AVX2 ON)
 else()
   set(BUILD_PLAIN64 ON)
