@@ -98,13 +98,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 		cmake -GNinja ..
 		ninja
 
-Various options can be passed to `cmake` to customize the build. Some of them include:
-
-- `-DOQS_USE_OPENSSL=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
-- `-DBUILD_SHARED_LIBS=<val>`: `<val>` can be `ON` or `OFF`; when `ON`, CMake generates instructions for building a shared library, otherwise it generates instructions for building a static library.
-- `-DOPENSSL_ROOT_DIR=<dir>`: `<dir>` specifies the directory in which CMake will look for OpenSSL.
-
-All supported options are listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory. They are also listed and explained in [the wiki](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs).
+Various `cmake` build options to customize the resultant artifacts are available and are [documented in the project Wiki](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs). All supported options are also listed in the `.CMake/alg-support.cmake` file, and can be viewed by running `cmake -LAH ..` in the `build` directory.
 
 The following instructions assume we are in `build`.
 
@@ -123,7 +117,7 @@ The following instructions assume we are in `build`.
 	- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 	- `test_portability`: Simple test harnesses for checking cross-CPU code portability; requires presence of `qemu`; proper operation validated only on Ubuntu
 
-	The test suite can be run using
+	The complete test suite can be run using
 
 		ninja run_tests
 
@@ -137,29 +131,18 @@ The following instructions assume we are in `build`.
 
 ### Windows
 
-Binaries can be generated using Visual Studio 2019 with the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) extension installed.
+Binaries can be generated using Visual Studio 2019 with the [CMake Tools](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cmake-tools) extension installed. The same options as explained above for Linux/macOS can be used and build artifacts are generated in the specified `build` folders.
+
+If you want to create Visual Studio build files, e.g., if not using `ninja`, be sure to _not_ pass the parameter `-GNinja` to the `cmake` command as exemplified above. You can then build all components using `msbuild`, e.g. as follows: `msbuild ALL_BUILD.vcxproj` and install all artifacts e.g. using this command `msbuild INSTALL.vcxproj`.
+
 
 ### Cross compilation
 
-You can cross compile liboqs for various platform by supplying CMake with an appropriate [toolchain](https://cmake.org/cmake/help/latest/manual/cmake-toolchains.7.html) file.
-
-For example, to cross compile for a Raspberry Pi from Ubuntu Bionic:
-
-	apt install gcc-8-arm-linux-gnueabihf
-	mkdir build && cd build
-	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_rasppi.cmake -DOQS_USE_OPENSSL=OFF ..
-	ninja
-	
-Or to compile for Windows AMD64 from Ubuntu Bionic:
-
-	apt install gcc-mingw-w64
-	mkdir build && cd build
-	cmake -GNinja -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_windows-amd64.cmake -DOQS_DIST_BUILD=ON ..
-	ninja
+You can cross compile liboqs for various platforms. Detailed information is available [in the Wiki](https://github.com/open-quantum-safe/liboqs/wiki/Platform-specific-notes-for-building-liboqs#cross-compiling).
 
 ## Documentation
 
-Further information can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
+More detailed information on building, optional build parameters, example applications, coding conventions and more can be found in the [wiki](https://github.com/open-quantum-safe/liboqs/wiki).
 
 ## Contributing
 
