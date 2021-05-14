@@ -16,7 +16,8 @@ set(SRCS additional/decode.c
          additional/aes_ctr_prf.c
          additional/error.c)
 
-if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
+if ( (CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin") OR
+     (CMAKE_HOST_SYSTEM_NAME STREQUAL "CYGWIN") )
     set(SRCS ${SRCS} additional/sampling_portable.c
                      additional/secure_decode_portable.c)
     set(CPP_DEFS PORTABLE)
