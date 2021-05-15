@@ -151,17 +151,7 @@ if(OQS_ENABLE_KEM_sike_p434 OR
         # the "{0}" structure initializer is used.
         target_compile_options(sike PRIVATE -Wno-missing-braces)
     endif()
-    if (WIN32)
-        message(STATUS "SIKE: WIN32")
-    endif()
-    if (CYGWIN)
-        message(STATUS "SIKE: CYGWIN")
-    else()
-        message(STATUS "SIKE: No CYGWIN")
-        message(STATUS "CMAKE_HOST_SYSTEM_NAME ${CMAKE_HOST_SYSTEM_NAME}")
-    endif()
     if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
-        message(STATUS "SIKE: WIN32 and not (MINGW OR MSYS OR CYGWIN)")
         # ignore warning about cast from int to OQS_STATUS
         target_compile_options(sike PRIVATE /wd4133)
     endif()
