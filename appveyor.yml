@@ -12,16 +12,18 @@ branches:
 environment:
   matrix:
     - BUILD_SHARED: OFF
-      COMPILER: msvc2019
-    - BUILD_SHARED: OFF
-      COMPILER: msvc2019
-      OQS_USE_OPENSSL: ON
-    - BUILD_SHARED: ON
-      COMPILER: msvc2019
-    - BUILD_SHARED: OFF
-      COMPILER: msys2
-    - BUILD_SHARED: ON
-      COMPILER: msys2
+      COMPILER: cygwin
+#    - BUILD_SHARED: OFF
+#      COMPILER: msvc2019
+#    - BUILD_SHARED: OFF
+#      COMPILER: msvc2019
+#      OQS_USE_OPENSSL: ON
+#    - BUILD_SHARED: ON
+#      COMPILER: msvc2019
+#    - BUILD_SHARED: OFF
+#      COMPILER: msys2
+#    - BUILD_SHARED: ON
+#      COMPILER: msys2
 
 for:
   - matrix:

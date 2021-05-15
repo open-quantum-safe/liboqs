@@ -26,6 +26,12 @@ localCheckout: &localCheckout
     cp -a /tmp/_circleci_local_build_repo/.git ${PROJECT_PATH}
 
 jobs:
+  empty:
+    description: Do nothing
+    docker:
+      - image: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+    steps:
+      - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
   stylecheck:
     description: Validate formatting of code and documentation
     docker:
@@ -246,135 +252,136 @@ workflows:
       not:
         equal: [ main, << pipeline.git.branch >> ]
     jobs:
-      - stylecheck
-      - buildcheck:
-          <<: *require_stylecheck
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          KEM_NAME: kyber_768
-          SIG_NAME: dilithium_3
-      # Disabling testapproval as no jobs currently need it.
-      #- testapproval:
-      #    <<: *require_buildcheck
-      #    type: approval
-      - linux_x64:
-          <<: *require_buildcheck
-          name: alpine-noopenssl
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-      - linux_x64:
-          <<: *require_buildcheck
-          name: alpine
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-          CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
-      # Disabling centos-8 and debian-buster.
-      # Re-enable if specific configurations (package versions etc) that need to be tested are identified.
-      #- linux_x64:
-      #    <<: *require_buildcheck
-      #    name: centos-8
-      #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
-      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang
-      #- linux_x64:
-      #    <<: *require_buildcheck
-      #    name: debian-buster
-      #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
-      - linux_x64:
-          <<: *require_buildcheck
-          name: ubuntu-focal-noopenssl
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DOQS_USE_OPENSSL=OFF
-      - linux_x64:
-          <<: *require_buildcheck
-          name: ubuntu-focal-shared-noopenssl
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DOQS_DIST_BUILD=ON -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
-          PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
-      - linux_x64:
-          <<: *require_buildcheck
-          name: ubuntu-focal-clang9
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9
-      - linux_x64:
-          <<: *require_buildcheck
-          name: address-sanitizer
-          context: openquantumsafe
-          filters:
-            branches:
-              only:
-                - /^audit.*/
-          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
-          PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
-      # Disabling test_constant_time for now
-      #- linux_x64:
-      #    <<: *require_buildcheck
-      #    name: constant-time-x64
-      #    filters:
-      #      branches:
-      #        only:
-      #          - /^audit.*/
-      #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      #    CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-      #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-      #- linux_x64:
-      #    <<: *require_buildcheck
-      #    name: constant-time-x64-extensions
-      #    filters:
-      #      branches:
-      #        only:
-      #          - /^audit.*/
-      #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      #    CMAKE_ARGS: -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-      #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-      # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
-      #- linux_x64:
-      #    name: undefined-sanitizer
+      - empty
+      #- stylecheck
+      #- buildcheck:
+      #    <<: *require_stylecheck
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Undefined
-           # Normally the linux tests are run with 35 processes, but that
-           # exhausts memory for this test
-      #    PYTEST_ARGS: --numprocesses=1
-      # SPHINCS exhausts memory on CircleCI servers
-      # for these configurations.
-      - arm_emulated:
-          <<: *require_buildcheck
-          name: arm64
-          ARCH: arm64
-          CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_DIST_BUILD=ON
-      - arm_emulated:
-          <<: *require_buildcheck
-          name: armhf
-          ARCH: armhf
-          CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
-      # Disabling armel
+      #    KEM_NAME: kyber_768
+      #    SIG_NAME: dilithium_3
+      ## Disabling testapproval as no jobs currently need it.
+      ##- testapproval:
+      ##    <<: *require_buildcheck
+      ##    type: approval
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: alpine-noopenssl
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-alpine-amd64:latest
+      #    CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: alpine
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-alpine-amd64:latest
+      #    CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+      ## Disabling centos-8 and debian-buster.
+      ## Re-enable if specific configurations (package versions etc) that need to be tested are identified.
+      ##- linux_x64:
+      ##    <<: *require_buildcheck
+      ##    name: centos-8
+      ##    context: openquantumsafe
+      ##    CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
+      ##    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang
+      ##- linux_x64:
+      ##    <<: *require_buildcheck
+      ##    name: debian-buster
+      ##    context: openquantumsafe
+      ##    CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: ubuntu-focal-noopenssl
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DOQS_USE_OPENSSL=OFF
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: ubuntu-focal-shared-noopenssl
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DOQS_DIST_BUILD=ON -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
+      #    PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: ubuntu-focal-clang9
+      #    context: openquantumsafe
+      #    CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9
+      #- linux_x64:
+      #    <<: *require_buildcheck
+      #    name: address-sanitizer
+      #    context: openquantumsafe
+      #    filters:
+      #      branches:
+      #        only:
+      #          - /^audit.*/
+      #    CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
+      #    PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
+      ## Disabling test_constant_time for now
+      ##- linux_x64:
+      ##    <<: *require_buildcheck
+      ##    name: constant-time-x64
+      ##    filters:
+      ##      branches:
+      ##        only:
+      ##          - /^audit.*/
+      ##    context: openquantumsafe
+      ##    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      ##    CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+      ##    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+      ##- linux_x64:
+      ##    <<: *require_buildcheck
+      ##    name: constant-time-x64-extensions
+      ##    filters:
+      ##      branches:
+      ##        only:
+      ##          - /^audit.*/
+      ##    context: openquantumsafe
+      ##    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+      ##    CMAKE_ARGS: -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+      ##    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+      ## Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
+      ##- linux_x64:
+      ##    name: undefined-sanitizer
+      ##    context: openquantumsafe
+      ##    CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+      ##    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Undefined
+      #     # Normally the linux tests are run with 35 processes, but that
+      #     # exhausts memory for this test
+      ##    PYTEST_ARGS: --numprocesses=1
+      ## SPHINCS exhausts memory on CircleCI servers
+      ## for these configurations.
       #- arm_emulated:
       #    <<: *require_buildcheck
-      #    name: armel
-      #    ARCH: armel
-      #    CMAKE_ARGS:  -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
-
-      - macOS:
-          <<: *require_buildcheck
-          name: macOS-noopenssl
-          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-      - macOS:
-          <<: *require_buildcheck
-          name: macOS-shared
-          CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=ON
-
-  commit-to-main:
-    when:
-      equal: [ main, << pipeline.git.branch >> ]
-    jobs:
-      - trigger-downstream-ci:
-          context: openquantumsafe
+      #    name: arm64
+      #    ARCH: arm64
+      #    CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_DIST_BUILD=ON
+      #- arm_emulated:
+      #    <<: *require_buildcheck
+      #    name: armhf
+      #    ARCH: armhf
+      #    CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+      ## Disabling armel
+      ##- arm_emulated:
+      ##    <<: *require_buildcheck
+      ##    name: armel
+      ##    ARCH: armel
+      ##    CMAKE_ARGS:  -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+#
+#      - macOS:
+#          <<: *require_buildcheck
+#          name: macOS-noopenssl
+#          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
+#      - macOS:
+#          <<: *require_buildcheck
+#          name: macOS-shared
+#          CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=ON
+#
+#  commit-to-main:
+#    when:
+#      equal: [ main, << pipeline.git.branch >> ]
+#    jobs:
+#      - trigger-downstream-ci:
+#          context: openquantumsafe
