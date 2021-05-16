@@ -11,15 +11,16 @@ branches:
 
 environment:
   matrix:
-    - BUILD_SHARED: OFF
+    - BUILD_SHARED: ON
       COMPILER: cygwin
+      OQS_USE_OPENSSL: ON
 #    - BUILD_SHARED: OFF
 #      COMPILER: msvc2019
 #    - BUILD_SHARED: OFF
 #      COMPILER: msvc2019
 #      OQS_USE_OPENSSL: ON
-#    - BUILD_SHARED: ON
-#      COMPILER: msvc2019
+    - BUILD_SHARED: ON
+      COMPILER: msvc2019
 #    - BUILD_SHARED: OFF
 #      COMPILER: msys2
 #    - BUILD_SHARED: ON
@@ -41,20 +42,12 @@ before_test:
   - cmd: |-
          SET "PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%"
          pip.exe install pytest pytest-xdist
-         python -V
-         echo "%PATH%"
-         cd C:\Python37-x64
-         dir
 
 test_script:
   - cmd: |-
          cd %APPVEYOR_BUILD_FOLDER%
-         python -V 
-         echo "%PATH%"
          set PATH=%APPVEYOR_BUILD_FOLDER%\build\bin;c:\cygwin64\bin;%PATH%
-         echo "%PATH%" 
          if not exist tmp (mkdir tmp) 
-         python -V 
          python -m pytest --numprocesses=auto -vv --maxfail=2 --ignore=tests/test_code_conventions.py --junitxml=build\test-results\pytest\test-results.xml
 
 after_test:
