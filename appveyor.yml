@@ -13,8 +13,8 @@ environment:
   matrix:
     - BUILD_SHARED: OFF
       COMPILER: cygwin
-#    - BUILD_SHARED: OFF
-#      COMPILER: msvc2019
+    - BUILD_SHARED: OFF
+      COMPILER: msvc2019
 #    - BUILD_SHARED: OFF
 #      COMPILER: msvc2019
 #      OQS_USE_OPENSSL: ON
