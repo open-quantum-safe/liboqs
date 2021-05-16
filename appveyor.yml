@@ -11,24 +11,24 @@ branches:
 
 environment:
   matrix:
-#    - BUILD_SHARED: ON
-#      COMPILER: cygwin
-#    - BUILD_SHARED: OFF
-#      COMPILER: cygwin
+    - BUILD_SHARED: ON
+      COMPILER: cygwin
+    - BUILD_SHARED: OFF
+      COMPILER: cygwin
     - BUILD_SHARED: ON
       OQS_USE_OPENSSL: ON
       COMPILER: cygwin
-#    - BUILD_SHARED: OFF
-#      COMPILER: msvc2019
-#    - BUILD_SHARED: OFF
-#      COMPILER: msvc2019
-#      OQS_USE_OPENSSL: ON
-#    - BUILD_SHARED: ON
-#      COMPILER: msvc2019
-#    - BUILD_SHARED: OFF
-#      COMPILER: msys2
-#    - BUILD_SHARED: ON
-#      COMPILER: msys2
+    - BUILD_SHARED: OFF
+      COMPILER: msvc2019
+    - BUILD_SHARED: OFF
+      COMPILER: msvc2019
+      OQS_USE_OPENSSL: ON
+    - BUILD_SHARED: ON
+      COMPILER: msvc2019
+    - BUILD_SHARED: OFF
+      COMPILER: msys2
+    - BUILD_SHARED: ON
+      COMPILER: msys2
 
 for:
   - matrix:
@@ -52,7 +52,7 @@ test_script:
          cd %APPVEYOR_BUILD_FOLDER%
          set PATH=%APPVEYOR_BUILD_FOLDER%\build\bin;c:\cygwin64\bin;%PATH%
          if not exist tmp (mkdir tmp) 
-         python -m pytest --numprocesses=auto -vv --maxfail=2 --ignore=tests/test_code_conventions.py --junitxml=build\test-results\pytest\test-results.xml
+         python -m pytest --numprocesses=auto -vv --maxfail=10 --ignore=tests/test_code_conventions.py --junitxml=build\test-results\pytest\test-results.xml
 
 after_test:
   - ps: |-
