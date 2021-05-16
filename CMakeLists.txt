@@ -146,7 +146,7 @@ add_subdirectory(src)
 if(NOT OQS_BUILD_ONLY_LIB)
     add_subdirectory(tests)
 
-    if (NOT CYGWIN)
+#    if (NOT CYGWIN)
       find_package(Doxygen)
       if(DOXYGEN_FOUND)
         set(DOXYFILE ${PROJECT_SOURCE_DIR}/docs/.Doxyfile)
@@ -157,7 +157,7 @@ if(NOT OQS_BUILD_ONLY_LIB)
             COMMENT "Generate API documentation with Doxygen."
             USES_TERMINAL)
       endif()
-    endif()
+#    endif()
 
     if(NOT WIN32)
         add_custom_target(

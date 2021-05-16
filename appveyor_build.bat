@@ -2,7 +2,7 @@
 IF %COMPILER%==cygwin (
     @echo on
     SET "PATH=C:\cywin64\bin;c:\cygwin64;%PATH%"
-    c:\cygwin64\bin\bash.exe -lc "echo $PATH && setup-x86_64.exe -qnNdO -R C:/cygwin64 -l C:/cygwin/var/cache/setup -P openssl-devel -P openssl -P ninja -P cmake -P gcc && cd ${APPVEYOR_BUILD_FOLDER} && openssl version && find /usr -name opensslv.h -print && pwd && mkdir build && cd build && whoami && touch CMakeDoxyfile.tpl && ls -la && cmake .. -GNinja -DCMAKE_C_COMPILER=gcc -DOQS_MINIMAL_BUILD=ON -DOQS_DIST_BUILD=ON -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_ENABLE_SIG_RAINBOW=OFF -DBUILD_SHARED_LIBS=%BUILD_SHARED% -DOQS_USE_OPENSSL=%OQS_USE_OPENSSL% && ninja "
+    c:\cygwin64\bin\bash.exe -lc "echo $PATH && setup-x86_64.exe -qnNdO -R C:/cygwin64 -l C:/cygwin/var/cache/setup -P openssl-devel -P openssl -P ninja -P cmake -P gcc && cd ${APPVEYOR_BUILD_FOLDER} && openssl version && find / -name opensslv.h -print && pwd && mkdir build && cd build && whoami && touch CMakeDoxyfile.tpl && ls -la && cmake .. -GNinja -DCMAKE_C_COMPILER=gcc -DOQS_MINIMAL_BUILD=ON -DOQS_DIST_BUILD=ON -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_ENABLE_SIG_RAINBOW=OFF -DBUILD_SHARED_LIBS=%BUILD_SHARED% -DOQS_USE_OPENSSL=%OQS_USE_OPENSSL% && ninja "
 )
 IF %COMPILER%==msys2 (
     @echo on
