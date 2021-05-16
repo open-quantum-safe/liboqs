@@ -37,9 +37,7 @@ def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, in
         )
 
     if not(ignore_returncode) and (result.returncode != expected_returncode):
-        print("Error in command %s. STDOUT START:" % (" ".join(command)))
         print(result.stdout.decode('utf-8'))
-        print(":STDOUT END")
         assert False, "Got unexpected return code {}".format(result.returncode)
     return result.stdout.decode('utf-8')
 
