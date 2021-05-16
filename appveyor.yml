@@ -49,11 +49,9 @@ before_test:
 test_script:
   - cmd: |-
          cd %APPVEYOR_BUILD_FOLDER%
-         dir
          python -V 
-         echo "ABF: --%APPVEYOR_BUILD_FOLDER%--"
          echo "%PATH%"
-         set PATH="%APPVEYOR_BUILD_FOLDER%\build\bin;c:\cygwin64\bin;%PATH%" 
+         set PATH=%APPVEYOR_BUILD_FOLDER%\build\bin;c:\cygwin64\bin;%PATH%
          echo "%PATH%" 
          if not exist tmp (mkdir tmp) 
          python -V 
