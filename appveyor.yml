@@ -41,12 +41,13 @@ before_test:
   - cmd: |-
          SET "PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%"
          pip.exe install pytest pytest-xdist
+         dir C:\Python37-x64
 
 test_script:
   - cmd: |-
          cd %APPVEYOR_BUILD_FOLDER%
          echo "%PATH%"
-         set PATH="%cd%\build\bin;c:\cygwin64\bin;%PATH%" && if not exist tmp (mkdir tmp) && python -V && python -m pytest --numprocesses=auto -vv --maxfail=2 --ignore=tests/test_code_conventions.py --junitxml=build\test-results\pytest\test-results.xml
+         set PATH="%APPVEYOR_BUILD_FOLDER%\build\bin;c:\cygwin64\bin;%PATH%" && echo "%PATH%" && if not exist tmp (mkdir tmp) && python -V && python -m pytest --numprocesses=auto -vv --maxfail=2 --ignore=tests/test_code_conventions.py --junitxml=build\test-results\pytest\test-results.xml
 
 after_test:
   - ps: |-
