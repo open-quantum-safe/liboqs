@@ -41,6 +41,11 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 }
 #endif
 
+#if defined(__CYGWIN__)
+#include <endian.h>
+#define HAVE_HOSTSWAP
+#endif
+
 /* Linux / GLIBC */
 #if defined(__linux__) || defined(__GLIBC__)
 #include <endian.h>
