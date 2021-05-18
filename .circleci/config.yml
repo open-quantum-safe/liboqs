@@ -65,7 +65,7 @@ jobs:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
           name: Configure
-          command: mkdir build && cd build && source ~/.bashrc && cmake -GNinja << parameters.CMAKE_ARGS >> -DOQS_MINIMAL_BUILD=ON -DOQS_KEM_DEFAULT=OQS_KEM_alg_<< parameters.KEM_NAME >> -DOQS_SIG_DEFAULT=OQS_SIG_alg_<< parameters.SIG_NAME >> .. && cmake -LA ..
+          command: mkdir build && cd build && source ~/.bashrc && cmake --warn-uninitialized -GNinja << parameters.CMAKE_ARGS >> -DOQS_MINIMAL_BUILD=ON -DOQS_KEM_DEFAULT=OQS_KEM_alg_<< parameters.KEM_NAME >> -DOQS_SIG_DEFAULT=OQS_SIG_alg_<< parameters.SIG_NAME >> .. > config.log 2>&1 && cat config.log && cmake -LA .. && ! (grep "uninitialized variable" config.log)
       - run:
           name: Build
           command: ninja
