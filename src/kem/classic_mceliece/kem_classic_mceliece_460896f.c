@@ -30,14 +30,14 @@ OQS_KEM *OQS_KEM_classic_mceliece_460896f_new() {
 	return kem;
 }
 
-extern int PQCLEAN_MCELIECE460896F_VEC_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
-extern int PQCLEAN_MCELIECE460896F_VEC_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
-extern int PQCLEAN_MCELIECE460896F_VEC_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int PQCLEAN_MCELIECE460896F_VEC_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_MCELIECE460896F_VEC_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCLEAN_MCELIECE460896F_VEC_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #if defined(OQS_ENABLE_KEM_classic_mceliece_460896f_avx)
-extern int PQCLEAN_MCELIECE460896F_AVX_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
-extern int PQCLEAN_MCELIECE460896F_AVX_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
-extern int PQCLEAN_MCELIECE460896F_AVX_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int PQCLEAN_MCELIECE460896F_AVX_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_MCELIECE460896F_AVX_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCLEAN_MCELIECE460896F_AVX_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
 OQS_API OQS_STATUS OQS_KEM_classic_mceliece_460896f_keypair(uint8_t *public_key, uint8_t *secret_key) {

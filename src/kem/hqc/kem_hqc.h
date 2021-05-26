@@ -39,3 +39,4 @@ OQS_API OQS_STATUS OQS_KEM_hqc_256_decaps(uint8_t *shared_secret, const uint8_t 
 #endif
 
 #endif
+

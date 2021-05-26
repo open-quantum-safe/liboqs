@@ -39,21 +39,21 @@ OQS_KEM *OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_new() {
            {%- set cleankeypair = scheme['metadata'].update({'default_keypair_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_keypair"}) -%}
         {%- endif %}
 
-extern int {{ scheme['metadata']['default_keypair_signature'] }}(unsigned char *pk, unsigned char *sk);
+extern int {{ scheme['metadata']['default_keypair_signature'] }}(uint8_t *pk, uint8_t *sk);
 
         {%- if impl['signature_enc'] %}
            {%- set cleanenc = scheme['metadata'].update({'default_enc_signature': impl['signature_enc']}) -%}
         {%- else %}
            {%- set cleanenc = scheme['metadata'].update({'default_enc_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_enc"}) -%}
         {%- endif %}
-extern int {{ scheme['metadata']['default_enc_signature'] }}(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
+extern int {{ scheme['metadata']['default_enc_signature'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 
         {%- if impl['signature_dec'] %}
            {%- set cleandec = scheme['metadata'].update({'default_dec_signature': impl['signature_dec']}) -%}
         {%- else %}
            {%- set cleandec = scheme['metadata'].update({'default_dec_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_kem_dec"}) -%}
         {%- endif %}
-extern int {{ scheme['metadata']['default_dec_signature']  }}(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int {{ scheme['metadata']['default_dec_signature']  }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
     {%- endfor %}
 
@@ -61,21 +61,21 @@ extern int {{ scheme['metadata']['default_dec_signature']  }}(unsigned char *ss,
 
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
         {%- if impl['signature_keypair'] %}
-extern int {{ impl['signature_keypair'] }}(unsigned char *pk, unsigned char *sk);
+extern int {{ impl['signature_keypair'] }}(uint8_t *pk, uint8_t *sk);
         {%- else %}
-extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
         {%- endif %}
 
         {%- if impl['signature_enc'] %}
-extern int {{ impl['signature_enc'] }}(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
+extern int {{ impl['signature_enc'] }}(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
         {%- else %}
-extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
         {%- endif %}
 
         {%- if impl['signature_dec'] %}
-extern int {{ impl['signature_dec'] }}(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int {{ impl['signature_dec'] }}(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
         {%- else %}
-extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
         {%- endif %}
 #endif
     {%- endfor %}
@@ -154,3 +154,5 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 
 #endif
 {% endfor -%}
+
+

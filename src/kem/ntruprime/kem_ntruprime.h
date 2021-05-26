@@ -72,3 +72,4 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup857_decaps(uint8_t *shared_secret, co
 #endif
 
 #endif
+

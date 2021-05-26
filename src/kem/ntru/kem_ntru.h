@@ -50,3 +50,4 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hrss701_decaps(uint8_t *shared_secret, const uin
 #endif
 
 #endif
+
