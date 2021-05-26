@@ -256,7 +256,7 @@ typedef struct OQS_KEM {
 	 * @param[in] secret_key The secret key represented as a byte string.
 	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
-	OQS_STATUS (*decaps)(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+	OQS_STATUS (*decaps)(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 
 } OQS_KEM;
 

@@ -305,7 +305,7 @@ cleanup:
 	return ret;
 }
 
-OQS_API OQS_STATUS OQS_KEM_sidh_p434_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p434_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p434_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
@@ -375,7 +375,7 @@ cleanup:
 	return ret;
 }
 
-OQS_API OQS_STATUS OQS_KEM_sidh_p434_compressed_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p434_compressed_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p434_compressed_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
@@ -445,7 +445,7 @@ cleanup:
 	return ret;
 }
 
-OQS_API OQS_STATUS OQS_KEM_sidh_p503_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p503_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p503_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
@@ -515,7 +515,7 @@ cleanup:
 	return ret;
 }
 
-OQS_API OQS_STATUS OQS_KEM_sidh_p503_compressed_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p503_compressed_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p503_compressed_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
@@ -585,7 +585,7 @@ cleanup:
 	return ret;
 }
 
-OQS_API OQS_STATUS OQS_KEM_sidh_p610_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p610_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p610_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
@@ -655,7 +655,7 @@ cleanup:
 	return ret;
 }
 
-OQS_API OQS_STATUS OQS_KEM_sidh_p610_compressed_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p610_compressed_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p610_compressed_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
@@ -725,7 +725,7 @@ cleanup:
 	return ret;
 }
 
-OQS_API OQS_STATUS OQS_KEM_sidh_p751_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p751_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p751_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
@@ -795,7 +795,7 @@ cleanup:
 	return ret;
 }
 
-OQS_API OQS_STATUS OQS_KEM_sidh_p751_compressed_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_sidh_p751_compressed_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 	if (oqs_kem_sidh_p751_compressed_EphemeralSecretAgreement_A((unsigned char *) secret_key, (unsigned char *) ciphertext, (unsigned char *) shared_secret) != 0) {
 		return OQS_ERROR;
 	}
