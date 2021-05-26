@@ -72,7 +72,7 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr653_encaps(uint8_t *ciphertext, uint
 #endif
 }
 
-OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr653_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr653_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_ntruprime_ntrulpr653_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
