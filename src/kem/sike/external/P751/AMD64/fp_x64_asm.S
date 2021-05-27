@@ -739,8 +739,6 @@ fmt(mul751_asm):
     and    r15, rax     
     mov    [rcx], r8
     mov    [rcx+8], r9
-    mov    [rcx+16], rbx    /////
-    mov    [rcx+24], rbp    /////
 
     // r8-r13 <- masked (AH + AL)
     mov    r8, [rsp]

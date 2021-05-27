@@ -11,20 +11,33 @@
 
 static void Elligator2(const f2elm_t a24, const unsigned int r, f2elm_t x, unsigned char *bit, const unsigned char COMPorDEC)
 { // Generate an x-coordinate of a point on curve with (affine) coefficient a24 
+  // Use a precomputed Elligator table of size TABLE_V3_LEN and switch to online computations if table runs out of elements.
   // Use the counter r
     int i;
-    felm_t one_fp, a2, b2, N, temp0, temp1;
-    f2elm_t A, y2, *t_ptr;
+    felm_t one_fp, a2, b2, N, temp0, temp1, rmonty = {0}, *U;
+    f2elm_t A, y2, *t_ptr, v;
 
     fpcopy((digit_t*)&Montgomery_one, one_fp);
     fp2add(a24, a24, A);
     fpsub(A[0], one_fp, A[0]);
-    fp2add(A, A, A);                       // A = 4*a24-2 
+    fp2add(A, A, A);                          // A = 4*a24-2 
 
-    // Elligator computation
-    t_ptr = (f2elm_t *)&v_3_torsion[r];    
-    fp2mul_mont(A, (felm_t*)t_ptr, x);     // x = A*v; v := 1/(1 + U*r^2) table lookup
-    fp2neg(x);                             // x = -A*v;
+    // Elligator computation    
+    if (r < TABLE_V3_LEN) {
+        t_ptr = (f2elm_t *)&v_3_torsion[r];    
+        fp2copy((felm_t*)t_ptr, v);
+    } else { // Compute v = 1/(1+U*r^2)
+        U = (felm_t *)U3;
+        rmonty[0] = r;
+        to_mont(rmonty, rmonty);
+        fpsqr_mont(rmonty, rmonty);
+        fpmul_mont(U[0], rmonty, v[0]);
+        fpmul_mont(U[1], rmonty, v[1]);
+        fpadd(v[0], (digit_t*)&Montgomery_one, v[0]);
+        fp2inv_mont_bingcd(v);
+    }
+    fp2mul_mont(A, v, x);     // x = A*v; v := 1/(1 + U*r^2) table lookup
+    fp2neg(x);                // x = -A*v;
     
     if (COMPorDEC == COMPRESSION) {
         fp2add(A, x, y2);                      // y2 = x + A
@@ -229,7 +242,7 @@ static void FirstPoint3n(const f2elm_t a24, const f2elm_t As[][5], f2elm_t x, po
     bool b = false;
     point_proj_t P;
     felm_t zero = {0};
-    *r = 0;
+    *r = 0;    
 
     while (!b) {        
         *bitEll = 0;
@@ -363,53 +376,72 @@ static void BuildOrdinary3nBasis_Decomp_dual(const f2elm_t A24, point_proj_t *Rs
 }
 
 
+static void get2mPointonEA(const f2elm_t A, f2elm_t x, felm_t r, f2elm_t t, unsigned char *vqnr, unsigned char *ind) 
+{// Given a Montgomery curve EA, find a point of order 2^m using precomputed tables of size TABLE_R_LEN and switch to online computations if table runs out of elements.
+    f2elm_t *tv_ptr, v, tmp;
+    felm_t *tr_ptr, *u;
+
+    u = (felm_t *)u_entang;
+    // Select the correct tables, i.e., if A is a QR then v must be QNR, and vice-versa
+    if (is_sqr_fp2(A,  tmp[0])) {
+        tv_ptr = (f2elm_t *)table_v_qnr; 
+        tr_ptr = (felm_t *)table_r_qnr; 
+        *vqnr = 1;
+    } else {
+        tv_ptr = (f2elm_t *)table_v_qr;
+        tr_ptr = (felm_t *)table_r_qr; 
+        *vqnr = 0;
+    }
+
+    *ind = 0;
+    do {
+        if (*ind <= TABLE_R_LEN-1) {
+            fp2copy((felm_t *)*tv_ptr++, v);
+            fpcopy(tr_ptr[*ind], r);
+        } else {
+            do {
+                fpadd(r, (digit_t*)Montgomery_one, r);
+                fpmul_mont(r, r, tmp[1]);
+                fpmul_mont(u[0], tmp[1], tmp[0]);
+                fpmul_mont(u[1], tmp[1], tmp[1]);
+                fpadd(tmp[0], (digit_t*)Montgomery_one, tmp[0]);
+                fp2inv_mont_bingcd(tmp);
+                fp2copy(tmp, v);     // v = 1/(1 + u*r^2)
+                *ind += 1; // store the number of attempts for r so that we skip them during decompression
+            } while (is_sqr_fp2(v, tmp[0]) == *vqnr);
+        }
+        fp2mul_mont(A, v, x);   
+        fp2neg(x);                   // x = -A*v
+        fp2add(x, A, tmp);        
+        fp2mul_mont(x, tmp, tmp); 
+        fpadd(tmp[0], (digit_t*)Montgomery_one, tmp[0]); 
+        fp2mul_mont(x, tmp, t);      // t = x^3 + A*x^2 + x
+        if (*ind < TABLE_R_LEN)
+            *ind += 1;
+    } while (!is_sqr_fp2(t, tmp[0]));
+    *ind -= 1;
+}
+
 
 static void BuildEntangledXonly(const f2elm_t A, point_proj_t *R, unsigned char *qnr, unsigned char *ind)
 {
-    felm_t s;
-    f2elm_t *t_ptr, r, t;
+    f2elm_t r, t;
 
-    // Select the correct table
-    if (is_sqr_fp2(A,  s)) {
-        t_ptr = (f2elm_t *)table_v_qnr; 
-        *qnr = 1;
-    } else {
-        t_ptr = (f2elm_t *)table_v_qr;
-        *qnr = 0;
-    }
+    get2mPointonEA(A, R[0]->X, r[0], t, qnr, ind);
 
-    // Get x0
-    *ind = 0;
-    do {
-        fp2mul_mont(A,  (felm_t *)*t_ptr++,  R[0]->X);    // R[0]->X =  A*v
-        fp2neg(R[0]->X);                                  // R[0]->X = -A*v
-        fp2add(R[0]->X,  A,  t);
-        fp2mul_mont(R[0]->X,  t,  t);
-        fpadd(t[0],  (digit_t*)Montgomery_one,  t[0]);
-        fp2mul_mont(R[0]->X,  t,  t);                     // t = R[0]->X^3 + A*R[0]->X^2 + R[0]->X
-        *ind += 1;
-    } while (!is_sqr_fp2(t,  s));
-    *ind -= 1;
-
-    if (*qnr)
-        fpcopy((digit_t*)table_r_qnr[*ind], r[0]);
-    else
-        fpcopy((digit_t*)table_r_qr[*ind], r[0]);
-
-    // Get x1
+     // Get x1 = -x-A
     fp2add(R[0]->X, A, R[1]->X);
-    fp2neg(R[1]->X);    // R[1]->X = -R[0]->X-A
+    fp2neg(R[1]->X);
 
     // Get difference x2,  z2
     fp2sub(R[0]->X, R[1]->X, R[2]->Z);
     fp2sqr_mont(R[2]->Z, R[2]->Z);
 
-    fpcopy(r[0], r[1]);    // (1+i)*ind
+    fpcopy(r[0], r[1]);    // (1+i)*r
     fpadd((digit_t*)Montgomery_one, r[0], r[0]);
     fp2sqr_mont(r, r);
     fp2mul_mont(t, r, R[2]->X);
 }
-
 
 
 static void BuildOrdinary2nBasis_dual(const f2elm_t A, const f2elm_t Ds[][2], point_full_proj_t *Rs, unsigned char *qnr, unsigned char *ind)
@@ -421,6 +453,7 @@ static void BuildOrdinary2nBasis_dual(const f2elm_t A, const f2elm_t Ds[][2], po
 
     // Generate x-only entangled basis 
     BuildEntangledXonly(A, xs, qnr, ind);
+
     fpcopy((digit_t*)Montgomery_one, (xs[0]->Z)[0]);
     fpcopy((digit_t*)Montgomery_one, (xs[1]->Z)[0]);
 
@@ -442,42 +475,94 @@ static void BuildOrdinary2nBasis_dual(const f2elm_t A, const f2elm_t Ds[][2], po
 }
 
 
+static void getrvOf2mPoint_Decomp(const unsigned char vqnr, const unsigned char ind, felm_t r, f2elm_t v) 
+{// Given a Montgomery curve EA, find Elligator values r, v leading to a point of order 2^m. 
+ // Use precomputed tables of size TABLE_R_LEN and switch to online computations if table runs out of elements.
+    f2elm_t *tv_ptr, tmp;
+    felm_t *tr_ptr, *u;
+
+    u = (felm_t *)u_entang;
+    // Select the correct tables
+    if (vqnr == 1) {
+        tv_ptr = (f2elm_t *)table_v_qnr; 
+        tr_ptr = (felm_t *)table_r_qnr; 
+    } else {
+        tv_ptr = (f2elm_t *)table_v_qr;
+        tr_ptr = (felm_t *)table_r_qr; 
+    }
+
+    if (ind < TABLE_R_LEN) {
+        fp2copy(tv_ptr[ind], v);
+        fpcopy(tr_ptr[ind], r);
+    } else {
+        fpcopy(tr_ptr[TABLE_R_LEN-1], r);
+        for (int k = 0; k < ind - TABLE_R_LEN + 1; k++)
+            fpadd(r, (digit_t*)Montgomery_one, r);
+
+        fpmul_mont(r, r, tmp[1]);
+        fpmul_mont(u[0], tmp[1], tmp[0]);
+        fpmul_mont(u[1], tmp[1], v[1]);
+        fpadd(tmp[0], (digit_t*)Montgomery_one, v[0]); // v^-1 = (1 + u*r^2)
+    }           
+}
+
 
 static void BuildEntangledXonly_Decomp(const f2elm_t A, point_proj_t *R, unsigned char qnr, unsigned char ind)
 {
-    f2elm_t *t_ptr, r, t;
-    
-    // Select the correct table
-    if ( qnr == 1 )
-        t_ptr = (f2elm_t *)table_v_qnr; 
-    else
-        t_ptr = (f2elm_t *)table_v_qr;
+    f2elm_t r, t, v;
 
-    if (ind >= TABLE_V_LEN/2)
-        ind = 0;
-    // Get x0     
-    fp2mul_mont(A, t_ptr[ind], R[0]->X);    // x1 =  A*v
-    fp2neg(R[0]->X);                        // R[0]->X = -A*v
-    fp2add(R[0]->X, A, t);
-    fp2mul_mont(R[0]->X, t, t);
-    fpadd(t[0], (digit_t*)Montgomery_one, t[0]);
-    fp2mul_mont(R[0]->X, t, t);             // t = R[0]->X^3 + A*R[0]->X^2 + R[0]->X
+    getrvOf2mPoint_Decomp(qnr, ind, r[0], v);
 
-    if (qnr == 1)
-        fpcopy((digit_t*)table_r_qnr[ind], r[0]);
-    else
-        fpcopy((digit_t*)table_r_qr[ind], r[0]);
+    if (ind < TABLE_R_LEN) {
+       // Get x0 = -A*v
+        fp2mul_mont(A, v, R[0]->X);    
+        fp2neg(R[0]->X);               
+        fp2add(R[0]->X, A, t);
+        fp2mul_mont(R[0]->X, t, t);
+        fpadd(t[0], (digit_t*)Montgomery_one, t[0]);
+        fp2mul_mont(R[0]->X, t, t);    // t = x0^3 + A*x0^2 + x0
 
-    // Get x1 
-    fp2add(R[0]->X, A, R[1]->X);
-    fp2neg(R[1]->X);    // R[1]->X = -R[0]->X-A
+        // Get x1 = -x0-A
+        fp2add(R[0]->X, A, R[1]->X);
+        fp2neg(R[1]->X);
 
-    // Get difference x2,z2 
-    fp2sub(R[0]->X, R[1]->X, R[2]->Z);
-    fp2sqr_mont(R[2]->Z, R[2]->Z);
+        // Get difference x2,z2 
+        fp2sub(R[0]->X, R[1]->X, R[2]->Z);
+        fp2sqr_mont(R[2]->Z, R[2]->Z);
 
-    fpcopy(r[0],r[1]); // (1+i)*ind 
-    fpadd((digit_t*)Montgomery_one, r[0], r[0]);
-    fp2sqr_mont(r, r);
-    fp2mul_mont(t, r, R[2]->X);
+        fpcopy(r[0],r[1]); // (1+i)*r
+        fpadd((digit_t*)Montgomery_one, r[0], r[0]);
+        fp2sqr_mont(r, r);
+        fp2mul_mont(t, r, R[2]->X);
+    } else {
+        // Get X0, Z0
+        fp2copy(A, R[0]->X);
+        fp2neg(R[0]->X);
+        fp2copy(v, R[0]->Z);
+
+        // Get X1, Z1 
+        fp2copy(v, R[1]->X);
+        fp2neg(R[1]->X);  
+        fpadd((digit_t*)Montgomery_one, R[1]->X[0], R[1]->X[0]);
+        fp2mul_mont(R[1]->X, A, R[1]->X);
+        fp2copy(v, R[1]->Z);
+
+        // Get difference X2,Z2 
+        fpcopy(r[0],r[1]); // (1+i)*r 
+        fpadd((digit_t*)Montgomery_one, r[0], r[0]);
+        fp2sqr_mont(r, R[2]->X);
+        fp2copy(v, r);
+        fpsub(r[0], (digit_t*)Montgomery_one, r[0]);
+        fp2sqr_mont(A, t);
+        fp2mul_mont(t, r, r);
+        fp2sqr_mont(v, t);
+        fp2sub(r, t, r);
+        fp2mul_mont(R[2]->X, r, R[2]->X);
+        fp2mul_mont(A, v, R[2]->Z);
+        fp2copy(v, r);
+        fpsub(r[0], (digit_t*)Montgomery_one, r[0]);
+        fpsub(r[0], (digit_t*)Montgomery_one, r[0]);
+        fp2sqr_mont(r, r);
+        fp2mul_mont(R[2]->Z, r, R[2]->Z);
+    }
 }

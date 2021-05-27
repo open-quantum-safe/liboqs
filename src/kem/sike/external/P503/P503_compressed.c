@@ -215,16 +215,19 @@ static const unsigned int ph3_path[PLEN_3] = {
 // For the 3^eB-torsion basis generation:
 //      A table of size 20 for values v = 1/(1+U*r^2)
 
-/* OQS note: unused
 static const uint64_t u_entang[2 * NWORDS64_FIELD] = {
 	0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x7F3, 0x0, 0x0, 0xBC00000000000000, 0xB48DD9032BABBDC8, 0x87354452517EE94B, 0xB55528D05AECDDB4, 0xD90684A9D9488
 };
 
+/* OQS note: unused
 static const uint64_t u0_entang[2 * NWORDS64_FIELD] = {
 	0x3F9, 0x0, 0x0, 0xB400000000000000, 0x63CB1A6EA6DED2B4, 0x51689D8D667EB37D, 0x8ACD77C71AB24142, 0x26FBAEC60F5953, 0x3F9, 0x0, 0x0, 0xB400000000000000,
 	0x63CB1A6EA6DED2B4, 0x51689D8D667EB37D, 0x8ACD77C71AB24142, 0x26FBAEC60F5953
 };
 */
+
+// Elligator constant U = min{u0+k} for k=1,2... such that u0+k is a square in F_p^2 for generating 3^n torsion bases
+static const uint64_t U3[2*NWORDS64_FIELD] = {0x7F3,0x0,0x0,0xBC00000000000000,0xB48DD9032BABBDC8,0x87354452517EE94B,0xB55528D05AECDDB4,0xD90684A9D9488,0x3F9,0x0,0x0,0xB400000000000000,0x63CB1A6EA6DED2B4,0x51689D8D667EB37D,0x8ACD77C71AB24142,0x26FBAEC60F5953};
 
 // Tables for quadratic residues and quadratic non residues v with 17 elements each.
 

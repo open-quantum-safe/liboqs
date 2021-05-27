@@ -34,7 +34,7 @@ int OQS_KEM_sike_p503_decaps(unsigned char *ss, const unsigned char *ct, const u
 // Elements over GF(p503) are encoded in 63 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
 // Elements (a+b*i) over GF(p503^2), where a and b are defined over GF(p503), are encoded as {a, b}, with a in the lowest memory portion.
 //
-// Private keys sk consist of the concatenation of a 24-byte random value, a value in the range [0, 2^250-1] and the public key pk. In the SIKE API,
+// Private keys sk consist of the concatenation of a 24-byte random value, a value in the range [0, 2^Floor(Log(2,3^159)) - 1] and the public key pk. In the SIKE API,
 // private keys are encoded in 434 octets in little endian format.
 // Public keys pk consist of 3 elements in GF(p503^2). In the SIKE API, pk is encoded in 378 octets.
 // Ciphertexts ct consist of the concatenation of a public key value and a 24-byte value. In the SIKE API, ct is encoded in 378 + 24 = 402 octets.
