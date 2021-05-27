@@ -5,14 +5,14 @@ SIKE
 - **Main cryptographic assumption**: (supersingular) isogeny walk problem
 - **Scheme authors**: David Jao, Reza Azarderakhsh, Matthew Campagna, Craig Costello, Luca De Feo, Basil Hess, Amir Jalali, Brian Koziel, Brian LaMacchia, Patrick Longa, Michael Naehrig, Joost Renes, Vladimir Soukharev, David Urbanik
 - **Authors' website**: http://sike.org/
-- **Version**: 3.3
+- **Version**: 3.4
 - **Added to liboqs by**: Christian Paquin
 
 Implementation
 --------------
 
 - **Source of implementation**: https://github.com/Microsoft/PQCrypto-SIDH
-- **Implementation version**: https://github.com/microsoft/PQCrypto-SIDH/commit/67981447d36dfdcfc849d8d88963f727a31ba772 (bugfix on v3.4)
+- **Implementation version**: https://github.com/microsoft/PQCrypto-SIDH/commit/10b0f4dca695751290e5ddf5b297a9a2f0563287 (bugfix on v3.4)
 - **License**: MIT License
 - **Constant-time**: Yes
 - **Optimizations**: Portable C, with assembly optimizations on AMD64 and selected parameter sets on ARM64 (selected at compile-time, enabled by default if available)
