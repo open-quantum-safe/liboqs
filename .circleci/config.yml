@@ -164,6 +164,10 @@ jobs:
     resource_class: arm.medium
     steps:
       - checkout
+      # It seems the machine doesn't contain all preprequisites, so add them explicitly
+      - run:
+          name: Prepare machine
+          command: apt-get update && apt-get -y upgrade && apt install -y cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-pip && pip3 install pytest pytest-xdist
       - run:
           name: Configure
           command: mkdir build && cd build && source ~/.bashrc && cmake -GNinja << parameters.CMAKE_ARGS >> .. && cmake -LA ..
