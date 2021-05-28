@@ -26,7 +26,50 @@
     Compression does not need to be constant time
     Memcheck:Cond
     ...
-    fun:BuildOrdinary?nBasis_dual
+    fun:FirstPoint3n
+    fun:BuildOrdinary3nBasis_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:SecondPoint3n
+    fun:BuildOrdinary3nBasis_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:BiQuad_affine
+    fun:BuildOrdinary3nBasis_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:makeDiff
+    fun:BuildOrdinary3nBasis_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:BuildEntangledXonly
+    fun:BuildOrdinary2nBasis_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:CompleteMPoint
+    fun:BuildOrdinary2nBasis_dual
+}
+{
+    Compression does not need to be constant time
+    Memcheck:Cond
+    ...
+    fun:RecoverY
+    fun:BuildOrdinary2nBasis_dual
 }
 {
     Compression does not need to be constant time
@@ -40,7 +83,7 @@
    Memcheck:Cond
    ...
    fun:fp2inv*_mont_bingcd
-   src:sidh_compressed.c:590 # fun:FullIsogeny_A_dual
+   src:sidh_compressed.c:124 # fun:FullIsogeny_A_dual
 }
 
 {
@@ -49,5 +92,5 @@
    Memcheck:Cond
    ...
    fun:fp2inv*_mont_bingcd
-   src:sidh_compressed.c:993 # fun:FullIsogeny_B_dual
+   src:sidh_compressed.c:398 # fun:FullIsogeny_B_dual
 }
