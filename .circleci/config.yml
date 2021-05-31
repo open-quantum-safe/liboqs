@@ -384,8 +384,8 @@ workflows:
       - arm_machine:
           <<: *require_buildcheck
           name: arm64
-          PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
-          CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_DIST_BUILD=ON
+          PYTEST_ARGS: --numprocesses=auto --maxprocesses=10
+          CMAKE_ARGS: -DOQS_DIST_BUILD=ON
       - arm_emulated:
           <<: *require_buildcheck
           name: armhf
