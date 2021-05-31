@@ -164,21 +164,13 @@ jobs:
     resource_class: arm.medium
     steps:
       - checkout
-      # It seems the machine doesn't contain all preprequisites, so add them explicitly
+      # It seems the machine doesn't contain all preprequisites, and we don't have permission to add them explicitly, 
+      # so we can only run in a prepared ARM64 CI image
       - run:
-          name: Prepare machine
-          command: apt-get update && apt-get -y upgrade && apt install -y cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-pip && pip3 install pytest pytest-xdist
-      - run:
-          name: Configure
-          command: mkdir build && cd build && source ~/.bashrc && cmake -GNinja << parameters.CMAKE_ARGS >> .. && cmake -LA ..
-      - run:
-          name: Build
-          command: ninja
-          working_directory: build
-      - run:
-          name: Run tests
+          name: Build and run tests in docker 
           no_output_timeout: 1h
-          command: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml << parameters.PYTEST_ARGS >>
+          command: |
+            docker run -e CMAKE_ARGS=<< parameters.CMAKE_ARGS >> -e PYTEST_ARGS=<< parameters.PYTEST_ARGS >> -v `pwd`:/root/project -it openquantumsafe/ci-ubuntu-focal-arm64:latest bash -c 'cd /root/project && ls && mkdir build && cd build && source ~/.bashrc && cmake -GNinja $CMAKE_ARGS .. && cmake -LA .. && ninja && cd .. && mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml $PYTEST_ARGS'
       - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
           path: build/test-results
       - store_artifacts:
