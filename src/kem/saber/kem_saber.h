@@ -13,7 +13,7 @@
 OQS_KEM *OQS_KEM_saber_lightsaber_new(void);
 OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_saber_saber
@@ -24,7 +24,7 @@ OQS_API OQS_STATUS OQS_KEM_saber_lightsaber_decaps(uint8_t *shared_secret, const
 OQS_KEM *OQS_KEM_saber_saber_new(void);
 OQS_API OQS_STATUS OQS_KEM_saber_saber_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_saber_saber_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_saber_saber_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_saber_saber_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_saber_firesaber
@@ -35,7 +35,7 @@ OQS_API OQS_STATUS OQS_KEM_saber_saber_decaps(uint8_t *shared_secret, const unsi
 OQS_KEM *OQS_KEM_saber_firesaber_new(void);
 OQS_API OQS_STATUS OQS_KEM_saber_firesaber_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_saber_firesaber_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_saber_firesaber_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_saber_firesaber_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #endif

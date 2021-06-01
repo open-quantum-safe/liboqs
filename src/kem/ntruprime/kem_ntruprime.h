@@ -13,7 +13,7 @@
 OQS_KEM *OQS_KEM_ntruprime_ntrulpr653_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr653_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr653_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr653_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr653_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_ntruprime_ntrulpr761
@@ -24,7 +24,7 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr653_decaps(uint8_t *shared_secret, c
 OQS_KEM *OQS_KEM_ntruprime_ntrulpr761_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr761_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr761_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr761_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr761_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_ntruprime_ntrulpr857
@@ -35,7 +35,7 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr761_decaps(uint8_t *shared_secret, c
 OQS_KEM *OQS_KEM_ntruprime_ntrulpr857_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr857_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr857_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr857_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr857_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_ntruprime_sntrup653
@@ -46,7 +46,7 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_ntrulpr857_decaps(uint8_t *shared_secret, c
 OQS_KEM *OQS_KEM_ntruprime_sntrup653_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup653_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup653_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup653_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup653_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_ntruprime_sntrup761
@@ -57,7 +57,7 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup653_decaps(uint8_t *shared_secret, co
 OQS_KEM *OQS_KEM_ntruprime_sntrup761_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_ntruprime_sntrup857
@@ -68,7 +68,7 @@ OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup761_decaps(uint8_t *shared_secret, co
 OQS_KEM *OQS_KEM_ntruprime_sntrup857_new(void);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup857_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup857_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup857_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_ntruprime_sntrup857_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #endif

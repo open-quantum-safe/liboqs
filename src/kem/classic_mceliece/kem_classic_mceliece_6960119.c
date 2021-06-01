@@ -30,14 +30,14 @@ OQS_KEM *OQS_KEM_classic_mceliece_6960119_new() {
 	return kem;
 }
 
-extern int PQCLEAN_MCELIECE6960119_VEC_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
-extern int PQCLEAN_MCELIECE6960119_VEC_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
-extern int PQCLEAN_MCELIECE6960119_VEC_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int PQCLEAN_MCELIECE6960119_VEC_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_MCELIECE6960119_VEC_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCLEAN_MCELIECE6960119_VEC_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #if defined(OQS_ENABLE_KEM_classic_mceliece_6960119_avx)
-extern int PQCLEAN_MCELIECE6960119_AVX_crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
-extern int PQCLEAN_MCELIECE6960119_AVX_crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
-extern int PQCLEAN_MCELIECE6960119_AVX_crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
+extern int PQCLEAN_MCELIECE6960119_AVX_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_MCELIECE6960119_AVX_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCLEAN_MCELIECE6960119_AVX_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
 OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_keypair(uint8_t *public_key, uint8_t *secret_key) {
@@ -72,7 +72,7 @@ OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_encaps(uint8_t *ciphertext, 
 #endif
 }
 
-OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_KEM_classic_mceliece_6960119_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_classic_mceliece_6960119_avx)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {

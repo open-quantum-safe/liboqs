@@ -13,7 +13,7 @@
 OQS_KEM *OQS_KEM_bike1_l1_cpa_new(void);
 OQS_API OQS_STATUS OQS_KEM_bike1_l1_cpa_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_bike1_l1_cpa_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_bike1_l1_cpa_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_bike1_l1_cpa_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_bike1_l3_cpa
@@ -24,7 +24,7 @@ OQS_API OQS_STATUS OQS_KEM_bike1_l1_cpa_decaps(uint8_t *shared_secret, const uns
 OQS_KEM *OQS_KEM_bike1_l3_cpa_new(void);
 OQS_API OQS_STATUS OQS_KEM_bike1_l3_cpa_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_bike1_l3_cpa_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_bike1_l3_cpa_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_bike1_l3_cpa_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_bike1_l1_fo
@@ -35,7 +35,7 @@ OQS_API OQS_STATUS OQS_KEM_bike1_l3_cpa_decaps(uint8_t *shared_secret, const uns
 OQS_KEM *OQS_KEM_bike1_l1_fo_new(void);
 OQS_API OQS_STATUS OQS_KEM_bike1_l1_fo_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_bike1_l1_fo_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_bike1_l1_fo_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_bike1_l1_fo_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #ifdef OQS_ENABLE_KEM_bike1_l3_fo
@@ -46,7 +46,7 @@ OQS_API OQS_STATUS OQS_KEM_bike1_l1_fo_decaps(uint8_t *shared_secret, const unsi
 OQS_KEM *OQS_KEM_bike1_l3_fo_new(void);
 OQS_API OQS_STATUS OQS_KEM_bike1_l3_fo_keypair(uint8_t *public_key, uint8_t *secret_key);
 OQS_API OQS_STATUS OQS_KEM_bike1_l3_fo_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key);
-OQS_API OQS_STATUS OQS_KEM_bike1_l3_fo_decaps(uint8_t *shared_secret, const unsigned char *ciphertext, const uint8_t *secret_key);
+OQS_API OQS_STATUS OQS_KEM_bike1_l3_fo_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key);
 #endif
 
 #endif // OQS_KEM_BIKE_H
