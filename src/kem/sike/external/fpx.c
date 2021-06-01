@@ -133,6 +133,7 @@ static void copy_words(const digit_t* a, digit_t* c, const unsigned int nwords)
         c[i] = a[i];
 }
 
+
 static void fpmul_mont(const felm_t ma, const felm_t mb, felm_t mc)
 { // Multiprecision multiplication, c = a*b mod p.
     dfelm_t temp = {0};
@@ -237,13 +238,6 @@ __inline static void mp2_sub_p2(const f2elm_t a, const f2elm_t b, f2elm_t c)
 { // GF(p^2) subtraction with correction with 2*p, c = a-b+2p in GF(p^2).    
     mp_sub_p2(a[0], b[0], c[0]);  
     mp_sub_p2(a[1], b[1], c[1]);
-}
-
-
-__inline static void mp2_sub_p4(const f2elm_t a, const f2elm_t b, f2elm_t c)       
-{ // GF(p^2) subtraction with correction with 4*p, c = a-b+4p in GF(p^2). 
-    mp_sub_p4(a[0], b[0], c[0]);  
-    mp_sub_p4(a[1], b[1], c[1]); 
 }
 
 
@@ -810,9 +804,7 @@ static void mp_shiftleft(digit_t* x, unsigned int shift, const unsigned int nwor
 
 static void mp_shiftr1(digit_t* x, const unsigned int nwords)
 { // Multiprecision right shift by one.
-    unsigned int i;
-
-    for (i = 0; i < nwords-1; i++) {
+    for (unsigned int i = 0; i < nwords-1; i++) {
         SHIFTR(x[i+1], x[i], 1, x[i], RADIX);
     }
     x[nwords-1] >>= 1;
@@ -821,9 +813,7 @@ static void mp_shiftr1(digit_t* x, const unsigned int nwords)
 
 static void mp_shiftl1(digit_t* x, const unsigned int nwords)
 { // Multiprecision left shift by one.
-    int i;
-
-    for (i = nwords-1; i > 0; i--) {
+    for (int i = nwords-1; i > 0; i--) {
         SHIFTL(x[i], x[i-1], 1, x[i], RADIX);
     }
     x[0] <<= 1;

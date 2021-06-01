@@ -206,16 +206,16 @@ static void inv_3_way(f2elm_t z1, f2elm_t z2, f2elm_t z3)
 { // 3-way simultaneous inversion
   // Input:  z1,z2,z3
   // Output: 1/z1,1/z2,1/z3 (override inputs).
-    f2elm_t t0, t1, t2, t3;
+    f2elm_t t0, t1, t2;
 
     fp2mul_mont(z1, z2, t0);                      // t0 = z1*z2
     fp2mul_mont(z3, t0, t1);                      // t1 = z1*z2*z3
     fp2inv_mont(t1);                              // t1 = 1/(z1*z2*z3)
-    fp2mul_mont(z3, t1, t2);                      // t2 = 1/(z1*z2) 
-    fp2mul_mont(t2, z2, t3);                      // t3 = 1/z1
-    fp2mul_mont(t2, z1, z2);                      // z2 = 1/z2
+    fp2mul_mont(z3, t1, t2);                      // t2 = 1/(z1*z2)
     fp2mul_mont(t0, t1, z3);                      // z3 = 1/z3
-    fp2copy(t3, z1);                              // z1 = 1/z1
+    fp2mul_mont(t2, z2, t0);                      // z1 = 1/z1
+    fp2mul_mont(t2, z1, z2);                      // z2 = 1/z2
+    fp2copy(t0, z1);
 }
 
 
@@ -293,7 +293,6 @@ static void xDBLADD(point_proj_t P, point_proj_t Q, const f2elm_t XPQ, const f2e
     fp2mul_mont(Q->Z, XPQ, Q->Z);                   // ZQ = xPQ*[(XP+ZP)*(XQ-ZQ)-(XP-ZP)*(XQ+ZQ)]^2
     fp2mul_mont(Q->X, ZPQ, Q->X);                   // XQ = ZPQ*[(XP+ZP)*(XQ-ZQ)+(XP-ZP)*(XQ+ZQ)]^2            
 }
-
 
 
 static void swap_points(point_proj_t P, point_proj_t Q, const digit_t option)
