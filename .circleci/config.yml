@@ -147,6 +147,35 @@ jobs:
       - store_artifacts:
           path: build/test-results
 
+  arm_machine:
+    description: A template for running liboqs tests on ARM(presently only 64) machines
+    parameters:
+      CMAKE_ARGS:
+        description: "Arguments to pass to CMake."
+        type: string
+      PYTEST_ARGS:
+        description: "Arguments to pass to pytest."
+        type: string
+        # Not every executor handles --numprocesses=auto being passed to pytest well
+        # See https://github.com/open-quantum-safe/liboqs/issues/738#issuecomment-621394744
+        default: --numprocesses=auto
+    machine:
+      image: ubuntu-2004:202101-01
+    resource_class: arm.medium
+    steps:
+      - checkout
+      # It seems the machine doesn't contain all preprequisites, and we don't have permission to add them explicitly, 
+      # so we can only run in a prepared ARM64 CI image
+      - run:
+          name: Build and run tests in docker 
+          no_output_timeout: 1h
+          command: |
+            docker run -e CMAKE_ARGS="<< parameters.CMAKE_ARGS >>" -e PYTEST_ARGS="<< parameters.PYTEST_ARGS >>" -v `pwd`:/root/project -it openquantumsafe/ci-ubuntu-focal-arm64:latest bash -c 'cd /root/project && uname -a && mkdir build && cd build && source ~/.bashrc && cmake -GNinja $CMAKE_ARGS .. && cmake -LA .. && ninja && cd .. && mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml $PYTEST_ARGS'
+      - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
+          path: build/test-results
+      - store_artifacts:
+          path: build/test-results
+
   macOS:
     description: A template for running liboqs tests on macOS
     parameters:
@@ -346,11 +375,17 @@ workflows:
       #    PYTEST_ARGS: --numprocesses=1
       # SPHINCS exhausts memory on CircleCI servers
       # for these configurations.
-      - arm_emulated:
+      # don't run ARM64 emulated any more:
+      #- arm_emulated:
+      #    <<: *require_buildcheck
+      #    name: arm64
+      #    ARCH: arm64
+      #    CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_DIST_BUILD=ON
+      - arm_machine:
           <<: *require_buildcheck
           name: arm64
-          ARCH: arm64
-          CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_DIST_BUILD=ON
+          PYTEST_ARGS: --numprocesses=auto --maxprocesses=10
+          CMAKE_ARGS: -DOQS_DIST_BUILD=ON
       - arm_emulated:
           <<: *require_buildcheck
           name: armhf
