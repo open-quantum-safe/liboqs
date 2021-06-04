@@ -48,6 +48,8 @@
 #cmakedefine OQS_ENABLE_KEM_bike1_l3_cpa 1
 #cmakedefine OQS_ENABLE_KEM_bike1_l1_fo 1
 #cmakedefine OQS_ENABLE_KEM_bike1_l3_fo 1
+#cmakedefine OQS_ENABLE_KEM_bike_l1 1
+#cmakedefine OQS_ENABLE_KEM_bike_l3 1
 
 #cmakedefine OQS_ENABLE_KEM_FRODOKEM 1
 #cmakedefine OQS_ENABLE_KEM_frodokem_640_aes 1

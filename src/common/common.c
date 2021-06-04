@@ -62,6 +62,7 @@ static void set_available_cpu_extensions(void) {
 		if (avx512f && avx512bw && avx512dq) {
 			cpu_ext_data[OQS_CPU_EXT_AVX512] = 1;
 		}
+		cpu_ext_data[OQS_CPU_EXT_VPCLMULQDQ] = is_bit_set(leaf_7.ecx, 10);
 	}
 }
 #elif defined(OQS_DIST_ARM64v8_BUILD)
