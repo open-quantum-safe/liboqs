@@ -105,42 +105,45 @@ else()
     set(SRCS ${SRCS} additional/gf2x_portable.c additional/gf2x_mul.c)
 endif()
 
+add_library(kem_bike OBJECT kem_bike.c)
+set(_BIKE_OBJS $<TARGET_OBJECTS:kem_bike>)
+
 # CPA variants
 if(OQS_ENABLE_KEM_bike1_l1_cpa)
-    add_library(bike1_l1_cpa OBJECT kem_bike.c ${SRCS} additional/kem_cpa.c)
+    add_library(bike1_l1_cpa OBJECT ${SRCS} additional/kem_cpa.c)
     target_compile_definitions(bike1_l1_cpa PRIVATE INDCPA=1 LEVEL=1 FUNC_PREFIX=OQS_KEM_bike1_l1_cpa ${CPP_DEFS})
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1_cpa>)
 endif()
 
 if(OQS_ENABLE_KEM_bike1_l3_cpa)
-    add_library(bike1_l3_cpa OBJECT kem_bike.c ${SRCS} additional/kem_cpa.c)
+    add_library(bike1_l3_cpa OBJECT ${SRCS} additional/kem_cpa.c)
     target_compile_definitions(bike1_l3_cpa PRIVATE INDCPA=1 LEVEL=3 FUNC_PREFIX=OQS_KEM_bike1_l3_cpa ${CPP_DEFS})
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l3_cpa>)
 endif()
 
 # FO variants
 if(OQS_ENABLE_KEM_bike1_l1_fo)
-    add_library(bike1_l1_fo OBJECT kem_bike.c ${SRCS} additional/kem.c)
+    add_library(bike1_l1_fo OBJECT ${SRCS} additional/kem.c)
     target_compile_definitions(bike1_l1_fo PRIVATE LEVEL=1 FUNC_PREFIX=OQS_KEM_bike1_l1_fo ${CPP_DEFS})
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1_fo>)
 endif()
 
 if(OQS_ENABLE_KEM_bike1_l3_fo)
-    add_library(bike1_l3_fo OBJECT kem_bike.c ${SRCS} additional/kem.c)
+    add_library(bike1_l3_fo OBJECT ${SRCS} additional/kem.c)
     target_compile_definitions(bike1_l3_fo PRIVATE LEVEL=3 FUNC_PREFIX=OQS_KEM_bike1_l3_fo ${CPP_DEFS})
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l3_fo>)
 endif()
 
 # Round-3 KEMs
 if(OQS_ENABLE_KEM_bike_l1)
-    add_library(bike_l1 OBJECT kem_bike.c ${SRCS_R3} additional_r3/kem.c)
+    add_library(bike_l1 OBJECT ${SRCS_R3} additional_r3/kem.c)
     target_compile_definitions(bike_l1 PRIVATE LEVEL=1 FUNC_PREFIX=OQS_KEM_bike_l1 ${CPP_DEFS_R3})
     target_include_directories(bike_l1 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/additional_r3)
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike_l1>)
 endif()
 
 if(OQS_ENABLE_KEM_bike_l3)
-    add_library(bike_l3 OBJECT kem_bike.c ${SRCS_R3} additional_r3/kem.c)
+    add_library(bike_l3 OBJECT ${SRCS_R3} additional_r3/kem.c)
     target_compile_definitions(bike_l3 PRIVATE LEVEL=3 FUNC_PREFIX=OQS_KEM_bike_l3 ${CPP_DEFS_R3})
     target_include_directories(bike_l3 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/additional_r3)
     set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike_l3>)
