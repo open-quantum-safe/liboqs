@@ -15,7 +15,7 @@ OQS_KEM *OQS_KEM_kyber_768_90s_new() {
 	kem->method_name = OQS_KEM_alg_kyber_768_90s;
 	kem->alg_version = "https://github.com/pq-crystals/kyber/commit/74cad307858b61e434490c75f812cb9b9ef7279b";
 
-	kem->claimed_nist_level = 1;
+	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
 
 	kem->length_public_key = OQS_KEM_kyber_768_90s_length_public_key;
