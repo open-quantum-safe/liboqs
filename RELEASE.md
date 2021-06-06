@@ -1,4 +1,4 @@
-liboqs version 0.6.0-rc2
+liboqs version 0.6.0-rc3
 ========================
 
 About
@@ -28,7 +28,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 2 for version 0.6.0 of liboqs.  It was released on June 2, 2021.
+This is release candidate 3 for version 0.6.0 of liboqs.  It was released on June 6, 2021.
 
 What's New
 ----------
@@ -41,6 +41,7 @@ This release continues from the 0.5.0 release of liboqs.
 - Bug fixes in SIKE
 - Bug fixes in HQC
 - Change unsigned char to uint8_t in KEM API
+- Fix wrong NIST level for Kyber768-90s
 
 ### Digital signature schemes
 
