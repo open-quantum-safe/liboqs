@@ -154,11 +154,14 @@ _INLINE_ void gf2x_ctx_init(gf2x_ctx *ctx)
   }
 
 #if defined(X86_64)
+#  if !defined(DISABLE_VPCLMUL)
   if(is_vpclmul_enabled()) {
     ctx->mul_base_qwords = GF2X_VPCLMUL_BASE_QWORDS;
     ctx->mul_base        = gf2x_mul_base_vpclmul;
     ctx->sqr             = gf2x_sqr_vpclmul;
-  } else if(is_pclmul_enabled()) {
+  } else
+#  endif // DISABLE_VPCLMUL
+  if(is_pclmul_enabled()) {
     ctx->mul_base_qwords = GF2X_PCLMUL_BASE_QWORDS;
     ctx->mul_base        = gf2x_mul_base_pclmul;
     ctx->sqr             = gf2x_sqr_pclmul;

@@ -60,7 +60,16 @@ if(OQS_ENABLE_KEM_bike_l1 OR OQS_ENABLE_KEM_bike_l3)
         set_source_files_properties(${AVX512_SRCS} PROPERTIES COMPILE_OPTIONS "${AVX512_FLAGS}")
 
         set_source_files_properties(additional_r3/gf2x_mul_base_pclmul.c PROPERTIES COMPILE_OPTIONS "-mpclmul;-msse2")
-        set_source_files_properties(additional_r3/gf2x_mul_base_vpclmul.c PROPERTIES COMPILE_OPTIONS "-mvpclmulqdq;${AVX512_FLAGS}")
+
+        # Some older compilers don't support the "mvpclmulqdq" flag so we have to check.
+        try_compile(VPCLMUL_SUPPORTED ${CMAKE_BINARY_DIR}
+                    ${CMAKE_CURRENT_LIST_DIR}/additional_r3/noop_main.c
+                    COMPILE_DEFINITIONS -mvpclmulqdq)
+        if (VPCLMUL_SUPPORTED) 
+            set_source_files_properties(additional_r3/gf2x_mul_base_vpclmul.c PROPERTIES COMPILE_OPTIONS "-mvpclmulqdq;${AVX512_FLAGS}")
+        else()
+            set(CPP_DEFS_R3 ${CPP_DEFS_R3} DISABLE_VPCLMUL)
+        endif()
     endif()
 
 endif()
