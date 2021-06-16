@@ -836,7 +836,7 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 		return NULL;
 	}
 }
-#include <stdio.h>
+
 OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key) {
 	if (kem == NULL) {
 		return OQS_ERROR;

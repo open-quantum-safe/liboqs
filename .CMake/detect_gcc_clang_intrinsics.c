@@ -24,6 +24,9 @@ int main(void) {
 #if defined(__AVX512F__)
 	printf("AVX512F;");
 #endif
+#if defined(__VPCLMULQDQ__)
+	printf("VPCLMULQDQ;");
+#endif
 #if defined(__BMI__)
 	printf("BMI1;");
 #endif
