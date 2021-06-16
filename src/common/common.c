@@ -102,6 +102,9 @@ static void set_available_cpu_extensions(void) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
 	}
 }
+#elif defined(OQS_DIST_BUILD)
+static void set_available_cpu_extensions(void) {
+}
 #endif
 
 OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext) {
