@@ -28,3 +28,5 @@ Parameter sets
 | BIKE1-L3-CPA        |     IND-CPA    |              3              |           4964          |          5788          |           4964          |             32             |
 | BIKE1-L1-FO         |     IND-CCA    |              1              |           2946          |          6460          |           2946          |             32             |
 | BIKE1-L3-FO         |     IND-CCA    |              3              |           6206          |         13236          |           6206          |             32             |
+| BIKE-L1             |     IND-CPA    |              1              |           1541          |          5223          |           1573          |             32             |
+| BIKE-L3             |     IND-CPA    |              3              |           3083          |         10105          |           3115          |             32             |

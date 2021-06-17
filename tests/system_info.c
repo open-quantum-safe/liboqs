@@ -85,6 +85,9 @@ static void print_cpu_extensions(void) {
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
 		printf(" PCLMULQDQ");
 	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_VPCLMULQDQ)) {
+		printf(" VPCLMULQDQ");
+	}
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 		printf(" POPCNT");
 	}
