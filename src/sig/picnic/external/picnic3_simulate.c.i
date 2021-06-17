@@ -41,7 +41,7 @@ static int SIM_ONLINE(mzd_local_t* maskedKey, randomTape_t* tapes, msgs_t* msgs,
   uint8_t output[MAX_LOWMC_BLOCK_SIZE];
   mzd_to_char_array(output, state, params->output_size);
 
-  if (timingsafe_bcmp(output, pubKey, params->output_size) != 0) {
+  if (picnic_timingsafe_bcmp(output, pubKey, params->output_size) != 0) {
 #if !defined(NDEBUG)
     printf("%s: output does not match pubKey\n", __func__);
     printf("pubKey: ");

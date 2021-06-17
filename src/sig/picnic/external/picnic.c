@@ -427,7 +427,7 @@ int PICNIC_CALLING_CONVENTION picnic_read_private_key(picnic_privatekey_t* key, 
 }
 
 void PICNIC_CALLING_CONVENTION picnic_clear_private_key(picnic_privatekey_t* key) {
-  explicit_bzero(key, sizeof(picnic_privatekey_t));
+  picnic_explicit_bzero(key, sizeof(picnic_privatekey_t));
 }
 
 /* unused

@@ -18,7 +18,6 @@ endif()
 
 set(SRCS sig_picnic.c
          external/bitstream.c
-         external/compat.c
          external/io.c
          external/lowmc.c
          external/lowmc_128_128_20.c
