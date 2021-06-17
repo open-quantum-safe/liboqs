@@ -1048,19 +1048,19 @@ int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint
   const zkbpp_share_implementation_f mzd_share        = pp->impls.mzd_share;
 
   // Perform LowMC evaluation and record state before AND gates
-  recorded_state_t* recorded_state = aligned_alloc(32, sizeof(recorded_state_t) * (lowmc_r + 1));
+  recorded_state_t* recorded_state = picnic_aligned_alloc(32, sizeof(recorded_state_t) * (lowmc_r + 1));
   lowmc_store_impl(context->m_key, context->m_plaintext, recorded_state);
 
   sig_proof_t* prf = proof_new(pp);
-  view_t* views    = aligned_alloc(32, sizeof(view_t) * lowmc_r);
+  view_t* views    = picnic_aligned_alloc(32, sizeof(view_t) * lowmc_r);
 
   in_out_shares_t in_out_shares;
 
   // Generate seeds
   generate_seeds(pp, context, prf->round[0].seeds[0], prf->salt);
 
-  rvec_t* rvec = aligned_alloc(32, sizeof(rvec_t) * lowmc_r); // random tapes for AND-gates
-  uint8_t* tape_bytes_x4 = aligned_alloc(sizeof(uint64_t), SC_PROOF * 4 * aview_size);
+  rvec_t* rvec = picnic_aligned_alloc(32, sizeof(rvec_t) * lowmc_r); // random tapes for AND-gates
+  uint8_t* tape_bytes_x4 = picnic_aligned_alloc(sizeof(uint64_t), SC_PROOF * 4 * aview_size);
 
   proof_round_t* round = prf->round;
   unsigned int i       = 0;
@@ -1185,11 +1185,11 @@ int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint
   const int ret = sig_proof_to_char_array(pp, prf, sig, siglen);
 
   // clean up
-  aligned_free(tape_bytes_x4);
-  aligned_free(rvec);
-  aligned_free(views);
+  picnic_aligned_free(tape_bytes_x4);
+  picnic_aligned_free(rvec);
+  picnic_aligned_free(views);
   proof_free(prf);
-  aligned_free(recorded_state);
+  picnic_aligned_free(recorded_state);
   return ret;
 }
 
@@ -1215,14 +1215,14 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
   }
 
   in_out_shares_t in_out_shares;
-  view_t* views = aligned_alloc(32, sizeof(view_t) * lowmc_r);
-  rvec_t* rvec  = aligned_alloc(32, sizeof(rvec_t) * lowmc_r); // random tapes for and-gates
+  view_t* views = picnic_aligned_alloc(32, sizeof(view_t) * lowmc_r);
+  rvec_t* rvec  = picnic_aligned_alloc(32, sizeof(rvec_t) * lowmc_r); // random tapes for and-gates
 
   // sort the different challenge rounds based on their H3 index, so we can use the 4x Keccak when
   // verifying since all of this is public information, there is no leakage
   sorting_helper_t* sorted_rounds = malloc(sizeof(sorting_helper_t) * num_rounds);
 
-  uint8_t* tape_bytes_x4 = aligned_alloc(sizeof(uint64_t), SC_VERIFY * 4 * aview_size);
+  uint8_t* tape_bytes_x4 = picnic_aligned_alloc(sizeof(uint64_t), SC_VERIFY * 4 * aview_size);
   for (unsigned int current_chal = 0; current_chal < 3; current_chal++) {
     unsigned int num_current_rounds = 0;
     for (unsigned int r = 0; r < num_rounds; r++) {
@@ -1389,10 +1389,10 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
   const int success_status = memcmp(challenge, prf->challenge, pp->num_rounds);
 
   // clean up
-  aligned_free(tape_bytes_x4);
+  picnic_aligned_free(tape_bytes_x4);
   free(sorted_rounds);
-  aligned_free(rvec);
-  aligned_free(views);
+  picnic_aligned_free(rvec);
+  picnic_aligned_free(views);
 
   proof_free(prf);
 

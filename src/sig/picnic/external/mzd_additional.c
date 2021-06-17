@@ -63,7 +63,7 @@ mzd_local_t* mzd_local_init_ex(unsigned int r, unsigned int c, bool clear) {
   /* We always align mzd_local_ts to 32 bytes. Thus the first row is always
    * aligned to 32 bytes as well. For 128 bit and SSE all other rows are then
    * aligned to 16 bytes. */
-  unsigned char* buffer = aligned_alloc(32, alloc_size);
+  unsigned char* buffer = picnic_aligned_alloc(32, alloc_size);
   if (clear) {
     memset(buffer, 0, alloc_size);
   }
@@ -72,7 +72,7 @@ mzd_local_t* mzd_local_init_ex(unsigned int r, unsigned int c, bool clear) {
 }
 
 void mzd_local_free(mzd_local_t* v) {
-  aligned_free(v);
+  picnic_aligned_free(v);
 }
 
 /* implementation of copy */

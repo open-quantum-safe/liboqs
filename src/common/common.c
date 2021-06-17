@@ -126,6 +126,18 @@ OQS_API void OQS_init(void) {
 	return;
 }
 
+OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
+	/* Assume CHAR_BIT = 8 */
+	uint8_t r = 0;
+
+	for (size_t i = 0; i < len; i++) {
+		r |= ((const uint8_t *)a)[i] ^ ((const uint8_t *)b)[i];
+	}
+
+	// We have 0 <= r < 256, and unsigned int is at least 16 bits.
+	return 1 & ((-(unsigned int)r) >> 8);
+}
+
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 #if defined(_WIN32)
 	SecureZeroMemory(ptr, len);

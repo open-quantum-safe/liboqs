@@ -32,7 +32,7 @@ def test_namespace():
             symbols.append(line)
 
     # ideally this would be just ['oqs', 'pqclean'], but contains exceptions (e.g., providing compat implementations of unavailable platform functions)
-    namespaces = ['oqs', 'pqclean', 'keccak', 'pqcrystals', 'aligned_alloc', 'aligned_free', 'explicit_bzero', 'timingsafe_bcmp', 'init', 'fini', 'seedexpander']
+    namespaces = ['oqs', 'pqclean', 'keccak', 'pqcrystals', 'init', 'fini', 'seedexpander']
     non_namespaced = []
 
     for symbolstr in symbols:

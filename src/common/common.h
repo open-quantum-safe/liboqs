@@ -144,6 +144,17 @@ OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext);
 OQS_API void OQS_init(void);
 
 /**
+ * Constant time comparison of byte sequences `a` and `b` of length `len`.
+ * Returns 0 if the byte sequences are equal or if `len`=0.
+ * Returns 1 otherwise.
+ *
+ * @param[in] a A byte sequence of length at least `len`.
+ * @param[in] b A byte sequence of length at least `len`.
+ * @param[in] len The number of bytes to compare.
+ */
+OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len);
+
+/**
  * Zeros out `len` bytes of memory starting at `ptr`.
  *
  * Designed to be protected against optimizing compilers which try to remove
