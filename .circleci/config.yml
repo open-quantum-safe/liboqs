@@ -65,7 +65,15 @@ jobs:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
           name: Configure
-          command: mkdir build && cd build && source ~/.bashrc && cmake --warn-uninitialized -GNinja << parameters.CMAKE_ARGS >> -DOQS_MINIMAL_BUILD=ON -DOQS_KEM_DEFAULT=OQS_KEM_alg_<< parameters.KEM_NAME >> -DOQS_SIG_DEFAULT=OQS_SIG_alg_<< parameters.SIG_NAME >> .. > config.log 2>&1 && cat config.log && cmake -LA .. && ! (grep "uninitialized variable" config.log)
+          command: |2
+            mkdir build && cd build && source ~/.bashrc && \
+            cmake .. --warn-uninitialized \
+                     -GNinja << parameters.CMAKE_ARGS >> \
+                     -DOQS_MINIMAL_BUILD=ON \
+                     -DOQS_KEM_DEFAULT=OQS_KEM_alg_<< parameters.KEM_NAME >> \
+                     -DOQS_SIG_DEFAULT=OQS_SIG_alg_<< parameters.SIG_NAME >> > config.log 2>&1 && \
+            cat config.log && \
+            cmake -LA .. && ! (grep "uninitialized variable" config.log)
       - run:
           name: Build
           command: ninja
@@ -129,19 +137,29 @@ jobs:
           command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
       - run:
           name: Build in an x86_64 container
-          command: |
-            docker run --rm -v `pwd`:`pwd` -w `pwd` openquantumsafe/ci-debian-buster-amd64:latest /bin/bash -c "
-            mkdir build &&
-            (cd build &&
-            cmake -GNinja << parameters.CMAKE_ARGS >> -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_<< parameters.ARCH >>.cmake .. && cmake -LA .. &&
-            ninja)
-            "
+          command: |2
+            docker run --rm \
+                       -v `pwd`:`pwd` \
+                       -w `pwd` \
+                       openquantumsafe/ci-debian-buster-amd64:latest /bin/bash \
+                       -c "mkdir build && \
+                           (cd build && \
+                            cmake .. -GNinja << parameters.CMAKE_ARGS >> \
+                                     -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_<< parameters.ARCH >>.cmake && \
+                            cmake -LA .. && \
+                            ninja)"
       - run:
           name: Run the tests in an << parameters.ARCH >> container
-          command: |
-            docker run -e SKIP_TESTS=style,mem_kem,mem_sig --rm -v `pwd`:`pwd` -w `pwd` openquantumsafe/ci-debian-buster-<< parameters.ARCH >>:latest /bin/bash -c "
-            mkdir -p tmp && python3 -m pytest --verbose --numprocesses=auto --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml
-            "
+          command: |2
+            docker run --rm -e SKIP_TESTS=style,mem_kem,mem_sig \
+                            -v `pwd`:`pwd` \
+                            -w `pwd` \
+                            openquantumsafe/ci-debian-buster-<< parameters.ARCH >>:latest /bin/bash \
+                            -c "mkdir -p tmp && \
+                                python3 -m pytest --verbose \
+                                                  --numprocesses=auto \
+                                                  --ignore=tests/test_code_conventions.py \
+                                                  --junitxml=build/test-results/pytest/test-results.xml"
       - store_test_results:
           path: build/test-results
       - store_artifacts:
@@ -169,8 +187,19 @@ jobs:
       - run:
           name: Build and run tests in docker 
           no_output_timeout: 1h
-          command: |
-            docker run -e CMAKE_ARGS="<< parameters.CMAKE_ARGS >>" -e PYTEST_ARGS="<< parameters.PYTEST_ARGS >>" -v `pwd`:/root/project -it openquantumsafe/ci-ubuntu-focal-arm64:latest bash -c 'cd /root/project && uname -a && mkdir build && cd build && source ~/.bashrc && cmake -GNinja $CMAKE_ARGS .. && cmake -LA .. && ninja && cd .. && mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml $PYTEST_ARGS'
+          command: |2
+            docker run -it -e CMAKE_ARGS="<< parameters.CMAKE_ARGS >>" \
+                           -e PYTEST_ARGS="<< parameters.PYTEST_ARGS >>" \
+                           -v `pwd`:/root/project \
+                           openquantumsafe/ci-ubuntu-focal-arm64:latest bash \
+                           -c "cd /root/project && \
+                               uname -a && \
+                               mkdir build && cd build && source ~/.bashrc && \
+                               cmake -GNinja $CMAKE_ARGS .. && cmake -LA .. && ninja && \
+                               cd .. && mkdir -p tmp && \
+                               python3 -m pytest --verbose \
+                                                 --ignore=tests/test_code_conventions.py \
+                                                 --junitxml=build/test-results/pytest/test-results.xml $PYTEST_ARGS"
       - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
           path: build/test-results
       - store_artifacts:
@@ -221,52 +250,70 @@ jobs:
     steps:
       - run:
           name: Trigger OQS-OpenSSL CI
-          command: |
-            curl -u ${BUILD_TRIGGER_TOKEN}: \
-                 -X POST \
+          command: |2
+            curl --silent \
+                 --write-out "\n%{response_code}\n" \
+                 --user ${BUILD_TRIGGER_TOKEN}: \
+                 --request POST \
                  --header "Content-Type: application/json" \
-                 -d '{ "branch": "OQS-OpenSSL_1_1_1-stable", "parameters": { "run_downstream_tests": true } }' \
-                 https://circleci.com/api/v2/project/gh/open-quantum-safe/openssl/pipeline
+                 --data '{ "branch": "OQS-OpenSSL_1_1_1-stable", "parameters": { "run_downstream_tests": true } }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/openssl/pipeline | tee curl_out \
+            && grep -q "201" curl_out
+
       - run:
           name: Trigger OQS-BoringSSL CI
-          command: |
-            curl -u ${BUILD_TRIGGER_TOKEN}: \
-                 -X POST \
+          command: |2
+            curl --silent \
+                 --write-out "\n%{response_code}\n" \
+                 --user ${BUILD_TRIGGER_TOKEN}: \
+                 --request POST \
                  --header "Content-Type: application/json" \
-                 -d '{ "branch": "master", "parameters": { "run_downstream_tests": true } }' \
-                 https://circleci.com/api/v2/project/gh/open-quantum-safe/boringssl/pipeline
+                 --data '{ "branch": "master", "parameters": { "run_downstream_tests": true } }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/boringssl/pipeline | tee curl_out \
+            && grep -q "201" curl_out
       - run:
           name: Trigger OQS-OpenSSH CI
-          command: |
-            curl -u ${BUILD_TRIGGER_TOKEN}: \
-                 -X POST \
+          command: |2
+            curl --silent \
+                 --write-out "\n%{response_code}\n" \
+                 --user ${BUILD_TRIGGER_TOKEN}: \
+                 --request POST \
                  --header "Content-Type: application/json" \
-                 -d '{ "branch": "OQS-master", "parameters": { "run_downstream_tests": true } }' \
-                 https://circleci.com/api/v2/project/gh/open-quantum-safe/openssh/pipeline
+                 --data '{ "branch": "OQS-master", "parameters": { "run_downstream_tests": true } }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/openssh/pipeline | tee curl_out \
+            && grep -q "201" curl_out
       - run:
           name: Trigger liboqs-dotnet CI
-          command: |
-            curl -u ${BUILD_TRIGGER_TOKEN}: \
-                 -X POST \
+          command: |2
+            curl --silent \
+                 --write-out "\n%{response_code}\n" \
+                 --user ${BUILD_TRIGGER_TOKEN}: \
+                 --request POST \
                  --header "Content-Type: application/json" \
-                 -d '{ "branch": "master" }' \
-                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-dotnet/pipeline
+                 --data '{ "branch": "master" }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-dotnet/pipeline | tee curl_out \
+            && grep -q "201" curl_out
       - run:
           name: Trigger liboqs-java CI
-          command: |
-            curl -u ${BUILD_TRIGGER_TOKEN}: \
-                 -X POST \
+          command: |2
+            curl --silent \
+                 --write-out "\n%{response_code}\n" \
+                 --user ${BUILD_TRIGGER_TOKEN}: \
+                 --request POST \
                  --header "Content-Type: application/json" \
-                 -d '{ "branch": "master" }' \
-                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-java/pipeline
+                 --data '{ "branch": "master" }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-java/pipeline | tee curl_out \
+            && grep -q "201" curl_out
       - run:
           name: Trigger liboqs-python CI
-          command: |
-            curl -u ${BUILD_TRIGGER_TOKEN}: \
-                 -X POST \
-                 --header "Content-Type: application/json" \
-                 -d '{ "branch": "master" }' \
-                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-python/pipeline
+          command: |2
+            curl --silent \
+                 --write-out "\n%{response_code}\n" \
+                 --user ${BUILD_TRIGGER_TOKEN}: \
+                 --request POST \
+                 --data '{ "branch": "main" }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/liboqs-python/pipeline | tee curl_out \
+            && grep -q "201" curl_out
 
 workflows:
   version: 2.1
