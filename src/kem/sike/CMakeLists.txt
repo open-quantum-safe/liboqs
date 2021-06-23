@@ -126,6 +126,8 @@ if(OQS_ENABLE_KEM_sike_p434 OR
                 target_compile_definitions(sike PRIVATE USE_SIKEP751_ASM)
             endif()
         endif()
+    elseif(ARCH_PPC64LE)
+        target_compile_definitions(sike PRIVATE _GENERIC_ _PPC64LE_)
     endif()
 
     if(CMAKE_C_COMPILER_ID STREQUAL "GNU")

@@ -108,6 +108,11 @@ static void set_available_cpu_extensions(void) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
 	}
 }
+#elif defined(OQS_DIST_PPC64LE_BUILD)
+static void set_available_cpu_extensions(void) {
+	/* mark that this function has been called */
+	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+}
 #elif defined(OQS_DIST_BUILD)
 static void set_available_cpu_extensions(void) {
 }
