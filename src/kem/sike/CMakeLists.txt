@@ -81,6 +81,8 @@ if(OQS_ENABLE_KEM_sike_p434 OR
     add_library(sike OBJECT ${SRCS})
     if(ARCH STREQUAL "x86")
         target_compile_definitions(sike PRIVATE _GENERIC_ _X86_)
+    elseif(ARCH_X86)
+        target_compile_definitions(sike PRIVATE _GENERIC_ _X86_)
     elseif(ARCH_X86_64)
         target_compile_definitions(sike PRIVATE _AMD64_)
         if(OQS_USE_BMI2_INSTRUCTIONS)

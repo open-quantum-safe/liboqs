@@ -4,6 +4,7 @@
 #cmakedefine OQS_COMPILE_BUILD_TARGET "@OQS_COMPILE_BUILD_TARGET@"
 #cmakedefine OQS_DIST_BUILD 1
 #cmakedefine OQS_DIST_X86_64_BUILD 1
+#cmakedefine OQS_DIST_X86_BUILD 1
 #cmakedefine OQS_DIST_ARM64v8_BUILD 1
 #cmakedefine OQS_DIST_ARM32v7_BUILD 1
 #cmakedefine OQS_DEBUG_BUILD 1

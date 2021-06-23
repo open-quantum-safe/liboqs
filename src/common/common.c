@@ -65,6 +65,11 @@ static void set_available_cpu_extensions(void) {
 		cpu_ext_data[OQS_CPU_EXT_VPCLMULQDQ] = is_bit_set(leaf_7.ecx, 10);
 	}
 }
+#elif defined(OQS_DIST_X86_BUILD)
+static void set_available_cpu_extensions(void) {
+	/* mark that this function has been called */
+	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+}
 #elif defined(OQS_DIST_ARM64v8_BUILD)
 #include <sys/auxv.h>
 #include <asm/hwcap.h>
