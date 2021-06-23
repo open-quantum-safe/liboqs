@@ -138,7 +138,7 @@ static int ord2w_dloghyb(const felm_t *h, const int *logT, const felm_t *Texp, c
 {
     int k = 0, d = 0, index = 0, ord = 0, tmp = 0, w = W_2, w2 = w - W_2_1, i_j = 0, t;
     uint8_t inv = 0, flag = 0;
-    f2elm_t H[W_2_1] = {0}; // Size of H should be max of {W_2_1, W_2 - W_2_1}
+    f2elm_t H[W_2_1+1] = {0}; // Size of H should be max of {W_2_1+1, W_2 - W_2_1}
     felm_t one = {0};
 
     fpcopy((digit_t*)&Montgomery_one, one);    

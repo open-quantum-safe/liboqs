@@ -424,25 +424,25 @@ static void CompletePoint(const point_proj_t P, point_full_proj_t R)
 }
 
 
-static void CompleteMPoint(const f2elm_t A, point_proj_t P, point_full_proj_t R)
+static void CompleteMPoint(const f2elm_t A, const f2elm_t PX, const f2elm_t PZ, point_full_proj_t R)
 { // Given an xz-only representation on a montgomery curve, compute its affine representation
     f2elm_t zero = {0}, one = {0}, xz, yz, s2, r2, invz, temp0, temp1;
 
     fpcopy((digit_t*)&Montgomery_one, one[0]);    
-    if (memcmp(P->Z[0], zero, NBITS_TO_NBYTES(NBITS_FIELD)) != 0 || memcmp(P->Z[1], zero, NBITS_TO_NBYTES(NBITS_FIELD)) != 0) {
-        fp2mul_mont(P->X, P->Z, xz);       // xz = x*z;
-        fpsub(P->X[0], P->Z[1], temp0[0]);
-        fpadd(P->X[1], P->Z[0], temp0[1]);
-        fpadd(P->X[0], P->Z[1], temp1[0]);
-        fpsub(P->X[1], P->Z[0], temp1[1]);        
+    if (memcmp(PZ[0], zero, NBITS_TO_NBYTES(NBITS_FIELD)) != 0 || memcmp(PZ[1], zero, NBITS_TO_NBYTES(NBITS_FIELD)) != 0) {
+        fp2mul_mont(PX, PZ, xz);       // xz = x*z;
+        fpsub(PX[0], PZ[1], temp0[0]);
+        fpadd(PX[1], PZ[0], temp0[1]);
+        fpadd(PX[0], PZ[1], temp1[0]);
+        fpsub(PX[1], PZ[0], temp1[1]);        
         fp2mul_mont(temp0, temp1, s2);     // s2 = (x + i*z)*(x - i*z);
         fp2mul_mont(A, xz, temp0);
         fp2add(temp0, s2, temp1);
         fp2mul_mont(xz, temp1, r2);        // r2 = xz*(A*xz + s2);
         sqrt_Fp2(r2, yz);
-        fp2copy(P->Z, invz);
+        fp2copy(PZ, invz);
         fp2inv_mont_bingcd(invz);        
-        fp2mul_mont(P->X, invz, R->X);
+        fp2mul_mont(PX, invz, R->X);
         fp2sqr_mont(invz, temp0);
         fp2mul_mont(yz, temp0, R->Y);      // R = EM![x*invz, yz*invz^2];
         fp2copy(one, R->Z);
