@@ -215,11 +215,11 @@ static void fp2correction(f2elm_t a)
 
 __inline static void mp_addfast(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision addition, c = a+b.    
-#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM)
+#if !defined(USE_SIKE_ASM)
 
     mp_add(a, b, c, NWORDS_FIELD);
     
-#elif (OS_TARGET == OS_NIX)                 
+#else
     
     mp_add_asm(a, b, c);    
 
@@ -280,7 +280,7 @@ __inline unsigned int mp_sub(const digit_t* a, const digit_t* b, digit_t* c, con
 
 __inline static void mp_subaddfast(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction followed by addition with p*2^MAXBITS_FIELD, c = a-b+(p*2^MAXBITS_FIELD) if a-b < 0, otherwise c=a-b. 
-#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM)
+#if !defined(USE_SIKE_ASM)
     felm_t t1;
 
     digit_t mask = 0 - (digit_t)mp_sub(a, b, c, 2*NWORDS_FIELD);
@@ -288,7 +288,7 @@ __inline static void mp_subaddfast(const digit_t* a, const digit_t* b, digit_t* 
         t1[i] = ((digit_t*)PRIME)[i] & mask;
     mp_addfast((digit_t*)&c[NWORDS_FIELD], t1, (digit_t*)&c[NWORDS_FIELD]);
 
-#elif (OS_TARGET == OS_NIX)               
+#else
 
     mp_subaddx2_asm(a, b, c);     
 
@@ -298,12 +298,12 @@ __inline static void mp_subaddfast(const digit_t* a, const digit_t* b, digit_t* 
 
 __inline static void mp_dblsubfast(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction, c = c-a-b, where lng(a) = lng(b) = 2*NWORDS_FIELD.
-#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM)
+#if !defined(USE_SIKE_ASM)
 
     mp_sub(c, a, c, 2*NWORDS_FIELD);
     mp_sub(c, b, c, 2*NWORDS_FIELD);
 
-#elif (OS_TARGET == OS_NIX)                 
+#else
 
     mp_dblsubx2_asm(a, b, c);
 
@@ -1485,7 +1485,7 @@ static int mod(int a, unsigned int b)
     int r; 
     if (b == 0) return 0; // avoid invalid operation
     r = a % b;
-    // while (r < 0) r += b; // OQS note: commented to avoid "always false" error
+    while (r < 0) r += b;
     return r;
 }
 
