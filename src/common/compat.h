@@ -5,6 +5,9 @@
  * versions of compilers.
  *
  * This file is allowed to use #ifdefs and toggle things by compiler versions.
+ *
+ * SPDX-License-Identifier: MIT
+ *
  */
 
 
