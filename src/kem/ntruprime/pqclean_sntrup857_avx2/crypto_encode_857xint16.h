@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 #define PQCLEAN_SNTRUP857_AVX2_crypto_encode_857xint16_STRBYTES 1714
-#define PQCLEAN_SNTRUP857_AVX2_crypto_encode_857xint16_ITEMBYTES 2
 #define PQCLEAN_SNTRUP857_AVX2_crypto_encode_857xint16_ITEMS 857
+#define PQCLEAN_SNTRUP857_AVX2_crypto_encode_857xint16_ITEMBYTES 2
 
 void PQCLEAN_SNTRUP857_AVX2_crypto_encode_857xint16(unsigned char *s, const void *v);
 #endif

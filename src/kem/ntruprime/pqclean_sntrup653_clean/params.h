@@ -24,8 +24,10 @@
 #include "crypto_verify_897.h"
 
 
+#define q31 464722 /* floor(2^31/q) */
 #define q27 29045 /* closest integer to 2^27/q */
 #define q18 57 /* closest integer to 2^18/q */
+#define q14 4 /* closest integer to 2^14/q */
 #define p 653
 #define q 4621
 #define w 288
@@ -63,8 +65,8 @@
 
 #define crypto_core_inv3 PQCLEAN_SNTRUP653_CLEAN_crypto_core_inv3sntrup653
 
-#define crypto_core_mult PQCLEAN_SNTRUP653_CLEAN_crypto_core_multsntrup653
-
 #define crypto_core_mult3 PQCLEAN_SNTRUP653_CLEAN_crypto_core_mult3sntrup653
+
+#define crypto_core_mult PQCLEAN_SNTRUP653_CLEAN_crypto_core_multsntrup653
 
 #endif

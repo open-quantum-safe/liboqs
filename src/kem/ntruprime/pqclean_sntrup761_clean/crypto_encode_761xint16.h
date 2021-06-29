@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 #define PQCLEAN_SNTRUP761_CLEAN_crypto_encode_761xint16_STRBYTES 1522
-#define PQCLEAN_SNTRUP761_CLEAN_crypto_encode_761xint16_ITEMBYTES 2
 #define PQCLEAN_SNTRUP761_CLEAN_crypto_encode_761xint16_ITEMS 761
+#define PQCLEAN_SNTRUP761_CLEAN_crypto_encode_761xint16_ITEMBYTES 2
 
 void PQCLEAN_SNTRUP761_CLEAN_crypto_encode_761xint16(unsigned char *s, const void *v);
 #endif

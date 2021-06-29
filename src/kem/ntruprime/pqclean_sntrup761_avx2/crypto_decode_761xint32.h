@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 #define PQCLEAN_SNTRUP761_AVX2_crypto_decode_761xint32_STRBYTES 3044
-#define PQCLEAN_SNTRUP761_AVX2_crypto_decode_761xint32_ITEMBYTES 4
 #define PQCLEAN_SNTRUP761_AVX2_crypto_decode_761xint32_ITEMS 761
+#define PQCLEAN_SNTRUP761_AVX2_crypto_decode_761xint32_ITEMBYTES 4
 
 void PQCLEAN_SNTRUP761_AVX2_crypto_decode_761xint32(void *v, const unsigned char *s);
 #endif

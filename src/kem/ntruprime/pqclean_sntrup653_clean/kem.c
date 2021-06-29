@@ -1,4 +1,5 @@
 #include "api.h"
+#include "crypto_declassify.h"
 #include "crypto_sort_uint32.h"
 #include "params.h"
 #include "randombytes.h"
@@ -141,8 +142,11 @@ int PQCLEAN_SNTRUP653_CLEAN_crypto_kem_keypair(unsigned char *pk, unsigned char 
         Small_random(g);
         {
             small v[p + 1];
+            small vp;
             crypto_core_inv3((unsigned char *) v, (const unsigned char *) g);
-            if (v[p] == 0) {
+            vp = v[p];
+            crypto_declassify(&vp, sizeof vp);
+            if (vp == 0) {
                 Small_encode(sk + Small_bytes, v);
                 break;
             }

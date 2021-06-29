@@ -25,9 +25,12 @@
 
 
 #define qinv (-29499) /* reciprocal of q mod 2^16 */
+#define q31 464722 /* floor(2^31/q) */
 #define q27 29045 /* closest integer to 2^27/q */
 #define q18 57 /* closest integer to 2^18/q */
+#define q14 4 /* closest integer to 2^14/q */
 #define ppad 657
+#define endingmask _mm256_set_epi8(1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 #define crypto_core_weight PQCLEAN_SNTRUP653_AVX2_crypto_core_weightsntrup653
 #define p 653
 #define q 4621
@@ -66,8 +69,8 @@
 
 #define crypto_core_inv3 PQCLEAN_SNTRUP653_AVX2_crypto_core_inv3sntrup653
 
-#define crypto_core_mult PQCLEAN_SNTRUP653_AVX2_crypto_core_multsntrup653
-
 #define crypto_core_mult3 PQCLEAN_SNTRUP653_AVX2_crypto_core_mult3sntrup653
+
+#define crypto_core_mult PQCLEAN_SNTRUP653_AVX2_crypto_core_multsntrup653
 
 #endif
