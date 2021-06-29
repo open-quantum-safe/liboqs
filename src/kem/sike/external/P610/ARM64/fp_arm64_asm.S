@@ -4,6 +4,13 @@
 // Abstract: field arithmetic in 64-bit ARMv8 assembly for P610 on Linux
 //*******************************************************************************************
 
+// Format function and variable names for Mac OS X
+#if defined(__APPLE__)
+    #define fmt(f)    _##f
+#else
+    #define fmt(f)    f
+#endif
+
 .text
 
 // p610
@@ -51,8 +58,8 @@ p610p1_nz_s6:
 //  Field addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_fpadd610_asm
-oqs_kem_sike_fpadd610_asm:
+.global fmt(fpadd610_asm)
+fmt(fpadd610_asm):
     // Add a + b
     ldp     x3, x4,   [x0,#0]
     ldp     x5, x6,   [x0,#16]
@@ -131,8 +138,8 @@ oqs_kem_sike_fpadd610_asm:
 //  Field subtraction
 //  Operation: c [x2] = a [x0] - b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_fpsub610_asm
-oqs_kem_sike_fpsub610_asm:
+.global fmt(fpsub610_asm)
+fmt(fpsub610_asm):
     // Subtract a - b
     ldp     x3, x4,   [x0,#0]
     ldp     x5, x6,   [x0,#16]
@@ -248,8 +255,8 @@ oqs_kem_sike_fpsub610_asm:
 //  Multiprecision subtraction with correction with 2*p610
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 2*p610
 //*********************************************************************** 
-.global oqs_kem_sike_mp_sub610_p2_asm
-oqs_kem_sike_mp_sub610_p2_asm:
+.global fmt(mp_sub610_p2_asm)
+fmt(mp_sub610_p2_asm):
 
   SUB610_PX  p610x2
   ret
@@ -259,8 +266,8 @@ oqs_kem_sike_mp_sub610_p2_asm:
 //  Multiprecision subtraction with correction with 4*p610
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 4*p610
 //*********************************************************************** 
-.global oqs_kem_sike_mp_sub610_p4_asm
-oqs_kem_sike_mp_sub610_p4_asm:
+.global fmt(mp_sub610_p4_asm)
+fmt(mp_sub610_p4_asm):
 
   SUB610_PX  p610x4
   ret
@@ -420,8 +427,8 @@ oqs_kem_sike_mp_sub610_p4_asm:
 //  640-bit integer multiplication using Karatsuba (two levels), Comba (lower level)
 //  Operation: c [x2] = a [x0] * b [x1]
 //*********************************************************************************** 
-.global oqs_kem_sike_mul610_asm
-oqs_kem_sike_mul610_asm:
+.global fmt(mul610_asm)
+fmt(mul610_asm):
     sub     sp, sp, #96
     ldp     x3, x4, [x0]
     ldp     x5, x6, [x0,#16]
@@ -650,8 +657,8 @@ oqs_kem_sike_mul610_asm:
 //  Operation: mc [x1] = ma [x0]
 //  NOTE: ma=mc is not allowed
 //************************************************************************************** 
-.global oqs_kem_sike_rdc610_asm
-oqs_kem_sike_rdc610_asm:
+.global fmt(rdc610_asm)
+fmt(rdc610_asm):
     sub     sp, sp, #96
     stp     x19, x20, [sp]
     stp     x21, x22, [sp,#16]
@@ -863,8 +870,8 @@ oqs_kem_sike_rdc610_asm:
 //  610-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_add610_asm
-oqs_kem_sike_mp_add610_asm:
+.global fmt(mp_add610_asm)
+fmt(mp_add610_asm):
     ldp     x3, x4,   [x0,#0]
     ldp     x11, x12, [x1,#0]
     ldp     x5, x6,   [x0,#16]
@@ -898,8 +905,8 @@ oqs_kem_sike_mp_add610_asm:
 //  2x610-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_add610x2_asm
-oqs_kem_sike_mp_add610x2_asm:
+.global fmt(mp_add610x2_asm)
+fmt(mp_add610x2_asm):
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -962,8 +969,8 @@ oqs_kem_sike_mp_add610x2_asm:
 //  2x610-bit multiprecision subtraction/addition
 //  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p610*2^640
 //*********************************************************************** 
-.global oqs_kem_sike_mp_subadd610x2_asm
-oqs_kem_sike_mp_subadd610x2_asm:
+.global fmt(mp_subadd610x2_asm)
+fmt(mp_subadd610x2_asm):
     ldp     x3, x4,   [x0,#0]
     ldp     x5, x6,   [x0,#16]
     ldp     x11, x12, [x1,#0]
@@ -1049,8 +1056,8 @@ oqs_kem_sike_mp_subadd610x2_asm:
 //  Double 2x610-bit multiprecision subtraction
 //  Operation: c [x2] = c [x2] - a [x0] - b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_dblsub610x2_asm
-oqs_kem_sike_mp_dblsub610x2_asm:
+.global fmt(mp_dblsub610x2_asm)
+fmt(mp_dblsub610x2_asm):
     sub sp, sp, #64
     stp x19, x20, [sp]
     stp x21, x22, [sp, #16]

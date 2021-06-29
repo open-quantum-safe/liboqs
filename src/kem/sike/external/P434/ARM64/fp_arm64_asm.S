@@ -4,6 +4,13 @@
 // Abstract: field arithmetic in 64-bit ARMv8 assembly for P434 on Linux
 //*******************************************************************************************
 
+// Format function and variable names for Mac OS X
+#if defined(__APPLE__)
+    #define fmt(f)    _##f
+#else
+    #define fmt(f)    f
+#endif
+
 .text
 
 // p434
@@ -43,8 +50,8 @@ p434p1_nz:
 //  Field addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_fpadd434_asm
-oqs_kem_sike_fpadd434_asm:
+.global fmt(fpadd434_asm)
+fmt(fpadd434_asm):
 
     // Add a + b
     ldp     x3, x4,   [x0,#0]
@@ -105,8 +112,8 @@ oqs_kem_sike_fpadd434_asm:
 //  Field subtraction
 //  Operation: c [x2] = a [x0] - b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_fpsub434_asm
-oqs_kem_sike_fpsub434_asm:
+.global fmt(fpsub434_asm)
+fmt(fpsub434_asm):
 
     // Subtract a - b
     ldp     x3, x4,   [x0,#0]
@@ -198,8 +205,8 @@ oqs_kem_sike_fpsub434_asm:
 //  Multiprecision subtraction with correction with 2*p434
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 2*p434
 //*********************************************************************** 
-.global oqs_kem_sike_mp_sub434_p2_asm
-oqs_kem_sike_mp_sub434_p2_asm:
+.global fmt(mp_sub434_p2_asm)
+fmt(mp_sub434_p2_asm):
 
   SUB434_PX  p434x2
   ret
@@ -209,13 +216,13 @@ oqs_kem_sike_mp_sub434_p2_asm:
 //  Multiprecision subtraction with correction with 4*p434
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 4*p434
 //*********************************************************************** 
-.global oqs_kem_sike_mp_sub434_p4_asm
-oqs_kem_sike_mp_sub434_p4_asm:
+.global fmt(mp_sub434_p4_asm)
+fmt(mp_sub434_p4_asm):
 
   SUB434_PX  p434x4
   ret
 
-
+    
 //////////////////////////////////////////// MACRO
 .macro MUL192_COMBA_CUT  A0, A1, A2, B0, B1, B2, C0, C1, C2, C3, C4, C5, T0, T1
     mul     \C4, \A1, \B0
@@ -277,7 +284,6 @@ oqs_kem_sike_mp_sub434_p4_asm:
     adds    \C2, \C2, \T0
     adc     \C3, \C3, \B1
 .endm
-
 
 //////////////////////////////////////////// MACRO
 .macro    MUL256_KARATSUBA_COMBA  M,A0,A1,A2,A3,B0,B1,B2,B3,C0,C1,C2,C3,C4,C5,C6,C7,T0,T1
@@ -362,8 +368,8 @@ oqs_kem_sike_mp_sub434_p4_asm:
 //  448-bit integer multiplication using Karatsuba (two levels), Comba (lower level)
 //  Operation: c [x2] = a [x0] * b [x1]
 //*********************************************************************************** 
-.global oqs_kem_sike_mul434_asm
-oqs_kem_sike_mul434_asm:
+.global fmt(mul434_asm)
+fmt(mul434_asm):
     sub     sp, sp, #96
     ldp     x3, x4, [x0]
     ldp     x7, x8, [x0,#32]
@@ -413,7 +419,7 @@ oqs_kem_sike_mul434_asm:
     adcs    x15, x15, x20
     adcs    x16, x16, x21
     stp     x26, x27, [x2,#0]
-    adc    x17, x17, x22
+    adc     x17, x17, x22
     
     // x8-x9, x30, x19-x23 <- (AH+AL) x (BH+BL), low part
     MUL256_KARATSUBA_COMBA  x2, x26, x27, x28, x29, x11, x12, x13, x14, x8, x9, x30, x19, x20, x21, x22, x23, x24, x25  
@@ -424,7 +430,7 @@ oqs_kem_sike_mul434_asm:
     adcs    x15, x15, x21
     adcs    x16, x16, x22
     ldp     x13, x14, [x1,#16]
-    adc    x17, x17, x23
+    adc     x17, x17, x23
 
     // x20-x27 <- AL x BL
     MUL256_KARATSUBA_COMBA  x0, x3, x4, x5, x6, x11, x12, x13, x14, x20, x21, x22, x23, x24, x25, x26, x27, x28, x29
@@ -460,7 +466,7 @@ oqs_kem_sike_mul434_asm:
     sbcs    x10, x10, x28
     sbcs    x15, x15, x29
     sbcs    x16, x16, xzr
-    sbc     x17, x17, xzr
+    sbc     x17, x17, xzr    
 
     adds    x8, x8, x24 
     adcs    x9, x9, x25
@@ -553,8 +559,8 @@ oqs_kem_sike_mul434_asm:
 //  Operation: mc [x1] = ma [x0]
 //  NOTE: ma=mc is not allowed
 //************************************************************************************** 
-.global oqs_kem_sike_rdc434_asm
-oqs_kem_sike_rdc434_asm:
+.global fmt(rdc434_asm)
+fmt(rdc434_asm):
     sub     sp, sp, #80
     stp     x21, x24, [sp,#16]
     stp     x25, x26, [sp,#32]
@@ -654,8 +660,8 @@ oqs_kem_sike_rdc434_asm:
 //  434-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_add434_asm
-oqs_kem_sike_mp_add434_asm:
+.global fmt(mp_add434_asm)
+fmt(mp_add434_asm):
     ldp     x3, x4,   [x0,#0]
     ldp     x11, x12, [x1,#0]
     ldp     x5, x6,   [x0,#16]
@@ -683,8 +689,8 @@ oqs_kem_sike_mp_add434_asm:
 //  2x434-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_add434x2_asm
-oqs_kem_sike_mp_add434x2_asm:
+.global fmt(mp_add434x2_asm)
+fmt(mp_add434x2_asm):
     ldp     x3, x4,   [x0,#0]
     ldp     x11, x12, [x1,#0]
     ldp     x5, x6,   [x0,#16]
@@ -711,7 +717,7 @@ oqs_kem_sike_mp_add434x2_asm:
     ldp     x11, x12, [x1,#64]
     ldp     x5, x6,   [x0,#80]
     ldp     x13, x14, [x1,#80]
-
+    
     ldp     x7, x8,   [x0,#96]
     ldp     x15, x16, [x1,#96]
     adcs    x3, x3, x11
@@ -730,13 +736,13 @@ oqs_kem_sike_mp_add434x2_asm:
 //  2x434-bit multiprecision subtraction/addition
 //  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p434*2^448
 //*********************************************************************** 
-.global oqs_kem_sike_mp_subadd434x2_asm
-oqs_kem_sike_mp_subadd434x2_asm:
+.global fmt(mp_subadd434x2_asm)
+fmt(mp_subadd434x2_asm):
     ldp     x3, x4,   [x0,#0]
     ldp     x11, x12, [x1,#0]
     ldp     x5, x6,   [x0,#16]
     ldp     x13, x14, [x1,#16]
-
+    
     ldp     x7, x8,   [x0,#32]
     subs    x3, x3, x11
     sbcs    x4, x4, x12
@@ -751,14 +757,14 @@ oqs_kem_sike_mp_subadd434x2_asm:
     sbcs    x8, x8, x12
     stp     x7, x8,   [x2,#32]
     sbcs    x9, x9, x15
-    sbcs    x10, x10, x16
+    sbcs    x10, x10, x16    
     str     x9,       [x2,#48]
     
     ldp     x3, x4,   [x0,#64]
     ldp     x11, x12, [x1,#64]
     ldp     x5, x6,   [x0,#80]
     ldp     x13, x14, [x1,#80]
-
+    
     ldp     x7, x8,   [x0,#96]
     ldp     x15, x16, [x1,#96]
     sbcs    x3, x3, x11
@@ -789,7 +795,7 @@ oqs_kem_sike_mp_subadd434x2_asm:
     adcs    x6, x6, x13  
     stp     x5, x6,   [x2,#80] 
     adcs    x7, x7, x14   
-    adc     x8, x8, x15
+    adc     x8, x8, x15     
     stp     x7, x8,   [x2,#96]
     ret
 
@@ -798,14 +804,14 @@ oqs_kem_sike_mp_subadd434x2_asm:
 //  Double 2x434-bit multiprecision subtraction
 //  Operation: c [x2] = c [x2] - a [x0] - b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_dblsub434x2_asm
-oqs_kem_sike_mp_dblsub434x2_asm:
+.global fmt(mp_dblsub434x2_asm)
+fmt(mp_dblsub434x2_asm):
     sub     sp, sp, #32
     stp     x27, x28, [sp, #0]
     stp     x29, x30, [sp, #16]
     ldp     x3, x4,   [x2,#0]
     ldp     x5, x6,   [x2,#16]
-
+    
     ldp     x27, x28, [x0,#0]
     ldp     x29, x30, [x0,#16]
     ldp     x7, x8,   [x2,#32]
@@ -865,5 +871,3 @@ oqs_kem_sike_mp_dblsub434x2_asm:
     ldp     x29, x30, [sp, #16]
     add     sp, sp, #32
     ret
-
-
