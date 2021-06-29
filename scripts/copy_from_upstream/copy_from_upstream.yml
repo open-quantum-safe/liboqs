@@ -13,7 +13,7 @@ upstreams:
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
     git_branch: master
-    git_commit: 8e9308bd0f25fa698e4f37aba216249261f8b352
+    git_commit: fd83229e9dcc7c235a5ea8bb320d1fbade812452
     kem_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     kem_scheme_path: '.'
