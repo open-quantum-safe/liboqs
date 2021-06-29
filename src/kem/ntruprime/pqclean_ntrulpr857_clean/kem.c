@@ -35,7 +35,7 @@ typedef int8 small;
 #define q12 ((q-1)/2)
 typedef int16 Fq;
 
-/* works for -14000000 < x < 14000000 if q in 4591, 4621, 5167 */
+/* works for -7000000 < x < 7000000 if q in 4591, 4621, 5167, 6343, 7177, 7879 */
 /* assumes twos complement; use, e.g., gcc -fwrapv */
 static Fq Fq_freeze(int32 x) {
     x -= (int32) (q * ((q18 * x) >> 18));

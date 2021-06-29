@@ -7,6 +7,7 @@
 #define int32 int32_t
 #define uint16 uint16_t
 #define uint32 uint32_t
+#define uint64 uint64_t
 
 
 
@@ -33,11 +34,19 @@ typedef int8 small;
 typedef int16 Fq;
 /* always represented as -(q-1)/2...(q-1)/2 */
 
-/* works for -14000000 < x < 14000000 if q in 4591, 4621, 5167 */
+/* works for -7000000 < x < 7000000 if q in 4591, 4621, 5167, 6343, 7177, 7879 */
 static Fq Fq_freeze(int32 x) {
     x -= q * ((q18 * x) >> 18);
     x -= q * ((q27 * x + 67108864) >> 27);
     return (Fq) x;
+}
+
+static Fq Fq_bigfreeze(int32 x) {
+    x -= q * ((q14 * x) >> 14);
+    x -= q * ((q18 * x) >> 18);
+    x -= q * ((q27 * x + 67108864) >> 27);
+    x -= q * ((q27 * x + 67108864) >> 27);
+    return x;
 }
 
 /* nonnegative e */
@@ -49,9 +58,9 @@ static Fq Fq_pow(Fq a, int e) {
         return a;
     }
     if (e & 1) {
-        return Fq_freeze(a * (int32)Fq_pow(a, e - 1));
+        return Fq_bigfreeze(a * (int32)Fq_pow(a, e - 1));
     }
-    a = Fq_freeze(a * (int32)a);
+    a = Fq_bigfreeze(a * (int32)a);
     return Fq_pow(a, e >> 1);
 }
 
@@ -156,6 +165,9 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_core_invsntrup761(unsigned char *outbytes, con
     for (loop = 0; loop < p; ++loop) {
         g0 = Fq_freeze(g[0]);
         f0 = f[0];
+        if (q > 5167) {
+            f0 = Fq_freeze(f0);
+        }
 
         minusdelta = -delta;
         swap = int16_negative_mask((int16) minusdelta) & int16_nonzero_mask(g0);
@@ -175,6 +187,9 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_core_invsntrup761(unsigned char *outbytes, con
     for (loop = p - 1; loop > 0; --loop) {
         g0 = Fq_freeze(g[0]);
         f0 = f[0];
+        if (q > 5167) {
+            f0 = Fq_freeze(f0);
+        }
 
         minusdelta = -delta;
         swap = int16_negative_mask((int16) minusdelta) & int16_nonzero_mask(g0);
@@ -193,7 +208,7 @@ int PQCLEAN_SNTRUP761_AVX2_crypto_core_invsntrup761(unsigned char *outbytes, con
 
     scale = Fq_recip(Fq_freeze(f[0]));
     for (i = 0; i < p; ++i) {
-        out[i] = Fq_freeze(scale * (int32)Fq_freeze(v[p - i]));
+        out[i] = Fq_bigfreeze(scale * (int32)Fq_freeze(v[p - i]));
     }
 
     crypto_encode_pxint16(outbytes, out);

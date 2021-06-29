@@ -9,7 +9,7 @@
 ## Implementation
 
 - **Source of implementation**: https://github.com/jschanck/ntru/tree/a43a4457
-- **Implementation version**: https://github.com/PQClean/PQClean.git, master, 19b438ba5c7c3a6f2194cd8bda14821dc33c64a3
+- **Implementation version**: https://github.com/PQClean/PQClean.git, master, 89d34613364deca88659f6c2dd38708279c6bd24
 - **License**: Public domain
 - **Constant-time**: Yes
 - **Optimizations**: Portable C with AVX2, BMI2 instructions (if available at run-time)

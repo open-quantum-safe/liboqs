@@ -7,6 +7,7 @@
 #define int32 int32_t
 #define uint16 uint16_t
 #define uint32 uint32_t
+#define uint64 uint64_t
 
 
 /* ----- masks */
@@ -36,9 +37,10 @@ typedef int8 small;
 typedef int16 Fq;
 /* always represented as -(q-1)/2...(q-1)/2 */
 
-/* works for -14000000 < x < 14000000 if q in 4591, 4621, 5167 */
-static Fq Fq_freeze(int32 x) {
+static Fq Fq_bigfreeze(int32 x) {
+    x -= q * ((q14 * x) >> 14);
     x -= q * ((q18 * x) >> 18);
+    x -= q * ((q27 * x + 67108864) >> 27);
     x -= q * ((q27 * x + 67108864) >> 27);
     return (Fq) x;
 }
@@ -48,7 +50,7 @@ static Fq Fq_recip(Fq a1) {
     Fq ai = a1;
 
     while (i < q - 2) {
-        ai = Fq_freeze(a1 * (int32)ai);
+        ai = Fq_bigfreeze(a1 * (int32)ai);
         i += 1;
     }
     return ai;
@@ -79,7 +81,7 @@ int PQCLEAN_SNTRUP857_CLEAN_crypto_core_invsntrup857(unsigned char *outbytes, co
     f[0] = 1;
     f[p - 1] = f[p] = -1;
     for (i = 0; i < p; ++i) {
-        g[p - 1 - i] = in[i];
+        g[p - 1 - i] = (Fq) in[i];
     }
     g[p] = 0;
 
@@ -107,10 +109,10 @@ int PQCLEAN_SNTRUP857_CLEAN_crypto_core_invsntrup857(unsigned char *outbytes, co
         f0 = f[0];
         g0 = g[0];
         for (i = 0; i < p + 1; ++i) {
-            g[i] = Fq_freeze(f0 * g[i] - g0 * f[i]);
+            g[i] = Fq_bigfreeze(f0 * g[i] - g0 * f[i]);
         }
         for (i = 0; i < p + 1; ++i) {
-            r[i] = Fq_freeze(f0 * r[i] - g0 * v[i]);
+            r[i] = Fq_bigfreeze(f0 * r[i] - g0 * v[i]);
         }
 
         for (i = 0; i < p; ++i) {
@@ -121,11 +123,10 @@ int PQCLEAN_SNTRUP857_CLEAN_crypto_core_invsntrup857(unsigned char *outbytes, co
 
     scale = Fq_recip(f[0]);
     for (i = 0; i < p; ++i) {
-        out[i] = Fq_freeze(scale * (int32)v[p - 1 - i]);
+        out[i] = Fq_bigfreeze(scale * (int32)v[p - 1 - i]);
     }
 
     crypto_encode_pxint16(outbytes, out);
-
     outbytes[2 * p] = (unsigned char) int16_nonzero_mask((int16) delta);
     return 0;
 }

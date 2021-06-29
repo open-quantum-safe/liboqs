@@ -87,7 +87,7 @@ static void fp2_decode(const unsigned char *x, f2elm_t dec)
 }
 
 
-__inline void fpcopy(const felm_t a, felm_t c)
+__inline void fpcopy(const digit_t* a, digit_t* c)
 { // Copy a field element, c = a.
     unsigned int i;
 
@@ -96,7 +96,7 @@ __inline void fpcopy(const felm_t a, felm_t c)
 }
 
 
-__inline void fpzero(felm_t a)
+__inline void fpzero(digit_t* a)
 { // Zero a field element, a = 0.
     unsigned int i;
 
@@ -105,7 +105,7 @@ __inline void fpzero(felm_t a)
 }
 
 
-static void to_mont(const felm_t a, felm_t mc)
+static void to_mont(const digit_t* a, digit_t* mc)
 { // Conversion to Montgomery representation,
   // mc = a*R^2*R^(-1) mod p = a*R mod p, where a in [0, p-1].
   // The Montgomery constant R^2 mod p is the global value "Montgomery_R2". 
@@ -114,7 +114,7 @@ static void to_mont(const felm_t a, felm_t mc)
 }
 
 
-static void from_mont(const felm_t ma, felm_t c)
+static void from_mont(const digit_t* ma, digit_t* c)
 { // Conversion from Montgomery representation to standard representation,
   // c = ma*R^(-1) mod p = a mod p, where ma in [0, p-1].
     digit_t one[NWORDS_FIELD] = {0};
@@ -134,7 +134,7 @@ static void copy_words(const digit_t* a, digit_t* c, const unsigned int nwords)
 }
 
 
-static void fpmul_mont(const felm_t ma, const felm_t mb, felm_t mc)
+static void fpmul_mont(const digit_t* ma, const digit_t* mb, digit_t* mc)
 { // Multiprecision multiplication, c = a*b mod p.
     dfelm_t temp = {0};
 
@@ -143,7 +143,7 @@ static void fpmul_mont(const felm_t ma, const felm_t mb, felm_t mc)
 }
 
 
-static void fpsqr_mont(const felm_t ma, felm_t mc)
+static void fpsqr_mont(const digit_t* ma, digit_t* mc)
 { // Multiprecision squaring, c = a^2 mod p.
     dfelm_t temp = {0};
 
@@ -152,7 +152,7 @@ static void fpsqr_mont(const felm_t ma, felm_t mc)
 }
 
 
-static void fpinv_mont(felm_t a)
+static void fpinv_mont(digit_t* a)
 { // Field inversion using Montgomery arithmetic, a = a^(-1)*R mod p.
     felm_t tt;
 
@@ -330,7 +330,7 @@ static void fp2mul_mont(const f2elm_t a, const f2elm_t b, f2elm_t c)
 }
 
 
-static void fpinv_chain_mont(felm_t a)
+static void fpinv_chain_mont(digit_t* a)
 { // Chain to compute a^(p-3)/4 using Montgomery arithmetic.
     unsigned int i, j;
     
@@ -804,6 +804,7 @@ static void mp_shiftleft(digit_t* x, unsigned int shift, const unsigned int nwor
 
 static void mp_shiftr1(digit_t* x, const unsigned int nwords)
 { // Multiprecision right shift by one.
+
     for (unsigned int i = 0; i < nwords-1; i++) {
         SHIFTR(x[i+1], x[i], 1, x[i], RADIX);
     }
@@ -813,6 +814,7 @@ static void mp_shiftr1(digit_t* x, const unsigned int nwords)
 
 static void mp_shiftl1(digit_t* x, const unsigned int nwords)
 { // Multiprecision left shift by one.
+
     for (int i = nwords-1; i > 0; i--) {
         SHIFTL(x[i], x[i-1], 1, x[i], RADIX);
     }
@@ -1135,7 +1137,7 @@ static __inline void fpinv_mont_bingcd_partial(const felm_t a, felm_t x1, unsign
 }
 
 
-static void fpinv_mont_bingcd(felm_t a)
+static void fpinv_mont_bingcd(digit_t* a)
 { // Field inversion via the binary GCD using Montgomery arithmetic, a = a^-1*r' mod p.
   // SECURITY NOTE: This function does not run in constant-time and is therefore only suitable for 
   //                operations not involving any secret data.
@@ -1480,10 +1482,10 @@ static void recover_os(const f2elm_t X1, const f2elm_t Z1, const f2elm_t X2, con
 
 static int mod(int a, unsigned int b)
 {
-    unsigned int r; 
+    int r; 
     if (b == 0) return 0; // avoid invalid operation
     r = a % b;
-    //    while (r < 0) r += b; OQS note: commented to avoid "always false" error
+    while (r < 0) r += b;
     return r;
 }
 

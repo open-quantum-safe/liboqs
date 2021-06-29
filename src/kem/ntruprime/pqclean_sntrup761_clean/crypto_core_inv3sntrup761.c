@@ -97,10 +97,10 @@ int PQCLEAN_SNTRUP761_CLEAN_crypto_core_inv3sntrup761(unsigned char *outbytes, c
         for (i = 0; i < p; ++i) {
             g[i] = g[i + 1];
         }
-        g[p] = 0;
+        g[p] = (int16) 0;
     }
 
-    sign = f[0];
+    sign = (int) f[0];
     for (i = 0; i < p; ++i) {
         out[i] = (small) (sign * v[p - 1 - i]);
     }

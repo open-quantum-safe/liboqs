@@ -33,14 +33,14 @@ int PQCLEAN_SNTRUP857_CLEAN_crypto_core_mult3sntrup857(unsigned char *outbytes, 
     for (i = 0; i < p; ++i) {
         result = 0;
         for (j = 0; j <= i; ++j) {
-            result += (int16) (f[j] * g[i - j]);
+            result += (small) (f[j] * g[i - j]);
         }
         fg[i] = F3_freeze(result);
     }
     for (i = p; i < p + p - 1; ++i) {
         result = 0;
         for (j = i - p + 1; j < p; ++j) {
-            result += (int16) (f[j] * g[i - j]);
+            result += (small) (f[j] * g[i - j]);
         }
         fg[i] = F3_freeze(result);
     }

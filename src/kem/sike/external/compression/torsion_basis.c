@@ -470,7 +470,7 @@ static void BuildOrdinary2nBasis_dual(const f2elm_t A, const f2elm_t Ds[][2], po
     fpadd(t0, t0, A6[0]);
     fpadd(A6[0], t0, A6[0]);
 
-    CompleteMPoint(A6, xs[0], Rs[0]);
+    CompleteMPoint(A6, xs[0]->X, xs[0]->Z, Rs[0]);
     RecoverY(A6, xs, Rs);
 }
 
