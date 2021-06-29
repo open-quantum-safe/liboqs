@@ -1,4 +1,6 @@
 {
+  "BIKE-L1": ["bike_has_no_timing_protections"],
+  "BIKE-L3": ["bike_has_no_timing_protections"],
   "BIKE1-L1-CPA": ["bike_has_no_timing_protections"],
   "BIKE1-L1-FO": ["bike_has_no_timing_protections"],
   "BIKE1-L3-CPA": ["bike_has_no_timing_protections"],
