@@ -34,14 +34,12 @@ UNALIGNED_VECTOR_POLYFILL_GCC
 UNALIGNED_VECTOR_POLYFILL_GCC
 #  endif
 
-#elif defined(MSVC)
-// MSVC simply doesn't have these types
+#else
+// Neither MSVC nor other compilers seem to have these types
 #define __m256_u    __m256
 #define __m256d_u   __m256d
 #define __m256i_u   __m256i
 
-#else
-#error UNSUPPORTED COMPILER!?!?
 #endif // compiler selector
 
 
