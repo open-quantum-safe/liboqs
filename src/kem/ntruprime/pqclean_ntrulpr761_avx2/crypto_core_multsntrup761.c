@@ -19,9 +19,9 @@ typedef int16_t int16;
 #define signmask_x16(x) _mm256_srai_epi16((x),15)
 
 typedef union {
-    int16 v[3][512];
+    int16 v[6][512];
     int16x16 _dummy;
-} vec3x512;
+} vec6x512;
 
 typedef union {
     int16 v[768];
@@ -173,20 +173,20 @@ static void ungood(int16 f[1536], const int16 fpad[3][512]) {
 }
 
 static void mult768(int16 h[1536], const int16 f[768], const int16 g[768]) {
-    vec3x512 x1, x2;
-    vec1536 x3, x4;
-#define fpad (x1.v)
-#define gpad (x2.v)
+    vec6x512 fgpad;
+#define fpad (fgpad.v)
+#define gpad (fgpad.v+3)
 #define hpad fpad
-#define h_7681 (x3.v)
-#define h_10753 (x4.v)
+    vec1536 aligned_h_7681;
+    vec1536 aligned_h_10753;
+#define h_7681 (aligned_h_7681.v)
+#define h_10753 (aligned_h_10753.v)
     int i;
 
     good(fpad, f);
-    PQCLEAN_NTRULPR761_AVX2_ntt512_7681(fpad[0], 3);
-
     good(gpad, g);
-    PQCLEAN_NTRULPR761_AVX2_ntt512_7681(gpad[0], 3);
+
+    PQCLEAN_NTRULPR761_AVX2_ntt512_7681(fgpad.v[0], 6);
 
     for (i = 0; i < 512; i += 16) {
         int16x16 f0 = squeeze_7681_x16(load_x16(&fpad[0][i]));
@@ -211,10 +211,9 @@ static void mult768(int16 h[1536], const int16 f[768], const int16 g[768]) {
     ungood(h_7681, (const int16(*)[512]) hpad);
 
     good(fpad, f);
-    PQCLEAN_NTRULPR761_AVX2_ntt512_10753(fpad[0], 3);
-
     good(gpad, g);
-    PQCLEAN_NTRULPR761_AVX2_ntt512_10753(gpad[0], 3);
+
+    PQCLEAN_NTRULPR761_AVX2_ntt512_10753(fgpad.v[0], 6);
 
     for (i = 0; i < 512; i += 16) {
         int16x16 f0 = squeeze_10753_x16(load_x16(&fpad[0][i]));

@@ -15,7 +15,7 @@ int PQCLEAN_SNTRUP857_AVX2_crypto_core_weightsntrup857(unsigned char *outbytes, 
     int16 weight;
 
     sum = _mm256_loadu_si256((__m256i *) (in + p - 32));
-    sum &= _mm256_set_epi8(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0);
+    sum &= endingmask;
 
     for (i = p - 32; i >= 0; i -= 32) {
         __m256i bits = _mm256_loadu_si256((__m256i *) in);

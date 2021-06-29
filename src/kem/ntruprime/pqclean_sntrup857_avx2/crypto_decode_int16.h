@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 #define PQCLEAN_SNTRUP857_AVX2_crypto_core_multsntrup857_STRBYTES 2
-#define PQCLEAN_SNTRUP857_AVX2_crypto_core_multsntrup857_ITEMBYTES 2
 #define PQCLEAN_SNTRUP857_AVX2_crypto_core_multsntrup857_ITEMS 1
+#define PQCLEAN_SNTRUP857_AVX2_crypto_core_multsntrup857_ITEMBYTES 2
 void PQCLEAN_SNTRUP857_AVX2_crypto_decode_int16(void *x, const unsigned char *s);
 #endif

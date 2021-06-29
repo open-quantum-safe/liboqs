@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 #define PQCLEAN_NTRULPR653_CLEAN_crypto_encode_653xint16_STRBYTES 1306
-#define PQCLEAN_NTRULPR653_CLEAN_crypto_encode_653xint16_ITEMBYTES 2
 #define PQCLEAN_NTRULPR653_CLEAN_crypto_encode_653xint16_ITEMS 653
+#define PQCLEAN_NTRULPR653_CLEAN_crypto_encode_653xint16_ITEMBYTES 2
 
 void PQCLEAN_NTRULPR653_CLEAN_crypto_encode_653xint16(unsigned char *s, const void *v);
 #endif
