@@ -6,9 +6,9 @@
 
 // Format function and variable names for Mac OS X
 #if defined(__APPLE__)
-    #define fmt(f)    _##f
+    #define fmt(f)    _oqs_kem_sike_##f
 #else
-    #define fmt(f)    f
+    #define fmt(f)    oqs_kem_sike_##f
 #endif
 	
 .text
