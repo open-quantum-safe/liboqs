@@ -45,8 +45,18 @@ if(OQS_ENABLE_KEM_bike_l1 OR OQS_ENABLE_KEM_bike_l3)
     endif()
 
     if (OQS_DIST_X86_64_BUILD OR OQS_USE_VPCLMULQDQ_INSTRUCTIONS)
-        set_source_files_properties(additional_r3/gf2x_mul_base_vpclmul.c PROPERTIES COMPILE_FLAGS "-mvpclmulqdq -mavx512f -mavx512bw -mavx512dq")
         set(SRCS_R3 ${SRCS_R3} additional_r3/gf2x_mul_base_vpclmul.c)
+
+        # Some of our CI configurations use OQS_DIST_BUILD with compilers that do not have
+        # the -mvpclmulqdq flag. So we might still have to set DISABLE_VPCLMUL.
+        try_compile(CAN_COMPILE_VPCLMUL ${CMAKE_BINARY_DIR}
+                    ${CMAKE_CURRENT_LIST_DIR}/additional_r3/gf2x_mul_base_vpclmul.c
+                    COMPILE_DEFINITIONS -mvpclmulqdq -mavx512f -mavx512bw -mavx512dq)
+        if(CAN_COMPILE_VPCLMUL)
+            set_source_files_properties(additional_r3/gf2x_mul_base_vpclmul.c PROPERTIES COMPILE_FLAGS "-mvpclmulqdq -mavx512f -mavx512bw -mavx512dq")
+        else()
+            set(CPP_DEFS_R3 ${CPP_DEFS_R3} DISABLE_VPCLMUL)
+        endif()
     endif()
 
     if(ARCH_X86_64)
