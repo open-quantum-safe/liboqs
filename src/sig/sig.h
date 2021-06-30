@@ -31,8 +31,6 @@
 extern "C" {
 #endif
 
-/** Algorithm identifier for default SIG algorithm. */
-#define OQS_SIG_alg_default "DEFAULT"
 /** Algorithm identifier for picnic_L1_FS */
 #define OQS_SIG_alg_picnic_L1_FS "picnic_L1_FS"
 /** Algorithm identifier for picnic_L1_UR */
@@ -168,7 +166,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above (including default). */
-#define OQS_SIG_algs_length 66
+#define OQS_SIG_algs_length 65
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**

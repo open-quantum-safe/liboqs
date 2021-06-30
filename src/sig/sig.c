@@ -14,7 +14,6 @@
 OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	// EDIT-WHEN-ADDING-SIG
 	const char *a[OQS_SIG_algs_length] = {
-		OQS_SIG_alg_default,
 		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_START
 		OQS_SIG_alg_dilithium_2,
 		OQS_SIG_alg_dilithium_3,
@@ -98,8 +97,7 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 	if (method_name == NULL) {
 		return 0;
 	}
-	if (0 == strcasecmp(method_name, OQS_SIG_alg_default)) {
-		return OQS_SIG_alg_is_enabled(OQS_SIG_DEFAULT);
+	if (0) {
 		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_START
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_2)) {
 #ifdef OQS_ENABLE_SIG_dilithium_2
@@ -502,8 +500,7 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 	if (method_name == NULL) {
 		return NULL;
 	}
-	if (0 == strcasecmp(method_name, OQS_SIG_alg_default)) {
-		return OQS_SIG_new(OQS_SIG_DEFAULT);
+	if (0) {
 		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_NEW_CASE_START
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_dilithium_2)) {
 #ifdef OQS_ENABLE_SIG_dilithium_2

@@ -2,11 +2,11 @@
 
 include(CMakeDependentOption)
 
-if(NOT DEFINED OQS_KEM_DEFAULT)
-    set(OQS_KEM_DEFAULT "OQS_KEM_alg_frodokem_640_aes")
+if(DEFINED OQS_KEM_DEFAULT)
+    message(WARNING "OQS_KEM_DEFAULT not longer supported")
 endif()
-if(NOT DEFINED OQS_SIG_DEFAULT)
-    set(OQS_SIG_DEFAULT "OQS_SIG_alg_dilithium_2")
+if(DEFINED OQS_SIG_DEFAULT)
+    message(WARNING "OQS_SIG_DEFAULT not longer supported")
 endif()
 
 # Only enable OpenSSL by default on not-Windows
