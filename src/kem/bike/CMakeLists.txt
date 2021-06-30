@@ -1,5 +1,14 @@
 # SPDX-License-Identifier: MIT
 
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND
+   CMAKE_C_COMPILER_VERSION VERSION_LESS "5" OR
+   CMAKE_C_COMPILER_ID MATCHES "Clang")
+    # GCC 4.9 erroneously reports warnings for certain valid code in BIKE
+    # https://stackoverflow.com/questions/13746033/how-to-repair-warning-missing-braces-around-initializer
+    add_compile_options(-Wno-missing-braces)
+    add_compile_options(-Wno-missing-field-initializers)
+endif()
+
 if(OQS_ENABLE_KEM_bike_l1 OR OQS_ENABLE_KEM_bike_l3)
     set(_BIKE_OBJS "")
     set(CPP_DEFS_R3 "")
