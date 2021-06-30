@@ -45,10 +45,6 @@
 #cmakedefine OQS_ENABLE_SHA3_xkcp_low_avx2 1
 
 #cmakedefine OQS_ENABLE_KEM_BIKE 1
-#cmakedefine OQS_ENABLE_KEM_bike1_l1_cpa 1
-#cmakedefine OQS_ENABLE_KEM_bike1_l3_cpa 1
-#cmakedefine OQS_ENABLE_KEM_bike1_l1_fo 1
-#cmakedefine OQS_ENABLE_KEM_bike1_l3_fo 1
 #cmakedefine OQS_ENABLE_KEM_bike_l1 1
 #cmakedefine OQS_ENABLE_KEM_bike_l3 1
 
