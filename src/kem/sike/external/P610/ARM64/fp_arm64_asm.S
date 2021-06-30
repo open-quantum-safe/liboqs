@@ -12,6 +12,7 @@
 #endif
 
 .text
+.align 2
 
 // p610
 p610:

@@ -12,6 +12,7 @@
 #endif
 
 .text
+.align 2
 
 // p434
 p434:
