@@ -569,7 +569,7 @@ if((OQS_MINIMAL_BUILD STREQUAL "ON"))
    message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
 endif()
 
-if(NOT (OQS_MINIMAL_BUILD STREQUAL "OFF"))
+if(NOT ((OQS_MINIMAL_BUILD STREQUAL "") OR (OQS_MINIMAL_BUILD STREQUAL "OFF")))
   # Set every OQS_ENABLE_* variable =OFF unless it one of the following.
   #  1. the switch for one of the requested minimal build algorithm's family, e.g OQS_ENABLE_KEM_KYBER
   #  2. the switch for one of the requested algorithms, e.g. OQS_ENABLE_KEM_kyber_768.

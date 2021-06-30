@@ -16,7 +16,7 @@ project(liboqs C ASM)
 
 option(OQS_DIST_BUILD "Build distributable library with optimized code for several CPU microarchitectures. Enables run-time CPU feature detection." OFF)
 option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
-set(OQS_MINIMAL_BUILD auto CACHE STRING "Only build specifically listed algorithms.")
+set(OQS_MINIMAL_BUILD "" CACHE STRING "Only build specifically listed algorithms.")
 option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsupported architecture." OFF)
 
 set(OQS_OPT_TARGET auto CACHE STRING "The target microarchitecture for optimization.")
