@@ -1,26 +1,11 @@
 # SPDX-License-Identifier: MIT
 
-if(CMAKE_C_COMPILER_ID STREQUAL "GNU" AND
-   CMAKE_C_COMPILER_VERSION VERSION_LESS "5" OR
-   CMAKE_C_COMPILER_ID MATCHES "Clang")
-    # GCC 4.9 erroneously reports warnings for certain valid code in BIKE
-    # https://stackoverflow.com/questions/13746033/how-to-repair-warning-missing-braces-around-initializer
-    add_compile_options(-Wno-missing-braces)
-    add_compile_options(-Wno-missing-field-initializers)
-endif()
-
-if(OQS_ENABLE_KEM_bike1_l1_cpa OR OQS_ENABLE_KEM_bike1_l3_cpa OR
-   OQS_ENABLE_KEM_bike1_l1_fo OR OQS_ENABLE_KEM_bike1_l3_fo)
-
-    set(SRCS additional/decode.c
-             additional/sampling.c
-             additional/parallel_hash.c
-             additional/utilities.c
-             additional/aes_ctr_prf.c
-             additional/error.c)
-endif()
-
 if(OQS_ENABLE_KEM_bike_l1 OR OQS_ENABLE_KEM_bike_l3)
+    set(_BIKE_OBJS "")
+    set(CPP_DEFS_R3 "")
+
+    add_library(kem_bike OBJECT kem_bike.c)
+    set(_BIKE_OBJS $<TARGET_OBJECTS:kem_bike>)
 
     set(SRCS_R3 additional_r3/aes_ctr_prf.c
                 additional_r3/decode.c
@@ -36,126 +21,54 @@ if(OQS_ENABLE_KEM_bike_l1 OR OQS_ENABLE_KEM_bike_l3)
                 additional_r3/sampling_portable.c
                 additional_r3/utilities.c)
 
-    if(ARCH_X86_64)
-        set(SRCS_R3 ${SRCS_R3} additional_r3/decode_avx2.c
-                               additional_r3/decode_avx512.c
-                               additional_r3/gf2x_ksqr_avx2.c
-                               additional_r3/gf2x_ksqr_avx512.c
-                               additional_r3/gf2x_mul_avx2.c
-                               additional_r3/gf2x_mul_avx512.c
-                               additional_r3/gf2x_mul_base_pclmul.c
-                               additional_r3/gf2x_mul_base_vpclmul.c
-                               additional_r3/sampling_avx2.c
-                               additional_r3/sampling_avx512.c)
-
-        set(CPP_DEFS_R3 X86_64)
-
-        FILE(GLOB_RECURSE AVX2_SRCS additional_r3/*_avx2.c)
-        FILE(GLOB_RECURSE AVX512_SRCS additional_r3/*_avx512.c)
-
-        set(AVX512_FLAGS "-mavx512f -mavx512bw -mavx512dq")
-
-        # Set appropriate flags for avx files
+    if (OQS_DIST_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
+        set(AVX2_SRCS additional_r3/decode_avx2.c
+                      additional_r3/gf2x_ksqr_avx2.c
+                      additional_r3/gf2x_mul_avx2.c
+                      additional_r3/sampling_avx2.c)
         set_source_files_properties(${AVX2_SRCS} PROPERTIES COMPILE_FLAGS "-mavx2")
-        set_source_files_properties(${AVX512_SRCS} PROPERTIES COMPILE_FLAGS "${AVX512_FLAGS}")
+        set(SRCS_R3 ${SRCS_R3} ${AVX2_SRCS})
+    endif()
 
+    if (OQS_DIST_X86_64_BUILD OR OQS_USE_AVX512_INSTRUCTIONS)
+        set(AVX512_SRCS additional_r3/gf2x_mul_base_vpclmul.c
+                        additional_r3/decode_avx512.c
+                        additional_r3/gf2x_ksqr_avx512.c
+                        additional_r3/gf2x_mul_avx512.c
+                        additional_r3/sampling_avx512.c)
+        set_source_files_properties(${AVX512_SRCS} PROPERTIES COMPILE_FLAGS "-mavx512f -mavx512bw -mavx512dq")
+    endif()
+
+    if (OQS_DIST_X86_64_BUILD OR OQS_USE_PCLMULQDQ_INSTRUCTIONS)
         set_source_files_properties(additional_r3/gf2x_mul_base_pclmul.c PROPERTIES COMPILE_FLAGS "-mpclmul -msse2")
-
-        # Some older compilers don't support the "mvpclmulqdq" flag so we have to check.
-        try_compile(VPCLMUL_SUPPORTED ${CMAKE_BINARY_DIR}
-                    ${CMAKE_CURRENT_LIST_DIR}/additional_r3/noop_main.c
-                    COMPILE_DEFINITIONS -mvpclmulqdq)
-        if (VPCLMUL_SUPPORTED) 
-            set_source_files_properties(additional_r3/gf2x_mul_base_vpclmul.c PROPERTIES COMPILE_FLAGS "-mvpclmulqdq ${AVX512_FLAGS}")
-        else()
-            set(CPP_DEFS_R3 ${CPP_DEFS_R3} DISABLE_VPCLMUL)
-        endif()
+        set(SRCS_R3 ${SRCS_R3} additional_r3/gf2x_mul_base_pclmul.c)
     endif()
 
-endif()
-
-if ( (CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin") OR
-     (CMAKE_HOST_SYSTEM_NAME STREQUAL "CYGWIN") )
-    set(SRCS ${SRCS} additional/sampling_portable.c
-                     additional/secure_decode_portable.c)
-    set(CPP_DEFS PORTABLE)
-elseif(OQS_USE_AVX512_INSTRUCTIONS AND NOT ${OQS_DIST_BUILD})
-    set(SRCS ${SRCS} additional/red.S
-                     additional/secure_decode_avx512.c
-                     additional/sampling_avx512.S
-                     additional/gf_mul.S)
-    set(CPP_DEFS AVX512)
-    add_compile_options(-mavx512bw -mavx512dq -mavx512f)
-elseif(OQS_USE_AVX2_INSTRUCTIONS AND NOT ${OQS_DIST_BUILD})
-    set(SRCS ${SRCS} additional/red.S
-                     additional/secure_decode_avx2.c
-                     additional/sampling_avx2.S
-                     additional/gf_mul.S)
-    set(CPP_DEFS AVX2)
-    add_compile_options(-mavx2)
-else()
-    set(SRCS ${SRCS} additional/sampling_portable.c
-                     additional/secure_decode_portable.c)
-    set(CPP_DEFS PORTABLE)
-endif()
-
-add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
-
-if(${OQS_USE_OPENSSL})
-    # TODO: Find a way to eliminate this include_directories() call
-    include_directories(${OPENSSL_INCLUDE_DIR})
-    set(SRCS ${SRCS} additional/openssl_utils.c)
-    include(CheckSymbolExists)
-    check_symbol_exists(OPENSSL_NO_EC2M "openssl/opensslconf.h" OPENSSL_NO_EC2M_SET)
-    if(OPENSSL_NO_EC2M_SET)
-       set(SRCS ${SRCS} additional/gf2x_portable.c additional/gf2x_mul.c)
+    if (OQS_DIST_X86_64_BUILD OR OQS_USE_VPCLMULQDQ_INSTRUCTIONS)
+        set_source_files_properties(additional_r3/gf2x_mul_base_vpclmul.c PROPERTIES COMPILE_FLAGS "-mvpclmulqdq -mavx512f -mavx512bw -mavx512dq")
+        set(SRCS_R3 ${SRCS_R3} additional_r3/gf2x_mul_base_vpclmul.c)
     endif()
-else()
-    set(SRCS ${SRCS} additional/gf2x_portable.c additional/gf2x_mul.c)
-endif()
 
-add_library(kem_bike OBJECT kem_bike.c)
-set(_BIKE_OBJS $<TARGET_OBJECTS:kem_bike>)
+    if(ARCH_X86_64)
+        set(CPP_DEFS_R3 ${CPP_DEFS_R3} X86_64)
+    endif()
 
-# CPA variants
-if(OQS_ENABLE_KEM_bike1_l1_cpa)
-    add_library(bike1_l1_cpa OBJECT ${SRCS} additional/kem_cpa.c)
-    target_compile_definitions(bike1_l1_cpa PRIVATE INDCPA=1 LEVEL=1 FUNC_PREFIX=OQS_KEM_bike1_l1_cpa ${CPP_DEFS})
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1_cpa>)
-endif()
+    add_compile_options(-include ${CMAKE_CURRENT_LIST_DIR}/functions_renaming.h)
 
-if(OQS_ENABLE_KEM_bike1_l3_cpa)
-    add_library(bike1_l3_cpa OBJECT ${SRCS} additional/kem_cpa.c)
-    target_compile_definitions(bike1_l3_cpa PRIVATE INDCPA=1 LEVEL=3 FUNC_PREFIX=OQS_KEM_bike1_l3_cpa ${CPP_DEFS})
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l3_cpa>)
-endif()
+    # Round-3 KEMs
+    if(OQS_ENABLE_KEM_bike_l1)
+        add_library(bike_l1 OBJECT ${SRCS_R3} additional_r3/kem.c)
+        target_compile_definitions(bike_l1 PRIVATE LEVEL=1 FUNC_PREFIX=OQS_KEM_bike_l1 ${CPP_DEFS_R3})
+        target_include_directories(bike_l1 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/additional_r3)
+        set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike_l1>)
+    endif()
 
-# FO variants
-if(OQS_ENABLE_KEM_bike1_l1_fo)
-    add_library(bike1_l1_fo OBJECT ${SRCS} additional/kem.c)
-    target_compile_definitions(bike1_l1_fo PRIVATE LEVEL=1 FUNC_PREFIX=OQS_KEM_bike1_l1_fo ${CPP_DEFS})
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l1_fo>)
-endif()
-
-if(OQS_ENABLE_KEM_bike1_l3_fo)
-    add_library(bike1_l3_fo OBJECT ${SRCS} additional/kem.c)
-    target_compile_definitions(bike1_l3_fo PRIVATE LEVEL=3 FUNC_PREFIX=OQS_KEM_bike1_l3_fo ${CPP_DEFS})
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike1_l3_fo>)
-endif()
-
-# Round-3 KEMs
-if(OQS_ENABLE_KEM_bike_l1)
-    add_library(bike_l1 OBJECT ${SRCS_R3} additional_r3/kem.c)
-    target_compile_definitions(bike_l1 PRIVATE LEVEL=1 FUNC_PREFIX=OQS_KEM_bike_l1 ${CPP_DEFS_R3})
-    target_include_directories(bike_l1 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/additional_r3)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike_l1>)
-endif()
-
-if(OQS_ENABLE_KEM_bike_l3)
-    add_library(bike_l3 OBJECT ${SRCS_R3} additional_r3/kem.c)
-    target_compile_definitions(bike_l3 PRIVATE LEVEL=3 FUNC_PREFIX=OQS_KEM_bike_l3 ${CPP_DEFS_R3})
-    target_include_directories(bike_l3 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/additional_r3)
-    set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike_l3>)
+    if(OQS_ENABLE_KEM_bike_l3)
+        add_library(bike_l3 OBJECT ${SRCS_R3} additional_r3/kem.c)
+        target_compile_definitions(bike_l3 PRIVATE LEVEL=3 FUNC_PREFIX=OQS_KEM_bike_l3 ${CPP_DEFS_R3})
+        target_include_directories(bike_l3 PRIVATE ${CMAKE_CURRENT_LIST_DIR}/additional_r3)
+        set(_BIKE_OBJS ${_BIKE_OBJS} $<TARGET_OBJECTS:bike_l3>)
+    endif()
 endif()
 
 set(BIKE_OBJS ${_BIKE_OBJS} PARENT_SCOPE)
