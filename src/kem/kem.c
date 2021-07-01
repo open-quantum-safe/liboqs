@@ -87,8 +87,7 @@ OQS_API int OQS_KEM_alg_count() {
 OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 	if (method_name == NULL) {
 		return 0;
-	}
-	else if (0 == strcasecmp(method_name, OQS_KEM_alg_bike_l1)) {
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_bike_l1)) {
 #ifdef OQS_ENABLE_KEM_bike_l1
 		return 1;
 #else
