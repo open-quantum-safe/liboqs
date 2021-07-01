@@ -33,14 +33,6 @@ extern "C" {
 
 /** Algorithm identifier for default KEM algorithm. */
 #define OQS_KEM_alg_default "DEFAULT"
-/** Algorithm identifier for BIKE1-L1-CPA KEM. */
-#define OQS_KEM_alg_bike1_l1_cpa "BIKE1-L1-CPA"
-/** Algorithm identifier for BIKE1-L3-CPA KEM. */
-#define OQS_KEM_alg_bike1_l3_cpa "BIKE1-L3-CPA"
-/** Algorithm identifier for BIKE1-L1-FO KEM. */
-#define OQS_KEM_alg_bike1_l1_fo "BIKE1-L1-FO"
-/** Algorithm identifier for BIKE1-L3-FO KEM. */
-#define OQS_KEM_alg_bike1_l3_fo "BIKE1-L3-FO"
 /** Algorithm identifier for BIKE-L1 KEM (Round-3). */
 #define OQS_KEM_alg_bike_l1 "BIKE-L1"
 /** Algorithm identifier for BIKE-L3 KEM (Round-3). */
@@ -158,7 +150,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 61
+#define OQS_KEM_algs_length 57
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**

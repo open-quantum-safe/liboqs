@@ -28,7 +28,8 @@
 #cmakedefine OQS_USE_AVX512_INSTRUCTIONS 1
 #cmakedefine OQS_USE_BMI1_INSTRUCTIONS 1
 #cmakedefine OQS_USE_BMI2_INSTRUCTIONS 1
-#cmakedefine OQS_USE_PCLMUL_INSTRUCTIONS 1
+#cmakedefine OQS_USE_PCLMULQDQ_INSTRUCTIONS 1
+#cmakedefine OQS_USE_VPCLMULQDQ_INSTRUCTIONS 1
 #cmakedefine OQS_USE_POPCNT_INSTRUCTIONS 1
 #cmakedefine OQS_USE_SSE_INSTRUCTIONS 1
 #cmakedefine OQS_USE_SSE2_INSTRUCTIONS 1
@@ -44,10 +45,6 @@
 #cmakedefine OQS_ENABLE_SHA3_xkcp_low_avx2 1
 
 #cmakedefine OQS_ENABLE_KEM_BIKE 1
-#cmakedefine OQS_ENABLE_KEM_bike1_l1_cpa 1
-#cmakedefine OQS_ENABLE_KEM_bike1_l3_cpa 1
-#cmakedefine OQS_ENABLE_KEM_bike1_l1_fo 1
-#cmakedefine OQS_ENABLE_KEM_bike1_l3_fo 1
 #cmakedefine OQS_ENABLE_KEM_bike_l1 1
 #cmakedefine OQS_ENABLE_KEM_bike_l3 1
 

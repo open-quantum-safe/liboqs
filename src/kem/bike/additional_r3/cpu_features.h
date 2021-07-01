@@ -12,18 +12,46 @@
 #include <oqs/common.h>
 #include <stdint.h>
 
-#if defined(X86_64)
-
-_INLINE_ uint32_t is_avx2_enabled(void) { return OQS_CPU_has_extension(OQS_CPU_EXT_AVX2); }
-_INLINE_ uint32_t is_avx512_enabled(void) { return OQS_CPU_has_extension(OQS_CPU_EXT_AVX512); }
-_INLINE_ uint32_t is_pclmul_enabled(void) { return OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ); }
-_INLINE_ uint32_t is_vpclmul_enabled(void) { return OQS_CPU_has_extension(OQS_CPU_EXT_VPCLMULQDQ); }
-
+_INLINE_ uint32_t is_avx2_enabled(void)
+{
+#if defined(OQS_DIST_X86_64_BUILD)
+	return OQS_CPU_has_extension(OQS_CPU_EXT_AVX2);
+#elif defined(OQS_USE_AVX2_INSTRUCTIONS)
+	return 1;
 #else
-
-_INLINE_ uint32_t is_avx2_enabled(void) { return 0; }
-_INLINE_ uint32_t is_avx512_enabled(void) { return 0; }
-_INLINE_ uint32_t is_pclmul_enabled(void) { return 0; }
-_INLINE_ uint32_t is_vpclmul_enabled(void) { return 0; }
-
+	return 0;
 #endif
+}
+
+_INLINE_ uint32_t is_avx512_enabled(void)
+{
+// TODO: Determine minimal set of AVX512 features
+#if defined(OQS_DIST_X86_64_BUILD)
+	return OQS_CPU_has_extension(OQS_CPU_EXT_AVX512);
+#elif defined(OQS_USE_AVX512_INSTRUCTIONS)
+	return 1;
+#else
+	return 0;
+#endif
+}
+
+_INLINE_ uint32_t is_pclmul_enabled(void)
+{
+#if defined(OQS_DIST_X86_64_BUILD)
+	return OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ);
+#elif defined(OQS_USE_PCLMULQDQ_INSTRUCTIONS)
+	return 1;
+#else
+	return 0;
+#endif
+}
+
+_INLINE_ uint32_t is_vpclmul_enabled(void) {
+#if defined(OQS_DIST_X86_64_BUILD)
+	return OQS_CPU_has_extension(OQS_CPU_EXT_VPCLMULQDQ);
+#elif defined(OQS_USE_VPCLMULQDQ_INSTRUCTIONS)
+	return 1;
+#else
+	return 0;
+#endif
+}

@@ -135,8 +135,8 @@ static void print_cpu_extensions(void) {
 #ifdef OQS_USE_BMI2_INSTRUCTIONS
 	printf(" BMI2");
 #endif
-#ifdef OQS_USE_PCLMUL_INSTRUCTIONS
-	printf(" PCLMUL");
+#ifdef OQS_USE_PCLMULQDQ_INSTRUCTIONS
+	printf(" PCLMULQDQ");
 #endif
 #ifdef OQS_USE_POPCNT_INSTRUCTIONS
 	printf(" POPCNT");
