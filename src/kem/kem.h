@@ -31,8 +31,6 @@
 extern "C" {
 #endif
 
-/** Algorithm identifier for default KEM algorithm. */
-#define OQS_KEM_alg_default "DEFAULT"
 /** Algorithm identifier for BIKE-L1 KEM (Round-3). */
 #define OQS_KEM_alg_bike_l1 "BIKE-L1"
 /** Algorithm identifier for BIKE-L3 KEM (Round-3). */
@@ -150,7 +148,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 57
+#define OQS_KEM_algs_length 56
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**

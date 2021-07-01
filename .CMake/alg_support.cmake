@@ -2,11 +2,11 @@
 
 include(CMakeDependentOption)
 
-if(NOT DEFINED OQS_KEM_DEFAULT)
-    set(OQS_KEM_DEFAULT "OQS_KEM_alg_frodokem_640_aes")
+if(DEFINED OQS_KEM_DEFAULT)
+    message(WARNING "OQS_KEM_DEFAULT not longer supported")
 endif()
-if(NOT DEFINED OQS_SIG_DEFAULT)
-    set(OQS_SIG_DEFAULT "OQS_SIG_alg_dilithium_2")
+if(DEFINED OQS_SIG_DEFAULT)
+    message(WARNING "OQS_SIG_DEFAULT not longer supported")
 endif()
 
 # Only enable OpenSSL by default on not-Windows
@@ -565,42 +565,45 @@ endif()
 
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 
-if(${OQS_MINIMAL_BUILD})
-  # Set every OQS_ENABLE_* variable =OFF unless it one of the following.
-  #  1. the switch for the default algorithm's family, e.g OQS_ENABLE_KEM_KYBER
-  #  2. the switch for the default algorithm, e.g. OQS_ENABLE_KEM_kyber_768.
-  #  3. the switch for platform-specific ("_aesni" or "_avx2") implementation of
-  #     the default algorithm, e.g. OQS_ENABLE_KEM_kyber_768_avx2.
+if((OQS_MINIMAL_BUILD STREQUAL "ON"))
+   message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
+endif()
 
-  string(REPLACE "OQS_KEM_alg_" "OQS_ENABLE_KEM_" default_kem_switch ${OQS_KEM_DEFAULT})
-  string(REPLACE "OQS_SIG_alg_" "OQS_ENABLE_SIG_" default_sig_switch ${OQS_SIG_DEFAULT})
-  string(TOUPPER ${default_kem_switch} default_kem_switch_upper) # The default kem's family is a prefix of this string.
-  string(TOUPPER ${default_sig_switch} default_sig_switch_upper)
+if(NOT ((OQS_MINIMAL_BUILD STREQUAL "") OR (OQS_MINIMAL_BUILD STREQUAL "OFF")))
+  # Set every OQS_ENABLE_* variable =OFF unless it one of the following.
+  #  1. the switch for one of the requested minimal build algorithm's family, e.g OQS_ENABLE_KEM_KYBER
+  #  2. the switch for one of the requested algorithms, e.g. OQS_ENABLE_KEM_kyber_768.
+  #  3. the switch for platform-specific ("_aesni" or "_avx2") implementation of
+  #     one of the requested algorithms, e.g. OQS_ENABLE_KEM_kyber_768_avx2.
 
   get_cmake_property(_vars VARIABLES)
   foreach (_var ${_vars})
       if(_var MATCHES "^OQS_ENABLE_..._" AND NOT _var MATCHES "_AVAILABLE$")
           set(${_var} OFF)
           # Case 1, family name
-          if(${default_kem_switch_upper} MATCHES "^${_var}"
-          OR ${default_sig_switch_upper} MATCHES "^${_var}")
-              set(${_var} ON)
-          endif()
+          foreach (_alg ${OQS_MINIMAL_BUILD})
+             string(TOUPPER ${_alg} upalg)
+             if(${upalg} MATCHES "^${_var}")
+                 set(${_var} ON)
+             endif()
+          endforeach()
           # Case 2, exact match
-          if(${_var}X STREQUAL ${default_kem_switch}X
-          OR ${_var}X STREQUAL ${default_sig_switch}X)
-              set(${_var} ON)
-          endif()
+          foreach (_alg ${OQS_MINIMAL_BUILD})
+             if(${_var}X STREQUAL ${_alg}X)
+                 set(${_var} ON)
+             endif()
+          endforeach()
           # Case 3, platform specific
           string(REPLACE "_aesni" "" _var_base ${_var})
           string(REPLACE "_avx2" "" _var_base ${_var_base})
           string(REPLACE "_avx" "" _var_base ${_var_base})
-          if(${_var}_AVAILABLE)
-              if(${_var_base}X STREQUAL ${default_kem_switch}X
-              OR ${_var_base}X STREQUAL ${default_sig_switch}X)
+          foreach (_alg ${OQS_MINIMAL_BUILD})
+            if(${_var}_AVAILABLE)
+              if(${_var_base}X STREQUAL ${_alg}X)
                   set(${_var} ON)
               endif()
-          endif()
+            endif()
+          endforeach()
       endif()
   endforeach()
 endif()
