@@ -4,7 +4,15 @@
 // Abstract: field arithmetic in 64-bit ARMv8 assembly for P751 on Linux
 //*******************************************************************************************
 
+// Format function and variable names for Mac OS X
+#if defined(__APPLE__)
+    #define fmt(f)    _oqs_kem_sike_##f
+#else
+    #define fmt(f)    oqs_kem_sike_##f
+#endif
+
 .text
+.align 2
 
 // p751
 p751:
@@ -55,8 +63,8 @@ p751p1_nz_s32:
 //  Field addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_fpadd751_asm
-oqs_kem_sike_fpadd751_asm:
+.global fmt(fpadd751_asm)
+fmt(fpadd751_asm):
     sub     sp, sp, #16
     stp     x19, x20, [sp]
 
@@ -153,8 +161,8 @@ oqs_kem_sike_fpadd751_asm:
 //  Field subtraction
 //  Operation: c [x2] = a [x0] - b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_fpsub751_asm
-oqs_kem_sike_fpsub751_asm:
+.global fmt(fpsub751_asm)
+fmt(fpsub751_asm):
     sub     sp, sp, #16
     str     x19, [sp]
 
@@ -297,8 +305,8 @@ oqs_kem_sike_fpsub751_asm:
 //  Multiprecision subtraction with correction with 2*p751
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 2*p751
 //*********************************************************************** 
-.global oqs_kem_sike_mp_sub751_p2_asm
-oqs_kem_sike_mp_sub751_p2_asm:
+.global fmt(mp_sub751_p2_asm)
+fmt(mp_sub751_p2_asm):
 
   SUB751_PX  p751x2
   ret
@@ -308,8 +316,8 @@ oqs_kem_sike_mp_sub751_p2_asm:
 //  Multiprecision subtraction with correction with 4*p751
 //  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 4*p751
 //*********************************************************************** 
-.global oqs_kem_sike_mp_sub751_p4_asm
-oqs_kem_sike_mp_sub751_p4_asm:
+.global fmt(mp_sub751_p4_asm)
+fmt(mp_sub751_p4_asm):
 
   SUB751_PX  p751x4
   ret
@@ -570,8 +578,8 @@ oqs_kem_sike_mp_sub751_p4_asm:
 //  768-bit integer multiplication using Karatsuba (two levels), Comba (lower level)
 //  Operation: c [x2] = a [x0] * b [x1]
 //*********************************************************************************** 
-.global oqs_kem_sike_mul751_asm
-oqs_kem_sike_mul751_asm:
+.global fmt(mul751_asm)
+fmt(mul751_asm):
     sub     sp, sp, #96
     stp     x19, x20, [sp,#0]
     stp     x21, x22, [sp,#16]
@@ -925,8 +933,8 @@ oqs_kem_sike_mul751_asm:
 //  Operation: mc [x1] = ma [x0]
 //  NOTE: ma=mc is not allowed
 //************************************************************************************** 
-.global oqs_kem_sike_rdc751_asm
-oqs_kem_sike_rdc751_asm:
+.global fmt(rdc751_asm)
+fmt(rdc751_asm):
     sub     sp, sp, #96
     stp     x19, x20, [sp]
     stp     x21, x22, [sp,#16]
@@ -1117,8 +1125,8 @@ oqs_kem_sike_rdc751_asm:
 //  751-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_add751_asm
-oqs_kem_sike_mp_add751_asm:
+.global fmt(mp_add751_asm)
+fmt(mp_add751_asm):
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -1158,8 +1166,8 @@ oqs_kem_sike_mp_add751_asm:
 //  2x751-bit multiprecision addition
 //  Operation: c [x2] = a [x0] + b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_add751x2_asm
-oqs_kem_sike_mp_add751x2_asm:
+.global fmt(mp_add751x2_asm)
+fmt(mp_add751x2_asm):
     ldp x3, x4,   [x0,#0]
     ldp x5, x6,   [x0,#16]
     ldp x7, x8,   [x0,#32]
@@ -1232,8 +1240,8 @@ oqs_kem_sike_mp_add751x2_asm:
 //  2x751-bit multiprecision subtraction/addition
 //  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p751*2^768
 //*********************************************************************** 
-.global oqs_kem_sike_mp_subadd751x2_asm
-oqs_kem_sike_mp_subadd751x2_asm:
+.global fmt(mp_subadd751x2_asm)
+fmt(mp_subadd751x2_asm):
     sub sp, sp, #16
     stp x19, x20, [sp]
 
@@ -1340,8 +1348,8 @@ oqs_kem_sike_mp_subadd751x2_asm:
 //  Double 2x751-bit multiprecision subtraction
 //  Operation: c [x2] = c [x2] - a [x0] - b [x1]
 //*********************************************************************** 
-.global oqs_kem_sike_mp_dblsub751x2_asm
-oqs_kem_sike_mp_dblsub751x2_asm:
+.global fmt(mp_dblsub751x2_asm)
+fmt(mp_dblsub751x2_asm):
     sub sp, sp, #96
     stp x19, x20, [sp]
     stp x21, x22, [sp, #16]
