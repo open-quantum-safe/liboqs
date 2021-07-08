@@ -23,7 +23,7 @@
 {
    Requested number of random bytes is not secret
    Memcheck:Cond
-   src:poly.c:413
+   src:poly.c:394
    # fun:pqcrystals_dilithium2aes_avx2_poly_uniform_preinit
 }
 
@@ -46,6 +46,6 @@
 {
    Requested number of random bytes is not secret
    Memcheck:Cond
-   src:poly.c:546
+   src:poly.c:530
    # fun:pqcrystals_dilithium*aes_avx2_poly_uniform_eta_preinit
 }

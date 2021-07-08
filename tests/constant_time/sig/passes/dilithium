@@ -1,7 +1,7 @@
 {
    Rejection sampling for uniformly distributed public A matrix
    Memcheck:Cond
-   src:poly.c:343 # fun:rej_uniform
+   fun:rej_uniform
    fun:pqcrystals_dilithium*_ref_poly_uniform
    fun:pqcrystals_dilithium*_ref_polyvec_matrix_expand
 }
