@@ -3,11 +3,23 @@
 #include <oqs/oqs.h>
 
 #include "sha2_local.h"
+
 #include <stdio.h>
 
+#if defined(OQS_DIST_ARM64v8_BUILD) || defined(OQS_USE_ARM_SHA2_INSTRUCTIONS)
+#include <stdint.h>
+#include <arm_acle.h>
+#include <arm_neon.h>
+#endif
+/*
 #define PQC_SHA256CTX_BYTES 40
 #define PQC_SHA512CTX_BYTES 72
+*/
 
+
+
+
+/*
 typedef struct {
 	uint8_t *ctx;
 } sha224ctx;
@@ -17,7 +29,7 @@ typedef struct {
 #define sha224_inc_blocks oqs_sha2_sha224_inc_blocks
 #define sha224_inc_finalize oqs_sha2_sha224_inc_finalize
 #define sha224 oqs_sha2_sha224
-/*
+
 typedef struct {
 	uint8_t *ctx;
 } sha256ctx;
@@ -59,18 +71,19 @@ typedef struct {
 #include <stdlib.h>
 #include <string.h>
 
+/*
 static uint32_t load_bigendian_32(const uint8_t *x) {
 	return (uint32_t)(x[3]) | (((uint32_t)(x[2])) << 8) |
 	       (((uint32_t)(x[1])) << 16) | (((uint32_t)(x[0])) << 24);
 }
-
+*/
 static uint64_t load_bigendian_64(const uint8_t *x) {
 	return (uint64_t)(x[7]) | (((uint64_t)(x[6])) << 8) |
 	       (((uint64_t)(x[5])) << 16) | (((uint64_t)(x[4])) << 24) |
 	       (((uint64_t)(x[3])) << 32) | (((uint64_t)(x[2])) << 40) |
 	       (((uint64_t)(x[1])) << 48) | (((uint64_t)(x[0])) << 56);
 }
-
+/*
 static void store_bigendian_32(uint8_t *x, uint64_t u) {
 	x[3] = (uint8_t) u;
 	u >>= 8;
@@ -80,7 +93,7 @@ static void store_bigendian_32(uint8_t *x, uint64_t u) {
 	u >>= 8;
 	x[0] = (uint8_t) u;
 }
-
+*/
 static void store_bigendian_64(uint8_t *x, uint64_t u) {
 	x[7] = (uint8_t) u;
 	u >>= 8;
@@ -98,7 +111,7 @@ static void store_bigendian_64(uint8_t *x, uint64_t u) {
 	u >>= 8;
 	x[0] = (uint8_t) u;
 }
-
+/*
 #define SHR(x, c) ((x) >> (c))
 #define ROTR_32(x, c) (((x) >> (c)) | ((x) << (32 - (c))))
 #define ROTR_64(x, c) (((x) >> (c)) | ((x) << (64 - (c))))
@@ -335,7 +348,137 @@ static size_t crypto_hashblocks_sha256(uint8_t *statebytes,
 
 	return inlen;
 }
+*/
 
+static size_t crypto_hashblocks_sha256(uint8_t *statebytes,
+                                       const uint8_t *data, size_t length) {
+	static unsigned int s256cst[64]= {
+		0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
+		0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+		0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
+		0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+		0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
+		0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+		0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7,
+		0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+		0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13,
+		0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+		0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3,
+		0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+		0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5,
+		0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+		0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
+		0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2 };
+	unsigned long long pos = 0;
+	/* load constants */
+	uint32x4_t c0 = vld1q_u32(s256cst +  0);
+	uint32x4_t c1 = vld1q_u32(s256cst +  4);
+	uint32x4_t c2 = vld1q_u32(s256cst +  8);
+	uint32x4_t c3 = vld1q_u32(s256cst + 12);
+	uint32x4_t c4 = vld1q_u32(s256cst + 16);
+	uint32x4_t c5 = vld1q_u32(s256cst + 20);
+	uint32x4_t c6 = vld1q_u32(s256cst + 24);
+	uint32x4_t c7 = vld1q_u32(s256cst + 28);
+	uint32x4_t c8 = vld1q_u32(s256cst + 32);
+	uint32x4_t c9 = vld1q_u32(s256cst + 36);
+	uint32x4_t ca = vld1q_u32(s256cst + 40);
+	uint32x4_t cb = vld1q_u32(s256cst + 44);
+	uint32x4_t cc = vld1q_u32(s256cst + 48);
+	uint32x4_t cd = vld1q_u32(s256cst + 52);
+	uint32x4_t ce = vld1q_u32(s256cst + 56);
+	uint32x4_t cf = vld1q_u32(s256cst + 60);
+	/* load state */
+	uint32x4_t d0 = vld1q_u32((uint32_t*)(statebytes +  0));
+	uint32x4_t d1 = vld1q_u32((uint32_t*)(statebytes + 16));
+	uint32x4_t s0, s1, h0, h1;
+	/* make state big-endian */
+	d0 = (uint32x4_t)vrev32q_u8((uint8x16_t)d0);
+	d1 = (uint32x4_t)vrev32q_u8((uint8x16_t)d1);
+	while (length	>= 64) {
+		/* load one block */
+		uint32x4_t i0 = vld1q_u32((uint32_t*)(data+pos+ 0));
+		uint32x4_t i1 = vld1q_u32((uint32_t*)(data+pos+16));
+		uint32x4_t i2 = vld1q_u32((uint32_t*)(data+pos+32));
+		uint32x4_t i3 = vld1q_u32((uint32_t*)(data+pos+48));
+		uint32x4_t j0, j1, j2, j3;
+		uint32x4_t x0, x1;
+		
+		/* copy state to working space */
+		s0 = d0;
+		s1 = d1;
+		
+		/* make block big-endian */
+		i0 = (uint32x4_t)vrev32q_u8((uint8x16_t)i0);
+		i1 = (uint32x4_t)vrev32q_u8((uint8x16_t)i1);
+		i2 = (uint32x4_t)vrev32q_u8((uint8x16_t)i2);
+		i3 = (uint32x4_t)vrev32q_u8((uint8x16_t)i3);
+
+		/*
+		 * This computes 16 rounds in i0..i3
+		 * using 16 constants in c0..c3
+		 * we need h0,h1,x0,x1 as scratch
+		 */
+#define DO16ROUNDS(i0, i1, i2, i3, c0, c1, c2, c3)	\
+		h0 = vaddq_u32(i0, c0);			\
+		x0 = vsha256hq_u32(s0, s1, h0);		\
+		x1 = vsha256h2q_u32(s1, s0, h0);	\
+		h1 = vaddq_u32(i1, c1);			\
+		s0 = vsha256hq_u32(x0, x1, h1);		\
+		s1 = vsha256h2q_u32(x1, x0, h1);	\
+		h0 = vaddq_u32(i2, c2);			\
+		x0 = vsha256hq_u32(s0, s1, h0);		\
+		x1 = vsha256h2q_u32(s1, s0, h0);	\
+		h1 = vaddq_u32(i3, c3);			\
+		s0 = vsha256hq_u32(x0, x1, h1);		\
+		s1 = vsha256h2q_u32(x1, x0, h1)
+
+		/*
+		 * this expands the block (or previously
+		 * expanded) in i0..i3 to j0..j3
+		 */
+#define DO16EXPANDS(i0, i1, i2, i3, j0, j1, j2, j3)	\
+		j0 = vsha256su0q_u32(i0, i1);		\
+		j0 = vsha256su1q_u32(j0, i2, i3);	\
+		j1 = vsha256su0q_u32(i1, i2);		\
+		j1 = vsha256su1q_u32(j1, i3, j0);	\
+		j2 = vsha256su0q_u32(i2, i3);		\
+		j2 = vsha256su1q_u32(j2, j0, j1);	\
+		j3 = vsha256su0q_u32(i3, j0);		\
+		j3 = vsha256su1q_u32(j3, j1, j2)
+
+		DO16ROUNDS(i0, i1, i2, i3, c0, c1, c2, c3);
+
+		DO16EXPANDS(i0, i1, i2, i3, j0, j1, j2, j3);
+
+		DO16ROUNDS(j0, j1, j2, j3, c4, c5, c6, c7);
+
+		DO16EXPANDS(j0, j1, j2, j3, i0, i1, i2, i3);
+
+		DO16ROUNDS(i0, i1, i2, i3, c8, c9, ca, cb);
+
+		DO16EXPANDS(i0, i1, i2, i3, j0, j1, j2, j3);
+
+		DO16ROUNDS(j0, j1, j2, j3, cc, cd, ce, cf);
+
+		/* final add to update states */
+		d0 = vaddq_u32(s0, d0);
+		d1 = vaddq_u32(s1, d1);
+
+		length -= 64;
+		pos += 64;
+	}
+
+	/* store back to little-endian */
+	d0 = (uint32x4_t)vrev32q_u8((uint8x16_t)d0);
+	d1 = (uint32x4_t)vrev32q_u8((uint8x16_t)d1);
+	vst1q_u32((uint32_t*)(statebytes +  0), d0);
+	vst1q_u32((uint32_t*)(statebytes + 16), d1);
+
+	return length;
+
+}
+
+/*
 static size_t crypto_hashblocks_sha512(uint8_t *statebytes,
                                        const uint8_t *in, size_t inlen) {
 	uint64_t state[8];
@@ -511,144 +654,9 @@ static size_t crypto_hashblocks_sha512(uint8_t *statebytes,
 
 	return inlen;
 }
-
-static const uint8_t iv_224[32] = {
-	0xc1, 0x05, 0x9e, 0xd8, 0x36, 0x7c, 0xd5, 0x07,
-	0x30, 0x70, 0xdd, 0x17, 0xf7, 0x0e, 0x59, 0x39,
-	0xff, 0xc0, 0x0b, 0x31, 0x68, 0x58, 0x15, 0x11,
-	0x64, 0xf9, 0x8f, 0xa7, 0xbe, 0xfa, 0x4f, 0xa4
-};
-
-static const uint8_t iv_256[32] = {
-	0x6a, 0x09, 0xe6, 0x67, 0xbb, 0x67, 0xae, 0x85,
-	0x3c, 0x6e, 0xf3, 0x72, 0xa5, 0x4f, 0xf5, 0x3a,
-	0x51, 0x0e, 0x52, 0x7f, 0x9b, 0x05, 0x68, 0x8c,
-	0x1f, 0x83, 0xd9, 0xab, 0x5b, 0xe0, 0xcd, 0x19
-};
-
-static const uint8_t iv_384[64] = {
-	0xcb, 0xbb, 0x9d, 0x5d, 0xc1, 0x05, 0x9e, 0xd8, 0x62, 0x9a, 0x29,
-	0x2a, 0x36, 0x7c, 0xd5, 0x07, 0x91, 0x59, 0x01, 0x5a, 0x30, 0x70,
-	0xdd, 0x17, 0x15, 0x2f, 0xec, 0xd8, 0xf7, 0x0e, 0x59, 0x39, 0x67,
-	0x33, 0x26, 0x67, 0xff, 0xc0, 0x0b, 0x31, 0x8e, 0xb4, 0x4a, 0x87,
-	0x68, 0x58, 0x15, 0x11, 0xdb, 0x0c, 0x2e, 0x0d, 0x64, 0xf9, 0x8f,
-	0xa7, 0x47, 0xb5, 0x48, 0x1d, 0xbe, 0xfa, 0x4f, 0xa4
-};
-
-static const uint8_t iv_512[64] = {
-	0x6a, 0x09, 0xe6, 0x67, 0xf3, 0xbc, 0xc9, 0x08, 0xbb, 0x67, 0xae,
-	0x85, 0x84, 0xca, 0xa7, 0x3b, 0x3c, 0x6e, 0xf3, 0x72, 0xfe, 0x94,
-	0xf8, 0x2b, 0xa5, 0x4f, 0xf5, 0x3a, 0x5f, 0x1d, 0x36, 0xf1, 0x51,
-	0x0e, 0x52, 0x7f, 0xad, 0xe6, 0x82, 0xd1, 0x9b, 0x05, 0x68, 0x8c,
-	0x2b, 0x3e, 0x6c, 0x1f, 0x1f, 0x83, 0xd9, 0xab, 0xfb, 0x41, 0xbd,
-	0x6b, 0x5b, 0xe0, 0xcd, 0x19, 0x13, 0x7e, 0x21, 0x79
-};
-
-void sha224_inc_init(sha224ctx *state) {
-	state->ctx = malloc(PQC_SHA256CTX_BYTES);
-	if (state->ctx == NULL) {
-		exit(111);
-	}
-	for (size_t i = 0; i < 32; ++i) {
-		state->ctx[i] = iv_224[i];
-	}
-	for (size_t i = 32; i < 40; ++i) {
-		state->ctx[i] = 0;
-	}
-}
-
-void oqs_sha2_sha256_inc_init_c(sha256ctx *state) {
-	state->ctx = malloc(PQC_SHA256CTX_BYTES);
-	if (state->ctx == NULL) {
-		exit(111);
-	}
-	for (size_t i = 0; i < 32; ++i) {
-		state->ctx[i] = iv_256[i];
-	}
-	for (size_t i = 32; i < 40; ++i) {
-		state->ctx[i] = 0;
-	}
-}
-
-void oqs_sha2_sha384_inc_init_c(sha384ctx *state) {
-	state->ctx = malloc(PQC_SHA512CTX_BYTES);
-	if (state->ctx == NULL) {
-		exit(111);
-	}
-	for (size_t i = 0; i < 64; ++i) {
-		state->ctx[i] = iv_384[i];
-	}
-	for (size_t i = 64; i < 72; ++i) {
-		state->ctx[i] = 0;
-	}
-}
-
-void oqs_sha2_sha512_inc_init_c(sha512ctx *state) {
-	state->ctx = malloc(PQC_SHA512CTX_BYTES);
-	if (state->ctx == NULL) {
-		exit(111);
-	}
-	for (size_t i = 0; i < 64; ++i) {
-		state->ctx[i] = iv_512[i];
-	}
-	for (size_t i = 64; i < 72; ++i) {
-		state->ctx[i] = 0;
-	}
-}
-
-void sha224_inc_ctx_clone_c(sha224ctx *stateout, const sha224ctx *statein) {
-	stateout->ctx = malloc(PQC_SHA256CTX_BYTES);
-	if (stateout->ctx == NULL) {
-		exit(111);
-	}
-	memcpy(stateout->ctx, statein->ctx, PQC_SHA256CTX_BYTES);
-}
-
-void oqs_sha2_sha256_inc_ctx_clone_c(sha256ctx *stateout, const sha256ctx *statein) {
-	stateout->ctx = malloc(PQC_SHA256CTX_BYTES);
-	if (stateout->ctx == NULL) {
-		exit(111);
-	}
-	memcpy(stateout->ctx, statein->ctx, PQC_SHA256CTX_BYTES);
-}
-
-void oqs_sha2_sha384_inc_ctx_clone_c(sha384ctx *stateout, const sha384ctx *statein) {
-	stateout->ctx = malloc(PQC_SHA512CTX_BYTES);
-	if (stateout->ctx == NULL) {
-		exit(111);
-	}
-	memcpy(stateout->ctx, statein->ctx, PQC_SHA512CTX_BYTES);
-}
-
-void oqs_sha2_sha512_inc_ctx_clone_c(sha512ctx *stateout, const sha512ctx *statein) {
-	stateout->ctx = malloc(PQC_SHA512CTX_BYTES);
-	if (stateout->ctx == NULL) {
-		exit(111);
-	}
-	memcpy(stateout->ctx, statein->ctx, PQC_SHA512CTX_BYTES);
-}
-
-/* Destroy the hash state. */
-void sha224_inc_ctx_release(sha224ctx *state) {
-	free(state->ctx); // IGNORE free-check
-}
-
-/* Destroy the hash state. */
-void oqs_sha2_sha256_inc_ctx_release_c(sha256ctx *state) {
-	free(state->ctx); // IGNORE free-check
-}
-
-/* Destroy the hash state. */
-void oqs_sha2_sha384_inc_ctx_release_c(sha384ctx *state) {
-	free(state->ctx); // IGNORE free-check
-}
-
-/* Destroy the hash state. */
-void oqs_sha2_sha512_inc_ctx_release_c(sha512ctx *state) {
-	free(state->ctx); // IGNORE free-check
-}
-
-void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t inblocks) {
+*/
+void oqs_sha2_sha256_inc_blocks_ni(sha256ctx *state, const uint8_t *in, size_t inblocks) {
+	
 	uint64_t bytes = load_bigendian_64(state->ctx + 32);
 
 	crypto_hashblocks_sha256(state->ctx, in, 64 * inblocks);
@@ -657,11 +665,8 @@ void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t in
 	store_bigendian_64(state->ctx + 32, bytes);
 }
 
-void sha224_inc_blocks(sha224ctx *state, const uint8_t *in, size_t inblocks) {
-	oqs_sha2_sha256_inc_blocks_c((sha256ctx *) state, in, inblocks);
-}
-
-void oqs_sha2_sha512_inc_blocks_c(sha512ctx *state, const uint8_t *in, size_t inblocks) {
+/*
+void oqs_sha2_sha512_inc_blocks_ni(sha512ctx *state, const uint8_t *in, size_t inblocks) {
 	uint64_t bytes = load_bigendian_64(state->ctx + 64);
 
 	crypto_hashblocks_sha512(state->ctx, in, 128 * inblocks);
@@ -670,11 +675,11 @@ void oqs_sha2_sha512_inc_blocks_c(sha512ctx *state, const uint8_t *in, size_t in
 	store_bigendian_64(state->ctx + 64, bytes);
 }
 
-void oqs_sha2_sha384_inc_blocks_c(sha384ctx *state, const uint8_t *in, size_t inblocks) {
-	oqs_sha2_sha512_inc_blocks_c((sha512ctx *) state, in, inblocks);
+void oqs_sha2_sha384_inc_blocks_ni(sha384ctx *state, const uint8_t *in, size_t inblocks) {
+	oqs_sha2_sha512_inc_blocks_ni((sha512ctx *) state, in, inblocks);
 }
-
-void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_t *in, size_t inlen) {
+*/
+void oqs_sha2_sha256_inc_finalize_ni(uint8_t *out, sha256ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t padded[128];
 	uint64_t bytes = load_bigendian_64(state->ctx + 32) + inlen;
 
@@ -682,6 +687,7 @@ void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_
 	in += inlen;
 	inlen &= 63;
 	in -= inlen;
+
 
 	for (size_t i = 0; i < inlen; ++i) {
 		padded[i] = in[i];
@@ -721,17 +727,17 @@ void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_
 	}
 	oqs_sha2_sha256_inc_ctx_release_c(state);
 }
-
+/*
 void sha224_inc_finalize(uint8_t *out, sha224ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t tmp[32];
-	oqs_sha2_sha256_inc_finalize_c(tmp, (sha256ctx *)state, in, inlen);
+	oqs_sha2_sha256_inc_finalize_ni(tmp, (sha256ctx *)state, in, inlen);
 
 	for (size_t i = 0; i < 28; ++i) {
 		out[i] = tmp[i];
 	}
 }
 
-void oqs_sha2_sha512_inc_finalize_c(uint8_t *out, sha512ctx *state, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha512_inc_finalize_ni(uint8_t *out, sha512ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t padded[256];
 	uint64_t bytes = load_bigendian_64(state->ctx + 64) + inlen;
 
@@ -778,16 +784,37 @@ void oqs_sha2_sha512_inc_finalize_c(uint8_t *out, sha512ctx *state, const uint8_
 	for (size_t i = 0; i < 64; ++i) {
 		out[i] = state->ctx[i];
 	}
-	oqs_sha2_sha512_inc_ctx_release_c(state);
+	oqs_sha2_sha512_inc_ctx_release_ni(state);
 }
 
-void oqs_sha2_sha384_inc_finalize_c(uint8_t *out, sha384ctx *state, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha384_inc_finalize_ni(uint8_t *out, sha384ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t tmp[64];
-	oqs_sha2_sha512_inc_finalize_c(tmp, (sha512ctx *)state, in, inlen);
+	oqs_sha2_sha512_inc_finalize_ni(tmp, (sha512ctx *)state, in, inlen);
 
 	for (size_t i = 0; i < 48; ++i) {
 		out[i] = tmp[i];
 	}
+}
+*/
+void oqs_sha2_sha256_ni(uint8_t *out, const uint8_t *in, size_t inlen) {
+	sha256ctx state;
+
+	oqs_sha2_sha256_inc_init_c(&state);
+	oqs_sha2_sha256_inc_finalize_ni(out, &state, in, inlen);
+}
+/*
+void oqs_sha2_sha384_ni(uint8_t *out, const uint8_t *in, size_t inlen) {
+	sha384ctx state;
+
+	oqs_sha2_sha384_inc_init_c(&state);
+	oqs_sha2_sha384_inc_finalize_c(out, &state, in, inlen);
+}
+
+void oqs_sha2_sha512_ni(uint8_t *out, const uint8_t *in, size_t inlen) {
+	sha512ctx state;
+
+	oqs_sha2_sha512_inc_init_c(&state);
+	oqs_sha2_sha512_inc_finalize_c(out, &state, in, inlen);
 }
 
 void sha224(uint8_t *out, const uint8_t *in, size_t inlen) {
@@ -796,25 +823,4 @@ void sha224(uint8_t *out, const uint8_t *in, size_t inlen) {
 	sha224_inc_init(&state);
 	sha224_inc_finalize(out, &state, in, inlen);
 }
-
-void oqs_sha2_sha256_c(uint8_t *out, const uint8_t *in, size_t inlen) {
-	sha256ctx state;
-
-	oqs_sha2_sha256_inc_init_c(&state);
-	oqs_sha2_sha256_inc_finalize_c(out, &state, in, inlen);
-}
-
-void oqs_sha2_sha384_c(uint8_t *out, const uint8_t *in, size_t inlen) {
-	sha384ctx state;
-
-	oqs_sha2_sha384_inc_init_c(&state);
-	oqs_sha2_sha384_inc_finalize_c(out, &state, in, inlen);
-}
-
-void oqs_sha2_sha512_c(uint8_t *out, const uint8_t *in, size_t inlen) {
-	sha512ctx state;
-
-	oqs_sha2_sha512_inc_init_c(&state);
-	oqs_sha2_sha512_inc_finalize_c(out, &state, in, inlen);
-}
-
+*/
