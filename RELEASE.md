@@ -1,5 +1,5 @@
-liboqs version 0.6.0
-====================
+liboqs version 0.7.0-rc1
+========================
 
 About
 -----
@@ -28,31 +28,25 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is version 0.6.0 of liboqs.  It was released on June 8, 2021.
+This is release candidate 1 for version 0.7.0 of liboqs.  It was released on July 13, 2021.
 
 What's New
 ----------
 
-This release continues from the 0.5.0 release of liboqs. 
+This release continues from the 0.6.0 release of liboqs. 
 
 ### Key encapsulation mechanisms
 
-- Update Classic McEliece implementation
-- Bug fixes in SIKE
-- Bug fixes in HQC
-- Change unsigned char to uint8_t in KEM API
-- Fix wrong NIST level for Kyber768-90s
+- Update BIKE to Round 3 (version 3.2) -- add BIKE1, BIKE3, remove BIKE1-L1-CPA, BIKE1-L1-FO, BIKE1-L3-CPA, BIKE1-L3-FO
+- Update NTRU Prime implementation
+- Update SIKE implementation
+- Remove OQS\_KEM\_DEFAULT alias
 
 ### Digital signature schemes
 
-- Update SPHINCS+ to Round 3 version
+- Remove OQS\_SIG\_DEFAULT alias
 
 ### Other changes
 
-- Improve random number generator when not relying on OpenSSL
-- Improve run-time and compile-time guarding of optimized code
-- Remove (unused) AES decryption code from common symmetric encryption code
-- Replace AES plain C implementation with a constant-time version
-- Update Windows cross-compiling toolchain
-- **Build options changed**:
-	- By default, liboqs is now no longer built by default with CPU runtime feature detection and thus resulting executables may crash if not compiled suitably for the  CPU on which the code shall be executed.  For Docker files, we recommend setting [OQS\_DIST\_BUILD](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs#OQS_DIST_BUILD) to obtain code able to handle different CPU feature sets. Also, [OQS\_OPT\_TARGET](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs#oqs_opt_target) can be used to target a specific CPU at compile time. These flags are documented on the [build options wiki page](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs).
+- Allow liboqs to build on other architectures, with preliminary builds on ppc64le
+- Support for building liboqs on Apple Silicon
