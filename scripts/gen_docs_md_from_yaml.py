@@ -77,7 +77,7 @@ for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
                       'Large stack usage?']]
             for impl in parameter_set['implementations']:
                 if impl['supported-platforms'] == 'all':
-                    table.append([impl['upstream-id'],
+                    table.append([impl['upstream-id'].replace('_', '\_'),
                                   'All',
                                   'All',
                                   'None',
@@ -92,8 +92,8 @@ for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
                         else:
                             flags = 'None'
 
-                        table.append([impl['upstream-id'],
-                                      platform['architecture'],
+                        table.append([impl['upstream-id'].replace('_', '\_'),
+                                      platform['architecture'].replace('_', '\_'),
                                       op_systems,
                                       flags,
                                       impl['no-secret-dependent-branching-claimed'],

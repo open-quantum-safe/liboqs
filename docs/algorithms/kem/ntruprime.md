@@ -26,7 +26,7 @@
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86_64                      | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -35,7 +35,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86_64                      | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -44,7 +44,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86_64                      | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -53,7 +53,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86_64                      | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -62,7 +62,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86_64                      | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -71,6 +71,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86_64                      | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.

@@ -34,9 +34,9 @@
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -45,9 +45,9 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -56,10 +56,10 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|     additional_amd64     | x86_64                      | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -68,10 +68,10 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|     additional_amd64     | x86_64                      | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -80,9 +80,9 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -91,9 +91,9 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -102,10 +102,10 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|     additional_amd64     | x86_64                      | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -114,10 +114,10 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|     additional_amd64     | x86_64                      | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -126,9 +126,9 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -137,9 +137,9 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -148,10 +148,10 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|     additional_amd64     | x86_64                      | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -160,10 +160,10 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|     additional_amd64     | x86_64                      | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -172,9 +172,9 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -183,9 +183,9 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -194,10 +194,10 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|     additional_amd64     | x86_64                      | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -206,9 +206,9 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|     additional_amd64     | x86_64                      | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-|  additional_amd64_bmi2   | x86_64                      | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|   additional_amd64_adx   | x86_64                      | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|     additional_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
