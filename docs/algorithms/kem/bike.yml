@@ -1,0 +1,89 @@
+name: BIKE
+type: kem
+principal-submitters:
+- Nicolas Aragon
+- Paulo Barreto
+- Slim Bettaieb
+- Loic Bidoux
+- Olivier Blazy
+- Jean-Christophe Deneuville
+- Phillipe Gaborit
+- Santosh Gosh
+- Shay Gueron
+- Tim Güneysu
+- Carlos Aguilar Melchor
+- Rafael Misoczki
+- Edoardo Persichetti
+- Nicolas Sendrier
+- Jean-Pierre Tillich
+- Valentin Vasseur
+- Gilles Zémor
+crypto-assumption: QC-MDPC (Quasi-Cyclic Moderate Density Parity-Check)
+website: http://bikesuite.org/
+nist-round: 3
+spec-version: 4.1
+spdx-license-identifier: Apache-2.0
+upstream: https://github.com/awslabs/bike-kem
+upstream-ancestors:
+- https://bikesuite.org/files/v4.1/Reference_Implementation.2020.10.20.2.zip
+parameter-sets:
+- name: BIKE-L1
+  claimed-nist-level: 1
+  claimed-security: IND-CPA
+  length-public-key: 1541
+  length-ciphertext: 1573
+  length-secret-key: 5223
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: master
+    supported-platforms: all
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: master
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - avx512
+      - pclmul
+      - sse2
+    common-crypto:
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: BIKE-L3
+  claimed-nist-level: 3
+  claimed-security: IND-CPA
+  length-ciphertext: 3115
+  length-public-key: 3083
+  length-secret-key: 10105
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: master
+    supported-platforms: all
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: master
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - avx512
+      - pclmul
+      - sse2
+    common-crypto:
+    - AES: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false

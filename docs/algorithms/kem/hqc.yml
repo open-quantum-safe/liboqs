@@ -1,0 +1,118 @@
+name: HQC
+type: kem
+principal-submitters:
+- Carlos Aguilar Melchor
+- Nicolas Aragon
+- Slim Bettaieb
+- Olivier Blazy
+- Jurjen Bos
+- Jean-Christophe Deneuville
+- Philippe Gaborit
+- Edoardo Persichetti
+- Jean-Marc Robert
+- Pascal Véron
+- Gilles Zémor
+- Loïc Bidoux
+crypto-assumption: Syndrome decoding of structure codes (Hamming Quasi-Cyclic)
+website: https://pqc-hqc.org/
+nist-round: 3
+spec-version: NIST Round 3 submission
+spdx-license-identifier: Public domain
+upstream: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24
+upstream-ancestors:
+- https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc
+- submission 2020-10-01 at https://pqc-hqc.org/implementation.html
+parameter-sets:
+- name: HQC-128
+  claimed-nist-level: 1
+  claimed-security: IND-CCA2
+  length-public-key: 2249
+  length-ciphertext: 4481
+  length-secret-key: 2289
+  length-shared-secret: 64
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi1
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: HQC-192
+  claimed-nist-level: 3
+  claimed-security: IND-CCA2
+  length-ciphertext: 9026
+  length-public-key: 4522
+  length-secret-key: 4562
+  length-shared-secret: 64
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi1
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: HQC-256
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-ciphertext: 14469
+  length-public-key: 7245
+  length-secret-key: 7285
+  length-shared-secret: 64
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - bmi1
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false

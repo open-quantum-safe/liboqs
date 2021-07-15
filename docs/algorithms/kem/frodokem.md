@@ -1,29 +1,74 @@
-FrodoKEM
-========
+# FrodoKEM
 
-- **Algorithm type**: key encapsulation mechanism
-- **Main cryptographic assumption**: learning with errors (LWE)
-- **Scheme authors**: Michael Naehrig, Erdem Alkim, Joppe Bos, Léo Ducas, Karen Easterbrook, Brian LaMacchia, Patrick Longa, Ilya Mironov, Valeria Nikolaenko, Christopher Peikert, Ananth Raghunathan, Douglas Stebila
-- **Authors' website**: https://frodokem.org/
-- **Version**: NIST Round 3 submission
+- **Algorithm type**: Key encapsulation mechanism.
+- **Main cryptographic assumption**: learning with errors (LWE).
+- **Principal submitters**: Michael Naehrig, Erdem Alkim, Joppe Bos, Léo Ducas, Karen Easterbrook, Brian LaMacchia, Patrick Longa, Ilya Mironov, Valeria Nikolaenko, Christopher Peikert, Ananth Raghunathan, Douglas Stebila.
+- **Authors website**: https://frodokem.org/
+- **Specification version**: NIST Round 3 submission.
+- **Implementation source**: https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2
+- **Implementation license (SPDX-Identifier)**: MIT.
 
-Implementation
---------------
+## Parameter set summary
 
-- **Source of implementation**: https://github.com/Microsoft/PQCrypto-LWEKE
-- **Implementation version**: https://github.com/microsoft/PQCrypto-LWEKE/commit/669522db63850fa64d1a24a47e138e80a59349db
-- **License**: MIT License
-- **Constant-time**: Yes
-- **Optimizations**: Portable C with optional use of AVX2 and AESNI instructions (selected at compile-time, enabled by default if available)
+|    Parameter set    | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
+|:-------------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
+|  FrodoKEM-640-AES   | IND-CCA2         |                    1 |                      9616 |                     19888 |                      9720 |                           16 |
+| FrodoKEM-640-SHAKE  | IND-CCA2         |                    1 |                      9616 |                     19888 |                      9720 |                           16 |
+|  FrodoKEM-976-AES   | IND-CCA2         |                    3 |                     15632 |                     31296 |                     15744 |                           24 |
+| FrodoKEM-976-SHAKE  | IND-CCA2         |                    3 |                     15632 |                     31296 |                     15744 |                           24 |
+|  FrodoKEM-1344-AES  | IND-CCA2         |                    5 |                     21520 |                     43088 |                     21632 |                           32 |
+| FrodoKEM-1344-SHAKE | IND-CCA2         |                    5 |                     21520 |                     43088 |                     21632 |                           32 |
 
-Parameter sets
---------------
+## FrodoKEM-640-AES implementation characteristics
 
-| Parameter set       | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Ciphertext size (bytes) | Shared secret size (bytes) |
-|---------------------|:--------------:|:---------------------------:|:-----------------------:|:-----------------------:|:-----------------------:|:--------------------------:|
-| FrodoKEM-640-AES    |     IND-CCA    |              1              |           9616          |          19888          |           9720          |             16             |
-| FrodoKEM-640-SHAKE  |     IND-CCA    |              1              |           9616          |          19888          |           9720          |             16             |
-| FrodoKEM-976-AES    |     IND-CCA    |              3              |          15632          |          31296          |          15744          |             24             |
-| FrodoKEM-976-SHAKE  |     IND-CCA    |              3              |          15632          |          31296          |          15744          |             24             |
-| FrodoKEM-1344-AES   |     IND-CCA    |              5              |          21520          |          43088          |          21632          |             32             |
-| FrodoKEM-1344-SHAKE |     IND-CCA    |              5              |          21520          |          43088          |          21632          |             32             |
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
+|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## FrodoKEM-640-SHAKE implementation characteristics
+
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
+|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## FrodoKEM-976-AES implementation characteristics
+
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
+|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## FrodoKEM-976-SHAKE implementation characteristics
+
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
+|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## FrodoKEM-1344-AES implementation characteristics
+
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
+|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## FrodoKEM-1344-SHAKE implementation characteristics
+
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
+|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.

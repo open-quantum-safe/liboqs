@@ -1,0 +1,193 @@
+name: Rainbow
+type: signature
+principal-submitters:
+  - Jintai Ding
+auxiliary-submitters:
+  - Ming-Shing Chen
+  - Matthias Kannwischer
+  - Jacques Patarin
+  - Albrecht Petzoldt
+  - Dieter Schmidt
+  - Bo-Yin Yang
+crypto-assumption: multivariable polynomials, unbalanced oil and vinegar
+website: https://www.pqcrainbow.org/
+nist-round: 3
+spec-version: NIST Round 3 submission
+spdx-license-identifier: CC0 1.0
+implementation-chain:
+  - https://github.com/fast-crypto-lab/rainbow-submission-round2
+  - https://github.com/PQClean/PQClean/commit/ef4ad5da02283ec0dd58b57a0684c98a1e33a531
+implementation-type: Portable C
+parameter-sets:
+  -
+    name: Rainbow-I-Classic
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 161600
+    length-secret-key: 103648
+    length-signature: 66
+    implementations:
+      -
+        arch: x86-64
+        portable: yes
+        platforms: []
+        cpu-extensions-used: []
+        common-crypto:
+          - AES: liboqs
+          - SHA2: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+  -
+    name: Rainbow-I-Circumzenithal
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 60192
+    length-secret-key: 103648
+    length-signature: 66
+    implementations:
+      -
+        arch: x86-64
+        portable: yes
+        platforms: []
+        cpu-extensions-used: []
+        common-crypto:
+          - AES: liboqs
+          - SHA2: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+  -
+    name: Rainbow-I-Compressed
+    claimed-nist-level: 1
+    claimed-security: EUF-CMA
+    length-public-key: 60192
+    length-secret-key: 64
+    length-signature: 66
+    implementations:
+      -
+        arch: x86-64
+        portable: yes
+        platforms: []
+        cpu-extensions-used: []
+        common-crypto:
+          - AES: liboqs
+          - SHA2: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+  -
+    name: Rainbow-III-Classic
+    claimed-security: EUF-CMA
+    claimed-nist-level: 3
+    length-public-key: 882080
+    length-secret-key: 626048
+    length-signature: 164
+    implementations:
+      -
+        arch: x86-64
+        portable: yes
+        platforms: []
+        cpu-extensions-used: []
+        common-crypto:
+          - AES: liboqs
+          - SHA2: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+  -
+    name: Rainbow-III-Circumzenithal
+    claimed-security: EUF-CMA
+    claimed-nist-level: 3
+    length-public-key: 264608
+    length-secret-key: 626048
+    length-signature: 164
+    implementations:
+      -
+        arch: x86-64
+        portable: yes
+        platforms: []
+        cpu-extensions-used: []
+        common-crypto:
+          - AES: liboqs
+          - SHA2: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+  -
+    name: Rainbow-III-Compressed
+    claimed-security: EUF-CMA
+    claimed-nist-level: 3
+    length-public-key: 264608
+    length-secret-key: 64
+    length-signature: 164
+    implementations:
+      -
+        arch: x86-64
+        portable: yes
+        platforms: []
+        cpu-extensions-used: []
+        common-crypto:
+          - AES: liboqs
+          - SHA2: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+  -
+    name: Rainbow-V-Classic
+    claimed-security: EUF-CMA
+    claimed-nist-level: 5
+    length-public-key: 1930600
+    length-secret-key: 1408736
+    length-signature: 212
+    implementations:
+      -
+        arch: x86-64
+        portable: yes
+        platforms: []
+        cpu-extensions-used: []
+        common-crypto:
+          - AES: liboqs
+          - SHA2: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+  -
+    name: Rainbow-V-Circumzenithal
+    claimed-security: EUF-CMA
+    claimed-nist-level: 5
+    length-public-key: 536136
+    length-secret-key: 1408736
+    length-signature: 212
+    implementations:
+      -
+        arch: x86-64
+        portable: yes
+        platforms: []
+        cpu-extensions-used: []
+        common-crypto:
+          - AES: liboqs
+          - SHA2: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+  -
+    name: Rainbow-V-Compressed
+    claimed-security: EUF-CMA
+    claimed-nist-level: 5
+    length-public-key: 536136
+    length-secret-key: 64
+    length-signature: 212
+    implementations:
+      -
+        arch: x86-64
+        portable: yes
+        platforms: []
+        cpu-extensions-used: []
+        common-crypto:
+          - AES: liboqs
+          - SHA2: liboqs
+        no-secret-dependent-branching-claimed: true
+        no-secret-dependent-branching-checked-by-valgrind: true
+        large-stack-usage: true
+
