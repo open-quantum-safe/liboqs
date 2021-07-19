@@ -22,6 +22,12 @@
 extern "C" {
 #endif
 
+/** Data structure for the state of the SHA-224 incremental hashing API. */
+typedef struct {
+	/** Internal state */
+	void *ctx;
+} OQS_SHA2_sha224_ctx;
+
 /**
  * \brief Process a message with SHA-256 and return the hash code in the output byte array.
  *
