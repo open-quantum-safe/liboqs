@@ -33,7 +33,7 @@ else()
     set(SHA2_IMPL sha2/sha2.c sha2/sha2_c.c)
     if (OQS_DIST_ARM64v8_BUILD OR OQS_USE_ARM_SHA2_INSTRUCTIONS)
       set(SHA2_IMPL ${SHA2_IMPL} sha2/sha2_ni.c)
-      set_source_files_properties(sha2/sha2_ni.c PROPERTIES COMPILE_FLAGS -march=armv8-a+crypto)
+      # set_source_files_properties(sha2/sha2_ni.c PROPERTIES COMPILE_FLAGS -march=armv8-a+crypto)
      endif()
 endif()
 
