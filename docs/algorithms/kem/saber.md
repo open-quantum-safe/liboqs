@@ -3,7 +3,7 @@
 - **Algorithm type**: Key encapsulation mechanism.
 - **Main cryptographic assumption**: Module learning with rounding.
 - **Principal submitters**: Jan-Pieter D'Anvers, Angshuman Karmakar, Sujoy Sinha Roy, Frederik Vercauteren.
-- **Authors website**: https://www.esat.kuleuven.be/cosic/pqcrypto/saber/
+- **Authors' website**: https://www.esat.kuleuven.be/cosic/pqcrypto/saber/
 - **Specification version**: NIST Round 3 submission.
 - **Implementation source**: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24, which takes it from:
   - https://github.com/jschanck/package-pqclean/tree/1ae84c3c/saber, which takes it from:

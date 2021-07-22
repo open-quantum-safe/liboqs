@@ -162,6 +162,7 @@ parameter-sets:
   length-public-key: 49
   length-secret-key: 73
   length-signature: 121849
+  implementations-switch-on-runtime-cpu-features: false
   implementations:
   - upstream-id: master
     supported-platforms: all
@@ -231,6 +232,32 @@ parameter-sets:
   length-signature: 132860
   implementations-switch-on-runtime-cpu-features: false
   implementations:
+  - upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: master
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      required_flags:
+      - avx2
+      - sse2
+    - architecture: x86_64
+      operating_systems:
+      - Darwin
+      - Windows
+      required_flags:
+      - sse2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
 - name: picnic_L5_UR
   claimed-nist-level: 5
   claimed-security: EUF-CMA

@@ -3,7 +3,7 @@
 - **Algorithm type**: Key encapsulation mechanism.
 - **Main cryptographic assumption**: learning with errors (LWE).
 - **Principal submitters**: Michael Naehrig, Erdem Alkim, Joppe Bos, Léo Ducas, Karen Easterbrook, Brian LaMacchia, Patrick Longa, Ilya Mironov, Valeria Nikolaenko, Christopher Peikert, Ananth Raghunathan, Douglas Stebila.
-- **Authors website**: https://frodokem.org/
+- **Authors' website**: https://frodokem.org/
 - **Specification version**: NIST Round 3 submission.
 - **Implementation source**: https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2
 - **Implementation license (SPDX-Identifier)**: MIT.

@@ -4,7 +4,7 @@
 - **Main cryptographic assumption**: Module LWE+R with base ring Z[x]/(3329, x^256+1).
 - **Principal submitters**: Peter Schwabe.
 - **Auxiliary submitters**: Roberto Avanzi, Joppe Bos, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Vadim Lyubashevsky, John M. Schanck, Gregor Seiler, Damien Stehlé.
-- **Authors website**: https://pq-crystals.org/
+- **Authors' website**: https://pq-crystals.org/
 - **Specification version**: NIST Round 3 submission.
 - **Implementation source**: https://github.com/pq-crystals/kyber/commit/8e9308bd with copy_from_upstream patches
 - **Implementation license (SPDX-Identifier)**: CC0-1.0.

@@ -3,7 +3,7 @@
 - **Algorithm type**: Key encapsulation mechanism.
 - **Main cryptographic assumption**: Syndrome decoding of structure codes (Hamming Quasi-Cyclic).
 - **Principal submitters**: Carlos Aguilar Melchor, Nicolas Aragon, Slim Bettaieb, Olivier Blazy, Jurjen Bos, Jean-Christophe Deneuville, Philippe Gaborit, Edoardo Persichetti, Jean-Marc Robert, Pascal Véron, Gilles Zémor, Loïc Bidoux.
-- **Authors website**: https://pqc-hqc.org/
+- **Authors' website**: https://pqc-hqc.org/
 - **Specification version**: NIST Round 3 submission.
 - **Implementation source**: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24, which takes it from:
   - https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc, which takes it from:

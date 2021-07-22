@@ -3,7 +3,7 @@
 - **Algorithm type**: Key encapsulation mechanism.
 - **Main cryptographic assumption**: NTRU.
 - **Principal submitters**: Daniel J. Bernstein, Chitchanok Chuengsatiansup, Tanja Lange, Christine van Vredendaal.
-- **Authors website**: https://ntruprime.cr.yp.to
+- **Authors' website**: https://ntruprime.cr.yp.to
 - **Specification version**: supercop-20200826.
 - **Implementation source**: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24, which takes it from:
   - https://github.com/jschanck/package-pqclean/tree/4d9f08c3/ntruprime, which takes it from:
