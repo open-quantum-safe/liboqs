@@ -5,7 +5,7 @@
 - **Principal submitters**: Andreas Hülsing.
 - **Auxiliary submitters**: Jean-Philippe Aumasson, Daniel J. Bernstein,, Christoph Dobraunig, Maria Eichlseder, Scott Fluhrer, Stefan-Lukas Gazdag, Panos Kampanakis, Stefan Kölbl, Tanja Lange, Martin M. Lauridsen, Florian Mendel, Ruben Niederhagen, Christian Rechberger, Joost Rijneveld, Peter Schwabe.
 - **Authors' website**: https://sphincs.org/
-- **Specification version**: NIST Round 2 submission.
+- **Specification version**: NIST Round 3 submission.
 - **Implementation source**: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24, which takes it from:
   - https://github.com/sphincs/sphincsplus
 - **Implementation license (SPDX-Identifier)**: CC0-1.0.
