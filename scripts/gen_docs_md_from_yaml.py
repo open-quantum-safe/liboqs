@@ -184,4 +184,6 @@ for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
                                       impl['no-secret-dependent-branching-checked-by-valgrind'],
                                       impl['large-stack-usage']])
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
-            out_md.write('\n\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
+            out_md.write('\n')
+            if 'implementations-switch-on-runtime-cpu-features' in parameter_set:
+                out_md.write('\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))

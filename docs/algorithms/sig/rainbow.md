@@ -30,15 +30,11 @@
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
 ## Rainbow-I-Circumzenithal implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Rainbow-I-Compressed implementation characteristics
 
@@ -46,15 +42,11 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
 ## Rainbow-III-Classic implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Rainbow-III-Circumzenithal implementation characteristics
 
@@ -62,15 +54,11 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
 ## Rainbow-III-Compressed implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Rainbow-V-Classic implementation characteristics
 
@@ -78,20 +66,14 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
 ## Rainbow-V-Circumzenithal implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
 ## Rainbow-V-Compressed implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.

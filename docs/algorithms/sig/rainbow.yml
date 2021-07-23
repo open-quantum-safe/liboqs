@@ -24,7 +24,6 @@ parameter-sets:
   length-public-key: 161600
   length-secret-key: 103648
   length-signature: 66
-  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: clean
     supported-platforms: all
@@ -40,7 +39,6 @@ parameter-sets:
   length-public-key: 60192
   length-secret-key: 103648
   length-signature: 66
-  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: clean
     supported-platforms: all
@@ -56,7 +54,6 @@ parameter-sets:
   length-public-key: 60192
   length-secret-key: 64
   length-signature: 66
-  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: clean
     supported-platforms: all
@@ -72,7 +69,6 @@ parameter-sets:
   length-public-key: 882080
   length-secret-key: 626048
   length-signature: 164
-  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: clean
     supported-platforms: all
@@ -88,7 +84,6 @@ parameter-sets:
   length-public-key: 264608
   length-secret-key: 626048
   length-signature: 164
-  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: clean
     supported-platforms: all
@@ -104,7 +99,6 @@ parameter-sets:
   length-public-key: 264608
   length-secret-key: 64
   length-signature: 164
-  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: clean
     supported-platforms: all
@@ -120,7 +114,6 @@ parameter-sets:
   length-public-key: 1930600
   length-secret-key: 1408736
   length-signature: 212
-  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: clean
     supported-platforms: all
@@ -136,7 +129,6 @@ parameter-sets:
   length-public-key: 536136
   length-secret-key: 1408736
   length-signature: 212
-  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: clean
     supported-platforms: all
@@ -152,7 +144,6 @@ parameter-sets:
   length-public-key: 536136
   length-secret-key: 64
   length-signature: 212
-  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: clean
     supported-platforms: all
