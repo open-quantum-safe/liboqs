@@ -25,3 +25,8 @@ for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
     print('Formatting {}.'.format(os.path.basename(kem_yaml_path)))
     kem_yaml = load_yaml(kem_yaml_path)
     store_yaml(kem_yaml_path, kem_yaml)
+
+for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig', '*.yml')):
+    print('Formatting {}.'.format(os.path.basename(sig_yaml_path)))
+    sig_yaml = load_yaml(sig_yaml_path)
+    store_yaml(sig_yaml_path, sig_yaml)

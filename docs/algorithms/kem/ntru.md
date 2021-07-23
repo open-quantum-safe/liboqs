@@ -4,7 +4,7 @@
 - **Main cryptographic assumption**: NTRU in Z[x]/(q, x^n-1) with prime n and power-of-two q.
 - **Principal submitters**: John M. Schanck.
 - **Auxiliary submitters**: Cong Chen, Oussama Danba, Jeffrey Hoffstein, Andreas Hülsing, Joost Rijneveld, Tsunekazu Saito, Peter Schwabe, William Whyte, Keita Xagawa, Takashi Yamakawa, Zhenfei Zhang.
-- **Authors website**: https://ntru.org/
+- **Authors' website**: https://ntru.org/
 - **Specification version**: NIST Round 3 submission.
 - **Implementation source**: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24, which takes it from:
   - https://github.com/jschanck/ntru/tree/a43a4457
