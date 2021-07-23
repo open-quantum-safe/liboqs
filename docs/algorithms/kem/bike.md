@@ -3,7 +3,7 @@
 - **Algorithm type**: Key encapsulation mechanism.
 - **Main cryptographic assumption**: QC-MDPC (Quasi-Cyclic Moderate Density Parity-Check).
 - **Principal submitters**: Nicolas Aragon, Paulo Barreto, Slim Bettaieb, Loic Bidoux, Olivier Blazy, Jean-Christophe Deneuville, Phillipe Gaborit, Santosh Gosh, Shay Gueron, Tim Güneysu, Carlos Aguilar Melchor, Rafael Misoczki, Edoardo Persichetti, Nicolas Sendrier, Jean-Pierre Tillich, Valentin Vasseur, Gilles Zémor.
-- **Authors website**: http://bikesuite.org/
+- **Authors' website**: http://bikesuite.org/
 - **Specification version**: 4.1.
 - **Implementation source**: https://github.com/awslabs/bike-kem, which takes it from:
   - https://bikesuite.org/files/v4.1/Reference_Implementation.2020.10.20.2.zip

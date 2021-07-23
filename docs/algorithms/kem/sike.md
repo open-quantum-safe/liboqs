@@ -3,7 +3,7 @@
 - **Algorithm type**: Key encapsulation mechanism.
 - **Main cryptographic assumption**: (supersingular) isogeny walk problem.
 - **Principal submitters**: David Jao, Reza Azarderakhsh, Matthew Campagna, Craig Costello, Luca De Feo, Basil Hess, Amir Jalali, Brian Koziel, Brian LaMacchia, Patrick Longa, Michael Naehrig, Joost Renes, Vladimir Soukharev, David Urbanik.
-- **Authors website**: https://sike.org
+- **Authors' website**: https://sike.org
 - **Specification version**: NIST Round 3 submission.
 - **Implementation source**: https://github.com/microsoft/PQCrypto-SIDH/commit/28b4b5d0a7926e0e7eb4f9c03f75887236e1cebd
 - **Implementation license (SPDX-Identifier)**: MIT.

@@ -1,221 +1,220 @@
----
 name: CRYSTALS-Dilithium
 type: signature
 principal-submitters:
-  - Vadim Lyubashevsky
+- Vadim Lyubashevsky
 auxiliary-submitters:
-  - Shi Bai
-  - Léo Ducas
-  - Eike Kiltz
-  - Tancrède Lepoint
-  - Peter Schwabe
-  - Gregor Seiler
-  - Damien Stehlé
+- Shi Bai
+- Léo Ducas
+- Eike Kiltz
+- Tancrède Lepoint
+- Peter Schwabe
+- Gregor Seiler
+- Damien Stehlé
 crypto-assumption: hardness of lattice problems over module lattices
 website: https://pq-crystals.org/dilithium/
 nist-round: 3
 spec-version: 3.1
-upstream:
-  https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409
+spdx-license-identifier: CC0-1.0
+upstream: https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409
 parameter-sets:
-  - name: Dilithium2
-    claimed-nist-level: 2
-    claimed-security: EUF-CMA
-    length-public-key: 1312
-    length-secret-key: 2528
-    length-signature: 2420
-    implementations-switch-on-runtime-cpu-features: true
-    implementations:
-      - upstream-id: ref
-        supported-platforms: all
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-      - upstream-id: avx2
-        supported-platforms:
-          - architecture: x86_64
-            operating_systems:
-              - Linux
-              - Darwin
-            required_flags:
-              - avx2
-              - popcnt
-              - sse2
-              - ssse3
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-  - name: Dilithium3
-    claimed-nist-level: 3
-    claimed-security: EUF-CMA
-    length-public-key: 1952
-    length-secret-key: 4000
-    length-signature: 3293
-    implementations-switch-on-runtime-cpu-features: true
-    implementations:
-      - upstream-id: ref
-        supported-platforms: all
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-      - upstream-id: avx2
-        supported-platforms:
-          - architecture: x86_64
-            operating_systems:
-              - Linux
-              - Darwin
-            required_flags:
-              - avx2
-              - popcnt
-              - sse2
-              - ssse3
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-  - name: Dilithium5
-    claimed-nist-level: 5
-    claimed-security: EUF-CMA
-    length-public-key: 2592
-    length-secret-key: 4864
-    length-signature: 4595
-    implementations-switch-on-runtime-cpu-features: true
-    implementations:
-      - upstream-id: ref
-        supported-platforms: all
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-      - upstream-id: avx2
-        supported-platforms:
-          - architecture: x86_64
-            operating_systems:
-              - Linux
-              - Darwin
-            required_flags:
-              - avx2
-              - popcnt
-              - sse2
-              - ssse3
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-  - name: Dilithium2-AES
-    claimed-security: EUF-CMA
-    claimed-nist-level: 2
-    length-public-key: 1312
-    length-secret-key: 2528
-    length-signature: 2420
-    implementations-switch-on-runtime-cpu-features: true
-    implementations:
-      - upstream-id: ref
-        supported-platforms: all
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-      - upstream-id: avx2
-        supported-platforms:
-          - architecture: x86_64
-            operating_systems:
-              - Linux
-              - Darwin
-            required_flags:
-              - aes
-              - avx2
-              - popcnt
-              - sse2
-              - ssse3
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-  - name: Dilithium3-AES
-    claimed-security: EUF-CMA
-    claimed-nist-level: 3
-    length-public-key: 1952
-    length-secret-key: 4000
-    length-signature: 3293
-    implementations-switch-on-runtime-cpu-features: true
-    implementations:
-      - upstream-id: ref
-        supported-platforms: all
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-      - upstream-id: avx2
-        supported-platforms:
-          - architecture: x86_64
-            operating_systems:
-              - Linux
-              - Darwin
-            required_flags:
-              - aes
-              - avx2
-              - popcnt
-              - sse2
-              - ssse3
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-  - name: Dilithium5-AES
-    claimed-security: EUF-CMA
-    claimed-nist-level: 5
-    length-public-key: 2592
-    length-secret-key: 4864
-    length-signature: 4595
-    implementations-switch-on-runtime-cpu-features: true
-    implementations:
-      - upstream-id: ref
-        supported-platforms: all
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
-      - upstream-id: avx2
-        supported-platforms:
-          - architecture: x86_64
-            operating_systems:
-              - Linux
-              - Darwin
-            required_flags:
-              - aes
-              - avx2
-              - popcnt
-              - sse2
-              - ssse3
-        common-crypto:
-          - AES: pqcrystals
-          - SHA3: liboqs
-        no-secret-dependent-branching-claimed: true
-        no-secret-dependent-branching-checked-by-valgrind: true
-        large-stack-usage: false
+- name: Dilithium2
+  claimed-nist-level: 2
+  claimed-security: EUF-CMA
+  length-public-key: 1312
+  length-secret-key: 2528
+  length-signature: 2420
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+      - sse2
+      - ssse3
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Dilithium3
+  claimed-nist-level: 3
+  claimed-security: EUF-CMA
+  length-public-key: 1952
+  length-secret-key: 4000
+  length-signature: 3293
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+      - sse2
+      - ssse3
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Dilithium5
+  claimed-nist-level: 5
+  claimed-security: EUF-CMA
+  length-public-key: 2592
+  length-secret-key: 4864
+  length-signature: 4595
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+      - popcnt
+      - sse2
+      - ssse3
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Dilithium2-AES
+  claimed-security: EUF-CMA
+  claimed-nist-level: 2
+  length-public-key: 1312
+  length-secret-key: 2528
+  length-signature: 2420
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - aes
+      - avx2
+      - popcnt
+      - sse2
+      - ssse3
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Dilithium3-AES
+  claimed-security: EUF-CMA
+  claimed-nist-level: 3
+  length-public-key: 1952
+  length-secret-key: 4000
+  length-signature: 3293
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - aes
+      - avx2
+      - popcnt
+      - sse2
+      - ssse3
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: Dilithium5-AES
+  claimed-security: EUF-CMA
+  claimed-nist-level: 5
+  length-public-key: 2592
+  length-secret-key: 4864
+  length-signature: 4595
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: ref
+    supported-platforms: all
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - aes
+      - avx2
+      - popcnt
+      - sse2
+      - ssse3
+    common-crypto:
+    - AES: pqcrystals
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false

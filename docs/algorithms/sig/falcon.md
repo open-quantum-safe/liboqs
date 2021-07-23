@@ -1,22 +1,37 @@
 # Falcon
 
-- **Algorithm type**: signature
-- **Main cryptographic assumption**: hardness of NTRU lattice problems
-- **Scheme authors**: Thomas Prest, Pierre-Alain Fouque, Jeffrey Hoffstein, Paul Kirchner, Vadim Lyubashevsky, Thomas Pornin, Thomas Ricosset, Gregor Seiler, William Whyte, Zhenfei Zhang
+- **Algorithm type**: Digital signature scheme.
+- **Main cryptographic assumption**: hardness of NTRU lattice problems.
+- **Principal submitters**: Thomas Prest.
+- **Auxiliary submitters**: Pierre-Alain Fouque, Jeffrey Hoffstein, Paul Kirchner, Vadim Lyubashevsky, Thomas Pornin, Thomas Ricosset, Gregor Seiler, William Whyte, Zhenfei Zhang.
 - **Authors' website**: https://falcon-sign.info
-- **Version**: 20201018
+- **Specification version**: v1.2.
+- **Implementation source**: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24, which takes it from:
+  - https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon, which takes it from:
+  - supercop-20201018
+- **Implementation license (SPDX-Identifier)**: CC0-1.0.
 
-## Implementation
+## Parameter set summary
 
-- **Source of implementation**: supercop-20201018 via https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon
-- **Implementation version**: https://github.com/PQClean/PQClean.git, master, 89d34613364deca88659f6c2dd38708279c6bd24
-- **License**: CC0 1.0 Universal
-- **Constant-time**: Yes
-- **Optimizations**: Portable C with AVX2 instructions (if available at run-time)
+|  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
+|:---------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
+|   Falcon-512    | EUF-CMA          |                    1 |                       897 |                      1281 |                      690 |
+|   Falcon-1024   | EUF-CMA          |                    5 |                      1793 |                      2305 |                     1330 |
 
-## Parameter sets
+## Falcon-512 implementation characteristics
 
-| Parameter set | Security model | Claimed NIST security level | Public key size (bytes) | Secret key size (bytes) | Signature size (bytes) |
-| ------------- | -------------- | --------------------------- | ----------------------- | ----------------------- | ---------------------- |
-| Falcon-512    | EUF-CMA        | 1                           | 897                     | 1281                    | 690                    |
-| Falcon-1024   | EUF-CMA        | 5                           | 1793                    | 2305                    | 1330                   |
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2                    | True                               | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## Falcon-1024 implementation characteristics
+
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2                    | True                               | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
