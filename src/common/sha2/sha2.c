@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: Public domain
+// SPDX-License-Identifier: MIT
 #include <stdio.h>
 
 #include <oqs/common.h>
@@ -7,7 +7,7 @@
 #include "sha2_local.h"
 
 #if defined(OQS_DIST_ARM64v8_BUILD)
-#define C_OR_NI(stmt_c, stmt_ni) { \
+#define C_OR_NI(stmt_c, stmt_ni) \
     do { \
         if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_SHA2)) {  \
             stmt_ni; \

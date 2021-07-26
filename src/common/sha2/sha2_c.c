@@ -7,48 +7,6 @@
 
 #define PQC_SHA256CTX_BYTES 40
 #define PQC_SHA512CTX_BYTES 72
-/*
-typedef struct {
-    uint8_t *ctx;
-} sha224ctx;
-#define sha224_inc_init oqs_sha2_sha224_inc_init
-#define sha224_inc_ctx_clone oqs_sha2_sha224_inc_ctx_clone
-#define sha224_inc_ctx_release oqs_sha2_sha224_inc_ctx_release
-#define sha224_inc_blocks oqs_sha2_sha224_inc_blocks
-#define sha224_inc_finalize oqs_sha2_sha224_inc_finalize
-#define sha224 oqs_sha2_sha224
-typedef struct {
-    uint8_t *ctx;
-} sha256ctx;
-#define sha256_inc_init oqs_sha2_sha256_inc_init_c
-#define sha256_inc_ctx_clone oqs_sha2_sha256_inc_ctx_clone_c
-#define sha256_inc_ctx_release oqs_sha2_sha256_inc_ctx_release_c
-#define sha256_inc_blocks oqs_sha2_sha256_inc_blocks_c
-#define sha256_inc_finalize oqs_sha2_sha256_inc_finalize_c
-#define sha256 OQS_SHA2_sha256
-
-typedef struct {
-    uint8_t *ctx;
-} sha384ctx;
-
-#define sha384_inc_init oqs_sha2_sha384_inc_init_c
-#define sha384_inc_ctx_clone oqs_sha2_sha384_inc_ctx_clone_c
-#define sha384_inc_ctx_release oqs_sha2_sha384_inc_ctx_release_c
-#define sha384_inc_blocks oqs_sha2_sha384_inc_blocks_c
-#define sha384_inc_finalize oqs_sha2_sha384_inc_finalize_c
-#define sha384 OQS_SHA2_sha384
-
-typedef struct {
-    uint8_t *ctx;
-} sha512ctx;
-
-#define sha512_inc_init oqs_sha2_sha512_inc_init_c
-#define sha512_inc_ctx_clone oqs_sha2_sha512_inc_ctx_clone_c
-#define sha512_inc_ctx_release oqs_sha2_sha512_inc_ctx_release_c
-#define sha512_inc_blocks oqs_sha2_sha512_inc_blocks_c
-#define sha512_inc_finalize oqs_sha2_sha512_inc_finalize_c
-#define sha512 OQS_SHA2_sha512
-*/
 /* Based on the public domain implementation in
  * crypto_hash/sha512/ref/ from http://bench.cr.yp.to/supercop.html
  * by D. J. Bernstein */
