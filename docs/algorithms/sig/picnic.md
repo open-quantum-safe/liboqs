@@ -27,13 +27,15 @@
 
 ## picnic\_L1\_FS implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
-|          master          | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
-|          master          | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+|          master          | All                         | All                             | None                    | True                               | True                                           | False                 |
+|          master          | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                 |
+|          master          | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
+
+ ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.
 
 ## picnic\_L1\_UR implementation characteristics
 
@@ -144,3 +146,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |          master          | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
+
+## Explanation of Terms
+
+- **Large Stack Usage**: Algorithms identified as having such may cause failures when running in threads or in constrained environments.

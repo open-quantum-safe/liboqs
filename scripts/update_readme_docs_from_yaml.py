@@ -7,12 +7,6 @@ import tabulate
 import yaml
 import os
 
-# TODO: Add explanatory notes at the end of each markdown file with
-# respect to the following keys:
-# - no-secret-dependent-branching-claimed
-# - no-secret-dependent-branching-checked-by-valgrind
-# - large-stack-usage
-
 parser = argparse.ArgumentParser()
 parser.add_argument("--liboqs-root", default=".")
 args = parser.parse_args()
@@ -21,7 +15,9 @@ def load_yaml(filename, encoding='utf-8'):
     with open(filename, mode='r', encoding=encoding) as fh:
         return yaml.safe_load(fh.read())
 
-# Generate the KEM markdown documentation.
+########################################
+# Update the KEM markdown documentation.
+########################################
 for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'kem', '*.yml')):
     kem_yaml = load_yaml(kem_yaml_path)
     kem_name = os.path.splitext(os.path.basename(kem_yaml_path))[0]
@@ -67,15 +63,24 @@ for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
         out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
         out_md.write('\n')
 
-        for parameter_set in kem_yaml['parameter-sets']:
+        for index, parameter_set in enumerate(kem_yaml['parameter-sets']):
             out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name']))
-            table = [['Identifier in upstream',
-                      'Supported architecture(s)',
-                      'Supported operating system(s)',
-                      'CPU extension(s) used',
-                      'No branching-on-secrets claimed?',
-                      'No branching-on-secrets checked by valgrind?',
-                      'Large stack usage?']]
+            if index == 0:
+                table = [['Identifier in upstream',
+                          'Supported architecture(s)',
+                          'Supported operating system(s)',
+                          'CPU extension(s) used',
+                          'No branching-on-secrets claimed?',
+                          'No branching-on-secrets checked by valgrind?',
+                          'Large stack usage?‡']]
+            else:
+                table = [['Identifier in upstream',
+                          'Supported architecture(s)',
+                          'Supported operating system(s)',
+                          'CPU extension(s) used',
+                          'No branching-on-secrets claimed?',
+                          'No branching-on-secrets checked by valgrind?',
+                          'Large stack usage?']]
             for impl in parameter_set['implementations']:
                 if impl['supported-platforms'] == 'all':
                     table.append([impl['upstream-id'].replace('_', '\_'),
@@ -101,9 +106,17 @@ for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
                                       impl['no-secret-dependent-branching-checked-by-valgrind'],
                                       impl['large-stack-usage']])
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
-            out_md.write('\n\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
+            out_md.write('\n')
+            if 'implementations-switch-on-runtime-cpu-features' in parameter_set:
+                out_md.write('\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
+            if index == 0:
+                out_md.write('\n ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.\n')
+        out_md.write('\n## Explanation of Terms\n\n')
+        out_md.write('- **Large Stack Usage**: Algorithms identified as having such may cause failures when running in threads or in constrained environments.')
 
-# Generate the signature markdown documentation.
+##############################################
+# Update the signature markdown documentation.
+##############################################
 for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig', '*.yml')):
     sig_yaml = load_yaml(sig_yaml_path)
     sig_name = os.path.splitext(os.path.basename(sig_yaml_path))[0]
@@ -147,15 +160,24 @@ for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
         out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
         out_md.write('\n')
 
-        for parameter_set in sig_yaml['parameter-sets']:
+        for index, parameter_set in enumerate(sig_yaml['parameter-sets']):
             out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace('_', '\_')))
-            table = [['Identifier in upstream',
-                      'Supported architecture(s)',
-                      'Supported operating system(s)',
-                      'CPU extension(s) used',
-                      'No branching-on-secrets claimed?',
-                      'No branching-on-secrets checked by valgrind?',
-                      'Large stack usage?']]
+            if index == 0:
+                table = [['Identifier in upstream',
+                          'Supported architecture(s)',
+                          'Supported operating system(s)',
+                          'CPU extension(s) used',
+                          'No branching-on-secrets claimed?',
+                          'No branching-on-secrets checked by valgrind?',
+                          'Large stack usage?‡']]
+            else:
+                table = [['Identifier in upstream',
+                          'Supported architecture(s)',
+                          'Supported operating system(s)',
+                          'CPU extension(s) used',
+                          'No branching-on-secrets claimed?',
+                          'No branching-on-secrets checked by valgrind?',
+                          'Large stack usage?']]
             for impl in parameter_set['implementations']:
                 if impl['supported-platforms'] == 'all':
                     table.append([impl['upstream-id'].replace('_', '\_'),
@@ -187,3 +209,8 @@ for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
             out_md.write('\n')
             if 'implementations-switch-on-runtime-cpu-features' in parameter_set:
                 out_md.write('\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
+            if index == 0:
+                out_md.write('\n ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.\n')
+
+        out_md.write('\n## Explanation of Terms\n\n')
+        out_md.write('- **Large Stack Usage**: Algorithms identified as having such may cause failures when running in threads or in constrained environments.')
