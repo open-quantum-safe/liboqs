@@ -13,7 +13,6 @@ principal-submitters:
 - Christopher Peikert
 - Ananth Raghunathan
 - Douglas Stebila
-auxiliary-submitters: []
 crypto-assumption: learning with errors (LWE)
 website: https://frodokem.org/
 nist-round: 3

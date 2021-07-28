@@ -77,7 +77,7 @@ parameter-sets:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Rainbow-III-Circumzenithal
   claimed-nist-level: 3
   claimed-security: EUF-CMA
@@ -92,7 +92,7 @@ parameter-sets:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Rainbow-III-Compressed
   claimed-nist-level: 3
   claimed-security: EUF-CMA
@@ -107,7 +107,7 @@ parameter-sets:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Rainbow-V-Classic
   claimed-nist-level: 5
   claimed-security: EUF-CMA
@@ -122,7 +122,7 @@ parameter-sets:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Rainbow-V-Circumzenithal
   claimed-nist-level: 5
   claimed-security: EUF-CMA
@@ -137,7 +137,7 @@ parameter-sets:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Rainbow-V-Compressed
   claimed-nist-level: 5
   claimed-security: EUF-CMA
@@ -152,4 +152,4 @@ parameter-sets:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true

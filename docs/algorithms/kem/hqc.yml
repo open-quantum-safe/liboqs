@@ -115,4 +115,4 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
