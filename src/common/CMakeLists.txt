@@ -35,7 +35,7 @@ else()
        set(SHA2_IMPL ${SHA2_IMPL} sha2/sha2_ni.c)
        set_source_files_properties(sha2/sha2_ni.c PROPERTIES COMPILE_FLAGS -mcpu=cortex-a53+crypto)
     elseif (OQS_USE_ARM_SHA2_INSTRUCTIONS)
-       # Assume if we are here we are comopiling native
+       # Assume we are compiling native
        set(SHA2_IMPL ${SHA2_IMPL} sha2/sha2_ni.c)
     endif()
 endif()
