@@ -132,8 +132,8 @@ static uint64_t _bench_rdtsc(void) {
 	/* Use the ARM performance counters. */
 	unsigned int value;
 	/* Read CCNT Register */
-	asm volatile("mrc p15, 0, %0, c9, c13, 0\t\n"
-	             : "=r"(value));
+	__asm__ volatile("mrc p15, 0, %0, c9, c13, 0\t\n"
+	                 : "=r"(value));
 	return value;
 #else
 #define USING_TIME_RATHER_THAN_CYCLES
@@ -161,13 +161,13 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 	value |= 16;
 
 	/* Program the performance-counter control-register */
-	asm volatile("mcr p15, 0, %0, c9, c12, 0\t\n" ::"r"(value));
+	__asm__ volatile("mcr p15, 0, %0, c9, c12, 0\t\n" ::"r"(value));
 
 	/* Enable all counters */
-	asm volatile("mcr p15, 0, %0, c9, c12, 1\t\n" ::"r"(0x8000000f));
+	__asm__ volatile("mcr p15, 0, %0, c9, c12, 1\t\n" ::"r"(0x8000000f));
 
 	/* Clear overflows */
-	asm volatile("mcr p15, 0, %0, c9, c12, 3\t\n" ::"r"(0x8000000f));
+	__asm__ volatile("mcr p15, 0, %0, c9, c12, 3\t\n" ::"r"(0x8000000f));
 }
 #endif
 

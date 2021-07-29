@@ -104,7 +104,7 @@ static void keccak_inc_reset(uint64_t *s) {
  **************************************************/
 static void keccak_inc_absorb(uint64_t *s, uint32_t r, const uint8_t *m,
                               size_t mlen) {
-	size_t c;
+	uint64_t c;
 
 	if (s[25] && mlen + s[25] >= r) {
 		c = r - s[25];
