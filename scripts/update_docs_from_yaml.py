@@ -15,13 +15,21 @@ def load_yaml(filename, encoding='utf-8'):
     with open(filename, mode='r', encoding=encoding) as fh:
         return yaml.safe_load(fh.read())
 
+def file_get_contents(filename, encoding=None):
+    with open(filename, mode='r', encoding=encoding) as fh:
+        return fh.read()
+
+kem_yamls = []
+sig_yamls = []
+
 ########################################
 # Update the KEM markdown documentation.
 ########################################
-for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'kem', '*.yml')):
+for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'kem', '*.yml'))):
     kem_yaml = load_yaml(kem_yaml_path)
+    kem_yamls.append(kem_yaml)
     kem_name = os.path.splitext(os.path.basename(kem_yaml_path))[0]
-    print('Updating {}.md'.format(kem_name))
+    print('Updating {}/{}.md'.format(os.path.dirname(kem_yaml_path), kem_name))
 
     with open(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'kem', '{}.md'.format(kem_name)), mode='w', encoding='utf-8') as out_md:
         out_md.write('# {}\n\n'.format(kem_yaml['name']))
@@ -117,10 +125,11 @@ for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
 ##############################################
 # Update the signature markdown documentation.
 ##############################################
-for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig', '*.yml')):
+for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig', '*.yml'))):
     sig_yaml = load_yaml(sig_yaml_path)
+    sig_yamls.append(sig_yaml)
     sig_name = os.path.splitext(os.path.basename(sig_yaml_path))[0]
-    print('Updating {}.md'.format(sig_name))
+    print('Updating {}/{}.md'.format(os.path.dirname(sig_yaml_path), sig_name))
 
     with open(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig', '{}.md'.format(sig_name)), mode='w', encoding='utf-8') as out_md:
         out_md.write('# {}\n\n'.format(sig_yaml['name']))
@@ -214,3 +223,73 @@ for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
 
         out_md.write('\n## Explanation of Terms\n\n')
         out_md.write('- **Large Stack Usage**: Algorithms identified as having such may cause failures when running in threads or in constrained environments.')
+
+####################
+# Update the README.
+####################
+print("Updating README.md")
+
+readme_path = os.path.join(args.liboqs_root, 'README.md')
+
+# KEMS
+readme_contents = file_get_contents(readme_path)
+
+identifier_start = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_START -->'
+identifier_end = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_END -->'
+
+preamble = readme_contents[:readme_contents.find(identifier_start)]
+postamble = readme_contents[readme_contents.find(identifier_end):]
+
+with open(readme_path, mode='w', encoding='utf-8') as readme:
+    readme.write(preamble + identifier_start + '\n')
+    for kem_yaml in kem_yamls:
+        if any(impl['large-stack-usage'] for impl in kem_yaml['parameter-sets'][0]['implementations']):
+            readme.write('- **{}**: {}†'.format(kem_yaml['name'], kem_yaml['parameter-sets'][0]['name']))
+        else:
+            readme.write('- **{}**: {}'.format(kem_yaml['name'], kem_yaml['parameter-sets'][0]['name']))
+        for parameter_set in kem_yaml['parameter-sets'][1:]:
+            if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
+                readme.write(', {}†'.format(parameter_set['name']))
+            else:
+                readme.write(', {}'.format(parameter_set['name']))
+        readme.write('\n')
+    readme.write(postamble)
+
+# Signatures
+readme_contents = file_get_contents(readme_path)
+
+identifier_start = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_SIGS_START -->'
+identifier_end = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_SIGS_END -->'
+
+preamble = readme_contents[:readme_contents.find(identifier_start)]
+postamble = readme_contents[readme_contents.find(identifier_end):]
+
+with open(readme_path, mode='w', encoding='utf-8') as readme:
+    readme.write(preamble + identifier_start + '\n')
+    for sig_yaml in sig_yamls[:-1]: # SPHINCS is last in this sorted list and requires special handling.
+        if any(impl['large-stack-usage'] for impl in sig_yaml['parameter-sets'][0]['implementations']):
+            readme.write('- **{}**: {}†'.format(sig_yaml['name'], sig_yaml['parameter-sets'][0]['name'].replace('_','\_')))
+        else:
+            readme.write('- **{}**: {}'.format(sig_yaml['name'], sig_yaml['parameter-sets'][0]['name'].replace('_','\_')))
+        for parameter_set in sig_yaml['parameter-sets'][1:]:
+            if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
+                readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
+            else:
+                readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
+        readme.write('\n')
+
+    sphincs_yml = sig_yamls[-1]
+    for hashf in ['Haraka', 'SHA256', 'SHAKE256']:
+        parameter_sets = [pset for pset in sphincs_yml['parameter-sets'] if hashf in pset['name']]
+        if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
+            readme.write('- **SPHINCS+-{}**: {}†'.format(hashf, parameter_sets[0]['name'].replace('_','\_')))
+        else:
+            readme.write('- **SPHINCS+-{}**: {}'.format(hashf, parameter_sets[0]['name'].replace('_','\_')))
+        for parameter_set in parameter_sets[1:]:
+            if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
+                readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
+            else:
+                readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
+        readme.write('\n')
+
+    readme.write(postamble)

@@ -497,7 +497,7 @@ def copy_from_upstream():
     if not keepdata:
         shutil.rmtree('repos')
 
-    #print("Remember to update the docs by running update_pqclean_alg_docs.py")
+    #print("Remember to update the docs by running scripts/copy_from_upstream/update_pqclean_alg_docs.py -> scripts/format_docs_yaml.py -> scripts/update_readme_docs_from_yaml.py")
 
 
 def verify_from_upstream():
