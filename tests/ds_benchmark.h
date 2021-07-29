@@ -133,7 +133,7 @@ static uint64_t _bench_rdtsc(void) {
 	unsigned int value;
 	/* Read CCNT Register */
 	__asm__ volatile("mrc p15, 0, %0, c9, c13, 0\t\n"
-	             : "=r"(value));
+	                 : "=r"(value));
 	return value;
 #else
 #define USING_TIME_RATHER_THAN_CYCLES
