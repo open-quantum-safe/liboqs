@@ -34,7 +34,7 @@ More information on OQS can be found [here](https://openquantumsafe.org/) and in
 
 ### Supported Algorithms
 
-Details on each supported algorithm can be found in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms).
+Details on each supported algorithm can be found in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.
 
 #### Key encapsulation mechanisms
 
