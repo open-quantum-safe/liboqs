@@ -86,10 +86,10 @@ static size_t crypto_hashblocks_sha256_ni(uint8_t *statebytes,
 	d1 = (uint32x4_t)vrev32q_u8((uint8x16_t)d1);
 	while (length   >= 64) {
 		/* load one block */
-		uint32x4_t i0 = vld1q_u32((uint32_t *)(data + pos + 0));
-		uint32x4_t i1 = vld1q_u32((uint32_t *)(data + pos + 16));
-		uint32x4_t i2 = vld1q_u32((uint32_t *)(data + pos + 32));
-		uint32x4_t i3 = vld1q_u32((uint32_t *)(data + pos + 48));
+		uint32x4_t i0 = vld1q_u32((const uint32_t *)(data + pos + 0));
+		uint32x4_t i1 = vld1q_u32((const uint32_t *)(data + pos + 16));
+		uint32x4_t i2 = vld1q_u32((const uint32_t *)(data + pos + 32));
+		uint32x4_t i3 = vld1q_u32((const uint32_t *)(data + pos + 48));
 		uint32x4_t j0, j1, j2, j3;
 		uint32x4_t x0, x1;
 

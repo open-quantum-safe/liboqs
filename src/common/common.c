@@ -73,7 +73,7 @@ static void set_available_cpu_extensions(void) {
 #elif defined(OQS_DIST_ARM64v8_BUILD)
 #if defined(__APPLE__)
 #include <sys/sysctl.h>
-static int macos_feature_detection(const char *feature_name) {
+static unsigned int macos_feature_detection(const char *feature_name) {
 	int p;
 	size_t p_len = sizeof(p);
 	int res = sysctlbyname(feature_name, &p, &p_len, NULL, 0);
