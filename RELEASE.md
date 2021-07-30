@@ -1,4 +1,4 @@
-liboqs version 0.7.0-rc1
+liboqs version 0.7.0-rc2
 ========================
 
 About
@@ -28,7 +28,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 for version 0.7.0 of liboqs.  It was released on July 13, 2021.
+This is release candidate 2 for version 0.7.0 of liboqs.  It was released on July 30, 2021.
 
 What's New
 ----------
@@ -48,5 +48,7 @@ This release continues from the 0.6.0 release of liboqs.
 
 ### Other changes
 
-- Allow liboqs to build on other architectures, with preliminary builds on ppc64le
+- Allow liboqs to build on other architectures, with preliminary builds on ppc64le and x86.
 - Support for building liboqs on Apple Silicon
+- New algorithm datasheets with more details on implementations.
+- Optimized SHA-256 implementation on ARMv8 with crypto extensions.
