@@ -73,22 +73,18 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
 
         for index, parameter_set in enumerate(kem_yaml['parameter-sets']):
             out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name']))
+            table_header = ['Identifier in upstream',
+                            'Supported architecture(s)',
+                            'Supported operating system(s)',
+                            'CPU extension(s) used',
+                            'No branching-on-secrets claimed?',
+                            'No branching-on-secrets checked by valgrind?']
             if index == 0:
-                table = [['Identifier in upstream',
-                          'Supported architecture(s)',
-                          'Supported operating system(s)',
-                          'CPU extension(s) used',
-                          'No branching-on-secrets claimed?',
-                          'No branching-on-secrets checked by valgrind?',
-                          'Large stack usage?‡']]
+                table_header.append('Large stack usage?‡')
             else:
-                table = [['Identifier in upstream',
-                          'Supported architecture(s)',
-                          'Supported operating system(s)',
-                          'CPU extension(s) used',
-                          'No branching-on-secrets claimed?',
-                          'No branching-on-secrets checked by valgrind?',
-                          'Large stack usage?']]
+                table_header.append('Large stack usage?')
+
+            table = [table_header]
             for impl in parameter_set['implementations']:
                 if impl['supported-platforms'] == 'all':
                     table.append([impl['upstream-id'].replace('_', '\_'),
@@ -113,12 +109,15 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
                                       impl['no-secret-dependent-branching-claimed'],
                                       impl['no-secret-dependent-branching-checked-by-valgrind'],
                                       impl['large-stack-usage']])
+
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
             out_md.write('\n')
+
             if 'implementations-switch-on-runtime-cpu-features' in parameter_set:
                 out_md.write('\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
             if index == 0:
                 out_md.write('\n ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.\n')
+
         out_md.write('\n## Explanation of Terms\n\n')
         out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
 
@@ -171,22 +170,18 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
 
         for index, parameter_set in enumerate(sig_yaml['parameter-sets']):
             out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace('_', '\_')))
+            table_header = ['Identifier in upstream',
+                            'Supported architecture(s)',
+                            'Supported operating system(s)',
+                            'CPU extension(s) used',
+                            'No branching-on-secrets claimed?',
+                            'No branching-on-secrets checked by valgrind?']
             if index == 0:
-                table = [['Identifier in upstream',
-                          'Supported architecture(s)',
-                          'Supported operating system(s)',
-                          'CPU extension(s) used',
-                          'No branching-on-secrets claimed?',
-                          'No branching-on-secrets checked by valgrind?',
-                          'Large stack usage?‡']]
+                table_header.append('Large stack usage?‡')
             else:
-                table = [['Identifier in upstream',
-                          'Supported architecture(s)',
-                          'Supported operating system(s)',
-                          'CPU extension(s) used',
-                          'No branching-on-secrets claimed?',
-                          'No branching-on-secrets checked by valgrind?',
-                          'Large stack usage?']]
+                table_header.append('Large stack usage?')
+
+            table = [table_header]
             for impl in parameter_set['implementations']:
                 if impl['supported-platforms'] == 'all':
                     table.append([impl['upstream-id'].replace('_', '\_'),
@@ -214,8 +209,10 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
                                       impl['no-secret-dependent-branching-claimed'],
                                       impl['no-secret-dependent-branching-checked-by-valgrind'],
                                       impl['large-stack-usage']])
+
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
             out_md.write('\n')
+
             if 'implementations-switch-on-runtime-cpu-features' in parameter_set:
                 out_md.write('\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
             if index == 0:
@@ -230,48 +227,55 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
 print("Updating README.md")
 
 readme_path = os.path.join(args.liboqs_root, 'README.md')
+start_identifier_tmpl = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_{}_START -->'
+end_identifier_tmpl = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_{}_END -->'
 
 # KEMS
 readme_contents = file_get_contents(readme_path)
 
-identifier_start = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_START -->'
-identifier_end = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_END -->'
+identifier_start = start_identifier_tmpl.format('KEXS')
+identifier_end = end_identifier_tmpl.format('KEXS')
 
 preamble = readme_contents[:readme_contents.find(identifier_start)]
 postamble = readme_contents[readme_contents.find(identifier_end):]
 
 with open(readme_path, mode='w', encoding='utf-8') as readme:
     readme.write(preamble + identifier_start + '\n')
+
     for kem_yaml in kem_yamls:
-        if any(impl['large-stack-usage'] for impl in kem_yaml['parameter-sets'][0]['implementations']):
-            readme.write('- **{}**: {}†'.format(kem_yaml['name'], kem_yaml['parameter-sets'][0]['name']))
+        parameter_sets = kem_yaml['parameter-sets']
+        if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
+            readme.write('- **{}**: {}†'.format(kem_yaml['name'], parameter_sets[0]['name']))
         else:
-            readme.write('- **{}**: {}'.format(kem_yaml['name'], kem_yaml['parameter-sets'][0]['name']))
-        for parameter_set in kem_yaml['parameter-sets'][1:]:
+            readme.write('- **{}**: {}'.format(kem_yaml['name'], parameter_sets[0]['name']))
+        for parameter_set in parameter_sets[1:]:
             if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
                 readme.write(', {}†'.format(parameter_set['name']))
             else:
                 readme.write(', {}'.format(parameter_set['name']))
         readme.write('\n')
+
     readme.write(postamble)
 
 # Signatures
 readme_contents = file_get_contents(readme_path)
 
-identifier_start = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_SIGS_START -->'
-identifier_end = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_SIGS_END -->'
+identifier_start = start_identifier_tmpl.format('SIGS')
+identifier_end = end_identifier_tmpl.format('SIGS')
 
 preamble = readme_contents[:readme_contents.find(identifier_start)]
 postamble = readme_contents[readme_contents.find(identifier_end):]
 
 with open(readme_path, mode='w', encoding='utf-8') as readme:
     readme.write(preamble + identifier_start + '\n')
+
     for sig_yaml in sig_yamls[:-1]: # SPHINCS is last in this sorted list and requires special handling.
-        if any(impl['large-stack-usage'] for impl in sig_yaml['parameter-sets'][0]['implementations']):
-            readme.write('- **{}**: {}†'.format(sig_yaml['name'], sig_yaml['parameter-sets'][0]['name'].replace('_','\_')))
+        parameter_sets = sig_yaml['parameter-sets']
+        if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
+            readme.write('- **{}**: {}†'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
         else:
-            readme.write('- **{}**: {}'.format(sig_yaml['name'], sig_yaml['parameter-sets'][0]['name'].replace('_','\_')))
-        for parameter_set in sig_yaml['parameter-sets'][1:]:
+            readme.write('- **{}**: {}'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
+        for parameter_set in parameter_sets[1:]:
             if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
                 readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
             else:
@@ -279,12 +283,12 @@ with open(readme_path, mode='w', encoding='utf-8') as readme:
         readme.write('\n')
 
     sphincs_yml = sig_yamls[-1]
-    for hashf in ['Haraka', 'SHA256', 'SHAKE256']:
-        parameter_sets = [pset for pset in sphincs_yml['parameter-sets'] if hashf in pset['name']]
+    for hash_func in ['Haraka', 'SHA256', 'SHAKE256']:
+        parameter_sets = [pset for pset in sphincs_yml['parameter-sets'] if hash_func in pset['name']]
         if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
-            readme.write('- **SPHINCS+-{}**: {}†'.format(hashf, parameter_sets[0]['name'].replace('_','\_')))
+            readme.write('- **SPHINCS+-{}**: {}†'.format(hash_func, parameter_sets[0]['name'].replace('_','\_')))
         else:
-            readme.write('- **SPHINCS+-{}**: {}'.format(hashf, parameter_sets[0]['name'].replace('_','\_')))
+            readme.write('- **SPHINCS+-{}**: {}'.format(hash_func, parameter_sets[0]['name'].replace('_','\_')))
         for parameter_set in parameter_sets[1:]:
             if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
                 readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
