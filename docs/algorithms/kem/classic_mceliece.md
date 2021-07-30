@@ -118,4 +118,4 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Explanation of Terms
 
-- **Large Stack Usage**: Algorithms identified as having such may cause failures when running in threads or in constrained environments.
+- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.

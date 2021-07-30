@@ -120,7 +120,7 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
             if index == 0:
                 out_md.write('\n ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.\n')
         out_md.write('\n## Explanation of Terms\n\n')
-        out_md.write('- **Large Stack Usage**: Algorithms identified as having such may cause failures when running in threads or in constrained environments.')
+        out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
 
 ##############################################
 # Update the signature markdown documentation.
@@ -222,7 +222,7 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
                 out_md.write('\n ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.\n')
 
         out_md.write('\n## Explanation of Terms\n\n')
-        out_md.write('- **Large Stack Usage**: Algorithms identified as having such may cause failures when running in threads or in constrained environments.')
+        out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
 
 ####################
 # Update the README.

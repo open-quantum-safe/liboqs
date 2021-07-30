@@ -10,22 +10,22 @@
 
 ## Parameter set summary
 
-|  Parameter set   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
-|:----------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
-|  picnic\_L1\_FS  | EUF-CMA          |                    1 |                        33 |                        49 |                    34036 |
-|  picnic\_L1\_UR  | EUF-CMA          |                    1 |                        33 |                        49 |                    53965 |
-| picnic\_L1\_full | EUF-CMA          |                    1 |                        35 |                        52 |                    32065 |
-|  picnic\_L3\_FS  | EUF-CMA          |                    3 |                        49 |                        73 |                    76776 |
-|  picnic\_L3\_UR  | EUF-CMA          |                    3 |                        49 |                        73 |                   121849 |
-| picnic\_L3\_full | EUF-CMA          |                    3 |                        49 |                        73 |                    71183 |
-|  picnic\_L5\_FS  | EUF-CMA          |                    5 |                        65 |                        97 |                   132860 |
-|  picnic\_L5\_UR  | EUF-CMA          |                    5 |                        65 |                        97 |                   209510 |
-| picnic\_L5\_full | EUF-CMA          |                    5 |                        65 |                        97 |                   126290 |
-|   picnic3\_L1    | EUF-CMA          |                    1 |                        35 |                        52 |                    14612 |
-|   picnic3\_L3    | EUF-CMA          |                    3 |                        49 |                        73 |                    35028 |
-|   picnic3\_L5    | EUF-CMA          |                    5 |                        65 |                        97 |                    61028 |
+|  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
+|:---------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|-------------------------:|
+|  Picnic-L1-FS   | EUF-CMA          |                    1 |                        33 |                        49 |                    34036 |
+|  Picnic-L1-UR   | EUF-CMA          |                    1 |                        33 |                        49 |                    53965 |
+| Picnic-L1-full  | EUF-CMA          |                    1 |                        35 |                        52 |                    32065 |
+|  Picnic-L3-FS   | EUF-CMA          |                    3 |                        49 |                        73 |                    76776 |
+|  Picnic-L3-UR   | EUF-CMA          |                    3 |                        49 |                        73 |                   121849 |
+| Picnic-L3-full  | EUF-CMA          |                    3 |                        49 |                        73 |                    71183 |
+|  Picnic-L5-FS   | EUF-CMA          |                    5 |                        65 |                        97 |                   132860 |
+|  Picnic-L5-UR   | EUF-CMA          |                    5 |                        65 |                        97 |                   209510 |
+| Picnic-L5-full  | EUF-CMA          |                    5 |                        65 |                        97 |                   126290 |
+|   Picnic3-L1    | EUF-CMA          |                    1 |                        35 |                        52 |                    14612 |
+|   Picnic3-L3    | EUF-CMA          |                    3 |                        49 |                        73 |                    35028 |
+|   Picnic3-L5    | EUF-CMA          |                    5 |                        65 |                        97 |                    61028 |
 
-## picnic\_L1\_FS implementation characteristics
+## Picnic-L1-FS implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
@@ -37,7 +37,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
  ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.
 
-## picnic\_L1\_UR implementation characteristics
+## Picnic-L1-UR implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -47,7 +47,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L1\_full implementation characteristics
+## Picnic-L1-full implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -57,7 +57,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L3\_FS implementation characteristics
+## Picnic-L3-FS implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -67,7 +67,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L3\_UR implementation characteristics
+## Picnic-L3-UR implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -77,7 +77,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L3\_full implementation characteristics
+## Picnic-L3-full implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -87,7 +87,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L5\_FS implementation characteristics
+## Picnic-L5-FS implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -97,7 +97,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L5\_UR implementation characteristics
+## Picnic-L5-UR implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -107,7 +107,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L5\_full implementation characteristics
+## Picnic-L5-full implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -117,7 +117,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic3\_L1 implementation characteristics
+## Picnic3-L1 implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -127,7 +127,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic3\_L3 implementation characteristics
+## Picnic3-L3 implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -137,7 +137,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic3\_L5 implementation characteristics
+## Picnic3-L5 implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
@@ -149,4 +149,4 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## Explanation of Terms
 
-- **Large Stack Usage**: Algorithms identified as having such may cause failures when running in threads or in constrained environments.
+- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.

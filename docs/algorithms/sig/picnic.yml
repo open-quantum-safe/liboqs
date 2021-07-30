@@ -20,7 +20,7 @@ spec-version: 3.0.3
 spdx-license-identifier: MIT
 upstream: https://github.com/IAIK/Picnic/tree/v3.0.4
 parameter-sets:
-- name: picnic_L1_FS
+- name: Picnic-L1-FS
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 33
@@ -54,7 +54,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic_L1_UR
+- name: Picnic-L1-UR
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 33
@@ -88,7 +88,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic_L1_full
+- name: Picnic-L1-full
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 35
@@ -122,7 +122,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic_L3_FS
+- name: Picnic-L3-FS
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 49
@@ -156,7 +156,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic_L3_UR
+- name: Picnic-L3-UR
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 49
@@ -190,7 +190,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic_L3_full
+- name: Picnic-L3-full
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 49
@@ -224,7 +224,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic_L5_FS
+- name: Picnic-L5-FS
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 65
@@ -258,7 +258,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic_L5_UR
+- name: Picnic-L5-UR
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 65
@@ -292,7 +292,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic_L5_full
+- name: Picnic-L5-full
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 65
@@ -326,7 +326,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic3_L1
+- name: Picnic3-L1
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 35
@@ -360,7 +360,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic3_L3
+- name: Picnic3-L3
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 49
@@ -394,7 +394,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: picnic3_L5
+- name: Picnic3-L5
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 65
