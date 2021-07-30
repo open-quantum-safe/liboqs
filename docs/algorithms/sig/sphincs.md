@@ -53,12 +53,14 @@
 
 ## SPHINCS+-Haraka-128f-robust implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
-|          aesni           | x86\_64                     | All                             | AES                     | True                               | True                                           | False                |
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+|          clean           | All                         | All                             | None                    | True                               | True                                           | False                 |
+|          aesni           | x86\_64                     | All                             | AES                     | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+ ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.
 
 ## SPHINCS+-Haraka-128f-simple implementation characteristics
 
@@ -374,3 +376,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |           avx2           | x86\_64                     | All                             | AVX2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## Explanation of Terms
+
+- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.

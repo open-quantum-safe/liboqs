@@ -13,7 +13,6 @@ import yaml
 from pathlib import Path
 import sys
 import json
-import mdformat
 
 # kats of all algs
 kats = {}
@@ -471,16 +470,6 @@ def process_families(instructions, basedir, with_kat, with_generator):
                     scheme,
                 )
 
-            generator(
-                os.path.join(os.environ['LIBOQS_DIR'], 'docs', 'algorithms', family['type'], '{}.md'.format(family['name'])),
-                os.path.join('docs', 'algorithms', family['type'], '{}.md'.format(family['name'])),
-                family,
-                None,
-            )
-            mdformat.file(os.path.join(os.environ['LIBOQS_DIR'], 'docs', 'algorithms', family['type'], '{}.md'.format(family['name'])),
-                          extensions={"tables"})
-
-
 def copy_from_upstream():
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
@@ -508,7 +497,7 @@ def copy_from_upstream():
     if not keepdata:
         shutil.rmtree('repos')
 
-    #print("Remember to update $LIBOQS_DIR/docs/algorithms/<family>/<scheme>.md")
+    #print("Remember to update the docs by running scripts/copy_from_upstream/update_pqclean_alg_docs.py -> scripts/format_docs_yaml.py -> scripts/update_docs_from_yaml.py")
 
 
 def verify_from_upstream():

@@ -7,12 +7,6 @@ import tabulate
 import yaml
 import os
 
-# TODO: Add explanatory notes at the end of each markdown file with
-# respect to the following keys:
-# - no-secret-dependent-branching-claimed
-# - no-secret-dependent-branching-checked-by-valgrind
-# - large-stack-usage
-
 parser = argparse.ArgumentParser()
 parser.add_argument("--liboqs-root", default=".")
 args = parser.parse_args()
@@ -21,11 +15,21 @@ def load_yaml(filename, encoding='utf-8'):
     with open(filename, mode='r', encoding=encoding) as fh:
         return yaml.safe_load(fh.read())
 
-# Generate the KEM markdown documentation.
-for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'kem', '*.yml')):
+def file_get_contents(filename, encoding=None):
+    with open(filename, mode='r', encoding=encoding) as fh:
+        return fh.read()
+
+kem_yamls = []
+sig_yamls = []
+
+########################################
+# Update the KEM markdown documentation.
+########################################
+for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'kem', '*.yml'))):
     kem_yaml = load_yaml(kem_yaml_path)
+    kem_yamls.append(kem_yaml)
     kem_name = os.path.splitext(os.path.basename(kem_yaml_path))[0]
-    print('Updating {}.md'.format(kem_name))
+    print('Updating {}/{}.md'.format(os.path.dirname(kem_yaml_path), kem_name))
 
     with open(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'kem', '{}.md'.format(kem_name)), mode='w', encoding='utf-8') as out_md:
         out_md.write('# {}\n\n'.format(kem_yaml['name']))
@@ -67,15 +71,20 @@ for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
         out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
         out_md.write('\n')
 
-        for parameter_set in kem_yaml['parameter-sets']:
+        for index, parameter_set in enumerate(kem_yaml['parameter-sets']):
             out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name']))
-            table = [['Identifier in upstream',
-                      'Supported architecture(s)',
-                      'Supported operating system(s)',
-                      'CPU extension(s) used',
-                      'No branching-on-secrets claimed?',
-                      'No branching-on-secrets checked by valgrind?',
-                      'Large stack usage?']]
+            table_header = ['Identifier in upstream',
+                            'Supported architecture(s)',
+                            'Supported operating system(s)',
+                            'CPU extension(s) used',
+                            'No branching-on-secrets claimed?',
+                            'No branching-on-secrets checked by valgrind?']
+            if index == 0:
+                table_header.append('Large stack usage?‡')
+            else:
+                table_header.append('Large stack usage?')
+
+            table = [table_header]
             for impl in parameter_set['implementations']:
                 if impl['supported-platforms'] == 'all':
                     table.append([impl['upstream-id'].replace('_', '\_'),
@@ -100,14 +109,26 @@ for kem_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
                                       impl['no-secret-dependent-branching-claimed'],
                                       impl['no-secret-dependent-branching-checked-by-valgrind'],
                                       impl['large-stack-usage']])
-            out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
-            out_md.write('\n\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
 
-# Generate the signature markdown documentation.
-for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig', '*.yml')):
+            out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
+            out_md.write('\n')
+
+            if 'implementations-switch-on-runtime-cpu-features' in parameter_set:
+                out_md.write('\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
+            if index == 0:
+                out_md.write('\n ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.\n')
+
+        out_md.write('\n## Explanation of Terms\n\n')
+        out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
+
+##############################################
+# Update the signature markdown documentation.
+##############################################
+for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig', '*.yml'))):
     sig_yaml = load_yaml(sig_yaml_path)
+    sig_yamls.append(sig_yaml)
     sig_name = os.path.splitext(os.path.basename(sig_yaml_path))[0]
-    print('Updating {}.md'.format(sig_name))
+    print('Updating {}/{}.md'.format(os.path.dirname(sig_yaml_path), sig_name))
 
     with open(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig', '{}.md'.format(sig_name)), mode='w', encoding='utf-8') as out_md:
         out_md.write('# {}\n\n'.format(sig_yaml['name']))
@@ -147,15 +168,20 @@ for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
         out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
         out_md.write('\n')
 
-        for parameter_set in sig_yaml['parameter-sets']:
+        for index, parameter_set in enumerate(sig_yaml['parameter-sets']):
             out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace('_', '\_')))
-            table = [['Identifier in upstream',
-                      'Supported architecture(s)',
-                      'Supported operating system(s)',
-                      'CPU extension(s) used',
-                      'No branching-on-secrets claimed?',
-                      'No branching-on-secrets checked by valgrind?',
-                      'Large stack usage?']]
+            table_header = ['Identifier in upstream',
+                            'Supported architecture(s)',
+                            'Supported operating system(s)',
+                            'CPU extension(s) used',
+                            'No branching-on-secrets claimed?',
+                            'No branching-on-secrets checked by valgrind?']
+            if index == 0:
+                table_header.append('Large stack usage?‡')
+            else:
+                table_header.append('Large stack usage?')
+
+            table = [table_header]
             for impl in parameter_set['implementations']:
                 if impl['supported-platforms'] == 'all':
                     table.append([impl['upstream-id'].replace('_', '\_'),
@@ -183,7 +209,91 @@ for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
                                       impl['no-secret-dependent-branching-claimed'],
                                       impl['no-secret-dependent-branching-checked-by-valgrind'],
                                       impl['large-stack-usage']])
+
             out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
             out_md.write('\n')
+
             if 'implementations-switch-on-runtime-cpu-features' in parameter_set:
                 out_md.write('\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
+            if index == 0:
+                out_md.write('\n ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.\n')
+
+        out_md.write('\n## Explanation of Terms\n\n')
+        out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
+
+####################
+# Update the README.
+####################
+print("Updating README.md")
+
+readme_path = os.path.join(args.liboqs_root, 'README.md')
+start_identifier_tmpl = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_{}_START -->'
+end_identifier_tmpl = '<!--- OQS_TEMPLATE_FRAGMENT_LIST_{}_END -->'
+
+# KEMS
+readme_contents = file_get_contents(readme_path)
+
+identifier_start = start_identifier_tmpl.format('KEXS')
+identifier_end = end_identifier_tmpl.format('KEXS')
+
+preamble = readme_contents[:readme_contents.find(identifier_start)]
+postamble = readme_contents[readme_contents.find(identifier_end):]
+
+with open(readme_path, mode='w', encoding='utf-8') as readme:
+    readme.write(preamble + identifier_start + '\n')
+
+    for kem_yaml in kem_yamls:
+        parameter_sets = kem_yaml['parameter-sets']
+        if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
+            readme.write('- **{}**: {}†'.format(kem_yaml['name'], parameter_sets[0]['name']))
+        else:
+            readme.write('- **{}**: {}'.format(kem_yaml['name'], parameter_sets[0]['name']))
+        for parameter_set in parameter_sets[1:]:
+            if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
+                readme.write(', {}†'.format(parameter_set['name']))
+            else:
+                readme.write(', {}'.format(parameter_set['name']))
+        readme.write('\n')
+
+    readme.write(postamble)
+
+# Signatures
+readme_contents = file_get_contents(readme_path)
+
+identifier_start = start_identifier_tmpl.format('SIGS')
+identifier_end = end_identifier_tmpl.format('SIGS')
+
+preamble = readme_contents[:readme_contents.find(identifier_start)]
+postamble = readme_contents[readme_contents.find(identifier_end):]
+
+with open(readme_path, mode='w', encoding='utf-8') as readme:
+    readme.write(preamble + identifier_start + '\n')
+
+    for sig_yaml in sig_yamls[:-1]: # SPHINCS is last in this sorted list and requires special handling.
+        parameter_sets = sig_yaml['parameter-sets']
+        if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
+            readme.write('- **{}**: {}†'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
+        else:
+            readme.write('- **{}**: {}'.format(sig_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
+        for parameter_set in parameter_sets[1:]:
+            if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
+                readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
+            else:
+                readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
+        readme.write('\n')
+
+    sphincs_yml = sig_yamls[-1]
+    for hash_func in ['Haraka', 'SHA256', 'SHAKE256']:
+        parameter_sets = [pset for pset in sphincs_yml['parameter-sets'] if hash_func in pset['name']]
+        if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
+            readme.write('- **SPHINCS+-{}**: {}†'.format(hash_func, parameter_sets[0]['name'].replace('_','\_')))
+        else:
+            readme.write('- **SPHINCS+-{}**: {}'.format(hash_func, parameter_sets[0]['name'].replace('_','\_')))
+        for parameter_set in parameter_sets[1:]:
+            if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
+                readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
+            else:
+                readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
+        readme.write('\n')
+
+    readme.write(postamble)

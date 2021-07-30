@@ -3,8 +3,6 @@ importlib-metadata==3.7.0
 Jinja2==2.11.3
 markdown-it-py==0.6.2
 MarkupSafe==1.1.1
-mdformat==0.5.7
-mdformat-tables==0.2.1
 mdit-py-plugins==0.2.5
 PyYAML==5.4.1
 typing-extensions==3.7.4.3
