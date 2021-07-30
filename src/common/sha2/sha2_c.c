@@ -2,51 +2,11 @@
 
 #include <oqs/oqs.h>
 
-#include "sha2.h"
+#include "sha2_local.h"
+#include <stdio.h>
 
 #define PQC_SHA256CTX_BYTES 40
 #define PQC_SHA512CTX_BYTES 72
-
-typedef struct {
-	uint8_t *ctx;
-} sha224ctx;
-#define sha224_inc_init oqs_sha2_sha224_inc_init
-#define sha224_inc_ctx_clone oqs_sha2_sha224_inc_ctx_clone
-#define sha224_inc_ctx_release oqs_sha2_sha224_inc_ctx_release
-#define sha224_inc_blocks oqs_sha2_sha224_inc_blocks
-#define sha224_inc_finalize oqs_sha2_sha224_inc_finalize
-#define sha224 oqs_sha2_sha224
-
-typedef struct {
-	uint8_t *ctx;
-} sha256ctx;
-#define sha256_inc_init oqs_sha2_sha256_inc_init
-#define sha256_inc_ctx_clone oqs_sha2_sha256_inc_ctx_clone
-#define sha256_inc_ctx_release oqs_sha2_sha256_inc_ctx_release
-#define sha256_inc_blocks oqs_sha2_sha256_inc_blocks
-#define sha256_inc_finalize oqs_sha2_sha256_inc_finalize
-#define sha256 OQS_SHA2_sha256
-
-typedef struct {
-	uint8_t *ctx;
-} sha384ctx;
-#define sha384_inc_init oqs_sha2_sha384_inc_init
-#define sha384_inc_ctx_clone oqs_sha2_sha384_inc_ctx_clone
-#define sha384_inc_ctx_release oqs_sha2_sha384_inc_ctx_release
-#define sha384_inc_blocks oqs_sha2_sha384_inc_blocks
-#define sha384_inc_finalize oqs_sha2_sha384_inc_finalize
-#define sha384 OQS_SHA2_sha384
-
-typedef struct {
-	uint8_t *ctx;
-} sha512ctx;
-#define sha512_inc_init oqs_sha2_sha512_inc_init
-#define sha512_inc_ctx_clone oqs_sha2_sha512_inc_ctx_clone
-#define sha512_inc_ctx_release oqs_sha2_sha512_inc_ctx_release
-#define sha512_inc_blocks oqs_sha2_sha512_inc_blocks
-#define sha512_inc_finalize oqs_sha2_sha512_inc_finalize
-#define sha512 OQS_SHA2_sha512
-
 /* Based on the public domain implementation in
  * crypto_hash/sha512/ref/ from http://bench.cr.yp.to/supercop.html
  * by D. J. Bernstein */
@@ -176,8 +136,8 @@ static void store_bigendian_64(uint8_t *x, uint64_t u) {
     b = a;                                           \
     a = T1 + T2;
 
-static size_t crypto_hashblocks_sha256(uint8_t *statebytes,
-                                       const uint8_t *in, size_t inlen) {
+static size_t crypto_hashblocks_sha256_c(uint8_t *statebytes,
+        const uint8_t *in, size_t inlen) {
 	uint32_t state[8];
 	uint32_t a;
 	uint32_t b;
@@ -333,8 +293,8 @@ static size_t crypto_hashblocks_sha256(uint8_t *statebytes,
 	return inlen;
 }
 
-static size_t crypto_hashblocks_sha512(uint8_t *statebytes,
-                                       const uint8_t *in, size_t inlen) {
+static size_t crypto_hashblocks_sha512_c(uint8_t *statebytes,
+        const uint8_t *in, size_t inlen) {
 	uint64_t state[8];
 	uint64_t a;
 	uint64_t b;
@@ -541,7 +501,7 @@ static const uint8_t iv_512[64] = {
 	0x6b, 0x5b, 0xe0, 0xcd, 0x19, 0x13, 0x7e, 0x21, 0x79
 };
 
-void sha224_inc_init(sha224ctx *state) {
+void oqs_sha2_sha224_inc_init_c(sha224ctx *state) {
 	state->ctx = malloc(PQC_SHA256CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
@@ -554,7 +514,7 @@ void sha224_inc_init(sha224ctx *state) {
 	}
 }
 
-void sha256_inc_init(sha256ctx *state) {
+void oqs_sha2_sha256_inc_init_c(sha256ctx *state) {
 	state->ctx = malloc(PQC_SHA256CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
@@ -567,7 +527,7 @@ void sha256_inc_init(sha256ctx *state) {
 	}
 }
 
-void sha384_inc_init(sha384ctx *state) {
+void oqs_sha2_sha384_inc_init_c(sha384ctx *state) {
 	state->ctx = malloc(PQC_SHA512CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
@@ -580,7 +540,7 @@ void sha384_inc_init(sha384ctx *state) {
 	}
 }
 
-void sha512_inc_init(sha512ctx *state) {
+void oqs_sha2_sha512_inc_init_c(sha512ctx *state) {
 	state->ctx = malloc(PQC_SHA512CTX_BYTES);
 	if (state->ctx == NULL) {
 		exit(111);
@@ -593,7 +553,7 @@ void sha512_inc_init(sha512ctx *state) {
 	}
 }
 
-void sha224_inc_ctx_clone(sha224ctx *stateout, const sha224ctx *statein) {
+void oqs_sha2_sha224_inc_ctx_clone_c(sha224ctx *stateout, const sha224ctx *statein) {
 	stateout->ctx = malloc(PQC_SHA256CTX_BYTES);
 	if (stateout->ctx == NULL) {
 		exit(111);
@@ -601,7 +561,7 @@ void sha224_inc_ctx_clone(sha224ctx *stateout, const sha224ctx *statein) {
 	memcpy(stateout->ctx, statein->ctx, PQC_SHA256CTX_BYTES);
 }
 
-void sha256_inc_ctx_clone(sha256ctx *stateout, const sha256ctx *statein) {
+void oqs_sha2_sha256_inc_ctx_clone_c(sha256ctx *stateout, const sha256ctx *statein) {
 	stateout->ctx = malloc(PQC_SHA256CTX_BYTES);
 	if (stateout->ctx == NULL) {
 		exit(111);
@@ -609,7 +569,7 @@ void sha256_inc_ctx_clone(sha256ctx *stateout, const sha256ctx *statein) {
 	memcpy(stateout->ctx, statein->ctx, PQC_SHA256CTX_BYTES);
 }
 
-void sha384_inc_ctx_clone(sha384ctx *stateout, const sha384ctx *statein) {
+void oqs_sha2_sha384_inc_ctx_clone_c(sha384ctx *stateout, const sha384ctx *statein) {
 	stateout->ctx = malloc(PQC_SHA512CTX_BYTES);
 	if (stateout->ctx == NULL) {
 		exit(111);
@@ -617,7 +577,7 @@ void sha384_inc_ctx_clone(sha384ctx *stateout, const sha384ctx *statein) {
 	memcpy(stateout->ctx, statein->ctx, PQC_SHA512CTX_BYTES);
 }
 
-void sha512_inc_ctx_clone(sha512ctx *stateout, const sha512ctx *statein) {
+void oqs_sha2_sha512_inc_ctx_clone_c(sha512ctx *stateout, const sha512ctx *statein) {
 	stateout->ctx = malloc(PQC_SHA512CTX_BYTES);
 	if (stateout->ctx == NULL) {
 		exit(111);
@@ -626,56 +586,56 @@ void sha512_inc_ctx_clone(sha512ctx *stateout, const sha512ctx *statein) {
 }
 
 /* Destroy the hash state. */
-void sha224_inc_ctx_release(sha224ctx *state) {
+void oqs_sha2_sha224_inc_ctx_release_c(sha224ctx *state) {
 	free(state->ctx); // IGNORE free-check
 }
 
 /* Destroy the hash state. */
-void sha256_inc_ctx_release(sha256ctx *state) {
+void oqs_sha2_sha256_inc_ctx_release_c(sha256ctx *state) {
 	free(state->ctx); // IGNORE free-check
 }
 
 /* Destroy the hash state. */
-void sha384_inc_ctx_release(sha384ctx *state) {
+void oqs_sha2_sha384_inc_ctx_release_c(sha384ctx *state) {
 	free(state->ctx); // IGNORE free-check
 }
 
 /* Destroy the hash state. */
-void sha512_inc_ctx_release(sha512ctx *state) {
+void oqs_sha2_sha512_inc_ctx_release_c(sha512ctx *state) {
 	free(state->ctx); // IGNORE free-check
 }
 
-void sha256_inc_blocks(sha256ctx *state, const uint8_t *in, size_t inblocks) {
+void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t inblocks) {
 	uint64_t bytes = load_bigendian_64(state->ctx + 32);
 
-	crypto_hashblocks_sha256(state->ctx, in, 64 * inblocks);
+	crypto_hashblocks_sha256_c(state->ctx, in, 64 * inblocks);
 	bytes += 64 * inblocks;
 
 	store_bigendian_64(state->ctx + 32, bytes);
 }
 
-void sha224_inc_blocks(sha224ctx *state, const uint8_t *in, size_t inblocks) {
-	sha256_inc_blocks((sha256ctx *) state, in, inblocks);
+void oqs_sha2_sha224_inc_blocks_c(sha224ctx *state, const uint8_t *in, size_t inblocks) {
+	oqs_sha2_sha256_inc_blocks_c((sha256ctx *) state, in, inblocks);
 }
 
-void sha512_inc_blocks(sha512ctx *state, const uint8_t *in, size_t inblocks) {
+void oqs_sha2_sha512_inc_blocks_c(sha512ctx *state, const uint8_t *in, size_t inblocks) {
 	uint64_t bytes = load_bigendian_64(state->ctx + 64);
 
-	crypto_hashblocks_sha512(state->ctx, in, 128 * inblocks);
+	crypto_hashblocks_sha512_c(state->ctx, in, 128 * inblocks);
 	bytes += 128 * inblocks;
 
 	store_bigendian_64(state->ctx + 64, bytes);
 }
 
-void sha384_inc_blocks(sha384ctx *state, const uint8_t *in, size_t inblocks) {
-	sha512_inc_blocks((sha512ctx *) state, in, inblocks);
+void oqs_sha2_sha384_inc_blocks_c(sha384ctx *state, const uint8_t *in, size_t inblocks) {
+	oqs_sha2_sha512_inc_blocks_c((sha512ctx *) state, in, inblocks);
 }
 
-void sha256_inc_finalize(uint8_t *out, sha256ctx *state, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t padded[128];
 	uint64_t bytes = load_bigendian_64(state->ctx + 32) + inlen;
 
-	crypto_hashblocks_sha256(state->ctx, in, inlen);
+	crypto_hashblocks_sha256_c(state->ctx, in, inlen);
 	in += inlen;
 	inlen &= 63;
 	in -= inlen;
@@ -697,7 +657,7 @@ void sha256_inc_finalize(uint8_t *out, sha256ctx *state, const uint8_t *in, size
 		padded[61] = (uint8_t) (bytes >> 13);
 		padded[62] = (uint8_t) (bytes >> 5);
 		padded[63] = (uint8_t) (bytes << 3);
-		crypto_hashblocks_sha256(state->ctx, padded, 64);
+		crypto_hashblocks_sha256_c(state->ctx, padded, 64);
 	} else {
 		for (size_t i = inlen + 1; i < 120; ++i) {
 			padded[i] = 0;
@@ -710,29 +670,29 @@ void sha256_inc_finalize(uint8_t *out, sha256ctx *state, const uint8_t *in, size
 		padded[125] = (uint8_t) (bytes >> 13);
 		padded[126] = (uint8_t) (bytes >> 5);
 		padded[127] = (uint8_t) (bytes << 3);
-		crypto_hashblocks_sha256(state->ctx, padded, 128);
+		crypto_hashblocks_sha256_c(state->ctx, padded, 128);
 	}
 
 	for (size_t i = 0; i < 32; ++i) {
 		out[i] = state->ctx[i];
 	}
-	sha256_inc_ctx_release(state);
+	oqs_sha2_sha256_inc_ctx_release_c(state);
 }
 
-void sha224_inc_finalize(uint8_t *out, sha224ctx *state, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha224_inc_finalize_c(uint8_t *out, sha224ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t tmp[32];
-	sha256_inc_finalize(tmp, (sha256ctx *)state, in, inlen);
+	oqs_sha2_sha256_inc_finalize_c(tmp, (sha256ctx *)state, in, inlen);
 
 	for (size_t i = 0; i < 28; ++i) {
 		out[i] = tmp[i];
 	}
 }
 
-void sha512_inc_finalize(uint8_t *out, sha512ctx *state, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha512_inc_finalize_c(uint8_t *out, sha512ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t padded[256];
 	uint64_t bytes = load_bigendian_64(state->ctx + 64) + inlen;
 
-	crypto_hashblocks_sha512(state->ctx, in, inlen);
+	crypto_hashblocks_sha512_c(state->ctx, in, inlen);
 	in += inlen;
 	inlen &= 127;
 	in -= inlen;
@@ -755,7 +715,7 @@ void sha512_inc_finalize(uint8_t *out, sha512ctx *state, const uint8_t *in, size
 		padded[125] = (uint8_t) (bytes >> 13);
 		padded[126] = (uint8_t) (bytes >> 5);
 		padded[127] = (uint8_t) (bytes << 3);
-		crypto_hashblocks_sha512(state->ctx, padded, 128);
+		crypto_hashblocks_sha512_c(state->ctx, padded, 128);
 	} else {
 		for (size_t i = inlen + 1; i < 247; ++i) {
 			padded[i] = 0;
@@ -769,108 +729,49 @@ void sha512_inc_finalize(uint8_t *out, sha512ctx *state, const uint8_t *in, size
 		padded[253] = (uint8_t) (bytes >> 13);
 		padded[254] = (uint8_t) (bytes >> 5);
 		padded[255] = (uint8_t) (bytes << 3);
-		crypto_hashblocks_sha512(state->ctx, padded, 256);
+		crypto_hashblocks_sha512_c(state->ctx, padded, 256);
 	}
 
 	for (size_t i = 0; i < 64; ++i) {
 		out[i] = state->ctx[i];
 	}
-	sha512_inc_ctx_release(state);
+	oqs_sha2_sha512_inc_ctx_release_c(state);
 }
 
-void sha384_inc_finalize(uint8_t *out, sha384ctx *state, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha384_inc_finalize_c(uint8_t *out, sha384ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t tmp[64];
-	sha512_inc_finalize(tmp, (sha512ctx *)state, in, inlen);
+	oqs_sha2_sha512_inc_finalize_c(tmp, (sha512ctx *)state, in, inlen);
 
 	for (size_t i = 0; i < 48; ++i) {
 		out[i] = tmp[i];
 	}
 }
 
-void sha224(uint8_t *out, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha224_c(uint8_t *out, const uint8_t *in, size_t inlen) {
 	sha224ctx state;
 
-	sha224_inc_init(&state);
-	sha224_inc_finalize(out, &state, in, inlen);
+	oqs_sha2_sha224_inc_init_c(&state);
+	oqs_sha2_sha224_inc_finalize_c(out, &state, in, inlen);
 }
 
-void sha256(uint8_t *out, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha256_c(uint8_t *out, const uint8_t *in, size_t inlen) {
 	sha256ctx state;
 
-	sha256_inc_init(&state);
-	sha256_inc_finalize(out, &state, in, inlen);
+	oqs_sha2_sha256_inc_init_c(&state);
+	oqs_sha2_sha256_inc_finalize_c(out, &state, in, inlen);
 }
 
-void sha384(uint8_t *out, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha384_c(uint8_t *out, const uint8_t *in, size_t inlen) {
 	sha384ctx state;
 
-	sha384_inc_init(&state);
-	sha384_inc_finalize(out, &state, in, inlen);
+	oqs_sha2_sha384_inc_init_c(&state);
+	oqs_sha2_sha384_inc_finalize_c(out, &state, in, inlen);
 }
 
-void sha512(uint8_t *out, const uint8_t *in, size_t inlen) {
+void oqs_sha2_sha512_c(uint8_t *out, const uint8_t *in, size_t inlen) {
 	sha512ctx state;
 
-	sha512_inc_init(&state);
-	sha512_inc_finalize(out, &state, in, inlen);
+	oqs_sha2_sha512_inc_init_c(&state);
+	oqs_sha2_sha512_inc_finalize_c(out, &state, in, inlen);
 }
 
-void OQS_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
-	oqs_sha2_sha256_inc_init((sha256ctx *) state);
-}
-
-void OQS_SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_sha256_ctx *src) {
-	oqs_sha2_sha256_inc_ctx_clone((sha256ctx *) dest, (const sha256ctx *) src);
-}
-
-void OQS_SHA2_sha256_inc_ctx_release(OQS_SHA2_sha256_ctx *state) {
-	oqs_sha2_sha256_inc_ctx_release((sha256ctx *) state);
-}
-
-void OQS_SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inblocks) {
-	oqs_sha2_sha256_inc_blocks((sha256ctx *) state, in, inblocks);
-}
-
-void OQS_SHA2_sha256_inc_finalize(uint8_t *out, OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inlen) {
-	oqs_sha2_sha256_inc_finalize(out, (sha256ctx *) state, in, inlen);
-}
-
-void OQS_SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
-	oqs_sha2_sha384_inc_init((sha384ctx *) state);
-}
-
-void OQS_SHA2_sha384_inc_ctx_clone(OQS_SHA2_sha384_ctx *dest, const OQS_SHA2_sha384_ctx *src) {
-	oqs_sha2_sha384_inc_ctx_clone((sha384ctx *) dest, (const sha384ctx *) src);
-}
-
-void OQS_SHA2_sha384_inc_ctx_release(OQS_SHA2_sha384_ctx *state) {
-	oqs_sha2_sha384_inc_ctx_release((sha384ctx *) state);
-}
-
-void OQS_SHA2_sha384_inc_blocks(OQS_SHA2_sha384_ctx *state, const uint8_t *in, size_t inblocks) {
-	oqs_sha2_sha384_inc_blocks((sha384ctx *) state, in, inblocks);
-}
-
-void OQS_SHA2_sha384_inc_finalize(uint8_t *out, OQS_SHA2_sha384_ctx *state, const uint8_t *in, size_t inlen) {
-	oqs_sha2_sha384_inc_finalize(out, (sha384ctx *) state, in, inlen);
-}
-
-void OQS_SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state) {
-	oqs_sha2_sha512_inc_init((sha512ctx *) state);
-}
-
-void OQS_SHA2_sha512_inc_ctx_clone(OQS_SHA2_sha512_ctx *dest, const OQS_SHA2_sha512_ctx *src) {
-	oqs_sha2_sha512_inc_ctx_clone((sha512ctx *) dest, (const sha512ctx *) src);
-}
-
-void OQS_SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state) {
-	oqs_sha2_sha512_inc_ctx_release((sha512ctx *) state);
-}
-
-void OQS_SHA2_sha512_inc_blocks(OQS_SHA2_sha512_ctx *state, const uint8_t *in, size_t inblocks) {
-	oqs_sha2_sha512_inc_blocks((sha512ctx *) state, in, inblocks);
-}
-
-void OQS_SHA2_sha512_inc_finalize(uint8_t *out, OQS_SHA2_sha512_ctx *state, const uint8_t *in, size_t inlen) {
-	oqs_sha2_sha512_inc_finalize(out, (sha512ctx *) state, in, inlen);
-}

@@ -71,6 +71,27 @@ static void set_available_cpu_extensions(void) {
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
 }
 #elif defined(OQS_DIST_ARM64v8_BUILD)
+#if defined(__APPLE__)
+#include <sys/sysctl.h>
+static unsigned int macos_feature_detection(const char *feature_name) {
+	int p;
+	size_t p_len = sizeof(p);
+	int res = sysctlbyname(feature_name, &p, &p_len, NULL, 0);
+	if (res != 0) {
+		return 0;
+	} else {
+		return (p != 0) ? 1 : 0;
+	}
+}
+static void set_available_cpu_extensions(void) {
+	/* mark that this function has been called */
+	cpu_ext_data[OQS_CPU_EXT_ARM_AES] = 1;
+	cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
+	cpu_ext_data[OQS_CPU_EXT_ARM_SHA3] = macos_feature_detection("hw.optional.armv8_2_sha3");
+	cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = macos_feature_detection("hw.optional.neon");
+	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+}
+#else
 #include <sys/auxv.h>
 #include <asm/hwcap.h>
 static void set_available_cpu_extensions(void) {
@@ -90,6 +111,7 @@ static void set_available_cpu_extensions(void) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
 	}
 }
+#endif
 #elif defined(OQS_DIST_ARM32v7_BUILD)
 #include <sys/auxv.h>
 #include <asm/hwcap.h>
