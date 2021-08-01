@@ -6,7 +6,7 @@
 - **Auxiliary submitters**: Pierre-Alain Fouque, Jeffrey Hoffstein, Paul Kirchner, Vadim Lyubashevsky, Thomas Pornin, Thomas Ricosset, Gregor Seiler, William Whyte, Zhenfei Zhang.
 - **Authors' website**: https://falcon-sign.info
 - **Specification version**: v1.2.
-- **Implementation source**: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24, which takes it from:
+- **Implementation source**: https://github.com/PQClean/PQClean/commit/6c1ea921ee4a06a6b50c742ca540bb9b5e51aee2, which takes it from:
   - https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon, which takes it from:
   - supercop-20201018
 - **Implementation license (SPDX-Identifier)**: CC0-1.0.

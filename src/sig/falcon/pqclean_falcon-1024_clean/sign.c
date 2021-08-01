@@ -267,7 +267,7 @@ PQCLEAN_FALCON1024_CLEAN_expand_privkey(fpr *expanded_key,
     PQCLEAN_FALCON1024_CLEAN_poly_neg(rF, logn);
 
     /*
-     * The Gram matrix is G = B·B*. Formulas are:
+     * The Gram matrix is G = B x B*. Formulas are:
      *   g00 = b00*adj(b00) + b01*adj(b01)
      *   g01 = b00*adj(b10) + b01*adj(b11)
      *   g10 = b10*adj(b00) + b11*adj(b01)
@@ -788,7 +788,7 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
     PQCLEAN_FALCON1024_CLEAN_poly_neg(b11, logn);
 
     /*
-     * Compute the Gram matrix G = B·B*. Formulas are:
+     * Compute the Gram matrix G = B x B*. Formulas are:
      *   g00 = b00*adj(b00) + b01*adj(b01)
      *   g01 = b00*adj(b10) + b01*adj(b11)
      *   g10 = b10*adj(b00) + b11*adj(b01)
