@@ -1,4 +1,4 @@
-liboqs version 0.7.0-rc2
+liboqs version 0.7.0-rc3
 ========================
 
 About
@@ -28,7 +28,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 2 for version 0.7.0 of liboqs.  It was released on July 30, 2021.
+This is release candidate 3 for version 0.7.0 of liboqs.  It was released on August 1, 2021.
 
 What's New
 ----------
