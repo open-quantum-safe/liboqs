@@ -17,6 +17,8 @@ import json
 # kats of all algs
 kats = {}
 
+non_upstream_lengths = {}
+
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbosity", type=int)
 parser.add_argument("-k", "--keep_data", action='store_true')
@@ -33,6 +35,19 @@ keepdata = True if args.keep_data else False
 if 'LIBOQS_DIR' not in os.environ:
     print("Must set environment variable LIBOQS_DIR")
     exit(1)
+
+# pass this function the list of non-upstream algs to count
+# kemsig either 'kem' or 'sig'
+# scours the documentation for non-upstream algorithms
+# returns the number of documented algorithms
+def count_non_upstream_algs(kemsig, alglist):
+    counted=0
+    docs_dir = os.path.join(os.environ['LIBOQS_DIR'], 'docs', 'algorithms', kemsig)
+    for alg in alglist:
+       with open(os.path.join(docs_dir, alg+".yml"), mode='r', encoding='utf-8') as f:
+           algyml = yaml.safe_load(f.read())
+           counted = counted + len(algyml['parameter-sets'])
+    return counted
 
 
 def file_get_contents(filename, encoding=None):
@@ -79,7 +94,7 @@ def replacer(filename, instructions, delimiter):
         preamble = contents[:contents.find(identifier_start)]
         postamble = contents[contents.find(identifier_end):]
         contents = preamble + identifier_start + jinja2.Template(template).render(
-            {'instructions': instructions}) + postamble
+            {'instructions': instructions, 'non_upstream_lengths': non_upstream_lengths}) + postamble
     file_put_contents(os.path.join(os.environ['LIBOQS_DIR'], filename), contents)
 
 def load_instructions():
@@ -497,7 +512,7 @@ def copy_from_upstream():
     if not keepdata:
         shutil.rmtree('repos')
 
-    #print("Remember to update the docs by running scripts/copy_from_upstream/update_pqclean_alg_docs.py -> scripts/format_docs_yaml.py -> scripts/update_docs_from_yaml.py")
+    print("Remember to update the docs by running update_pqclean_alg_docs.py")
 
 
 def verify_from_upstream():
@@ -564,6 +579,8 @@ def verify_from_upstream():
     if (differ > 0):
         exit(1)
 
+non_upstream_lengths['kem'] = count_non_upstream_algs('kem', ['bike', 'frodokem', 'sike'])
+non_upstream_lengths['sig'] = count_non_upstream_algs('sig', ['picnic'])
 
 if args.operation == "copy":
     copy_from_upstream()
