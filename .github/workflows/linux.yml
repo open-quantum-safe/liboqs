@@ -34,4 +34,4 @@ jobs:
           cmake -LA .. && ! (grep "uninitialized variable" config.log)
       - name: Build
         run: ninja
-        working_directory: build
+        working-directory: build
