@@ -3,6 +3,7 @@ on: [push]
 jobs:
   stylecheck:
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
