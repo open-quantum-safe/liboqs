@@ -166,7 +166,7 @@ _INLINE_ void gf2x_ctx_init(gf2x_ctx *ctx)
     ctx->sqr             = gf2x_sqr_vpclmul;
   } else
 #  endif // DISABLE_VPCLMUL
-#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_PCLMUL_INSTRUCTIONS)
+#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_PCLMULQDQ_INSTRUCTIONS)
   if(is_pclmul_enabled()) {
     ctx->mul_base_qwords = GF2X_PCLMUL_BASE_QWORDS;
     ctx->mul_base        = gf2x_mul_base_pclmul;
