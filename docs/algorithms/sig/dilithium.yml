@@ -3,7 +3,6 @@ type: signature
 principal-submitters:
 - Vadim Lyubashevsky
 auxiliary-submitters:
-- Shi Bai
 - Léo Ducas
 - Eike Kiltz
 - Tancrède Lepoint
@@ -41,8 +40,8 @@ parameter-sets:
       - Darwin
       - Linux
       required_flags:
-      - avx2
       - popcnt
+      - avx2
     common-crypto:
     - AES: pqcrystals
     - SHA3: liboqs
@@ -72,8 +71,8 @@ parameter-sets:
       - Darwin
       - Linux
       required_flags:
-      - avx2
       - popcnt
+      - avx2
     common-crypto:
     - AES: pqcrystals
     - SHA3: liboqs
@@ -103,8 +102,8 @@ parameter-sets:
       - Darwin
       - Linux
       required_flags:
-      - avx2
       - popcnt
+      - avx2
     common-crypto:
     - AES: pqcrystals
     - SHA3: liboqs

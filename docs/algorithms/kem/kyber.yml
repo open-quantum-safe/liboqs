@@ -43,9 +43,9 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - avx2
       - popcnt
       - bmi2
+      - avx2
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -110,9 +110,9 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - avx2
       - popcnt
       - bmi2
+      - avx2
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -177,9 +177,9 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - avx2
       - popcnt
       - bmi2
+      - avx2
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
