@@ -5,6 +5,7 @@ jobs:
     name: Check code formatting
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     runs-on: ubuntu-latest
+    if: 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -28,7 +29,7 @@ jobs:
           mkdir build && \
           cd build && \
           cmake .. --warn-uninitialized \
-                   -GNinja << parameters.CMAKE_ARGS >> \
+                   -GNinja \
                    -DOQS_MINIMAL_BUILD="OQS_ENABLE_KEM_$KEM_NAME;OQS_ENABLE_SIG_$SIG_NAME" \
                    > config.log 2>&1 && \
           cat config.log && \
