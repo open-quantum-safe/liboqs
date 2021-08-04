@@ -61,12 +61,15 @@ typedef struct decode_ctx_st {
 _INLINE_ void decode_ctx_init(decode_ctx *ctx)
 {
 #if defined(X86_64)
+#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_AVX512_INSTRUCTIONS)
   if(is_avx512_enabled()) {
     ctx->rotate_right            = rotate_right_avx512;
     ctx->dup                     = dup_avx512;
     ctx->bit_sliced_adder        = bit_sliced_adder_avx512;
     ctx->bit_slice_full_subtract = bit_slice_full_subtract_avx512;
-  } else if(is_avx2_enabled()) {
+  } else 
+#endif
+  if(is_avx2_enabled()) {
     ctx->rotate_right            = rotate_right_avx2;
     ctx->dup                     = dup_avx2;
     ctx->bit_sliced_adder        = bit_sliced_adder_avx2;

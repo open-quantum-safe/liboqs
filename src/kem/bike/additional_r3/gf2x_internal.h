@@ -131,13 +131,16 @@ void gf2x_mod_mul_with_ctx(OUT pad_r_t *c,
 _INLINE_ void gf2x_ctx_init(gf2x_ctx *ctx)
 {
 #if defined(X86_64)
+#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_AVX512_INSTRUCTIONS)
   if(is_avx512_enabled()) {
     ctx->karatzuba_add1 = karatzuba_add1_avx512;
     ctx->karatzuba_add2 = karatzuba_add2_avx512;
     ctx->karatzuba_add3 = karatzuba_add3_avx512;
     ctx->k_sqr          = k_sqr_avx512;
     ctx->red            = gf2x_red_avx512;
-  } else if(is_avx2_enabled()) {
+  } else
+#endif
+  if(is_avx2_enabled()) {
     ctx->karatzuba_add1 = karatzuba_add1_avx2;
     ctx->karatzuba_add2 = karatzuba_add2_avx2;
     ctx->karatzuba_add3 = karatzuba_add3_avx2;

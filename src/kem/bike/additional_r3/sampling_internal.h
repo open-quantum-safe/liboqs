@@ -46,10 +46,13 @@ typedef struct sampling_ctx_st {
 _INLINE_ void sampling_ctx_init(sampling_ctx *ctx)
 {
 #if defined(X86_64)
+#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_AVX512_INSTRUCTIONS)
   if(is_avx512_enabled()) {
     ctx->secure_set_bits = secure_set_bits_avx512;
     ctx->is_new          = is_new_avx512;
-  } else if(is_avx2_enabled()) {
+  } else
+#endif
+  if(is_avx2_enabled()) {
     ctx->secure_set_bits = secure_set_bits_avx2;
     ctx->is_new          = is_new_avx2;
   } else
