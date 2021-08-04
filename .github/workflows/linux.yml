@@ -2,6 +2,7 @@ name: Linux tests
 on: [push]
 jobs:
   stylecheck:
+    name: Check code formatting
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     runs-on: ubuntu-latest
     steps:
@@ -11,3 +12,26 @@ jobs:
         run: python3 -m pytest --verbose tests/test_code_conventions.py
       - name: Check that doxygen can parse the documentation
         run: mkdir -p build/docs && doxygen docs/.Doxyfile
+  buildcheck:
+    name: Check that code passes a basic build before starting heavier tests
+    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+    needs: stylecheck
+    runs-on: ubuntu-latest
+    env:
+      KEM_NAME: kyber_768
+      SIG_NAME: dilithium_3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Configure
+        run: |
+          mkdir build && cd build && source ~/.bashrc && \
+          cmake .. --warn-uninitialized \
+                   -GNinja << parameters.CMAKE_ARGS >> \
+                   -DOQS_MINIMAL_BUILD="OQS_ENABLE_KEM_${KEM_NAME};OQS_ENABLE_SIG_${SIG_NAME}" \
+                   > config.log 2>&1 && \
+          cat config.log && \
+          cmake -LA .. && ! (grep "uninitialized variable" config.log)
+      - name: Build
+        run: ninja
+        working_directory: build
