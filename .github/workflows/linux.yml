@@ -1,11 +1,14 @@
 name: Linux tests
+
 on: [push]
+
 jobs:
+
   stylecheck:
     name: Check code formatting
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     runs-on: ubuntu-latest
-    if: 
+    if: false
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -13,10 +16,12 @@ jobs:
         run: python3 -m pytest --verbose tests/test_code_conventions.py
       - name: Check that doxygen can parse the documentation
         run: mkdir -p build/docs && doxygen docs/.Doxyfile
+
   buildcheck:
     name: Check that code passes a basic build before starting heavier tests
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     # needs: stylecheck
+    if: false
     runs-on: ubuntu-latest
     env:
       KEM_NAME: kyber_768
@@ -38,3 +43,21 @@ jobs:
       - name: Build
         run: ninja
         working-directory: build
+
+  alpine:
+    container: openquantumsafe/ci-alpine-amd64:latest
+    # needs: [stylecheck, buildcheck]
+    runs-on: ubuntu-latest
+    env:
+      CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Configure
+        run: mkdir build && cd build && source ~/.bashrc && cmake -GNinja $CMAKE_ARGS .. && cmake -LA ..
+      - name: Build
+        command: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 60
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py $PYTEST_ARGS
