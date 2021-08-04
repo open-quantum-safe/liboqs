@@ -1,0 +1,12 @@
+name: Linux tests
+on: [push]
+jobs:
+  stylecheck:
+    container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Ensure code conventions are upheld
+        run: python3 -m pytest --verbose tests/test_code_conventions.py
+      - name: Check that doxygen can parse the documentation
+        run: mkdir -p build/docs && doxygen docs/.Doxyfile
