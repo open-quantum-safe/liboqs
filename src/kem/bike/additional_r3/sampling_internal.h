@@ -52,10 +52,12 @@ _INLINE_ void sampling_ctx_init(sampling_ctx *ctx)
     ctx->is_new          = is_new_avx512;
   } else
 #endif
+#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_AVX2_INSTRUCTIONS)
   if(is_avx2_enabled()) {
     ctx->secure_set_bits = secure_set_bits_avx2;
     ctx->is_new          = is_new_avx2;
   } else
+#endif
 #endif
   {
     ctx->secure_set_bits = secure_set_bits_port;

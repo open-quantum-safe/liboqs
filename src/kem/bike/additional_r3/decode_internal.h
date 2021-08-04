@@ -69,12 +69,14 @@ _INLINE_ void decode_ctx_init(decode_ctx *ctx)
     ctx->bit_slice_full_subtract = bit_slice_full_subtract_avx512;
   } else 
 #endif
+#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_AVX2_INSTRUCTIONS)
   if(is_avx2_enabled()) {
     ctx->rotate_right            = rotate_right_avx2;
     ctx->dup                     = dup_avx2;
     ctx->bit_sliced_adder        = bit_sliced_adder_avx2;
     ctx->bit_slice_full_subtract = bit_slice_full_subtract_avx2;
   } else
+#endif
 #endif
   {
     ctx->rotate_right            = rotate_right_port;

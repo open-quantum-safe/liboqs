@@ -140,6 +140,7 @@ _INLINE_ void gf2x_ctx_init(gf2x_ctx *ctx)
     ctx->red            = gf2x_red_avx512;
   } else
 #endif
+#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_AVX2_INSTRUCTIONS)
   if(is_avx2_enabled()) {
     ctx->karatzuba_add1 = karatzuba_add1_avx2;
     ctx->karatzuba_add2 = karatzuba_add2_avx2;
@@ -147,6 +148,7 @@ _INLINE_ void gf2x_ctx_init(gf2x_ctx *ctx)
     ctx->k_sqr          = k_sqr_avx2;
     ctx->red            = gf2x_red_avx2;
   } else
+#endif
 #endif
   {
     ctx->karatzuba_add1 = karatzuba_add1_port;
@@ -164,11 +166,13 @@ _INLINE_ void gf2x_ctx_init(gf2x_ctx *ctx)
     ctx->sqr             = gf2x_sqr_vpclmul;
   } else
 #  endif // DISABLE_VPCLMUL
+#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_PCLMUL_INSTRUCTIONS)
   if(is_pclmul_enabled()) {
     ctx->mul_base_qwords = GF2X_PCLMUL_BASE_QWORDS;
     ctx->mul_base        = gf2x_mul_base_pclmul;
     ctx->sqr             = gf2x_sqr_pclmul;
   } else
+#endif
 #endif
   {
     ctx->mul_base_qwords = GF2X_PORT_BASE_QWORDS;
