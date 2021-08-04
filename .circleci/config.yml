@@ -322,8 +322,11 @@ workflows:
   version: 2.1
   build:
     when:
-      not:
-        equal: [ main, << pipeline.git.branch >> ]
+      and:
+        - not:
+            equal: [ main, << pipeline.git.branch >> ]
+        - not:
+            matches: { pattern: "^ghactionsonly-.*", value: << pipeline.git.branch >> }
     jobs:
       - stylecheck
       - buildcheck:
