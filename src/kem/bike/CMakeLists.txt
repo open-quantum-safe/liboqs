@@ -66,6 +66,8 @@ if(OQS_ENABLE_KEM_bike_l1 OR OQS_ENABLE_KEM_bike_l3)
         else()
             set(CPP_DEFS_R3 ${CPP_DEFS_R3} DISABLE_VPCLMUL)
         endif()
+    else()
+        set(CPP_DEFS_R3 ${CPP_DEFS_R3} DISABLE_VPCLMUL)
     endif()
 
     if(ARCH_X86_64)
