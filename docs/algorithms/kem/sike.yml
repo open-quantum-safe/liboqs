@@ -500,7 +500,7 @@ parameter-sets:
     large-stack-usage: false
 - name: SIKE-p434
   claimed-nist-level: 1
-  claimed-security: IND-CCA
+  claimed-security: IND-CCA2
   length-public-key: 330
   length-ciphertext: 346
   length-secret-key: 374
@@ -554,7 +554,7 @@ parameter-sets:
     large-stack-usage: false
 - name: SIKE-p434-compressed
   claimed-nist-level: 1
-  claimed-security: IND-CCA
+  claimed-security: IND-CCA2
   length-public-key: 197
   length-ciphertext: 236
   length-secret-key: 350
@@ -608,7 +608,7 @@ parameter-sets:
     large-stack-usage: false
 - name: SIKE-p503
   claimed-nist-level: 2
-  claimed-security: IND-CCA
+  claimed-security: IND-CCA2
   length-public-key: 378
   length-ciphertext: 402
   length-secret-key: 434
@@ -673,7 +673,7 @@ parameter-sets:
     large-stack-usage: false
 - name: SIKE-p503-compressed
   claimed-nist-level: 2
-  claimed-security: IND-CCA
+  claimed-security: IND-CCA2
   length-public-key: 225
   length-ciphertext: 280
   length-secret-key: 407
@@ -738,7 +738,7 @@ parameter-sets:
     large-stack-usage: false
 - name: SIKE-p610
   claimed-nist-level: 3
-  claimed-security: IND-CCA
+  claimed-security: IND-CCA2
   length-public-key: 462
   length-ciphertext: 486
   length-secret-key: 524
@@ -792,7 +792,7 @@ parameter-sets:
     large-stack-usage: false
 - name: SIKE-p610-compressed
   claimed-nist-level: 3
-  claimed-security: IND-CCA
+  claimed-security: IND-CCA2
   length-public-key: 274
   length-ciphertext: 336
   length-secret-key: 491
@@ -846,7 +846,7 @@ parameter-sets:
     large-stack-usage: false
 - name: SIKE-p751
   claimed-nist-level: 5
-  claimed-security: IND-CCA
+  claimed-security: IND-CCA2
   length-public-key: 564
   length-ciphertext: 596
   length-secret-key: 644
@@ -911,7 +911,7 @@ parameter-sets:
     large-stack-usage: false
 - name: SIKE-p751-compressed
   claimed-nist-level: 5
-  claimed-security: IND-CCA
+  claimed-security: IND-CCA2
   length-public-key: 335
   length-ciphertext: 410
   length-secret-key: 602

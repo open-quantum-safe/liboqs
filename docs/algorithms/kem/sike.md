@@ -20,14 +20,14 @@
 | SIDH-p610-compressed | IND-CPA          |                    3 |                       274 |                        39 |                       274 |                          154 |
 |      SIDH-p751       | IND-CPA          |                    5 |                       564 |                        48 |                       564 |                          188 |
 | SIDH-p751-compressed | IND-CPA          |                    5 |                       335 |                        48 |                       335 |                          188 |
-|      SIKE-p434       | IND-CCA          |                    1 |                       330 |                       374 |                       346 |                           16 |
-| SIKE-p434-compressed | IND-CCA          |                    1 |                       197 |                       350 |                       236 |                           16 |
-|      SIKE-p503       | IND-CCA          |                    2 |                       378 |                       434 |                       402 |                           24 |
-| SIKE-p503-compressed | IND-CCA          |                    2 |                       225 |                       407 |                       280 |                           24 |
-|      SIKE-p610       | IND-CCA          |                    3 |                       462 |                       524 |                       486 |                           24 |
-| SIKE-p610-compressed | IND-CCA          |                    3 |                       274 |                       491 |                       336 |                           24 |
-|      SIKE-p751       | IND-CCA          |                    5 |                       564 |                       644 |                       596 |                           32 |
-| SIKE-p751-compressed | IND-CCA          |                    5 |                       335 |                       602 |                       410 |                           32 |
+|      SIKE-p434       | IND-CCA2         |                    1 |                       330 |                       374 |                       346 |                           16 |
+| SIKE-p434-compressed | IND-CCA2         |                    1 |                       197 |                       350 |                       236 |                           16 |
+|      SIKE-p503       | IND-CCA2         |                    2 |                       378 |                       434 |                       402 |                           24 |
+| SIKE-p503-compressed | IND-CCA2         |                    2 |                       225 |                       407 |                       280 |                           24 |
+|      SIKE-p610       | IND-CCA2         |                    3 |                       462 |                       524 |                       486 |                           24 |
+| SIKE-p610-compressed | IND-CCA2         |                    3 |                       274 |                       491 |                       336 |                           24 |
+|      SIKE-p751       | IND-CCA2         |                    5 |                       564 |                       644 |                       596 |                           32 |
+| SIKE-p751-compressed | IND-CCA2         |                    5 |                       335 |                       602 |                       410 |                           32 |
 
 ## SIDH-p434 implementation characteristics
 

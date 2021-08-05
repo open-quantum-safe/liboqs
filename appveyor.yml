@@ -45,7 +45,7 @@ build_script:
 before_test:
   - cmd: |-
          SET "PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%"
-         pip.exe install pytest pytest-xdist
+         pip.exe install pytest pytest-xdist pyyaml
 
 test_script:
   - cmd: |-
