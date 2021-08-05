@@ -57,7 +57,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Configure
-        run: mkdir build && cd build && cmake -GNinja $CMAKE_ARGS .. && cmake -LA ..
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
       - name: Build
         run: ninja
         working-directory: build
