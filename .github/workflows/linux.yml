@@ -46,8 +46,10 @@ jobs:
 
   linux_intel:
     # needs: [stylecheck, buildcheck]
+    if: false
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
           - name: alpine
@@ -58,10 +60,11 @@ jobs:
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
             PYTEST_ARGS: ""
-          - name: address-sanitizer
-            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
-            PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
+          # disabled until #1067 lands
+          # - name: address-sanitizer
+          #   container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+          #   CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
+          #   PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
     container:
       image: ${{ matrix.container }}
     steps:
@@ -75,3 +78,45 @@ jobs:
       - name: Run tests
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}
+
+  linux_arm_emulated:
+    # needs: [stylecheck, buildcheck]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: armhf
+            ARCH: armhf
+            CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+          # - name: armel
+          #   ARCH: armel
+          #   CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install the emulation handlers
+        run: docker run --rm --privileged multiarch/qemu-user-static:register --reset
+      - name: Build in an x86_64 container
+        run: |
+          docker run --rm \
+                     -v `pwd`:`pwd` \
+                     -w `pwd` \
+                     openquantumsafe/ci-debian-buster-amd64:latest /bin/bash \
+                     -c "mkdir build && \
+                         (cd build && \
+                          cmake .. -GNinja ${{ matrix.CMAKE_ARGS }} \
+                                   -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_${{ matrix.ARCH }}.cmake && \
+                          cmake -LA .. && \
+                          ninja)"
+      - name: Run the tests in an ${{ matrix.ARCH }} container
+        timeout-minutes: 60
+        run: |
+          docker run --rm -e SKIP_TESTS=style,mem_kem,mem_sig \
+                          -v `pwd`:`pwd` \
+                          -w `pwd` \
+                          openquantumsafe/ci-debian-buster-${{ matrix.ARCH }}:latest /bin/bash \
+                          -c "mkdir -p tmp && \
+                              python3 -m pytest --verbose \
+                                                --numprocesses=auto \
+                                                --ignore=tests/test_code_conventions.py"
