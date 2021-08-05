@@ -44,15 +44,26 @@ jobs:
         run: ninja
         working-directory: build
 
-  alpine:
-    container: openquantumsafe/ci-alpine-amd64:latest
+  linux_intel:
     # needs: [stylecheck, buildcheck]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        CMAKE_ARGS:
-          - "-DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON"
-          - "-DOQS_USE_OPENSSL=OFF"
+        include:
+          - name: alpine
+            container: openquantumsafe/ci-alpine-amd64:latest
+            CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+            PYTEST_ARGS: ""
+          - name: alpine-noopenssl
+            container: openquantumsafe/ci-alpine-amd64:latest
+            CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
+            PYTEST_ARGS: ""
+          - name: address-sanitizer
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
+            PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
+    container:
+      image: ${{ matrix.container }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -63,4 +74,4 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py $PYTEST_ARGS
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}
