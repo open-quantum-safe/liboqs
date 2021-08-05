@@ -127,6 +127,9 @@ jobs:
       CMAKE_ARGS:
         description: "Arguments to pass to CMake."
         type: string
+      PYTEST_ARGS:
+        description: "Arguments to pass to pytest."
+        type: string
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -157,6 +160,7 @@ jobs:
                             -c "mkdir -p tmp && \
                                 python3 -m pytest --verbose \
                                                   --numprocesses=auto \
+                                                  << parameters.PYTEST_ARGS >> \
                                                   --ignore=tests/test_code_conventions.py \
                                                   --junitxml=build/test-results/pytest/test-results.xml"
       - store_test_results:
@@ -220,7 +224,7 @@ jobs:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
           name: Install dependencies
-          command: brew unlink python@2 && env HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja && pip3 install pytest pytest-xdist
+          command: brew unlink python@2 && env HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja && pip3 install pytest pytest-xdist pyyaml
       - run:
           name: Get system information
           command: sysctl -a | grep machdep.cpu
@@ -338,12 +342,14 @@ workflows:
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
+          PYTEST_ARGS: --ignore=tests/test_alg_info.py
       - linux_oqs:
           <<: *require_buildcheck
           name: alpine
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+          PYTEST_ARGS: --ignore=tests/test_alg_info.py
       # Disabling centos-8 and debian-buster.
       # Re-enable if specific configurations (package versions etc) that need to be tested are identified.
       #- linux_oqs:
@@ -443,6 +449,7 @@ workflows:
           name: armhf
           ARCH: armhf
           CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+          PYTEST_ARGS: --ignore=tests/test_alg_info.py
       # Disabling armel
       #- arm_emulated:
       #    <<: *require_buildcheck

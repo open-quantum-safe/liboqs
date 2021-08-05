@@ -18,7 +18,7 @@ def test_alg_info_kem(kem_name):
     # find and load the datasheet
     datasheet_filename = helpers.run_subprocess(['grep', '-r', '-l', kem_name, 'docs/algorithms/kem']).splitlines()[0]
     datasheet_filename = datasheet_filename.replace('.md','.yml')
-    with open(datasheet_filename, 'r') as datasheet_fh:
+    with open(datasheet_filename, 'r', encoding='utf8') as datasheet_fh:
         datasheet = yaml.safe_load(datasheet_fh.read())
     # find the parameter set in the datasheet
     foundit = False
@@ -47,7 +47,7 @@ def test_alg_info_sig(sig_name):
     # find and load the datasheet
     datasheet_filename = helpers.run_subprocess(['grep', '-r', '-l', sig_name, 'docs/algorithms/sig']).splitlines()[0]
     datasheet_filename = datasheet_filename.replace('.md','.yml')
-    with open(datasheet_filename, 'r') as datasheet_fh:
+    with open(datasheet_filename, 'r', encoding='utf8') as datasheet_fh:
         datasheet = yaml.safe_load(datasheet_fh.read())
     # find the parameter set in the datasheet
     foundit = False
