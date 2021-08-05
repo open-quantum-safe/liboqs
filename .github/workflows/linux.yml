@@ -2,19 +2,6 @@ name: Linux tests
 
 on: [push]
 
-template_linux_build_steps:
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    - name: Configure
-      run: mkdir build && cd build && cmake -GNinja $CMAKE_ARGS .. && cmake -LA ..
-    - name: Build
-      run: ninja
-      working-directory: build
-    - name: Run tests
-      timeout-minutes: 60
-      run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py $PYTEST_ARGS
-
 jobs:
 
   stylecheck:
@@ -61,14 +48,19 @@ jobs:
     container: openquantumsafe/ci-alpine-amd64:latest
     # needs: [stylecheck, buildcheck]
     runs-on: ubuntu-latest
-    env:
-      CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
-    <<: *template_linux_build_steps
-
-  alpine-noopenssl:
-    container: openquantumsafe/ci-alpine-amd64:latest
-    # needs: [stylecheck, buildcheck]
-    runs-on: ubuntu-latest
-    env:
-      CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-    <<: *template_linux_build_steps
+    strategy:
+      matrix:
+        CMAKE_ARGS:
+          - "-DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON"
+          - "-DOQS_USE_OPENSSL=OFF"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja $CMAKE_ARGS .. && cmake -LA ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 60
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py $PYTEST_ARGS
