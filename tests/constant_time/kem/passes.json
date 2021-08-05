@@ -1,8 +1,6 @@
 {
-  "BIKE1-L1-CPA": [],
-  "BIKE1-L1-FO": [],
-  "BIKE1-L3-CPA": [],
-  "BIKE1-L3-FO": [],
+  "BIKE-L1": [],
+  "BIKE-L3": [],
   "Classic-McEliece-348864": ["mceliece-sk_gen", "mceliece-348864"],
   "Classic-McEliece-348864f": ["mceliece-sk_gen", "mceliece-348864f"],
   "Classic-McEliece-460896": ["mceliece-sk_gen", "mceliece-460896"],
