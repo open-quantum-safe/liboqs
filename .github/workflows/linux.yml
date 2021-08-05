@@ -8,7 +8,6 @@ jobs:
     name: Check code formatting
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
     runs-on: ubuntu-latest
-    if: false
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -20,8 +19,7 @@ jobs:
   buildcheck:
     name: Check that code passes a basic build before starting heavier tests
     container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-    # needs: stylecheck
-    if: false
+    needs: stylecheck
     runs-on: ubuntu-latest
     env:
       KEM_NAME: kyber_768
@@ -45,8 +43,7 @@ jobs:
         working-directory: build
 
   linux_intel:
-    # needs: [stylecheck, buildcheck]
-    if: false
+    needs: [stylecheck, buildcheck]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -55,11 +52,11 @@ jobs:
           - name: alpine
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
-            PYTEST_ARGS: ""
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py
           - name: alpine-noopenssl
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-            PYTEST_ARGS: ""
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py
           # disabled until #1067 lands
           # - name: address-sanitizer
           #   container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
@@ -80,7 +77,7 @@ jobs:
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}
 
   linux_arm_emulated:
-    # needs: [stylecheck, buildcheck]
+    needs: [stylecheck, buildcheck]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -89,6 +86,7 @@ jobs:
           - name: armhf
             ARCH: armhf
             CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+          # no longer supporting armel
           # - name: armel
           #   ARCH: armel
           #   CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic

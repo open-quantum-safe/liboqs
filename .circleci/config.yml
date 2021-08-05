@@ -118,56 +118,6 @@ jobs:
       - store_artifacts:
           path: build/test-results
 
-  arm_emulated:
-    description: A template for running liboqs tests on emulated ARM Docker VMs
-    parameters:
-      ARCH:
-        description: "The desired ARM architecture to be emulated."
-        type: string
-      CMAKE_ARGS:
-        description: "Arguments to pass to CMake."
-        type: string
-      PYTEST_ARGS:
-        description: "Arguments to pass to pytest."
-        type: string
-    machine:
-      image: ubuntu-1604:201903-01
-    steps:
-      - checkout
-      - run:
-          name: Install the emulation handlers
-          command: docker run --rm --privileged multiarch/qemu-user-static:register --reset
-      - run:
-          name: Build in an x86_64 container
-          command: |2
-            docker run --rm \
-                       -v `pwd`:`pwd` \
-                       -w `pwd` \
-                       openquantumsafe/ci-debian-buster-amd64:latest /bin/bash \
-                       -c "mkdir build && \
-                           (cd build && \
-                            cmake .. -GNinja << parameters.CMAKE_ARGS >> \
-                                     -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_<< parameters.ARCH >>.cmake && \
-                            cmake -LA .. && \
-                            ninja)"
-      - run:
-          name: Run the tests in an << parameters.ARCH >> container
-          command: |2
-            docker run --rm -e SKIP_TESTS=style,mem_kem,mem_sig \
-                            -v `pwd`:`pwd` \
-                            -w `pwd` \
-                            openquantumsafe/ci-debian-buster-<< parameters.ARCH >>:latest /bin/bash \
-                            -c "mkdir -p tmp && \
-                                python3 -m pytest --verbose \
-                                                  --numprocesses=auto \
-                                                  << parameters.PYTEST_ARGS >> \
-                                                  --ignore=tests/test_code_conventions.py \
-                                                  --junitxml=build/test-results/pytest/test-results.xml"
-      - store_test_results:
-          path: build/test-results
-      - store_artifacts:
-          path: build/test-results
-
   arm_machine:
     description: A template for running liboqs tests on ARM(presently only 64) machines
     parameters:
@@ -339,20 +289,6 @@ workflows:
       #- testapproval:
       #    <<: *require_buildcheck
       #    type: approval
-      - linux_oqs:
-          <<: *require_buildcheck
-          name: alpine-noopenssl
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-          PYTEST_ARGS: --ignore=tests/test_alg_info.py
-      - linux_oqs:
-          <<: *require_buildcheck
-          name: alpine
-          context: openquantumsafe
-          CONTAINER: openquantumsafe/ci-alpine-amd64:latest
-          CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
-          PYTEST_ARGS: --ignore=tests/test_alg_info.py
       # Disabling centos-8 and debian-buster.
       # Re-enable if specific configurations (package versions etc) that need to be tested are identified.
       #- linux_oqs:
@@ -385,17 +321,6 @@ workflows:
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9
-      - linux_oqs:
-          <<: *require_buildcheck
-          name: address-sanitizer
-          context: openquantumsafe
-          filters:
-            branches:
-              only:
-                - /^audit.*/
-          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
-          PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
       - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-bionic-i386
@@ -436,30 +361,11 @@ workflows:
       #    PYTEST_ARGS: --numprocesses=1
       # SPHINCS exhausts memory on CircleCI servers
       # for these configurations.
-      # don't run ARM64 emulated any more:
-      #- arm_emulated:
-      #    <<: *require_buildcheck
-      #    name: arm64
-      #    ARCH: arm64
-      #    CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_DIST_BUILD=ON
       - arm_machine:
           <<: *require_buildcheck
           name: arm64
           PYTEST_ARGS: --numprocesses=auto --maxprocesses=10
           CMAKE_ARGS: -DOQS_DIST_BUILD=ON
-      - arm_emulated:
-          <<: *require_buildcheck
-          name: armhf
-          ARCH: armhf
-          CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
-          PYTEST_ARGS: --ignore=tests/test_alg_info.py
-      # Disabling armel
-      #- arm_emulated:
-      #    <<: *require_buildcheck
-      #    name: armel
-      #    ARCH: armel
-      #    CMAKE_ARGS:  -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
-
       - macOS:
           <<: *require_buildcheck
           name: macOS-noopenssl
