@@ -6,7 +6,7 @@
 - **Auxiliary submitters**: Ming-Shing Chen, Matthias Kannwischer, Jacques Patarin, Albrecht Petzoldt, Dieter Schmidt, Bo-Yin Yang.
 - **Authors' website**: https://www.pqcrainbow.org/
 - **Specification version**: NIST Round 3 submission.
-- **Implementation source**: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24, which takes it from:
+- **Implementation source**: https://github.com/PQClean/PQClean/commit/6c1ea921ee4a06a6b50c742ca540bb9b5e51aee2, which takes it from:
   - https://github.com/fast-crypto-lab/rainbow-submission-round2/commit/173ada0e077e1b9dbd8e4a78994f87acc0c92263
 - **Implementation license (SPDX-Identifier)**: CC0-1.0.
 
@@ -26,9 +26,11 @@
 
 ## Rainbow-I-Classic implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+|          clean           | All                         | All                             | None                    | True                               | True                                           | False                 |
+
+ ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.
 
 ## Rainbow-I-Circumzenithal implementation characteristics
 
@@ -46,34 +48,38 @@
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|          clean           | All                         | All                             | None                    | True                               | True                                           | True                 |
 
 ## Rainbow-III-Circumzenithal implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|          clean           | All                         | All                             | None                    | True                               | True                                           | True                 |
 
 ## Rainbow-III-Compressed implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|          clean           | All                         | All                             | None                    | True                               | True                                           | True                 |
 
 ## Rainbow-V-Classic implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|          clean           | All                         | All                             | None                    | True                               | True                                           | True                 |
 
 ## Rainbow-V-Circumzenithal implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|          clean           | All                         | All                             | None                    | True                               | True                                           | True                 |
 
 ## Rainbow-V-Compressed implementation characteristics
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          clean           | All                         | All                             | None                    | True                               | True                                           | False                |
+|          clean           | All                         | All                             | None                    | True                               | True                                           | True                 |
+
+## Explanation of Terms
+
+- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.

@@ -78,8 +78,8 @@ jobs:
           command: ninja
           working_directory: build
 
-  linux_x64:
-    description: A template for running liboqs tests on x64 Linux Docker VMs
+  linux_oqs:
+    description: A template for running liboqs tests on Linux Docker VMs
     parameters:
       CONTAINER:
         description: "The docker container to use."
@@ -127,6 +127,9 @@ jobs:
       CMAKE_ARGS:
         description: "Arguments to pass to CMake."
         type: string
+      PYTEST_ARGS:
+        description: "Arguments to pass to pytest."
+        type: string
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -157,6 +160,7 @@ jobs:
                             -c "mkdir -p tmp && \
                                 python3 -m pytest --verbose \
                                                   --numprocesses=auto \
+                                                  << parameters.PYTEST_ARGS >> \
                                                   --ignore=tests/test_code_conventions.py \
                                                   --junitxml=build/test-results/pytest/test-results.xml"
       - store_test_results:
@@ -220,7 +224,7 @@ jobs:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
           name: Install dependencies
-          command: brew unlink python@2 && env HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja && pip3 install pytest pytest-xdist
+          command: brew unlink python@2 && env HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja && pip3 install pytest pytest-xdist pyyaml
       - run:
           name: Get system information
           command: sysctl -a | grep machdep.cpu
@@ -332,51 +336,53 @@ workflows:
       #- testapproval:
       #    <<: *require_buildcheck
       #    type: approval
-      - linux_x64:
+      - linux_oqs:
           <<: *require_buildcheck
           name: alpine-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-      - linux_x64:
+          PYTEST_ARGS: --ignore=tests/test_alg_info.py
+      - linux_oqs:
           <<: *require_buildcheck
           name: alpine
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-alpine-amd64:latest
           CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+          PYTEST_ARGS: --ignore=tests/test_alg_info.py
       # Disabling centos-8 and debian-buster.
       # Re-enable if specific configurations (package versions etc) that need to be tested are identified.
-      #- linux_x64:
+      #- linux_oqs:
       #    <<: *require_buildcheck
       #    name: centos-8
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-centos-8-amd64:latest
       #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang
-      #- linux_x64:
+      #- linux_oqs:
       #    <<: *require_buildcheck
       #    name: debian-buster
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-debian-buster-amd64:latest
-      - linux_x64:
+      - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-focal-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DOQS_USE_OPENSSL=OFF
-      - linux_x64:
+      - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-focal-shared-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DOQS_DIST_BUILD=ON -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
           PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
-      - linux_x64:
+      - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-focal-clang9
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9
-      - linux_x64:
+      - linux_oqs:
           <<: *require_buildcheck
           name: address-sanitizer
           context: openquantumsafe
@@ -387,8 +393,14 @@ workflows:
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
           PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
+      - linux_oqs:
+          <<: *require_buildcheck
+          name: ubuntu-bionic-i386
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-bionic-i386:latest
+          CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_x86.cmake
       # Disabling test_constant_time for now
-      #- linux_x64:
+      #- linux_oqs:
       #    <<: *require_buildcheck
       #    name: constant-time-x64
       #    filters:
@@ -399,7 +411,7 @@ workflows:
       #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
       #    CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
       #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-      #- linux_x64:
+      #- linux_oqs:
       #    <<: *require_buildcheck
       #    name: constant-time-x64-extensions
       #    filters:
@@ -411,7 +423,7 @@ workflows:
       #    CMAKE_ARGS: -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
       #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
-      #- linux_x64:
+      #- linux_oqs:
       #    name: undefined-sanitizer
       #    context: openquantumsafe
       #    CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
@@ -437,6 +449,7 @@ workflows:
           name: armhf
           ARCH: armhf
           CMAKE_ARGS: -DOQS_ENABLE_SIG_SPHINCS=OFF -DOQS_USE_OPENSSL=OFF -DOQS_OPT_TARGET=generic
+          PYTEST_ARGS: --ignore=tests/test_alg_info.py
       # Disabling armel
       #- arm_emulated:
       #    <<: *require_buildcheck

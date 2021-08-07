@@ -99,12 +99,8 @@
  * targets other than 32-bit x86, or when the native 'double' type is
  * not used, the set_fpu_cw() function does nothing at all.
  */
-static inline unsigned
-set_fpu_cw(unsigned x) {
-    return x;
-}
-
-
+#define set_fpu_cw PQCLEAN_FALCON1024_CLEAN_set_fpu_cw
+unsigned set_fpu_cw(unsigned x);
 
 
 /* ==================================================================== */
@@ -496,50 +492,14 @@ void PQCLEAN_FALCON1024_CLEAN_prng_get_bytes(prng *p, void *dst, size_t len);
 /*
  * Get a 64-bit random value from a PRNG.
  */
-static inline uint64_t
-prng_get_u64(prng *p) {
-    size_t u;
-
-    /*
-     * If there are less than 9 bytes in the buffer, we refill it.
-     * This means that we may drop the last few bytes, but this allows
-     * for faster extraction code. Also, it means that we never leave
-     * an empty buffer.
-     */
-    u = p->ptr;
-    if (u >= (sizeof p->buf.d) - 9) {
-        PQCLEAN_FALCON1024_CLEAN_prng_refill(p);
-        u = 0;
-    }
-    p->ptr = u + 8;
-
-    /*
-     * On systems that use little-endian encoding and allow
-     * unaligned accesses, we can simply read the data where it is.
-     */
-    return (uint64_t)p->buf.d[u + 0]
-           | ((uint64_t)p->buf.d[u + 1] << 8)
-           | ((uint64_t)p->buf.d[u + 2] << 16)
-           | ((uint64_t)p->buf.d[u + 3] << 24)
-           | ((uint64_t)p->buf.d[u + 4] << 32)
-           | ((uint64_t)p->buf.d[u + 5] << 40)
-           | ((uint64_t)p->buf.d[u + 6] << 48)
-           | ((uint64_t)p->buf.d[u + 7] << 56);
-}
+#define prng_get_u64 PQCLEAN_FALCON1024_CLEAN_prng_get_u64
+uint64_t prng_get_u64(prng *p);
 
 /*
  * Get an 8-bit random value from a PRNG.
  */
-static inline unsigned
-prng_get_u8(prng *p) {
-    unsigned v;
-
-    v = p->buf.d[p->ptr ++];
-    if (p->ptr == sizeof p->buf.d) {
-        PQCLEAN_FALCON1024_CLEAN_prng_refill(p);
-    }
-    return v;
-}
+#define prng_get_u8 PQCLEAN_FALCON1024_CLEAN_prng_get_u8
+unsigned prng_get_u8(prng *p);
 
 /* ==================================================================== */
 /*

@@ -205,23 +205,6 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size);
  */
 void OQS_MEM_aligned_free(void *ptr);
 
-/**
- * Macros that indicates a function argument may be unused.  Used to comply with
- * an API specification but when an implementation doesn't actually use the
- * argument and we'd get a compiler warning otherwise.
- */
-#ifdef __GNUC__
-#define UNUSED __attribute__((unused))
-#else
-// __attribute__ not supported in VS
-#define UNUSED
-#endif
-
-#if defined(OQS_SYS_UEFI)
-#undef UNUSED
-#define UNUSED
-#endif
-
 #if defined(__cplusplus)
 } // extern "C"
 #endif

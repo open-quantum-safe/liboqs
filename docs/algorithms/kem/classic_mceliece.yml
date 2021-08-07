@@ -19,7 +19,7 @@ website: https://classic.mceliece.org
 nist-round: 3
 spec-version: SUPERCOP-20191221
 spdx-license-identifier: Public domain
-upstream: https://github.com/PQClean/PQClean/commit/89d34613364deca88659f6c2dd38708279c6bd24
+upstream: https://github.com/PQClean/PQClean/commit/6c1ea921ee4a06a6b50c742ca540bb9b5e51aee2
 upstream-ancestors:
 - SUPERCOP-20191221 "vec" and "avx" implementations
 parameter-sets:
@@ -39,7 +39,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -54,7 +54,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Classic-McEliece-348864f
   claimed-nist-level: 1
   claimed-security: IND-CCA2
@@ -71,7 +71,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -87,7 +87,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Classic-McEliece-460896
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -104,7 +104,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -119,7 +119,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Classic-McEliece-460896f
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -136,7 +136,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -152,7 +152,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Classic-McEliece-6688128
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -169,7 +169,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -184,7 +184,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Classic-McEliece-6688128f
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -201,7 +201,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -217,7 +217,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Classic-McEliece-6960119
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -234,7 +234,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -249,7 +249,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Classic-McEliece-6960119f
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -266,7 +266,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -282,7 +282,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Classic-McEliece-8192128
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -299,7 +299,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -314,7 +314,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 - name: Classic-McEliece-8192128f
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -331,7 +331,7 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -347,5 +347,5 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
-    large-stack-usage: false
+    large-stack-usage: true
 auxiliary-submitters: []
