@@ -54,7 +54,7 @@ int main(void) {
 #if defined(__ARM_FEATURE_AES)
 	printf("ARM_AES;");
 #endif
-#if defined(__ARM_FEATURE_SHA2)
+#if (defined(__APPLE__) && defined(__aarch64__)) || defined(__ARM_FEATURE_SHA2)
 	printf("ARM_SHA2;");
 #endif
 #if defined(__ARM_FEATURE_SHA3)
