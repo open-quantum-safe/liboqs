@@ -186,6 +186,8 @@ static void print_oqs_configuration(void) {
 #endif
 #if defined(OQS_USE_SHA2_OPENSSL)
 	printf("SHA-2:            OpenSSL\n");
+#elif defined(OQS_USE_ARM_SHA2_INSTRUCTIONS)
+	printf("SHA-2:            C and ARM CRYPTO extensions\n");
 #else
 	printf("SHA-2:            C\n");
 #endif
