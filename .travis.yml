@@ -7,6 +7,7 @@ jobs:
       os: linux             # required for arch different than amd64
       dist: focal           # or bionic | xenial with xenial as default
       compiler: gcc
+      if: NOT branch =~ /^ghactionsonly-/
       script:
         - mkdir build && cd build && cmake -GNinja .. && cmake -LA .. && ninja
         - cd build & ninja run_tests
