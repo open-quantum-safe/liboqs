@@ -19,7 +19,7 @@
  * Return value: 0 on success, -1 on error.
  */
 int PQCLEAN_FALCON1024_CLEAN_crypto_sign_keypair(
-    uint8_t *pk, uint8_t *sk);
+    uint8_t *pk, uint8_t *sk, uint8_t *seed, size_t seedlen);
 
 /*
  * Compute a signature on a provided message (m, mlen), with a given

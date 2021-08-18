@@ -41,7 +41,7 @@
 
 /* see api.h */
 int
-PQCLEAN_FALCON1024_CLEAN_crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
+PQCLEAN_FALCON1024_CLEAN_crypto_sign_keypair(unsigned char *pk, unsigned char *sk, unsigned char *seed, size_t seedlen) {
     union {
         uint8_t b[28 * 1024];
         uint64_t dummy_u64;
@@ -49,7 +49,6 @@ PQCLEAN_FALCON1024_CLEAN_crypto_sign_keypair(unsigned char *pk, unsigned char *s
     } tmp;
     int8_t f[1024], g[1024], F[1024], G[1024];
     uint16_t h[1024];
-    unsigned char seed[SEEDLEN];
     inner_shake256_context rng;
     size_t u, v;
 
@@ -57,9 +56,8 @@ PQCLEAN_FALCON1024_CLEAN_crypto_sign_keypair(unsigned char *pk, unsigned char *s
     /*
      * Generate key pair.
      */
-    randombytes(seed, sizeof seed);
     inner_shake256_init(&rng);
-    inner_shake256_inject(&rng, seed, sizeof seed);
+    inner_shake256_inject(&rng, seed, seedlen);
     inner_shake256_flip(&rng);
     PQCLEAN_FALCON1024_CLEAN_keygen(&rng, f, g, F, G, h, 10, tmp.b);
     inner_shake256_ctx_release(&rng);
