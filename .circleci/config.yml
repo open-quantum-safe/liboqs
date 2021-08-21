@@ -327,40 +327,6 @@ workflows:
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-i386:latest
           CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_x86.cmake
-      # Disabling test_constant_time for now
-      #- linux_oqs:
-      #    <<: *require_buildcheck
-      #    name: constant-time-x64
-      #    filters:
-      #      branches:
-      #        only:
-      #          - /^audit.*/
-      #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      #    CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-      #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-      #- linux_oqs:
-      #    <<: *require_buildcheck
-      #    name: constant-time-x64-extensions
-      #    filters:
-      #      branches:
-      #        only:
-      #          - /^audit.*/
-      #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-      #    CMAKE_ARGS: -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
-      #    PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-      # Disabling for now due to https://github.com/open-quantum-safe/liboqs/issues/791
-      #- linux_oqs:
-      #    name: undefined-sanitizer
-      #    context: openquantumsafe
-      #    CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-      #    CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Undefined
-           # Normally the linux tests are run with 35 processes, but that
-           # exhausts memory for this test
-      #    PYTEST_ARGS: --numprocesses=1
-      # SPHINCS exhausts memory on CircleCI servers
-      # for these configurations.
       - arm_machine:
           <<: *require_buildcheck
           name: arm64
@@ -381,3 +347,34 @@ workflows:
     jobs:
       - trigger-downstream-ci:
           context: openquantumsafe
+
+  weekly:
+    jobs:
+      - linux_oqs:
+          name: constant-time-x64
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+          CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+          PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+      - linux_oqs:
+          name: constant-time-x64-extensions
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
+          CMAKE_ARGS: -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+          PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+      - linux_oqs:
+          name: undefined-sanitizer
+          context: openquantumsafe
+          CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Undefined
+          # Normally the linux tests are run with 35 processes, but that
+          # exhausts memory for this test
+          PYTEST_ARGS: --numprocesses=1
+    # run these jobs unconditionally every Sunday at midnight
+    triggers:
+      - schedule:
+          cron: "10 0 * * 0"
+          filters:
+            branches:
+              only:
+                - main
