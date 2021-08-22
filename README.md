@@ -106,7 +106,7 @@ Various `cmake` build options to customize the resultant artifacts are available
 
 The following instructions assume we are in `build`.
 
-3. The main build result is `lib/liboqs.a`, a static library. If you want to build a shared/dynamic library, append `-DBUILD_SHARED_LIBS=ON` to the `cmake -GNinja ..` command above and the result will be `lib/liboqs.so|dylib|dll`. The public headers are located in the `include` directory. There are also a variety of programs built under the `tests` directory:
+3. By default the main build result is `lib/liboqs.a`, a static library. If you want to build a shared/dynamic library, append [`-DBUILD_SHARED_LIBS=ON`](https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs#build_shared_libs) to the `cmake -GNinja ..` command above and the result will be `lib/liboqs.so|dylib|dll`. The public headers are located in the `include` directory. There are also a variety of programs built under the `tests` directory:
 
 	- `test_kem`: Simple test harness for key encapsulation mechanisms
 	- `test_sig`: Simple test harness for key signature schemes
