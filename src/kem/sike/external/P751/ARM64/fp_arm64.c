@@ -14,34 +14,34 @@ extern const uint64_t p751x2[NWORDS_FIELD];
 extern const uint64_t p751x4[NWORDS_FIELD];
 */
 
-__inline void mp_sub751_p2(const digit_t* a, const digit_t* b, digit_t* c)
+inline void mp_sub751_p2(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 2*p, c = a-b+2p. 
     
     oqs_kem_sike_mp_sub751_p2_asm(a, b, c); 
 } 
 
 
-__inline void mp_sub751_p4(const digit_t* a, const digit_t* b, digit_t* c)
+inline void mp_sub751_p4(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 4*p, c = a-b+4p. 
     
     oqs_kem_sike_mp_sub751_p4_asm(a, b, c);
 }
 
-__inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p751.
+inline void fpadd751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p751.
 	// Inputs: a, b in [0, 2*p751-1]
 	// Output: c in [0, 2*p751-1]
 
 	oqs_kem_sike_fpadd751_asm(a, b, c);
 }
 
-__inline void fpsub751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p751.
+inline void fpsub751(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p751.
 	// Inputs: a, b in [0, 2*p751-1]
 	// Output: c in [0, 2*p751-1]
 
 	oqs_kem_sike_fpsub751_asm(a, b, c);
 }
 
-__inline void fpneg751(digit_t *a) { // Modular negation, a = -a mod p751.
+inline void fpneg751(digit_t *a) { // Modular negation, a = -a mod p751.
 	// Input/output: a in [0, 2*p751-1]
 	unsigned int i, borrow = 0;
 

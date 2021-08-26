@@ -137,15 +137,15 @@ typedef uint64_t uint128_t[2];
 
 // The following functions return 1 (TRUE) if condition is true, 0 (FALSE) otherwise
 
-__inline unsigned int is_digit_nonzero_ct(digit_t x) { // Is x != 0?
+inline unsigned int is_digit_nonzero_ct(digit_t x) { // Is x != 0?
 	return (unsigned int) ((x | (0 - x)) >> (RADIX - 1));
 }
 
-__inline unsigned int is_digit_zero_ct(digit_t x) { // Is x = 0?
+inline unsigned int is_digit_zero_ct(digit_t x) { // Is x = 0?
 	return (unsigned int) (1 ^ is_digit_nonzero_ct(x));
 }
 
-__inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) { // Is x < y?
+inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) { // Is x < y?
 	return (unsigned int) ((x ^ ((x ^ y) | ((x - y) ^ y))) >> (RADIX - 1));
 }
 

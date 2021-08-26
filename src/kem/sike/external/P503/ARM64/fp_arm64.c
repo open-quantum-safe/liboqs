@@ -13,33 +13,33 @@ extern const uint64_t p503x2[NWORDS_FIELD];
 extern const uint64_t p503x4[NWORDS_FIELD];
 */
 
-__inline void mp_sub503_p2(const digit_t* a, const digit_t* b, digit_t* c)
+inline void mp_sub503_p2(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 2*p, c = a-b+2p. 
     
     oqs_kem_sike_mp_sub503_p2_asm(a, b, c); 
 } 
 
-__inline void mp_sub503_p4(const digit_t* a, const digit_t* b, digit_t* c)
+inline void mp_sub503_p4(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 4*p, c = a-b+4p. 
     
     oqs_kem_sike_mp_sub503_p4_asm(a, b, c);
 }
 
-__inline void fpadd503(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p503.
+inline void fpadd503(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p503.
 	// Inputs: a, b in [0, 2*p503-1]
 	// Output: c in [0, 2*p503-1]
 
 	oqs_kem_sike_fpadd503_asm(a, b, c);
 }
 
-__inline void fpsub503(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p503.
+inline void fpsub503(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p503.
 	// Inputs: a, b in [0, 2*p503-1]
 	// Output: c in [0, 2*p503-1]
 
 	oqs_kem_sike_fpsub503_asm(a, b, c);
 }
 
-__inline void fpneg503(digit_t *a) { // Modular negation, a = -a mod p503.
+inline void fpneg503(digit_t *a) { // Modular negation, a = -a mod p503.
 	// Input/output: a in [0, 2*p503-1]
 	unsigned int i, borrow = 0;
 
