@@ -20,7 +20,7 @@ website: https://sike.org
 nist-round: 3
 spec-version: NIST Round 3 submission
 spdx-license-identifier: MIT
-upstream: https://github.com/microsoft/PQCrypto-SIDH/commit/28b4b5d0a7926e0e7eb4f9c03f75887236e1cebd
+upstream: https://github.com/microsoft/PQCrypto-SIDH/commit/effa607f244768cdd38f930887076373604eaa78
 parameter-sets:
 - name: SIDH-p434
   claimed-nist-level: 1

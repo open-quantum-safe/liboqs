@@ -14,21 +14,21 @@ extern const uint64_t p610x2[NWORDS_FIELD];
 extern const uint64_t p610x4[NWORDS_FIELD];
 */
 
-__inline void mp_sub610_p2(const digit_t* a, const digit_t* b, digit_t* c)
+inline void mp_sub610_p2(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 2*p, c = a-b+2p. 
     
     oqs_kem_sike_mp_sub610_p2_asm(a, b, c); 
 } 
 
 
-__inline void mp_sub610_p4(const digit_t* a, const digit_t* b, digit_t* c)
+inline void mp_sub610_p4(const digit_t* a, const digit_t* b, digit_t* c)
 { // Multiprecision subtraction with correction with 4*p, c = a-b+4p. 
     
     oqs_kem_sike_mp_sub610_p4_asm(a, b, c);
 }
 
 
-__inline void fpadd610(const digit_t* a, const digit_t* b, digit_t* c)
+inline void fpadd610(const digit_t* a, const digit_t* b, digit_t* c)
 { // Modular addition, c = a+b mod p610.
   // Inputs: a, b in [0, 2*p610-1] 
   // Output: c in [0, 2*p610-1]
@@ -37,7 +37,7 @@ __inline void fpadd610(const digit_t* a, const digit_t* b, digit_t* c)
 } 
 
 
-__inline void fpsub610(const digit_t* a, const digit_t* b, digit_t* c)
+inline void fpsub610(const digit_t* a, const digit_t* b, digit_t* c)
 { // Modular subtraction, c = a-b mod p610.
   // Inputs: a, b in [0, 2*p610-1] 
   // Output: c in [0, 2*p610-1] 
@@ -46,7 +46,7 @@ __inline void fpsub610(const digit_t* a, const digit_t* b, digit_t* c)
 }
 
 
-__inline void fpneg610(digit_t* a)
+inline void fpneg610(digit_t* a)
 { // Modular negation, a = -a mod p610.
   // Input/output: a in [0, 2*p610-1] 
     unsigned int i, borrow = 0;
