@@ -11,12 +11,12 @@ import glob
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 def test_namespace():
-    liboqs = glob.glob('build/lib/liboqs.*')[0]
-    if liboqs == 'build/lib/liboqs.dylib':
+    liboqs = glob.glob(helpers.get_current_build_dir_name()+'/lib/liboqs.*')[0]
+    if liboqs == helpers.get_current_build_dir_name()+'/lib/liboqs.dylib':
         out = helpers.run_subprocess(
             ['nm', '-g', liboqs]
         )
-    elif liboqs == 'build/lib/liboqs.so':
+    elif liboqs == helpers.get_current_build_dir_name()+'/lib/liboqs.so':
         out = helpers.run_subprocess(
             ['nm', '-D', liboqs]
         )

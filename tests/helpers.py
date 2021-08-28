@@ -64,7 +64,7 @@ def is_kem_enabled_by_name(name):
                     symbol = kem_symbol
                     break
     if symbol == None: return False
-    header = os.path.join('build', 'include', 'oqs', 'oqsconfig.h')
+    header = os.path.join(get_current_build_dir_name(), 'include', 'oqs', 'oqsconfig.h')
     with open(header) as fh:
         for line in fh:
             if line.startswith("#define OQS_ENABLE_KEM_"):
@@ -97,7 +97,7 @@ def is_sig_enabled_by_name(name):
                     symbol = sig_symbol
                     break
     if symbol == None: return False
-    header = os.path.join('build', 'include', 'oqs', 'oqsconfig.h')
+    header = os.path.join(get_current_build_dir_name(), 'include', 'oqs', 'oqsconfig.h')
     with open(header) as fh:
         for line in fh:
             if line.startswith("#define OQS_ENABLE_SIG_"):
@@ -118,12 +118,23 @@ def filtered_test(func):
             return func(*args, **kwargs)
     return wrapper
 
+# So far, build dir name has been hard coded to "build".
+# This function makes it dependent on the availability of the environment variable OQS_BUILD_DIR:
+# OQS_BUILD_DIR must be below current working dir; if not, behave as before
+# If OQS_BUILD_DIR is not set, behave as before, returning hard-coded build name
+def get_current_build_dir_name():
+    if 'OQS_BUILD_DIR' in os.environ:
+        # assure this is within current dir:
+        if os.environ['OQS_BUILD_DIR'].startswith(os.getcwd()):
+            return os.environ['OQS_BUILD_DIR'][len(os.getcwd())+1:]
+    return 'build'
+
 def path_to_executable(program_name):
     path = "."
     if sys.platform.startswith("win"):
         if 'APPVEYOR_BUILD_FOLDER' not in os.environ: os.environ['APPVEYOR_BUILD_FOLDER'] = "."
         path = os.path.join(path, os.environ['APPVEYOR_BUILD_FOLDER'])
-    path = os.path.join(path, "build", "tests")
+    path = os.path.join(path, get_current_build_dir_name(), "tests")
     for executable in [
         os.path.join(path, program_name),
         os.path.join(path, program_name + ".EXE"),
@@ -134,7 +145,7 @@ def path_to_executable(program_name):
 
 def available_use_options_by_name():
     enabled_use_options = []
-    with open(os.path.join('build', 'include', 'oqs', 'oqsconfig.h')) as fh:
+    with open(os.path.join(get_current_build_dir_name(), 'include', 'oqs', 'oqsconfig.h')) as fh:
         for line in fh:
             if line.startswith("#define OQS_USE_"):
                 option_name = line.split(' ')[1][len("OQS_USE_"):].strip('\n')
@@ -167,7 +178,7 @@ def test_requires_valgrind_version_at_least(x,y,z):
 @functools.lru_cache()
 def test_requires_build_options(*options):
     enabled = {opt : False for opt in options}
-    with open(os.path.join('build', 'include', 'oqs', 'oqsconfig.h')) as fh:
+    with open(os.path.join(get_current_build_dir_name(), 'include', 'oqs', 'oqsconfig.h')) as fh:
         for line in fh:
             opt = line.split(' ')[1] if line.startswith('#define ') else None
             if opt in options:
