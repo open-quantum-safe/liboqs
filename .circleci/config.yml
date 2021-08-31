@@ -360,7 +360,10 @@ workflows:
           name: constant-time-x64-extensions
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
-          CMAKE_ARGS: -DOQS_OPT_TARGET=auto -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+          # building for haswell to avoid generating instructions that valgrind cannot currently handle
+          # TODO: Re-enable target=auto if/when valgrind supports beyond AVX2:
+          # check: https://valgrind.org/info/platforms.html
+          CMAKE_ARGS: -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
           PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
       - linux_oqs:
           name: undefined-sanitizer
