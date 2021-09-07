@@ -43,17 +43,20 @@ static void print_platform_info(void) {
 #endif
 
 #if defined(OQS_DIST_X86_64_BUILD)
-#define C_OR_NI(stmt_c, stmt_ni) \
+#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) { \
         stmt_ni; \
     } else { \
         stmt_c; \
     }
 #elif defined(OQS_USE_AES_INSTRUCTIONS)
-#define  C_OR_NI(stmt_c, stmt_ni) \
+#define  C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     stmt_ni;
+#elif defined(OQS_USE_ARM_AES_INSTRUCTIONS)
+#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+    stmt_arm;
 #else
-#define  C_OR_NI(stmt_c, stmt_ni) \
+#define  C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     stmt_c;
 #endif
 
@@ -179,9 +182,10 @@ static void print_oqs_configuration(void) {
 #if defined(OQS_USE_AES_OPENSSL)
 	printf("AES:              OpenSSL\n");
 #else
-	C_OR_NI(
+	C_OR_NI_OR_ARM(
 	    printf("AES:              C\n"),
-	    printf("AES:              NI\n")
+	    printf("AES:              NI\n"),
+	    printf("AES:              C and ARM CRYPTO extensions\n")
 	)
 #endif
 #if defined(OQS_USE_SHA2_OPENSSL)
