@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Public domain
+
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
