@@ -9,7 +9,7 @@
 
 #define PQC_AES128_STATESIZE 88
 typedef struct {
-        uint64_t sk_exp[PQC_AES128_STATESIZE];
+	uint64_t sk_exp[PQC_AES128_STATESIZE];
 } aes128ctx;
 
 
@@ -61,14 +61,14 @@ static unsigned int FSb[256] = FSbData;
 
 
 static inline unsigned int rotr(const unsigned int x, const unsigned int n) {
-  unsigned int r;
-  r = ((x >> n) | (x << (32 - n)));
-  return r;
+	unsigned int r;
+	r = ((x >> n) | (x << (32 - n)));
+	return r;
 }
 static inline unsigned int rotl(const unsigned int x, const unsigned int n) {
-  unsigned int r;
-  r = ((x << n) | (x >> (32 - n)));
-  return r;
+	unsigned int r;
+	r = ((x << n) | (x >> (32 - n)));
+	return r;
 }
 
 // From crypto_core/aes128encrypt/dolbeau/armv8crypto
@@ -92,12 +92,11 @@ static inline void aes128_armv8_keysched(const unsigned int key[], unsigned int 
 	tmp11 = (key[3]);
 	aes_edrk[3] = tmp11;
 
-	for( i = 4; i < 36; /* i += 4 */ )
-	{
+	for ( i = 4; i < 36; /* i += 4 */ ) {
 #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-		rotl_aes_edrk = rotl(tmp11,8);
+		rotl_aes_edrk = rotl(tmp11, 8);
 #else
-		rotl_aes_edrk = rotr(tmp11,8);
+		rotl_aes_edrk = rotr(tmp11, 8);
 #endif
 		temp_lds = f_FSb_32__1(rotl_aes_edrk) ^ f_FSb_32__2(rotl_aes_edrk);
 
@@ -115,10 +114,10 @@ static inline void aes128_armv8_keysched(const unsigned int key[], unsigned int 
 
 #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
 	round = 0x1B000000;
-	rotl_aes_edrk = rotl(tmp11,8);
+	rotl_aes_edrk = rotl(tmp11, 8);
 #else
 	round = 0x0000001B;
-	rotl_aes_edrk = rotr(tmp11,8);
+	rotl_aes_edrk = rotr(tmp11, 8);
 #endif
 	temp_lds = f_FSb_32__1(rotl_aes_edrk) ^ f_FSb_32__2(rotl_aes_edrk);
 
@@ -134,10 +133,10 @@ static inline void aes128_armv8_keysched(const unsigned int key[], unsigned int 
 
 #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
 	round = 0x36000000;
-	rotl_aes_edrk = rotl(tmp11,8);
+	rotl_aes_edrk = rotl(tmp11, 8);
 #else
 	round = 0x00000036;
-	rotl_aes_edrk = rotr(tmp11,8);
+	rotl_aes_edrk = rotr(tmp11, 8);
 #endif
 	temp_lds = f_FSb_32__1(rotl_aes_edrk) ^ f_FSb_32__2(rotl_aes_edrk);
 
@@ -154,15 +153,15 @@ static inline void aes128_armv8_keysched(const unsigned int key[], unsigned int 
 
 
 void oqs_aes128_load_schedule_armv8(const uint8_t *key, void **_schedule) {
-	*_schedule = malloc(44*sizeof(int));
+	*_schedule = malloc(44 * sizeof(int));
 	assert(*_schedule != NULL);
 	unsigned int *schedule = (unsigned int *) *_schedule;
-	aes128_armv8_keysched((const unsigned int*) key, schedule);
+	aes128_armv8_keysched((const unsigned int *) key, schedule);
 }
 
 void oqs_aes128_free_schedule_armv8(void *schedule) {
 	if (schedule != NULL) {
-		OQS_MEM_secure_free(schedule, 44*sizeof(int));
+		OQS_MEM_secure_free(schedule, 44 * sizeof(int));
 	}
 }
 
@@ -172,34 +171,34 @@ static inline void aes128_armv8_encrypt(const unsigned char *rkeys, const unsign
 	uint8x16_t temp = vld1q_u8(n);
 	//int i;
 
-/*
-	In ARMv8+crypto, the AESE instruction does the 'AddRoundKey' first then SubBytes and ShiftRows.
-	The AESMC instruction does the MixColumns.
-	So instead of a single XOR of the first round key before the rounds,
-	we end up having a single XOR of the last round key after the rounds.
-*/
+	/*
+	    In ARMv8+crypto, the AESE instruction does the 'AddRoundKey' first then SubBytes and ShiftRows.
+	    The AESMC instruction does the MixColumns.
+	    So instead of a single XOR of the first round key before the rounds,
+	    we end up having a single XOR of the last round key after the rounds.
+	*/
 
 	temp = vaeseq_u8(temp, vld1q_u8(rkeys));
 	temp = vaesmcq_u8(temp);
-	temp = vaeseq_u8(temp, vld1q_u8(rkeys+16));
+	temp = vaeseq_u8(temp, vld1q_u8(rkeys + 16));
 	temp = vaesmcq_u8(temp);
-	temp = vaeseq_u8(temp, vld1q_u8(rkeys+32));
+	temp = vaeseq_u8(temp, vld1q_u8(rkeys + 32));
 	temp = vaesmcq_u8(temp);
-	temp = vaeseq_u8(temp, vld1q_u8(rkeys+48));
+	temp = vaeseq_u8(temp, vld1q_u8(rkeys + 48));
 	temp = vaesmcq_u8(temp);
-	temp = vaeseq_u8(temp, vld1q_u8(rkeys+64));
+	temp = vaeseq_u8(temp, vld1q_u8(rkeys + 64));
 	temp = vaesmcq_u8(temp);
-	temp = vaeseq_u8(temp, vld1q_u8(rkeys+80));
+	temp = vaeseq_u8(temp, vld1q_u8(rkeys + 80));
 	temp = vaesmcq_u8(temp);
-	temp = vaeseq_u8(temp, vld1q_u8(rkeys+96));
+	temp = vaeseq_u8(temp, vld1q_u8(rkeys + 96));
 	temp = vaesmcq_u8(temp);
-	temp = vaeseq_u8(temp, vld1q_u8(rkeys+112));
+	temp = vaeseq_u8(temp, vld1q_u8(rkeys + 112));
 	temp = vaesmcq_u8(temp);
-	temp = vaeseq_u8(temp, vld1q_u8(rkeys+128));
+	temp = vaeseq_u8(temp, vld1q_u8(rkeys + 128));
 	temp = vaesmcq_u8(temp);
 
-	temp = vaeseq_u8(temp, vld1q_u8((rkeys+144)));
-	temp = veorq_u8(temp, vld1q_u8((rkeys+160)));
+	temp = vaeseq_u8(temp, vld1q_u8((rkeys + 144)));
+	temp = veorq_u8(temp, vld1q_u8((rkeys + 160)));
 
 	vst1q_u8(out, temp);
 }

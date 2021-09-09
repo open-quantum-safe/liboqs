@@ -29,25 +29,25 @@
 
 void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	C_OR_NI_OR_ARM(
-		oqs_aes128_load_schedule_c(key, _schedule),
-		oqs_aes128_load_schedule_ni(key, _schedule),
-		oqs_aes128_load_schedule_armv8(key, _schedule)
+	    oqs_aes128_load_schedule_c(key, _schedule),
+	    oqs_aes128_load_schedule_ni(key, _schedule),
+	    oqs_aes128_load_schedule_armv8(key, _schedule)
 	)
 }
 
 void OQS_AES128_free_schedule(void *schedule) {
 	C_OR_NI_OR_ARM(
-		oqs_aes128_free_schedule_c(schedule),
-		oqs_aes128_free_schedule_ni(schedule),
-		oqs_aes128_free_schedule_armv8(schedule)
+	    oqs_aes128_free_schedule_c(schedule),
+	    oqs_aes128_free_schedule_ni(schedule),
+	    oqs_aes128_free_schedule_armv8(schedule)
 	)
 }
 
 void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	C_OR_NI_OR_ARM(
-		oqs_aes256_load_schedule_c(key, _schedule),
-		oqs_aes256_load_schedule_ni(key, _schedule),
-		oqs_aes256_load_schedule_armv8(key, _schedule)
+	    oqs_aes256_load_schedule_c(key, _schedule),
+	    oqs_aes256_load_schedule_ni(key, _schedule),
+	    oqs_aes256_load_schedule_armv8(key, _schedule)
 	)
 }
 
@@ -57,9 +57,9 @@ void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **_schedule) {
 
 void OQS_AES256_free_schedule(void *schedule) {
 	C_OR_NI_OR_ARM(
-		oqs_aes256_free_schedule_c(schedule),
-		oqs_aes256_free_schedule_ni(schedule),
-		oqs_aes256_free_schedule_armv8(schedule)
+	    oqs_aes256_free_schedule_c(schedule),
+	    oqs_aes256_free_schedule_ni(schedule),
+	    oqs_aes256_free_schedule_armv8(schedule)
 	)
 }
 
@@ -72,9 +72,9 @@ void OQS_AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
 
 void OQS_AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	C_OR_NI_OR_ARM(
-		oqs_aes128_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext),
-		oqs_aes128_ecb_enc_sch_ni(plaintext, plaintext_len, schedule, ciphertext),
-		oqs_aes128_ecb_enc_sch_armv8(plaintext, plaintext_len, schedule, ciphertext)
+	    oqs_aes128_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext),
+	    oqs_aes128_ecb_enc_sch_ni(plaintext, plaintext_len, schedule, ciphertext),
+	    oqs_aes128_ecb_enc_sch_armv8(plaintext, plaintext_len, schedule, ciphertext)
 	)
 }
 
@@ -87,9 +87,9 @@ void OQS_AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
 
 void OQS_AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	C_OR_NI_OR_ARM(
-		oqs_aes256_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext),
-		oqs_aes256_ecb_enc_sch_ni(plaintext, plaintext_len, schedule, ciphertext),
-		oqs_aes256_ecb_enc_sch_armv8(plaintext, plaintext_len, schedule, ciphertext)
+	    oqs_aes256_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext),
+	    oqs_aes256_ecb_enc_sch_ni(plaintext, plaintext_len, schedule, ciphertext),
+	    oqs_aes256_ecb_enc_sch_armv8(plaintext, plaintext_len, schedule, ciphertext)
 	)
 }
 
@@ -176,9 +176,9 @@ void oqs_aes256_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const 
 
 void OQS_AES256_CTR_sch(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	C_OR_NI_OR_ARM(
-		oqs_aes256_ctr_enc_sch_c(iv, iv_len, schedule, out, out_len),
-		oqs_aes256_ctr_enc_sch_ni(iv, iv_len, schedule, out, out_len),
-		oqs_aes256_ctr_enc_sch_armv8(iv, iv_len, schedule, out, out_len)
+	    oqs_aes256_ctr_enc_sch_c(iv, iv_len, schedule, out, out_len),
+	    oqs_aes256_ctr_enc_sch_ni(iv, iv_len, schedule, out, out_len),
+	    oqs_aes256_ctr_enc_sch_armv8(iv, iv_len, schedule, out, out_len)
 	)
 }
 
