@@ -483,7 +483,7 @@ static void inc4_be(uint32_t *x)
   *x = br_swap32(*x);
 }
 
-static void aes_ctr4x(uint8_t out[64], uint32_t ivw[16], uint64_t sk_exp[64])
+static void aes_ctr4x(uint8_t out[64], uint32_t ivw[16], uint64_t sk_exp[120])
 {
   uint32_t w[16];
   uint64_t q[8];
@@ -554,7 +554,7 @@ static void br_aes_ct64_ctr_run(uint64_t sk_exp[120], const uint8_t *iv, uint32_
 	}
 }
 
-void aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t *key, const uint8_t *nonce)
+void aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t key[32], const uint8_t nonce[12])
 {
   uint64_t sk_exp[120];
 
@@ -562,7 +562,7 @@ void aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t *key, const uint8_
   br_aes_ct64_ctr_run(sk_exp, nonce, 0, out, outlen);
 }
 
-void aes256ctr_init(aes256ctr_ctx *s, const uint8_t *key, const uint8_t *nonce)
+void aes256ctr_init(aes256ctr_ctx *s, const uint8_t key[32], const uint8_t nonce[12])
 {
   br_aes_ct64_ctr_init(s->sk_exp, key);
 

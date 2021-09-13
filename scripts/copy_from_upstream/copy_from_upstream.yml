@@ -13,7 +13,7 @@ upstreams:
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
     git_branch: master
-    git_commit: fd83229e9dcc7c235a5ea8bb320d1fbade812452
+    git_commit: faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2
     kem_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     kem_scheme_path: '.'
@@ -22,7 +22,7 @@ upstreams:
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
     git_branch: master
-    git_commit: 9dddb2a0537734e749ec2c8d4f952cb90cd9e67b
+    git_commit: 61b51a71701b8ae9f546a1e5d220e1950ed20d06
     sig_meta_path: '{pretty_name_full}_META.yml'
     common_meta_path: 'Common_META.yml'
     sig_scheme_path: '.'

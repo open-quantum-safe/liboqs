@@ -1021,7 +1021,7 @@ void polyz_pack(uint8_t r[POLYZ_PACKEDBYTES], const poly * restrict a) {
 *              - const uint8_t *a: byte array with bit-packed polynomial
 **************************************************/
 #if GAMMA1 == (1 << 17)
-void polyz_unpack(poly * restrict r, const uint8_t a[POLYZ_PACKEDBYTES+14]) {
+void polyz_unpack(poly * restrict r, const uint8_t *a) {
   unsigned int i;
   __m256i f;
   const __m256i shufbidx = _mm256_set_epi8(-1, 9, 8, 7,-1, 7, 6, 5,-1, 5, 4, 3,-1, 3, 2, 1,
@@ -1045,7 +1045,7 @@ void polyz_unpack(poly * restrict r, const uint8_t a[POLYZ_PACKEDBYTES+14]) {
 }
 
 #elif GAMMA1 == (1 << 19)
-void polyz_unpack(poly * restrict r, const uint8_t a[POLYZ_PACKEDBYTES+12]) {
+void polyz_unpack(poly * restrict r, const uint8_t *a) {
   unsigned int i;
   __m256i f;
   const __m256i shufbidx = _mm256_set_epi8(-1,11,10, 9,-1, 9, 8, 7,-1, 6, 5, 4,-1, 4, 3, 2,
@@ -1080,7 +1080,7 @@ void polyz_unpack(poly * restrict r, const uint8_t a[POLYZ_PACKEDBYTES+12]) {
 *              - const poly *a: pointer to input polynomial
 **************************************************/
 #if GAMMA2 == (Q-1)/88
-void polyw1_pack(uint8_t r[POLYW1_PACKEDBYTES+8], const poly * restrict a) {
+void polyw1_pack(uint8_t *r, const poly * restrict a) {
   unsigned int i;
   __m256i f0,f1,f2,f3;
   const __m256i shift1 = _mm256_set1_epi16((64 << 8) + 1);
@@ -1111,7 +1111,7 @@ void polyw1_pack(uint8_t r[POLYW1_PACKEDBYTES+8], const poly * restrict a) {
 }
 
 #elif GAMMA2 == (Q-1)/32
-void polyw1_pack(uint8_t r[POLYW1_PACKEDBYTES], const poly * restrict a) {
+void polyw1_pack(uint8_t *r, const poly * restrict a) {
   unsigned int i;
   __m256i f0, f1, f2, f3, f4, f5, f6, f7;
   const __m256i shift = _mm256_set1_epi16((16 << 8) + 1);

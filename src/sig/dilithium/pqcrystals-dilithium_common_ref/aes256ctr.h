@@ -13,12 +13,6 @@ typedef struct {
   uint32_t ivw[16];
 } aes256ctr_ctx;
 
-#define aes256ctr_prf AES256CTR_NAMESPACE(prf)
-void aes256ctr_prf(uint8_t *out,
-                   size_t outlen,
-                   const uint8_t key[32],
-                   const uint8_t nonce[12]);
-
 #define aes256ctr_init AES256CTR_NAMESPACE(init)
 void aes256ctr_init(aes256ctr_ctx *state,
                     const uint8_t key[32],
