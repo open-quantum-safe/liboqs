@@ -177,6 +177,7 @@ import json
 import os
 import pytest
 import sys
+import re
 
 REQ_LIBOQS_BUILD_OPTS = ['OQS_ENABLE_TEST_CONSTANT_TIME',
                          'OQS_DEBUG_BUILD']
@@ -228,6 +229,10 @@ def get_ct_issues(t, name):
 @helpers.test_requires_valgrind_version_at_least(*MIN_VALGRIND_VERSION)
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_constant_time_kem(kem_name):
+    if ('SKIP_ALGS' in os.environ) and len(os.environ['SKIP_ALGS'])>0:
+        for algexp in os.environ['SKIP_ALGS'].split(','):
+            if len(re.findall(algexp, kem_name))>0:
+               pytest.skip("Test disabled by alg filter")
     passes = get_ct_passes('kem', kem_name)
     issues = get_ct_issues('kem', kem_name)
     output = helpers.run_subprocess(
@@ -244,6 +249,10 @@ def test_constant_time_kem(kem_name):
 @helpers.test_requires_valgrind_version_at_least(*MIN_VALGRIND_VERSION)
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_constant_time_sig(sig_name):
+    if ('SKIP_ALGS' in os.environ) and len(os.environ['SKIP_ALGS'])>0:
+        for algexp in os.environ['SKIP_ALGS'].split(','):
+            if len(re.findall(algexp, sig_name))>0:
+               pytest.skip("Test disabled by alg filter")
     passes = get_ct_passes('sig', sig_name)
     issues = get_ct_issues('sig', sig_name)
     output = helpers.run_subprocess(
