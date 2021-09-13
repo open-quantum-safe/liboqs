@@ -17,8 +17,8 @@ website: https://pq-crystals.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
 spdx-license-identifier: CC0-1.0
-upstream: https://github.com/pq-crystals/kyber/commit/8e9308bd with copy_from_upstream
-  patches
+upstream: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2
+  with copy_from_upstream patches
 parameter-sets:
 - name: Kyber512
   claimed-nist-level: 1
@@ -44,8 +44,8 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
-      - bmi2
       - popcnt
+      - bmi2
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -75,10 +75,12 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - aes
-      - avx2
-      - bmi2
+      - sse2
       - popcnt
+      - bmi2
+      - ssse3
+      - avx2
+      - aes
     common-crypto:
     - AES: pqcrystals-kyber_common_aes
     - SHA3: liboqs
@@ -109,8 +111,8 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
-      - bmi2
       - popcnt
+      - bmi2
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -140,10 +142,12 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - aes
-      - avx2
-      - bmi2
+      - sse2
       - popcnt
+      - bmi2
+      - ssse3
+      - avx2
+      - aes
     common-crypto:
     - AES: pqcrystals-kyber_common_aes
     - SHA3: liboqs
@@ -174,8 +178,8 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
-      - bmi2
       - popcnt
+      - bmi2
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -205,10 +209,12 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - aes
-      - avx2
-      - bmi2
+      - sse2
       - popcnt
+      - bmi2
+      - ssse3
+      - avx2
+      - aes
     common-crypto:
     - AES: pqcrystals-kyber_common_aes
     - SHA3: liboqs
