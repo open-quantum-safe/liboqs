@@ -24,10 +24,4 @@ void aes256ctr_squeezeblocks(uint8_t *out,
                              size_t nblocks,
                              aes256ctr_ctx *state);
 
-#define aes256ctr_prf AES256CTR_NAMESPACE(prf)
-void aes256ctr_prf(uint8_t *out,
-                   size_t outlen,
-                   const uint8_t key[32],
-                   uint64_t nonce);
-
 #endif

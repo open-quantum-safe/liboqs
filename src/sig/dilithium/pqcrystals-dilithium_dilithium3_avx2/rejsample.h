@@ -22,7 +22,7 @@ extern const uint8_t idxlut[256][8];
 unsigned int rej_uniform_avx(int32_t *r, const uint8_t buf[REJ_UNIFORM_BUFLEN+8]);
 
 #define rej_eta_avx DILITHIUM_NAMESPACE(rej_eta_avx)
-unsigned int rej_eta_avx(int32_t *r, const uint8_t buf[REJ_UNIFORM_BUFLEN]);
+unsigned int rej_eta_avx(int32_t *r, const uint8_t buf[REJ_UNIFORM_ETA_BUFLEN]);
 
 #endif
 

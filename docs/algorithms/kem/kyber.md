@@ -6,7 +6,7 @@
 - **Auxiliary submitters**: Roberto Avanzi, Joppe Bos, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Vadim Lyubashevsky, John M. Schanck, Gregor Seiler, Damien Stehlé.
 - **Authors' website**: https://pq-crystals.org/
 - **Specification version**: NIST Round 3 submission.
-- **Implementation source**: https://github.com/pq-crystals/kyber/commit/8e9308bd with copy_from_upstream patches
+- **Implementation source**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
 - **Implementation license (SPDX-Identifier)**: CC0-1.0.
 
 ## Parameter set summary
@@ -25,7 +25,7 @@
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
 |           ref            | All                         | All                             | None                    | True                               | True                                           | False                 |
-|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                 |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI2        | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -33,10 +33,10 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Kyber512-90s implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           ref            | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Linux,Darwin                    | AES,AVX2,BMI2,POPCNT    | True                               | True                                           | False                |
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used           | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:--------------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|           ref            | All                         | All                             | None                            | True                               | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | SSE2,POPCNT,BMI2,SSSE3,AVX2,AES | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -45,16 +45,16 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |           ref            | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI2        | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Kyber768-90s implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           ref            | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Linux,Darwin                    | AES,AVX2,BMI2,POPCNT    | True                               | True                                           | False                |
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used           | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:--------------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|           ref            | All                         | All                             | None                            | True                               | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | SSE2,POPCNT,BMI2,SSSE3,AVX2,AES | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -63,16 +63,16 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |           ref            | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI2        | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Kyber1024-90s implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           ref            | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Linux,Darwin                    | AES,AVX2,BMI2,POPCNT    | True                               | True                                           | False                |
+|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used           | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:------------------------:|:----------------------------|:--------------------------------|:--------------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|           ref            | All                         | All                             | None                            | True                               | True                                           | False                |
+|           avx2           | x86\_64                     | Linux,Darwin                    | SSE2,POPCNT,BMI2,SSSE3,AVX2,AES | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

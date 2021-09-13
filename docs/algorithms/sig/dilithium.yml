@@ -15,7 +15,8 @@ website: https://pq-crystals.org/dilithium/
 nist-round: 3
 spec-version: 3.1
 spdx-license-identifier: CC0-1.0
-upstream: https://github.com/pq-crystals/dilithium/commit/d9c885d3f2e11c05529eeeb7d70d808c972b8409
+upstream: https://github.com/pq-crystals/dilithium/commit/61b51a71701b8ae9f546a1e5d220e1950ed20d06
+  with copy_from_upstream patches
 parameter-sets:
 - name: Dilithium2
   claimed-nist-level: 2
@@ -37,13 +38,11 @@ parameter-sets:
     supported-platforms:
     - architecture: x86_64
       operating_systems:
-      - Linux
       - Darwin
+      - Linux
       required_flags:
       - avx2
       - popcnt
-      - sse2
-      - ssse3
     common-crypto:
     - AES: pqcrystals
     - SHA3: liboqs
@@ -70,13 +69,11 @@ parameter-sets:
     supported-platforms:
     - architecture: x86_64
       operating_systems:
-      - Linux
       - Darwin
+      - Linux
       required_flags:
       - avx2
       - popcnt
-      - sse2
-      - ssse3
     common-crypto:
     - AES: pqcrystals
     - SHA3: liboqs
@@ -103,13 +100,11 @@ parameter-sets:
     supported-platforms:
     - architecture: x86_64
       operating_systems:
-      - Linux
       - Darwin
+      - Linux
       required_flags:
       - avx2
       - popcnt
-      - sse2
-      - ssse3
     common-crypto:
     - AES: pqcrystals
     - SHA3: liboqs
@@ -136,14 +131,14 @@ parameter-sets:
     supported-platforms:
     - architecture: x86_64
       operating_systems:
-      - Linux
       - Darwin
+      - Linux
       required_flags:
-      - aes
-      - avx2
-      - popcnt
       - sse2
+      - popcnt
       - ssse3
+      - avx2
+      - aes
     common-crypto:
     - AES: pqcrystals
     - SHA3: liboqs
@@ -170,14 +165,14 @@ parameter-sets:
     supported-platforms:
     - architecture: x86_64
       operating_systems:
-      - Linux
       - Darwin
+      - Linux
       required_flags:
-      - aes
-      - avx2
-      - popcnt
       - sse2
+      - popcnt
       - ssse3
+      - avx2
+      - aes
     common-crypto:
     - AES: pqcrystals
     - SHA3: liboqs
@@ -204,14 +199,14 @@ parameter-sets:
     supported-platforms:
     - architecture: x86_64
       operating_systems:
-      - Linux
       - Darwin
+      - Linux
       required_flags:
-      - aes
-      - avx2
-      - popcnt
       - sse2
+      - popcnt
       - ssse3
+      - avx2
+      - aes
     common-crypto:
     - AES: pqcrystals
     - SHA3: liboqs

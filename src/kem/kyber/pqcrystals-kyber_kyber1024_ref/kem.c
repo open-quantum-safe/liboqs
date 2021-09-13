@@ -20,8 +20,8 @@
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_kem_keypair(uint8_t pk[KYBER_PUBLICKEYBYTES],
-                       uint8_t sk[KYBER_SECRETKEYBYTES])
+int crypto_kem_keypair(uint8_t *pk,
+                       uint8_t *sk)
 {
   size_t i;
   indcpa_keypair(pk, sk);
@@ -48,9 +48,9 @@ int crypto_kem_keypair(uint8_t pk[KYBER_PUBLICKEYBYTES],
 *
 * Returns 0 (success)
 **************************************************/
-int crypto_kem_enc(uint8_t ct[KYBER_CIPHERTEXTBYTES],
-                   uint8_t ss[KYBER_SSBYTES],
-                   const uint8_t pk[KYBER_PUBLICKEYBYTES])
+int crypto_kem_enc(uint8_t *ct,
+                   uint8_t *ss,
+                   const uint8_t *pk)
 {
   uint8_t buf[2*KYBER_SYMBYTES];
   /* Will contain key, coins */
@@ -91,9 +91,9 @@ int crypto_kem_enc(uint8_t ct[KYBER_CIPHERTEXTBYTES],
 *
 * On failure, ss will contain a pseudo-random value.
 **************************************************/
-int crypto_kem_dec(uint8_t ss[KYBER_SSBYTES],
-                   const uint8_t ct[KYBER_CIPHERTEXTBYTES],
-                   const uint8_t sk[KYBER_SECRETKEYBYTES])
+int crypto_kem_dec(uint8_t *ss,
+                   const uint8_t *ct,
+                   const uint8_t *sk)
 {
   size_t i;
   int fail;

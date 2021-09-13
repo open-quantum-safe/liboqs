@@ -483,7 +483,7 @@ static void inc4_be(uint32_t *x)
   *x = br_swap32(*x);
 }
 
-static void aes_ctr4x(uint8_t out[64], uint32_t ivw[16], uint64_t sk_exp[64])
+static void aes_ctr4x(uint8_t out[64], uint32_t ivw[16], uint64_t sk_exp[120])
 {
   uint32_t w[16];
   uint64_t q[8];
@@ -527,42 +527,7 @@ static void br_aes_ct64_ctr_init(uint64_t sk_exp[120], const uint8_t *key)
 	br_aes_ct64_skey_expand(sk_exp, skey);
 }
 
-static void br_aes_ct64_ctr_run(uint64_t sk_exp[120], const uint8_t *iv, uint32_t cc, uint8_t *data, size_t len)
-{
-	uint32_t ivw[16];
-	size_t i;
-
-	br_range_dec32le(ivw, 3, iv);
-	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
-	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));
-	memcpy(ivw + 12, ivw, 3 * sizeof(uint32_t));
-	ivw[ 3] = br_swap32(cc);
-	ivw[ 7] = br_swap32(cc + 1);
-	ivw[11] = br_swap32(cc + 2);
-	ivw[15] = br_swap32(cc + 3);
-
-	while (len > 64) {
-		aes_ctr4x(data, ivw, sk_exp);
-		data += 64;
-		len -= 64;
-	}
-	if(len > 0) {
-		uint8_t tmp[64];
-		aes_ctr4x(tmp, ivw, sk_exp);
-		for(i=0;i<len;i++)
-			data[i] = tmp[i];
-	}
-}
-
-void aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t *key, const uint8_t *nonce)
-{
-  uint64_t sk_exp[120];
-
-  br_aes_ct64_ctr_init(sk_exp, key);
-  br_aes_ct64_ctr_run(sk_exp, nonce, 0, out, outlen);
-}
-
-void aes256ctr_init(aes256ctr_ctx *s, const uint8_t *key, const uint8_t *nonce)
+void aes256ctr_init(aes256ctr_ctx *s, const uint8_t key[32], const uint8_t nonce[12])
 {
   br_aes_ct64_ctr_init(s->sk_exp, key);
 
