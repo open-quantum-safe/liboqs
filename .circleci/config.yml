@@ -94,6 +94,10 @@ jobs:
         # Not every executor handles --numprocesses=auto being passed to pytest well
         # See https://github.com/open-quantum-safe/liboqs/issues/738#issuecomment-621394744
         default: --numprocesses=auto
+      SKIP_ALGS:
+        description: "Algorithms not to test in test_constant_time."
+        type: string
+        default: ''
     docker:
       - image: << parameters.CONTAINER >>
 # Re-enable iff docker enforces rate limitations without auth:
@@ -113,6 +117,8 @@ jobs:
           name: Run tests
           no_output_timeout: 1h
           command: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml << parameters.PYTEST_ARGS >>
+          environment:
+             SKIP_ALGS: << parameters.SKIP_ALGS >>
       - store_test_results: # Note that this command will fail when running CircleCI locally, that is expected behaviour
           path: build/test-results
       - store_artifacts:
@@ -356,6 +362,7 @@ workflows:
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-x86_64:latest
           CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
           PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+          SKIP_ALGS: 'SPHINCS\+-SHA256*,Rainbow-V-Compressed'
       - linux_oqs:
           name: constant-time-x64-extensions
           context: openquantumsafe
