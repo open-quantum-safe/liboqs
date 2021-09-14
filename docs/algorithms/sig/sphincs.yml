@@ -24,6 +24,7 @@ nist-round: 3
 spec-version: NIST Round 3 submission
 spdx-license-identifier: CC0-1.0
 upstream: https://github.com/PQClean/PQClean/commit/6c1ea921ee4a06a6b50c742ca540bb9b5e51aee2
+  with copy_from_upstream patches
 upstream-ancestors:
 - https://github.com/sphincs/sphincsplus
 parameter-sets:

@@ -75,6 +75,12 @@ def get_oqs_yaml(param_list, name):
 def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=False):
     for kem in kems:
         ui = get_upstream_info(upstream_info, kem['upstream_location'])
+        patches_done=""
+        if 'patches' in ui:
+          for patchfilename in ui['patches']:
+              if kem['name'] in patchfilename:
+                 patches_done=" with copy_from_upstream patches"
+
         upstream_root = ui['upstream_root']
         meta_yaml_path_template = ui['kem_meta_path']
         if DEBUG > 1:
@@ -99,7 +105,9 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 oqs_yaml['principal-submitters'] = rhs_if_not_equal(oqs_yaml['principal-submitters'], upstream_yaml['principal-submitters'], "principal-submitters")
 
                 upstream_base_url = ui['git_url'][:-len(".git")]
-                oqs_yaml['upstream'] = rhs_if_not_equal("{}/commit/{}".format(upstream_base_url, ui['git_commit']), oqs_yaml['upstream'], "upstream")
+                # upstream is special: We will take the upstream git commit information 
+                # (possibly with added patch comment) as it is what drove the update
+                oqs_yaml['upstream'] = rhs_if_not_equal(oqs_yaml['upstream'], ("{}/commit/{}"+patches_done).format(upstream_base_url, ui['git_commit']), "upstream")
 
                 if 'auxiliary-submitters' in upstream_yaml:
                         oqs_yaml['auxiliary-submitters'] = rhs_if_not_equal(oqs_yaml['auxiliary-submitters'] if 'auxiliary-submitters' in oqs_yaml else '', upstream_yaml['auxiliary-submitters'], "auxiliary-submitters")
@@ -121,12 +129,12 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 oqs_scheme_yaml['length-shared-secret'] = rhs_if_not_equal(oqs_scheme_yaml['length-shared-secret'], upstream_yaml['length-shared-secret'], "length-shared-secret")
 
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
-                    for pqclean_impl in upstream_yaml['implementations']:
-                        if impl['upstream-id'] == pqclean_impl['name']:
+                    for upstream_impl in upstream_yaml['implementations']:
+                        if impl['upstream-id'] == upstream_impl['name']:
                             break
 
-                    if 'supported_platforms' in pqclean_impl:
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], pqclean_impl['supported_platforms'], "supported-platforms")
+                    if 'supported_platforms' in upstream_impl:
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
                     else:
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
 
@@ -151,6 +159,12 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
 def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes=False):
     for sig in sigs:
         ui = get_upstream_info(upstream_info, sig['upstream_location'])
+        patches_done=""
+        if 'patches' in ui:
+          for patchfilename in ui['patches']:
+              if sig['name'] in patchfilename:
+                 patches_done=" with copy_from_upstream patches"
+
         upstream_root = ui['upstream_root']
         meta_yaml_path_template = ui['sig_meta_path']
         if DEBUG > 1:
@@ -174,7 +188,9 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 oqs_yaml['principal-submitters'] = rhs_if_not_equal(oqs_yaml['principal-submitters'], upstream_yaml['principal-submitters'], "principal-submitters")
 
                 upstream_base_url = ui['git_url'][:-len(".git")]
-                oqs_yaml['upstream'] = rhs_if_not_equal("{}/commit/{}".format(upstream_base_url, ui['git_commit']), oqs_yaml['upstream'], "upstream")
+                # upstream is special: We will take the upstream git commit information 
+                # (possibly with added patch comment) as it is what drove the update
+                oqs_yaml['upstream'] = rhs_if_not_equal(oqs_yaml['upstream'], ("{}/commit/{}"+patches_done).format(upstream_base_url, ui['git_commit']), "upstream")
 
                 if 'auxiliary-submitters' in upstream_yaml:
                         oqs_yaml['auxiliary-submitters'] = rhs_if_not_equal(oqs_yaml['auxiliary-submitters'] if 'auxiliary-submitters' in oqs_yaml else '', upstream_yaml['auxiliary-submitters'], "auxiliary-submitters")
@@ -195,12 +211,12 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 oqs_scheme_yaml['length-signature'] = rhs_if_not_equal(oqs_scheme_yaml['length-signature'], upstream_yaml['length-signature'], "length-signature")
 
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
-                    for pqclean_impl in upstream_yaml['implementations']:
-                        if impl['upstream-id'] == pqclean_impl['name']:
+                    for upstream_impl in upstream_yaml['implementations']:
+                        if impl['upstream-id'] == upstream_impl['name']:
                             break
 
-                    if 'supported_platforms' in pqclean_impl:
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], pqclean_impl['supported_platforms'], "supported-platforms")
+                    if 'supported_platforms' in upstream_impl:
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
                     else:
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
 
@@ -223,6 +239,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 store_yaml(oqs_yaml_path, oqs_yaml)
 
 def do_it(liboqs_root):
+   global DEBUG
    if liboqs_root == None:
       parser = argparse.ArgumentParser()
       parser.add_argument("--liboqs-root", default=os.path.join("..", ".."))
