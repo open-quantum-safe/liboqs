@@ -75,12 +75,12 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - ssse3
-      - popcnt
-      - avx2
-      - sse2
-      - bmi2
       - aes
+      - avx2
+      - bmi2
+      - popcnt
+      - sse2
+      - ssse3
     common-crypto:
     - AES: pqcrystals-kyber_common_aes
     - SHA3: liboqs
@@ -142,12 +142,12 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - ssse3
-      - popcnt
-      - avx2
-      - sse2
-      - bmi2
       - aes
+      - avx2
+      - bmi2
+      - popcnt
+      - sse2
+      - ssse3
     common-crypto:
     - AES: pqcrystals-kyber_common_aes
     - SHA3: liboqs
@@ -209,12 +209,12 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - ssse3
-      - popcnt
-      - avx2
-      - sse2
-      - bmi2
       - aes
+      - avx2
+      - bmi2
+      - popcnt
+      - sse2
+      - ssse3
     common-crypto:
     - AES: pqcrystals-kyber_common_aes
     - SHA3: liboqs

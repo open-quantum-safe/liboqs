@@ -133,11 +133,6 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                         if impl['upstream-id'] == upstream_impl['name']:
                             break
 
-                    if 'supported_platforms' in upstream_impl:
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
-                    else:
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
-
                     # Logic to add Common_META.yml components
                     uir = get_upstream_info(upstream_yaml['implementations'], impl['upstream-id'])
                     if (uir != None) and ('common_dep' in uir):
@@ -147,7 +142,13 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                             ur = get_upstream_info(upstream_common_yaml['commons'], c)
                             if (ur != None) and ('supported_platforms' in ur):
                                if 'required_flags' in ur['supported_platforms'][0].keys():
-                                  impl['supported-platforms'][0]['required_flags']=list(set(impl['supported-platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
+                                  upstream_impl['supported_platforms'][0]['required_flags']=list(set(upstream_impl['supported_platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
+                                  upstream_impl['supported_platforms'][0]['required_flags'].sort()
+
+                    if 'supported_platforms' in upstream_impl:
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
+                    else:
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
 
                     oqs_scheme_yaml['implementations'][impl_index] = impl
 
@@ -215,11 +216,6 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                         if impl['upstream-id'] == upstream_impl['name']:
                             break
 
-                    if 'supported_platforms' in upstream_impl:
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
-                    else:
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
-
                     # Logic to add Common_META.yml components
                     uir = get_upstream_info(upstream_yaml['implementations'], impl['upstream-id'])
                     if (uir != None) and ('common_dep' in uir):
@@ -229,7 +225,13 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                             ur = get_upstream_info(upstream_common_yaml['commons'], c)
                             if (ur != None) and ('supported_platforms' in ur):
                                if 'required_flags' in ur['supported_platforms'][0].keys():
-                                  impl['supported-platforms'][0]['required_flags']=list(set(impl['supported-platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
+                                  upstream_impl['supported_platforms'][0]['required_flags']=list(set(upstream_impl['supported_platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
+                                  upstream_impl['supported_platforms'][0]['required_flags'].sort()
+
+                    if 'supported_platforms' in upstream_impl:
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
+                    else:
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
 
                     oqs_scheme_yaml['implementations'][impl_index] = impl
 
