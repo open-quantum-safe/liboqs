@@ -13,6 +13,7 @@ import yaml
 from pathlib import Path
 import sys
 import json
+import update_upstream_alg_docs
 
 # kats of all algs
 kats = {}
@@ -512,7 +513,7 @@ def copy_from_upstream():
     if not keepdata:
         shutil.rmtree('repos')
 
-    print("Remember to update the docs by running update_pqclean_alg_docs.py")
+    update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
 
 def verify_from_upstream():

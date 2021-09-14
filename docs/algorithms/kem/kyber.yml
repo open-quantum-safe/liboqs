@@ -44,8 +44,8 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
-      - popcnt
       - bmi2
+      - popcnt
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -75,12 +75,12 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - sse2
-      - popcnt
-      - bmi2
-      - ssse3
-      - avx2
       - aes
+      - avx2
+      - bmi2
+      - popcnt
+      - sse2
+      - ssse3
     common-crypto:
     - AES: pqcrystals-kyber_common_aes
     - SHA3: liboqs
@@ -111,8 +111,8 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
-      - popcnt
       - bmi2
+      - popcnt
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -142,12 +142,12 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - sse2
-      - popcnt
-      - bmi2
-      - ssse3
-      - avx2
       - aes
+      - avx2
+      - bmi2
+      - popcnt
+      - sse2
+      - ssse3
     common-crypto:
     - AES: pqcrystals-kyber_common_aes
     - SHA3: liboqs
@@ -178,8 +178,8 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
-      - popcnt
       - bmi2
+      - popcnt
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -209,12 +209,12 @@ parameter-sets:
       - Linux
       - Darwin
       required_flags:
-      - sse2
-      - popcnt
-      - bmi2
-      - ssse3
-      - avx2
       - aes
+      - avx2
+      - bmi2
+      - popcnt
+      - sse2
+      - ssse3
     common-crypto:
     - AES: pqcrystals-kyber_common_aes
     - SHA3: liboqs
