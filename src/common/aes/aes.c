@@ -181,11 +181,3 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, const size_t iv_len, const void *sche
 	    oqs_aes256_ctr_enc_sch_armv8(iv, iv_len, schedule, out, out_len)
 	)
 }
-
-
-
-
-
-
-
-
