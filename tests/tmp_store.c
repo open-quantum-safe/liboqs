@@ -5,7 +5,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
 #define OQS_STORE_DIR "tmp"
 #define OQS_STORE_PREFIX "/oqs-temp-file-"
