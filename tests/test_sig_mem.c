@@ -188,6 +188,8 @@ int main(int argc, char **argv) {
 	// Use system RNG in this program
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_system);
 
+	oqs_fstore_init();
+
 	OQS_STATUS rc = sig_test_correctness(alg_name, (unsigned int)atoi(argv[2]));
 
 	if (rc != OQS_SUCCESS) {

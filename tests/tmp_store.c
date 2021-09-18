@@ -3,15 +3,46 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <dirent.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
-#define STORE_PREFIX "build/mem-benchmark/oqs-temp-file-"
+#define OQS_STORE_DIR "tmp"
+#define OQS_STORE_PREFIX "/oqs-temp-file-"
 #define MAXPATHLEN 128
+
+static OQS_STATUS oqs_fstore_init(void) {
+	return mkdir(OQS_STORE_DIR, 0755);
+}
+
+/* Activate when tmp folder cleanup desirable; only call after _all_ tests have completed!
+static OQS_STATUS oqs_fstore_cleanup(void) {
+	char fpath[MAXPATHLEN];
+	struct dirent *entry;
+	DIR *dir = opendir(OQS_STORE_DIR);
+	// first delete all files in OQS_STORE_DIR
+	while ((entry = readdir(dir)) != NULL) {
+		if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, "..")) {
+			strcpy(fpath, OQS_STORE_DIR);
+			strcat(fpath, "/"); // tests only run under UNIX
+			strcat(fpath, entry->d_name);
+			if (unlink(fpath) != 0) {
+				fprintf(stderr, "Warning: Couldn't remove %s.\n", fpath);
+			}
+		}
+	}
+	return rmdir(OQS_STORE_DIR); // will return failure if some files could not be removed
+}
+*/
 
 static OQS_STATUS oqs_fstore(const char *fname, const char *mname, uint8_t *data, size_t len) {
 	char fpath[MAXPATHLEN];
-	strcpy(fpath, STORE_PREFIX);
+	strcpy(fpath, OQS_STORE_DIR);
+	strcat(fpath, OQS_STORE_PREFIX);
 	strcat(fpath, mname);
-	FILE *fp = fopen(strcat(fpath, fname), "wb");
+	strcat(fpath, fname);
+	FILE *fp = fopen(fpath, "wb");
 	if (!fp) {
 		fprintf(stderr, "Couldn't open %s for writing.\n", fpath);
 		return OQS_ERROR;
@@ -25,9 +56,11 @@ static OQS_STATUS oqs_fload(const char *fname, const char *mname, uint8_t *data,
 	size_t len_read = 0, r = 0;
 	uint8_t *dr = NULL;
 	char fpath[MAXPATHLEN];
-	strcpy(fpath, STORE_PREFIX);
+	strcpy(fpath, OQS_STORE_DIR);
+	strcat(fpath, OQS_STORE_PREFIX);
 	strcat(fpath, mname);
-	FILE *fp = fopen(strcat(fpath, fname), "rb");
+	strcat(fpath, fname);
+	FILE *fp = fopen(fpath, "rb");
 	if (!fp) {
 		fprintf(stderr, "Couldn't open %s for reading.\n", fpath);
 		return OQS_ERROR;
