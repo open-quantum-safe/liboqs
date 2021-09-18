@@ -10,6 +10,10 @@
 #define OQS_STORE_PREFIX "/oqs-temp-file-"
 #define MAXPATHLEN 128
 
+#if (defined(_WIN32) || defined(__WIN32__))
+#define mkdir(A, B) mkdir(A)
+#endif
+
 static OQS_STATUS oqs_fstore_init(void) {
 	return mkdir(OQS_STORE_DIR, 0755);
 }
