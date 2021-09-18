@@ -5,8 +5,9 @@ tags
 *~
 .tags*
 
-# CMake
+# CMake & testing
 /build*
+/tmp*
 
 # MSVC
 .vs
