@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-#include <dirent.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
@@ -15,26 +14,6 @@
 static OQS_STATUS oqs_fstore_init(void) {
 	return mkdir(OQS_STORE_DIR, 0755);
 }
-
-/* Activate when tmp folder cleanup desirable; only call after _all_ tests have completed!
-static OQS_STATUS oqs_fstore_cleanup(void) {
-    char fpath[MAXPATHLEN];
-    struct dirent *entry;
-    DIR *dir = opendir(OQS_STORE_DIR);
-    // first delete all files in OQS_STORE_DIR
-    while ((entry = readdir(dir)) != NULL) {
-        if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, "..")) {
-            strcpy(fpath, OQS_STORE_DIR);
-            strcat(fpath, "/"); // tests only run under UNIX
-            strcat(fpath, entry->d_name);
-            if (unlink(fpath) != 0) {
-                fprintf(stderr, "Warning: Couldn't remove %s.\n", fpath);
-            }
-        }
-    }
-    return rmdir(OQS_STORE_DIR); // will return failure if some files could not be removed
-}
-*/
 
 static OQS_STATUS oqs_fstore(const char *fname, const char *mname, uint8_t *data, size_t len) {
 	char fpath[MAXPATHLEN];
