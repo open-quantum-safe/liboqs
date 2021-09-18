@@ -18,21 +18,21 @@ static OQS_STATUS oqs_fstore_init(void) {
 
 /* Activate when tmp folder cleanup desirable; only call after _all_ tests have completed!
 static OQS_STATUS oqs_fstore_cleanup(void) {
-	char fpath[MAXPATHLEN];
-	struct dirent *entry;
-	DIR *dir = opendir(OQS_STORE_DIR);
-	// first delete all files in OQS_STORE_DIR
-	while ((entry = readdir(dir)) != NULL) {
-		if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, "..")) {
-			strcpy(fpath, OQS_STORE_DIR);
-			strcat(fpath, "/"); // tests only run under UNIX
-			strcat(fpath, entry->d_name);
-			if (unlink(fpath) != 0) {
-				fprintf(stderr, "Warning: Couldn't remove %s.\n", fpath);
-			}
-		}
-	}
-	return rmdir(OQS_STORE_DIR); // will return failure if some files could not be removed
+    char fpath[MAXPATHLEN];
+    struct dirent *entry;
+    DIR *dir = opendir(OQS_STORE_DIR);
+    // first delete all files in OQS_STORE_DIR
+    while ((entry = readdir(dir)) != NULL) {
+        if (strcmp(entry->d_name, ".") && strcmp(entry->d_name, "..")) {
+            strcpy(fpath, OQS_STORE_DIR);
+            strcat(fpath, "/"); // tests only run under UNIX
+            strcat(fpath, entry->d_name);
+            if (unlink(fpath) != 0) {
+                fprintf(stderr, "Warning: Couldn't remove %s.\n", fpath);
+            }
+        }
+    }
+    return rmdir(OQS_STORE_DIR); // will return failure if some files could not be removed
 }
 */
 
