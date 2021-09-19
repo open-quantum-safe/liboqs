@@ -120,13 +120,10 @@ def filtered_test(func):
 
 # So far, build dir name has been hard coded to "build".
 # This function makes it dependent on the availability of the environment variable OQS_BUILD_DIR:
-# OQS_BUILD_DIR must be below current working dir; if not, behave as before
-# If OQS_BUILD_DIR is not set, behave as before, returning hard-coded build name
+# If OQS_BUILD_DIR is not set, behave as before, returning hard-coded build name set as per README
 def get_current_build_dir_name():
     if 'OQS_BUILD_DIR' in os.environ:
-        # assure this is within current dir:
-        if os.environ['OQS_BUILD_DIR'].startswith(os.getcwd()):
-            return os.environ['OQS_BUILD_DIR'][len(os.getcwd())+1:]
+        return os.environ['OQS_BUILD_DIR']
     return 'build'
 
 def path_to_executable(program_name):
