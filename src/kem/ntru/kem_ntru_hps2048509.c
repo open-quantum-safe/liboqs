@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_ntru_hps2048509_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_ntru_hps2048509;
-	kem->alg_version = "https://github.com/jschanck/ntru/tree/a43a4457 reference implementation";
+	kem->alg_version = "https://github.com/jschanck/ntru/tree/3227cd42 reference implementation";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;

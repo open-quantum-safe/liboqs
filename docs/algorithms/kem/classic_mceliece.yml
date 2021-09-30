@@ -19,7 +19,7 @@ website: https://classic.mceliece.org
 nist-round: 3
 spec-version: SUPERCOP-20191221
 spdx-license-identifier: Public domain
-upstream: https://github.com/PQClean/PQClean/commit/6c1ea921ee4a06a6b50c742ca540bb9b5e51aee2
+upstream: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0
 upstream-ancestors:
 - SUPERCOP-20191221 "vec" and "avx" implementations
 parameter-sets:

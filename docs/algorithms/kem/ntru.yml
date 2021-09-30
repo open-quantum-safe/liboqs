@@ -19,7 +19,7 @@ website: https://ntru.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
 spdx-license-identifier: CC0-1.0
-upstream: https://github.com/PQClean/PQClean/commit/6c1ea921ee4a06a6b50c742ca540bb9b5e51aee2
+upstream: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0
 upstream-ancestors:
 - https://github.com/jschanck/ntru/tree/a43a4457
 parameter-sets:

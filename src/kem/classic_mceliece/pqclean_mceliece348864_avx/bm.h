@@ -8,7 +8,7 @@
 
 #include "vec128.h"
 
-void PQCLEAN_MCELIECE348864_AVX_bm(uint64_t * /*out*/, vec128 * /*in*/);
+void PQCLEAN_MCELIECE348864_AVX_bm(uint64_t /*out*/[ GFBITS ], vec128 /*in*/ [ GFBITS ]);
 
 #endif
 

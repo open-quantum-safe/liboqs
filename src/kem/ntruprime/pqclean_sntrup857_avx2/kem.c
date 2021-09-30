@@ -136,7 +136,7 @@ static void Hide(unsigned char *x, unsigned char *c, unsigned char *r_enc, const
 }
 
 
-int PQCLEAN_SNTRUP857_AVX2_crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
+int PQCLEAN_SNTRUP857_AVX2_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
     small g[p];
     for (;;) {
         Small_random(g);
@@ -177,7 +177,7 @@ int PQCLEAN_SNTRUP857_AVX2_crypto_kem_keypair(unsigned char *pk, unsigned char *
     return 0;
 }
 
-int PQCLEAN_SNTRUP857_AVX2_crypto_kem_enc(unsigned char *c, unsigned char *k, const unsigned char *pk) {
+int PQCLEAN_SNTRUP857_AVX2_crypto_kem_enc(uint8_t *c, uint8_t *k, const uint8_t *pk) {
     unsigned char cache[Hash_bytes];
     int i;
     {
@@ -205,7 +205,7 @@ int PQCLEAN_SNTRUP857_AVX2_crypto_kem_enc(unsigned char *c, unsigned char *k, co
     return 0;
 }
 
-int PQCLEAN_SNTRUP857_AVX2_crypto_kem_dec(unsigned char *k, const unsigned char *c, const unsigned char *sk) {
+int PQCLEAN_SNTRUP857_AVX2_crypto_kem_dec(uint8_t *k, const uint8_t *c, const uint8_t *sk) {
     const unsigned char *pk = sk + SecretKeys_bytes;
     const unsigned char *rho = pk + PublicKeys_bytes;
     const unsigned char *cache = rho + Small_bytes;
