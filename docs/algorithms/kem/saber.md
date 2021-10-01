@@ -5,7 +5,7 @@
 - **Principal submitters**: Jan-Pieter D'Anvers, Angshuman Karmakar, Sujoy Sinha Roy, Frederik Vercauteren.
 - **Authors' website**: https://www.esat.kuleuven.be/cosic/pqcrypto/saber/
 - **Specification version**: NIST Round 3 submission.
-- **Implementation source**: https://github.com/PQClean/PQClean/commit/6c1ea921ee4a06a6b50c742ca540bb9b5e51aee2, which takes it from:
+- **Implementation source**: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0, which takes it from:
   - https://github.com/jschanck/package-pqclean/tree/1ae84c3c/saber, which takes it from:
   - https://github.com/KULeuven-COSIC/SABER/tree/509cc5ec3a7e12a751ccdd2ef5bd6e54e00bd350
 - **Implementation license (SPDX-Identifier)**: Public domain.

@@ -6,7 +6,7 @@
 - **Auxiliary submitters**: Cong Chen, Oussama Danba, Jeffrey Hoffstein, Andreas Hülsing, Joost Rijneveld, Tsunekazu Saito, Peter Schwabe, William Whyte, Keita Xagawa, Takashi Yamakawa, Zhenfei Zhang.
 - **Authors' website**: https://ntru.org/
 - **Specification version**: NIST Round 3 submission.
-- **Implementation source**: https://github.com/PQClean/PQClean/commit/6c1ea921ee4a06a6b50c742ca540bb9b5e51aee2, which takes it from:
+- **Implementation source**: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0, which takes it from:
   - https://github.com/jschanck/ntru/tree/a43a4457
 - **Implementation license (SPDX-Identifier)**: CC0-1.0.
 
