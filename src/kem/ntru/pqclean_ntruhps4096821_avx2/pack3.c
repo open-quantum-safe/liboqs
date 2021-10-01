@@ -1,6 +1,6 @@
 #include "poly.h"
 
-void PQCLEAN_NTRUHPS4096821_AVX2_poly_S3_tobytes(unsigned char msg[NTRU_OWCPA_MSGBYTES], const poly *a) {
+void PQCLEAN_NTRUHPS4096821_AVX2_poly_S3_tobytes(unsigned char msg[NTRU_PACK_TRINARY_BYTES], const poly *a) {
     int i;
     unsigned char c;
 
@@ -14,7 +14,7 @@ void PQCLEAN_NTRUHPS4096821_AVX2_poly_S3_tobytes(unsigned char msg[NTRU_OWCPA_MS
     }
 }
 
-void PQCLEAN_NTRUHPS4096821_AVX2_poly_S3_frombytes(poly *r, const unsigned char msg[NTRU_OWCPA_MSGBYTES]) {
+void PQCLEAN_NTRUHPS4096821_AVX2_poly_S3_frombytes(poly *r, const unsigned char msg[NTRU_PACK_TRINARY_BYTES]) {
     int i;
     unsigned char c;
 

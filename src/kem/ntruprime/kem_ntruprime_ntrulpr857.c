@@ -13,9 +13,9 @@ OQS_KEM *OQS_KEM_ntruprime_ntrulpr857_new() {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_ntruprime_ntrulpr857;
-	kem->alg_version = "supercop-20210604 via https://github.com/jschanck/package-pqclean/tree/4d9f08c3/ntruprime";
+	kem->alg_version = "supercop-20210604 via https://github.com/mkannwischer/package-pqclean/tree/5714c895/ntruprime";
 
-	kem->claimed_nist_level = 4;
+	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
 
 	kem->length_public_key = OQS_KEM_ntruprime_ntrulpr857_length_public_key;

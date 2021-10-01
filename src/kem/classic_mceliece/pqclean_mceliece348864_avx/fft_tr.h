@@ -8,7 +8,7 @@
 #include "params.h"
 #include "vec256.h"
 
-void PQCLEAN_MCELIECE348864_AVX_fft_tr(vec128 * /*out*/, vec256  /*in*/[][ GFBITS ]);
+void PQCLEAN_MCELIECE348864_AVX_fft_tr(vec128 /*out*/[ GFBITS ], vec256  /*in*/[][ GFBITS ]);
 
 #endif
 

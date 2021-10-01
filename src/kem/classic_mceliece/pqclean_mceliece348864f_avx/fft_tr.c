@@ -348,7 +348,7 @@ static void butterflies_tr(vec128 out[ GFBITS ], vec256 in[][ GFBITS ]) {
     }
 }
 
-void PQCLEAN_MCELIECE348864F_AVX_fft_tr(vec128 out[GFBITS], vec256 in[][ GFBITS ]) {
+void PQCLEAN_MCELIECE348864F_AVX_fft_tr(vec128 *out, vec256 in[][ GFBITS ]) {
     butterflies_tr(out, in);
     radix_conversions_tr(out);
 }

@@ -129,7 +129,7 @@ static inline void get_coefs(gf *out, vec128 *in) {
 
 /* input: in, field elements in bitsliced form */
 /* output: out, field elements in non-bitsliced form */
-void PQCLEAN_MCELIECE348864F_AVX_bm(uint64_t out[ GFBITS ], vec128 in[ GFBITS ]) {
+void PQCLEAN_MCELIECE348864F_AVX_bm(uint64_t *out, vec128 *in) {
     uint16_t i;
     uint16_t N, L;
 

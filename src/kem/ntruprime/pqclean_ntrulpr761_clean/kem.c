@@ -4,7 +4,7 @@
 #include "params.h"
 #include "randombytes.h"
 #include "sha2.h"
-
+#include <stdlib.h> /* for abort() in case of OpenSSL failures */
 
 
 #define int8 int8_t
@@ -126,7 +126,9 @@ static void Generator(Fq *G, const unsigned char *pk) {
     uint32 L[p];
     int i;
 
-    PQCLEAN_NTRULPR761_CLEAN_crypto_stream_aes256ctr((unsigned char *) L, 4 * p, aes_nonce, pk);
+    if (PQCLEAN_NTRULPR761_CLEAN_crypto_stream_aes256ctr((unsigned char *) L, 4 * p, aes_nonce, pk) != 0) {
+        abort();
+    }
     crypto_decode_pxint32(L, (unsigned char *) L);
     for (i = 0; i < p; ++i) {
         G[i] = Fq_bigfreeze(L[i]) - q12;
@@ -156,7 +158,9 @@ static void Hide(unsigned char *c, unsigned char *r_enc, const Inputs r, const u
             s[0] = 5;
             Hash(h, s, sizeof s);
         }
-        PQCLEAN_NTRULPR761_CLEAN_crypto_stream_aes256ctr((unsigned char *) L, 4 * p, aes_nonce, h);
+        if (PQCLEAN_NTRULPR761_CLEAN_crypto_stream_aes256ctr((unsigned char *) L, 4 * p, aes_nonce, h) != 0) {
+            abort();
+        }
         crypto_decode_pxint32(L, (unsigned char *) L);
         Short_fromlist(b, L);
     }
@@ -192,7 +196,7 @@ static void Hide(unsigned char *c, unsigned char *r_enc, const Inputs r, const u
 }
 
 
-int PQCLEAN_NTRULPR761_CLEAN_crypto_kem_keypair(unsigned char *pk, unsigned char *sk) {
+int PQCLEAN_NTRULPR761_CLEAN_crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
     Fq aG[p];
     int i;
     randombytes(pk, Seeds_bytes);
@@ -217,7 +221,7 @@ int PQCLEAN_NTRULPR761_CLEAN_crypto_kem_keypair(unsigned char *pk, unsigned char
     return 0;
 }
 
-int PQCLEAN_NTRULPR761_CLEAN_crypto_kem_enc(unsigned char *c, unsigned char *k, const unsigned char *pk) {
+int PQCLEAN_NTRULPR761_CLEAN_crypto_kem_enc(uint8_t *c, uint8_t *k, const uint8_t *pk) {
     int i;
     unsigned char cache[Hash_bytes];
     {
@@ -246,7 +250,7 @@ int PQCLEAN_NTRULPR761_CLEAN_crypto_kem_enc(unsigned char *c, unsigned char *k, 
     return 0;
 }
 
-int PQCLEAN_NTRULPR761_CLEAN_crypto_kem_dec(unsigned char *k, const unsigned char *c, const unsigned char *sk) {
+int PQCLEAN_NTRULPR761_CLEAN_crypto_kem_dec(uint8_t *k, const uint8_t *c, const uint8_t *sk) {
     const unsigned char *pk = sk + SecretKeys_bytes;
     const unsigned char *rho = pk + PublicKeys_bytes;
     const unsigned char *cache = rho + Inputs_bytes;
