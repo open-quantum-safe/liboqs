@@ -371,7 +371,7 @@ workflows:
           # check: https://valgrind.org/info/platforms.html
           CMAKE_ARGS: -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
           PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-          SKIP_ALGS: 'SPHINCS\+-SHA256*,Rainbow-V-Compressed'
+          SKIP_ALGS: 'SPHINCS\+-SHA*,Rainbow-V-Compressed'
       - linux_oqs:
           name: undefined-sanitizer
           context: openquantumsafe
