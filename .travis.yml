@@ -11,3 +11,11 @@ jobs:
       script:
         - mkdir build && cd build && cmake -GNinja .. && cmake -LA .. && ninja
         - cd build & ninja run_tests
+    - arch: s390x
+      os: linux
+      dist: focal
+      compiler: gcc
+      if: NOT branch =~ /^ghactionsonly-/
+      script:
+        - mkdir build && cd build && cmake -DOQS_ENABLE_KEM_BIKE=OFF -GNinja .. && cmake -LA .. && ninja
+        - cd build & ninja run_tests

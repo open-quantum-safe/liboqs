@@ -22,8 +22,15 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
     endif()
 
     if(OQS_OPT_TARGET STREQUAL "generic")
-        # Assume sensible default like -march=x86-64, -march=armv8-a, etc.
-        set(OQS_OPT_FLAG "")
+        if(ARCH_S390X)
+            # At least z9-109 is needed for 'stckf' in benchmarking code.
+            # gcc's default is z900 (older than z9-109), clang's default and minimum is z10.
+            # setting to z10 as sensible default.
+            set(OQS_OPT_FLAG "-march=z10")
+        else()
+            # Assume sensible default like -march=x86-64, -march=armv8-a, etc.
+            set(OQS_OPT_FLAG "")
+        endif()
     elseif(OQS_OPT_TARGET STREQUAL "auto")
       if(ARCH_X86_64)
           set(OQS_OPT_FLAG "-march=native")
@@ -31,6 +38,8 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
           set(OQS_OPT_FLAG "-mcpu=native")
       elseif(ARCH_ARM64v8 AND CMAKE_SYSTEM_NAME STREQUAL "Darwin")
           set(OQS_OPT_FLAG "-mcpu=native")
+      elseif(ARCH_S390X)
+          set(OQS_OPT_FLAG "-march=native")
       else()
           message(WARNING "Setting OQS_OPT_TARGET=AUTO may not produce optimized code on this system.")
       endif()
@@ -39,6 +48,8 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
         set(OQS_OPT_FLAG "-march=${OQS_OPT_TARGET}")
       elseif(ARCH_ARM64v8 OR ARCH_ARM32v7)
         set(OQS_OPT_FLAG "-mcpu=${OQS_OPT_TARGET}")
+      elseif(ARCH_S390X)
+        set(OQS_OPT_FLAG "-march=${OQS_OPT_TARGET}")
       endif()
     endif()
 
