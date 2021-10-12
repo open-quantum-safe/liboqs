@@ -39,7 +39,7 @@ int frodo_mul_add_sa_plus_e_shake_portable(uint16_t *out, const uint16_t *s, con
             for (j = 0; j < 4; j++) {
                 uint16_t sp = s[i*PARAMS_N + kk + j];
                 for (int k = 0; k < PARAMS_N; k++) {                // Matrix-vector multiplication
-                    sum[k] += (uint16_t) ((uint32_t) sp * (uint32_t) a_cols[(t+j)*PARAMS_N + k]);
+                    sum[k] += (uint16_t) ((uint32_t) sp * (uint32_t) UINT16_TO_LE(a_cols[(t+j)*PARAMS_N + k]));
                 }
              }
             for (int k = 0; k < PARAMS_N; k++){

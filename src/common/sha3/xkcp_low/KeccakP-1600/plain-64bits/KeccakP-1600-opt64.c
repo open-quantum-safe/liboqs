@@ -435,10 +435,11 @@ void KeccakP1600_ExtractAndAddBytesInLane(const void *state, unsigned int lanePo
 
 void KeccakP1600_ExtractAndAddLanes(const void *state, const unsigned char *input, unsigned char *output, unsigned int laneCount) {
 	unsigned int i;
-	uint64_t lane;
 #if (PLATFORM_BYTE_ORDER != IS_LITTLE_ENDIAN)
 	unsigned char temp[8];
 	unsigned int j;
+#else
+	uint64_t lane;
 #endif
 
 	for (i = 0; i < laneCount; i++) {
