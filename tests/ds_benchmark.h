@@ -135,6 +135,11 @@ static uint64_t _bench_rdtsc(void) {
 	__asm__ volatile("mrc p15, 0, %0, c9, c13, 0\t\n"
 	                 : "=r"(value));
 	return value;
+#elif defined(__s390x__)
+#define USING_TIME_RATHER_THAN_CYCLES
+	uint64_t tod;
+	__asm__ volatile("stckf %0\n" : "=Q" (tod) : : "cc");
+	return (tod * 1000 / 4096);
 #else
 #define USING_TIME_RATHER_THAN_CYCLES
 	struct timespec time;
