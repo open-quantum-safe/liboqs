@@ -20,7 +20,7 @@
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                             | None                    | True                               | True                                           | False                 |
+|          master          | little endian               | All                             | None                    | True                               | True                                           | False                 |
 |          master          | x86\_64                     | Linux,Darwin                    | AVX2,AVX512,PCLMUL,SSE2 | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
@@ -31,7 +31,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 |  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
+|          master          | little endian               | All                             | None                    | True                               | True                                           | False                |
 |          master          | x86\_64                     | Linux,Darwin                    | AVX2,AVX512,PCLMUL,SSE2 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
