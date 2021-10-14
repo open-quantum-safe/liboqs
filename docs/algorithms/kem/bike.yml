@@ -37,7 +37,10 @@ parameter-sets:
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: master
-    supported-platforms: all
+    supported-platforms:
+    - architecture: little endian
+      operating_systems:
+      - All
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -67,7 +70,10 @@ parameter-sets:
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream-id: master
-    supported-platforms: all
+    supported-platforms:
+    - architecture: little endian
+      operating_systems:
+      - All
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
