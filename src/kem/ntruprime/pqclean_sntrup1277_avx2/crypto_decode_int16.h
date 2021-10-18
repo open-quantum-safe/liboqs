@@ -1,0 +1,9 @@
+#ifndef PQCLEAN_SNTRUP1277_AVX2_CRYPTO_DECODE_INT16_H
+#define PQCLEAN_SNTRUP1277_AVX2_CRYPTO_DECODE_INT16_H
+
+#include <stdint.h>
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_core_multsntrup1277_STRBYTES 2
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_core_multsntrup1277_ITEMS 1
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_core_multsntrup1277_ITEMBYTES 2
+void PQCLEAN_SNTRUP1277_AVX2_crypto_decode_int16(void *x, const unsigned char *s);
+#endif

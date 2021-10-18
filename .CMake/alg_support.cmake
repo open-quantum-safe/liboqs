@@ -266,6 +266,13 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
 endif()
 endif()
 
+cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_ntrulpr1277 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_ntrulpr1277_avx2 "" ON "OQS_ENABLE_KEM_ntruprime_ntrulpr1277" OFF)
+endif()
+endif()
+
 cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup653 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
@@ -284,6 +291,13 @@ cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup857 "" ON "OQS_ENABLE_KEM_
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup857_avx2 "" ON "OQS_ENABLE_KEM_ntruprime_sntrup857" OFF)
+endif()
+endif()
+
+cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup1277 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup1277_avx2 "" ON "OQS_ENABLE_KEM_ntruprime_sntrup1277" OFF)
 endif()
 endif()
 

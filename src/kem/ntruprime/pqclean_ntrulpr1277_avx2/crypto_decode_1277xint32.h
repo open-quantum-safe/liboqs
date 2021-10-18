@@ -1,0 +1,10 @@
+#ifndef PQCLEAN_NTRULPR1277_AVX2_CRYPTO_DECODE_1277XINT32_H
+#define PQCLEAN_NTRULPR1277_AVX2_CRYPTO_DECODE_1277XINT32_H
+
+#include <stdint.h>
+#define PQCLEAN_NTRULPR1277_AVX2_crypto_decode_1277xint32_STRBYTES 5108
+#define PQCLEAN_NTRULPR1277_AVX2_crypto_decode_1277xint32_ITEMS 1277
+#define PQCLEAN_NTRULPR1277_AVX2_crypto_decode_1277xint32_ITEMBYTES 4
+
+void PQCLEAN_NTRULPR1277_AVX2_crypto_decode_1277xint32(void *v, const unsigned char *s);
+#endif
