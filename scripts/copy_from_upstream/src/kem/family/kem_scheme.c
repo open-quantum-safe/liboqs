@@ -82,7 +82,11 @@ extern int PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper 
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *public_key, uint8_t *secret_key) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+    {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+    {%- else %}
+#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+    {%- endif %}
 #if defined(OQS_DIST_BUILD)
 	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
@@ -96,8 +100,8 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 		return (OQS_STATUS) {{ scheme['metadata']['default_keypair_signature'] }}(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
-#else
     {%- endfor %}
+#else
 	return (OQS_STATUS) {{ scheme['metadata']['default_keypair_signature'] }}(public_key, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
@@ -106,7 +110,11 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+    {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+    {%- else %}
+#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+    {%- endif %}
 #if defined(OQS_DIST_BUILD)
 	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
@@ -120,8 +128,8 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 		return (OQS_STATUS) {{ scheme['metadata']['default_enc_signature'] }}(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
-#else
     {%- endfor %}
+#else
 	return (OQS_STATUS) {{ scheme['metadata']['default_enc_signature'] }}(ciphertext, shared_secret, public_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
@@ -130,7 +138,11 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 
 OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] != scheme['default_implementation'] %}
+    {%- if loop.first %}
 #if defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+    {%- else %}
+#elif defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
+    {%- endif %}
 #if defined(OQS_DIST_BUILD)
 	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
@@ -144,8 +156,8 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 		return (OQS_STATUS) {{ scheme['metadata']['default_dec_signature'] }}(shared_secret, ciphertext, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
-#else
     {%- endfor %}
+#else
 	return (OQS_STATUS) {{ scheme['metadata']['default_dec_signature'] }}(shared_secret, ciphertext, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif

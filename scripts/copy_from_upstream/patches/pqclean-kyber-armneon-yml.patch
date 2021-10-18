@@ -1,0 +1,63 @@
+From d5ef525742ead67f995cb90da595cd07beb69289 Mon Sep 17 00:00:00 2001
+From: Jason Goertzen <Martyrshot@gmail.com>
+Date: Tue, 5 Oct 2021 22:25:43 -0400
+Subject: [PATCH] Patching pqclean's kyber meta for arm neon
+
+---
+ crypto_kem/kyber1024/META.yml | 4 ++--
+ crypto_kem/kyber512/META.yml  | 4 ++--
+ crypto_kem/kyber768/META.yml  | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/crypto_kem/kyber1024/META.yml b/crypto_kem/kyber1024/META.yml
+index 68a1c1e..6966218 100644
+--- a/crypto_kem/kyber1024/META.yml
++++ b/crypto_kem/kyber1024/META.yml
+@@ -37,9 +37,9 @@ implementations:
+     - name: aarch64
+       version: https://github.com/neon-ntt/neon-ntt/tree/9e000470c88dad444cdeb75381c698d810a0c5e9
+       supported_platforms:
+-        - architecture: arm_8
++        - architecture: ARM64_V8
+           operating_systems:
+               - Linux
+               - Darwin
+           required_flags:
+-              - asimd
++              - neon
+diff --git a/crypto_kem/kyber512/META.yml b/crypto_kem/kyber512/META.yml
+index 58ca95e..06cf1f4 100644
+--- a/crypto_kem/kyber512/META.yml
++++ b/crypto_kem/kyber512/META.yml
+@@ -37,9 +37,9 @@ implementations:
+     - name: aarch64
+       version: https://github.com/neon-ntt/neon-ntt/tree/9e000470c88dad444cdeb75381c698d810a0c5e9
+       supported_platforms:
+-        - architecture: arm_8
++        - architecture: ARM64_V8
+           operating_systems:
+               - Linux
+               - Darwin
+           required_flags:
+-              - asimd
++              - neon
+diff --git a/crypto_kem/kyber768/META.yml b/crypto_kem/kyber768/META.yml
+index 0e88092..93a3ff5 100644
+--- a/crypto_kem/kyber768/META.yml
++++ b/crypto_kem/kyber768/META.yml
+@@ -37,10 +37,10 @@ implementations:
+     - name: aarch64
+       version: https://github.com/neon-ntt/neon-ntt/tree/9e000470c88dad444cdeb75381c698d810a0c5e9
+       supported_platforms:
+-        - architecture: arm_8
++        - architecture: ARM64_V8
+           operating_systems:
+               - Linux
+               - Darwin
+           required_flags:
+-              - asimd
++              - neon
+ 
+-- 
+2.30.1 (Apple Git-130)
+
