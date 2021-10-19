@@ -345,7 +345,7 @@ workflows:
       - macOS:
           <<: *require_buildcheck
           name: macOS-shared
-          CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=ON
+          CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=ON -DOQS_ENABLE_KEM_CLASSIC_MCELIECE=OFF
 
   commit-to-main:
     when:
