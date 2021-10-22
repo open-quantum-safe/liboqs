@@ -17,5 +17,5 @@ jobs:
       compiler: gcc
       if: NOT branch =~ /^ghactionsonly-/
       script:
-        - mkdir build && cd build && cmake -DOQS_ENABLE_KEM_BIKE=OFF -GNinja .. && cmake -LA .. && ninja
+        - mkdir build && cd build && cmake -GNinja .. && cmake -LA .. && ninja
         - cd build & ninja run_tests
