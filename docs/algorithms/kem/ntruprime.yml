@@ -114,6 +114,37 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+- name: ntrulpr1277
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-ciphertext: 1975
+  length-public-key: 1847
+  length-secret-key: 2231
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA2: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+    common-crypto:
+    - AES: liboqs
+    - SHA2: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
 - name: sntrup653
   claimed-nist-level: 1
   claimed-security: IND-CCA2
@@ -182,6 +213,37 @@ parameter-sets:
   length-ciphertext: 1184
   length-public-key: 1322
   length-secret-key: 1999
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA2: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+    common-crypto:
+    - AES: liboqs
+    - SHA2: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: sntrup1277
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-ciphertext: 1847
+  length-public-key: 2067
+  length-secret-key: 3059
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
