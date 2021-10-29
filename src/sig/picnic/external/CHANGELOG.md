@@ -1,3 +1,12 @@
+Version 3.0.5 -- 2021-10-19
+---------------------------
+
+* Update SHAKE3 implementation
+* Fix build with GCC 11
+* Reduce memory consumption slightly
+* Expose `picnic_get_{private,public}key_size` as part of the public API
+* Add `picnic_get_{private,public}_key_param` to retrieve a key's parameter set
+
 Version 3.0.4 -- 2020-12-17
 ---------------------------
 
