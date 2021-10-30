@@ -74,8 +74,6 @@ typedef struct picnic_instance_t {
 const picnic_instance_t* picnic_instance_get(picnic_params_t param);
 
 PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_lowmc_block_size(picnic_params_t param);
-PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_private_key_size(picnic_params_t param);
-PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_public_key_size(picnic_params_t param);
 
 /* Prefix values for domain separation */
 static const uint8_t HASH_PREFIX_0 = 0;

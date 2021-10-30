@@ -430,6 +430,26 @@ void PICNIC_CALLING_CONVENTION picnic_clear_private_key(picnic_privatekey_t* key
   picnic_explicit_bzero(key, sizeof(picnic_privatekey_t));
 }
 
+picnic_params_t PICNIC_CALLING_CONVENTION
+picnic_get_private_key_param(const picnic_privatekey_t* privatekey) {
+  if (!privatekey) {
+    return PARAMETER_SET_INVALID;
+  }
+
+  const picnic_params_t param = privatekey->data[0];
+  return picnic_instance_get(param) ? param : PARAMETER_SET_INVALID;
+}
+
+picnic_params_t PICNIC_CALLING_CONVENTION
+picnic_get_public_key_param(const picnic_publickey_t* publickey) {
+  if (!publickey) {
+    return PARAMETER_SET_INVALID;
+  }
+
+  const picnic_params_t param = publickey->data[0];
+  return picnic_instance_get(param) ? param : PARAMETER_SET_INVALID;
+}
+
 /* unused
 #if defined(PICNIC_STATIC) && defined(WITH_ZKBPP)
 void picnic_visualize_keys(FILE* out, const picnic_privatekey_t* sk, const picnic_publickey_t* pk) {
