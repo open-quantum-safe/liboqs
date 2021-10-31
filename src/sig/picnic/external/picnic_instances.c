@@ -117,7 +117,7 @@ static bool create_instance(picnic_instance_t* pp) {
   }
 #endif
 
-  pp->impls.lowmc                 = lowmc_get_implementation(&pp->lowmc);
+  pp->impls.lowmc = lowmc_get_implementation(&pp->lowmc);
 #if defined(WITH_ZKBPP)
   if ((pp->params >= Picnic_L1_FS && pp->params <= Picnic_L5_UR) ||
       (pp->params >= Picnic_L1_full && pp->params <= Picnic_L5_full)) {

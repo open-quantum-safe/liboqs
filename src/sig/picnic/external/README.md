@@ -88,7 +88,9 @@ If the the cross-built DLLs are intended to be used in a Visual Studio project, 
 EXPORTS
 picnic_clear_private_key
 picnic_get_param_name
+picnic_get_private_key_param
 picnic_get_private_key_size
+picnic_get_public_key_param
 picnic_get_public_key_size
 picnic_keygen
 picnic_read_private_key

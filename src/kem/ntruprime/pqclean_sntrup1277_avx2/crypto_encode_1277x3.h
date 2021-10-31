@@ -1,0 +1,10 @@
+#ifndef PQCLEAN_SNTRUP1277_AVX2_CRYPTO_ENCODE_1277X3_H
+#define PQCLEAN_SNTRUP1277_AVX2_CRYPTO_ENCODE_1277X3_H
+
+#include <stdint.h>
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_encode_1277x3_STRBYTES 320
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_encode_1277x3_ITEMS 1277
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_encode_1277x3_ITEMBYTES 1
+
+void PQCLEAN_SNTRUP1277_AVX2_crypto_encode_1277x3(unsigned char *s, const void *v);
+#endif
