@@ -205,6 +205,9 @@ def load_instructions():
             # working on updating scheme_paths to be attached to name rather than default and extras
             # HERE
             scheme['metadata'] = metadata
+            for impl in scheme['metadata']['implementations']:
+                if family['name'] == 'classic_mceliece':
+                    print(impl['upstream']['name'])
             if not 'scheme_paths' in scheme:
                 scheme['scheme_paths'] = {}
                 for imp in scheme['metadata']['implementations']:
@@ -609,7 +612,7 @@ def process_families(instructions, basedir, with_kat, with_generator):
                 family,
                 None,
             )
-
+            print(family['name'])
             generator(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
                 os.path.join('src', family['type'], 'family', 'CMakeLists.txt'),

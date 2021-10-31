@@ -12,10 +12,10 @@ endif()
 {% if platform['operating_systems'] %}endif()
 {% endif -%}
             {%- endfor -%}
-            {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'ARM64_V8' %} {# TODO: Do we want to doctor pqclean meta.yml to match our ARM64_V8 naming convetion? #}
+            {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'ARM64_V8' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
 {% endif -%}
-if(OQS_DIST_ARM64_V8_BUILD OR ({% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}))
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS{% for flag in platform['required_flags'] -%} {%- if not loop.last %} AND {% endif -%}OQS_USE_ARM_{{ flag|upper }}_INSTRUCTIONS {%- endfor -%}))
     cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
 endif()
 {% if platform['operating_systems'] %}endif()
@@ -39,10 +39,10 @@ endif()
 {% if platform['operating_systems'] %}endif()
 {% endif -%}
             {%- endfor -%}
-            {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'ARM64_V8' %} {# TODO change to ARM64_V8? #}
+            {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'ARM64_V8' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
 {% endif -%}
-if(OQS_DIST_ARM64_V8_BUILD OR ({% for flag in platform['required_flags'] -%} OQS_USE_{{ flag|upper }}_INSTRUCTIONS {%- if not loop.last %} AND {% endif -%}{%- endfor -%}))
+if(OQS_DIST_ARM64_V8_BUILD (OR OQS_USE_ARM_NEON_INSTRUCTIONS{% for flag in platform['required_flags'] -%} {%- if not loop.last %} AND {% endif -%}OQS_USE_ARM_{{ flag|upper }}_INSTRUCTIONS {%- endfor -%}))
     cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
 endif()
 {% if platform['operating_systems'] %}endif()

@@ -1,0 +1,232 @@
+From 3a86145c7ec6ba72713c422bc40d686626405657 Mon Sep 17 00:00:00 2001
+From: Martyrshot <Martyrshot@gmail.com>
+Date: Sun, 31 Oct 2021 18:23:51 +0000
+Subject: [PATCH] shimming in pqclean's aarch64 optimized kyber implementations
+
+---
+ crypto_kem/kyber1024/aarch64/fips202x2.h       | 8 ++------
+ crypto_kem/kyber1024/aarch64/symmetric-shake.c | 4 ++--
+ crypto_kem/kyber1024/aarch64/symmetric.h       | 4 ++--
+ crypto_kem/kyber512/aarch64/fips202x2.h        | 7 ++-----
+ crypto_kem/kyber512/aarch64/symmetric-shake.c  | 4 ++--
+ crypto_kem/kyber512/aarch64/symmetric.h        | 4 ++--
+ crypto_kem/kyber768/aarch64/fips202x2.h        | 8 ++------
+ crypto_kem/kyber768/aarch64/indcpa.c           | 3 ++-
+ crypto_kem/kyber768/aarch64/symmetric-shake.c  | 4 ++--
+ crypto_kem/kyber768/aarch64/symmetric.h        | 5 +++--
+ 10 files changed, 21 insertions(+), 30 deletions(-)
+
+diff --git a/crypto_kem/kyber1024/aarch64/fips202x2.h b/crypto_kem/kyber1024/aarch64/fips202x2.h
+index 3b9dd97..7cffd7b 100644
+--- a/crypto_kem/kyber1024/aarch64/fips202x2.h
++++ b/crypto_kem/kyber1024/aarch64/fips202x2.h
+@@ -5,13 +5,9 @@
+ #include <arm_neon.h>
+ #include <stddef.h>
+ 
+-typedef uint64x2_t v128;
+-
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
++#include "fips202.h"
+ 
++typedef uint64x2_t v128;
+ 
+ typedef struct {
+     v128 s[25];
+diff --git a/crypto_kem/kyber1024/aarch64/symmetric-shake.c b/crypto_kem/kyber1024/aarch64/symmetric-shake.c
+index 72059d4..9311d5d 100644
+--- a/crypto_kem/kyber1024/aarch64/symmetric-shake.c
++++ b/crypto_kem/kyber1024/aarch64/symmetric-shake.c
+@@ -15,7 +15,7 @@
+ *              - uint8_t i: additional byte of input
+ *              - uint8_t j: additional byte of input
+ **************************************************/
+-void kyber_shake128_absorb(shake128ctx *state,
++void kyber_shake128_absorb(shake128incctx *state,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y) {
+@@ -25,7 +25,7 @@ void kyber_shake128_absorb(shake128ctx *state,
+     extseed[KYBER_SYMBYTES + 0] = x;
+     extseed[KYBER_SYMBYTES + 1] = y;
+ 
+-    shake128_absorb(state, extseed, sizeof(extseed));
++    shake128_absorb_once(state, extseed, sizeof(extseed));
+ }
+ 
+ /*************************************************
+diff --git a/crypto_kem/kyber1024/aarch64/symmetric.h b/crypto_kem/kyber1024/aarch64/symmetric.h
+index 471995c..ac0a783 100644
+--- a/crypto_kem/kyber1024/aarch64/symmetric.h
++++ b/crypto_kem/kyber1024/aarch64/symmetric.h
+@@ -8,12 +8,12 @@
+ 
+ #include "fips202.h"
+ 
+-typedef shake128ctx xof_state;
++typedef shake128incctx xof_state;
+ 
+ 
+ 
+ #define kyber_shake128_absorb KYBER_NAMESPACE(kyber_shake128_absorb)
+-void kyber_shake128_absorb(shake128ctx *s,
++void kyber_shake128_absorb(shake128incctx *s,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y);
+diff --git a/crypto_kem/kyber512/aarch64/fips202x2.h b/crypto_kem/kyber512/aarch64/fips202x2.h
+index 3b9dd97..426988d 100644
+--- a/crypto_kem/kyber512/aarch64/fips202x2.h
++++ b/crypto_kem/kyber512/aarch64/fips202x2.h
+@@ -5,12 +5,9 @@
+ #include <arm_neon.h>
+ #include <stddef.h>
+ 
+-typedef uint64x2_t v128;
++#include "fips202.h"
+ 
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
++typedef uint64x2_t v128;
+ 
+ 
+ typedef struct {
+diff --git a/crypto_kem/kyber512/aarch64/symmetric-shake.c b/crypto_kem/kyber512/aarch64/symmetric-shake.c
+index 72059d4..9311d5d 100644
+--- a/crypto_kem/kyber512/aarch64/symmetric-shake.c
++++ b/crypto_kem/kyber512/aarch64/symmetric-shake.c
+@@ -15,7 +15,7 @@
+ *              - uint8_t i: additional byte of input
+ *              - uint8_t j: additional byte of input
+ **************************************************/
+-void kyber_shake128_absorb(shake128ctx *state,
++void kyber_shake128_absorb(shake128incctx *state,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y) {
+@@ -25,7 +25,7 @@ void kyber_shake128_absorb(shake128ctx *state,
+     extseed[KYBER_SYMBYTES + 0] = x;
+     extseed[KYBER_SYMBYTES + 1] = y;
+ 
+-    shake128_absorb(state, extseed, sizeof(extseed));
++    shake128_absorb_once(state, extseed, sizeof(extseed));
+ }
+ 
+ /*************************************************
+diff --git a/crypto_kem/kyber512/aarch64/symmetric.h b/crypto_kem/kyber512/aarch64/symmetric.h
+index 471995c..ac0a783 100644
+--- a/crypto_kem/kyber512/aarch64/symmetric.h
++++ b/crypto_kem/kyber512/aarch64/symmetric.h
+@@ -8,12 +8,12 @@
+ 
+ #include "fips202.h"
+ 
+-typedef shake128ctx xof_state;
++typedef shake128incctx xof_state;
+ 
+ 
+ 
+ #define kyber_shake128_absorb KYBER_NAMESPACE(kyber_shake128_absorb)
+-void kyber_shake128_absorb(shake128ctx *s,
++void kyber_shake128_absorb(shake128incctx *s,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y);
+diff --git a/crypto_kem/kyber768/aarch64/fips202x2.h b/crypto_kem/kyber768/aarch64/fips202x2.h
+index 3b9dd97..7cffd7b 100644
+--- a/crypto_kem/kyber768/aarch64/fips202x2.h
++++ b/crypto_kem/kyber768/aarch64/fips202x2.h
+@@ -5,13 +5,9 @@
+ #include <arm_neon.h>
+ #include <stddef.h>
+ 
+-typedef uint64x2_t v128;
+-
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
++#include "fips202.h"
+ 
++typedef uint64x2_t v128;
+ 
+ typedef struct {
+     v128 s[25];
+diff --git a/crypto_kem/kyber768/aarch64/indcpa.c b/crypto_kem/kyber768/aarch64/indcpa.c
+index 24887e2..c273dc4 100644
+--- a/crypto_kem/kyber768/aarch64/indcpa.c
++++ b/crypto_kem/kyber768/aarch64/indcpa.c
+@@ -135,6 +135,7 @@ void gen_matrix(int16_t a[KYBER_K][KYBER_K][KYBER_N], const uint8_t seed[KYBER_S
+     int16_t *s1 = NULL, *s2 = NULL;
+     unsigned int x1, x2, y1, y2;
+     xof_state c_state;
++    xof_init(&c_state);
+ 
+     for (unsigned int j = 0; j < KYBER_K * KYBER_K - 1; j += 2) {
+         switch (j) {
+@@ -222,7 +223,7 @@ void gen_matrix(int16_t a[KYBER_K][KYBER_K][KYBER_N], const uint8_t seed[KYBER_S
+         buflen = off + XOF_BLOCKBYTES;
+         ctr0 += rej_uniform(&(a[2][2][0]) + ctr0, KYBER_N - ctr0, buf0, buflen);
+     }
+-    shake128_ctx_release(&c_state);
++    shake128_inc_ctx_release(&c_state);
+ 
+ }
+ 
+diff --git a/crypto_kem/kyber768/aarch64/symmetric-shake.c b/crypto_kem/kyber768/aarch64/symmetric-shake.c
+index 72059d4..9311d5d 100644
+--- a/crypto_kem/kyber768/aarch64/symmetric-shake.c
++++ b/crypto_kem/kyber768/aarch64/symmetric-shake.c
+@@ -15,7 +15,7 @@
+ *              - uint8_t i: additional byte of input
+ *              - uint8_t j: additional byte of input
+ **************************************************/
+-void kyber_shake128_absorb(shake128ctx *state,
++void kyber_shake128_absorb(shake128incctx *state,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y) {
+@@ -25,7 +25,7 @@ void kyber_shake128_absorb(shake128ctx *state,
+     extseed[KYBER_SYMBYTES + 0] = x;
+     extseed[KYBER_SYMBYTES + 1] = y;
+ 
+-    shake128_absorb(state, extseed, sizeof(extseed));
++    shake128_absorb_once(state, extseed, sizeof(extseed));
+ }
+ 
+ /*************************************************
+diff --git a/crypto_kem/kyber768/aarch64/symmetric.h b/crypto_kem/kyber768/aarch64/symmetric.h
+index 471995c..7da2246 100644
+--- a/crypto_kem/kyber768/aarch64/symmetric.h
++++ b/crypto_kem/kyber768/aarch64/symmetric.h
+@@ -8,12 +8,12 @@
+ 
+ #include "fips202.h"
+ 
+-typedef shake128ctx xof_state;
++typedef shake128incctx xof_state;
+ 
+ 
+ 
+ #define kyber_shake128_absorb KYBER_NAMESPACE(kyber_shake128_absorb)
+-void kyber_shake128_absorb(shake128ctx *s,
++void kyber_shake128_absorb(shake128incctx *s,
+                            const uint8_t seed[KYBER_SYMBYTES],
+                            uint8_t x,
+                            uint8_t y);
+@@ -25,6 +25,7 @@ void kyber_shake256_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYM
+ 
+ #define hash_h(OUT, IN, INBYTES) sha3_256(OUT, IN, INBYTES)
+ #define hash_g(OUT, IN, INBYTES) sha3_512(OUT, IN, INBYTES)
++#define xof_init(STATE) shake128_inc_init(STATE)
+ #define xof_absorb(STATE, SEED, X, Y) kyber_shake128_absorb(STATE, SEED, X, Y)
+ #define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) shake128_squeezeblocks(OUT, OUTBLOCKS, STATE)
+ #define prf(OUT, OUTBYTES, KEY, NONCE) kyber_shake256_prf(OUT, OUTBYTES, KEY, NONCE)
+-- 
+2.25.1
+
