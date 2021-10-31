@@ -25,6 +25,21 @@
 #include "picnic3_tree.h"
 #include "picnic3_types.h"
 
+/* The smallest tree has numNodes = 31, so we need at least 64 bit to represent nodes and the flags.
+ * On 32 bit platforms, it might be more efficient to work with 32-bit words, though. At least on
+ * 64 bit Linux, uint_fast32_t is 64 bits wide. */
+typedef uint_fast32_t bitset_word_t;
+#define BITSET_WORD_C(v) ((bitset_word_t)(v))
+
+static inline bitset_word_t get_bit(const bitset_word_t* array, size_t index) {
+  return array[index / (sizeof(bitset_word_t) * 8)] >> (index % (sizeof(bitset_word_t) * 8)) & 0x1;
+}
+
+static inline void set_bit(bitset_word_t* array, size_t index) {
+  array[index / (sizeof(bitset_word_t) * 8)] |= BITSET_WORD_C(1)
+                                                << (index % (sizeof(bitset_word_t) * 8));
+}
+
 static int contains(size_t* list, size_t len, size_t value) {
   for (size_t i = 0; i < len; i++) {
     if (list[i] == value) {
@@ -34,14 +49,25 @@ static int contains(size_t* list, size_t len, size_t value) {
   return 0;
 }
 
-static int exists(tree_t* tree, size_t i) {
+static bitset_word_t exists(tree_t* tree, size_t i) {
   if (i >= tree->numNodes) {
     return 0;
   }
-  if (tree->exists[i]) {
-    return 1;
-  }
-  return 0;
+  return get_bit(tree->haveNodeExists, 2 * i);
+}
+
+static bitset_word_t haveNode(tree_t* tree, size_t i) {
+  return get_bit(tree->haveNodeExists, 2 * i + 1);
+}
+
+static void markNode(tree_t* tree, size_t i) {
+  set_bit(tree->haveNodeExists, 2 * i + 1);
+}
+
+static bool existsNotHaveNode(tree_t* tree, size_t i) {
+  return (tree->haveNodeExists[2 * i / (sizeof(bitset_word_t) * 8)] >>
+              (2 * i % (sizeof(bitset_word_t) * 8)) &
+          0x3) == 0x01;
 }
 
 tree_t* createTree(size_t numLeaves, size_t dataSize) {
@@ -53,36 +79,30 @@ tree_t* createTree(size_t numLeaves, size_t dataSize) {
       ((1 << (tree->depth - 1)) - numLeaves); /* Num nodes in complete - number of missing leaves */
   tree->numLeaves = numLeaves;
   tree->dataSize  = dataSize;
-  tree->nodes     = malloc(tree->numNodes * sizeof(uint8_t*));
-
-  uint8_t* slab = calloc(tree->numNodes, dataSize);
-
-  for (size_t i = 0; i < tree->numNodes; i++) {
-    tree->nodes[i] = slab;
-    slab += dataSize;
-  }
-
-  tree->haveNode = calloc(tree->numNodes, 1);
+  tree->nodes     = calloc(tree->numNodes, dataSize);
 
   /* Depending on the number of leaves, the tree may not be complete */
-  tree->exists = calloc(tree->numNodes, 1);
-  memset(tree->exists + tree->numNodes - tree->numLeaves, 1, tree->numLeaves); /* Set leaves */
+  tree->haveNodeExists =
+      calloc((2 * tree->numNodes + (sizeof(bitset_word_t) * 8) - 1) / (sizeof(bitset_word_t) * 8),
+             sizeof(bitset_word_t));
+  /* Set leaves */
+  for (size_t i = 0; i < tree->numLeaves; ++i) {
+    set_bit(tree->haveNodeExists, 2 * (tree->numNodes - tree->numLeaves + i));
+  }
   for (int i = tree->numNodes - tree->numLeaves; i > 0; i--) {
     if (exists(tree, 2 * i + 1) || exists(tree, 2 * i + 2)) {
-      tree->exists[i] = 1;
+      set_bit(tree->haveNodeExists, 2 * i);
     }
   }
-  tree->exists[0] = 1;
+  set_bit(tree->haveNodeExists, 0);
 
   return tree;
 }
 
 void freeTree(tree_t* tree) {
   if (tree != NULL) {
-    free(tree->nodes[0]);
     free(tree->nodes);
-    free(tree->haveNode);
-    free(tree->exists);
+    free(tree->haveNodeExists);
     free(tree);
   }
 }
@@ -107,14 +127,14 @@ static size_t getParent(size_t node) {
   //return (node - 2) / 2;
 }
 
-uint8_t** getLeaves(tree_t* tree) {
-  return &tree->nodes[tree->numNodes - tree->numLeaves];
+uint8_t* getLeaves(tree_t* tree) {
+  return &tree->nodes[(tree->numNodes - tree->numLeaves) * tree->dataSize];
 }
 
 uint8_t* getLeaf(tree_t* tree, size_t leafIndex) {
   assert(leafIndex < tree->numLeaves);
   size_t firstLeaf = tree->numNodes - tree->numLeaves;
-  return tree->nodes[firstLeaf + leafIndex];
+  return &tree->nodes[(firstLeaf + leafIndex) * tree->dataSize];
 }
 
 static void hashSeed(uint8_t* digest, const uint8_t* inputSeed, uint8_t* salt, uint8_t hashPrefix,
@@ -131,28 +151,33 @@ static void hashSeed(uint8_t* digest, const uint8_t* inputSeed, uint8_t* salt, u
   hash_clear(&ctx);
 }
 
-static void hashSeed_x4(uint8_t** digest, const uint8_t** inputSeed, uint8_t* salt,
+static void hashSeed_x4(uint8_t** digest, const tree_t* tree, uint8_t* salt,
                         uint8_t hashPrefix, size_t repIndex, size_t nodeIndex,
                         const picnic_instance_t* params) {
+  const size_t seed_size = params->seed_size;
+
   hash_context_x4 ctx;
-
   hash_init_prefix_x4(&ctx, params->digest_size, hashPrefix);
-  hash_update_x4(&ctx, inputSeed, params->seed_size);
+  hash_update_x4_4(&ctx, &tree->nodes[nodeIndex * seed_size],
+                   &tree->nodes[(nodeIndex + 1) * seed_size],
+                   &tree->nodes[(nodeIndex + 2) * seed_size],
+                   &tree->nodes[(nodeIndex + 3) * seed_size], seed_size);
 
-  const uint8_t* salts[4] = {salt, salt, salt, salt};
-  hash_update_x4(&ctx, salts, SALT_SIZE);
+  hash_update_x4_1(&ctx, salt, SALT_SIZE);
   hash_update_x4_uint16_le(&ctx, repIndex);
 
   const uint16_t nodes[4] = {nodeIndex, nodeIndex + 1, nodeIndex + 2, nodeIndex + 3};
   hash_update_x4_uint16s_le(&ctx, nodes);
 
   hash_final_x4(&ctx);
-  hash_squeeze_x4(&ctx, digest, 2 * params->seed_size);
+  hash_squeeze_x4(&ctx, digest, 2 * seed_size);
   hash_clear_x4(&ctx);
 }
 
 static void expandSeeds(tree_t* tree, uint8_t* salt, size_t repIndex,
                         const picnic_instance_t* params) {
+  const size_t seed_size = params->seed_size;
+
   uint8_t tmp[4 * 2 * MAX_SEED_SIZE_BYTES];
   uint8_t* tmp_ptr[4] = {&tmp[0], &tmp[2 * MAX_SEED_SIZE_BYTES], &tmp[2 * 2 * MAX_SEED_SIZE_BYTES],
                          &tmp[3 * 2 * MAX_SEED_SIZE_BYTES]};
@@ -162,69 +187,68 @@ static void expandSeeds(tree_t* tree, uint8_t* salt, size_t repIndex,
   size_t lastNonLeaf = getParent(tree->numNodes - 1);
   size_t i           = 0;
   /* expand the first 4 seeds*/
-  for (; i <= MIN(2,lastNonLeaf); i++) {
-    if (!tree->haveNode[i]) {
+  for (; i <= MIN(2, lastNonLeaf); i++) {
+    if (!haveNode(tree, i)) {
       continue;
     }
 
-    hashSeed(tmp, tree->nodes[i], salt, HASH_PREFIX_1, repIndex, i, params);
+    hashSeed(tmp, &tree->nodes[i * seed_size], salt, HASH_PREFIX_1, repIndex, i, params);
 
-    if (!tree->haveNode[2 * i + 1]) {
+    if (!haveNode(tree, 2 * i + 1)) {
       /* left child = H_left(seed_i || salt || t || i) */
-      memcpy(tree->nodes[2 * i + 1], tmp, params->seed_size);
-      tree->haveNode[2 * i + 1] = 1;
+      memcpy(&tree->nodes[(2 * i + 1) * seed_size], tmp, seed_size);
+      markNode(tree, 2 * i + 1);
     }
 
     /* The last non-leaf node will only have a left child when there are an odd number of leaves */
-    if (exists(tree, 2 * i + 2) && !tree->haveNode[2 * i + 2]) {
+    if (existsNotHaveNode(tree, 2 * i + 2)) {
       /* right child = H_right(seed_i || salt || t || i)  */
-      memcpy(tree->nodes[2 * i + 2], tmp + params->seed_size, params->seed_size);
-      tree->haveNode[2 * i + 2] = 1;
+      memcpy(&tree->nodes[(2 * i + 2) * seed_size], tmp + seed_size, seed_size);
+      markNode(tree, 2 * i + 2);
     }
   }
   /* now hash in groups of 4 for faster hashing */
   for (; i <= lastNonLeaf / 4 * 4; i += 4) {
-
-    hashSeed_x4(tmp_ptr, (const uint8_t**) &tree->nodes[i], salt, HASH_PREFIX_1, repIndex, i, params);
+    hashSeed_x4(tmp_ptr, tree, salt, HASH_PREFIX_1, repIndex, i, params);
 
     for (size_t j = i; j < i + 4; j++) {
-      if (!tree->haveNode[j]) {
+      if (!haveNode(tree, j)) {
         continue;
       }
-      if (!tree->haveNode[2 * j + 1]) {
+      if (!haveNode(tree, 2 * j + 1)) {
         /* left child = H_left(seed_i || salt || t || j) */
-        memcpy(tree->nodes[2 * j + 1], tmp_ptr[j-i], params->seed_size);
-        tree->haveNode[2 * j + 1] = 1;
+        memcpy(&tree->nodes[(2 * j + 1) * seed_size], tmp_ptr[j - i], seed_size);
+        markNode(tree, 2 * j + 1);
       }
 
       /* The last non-leaf node will only have a left child when there are an odd number of leaves
        */
-      if (exists(tree, 2 * j + 2) && !tree->haveNode[2 * j + 2]) {
+      if (existsNotHaveNode(tree, 2 * j + 2)) {
         /* right child = H_right(seed_i || salt || t || j)  */
-        memcpy(tree->nodes[2 * j + 2], tmp_ptr[j-i] + params->seed_size, params->seed_size);
-        tree->haveNode[2 * j + 2] = 1;
+        memcpy(&tree->nodes[(2 * j + 2) * seed_size], tmp_ptr[j - i] + seed_size, seed_size);
+        markNode(tree, 2 * j + 2);
       }
     }
   }
   /* handle last few, which are not a multiple of 4 */
   for (; i <= lastNonLeaf; i++) {
-    if (!tree->haveNode[i]) {
+    if (!haveNode(tree, i)) {
       continue;
     }
 
-    hashSeed(tmp, tree->nodes[i], salt, HASH_PREFIX_1, repIndex, i, params);
+    hashSeed(tmp, &tree->nodes[i * seed_size], salt, HASH_PREFIX_1, repIndex, i, params);
 
-    if (!tree->haveNode[2 * i + 1]) {
+    if (!haveNode(tree, 2 * i + 1)) {
       /* left child = H_left(seed_i || salt || t || i) */
-      memcpy(tree->nodes[2 * i + 1], tmp, params->seed_size);
-      tree->haveNode[2 * i + 1] = 1;
+      memcpy(&tree->nodes[(2 * i + 1) * seed_size], tmp, seed_size);
+      markNode(tree, 2 * i + 1);
     }
 
     /* The last non-leaf node will only have a left child when there are an odd number of leaves */
-    if (exists(tree, 2 * i + 2) && !tree->haveNode[2 * i + 2]) {
+    if (existsNotHaveNode(tree, 2 * i + 2)) {
       /* right child = H_right(seed_i || salt || t || i)  */
-      memcpy(tree->nodes[2 * i + 2], tmp + params->seed_size, params->seed_size);
-      tree->haveNode[2 * i + 2] = 1;
+      memcpy(&tree->nodes[(2 * i + 2) * seed_size], tmp + seed_size, seed_size);
+      markNode(tree, 2 * i + 2);
     }
   }
 }
@@ -233,8 +257,8 @@ tree_t* generateSeeds(size_t nSeeds, uint8_t* rootSeed, uint8_t* salt, size_t re
                       const picnic_instance_t* params) {
   tree_t* tree = createTree(nSeeds, params->seed_size);
 
-  memcpy(tree->nodes[0], rootSeed, params->seed_size);
-  tree->haveNode[0] = 1;
+  memcpy(tree->nodes, rootSeed, params->seed_size);
+  markNode(tree, 0);
   expandSeeds(tree, salt, repIndex, params);
 
   return tree;
@@ -362,7 +386,7 @@ size_t revealSeeds(tree_t* tree, uint16_t* hideList, size_t hideListSize, uint8_
       free(revealed);
       return 0;
     }
-    memcpy(output, tree->nodes[revealed[i]], params->seed_size);
+    memcpy(output, &tree->nodes[revealed[i] * params->seed_size], params->seed_size);
     output += params->seed_size;
   }
 
@@ -388,8 +412,8 @@ int reconstructSeeds(tree_t* tree, uint16_t* hideList, size_t hideListSize, uint
       ret = -1;
       goto Exit;
     }
-    memcpy(tree->nodes[revealed[i]], input, params->seed_size);
-    tree->haveNode[revealed[i]] = 1;
+    memcpy(&tree->nodes[revealed[i] * params->seed_size], input, params->seed_size);
+    markNode(tree, revealed[i]);
     input += params->seed_size;
   }
 
@@ -408,16 +432,16 @@ static void computeParentHash(tree_t* tree, size_t child, uint8_t* salt,
 
   size_t parent = getParent(child);
 
-  if (tree->haveNode[parent]) {
+  if (haveNode(tree, parent)) {
     return;
   }
 
   /* Compute the hash for parent, if we have everything */
-  if (!tree->haveNode[2 * parent + 1]) {
+  if (!haveNode(tree, 2 * parent + 1)) {
     return;
   }
 
-  if (exists(tree, 2 * parent + 2) && !tree->haveNode[2 * parent + 2]) {
+  if (existsNotHaveNode(tree, 2 * parent + 2)) {
     return;
   }
 
@@ -425,18 +449,18 @@ static void computeParentHash(tree_t* tree, size_t child, uint8_t* salt,
   hash_context ctx;
 
   hash_init_prefix(&ctx, params->digest_size, HASH_PREFIX_3);
-  hash_update(&ctx, tree->nodes[2 * parent + 1], params->digest_size);
+  hash_update(&ctx, &tree->nodes[(2 * parent + 1) * params->digest_size], params->digest_size);
   if (hasRightChild(tree, parent)) {
     /* One node may not have a right child when there's an odd number of leaves */
-    hash_update(&ctx, tree->nodes[2 * parent + 2], params->digest_size);
+    hash_update(&ctx, &tree->nodes[(2 * parent + 2) * params->digest_size], params->digest_size);
   }
 
   hash_update(&ctx, salt, SALT_SIZE);
   hash_update_uint16_le(&ctx, parent);
   hash_final(&ctx);
-  hash_squeeze(&ctx, tree->nodes[parent], params->digest_size);
+  hash_squeeze(&ctx, &tree->nodes[parent * params->digest_size], params->digest_size);
   hash_clear(&ctx);
-  tree->haveNode[parent] = 1;
+  markNode(tree, parent);
 }
 
 /* Create a Merkle tree by hashing up all nodes.
@@ -449,8 +473,8 @@ void buildMerkleTree(tree_t* tree, uint8_t** leafData, uint8_t* salt,
    * hashed, according to the spec. */
   for (size_t i = 0; i < tree->numLeaves; i++) {
     if (leafData[i] != NULL) {
-      memcpy(tree->nodes[firstLeaf + i], leafData[i], tree->dataSize);
-      tree->haveNode[firstLeaf + i] = 1;
+      memcpy(&tree->nodes[(firstLeaf + i) * tree->dataSize], leafData[i], tree->dataSize);
+      markNode(tree, firstLeaf + i);
     }
   }
   /* Starting at the leaves, work up the tree, computing the hashes for intermediate nodes */
@@ -535,7 +559,7 @@ uint8_t* openMerkleTree(tree_t* tree, uint16_t* missingLeaves, size_t missingLea
   uint8_t* outputBase = output;
 
   for (size_t i = 0; i < revealedSize; i++) {
-    memcpy(output, tree->nodes[revealed[i]], tree->dataSize);
+    memcpy(output, &tree->nodes[revealed[i] * tree->dataSize], tree->dataSize);
     output += tree->dataSize;
   }
 
@@ -567,9 +591,9 @@ int addMerkleNodes(tree_t* tree, uint16_t* missingLeaves, size_t missingLeavesSi
       ret = -1;
       goto Exit;
     }
-    memcpy(tree->nodes[revealed[i]], input, tree->dataSize);
+    memcpy(&tree->nodes[revealed[i] * tree->dataSize], input, tree->dataSize);
     input += tree->dataSize;
-    tree->haveNode[revealed[i]] = 1;
+    markNode(tree, revealed[i]);
   }
 
   if (intLen != 0) {
@@ -593,13 +617,13 @@ int verifyMerkleTree(tree_t* tree, /* uint16_t* missingLeaves, size_t missingLea
    * hashed, according to the spec. */
   for (size_t i = 0; i < tree->numLeaves; i++) {
     if (leafData[i] != NULL) {
-      if (tree->haveNode[firstLeaf + i] == 1) {
+      if (haveNode(tree, firstLeaf + i)) {
         return -1; /* A leaf was assigned from the prover for a node we've recomputed */
       }
 
       if (leafData[i] != NULL) {
-        memcpy(tree->nodes[firstLeaf + i], leafData[i], tree->dataSize);
-        tree->haveNode[firstLeaf + i] = 1;
+        memcpy(&tree->nodes[(firstLeaf + i) * tree->dataSize], leafData[i], tree->dataSize);
+        markNode(tree, firstLeaf + i);
       }
     }
   }
@@ -611,7 +635,7 @@ int verifyMerkleTree(tree_t* tree, /* uint16_t* missingLeaves, size_t missingLea
   }
 
   /* Fail if the root was not computed. */
-  if (!tree->haveNode[0]) {
+  if (!haveNode(tree, 0)) {
     return -1;
   }
 

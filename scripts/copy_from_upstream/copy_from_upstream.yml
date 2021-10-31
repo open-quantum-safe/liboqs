@@ -162,6 +162,10 @@ kems:
         pqclean_scheme: ntrulpr857
         pretty_name_full: ntrulpr857
       -
+        scheme: ntrulpr1277
+        pqclean_scheme: ntrulpr1277
+        pretty_name_full: ntrulpr1277
+      -
         scheme: sntrup653
         pqclean_scheme: sntrup653
         pretty_name_full: sntrup653
@@ -173,6 +177,10 @@ kems:
         scheme: sntrup857
         pqclean_scheme: sntrup857
         pretty_name_full: sntrup857
+      -
+        scheme: sntrup1277
+        pqclean_scheme: sntrup1277
+        pretty_name_full: sntrup1277
   -
     name: saber
     default_implementation: clean

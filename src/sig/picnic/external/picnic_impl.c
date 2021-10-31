@@ -821,8 +821,8 @@ static int sig_proof_to_char_array(const picnic_instance_t* pp, const sig_proof_
   const size_t seed_size      = pp->seed_size;
   const size_t challenge_size = pp->collapsed_challenge_size;
   const size_t digest_size    = pp->digest_size;
-  const size_t view_size        = pp->view_size;
-  const size_t input_size       = pp->input_size;
+  const size_t view_size      = pp->view_size;
+  const size_t input_size     = pp->input_size;
 #if defined(WITH_UNRUH)
   const size_t unruh_with_input_bytes_size    = pp->unruh_with_input_bytes_size;
   const size_t unruh_without_input_bytes_size = pp->unruh_without_input_bytes_size;
@@ -1097,8 +1097,7 @@ int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint
         clear_padding_bits(&round[round_offset].input_shares[j][input_size - 1], diff);
         mzd_from_char_array(in_out_shares.s[j], round[round_offset].input_shares[j], input_size);
       }
-      mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1],
-                context->m_key);
+      mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1], context->m_key);
       mzd_to_char_array(round[round_offset].input_shares[SC_PROOF - 1],
                         in_out_shares.s[SC_PROOF - 1], input_size);
 
@@ -1143,8 +1142,7 @@ int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint
         clear_padding_bits(&round->input_shares[j][input_size - 1], diff);
         mzd_from_char_array(in_out_shares.s[j], round->input_shares[j], input_size);
       }
-      mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1],
-                context->m_key);
+      mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1], context->m_key);
       mzd_to_char_array(round->input_shares[SC_PROOF - 1], in_out_shares.s[SC_PROOF - 1],
                         input_size);
 
@@ -1294,8 +1292,7 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
         lowmc_verify_impl(context->m_plaintext, views, &in_out_shares, rvec, a_i);
         compress_view(helper[round_offset].round->communicated_bits[0], pp, views, 0);
 
-        mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1],
-                  context->m_key);
+        mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1], context->m_key);
         // recompute commitments
         for (unsigned int j = 0; j < SC_VERIFY; ++j) {
           mzd_to_char_array(helper[round_offset].round->output_shares[j], in_out_shares.s[j],
@@ -1362,8 +1359,7 @@ int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, co
       lowmc_verify_impl(context->m_plaintext, views, &in_out_shares, rvec, a_i);
       compress_view(helper->round->communicated_bits[0], pp, views, 0);
 
-      mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1],
-                context->m_key);
+      mzd_share(in_out_shares.s[2], in_out_shares.s[0], in_out_shares.s[1], context->m_key);
       // recompute commitments
       for (unsigned int j = 0; j < SC_VERIFY; ++j) {
         mzd_to_char_array(helper->round->output_shares[j], in_out_shares.s[j], output_size);
