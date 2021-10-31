@@ -124,7 +124,6 @@ def load_instructions():
         if 'patches' in upstream:
             for patch in upstream['patches']:
                 patch_file = os.path.join('patches', patch)
-                # TODO fix whitespace=fix. I cannot get my patch to apply... I've manually checked whitespace and can't figure out the issue to save my life
                 shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'apply', '--whitespace=fix', '--directory', work_dir, patch_file])
                 # Make a commit in the temporary repo for each of our patches.
                 # Helpful when upstream changes and one of our patches cannot be applied.
@@ -177,7 +176,7 @@ def load_instructions():
                 scheme['kem_meta_paths']['default'] = os.path.join('repos', scheme['upstream_location'],
                                                        upstreams[scheme['upstream_location']][
                                                            'kem_meta_path'].format_map(scheme))
-                if 'arch_specific_upstream_locations' in family: #TODO maybe move this up?
+                if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['kem_meta_paths']:
                         scheme['kem_meta_paths']['extras'] = {}
                         
@@ -186,7 +185,6 @@ def load_instructions():
                         scheme['kem_meta_paths']['extras'][arch] = os.path.join('repos', location,
                                                                upstreams[location]['kem_meta_path'].format_map(scheme))
             metadata = {}
-            # TODO, this is going to need a serious rewrite to depend on name not arch...
             if not 'metadata' in scheme:
                 metadata = yaml.safe_load(file_get_contents(scheme['kem_meta_paths']['default']))
                 for imp in metadata['implementations']:
@@ -199,15 +197,7 @@ def load_instructions():
                                 imp['upstream'] = upstreams[family['arch_specific_upstream_locations'][arch]]
                                 metadata['implementations'].append(imp)
                                 break
-            #scheme['metadata'] = yaml.safe_load(
-            #    file_get_contents(scheme['kem_meta_paths'][0]))
-            # HERE
-            # working on updating scheme_paths to be attached to name rather than default and extras
-            # HERE
             scheme['metadata'] = metadata
-            for impl in scheme['metadata']['implementations']:
-                if family['name'] == 'classic_mceliece':
-                    print(impl['upstream']['name'])
             if not 'scheme_paths' in scheme:
                 scheme['scheme_paths'] = {}
                 for imp in scheme['metadata']['implementations']:
@@ -215,7 +205,7 @@ def load_instructions():
                     location = imp['upstream']['kem_scheme_path']
                     scheme['scheme_paths'][imp_name] = os.path.join('repos', scheme['upstream_location'],
                                                          location.format_map(scheme))
-                if 'arch_specific_upstream_locations' in family: #TODO maybe move this up?
+                if 'arch_specific_upstream_locations' in family:
                     # This is to override any implememtations provided by the default upstream that 
                     # are also specified specifically
                     for arch in family['arch_specific_upstream_locations']:
@@ -225,10 +215,7 @@ def load_instructions():
                     for arch in family['arch_specific_upstream_locations']:
                         location = family['arch_specific_upstream_locations'][arch]
                         if arch in scheme['scheme_paths']:
-                            # TODO might be a bug double adding here. For not just continue and clean up later
-                            print('++++++++++++++ ' + str(scheme['scheme_paths']))
-                            continue
-                            #raise RuntimeError("Found duplicate arch {} in scheme {}".format(arch, scheme))
+                            raise RuntimeError("Found duplicate arch {} in scheme {}".format(arch, scheme))
                         scheme['scheme_paths'][arch] = (os.path.join('repos', location,
                                                                     upstreams[location]['kem_scheme_path'].format_map(scheme)))
             scheme['metadata']['ind_cca'] = 'true' if (
@@ -254,7 +241,7 @@ def load_instructions():
                             family['common_deps_usedby'][cdep_name] = [{'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']}]
                         else:
                             family['common_deps_usedby'][cdep_name].append({'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']})
-    # TODO add arch specific flags to sigs, as did for kems
+    # TODO *should* work, but sigs with multiple upstreams is not supported
     for family in instructions['sigs']:
         family['type'] = 'sig'
         family['pqclean_type'] = 'sign'
@@ -277,7 +264,7 @@ def load_instructions():
                 scheme['sig_meta_paths']['default'] = os.path.join('repos', scheme['upstream_location'],
                                                        upstreams[scheme['upstream_location']][
                                                            'sig_meta_path'].format_map(scheme))
-                if 'arch_specific_upstream_locations' in family: #TODO maybe move this up?
+                if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['kem_meta_paths']:
                         scheme['sig_meta_paths']['extras'] = {}
                         
@@ -286,7 +273,6 @@ def load_instructions():
                         scheme['sig_meta_paths']['extras'][arch] = os.path.join('repos', location,
                                                                upstreams[location]['sig_meta_path'].format_map(scheme))
             metadata = {}
-            # TODO, this is going to need a serious rewrite to depend on name not arch...
             if not 'metadata' in scheme:
                 metadata = yaml.safe_load(file_get_contents(scheme['sig_meta_paths']['default']))
                 for imp in metadata['implementations']:
@@ -312,7 +298,7 @@ def load_instructions():
                     location = imp['upstream']['sig_scheme_path']
                     scheme['scheme_paths'][imp_name] = os.path.join('repos', scheme['upstream_location'],
                                                          location.format_map(scheme))
-                if 'arch_specific_upstream_locations' in family: #TODO maybe move this up?
+                if 'arch_specific_upstream_locations' in family:
                     # This is to override any implememtations provided by the default upstream that 
                     # are also specified specifically
                     for arch in family['arch_specific_upstream_locations']:
@@ -322,10 +308,7 @@ def load_instructions():
                     for arch in family['arch_specific_upstream_locations']:
                         location = family['arch_specific_upstream_locations'][arch]
                         if arch in scheme['scheme_paths']:
-                            # TODO might be a bug double adding here. For not just continue and clean up later
-                            print('++++++++++++++ ' + str(scheme['scheme_paths']))
-                            continue
-                            #raise RuntimeError("Found duplicate arch {} in scheme {}".format(arch, scheme))
+                            raise RuntimeError("Found duplicate arch {} in scheme {}".format(arch, scheme))
                         scheme['scheme_paths'][arch] = (os.path.join('repos', location,
                                                                     upstreams[location]['sig_scheme_path'].format_map(scheme)))
             scheme['metadata']['euf_cma'] = 'true'
@@ -351,51 +334,6 @@ def load_instructions():
                         else:
                             family['common_deps_usedby'][cdep_name].append({'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']})
 
-    """
-        for scheme in family['schemes']:
-            if not 'upstream_location' in scheme:
-                scheme['upstream_location'] = family['upstream_location']
-            if not 'git_branch' in scheme:
-                scheme['git_branch'] = upstreams[scheme['upstream_location']]['git_branch']
-            if not 'git_commit' in scheme:
-                scheme['git_commit'] = upstreams[scheme['upstream_location']]['git_commit']
-            if not 'git_url' in scheme:
-                scheme['git_url'] = upstreams[scheme['upstream_location']]['git_url']
-            # upstream_check(scheme)
-            if not 'sig_meta_path' in scheme:
-                scheme['sig_meta_path'] = os.path.join('repos', scheme['upstream_location'],
-                                                       upstreams[scheme['upstream_location']][
-                                                           'sig_meta_path'].format_map(scheme))
-            if not 'scheme_path' in scheme:
-                scheme['scheme_path'] = os.path.join('repos', scheme['upstream_location'],
-                                                     upstreams[scheme['upstream_location']][
-                                                         'sig_scheme_path'].format_map(scheme))
-            if not 'metadata' in scheme:
-                scheme['metadata'] = yaml.safe_load(
-                    file_get_contents(scheme['sig_meta_path']))
-            # TODO: can we be sure this is always the case?
-            scheme['metadata']['euf_cma'] = 'true'
-            scheme['pqclean_scheme_c'] = scheme['pqclean_scheme'].replace('-', '')
-            scheme['scheme_c'] = scheme['scheme'].replace('-', '')
-            scheme['default_implementation'] = family['default_implementation']
-
-            for impl in scheme['metadata']['implementations']:
-                if 'common_dep' in impl:
-                    cdeps_names = impl['common_dep'].split(" ")
-                    sname = scheme['pretty_name_full']
-                    uloc = scheme['upstream_location']
-                    for cdep_name in cdeps_names:
-                        cdep = upstreams[uloc]['commons'][cdep_name]
-                        if 'required_flags' in cdep:
-                            family['all_required_flags'].update(cdep['required_flags'])
-                        if not 'cdep_path' in cdep:
-                            cdep['cdep_path'] = scheme['scheme_path']
-                        if not cdep['name'] in family['common_deps_usedby']:
-                            family['common_deps'].append(cdep)
-                            family['common_deps_usedby'][cdep_name] = [{'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']}]
-                        else:
-                            family['common_deps_usedby'][cdep_name].append({'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']})
-    """
     return instructions
 
 # Copy over all files for a given impl in a family using scheme
@@ -473,7 +411,6 @@ def handle_implementation(impl, family, scheme, dst_basedir):
             of = i['folder_name']
         else:
             of = impl
-        # HERE TODO BROKEN
         origfolder = os.path.join(scheme['scheme_paths'][impl], of)
         upstream_location = i['upstream']['name']
         shutil.rmtree(os.path.join(dst_basedir, 'src', family['type'], family['name'],
@@ -581,7 +518,7 @@ def process_families(instructions, basedir, with_kat, with_generator):
                             family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:
                         if (impl['name'] != family['default_implementation']):
-                            print("No required flags found for %s (KeyError %s on impl %s)\n" % (
+                            print("No required flags found for %s (KeyError %s on impl %s)" % (
                                 scheme['scheme'], str(ke), impl['name']))
                         pass
 
@@ -612,7 +549,6 @@ def process_families(instructions, basedir, with_kat, with_generator):
                 family,
                 None,
             )
-            print(family['name'])
             generator(
                 os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
                 os.path.join('src', family['type'], 'family', 'CMakeLists.txt'),
@@ -634,11 +570,8 @@ def copy_from_upstream():
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
             kats[t] = json.load(fp)
 
-    print("post instructions")
     instructions = load_instructions()
-    print("post instructions")
     process_families(instructions, os.environ['LIBOQS_DIR'], True, True)
-    print("post process_families")
     replacer('.CMake/alg_support.cmake', instructions, '#####')
     replacer('CMakeLists.txt', instructions, '#####')
     replacer('src/oqsconfig.h.cmake', instructions, '/////')
@@ -648,17 +581,13 @@ def copy_from_upstream():
     replacer('src/sig/sig.c', instructions, '/////')
     replacer('src/sig/sig.h', instructions, '/////')
     replacer('tests/kat_sig.c', instructions, '/////')
-    print("post replacer")
     # Finally store KATS away again
     for t in ["kem", "sig"]:
         with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
             json.dump(kats[t], f, indent=2, sort_keys=True)
-    print("post KATS")
     if not keepdata:
         shutil.rmtree('repos')
-    print("post not keepdata")
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
-    print("post update alg docs")
 
 
 def verify_from_upstream():
@@ -725,15 +654,11 @@ def verify_from_upstream():
     if (differ > 0):
         exit(1)
 
-print("pre-nonupstream")
 non_upstream_lengths['kem'] = count_non_upstream_algs('kem', ['bike', 'frodokem', 'sike'])
 non_upstream_lengths['sig'] = count_non_upstream_algs('sig', ['picnic'])
-print("post-nonupstream")
 
 if args.operation == "copy":
     copy_from_upstream()
-    print("post copy_from_upstream")
 elif args.operation == "verify":
     verify_from_upstream()
 
-print("Post everything...")
