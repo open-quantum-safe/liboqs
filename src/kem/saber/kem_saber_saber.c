@@ -40,12 +40,28 @@ extern int PQCLEAN_SABER_AVX2_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uin
 extern int PQCLEAN_SABER_AVX2_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
 
+#if defined(OQS_ENABLE_KEM_saber_saber_aarch64)
+extern int PQCLEAN_SABER_AARCH64_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+extern int PQCLEAN_SABER_AARCH64_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCLEAN_SABER_AARCH64_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+#endif
+
 OQS_API OQS_STATUS OQS_KEM_saber_saber_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_saber_saber_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SABER_AVX2_crypto_kem_keypair(public_key, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCLEAN_SABER_CLEAN_crypto_kem_keypair(public_key, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_KEM_saber_saber_aarch64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ASIMD)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCLEAN_SABER_AARCH64_crypto_kem_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_SABER_CLEAN_crypto_kem_keypair(public_key, secret_key);
@@ -67,6 +83,16 @@ OQS_API OQS_STATUS OQS_KEM_saber_saber_encaps(uint8_t *ciphertext, uint8_t *shar
 		return (OQS_STATUS) PQCLEAN_SABER_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_KEM_saber_saber_aarch64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ASIMD)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCLEAN_SABER_AARCH64_crypto_kem_enc(ciphertext, shared_secret, public_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCLEAN_SABER_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
+	}
+#endif /* OQS_DIST_BUILD */
 #else
 	return (OQS_STATUS) PQCLEAN_SABER_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
 #endif
@@ -78,6 +104,16 @@ OQS_API OQS_STATUS OQS_KEM_saber_saber_decaps(uint8_t *shared_secret, const uint
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SABER_AVX2_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCLEAN_SABER_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#elif defined(OQS_ENABLE_KEM_saber_saber_aarch64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ASIMD)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCLEAN_SABER_AARCH64_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
 		return (OQS_STATUS) PQCLEAN_SABER_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
