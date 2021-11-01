@@ -207,7 +207,7 @@ def load_instructions():
                                                          location.format_map(scheme))
                 if 'arch_specific_upstream_locations' in family:
                     # This is to override any implememtations provided by the default upstream that 
-                    # are also specified specifically
+                    # are also specifically specified
                     for arch in family['arch_specific_upstream_locations']:
                         if arch in scheme['scheme_paths']:
                             del scheme['scheme_paths'][arch]
@@ -233,15 +233,13 @@ def load_instructions():
                         if 'required_flags' in cdep:
                             family['all_required_flags'].update(cdep['required_flags'])
                         if not 'cdep_path' in cdep:
-                            # TODO
-                            #this is not portable... need to figure out a better way to handle this
-                            cdep['cdep_path'] = scheme['scheme_paths'][family['default_implementation']]
+                            cdep['cdep_path'] = scheme['scheme_paths'][impl['name']]
                         if not cdep['name'] in family['common_deps_usedby']:
                             family['common_deps'].append(cdep)
                             family['common_deps_usedby'][cdep_name] = [{'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']}]
                         else:
                             family['common_deps_usedby'][cdep_name].append({'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']})
-    # TODO *should* work, but sigs with multiple upstreams is not supported
+    # TODO *should* work, but sigs with multiple upstreams are currently not supported... Coming soon.
     for family in instructions['sigs']:
         family['type'] = 'sig'
         family['pqclean_type'] = 'sign'
@@ -285,11 +283,6 @@ def load_instructions():
                                 imp['upstream'] = upstreams[family['arch_specific_upstream_locations'][arch]]
                                 metadata['implementations'].append(imp)
                                 break
-            #scheme['metadata'] = yaml.safe_load(
-            #    file_get_contents(scheme['kem_meta_paths'][0]))
-            # HERE
-            # working on updating scheme_paths to be attached to name rather than default and extras
-            # HERE
             scheme['metadata'] = metadata
             if not 'scheme_paths' in scheme:
                 scheme['scheme_paths'] = {}
@@ -300,7 +293,7 @@ def load_instructions():
                                                          location.format_map(scheme))
                 if 'arch_specific_upstream_locations' in family:
                     # This is to override any implememtations provided by the default upstream that 
-                    # are also specified specifically
+                    # are also specifically specified
                     for arch in family['arch_specific_upstream_locations']:
                         if arch in scheme['scheme_paths']:
                             del scheme['scheme_paths'][arch]
@@ -325,9 +318,7 @@ def load_instructions():
                         if 'required_flags' in cdep:
                             family['all_required_flags'].update(cdep['required_flags'])
                         if not 'cdep_path' in cdep:
-                            # TODO
-                            #this is not portable... need to figure out a better way to handle this
-                            cdep['cdep_path'] = scheme['scheme_paths'][family['default_implementation']]
+                            cdep['cdep_path'] = scheme['scheme_paths'][impl['name']]
                         if not cdep['name'] in family['common_deps_usedby']:
                             family['common_deps'].append(cdep)
                             family['common_deps_usedby'][cdep_name] = [{'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']}]
