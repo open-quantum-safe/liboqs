@@ -230,10 +230,6 @@ def get_ct_issues(t, name):
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_constant_time_kem(kem_name):
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
-    if ('SKIP_ALGS' in os.environ) and len(os.environ['SKIP_ALGS'])>0:
-        for algexp in os.environ['SKIP_ALGS'].split(','):
-            if len(re.findall(algexp, kem_name))>0:
-               pytest.skip("Test disabled by alg filter")
     passes = get_ct_passes('kem', kem_name)
     issues = get_ct_issues('kem', kem_name)
     output = helpers.run_subprocess(
@@ -251,10 +247,6 @@ def test_constant_time_kem(kem_name):
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_constant_time_sig(sig_name):
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
-    if ('SKIP_ALGS' in os.environ) and len(os.environ['SKIP_ALGS'])>0:
-        for algexp in os.environ['SKIP_ALGS'].split(','):
-            if len(re.findall(algexp, sig_name))>0:
-               pytest.skip("Test disabled by alg filter")
     passes = get_ct_passes('sig', sig_name)
     issues = get_ct_issues('sig', sig_name)
     output = helpers.run_subprocess(
