@@ -229,6 +229,7 @@ def get_ct_issues(t, name):
 @helpers.test_requires_valgrind_version_at_least(*MIN_VALGRIND_VERSION)
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_constant_time_kem(kem_name):
+    if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     if ('SKIP_ALGS' in os.environ) and len(os.environ['SKIP_ALGS'])>0:
         for algexp in os.environ['SKIP_ALGS'].split(','):
             if len(re.findall(algexp, kem_name))>0:
@@ -249,6 +250,7 @@ def test_constant_time_kem(kem_name):
 @helpers.test_requires_valgrind_version_at_least(*MIN_VALGRIND_VERSION)
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_constant_time_sig(sig_name):
+    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     if ('SKIP_ALGS' in os.environ) and len(os.environ['SKIP_ALGS'])>0:
         for algexp in os.environ['SKIP_ALGS'].split(','):
             if len(re.findall(algexp, sig_name))>0:
