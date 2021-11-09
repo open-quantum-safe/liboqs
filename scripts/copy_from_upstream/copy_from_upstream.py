@@ -505,6 +505,8 @@ def process_families(instructions, basedir, with_kat, with_generator):
                     try:
                         for i in range(len(impl['supported_platforms'])):
                             req = impl['supported_platforms'][i]
+                            if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
+                                continue
                             impl['required_flags'] = req['required_flags']
                             family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:

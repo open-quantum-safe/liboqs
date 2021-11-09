@@ -1,19 +1,20 @@
-From 8127443600b88b8b98836b5f2f74a7995e9d5e7b Mon Sep 17 00:00:00 2001
-From: Martyrshot <Martyrshot@gmail.com>
-Date: Sun, 31 Oct 2021 04:37:35 +0000
-Subject: [PATCH] Patch for pqclean's meta yml
+From acfeeed3a79552a1a7b42f9d44132833bcc08afa Mon Sep 17 00:00:00 2001
+From: Jason Goertzen <Martyrshot@gmail.com>
+Date: Tue, 9 Nov 2021 16:51:51 -0500
+Subject: [PATCH] Patching pqclean's META.yml files to match our arm
+ architecture naming convention
 
 ---
- crypto_kem/kyber1024/META.yml | 4 +---
- crypto_kem/kyber512/META.yml  | 4 +---
- crypto_kem/kyber768/META.yml  | 5 +----
- 3 files changed, 3 insertions(+), 10 deletions(-)
+ crypto_kem/kyber1024/META.yml | 2 +-
+ crypto_kem/kyber512/META.yml  | 2 +-
+ crypto_kem/kyber768/META.yml  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/crypto_kem/kyber1024/META.yml b/crypto_kem/kyber1024/META.yml
-index 28e2014..8ba4d4e 100644
+index 28e2014..56a4b5f 100644
 --- a/crypto_kem/kyber1024/META.yml
 +++ b/crypto_kem/kyber1024/META.yml
-@@ -37,9 +37,7 @@ implementations:
+@@ -37,7 +37,7 @@ implementations:
      - name: aarch64
        version: https://github.com/neon-ntt/neon-ntt/tree/b011eeff3515fb168aa4dbaa671d760009d98dbb
        supported_platforms:
@@ -22,13 +23,11 @@ index 28e2014..8ba4d4e 100644
            operating_systems:
                - Linux
                - Darwin
--          required_flags:
--              - asimd
 diff --git a/crypto_kem/kyber512/META.yml b/crypto_kem/kyber512/META.yml
-index 3c4d1ee..d1ac307 100644
+index 3c4d1ee..33fe01d 100644
 --- a/crypto_kem/kyber512/META.yml
 +++ b/crypto_kem/kyber512/META.yml
-@@ -37,9 +37,7 @@ implementations:
+@@ -37,7 +37,7 @@ implementations:
      - name: aarch64
        version: https://github.com/neon-ntt/neon-ntt/tree/b011eeff3515fb168aa4dbaa671d760009d98dbb
        supported_platforms:
@@ -37,13 +36,11 @@ index 3c4d1ee..d1ac307 100644
            operating_systems:
                - Linux
                - Darwin
--          required_flags:
--              - asimd
 diff --git a/crypto_kem/kyber768/META.yml b/crypto_kem/kyber768/META.yml
-index 035cce6..b2e4634 100644
+index 035cce6..98a0504 100644
 --- a/crypto_kem/kyber768/META.yml
 +++ b/crypto_kem/kyber768/META.yml
-@@ -37,10 +37,7 @@ implementations:
+@@ -37,7 +37,7 @@ implementations:
      - name: aarch64
        version: https://github.com/neon-ntt/neon-ntt/tree/b011eeff3515fb168aa4dbaa671d760009d98dbb
        supported_platforms:
@@ -52,9 +49,6 @@ index 035cce6..b2e4634 100644
            operating_systems:
                - Linux
                - Darwin
--          required_flags:
--              - asimd
--
 -- 
-2.25.1
+2.30.1 (Apple Git-130)
 
