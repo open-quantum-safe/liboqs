@@ -505,8 +505,10 @@ def process_families(instructions, basedir, with_kat, with_generator):
                     try:
                         for i in range(len(impl['supported_platforms'])):
                             req = impl['supported_platforms'][i]
+                            # if compiling for ARM64_V8 the asimd is implied and will cause errors
+                            # when provided to the compiler, so we need to remove it
                             if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
-                                continue
+                                req['required_flags'].remove('asimd')
                             impl['required_flags'] = req['required_flags']
                             family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:

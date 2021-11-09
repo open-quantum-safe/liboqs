@@ -15,7 +15,7 @@ endif()
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'ARM64_V8' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
 {% endif -%}
-if((OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS{% for flag in platform['required_flags'] -%} {%- if not loop.last %} AND {% endif -%}OQS_USE_ARM_{{ flag|upper }}_INSTRUCTIONS {%- endfor -%})))
+if((OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS{% for flag in platform['required_flags'] -%} {%- if not loop.last or loop.first %} AND {% endif -%}OQS_USE_ARM_{{ flag|upper }}_INSTRUCTIONS {%- endfor -%})))
 {% if family['name'] == "kyber" and impl['upstream']['name'] == 'pqclean' -%}
 if(((CMAKE_C_COMPILER_ID STREQUAL "GNU") AND (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "9.4.0")) OR ((CMAKE_CXX_COMPILER_ID STREQUAL "GNU") AND (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "9.4.0")))
 {%- endif %}
@@ -48,7 +48,7 @@ endif()
             {%- for platform in impl['supported_platforms'] if platform['architecture'] == 'ARM64_V8' %}
 {% if platform['operating_systems'] %}if(CMAKE_SYSTEM_NAME MATCHES "{{ platform['operating_systems']|join('|') }}")
 {% endif -%}
-if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS{% for flag in platform['required_flags'] -%} {%- if not loop.last %} AND {% endif -%}OQS_USE_ARM_{{ flag|upper }}_INSTRUCTIONS {%- endfor -%}))
+if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS{% for flag in platform['required_flags'] -%} {%- if not loop.last or loop.first %} AND {% endif -%}OQS_USE_ARM_{{ flag|upper }}_INSTRUCTIONS {%- endfor -%}))
     cmake_dependent_option(OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_SIG_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
 endif()
 {% if platform['operating_systems'] %}endif()
