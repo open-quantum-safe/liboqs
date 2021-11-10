@@ -6,7 +6,14 @@
 - **Auxiliary submitters**: Roberto Avanzi, Joppe Bos, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Vadim Lyubashevsky, John M. Schanck, Gregor Seiler, Damien Stehlé.
 - **Authors' website**: https://pq-crystals.org/
 - **Specification version**: NIST Round 3 submission.
-- **Primary Source**<a name="primary-source"></a>:  - **Source**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches  - **Implementation license (SPDX-Identifier)**: CC0-1.0- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches  - **pqclean-aarch64**:<a name="pqclean-aarch64"></a>      - **Source**: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524 with copy_from_upstream patches      - **Implementation license (SPDX-Identifier)**: CC0-1.0
+- **Primary Source**<a name="primary-source"></a>:
+  - **Source**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
+  - **Implementation license (SPDX-Identifier)**: CC0-1.0
+- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
+  - **pqclean-aarch64**:<a name="pqclean-aarch64"></a>
+      - **Source**: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524 with copy_from_upstream patches
+      - **Implementation license (SPDX-Identifier)**: CC0-1.0
+
 
 ## Parameter set summary
 
