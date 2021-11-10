@@ -68,7 +68,7 @@ parameter-sets:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Kyber512-90s
   claimed-nist-level: 1
@@ -152,7 +152,7 @@ parameter-sets:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Kyber768-90s
   claimed-nist-level: 3
@@ -236,7 +236,7 @@ parameter-sets:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Kyber1024-90s
   claimed-nist-level: 5
