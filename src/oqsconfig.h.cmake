@@ -124,10 +124,13 @@
 #cmakedefine OQS_ENABLE_KEM_KYBER 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512_avx2 1
+#cmakedefine OQS_ENABLE_KEM_kyber_512_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_kyber_768 1
 #cmakedefine OQS_ENABLE_KEM_kyber_768_avx2 1
+#cmakedefine OQS_ENABLE_KEM_kyber_768_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_kyber_1024 1
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_avx2 1
+#cmakedefine OQS_ENABLE_KEM_kyber_1024_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512_90s 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512_90s_avx2 1
 #cmakedefine OQS_ENABLE_KEM_kyber_768_90s 1
@@ -166,10 +169,13 @@
 #cmakedefine OQS_ENABLE_KEM_SABER 1
 #cmakedefine OQS_ENABLE_KEM_saber_lightsaber 1
 #cmakedefine OQS_ENABLE_KEM_saber_lightsaber_avx2 1
+#cmakedefine OQS_ENABLE_KEM_saber_lightsaber_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_saber_saber 1
 #cmakedefine OQS_ENABLE_KEM_saber_saber_avx2 1
+#cmakedefine OQS_ENABLE_KEM_saber_saber_aarch64 1
 #cmakedefine OQS_ENABLE_KEM_saber_firesaber 1
 #cmakedefine OQS_ENABLE_KEM_saber_firesaber_avx2 1
+#cmakedefine OQS_ENABLE_KEM_saber_firesaber_aarch64 1
 
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1

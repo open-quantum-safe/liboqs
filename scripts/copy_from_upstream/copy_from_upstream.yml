@@ -2,13 +2,13 @@ upstreams:
   -
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
-    git_branch: mcliece-gcc11
-    git_commit: 5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0
+    git_branch: master
+    git_commit: 7eb978b4a733696bd7197278aa84216095674524
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: ['pqclean-sphincs.patch']
+    patches: ['pqclean-sphincs.patch', 'pqclean-kyber-armneon-yml.patch', 'pqclean-kyber-armneon-shake.patch']
   -
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
@@ -93,7 +93,11 @@ kems:
   -
     name: kyber
     default_implementation: ref
+    arch_specific_implementations: 
+                                      aarch64: aarch64
     upstream_location: pqcrystals-kyber
+    arch_specific_upstream_locations: 
+                                      aarch64: pqclean
     schemes:
       -
         scheme: "512"
