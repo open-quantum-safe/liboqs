@@ -16,9 +16,13 @@ crypto-assumption: Module LWE+R with base ring Z[x]/(3329, x^256+1)
 website: https://pq-crystals.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
-spdx-license-identifier: CC0-1.0
-upstream: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2
-  with copy_from_upstream patches
+primary-upstream:
+  source: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
+  spdx-license-identifier: CC0-1.0
+optimized-upstreams:
+  pqclean-aarch64:
+    source: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524 with copy_from_upstream patches
+    spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: Kyber512
   claimed-nist-level: 1
@@ -29,14 +33,16 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -51,6 +57,19 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+  - upstream: pqclean-aarch64
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
 - name: Kyber512-90s
   claimed-nist-level: 1
   claimed-security: IND-CCA2
@@ -60,7 +79,8 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - AES: pqcrystals-kyber_common_ref
@@ -68,7 +88,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -96,14 +117,16 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -118,6 +141,19 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+  - upstream: pqclean-aarch64
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
 - name: Kyber768-90s
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -127,7 +163,8 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - AES: pqcrystals-kyber_common_ref
@@ -135,7 +172,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -163,14 +201,16 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -185,6 +225,19 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+  - upstream: pqclean-aarch64
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
 - name: Kyber1024-90s
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -194,7 +247,8 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - AES: pqcrystals-kyber_common_ref
@@ -202,7 +256,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
