@@ -168,14 +168,25 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 oqs_scheme_yaml['length-ciphertext'] = rhs_if_not_equal(oqs_scheme_yaml['length-ciphertext'], upstream_yaml['length-ciphertext'], "length-ciphertext")
                 oqs_scheme_yaml['length-secret-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-secret-key'], upstream_yaml['length-secret-key'], "legnth-secret-key")
                 oqs_scheme_yaml['length-shared-secret'] = rhs_if_not_equal(oqs_scheme_yaml['length-shared-secret'], upstream_yaml['length-shared-secret'], "length-shared-secret")
-
+                
+                _upstream_yaml = upstream_yaml
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
+                    upstream_yaml = _upstream_yaml
+                    if impl['upstream'] in ouis:
+                        print(ouis[impl['upstream']])
+                        upstream_name = impl['upstream']
+                        meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
+                        opt_upstream_root = ouis[upstream_name]['upstream_root']
+                        upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
+                        upstream_yaml = load_yaml(upstream_meta_path)
+                        
                     for upstream_impl in upstream_yaml['implementations']:
                         if impl['upstream-id'] == upstream_impl['name']:
                             break
                     # Logic to add Common_META.yml components
 
                     implementations = upstream_yaml['implementations']
+                    """
                     if 'arch_specific_upstream_locations' in kem and impl['upstream'] != 'primary-upstream':
                         upstream_name = impl['upstream']
                         meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
@@ -183,6 +194,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                         upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
                         optimized_meta = load_yaml(upstream_meta_path)
                         implementations = optimized_meta['implementations']
+                    """
                     uir = get_upstream_info(implementations, impl['upstream-id'])
                     if (uir != None) and ('common_dep' in uir):
                         upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
@@ -193,12 +205,18 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                                if 'required_flags' in ur['supported_platforms'][0].keys():
                                   upstream_impl['supported_platforms'][0]['required_flags']=list(set(upstream_impl['supported_platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
                                   upstream_impl['supported_platforms'][0]['required_flags'].sort()
-
                     if 'supported_platforms' in upstream_impl:
+                        for i in range(len(upstream_impl['supported_platforms'])):
+                            if upstream_impl['supported_platforms'][i]['architecture'] == 'arm_8':
+                                upstream_impl['supported_platforms'][i]['architecture'] = 'ARM64_V8'
+                                if 'asimd' in upstream_impl['supported_platforms'][i]['required_flags']:
+                                    upstream_impl['supported_platforms'][i]['required_flags'].remove('asimd')
+                                if not upstream_impl['supported_platforms'][i]['required_flags']:
+                                    del upstream_impl['supported_platforms'][i]['required_flags']
+
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
                     else:
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
-
                     oqs_scheme_yaml['implementations'][impl_index] = impl
 
                 oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
@@ -281,7 +299,6 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
                     else:
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
-
                     oqs_scheme_yaml['implementations'][impl_index] = impl
 
                 oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
