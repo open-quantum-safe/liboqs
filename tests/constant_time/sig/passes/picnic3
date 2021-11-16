@@ -64,6 +64,15 @@
    fun:sign_picnic3
 }
 {
+   use of unitialized value (hash context init in commit)
+   Memcheck:Value8
+   fun:KeccakP1600_AddBytes
+   fun:OQS_SHA3_shake*_inc_absorb
+   fun:hash_update
+   src:picnic3_impl.c:107 # fun:commit
+   fun:sign_picnic3
+}
+{
    challengeC is declassified
    Memcheck:Cond
    fun:contains
