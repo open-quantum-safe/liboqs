@@ -17,11 +17,13 @@ website: https://pq-crystals.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
 primary-upstream:
-  source: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
+  source: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2
+    with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0
 optimized-upstreams:
   pqclean-aarch64:
-    source: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524 with copy_from_upstream patches
+    source: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524
+      with copy_from_upstream patches
     spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: Kyber512
@@ -64,7 +66,6 @@ parameter-sets:
       operating_systems:
       - Linux
       - Darwin
-      required_flags:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -148,7 +149,6 @@ parameter-sets:
       operating_systems:
       - Linux
       - Darwin
-      required_flags:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
@@ -232,7 +232,6 @@ parameter-sets:
       operating_systems:
       - Linux
       - Darwin
-      required_flags:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
