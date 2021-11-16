@@ -164,6 +164,8 @@ def load_instructions():
         for scheme in family['schemes']:
             if not 'upstream_location' in scheme:
                 scheme['upstream_location'] = family['upstream_location']
+            if (not 'arch_specific_upstream_locations' in scheme) and 'arch_specific_upstream_locations' in family:
+                scheme['arch_specific_upstream_locations'] = family['arch_specific_upstream_locations']
             if not 'git_commit' in scheme:
                 scheme['git_commit'] = upstreams[scheme['upstream_location']]['git_commit']
             if not 'git_branch' in scheme:
@@ -179,7 +181,7 @@ def load_instructions():
                 if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['kem_meta_paths']:
                         scheme['kem_meta_paths']['extras'] = {}
-                        
+
                     for arch in family['arch_specific_upstream_locations']:
                         location = family['arch_specific_upstream_locations'][arch]
                         scheme['kem_meta_paths']['extras'][arch] = os.path.join('repos', location,
@@ -265,7 +267,7 @@ def load_instructions():
                 if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['kem_meta_paths']:
                         scheme['sig_meta_paths']['extras'] = {}
-                        
+
                     for arch in family['arch_specific_upstream_locations']:
                         location = family['arch_specific_upstream_locations'][arch]
                         scheme['sig_meta_paths']['extras'][arch] = os.path.join('repos', location,
