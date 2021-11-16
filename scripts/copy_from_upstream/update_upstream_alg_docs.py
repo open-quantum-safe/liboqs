@@ -173,7 +173,6 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
                     upstream_yaml = _upstream_yaml
                     if impl['upstream'] in ouis:
-                        print(ouis[impl['upstream']])
                         upstream_name = impl['upstream']
                         meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
                         opt_upstream_root = ouis[upstream_name]['upstream_root']
