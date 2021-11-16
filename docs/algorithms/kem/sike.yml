@@ -20,7 +20,9 @@ website: https://sike.org
 nist-round: 3
 spec-version: NIST Round 3 submission
 spdx-license-identifier: MIT
-upstream: https://github.com/microsoft/PQCrypto-SIDH/commit/effa607f244768cdd38f930887076373604eaa78
+primary-upstream:
+  source: https://github.com/microsoft/PQCrypto-SIDH/commit/effa607f244768cdd38f930887076373604eaa78
+  spdx-license-identifier: MIT
 parameter-sets:
 - name: SIDH-p434
   claimed-nist-level: 1
@@ -31,14 +33,16 @@ parameter-sets:
   length-shared-secret: 110
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -51,7 +55,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -65,7 +70,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -85,14 +91,16 @@ parameter-sets:
   length-shared-secret: 110
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -105,7 +113,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -119,7 +128,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -139,14 +149,16 @@ parameter-sets:
   length-shared-secret: 126
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64
+  - upstream: primary-upstream
+    upstream-id: additional_amd64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -157,7 +169,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -170,7 +183,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -184,7 +198,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -204,14 +219,16 @@ parameter-sets:
   length-shared-secret: 126
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64
+  - upstream: primary-upstream
+    upstream-id: additional_amd64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -222,7 +239,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -235,7 +253,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -249,7 +268,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -269,14 +289,16 @@ parameter-sets:
   length-shared-secret: 154
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -289,7 +311,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -303,7 +326,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -323,14 +347,16 @@ parameter-sets:
   length-shared-secret: 154
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -343,7 +369,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -357,7 +384,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -377,14 +405,16 @@ parameter-sets:
   length-shared-secret: 188
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64
+  - upstream: primary-upstream
+    upstream-id: additional_amd64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -395,7 +425,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -408,7 +439,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -422,7 +454,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -442,14 +475,16 @@ parameter-sets:
   length-shared-secret: 188
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64
+  - upstream: primary-upstream
+    upstream-id: additional_amd64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -460,7 +495,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -473,7 +509,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -487,7 +524,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -507,14 +545,16 @@ parameter-sets:
   length-shared-secret: 16
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -527,7 +567,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -541,7 +582,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -561,14 +603,16 @@ parameter-sets:
   length-shared-secret: 16
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -581,7 +625,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -595,7 +640,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -615,14 +661,16 @@ parameter-sets:
   length-shared-secret: 24
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64
+  - upstream: primary-upstream
+    upstream-id: additional_amd64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -633,7 +681,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -646,7 +695,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -660,7 +710,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -680,14 +731,16 @@ parameter-sets:
   length-shared-secret: 24
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64
+  - upstream: primary-upstream
+    upstream-id: additional_amd64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -698,7 +751,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -711,7 +765,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -725,7 +780,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -745,14 +801,16 @@ parameter-sets:
   length-shared-secret: 24
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -765,7 +823,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -779,7 +838,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -799,14 +859,16 @@ parameter-sets:
   length-shared-secret: 24
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -819,7 +881,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -833,7 +896,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -853,14 +917,16 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64
+  - upstream: primary-upstream
+    upstream-id: additional_amd64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -871,7 +937,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -884,7 +951,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -898,7 +966,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:
@@ -918,14 +987,16 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: false
   implementations:
-  - upstream-id: optimized
+  - upstream: primary-upstream
+    upstream-id: optimized
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64
+  - upstream: primary-upstream
+    upstream-id: additional_amd64
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -936,7 +1007,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_bmi2
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_bmi2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -949,7 +1021,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_amd64_adx
+  - upstream: primary-upstream
+    upstream-id: additional_amd64_adx
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -963,7 +1036,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: additional_arm64
+  - upstream: primary-upstream
+    upstream-id: additional_arm64
     supported-platforms:
     - architecture: arm64v8
       operating_systems:

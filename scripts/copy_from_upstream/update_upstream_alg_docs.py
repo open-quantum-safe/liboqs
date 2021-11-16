@@ -114,7 +114,23 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 upstream_base_url = ui['git_url'][:-len(".git")]
                 # upstream is special: We will take the upstream git commit information 
                 # (possibly with added patch comment) as it is what drove the update
-                oqs_yaml['primary-upstream']['source'] = rhs_if_not_equal(oqs_yaml['primary-upstream']['source'], ("{}/commit/{}"+patches_done).format(upstream_base_url, ui['git_commit']), "primary-upstream")
+                
+                # Need to check if yml is of old format. If so, update to new format
+                if 'primary-upstream' not in oqs_yaml:
+                    print("Updating format. Please double check ordering of yaml file")
+                    lhs = oqs_yaml['upstream']
+                    oqs_yaml['primary-upstream'] = dict()
+                    oqs_yaml['primary-upstream']['spdx-license-identifier'] = oqs_yaml['spdx-license-identifier']
+                    for i in range(len(oqs_yaml['parameter-sets'])):
+                        for j in range(len(oqs_yaml['parameter-sets'][i]['implementations'])):
+                            print(oqs_yaml['parameter-sets'][i])
+                            oqs_yaml['parameter-sets'][i]['implementations'][j]['upstream'] = 'primary-upstream'
+                else:
+                    lhs = oqs_yaml['primary-upstream']['source']
+                oqs_yaml['primary-upstream']['source'] = rhs_if_not_equal(lhs, ("{}/commit/{}"+patches_done).format(upstream_base_url, ui['git_commit']), "primary-upstream")
+                if 'upstream' in oqs_yaml:
+                    del oqs_yaml['upstream']
+                    del oqs_yaml['spdx-license-identifier']
 
                 if ouis:
                     for upstream in ouis:

@@ -17,8 +17,9 @@ crypto-assumption: learning with errors (LWE)
 website: https://frodokem.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
-spdx-license-identifier: MIT
-upstream: https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2
+primary-upstream:
+  source: https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2
+  spdx-license-identifier: MIT
 parameter-sets:
 - name: FrodoKEM-640-AES
   claimed-nist-level: 1
@@ -29,7 +30,8 @@ parameter-sets:
   length-shared-secret: 16
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -37,7 +39,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -61,7 +64,8 @@ parameter-sets:
   length-shared-secret: 16
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -69,7 +73,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -93,7 +98,8 @@ parameter-sets:
   length-shared-secret: 24
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -101,7 +107,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -125,7 +132,8 @@ parameter-sets:
   length-shared-secret: 24
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -133,7 +141,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -157,7 +166,8 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -165,7 +175,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -189,7 +200,8 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -197,7 +209,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: x86_64
       operating_systems:
