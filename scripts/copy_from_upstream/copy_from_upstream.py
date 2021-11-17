@@ -602,10 +602,10 @@ def verify_from_upstream():
             if 'implementation' in scheme:
                 impl = scheme['implementation']
                 oqsdir = os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
-                                      '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'], impl))
-                verifydir = os.path.join(basedir, 'src', family['type'], family['name'],
-                                         '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'], impl))
-                scheme['verifydir'] = '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'], impl)
+                                      '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl))
+                vverify_from_upstreamerifydir = os.path.join(basedir, 'src', family['type'], family['name'],
+                                         '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl))
+                scheme['verifydir'] = '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl)
                 ret = subprocess.run(['diff', '-rq', oqsdir, verifydir], stdout=subprocess.DEVNULL)
                 if ret.returncode == 0:
                     validated += 1
@@ -616,12 +616,12 @@ def verify_from_upstream():
                 # If no scheme['implementation'] given, get the list from META.yml and add all implementations
                 for impl in scheme['metadata']['implementations']:
                     oqsdir = os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
-                                          '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'],
+                                          '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'],
                                                             impl['name']))
                     verifydir = os.path.join(basedir, 'src', family['type'], family['name'],
-                                             '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'],
+                                             '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'],
                                                                impl['name']))
-                    scheme['verifydir'] = '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'],
+                    scheme['verifydir'] = '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'],
                                                             impl['name'])
                     ret = subprocess.run(['diff', '-rq', oqsdir, verifydir], stdout=subprocess.DEVNULL)
                     if ret.returncode == 0:
