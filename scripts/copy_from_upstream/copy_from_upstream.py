@@ -208,8 +208,8 @@ def load_instructions():
                         for imp in implementations:
                             upstream = upstreams[family['arch_specific_upstream_locations'][arch]]
                             if (arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']) \
-                                    and ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) \
-                                            not in upstream['ignore']):
+                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) \
+                                            not in upstream['ignore'])):
                                 imp['upstream'] = upstream
                                 metadata['implementations'].append(imp)
                                 break
