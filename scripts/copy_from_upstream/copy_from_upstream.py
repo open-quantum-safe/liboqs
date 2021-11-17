@@ -195,8 +195,10 @@ def load_instructions():
                     for arch in scheme['kem_meta_paths']['extras']:
                         implementations = yaml.safe_load(file_get_contents(scheme['kem_meta_paths']['extras'][arch]))['implementations']
                         for imp in implementations:
-                            if arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']:
-                                imp['upstream'] = upstreams[family['arch_specific_upstream_locations'][arch]]
+                            upstream = upstreams[family['arch_specific_upstream_locations'][arch]]
+                            if (arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']) \
+                                    and ("{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) not in upstream['ignore']):
+                                imp['upstream'] = upstream
                                 metadata['implementations'].append(imp)
                                 break
             scheme['metadata'] = metadata
