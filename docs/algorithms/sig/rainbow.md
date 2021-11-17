@@ -6,7 +6,7 @@
 - **Auxiliary submitters**: Ming-Shing Chen, Matthias Kannwischer, Jacques Patarin, Albrecht Petzoldt, Dieter Schmidt, Bo-Yin Yang.
 - **Authors' website**: https://www.pqcrainbow.org/
 - **Specification version**: NIST Round 3 submission.
-- **Implementation source**: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0, which takes it from:
+- **Implementation source**: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524, which takes it from:
   - https://github.com/fast-crypto-lab/rainbow-submission-round2/commit/173ada0e077e1b9dbd8e4a78994f87acc0c92263
 - **Implementation license (SPDX-Identifier)**: CC0-1.0.
 

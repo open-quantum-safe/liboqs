@@ -5,9 +5,11 @@
 - **Principal submitters**: Nicolas Aragon, Paulo Barreto, Slim Bettaieb, Loic Bidoux, Olivier Blazy, Jean-Christophe Deneuville, Phillipe Gaborit, Santosh Gosh, Shay Gueron, Tim Güneysu, Carlos Aguilar Melchor, Rafael Misoczki, Edoardo Persichetti, Nicolas Sendrier, Jean-Pierre Tillich, Valentin Vasseur, Gilles Zémor.
 - **Authors' website**: http://bikesuite.org/
 - **Specification version**: 4.1.
-- **Implementation source**: https://github.com/awslabs/bike-kem, which takes it from:
+- **Primary Source**<a name="primary-source"></a>:
+  - **Source**: https://github.com/awslabs/bike-kem
+  - **Implementation license (SPDX-Identifier)**: Apache-2.0
+, which takes it from:
   - https://bikesuite.org/files/v4.1/Reference_Implementation.2020.10.20.2.zip
-- **Implementation license (SPDX-Identifier)**: Apache-2.0.
 
 ## Parameter set summary
 
@@ -18,10 +20,10 @@
 
 ## BIKE-L1 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | little endian               | All                             | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin                    | AVX2,AVX512,PCLMUL,SSE2 | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+| [Primary Source](#primary-source) | master                   | little endian               | All                             | None                    | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin                    | AVX2,AVX512,PCLMUL,SSE2 | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -29,10 +31,10 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## BIKE-L3 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          master          | little endian               | All                             | None                    | True                               | True                                           | False                |
-|          master          | x86\_64                     | Linux,Darwin                    | AVX2,AVX512,PCLMUL,SSE2 | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | little endian               | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin                    | AVX2,AVX512,PCLMUL,SSE2 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

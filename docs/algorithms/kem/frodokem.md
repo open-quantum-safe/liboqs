@@ -5,8 +5,10 @@
 - **Principal submitters**: Michael Naehrig, Erdem Alkim, Joppe Bos, Léo Ducas, Karen Easterbrook, Brian LaMacchia, Patrick Longa, Ilya Mironov, Valeria Nikolaenko, Christopher Peikert, Ananth Raghunathan, Douglas Stebila.
 - **Authors' website**: https://frodokem.org/
 - **Specification version**: NIST Round 3 submission.
-- **Implementation source**: https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2
-- **Implementation license (SPDX-Identifier)**: MIT.
+- **Primary Source**<a name="primary-source"></a>:
+  - **Source**: https://github.com/microsoft/PQCrypto-LWEKE/commit/b6609d30a9982318d7f2937aa3c7b92147b917a2
+  - **Implementation license (SPDX-Identifier)**: MIT
+
 
 ## Parameter set summary
 
@@ -21,10 +23,10 @@
 
 ## FrodoKEM-640-AES implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                             | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -32,46 +34,46 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## FrodoKEM-640-SHAKE implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
-|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## FrodoKEM-976-AES implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
-|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## FrodoKEM-976-SHAKE implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
-|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## FrodoKEM-1344-AES implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
-|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## FrodoKEM-1344-SHAKE implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|          master          | All                         | All                             | None                    | True                               | True                                           | False                |
-|          master          | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux,Darwin,Windows            | AVX2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
