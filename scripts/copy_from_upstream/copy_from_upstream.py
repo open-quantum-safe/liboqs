@@ -603,15 +603,20 @@ def verify_from_upstream():
                 impl = scheme['implementation']
                 oqsdir = os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
                                       '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl))
-                vverify_from_upstreamerifydir = os.path.join(basedir, 'src', family['type'], family['name'],
+                verifydir = os.path.join(basedir, 'src', family['type'], family['name'],
                                          '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl))
-                scheme['verifydir'] = '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl)
-                ret = subprocess.run(['diff', '-rq', oqsdir, verifydir], stdout=subprocess.DEVNULL)
-                if ret.returncode == 0:
-                    validated += 1
+                if not os.path.isdir(oqsdir) and os.path.isdir(erifydir):
+                    print('Available implementation in upstream that isn\'t integrated into LIBOQS: {}_{}_{}'.format(impl['upstream']['name'],
+                                                                                                                scheme['pqclean_scheme'], impl))
                 else:
-                    differ += 1
-                    dinfo.append(scheme)
+                    scheme['verifydir'] = '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl)
+                    ret = subprocess.run(['diff', '-rq', oqsdir, verifydir], stdout=subprocess.DEVNULL)
+                    # If we haven't integrated something from upstream it shouldn't be reported as an error, it should just be reported.
+                    if ret.returncode == 0:
+                        validated += 1
+                    else:
+                        differ += 1
+                        dinfo.append(scheme)
             else:
                 # If no scheme['implementation'] given, get the list from META.yml and add all implementations
                 for impl in scheme['metadata']['implementations']:
@@ -621,14 +626,18 @@ def verify_from_upstream():
                     verifydir = os.path.join(basedir, 'src', family['type'], family['name'],
                                              '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'],
                                                                impl['name']))
-                    scheme['verifydir'] = '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'],
-                                                            impl['name'])
-                    ret = subprocess.run(['diff', '-rq', oqsdir, verifydir], stdout=subprocess.DEVNULL)
-                    if ret.returncode == 0:
-                        validated += 1
+                    if not os.path.isdir(oqsdir) and os.path.isdir(verifydir):
+                        print('Available implementation in upstream that isn\'t integrated into LIBOQS: {}_{}_{}'.format(impl['upstream']['name'],
+                                                                                                                    scheme['pqclean_scheme'], impl['name']))
                     else:
-                        differ += 1
-                        dinfo.append(scheme)
+                        scheme['verifydir'] = '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'],
+                                                            impl['name'])
+                        ret = subprocess.run(['diff', '-rq', oqsdir, verifydir], stdout=subprocess.DEVNULL)
+                        if ret.returncode == 0:
+                            validated += 1
+                        else:
+                            differ += 1
+                            dinfo.append(scheme)
 
     patch_list = []
     for upstream in instructions['upstreams']:
