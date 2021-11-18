@@ -24,7 +24,7 @@ static inline void schoolbook_KxK(uint16_t r[2 * K], const uint16_t a[K], const 
 static void toom4_k2x2_interpolate(uint16_t r[2 * L], const uint16_t a[63 * 2 * K]);
 static inline void k2x2_interpolate(uint16_t r[2 * M], const uint16_t a[18 * K]);
 
-void PQCLEAN_NTRUHPS2048677_CLEAN_poly_Rq_mul(poly *r, const poly *a, const poly *b) {
+void PQCLEAN_NTRUHPS40961229_CLEAN_poly_Rq_mul(poly *r, const poly *a, const poly *b) {
     size_t i;
     uint16_t ab[2 * L];
 

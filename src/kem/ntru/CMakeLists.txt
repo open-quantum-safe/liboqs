@@ -50,6 +50,13 @@ if(OQS_ENABLE_KEM_ntru_hps4096821_avx2)
     set(_NTRU_OBJS ${_NTRU_OBJS} $<TARGET_OBJECTS:ntru_hps4096821_avx2>)
 endif()
 
+if(OQS_ENABLE_KEM_ntru_hps40961229)
+    add_library(ntru_hps40961229_clean OBJECT kem_ntru_hps40961229.c pqclean_ntruhps40961229_clean/cmov.c pqclean_ntruhps40961229_clean/crypto_sort_int32.c pqclean_ntruhps40961229_clean/kem.c pqclean_ntruhps40961229_clean/owcpa.c pqclean_ntruhps40961229_clean/pack3.c pqclean_ntruhps40961229_clean/packq.c pqclean_ntruhps40961229_clean/poly.c pqclean_ntruhps40961229_clean/poly_lift.c pqclean_ntruhps40961229_clean/poly_mod.c pqclean_ntruhps40961229_clean/poly_r2_inv.c pqclean_ntruhps40961229_clean/poly_rq_mul.c pqclean_ntruhps40961229_clean/poly_s3_inv.c pqclean_ntruhps40961229_clean/sample.c pqclean_ntruhps40961229_clean/sample_iid.c)
+    target_include_directories(ntru_hps40961229_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ntruhps40961229_clean)
+    target_include_directories(ntru_hps40961229_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    set(_NTRU_OBJS ${_NTRU_OBJS} $<TARGET_OBJECTS:ntru_hps40961229_clean>)
+endif()
+
 if(OQS_ENABLE_KEM_ntru_hrss701)
     add_library(ntru_hrss701_clean OBJECT kem_ntru_hrss701.c pqclean_ntruhrss701_clean/cmov.c pqclean_ntruhrss701_clean/kem.c pqclean_ntruhrss701_clean/owcpa.c pqclean_ntruhrss701_clean/pack3.c pqclean_ntruhrss701_clean/packq.c pqclean_ntruhrss701_clean/poly.c pqclean_ntruhrss701_clean/poly_lift.c pqclean_ntruhrss701_clean/poly_mod.c pqclean_ntruhrss701_clean/poly_r2_inv.c pqclean_ntruhrss701_clean/poly_rq_mul.c pqclean_ntruhrss701_clean/poly_s3_inv.c pqclean_ntruhrss701_clean/sample.c pqclean_ntruhrss701_clean/sample_iid.c)
     target_include_directories(ntru_hrss701_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ntruhrss701_clean)

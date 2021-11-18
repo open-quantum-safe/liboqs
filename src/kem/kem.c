@@ -39,6 +39,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 		OQS_KEM_alg_ntru_hps2048509,
 		OQS_KEM_alg_ntru_hps2048677,
 		OQS_KEM_alg_ntru_hps4096821,
+		OQS_KEM_alg_ntru_hps40961229,
 		OQS_KEM_alg_ntru_hrss701,
 		OQS_KEM_alg_ntruprime_ntrulpr653,
 		OQS_KEM_alg_ntruprime_ntrulpr761,
@@ -230,6 +231,12 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntru_hps4096821)) {
 #ifdef OQS_ENABLE_KEM_ntru_hps4096821
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntru_hps40961229)) {
+#ifdef OQS_ENABLE_KEM_ntru_hps40961229
 		return 1;
 #else
 		return 0;
@@ -591,6 +598,12 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntru_hps4096821)) {
 #ifdef OQS_ENABLE_KEM_ntru_hps4096821
 		return OQS_KEM_ntru_hps4096821_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntru_hps40961229)) {
+#ifdef OQS_ENABLE_KEM_ntru_hps40961229
+		return OQS_KEM_ntru_hps40961229_new();
 #else
 		return NULL;
 #endif
