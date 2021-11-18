@@ -18,8 +18,6 @@ crypto-assumption: Niederreiter's dual version of McEliece's public key encrypti
 website: https://classic.mceliece.org
 nist-round: 3
 spec-version: SUPERCOP-20191221
-spdx-license-identifier: Public domain
-upstream: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0
 upstream-ancestors:
 - SUPERCOP-20191221 "vec" and "avx" implementations
 parameter-sets:
@@ -40,6 +38,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -55,6 +54,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 - name: Classic-McEliece-348864f
   claimed-nist-level: 1
   claimed-security: IND-CCA2
@@ -72,6 +72,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -88,6 +89,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 - name: Classic-McEliece-460896
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -105,6 +107,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -120,6 +123,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 - name: Classic-McEliece-460896f
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -137,6 +141,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -153,6 +158,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 - name: Classic-McEliece-6688128
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -170,6 +176,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -185,6 +192,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 - name: Classic-McEliece-6688128f
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -202,6 +210,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -218,6 +227,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 - name: Classic-McEliece-6960119
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -235,6 +245,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -250,6 +261,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 - name: Classic-McEliece-6960119f
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -267,6 +279,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -283,6 +296,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 - name: Classic-McEliece-8192128
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -300,6 +314,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -315,6 +330,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 - name: Classic-McEliece-8192128f
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -332,6 +348,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
   - upstream-id: avx
     supported-platforms:
     - architecture: x86_64
@@ -348,4 +365,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
+    upstream: primary-upstream
 auxiliary-submitters: []
+primary-upstream:
+  spdx-license-identifier: Public domain
+  source: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524

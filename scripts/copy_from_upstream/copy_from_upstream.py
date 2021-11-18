@@ -164,6 +164,8 @@ def load_instructions():
         for scheme in family['schemes']:
             if not 'upstream_location' in scheme:
                 scheme['upstream_location'] = family['upstream_location']
+            if (not 'arch_specific_upstream_locations' in scheme) and 'arch_specific_upstream_locations' in family:
+                scheme['arch_specific_upstream_locations'] = family['arch_specific_upstream_locations']
             if not 'git_commit' in scheme:
                 scheme['git_commit'] = upstreams[scheme['upstream_location']]['git_commit']
             if not 'git_branch' in scheme:
@@ -179,7 +181,7 @@ def load_instructions():
                 if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['kem_meta_paths']:
                         scheme['kem_meta_paths']['extras'] = {}
-                        
+
                     for arch in family['arch_specific_upstream_locations']:
                         location = family['arch_specific_upstream_locations'][arch]
                         scheme['kem_meta_paths']['extras'][arch] = os.path.join('repos', location,
@@ -187,14 +189,28 @@ def load_instructions():
             metadata = {}
             if not 'metadata' in scheme:
                 metadata = yaml.safe_load(file_get_contents(scheme['kem_meta_paths']['default']))
+                imps_to_remove = []
+                upstream = upstreams[scheme['upstream_location']]
                 for imp in metadata['implementations']:
-                    imp['upstream'] = upstreams[scheme['upstream_location']]
+                    if 'ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], imp['name']) in upstream['ignore']:
+                        imps_to_remove.append(imp['name'])
+                    else:
+                        imp['upstream'] = upstream
+                for imp_name in imps_to_remove:
+                    for i in range(len(metadata['implementations'])):
+                        if metadata['implementations'][i]['name'] == imp_name:
+                            del metadata['implementations'][i]
+                            break
+
                 if 'extras' in scheme['kem_meta_paths']:
                     for arch in scheme['kem_meta_paths']['extras']:
                         implementations = yaml.safe_load(file_get_contents(scheme['kem_meta_paths']['extras'][arch]))['implementations']
                         for imp in implementations:
-                            if arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']:
-                                imp['upstream'] = upstreams[family['arch_specific_upstream_locations'][arch]]
+                            upstream = upstreams[family['arch_specific_upstream_locations'][arch]]
+                            if (arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']) \
+                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) \
+                                            not in upstream['ignore'])):
+                                imp['upstream'] = upstream
                                 metadata['implementations'].append(imp)
                                 break
             scheme['metadata'] = metadata
@@ -265,7 +281,7 @@ def load_instructions():
                 if 'arch_specific_upstream_locations' in family:
                     if 'extras' not in scheme['kem_meta_paths']:
                         scheme['sig_meta_paths']['extras'] = {}
-                        
+
                     for arch in family['arch_specific_upstream_locations']:
                         location = family['arch_specific_upstream_locations'][arch]
                         scheme['sig_meta_paths']['extras'][arch] = os.path.join('repos', location,
@@ -584,6 +600,9 @@ def copy_from_upstream():
         shutil.rmtree('repos')
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
+    # Not in love with using sub process to call a python script, but this is the easiest solution for 
+    # automatically calling this script in its current state.
+    shell(["python3",  "../update_docs_from_yaml.py", "--liboqs-root", "../../"]) 
 
 def verify_from_upstream():
     instructions = load_instructions()
@@ -600,33 +619,42 @@ def verify_from_upstream():
             if 'implementation' in scheme:
                 impl = scheme['implementation']
                 oqsdir = os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
-                                      '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'], impl))
+                                      '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl))
                 verifydir = os.path.join(basedir, 'src', family['type'], family['name'],
-                                         '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'], impl))
-                scheme['verifydir'] = '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'], impl)
-                ret = subprocess.run(['diff', '-rq', oqsdir, verifydir], stdout=subprocess.DEVNULL)
-                if ret.returncode == 0:
-                    validated += 1
+                                         '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl))
+                if not os.path.isdir(oqsdir) and os.path.isdir(erifydir):
+                    print('Available implementation in upstream that isn\'t integrated into LIBOQS: {}_{}_{}'.format(impl['upstream']['name'],
+                                                                                                                scheme['pqclean_scheme'], impl))
                 else:
-                    differ += 1
-                    dinfo.append(scheme)
-            else:
-                # If no scheme['implementation'] given, get the list from META.yml and add all implementations
-                for impl in scheme['metadata']['implementations']:
-                    oqsdir = os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
-                                          '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'],
-                                                            impl['name']))
-                    verifydir = os.path.join(basedir, 'src', family['type'], family['name'],
-                                             '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'],
-                                                               impl['name']))
-                    scheme['verifydir'] = '{}_{}_{}'.format(scheme['upstream_location'], scheme['pqclean_scheme'],
-                                                            impl['name'])
+                    scheme['verifydir'] = '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'], impl)
                     ret = subprocess.run(['diff', '-rq', oqsdir, verifydir], stdout=subprocess.DEVNULL)
+                    # If we haven't integrated something from upstream it shouldn't be reported as an error, it should just be reported.
                     if ret.returncode == 0:
                         validated += 1
                     else:
                         differ += 1
                         dinfo.append(scheme)
+            else:
+                # If no scheme['implementation'] given, get the list from META.yml and add all implementations
+                for impl in scheme['metadata']['implementations']:
+                    oqsdir = os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'],
+                                          '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'],
+                                                            impl['name']))
+                    verifydir = os.path.join(basedir, 'src', family['type'], family['name'],
+                                             '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'],
+                                                               impl['name']))
+                    if not os.path.isdir(oqsdir) and os.path.isdir(verifydir):
+                        print('Available implementation in upstream that isn\'t integrated into LIBOQS: {}_{}_{}'.format(impl['upstream']['name'],
+                                                                                                                    scheme['pqclean_scheme'], impl['name']))
+                    else:
+                        scheme['verifydir'] = '{}_{}_{}'.format(impl['upstream']['name'], scheme['pqclean_scheme'],
+                                                            impl['name'])
+                        ret = subprocess.run(['diff', '-rq', oqsdir, verifydir], stdout=subprocess.DEVNULL)
+                        if ret.returncode == 0:
+                            validated += 1
+                        else:
+                            differ += 1
+                            dinfo.append(scheme)
 
     patch_list = []
     for upstream in instructions['upstreams']:

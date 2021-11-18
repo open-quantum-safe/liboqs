@@ -5,9 +5,11 @@
 - **Principal submitters**: Daniel J. Bernstein, Tung Chou, Tanja Lange, Ingo von Maurich, Rafael Misoczki, Ruben Niederhagen, Edoardo Persichetti, Christiane Peters, Peter Schwabe, Nicolas Sendrier, Jakub Szefer, Wen Wang.
 - **Authors' website**: https://classic.mceliece.org
 - **Specification version**: SUPERCOP-20191221.
-- **Implementation source**: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0, which takes it from:
+- **Primary Source**<a name="primary-source"></a>:
+  - **Source**: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524
+  - **Implementation license (SPDX-Identifier)**: Public domain
+, which takes it from:
   - SUPERCOP-20191221 "vec" and "avx" implementations
-- **Implementation license (SPDX-Identifier)**: Public domain.
 
 ## Parameter set summary
 
@@ -26,10 +28,10 @@
 
 ## Classic-McEliece-348864 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                  |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                  |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                  |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                  |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -37,82 +39,82 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Classic-McEliece-348864f implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                 |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | True                                           | True                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Classic-McEliece-460896 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                 |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Classic-McEliece-460896f implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                 |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,BMI1,POPCNT        | False                              | True                                           | True                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,BMI1,POPCNT        | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Classic-McEliece-6688128 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                 |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Classic-McEliece-6688128f implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                 |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,BMI1,POPCNT        | False                              | True                                           | True                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,BMI1,POPCNT        | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Classic-McEliece-6960119 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                 |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Classic-McEliece-6960119f implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                 |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,BMI1,POPCNT        | False                              | True                                           | True                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,BMI1,POPCNT        | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Classic-McEliece-8192128 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                 |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Classic-McEliece-8192128f implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           vec            | All                         | All                             | None                    | True                               | True                                           | True                 |
-|           avx            | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | True                                           | True                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | vec                      | All                         | All                             | None                    | True                               | True                                           | True                 |
+| [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT,BMI1        | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

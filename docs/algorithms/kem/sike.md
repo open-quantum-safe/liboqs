@@ -5,8 +5,10 @@
 - **Principal submitters**: David Jao, Reza Azarderakhsh, Matthew Campagna, Craig Costello, Luca De Feo, Basil Hess, Amir Jalali, Brian Koziel, Brian LaMacchia, Patrick Longa, Michael Naehrig, Joost Renes, Vladimir Soukharev, David Urbanik.
 - **Authors' website**: https://sike.org
 - **Specification version**: NIST Round 3 submission.
-- **Implementation source**: https://github.com/microsoft/PQCrypto-SIDH/commit/effa607f244768cdd38f930887076373604eaa78
-- **Implementation license (SPDX-Identifier)**: MIT.
+- **Primary Source**<a name="primary-source"></a>:
+  - **Source**: https://github.com/microsoft/PQCrypto-SIDH/commit/effa607f244768cdd38f930887076373604eaa78
+  - **Implementation license (SPDX-Identifier)**: MIT
+
 
 ## Parameter set summary
 
@@ -31,12 +33,12 @@
 
 ## SIDH-p434 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                 |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                 |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                 |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -44,174 +46,174 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIDH-p434-compressed implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIDH-p503 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64        | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIDH-p503-compressed implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64        | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIDH-p610 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIDH-p610-compressed implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIDH-p751 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64        | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIDH-p751-compressed implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64        | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIKE-p434 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIKE-p434-compressed implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIKE-p503 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64        | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIKE-p503-compressed implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64        | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIKE-p610 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIKE-p610-compressed implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIKE-p751 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64        | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## SIKE-p751-compressed implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|        optimized         | All                         | All                             | None                    | True                               | True                                           | False                |
-|    additional\_amd64     | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
-| additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
-|  additional\_amd64\_adx  | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
-|    additional\_arm64     | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | optimized                | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64        | x86\_64                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_bmi2  | x86\_64                     | Linux,Darwin                    | BMI2                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_amd64\_adx   | x86\_64                     | Linux,Darwin                    | BMI2,ADX                | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | additional\_arm64        | arm64v8                     | Linux,Darwin                    | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 

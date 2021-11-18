@@ -15,8 +15,6 @@ crypto-assumption: NTRU
 website: https://ntruprime.cr.yp.to
 nist-round: 3
 spec-version: supercop-20200826
-spdx-license-identifier: Public domain
-upstream: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0
 upstream-ancestors:
 - https://github.com/jschanck/package-pqclean/tree/4d9f08c3/ntruprime
 - supercop-20210604
@@ -38,6 +36,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -52,6 +51,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: ntrulpr761
   claimed-nist-level: 2
   claimed-security: IND-CCA2
@@ -69,6 +69,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -83,6 +84,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: ntrulpr857
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -100,6 +102,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -114,6 +117,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: ntrulpr1277
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -131,6 +135,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -145,6 +150,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: sntrup653
   claimed-nist-level: 1
   claimed-security: IND-CCA2
@@ -162,6 +168,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -176,6 +183,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: sntrup761
   claimed-nist-level: 2
   claimed-security: IND-CCA2
@@ -193,6 +201,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -207,6 +216,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: sntrup857
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -224,6 +234,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -238,6 +249,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: sntrup1277
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -255,6 +267,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -269,3 +282,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
+primary-upstream:
+  spdx-license-identifier: Public domain
+  source: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524

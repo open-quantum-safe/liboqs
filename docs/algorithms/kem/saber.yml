@@ -9,8 +9,6 @@ crypto-assumption: Module learning with rounding
 website: https://www.esat.kuleuven.be/cosic/pqcrypto/saber/
 nist-round: 3
 spec-version: NIST Round 3 submission
-spdx-license-identifier: Public domain
-upstream: https://github.com/PQClean/PQClean/commit/5b8ef3baea3ffdfbf688a3a1bb8f02de44a67ec0
 upstream-ancestors:
 - https://github.com/jschanck/package-pqclean/tree/1ae84c3c/saber
 - https://github.com/KULeuven-COSIC/SABER/tree/509cc5ec3a7e12a751ccdd2ef5bd6e54e00bd350
@@ -31,6 +29,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -44,6 +43,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: Saber-KEM
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -60,6 +60,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -73,6 +74,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
 - name: FireSaber-KEM
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -89,6 +91,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
   - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
@@ -102,3 +105,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+    upstream: primary-upstream
+primary-upstream:
+  spdx-license-identifier: Public domain
+  source: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524

@@ -41,7 +41,16 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         out_md.write('- **Authors\' website**: {}\n'.format(kem_yaml['website']))
         out_md.write('- **Specification version**: {}.\n'.format(kem_yaml['spec-version']))
 
-        out_md.write('- **Implementation source**: {}'.format(kem_yaml['upstream']))
+        out_md.write('- **Primary Source**<a name="primary-source"></a>:\n')
+        out_md.write('  - **Source**: {}\n'.format(kem_yaml['primary-upstream']['source']))
+        out_md.write('  - **Implementation license (SPDX-Identifier)**: {}\n'.format(kem_yaml['primary-upstream']['spdx-license-identifier']))
+        if 'optimized-upstreams' in kem_yaml:
+            out_md.write('- **Optimized Implementation sources**: {}\n'.format(kem_yaml['primary-upstream']['source']))
+            for opt_upstream in kem_yaml['optimized-upstreams']:
+                out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
+                out_md.write('      - **Source**: {}\n'.format(kem_yaml['optimized-upstreams'][opt_upstream]['source']))
+                out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(kem_yaml['optimized-upstreams'][opt_upstream]['spdx-license-identifier']))
+
         if 'upstream-ancestors' in kem_yaml:
             out_md.write(', which takes it from:\n')
             for url in kem_yaml['upstream-ancestors'][:-1]:
@@ -50,7 +59,6 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         else:
             out_md.write('\n')
 
-        out_md.write('- **Implementation license (SPDX-Identifier)**: {}.\n'.format(kem_yaml['spdx-license-identifier']))
 
         out_md.write('\n## Parameter set summary\n\n')
         table = [['Parameter set',
@@ -73,7 +81,8 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
 
         for index, parameter_set in enumerate(kem_yaml['parameter-sets']):
             out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name']))
-            table_header = ['Identifier in upstream',
+            table_header = ['Implementation source',
+                            'Identifier in upstream',
                             'Supported architecture(s)',
                             'Supported operating system(s)',
                             'CPU extension(s) used',
@@ -86,8 +95,11 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
 
             table = [table_header]
             for impl in parameter_set['implementations']:
+                # todo, automate linking this?
+                # if all platforms are supported, assuming not optimized and is primary upstream
                 if impl['supported-platforms'] == 'all':
-                    table.append([impl['upstream-id'].replace('_', '\_'),
+                    table.append(['[Primary Source](#primary-source)',
+                                  impl['upstream-id'].replace('_', '\_'),
                                   'All',
                                   'All',
                                   'None',
@@ -97,12 +109,19 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
                 else:
                     for platform in impl['supported-platforms']:
                         op_systems = ','.join(platform['operating_systems'])
-                        if 'required_flags' in platform:
+                        if 'required_flags' in platform and platform['required_flags']:
                             flags = ','.join(flag.upper() for flag in platform['required_flags'])
                         else:
                             flags = 'None'
-
-                        table.append([impl['upstream-id'].replace('_', '\_'),
+                        if impl['upstream'] == 'primary-upstream':
+                            name = 'Primary Source'
+                            anchor = 'primary-source'
+                        else:
+                            name = impl['upstream']
+                            anchor = impl['upstream']
+                        upstream_name = '[{}](#{})'.format(name, anchor)
+                        table.append([upstream_name,
+                                      impl['upstream-id'].replace('_', '\_'),
                                       platform['architecture'].replace('_', '\_'),
                                       op_systems,
                                       flags,

@@ -68,13 +68,19 @@ def get_oqs_yaml(param_list, name):
     exit(1)
 
 # Merge documentation contained in liboqs_root/docs/algorithms/kem/kem['name'].yml with upstream information:
-# Args: 
+# Args:
 # kems: List of kems in copy_from_upstream.yml
 # upstream_info: Hashtable of upstream information (keyed by upstream source)
-#  incl. entry: 'upstream_root' pointing to local folder containing source code 
+#  incl. entry: 'upstream_root' pointing to local folder containing source code
 def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=False):
     for kem in kems:
         ui = get_upstream_info(upstream_info, kem['upstream_location'])
+
+        ouis = dict()
+        if 'arch_specific_upstream_locations' in kem:
+            for arch_specific_ul in kem['arch_specific_upstream_locations']:
+                name = kem['arch_specific_upstream_locations'][arch_specific_ul] + '-' + str(arch_specific_ul)
+                ouis[name] = get_upstream_info(upstream_info, kem['arch_specific_upstream_locations'][arch_specific_ul])
         patches_done=""
         if 'patches' in ui:
           for patchfilename in ui['patches']:
@@ -96,6 +102,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
             # in the OQS YAML files matches that of copy_from_upstream.yml
             # hence use helper function get_oqs_yaml(alg_name)
             for scheme in kem['schemes']:
+                meta_yaml_path_template = ui['kem_meta_path']
                 upstream_meta_path = os.path.join(upstream_root, meta_yaml_path_template.format_map(scheme))
                 if DEBUG > 0:
                     print("Examining {}'s META.yml.".format(scheme['pretty_name_full']))
@@ -107,7 +114,41 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 upstream_base_url = ui['git_url'][:-len(".git")]
                 # upstream is special: We will take the upstream git commit information 
                 # (possibly with added patch comment) as it is what drove the update
-                oqs_yaml['upstream'] = rhs_if_not_equal(oqs_yaml['upstream'], ("{}/commit/{}"+patches_done).format(upstream_base_url, ui['git_commit']), "upstream")
+                
+                # Need to check if yml is of old format. If so, update to new format
+                if 'primary-upstream' not in oqs_yaml:
+                    print("Updating format of {}. Please double check ordering of yaml file".format(scheme['pretty_name_full']))
+                    lhs = oqs_yaml['upstream']
+                    oqs_yaml['primary-upstream'] = dict()
+                    oqs_yaml['primary-upstream']['spdx-license-identifier'] = oqs_yaml['spdx-license-identifier']
+                    for i in range(len(oqs_yaml['parameter-sets'])):
+                        for j in range(len(oqs_yaml['parameter-sets'][i]['implementations'])):
+                            oqs_yaml['parameter-sets'][i]['implementations'][j]['upstream'] = 'primary-upstream'
+                else:
+                    lhs = oqs_yaml['primary-upstream']['source']
+                oqs_yaml['primary-upstream']['source'] = rhs_if_not_equal(lhs, ("{}/commit/{}"+patches_done).format(upstream_base_url, ui['git_commit']), "primary-upstream")
+                if 'upstream' in oqs_yaml:
+                    del oqs_yaml['upstream']
+                    del oqs_yaml['spdx-license-identifier']
+
+                if ouis:
+                    for upstream in ouis:
+                        optimized_upstream_base_url = ouis[upstream]['git_url'][:-len(".git")]
+                        for patchfilename in ouis[upstream]['patches']:
+                            if kem['name'] in patchfilename:
+                                patches_done=" with copy_from_upstream patches"
+                        patches_done=""
+                        if 'patches' in ouis[upstream]:
+                            for patchfilename in ouis[upstream]['patches']:
+                                if kem['name'] in patchfilename:
+                                    patches_done=" with copy_from_upstream patches"
+                        if 'optimized-upstreams' in oqs_yaml and upstream in oqs_yaml['optimized-upstreams']:
+                            lhs = oqs_yaml['optimized-upstreams'][upstream]['source']
+                        else:
+                            lhs = ''
+                        git_commit = ouis[upstream]['git_commit']
+                        oqs_yaml['optimized-upstreams'][upstream]['source'] = rhs_if_not_equal(lhs, ("{}/commit/{}"+patches_done).format(optimized_upstream_base_url, git_commit), "optimized-upstreams")
+
 
                 if 'auxiliary-submitters' in upstream_yaml:
                         oqs_yaml['auxiliary-submitters'] = rhs_if_not_equal(oqs_yaml['auxiliary-submitters'] if 'auxiliary-submitters' in oqs_yaml else '', upstream_yaml['auxiliary-submitters'], "auxiliary-submitters")
@@ -127,14 +168,33 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 oqs_scheme_yaml['length-ciphertext'] = rhs_if_not_equal(oqs_scheme_yaml['length-ciphertext'], upstream_yaml['length-ciphertext'], "length-ciphertext")
                 oqs_scheme_yaml['length-secret-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-secret-key'], upstream_yaml['length-secret-key'], "legnth-secret-key")
                 oqs_scheme_yaml['length-shared-secret'] = rhs_if_not_equal(oqs_scheme_yaml['length-shared-secret'], upstream_yaml['length-shared-secret'], "length-shared-secret")
-
+                
+                _upstream_yaml = upstream_yaml
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
+                    upstream_yaml = _upstream_yaml
+                    if impl['upstream'] in ouis:
+                        upstream_name = impl['upstream']
+                        meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
+                        opt_upstream_root = ouis[upstream_name]['upstream_root']
+                        upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
+                        upstream_yaml = load_yaml(upstream_meta_path)
+                        
                     for upstream_impl in upstream_yaml['implementations']:
                         if impl['upstream-id'] == upstream_impl['name']:
                             break
-
                     # Logic to add Common_META.yml components
-                    uir = get_upstream_info(upstream_yaml['implementations'], impl['upstream-id'])
+
+                    implementations = upstream_yaml['implementations']
+                    """
+                    if 'arch_specific_upstream_locations' in kem and impl['upstream'] != 'primary-upstream':
+                        upstream_name = impl['upstream']
+                        meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
+                        opt_upstream_root = ouis[upstream_name]['upstream_root']
+                        upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
+                        optimized_meta = load_yaml(upstream_meta_path)
+                        implementations = optimized_meta['implementations']
+                    """
+                    uir = get_upstream_info(implementations, impl['upstream-id'])
                     if (uir != None) and ('common_dep' in uir):
                         upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
                         upstream_common_yaml = load_yaml(upstream_common_path)
@@ -144,12 +204,18 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                                if 'required_flags' in ur['supported_platforms'][0].keys():
                                   upstream_impl['supported_platforms'][0]['required_flags']=list(set(upstream_impl['supported_platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
                                   upstream_impl['supported_platforms'][0]['required_flags'].sort()
-
                     if 'supported_platforms' in upstream_impl:
+                        for i in range(len(upstream_impl['supported_platforms'])):
+                            if upstream_impl['supported_platforms'][i]['architecture'] == 'arm_8':
+                                upstream_impl['supported_platforms'][i]['architecture'] = 'ARM64_V8'
+                                if 'asimd' in upstream_impl['supported_platforms'][i]['required_flags']:
+                                    upstream_impl['supported_platforms'][i]['required_flags'].remove('asimd')
+                                if not upstream_impl['supported_platforms'][i]['required_flags']:
+                                    del upstream_impl['supported_platforms'][i]['required_flags']
+
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
                     else:
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
-
                     oqs_scheme_yaml['implementations'][impl_index] = impl
 
                 oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
@@ -189,7 +255,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 oqs_yaml['principal-submitters'] = rhs_if_not_equal(oqs_yaml['principal-submitters'], upstream_yaml['principal-submitters'], "principal-submitters")
 
                 upstream_base_url = ui['git_url'][:-len(".git")]
-                # upstream is special: We will take the upstream git commit information 
+                # upstream is special: We will take the upstream git commit information
                 # (possibly with added patch comment) as it is what drove the update
                 oqs_yaml['upstream'] = rhs_if_not_equal(oqs_yaml['upstream'], ("{}/commit/{}"+patches_done).format(upstream_base_url, ui['git_commit']), "upstream")
 
@@ -232,7 +298,6 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
                     else:
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
-
                     oqs_scheme_yaml['implementations'][impl_index] = impl
 
                 oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml

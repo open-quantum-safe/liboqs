@@ -22,8 +22,9 @@ crypto-assumption: QC-MDPC (Quasi-Cyclic Moderate Density Parity-Check)
 website: http://bikesuite.org/
 nist-round: 3
 spec-version: 4.1
-spdx-license-identifier: Apache-2.0
-upstream: https://github.com/awslabs/bike-kem
+primary-upstream: 
+  source: https://github.com/awslabs/bike-kem
+  spdx-license-identifier: Apache-2.0
 upstream-ancestors:
 - https://bikesuite.org/files/v4.1/Reference_Implementation.2020.10.20.2.zip
 parameter-sets:
@@ -36,7 +37,8 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: little endian
       operating_systems:
@@ -44,7 +46,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -69,7 +72,8 @@ parameter-sets:
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: little endian
       operating_systems:
@@ -77,7 +81,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: master
+  - upstream: primary-upstream
+    upstream-id: master
     supported-platforms:
     - architecture: x86_64
       operating_systems:
