@@ -72,4 +72,11 @@ if(OQS_ENABLE_KEM_ntru_hrss701_avx2)
     set(_NTRU_OBJS ${_NTRU_OBJS} $<TARGET_OBJECTS:ntru_hrss701_avx2>)
 endif()
 
+if(OQS_ENABLE_KEM_ntru_hrss1373)
+    add_library(ntru_hrss1373_clean OBJECT kem_ntru_hrss1373.c pqclean_ntruhrss1373_clean/cmov.c pqclean_ntruhrss1373_clean/kem.c pqclean_ntruhrss1373_clean/owcpa.c pqclean_ntruhrss1373_clean/pack3.c pqclean_ntruhrss1373_clean/packq.c pqclean_ntruhrss1373_clean/poly.c pqclean_ntruhrss1373_clean/poly_lift.c pqclean_ntruhrss1373_clean/poly_mod.c pqclean_ntruhrss1373_clean/poly_r2_inv.c pqclean_ntruhrss1373_clean/poly_rq_mul.c pqclean_ntruhrss1373_clean/poly_s3_inv.c pqclean_ntruhrss1373_clean/sample.c pqclean_ntruhrss1373_clean/sample_iid.c)
+    target_include_directories(ntru_hrss1373_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_ntruhrss1373_clean)
+    target_include_directories(ntru_hrss1373_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
+    set(_NTRU_OBJS ${_NTRU_OBJS} $<TARGET_OBJECTS:ntru_hrss1373_clean>)
+endif()
+
 set(NTRU_OBJS ${_NTRU_OBJS} PARENT_SCOPE)

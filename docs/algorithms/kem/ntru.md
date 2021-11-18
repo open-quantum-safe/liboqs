@@ -21,6 +21,7 @@
 | NTRU-HPS-4096-821  | IND-CCA2         |                    5 |                      1230 |                      1590 |                      1230 |                           32 |
 | NTRU-HPS-4096-1229 | IND-CCA2         |                    5 |                      1842 |                      2366 |                      1842 |                           32 |
 |   NTRU-HRSS-701    | IND-CCA2         |                    3 |                      1138 |                      1450 |                      1138 |                           32 |
+|   NTRU-HRSS-1373   | IND-CCA2         |                    5 |                      2401 |                      2983 |                      2401 |                           32 |
 
 ## NTRU-HPS-2048-509 implementation characteristics
 
@@ -65,6 +66,14 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2               | True                               | True                                           | False                |
+
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+## NTRU-HRSS-1373 implementation characteristics
+
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

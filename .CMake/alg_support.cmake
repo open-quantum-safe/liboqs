@@ -268,6 +268,7 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCT
 endif()
 endif()
 
+cmake_dependent_option(OQS_ENABLE_KEM_ntru_hrss1373 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
 
 option(OQS_ENABLE_KEM_NTRUPRIME "Enable ntruprime algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_ntrulpr653 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)

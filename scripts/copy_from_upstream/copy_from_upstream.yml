@@ -149,6 +149,10 @@ kems:
         scheme: hrss701
         pqclean_scheme: ntruhrss701
         pretty_name_full: NTRU-HRSS-701
+      -
+        scheme: hrss1373
+        pqclean_scheme: ntruhrss1373
+        pretty_name_full: NTRU-HRSS-1373
   -
     name: ntruprime
     default_implementation: clean
