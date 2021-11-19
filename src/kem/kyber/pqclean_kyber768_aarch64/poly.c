@@ -15,7 +15,7 @@
 *                            (of length KYBER_POLYCOMPRESSEDBYTES)
 *              - const poly *a: pointer to input polynomial
 **************************************************/
-void poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const int16_t *a) {
+void poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const int16_t a[KYBER_N]) {
     unsigned int i, j;
     int16_t u;
     uint8_t t[8];
@@ -46,7 +46,7 @@ void poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const int16_t *a) {
 *              - const uint8_t *a: pointer to input byte array
 *                                  (of length KYBER_POLYCOMPRESSEDBYTES bytes)
 **************************************************/
-void poly_decompress(int16_t *r, const uint8_t a[KYBER_POLYCOMPRESSEDBYTES]) {
+void poly_decompress(int16_t r[KYBER_N], const uint8_t a[KYBER_POLYCOMPRESSEDBYTES]) {
     unsigned int i;
 
     for (i = 0; i < KYBER_N / 2; i++) {
@@ -65,7 +65,7 @@ void poly_decompress(int16_t *r, const uint8_t a[KYBER_POLYCOMPRESSEDBYTES]) {
 *                            (needs space for KYBER_POLYBYTES bytes)
 *              - const poly *a: pointer to input polynomial
 **************************************************/
-void poly_tobytes(uint8_t r[KYBER_POLYBYTES], const int16_t *a) {
+void poly_tobytes(uint8_t r[KYBER_POLYBYTES], const int16_t a[KYBER_N]) {
     unsigned int i;
     uint16_t t0, t1;
 
@@ -91,7 +91,7 @@ void poly_tobytes(uint8_t r[KYBER_POLYBYTES], const int16_t *a) {
 *              - const uint8_t *a: pointer to input byte array
 *                                  (of KYBER_POLYBYTES bytes)
 **************************************************/
-void poly_frombytes(int16_t *r, const uint8_t a[KYBER_POLYBYTES]) {
+void poly_frombytes(int16_t r[KYBER_N], const uint8_t a[KYBER_POLYBYTES]) {
     uint8x16x3_t neon_buf;
     uint16x8x4_t tmp;
     int16x8x4_t value;
@@ -135,7 +135,7 @@ void poly_frombytes(int16_t *r, const uint8_t a[KYBER_POLYBYTES]) {
 * Arguments:   - poly *r: pointer to output polynomial
 *              - const uint8_t *msg: pointer to input message
 **************************************************/
-void poly_frommsg(int16_t *r, const uint8_t msg[KYBER_INDCPA_MSGBYTES]) {
+void poly_frommsg(int16_t r[KYBER_N], const uint8_t msg[KYBER_INDCPA_MSGBYTES]) {
     unsigned int i, j;
     int16_t mask;
 
@@ -156,7 +156,7 @@ void poly_frommsg(int16_t *r, const uint8_t msg[KYBER_INDCPA_MSGBYTES]) {
 * Arguments:   - uint8_t *msg: pointer to output message
 *              - const poly *a: pointer to input polynomial
 **************************************************/
-void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const int16_t *a) {
+void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const int16_t a[KYBER_N]) {
     unsigned int i, j;
     uint16_t t;
 
