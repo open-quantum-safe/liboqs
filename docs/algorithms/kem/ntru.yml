@@ -117,6 +117,23 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+- name: NTRU-HPS-4096-1229
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 1842
+  length-ciphertext: 1842
+  length-secret-key: 2366
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
 - name: NTRU-HRSS-701
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -149,6 +166,23 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+- name: NTRU-HRSS-1373
+  claimed-nist-level: 5
+  claimed-security: IND-CCA2
+  length-public-key: 2401
+  length-ciphertext: 2401
+  length-secret-key: 2983
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
 primary-upstream:
   spdx-license-identifier: CC0-1.0
-  source: https://github.com/PQClean/PQClean/commit/7eb978b4a733696bd7197278aa84216095674524
+  source: https://github.com/PQClean/PQClean/commit/e2d82cc58dcbc75dcce9ecf70e91465a00c2a4d8

@@ -80,8 +80,12 @@ extern "C" {
 #define OQS_KEM_alg_ntru_hps2048677 "NTRU-HPS-2048-677"
 /** Algorithm identifier for NTRU-HPS-4096-821 KEM. */
 #define OQS_KEM_alg_ntru_hps4096821 "NTRU-HPS-4096-821"
+/** Algorithm identifier for NTRU-HPS-4096-1229 KEM. */
+#define OQS_KEM_alg_ntru_hps40961229 "NTRU-HPS-4096-1229"
 /** Algorithm identifier for NTRU-HRSS-701 KEM. */
 #define OQS_KEM_alg_ntru_hrss701 "NTRU-HRSS-701"
+/** Algorithm identifier for NTRU-HRSS-1373 KEM. */
+#define OQS_KEM_alg_ntru_hrss1373 "NTRU-HRSS-1373"
 /** Algorithm identifier for ntrulpr653 KEM. */
 #define OQS_KEM_alg_ntruprime_ntrulpr653 "ntrulpr653"
 /** Algorithm identifier for ntrulpr761 KEM. */
@@ -152,7 +156,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 58
+#define OQS_KEM_algs_length 60
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
