@@ -17,7 +17,7 @@ website: https://falcon-sign.info
 nist-round: 3
 spec-version: v1.2
 spdx-license-identifier: CC0-1.0
-upstream: https://github.com/PQClean/PQClean/commit/e2d82cc58dcbc75dcce9ecf70e91465a00c2a4d8
+upstream: https://github.com/PQClean/PQClean/commit/f365dcfe69f15325443ce65df9798e42816f78e9
 upstream-ancestors:
 - https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon
 - supercop-20201018
