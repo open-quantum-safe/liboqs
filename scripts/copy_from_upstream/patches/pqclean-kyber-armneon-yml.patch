@@ -16,7 +16,7 @@ index 28e2014..56a4b5f 100644
 +++ b/crypto_kem/kyber1024/META.yml
 @@ -37,7 +37,7 @@ implementations:
      - name: aarch64
-       version: https://github.com/neon-ntt/neon-ntt/tree/b011eeff3515fb168aa4dbaa671d760009d98dbb
+       version: https://github.com/neon-ntt/neon-ntt/tree/c6ffbcd1e5590e4dddbc604fc80d2ad756485b4d
        supported_platforms:
 -        - architecture: arm_8
 +        - architecture: ARM64_V8
@@ -29,7 +29,7 @@ index 3c4d1ee..33fe01d 100644
 +++ b/crypto_kem/kyber512/META.yml
 @@ -37,7 +37,7 @@ implementations:
      - name: aarch64
-       version: https://github.com/neon-ntt/neon-ntt/tree/b011eeff3515fb168aa4dbaa671d760009d98dbb
+       version: https://github.com/neon-ntt/neon-ntt/tree/c6ffbcd1e5590e4dddbc604fc80d2ad756485b4d
        supported_platforms:
 -        - architecture: arm_8
 +        - architecture: ARM64_V8
@@ -42,7 +42,7 @@ index 035cce6..98a0504 100644
 +++ b/crypto_kem/kyber768/META.yml
 @@ -37,7 +37,7 @@ implementations:
      - name: aarch64
-       version: https://github.com/neon-ntt/neon-ntt/tree/b011eeff3515fb168aa4dbaa671d760009d98dbb
+       version: https://github.com/neon-ntt/neon-ntt/tree/c6ffbcd1e5590e4dddbc604fc80d2ad756485b4d
        supported_platforms:
 -        - architecture: arm_8
 +        - architecture: ARM64_V8
