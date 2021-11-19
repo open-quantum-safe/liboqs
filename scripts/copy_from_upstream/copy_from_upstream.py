@@ -523,6 +523,8 @@ def process_families(instructions, basedir, with_kat, with_generator):
                             req = impl['supported_platforms'][i]
                             # if compiling for ARM64_V8 the asimd is implied and will cause errors
                             # when provided to the compiler, so we need to remove it
+                            if req['architecture'] == 'arm_8':
+                                req['architecture'] = 'ARM64_V8'
                             if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
                                 req['required_flags'].remove('asimd')
                             impl['required_flags'] = req['required_flags']

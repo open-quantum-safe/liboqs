@@ -9,7 +9,7 @@ upstreams:
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
     ignore: ['pqclean_lightsaber_aarch64', 'pqclean_saber_aarch64', 'pqclean_firesaber_aarch64'] 
-    patches: ['pqclean-sphincs.patch', 'pqclean-kyber-armneon-yml.patch', 'pqclean-kyber-armneon-shake.patch']
+    patches: ['pqclean-sphincs.patch', 'pqclean-kyber-armneon-shake.patch']
   -
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
