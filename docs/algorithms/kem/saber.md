@@ -6,7 +6,7 @@
 - **Authors' website**: https://www.esat.kuleuven.be/cosic/pqcrypto/saber/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/f365dcfe69f15325443ce65df9798e42816f78e9
+  - **Source**: https://github.com/PQClean/PQClean/commit/f365dcfe69f15325443ce65df9798e42816f78e9 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Public domain
 , which takes it from:
   - https://github.com/jschanck/package-pqclean/tree/1ae84c3c/saber, which takes it from:
@@ -26,6 +26,7 @@
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                 |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                 |
+| [Primary Source](#primary-source) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | False                              | True                                           | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -37,6 +38,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+| [Primary Source](#primary-source) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | False                              | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -46,6 +48,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | clean                    | All                         | All                             | None                    | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2                    | False                              | True                                           | False                |
+| [Primary Source](#primary-source) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | False                              | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

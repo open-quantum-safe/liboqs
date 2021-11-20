@@ -44,6 +44,18 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+  - upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
 - name: Saber-KEM
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -69,6 +81,18 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
+  - upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
@@ -106,6 +130,19 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
     upstream: primary-upstream
+  - upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
 primary-upstream:
   spdx-license-identifier: Public domain
   source: https://github.com/PQClean/PQClean/commit/f365dcfe69f15325443ce65df9798e42816f78e9
+    with copy_from_upstream patches

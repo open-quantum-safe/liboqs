@@ -1,0 +1,63 @@
+diff --git a/crypto_kem/firesaber/aarch64/fips202x2.h b/crypto_kem/firesaber/aarch64/fips202x2.h
+index d260245..11579f3 100644
+--- a/crypto_kem/firesaber/aarch64/fips202x2.h
++++ b/crypto_kem/firesaber/aarch64/fips202x2.h
+@@ -4,15 +4,9 @@
+ #include "SABER_params.h"
+ #include <arm_neon.h>
+ #include <stddef.h>
+-
++#include "fips202.h"
+ typedef uint64x2_t v128;
+ 
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
+-
+-
+ typedef struct {
+     v128 s[25];
+ } keccakx2_state;
+diff --git a/crypto_kem/lightsaber/aarch64/fips202x2.h b/crypto_kem/lightsaber/aarch64/fips202x2.h
+index d260245..11579f3 100644
+--- a/crypto_kem/lightsaber/aarch64/fips202x2.h
++++ b/crypto_kem/lightsaber/aarch64/fips202x2.h
+@@ -4,15 +4,9 @@
+ #include "SABER_params.h"
+ #include <arm_neon.h>
+ #include <stddef.h>
+-
++#include "fips202.h"
+ typedef uint64x2_t v128;
+ 
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
+-
+-
+ typedef struct {
+     v128 s[25];
+ } keccakx2_state;
+diff --git a/crypto_kem/saber/aarch64/fips202x2.h b/crypto_kem/saber/aarch64/fips202x2.h
+index d260245..11579f3 100644
+--- a/crypto_kem/saber/aarch64/fips202x2.h
++++ b/crypto_kem/saber/aarch64/fips202x2.h
+@@ -4,15 +4,9 @@
+ #include "SABER_params.h"
+ #include <arm_neon.h>
+ #include <stddef.h>
+-
++#include "fips202.h"
+ typedef uint64x2_t v128;
+ 
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
+-
+-
+ typedef struct {
+     v128 s[25];
+ } keccakx2_state;
