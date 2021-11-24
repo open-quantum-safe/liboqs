@@ -1,6 +1,17 @@
 # SPDX-License-Identifier: MIT
 
-if(OQS_ENABLE_KEM_sike_p434 OR
+if(
+  # check we are on a supported platform (SIKE's config.h stops the build otherwise)
+  (ARCH STREQUAL "x86" OR
+   ARCH_X86 OR
+   ARCH_X86_64 OR
+   ARCH_ARM32v7 OR
+   ARCH_ARM64v8 OR
+   ARCH_PPC64LE OR
+   ARCH_S390X)
+  AND
+  # check that one SIDH/SIKE alg is enabled
+  (OQS_ENABLE_KEM_sike_p434 OR
    OQS_ENABLE_KEM_sike_p503 OR
    OQS_ENABLE_KEM_sike_p610 OR
    OQS_ENABLE_KEM_sike_p751 OR
@@ -15,7 +26,7 @@ if(OQS_ENABLE_KEM_sike_p434 OR
    OQS_ENABLE_KEM_sidh_p434_compressed OR
    OQS_ENABLE_KEM_sidh_p503_compressed OR
    OQS_ENABLE_KEM_sidh_p610_compressed OR
-   OQS_ENABLE_KEM_sidh_p751_compressed)
+   OQS_ENABLE_KEM_sidh_p751_compressed))
 
     set(SRCS kem_sike.c)
     if(OQS_ENABLE_KEM_sike_p434 OR OQS_ENABLE_KEM_sidh_p434)
