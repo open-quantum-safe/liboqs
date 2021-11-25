@@ -14,10 +14,10 @@ _PQCLEAN_FIRESABER_AARCH64_asm_asymmetric_mul:
     push_all
 
     ldr w28, [x3, #0]
-    ldr w29, [x3, #4]
+    ldr w27, [x3, #4]
 
     dup v28.4S, w28
-    dup v29.4S, w29
+    dup v29.4S, w27
 
     add x11,  x0, #0
 
