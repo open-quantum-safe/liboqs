@@ -53,7 +53,7 @@ parameter-sets:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
     upstream: primary-upstream
 - name: Saber-KEM
@@ -96,7 +96,7 @@ parameter-sets:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
     upstream: primary-upstream
 - name: FireSaber-KEM
@@ -139,7 +139,7 @@ parameter-sets:
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: false
-    no-secret-dependent-branching-checked-by-valgrind: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
     upstream: primary-upstream
 primary-upstream:
