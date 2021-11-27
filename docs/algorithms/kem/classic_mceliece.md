@@ -6,7 +6,7 @@
 - **Authors' website**: https://classic.mceliece.org
 - **Specification version**: SUPERCOP-20191221.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/f365dcfe69f15325443ce65df9798e42816f78e9
+  - **Source**: https://github.com/PQClean/PQClean/commit/6a32796212b79a5f9126d0a933e1216313f50c16
   - **Implementation license (SPDX-Identifier)**: Public domain
 , which takes it from:
   - SUPERCOP-20191221 "vec" and "avx" implementations

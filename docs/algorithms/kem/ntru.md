@@ -7,7 +7,7 @@
 - **Authors' website**: https://ntru.org/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/f365dcfe69f15325443ce65df9798e42816f78e9
+  - **Source**: https://github.com/PQClean/PQClean/commit/6a32796212b79a5f9126d0a933e1216313f50c16
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 , which takes it from:
   - https://github.com/jschanck/ntru/tree/a43a4457

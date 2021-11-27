@@ -3,13 +3,12 @@ upstreams:
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
-    git_commit: f365dcfe69f15325443ce65df9798e42816f78e9
+    git_commit: 6a32796212b79a5f9126d0a933e1216313f50c16
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    ignore: ['pqclean_lightsaber_aarch64', 'pqclean_saber_aarch64', 'pqclean_firesaber_aarch64'] 
-    patches: ['pqclean-sphincs.patch', 'pqclean-kyber-armneon-shake.patch']
+    patches: ['pqclean-sphincs.patch', 'pqclean-kyber-armneon-shake.patch', 'pqclean-saber-armneon-shake.patch']
   -
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git

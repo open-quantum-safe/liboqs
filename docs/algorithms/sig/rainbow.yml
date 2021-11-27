@@ -14,7 +14,7 @@ website: https://www.pqcrainbow.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
 spdx-license-identifier: CC0-1.0
-upstream: https://github.com/PQClean/PQClean/commit/f365dcfe69f15325443ce65df9798e42816f78e9
+upstream: https://github.com/PQClean/PQClean/commit/6a32796212b79a5f9126d0a933e1216313f50c16
 upstream-ancestors:
 - https://github.com/fast-crypto-lab/rainbow-submission-round2/commit/173ada0e077e1b9dbd8e4a78994f87acc0c92263
 parameter-sets:
