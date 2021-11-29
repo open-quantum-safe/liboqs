@@ -21,6 +21,8 @@ if(((CMAKE_C_COMPILER_ID STREQUAL "GNU") AND (CMAKE_C_COMPILER_VERSION VERSION_G
 {%- endif %}
     cmake_dependent_option(OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}_{{ impl['name']  }} "" ON "OQS_ENABLE_KEM_{{ family['name'] }}_{{ scheme['scheme'] }}" OFF)
 {% if impl['upstream']['name'] == 'pqclean' -%}
+else()
+    message(WARNING "  ARM optimizations not active due to downlevel compiler")
 endif()
 {%- endif %}
 endif()
