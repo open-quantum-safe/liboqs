@@ -39,6 +39,8 @@
 #cmakedefine OQS_USE_ARM_SHA3_INSTRUCTIONS 1
 #cmakedefine OQS_USE_ARM_NEON_INSTRUCTIONS 1
 
+#cmakedefine OQS_SPEED_USE_ARM_PMU 1
+
 #cmakedefine OQS_ENABLE_TEST_CONSTANT_TIME 1
 
 #cmakedefine OQS_ENABLE_SHA3_xkcp_low_avx2 1

@@ -91,6 +91,8 @@ else()
     set(OQS_DEBUG_BUILD OFF)
 endif()
 
+option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
+
 if(WIN32)
     set(CMAKE_GENERATOR_CC cl)
 endif()
