@@ -181,6 +181,15 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 	__asm__ volatile("mcr p15, 0, %0, c9, c12, 3\t\n" ::"r"(0x8000000f));
 }
 #elif defined(SPEED_USE_ARM_PMU)
+
+/* Enabling access to ARMv8's Performance Monitoring Unit
+ * cannot be done from user mode. A kernel module to
+ * enable access must be loaded. This generally will
+ * require superuser permissions. A module that has
+ * been found to work on some platforms can be found at
+ * https://github.com/mupq/pqax#enable-access-to-performance-counters
+ */
+
 static void _bench_init_perfcounters(void) {
 	__asm__ volatile("MSR PMCR_EL0, %0" ::"r"(1));
 	__asm__ volatile("MSR PMCNTENSET_EL0, %0" ::"r"(0x80000000));
