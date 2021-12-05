@@ -45,6 +45,9 @@ if(NOT WIN32)
     add_executable(test_sha3 test_sha3.c ${COMMON_OBJS})
     target_link_libraries(test_sha3 PRIVATE ${INTERNAL_TEST_DEPS})
 
+    add_executable(speed_common speed_common.c ${COMMON_OBJS})
+    target_link_libraries(speed_common PRIVATE ${INTERNAL_TEST_DEPS})
+
     set(UNIX_TESTS test_aes test_hash test_sha3)
 
     set(PYTHON3_EXEC python3)
