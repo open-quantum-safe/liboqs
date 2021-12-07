@@ -2,6 +2,21 @@
 
 #include <oqs/oqs.h>
 
+// This file aims to directly or indirectly display all performance relevant OQS
+// build options from https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs:
+//
+// BUILD_SHARED_LIBS: Performance relevance TBD
+// CMAKE_BUILD_TYPE: If Debug, -g compiler option will be shown; -O3 for Release build
+// CMAKE_INSTALL_PREFIX: Not performance relevant
+// OQS_ENABLE_KEM|SIG: Not performance relevant; alg absence/presence will be detected on run
+// OQS_BUILD_ONLY_LIB: Not performance relevant
+// OQS_DIST_BUILD: Set if output "CPU exts active" present; otherwise, "CPU exts compile-time:" output
+// OQS_USE_OPENSSL: Explicitly output
+// OQS_OPT_TARGET: Visible by looking at compile options (-march or -mcpu): 'auto' -> "-march|cpu=native"
+// OQS_SPEED_USE_ARM_PMU: Output with Target platform
+// USE_SANITIZER: -fsanitize= option present in compile options
+
+
 #include <stdio.h>
 #include <string.h>
 
@@ -28,14 +43,18 @@ static void print_compiler_info(void) {
 // based on macros in https://sourceforge.net/p/predef/wiki/Architectures/
 static void print_platform_info(void) {
 #if defined(OQS_COMPILE_BUILD_TARGET)
-	printf("Target platform:  %s\n", OQS_COMPILE_BUILD_TARGET);
+	printf("Target platform:  %s", OQS_COMPILE_BUILD_TARGET);
 #elif defined(_WIN64)
-	printf("Target platform:  Windows (64-bit)\n");
+	printf("Target platform:  Windows (64-bit)");
 #elif defined(_WIN32)
-	printf("Target platform:  Windows (32-bit)\n");
+	printf("Target platform:  Windows (32-bit)");
 #else
-	printf("Target platform:  Unknown\n");
+	printf("Target platform:  Unknown");
 #endif
+#if defined(OQS_SPEED_USE_ARM_PMU)
+	printf(" - ARM PMU options enabled");
+#endif
+	printf("\n");
 }
 
 #if defined(OQS_USE_OPENSSL)
