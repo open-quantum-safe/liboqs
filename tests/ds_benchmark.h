@@ -135,6 +135,12 @@ static uint64_t _bench_rdtsc(void) {
 	__asm__ volatile("mrc p15, 0, %0, c9, c13, 0\t\n"
 	                 : "=r"(value));
 	return value;
+#elif defined(SPEED_USE_ARM_PMU)
+	/* Use the Performance Monitoring Unit */
+	uint64_t value;
+	/* Read the PMU register */
+	__asm__ volatile("mrs %0, PMCCNTR_EL0" : "=r" (value));
+	return value;
 #elif defined(__s390x__)
 #define USING_TIME_RATHER_THAN_CYCLES
 	uint64_t tod;
@@ -174,6 +180,20 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 	/* Clear overflows */
 	__asm__ volatile("mcr p15, 0, %0, c9, c12, 3\t\n" ::"r"(0x8000000f));
 }
+#elif defined(SPEED_USE_ARM_PMU)
+
+/* Enabling access to ARMv8's Performance Monitoring Unit
+ * cannot be done from user mode. A kernel module to
+ * enable access must be loaded. This generally will
+ * require superuser permissions. A module that has
+ * been found to work on some platforms can be found at
+ * https://github.com/mupq/pqax#enable-access-to-performance-counters
+ */
+
+static void _bench_init_perfcounters(void) {
+	__asm__ volatile("MSR PMCR_EL0, %0" ::"r"(1));
+	__asm__ volatile("MSR PMCNTENSET_EL0, %0" ::"r"(0x80000000));
+}
 #endif
 
 #define DEFINE_TIMER_VARIABLES                                                                              \
@@ -193,6 +213,15 @@ static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
     _bench_cycles_M2 = 0.0;         \
     _bench_time_cumulative = 0;     \
     _bench_time_mean = 0.0;         \
+    _bench_time_M2 = 0.0;
+#elif defined(SPEED_USE_ARM_PMU)
+#define INITIALIZE_TIMER        \
+    _bench_init_perfcounters(); \
+    _bench_iterations = 0;      \
+    _bench_cycles_mean = 0.0;   \
+    _bench_cycles_M2 = 0.0;     \
+    _bench_time_cumulative = 0; \
+    _bench_time_mean = 0.0;     \
     _bench_time_M2 = 0.0;
 #else
 #define INITIALIZE_TIMER        \
