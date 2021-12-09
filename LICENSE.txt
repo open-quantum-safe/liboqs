@@ -4,7 +4,7 @@ differently; the corresponding subfolder contains the license that applies in
 that case.
 
 
-Copyright (c) 2016-2020 Open Quantum Safe project
+Copyright (c) 2016-2021 Open Quantum Safe project
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
