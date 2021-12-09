@@ -254,19 +254,19 @@ static void _bench_init_perfcounters(void) {
     _bench_cycles_delta = _bench_cycles_x - _bench_cycles_mean;                                                                                                             \
     _bench_cycles_mean += _bench_cycles_delta / (double) _bench_iterations;                                                                                                 \
     _bench_cycles_M2 += _bench_cycles_delta * (_bench_cycles_x - _bench_cycles_mean);                                                                                       \
-    _bench_time_x = (double) ((_bench_timeval_end.tv_sec * 1000000 + _bench_timeval_end.tv_usec) - (_bench_timeval_start.tv_sec * 1000000 + _bench_timeval_start.tv_usec)); \
+    _bench_time_x = (double) ((((uint64_t) _bench_timeval_end.tv_sec) * 1000000 + (uint64_t) _bench_timeval_end.tv_usec) - (((uint64_t) _bench_timeval_start.tv_sec) * 1000000 + (uint64_t) _bench_timeval_start.tv_usec)); \
     _bench_time_delta = _bench_time_x - _bench_time_mean;                                                                                                                   \
     _bench_time_mean += _bench_time_delta / (double) _bench_iterations;                                                                                                     \
     _bench_time_M2 += _bench_time_delta * (_bench_time_x - _bench_time_mean);                                                                                               \
     _bench_time_cumulative += (uint64_t) _bench_time_x;
 
 #define FINALIZE_TIMER                                                             \
-    if (_bench_iterations == 2) {                                                  \
+    if (_bench_iterations < 2) {                                                   \
         _bench_cycles_stdev = 0.0;                                                 \
     } else {                                                                       \
         _bench_cycles_stdev = sqrt(_bench_cycles_M2 / (double) _bench_iterations); \
     }                                                                              \
-    if (_bench_iterations == 2) {                                                  \
+    if (_bench_iterations < 2) {                                                   \
         _bench_time_stdev = 0.0;                                                   \
     } else {                                                                       \
         _bench_time_stdev = sqrt(_bench_time_M2 / (double) _bench_iterations);     \
