@@ -521,12 +521,13 @@ def process_families(instructions, basedir, with_kat, with_generator):
                     try:
                         for i in range(len(impl['supported_platforms'])):
                             req = impl['supported_platforms'][i]
-                            # if compiling for ARM64_V8 the asimd is implied and will cause errors
-                            # when provided to the compiler, so we need to remove it
+                            # if compiling for ARM64_V8, asimd/neon is implied and will cause errors
+                            # when provided to the compiler; OQS uses the term ARM_NEON
                             if req['architecture'] == 'arm_8':
                                 req['architecture'] = 'ARM64_V8'
                             if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
                                 req['required_flags'].remove('asimd')
+                                req['required_flags'].append('arm_neon')
                             impl['required_flags'] = req['required_flags']
                             family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:
