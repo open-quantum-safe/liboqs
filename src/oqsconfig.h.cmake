@@ -12,6 +12,9 @@
 #cmakedefine ARCH_X86_64 1
 #cmakedefine ARCH_ARM64v8 1
 #cmakedefine ARCH_ARM32v7 1
+#cmakedefine BUILD_SHARED_LIBS 1
+#cmakedefine OQS_BUILD_ONLY_LIB 1
+#cmakefefine OQS_OPT_TARGET "@OQS_OPT_TARGET@"
 
 #cmakedefine OQS_USE_OPENSSL 1
 #cmakedefine OQS_USE_AES_OPENSSL 1
