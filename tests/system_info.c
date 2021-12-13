@@ -174,19 +174,19 @@ static void print_cpu_extensions(void) {
 }
 
 static void print_oqs_configuration(void) {
-/* Display all options as per https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs:
- * BUILD_SHARED_LIBS: Performance relevance TBD
- * CMAKE_BUILD_TYPE: If Debug, -g compiler option will be shown; -O3 for Release build
- * CMAKE_INSTALL_PREFIX: Not performance relevant
- * OQS_ENABLE_KEM|SIG: alg absence/presence detected on run; can be output by not passing an alg name to the test programs
- * OQS_BUILD_ONLY_LIB: Not performance relevant
- * OQS_DIST_BUILD: Set if output "CPU exts active" present; otherwise, "CPU exts compile-time:" output
- * OQS_USE_OPENSSL: Explicitly output
- * OQS_OPT_TARGET: Visible by looking at compile options (-march or -mcpu): 'auto' -> "-march|cpu=native"
- * OQS_SPEED_USE_ARM_PMU: Output with Target platform
- * USE_SANITIZER: -fsanitize= option present in compile options
- * OQS_ENABLE_TEST_CONSTANT_TIME: 
- */
+	/* Display all options as per https://github.com/open-quantum-safe/liboqs/wiki/Customizing-liboqs:
+	 * BUILD_SHARED_LIBS: Performance relevance TBD
+	 * CMAKE_BUILD_TYPE: If Debug, -g compiler option will be shown; -O3 for Release build
+	 * CMAKE_INSTALL_PREFIX: Not performance relevant
+	 * OQS_ENABLE_KEM|SIG: alg absence/presence detected on run; can be output by not passing an alg name to the test programs
+	 * OQS_BUILD_ONLY_LIB: Not performance relevant
+	 * OQS_DIST_BUILD: Set if output "CPU exts active" present; otherwise, "CPU exts compile-time:" output
+	 * OQS_USE_OPENSSL: Explicitly output
+	 * OQS_OPT_TARGET: Visible by looking at compile options (-march or -mcpu): 'auto' -> "-march|cpu=native"
+	 * OQS_SPEED_USE_ARM_PMU: Output with Target platform
+	 * USE_SANITIZER: -fsanitize= option present in compile options
+	 * OQS_ENABLE_TEST_CONSTANT_TIME:
+	 */
 	printf("OQS version:      %s\n", OQS_VERSION_TEXT);
 #if defined(OQS_COMPILE_GIT_COMMIT)
 	printf("Git commit:       %s\n", OQS_COMPILE_GIT_COMMIT);
