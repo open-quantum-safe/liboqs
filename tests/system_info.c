@@ -217,10 +217,31 @@ static void print_oqs_configuration(void) {
 #else
 	printf("SHA-3:            C\n");
 #endif
-	printf("OQS build flags: ");
+	printf("OQS build flags:  ");
 #ifdef BUILD_SHARED_LIBS
 	printf("BUILD_SHARED_LIBS ");
 #endif
+#ifdef OQS_ENABLE_TEST_CONSTANT_TIME
+	printf("OQS_ENABLE_TEST_CONSTANT_TIME ");
+#endif
+#ifdef OQS_SPEED_USE_ARM_PMU
+	printf("OQS_SPEED_USE_ARM_PMU ");
+#endif
+#ifdef OQS_DIST_BUILD
+	printf("OQS_DIST_BUILD ");
+#endif
+#ifdef OQS_OPT_TARGET
+	printf("OQS_OPT_TARGET=%s ", OQS_OPT_TARGET);
+#endif
+#ifdef CMAKE_BUILD_TYPE
+	printf("CMAKE_BUILD_TYPE=%s ", CMAKE_BUILD_TYPE);
+#else
+#ifdef OQS_DEBUG_BUILD
+	guard against impossible configuration (no CMAKE_BUILD_TYPE but DEBUG_BUILD)
+#endif
+	printf("CMAKE_BUILD_TYPE=Release ");
+#endif
+	printf("\n");
 }
 
 static void print_system_info(void) {
