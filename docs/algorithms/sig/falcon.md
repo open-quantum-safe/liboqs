@@ -9,7 +9,7 @@
 - **Implementation source**: https://github.com/PQClean/PQClean/commit/6a32796212b79a5f9126d0a933e1216313f50c16, which takes it from:
   - https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon, which takes it from:
   - supercop-20201018
-- **Implementation license (SPDX-Identifier)**: CC0-1.0.
+- **Implementation license (SPDX-Identifier)**: MIT.
 
 ## Parameter set summary
 
