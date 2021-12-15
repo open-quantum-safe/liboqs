@@ -36,42 +36,21 @@
 #endif
 
 typedef struct picnic_instance_t {
-  lowmc_parameters_t lowmc;
-
-  uint32_t digest_size;       /* bytes */
-  uint32_t seed_size;         /* bytes */
-  uint32_t num_rounds;        // T
-  uint32_t num_opened_rounds; // u
-  uint32_t num_MPC_parties;   // N
-
-  uint32_t input_size;      /* bytes */
-  uint32_t output_size;     /* bytes */
-  uint32_t view_size;       /* bytes */
-  uint32_t view_round_size; /* bits (per round) */
-
-  uint32_t collapsed_challenge_size;       /* bytes */
-  uint32_t unruh_without_input_bytes_size; /* bytes */
-  uint32_t unruh_with_input_bytes_size;    /* bytes */
-  uint32_t max_signature_size;             /* bytes */
-
-  picnic_params_t params;
-
-  struct {
-    lowmc_implementation_f lowmc;
-#if defined(WITH_ZKBPP)
-    lowmc_store_implementation_f lowmc_store;
-    zkbpp_lowmc_implementation_f zkbpp_lowmc;
-    zkbpp_lowmc_verify_implementation_f zkbpp_lowmc_verify;
-    zkbpp_share_implementation_f mzd_share;
-#endif
-#if defined(WITH_KKW)
-    lowmc_compute_aux_implementation_f lowmc_aux;
-    lowmc_simulate_online_f lowmc_simulate_online;
-#endif
-  } impls;
+  const lowmc_parameters_t lowmc;
+  const uint16_t num_rounds;       // T
+  const uint8_t digest_size;       // bytes
+  const uint8_t seed_size;         // bytes
+  const uint8_t input_output_size; // bytes
+  const uint8_t view_size;         // bytes
+  const uint8_t num_opened_rounds; // u (KKW only)
+  const uint8_t num_MPC_parties;   // N (KKW only)
 } picnic_instance_t;
 
-const picnic_instance_t* picnic_instance_get(picnic_params_t param);
+ATTR_PURE const picnic_instance_t* picnic_instance_get(picnic_params_t param);
+
+ATTR_CONST static inline bool picnic_instance_is_unruh(picnic_params_t param) {
+  return param == Picnic_L1_UR || param == Picnic_L3_UR || param == Picnic_L5_UR;
+}
 
 PICNIC_EXPORT size_t PICNIC_CALLING_CONVENTION picnic_get_lowmc_block_size(picnic_params_t param);
 
