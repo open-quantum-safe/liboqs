@@ -242,6 +242,17 @@ jobs:
                  https://circleci.com/api/v2/project/gh/open-quantum-safe/openssh/pipeline | tee curl_out \
             && grep -q "201" curl_out
       - run:
+          name: Trigger oqs-provider CI
+          command: |2
+            curl --silent \
+                 --write-out "\n%{response_code}\n" \
+                 --user ${BUILD_TRIGGER_TOKEN}: \
+                 --request POST \
+                 --header "Content-Type: application/json" \
+                 --data '{ "branch": "main" }' \
+                 https://circleci.com/api/v2/project/gh/open-quantum-safe/oqs-provider/pipeline | tee curl_out \
+            && grep -q "201" curl_out
+      - run:
           name: Trigger liboqs-dotnet CI
           command: |2
             curl --silent \
