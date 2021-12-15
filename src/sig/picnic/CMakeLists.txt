@@ -51,7 +51,7 @@ endif()
 add_library(picnic OBJECT ${SRCS})
 target_include_directories(picnic PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/external)
 target_compile_definitions(picnic PRIVATE OQS
-                                          PICNIC_STATIC
+                                          PICNIC_EXPORT=
                                           WITH_ZKBPP
                                           WITH_UNRUH
                                           WITH_KKW
