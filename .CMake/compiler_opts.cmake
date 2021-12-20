@@ -118,7 +118,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wformat=2)
     add_compile_options(-Wfloat-equal)
     add_compile_options(-Wwrite-strings)
-    add_compile_options(-Wl,-z,noexecstack)
+    add_link_options(-Wa,--noexecstack)
 
     if(NOT ${OQS_BUILD_ONLY_LIB})
         set(THREADS_PREFER_PTHREAD_FLAG ON)
