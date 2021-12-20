@@ -61,7 +61,7 @@
 
 /* Apple version check macro */
 #if defined(__APPLE__)
-  #include <Availability.h>
+#include <Availability.h>
 #define MACOSX_CHECK(maj, min, rev)                                                                \
   (__MAC_OS_X_VERSION_MIN_REQUIRED >= ((maj)*10000 + (min)*100 + (rev)))
 #else
@@ -171,8 +171,12 @@
 /* target attribute */
 #if defined(__GNUC__) || __has_attribute(target)
 #define ATTR_TARGET(x) __attribute__((target((x))))
+#define ATTR_TARGET_AVX2 __attribute__((target("avx2,bmi2")))
+#define ATTR_TARGET_SSE2 __attribute__((target("sse")))
 #else
 #define ATTR_TARGET(x)
+#define ATTR_TARGET_AVX2
+#define ATTR_TARGET_SSE2
 #endif
 
 /* artificial attribute */
@@ -181,9 +185,6 @@
 #else
 #define ATTR_ARTIFICIAL
 #endif
-
-#define ATTR_TARGET_AVX2 ATTR_TARGET("avx2,bmi2")
-#define ATTR_TARGET_SSE2 ATTR_TARGET("sse2")
 
 #define FN_ATTRIBUTES_AVX2 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_AVX2
 #define FN_ATTRIBUTES_SSE2 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_SSE2
@@ -219,30 +220,11 @@ static inline bool sub_overflow_size_t(const size_t x, const size_t y, size_t* d
 
 /* helper functions for parity computations */
 #if GNUC_CHECK(4, 9) || __has_builtin(__builtin_parity)
-ATTR_CONST ATTR_ARTIFICIAL static inline uint8_t parity64_uint8(uint8_t in) {
-  return __builtin_parity(in);
-}
-
-ATTR_CONST ATTR_ARTIFICIAL static inline uint16_t parity64_uint16(uint16_t in) {
-  return __builtin_parity(in);
-}
-
 ATTR_CONST ATTR_ARTIFICIAL static inline uint64_t parity64_uint64(uint64_t in) {
   return __builtin_parityll(in);
 }
 #else
-ATTR_CONST ATTR_ARTIFICIAL static inline uint8_t parity64_uint8(uint8_t in) {
-  /* byte parity from: https://graphics.stanford.edu/~seander/bithacks.html#ParityWith64Bits */
-  return (((in * UINT64_C(0x0101010101010101)) & UINT64_C(0x8040201008040201)) % 0x1FF) & 1;
-}
-
-ATTR_CONST ATTR_ARTIFICIAL static inline uint16_t parity64_uint16(uint16_t in) {
-  in ^= in >> 1;
-  in ^= in >> 2;
-  in = (in & 0x1111) * 0x1111;
-  return (in >> 12) & 1;
-}
-
+/* byte parity from: https://graphics.stanford.edu/~seander/bithacks.html#ParityWith64Bits */
 ATTR_CONST ATTR_ARTIFICIAL static inline uint64_t parity64_uint64(uint64_t in) {
   in ^= in >> 1;
   in ^= in >> 2;
@@ -255,6 +237,15 @@ ATTR_CONST ATTR_ARTIFICIAL static inline uint64_t parity64_uint64(uint64_t in) {
 #if GNUC_CHECK(4, 7) || __has_builtin(__builtin_clz)
 ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t clz(uint32_t x) {
   return x ? __builtin_clz(x) : 32;
+}
+#elif defined(_MSC_VER)
+#include <intrin.h>
+ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t clz(uint32_t x) {
+  unsigned long index = 0;
+  if (_BitScanReverse(&index, x)) {
+    return 31 - index;
+  }
+  return 32;
 }
 #else
 /* Number of leading zeroes of x.

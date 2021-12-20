@@ -37,7 +37,6 @@ void mzd_from_char_array(mzd_local_t* result, const uint8_t* data, size_t len) {
   }
 }
 
-/* unused
 #if defined(PICNIC_STATIC) || !defined(NDEBUG)
 void print_hex(FILE* out, const uint8_t* data, size_t len) {
   for (size_t i = len; i; --i, ++data) {
@@ -45,4 +44,3 @@ void print_hex(FILE* out, const uint8_t* data, size_t len) {
   }
 }
 #endif
-*/

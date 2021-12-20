@@ -74,6 +74,16 @@ cmake_dependent_option(OQS_ENABLE_SIG_picnic3_L1 "" ON "OQS_ENABLE_SIG_PICNIC" O
 cmake_dependent_option(OQS_ENABLE_SIG_picnic3_L3 "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_picnic3_L5 "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
 
+if(OQS_DIST_X86_64_BUILD OR OQS_USE_SSE2_INSTRUCTIONS)
+    cmake_dependent_option(OQS_ENABLE_SIG_picnic_sse2 "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
+endif()
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_SIG_picnic_avx2 "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
+endif()
+if(OQS_DIST_ARM64_V8_BUILD OR OQS_USE_ARM_NEON_INSTRUCTIONS)
+    cmake_dependent_option(OQS_ENABLE_SIG_picnic_neon "" ON "OQS_ENABLE_SIG_PICNIC" OFF)
+endif()
+
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_START
 option(OQS_ENABLE_KEM_CLASSIC_MCELIECE "Enable classic_mceliece algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_348864 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)

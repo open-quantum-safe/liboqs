@@ -24,11 +24,22 @@ typedef struct {
   const uint8_t* public_key;
   const uint8_t* msg;
   size_t msglen;
+#if defined(WITH_UNRUH)
+  bool unruh;
+#endif
 } picnic_context_t;
-int impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint8_t* sig,
-	      size_t* siglen);
-int impl_verify(const picnic_instance_t* pp, const picnic_context_t* context, const uint8_t* sig,
-		size_t siglen);
-/* OQS note: cropped unused visualization functions */
 
+int picnic_impl_sign(const picnic_instance_t* pp, const picnic_context_t* context, uint8_t* sig,
+                     size_t* siglen);
+int picnic_impl_verify(const picnic_instance_t* pp, const picnic_context_t* context,
+                       const uint8_t* sig, size_t siglen);
+
+#if defined(PICNIC_STATIC)
+void visualize_signature(FILE* out, const picnic_instance_t* pp, const picnic_context_t* ctxt,
+                         const uint8_t* sig, size_t siglen);
+void picnic_visualize_keys(FILE* out, const picnic_privatekey_t* private_key,
+                           const picnic_publickey_t* public_key);
+void picnic_visualize(FILE* out, const picnic_publickey_t* public_key, const uint8_t* msg,
+                      size_t msglen, const uint8_t* sig, size_t siglen);
+#endif
 #endif

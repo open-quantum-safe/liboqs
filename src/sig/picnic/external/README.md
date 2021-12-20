@@ -9,7 +9,6 @@ Research paper describing the signature scheme and the optimizations are also av
 * **Linear Equivalence of Block Ciphers with Partial Non-Linear Layers: Application to LowMC** Itai Dinur and Daniel Kales and Angela Promitzer and Sebastian Ramacher and Christian Rechberger. *In Proceedings of Eurocrypt 2019*. *[Cryptology ePrint Archive: Report 2018/772](https://eprint.iacr.org/2018/772)*
 * **Improving the Performance of the Picnic Signature Scheme** Daniel Kales and Greg Zaverucha. *[Cryptology ePrint Archive: Report 2020/427](https://eprint.iacr.org/2020/427)*
 
-
 Packages
 --------
 
@@ -110,11 +109,6 @@ lib /def:"libpicnic.def" /out:"libpicnic.lib" /machine:x64
 to produce the `lib` file required by Visual Studio for linking.
 
 The instructions were tested for a 64 bit build of Picnic on a recent Debian and Ubuntu installation with `mingw-w64` installed. For a 32 bits the paths need to be changed in the toolchain file and `lib` needs to be called with `/machine:x86`.
-
-CI status
----------
-[![Travis CI build status](https://travis-ci.org/IAIK/Picnic.svg?branch=master)](https://travis-ci.org/IAIK/Picnic)
-[![AppVeyor CI build status](https://ci.appveyor.com/api/projects/status/github/IAIK/Picnic?branch=master&svg=true)](https://ci.appveyor.com/project/sebastinas/picnic)
 
 License
 -------

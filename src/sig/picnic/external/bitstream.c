@@ -163,7 +163,7 @@ void bitstream_put_bits_32(bitstream_t* bs, uint32_t value, unsigned int num_bit
 
 #if defined(WITH_LOWMC_129_129_4) || defined(WITH_LOWMC_192_192_4) || defined(WITH_LOWMC_255_255_4)
 void mzd_to_bitstream(bitstream_t* bs, const mzd_local_t* v, const size_t width,
-		      const size_t size) {
+                      const size_t size) {
   const uint64_t* d = &CONST_BLOCK(v, 0)->w64[width - 1];
   size_t bits       = size;
   for (; bits >= sizeof(uint64_t) * 8; bits -= sizeof(uint64_t) * 8, --d) {

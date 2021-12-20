@@ -26,43 +26,16 @@
 
 #include "cpu.h"
 
-#if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
-#if defined(BUILTIN_CPU_SUPPORTED)
-#if !defined(BUILTIN_CPU_SUPPORTED_BROKEN_BMI2)
-#define CPU_SUPPORTS_AVX2 (__builtin_cpu_supports("avx2") && __builtin_cpu_supports("bmi2"))
-#else
-#define CPU_SUPPORTS_AVX2 (__builtin_cpu_supports("avx2") && cpu_supports(CPU_CAP_BMI2))
-#endif
-#else
-#define CPU_SUPPORTS_AVX2 cpu_supports(CPU_CAP_AVX2 | CPU_CAP_BMI2)
-#endif
-#endif
-
 #if defined(__x86_64__) || defined(_M_X64)
-// X86-64 CPUs always support SSE2
-#define CPU_SUPPORTS_SSE2 1
 #if defined(WITH_SSE2) || defined(WITH_AVX2)
 #define NO_UINT64_FALLBACK
 #endif
-#elif defined(__i386__) || defined(_M_IX86)
-#if defined(BUILTIN_CPU_SUPPORTED)
-#define CPU_SUPPORTS_SSE2 __builtin_cpu_supports("sse2")
-#else
-#define CPU_SUPPORTS_SSE2 cpu_supports(CPU_CAP_SSE2)
-#endif
-#else
-#define CPU_SUPPORTS_SSE2 0
 #endif
 
 #if defined(__aarch64__)
-#define CPU_SUPPORTS_NEON 1
 #if defined(WITH_NEON)
 #define NO_UINT64_FALLBACK
 #endif
-#elif defined(__arm__)
-#define CPU_SUPPRTS_NEON cpu_supports(CPU_CAP_NEON)
-#else
-#define CPU_SUPPORTS_NEON 0
 #endif
 
 #if defined(_MSC_VER)

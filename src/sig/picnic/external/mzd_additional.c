@@ -18,7 +18,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "compat.h"
 #include "mzd_additional.h"
 
 #if !defined(_MSC_VER) && !defined(static_assert)
@@ -32,7 +31,7 @@ static_assert(((sizeof(mzd_local_t) + 0x1f) & ~0x1f) == 32, "sizeof mzd_local_t 
 #endif
 static const unsigned int align_bound = 128 / (8 * sizeof(word));
 
-static size_t calculate_rowstride(size_t width) {
+static inline size_t calculate_rowstride(size_t width) {
   // As soon as we hit the AVX bound, use 32 byte alignment. Otherwise use 16
   // byte alignment for SSE2 and 128 bit vectors.
   if (width > align_bound) {
@@ -42,7 +41,7 @@ static size_t calculate_rowstride(size_t width) {
   }
 }
 
-static size_t calculate_width(size_t c) {
+static inline size_t calculate_width(size_t c) {
   return (c + sizeof(word) * 8 - 1) / (sizeof(word) * 8);
 }
 
@@ -69,10 +68,6 @@ mzd_local_t* mzd_local_init_ex(unsigned int r, unsigned int c, bool clear) {
   }
 
   return (mzd_local_t*)buffer;
-}
-
-void mzd_local_free(mzd_local_t* v) {
-  picnic_aligned_free(v);
 }
 
 /* implementation of copy */
@@ -146,8 +141,8 @@ void mzd_xor_s128_128(mzd_local_t* res, mzd_local_t const* first, mzd_local_t co
 }
 
 ATTR_TARGET_S128
-static void mzd_xor_s128_blocks(block_t* rblock, const block_t* fblock, const block_t* sblock,
-                                unsigned int count) {
+static inline void mzd_xor_s128_blocks(block_t* rblock, const block_t* fblock,
+                                       const block_t* sblock, unsigned int count) {
   for (; count; --count, ++rblock, ++fblock, ++sblock) {
     rblock->w128[0] = mm128_xor(fblock->w128[0], sblock->w128[0]);
     rblock->w128[1] = mm128_xor(fblock->w128[1], sblock->w128[1]);
@@ -194,8 +189,8 @@ void mzd_xor_s256_128(mzd_local_t* res, mzd_local_t const* first, mzd_local_t co
 }
 
 ATTR_TARGET_AVX2
-static void mzd_xor_s256_blocks(block_t* rblock, const block_t* fblock, const block_t* sblock,
-                                unsigned int count) {
+static inline void mzd_xor_s256_blocks(block_t* rblock, const block_t* fblock,
+                                       const block_t* sblock, unsigned int count) {
   for (; count; --count, ++rblock, ++fblock, ++sblock) {
     rblock->w256 = mm256_xor(fblock->w256, sblock->w256);
   }
@@ -221,16 +216,18 @@ void mzd_xor_s256_1280(mzd_local_t* res, mzd_local_t const* first, mzd_local_t c
 #endif
 #endif
 
-static void mzd_xor_uint64_block(block_t* rblock, const block_t* fblock, const block_t* sblock,
-                                 const unsigned int len) {
+static inline void mzd_xor_uint64_block(block_t* rblock, const block_t* fblock,
+                                        const block_t* sblock, const unsigned int len) {
   for (unsigned int i = 0; i < len; ++i) {
     rblock->w64[i] = fblock->w64[i] ^ sblock->w64[i];
   }
 }
 
+// clang-format off
 #if defined(WITH_LOWMC_128_128_20) || defined(WITH_LOWMC_192_192_30) || defined(WITH_LOWMC_256_256_38)
-static void mzd_xor_uint64_blocks(block_t* rblock, const block_t* fblock, const block_t* sblock,
-                                  const unsigned int len) {
+// clang-format on
+static inline void mzd_xor_uint64_blocks(block_t* rblock, const block_t* fblock,
+                                         const block_t* sblock, const unsigned int len) {
   for (unsigned int i = len; i; --i, ++rblock, ++fblock, ++sblock) {
     mzd_xor_uint64_block(rblock, fblock, sblock, 4);
   }
@@ -1061,22 +1058,24 @@ void mzd_mul_v_s256_256_1280(mzd_local_t* c, mzd_local_t const* v, mzd_local_t c
 #endif
 #endif
 
-static void clear_uint64_block(block_t* block, const unsigned int idx) {
+static inline void clear_uint64_block(block_t* block, const unsigned int idx) {
   for (unsigned int i = 0; i < idx; ++i) {
     block->w64[i] = 0;
   }
 }
 
+// clang-format off
 #if defined(WITH_LOWMC_128_128_20) || defined(WITH_LOWMC_192_192_30) || defined(WITH_LOWMC_256_256_38)
-static void clear_uint64_blocks(block_t* block, unsigned int len) {
+// clang-format on
+static inline void clear_uint64_blocks(block_t* block, unsigned int len) {
   for (; len; --len, ++block) {
     clear_uint64_block(block, 4);
   }
 }
 #endif
 
-static void mzd_xor_mask_uint64_block(block_t* rblock, const block_t* fblock, const word mask,
-                                      const unsigned int idx) {
+static inline void mzd_xor_mask_uint64_block(block_t* rblock, const block_t* fblock,
+                                             const word mask, const unsigned int idx) {
   for (unsigned int i = 0; i < idx; ++i) {
     rblock->w64[i] ^= fblock->w64[i] & mask;
   }
@@ -1233,7 +1232,9 @@ void mzd_mul_v_uint64_256_1216(mzd_local_t* c, mzd_local_t const* v, mzd_local_t
 }
 #endif
 
+// clang-format off
 #if defined(WITH_LOWMC_128_128_20) || defined(WITH_LOWMC_192_192_30) || defined(WITH_LOWMC_256_256_38)
+// clang-format on
 // specific instances
 // bit extract, non-constant time for mask, but mask is public in our calls
 static word extract_bits(word in, word mask) {
@@ -1338,7 +1339,7 @@ void mzd_addmul_v_s128_30_128(mzd_local_t* c, mzd_local_t const* v, mzd_local_t 
 
 #if defined(WITH_LOWMC_192_192_30) || defined(WITH_LOWMC_256_256_38)
 ATTR_TARGET_S128
-static void mzd_addmul_v_s128_30_256_idx(mzd_local_t* c, mzd_local_t const* A, word idx) {
+static inline void mzd_addmul_v_s128_30_256_idx(mzd_local_t* c, mzd_local_t const* A, word idx) {
   block_t* cblock       = BLOCK(c, 0);
   const block_t* Ablock = CONST_BLOCK(A, 0);
 
@@ -1434,7 +1435,9 @@ void mzd_addmul_v_s256_30_256(mzd_local_t* c, mzd_local_t const* v, mzd_local_t 
 }
 #endif
 
+// clang-format off
 #if defined(WITH_LOWMC_128_128_20) || defined(WITH_LOWMC_192_192_30) || defined(WITH_LOWMC_256_256_38)
+// clang-format on
 #if !defined(__x86_64__) && !defined(_M_X64)
 ATTR_TARGET_AVX2 ATTR_CONST static uint8_t popcount_32(uint32_t value) {
   uint64_t result =

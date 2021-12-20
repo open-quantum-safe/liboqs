@@ -17,7 +17,6 @@ if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
 endif()
 
 set(SRCS sig_picnic.c
-         external/bitstream.c
          external/io.c
          external/lowmc.c
          external/lowmc_128_128_20.c
@@ -37,21 +36,10 @@ set(SRCS sig_picnic.c
          external/picnic3_types.c
          external/randomness.c)
 
-# Avoid generating no symbols:
-if (NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-   set(SRCS ${SRCS} external/cpu.c)
-endif()
-
-if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" AND
-   OQS_USE_AVX2_INSTRUCTIONS AND
-   OQS_USE_BMI2_INSTRUCTIONS)
-    set(USE_AVX2 ON)
-endif()
-
 add_library(picnic OBJECT ${SRCS})
 target_include_directories(picnic PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/external)
 target_compile_definitions(picnic PRIVATE OQS
-                                          PICNIC_STATIC
+                                          PICNIC_EXPORT=
                                           WITH_ZKBPP
                                           WITH_UNRUH
                                           WITH_KKW
@@ -63,12 +51,12 @@ target_compile_definitions(picnic PRIVATE OQS
                                           WITH_LOWMC_255_255_4
                                           WITH_OPT)
 
-if(OQS_USE_SSE2_INSTRUCTIONS)
+if(OQS_ENABLE_SIG_picnic_sse2)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
-    add_compile_options(-msse2)
 endif()
-if(USE_AVX2)
+if(OQS_ENABLE_SIG_picnic_avx2)
     target_compile_definitions(picnic PRIVATE WITH_AVX2)
-    add_compile_options(picnic PRIVATE -mavx2)
 endif()
-
+if(OQS_ENABLE_SIG_picnic_neon)
+  target_compile_definitions(picnic PRIVATE WITH_NEON)
+endif()

@@ -323,7 +323,7 @@ PICNIC_EXPORT void PICNIC_CALLING_CONVENTION picnic_clear_private_key(picnic_pri
  * @return Returns 0 on success, or a nonzero value indicating an error.
  **/
 PICNIC_EXPORT int PICNIC_CALLING_CONVENTION picnic_sk_to_pk(const picnic_privatekey_t* privatekey,
-							    picnic_publickey_t* publickey);
+                                                            picnic_publickey_t* publickey);
 
 /**
  * Get the parameter set identifier from a private key.
