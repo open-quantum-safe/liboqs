@@ -175,12 +175,12 @@ jobs:
         type: string
         default: ""
     macos:
-      xcode: "11.3.0"
+      xcode: "13.2.1"
     steps:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
           name: Install dependencies
-          command: brew unlink python@2 && env HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja && pip3 install pytest pytest-xdist pyyaml
+          command: env HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja && pip3 install pytest pytest-xdist pyyaml
       - run:
           name: Get system information
           command: sysctl -a | grep machdep.cpu
