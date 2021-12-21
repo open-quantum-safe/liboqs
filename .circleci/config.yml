@@ -175,7 +175,7 @@ jobs:
         type: string
         default: ""
     macos:
-      xcode: "11.3.0"
+      xcode: "13.2.1"
     steps:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
