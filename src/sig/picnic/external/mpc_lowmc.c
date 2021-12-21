@@ -464,6 +464,13 @@ static void mpc_sbox_verify_uint64_lowmc_255_255_4(mzd_local_t* out, const mzd_l
 #endif /* NO_UINT_FALLBACK */
 
 #if defined(WITH_OPT)
+#define NROLR(a, b, c)                                                                             \
+  do {                                                                                             \
+    (void)a;                                                                                       \
+    (void)b;                                                                                       \
+    (void)c;                                                                                       \
+  } while (0)
+
 /* requires IN and RVEC to be defined */
 #define bitsliced_mm_step_1(sc, type, AND, ROL, MASK_A, MASK_B, MASK_C)                            \
   type r0m[sc] ATTR_ALIGNED(alignof(type));                                                        \
@@ -661,8 +668,7 @@ static inline void mpc_sbox_prove_s128_256(mzd_local_t* out, const mzd_local_t* 
                                mask_a->w128, mask_b->w128, mask_c->w128);
 
   // a & b
-  mpc_mm_multiple_and_def(word128, 2, mm128_and_256, mm128_xor_256, mm128_shift_right_256, r0m, x0s,
-                          x1s, r2m, 0);
+  mpc_mm_multiple_and_def(word128, 2, mm128_and_256, mm128_xor_256, NROLR, r0m, x0s, x1s, r2m, 0);
   // b & c
   mpc_mm_multiple_and_def(word128, 2, mm128_and_256, mm128_xor_256, mm128_shift_right_256, r2m, x1s,
                           x2m, r1s, 1);
@@ -681,8 +687,8 @@ static inline void mpc_sbox_verify_s128_256(mzd_local_t* out, const mzd_local_t*
                                mask_a->w128, mask_b->w128, mask_c->w128);
 
   // a & b
-  mpc_mm_multiple_and_verify_def(word128, 2, mm128_and_256, mm128_xor_256, mm128_shift_left_256,
-                                 mm128_shift_right_256, r0m, x0s, x1s, r2m, mask_c->w128, 0);
+  mpc_mm_multiple_and_verify_def(word128, 2, mm128_and_256, mm128_xor_256, NROLR, NROLR, r0m, x0s,
+                                 x1s, r2m, mask_c->w128, 0);
   // b & c
   mpc_mm_multiple_and_verify_def(word128, 2, mm128_and_256, mm128_xor_256, mm128_shift_left_256,
                                  mm128_shift_right_256, r2m, x1s, x2m, r1s, mask_c->w128, 1);

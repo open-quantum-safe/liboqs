@@ -172,7 +172,7 @@
 #if defined(__GNUC__) || __has_attribute(target)
 #define ATTR_TARGET(x) __attribute__((target((x))))
 #define ATTR_TARGET_AVX2 __attribute__((target("avx2,bmi2")))
-#define ATTR_TARGET_SSE2 __attribute__((target("sse")))
+#define ATTR_TARGET_SSE2 __attribute__((target("sse2")))
 #else
 #define ATTR_TARGET(x)
 #define ATTR_TARGET_AVX2

@@ -4,8 +4,8 @@
 - **Main cryptographic assumption**: hash function security (ROM/QROM), key recovery attacks on the lowMC block cipher.
 - **Principal submitters**: Greg Zaverucha, Melissa Chase, David Derler, Steven Goldfeder, Claudio Orlandi, Sebastian Ramacher, Christian Rechberger, Daniel Slamanig, Jonathan Katz, Xiao Wang, Vladmir Kolesnikov.
 - **Authors' website**: https://microsoft.github.io/Picnic/
-- **Specification version**: 3.0.8.
-- **Implementation source**: https://github.com/IAIK/Picnic/tree/v3.0.8
+- **Specification version**: 3.0.10.
+- **Implementation source**: https://github.com/IAIK/Picnic/tree/v3.0.10
 - **Implementation license (SPDX-Identifier)**: MIT.
 
 ## Parameter set summary

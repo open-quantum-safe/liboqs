@@ -112,9 +112,11 @@ typedef __m256i word256;
 /* !l & r */
 #define mm256_nand(l, r) _mm256_andnot_si256((l), (r))
 
+// clang-format off
 apply_region(mm256_xor_region, word256, mm256_xor, FN_ATTRIBUTES_AVX2)
 apply_mask_region(mm256_xor_mask_region, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2)
 apply_mask(mm256_xor_mask, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2_CONST)
+// clang-format on
 
 #define mm256_shift_left(data, count)                                                              \
   _mm256_or_si256(_mm256_slli_epi64(data, count),                                                  \
@@ -153,11 +155,13 @@ typedef __m128i word128;
 #define mm128_sl_u64(x, s) _mm_slli_epi64((x), (s))
 #define mm128_sr_u64(x, s) _mm_srli_epi64((x), (s))
 
+// clang-format off
 apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_SSE2)
 apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2)
 apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2_CONST)
 apply_array(mm128_xor_256, word128, mm128_xor, 2, FN_ATTRIBUTES_SSE2)
 apply_array(mm128_and_256, word128, mm128_and, 2, FN_ATTRIBUTES_SSE2)
+// clang-format on
 
 #define mm128_shift_left(data, count)                                                              \
   _mm_or_si128(_mm_slli_epi64(data, count), _mm_srli_epi64(_mm_bslli_si128(data, 8), 64 - count))
@@ -235,15 +239,19 @@ typedef uint64x2_t word128;
 #define mm128_nand(l, r) vbicq_u64((r), (l))
 #define mm128_broadcast_u64(x) vdupq_n_u64((x))
 #define mm128_sl_u64(x, s)                                                                         \
-  (__builtin_constant_p(s) ? vshlq_n_u64((x), (s)) : vshlq_u64((x), vdupq_n_s64(s)))
+  __builtin_choose_expr(__builtin_constant_p(s), vshlq_n_u64((x), (s)),                            \
+                        vshlq_u64((x), vdupq_n_s64(s)))
 #define mm128_sr_u64(x, s)                                                                         \
-  (__builtin_constant_p(s) ? vshrq_n_u64((x), (s)) : vshlq_u64((x), vdupq_n_s64(-(int64_t)(s))))
+  __builtin_choose_expr(__builtin_constant_p(s), vshrq_n_u64((x), (s)),                            \
+                        vshlq_u64((x), vdupq_n_s64(-(int64_t)(s))))
 
+// clang-format off
 apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_NEON)
 apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_NEON)
 apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_NEON_CONST)
 apply_array(mm128_xor_256, word128, mm128_xor, 2, FN_ATTRIBUTES_NEON)
 apply_array(mm128_and_256, word128, mm128_and, 2, FN_ATTRIBUTES_NEON)
+// clang-format on
 
 /* shift left by 64 to 127 bits */
 #define mm128_shift_left_64_127(data, count)                                                       \
@@ -264,37 +272,37 @@ apply_array(mm128_and_256, word128, mm128_and, 2, FN_ATTRIBUTES_NEON)
 #define mm128_rotate_right(data, count)                                                            \
   vorrq_u64(mm128_shift_right(data, count), mm128_shift_left_64_127(data, 128 - count))
 
-static inline void FN_ATTRIBUTES_NEON mm128_shift_left_256(word128 res[2], word128 const data[2],
-                                                           const unsigned int count) {
-  res[1] =
-      vorrq_u64(mm128_shift_left(data[1], count), mm128_shift_right_64_127(data[0], 128 - count));
-  res[0] = mm128_shift_left(data[0], count);
-}
+#define mm128_shift_left_256(res, data, count)                                                     \
+  do {                                                                                             \
+    res[1] = vorrq_u64(mm128_shift_left(data[1], count),                                           \
+                       mm128_shift_right_64_127(data[0], 128 - count));                            \
+    res[0] = mm128_shift_left(data[0], count);                                                     \
+  } while (0)
 
-static inline void FN_ATTRIBUTES_NEON mm128_shift_right_256(word128 res[2], word128 const data[2],
-                                                            const unsigned int count) {
-  res[0] =
-      vorrq_u64(mm128_shift_right(data[0], count), mm128_shift_left_64_127(data[1], 128 - count));
-  res[1] = mm128_shift_right(data[1], count);
-}
+#define mm128_shift_right_256(res, data, count)                                                    \
+  do {                                                                                             \
+    res[0] = vorrq_u64(mm128_shift_right(data[0], count),                                          \
+                       mm128_shift_left_64_127(data[1], 128 - count));                             \
+    res[1] = mm128_shift_right(data[1], count);                                                    \
+  } while (0)
 
-static inline void FN_ATTRIBUTES_NEON mm128_rotate_left_256(word128 res[2], word128 const data[2],
-                                                            const unsigned int count) {
-  const word128 carry = mm128_shift_right_64_127(data[1], 128 - count);
+#define mm128_rotate_left_256(res, data, count)                                                    \
+  do {                                                                                             \
+    const word128 carry = mm128_shift_right_64_127(data[1], 128 - count);                          \
+                                                                                                   \
+    res[1] = vorrq_u64(mm128_shift_left(data[1], count),                                           \
+                       mm128_shift_right_64_127(data[0], 128 - count));                            \
+    res[0] = vorrq_u64(mm128_shift_left(data[0], count), carry);                                   \
+  } while (0)
 
-  res[1] =
-      vorrq_u64(mm128_shift_left(data[1], count), mm128_shift_right_64_127(data[0], 128 - count));
-  res[0] = vorrq_u64(mm128_shift_left(data[0], count), carry);
-}
-
-static inline void FN_ATTRIBUTES_NEON mm128_rotate_right_256(word128 res[2], word128 const data[2],
-                                                             const unsigned int count) {
-  const word128 carry = mm128_shift_left_64_127(data[0], 128 - count);
-
-  res[0] =
-      vorrq_u64(mm128_shift_right(data[0], count), mm128_shift_left_64_127(data[1], 128 - count));
-  res[1] = vorrq_u64(mm128_shift_right(data[1], count), carry);
-}
+#define mm128_rotate_right_256(res, data, count)                                                   \
+  do {                                                                                             \
+    const word128 carry = mm128_shift_left_64_127(data[0], 128 - count);                           \
+                                                                                                   \
+    res[0] = vorrq_u64(mm128_shift_right(data[0], count),                                          \
+                       mm128_shift_left_64_127(data[1], 128 - count));                             \
+    res[1] = vorrq_u64(mm128_shift_right(data[1], count), carry);                                  \
+  } while (0)
 #endif
 
 #if defined(_MSC_VER)
