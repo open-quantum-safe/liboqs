@@ -32,6 +32,7 @@
 #define TARGET_ARM 4
 #define TARGET_ARM64 5
 #define TARGET_PPC64LE 6
+#define TARGET_PPC64 7
 
 #if defined(_AMD64_)
 #define TARGET TARGET_AMD64
@@ -61,6 +62,12 @@ typedef uint16_t hdigit_t; // Unsigned 16-bit digit
 #define TARGET TARGET_ARM64
 #define RADIX 64
 #define LOG2RADIX 6
+typedef uint64_t digit_t;  // Unsigned 64-bit digit
+typedef uint32_t hdigit_t; // Unsigned 32-bit digit
+#elif defined(_PPC64_)
+#define TARGET TARGET_PPC64
+#define RADIX           64
+#define LOG2RADIX       6
 typedef uint64_t digit_t;  // Unsigned 64-bit digit
 typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 #elif defined(_PPC64LE_)

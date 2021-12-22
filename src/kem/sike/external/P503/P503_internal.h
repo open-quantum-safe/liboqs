@@ -9,7 +9,7 @@
 
 #include "../config.h"
 
-#if (TARGET == TARGET_AMD64) || (TARGET == TARGET_ARM64) || (TARGET == TARGET_S390X) || (TARGET == TARGET_PPC64LE)
+#if (TARGET == TARGET_AMD64) || (TARGET == TARGET_ARM64) || (TARGET == TARGET_S390X) || (TARGET == TARGET_PPC64) || (TARGET == TARGET_PPC64LE)
 #define NWORDS_FIELD 8    // Number of words of a 503-bit field element
 #define p503_ZERO_WORDS 3 // Number of "0" digits in the least significant part of p503 + 1
 #elif (TARGET == TARGET_x86) || (TARGET == TARGET_ARM)

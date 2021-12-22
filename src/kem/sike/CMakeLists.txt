@@ -8,6 +8,7 @@ if(
    ARCH_ARM32v7 OR
    ARCH_ARM64v8 OR
    ARCH_PPC64LE OR
+   ARCH_PPC64 OR
    ARCH_S390X)
   AND
   # check that one SIDH/SIKE alg is enabled
@@ -137,6 +138,8 @@ if(
                 target_compile_definitions(sike PRIVATE USE_SIKEP751_ASM)
             endif()
         endif()
+    elseif(ARCH_PPC64)
+        target_compile_definitions(sike PRIVATE _GENERIC_ _PPC64_)
     elseif(ARCH_PPC64LE)
         target_compile_definitions(sike PRIVATE _GENERIC_ _PPC64LE_)
     elseif(ARCH_S390X)
