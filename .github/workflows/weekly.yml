@@ -32,5 +32,5 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}
+        run: mkdir -p tmp && python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
