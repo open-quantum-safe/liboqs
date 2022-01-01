@@ -31,6 +31,6 @@ jobs:
         run: ninja
         working-directory: build
       - name: Run tests
-        timeout-minutes: 60
+        timeout-minutes: 120
         run: mkdir -p tmp && python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
