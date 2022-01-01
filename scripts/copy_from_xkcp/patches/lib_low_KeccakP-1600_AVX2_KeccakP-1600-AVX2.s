@@ -1,8 +1,8 @@
 --- upstream/lib/low/KeccakP-1600/AVX2/KeccakP-1600-AVX2.s
 +++ upstream-patched/lib/low/KeccakP-1600/AVX2/KeccakP-1600-AVX2.s
-@@ -15,6 +15,34 @@
- # The rest of the code was written by Ronny Van Keer.
+@@ -16,6 +16,34 @@
  # Adaptations for macOS by Stéphane Léon.
+ # Adaptations for mingw-w64 (changes macOS too) by Jorrit Jongma.
  
 +#ifdef ADD_SYMBOL_SUFFIX
 +#define KeccakP1600_Initialize KeccakP1600_Initialize_avx2
@@ -35,4 +35,23 @@
  .text
  
  # -----------------------------------------------------------------------------
+@@ -31,12 +59,12 @@
+ _KeccakP1600_Initialize:
+ .balign 32
+     vpxor       %ymm0,%ymm0,%ymm0
+-    vmovdqu     %ymm0,0*32(%rdi)
+-    vmovdqu     %ymm0,1*32(%rdi)
+-    vmovdqu     %ymm0,2*32(%rdi)
+-    vmovdqu     %ymm0,3*32(%rdi)
+-    vmovdqu     %ymm0,4*32(%rdi)
+-    vmovdqu     %ymm0,5*32(%rdi)
++    vmovdqa     %ymm0,0*32(%rdi)
++    vmovdqa     %ymm0,1*32(%rdi)
++    vmovdqa     %ymm0,2*32(%rdi)
++    vmovdqa     %ymm0,3*32(%rdi)
++    vmovdqa     %ymm0,4*32(%rdi)
++    vmovdqa     %ymm0,5*32(%rdi)
+     movq        $0,6*32(%rdi)
+     ret
+ .ifndef old_gas_syntax
 
