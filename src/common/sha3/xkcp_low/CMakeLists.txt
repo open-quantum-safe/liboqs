@@ -36,7 +36,7 @@ if(BUILD_AVX2 AND CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
   target_compile_options(xkcp_low_keccakp_1600times4_avx2 PRIVATE -mavx2)
 
   if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-      target_compile_options(xkcp_low_keccakp_1600_avx2 PRIVATE -Wa,-defsym,macOS=1)
+    target_compile_definitions(xkcp_low_keccakp_1600_avx2 PRIVATE old_gas_syntax no_plt)
   endif()
 
   if(OQS_DIST_X86_64_BUILD)

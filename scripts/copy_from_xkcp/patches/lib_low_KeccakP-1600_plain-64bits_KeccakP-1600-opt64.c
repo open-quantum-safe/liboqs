@@ -170,15 +170,13 @@
      }
  #else
      unsigned int i;
-@@ -475,6 +482,7 @@
- void KeccakP1600_ExtractAndAddLanes(const void *state, const unsigned char *input, unsigned char *output, unsigned int laneCount)
- {
-     unsigned int i;
-+    uint64_t lane;
+@@ -478,11 +485,15 @@
  #if (PLATFORM_BYTE_ORDER != IS_LITTLE_ENDIAN)
      unsigned char temp[8];
      unsigned int j;
-@@ -482,7 +490,9 @@
++#else
++    uint64_t lane;
+ #endif
  
      for(i=0; i<laneCount; i++) {
  #if (PLATFORM_BYTE_ORDER == IS_LITTLE_ENDIAN)
@@ -189,7 +187,7 @@
  #else
          fromWordToBytes(temp, ((const uint64_t*)state)[i]);
          for(j=0; j<8; j++)
-@@ -490,24 +500,26 @@
+@@ -490,24 +501,26 @@
  #endif
      }
  #ifdef KeccakP1600_useLaneComplementing
@@ -222,7 +220,7 @@
  #endif
  }
  
-@@ -528,13 +540,12 @@
+@@ -528,13 +541,12 @@
      unsigned int i;
      #endif
      uint64_t *stateAsLanes = (uint64_t*)state;
@@ -238,7 +236,7 @@
          dataByteLen -= laneCount*8;
      }
      copyToState(stateAsLanes, A)
-@@ -551,13 +562,12 @@
+@@ -551,13 +563,12 @@
      unsigned int i;
      #endif
      uint64_t *stateAsLanes = (uint64_t*)state;

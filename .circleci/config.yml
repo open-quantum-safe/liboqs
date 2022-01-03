@@ -180,7 +180,7 @@ jobs:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
           name: Install dependencies
-          command: env HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja && pip3 install pytest pytest-xdist pyyaml
+          command: env HOMEBREW_NO_AUTO_UPDATE=1 brew install cmake ninja gcc@11 && pip3 install pytest pytest-xdist pyyaml
       - run:
           name: Get system information
           command: sysctl -a | grep machdep.cpu
@@ -349,6 +349,10 @@ workflows:
           name: arm64
           PYTEST_ARGS: --numprocesses=auto --maxprocesses=10
           CMAKE_ARGS: -DOQS_DIST_BUILD=ON
+      - macOS:
+          <<: *require_buildcheck
+          name: macOS-gcc11
+          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-11
       - macOS:
           <<: *require_buildcheck
           name: macOS-noopenssl

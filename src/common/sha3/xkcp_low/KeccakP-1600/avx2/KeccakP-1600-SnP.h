@@ -23,6 +23,12 @@ Please refer to SnP-documentation.h for more details.
 
 #include <stddef.h>
 
+#ifdef __MINGW32__
+#define FORCE_SYSV __attribute__((sysv_abi))
+#else
+#define FORCE_SYSV
+#endif
+
 #define KeccakP1600_implementation_avx2      "AVX2 optimized implementation"
 #define KeccakP1600_stateSizeInBytes_avx2    200
 #define KeccakP1600_stateAlignment_avx2      32
@@ -43,39 +49,39 @@ Please refer to SnP-documentation.h for more details.
 void KeccakP1600_StaticInitialize(void);
 
 #define KeccakP1600_Initialize KECCAK_IMPL_NAMESPACE(KeccakP1600_Initialize)
-void KeccakP1600_Initialize(void *state);
+FORCE_SYSV void KeccakP1600_Initialize(void *state);
 
 #define KeccakP1600_AddByte KECCAK_IMPL_NAMESPACE(KeccakP1600_AddByte)
-void KeccakP1600_AddByte(void *state, unsigned char data, unsigned int offset);
+FORCE_SYSV void KeccakP1600_AddByte(void *state, unsigned char data, unsigned int offset);
 
 #define KeccakP1600_AddBytes KECCAK_IMPL_NAMESPACE(KeccakP1600_AddBytes)
-void KeccakP1600_AddBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length);
+FORCE_SYSV void KeccakP1600_AddBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length);
 
 #define KeccakP1600_OverwriteBytes KECCAK_IMPL_NAMESPACE(KeccakP1600_OverwriteBytes)
-void KeccakP1600_OverwriteBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length);
+FORCE_SYSV void KeccakP1600_OverwriteBytes(void *state, const unsigned char *data, unsigned int offset, unsigned int length);
 
 #define KeccakP1600_OverwriteWithZeroes KECCAK_IMPL_NAMESPACE(KeccakP1600_OverwriteWithZeroes)
-void KeccakP1600_OverwriteWithZeroes(void *state, unsigned int byteCount);
+FORCE_SYSV void KeccakP1600_OverwriteWithZeroes(void *state, unsigned int byteCount);
 
 #define KeccakP1600_Permute_Nrounds KECCAK_IMPL_NAMESPACE(KeccakP1600_Permute_Nrounds)
-void KeccakP1600_Permute_Nrounds(void *state, unsigned int nrounds);
+FORCE_SYSV void KeccakP1600_Permute_Nrounds(void *state, unsigned int nrounds);
 
 #define KeccakP1600_Permute_12rounds KECCAK_IMPL_NAMESPACE(KeccakP1600_Permute_12rounds)
-void KeccakP1600_Permute_12rounds(void *state);
+FORCE_SYSV void KeccakP1600_Permute_12rounds(void *state);
 
 #define KeccakP1600_Permute_24rounds KECCAK_IMPL_NAMESPACE(KeccakP1600_Permute_24rounds)
-void KeccakP1600_Permute_24rounds(void *state);
+FORCE_SYSV void KeccakP1600_Permute_24rounds(void *state);
 
 #define KeccakP1600_ExtractBytes KECCAK_IMPL_NAMESPACE(KeccakP1600_ExtractBytes)
-void KeccakP1600_ExtractBytes(const void *state, unsigned char *data, unsigned int offset, unsigned int length);
+FORCE_SYSV void KeccakP1600_ExtractBytes(const void *state, unsigned char *data, unsigned int offset, unsigned int length);
 
 #define KeccakP1600_ExtractAndAddBytes KECCAK_IMPL_NAMESPACE(KeccakP1600_ExtractAndAddBytes)
-void KeccakP1600_ExtractAndAddBytes(const void *state, const unsigned char *input, unsigned char *output, unsigned int offset, unsigned int length);
+FORCE_SYSV void KeccakP1600_ExtractAndAddBytes(const void *state, const unsigned char *input, unsigned char *output, unsigned int offset, unsigned int length);
 
 #define KeccakF1600_FastLoop_Absorb KECCAK_IMPL_NAMESPACE(KeccakF1600_FastLoop_Absorb)
-size_t KeccakF1600_FastLoop_Absorb(void *state, unsigned int laneCount, const unsigned char *data, size_t dataByteLen);
+FORCE_SYSV size_t KeccakF1600_FastLoop_Absorb(void *state, unsigned int laneCount, const unsigned char *data, size_t dataByteLen);
 
 #define KeccakP1600_12rounds_FastLoop_Absorb KECCAK_IMPL_NAMESPACE(KeccakP1600_12rounds_FastLoop_Absorb)
-size_t KeccakP1600_12rounds_FastLoop_Absorb(void *state, unsigned int laneCount, const unsigned char *data, size_t dataByteLen);
+FORCE_SYSV size_t KeccakP1600_12rounds_FastLoop_Absorb(void *state, unsigned int laneCount, const unsigned char *data, size_t dataByteLen);
 
 #endif
