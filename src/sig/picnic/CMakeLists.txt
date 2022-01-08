@@ -48,9 +48,11 @@ target_compile_definitions(picnic PRIVATE OQS
                                           WITH_LOWMC_256_256_38
                                           WITH_LOWMC_129_129_4
                                           WITH_LOWMC_192_192_4
-                                          WITH_LOWMC_255_255_4
-                                          WITH_OPT)
+                                          WITH_LOWMC_255_255_4)
 
+if(OQS_ENABLE_SIG_picnic_avx2 OR OQS_ENABLE_SIG_picnic_sse2 OR OQS_ENABLE_SIG_picnic_neon)
+    target_compile_definitions(picnic PRIVATE WITH_OPT)
+endif()
 if(OQS_ENABLE_SIG_picnic_sse2)
     target_compile_definitions(picnic PRIVATE WITH_SSE2)
 endif()
