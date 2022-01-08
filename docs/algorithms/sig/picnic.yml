@@ -114,7 +114,7 @@ parameter-sets:
     - architecture: x86_64
       operating_systems:
       - Darwin
-      - Windows (except cygwin)
+      - Windows
       required_flags:
       - sse2
     common-crypto:
@@ -216,7 +216,7 @@ parameter-sets:
     - architecture: x86_64
       operating_systems:
       - Darwin
-      - Windows (except cygwin)
+      - Windows
       required_flags:
       - sse2
     common-crypto:
@@ -318,7 +318,7 @@ parameter-sets:
     - architecture: x86_64
       operating_systems:
       - Darwin
-      - Windows (except cygwin)
+      - Windows
       required_flags:
       - sse2
     common-crypto:

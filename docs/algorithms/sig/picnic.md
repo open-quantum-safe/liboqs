@@ -53,7 +53,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          master          | All                         | All                             | None                    | True                               | True                                           | False                |
 |          master          | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
-|          master          | x86\_64                     | Darwin,Windows (except cygwin)  | SSE2                    | True                               | True                                           | False                |
+|          master          | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -83,7 +83,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          master          | All                         | All                             | None                    | True                               | True                                           | False                |
 |          master          | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
-|          master          | x86\_64                     | Darwin,Windows (except cygwin)  | SSE2                    | True                               | True                                           | False                |
+|          master          | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
@@ -113,7 +113,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 |:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 |          master          | All                         | All                             | None                    | True                               | True                                           | False                |
 |          master          | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
-|          master          | x86\_64                     | Darwin,Windows (except cygwin)  | SSE2                    | True                               | True                                           | False                |
+|          master          | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **No**.
 
