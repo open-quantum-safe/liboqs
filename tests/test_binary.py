@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 import helpers
+import os
 import pytest
 import sys
 import glob
@@ -50,6 +51,21 @@ def test_namespace():
             print("Non-namespaced symbol: {}".format(symbol))
 
     assert(len(non_namespaced) == 0)
+
+@helpers.filtered_test
+@pytest.mark.skipif(not(sys.platform.startswith("linux")), reason="Only supported on Linux")
+@pytest.mark.skipif(not(os.path.exists(helpers.get_current_build_dir_name()+'/lib/liboqs.so')), reason="Only supported on builds with a shared library")
+def test_non_executable_stack():
+    liboqs = helpers.get_current_build_dir_name()+'/lib/liboqs.so'
+    out = helpers.run_subprocess(
+        ['readelf', '--wide', '--segments', liboqs]
+    )
+    lines = out.strip().split("\n")
+    for line in lines:
+        if "GNU_STACK" in line:
+            chunks = line.strip().split()
+            flags = chunks[6]
+            assert(flags == 'RW')
 
 if __name__ == "__main__":
     import sys
