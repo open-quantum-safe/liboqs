@@ -674,7 +674,7 @@ static void H3_verify(const picnic_instance_t* pp, sig_proof_t* prf,
   H3_public_key_message(&ctx, pp, prf->salt, context);
   hash_final(&ctx);
 
-  uint8_t hash[MAX_DIGEST_SIZE];
+  uint8_t hash[MAX_DIGEST_SIZE] = {0};
   hash_squeeze(&ctx, hash, digest_size);
   hash_clear(&ctx);
   H3_compute(pp, hash, ch);
@@ -704,7 +704,7 @@ static void H3(const picnic_instance_t* pp, sig_proof_t* prf, const picnic_conte
   H3_public_key_message(&ctx, pp, prf->salt, context);
   hash_final(&ctx);
 
-  uint8_t hash[MAX_DIGEST_SIZE];
+  uint8_t hash[MAX_DIGEST_SIZE] = {0};
   hash_squeeze(&ctx, hash, pp->digest_size);
   hash_clear(&ctx);
   /* parts of this hash will be published as challenge so is public anyway */

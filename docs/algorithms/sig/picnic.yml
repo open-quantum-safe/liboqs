@@ -16,9 +16,9 @@ crypto-assumption: hash function security (ROM/QROM), key recovery attacks on th
   lowMC block cipher
 website: https://microsoft.github.io/Picnic/
 nist-round: 3
-spec-version: 3.0.8
+spec-version: 3.0.10
 spdx-license-identifier: MIT
-upstream: https://github.com/IAIK/Picnic/tree/v3.0.8
+upstream: https://github.com/IAIK/Picnic/tree/v3.0.10
 parameter-sets:
 - name: picnic_L1_FS
   claimed-nist-level: 1
@@ -114,7 +114,7 @@ parameter-sets:
     - architecture: x86_64
       operating_systems:
       - Darwin
-      - Windows (except cygwin)
+      - Windows
       required_flags:
       - sse2
     common-crypto:
@@ -216,7 +216,7 @@ parameter-sets:
     - architecture: x86_64
       operating_systems:
       - Darwin
-      - Windows (except cygwin)
+      - Windows
       required_flags:
       - sse2
     common-crypto:
@@ -318,7 +318,7 @@ parameter-sets:
     - architecture: x86_64
       operating_systems:
       - Darwin
-      - Windows (except cygwin)
+      - Windows
       required_flags:
       - sse2
     common-crypto:
