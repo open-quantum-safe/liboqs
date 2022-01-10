@@ -1,0 +1,16 @@
+jobs:
+  - name: Check environment
+    cmds:
+      - whoami
+      - pwd
+      - cmake --version
+      - uname -a
+  - name: Building on M1
+    cmds:
+      - mkdir build && cd build && cmake -GNinja .. && ninja
+  - name: Minimal testing on M1
+    env:
+      PYTEST_ARGS: tests/test_code_conventions.py tests/test_kat.py
+    cmds:
+      - python3 -m pytest --verbose $PYTEST_ARGS
+
