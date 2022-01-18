@@ -2,7 +2,7 @@
 .align 2
 .global PQCLEAN_FIRESABER_AARCH64_asm_1_to_16
 .global _PQCLEAN_FIRESABER_AARCH64_asm_1_to_16
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_FIRESABER_AARCH64_asm_1_to_16, %function
 #endif
 PQCLEAN_FIRESABER_AARCH64_asm_1_to_16:
@@ -47,7 +47,7 @@ _PQCLEAN_FIRESABER_AARCH64_asm_1_to_16:
 .align 2
 .global PQCLEAN_FIRESABER_AARCH64_asm_4_to_16
 .global _PQCLEAN_FIRESABER_AARCH64_asm_4_to_16
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_FIRESABER_AARCH64_asm_4_to_16, %function
 #endif
 PQCLEAN_FIRESABER_AARCH64_asm_4_to_16:
@@ -85,7 +85,7 @@ _PQCLEAN_FIRESABER_AARCH64_asm_4_to_16:
 .align 2
 .global PQCLEAN_FIRESABER_AARCH64_asm_10_to_32
 .global _PQCLEAN_FIRESABER_AARCH64_asm_10_to_32
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_FIRESABER_AARCH64_asm_10_to_32, %function
 #endif
 PQCLEAN_FIRESABER_AARCH64_asm_10_to_32:
@@ -161,7 +161,7 @@ _PQCLEAN_FIRESABER_AARCH64_asm_10_to_32:
 .align 2
 .global PQCLEAN_FIRESABER_AARCH64_asm_13_to_32
 .global _PQCLEAN_FIRESABER_AARCH64_asm_13_to_32
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_FIRESABER_AARCH64_asm_13_to_32, %function
 #endif
 PQCLEAN_FIRESABER_AARCH64_asm_13_to_32:
@@ -318,7 +318,7 @@ _PQCLEAN_FIRESABER_AARCH64_asm_13_to_32:
 .align 2
 .global PQCLEAN_FIRESABER_AARCH64_asm_16_to_32
 .global _PQCLEAN_FIRESABER_AARCH64_asm_16_to_32
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_FIRESABER_AARCH64_asm_16_to_32, %function
 #endif
 PQCLEAN_FIRESABER_AARCH64_asm_16_to_32:

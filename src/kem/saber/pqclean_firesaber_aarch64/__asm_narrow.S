@@ -4,7 +4,7 @@
 .align 2
 .global PQCLEAN_FIRESABER_AARCH64_asm_round
 .global _PQCLEAN_FIRESABER_AARCH64_asm_round
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_FIRESABER_AARCH64_asm_round, %function
 #endif
 PQCLEAN_FIRESABER_AARCH64_asm_round:
@@ -53,7 +53,7 @@ _PQCLEAN_FIRESABER_AARCH64_asm_round:
 .align 2
 .global PQCLEAN_FIRESABER_AARCH64_asm_enc_add_msg
 .global _PQCLEAN_FIRESABER_AARCH64_asm_enc_add_msg
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_FIRESABER_AARCH64_asm_enc_add_msg, %function
 #endif
 PQCLEAN_FIRESABER_AARCH64_asm_enc_add_msg:
@@ -143,7 +143,7 @@ _PQCLEAN_FIRESABER_AARCH64_asm_enc_add_msg:
 .align 2
 .global PQCLEAN_FIRESABER_AARCH64_asm_dec_get_msg
 .global _PQCLEAN_FIRESABER_AARCH64_asm_dec_get_msg
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_FIRESABER_AARCH64_asm_dec_get_msg, %function
 #endif
 PQCLEAN_FIRESABER_AARCH64_asm_dec_get_msg:
