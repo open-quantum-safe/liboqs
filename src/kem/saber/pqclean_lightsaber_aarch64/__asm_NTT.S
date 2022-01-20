@@ -4,7 +4,7 @@
 .align 2
 .global PQCLEAN_LIGHTSABER_AARCH64_asm_ntt_SIMD_top
 .global _PQCLEAN_LIGHTSABER_AARCH64_asm_ntt_SIMD_top
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_LIGHTSABER_AARCH64_asm_ntt_SIMD_top, %function
 #endif
 PQCLEAN_LIGHTSABER_AARCH64_asm_ntt_SIMD_top:
@@ -181,7 +181,7 @@ _PQCLEAN_LIGHTSABER_AARCH64_asm_ntt_SIMD_top:
 .align 2
 .global PQCLEAN_LIGHTSABER_AARCH64_asm_ntt_SIMD_bot
 .global _PQCLEAN_LIGHTSABER_AARCH64_asm_ntt_SIMD_bot
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_LIGHTSABER_AARCH64_asm_ntt_SIMD_bot, %function
 #endif
 PQCLEAN_LIGHTSABER_AARCH64_asm_ntt_SIMD_bot:

@@ -6,7 +6,7 @@
 .align 2
 .global PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended
 .global _PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
   .type PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended, %function
 #endif
 PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended:
@@ -73,7 +73,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended:
 .align 2
 .global PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul
 .global _PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul, %function
 #endif
 PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul:
@@ -228,7 +228,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul:
 .align 2
 .global PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul_montgomery
 .global _PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul_montgomery
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul_montgomery, %function
 #endif
 PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul_montgomery:

@@ -4,7 +4,7 @@
 .align 2
 .global PQCLEAN_KYBER768_AARCH64_asm_add_reduce
 .global _PQCLEAN_KYBER768_AARCH64_asm_add_reduce
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_KYBER768_AARCH64_asm_add_reduce, %function
 #endif
 PQCLEAN_KYBER768_AARCH64_asm_add_reduce:
@@ -68,7 +68,7 @@ _PQCLEAN_KYBER768_AARCH64_asm_add_reduce:
 .align 2
 .global PQCLEAN_KYBER768_AARCH64_asm_sub_reduce
 .global _PQCLEAN_KYBER768_AARCH64_asm_sub_reduce
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_KYBER768_AARCH64_asm_sub_reduce, %function
 #endif
 PQCLEAN_KYBER768_AARCH64_asm_sub_reduce:
@@ -132,7 +132,7 @@ _PQCLEAN_KYBER768_AARCH64_asm_sub_reduce:
 .align 2
 .global PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce
 .global _PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce
-#ifndef __clang__
+#if !defined(__clang__) && !defined(old_gas_syntax)
 .type PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce, %function
 #endif
 PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce:
