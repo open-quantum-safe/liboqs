@@ -29,6 +29,10 @@ endif()
 
 # BIKE is not supported on Windows, 32-bit ARM, S390X (big endian) and PPC64 (big endian)
 cmake_dependent_option(OQS_ENABLE_KEM_BIKE "Enable BIKE algorithm family" ON "NOT WIN32; NOT ARCH_ARM32v7; NOT ARCH_X86; NOT ARCH_S390X; NOT ARCH_PPC64" OFF)
+# BIKE doesn't work on any 32bit platform except x86:
+if(CMAKE_SIZEOF_VOID_P MATCHES "4" AND NOT ARCH_X86)
+set(OQS_ENABLE_KEM_BIKE OFF)
+endif()
 cmake_dependent_option(OQS_ENABLE_KEM_bike_l1 "" ON "OQS_ENABLE_KEM_BIKE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_bike_l3 "" ON "OQS_ENABLE_KEM_BIKE" OFF)
 
