@@ -466,8 +466,8 @@ static void mpc_sbox_verify_uint64_lowmc_255_255_4(mzd_local_t* out, const mzd_l
 #if defined(WITH_OPT)
 #define NROLR(a, b, c)                                                                             \
   do {                                                                                             \
-    (void)a;                                                                                       \
-    (void)b;                                                                                       \
+    a[0] = b[0];                                                                                   \
+    a[1] = b[1];                                                                                   \
     (void)c;                                                                                       \
   } while (0)
 

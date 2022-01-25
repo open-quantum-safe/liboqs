@@ -150,5 +150,76 @@ static inline void mzd_from_bitstream(bitstream_t* bs, mzd_local_t* v, const siz
     *d = 0;
   }
 }
+
+#if defined(WITH_OPT)
+#if defined(WITH_AVX2)
+ATTR_TARGET_S256
+static inline void w256_to_bitstream(bitstream_t* bs, const word256 v, const size_t width,
+                                     const size_t size) {
+  uint64_t buf[4] ATTR_ALIGNED(32);
+  mm256_store(buf, v);
+
+  const uint64_t* d = &buf[width - 1];
+  size_t bits       = size;
+  for (; bits >= sizeof(uint64_t) * 8; bits -= sizeof(uint64_t) * 8, --d) {
+    bitstream_put_bits(bs, *d, sizeof(uint64_t) * 8);
+  }
+  if (bits) {
+    bitstream_put_bits(bs, *d >> (sizeof(uint64_t) * 8 - bits), bits);
+  }
+}
+
+ATTR_TARGET_S256
+static inline word256 w256_from_bitstream(bitstream_t* bs, const size_t width, const size_t size) {
+  uint64_t buf[4] ATTR_ALIGNED(32) = {0};
+  uint64_t* d                      = &buf[width - 1];
+  size_t bits                      = size;
+  for (; bits >= sizeof(uint64_t) * 8; bits -= sizeof(uint64_t) * 8, --d) {
+    *d = bitstream_get_bits(bs, sizeof(uint64_t) * 8);
+  }
+  if (bits) {
+    *d = bitstream_get_bits(bs, bits) << (sizeof(uint64_t) * 8 - bits);
+  }
+
+  return mm256_load(&buf[0]);
+}
+#endif
+
+#if defined(WITH_SSE2) || defined(WITH_NEON)
+ATTR_TARGET_S128
+static inline void w128_to_bitstream(bitstream_t* bs, const word128 v[2], const size_t width,
+                                     const size_t size) {
+  uint64_t buf[4] ATTR_ALIGNED(16);
+  mm128_store(&buf[0], v[0]);
+  mm128_store(&buf[2], v[1]);
+
+  const uint64_t* d = &buf[width - 1];
+  size_t bits       = size;
+  for (; bits >= sizeof(uint64_t) * 8; bits -= sizeof(uint64_t) * 8, --d) {
+    bitstream_put_bits(bs, *d, sizeof(uint64_t) * 8);
+  }
+  if (bits) {
+    bitstream_put_bits(bs, *d >> (sizeof(uint64_t) * 8 - bits), bits);
+  }
+}
+
+ATTR_TARGET_S128
+static inline void w128_from_bitstream(bitstream_t* bs, word128 v[2], const size_t width,
+                                       const size_t size) {
+  uint64_t buf[4] ATTR_ALIGNED(16) = {0};
+  uint64_t* d                      = &buf[width - 1];
+  size_t bits                      = size;
+  for (; bits >= sizeof(uint64_t) * 8; bits -= sizeof(uint64_t) * 8, --d) {
+    *d = bitstream_get_bits(bs, sizeof(uint64_t) * 8);
+  }
+  if (bits) {
+    *d = bitstream_get_bits(bs, bits) << (sizeof(uint64_t) * 8 - bits);
+  }
+
+  v[0] = mm128_load(&buf[0]);
+  v[1] = mm128_load(&buf[2]);
+}
+#endif
+#endif
 #endif
 #endif
