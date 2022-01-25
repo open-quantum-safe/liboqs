@@ -486,11 +486,11 @@ static void sbox_aux_uint64_lowmc_255_255_4(mzd_local_t* statein, mzd_local_t* s
     word128 t0[2] ATTR_ALIGNED(alignof(word128));                                                  \
     word128 t1[2] ATTR_ALIGNED(alignof(word128));                                                  \
     word128 t2[2] ATTR_ALIGNED(alignof(word128));                                                  \
-    mzd_local_t tmp[1], aux[1];                                                                    \
+    word128 aux[2] ATTR_ALIGNED(alignof(word128));                                                 \
     SHR(t2, fresh_output_ca, 2);                                                                   \
     SHR(t1, fresh_output_bc, 1);                                                                   \
     XOR(t2, t2, t1);                                                                               \
-    XOR(aux->w128, t2, fresh_output_ab);                                                           \
+    XOR(aux, t2, fresh_output_ab);                                                                 \
                                                                                                    \
     /* a & b */                                                                                    \
     AND(t0, a, b);                                                                                 \
@@ -502,21 +502,21 @@ static void sbox_aux_uint64_lowmc_255_255_4(mzd_local_t* statein, mzd_local_t* s
     SHR(t1, t1, 1);                                                                                \
     XOR(t2, t2, t1);                                                                               \
     XOR(t2, t2, t0);                                                                               \
-    XOR(aux->w128, aux->w128, t2);                                                                 \
+    XOR(aux, aux, t2);                                                                             \
                                                                                                    \
     bitstream_t parity_tape     = {{tapes->parity_tapes}, tapes->pos};                             \
     bitstream_t last_party_tape = {{tapes->tape[15]}, tapes->pos};                                 \
                                                                                                    \
     /* calculate aux_bits to fix and_helper */                                                     \
-    mzd_from_bitstream(&parity_tape, tmp, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);       \
-    XOR(aux->w128, aux->w128, tmp->w128);                                                          \
-    mzd_from_bitstream(&last_party_tape, tmp, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);   \
-    XOR(aux->w128, aux->w128, tmp->w128);                                                          \
+    w128_from_bitstream(&parity_tape, t0, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);       \
+    XOR(aux, aux, t0);                                                                             \
+    w128_from_bitstream(&last_party_tape, t1, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);   \
+    XOR(aux, aux, t1);                                                                             \
                                                                                                    \
     last_party_tape.position = tapes->pos;                                                         \
-    mzd_to_bitstream(&last_party_tape, aux, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);     \
+    w128_to_bitstream(&last_party_tape, aux, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);    \
     bitstream_t aux_tape = {{tapes->aux_bits}, tapes->aux_pos};                                    \
-    mzd_to_bitstream(&aux_tape, aux, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);            \
+    w128_to_bitstream(&aux_tape, aux, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);           \
                                                                                                    \
     tapes->aux_pos += LOWMC_N;                                                                     \
   } while (0)
@@ -616,37 +616,38 @@ static void sbox_aux_s128_lowmc_255_255_4(mzd_local_t* statein, mzd_local_t* sta
     word256 t0 ATTR_ALIGNED(alignof(word256));                                                     \
     word256 t1 ATTR_ALIGNED(alignof(word256));                                                     \
     word256 t2 ATTR_ALIGNED(alignof(word256));                                                     \
-    mzd_local_t tmp[1], aux[1];                                                                    \
-    t2        = ROR(fresh_output_ca, 2);                                                           \
-    t1        = ROR(fresh_output_bc, 1);                                                           \
-    t2        = XOR(t2, t1);                                                                       \
-    aux->w256 = XOR(t2, fresh_output_ab);                                                          \
+    word256 aux ATTR_ALIGNED(alignof(word256));                                                    \
+                                                                                                   \
+    t2  = ROR(fresh_output_ca, 2);                                                                 \
+    t1  = ROR(fresh_output_bc, 1);                                                                 \
+    t2  = XOR(t2, t1);                                                                             \
+    aux = XOR(t2, fresh_output_ab);                                                                \
                                                                                                    \
     /* a & b */                                                                                    \
     t0 = AND(a, b);                                                                                \
     /* b & c */                                                                                    \
     t1 = AND(b, c);                                                                                \
     /* c & a */                                                                                    \
-    t2        = AND(c, a);                                                                         \
-    t2        = ROR(t2, 2);                                                                        \
-    t1        = ROR(t1, 1);                                                                        \
-    t2        = XOR(t2, t1);                                                                       \
-    t2        = XOR(t2, t0);                                                                       \
-    aux->w256 = XOR(aux->w256, t2);                                                                \
+    t2  = AND(c, a);                                                                               \
+    t2  = ROR(t2, 2);                                                                              \
+    t1  = ROR(t1, 1);                                                                              \
+    t2  = XOR(t2, t1);                                                                             \
+    t2  = XOR(t2, t0);                                                                             \
+    aux = XOR(aux, t2);                                                                            \
                                                                                                    \
     bitstream_t parity_tape     = {{tapes->parity_tapes}, tapes->pos};                             \
     bitstream_t last_party_tape = {{tapes->tape[15]}, tapes->pos};                                 \
                                                                                                    \
     /* calculate aux_bits to fix and_helper */                                                     \
-    mzd_from_bitstream(&parity_tape, tmp, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);       \
-    aux->w256 = XOR(aux->w256, tmp->w256);                                                         \
-    mzd_from_bitstream(&last_party_tape, tmp, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);   \
-    aux->w256 = XOR(aux->w256, tmp->w256);                                                         \
+    t0  = w256_from_bitstream(&parity_tape, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);     \
+    aux = XOR(aux, t0);                                                                            \
+    t1  = w256_from_bitstream(&last_party_tape, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N); \
+    aux = XOR(aux, t1);                                                                            \
                                                                                                    \
     last_party_tape.position = tapes->pos;                                                         \
-    mzd_to_bitstream(&last_party_tape, aux, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);     \
+    w256_to_bitstream(&last_party_tape, aux, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);    \
     bitstream_t aux_tape = {{tapes->aux_bits}, tapes->aux_pos};                                    \
-    mzd_to_bitstream(&aux_tape, aux, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);            \
+    w256_to_bitstream(&aux_tape, aux, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);           \
                                                                                                    \
     tapes->aux_pos += LOWMC_N;                                                                     \
   } while (0)

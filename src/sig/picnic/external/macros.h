@@ -171,7 +171,7 @@
 /* target attribute */
 #if defined(__GNUC__) || __has_attribute(target)
 #define ATTR_TARGET(x) __attribute__((target((x))))
-#define ATTR_TARGET_AVX2 __attribute__((target("avx2,bmi2")))
+#define ATTR_TARGET_AVX2 __attribute__((target("avx2,bmi2,sse2")))
 #define ATTR_TARGET_SSE2 __attribute__((target("sse2")))
 #else
 #define ATTR_TARGET(x)
@@ -184,6 +184,20 @@
 #define ATTR_ARTIFICIAL __attribute__((__artificial__))
 #else
 #define ATTR_ARTIFICIAL
+#endif
+
+/* may_alias attribute */
+#if GNUC_CHECK(3, 3) || __has_attribute(__may_alias__)
+#define ATTR_MAY_ALIAS __attribute__((__may_alias__))
+#else
+#define ATTR_MAY_ALIAS
+#endif
+
+/* vector_size attribute */
+#if GNUC_CHECK(4, 8) || __has_attribute(__vector_size__)
+#define ATTR_VECTOR_SIZE(s) __attribute__((__vector_size__(s)))
+#else
+#define ATTR_VECTOR_SIZE(s)
 #endif
 
 #define FN_ATTRIBUTES_AVX2 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_AVX2
