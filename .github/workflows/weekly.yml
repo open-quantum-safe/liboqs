@@ -2,7 +2,7 @@ name: Weekly constant time tests
 
 on:
   schedule:
-  - cron: "5 0 * * 6"
+  - cron: "5 0 * * *"
 
 jobs:
 
@@ -34,5 +34,5 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 360
-        run: mkdir -p tmp && SKIP_ALGS=${{ matrix.SKIP_ALGS }} python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
+        run: mkdir -p tmp && SKIP_ALGS='${{ matrix.SKIP_ALGS }}' python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
