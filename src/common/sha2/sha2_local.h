@@ -1,5 +1,5 @@
 /**
- * \file sha2.h
+ * \file sha2_local.h
  * \brief Internal SHA2 functions that enable easy switching between native instructions
  *        and c implementations
  *
