@@ -40,6 +40,9 @@ else()
     elseif (OQS_USE_ARM_SHA2_INSTRUCTIONS)
        # Assume we are compiling native
        set(SHA2_IMPL ${SHA2_IMPL} sha2/sha2_ni.c)
+       if ((CMAKE_SYSTEM_NAME MATCHES "Darwin") AND (${CMAKE_C_COMPILER_ID} STREQUAL "GNU"))
+         set_source_files_properties(sha2/sha2_ni.c PROPERTIES COMPILE_FLAGS -march=armv8-a+crypto)
+       endif()
     endif()
 endif()
 
