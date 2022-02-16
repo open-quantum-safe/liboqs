@@ -34,3 +34,10 @@
    fun:pqcrystals_kyber*_avx2_gen_matrix
    fun:pqcrystals_kyber*_avx2_indcpa_*
 }
+{
+   Rejection sampling to produce public "A" matrix
+   Memcheck:Value8
+   fun:rej_uniform
+   fun:pqcrystals_kyber*_avx2_gen_matrix
+   fun:pqcrystals_kyber*_avx2_indcpa_*
+}
