@@ -119,3 +119,29 @@ jobs:
                               python3 -m pytest --verbose \
                                                 --numprocesses=auto \
                                                 --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}"
+
+  constant-time-x64:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: extensions
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+            PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
+            SKIP_ALGS: 'SPHINCS*,Rainbow*,Classic*,BIKE*,Frodo*,HQC*,NTRU*,ntru*,sntru*,Fire*,Light*,Saber*,SIDH*,SIKE*,picnic*,Dilithium*,Falcon*'
+    container:
+      image: ${{ matrix.container }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 360
+        run: mkdir -p tmp && SKIP_ALGS='${{ matrix.SKIP_ALGS }}' python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
+
