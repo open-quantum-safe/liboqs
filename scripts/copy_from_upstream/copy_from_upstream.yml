@@ -211,6 +211,10 @@ sigs:
     name: dilithium
     default_implementation: ref
     upstream_location: pqcrystals-dilithium
+    arch_specific_implementations: 
+                                      aarch64: aarch64
+    arch_specific_upstream_locations: 
+                                      aarch64: pqclean
     schemes:
       -
         scheme: "2"
@@ -224,22 +228,22 @@ sigs:
         signed_msg_order: sig_then_msg
       -
         scheme: "5"
-        pqclean_scheme: dilithium_5
+        pqclean_scheme: dilithium5
         pretty_name_full: Dilithium5
         signed_msg_order: sig_then_msg
       -
         scheme: "2_aes"
-        pqclean_scheme: dilithium2-aes
+        pqclean_scheme: dilithium2aes
         pretty_name_full: Dilithium2-AES
         signed_msg_order: sig_then_msg
       -
         scheme: "3_aes"
-        pqclean_scheme: dilithium3-aes
+        pqclean_scheme: dilithium3aes
         pretty_name_full: Dilithium3-AES
         signed_msg_order: sig_then_msg
       -
         scheme: "5_aes"
-        pqclean_scheme: dilithium_5-aes
+        pqclean_scheme: dilithium5aes
         pretty_name_full: Dilithium5-AES
         signed_msg_order: sig_then_msg
   -

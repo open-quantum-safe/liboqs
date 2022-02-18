@@ -279,7 +279,7 @@ def load_instructions():
                                                        upstreams[scheme['upstream_location']][
                                                            'sig_meta_path'].format_map(scheme))
                 if 'arch_specific_upstream_locations' in family:
-                    if 'extras' not in scheme['kem_meta_paths']:
+                    if 'extras' not in scheme['sig_meta_paths']:
                         scheme['sig_meta_paths']['extras'] = {}
 
                     for arch in family['arch_specific_upstream_locations']:
