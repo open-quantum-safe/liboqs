@@ -601,11 +601,13 @@ def copy_from_upstream():
             json.dump(kats[t], f, indent=2, sort_keys=True)
     if not keepdata:
         shutil.rmtree('repos')
-    update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
+
+    # TODO uncomment these once done integrating dilithium
+    # update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
     # Not in love with using sub process to call a python script, but this is the easiest solution for 
     # automatically calling this script in its current state.
-    shell(["python3",  "../update_docs_from_yaml.py", "--liboqs-root", "../../"]) 
+    # shell(["python3",  "../update_docs_from_yaml.py", "--liboqs-root", "../../"]) 
 
 def verify_from_upstream():
     instructions = load_instructions()
