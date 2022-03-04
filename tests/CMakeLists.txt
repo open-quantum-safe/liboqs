@@ -52,6 +52,9 @@ if(NOT WIN32)
 
     set(PYTHON3_EXEC python3)
 else()
+    if(OQS_USE_OPENSSL)
+        include_directories(${OPENSSL_INCLUDE_DIR})
+    endif()
     set(PYTHON3_EXEC python)
 endif()
 
