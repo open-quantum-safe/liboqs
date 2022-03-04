@@ -10,6 +10,10 @@
   - https://github.com/fast-crypto-lab/rainbow-submission-round2/commit/173ada0e077e1b9dbd8e4a78994f87acc0c92263
 - **Implementation license (SPDX-Identifier)**: CC0-1.0.
 
+## Usage advice/warning
+
+[A practical attack against this algorithm has been published and confirmed](https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/KFgw5_qCXiI?pli=1). Thus, caution is advised regarding the use of it. Next steps are tracked under [liboqs issue #1192](https://github.com/open-quantum-safe/liboqs/issues/1192).
+
 ## Parameter set summary
 
 |       Parameter set        | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |
