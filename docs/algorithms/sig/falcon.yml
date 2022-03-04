@@ -16,11 +16,12 @@ crypto-assumption: hardness of NTRU lattice problems
 website: https://falcon-sign.info
 nist-round: 3
 spec-version: v1.2
-spdx-license-identifier: MIT
-upstream: https://github.com/PQClean/PQClean/commit/6a32796212b79a5f9126d0a933e1216313f50c16
-upstream-ancestors:
-- https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon
-- supercop-20201018
+primary-upstream:
+  source: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+  spdx-license-identifier: CC0-1.0
+  upstream-ancestors:
+  - https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon
+  - supercop-20201018
 parameter-sets:
 - name: Falcon-512
   claimed-nist-level: 1
@@ -30,14 +31,16 @@ parameter-sets:
   length-signature: 690
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -58,14 +61,16 @@ parameter-sets:
   length-signature: 1330
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:

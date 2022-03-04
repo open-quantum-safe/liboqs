@@ -185,4 +185,4 @@ parameter-sets:
     upstream: primary-upstream
 primary-upstream:
   spdx-license-identifier: CC0-1.0
-  source: https://github.com/PQClean/PQClean/commit/6a32796212b79a5f9126d0a933e1216313f50c16
+  source: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6

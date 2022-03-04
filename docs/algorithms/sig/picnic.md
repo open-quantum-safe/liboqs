@@ -5,8 +5,10 @@
 - **Principal submitters**: Greg Zaverucha, Melissa Chase, David Derler, Steven Goldfeder, Claudio Orlandi, Sebastian Ramacher, Christian Rechberger, Daniel Slamanig, Jonathan Katz, Xiao Wang, Vladmir Kolesnikov.
 - **Authors' website**: https://microsoft.github.io/Picnic/
 - **Specification version**: 3.0.11.
-- **Implementation source**: https://github.com/IAIK/Picnic/tree/v3.0.11
-- **Implementation license (SPDX-Identifier)**: MIT.
+- **Primary Source**<a name="primary-source"></a>:
+  - **Source**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
+  - **Implementation license (SPDX-Identifier)**: CC0-1.0
+
 
 ## Parameter set summary
 
@@ -25,127 +27,127 @@
 |   picnic3\_L3    | EUF-CMA          |                    3 |                        49 |                        73 |                    35028 |
 |   picnic3\_L5    | EUF-CMA          |                    5 |                        65 |                        97 |                    61028 |
 
-## picnic\_L1\_FS implementation characteristics
+## picnic_L1_FS implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                 |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                 |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
  ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.
 
-## picnic\_L1\_UR implementation characteristics
+## picnic_L1_UR implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L1\_full implementation characteristics
+## picnic_L1_full implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L3\_FS implementation characteristics
+## picnic_L3_FS implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L3\_UR implementation characteristics
+## picnic_L3_UR implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L3\_full implementation characteristics
+## picnic_L3_full implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L5\_FS implementation characteristics
+## picnic_L5_FS implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L5\_UR implementation characteristics
+## picnic_L5_UR implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic\_L5\_full implementation characteristics
+## picnic_L5_full implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic3\_L1 implementation characteristics
+## picnic3_L1 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic3\_L3 implementation characteristics
+## picnic3_L3 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
-## picnic3\_L5 implementation characteristics
+## picnic3_L5 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)        | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:-------------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|          master          | All                         | All                                  | None                    | True                               | True                                           | False                 |
-|          master          | x86\_64                     | Linux,Darwin,Windows (except Cygwin) | AVX2,SSE2               | True                               | True                                           | False                 |
-|          master          | arm64                       | Linux,Darwin                         | NEON                    | True                               | True                                           | False                 |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | master                   | All                         | All                             | None                    | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
+Are implementations chosen based on runtime CPU feature detection? **No**.
 
 ## Explanation of Terms
 

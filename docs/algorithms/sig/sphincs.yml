@@ -23,10 +23,12 @@ website: https://sphincs.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
 spdx-license-identifier: CC0-1.0
-upstream: https://github.com/PQClean/PQClean/commit/6a32796212b79a5f9126d0a933e1216313f50c16
-  with copy_from_upstream patches
-upstream-ancestors:
-- https://github.com/sphincs/sphincsplus
+primary-upstream:
+  source: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+    with copy_from_upstream patches
+  spdx-license-identifier: CC0-1.0
+  upstream-ancestors:
+  - https://github.com/sphincs/sphincsplus
 parameter-sets:
 - name: SPHINCS+-Haraka-128f-robust
   claimed-nist-level: 1
@@ -36,14 +38,16 @@ parameter-sets:
   length-signature: 17088
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -61,14 +65,16 @@ parameter-sets:
   length-signature: 17088
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -86,14 +92,16 @@ parameter-sets:
   length-signature: 7856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -111,14 +119,16 @@ parameter-sets:
   length-signature: 7856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -136,14 +146,16 @@ parameter-sets:
   length-signature: 35664
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -161,14 +173,16 @@ parameter-sets:
   length-signature: 35664
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -186,14 +200,16 @@ parameter-sets:
   length-signature: 16224
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -211,14 +227,16 @@ parameter-sets:
   length-signature: 16224
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -236,14 +254,16 @@ parameter-sets:
   length-signature: 49856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -261,14 +281,16 @@ parameter-sets:
   length-signature: 49856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -286,14 +308,16 @@ parameter-sets:
   length-signature: 29792
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -311,14 +335,16 @@ parameter-sets:
   length-signature: 29792
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: BearSSL (packaged)
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: aesni
+  - upstream: primary-upstream
+    upstream-id: aesni
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -336,14 +362,16 @@ parameter-sets:
   length-signature: 17088
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -361,14 +389,16 @@ parameter-sets:
   length-signature: 17088
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -386,14 +416,16 @@ parameter-sets:
   length-signature: 7856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -411,14 +443,16 @@ parameter-sets:
   length-signature: 7856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -436,14 +470,16 @@ parameter-sets:
   length-signature: 35664
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -461,14 +497,16 @@ parameter-sets:
   length-signature: 35664
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -486,14 +524,16 @@ parameter-sets:
   length-signature: 16224
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -511,14 +551,16 @@ parameter-sets:
   length-signature: 16224
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -536,14 +578,16 @@ parameter-sets:
   length-signature: 49856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -561,14 +605,16 @@ parameter-sets:
   length-signature: 49856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -586,14 +632,16 @@ parameter-sets:
   length-signature: 29792
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -611,14 +659,16 @@ parameter-sets:
   length-signature: 29792
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA2: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -636,14 +686,16 @@ parameter-sets:
   length-signature: 17088
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -661,14 +713,16 @@ parameter-sets:
   length-signature: 17088
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -686,14 +740,16 @@ parameter-sets:
   length-signature: 7856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -711,14 +767,16 @@ parameter-sets:
   length-signature: 7856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -736,14 +794,16 @@ parameter-sets:
   length-signature: 35664
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -761,14 +821,16 @@ parameter-sets:
   length-signature: 35664
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -786,14 +848,16 @@ parameter-sets:
   length-signature: 16224
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -811,14 +875,16 @@ parameter-sets:
   length-signature: 16224
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -836,14 +902,16 @@ parameter-sets:
   length-signature: 49856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -861,14 +929,16 @@ parameter-sets:
   length-signature: 49856
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -886,14 +956,16 @@ parameter-sets:
   length-signature: 29792
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:
@@ -911,14 +983,16 @@ parameter-sets:
   length-signature: 29792
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: clean
+  - upstream: primary-upstream
+    upstream-id: clean
     supported-platforms: all
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       required_flags:

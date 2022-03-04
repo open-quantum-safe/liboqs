@@ -6,8 +6,14 @@
 - **Auxiliary submitters**: Shi Bai, Léo Ducas, Eike Kiltz, Tancrède Lepoint, Peter Schwabe, Gregor Seiler, Damien Stehlé.
 - **Authors' website**: https://pq-crystals.org/dilithium/
 - **Specification version**: 3.1.
-- **Implementation source**: https://github.com/pq-crystals/dilithium/commit/61b51a71701b8ae9f546a1e5d220e1950ed20d06 with copy_from_upstream patches
-- **Implementation license (SPDX-Identifier)**: CC0-1.0.
+- **Primary Source**<a name="primary-source"></a>:
+  - **Source**: https://github.com/pq-crystals/dilithium/commit/61b51a71701b8ae9f546a1e5d220e1950ed20d06 with copy_from_upstream patches
+  - **Implementation license (SPDX-Identifier)**: CC0-1.0
+- **Optimized Implementation sources**: https://github.com/pq-crystals/dilithium/commit/61b51a71701b8ae9f546a1e5d220e1950ed20d06 with copy_from_upstream patches
+  - **pqclean-aarch64**:<a name="pqclean-aarch64"></a>
+      - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6 with copy_from_upstream patches
+      - **Implementation license (SPDX-Identifier)**: CC0-1.0
+
 
 ## Parameter set summary
 
@@ -22,10 +28,11 @@
 
 ## Dilithium2 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
-|           ref            | All                         | All                             | None                    | True                               | True                                           | False                 |
-|           avx2           | x86\_64                     | Darwin,Linux                    | AVX2,POPCNT             | True                               | True                                           | False                 |
+|        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
+|:-----------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
+|  [Primary Source](#primary-source)  | ref                      | All                         | All                             | None                    | True                               | True                                           | False                 |
+|  [Primary Source](#primary-source)  | avx2                     | x86\_64                     | Darwin,Linux                    | AVX2,POPCNT             | True                               | True                                           | False                 |
+| [pqclean-aarch64](#pqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -33,46 +40,48 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Dilithium3 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           ref            | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Darwin,Linux                    | AVX2,POPCNT             | True                               | True                                           | False                |
+|        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:-----------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|  [Primary Source](#primary-source)  | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
+|  [Primary Source](#primary-source)  | avx2                     | x86\_64                     | Darwin,Linux                    | AVX2,POPCNT             | True                               | True                                           | False                |
+| [pqclean-aarch64](#pqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Dilithium5 implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           ref            | All                         | All                             | None                    | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Darwin,Linux                    | AVX2,POPCNT             | True                               | True                                           | False                |
+|        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:-----------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+|  [Primary Source](#primary-source)  | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
+|  [Primary Source](#primary-source)  | avx2                     | x86\_64                     | Darwin,Linux                    | AVX2,POPCNT             | True                               | True                                           | False                |
+| [pqclean-aarch64](#pqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Dilithium2-AES implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used      | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:---------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           ref            | All                         | All                             | None                       | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Darwin,Linux                    | AES,AVX2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used      | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:---------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                       | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AES,AVX2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Dilithium3-AES implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used      | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:---------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           ref            | All                         | All                             | None                       | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Darwin,Linux                    | AES,AVX2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used      | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:---------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                       | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AES,AVX2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Dilithium5-AES implementation characteristics
 
-|  Identifier in upstream  | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used      | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:------------------------:|:----------------------------|:--------------------------------|:---------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-|           ref            | All                         | All                             | None                       | True                               | True                                           | False                |
-|           avx2           | x86\_64                     | Darwin,Linux                    | AES,AVX2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
+|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used      | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
+|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:---------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
+| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                       | True                               | True                                           | False                |
+| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AES,AVX2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

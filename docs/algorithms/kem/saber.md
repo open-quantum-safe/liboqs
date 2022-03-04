@@ -6,7 +6,7 @@
 - **Authors' website**: https://www.esat.kuleuven.be/cosic/pqcrypto/saber/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/6a32796212b79a5f9126d0a933e1216313f50c16 with copy_from_upstream patches
+  - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Public domain
 , which takes it from:
   - https://github.com/jschanck/package-pqclean/tree/1ae84c3c/saber, which takes it from:

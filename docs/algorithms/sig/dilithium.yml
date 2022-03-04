@@ -14,9 +14,15 @@ crypto-assumption: hardness of lattice problems over module lattices
 website: https://pq-crystals.org/dilithium/
 nist-round: 3
 spec-version: 3.1
-spdx-license-identifier: CC0-1.0
-upstream: https://github.com/pq-crystals/dilithium/commit/61b51a71701b8ae9f546a1e5d220e1950ed20d06
-  with copy_from_upstream patches
+primary-upstream:
+  source: https://github.com/pq-crystals/dilithium/commit/61b51a71701b8ae9f546a1e5d220e1950ed20d06
+    with copy_from_upstream patches
+  spdx-license-identifier: CC0-1.0
+optimized-upstreams:
+  pqclean-aarch64:
+    source: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+      with copy_from_upstream patches
+    spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: Dilithium2
   claimed-nist-level: 2
@@ -26,7 +32,8 @@ parameter-sets:
   length-signature: 2420
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - AES: pqcrystals
@@ -34,7 +41,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -48,6 +56,18 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: pqclean-aarch64
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Dilithium3
   claimed-nist-level: 3
@@ -57,7 +77,8 @@ parameter-sets:
   length-signature: 3293
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - AES: pqcrystals
@@ -65,7 +86,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -79,6 +101,18 @@ parameter-sets:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+  - upstream: pqclean-aarch64
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Dilithium5
   claimed-nist-level: 5
@@ -88,7 +122,8 @@ parameter-sets:
   length-signature: 4595
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - AES: pqcrystals
@@ -96,7 +131,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -111,6 +147,18 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
+  - upstream: pqclean-aarch64
+    upstream-id: aarch64
+    supported-platforms:
+    - architecture: ARM64_V8
+      operating_systems:
+      - Linux
+      - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
 - name: Dilithium2-AES
   claimed-security: EUF-CMA
   claimed-nist-level: 2
@@ -119,7 +167,8 @@ parameter-sets:
   length-signature: 2420
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - AES: pqcrystals
@@ -127,7 +176,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -153,7 +203,8 @@ parameter-sets:
   length-signature: 3293
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - AES: pqcrystals
@@ -161,7 +212,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -187,7 +239,8 @@ parameter-sets:
   length-signature: 4595
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: ref
+  - upstream: primary-upstream
+    upstream-id: ref
     supported-platforms: all
     common-crypto:
     - AES: pqcrystals
@@ -195,7 +248,8 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-  - upstream-id: avx2
+  - upstream: primary-upstream
+    upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
