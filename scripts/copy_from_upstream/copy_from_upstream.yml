@@ -3,12 +3,12 @@ upstreams:
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
-    git_commit: 6a32796212b79a5f9126d0a933e1216313f50c16
+    git_commit: 4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: [pqclean-sphincs.patch, pqclean-kyber-armneon-shake.patch, pqclean-saber-armneon-shake.patch, pqclean-saber-kyber-arm-macos-gcc-fix.patch]
+    patches: [pqclean-sphincs.patch, pqclean-kyber-armneon-shake.patch, pqclean-saber-armneon-shake.patch, pqclean-saber-kyber-arm-macos-gcc-fix.patch, pqclean-dilithium-arm-randomized-signing.patch]
   -
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
@@ -93,10 +93,10 @@ kems:
   -
     name: kyber
     default_implementation: ref
-    arch_specific_implementations: 
+    arch_specific_implementations:
                                       aarch64: aarch64
     upstream_location: pqcrystals-kyber
-    arch_specific_upstream_locations: 
+    arch_specific_upstream_locations:
                                       aarch64: pqclean
     schemes:
       -
@@ -211,9 +211,9 @@ sigs:
     name: dilithium
     default_implementation: ref
     upstream_location: pqcrystals-dilithium
-    arch_specific_implementations: 
+    arch_specific_implementations:
                                       aarch64: aarch64
-    arch_specific_upstream_locations: 
+    arch_specific_upstream_locations:
                                       aarch64: pqclean
     schemes:
       -
