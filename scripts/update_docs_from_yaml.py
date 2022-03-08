@@ -80,7 +80,7 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         out_md.write('\n')
 
         for index, parameter_set in enumerate(kem_yaml['parameter-sets']):
-            out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name']))
+            out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace("_", "\_")))
             table_header = ['Implementation source',
                             'Identifier in upstream',
                             'Supported architecture(s)',
@@ -198,7 +198,7 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         out_md.write('\n')
 
         for index, parameter_set in enumerate(sig_yaml['parameter-sets']):
-            out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name']))
+            out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace("_", "\_")))
             table_header = ['Implementation source',
                             'Identifier in upstream',
                             'Supported architecture(s)',
