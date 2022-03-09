@@ -1,0 +1,134 @@
+From d1587756615048953cc96a377d5ff312ca25d753 Mon Sep 17 00:00:00 2001
+From: Jason Goertzen <Martyrshot@gmail.com>
+Date: Fri, 4 Mar 2022 12:04:48 -0500
+Subject: [PATCH] Manually adding randomized signing to dilithium, and removing
+ some repeat defintions related to sha3
+
+---
+ crypto_sign/dilithium2/aarch64/fips202x2.h | 8 ++------
+ crypto_sign/dilithium2/aarch64/sign.c      | 8 +++++++-
+ crypto_sign/dilithium3/aarch64/fips202x2.h | 8 ++------
+ crypto_sign/dilithium3/aarch64/sign.c      | 8 +++++++-
+ crypto_sign/dilithium5/aarch64/fips202x2.h | 7 ++-----
+ crypto_sign/dilithium5/aarch64/sign.c      | 8 +++++++-
+ 6 files changed, 27 insertions(+), 20 deletions(-)
+
+diff --git a/crypto_sign/dilithium2/aarch64/fips202x2.h b/crypto_sign/dilithium2/aarch64/fips202x2.h
+index 411d191..e2ee105 100644
+--- a/crypto_sign/dilithium2/aarch64/fips202x2.h
++++ b/crypto_sign/dilithium2/aarch64/fips202x2.h
+@@ -5,13 +5,9 @@
+ #include <arm_neon.h>
+ #include <stddef.h>
+ 
+-typedef uint64x2_t v128;
+-
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
++#include <fips202.h>
+ 
++typedef uint64x2_t v128;
+ 
+ typedef struct {
+     v128 s[25];
+diff --git a/crypto_sign/dilithium2/aarch64/sign.c b/crypto_sign/dilithium2/aarch64/sign.c
+index ebe3e82..e6c032d 100644
+--- a/crypto_sign/dilithium2/aarch64/sign.c
++++ b/crypto_sign/dilithium2/aarch64/sign.c
+@@ -106,7 +106,13 @@ int crypto_sign_signature(uint8_t *sig,
+     shake256_inc_squeeze(mu, CRHBYTES, &state);
+     shake256_inc_ctx_release(&state);
+ 
+-    shake256(rhoprime, CRHBYTES, key, SEEDBYTES + CRHBYTES);
++    // liboqs uses randomized signing for the reference and
++    // avx2 implementations of dilithium. pqclean currently
++    // doesn't support randomized signing, so this is patched
++    // in. If/when pqclean adds randomized signing to dilithium
++    // this will need to be updated.
++    randombytes(rhoprime, CRHBYTES);
++    //shake256(rhoprime, CRHBYTES, key, SEEDBYTES + CRHBYTES);
+ 
+     /* Expand matrix and transform vectors */
+     polyvec_matrix_expand(mat, rho);
+diff --git a/crypto_sign/dilithium3/aarch64/fips202x2.h b/crypto_sign/dilithium3/aarch64/fips202x2.h
+index 411d191..e2ee105 100644
+--- a/crypto_sign/dilithium3/aarch64/fips202x2.h
++++ b/crypto_sign/dilithium3/aarch64/fips202x2.h
+@@ -5,13 +5,9 @@
+ #include <arm_neon.h>
+ #include <stddef.h>
+ 
+-typedef uint64x2_t v128;
+-
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
++#include <fips202.h>
+ 
++typedef uint64x2_t v128;
+ 
+ typedef struct {
+     v128 s[25];
+diff --git a/crypto_sign/dilithium3/aarch64/sign.c b/crypto_sign/dilithium3/aarch64/sign.c
+index ebe3e82..e6c032d 100644
+--- a/crypto_sign/dilithium3/aarch64/sign.c
++++ b/crypto_sign/dilithium3/aarch64/sign.c
+@@ -106,7 +106,13 @@ int crypto_sign_signature(uint8_t *sig,
+     shake256_inc_squeeze(mu, CRHBYTES, &state);
+     shake256_inc_ctx_release(&state);
+ 
+-    shake256(rhoprime, CRHBYTES, key, SEEDBYTES + CRHBYTES);
++    // liboqs uses randomized signing for the reference and
++    // avx2 implementations of dilithium. pqclean currently
++    // doesn't support randomized signing, so this is patched
++    // in. If/when pqclean adds randomized signing to dilithium
++    // this will need to be updated.
++    randombytes(rhoprime, CRHBYTES);
++    //shake256(rhoprime, CRHBYTES, key, SEEDBYTES + CRHBYTES);
+ 
+     /* Expand matrix and transform vectors */
+     polyvec_matrix_expand(mat, rho);
+diff --git a/crypto_sign/dilithium5/aarch64/fips202x2.h b/crypto_sign/dilithium5/aarch64/fips202x2.h
+index 411d191..63a2bba 100644
+--- a/crypto_sign/dilithium5/aarch64/fips202x2.h
++++ b/crypto_sign/dilithium5/aarch64/fips202x2.h
+@@ -5,12 +5,9 @@
+ #include <arm_neon.h>
+ #include <stddef.h>
+ 
+-typedef uint64x2_t v128;
++#include <fips202.h>
+ 
+-#define SHAKE128_RATE 168
+-#define SHAKE256_RATE 136
+-#define SHA3_256_RATE 136
+-#define SHA3_512_RATE 72
++typedef uint64x2_t v128;
+ 
+ 
+ typedef struct {
+diff --git a/crypto_sign/dilithium5/aarch64/sign.c b/crypto_sign/dilithium5/aarch64/sign.c
+index ebe3e82..e6c032d 100644
+--- a/crypto_sign/dilithium5/aarch64/sign.c
++++ b/crypto_sign/dilithium5/aarch64/sign.c
+@@ -106,7 +106,13 @@ int crypto_sign_signature(uint8_t *sig,
+     shake256_inc_squeeze(mu, CRHBYTES, &state);
+     shake256_inc_ctx_release(&state);
+ 
+-    shake256(rhoprime, CRHBYTES, key, SEEDBYTES + CRHBYTES);
++    // liboqs uses randomized signing for the reference and
++    // avx2 implementations of dilithium. pqclean currently
++    // doesn't support randomized signing, so this is patched
++    // in. If/when pqclean adds randomized signing to dilithium
++    // this will need to be updated.
++    randombytes(rhoprime, CRHBYTES);
++    //shake256(rhoprime, CRHBYTES, key, SEEDBYTES + CRHBYTES);
+ 
+     /* Expand matrix and transform vectors */
+     polyvec_matrix_expand(mat, rho);
+-- 
+2.32.0 (Apple Git-132)
+

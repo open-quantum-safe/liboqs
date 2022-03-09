@@ -80,7 +80,7 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         out_md.write('\n')
 
         for index, parameter_set in enumerate(kem_yaml['parameter-sets']):
-            out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name']))
+            out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace("_", "\_")))
             table_header = ['Implementation source',
                             'Identifier in upstream',
                             'Supported architecture(s)',
@@ -108,6 +108,8 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
                                   impl['large-stack-usage']])
                 else:
                     for platform in impl['supported-platforms']:
+                        if 'operating_systems' not in platform:
+                            platform['operating_systems'] = ['All']
                         op_systems = ','.join(platform['operating_systems'])
                         if 'required_flags' in platform and platform['required_flags']:
                             flags = ','.join(flag.upper() for flag in platform['required_flags'])
@@ -159,7 +161,16 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         out_md.write('- **Authors\' website**: {}\n'.format(sig_yaml['website']))
         out_md.write('- **Specification version**: {}.\n'.format(sig_yaml['spec-version']))
 
-        out_md.write('- **Implementation source**: {}'.format(sig_yaml['upstream']))
+        out_md.write('- **Primary Source**<a name="primary-source"></a>:\n')
+        out_md.write('  - **Source**: {}\n'.format(sig_yaml['primary-upstream']['source']))
+        out_md.write('  - **Implementation license (SPDX-Identifier)**: {}\n'.format(sig_yaml['primary-upstream']['spdx-license-identifier']))
+        if 'optimized-upstreams' in sig_yaml:
+            out_md.write('- **Optimized Implementation sources**: {}\n'.format(sig_yaml['primary-upstream']['source']))
+            for opt_upstream in sig_yaml['optimized-upstreams']:
+                out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
+                out_md.write('      - **Source**: {}\n'.format(sig_yaml['optimized-upstreams'][opt_upstream]['source']))
+                out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(sig_yaml['optimized-upstreams'][opt_upstream]['spdx-license-identifier']))
+
         if 'upstream-ancestors' in sig_yaml:
             out_md.write(', which takes it from:\n')
             for url in sig_yaml['upstream-ancestors'][:-1]:
@@ -168,7 +179,6 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         else:
             out_md.write('\n')
 
-        out_md.write('- **Implementation license (SPDX-Identifier)**: {}.\n'.format(sig_yaml['spdx-license-identifier']))
 
         out_md.write('\n## Parameter set summary\n\n')
         table = [['Parameter set',
@@ -188,8 +198,9 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         out_md.write('\n')
 
         for index, parameter_set in enumerate(sig_yaml['parameter-sets']):
-            out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace('_', '\_')))
-            table_header = ['Identifier in upstream',
+            out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace("_", "\_")))
+            table_header = ['Implementation source',
+                            'Identifier in upstream',
                             'Supported architecture(s)',
                             'Supported operating system(s)',
                             'CPU extension(s) used',
@@ -202,8 +213,11 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
 
             table = [table_header]
             for impl in parameter_set['implementations']:
+                # todo, automate linking this?
+                # if all platforms are supported, assuming not optimized and is primary upstream
                 if impl['supported-platforms'] == 'all':
-                    table.append([impl['upstream-id'].replace('_', '\_'),
+                    table.append(['[Primary Source](#primary-source)',
+                                  impl['upstream-id'].replace('_', '\_'),
                                   'All',
                                   'All',
                                   'None',
@@ -212,16 +226,22 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
                                   impl['large-stack-usage']])
                 else:
                     for platform in impl['supported-platforms']:
-                        if 'operating_systems' in platform:
-                            op_systems = ','.join(platform['operating_systems'])
-                        else:
-                            op_systems = 'All'
-                        if 'required_flags' in platform:
+                        if 'operating_systems' not in platform:
+                            platform['operating_systems'] = ['All']
+                        op_systems = ','.join(platform['operating_systems'])
+                        if 'required_flags' in platform and platform['required_flags']:
                             flags = ','.join(flag.upper() for flag in platform['required_flags'])
                         else:
                             flags = 'None'
-
-                        table.append([impl['upstream-id'].replace('_', '\_'),
+                        if impl['upstream'] == 'primary-upstream':
+                            name = 'Primary Source'
+                            anchor = 'primary-source'
+                        else:
+                            name = impl['upstream']
+                            anchor = impl['upstream']
+                        upstream_name = '[{}](#{})'.format(name, anchor)
+                        table.append([upstream_name,
+                                      impl['upstream-id'].replace('_', '\_'),
                                       platform['architecture'].replace('_', '\_'),
                                       op_systems,
                                       flags,
@@ -239,6 +259,8 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
 
         out_md.write('\n## Explanation of Terms\n\n')
         out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
+
+
 
 ####################
 # Update the README.

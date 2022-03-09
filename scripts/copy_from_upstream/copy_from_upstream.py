@@ -255,7 +255,7 @@ def load_instructions():
                             family['common_deps_usedby'][cdep_name] = [{'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']}]
                         else:
                             family['common_deps_usedby'][cdep_name].append({'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']})
-    # TODO *should* work, but sigs with multiple upstreams are currently not supported... Coming soon.
+    
     for family in instructions['sigs']:
         family['type'] = 'sig'
         family['pqclean_type'] = 'sign'
@@ -279,7 +279,7 @@ def load_instructions():
                                                        upstreams[scheme['upstream_location']][
                                                            'sig_meta_path'].format_map(scheme))
                 if 'arch_specific_upstream_locations' in family:
-                    if 'extras' not in scheme['kem_meta_paths']:
+                    if 'extras' not in scheme['sig_meta_paths']:
                         scheme['sig_meta_paths']['extras'] = {}
 
                     for arch in family['arch_specific_upstream_locations']:
@@ -289,14 +289,28 @@ def load_instructions():
             metadata = {}
             if not 'metadata' in scheme:
                 metadata = yaml.safe_load(file_get_contents(scheme['sig_meta_paths']['default']))
+                imps_to_remove = []
+                upstream = upstreams[scheme['upstream_location']]
                 for imp in metadata['implementations']:
-                    imp['upstream'] = upstreams[scheme['upstream_location']]
+                    if 'ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], imp['name']) in upstream['ignore']:
+                        imps_to_remove.append(imp['name'])
+                    else:
+                        imp['upstream'] = upstream
+                for imp_name in imps_to_remove:
+                    for i in range(len(metadata['implementations'])):
+                        if metadata['implementations'][i]['name'] == imp_name:
+                            del metadata['implementations'][i]
+                            break
+
                 if 'extras' in scheme['sig_meta_paths']:
                     for arch in scheme['sig_meta_paths']['extras']:
                         implementations = yaml.safe_load(file_get_contents(scheme['sig_meta_paths']['extras'][arch]))['implementations']
                         for imp in implementations:
-                            if arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']:
-                                imp['upstream'] = upstreams[family['arch_specific_upstream_locations'][arch]]
+                            upstream = upstreams[family['arch_specific_upstream_locations'][arch]]
+                            if (arch in family['arch_specific_implementations'] and imp['name'] in family['arch_specific_implementations']) \
+                                    and ('ignore' not in upstream or ('ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], impl['name']) \
+                                            not in upstream['ignore'])):
+                                imp['upstream'] = upstream
                                 metadata['implementations'].append(imp)
                                 break
             scheme['metadata'] = metadata
@@ -601,6 +615,7 @@ def copy_from_upstream():
             json.dump(kats[t], f, indent=2, sort_keys=True)
     if not keepdata:
         shutil.rmtree('repos')
+
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
     # Not in love with using sub process to call a python script, but this is the easiest solution for 
