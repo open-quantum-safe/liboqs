@@ -74,7 +74,7 @@ def test_free():
 # scripts/format_docs_yaml.py (we could also specify a custom profile for
 # yamllint or use a different linter).
 @helpers.filtered_test
-@pytest.mark.skip(sys.platform.startswith("win"), reason="yamllint does not agree with current automatic formatting script.")
+@pytest.mark.skip()
 def test_datasheet_yamllint():
     helpers.run_subprocess(
         ['yamllint', 'docs/algorithms']
