@@ -69,17 +69,6 @@ def test_free():
                 print("Suspicious `free` in {}:{}:{}".format(fn,no,line))
     assert okay, "'free' is used in some files.  These should be changed to 'OQS_MEM_secure_free' or 'OQS_MEM_insecure_free' as appropriate. If you are sure you want to use 'free' in a particular spot, add the comment '// IGNORE free-check' on the line where 'free' occurs."
 
-# Ensure that the datasheet .yml files are correctly formatted
-# TODO: Re-enable once yamllint is happy with the output produced by
-# scripts/format_docs_yaml.py (we could also specify a custom profile for
-# yamllint or use a different linter).
-@helpers.filtered_test
-@pytest.mark.skip(sys.platform.startswith("win"), reason="yamllint does not agree with current automatic formatting script.")
-def test_datasheet_yamllint():
-    helpers.run_subprocess(
-        ['yamllint', 'docs/algorithms']
-    )
-
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
