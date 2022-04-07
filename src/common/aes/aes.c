@@ -31,7 +31,7 @@ void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes128_load_schedule_c(key, _schedule),
 	    oqs_aes128_load_schedule_ni(key, _schedule),
-	    oqs_aes128_load_schedule_armv8(key, _schedule)
+	    oqs_aes128_load_schedule_no_bitslice(key, _schedule)
 	)
 }
 
@@ -39,7 +39,7 @@ void OQS_AES128_free_schedule(void *schedule) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes128_free_schedule_c(schedule),
 	    oqs_aes128_free_schedule_ni(schedule),
-	    oqs_aes128_free_schedule_armv8(schedule)
+	    oqs_aes128_free_schedule_no_bitslice(schedule)
 	)
 }
 
@@ -47,7 +47,7 @@ void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes256_load_schedule_c(key, _schedule),
 	    oqs_aes256_load_schedule_ni(key, _schedule),
-	    oqs_aes256_load_schedule_armv8(key, _schedule)
+	    oqs_aes256_load_schedule_no_bitslice(key, _schedule)
 	)
 }
 
@@ -59,7 +59,7 @@ void OQS_AES256_free_schedule(void *schedule) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes256_free_schedule_c(schedule),
 	    oqs_aes256_free_schedule_ni(schedule),
-	    oqs_aes256_free_schedule_armv8(schedule)
+	    oqs_aes256_free_schedule_no_bitslice(schedule)
 	)
 }
 
