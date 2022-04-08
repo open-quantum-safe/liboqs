@@ -408,6 +408,31 @@ static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, 
 	}
 }
 
+static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, unsigned int key_len) {
+	unsigned int i, j, k, nk, nkf;
+	uint32_t tmp;
+	unsigned nrounds = 10 + ((key_len - 16) >> 2);
+
+	nk = (key_len >> 2);
+	nkf = ((nrounds + 1) << 2);
+	br_range_dec32le(skey, (key_len >> 2), key);
+	tmp = skey[(key_len >> 2) - 1];
+	for (i = nk, j = 0, k = 0; i < nkf; i ++) {
+		if (j == 0) {
+			tmp = (tmp << 24) | (tmp >> 8);
+			tmp = sub_word(tmp) ^ Rcon[k];
+		} else if (nk > 6 && j == 4) {
+			tmp = sub_word(tmp);
+		}
+		tmp ^= skey[i - nk];
+		skey[i] = tmp;
+		if (++ j == nk) {
+			j = 0;
+			k ++;
+		}
+	}
+}
+
 static void br_aes_ct64_skey_expand(uint64_t *skey, const uint64_t *comp_skey, unsigned int nrounds) {
 	unsigned u, v, n;
 
@@ -616,6 +641,20 @@ void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
 	br_aes_ct64_skey_expand(ctx->sk_exp, skey, 14);
 }
 
+void oqs_aes128_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
+	*_schedule = malloc(44 * sizeof(int));
+	assert(*_schedule != NULL);
+	uint32_t *schedule = (uint32_t *) *_schedule;
+	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 16);
+}
+
+void oqs_aes256_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
+	*_schedule = malloc(60 * sizeof(int));
+	assert(*_schedule != NULL);
+	uint32_t *schedule = (uint32_t *) *_schedule;
+	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 32);
+}
+
 void oqs_aes128_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
 	const aes128ctx *ctx = (const aes128ctx *) schedule;
@@ -645,3 +684,16 @@ void oqs_aes256_free_schedule_c(void *schedule) {
 		OQS_MEM_secure_free(ctx, sizeof(aes256ctx));
 	}
 }
+
+void oqs_aes128_free_schedule_no_bitslice(void *schedule) {
+	if (schedule != NULL) {
+		OQS_MEM_secure_free(schedule, 44 * sizeof(int));
+	}
+}
+
+void oqs_aes256_free_schedule_no_bitslice(void *schedule) {
+	if (schedule != NULL) {
+		OQS_MEM_secure_free(schedule, 60 * sizeof(int));
+	}
+}
+
