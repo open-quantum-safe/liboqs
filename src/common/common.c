@@ -70,7 +70,7 @@ static void set_available_cpu_extensions(void) {
 	/* mark that this function has been called */
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
 }
-#elif defined(OQS_DIST_ARM64v8_BUILD)
+#elif defined(OQS_DIST_ARM64_V8_BUILD)
 #if defined(__APPLE__)
 #include <sys/sysctl.h>
 static unsigned int macos_feature_detection(const char *feature_name) {
