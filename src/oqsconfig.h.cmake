@@ -5,8 +5,8 @@
 #cmakedefine OQS_DIST_BUILD 1
 #cmakedefine OQS_DIST_X86_64_BUILD 1
 #cmakedefine OQS_DIST_X86_BUILD 1
-#cmakedefine OQS_DIST_ARM64v8_BUILD 1
-#cmakedefine OQS_DIST_ARM32v7_BUILD 1
+#cmakedefine OQS_DIST_ARM64_V8_BUILD 1
+#cmakedefine OQS_DIST_ARM32_V7_BUILD 1
 #cmakedefine OQS_DIST_PPC64LE_BUILD 1
 #cmakedefine OQS_DEBUG_BUILD 1
 #cmakedefine ARCH_X86_64 1
