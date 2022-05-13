@@ -91,7 +91,7 @@ static void set_available_cpu_extensions(void) {
 	cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = macos_feature_detection("hw.optional.neon");
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
 }
-#elif defined(__FREEBSD__)
+#elif defined(__FreeBSD__) || defined(__FreeBSD)
 #include <stdint.h>
 #include <machine/armreg.h>
 static void set_available_cpu_extensions(void) {
