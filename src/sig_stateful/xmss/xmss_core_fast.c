@@ -808,7 +808,8 @@ int xmss_core_sign(const xmss_params *params,
 
     sm += params->tree_height*params->n;
     *smlen += params->tree_height*params->n;
-
+    
+    // WE NEED TO REMOVE THE NEXT 2 LINES SO THAT THE MESSAGE DOES NOT GET APPENDED
     memcpy(sm, m, mlen);
     *smlen += mlen;
 
