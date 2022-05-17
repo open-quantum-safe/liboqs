@@ -21,8 +21,7 @@ int xmss_core_keypair(const xmss_params *params,
                       unsigned char *pk, unsigned char *sk);
 
 /**
- * Signs a message. Returns an array containing the signature followed by the
- * message and an updated secret key.
+ * Signs a message. Returns an array containing the signature and an updated secret key.
  */
 int xmss_core_sign(const xmss_params *params,
                    unsigned char *sk,
