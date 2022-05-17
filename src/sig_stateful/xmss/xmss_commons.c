@@ -191,6 +191,8 @@ int xmssmt_core_sign_open(const xmss_params *params,
     /* Convert the index bytes from the signature to an integer. */
     idx = bytes_to_ull(sm, params->index_bytes);
 
+    // THE NEXT 3 LINES OF CODE SHOULD BE REMOVED TO ACCOUNT FOR THE LACK OF MESSAGE APPENDING
+
     /* Put the message all the way at the end of the m buffer, so that we can
      * prepend the required other inputs for the hash function. */
     memcpy(m + params->sig_bytes, sm + params->sig_bytes, *mlen);
@@ -237,6 +239,7 @@ int xmssmt_core_sign_open(const xmss_params *params,
         return -1;
     }
 
+    // WE WOULD NOT NEED TO DO THIS STEP SHOULD THE SIGNATURE BE MESSAGE FREE
     /* If verification was successful, copy the message from the signature. */
     memcpy(m, sm, *mlen);
 
