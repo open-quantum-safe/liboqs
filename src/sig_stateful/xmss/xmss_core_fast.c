@@ -751,6 +751,7 @@ int xmss_core_sign(const xmss_params *params,
     // First compute pseudorandom value
     prf(params, R, idx_bytes_32, sk_prf);
 
+    // REMOVE THIS AS WELL
     /* Already put the message in the right place, to make it easier to prepend
      * things when computing the hash over the message. */
     memcpy(sm + params->sig_bytes, m, mlen);
