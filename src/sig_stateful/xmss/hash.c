@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <string.h>
-#include <src/oqs.h>
+#include <oqs/oqs.h>
 #include <openssl/sha.h>
 
 #include "hash_address.h"
