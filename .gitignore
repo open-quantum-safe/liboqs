@@ -4,6 +4,7 @@ tags
 *.swp
 *~
 .tags*
+/.vscode*
 
 # CMake & testing
 /build*
