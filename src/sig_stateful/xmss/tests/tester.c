@@ -4,23 +4,31 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <params.h>
 #include <xmss.h>
 
 #define MAX_LIMIT 256
 #define MAX_FILENAME 32
+#define XMSS_MLEN 32
 
 int main() {
 
-    // Variables needed for the XMSS signing
-    unsigned char input[MAX_LIMIT], message[MAX_LIMIT];
-    unsigned char *pk, *sk, *sig;
-    unsigned long long siglength, mlength;  
-    
-    unsigned char filename[30];
-    FILE *fpt;
-
     // XMSS-SHA2_16_256
+    xmss_params par;
     const uint32_t oid = 0x00000002;
+    xmss_parse_oid(&par, oid);
+
+    // Variables needed for the XMSS signing
+    unsigned char input[MAX_LIMIT];
+    
+    unsigned char message = malloc(XMSS_MLEN);
+    unsigned char pk[XMSS_OID_LEN + par.pk_bytes]; 
+    unsigned char sk[XMSS_OID_LEN + par.sk_bytes]; 
+    unsigned char *sig = malloc(par.sig_bytes + XMSS_MLEN);
+    unsigned long long siglength, mlength;  
+
+    unsigned char filename[MAX_FILENAME];
+    FILE *fpt;
 
     while (1) {
         printf("Command > ");
