@@ -9,6 +9,8 @@ tags
 # CMake & testing
 /build*
 /tmp*
+*.o
+*.d
 
 # MSVC
 .vs
