@@ -1,7 +1,7 @@
 CXX = gcc
 CXX_FLAGS = -g -Wall -O3 -Wpendantic
 EXEC = xmss
-LDLIBS = -lcrypto
+LDLIBS = -lcrypto -loqs
 
 SOURCES = params.c hash.c fips202.c hash_address.c randombytes.c wots.c xmss.c xmss_core.c xmss_commons.c utils.c
 HEADERS = params.h hash.h fips202.h hash_address.h randombytes.h wots.h xmss.h xmss_core.h xmss_commons.h utils.h
@@ -18,7 +18,7 @@ tests: $(TESTS)
 .PHONY: clean test
 
 tests/test_fast: tests/tester.c $(SOURCES_FAST) $(OBJS) $(HEADERS_FAST)
-	$(CC) $(CFLAGS) -o $@ $(SOURCES_FAST) $< $(LDLIBS)
+	$(CC) $(CFLAGS) -o $@ $(SOURCES_FAST) $< $(LDLIBS) -L../../../build/lib -I../../../build/include -I.
 
 clean:
 	-$(RM) $(TESTS)
