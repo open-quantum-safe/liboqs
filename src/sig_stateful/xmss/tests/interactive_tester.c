@@ -8,6 +8,10 @@
 #include "../randombytes.h"
 
 #define XMSS_MLEN 32
+#define XMSS_IMPLEMENTATION "XMSS-SHA2_20_256"
+
+#define COMMAND_LEN 4
+#define FILESTEM_LEN 32
 
 static void hexdump(unsigned char *d, unsigned int l)
 {
@@ -40,6 +44,7 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
         }
     }
 
+    // STRINGS FOR XMSS PROTOCOL
     unsigned char pk[XMSS_OID_LEN + params.pk_bytes];
     unsigned char sk[XMSS_OID_LEN + params.sk_bytes];
     unsigned char *m = malloc(XMSS_MLEN);
@@ -48,44 +53,52 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
     unsigned long long smlen;
     unsigned long long mlen;
 
-    printf("Message (less than 32 chars) > ");
-    scanf("%32s", m);
-    // randombytes(m, XMSS_MLEN);
-
-    printf("sk_bytes=%llu + oid\n", params.sk_bytes);
-    if(xmssmt){
-        xmssmt_keypair(pk, sk, oid);
-    }
-    else {
-        xmss_keypair(pk, sk, oid);
-    }
-
-    unsigned char keystem[40];
-    unsigned char reply[4];
-
+    // STRINGS FOR USER INTERACTION
+    unsigned char command[COMMAND_LEN];
+    unsigned char filename[FILESTEM_LEN + 5];
     
-    printf("\nFile stem for key storage >");
-    scanf("%32s", keystem);
-    
-    FILE *pub_key = fopen(strcat(keystem, ".pub"), "w+");
-    for (int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
-        fputc(pk[i], pub_key);
-    }
-    fclose(pub_key);
+    printf("\nCommand >");
+    scanf("%3s", command);
 
-    FILE *prv_key = fopen(strcat(keystem, ".prv"), "w+");
-    for (int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
-        fputc(sk[i], prv_key);
-    }
-    fclose(prv_key);
 
-    printf("Do you wish to continue (yes/no) > ");
-    scanf("%s", &reply);
+    if (!strcmpi(command, "gen")) { // KEY GENERATION
 
-    if (!strcmp(reply. "yes")) {
-        printf("%d", 0);
-    }  else {
-        return 0;
+        /** Generating the keys with the xmss(mt)_keypair(...) method */
+        printf("sk_bytes=%llu + oid\n", params.sk_bytes);
+        if(xmssmt){
+            xmssmt_keypair(pk, sk, oid);
+        }
+        else {
+            xmss_keypair(pk, sk, oid);
+        }
+
+        /* Saving the generated keys to a file so repeated key generation
+           is not necessary */
+        unsigned char keystem[FILESTEM_LEN + 10];
+        printf("\nFilestem for key storage >");
+        scanf("%32s", keystem);
+        
+        FILE *pub_key = fopen(strcat(keystem, ".pub"), "w+");
+        for (int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
+            fputc(pk[i], pub_key);
+        }
+        fclose(pub_key);
+
+        FILE *prv_key = fopen(strcat(keystem, ".prv"), "w+");
+        for (int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
+            fputc(sk[i], prv_key);
+        }
+        fclose(prv_key);
+
+    } else if (!strcmpi(command, "sgn")) { // SIGNING PROCESS
+
+        printf("Message (less than 32 chars) >");
+        scanf("%32s", m);
+
+
+
+    } else if (!strcmpi(command, "vrf")) { // VERIFICATION PROCESS
+
     }
 
     printf("pk="); hexdump(pk, sizeof pk);
@@ -174,7 +187,7 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
 int main()
 {
     int rc;
-    rc = test_case("XMSS-SHA2_20_256", 0, 1<<16);
+    rc = test_case(XMSS_IMPLEMENTATION, 0, 1<<16);
     if(rc) return rc;
     return 0;
 }
