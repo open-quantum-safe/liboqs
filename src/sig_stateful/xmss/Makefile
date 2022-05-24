@@ -1,5 +1,5 @@
 CXX = gcc
-CXX_FLAGS = -g -Wall -O3 -Wpendantic
+CXX_FLAGS = -g -Wall -O0
 EXEC = xmss
 LDLIBS = -lcrypto -loqs
 
