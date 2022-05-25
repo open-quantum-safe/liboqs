@@ -8,6 +8,16 @@
 #include "../randombytes.h"
 
 #define XMSS_MLEN 32
+#define XMSS_IMPLEMENTATION "XMSS-SHA2_20_256"
+
+/** The various implementations available to you are :
+ *      * "XMSS-SHA2_10_256"
+ *      * "XMSS-SHA2_16_256"
+ *      * "XMSS-SHA2_20_256"
+ *      * "XMSS-SHA2_10_512"
+ *      * "XMSS-SHA2_16_512"
+ *      * "XMSS-SHA2_20_512"
+ */
 
 static void hexdump(unsigned char *d, unsigned int l)
 {
@@ -144,7 +154,7 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
 int main()
 {
     int rc;
-    rc = test_case("XMSS-SHA2_20_256", 0, 1<<16);
+    rc = test_case(XMSS_IMPLEMENTATION, 0, 1<<16);
     if(rc) return rc;
     return 0;
 }

@@ -10,6 +10,15 @@
 #define XMSS_MLEN 32
 #define XMSS_IMPLEMENTATION "XMSS-SHA2_20_256"
 
+/** The various implementations available to you are :
+ *      * "XMSS-SHA2_10_256"
+ *      * "XMSS-SHA2_16_256"
+ *      * "XMSS-SHA2_20_256"
+ *      * "XMSS-SHA2_10_512"
+ *      * "XMSS-SHA2_16_512"
+ *      * "XMSS-SHA2_20_512"
+ */
+
 #define COMMAND_LEN 4
 #define FILESTEM_LEN 32
 
@@ -56,6 +65,7 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
     // STRINGS FOR USER INTERACTION
     unsigned char command[COMMAND_LEN];
     unsigned char filename[FILESTEM_LEN + 5];
+    unsigned char keystem[FILESTEM_LEN + 10];
     
     printf("\nCommand >");
     scanf("%3s", command);
@@ -74,39 +84,45 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
 
         /* Saving the generated keys to a file so repeated key generation
            is not necessary */
-        unsigned char keystem[FILESTEM_LEN + 10];
         printf("\nFilestem for key storage >");
         scanf("%32s", keystem);
         
         FILE *pub_key = fopen(strcat(keystem, ".pub"), "w+");
-        for (int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
+        for (unsigned int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
             fputc(pk[i], pub_key);
         }
         fclose(pub_key);
 
         FILE *prv_key = fopen(strcat(keystem, ".prv"), "w+");
-        for (int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
+        for (unsigned int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
             fputc(sk[i], prv_key);
         }
         fclose(prv_key);
 
     } else if (!strcmpi(command, "sgn")) { // SIGNING PROCESS
 
-        printf("Message (less than 32 chars) >");
+        printf("Message >");
         scanf("%32s", m);
 
+        /* Get the bytes of the key from  the .pub and .prv files
+           respectively */
+        printf("\nFilestem where keys are stored>");
+        scanf("%32s", keystem);
+        FILE *pub_key = fopen(strcat(keystem, ".pub"), "r");
+        for (unsigned int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
+            pk[i] = fgetc(pub_key);
+        }
+        fclose(pub_key);
 
+        FILE *prv_key = fopen(strcat(keystem, ".prv"), "r");
+        for (unsigned int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
+            sk[i] = fgetc(prv_key);
+        }
+        fclose(prv_key);
 
-    } else if (!strcmpi(command, "vrf")) { // VERIFICATION PROCESS
-
-    }
-
-    printf("pk="); hexdump(pk, sizeof pk);
-    printf("sk="); hexdump(sk, sizeof sk);
-    printf("Testing %d %s signatures.. \n", num_tests, name);
-
-    // for (i = 0; i < num_tests; i++) {
-        // printf("  - iteration #%d:\n", i);
+        printf("pk="); hexdump(pk, sizeof pk);
+        printf("sk="); hexdump(sk, sizeof sk);
+        printf("Testing %d %s signatures.. \n", num_tests, name);
 
         if(xmssmt){
             ret = xmssmt_sign(sk, sm, &smlen, m, XMSS_MLEN);
@@ -120,8 +136,7 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
                     return 0;
                 }
             }
-        }
-        else {
+        } else {
             ret = xmss_sign(sk, sm, &smlen, m, XMSS_MLEN);
             if(i >= ((1ULL << params.tree_height)-1)) {
                 if(ret != -2) {
@@ -135,7 +150,7 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
         }
 
         printf("sm="); hexdump(sm, smlen);
-
+        
         if (smlen != params.sig_bytes + XMSS_MLEN) {
             printf("  X smlen incorrect [%llu != %u]!\n",
                    smlen, params.sig_bytes);
@@ -143,9 +158,25 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
         }
         else {
             printf("    smlen as expected [%llu].\n", smlen);
-        }
+        } 
+        
+        /* Write the signature generated to the .sig file that the user names */ 
+        printf("Filestem where the signature is stored (useful to add the keystem as part of the name)\n>");
+        scanf("%32s", filename);
+        FILE *sig_file = fopen(strcat(filename, ".sig"), "w+");
+        for (unsigned long long i = 0; i < smlen; i++) {
+            fputc(sm[i], sig_file);
+        }     
+        printf("Signature written to file %s successfully", filename);
 
-        /* Test if signature is valid. */
+    } else if (!strcmpi(command, "vrf")) { // VERIFICATION PROCESS
+
+        printf("Filestem where the signature is specified >");
+        scanf("%32s", filename);
+        FILE *sig_file = fopen(strcat(filename, ".sig"), "r");
+        for (unsigned long long  i =0; i < smlen; i++) {
+            sm[i] = fgetc(sig_file);
+        }
 
         if(xmssmt){
             ret = xmssmt_sign_open(mout, &mlen, sm, smlen, pk);
@@ -177,7 +208,8 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
         }
 
         if(ret) return ret;
-    // }
+    }
+
     free(m);
     free(sm);
     free(mout);
