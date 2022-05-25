@@ -11,17 +11,17 @@ HEADERS = params.h hash.h fips202.h hash_address.h randombytes.h wots.h xmss.h x
 SOURCES_FAST = $(subst xmss_core.c,xmss_core_fast.c,$(SOURCES))
 HEADERS_FAST = $(subst xmss_core.c,xmss_core_fast.c,$(HEADERS))
 
-TESTS = tests/test_full
+TESTS = tests/test_full tests/test_step
 
 tests: $(TESTS)
 
 .PHONY: clean test
 
 tests/test_full: tests/complete_tester.c $(SOURCES_FAST) $(OBJS) $(HEADERS_FAST)
-	$(CC) $(CFLAGS) -o $@ $(SOURCES_FAST) $< $(LDLIBS) -L../../../build/lib -I../../../build/include -I.
+	$(CXX) $(CXX_FLAGS) -o $@ $(SOURCES_FAST) $< $(LDLIBS) -L../../../build/lib -I../../../build/include -I.
 
 tests/test_step: tests/interactive_tester.c $(SOURCES_FAST) $(OBJS) $(HEADERS_FAST)
-	$(CC) $(CFLAGS) -o $@ $(SOURCES_FAST) $< $(LDLIBS) -L../../../build/lib -I../../../build/include -I.
+	$(CXX) $(CXX_FLAGS) -o $@ $(SOURCES_FAST) $< $(LDLIBS) -L../../../build/lib -I../../../build/include -I.
 
 clean:
 	-$(RM) $(TESTS)

@@ -67,149 +67,182 @@ int test_case(const char *name, int xmssmt, unsigned int num_tests){
     unsigned char filename[FILESTEM_LEN + 5];
     unsigned char keystem[FILESTEM_LEN + 10];
     
-    printf("\nCommand >");
-    scanf("%3s", command);
+
+    while (1) {
+        printf("\nCommand >");
+        scanf("%3s", command);
 
 
-    if (!strcmpi(command, "gen")) { // KEY GENERATION
 
-        /** Generating the keys with the xmss(mt)_keypair(...) method */
-        printf("sk_bytes=%llu + oid\n", params.sk_bytes);
-        if(xmssmt){
-            xmssmt_keypair(pk, sk, oid);
-        }
-        else {
-            xmss_keypair(pk, sk, oid);
-        }
+        if (!strcmp(command, "gen")) { // KEY GENERATION
 
-        /* Saving the generated keys to a file so repeated key generation
-           is not necessary */
-        printf("\nFilestem for key storage >");
-        scanf("%32s", keystem);
-        
-        FILE *pub_key = fopen(strcat(keystem, ".pub"), "w+");
-        for (unsigned int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
-            fputc(pk[i], pub_key);
-        }
-        fclose(pub_key);
+            /** Generating the keys with the xmss(mt)_keypair(...) method */
+            printf("sk_bytes=%llu + oid\n", params.sk_bytes);
+            if(xmssmt){
+                xmssmt_keypair(pk, sk, oid);
+            }
+            else {
+                xmss_keypair(pk, sk, oid);
+            }
 
-        FILE *prv_key = fopen(strcat(keystem, ".prv"), "w+");
-        for (unsigned int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
-            fputc(sk[i], prv_key);
-        }
-        fclose(prv_key);
+            /* Saving the generated keys to a file so repeated key generation
+            is not necessary */
+            printf("\nFilestem for key storage >");
+            scanf("%32s", keystem);
+            
+            FILE *pub_key = fopen(strcat(keystem, ".pub"), "w+");
+            for (unsigned int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
+                fputc(pk[i], pub_key);
+            }
+            fclose(pub_key);
 
-    } else if (!strcmpi(command, "sgn")) { // SIGNING PROCESS
+            FILE *prv_key = fopen(strcat(keystem, ".prv"), "w+");
+            for (unsigned int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
+                fputc(sk[i], prv_key);
+            }
+            fclose(prv_key);
 
-        printf("Message >");
-        scanf("%32s", m);
+        } else if (!strcmp(command, "sgn")) { // SIGNING PROCESS
 
-        /* Get the bytes of the key from  the .pub and .prv files
-           respectively */
-        printf("\nFilestem where keys are stored>");
-        scanf("%32s", keystem);
-        FILE *pub_key = fopen(strcat(keystem, ".pub"), "r");
-        for (unsigned int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
-            pk[i] = fgetc(pub_key);
-        }
-        fclose(pub_key);
+            printf("Message >");
+            scanf("%32s", m);
 
-        FILE *prv_key = fopen(strcat(keystem, ".prv"), "r");
-        for (unsigned int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
-            sk[i] = fgetc(prv_key);
-        }
-        fclose(prv_key);
+            /* Get the bytes of the key from  the .pub and .prv files
+            respectively */
+            printf("\nFilestem where keys are stored>");
+            scanf("%32s", keystem);
+            FILE *pub_key = fopen(strcat(keystem, ".pub"), "r");
+            for (unsigned int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
+                pk[i] = fgetc(pub_key);
+            }
+            fclose(pub_key);
 
-        printf("pk="); hexdump(pk, sizeof pk);
-        printf("sk="); hexdump(sk, sizeof sk);
-        printf("Testing %d %s signatures.. \n", num_tests, name);
+            FILE *prv_key = fopen(strcat(keystem, ".prv"), "r");
+            for (unsigned int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
+                sk[i] = fgetc(prv_key);
+            }
+            fclose(prv_key);
 
-        if(xmssmt){
-            ret = xmssmt_sign(sk, sm, &smlen, m, XMSS_MLEN);
-            if(i >= ((1ULL << params.full_height)-1)) {
-                printf("here\n");
-                if(ret != -2) {
-                    printf("Error detecting running out of OTS keys\n");
+            printf("pk="); hexdump(pk, sizeof pk);
+            printf("sk="); hexdump(sk, sizeof sk);
+            printf("Testing %d %s signatures.. \n", num_tests, name);
+
+            if(xmssmt){
+                ret = xmssmt_sign(sk, sm, &smlen, m, XMSS_MLEN);
+                if(i >= ((1ULL << params.full_height)-1)) {
+                    printf("here\n");
+                    if(ret != -2) {
+                        printf("Error detecting running out of OTS keys\n");
+                    }
+                    else {
+                        printf("Successfully detected running out of OTS keys\n");
+                        return 0;
+                    }
                 }
-                else {
-                    printf("Successfully detected running out of OTS keys\n");
-                    return 0;
+            } else {
+                ret = xmss_sign(sk, sm, &smlen, m, XMSS_MLEN);
+                if(i >= ((1ULL << params.tree_height)-1)) {
+                    if(ret != -2) {
+                        printf("Error detecting running out of OTS keys\n");
+                    }
+                    else {
+                        printf("Successfully detected running out of OTS keys\n");
+                        return 0;
+                    }
                 }
             }
-        } else {
-            ret = xmss_sign(sk, sm, &smlen, m, XMSS_MLEN);
-            if(i >= ((1ULL << params.tree_height)-1)) {
-                if(ret != -2) {
-                    printf("Error detecting running out of OTS keys\n");
-                }
-                else {
-                    printf("Successfully detected running out of OTS keys\n");
-                    return 0;
-                }
+
+            printf("sm="); hexdump(sm, smlen);
+            
+            if (smlen != params.sig_bytes + XMSS_MLEN) {
+                printf("  X smlen incorrect [%llu != %u]!\n",
+                    smlen, params.sig_bytes);
+                ret = -1;
             }
-        }
+            else {
+                printf("    smlen as expected [%llu].\n", smlen);
+            } 
+            
+            /* Write the signature generated to the .sig file that the user names */ 
+            printf("Filestem where the signature is stored (useful to add the keystem as part of the name)\n>");
+            scanf("%32s", filename);
+            FILE *sig_file = fopen(strcat(filename, ".sig"), "w+");
+            for (unsigned long long i = 0; i < smlen; i++) {
+                fputc(sm[i], sig_file);
+            }     
+            printf("Signature written to file %s successfully", filename);
+            fclose(sig_file);
 
-        printf("sm="); hexdump(sm, smlen);
-        
-        if (smlen != params.sig_bytes + XMSS_MLEN) {
-            printf("  X smlen incorrect [%llu != %u]!\n",
-                   smlen, params.sig_bytes);
-            ret = -1;
-        }
-        else {
-            printf("    smlen as expected [%llu].\n", smlen);
-        } 
-        
-        /* Write the signature generated to the .sig file that the user names */ 
-        printf("Filestem where the signature is stored (useful to add the keystem as part of the name)\n>");
-        scanf("%32s", filename);
-        FILE *sig_file = fopen(strcat(filename, ".sig"), "w+");
-        for (unsigned long long i = 0; i < smlen; i++) {
-            fputc(sm[i], sig_file);
-        }     
-        printf("Signature written to file %s successfully", filename);
+        } else if (!strcmp(command, "vrf")) { // VERIFICATION PROCESS
 
-    } else if (!strcmpi(command, "vrf")) { // VERIFICATION PROCESS
+            printf("Filestem where the signature is specified >");
+            scanf("%32s", filename);
+            FILE *sig_file;
+            sig_file = fopen(strcat(filename, ".sig"), "rb");
+            fseek(sig_file, 0, SEEK_END);
+            smlen = ftell(sig_file);
+            fclose(sig_file);
 
-        printf("Filestem where the signature is specified >");
-        scanf("%32s", filename);
-        FILE *sig_file = fopen(strcat(filename, ".sig"), "r");
-        for (unsigned long long  i =0; i < smlen; i++) {
-            sm[i] = fgetc(sig_file);
-        }
+            sig_file = fopen(strcat(filename, ".sig"), "rb");
+            printf("Bytes in the file: %i\n", smlen);
+            for (unsigned long long  i = 0; i < smlen; i++) {
+                sm[i] = fgetc(sig_file);
+            }
+            printf("sm="); hexdump(sm, sizeof sm);
+            printf("%s", filename);
+            fclose(sig_file);
 
-        if(xmssmt){
-            ret = xmssmt_sign_open(mout, &mlen, sm, smlen, pk);
-        }
-        else {
-            ret = xmss_sign_open(mout, &mlen, sm, smlen, pk);
-        }
-        if (ret) {
-            printf("  X verification failed!\n");
-        }
-        else {
-            printf("    verification succeeded.\n");
-        }
+            /* Get the bytes of the key from  the .pub and .prv files
+            respectively */
+            printf("\nFilestem where keys are stored>");
+            scanf("%32s", keystem);
+            FILE *pub_key = fopen(strcat(keystem, ".pub"), "rb");
+            for (unsigned int i = 0; i < XMSS_OID_LEN + params.pk_bytes; i++) {
+                pk[i] = fgetc(pub_key);
+            }
+            printf("pk="); hexdump(pk, sizeof pk);
+            fclose(pub_key);
 
-        /* Test if the correct message was recovered. */
-        if (mlen != XMSS_MLEN) {
-            printf("  X mlen incorrect [%llu != %u]!\n", mlen, XMSS_MLEN);
-            ret = -1;
-        }
-        else {
-            printf("    mlen as expected [%llu].\n", mlen);
-        }
-        if (memcmp(m, mout, XMSS_MLEN)) {
-            printf("  X output message incorrect!\n");
-            ret = -1;
-        }
-        else {
-            printf("    output message as expected.\n");
-        }
+            FILE *prv_key = fopen(strcat(keystem, ".prv"), "rb");
+            for (unsigned int i = 0; i < XMSS_OID_LEN + params.sk_bytes; i++) {
+                sk[i] = fgetc(prv_key);
+            }
+            printf("sk="); hexdump(sk, sizeof sk);
+            fclose(prv_key);
 
-        if(ret) return ret;
+            if(xmssmt){
+                ret = xmssmt_sign_open(mout, &mlen, sm, smlen, pk);
+            }
+            else {
+                ret = xmss_sign_open(mout, &mlen, sm, smlen, pk);
+            }
+            if (ret) {
+                printf("  X verification failed!\n");
+            }
+            else {
+                printf("    verification succeeded.\n");
+            }
+
+            /* Test if the correct message was recovered. */
+            if (mlen != XMSS_MLEN) {
+                printf("  X mlen incorrect [%llu != %u]!\n", mlen, XMSS_MLEN);
+                ret = -1;
+            }
+            else {
+                printf("    mlen as expected [%llu].\n", mlen);
+            }
+            if (memcmp(m, mout, XMSS_MLEN)) {
+                printf("  X output message incorrect!\n");
+                ret = -1;
+            }
+            else {
+                printf("    output message as expected.\n");
+            }
+
+            if(ret) return ret;
+        }
     }
-
+    
     free(m);
     free(sm);
     free(mout);
