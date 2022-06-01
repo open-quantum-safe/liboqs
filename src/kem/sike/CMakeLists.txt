@@ -74,7 +74,7 @@ if(
             endif()
         endif()
     elseif(ARCH_ARM64v8)
-        if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
+	if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "FreeBSD")
             if(OQS_ENABLE_KEM_sike_p434 OR OQS_ENABLE_KEM_sidh_p434 OR OQS_ENABLE_KEM_sike_p434_compressed OR OQS_ENABLE_KEM_sidh_p434_compressed)
                 set(SRCS ${SRCS} external/P434/ARM64/fp_arm64_asm.S)
             endif()
