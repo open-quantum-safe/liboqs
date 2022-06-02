@@ -85,7 +85,48 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name);
 /**
  * Signature schemes object
  */
-typedef struct OQS_SIG {};
+typedef struct OQS_SIG_STFL {
+
+    /** Printable string representing the name of the signature scheme. */
+	const char *method_name;
+
+	/**
+	 * Printable string representing the version of the cryptographic algorithm.
+	 *
+	 * Implementations with the same method_name and same alg_version will be interoperable.
+	 * See README.md for information about algorithm compatibility.
+	 */
+	const char *alg_version;
+
+	/** The NIST security level (1, 2, 3, 4, 5) claimed in this algorithm's original NIST submission. */
+	uint8_t claimed_nist_level;
+
+	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
+	bool euf_cma;
+
+	/** The (maximum) length, in bytes, of public keys for this signature scheme. */
+	size_t length_public_key;
+	
+	/** The (maximum) length, in bytes, of signatures for this signature scheme. */
+	size_t length_signature;
+
+} OQS_SIG_STFL;
+
+
+typedef struct OQS_SECRET_KEY {
+	
+	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
+	size_t length_secret_key;
+
+	/** The physical secret key stored in memory as an array of bytes*/
+	uint8_t *secret_key;
+
+	unsigned long long signatures_completed;
+
+	unsigned long long signatures_left;
+
+
+};	
 
 #if defined(__cplusplus)
 } // extern "C"
