@@ -1,0 +1,7 @@
+{
+   memcpy source and destination overlap see issue 1038
+   Memcheck:Overlap
+   fun:__GI_memcpy
+   fun:gen_chain
+   fun:PQCLEAN_SPHINCS*_CLEAN_wots_*
+}

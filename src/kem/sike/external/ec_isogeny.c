@@ -655,7 +655,6 @@ static void Ladder(const point_proj_t P, const digit_t* m, const f2elm_t A, cons
     fp2div2(A24, A24);  // A24 = (A+2)/4          
 
     j = order_bits - 1;
-    bit = (m[j >> LOG2RADIX] >> (j & (RADIX-1))) & 1;
 
     // R0 <- P, R1 <- 2P
     fp2copy(P->X, R0->X);
