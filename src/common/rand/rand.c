@@ -81,13 +81,13 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 #else
 #if defined(__APPLE__) && (TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
-    int status =
-        SecRandomCopyBytes(kSecRandomDefault, bytes_to_read, random_array);
+	int status =
+	    SecRandomCopyBytes(kSecRandomDefault, bytes_to_read, random_array);
 
-    if (status == errSecSuccess) {
-        perror("OQS_randombytes");
-        exit(EXIT_FAILURE);
-    }
+	if (status == errSecSuccess) {
+		perror("OQS_randombytes");
+		exit(EXIT_FAILURE);
+	}
 }
 #else
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
