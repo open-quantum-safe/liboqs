@@ -5,12 +5,6 @@
 
 set(_KYBER_OBJS "")
 
-if(OQS_ENABLE_KEM_kyber_512 OR OQS_ENABLE_KEM_kyber_768 OR OQS_ENABLE_KEM_kyber_1024 OR OQS_ENABLE_KEM_kyber_512_90s OR OQS_ENABLE_KEM_kyber_768_90s OR OQS_ENABLE_KEM_kyber_1024_90s)
-    add_library(kyber_common_ref OBJECT pqcrystals-kyber_common_ref/aes256ctr.c)
-    target_include_directories(kyber_common_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_common_ref)
-    set(_KYBER_OBJS ${_KYBER_OBJS} $<TARGET_OBJECTS:kyber_common_ref>)
-endif()
-
 if(OQS_ENABLE_KEM_kyber_512_90s_avx2 OR OQS_ENABLE_KEM_kyber_768_90s_avx2 OR OQS_ENABLE_KEM_kyber_1024_90s_avx2)
     add_library(kyber_common_aes OBJECT pqcrystals-kyber_common_aes/aes256ctr.c)
     target_include_directories(kyber_common_aes PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqcrystals-kyber_common_aes)

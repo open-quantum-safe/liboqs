@@ -6,9 +6,30 @@
 #include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <oqs/common.h>
 
 #include <wmmintrin.h>
+
+#define AES_BLOCKBYTES 16
+
+typedef struct {
+	__m128i sk_exp[15];
+	uint8_t iv[AES_BLOCKBYTES];
+} aes256ctx;
+
+static uint32_t UINT32_TO_BE(const uint32_t x) {
+	union {
+		uint32_t val;
+		uint8_t bytes[4];
+	} y;
+	y.bytes[0] = (x >> 24) & 0xFF;
+	y.bytes[1] = (x >> 16) & 0xFF;
+	y.bytes[2] = (x >> 8) & 0xFF;
+	y.bytes[3] = x & 0xFF;
+	return y.val;
+}
+#define BE_TO_UINT32(n) (uint32_t)((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
 
 // From crypto_core/aes256encrypt/dolbeau/aesenc-int
 static inline void aes256ni_setkey_encrypt(const unsigned char *key, __m128i rkeys[15]) {
@@ -65,15 +86,30 @@ static inline void aes256ni_setkey_encrypt(const unsigned char *key, __m128i rke
 }
 
 void oqs_aes256_load_schedule_ni(const uint8_t *key, void **_schedule) {
-	*_schedule = malloc(15 * sizeof(__m128i));
+	//*_schedule = malloc(15 * sizeof(__m128i));
+	*_schedule = malloc(sizeof(aes256ctx));
+	OQS_EXIT_IF_NULLPTR(*_schedule);
 	assert(*_schedule != NULL);
-	__m128i *schedule = (__m128i *) *_schedule;
+	__m128i *schedule = ((aes256ctx *) *_schedule)->sk_exp;
 	aes256ni_setkey_encrypt(key, schedule);
+}
+
+void oqs_aes256_load_nonce_ni(const uint8_t *iv, size_t iv_len, void **_schedule) {
+	aes256ctx *ctx = *_schedule;
+	if (iv_len == 12) {
+		memcpy(ctx->iv, iv, 12);
+		memset(&ctx->iv[12], 0, 4);
+	} else if (iv_len == 16) {
+		memcpy(ctx->iv, iv, 16);
+	} else {
+		exit(EXIT_FAILURE);
+	}
 }
 
 void oqs_aes256_free_schedule_ni(void *schedule) {
 	if (schedule != NULL) {
-		OQS_MEM_secure_free(schedule, 15 * sizeof(__m128i));
+		//OQS_MEM_secure_free(schedule, 15 * sizeof(__m128i));
+		OQS_MEM_secure_free(schedule, sizeof(aes256ctx));
 	}
 }
 
@@ -99,7 +135,7 @@ static inline void aes256ni_encrypt(const __m128i rkeys[15], const unsigned char
 }
 
 void oqs_aes256_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
-	const __m128i *schedule = (const __m128i *) _schedule;
+	const __m128i *schedule = ((const aes256ctx *) _schedule)->sk_exp;
 	aes256ni_encrypt(schedule, plaintext, ciphertext);
 }
 
@@ -107,5 +143,61 @@ void oqs_aes256_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_
 	assert(plaintext_len % 16 == 0);
 	for (size_t block = 0; block < plaintext_len / 16; block++) {
 		oqs_aes256_enc_sch_block_ni(plaintext + (16 * block), schedule, ciphertext + (16 * block));
+	}
+}
+
+void oqs_aes256_ctr_enc_sch_ivinit_ni(void *schedule, uint8_t *out, size_t out_len) {
+	uint32_t ctr;
+	uint32_t ctr_be;
+	uint8_t *block = ((aes256ctx *) schedule)->iv;
+
+	memcpy(&ctr_be, &block[12], 4);
+	ctr = BE_TO_UINT32(ctr_be);
+
+	while (out_len >= 16) {
+		ctr_be = UINT32_TO_BE(ctr);
+		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
+		oqs_aes256_enc_sch_block_ni(block, schedule, out);
+		out += 16;
+		out_len -= 16;
+		ctr++;
+	}
+	if (out_len > 0) {
+		uint8_t tmp[16];
+		ctr_be = UINT32_TO_BE(ctr);
+		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
+		oqs_aes256_enc_sch_block_ni(block, schedule, tmp);
+		memcpy(out, tmp, out_len);
+	}
+}
+
+void oqs_aes256_ctr_enc_sch_ni(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+	uint8_t block[16];
+	uint32_t ctr;
+	uint32_t ctr_be;
+
+	memcpy(block, iv, 12);
+	if (iv_len == 12) {
+		ctr = 0;
+	} else if (iv_len == 16) {
+		memcpy(&ctr_be, &iv[12], 4);
+		ctr = BE_TO_UINT32(ctr_be);
+	} else {
+		exit(EXIT_FAILURE);
+	}
+	while (out_len >= 16) {
+		ctr_be = UINT32_TO_BE(ctr);
+		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
+		oqs_aes256_enc_sch_block_ni(block, schedule, out);
+		out += 16;
+		out_len -= 16;
+		ctr++;
+	}
+	if (out_len > 0) {
+		uint8_t tmp[16];
+		ctr_be = UINT32_TO_BE(ctr);
+		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
+		oqs_aes256_enc_sch_block_ni(block, schedule, tmp);
+		memcpy(out, tmp, out_len);
 	}
 }

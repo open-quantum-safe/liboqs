@@ -55,6 +55,14 @@ void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **_schedule) {
 	OQS_AES256_ECB_load_schedule(key, _schedule);
 }
 
+void OQS_AES256_CTR_load_nonce(const uint8_t *iv, size_t iv_len, void **_schedule) {
+	C_OR_NI_OR_ARM(
+	    oqs_aes256_load_nonce_c(iv, iv_len, _schedule),
+	    oqs_aes256_load_nonce_ni(iv, iv_len, _schedule),
+	    oqs_aes256_load_nonce_no_bitslice(iv, iv_len, _schedule)
+	)
+}
+
 void OQS_AES256_free_schedule(void *schedule) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes256_free_schedule_c(schedule),
@@ -93,8 +101,7 @@ void OQS_AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 	)
 }
 
-#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_AES_INSTRUCTIONS) || defined(OQS_USE_ARM_AES_INSTRUCTIONS)
-
+#if defined(OQS_USE_ARM_AES_INSTRUCTIONS)
 static uint32_t UINT32_TO_BE(const uint32_t x) {
 	union {
 		uint32_t val;
@@ -107,41 +114,7 @@ static uint32_t UINT32_TO_BE(const uint32_t x) {
 	return y.val;
 }
 #define BE_TO_UINT32(n) (uint32_t)((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
-#endif
 
-#if defined(OQS_DIST_X86_64_BUILD) || defined(OQS_USE_AES_INSTRUCTIONS)
-void oqs_aes256_ctr_enc_sch_ni(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
-	uint8_t block[16];
-	uint32_t ctr;
-	uint32_t ctr_be;
-	memcpy(block, iv, 12);
-	if (iv_len == 12) {
-		ctr = 0;
-	} else if (iv_len == 16) {
-		memcpy(&ctr_be, &iv[12], 4);
-		ctr = BE_TO_UINT32(ctr_be);
-	} else {
-		exit(EXIT_FAILURE);
-	}
-	while (out_len >= 16) {
-		ctr_be = UINT32_TO_BE(ctr);
-		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		oqs_aes256_enc_sch_block_ni(block, schedule, out);
-		out += 16;
-		out_len -= 16;
-		ctr++;
-	}
-	if (out_len > 0) {
-		uint8_t tmp[16];
-		ctr_be = UINT32_TO_BE(ctr);
-		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		oqs_aes256_enc_sch_block_ni(block, schedule, tmp);
-		memcpy(out, tmp, out_len);
-	}
-}
-#endif
-
-#if defined(OQS_USE_ARM_AES_INSTRUCTIONS)
 void oqs_aes256_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	uint8_t block[16];
 	uint32_t ctr;
@@ -179,5 +152,14 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, const size_t iv_len, const void *sche
 	    oqs_aes256_ctr_enc_sch_c(iv, iv_len, schedule, out, out_len),
 	    oqs_aes256_ctr_enc_sch_ni(iv, iv_len, schedule, out, out_len),
 	    oqs_aes256_ctr_enc_sch_armv8(iv, iv_len, schedule, out, out_len)
+	)
+}
+
+
+void OQS_AES256_CTR_sch_ivinit(void *schedule, uint8_t *out, size_t out_len) {
+	C_OR_NI_OR_ARM(
+	    oqs_aes256_ctr_enc_sch_ivinit_c(schedule, out, out_len),
+	    oqs_aes256_ctr_enc_sch_ivinit_ni(schedule, out, out_len),
+	    oqs_aes256_ctr_enc_sch_ivinit_armv8(schedule, out, out_len)
 	)
 }

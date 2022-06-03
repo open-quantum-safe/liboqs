@@ -44,11 +44,13 @@
 #define PQC_AES128_STATESIZE 88
 typedef struct {
 	uint64_t sk_exp[PQC_AES128_STATESIZE];
+	uint8_t iv[AES_BLOCKBYTES];
 } aes128ctx;
 
 #define PQC_AES256_STATESIZE 120
 typedef struct {
 	uint64_t sk_exp[PQC_AES256_STATESIZE];
+	uint8_t iv[AES_BLOCKBYTES];
 } aes256ctx;
 
 
@@ -82,6 +84,12 @@ static inline void br_enc32le(unsigned char *dst, uint32_t x) {
 	dst[3] = (unsigned char)(x >> 24);
 }
 
+static inline void br_enc32be(unsigned char *dst, uint32_t x) {
+	dst[0] = (unsigned char)(x >> 24);
+	dst[1] = (unsigned char)(x >> 16);
+	dst[2] = (unsigned char)(x >>  8);
+	dst[3] = (unsigned char)x;
+}
 
 static void br_range_enc32le(unsigned char *dst, const uint32_t *v, size_t num) {
 	while (num-- > 0) {
@@ -587,6 +595,38 @@ static void aes_ecb(unsigned char *out, const unsigned char *in, size_t nblocks,
 	}
 }
 
+static void aes256_ctr_ivint(unsigned char *out, size_t outlen, aes256ctx *ctx) {
+	uint32_t ivw[16];
+	size_t i;
+	uint32_t cc;
+	uint8_t *iv = ctx->iv;
+	uint32_t blocks = ((uint32_t) outlen + 15) / 16;
+	unsigned int nrounds = 14;
+
+	br_range_dec32le(ivw, 4, iv);
+
+	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw + 12, ivw, 3 * sizeof(uint32_t));
+	cc = br_swap32(ivw[3]);
+	ivw[ 7] = br_swap32(cc + 1);
+	ivw[11] = br_swap32(cc + 2);
+	ivw[15] = br_swap32(cc + 3);
+
+	while (outlen > 64) {
+		aes_ctr4x(out, ivw, ctx->sk_exp, nrounds);
+		out += 64;
+		outlen -= 64;
+	}
+	if (outlen > 0) {
+		unsigned char tmp[64];
+		aes_ctr4x(tmp, ivw, ctx->sk_exp, nrounds);
+		for (i = 0; i < outlen; i++) {
+			out[i] = tmp[i];
+		}
+	}
+	br_enc32be(&ctx->iv[12], cc + blocks);
+}
 
 static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, const size_t iv_len, const uint64_t *rkeys, unsigned int nrounds) {
 	uint32_t ivw[16];
@@ -641,6 +681,18 @@ void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
 	br_aes_ct64_skey_expand(ctx->sk_exp, skey, 14);
 }
 
+void oqs_aes256_load_nonce_c(const uint8_t *iv, size_t iv_len, void **_schedule) {
+	aes256ctx *ctx = *_schedule;
+	if (iv_len == 12) {
+		memcpy(ctx->iv, iv, 12);
+		memset(&ctx->iv[12], 0, 4);
+	} else if (iv_len == 16) {
+		memcpy(ctx->iv, iv, 16);
+	} else {
+		exit(EXIT_FAILURE);
+	}
+}
+
 void oqs_aes128_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(44 * sizeof(int));
 	assert(*_schedule != NULL);
@@ -670,6 +722,11 @@ void oqs_aes256_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_l
 void oqs_aes256_ctr_enc_sch_c(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	const aes256ctx *ctx = (const aes256ctx *) schedule;
 	aes_ctr(out, out_len, iv, iv_len, ctx->sk_exp, 14);
+}
+
+void oqs_aes256_ctr_enc_sch_ivinit_c(void *schedule, uint8_t *out, size_t out_len) {
+	aes256ctx *ctx = (aes256ctx *) schedule;
+	aes256_ctr_ivint(out, out_len, ctx);
 }
 
 void oqs_aes128_free_schedule_c(void *schedule) {

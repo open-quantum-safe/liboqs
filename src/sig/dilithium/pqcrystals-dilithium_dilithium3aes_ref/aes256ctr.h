@@ -6,6 +6,8 @@
 
 #define AES256CTR_BLOCKBYTES 64
 
+#if 0
+
 #define AES256CTR_NAMESPACE(s) pqcrystals_dilithium_aes256ctr_ref_##s
 
 typedef struct {
@@ -23,4 +25,5 @@ void aes256ctr_squeezeblocks(uint8_t *out,
                              size_t nblocks,
                              aes256ctr_ctx *state);
 
+#endif
 #endif

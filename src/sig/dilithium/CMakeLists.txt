@@ -5,12 +5,6 @@
 
 set(_DILITHIUM_OBJS "")
 
-if(OQS_ENABLE_SIG_dilithium_2 OR OQS_ENABLE_SIG_dilithium_3 OR OQS_ENABLE_SIG_dilithium_5 OR OQS_ENABLE_SIG_dilithium_2_aes OR OQS_ENABLE_SIG_dilithium_3_aes OR OQS_ENABLE_SIG_dilithium_5_aes)
-    add_library(dilithium_common_ref OBJECT pqcrystals-dilithium_common_ref/aes256ctr.c)
-    target_include_directories(dilithium_common_ref PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqcrystals-dilithium_common_ref)
-    set(_DILITHIUM_OBJS ${_DILITHIUM_OBJS} $<TARGET_OBJECTS:dilithium_common_ref>)
-endif()
-
 if(OQS_ENABLE_SIG_dilithium_2_aes_avx2 OR OQS_ENABLE_SIG_dilithium_3_aes_avx2 OR OQS_ENABLE_SIG_dilithium_5_aes_avx2)
     add_library(dilithium_common_aes OBJECT pqcrystals-dilithium_common_aes/aes256ctr.c)
     target_include_directories(dilithium_common_aes PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqcrystals-dilithium_common_aes)
