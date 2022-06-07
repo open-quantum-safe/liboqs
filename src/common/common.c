@@ -95,6 +95,7 @@ static void set_available_cpu_extensions(void) {
 #include <stdint.h>
 #include <machine/armreg.h>
 static void set_available_cpu_extensions(void) {
+	/* mark that this function has been called */
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
 	uint64_t isar0 = READ_SPECIALREG(id_aa64isar0_el1);
 	if (ID_AA64ISAR0_AES_VAL(isar0) >= ID_AA64ISAR0_AES_BASE) {
