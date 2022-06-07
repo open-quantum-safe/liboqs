@@ -9,6 +9,9 @@
   - **Source**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
+## Test limitation
+
+This algorithm is not tested under Windows using the "msys2" tool chain (due to https://github.com/open-quantum-safe/liboqs/issues/1218).
 
 ## Parameter set summary
 
