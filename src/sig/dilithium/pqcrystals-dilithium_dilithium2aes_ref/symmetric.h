@@ -9,12 +9,8 @@
 #include "aes256ctr.h"
 #include "fips202.h"
 
-#include "aes.h"
-typedef aes256ctx aes256ctr_ctx;
-
 typedef aes256ctr_ctx stream128_state;
 typedef aes256ctr_ctx stream256_state;
-
 
 #define dilithium_aes256ctr_init DILITHIUM_NAMESPACE(dilithium_aes256ctr_init)
 void dilithium_aes256ctr_init(aes256ctr_ctx *state,
@@ -34,7 +30,8 @@ void dilithium_aes256ctr_init(aes256ctr_ctx *state,
         dilithium_aes256ctr_init(STATE, SEED, NONCE)
 #define stream256_squeezeblocks(OUT, OUTBLOCKS, STATE) \
         aes256ctr_squeezeblocks(OUT, OUTBLOCKS, STATE)
-#define stream256_release(STATE)
+#define stream256_release(STATE) \
+        aes256_ctx_release(STATE)
 
 #else
 

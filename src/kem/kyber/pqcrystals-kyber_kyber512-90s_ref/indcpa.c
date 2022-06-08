@@ -7,7 +7,6 @@
 #include "ntt.h"
 #include "symmetric.h"
 #include "randombytes.h"
-#define AES256CTR_BLOCKBYTES 64
 
 /*************************************************
 * Name:        pack_pk

@@ -9,9 +9,6 @@
 #include "aes256ctr.h"
 #include "fips202.h"
 
-#include "aes.h"
-typedef aes256ctx aes256ctr_ctx;
-
 typedef aes256ctr_ctx stream128_state;
 typedef aes256ctr_ctx stream256_state;
 

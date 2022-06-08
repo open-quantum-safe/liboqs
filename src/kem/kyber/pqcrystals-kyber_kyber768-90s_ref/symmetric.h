@@ -10,7 +10,6 @@
 #include "aes256ctr.h"
 #include "sha2.h"
 
-
 #if (KYBER_SSBYTES != 32)
 #error "90s variant of Kyber can only generate keys of length 256 bits"
 #endif
