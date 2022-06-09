@@ -55,11 +55,11 @@ void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **_schedule) {
 	OQS_AES256_ECB_load_schedule(key, _schedule);
 }
 
-void OQS_AES256_CTR_load_nonce(const uint8_t *iv, size_t iv_len, void **_schedule) {
+void OQS_AES256_CTR_load_iv(const uint8_t *iv, size_t iv_len, void *_schedule) {
 	C_OR_NI_OR_ARM(
-	    oqs_aes256_load_nonce_c(iv, iv_len, _schedule),
-	    oqs_aes256_load_nonce_ni(iv, iv_len, _schedule),
-	    oqs_aes256_load_nonce_no_bitslice(iv, iv_len, _schedule)
+	    oqs_aes256_load_iv_c(iv, iv_len, _schedule),
+	    oqs_aes256_load_iv_ni(iv, iv_len, _schedule),
+	    oqs_aes256_load_iv_no_bitslice(iv, iv_len, _schedule)
 	)
 }
 
@@ -156,10 +156,10 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, const size_t iv_len, const void *sche
 }
 
 
-void OQS_AES256_CTR_sch_ivinit(void *schedule, uint8_t *out, size_t out_len) {
+void OQS_AES256_CTR_sch_upd_blks(void *schedule, uint8_t *out, size_t out_blks) {
 	C_OR_NI_OR_ARM(
-	    oqs_aes256_ctr_enc_sch_ivinit_c(schedule, out, out_len),
-	    oqs_aes256_ctr_enc_sch_ivinit_ni(schedule, out, out_len),
-	    oqs_aes256_ctr_enc_sch_ivinit_armv8(schedule, out, out_len)
+	    oqs_aes256_ctr_enc_sch_upd_blks_c(schedule, out, out_blks),
+	    oqs_aes256_ctr_enc_sch_upd_blks_ni(schedule, out, out_blks),
+	    oqs_aes256_ctr_enc_sch_upd_blks_armv8(schedule, out, out_blks)
 	)
 }

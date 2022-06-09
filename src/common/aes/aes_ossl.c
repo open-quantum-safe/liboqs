@@ -90,9 +90,9 @@ void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **schedule) {
 	memcpy(ks->key, key, 32);
 }
 
-void OQS_AES256_CTR_load_nonce(const uint8_t *iv, size_t iv_len, void **schedule) {
-	OQS_EXIT_IF_NULLPTR(*schedule);
-	struct key_schedule *ks = (struct key_schedule *) *schedule;
+void OQS_AES256_CTR_load_iv(const uint8_t *iv, size_t iv_len, void *schedule) {
+	OQS_EXIT_IF_NULLPTR(schedule);
+	struct key_schedule *ks = (struct key_schedule *) schedule;
 	if (iv_len == 12) {
 		memcpy(ks->iv, iv, 12);
 		memset(&ks->iv[12], 0, 4);
@@ -146,9 +146,10 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *schedule, 
 	EVP_CIPHER_CTX_free(ctr_ctx);
 }
 
-void OQS_AES256_CTR_sch_ivinit(void *schedule, uint8_t *out, size_t out_len) {
+void OQS_AES256_CTR_sch_upd_blks(void *schedule, uint8_t *out, size_t out_blks) {
 	EVP_CIPHER_CTX *ctr_ctx = EVP_CIPHER_CTX_new();
 	assert(ctr_ctx != NULL);
+	size_t out_len = out_blks * 16;
 	struct key_schedule *ks = (struct key_schedule *) schedule;
 	uint8_t *iv = ((struct key_schedule *) schedule)->iv;
 	uint32_t cc = br_dec32be(&iv[12]);

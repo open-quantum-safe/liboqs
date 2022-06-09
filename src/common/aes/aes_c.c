@@ -595,7 +595,7 @@ static void aes_ecb(unsigned char *out, const unsigned char *in, size_t nblocks,
 	}
 }
 
-static void aes256_ctr_ivint(unsigned char *out, size_t outlen, aes256ctx *ctx) {
+static void aes256_ctr_upd(unsigned char *out, size_t outlen, aes256ctx *ctx) {
 	uint32_t ivw[16];
 	size_t i;
 	uint32_t cc;
@@ -681,8 +681,8 @@ void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
 	br_aes_ct64_skey_expand(ctx->sk_exp, skey, 14);
 }
 
-void oqs_aes256_load_nonce_c(const uint8_t *iv, size_t iv_len, void **_schedule) {
-	aes256ctx *ctx = *_schedule;
+void oqs_aes256_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
+	aes256ctx *ctx = _schedule;
 	if (iv_len == 12) {
 		memcpy(ctx->iv, iv, 12);
 		memset(&ctx->iv[12], 0, 4);
@@ -724,9 +724,9 @@ void oqs_aes256_ctr_enc_sch_c(const uint8_t *iv, const size_t iv_len, const void
 	aes_ctr(out, out_len, iv, iv_len, ctx->sk_exp, 14);
 }
 
-void oqs_aes256_ctr_enc_sch_ivinit_c(void *schedule, uint8_t *out, size_t out_len) {
+void oqs_aes256_ctr_enc_sch_upd_blks_c(void *schedule, uint8_t *out, size_t out_blks) {
 	aes256ctx *ctx = (aes256ctx *) schedule;
-	aes256_ctr_ivint(out, out_len, ctx);
+	aes256_ctr_upd(out, out_blks * 16, ctx);
 }
 
 void oqs_aes128_free_schedule_c(void *schedule) {

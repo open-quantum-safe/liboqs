@@ -94,8 +94,8 @@ void oqs_aes256_load_schedule_ni(const uint8_t *key, void **_schedule) {
 	aes256ni_setkey_encrypt(key, schedule);
 }
 
-void oqs_aes256_load_nonce_ni(const uint8_t *iv, size_t iv_len, void **_schedule) {
-	aes256ctx *ctx = *_schedule;
+void oqs_aes256_load_iv_ni(const uint8_t *iv, size_t iv_len, void *_schedule) {
+	aes256ctx *ctx = _schedule;
 	if (iv_len == 12) {
 		memcpy(ctx->iv, iv, 12);
 		memset(&ctx->iv[12], 0, 4);
@@ -146,10 +146,11 @@ void oqs_aes256_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_
 	}
 }
 
-void oqs_aes256_ctr_enc_sch_ivinit_ni(void *schedule, uint8_t *out, size_t out_len) {
+void oqs_aes256_ctr_enc_sch_upd_blks_ni(void *schedule, uint8_t *out, size_t out_blks) {
 	uint32_t ctr;
 	uint32_t ctr_be;
 	uint8_t *block = ((aes256ctx *) schedule)->iv;
+	size_t out_len = out_blks * 16;
 
 	memcpy(&ctr_be, &block[12], 4);
 	ctr = BE_TO_UINT32(ctr_be);
@@ -162,13 +163,8 @@ void oqs_aes256_ctr_enc_sch_ivinit_ni(void *schedule, uint8_t *out, size_t out_l
 		out_len -= 16;
 		ctr++;
 	}
-	if (out_len > 0) {
-		uint8_t tmp[16];
-		ctr_be = UINT32_TO_BE(ctr);
-		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		oqs_aes256_enc_sch_block_ni(block, schedule, tmp);
-		memcpy(out, tmp, out_len);
-	}
+	ctr_be = UINT32_TO_BE(ctr);
+	memcpy(&block[12], (uint8_t *) &ctr_be, 4);
 }
 
 void oqs_aes256_ctr_enc_sch_ni(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {

@@ -10,7 +10,7 @@ void kyber_aes256xof_absorb(aes256ctr_ctx *state, const uint8_t seed[32], uint8_
   uint8_t expnonce[12] = {0};
   expnonce[0] = x;
   expnonce[1] = y;
-  aes256ctr_init_nonce(state, expnonce);
+  aes256ctr_init_iv(state, expnonce);
 }
 
 void kyber_aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t key[32], uint8_t nonce)
