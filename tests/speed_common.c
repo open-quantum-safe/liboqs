@@ -58,7 +58,7 @@ static OQS_STATUS speed_aes128(uint64_t duration, size_t message_len) {
 static OQS_STATUS speed_aes256(uint64_t duration, size_t message_len) {
 	uint8_t *message = NULL;
 	uint8_t *ciphertext = NULL;
-	uint8_t nonce[12] = { 0 };
+	uint8_t nonce[12] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
 	void *schedule = NULL;
 
 	message = malloc(message_len);

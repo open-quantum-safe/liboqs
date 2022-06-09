@@ -130,7 +130,7 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, size_t iv_len, const void *ctx, uint8
  *
  * @param ctx         Abstract data structure for key schedule and IV.
  * @param out         Pointer to a block of memory which is big enough to contain out_blks*16 bytes; the result will be written here.
- * @param out_blks  Length of output blocks to generate, where one block is 16 bytes.
+ * @param out_blks    Length of output blocks to generate, where one block is 16 bytes.
  */
 void OQS_AES256_CTR_sch_upd_blks(void *ctx, uint8_t *out, size_t out_blks);
 
