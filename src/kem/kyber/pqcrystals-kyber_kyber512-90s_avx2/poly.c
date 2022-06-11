@@ -361,6 +361,7 @@ void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const poly * restrict a)
   }
 }
 
+#if 0
 /*************************************************
 * Name:        poly_getnoise_eta1
 *
@@ -380,6 +381,7 @@ void poly_getnoise_eta1(poly *r, const uint8_t seed[KYBER_SYMBYTES], uint8_t non
   poly_cbd_eta1(r, buf.vec);
 }
 
+
 /*************************************************
 * Name:        poly_getnoise_eta2
 *
@@ -398,7 +400,7 @@ void poly_getnoise_eta2(poly *r, const uint8_t seed[KYBER_SYMBYTES], uint8_t non
   prf(buf.coeffs, KYBER_ETA2*KYBER_N/4, seed, nonce);
   poly_cbd_eta2(r, buf.vec);
 }
-
+#endif
 #ifndef KYBER_90S
 #define NOISE_NBLOCKS ((KYBER_ETA1*KYBER_N/4+SHAKE256_RATE-1)/SHAKE256_RATE)
 void poly_getnoise_eta1_4x(poly *r0,

@@ -693,6 +693,20 @@ void oqs_aes256_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 	}
 }
 
+void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
+	OQS_EXIT_IF_NULLPTR(schedule);
+	aes256ctx *ctx = (aes256ctx *) schedule;
+	ctx->iv[7] = (unsigned char)(iv >> 56);
+	ctx->iv[6] = (unsigned char)(iv >> 48);
+	ctx->iv[5] = (unsigned char)(iv >> 40);
+	ctx->iv[4] = (unsigned char)(iv >> 32);
+	ctx->iv[3] = (unsigned char)(iv >> 24);
+	ctx->iv[2] = (unsigned char)(iv >> 16);
+	ctx->iv[1] = (unsigned char)(iv >>  8);
+	ctx->iv[0] = (unsigned char)iv;
+	memset(&ctx->iv[8], 0, 8);
+}
+
 void oqs_aes128_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(44 * sizeof(int));
 	assert(*_schedule != NULL);
@@ -754,3 +768,7 @@ void oqs_aes256_free_schedule_no_bitslice(void *schedule) {
 	}
 }
 
+void oqs_aes256_ctr_enc_sch_upd_blks_u64_c(uint64_t iv, void *ctx, uint8_t *out, size_t out_blks) {
+	oqs_aes256_load_iv_u64_c(iv, ctx);
+	oqs_aes256_ctr_enc_sch_upd_blks_c(ctx, out, out_blks);
+}

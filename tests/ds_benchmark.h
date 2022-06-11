@@ -290,8 +290,8 @@ static void _bench_init_perfcounters(void) {
     printf("Started at ");                                                                                                                                                                          \
     PRINT_CURRENT_TIME                                                                                                                                                                              \
     printf("\n");                                                                                                                                                                                   \
-    printf("%-30s | %10s | %14s | %15s | %10s | %25s | %10s\n", "Operation                     ", "Iterations", "Total time (s)", "Time (us): mean", "pop. stdev", HIGH_PREC_HEADER, "pop. stdev"); \
-    printf("%-30s | %10s:| %14s:| %15s:| %10s:| %25s:| %10s:\n", "------------------------------", "----------", "--------------", "---------------", "----------", "-------------------------", "----------");
+    printf("%-36s | %10s | %14s | %15s | %10s | %25s | %10s\n", "Operation                           ", "Iterations", "Total time (s)", "Time (us): mean", "pop. stdev", HIGH_PREC_HEADER, "pop. stdev"); \
+    printf("%-36s | %10s:| %14s:| %15s:| %10s:| %25s:| %10s:\n", "------------------------------------", "----------", "--------------", "---------------", "----------", "-------------------------", "----------");
 /* colons are used in above to right-align cell contents in Markdown */
 
 #define PRINT_TIMER_FOOTER \
@@ -300,7 +300,7 @@ static void _bench_init_perfcounters(void) {
     printf("\n");
 
 #define PRINT_TIMER_AVG(op_name) \
-    printf("%-30s | %10" PRIu64 " | %14.3f | %15.3f | %10.3f | %25.0f | %10.0f\n", (op_name), _bench_iterations, ((double) _bench_time_cumulative) / 1000000.0, _bench_time_mean, _bench_time_stdev, ((double) _bench_cycles_cumulative) / (double) _bench_iterations, _bench_cycles_stdev);
+    printf("%-36s | %10" PRIu64 " | %14.3f | %15.3f | %10.3f | %25.0f | %10.0f\n", (op_name), _bench_iterations, ((double) _bench_time_cumulative) / 1000000.0, _bench_time_mean, _bench_time_stdev, ((double) _bench_cycles_cumulative) / (double) _bench_iterations, _bench_cycles_stdev);
 
 #define TIME_OPERATION_ITERATIONS(op, op_name, it) \
     {                                              \

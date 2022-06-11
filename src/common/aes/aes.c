@@ -51,15 +51,23 @@ void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	)
 }
 
-void OQS_AES256_CTR_load_schedule(const uint8_t *key, void **_schedule) {
+void OQS_AES256_CTR_inc_init(const uint8_t *key, void **_schedule) {
 	OQS_AES256_ECB_load_schedule(key, _schedule);
 }
 
-void OQS_AES256_CTR_load_iv(const uint8_t *iv, size_t iv_len, void *_schedule) {
+void OQS_AES256_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *_schedule) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes256_load_iv_c(iv, iv_len, _schedule),
 	    oqs_aes256_load_iv_ni(iv, iv_len, _schedule),
-	    oqs_aes256_load_iv_no_bitslice(iv, iv_len, _schedule)
+	    (void) iv; (void) iv_len; (void) _schedule
+	)
+}
+
+void OQS_AES256_CTR_inc_ivu64(uint64_t iv, void *_schedule) {
+	C_OR_NI_OR_ARM(
+	    oqs_aes256_load_iv_u64_c(iv, _schedule),
+	    oqs_aes256_load_iv_u64_ni(iv, _schedule),
+	    (void) iv; (void) _schedule
 	)
 }
 
@@ -147,7 +155,7 @@ void oqs_aes256_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const 
 #endif
 
 
-void OQS_AES256_CTR_sch(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
+void OQS_AES256_CTR_inc_stream_iv(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes256_ctr_enc_sch_c(iv, iv_len, schedule, out, out_len),
 	    oqs_aes256_ctr_enc_sch_ni(iv, iv_len, schedule, out, out_len),
@@ -155,11 +163,18 @@ void OQS_AES256_CTR_sch(const uint8_t *iv, const size_t iv_len, const void *sche
 	)
 }
 
+void OQS_AES256_CTR_inc_stream_ivu64_blks(uint64_t iv, void *ctx, uint8_t *out, size_t out_blks) {
+	C_OR_NI_OR_ARM(
+	    OQS_AES256_CTR_inc_ivu64(iv, ctx); OQS_AES256_CTR_inc_stream_blks(ctx, out, out_blks),
+	    oqs_aes256_ctr_enc_sch_upd_blks_u64_ni(iv, ctx, out, out_blks),
+	    (void) iv; (void) ctx; (void) out; (void) out_blks
+	)
+}
 
-void OQS_AES256_CTR_sch_upd_blks(void *schedule, uint8_t *out, size_t out_blks) {
+void OQS_AES256_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_blks) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes256_ctr_enc_sch_upd_blks_c(schedule, out, out_blks),
 	    oqs_aes256_ctr_enc_sch_upd_blks_ni(schedule, out, out_blks),
-	    oqs_aes256_ctr_enc_sch_upd_blks_armv8(schedule, out, out_blks)
+	    (void) schedule; (void) out; (void) out_blks
 	)
 }
