@@ -29,8 +29,13 @@ static OQS_STATUS speed_aes128(uint64_t duration, size_t message_len) {
 	void *schedule = NULL;
 
 	message = malloc(message_len);
+	if (message == NULL) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		return OQS_ERROR;
+	}
 	ciphertext = malloc(message_len);
-	if ((message == NULL) || (ciphertext == NULL)) {
+	if (ciphertext == NULL) {
+		OQS_MEM_insecure_free(message);
 		fprintf(stderr, "ERROR: malloc failed\n");
 		return OQS_ERROR;
 	}
@@ -56,8 +61,13 @@ static OQS_STATUS speed_aes256(uint64_t duration, size_t message_len) {
 	void *schedule = NULL;
 
 	message = malloc(message_len);
+	if (message == NULL) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		return OQS_ERROR;
+	}
 	ciphertext = malloc(message_len);
-	if ((message == NULL) || (ciphertext == NULL)) {
+	if (ciphertext == NULL) {
+		OQS_MEM_insecure_free(message);
 		fprintf(stderr, "ERROR: malloc failed\n");
 		return OQS_ERROR;
 	}
@@ -73,6 +83,7 @@ static OQS_STATUS speed_aes256(uint64_t duration, size_t message_len) {
 	OQS_AES256_free_schedule(schedule);
 
 	OQS_MEM_insecure_free(message);
+	OQS_MEM_insecure_free(ciphertext);
 
 	return OQS_SUCCESS;
 }
@@ -171,8 +182,13 @@ static OQS_STATUS speed_shake128(uint64_t duration, size_t message_len, size_t o
 	uint8_t *output = NULL;
 
 	message = malloc(message_len);
+	if (message == NULL) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		return OQS_ERROR;
+	}
 	output = malloc(output_len);
-	if ((message == NULL) || (output == NULL)) {
+	if (output == NULL) {
+		OQS_MEM_insecure_free(message);
 		fprintf(stderr, "ERROR: malloc failed\n");
 		return OQS_ERROR;
 	}
@@ -193,8 +209,13 @@ static OQS_STATUS speed_shake256(uint64_t duration, size_t message_len, size_t o
 	uint8_t *output = NULL;
 
 	message = malloc(message_len);
+	if (message == NULL) {
+		fprintf(stderr, "ERROR: malloc failed\n");
+		return OQS_ERROR;
+	}
 	output = malloc(output_len);
-	if ((message == NULL) || (output == NULL)) {
+	if (output == NULL) {
+		OQS_MEM_insecure_free(message);
 		fprintf(stderr, "ERROR: malloc failed\n");
 		return OQS_ERROR;
 	}
