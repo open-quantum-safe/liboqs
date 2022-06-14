@@ -59,7 +59,7 @@ void OQS_AES256_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *_schedule) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes256_load_iv_c(iv, iv_len, _schedule),
 	    oqs_aes256_load_iv_ni(iv, iv_len, _schedule),
-	    (void) iv; (void) iv_len; (void) _schedule
+	    oqs_aes256_load_iv_armv8(iv, iv_len, _schedule)
 	)
 }
 
@@ -109,52 +109,6 @@ void OQS_AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len
 	)
 }
 
-#if defined(OQS_USE_ARM_AES_INSTRUCTIONS)
-static uint32_t UINT32_TO_BE(const uint32_t x) {
-	union {
-		uint32_t val;
-		uint8_t bytes[4];
-	} y;
-	y.bytes[0] = (x >> 24) & 0xFF;
-	y.bytes[1] = (x >> 16) & 0xFF;
-	y.bytes[2] = (x >> 8) & 0xFF;
-	y.bytes[3] = x & 0xFF;
-	return y.val;
-}
-#define BE_TO_UINT32(n) (uint32_t)((((uint8_t *) &(n))[0] << 24) | (((uint8_t *) &(n))[1] << 16) | (((uint8_t *) &(n))[2] << 8) | (((uint8_t *) &(n))[3] << 0))
-
-void oqs_aes256_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
-	uint8_t block[16];
-	uint32_t ctr;
-	uint32_t ctr_be;
-	memcpy(block, iv, 12);
-	if (iv_len == 12) {
-		ctr = 0;
-	} else if (iv_len == 16) {
-		memcpy(&ctr_be, &iv[12], 4);
-		ctr = BE_TO_UINT32(ctr_be);
-	} else {
-		exit(EXIT_FAILURE);
-	}
-	while (out_len >= 16) {
-		ctr_be = UINT32_TO_BE(ctr);
-		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		oqs_aes256_enc_sch_block_armv8(block, schedule, out);
-		out += 16;
-		out_len -= 16;
-		ctr++;
-	}
-	if (out_len > 0) {
-		uint8_t tmp[16];
-		ctr_be = UINT32_TO_BE(ctr);
-		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		oqs_aes256_enc_sch_block_armv8(block, schedule, tmp);
-		memcpy(out, tmp, out_len);
-	}
-}
-#endif
-
-
 void OQS_AES256_CTR_inc_stream_iv(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes256_ctr_enc_sch_c(iv, iv_len, schedule, out, out_len),
@@ -163,18 +117,10 @@ void OQS_AES256_CTR_inc_stream_iv(const uint8_t *iv, const size_t iv_len, const 
 	)
 }
 
-void OQS_AES256_CTR_inc_stream_ivu64_blks(uint64_t iv, void *ctx, uint8_t *out, size_t out_blks) {
-	C_OR_NI_OR_ARM(
-	    OQS_AES256_CTR_inc_ivu64(iv, ctx); OQS_AES256_CTR_inc_stream_blks(ctx, out, out_blks),
-	    oqs_aes256_ctr_enc_sch_upd_blks_u64_ni(iv, ctx, out, out_blks),
-	    (void) iv; (void) ctx; (void) out; (void) out_blks
-	)
-}
-
 void OQS_AES256_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_blks) {
 	C_OR_NI_OR_ARM(
 	    oqs_aes256_ctr_enc_sch_upd_blks_c(schedule, out, out_blks),
 	    oqs_aes256_ctr_enc_sch_upd_blks_ni(schedule, out, out_blks),
-	    (void) schedule; (void) out; (void) out_blks
+	    oqs_aes256_ctr_enc_sch_upd_blks_armv8(schedule, out, out_blks)
 	)
 }

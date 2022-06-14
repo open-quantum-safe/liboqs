@@ -178,8 +178,3 @@ void OQS_AES256_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_blk
 	memset(out, 0, (size_t)out_len_input_int);
 	OQS_OPENSSL_GUARD(EVP_EncryptUpdate(ks->ctx, out, &out_len_output, out, (int) out_len));
 }
-
-void OQS_AES256_CTR_inc_stream_ivu64_blks(uint64_t iv, void *ctx, uint8_t *out, size_t out_blks) {
-	OQS_AES256_CTR_inc_ivu64(iv, ctx);
-	OQS_AES256_CTR_inc_stream_blks(ctx, out, out_blks);
-}

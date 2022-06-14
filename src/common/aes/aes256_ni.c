@@ -201,31 +201,6 @@ void oqs_aes256_ctr_enc_sch_upd_blks_ni(void *schedule, uint8_t *out, size_t out
 	}
 }
 
-void oqs_aes256_ctr_enc_sch_upd_blks_u64_ni(uint64_t iv, void *schedule, uint8_t *out, size_t out_blks) {
-	aes256ctx *ctx = (aes256ctx *) schedule;
-	__m128i nonce = _mm_loadl_epi64((__m128i *)&iv);
-	const __m128i mask = _mm_set_epi8(8, 9, 10, 11, 12, 13, 14, 15, 7, 6, 5, 4, 3, 2, 1, 0);
-
-	while (out_blks >= 4) {
-		__m128i nv0 = _mm_shuffle_epi8(nonce, mask);
-		__m128i nv1 = _mm_shuffle_epi8(_mm_add_epi64(nonce, _mm_set_epi64x(1, 0)), mask);
-		__m128i nv2 = _mm_shuffle_epi8(_mm_add_epi64(nonce, _mm_set_epi64x(2, 0)), mask);
-		__m128i nv3 = _mm_shuffle_epi8(_mm_add_epi64(nonce, _mm_set_epi64x(3, 0)), mask);
-		aes256ni_encrypt_x4(schedule, nv0, nv1, nv2, nv3, out);
-		nonce = _mm_add_epi64(nonce, _mm_set_epi64x(4, 0));
-		out += 64;
-		out_blks -= 4;
-	}
-	while (out_blks >= 1) {
-		__m128i nv0 = _mm_shuffle_epi8(nonce, mask);
-		aes256ni_encrypt(schedule, nv0, out);
-		nonce = _mm_add_epi64(nonce, _mm_set_epi64x(1, 0));
-		out += 16;
-		out_blks--;
-	}
-	ctx->iv = nonce;
-}
-
 void oqs_aes256_ctr_enc_sch_ni(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	__m128i block;
 	__m128i mask = _mm_set_epi8(8, 9, 10, 11, 12, 13, 14, 15, 7, 6, 5, 4, 3, 2, 1, 0);

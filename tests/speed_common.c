@@ -89,7 +89,7 @@ static OQS_STATUS speed_aes256(uint64_t duration, size_t message_len) {
 	OQS_AES256_CTR_inc_iv(nonce, 12, schedule);
 
 	TIME_OPERATION_SECONDS(OQS_AES256_CTR_inc_stream_iv(nonce, 12, schedule, ciphertext, message_len), "OQS_AES256_CTR_inc_stream_iv", duration);
-	TIME_OPERATION_SECONDS(OQS_AES256_CTR_inc_stream_ivu64_blks(0, schedule, ciphertext, message_len / 16), "OQS_AES256_CTR_inc_stream_ivu64_blks", duration);
+
 	TIME_OPERATION_SECONDS(OQS_AES256_CTR_inc_stream_blks(schedule, ciphertext, message_len / 16), "OQS_AES256_CTR_inc_stream_blks", duration);
 
 	OQS_AES256_free_schedule(schedule);
