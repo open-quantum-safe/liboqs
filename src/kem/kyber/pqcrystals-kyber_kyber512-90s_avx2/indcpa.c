@@ -187,8 +187,6 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
       else
         nonce = (i << 8) | j;
 
-      //aes256ctr_init_iv_u64(&state, nonce);
-      //state.n = _mm_loadl_epi64((__m128i *)&nonce);
       aes256ctr_init_iv_u64(&state, nonce);
       aes256ctr_squeezeblocks(buf.coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state);
       buflen = REJ_UNIFORM_AVX_NBLOCKS*AES256CTR_BLOCKBYTES;
@@ -493,14 +491,11 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
     aes256ctr_squeezeblocks(coins.coeffs, NOISE_NBLOCKS, &state);
     aes256ctr_init_iv_u64(&state, nonce);
     nonce += 1;
-    //state.n = _mm_loadl_epi64((__m128i *)&nonce);
-    //nonce += 1;
     poly_cbd_eta1(&skpv.vec[i], coins.vec);
   }
   for(i=0;i<KYBER_K;i++) {
     aes256ctr_squeezeblocks(coins.coeffs, NOISE_NBLOCKS, &state);
     aes256ctr_init_iv_u64(&state, nonce);
-    //state.n = _mm_loadl_epi64((__m128i *)&nonce);
     nonce += 1;
     poly_cbd_eta1(&e.vec[i], coins.vec);
   }
@@ -584,7 +579,9 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
     poly_cbd_eta2(&ep.vec[i], buf.vec);
   }
   aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
+  nonce += 1;
   aes256_ctx_release(&state);
+
   poly_cbd_eta2(&epp, buf.vec);
 #else
 #if KYBER_K == 2

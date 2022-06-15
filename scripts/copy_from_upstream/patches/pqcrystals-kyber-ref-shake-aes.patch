@@ -45,7 +45,7 @@ index 4d9560a..2317c06 100644
    expnonce[0] = x;
    expnonce[1] = y;
 -  aes256ctr_init(state, seed, expnonce);
-+  aes256ctr_init_nonce(state, expnonce);
++  aes256ctr_init_iv(state, expnonce);
  }
  
  void kyber_aes256ctr_prf(uint8_t *out, size_t outlen, const uint8_t key[32], uint8_t nonce)

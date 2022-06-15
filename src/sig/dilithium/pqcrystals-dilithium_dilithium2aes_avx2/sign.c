@@ -108,6 +108,7 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     aes256ctr_init_iv_u64(&aesctx, nonce);
     poly_uniform_eta_preinit(&s2.vec[i], &aesctx);
   }
+  aes256_ctx_release(&aesctx);
 #elif K == 4 && L == 4
   poly_uniform_eta_4x(&s1.vec[0], &s1.vec[1], &s1.vec[2], &s1.vec[3], rhoprime, 0, 1, 2, 3);
   poly_uniform_eta_4x(&s2.vec[0], &s2.vec[1], &s2.vec[2], &s2.vec[3], rhoprime, 4, 5, 6, 7);
@@ -163,6 +164,10 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
     polyt1_pack(pk + SEEDBYTES + i*POLYT1_PACKEDBYTES, &t1);
     polyt0_pack(sk + 3*SEEDBYTES + (L+K)*POLYETA_PACKEDBYTES + i*POLYT0_PACKEDBYTES, &t0);
   }
+
+#ifdef DILITHIUM_USE_AES
+  aes256_ctx_release(&aesctx);
+#endif
 
   /* Compute H(rho, t1) and store in secret key */
   shake256(sk + 2*SEEDBYTES, SEEDBYTES, pk, CRYPTO_PUBLICKEYBYTES);
@@ -317,6 +322,10 @@ rej:
     hint[OMEGA + i] = pos = pos + n;
   }
 
+#ifdef DILITHIUM_USE_AES
+  aes256_ctx_release(&aesctx);
+#endif
+
   shake256_inc_ctx_release(&state);
   /* Pack z into signature */
   for(i = 0; i < L; i++)
@@ -450,6 +459,10 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
     poly_use_hint(&w1, &w1, &h);
     polyw1_pack(buf.coeffs + i*POLYW1_PACKEDBYTES, &w1);
   }
+
+#ifdef DILITHIUM_USE_AES
+  aes256_ctx_release(&aesctx);
+#endif
 
   /* Extra indices are zero for strong unforgeability */
   for(j = pos; j < OMEGA; ++j)

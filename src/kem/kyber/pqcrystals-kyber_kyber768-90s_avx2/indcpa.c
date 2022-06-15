@@ -581,7 +581,7 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
   aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
   nonce += 1;
   aes256_ctx_release(&state);
-  
+
   poly_cbd_eta2(&epp, buf.vec);
 #else
 #if KYBER_K == 2

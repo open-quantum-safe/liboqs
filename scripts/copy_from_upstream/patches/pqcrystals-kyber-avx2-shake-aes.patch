@@ -180,7 +180,23 @@ index ab148a2..96bad86 100644
  #include "params.h"
  #include "poly.h"
  #include "ntt.h"
-@@ -412,7 +413,7 @@ void poly_getnoise_eta1_4x(poly *r0,
+@@ -360,6 +361,7 @@ void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const poly * restrict a)
+   }
+ }
+ 
++#ifndef KYBER_90S
+ /*************************************************
+ * Name:        poly_getnoise_eta1
+ *
+@@ -397,6 +399,7 @@ void poly_getnoise_eta2(poly *r, const uint8_t seed[KYBER_SYMBYTES], uint8_t non
+   prf(buf.coeffs, KYBER_ETA2*KYBER_N/4, seed, nonce);
+   poly_cbd_eta2(r, buf.vec);
+ }
++#endif
+ 
+ #ifndef KYBER_90S
+ #define NOISE_NBLOCKS ((KYBER_ETA1*KYBER_N/4+SHAKE256_RATE-1)/SHAKE256_RATE)
+@@ -412,7 +415,7 @@ void poly_getnoise_eta1_4x(poly *r0,
  {
    ALIGNED_UINT8(NOISE_NBLOCKS*SHAKE256_RATE) buf[4];
    __m256i f;
@@ -189,7 +205,7 @@ index ab148a2..96bad86 100644
  
    f = _mm256_loadu_si256((__m256i *)seed);
    _mm256_store_si256(buf[0].vec, f);
-@@ -425,8 +426,10 @@ void poly_getnoise_eta1_4x(poly *r0,
+@@ -425,8 +428,10 @@ void poly_getnoise_eta1_4x(poly *r0,
    buf[2].coeffs[32] = nonce2;
    buf[3].coeffs[32] = nonce3;
  
@@ -200,7 +216,7 @@ index ab148a2..96bad86 100644
  
    poly_cbd_eta1(r0, buf[0].vec);
    poly_cbd_eta1(r1, buf[1].vec);
-@@ -447,7 +450,7 @@ void poly_getnoise_eta1122_4x(poly *r0,
+@@ -447,7 +452,7 @@ void poly_getnoise_eta1122_4x(poly *r0,
  {
    ALIGNED_UINT8(NOISE_NBLOCKS*SHAKE256_RATE) buf[4];
    __m256i f;
@@ -209,7 +225,7 @@ index ab148a2..96bad86 100644
  
    f = _mm256_loadu_si256((__m256i *)seed);
    _mm256_store_si256(buf[0].vec, f);
-@@ -460,8 +463,10 @@ void poly_getnoise_eta1122_4x(poly *r0,
+@@ -460,8 +465,10 @@ void poly_getnoise_eta1122_4x(poly *r0,
    buf[2].coeffs[32] = nonce2;
    buf[3].coeffs[32] = nonce3;
  

@@ -178,7 +178,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
   ALIGNED_UINT8(REJ_UNIFORM_AVX_NBLOCKS*AES256CTR_BLOCKBYTES) buf;
   aes256ctr_ctx state;
 
-  aes256ctr_init(&state, seed, 0);
+  aes256ctr_init_key(&state, seed);
 
   for(i=0;i<KYBER_K;i++) {
     for(j=0;j<KYBER_K;j++) {
@@ -187,7 +187,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
       else
         nonce = (i << 8) | j;
 
-      state.n = _mm_loadl_epi64((__m128i *)&nonce);
+      aes256ctr_init_iv_u64(&state, nonce);
       aes256ctr_squeezeblocks(buf.coeffs, REJ_UNIFORM_AVX_NBLOCKS, &state);
       buflen = REJ_UNIFORM_AVX_NBLOCKS*AES256CTR_BLOCKBYTES;
       ctr = rej_uniform_avx(a[i].vec[j].coeffs, buf.coeffs);
@@ -204,6 +204,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
       poly_nttunpack(&a[i].vec[j]);
     }
   }
+  aes256_ctx_release(&state);
 }
 #else
 #if KYBER_K == 2
@@ -485,19 +486,20 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
   uint64_t nonce = 0;
   ALIGNED_UINT8(NOISE_NBLOCKS*AES256CTR_BLOCKBYTES+32) coins; // +32 bytes as required by poly_cbd_eta1
   aes256ctr_ctx state;
-  aes256ctr_init(&state, noiseseed, nonce++);
+  aes256ctr_init_u64(&state, noiseseed, nonce++);
   for(i=0;i<KYBER_K;i++) {
     aes256ctr_squeezeblocks(coins.coeffs, NOISE_NBLOCKS, &state);
-    state.n = _mm_loadl_epi64((__m128i *)&nonce);
+    aes256ctr_init_iv_u64(&state, nonce);
     nonce += 1;
     poly_cbd_eta1(&skpv.vec[i], coins.vec);
   }
   for(i=0;i<KYBER_K;i++) {
     aes256ctr_squeezeblocks(coins.coeffs, NOISE_NBLOCKS, &state);
-    state.n = _mm_loadl_epi64((__m128i *)&nonce);
+    aes256ctr_init_iv_u64(&state, nonce);
     nonce += 1;
     poly_cbd_eta1(&e.vec[i], coins.vec);
   }
+  aes256_ctx_release(&state);
 #else
 #if KYBER_K == 2
   poly_getnoise_eta1_4x(skpv.vec+0, skpv.vec+1, e.vec+0, e.vec+1, noiseseed, 0, 1, 2, 3);
@@ -563,22 +565,23 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
   uint64_t nonce = 0;
   ALIGNED_UINT8(NOISE_NBLOCKS*AES256CTR_BLOCKBYTES+32) buf; /* +32 bytes as required by poly_cbd_eta1 */
   aes256ctr_ctx state;
-  aes256ctr_init(&state, coins, nonce++);
+  aes256ctr_init_u64(&state, coins, nonce++);
   for(i=0;i<KYBER_K;i++) {
     aes256ctr_squeezeblocks(buf.coeffs, NOISE_NBLOCKS, &state);
-    state.n = _mm_loadl_epi64((__m128i *)&nonce);
+    aes256ctr_init_iv_u64(&state, nonce);
     nonce += 1;
     poly_cbd_eta1(&sp.vec[i], buf.vec);
   }
   for(i=0;i<KYBER_K;i++) {
     aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
-    state.n = _mm_loadl_epi64((__m128i *)&nonce);
+    aes256ctr_init_iv_u64(&state, nonce);
     nonce += 1;
     poly_cbd_eta2(&ep.vec[i], buf.vec);
   }
   aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
-  state.n = _mm_loadl_epi64((__m128i *)&nonce);
   nonce += 1;
+  aes256_ctx_release(&state);
+
   poly_cbd_eta2(&epp, buf.vec);
 #else
 #if KYBER_K == 2

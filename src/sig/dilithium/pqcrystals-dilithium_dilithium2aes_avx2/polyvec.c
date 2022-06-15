@@ -35,6 +35,7 @@ void polyvec_matrix_expand(polyvecl mat[K], const uint8_t rho[SEEDBYTES]) {
       poly_nttunpack(&mat[i].vec[j]);
     }
   }
+  aes256_ctx_release(&state);
 }
 
 #elif K == 4 && L == 4

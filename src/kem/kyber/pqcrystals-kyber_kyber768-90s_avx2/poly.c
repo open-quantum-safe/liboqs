@@ -361,8 +361,7 @@ void poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const poly * restrict a)
   }
 }
 
-
-#if 0
+#ifndef KYBER_90S
 /*************************************************
 * Name:        poly_getnoise_eta1
 *
