@@ -7,13 +7,18 @@ index c725df3..489e667 100644
 -  - name: common_ref
 -    folder_name: ref
 -    sources: aes256ctr.c aes256ctr.h fips202.c fips202.h
-   - name: common_aes
-     folder_name: avx2
-     sources: aes256ctr.c aes256ctr.h
-@@ -14,23 +14,3 @@ commons:
-           - aes
-           - sse2
-           - ssse3
+-  - name: common_aes
+-    folder_name: avx2
+-    sources: aes256ctr.c aes256ctr.h
+-    supported_platforms:
+-      - architecture: x86_64
+-        operating_systems:
+-          - Darwin
+-          - Linux
+-        required_flags:
+-          - aes
+-          - sse2
+-          - ssse3
 -  - name: common_avx2
 -    folder_name: avx2
 -    sources: fips202.c fips202.h fips202x4.c fips202x4.h
@@ -54,8 +59,7 @@ index 5c53324..5cbc877 100644
      signature_dec: pqcrystals_kyber1024_90s_avx2_dec
 -    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h fips202.h fips202x4.h aes256ctr.h
 -    common_dep: common_avx2 common_aes
-+    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h aes256ctr.h
-+    common_dep: common_aes
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h
      supported_platforms:
        - architecture: x86_64
          operating_systems:
@@ -101,8 +105,7 @@ index 32d88c9..3e143e1 100644
      signature_dec: pqcrystals_kyber512_90s_avx2_dec
 -    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h fips202.h fips202x4.h aes256ctr.h
 -    common_dep: common_avx2 common_aes
-+    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h aes256ctr.h
-+    common_dep: common_aes
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h
      supported_platforms:
          - architecture: x86_64
            operating_systems:
@@ -148,8 +151,7 @@ index 18e8c17..b9b97c1 100644
      signature_dec: pqcrystals_kyber768_90s_avx2_dec
 -    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h fips202.h fips202x4.h aes256ctr.h
 -    common_dep: common_avx2 common_aes
-+    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h aes256ctr.h
-+    common_dep: common_aes
++    sources: ../LICENSE kem.c indcpa.c polyvec.c poly.c fq.S shuffle.S ntt.S invntt.S basemul.S consts.c rejsample.c cbd.c verify.c align.h kem.h params.h api.h indcpa.h polyvec.h poly.h reduce.h fq.inc shuffle.inc ntt.h consts.h rejsample.h cbd.h verify.h symmetric.h
      supported_platforms:
        - architecture: x86_64
          operating_systems:

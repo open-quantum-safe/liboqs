@@ -100,13 +100,11 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
   aes256ctr_init_u64(&aesctx, rhoprime, 0);
   for(i = 0; i < L; ++i) {
     nonce = i;
-    //aesctx.n = _mm_loadl_epi64((__m128i *)&nonce);
     aes256ctr_init_iv_u64(&aesctx, nonce);
     poly_uniform_eta_preinit(&s1.vec[i], &aesctx);
   }
   for(i = 0; i < K; ++i) {
     nonce = L + i;
-    //aesctx.n = _mm_loadl_epi64((__m128i *)&nonce);
     aes256ctr_init_iv_u64(&aesctx, nonce);
     poly_uniform_eta_preinit(&s2.vec[i], &aesctx);
   }
@@ -144,7 +142,6 @@ int crypto_sign_keypair(uint8_t *pk, uint8_t *sk) {
 #ifdef DILITHIUM_USE_AES
     for(unsigned int j = 0; j < L; j++) {
       nonce = (i << 8) + j;
-      //aesctx.n = _mm_loadl_epi64((__m128i *)&nonce);
       aes256ctr_init_iv_u64(&aesctx, nonce);
       poly_uniform_preinit(&row->vec[j], &aesctx);
       poly_nttunpack(&row->vec[j]);
@@ -237,7 +234,6 @@ rej:
   /* Sample intermediate vector y */
 #ifdef DILITHIUM_USE_AES
   for(i = 0; i < L; ++i) {
-    //aesctx.n = _mm_loadl_epi64((__m128i *)&nonce);
     aes256ctr_init_iv_u64(&aesctx, nonce);
     nonce++;
     poly_uniform_gamma1_preinit(&z.vec[i], &aesctx);
@@ -419,7 +415,6 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
     for(j = 0; j < L; j++) {
       nonce = (i << 8) + j;
       aes256ctr_init_iv_u64(&aesctx, nonce);
-      //aesctx.n = _mm_loadl_epi64((__m128i *)&nonce);
       poly_uniform_preinit(&row->vec[j], &aesctx);
       poly_nttunpack(&row->vec[j]);
     }

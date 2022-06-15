@@ -31,7 +31,6 @@ void polyvec_matrix_expand(polyvecl mat[K], const uint8_t rho[SEEDBYTES]) {
     for(j = 0; j < L; j++) {
       nonce = (i << 8) + j;
       aes256ctr_init_iv_u64(&state, nonce);
-      //state.n = _mm_loadl_epi64((__m128i *)&nonce);
       poly_uniform_preinit(&mat[i].vec[j], &state);
       poly_nttunpack(&mat[i].vec[j]);
     }
