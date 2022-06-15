@@ -574,12 +574,12 @@ static void aes_ecb(unsigned char *out, const unsigned char *in, size_t nblocks,
 	}
 }
 
-static void aes256_ctr_upd(unsigned char *out, size_t outlen, aes256ctx *ctx) {
+static inline void aes256_ctr_upd_blks(unsigned char *out, size_t outblks, aes256ctx *ctx) {
 	uint32_t ivw[16];
 	size_t i;
 	uint32_t cc;
 	uint8_t *iv = ctx->iv;
-	uint32_t blocks = ((uint32_t) outlen + 15) / 16;
+	uint32_t blocks = (uint32_t) outblks;
 	unsigned int nrounds = 14;
 
 	br_range_dec32le(ivw, 4, iv);
@@ -592,15 +592,15 @@ static void aes256_ctr_upd(unsigned char *out, size_t outlen, aes256ctx *ctx) {
 	ivw[11] = br_swap32(cc + 2);
 	ivw[15] = br_swap32(cc + 3);
 
-	while (outlen > 64) {
+	while (outblks >= 4) {
 		aes_ctr4x(out, ivw, ctx->sk_exp, nrounds);
 		out += 64;
-		outlen -= 64;
+		outblks -= 4;
 	}
-	if (outlen > 0) {
+	if (outblks > 0) {
 		unsigned char tmp[64];
 		aes_ctr4x(tmp, ivw, ctx->sk_exp, nrounds);
-		for (i = 0; i < outlen; i++) {
+		for (i = 0; i < outblks * 16; i++) {
 			out[i] = tmp[i];
 		}
 	}
@@ -628,7 +628,7 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 	ivw[11] = br_swap32(cc + 2);
 	ivw[15] = br_swap32(cc + 3);
 
-	while (outlen > 64) {
+	while (outlen >= 64) {
 		aes_ctr4x(out, ivw, rkeys, nrounds);
 		out += 64;
 		outlen -= 64;
@@ -744,7 +744,7 @@ void oqs_aes256_ctr_enc_sch_c(const uint8_t *iv, const size_t iv_len, const void
 
 void oqs_aes256_ctr_enc_sch_upd_blks_c(void *schedule, uint8_t *out, size_t out_blks) {
 	aes256ctx *ctx = (aes256ctx *) schedule;
-	aes256_ctr_upd(out, out_blks * 16, ctx);
+	aes256_ctr_upd_blks(out, out_blks, ctx);
 }
 
 void oqs_aes128_free_schedule_c(void *schedule) {
