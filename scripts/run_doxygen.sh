@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# SPDX-License-Identifier: MIT
+
 if [ "$#" -ne 2 ]; then
    echo "Wrong number of arguments: Expecting path to doxygen binary and doxygen file. Exiting." 
    exit 1

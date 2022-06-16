@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: MIT
+
 import sys
 from pathlib import Path
 
@@ -25,20 +27,22 @@ lines = infile.readlines()
 
 with open(sys.argv[2], "w") as outfile:
     # ll is last line: can only be written when anchor property is known
+    # and that propery can be set with subsequent line of "==="
     ll = None
     possibleanchor = None
     for line in lines:
         nl = line
-        if line.startswith("#"):
+        if line.startswith("#"): # anchor for sure
             # space must exist
             si = line.index(" ")
             doxyref=anchorstring(line[si+1:].strip())
             nl = line[0:si] + " " + line[si+1:].strip() + " {#"+doxyref+"}\n"
-        elif nl.startswith("==="):
-            # previous line is anchor
+        elif nl.startswith("==="): # previous line is anchor
             ll = possibleanchor
-        else:
+        else: # create anchor markup just in case...
             possibleanchor=line.strip()+" {#"+anchorstring(line.strip())+"}\n"
+        # write last line
         if ll is not None: outfile.write(ll)
         ll = nl
+    # write final line
     outfile.write(ll)
