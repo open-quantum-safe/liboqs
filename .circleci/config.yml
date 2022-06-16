@@ -41,7 +41,7 @@ jobs:
           command: python3 -m pytest --verbose tests/test_code_conventions.py
       - run:
           name: Check that doxygen can parse the documentation
-          command: mkdir -p build/docs && doxygen docs/.Doxyfile
+          command: mkdir -p build/docs && ./scripts/run_doxygen.sh doxygen docs/.Doxyfile
 
   buildcheck:
     description: Test that we can build a single KEM/Signature pair as part of a minimal build.
