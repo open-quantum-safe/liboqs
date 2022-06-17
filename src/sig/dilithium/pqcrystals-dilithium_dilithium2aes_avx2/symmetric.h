@@ -17,10 +17,10 @@ typedef aes256ctr_ctx stream256_state;
 
 #define stream128_init(STATE, SEED, NONCE) aes256ctr_init_u64(STATE, SEED, NONCE)
 #define stream128_squeezeblocks(OUT, OUTBLOCKS, STATE) aes256ctr_squeezeblocks(OUT, OUTBLOCKS, STATE)
-#define stream128_release(STATE)
+#define stream128_release(STATE) aes256_ctx_release(STATE)
 #define stream256_init(STATE, SEED, NONCE) aes256ctr_init_u64(STATE, SEED, NONCE)
 #define stream256_squeezeblocks(OUT, OUTBLOCKS, STATE) aes256ctr_squeezeblocks(OUT, OUTBLOCKS, STATE)
-#define stream256_release(STATE)
+#define stream256_release(STATE) aes256_ctx_release(STATE)
 
 #else
 

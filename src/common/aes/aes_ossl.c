@@ -26,21 +26,7 @@ static inline void br_enc64be(unsigned char *dst, uint64_t x) {
 	dst[1] = (unsigned char)(x >>  8);
 	dst[0] = (unsigned char)x;
 }
-#if 0
-static inline void br_enc32be(unsigned char *dst, uint32_t x) {
-	dst[0] = (unsigned char)(x >> 24);
-	dst[1] = (unsigned char)(x >> 16);
-	dst[2] = (unsigned char)(x >>  8);
-	dst[3] = (unsigned char)x;
-}
 
-static inline uint32_t br_dec32be(const unsigned char *src) {
-	return   ((uint32_t)src[0] << 24)
-	         | ((uint32_t)src[1] << 16)
-	         | ((uint32_t)src[2] <<  8)
-	         | ((uint32_t)src[3]      );
-}
-#endif
 void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	*schedule = malloc(sizeof(struct key_schedule));
 	OQS_EXIT_IF_NULLPTR(*schedule);
