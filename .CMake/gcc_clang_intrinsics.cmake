@@ -12,7 +12,9 @@ if(NOT RUN_RESULT EQUAL 0)
      message(FATAL_ERROR ".CMake/detect_gcc_clang_intrinsics.c returned exit code: " ${RUN_RESULT})
 endif()
 foreach(CPU_EXTENSION ${RUN_OUTPUT})
-    set(OQS_USE_${CPU_EXTENSION}_INSTRUCTIONS ON)
+     if (NOT DEFINED OQS_USE_${CPU_EXTENSION}_INSTRUCTIONS)
+          set(OQS_USE_${CPU_EXTENSION}_INSTRUCTIONS ON)
+     endif()
 endforeach()
 if(OQS_USE_AVX512BW_INSTRUCTIONS AND
    OQS_USE_AVX512DQ_INSTRUCTIONS AND
