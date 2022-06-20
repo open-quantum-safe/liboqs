@@ -6,7 +6,7 @@
 * Released under MIT license
 *
 * Abstract: configuration file and platform-dependent macros
-*********************************************************************************************/  
+*********************************************************************************************/
 
 #ifndef CONFIG_H
 #define CONFIG_H
@@ -31,7 +31,7 @@
 // Definition of compiler (removed in OQS)
 
 // Definition of the targeted architecture and basic data types
-    
+
 #define TARGET_AMD64        1
 #define TARGET_x86          2
 #define TARGET_S390X        3
@@ -42,49 +42,49 @@
 #define TARGET_PPC64 7
 
 #if defined(_AMD64_)
-    #define TARGET TARGET_AMD64
-    #define RADIX           64
-    #define LOG2RADIX       6  
-    typedef uint64_t        digit_t;        // Unsigned 64-bit digit
-    typedef uint32_t        hdigit_t;       // Unsigned 32-bit digit
+#define TARGET TARGET_AMD64
+#define RADIX           64
+#define LOG2RADIX       6
+typedef uint64_t        digit_t;        // Unsigned 64-bit digit
+typedef uint32_t        hdigit_t;       // Unsigned 32-bit digit
 #elif defined(_X86_)
-    #define TARGET TARGET_x86
-    #define RADIX           32
-    #define LOG2RADIX       5  
-    typedef uint32_t        digit_t;        // Unsigned 32-bit digit
-    typedef uint16_t        hdigit_t;       // Unsigned 16-bit digit  
+#define TARGET TARGET_x86
+#define RADIX           32
+#define LOG2RADIX       5
+typedef uint32_t        digit_t;        // Unsigned 32-bit digit
+typedef uint16_t        hdigit_t;       // Unsigned 16-bit digit
 #elif defined(_S390X_)
-    #define TARGET TARGET_S390X
-    #define RADIX           64
-    #define LOG2RADIX       6  
-    typedef uint64_t        digit_t;        // Unsigned 64-bit digit
-    typedef uint32_t        hdigit_t;       // Unsigned 32-bit digit
+#define TARGET TARGET_S390X
+#define RADIX           64
+#define LOG2RADIX       6
+typedef uint64_t        digit_t;        // Unsigned 64-bit digit
+typedef uint32_t        hdigit_t;       // Unsigned 32-bit digit
 #elif defined(_ARM_)
-    #define TARGET TARGET_ARM
-    #define RADIX           32
-    #define LOG2RADIX       5  
-    typedef uint32_t        digit_t;        // Unsigned 32-bit digit
-    typedef uint16_t        hdigit_t;       // Unsigned 16-bit digit  
+#define TARGET TARGET_ARM
+#define RADIX           32
+#define LOG2RADIX       5
+typedef uint32_t        digit_t;        // Unsigned 32-bit digit
+typedef uint16_t        hdigit_t;       // Unsigned 16-bit digit
 #elif defined(_ARM64_)
-    #define TARGET TARGET_ARM64
-    #define RADIX           64
-    #define LOG2RADIX       6  
-    typedef uint64_t        digit_t;        // Unsigned 64-bit digit
-    typedef uint32_t        hdigit_t;       // Unsigned 32-bit digit
+#define TARGET TARGET_ARM64
+#define RADIX           64
+#define LOG2RADIX       6
+typedef uint64_t        digit_t;        // Unsigned 64-bit digit
+typedef uint32_t        hdigit_t;       // Unsigned 32-bit digit
 #elif defined(_PPC64_)
-    #define TARGET TARGET_PPC64
-    #define RADIX           64
-    #define LOG2RADIX       6
-    typedef uint64_t digit_t;  // Unsigned 64-bit digit
-    typedef uint32_t hdigit_t; // Unsigned 32-bit digit
+#define TARGET TARGET_PPC64
+#define RADIX           64
+#define LOG2RADIX       6
+typedef uint64_t digit_t;  // Unsigned 64-bit digit
+typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 #elif defined(_PPC64LE_)
-    #define TARGET TARGET_PPC64LE
-    #define RADIX           64
-    #define LOG2RADIX       6
-    typedef uint64_t digit_t;  // Unsigned 64-bit digit
-    typedef uint32_t hdigit_t; // Unsigned 32-bit digit
+#define TARGET TARGET_PPC64LE
+#define RADIX           64
+#define LOG2RADIX       6
+typedef uint64_t digit_t;  // Unsigned 64-bit digit
+typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 #else
-    #error -- "Unsupported ARCHITECTURE"
+#error -- "Unsupported ARCHITECTURE"
 #endif
 
 #define RADIX64             64
@@ -96,10 +96,10 @@
 
 // Selection of generic, portable implementation
 
-#if defined(_GENERIC_)                      
-    #define GENERIC_IMPLEMENTATION
-#elif defined(_FAST_)                      
-    #define FAST_IMPLEMENTATION
+#if defined(_GENERIC_)
+#define GENERIC_IMPLEMENTATION
+#elif defined(_FAST_)
+#define FAST_IMPLEMENTATION
 #endif
 
 
@@ -114,7 +114,7 @@ typedef unsigned uint128_t __attribute__((mode(TI)));
 typedef uint64_t uint128_t[2];
 #endif
 
-    
+
 
 // Macro definitions
 
@@ -129,33 +129,33 @@ typedef uint64_t uint128_t[2];
 // Macros for endianness
 // 32-bit byte swap
 #if (COMPILER == COMPILER_GCC || COMPILER == COMPILER_CLANG)
-    #define BSWAP32(i) __builtin_bswap32((i))
+#define BSWAP32(i) __builtin_bswap32((i))
 #else
-    #define BSWAP32(i) ((((i) >> 24) & 0xff) | (((i) >> 8) & 0xff00) | (((i) & 0xff00) << 8) | ((i) << 24))
+#define BSWAP32(i) ((((i) >> 24) & 0xff) | (((i) >> 8) & 0xff00) | (((i) & 0xff00) << 8) | ((i) << 24))
 #endif
 
 // 64-bit byte swap
 #if (COMPILER == COMPILER_GCC || COMPILER == COMPILER_CLANG)
-    #define BSWAP64(i) __builtin_bswap64((i))
+#define BSWAP64(i) __builtin_bswap64((i))
 #else
-    #define BSWAP64(i) ((BSWAP32((i) >> 32) & 0xffffffff) | (BSWAP32(i) << 32))
+#define BSWAP64(i) ((BSWAP32((i) >> 32) & 0xffffffff) | (BSWAP32(i) << 32))
 #endif
 
 #if RADIX == 32
-    #define BSWAP_DIGIT(i) BSWAP32((i))
+#define BSWAP_DIGIT(i) BSWAP32((i))
 #elif RADIX == 64
-    #define BSWAP_DIGIT(i) BSWAP64((i))
+#define BSWAP_DIGIT(i) BSWAP64((i))
 #endif
 
 // Host to little endian, little endian to host
 #if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
-    #define _BIG_ENDIAN_
-    #define HTOLE_64(i) BSWAP64((i))
-    #define LETOH_64(i) BSWAP64((i))
+#define _BIG_ENDIAN_
+#define HTOLE_64(i) BSWAP64((i))
+#define LETOH_64(i) BSWAP64((i))
 #else
-    #define _LITTLE_ENDIAN_
-    #define HTOLE_64(i) (i)
-    #define LETOH_64(i) (i)
+#define _LITTLE_ENDIAN_
+#define HTOLE_64(i) (i)
+#define LETOH_64(i) (i)
 #endif
 
 
@@ -163,19 +163,19 @@ typedef uint64_t uint128_t[2];
 
 // The following functions return 1 (TRUE) if condition is true, 0 (FALSE) otherwise
 
-static inline unsigned int is_digit_nonzero_ct(digit_t x)
-{ // Is x != 0?
-    return (unsigned int)((x | (0-x)) >> (RADIX-1));
+static inline unsigned int is_digit_nonzero_ct(digit_t x) {
+	// Is x != 0?
+	return (unsigned int)((x | (0 - x)) >> (RADIX - 1));
 }
 
-static inline unsigned int is_digit_zero_ct(digit_t x)
-{ // Is x = 0?
-    return (unsigned int)(1 ^ is_digit_nonzero_ct(x));
+static inline unsigned int is_digit_zero_ct(digit_t x) {
+	// Is x = 0?
+	return (unsigned int)(1 ^ is_digit_nonzero_ct(x));
 }
 
-static inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y)
-{ // Is x < y?
-    return (unsigned int)((x ^ ((x ^ y) | ((x - y) ^ y))) >> (RADIX-1)); 
+static inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y) {
+	// Is x < y?
+	return (unsigned int)((x ^ ((x ^ y) | ((x - y) ^ y))) >> (RADIX - 1));
 }
 
 
@@ -186,7 +186,7 @@ static inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y)
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo)                                                     \
     digit_x_digit((multiplier), (multiplicand), &(lo));
-    
+
 // Digit addition with carry
 #define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                         \
     { digit_t tempReg = (addend1) + (digit_t)(carryIn);                                           \
@@ -199,11 +199,11 @@ static inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y)
     unsigned int borrowReg = (is_digit_lessthan_ct((minuend), (subtrahend)) | ((borrowIn) & is_digit_zero_ct(tempReg)));  \
     (differenceOut) = tempReg - (digit_t)(borrowIn);                                              \
     (borrowOut) = borrowReg; }
-    
+
 // Shift right with flexible datatype
 #define SHIFTR(highIn, lowIn, shift, shiftOut, DigitSize)                                         \
     (shiftOut) = ((lowIn) >> (shift)) ^ ((highIn) << (DigitSize - (shift)));
-    
+
 // Shift left with flexible datatype
 #define SHIFTL(highIn, lowIn, shift, shiftOut, DigitSize)                                         \
     (shiftOut) = ((highIn) << (shift)) ^ ((lowIn) >> (DigitSize - (shift)));
@@ -212,7 +212,7 @@ static inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y)
 
 // Digit multiplication
 #define MUL(multiplier, multiplicand, hi, lo)                                                     \
-    (lo) = _umul128((multiplier), (multiplicand), (hi));                
+    (lo) = _umul128((multiplier), (multiplicand), (hi));
 
 // Digit addition with carry
 #define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                         \
@@ -237,7 +237,7 @@ static inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y)
 // 128-bit addition with output carry
 #define ADC128(addend1, addend2, carry, addition)                                                 \
     (carry) = _addcarry_u64(0, (addend1)[0], (addend2)[0], &(addition)[0]);                       \
-    (carry) = _addcarry_u64((carry), (addend1)[1], (addend2)[1], &(addition)[1]); 
+    (carry) = _addcarry_u64((carry), (addend1)[1], (addend2)[1], &(addition)[1]);
 
 #define MULADD128(multiplier, multiplicand, addend, carry, result);                               \
     { uint128_t product;                                                                          \
@@ -256,8 +256,8 @@ static inline unsigned int is_digit_lessthan_ct(digit_t x, digit_t y)
 #define ADDC(carryIn, addend1, addend2, carryOut, sumOut)                                         \
     { uint128_t tempReg = (uint128_t)(addend1) + (uint128_t)(addend2) + (uint128_t)(carryIn);     \
     (carryOut) = (digit_t)(tempReg >> RADIX);                                                     \
-    (sumOut) = (digit_t)tempReg; }  
-    
+    (sumOut) = (digit_t)tempReg; }
+
 // Digit subtraction with borrow
 #define SUBC(borrowIn, minuend, subtrahend, borrowOut, differenceOut)                             \
     { uint128_t tempReg = (uint128_t)(minuend) - (uint128_t)(subtrahend) - (uint128_t)(borrowIn); \
