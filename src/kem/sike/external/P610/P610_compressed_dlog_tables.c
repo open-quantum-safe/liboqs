@@ -54,4 +54,3 @@ static const uint64_t ph3_T[DLEN_3 * (ELL3_W >> 1) * 2 * NWORDS64_FIELD] = {
 #endif
 #endif
 #endif
-

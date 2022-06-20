@@ -456,5 +456,3 @@ static void solve_dlog(const f2elm_t r, int *D, digit_t *d, int ell) {
 		from_base(D, d, DLEN_3, ELL3_W);
 	}
 }
-
-

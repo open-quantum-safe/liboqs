@@ -1096,3 +1096,4 @@ fmt(fpmul610_asm):
     pop    r13
     pop    r12
     ret
+    

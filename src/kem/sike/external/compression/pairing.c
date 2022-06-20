@@ -287,4 +287,3 @@ static void Tate2_pairings(const point_t P, const point_t Q, point_full_proj_t *
 		final_exponentiation_2_torsion(f[j], finv[j], f[j]);
 	}
 }
-
