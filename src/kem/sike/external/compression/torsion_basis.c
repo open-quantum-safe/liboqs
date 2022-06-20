@@ -1,5 +1,9 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: Torsion basis generation for compression
 *********************************************************************************************/
@@ -449,7 +453,7 @@ static void BuildOrdinary2nBasis_dual(const f2elm_t A, const f2elm_t Ds[][2], po
     unsigned int i;
     felm_t t0;
     f2elm_t A6 = {0};
-    point_proj_t xs[3] = {0};
+    point_proj_t xs[3] = {0};    
 
     // Generate x-only entangled basis 
     BuildEntangledXonly(A, xs, qnr, ind);

@@ -1,5 +1,9 @@
 /*************************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: ephemeral supersingular isogeny Diffie-Hellman key exchange (SIDH) using compression
 **************************************************************************************************/ 
@@ -30,23 +34,27 @@ static void FormatPrivKey_B(unsigned char *skB)
 }
 
 
-void random_mod_order_A(unsigned char* random_digits)
+int random_mod_order_A(unsigned char* random_digits)
 {  // Generation of Alice's secret key  
-   // Outputs random value in [0, 2^eA - 1]
+   // Outputs random value in [0, 2^eA - 1]. Returns 1 on error
 
     memset(random_digits, 0, SECRETKEY_A_BYTES);
     OQS_randombytes(random_digits, SECRETKEY_A_BYTES);
     random_digits[0] &= 0xFE;                            // Make private scalar even    
-    random_digits[SECRETKEY_A_BYTES-1] &= MASK_ALICE;    // Masking last byte     
+    random_digits[SECRETKEY_A_BYTES-1] &= MASK_ALICE;    // Masking last byte  
+
+    return 0;
 }
 
 
-void random_mod_order_B(unsigned char* random_digits)
+int random_mod_order_B(unsigned char* random_digits)
 {  // Generation of Bob's secret key  
-   // Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]
-    
+   // Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]. Returns 1 on error
+
     OQS_randombytes(random_digits, SECRETKEY_B_BYTES);
     FormatPrivKey_B(random_digits);
+
+    return 0;
 }
 
 
@@ -412,11 +420,11 @@ static void Dlogs2_dual(const f2elm_t *f, int *D, digit_t *d0, digit_t *c0, digi
 }
 
 
-static void PKBDecompression_extended(const unsigned char* SecretKeyA, const unsigned char* CompressedPKB, point_proj_t R, f2elm_t A, unsigned char* tphiBKA_t)
+static int PKBDecompression_extended(const unsigned char* SecretKeyA, const unsigned char* CompressedPKB, point_proj_t R, f2elm_t A, unsigned char* tphiBKA_t)
 { // Bob's PK decompression -- SIKE protocol
     uint64_t mask = (digit_t)(-1);
     unsigned char qnr, ind;
-    f2elm_t A24,  Adiv2 = {0};
+    f2elm_t A24, Atmp = {0};
     digit_t tmp1[2*NWORDS_ORDER] = {0}, tmp2[2*NWORDS_ORDER] = {0}, inv[NWORDS_ORDER] = {0}, scal[2*NWORDS_ORDER] = {0};
     digit_t SKin[NWORDS_ORDER] = {0}, a0[NWORDS_ORDER] = {0}, a1[NWORDS_ORDER] = {0}, b0[NWORDS_ORDER] = {0}, b1[NWORDS_ORDER] = {0};
     point_proj_t Rs[3] = {0};
@@ -424,6 +432,18 @@ static void PKBDecompression_extended(const unsigned char* SecretKeyA, const uns
     mask >>= (MAXBITS_ORDER - OALICE_BITS);
 
     fp2_decode(&CompressedPKB[4*ORDER_A_ENCODED_BYTES], A);
+
+    // Check that A^2 - 4 is a square in GF(p^2)
+    fp2sqr_mont(A, A24);
+    fpcopy((digit_t*)Montgomery_one, Atmp[0]);
+    fp2add(Atmp, Atmp, Atmp);
+    fp2add(Atmp, Atmp, Atmp);
+    fp2sub(A24, Atmp, A24);
+    fp2correction(A24);
+
+    if (!is_sqr_fp2(A24, Atmp[0]))
+        return 1;
+
     qnr = CompressedPKB[4*ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES] & 0x01;
     ind = CompressedPKB[4*ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 1];
 
@@ -468,12 +488,13 @@ static void PKBDecompression_extended(const unsigned char* SecretKeyA, const uns
         Ladder3pt_dual(Rs, scal, ALICE, R, A24);            
     }        
     
-    fp2div2(A,Adiv2);
-    xTPLe_fast(R, R, Adiv2, OBOB_EXPON);    
+    fp2div2(A, Atmp);  // A/2
+    xTPLe_fast(R, R, Atmp, OBOB_EXPON);    
     
     fp2_encode(R->X, tphiBKA_t);
     fp2_encode(R->Z, &tphiBKA_t[FP2_ENCODED_BYTES]);
     encode_to_bytes(inv, &tphiBKA_t[2*FP2_ENCODED_BYTES], ORDER_A_ENCODED_BYTES);
+    return 0;
 }
 
 
@@ -674,10 +695,12 @@ static int EphemeralSecretAgreement_A_extended(const unsigned char* PrivateKeyA,
     f2elm_t jinv, coeff[5], A;
     f2elm_t param_A = {0};
 
-    if (sike == 1)
-        PKBDecompression_extended(PrivateKeyA, PKB, R, param_A, SharedSecretA+FP2_ENCODED_BYTES);
-    else
+    if (sike == 1) {
+        if (!PKBDecompression_extended(PrivateKeyA, PKB, R, param_A, SharedSecretA + FP2_ENCODED_BYTES) == 0)
+            return 1;
+    } else {
         PKBDecompression(PrivateKeyA, PKB, R, param_A);
+    }
     
     fp2copy(param_A, A);    
     fpadd((digit_t*)&Montgomery_one, (digit_t*)&Montgomery_one, C24[0]);

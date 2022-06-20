@@ -1,5 +1,9 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: supersingular isogeny key encapsulation (SIKE) protocol
 *********************************************************************************************/ 
@@ -12,6 +16,7 @@
 #include <valgrind/memcheck.h>
 #endif
 
+
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
 { // SIKE's key generation
   // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_B_BYTES + CRYPTO_PUBLICKEYBYTES bytes)
@@ -19,7 +24,8 @@ int crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
 
     // Generate lower portion of secret key sk <- s||SK
     OQS_randombytes(sk, MSG_BYTES);
-    random_mod_order_B(sk + MSG_BYTES);
+    if (random_mod_order_B(sk + MSG_BYTES) != 0)
+        return 1;
 #ifdef DO_VALGRIND_CHECK
     VALGRIND_MAKE_MEM_UNDEFINED(sk, MSG_BYTES + SECRETKEY_B_BYTES);
 #endif
@@ -85,12 +91,19 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
     unsigned char h_[MSG_BYTES];
     unsigned char c0_[CRYPTO_PUBLICKEYBYTES];
     unsigned char temp[CRYPTO_CIPHERTEXTBYTES+MSG_BYTES];
+    int8_t selector = -1;
 #ifdef DO_VALGRIND_CHECK
-    VALGRIND_MAKE_MEM_UNDEFINED(sk, CRYPTO_SECRETKEYBYTES);
+    VALGRIND_MAKE_MEM_UNDEFINED(sk, MSG_BYTES + SECRETKEY_B_BYTES);
+    VALGRIND_MAKE_MEM_DEFINED(ct, CRYPTO_CIPHERTEXTBYTES);
 #endif
 
     // Decrypt
-    EphemeralSecretAgreement_B(sk + MSG_BYTES, ct, jinvariant_);
+    if (!EphemeralSecretAgreement_B_extended(sk + MSG_BYTES, ct, jinvariant_, 1) == 0) {
+        goto Hashing;
+    }
+#ifdef DO_VALGRIND_CHECK
+    VALGRIND_MAKE_MEM_UNDEFINED(ct, CRYPTO_CIPHERTEXTBYTES);
+#endif
     OQS_SHA3_shake256(h_, MSG_BYTES, jinvariant_, FP2_ENCODED_BYTES);
     for (int i = 0; i < MSG_BYTES; i++) {
         temp[i] = ct[i + CRYPTO_PUBLICKEYBYTES] ^ h_[i];
@@ -104,13 +117,15 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
     // Generate shared secret ss <- H(m||ct), or output ss <- H(s||ct) in case of ct verification failure
     EphemeralKeyGeneration_A(ephemeralsk_, c0_);
     // If selector = 0 then do ss = H(m||ct), else if selector = -1 load s to do ss = H(s||ct)
-    int8_t selector = ct_compare(c0_, ct, CRYPTO_PUBLICKEYBYTES);
+    selector = ct_compare(c0_, ct, CRYPTO_PUBLICKEYBYTES);
+Hashing:
     ct_cmov(temp, sk, MSG_BYTES, selector);
     memcpy(&temp[MSG_BYTES], ct, CRYPTO_CIPHERTEXTBYTES);
     OQS_SHA3_shake256(ss, CRYPTO_BYTES, temp, CRYPTO_CIPHERTEXTBYTES+MSG_BYTES);
-
+    
 #ifdef DO_VALGRIND_CHECK
-    VALGRIND_MAKE_MEM_DEFINED(sk, CRYPTO_SECRETKEYBYTES);
+    VALGRIND_MAKE_MEM_DEFINED(sk, MSG_BYTES + SECRETKEY_B_BYTES);
+    VALGRIND_MAKE_MEM_DEFINED(ct, CRYPTO_CIPHERTEXTBYTES);
 #endif
     return 0;
 }

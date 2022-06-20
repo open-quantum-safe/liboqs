@@ -6,6 +6,7 @@
 #define p434 oqs_kem_sike_compressed_p434
 #define p434x2 oqs_kem_sike_compressed_p434x2
 #define p434x4 oqs_kem_sike_compressed_p434x4
+#define p434x8 oqs_kem_sike_compressed_p434x8
 #define p434p1 oqs_kem_sike_compressed_p434p1
 #define fpadd434 oqs_kem_sike_compressed_fpadd434
 #define fpsub434 oqs_kem_sike_compressed_fpsub434
@@ -20,6 +21,7 @@
 #define p503p1 oqs_kem_sike_compressed_p503p1
 #define p503x2 oqs_kem_sike_compressed_p503x2
 #define p503x4 oqs_kem_sike_compressed_p503x4
+#define p503x8 oqs_kem_sike_compressed_p503x8
 #define p503p1x64 oqs_kem_sike_compressed_p503p1x64
 #define fpadd503 oqs_kem_sike_compressed_fpadd503
 #define fpsub503 oqs_kem_sike_compressed_fpsub503
@@ -34,6 +36,7 @@
 #define p610p1 oqs_kem_sike_compressed_p610p1
 #define p610x2 oqs_kem_sike_compressed_p610x2
 #define p610x4 oqs_kem_sike_compressed_p610x4
+#define p610x8 oqs_kem_sike_compressed_p610x8
 #define fpadd610 oqs_kem_sike_compressed_fpadd610
 #define fpsub610 oqs_kem_sike_compressed_fpsub610
 #define fpneg610 oqs_kem_sike_compressed_fpneg610

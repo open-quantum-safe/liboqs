@@ -1,8 +1,12 @@
 //*******************************************************************************************
 // SIDH: an efficient supersingular isogeny cryptography library
+// Copyright (c) Microsoft Corporation
 //
-// Abstract: field arithmetic in x64 assembly for P610 on Linux 
-//*******************************************************************************************  
+// Website: https://github.com/microsoft/PQCrypto-SIDH
+// Released under MIT license 
+//
+// Abstract: field arithmetic in x64 assembly for P610 on Linux
+//******************************************************************************************* 
 
 .intel_syntax noprefix 
 
@@ -20,6 +24,46 @@
 
 
 .text
+//***********************************************************************
+//  610-bit multiprecision addition
+//  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
+//*********************************************************************** 
+.global fmt(mp_add610_asm)
+fmt(mp_add610_asm):  
+  mov    r8, [reg_p1]
+  mov    r9, [reg_p1+8]
+  mov    r10, [reg_p1+16]
+  mov    r11, [reg_p1+24]
+  mov    rax, [reg_p1+32]
+  add    r8, [reg_p2] 
+  adc    r9, [reg_p2+8] 
+  adc    r10, [reg_p2+16] 
+  adc    r11, [reg_p2+24] 
+  adc    rax, [reg_p2+32] 
+  mov    [reg_p3], r8
+  mov    [reg_p3+8], r9
+  mov    [reg_p3+16], r10
+  mov    [reg_p3+24], r11
+  mov    [reg_p3+32], rax
+
+  mov    r8, [reg_p1+40]
+  mov    r9, [reg_p1+48] 
+  mov    r10, [reg_p1+56]
+  mov    r11, [reg_p1+64] 
+  mov    rax, [reg_p1+72] 
+  adc    r8, [reg_p2+40] 
+  adc    r9, [reg_p2+48]
+  adc    r10, [reg_p2+56] 
+  adc    r11, [reg_p2+64]
+  adc    rax, [reg_p2+72]
+  mov    [reg_p3+40], r8
+  mov    [reg_p3+48], r9
+  mov    [reg_p3+56], r10
+  mov    [reg_p3+64], r11
+  mov    [reg_p3+72], rax
+  ret
+
+
 //***********************************************************************
 //  Field addition
 //  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
@@ -288,1023 +332,767 @@ fmt(mp_sub610_p2_asm):
   ret
 
 
-//***********************************************************************
-//  Multiprecision subtraction with correction with 4*p610
-//  Operation: c [reg_p3] = a [reg_p1] - b [reg_p2] + 4*p610
-//*********************************************************************** 
-.global fmt(mp_sub610_p4_asm)
-fmt(mp_sub610_p4_asm):
-
-  SUB610_PX  fmt(p610x4)
-  ret
-
-
 #ifdef _MULX_
-
-/////////////////////////////////////////////////////////////////////////// MACRO
-// Schoolbook integer multiplication
-// Inputs:  memory pointers M0 and M1
-// Outputs: memory pointer C
-// Temps:   regs T0:T7
-///////////////////////////////////////////////////////////////////////////
 #ifdef _ADX_
 
-.macro MUL320_SCHOOL M0, M1, C, T0, T1, T2, T3, T4, T5, T6, T7 
-    mov    rdx, \M0
-    mulx   \T0, \T1, \M1    
-    mulx   \T2, \T3, 8\M1
-    mov    \C, \T1             // C0_final 
-    xor    rax, rax
-    mulx   \T4, \T5, 16\M1 
-    adox   \T0, \T3               
-    adox   \T2, \T5     
-    mulx   \T1, \T3, 24\M1
-    adox   \T4, \T3         
-    mulx   \T5, \T6, 32\M1 
-    adox   \T1, \T6     
-    adox   \T5, rax        
-    
-    mov    rdx, 8\M0 
-    mulx   \T6, \T7, \M1 
-    xor    rax, rax
-    adcx   \T0, \T7 
-    mov    8\C, \T0            // C1_final 
-    adcx   \T2, \T6     
-    mulx   \T6, \T7, 8\M1
-    adox   \T2, \T7 
-    adcx   \T4, \T6        
-    mulx   \T0, \T6, 16\M1 
-    adox   \T4, \T6  
-    adcx   \T0, \T1     
-    mulx   \T1, \T7, 24\M1   
-    adcx   \T1, \T5 
-    adox   \T0, \T7   
-    mulx   \T5, \T6, 32\M1 
-    adcx   \T5, rax         
-    adox   \T1, \T6  
-    adox   \T5, rax         
-    
-    mov    rdx, 16\M0 
-    mulx   \T6, \T7, \M1
-    xor    rax, rax 
-    adcx   \T2, \T7 
-    mov    16\C, \T2           // C2_final 
-    adcx   \T4, \T6     
-    mulx   \T6, \T7, 8\M1
-    adox   \T4, \T7 
-    adcx   \T0, \T6        
-    mulx   \T2, \T6, 16\M1
-    adox   \T0, \T6 
-    adcx   \T1, \T2     
-    mulx   \T2, \T7, 24\M1   
-    adcx   \T5, \T2          
-    adox   \T1, \T7   
-    mulx   \T2, \T6, 32\M1   
-    adcx   \T2, rax 
-    adox   \T5, \T6 
-    adox   \T2, rax           
-    
-    mov    rdx, 24\M0 
-    mulx   \T6, \T7, \M1
-    xor    rax, rax 
-    adcx   \T4, \T7 
-    mov    24\C, \T4           // C3_final 
-    adcx   \T0, \T6     
-    mulx   \T6, \T7, 8\M1
-    adox   \T0, \T7
-    adcx   \T1, \T6        
-    mulx   \T4, \T6, 16\M1
-    adox   \T1, \T6  
-    adcx   \T5, \T4     
-    mulx   \T4, \T7, 24\M1   
-    adcx   \T2, \T4        
-    adox   \T5, \T7   
-    mulx   \T4, \T6, 32\M1   
-    adcx   \T4, rax 
-    adox   \T2, \T6  
-    adox   \T4, rax         
-    
-    mov    rdx, 32\M0 
-    mulx   \T6, \T7, \M1 
-    xor    rax, rax
-    adcx   \T0, \T7 
-    mov    32\C, \T0           // C4_final 
-    adcx   \T1, \T6     
-    mulx   \T6, \T7, 8\M1
-    adox   \T1, \T7 
-    adcx   \T5, \T6        
-    mulx   \T0, \T6, 16\M1 
-    adox   \T5, \T6 
-    adcx   \T2, \T0     
-    mulx   \T0, \T7, 24\M1   
-    adcx   \T4, \T0 
-    adox   \T2, \T7  
-    mulx   \T0, \T6, 32\M1   
-    adcx   \T0, rax           
-    adox   \T4, \T6 
-    adox   \T0, rax 
-
-    mov    40\C, \T1 
-    mov    48\C, \T5 
-    mov    56\C, \T2 
-    mov    64\C, \T4
-    mov    72\C, \T0
+///////////////////////////////////////////////////////////////// MACRO
+// z = a x bi + z
+// Inputs: base memory pointer M1 (a),
+//         bi pre-stored in rdx,
+//         accumulator z in [M0:M2, Z3:Z10]
+// Output: [M0:M2, Z3:Z10]
+// Temps:  regs T0:T1
+/////////////////////////////////////////////////////////////////
+.macro MULADD64x640 M1, M, Z3, Z4, Z5, Z6, Z7, Z8, Z9, Z10, T0, T1, T2, C
+    mulx   \T0, \T1, \M1     // A0*B0
+	xor    \C, \C
+    adox   \T1, \M
+    adox   \T0, 8\M  
+	mov    \M, \T1
+    mulx   \T1, \T2, 8\M1    // A0*B1
+    adcx   \T0, \T2
+    adox   \T1, 16\M  
+	mov    8\M, \T0   
+    mulx   \T0, \T2, 16\M1   // A0*B2
+    adcx   \T1, \T2
+    adox   \Z3, \T0 
+	mov    16\M, \T1  
+    mulx   \T0, \T1, 24\M1   // A0*B3          
+    adcx   \Z3, \T1
+    adox   \Z4, \T0
+    mulx   \T0, \T1, 32\M1   // A0*B4          
+    adcx   \Z4, \T1
+    adox   \Z5, \T0
+    mulx   \T0, \T1, 40\M1   // A0*B5          
+    adcx   \Z5, \T1
+    adox   \Z6, \T0
+    mulx   \T0, \T1, 48\M1   // A0*B6               
+    adcx   \Z6, \T1
+    adox   \Z7, \T0
+    mulx   \T0, \T1, 56\M1   // A0*B7         
+    adcx   \Z7, \T1
+    adox   \Z8, \T0
+    mulx   \T0, \T1, 64\M1   // A0*B8         
+    adcx   \Z8, \T1
+    adox   \Z9, \T0
+    mulx   \T0, \T1, 72\M1   // A0*B9         
+    adcx   \Z9, \T1
+    adox   \Z10, \T0
+    adc    \Z10, 0 
 .endm
+
+
+.macro MULADD64x640b M1, M, MM, Z3, Z4, Z5, Z6, Z7, Z8, Z9, Z10, T0, T1, T2, C
+    mulx   \T0, \T1, \M1     // A0*B0
+	xor    \C, \C
+    adox   \T1, \M
+    adox   \T0, 8\M  
+	mov    24\M, \T1
+    mulx   \T1, \T2, 8\M1    // A0*B1
+    adcx   \T0, \T2
+    adox   \T1, 16\M  
+	mov    \MM, \T0   
+    mulx   \T0, \T2, 16\M1   // A0*B2
+    adcx   \T1, \T2
+    adox   \Z3, \T0 
+	mov    8\MM, \T1  
+    mulx   \T0, \T1, 24\M1   // A0*B3          
+    adcx   \Z3, \T1
+    adox   \Z4, \T0
+    mulx   \T0, \T1, 32\M1   // A0*B4    
+	mov    16\MM, \Z3        
+    adcx   \Z4, \T1
+    adox   \Z5, \T0
+    mulx   \T0, \T1, 40\M1   // A0*B5          
+    adcx   \Z5, \T1
+    adox   \Z6, \T0
+    mulx   \T0, \T1, 48\M1   // A0*B6               
+    adcx   \Z6, \T1
+    adox   \Z7, \T0
+    mulx   \T0, \T1, 56\M1   // A0*B7         
+    adcx   \Z7, \T1
+    adox   \Z8, \T0
+    mulx   \T0, \T1, 64\M1   // A0*B8         
+    adcx   \Z8, \T1
+    adox   \Z9, \T0
+    mulx   \T0, \T1, 72\M1   // A0*B9         
+    adcx   \Z9, \T1
+    adox   \Z10, \T0
+    adc    \Z10, 0 
+.endm
+
+
+.macro MULADD64x384 M1, Z0, Z1, Z2, Z3, Z4, Z5, Z6, T0, T1
+    mulx   \T0, \T1, \M1     // A0*B0
+	xor    rax, rax
+    adox   \Z0, \T1
+    adox   \Z1, \T0  
+    mulx   \T0, \T1, 8\M1    // A0*B1
+    adcx   \Z1, \T1
+    adox   \Z2, \T0    
+    mulx   \T0, \T1, 16\M1   // A0*B2
+    adcx   \Z2, \T1
+    adox   \Z3, \T0
+    mulx   \T0, \T1, 24\M1   // A0*B3          
+    adcx   \Z3, \T1
+    adox   \Z4, \T0
+    mulx   \T0, \T1, 32\M1   // A0*B4 
+    adcx   \Z4, \T1
+    adox   \Z5, \T0
+    mulx   \T0, \T1, 40\M1   // A0*B5 
+    adcx   \Z5, \T1
+    adox   \Z6, \T0
+    adc    \Z6, 0    
+.endm
+
+
+///////////////////////////////////////////////////////////////// MACRO
+// z = a x b + c x d (mod p)
+// Inputs: base memory pointers M0 (a,c), M1 (b,d)
+//         bi pre-stored in rdx,
+//         accumulator z in [Z0:Z7], pre-stores a0 x b
+// Output: [Z0:Z7]
+// Temps:  MM, regs T0:T2
+/////////////////////////////////////////////////////////////////
+.macro FPDBLMUL640x640 M00, M01, M10, M11, MM, Z0, Z1, Z2, Z3, Z4, Z5, Z6, Z7, T0, T1, T2
+    mov    rdx, \M11    
+    MULADD64x640b \M01, \MM, \MM, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \T0, \T1, \T2, \T2        
+    // [MM0:MM16, Z1:Z7] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                  // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \T0, \T1
+
+    // [MM0:MM16, Z1:Z5, Z0] <- z = a0 x b01 - a1 x b11 + z 
+    mov    rdx, 8\M10
+    MULADD64x640 \M00, \MM, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \T0, \T1, \T2, \Z0
+    mov    rdx, 8\M11    
+    MULADD64x640b \M01, \MM, \MM, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \T0, \T1, \T2, \T2
+    // [MM0:MM16, Z2:Z7, Z0] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \T0, \T1
+
+    // [MM0:MM16, Z2:Z7, Z0:Z1] <- z = a0 x b02 + a1 x b12 + z 
+    mov    rdx, 16\M10
+    MULADD64x640 \M00, \MM, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \T0, \T1, \T2, \Z1
+    mov    rdx, 16\M11    
+    MULADD64x640b \M01, \MM, \MM, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \T0, \T1, \T2, \T2
+    // [MM0:MM16, Z3:Z7, Z0:Z1] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \T0, \T1
+
+    // [MM0:MM16, Z3:Z7, Z0:Z2] <- z = a0 x b03 + a1 x b13 + z 
+    mov    rdx, 24\M10
+    MULADD64x640 \M00, \MM, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \T0, \T1, \T2, \Z2
+    mov    rdx, 24\M11    
+    MULADD64x640b \M01, \MM, \MM, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \T0, \T1, \T2, \T2
+    // [MM0:MM16, Z4:Z7, Z0:Z2] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \T0, \T1
+
+    // [MM0:MM16, Z4:Z7, Z0:Z3] <- z = a0 x b04 + a1 x b14 + z 
+    mov    rdx, 32\M10
+    MULADD64x640 \M00, \MM, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \T0, \T1, \T2, \Z3
+    mov    rdx, 32\M11    
+    MULADD64x640b \M01, \MM, \MM, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \T0, \T1, \T2, \T2
+    // [MM0:MM16, Z5:Z7, Z0:Z3] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \T0, \T1
+
+    // [MM0:MM16, Z5:Z7, Z0:Z4] <- z = a0 x b05 + a1 x b15 + z 
+    mov    rdx, 40\M10
+    MULADD64x640 \M00, \MM, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \T0, \T1, \T2, \Z4
+    mov    rdx, 40\M11    
+    MULADD64x640b \M01, \MM, \MM, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \T0, \T1, \T2, \T2
+    // [MM0:MM16, Z6:Z7, Z0:Z4] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \T0, \T1
+
+    // [MM0:MM16, Z6:Z7, Z0:Z5] <- z = a0 x b06 + a1 x b16 + z 
+    mov    rdx, 48\M10
+    MULADD64x640 \M00, \MM, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \T0, \T1, \T2, \Z5
+    mov    rdx, 48\M11    
+    MULADD64x640b \M01, \MM, \MM, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \T0, \T1, \T2, \T2
+    // [MM0:MM16, Z7, Z0:Z5] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \T0, \T1
+
+    // [MM0:MM16, Z7, Z0:Z6] <- z = a0 x b07 + a1 x b17 + z 
+    mov    rdx, 56\M10
+    MULADD64x640 \M00, \MM, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \T0, \T1, \T2, \Z6
+    mov    rdx, 56\M11    
+    MULADD64x640b \M01, \MM, \MM, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \T0, \T1, \T2, \T2
+    // [MM0:MM16, Z0:Z6] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \T0, \T1
+
+    // [MM0:MM16, Z0:Z7] <- z = a0 x b08 + a1 x b18 + z 
+    mov    rdx, 64\M10
+    MULADD64x640 \M00, \MM, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \T0, \T1, \T2, \Z7
+    mov    rdx, 64\M11    
+    MULADD64x640b \M01, \MM, \MM, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \T0, \T1, \T2, \T2
+    // [MM0:MM16, Z1:Z7] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \T0, \T1
+
+    // [MM0:MM16, Z1:Z7, Z0] <- z = a0 x b09 + a1 x b19 + z 
+    mov    rdx, 72\M10
+    MULADD64x640 \M00, \MM, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \T0, \T1, \T2, \Z0
+    mov    rdx, 72\M11    
+    MULADD64x640b \M01, \MM, [rcx], \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \T0, \T1, \T2, \T2
+    // [MM0:MM16, Z2:Z7, Z0] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \T0, \T1
+.endm
+
+
+//***********************************************************************
+//  Multiplication in GF(p^2), non-complex part
+//  Operation: c [reg_p3] = a0 x b0 - a1 x b1
+//  Inputs: a = [a1, a0] stored in [reg_p1] 
+//          b = [b1, b0] stored in [reg_p2] 
+//  Output: c stored in [reg_p3]
+//***********************************************************************
+.global fmt(fp2mul610_c0_asm)
+fmt(fp2mul610_c0_asm):      
+    push   r12 
+    push   r13 
+    push   r14 
+    push   r15     
+    push   rbx   
+    push   rbp  
+	sub    rsp, 80   
+    mov    rcx, reg_p3
+	
+	// [rsp0:rsp72] <- 8*p - b1
+	mov    r8, [rip+fmt(p610x8)]  
+	mov    r9, [rip+fmt(p610x8)+8]   
+	mov    r12, [rip+fmt(p610x8)+32]
+	mov    r13, [rip+fmt(p610x8)+40] 
+	mov    rax, [reg_p2+80]
+	mov    rdx, [reg_p2+88]
+	mov    r10, r9 
+	mov    r11, r9                         
+	sub    r8, rax
+	sbb    r9, rdx
+	mov    rax, [reg_p2+96]
+	mov    rdx, [reg_p2+104]
+	sbb    r10, rax
+	sbb    r11, rdx
+	mov    rax, [reg_p2+112]
+	mov    rdx, [reg_p2+120]
+	sbb    r12, rax
+	sbb    r13, rdx
+	mov    [rsp], r8
+	mov    [rsp+8], r9
+	mov    [rsp+16], r10
+	mov    [rsp+24], r11 
+	mov    [rsp+32], r12  
+	mov    [rsp+40], r13
+	mov    r8, [rip+fmt(p610x8)+48]
+	mov    r9, [rip+fmt(p610x8)+56]
+	mov    r10, [rip+fmt(p610x8)+64]
+	mov    r11, [rip+fmt(p610x8)+72]
+	mov    rax, [reg_p2+128]
+	mov    rdx, [reg_p2+136]
+	sbb    r8, rax 
+	sbb    r9, rdx 
+	mov    rax, [reg_p2+144]
+	mov    rdx, [reg_p2+152]
+	sbb    r10, rax 
+	sbb    r11, rdx 
+	mov    [rsp+48], r8
+	mov    [rsp+56], r9
+	mov    [rsp+64], r10
+	mov    [rsp+72], r11
+    
+    // [rcx0:rcx16, r11:r15, r8:r10] <- z = a0 x b00 - a1 x b10
+    mov    rdx, [reg_p2]
+    mulx   r9, r8, [reg_p1] 
+    xor    rax, rax 
+    mulx   r10, r11, [reg_p1+8] 
+	mov    [rcx], r8
+    adcx   r9, r11 
+    mulx   r11, r12, [reg_p1+16]
+	mov    [rcx+8], r9  
+    adcx   r10, r12         
+    mulx   r12, r13, [reg_p1+24] 
+	mov    [rcx+16], r10  
+    adcx   r11, r13       
+    mulx   r13, r8, [reg_p1+32] 
+    adcx   r12, r8      
+    mulx   r14, r9, [reg_p1+40]
+    adcx   r13, r9      
+    mulx   r15, rax, [reg_p1+48]
+    adcx   r14, rax     
+    mulx   r8, r10, [reg_p1+56]
+    adcx   r15, r10     
+    mulx   r9, rax, [reg_p1+64]
+    adcx   r8, rax    
+    mulx   r10, rbx, [reg_p1+72] 
+    adcx   r9, rbx    
+    adc    r10, 0 
+
+	FPDBLMUL640x640 [reg_p1], [reg_p1+80], [reg_p2], [rsp], [rcx], r11, r12, r13, r14, r15, r8, r9, r10, rbx, rbp, rax
+         
+    mov    [rcx+24], r13 
+    mov    [rcx+32], r14   
+    mov    [rcx+40], r15 
+    mov    [rcx+48], r8   
+    mov    [rcx+56], r9      
+    mov    [rcx+64], r10                  
+    mov    [rcx+72], r11
+	add    rsp, 80
+    pop    rbp
+    pop    rbx
+    pop    r15 
+    pop    r14
+    pop    r13
+    pop    r12
+    ret
+
+
+//***********************************************************************
+//  Multiplication in GF(p^2), complex part
+//  Operation: c [reg_p3] = a0 x b1 + a1 x b0
+//  Inputs: a = [a1, a0] stored in [reg_p1] 
+//          b = [b1, b0] stored in [reg_p2] 
+//  Output: c stored in [reg_p3]
+//***********************************************************************
+.global fmt(fp2mul610_c1_asm)
+fmt(fp2mul610_c1_asm): 
+    push   r12    
+    push   r13     
+    push   r14   
+    push   r15        
+    push   rbx    
+    push   rbp 
+	sub    rsp, 32 
+    mov    rcx, reg_p3
+    
+    // [rsp0:rsp16, r11:r15, r8:r10] <- z = a0 x b10 + a1 x b00
+    mov    rdx, [reg_p2]
+    mulx   r9, r8, [reg_p1+80] 
+    xor    rax, rax 
+    mulx   r10, r11, [reg_p1+88] 
+	mov    [rsp], r8
+    adcx   r9, r11 
+    mulx   r11, r12, [reg_p1+96]
+	mov    [rsp+8], r9  
+    adcx   r10, r12         
+    mulx   r12, r13, [reg_p1+104] 
+	mov    [rsp+16], r10  
+    adcx   r11, r13       
+    mulx   r13, r8, [reg_p1+112] 
+    adcx   r12, r8      
+    mulx   r14, r9, [reg_p1+120]
+    adcx   r13, r9      
+    mulx   r15, rax, [reg_p1+128]
+    adcx   r14, rax     
+    mulx   r8, r10, [reg_p1+136] 
+    adcx   r15, r10     
+    mulx   r9, rax, [reg_p1+144]
+    adcx   r8, rax    
+    mulx   r10, rbx, [reg_p1+152] 
+    adcx   r9, rbx    
+    adc    r10, 0  
+
+	FPDBLMUL640x640 [reg_p1+80], [reg_p1], [reg_p2], [reg_p2+80], [rsp], r11, r12, r13, r14, r15, r8, r9, r10, rbx, rbp, rax
+         
+    mov    [rcx+24], r13 
+    mov    [rcx+32], r14   
+    mov    [rcx+40], r15 
+    mov    [rcx+48], r8   
+    mov    [rcx+56], r9      
+    mov    [rcx+64], r10                  
+    mov    [rcx+72], r11
+	add    rsp, 32
+    pop    rbp
+    pop    rbx
+    pop    r15 
+    pop    r14
+    pop    r13
+    pop    r12
+    ret
 
 #else
 
-.macro MUL320_SCHOOL M0, M1, C, T0, T1, T2, T3, T4, T5, T6, T7
-    mov    rdx, \M0
-    mulx   \T0, \T1, \M1    
-    mulx   \T2, \T3, 8\M1
-    mov    \C, \T1             // C0_final 
-    mulx   \T4, \T5, 16\M1 
-    add    \T0, \T3               
-    adc    \T2, \T5     
-    mulx   \T1, \T3, 24\M1
-    adc    \T3, \T4         
-    mulx   \T5, \T6, 32\M1 
-    adc    \T1, \T6     
-    adc    \T5, 0        
-    
-    mov    rdx, 8\M0 
-    mulx   \T6, \T7, \M1 
-    add    \T0, \T7 
-    mov    8\C, \T0            // C1_final 
-    adc    \T2, \T6     
-    mulx   \T6, \T7, 8\M1
-    adc    \T3, \T6        
-    mulx   \T0, \T4, 16\M1
-    adc    \T0, \T1     
-    mulx   \T1, \T6, 24\M1   
-    adc    \T5, \T1  
-    mulx   \T1, rax, 32\M1     
-    adc    \T1, 0 
-        
-    add    \T2, \T7 
-    adc    \T3, \T4  
-    adc    \T0, \T6  
-    adc    \T5, rax  
-    adc    \T1, 0         
-    
-    mov    rdx, 16\M0 
-    mulx   \T4, \T6, \M1 
-    add    \T2, \T6 
-    mov    16\C, \T2           // C2_final 
-    adc    \T3, \T4     
-    mulx   \T6, \T7, 8\M1
-    adc    \T0, \T6        
-    mulx   \T2, \T4, 16\M1 
-    adc    \T2, \T5     
-    mulx   \T5, \T6, 24\M1   
-    adc    \T1, \T5 
-    mulx   \T5, rax, 32\M1     
-    adc    \T5, 0 
-        
-    add    \T3, \T7
-    adc    \T0, \T4  
-    adc    \T2, \T6  
-    adc    \T1, rax 
-    adc    \T5, 0          
-    
-    mov    rdx, 24\M0
-    mulx   \T4, \T6, \M1 
-    add    \T3, \T6 
-    mov    24\C, \T3           // C3_final 
-    adc    \T0, \T4     
-    mulx   \T6, \T7, 8\M1
-    adc    \T2, \T6        
-    mulx   \T3, \T4, 16\M1 
-    adc    \T1, \T3     
-    mulx   \T3, \T6, 24\M1   
-    adc    \T3, \T5 
-    mulx   \T5, rax, 32\M1     
-    adc    \T5, 0
-        
-    add    \T0, \T7
-    adc    \T2, \T4  
-    adc    \T1, \T6  
-    adc    \T3, rax 
-    adc    \T5, 0       
-    
-    mov    rdx, 32\M0 
-    mulx   \T4, \T6, \M1 
-    add    \T0, \T6 
-    mov    32\C, \T0           // C4_final 
-    adc    \T2, \T4     
-    mulx   \T6, \T7, 8\M1
-    adc    \T1, \T6        
-    mulx   \T0, \T4, 16\M1 
-    adc    \T3, \T0     
-    mulx   \T0, \T6, 24\M1   
-    adc    \T0, \T5 
-    mulx   \T5, rax, 32\M1     
-    adc    \T5, 0
-        
-    add    \T2, \T7 
-    adc    \T1, \T4  
-    adc    \T3, \T6 
-    adc    \T0, rax 
-    adc    \T5, 0 
-    mov    40\C, \T2 
-    mov    48\C, \T1 
-    mov    56\C, \T3 
-    mov    64\C, \T0
-    mov    72\C, \T5 
-.endm
+# error "CONFIGURATION NOT SUPPORTED. TRY USE_MULX=TRUE USE_ADX=TRUE"
+
+#endif
+
+#else
+
+# error "CONFIGURATION NOT SUPPORTED. TRY USE_MULX=TRUE USE_ADX=TRUE"
 
 #endif
 
 
-//*****************************************************************************
-//  610-bit multiplication using Karatsuba (one level), schoolbook (two levels)
-//***************************************************************************** 
-.global fmt(mul610_asm)
-fmt(mul610_asm):    
+///////////////////////////////////////////////////////////////// MACRO
+// z = z + a x b
+// Inputs: base memory pointers M0 (a), M1 (b)
+//         bi pre-stored in rdx,
+//         accumulator z in [Z0:Z7], pre-stores a0 x b
+// Output: [Z0:Z7] and OUT
+// Temps:  regs T0:T2
+/////////////////////////////////////////////////////////////////
+.macro FPMUL640x640 M0, M1, MM, OUT, Z0, Z1, Z2, Z3, Z4, Z5, Z6, Z7, T0, T1, T2                   
+    // [Z4:Z7, Z0:Z2] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                  // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \T0, \T1
+
+    // [rsp8:rsp24, \Z4:\Z7, \Z0:\Z3] <- z = a0 x b11 + a1 x b01 + z 
+    mov    rdx, 8\M0
+    MULADD64x640b \M1, \MM, \MM, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \T0, \T1, \T2, \Z3
+    // [\Z5:\Z7, \Z0:\Z3] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \T0, \T1
+
+    // [rsp16:rsp32, \Z5:\Z7, \Z0:\Z4] <- z = a0 x b12 + a1 x b02 + z 
+    mov    rdx, 16\M0
+    MULADD64x640b \M1, \MM, \MM, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \T0, \T1, \T2, \Z4
+    // [rsp24:rsp40, \Z6:\Z7, \Z0:\Z4] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \T0, \T1
+
+    // [rsp24:rsp40, \Z6:\Z7, \Z0:\Z5] <- z = a0 x b13 + a1 x b03 + z 
+    mov    rdx, 24\M0
+    MULADD64x640b \M1, \MM, \MM, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \T0, \T1, \T2, \Z5
+    // [rsp32:rsp48, \Z7, \Z0:\Z5] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \T0, \T1
+
+    // [rsp32:rsp48, \Z7, \Z0:\Z6] <- z = a0 x b14 + a1 x b04 + z 
+    mov    rdx, 32\M0
+    MULADD64x640b \M1, \MM, \MM, \Z7, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \T0, \T1, \T2, \Z6
+    // [rsp40:rsp56, \Z0:\Z6] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \T0, \T1
+
+    // [rsp40:rsp56, \Z0:\Z7] <- z = a0 x b15 + a1 x b05 + z 
+    mov    rdx, 40\M0
+    MULADD64x640b \M1, \MM, \MM, \Z0, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \T0, \T1, \T2, \Z7
+    // [rsp48:rsp64, \Z1:\Z7] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \T0, \T1
+
+    // [rsp48:rsp64, \Z1:\Z7, \Z0] <- z = a0 x b16 + a1 x b06 + z 
+    mov    rdx, 48\M0
+    MULADD64x640b \M1, \MM, \MM, \Z1, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \T0, \T1, \T2, \Z0
+    // [rsp56:rsp72, \Z2:\Z7, \Z0] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \T0, \T1
+
+    // [rsp56:rsp72, \Z2:\Z7, \Z0:\Z1] <- z = a0 x b17 + a1 x b07 + z 
+    mov    rdx, 56\M0
+    MULADD64x640b \M1, \MM, \MM, \Z2, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \T0, \T1, \T2, \Z1
+    // [rsp64:rsp80, \Z3:\Z7, \Z0:\Z1] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \T0, \T1
+
+    // [rsp64:rsp80, \Z3:\Z7, \Z0:\Z2] <- z = a0 x b18 + a1 x b08 + z 
+    mov    rdx, 64\M0
+    MULADD64x640b \M1, \MM, \MM, \Z3, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \T0, \T1, \T2, \Z2
+    // [rsp72:rsp88, \Z4:\Z7, \Z0:\Z2] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \T0, \T1
+
+    // [rsi0:rsi16, \Z4:\Z7, \Z0:\Z3] <- z = a0 x b19 + a1 x b09 + z 
+    mov    rdx, 72\M0
+    MULADD64x640b \M1, \MM, \OUT, \Z4, \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \T0, \T1, \T2, \Z3
+    // [rsp80:rsp96, \Z5:\Z7, \Z0:\Z3] <- z = (z0 x p610p1 + z)/2^64
+    mov    rdx, 24\MM                 // rdx <- z0
+    MULADD64x384 [rip+fmt(p610p1)+32], \Z5, \Z6, \Z7, \Z0, \Z1, \Z2, \Z3, \T0, \T1
+.endm
+
+
+//***********************************************************************
+//  Squaring in GF(p^2), non-complex part
+//  Operation: c [reg_p2] = (a0+a1) x (a0-a1)
+//  Inputs: a = [a1, a0] stored in [reg_p1] 
+//  Output: c stored in [reg_p2]
+//***********************************************************************
+.global fmt(fp2sqr610_c0_asm)
+fmt(fp2sqr610_c0_asm):  
+    push   r12
+    push   r13
+    push   r14  
+    push   r15  
+    push   rbx  
+    push   rbp
+	sub    rsp, 32
+
+	// a0 + a1
+	mov    r8, [reg_p1]
+	mov    r9, [reg_p1+8]
+	mov    r10, [reg_p1+16]
+	mov    r11, [reg_p1+24]
+	mov    r12, [reg_p1+32]
+	mov    r13, [reg_p1+40]
+	add    r8, [reg_p1+80]
+	adc    r9, [reg_p1+88] 
+	mov    [reg_p2], r8
+	adc    r10, [reg_p1+96]
+	adc    r11, [reg_p1+104]
+	mov    [reg_p2+8], r9
+	mov    [reg_p2+16], r10
+	adc    r12, [reg_p1+112]
+	adc    r13, [reg_p1+120]
+	mov    r14, [reg_p1+48]
+	mov    r15, [reg_p1+56]
+	adc    r14, [reg_p1+128]
+	adc    r15, [reg_p1+136]
+	mov    r9, [reg_p1+64]
+	mov    r10, [reg_p1+72]
+	adc    r9, [reg_p1+144]
+	adc    r10, [reg_p1+152]
+	mov    [reg_p2+24], r11
+	mov    [reg_p2+32], r12
+	mov    [reg_p2+40], r13
+	mov    [reg_p2+48], r14
+	mov    [reg_p2+56], r15
+	mov    [reg_p2+64], r9
+	mov    [reg_p2+72], r10
+	
+	// a0 - a1 + 4xp610
+	mov    rcx, [reg_p1]
+	mov    r10, [reg_p1+8]
+	mov    r12, [reg_p1+16]
+	mov    r13, [reg_p1+24]
+	mov    r14, [reg_p1+32]
+	mov    r15, [reg_p1+40]
+	sub    rcx, [reg_p1+80]
+	sbb    r10, [reg_p1+88]
+	sbb    r12, [reg_p1+96]
+	sbb    r13, [reg_p1+104] 
+	sbb    r14, [reg_p1+112]
+	sbb    r15, [reg_p1+120]
+	mov    rbx, [reg_p1+48]
+	mov    rbp, [reg_p1+56]
+	mov    r8, [reg_p1+64]
+	mov    rax, [reg_p1+72]
+	sbb    rbx, [reg_p1+128]
+	sbb    rbp, [reg_p1+136]
+	sbb    r8, [reg_p1+144]
+	sbb    rax, [reg_p1+152]
+	add    rcx, [rip+fmt(p610x4)]	                  
+	mov    rdx, [rip+fmt(p610x4)+8]
+	adc    r10, rdx
+	adc    r12, rdx
+	adc    r13, rdx
+	adc    r14, [rip+fmt(p610x4)+32]
+	adc    r15, [rip+fmt(p610x4)+40]
+	adc    rbx, [rip+fmt(p610x4)+48]
+	adc    rbp, [rip+fmt(p610x4)+56]
+	adc    r8, [rip+fmt(p610x4)+64]
+	adc    rax, [rip+fmt(p610x4)+72]
+	mov    [reg_p2+80], rcx                 
+	mov    [reg_p2+88], r10
+	mov    [reg_p2+96], r12 
+	mov    [reg_p2+104], r13 
+	mov    [reg_p2+112], r14 
+	mov    [reg_p2+144], r8 
+	mov    [reg_p2+152], rax
+    
+    // [rsp0:rsp16, r11:r15, r8:r10] <- z = a00 x a1
+    mov    rdx, [reg_p2]
+    mulx   r9, r8, rcx
+	mov    [reg_p2+120], r15
+    xor    rax, rax 
+    mulx   r10, r11, r10 
+	mov    [reg_p2+128], rbx
+    adcx   r9, r11     
+    mulx   r11, r12, r12 
+	mov    [reg_p2+136], rbp 
+    adcx   r10, r12       
+    mulx   r12, r13, r13 
+	mov    [rsp+24], r8
+    adcx   r11, r13      
+    mulx   r13, r8, r14  
+	mov    [rsp], r9 
+    adcx   r12, r8      
+    mulx   r14, r9, r15 
+	mov    [rsp+8], r10  
+    adcx   r13, r9      
+    mulx   r15, rax, rbx 
+	mov    [rsp+16], r11  
+    adcx   r14, rax     
+    mulx   r8, r10, rbp  
+    adcx   r15, r10     
+    mulx   r9, rax, [reg_p2+144] 
+    adcx   r8, rax    
+    mulx   r10, rbx, [reg_p2+152] 
+    adcx   r9, rbx    
+    adc    r10, 0 
+           
+	FPMUL640x640 [reg_p2], [reg_p2+80], [rsp], [reg_p2], r8, r9, r10, r11, r12, r13, r14, r15, rbx, rbp, rax
+           
+    mov    [reg_p2+24], r13   
+    mov    [reg_p2+32], r14 
+    mov    [reg_p2+40], r15  
+    mov    [reg_p2+48], r8      
+    mov    [reg_p2+56], r9                  
+    mov    [reg_p2+64], r10                 
+    mov    [reg_p2+72], r11
+	add    rsp, 32
+    pop    rbp
+    pop    rbx
+    pop    r15 
+    pop    r14
+    pop    r13
+    pop    r12
+    ret
+
+//***********************************************************************
+//  Squaring in GF(p^2), complex part
+//  Operation: c [reg_p2] = 2a0 x a1
+//  Inputs: a = [a1, a0] stored in [reg_p1] 
+//  Output: c stored in [reg_p2]
+//***********************************************************************
+.global fmt(fp2sqr610_c1_asm)
+fmt(fp2sqr610_c1_asm):  
+    push   r12     
+    push   r13     
+    push   r14 
+    push   r15 
+	
+	mov    r8, [reg_p1]
+	mov    r9, [reg_p1+8]
+	mov    r10, [reg_p1+16]
+	mov    r11, [reg_p1+24]
+	mov    r12, [reg_p1+32]
+	mov    r13, [reg_p1+40] 
+	add    r8, r8
+	adc    r9, r9
+    push   rbx 
+	adc    r10, r10
+	adc    r11, r11  
+    push   rbp
+	adc    r12, r12
+	adc    r13, r13
+	mov    r14, [reg_p1+48] 
+	mov    r15, [reg_p1+56] 
+	adc    r14, r14
+	adc    r15, r15
+	mov    rbx, [reg_p1+64] 
+	mov    rbp, [reg_p1+72] 
+	adc    rbx, rbx
+	adc    rbp, rbp
+	sub    rsp, 112
+	mov    [rsp+8], r9
+	mov    [rsp+16], r10
+	mov    [rsp+24], r11
+    
+    // [rsp24, rsp0:rsp16, r11:r15, r8:r10] <- z = a00 x a1
+    mov    rdx, r8
+    mulx   r9, r8, [reg_p1+80]
+	mov    [rsp+32], r12
+    xor    rax, rax
+    mulx   r10, r11, [reg_p1+88] 
+	mov    [rsp+40], r13
+    adcx   r9, r11     
+    mulx   r11, r12, [reg_p1+96]
+	mov    [rsp+48], r14
+    adcx   r10, r12         
+    mulx   r12, r13, [reg_p1+104] 
+	mov    [rsp+104], r8
+    adcx   r11, r13         
+    mulx   r13, r8, [reg_p1+112]
+	mov    [rsp+80], r9   
+    adcx   r12, r8      
+    mulx   r14, r9, [reg_p1+120]
+	mov    [rsp+56], r15
+    adcx   r13, r9      
+    mulx   r15, rax, [reg_p1+128]
+	mov    [rsp+88], r10  
+    adcx   r14, rax     
+    mulx   r8, r10, [reg_p1+136] 
+	mov    [rsp+96], r11 
+    adcx   r15, r10     
+    mulx   r9, rax, [reg_p1+144] 
+	mov    [rsp+64], rbx
+    adcx   r8, rax    
+    mulx   r10, rbx, [reg_p1+152] 
+	mov    [rsp+72], rbp
+    adcx   r9, rbx    
+    adc    r10, 0  
+           
+	FPMUL640x640 [rsp], [reg_p1+80], [rsp+80], [reg_p2], r8, r9, r10, r11, r12, r13, r14, r15, rbx, rbp, rax
+         
+    mov    [reg_p2+24], r13   
+    mov    [reg_p2+32], r14 
+    mov    [reg_p2+40], r15  
+    mov    [reg_p2+48], r8      
+    mov    [reg_p2+56], r9                  
+    mov    [reg_p2+64], r10                 
+    mov    [reg_p2+72], r11
+	add    rsp, 112
+    pop    rbp
+    pop    rbx
+    pop    r15 
+    pop    r14
+    pop    r13
+    pop    r12
+    ret
+
+
+//***********************************************************************
+//  Field multiplication in GF(p)
+//  Operation: c = a x b mod p
+//  Inputs: a stored in [reg_p1], b stored in [reg_p2] 
+//  Output: c stored in [reg_p3]
+//***********************************************************************
+.global fmt(fpmul610_asm)
+fmt(fpmul610_asm): 
+    mov    rcx, reg_p3  
     push   r12
     push   r13 
     push   r14 
-    push   r15
-    mov    rcx, reg_p3 
+    push   r15 
+    push   rbx    
+    push   rbp
+	sub    rsp, 32
+     
+    // [r8:r15] <- z = a x b0
+    mov    rdx, [reg_p2]
+    mulx   r9, r8, [reg_p1]
+    xor    rax, rax 
+	mov    [rsp+24], r8
+    mulx   r10, r11, [reg_p1+8]
+    adcx   r9, r11        
+    mulx   r11, r12, [reg_p1+16]
+    adcx   r10, r12        
+    mulx   r12, r13, [reg_p1+24]
+    adcx   r11, r13       
+    mulx   r13, r8, [reg_p1+32]
+    adcx   r12, r8      
+    mulx   r14, rax, [reg_p1+40]
+    adcx   r13, rax     
+    mulx   r15, rax, [reg_p1+48]   
+	mov    [rsp], r9
+    adcx   r14, rax      
+    mulx   r8, rbx, [reg_p1+56]  
+	mov    [rsp+8], r10    
+    adcx   r15, rbx     
+    mulx   r9, rax, [reg_p1+64] 
+	mov    [rsp+16], r11    
+    adcx   r8, rax     
+    mulx   r10, rbx, [reg_p1+72]  
+    adcx   r9, rbx 
+    adc    r10, 0 
 
-    // [rsp] <- AH + AL, rax <- mask
-    xor    rax, rax
-    mov    r8, [reg_p1]
-    mov    r9, [reg_p1+8]
-    mov    r10, [reg_p1+16]
-    mov    r11, [reg_p1+24] 
-    mov    r12, [reg_p1+32] 
-    push   rbx 
-    sub    rsp, 112
-    add    r8, [reg_p1+40]
-    adc    r9, [reg_p1+48]
-    adc    r10, [reg_p1+56]
-    adc    r11, [reg_p1+64]
-    adc    r12, [reg_p1+72]
-    sbb    rax, 0
-    mov    [rsp], r8
-    mov    [rsp+8], r9
-    mov    [rsp+16], r10
-    mov    [rsp+24], r11
-    mov    [rsp+32], r12
-
-    // [rsp+40] <- BH + BL, rdx <- mask
-    xor    rdx, rdx
-    mov    r8, [reg_p2]
-    mov    r9, [reg_p2+8]
-    mov    rbx, [reg_p2+16]
-    mov    r13, [reg_p2+24] 
-    mov    r14, [reg_p2+32]    
-    add    r8, [reg_p2+40]
-    adc    r9, [reg_p2+48]
-    adc    rbx, [reg_p2+56]
-    adc    r13, [reg_p2+64]
-    adc    r14, [reg_p2+72]
-    sbb    rdx, 0
-    mov    [rsp+40], r8
-    mov    [rsp+48], r9
-    mov    [rsp+56], rbx
-    mov    [rsp+64], r13
-    mov    [rsp+72], r14     
-    
-    // [rcx] <- masked (BH + BL)
-    and    r8, rax
-    and    r9, rax
-    and    rbx, rax
-    and    r13, rax
-    and    r14, rax    
-    mov    [rcx], r8
-    mov    [rcx+8], r9
-
-    // r8-r12 <- masked (AH + AL)
-    mov    r8, [rsp]
-    mov    r9, [rsp+8]
-    and    r8, rdx
-    and    r9, rdx
-    and    r10, rdx
-    and    r11, rdx
-    and    r12, rdx
-
-    // [rsp+80] <- masked (AH + AL) + masked (BH + BL)
-    mov    rax, [rcx]
-    mov    rdx, [rcx+8]
-    add    r8, rax
-    adc    r9, rdx
-    adc    r10, rbx
-    adc    r11, r13
-    adc    r12, r14        
-    mov    [rsp+80], r8
-    mov    [rsp+88], r9
-    mov    [rsp+96], r10
-    mov    [rsp+104], r11
-
-    // [rcx] <- AL x BL
-    MUL320_SCHOOL  [reg_p1], [reg_p2], [rcx], r8, r9, r10, r11, rbx, r13, r14, r15     // Result C0-C4 
-
-    // [rcx+80] <- (AH+AL) x (BH+BL), low part 
-    MUL320_SCHOOL  [rsp], [rsp+40], [rcx+80], r8, r9, r10, r11, rbx, r13, r14, r15
-
-    // [rsp] <- AH x BH 
-    MUL320_SCHOOL  [reg_p1+40], [reg_p2+40], [rsp], r8, r9, r10, r11, rbx, r13, r14, r15
-    
-    // r8-r12 <- (AH+AL) x (BH+BL), final step
-    mov    r8, [rsp+80]
-    mov    r9, [rsp+88]
-    mov    r10, [rsp+96]
-    mov    r11, [rsp+104]
-    mov    rax, [rcx+120]
-    add    r8, rax
-    mov    rax, [rcx+128]
-    adc    r9, rax
-    mov    rax, [rcx+136]
-    adc    r10, rax
-    mov    rax, [rcx+144]
-    adc    r11, rax
-    mov    rax, [rcx+152]
-    adc    r12, rax
-    
-    // rdi,rdx,rbx,r13,r14,r8-r12 <- (AH+AL) x (BH+BL) - ALxBL
-    mov    rdi, [rcx+80]
-    sub    rdi, [rcx]
-    mov    rdx, [rcx+88]
-    sbb    rdx, [rcx+8]
-    mov    rbx, [rcx+96]
-    sbb    rbx, [rcx+16]
-    mov    r13, [rcx+104]
-    sbb    r13, [rcx+24]
-    mov    r14, [rcx+112]     
-    sbb    r14, [rcx+32]  
-    sbb    r8, [rcx+40]
-    sbb    r9, [rcx+48]
-    sbb    r10, [rcx+56]
-    sbb    r11, [rcx+64]
-    sbb    r12, [rcx+72]
-    
-    // rdi,rdx,rbx,r13,r14,r8-r12 <- (AH+AL) x (BH+BL) - ALxBL - AHxBH
-    sub    rdi, [rsp]
-    sbb    rdx, [rsp+8]
-    sbb    rbx, [rsp+16]
-    sbb    r13, [rsp+24]
-    sbb    r14, [rsp+32]  
-    sbb    r8, [rsp+40]
-    sbb    r9, [rsp+48]
-    sbb    r10, [rsp+56]
-    sbb    r11, [rsp+64]
-    sbb    r12, [rsp+72]
-    
-    mov    rax, [rcx+40]
-    add    rax, rdi
-    mov    [rcx+40], rax    // Result C5-C9
-    mov    rax, [rcx+48]
-    adc    rax, rdx
-    mov    [rcx+48], rax 
-    mov    rax, [rcx+56]
-    adc    rax, rbx
-    mov    [rcx+56], rax 
-    mov    rax, [rcx+64]
-    adc    rax, r13
-    mov    [rcx+64], rax 
-    mov    rax, [rcx+72]
-    adc    rax, r14           
-    mov    [rcx+72], rax 
-    mov    rax, [rsp]
-    adc    r8, rax 
-    mov    [rcx+80], r8    // Result C10-C19
-    mov    rax, [rsp+8]
-    adc    r9, rax
-    mov    [rcx+88], r9 
-    mov    rax, [rsp+16]
-    adc    r10, rax
-    mov    [rcx+96], r10 
-    mov    rax, [rsp+24]
-    adc    r11, rax
-    mov    [rcx+104], r11 
-    mov    rax, [rsp+32]
-    adc    r12, rax
-    mov    [rcx+112], r12 
-    mov    r8, [rsp+40]
-    mov    r9, [rsp+48]
-    mov    r10, [rsp+56]
-    mov    r11, [rsp+64]
-    mov    r12, [rsp+72]
-    adc    r8, 0
-    adc    r9, 0
-    adc    r10, 0
-    adc    r11, 0
-    adc    r12, 0
-    add    rsp, 112   
-    mov    [rcx+120], r8 
-    mov    [rcx+128], r9 
-    mov    [rcx+136], r10 
-    mov    [rcx+144], r11 
-    mov    [rcx+152], r12 
-      
+	FPMUL640x640 [reg_p2], [reg_p1], [rsp], [rcx], r8, r9, r10, r11, r12, r13, r14, r15, rbx, rbp, rax
+	
+    mov    [rcx+24], r13   
+    mov    [rcx+32], r14 
+    mov    [rcx+40], r15  
+    mov    [rcx+48], r8      
+    mov    [rcx+56], r9                  
+    mov    [rcx+64], r10                 
+    mov    [rcx+72], r11
+	add    rsp, 32
+    pop    rbp
     pop    rbx
     pop    r15
     pop    r14
     pop    r13
     pop    r12
     ret
-
-#else
-
-//***********************************************************************
-//  Integer multiplication
-//  Based on Karatsuba method
-//  Operation: c [reg_p3] = a [reg_p1] * b [reg_p2]
-//  NOTE: a=c or b=c are not allowed
-//***********************************************************************
-.global fmt(mul610_asm)
-fmt(mul610_asm):
-
-  ret
-
-# error "CONFIGURATION NOT SUPPORTED. TRY USE_MULX=TRUE"
-
-#endif
-
-
-#ifdef _MULX_
-
-///////////////////////////////////////////////////////////////// MACRO
-// Schoolbook integer multiplication
-// Inputs:  memory pointers M0 and M1
-// Outputs: regs T0:T7
-// Temps:   regs T8
-/////////////////////////////////////////////////////////////////
-
-#ifdef _ADX_
-.macro MUL128x384_SCHOOL M0, M1, T0, T1, T2, T3, T4, T5, T6, T7, T8
-    mov    rdx, \M0
-    mulx   \T1, \T0, \M1       // T0 <- C0_final    
-    mulx   \T2, \T4, 8\M1
-    xor    rax, rax
-    mulx   \T3, \T5, 16\M1 
-    adox   \T1, \T4               
-    adox   \T2, \T5     
-    mulx   \T4, \T7, 24\M1
-    adox   \T3, \T7         
-    mulx   \T5, \T6, 32\M1 
-    adox   \T4, \T6         
-    mulx   \T7, \T8, 40\M1           
-    adox   \T5, \T8         
-    adox   \T7, rax   
-    
-    mov    rdx, 8\M0 
-    mulx   \T8, \T6, \M1 
-    adcx   \T1, \T6            // T1 <- C1_final 
-    adcx   \T2, \T8    
-    mulx   \T6, \T8, 8\M1
-    adox   \T2, \T8  
-    adcx   \T3, \T6        
-    mulx   \T6, \T8, 16\M1
-    adox   \T3, \T8
-    adcx   \T4, \T6     
-    mulx   \T6, \T8, 24\M1
-    adox   \T4, \T8     
-    adcx   \T5, \T6  
-    mulx   \T6, \T8, 32\M1 
-    adox   \T5, \T8 
-    adcx   \T6, \T7 
-    mulx   \T7, \T8, 40\M1
-    adcx   \T7, rax  
-    adox   \T6, \T8          
-    adox   \T7, rax
-.endm
-
-#else
-
-.macro MUL128x384_SCHOOL M0, M1, T0, T1, T2, T3, T4, T5, T6, T7, T8
-    mov    rdx, \M0
-    mulx   \T1, \T0, \M1       // T0 <- C0_final 
-    mulx   \T2, \T3, 8\M1
-    add    \T1, \T3               
-    adc    \T2, 0  
-
-    mov    rdx, 8\M0   
-    xor    \T5, \T5
-    mulx   \T3, \T4, \M1 
-    add    \T1, \T4               
-    adc    \T2, \T3  
-    adc    \T5, 0  
-      
-    xor    \T6, \T6
-    mulx   \T3, \T4, 8\M1
-    add    \T2, \T4  
-    adc    \T3, \T5           
-    adc    \T6, 0 
-        
-    mov    rdx, \M0         
-    mulx   \T4, \T5, 16\M1 
-    add    \T2, \T5  
-    adc    \T3, \T4           
-    adc    \T6, 0  
-        
-    xor    \T7, \T7        
-    mulx   \T4, \T5, 24\M1 
-    add    \T3, \T5  
-    adc    \T4, \T6           
-    adc    \T7, 0  
-
-    mov    rdx, 8\M0 
-    mulx   \T5, \T6, 16\M1 
-    add    \T3, \T6               
-    adc    \T4, \T5  
-    adc    \T7, 0    
-        
-    xor    \T6, \T6        
-    mulx   \T5, \T8, 24\M1 
-    add    \T4, \T8  
-    adc    \T5, \T7           
-    adc    \T6, 0  
-        
-    mov    rdx, \M0        
-    mulx   \T7, \T8, 32\M1 
-    add    \T4, \T8  
-    adc    \T5, \T7           
-    adc    \T6, 0      
-        
-    xor    \T7, \T7        
-    mulx   \T8, rax, 40\M1 
-    add    \T5, rax  
-    adc    \T6, \T8          
-    adc    \T7, 0  
-        
-    mov    rdx, 8\M0        
-    mulx   \T8, rax, 32\M1 
-    add    \T5, rax  
-    adc    \T6, \T8         
-    adc    \T7, 0   
-        
-    mov    rdx, 8\M0        
-    mulx   \T8, rax, 40\M1 
-    add    \T6, rax  
-    adc    \T7, \T8  
-.endm
-#endif
-
-  
-//**************************************************************************************
-//  Montgomery reduction
-//  Based on method described in Faz-Hernandez et al. https://eprint.iacr.org/2017/1015  
-//  Operation: c [reg_p2] = a [reg_p1]
-//  NOTE: a=c is not allowed
-//************************************************************************************** 
-.global fmt(rdc610_asm)
-fmt(rdc610_asm):
-    push   r12
-    push   r13 
-    push   r14 
-    push   r15  
-
-    // a[0-1] x p610p1_nz --> result: r8:r15 
-    MUL128x384_SCHOOL [reg_p1], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx     
-
-    xor    rcx, rcx
-    add    r8, [reg_p1+32]  
-    adc    r9, [reg_p1+40]  
-    adc    r10, [reg_p1+48]   
-    adc    r11, [reg_p1+56]   
-    adc    r12, [reg_p1+64]   
-    adc    r13, [reg_p1+72]   
-    adc    r14, [reg_p1+80]  
-    adc    r15, [reg_p1+88]   
-    adc    rcx, [reg_p1+96] 
-    mov    [reg_p1+32], r8  
-    mov    [reg_p1+40], r9  
-    mov    [reg_p1+48], r10  
-    mov    [reg_p1+56], r11  
-    mov    [reg_p1+64], r12  
-    mov    [reg_p1+72], r13  
-    mov    [reg_p1+80], r14
-    mov    [reg_p1+88], r15  
-    mov    [reg_p1+96], rcx  
-    mov    r8, [reg_p1+104]  
-    mov    r9, [reg_p1+112]  
-    mov    r10, [reg_p1+120]
-    mov    r11, [reg_p1+128]
-    mov    r12, [reg_p1+136]
-    mov    r13, [reg_p1+144]
-    mov    r14, [reg_p1+152]
-    adc    r8, 0
-    adc    r9, 0
-    adc    r10, 0
-    adc    r11, 0
-    adc    r12, 0
-    adc    r13, 0
-    adc    r14, 0
-    mov    [reg_p1+104], r8  
-    mov    [reg_p1+112], r9  
-    mov    [reg_p1+120], r10  
-    mov    [reg_p1+128], r11  
-    mov    [reg_p1+136], r12 
-    mov    [reg_p1+144], r13 
-    mov    [reg_p1+152], r14
-
-    // a[2-3] x p610p1_nz --> result: r8:r15
-    MUL128x384_SCHOOL [reg_p1+16], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx 
-
-    xor    rcx, rcx
-    add    r8, [reg_p1+48]  
-    adc    r9, [reg_p1+56]  
-    adc    r10, [reg_p1+64]   
-    adc    r11, [reg_p1+72]  
-    adc    r12, [reg_p1+80]   
-    adc    r13, [reg_p1+88]   
-    adc    r14, [reg_p1+96]  
-    adc    r15, [reg_p1+104]
-    adc    rcx, [reg_p1+112]
-    mov    [reg_p1+48], r8  
-    mov    [reg_p1+56], r9  
-    mov    [reg_p1+64], r10  
-    mov    [reg_p1+72], r11   
-    mov    [reg_p1+80], r12  
-    mov    [reg_p1+88], r13  
-    mov    [reg_p1+96], r14
-    mov    [reg_p1+104], r15
-    mov    [reg_p1+112], rcx
-    mov    r8, [reg_p1+120]
-    mov    r9, [reg_p1+128]
-    mov    r10, [reg_p1+136] 
-    mov    r11, [reg_p1+144] 
-    mov    r12, [reg_p1+152] 
-    adc    r8, 0
-    adc    r9, 0
-    adc    r10, 0  
-    adc    r11, 0 
-    adc    r12, 0  
-    mov    [reg_p1+120], r8  
-    mov    [reg_p1+128], r9  
-    mov    [reg_p1+136], r10 
-    mov    [reg_p1+144], r11 
-    mov    [reg_p1+152], r12 
-
-    // a[4-5] x p610p1_nz --> result: r8:r15
-    MUL128x384_SCHOOL [reg_p1+32], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx 
-
-    xor    rcx, rcx
-    add    r8, [reg_p1+64]  
-    adc    r9, [reg_p1+72]  
-    adc    r10, [reg_p1+80]   
-    adc    r11, [reg_p1+88]  
-    adc    r12, [reg_p1+96]   
-    adc    r13, [reg_p1+104]   
-    adc    r14, [reg_p1+112]  
-    adc    r15, [reg_p1+120]
-    adc    rcx, [reg_p1+128]
-    mov    [reg_p1+64], r8  
-    mov    [reg_p1+72], r9  
-    mov    [reg_p1+80], r10  
-    mov    [reg_p1+88], r11   
-    mov    [reg_p1+96], r12  
-    mov    [reg_p1+104], r13  
-    mov    [reg_p1+112], r14
-    mov    [reg_p1+120], r15
-    mov    [reg_p1+128], rcx
-    mov    r8, [reg_p1+136]
-    mov    r9, [reg_p1+144]
-    mov    r10, [reg_p1+152] 
-    adc    r8, 0
-    adc    r9, 0
-    adc    r10, 0 
-    mov    [reg_p1+136], r8  
-    mov    [reg_p1+144], r9  
-    mov    [reg_p1+152], r10 
-
-    // a[6-7] x p610p1_nz --> result: r8:r15
-    MUL128x384_SCHOOL [reg_p1+48], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx 
-
-    xor    rcx, rcx
-    add    r8, [reg_p1+80]  
-    adc    r9, [reg_p1+88]  
-    adc    r10, [reg_p1+96]   
-    adc    r11, [reg_p1+104]  
-    adc    r12, [reg_p1+112]   
-    adc    r13, [reg_p1+120]   
-    adc    r14, [reg_p1+128]  
-    adc    r15, [reg_p1+136]
-    adc    rcx, [reg_p1+144]
-    mov    [reg_p2], r8         // C0_final
-    mov    [reg_p2+8], r9       // C1_final
-    mov    [reg_p1+96], r10  
-    mov    [reg_p1+104], r11   
-    mov    [reg_p1+112], r12  
-    mov    [reg_p1+120], r13  
-    mov    [reg_p1+128], r14
-    mov    [reg_p1+136], r15
-    mov    [reg_p1+144], rcx
-    mov    r8, [reg_p1+152] 
-    adc    r8, 0
-    mov    [reg_p1+152], r8
-
-    // a[8-9] x p610p1_nz --> result: r8:r15
-    MUL128x384_SCHOOL [reg_p1+64], [rip+fmt(p610p1)+32], r8, r9, r10, r11, r12, r13, r14, r15, rcx
-    
-    // Final result C2:C9
-    add    r8, [reg_p1+96]  
-    adc    r9, [reg_p1+104]  
-    adc    r10, [reg_p1+112]   
-    adc    r11, [reg_p1+120]  
-    adc    r12, [reg_p1+128]   
-    adc    r13, [reg_p1+136]   
-    adc    r14, [reg_p1+144]   
-    adc    r15, [reg_p1+152] 
-    mov    [reg_p2+16], r8
-    mov    [reg_p2+24], r9  
-    mov    [reg_p2+32], r10   
-    mov    [reg_p2+40], r11  
-    mov    [reg_p2+48], r12  
-    mov    [reg_p2+56], r13 
-    mov    [reg_p2+64], r14 
-    mov    [reg_p2+72], r15
-
-    pop    r15
-    pop    r14
-    pop    r13
-    pop    r12
-    ret
-
-  #else
-  
-//***********************************************************************
-//  Montgomery reduction
-//  Based on comba method
-//  Operation: c [reg_p2] = a [reg_p1]
-//  NOTE: a=c is not allowed
-//*********************************************************************** 
-.global fmt(rdc610_asm)
-fmt(rdc610_asm):
-
-  ret
-
-# error "CONFIGURATION NOT SUPPORTED. TRY USE_MULX=TRUE"
-
-  #endif
-
-
-//***********************************************************************
-//  610-bit multiprecision addition
-//  Operation: c [reg_p3] = a [reg_p1] + b [reg_p2]
-//*********************************************************************** 
-.global fmt(mp_add610_asm)
-fmt(mp_add610_asm):  
-  mov    r8, [reg_p1]
-  mov    r9, [reg_p1+8]
-  mov    r10, [reg_p1+16]
-  mov    r11, [reg_p1+24]
-  mov    rax, [reg_p1+32]
-  add    r8, [reg_p2] 
-  adc    r9, [reg_p2+8] 
-  adc    r10, [reg_p2+16] 
-  adc    r11, [reg_p2+24] 
-  adc    rax, [reg_p2+32] 
-  mov    [reg_p3], r8
-  mov    [reg_p3+8], r9
-  mov    [reg_p3+16], r10
-  mov    [reg_p3+24], r11
-  mov    [reg_p3+32], rax
-
-  mov    r8, [reg_p1+40]
-  mov    r9, [reg_p1+48] 
-  mov    r10, [reg_p1+56]
-  mov    r11, [reg_p1+64] 
-  mov    rax, [reg_p1+72] 
-  adc    r8, [reg_p2+40] 
-  adc    r9, [reg_p2+48]
-  adc    r10, [reg_p2+56] 
-  adc    r11, [reg_p2+64]
-  adc    rax, [reg_p2+72]
-  mov    [reg_p3+40], r8
-  mov    [reg_p3+48], r9
-  mov    [reg_p3+56], r10
-  mov    [reg_p3+64], r11
-  mov    [reg_p3+72], rax
-  ret
-
-
-//***********************************************************************
-//  2x610-bit multiprecision subtraction/addition
-//  Operation: c [x2] = a [x0] - b [x1]. If c < 0, add p610*2^640
-//*********************************************************************** 
-.global fmt(mp_subadd610x2_asm)
-fmt(mp_subadd610x2_asm):
-  push   r12
-  push   r13 
-  push   r14 
-  push   r15
-  push   rbx
-  xor    rax, rax
-  mov    r8, [reg_p1]
-  mov    r9, [reg_p1+8]
-  mov    r10, [reg_p1+16]
-  mov    r11, [reg_p1+24]
-  mov    rcx, [reg_p1+32]
-  sub    r8, [reg_p2] 
-  sbb    r9, [reg_p2+8] 
-  sbb    r10, [reg_p2+16] 
-  sbb    r11, [reg_p2+24] 
-  sbb    rcx, [reg_p2+32] 
-  mov    [reg_p3], r8
-  mov    [reg_p3+8], r9
-  mov    [reg_p3+16], r10
-  mov    [reg_p3+24], r11
-  mov    [reg_p3+32], rcx
-
-  mov    r8, [reg_p1+40]
-  mov    r9, [reg_p1+48]
-  mov    r10, [reg_p1+56] 
-  mov    r11, [reg_p1+64]
-  mov    rcx, [reg_p1+72] 
-  sbb    r8, [reg_p2+40] 
-  sbb    r9, [reg_p2+48] 
-  sbb    r10, [reg_p2+56]
-  sbb    r11, [reg_p2+64] 
-  sbb    rcx, [reg_p2+72]
-  mov    [reg_p3+40], r8
-  mov    [reg_p3+48], r9
-  mov    [reg_p3+56], r10
-  mov    [reg_p3+64], r11
-  mov    [reg_p3+72], rcx
-  
-  mov    r8, [reg_p1+80]
-  mov    r9, [reg_p1+88] 
-  mov    r10, [reg_p1+96]
-  mov    r11, [reg_p1+104]
-  mov    rcx, [reg_p1+112]
-  sbb    r8, [reg_p2+80]
-  sbb    r9, [reg_p2+88]
-  sbb    r10, [reg_p2+96] 
-  sbb    r11, [reg_p2+104] 
-  sbb    rcx, [reg_p2+112]
-  mov    [reg_p3+80], r8 
-  mov    [reg_p3+88], r9
-  mov    [reg_p3+96], r10
-  mov    [reg_p3+104], r11
-  mov    [reg_p3+112], rcx
-  
-  mov    r8, [reg_p1+120]
-  mov    r9, [reg_p1+128]
-  mov    r10, [reg_p1+136]
-  mov    r11, [reg_p1+144]
-  mov    rcx, [reg_p1+152]
-  sbb    r8, [reg_p2+120] 
-  sbb    r9, [reg_p2+128] 
-  sbb    r10, [reg_p2+136] 
-  sbb    r11, [reg_p2+144] 
-  sbb    rcx, [reg_p2+152]
-  sbb    rax, 0
-  
-  // Add p610 anded with the mask in rax 
-  mov    r12, [rip+fmt(p610)]
-  mov    r13, [rip+fmt(p610)+32]
-  mov    r14, [rip+fmt(p610)+40]
-  mov    r15, [rip+fmt(p610)+48]
-  mov    rdi, [rip+fmt(p610)+56]
-  mov    rsi, [rip+fmt(p610)+64]
-  mov    rbx, [rip+fmt(p610)+72]
-  and    r12, rax
-  and    r13, rax
-  and    r14, rax
-  and    r15, rax
-  and    rdi, rax
-  and    rsi, rax
-  and    rbx, rax
-  mov    rax, [reg_p3+80]
-  add    rax, r12
-  mov    [reg_p3+80], rax
-  mov    rax, [reg_p3+88]
-  adc    rax, r12
-  mov    [reg_p3+88], rax
-  mov    rax, [reg_p3+96]
-  adc    rax, r12
-  mov    [reg_p3+96], rax
-  adc    r12, [reg_p3+104]
-  adc    r13, [reg_p3+112]
-  mov    [reg_p3+104], r12
-  mov    [reg_p3+112], r13
-  adc    r8, r14
-  adc    r9, r15
-  adc    r10, rdi
-  adc    r11, rsi
-  adc    rcx, rbx
-  
-  mov    [reg_p3+120], r8
-  mov    [reg_p3+128], r9
-  mov    [reg_p3+136], r10
-  mov    [reg_p3+144], r11
-  mov    [reg_p3+152], rcx
-  pop    rbx
-  pop    r15
-  pop    r14
-  pop    r13
-  pop    r12
-  ret
-
-
-//***********************************************************************
-//  Double 2x610-bit multiprecision subtraction
-//  Operation: c [reg_p3] = c [reg_p3] - a [reg_p1] - b [reg_p2]
-//*********************************************************************** 
-.global fmt(mp_dblsub610x2_asm)
-fmt(mp_dblsub610x2_asm):
-  push   r12
-  push   r13
-  push   r14
-  push   r15
-  
-  mov    r8, [reg_p3]
-  mov    r9, [reg_p3+8]
-  mov    r10, [reg_p3+16]
-  mov    r11, [reg_p3+24]
-  mov    r12, [reg_p3+32]
-  mov    r13, [reg_p3+40]
-  mov    r14, [reg_p3+48]
-  mov    r15, [reg_p3+56]
-  sub    r8, [reg_p1]
-  sbb    r9, [reg_p1+8] 
-  sbb    r10, [reg_p1+16] 
-  sbb    r11, [reg_p1+24] 
-  sbb    r12, [reg_p1+32] 
-  sbb    r13, [reg_p1+40] 
-  sbb    r14, [reg_p1+48] 
-  sbb    r15, [reg_p1+56]
-  setc   al
-  sub    r8, [reg_p2]
-  sbb    r9, [reg_p2+8] 
-  sbb    r10, [reg_p2+16] 
-  sbb    r11, [reg_p2+24] 
-  sbb    r12, [reg_p2+32] 
-  sbb    r13, [reg_p2+40] 
-  sbb    r14, [reg_p2+48] 
-  sbb    r15, [reg_p2+56]
-  setc   cl
-  mov    [reg_p3], r8
-  mov    [reg_p3+8], r9
-  mov    [reg_p3+16], r10
-  mov    [reg_p3+24], r11
-  mov    [reg_p3+32], r12
-  mov    [reg_p3+40], r13
-  mov    [reg_p3+48], r14
-  mov    [reg_p3+56], r15
-    
-  mov    r8, [reg_p3+64]
-  mov    r9, [reg_p3+72]
-  mov    r10, [reg_p3+80]
-  mov    r11, [reg_p3+88]
-  mov    r12, [reg_p3+96]
-  mov    r13, [reg_p3+104]
-  mov    r14, [reg_p3+112]
-  mov    r15, [reg_p3+120]
-  bt     rax, 0 
-  sbb    r8, [reg_p1+64] 
-  sbb    r9, [reg_p1+72] 
-  sbb    r10, [reg_p1+80] 
-  sbb    r11, [reg_p1+88] 
-  sbb    r12, [reg_p1+96] 
-  sbb    r13, [reg_p1+104] 
-  sbb    r14, [reg_p1+112] 
-  sbb    r15, [reg_p1+120]
-  setc   al 
-  bt     rcx, 0  
-  sbb    r8, [reg_p2+64] 
-  sbb    r9, [reg_p2+72] 
-  sbb    r10, [reg_p2+80] 
-  sbb    r11, [reg_p2+88] 
-  sbb    r12, [reg_p2+96] 
-  sbb    r13, [reg_p2+104] 
-  sbb    r14, [reg_p2+112] 
-  sbb    r15, [reg_p2+120]
-  setc   cl 
-  mov    [reg_p3+64], r8
-  mov    [reg_p3+72], r9
-  mov    [reg_p3+80], r10
-  mov    [reg_p3+88], r11
-  mov    [reg_p3+96], r12
-  mov    [reg_p3+104], r13
-  mov    [reg_p3+112], r14
-  mov    [reg_p3+120], r15
-  
-  mov    r8, [reg_p3+128]
-  mov    r9, [reg_p3+136]
-  mov    r10, [reg_p3+144]
-  mov    r11, [reg_p3+152]
-  bt     rax, 0 
-  sbb    r8, [reg_p1+128] 
-  sbb    r9, [reg_p1+136] 
-  sbb    r10, [reg_p1+144] 
-  sbb    r11, [reg_p1+152]
-  bt     rcx, 0 
-  sbb    r8, [reg_p2+128] 
-  sbb    r9, [reg_p2+136] 
-  sbb    r10, [reg_p2+144] 
-  sbb    r11, [reg_p2+152]
-  mov    [reg_p3+128], r8
-  mov    [reg_p3+136], r9
-  mov    [reg_p3+144], r10
-  mov    [reg_p3+152], r11
-  
-  pop    r15
-  pop    r14
-  pop    r13
-  pop    r12
-  ret

@@ -6,7 +6,7 @@
 - **Authors' website**: https://sike.org
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/microsoft/PQCrypto-SIDH/commit/effa607f244768cdd38f930887076373604eaa78
+  - **Source**: https://github.com/microsoft/PQCrypto-SIDH/tree/v3.5.1
   - **Implementation license (SPDX-Identifier)**: MIT
 
 

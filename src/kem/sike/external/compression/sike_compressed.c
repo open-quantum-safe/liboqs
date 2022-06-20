@@ -1,5 +1,9 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: supersingular isogeny key encapsulation (SIKE) protocol using compression
 *********************************************************************************************/ 
@@ -8,14 +12,16 @@
 #include <oqs/common.h>
 #include <oqs/sha3.h>
 
+
 int crypto_kem_keypair(unsigned char *pk, unsigned char *sk)
 { // SIKE's key generation using compression
   // Outputs: secret key sk (CRYPTO_SECRETKEYBYTES = MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES + FP2_ENCODED_BYTES bytes)
   //          public key pk_comp (CRYPTO_PUBLICKEYBYTES bytes) 
     
     // Generate lower portion of secret key sk <- s||SK
-    OQS_randombytes(sk, MSG_BYTES);   
-    random_mod_order_A(sk + MSG_BYTES);    // Even random number
+    OQS_randombytes(sk, MSG_BYTES);    
+    if (random_mod_order_A(sk + MSG_BYTES) != 0)
+        return 1;
 
     // Generate public key pk
     EphemeralKeyGeneration_A_extended(sk + MSG_BYTES, pk);
@@ -38,7 +44,7 @@ int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk
     unsigned char temp[CRYPTO_CIPHERTEXTBYTES + MSG_BYTES] = {0};
 
     // Generate ephemeralsk <- G(m||pk) mod oB 
-    OQS_randombytes(temp, MSG_BYTES);    
+    OQS_randombytes(temp, MSG_BYTES);
     memcpy(&temp[MSG_BYTES], pk, CRYPTO_PUBLICKEYBYTES);        
     OQS_SHA3_shake256(ephemeralsk, SECRETKEY_B_BYTES, temp, MSG_BYTES + CRYPTO_PUBLICKEYBYTES);
     FormatPrivKey_B(ephemeralsk);
@@ -68,10 +74,13 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
     unsigned char jinvariant_[FP2_ENCODED_BYTES + 2*FP2_ENCODED_BYTES + SECRETKEY_A_BYTES] = {0}, h_[MSG_BYTES];
     unsigned char temp[CRYPTO_CIPHERTEXTBYTES + MSG_BYTES] = {0};   
     unsigned char* tphiBKA_t = &jinvariant_[FP2_ENCODED_BYTES];
+    int8_t selector = -1;
     
     // Decrypt 
-    EphemeralSecretAgreement_A_extended(sk + MSG_BYTES, ct, jinvariant_, 1);  
-    OQS_SHA3_shake256(h_, MSG_BYTES, jinvariant_, FP2_ENCODED_BYTES);   
+    if (!EphemeralSecretAgreement_A_extended(sk + MSG_BYTES, ct, jinvariant_, 1) == 0) {
+        goto Hashing;
+    }
+    OQS_SHA3_shake256(h_, MSG_BYTES, jinvariant_, FP2_ENCODED_BYTES);
     
     for (int i = 0; i < MSG_BYTES; i++) {
         temp[i] = ct[i + PARTIALLY_COMPRESSED_CHUNK_CT] ^ h_[i];                         
@@ -84,10 +93,11 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
     
     // Generate shared secret ss <- H(m||ct), or output ss <- H(s||ct) in case of ct verification failure
     // No need to recompress, just check if x(phi(P) + t*phi(Q)) == x((a0 + t*a1)*R1 + (b0 + t*b1)*R2)    
-    int8_t selector = validate_ciphertext(ephemeralsk_, ct, &sk[MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES], tphiBKA_t);
+    selector = validate_ciphertext(ephemeralsk_, ct, &sk[MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES], tphiBKA_t);
+Hashing:
     // If ct validation passes (selector = 0) then do ss = H(m||ct), otherwise (selector = -1) load s to do ss = H(s||ct)
     ct_cmov(temp, sk, MSG_BYTES, selector);
-    memcpy(&temp[MSG_BYTES], ct, CRYPTO_CIPHERTEXTBYTES);
+    memcpy(&temp[MSG_BYTES], ct, CRYPTO_CIPHERTEXTBYTES);  
     OQS_SHA3_shake256(ss, CRYPTO_BYTES, temp, CRYPTO_CIPHERTEXTBYTES + MSG_BYTES);
 
     return 0;

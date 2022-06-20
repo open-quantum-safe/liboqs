@@ -1,5 +1,9 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: core functions over GF(p) and GF(p^2)
 *********************************************************************************************/
@@ -136,19 +140,27 @@ static void copy_words(const digit_t* a, digit_t* c, const unsigned int nwords)
 
 static void fpmul_mont(const digit_t* ma, const digit_t* mb, digit_t* mc)
 { // Multiprecision multiplication, c = a*b mod p.
+#if defined(_MULX_) && defined(_ADX_) && (OS_TARGET == OS_NIX) && (NBITS_FIELD != 751)
+    fpmul(ma, mb, mc);
+#else
     dfelm_t temp = {0};
 
     mp_mul(ma, mb, temp, NWORDS_FIELD);
     rdc_mont(temp, mc);
+#endif
 }
 
 
 static void fpsqr_mont(const digit_t* ma, digit_t* mc)
 { // Multiprecision squaring, c = a^2 mod p.
+#if defined(_MULX_) && defined(_ADX_) && (OS_TARGET == OS_NIX) && (NBITS_FIELD != 751)
+    fpmul(ma, ma, mc);
+#else
     dfelm_t temp = {0};
 
     mp_mul(ma, ma, temp, NWORDS_FIELD);
     rdc_mont(temp, mc);
+#endif
 }
 
 
@@ -219,7 +231,7 @@ inline static void mp_addfast(const digit_t* a, const digit_t* b, digit_t* c)
 
     mp_add(a, b, c, NWORDS_FIELD);
     
-#else
+#else                 
     
     mp_add_asm(a, b, c);    
 
@@ -256,7 +268,14 @@ inline unsigned int mp_add(const digit_t* a, const digit_t* b, digit_t* c, const
 static void fp2sqr_mont(const f2elm_t a, f2elm_t c)
 { // GF(p^2) squaring using Montgomery arithmetic, c = a^2 in GF(p^2).
   // Inputs: a = a0+a1*i, where a0, a1 are in [0, 2*p-1] 
-  // Output: c = c0+c1*i, where c0, c1 are in [0, 2*p-1] 
+  // Output: c = c0+c1*i, where c0, c1 are in [0, 2*p-1]  
+#if defined(_MULX_) && defined(_ADX_) && (OS_TARGET == OS_NIX) && (NBITS_FIELD != 751)
+    dfelm_t tt1; 
+    
+    fp2sqr_c0_mont(a[0], (digit_t*)tt1);            // c0 = (a0+a1)(a0-a1)
+    fp2sqr_c1_mont(a[0], c[1]);                     // c1 = 2a0*a1
+    fpcopy((digit_t*)tt1, c[0]);
+#else
     felm_t t1, t2, t3;
     
     mp_addfast(a[0], a[1], t1);                      // t1 = a0+a1 
@@ -264,6 +283,7 @@ static void fp2sqr_mont(const f2elm_t a, f2elm_t c)
     mp_addfast(a[0], a[0], t3);                      // t3 = 2a0
     fpmul_mont(t1, t2, c[0]);                        // c0 = (a0+a1)(a0-a1)
     fpmul_mont(t3, a[1], c[1]);                      // c1 = 2a0*a1
+#endif
 }
 
 
@@ -315,6 +335,13 @@ static void fp2mul_mont(const f2elm_t a, const f2elm_t b, f2elm_t c)
 { // GF(p^2) multiplication using Montgomery arithmetic, c = a*b in GF(p^2).
   // Inputs: a = a0+a1*i and b = b0+b1*i, where a0, a1, b0, b1 are in [0, 2*p-1] 
   // Output: c = c0+c1*i, where c0, c1 are in [0, 2*p-1] 
+#if defined(_MULX_) && defined(_ADX_) && (OS_TARGET == OS_NIX) && (NBITS_FIELD != 751)
+    felm_t t1;
+    
+    fp2mul_c0_mont(a[0], b[0], t1);                  // c0 = a0*b0 - a1*b1
+    fp2mul_c1_mont(a[0], b[0], c[1]);                // c1 = a0*b1 + a1*b0 
+    fpcopy(t1, c[0]);
+#else
     felm_t t1, t2;
     dfelm_t tt1, tt2, tt3; 
     
@@ -325,8 +352,9 @@ static void fp2mul_mont(const f2elm_t a, const f2elm_t b, f2elm_t c)
     mp_mul(t1, t2, tt3, NWORDS_FIELD);               // tt3 = (a0+a1)*(b0+b1)
     mp_dblsubfast(tt1, tt2, tt3);                    // tt3 = (a0+a1)*(b0+b1) - a0*b0 - a1*b1
     mp_subaddfast(tt1, tt2, tt1);                    // tt1 = a0*b0 - a1*b1 + p*2^MAXBITS_FIELD if a0*b0 - a1*b1 < 0, else tt1 = a0*b0 - a1*b1
-    rdc_mont(tt3, c[1]);                             // c[1] = (a0+a1)*(b0+b1) - a0*b0 - a1*b1 
-    rdc_mont(tt1, c[0]);                             // c[0] = a0*b0 - a1*b1
+    rdc_mont(tt3, c[1]);                             // c1 = (a0+a1)*(b0+b1) - a0*b0 - a1*b1 
+    rdc_mont(tt1, c[0]);                             // c0 = a0*b0 - a1*b1
+#endif
 }
 
 
@@ -821,18 +849,46 @@ static void mp_shiftl1(digit_t* x, const unsigned int nwords)
     x[0] <<= 1;
 }
 
-#ifdef COMPRESS
 
 static inline unsigned int is_felm_zero(const felm_t x)
 { // Is x = 0? return 1 (TRUE) if condition is true, 0 (FALSE) otherwise.
   // SECURITY NOTE: This function does not run in constant-time.
-    unsigned int i;
 
-    for (i = 0; i < NWORDS_FIELD; i++) {
+    for (unsigned int i = 0; i < NWORDS_FIELD; i++) {
         if (x[i] != 0) return 0;
     }
     return 1;
 }
+
+
+static unsigned char is_sqr_fp2(const f2elm_t a, felm_t s)
+{ // Test if a is a square in GF(p^2) and return 1 if true, 0 otherwise
+  // If a is a quadratic residue, s will be assigned with a partially computed square root of a
+    int i;
+    felm_t a0, a1, z, temp;
+
+    fpsqr_mont(a[0], a0);
+    fpsqr_mont(a[1], a1);
+    fpadd(a0, a1, z);
+
+    fpcopy(z, s);
+    for (i = 0; i < OALICE_BITS - 2; i++) {
+        fpsqr_mont(s, s);
+    }
+    for (i = 0; i < OBOB_EXPON; i++) {
+        fpsqr_mont(s, temp);
+        fpmul_mont(s, temp, s);
+    }
+    fpsqr_mont(s, temp);          // s = z^((p+1)/4)
+    fpcorrection(temp);
+    fpcorrection(z);
+    if (memcmp(temp, z, NBITS_TO_NBYTES(NBITS_FIELD)) != 0)  // s^2 != z?
+        return 0;
+
+    return 1;
+}
+
+#ifdef COMPRESS
 
 static inline unsigned int is_felm_one(const felm_t x)
 { // Is x = 0? return 1 (TRUE) if condition is true, 0 (FALSE) otherwise.
@@ -844,6 +900,7 @@ static inline unsigned int is_felm_one(const felm_t x)
     }
     return 1;
 }
+
 
 static void mul3(unsigned char *a) 
 { // Computes a = 3*a
@@ -922,10 +979,6 @@ static void cube_Fp2_cycl(f2elm_t a, const felm_t one)
 }
 
 
-
-
-
-
 static bool is_zero(digit_t* a, unsigned int nwords)
 { // Check if multiprecision element is zero.
   // SECURITY NOTE: This function does not run in constant time.
@@ -937,34 +990,6 @@ static bool is_zero(digit_t* a, unsigned int nwords)
     }
 
     return true;
-}
-
-
-static unsigned char is_sqr_fp2(const f2elm_t a, felm_t s) 
-{ // Test if a is a square in GF(p^2) and return 1 if true, 0 otherwise
-  // If a is a quadratic residue, s will be assigned with a partially computed square root of a
-    int i;
-    felm_t a0,a1,z,temp;
-    
-    fpsqr_mont(a[0],a0);
-    fpsqr_mont(a[1],a1);
-    fpadd(a0,a1,z);
-    
-    fpcopy(z,s);
-    for (i = 0; i < OALICE_BITS - 2; i++) {             
-        fpsqr_mont(s, s);
-    }
-    for (i = 0; i < OBOB_EXPON; i++) {
-        fpsqr_mont(s, temp);
-        fpmul_mont(s, temp, s);
-    }  
-    fpsqr_mont(s,temp);          // s = z^((p+1)/4)
-    fpcorrection(temp);
-    fpcorrection(z);
-    if (memcmp(temp, z, NBITS_TO_NBYTES(NBITS_FIELD)) != 0)  // s^2 !=? z
-        return 0;
-    
-    return 1;
 }
 
 

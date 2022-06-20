@@ -1,10 +1,15 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: modular arithmetic optimized for 64-bit ARMv8 platforms for P434
 *********************************************************************************************/
 
 #include "../P434_internal.h"
+#include "../../internal.h"
 
 /* OQS note: this file is #include'd with the defs of these consts; removed to avoid re-defs
 // Global constants

@@ -1,5 +1,9 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: elliptic curve and isogeny functions
 *********************************************************************************************/
@@ -28,25 +32,24 @@ static void xDBLe(const point_proj_t P, point_proj_t Q, const f2elm_t A24plus, c
 { // Computes [2^e](X:Z) on Montgomery curve with projective constant via e repeated doublings.
   // Input: projective Montgomery x-coordinates P = (XP:ZP), such that xP=XP/ZP and Montgomery curve constants A+2C and 4C.
   // Output: projective Montgomery x-coordinates Q <- (2^e)*P.
-    int i;
     
     copy_words((digit_t*)P, (digit_t*)Q, 2*2*NWORDS_FIELD);
 
-    for (i = 0; i < e; i++) {
+    for (int i = 0; i < e; i++) {
         xDBL(Q, Q, A24plus, C24);
     }
 }
 
 #if (OALICE_BITS % 2 == 1)
 
-static void get_2_isog(const point_proj_t P, f2elm_t A, f2elm_t C)
+static void get_2_isog(const point_proj_t P, f2elm_t A24plus, f2elm_t C24)
 { // Computes the corresponding 2-isogeny of a projective Montgomery point (X2:Z2) of order 2.
   // Input:  projective point of order two P = (X2:Z2).
-  // Output: the 2-isogenous Montgomery curve with projective coefficients A/C.
+  // Output: the 2-isogenous Montgomery curve with projective coefficients A/C, where A+2C = A24plus and 4C = C24.
     
-    fp2sqr_mont(P->X, A);                           // A = X2^2
-    fp2sqr_mont(P->Z, C);                           // C = Z2^2
-    mp2_sub_p2(C, A, A);                            // A = Z2^2 - X2^2
+    fp2sqr_mont(P->X, A24plus);                     // A24plus = X2^2
+    fp2sqr_mont(P->Z, C24);                         // C24 = Z2^2
+    mp2_sub_p2(C24, A24plus, A24plus);              // A24plus = Z2^2 - X2^2
 }
 
 
@@ -73,8 +76,8 @@ static void eval_2_isog(point_proj_t P, point_proj_t Q)
 static void get_4_isog(const point_proj_t P, f2elm_t A24plus, f2elm_t C24, f2elm_t* coeff)
 { // Computes the corresponding 4-isogeny of a projective Montgomery point (X4:Z4) of order 4.
   // Input:  projective point of order four P = (X4:Z4).
-  // Output: the 4-isogenous Montgomery curve with projective coefficients A+2C/4C and the 3 coefficients 
-  //         that are used to evaluate the isogeny at a point in eval_4_isog().
+  // Output: the 4-isogenous Montgomery curve with projective coefficients A/C, where A+2C = A24plus and 4C = C24, 
+  //         and the 3 coefficients that are used to evaluate the isogeny at a point in eval_4_isog().
     
     mp2_sub_p2(P->X, P->Z, coeff[1]);               // coeff[1] = X4-Z4
     mp2_add(P->X, P->Z, coeff[2]);                  // coeff[2] = X4+Z4
@@ -147,11 +150,10 @@ static void xTPLe(const point_proj_t P, point_proj_t Q, const f2elm_t A24minus, 
 { // Computes [3^e](X:Z) on Montgomery curve with projective constant via e repeated triplings.
   // Input: projective Montgomery x-coordinates P = (XP:ZP), such that xP=XP/ZP and Montgomery curve constants A24plus = A+2C and A24minus = A-2C.
   // Output: projective Montgomery x-coordinates Q <- (3^e)*P.
-    int i;
         
     copy_words((digit_t*)P, (digit_t*)Q, 2*2*NWORDS_FIELD);
 
-    for (i = 0; i < e; i++) {
+    for (int i = 0; i < e; i++) {
         xTPL(Q, Q, A24minus, A24plus);
     }
 }
@@ -160,7 +162,7 @@ static void xTPLe(const point_proj_t P, point_proj_t Q, const f2elm_t A24minus, 
 static void get_3_isog(const point_proj_t P, f2elm_t A24minus, f2elm_t A24plus, f2elm_t* coeff)
 { // Computes the corresponding 3-isogeny of a projective Montgomery point (X3:Z3) of order 3.
   // Input:  projective point of order three P = (X3:Z3).
-  // Output: the 3-isogenous Montgomery curve with projective coefficient A/C. 
+  // Output: the 3-isogenous Montgomery curve with projective coefficient A/C, where A+2C = A24plus and A-2C = A24minus. 
     f2elm_t t0, t1, t2, t3, t4;
     
     mp2_sub_p2(P->X, P->Z, coeff[0]);               // coeff0 = X-Z
@@ -362,8 +364,51 @@ static void LADDER3PT(const f2elm_t xP, const f2elm_t xQ, const f2elm_t xPQ, con
     swap_points(R, R2, mask);
 }
 
-#ifdef COMPRESS
 
+static void xTPL_fast(const point_proj_t P, point_proj_t Q, const f2elm_t A2)
+{ // Montgomery curve (E: y^2 = x^3 + A*x^2 + x) x-only tripling at a cost of 5M + 6S + 11A.
+  // Input : projective Montgomery x-coordinates P = (X:Z), where x=X/Z and Montgomery curve constant A/2. 
+  // Output: projective Montgomery x-coordinates Q = 3*P = (X3:Z3).
+    f2elm_t t1, t2, t3, t4;
+
+    fp2sqr_mont(P->X, t1);        // t1 = x^2
+    fp2sqr_mont(P->Z, t2);        // t2 = z^2
+    fp2add(t1, t2, t3);           // t3 = t1 + t2
+    fp2add(P->X, P->Z, t4);       // t4 = x + z
+    fp2sqr_mont(t4, t4);          // t4 = t4^2
+    fp2sub(t4, t3, t4);           // t4 = t4 - t3
+    fp2mul_mont(A2, t4, t4);      // t4 = t4*A2
+    fp2add(t3, t4, t4);           // t4 = t4 + t3
+    fp2sub(t1, t2, t3);           // t3 = t1 - t2
+    fp2sqr_mont(t3, t3);          // t3 = t3^2
+    fp2mul_mont(t1, t4, t1);      // t1 = t1*t4
+    fp2add(t1, t1, t1);           // t1 = 2*t1
+    fp2add(t1, t1, t1);           // t1 = 4*t1
+    fp2sub(t1, t3, t1);           // t1 = t1 - t3
+    fp2sqr_mont(t1, t1);          // t1 = t1^2
+    fp2mul_mont(t2, t4, t2);      // t2 = t2*t4
+    fp2add(t2, t2, t2);           // t2 = 2*t2
+    fp2add(t2, t2, t2);           // t2 = 4*t2
+    fp2sub(t2, t3, t2);           // t2 = t2 - t3
+    fp2sqr_mont(t2, t2);          // t2 = t2^2
+    fp2mul_mont(P->X, t2, Q->X);  // x = x*t2
+    fp2mul_mont(P->Z, t1, Q->Z);  // z = z*t1    
+}
+
+
+static void xTPLe_fast(point_proj_t P, point_proj_t Q, const f2elm_t A2, int e)
+{ // Computes [3^e](X:Z) on Montgomery curve with projective constant via e repeated triplings. e triplings in E costs e*(5M + 6S + 11A)
+  // Input: projective Montgomery x-coordinates P = (X:Z), where x=X/Z, Montgomery curve constant A2 = A/2 and the number of triplings e.
+  // Output: projective Montgomery x-coordinates Q <- [3^e]P.
+
+    copy_words((digit_t*)P, (digit_t*)Q, 2 * 2 * NWORDS_FIELD);
+
+    for (int i = 0; i < e; i++) {
+        xTPL_fast(Q, Q, A2);
+    }
+}
+
+#ifdef COMPRESS
 
 static void RecoverY(const f2elm_t A, const point_proj_t *xs, point_full_proj_t *Rs)
 {
@@ -474,49 +519,6 @@ static void Double(point_proj_t P, point_proj_t Q, f2elm_t A24, const int k)
         fp2add(temp, bb, temp);
         fp2mul_mont(c, temp, Q->Z);
     }
-}
-
-
-static void xTPL_fast(const point_proj_t P, point_proj_t Q, const f2elm_t A2)
-{ // Montgomery curve (E: y^2 = x^3 + A*x^2 + x) x-only tripling at a cost 5M + 6S + 9A = 27p + 61a.
-  // Input : projective Montgomery x-coordinates P = (X:Z), where x=X/Z and Montgomery curve constant A/2. 
-  // Output: projective Montgomery x-coordinates Q = 3*P = (X3:Z3).
-       f2elm_t t1, t2, t3, t4;
-       
-       fp2sqr_mont(P->X, t1);        // t1 = x^2
-       fp2sqr_mont(P->Z, t2);        // t2 = z^2
-       fp2add(t1, t2, t3);           // t3 = t1 + t2
-       fp2add(P->X, P->Z, t4);       // t4 = x + z
-       fp2sqr_mont(t4, t4);          // t4 = t4^2
-       fp2sub(t4, t3, t4);           // t4 = t4 - t3
-       fp2mul_mont(A2, t4, t4);      // t4 = t4*A2
-       fp2add(t3, t4, t4);           // t4 = t4 + t3
-       fp2sub(t1, t2, t3);           // t3 = t1 - t2
-       fp2sqr_mont(t3, t3);          // t3 = t3^2
-       fp2mul_mont(t1, t4, t1);      // t1 = t1*t4
-       fp2shl(t1, 2, t1);            // t1 = 4*t1
-       fp2sub(t1, t3, t1);           // t1 = t1 - t3
-       fp2sqr_mont(t1, t1);          // t1 = t1^2
-       fp2mul_mont(t2, t4, t2);      // t2 = t2*t4
-       fp2shl(t2, 2, t2);            // t2 = 4*t2
-       fp2sub(t2, t3, t2);           // t2 = t2 - t3
-       fp2sqr_mont(t2, t2);          // t2 = t2^2
-       fp2mul_mont(P->X, t2, Q->X);  // x = x*t2
-       fp2mul_mont(P->Z, t1, Q->Z);  // z = z*t1    
-}
-
-
-static void xTPLe_fast(point_proj_t P, point_proj_t Q, const f2elm_t A2, int e)
-{ // Computes [3^e](X:Z) on Montgomery curve with projective constant via e repeated triplings. e triplings in E costs k*(5M + 6S + 9A)
-  // Input: projective Montgomery x-coordinates P = (X:Z), where x=X/Z, Montgomery curve constant A2 = A/2 and the number of triplings e.
-  // Output: projective Montgomery x-coordinates Q <- [3^e]P.    
-    point_proj_t T;
-
-    copy_words((digit_t*)P, (digit_t*)T, 2*2*NWORDS_FIELD);
-    for (int j = 0; j < e; j++) { 
-        xTPL_fast(T, T, A2);
-    }
-    copy_words((digit_t*)T, (digit_t*)Q, 2*2*NWORDS_FIELD);
 }
 
 
@@ -646,15 +648,13 @@ static void Ladder(const point_proj_t P, const digit_t* m, const f2elm_t A, cons
     point_proj_t R0, R1;
     f2elm_t A24 = {0};
     digit_t mask;
-    unsigned int bit = 0, prevbit = 0, j, swap;
+    unsigned int bit = 0, prevbit = 0, swap;
         
     fpcopy((digit_t*)&Montgomery_one, A24[0]);
     fpadd(A24[0], A24[0], A24[0]);
     fp2add(A, A24, A24);
     fp2div2(A24, A24);  
-    fp2div2(A24, A24);  // A24 = (A+2)/4          
-
-    j = order_bits - 1;
+    fp2div2(A24, A24);  // A24 = (A+2)/4
 
     // R0 <- P, R1 <- 2P
     fp2copy(P->X, R0->X);
@@ -662,7 +662,7 @@ static void Ladder(const point_proj_t P, const digit_t* m, const f2elm_t A, cons
     xDBL_e(P, R1, A24, 1);    
     
     // Main loop
-    for (int i = j;  i >= 0; i--) {
+    for (int i = order_bits-1;  i >= 0; i--) {
         bit = (m[i >> LOG2RADIX] >> (i & (RADIX-1))) & 1;
         swap = bit ^ prevbit;
         prevbit = bit;
