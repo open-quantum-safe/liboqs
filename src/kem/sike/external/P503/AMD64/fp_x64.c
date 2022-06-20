@@ -190,6 +190,18 @@ void fpmul503(const digit_t *a, const digit_t *b, digit_t *c) {
 	oqs_kem_sike_fpmul503_asm(a, b, c);
 }
 
+// OQS note: macOS complains that these aren't define, so creating empty functions from the #else clause
+void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords) {
+	UNREFERENCED_PARAMETER(a);
+	UNREFERENCED_PARAMETER(b);
+	UNREFERENCED_PARAMETER(c);
+	UNREFERENCED_PARAMETER(nwords);
+}
+void rdc_mont(digit_t *ma, digit_t *mc) {
+	UNREFERENCED_PARAMETER(ma);
+	UNREFERENCED_PARAMETER(mc);
+}
+
 #else
 
 void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords) {
