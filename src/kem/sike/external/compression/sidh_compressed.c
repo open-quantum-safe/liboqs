@@ -693,7 +693,7 @@ static int EphemeralSecretAgreement_A_extended(const unsigned char *PrivateKeyA,
 	f2elm_t param_A = {0};
 
 	if (sike == 1) {
-		if (!PKBDecompression_extended(PrivateKeyA, PKB, R, param_A, SharedSecretA + FP2_ENCODED_BYTES) == 0) {
+		if (!(PKBDecompression_extended(PrivateKeyA, PKB, R, param_A, SharedSecretA + FP2_ENCODED_BYTES) == 0)) {
 			return 1;
 		}
 	} else {

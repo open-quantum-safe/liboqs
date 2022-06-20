@@ -78,7 +78,7 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 	int8_t selector = -1;
 
 	// Decrypt
-	if (!EphemeralSecretAgreement_A_extended(sk + MSG_BYTES, ct, jinvariant_, 1) == 0) {
+	if (!(EphemeralSecretAgreement_A_extended(sk + MSG_BYTES, ct, jinvariant_, 1) == 0)) {
 		goto Hashing;
 	}
 	OQS_SHA3_shake256(h_, MSG_BYTES, jinvariant_, FP2_ENCODED_BYTES);

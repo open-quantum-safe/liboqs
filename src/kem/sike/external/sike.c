@@ -99,7 +99,7 @@ int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned ch
 #endif
 
 	// Decrypt
-	if (!EphemeralSecretAgreement_B_extended(sk + MSG_BYTES, ct, jinvariant_, 1) == 0) {
+	if (!(EphemeralSecretAgreement_B_extended(sk + MSG_BYTES, ct, jinvariant_, 1) == 0)) {
 		goto Hashing;
 	}
 #ifdef DO_VALGRIND_CHECK
