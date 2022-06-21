@@ -3146,3 +3146,4 @@ fmt(mp_dblsub751x2_asm):
   pop    r12
   ret
   
+  
