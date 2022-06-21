@@ -79,7 +79,7 @@ inline static void decode_to_digits(const unsigned char *x, digit_t *dec, int nb
 
 static void fp2_encode(const f2elm_t x, unsigned char *enc) {
 	// Conversion of GF(p^2) element from Montgomery to standard representation, and encoding by removing leading 0 bytes
-	f2elm_t t;
+	f2elm_t t = {0};
 
 	from_fp2mont(x, t);
 	encode_to_bytes(t[0], enc, FP2_ENCODED_BYTES / 2);
