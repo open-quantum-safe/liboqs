@@ -271,7 +271,7 @@ int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned 
 static int publickey_validation(const f2elm_t *PKB, const f2elm_t A, const f2elm_t A24plus, const f2elm_t A24minus) {
 	// Public key validation
 	point_proj_t P = {0}, Q = {0};
-	f2elm_t A2, tmp1, tmp2;
+	f2elm_t A2 = {0}, tmp1 = {0}, tmp2 = {0};
 
 	// Verify that P and Q generate E_A[3^e_3] by checking that [3^(e_3-1)]P != [+-3^(e_3-1)]Q
 	fp2div2(A, A2);
