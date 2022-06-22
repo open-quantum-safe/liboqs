@@ -882,6 +882,7 @@ INPUT                  = src/common/common.h \
                          src/kem/kem.h \
                          src/sig/sig.h \
                          README.md \
+                         CONFIGURE.md \
                          CONTRIBUTORS 
 
 # This tag can be used to specify the character encoding of the source files
