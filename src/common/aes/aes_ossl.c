@@ -82,10 +82,8 @@ void OQS_AES256_CTR_inc_init(const uint8_t *key, void **schedule) {
 	struct key_schedule *ks = (struct key_schedule *) *schedule;
 	EVP_CIPHER_CTX *ctr_ctx = EVP_CIPHER_CTX_new();
 	assert(ctr_ctx != NULL);
-	//OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ctr_ctx, EVP_aes_256_ctr(), NULL, key, NULL));
 
 	OQS_EXIT_IF_NULLPTR(*schedule);
-	//struct key_schedule *ks = (struct key_schedule *) *schedule;
 	ks->for_ECB = 0;
 	ks->ctx = ctr_ctx;
 	memcpy(ks->key, key, 32);

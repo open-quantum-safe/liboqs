@@ -80,12 +80,12 @@ void OQS_AES256_CTR_inc_init(const uint8_t *key, void **ctx);
 void OQS_AES256_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *ctx);
 
 /**
- * Function to fill a context fiven an IV for use in CTR mode.
+ * Function to fill a context given an IV for use in CTR mode.
  * Handles an 8-byte IV passed as a 64-bit unsigned integer,
  * counter bytes are initialized to zero.
  *
  * @param iv             Initialization Vector as 64-bit integer.
- * @param ctx            Abstract datra structure for IV.
+ * @param ctx            Abstract data structure for IV.
  */
 void OQS_AES256_CTR_inc_ivu64(uint64_t iv, void *ctx);
 
