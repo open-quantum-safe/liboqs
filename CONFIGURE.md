@@ -7,6 +7,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_ENABLE_KEM_\<ALG\>/OQS_ENABLE_SIG_\<ALG\>](#OQS_ENABLE_KEM_\<ALG\>/OQS_ENABLE_SIG_\<ALG\>)
 - [OQS_MINIMAL_BUILD](#OQS_MINIMAL_BUILD)
 - [OQS_DIST_BUILD](#OQS_DIST_BUILD)
+- [OQS_USE_\<CPU_FEATURE\>_INSTRUCTIONS](OQS_USE_\<CPU_FEATURE\>_INSTRUCTIONS)
 - [OQS_USE_OPENSSL](#OQS_USE_OPENSSL)
 - [OQS_OPT_TARGET](#OQS_OPT_TARGET)
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
@@ -57,15 +58,19 @@ When built for distribution, the library will run on any CPU of the target archi
 
 When built for use on a single machine, the library will only include the best available code for the target micro-architecture (see [OQS_OPT_TARGET](#OQS_OPT_TARGET)).
 
+## OQS_USE_\<CPU_FEATURE\>_INSTRUCTIONS
+
+These can be set to `ON` or `OFF` and take an effect if liboqs is built for use on a single machine. By default, the CPU features are automatically determined and set to `ON` or `OFF` based on the CPU features available on the build system. The default values can be overridden by providing CMake build options. The available options on x86-64 are: `OQS_USE_ADX_INSTRUCTIONS`, `OQS_USE_AES_INSTRUCTIONS`, `OQS_USE_AVX_INSTRUCTIONS`, `OQS_USE_AVX2_INSTRUCTIONS`, `OQS_USE_AVX512_INSTRUCTIONS`, `OQS_USE_BMI1_INSTRUCTIONS`, `OQS_USE_BMI2_INSTRUCTIONS`, `OQS_USE_PCLMULQDQ_INSTRUCTIONS`, `OQS_USE_VPCLMULQDQ_INSTRUCTIONS`, `OQS_USE_POPCNT_INSTRUCTIONS`, `OQS_USE_SSE_INSTRUCTIONS`, `OQS_USE_SSE2_INSTRUCTIONS` and `OQS_USE_SSE3_INSTRUCTIONS`. The available options on ARM64v8 are `OQS_USE_ARM_AES_INSTRUCTIONS`, `OQS_USE_ARM_SHA2_INSTRUCTIONS`, `OQS_USE_ARM_SHA3_INSTRUCTIONS` and `OQS_USE_ARM_NEON_INSTRUCTIONS`.
+
 ## OQS_USE_OPENSSL
 
-This can be set to `ON` or `OFF`. When `ON`, the additional options `OQS_USE_AES_OPENSSL`, `OQS_USE_SHA2_OPENSSL`, and `OQS_USE_SHA3_OPENSSL` are made available to control whether liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations. By default, `OQS_USE_AES_OPENSSL` and `OQS_USE_SHA2_OPENSSL` are `ON` while `OQS_USE_SHA3_OPENSSL` is `OFF`.
+This can be set to `ON` or `OFF`. When `ON`, the additional options `OQS_USE_AES_OPENSSL`, `OQS_USE_SHA2_OPENSSL`, and `OQS_USE_SHA3_OPENSSL` are made available to control whether liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations. By default, `OQS_USE_AES_OPENSSL` is `ON` (on x86-64 only if `OQS_DIST_BUILD` and `OQS_USE_AES_INSTRUCTIONS` are not set), `OQS_USE_SHA2_OPENSSL` is `ON` while `OQS_USE_SHA3_OPENSSL` is `OFF`.
 
 When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the minimum version of OpenSSL required by liboqs (which happens to be 1.1.1). The `OPENSSL_ROOT_DIR` option can be set to aid CMake in its search.
 
 ## OQS_OPT_TARGET
 
-An optimization target. Only has an effect if the compiler is GCC or Clang and `OQS_DIST_BUILD=OFF`. Can take any valid input to the `-march` (on x86_64) or `-mcpu` (on ARM32v7 or ARM64v8) option for `CMAKE_C_COMPILER`. Can also be set to one of the following special values.
+An optimization target. Only has an effect if the compiler is GCC or Clang and `OQS_DIST_BUILD=OFF`. Can take any valid input to the `-march` (on x86-64) or `-mcpu` (on ARM32v7 or ARM64v8) option for `CMAKE_C_COMPILER`. Can also be set to one of the following special values.
   - `auto`: Use `-march=native` or `-mcpu=native` (if the compiler supports it).
   - `generic`: Use `-march=x86-64` on x86-64, or `-mcpu=cortex-a5` on ARM32v7, or `-mcpu=cortex-a53` on ARM64v8.
 

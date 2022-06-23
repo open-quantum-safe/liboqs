@@ -76,8 +76,8 @@ static const uint8_t test_aes256ctr_ciphertext[] = {0xEB, 0x6C, 0x52, 0x82, 0x1D
 static int test_aes256ctr_correctness(void) {
 	uint8_t derived_ciphertext[36];
 	void *schedule = NULL;
-	OQS_AES256_CTR_load_schedule(test_aes256ctr_key, &schedule);
-	OQS_AES256_CTR_sch(test_aes256ctr_iv, sizeof(test_aes256ctr_iv), schedule, derived_ciphertext, sizeof(derived_ciphertext));
+	OQS_AES256_CTR_inc_init(test_aes256ctr_key, &schedule);
+	OQS_AES256_CTR_inc_stream_iv(test_aes256ctr_iv, sizeof(test_aes256ctr_iv), schedule, derived_ciphertext, sizeof(derived_ciphertext));
 	for (size_t i = 0; i < sizeof(derived_ciphertext); i++) {
 		derived_ciphertext[i] ^= test_aes256ctr_plaintext[i];
 	}

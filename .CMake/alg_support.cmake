@@ -15,7 +15,10 @@ if(NOT WIN32)
 else()
     option(OQS_USE_OPENSSL "Enable OpenSSL usage" OFF)
 endif()
-cmake_dependent_option(OQS_USE_AES_OPENSSL "" ON "OQS_USE_OPENSSL" OFF)
+
+# Use OpenSSL's AES only if no AESNI and x86 dist build is used.
+# Reason: AESNI implementation better fits our incremental API.
+cmake_dependent_option(OQS_USE_AES_OPENSSL "" ON "OQS_USE_OPENSSL; NOT OQS_DIST_X86_64_BUILD; NOT OQS_USE_AES_INSTRUCTIONS" OFF)
 cmake_dependent_option(OQS_USE_SHA2_OPENSSL "" ON "OQS_USE_OPENSSL" OFF)
 # Disable OpenSSL's SHA3 by default. The implementation is not complete
 # enough to support our incremental API.

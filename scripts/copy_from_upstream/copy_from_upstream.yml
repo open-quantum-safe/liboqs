@@ -15,18 +15,16 @@ upstreams:
     git_branch: master
     git_commit: faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2
     kem_meta_path: '{pretty_name_full}_META.yml'
-    common_meta_path: 'Common_META.yml'
     kem_scheme_path: '.'
-    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake.patch, pqcrystals-kyber-avx2-shake.patch]
+    patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
   -
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
     git_branch: master
     git_commit: 61b51a71701b8ae9f546a1e5d220e1950ed20d06
     sig_meta_path: '{pretty_name_full}_META.yml'
-    common_meta_path: 'Common_META.yml'
     sig_scheme_path: '.'
-    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake.patch, pqcrystals-dilithium-avx2-shake.patch]
+    patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch]
 kems:
   -
     name: classic_mceliece

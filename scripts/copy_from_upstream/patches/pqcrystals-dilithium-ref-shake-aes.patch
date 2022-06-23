@@ -196,16 +196,18 @@ diff --git a/ref/symmetric.h b/ref/symmetric.h
 index 0b34fb6..13c88da 100644
 --- a/ref/symmetric.h
 +++ b/ref/symmetric.h
-@@ -24,25 +24,27 @@ void dilithium_aes256ctr_init(aes256ctr_ctx *state,
+@@ -24,25 +24,29 @@ void dilithium_aes256ctr_init(aes256ctr_ctx *state,
          dilithium_aes256ctr_init(STATE, SEED, NONCE)
  #define stream128_squeezeblocks(OUT, OUTBLOCKS, STATE) \
          aes256ctr_squeezeblocks(OUT, OUTBLOCKS, STATE)
-+#define stream128_release(STATE)
++#define stream128_release(STATE) \
++        aes256_ctx_release(STATE)
  #define stream256_init(STATE, SEED, NONCE) \
          dilithium_aes256ctr_init(STATE, SEED, NONCE)
  #define stream256_squeezeblocks(OUT, OUTBLOCKS, STATE) \
          aes256ctr_squeezeblocks(OUT, OUTBLOCKS, STATE)
-+#define stream256_release(STATE)
++#define stream256_release(STATE) \
++        aes256_ctx_release(STATE)
  
  #else
  
@@ -228,7 +230,7 @@ index 0b34fb6..13c88da 100644
                                      const uint8_t seed[CRHBYTES],
                                      uint16_t nonce);
  
-@@ -53,10 +55,12 @@ void dilithium_shake256_stream_init(keccak_state *state,
+@@ -53,10 +57,12 @@ void dilithium_shake256_stream_init(keccak_state *state,
          dilithium_shake128_stream_init(STATE, SEED, NONCE)
  #define stream128_squeezeblocks(OUT, OUTBLOCKS, STATE) \
          shake128_squeezeblocks(OUT, OUTBLOCKS, STATE)
