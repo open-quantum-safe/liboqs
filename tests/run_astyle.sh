@@ -10,8 +10,8 @@ if [ $? -ne 1 ]; then
    rv=-1
 fi
 
-# check _all_ source files for CRLF line endings:
-find . -name '*.[chS]' -exec file "{}" ";" | grep CRLF
+# check _all_ source files for CRLF line endings (except in repos directory):
+find . \( -type d -name repos -prune \) -o -name '*.[chS]' -exec file "{}" ";" | grep CRLF
 if [ $? -ne 1 ]; then
    echo "Error: Files found with non-UNIX line endings."
    echo "To fix, consider running \"find src tests -name '*.[chS]' | xargs sed -i 's/\r//' \"."
