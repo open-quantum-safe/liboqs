@@ -13,8 +13,10 @@
 #include "macros.h"
 
 #if !defined(OQS)
-#if defined(__GNUC__) && !(defined(__APPLE__) && (__clang_major__ <= 8)) &&                        \
-    !defined(__MINGW32__) && !defined(__MINGW64__)
+/* Check if support for __builtin_cpu_supports is available and known to be working. As tests have
+ * showed, support for it on Mac OS X and MinGW is not reliable. */
+#if (defined(__GNUC__) || __has_builtin(__builtin_cpu_supports)) && !defined(__APPLE__) &&         \
+    !defined(__MINGW32__) && !defined(__MINGW64__) && !defined(WITHOUT_BUILTIN_CPU_SUPPORTS)
 #define BUILTIN_CPU_SUPPORTED
 #endif
 
@@ -75,9 +77,10 @@ bool cpu_supports(unsigned int caps);
 #include <oqs/common.h>
 
 #if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
-#define CPU_SUPPORTS_AVX2 (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2))
+#define CPU_SUPPORTS_AVX2                                                                          \
+  (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2))
 #else
-#define CPU_SUPPORTS_AVX2 cpu_supports(CPU_CAP_AVX2 | CPU_CAP_BMI2)
+#define CPU_SUPPORTS_AVX2 0
 #endif
 
 #if defined(__x86_64__) || defined(_M_X64)

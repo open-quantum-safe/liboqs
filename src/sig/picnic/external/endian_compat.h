@@ -44,8 +44,9 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 /* Linux / GLIBC */
 #if defined(__linux__) || defined(__GLIBC__)
 #include <endian.h>
-/* endian.h only provides conversion functions if built with one these defines */
-#if defined(_DEFAULT_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE)
+/* endian.h only provides conversion functions if built with one these defines. Android is also
+ * known to provide these functions. */
+#if defined(_DEFAULT_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE) || defined(__ANDROID__)
 #define HAVE_HOSTSWAP
 #endif
 #endif

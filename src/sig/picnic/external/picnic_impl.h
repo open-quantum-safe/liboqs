@@ -14,6 +14,8 @@
 #include "picnic_instances.h"
 #include "picnic.h"
 
+#include <stdio.h>
+
 typedef struct {
   mzd_local_t m_plaintext[(MAX_LOWMC_BLOCK_SIZE_BITS + 255) / 256];
   /* private key for signing, public key for verification */
@@ -34,12 +36,4 @@ int picnic_impl_sign(const picnic_instance_t* pp, const picnic_context_t* contex
 int picnic_impl_verify(const picnic_instance_t* pp, const picnic_context_t* context,
                        const uint8_t* sig, size_t siglen);
 
-#if defined(PICNIC_STATIC)
-void visualize_signature(FILE* out, const picnic_instance_t* pp, const picnic_context_t* ctxt,
-                         const uint8_t* sig, size_t siglen);
-void picnic_visualize_keys(FILE* out, const picnic_privatekey_t* private_key,
-                           const picnic_publickey_t* public_key);
-void picnic_visualize(FILE* out, const picnic_publickey_t* public_key, const uint8_t* msg,
-                      size_t msglen, const uint8_t* sig, size_t siglen);
-#endif
 #endif

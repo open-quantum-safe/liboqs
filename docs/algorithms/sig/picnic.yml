@@ -16,11 +16,10 @@ crypto-assumption: hash function security (ROM/QROM), key recovery attacks on th
   lowMC block cipher
 website: https://microsoft.github.io/Picnic/
 nist-round: 3
-spec-version: 3.0.11
+spec-version: 3.0.14
 primary-upstream:
-  source: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2
-    with copy_from_upstream patches
-  spdx-license-identifier: CC0-1.0
+  source: https://github.com/IAIK/Picnic
+  spdx-license-identifier: MIT
 parameter-sets:
 - name: picnic_L1_FS
   claimed-nist-level: 1
@@ -28,7 +27,7 @@ parameter-sets:
   length-public-key: 33
   length-secret-key: 49
   length-signature: 34036
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -64,7 +63,7 @@ parameter-sets:
   length-public-key: 33
   length-secret-key: 49
   length-signature: 53965
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -100,7 +99,7 @@ parameter-sets:
   length-public-key: 35
   length-secret-key: 52
   length-signature: 32065
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -136,7 +135,7 @@ parameter-sets:
   length-public-key: 49
   length-secret-key: 73
   length-signature: 76776
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -172,7 +171,7 @@ parameter-sets:
   length-public-key: 49
   length-secret-key: 73
   length-signature: 121849
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -208,7 +207,7 @@ parameter-sets:
   length-public-key: 49
   length-secret-key: 73
   length-signature: 71183
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -244,7 +243,7 @@ parameter-sets:
   length-public-key: 65
   length-secret-key: 97
   length-signature: 132860
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -280,7 +279,7 @@ parameter-sets:
   length-public-key: 65
   length-secret-key: 97
   length-signature: 209510
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -316,7 +315,7 @@ parameter-sets:
   length-public-key: 65
   length-secret-key: 97
   length-signature: 126290
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -352,7 +351,7 @@ parameter-sets:
   length-public-key: 35
   length-secret-key: 52
   length-signature: 14612
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -388,7 +387,7 @@ parameter-sets:
   length-public-key: 49
   length-secret-key: 73
   length-signature: 35028
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master
@@ -424,7 +423,7 @@ parameter-sets:
   length-public-key: 65
   length-secret-key: 97
   length-signature: 61028
-  implementations-switch-on-runtime-cpu-features: false
+  implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
     upstream-id: master

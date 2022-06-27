@@ -248,7 +248,9 @@ int PICNIC_CALLING_CONVENTION picnic_sign(const picnic_privatekey_t* sk, const u
 #if defined(WITH_UNRUH)
     context.unruh = picnic_instance_is_unruh(param);
 #endif
-    return picnic_impl_sign(instance, &context, signature, signature_len);
+    int ret = picnic_impl_sign(instance, &context, signature, signature_len);
+    picnic_explicit_bzero(context.m_key, sizeof(context.m_key));
+    return ret;
 #else
     return -1;
 #endif
@@ -460,57 +462,3 @@ picnic_get_public_key_param(const picnic_publickey_t* publickey) {
   const picnic_params_t param = publickey->data[0];
   return picnic_instance_get(param) ? param : PARAMETER_SET_INVALID;
 }
-
-#if defined(PICNIC_STATIC) && defined(WITH_ZKBPP)
-void picnic_visualize_keys(FILE* out, const picnic_privatekey_t* sk, const picnic_publickey_t* pk) {
-  if (!sk || !pk) {
-    return;
-  }
-
-  if (sk->data[0] != pk->data[0]) {
-    return;
-  }
-
-  const picnic_params_t param       = sk->data[0];
-  const picnic_instance_t* instance = picnic_instance_get(param);
-  if (!instance) {
-    return;
-  }
-
-  printf("sk: ");
-  print_hex(out, SK_SK(sk), instance->input_output_size);
-  printf("\npk: ");
-  print_hex(out, PK_C(pk), instance->input_output_size);
-  print_hex(out, PK_PT(pk, instance), instance->input_output_size);
-  printf("\npk_p: ");
-  print_hex(out, PK_PT(pk, instance), instance->input_output_size);
-  printf("\npk_C: ");
-  print_hex(out, PK_C(pk), instance->input_output_size);
-  printf("\n");
-}
-
-void picnic_visualize(FILE* out, const picnic_publickey_t* public_key, const uint8_t* msg,
-                      size_t msglen, const uint8_t* sig, size_t siglen) {
-  if (!public_key) {
-    return;
-  }
-
-  const picnic_params_t param       = public_key->data[0];
-  const picnic_instance_t* instance = picnic_instance_get(param);
-  if (!instance) {
-    return;
-  }
-
-  picnic_context_t context;
-  context.plaintext   = NULL;
-  context.private_key = NULL;
-  context.public_key  = NULL;
-  context.msg         = msg;
-  context.msglen      = msglen;
-#if defined(WITH_UNRUH)
-  context.unruh = picnic_instance_is_unruh(param);
-#endif
-
-  visualize_signature(out, instance, &context, sig, siglen);
-}
-#endif
