@@ -445,8 +445,12 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
 
     /* Get hint polynomial and reconstruct w1 */
     memset(h.vec, 0, sizeof(poly));
-    if(hint[OMEGA + i] < pos || hint[OMEGA + i] > OMEGA)
+    if(hint[OMEGA + i] < pos || hint[OMEGA + i] > OMEGA) {
+#ifdef DILITHIUM_USE_AES
+      aes256_ctx_release(&aesctx);
+#endif
       return -1;
+    }
 
     for(j = pos; j < hint[OMEGA + i]; ++j) {
       /* Coefficients are ordered for strong unforgeability */
