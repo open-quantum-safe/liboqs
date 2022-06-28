@@ -54,6 +54,15 @@
 #define ATTR_TARGET_S256
 #endif
 
+#define FN_ATTRIBUTES_S256 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_S256
+#define FN_ATTRIBUTES_S128 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_S128
+
+#define FN_ATTRIBUTES_S256_PURE FN_ATTRIBUTES_S256 ATTR_PURE
+#define FN_ATTRIBUTES_S128_PURE FN_ATTRIBUTES_S128 ATTR_PURE
+
+#define FN_ATTRIBUTES_S256_CONST FN_ATTRIBUTES_S256 ATTR_CONST
+#define FN_ATTRIBUTES_S128_CONST FN_ATTRIBUTES_S128 ATTR_CONST
+
 #if defined(WITH_SSE2)
 /* backwards compatibility macros for GCC 4.8 and 4.9
  *
@@ -66,38 +75,6 @@
 #endif
 #endif
 
-#define apply_region(name, type, op, attributes)                                                   \
-  static inline void attributes name(type* restrict dst, type const* restrict src,                 \
-                                     unsigned int count) {                                         \
-    for (unsigned int i = count; i; --i, ++dst, ++src) {                                           \
-      *dst = op(*dst, *src);                                                                       \
-    }                                                                                              \
-  }
-
-#define apply_mask(name, type, op, opmask, attributes)                                             \
-  static inline type attributes name(const type lhs, const type rhs, const type mask) {            \
-    return op(lhs, opmask(rhs, mask));                                                             \
-  }
-
-#define apply_mask_region(name, type, op, opmask, attributes)                                      \
-  static inline void attributes name(type* restrict dst, type const* restrict src,                 \
-                                     type const mask, unsigned int count) {                        \
-    for (unsigned int i = count; i; --i, ++dst, ++src) {                                           \
-      *dst = op(*dst, opmask(*src, mask));                                                         \
-    }                                                                                              \
-  }
-
-#define apply_array(name, type, op, count, attributes)                                             \
-  static inline void attributes name(type dst[count], type const lhs[count],                       \
-                                     type const rhs[count]) {                                      \
-    type* d       = dst;                                                                           \
-    const type* l = lhs;                                                                           \
-    const type* r = rhs;                                                                           \
-    for (unsigned int i = count; i; --i, ++d, ++l, ++r) {                                          \
-      *d = op(*l, *r);                                                                             \
-    }                                                                                              \
-  }
-
 #if defined(WITH_AVX2)
 typedef __m256i word256;
 
@@ -108,17 +85,11 @@ typedef __m256i word256;
 
 #define mm256_zero _mm256_setzero_si256()
 #define mm256_load(s) _mm256_load_si256((const word256*)s)
+#define mm256_set_4(v0, v1, v2, v3) _mm256_set_epi64x(v3, v2, v1, v0)
 #define mm256_store(d, s) _mm256_store_si256((word256*)d, s)
 #define mm256_xor(l, r) _mm256_xor_si256((l), (r))
 #define mm256_and(l, r) _mm256_and_si256((l), (r))
-/* !l & r */
-#define mm256_nand(l, r) _mm256_andnot_si256((l), (r))
-
-// clang-format off
-apply_region(mm256_xor_region, word256, mm256_xor, FN_ATTRIBUTES_AVX2)
-apply_mask_region(mm256_xor_mask_region, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2)
-apply_mask(mm256_xor_mask, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2_CONST)
-// clang-format on
+#define mm256_xor_mask(lhs, rhs, mask) mm256_xor((lhs), mm256_and((rhs), (mask)))
 
 #define mm256_shift_left(data, count)                                                              \
   _mm256_or_si256(_mm256_slli_epi64(data, count),                                                  \
@@ -149,24 +120,15 @@ apply_mask(mm256_xor_mask, word256, mm256_xor, mm256_and, FN_ATTRIBUTES_AVX2_CON
 typedef __m128i word128;
 
 #define mm128_zero _mm_setzero_si128()
-#define mm128_load(s) _mm_load_si128((const word128*)s)
-#define mm128_store(d, s) _mm_store_si128((word128*)d, s)
+#define mm128_load(s) _mm_load_si128((const word128*)(s))
+#define mm128_loadu(s) _mm_loadu_si128((const void*)(s))
+#define mm128_store(d, s) _mm_store_si128((word128*)d, (s))
 #define mm128_xor(l, r) _mm_xor_si128((l), (r))
 #define mm128_and(l, r) _mm_and_si128((l), (r))
-/* !l & r */
-#define mm128_nand(l, r) _mm_andnot_si128((l), (r))
 #define mm128_broadcast_u64(x) _mm_set1_epi64x((x))
 /* bit shifts up to 63 bits */
 #define mm128_sl_u64(x, s) _mm_slli_epi64((x), (s))
 #define mm128_sr_u64(x, s) _mm_srli_epi64((x), (s))
-
-// clang-format off
-apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_SSE2)
-apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2)
-apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_SSE2_CONST)
-apply_array(mm128_xor_256, word128, mm128_xor, 2, FN_ATTRIBUTES_SSE2)
-apply_array(mm128_and_256, word128, mm128_and, 2, FN_ATTRIBUTES_SSE2)
-// clang-format on
 
 #define mm128_shift_left(data, count)                                                              \
   _mm_or_si128(_mm_slli_epi64(data, count), _mm_srli_epi64(_mm_bslli_si128(data, 8), 64 - count))
@@ -234,20 +196,10 @@ typedef uint64x2_t word128;
 #define mm128_store(d, s) vst1q_u64(d, s)
 #define mm128_xor(l, r) veorq_u64((l), (r))
 #define mm128_and(l, r) vandq_u64((l), (r))
-/* !l & r, requires l to be an immediate */
-#define mm128_nand(l, r) vbicq_u64((r), (l))
 #define mm128_broadcast_u64(x) vdupq_n_u64((x))
 /* bit shifts up to 63 bits */
 #define mm128_sl_u64(x, s) vshlq_n_u64((x), (s))
 #define mm128_sr_u64(x, s) vshrq_n_u64((x), (s))
-
-// clang-format off
-apply_region(mm128_xor_region, word128, mm128_xor, FN_ATTRIBUTES_NEON)
-apply_mask_region(mm128_xor_mask_region, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_NEON)
-apply_mask(mm128_xor_mask, word128, mm128_xor, mm128_and, FN_ATTRIBUTES_NEON_CONST)
-apply_array(mm128_xor_256, word128, mm128_xor, 2, FN_ATTRIBUTES_NEON)
-apply_array(mm128_and_256, word128, mm128_and, 2, FN_ATTRIBUTES_NEON)
-// clang-format on
 
 /* shift left by 64 to 127 bits */
 #define mm128_shift_left_64_127(data, count)                                                       \
@@ -301,13 +253,46 @@ apply_array(mm128_and_256, word128, mm128_and, 2, FN_ATTRIBUTES_NEON)
   } while (0)
 #endif
 
+#if defined(WITH_SSE2) || defined(WITH_NEON)
+FN_ATTRIBUTES_S128_CONST
+static inline word128 mm128_xor_mask(const word128 lhs, const word128 rhs, const word128 mask) {
+  return mm128_xor(lhs, mm128_and(rhs, mask));
+}
+
+FN_ATTRIBUTES_S128
+static inline void mm128_xor_region(word128* restrict dst, const word128* restrict src,
+                                    unsigned int count) {
+  for (unsigned int i = 0; i != count; ++i) {
+    dst[i] = mm128_xor(dst[i], src[i]);
+  }
+}
+
+FN_ATTRIBUTES_S128
+static inline void mm128_xor_mask_region(word128* restrict dst, const uint64_t* restrict src,
+                                         const word128 mask, unsigned int count) {
+  for (unsigned int i = 0; i != count; ++i) {
+    dst[i] = mm128_xor(dst[i],
+                       mm128_and(mm128_load(&src[i * sizeof(word128) / sizeof(uint64_t)]), mask));
+  }
+}
+
+FN_ATTRIBUTES_S128
+static inline void mm128_xor_256(word128 dst[2], const word128 lhs[2], const word128 rhs[2]) {
+  dst[0] = mm128_xor(lhs[0], rhs[0]);
+  dst[1] = mm128_xor(lhs[1], rhs[1]);
+}
+
+FN_ATTRIBUTES_S128
+static inline void mm128_and_256(word128 dst[2], const word128 lhs[2], const word128 rhs[2]) {
+  dst[0] = mm128_and(lhs[0], rhs[0]);
+  dst[1] = mm128_and(lhs[1], rhs[1]);
+}
+#endif
+
 #if defined(_MSC_VER)
 #undef restrict
 #endif
 
-#undef apply_region
-#undef apply_mask_region
-#undef apply_array
 #undef BUILTIN_CPU_SUPPORTED
 
 #endif

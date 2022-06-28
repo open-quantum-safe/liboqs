@@ -4,10 +4,10 @@
 - **Main cryptographic assumption**: hash function security (ROM/QROM), key recovery attacks on the lowMC block cipher.
 - **Principal submitters**: Greg Zaverucha, Melissa Chase, David Derler, Steven Goldfeder, Claudio Orlandi, Sebastian Ramacher, Christian Rechberger, Daniel Slamanig, Jonathan Katz, Xiao Wang, Vladmir Kolesnikov.
 - **Authors' website**: https://microsoft.github.io/Picnic/
-- **Specification version**: 3.0.11.
+- **Specification version**: 3.0.14.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
-  - **Implementation license (SPDX-Identifier)**: CC0-1.0
+  - **Source**: https://github.com/IAIK/Picnic
+  - **Implementation license (SPDX-Identifier)**: MIT
 
 ## Test limitation
 
@@ -38,7 +38,7 @@ This algorithm is not tested under Windows using the "msys2" tool chain (due to 
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                 |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                 |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
  ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.
 
@@ -50,7 +50,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic\_L1\_full implementation characteristics
 
@@ -60,7 +60,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic\_L3\_FS implementation characteristics
 
@@ -70,7 +70,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic\_L3\_UR implementation characteristics
 
@@ -80,7 +80,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic\_L3\_full implementation characteristics
 
@@ -90,7 +90,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic\_L5\_FS implementation characteristics
 
@@ -100,7 +100,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic\_L5\_UR implementation characteristics
 
@@ -110,7 +110,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic\_L5\_full implementation characteristics
 
@@ -120,7 +120,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic3\_L1 implementation characteristics
 
@@ -130,7 +130,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic3\_L3 implementation characteristics
 
@@ -140,7 +140,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## picnic3\_L5 implementation characteristics
 
@@ -150,7 +150,7 @@ Are implementations chosen based on runtime CPU feature detection? **No**.
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Linux                           | AVX2,SSE2               | True                               | True                                           | False                |
 | [Primary Source](#primary-source) | master                   | x86\_64                     | Darwin,Windows                  | SSE2                    | True                               | True                                           | False                |
 
-Are implementations chosen based on runtime CPU feature detection? **No**.
+Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 ## Explanation of Terms
 

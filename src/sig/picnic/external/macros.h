@@ -68,12 +68,20 @@
 #define MACOSX_CHECK(maj, min, rev) 0
 #endif
 
-#ifndef MIN
+#if !defined(MIN)
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
 #endif
 
-#ifndef MAX
+#if !defined(MAX)
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
+#endif
+
+#if defined(__cplusplus)
+#define PICNIC_BEGIN_C_DECL extern "C" {
+#define PICNIC_END_C_DECL }
+#else
+#define PICNIC_BEGIN_C_DECL
+#define PICNIC_END_C_DECL
 #endif
 
 /* assume */
@@ -200,107 +208,9 @@
 #define ATTR_VECTOR_SIZE(s)
 #endif
 
-#define FN_ATTRIBUTES_AVX2 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_AVX2
-#define FN_ATTRIBUTES_SSE2 ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE ATTR_TARGET_SSE2
-#define FN_ATTRIBUTES_NEON ATTR_ARTIFICIAL ATTR_ALWAYS_INLINE
-
-#define FN_ATTRIBUTES_AVX2_PURE FN_ATTRIBUTES_AVX2 ATTR_PURE
-#define FN_ATTRIBUTES_SSE2_PURE FN_ATTRIBUTES_SSE2 ATTR_PURE
-#define FN_ATTRIBUTES_NEON_PURE FN_ATTRIBUTES_NEON ATTR_PURE
-
-#define FN_ATTRIBUTES_AVX2_CONST FN_ATTRIBUTES_AVX2 ATTR_CONST
-#define FN_ATTRIBUTES_SSE2_CONST FN_ATTRIBUTES_SSE2 ATTR_CONST
-#define FN_ATTRIBUTES_NEON_CONST FN_ATTRIBUTES_NEON ATTR_CONST
-
 /* concatenation */
 #define CONCAT2(a, b) a##_##b
 #define CONCAT(a, b) CONCAT2(a, b)
-
-/* helper macros/functions for checked integer subtraction */
-#if GNUC_CHECK(5, 0) || __has_builtin(__builtin_add_overflow)
-#define sub_overflow_size_t(x, y, diff) __builtin_sub_overflow(x, y, diff)
-#else
-#include <stdbool.h>
-#include <stddef.h>
-
-ATTR_ARTIFICIAL
-static inline bool sub_overflow_size_t(const size_t x, const size_t y, size_t* diff) {
-  *diff = x - y;
-  return x < y;
-}
-#endif
-
-#include <stdint.h>
-
-/* helper functions for parity computations */
-#if GNUC_CHECK(4, 9) || __has_builtin(__builtin_parity)
-ATTR_CONST ATTR_ARTIFICIAL static inline uint64_t parity64_uint64(uint64_t in) {
-  return __builtin_parityll(in);
-}
-#else
-/* byte parity from: https://graphics.stanford.edu/~seander/bithacks.html#ParityWith64Bits */
-ATTR_CONST ATTR_ARTIFICIAL static inline uint64_t parity64_uint64(uint64_t in) {
-  in ^= in >> 1;
-  in ^= in >> 2;
-  in = (in & 0x1111111111111111) * 0x1111111111111111;
-  return (in >> 60) & 1;
-}
-#endif
-
-/* helper functions to compute number of leading zeroes */
-#if GNUC_CHECK(4, 7) || __has_builtin(__builtin_clz)
-ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t clz(uint32_t x) {
-  return x ? __builtin_clz(x) : 32;
-}
-#elif defined(_MSC_VER)
-#include <intrin.h>
-ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t clz(uint32_t x) {
-  unsigned long index = 0;
-  if (_BitScanReverse(&index, x)) {
-    return 31 - index;
-  }
-  return 32;
-}
-#else
-/* Number of leading zeroes of x.
- * From the book
- * H.S. Warren, *Hacker's Delight*, Pearson Education, 2003.
- * http://www.hackersdelight.org/hdcodetxt/nlz.c.txt
- */
-ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t clz(uint32_t x) {
-  if (!x) {
-    return 32;
-  }
-
-  uint32_t n = 1;
-  if (!(x >> 16)) {
-    n = n + 16;
-    x = x << 16;
-  }
-  if (!(x >> 24)) {
-    n = n + 8;
-    x = x << 8;
-  }
-  if (!(x >> 28)) {
-    n = n + 4;
-    x = x << 4;
-  }
-  if (!(x >> 30)) {
-    n = n + 2;
-    x = x << 2;
-  }
-  n = n - (x >> 31);
-
-  return n;
-}
-#endif
-
-ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t ceil_log2(uint32_t x) {
-  if (!x) {
-    return 0;
-  }
-  return 32 - clz(x - 1);
-}
 
 #if defined(__WIN32__)
 #define SIZET_FMT "%Iu"
@@ -309,9 +219,9 @@ ATTR_CONST ATTR_ARTIFICIAL static inline uint32_t ceil_log2(uint32_t x) {
 #endif
 
 /* crypto_declassify wrapper */
-#if defined(TIMECOP)
+#if defined(TIMECOP) || defined(SUPERCOP)
 #include "crypto_declassify.h"
-#define picnic_declassify(x, len) crypto_declassify(x, len)
+#define picnic_declassify(x, len) crypto_declassify((void*)x, len)
 #elif defined(WITH_VALGRIND)
 #include <valgrind/memcheck.h>
 #define picnic_declassify(x, len) VALGRIND_MAKE_MEM_DEFINED(x, len)

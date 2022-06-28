@@ -17,7 +17,7 @@
 
 #define MUL_MC mzd_mul_v_s256_256_1280
 #define ADDMUL_R mzd_addmul_v_s256_30_256
-#define MUL_Z mzd_mul_v_parity_uint64_256_30
+#define MUL_Z mzd_mul_v_parity_s256_256_30
 #define XOR_MC mzd_xor_s256_1280
 
 #if defined(WITH_LOWMC_256_256_38)

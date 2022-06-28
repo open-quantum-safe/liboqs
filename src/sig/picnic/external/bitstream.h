@@ -152,6 +152,8 @@ static inline void mzd_from_bitstream(bitstream_t* bs, mzd_local_t* v, const siz
 }
 
 #if defined(WITH_OPT)
+#include "simd.h"
+
 #if defined(WITH_AVX2)
 ATTR_TARGET_S256
 static inline void w256_to_bitstream(bitstream_t* bs, const word256 v, const size_t width,

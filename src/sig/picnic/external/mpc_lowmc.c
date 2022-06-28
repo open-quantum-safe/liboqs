@@ -472,231 +472,252 @@ static void mpc_sbox_verify_uint64_lowmc_255_255_4(mzd_local_t* out, const mzd_l
   } while (0)
 
 /* requires IN and RVEC to be defined */
-#define bitsliced_mm_step_1(sc, type, AND, ROL, MASK_A, MASK_B, MASK_C)                            \
-  type r0m[sc] ATTR_ALIGNED(alignof(type));                                                        \
-  type r0s[sc] ATTR_ALIGNED(alignof(type));                                                        \
-  type r1m[sc] ATTR_ALIGNED(alignof(type));                                                        \
-  type r1s[sc] ATTR_ALIGNED(alignof(type));                                                        \
-  type r2m[sc] ATTR_ALIGNED(alignof(type));                                                        \
-  type x0s[sc] ATTR_ALIGNED(alignof(type));                                                        \
-  type x1s[sc] ATTR_ALIGNED(alignof(type));                                                        \
-  type x2m[sc] ATTR_ALIGNED(alignof(type));                                                        \
+#define bitsliced_mm256_step_1(sc, MASK_A, MASK_B, MASK_C)                                         \
+  word256 r0m[sc];                                                                                 \
+  word256 r0s[sc];                                                                                 \
+  word256 r1m[sc];                                                                                 \
+  word256 r1s[sc];                                                                                 \
+  word256 r2m[sc];                                                                                 \
+  word256 x0s[sc];                                                                                 \
+  word256 x1s[sc];                                                                                 \
+  word256 x2m[sc];                                                                                 \
   do {                                                                                             \
     for (unsigned int m = 0; m < (sc); ++m) {                                                      \
-      x0s[m] = AND(IN(m), MASK_A);                                                                 \
-      x1s[m] = AND(IN(m), MASK_B);                                                                 \
-      x2m[m] = AND(IN(m), MASK_C);                                                                 \
+      word256 tmp = mm256_load(IN(m));                                                             \
+      x0s[m]      = mm256_and(tmp, MASK_A);                                                        \
+      x1s[m]      = mm256_and(tmp, MASK_B);                                                        \
+      x2m[m]      = mm256_and(tmp, MASK_C);                                                        \
                                                                                                    \
-      x0s[m] = ROL(x0s[m], 2);                                                                     \
-      x1s[m] = ROL(x1s[m], 1);                                                                     \
+      x0s[m] = mm256_rotate_left(x0s[m], 2);                                                       \
+      x1s[m] = mm256_rotate_left(x1s[m], 1);                                                       \
                                                                                                    \
-      r0m[m] = AND(RVEC(m), MASK_A);                                                               \
-      r1m[m] = AND(RVEC(m), MASK_B);                                                               \
-      r2m[m] = AND(RVEC(m), MASK_C);                                                               \
+      tmp    = mm256_load(RVEC(m));                                                                \
+      r0m[m] = mm256_and(tmp, MASK_A);                                                             \
+      r1m[m] = mm256_and(tmp, MASK_B);                                                             \
+      r2m[m] = mm256_and(tmp, MASK_C);                                                             \
                                                                                                    \
-      r0s[m] = ROL(r0m[m], 2);                                                                     \
-      r1s[m] = ROL(r1m[m], 1);                                                                     \
+      r0s[m] = mm256_rotate_left(r0m[m], 2);                                                       \
+      r1s[m] = mm256_rotate_left(r1m[m], 1);                                                       \
     }                                                                                              \
   } while (0)
 
-#define bitsliced_mm_step_2(sc, XOR, ROR)                                                          \
+#define bitsliced_mm256_step_2(sc)                                                                 \
   do {                                                                                             \
     for (unsigned int m = 0; m < sc; ++m) {                                                        \
-      r2m[m] = XOR(r2m[m], x0s[m]);                                                                \
-      x0s[m] = XOR(x0s[m], x1s[m]);                                                                \
-      r1m[m] = XOR(x0s[m], r1m[m]);                                                                \
-      r0m[m] = XOR(x0s[m], r0m[m]);                                                                \
-      r0m[m] = XOR(r0m[m], x2m[m]);                                                                \
+      r2m[m] = mm256_xor(r2m[m], x0s[m]);                                                          \
+      x0s[m] = mm256_xor(x0s[m], x1s[m]);                                                          \
+      r1m[m] = mm256_xor(x0s[m], r1m[m]);                                                          \
+      r0m[m] = mm256_xor(x0s[m], r0m[m]);                                                          \
+      r0m[m] = mm256_xor(r0m[m], x2m[m]);                                                          \
                                                                                                    \
-      x0s[m] = ROR(r2m[m], 2);                                                                     \
-      x1s[m] = ROR(r1m[m], 1);                                                                     \
+      x0s[m] = mm256_rotate_right(r2m[m], 2);                                                      \
+      x1s[m] = mm256_rotate_right(r1m[m], 1);                                                      \
                                                                                                    \
-      OUT(m) = XOR(r0m[m], XOR(x0s[m], x1s[m]));                                                   \
+      mm256_store(OUT(m), mm256_xor(r0m[m], mm256_xor(x0s[m], x1s[m])));                           \
     }                                                                                              \
   } while (0)
 
-#define mpc_mm_and_def(AND, XOR, ROR, res, first, second, r, viewshift)                            \
+#define mpc_mm256_and_def(res, first, second, r, viewshift)                                        \
   do {                                                                                             \
     for (unsigned int m = 0; m < SC_PROOF; ++m) {                                                  \
       const unsigned int j = (m + 1) % SC_PROOF;                                                   \
                                                                                                    \
-      res[m] = XOR(AND(first[m], second[m]), AND(first[j], second[m]));                            \
-      res[m] = XOR(res[m], AND(first[m], second[j]));                                              \
-      res[m] = XOR(res[m], XOR(r[m], r[j]));                                                       \
+      word256 tmp1 = mm256_xor(mm256_and(first[m], second[m]), mm256_and(first[j], second[m]));    \
+      word256 tmp2 = mm256_xor(mm256_xor(r[m], r[j]), mm256_and(first[m], second[j]));             \
+      res[m]       = mm256_xor(tmp1, tmp2);                                                        \
       if (viewshift) {                                                                             \
-        VIEW(m) = XOR(ROR(res[m], viewshift), VIEW(m));                                            \
+        mm256_store(VIEW(m),                                                                       \
+                    mm256_xor(mm256_rotate_right(res[m], viewshift), mm256_load(VIEW(m))));        \
       } else {                                                                                     \
-        VIEW(m) = res[m];                                                                          \
+        mm256_store(VIEW(m), res[m]);                                                              \
       }                                                                                            \
     }                                                                                              \
   } while (0)
 
-#define mpc_mm_and_verify_def(AND, XOR, ROL, ROR, res, first, second, r, MASK, viewshift)          \
+#define mpc_mm256_and_verify_def(res, first, second, r, MASK, viewshift)                           \
   do {                                                                                             \
     for (unsigned int m = 0; m < (SC_VERIFY - 1); ++m) {                                           \
       const unsigned int j = m + 1;                                                                \
                                                                                                    \
-      res[m] = XOR(AND(first[m], second[m]), AND(first[j], second[m]));                            \
-      res[m] = XOR(res[m], AND(first[m], second[j]));                                              \
-      res[m] = XOR(res[m], XOR(r[m], r[j]));                                                       \
+      word256 tmp1 = mm256_xor(mm256_and(first[m], second[m]), mm256_and(first[j], second[m]));    \
+      word256 tmp2 = mm256_xor(mm256_xor(r[m], r[j]), mm256_and(first[m], second[j]));             \
+      res[m]       = mm256_xor(tmp1, tmp2);                                                        \
       if (viewshift) {                                                                             \
-        VIEW(m) = XOR(ROR(res[m], viewshift), VIEW(m));                                            \
+        mm256_store(VIEW(m),                                                                       \
+                    mm256_xor(mm256_rotate_right(res[m], viewshift), mm256_load(VIEW(m))));        \
       } else {                                                                                     \
-        VIEW(m) = res[m];                                                                          \
+        mm256_store(VIEW(m), res[m]);                                                              \
       }                                                                                            \
     }                                                                                              \
     if (viewshift) {                                                                               \
-      res[SC_VERIFY - 1] = AND(ROL(VIEW(SC_VERIFY - 1), viewshift), MASK);                         \
+      const word256 tmp  = mm256_load(VIEW(SC_VERIFY - 1));                                        \
+      res[SC_VERIFY - 1] = mm256_and(mm256_rotate_left(tmp, viewshift), MASK);                     \
     } else {                                                                                       \
-      res[SC_VERIFY - 1] = AND(VIEW(SC_VERIFY - 1), MASK);                                         \
-    }                                                                                              \
-  } while (0)
-
-#define bitsliced_mm_multiple_step_1(sc, type, size, AND, ROL, MASK_A, MASK_B, MASK_C)             \
-  type r0m[sc][size] ATTR_ALIGNED(alignof(type));                                                  \
-  type r0s[sc][size] ATTR_ALIGNED(alignof(type));                                                  \
-  type r1m[sc][size] ATTR_ALIGNED(alignof(type));                                                  \
-  type r1s[sc][size] ATTR_ALIGNED(alignof(type));                                                  \
-  type r2m[sc][size] ATTR_ALIGNED(alignof(type));                                                  \
-  type x0s[sc][size] ATTR_ALIGNED(alignof(type));                                                  \
-  type x1s[sc][size] ATTR_ALIGNED(alignof(type));                                                  \
-  type x2m[sc][size] ATTR_ALIGNED(alignof(type));                                                  \
-  do {                                                                                             \
-    for (unsigned int m = 0; m < (sc); ++m) {                                                      \
-      AND(x0s[m], IN(m), MASK_A);                                                                  \
-      AND(x1s[m], IN(m), MASK_B);                                                                  \
-      AND(x2m[m], IN(m), MASK_C);                                                                  \
-                                                                                                   \
-      ROL(x0s[m], x0s[m], 2);                                                                      \
-      ROL(x1s[m], x1s[m], 1);                                                                      \
-                                                                                                   \
-      AND(r0m[m], RVEC(m), MASK_A);                                                                \
-      AND(r1m[m], RVEC(m), MASK_B);                                                                \
-      AND(r2m[m], RVEC(m), MASK_C);                                                                \
-                                                                                                   \
-      ROL(r0s[m], r0m[m], 2);                                                                      \
-      ROL(r1s[m], r1m[m], 1);                                                                      \
-    }                                                                                              \
-  } while (0)
-
-#define bitsliced_mm_multiple_step_2(sc, type, size, XOR, ROR)                                     \
-  do {                                                                                             \
-    for (unsigned int m = 0; m < sc; ++m) {                                                        \
-      XOR(r2m[m], r2m[m], x0s[m]);                                                                 \
-      XOR(x0s[m], x0s[m], x1s[m]);                                                                 \
-      XOR(r1m[m], x0s[m], r1m[m]);                                                                 \
-      XOR(r0m[m], x0s[m], r0m[m]);                                                                 \
-      XOR(r0m[m], r0m[m], x2m[m]);                                                                 \
-                                                                                                   \
-      ROR(x0s[m], r2m[m], 2);                                                                      \
-      ROR(x1s[m], r1m[m], 1);                                                                      \
-                                                                                                   \
-      XOR(x0s[m], x0s[m], x1s[m]);                                                                 \
-      XOR(OUT(m), r0m[m], x0s[m]);                                                                 \
-    }                                                                                              \
-  } while (0)
-
-#define mpc_mm_multiple_and_def(type, size, AND, XOR, ROR, res, first, second, r, viewshift)       \
-  do {                                                                                             \
-    for (unsigned int m = 0; m < SC_PROOF; ++m) {                                                  \
-      const unsigned int j = (m + 1) % SC_PROOF;                                                   \
-      type tmp1[size] ATTR_ALIGNED(alignof(type)), tmp2[size] ATTR_ALIGNED(alignof(type));         \
-                                                                                                   \
-      AND(tmp1, first[m], second[m]);                                                              \
-      AND(tmp2, first[j], second[m]);                                                              \
-      XOR(res[m], tmp1, tmp2);                                                                     \
-      AND(tmp1, first[m], second[j]);                                                              \
-      XOR(res[m], res[m], tmp1);                                                                   \
-      XOR(tmp2, r[m], r[j]);                                                                       \
-      XOR(res[m], res[m], tmp2);                                                                   \
-      if (viewshift) {                                                                             \
-        ROR(tmp1, res[m], viewshift);                                                              \
-        XOR(VIEW(m), tmp1, VIEW(m));                                                               \
-      } else {                                                                                     \
-        for (unsigned int k = 0; k < size; ++k) {                                                  \
-          VIEW(m)[k] = res[m][k];                                                                  \
-        }                                                                                          \
-      }                                                                                            \
-    }                                                                                              \
-  } while (0)
-
-#define mpc_mm_multiple_and_verify_def(type, size, AND, XOR, ROL, ROR, res, first, second, r,      \
-                                       MASK, viewshift)                                            \
-  do {                                                                                             \
-    for (unsigned int m = 0; m < (SC_VERIFY - 1); ++m) {                                           \
-      const unsigned int j = (m + 1) % SC_PROOF;                                                   \
-      type tmp1[size] ATTR_ALIGNED(alignof(type)), tmp2[size] ATTR_ALIGNED(alignof(type));         \
-                                                                                                   \
-      AND(tmp1, first[m], second[m]);                                                              \
-      AND(tmp2, first[j], second[m]);                                                              \
-      XOR(res[m], tmp1, tmp2);                                                                     \
-      AND(tmp1, first[m], second[j]);                                                              \
-      XOR(res[m], res[m], tmp1);                                                                   \
-      XOR(tmp2, r[m], r[j]);                                                                       \
-      XOR(res[m], res[m], tmp2);                                                                   \
-      if (viewshift) {                                                                             \
-        ROR(tmp1, res[m], viewshift);                                                              \
-        XOR(VIEW(m), tmp1, VIEW(m));                                                               \
-      } else {                                                                                     \
-        for (unsigned int k = 0; k < size; ++k) {                                                  \
-          VIEW(m)[k] = res[m][k];                                                                  \
-        }                                                                                          \
-      }                                                                                            \
-    }                                                                                              \
-                                                                                                   \
-    if (viewshift) {                                                                               \
-      type tmp[size] ATTR_ALIGNED(alignof(type));                                                  \
-      ROL(tmp, VIEW(SC_VERIFY - 1), viewshift);                                                    \
-      AND(res[SC_VERIFY - 1], tmp, MASK);                                                          \
-    } else {                                                                                       \
-      AND(res[SC_VERIFY - 1], VIEW(SC_VERIFY - 1), MASK);                                          \
+      res[SC_VERIFY - 1] = mm256_and(mm256_load(VIEW(SC_VERIFY - 1)), MASK);                       \
     }                                                                                              \
   } while (0)
 
 #if defined(WITH_SSE2) || defined(WITH_NEON)
-#define IN(m) in[m].w128
-#define OUT(m) out[m].w128
-#define RVEC(m) rvec->s[m].w128
-#define VIEW(m) view->s[m].w128
+#define bitsliced_mm128_256_step_1(sc, MASK_A, MASK_B, MASK_C)                                     \
+  word128 r0m[sc][2];                                                                              \
+  word128 r0s[sc][2];                                                                              \
+  word128 r1m[sc][2];                                                                              \
+  word128 r1s[sc][2];                                                                              \
+  word128 r2m[sc][2];                                                                              \
+  word128 x0s[sc][2];                                                                              \
+  word128 x1s[sc][2];                                                                              \
+  word128 x2m[sc][2];                                                                              \
+  do {                                                                                             \
+    word128 tmp[2], bitm_a[2], bitm_b[2], bitm_c[2];                                               \
+    bitm_a[0] = mm128_load(&MASK_A->w64[0]);                                                       \
+    bitm_a[1] = mm128_load(&MASK_A->w64[2]);                                                       \
+    bitm_b[0] = mm128_load(&MASK_B->w64[0]);                                                       \
+    bitm_b[1] = mm128_load(&MASK_B->w64[2]);                                                       \
+    bitm_c[0] = mm128_load(&MASK_C->w64[0]);                                                       \
+    bitm_c[1] = mm128_load(&MASK_C->w64[2]);                                                       \
+    for (unsigned int m = 0; m < (sc); ++m) {                                                      \
+      tmp[0] = mm128_load(&IN(m)[0]);                                                              \
+      tmp[1] = mm128_load(&IN(m)[2]);                                                              \
+      mm128_and_256(x0s[m], tmp, bitm_a);                                                          \
+      mm128_and_256(x1s[m], tmp, bitm_b);                                                          \
+      mm128_and_256(x2m[m], tmp, bitm_c);                                                          \
+                                                                                                   \
+      mm128_shift_left_256(x0s[m], x0s[m], 2);                                                     \
+      mm128_shift_left_256(x1s[m], x1s[m], 1);                                                     \
+                                                                                                   \
+      tmp[0] = mm128_load(&RVEC(m)[0]);                                                            \
+      tmp[1] = mm128_load(&RVEC(m)[2]);                                                            \
+      mm128_and_256(r0m[m], tmp, bitm_a);                                                          \
+      mm128_and_256(r1m[m], tmp, bitm_b);                                                          \
+      mm128_and_256(r2m[m], tmp, bitm_c);                                                          \
+                                                                                                   \
+      mm128_shift_left_256(r0s[m], r0m[m], 2);                                                     \
+      mm128_shift_left_256(r1s[m], r1m[m], 1);                                                     \
+    }                                                                                              \
+  } while (0)
+
+#define bitsliced_mm128_256_step_2(sc)                                                             \
+  do {                                                                                             \
+    for (unsigned int m = 0; m < sc; ++m) {                                                        \
+      mm128_xor_256(r2m[m], r2m[m], x0s[m]);                                                       \
+      mm128_xor_256(x0s[m], x0s[m], x1s[m]);                                                       \
+      mm128_xor_256(r1m[m], x0s[m], r1m[m]);                                                       \
+      mm128_xor_256(r0m[m], x0s[m], r0m[m]);                                                       \
+      mm128_xor_256(r0m[m], r0m[m], x2m[m]);                                                       \
+                                                                                                   \
+      mm128_shift_right_256(x0s[m], r2m[m], 2);                                                    \
+      mm128_shift_right_256(x1s[m], r1m[m], 1);                                                    \
+                                                                                                   \
+      mm128_xor_256(x0s[m], x0s[m], x1s[m]);                                                       \
+      mm128_xor_256(r0m[m], r0m[m], x0s[m]);                                                       \
+      mm128_store(&OUT(m)[0], r0m[m][0]);                                                          \
+      mm128_store(&OUT(m)[2], r0m[m][1]);                                                          \
+    }                                                                                              \
+  } while (0)
+
+#define mpc_mm128_256_and_def(ROR, res, first, second, r, viewshift)                               \
+  do {                                                                                             \
+    for (unsigned int m = 0; m < SC_PROOF; ++m) {                                                  \
+      const unsigned int j = (m + 1) % SC_PROOF;                                                   \
+      word128 tmp1[2], tmp2[2];                                                                    \
+                                                                                                   \
+      mm128_and_256(tmp1, first[m], second[m]);                                                    \
+      mm128_and_256(tmp2, first[j], second[m]);                                                    \
+      mm128_xor_256(res[m], tmp1, tmp2);                                                           \
+      mm128_and_256(tmp1, first[m], second[j]);                                                    \
+      mm128_xor_256(res[m], res[m], tmp1);                                                         \
+      mm128_xor_256(tmp2, r[m], r[j]);                                                             \
+      mm128_xor_256(res[m], res[m], tmp2);                                                         \
+      if (viewshift) {                                                                             \
+        ROR(tmp1, res[m], viewshift);                                                              \
+        tmp2[0] = mm128_load(&VIEW(m)[0]);                                                         \
+        tmp2[1] = mm128_load(&VIEW(m)[2]);                                                         \
+        mm128_xor_256(tmp2, tmp1, tmp2);                                                           \
+        mm128_store(&VIEW(m)[0], tmp2[0]);                                                         \
+        mm128_store(&VIEW(m)[2], tmp2[1]);                                                         \
+      } else {                                                                                     \
+        mm128_store(&VIEW(m)[0], res[m][0]);                                                       \
+        mm128_store(&VIEW(m)[2], res[m][1]);                                                       \
+      }                                                                                            \
+    }                                                                                              \
+  } while (0)
+
+#define mpc_mm128_256_and_verify_def(ROL, ROR, res, first, second, r, MASK, viewshift)             \
+  do {                                                                                             \
+    word128 tmp1[2], tmp2[2];                                                                      \
+    for (unsigned int m = 0; m < (SC_VERIFY - 1); ++m) {                                           \
+      const unsigned int j = (m + 1) % SC_PROOF;                                                   \
+                                                                                                   \
+      mm128_and_256(tmp1, first[m], second[m]);                                                    \
+      mm128_and_256(tmp2, first[j], second[m]);                                                    \
+      mm128_xor_256(res[m], tmp1, tmp2);                                                           \
+      mm128_and_256(tmp1, first[m], second[j]);                                                    \
+      mm128_xor_256(res[m], res[m], tmp1);                                                         \
+      mm128_xor_256(tmp2, r[m], r[j]);                                                             \
+      mm128_xor_256(res[m], res[m], tmp2);                                                         \
+      if (viewshift) {                                                                             \
+        ROR(tmp1, res[m], viewshift);                                                              \
+        tmp2[0] = mm128_load(&VIEW(m)[0]);                                                         \
+        tmp2[1] = mm128_load(&VIEW(m)[2]);                                                         \
+        mm128_xor_256(tmp2, tmp1, tmp2);                                                           \
+        mm128_store(&VIEW(m)[0], tmp2[0]);                                                         \
+        mm128_store(&VIEW(m)[2], tmp2[1]);                                                         \
+      } else {                                                                                     \
+        mm128_store(&VIEW(m)[0], res[m][0]);                                                       \
+        mm128_store(&VIEW(m)[2], res[m][1]);                                                       \
+      }                                                                                            \
+    }                                                                                              \
+                                                                                                   \
+    tmp2[0] = mm128_load(&VIEW(SC_VERIFY - 1)[0]);                                                 \
+    tmp2[1] = mm128_load(&VIEW(SC_VERIFY - 1)[2]);                                                 \
+    tmp1[0] = mm128_load(&MASK->w64[0]);                                                           \
+    tmp1[1] = mm128_load(&MASK->w64[2]);                                                           \
+    if (viewshift) {                                                                               \
+      ROL(tmp2, tmp2, viewshift);                                                                  \
+      mm128_and_256(res[SC_VERIFY - 1], tmp2, tmp1);                                               \
+    } else {                                                                                       \
+      mm128_and_256(res[SC_VERIFY - 1], tmp2, tmp1);                                               \
+    }                                                                                              \
+  } while (0)
+
+#define IN(m) in[m].w64
+#define OUT(m) out[m].w64
+#define RVEC(m) rvec->s[m].w64
+#define VIEW(m) view->s[m].w64
 
 #if defined(WITH_LOWMC_129_129_4) || defined(WITH_LOWMC_192_192_4) || defined(WITH_LOWMC_255_255_4)
 ATTR_TARGET_S128
 static inline void mpc_sbox_prove_s128_256(mzd_local_t* out, const mzd_local_t* in, view_t* view,
                                            const rvec_t* rvec, const mzd_local_t* mask_a,
                                            const mzd_local_t* mask_b, const mzd_local_t* mask_c) {
-  bitsliced_mm_multiple_step_1(SC_PROOF, word128, 2, mm128_and_256, mm128_shift_left_256,
-                               mask_a->w128, mask_b->w128, mask_c->w128);
+  bitsliced_mm128_256_step_1(SC_PROOF, mask_a, mask_b, mask_c);
 
   // a & b
-  mpc_mm_multiple_and_def(word128, 2, mm128_and_256, mm128_xor_256, NROLR, r0m, x0s, x1s, r2m, 0);
+  mpc_mm128_256_and_def(NROLR, r0m, x0s, x1s, r2m, 0);
   // b & c
-  mpc_mm_multiple_and_def(word128, 2, mm128_and_256, mm128_xor_256, mm128_shift_right_256, r2m, x1s,
-                          x2m, r1s, 1);
+  mpc_mm128_256_and_def(mm128_shift_right_256, r2m, x1s, x2m, r1s, 1);
   // c & a
-  mpc_mm_multiple_and_def(word128, 2, mm128_and_256, mm128_xor_256, mm128_shift_right_256, r1m, x0s,
-                          x2m, r0s, 2);
+  mpc_mm128_256_and_def(mm128_shift_right_256, r1m, x0s, x2m, r0s, 2);
 
-  bitsliced_mm_multiple_step_2(SC_PROOF, word128, 2, mm128_xor_256, mm128_shift_right_256);
+  bitsliced_mm128_256_step_2(SC_PROOF);
 }
 
 ATTR_TARGET_S128
 static inline void mpc_sbox_verify_s128_256(mzd_local_t* out, const mzd_local_t* in, view_t* view,
                                             const rvec_t* rvec, const mzd_local_t* mask_a,
                                             const mzd_local_t* mask_b, const mzd_local_t* mask_c) {
-  bitsliced_mm_multiple_step_1(SC_VERIFY, word128, 2, mm128_and_256, mm128_shift_left_256,
-                               mask_a->w128, mask_b->w128, mask_c->w128);
+  bitsliced_mm128_256_step_1(SC_VERIFY, mask_a, mask_b, mask_c);
 
   // a & b
-  mpc_mm_multiple_and_verify_def(word128, 2, mm128_and_256, mm128_xor_256, NROLR, NROLR, r0m, x0s,
-                                 x1s, r2m, mask_c->w128, 0);
+  mpc_mm128_256_and_verify_def(NROLR, NROLR, r0m, x0s, x1s, r2m, mask_c, 0);
   // b & c
-  mpc_mm_multiple_and_verify_def(word128, 2, mm128_and_256, mm128_xor_256, mm128_shift_left_256,
-                                 mm128_shift_right_256, r2m, x1s, x2m, r1s, mask_c->w128, 1);
+  mpc_mm128_256_and_verify_def(mm128_shift_left_256, mm128_shift_right_256, r2m, x1s, x2m, r1s,
+                               mask_c, 1);
   // c & a
-  mpc_mm_multiple_and_verify_def(word128, 2, mm128_and_256, mm128_xor_256, mm128_shift_left_256,
-                                 mm128_shift_right_256, r1m, x0s, x2m, r0s, mask_c->w128, 2);
+  mpc_mm128_256_and_verify_def(mm128_shift_left_256, mm128_shift_right_256, r1m, x0s, x2m, r0s,
+                               mask_c, 2);
 
-  bitsliced_mm_multiple_step_2(SC_VERIFY, word128, 2, mm128_xor_256, mm128_shift_right_256);
+  bitsliced_mm128_256_step_2(SC_VERIFY);
 }
 #endif
 
@@ -755,45 +776,42 @@ static void mpc_sbox_verify_s128_lowmc_255_255_4(mzd_local_t* out, const mzd_loc
 #endif /* WITH_SSE2 || WITH_NEON */
 
 #if defined(WITH_AVX2)
-#define IN(m) in[m].w256
-#define OUT(m) out[m].w256
-#define RVEC(m) rvec->s[m].w256
-#define VIEW(m) view->s[m].w256
+#define IN(m) in[m].w64
+#define OUT(m) out[m].w64
+#define RVEC(m) rvec->s[m].w64
+#define VIEW(m) view->s[m].w64
 
 #if defined(WITH_LOWMC_129_129_4) || defined(WITH_LOWMC_192_192_4) || defined(WITH_LOWMC_255_255_4)
 ATTR_TARGET_AVX2
 static inline void mpc_sbox_prove_s256_256(mzd_local_t* out, const mzd_local_t* in, view_t* view,
                                            const rvec_t* rvec, const word256 mask_a,
                                            const word256 mask_b, const word256 mask_c) {
-  bitsliced_mm_step_1(SC_PROOF, word256, mm256_and, mm256_rotate_left, mask_a, mask_b, mask_c);
+  bitsliced_mm256_step_1(SC_PROOF, mask_a, mask_b, mask_c);
 
   // a & b
-  mpc_mm_and_def(mm256_and, mm256_xor, mm256_rotate_right, r0m, x0s, x1s, r2m, 0);
+  mpc_mm256_and_def(r0m, x0s, x1s, r2m, 0);
   // b & c
-  mpc_mm_and_def(mm256_and, mm256_xor, mm256_rotate_right, r2m, x1s, x2m, r1s, 1);
+  mpc_mm256_and_def(r2m, x1s, x2m, r1s, 1);
   // c & a
-  mpc_mm_and_def(mm256_and, mm256_xor, mm256_rotate_right, r1m, x0s, x2m, r0s, 2);
+  mpc_mm256_and_def(r1m, x0s, x2m, r0s, 2);
 
-  bitsliced_mm_step_2(SC_PROOF, mm256_xor, mm256_rotate_right);
+  bitsliced_mm256_step_2(SC_PROOF);
 }
 
 ATTR_TARGET_AVX2
 static void mpc_sbox_verify_s256_256(mzd_local_t* out, const mzd_local_t* in, view_t* view,
                                      const rvec_t* rvec, const word256 mask_a, const word256 mask_b,
                                      const word256 mask_c) {
-  bitsliced_mm_step_1(SC_VERIFY, word256, mm256_and, mm256_rotate_left, mask_a, mask_b, mask_c);
+  bitsliced_mm256_step_1(SC_VERIFY, mask_a, mask_b, mask_c);
 
   // a & b
-  mpc_mm_and_verify_def(mm256_and, mm256_xor, mm256_rotate_left, mm256_rotate_right, r0m, x0s, x1s,
-                        r2m, mask_c, 0);
+  mpc_mm256_and_verify_def(r0m, x0s, x1s, r2m, mask_c, 0);
   // b & c
-  mpc_mm_and_verify_def(mm256_and, mm256_xor, mm256_rotate_left, mm256_rotate_right, r2m, x1s, x2m,
-                        r1s, mask_c, 1);
+  mpc_mm256_and_verify_def(r2m, x1s, x2m, r1s, mask_c, 1);
   // c & a
-  mpc_mm_and_verify_def(mm256_and, mm256_xor, mm256_rotate_left, mm256_rotate_right, r1m, x0s, x2m,
-                        r0s, mask_c, 2);
+  mpc_mm256_and_verify_def(r1m, x0s, x2m, r0s, mask_c, 2);
 
-  bitsliced_mm_step_2(SC_VERIFY, mm256_xor, mm256_rotate_right);
+  bitsliced_mm256_step_2(SC_VERIFY);
 }
 #endif
 
@@ -801,15 +819,25 @@ static void mpc_sbox_verify_s256_256(mzd_local_t* out, const mzd_local_t* in, vi
 ATTR_TARGET_AVX2
 static void mpc_sbox_prove_s256_lowmc_129_129_4(mzd_local_t* out, const mzd_local_t* in,
                                                 view_t* view, const rvec_t* rvec) {
-  mpc_sbox_prove_s256_256(out, in, view, rvec, mask_129_129_43_a->w256, mask_129_129_43_b->w256,
-                          mask_129_129_43_c->w256);
+  mpc_sbox_prove_s256_256(out, in, view, rvec,
+                          mm256_set_4(MASK_129_129_43_A_0, MASK_129_129_43_A_1, MASK_129_129_43_A_2,
+                                      MASK_129_129_43_A_3),
+                          mm256_set_4(MASK_129_129_43_B_0, MASK_129_129_43_B_1, MASK_129_129_43_B_2,
+                                      MASK_129_129_43_B_3),
+                          mm256_set_4(MASK_129_129_43_C_0, MASK_129_129_43_C_1, MASK_129_129_43_C_2,
+                                      MASK_129_129_43_C_3));
 }
 
 ATTR_TARGET_AVX2
 static void mpc_sbox_verify_s256_lowmc_129_129_4(mzd_local_t* out, const mzd_local_t* in,
                                                  view_t* view, const rvec_t* rvec) {
-  mpc_sbox_verify_s256_256(out, in, view, rvec, mask_129_129_43_a->w256, mask_129_129_43_b->w256,
-                           mask_129_129_43_c->w256);
+  mpc_sbox_verify_s256_256(out, in, view, rvec,
+                           mm256_set_4(MASK_129_129_43_A_0, MASK_129_129_43_A_1,
+                                       MASK_129_129_43_A_2, MASK_129_129_43_A_3),
+                           mm256_set_4(MASK_129_129_43_B_0, MASK_129_129_43_B_1,
+                                       MASK_129_129_43_B_2, MASK_129_129_43_B_3),
+                           mm256_set_4(MASK_129_129_43_C_0, MASK_129_129_43_C_1,
+                                       MASK_129_129_43_C_2, MASK_129_129_43_C_3));
 }
 #endif
 
@@ -817,15 +845,25 @@ static void mpc_sbox_verify_s256_lowmc_129_129_4(mzd_local_t* out, const mzd_loc
 ATTR_TARGET_AVX2
 static void mpc_sbox_prove_s256_lowmc_192_192_4(mzd_local_t* out, const mzd_local_t* in,
                                                 view_t* view, const rvec_t* rvec) {
-  mpc_sbox_prove_s256_256(out, in, view, rvec, mask_192_192_64_a->w256, mask_192_192_64_b->w256,
-                          mask_192_192_64_c->w256);
+  mpc_sbox_prove_s256_256(out, in, view, rvec,
+                          mm256_set_4(MASK_192_192_64_A_0, MASK_192_192_64_A_1, MASK_192_192_64_A_2,
+                                      MASK_192_192_64_A_3),
+                          mm256_set_4(MASK_192_192_64_B_0, MASK_192_192_64_B_1, MASK_192_192_64_B_2,
+                                      MASK_192_192_64_B_3),
+                          mm256_set_4(MASK_192_192_64_C_0, MASK_192_192_64_C_1, MASK_192_192_64_C_2,
+                                      MASK_192_192_64_C_3));
 }
 
 ATTR_TARGET_AVX2
 static void mpc_sbox_verify_s256_lowmc_192_192_4(mzd_local_t* out, const mzd_local_t* in,
                                                  view_t* view, const rvec_t* rvec) {
-  mpc_sbox_verify_s256_256(out, in, view, rvec, mask_192_192_64_a->w256, mask_192_192_64_b->w256,
-                           mask_192_192_64_c->w256);
+  mpc_sbox_verify_s256_256(out, in, view, rvec,
+                           mm256_set_4(MASK_192_192_64_A_0, MASK_192_192_64_A_1,
+                                       MASK_192_192_64_A_2, MASK_192_192_64_A_3),
+                           mm256_set_4(MASK_192_192_64_B_0, MASK_192_192_64_B_1,
+                                       MASK_192_192_64_B_2, MASK_192_192_64_B_3),
+                           mm256_set_4(MASK_192_192_64_C_0, MASK_192_192_64_C_1,
+                                       MASK_192_192_64_C_2, MASK_192_192_64_C_3));
 }
 #endif
 
@@ -833,15 +871,25 @@ static void mpc_sbox_verify_s256_lowmc_192_192_4(mzd_local_t* out, const mzd_loc
 ATTR_TARGET_AVX2
 static void mpc_sbox_prove_s256_lowmc_255_255_4(mzd_local_t* out, const mzd_local_t* in,
                                                 view_t* view, const rvec_t* rvec) {
-  mpc_sbox_prove_s256_256(out, in, view, rvec, mask_255_255_85_a->w256, mask_255_255_85_b->w256,
-                          mask_255_255_85_c->w256);
+  mpc_sbox_prove_s256_256(out, in, view, rvec,
+                          mm256_set_4(MASK_255_255_85_A_0, MASK_255_255_85_A_1, MASK_255_255_85_A_2,
+                                      MASK_255_255_85_A_3),
+                          mm256_set_4(MASK_255_255_85_B_0, MASK_255_255_85_B_1, MASK_255_255_85_B_2,
+                                      MASK_255_255_85_B_3),
+                          mm256_set_4(MASK_255_255_85_C_0, MASK_255_255_85_C_1, MASK_255_255_85_C_2,
+                                      MASK_255_255_85_C_3));
 }
 
 ATTR_TARGET_AVX2
 static void mpc_sbox_verify_s256_lowmc_255_255_4(mzd_local_t* out, const mzd_local_t* in,
                                                  view_t* view, const rvec_t* rvec) {
-  mpc_sbox_verify_s256_256(out, in, view, rvec, mask_255_255_85_a->w256, mask_255_255_85_b->w256,
-                           mask_255_255_85_c->w256);
+  mpc_sbox_verify_s256_256(out, in, view, rvec,
+                           mm256_set_4(MASK_255_255_85_A_0, MASK_255_255_85_A_1,
+                                       MASK_255_255_85_A_2, MASK_255_255_85_A_3),
+                           mm256_set_4(MASK_255_255_85_B_0, MASK_255_255_85_B_1,
+                                       MASK_255_255_85_B_2, MASK_255_255_85_B_3),
+                           mm256_set_4(MASK_255_255_85_C_0, MASK_255_255_85_C_1,
+                                       MASK_255_255_85_C_2, MASK_255_255_85_C_3));
 }
 #endif
 #endif /* WITH_AVX2*/
@@ -1185,91 +1233,4 @@ get_zkbpp_lowmc_verify_implementation(const lowmc_parameters_t* lowmc) {
 
   UNREACHABLE;
   return NULL;
-}
-
-#if !defined(NO_UINT64_FALLBACK)
-static void mzd_share_uint64_128(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                                 const mzd_local_t* v3) {
-  mzd_xor_uint64_128(r, v1, v2);
-  mzd_xor_uint64_128(r, r, v3);
-}
-
-static void mzd_share_uint64_192(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                                 const mzd_local_t* v3) {
-  mzd_xor_uint64_192(r, v1, v2);
-  mzd_xor_uint64_192(r, r, v3);
-}
-
-static void mzd_share_uint64_256(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                                 const mzd_local_t* v3) {
-  mzd_xor_uint64_256(r, v1, v2);
-  mzd_xor_uint64_256(r, r, v3);
-}
-#endif
-
-#if defined(WITH_OPT)
-#if defined(WITH_SSE2) || defined(WITH_NEON)
-ATTR_TARGET_S128
-static void mzd_share_s128_128(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                               const mzd_local_t* v3) {
-  mzd_xor_s128_128(r, v1, v2);
-  mzd_xor_s128_128(r, r, v3);
-}
-
-ATTR_TARGET_S128
-static void mzd_share_s128_256(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                               const mzd_local_t* v3) {
-  mzd_xor_s128_256(r, v1, v2);
-  mzd_xor_s128_256(r, r, v3);
-}
-#endif
-
-#if defined(WITH_AVX2)
-ATTR_TARGET_AVX2
-static void mzd_share_s256_128(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                               const mzd_local_t* v3) {
-  mzd_xor_s256_128(r, v1, v2);
-  mzd_xor_s256_128(r, r, v3);
-}
-
-ATTR_TARGET_AVX2
-static void mzd_share_s256_256(mzd_local_t* r, const mzd_local_t* v1, const mzd_local_t* v2,
-                               const mzd_local_t* v3) {
-  mzd_xor_s256_256(r, v1, v2);
-  mzd_xor_s256_256(r, r, v3);
-}
-#endif
-#endif
-
-zkbpp_share_implementation_f get_zkbpp_share_implentation(const lowmc_parameters_t* lowmc) {
-#if defined(WITH_OPT)
-#if defined(WITH_AVX2)
-  if (CPU_SUPPORTS_AVX2) {
-    if (lowmc->n <= 128) {
-      return mzd_share_s256_128;
-    } else {
-      return mzd_share_s256_256;
-    }
-  }
-#endif
-#if defined(WITH_SSE2) || defined(WITH_NEON)
-  if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
-    if (lowmc->n <= 128) {
-      return mzd_share_s128_128;
-    } else {
-      return mzd_share_s128_256;
-    }
-  }
-#endif
-#endif
-
-#if !defined(NO_UINT64_FALLBACK)
-  if (lowmc->n <= 128) {
-    return mzd_share_uint64_128;
-  } else if (lowmc->n <= 192) {
-    return mzd_share_uint64_192;
-  } else {
-    return mzd_share_uint64_256;
-  }
-#endif
 }

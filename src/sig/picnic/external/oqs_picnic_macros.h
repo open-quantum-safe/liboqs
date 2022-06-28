@@ -25,6 +25,7 @@
 #define allocateRandomTape oqs_sig_picnic_allocateRandomTape
 #define allocateSignature2 oqs_sig_picnic_allocateSignature2
 #define buildMerkleTree oqs_sig_picnic_buildMerkleTree
+#define clearTree oqs_sig_picnic_clearTree
 #define createTree oqs_sig_picnic_createTree
 #define freeCommitments oqs_sig_picnic_freeCommitments
 #define freeCommitments2 oqs_sig_picnic_freeCommitments2
@@ -33,7 +34,6 @@
 #define freeProof2 oqs_sig_picnic_freeProof2
 #define freeRandomTape oqs_sig_picnic_freeRandomTape
 #define freeSignature2 oqs_sig_picnic_freeSignature2
-#define freeTree oqs_sig_picnic_freeTree
 #define generateSeeds oqs_sig_picnic_generateSeeds
 #define getBit oqs_sig_picnic_getBit
 #define getLeaf oqs_sig_picnic_getLeaf
@@ -90,6 +90,7 @@
 #define mzd_from_char_array oqs_sig_picnic_mzd_from_char_array
 #define mzd_local_free oqs_sig_picnic_mzd_local_free
 #define mzd_local_init_ex oqs_sig_picnic_mzd_local_init_ex
+#define mzd_mul_v_parity_s256_256_30 oqs_sig_picnic_mzd_mul_v_parity_s256_256_30
 #define mzd_mul_v_parity_uint64_128_3 oqs_sig_picnic_mzd_mul_v_parity_uint64_128_3
 #define mzd_mul_v_parity_uint64_128_30 oqs_sig_picnic_mzd_mul_v_parity_uint64_128_30
 #define mzd_mul_v_parity_uint64_192_3 oqs_sig_picnic_mzd_mul_v_parity_uint64_192_3

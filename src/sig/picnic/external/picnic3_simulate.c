@@ -213,25 +213,35 @@ static void picnic3_mpc_sbox_uint64_lowmc_255_255_4(mzd_local_t* statein, random
 #define picnic3_mpc_sbox_bitsliced_mm128(LOWMC_N, XOR, AND, SHL, SHR, bitmask_a, bitmask_b,        \
                                          bitmask_c)                                                \
   do {                                                                                             \
-    word128 a[2] ATTR_ALIGNED(alignof(word128));                                                   \
-    word128 b[2] ATTR_ALIGNED(alignof(word128));                                                   \
-    word128 c[2] ATTR_ALIGNED(alignof(word128));                                                   \
+    word128 tmp[2], bitm_a[2], bitm_b[2], bitm_c[2];                                               \
+    tmp[0]    = mm128_load(&statein->w64[0]);                                                      \
+    tmp[1]    = mm128_load(&statein->w64[2]);                                                      \
+    bitm_a[0] = mm128_load(&bitmask_a->w64[0]);                                                    \
+    bitm_a[1] = mm128_load(&bitmask_a->w64[2]);                                                    \
+    bitm_b[0] = mm128_load(&bitmask_b->w64[0]);                                                    \
+    bitm_b[1] = mm128_load(&bitmask_b->w64[2]);                                                    \
+    bitm_c[0] = mm128_load(&bitmask_c->w64[0]);                                                    \
+    bitm_c[1] = mm128_load(&bitmask_c->w64[2]);                                                    \
+                                                                                                   \
+    word128 a[2];                                                                                  \
+    word128 b[2];                                                                                  \
+    word128 c[2];                                                                                  \
     /* a */                                                                                        \
-    AND(a, bitmask_a->w128, statein->w128);                                                        \
+    AND(a, bitm_a, tmp);                                                                           \
     /* b */                                                                                        \
-    AND(b, bitmask_b->w128, statein->w128);                                                        \
+    AND(b, bitm_b, tmp);                                                                           \
     /* c */                                                                                        \
-    AND(c, bitmask_c->w128, statein->w128);                                                        \
+    AND(c, bitm_c, tmp);                                                                           \
                                                                                                    \
     SHL(a, a, 2);                                                                                  \
     SHL(b, b, 1);                                                                                  \
                                                                                                    \
-    word128 t0[2] ATTR_ALIGNED(alignof(word128));                                                  \
-    word128 t1[2] ATTR_ALIGNED(alignof(word128));                                                  \
-    word128 t2[2] ATTR_ALIGNED(alignof(word128));                                                  \
-    word128 s_ab[2] ATTR_ALIGNED(alignof(word128));                                                \
-    word128 s_bc[2] ATTR_ALIGNED(alignof(word128));                                                \
-    word128 s_ca[2] ATTR_ALIGNED(alignof(word128));                                                \
+    word128 t0[2];                                                                                 \
+    word128 t1[2];                                                                                 \
+    word128 t2[2];                                                                                 \
+    word128 s_ab[2];                                                                               \
+    word128 s_bc[2];                                                                               \
+    word128 s_ca[2];                                                                               \
                                                                                                    \
     /* b & c */                                                                                    \
     AND(s_bc, b, c);                                                                               \
@@ -240,17 +250,16 @@ static void picnic3_mpc_sbox_uint64_lowmc_255_255_4(mzd_local_t* statein, random
     /* a & b */                                                                                    \
     AND(s_ab, a, b);                                                                               \
     for (int i = 0; i < 16; i++) {                                                                 \
-      word128 tmp[2] ATTR_ALIGNED(alignof(word128));                                               \
       bitstream_t party_msgs = {{msgs->msgs[i]}, msgs->pos};                                       \
       if (i == msgs->unopened) {                                                                   \
         /* we are in verify, just grab the broadcast s from the msgs array */                      \
         w128_from_bitstream(&party_msgs, tmp, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);   \
         /* a */                                                                                    \
-        AND(t0, bitmask_a->w128, tmp);                                                             \
+        AND(t0, bitm_a, tmp);                                                                      \
         /* b */                                                                                    \
-        AND(t1, bitmask_b->w128, tmp);                                                             \
+        AND(t1, bitm_b, tmp);                                                                      \
         /* c */                                                                                    \
-        AND(t2, bitmask_c->w128, tmp);                                                             \
+        AND(t2, bitm_c, tmp);                                                                      \
         SHL(t0, t0, 2);                                                                            \
         SHL(t1, t1, 1);                                                                            \
         XOR(s_ab, t2, s_ab);                                                                       \
@@ -261,30 +270,30 @@ static void picnic3_mpc_sbox_uint64_lowmc_255_255_4(mzd_local_t* statein, random
       }                                                                                            \
       bitstream_t party_tape = {{tapes->tape[i]}, tapes->pos};                                     \
       /* make a mzd_local from tape[i] for input_masks */                                          \
-      word128 mask_a[2] ATTR_ALIGNED(alignof(word128));                                            \
-      word128 mask_b[2] ATTR_ALIGNED(alignof(word128));                                            \
-      word128 mask_c[2] ATTR_ALIGNED(alignof(word128));                                            \
+      word128 mask_a[2];                                                                           \
+      word128 mask_b[2];                                                                           \
+      word128 mask_c[2];                                                                           \
       w128_from_bitstream(&party_tape, tmp, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);     \
       /* a */                                                                                      \
-      AND(mask_a, bitmask_a->w128, tmp);                                                           \
+      AND(mask_a, bitm_a, tmp);                                                                    \
       /* b */                                                                                      \
-      AND(mask_b, bitmask_b->w128, tmp);                                                           \
+      AND(mask_b, bitm_b, tmp);                                                                    \
       /* c */                                                                                      \
-      AND(mask_c, bitmask_c->w128, tmp);                                                           \
+      AND(mask_c, bitm_c, tmp);                                                                    \
       SHL(mask_a, mask_a, 2);                                                                      \
       SHL(mask_b, mask_b, 1);                                                                      \
                                                                                                    \
       /* make a mzd_local from tape[i] for and_helper */                                           \
-      word128 and_helper_ab[2] ATTR_ALIGNED(alignof(word128));                                     \
-      word128 and_helper_bc[2] ATTR_ALIGNED(alignof(word128));                                     \
-      word128 and_helper_ca[2] ATTR_ALIGNED(alignof(word128));                                     \
+      word128 and_helper_ab[2];                                                                    \
+      word128 and_helper_bc[2];                                                                    \
+      word128 and_helper_ca[2];                                                                    \
       w128_from_bitstream(&party_tape, tmp, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);     \
       /* a */                                                                                      \
-      AND(and_helper_ab, bitmask_c->w128, tmp);                                                    \
+      AND(and_helper_ab, bitm_c, tmp);                                                             \
       /* b */                                                                                      \
-      AND(and_helper_bc, bitmask_b->w128, tmp);                                                    \
+      AND(and_helper_bc, bitm_b, tmp);                                                             \
       /* c */                                                                                      \
-      AND(and_helper_ca, bitmask_a->w128, tmp);                                                    \
+      AND(and_helper_ca, bitm_a, tmp);                                                             \
       SHL(and_helper_ca, and_helper_ca, 2);                                                        \
       SHL(and_helper_bc, and_helper_bc, 1);                                                        \
                                                                                                    \
@@ -333,7 +342,9 @@ static void picnic3_mpc_sbox_uint64_lowmc_255_255_4(mzd_local_t* statein, random
     SHR(t1, t1, 1);                                                                                \
                                                                                                    \
     XOR(t2, t2, t1);                                                                               \
-    XOR(statein->w128, t2, t0);                                                                    \
+    XOR(tmp, t2, t0);                                                                              \
+    mm128_store(&statein->w64[0], tmp[0]);                                                         \
+    mm128_store(&statein->w64[2], tmp[1]);                                                         \
   } while (0)
 
 #if defined(WITH_LOWMC_129_129_4)
@@ -391,108 +402,88 @@ static void picnic3_mpc_sbox_s128_lowmc_255_255_4(mzd_local_t* statein, randomTa
 #endif // SSE/NEON
 
 #if defined(WITH_AVX2)
-#define picnic3_mpc_sbox_bitsliced_mm256(LOWMC_N, XOR, AND, ROL, ROR, bitmask_a, bitmask_b,        \
-                                         bitmask_c)                                                \
+#define picnic3_mpc_sbox_bitsliced_mm256(LOWMC_N, bitmask_a, bitmask_b, bitmask_c)                 \
   do {                                                                                             \
-    word256 a ATTR_ALIGNED(alignof(word256));                                                      \
-    word256 b ATTR_ALIGNED(alignof(word256));                                                      \
-    word256 c ATTR_ALIGNED(alignof(word256));                                                      \
+    const word256 bitm_a = bitmask_a;                                                              \
+    const word256 bitm_b = bitmask_b;                                                              \
+    const word256 bitm_c = bitmask_c;                                                              \
+                                                                                                   \
+    word256 tmp = mm256_load(statein->w64);                                                        \
     /* a */                                                                                        \
-    a = AND(bitmask_a->w256, statein->w256);                                                       \
+    word256 a = mm256_and(bitm_a, tmp);                                                            \
     /* b */                                                                                        \
-    b = AND(bitmask_b->w256, statein->w256);                                                       \
+    word256 b = mm256_and(bitm_b, tmp);                                                            \
     /* c */                                                                                        \
-    c = AND(bitmask_c->w256, statein->w256);                                                       \
+    word256 c = mm256_and(bitm_c, tmp);                                                            \
                                                                                                    \
-    a = ROL(a, 2);                                                                                 \
-    b = ROL(b, 1);                                                                                 \
-                                                                                                   \
-    word256 t0 ATTR_ALIGNED(alignof(word256));                                                     \
-    word256 t1 ATTR_ALIGNED(alignof(word256));                                                     \
-    word256 t2 ATTR_ALIGNED(alignof(word256));                                                     \
-    word256 s_ab ATTR_ALIGNED(alignof(word256));                                                   \
-    word256 s_bc ATTR_ALIGNED(alignof(word256));                                                   \
-    word256 s_ca ATTR_ALIGNED(alignof(word256));                                                   \
+    a = mm256_rotate_left(a, 2);                                                                   \
+    b = mm256_rotate_left(b, 1);                                                                   \
                                                                                                    \
     /* b & c */                                                                                    \
-    s_bc = AND(b, c);                                                                              \
+    word256 s_bc = mm256_and(b, c);                                                                \
     /* c & a */                                                                                    \
-    s_ca = AND(c, a);                                                                              \
+    word256 s_ca = mm256_and(c, a);                                                                \
     /* a & b */                                                                                    \
-    s_ab = AND(a, b);                                                                              \
-    for (int i = 0; i < 16; i++) {                                                                 \
-      word256 tmp ATTR_ALIGNED(alignof(word256));                                                  \
+    word256 s_ab = mm256_and(a, b);                                                                \
+    word256 t0, t1, t2;                                                                            \
+    for (int i = 0; i < 16; ++i) {                                                                 \
       bitstream_t party_msgs = {{msgs->msgs[i]}, msgs->pos};                                       \
       if (i == msgs->unopened) {                                                                   \
         /* we are in verify, just grab the broadcast s from the msgs array */                      \
         tmp = w256_from_bitstream(&party_msgs, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);  \
         /* a */                                                                                    \
-        t0 = AND(bitmask_a->w256, tmp);                                                            \
+        t0 = mm256_and(bitm_a, tmp);                                                               \
         /* b */                                                                                    \
-        t1 = AND(bitmask_b->w256, tmp);                                                            \
+        t1 = mm256_and(bitm_b, tmp);                                                               \
         /* c */                                                                                    \
-        t2   = AND(bitmask_c->w256, tmp);                                                          \
-        t0   = ROL(t0, 2);                                                                         \
-        t1   = ROL(t1, 1);                                                                         \
-        s_ab = XOR(t2, s_ab);                                                                      \
-        s_bc = XOR(t1, s_bc);                                                                      \
-        s_ca = XOR(t0, s_ca);                                                                      \
+        t2   = mm256_and(bitm_c, tmp);                                                             \
+        t0   = mm256_rotate_left(t0, 2);                                                           \
+        t1   = mm256_rotate_left(t1, 1);                                                           \
+        s_ab = mm256_xor(t2, s_ab);                                                                \
+        s_bc = mm256_xor(t1, s_bc);                                                                \
+        s_ca = mm256_xor(t0, s_ca);                                                                \
                                                                                                    \
         continue;                                                                                  \
       }                                                                                            \
       bitstream_t party_tape = {{tapes->tape[i]}, tapes->pos};                                     \
       /* make a mzd_local from tape[i] for input_masks */                                          \
-      word256 mask_a ATTR_ALIGNED(alignof(word256));                                               \
-      word256 mask_b ATTR_ALIGNED(alignof(word256));                                               \
-      word256 mask_c ATTR_ALIGNED(alignof(word256));                                               \
       tmp = w256_from_bitstream(&party_tape, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);    \
       /* a */                                                                                      \
-      mask_a = AND(bitmask_a->w256, tmp);                                                          \
+      word256 mask_a = mm256_and(bitm_a, tmp);                                                     \
       /* b */                                                                                      \
-      mask_b = AND(bitmask_b->w256, tmp);                                                          \
+      word256 mask_b = mm256_and(bitm_b, tmp);                                                     \
       /* c */                                                                                      \
-      mask_c = AND(bitmask_c->w256, tmp);                                                          \
-      mask_a = ROL(mask_a, 2);                                                                     \
-      mask_b = ROL(mask_b, 1);                                                                     \
+      word256 mask_c = mm256_and(bitm_c, tmp);                                                     \
+      mask_a         = mm256_rotate_left(mask_a, 2);                                               \
+      mask_b         = mm256_rotate_left(mask_b, 1);                                               \
                                                                                                    \
       /* make a mzd_local from tape[i] for and_helper */                                           \
-      word256 and_helper_ab ATTR_ALIGNED(alignof(word256));                                        \
-      word256 and_helper_bc ATTR_ALIGNED(alignof(word256));                                        \
-      word256 and_helper_ca ATTR_ALIGNED(alignof(word256));                                        \
       tmp = w256_from_bitstream(&party_tape, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);    \
       /* a */                                                                                      \
-      and_helper_ab = AND(bitmask_c->w256, tmp);                                                   \
+      word256 and_helper_ab = mm256_and(bitm_c, tmp);                                              \
       /* b */                                                                                      \
-      and_helper_bc = AND(bitmask_b->w256, tmp);                                                   \
+      word256 and_helper_bc = mm256_and(bitm_b, tmp);                                              \
       /* c */                                                                                      \
-      and_helper_ca = AND(bitmask_a->w256, tmp);                                                   \
-      and_helper_ca = ROL(and_helper_ca, 2);                                                       \
-      and_helper_bc = ROL(and_helper_bc, 1);                                                       \
+      word256 and_helper_ca = mm256_and(bitm_a, tmp);                                              \
+      and_helper_ca         = mm256_rotate_left(and_helper_ca, 2);                                 \
+      and_helper_bc         = mm256_rotate_left(and_helper_bc, 1);                                 \
                                                                                                    \
       /* s_ab */                                                                                   \
-      t0   = AND(a, mask_b);                                                                       \
-      t1   = AND(b, mask_a);                                                                       \
-      t0   = XOR(t0, t1);                                                                          \
-      tmp  = XOR(t0, and_helper_ab);                                                               \
-      s_ab = XOR(tmp, s_ab);                                                                       \
+      t0   = mm256_xor(mm256_and(a, mask_b), mm256_and(b, mask_a));                                \
+      tmp  = mm256_xor(t0, and_helper_ab);                                                         \
+      s_ab = mm256_xor(tmp, s_ab);                                                                 \
       /* s_bc */                                                                                   \
-      t0   = AND(b, mask_c);                                                                       \
-      t1   = AND(c, mask_b);                                                                       \
-      t0   = XOR(t0, t1);                                                                          \
-      t0   = XOR(t0, and_helper_bc);                                                               \
-      s_bc = XOR(t0, s_bc);                                                                        \
+      t0   = mm256_xor(mm256_and(b, mask_c), mm256_and(c, mask_b));                                \
+      t0   = mm256_xor(t0, and_helper_bc);                                                         \
+      s_bc = mm256_xor(t0, s_bc);                                                                  \
                                                                                                    \
-      t0  = ROR(t0, 1);                                                                            \
-      tmp = XOR(tmp, t0);                                                                          \
+      tmp = mm256_xor(tmp, mm256_rotate_right(t0, 1));                                             \
       /* s_ca */                                                                                   \
-      t0   = AND(c, mask_a);                                                                       \
-      t1   = AND(a, mask_c);                                                                       \
-      t0   = XOR(t0, t1);                                                                          \
-      t0   = XOR(t0, and_helper_ca);                                                               \
-      s_ca = XOR(t0, s_ca);                                                                        \
+      t0   = mm256_xor(mm256_and(c, mask_a), mm256_and(a, mask_c));                                \
+      t0   = mm256_xor(t0, and_helper_ca);                                                         \
+      s_ca = mm256_xor(t0, s_ca);                                                                  \
                                                                                                    \
-      t0  = ROR(t0, 2);                                                                            \
-      tmp = XOR(tmp, t0);                                                                          \
+      tmp = mm256_xor(tmp, mm256_rotate_right(t0, 2));                                             \
       w256_to_bitstream(&party_msgs, tmp, (LOWMC_N + 63) / (sizeof(uint64_t) * 8), LOWMC_N);       \
     }                                                                                              \
     tapes->pos += LOWMC_N;                                                                         \
@@ -500,30 +491,32 @@ static void picnic3_mpc_sbox_s128_lowmc_255_255_4(mzd_local_t* statein, randomTa
     msgs->pos += LOWMC_N;                                                                          \
                                                                                                    \
     /* (b & c) ^ a */                                                                              \
-    t0 = XOR(s_bc, a);                                                                             \
+    t0 = mm256_xor(s_bc, a);                                                                       \
                                                                                                    \
     /* (c & a) ^ a ^ b */                                                                          \
-    a  = XOR(a, b);                                                                                \
-    t1 = XOR(s_ca, a);                                                                             \
+    a  = mm256_xor(a, b);                                                                          \
+    t1 = mm256_xor(s_ca, a);                                                                       \
                                                                                                    \
     /* (a & b) ^ a ^ b ^c */                                                                       \
-    t2 = XOR(s_ab, a);                                                                             \
-    t2 = XOR(t2, c);                                                                               \
+    t2 = mm256_xor(mm256_xor(s_ab, a), c);                                                         \
                                                                                                    \
-    t0 = ROR(t0, 2);                                                                               \
-    t1 = ROR(t1, 1);                                                                               \
+    t0 = mm256_rotate_right(t0, 2);                                                                \
+    t1 = mm256_rotate_right(t1, 1);                                                                \
                                                                                                    \
-    t2            = XOR(t2, t1);                                                                   \
-    statein->w256 = XOR(t2, t0);                                                                   \
+    mm256_store(statein->w64, mm256_xor(mm256_xor(t2, t1), t0));                                   \
   } while (0)
 
 #if defined(WITH_LOWMC_129_129_4)
 ATTR_TARGET_AVX2
 static void picnic3_mpc_sbox_s256_lowmc_129_129_4(mzd_local_t* statein, randomTape_t* tapes,
                                                   msgs_t* msgs) {
-  picnic3_mpc_sbox_bitsliced_mm256(LOWMC_129_129_4_N, mm256_xor, mm256_and, mm256_rotate_left,
-                                   mm256_rotate_right, mask_129_129_43_a, mask_129_129_43_b,
-                                   mask_129_129_43_c);
+  picnic3_mpc_sbox_bitsliced_mm256(LOWMC_129_129_4_N,
+                                   mm256_set_4(MASK_129_129_43_A_0, MASK_129_129_43_A_1,
+                                               MASK_129_129_43_A_2, MASK_129_129_43_A_3),
+                                   mm256_set_4(MASK_129_129_43_B_0, MASK_129_129_43_B_1,
+                                               MASK_129_129_43_B_2, MASK_129_129_43_B_3),
+                                   mm256_set_4(MASK_129_129_43_C_0, MASK_129_129_43_C_1,
+                                               MASK_129_129_43_C_2, MASK_129_129_43_C_3));
 }
 #endif
 
@@ -531,9 +524,13 @@ static void picnic3_mpc_sbox_s256_lowmc_129_129_4(mzd_local_t* statein, randomTa
 ATTR_TARGET_AVX2
 static void picnic3_mpc_sbox_s256_lowmc_192_192_4(mzd_local_t* statein, randomTape_t* tapes,
                                                   msgs_t* msgs) {
-  picnic3_mpc_sbox_bitsliced_mm256(LOWMC_192_192_4_N, mm256_xor, mm256_and, mm256_rotate_left,
-                                   mm256_rotate_right, mask_192_192_64_a, mask_192_192_64_b,
-                                   mask_192_192_64_c);
+  picnic3_mpc_sbox_bitsliced_mm256(LOWMC_192_192_4_N,
+                                   mm256_set_4(MASK_192_192_64_A_0, MASK_192_192_64_A_1,
+                                               MASK_192_192_64_A_2, MASK_192_192_64_A_3),
+                                   mm256_set_4(MASK_192_192_64_B_0, MASK_192_192_64_B_1,
+                                               MASK_192_192_64_B_2, MASK_192_192_64_B_3),
+                                   mm256_set_4(MASK_192_192_64_C_0, MASK_192_192_64_C_1,
+                                               MASK_192_192_64_C_2, MASK_192_192_64_C_3));
 }
 #endif
 
@@ -541,9 +538,13 @@ static void picnic3_mpc_sbox_s256_lowmc_192_192_4(mzd_local_t* statein, randomTa
 ATTR_TARGET_AVX2
 static void picnic3_mpc_sbox_s256_lowmc_255_255_4(mzd_local_t* statein, randomTape_t* tapes,
                                                   msgs_t* msgs) {
-  picnic3_mpc_sbox_bitsliced_mm256(LOWMC_255_255_4_N, mm256_xor, mm256_and, mm256_rotate_left,
-                                   mm256_rotate_right, mask_255_255_85_a, mask_255_255_85_b,
-                                   mask_255_255_85_c);
+  picnic3_mpc_sbox_bitsliced_mm256(LOWMC_255_255_4_N,
+                                   mm256_set_4(MASK_255_255_85_A_0, MASK_255_255_85_A_1,
+                                               MASK_255_255_85_A_2, MASK_255_255_85_A_3),
+                                   mm256_set_4(MASK_255_255_85_B_0, MASK_255_255_85_B_1,
+                                               MASK_255_255_85_B_2, MASK_255_255_85_B_3),
+                                   mm256_set_4(MASK_255_255_85_C_0, MASK_255_255_85_C_1,
+                                               MASK_255_255_85_C_2, MASK_255_255_85_C_3));
 }
 #endif
 

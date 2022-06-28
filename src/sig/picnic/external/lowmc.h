@@ -12,6 +12,8 @@
 
 #include "lowmc_pars.h"
 
+PICNIC_BEGIN_C_DECL
+
 typedef struct {
   mzd_local_t state[(MAX_LOWMC_BLOCK_SIZE + 255) / 256];
 } recorded_state_t;
@@ -27,5 +29,7 @@ void lowmc_compute_aux(const lowmc_parameters_t* params, lowmc_key_t* key, rando
 
 typedef void (*lowmc_implementation_f)(lowmc_key_t const*, mzd_local_t const*, mzd_local_t*);
 lowmc_implementation_f lowmc_get_implementation(const lowmc_parameters_t* lowmc);
+
+PICNIC_END_C_DECL
 
 #endif

@@ -26,7 +26,6 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 
 #include "oqs_picnic_macros.h"
 
@@ -259,8 +258,8 @@ PICNIC_EXPORT int PICNIC_CALLING_CONVENTION picnic_write_public_key(const picnic
 /**
  * De-serialize a public key.
  *
- * @param[out]  key The public key object to be populated.
- * @param[in] buf The buffer to read the public key from.
+ * @param[out] key The public key object to be populated.
+ * @param[in]  buf The buffer to read the public key from.
  *                 Must be at least PICNIC_MAX_PUBLICKEY_SIZE bytes.
  * @param[in]  buflen The length of buf, in bytes
  *
@@ -286,8 +285,8 @@ PICNIC_EXPORT int PICNIC_CALLING_CONVENTION picnic_write_private_key(const picni
 /**
  * De-serialize a private key.
  *
- * @param[out]  key The private key object to be populated
- * @param[in] buf The buffer to read the key from.
+ * @param[out] key The private key object to be populated
+ * @param[in]  buf The buffer to read the key from.
  *                 Must have size at least PICNIC_MAX_PRIVATEKEY_SIZE bytes.
  * @param[in]  buflen The length of buf, in bytes
  *
