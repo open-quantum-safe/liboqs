@@ -8,8 +8,8 @@
 * Abstract: configuration file and platform-dependent macros
 *********************************************************************************************/
 
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef SIKE_CONFIG_H
+#define SIKE_CONFIG_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -98,8 +98,6 @@ typedef uint32_t hdigit_t; // Unsigned 32-bit digit
 
 #if defined(_GENERIC_)
 #define GENERIC_IMPLEMENTATION
-#elif defined(_FAST_)
-#define FAST_IMPLEMENTATION
 #endif
 
 
