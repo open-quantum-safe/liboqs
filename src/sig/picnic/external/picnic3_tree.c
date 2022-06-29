@@ -358,13 +358,12 @@ static unsigned int* getRevealedNodes(tree_t* tree, uint16_t* hideList, size_t h
 
   /* pathSets[i][0...hideListSize] ~= pathSets[i * hideListSize + ...] stores the nodes in the path
    * at depth i for each of the leaf nodes in hideListSize */
-  unsigned int* pathSets = malloc(hideListSize * pathLen * sizeof(unsigned int));
+  unsigned int* pathSets = calloc(hideListSize * pathLen, sizeof(unsigned int));
 
   /* Compute the paths back to the root */
   for (size_t i = 0; i < hideListSize; i++) {
-    unsigned int node =
-        hideList[i] +
-        (tree->numNodes - tree->numLeaves); /* input lists leaf indexes, translate to nodes */
+    /* input lists leaf indexes, translate to nodes */
+    unsigned int node                    = hideList[i] + (tree->numNodes - tree->numLeaves);
     pathSets[/* 0 * hideListSize + */ i] = node;
     unsigned int pos                     = 1;
     while ((node = getParent(node)) != 0) {

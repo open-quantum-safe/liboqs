@@ -14,7 +14,7 @@
 #define SBOX(x) sbox_layer_10_uint64(&BLOCK(x, 0)->w64[(LOWMC_N / (sizeof(word) * 8)) - 1])
 #include "lowmc_impl_partial.c.i"
 #else
-#define SBOX(x) SBOX_FUNC(BLOCK(x, 0))
+#define SBOX(x) SBOX_FUNC(x)
 #include "lowmc_impl.c.i"
 #endif
 #if defined(WITH_ZKBPP)
@@ -35,7 +35,7 @@
 #undef SBOX
 #undef SBOX_FUNC
 #define SBOX_FUNC CONCAT(sbox_aux, CONCAT(IMPL, LOWMC_INSTANCE))
-#define SBOX(x, y, tapes) SBOX_FUNC(BLOCK(x, 0), BLOCK(y, 0), tapes)
+#define SBOX(x, y, tapes) SBOX_FUNC(x, y, tapes)
 #define N_LOWMC CONCAT(lowmc_aux, CONCAT(IMPL, LOWMC_INSTANCE))
 #include "lowmc_impl_aux.c.i"
 #endif
