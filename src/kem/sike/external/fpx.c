@@ -1241,7 +1241,7 @@ static unsigned char is_sqr_fp2(const f2elm_t a, felm_t s) {
 	// Test if a is a square in GF(p^2) and return 1 if true, 0 otherwise
 	// If a is a quadratic residue, s will be assigned with a partially computed square root of a
 	int i;
-	felm_t a0, a1, z, temp;
+	felm_t a0 = {0}, a1 = {0}, z = {0}, temp = {0};
 
 	fpsqr_mont(a[0], a0);
 	fpsqr_mont(a[1], a1);
@@ -1374,7 +1374,7 @@ static bool is_zero(digit_t *a, unsigned int nwords) {
 
 static void sqrt_Fp2(const f2elm_t u, f2elm_t y) {
 	// Computes square roots of elements in (Fp2)^2 using Hamburg's trick.
-	felm_t t0, t1, t2, t3;
+	felm_t t0 = {0}, t1 = {0}, t2 = {0}, t3 = {0};
 	digit_t *a  = (digit_t *)u[0], *b  = (digit_t *)u[1];
 	unsigned int i;
 
@@ -1570,7 +1570,7 @@ static void fpinv_mont_bingcd(digit_t *a) {
 static void fp2inv_mont_bingcd(f2elm_t a) {
 	// GF(p^2) inversion using Montgomery arithmetic, a = (a0-i*a1)/(a0^2+a1^2)
 // This uses the binary GCD for inversion in fp and is NOT constant time!!!
-	f2elm_t t1;
+	f2elm_t t1 = {0};
 
 	fpsqr_mont(a[0], t1[0]);             // t10 = a0^2
 	fpsqr_mont(a[1], t1[1]);             // t11 = a1^2
