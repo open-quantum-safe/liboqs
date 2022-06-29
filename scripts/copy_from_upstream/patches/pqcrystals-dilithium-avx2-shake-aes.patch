@@ -294,7 +294,7 @@ index 3dee7a62..8c254f07 100644
        poly_uniform_preinit(&row->vec[j], &aesctx);
        poly_nttunpack(&row->vec[j]);
      }
-@@ -434,8 +445,12 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
+@@ -434,12 +445,21 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
  
      /* Get hint polynomial and reconstruct w1 */
      memset(h.vec, 0, sizeof(poly));
@@ -308,7 +308,17 @@ index 3dee7a62..8c254f07 100644
  
      for(j = pos; j < hint[OMEGA + i]; ++j) {
        /* Coefficients are ordered for strong unforgeability */
-@@ -449,16 +464,21 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
+-      if(j > pos && hint[j] <= hint[j-1]) return -1;
++      if(j > pos && hint[j] <= hint[j-1]) {
++#ifdef DILITHIUM_USE_AES
++        aes256_ctx_release(&aesctx);
++#endif
++        return -1;
++      }
+       h.coeffs[hint[j]] = 1;
+     }
+     pos = hint[OMEGA + i];
+@@ -449,16 +469,21 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
      polyw1_pack(buf.coeffs + i*POLYW1_PACKEDBYTES, &w1);
    }
  
