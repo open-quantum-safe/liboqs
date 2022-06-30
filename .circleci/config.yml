@@ -138,10 +138,10 @@ jobs:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
           name: Configure
-          command: mkdir build && cd build && pwd && source ~/.bashrc && scan-build cmake -GNinja ..
+          command: mkdir build && cd build && pwd && source ~/.bashrc && scan-build-14 cmake -GNinja ..
       - run:
           name: Build
-          command: scan-build --status-bugs ninja
+          command: scan-build-14 --status-bugs ninja
           working_directory: build
 
   arm_machine:
@@ -359,10 +359,10 @@ workflows:
           PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
       - linux_oqs:
           <<: *require_buildcheck
-          name: ubuntu-focal-clang9
+          name: ubuntu-focal-clang14
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9
+          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-14
       - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-bionic-i386
