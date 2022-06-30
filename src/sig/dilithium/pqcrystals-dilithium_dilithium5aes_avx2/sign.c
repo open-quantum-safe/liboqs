@@ -454,7 +454,12 @@ int crypto_sign_verify(const uint8_t *sig, size_t siglen, const uint8_t *m, size
 
     for(j = pos; j < hint[OMEGA + i]; ++j) {
       /* Coefficients are ordered for strong unforgeability */
-      if(j > pos && hint[j] <= hint[j-1]) return -1;
+      if(j > pos && hint[j] <= hint[j-1]) {
+#ifdef DILITHIUM_USE_AES
+        aes256_ctx_release(&aesctx);
+#endif
+        return -1;
+      }
       h.coeffs[hint[j]] = 1;
     }
     pos = hint[OMEGA + i];
