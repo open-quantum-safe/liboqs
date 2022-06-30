@@ -47,6 +47,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
+Implementation known to fail [scan-build](https://clang-analyzer.llvm.org/scan-build.html).
+
 ## Kyber768 implementation characteristics
 
 |        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
@@ -66,6 +68,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
+Implementation known to fail [scan-build](https://clang-analyzer.llvm.org/scan-build.html).
+
 ## Kyber1024 implementation characteristics
 
 |        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
@@ -84,6 +88,8 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AES,AVX2,BMI2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
+
+Implementation known to fail [scan-build](https://clang-analyzer.llvm.org/scan-build.html).
 
 ## Explanation of Terms
 
