@@ -363,7 +363,7 @@ workflows:
           name: ubuntu-focal-clang14
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-14
+          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-14 -DOQS_OPT_TARGET=skylake
       - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-bionic-i386
