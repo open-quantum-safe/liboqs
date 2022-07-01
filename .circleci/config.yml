@@ -350,25 +350,27 @@ workflows:
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-8 -DOQS_USE_OPENSSL=OFF
+          PYTEST_ARGS: --ignore=tests/test_leaks.py
       - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-focal-shared-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
           CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DOQS_DIST_BUILD=ON -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
-          PYTEST_ARGS: --ignore=tests/test_namespace.py --numprocesses=auto
+          PYTEST_ARGS: --ignore=tests/test_namespace.py --ignore=tests/test_leaks.py --numprocesses=auto
       - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-focal-clang14
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-14
+          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-14 -DOQS_OPT_TARGET=skylake
       - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-bionic-i386
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-bionic-i386:latest
           CMAKE_ARGS: -DCMAKE_TOOLCHAIN_FILE=../.CMake/toolchain_x86.cmake
+          PYTEST_ARGS: --ignore=tests/test_leaks.py
       - arm_machine:
           <<: *require_buildcheck
           name: arm64
