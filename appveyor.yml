@@ -26,10 +26,11 @@ environment:
       OQS_USE_OPENSSL: ON
     - BUILD_SHARED: ON
       COMPILER: msvc2019
-    - BUILD_SHARED: OFF
-      COMPILER: msys2
-    - BUILD_SHARED: ON
-      COMPILER: msys2
+      #    Disabled until https://github.com/open-quantum-safe/liboqs/issues/1218#issuecomment-1170067669 resolved
+      #    - BUILD_SHARED: OFF
+      #      COMPILER: msys2
+      #    - BUILD_SHARED: ON
+      #      COMPILER: msys2
 
 for:
   - matrix:
