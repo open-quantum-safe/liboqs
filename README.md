@@ -121,6 +121,10 @@ The following instructions assume we are in `build`.
 	- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 	- `test_portability`: Simple test harnesses for checking cross-CPU code portability; requires presence of `qemu`; proper operation validated only on Ubuntu
 
+	Install test suite dependencies:
+
+		sudo apt install valgrind
+
 	The complete test suite can be run using
 
 		ninja run_tests
