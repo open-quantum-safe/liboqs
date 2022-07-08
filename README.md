@@ -82,11 +82,11 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 	On Ubuntu:
 
-		 sudo apt install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml
+		 sudo apt install astyle cmake gcc ninja-build libssl-dev python3-pytest python3-pytest-xdist unzip xsltproc doxygen graphviz python3-yaml valgrind
 
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
-		brew install cmake ninja openssl@1.1 wget doxygen graphviz astyle
+		brew install cmake ninja openssl@1.1 wget doxygen graphviz astyle valgrind
 		pip3 install pytest pytest-xdist pyyaml
 
 	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL version 1.1.1 or higher.
@@ -120,10 +120,6 @@ The following instructions assume we are in `build`.
 	- `example_sig`: Minimal runnable example showing the usage of the signature API
 	- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 	- `test_portability`: Simple test harnesses for checking cross-CPU code portability; requires presence of `qemu`; proper operation validated only on Ubuntu
-
-	Install test suite dependencies:
-
-		sudo apt install valgrind
 
 	The complete test suite can be run using
 
