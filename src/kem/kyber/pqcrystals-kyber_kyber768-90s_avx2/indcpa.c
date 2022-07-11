@@ -579,7 +579,6 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
     poly_cbd_eta2(&ep.vec[i], buf.vec);
   }
   aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
-  nonce += 1;
   aes256_ctx_release(&state);
 
   poly_cbd_eta2(&epp, buf.vec);

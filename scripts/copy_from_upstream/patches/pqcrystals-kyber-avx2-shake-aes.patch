@@ -1,6 +1,6 @@
 c6a44a0dbb6735caf40ad4856063282feab56d98
 diff --git a/avx2/indcpa.c b/avx2/indcpa.c
-index bd6ec9f..78f6810 100644
+index 926f6e87..b8840863 100644
 --- a/avx2/indcpa.c
 +++ b/avx2/indcpa.c
 @@ -178,7 +178,7 @@ void gen_matrix(polyvec *a, const uint8_t seed[32], int transposed)
@@ -140,7 +140,7 @@ index bd6ec9f..78f6810 100644
  #else
  #if KYBER_K == 2
    poly_getnoise_eta1_4x(skpv.vec+0, skpv.vec+1, e.vec+0, e.vec+1, noiseseed, 0, 1, 2, 3);
-@@ -554,22 +565,23 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
+@@ -554,20 +565,22 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
    uint64_t nonce = 0;
    ALIGNED_UINT8(NOISE_NBLOCKS*AES256CTR_BLOCKBYTES+32) buf; /* +32 bytes as required by poly_cbd_eta1 */
    aes256ctr_ctx state;
@@ -161,10 +161,8 @@ index bd6ec9f..78f6810 100644
      poly_cbd_eta2(&ep.vec[i], buf.vec);
    }
    aes256ctr_squeezeblocks(buf.coeffs, CIPHERTEXTNOISE_NBLOCKS, &state);
--  state.n = _mm_loadl_epi64((__m128i *)&nonce);
-   nonce += 1;
 +  aes256_ctx_release(&state);
-+  
++
    poly_cbd_eta2(&epp, buf.vec);
  #else
  #if KYBER_K == 2

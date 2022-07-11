@@ -7,9 +7,9 @@
 - **Authors' website**: https://pq-crystals.org/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
+  - **Source**: https://github.com/pq-crystals/kyber/commit/8e00ec73035147d18b27d06048dff322f8de1f29 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
-- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/faf5c3fe33e0b61c7c8a7888dd862bf5def17ad2 with copy_from_upstream patches
+- **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/8e00ec73035147d18b27d06048dff322f8de1f29 with copy_from_upstream patches
   - **pqclean-aarch64**:<a name="pqclean-aarch64"></a>
       - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6 with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: CC0-1.0
@@ -47,8 +47,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
-Implementation known to fail [scan-build](https://clang-analyzer.llvm.org/scan-build.html).
-
 ## Kyber768 implementation characteristics
 
 |        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
@@ -68,8 +66,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
-Implementation known to fail [scan-build](https://clang-analyzer.llvm.org/scan-build.html).
-
 ## Kyber1024 implementation characteristics
 
 |        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
@@ -88,8 +84,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AES,AVX2,BMI2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
-Implementation known to fail [scan-build](https://clang-analyzer.llvm.org/scan-build.html).
 
 ## Explanation of Terms
 
