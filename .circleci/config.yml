@@ -137,8 +137,8 @@ jobs:
     steps:
       - checkout # change this from "checkout" to "*localCheckout" when running CircleCI locally
       - run:
-          name: Configure (excluding Kyber because of known issue)
-          command: mkdir build && cd build && pwd && source ~/.bashrc && scan-build-14 cmake -GNinja -DOQS_ENABLE_KEM_KYBER=OFF ..
+          name: Configure
+          command: mkdir build && cd build && pwd && source ~/.bashrc && scan-build-14 cmake -GNinja ..
       - run:
           name: Build
           command: scan-build-14 --status-bugs ninja
