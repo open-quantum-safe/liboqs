@@ -32,6 +32,7 @@ int main(void) {
 		printf("    length-ciphertext: %zu\n", kem->length_ciphertext);
 		printf("    length-secret-key: %zu\n", kem->length_secret_key);
 		printf("    length-shared-secret: %zu\n", kem->length_shared_secret);
+		OQS_KEM_free(kem);
 	}
 
 	// iterate through signature schemes and print info
@@ -50,6 +51,7 @@ int main(void) {
 		printf("    length-public-key: %zu\n", sig->length_public_key);
 		printf("    length-secret-key: %zu\n", sig->length_secret_key);
 		printf("    length-signature: %zu\n", sig->length_signature);
+		OQS_SIG_free(sig);
 	}
 }
 
