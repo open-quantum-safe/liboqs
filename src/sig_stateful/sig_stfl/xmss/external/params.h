@@ -30,6 +30,7 @@ typedef struct {
     unsigned int pk_bytes;
     unsigned long long sk_bytes;
     unsigned int bds_k;
+    unsigned int bytes_for_max;
 } xmss_params;
 
 /**

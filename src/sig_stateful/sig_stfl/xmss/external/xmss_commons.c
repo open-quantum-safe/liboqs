@@ -14,8 +14,8 @@
  * Note that this destroys the used WOTS public key.
  */
 static void l_tree(const xmss_params *params,
-                   unsigned char *leaf, unsigned char *wots_pk,
-                   const unsigned char *pub_seed, uint32_t addr[8])
+                   uint8_t *leaf, uint8_t *wots_pk,
+                   const uint8_t *pub_seed, uint32_t addr[8])
 {
     unsigned int l = params->wots_len;
     unsigned int parent_nodes;
@@ -51,13 +51,13 @@ static void l_tree(const xmss_params *params,
 /**
  * Computes a root node given a leaf and an auth path
  */
-static void compute_root(const xmss_params *params, unsigned char *root,
-                         const unsigned char *leaf, unsigned long leafidx,
-                         const unsigned char *auth_path,
-                         const unsigned char *pub_seed, uint32_t addr[8])
+static void compute_root(const xmss_params *params, uint8_t *root,
+                         const uint8_t *leaf, unsigned long leafidx,
+                         const uint8_t *auth_path,
+                         const uint8_t *pub_seed, uint32_t addr[8])
 {
     uint32_t i;
-    unsigned char buffer[2*params->n];
+    uint8_t buffer[2*params->n];
 
     /* If leafidx is odd (last bit = 1), current path element is a right child
        and auth_path has to go left. Otherwise it is the other way around. */
@@ -101,12 +101,12 @@ static void compute_root(const xmss_params *params, unsigned char *root,
  * then computes leaf using l_tree. As this happens position independent, we
  * only require that addr encodes the right ltree-address.
  */
-void gen_leaf_wots(const xmss_params *params, unsigned char *leaf,
-                   const unsigned char *sk_seed, const unsigned char *pub_seed,
+void gen_leaf_wots(const xmss_params *params, uint8_t *leaf,
+                   const uint8_t *sk_seed, const uint8_t *pub_seed,
                    uint32_t ltree_addr[8], uint32_t ots_addr[8])
 {
-    unsigned char seed[params->n];
-    unsigned char pk[params->wots_sig_bytes];
+    uint8_t seed[params->n];
+    uint8_t pk[params->wots_sig_bytes];
     #ifdef FORWARD_SECURE
     unsigned int i;
 
@@ -128,10 +128,10 @@ void gen_leaf_wots(const xmss_params *params, unsigned char *leaf,
  *
  * Takes n-byte sk_seed and returns n-byte seed using 32 byte address 'addr'.
  */
-void get_seed(const xmss_params *params, unsigned char *seed,
-              const unsigned char *sk_seed, uint32_t addr[8])
+void get_seed(const xmss_params *params, uint8_t *seed,
+              const uint8_t *sk_seed, uint32_t addr[8])
 {
-    unsigned char bytes[32];
+    uint8_t bytes[32];
 
     /* Make sure that chain addr, hash addr, and key bit are zeroed. */
     set_chain_addr(addr, 0);
@@ -148,9 +148,9 @@ void get_seed(const xmss_params *params, unsigned char *seed,
  * Note that this assumes a pk without an OID, i.e. [root || PUB_SEED]
  */
 int xmss_core_sign_open(const xmss_params *params,
-                        unsigned char *m, unsigned long long *mlen,
-                        const unsigned char *sm, unsigned long long smlen,
-                        const unsigned char *pk)
+                        uint8_t *m, unsigned long long *mlen,
+                        const uint8_t *sm, unsigned long long smlen,
+                        const uint8_t *pk)
 {
     /* XMSS signatures are fundamentally an instance of XMSSMT signatures.
        For d=1, as is the case with XMSS, some of the calls in the XMSSMT
@@ -164,16 +164,16 @@ int xmss_core_sign_open(const xmss_params *params,
  * Note that this assumes a pk without an OID, i.e. [root || PUB_SEED]
  */
 int xmssmt_core_sign_open(const xmss_params *params,
-                          unsigned char *m, unsigned long long *mlen,
-                          const unsigned char *sm, unsigned long long smlen,
-                          const unsigned char *pk)
+                          uint8_t *m, unsigned long long *mlen,
+                          const uint8_t *sm, unsigned long long smlen,
+                          const uint8_t *pk)
 {
-    const unsigned char *pub_root = pk;
-    const unsigned char *pub_seed = pk + params->n;
-    unsigned char wots_pk[params->wots_sig_bytes];
-    unsigned char leaf[params->n];
-    unsigned char root[params->n];
-    unsigned char *mhash = root;
+    const uint8_t *pub_root = pk;
+    const uint8_t *pub_seed = pk + params->n;
+    uint8_t wots_pk[params->wots_sig_bytes];
+    uint8_t leaf[params->n];
+    uint8_t root[params->n];
+    uint8_t *mhash = root;
     unsigned long long idx = 0;
     unsigned int i;
     uint32_t idx_leaf;
@@ -186,20 +186,20 @@ int xmssmt_core_sign_open(const xmss_params *params,
     set_type(ltree_addr, XMSS_ADDR_TYPE_LTREE);
     set_type(node_addr, XMSS_ADDR_TYPE_HASHTREE);
 
-    *mlen = smlen - params->sig_bytes;
-
     /* Convert the index bytes from the signature to an integer. */
     idx = bytes_to_ull(sm, params->index_bytes);
 
-    // THE NEXT 3 LINES OF CODE SHOULD BE REMOVED TO ACCOUNT FOR THE LACK OF MESSAGE APPENDING
-
-    /* Put the message all the way at the end of the m buffer, so that we can
-     * prepend the required other inputs for the hash function. */
-    memcpy(m + params->sig_bytes, sm + params->sig_bytes, *mlen);
+    uint8_t *buffer = (uint8_t*)malloc((*mlen + 4 * params->n) * sizeof(uint8_t));
+    
+    memcpy(buffer + 4* params->n, m, *mlen);
 
     /* Compute the message hash. */
     hash_message(params, mhash, sm + params->index_bytes, pk, idx,
-                 m + params->sig_bytes - 4*params->n, *mlen);
+                buffer, *mlen);
+        
+    free(buffer);
+    buffer = NULL;
+
     sm += params->index_bytes + params->n;
 
     /* For each subtree.. */
@@ -238,10 +238,5 @@ int xmssmt_core_sign_open(const xmss_params *params,
         *mlen = 0;
         return -1;
     }
-
-    // WE WOULD NOT NEED TO DO THIS STEP SHOULD THE SIGNATURE BE MESSAGE FREE
-    /* If verification was successful, copy the message from the signature. */
-    memcpy(m, sm, *mlen);
-
     return 0;
 }

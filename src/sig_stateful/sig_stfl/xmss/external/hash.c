@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <string.h>
-#include <oqs/oqs.h>
-#include <openssl/sha.h>
+#include <oqs/oqs.h> 
 
 #include "hash_address.h"
 #include "utils.h"
@@ -21,6 +20,7 @@ void addr_to_bytes(unsigned char *bytes, const uint32_t addr[8])
         ull_to_bytes(bytes + i*4, 4, addr[i]);
     }
 }
+
 
 static int core_hash(const xmss_params *params,
                      unsigned char *out,
@@ -52,6 +52,7 @@ static int core_hash(const xmss_params *params,
     }
     return 0;
 }
+
 
 /*
  * Computes PRF(key, in), for a key of params->n bytes, and a 32-byte input.
