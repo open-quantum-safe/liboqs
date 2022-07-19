@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <string.h>
-
+#include <math.h>
 #include "params.h"
 #include "xmss_core.h"
 
@@ -480,6 +480,17 @@ int xmssmt_parse_oid(xmss_params *params, const uint32_t oid)
 }
 
 /**
+ * @brief Get the no. of bytes necessary for the max field 
+ * in the secret key byte array.
+ * @param tree_height - height of the tree
+ * @return unsigned int - the number of bytes for the max sigs.
+ */
+unsigned int get_bytes_for_max(unsigned int tree_height) {
+    return pow(2, ceil(log2(tree_height))) / 8;
+}
+
+
+/**
  * Given a params struct where the following properties have been initialized;
  *  - full_height; the height of the complete (hyper)tree
  *  - n; the number of bytes of hash function output
@@ -492,6 +503,7 @@ int xmssmt_parse_oid(xmss_params *params, const uint32_t oid)
 int xmss_xmssmt_initialize_params(xmss_params *params)
 {
     params->tree_height = params->full_height  / params->d;
+    params->bytes_for_max = get_bytes_for_max(params->tree_height);
     if (params->wots_w == 4) {
         params->wots_log_w = 2;
         params->wots_len1 = 8 * params->n / params->wots_log_w;
@@ -529,7 +541,7 @@ int xmss_xmssmt_initialize_params(xmss_params *params)
                          + params->full_height * params->n);
 
     params->pk_bytes = 2 * params->n;
-    params->sk_bytes = xmss_xmssmt_core_sk_bytes(params);
+    params->sk_bytes = xmss_xmssmt_core_sk_bytes(params) + params->bytes_for_max;
 
     return 0;
 }
