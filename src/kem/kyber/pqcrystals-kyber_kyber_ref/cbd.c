@@ -1,6 +1,8 @@
 #include <stdint.h>
+#include <errno.h>
 #include "params.h"
 #include "cbd.h"
+extern param params[];
 
 /*************************************************
 * Name:        load32_littleendian
@@ -53,13 +55,13 @@ static uint32_t load24_littleendian(const uint8_t x[3])
 * Arguments:   - poly *r: pointer to output polynomial
 *              - const uint8_t *buf: pointer to input byte array
 **************************************************/
-static void cbd2(poly *r, const uint8_t buf[2*KYBER_N/4])
+static void cbd2(poly *r, const uint8_t *buf,int security_level)
 {
   unsigned int i,j;
   uint32_t t,d;
   int16_t a,b;
 
-  for(i=0;i<KYBER_N/8;i++) {
+  for(i=0;i<params[security_level].KYBER_N/8;i++) {
     t  = load32_littleendian(buf+4*i);
     d  = t & 0x55555555;
     d += (t>>1) & 0x55555555;
@@ -83,14 +85,13 @@ static void cbd2(poly *r, const uint8_t buf[2*KYBER_N/4])
 * Arguments:   - poly *r: pointer to output polynomial
 *              - const uint8_t *buf: pointer to input byte array
 **************************************************/
-#if KYBER_ETA1 == 3
-static void cbd3(poly *r, const uint8_t buf[3*KYBER_N/4])
+static void cbd3(poly *r, const uint8_t *buf, int security_level)
 {
   unsigned int i,j;
   uint32_t t,d;
   int16_t a,b;
 
-  for(i=0;i<KYBER_N/4;i++) {
+  for(i=0;i<params[security_level].KYBER_N/4;i++) {
     t  = load24_littleendian(buf+3*i);
     d  = t & 0x00249249;
     d += (t>>1) & 0x00249249;
@@ -103,24 +104,18 @@ static void cbd3(poly *r, const uint8_t buf[3*KYBER_N/4])
     }
   }
 }
-#endif
 
-void poly_cbd_eta1(poly *r, const uint8_t buf[KYBER_ETA1*KYBER_N/4])
+void poly_cbd_eta1(poly *r, const uint8_t *buf, int8_t security_level)
 {
-#if KYBER_ETA1 == 2
-  cbd2(r, buf);
-#elif KYBER_ETA1 == 3
-  cbd3(r, buf);
-#else
-#error "This implementation requires eta1 in {2,3}"
-#endif
+  if (params[security_level].KYBER_ETA1 == 2)
+    cbd2(r, buf,security_level);
+  else if( params[security_level].KYBER_ETA1 == 3)
+    cbd3(r, buf,security_level);
+
 }
 
-void poly_cbd_eta2(poly *r, const uint8_t buf[KYBER_ETA2*KYBER_N/4])
+void poly_cbd_eta2(poly *r, const uint8_t *buf, int8_t security_level)
 {
-#if KYBER_ETA2 == 2
-  cbd2(r, buf);
-#else
-#error "This implementation requires eta2 = 2"
-#endif
+  if( params[security_level].KYBER_ETA2 == 2)
+    cbd2(r, buf);
 }
