@@ -21,12 +21,12 @@ const char *OQS_SIG_STFL_alg_identifier(size_t i) {
         OQS_SIG_STFL_alg_xmss_sha512_h10,
         OQS_SIG_STFL_alg_xmss_sha512_h16,
         OQS_SIG_STFL_alg_xmss_sha512_h20,
-        OQS_SIG_STFL_alg_xmss_shake128_h10,
-        OQS_SIG_STFL_alg_xmss_shake128_h16,
-        OQS_SIG_STFL_alg_xmss_shake128_h20,
         OQS_SIG_STFL_alg_xmss_shake256_h10,
         OQS_SIG_STFL_alg_xmss_shake256_h16,
         OQS_SIG_STFL_alg_xmss_shake256_h20,
+        OQS_SIG_STFL_alg_xmss_shake512_h10,
+        OQS_SIG_STFL_alg_xmss_shake512_h16,
+        OQS_SIG_STFL_alg_xmss_shake512_h20,
     };
 
     if (i >= OQS_SIG_algs_length) {

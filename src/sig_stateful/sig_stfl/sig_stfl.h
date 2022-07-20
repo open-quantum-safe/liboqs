@@ -31,17 +31,17 @@ extern "C" {
 /* Algorithm identifier for XMSS-SHA2_20_256 */
 #define OQS_SIG_STFL_alg_xmss_sha512_h20 "XMSS-SHA2_20_512"
 /* Algorithm identifier for XMSS-SHAKE_10_256 */
-#define OQS_SIG_STFL_alg_xmss_shake128_h10 "XMSS-SHAKE_10_256"
+#define OQS_SIG_STFL_alg_xmss_shake256_h10 "XMSS-SHAKE_10_256"
 /* Algorithm identifier for XMSS-SHAKE_16_256 */
-#define OQS_SIG_STFL_alg_xmss_shake128_h16 "XMSS-SHAKE_16_256"
+#define OQS_SIG_STFL_alg_xmss_shake256_h16 "XMSS-SHAKE_16_256"
 /* Algorithm identifier for XMSS-SHAKE_20_256 */
-#define OQS_SIG_STFL_alg_xmss_shake128_h20 "XMSS-SHAKE_20_256"
+#define OQS_SIG_STFL_alg_xmss_shake256_h20 "XMSS-SHAKE_20_256"
 /* Algorithm identifier for XMSS-SHAKE_10_512 */
-#define OQS_SIG_STFL_alg_xmss_shake256_h10 "XMSS-SHAKE_10_512"
+#define OQS_SIG_STFL_alg_xmss_shake512_h10 "XMSS-SHAKE_10_512"
 /* Algorithm identifier for XMSS-SHAKE_16_512 */
-#define OQS_SIG_STFL_alg_xmss_shake256_h16 "XMSS-SHAKE_16_512"
+#define OQS_SIG_STFL_alg_xmss_shake512_h16 "XMSS-SHAKE_16_512"
 /* Algorithm identifier for XMSS-SHAKE_20_512 */
-#define OQS_SIG_STFL_alg_xmss_shake256_h20 "XMSS-SHAKE_20_512"
+#define OQS_SIG_STFL_alg_xmss_shake512_h20 "XMSS-SHAKE_20_512"
 
 /**
  * LMS will be added later. So far its only XMSS 
