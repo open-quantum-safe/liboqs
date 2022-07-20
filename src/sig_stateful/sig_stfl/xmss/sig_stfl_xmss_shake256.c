@@ -4,7 +4,7 @@
 #include "./external/params.h"
 #include "sig_stfl_xmss.h"
 
-// ======================== XMSS10-SHAKE512 ======================== //
+// ======================== XMSS10-SHAKE256 ======================== //
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h10_new() {
     
@@ -31,14 +31,14 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h10_new() {
     return sig;
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H10_new() {
+OQS_SECRET_KEY *OQS_SECRET_KEY_xmss_shake256_H10_new() {
 
     // Initialize the secret key in the heap with adequate memory
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
     if (sk == NULL) return NULL;
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
 
-    sk->oid = 0x0000000a;
+    sk->oid = 0x00000007;
     sk->is_xmssmt = 0;
 
     sk->length_secret_key = OQS_SIG_STFL_alg_xmss_shake256_h10_length_sk;
@@ -75,13 +75,13 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h16_new() {
     return sig;
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H16_new() {
+OQS_SECRET_KEY *OQS_SECRET_KEY_xmss_shake256_H16_new() {
 
     // Initialize the secret key in the heap with adequate memory
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
     if (sk == NULL) return NULL;
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
-    sk->oid = 0x0000000b;
+    sk->oid = 0x00000008;
     sk->is_xmssmt = 0;
 
     sk->length_secret_key = OQS_SIG_STFL_alg_xmss_shake256_h16_length_sk;
@@ -118,13 +118,13 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h20_new() {
     return sig;
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H20_new() {
+OQS_SECRET_KEY *OQS_SECRET_KEY_xmss_shake256_H20_new() {
 
     // Initialize the secret key in the heap with adequate memory
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
     if (sk == NULL) return NULL;
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
-    sk->oid = 0x0000000c;
+    sk->oid = 0x00000009;
     sk->is_xmssmt = 0;
 
     sk->length_secret_key = OQS_SIG_STFL_alg_xmss_shake256_h20_length_sk ;
