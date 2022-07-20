@@ -101,7 +101,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h20_new() {
     if (sig == NULL) {
         return NULL;
     }
-    sig->method_name = "XMSS-SHA2_20_512";
+    sig->method_name = "XMSS-SHAKE_20_256";
     sig->alg_version = "..."; 
 
     // Check how true this is

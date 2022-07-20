@@ -8,6 +8,7 @@ add_subdirectory(common)
 # initialize KEM|SIG_OBJS for --warn-uninitialized
 set(KEM_OBJS "")
 set(SIG_OBJS "")
+set(SIG_STFL_OBJS "")
 
 if(${OQS_ENABLE_KEM_BIKE})
     add_subdirectory(kem/bike)
@@ -62,12 +63,18 @@ if(OQS_ENABLE_SIG_SPHINCS)
     add_subdirectory(sig/sphincs)
     set(SIG_OBJS ${SIG_OBJS} ${SPHINCS_OBJS})
 endif()
+if(OQS_ENABLE_SIG_STFL_XMSS)
+    add_subdirectory(sig_stateful/xmss)
+    set(SIG_STFL_OBJS ${SIG_STFL_OBJS} ${XMSS_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 add_library(oqs kem/kem.c
                 ${KEM_OBJS}
                 sig/sig.c
                 ${SIG_OBJS}
+                sig_stateful/sig_stfl.c
+                ${SIG_STFL_OBJS}
                 ${COMMON_OBJS})
 set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
 if(DEFINED SANITIZER_LD_FLAGS)

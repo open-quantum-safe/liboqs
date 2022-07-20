@@ -14,7 +14,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h10_new() {
     }
     memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-    sig->method_name = "XMSS-SHAKE_10_256";
+    sig->method_name = "XMSS-SHAKE_10_512";
     sig->alg_version = "..."; 
 
     // Check how true this is
@@ -58,7 +58,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h16_new() {
     if (sig == NULL) {
         return NULL;
     }
-    sig->method_name = "XMSS-SHAKE_16_256";
+    sig->method_name = "XMSS-SHAKE_16_512";
     sig->alg_version = "..."; 
 
     // Check how true this is
@@ -101,7 +101,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h20_new() {
     if (sig == NULL) {
         return NULL;
     }
-    sig->method_name = "XMSS-SHA2_20_512";
+    sig->method_name = "XMSS-SHAKE_16_512";;
     sig->alg_version = "..."; 
 
     // Check how true this is
