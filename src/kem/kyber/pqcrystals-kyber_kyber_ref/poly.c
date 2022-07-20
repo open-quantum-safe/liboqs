@@ -23,7 +23,7 @@ void poly_compress(uint8_t *r, const poly *a, int8_t security_level)
   uint8_t t[8];
 
   if (params[security_level].KYBER_POLYCOMPRESSEDBYTES == 128)
-    for(i=0;i<params[security_level].KYBER_N/8;i++) {
+    for(i=0;i<(unsigned int)params[security_level].KYBER_N/8;i++) {
       for(j=0;j<8;j++) {
       // map to positive standard representatives
         u  = a->coeffs[8*i+j];
@@ -38,7 +38,7 @@ void poly_compress(uint8_t *r, const poly *a, int8_t security_level)
     r += 4;
   }
 else if (params[security_level].KYBER_POLYCOMPRESSEDBYTES == 160)
-  for(i=0;i<params[security_level].KYBER_N/8;i++) {
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N/8;i++) {
     for(j=0;j<8;j++) {
       // map to positive standard representatives
       u  = a->coeffs[8*i+j];
@@ -71,7 +71,7 @@ void poly_decompress(poly *r, const uint8_t *a, int8_t security_level)
   unsigned int i;
 
   if (params[security_level].KYBER_POLYCOMPRESSEDBYTES == 128)
-    for(i=0;i<params[security_level].KYBER_N/2;i++) {
+    for(i=0;i<(unsigned int)params[security_level].KYBER_N/2;i++) {
       r->coeffs[2*i+0] = (((uint16_t)(a[0] & 15)*params[security_level].KYBER_Q) + 8) >> 4;
       r->coeffs[2*i+1] = (((uint16_t)(a[0] >> 4)*params[security_level].KYBER_Q) + 8) >> 4;
       a += 1;
@@ -79,7 +79,7 @@ void poly_decompress(poly *r, const uint8_t *a, int8_t security_level)
   else if (params[security_level].KYBER_POLYCOMPRESSEDBYTES == 160){
     unsigned int j;
     uint8_t t[8];
-    for(i=0;i<params[security_level].KYBER_N/8;i++) {
+    for(i=0;i<(unsigned int)params[security_level].KYBER_N/8;i++) {
       t[0] = (a[0] >> 0);
       t[1] = (a[0] >> 5) | (a[1] << 3);
       t[2] = (a[1] >> 2);
@@ -112,7 +112,7 @@ void poly_tobytes(uint8_t *r, const poly *a, int8_t security_level)
   unsigned int i;
   uint16_t t0, t1;
 
-  for(i=0;i<params[security_level].KYBER_N/2;i++) {
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N/2;i++) {
     // map to positive standard representatives
     t0  = a->coeffs[2*i];
     t0 += ((int16_t)t0 >> 15) & params[security_level].KYBER_Q;
@@ -137,7 +137,7 @@ void poly_tobytes(uint8_t *r, const poly *a, int8_t security_level)
 void poly_frombytes(poly *r, const uint8_t *a, int8_t security_level)
 {
   unsigned int i;
-  for(i=0;i<params[security_level].KYBER_N/2;i++) {
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N/2;i++) {
     r->coeffs[2*i]   = ((a[3*i+0] >> 0) | ((uint16_t)a[3*i+1] << 8)) & 0xFFF;
     r->coeffs[2*i+1] = ((a[3*i+1] >> 4) | ((uint16_t)a[3*i+2] << 4)) & 0xFFF;
   }
@@ -160,7 +160,7 @@ void poly_frommsg(poly *r, const uint8_t *msg,int8_t security_level)
 // #error "KYBER_INDCPA_MSGBYTES must be equal to KYBER_N/8 bytes!"
 // #endif
 
-  for(i=0;i<params[security_level].KYBER_N/8;i++) {
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N/8;i++) {
     for(j=0;j<8;j++) {
       mask = -(int16_t)((msg[i] >> j)&1);
       r->coeffs[8*i+j] = mask & ((params[security_level].KYBER_Q+1)/2);
@@ -181,7 +181,7 @@ void poly_tomsg(uint8_t *msg, const poly *a,int8_t security_level)
   unsigned int i,j;
   uint16_t t;
 
-  for(i=0;i<params[security_level].KYBER_N/8;i++) {
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N/8;i++) {
     msg[i] = 0;
     for(j=0;j<8;j++) {
       t  = a->coeffs[8*i+j];
@@ -207,7 +207,7 @@ void poly_tomsg(uint8_t *msg, const poly *a,int8_t security_level)
 void poly_getnoise_eta1(poly *r, const uint8_t *seed, uint8_t nonce, int8_t security_level)
 {
   uint8_t buf[params[security_level].KYBER_ETA1*params[security_level].KYBER_N/4];
-  prf(buf, sizeof(buf), seed, nonce);
+  prf(buf, sizeof(buf), seed, nonce, security_level);
   poly_cbd_eta1(r, buf, security_level);
 }
 
@@ -226,7 +226,7 @@ void poly_getnoise_eta1(poly *r, const uint8_t *seed, uint8_t nonce, int8_t secu
 void poly_getnoise_eta2(poly *r, const uint8_t *seed, uint8_t nonce,int8_t security_level)
 {
   uint8_t buf[params[security_level].KYBER_ETA2*params[security_level].KYBER_N/4];
-  prf(buf, sizeof(buf), seed, nonce);
+  prf(buf, sizeof(buf), seed, nonce, security_level);
   poly_cbd_eta2(r, buf, security_level);
 }
 
@@ -242,7 +242,7 @@ void poly_getnoise_eta2(poly *r, const uint8_t *seed, uint8_t nonce,int8_t secur
 **************************************************/
 void poly_ntt(poly *r,int8_t security_level)
 {
-  ntt(r->coeffs);
+  ntt(r->coeffs, security_level);
   poly_reduce(r,security_level);
 }
 
@@ -255,9 +255,9 @@ void poly_ntt(poly *r,int8_t security_level)
 *
 * Arguments:   - uint16_t *a: pointer to in/output polynomial
 **************************************************/
-void poly_invntt_tomont(poly *r)
+void poly_invntt_tomont(poly *r, int8_t security_level)
 {
-  invntt(r->coeffs);
+  invntt(r->coeffs, security_level);
 }
 
 /*************************************************
@@ -272,9 +272,9 @@ void poly_invntt_tomont(poly *r)
 void poly_basemul_montgomery(poly *r, const poly *a, const poly *b, int8_t security_level)
 {
   unsigned int i;
-  for(i=0;i<params[security_level].KYBER_N/4;i++) {
-    basemul(&r->coeffs[4*i], &a->coeffs[4*i], &b->coeffs[4*i], zetas[64+i]);
-    basemul(&r->coeffs[4*i+2], &a->coeffs[4*i+2], &b->coeffs[4*i+2], -zetas[64+i]);
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N/4;i++) {
+    basemul(&r->coeffs[4*i], &a->coeffs[4*i], &b->coeffs[4*i], zetas[64+i], security_level);
+    basemul(&r->coeffs[4*i+2], &a->coeffs[4*i+2], &b->coeffs[4*i+2], -zetas[64+i], security_level);
   }
 }
 
@@ -290,8 +290,8 @@ void poly_tomont(poly *r,int8_t security_level)
 {
   unsigned int i;
   const int16_t f = (1ULL << 32) % params[security_level].KYBER_Q;
-  for(i=0;i<params[security_level].KYBER_N;i++)
-    r->coeffs[i] = montgomery_reduce((int32_t)r->coeffs[i]*f);
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N;i++)
+    r->coeffs[i] = montgomery_reduce((int32_t)r->coeffs[i]*f, security_level);
 }
 
 /*************************************************
@@ -305,8 +305,8 @@ void poly_tomont(poly *r,int8_t security_level)
 void poly_reduce(poly *r,int8_t security_level)
 {
   unsigned int i;
-  for(i=0;i<params[security_level].KYBER_N;i++)
-    r->coeffs[i] = barrett_reduce(r->coeffs[i]);
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N;i++)
+    r->coeffs[i] = barrett_reduce(r->coeffs[i], security_level);
 }
 
 /*************************************************
@@ -321,7 +321,7 @@ void poly_reduce(poly *r,int8_t security_level)
 void poly_add(poly *r, const poly *a, const poly *b,int8_t security_level)
 {
   unsigned int i;
-  for(i=0;i<params[security_level].KYBER_N;i++)
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N;i++)
     r->coeffs[i] = a->coeffs[i] + b->coeffs[i];
 }
 
@@ -337,6 +337,6 @@ void poly_add(poly *r, const poly *a, const poly *b,int8_t security_level)
 void poly_sub(poly *r, const poly *a, const poly *b, int8_t security_level)
 {
   unsigned int i;
-  for(i=0;i<params[security_level].KYBER_N;i++)
+  for(i=0;i<(unsigned int)params[security_level].KYBER_N;i++)
     r->coeffs[i] = a->coeffs[i] - b->coeffs[i];
 }

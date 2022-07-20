@@ -61,7 +61,7 @@ static void cbd2(poly *r, const uint8_t *buf,int security_level)
   uint32_t t,d;
   int16_t a,b;
 
-  for(i=0;i<params[security_level].KYBER_N/8;i++) {
+  for(i=0;i<((unsigned int)params[security_level].KYBER_N)/8;i++) {
     t  = load32_littleendian(buf+4*i);
     d  = t & 0x55555555;
     d += (t>>1) & 0x55555555;
@@ -91,7 +91,7 @@ static void cbd3(poly *r, const uint8_t *buf, int security_level)
   uint32_t t,d;
   int16_t a,b;
 
-  for(i=0;i<params[security_level].KYBER_N/4;i++) {
+  for(i=0;i<((unsigned int)params[security_level].KYBER_N)/4;i++) {
     t  = load24_littleendian(buf+3*i);
     d  = t & 0x00249249;
     d += (t>>1) & 0x00249249;
@@ -117,5 +117,5 @@ void poly_cbd_eta1(poly *r, const uint8_t *buf, int8_t security_level)
 void poly_cbd_eta2(poly *r, const uint8_t *buf, int8_t security_level)
 {
   if( params[security_level].KYBER_ETA2 == 2)
-    cbd2(r, buf);
+    cbd2(r, buf,security_level);
 }

@@ -158,4 +158,4 @@ param params[3]={
         1568             /* KYBER_CIPHERTEXTBYTES */
     }
 
-}
+};

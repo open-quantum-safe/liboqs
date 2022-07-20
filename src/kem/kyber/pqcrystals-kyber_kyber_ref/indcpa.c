@@ -25,8 +25,8 @@ static void pack_pk(uint8_t *r,
                     int8_t security_level)
 {
   size_t i;
-  polyvec_tobytes(r, pk);
-  for(i=0;i<params[security_level].KYBER_SYMBYTES;i++)
+  polyvec_tobytes(r, pk, security_level);
+  for(i=0;i<(size_t)params[security_level].KYBER_SYMBYTES;i++)
     r[i+params[security_level].KYBER_POLYVECBYTES] = seed[i];
 }
 
@@ -46,8 +46,8 @@ static void unpack_pk(polyvec *pk,
                       int8_t security_level)
 {
   size_t i;
-  polyvec_frombytes(pk, packedpk);
-  for(i=0;i<params[security_level].KYBER_SYMBYTES;i++)
+  polyvec_frombytes(pk, packedpk, security_level);
+  for(i=0;i<(size_t)params[security_level].KYBER_SYMBYTES;i++)
     seed[i] = packedpk[i+params[security_level].KYBER_POLYVECBYTES];
 }
 
@@ -59,9 +59,9 @@ static void unpack_pk(polyvec *pk,
 * Arguments:   - uint8_t *r: pointer to output serialized secret key
 *              - polyvec *sk: pointer to input vector of polynomials (secret key)
 **************************************************/
-static void pack_sk(uint8_t *r, polyvec *sk)
+static void pack_sk(uint8_t *r, polyvec *sk, int8_t security_level)
 {
-  polyvec_tobytes(r, sk);
+  polyvec_tobytes(r, sk, security_level);
 }
 
 /*************************************************
@@ -72,9 +72,9 @@ static void pack_sk(uint8_t *r, polyvec *sk)
 * Arguments:   - polyvec *sk: pointer to output vector of polynomials (secret key)
 *              - const uint8_t *packedsk: pointer to input serialized secret key
 **************************************************/
-static void unpack_sk(polyvec *sk, const uint8_t *packedsk)
+static void unpack_sk(polyvec *sk, const uint8_t *packedsk, int8_t security_level)
 {
-  polyvec_frombytes(sk, packedsk);
+  polyvec_frombytes(sk, packedsk, security_level);
 }
 
 /*************************************************
@@ -90,7 +90,7 @@ static void unpack_sk(polyvec *sk, const uint8_t *packedsk)
 **************************************************/
 static void pack_ciphertext(uint8_t *r, polyvec *b, poly *v,int8_t security_level)
 {
-  polyvec_compress(r, b);
+  polyvec_compress(r, b, security_level);
   poly_compress(r+params[security_level].KYBER_POLYVECCOMPRESSEDBYTES, v, security_level);
 }
 
@@ -106,7 +106,7 @@ static void pack_ciphertext(uint8_t *r, polyvec *b, poly *v,int8_t security_leve
 **************************************************/
 static void unpack_ciphertext(polyvec *b, poly *v, const uint8_t *c,int8_t security_level)
 {
-  polyvec_decompress(b, c);
+  polyvec_decompress(b, c, security_level);
   poly_decompress(v, c+params[security_level].KYBER_POLYVECCOMPRESSEDBYTES, security_level);
 }
 
@@ -173,18 +173,18 @@ void gen_matrix(polyvec *a, const uint8_t *seed, int8_t security_level, int tran
   xof_state state;
   xof_init(&state, seed);
 
-  for(i=0;i<params[security_level].KYBER_K;i++) {
-    for(j=0;j<params[security_level].KYBER_K;j++) {
+  for(i=0;i<(size_t)params[security_level].KYBER_K;i++) {
+    for(j=0;j<(size_t)params[security_level].KYBER_K;j++) {
       if(transposed)
-        xof_absorb(&state, seed, i, j);
+        xof_absorb(&state, seed, i, j, security_level);
       else
-        xof_absorb(&state, seed, j, i);
+        xof_absorb(&state, seed, j, i, security_level);
 
       xof_squeezeblocks(buf, GEN_MATRIX_NBLOCKS, &state);
       buflen = GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES;
       ctr = rej_uniform(a[i].vec[j].coeffs, params[security_level].KYBER_N, buf, buflen, security_level);
 
-      while(ctr < params[security_level].KYBER_N) {
+      while(ctr < (unsigned int)params[security_level].KYBER_N) {
         off = buflen % 3;
         for(k = 0; k < off; k++)
           buf[k] = buf[buflen - off + k];
@@ -223,24 +223,24 @@ void indcpa_keypair(uint8_t *pk,
 
   gen_a(a, publicseed,security_level);
 
-  for(i=0;i<params[security_level].KYBER_K;i++)
+  for(i=0;i<(size_t)params[security_level].KYBER_K;i++)
     poly_getnoise_eta1(&skpv.vec[i], noiseseed, nonce++, security_level);
-  for(i=0;i<params[security_level].KYBER_K;i++)
+  for(i=0;i<(size_t)params[security_level].KYBER_K;i++)
     poly_getnoise_eta1(&e.vec[i], noiseseed, nonce++, security_level);
 
-  polyvec_ntt(&skpv);
-  polyvec_ntt(&e);
+  polyvec_ntt(&skpv, security_level);
+  polyvec_ntt(&e, security_level);
 
   // matrix-vector multiplication
-  for(i=0;i<params[security_level].KYBER_K;i++) {
-    polyvec_basemul_acc_montgomery(&pkpv.vec[i], &a[i], &skpv);
+  for(i=0;i<(size_t)params[security_level].KYBER_K;i++) {
+    polyvec_basemul_acc_montgomery(&pkpv.vec[i], &a[i], &skpv, security_level);
     poly_tomont(&pkpv.vec[i],security_level);
   }
 
-  polyvec_add(&pkpv, &pkpv, &e);
-  polyvec_reduce(&pkpv);
+  polyvec_add(&pkpv, &pkpv, &e, security_level);
+  polyvec_reduce(&pkpv, security_level);
 
-  pack_sk(sk, &skpv);
+  pack_sk(sk, &skpv, security_level);
   pack_pk(pk, &pkpv, publicseed,security_level);
 }
 
@@ -276,27 +276,27 @@ void indcpa_enc(uint8_t *c,
   poly_frommsg(&k, m, security_level);
   gen_at(at, seed,security_level);
 
-  for(i=0;i<params[security_level].KYBER_K;i++)
+  for(i=0;i<(unsigned int)params[security_level].KYBER_K;i++)
     poly_getnoise_eta1(sp.vec+i, coins, nonce++, security_level);
-  for(i=0;i<params[security_level].KYBER_K;i++)
+  for(i=0;i<(unsigned int)params[security_level].KYBER_K;i++)
     poly_getnoise_eta2(ep.vec+i, coins, nonce++, security_level);
   poly_getnoise_eta2(&epp, coins, nonce++, security_level);
 
-  polyvec_ntt(&sp);
+  polyvec_ntt(&sp, security_level);
 
   // matrix-vector multiplication
-  for(i=0;i<params[security_level].KYBER_K;i++)
-    polyvec_basemul_acc_montgomery(&b.vec[i], &at[i], &sp);
+  for(i=0;i<(unsigned int)params[security_level].KYBER_K;i++)
+    polyvec_basemul_acc_montgomery(&b.vec[i], &at[i], &sp, security_level);
 
-  polyvec_basemul_acc_montgomery(&v, &pkpv, &sp);
+  polyvec_basemul_acc_montgomery(&v, &pkpv, &sp, security_level);
 
-  polyvec_invntt_tomont(&b);
-  poly_invntt_tomont(&v);
+  polyvec_invntt_tomont(&b, security_level);
+  poly_invntt_tomont(&v, security_level);
 
-  polyvec_add(&b, &b, &ep);
+  polyvec_add(&b, &b, &ep, security_level);
   poly_add(&v, &v, &epp, security_level);
   poly_add(&v, &v, &k, security_level);
-  polyvec_reduce(&b);
+  polyvec_reduce(&b, security_level);
   poly_reduce(&v, security_level);
 
   pack_ciphertext(c, &b, &v,security_level);
@@ -324,11 +324,11 @@ void indcpa_dec(uint8_t *m,
   poly v, mp;
 
   unpack_ciphertext(&b, &v, c,security_level);
-  unpack_sk(&skpv, sk);
+  unpack_sk(&skpv, sk, security_level);
 
-  polyvec_ntt(&b);
-  polyvec_basemul_acc_montgomery(&mp, &skpv, &b);
-  poly_invntt_tomont(&mp);
+  polyvec_ntt(&b, security_level);
+  polyvec_basemul_acc_montgomery(&mp, &skpv, &b, security_level);
+  poly_invntt_tomont(&mp, security_level);
 
   poly_sub(&mp, &v, &mp, security_level);
   poly_reduce(&mp,security_level);

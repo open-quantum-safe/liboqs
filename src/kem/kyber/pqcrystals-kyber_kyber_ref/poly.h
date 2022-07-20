@@ -36,7 +36,7 @@ void poly_getnoise_eta2(poly *r, const uint8_t *seed, uint8_t nonce, int8_t secu
 // #define poly_ntt KYBER_NAMESPACE(poly_ntt)
 void poly_ntt(poly *r,int8_t security_level);
 // #define poly_invntt_tomont KYBER_NAMESPACE(poly_invntt_tomont)
-void poly_invntt_tomont(poly *r);
+void poly_invntt_tomont(poly *r, int8_t security_level);
 // #define poly_basemul_montgomery KYBER_NAMESPACE(poly_basemul_montgomery)
 void poly_basemul_montgomery(poly *r, const poly *a, const poly *b, int8_t security_level);
 // #define poly_tomont KYBER_NAMESPACE(poly_tomont)

@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include "params.h"
 #include "reduce.h"
-
+extern param params[];
 /*************************************************
 * Name:        montgomery_reduce
 *
@@ -13,12 +13,12 @@
 *
 * Returns:     integer in {-q+1,...,q-1} congruent to a * R^-1 modulo q.
 **************************************************/
-int16_t montgomery_reduce(int32_t a)
+int16_t montgomery_reduce(int32_t a, int8_t security_level)
 {
   int16_t t;
 
   t = (int16_t)a*QINV;
-  t = (a - (int32_t)t*KYBER_Q) >> 16;
+  t = (a - (int32_t)t*params[security_level].KYBER_Q) >> 16;
   return t;
 }
 
@@ -32,11 +32,11 @@ int16_t montgomery_reduce(int32_t a)
 *
 * Returns:     integer in {-(q-1)/2,...,(q-1)/2} congruent to a modulo q.
 **************************************************/
-int16_t barrett_reduce(int16_t a) {
+int16_t barrett_reduce(int16_t a, int8_t security_level) {
   int16_t t;
-  const int16_t v = ((1<<26) + KYBER_Q/2)/KYBER_Q;
+  const int16_t v = ((1<<26) + params[security_level].KYBER_Q/2)/params[security_level].KYBER_Q;
 
   t  = ((int32_t)v*a + (1<<25)) >> 26;
-  t *= KYBER_Q;
+  t *= params[security_level].KYBER_Q;
   return a - t;
 }

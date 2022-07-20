@@ -41,22 +41,27 @@ typedef shake128incctx xof_state;
 
 // #define kyber_shake128_absorb KYBER_NAMESPACE(kyber_shake128_absorb)
 void kyber_shake128_absorb(shake128incctx *s,
-                           const uint8_t seed[KYBER_SYMBYTES],
+                           const uint8_t *seed,
                            uint8_t x,
-                           uint8_t y);
+                           uint8_t y,
+                           int8_t security_level);
 
 // #define kyber_shake256_prf KYBER_NAMESPACE(kyber_shake256_prf)
-void kyber_shake256_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYMBYTES], uint8_t nonce);
+void kyber_shake256_prf(uint8_t *out,
+                        size_t outlen,
+                        const uint8_t *key,
+                        uint8_t nonce,
+                        int8_t security_level);
 
 #define XOF_BLOCKBYTES SHAKE128_RATE
 
 #define hash_h(OUT, IN, INBYTES) sha3_256(OUT, IN, INBYTES)
 #define hash_g(OUT, IN, INBYTES) sha3_512(OUT, IN, INBYTES)
 #define xof_init(STATE, SEED) shake128_inc_init(STATE)
-#define xof_absorb(STATE, SEED, X, Y) kyber_shake128_absorb(STATE, SEED, X, Y)
+#define xof_absorb(STATE, SEED, X, Y, security_level) kyber_shake128_absorb(STATE, SEED, X, Y, security_level)
 #define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) shake128_squeezeblocks(OUT, OUTBLOCKS, STATE)
 #define xof_release(STATE) shake128_inc_ctx_release(STATE)
-#define prf(OUT, OUTBYTES, KEY, NONCE) kyber_shake256_prf(OUT, OUTBYTES, KEY, NONCE)
+#define prf(OUT, OUTBYTES, KEY, NONCE, security_level) kyber_shake256_prf(OUT, OUTBYTES, KEY, NONCE, security_level)
 #define kdf(OUT, kyber_ssbytes,IN, INBYTES) shake256(OUT, kyber_ssbytes, IN, INBYTES)
 
 #endif /* KYBER_90S */

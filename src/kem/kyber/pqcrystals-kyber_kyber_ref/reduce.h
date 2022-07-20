@@ -8,9 +8,9 @@
 #define QINV -3327 // q^-1 mod 2^16
 
 // #define montgomery_reduce KYBER_NAMESPACE(montgomery_reduce)
-int16_t montgomery_reduce(int32_t a);
+int16_t montgomery_reduce(int32_t a, int8_t security_level);
 
 // #define barrett_reduce KYBER_NAMESPACE(barrett_reduce)
-int16_t barrett_reduce(int16_t a);
+int16_t barrett_reduce(int16_t a, int8_t security_level);
 
 #endif
