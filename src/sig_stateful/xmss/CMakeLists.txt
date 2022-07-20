@@ -40,4 +40,11 @@ target_compile_definitions(xmss PRIVATE OQS
                                           WITH_SHA256_H20
                                           WITH_SHA512_H10
                                           WITH_SHA512_H16
-                                          WITH_SHA512_H20)
+                                          WITH_SHA512_H20
+                                          WITH_SHAKE256_H10
+                                          WITH_SHAKE256_H16
+                                          WITH_SHAKE256_H20
+                                          WITH_SHAKE512_H10
+                                          WITH_SHAKE512_H16
+                                          WITH_SHAKE512_H20
+                                          )

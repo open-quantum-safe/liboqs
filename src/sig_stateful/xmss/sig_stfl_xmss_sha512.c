@@ -7,7 +7,7 @@
 
 // ======================== XMSS10-SHA256 ======================== //
 
-OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h10_new() {
+OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h10_new(void) {
     
     OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL));
     if (sig == NULL) {
@@ -32,7 +32,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h10_new() {
     return sig;
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H10_new() {
+OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H10_new(void) {
 
     // Initialize the secret key in the heap with adequate memory
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
@@ -53,7 +53,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H10_new() {
 
 // ======================== XMSS16-SHA256 ======================== //
 
-OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h16_new() {
+OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h16_new(void) {
     
     OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL));
     if (sig == NULL) {
@@ -76,7 +76,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h16_new() {
     return sig;
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H16_new() {
+OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H16_new(void) {
 
     // Initialize the secret key in the heap with adequate memory
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
@@ -96,7 +96,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H16_new() {
 
 // ======================== XMSS20-SHA256 ======================== //
 
-OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h20_new() {
+OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h20_new(void) {
     
     OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL));
     if (sig == NULL) {
@@ -119,7 +119,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h20_new() {
     return sig;
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H20_new() {
+OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H20_new(void) {
 
     // Initialize the secret key in the heap with adequate memory
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));

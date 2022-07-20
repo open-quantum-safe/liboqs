@@ -59,11 +59,6 @@ int xmss_modify_maximum(OQS_SECRET_KEY *sk, unsigned long long new_max) {
 
 #endif
 
-
-int xmss_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned long long number_of_sigs) {
-    return 0;
-}
-
 int xmss_sign(OQS_SECRET_KEY *sk,
               uint8_t *sm, unsigned long long *smlen,
               const uint8_t *m, unsigned long long mlen)
