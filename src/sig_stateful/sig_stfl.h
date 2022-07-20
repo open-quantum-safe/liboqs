@@ -198,5 +198,11 @@ void OQS_SIG_STFL_free(OQS_SIG_STFL *sig);
 } // extern "C"
 #endif
 
+#ifdef OQS_ENABLE_SIG_STFL_XMSS
+#include <oqs/sig_stfl_xmss.h>
+#endif // OQS_ENABLE_SIG_STFL_XMSS
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+#include <oqs/sig_stfl_lms.h>
+#endif // OQS_ENABLE_SIG_STFL_LMS
 
 #endif /* OQS_SIG_STATEFUL_H */

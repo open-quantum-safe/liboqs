@@ -11,16 +11,6 @@
  */
 int xmss_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid);
 
-/**
- * @brief 
- * 
- * @param master 
- * @param subkey 
- * @param number_of_sigs 
- * @return int 
- */
-int xmss_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned long long number_of_sigs);
-
 #ifdef MAX_MOD
 
 int xmss_modify_maximum(OQS_SECRET_KEY *sk, unsigned long long new_max);
