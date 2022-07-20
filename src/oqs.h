@@ -20,6 +20,7 @@
 #include <oqs/sha3x4.h>
 #include <oqs/rand.h>
 #include <oqs/kem.h>
+#include <oqs/sig_stfl.h>
 #include <oqs/sig.h>
 
 #endif // OQS_H

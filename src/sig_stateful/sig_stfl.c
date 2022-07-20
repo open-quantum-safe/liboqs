@@ -9,7 +9,7 @@
 #include <strings.h>
 #endif
 
-#include "sig_stfl.h"
+#include <oqs/oqs.h>
 
 const char *OQS_SIG_STFL_alg_identifier(size_t i) {
 
@@ -82,23 +82,23 @@ OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
     if (0) {    
 
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h10)) {
-//#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10
         return OQS_SIG_STFL_alg_xmss_sha256_h10_new();
-//#else 
-        //return NULL;
-//#endif
+#else 
+        return NULL;
+#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16)) {
-//#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H16
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H16
         return OQS_SIG_STFL_alg_xmss_sha256_h16_new();
-//#else 
-        //return NULL;
-//#endif
+#else 
+        return NULL;
+#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20)) {
-//#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H20
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H20
         return OQS_SIG_STFL_alg_xmss_sha256_h20_new();
-//#else 
-        //return NULL;
-//#endif
+#else 
+        return NULL;
+#endif
         // EDIT-WHEN ADDING MORE XMSS/XMSS^MT ALGS
     } else {
         return NULL;
@@ -149,23 +149,23 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name) {
     if (0) {    
 
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h10)) {
-//#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10
         return OQS_SECRET_KEY_XMSS_SHA256_H10_new();
-//#else 
+#else 
         //return NULL;
-//#endif
+#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h16)) {
-//#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H16
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H16
         return OQS_SECRET_KEY_XMSS_SHA256_H16_new();
-//#else 
+#else 
         //return NULL;
-//#endif
+#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h20)) {
-//#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H20
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H20
         return OQS_SECRET_KEY_XMSS_SHA256_H20_new();
-//#else 
+#else 
         //return NULL;
-//#endif
+#endif
     } else {
         return NULL;
     }

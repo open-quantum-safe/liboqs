@@ -8,6 +8,9 @@ endif()
 if(DEFINED OQS_SIG_DEFAULT)
     message(WARNING "OQS_SIG_DEFAULT not longer supported")
 endif()
+if(DEFINED OQS_SIG_STFL_DEFAULT)
+    message(WARNING "OQS_SIG_STFL_DEFAULT not longer supported")
+endif()
 
 # Only enable OpenSSL by default on not-Windows
 if(NOT WIN32)
@@ -650,6 +653,15 @@ cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256s_simple "" ON "OQS_EN
 if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
     cmake_dependent_option(OQS_ENABLE_SIG_sphincs_shake256_256s_simple_avx2 "" ON "OQS_ENABLE_SIG_sphincs_shake256_256s_simple" OFF)
 endif()
+
+### OQS STATEFUL SIGNATURE ALGORITHMS
+option(OQS_ENABLE_SIG_STFL_XMSS "Enable XMSS algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSS_SHA256_H16 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSS_SHA256_H20 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSS_SHA512_H10 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSS_SHA512_H16 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSS_SHA512_H20 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 
