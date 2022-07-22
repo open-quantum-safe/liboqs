@@ -5,6 +5,16 @@
 #include "../../sig_stfl.h"
 
 /**
+ * @brief Populates a subkey object with a key that is valid for a certain number of signatures.
+ * @attention The caller is responsible for allocating memory and freeing the subkey object.
+ * @param master the master key
+ * @param subkey the derived key for n signatures
+ * @param number_of_sigs the number of signatures that are needed
+ * @return int - Returns 0 on success, -1 on failure.
+ */
+int xmss_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned long long number_of_sigs);
+
+/*
  * Generates a XMSS key pair for a given parameter set.
  * Format sk: [OID || (32bit) idx || SK_SEED || SK_PRF || PUB_SEED || root]
  * Format pk: [OID || root || PUB_SEED]
@@ -16,6 +26,13 @@ int xmss_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid);
 int xmss_modify_maximum(OQS_SECRET_KEY *sk, unsigned long long new_max);
 
 #endif
+
+/**
+ * Generates a XMSS key pair for a given parameter set.
+ * Format sk: [OID || (32bit) idx || SK_SEED || SK_PRF || PUB_SEED || root]
+ * Format pk: [OID || root || PUB_SEED]
+ */
+int xmss_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid);
 
 /**
  * Signs a message using an XMSS secret key.

@@ -33,3 +33,4 @@ __pycache__
 .cache
 .CMake/a.out
 
+.directory

@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include <math.h>
 
 #include "params.h"
@@ -59,12 +60,56 @@ int xmss_modify_maximum(OQS_SECRET_KEY *sk, unsigned long long new_max) {
 
 #endif
 
+int xmss_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned long long number_of_sigs) {
+    
+    xmss_params params;
+    unsigned int i;
+    uint32_t oid = 0;
+    for (i = 0; i < XMSS_OID_LEN; i++) {
+        oid |= master->secret_key[XMSS_OID_LEN - i - 1] << (i * 8);
+    }
+    xmss_parse_oid(&params, oid);
+
+    unsigned long long master_idx = bytes_to_ull(master->secret_key + XMSS_OID_LEN, params.index_bytes);
+    unsigned long long master_max = bytes_to_ull(master->secret_key + master->length_secret_key - params.bytes_for_max, params.bytes_for_max);
+
+    // Check if you can still generate that many signatures from the master key
+    if (master_idx + number_of_sigs >= master_max) {
+        return -1;
+    }
+    
+    unsigned long long subkey_idx = master_idx;
+    unsigned long long subkey_max = master_idx + number_of_sigs;
+
+    // Copy the current master key to the subkey
+    memcpy(subkey->secret_key, master->secret_key, master->length_secret_key);
+
+    // Increment the authentication path based on the BDS algorithm.
+    xmss_core_increment_authpath(&params, master->secret_key + XMSS_OID_LEN, number_of_sigs);
+    
+    // Set the subkey maximum to the master key index + the number of signatures
+    ull_to_bytes(subkey->secret_key + subkey->length_secret_key - params.bytes_for_max, params.bytes_for_max, subkey_max);
+
+    // Set the subkey index to the master key's current index
+    ull_to_bytes(subkey->secret_key + XMSS_OID_LEN, params.index_bytes, subkey_idx);
+
+    // Set the master key index to the master key index + the number of signatures
+    master_idx = master_idx + number_of_sigs;
+    ull_to_bytes(master->secret_key + XMSS_OID_LEN, params.index_bytes, master_idx);
+
+    return 0; 
+}
+
 int xmss_sign(OQS_SECRET_KEY *sk,
               uint8_t *sm, unsigned long long *smlen,
               const uint8_t *m, unsigned long long mlen)
 {
     xmss_params params;
-    uint32_t oid = sk->oid;
+    unsigned int i;
+    uint32_t oid = 0;
+    for (i = 0; i < XMSS_OID_LEN; i++) {
+        oid |= sk->secret_key[XMSS_OID_LEN - i - 1] << (i * 8);
+    }
     if (xmss_parse_oid(&params, oid)) {
         return -1;
     }

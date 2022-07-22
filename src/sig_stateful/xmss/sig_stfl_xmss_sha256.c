@@ -7,6 +7,13 @@
 
 // ======================== XMSS10-SHA256 ======================== //
 
+int OQS_SIG_STFL_alg_xmss_sha256_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+    if (secret_key == NULL || public_key == NULL) return -1;
+    
+    uint32_t oid = 0x00000001;
+    return xmss_keypair(public_key, secret_key, oid);
+}
+
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
     
     OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL));
@@ -25,7 +32,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
     sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha256_h10_length_pk;
     sig->length_signature = OQS_SIG_STFL_alg_xmss_sha256_h10_length_signature;
 
-    sig->keypair = OQS_SIG_STFL_alg_xmss_keypair;
+    sig->keypair = OQS_SIG_STFL_alg_xmss_sha256_h10_keypair;
     sig->sign = OQS_SIG_STFL_alg_xmss_sign;
     sig->verify = OQS_SIG_STFL_alg_xmss_verify;
 
@@ -39,9 +46,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H10_new(void) {
     if (sk == NULL) return NULL;
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
 
-    sk->oid = 0x00000001;
-    sk->is_xmssmt = 0;
-
     sk->length_secret_key = OQS_SIG_STFL_alg_xmss_sha256_h10_length_sk;
     
     perform_key_allocation(sk);
@@ -53,12 +57,22 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H10_new(void) {
 
 // ======================== XMSS16-SHA256 ======================== //
 
+int OQS_SIG_STFL_alg_xmss_sha256_h16_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+    if (secret_key == NULL || public_key == NULL) return -1;
+    
+    uint32_t oid = 0x00000002;
+    return xmss_keypair(public_key, secret_key, oid);
+}
+
+
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h16_new(void) {
     
     OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL));
     if (sig == NULL) {
         return NULL;
     }
+    memset(sig, 0, sizeof(OQS_SIG_STFL));
+
     sig->method_name = "XMSS-SHA2_16_256";
     sig->alg_version = "..."; 
 
@@ -69,7 +83,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h16_new(void) {
     sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha256_h16_length_pk;
     sig->length_signature = OQS_SIG_STFL_alg_xmss_sha256_h16_length_signature;
 
-    sig->keypair = OQS_SIG_STFL_alg_xmss_keypair;
+    sig->keypair = OQS_SIG_STFL_alg_xmss_sha256_h16_keypair;
     sig->sign = OQS_SIG_STFL_alg_xmss_sign;
     sig->verify = OQS_SIG_STFL_alg_xmss_verify;
 
@@ -79,14 +93,11 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h16_new(void) {
 OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H16_new(void) {
 
     // Initialize the secret key in the heap with adequate memory
-    OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
+    OQS_SECRET_KEY *sk = (OQS_SECRET_KEY *)malloc(sizeof(OQS_SECRET_KEY));
     if (sk == NULL) return NULL;
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
-    sk->oid = 0x00000002;
-    sk->is_xmssmt = 0;
 
     sk->length_secret_key = OQS_SIG_STFL_alg_xmss_sha256_h16_length_sk;
-
     perform_key_allocation(sk);
 
     return sk;
@@ -96,12 +107,21 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H16_new(void) {
 
 // ======================== XMSS20-SHA256 ======================== //
 
+int OQS_SIG_STFL_alg_xmss_sha256_h20_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+    if (secret_key == NULL || public_key == NULL) return -1;
+    
+    uint32_t oid = 0x00000003;
+    return xmss_keypair(public_key, secret_key, oid);
+}
+
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h20_new(void) {
     
     OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL));
     if (sig == NULL) {
         return NULL;
     }
+    memset(sig, 0, sizeof(OQS_SIG_STFL));
+    
     sig->method_name = "XMSS-SHA2_20_256";
     sig->alg_version = "..."; 
 
@@ -112,7 +132,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h20_new(void) {
     sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha256_h20_length_pk;
     sig->length_signature = OQS_SIG_STFL_alg_xmss_sha256_h20_length_signature;
 
-    sig->keypair = OQS_SIG_STFL_alg_xmss_keypair;
+    sig->keypair = OQS_SIG_STFL_alg_xmss_sha256_h20_keypair;
     sig->sign = OQS_SIG_STFL_alg_xmss_sign;
     sig->verify = OQS_SIG_STFL_alg_xmss_verify;
 
@@ -125,9 +145,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H20_new(void) {
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
     if (sk == NULL) return NULL;
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
-    sk->oid = 0x00000003;
-    sk->is_xmssmt = 0;
-
+    
     sk->length_secret_key = OQS_SIG_STFL_alg_xmss_sha256_h20_length_sk ;
 
     perform_key_allocation(sk);
