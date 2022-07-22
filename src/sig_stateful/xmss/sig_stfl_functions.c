@@ -52,10 +52,7 @@ unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_left(const OQS_SECRET_KEY *
     xmss_parse_oid(&params, oid);
 
     unsigned long long max = OQS_SIG_STFL_alg_xmss_xmssmt_sigs_total(secret_key);
-    unsigned long long idx = 0;
-    for (unsigned int i = 0; i < params.index_bytes; i++) {
-        idx |= ((unsigned long long)secret_key->secret_key[i]) << 8*(params.index_bytes - 1 - i);
-    }
+    unsigned long long idx = bytes_to_ull(secret_key->secret_key + XMSS_OID_LEN, params.index_bytes);
     return (max - idx);
 }
 
@@ -70,10 +67,7 @@ unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_total(const OQS_SECRET_KEY 
     }
     xmss_parse_oid(&params, oid);
 
-    unsigned long long max = 0;
-    for (int j = params.bytes_for_max; j > 0; j--) {
-        max |= ((unsigned long long)secret_key->secret_key[params.sk_bytes - XMSS_OID_LEN - j] << 8*(j - 1));
-    }
+    unsigned long long max = bytes_to_ull(secret_key->secret_key + secret_key->length_secret_key - params.bytes_for_max, params.bytes_for_max);
     return max;
 }
 
