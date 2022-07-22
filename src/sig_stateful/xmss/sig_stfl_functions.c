@@ -4,12 +4,6 @@
 #include "./external/params.h"
 #include "./external/xmss.h"
 
-int OQS_SIG_STFL_alg_xmss_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
-    if (secret_key == NULL || public_key == NULL) return -1;
-    
-    return xmss_keypair(public_key, secret_key, secret_key->oid);
-}
-
 int OQS_SIG_STFL_alg_xmss_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
     if (secret_key == NULL || message == NULL || signature == NULL) return -1;
     
@@ -20,12 +14,6 @@ int OQS_SIG_STFL_alg_xmss_verify(const uint8_t *message, size_t message_len, con
     if (message == NULL || signature == NULL || public_key == NULL) return -1;
     
     return xmss_sign_open(message, (unsigned long long *)&message_len, signature, (unsigned long long)signature_len, public_key);
-}
-
-int OQS_SIG_STFL_alg_xmssmt_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
-    if (secret_key == NULL || public_key == NULL) return -1;
-    
-    return xmssmt_keypair(public_key, secret_key, secret_key->oid);
 }
 
 int OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
@@ -44,11 +32,12 @@ unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_left(const OQS_SECRET_KEY *
     if (secret_key == NULL) return -1;
     
     xmss_params params;
-    if (secret_key->is_xmssmt) {
-        xmssmt_parse_oid(&params, secret_key->oid);
-    } else {
-        xmss_parse_oid(&params, secret_key->oid);
+    unsigned int i;
+    uint32_t oid = 0;
+    for (i = 0; i < XMSS_OID_LEN; i++) {
+        oid |= secret_key->secret_key[XMSS_OID_LEN - i - 1] << (i * 8);
     }
+    xmss_parse_oid(&params, oid);
 
     unsigned long long max = OQS_SIG_STFL_alg_xmss_xmssmt_sigs_total(secret_key);
     unsigned long long idx = 0;
@@ -62,11 +51,12 @@ unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_total(const OQS_SECRET_KEY 
     if (secret_key == NULL) return -1;
     
     xmss_params params;
-    if (secret_key->is_xmssmt) {
-        xmssmt_parse_oid(&params, secret_key->oid);
-    } else {
-        xmss_parse_oid(&params, secret_key->oid);
+    unsigned int i;
+    uint32_t oid = 0;
+    for (i = 0; i < XMSS_OID_LEN; i++) {
+        oid |= secret_key->secret_key[XMSS_OID_LEN - i - 1] << (i * 8);
     }
+    xmss_parse_oid(&params, oid);
 
     unsigned long long max = 0;
     for (int j = params.bytes_for_max; j > 0; j--) {
@@ -84,4 +74,22 @@ void perform_key_allocation(OQS_SECRET_KEY *sk) {
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
     memset(sk->secret_key, 0, sk->length_secret_key);   
+}
+
+OQS_SECRET_KEY *OQS_SECRET_KEY_alg_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs) { 
+
+    OQS_SECRET_KEY *subkey = (OQS_SECRET_KEY *)malloc(sizeof(OQS_SECRET_KEY));
+
+    // Copy all the essential details of the master key to the subkey.
+    subkey->length_secret_key = master_key->length_secret_key;
+
+    // Allocate the memory for the secret key.
+    perform_key_allocation(subkey);
+
+    // Derive the subkey.
+    if (xmss_derive_subkey(master_key, subkey, number_of_sigs) != 0) {
+        OQS_SECRET_KEY_free(subkey);
+        return NULL;
+    }
+    return subkey;
 }

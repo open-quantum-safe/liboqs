@@ -50,7 +50,7 @@ extern "C" {
 #define OQS_SIG_STFL_algs_length 12
 
 /**
- * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_new.
+ * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_STFL_new.
  *
  * Note that algorithm identifiers are present in this list even when the algorithm is disabled
  * at compile time.
@@ -80,19 +80,14 @@ int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
 
 
 /**
- * @brief Secret Kye object for stateful signature schemes * 
+ * @brief SECRET KEY object for stateful signature schemes * 
  */
-
 typedef struct OQS_SECRET_KEY OQS_SECRET_KEY;
 
 typedef struct OQS_SECRET_KEY {
 	
 	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
 	unsigned long long length_secret_key;
-
-	uint32_t oid;
-
-	bool is_xmssmt;
 
 	/** The physical secret key stored in memory as an array of bytes*/
 	uint8_t *secret_key;
@@ -111,10 +106,10 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name);
 
 void OQS_SECRET_KEY_free(OQS_SECRET_KEY *sk);	
 
-
+OQS_SECRET_KEY *OQS_SECRET_KEY_derive_subkey(OQS_SECRET_KEY *master_sk, const unsigned long long number_of_signatures);
 
 /**
- * Signature schemes object
+ * Stateful signature scheme object
  */
 typedef struct OQS_SIG_STFL {
 

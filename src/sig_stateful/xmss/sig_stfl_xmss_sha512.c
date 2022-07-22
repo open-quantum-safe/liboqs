@@ -5,7 +5,14 @@
 #include "./external/params.h"
 #include "sig_stfl_xmss.h"
 
-// ======================== XMSS10-SHA256 ======================== //
+// ======================== XMSS10-SHa512 ======================== //
+
+int OQS_SIG_STFL_alg_xmss_sha512_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+    if (secret_key == NULL || public_key == NULL) return -1;
+    
+    uint32_t oid = 0x00000004;
+    return xmss_keypair(public_key, secret_key, oid);
+}
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h10_new(void) {
     
@@ -25,7 +32,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h10_new(void) {
     sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha512_h10_length_pk;
     sig->length_signature = OQS_SIG_STFL_alg_xmss_sha512_h10_length_signature;
 
-    sig->keypair = OQS_SIG_STFL_alg_xmss_keypair;
+    sig->keypair = OQS_SIG_STFL_alg_xmss_sha512_h10_keypair;
     sig->sign = OQS_SIG_STFL_alg_xmss_sign;
     sig->verify = OQS_SIG_STFL_alg_xmss_verify;
 
@@ -39,9 +46,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H10_new(void) {
     if (sk == NULL) return NULL;
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
 
-    sk->oid = 0x00000004;
-    sk->is_xmssmt = 0;
-
     sk->length_secret_key = OQS_SIG_STFL_alg_xmss_sha512_h10_length_sk;
     
     perform_key_allocation(sk);
@@ -51,7 +55,14 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H10_new(void) {
 
 // ================================================================ //
 
-// ======================== XMSS16-SHA256 ======================== //
+// ======================== XMSS16-SHA512 ======================== //
+
+int OQS_SIG_STFL_alg_xmss_sha512_h16_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+    if (secret_key == NULL || public_key == NULL) return -1;
+    
+    uint32_t oid = 0x00000004;
+    return xmss_keypair(public_key, secret_key, oid);
+}
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h16_new(void) {
     
@@ -69,7 +80,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h16_new(void) {
     sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha512_h16_length_pk;
     sig->length_signature = OQS_SIG_STFL_alg_xmss_sha512_h16_length_signature;
 
-    sig->keypair = OQS_SIG_STFL_alg_xmss_keypair;
+    sig->keypair = OQS_SIG_STFL_alg_xmss_sha512_h16_keypair;
     sig->sign = OQS_SIG_STFL_alg_xmss_sign;
     sig->verify = OQS_SIG_STFL_alg_xmss_verify;
 
@@ -82,8 +93,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H16_new(void) {
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
     if (sk == NULL) return NULL;
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
-    sk->oid = 0x00000005;
-    sk->is_xmssmt = 0;
 
     sk->length_secret_key = OQS_SIG_STFL_alg_xmss_sha512_h16_length_sk;
 
@@ -94,8 +103,15 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H16_new(void) {
 
 // ================================================================ //
 
-// ======================== XMSS20-SHA256 ======================== //
+// ======================== XMSS20-SHA512 ======================== //
 
+int OQS_SIG_STFL_alg_xmss_sha512_h20_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+    if (secret_key == NULL || public_key == NULL) return -1;
+    
+    uint32_t oid = 0x00000004;
+    return xmss_keypair(public_key, secret_key, oid);
+}
+ 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h20_new(void) {
     
     OQS_SIG_STFL *sig = (OQS_SIG_STFL *)malloc(sizeof(OQS_SIG_STFL));
@@ -112,7 +128,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h20_new(void) {
     sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha512_h20_length_pk;
     sig->length_signature = OQS_SIG_STFL_alg_xmss_sha512_h20_length_signature;
 
-    sig->keypair = OQS_SIG_STFL_alg_xmss_keypair;
+    sig->keypair = OQS_SIG_STFL_alg_xmss_sha512_h20_keypair;
     sig->sign = OQS_SIG_STFL_alg_xmss_sign;
     sig->verify = OQS_SIG_STFL_alg_xmss_verify;
 
@@ -125,8 +141,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H20_new(void) {
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
     if (sk == NULL) return NULL;
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
-    sk->oid = 0x00000006;
-    sk->is_xmssmt = 0;
 
     sk->length_secret_key = OQS_SIG_STFL_alg_xmss_sha512_h20_length_sk ;
 

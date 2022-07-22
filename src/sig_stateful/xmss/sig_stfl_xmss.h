@@ -13,8 +13,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H10_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void);
 int OQS_SIG_STFL_alg_xmss_sha256_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha256_h10_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha256_h10_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H16
@@ -27,8 +25,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H16_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h16_new(void);
 int OQS_SIG_STFL_alg_xmss_sha256_h16_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha256_h16_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha256_h16_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H20
@@ -41,8 +37,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA256_H20_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h20_new(void);
 int OQS_SIG_STFL_alg_xmss_sha256_h20_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha256_h20_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha256_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA512_H10
@@ -55,8 +49,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H10_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h10_new(void);
 int OQS_SIG_STFL_alg_xmss_sha512_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha512_h10_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha512_h10_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA512_H16
@@ -69,8 +61,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H16_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h16_new(void);
 int OQS_SIG_STFL_alg_xmss_sha512_h16_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha512_h16_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha512_h16_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA512_H20
@@ -83,8 +73,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H20_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h20_new(void);
 int OQS_SIG_STFL_alg_xmss_sha512_h20_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha512_h20_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_sha512_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE256_H10
@@ -97,8 +85,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H10_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h10_new(void);
 int OQS_SIG_STFL_alg_xmss_shake256_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake256_h10_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake256_h10_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE256_H16
@@ -111,8 +97,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H16_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h16_new(void);
 int OQS_SIG_STFL_alg_xmss_shake256_h16_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake256_h16_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake256_h16_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE256_H20
@@ -125,8 +109,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE256_H20_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h20_new(void);
 int OQS_SIG_STFL_alg_xmss_shake256_h20_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake256_h20_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake256_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE512_H10
@@ -139,8 +121,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE512_H10_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h10_new(void);
 int OQS_SIG_STFL_alg_xmss_shake512_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake512_h10_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake512_h10_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE512_H16
@@ -153,8 +133,6 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE512_H16_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h16_new(void);
 int OQS_SIG_STFL_alg_xmss_shake512_h16_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake512_h16_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake512_h16_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE512_H20
@@ -167,10 +145,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE512_H20_new(void);
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h20_new(void);
 int OQS_SIG_STFL_alg_xmss_shake512_h20_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake512_h20_sign(uint8_t *signature, const uint8_t *message, size_t message_len, const OQS_SECRET_KEY *secret_key);
-int OQS_SIG_STFL_alg_xmss_shake512_h20_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 #endif
-
 
 /* ===
     ADD THE XMSS^MT VARIANTS HERE
@@ -180,13 +155,9 @@ int OQS_SIG_STFL_alg_xmss_shake512_h20_verify(const uint8_t *message, size_t mes
 
 // ---------------------------- FUNCTIONS INDEPENDENT OF VARIANT -----------------------------------------
 
-int OQS_SIG_STFL_alg_xmss_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
-
 int OQS_SIG_STFL_alg_xmss_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key);
 
 int OQS_SIG_STFL_alg_xmss_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-
-int OQS_SIG_STFL_alg_xmssmt_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key);
 
 int OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key);
 
@@ -197,6 +168,8 @@ unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_left(const OQS_SECRET_KEY *
 unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_total(const OQS_SECRET_KEY *secret_key);
 
 void perform_key_allocation(OQS_SECRET_KEY *sk);
+
+OQS_SECRET_KEY *OQS_SECRET_KEY_alg_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs);
 
 // --------------------------------------------------------------------------------------------------------
 

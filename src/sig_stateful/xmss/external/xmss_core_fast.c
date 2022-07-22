@@ -635,6 +635,10 @@ unsigned long long xmss_xmssmt_core_sk_bytes(const xmss_params *params)
         + (params->d - 1) * params->wots_sig_bytes;
 }
 
+int xmss_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsigned long long amount) {
+    return xmssmt_core_increment_authpath(params, sk, amount);
+}
+
 /*
  * Generates a XMSS key pair for a given parameter set.
  * Format sk: [(32bit) idx || SK_SEED || SK_PRF || root || PUB_SEED]
@@ -845,6 +849,59 @@ int xmss_core_sign(const xmss_params *params,
 
     secret_key->release_key(secret_key);
 
+    return 0;
+}
+
+int xmssmt_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsigned long long amount) {
+    unsigned long long i, j = 0;
+    
+    bds_state state;
+    treehash_inst treehash[params->tree_height - params->bds_k];
+    state.treehash = treehash;
+
+    xmss_deserialize_state(params, &state, sk);
+    
+    // Extract remaining SK
+    uint8_t sk_seed[params->n];
+    memcpy(sk_seed, sk + params->index_bytes, params->n);
+    uint8_t sk_prf[params->n];
+    memcpy(sk_prf, sk + params->index_bytes + params->n, params->n);
+    uint8_t pub_seed[params->n];
+    memcpy(pub_seed, sk + params->index_bytes + 3*params->n, params->n);
+
+    // Init working params;
+    uint32_t ots_addr[8] = {0};
+
+    /* Check if we can still sign with this sk, return -2 if not: */
+    // Extract index
+    unsigned long long idx = bytes_to_ull(sk, params->index_bytes);
+    // Extract the max_sigs
+    unsigned long long max = bytes_to_ull(sk + params->sk_bytes - params->bytes_for_max, params->bytes_for_max);
+    if (idx >= max) {
+        return -2;
+    }
+
+    // Update SK
+    sk[0] = ((idx + amount) >> 24) & 255;
+    sk[1] = ((idx + amount) >> 16) & 255;
+    sk[2] = ((idx + amount) >> 8) & 255;
+    sk[3] = (idx + amount) & 255;
+
+    for (i = 0; i < amount; i++) {
+        bds_round(params, &state, idx, sk_seed, pub_seed, ots_addr);
+        bds_treehash_update(params, &state, (params->tree_height - params->bds_k) >> 1, sk_seed, pub_seed, ots_addr);
+        
+        #ifdef FORWARD_SECURE
+            // move forward next seeds for all tree hash instances
+            for (j = 0; j < params->tree_height-params->bds_k-1; j++) {
+                set_ots_addr(ots_addr, 1+3*(1<<i)+idx);
+                hash_prg(params, NULL, state.treehash[i].seed_next, state.treehash[i].seed_next, pub_seed, ots_addr);
+            }
+        #endif
+    }
+    
+    xmss_serialize_state(params, sk, &state);
+    
     return 0;
 }
 
