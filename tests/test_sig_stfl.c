@@ -45,7 +45,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	magic_t magic;
 	OQS_randombytes(magic.val, sizeof(magic_t));
 
-	sig = OQS_SIG_new(method_name);
+	sig = OQS_SIG_STFL_new(method_name);
 	if (sig == NULL) {
 		fprintf(stderr, "ERROR: OQS_SIG_new failed\n");
 		goto err;
@@ -56,43 +56,47 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	printf("================================================================================\n");
 
 	public_key = malloc(sig->length_public_key + 2 * sizeof(magic_t));
-	secret_key = malloc(sig->length_secret_key + 2 * sizeof(magic_t));
+	secret_key = OQS_SECRET_KEY_new(method_name);
+	if (secret_key == NULL) {
+		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
+		goto err;
+	}
 	message = malloc(message_len + 2 * sizeof(magic_t));
 	signature = malloc(sig->length_signature + 2 * sizeof(magic_t));
 
-	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
+	if ((public_key == NULL) || (message == NULL) || (signature == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");
 		goto err;
 	}
 
 	//Set the magic numbers before
 	memcpy(public_key, magic.val, sizeof(magic_t));
-	memcpy(secret_key, magic.val, sizeof(magic_t));
+	memcpy(secret_key->secret_key, magic.val, sizeof(magic_t));
 	memcpy(message, magic.val, sizeof(magic_t));
 	memcpy(signature, magic.val, sizeof(magic_t));
 
 	public_key += sizeof(magic_t);
-	secret_key += sizeof(magic_t);
+	secret_key->secret_key += sizeof(magic_t);
 	message += sizeof(magic_t);
 	signature += sizeof(magic_t);
 
 	// and after
 	memcpy(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
-	memcpy(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
+	memcpy(secret_key->secret_key + secret_key->length_secret_key, magic.val, sizeof(magic_t));
 	memcpy(message + message_len, magic.val, sizeof(magic_t));
 	memcpy(signature + sig->length_signature, magic.val, sizeof(magic_t));
 
 	OQS_randombytes(message, message_len);
 	OQS_TEST_CT_DECLASSIFY(message, message_len);
 
-	rc = OQS_SIG_keypair(sig, public_key, secret_key);
+	rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
 		goto err;
 	}
 
-	rc = OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key);
+	rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_sign failed\n");
@@ -101,7 +105,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	OQS_TEST_CT_DECLASSIFY(public_key, sig->length_public_key);
 	OQS_TEST_CT_DECLASSIFY(signature, signature_len);
-	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+	rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof rc);
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "ERROR: OQS_SIG_verify failed\n");
@@ -121,11 +125,11 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
 	/* check magic values */
 	int rv = memcmp(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
-	rv |= memcmp(secret_key + sig->length_secret_key, magic.val, sizeof(magic_t));
+	rv |= memcmp(secret_key->secret_key + secret_key->length_secret_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(message + message_len, magic.val, sizeof(magic_t));
 	rv |= memcmp(signature + sig->length_signature, magic.val, sizeof(magic_t));
 	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
-	rv |= memcmp(secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
+	rv |= memcmp(secret_key->secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(message - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(signature - sizeof(magic_t), magic.val, sizeof(magic_t));
 	if (rv) {
@@ -143,12 +147,13 @@ err:
 
 cleanup:
 	if (sig != NULL) {
-		OQS_MEM_secure_free(secret_key - sizeof(magic_t), sig->length_secret_key + 2 * sizeof(magic_t));
+		OQS_SECRET_KEY_free(secret_key);
 	}
 	OQS_MEM_insecure_free(public_key - sizeof(magic_t));
 	OQS_MEM_insecure_free(message - sizeof(magic_t));
 	OQS_MEM_insecure_free(signature - sizeof(magic_t));
-	OQS_SIG_free(sig);
+	
+	OQS_SIG_STFL_free(sig);
 
 	return ret;
 }
