@@ -4,28 +4,40 @@
 #include "./external/params.h"
 #include "./external/xmss.h"
 
-int OQS_SIG_STFL_alg_xmss_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
     if (secret_key == NULL || message == NULL || signature == NULL) return -1;
     
-    return xmss_sign(secret_key, signature, (unsigned long long *)signature_length, message, (unsigned long long)message_len);
+    if (xmss_sign(secret_key, signature, (unsigned long long *)signature_length, message, (unsigned long long)message_len) != 0) {
+        return OQS_ERROR;
+    }
+    return OQS_SUCCESS;
 }
 
-int OQS_SIG_STFL_alg_xmss_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
     if (message == NULL || signature == NULL || public_key == NULL) return -1;
     
-    return xmss_sign_open(message, (unsigned long long *)&message_len, signature, (unsigned long long)signature_len, public_key);
+    if (xmss_sign_open(message, (unsigned long long *)&message_len, signature, (unsigned long long)signature_len, public_key) != 0) {
+        return OQS_ERROR;
+    } 
+    return OQS_SUCCESS;
 }
 
-int OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
     if (secret_key == NULL || message == NULL || signature == NULL) return -1;
     
-    return xmssmt_sign(secret_key, signature, (unsigned long long*)signature_length, message, (unsigned long long)message_len);
+    if (xmssmt_sign(secret_key, signature, (unsigned long long*)signature_length, message, (unsigned long long)message_len) != 0) {
+        return OQS_ERROR;
+    }
+    return OQS_SUCCESS;
 }
 
-int OQS_SIG_STFL_alg_xmssmt_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
     if (message == NULL || signature == NULL || public_key == NULL) return -1;
     
-    return xmssmt_sign_open(message, (unsigned long long*)&message_len, signature, (unsigned long long)signature_len, public_key);
+    if (xmssmt_sign_open(message, (unsigned long long*)&message_len, signature, (unsigned long long)signature_len, public_key) != 0) {
+        return OQS_ERROR;
+    }
+    return OQS_SUCCESS;
 }
 
 unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_left(const OQS_SECRET_KEY *secret_key) {

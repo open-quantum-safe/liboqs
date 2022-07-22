@@ -38,7 +38,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h10_new(void) {
     return sig;
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_xmss_shake512_H10_new(void) {
+OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE512_H10_new(void) {
 
     // Initialize the secret key in the heap with adequate memory
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
@@ -86,7 +86,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h16_new(void) {
     return sig;
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_xmss_shake512_H16_new(void) {
+OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE512_H16_new(void) {
 
 
     // Initialize the secret key in the heap with adequate memory
@@ -135,7 +135,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h20_new(void) {
     return sig;
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_xmss_shake512_H20_new(void) {
+OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE512_H20_new(void) {
 
     // Initialize the secret key in the heap with adequate memory
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
