@@ -181,7 +181,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
 
 
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig) {
-    free(sig);
+    OQS_MEM_insecure_free(sig);
 }
 
 
@@ -281,8 +281,8 @@ OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name) {
 
 
 OQS_API void OQS_SECRET_KEY_free(OQS_SECRET_KEY *sk) {
-    free(sk->secret_key);
-    free(sk);
+    OQS_MEM_secure_free(sk->secret_key, sk->length_secret_key);
+    OQS_MEM_secure_free(sk, sizeof(sk));
 }
 
 // ==========================================================================================================
