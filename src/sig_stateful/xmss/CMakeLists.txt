@@ -20,11 +20,10 @@ set(SRCS sig_stfl_xmss_sha256.c
          sig_stfl_xmss_shake256.c
          sig_stfl_xmss_shake512.c
          sig_stfl_functions.c
-         external/fips202.c
+         external/xmss_namespace.h
          external/hash_address.c
          external/hash.c
          external/params.c
-         external/randombytes.c
          external/utils.c
          external/wots.c
          external/xmss_commons.c
