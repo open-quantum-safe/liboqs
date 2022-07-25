@@ -54,7 +54,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h10_keypair(uint8_t *public_key,
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA512_H16
 
 #define OQS_SIG_STFL_alg_xmss_sha512_h16_length_signature 9476
-#define OQS_SIG_STFL_alg_xmss_sha512_h16_length_pk 128 + XMSS_OID_LEN 
+#define OQS_SIG_STFL_alg_xmss_sha512_h16_length_pk 128 + XMSS_OID_LEN
 #define OQS_SIG_STFL_alg_xmss_sha512_h16_length_sk 6159 + XMSS_OID_LEN
 
 OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H16_new(void);
@@ -126,7 +126,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake512_h10_keypair(uint8_t *public_ke
 #ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE512_H16
 
 #define OQS_SIG_STFL_alg_xmss_shake512_h16_length_signature 9476
-#define OQS_SIG_STFL_alg_xmss_shake512_h16_length_pk 128 + XMSS_OID_LEN 
+#define OQS_SIG_STFL_alg_xmss_shake512_h16_length_pk 128 + XMSS_OID_LEN
 #define OQS_SIG_STFL_alg_xmss_shake512_h16_length_sk 6159 + XMSS_OID_LEN
 
 OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE512_H16_new(void);

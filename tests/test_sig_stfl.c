@@ -152,7 +152,7 @@ cleanup:
 	OQS_MEM_insecure_free(public_key - sizeof(magic_t));
 	OQS_MEM_insecure_free(message - sizeof(magic_t));
 	OQS_MEM_insecure_free(signature - sizeof(magic_t));
-	
+
 	OQS_SIG_STFL_free(sig);
 
 	return ret;

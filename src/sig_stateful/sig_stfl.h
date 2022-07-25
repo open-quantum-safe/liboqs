@@ -44,8 +44,8 @@ extern "C" {
 #define OQS_SIG_STFL_alg_xmss_shake512_h20 "XMSS-SHAKE_20_512"
 
 /**
- * LMS will be added later. So far its only XMSS 
- * 
+ * LMS will be added later. So far its only XMSS
+ *
  */
 #define OQS_SIG_STFL_algs_length 12
 
@@ -80,12 +80,12 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name);
 
 
 /**
- * @brief SECRET KEY object for stateful signature schemes * 
+ * @brief SECRET KEY object for stateful signature schemes *
  */
 typedef struct OQS_SECRET_KEY OQS_SECRET_KEY;
 
 typedef struct OQS_SECRET_KEY {
-	
+
 	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
 	unsigned long long length_secret_key;
 
@@ -104,7 +104,7 @@ typedef struct OQS_SECRET_KEY {
 
 OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name);
 
-OQS_API void OQS_SECRET_KEY_free(OQS_SECRET_KEY *sk);	
+OQS_API void OQS_SECRET_KEY_free(OQS_SECRET_KEY *sk);
 
 OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_derive_subkey(OQS_SECRET_KEY *master_sk, const unsigned long long number_of_signatures);
 
@@ -113,7 +113,7 @@ OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_derive_subkey(OQS_SECRET_KEY *master_sk, 
  */
 typedef struct OQS_SIG_STFL {
 
-    /** Printable string representing the name of the signature scheme. */
+	/** Printable string representing the name of the signature scheme. */
 	const char *method_name;
 
 	/**
@@ -129,7 +129,7 @@ typedef struct OQS_SIG_STFL {
 
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
 	bool euf_cma;
-	
+
 	/** The (maximum) length, in bytes, of public keys for this signature scheme. */
 	size_t length_public_key;
 	/** The (maximum) length, in bytes, of signatures for this signature scheme. */
