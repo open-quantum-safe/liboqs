@@ -44,7 +44,7 @@ extern "C" {
 #define OQS_SIG_STFL_alg_xmss_shake512_h20 "XMSS-SHAKE_20_512"
 
 /**
- * LMS will be added later. So far its only XMSS
+ * LMS and XMSS^MT will be added later. So far its only XMSS
  *
  */
 #define OQS_SIG_STFL_algs_length 12

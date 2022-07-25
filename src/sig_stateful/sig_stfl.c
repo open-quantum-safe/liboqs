@@ -37,12 +37,12 @@ OQS_API const char *OQS_SIG_STFL_alg_identifier(size_t i) {
 }
 
 
-OQS_API int OQS_SIG_alg_count(void) {
+OQS_API int OQS_SIG_STFL_alg_count(void) {
 	return OQS_SIG_algs_length;
 }
 
 
-OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
+OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 	assert(method_name != NULL);
 
 	if (0) {
@@ -65,8 +65,63 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-		// EDIT-WHEN ADDING MORE XMSS/XMSS^MT ALGS
-	} else {
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h10)) {
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA512_H10
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h16)) {
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA512_H16
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha512_h20)) {
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA512_H20
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h10)) {
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE256_H10
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE256_H16
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE256_H20
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake512_h10)) {
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE512_H10
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h16)) {
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE512_H16
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_shake256_h20)) {
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHAKE512_H20
+		return 1;
+#else
+		return 0;
+#endif
+	}
+	// EDIT-WHEN ADDING MORE XMSS/XMSS^MT ALGS
+	else {
 		return 0;
 	}
 }

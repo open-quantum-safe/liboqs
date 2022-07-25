@@ -97,6 +97,20 @@ endif()
 add_executable(test_sig_mem test_sig_mem.c)
 target_link_libraries(test_sig_mem PRIVATE ${API_TEST_DEPS})
 
+# SIG_STFL API tests
+add_executable(test_sig_stfl test_sig_stfl.c)
+if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
+    target_link_libraries(test_sig_stfl PRIVATE ${API_TEST_DEPS} Threads::Threads)
+else ()
+    target_link_libraries(test_sig_stfl PRIVATE ${API_TEST_DEPS})
+endif()
+
+# add_executable(kat_sig_stfl kat_sig_stfl.c)
+# target_link_libraries(kat_sig_stfl PRIVATE ${API_TEST_DEPS})
+
+# add_executable(test_sig_stfl_mem test_sig_stfl_mem.c)
+# target_link_libraries(test_sig_stfl_mem PRIVATE ${API_TEST_DEPS})
+
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
 
@@ -120,5 +134,5 @@ add_custom_target(
     run_tests
     COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest --verbose --numprocesses=auto --ignore=scripts/copy_from_upstream/repos
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS oqs example_kem kat_kem test_kem example_sig kat_sig test_sig test_sig_mem test_kem_mem ${UNIX_TESTS}
+    DEPENDS oqs example_kem kat_kem test_kem example_sig kat_sig test_sig test_sig_mem test_sig_stfl test_kem_mem ${UNIX_TESTS}
     USES_TERMINAL)

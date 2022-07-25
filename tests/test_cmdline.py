@@ -20,6 +20,7 @@ def test_kem(kem_name):
         [helpers.path_to_executable('test_kem'), kem_name],
     )
 
+# Stateless signature schemes testing
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig(sig_name):
@@ -29,6 +30,15 @@ def test_sig(sig_name):
             pytest.skip('Skipping SPHINCS+ 192s and 256s tests on Windows AppVeyor builds')
     helpers.run_subprocess(
         [helpers.path_to_executable('test_sig'), sig_name],
+    )
+
+# Stateful signature schemes testing
+@helpers.filtered_test
+@pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
+def test_sig_stfl(sig_stfl_name):
+    if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
+    helpers.run_subprocess(
+        [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
     )
 
 if __name__ == "__main__":

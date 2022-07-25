@@ -12,6 +12,7 @@ import json
 kats = {}
 kats["kem"] = None
 kats["sig"] = None
+kats["sig_stfl"] = None
 
 def run_subprocess(command, working_dir='.', env=None, expected_returncode=0, input=None, ignore_returncode=False):
     """
@@ -105,6 +106,39 @@ def is_sig_enabled_by_name(name):
                 sig_symbol = line.split(' ')[1]
                 sig_symbol = sig_symbol[len("OQS_ENABLE_SIG_"):].rstrip()
                 if sig_symbol == symbol:
+                    return True
+    return False
+
+def available_sig_stfls_by_name():
+    available_names = []
+    with open(os.path.join('src', 'sig_stateful', 'sig_stfl.h')) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_SIG_STFL_alg_"):
+                sig_stfl_name = line.split(' ')[2]
+                sig_stfl_name = sig_stfl_name[1:-2]
+                available_names.append(sig_stfl_name)
+    return available_names
+
+def is_sig_stfl_enabled_by_name(name):
+    symbol = None
+    with open(os.path.join('src', 'sig_stateful', 'sig_stfl.h')) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_SIG_STFL_alg_"):
+                sig_stfl_symbol = line.split(' ')[1]
+                sig_stfl_symbol = sig_stfl_symbol[len("OQS_SIG_STFL_alg_"):]
+                sig_stfl_name = line.split(' ')[2]
+                sig_stfl_name = sig_stfl_name[1:-2]
+                if sig_stfl_name == name:
+                    symbol = sig_stfl_symbol
+                    break
+    if symbol == None: return False
+    header = os.path.join(get_current_build_dir_name(), 'include', 'oqs', 'oqsconfig.h')
+    with open(header) as fh:
+        for line in fh:
+            if line.startswith("#define OQS_ENABLE_SIG_STFL_"):
+                sig_stfl_symbol = line.split(' ')[1]
+                sig_stfl_symbol = sig_stfl_symbol[len("OQS_ENABLE_SIG_STFL_"):].rstrip()
+                if sig_stfl_symbol == symbol:
                     return True
     return False
 
