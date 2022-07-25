@@ -199,7 +199,7 @@ int xmssmt_core_sign_open(const xmss_params *params,
     hash_message(params, mhash, sm + params->index_bytes, pk, idx,
                 buffer, *mlen);
         
-    free(buffer);
+    OQS_MEM_insecure_free(buffer);
     buffer = NULL;
 
     sm += params->index_bytes + params->n;

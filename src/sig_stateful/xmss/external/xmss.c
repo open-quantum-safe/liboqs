@@ -36,30 +36,6 @@ int xmss_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid)
     return ret;
 }
 
-#ifdef MAX_MOD
-
-int xmss_modify_maximum(OQS_SECRET_KEY *sk, unsigned long long new_max) {
-    
-    xmss_params params;
-    unsigned int i;
-
-    if (xmss_parse_oid(&params, sk->oid)) {
-        return -1;
-    }
-
-    for (i = params.sk_bytes - params.bytes_for_max; i < params.sk_bytes; i++) {
-        sk->secret_key[i] = (new_max >> (8 * (params.sk_bytes - i - 1))) & 0xFF;
-
-        #ifdef DEBUGGING
-        printf("%02x\n", (new_max >> (8 * (params.sk_bytes - i - 1))) & 0xFF);
-        #endif
-    }
-    printf("\n");
-    return 0;
-}
-
-#endif
-
 int xmss_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned long long number_of_sigs) {
     
     xmss_params params;
