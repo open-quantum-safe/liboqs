@@ -65,7 +65,7 @@ if(OQS_ENABLE_SIG_SPHINCS)
 endif()
 if(OQS_ENABLE_SIG_STFL_XMSS)
     add_subdirectory(sig_stateful/xmss)
-    set(SIG_STFL_OBJS ${SIG_STFL_OBJS} ${XMSS_OBJS})
+    set(SIG_STFL_OBJS ${SIG_STFL_OBJS} $<TARGET_OBJECTS:xmss>)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 

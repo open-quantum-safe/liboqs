@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <oqs/oqs.h>
 
 #include "hash.h"
 #include "hash_address.h"
