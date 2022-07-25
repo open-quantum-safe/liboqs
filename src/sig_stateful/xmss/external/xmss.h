@@ -14,13 +14,6 @@
  */
 int xmss_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned long long number_of_sigs);
 
-/*
- * Generates a XMSS key pair for a given parameter set.
- * Format sk: [OID || (32bit) idx || SK_SEED || SK_PRF || PUB_SEED || root]
- * Format pk: [OID || root || PUB_SEED]
- */
-int xmss_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid);
-
 #ifdef MAX_MOD
 
 int xmss_modify_maximum(OQS_SECRET_KEY *sk, unsigned long long new_max);
