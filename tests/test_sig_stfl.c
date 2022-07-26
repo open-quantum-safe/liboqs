@@ -29,6 +29,22 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
+
+OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
+	printf("%02x", sk->secret_key[0]);
+	return 0;
+}
+
+OQS_STATUS release_sk_key(OQS_SECRET_KEY *sk) {
+    printf("%02x", sk->secret_key[0]);
+	return 0;
+}
+
+OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
+    printf("%02x", sk->secret_key[0]);
+	return 0;
+}
+
 static OQS_STATUS sig_test_correctness(const char *method_name) {
 
 	OQS_SIG_STFL *sig = NULL;
@@ -56,33 +72,37 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	printf("================================================================================\n");
 
 	public_key = malloc(sig->length_public_key + 2 * sizeof(magic_t));
-	secret_key = OQS_SECRET_KEY_new(method_name);
-	if (secret_key == NULL) {
-		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
-		goto err;
-	}
 	message = malloc(message_len + 2 * sizeof(magic_t));
 	signature = malloc(sig->length_signature + 2 * sizeof(magic_t));
-
 	if ((public_key == NULL) || (message == NULL) || (signature == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed\n");
 		goto err;
 	}
 
+	// Define the secret key object
+	secret_key = OQS_SECRET_KEY_new(method_name);
+	secret_key->lock_key = lock_sk_key;
+	secret_key->release_key = release_sk_key;
+	secret_key->oqs_save_updated_sk_key = do_nothing_save;
+	if (secret_key == NULL) {
+		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
+		goto err;
+	}	
+
 	//Set the magic numbers before
 	memcpy(public_key, magic.val, sizeof(magic_t));
-	memcpy(secret_key->secret_key, magic.val, sizeof(magic_t));
+	// memcpy(secret_key, magic.val, sizeof(magic_t));
 	memcpy(message, magic.val, sizeof(magic_t));
 	memcpy(signature, magic.val, sizeof(magic_t));
 
 	public_key += sizeof(magic_t);
-	secret_key->secret_key += sizeof(magic_t);
+	//secret_key->secret_key += sizeof(magic_t);
 	message += sizeof(magic_t);
 	signature += sizeof(magic_t);
 
 	// and after
 	memcpy(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
-	memcpy(secret_key->secret_key + secret_key->length_secret_key, magic.val, sizeof(magic_t));
+	// memcpy(secret_key + sizeof(secret_key), magic.val, sizeof(magic_t));
 	memcpy(message + message_len, magic.val, sizeof(magic_t));
 	memcpy(signature + sig->length_signature, magic.val, sizeof(magic_t));
 
@@ -125,15 +145,15 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 #ifndef OQS_ENABLE_TEST_CONSTANT_TIME
 	/* check magic values */
 	int rv = memcmp(public_key + sig->length_public_key, magic.val, sizeof(magic_t));
-	rv |= memcmp(secret_key->secret_key + secret_key->length_secret_key, magic.val, sizeof(magic_t));
+	//rv |= memcmp(secret_key->secret_key + secret_key->length_secret_key, magic.val, sizeof(magic_t));
 	rv |= memcmp(message + message_len, magic.val, sizeof(magic_t));
 	rv |= memcmp(signature + sig->length_signature, magic.val, sizeof(magic_t));
 	rv |= memcmp(public_key - sizeof(magic_t), magic.val, sizeof(magic_t));
-	rv |= memcmp(secret_key->secret_key - sizeof(magic_t), magic.val, sizeof(magic_t));
+	//rv |= memcmp(secret_key- sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(message - sizeof(magic_t), magic.val, sizeof(magic_t));
 	rv |= memcmp(signature - sizeof(magic_t), magic.val, sizeof(magic_t));
 	if (rv) {
-		fprintf(stderr, "ERROR: Magic numbers do not mtach\n");
+		fprintf(stderr, "ERROR: Magic numbers do not match\n");
 		goto err;
 	}
 #endif
@@ -191,11 +211,11 @@ int main(int argc, char **argv) {
 	if (argc != 2) {
 		fprintf(stderr, "Usage: test_sig algname\n");
 		fprintf(stderr, "  algname: ");
-		for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
+		for (size_t i = 0; i < OQS_SIG_STFL_algs_length; i++) {
 			if (i > 0) {
 				fprintf(stderr, ", ");
 			}
-			fprintf(stderr, "%s", OQS_SIG_alg_identifier(i));
+			fprintf(stderr, "%s", OQS_SIG_STFL_alg_identifier(i));
 		}
 		fprintf(stderr, "\n");
 		return EXIT_FAILURE;
@@ -204,7 +224,7 @@ int main(int argc, char **argv) {
 	print_system_info();
 
 	char *alg_name = argv[1];
-	if (!OQS_SIG_alg_is_enabled(alg_name)) {
+	if (!OQS_SIG_STFL_alg_is_enabled(alg_name)) {
 		printf("Signature algorithm %s not enabled!\n", alg_name);
 		return EXIT_FAILURE;
 	}

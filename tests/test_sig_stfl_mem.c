@@ -167,11 +167,11 @@ int main(int argc, char **argv) {
 	if (argc != 3) {
 		fprintf(stderr, "Usage: test_sig algname operation (0,1,2)\n");
 		fprintf(stderr, "  algname: ");
-		for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
+		for (size_t i = 0; i < OQS_SIG_STFL_algs_length; i++) {
 			if (i > 0) {
 				fprintf(stderr, ", ");
 			}
-			fprintf(stderr, "%s", OQS_SIG_alg_identifier(i));
+			fprintf(stderr, "%s", OQS_SIG_STFL_alg_identifier(i));
 		}
 		fprintf(stderr, "\n");
 		return EXIT_FAILURE;
@@ -180,7 +180,7 @@ int main(int argc, char **argv) {
 	print_system_info();
 
 	char *alg_name = argv[1];
-	if (!OQS_SIG_alg_is_enabled(alg_name)) {
+	if (!OQS_SIG_STFL_alg_is_enabled(alg_name)) {
 		printf("Signature algorithm %s not enabled!\n", alg_name);
 		return EXIT_FAILURE;
 	}

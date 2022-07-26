@@ -128,7 +128,10 @@ def is_sig_stfl_enabled_by_name(name):
                 sig_stfl_symbol = sig_stfl_symbol[len("OQS_SIG_STFL_alg_"):]
                 sig_stfl_name = line.split(' ')[2]
                 sig_stfl_name = sig_stfl_name[1:-2]
-                if sig_stfl_name == name:
+                print("\n(name)The stateful signature scheme is :", sig_stfl_name)
+                print("\nThe name passed in was :", name)
+
+                if sig_stfl_name.lower() == name.lower():
                     symbol = sig_stfl_symbol
                     break
     if symbol == None: return False
@@ -138,7 +141,8 @@ def is_sig_stfl_enabled_by_name(name):
             if line.startswith("#define OQS_ENABLE_SIG_STFL_"):
                 sig_stfl_symbol = line.split(' ')[1]
                 sig_stfl_symbol = sig_stfl_symbol[len("OQS_ENABLE_SIG_STFL_"):].rstrip()
-                if sig_stfl_symbol == symbol:
+                print("\n(symb)The stateful signature scheme is :", sig_stfl_symbol)
+                if sig_stfl_symbol.lower() == symbol.lower():
                     return True
     return False
 

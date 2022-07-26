@@ -96,9 +96,9 @@ typedef struct OQS_SECRET_KEY {
 
 	unsigned long long (*sigs_left)(const OQS_SECRET_KEY *secret_key);
 
-	int (*lock_key)(OQS_SECRET_KEY *sk);
-	int (*oqs_save_updated_sk_key)(const OQS_SECRET_KEY *sk);
-	int (*release_key)(OQS_SECRET_KEY *sk);
+	OQS_STATUS (*lock_key)(OQS_SECRET_KEY *sk);
+	OQS_STATUS (*oqs_save_updated_sk_key)(const OQS_SECRET_KEY *sk);
+	OQS_STATUS (*release_key)(OQS_SECRET_KEY *sk);
 
 } OQS_SECRET_KEY;
 
