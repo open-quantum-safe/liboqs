@@ -1,6 +1,8 @@
 #ifndef XMSS_UTILS_H
 #define XMSS_UTILS_H
 
+#include "xmss_namespace.h"
+
 /**
  * Converts the value of 'in' to 'outlen' bytes in big-endian byte order.
  */

@@ -2,7 +2,10 @@
 #define XMSS_H
 
 #include <stdint.h>
-#include "../../sig_stfl.h"
+#include <oqs/oqs.h>
+
+#include "xmss_namespace.h"
+
 
 /**
  * @brief Populates a subkey object with a key that is valid for a certain number of signatures.

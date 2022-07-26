@@ -2,6 +2,7 @@
 #define XMSS_HASH_ADDRESS_H
 
 #include <stdint.h>
+#include "xmss_namespace.h"
 
 #define XMSS_ADDR_TYPE_OTS 0
 #define XMSS_ADDR_TYPE_LTREE 1

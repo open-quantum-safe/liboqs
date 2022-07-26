@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#include "xmss_namespace.h"
+
 /* These are merely internal identifiers for the supported hash functions. */
 #define XMSS_SHA2 0
 #define XMSS_SHAKE 1
