@@ -68,11 +68,12 @@ if(OQS_ENABLE_SIG_SPHINCS)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
-add_library(oqs kem/kem.c
+list(APPEND OQS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/kem/kem.c
                 ${KEM_OBJS}
-                sig/sig.c
+                ${CMAKE_CURRENT_SOURCE_DIR}/sig/sig.c
                 ${SIG_OBJS}
                 ${COMMON_OBJS})
+set_target_properties(oqs PROPERTIES SOURCES "${OQS_SOURCES}")
 set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
@@ -92,12 +93,20 @@ target_include_directories(oqs
 )
 set_target_properties(oqs
     PROPERTIES
+    # Compiler, standard and code properties
+    C_STANDARD 11
+    C_STANDARD_REQUIRED ON
+    POSITION_INDEPENDENT_CODE ON
+    C_VISIBILITY_PRESET "hidden"
+    EXPORT_COMPILE_COMMANDS ON
+    # Build properties
     ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
     VERSION ${OQS_VERSION_TEXT}
     SOVERSION 0
     # For Windows DLLs
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+)
 
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/liboqsConfig.cmake"

@@ -2,14 +2,14 @@
 
 if(
   # check we are on a supported platform (SIKE's config.h stops the build otherwise)
-  (ARCH STREQUAL "x86" OR
-   ARCH_X86 OR
-   ARCH_X86_64 OR
-   ARCH_ARM32v7 OR
-   ARCH_ARM64v8 OR
-   ARCH_PPC64LE OR
-   ARCH_PPC64 OR
-   ARCH_S390X)
+  (OQS_ARCH STREQUAL "x86" OR
+   OQS_ARCH_X86 OR
+   OQS_ARCH_X86_64 OR
+   OQS_ARCH_ARM32v7 OR
+   OQS_ARCH_ARM64v8 OR
+   OQS_ARCH_PPC64LE OR
+   OQS_ARCH_PPC64 OR
+   OQS_ARCH_S390X)
   AND
   # check that one SIDH/SIKE alg is enabled
   (OQS_ENABLE_KEM_sike_p434 OR
@@ -55,7 +55,7 @@ if(
         set(SRCS ${SRCS} external/P751/P751_compressed.c)
     endif()
 
-    if(ARCH_X86_64)
+    if(OQS_ARCH_X86_64)
         if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
             if(OQS_ENABLE_KEM_sike_p503 OR OQS_ENABLE_KEM_sidh_p503 OR OQS_ENABLE_KEM_sike_p503_compressed OR OQS_ENABLE_KEM_sidh_p503_compressed)
                 set(SRCS ${SRCS} external/P503/AMD64/fp_x64_asm.S)
@@ -73,7 +73,7 @@ if(
                 endif()
             endif()
         endif()
-    elseif(ARCH_ARM64v8)
+    elseif(OQS_ARCH_ARM64v8)
 	if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "FreeBSD")
             if(OQS_ENABLE_KEM_sike_p434 OR OQS_ENABLE_KEM_sidh_p434 OR OQS_ENABLE_KEM_sike_p434_compressed OR OQS_ENABLE_KEM_sidh_p434_compressed)
                 set(SRCS ${SRCS} external/P434/ARM64/fp_arm64_asm.S)
@@ -91,11 +91,11 @@ if(
     endif()
 
     add_library(sike OBJECT ${SRCS})
-    if(ARCH STREQUAL "x86")
+    if(OQS_ARCH STREQUAL "x86")
         target_compile_definitions(sike PRIVATE _GENERIC_ _X86_)
-    elseif(ARCH_X86)
+    elseif(OQS_ARCH_X86)
         target_compile_definitions(sike PRIVATE _GENERIC_ _X86_)
-    elseif(ARCH_X86_64)
+    elseif(OQS_ARCH_X86_64)
         target_compile_definitions(sike PRIVATE _AMD64_)
         if(OQS_USE_BMI2_INSTRUCTIONS)
             target_compile_definitions(sike PRIVATE _MULX_)
@@ -120,9 +120,9 @@ if(
                 endif()
             endif()
         endif()
-    elseif(ARCH_ARM32v7)
+    elseif(OQS_ARCH_ARM32v7)
         target_compile_definitions(sike PRIVATE _GENERIC_ _ARM_)
-    elseif(ARCH_ARM64v8)
+    elseif(OQS_ARCH_ARM64v8)
         target_compile_definitions(sike PRIVATE _ARM64_)
         if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
             if(OQS_ENABLE_KEM_sike_p434 OR OQS_ENABLE_KEM_sidh_p434 OR OQS_ENABLE_KEM_sike_p434_compressed OR OQS_ENABLE_KEM_sidh_p434_compressed)
@@ -138,11 +138,11 @@ if(
                 target_compile_definitions(sike PRIVATE USE_SIKEP751_ASM)
             endif()
         endif()
-    elseif(ARCH_PPC64)
+    elseif(OQS_ARCH_PPC64)
         target_compile_definitions(sike PRIVATE _GENERIC_ _PPC64_)
-    elseif(ARCH_PPC64LE)
+    elseif(OQS_ARCH_PPC64LE)
         target_compile_definitions(sike PRIVATE _GENERIC_ _PPC64LE_)
-    elseif(ARCH_S390X)
+    elseif(OQS_ARCH_S390X)
         target_compile_definitions(sike PRIVATE _GENERIC_ _S390X_)
     endif()
 
