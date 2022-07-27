@@ -5,27 +5,6 @@
 
 set(_RAINBOW_OBJS "")
 
-if(OQS_ENABLE_SIG_rainbow_I_classic)
-    add_library(rainbow_I_classic_clean OBJECT sig_rainbow_I_classic.c pqclean_rainbowI-classic_clean/blas.c pqclean_rainbowI-classic_clean/blas_comm.c pqclean_rainbowI-classic_clean/gf.c pqclean_rainbowI-classic_clean/parallel_matrix_op.c pqclean_rainbowI-classic_clean/rainbow.c pqclean_rainbowI-classic_clean/rainbow_keypair.c pqclean_rainbowI-classic_clean/rainbow_keypair_computation.c pqclean_rainbowI-classic_clean/sign.c pqclean_rainbowI-classic_clean/utils_hash.c pqclean_rainbowI-classic_clean/utils_prng.c)
-    target_include_directories(rainbow_I_classic_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_rainbowI-classic_clean)
-    target_include_directories(rainbow_I_classic_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-    set(_RAINBOW_OBJS ${_RAINBOW_OBJS} $<TARGET_OBJECTS:rainbow_I_classic_clean>)
-endif()
-
-if(OQS_ENABLE_SIG_rainbow_I_circumzenithal)
-    add_library(rainbow_I_circumzenithal_clean OBJECT sig_rainbow_I_circumzenithal.c pqclean_rainbowI-circumzenithal_clean/blas.c pqclean_rainbowI-circumzenithal_clean/blas_comm.c pqclean_rainbowI-circumzenithal_clean/gf.c pqclean_rainbowI-circumzenithal_clean/parallel_matrix_op.c pqclean_rainbowI-circumzenithal_clean/rainbow.c pqclean_rainbowI-circumzenithal_clean/rainbow_keypair.c pqclean_rainbowI-circumzenithal_clean/rainbow_keypair_computation.c pqclean_rainbowI-circumzenithal_clean/sign.c pqclean_rainbowI-circumzenithal_clean/utils_hash.c pqclean_rainbowI-circumzenithal_clean/utils_prng.c)
-    target_include_directories(rainbow_I_circumzenithal_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_rainbowI-circumzenithal_clean)
-    target_include_directories(rainbow_I_circumzenithal_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-    set(_RAINBOW_OBJS ${_RAINBOW_OBJS} $<TARGET_OBJECTS:rainbow_I_circumzenithal_clean>)
-endif()
-
-if(OQS_ENABLE_SIG_rainbow_I_compressed)
-    add_library(rainbow_I_compressed_clean OBJECT sig_rainbow_I_compressed.c pqclean_rainbowI-compressed_clean/blas.c pqclean_rainbowI-compressed_clean/blas_comm.c pqclean_rainbowI-compressed_clean/gf.c pqclean_rainbowI-compressed_clean/parallel_matrix_op.c pqclean_rainbowI-compressed_clean/rainbow.c pqclean_rainbowI-compressed_clean/rainbow_keypair.c pqclean_rainbowI-compressed_clean/rainbow_keypair_computation.c pqclean_rainbowI-compressed_clean/sign.c pqclean_rainbowI-compressed_clean/utils_hash.c pqclean_rainbowI-compressed_clean/utils_prng.c)
-    target_include_directories(rainbow_I_compressed_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_rainbowI-compressed_clean)
-    target_include_directories(rainbow_I_compressed_clean PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
-    set(_RAINBOW_OBJS ${_RAINBOW_OBJS} $<TARGET_OBJECTS:rainbow_I_compressed_clean>)
-endif()
-
 if(OQS_ENABLE_SIG_rainbow_III_classic)
     add_library(rainbow_III_classic_clean OBJECT sig_rainbow_III_classic.c pqclean_rainbowIII-classic_clean/blas.c pqclean_rainbowIII-classic_clean/blas_comm.c pqclean_rainbowIII-classic_clean/gf.c pqclean_rainbowIII-classic_clean/parallel_matrix_op.c pqclean_rainbowIII-classic_clean/rainbow.c pqclean_rainbowIII-classic_clean/rainbow_keypair.c pqclean_rainbowIII-classic_clean/rainbow_keypair_computation.c pqclean_rainbowIII-classic_clean/sign.c pqclean_rainbowIII-classic_clean/utils_hash.c pqclean_rainbowIII-classic_clean/utils_prng.c)
     target_include_directories(rainbow_III_classic_clean PRIVATE ${CMAKE_CURRENT_LIST_DIR}/pqclean_rainbowIII-classic_clean)

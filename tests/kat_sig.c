@@ -174,36 +174,6 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		(*signed_msg)[42 + msg_len] = 0x2A;
 		memcpy(*signed_msg + 42 + msg_len + 1, falc_sig, signature_len - 41);
 		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "Rainbow-I-Classic")) {
-		// signed_msg = msg || signature
-		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, msg, msg_len);
-		memcpy(*signed_msg + msg_len, signature, signature_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "Rainbow-I-Circumzenithal")) {
-		// signed_msg = msg || signature
-		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, msg, msg_len);
-		memcpy(*signed_msg + msg_len, signature, signature_len);
-		return OQS_SUCCESS;
-	} else if (0 == strcmp(sig->method_name, "Rainbow-I-Compressed")) {
-		// signed_msg = msg || signature
-		*signed_msg_len = msg_len + signature_len;
-		*signed_msg = malloc(*signed_msg_len);
-		if (*signed_msg == NULL) {
-			return OQS_ERROR;
-		}
-		memcpy(*signed_msg, msg, msg_len);
-		memcpy(*signed_msg + msg_len, signature, signature_len);
-		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "Rainbow-III-Classic")) {
 		// signed_msg = msg || signature
 		*signed_msg_len = msg_len + signature_len;

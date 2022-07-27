@@ -265,21 +265,6 @@ sigs:
     upstream_location: pqclean
     schemes:
       -
-        scheme: "I_classic"
-        pqclean_scheme: rainbowI-classic
-        pretty_name_full: Rainbow-I-Classic
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "I_circumzenithal"
-        pqclean_scheme: rainbowI-circumzenithal
-        pretty_name_full: Rainbow-I-Circumzenithal
-        signed_msg_order: msg_then_sig
-      -
-        scheme: "I_compressed"
-        pqclean_scheme: rainbowI-compressed
-        pretty_name_full: Rainbow-I-Compressed
-        signed_msg_order: msg_then_sig
-      -
         scheme: "III_classic"
         pqclean_scheme: rainbowIII-classic
         pretty_name_full: Rainbow-III-Classic

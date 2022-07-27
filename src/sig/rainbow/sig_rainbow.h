@@ -5,39 +5,6 @@
 
 #include <oqs/oqs.h>
 
-#ifdef OQS_ENABLE_SIG_rainbow_I_classic
-#define OQS_SIG_rainbow_I_classic_length_public_key 161600
-#define OQS_SIG_rainbow_I_classic_length_secret_key 103648
-#define OQS_SIG_rainbow_I_classic_length_signature 66
-
-OQS_SIG *OQS_SIG_rainbow_I_classic_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_I_classic_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_I_classic_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_I_classic_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-#endif
-
-#ifdef OQS_ENABLE_SIG_rainbow_I_circumzenithal
-#define OQS_SIG_rainbow_I_circumzenithal_length_public_key 60192
-#define OQS_SIG_rainbow_I_circumzenithal_length_secret_key 103648
-#define OQS_SIG_rainbow_I_circumzenithal_length_signature 66
-
-OQS_SIG *OQS_SIG_rainbow_I_circumzenithal_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_I_circumzenithal_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_I_circumzenithal_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_I_circumzenithal_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-#endif
-
-#ifdef OQS_ENABLE_SIG_rainbow_I_compressed
-#define OQS_SIG_rainbow_I_compressed_length_public_key 60192
-#define OQS_SIG_rainbow_I_compressed_length_secret_key 64
-#define OQS_SIG_rainbow_I_compressed_length_signature 66
-
-OQS_SIG *OQS_SIG_rainbow_I_compressed_new(void);
-OQS_API OQS_STATUS OQS_SIG_rainbow_I_compressed_keypair(uint8_t *public_key, uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_I_compressed_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key);
-OQS_API OQS_STATUS OQS_SIG_rainbow_I_compressed_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
-#endif
-
 #ifdef OQS_ENABLE_SIG_rainbow_III_classic
 #define OQS_SIG_rainbow_III_classic_length_public_key 882080
 #define OQS_SIG_rainbow_III_classic_length_secret_key 626048
