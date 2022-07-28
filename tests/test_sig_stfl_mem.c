@@ -156,7 +156,7 @@ cleanup:
 	}
 	if (sig != NULL) {
 		OQS_SECRET_KEY_free(secret_key);
-		OQS_SIG_free(sig);
+		OQS_SIG_STFL_free(sig);
 	}
 
 	return ret;
