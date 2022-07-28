@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "xmss_namespace.h"
 
 /**
  * Converts the value of 'in' to 'outlen' bytes in big-endian byte order.

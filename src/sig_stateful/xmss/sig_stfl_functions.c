@@ -3,6 +3,7 @@
 
 #include "./external/params.h"
 #include "./external/xmss.h"
+#include "./external/xmss_namespace.h"
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
 	if (secret_key == NULL || message == NULL || signature == NULL) {

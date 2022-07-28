@@ -11,6 +11,7 @@
 #include "utils.h"
 #include "xmss_commons.h"
 #include "xmss_core.h"
+#include "xmss_namespace.h"
 
 typedef struct{
     uint8_t h;

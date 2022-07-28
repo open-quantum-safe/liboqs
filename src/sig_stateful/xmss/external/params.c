@@ -3,6 +3,7 @@
 #include <math.h>
 #include "params.h"
 #include "xmss_core.h"
+#include "xmss_namespace.h"
 
 int xmss_str_to_oid(uint32_t *oid, const char *s)
 {
