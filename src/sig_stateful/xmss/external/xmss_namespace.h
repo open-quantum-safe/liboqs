@@ -8,7 +8,17 @@
 #define hash_prg oqs_sig_stfl_xmss_hash_prg
 
 // hash_address.h - ALL THE HASH ADDRESSING FUNCTIONS
-
+#define set_layer_addr oqs_sig_stfl_xmss_set_layer_addr
+#define set_tree_addr oqs_sig_stfl_xmss_set_tree_addr
+#define set_type oqs_sig_stfl_xmss_set_type
+#define set_key_and_mask oqs_sig_stfl_xmss_set_key_and_mask
+#define copy_subtree_addr oqs_sig_stfl_xmss_copy_subtree_addr
+#define set_ots_addr oqs_sig_stfl_xmss_set_ots_addr
+#define set_chain_addr oqs_sig_stfl_xmss_set_chain_addr
+#define set_hash_addr oqs_sig_stfl_xmss_set_hash_addr
+#define set_ltree_addr oqs_sig_stfl_xmss_set_ltree_addr
+#define set_tree_height oqs_sig_stfl_xmss_set_tree_height
+#define set_tree_index oqs_sig_stfl_xmss_set_tree_index
 
 // params.h - ALL THE PARAMETER FUNCTIONS
 #define xmss_str_to_oid oqs_sig_stfl_xmss_xmss_str_to_oid
@@ -32,16 +42,16 @@
 #define xmss_core_increment_authpath oqs_sig_stfl_xmss_core_increment_authpath
 #define xmss_core_keypair oqs_sig_stfl_xmss_core_keypair
 #define xmss_core_sign oqs_sig_stfl_xmss_core_sign
-#define xmssmt_core_increment_authpath oqs_sig_stfl_xmss_core_increment_authpath
-#define xmssmt_core_keypair oqs_sig_stfl_xmss_core_keypair
-#define xmssmt_core_sign oqs_sig_stfl_xmss_core_sign
+#define xmssmt_core_increment_authpath oqs_sig_stfl_xmssmt_core_increment_authpath
+#define xmssmt_core_keypair oqs_sig_stfl_xmssmt_core_keypair
+#define xmssmt_core_sign oqs_sig_stfl_xmssmt_core_sign
 
 // xmss.c - XMSS VARIANT PARSING FUNCTIONS
 #define xmss_derive_subkey oqs_sig_stfl_xmss_derive_subkey
 #define xmss_keypair oqs_sig_stfl_xmss_keypair
 #define xmss_sign oqs_sig_stfl_xmss_sign
 #define xmss_sign_open oqs_sig_stfl_xmss_sign_open
-#define xmssmt_keypair oqs_sig_stfl_xmss_keypair
-#define xmsmt_sign oqs_sig_stfl_xmss_sign
-#define xmssmt_sign_open oqs_sig_stfl_xmss_sign_open
+#define xmssmt_keypair oqs_sig_stfl_xmssmt_keypair
+#define xmsmt_sign oqs_sig_stfl_xmssmt_sign
+#define xmssmt_sign_open oqs_sig_stfl_xmssmt_sign_open
 
