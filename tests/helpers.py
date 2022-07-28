@@ -76,6 +76,9 @@ def is_kem_enabled_by_name(name):
                     return True
     return False
 
+
+# Stateless Signatures Testing
+
 def available_sigs_by_name():
     available_names = []
     with open(os.path.join('src', 'sig', 'sig.h')) as fh:
@@ -109,6 +112,9 @@ def is_sig_enabled_by_name(name):
                     return True
     return False
 
+
+# Stateful Signatures Testing
+
 def available_sig_stfls_by_name():
     available_names = []
     with open(os.path.join('src', 'sig_stateful', 'sig_stfl.h')) as fh:
@@ -128,9 +134,6 @@ def is_sig_stfl_enabled_by_name(name):
                 sig_stfl_symbol = sig_stfl_symbol[len("OQS_SIG_STFL_alg_"):]
                 sig_stfl_name = line.split(' ')[2]
                 sig_stfl_name = sig_stfl_name[1:-2]
-                print("\n(name)The stateful signature scheme is :", sig_stfl_name)
-                print("\nThe name passed in was :", name)
-
                 if sig_stfl_name.lower() == name.lower():
                     symbol = sig_stfl_symbol
                     break
@@ -141,7 +144,6 @@ def is_sig_stfl_enabled_by_name(name):
             if line.startswith("#define OQS_ENABLE_SIG_STFL_"):
                 sig_stfl_symbol = line.split(' ')[1]
                 sig_stfl_symbol = sig_stfl_symbol[len("OQS_ENABLE_SIG_STFL_"):].rstrip()
-                print("\n(symb)The stateful signature scheme is :", sig_stfl_symbol)
                 if sig_stfl_symbol.lower() == symbol.lower():
                     return True
     return False
