@@ -4,6 +4,7 @@
 #include "./external/xmss.h"
 #include "./external/params.h"
 #include "sig_stfl_xmss.h"
+#include "./external/xmss_namespace.h"
 
 // ======================== XMSS10-SHA256 ======================== //
 

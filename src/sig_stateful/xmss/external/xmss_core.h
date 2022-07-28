@@ -1,9 +1,9 @@
 #ifndef XMSS_CORE_H
 #define XMSS_CORE_H
 
-#include "params.h"
 #include <oqs/oqs.h>
-
+#include "params.h"
+#include "xmss_namespace.h"
 /**
  * Given a set of parameters, this function returns the size of the secret key.
  * This is implementation specific, as varying choices in tree traversal will

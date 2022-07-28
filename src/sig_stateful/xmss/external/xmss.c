@@ -5,8 +5,8 @@
 
 #include "params.h"
 #include "utils.h"
-#include "../../sig_stfl.h"
 #include "xmss_core.h"
+#include "xmss_namespace.h"
 
 /* This file provides wrapper functions that take keys that include OIDs to
 identify the parameter set to be used. After setting the parameters accordingly

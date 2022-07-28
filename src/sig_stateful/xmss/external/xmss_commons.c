@@ -9,6 +9,7 @@
 #include "wots.h"
 #include "utils.h"
 #include "xmss_commons.h"
+#include "xmss_namespace.h"
 
 /**
  * Computes a leaf node from a WOTS public key using an L-tree.
