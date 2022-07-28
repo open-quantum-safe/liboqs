@@ -19,6 +19,21 @@ typedef enum sig_ops {
 	SIG_VERIFY = 2
 } SIG_OPS;
 
+OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
+	printf("%02x", sk->secret_key[0]);
+	return 0;
+}
+
+OQS_STATUS release_sk_key(OQS_SECRET_KEY *sk) {
+    printf("%02x", sk->secret_key[0]);
+	return 0;
+}
+
+OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
+    printf("%02x", sk->secret_key[0]);
+	return 0;
+}
+
 static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 
 	OQS_SIG_STFL *sig = NULL;
@@ -43,7 +58,12 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		printf("================================================================================\n");
 
 		public_key = malloc(sig->length_public_key);
+		
 		secret_key = OQS_SECRET_KEY_new(method_name);
+		secret_key->lock_key = lock_sk_key;
+		secret_key->release_key = release_sk_key;
+		secret_key->oqs_save_updated_sk_key = do_nothing_save;
+
 		if ((public_key == NULL) || (secret_key == NULL)) {
 			fprintf(stderr, "ERROR: malloc failed\n");
 			goto err;
@@ -69,6 +89,9 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 
 		public_key = malloc(sig->length_public_key);
 		secret_key = OQS_SECRET_KEY_new(method_name);
+		secret_key->lock_key = lock_sk_key;
+		secret_key->release_key = release_sk_key;
+		secret_key->oqs_save_updated_sk_key = do_nothing_save;
 		message = malloc(message_len);
 		signature = malloc(sig->length_signature);
 
@@ -106,6 +129,9 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 
 		public_key = malloc(sig->length_public_key);
 		secret_key = OQS_SECRET_KEY_new(method_name);
+		secret_key->lock_key = lock_sk_key;
+		secret_key->release_key = release_sk_key;
+		secret_key->oqs_save_updated_sk_key = do_nothing_save;
 		message = malloc(message_len);
 		signature = malloc(sig->length_signature);
 

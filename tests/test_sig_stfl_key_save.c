@@ -29,6 +29,14 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
+#define MAX_FILE_NAME_LEN 60
+char filename[MAX_FILE_NAME_LEN] = "XMSS-SHA2_10_256";
+
+void prepend(char* s, const char* t) {
+    size_t len = strlen(t);
+    memmove(s + len, s, strlen(s) + 1);
+    memcpy(s, t, len);
+}
 
 OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
 	printf("lk=%02x\n", sk->secret_key[0]);
@@ -46,7 +54,26 @@ OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
 }
 
 OQS_STATUS sk_file_write(const OQS_SECRET_KEY *sk) {
-    printf("saving_=%02x\n", sk->secret_key[0]);
+
+	prepend(filename, "./tmp/oqs_");
+	strcat(filename, "__sk");
+
+    printf("\nWriting to file %s\n", filename);
+    FILE *printer = fopen(filename, "w+");
+    if (printer == NULL) {
+        perror("ERROR! There is no such file. Terminating...");
+        return -1;
+    }
+
+    // Write the entire secret key byte array to the specified file.
+    for (unsigned long i = 0; i < sk->length_secret_key; i++) {
+        if (fputc(sk->secret_key[i], printer) == EOF) {
+            perror("ERROR! There is no such file. Terminating...");
+            return -1;
+        }
+    }
+    fclose(printer);
+    printf("Completed the write operation\n");
     return 0;
 }
 
@@ -233,6 +260,7 @@ int main(int argc, char **argv) {
 		printf("Signature algorithm %s not enabled!\n", alg_name);
 		return EXIT_FAILURE;
 	}
+	strcpy(filename, alg_name);
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
 	OQS_randombytes_custom_algorithm(&TEST_SIG_randombytes);

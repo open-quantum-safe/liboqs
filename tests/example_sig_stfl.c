@@ -18,9 +18,9 @@
 /* Cleaning up memory etc */
 void cleanup_stack(uint8_t *secret_key, size_t secret_key_len);
 
-void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
+void cleanup_heap(uint8_t *public_key, OQS_SECRET_KEY *secret_key,
                   uint8_t *message, uint8_t *signature,
-                  OQS_SIG *sig);
+                  OQS_SIG_STFL *sig);
 
 /* This function gives an example of the signing operations
  * using only compile-time macros and allocating variables
@@ -37,41 +37,41 @@ void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
  */
 static OQS_STATUS example_stack(void) {
 
-#ifdef OQS_ENABLE_SIG_dilithium_2
+#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H16
 
 	OQS_STATUS rc;
 
-	uint8_t public_key[OQS_SIG_dilithium_2_length_public_key];
-	uint8_t secret_key[OQS_SIG_dilithium_2_length_secret_key];
+	uint8_t public_key[OQS_SIG_STFL_alg_xmss_sha256_h16_length_pk];
+	OQS_SECRET_KEY *secret_key = OQS_SECRET_KEY_new(OQS_SIG_STFL_alg_xmss_sha256_h16);
 	uint8_t message[MESSAGE_LEN];
-	uint8_t signature[OQS_SIG_dilithium_2_length_signature];
+	uint8_t signature[OQS_SIG_STFL_alg_xmss_sha256_h16_length_signature];
 	size_t message_len = MESSAGE_LEN;
 	size_t signature_len;
 
 	// let's create a random test message to sign
 	OQS_randombytes(message, message_len);
 
-	rc = OQS_SIG_dilithium_2_keypair(public_key, secret_key);
+	rc = OQS_SIG_STFL_alg_xmss_sha256_h16_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_dilithium_2_keypair failed!\n");
-		cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
+		fprintf(stderr, "ERROR: OQS_SIG_STFL_alg_xmss_sha256_h16_keypair failed!\n");
+		OQS_SECRET_KEY_free(secret_key);
 		return OQS_ERROR;
 	}
-	rc = OQS_SIG_dilithium_2_sign(signature, &signature_len, message, message_len, secret_key);
+	rc = OQS_SIG_STFL_alg_xmss_sha256_h16_sign(signature, &signature_len, message, message_len, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_dilithium_2_sign failed!\n");
-		cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
+		fprintf(stderr, "ERROR: OQS_SIG_STFL_alg_xmss_sha256_h16_sign failed!\n");
+		OQS_SECRET_KEY_free(secret_key);
 		return OQS_ERROR;
 	}
-	rc = OQS_SIG_dilithium_2_verify(message, message_len, signature, signature_len, public_key);
+	rc = OQS_SIG_STFL_alg_xmss_sha256_h16_verify(message, message_len, signature, signature_len, public_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_dilithium_2_verify failed!\n");
-		cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
+		fprintf(stderr, "ERROR: OQS_SIG_STFL_alg_xmss_sha256_h16_verify failed!\n");
+		OQS_SECRET_KEY_free(secret_key);
 		return OQS_ERROR;
 	}
 
-	printf("[example_stack] OQS_SIG_dilithium_2 operations completed.\n");
-	cleanup_stack(secret_key, OQS_SIG_dilithium_2_length_secret_key);
+	printf("[example_stack] OQS_SIG_STFL_alg_xmss_sha256_h16 operations completed.\n");
+	OQS_SECRET_KEY_free(secret_key);
 	return OQS_SUCCESS; // success!
 
 #else
@@ -92,23 +92,23 @@ static OQS_STATUS example_stack(void) {
  */
 static OQS_STATUS example_heap(void) {
 
-	OQS_SIG *sig = NULL;
+	OQS_SIG_STFL *sig = NULL;
 	uint8_t *public_key = NULL;
-	uint8_t *secret_key = NULL;
+	OQS_SECRET_KEY *secret_key = NULL;
 	uint8_t *message = NULL;
 	uint8_t *signature = NULL;
 	size_t message_len = MESSAGE_LEN;
 	size_t signature_len;
 	OQS_STATUS rc;
 
-	sig = OQS_SIG_new(OQS_SIG_alg_dilithium_2);
+	sig = OQS_SIG_STFL_new(OQS_SIG_alg_dilithium_2);
 	if (sig == NULL) {
-		printf("[example_heap]  OQS_SIG_alg_dilithium_2 was not enabled at compile-time.\n");
+		printf("[example_heap]  OQS_SIG_STFL_alg_xmss_sha256_h16 was not enabled at compile-time.\n");
 		return OQS_ERROR;
 	}
 
 	public_key = malloc(sig->length_public_key);
-	secret_key = malloc(sig->length_secret_key);
+	secret_key = OQS_SECRET_KEY_new(OQS_SIG_STFL_alg_xmss_sha256_h16);
 	message = malloc(message_len);
 	signature = malloc(sig->length_signature);
 	if ((public_key == NULL) || (secret_key == NULL) || (message == NULL) || (signature == NULL)) {
@@ -120,26 +120,26 @@ static OQS_STATUS example_heap(void) {
 	// let's create a random test message to sign
 	OQS_randombytes(message, message_len);
 
-	rc = OQS_SIG_keypair(sig, public_key, secret_key);
+	rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_keypair failed!\n");
+		fprintf(stderr, "ERROR: OQS_SIG_STFL_keypair failed!\n");
 		cleanup_heap(public_key, secret_key, message, signature, sig);
 		return OQS_ERROR;
 	}
-	rc = OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key);
+	rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_sign failed!\n");
+		fprintf(stderr, "ERROR: OQS_SIG_STFL_sign failed!\n");
 		cleanup_heap(public_key, secret_key, message, signature, sig);
 		return OQS_ERROR;
 	}
-	rc = OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key);
+	rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_SIG_verify failed!\n");
+		fprintf(stderr, "ERROR: OQS_SIG_STFL_verify failed!\n");
 		cleanup_heap(public_key, secret_key, message, signature, sig);
 		return OQS_ERROR;
 	}
 
-	printf("[example_heap]  OQS_SIG_dilithium_2 operations completed.\n");
+	printf("[example_heap]  OQS_SIG_STFL_alg_xmss_sha256_h16 operations completed.\n");
 	cleanup_heap(public_key, secret_key, message, signature, sig);
 	return OQS_SUCCESS; // success
 }
@@ -152,18 +152,14 @@ int main(void) {
 	}
 }
 
-void cleanup_stack(uint8_t *secret_key, size_t secret_key_len) {
-	OQS_MEM_cleanse(secret_key, secret_key_len);
-}
-
-void cleanup_heap(uint8_t *public_key, uint8_t *secret_key,
+void cleanup_heap(uint8_t *public_key, OQS_SECRET_KEY *secret_key,
                   uint8_t *message, uint8_t *signature,
-                  OQS_SIG *sig) {
+                  OQS_SIG_STFL *sig) {
 	if (sig != NULL) {
-		OQS_MEM_secure_free(secret_key, sig->length_secret_key);
+		OQS_SECRET_KEY_free(secret_key);
 	}
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(message);
 	OQS_MEM_insecure_free(signature);
-	OQS_SIG_free(sig);
+	OQS_SIG_STFL_free(sig);
 }

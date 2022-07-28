@@ -32,5 +32,3 @@ __pycache__
 .pytest_cache
 .cache
 .CMake/a.out
-
-.directory
