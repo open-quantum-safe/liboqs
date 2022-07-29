@@ -9,9 +9,9 @@
 #cmakedefine OQS_DIST_ARM32_V7_BUILD 1
 #cmakedefine OQS_DIST_PPC64LE_BUILD 1
 #cmakedefine OQS_DEBUG_BUILD 1
-#cmakedefine ARCH_X86_64 1
-#cmakedefine ARCH_ARM64v8 1
-#cmakedefine ARCH_ARM32v7 1
+#cmakedefine OQS_ARCH_X86_64 1
+#cmakedefine OQS_ARCH_ARM64v8 1
+#cmakedefine OQS_ARCH_ARM32v7 1
 #cmakedefine BUILD_SHARED_LIBS 1
 #cmakedefine OQS_BUILD_ONLY_LIB 1
 #cmakedefine OQS_OPT_TARGET "@OQS_OPT_TARGET@"

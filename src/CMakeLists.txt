@@ -6,24 +6,24 @@ include(CMakePackageConfigHelpers)
 add_subdirectory(common)
 
 # initialize KEM|SIG_OBJS for --warn-uninitialized
-set(KEM_OBJS "")
-set(SIG_OBJS "")
+set(OQS_KEM_OBJS "")
+set(OQS_SIG_OBJS "")
 
 if(${OQS_ENABLE_KEM_BIKE})
     add_subdirectory(kem/bike)
-    set(KEM_OBJS ${KEM_OBJS} ${BIKE_OBJS})
+    list(APPEND OQS_KEM_OBJS ${OQS_BIKE_OBJS})
 endif()
 if(${OQS_ENABLE_KEM_FRODOKEM})
     add_subdirectory(kem/frodokem)
-    set(KEM_OBJS ${KEM_OBJS} ${FRODOKEM_OBJS})
+    list(APPEND OQS_KEM_OBJS ${OQS_FRODOKEM_OBJS})
 endif()
 if(${OQS_ENABLE_KEM_SIKE} OR ${OQS_ENABLE_KEM_SIDH})
     add_subdirectory(kem/sike)
-    set(KEM_OBJS ${KEM_OBJS} $<TARGET_OBJECTS:sike>)
+    list(APPEND OQS_KEM_OBJS ${OQS_SIKE_OBJS})
 endif()
 if(${OQS_ENABLE_SIG_PICNIC})
     add_subdirectory(sig/picnic)
-    set(SIG_OBJS ${SIG_OBJS} $<TARGET_OBJECTS:picnic>)
+    list(APPEND OQS_SIG_OBJS ${OQS_PICNIC_OBJS})
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_START
 if(OQS_ENABLE_KEM_CLASSIC_MCELIECE)
@@ -68,16 +68,17 @@ if(OQS_ENABLE_SIG_SPHINCS)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
-add_library(oqs kem/kem.c
-                ${KEM_OBJS}
-                sig/sig.c
-                ${SIG_OBJS}
+oqs_target_init(oqs)
+set_property(TARGET oqs APPEND PROPERTY SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/kem/kem.c
+                ${OQS_KEM_OBJS}
+                ${CMAKE_CURRENT_SOURCE_DIR}/sig/sig.c
+                ${OQS_SIG_OBJS}
                 ${COMMON_OBJS})
 set(COMMON_OBJS ${COMMON_OBJS} PARENT_SCOPE)
 if(DEFINED SANITIZER_LD_FLAGS)
     target_link_libraries(oqs PUBLIC ${SANITIZER_LD_FLAGS})
 endif()
-if(${OQS_USE_OPENSSL})
+if(OQS_USE_OPENSSL)
     target_link_libraries(oqs PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
 endif()
 if(IOS)
@@ -90,14 +91,6 @@ target_include_directories(oqs
                            "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
                            "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
-set_target_properties(oqs
-    PROPERTIES
-    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
-    VERSION ${OQS_VERSION_TEXT}
-    SOVERSION 0
-    # For Windows DLLs
-    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 
 configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/liboqsConfig.cmake"
@@ -131,7 +124,8 @@ install(EXPORT liboqsTargets
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/liboqs
 )
 
-install(FILES ${PUBLIC_HEADERS}
+get_target_property(OQS_PUBLIC_HEADERS oqs PUBLIC_HEADERS)
+install(FILES ${OQS_PUBLIC_HEADERS}
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/oqs)
 
 export(EXPORT liboqsTargets
