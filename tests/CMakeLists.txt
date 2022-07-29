@@ -60,20 +60,11 @@ function(oqs_add_test)
   set(target "${ADD_TEST_NAME}")
   add_executable("${target}" ${ADD_TEST_SOURCES})
 
-  set_target_properties(${target}
-    PROPERTIES
-    # Compiler, standard and code properties
-    C_STANDARD 11
-    C_STANDARD_REQUIRED ON
-    POSITION_INDEPENDENT_CODE ON
-    C_VISIBILITY_PRESET "hidden"
-    EXPORT_COMPILE_COMMANDS ON
-    # Build properties
-    VERSION ${OQS_VERSION_TEXT}
-  )
-
-  get_target_property(OQS_C_FLAGS oqs COMPILE_OPTIONS)
+  oqs_target_init(${target})
+  # Apply `OQS_C_FLAGS` and `OQS_LD_FLAGS` to the test
   oqs_add_c_flags(${target} REQUIRED PRIVATE ${OQS_C_FLAGS})
+  oqs_add_ld_flags(${target} PRIVATE ${OQS_LD_FLAGS})
+  target_include_directories(${target} PRIVATE ${OQS_INCLUDE_DIRS})
 
   oqs_add_c_flags(${target} REQUIRED PRIVATE ${OQS_TESTS_C_FLAGS})
   target_compile_definitions(${target} PRIVATE ${OQS_TESTS_C_DEFINITIONS})

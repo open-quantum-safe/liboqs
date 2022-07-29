@@ -29,13 +29,33 @@ add_library(oqs)
 
 option(OQS_DIST_BUILD "Build distributable library with optimized code for several CPU microarchitectures. Enables run-time CPU feature detection." OFF)
 option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
-set(OQS_MINIMAL_BUILD "" CACHE STRING "Only build specifically listed algorithms.")
 option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsupported architecture." OFF)
+option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
 
+set(OQS_MINIMAL_BUILD "" CACHE STRING "Only build specifically listed algorithms.")
 set(OQS_OPT_TARGET auto CACHE STRING "The target microarchitecture for optimization.")
-
 set(OQS_VERSION_TEXT "0.7.2-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
+
+#! list of C flags to apply to `oqs` target and its tests.
+#
+# These flags depend on the targeted architecture and on the build type, from
+# `CMAKE_BUILD_TYPE`
+list(APPEND OQS_C_FLAGS "")
+
+#! list of linker flags to apply to `oqs` target and its tests.
+#
+# Similar to `OQS_C_FLAGS`, these flags depend on several build settings
+list(APPEND OQS_LD_FLAGS "")
+
+#! list of C definitions to apply to `oqs` target and its tests.
+#
+# Similar to `OQS_C_FLAGS` and `OQS_LD_FLAGS`, these flags depend on several
+# build settings
+list(APPEND OQS_C_DEFS "")
+
+#! list of included directories to apply to `oqs target and its tests
+list(APPEND OQS_INCLUDE_DIRS "")
 
 # intentionally don't switch to variables to avoid --warn-uninitialized report
 if(OQS_USE_CPU_EXTENSIONS)
@@ -53,8 +73,6 @@ else()
     set(OQS_DEBUG_BUILD OFF)
 endif()
 
-option(OQS_SPEED_USE_ARM_PMU "Use ARM Performance Monitor Unit during benchmarking" OFF)
-
 if(WIN32)
     set(CMAKE_GENERATOR_CC cl)
 endif()
@@ -62,22 +80,32 @@ endif()
 include(.CMake/compiler_opts.cmake)
 include(.CMake/alg_support.cmake)
 
-if(${OQS_USE_OPENSSL})
+if(OQS_USE_OPENSSL)
     if(NOT DEFINED OPENSSL_ROOT_DIR)
-        if(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Darwin")
+        if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Darwin")
             if(EXISTS "/usr/local/opt/openssl@1.1")
                 set(OPENSSL_ROOT_DIR "/usr/local/opt/openssl@1.1")
             elseif(EXISTS "/opt/homebrew/opt/openssl@1.1")
                 set(OPENSSL_ROOT_DIR "/opt/homebrew/opt/openssl@1.1")
             endif()
-        elseif(${CMAKE_HOST_SYSTEM_NAME} STREQUAL "Linux")
+        elseif(CMAKE_HOST_SYSTEM_NAME STREQUAL "Linux")
             set(OPENSSL_ROOT_DIR "/usr")
         endif()
     endif()
     find_package(OpenSSL 1.1.1 REQUIRED)
 endif()
 
-set_property(GLOBAL PROPERTY OQS_PUBLIC_HEADERS ${PROJECT_SOURCE_DIR}/src/oqs.h
+#! Define a new target property, `PUBLIC_HEADERS`, for storing all public
+# headers.
+define_property(
+  TARGET
+  PROPERTY PUBLIC_HEADERS
+  BRIEF_DOCS "Public headers"
+  FULL_DOCS "Public headers, exposed as the API for developers"
+)
+
+set_property(TARGET oqs APPEND PROPERTY PUBLIC_HEADERS
+                   ${PROJECT_SOURCE_DIR}/src/oqs.h
                    ${PROJECT_SOURCE_DIR}/src/common/common.h
                    ${PROJECT_SOURCE_DIR}/src/common/rand/rand.h
                    ${PROJECT_SOURCE_DIR}/src/common/aes/aes.h
@@ -134,9 +162,7 @@ function(enable_alg)
         endif()
       endforeach()
       message(STATUS "${ENABLE_ALG_TYPE} ${name} is enabled")
-      get_property(tmp GLOBAL PROPERTY OQS_PUBLIC_HEADERS)
-      list(APPEND tmp ${ENABLE_ALG_HEADERS})
-      set_property(GLOBAL PROPERTY OQS_PUBLIC_HEADERS ${tmp})
+      set_property(TARGET oqs APPEND PROPERTY PUBLIC_HEADERS ${ENABLE_ALG_HEADERS})
       return()
     else()
       message(STATUS "${ENABLE_ALG_TYPE} ${name} is disabled")
@@ -196,17 +222,24 @@ enable_kems(NAMES
 enable_sigs(NAMES
   "PICNIC" "FALCON" "RAINBOW" "DILITHIUM" "SPHINCS"
 )
-get_property(PUBLIC_HEADERS GLOBAL PROPERTY OQS_PUBLIC_HEADERS)
 
+#! Copy public headers to the build directory, under 'include'
+get_target_property(OQS_PUBLIC_HEADERS oqs PUBLIC_HEADERS)
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/include/oqs)
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${PUBLIC_HEADERS} ${PROJECT_BINARY_DIR}/include/oqs)
-configure_file(src/oqsconfig.h.cmake ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig.h)
-list(APPEND PUBLIC_HEADERS ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig.h)
+execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${OQS_PUBLIC_HEADERS} ${PROJECT_BINARY_DIR}/include/oqs)
 
-include_directories(${PROJECT_BINARY_DIR}/include)
+configure_file(src/oqsconfig.h.cmake ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig.h)
+set_property(TARGET oqs APPEND PROPERTY PUBLIC_HEADERS ${PROJECT_BINARY_DIR}/include/oqs/oqsconfig.h)
+list(APPEND OQS_INCLUDE_DIRS ${PROJECT_BINARY_DIR}/include)
+
 add_subdirectory(src)
 
-if(NOT ${OQS_BUILD_ONLY_LIB})
+# Now, apply the OQS_C_FLAGS, OQS_LD_FLAGS, OQS_C_DEFS and OQS_INCLUDE_DIRS
+oqs_add_c_flags(oqs REQUIRED PRIVATE ${OQS_C_FLAGS})
+oqs_add_ld_flags(oqs PRIVATE ${OQS_LD_FLAGS})
+target_include_directories(oqs PRIVATE ${OQS_INCLUDE_DIRS})
+
+if(NOT OQS_BUILD_ONLY_LIB)
     add_subdirectory(tests)
 
     if (NOT CYGWIN)

@@ -53,6 +53,28 @@ function(oqs_define_architecture)
   endforeach()
 endfunction()
 
+#! Define basic properties for a target
+#
+# /arg:target Target
+function(oqs_target_init target)
+  set_target_properties(${target}
+    PROPERTIES
+    # Compiler, standard and code properties
+    C_STANDARD 11
+    C_STANDARD_REQUIRED ON
+    POSITION_INDEPENDENT_CODE ON
+    C_VISIBILITY_PRESET "hidden"
+    EXPORT_COMPILE_COMMANDS ON
+    # Build properties
+    ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+    VERSION ${OQS_VERSION_TEXT}
+    SOVERSION 0
+    # For Windows DLLs
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+  )
+endfunction()
+
 #! Format a flag name
 #
 # String the frist - if exists, and replace any symbols in [-+=,] by _
@@ -79,7 +101,14 @@ function(oqs_test_c_flag flag outvar)
   oqs_format_flag("${flag}" fmtflag)
   set(supportflag OQS_C_SUPPORTS_${fmtflag})
   if(NOT DEFINED ${supportflag})
-    check_c_compiler_flag("${flag}" ${supportflag})
+    if(flag MATCHES "-fsanitize=")
+      set(OLD_CMAKE_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
+      set(CMAKE_REQUIRED_LIBRARIES "${flag}")
+      check_c_compiler_flag("${flag}" ${supportflag})
+      set(CMAKE_REQUIRED_LIBRARIES ${OLD_CMAKE_REQUIRED_LIBRARIES})
+    else()
+      check_c_compiler_flag("${flag}" ${supportflag})
+    endif()
     if(${supportflag})
       message(DEBUG "Compiler flag '${flag}' is supported by ${CMAKE_C_COMPILER}")
     else()
@@ -116,6 +145,7 @@ define_property(
   BRIEF_DOCS "Sanitizers options to apply"
   FULL_DOCS "List of sanitizer options to enable using -fsanitize="
 )
+set_target_properties(oqs PROPERTIES SANITIZERS "")
 
 #! Enable sanitizer options
 #
@@ -124,29 +154,39 @@ define_property(
 # \arg:required Are the sanitizers options required (REQUIRED or OPTIONAL)
 # \arg:policy Policy (see https://cmake.org/cmake/help/latest/command/target_compile_options.html#arguments)
 function(oqs_add_sanitizers target required policy)
-  get_target_property(sanitizers ${target} SANITIZERS)
   foreach(san ${ARGN})
-    oqs_test_c_flag("-fsanitize=${san}" supported)
+    get_target_property(sanitizers ${target} SANITIZERS)
+    if(san IN_LIST sanitizers)
+      continue()
+    endif()
+    set(flag "-fsanitize=${san}")
+    oqs_test_c_flag("${flag}" supported)
     if(supported)
-      list(APPEND sanitizers "${san}")
+      set_property(TARGET ${target} APPEND PROPERTY SANITIZERS "${san}")
+      message(STATUS "Sanitizer option '${san}' is supported by ${CMAKE_C_COMPILER}")
     elseif(${required} STREQUAL REQUIRED)
       message(FATAL_ERROR "Sanitizer option '${san}' is not supported by ${CMAKE_C_COMPILER}")
     endif()
   endforeach()
-  set_target_properties(${target} PROPERTIES SANITIZERS "${sanitizers}")
 endfunction()
 
 #! Apply the sanitizers options
 #
 # After building the list of sanitizers options using `oqs_add_sanitizers`,
 # apply the `-fsanitize=<list>` to the given target
+#
+# \arg:target Target
 # \arg:policy Policy (see https://cmake.org/cmake/help/latest/command/target_compile_options.html#arguments)
-function(oqs_apply_sanitizers target policy)
+# \arg:outvar Write the final flag to this out variable
+function(oqs_apply_sanitizers target policy outvar)
   get_target_property(sanitizerslist ${target} SANITIZERS)
   if(sanitizerslist)
     list(JOIN sanitizerslist "," sanitizers)
     target_compile_options(${target} ${policy} "-fsanitize=${sanitizers}")
     target_link_options(${target} PRIVATE "-fsanitize=${sanitizers}")
+    set(${outvar} "-fsanitize=${sanitizers}" PARENT_SCOPE)
+  else()
+    set(${outvar} "" PARENT_SCOPE)
   endif()
 endfunction()
 
@@ -232,7 +272,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
       endif()
     endif()
 
-    oqs_add_c_flags(oqs REQUIRED PRIVATE ${OQS_OPT_FLAG})
+    list(APPEND OQS_C_FLAGS ${OQS_OPT_FLAG})
 
     # If this is not a dist build we also need to set the OQS_USE_[EXTENSION] flags
     if(NOT OQS_DIST_BUILD)
@@ -241,7 +281,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
 endif()
 
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
-    oqs_add_c_flags(oqs REQUIRED PRIVATE
+    list(APPEND OQS_C_FLAGS
       "-Werror"
       "-Wall"
       "-Wextra"
@@ -250,43 +290,56 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     )
     set(CMAKE_ASM_FLAGS "${CMAKE_ASM_FLAGS} -Wa,--noexecstack")
 
-    if(NOT ${OQS_BUILD_ONLY_LIB})
+    if(NOT OQS_BUILD_ONLY_LIB)
         set(THREADS_PREFER_PTHREAD_FLAG ON)
         find_package(Threads REQUIRED)
         set(OQS_USE_PTHREADS_IN_TESTS 1)
     endif()
 
-    if(${OQS_DEBUG_BUILD})
-        oqs_add_c_flags(oqs REQUIRED PRIVATE "-g3" "-fno-omit-frame-pointer")
-        oqs_add_ld_flags(oqs PRIVATE "-fno-omit-frame-pointer")
-        if(USE_SANITIZER STREQUAL "Address")
-            oqs_add_c_flags(oqs REQUIRED PRIVATE
-              "-fno-optimize-sibling-calls"
+    if(OQS_DEBUG_BUILD)
+        list(APPEND OQS_C_FLAGS "-g3" "-fno-omit-frame-pointer")
+        list(APPEND OQS_LD_FLAGS "-fno-omit-frame-pointer")
+        set(all_sanitizers FALSE)
+        if(OQS_SANITIZERS STREQUAL "All")
+          message(STATUS "Using all sanitizers")
+          set(all_sanitizers TRUE)
+        endif()
+        if("Address" IN_LIST OQS_SANITIZERS OR all_sanitizers )
+            list(APPEND OQS_C_FLAGS "-fno-optimize-sibling-calls"
               "-fsanitize-address-use-after-scope"
             )
-            oqs_add_sanitizers(oqs REQUIRED "address")
-        elseif(USE_SANITIZER STREQUAL "Memory")
-            oqs_add_sanitizers(oqs REQUIRED "address" "memory")
-        elseif(USE_SANITIZER STREQUAL "MemoryWithOrigins")
-            oqs_add_sanitizers(oqs REQUIRED "address" "memory")
-            oqs_add_c_flags(oqs REQUIRED PRIVATE "-fsanitize-memory-track-origins")
-        elseif(USE_SANITIZER STREQUAL "Undefined")
-            oqs_add_sanitizers(oqs REQUIRED "undefined")
-            if(EXISTS "${BLACKLIST_FILE}")
-                oqs_add_c_flags(oqs REQUIRED PRIVATE "-fsanitize-blacklist=${BLACKLIST_FILE}")
-            endif()
-        elseif(USE_SANITIZER STREQUAL "Thread")
-            oqs_add_sanitizers(oqs REQUIRED "thread")
-        elseif(USE_SANITIZER STREQUAL "Leak")
-            oqs_add_sanitizers(oqs REQUIRED "leak")
+            oqs_add_sanitizers(oqs REQUIRED PRIVATE "address")
         endif()
-        oqs_apply_sanitizers(oqs PRIVATE)
+        if("Memory" IN_LIST OQS_SANITIZERS OR all_sanitizers)
+            oqs_add_sanitizers(oqs REQUIRED PRIVATE "address" "memory")
+        endif()
+        if("MemoryWithOrigins" IN_LIST OQS_SANITIZERS OR all_sanitizers)
+            oqs_add_sanitizers(oqs REQUIRED PRIVATE "address" "memory")
+            list(APPEND OQS_C_FLAGS "-fsanitize-memory-track-origins")
+        endif()
+        if("Undefined" IN_LIST OQS_SANITIZERS OR all_sanitizers)
+            oqs_add_sanitizers(oqs REQUIRED PRIVATE "undefined")
+            if(EXISTS "${BLACKLIST_FILE}")
+                list(APPEND OQS_C_FLAGS "-fsanitize-blacklist=${BLACKLIST_FILE}")
+            endif()
+        endif()
+        if("Thread" IN_LIST OQS_SANITIZERS AND NOT all_sanitizers)
+            oqs_add_sanitizers(oqs REQUIRED PRIVATE "thread")
+        endif()
+        if("Leak" IN_LIST OQS_SANITIZERS OR all_sanitizers)
+            oqs_add_sanitizers(oqs REQUIRED PRIVATE "leak")
+        endif()
+        get_target_property(sanitizers oqs SANITIZERS)
+        list(JOIN sanitizers ", " sanitizers)
+        message(STATUS "Enable sanitizers for oqs: ${sanitizers}")
+        oqs_apply_sanitizers(oqs PRIVATE sanitizerflag)
+        list(APPEND OQS_C_FLAGS ${sanitizerflag})
     else()
-        oqs_add_c_flags(oqs REQUIRED PRIVATE "-O3" "-fomit-frame-pointer")
+        list(APPEND OQS_C_FLAGS "-O3" "-fomit-frame-pointer")
     endif()
 
 elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
-    oqs_add_c_flags(oqs REQUIRED PRIVATE
+    list(APPEND OQS_C_FLAGS
       "-Werror"
       "-Wall"
       "-Wextra"
@@ -309,21 +362,21 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     endif()
 
     if(${OQS_DEBUG_BUILD})
-        oqs_add_c_flags(oqs REQUIRED PRIVATE
+        list(APPEND OQS_C_FLAGS
           "-Wstrict-overflow"
           "-ggdb3"
         )
     else()
-        oqs_add_c_flags(oqs REQUIRED PRIVATE
+        list(APPEND OQS_C_FLAGS
           "-O"
           "-fomit-frame-pointer"
           "-fdata-sections"
           "-ffunction-sections"
         )
         if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
-            oqs_add_c_flags(oqs REQUIRED PRIVATE "-Wl,-dead_strip")
+            list(APPEND OQS_C_FLAGS "-Wl,-dead_strip")
         else()
-            oqs_add_c_flags(oqs REQUIRED PRIVATE "-Wl,--gc-sections")
+            list(APPEND OQS_C_FLAGS "-Wl,--gc-sections")
         endif()
     endif()
 
@@ -332,21 +385,22 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
     # unsigned type; this has nonetheless been standard and portable for as
     # long as there has been a C standard, and we need it for constant-time
     # computations. Thus, we disable that spurious warning.
-    oqs_add_c_flags(oqs REQUIRED PRIVATE "/wd4146")
+    list(APPEND OQS_C_FLAGS "/wd4146")
     # Need a larger stack for Classic McEliece
-    oqs_add_ld_flags(oqs PRIVATE "/STACK:8192000")
+    list(APPEND OQS_LD_FLAGS "/STACK:8192000")
     # bring compile options in line with openssl options; link otherwise fails
-    oqs_add_c_flags(oqs REQUIRED PRIVATE "/MT")
+    list(APPEND OQS_C_FLAGS "/MT")
 endif()
 
 if(MINGW OR MSYS OR CYGWIN)
-    oqs_add_c_flags(oqs REQUIRED PRIVATE "-Wno-maybe-uninitialized")
-    oqs_add_ld_flags(oqs PRIVATE "--stack,16777216")
+    list(APPEND OQS_C_FLAGS "-Wno-maybe-uninitialized")
+    list(APPEND OQS_LD_FLAGS "--stack,16777216")
     if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.13.0")
-        target_link_options(oqs PUBLIC "--stack,16777216")
+        list(APPEND OQS_LD_FLAGS "--stack,16777216")
     endif()
 endif()
 
 if(CMAKE_C_IMPLICIT_LINK_DIRECTORIES MATCHES "alpine-linux-musl")
-    oqs_add_ld_flags(oqs PUBLIC "-z stack-size=16777216")
+    list(APPEND OQS_LD_FLAGS "-z stack-size=16777216")
 endif()
+
