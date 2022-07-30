@@ -1,5 +1,9 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: API header file for P503
 *********************************************************************************************/
@@ -7,9 +11,13 @@
 #ifndef P503_API_H
 #define P503_API_H
 
+
 /*********************** Key encapsulation mechanism API ***********************/
 
 // OQS note: size #defines moved to P503.c to avoid redefinitions across parameters
+
+// Algorithm name: OQS note: can't redefine across all variants
+// #define CRYPTO_ALGNAME "SIKEp503"
 
 // SIKE's key generation
 // It produces a private key sk and computes the public key pk.
@@ -29,16 +37,18 @@ int OQS_KEM_sike_p503_encaps(unsigned char *ct, unsigned char *ss, const unsigne
 // Outputs: shared secret ss      (CRYPTO_BYTES = 24 bytes)
 int OQS_KEM_sike_p503_decaps(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
 
+
 // Encoding of keys for KEM-based isogeny system "SIKEp503" (wire format):
 // ----------------------------------------------------------------------
 // Elements over GF(p503) are encoded in 63 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
 // Elements (a+b*i) over GF(p503^2), where a and b are defined over GF(p503), are encoded as {a, b}, with a in the lowest memory portion.
 //
-// Private keys sk consist of the concatenation of a 24-byte random value, a value in the range [0, 2^Floor(Log(2,3^159)) - 1] and the public key pk. In the SIKE API,
+// Private keys sk consist of the concatenation of a 24-byte random value, a value in the range [0, 2^Floor(Log(2,3^159))-1] and the public key pk. In the SIKE API,
 // private keys are encoded in 434 octets in little endian format.
 // Public keys pk consist of 3 elements in GF(p503^2). In the SIKE API, pk is encoded in 378 octets.
 // Ciphertexts ct consist of the concatenation of a public key value and a 24-byte value. In the SIKE API, ct is encoded in 378 + 24 = 402 octets.
 // Shared keys ss consist of a value of 24 octets.
+
 
 /*********************** Ephemeral key exchange API ***********************/
 
@@ -48,11 +58,11 @@ int OQS_KEM_sike_p503_decaps(unsigned char *ss, const unsigned char *ct, const u
 
 // Generation of Alice's secret key
 // Outputs random value in [0, 2^250 - 1] to be used as Alice's private key
-void oqs_kem_sidh_p503_random_mod_order_A(unsigned char *random_digits);
+int oqs_kem_sidh_p503_random_mod_order_A(unsigned char *random_digits);
 
 // Generation of Bob's secret key
 // Outputs random value in [0, 2^Floor(Log(2,3^159)) - 1] to be used as Bob's private key
-void oqs_kem_sidh_p503_random_mod_order_B(unsigned char *random_digits);
+int oqs_kem_sidh_p503_random_mod_order_B(unsigned char *random_digits);
 
 // Alice's ephemeral public key generation
 // Input:  a private key PrivateKeyA in the range [0, 2^250 - 1], stored in 32 bytes.
@@ -79,6 +89,7 @@ int oqs_kem_sidh_p503_EphemeralSecretAgreement_A(const unsigned char *PrivateKey
 // Output: a shared secret SharedSecretB that consists of one element in GF(p503^2) encoded in 126 bytes.
 int oqs_kem_sidh_p503_EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned char *PublicKeyA, unsigned char *SharedSecretB);
 
+
 // Encoding of keys for KEX-based isogeny system "SIDHp503" (wire format):
 // ----------------------------------------------------------------------
 // Elements over GF(p503) are encoded in 63 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
@@ -88,5 +99,6 @@ int oqs_kem_sidh_p503_EphemeralSecretAgreement_B(const unsigned char *PrivateKey
 // Alice's and Bob's private keys are encoded in 32 octets in little endian format.
 // Public keys PublicKeyA and PublicKeyB consist of 3 elements in GF(p503^2). In the SIDH API, they are encoded in 378 octets.
 // Shared keys SharedSecretA and SharedSecretB consist of one element in GF(p503^2). In the SIDH API, they are encoded in 126 octets.
+
 
 #endif

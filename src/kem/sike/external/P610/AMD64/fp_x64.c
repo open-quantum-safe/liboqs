@@ -1,5 +1,9 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: modular arithmetic optimized for x64 platforms for P610
 *********************************************************************************************/
@@ -15,50 +19,51 @@ extern const uint64_t p610x2[NWORDS_FIELD];
 extern const uint64_t p610x4[NWORDS_FIELD];
 */
 
-inline void mp_sub610_p2(const digit_t* a, const digit_t* b, digit_t* c)
-{ // Multiprecision subtraction with correction with 2*p, c = a-b+2p.    
-#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && NBITS_FIELD == 610)
-    unsigned int i, borrow = 0;
+inline void mp_sub610_p2(const digit_t *a, const digit_t *b, digit_t *c) {
+	// Multiprecision subtraction with correction with 2*p, c = a-b+2p.
+#if (OS_TARGET == OS_WIN)
+	unsigned int i, borrow = 0;
 
-    for (i = 0; i < NWORDS_FIELD; i++) {
-        SUBC(borrow, a[i], b[i], borrow, c[i]); 
-    }
+	for (i = 0; i < NWORDS_FIELD; i++) {
+		SUBC(borrow, a[i], b[i], borrow, c[i]);
+	}
 
-    borrow = 0;
-    for (i = 0; i < NWORDS_FIELD; i++) {
-        ADDC(borrow, c[i], ((digit_t*)p610x2)[i], borrow, c[i]); 
-    }
-    
+	borrow = 0;
+	for (i = 0; i < NWORDS_FIELD; i++) {
+		ADDC(borrow, c[i], ((digit_t *)p610x2)[i], borrow, c[i]);
+	}
+
 #elif (OS_TARGET == OS_NIX)
-    
-    oqs_kem_sike_mp_sub610_p2_asm(a, b, c);    
+
+	oqs_kem_sike_mp_sub610_p2_asm(a, b, c);
 
 #endif
-} 
+}
 
 
-inline void mp_sub610_p4(const digit_t* a, const digit_t* b, digit_t* c)
-{ // Multiprecision subtraction with correction with 4*p, c = a-b+4p.    
-#if (OS_TARGET == OS_WIN) || defined(GENERIC_IMPLEMENTATION) || (TARGET == TARGET_ARM) || (TARGET == TARGET_ARM64 && NBITS_FIELD == 610)
-    unsigned int i, borrow = 0;
+inline void mp_sub610_p4(const digit_t *a, const digit_t *b, digit_t *c) {
+	// Multiprecision subtraction with correction with 4*p, c = a-b+4p.
+#if (OS_TARGET == OS_WIN)
+	unsigned int i, borrow = 0;
 
-    for (i = 0; i < NWORDS_FIELD; i++) {
-        SUBC(borrow, a[i], b[i], borrow, c[i]); 
-    }
+	for (i = 0; i < NWORDS_FIELD; i++) {
+		SUBC(borrow, a[i], b[i], borrow, c[i]);
+	}
 
-    borrow = 0;
-    for (i = 0; i < NWORDS_FIELD; i++) {
-        ADDC(borrow, c[i], ((digit_t*)p610x4)[i], borrow, c[i]); 
-    }
-    
-#elif (OS_TARGET == OS_NIX)
-    
-    oqs_kem_sike_mp_sub610_p4_asm(a, b, c);    
-
+	borrow = 0;
+	for (i = 0; i < NWORDS_FIELD; i++) {
+		ADDC(borrow, c[i], ((digit_t *)p610x4)[i], borrow, c[i]);
+	}
+#else // OQS add-in to avoid unused errors
+	UNREFERENCED_PARAMETER(a);
+	UNREFERENCED_PARAMETER(b);
+	UNREFERENCED_PARAMETER(c);
 #endif
-} 
+}
 
-inline void fpadd610(const digit_t *a, const digit_t *b, digit_t *c) { // Modular addition, c = a+b mod p610.
+
+inline void fpadd610(const digit_t *a, const digit_t *b, digit_t *c) {
+	// Modular addition, c = a+b mod p610.
 	// Inputs: a, b in [0, 2*p610-1]
 	// Output: c in [0, 2*p610-1]
 
@@ -72,13 +77,13 @@ inline void fpadd610(const digit_t *a, const digit_t *b, digit_t *c) { // Modula
 
 	carry = 0;
 	for (i = 0; i < NWORDS_FIELD; i++) {
-		SUBC(carry, c[i], ((digit_t *) p610x2)[i], carry, c[i]);
+		SUBC(carry, c[i], ((digit_t *)p610x2)[i], carry, c[i]);
 	}
-	mask = 0 - (digit_t) carry;
+	mask = 0 - (digit_t)carry;
 
 	carry = 0;
 	for (i = 0; i < NWORDS_FIELD; i++) {
-		ADDC(carry, c[i], ((digit_t *) p610x2)[i] & mask, carry, c[i]);
+		ADDC(carry, c[i], ((digit_t *)p610x2)[i] & mask, carry, c[i]);
 	}
 
 #elif (OS_TARGET == OS_NIX)
@@ -88,7 +93,9 @@ inline void fpadd610(const digit_t *a, const digit_t *b, digit_t *c) { // Modula
 #endif
 }
 
-inline void fpsub610(const digit_t *a, const digit_t *b, digit_t *c) { // Modular subtraction, c = a-b mod p610.
+
+inline void fpsub610(const digit_t *a, const digit_t *b, digit_t *c) {
+	// Modular subtraction, c = a-b mod p610.
 	// Inputs: a, b in [0, 2*p610-1]
 	// Output: c in [0, 2*p610-1]
 
@@ -99,11 +106,11 @@ inline void fpsub610(const digit_t *a, const digit_t *b, digit_t *c) { // Modula
 	for (i = 0; i < NWORDS_FIELD; i++) {
 		SUBC(borrow, a[i], b[i], borrow, c[i]);
 	}
-	mask = 0 - (digit_t) borrow;
+	mask = 0 - (digit_t)borrow;
 
 	borrow = 0;
 	for (i = 0; i < NWORDS_FIELD; i++) {
-		ADDC(borrow, c[i], ((digit_t *) p610x2)[i] & mask, borrow, c[i]);
+		ADDC(borrow, c[i], ((digit_t *)p610x2)[i] & mask, borrow, c[i]);
 	}
 
 #elif (OS_TARGET == OS_NIX)
@@ -113,49 +120,94 @@ inline void fpsub610(const digit_t *a, const digit_t *b, digit_t *c) { // Modula
 #endif
 }
 
-inline void fpneg610(digit_t *a) { // Modular negation, a = -a mod p610.
+
+inline void fpneg610(digit_t *a) {
+	// Modular negation, a = -a mod p610.
 	// Input/output: a in [0, 2*p610-1]
 	unsigned int i, borrow = 0;
 
 	for (i = 0; i < NWORDS_FIELD; i++) {
-		SUBC(borrow, ((digit_t *) p610x2)[i], a[i], borrow, a[i]);
+		SUBC(borrow, ((digit_t *)p610x2)[i], a[i], borrow, a[i]);
 	}
 }
 
-void fpdiv2_610(const digit_t *a, digit_t *c) { // Modular division by two, c = a/2 mod p610.
+
+void fpdiv2_610(const digit_t *a, digit_t *c) {
+	// Modular division by two, c = a/2 mod p610.
 	// Input : a in [0, 2*p610-1]
 	// Output: c in [0, 2*p610-1]
 	unsigned int i, carry = 0;
 	digit_t mask;
 
-	mask = 0 - (digit_t)(a[0] & 1); // If a is odd compute a+p610
+	mask = 0 - (digit_t)(a[0] & 1);    // If a is odd compute a+p610
 	for (i = 0; i < NWORDS_FIELD; i++) {
-		ADDC(carry, a[i], ((digit_t *) p610)[i] & mask, carry, c[i]);
+		ADDC(carry, a[i], ((digit_t *)p610)[i] & mask, carry, c[i]);
 	}
 
 	mp_shiftr1(c, NWORDS_FIELD);
 }
 
-void fpcorrection610(digit_t *a) { // Modular correction to reduce field element a in [0, 2*p610-1] to [0, p610-1].
+
+void fpcorrection610(digit_t *a) {
+	// Modular correction to reduce field element a in [0, 2*p610-1] to [0, p610-1].
 	unsigned int i, borrow = 0;
 	digit_t mask;
 
 	for (i = 0; i < NWORDS_FIELD; i++) {
-		SUBC(borrow, a[i], ((digit_t *) p610)[i], borrow, a[i]);
+		SUBC(borrow, a[i], ((digit_t *)p610)[i], borrow, a[i]);
 	}
-	mask = 0 - (digit_t) borrow;
+	mask = 0 - (digit_t)borrow;
 
 	borrow = 0;
 	for (i = 0; i < NWORDS_FIELD; i++) {
-		ADDC(borrow, a[i], ((digit_t *) p610)[i] & mask, borrow, a[i]);
+		ADDC(borrow, a[i], ((digit_t *)p610)[i] & mask, borrow, a[i]);
 	}
 }
 
-void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords) { // Multiprecision multiply, c = a*b, where lng(a) = lng(b) = nwords.
+#if (OS_TARGET == OS_NIX)
+
+void fp2mul610_c0_mont(const digit_t *a, const digit_t *b, digit_t *c) {
+	oqs_kem_sike_fp2mul610_c0_asm(a, b, c);
+}
+
+
+void fp2mul610_c1_mont(const digit_t *a, const digit_t *b, digit_t *c) {
+	oqs_kem_sike_fp2mul610_c1_asm(a, b, c);
+}
+
+
+void fp2sqr610_c0_mont(const digit_t *a, digit_t *c) {
+	oqs_kem_sike_fp2sqr610_c0_asm(a, c);
+}
+
+
+void fp2sqr610_c1_mont(const digit_t *a, digit_t *c) {
+	oqs_kem_sike_fp2sqr610_c1_asm(a, c);
+}
+
+
+void fpmul610(const digit_t *a, const digit_t *b, digit_t *c) {
+	oqs_kem_sike_fpmul610_asm(a, b, c);
+}
+
+// OQS note: macOS complains that these aren't define, so creating empty functions from the #else clause
+void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords) {
+	UNREFERENCED_PARAMETER(a);
+	UNREFERENCED_PARAMETER(b);
+	UNREFERENCED_PARAMETER(c);
+	UNREFERENCED_PARAMETER(nwords);
+}
+void rdc_mont(digit_t *ma, digit_t *mc) {
+	UNREFERENCED_PARAMETER(ma);
+	UNREFERENCED_PARAMETER(mc);
+}
+
+#else
+
+void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int nwords) {
+	// Multiprecision multiply, c = a*b, where lng(a) = lng(b) = nwords.
 
 	UNREFERENCED_PARAMETER(nwords);
-
-#if (OS_TARGET == OS_WIN)
 	digit_t t = 0;
 	uint128_t uv = {0};
 	unsigned int carry = 0;
@@ -450,20 +502,14 @@ void mp_mul(const digit_t *a, const digit_t *b, digit_t *c, const unsigned int n
 	MULADD128(a[9], b[9], uv, carry, uv);
 	c[18] = uv[0];
 	c[19] = uv[1];
-
-#elif (OS_TARGET == OS_NIX)
-
-	oqs_kem_sike_mul610_asm(a, b, c);
-
-#endif
 }
 
-void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting special form of the prime.
+
+void rdc_mont(digit_t *ma, digit_t *mc) {
+	// Montgomery reduction exploiting special form of the prime.
 	// mc = ma*R^-1 mod p610x2, where R = 2^640.
 	// If ma < 2^640*p610, the output mc is in the range [0, 2*p610-1].
 	// ma is assumed to be in Montgomery representation.
-
-#if (OS_TARGET == OS_WIN)
 	unsigned int carry;
 	digit_t t = 0;
 	uint128_t uv = {0};
@@ -472,15 +518,15 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	mc[1] = ma[1];
 	mc[2] = ma[2];
 	mc[3] = ma[3];
-	MUL128(mc[0], ((digit_t *) p610p1)[4], uv);
+	MUL128(mc[0], ((digit_t *)p610p1)[4], uv);
 	ADDC(0, uv[0], ma[4], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
 	mc[4] = uv[0];
 	uv[0] = uv[1];
 	uv[1] = 0;
 
-	MULADD128(mc[0], ((digit_t *) p610p1)[5], uv, carry, uv);
-	MULADD128(mc[1], ((digit_t *) p610p1)[4], uv, carry, uv);
+	MULADD128(mc[0], ((digit_t *)p610p1)[5], uv, carry, uv);
+	MULADD128(mc[1], ((digit_t *)p610p1)[4], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[5], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -490,11 +536,11 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[0], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[0], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[1], ((digit_t *) p610p1)[5], uv, carry, uv);
+	MULADD128(mc[1], ((digit_t *)p610p1)[5], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[2], ((digit_t *) p610p1)[4], uv, carry, uv);
+	MULADD128(mc[2], ((digit_t *)p610p1)[4], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[6], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -504,13 +550,13 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[0], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[0], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[1], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[1], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[2], ((digit_t *) p610p1)[5], uv, carry, uv);
+	MULADD128(mc[2], ((digit_t *)p610p1)[5], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[3], ((digit_t *) p610p1)[4], uv, carry, uv);
+	MULADD128(mc[3], ((digit_t *)p610p1)[4], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[7], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -520,15 +566,15 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[0], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[0], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[1], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[1], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[2], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[2], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[3], ((digit_t *) p610p1)[5], uv, carry, uv);
+	MULADD128(mc[3], ((digit_t *)p610p1)[5], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[4], ((digit_t *) p610p1)[4], uv, carry, uv);
+	MULADD128(mc[4], ((digit_t *)p610p1)[4], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[8], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -538,17 +584,17 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[0], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[0], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[1], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[1], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[2], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[2], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[3], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[3], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[4], ((digit_t *) p610p1)[5], uv, carry, uv);
+	MULADD128(mc[4], ((digit_t *)p610p1)[5], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[5], ((digit_t *) p610p1)[4], uv, carry, uv);
+	MULADD128(mc[5], ((digit_t *)p610p1)[4], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[9], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -558,17 +604,17 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[1], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[1], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[2], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[2], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[3], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[3], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[4], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[4], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[5], ((digit_t *) p610p1)[5], uv, carry, uv);
+	MULADD128(mc[5], ((digit_t *)p610p1)[5], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[6], ((digit_t *) p610p1)[4], uv, carry, uv);
+	MULADD128(mc[6], ((digit_t *)p610p1)[4], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[10], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -578,17 +624,17 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[2], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[2], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[3], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[3], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[4], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[4], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[5], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[5], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[6], ((digit_t *) p610p1)[5], uv, carry, uv);
+	MULADD128(mc[6], ((digit_t *)p610p1)[5], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[7], ((digit_t *) p610p1)[4], uv, carry, uv);
+	MULADD128(mc[7], ((digit_t *)p610p1)[4], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[11], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -598,17 +644,17 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[3], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[3], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[4], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[4], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[5], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[5], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[6], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[6], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[7], ((digit_t *) p610p1)[5], uv, carry, uv);
+	MULADD128(mc[7], ((digit_t *)p610p1)[5], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[8], ((digit_t *) p610p1)[4], uv, carry, uv);
+	MULADD128(mc[8], ((digit_t *)p610p1)[4], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[12], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -618,17 +664,17 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[4], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[4], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[5], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[5], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[6], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[6], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[7], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[7], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[8], ((digit_t *) p610p1)[5], uv, carry, uv);
+	MULADD128(mc[8], ((digit_t *)p610p1)[5], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[9], ((digit_t *) p610p1)[4], uv, carry, uv);
+	MULADD128(mc[9], ((digit_t *)p610p1)[4], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[13], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -638,15 +684,15 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[5], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[5], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[6], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[6], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[7], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[7], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[8], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[8], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[9], ((digit_t *) p610p1)[5], uv, carry, uv);
+	MULADD128(mc[9], ((digit_t *)p610p1)[5], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[14], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -656,13 +702,13 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[6], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[6], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[7], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[7], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[8], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[8], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[9], ((digit_t *) p610p1)[6], uv, carry, uv);
+	MULADD128(mc[9], ((digit_t *)p610p1)[6], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[15], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -672,11 +718,11 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[7], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[7], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[8], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[8], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[9], ((digit_t *) p610p1)[7], uv, carry, uv);
+	MULADD128(mc[9], ((digit_t *)p610p1)[7], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[16], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -686,9 +732,9 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[8], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[8], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
-	MULADD128(mc[9], ((digit_t *) p610p1)[8], uv, carry, uv);
+	MULADD128(mc[9], ((digit_t *)p610p1)[8], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[17], carry, uv[0]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
@@ -698,15 +744,11 @@ void rdc_mont(digit_t *ma, digit_t *mc) { // Montgomery reduction exploiting spe
 	uv[1] = t;
 	t = 0;
 
-	MULADD128(mc[9], ((digit_t *) p610p1)[9], uv, carry, uv);
+	MULADD128(mc[9], ((digit_t *)p610p1)[9], uv, carry, uv);
 	t += carry;
 	ADDC(0, uv[0], ma[18], carry, mc[8]);
 	ADDC(carry, uv[1], 0, carry, uv[1]);
 	ADDC(0, uv[1], ma[19], carry, mc[9]);
-
-#elif (OS_TARGET == OS_NIX)
-
-	oqs_kem_sike_rdc610_asm(ma, mc);
+}
 
 #endif
-}

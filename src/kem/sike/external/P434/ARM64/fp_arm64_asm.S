@@ -1,5 +1,9 @@
 //*******************************************************************************************
 // SIDH: an efficient supersingular isogeny cryptography library
+// Copyright (c) Microsoft Corporation
+//
+// Website: https://github.com/microsoft/PQCrypto-SIDH
+// Released under MIT license
 //
 // Abstract: field arithmetic in 64-bit ARMv8 assembly for P434 on Linux
 //*******************************************************************************************

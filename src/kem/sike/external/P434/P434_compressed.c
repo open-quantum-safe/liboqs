@@ -1,5 +1,9 @@
 /********************************************************************************************
 * Supersingular Isogeny Key Encapsulation Library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: supersingular isogeny parameters and generation of functions for P434_compressed
 *********************************************************************************************/
@@ -11,15 +15,14 @@
 #include "P434_internal.h"
 #include "../internal.h"
 
-// defines moved from P434_compressed_api.h
 #define CRYPTO_SECRETKEYBYTES     350      // MSG_BYTES + SECRETKEY_A_BYTES + CRYPTO_PUBLICKEYBYTES + FP2_ENCODED_BYTES bytes
 #define CRYPTO_PUBLICKEYBYTES     197      // 3*ORDER_B_ENCODED_BYTES + FP2_ENCODED_BYTES + 3 bytes for shared elligator 
 #define CRYPTO_BYTES               16
 #define CRYPTO_CIPHERTEXTBYTES    236      // PARTIALLY_COMPRESSED_CHUNK_CT + MSG_BYTES bytes
-#define SIDH_SECRETKEYBYTES_A 27
-#define SIDH_SECRETKEYBYTES_B 28
-#define SIDH_PUBLICKEYBYTES 197
-#define SIDH_BYTES 110
+#define SIDH_SECRETKEYBYTES_A    27
+#define SIDH_SECRETKEYBYTES_B    28
+#define SIDH_PUBLICKEYBYTES     197
+#define SIDH_BYTES              110
 
 // Encoding of field elements, elements over Z_order, elements over GF(p^2) and elliptic curve points:
 // --------------------------------------------------------------------------------------------------
@@ -33,164 +36,188 @@
 // Curve isogeny system "SIDHp434". Base curve: Montgomery curve By^2 = Cx^3 + Ax^2 + Cx defined over GF(p434^2), where A=6, B=1, C=1 and p434 = 2^216*3^137-1
 //
 
-const uint64_t p434[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFDC1767AE2FFFFFF,
-                                              0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344
-                                             };
-const uint64_t p434x2[NWORDS64_FIELD] = {0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFB82ECF5C5FFFFFF,
-                                                0xF78CB8F062B15D47, 0xD9F8BFAD038A40AC, 0x0004683E4E2EE688
-                                               };
-const uint64_t p434x4[NWORDS64_FIELD]            = { 0xFFFFFFFFFFFFFFFC, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xF705D9EB8BFFFFFF, 
-                                                     0xEF1971E0C562BA8F, 0xB3F17F5A07148159, 0x0008D07C9C5DCD11 }; 
+const uint64_t p434[NWORDS64_FIELD]              = { 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFDC1767AE2FFFFFF,
+                                                     0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344
+                                                   };
+const uint64_t p434x2[NWORDS64_FIELD]            = { 0xFFFFFFFFFFFFFFFE, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xFB82ECF5C5FFFFFF,
+                                                     0xF78CB8F062B15D47, 0xD9F8BFAD038A40AC, 0x0004683E4E2EE688
+                                                   };
+const uint64_t p434x4[NWORDS64_FIELD]            = { 0xFFFFFFFFFFFFFFFC, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xF705D9EB8BFFFFFF,
+                                                     0xEF1971E0C562BA8F, 0xB3F17F5A07148159, 0x0008D07C9C5DCD11
+                                                   };
+const uint64_t p434x8[NWORDS64_FIELD]            = { 0xFFFFFFFFFFFFFFF8, 0xFFFFFFFFFFFFFFFF, 0xFFFFFFFFFFFFFFFF, 0xEE0BB3D717FFFFFF,
+                                                     0xDE32E3C18AC5751F, 0x67E2FEB40E2902B3, 0x0011A0F938BB9A23
+                                                   };
 const uint64_t p434p1[NWORDS64_FIELD]            = { 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0xFDC1767AE3000000,
-                                                     0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344 };  
-/* OQS note: commented out to avoid unused error
-static const uint64_t p434x16p[2*NWORDS64_FIELD]        = { 0x0000000000000010, 0x0000000000000000, 0x0000000000000000, 0x47D130A3A0000000, 
-                                                     0x873470F9D4EA2B80, 0x6074052FC75BF530, 0x54497C1B1D119772, 0xC55F373D2CDCA412, 
-                                                     0x732CA2221C664B96, 0x6445AB96AF6359A5, 0x221708AB42ABE1B4, 0xAE3D3D0063244F01, 
-                                                     0x18B920F2ECF68816, 0x0000004DB194809D }; 
-*/
+                                                     0x7BC65C783158AEA3, 0x6CFC5FD681C52056, 0x0002341F27177344
+                                                   };
 // Order of Alice's subgroup
-static const uint64_t Alice_order[NWORDS64_ORDER] = {0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000001000000};
+static const uint64_t Alice_order[NWORDS64_ORDER]       = { 0x0000000000000000, 0x0000000000000000, 0x0000000000000000, 0x0000000001000000 };
 // Order of Bob's subgroup
-static const uint64_t Bob_order[NWORDS64_ORDER] = {0x58AEA3FDC1767AE3, 0xC520567BC65C7831, 0x1773446CFC5FD681, 0x0000000002341F27};
+static const uint64_t Bob_order[NWORDS64_ORDER]         = { 0x58AEA3FDC1767AE3, 0xC520567BC65C7831, 0x1773446CFC5FD681, 0x0000000002341F27 };
 
 /* Basis for Alice on A = 6, expressed in Montgomery representation */
-static const uint64_t A_gen[6 * NWORDS64_FIELD] = {0x6E18D3A63313A738, 0x1DCC496DD6DDE298, 0xA35F3F7DAFBE2B43, 0xC6B9A5CC670071EB,
-                                                   0x2EA3DB085283675A, 0xFDFE173A0297F36, 0x0002200804EB824D, // XPA0
-                                                   0xB999E9E259F7BFA8, 0x2584D67D0C2EEAA9, 0x80AB07D4E9625724, 0x781DA616A7A76E54,
-                                                   0x9BE449736374F491, 0x8C6F86E8B0C4D74A, 0x0001C1D4812CBD98, // XPA1
-                                                   0x257DBD53095FD263, 0xBBB3C7A7B4EDB1D4, 0xA817B7FDDD5BB8DA, 0xF5DE963B242B7AB3,
-                                                   0x7F51B5362FC94CB6, 0xE7D2496B526DFF16, 0x0001E962CF69118C, // XQA0
-                                                   0xED9DC89467FB039D, 0x17C71E114B5803D0, 0x816C3379BE9647BF, 0xB07F441A15434B64,
-                                                   0xCC65C1804AF4CBD1, 0xF06BF5F074032C77, 0x0001A251F94CF02C, // XQA1
-                                                   0xA26194AB4BD1A16F, 0xCFCD9F7F04D5AB10, 0x1BB4A7C04C37482C, 0x71DEE733632DA36D,
-                                                   0x7335784B5ECF957F, 0x66AE2381533A7F09, 0x000232BFFE6FA42F, // XRA0
-                                                   0x60ACBE5D899CFA6A, 0x82AC55A556E5A22F, 0x437D8C2AC83FDC6B, 0x620A8DA602543EDE,
-                                                   0xD19ABA8092A1E8C2, 0xAFF1AA61981C95D3, 0x0001A7232B0C035E
-                                                  }; // XRA1
+static const uint64_t A_gen[6 * NWORDS64_FIELD]           = { 0x6E18D3A63313A738, 0x1DCC496DD6DDE298, 0xA35F3F7DAFBE2B43, 0xC6B9A5CC670071EB,
+                                                              0x2EA3DB085283675A, 0xFDFE173A0297F36,  0x0002200804EB824D, // XPA0
+                                                              0xB999E9E259F7BFA8, 0x2584D67D0C2EEAA9, 0x80AB07D4E9625724, 0x781DA616A7A76E54,
+                                                              0x9BE449736374F491, 0x8C6F86E8B0C4D74A, 0x0001C1D4812CBD98, // XPA1
+                                                              0x257DBD53095FD263, 0xBBB3C7A7B4EDB1D4, 0xA817B7FDDD5BB8DA, 0xF5DE963B242B7AB3,
+                                                              0x7F51B5362FC94CB6, 0xE7D2496B526DFF16, 0x0001E962CF69118C, // XQA0
+                                                              0xED9DC89467FB039D, 0x17C71E114B5803D0, 0x816C3379BE9647BF, 0xB07F441A15434B64,
+                                                              0xCC65C1804AF4CBD1, 0xF06BF5F074032C77, 0x0001A251F94CF02C, // XQA1
+                                                              0xA26194AB4BD1A16F, 0xCFCD9F7F04D5AB10, 0x1BB4A7C04C37482C, 0x71DEE733632DA36D,
+                                                              0x7335784B5ECF957F, 0x66AE2381533A7F09, 0x000232BFFE6FA42F, // XRA0
+                                                              0x60ACBE5D899CFA6A, 0x82AC55A556E5A22F, 0x437D8C2AC83FDC6B, 0x620A8DA602543EDE,
+                                                              0xD19ABA8092A1E8C2, 0xAFF1AA61981C95D3, 0x0001A7232B0C035E
+                                                            }; // XRA1
 
 /* Basis for Bob on A = 6, expressed in Montgomery representation */
-static const uint64_t B_gen[6 * NWORDS64_FIELD] = {0xE172658571249BA8, 0x9D8F52CB15829DA0, 0xE3A7C7F9F0E3F832, 0x8B825DD0B9410D30,
-                                                   0xF42F815734752EDA, 0xCB35DD9160997586, 0x00018B3AAAAD0F79, // XPB0
-                                                   0xCF0B435C40C1375D, 0x58AC8A63992B36EF, 0x416D0B3DFB0C1DF5, 0xB257E9CFE8985F15,
-                                                   0xA493D98A7A1D6DF2, 0x6D6781A5B3FDE61F, 0x000179AC0D886A3F, // XPB1
-                                                   0xE172658571249BA8, 0x9D8F52CB15829DA0, 0xE3A7C7F9F0E3F832, 0x8B825DD0B9410D30,
-                                                   0xF42F815734752EDA, 0xCB35DD9160997586, 0x00018B3AAAAD0F79, // XQB0
-                                                   0x30F4BCA3BF3EC8A2, 0xA753759C66D4C910, 0xBE92F4C204F3E20A, 0x4B698CAAFA67A0EA,
-                                                   0xD73282EDB73B40B1, 0xFF94DE30CDC73A36, 0x0000BA73198F0904, // XQB1
-                                                   0x9F7367022EFDF650, 0xA8C21C687A91D6BC, 0xDDB909C497C4BFED, 0x66FD362A30232EBF,
-                                                   0x84AC5026408590E1, 0x5378004CB74DA4ED, 0x00008AA46B9E55B2, // XRB0
-                                                   0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-                                                  };                         // XRB1
+static const uint64_t B_gen[6 * NWORDS64_FIELD]           = { 0xE172658571249BA8, 0x9D8F52CB15829DA0, 0xE3A7C7F9F0E3F832, 0x8B825DD0B9410D30,
+                                                              0xF42F815734752EDA, 0xCB35DD9160997586, 0x00018B3AAAAD0F79, // XPB0
+                                                              0xCF0B435C40C1375D, 0x58AC8A63992B36EF, 0x416D0B3DFB0C1DF5, 0xB257E9CFE8985F15,
+                                                              0xA493D98A7A1D6DF2, 0x6D6781A5B3FDE61F, 0x000179AC0D886A3F, // XPB1
+                                                              0xE172658571249BA8, 0x9D8F52CB15829DA0, 0xE3A7C7F9F0E3F832, 0x8B825DD0B9410D30,
+                                                              0xF42F815734752EDA, 0xCB35DD9160997586, 0x00018B3AAAAD0F79, // XQB0
+                                                              0x30F4BCA3BF3EC8A2, 0xA753759C66D4C910, 0xBE92F4C204F3E20A, 0x4B698CAAFA67A0EA,
+                                                              0xD73282EDB73B40B1, 0xFF94DE30CDC73A36, 0x0000BA73198F0904, // XQB1
+                                                              0x9F7367022EFDF650, 0xA8C21C687A91D6BC, 0xDDB909C497C4BFED, 0x66FD362A30232EBF,
+                                                              0x84AC5026408590E1, 0x5378004CB74DA4ED, 0x00008AA46B9E55B2, // XRB0
+                                                              0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
+                                                            }; // XRB1
 
 /* The x-coordinate of lB^(eB-1)*QB, expressed in Montgomery representation */
-static const uint64_t XQB3[2 * NWORDS64_FIELD] = {0x821E631A922B742C, 0xDA3EB61A6B066600, 0xBE9BF948971BD406, 0xAEF5D42FAF04075A,
-                                                  0x70165C6A99378F7F, 0xEEE1058485DD1F9A, 0x1B20B9F7D4D95,
-                                                  0x787CA8B336944EF3, 0xD29EBA9AF11A6EB, 0xE0BC6DA29BB99844, 0xF583F3C8DA2FB5FA,
-                                                  0xBBCB2EAAD861B7E8, 0x2487A88C3E782D0A, 0x11BA37E3442A5
-                                                 };
+static const uint64_t XQB3[2 * NWORDS64_FIELD]            = { 0x821E631A922B742C, 0xDA3EB61A6B066600, 0xBE9BF948971BD406, 0xAEF5D42FAF04075A,
+                                                              0x70165C6A99378F7F, 0xEEE1058485DD1F9A, 0x1B20B9F7D4D95,
+                                                              0x787CA8B336944EF3, 0xD29EBA9AF11A6EB, 0xE0BC6DA29BB99844, 0xF583F3C8DA2FB5FA,
+                                                              0xBBCB2EAAD861B7E8, 0x2487A88C3E782D0A, 0x11BA37E3442A5
+                                                            };
 
 /* Basis for Alice on A = 0, expressed in Montgomery representation */
-static const uint64_t A_basis_zero[8 * NWORDS64_FIELD] = {0x6E18D3A633148F91, 0x1DCC496DD6DDE298, 0xA35F3F7DAFBE2B43, 0x3B18175B7C0071EB,
-                                                          0x62E0C886CC6A1260, 0x75482A45DD52E0F9, 0x1C5C62D4E6CBE,
-                                                          0xB999E9E259F7BFA8, 0x2584D67D0C2EEAA9, 0x80AB07D4E9625724, 0x781DA616A7A76E54,
-                                                          0x9BE449736374F491, 0x8C6F86E8B0C4D74A, 0x1C1D4812CBD98,
-                                                          0x9B989BE60CFF0D15, 0x8B80A32171813F53, 0xF4F067606A56228E, 0x48F8237E159577B0,
-                                                          0x42529574B9E74156, 0xD8D26313F4AA9F9C, 0x1279AC6BC876C,
-                                                          0x9597544CBE9D88DF, 0x13801F440DF32748, 0xE4ECAFF9C15D0CEB, 0x7867D92EB045A646,
-                                                          0x2399062BA8C64EF, 0xE9258C0BDF8BBFF7, 0x1CE4BBF872205,
-                                                          0x257DBD530960BABC, 0xBBB3C7A7B4EDB1D4, 0xA817B7FDDD5BB8DA, 0x6A3D07CA392B7AB3,
-                                                          0xB38EA2B4A9AFF7BC, 0x4D3A923D8F9760D9, 0x18F20F7CBFBFE,
-                                                          0xED9DC89467FB039D, 0x17C71E114B5803D0, 0x816C3379BE9647BF, 0xB07F441A15434B64,
-                                                          0xCC65C1804AF4CBD1, 0xF06BF5F074032C77, 0x1A251F94CF02C,
-                                                          0x6239F7D1AD27CE42, 0x717E2E83920EF08C, 0xAA9328D01C5FDF24, 0x824E9DEA2B1F02F9,
-                                                          0x20B1D0984E195350, 0x4A5AFBFD02EF9414, 0x228BCA648BAFF,
-                                                          0x7DEDAD20B53F2C9A, 0xE7DD8746364EACC1, 0x743BABC72A5096D4, 0xDDA2FBF4E96A5174,
-                                                          0xE05A5B3B71083AF0, 0x69AB2A817C72ADCC, 0x216CFFC723E3C
-                                                         };
+static const uint64_t A_basis_zero[8 * NWORDS64_FIELD] =  { 0x6E18D3A633148F91, 0x1DCC496DD6DDE298, 0xA35F3F7DAFBE2B43, 0x3B18175B7C0071EB,
+                                                            0x62E0C886CC6A1260, 0x75482A45DD52E0F9, 0x1C5C62D4E6CBE,
+                                                            0xB999E9E259F7BFA8, 0x2584D67D0C2EEAA9, 0x80AB07D4E9625724, 0x781DA616A7A76E54,
+                                                            0x9BE449736374F491, 0x8C6F86E8B0C4D74A, 0x1C1D4812CBD98,
+                                                            0x9B989BE60CFF0D15, 0x8B80A32171813F53, 0xF4F067606A56228E, 0x48F8237E159577B0,
+                                                            0x42529574B9E74156, 0xD8D26313F4AA9F9C, 0x1279AC6BC876C,
+                                                            0x9597544CBE9D88DF, 0x13801F440DF32748, 0xE4ECAFF9C15D0CEB, 0x7867D92EB045A646,
+                                                            0x2399062BA8C64EF, 0xE9258C0BDF8BBFF7, 0x1CE4BBF872205,
+                                                            0x257DBD530960BABC, 0xBBB3C7A7B4EDB1D4, 0xA817B7FDDD5BB8DA, 0x6A3D07CA392B7AB3,
+                                                            0xB38EA2B4A9AFF7BC, 0x4D3A923D8F9760D9, 0x18F20F7CBFBFE,
+                                                            0xED9DC89467FB039D, 0x17C71E114B5803D0, 0x816C3379BE9647BF, 0xB07F441A15434B64,
+                                                            0xCC65C1804AF4CBD1, 0xF06BF5F074032C77, 0x1A251F94CF02C,
+                                                            0x6239F7D1AD27CE42, 0x717E2E83920EF08C, 0xAA9328D01C5FDF24, 0x824E9DEA2B1F02F9,
+                                                            0x20B1D0984E195350, 0x4A5AFBFD02EF9414, 0x228BCA648BAFF,
+                                                            0x7DEDAD20B53F2C9A, 0xE7DD8746364EACC1, 0x743BABC72A5096D4, 0xDDA2FBF4E96A5174,
+                                                            0xE05A5B3B71083AF0, 0x69AB2A817C72ADCC, 0x216CFFC723E3C
+                                                          };
+
+/* Basis for Bob on A = 0, expressed in Montgomery representation */
+/* OQS note: unused
+static const uint64_t B_basis_zero[8*NWORDS64_FIELD]    = { 0x214C34BB192F67A0, 0xDD49D3D02115D30, 0x700652C1A7B66ED, 0x1F856B48F4FF0024,
+                                                     0xFBDE6F4E6A705221, 0xB951A3D6C93D87B8, 0xAE8ADB818ED6,
+                                                     0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
+                                                     0x51D889FE197209C1, 0x191BCD9DBE4FE0EF, 0x447818CF5E54DD8A, 0x3F42710E8562A583,
+                                                     0x647BDBB01C66DCB5, 0xF402D36C15EA12E1, 0xA1E1D287C14C,
+                                                     0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
+                                                     0xDEB3CB44E6D0985F, 0xF22B62C2FDEEA2CF, 0xF8FF9AD3E5849912, 0xDE3C0B31EE00FFDB,
+                                                     0x7FE7ED29C6E85C82, 0xB3AABBFFB887989D, 0x185944B95E46D,
+                                                     0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
+                                                     0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,
+                                                     0x51D889FE197209C1, 0x191BCD9DBE4FE0EF, 0x447818CF5E54DD8A, 0x3F42710E8562A583,
+                                                     0x647BDBB01C66DCB5, 0xF402D36C15EA12E1, 0xA1E1D287C14C };
+*/
 
 /* Full 3-torsion for Bob on A = 0, expressed in Montgomery representation */
-static const uint64_t B_gen_3_tors[16 * NWORDS64_FIELD] = {0xD697601DCA7CA4B5, 0xD16726DCBE0FD988, 0x8119DD7AF0E6C87C, 0xD1E1BDAB620C8DF9,
-                                                           0x27ABDBB336AF35D0, 0xC36900B91B5F4914, 0x1E21CCC021AE9, // XPB30
-                                                           0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,                       // XPB31
-                                                           0xDAEB901A8B0B1BF6, 0xCFA413FEE3DEEB, 0xD8A152FC022EDD7F, 0x69AEE6F393ADDBE5,
-                                                           0x45F3B54D85AB6DDE, 0x19F7181A0B697BAB, 0xE1C0ED0125C4, // YPB30
-                                                           0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,                      // YPB31
-                                                           0x29689FE235835B4A, 0x2E98D92341F02677, 0x7EE622850F193783, 0x2BDFB8CF80F37206,
-                                                           0x541A80C4FAA978D3, 0xA9935F1D6665D742, 0x52025B15585A, // XQB30
-                                                           0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,                      // XQB31
-                                                           0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,                      // YQB30
-                                                           0xDAEB901A8B0B1BF6, 0xCFA413FEE3DEEB, 0xD8A152FC022EDD7F, 0x69AEE6F393ADDBE5,
-                                                           0x45F3B54D85AB6DDE, 0x19F7181A0B697BAB, 0xE1C0ED0125C4, // YQB31
-                                                           0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,                      // XRB30
-                                                           0xFC42C90C960A3D15, 0x815F603FE9413385, 0x640A06136E6DF1BA, 0x71E4C95A57555FE7,
-                                                           0xBF7BAC5BE8654D6F, 0x27CD8B340B46A743, 0x259C6CF43995, // XRB31
-                                                           0xFF585E4DCB517F6A, 0xEFFCE64BA91FBE1C, 0xFAEB260583830D6E, 0xEB68E9A0F32E8E96,
-                                                           0x419A555BABEC214B, 0xBA7A5BFD1EA7D14F, 0x220892411AA66, // YRB30
-                                                           0xA7A1B234AE8095, 0x100319B456E041E3, 0x514D9FA7C7CF291, 0x12588CD9EFD17169,
-                                                           0x3A2C071C856C8D58, 0xB28203D9631D4F07, 0x13960305C8DD, // YRB31
-                                                           0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0,                      // XSB30
-                                                           0x3BD36F369F5C2EA, 0x7EA09FC016BECC7A, 0x9BF5F9EC91920E45, 0x8BDCAD208BAAA018,
-                                                           0xBC4AB01C48F36134, 0x452ED4A2767E7912, 0x20E82BA2339AF, // XSB31
-                                                           0xFF585E4DCB517F6A, 0xEFFCE64BA91FBE1C, 0xFAEB260583830D6E, 0xEB68E9A0F32E8E96,
-                                                           0x419A555BABEC214B, 0xBA7A5BFD1EA7D14F, 0x220892411AA66, // YSB30
-                                                           0xFF585E4DCB517F6A, 0xEFFCE64BA91FBE1C, 0xFAEB260583830D6E, 0xEB68E9A0F32E8E96,
-                                                           0x419A555BABEC214B, 0xBA7A5BFD1EA7D14F, 0x220892411AA66
-                                                          }; // YSB31
+static const uint64_t B_gen_3_tors[16 * NWORDS64_FIELD]   = { 0xD697601DCA7CA4B5, 0xD16726DCBE0FD988, 0x8119DD7AF0E6C87C, 0xD1E1BDAB620C8DF9,
+                                                              0x27ABDBB336AF35D0, 0xC36900B91B5F4914, 0x1E21CCC021AE9, // XPB30
+                                                              0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, // XPB31
+                                                              0xDAEB901A8B0B1BF6, 0xCFA413FEE3DEEB, 0xD8A152FC022EDD7F, 0x69AEE6F393ADDBE5,
+                                                              0x45F3B54D85AB6DDE, 0x19F7181A0B697BAB, 0xE1C0ED0125C4, // YPB30
+                                                              0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, // YPB31
+                                                              0x29689FE235835B4A, 0x2E98D92341F02677, 0x7EE622850F193783, 0x2BDFB8CF80F37206,
+                                                              0x541A80C4FAA978D3, 0xA9935F1D6665D742, 0x52025B15585A, // XQB30
+                                                              0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, // XQB31
+                                                              0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, // YQB30
+                                                              0xDAEB901A8B0B1BF6, 0xCFA413FEE3DEEB, 0xD8A152FC022EDD7F, 0x69AEE6F393ADDBE5,
+                                                              0x45F3B54D85AB6DDE, 0x19F7181A0B697BAB, 0xE1C0ED0125C4, // YQB31
+                                                              0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, // XRB30
+                                                              0xFC42C90C960A3D15, 0x815F603FE9413385, 0x640A06136E6DF1BA, 0x71E4C95A57555FE7,
+                                                              0xBF7BAC5BE8654D6F, 0x27CD8B340B46A743, 0x259C6CF43995, // XRB31
+                                                              0xFF585E4DCB517F6A, 0xEFFCE64BA91FBE1C, 0xFAEB260583830D6E, 0xEB68E9A0F32E8E96,
+                                                              0x419A555BABEC214B, 0xBA7A5BFD1EA7D14F, 0x220892411AA66, // YRB30
+                                                              0xA7A1B234AE8095, 0x100319B456E041E3, 0x514D9FA7C7CF291, 0x12588CD9EFD17169,
+                                                              0x3A2C071C856C8D58, 0xB28203D9631D4F07, 0x13960305C8DD, // YRB31
+                                                              0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, // XSB30
+                                                              0x3BD36F369F5C2EA, 0x7EA09FC016BECC7A, 0x9BF5F9EC91920E45, 0x8BDCAD208BAAA018,
+                                                              0xBC4AB01C48F36134, 0x452ED4A2767E7912, 0x20E82BA2339AF, // XSB31
+                                                              0xFF585E4DCB517F6A, 0xEFFCE64BA91FBE1C, 0xFAEB260583830D6E, 0xEB68E9A0F32E8E96,
+                                                              0x419A555BABEC214B, 0xBA7A5BFD1EA7D14F, 0x220892411AA66, // YSB30
+                                                              0xFF585E4DCB517F6A, 0xEFFCE64BA91FBE1C, 0xFAEB260583830D6E, 0xEB68E9A0F32E8E96,
+                                                              0x419A555BABEC214B, 0xBA7A5BFD1EA7D14F, 0x220892411AA66
+                                                            }; // YSB31
 
 /* Pre-computed pairing ReducedTatePairing(R0,S3,lB^eB) on A = 0 */
-static const uint64_t g_R_S_im[NWORDS64_FIELD] = {0x410F318D49162E42, 0x6D1F5B0D35833300, 0x5F4DFCA44B8DEA03, 0x908ADE1CD38203AD,
-                                                  0x100CD330A23B7494, 0xE0A2D716A265D0DA, 0x1C5F4777BD5A5
-                                                 };
+static const uint64_t g_R_S_im[NWORDS64_FIELD]          = { 0x410F318D49162E42, 0x6D1F5B0D35833300, 0x5F4DFCA44B8DEA03, 0x908ADE1CD38203AD,
+                                                            0x100CD330A23B7494, 0xE0A2D716A265D0DA, 0x1C5F4777BD5A5
+                                                          };
+
+/* Pre-computed pairing ReducedTatePairing(phiR,phiS,lB^eB) on A = 0 */
+/* OQS note: unused
+static const uint64_t g_phiR_phiS_re[NWORDS64_FIELD]    = { 0xE3F6DD5BAE3DA160, 0x893B9874EAD27B9A, 0xAEB72FD8BCC2583, 0x2FFCCC8FAFA395E,
+                                                     0x2303AE01DD252409, 0xC6AD33482DFD53FA, 0x978AD00D3221 };
+static const uint64_t g_phiR_phiS_im[NWORDS64_FIELD]    = { 0xC728DE8E32AF6622, 0xF179EECB0D4F3D28, 0x37CA8F90B93772D7, 0xA349AE99A7B40196,
+                                                     0xD81D98E9D4891BF8, 0x4767F6BC20C22291, 0x19AF8C13C99B8 };
+*/
 
 // Montgomery constant Montgomery_R2 = (2^448)^2 mod p434
-static const uint64_t Montgomery_R2[NWORDS64_FIELD] = {0x28E55B65DCD69B30, 0xACEC7367768798C2, 0xAB27973F8311688D, 0x175CC6AF8D6C7C0B,
-                                                       0xABCD92BF2DDE347E, 0x69E16A61C7686D9A, 0x000025A89BCDD12A
-                                                      };
+static const uint64_t Montgomery_R2[NWORDS64_FIELD]     = { 0x28E55B65DCD69B30, 0xACEC7367768798C2, 0xAB27973F8311688D, 0x175CC6AF8D6C7C0B,
+                                                            0xABCD92BF2DDE347E, 0x69E16A61C7686D9A, 0x000025A89BCDD12A
+                                                          };
 
 // constant Montgomery_RB1 = (2^NBITS_ORDER)^2 mod Bob_order
-static const uint64_t Montgomery_RB1[NWORDS64_FIELD] = {0xE63F0179FFC3EF1B, 0x47AF4CC2440BEB81, 0xEC3CD079857407E7, 0x8BF47C};
+static const uint64_t Montgomery_RB1[NWORDS64_FIELD]     = { 0xE63F0179FFC3EF1B, 0x47AF4CC2440BEB81, 0xEC3CD079857407E7, 0x8BF47C};
+
 
 // constant Montgomery_RB2 = -(3^OBOB_EXP)^-1 mod 2^NBITS_ORDER
-static const uint64_t Montgomery_RB2[NWORDS64_FIELD] = {0x7A9991106B9F6535, 0x7E06A4ACAEA6DA73, 0x3D4C8710FC0ECD0E, 0xAE3D0E8DC11F55F1};
+static const uint64_t Montgomery_RB2[NWORDS64_FIELD]     = { 0x7A9991106B9F6535, 0x7E06A4ACAEA6DA73, 0x3D4C8710FC0ECD0E, 0xAE3D0E8DC11F55F1};
+
 
 // Value one in Montgomery representation
-static const uint64_t Montgomery_one[NWORDS64_FIELD] = {0x000000000000742C, 0x0000000000000000, 0x0000000000000000, 0xB90FF404FC000000,
-                                                        0xD801A4FB559FACD4, 0xE93254545F77410C, 0x0000ECEEA7BD2EDA
-                                                       };
-
+static const uint64_t Montgomery_one[NWORDS64_FIELD]    = { 0x000000000000742C, 0x0000000000000000, 0x0000000000000000, 0xB90FF404FC000000,
+                                                            0xD801A4FB559FACD4, 0xE93254545F77410C, 0x0000ECEEA7BD2EDA
+                                                          };
 /* OQS note: unused
 // 1/3 mod p
-static const uint64_t threeinv[NWORDS64_FIELD] = {0x5555555555557C0E, 0x5555555555555555, 0x5555555555555555, 0x3C30F5A8EB555555, 0x9A84C9F93D7058B4, 0x410E5C007655D5E8, 0x1C70EFCA40721};
+const uint64_t threeinv[NWORDS64_FIELD] = {0x5555555555557C0E,0x5555555555555555,0x5555555555555555,0x3C30F5A8EB555555,0x9A84C9F93D7058B4,0x410E5C007655D5E8,0x1C70EFCA40721};
 */
 
 // Fixed parameters for isogeny tree computation
 static const unsigned int strat_Alice[MAX_Alice - 1] = {
-        48, 28, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 13, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 4, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 21, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1
+	48, 28, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 13, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 4, 2, 1, 1, 2, 1, 1, 2, 1, 1, 1, 21, 12, 7, 4, 2, 1, 1, 2, 1, 1, 3, 2, 1, 1, 1, 1, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1
 };
 
 static const unsigned int strat_Bob[MAX_Bob - 1] = {
-        66, 33, 17, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 32, 16, 8, 4, 3, 1, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1
+	66, 33, 17, 9, 5, 3, 2, 1, 1, 1, 1, 2, 1, 1, 1, 4, 2, 1, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 32, 16, 8, 4, 3, 1, 1, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 16, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1, 8, 4, 2, 1, 1, 2, 1, 1, 4, 2, 1, 1, 2, 1, 1
 };
 
 // Fixed traversal strategies for Pohlig-Hellman discrete logs
-static const unsigned int ph2_path[PLEN_2] = { // w_2 = 4
+static const unsigned int ph2_path[PLEN_2] = {
 #ifdef COMPRESSED_TABLES
-  #ifdef ELL2_TORUS
-    #if (W_2 == 4)
-      0, 0, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 9, 10, 11, 12, 13, 13, 13, 14, 14, 15, 16, 17, 18, 19, 19, 19, 19, 20, 21, 22, 22, 23, 24, 25, 26, 27, 27, 28, 28, 28, 28, 28, 29, 30, 31, 32, 33, 34, 34, 35
-    #endif
-  #endif
+#ifdef ELL2_TORUS
+#if (W_2 == 4)
+	0, 0, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 9, 10, 11, 12, 13, 13, 13, 14, 14, 15, 16, 17, 18, 19, 19, 19, 19, 20, 21, 22, 22, 23, 24, 25, 26, 27, 27, 28, 28, 28, 28, 28, 29, 30, 31, 32, 33, 34, 34, 35
+#endif
+#endif
 #endif
 };
 
 static const unsigned int ph3_path[PLEN_3] = {
 #ifdef COMPRESSED_TABLES
-  #ifdef ELL3_FULL_SIGNED
-    #if (W_3 == 3)
-      0, 0, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 9, 10, 11, 12, 13, 13, 13, 13, 14, 15, 16, 17, 18, 19, 19, 19, 19, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 28, 28, 28, 28, 28
-    #endif
-  #endif
+#ifdef ELL3_FULL_SIGNED
+#if (W_3 == 3)
+	0, 0, 1, 2, 3, 3, 4, 4, 5, 6, 6, 7, 8, 9, 9, 9, 10, 11, 12, 13, 13, 13, 13, 14, 15, 16, 17, 18, 19, 19, 19, 19, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 28, 28, 28, 28, 28
+#endif
+#endif
 #endif
 };
 
@@ -203,13 +230,12 @@ static const unsigned int ph3_path[PLEN_3] = {
 // For the 3^eB-torsion basis generation:
 //      A table of size 20 for values v = 1/(1+U*r^2)
 
-
 static const uint64_t u_entang[2 * NWORDS64_FIELD] = {
 	0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xE858, 0x0, 0x0, 0x721FE809F8000000, 0xB00349F6AB3F59A9, 0xD264A8A8BEEE8219, 0x1D9DD4F7A5DB5
 };
 
 // Elligator constant U = min{u0+k} for k=1,2... such that u0+k is a square in F_p^2 for generating 3^n torsion bases
-static const uint64_t U3[2*NWORDS64_FIELD] = {0xE858,0x0,0x0,0x721FE809F8000000,0xB00349F6AB3F59A9,0xD264A8A8BEEE8219,0x1D9DD4F7A5DB5,0x742C,0x0,0x0,0xB90FF404FC000000,0xD801A4FB559FACD4,0xE93254545F77410C,0xECEEA7BD2EDA};
+static const uint64_t U3[2 * NWORDS64_FIELD] = {0xE858, 0x0, 0x0, 0x721FE809F8000000, 0xB00349F6AB3F59A9, 0xD264A8A8BEEE8219, 0x1D9DD4F7A5DB5, 0x742C, 0x0, 0x0, 0xB90FF404FC000000, 0xD801A4FB559FACD4, 0xE93254545F77410C, 0xECEEA7BD2EDA};
 
 // Tables for quadratic residues and quadratic non residues v with 17 elements each.
 
@@ -351,45 +377,50 @@ static const uint64_t v_3_torsion[TABLE_V3_LEN][2 * NWORDS64_FIELD] = {
 };
 
 // Setting up macro defines and including GF(p), GF(p^2), curve, isogeny and kex functions
-#define fpcopy fpcopy434
-#define fpzero fpzero434
-#define fpadd fpadd434
-#define fpsub fpsub434
-#define fpneg fpneg434
-#define fpdiv2 fpdiv2_434
-#define fpcorrection fpcorrection434
-#define fpmul_mont fpmul434_mont
-#define fpsqr_mont fpsqr434_mont
-#define fpinv_mont fpinv434_mont
-#define fpinv_chain_mont fpinv434_chain_mont
-#define fpinv_mont_bingcd fpinv434_mont_bingcd
-#define fp2copy fp2copy434
-#define fp2zero fp2zero434
-#define fp2add fp2add434
-#define fp2sub fp2sub434
-#define mp_sub_p2 mp_sub434_p2
-#define mp_sub_p4 mp_sub434_p4
-#define sub_p4 mp_sub_p4
-#define fp2neg fp2neg434
-#define fp2div2 fp2div2_434
-#define fp2correction fp2correction434
-#define fp2mul_mont fp2mul434_mont
-#define fp2sqr_mont fp2sqr434_mont
-#define fp2inv_mont fp2inv434_mont
-#define fp2inv_mont_bingcd fp2inv434_mont_bingcd
-#define fpequal_non_constant_time fpequal434_non_constant_time
-#define mp_add_asm oqs_kem_sike_mp_add434_asm
-#define mp_subaddx2_asm oqs_kem_sike_mp_subadd434x2_asm
-#define mp_dblsubx2_asm oqs_kem_sike_mp_dblsub434x2_asm
-#define crypto_kem_keypair OQS_KEM_sike_p434_compressed_keypair
-#define crypto_kem_enc OQS_KEM_sike_p434_compressed_encaps
-#define crypto_kem_dec OQS_KEM_sike_p434_compressed_decaps
-#define random_mod_order_A oqs_kem_sidh_p434_compressed_random_mod_order_A
-#define random_mod_order_B oqs_kem_sidh_p434_compressed_random_mod_order_B
-#define EphemeralKeyGeneration_A oqs_kem_sidh_p434_compressed_EphemeralKeyGeneration_A
-#define EphemeralKeyGeneration_B oqs_kem_sidh_p434_compressed_EphemeralKeyGeneration_B
-#define EphemeralSecretAgreement_A oqs_kem_sidh_p434_compressed_EphemeralSecretAgreement_A
-#define EphemeralSecretAgreement_B oqs_kem_sidh_p434_compressed_EphemeralSecretAgreement_B
+#define fpcopy                        fpcopy434
+#define fpzero                        fpzero434
+#define fpadd                         fpadd434
+#define fpsub                         fpsub434
+#define fpneg                         fpneg434
+#define fpdiv2                        fpdiv2_434
+#define fpcorrection                  fpcorrection434
+#define fpmul                         fpmul434
+#define fpmul_mont                    fpmul434_mont
+#define fpsqr_mont                    fpsqr434_mont
+#define fpinv_mont                    fpinv434_mont
+#define fpinv_chain_mont              fpinv434_chain_mont
+#define fpinv_mont_bingcd             fpinv434_mont_bingcd
+#define fp2copy                       fp2copy434
+#define fp2zero                       fp2zero434
+#define fp2add                        fp2add434
+#define fp2sub                        fp2sub434
+#define mp_sub_p2                     mp_sub434_p2
+#define mp_sub_p4                     mp_sub434_p4
+#define sub_p4                        mp_sub_p4
+#define fp2neg                        fp2neg434
+#define fp2div2                       fp2div2_434
+#define fp2correction                 fp2correction434
+#define fp2mul_mont                   fp2mul434_mont
+#define fp2sqr_mont                   fp2sqr434_mont
+#define fp2mul_c0_mont                fp2mul434_c0_mont
+#define fp2mul_c1_mont                fp2mul434_c1_mont
+#define fp2sqr_c0_mont                fp2sqr434_c0_mont
+#define fp2sqr_c1_mont                fp2sqr434_c1_mont
+#define fp2inv_mont                   fp2inv434_mont
+#define fp2inv_mont_bingcd            fp2inv434_mont_bingcd
+#define fpequal_non_constant_time     fpequal434_non_constant_time
+#define mp_add_asm                    oqs_kem_sike_mp_add434_asm
+#define mp_subaddx2_asm               oqs_kem_sike_mp_subadd434x2_asm
+#define mp_dblsubx2_asm               oqs_kem_sike_mp_dblsub434x2_asm
+#define random_mod_order_A            oqs_kem_sidh_p434_compressed_random_mod_order_A
+#define random_mod_order_B            oqs_kem_sidh_p434_compressed_random_mod_order_B
+#define EphemeralKeyGeneration_A      oqs_kem_sidh_p434_compressed_EphemeralKeyGeneration_A
+#define EphemeralKeyGeneration_B      oqs_kem_sidh_p434_compressed_EphemeralKeyGeneration_B
+#define EphemeralSecretAgreement_A    oqs_kem_sidh_p434_compressed_EphemeralSecretAgreement_A
+#define EphemeralSecretAgreement_B    oqs_kem_sidh_p434_compressed_EphemeralSecretAgreement_B
+#define crypto_kem_keypair            OQS_KEM_sike_p434_compressed_keypair
+#define crypto_kem_enc                OQS_KEM_sike_p434_compressed_encaps
+#define crypto_kem_dec                OQS_KEM_sike_p434_compressed_decaps
 #ifdef USE_SIKEP434_ASM
 #define USE_SIKE_ASM
 #endif
@@ -401,6 +432,7 @@ static const uint64_t v_3_torsion[TABLE_V3_LEN][2 * NWORDS64_FIELD] = {
 #else
 #include "generic/fp_generic.c"
 #endif
+
 
 #include "../fpx.c"
 #include "../ec_isogeny.c"

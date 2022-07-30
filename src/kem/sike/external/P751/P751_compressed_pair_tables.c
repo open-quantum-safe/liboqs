@@ -1,8 +1,13 @@
 /**************************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: precomputed tables for pairing computation on E0: y^2 = x^3 + x when using compression
 ***************************************************************************************************/
+
 
 // T_tate3 contains 6*(eB-1)+4 elements from Fp. There are (eB-1) 6-tuples (l1,l2,n1,n2,x23,x2p3), each corresponding to a single step in the Miller loop.
 // The values l1 and l2 are the slopes of the doubling and point addition to compute the tripling, n1 and n2 are coefficients of the corresponding lines and
@@ -4308,6 +4313,7 @@ static const uint64_t T_tate3[(6 * (OBOB_EXPON - 1) + 4) * NWORDS64_FIELD] = {
 	0xF8D2EB0F73295E65, 0x457B13EBC470BCCB, 0xFDA1CC9EFEF5BE33, 0x5DBF3D92CC02
 };
 
+
 // Precomputed values for the first Miller iteration of the Tate pairing on the
 // 2^eA-torsion of E0: y^2 = x^3 + x. Contains a triple (x,y,l1), there the
 // coordinates x and y of the double of P are in Fp, the slope l1 is in Fp2.
@@ -4326,6 +4332,7 @@ static const uint64_t T_tate2_firststep_P[4 * NWORDS64_FIELD] = {
 	0x22553D769BF6FA4C, 0x1A02C98F8E9FF24C, 0xA1F4FF3CB5A2879A, 0x786B1F479BB26317,
 	0x6C788B0D7262433E, 0x5C08F513D0B359E6, 0xDF77EE49CF2DDDB, 0x2BE7A0285CE3
 };
+
 
 // From here on all values are in Fp. The table contains eA-2 triples (x,y,l1).
 
@@ -7660,6 +7667,7 @@ static const uint64_t T_tate2_P[3 * (OALICE_BITS - 2) * NWORDS64_FIELD] = {
 	0x9D47C529A5AE770, 0x1A5048049D1FA98E, 0x111FFD261D4F
 };
 
+
 // Precomputed values for the first Miller iteration of the Tate pairing on the
 // 2^eA-torsion of E0: y^2 = x^3 + x. Contains a triple (x,y,l1), there the
 // coordinates x and y of the double of Q are in Fp, the slope l1 is in Fp2.
@@ -7678,6 +7686,7 @@ static const uint64_t T_tate2_firststep_Q[4 * NWORDS64_FIELD] = {
 	0x2FEA96B083869ADA, 0x60347DA847067588, 0xBC88696946B32293, 0x17B2DF2CBFD97F3C,
 	0x9B56940153EFAA92, 0xB10099C181CFD23D, 0xD3DD0D847F870C47, 0x21D326FF0152
 };
+
 
 // From here on all values are in Fp. The table contains eA-2 triples (x,y,l1).
 
@@ -11010,3 +11019,4 @@ static const uint64_t T_tate2_Q[3 * (OALICE_BITS - 2) * NWORDS64_FIELD] = {
 	0x7A79E2B34091B54, 0xA05809DCB42F1792, 0xB8D6FA0B2FB9739F, 0xB92947307436AD45,
 	0xA478488AA072D9C3, 0x76EF5DE652478B48, 0x21B5B2D9A016385E, 0x36FB1719882D
 };
+

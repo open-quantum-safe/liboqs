@@ -1,5 +1,9 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: internal header file for P434
 *********************************************************************************************/
@@ -9,52 +13,54 @@
 
 #include "../config.h"
 
+
 #if (TARGET == TARGET_AMD64) || (TARGET == TARGET_ARM64) || (TARGET == TARGET_S390X) || (TARGET == TARGET_PPC64) || (TARGET == TARGET_PPC64LE)
-#define NWORDS_FIELD 7    // Number of words of a 434-bit field element
-#define p434_ZERO_WORDS 3 // Number of "0" digits in the least significant part of p434 + 1
+#define NWORDS_FIELD    7               // Number of words of a 434-bit field element
+#define p434_ZERO_WORDS 3               // Number of "0" digits in the least significant part of p434 + 1     
 #elif (TARGET == TARGET_x86) || (TARGET == TARGET_ARM)
-#define NWORDS_FIELD 14
+#define NWORDS_FIELD    14
 #define p434_ZERO_WORDS 6
 #endif
 
+
 // Basic constants
 
-#define NBITS_FIELD 434
-#define MAXBITS_FIELD 448
-#define MAXWORDS_FIELD ((MAXBITS_FIELD + RADIX - 1) / RADIX) // Max. number of words to represent field elements
-#define NWORDS64_FIELD ((NBITS_FIELD + 63) / 64)             // Number of 64-bit words of a 434-bit field element
-#define NBITS_ORDER 256
-#define NWORDS_ORDER ((NBITS_ORDER + RADIX - 1) / RADIX) // Number of words of oA and oB, where oA and oB are the subgroup orders of Alice and Bob, resp.
-#define NWORDS64_ORDER ((NBITS_ORDER + 63) / 64)         // Number of 64-bit words of a 224-bit element
-#define MAXBITS_ORDER NBITS_ORDER
-#define ALICE 0
-#define BOB 1
-#define OALICE_BITS 216
-#define OBOB_BITS 218
-#define OBOB_EXPON 137
-#define MASK_ALICE 0xFF
-#define MASK_BOB 0x01
-#define PRIME p434
-#define PARAM_A 6
-#define PARAM_C 1
+#define NBITS_FIELD             434
+#define MAXBITS_FIELD           448
+#define MAXWORDS_FIELD          ((MAXBITS_FIELD+RADIX-1)/RADIX)     // Max. number of words to represent field elements
+#define NWORDS64_FIELD          ((NBITS_FIELD+63)/64)               // Number of 64-bit words of a 434-bit field element 
+#define NBITS_ORDER             256
+#define NWORDS_ORDER            ((NBITS_ORDER+RADIX-1)/RADIX)       // Number of words of oA and oB, where oA and oB are the subgroup orders of Alice and Bob, resp.
+#define NWORDS64_ORDER          ((NBITS_ORDER+63)/64)               // Number of 64-bit words of a 224-bit element 
+#define MAXBITS_ORDER           NBITS_ORDER
+#define ALICE                   0
+#define BOB                     1
+#define OALICE_BITS             216
+#define OBOB_BITS               218
+#define OBOB_EXPON              137
+#define MASK_ALICE              0xFF
+#define MASK_BOB                0x01
+#define PRIME                   p434
+#define PARAM_A                 6
+#define PARAM_C                 1
 // Fixed parameters for isogeny tree computation
-#define MAX_INT_POINTS_ALICE 7
-#define MAX_INT_POINTS_BOB 8
-#define MAX_Alice 108
-#define MAX_Bob 137
-#define MSG_BYTES 16
-#define SECRETKEY_A_BYTES ((OALICE_BITS + 7) / 8)
-#define SECRETKEY_B_BYTES ((OBOB_BITS - 1 + 7) / 8)
-#define FP2_ENCODED_BYTES 2 * ((NBITS_FIELD + 7) / 8)
+#define MAX_INT_POINTS_ALICE    7
+#define MAX_INT_POINTS_BOB      8
+#define MAX_Alice               108
+#define MAX_Bob                 137
+#define MSG_BYTES               16
+#define SECRETKEY_A_BYTES       ((OALICE_BITS + 7) / 8)
+#define SECRETKEY_B_BYTES       ((OBOB_BITS - 1 + 7) / 8)
+#define FP2_ENCODED_BYTES       2*((NBITS_FIELD + 7) / 8)
 
 #ifdef COMPRESS
-#define MASK2_BOB 0x00
-#define MASK3_BOB 0x7F
-#define ORDER_A_ENCODED_BYTES SECRETKEY_A_BYTES
-#define ORDER_B_ENCODED_BYTES SECRETKEY_B_BYTES
-#define PARTIALLY_COMPRESSED_CHUNK_CT (4*ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 2)
-#define COMPRESSED_CHUNK_CT (3 * ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 2)
-#define UNCOMPRESSEDPK_BYTES 330
+#define MASK2_BOB               0x00
+#define MASK3_BOB               0x7F
+#define ORDER_A_ENCODED_BYTES   SECRETKEY_A_BYTES
+#define ORDER_B_ENCODED_BYTES   SECRETKEY_B_BYTES
+#define PARTIALLY_COMPRESSED_CHUNK_CT     (4*ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 2)
+#define COMPRESSED_CHUNK_CT     (3*ORDER_A_ENCODED_BYTES + FP2_ENCODED_BYTES + 2)
+#define UNCOMPRESSEDPK_BYTES    330
 // Table sizes used by the Entangled basis generation
 #define TABLE_R_LEN 17
 #define TABLE_V_LEN 34
@@ -78,31 +84,31 @@
 #define ELL3_FULL_SIGNED    // Uses signed digits to reduce table size by half
 // Length of the optimal strategy path for Pohlig-Hellman
 #ifdef COMPRESSED_TABLES
-    #if W_2 == 4
-        #define PLEN_2 55
-    #endif
-    #ifdef ELL2_TORUS
-        #define W_2_1 3
-    #endif
-
-    #ifdef ELL3_FULL_SIGNED
-    #if W_3 == 3
-         #define PLEN_3 47
-      #endif
-    #endif
-  #endif
+#if W_2 == 4
+#define PLEN_2 55
 #endif
+#ifdef ELL2_TORUS
+#define W_2_1 3
+#endif
+#ifdef ELL3_FULL_SIGNED
+#if W_3 == 3
+#define PLEN_3 47
+#endif
+#endif
+#endif
+#endif
+
 
 // SIDH's basic element definitions and point representations
 
-typedef digit_t felm_t[NWORDS_FIELD];      // Datatype for representing 434-bit field elements (448-bit max.)
-typedef digit_t dfelm_t[2 * NWORDS_FIELD]; // Datatype for representing double-precision 2x434-bit field elements (448-bit max.)
-typedef felm_t f2elm_t[2];                 // Datatype for representing quadratic extension field elements GF(p434^2)
+typedef digit_t felm_t[NWORDS_FIELD];                                 // Datatype for representing 434-bit field elements (448-bit max.)
+typedef digit_t dfelm_t[2 * NWORDS_FIELD];                            // Datatype for representing double-precision 2x434-bit field elements (2x448-bit max.)
+typedef felm_t  f2elm_t[2];                                           // Datatype for representing quadratic extension field elements GF(p434^2)
 
 typedef struct {
 	f2elm_t X;
 	f2elm_t Z;
-} point_proj; // Point representation in projective XZ Montgomery coordinates.
+} point_proj;                  // Point representation in projective XZ Montgomery coordinates.
 typedef point_proj point_proj_t[1];
 
 #ifdef COMPRESS
@@ -110,17 +116,18 @@ typedef struct {
 	f2elm_t X;
 	f2elm_t Y;
 	f2elm_t Z;
-} point_full_proj; // Point representation in full projective XYZ Montgomery coordinates
+} point_full_proj;  // Point representation in full projective XYZ Montgomery coordinates
 typedef point_full_proj point_full_proj_t[1];
 
 typedef struct {
 	f2elm_t x;
 	f2elm_t y;
-} point_affine; // Point representation in affine coordinates.
+} point_affine;                // Point representation in affine coordinates.
 typedef point_affine point_t[1];
 
 typedef f2elm_t publickey_t[3];
 #endif
+
 
 /**************** Function prototypes ****************/
 /************* Multiprecision functions **************/
@@ -130,10 +137,10 @@ static void mp_add434(const digit_t *a, const digit_t *b, digit_t *c);
 void oqs_kem_sike_mp_add434_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // 434-bit multiprecision subtraction, c = a-b+2p or c = a-b+4p
-extern void mp_sub434_p2(const digit_t* a, const digit_t* b, digit_t* c);
-extern void mp_sub434_p4(const digit_t* a, const digit_t* b, digit_t* c);
-void oqs_kem_sike_mp_sub434_p2_asm(const digit_t* a, const digit_t* b, digit_t* c); 
-void oqs_kem_sike_mp_sub434_p4_asm(const digit_t* a, const digit_t* b, digit_t* c); 
+extern void mp_sub434_p2(const digit_t *a, const digit_t *b, digit_t *c);
+extern void mp_sub434_p4(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_sub434_p2_asm(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_mp_sub434_p4_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // 2x434-bit multiprecision subtraction followed by addition with p434*2^448, c = a-b+(p434*2^448) if a-b < 0, otherwise c=a-b
 void oqs_kem_sike_mp_subaddx2_asm(const digit_t *a, const digit_t *b, digit_t *c);
@@ -173,11 +180,13 @@ static void fpcorrection434(digit_t *a);
 // 434-bit Montgomery reduction, c = a mod p
 void oqs_kem_sike_rdc434_asm(digit_t *ma, digit_t *mc);
 
-// Field multiplication using Montgomery arithmetic, c = a*b*R^-1 mod p434, where R=2^768
+// Field multiplication using Montgomery arithmetic, c = a*b*R^-1 mod p434, where R=2^448
 static void fpmul434_mont(const digit_t *a, const digit_t *b, digit_t *c);
+static void fpmul434(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_fpmul434_asm(const digit_t *a, const digit_t *b, digit_t *c);
 void oqs_kem_sike_mul434_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
-// Field squaring using Montgomery arithmetic, c = a*b*R^-1 mod p434, where R=2^768
+// Field squaring using Montgomery arithmetic, c = a*b*R^-1 mod p434, where R=2^448
 static void fpsqr434_mont(const digit_t *ma, digit_t *mc);
 
 // Field inversion, a = a^-1 in GF(p434)
@@ -214,14 +223,23 @@ static void fp2correction434(f2elm_t a);
 
 // GF(p434^2) squaring using Montgomery arithmetic, c = a^2 in GF(p434^2)
 static void fp2sqr434_mont(const f2elm_t a, f2elm_t c);
+static void fp2sqr434_c0_mont(const digit_t *a, digit_t *c);
+void oqs_kem_sike_fp2sqr434_c0_asm(const digit_t *a, digit_t *c);
+static void fp2sqr434_c1_mont(const digit_t *a, digit_t *c);
+void oqs_kem_sike_fp2sqr434_c1_asm(const digit_t *a, digit_t *c);
 
 // GF(p434^2) multiplication using Montgomery arithmetic, c = a*b in GF(p434^2)
 static void fp2mul434_mont(const f2elm_t a, const f2elm_t b, f2elm_t c);
+static void fp2mul434_c0_mont(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_fp2mul434_c0_asm(const digit_t *a, const digit_t *b, digit_t *c);
+static void fp2mul434_c1_mont(const digit_t *a, const digit_t *b, digit_t *c);
+void oqs_kem_sike_fp2mul434_c1_asm(const digit_t *a, const digit_t *b, digit_t *c);
 
 // GF(p434^2) inversion using Montgomery arithmetic, a = (a0-i*a1)/(a0^2+a1^2)
 static void fp2inv434_mont(f2elm_t a);
 
 // GF(p434^2) inversion, a = (a0-i*a1)/(a0^2+a1^2), GF(p434) inversion done using the binary GCD
 static void fp2inv434_mont_bingcd(f2elm_t a);
+
 
 #endif

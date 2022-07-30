@@ -1,5 +1,9 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: API header file for P751 using compression
 *********************************************************************************************/
@@ -10,6 +14,9 @@
 /*********************** Key encapsulation mechanism API ***********************/
 
 // OQS note: size #defines moved to P751.c to avoid redefinitions across parameters
+
+// Algorithm name: OQS note: can't redefine across all variants
+// #define CRYPTO_ALGNAME "SIKEp751_compressed"
 
 // SIKE's key generation
 // It produces a private key sk and computes the public key pk.
@@ -29,6 +36,7 @@ int OQS_KEM_sike_p751_compressed_encaps(unsigned char *ct, unsigned char *ss, co
 // Outputs: shared secret ss      (CRYPTO_BYTES = 32 bytes)
 int OQS_KEM_sike_p751_compressed_decaps(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
 
+
 // Encoding of keys for KEM-based isogeny system "SIKEp751" (wire format):
 // ----------------------------------------------------------------------
 // Elements over GF(p751) are encoded in 94 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
@@ -41,6 +49,7 @@ int OQS_KEM_sike_p751_compressed_decaps(unsigned char *ss, const unsigned char *
 // ct is encoded in 4*47 + 188 + 2 + 32 = 410 octets.
 // Shared keys ss consist of a value of 32 octets.
 
+
 /*********************** Ephemeral key exchange API ***********************/
 
 // SECURITY NOTE: SIDH supports ephemeral Diffie-Hellman key exchange. It is NOT secure to use it with static keys.
@@ -49,11 +58,11 @@ int OQS_KEM_sike_p751_compressed_decaps(unsigned char *ss, const unsigned char *
 
 // Generation of Alice's secret key
 // Outputs random even value in [0, 2^372 - 1] to be used as Alice's private key
-void oqs_kem_sidh_p751_compressed_random_mod_order_A(unsigned char *random_digits);
+int oqs_kem_sidh_p751_compressed_random_mod_order_A(unsigned char *random_digits);
 
 // Generation of Bob's secret key
 // Outputs random value multiple of 3 in [0, 2^Floor(Log(2,3^239)) - 1] to be used as Bob's private key
-void oqs_kem_sidh_p751_compressed_random_mod_order_B(unsigned char *random_digits);
+int oqs_kem_sidh_p751_compressed_random_mod_order_B(unsigned char *random_digits);
 
 // Alice's ephemeral public key generation
 // Input:  a private key PrivateKeyA in the range [0, 2^372 - 1], stored in 47 bytes.
@@ -80,6 +89,7 @@ int oqs_kem_sidh_p751_compressed_EphemeralSecretAgreement_A(const unsigned char 
 // Output: a shared secret SharedSecretB that consists of one element in GF(p751^2) encoded in 188 bytes.
 int oqs_kem_sidh_p751_compressed_EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned char *PublicKeyA, unsigned char *SharedSecretB);
 
+
 // Encoding of keys for KEX-based isogeny system "SIDHp751" (wire format):
 // ----------------------------------------------------------------------
 // Elements over GF(p751) are encoded in 94 octets in little endian format (i.e., the least significant octet is located in the lowest memory address).
@@ -89,5 +99,6 @@ int oqs_kem_sidh_p751_compressed_EphemeralSecretAgreement_B(const unsigned char 
 // Alice's and Bob's private keys are encoded in 47 and 48 octets, resp., in little endian format.
 // Public keys pk consist of 3 values of length OBOB_BITS, one element in GF(p751^2) and 2 bytes. In the SIKE API, pk is encoded in 335 octets.
 // Shared keys SharedSecretA and SharedSecretB consist of one element in GF(p751^2). In the SIDH API, they are encoded in 188 octets.
+
 
 #endif

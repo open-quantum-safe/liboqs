@@ -1,34 +1,51 @@
 /********************************************************************************************
 * SIDH: an efficient supersingular isogeny cryptography library
+* Copyright (c) Microsoft Corporation
+*
+* Website: https://github.com/microsoft/PQCrypto-SIDH
+* Released under MIT license
 *
 * Abstract: ephemeral supersingular isogeny Diffie-Hellman key exchange (SIDH)
 *********************************************************************************************/
 
-#include <string.h>
+#include <oqs/rand.h>
 
-static void init_basis(digit_t *gen, f2elm_t XP, f2elm_t XQ, f2elm_t XR) { // Initialization of basis points
+static void init_basis(digit_t *gen, f2elm_t XP, f2elm_t XQ, f2elm_t XR) {
+	// Initialization of basis points
 
-	fpcopy(gen, XP[0]);
-	fpcopy(gen + NWORDS_FIELD, XP[1]);
+	fpcopy(gen,                  XP[0]);
+	fpcopy(gen +   NWORDS_FIELD, XP[1]);
 	fpcopy(gen + 2 * NWORDS_FIELD, XQ[0]);
 	fpcopy(gen + 3 * NWORDS_FIELD, XQ[1]);
 	fpcopy(gen + 4 * NWORDS_FIELD, XR[0]);
 	fpcopy(gen + 5 * NWORDS_FIELD, XR[1]);
 }
 
-void random_mod_order_A(unsigned char *random_digits) { // Generation of Alice's secret key
-	// Outputs random value in [0, 2^eA - 1]
+
+int random_mod_order_A(unsigned char *random_digits) {
+	// Generation of Alice's secret key
+	// Outputs random value in [0, 2^eA - 1]. Returns 1 on error
+
 	OQS_randombytes(random_digits, SECRETKEY_A_BYTES);
-	random_digits[SECRETKEY_A_BYTES - 1] &= MASK_ALICE; // Masking last byte
+	random_digits[SECRETKEY_A_BYTES - 1] &= MASK_ALICE;  // Masking last byte
+
+	return 0;
 }
 
-void random_mod_order_B(unsigned char *random_digits) { // Generation of Bob's secret key
-	// Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]
+
+int random_mod_order_B(unsigned char *random_digits) {
+	// Generation of Bob's secret key
+	// Outputs random value in [0, 2^Floor(Log(2, oB)) - 1]. Returns 1 on error
+
 	OQS_randombytes(random_digits, SECRETKEY_B_BYTES);
-	random_digits[SECRETKEY_B_BYTES - 1] &= MASK_BOB; // Masking last byte
+	random_digits[SECRETKEY_B_BYTES - 1] &= MASK_BOB;   // Masking last byte
+
+	return 0;
 }
 
-int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA) { // Alice's ephemeral public key generation
+
+int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *PublicKeyA) {
+	// Alice's ephemeral public key generation
 	// Input:  a private key PrivateKeyA in the range [0, 2^eA - 1].
 	// Output: the public key PublicKeyA consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_ALICE];
@@ -37,14 +54,14 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 	digit_t SecretKeyA[NWORDS_ORDER] = {0};
 
 	// Initialize basis points
-	init_basis((digit_t *) A_gen, XPA, XQA, XRA);
-	init_basis((digit_t *) B_gen, phiP->X, phiQ->X, phiR->X);
-	fpcopy((digit_t *) &Montgomery_one, (phiP->Z)[0]);
-	fpcopy((digit_t *) &Montgomery_one, (phiQ->Z)[0]);
-	fpcopy((digit_t *) &Montgomery_one, (phiR->Z)[0]);
+	init_basis((digit_t *)A_gen, XPA, XQA, XRA);
+	init_basis((digit_t *)B_gen, phiP->X, phiQ->X, phiR->X);
+	fpcopy((digit_t *)&Montgomery_one, (phiP->Z)[0]);
+	fpcopy((digit_t *)&Montgomery_one, (phiQ->Z)[0]);
+	fpcopy((digit_t *)&Montgomery_one, (phiR->Z)[0]);
 
 	// Initialize constants: A24plus = A+2C, C24 = 4C, where A=6, C=1
-	fpcopy((digit_t *) &Montgomery_one, A24plus[0]);
+	fpcopy((digit_t *)&Montgomery_one, A24plus[0]);
 	mp2_add(A24plus, A24plus, A24plus);
 	mp2_add(A24plus, A24plus, C24);
 	mp2_add(A24plus, C24, A);
@@ -57,7 +74,7 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 #if (OALICE_BITS % 2 == 1)
 	point_proj_t S;
 
-	xDBLe(R, S, A24plus, C24, (int) (OALICE_BITS - 1));
+	xDBLe(R, S, A24plus, C24, (int)(OALICE_BITS - 1));
 	get_2_isog(S, A24plus, C24);
 	eval_2_isog(phiP, S);
 	eval_2_isog(phiQ, S);
@@ -73,7 +90,7 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 			fp2copy(R->Z, pts[npts]->Z);
 			pts_index[npts++] = index;
 			m = strat_Alice[ii++];
-			xDBLe(R, R, A24plus, C24, (int) (2 * m));
+			xDBLe(R, R, A24plus, C24, (int)(2 * m));
 			index += m;
 		}
 		get_4_isog(R, A24plus, C24, coeff);
@@ -109,7 +126,9 @@ int EphemeralKeyGeneration_A(const unsigned char *PrivateKeyA, unsigned char *Pu
 	return 0;
 }
 
-int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *PublicKeyB) { // Bob's ephemeral public key generation
+
+int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *PublicKeyB) {
+	// Bob's ephemeral public key generation
 	// Input:  a private key PrivateKeyB in the range [0, 2^Floor(Log(2,oB)) - 1].
 	// Output: the public key PublicKeyB consisting of 3 elements in GF(p^2) which are encoded by removing leading 0 bytes.
 	point_proj_t R, phiP = {0}, phiQ = {0}, phiR = {0}, pts[MAX_INT_POINTS_BOB];
@@ -118,14 +137,14 @@ int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *Pu
 	digit_t SecretKeyB[NWORDS_ORDER] = {0};
 
 	// Initialize basis points
-	init_basis((digit_t *) B_gen, XPB, XQB, XRB);
-	init_basis((digit_t *) A_gen, phiP->X, phiQ->X, phiR->X);
-	fpcopy((digit_t *) &Montgomery_one, (phiP->Z)[0]);
-	fpcopy((digit_t *) &Montgomery_one, (phiQ->Z)[0]);
-	fpcopy((digit_t *) &Montgomery_one, (phiR->Z)[0]);
+	init_basis((digit_t *)B_gen, XPB, XQB, XRB);
+	init_basis((digit_t *)A_gen, phiP->X, phiQ->X, phiR->X);
+	fpcopy((digit_t *)&Montgomery_one, (phiP->Z)[0]);
+	fpcopy((digit_t *)&Montgomery_one, (phiQ->Z)[0]);
+	fpcopy((digit_t *)&Montgomery_one, (phiR->Z)[0]);
 
 	// Initialize constants: A24minus = A-2C, A24plus = A+2C, where A=6, C=1
-	fpcopy((digit_t *) &Montgomery_one, A24plus[0]);
+	fpcopy((digit_t *)&Montgomery_one, A24plus[0]);
 	mp2_add(A24plus, A24plus, A24plus);
 	mp2_add(A24plus, A24plus, A24minus);
 	mp2_add(A24plus, A24minus, A);
@@ -143,7 +162,7 @@ int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *Pu
 			fp2copy(R->Z, pts[npts]->Z);
 			pts_index[npts++] = index;
 			m = strat_Bob[ii++];
-			xTPLe(R, R, A24minus, A24plus, (int) m);
+			xTPLe(R, R, A24minus, A24plus, (int)m);
 			index += m;
 		}
 		get_3_isog(R, A24minus, A24plus, coeff);
@@ -179,7 +198,9 @@ int EphemeralKeyGeneration_B(const unsigned char *PrivateKeyB, unsigned char *Pu
 	return 0;
 }
 
-int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned char *PublicKeyB, unsigned char *SharedSecretA) { // Alice's ephemeral shared secret computation
+
+int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned char *PublicKeyB, unsigned char *SharedSecretA) {
+	// Alice's ephemeral shared secret computation
 	// It produces a shared secret key SharedSecretA using her secret key PrivateKeyA and Bob's public key PublicKeyB
 	// Inputs: Alice's PrivateKeyA is an integer in the range [0, oA-1].
 	//         Bob's PublicKeyB consists of 3 elements in GF(p^2) encoded by removing leading 0 bytes.
@@ -197,7 +218,7 @@ int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned 
 
 	// Initialize constants: A24plus = A+2C, C24 = 4C, where C=1
 	get_A(PKB[0], PKB[1], PKB[2], A);
-	mp_add((digit_t*)&Montgomery_one, (digit_t*)&Montgomery_one, C24[0], NWORDS_FIELD);
+	mp_add((digit_t *)&Montgomery_one, (digit_t *)&Montgomery_one, C24[0], NWORDS_FIELD);
 	mp2_add(A, C24, A24plus);
 	mp_add(C24[0], C24[0], C24[0], NWORDS_FIELD);
 
@@ -208,7 +229,7 @@ int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned 
 #if (OALICE_BITS % 2 == 1)
 	point_proj_t S;
 
-	xDBLe(R, S, A24plus, C24, (int) (OALICE_BITS - 1));
+	xDBLe(R, S, A24plus, C24, (int)(OALICE_BITS - 1));
 	get_2_isog(S, A24plus, C24);
 	eval_2_isog(R, S);
 #endif
@@ -221,7 +242,7 @@ int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned 
 			fp2copy(R->Z, pts[npts]->Z);
 			pts_index[npts++] = index;
 			m = strat_Alice[ii++];
-			xDBLe(R, R, A24plus, C24, (int) (2 * m));
+			xDBLe(R, R, A24plus, C24, (int)(2 * m));
 			index += m;
 		}
 		get_4_isog(R, A24plus, C24, coeff);
@@ -241,12 +262,62 @@ int EphemeralSecretAgreement_A(const unsigned char *PrivateKeyA, const unsigned 
 	fp2sub(A24plus, C24, A24plus);
 	fp2add(A24plus, A24plus, A24plus);
 	j_inv(A24plus, C24, jinv);
-	fp2_encode(jinv, SharedSecretA); // Format shared secret
+	fp2_encode(jinv, SharedSecretA);    // Format shared secret
 
 	return 0;
 }
 
-int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned char *PublicKeyA, unsigned char *SharedSecretB) { // Bob's ephemeral shared secret computation
+
+static int publickey_validation(const f2elm_t *PKB, const f2elm_t A, const f2elm_t A24plus, const f2elm_t A24minus) {
+	// Public key validation
+	point_proj_t P = {0}, Q = {0};
+	f2elm_t A2 = {0}, tmp1 = {0}, tmp2 = {0};
+
+	// Verify that P and Q generate E_A[3^e_3] by checking that [3^(e_3-1)]P != [+-3^(e_3-1)]Q
+	fp2div2(A, A2);
+	fp2copy(PKB[0], P->X);
+	fpcopy((digit_t *)&Montgomery_one, (digit_t *)P->Z);
+	fp2copy(PKB[1], Q->X);
+	fpcopy((digit_t *)&Montgomery_one, (digit_t *)Q->Z);
+
+	xTPLe_fast(P, P, A2, MAX_Bob - 1);
+	xTPLe_fast(Q, Q, A2, MAX_Bob - 1);
+	fp2correction(P->Z);
+	fp2correction(Q->Z);
+	if ((is_felm_zero(P->Z[0]) && is_felm_zero(P->Z[1])) || (is_felm_zero(Q->Z[0]) && is_felm_zero(Q->Z[1]))) {
+		return 1;
+	}
+
+	fp2mul_mont(P->X, Q->Z, tmp1);
+	fp2mul_mont(P->Z, Q->X, tmp2);
+	fp2correction(tmp1);
+	fp2correction(tmp2);
+	if (memcmp((uint8_t *)tmp1, (uint8_t *)tmp2, 2 * NBITS_TO_NBYTES(NBITS_FIELD)) == 0) {
+		return 1;
+	}
+
+	// Check that Ord(P) = Ord(Q) = 3^(e_3)
+	xTPL_fast(P, P, A2);
+	xTPL_fast(Q, Q, A2);
+	fp2correction(P->Z);
+	fp2correction(Q->Z);
+	if (!is_felm_zero(P->Z[0]) || !is_felm_zero(P->Z[1]) || !is_felm_zero(Q->Z[0]) || !is_felm_zero(Q->Z[1])) {
+		return 1;
+	}
+
+#if NBITS_FIELD == 610  // Additionally check that 8 | #E
+	if (!is_sqr_fp2(A24plus, tmp1[0]) || !is_sqr_fp2(A24minus, tmp1[0])) {
+		return 1;
+	}
+#else
+	(void)A24plus, (void)A24minus;
+#endif
+	return 0;
+}
+
+
+static int EphemeralSecretAgreement_B_extended(const unsigned char *PrivateKeyB, const unsigned char *PublicKeyA, unsigned char *SharedSecretB, unsigned int sike) {
+	// Bob's ephemeral shared secret computation, including public key's validation (enabled through input "sike")
 	// It produces a shared secret key SharedSecretB using his secret key PrivateKeyB and Alice's public key PublicKeyA
 	// Inputs: Bob's PrivateKeyB is an integer in the range [0, 2^Floor(Log(2,oB)) - 1].
 	//         Alice's PublicKeyA consists of 3 elements in GF(p^2) encoded by removing leading 0 bytes.
@@ -264,9 +335,17 @@ int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned 
 
 	// Initialize constants: A24plus = A+2C, A24minus = A-2C, where C=1
 	get_A(PKB[0], PKB[1], PKB[2], A);
-	mp_add((digit_t*)&Montgomery_one, (digit_t*)&Montgomery_one, A24minus[0], NWORDS_FIELD);
+	mp_add((digit_t *)&Montgomery_one, (digit_t *)&Montgomery_one, A24minus[0], NWORDS_FIELD);
 	mp2_add(A, A24minus, A24plus);
 	mp2_sub_p2(A, A24minus, A24minus);
+
+	if (sike == 1) {
+#if defined(PK_VALIDATION)  // Validation of public key
+		if (publickey_validation(PKB, A, A24plus, A24minus) == 1) {
+			return 1;
+		}
+#endif
+	}
 
 	// Retrieve kernel point
 	decode_to_digits(PrivateKeyB, SecretKeyB, SECRETKEY_B_BYTES, NWORDS_ORDER);
@@ -280,7 +359,7 @@ int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned 
 			fp2copy(R->Z, pts[npts]->Z);
 			pts_index[npts++] = index;
 			m = strat_Bob[ii++];
-			xTPLe(R, R, A24minus, A24plus, (int) m);
+			xTPLe(R, R, A24minus, A24plus, (int)m);
 			index += m;
 		}
 		get_3_isog(R, A24minus, A24plus, coeff);
@@ -300,7 +379,18 @@ int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned 
 	fp2add(A, A, A);
 	fp2sub(A24plus, A24minus, A24plus);
 	j_inv(A, A24plus, jinv);
-	fp2_encode(jinv, SharedSecretB); // Format shared secret
+	fp2_encode(jinv, SharedSecretB);    // Format shared secret
 
 	return 0;
+}
+
+
+int EphemeralSecretAgreement_B(const unsigned char *PrivateKeyB, const unsigned char *PublicKeyA, unsigned char *SharedSecretB) {
+	// Bob's ephemeral shared secret computation
+	// It produces a shared secret key SharedSecretB using his secret key PrivateKeyB and Alice's public key PublicKeyA
+	// Inputs: Bob's PrivateKeyB is an integer in the range [0, 2^Floor(Log(2,oB)) - 1].
+	//         Alice's PublicKeyA consists of 3 elements in GF(p^2) encoded by removing leading 0 bytes.
+	// Output: a shared secret SharedSecretB that consists of one element in GF(p^2) encoded by removing leading 0 bytes.
+
+	return EphemeralSecretAgreement_B_extended(PrivateKeyB, PublicKeyA, SharedSecretB, 0);
 }
