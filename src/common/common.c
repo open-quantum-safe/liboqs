@@ -92,23 +92,28 @@ static void set_available_cpu_extensions(void) {
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
 }
 #elif defined(__FreeBSD__) || defined(__FreeBSD)
-#include <stdint.h>
-#include <machine/armreg.h>
+#include <sys/auxv.h>
+#include <machine/elf.h>
+
 static void set_available_cpu_extensions(void) {
 	/* mark that this function has been called */
+	u_long hwcaps = 0;
 	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
-	uint64_t isar0 = READ_SPECIALREG(id_aa64isar0_el1);
-	if (ID_AA64ISAR0_AES_VAL(isar0) >= ID_AA64ISAR0_AES_BASE) {
+	if (elf_aux_info(AT_HWCAP, &hwcaps, sizeof(u_long))) {
+		fprintf(stderr, "Error getting HWCAP for ARM on FreeBSD\n");
+		return;
+	}
+	if (hwcaps | HWCAP_AES) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_AES] = 1;
 	}
-	if (ID_AA64ISAR0_SHA2_VAL(isar0) >= ID_AA64ISAR0_SHA2_BASE) {
+	if (hwcaps | HWCAP_ASIMD) {
+		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
+	}
+	if (hwcaps | HWCAP_SHA2) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
 	}
-	if (ID_AA64ISAR0_SHA3_VAL(isar0) >= ID_AA64ISAR0_SHA3_BASE) {
+	if (hwcaps | HWCAP_SHA3) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_SHA3] = 1;
-	}
-	if (ID_AA64ISAR0_AdvSIMD_VAL(isar0) >= ID_AA64ISAR0_AdvSIMD_BASE) {
-		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
 	}
 }
 #else
