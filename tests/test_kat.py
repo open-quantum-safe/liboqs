@@ -11,7 +11,6 @@ from hashlib import sha256
 @pytest.mark.parametrize('kem_name', helpers.available_kems_by_name())
 def test_kem(kem_name):
     kats = helpers.get_kats("kem")
-    if kem_name.startswith('SIDH'): pytest.skip('KATs not available for SIDH')
     if not(helpers.is_kem_enabled_by_name(kem_name)): pytest.skip('Not enabled')
     output = helpers.run_subprocess(
         [helpers.path_to_executable('kat_kem'), kem_name],
@@ -39,4 +38,3 @@ def test_sig(sig_name):
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
-
