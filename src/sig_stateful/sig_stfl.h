@@ -42,12 +42,28 @@ extern "C" {
 #define OQS_SIG_STFL_alg_xmss_shake512_h16 "XMSS-SHAKE_16_512"
 /* Algorithm identifier for XMSS-SHAKE_20_512 */
 #define OQS_SIG_STFL_alg_xmss_shake512_h20 "XMSS-SHAKE_20_512"
+/* Algorithm identifier for XMSSMT-SHA2_20/2_256 */
+#define OQS_SIG_STFL_alg_xmssmt_sha256_2_h20 "XMSSMT-SHA2_20/2_256"
+/* Algorithm identifier for XMSSMT-SHA2_20/4_256 */
+#define OQS_SIG_STFL_alg_xmssmt_sha256_4_h20 "XMSSMT-SHA2_20/4_256"
+/* Algorithm identifier for XMSSMT-SHA2_40/2_256 */
+#define OQS_SIG_STFL_alg_xmssmt_sha256_2_h40 "XMSSMT-SHA2_40/2_256"
+/* Algorithm identifier for XMSSMT-SHA2_40/4_256 */
+#define OQS_SIG_STFL_alg_xmssmt_sha256_4_h40 "XMSSMT-SHA2_40/4_256"
+/* Algorithm identifier for XMSSMT-SHA2_40/8_256 */
+#define OQS_SIG_STFL_alg_xmssmt_sha256_8_h40 "XMSSMT-SHA2_40/8_256"
+/* Algorithm identifier for XMSSMT-SHA2_60/3_256 */
+#define OQS_SIG_STFL_alg_xmssmt_sha256_3_h60 "XMSSMT-SHA2_60/3_256"
+/* Algorithm identifier for XMSSMT-SHA2_60/6_256 */
+#define OQS_SIG_STFL_alg_xmssmt_sha256_6_h60 "XMSSMT-SHA2_60/6_256"
+/* Algorithm identifier for XMSSMT-SHA2_60/12_256 */
+#define OQS_SIG_STFL_alg_xmssmt_sha256_12_h60 "XMSSMT-SHA2_60/12_256"
 
 /**
  * LMS and XMSS^MT will be added later. So far its only XMSS
  *
  */
-#define OQS_SIG_STFL_algs_length 12
+#define OQS_SIG_STFL_algs_length 20
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_STFL_new.
@@ -194,7 +210,7 @@ OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig);
 #endif
 
 #ifdef OQS_ENABLE_SIG_STFL_XMSS
-#include <oqs/sig_stfl_xmss.h>
+#include <oqs/sig_stfl_xmss_xmssmt.h>
 #endif // OQS_ENABLE_SIG_STFL_XMSS
 #ifdef OQS_ENABLE_SIG_STFL_LMS
 #include <oqs/sig_stfl_lms.h>
