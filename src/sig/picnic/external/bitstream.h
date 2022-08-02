@@ -158,7 +158,7 @@ static inline void mzd_from_bitstream(bitstream_t* bs, mzd_local_t* v, const siz
 ATTR_TARGET_S256
 static inline void w256_to_bitstream(bitstream_t* bs, const word256 v, const size_t width,
                                      const size_t size) {
-  uint64_t buf[4] ATTR_ALIGNED(32);
+  ATTR_ALIGNED(32) uint64_t buf[4];
   mm256_store(buf, v);
 
   const uint64_t* d = &buf[width - 1];
@@ -173,7 +173,7 @@ static inline void w256_to_bitstream(bitstream_t* bs, const word256 v, const siz
 
 ATTR_TARGET_S256
 static inline word256 w256_from_bitstream(bitstream_t* bs, const size_t width, const size_t size) {
-  uint64_t buf[4] ATTR_ALIGNED(32) = {0};
+  ATTR_ALIGNED(32) uint64_t buf[4] = {0};
   uint64_t* d                      = &buf[width - 1];
   size_t bits                      = size;
   for (; bits >= sizeof(uint64_t) * 8; bits -= sizeof(uint64_t) * 8, --d) {
@@ -191,7 +191,7 @@ static inline word256 w256_from_bitstream(bitstream_t* bs, const size_t width, c
 ATTR_TARGET_S128
 static inline void w128_to_bitstream(bitstream_t* bs, const word128 v[2], const size_t width,
                                      const size_t size) {
-  uint64_t buf[4] ATTR_ALIGNED(16);
+  ATTR_ALIGNED(16) uint64_t buf[4];
   mm128_store(&buf[0], v[0]);
   mm128_store(&buf[2], v[1]);
 
@@ -208,7 +208,7 @@ static inline void w128_to_bitstream(bitstream_t* bs, const word128 v[2], const 
 ATTR_TARGET_S128
 static inline void w128_from_bitstream(bitstream_t* bs, word128 v[2], const size_t width,
                                        const size_t size) {
-  uint64_t buf[4] ATTR_ALIGNED(16) = {0};
+  ATTR_ALIGNED(16) uint64_t buf[4] = {0};
   uint64_t* d                      = &buf[width - 1];
   size_t bits                      = size;
   for (; bits >= sizeof(uint64_t) * 8; bits -= sizeof(uint64_t) * 8, --d) {

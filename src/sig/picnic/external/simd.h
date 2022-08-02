@@ -16,6 +16,10 @@
 
 #include "macros.h"
 
+#if !defined(HAVE_USEFUL_ATTR_ALIGNED)
+#error "SIMD support requires that the compiler supports some method to specify alignment."
+#endif
+
 #if defined(_MSC_VER)
 #include <immintrin.h>
 #elif defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))

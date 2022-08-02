@@ -120,12 +120,12 @@
 
 /* aligned attribute */
 /* note that C11's alignas will only do the job once DR 444 is implemented */
-#if GNUC_CHECK(4, 9) || __has_attribute(aligned)
+#if GNUC_CHECK(3, 2) || __has_attribute(aligned)
 #define ATTR_ALIGNED(i) __attribute__((aligned((i))))
 #define HAVE_USEFUL_ATTR_ALIGNED
-/* #elif defined(_MSC_VER)
-#define ATTR_ALIGNED(i) __declspec(align((i)))
-#define HAVE_USEFUL_ATTR_ALIGNED */
+#elif defined(_MSC_VER)
+#define ATTR_ALIGNED(i) __declspec(align(i))
+#define HAVE_USEFUL_ATTR_ALIGNED
 #else
 #define ATTR_ALIGNED(i)
 #endif
