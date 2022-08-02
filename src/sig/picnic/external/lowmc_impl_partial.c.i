@@ -7,7 +7,6 @@
  *  SPDX-License-Identifier: MIT
  */
 
-
 #if defined(FN_ATTR)
 FN_ATTR
 #endif
