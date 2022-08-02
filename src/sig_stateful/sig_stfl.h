@@ -60,9 +60,10 @@ extern "C" {
 #define OQS_SIG_STFL_alg_xmssmt_sha256_12_h60 "XMSSMT-SHA2_60/12_256"
 
 /**
- * LMS and XMSS^MT will be added later. So far its only XMSS
- *
+ * LMS will be added later. So far its only XMSS/XMSS^MT
  */
+
+
 #define OQS_SIG_STFL_algs_length 20
 
 /**
