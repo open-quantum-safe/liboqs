@@ -14,9 +14,9 @@
 #include "tmp_store.c"
 
 typedef enum sig_ops {
-	SIG_KEYGEN = 0,
-	SIG_SIGN   = 1,
-	SIG_VERIFY = 2
+	SIG_KEYGEN 		= 0,
+	SIG_STFL_SIGN   = 1,
+	SIG_STFL_VERIFY = 2
 } SIG_OPS;
 
 OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
@@ -70,7 +70,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		}
 		rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
 		if (rc != OQS_SUCCESS) {
-			fprintf(stderr, "ERROR: OQS_SIG_keypair failed\n");
+			fprintf(stderr, "ERROR: OQS_SIG_STFL_KEYPAIR failed\n");
 			goto err;
 		}
 		if (oqs_fstore("pk", method_name, public_key, sig->length_public_key) != OQS_SUCCESS) {
@@ -82,7 +82,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		ret = OQS_SUCCESS;
 		goto cleanup;
 
-	case SIG_SIGN:
+	case SIG_STFL_SIGN:
 		printf("================================================================================\n");
 		printf("Executing sign for SIG_STFL_ALG %s\n", sig->method_name);
 		printf("================================================================================\n");
@@ -110,7 +110,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 
 		rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key);
 		if (rc != OQS_SUCCESS) {
-			fprintf(stderr, "ERROR: OQS_SIG_sign failed\n");
+			fprintf(stderr, "ERROR: OQS_SIG_STFL_SIGN failed\n");
 			goto err;
 		}
 		if (oqs_fstore("ct", method_name, message, message_len) != OQS_SUCCESS) {
@@ -122,7 +122,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		ret = OQS_SUCCESS;
 		goto cleanup;
 
-	case SIG_VERIFY:
+	case SIG_STFL_VERIFY:
 		printf("================================================================================\n");
 		printf("Executing verify for SIG_STFL_ALG %s\n", sig->method_name);
 		printf("================================================================================\n");
@@ -154,7 +154,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 
 		rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key);
 		if (rc != OQS_SUCCESS) {
-			fprintf(stderr, "ERROR: OQS_SIG_verify failed\n");
+			fprintf(stderr, "ERROR: OQS_SIG_STFL_VERify failed\n");
 			goto err;
 		}
 

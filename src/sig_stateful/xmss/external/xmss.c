@@ -30,7 +30,7 @@ int xmss_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid)
     int ret = xmss_core_keypair(&params, pk + XMSS_OID_LEN, sk->secret_key + XMSS_OID_LEN);
     if (ret != 0) return ret;
 
-    unsigned long long max = pow(2, params.tree_height) - (unsigned long) 1;
+    unsigned long long max = pow(2, params.full_height) - (unsigned long) 1;
     ull_to_bytes(sk->secret_key + sk->length_secret_key - params.bytes_for_max, params.bytes_for_max, max);
     
     return ret;
@@ -121,7 +121,13 @@ int xmssmt_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid)
         pk[XMSS_OID_LEN - i - 1] = (oid >> (8 * i)) & 0xFF;
         sk->secret_key[XMSS_OID_LEN - i - 1] = (oid >> (8 * i)) & 0xFF;
     }
-    return xmssmt_core_keypair(&params, pk + XMSS_OID_LEN, sk->secret_key + XMSS_OID_LEN);
+    int ret = xmssmt_core_keypair(&params, pk + XMSS_OID_LEN, sk->secret_key + XMSS_OID_LEN);
+    if (ret != 0) return ret;
+
+    unsigned long long max = pow(2, params.full_height) - (unsigned long) 1;
+    ull_to_bytes(sk->secret_key + sk->length_secret_key - params.bytes_for_max, params.bytes_for_max, max);
+
+    return ret;
 }
 
 int xmssmt_sign(OQS_SECRET_KEY *sk,

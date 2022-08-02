@@ -5,12 +5,16 @@
 
 #include "xmss_namespace.h"
 
+#ifndef XMSS_OID_LEN
+#define XMSS_OID_LEN 4
+#endif
+
 /* These are merely internal identifiers for the supported hash functions. */
 #define XMSS_SHA2 0
 #define XMSS_SHAKE 1
 
 /* This is a result of the OID definitions in the draft; needed for parsing. */
-#define XMSS_OID_LEN 4
+
 
 #define FORWARD_SECURE
 

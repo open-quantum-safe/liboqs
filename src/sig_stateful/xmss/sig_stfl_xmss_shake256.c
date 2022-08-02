@@ -2,18 +2,21 @@
 #include <stdlib.h>
 #include "./external/xmss.h"
 #include "./external/params.h"
-#include "sig_stfl_xmss.h"
+#include "sig_stfl_xmss_xmssmt.h"
 #include "./external/xmss_namespace.h"
 
 // ======================== XMSS10-SHAKE256 ======================== //
 
-int OQS_SIG_STFL_alg_xmss_shake256_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake256_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
 	if (secret_key == NULL || public_key == NULL) {
-		return -1;
+		return OQS_ERROR;
 	}
 
 	uint32_t oid = 0x00000007;
-	return xmss_keypair(public_key, secret_key, oid);
+	if (xmss_keypair(public_key, secret_key, oid) != 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h10_new(void) {

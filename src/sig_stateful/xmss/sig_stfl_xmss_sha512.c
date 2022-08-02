@@ -1,20 +1,24 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <oqs/oqs.h>
 #include "./external/xmss.h"
 #include "./external/params.h"
-#include "sig_stfl_xmss.h"
+#include "sig_stfl_xmss_xmssmt.h"
 #include "./external/xmss_namespace.h"
 
 // ======================== XMSS10-SHa512 ======================== //
 
-int OQS_SIG_STFL_alg_xmss_sha512_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h10_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
 	if (secret_key == NULL || public_key == NULL) {
-		return -1;
+		return OQS_ERROR;
 	}
 
 	uint32_t oid = 0x00000004;
-	return xmss_keypair(public_key, secret_key, oid);
+	if (xmss_keypair(public_key, secret_key, oid) != 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h10_new(void) {
@@ -62,13 +66,16 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H10_new(void) {
 
 // ======================== XMSS16-SHA512 ======================== //
 
-int OQS_SIG_STFL_alg_xmss_sha512_h16_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h16_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
 	if (secret_key == NULL || public_key == NULL) {
-		return -1;
+		return OQS_ERROR;
 	}
 
 	uint32_t oid = 0x00000004;
-	return xmss_keypair(public_key, secret_key, oid);
+	if (xmss_keypair(public_key, secret_key, oid) != 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h16_new(void) {
@@ -114,13 +121,16 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHA512_H16_new(void) {
 
 // ======================== XMSS20-SHA512 ======================== //
 
-int OQS_SIG_STFL_alg_xmss_sha512_h20_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h20_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
 	if (secret_key == NULL || public_key == NULL) {
-		return -1;
+		return OQS_ERROR;
 	}
 
 	uint32_t oid = 0x00000004;
-	return xmss_keypair(public_key, secret_key, oid);
+	if (xmss_keypair(public_key, secret_key, oid) != 0) {
+		return OQS_ERROR;
+	}
+	return OQS_SUCCESS;
 }
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h20_new(void) {

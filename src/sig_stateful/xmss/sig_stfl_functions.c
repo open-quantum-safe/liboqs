@@ -1,5 +1,5 @@
 #include <string.h>
-#include "sig_stfl_xmss.h"
+#include "sig_stfl_xmss_xmssmt.h"
 
 #include "./external/params.h"
 #include "./external/xmss.h"

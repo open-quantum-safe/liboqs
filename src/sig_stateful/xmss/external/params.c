@@ -504,7 +504,7 @@ unsigned int get_bytes_for_max(unsigned int tree_height) {
 int xmss_xmssmt_initialize_params(xmss_params *params)
 {
     params->tree_height = params->full_height  / params->d;
-    params->bytes_for_max = get_bytes_for_max(params->tree_height);
+    params->bytes_for_max = get_bytes_for_max(params->full_height);
     if (params->wots_w == 4) {
         params->wots_log_w = 2;
         params->wots_len1 = 8 * params->n / params->wots_log_w;
