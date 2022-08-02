@@ -11,7 +11,7 @@
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_3_h60_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
 	if (secret_key == NULL || public_key == NULL) {
-		return -1;
+		return OQS_ERROR;
 	}
 
 	uint32_t oid = 0x00000006;
@@ -69,7 +69,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_3_H60_new(void) {
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_6_h60_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
 	if (secret_key == NULL || public_key == NULL) {
-		return -1;
+		return OQS_ERROR;
 	}
 
 	uint32_t oid = 0x00000007;
@@ -127,7 +127,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_6_H60_new(void) {
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sha256_12_h60_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
 	if (secret_key == NULL || public_key == NULL) {
-		return -1;
+		return OQS_ERROR;
 	}
 
 	uint32_t oid = 0x00000008;
