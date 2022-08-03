@@ -125,8 +125,6 @@ OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name);
 
 OQS_API void OQS_SECRET_KEY_free(OQS_SECRET_KEY *sk);
 
-OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_derive_subkey(OQS_SECRET_KEY *master_sk, const unsigned long long number_of_signatures);
-
 /**
  * Stateful signature scheme object
  */
@@ -196,6 +194,8 @@ typedef struct OQS_SIG_STFL {
 	 */
 	OQS_STATUS (*verify)(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 
+	OQS_SECRET_KEY *(*derive_subkey)(OQS_SECRET_KEY *master_key, const unsigned long long number_of_signatures);
+
 } OQS_SIG_STFL;
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name);
@@ -205,6 +205,8 @@ OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *pk, OQ
 OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key);
 
 OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
+
+OQS_API OQS_SECRET_KEY *OQS_SIG_STFL_derive_subkey(const OQS_SIG_STFL *sig, OQS_SECRET_KEY *master_key, const unsigned long long number_of_signatures);
 
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig);
 

@@ -278,7 +278,7 @@ unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_total(const OQS_SECRET_KEY 
 
 void perform_key_allocation(OQS_SECRET_KEY *sk);
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_alg_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs);
+OQS_SECRET_KEY *OQS_SIG_STFL_alg_xmss_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs);
 
 // --------------------------------------------------------------------------------------------------------
 
