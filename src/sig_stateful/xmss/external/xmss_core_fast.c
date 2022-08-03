@@ -783,7 +783,7 @@ int xmss_core_sign(const xmss_params *params,
     hash_message(params, msg_h, R, pub_root, idx,
                 buffer, mlen);
 
-    free(buffer);
+    OQS_MEM_insecure_free(buffer);
 
     // Start collecting signature
     *smlen = 0;
@@ -1121,7 +1121,7 @@ int xmssmt_core_sign(const xmss_params *params,
     hash_message(params, msg_h, R, pub_root, idx,
                 buffer, mlen);
 
-    free(buffer);
+    OQS_MEM_insecure_free(buffer);
 
 
     // /* Already put the message in the right place, to make it easier to prepend
