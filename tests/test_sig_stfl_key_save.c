@@ -32,10 +32,10 @@ typedef struct magic_s {
 #define MAX_FILE_NAME_LEN 60
 char filename[MAX_FILE_NAME_LEN] = "XMSS-SHA2_10_256";
 
-void prepend(char* s, const char* t) {
-    size_t len = strlen(t);
-    memmove(s + len, s, strlen(s) + 1);
-    memcpy(s, t, len);
+void prepend(char *s, const char *t) {
+	size_t len = strlen(t);
+	memmove(s + len, s, strlen(s) + 1);
+	memcpy(s, t, len);
 }
 
 OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
@@ -44,12 +44,12 @@ OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
 }
 
 OQS_STATUS release_sk_key(OQS_SECRET_KEY *sk) {
-    printf("rk=%02x\n", sk->secret_key[0]);
+	printf("rk=%02x\n", sk->secret_key[0]);
 	return 0;
 }
 
 OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
-    printf("save_k=%02x\n", sk->secret_key[0]);
+	printf("save_k=%02x\n", sk->secret_key[0]);
 	return 0;
 }
 
@@ -58,23 +58,23 @@ OQS_STATUS sk_file_write(const OQS_SECRET_KEY *sk) {
 	prepend(filename, "./tmp/oqs_");
 	strcat(filename, "__sk");
 
-    printf("\nWriting to file %s\n", filename);
-    FILE *printer = fopen(filename, "w+");
-    if (printer == NULL) {
-        perror("ERROR! There is no such file. Terminating...");
-        return -1;
-    }
+	printf("\nWriting to file %s\n", filename);
+	FILE *printer = fopen(filename, "w+");
+	if (printer == NULL) {
+		perror("ERROR! There is no such file. Terminating...");
+		return -1;
+	}
 
-    // Write the entire secret key byte array to the specified file.
-    for (unsigned long i = 0; i < sk->length_secret_key; i++) {
-        if (fputc(sk->secret_key[i], printer) == EOF) {
-            perror("ERROR! There is no such file. Terminating...");
-            return -1;
-        }
-    }
-    fclose(printer);
-    printf("Completed the write operation\n");
-    return 0;
+	// Write the entire secret key byte array to the specified file.
+	for (unsigned long i = 0; i < sk->length_secret_key; i++) {
+		if (fputc(sk->secret_key[i], printer) == EOF) {
+			perror("ERROR! There is no such file. Terminating...");
+			return -1;
+		}
+	}
+	fclose(printer);
+	printf("Completed the write operation\n");
+	return 0;
 }
 
 static OQS_STATUS sig_test_correctness(const char *method_name) {
@@ -119,7 +119,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name) {
 	if (secret_key == NULL) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
 		goto err;
-	}	
+	}
 
 	//Set the magic numbers before
 	memcpy(public_key, magic.val, sizeof(magic_t));

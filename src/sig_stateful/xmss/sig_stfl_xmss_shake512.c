@@ -72,7 +72,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake512_h16_keypair(uint8_t *public_ke
 	}
 
 	uint32_t oid = 0x0000000b;
-		if (xmss_keypair(public_key, secret_key, oid) != 0) {
+	if (xmss_keypair(public_key, secret_key, oid) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -129,7 +129,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_shake512_h20_keypair(uint8_t *public_ke
 	}
 
 	uint32_t oid = 0x0000000c;
-		if (xmss_keypair(public_key, secret_key, oid) != 0) {
+	if (xmss_keypair(public_key, secret_key, oid) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;

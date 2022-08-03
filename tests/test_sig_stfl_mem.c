@@ -14,7 +14,7 @@
 #include "tmp_store.c"
 
 typedef enum sig_ops {
-	SIG_KEYGEN 		= 0,
+	SIG_KEYGEN      = 0,
 	SIG_STFL_SIGN   = 1,
 	SIG_STFL_VERIFY = 2
 } SIG_OPS;
@@ -25,12 +25,12 @@ OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
 }
 
 OQS_STATUS release_sk_key(OQS_SECRET_KEY *sk) {
-    printf("%02x", sk->secret_key[0]);
+	printf("%02x", sk->secret_key[0]);
 	return 0;
 }
 
 OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
-    printf("%02x", sk->secret_key[0]);
+	printf("%02x", sk->secret_key[0]);
 	return 0;
 }
 
@@ -58,7 +58,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		printf("================================================================================\n");
 
 		public_key = malloc(sig->length_public_key);
-		
+
 		secret_key = OQS_SECRET_KEY_new(method_name);
 		secret_key->lock_key = lock_sk_key;
 		secret_key->release_key = release_sk_key;

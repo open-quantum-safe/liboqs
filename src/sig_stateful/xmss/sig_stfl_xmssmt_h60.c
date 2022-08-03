@@ -41,7 +41,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_3_h60_new(void) {
 
 	sig->keypair = OQS_SIG_STFL_alg_xmssmt_sha256_3_h60_keypair;
 	sig->sign = OQS_SIG_STFL_alg_xmssmt_sign;
-	sig->verify = OQS_SIG_STFL_alg_xmssmt_verify;	
+	sig->verify = OQS_SIG_STFL_alg_xmssmt_verify;
 
 	return sig;
 }
@@ -99,7 +99,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_6_h60_new(void) {
 
 	sig->keypair = OQS_SIG_STFL_alg_xmssmt_sha256_6_h60_keypair;
 	sig->sign = OQS_SIG_STFL_alg_xmssmt_sign;
-	sig->verify = OQS_SIG_STFL_alg_xmssmt_verify;	
+	sig->verify = OQS_SIG_STFL_alg_xmssmt_verify;
 
 	return sig;
 }
@@ -157,7 +157,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_12_h60_new(void) {
 
 	sig->keypair = OQS_SIG_STFL_alg_xmssmt_sha256_12_h60_keypair;
 	sig->sign = OQS_SIG_STFL_alg_xmssmt_sign;
-	sig->verify = OQS_SIG_STFL_alg_xmssmt_verify;	
+	sig->verify = OQS_SIG_STFL_alg_xmssmt_verify;
 
 	return sig;
 }
