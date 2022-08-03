@@ -5,7 +5,7 @@
 /.CMake @xvzcf
 /docs @dstebila
 /scripts @xvzcf
-/scripts/copy_from_upstream @baentsch @bhess @xvczf
+/scripts/copy_from_upstream @baentsch @bhess @xvzcf
 /src/common @dstebila
 /src/kem/bike @crockeea
 /src/kem/frodokem @dstebila
