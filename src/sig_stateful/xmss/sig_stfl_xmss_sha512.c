@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -126,7 +128,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha512_h20_keypair(uint8_t *public_key,
 		return OQS_ERROR;
 	}
 
-	uint32_t oid = 0x00000005;
+	uint32_t oid = 0x00000006;
 	if (xmss_keypair(public_key, secret_key, oid) != 0) {
 		return OQS_ERROR;
 	}

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #include <string.h>
 #include "sig_stfl_xmss_xmssmt.h"
 

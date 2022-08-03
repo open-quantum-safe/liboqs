@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: MIT
 
 // hash.h - ALL THE HASHING FUNCTIONS
 #define prf oqs_sig_stfl_xmss_prf

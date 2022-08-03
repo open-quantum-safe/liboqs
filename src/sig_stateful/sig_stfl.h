@@ -1,7 +1,9 @@
-/*
- * \file sig_stateful.h
+/**
+ * \file sig_stfl.h
  * \brief Stateful Signature schemes
  *
+ * The file `tests/example_sig_stfl.c` contains an example on using the OQS_SIG_STFL API.
+ * 
  * SPDX-License-Identifier: MIT
  */
 

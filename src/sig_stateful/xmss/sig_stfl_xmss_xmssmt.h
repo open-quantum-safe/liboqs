@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 #ifndef OQS_SIG_STFL_XMSS_XMSSMT_H
 #define OQS_SIG_STFL_XMSS_XMSSMT_H
 
