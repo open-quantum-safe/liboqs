@@ -103,7 +103,7 @@ void perform_key_allocation(OQS_SECRET_KEY *sk) {
 	memset(sk->secret_key, 0, sk->length_secret_key);
 }
 
-OQS_SECRET_KEY *OQS_SECRET_KEY_alg_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs) {
+OQS_SECRET_KEY *OQS_SIG_STFL_alg_xmss_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs) {
 
 	OQS_SECRET_KEY *subkey = (OQS_SECRET_KEY *)malloc(sizeof(OQS_SECRET_KEY));
 

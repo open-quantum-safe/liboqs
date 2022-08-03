@@ -352,7 +352,7 @@ OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_derive_subkey(OQS_SECRET_KEY *master_key,
 	assert(master_key != NULL);
 	assert(number_of_signatures > 0);
 
-	return OQS_SECRET_KEY_alg_derive_subkey(master_key, number_of_signatures);
+	return OQS_SIG_STFL_alg_xmss_derive_subkey(master_key, number_of_signatures);
 }
 
 
