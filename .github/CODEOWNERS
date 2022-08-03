@@ -11,7 +11,6 @@
 /src/kem/frodokem @dstebila
 /src/kem/kyber @jschanck @bhess
 /src/kem/ntru @jschanck
-/src/kem/sike @christianpaquin
 /src/oqsconfig.h.cmake @xvzcf
 /src/sig/dilithium @bhess
 /src/sig/picnic @christianpaquin

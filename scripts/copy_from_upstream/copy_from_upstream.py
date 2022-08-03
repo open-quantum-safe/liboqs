@@ -695,11 +695,10 @@ def verify_from_upstream():
     if (differ > 0):
         exit(1)
 
-non_upstream_lengths['kem'] = count_non_upstream_algs('kem', ['bike', 'frodokem', 'sike'])
+non_upstream_lengths['kem'] = count_non_upstream_algs('kem', ['bike', 'frodokem'])
 non_upstream_lengths['sig'] = count_non_upstream_algs('sig', ['picnic'])
 
 if args.operation == "copy":
     copy_from_upstream()
 elif args.operation == "verify":
     verify_from_upstream()
-

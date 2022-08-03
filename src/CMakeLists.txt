@@ -17,10 +17,6 @@ if(${OQS_ENABLE_KEM_FRODOKEM})
     add_subdirectory(kem/frodokem)
     set(KEM_OBJS ${KEM_OBJS} ${FRODOKEM_OBJS})
 endif()
-if(${OQS_ENABLE_KEM_SIKE} OR ${OQS_ENABLE_KEM_SIDH})
-    add_subdirectory(kem/sike)
-    set(KEM_OBJS ${KEM_OBJS} $<TARGET_OBJECTS:sike>)
-endif()
 if(${OQS_ENABLE_SIG_PICNIC})
     add_subdirectory(sig/picnic)
     set(SIG_OBJS ${SIG_OBJS} $<TARGET_OBJECTS:picnic>)
@@ -138,4 +134,3 @@ export(EXPORT liboqsTargets
        FILE "${CMAKE_CURRENT_BINARY_DIR}/cmake/liboqsTargets.cmake"
        NAMESPACE OQS::
 )
-
