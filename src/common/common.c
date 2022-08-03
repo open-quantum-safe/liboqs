@@ -191,6 +191,10 @@ OQS_API void OQS_init(void) {
 	return;
 }
 
+OQS_API const char *OQS_version(void) {
+	return OQS_VERSION_TEXT;
+}
+
 OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
 	/* Assume CHAR_BIT = 8 */
 	uint8_t r = 0;
