@@ -144,6 +144,11 @@ OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext);
 OQS_API void OQS_init(void);
 
 /**
+ * Return library version string.
+ */
+OQS_API const char *OQS_version(void);
+
+/**
  * Constant time comparison of byte sequences `a` and `b` of length `len`.
  * Returns 0 if the byte sequences are equal or if `len`=0.
  * Returns 1 otherwise.

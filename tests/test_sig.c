@@ -183,6 +183,8 @@ void *test_wrapper(void *arg) {
 
 int main(int argc, char **argv) {
 
+	printf("Testing signature algorithms using liboqs version %s\n", OQS_version());
+
 	if (argc != 2) {
 		fprintf(stderr, "Usage: test_sig algname\n");
 		fprintf(stderr, "  algname: ");
