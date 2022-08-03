@@ -338,6 +338,13 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
 	}
 }
 
+OQS_API OQS_SECRET_KEY *OQS_SIG_STFL_derive_subkey(const OQS_SIG_STFL *sig, OQS_SECRET_KEY *master_key, const unsigned long long number_of_signatures) {
+	assert(master_key != NULL);
+	assert(number_of_signatures > 0);
+
+	return sig->derive_subkey(master_key, number_of_signatures);
+}
+
 
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig) {
 	OQS_MEM_insecure_free(sig);
@@ -346,14 +353,6 @@ OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig) {
 
 
 // ================================= OQS_SECRET_KEY FUNCTION ===============================================
-
-
-OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_signatures) {
-	assert(master_key != NULL);
-	assert(number_of_signatures > 0);
-
-	return OQS_SIG_STFL_alg_xmss_derive_subkey(master_key, number_of_signatures);
-}
 
 
 OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name) {
