@@ -80,7 +80,16 @@ typedef struct {
   const mzd_local_t* precomputed_constant_non_linear;
 } lowmc_partial_t;
 
+/**
+ * Unique identifier for a LowMC instance
+ */
 #define LOWMC_ID(n, m) ((((uint32_t)n) << 16) | (uint32_t)m)
-#define LOWMC_GET_ID(lowmc) LOWMC_ID(lowmc->n, lowmc->m)
+
+/**
+ * Obtain unique LowMC instance identifier
+ */
+static inline ATTR_PURE uint32_t lowmc_get_id(const lowmc_parameters_t* lowmc) {
+  return LOWMC_ID(lowmc->n, lowmc->m);
+}
 
 #endif

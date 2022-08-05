@@ -16,7 +16,7 @@ crypto-assumption: hash function security (ROM/QROM), key recovery attacks on th
   lowMC block cipher
 website: https://microsoft.github.io/Picnic/
 nist-round: 3
-spec-version: 3.0.16
+spec-version: 3.0.17
 primary-upstream:
   source: https://github.com/IAIK/Picnic
   spdx-license-identifier: MIT

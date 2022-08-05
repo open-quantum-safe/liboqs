@@ -38,13 +38,13 @@ typedef struct msgs_t {
 } msgs_t;
 
 typedef struct proof2_t {
-  uint16_t unOpenedIndex; // P[t], index of the party that is not opened.
   uint8_t* seedInfo; // Information required to compute the tree with seeds of of all opened parties
-  size_t seedInfoLen; // Length of seedInfo buffer
-  uint8_t* aux;       // Last party's correction bits; NULL if P[t] == N-1
-  uint8_t* C;         // Commitment to preprocessing step of unopened party
-  uint8_t* input;     // Masked input used in online execution
-  uint8_t* msgs;      // Broadcast messages of unopened party P[t]
+  size_t seedInfoLen;     // Length of seedInfo buffer
+  uint8_t* aux;           // Last party's correction bits; NULL if P[t] == N-1
+  uint8_t* C;             // Commitment to preprocessing step of unopened party
+  uint8_t* input;         // Masked input used in online execution
+  uint8_t* msgs;          // Broadcast messages of unopened party P[t]
+  uint16_t unOpenedIndex; // P[t], index of the party that is not opened.
 } proof2_t;
 
 typedef struct signature2_t {
@@ -58,8 +58,6 @@ typedef struct signature2_t {
   uint16_t* challengeP;
   proof2_t* proofs; // One proof for each online execution the verifier checks
 } signature2_t;
-
-#define UNUSED_PARAMETER(x) (void)(x)
 
 void allocateRandomTape(randomTape_t* tape, const picnic_instance_t* params);
 void freeRandomTape(randomTape_t* tape);

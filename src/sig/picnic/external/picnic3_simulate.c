@@ -574,59 +574,65 @@ static void picnic3_mpc_sbox_s256_lowmc_255_255_4(mzd_local_t* statein, randomTa
 #endif // WITH_OPT
 
 lowmc_simulate_online_f lowmc_simulate_online_get_implementation(const lowmc_parameters_t* lowmc) {
-  assert((lowmc->m == 43 && lowmc->n == 129) || (lowmc->m == 64 && lowmc->n == 192) ||
-         (lowmc->m == 85 && lowmc->n == 255));
+  const uint32_t lowmc_id = lowmc_get_id(lowmc);
 
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   if (CPU_SUPPORTS_AVX2) {
+    switch (lowmc_id) {
 #if defined(WITH_LOWMC_129_129_4)
-    if (lowmc->n == 129 && lowmc->m == 43)
+    case LOWMC_ID(129, 43):
       return lowmc_simulate_online_s256_129_43;
 #endif
 #if defined(WITH_LOWMC_192_192_4)
-    if (lowmc->n == 192 && lowmc->m == 64)
+    case LOWMC_ID(192, 64):
       return lowmc_simulate_online_s256_192_64;
 #endif
 #if defined(WITH_LOWMC_255_255_4)
-    if (lowmc->n == 255 && lowmc->m == 85)
+    case LOWMC_ID(255, 85):
       return lowmc_simulate_online_s256_255_85;
 #endif
+    }
   }
 #endif
 
 #if defined(WITH_SSE2) || defined(WITH_NEON)
   if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
+    switch (lowmc_id) {
 #if defined(WITH_LOWMC_129_129_4)
-    if (lowmc->n == 129 && lowmc->m == 43)
+    case LOWMC_ID(129, 43):
       return lowmc_simulate_online_s128_129_43;
 #endif
 #if defined(WITH_LOWMC_192_192_4)
-    if (lowmc->n == 192 && lowmc->m == 64)
+    case LOWMC_ID(192, 64):
       return lowmc_simulate_online_s128_192_64;
 #endif
 #if defined(WITH_LOWMC_255_255_4)
-    if (lowmc->n == 255 && lowmc->m == 85)
+    case LOWMC_ID(255, 85):
       return lowmc_simulate_online_s128_255_85;
 #endif
+    }
   }
 #endif
 #endif
 
 #if !defined(NO_UINT64_FALLBACK)
+  switch (lowmc_id) {
 #if defined(WITH_LOWMC_129_129_4)
-  if (lowmc->n == 129 && lowmc->m == 43)
+  case LOWMC_ID(129, 43):
     return lowmc_simulate_online_uint64_129_43;
 #endif
 #if defined(WITH_LOWMC_192_192_4)
-  if (lowmc->n == 192 && lowmc->m == 64)
+  case LOWMC_ID(192, 64):
     return lowmc_simulate_online_uint64_192_64;
 #endif
 #if defined(WITH_LOWMC_255_255_4)
-  if (lowmc->n == 255 && lowmc->m == 85)
+  case LOWMC_ID(255, 85):
     return lowmc_simulate_online_uint64_255_85;
 #endif
+  }
 #endif
 
+  UNREACHABLE;
   return NULL;
 }

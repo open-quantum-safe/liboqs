@@ -732,7 +732,7 @@ static void sbox_aux_s256_lowmc_255_255_4(mzd_local_t* statein, mzd_local_t* sta
 
 void lowmc_compute(const lowmc_parameters_t* lowmc, const lowmc_key_t* key, const mzd_local_t* x,
                    mzd_local_t* y) {
-  const uint32_t lowmc_id = LOWMC_GET_ID(lowmc);
+  const uint32_t lowmc_id = lowmc_get_id(lowmc);
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   /* AVX2 enabled instances */
@@ -865,7 +865,7 @@ void lowmc_compute(const lowmc_parameters_t* lowmc, const lowmc_key_t* key, cons
 #if defined(PICNIC_STATIC)
 // This function is only used by the LowMC benchmark.
 lowmc_implementation_f lowmc_get_implementation(const lowmc_parameters_t* lowmc) {
-  const uint32_t lowmc_id = LOWMC_GET_ID(lowmc);
+  const uint32_t lowmc_id = lowmc_get_id(lowmc);
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   /* AVX2 enabled instances */
@@ -982,7 +982,7 @@ lowmc_implementation_f lowmc_get_implementation(const lowmc_parameters_t* lowmc)
 #if defined(WITH_ZKBPP)
 void lowmc_record_state(const lowmc_parameters_t* lowmc, const lowmc_key_t* key,
                         const mzd_local_t* x, recorded_state_t* state) {
-  const uint32_t lowmc_id = LOWMC_GET_ID(lowmc);
+  const uint32_t lowmc_id = lowmc_get_id(lowmc);
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   /* AVX2 enabled instances */
@@ -1109,7 +1109,7 @@ void lowmc_record_state(const lowmc_parameters_t* lowmc, const lowmc_key_t* key,
 
 #if defined(WITH_KKW)
 void lowmc_compute_aux(const lowmc_parameters_t* lowmc, lowmc_key_t* key, randomTape_t* tapes) {
-  const uint32_t lowmc_id = LOWMC_GET_ID(lowmc);
+  const uint32_t lowmc_id = lowmc_get_id(lowmc);
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   /* AVX2 enabled instances */
