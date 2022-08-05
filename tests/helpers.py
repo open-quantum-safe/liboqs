@@ -4,6 +4,7 @@ import functools
 import os
 import os.path
 import pytest
+import re
 import subprocess
 import sys
 import json
@@ -112,6 +113,14 @@ def filtered_test(func):
 
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
+        if ('SKIP_ALGS' in os.environ) and len(os.environ['SKIP_ALGS'])>0:
+            for algexp in os.environ['SKIP_ALGS'].split(','):
+                for arg in args:
+                    if len(re.findall(algexp, arg))>0:
+                        pytest.skip("Test disabled by alg filter")
+                for arg in kwargs:
+                    if len(re.findall(algexp, kwargs[arg]))>0:
+                        pytest.skip("Test disabled by alg filter")
         if ('SKIP_TESTS' in os.environ) and (funcname in os.environ['SKIP_TESTS'].lower().split(',')):
             pytest.skip("Test disabled by filter")
         else:
