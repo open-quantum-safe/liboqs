@@ -20,3 +20,10 @@
    fun:oqs_sig_picnic_picnic_impl_sign
    fun:oqs_sig_picnic_sign
 }
+{
+   "Check" variable is initialized
+   Memcheck:Cond
+   fun:oqs_sig_picnic_picnic_impl_sign
+   fun:oqs_sig_picnic_sign
+   fun:common_picnic_sign
+}
