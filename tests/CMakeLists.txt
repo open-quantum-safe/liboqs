@@ -5,7 +5,6 @@ option(OQS_ENABLE_TEST_CONSTANT_TIME "Build test suite with support for Valgrind
 if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
    CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wbad-function-cast)
-    add_compile_options(-g)
 endif()
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wcast-qual)
