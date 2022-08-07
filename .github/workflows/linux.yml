@@ -74,6 +74,8 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
+        env:
+          SKIP_ALGS: "SPHINCS\\+-Haraka-256s-*"
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py ${{ matrix.PYTEST_ARGS }}
 
   linux_arm_emulated:
