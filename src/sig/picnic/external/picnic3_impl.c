@@ -72,7 +72,7 @@ static void createRandomTapes(randomTape_t* tapes, uint8_t* seeds, uint8_t* salt
  */
 static void computeAuxTape(randomTape_t* tapes, uint8_t* input_masks,
                            const picnic_instance_t* params) {
-  mzd_local_t lowmc_key[1];
+  mzd_local_t lowmc_key[1] = {0};
 
   size_t tapeSizeBytes = 2 * params->view_size;
 
@@ -642,9 +642,7 @@ static int sign_picnic3(const uint8_t* privateKey, const uint8_t* pubKey, const 
   commitments_t Cv;
   allocateCommitments2(&Cv, params, params->num_rounds);
 
-  mzd_local_t m_plaintext[1];
-  mzd_local_t m_maskedKey[1];
-
+  mzd_local_t m_plaintext[1] = {0};
   mzd_from_char_array(m_plaintext, plaintext, params->input_output_size);
 
   lowmc_simulate_online_f simulateOnline = lowmc_simulate_online_get_implementation(&params->lowmc);
@@ -677,6 +675,7 @@ static int sign_picnic3(const uint8_t* privateKey, const uint8_t* pubKey, const 
     for (size_t i = params->lowmc.n; i < params->input_output_size * 8; i++) {
       setBit(maskedKey, i, 0);
     }
+    mzd_local_t m_maskedKey[1] = {0};
     mzd_from_char_array(m_maskedKey, maskedKey, params->input_output_size);
 
     int rv = simulateOnline(m_maskedKey, &tapes[t], &msgs[t], m_plaintext, pubKey, params);

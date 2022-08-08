@@ -484,20 +484,14 @@ static void mpc_sbox_verify_uint64_lowmc_255_255_4(mzd_local_t* out, const mzd_l
   do {                                                                                             \
     for (unsigned int m = 0; m < (sc); ++m) {                                                      \
       word256 tmp = mm256_load(IN(m));                                                             \
-      x0s[m]      = mm256_and(tmp, MASK_A);                                                        \
-      x1s[m]      = mm256_and(tmp, MASK_B);                                                        \
+      x0s[m]      = mm256_rotate_left(mm256_and(tmp, MASK_A), 2);                                  \
+      x1s[m]      = mm256_rotate_left(mm256_and(tmp, MASK_B), 1);                                  \
       x2m[m]      = mm256_and(tmp, MASK_C);                                                        \
                                                                                                    \
-      x0s[m] = mm256_rotate_left(x0s[m], 2);                                                       \
-      x1s[m] = mm256_rotate_left(x1s[m], 1);                                                       \
-                                                                                                   \
       tmp    = mm256_load(RVEC(m));                                                                \
-      r0m[m] = mm256_and(tmp, MASK_A);                                                             \
-      r1m[m] = mm256_and(tmp, MASK_B);                                                             \
+      r0s[m] = mm256_rotate_left(mm256_and(tmp, MASK_A), 2);                                       \
+      r1s[m] = mm256_rotate_left(mm256_and(tmp, MASK_B), 1);                                       \
       r2m[m] = mm256_and(tmp, MASK_C);                                                             \
-                                                                                                   \
-      r0s[m] = mm256_rotate_left(r0m[m], 2);                                                       \
-      r1s[m] = mm256_rotate_left(r1m[m], 1);                                                       \
     }                                                                                              \
   } while (0)
 
@@ -508,12 +502,11 @@ static void mpc_sbox_verify_uint64_lowmc_255_255_4(mzd_local_t* out, const mzd_l
       x0s[m] = mm256_xor(x0s[m], x1s[m]);                                                          \
       r1m[m] = mm256_xor(x0s[m], r1m[m]);                                                          \
       r0m[m] = mm256_xor(x0s[m], r0m[m]);                                                          \
-      r0m[m] = mm256_xor(r0m[m], x2m[m]);                                                          \
                                                                                                    \
       x0s[m] = mm256_rotate_right(r2m[m], 2);                                                      \
       x1s[m] = mm256_rotate_right(r1m[m], 1);                                                      \
                                                                                                    \
-      mm256_store(OUT(m), mm256_xor(r0m[m], mm256_xor(x0s[m], x1s[m])));                           \
+      mm256_store(OUT(m), mm256_xor(mm256_xor(r0m[m], x2m[m]), mm256_xor(x0s[m], x1s[m])));        \
     }                                                                                              \
   } while (0)
 
@@ -1007,7 +1000,7 @@ static void mpc_sbox_verify_s256_lowmc_255_255_4(mzd_local_t* out, const mzd_loc
 #endif
 
 zkbpp_lowmc_implementation_f get_zkbpp_lowmc_implementation(const lowmc_parameters_t* lowmc) {
-  const uint32_t lowmc_id = LOWMC_GET_ID(lowmc);
+  const uint32_t lowmc_id = lowmc_get_id(lowmc);
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   /* AVX2 enabled instances */
@@ -1122,7 +1115,7 @@ zkbpp_lowmc_implementation_f get_zkbpp_lowmc_implementation(const lowmc_paramete
 
 zkbpp_lowmc_verify_implementation_f
 get_zkbpp_lowmc_verify_implementation(const lowmc_parameters_t* lowmc) {
-  const uint32_t lowmc_id = LOWMC_GET_ID(lowmc);
+  const uint32_t lowmc_id = lowmc_get_id(lowmc);
 #if defined(WITH_OPT)
 #if defined(WITH_AVX2)
   /* AVX2 enabled instances */

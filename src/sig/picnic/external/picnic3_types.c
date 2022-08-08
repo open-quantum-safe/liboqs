@@ -52,11 +52,13 @@ void allocateProof2(proof2_t* proof, const picnic_instance_t* params) {
 }
 
 static void freeProof2(proof2_t* proof) {
-  free(proof->seedInfo);
-  free(proof->C);
-  free(proof->input);
-  free(proof->aux);
-  free(proof->msgs);
+  if (proof) {
+    free(proof->seedInfo);
+    free(proof->C);
+    free(proof->input);
+    free(proof->aux);
+    free(proof->msgs);
+  }
 }
 
 bool allocateSignature2(signature2_t* sig, const picnic_instance_t* params) {
