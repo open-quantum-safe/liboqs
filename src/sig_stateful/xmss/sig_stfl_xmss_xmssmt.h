@@ -280,6 +280,8 @@ void perform_key_allocation(OQS_SECRET_KEY *sk);
 
 OQS_SECRET_KEY *OQS_SIG_STFL_alg_xmss_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs);
 
+OQS_SECRET_KEY *OQS_SIG_STFL_alg_xmssmt_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs);
+
 // --------------------------------------------------------------------------------------------------------
 
 #endif /* OQS_SIG_STFL_XMSS_H */
