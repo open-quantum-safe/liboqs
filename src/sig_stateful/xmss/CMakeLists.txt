@@ -23,7 +23,7 @@ set(SRCS sig_stfl_xmss_sha256.c
          sig_stfl_xmssmt_h20.c
          sig_stfl_xmssmt_h40.c
          sig_stfl_xmssmt_h60.c
-         sig_stfl_functions.c
+         sig_stfl_xmss_xmssmt_functions.c
          external/hash_address.c
          external/hash.c
          external/params.c

@@ -52,6 +52,7 @@
 #define xmss_keypair oqs_sig_stfl_xmss_keypair
 #define xmss_sign oqs_sig_stfl_xmss_sign
 #define xmss_sign_open oqs_sig_stfl_xmss_sign_open
+#define xmssmt_derive_subkey oqs_sig_stfl_xmssmt_derive_subkey
 #define xmssmt_keypair oqs_sig_stfl_xmssmt_keypair
 #define xmsmt_sign oqs_sig_stfl_xmssmt_sign
 #define xmssmt_sign_open oqs_sig_stfl_xmssmt_sign_open
