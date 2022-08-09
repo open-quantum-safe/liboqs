@@ -44,8 +44,7 @@
 {
    conditional on unitialized value (hash context init in commit)
    Memcheck:Cond
-   fun:KeccakP1600_AddLanes
-   fun:KeccakP1600_AddBytes
+   ...
    fun:keccak_inc_absorb
    fun:OQS_SHA3_shake*_inc_absorb
    fun:hash_update
@@ -55,8 +54,7 @@
 {
    use of unitialized value (hash context init in commit)
    Memcheck:Value8
-   fun:KeccakP1600_AddLanes
-   fun:KeccakP1600_AddBytes
+   ...
    fun:keccak_inc_absorb
    fun:OQS_SHA3_shake*_inc_absorb
    fun:hash_update
@@ -64,12 +62,21 @@
    fun:sign_picnic3
 }
 {
-   use of unitialized value (hash context init in commit)
-   Memcheck:Value8
-   fun:KeccakP1600_AddBytes
+   conditional on unitialized value (hash context init in commit)
+   Memcheck:Cond
+   ...
    fun:OQS_SHA3_shake*_inc_absorb
    fun:hash_update
-   src:picnic3_impl.c:106 # fun:commit
+   src:picnic3_impl.c:109 # fun:commit
+   fun:sign_picnic3
+}
+{
+   use of unitialized value (hash context init in commit)
+   Memcheck:Value8
+   ...
+   fun:OQS_SHA3_shake*_inc_absorb
+   fun:hash_update
+   src:picnic3_impl.c:109 # fun:commit
    fun:sign_picnic3
 }
 {
