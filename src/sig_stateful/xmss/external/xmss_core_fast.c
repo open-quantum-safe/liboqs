@@ -791,7 +791,6 @@ int xmss_core_sign(const xmss_params *params,
     unsigned long long max = bytes_to_ull(sk + params->sk_bytes - params->bytes_for_max, params->bytes_for_max);
 
     if (idx >= max) {
-        printf("ERROR! Exceeded maximum number of sigs");
         return -2;
     }
     /* Load the BDS state from sk. */
@@ -912,7 +911,7 @@ int xmss_core_sign(const xmss_params *params,
     /* Write the updated BDS state back into sk. */
     xmss_serialize_state(params, sk, &state);
 
-    secret_key->oqs_save_updated_sk_key(secret_key);
+    secret_key->save_secret_key(secret_key);
 
     secret_key->release_key(secret_key);
 
@@ -1274,7 +1273,6 @@ int xmssmt_core_sign(const xmss_params *params,
     /* ========= CHECKING AGAINST MAX =========== */
     // Check if we can still sign with this sk, return -2 if not: */
     if (idx >= max) {
-        printf("ERROR! Exceeded maximum number of sigs\n");
         return -2;
     }
 
@@ -1499,7 +1497,7 @@ int xmssmt_core_sign(const xmss_params *params,
     #endif
     xmssmt_serialize_state(params, sk, states);
 
-    secret_key->oqs_save_updated_sk_key(secret_key);
+    secret_key->save_secret_key(secret_key);
 
     secret_key->release_key(secret_key);
 

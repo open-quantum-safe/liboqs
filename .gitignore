@@ -11,9 +11,6 @@ tags
 /tmp*
 *.o
 *.d
-*.prv
-*.pub
-*.sig
 vgcore.*
 
 # MSVC

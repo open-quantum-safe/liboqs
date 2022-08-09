@@ -105,18 +105,29 @@ typedef struct OQS_SECRET_KEY OQS_SECRET_KEY;
 
 typedef struct OQS_SECRET_KEY {
 
-	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
+	/* The (maximum) length, in bytes, of secret keys for this signature scheme. */
 	unsigned long long length_secret_key;
 
-	/** The physical secret key stored in memory as an array of bytes*/
+	/* The physical secret key stored in memory as an array of bytes*/
 	uint8_t *secret_key;
 
+	/* User defined data that may be used for the SAFETY functions */
+	void *data;
+
+	/* Function that returns the total number of signatures for the secret key */
 	unsigned long long (*sigs_total)(const OQS_SECRET_KEY *secret_key);
 
+	/* Function that returns the number of signatures left for the secret key */
 	unsigned long long (*sigs_left)(const OQS_SECRET_KEY *secret_key);
 
+	/**
+	 * SAFETY FUNCTIONS
+	 * -> lock_key : "Locks" the secret key, preventing any attributes from being changed
+	 * -> save_secret_key : Saves the byte array of the secret key to a file
+	 * -> release_key : "Unlocks" the secret key, allowing attributes to be changed
+	 */
 	OQS_STATUS (*lock_key)(OQS_SECRET_KEY *sk);
-	OQS_STATUS (*oqs_save_updated_sk_key)(const OQS_SECRET_KEY *sk);
+	OQS_STATUS (*save_secret_key)(const OQS_SECRET_KEY *sk);
 	OQS_STATUS (*release_key)(OQS_SECRET_KEY *sk);
 
 } OQS_SECRET_KEY;
