@@ -157,7 +157,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h20_new(void) {
 	sig->sign = OQS_SIG_STFL_alg_xmss_sign;
 	sig->verify = OQS_SIG_STFL_alg_xmss_verify;
 	sig->derive_subkey = OQS_SIG_STFL_alg_xmss_derive_subkey;
-	
+
 	return sig;
 }
 

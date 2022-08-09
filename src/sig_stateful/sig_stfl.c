@@ -343,7 +343,7 @@ OQS_API OQS_SECRET_KEY *OQS_SIG_STFL_derive_subkey(const OQS_SIG_STFL *sig, OQS_
 		return NULL;
 	};
 	return sig->derive_subkey(master_key, number_of_signatures);
-}	
+}
 
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig) {
 	OQS_MEM_insecure_free(sig);
