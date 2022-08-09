@@ -62,7 +62,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		secret_key = OQS_SECRET_KEY_new(method_name);
 		secret_key->lock_key = lock_sk_key;
 		secret_key->release_key = release_sk_key;
-		secret_key->oqs_save_updated_sk_key = do_nothing_save;
+		secret_key->save_secret_key = do_nothing_save;
 
 		if ((public_key == NULL) || (secret_key == NULL)) {
 			fprintf(stderr, "ERROR: malloc failed\n");
@@ -91,7 +91,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		secret_key = OQS_SECRET_KEY_new(method_name);
 		secret_key->lock_key = lock_sk_key;
 		secret_key->release_key = release_sk_key;
-		secret_key->oqs_save_updated_sk_key = do_nothing_save;
+		secret_key->save_secret_key = do_nothing_save;
 		message = malloc(message_len);
 		signature = malloc(sig->length_signature);
 
@@ -131,7 +131,7 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		secret_key = OQS_SECRET_KEY_new(method_name);
 		secret_key->lock_key = lock_sk_key;
 		secret_key->release_key = release_sk_key;
-		secret_key->oqs_save_updated_sk_key = do_nothing_save;
+		secret_key->save_secret_key = do_nothing_save;
 		message = malloc(message_len);
 		signature = malloc(sig->length_signature);
 
