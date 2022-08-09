@@ -42,6 +42,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h10_new(void) {
 	sig->keypair = OQS_SIG_STFL_alg_xmss_shake256_h10_keypair;
 	sig->sign = OQS_SIG_STFL_alg_xmss_sign;
 	sig->verify = OQS_SIG_STFL_alg_xmss_verify;
+	sig->derive_subkey = OQS_SIG_STFL_alg_xmss_derive_subkey;
 
 	return sig;
 }
@@ -97,7 +98,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h16_new(void) {
 	sig->keypair = OQS_SIG_STFL_alg_xmss_shake256_h16_keypair;
 	sig->sign = OQS_SIG_STFL_alg_xmss_sign;
 	sig->verify = OQS_SIG_STFL_alg_xmss_verify;
-
+	sig->derive_subkey = OQS_SIG_STFL_alg_xmss_derive_subkey;
+	
 	return sig;
 }
 
@@ -152,7 +154,8 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h20_new(void) {
 	sig->keypair = OQS_SIG_STFL_alg_xmss_shake256_h20_keypair;
 	sig->sign = OQS_SIG_STFL_alg_xmss_sign;
 	sig->verify = OQS_SIG_STFL_alg_xmss_verify;
-
+	sig->derive_subkey = OQS_SIG_STFL_alg_xmss_derive_subkey;
+	
 	return sig;
 }
 

@@ -339,12 +339,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
 }
 
 OQS_API OQS_SECRET_KEY *OQS_SIG_STFL_derive_subkey(const OQS_SIG_STFL *sig, OQS_SECRET_KEY *master_key, const unsigned long long number_of_signatures) {
-	assert(master_key != NULL);
-	assert(number_of_signatures > 0);
-
+	if (sig == NULL || master_key == NULL || number_of_signatures == 0L) {
+		return NULL;
+	};
 	return sig->derive_subkey(master_key, number_of_signatures);
-}
-
+}	
 
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig) {
 	OQS_MEM_insecure_free(sig);
