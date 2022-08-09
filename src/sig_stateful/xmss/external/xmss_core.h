@@ -21,10 +21,9 @@ unsigned long long xmss_xmssmt_core_sk_bytes(const xmss_params *params);
  * @param amount number of times to increment the secret key auth path
  * @return int - Returns 0 on success, -1 on failure.
  */
-int 
-xmss_core_increment_authpath(const xmss_params *params,
-                          uint8_t *sk,
-                          unsigned long long amount);
+int xmss_core_increment_authpath(const xmss_params *params,
+                                 uint8_t *sk,
+                                 unsigned long long amount);
 
 /*
  * Generates a XMSS key pair for a given parameter set.

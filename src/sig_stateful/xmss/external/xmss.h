@@ -17,6 +17,17 @@
  */
 int xmss_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned long long number_of_sigs);
 
+/**
+ * @brief Populates a subkey object with a key that is valid for a certain number of signatures.
+ * @attention The caller is responsible for allocating memory and freeing the subkey object.
+ * @param master the master key
+ * @param subkey the derived key for n signatures
+ * @param number_of_sigs the number of signatures that are needed
+ * @return int - Returns 0 on success, -1 on failure.
+ */
+int xmssmt_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned long long number_of_sigs);
+
+
 #ifdef MAX_MOD
 
 int xmss_modify_maximum(OQS_SECRET_KEY *sk, unsigned long long new_max);
