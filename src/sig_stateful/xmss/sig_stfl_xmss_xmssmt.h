@@ -272,11 +272,13 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_sign(uint8_t *signature, size_t *sign
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
 
-unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_left(const OQS_SECRET_KEY *secret_key);
+unsigned long long OQS_SECRET_KEY_xmss_sigs_left(const OQS_SECRET_KEY *secret_key);
 
-unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_total(const OQS_SECRET_KEY *secret_key);
+unsigned long long OQS_SECRET_KEY_xmss_sigs_total(const OQS_SECRET_KEY *secret_key);
 
-void perform_key_allocation(OQS_SECRET_KEY *sk);
+unsigned long long OQS_SECRET_KEY_xmssmt_sigs_left(const OQS_SECRET_KEY *secret_key);
+
+unsigned long long OQS_SECRET_KEY_xmssmt_sigs_total(const OQS_SECRET_KEY *secret_key);
 
 OQS_SECRET_KEY *OQS_SIG_STFL_alg_xmss_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs);
 
