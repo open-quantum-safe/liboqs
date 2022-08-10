@@ -35,7 +35,6 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h10_new(void) {
 	sig->alg_version = "...";
 
 	// Check how true this is
-	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha512_h10_length_pk;
@@ -91,7 +90,6 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h16_new(void) {
 	sig->alg_version = "...";
 
 	// Check how true this is
-	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha512_h16_length_pk;
@@ -146,8 +144,6 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h20_new(void) {
 	sig->method_name = "XMSS-SHA2_20_512";
 	sig->alg_version = "...";
 
-	// Check how true this is
-	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha512_h20_length_pk;

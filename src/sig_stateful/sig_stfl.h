@@ -65,7 +65,6 @@ extern "C" {
  * LMS will be added later. So far its only XMSS/XMSS^MT
  */
 
-
 #define OQS_SIG_STFL_algs_length 20
 
 /**
@@ -106,9 +105,9 @@ typedef struct OQS_SECRET_KEY OQS_SECRET_KEY;
 typedef struct OQS_SECRET_KEY {
 
 	/* The (maximum) length, in bytes, of secret keys for this signature scheme. */
-	unsigned long long length_secret_key;
+	size_t length_secret_key;
 
-	/* The physical secret key stored in memory as an array of bytes*/
+	/* The secret key stored in memory as an array of bytes*/
 	uint8_t *secret_key;
 
 	/* User defined data that may be used for the SAFETY functions */
@@ -151,9 +150,6 @@ typedef struct OQS_SIG_STFL {
 	 * See README.md for information about algorithm compatibility.
 	 */
 	const char *alg_version;
-
-	/** The NIST security level (1, 2, 3, 4, 5) claimed in this algorithm's original NIST submission. */
-	uint8_t claimed_nist_level;
 
 	/** Whether the signature offers EUF-CMA security (TRUE) or not (FALSE). */
 	bool euf_cma;
@@ -228,8 +224,8 @@ OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig);
 #ifdef OQS_ENABLE_SIG_STFL_XMSS
 #include <oqs/sig_stfl_xmss_xmssmt.h>
 #endif // OQS_ENABLE_SIG_STFL_XMSS
-#ifdef OQS_ENABLE_SIG_STFL_LMS
-#include <oqs/sig_stfl_lms.h>
-#endif // OQS_ENABLE_SIG_STFL_LMS
+// #ifdef OQS_ENABLE_SIG_STFL_LMS
+// #include <oqs/sig_stfl_lms.h>
+// #endif // OQS_ENABLE_SIG_STFL_LMS
 
 #endif /* OQS_SIG_STATEFUL_H */

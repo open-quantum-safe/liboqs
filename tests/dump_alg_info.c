@@ -67,7 +67,6 @@ int main(void) {
 			continue;
 		}
 		printf("    isnull: false\n");
-		printf("    claimed-nist-level: %d\n", sig->claimed_nist_level);
 		printf("    claimed-security: %s\n", sig->euf_cma ? "EUF-CMA" : "none");
 		printf("    length-public-key: %zu\n", sig->length_public_key);
 		printf("    length-signature: %zu\n", sig->length_signature);

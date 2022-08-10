@@ -67,7 +67,7 @@ unsigned long long OQS_SIG_STFL_alg_xmss_xmssmt_sigs_left(const OQS_SECRET_KEY *
 	unsigned long long max = OQS_SIG_STFL_alg_xmss_xmssmt_sigs_total(secret_key);
 	unsigned long long idx = 0;
 	for (i = 0; i < params.index_bytes; i++) {
-		idx |= ((unsigned long long)secret_key->secret_key[i]) << 8 * (params.index_bytes - 1 - i);
+		idx |= ((unsigned long long)secret_key->secret_key[i]) << (8 * (params.index_bytes - 1 - i));
 	}
 	return (max - idx);
 }
@@ -106,6 +106,7 @@ void perform_key_allocation(OQS_SECRET_KEY *sk) {
 OQS_SECRET_KEY *OQS_SIG_STFL_alg_xmss_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs) {
 
 	OQS_SECRET_KEY *subkey = (OQS_SECRET_KEY *)malloc(sizeof(OQS_SECRET_KEY));
+	if (subkey == NULL) return NULL;
 
 	// Copy all the essential details of the master key to the subkey.
 	subkey->length_secret_key = master_key->length_secret_key;
@@ -124,6 +125,7 @@ OQS_SECRET_KEY *OQS_SIG_STFL_alg_xmss_derive_subkey(OQS_SECRET_KEY *master_key, 
 OQS_SECRET_KEY *OQS_SIG_STFL_alg_xmssmt_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs) {
 
 	OQS_SECRET_KEY *subkey = (OQS_SECRET_KEY *)malloc(sizeof(OQS_SECRET_KEY));
+	if (subkey == NULL) return NULL;	
 
 	// Copy all the essential details of the master key to the subkey.
 	subkey->length_secret_key = master_key->length_secret_key;

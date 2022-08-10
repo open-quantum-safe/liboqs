@@ -1,21 +1,4 @@
 # SPDX-License-Identifier: MIT
-
-if(CMAKE_C_COMPILER_ID STREQUAL "GNU" OR
-CMAKE_C_COMPILER_ID MATCHES "Clang")
- add_compile_options(-Wno-missing-braces)
-endif()
-if(CMAKE_C_COMPILER_ID MATCHES "Clang")
- if(CMAKE_C_COMPILER_VERSION VERSION_GREATER "3.9")
-     add_compile_options(-Wno-unguarded-availability-new)
- else() #Wno-unguarded-availability-new won't be recognized
-     add_compile_options(-Wno-error)
- endif()
-endif()
-if(WIN32 AND NOT (MINGW OR MSYS OR CYGWIN))
- # ignore some warnings. picnic team confirmed these are safe to ignore; will be fixed eventually
- add_compile_options(/wd4244 /wd4267 /wd4334)
-endif()
-
 set(SRCS sig_stfl_xmss_sha256.c
          sig_stfl_xmss_sha512.c
          sig_stfl_xmss_shake256.c
