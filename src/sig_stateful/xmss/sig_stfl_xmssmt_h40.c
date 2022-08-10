@@ -58,7 +58,13 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_2_H40_new(void) {
 
 	sk->length_secret_key = OQS_SIG_STFL_alg_xmssmt_sha256_2_h40_length_sk;
 
-	perform_key_allocation(sk);
+		// Assign the sigs_left and sigs_max functions
+	sk->sigs_left = OQS_SECRET_KEY_xmss_sigs_left;
+	sk->sigs_total = OQS_SECRET_KEY_xmss_sigs_total;
+
+	// Initialize the key with length_secret_key amount of bytes.
+	sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
+	memset(sk->secret_key, 0, sk->length_secret_key);
 
 	return sk;
 }
@@ -115,9 +121,13 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_4_H40_new(void) {
 	memset(sk, 0, sizeof(OQS_SECRET_KEY));
 
 	sk->length_secret_key = OQS_SIG_STFL_alg_xmssmt_sha256_4_h40_length_sk;
+	// Assign the sigs_left and sigs_max functions
+	sk->sigs_left = OQS_SECRET_KEY_xmss_sigs_left;
+	sk->sigs_total = OQS_SECRET_KEY_xmss_sigs_total;
 
-	perform_key_allocation(sk);
-
+	// Initialize the key with length_secret_key amount of bytes.
+	sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
+	memset(sk->secret_key, 0, sk->length_secret_key);
 	return sk;
 }
 
@@ -173,8 +183,13 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_8_H40_new(void) {
 
 	sk->length_secret_key = OQS_SIG_STFL_alg_xmssmt_sha256_8_h40_length_sk;
 
-	perform_key_allocation(sk);
+	// Assign the sigs_left and sigs_max functions
+	sk->sigs_left = OQS_SECRET_KEY_xmss_sigs_left;
+	sk->sigs_total = OQS_SECRET_KEY_xmss_sigs_total;
 
+	// Initialize the key with length_secret_key amount of bytes.
+	sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
+	memset(sk->secret_key, 0, sk->length_secret_key);
 	return sk;
 }
 
