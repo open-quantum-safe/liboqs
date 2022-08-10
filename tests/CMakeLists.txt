@@ -100,9 +100,6 @@ add_executable(test_sig_mem test_sig_mem.c)
 target_link_libraries(test_sig_mem PRIVATE ${API_TEST_DEPS})
 
 # SIG_STFL API tests
-# add_executable(example_sig_stfl example_sig_stfl.c)
-# target_link_libraries(example_sig_stfl PRIVATE ${API_TEST_DEPS})
-
 add_executable(test_sig_stfl test_sig_stfl.c)
 if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
     target_link_libraries(test_sig_stfl PRIVATE ${API_TEST_DEPS} Threads::Threads)
