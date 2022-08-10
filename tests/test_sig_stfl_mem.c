@@ -1,3 +1,9 @@
+/**
+ * @brief This file tests allows the user to specify whether 
+ * they want to generate keys, sign or verify and accordingly 
+ * performs the corresponding operation.
+ * The operation is specified as a command line argument.
+ */
 // SPDX-License-Identifier: MIT
 
 #if defined(_WIN32)
@@ -20,18 +26,21 @@ typedef enum sig_ops {
 } SIG_OPS;
 
 OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
-	printf("%02x", sk->secret_key[0]);
-	return 0;
+	uint8_t ss = *(sk->secret_key);
+	ss = 0;
+	return ss == 0 ? OQS_SUCCESS : OQS_ERROR;
 }
 
 OQS_STATUS release_sk_key(OQS_SECRET_KEY *sk) {
-	printf("%02x", sk->secret_key[0]);
-	return 0;
+	uint8_t ss = *(sk->secret_key);
+	ss = 0;
+	return ss == 0 ? OQS_SUCCESS : OQS_ERROR;
 }
 
 OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
-	printf("%02x", sk->secret_key[0]);
-	return 0;
+	uint8_t ss = *(sk->secret_key);
+	ss = 0;
+	return ss == 0 ? OQS_SUCCESS : OQS_ERROR;
 }
 
 static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
@@ -181,9 +190,9 @@ cleanup:
 		OQS_MEM_insecure_free(signature);
 	}
 	if (sig != NULL) {
-		OQS_SECRET_KEY_free(secret_key);
 		OQS_SIG_STFL_free(sig);
 	}
+	OQS_SECRET_KEY_free(secret_key);
 
 	return ret;
 }

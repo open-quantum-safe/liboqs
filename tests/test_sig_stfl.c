@@ -38,10 +38,10 @@ typedef struct magic_s {
 	uint8_t val[31];
 } magic_t;
 
-void prepend(char* s, const char* t) {
-    size_t len = strlen(t);
-    memmove(s + len, s, strlen(s) + 1);
-    memcpy(s, t, len);
+void prepend(char *s, const char *t) {
+	size_t len = strlen(t);
+	memmove(s + len, s, strlen(s) + 1);
+	memcpy(s, t, len);
 }
 
 OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
@@ -64,19 +64,21 @@ OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
 
 OQS_STATUS sk_file_write(const OQS_SECRET_KEY *sk) {
 	char filename[64];
-    strcpy(filename, (char *)sk->data);
+	strcpy(filename, (char *)sk->data);
 
-    strcat(filename, PRIVATE_KEY_EXT);
+	strcat(filename, PRIVATE_KEY_EXT);
 	FILE *printer = fopen(filename, "w+");
-    if (printer == NULL) {
+	if (printer == NULL) {
 		return OQS_ERROR;
-    }
+	}
 
-    // Write the entire secret key byte array to the specified file.
-    for (unsigned long i = 0; i < sk->length_secret_key; i++) {
-        if (fputc(sk->secret_key[i], printer) == EOF) return OQS_ERROR;
-    }
-    fclose(printer);
+	// Write the entire secret key byte array to the specified file.
+	for (unsigned long i = 0; i < sk->length_secret_key; i++) {
+		if (fputc(sk->secret_key[i], printer) == EOF) {
+			return OQS_ERROR;
+		}
+	}
+	fclose(printer);
 	return OQS_SUCCESS;
 }
 
@@ -120,11 +122,12 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 	secret_key->data = (void *)filestem;
 	secret_key->lock_key = lock_sk_key;
 	secret_key->release_key = release_sk_key;
-	if (mode == SAVING) 
+	if (mode == SAVING) {
 		secret_key->save_secret_key = sk_file_write;
-	else 
+	} else {
 		secret_key->save_secret_key = do_nothing_save;
-	
+	}
+
 	if (secret_key == NULL) {
 		fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
 		goto err;
@@ -148,7 +151,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 
 	OQS_randombytes(message, message_len);
 	OQS_TEST_CT_DECLASSIFY(message, message_len);
-	
+
 	if (mode == READING) {
 		strcpy(filename, filestem);
 		prepend(filename, DIRECTORY_PLUS_PREFIX);
@@ -156,20 +159,24 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 		// Public Key
 		strcat(filename, PUBLIC_KEY_EXT);
 		FILE *pub_key = fopen(filename, "rb");
-		if (pub_key == NULL) rc = OQS_ERROR;
+		if (pub_key == NULL) {
+			rc = OQS_ERROR;
+		}
 		for (unsigned int i = 0; i < sig->length_public_key; i++) {
-            public_key[i] = fgetc(pub_key);
-        }
+			public_key[i] = fgetc(pub_key);
+		}
 		fclose(pub_key);
 
 		// Private Key
 		filename[strlen(filename) - strlen(PUBLIC_KEY_EXT)] = '\0';
 		strcat(filename, PRIVATE_KEY_EXT);
 		FILE *prv_key = fopen(filename, "rb");
-		if (prv_key == NULL) rc = OQS_ERROR;
+		if (prv_key == NULL) {
+			rc = OQS_ERROR;
+		}
 		for (unsigned int i = 0; i < secret_key->length_secret_key; i++) {
-            secret_key->secret_key[i] = fgetc(prv_key);
-        }
+			secret_key->secret_key[i] = fgetc(prv_key);
+		}
 		fclose(prv_key);
 	} else {
 		rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
@@ -200,14 +207,16 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 		}
 
 		for (unsigned int i = 0; i < sig->length_public_key; i++) {
-            if (fputc(public_key[i], pub_key) == EOF) return OQS_ERROR;
-        }
+			if (fputc(public_key[i], pub_key) == EOF) {
+				return OQS_ERROR;
+			}
+		}
 		fclose(pub_key);
 	}
 
 	// ===========================================================================================
-	
-	
+
+
 	// ====================================== SIGNING =============================================
 
 	rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, message, message_len, secret_key);
@@ -270,7 +279,7 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
-	if (sig != NULL) {
+	if (secret_key != NULL) {
 		OQS_SECRET_KEY_free(secret_key);
 	}
 	OQS_MEM_insecure_free(public_key - sizeof(magic_t));
@@ -315,7 +324,7 @@ void *test_wrapper(void *arg) {
 int main(int argc, char **argv) {
 
 	if (argc < 2) {
-		fprintf(stderr, "Usage: test_sig algname [optional arguments]\n");
+		fprintf(stderr, "Usage: test_sig_stfl algname [optional arguments]\n");
 		fprintf(stderr, "  algname: ");
 		for (size_t i = 0; i < OQS_SIG_STFL_algs_length; i++) {
 			if (i > 0) {
@@ -341,12 +350,12 @@ int main(int argc, char **argv) {
 
 	// Extract the mode of operation from the command line arguments
 	char mode_of_operation = 'x';
-	char* filestem = NULL;
+	char *filestem = NULL;
 	if (argc > 2) {
 		char argument[8];
 		strncpy(argument, argv[2], 6);
 		if (strcmp(argument, "--save") == 0) {
-			mode_of_operation = SAVING; 
+			mode_of_operation = SAVING;
 			filestem = argv[2] + strlen("--save_key_to=");
 		} else if (strcmp(argument, "--read") == 0) {
 			mode_of_operation = READING;
@@ -368,31 +377,19 @@ int main(int argc, char **argv) {
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS_IN_TESTS
 #define MAX_LEN_SIG_NAME_ 64
-	// don't run Rainbow III and V in threads because of large stack usage
-	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"Rainbow-III", "Rainbow-V"};
-	int test_in_thread = 1;
-	for (size_t i = 0 ; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
-		if (strstr(alg_name, no_thread_sig_patterns[i]) != NULL) {
-			test_in_thread = 0;
-			break;
-		}
+
+	pthread_t thread;
+	struct thread_data td;
+	td.alg_name = alg_name;
+	td.mode_of_operation = mode_of_operation;
+	td.filestem = filestem;
+	int trc = pthread_create(&thread, NULL, test_wrapper, &td);
+	if (trc) {
+		fprintf(stderr, "ERROR: Creating pthread\n");
+		return EXIT_FAILURE;
 	}
-	if (test_in_thread) {
-		pthread_t thread;
-		struct thread_data td;
-		td.alg_name = alg_name;
-		td.mode_of_operation = mode_of_operation;
-		td.filestem = filestem;
-		int trc = pthread_create(&thread, NULL, test_wrapper, &td);
-		if (trc) {
-			fprintf(stderr, "ERROR: Creating pthread\n");
-			return EXIT_FAILURE;
-		}
-		pthread_join(thread, NULL);
-		rc = td.rc;
-	} else {
-		rc = sig_stfl_test_correctness(alg_name, mode_of_operation, filestem);
-	}
+	pthread_join(thread, NULL);
+	rc = td.rc;
 #else
 	rc = sig_stfl_test_correctness(alg_name);
 #endif

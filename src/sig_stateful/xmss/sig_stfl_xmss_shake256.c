@@ -85,7 +85,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake256_h16_new(void) {
 	}
 	sig->method_name = "XMSS-SHAKE_16_256";
 	sig->alg_version = "...";
-;
+	;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmss_shake256_h16_length_pk;
