@@ -33,7 +33,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_2_h40_new(void) {
 
 	sig->method_name = "XMSSMT-SHA2_40/2_256";
 	sig->alg_version = "...";
-;
+	;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmssmt_sha256_2_h40_length_pk;
