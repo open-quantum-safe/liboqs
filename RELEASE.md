@@ -1,4 +1,4 @@
-liboqs version 0.7.2-rc1
+liboqs version 0.7.2-rc2
 ========================
 
 About
@@ -29,7 +29,12 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 1 for version 0.7.2 of liboqs.
+This is release candidate 2 for version 0.7.2 of liboqs.
+
+Security considerations
+-----------------------
+
+This release removes Rainbow level 1 and all variants of SIDH and SIKE due to cryptanalytic breaks of those algorithms.  Users are advised to move away from use of those algorithms immediately.
 
 What's New
 ----------
@@ -61,11 +66,12 @@ The next release of liboqs, version 0.8.0, will remove some algorithms that did 
 - Add aarch64 CPU feature detection on FreeBSD
 - Improve cross-compiling on Windows
 - Enable integration of liboqs into other CMake-based projects
+- Increment shared object library version
 
 ---
 
 Detailed changelog
-==================
+------------------
 
 * Update Picnic to 3.0.8 by @sebastinas in https://github.com/open-quantum-safe/liboqs/pull/1158
 * XCode update by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1162
@@ -121,5 +127,11 @@ Detailed changelog
 * fixing FreeBSD runtime ARM CPU feature detection by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1267
 * Update CODEOWNERS by @vsoftco in https://github.com/open-quantum-safe/liboqs/pull/1274
 * adding library version retrieval function by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1273
+* fixup dilithium-avx2 valgrind test file by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1283
+* Add option to all pytests to skip particular algorithms by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/1282
+* Update to Picnic 3.0.17 by @sebastinas in https://github.com/open-quantum-safe/liboqs/pull/1280
+* Update release notes by @dstebila in https://github.com/open-quantum-safe/liboqs/pull/1281
+* add warning about HQC [skip ci] by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1284
+* Cover SHA3/SHAKE-implementation specific code paths in Picnic suppres… by @sebastinas in https://github.com/open-quantum-safe/liboqs/pull/1286
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.7.1...0.7.2-rc1
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.7.1...0.7.2-rc2
