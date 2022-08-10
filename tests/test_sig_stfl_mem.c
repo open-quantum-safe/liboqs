@@ -1,6 +1,6 @@
 /**
- * @brief This file tests allows the user to specify whether 
- * they want to generate keys, sign or verify and accordingly 
+ * @brief This file tests allows the user to specify whether
+ * they want to generate keys, sign or verify and accordingly
  * performs the corresponding operation.
  * The operation is specified as a command line argument.
  */

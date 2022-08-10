@@ -178,7 +178,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSS_SHAKE512_H20_new(void) {
 
 	sk->length_secret_key = OQS_SIG_STFL_alg_xmss_shake512_h20_length_sk ;
 
-		// Assign the sigs_left and sigs_max functions
+	// Assign the sigs_left and sigs_max functions
 	sk->sigs_left = OQS_SECRET_KEY_xmss_sigs_left;
 	sk->sigs_total = OQS_SECRET_KEY_xmss_sigs_total;
 

@@ -58,7 +58,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_2_H40_new(void) {
 
 	sk->length_secret_key = OQS_SIG_STFL_alg_xmssmt_sha256_2_h40_length_sk;
 
-		// Assign the sigs_left and sigs_max functions
+	// Assign the sigs_left and sigs_max functions
 	sk->sigs_left = OQS_SECRET_KEY_xmss_sigs_left;
 	sk->sigs_total = OQS_SECRET_KEY_xmss_sigs_total;
 
