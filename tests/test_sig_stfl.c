@@ -66,7 +66,6 @@ OQS_STATUS sk_file_write(const OQS_SECRET_KEY *sk) {
 	char filename[64];
     strcpy(filename, (char *)sk->data);
 
-	prepend(filename, DIRECTORY_PLUS_PREFIX);
     strcat(filename, PRIVATE_KEY_EXT);
 	FILE *printer = fopen(filename, "w+");
     if (printer == NULL) {
@@ -100,7 +99,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 
 	sig = OQS_SIG_STFL_new(method_name);
 	if (sig == NULL) {
-		fprintf(stderr, "ERROR: OQS_SIG_new failed\n");
+		fprintf(stderr, "ERROR: OQS_SIG_STFL_new failed\n");
 		goto err;
 	}
 
@@ -184,16 +183,22 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 		}
 		goto err;
 	}
+
+	// Save the keypair to the specified filestem
 	if (mode == SAVING) {
+		// Private Key
 		secret_key->save_secret_key(secret_key);
 
-		strcpy(filename, filestem);
-		prepend(filename, DIRECTORY_PLUS_PREFIX);
-
 		// Public Key
+		strcpy(filename, filestem);
 		strcat(filename, PUBLIC_KEY_EXT);
 		FILE *pub_key = fopen(filename, "w+");
-		if (pub_key == NULL) rc = OQS_ERROR;
+		if (pub_key == NULL) {
+			fprintf(stderr, "ERROR: fopen failed.\n");
+			rc = OQS_ERROR;
+			goto err;
+		}
+
 		for (unsigned int i = 0; i < sig->length_public_key; i++) {
             if (fputc(public_key[i], pub_key) == EOF) return OQS_ERROR;
         }
