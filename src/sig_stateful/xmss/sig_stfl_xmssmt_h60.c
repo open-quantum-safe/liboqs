@@ -34,8 +34,6 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_3_h60_new(void) {
 	sig->method_name = "XMSSMT-SHA2_60/3_256";
 	sig->alg_version = "...";
 
-	// Check how true this is
-	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmssmt_sha256_3_h60_length_pk;
@@ -93,8 +91,6 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_6_h60_new(void) {
 	sig->method_name = "XMSSMT-SHA2_60/6_256";
 	sig->alg_version = "...";
 
-	// Check how true this is
-	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmssmt_sha256_6_h60_length_pk;
@@ -152,8 +148,6 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_12_h60_new(void) {
 	sig->method_name = "XMSSMT-SHA2_60/12_256";
 	sig->alg_version = "...";
 
-	// Check how true this is
-	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmssmt_sha256_12_h60_length_pk;
