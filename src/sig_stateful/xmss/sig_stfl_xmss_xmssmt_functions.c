@@ -151,7 +151,7 @@ OQS_SECRET_KEY *OQS_SIG_STFL_alg_xmssmt_derive_subkey(OQS_SECRET_KEY *master_key
 		return NULL;
 	}
 
-		// Copy all the essential details of the master key to the subkey.
+	// Copy all the essential details of the master key to the subkey.
 	subkey->length_secret_key = master_key->length_secret_key;
 	subkey->data = master_key->data;
 	subkey->sigs_left = OQS_SECRET_KEY_xmss_sigs_left;

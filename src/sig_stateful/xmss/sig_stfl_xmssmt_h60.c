@@ -189,7 +189,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_XMSSMT_SHA256_12_H60_new(void) {
 	// Initialize the key with length_secret_key amount of bytes.
 	sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
 	memset(sk->secret_key, 0, sk->length_secret_key);
-	
+
 	return sk;
 }
 
