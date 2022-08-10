@@ -8,9 +8,6 @@ endif()
 if(DEFINED OQS_SIG_DEFAULT)
     message(WARNING "OQS_SIG_DEFAULT not longer supported")
 endif()
-if(DEFINED OQS_SIG_STFL_DEFAULT)
-    message(WARNING "OQS_SIG_STFL_DEFAULT not longer supported")
-endif()
 
 # Only enable OpenSSL by default on not-Windows
 if(NOT WIN32)
