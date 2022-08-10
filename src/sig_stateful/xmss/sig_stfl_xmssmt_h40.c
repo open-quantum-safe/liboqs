@@ -91,7 +91,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmssmt_sha256_4_h40_new(void) {
 	}
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
-	sig->method_name = "XMSSMT-SHA2_40/2_256";
+	sig->method_name = "XMSSMT-SHA2_40/4_256";
 	sig->alg_version = "...";
 
 	// Check how true this is
