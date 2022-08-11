@@ -133,6 +133,12 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 		goto err;
 	}
 
+	/**
+	 * Magic numbers are not inserted into the secret key because for we need an
+	 * OQS_SECRET_KEY object for the secret key. The secret key byte array is an attribute
+	 * of the object whose size gets assigend when new() is called.
+ 	 */
+
 	// Set the magic numbers before
 	memcpy(public_key, magic.val, sizeof(magic_t));
 	memcpy(message, magic.val, sizeof(magic_t));

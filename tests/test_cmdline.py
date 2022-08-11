@@ -34,25 +34,26 @@ def test_sig(sig_name):
     )
 
 # Stateful signature schemes testing
-# @helpers.filtered_test
-# @pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
-# def test_sig_stfl(sig_stfl_name):
-#     if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
-#     helpers.run_subprocess(
-#         [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
-#     )
+@helpers.filtered_test
+@pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
+def test_sig_stfl(sig_stfl_name):
+    if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
+    helpers.run_subprocess(
+        [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
+    )
 
 # Stateful signature schemes testing with key read
-# @helpers.filtered_test
-# @pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
-# def test_sig_stfl_read_key(sig_stfl_name):
-#     directory = "../tests/saved_keys/"
-#     filename = "tmp_" + sig_stfl_name
-#     if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
-#     helpers.run_subprocess(
-#         [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name, "--read_key_from="+directory+filename],
-#     )
+@helpers.filtered_test
+@pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
+def test_sig_stfl_read_key(sig_stfl_name):
+    directory = "../tests/saved_keys/"
+    filename = "tmp_" + sig_stfl_name
+    if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
+    helpers.run_subprocess(
+        [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name, "--read_key_from="+directory+filename],
+    )
 
+# Stateful signature schemes testing with key save
 @helpers.filtered_test
 @pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
 def test_sig_stfl_save_key(sig_stfl_name):
