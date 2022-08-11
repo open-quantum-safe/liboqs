@@ -29,13 +29,13 @@ def test_datasheet_sig(sig_name):
 
 # Ensure every stateful signature algorithm in the code
 # is mentioned in the documentation.
-@helpers.filtered_test
-@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
-@pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
-def test_datasheet_sig_stfl(sig_stfl_name):
-    helpers.run_subprocess(
-        ['grep', '-r', sig_stfl_name, 'docs/algorithms']
-    )
+# @helpers.filtered_test
+# @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
+# @pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
+# def test_datasheet_sig_stfl(sig_stfl_name):
+#     helpers.run_subprocess(
+#         ['grep', '-r', sig_stfl_name, 'docs/algorithms']
+#     )
 
 # Ensure astyle agrees with the formatting.
 @helpers.filtered_test
