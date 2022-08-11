@@ -32,7 +32,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
 	sig->method_name = "XMSS-SHA2_10_256";
-	sig->alg_version = "...";
+	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8391";
 
 	// Check how true this is
 	sig->euf_cma = true;
@@ -96,7 +96,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h16_new(void) {
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
 	sig->method_name = "XMSS-SHA2_16_256";
-	sig->alg_version = "...";
+	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8391";
 
 	// Check how true this is
 	sig->euf_cma = true;
@@ -159,7 +159,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h20_new(void) {
 	memset(sig, 0, sizeof(OQS_SIG_STFL));
 
 	sig->method_name = "XMSS-SHA2_20_256";
-	sig->alg_version = "...";
+	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8391";
 
 	// Check how true this is
 	sig->euf_cma = true;
