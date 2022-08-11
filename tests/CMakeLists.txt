@@ -110,9 +110,7 @@ endif()
 add_executable(test_sig_stfl_mem test_sig_stfl_mem.c)
 target_link_libraries(test_sig_stfl_mem PRIVATE ${API_TEST_DEPS})
 
-# add_executable(kat_sig_stfl kat_sig_stfl.c)
-# target_link_libraries(kat_sig_stfl PRIVATE ${API_TEST_DEPS})
-
+# Other tests
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
 

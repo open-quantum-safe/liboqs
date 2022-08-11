@@ -46,6 +46,8 @@ int xmss_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned 
     }
     xmss_parse_oid(&params, oid);
 
+    master->lock_key(master);
+
     unsigned long long master_idx = bytes_to_ull(master->secret_key + XMSS_OID_LEN, params.index_bytes);
     unsigned long long master_max = bytes_to_ull(master->secret_key + master->length_secret_key - params.bytes_for_max, params.bytes_for_max);
 
@@ -72,6 +74,10 @@ int xmss_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigned 
     // Set the master key index to the master key index + the number of signatures
     master_idx = master_idx + number_of_sigs;
     ull_to_bytes(master->secret_key + XMSS_OID_LEN, params.index_bytes, master_idx);
+
+    master->save_secret_key(master);
+
+    master->release_key(master);
     
     return 0; 
 }
@@ -85,6 +91,8 @@ int xmssmt_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigne
         oid |= master->secret_key[XMSS_OID_LEN - i - 1] << (i * 8);
     }
     xmssmt_parse_oid(&params, oid);
+
+    master->lock_key(master);
 
     unsigned long long master_idx = bytes_to_ull(master->secret_key + XMSS_OID_LEN, params.index_bytes);
     unsigned long long master_max = bytes_to_ull(master->secret_key + master->length_secret_key - params.bytes_for_max, params.bytes_for_max);
@@ -112,6 +120,10 @@ int xmssmt_derive_subkey(OQS_SECRET_KEY *master, OQS_SECRET_KEY *subkey, unsigne
     // Set the master key index to the master key index + the number of signatures
     master_idx = master_idx + number_of_sigs;
     ull_to_bytes(master->secret_key + XMSS_OID_LEN, params.index_bytes, master_idx);
+
+    master->save_secret_key(master);
+
+    master->release_key(master);
 
     return 0; 
 }
