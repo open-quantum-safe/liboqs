@@ -169,7 +169,12 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 			rc = OQS_ERROR;
 		}
 		for (unsigned int i = 0; i < sig->length_public_key; i++) {
-			public_key[i] = fgetc(pub_key);
+			uint8_t readin;
+			if (fscanf(pub_key, "%2hhx", &readin) != 1) {
+				rc = OQS_ERROR;
+				break;
+			}
+			public_key[i] = readin;
 		}
 		fclose(pub_key);
 
@@ -181,7 +186,12 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 			rc = OQS_ERROR;
 		}
 		for (unsigned int i = 0; i < secret_key->length_secret_key; i++) {
-			secret_key->secret_key[i] = fgetc(prv_key);
+			uint8_t readin;
+			if (fscanf(pub_key, "%2hhx", &readin) != 1) {
+				rc = OQS_ERROR;
+				break;
+			}
+			secret_key->secret_key[i] = readin;
 		}
 		fclose(prv_key);
 	} else {
