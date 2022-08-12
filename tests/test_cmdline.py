@@ -61,13 +61,12 @@ def test_sig_stfl_save_key(sig_stfl_name):
     
     # Extract parts of the scheme name to form the filename
     height_of_tree = sig_stfl_name[sig_stfl_name.find('_')+1:sig_stfl_name.rfind('_')].replace('/', '')
-    if hash_alg[-1] == '2': hash_alg = hash_alg[:-1]
     hash_alg = sig_stfl_name[sig_stfl_name.find('-')+1:sig_stfl_name.find('_')].lower()
+    if hash_alg[-1] == '2': hash_alg = hash_alg[:-1]
     sig_scheme = sig_stfl_name[0:sig_stfl_name.find('-')].lower()
     hash_alg_bits = sig_stfl_name[sig_stfl_name.rfind('_')+1:]
 
     filename = "tmp_" + sig_scheme + height_of_tree + "_" + hash_alg + hash_alg_bits
-     
     if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
     helpers.run_subprocess(
         [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name, "--save_key_to="+directory+filename],

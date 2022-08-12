@@ -159,7 +159,6 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 	OQS_TEST_CT_DECLASSIFY(message, message_len);
 
 	if (mode == READING) {
-		uint8_t readin;
 		strcpy(filename, filestem);
 
 		// Public Key
@@ -170,22 +169,11 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 			goto err;
 		}
 
-		unsigned int i = 0;
-		printf("pk=");
-		while (!feof(pub_key)) {
-			fscanf(pub_key, "%2hhx", &readin);
-			public_key[i++] = readin;
-			printf("%02x", readin);
+		size_t result = fread(public_key, 1, sig->length_public_key, pub_key);
+		if (result != sig->length_public_key) {
+			rc = OQS_ERROR;
+			goto err;
 		}
-		printf("\n");
-		return 0;
-		// for (unsigned int i = 0; i < sig->length_public_key; i++) {
-		// 	if (fscanf(pub_key, "%02hhx", &readin) != EOF) {
-		// 		rc = OQS_ERROR;
-		// 		break;
-		// 	}
-		// 	public_key[i] = readin;
-		// }
 		fclose(pub_key);
 
 		// Private Key
@@ -197,26 +185,13 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 			goto err;
 		}
 
-		i = 0;
-		printf("sk=");
-		while (!feof(prv_key)) {
-			fscanf(prv_key, "%2hhx", &readin);
-			secret_key->secret_key[i++] = readin;
-			printf("%02x", readin);
-			
+		result = fread(secret_key->secret_key, 1, secret_key->length_secret_key, prv_key);
+		if (result != secret_key->length_secret_key) {
+			rc = OQS_ERROR;
+			goto err;
 		}
-		printf("\n");
-
-
-		// for (unsigned int i = 0; i < secret_key->length_secret_key; i++) {
-			
-		// 	if (fscanf(prv_key, "%2hhx", &readin) != 1) {
-		// 		rc = OQS_ERROR;
-		// 		break;
-		// 	}
-		// 	secret_key->secret_key[i] = readin;
-		// }
 		fclose(prv_key);
+
 	} else {
 		rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
 	}
