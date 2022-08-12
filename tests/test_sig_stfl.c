@@ -45,21 +45,15 @@ void prepend(char *s, const char *t) {
 }
 
 OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
-	uint8_t ss = *(sk->secret_key);
-	ss = 0;
-	return ss == 0 ? OQS_SUCCESS : OQS_ERROR;
+	return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
 OQS_STATUS release_sk_key(OQS_SECRET_KEY *sk) {
-	uint8_t ss = *(sk->secret_key);
-	ss = 0;
-	return ss == 0 ? OQS_SUCCESS : OQS_ERROR;
+	return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
 OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
-	uint8_t ss = *(sk->secret_key);
-	ss = 0;
-	return ss == 0 ? OQS_SUCCESS : OQS_ERROR;
+	return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
 OQS_STATUS sk_file_write(const OQS_SECRET_KEY *sk) {
@@ -91,7 +85,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 	size_t message_len = 100;
 	uint8_t *signature = NULL;
 	size_t signature_len;
-	OQS_STATUS rc = OQS_ERROR, ret = OQS_ERROR;
+	OQS_STATUS rc = OQS_SUCCESS, ret = OQS_ERROR;
 	char filename[64];
 
 	//The magic numbers are random values.
@@ -290,6 +284,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 	goto cleanup;
 
 err:
+	if (rc != OQS_SUCCESS) ret = OQS_ERROR;
 	ret = OQS_ERROR;
 
 cleanup:

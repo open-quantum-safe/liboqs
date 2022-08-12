@@ -188,8 +188,6 @@ int xmssmt_core_sign_open(const xmss_params *params,
     set_type(ltree_addr, XMSS_ADDR_TYPE_LTREE);
     set_type(node_addr, XMSS_ADDR_TYPE_HASHTREE);
 
-    smlen = (smlen * 2)/2;
-
     /* Convert the index bytes from the signature to an integer. */
     idx = bytes_to_ull(sm, params->index_bytes);
 
@@ -205,7 +203,7 @@ int xmssmt_core_sign_open(const xmss_params *params,
     buffer = NULL;
 
     sm += params->index_bytes + params->n;
-
+    smlen -= (params->index_bytes + params->n);
     /* For each subtree.. */
     for (i = 0; i < params->d; i++) {
         idx_leaf = (idx & ((1 << params->tree_height)-1));
@@ -225,6 +223,7 @@ int xmssmt_core_sign_open(const xmss_params *params,
            of the subtree below the currently processed subtree. */
         wots_pk_from_sig(params, wots_pk, sm, root, pub_seed, ots_addr);
         sm += params->wots_sig_bytes;
+        smlen -= params->wots_sig_bytes;
 
         /* Compute the leaf node using the WOTS public key. */
         set_ltree_addr(ltree_addr, idx_leaf);
@@ -233,7 +232,10 @@ int xmssmt_core_sign_open(const xmss_params *params,
         /* Compute the root node of this subtree. */
         compute_root(params, root, leaf, idx_leaf, sm, pub_seed, node_addr);
         sm += params->tree_height*params->n;
+        smlen -= params->tree_height*params->n;
     }
+
+    if (smlen != 0) return -1; /* Signature malformed. */
 
     /* Check if the root node equals the root node in the public key. */
     if (memcmp(root, pub_root, params->n)) {

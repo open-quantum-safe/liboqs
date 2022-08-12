@@ -99,7 +99,9 @@ int thash_h(const xmss_params *params,
             const unsigned char *pub_seed, uint32_t addr[8])
 {
     unsigned char buf[4 * params->n];
+    memset(buf, 0, 4 * params->n);
     unsigned char bitmask[2 * params->n];
+    memset(bitmask, 0, 2 * params->n);
     unsigned char addr_as_bytes[32];
     unsigned int i;
 
