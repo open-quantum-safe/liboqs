@@ -7,6 +7,7 @@
 #define thash_f oqs_sig_stfl_xmss_thash_f
 #define hash_message oqs_sig_stfl_xmss_hash_message
 #define hash_prg oqs_sig_stfl_xmss_hash_prg
+#define addr_to_bytes oqs_sig_stfl_xmss_addr_to_bytes
 
 // hash_address.h - ALL THE HASH ADDRESSING FUNCTIONS
 #define set_layer_addr oqs_sig_stfl_xmss_set_layer_addr
@@ -21,11 +22,17 @@
 #define set_tree_height oqs_sig_stfl_xmss_set_tree_height
 #define set_tree_index oqs_sig_stfl_xmss_set_tree_index
 
+// wots.h - ALL THE WOTS FUNCTIONS
+#define wots_pkgen oqs_sig_stfl_xmss_wots_pkgen
+#define wots_sign oqs_sig_stfl_xmss_wots_sign
+#define wots_pk_from_sig oqs_sig_stfl_xmss_wots_pk_from_sig
+
 // params.h - ALL THE PARAMETER FUNCTIONS
 #define xmss_str_to_oid oqs_sig_stfl_xmss_xmss_str_to_oid
 #define xmssmt_str_to_oid oqs_sig_stfl_xmssmt_str_to_oid
 #define xmss_parse_oid oqs_sig_stfl_xmss_parse_oid
 #define xmssmt_parse_oid oqs_sig_stfl_xmssmt_parse_oid
+#define get_bytes_for_max oqs_sig_stfl_xmss_xmssmt_get_bytes_for_max
 #define xmss_xmssmt_initialize_params oqs_sig_stfl_xmss_xmssmt_initialize_params
 
 // utils.c - ULL <-> BYTES FUNCTIONS
@@ -54,6 +61,6 @@
 #define xmss_sign_open oqs_sig_stfl_xmss_sign_open
 #define xmssmt_derive_subkey oqs_sig_stfl_xmssmt_derive_subkey
 #define xmssmt_keypair oqs_sig_stfl_xmssmt_keypair
-#define xmsmt_sign oqs_sig_stfl_xmssmt_sign
+#define xmssmt_sign oqs_sig_stfl_xmssmt_sign
 #define xmssmt_sign_open oqs_sig_stfl_xmssmt_sign_open
 

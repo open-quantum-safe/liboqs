@@ -26,21 +26,15 @@ typedef enum sig_ops {
 } SIG_OPS;
 
 OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
-	uint8_t ss = *(sk->secret_key);
-	ss = 0;
-	return ss == 0 ? OQS_SUCCESS : OQS_ERROR;
+	return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
 OQS_STATUS release_sk_key(OQS_SECRET_KEY *sk) {
-	uint8_t ss = *(sk->secret_key);
-	ss = 0;
-	return ss == 0 ? OQS_SUCCESS : OQS_ERROR;
+	return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
 OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
-	uint8_t ss = *(sk->secret_key);
-	ss = 0;
-	return ss == 0 ? OQS_SUCCESS : OQS_ERROR;
+	return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
 static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {

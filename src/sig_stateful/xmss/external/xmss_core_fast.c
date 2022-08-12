@@ -257,6 +257,7 @@ static void treehash_init(const xmss_params *params,
 
     uint32_t lastnode, i;
     uint8_t stack[(height+1)*params->n];
+    memset(stack, 0, (height+1)*params->n);
     unsigned int stacklevels[height+1];
     unsigned int stackoffset=0;
     unsigned int nodeh;
@@ -897,7 +898,7 @@ int xmss_core_sign(const xmss_params *params,
     bds_round(params, &state, idx, sk_seed, pub_seed, ots_addr);
     bds_treehash_update(params, &state, (params->tree_height - params->bds_k) >> 1, sk_seed, pub_seed, ots_addr);
 
-    sm += params->tree_height*params->n;
+    //sm += params->tree_height*params->n;
     *smlen += params->tree_height*params->n;
 
     #ifdef FORWARD_SECURE
@@ -1253,6 +1254,7 @@ int xmssmt_core_sign(const xmss_params *params,
     uint8_t *wots_sigs;
 
     bds_state states[2*params->d - 1];
+    memset(states, 0, sizeof(states));
     treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
     for (i = 0; i < 2*params->d - 1; i++) {
         states[i].treehash = treehash + i * (params->tree_height - params->bds_k);
