@@ -33,8 +33,6 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h10_new(void) {
 
 	sig->method_name = "XMSS-SHA2_10_512";
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8391";
-
-	// Check how true this is
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha512_h10_length_pk;
@@ -94,8 +92,6 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha512_h16_new(void) {
 	}
 	sig->method_name = "XMSS-SHA2_16_512";
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8391";
-
-	// Check how true this is
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha512_h16_length_pk;

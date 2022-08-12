@@ -116,13 +116,27 @@ typedef struct OQS_SECRET_KEY {
 	unsigned long long (*sigs_left)(const OQS_SECRET_KEY *secret_key);
 
 	/**
-	 * SAFETY FUNCTIONS
-	 * -> lock_key : "Locks" the secret key, preventing any attributes from being changed
-	 * -> save_secret_key : Saves the byte array of the secret key to a file
-	 * -> release_key : "Unlocks" the secret key, allowing attributes to be changed
+	 * Secret Key Locking Function
+	 *
+	 * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+	 * @return OQS_SUCCESS or OQS_ERROR
 	 */
 	OQS_STATUS (*lock_key)(OQS_SECRET_KEY *sk);
+
+	/**
+	 * Secret Key Saving Function
+	 *
+	 * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
 	OQS_STATUS (*save_secret_key)(const OQS_SECRET_KEY *sk);
+
+	/**
+	 * Secret Key Unlocking / Releasing Function
+	 *
+	 * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+	 * @return OQS_SUCCESS or OQS_ERROR
+	 */
 	OQS_STATUS (*release_key)(OQS_SECRET_KEY *sk);
 
 } OQS_SECRET_KEY;

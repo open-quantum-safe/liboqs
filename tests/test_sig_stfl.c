@@ -91,7 +91,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 	size_t message_len = 100;
 	uint8_t *signature = NULL;
 	size_t signature_len;
-	OQS_STATUS rc, ret = OQS_ERROR;
+	OQS_STATUS rc = OQS_ERROR, ret = OQS_ERROR;
 	char filename[64];
 
 	//The magic numbers are random values.
