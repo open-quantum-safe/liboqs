@@ -151,7 +151,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_shake512_h20_new(void) {
 	if (sig == NULL) {
 		return NULL;
 	}
-	sig->method_name = "XMSS-SHAKE_16_512";;
+	sig->method_name = "XMSS-SHAKE_20_512";;
 	sig->alg_version = "https://datatracker.ietf.org/doc/html/rfc8391";
 
 	sig->euf_cma = true;

@@ -82,7 +82,7 @@ OQS_STATUS sk_file_write(const OQS_SECRET_KEY *sk) {
 	return OQS_SUCCESS;
 }
 
-static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, const char *filestem) {
+static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, char *filestem) {
 
 	OQS_SIG_STFL *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -159,23 +159,33 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 	OQS_TEST_CT_DECLASSIFY(message, message_len);
 
 	if (mode == READING) {
+		uint8_t readin;
 		strcpy(filename, filestem);
-		prepend(filename, DIRECTORY_PLUS_PREFIX);
 
 		// Public Key
 		strcat(filename, PUBLIC_KEY_EXT);
 		FILE *pub_key = fopen(filename, "rb");
 		if (pub_key == NULL) {
 			rc = OQS_ERROR;
+			goto err;
 		}
-		for (unsigned int i = 0; i < sig->length_public_key; i++) {
-			uint8_t readin;
-			if (fscanf(pub_key, "%2hhx", &readin) != 1) {
-				rc = OQS_ERROR;
-				break;
-			}
-			public_key[i] = readin;
+
+		unsigned int i = 0;
+		printf("pk=");
+		while (!feof(pub_key)) {
+			fscanf(pub_key, "%2hhx", &readin);
+			public_key[i++] = readin;
+			printf("%02x", readin);
 		}
+		printf("\n");
+		return 0;
+		// for (unsigned int i = 0; i < sig->length_public_key; i++) {
+		// 	if (fscanf(pub_key, "%02hhx", &readin) != EOF) {
+		// 		rc = OQS_ERROR;
+		// 		break;
+		// 	}
+		// 	public_key[i] = readin;
+		// }
 		fclose(pub_key);
 
 		// Private Key
@@ -184,15 +194,28 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 		FILE *prv_key = fopen(filename, "rb");
 		if (prv_key == NULL) {
 			rc = OQS_ERROR;
+			goto err;
 		}
-		for (unsigned int i = 0; i < secret_key->length_secret_key; i++) {
-			uint8_t readin;
-			if (fscanf(pub_key, "%2hhx", &readin) != 1) {
-				rc = OQS_ERROR;
-				break;
-			}
-			secret_key->secret_key[i] = readin;
+
+		i = 0;
+		printf("sk=");
+		while (!feof(prv_key)) {
+			fscanf(prv_key, "%2hhx", &readin);
+			secret_key->secret_key[i++] = readin;
+			printf("%02x", readin);
+			
 		}
+		printf("\n");
+
+
+		// for (unsigned int i = 0; i < secret_key->length_secret_key; i++) {
+			
+		// 	if (fscanf(prv_key, "%2hhx", &readin) != 1) {
+		// 		rc = OQS_ERROR;
+		// 		break;
+		// 	}
+		// 	secret_key->secret_key[i] = readin;
+		// }
 		fclose(prv_key);
 	} else {
 		rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
@@ -326,7 +349,7 @@ static void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 struct thread_data {
 	char *alg_name;
 	char mode_of_operation;
-	const char *filestem;
+	char *filestem;
 	OQS_STATUS rc;
 };
 
