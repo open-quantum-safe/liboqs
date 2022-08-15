@@ -24,7 +24,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_verify(const uint8_t *message, size_t m
 		return OQS_ERROR;
 	}
 
-	if (xmss_sign_open(message, (unsigned long long *)&message_len, signature, (unsigned long long)signature_len, public_key) != 0) {
+	if (xmss_verify(message, (unsigned long long *)&message_len, signature, (unsigned long long)signature_len, public_key) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;
@@ -46,7 +46,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmssmt_verify(const uint8_t *message, size_t
 		return OQS_ERROR;
 	}
 
-	if (xmssmt_sign_open(message, (unsigned long long *)&message_len, signature, (unsigned long long)signature_len, public_key) != 0) {
+	if (xmssmt_verify(message, (unsigned long long *)&message_len, signature, (unsigned long long)signature_len, public_key) != 0) {
 		return OQS_ERROR;
 	}
 	return OQS_SUCCESS;

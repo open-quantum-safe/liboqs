@@ -58,7 +58,7 @@ int xmss_sign(OQS_SECRET_KEY *sk,
  * verification succeeds. The (input) message is assumed to be contained in sm
  * which has the form [signature || message].
  */
-int xmss_sign_open(const uint8_t *m, unsigned long long *mlen,
+int xmss_verify(const uint8_t *m, unsigned long long *mlen,
                    const uint8_t *sm, unsigned long long smlen,
                    const uint8_t *pk);
 
@@ -86,7 +86,7 @@ int xmssmt_sign(OQS_SECRET_KEY *sk,
  * verification succeeds. The (input) message is assumed to be contained in sm
  * which has the form [signature || message].
  */
-int xmssmt_sign_open(const uint8_t *m, unsigned long long *mlen,
+int xmssmt_verify(const uint8_t *m, unsigned long long *mlen,
                      const uint8_t *sm, unsigned long long smlen,
                      const uint8_t *pk);
 #endif

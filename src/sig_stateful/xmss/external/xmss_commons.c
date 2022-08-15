@@ -149,7 +149,7 @@ void get_seed(const xmss_params *params, uint8_t *seed,
  * Verifies a given message signature pair under a given public key.
  * Note that this assumes a pk without an OID, i.e. [root || PUB_SEED]
  */
-int xmss_core_sign_open(const xmss_params *params,
+int xmss_core_verify(const xmss_params *params,
                         uint8_t *m, unsigned long long *mlen,
                         const uint8_t *sm, unsigned long long smlen,
                         const uint8_t *pk)
@@ -158,14 +158,14 @@ int xmss_core_sign_open(const xmss_params *params,
        For d=1, as is the case with XMSS, some of the calls in the XMSSMT
        routine become vacuous (i.e. the loop only iterates once, and address
        management can be simplified a bit).*/
-    return xmssmt_core_sign_open(params, m, mlen, sm, smlen, pk);
+    return xmssmt_core_verify(params, m, mlen, sm, smlen, pk);
 }
 
 /**
  * Verifies a given message signature pair under a given public key.
  * Note that this assumes a pk without an OID, i.e. [root || PUB_SEED]
  */
-int xmssmt_core_sign_open(const xmss_params *params,
+int xmssmt_core_verify(const xmss_params *params,
                           uint8_t *m, unsigned long long *mlen,
                           const uint8_t *sm, unsigned long long smlen,
                           const uint8_t *pk)
