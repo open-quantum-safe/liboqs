@@ -361,12 +361,12 @@ int main(int argc, char **argv) {
 	char mode_of_operation = 'x';
 	char *filestem = NULL;
 	if (argc > 2) {
-		char argument[8];
+		char argument[8] = {0};
 		strncpy(argument, argv[2], 6);
-		if (strcmp(argument, "--save") == 0) {
+		if (strncmp(argument, "--save", 6) == 0) {
 			mode_of_operation = SAVING;
 			filestem = argv[2] + strlen("--save_key_to=");
-		} else if (strcmp(argument, "--read") == 0) {
+		} else if (strncmp(argument, "--read", 6) == 0) {
 			mode_of_operation = READING;
 			filestem = argv[2] + strlen("--read_key_from=");
 		} else {

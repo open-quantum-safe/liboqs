@@ -487,7 +487,7 @@ int xmssmt_parse_oid(xmss_params *params, const uint32_t oid)
  * @return unsigned int - the number of bytes for the max sigs.
  */
 unsigned int get_bytes_for_max(unsigned int tree_height) {
-    return pow(2, ceil(log2(tree_height))) / 8;
+    return (unsigned int)(pow(2, ceil(log2(tree_height))) / 8);
 }
 
 
