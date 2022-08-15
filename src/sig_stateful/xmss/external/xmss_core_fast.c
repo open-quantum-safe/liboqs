@@ -1251,7 +1251,7 @@ int xmssmt_core_sign(const xmss_params *params,
     uint32_t ots_addr[8] = {0};
     uint8_t idx_bytes_32[32];
 
-    uint8_t *wots_sigs; 
+    uint8_t *wots_sigs = 0; 
 
     bds_state states[2*params->d - 1];
     memset(states, 0, sizeof(states));
