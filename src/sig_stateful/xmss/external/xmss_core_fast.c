@@ -1251,7 +1251,7 @@ int xmssmt_core_sign(const xmss_params *params,
     uint32_t ots_addr[8] = {0};
     uint8_t idx_bytes_32[32];
 
-    uint8_t *wots_sigs;
+    uint8_t *wots_sigs; 
 
     bds_state states[2*params->d - 1];
     memset(states, 0, sizeof(states));
@@ -1446,7 +1446,10 @@ int xmssmt_core_sign(const xmss_params *params,
             #else
             get_seed(params, ots_seed, sk+params->index_bytes, ots_addr);
             #endif
-            wots_sign(params, wots_sigs + i*params->wots_sig_bytes, states[i].stack, ots_seed, pub_seed, ots_addr);
+
+            if (wots_sigs != NULL) {
+                wots_sign(params, wots_sigs + i*params->wots_sig_bytes, states[i].stack, ots_seed, pub_seed, ots_addr);
+            }
 
             #ifdef FORWARD_SECURE
             // if this is a left node, we need to store it for BDS
