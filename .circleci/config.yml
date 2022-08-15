@@ -117,7 +117,7 @@ jobs:
       - run:
           name: Run tests
           no_output_timeout: 1h
-          command: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py  --ignore=tests/test_cmdline.py::test_sig_stfl_new_key --ignore=tests/test_cmdline.py::test_sig_stfl_save_key --junitxml=build/test-results/pytest/test-results.xml << parameters.PYTEST_ARGS >>
+          command: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --junitxml=build/test-results/pytest/test-results.xml << parameters.PYTEST_ARGS >>
           environment:
              SKIP_ALGS: << parameters.SKIP_ALGS >>
              SKIP_TESTS: test_sig_stfl_new_key, test_sig_stfl_save_key
