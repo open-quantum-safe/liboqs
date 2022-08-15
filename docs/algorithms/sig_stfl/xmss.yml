@@ -1,0 +1,38 @@
+name: XMSS
+type: signature
+authours:
+- Johannes Buchmann
+- Erik Dahmen
+- Andreas Hülsing
+crypto-assumption: hash function security (ROM/QROM)
+primary-upstream:
+  source: https://github.com/mkannwischer/xmssfs
+parameter-sets:
+- name: XMSS-SHA2_10_256
+  length-public-key: 68
+  length-secret-key: 2051
+  length-signature: 2500
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_16_256
+  length-public-key: 68
+  length-secret-key: 3155
+  length-signature: 2692
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
