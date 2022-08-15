@@ -144,7 +144,7 @@ int xmss_sign(OQS_SECRET_KEY *sk,
     return xmss_core_sign(&params, sk, sm, smlen, m, mlen);
 }
 
-int xmss_sign_open(uint8_t *m, unsigned long long *mlen,
+int xmss_verify(uint8_t *m, unsigned long long *mlen,
                    const uint8_t *sm, unsigned long long smlen,
                    const uint8_t *pk)
 {
@@ -158,7 +158,7 @@ int xmss_sign_open(uint8_t *m, unsigned long long *mlen,
     if (xmss_parse_oid(&params, oid)) {
         return -1;
     }
-    return xmss_core_sign_open(&params, m, mlen, sm, smlen, pk + XMSS_OID_LEN);
+    return xmss_core_verify(&params, m, mlen, sm, smlen, pk + XMSS_OID_LEN);
 }
 
 int xmssmt_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid)
@@ -199,7 +199,7 @@ int xmssmt_sign(OQS_SECRET_KEY *sk,
     return xmssmt_core_sign(&params, sk, sm, smlen, m, mlen);
 }
 
-int xmssmt_sign_open(uint8_t *m, unsigned long long *mlen,
+int xmssmt_verify(uint8_t *m, unsigned long long *mlen,
                      const uint8_t *sm, unsigned long long smlen,
                      const uint8_t *pk)
 {
@@ -213,5 +213,5 @@ int xmssmt_sign_open(uint8_t *m, unsigned long long *mlen,
     if (xmssmt_parse_oid(&params, oid)) {
         return -1;
     }
-    return xmssmt_core_sign_open(&params, m, mlen, sm, smlen, pk + XMSS_OID_LEN);
+    return xmssmt_core_verify(&params, m, mlen, sm, smlen, pk + XMSS_OID_LEN);
 }

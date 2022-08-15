@@ -46,7 +46,7 @@ int xmss_core_sign(const xmss_params *params,
  * Verifies a given message signature pair under a given public key.
  * Note that this assumes a pk without an OID, i.e. [root || PUB_SEED]
  */
-int xmss_core_sign_open(const xmss_params *params,
+int xmss_core_verify(const xmss_params *params,
                         uint8_t *m, unsigned long long *mlen,
                         const uint8_t *sm, unsigned long long smlen,
                         const uint8_t *pk);
@@ -85,7 +85,7 @@ int xmssmt_core_sign(const xmss_params *params,
  * Verifies a given message signature pair under a given public key.
  * Note that this assumes a pk without an OID, i.e. [root || PUB_SEED]
  */
-int xmssmt_core_sign_open(const xmss_params *params,
+int xmssmt_core_verify(const xmss_params *params,
                           uint8_t *m, unsigned long long *mlen,
                           const uint8_t *sm, unsigned long long smlen,
                           const uint8_t *pk);

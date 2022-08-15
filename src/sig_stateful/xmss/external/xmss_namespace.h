@@ -42,8 +42,8 @@
 // xmss_commons.c - XMSS VERFICIATION FUNCTIONS
 #define gen_leaf_wots oqs_sig_stfl_xmss_gen_leaf_wots
 #define get_seed oqs_sig_stfl_xmss_get_seed
-#define xmss_core_sign_open oqs_sig_stfl_xmss_core_sign_open
-#define xmssmt_core_sign_open oqs_sig_stfl_xmssmt_core_sign_open
+#define xmss_core_verify oqs_sig_stfl_xmss_core_verify
+#define xmssmt_core_verify oqs_sig_stfl_xmssmt_core_verify
 
 // xmss_core.h - XMSS CORE FUNCTIONS
 #define xmss_xmssmt_core_sk_bytes oqs_sig_stfl_xmss_xmssmt_core_sk_bytes
@@ -58,9 +58,9 @@
 #define xmss_derive_subkey oqs_sig_stfl_xmss_derive_subkey
 #define xmss_keypair oqs_sig_stfl_xmss_keypair
 #define xmss_sign oqs_sig_stfl_xmss_sign
-#define xmss_sign_open oqs_sig_stfl_xmss_sign_open
+#define xmss_verify oqs_sig_stfl_xmss_verify
 #define xmssmt_derive_subkey oqs_sig_stfl_xmssmt_derive_subkey
 #define xmssmt_keypair oqs_sig_stfl_xmssmt_keypair
 #define xmssmt_sign oqs_sig_stfl_xmssmt_sign
-#define xmssmt_sign_open oqs_sig_stfl_xmssmt_sign_open
+#define xmssmt_verify oqs_sig_stfl_xmssmt_verify
 
