@@ -284,7 +284,9 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 	goto cleanup;
 
 err:
-	if (rc != OQS_SUCCESS) ret = OQS_ERROR;
+	if (rc != OQS_SUCCESS) {
+		ret = OQS_ERROR;
+	}
 	ret = OQS_ERROR;
 
 cleanup:
