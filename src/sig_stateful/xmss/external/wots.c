@@ -160,6 +160,7 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *pub_seed, uint32_t addr[8])
 {
     int lengths[params->wots_len];
+    memset(lengths, 0, params->wots_len * sizeof(int));
     uint32_t i;
 
     chain_lengths(params, lengths, msg);

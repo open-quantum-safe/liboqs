@@ -216,7 +216,8 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 
 		for (unsigned int i = 0; i < sig->length_public_key; i++) {
 			if (fputc(public_key[i], pub_key) == EOF) {
-				return OQS_ERROR;
+				rc = OQS_ERROR;
+				goto err;
 			}
 		}
 		fclose(pub_key);
@@ -284,10 +285,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, 
 	goto cleanup;
 
 err:
-	if (rc != OQS_SUCCESS) {
-		ret = OQS_ERROR;
-	}
-	ret = OQS_ERROR;
+	ret = rc != OQS_SUCCESS ? OQS_ERROR : OQS_SUCCESS;
 
 cleanup:
 	if (secret_key != NULL) {
