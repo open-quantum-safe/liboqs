@@ -61,12 +61,13 @@ int prf(const xmss_params *params,
         unsigned char *out, const unsigned char in[32],
         const unsigned char *key)
 {
-    unsigned char buf[2*params->n + 32];
+    unsigned char *buf = (unsigned char *)malloc((2*params->n + 32) * sizeof(unsigned char));
 
     ull_to_bytes(buf, params->n, XMSS_HASH_PADDING_PRF);
     memcpy(buf + params->n, key, params->n);
     memcpy(buf + 2*params->n, in, 32);
 
+    free(buf);
     return core_hash(params, out, buf, 2*params->n + 32);
 }
 
@@ -98,9 +99,9 @@ int thash_h(const xmss_params *params,
             unsigned char *out, const unsigned char *in,
             const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned char buf[4 * params->n];
+    unsigned char *buf = (unsigned char *)malloc((4 * params->n) * sizeof(unsigned char));
     memset(buf, 0, 4 * params->n);
-    unsigned char bitmask[2 * params->n];
+    unsigned char *bitmask = (unsigned char *)malloc((2 * params->n) * sizeof(unsigned char));
     memset(bitmask, 0, 2 * params->n);
     unsigned char addr_as_bytes[32];
     unsigned int i;
@@ -125,6 +126,7 @@ int thash_h(const xmss_params *params,
     for (i = 0; i < 2 * params->n; i++) {
         buf[2*params->n + i] = in[i] ^ bitmask[i];
     }
+    free(buf); free(bitmask);
     return core_hash(params, out, buf, 4 * params->n);
 }
 
@@ -132,9 +134,9 @@ int thash_f(const xmss_params *params,
             unsigned char *out, const unsigned char *in,
             const unsigned char *pub_seed, uint32_t addr[8])
 {
-    unsigned char buf[3 * params->n];
+    unsigned char *buf = (unsigned char *)malloc((3 * params->n) * sizeof(unsigned char));
     memset(buf, 0, 3 * params->n);
-    unsigned char bitmask[params->n];
+    unsigned char *bitmask = (unsigned char *)malloc(params->n * sizeof(unsigned char));
     memset(bitmask, 0, params->n);
     unsigned char addr_as_bytes[32];
     unsigned int i;
@@ -155,6 +157,7 @@ int thash_f(const xmss_params *params,
     for (i = 0; i < params->n; i++) {
         buf[2*params->n + i] = in[i] ^ bitmask[i];
     }
+    free(buf); free(bitmask);
     return core_hash(params, out, buf, 3 * params->n);
 }
 
@@ -172,7 +175,7 @@ static void encode_ots_address(unsigned char *out, const uint32_t addr[8])
 int hash_prg(const xmss_params *params, unsigned char *out, unsigned char *next_seed,
               const unsigned char *in, const unsigned char *pk, const uint32_t addr[8])
 {
-    unsigned char buf[2*params->n + 16 + 1]; // pk, in, addr, {1,0}
+    unsigned char *buf = (unsigned char *) malloc((2*params->n + 16 + 1) * sizeof(unsigned char)); // pk, in, addr, {1,0}
 
     memcpy(buf, pk, params->n);
     memcpy(buf + params->n, in, params->n);
@@ -188,6 +191,7 @@ int hash_prg(const xmss_params *params, unsigned char *out, unsigned char *next_
         buf[2*params->n+16] = 1;
         rc |= core_hash(params, next_seed, buf, sizeof(buf));
     }
+    free(buf);
     return rc;
 }
 #endif
