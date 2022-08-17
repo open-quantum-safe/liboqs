@@ -67,7 +67,7 @@ int prf(const xmss_params *params,
     memcpy(buf + params->n, key, params->n);
     memcpy(buf + 2*params->n, in, 32);
 
-    free(buf);
+    OQS_MEM_insecure_free(buf);
     return core_hash(params, out, buf, 2*params->n + 32);
 }
 
@@ -126,7 +126,7 @@ int thash_h(const xmss_params *params,
     for (i = 0; i < 2 * params->n; i++) {
         buf[2*params->n + i] = in[i] ^ bitmask[i];
     }
-    free(buf); free(bitmask);
+    OQS_MEM_insecure_free(buf); OQS_MEM_insecure_free(bitmask);
     return core_hash(params, out, buf, 4 * params->n);
 }
 
@@ -157,7 +157,7 @@ int thash_f(const xmss_params *params,
     for (i = 0; i < params->n; i++) {
         buf[2*params->n + i] = in[i] ^ bitmask[i];
     }
-    free(buf); free(bitmask);
+    OQS_MEM_insecure_free(buf); OQS_MEM_insecure_free(bitmask);
     return core_hash(params, out, buf, 3 * params->n);
 }
 
@@ -191,7 +191,7 @@ int hash_prg(const xmss_params *params, unsigned char *out, unsigned char *next_
         buf[2*params->n+16] = 1;
         rc |= core_hash(params, next_seed, buf, sizeof(buf));
     }
-    free(buf);
+    OQS_MEM_insecure_free(buf);
     return rc;
 }
 #endif
