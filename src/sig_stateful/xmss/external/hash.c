@@ -128,7 +128,7 @@ int thash_h(const xmss_params *params,
     for (i = 0; i < 2 * params->n; i++) {
         buf[2*params->n + i] = in[i] ^ bitmask[i];
     }
-    int res =  core_hash(params, out, buf, 4 * params->n);
+    int res = core_hash(params, out, buf, 4 * params->n);
     OQS_MEM_insecure_free(buf); OQS_MEM_insecure_free(bitmask);
     return res;
 }
@@ -160,7 +160,7 @@ int thash_f(const xmss_params *params,
     for (i = 0; i < params->n; i++) {
         buf[2*params->n + i] = in[i] ^ bitmask[i];
     }
-    int res =  core_hash(params, out, buf, 3 * params->n);
+    int res = core_hash(params, out, buf, 3 * params->n);
     OQS_MEM_insecure_free(buf); OQS_MEM_insecure_free(bitmask);
     return res;
 }
