@@ -62,13 +62,15 @@ int prf(const xmss_params *params,
         const unsigned char *key)
 {
     unsigned char *buf = (unsigned char *)malloc((2*params->n + 32) * sizeof(unsigned char));
+    memset(buf, 0, (2*params->n + 32) * sizeof(unsigned char));
 
     ull_to_bytes(buf, params->n, XMSS_HASH_PADDING_PRF);
     memcpy(buf + params->n, key, params->n);
     memcpy(buf + 2*params->n, in, 32);
 
+    int res = core_hash(params, out, buf, 2*params->n + 32);
     OQS_MEM_insecure_free(buf);
-    return core_hash(params, out, buf, 2*params->n + 32);
+    return res;
 }
 
 /*
@@ -126,8 +128,9 @@ int thash_h(const xmss_params *params,
     for (i = 0; i < 2 * params->n; i++) {
         buf[2*params->n + i] = in[i] ^ bitmask[i];
     }
+    int res =  core_hash(params, out, buf, 4 * params->n);
     OQS_MEM_insecure_free(buf); OQS_MEM_insecure_free(bitmask);
-    return core_hash(params, out, buf, 4 * params->n);
+    return res;
 }
 
 int thash_f(const xmss_params *params,
@@ -157,8 +160,9 @@ int thash_f(const xmss_params *params,
     for (i = 0; i < params->n; i++) {
         buf[2*params->n + i] = in[i] ^ bitmask[i];
     }
+    int res =  core_hash(params, out, buf, 3 * params->n);
     OQS_MEM_insecure_free(buf); OQS_MEM_insecure_free(bitmask);
-    return core_hash(params, out, buf, 3 * params->n);
+    return res;
 }
 
 #ifdef FORWARD_SECURE
@@ -176,6 +180,7 @@ int hash_prg(const xmss_params *params, unsigned char *out, unsigned char *next_
               const unsigned char *in, const unsigned char *pk, const uint32_t addr[8])
 {
     unsigned char *buf = (unsigned char *) malloc((2*params->n + 16 + 1) * sizeof(unsigned char)); // pk, in, addr, {1,0}
+    memset(buf, 0, 2*params->n + 16 + 1);
 
     memcpy(buf, pk, params->n);
     memcpy(buf + params->n, in, params->n);
