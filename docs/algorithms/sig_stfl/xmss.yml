@@ -189,7 +189,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: XMSS-SHA2_20/2_256
+- name: XMSSMT-SHA2_20/2_256
   claimed-security: EUF-CMA
   length-public-key: 68
   length-secret-key: 8086
@@ -204,7 +204,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: XMSS-SHA2_20/4_256
+- name: XMSSMT-SHA2_20/4_256
   claimed-security: EUF-CMA
   length-public-key: 68
   length-secret-key: 13602
@@ -219,7 +219,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: XMSS-SHA2_40/2_256
+- name: XMSSMT-SHA2_40/2_256
   claimed-security: EUF-CMA
   length-public-key: 68
   length-secret-key: 13612
@@ -234,7 +234,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: XMSS-SHA2_40/4_256
+- name: XMSSMT-SHA2_40/4_256
   claimed-security: EUF-CMA
   length-public-key: 68
   length-secret-key: 20160
@@ -249,7 +249,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: XMSS-SHA2_40/8_256
+- name: XMSSMT-SHA2_40/8_256
   claimed-security: EUF-CMA
   length-public-key: 68
   length-secret-key: 30256
@@ -264,7 +264,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: XMSS-SHA2_60/3_256
+- name: XMSSMT-SHA2_60/3_256
   claimed-security: EUF-CMA
   length-public-key: 68
   length-secret-key: 23329
@@ -279,7 +279,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: XMSS-SHA2_60/6_256
+- name: XMSSMT-SHA2_60/6_256
   claimed-security: EUF-CMA
   length-public-key: 68
   length-secret-key: 32231
@@ -294,7 +294,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
-- name: XMSS-SHA2_60/12_256
+- name: XMSSMT-SHA2_60/12_256
   claimed-security: EUF-CMA
   length-public-key: 68
   length-secret-key: 46907

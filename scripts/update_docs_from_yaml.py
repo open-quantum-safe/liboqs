@@ -481,7 +481,6 @@ with open(readme_path, mode='w', encoding='utf-8') as readme:
         if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
             readme.write('- **{}**: {}†'.format(sig_stfl_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
         else:
-            print('- **{}**: {}'.format(sig_stfl_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
             readme.write('- **{}**: {}'.format(sig_stfl_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
         for parameter_set in parameter_sets[1:]:
             if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
