@@ -109,8 +109,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
-*Note: This algorithm is known to fail memory leak testing on x86_64.*
-
 ## Classic-McEliece-8192128f implementation characteristics
 
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |

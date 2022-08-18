@@ -261,6 +261,7 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         out_md.write('\n## Explanation of Terms\n\n')
         out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
 
+
 #######################################################
 # Update the stateful signature markdown documentation.
 #######################################################
@@ -274,7 +275,7 @@ for sig_stfl_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs'
         out_md.write('# {}\n\n'.format(sig_stfl_yaml['name']))
         out_md.write('- **Algorithm type**: Digital signature scheme.\n')
         out_md.write('- **Main cryptographic assumption**: {}.\n'.format(sig_stfl_yaml['crypto-assumption']))
-        out_md.write('- **Principal submitters**: {}.\n'.format(', '.join(sig_stfl_yaml['principal-submitters'])))
+        out_md.write('- **Authors**: {}.\n'.format(', '.join(sig_stfl_yaml['authors'])))
         if 'auxiliary-submitters' in sig_stfl_yaml and sig_stfl_yaml['auxiliary-submitters']:
             out_md.write('- **Auxiliary submitters**: {}.\n'.format(', '.join(sig_stfl_yaml['auxiliary-submitters'])))
         
@@ -462,6 +463,7 @@ with open(readme_path, mode='w', encoding='utf-8') as readme:
 
 
 # Stateful Signatures
+
 readme_contents = file_get_contents(readme_path)
 
 identifier_start = start_identifier_tmpl.format('SIG_STFLS')
@@ -473,11 +475,13 @@ postamble = readme_contents[readme_contents.find(identifier_end):]
 with open(readme_path, mode='w', encoding='utf-8') as readme:
     readme.write(preamble + identifier_start + '\n')
 
-    for sig_stfl_yaml in sig_stfl_yamls[:-1]: # SPHINCS is last in this sorted list and requires special handling.
+    for sig_stfl_yaml in sig_stfl_yamls:
+
         parameter_sets = sig_stfl_yaml['parameter-sets']
         if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
             readme.write('- **{}**: {}†'.format(sig_stfl_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
         else:
+            print('- **{}**: {}'.format(sig_stfl_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
             readme.write('- **{}**: {}'.format(sig_stfl_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
         for parameter_set in parameter_sets[1:]:
             if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
@@ -485,15 +489,4 @@ with open(readme_path, mode='w', encoding='utf-8') as readme:
             else:
                 readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
         readme.write('\n')
-
-    sphincs_yml = sig_stfl_yamls[-1]
-    for hash_func in ['Haraka', 'SHA256', 'SHAKE256']:
-        parameter_sets = [pset for pset in sphincs_yml['parameter-sets'] if hash_func in pset['name']]
-        for parameter_set in parameter_sets[1:]:
-            if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
-                readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
-            else:
-                readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
-        readme.write('\n')
-
     readme.write(postamble)
