@@ -30,3 +30,8 @@ for sig_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithm
     print('Formatting {}.'.format(os.path.basename(sig_yaml_path)))
     sig_yaml = load_yaml(sig_yaml_path)
     store_yaml(sig_yaml_path, sig_yaml)
+
+for sig_stfl_yaml_path in glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig_stfl', '*.yml')):
+    print('Formatting {}.'.format(os.path.basename(sig_stfl_yaml_path)))
+    sig_stfl_yaml = load_yaml(sig_stfl_yaml_path)
+    store_yaml(sig_stfl_yaml_path, sig_stfl_yaml)
