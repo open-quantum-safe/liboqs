@@ -9,9 +9,6 @@
   - **Source**: https://github.com/IAIK/Picnic
   - **Implementation license (SPDX-Identifier)**: MIT
 
-## Test limitation
-
-This algorithm is not tested under Windows using the "msys2" tool chain (due to https://github.com/open-quantum-safe/liboqs/issues/1218).
 
 ## Parameter set summary
 
