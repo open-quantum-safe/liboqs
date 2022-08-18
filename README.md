@@ -68,7 +68,7 @@ Details on each supported algorithm can be found in the [docs/algorithms](https:
 #### Stateful Signature schemes
 
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_SIG_STFLS_START -->
-- **XMSS/XMSS^MT**: XMSS-SHA2\_10\_256, XMSS-SHA2\_16\_256, XMSS-SHA2\_20\_256, XMSS-SHA2\_10\_512, XMSS-SHA2\_16\_512, XMSS-SHA2\_20\_512, XMSS-SHAKE\_10\_256, XMSS-SHAKE\_16\_256, XMSS-SHAKE\_20\_256, XMSS-SHAKE\_10\_512, XMSS-SHAKE\_16\_512, XMSS-SHAKE\_20\_512, XMSS-SHA2\_20/2\_256, XMSS-SHA2\_20/4\_256, XMSS-SHA2\_40/2\_256, XMSS-SHA2\_40/4\_256, XMSS-SHA2\_40/8\_256, XMSS-SHA2\_60/3\_256, XMSS-SHA2\_60/6\_256, XMSS-SHA2\_60/12\_256
+- **XMSS/XMSS^MT**: XMSS-SHA2\_10\_256, XMSS-SHA2\_16\_256, XMSS-SHA2\_20\_256, XMSS-SHA2\_10\_512, XMSS-SHA2\_16\_512, XMSS-SHA2\_20\_512, XMSS-SHAKE\_10\_256, XMSS-SHAKE\_16\_256, XMSS-SHAKE\_20\_256, XMSS-SHAKE\_10\_512, XMSS-SHAKE\_16\_512, XMSS-SHAKE\_20\_512, XMSSMT-SHA2\_20/2\_256, XMSSMT-SHA2\_20/4\_256, XMSSMT-SHA2\_40/2\_256, XMSSMT-SHA2\_40/4\_256, XMSSMT-SHA2\_40/8\_256, XMSSMT-SHA2\_60/3\_256, XMSSMT-SHA2\_60/6\_256, XMSSMT-SHA2\_60/12\_256
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_SIG_STFLS_END -->
 
 Note that for algorithms marked with a dagger (†), liboqs contains at least one implementation that uses a large amount of stack space; this may cause failures when run in threads or in constrained environments. For more information, consult the algorithm information sheets in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.
