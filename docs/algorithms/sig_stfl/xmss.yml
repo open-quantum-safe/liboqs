@@ -1,4 +1,4 @@
-name: XMSS
+name: XMSS/XMSS^MT
 type: signature
 authours:
 - Johannes Buchmann
@@ -7,6 +7,7 @@ authours:
 crypto-assumption: hash function security (ROM/QROM)
 primary-upstream:
   source: https://github.com/mkannwischer/xmssfs
+  spdx-license-identifier: MIT
 parameter-sets:
 - name: XMSS-SHA2_10_256
   length-public-key: 68
@@ -26,6 +27,258 @@ parameter-sets:
   length-public-key: 68
   length-secret-key: 3155
   length-signature: 2692
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_20_256
+  length-public-key: 68
+  length-secret-key: 3893
+  length-signature: 2820
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_10_512
+  length-public-key: 132
+  length-secret-key: 4003
+  length-signature: 9092
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_16_512
+  length-public-key: 132
+  length-secret-key: 6163
+  length-signature: 9476
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_20_512
+  length-public-key: 132
+  length-secret-key: 7605
+  length-signature: 9732
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHAKE_10_256
+  length-public-key: 68
+  length-secret-key: 2051
+  length-signature: 2500
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHAKE_16_256
+  length-public-key: 68
+  length-secret-key: 3155
+  length-signature: 2692
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHAKE_20_256
+  length-public-key: 68
+  length-secret-key: 3893
+  length-signature: 2820
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHAKE_10_512
+  length-public-key: 132
+  length-secret-key: 4003
+  length-signature: 9092
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHAKE_16_512
+  length-public-key: 132
+  length-secret-key: 6163
+  length-signature: 9476
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHAKE_20_512
+  length-public-key: 132
+  length-secret-key: 7605
+  length-signature: 9732
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_20/2_256
+  length-public-key: 68
+  length-secret-key: 8086
+  length-signature: 4963
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_20/4_256
+  length-public-key: 68
+  length-secret-key: 13602
+  length-signature: 9251
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_40/2_256
+  length-public-key: 68
+  length-secret-key: 13612
+  length-signature: 5605
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_40/4_256
+  length-public-key: 68
+  length-secret-key: 20160
+  length-signature: 9893
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_40/8_256
+  length-public-key: 68
+  length-secret-key: 30256
+  length-signature: 18469
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_60/3_256
+  length-public-key: 68
+  length-secret-key: 23329
+  length-signature: 8392
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_60/6_256
+  length-public-key: 68
+  length-secret-key: 32231
+  length-signature: 14824
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream: primary-upstream
+    upstream-id: master
+    supported-platforms: all
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+- name: XMSS-SHA2_60/12_256
+  length-public-key: 68
+  length-secret-key: 46907
+  length-signature: 27688
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream

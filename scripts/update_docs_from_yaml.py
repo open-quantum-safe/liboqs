@@ -21,6 +21,7 @@ def file_get_contents(filename, encoding=None):
 
 kem_yamls = []
 sig_yamls = []
+sig_stfl_yamls =  []
 
 ########################################
 # Update the KEM markdown documentation.
@@ -260,6 +261,126 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         out_md.write('\n## Explanation of Terms\n\n')
         out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
 
+#######################################################
+# Update the stateful signature markdown documentation.
+#######################################################
+for sig_stfl_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig_stfl', '*.yml'))):
+    sig_stfl_yaml = load_yaml(sig_stfl_yaml_path)
+    sig_stfl_yamls.append(sig_stfl_yaml)
+    sig_stfl_name = os.path.splitext(os.path.basename(sig_stfl_yaml_path))[0]
+    print('Updating {}/{}.md'.format(os.path.dirname(sig_stfl_yaml_path), sig_stfl_name))
+
+    with open(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig_stfl', '{}.md'.format(sig_stfl_name)), mode='w', encoding='utf-8') as out_md:
+        out_md.write('# {}\n\n'.format(sig_stfl_yaml['name']))
+        out_md.write('- **Algorithm type**: Digital signature scheme.\n')
+        out_md.write('- **Main cryptographic assumption**: {}.\n'.format(sig_stfl_yaml['crypto-assumption']))
+        out_md.write('- **Principal submitters**: {}.\n'.format(', '.join(sig_stfl_yaml['principal-submitters'])))
+        if 'auxiliary-submitters' in sig_stfl_yaml and sig_stfl_yaml['auxiliary-submitters']:
+            out_md.write('- **Auxiliary submitters**: {}.\n'.format(', '.join(sig_stfl_yaml['auxiliary-submitters'])))
+        
+        if 'spec-version' in sig_stfl_yaml:
+            out_md.write('- **Specification version**: {}.\n'.format(sig_stfl_yaml['spec-version']))
+
+        out_md.write('- **Primary Source**<a name="primary-source"></a>:\n')
+        out_md.write('  - **Source**: {}\n'.format(sig_stfl_yaml['primary-upstream']['source']))
+
+        if 'implementation-license' in sig_stfl_yaml:
+            out_md.write('  - **Implementation license (SPDX-Identifier)**: {}\n'.format(sig_stfl_yaml['primary-upstream']['spdx-license-identifier']))
+        
+        if 'optimized-upstreams' in sig_stfl_yaml:
+            out_md.write('- **Optimized Implementation sources**: {}\n'.format(sig_stfl_yaml['primary-upstream']['source']))
+            for opt_upstream in sig_stfl_yaml['optimized-upstreams']:
+                out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
+                out_md.write('      - **Source**: {}\n'.format(sig_stfl_yaml['optimized-upstreams'][opt_upstream]['source']))
+                out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(sig_stfl_yaml['optimized-upstreams'][opt_upstream]['spdx-license-identifier']))
+
+        if 'upstream-ancestors' in sig_stfl_yaml:
+            out_md.write(', which takes it from:\n')
+            for url in sig_stfl_yaml['upstream-ancestors'][:-1]:
+                out_md.write('  - {}, which takes it from:\n'.format(url))
+            out_md.write('  - {}\n'.format(sig_stfl_yaml['upstream-ancestors'][-1]))
+        else:
+            out_md.write('\n')
+
+
+        out_md.write('\n## Parameter set summary\n\n')
+        table = [['Parameter set',
+                  'Security model',
+                  'Public key size (bytes)',
+                  'Secret key size (bytes)',
+                  'Signature size (bytes)']]
+        for parameter_set in sig_stfl_yaml['parameter-sets']:
+            table.append([parameter_set['name'].replace('_', '\_'),
+                          parameter_set['claimed-security'],
+                          parameter_set['length-public-key'],
+                          parameter_set['length-secret-key'],
+                          parameter_set['length-signature']])
+        out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
+        out_md.write('\n')
+
+        for index, parameter_set in enumerate(sig_stfl_yaml['parameter-sets']):
+            out_md.write('\n## {} implementation characteristics\n\n'.format(parameter_set['name'].replace("_", "\_")))
+            table_header = ['Implementation source',
+                            'Identifier in upstream',
+                            'Supported architecture(s)',
+                            'Supported operating system(s)',
+                            'CPU extension(s) used',
+                            'No branching-on-secrets claimed?',
+                            'No branching-on-secrets checked by valgrind?']
+            if index == 0:
+                table_header.append('Large stack usage?‡')
+            else:
+                table_header.append('Large stack usage?')
+
+            table = [table_header]
+            for impl in parameter_set['implementations']:
+                # todo, automate linking this?
+                # if all platforms are supported, assuming not optimized and is primary upstream
+                if impl['supported-platforms'] == 'all':
+                    table.append(['[Primary Source](#primary-source)',
+                                  impl['upstream-id'].replace('_', '\_'),
+                                  'All',
+                                  'All',
+                                  'None',
+                                  impl['no-secret-dependent-branching-claimed'],
+                                  impl['no-secret-dependent-branching-checked-by-valgrind'],
+                                  impl['large-stack-usage']])
+                else:
+                    for platform in impl['supported-platforms']:
+                        if 'operating_systems' not in platform:
+                            platform['operating_systems'] = ['All']
+                        op_systems = ','.join(platform['operating_systems'])
+                        if 'required_flags' in platform and platform['required_flags']:
+                            flags = ','.join(flag.upper() for flag in platform['required_flags'])
+                        else:
+                            flags = 'None'
+                        if impl['upstream'] == 'primary-upstream':
+                            name = 'Primary Source'
+                            anchor = 'primary-source'
+                        else:
+                            name = impl['upstream']
+                            anchor = impl['upstream']
+                        upstream_name = '[{}](#{})'.format(name, anchor)
+                        table.append([upstream_name,
+                                      impl['upstream-id'].replace('_', '\_'),
+                                      platform['architecture'].replace('_', '\_'),
+                                      op_systems,
+                                      flags,
+                                      impl['no-secret-dependent-branching-claimed'],
+                                      impl['no-secret-dependent-branching-checked-by-valgrind'],
+                                      impl['large-stack-usage']])
+
+            out_md.write(tabulate.tabulate(table, tablefmt="pipe", headers="firstrow", colalign=("center",)))
+            out_md.write('\n')
+
+            if 'implementations-switch-on-runtime-cpu-features' in parameter_set:
+                out_md.write('\nAre implementations chosen based on runtime CPU feature detection? **{}**.\n'.format('Yes' if parameter_set['implementations-switch-on-runtime-cpu-features'] else 'No'))
+            if index == 0:
+                out_md.write('\n ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.\n')
+
+        out_md.write('\n## Explanation of Terms\n\n')
+        out_md.write('- **Large Stack Usage**: Implementations identified as having such may cause failures when running in threads or in constrained environments.')
+
 
 
 ####################
@@ -330,6 +451,44 @@ with open(readme_path, mode='w', encoding='utf-8') as readme:
             readme.write('- **SPHINCS+-{}**: {}†'.format(hash_func, parameter_sets[0]['name'].replace('_','\_')))
         else:
             readme.write('- **SPHINCS+-{}**: {}'.format(hash_func, parameter_sets[0]['name'].replace('_','\_')))
+        for parameter_set in parameter_sets[1:]:
+            if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
+                readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
+            else:
+                readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
+        readme.write('\n')
+
+    readme.write(postamble)
+
+
+# Stateful Signatures
+readme_contents = file_get_contents(readme_path)
+
+identifier_start = start_identifier_tmpl.format('SIG_STFLS')
+identifier_end = end_identifier_tmpl.format('SIG_STFLS')
+
+preamble = readme_contents[:readme_contents.find(identifier_start)]
+postamble = readme_contents[readme_contents.find(identifier_end):]
+
+with open(readme_path, mode='w', encoding='utf-8') as readme:
+    readme.write(preamble + identifier_start + '\n')
+
+    for sig_stfl_yaml in sig_stfl_yamls[:-1]: # SPHINCS is last in this sorted list and requires special handling.
+        parameter_sets = sig_stfl_yaml['parameter-sets']
+        if any(impl['large-stack-usage'] for impl in parameter_sets[0]['implementations']):
+            readme.write('- **{}**: {}†'.format(sig_stfl_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
+        else:
+            readme.write('- **{}**: {}'.format(sig_stfl_yaml['name'], parameter_sets[0]['name'].replace('_','\_')))
+        for parameter_set in parameter_sets[1:]:
+            if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
+                readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
+            else:
+                readme.write(', {}'.format(parameter_set['name'].replace('_', '\_')))
+        readme.write('\n')
+
+    sphincs_yml = sig_stfl_yamls[-1]
+    for hash_func in ['Haraka', 'SHA256', 'SHAKE256']:
+        parameter_sets = [pset for pset in sphincs_yml['parameter-sets'] if hash_func in pset['name']]
         for parameter_set in parameter_sets[1:]:
             if any(impl['large-stack-usage'] for impl in parameter_set['implementations']):
                 readme.write(', {}†'.format(parameter_set['name'].replace('_', '\_')))
