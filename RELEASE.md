@@ -1,5 +1,5 @@
-liboqs version 0.7.2-rc2
-========================
+liboqs version 0.7.2
+====================
 
 About
 -----
@@ -29,7 +29,7 @@ liboqs can also be used in the following programming languages via language-spec
 Release notes
 =============
 
-This is release candidate 2 for version 0.7.2 of liboqs.
+This is version 0.7.2 of liboqs.  It was released on August 21, 2022.
 
 Security considerations
 -----------------------
@@ -134,4 +134,4 @@ Detailed changelog
 * add warning about HQC [skip ci] by @baentsch in https://github.com/open-quantum-safe/liboqs/pull/1284
 * Cover SHA3/SHAKE-implementation specific code paths in Picnic suppres… by @sebastinas in https://github.com/open-quantum-safe/liboqs/pull/1286
 
-**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.7.1...0.7.2-rc2
+**Full Changelog**: https://github.com/open-quantum-safe/liboqs/compare/0.7.1...0.7.2
