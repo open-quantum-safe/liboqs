@@ -5,7 +5,7 @@
 #include <oqs/kem_bike.h>
 
 #ifdef OQS_ENABLE_KEM_bike_l1
-OQS_KEM *OQS_KEM_bike_l1_new() {
+OQS_KEM *OQS_KEM_bike_l1_new(void) {
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;
@@ -30,7 +30,7 @@ OQS_KEM *OQS_KEM_bike_l1_new() {
 #endif
 
 #ifdef OQS_ENABLE_KEM_bike_l3
-OQS_KEM *OQS_KEM_bike_l3_new() {
+OQS_KEM *OQS_KEM_bike_l3_new(void) {
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {
 		return NULL;

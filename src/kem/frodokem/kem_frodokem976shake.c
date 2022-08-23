@@ -6,7 +6,7 @@
 
 #ifdef OQS_ENABLE_KEM_frodokem_976_shake
 
-OQS_KEM *OQS_KEM_frodokem_976_shake_new() {
+OQS_KEM *OQS_KEM_frodokem_976_shake_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {

@@ -118,7 +118,7 @@ static OQS_STATUS common_picnic_verify(picnic_params_t parameters, const uint8_t
 
 #ifdef OQS_ENABLE_SIG_picnic_L1_FS
 
-OQS_SIG *OQS_SIG_picnic_L1_FS_new() {
+OQS_SIG *OQS_SIG_picnic_L1_FS_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -157,7 +157,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L1_FS_verify(const uint8_t *message, size_t me
 
 #ifdef OQS_ENABLE_SIG_picnic_L1_UR
 
-OQS_SIG *OQS_SIG_picnic_L1_UR_new() {
+OQS_SIG *OQS_SIG_picnic_L1_UR_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -196,7 +196,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L1_UR_verify(const uint8_t *message, size_t me
 
 #ifdef OQS_ENABLE_SIG_picnic_L1_full
 
-OQS_SIG *OQS_SIG_picnic_L1_full_new() {
+OQS_SIG *OQS_SIG_picnic_L1_full_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -235,7 +235,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L1_full_verify(const uint8_t *message, size_t 
 
 #ifdef OQS_ENABLE_SIG_picnic_L3_FS
 
-OQS_SIG *OQS_SIG_picnic_L3_FS_new() {
+OQS_SIG *OQS_SIG_picnic_L3_FS_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -274,7 +274,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L3_FS_verify(const uint8_t *message, size_t me
 
 #ifdef OQS_ENABLE_SIG_picnic_L3_UR
 
-OQS_SIG *OQS_SIG_picnic_L3_UR_new() {
+OQS_SIG *OQS_SIG_picnic_L3_UR_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -313,7 +313,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L3_UR_verify(const uint8_t *message, size_t me
 
 #ifdef OQS_ENABLE_SIG_picnic_L3_full
 
-OQS_SIG *OQS_SIG_picnic_L3_full_new() {
+OQS_SIG *OQS_SIG_picnic_L3_full_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -352,7 +352,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L3_full_verify(const uint8_t *message, size_t 
 
 #ifdef OQS_ENABLE_SIG_picnic_L5_FS
 
-OQS_SIG *OQS_SIG_picnic_L5_FS_new() {
+OQS_SIG *OQS_SIG_picnic_L5_FS_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -391,7 +391,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L5_FS_verify(const uint8_t *message, size_t me
 
 #ifdef OQS_ENABLE_SIG_picnic_L5_UR
 
-OQS_SIG *OQS_SIG_picnic_L5_UR_new() {
+OQS_SIG *OQS_SIG_picnic_L5_UR_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -431,7 +431,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L5_UR_verify(const uint8_t *message, size_t me
 
 #ifdef OQS_ENABLE_SIG_picnic_L5_full
 
-OQS_SIG *OQS_SIG_picnic_L5_full_new() {
+OQS_SIG *OQS_SIG_picnic_L5_full_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -469,7 +469,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic_L5_full_verify(const uint8_t *message, size_t 
 #endif
 
 #ifdef OQS_ENABLE_SIG_picnic3_L1
-OQS_SIG *OQS_SIG_picnic3_L1_new() {
+OQS_SIG *OQS_SIG_picnic3_L1_new(void) {
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
@@ -507,7 +507,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic3_L1_verify(const uint8_t *message, size_t mess
 
 #ifdef OQS_ENABLE_SIG_picnic3_L3
 
-OQS_SIG *OQS_SIG_picnic3_L3_new() {
+OQS_SIG *OQS_SIG_picnic3_L3_new(void) {
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
@@ -545,7 +545,7 @@ OQS_API OQS_STATUS OQS_SIG_picnic3_L3_verify(const uint8_t *message, size_t mess
 
 #ifdef OQS_ENABLE_SIG_picnic3_L5
 
-OQS_SIG *OQS_SIG_picnic3_L5_new() {
+OQS_SIG *OQS_SIG_picnic3_L5_new(void) {
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
 		return NULL;
