@@ -23,6 +23,7 @@ elseif(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14")
     file(WRITE "${TMP_TESTDIR}/test.c" "int main() { return 0; }\n")
     try_compile(LD_SUPPORTS_WL_Z_NOEXECSTACK "${TMP_TESTDIR}" "${TMP_TESTDIR}/test.c" LINK_OPTIONS "-Wl,-z,noexecstack")
 else()
+    message(WARNING "Unable to check if '-Wl,-z,noexecstack' is supported.")
     set(LD_SUPPORTS_WL_Z_NOEXECSTACK FALSE)
 endif()
 
