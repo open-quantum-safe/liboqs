@@ -12,10 +12,6 @@
   - https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc, which takes it from:
   - submission 2020-10-01 at https://pqc-hqc.org/implementation.html
 
-## Security advisory
-
-The implementation is [known to *not* provide constant time execution properties](https://github.com/open-quantum-safe/liboqs/issues/995).
-
 ## Parameter set summary
 
 |  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |

@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_KEM_ntru_hps2048677)
 
-OQS_KEM *OQS_KEM_ntru_hps2048677_new() {
+OQS_KEM *OQS_KEM_ntru_hps2048677_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {

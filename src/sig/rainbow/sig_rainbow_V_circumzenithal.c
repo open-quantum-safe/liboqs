@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_SIG_rainbow_V_circumzenithal)
 
-OQS_SIG *OQS_SIG_rainbow_V_circumzenithal_new() {
+OQS_SIG *OQS_SIG_rainbow_V_circumzenithal_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {

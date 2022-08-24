@@ -11,14 +11,6 @@
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
-## Usage advice/warning
-
-[A practical attack against this algorithm has been published and confirmed](https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/KFgw5_qCXiI?pli=1). Thus, caution is advised regarding the use of it. Next steps are tracked under [liboqs issue #1192](https://github.com/open-quantum-safe/liboqs/issues/1192).
-
-## Test limitation
-
-This algorithm is not tested under Windows.
-
 ## Parameter set summary
 
 |       Parameter set        | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Signature size (bytes) |

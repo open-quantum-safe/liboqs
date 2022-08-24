@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_SIG_falcon_1024)
 
-OQS_SIG *OQS_SIG_falcon_1024_new() {
+OQS_SIG *OQS_SIG_falcon_1024_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {

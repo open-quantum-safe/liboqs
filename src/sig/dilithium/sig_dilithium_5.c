@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_SIG_dilithium_5)
 
-OQS_SIG *OQS_SIG_dilithium_5_new() {
+OQS_SIG *OQS_SIG_dilithium_5_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {

@@ -331,9 +331,6 @@ inline uint32_t find_peaks(__m256i *transform) {
         tmp = _mm256_or_si256(tmp, _mm256_and_si256(vect_mask, transform[i]));
     }
     result = 0;
-#if __GNUC__ == 12
-# pragma GCC unroll 16
-#endif
     for (size_t i = 0; i < 16; i++) {
         mask = ~(uint32_t) ((-(int64_t)(i ^ message % 16)) >> 63);
         result |= mask & ((uint16_t *)&tmp)[i];
