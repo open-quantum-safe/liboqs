@@ -7,7 +7,7 @@
 {% for scheme in schemes -%}
 #if defined(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme'] }})
 
-OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new() {
+OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {
@@ -35,7 +35,7 @@ OQS_SIG *OQS_SIG_{{ family }}_{{ scheme['scheme'] }}_new() {
         {%- if impl['signature_keypair'] %}
            {%- set cleankeypair = scheme['metadata'].update({'default_keypair_signature': impl['signature_keypair']}) -%}
         {%- else %}
-           {%- set cleankeypair = scheme['metadata'].update({'default_keypair_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_sign_keypair"}) -%} 
+           {%- set cleankeypair = scheme['metadata'].update({'default_keypair_signature': "PQCLEAN_"+scheme['pqclean_scheme_c']|upper+"_"+scheme['default_implementation']|upper+"_crypto_sign_keypair"}) -%}
         {%- endif %}
 
 extern int {{ scheme['metadata']['default_keypair_signature'] }}(uint8_t *pk, uint8_t *sk);

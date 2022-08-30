@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_KEM_ntruprime_ntrulpr857)
 
-OQS_KEM *OQS_KEM_ntruprime_ntrulpr857_new() {
+OQS_KEM *OQS_KEM_ntruprime_ntrulpr857_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {

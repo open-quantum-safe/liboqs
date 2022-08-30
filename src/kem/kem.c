@@ -68,7 +68,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 	}
 }
 
-OQS_API int OQS_KEM_alg_count() {
+OQS_API int OQS_KEM_alg_count(void) {
 	return OQS_KEM_algs_length;
 }
 

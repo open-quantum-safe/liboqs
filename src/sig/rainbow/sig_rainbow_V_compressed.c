@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_SIG_rainbow_V_compressed)
 
-OQS_SIG *OQS_SIG_rainbow_V_compressed_new() {
+OQS_SIG *OQS_SIG_rainbow_V_compressed_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {

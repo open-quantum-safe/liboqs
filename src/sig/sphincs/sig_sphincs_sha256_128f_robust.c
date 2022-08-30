@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_SIG_sphincs_sha256_128f_robust)
 
-OQS_SIG *OQS_SIG_sphincs_sha256_128f_robust_new() {
+OQS_SIG *OQS_SIG_sphincs_sha256_128f_robust_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {

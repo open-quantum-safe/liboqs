@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_SIG_sphincs_haraka_192f_simple)
 
-OQS_SIG *OQS_SIG_sphincs_haraka_192f_simple_new() {
+OQS_SIG *OQS_SIG_sphincs_haraka_192f_simple_new(void) {
 
 	OQS_SIG *sig = malloc(sizeof(OQS_SIG));
 	if (sig == NULL) {

@@ -86,7 +86,7 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 	}
 }
 
-OQS_API int OQS_SIG_alg_count() {
+OQS_API int OQS_SIG_alg_count(void) {
 	return OQS_SIG_algs_length;
 }
 

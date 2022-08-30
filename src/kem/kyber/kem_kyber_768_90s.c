@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_KEM_kyber_768_90s)
 
-OQS_KEM *OQS_KEM_kyber_768_90s_new() {
+OQS_KEM *OQS_KEM_kyber_768_90s_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {

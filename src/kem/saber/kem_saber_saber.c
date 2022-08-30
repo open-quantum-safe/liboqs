@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_KEM_saber_saber)
 
-OQS_KEM *OQS_KEM_saber_saber_new() {
+OQS_KEM *OQS_KEM_saber_saber_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {

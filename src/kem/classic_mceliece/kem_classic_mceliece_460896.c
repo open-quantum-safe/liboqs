@@ -6,7 +6,7 @@
 
 #if defined(OQS_ENABLE_KEM_classic_mceliece_460896)
 
-OQS_KEM *OQS_KEM_classic_mceliece_460896_new() {
+OQS_KEM *OQS_KEM_classic_mceliece_460896_new(void) {
 
 	OQS_KEM *kem = malloc(sizeof(OQS_KEM));
 	if (kem == NULL) {
