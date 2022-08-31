@@ -95,7 +95,7 @@ bool cpu_supports(unsigned int caps);
 #if defined(__aarch64__)
 #define CPU_SUPPORTS_NEON 1
 #elif defined(__arm__)
-#define CPU_SUPPRTS_NEON OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)
+#define CPU_SUPPORTS_NEON OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)
 #else
 #define CPU_SUPPORTS_NEON 0
 #endif
