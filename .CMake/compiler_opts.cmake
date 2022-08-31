@@ -169,6 +169,12 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
         endif ()
     endif()
 
+    # workaround for gcc issues on ARM32 as per https://github.com/open-quantum-safe/liboqs/issues/1288
+    if(ARCH_ARM32v7)
+        add_compile_options(-fno-ipa-modref)
+        add_compile_options(-fno-ipa-pure-const)
+    endif()
+
 elseif(CMAKE_C_COMPILER_ID STREQUAL "MSVC")
     # Warning C4146 is raised when a unary minus operator is applied to an
     # unsigned type; this has nonetheless been standard and portable for as
