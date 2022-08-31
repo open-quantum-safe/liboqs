@@ -89,6 +89,13 @@ if(CMAKE_HAVE_MEMALIGN)
     target_compile_definitions(common PRIVATE OQS_HAVE_MEMALIGN)
 endif()
 
+# check if explicit_bzero exists
+check_symbol_exists(explicit_bzero string.h CMAKE_HAVE_EXPLICIT_BZERO)
+
+if(CMAKE_HAVE_EXPLICIT_BZERO)
+    target_compile_definitions(common PRIVATE OQS_HAVE_EXPLICIT_BZERO)
+endif()
+
 if(NOT ${OQS_USE_SHA3_OPENSSL}) # using XKCP
     set(_COMMON_OBJS ${_COMMON_OBJS} ${XKCP_LOW_OBJS})
 endif()
