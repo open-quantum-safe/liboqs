@@ -170,7 +170,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     endif()
 
     # workaround for gcc issues on ARM32 as per https://github.com/open-quantum-safe/liboqs/issues/1288
-    if(ARCH_ARM32v7)
+    if(ARCH_ARM32v7 AND (CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "11.0.0"))
         add_compile_options(-fno-ipa-modref)
         add_compile_options(-fno-ipa-pure-const)
     endif()
