@@ -89,11 +89,16 @@ if(CMAKE_HAVE_MEMALIGN)
     target_compile_definitions(common PRIVATE OQS_HAVE_MEMALIGN)
 endif()
 
-# check if explicit_bzero exists
+# check if explicit_bzero exists or memset_s
 check_symbol_exists(explicit_bzero string.h CMAKE_HAVE_EXPLICIT_BZERO)
+check_symbol_exists(memset_s string.h CMAKE_HAVE_MEMSET_S)
 
 if(CMAKE_HAVE_EXPLICIT_BZERO)
     target_compile_definitions(common PRIVATE OQS_HAVE_EXPLICIT_BZERO)
+endif()
+
+if(CMAKE_HAVE_MEMSET_S)
+    target_compile_definitions(common PRIVATE OQS_HAVE_MEMSET_S)
 endif()
 
 if(NOT ${OQS_USE_SHA3_OPENSSL}) # using XKCP
