@@ -72,6 +72,35 @@ else()
     endif()
 endif()
 
+# check available functions to perform aligned mallocs
+check_symbol_exists(aligned_alloc stdlib.h CMAKE_HAVE_ALIGNED_ALLOC)
+check_symbol_exists(posix_memalign stdlib.h CMAKE_HAVE_POSIX_MEMALIGN)
+check_symbol_exists(memalign malloc.h CMAKE_HAVE_MEMALIGN)
+
+if(CMAKE_HAVE_ALIGNED_ALLOC)
+    target_compile_definitions(common PRIVATE OQS_HAVE_ALIGNED_ALLOC)
+endif()
+
+if(CMAKE_HAVE_POSIX_MEMALIGN)
+    target_compile_definitions(common PRIVATE OQS_HAVE_POSIX_MEMALIGN)
+endif()
+
+if(CMAKE_HAVE_MEMALIGN)
+    target_compile_definitions(common PRIVATE OQS_HAVE_MEMALIGN)
+endif()
+
+# check if explicit_bzero exists or memset_s
+check_symbol_exists(explicit_bzero string.h CMAKE_HAVE_EXPLICIT_BZERO)
+check_symbol_exists(memset_s string.h CMAKE_HAVE_MEMSET_S)
+
+if(CMAKE_HAVE_EXPLICIT_BZERO)
+    target_compile_definitions(common PRIVATE OQS_HAVE_EXPLICIT_BZERO)
+endif()
+
+if(CMAKE_HAVE_MEMSET_S)
+    target_compile_definitions(common PRIVATE OQS_HAVE_MEMSET_S)
+endif()
+
 if(NOT ${OQS_USE_SHA3_OPENSSL}) # using XKCP
     set(_COMMON_OBJS ${_COMMON_OBJS} ${XKCP_LOW_OBJS})
 endif()
