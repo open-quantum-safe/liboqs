@@ -52,6 +52,9 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 
 	if (printInfo) {
 		printf("public key bytes: %zu, secret key bytes: %zu, signature bytes: %zu\n", sig->length_public_key, sig->length_secret_key, sig->length_signature);
+		if (signature_len != sig->length_signature) {
+			printf("   Actual signature length returned (%ld) less than declared maximum signature length (%ld)\n", signature_len, sig->length_signature);
+		}
 	}
 
 	ret = OQS_SUCCESS;
