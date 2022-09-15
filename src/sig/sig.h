@@ -242,7 +242,7 @@ typedef struct OQS_SIG {
 	 * compile-time macros `OQS_SIG_*_length_*`.
 	 *
 	 * @param[out] signature The signature on the message represented as a byte string.
-	 * @param[out] signature_len The length of the signature.
+	 * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
 	 * @param[in] message The message to sign represented as a byte string.
 	 * @param[in] message_len The length of the message to sign.
 	 * @param[in] secret_key The secret key represented as a byte string.
