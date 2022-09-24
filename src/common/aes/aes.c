@@ -19,7 +19,7 @@
       } \
    } while(0)
 #elif defined(OQS_DIST_ARM64_V8_BUILD)
-#define C_OR_NI_ARM(stmt_c, stmt_ni, stmt_arm) \
+#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     do { \
         if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_AES)) {  \
             stmt_arm; \
