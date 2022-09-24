@@ -113,16 +113,16 @@ static void set_available_cpu_extensions(void) {
 		fprintf(stderr, "Error getting HWCAP for ARM on FreeBSD\n");
 		return;
 	}
-	if (hwcaps | HWCAP_AES) {
+	if (hwcaps & HWCAP_AES) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_AES] = 1;
 	}
-	if (hwcaps | HWCAP_ASIMD) {
+	if (hwcaps & HWCAP_ASIMD) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
 	}
-	if (hwcaps | HWCAP_SHA2) {
+	if (hwcaps & HWCAP_SHA2) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
 	}
-	if (hwcaps | HWCAP_SHA3) {
+	if (hwcaps & HWCAP_SHA3) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_SHA3] = 1;
 	}
 }
