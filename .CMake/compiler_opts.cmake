@@ -45,7 +45,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
             set(OQS_OPT_FLAG "-march=z10")
         else()
             # Assume sensible default like -march=x86-64, -march=armv8-a, etc.
-            set(OQS_OPT_FLAG "")
+            set(OQS_OPT_FLAG "-march=armv8-a+crypto")
         endif()
     elseif(OQS_OPT_TARGET STREQUAL "auto")
       if(ARCH_X86_64)
