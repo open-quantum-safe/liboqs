@@ -2,6 +2,10 @@
 #include <string.h>
 #include <stdint.h>
 #include <stdio.h>
+#ifdef _MSC_VER
+#include <malloc.h>
+#include <alloca.h>
+#endif
 
 #include <oqs/rand.h>
 #include "hash.h"
@@ -256,14 +260,23 @@ static void treehash_init(const xmss_params *params,
     set_type(node_addr, 2);
 
     uint32_t lastnode, i;
-    uint8_t stack[(height+1)*params->n];
+    #ifdef _MSC_VER
+        uint8_t *stack = (uint8_t *)_malloca(params->n * (height + 1));
+        unsigned int *stacklevels = (unsigned int *)_malloca((height + 1) * sizeof(unsigned int));
+    #else
+        uint8_t stack[(height+1)*params->n];
+        unsigned int stacklevels[height+1];
+    #endif
     memset(stack, 0, (height+1)*params->n);
-    unsigned int stacklevels[height+1];
     unsigned int stackoffset=0;
     unsigned int nodeh;
 
     #ifdef FORWARD_SECURE
-    uint8_t ots_seed[params->n];
+    #ifdef _MSC_VER
+        uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    #else 
+        uint8_t ots_seed[params->n];
+    #endif
     #endif
 
     lastnode = idx+(1<<height);
@@ -323,6 +336,14 @@ static void treehash_init(const xmss_params *params,
     for (i = 0; i < params->n; i++) {
         node[i] = stack[i];
     }
+    
+    #ifdef _MSC_VER
+        _freea(stack);
+        _freea(stacklevels);
+        #ifdef FORWARD_SECURE
+        _freea(ots_seed);
+        #endif
+    #endif
 }
 
 static void treehash_update(const xmss_params *params,
@@ -346,11 +367,18 @@ static void treehash_update(const xmss_params *params,
     set_ltree_addr(ltree_addr, treehash->next_idx);
     set_ots_addr(ots_addr, treehash->next_idx);
 
-    uint8_t nodebuffer[2 * params->n];
+    #ifdef _MSC_VER 
+        uint8_t *nodebuffer - (uint8_t *)_malloca(2 * params->n);
+    #else
+        uint8_t nodebuffer[2 * params->n];
+    #endif
     unsigned int nodeheight = 0;
     #ifdef FORWARD_SECURE
-    uint8_t ots_seed[params->n];
-
+    #ifdef _MSC_VER 
+        uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    #else
+        uint8_t ots_seed[params->n];
+    #endif
     //sk_seed is not needed here suppress warning
     (void) sk_seed;
 
@@ -440,7 +468,11 @@ static char bds_state_update(const xmss_params *params,
     int idx = state->next_leaf;
 
     #ifdef FORWARD_SECURE
+    #ifdef _MSC_VER 
+        uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    #else
     uint8_t ots_seed[params->n];
+    #endif
     #endif
 
 
@@ -507,6 +539,10 @@ static char bds_state_update(const xmss_params *params,
         state->stackoffset--;
     }
     state->next_leaf++;
+
+    #ifdef _MSC_VER
+    _freea(ots_seed);
+    #endif
     return 0;
 }
 
@@ -524,14 +560,23 @@ static void bds_round(const xmss_params *params,
     unsigned int tau = params->tree_height;
     unsigned int startidx;
     unsigned int offset, rowidx;
+
+    #ifdef _MSC_VER
+    uint8_t *buf = (uint8_t *)_malloca(2 * params->n);
+    #else
     uint8_t buf[2 * params->n];
+    #endif
 
     uint32_t ots_addr[8] = {0};
     uint32_t ltree_addr[8] = {0};
     uint32_t node_addr[8] = {0};
 
     #ifdef FORWARD_SECURE
+    #ifdef _MSC_VER
+    uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    #else
     uint8_t ots_seed[params->n];
+    #endif
     #endif
 
     // only copy layer and tree address parts
@@ -645,8 +690,17 @@ int xmss_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsigne
     state.treehash = treehash;
 
     // Extract remaining SK
+    #ifdef _MSC_VER
+    uint8_t *sk_seed = (uint8_t *)_malloca(params->n);
+    uint8_t *pub_seed = (uint8_t *)_malloca(params->n);
+    uint8_t *sk_prf = (uint8_t *)_malloca(params->n);
+    uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    uint8_t *tmp_sig = (uint8_t *)_malloca(params->wots_sig_bytes);
+    uint8_t *tmp_msg = (uint8_t *)_malloca(params->n);
+    #else
     uint8_t sk_seed[params->n], sk_prf[params->n], pub_seed[params->n], ots_seed[params->n];
     uint8_t tmp_sig[params->wots_sig_bytes], tmp_msg[params->n];
+    #endif
     OQS_randombytes(tmp_msg, params->n);
 
     memcpy(sk_seed, sk + params->index_bytes, params->n);
@@ -704,6 +758,14 @@ int xmss_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsigne
         xmss_serialize_state(params, sk, &state);
         idx++;
     }    
+    #ifdef _MSC_VER
+    _freea(sk_seed);
+    _freea(sk_prf);
+    _freea(pub_seed);
+    _freea(ots_seed);
+    _freea(tmp_sig);
+    _freea(tmp_msg);
+    #endif
     return 0;
 }
 
@@ -1176,8 +1238,11 @@ int xmssmt_core_keypair(const xmss_params *params,
         hash_prg(params, ots_seed, NULL, sk+params->index_bytes+(i+1)*params->n, pk+params->n, addr);
         wots_sign(params, wots_sigs + i*params->wots_sig_bytes, pk, ots_seed, pk+params->n, addr);
 
-
-        uint8_t tmp_wots_leaf[params->n];
+        #ifdef _MSC_VER
+            uint8_t *tmp = (uint8_t *)_malloca(params->n);
+        #else
+            uint8_t tmp_wots_leaf[params->n];
+        #endif
         uint32_t ltree_addr[8] = {0};
         memcpy(ltree_addr, addr, sizeof ltree_addr);
         set_type(ltree_addr, 1);
@@ -1188,6 +1253,10 @@ int xmssmt_core_keypair(const xmss_params *params,
         set_layer_addr(addr, (i+1));
         get_seed(params, ots_seed, sk + params->index_bytes, addr);
         wots_sign(params, wots_sigs + i*params->wots_sig_bytes, pk, ots_seed, pk+params->n, addr);
+        #endif
+
+        #ifdef _MSC_VER
+            _freea(tmp_wots_leaf);
         #endif
     }
     // Address now points to the single tree on layer d-1
@@ -1240,15 +1309,7 @@ int xmssmt_core_sign(const xmss_params *params,
     int needswap_upto = -1, ret = 0;
     unsigned int updates;
     
-    #ifndef _MSC_VER
-        uint8_t sk_seed[params->n];
-        uint8_t sk_prf[params->n];
-        uint8_t pub_seed[params->n];
-        // Init working params
-        uint8_t R[params->n];
-        uint8_t msg_h[params->n];
-        uint8_t ots_seed[params->n];
-    #else 
+    #ifdef _MSC_VER
         uint8_t *sk_seed = (uint8_t *)_malloca(params->n);
         uint8_t *sk_prf = (uint8_t *)_malloca(params->n);
         uint8_t *pub_seed = (uint8_t *)_malloca(params->n);
@@ -1256,6 +1317,14 @@ int xmssmt_core_sign(const xmss_params *params,
         uint8_t *R = (uint8_t *)_malloca(params->n);
         uint8_t *msg_h = (uint8_t *)_malloca(params->n);
         uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    #else 
+        uint8_t sk_seed[params->n];
+        uint8_t sk_prf[params->n];
+        uint8_t pub_seed[params->n];
+        // Init working params
+        uint8_t R[params->n];
+        uint8_t msg_h[params->n];
+        uint8_t ots_seed[params->n];
     #endif
 
     uint32_t addr[8] = {0};
