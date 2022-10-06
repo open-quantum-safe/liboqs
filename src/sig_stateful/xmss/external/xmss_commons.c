@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdint.h>
 #include <oqs/oqs.h>
+#ifdef _MSC_VER
+#include <malloc.h>
+#endif
 
 #include "hash.h"
 #include "hash_address.h"
@@ -59,7 +62,11 @@ static void compute_root(const xmss_params *params, uint8_t *root,
                          const uint8_t *pub_seed, uint32_t addr[8])
 {
     uint32_t i;
+    #ifdef _MSC_VER
+    uint8_t *buffer = (uint8_t *)_malloca(2 * params->n);
+    #else
     uint8_t buffer[2*params->n];
+    #endif
 
     /* If leafidx is odd (last bit = 1), current path element is a right child
        and auth_path has to go left. Otherwise it is the other way around. */
@@ -95,6 +102,10 @@ static void compute_root(const xmss_params *params, uint8_t *root,
     leafidx >>= 1;
     set_tree_index(addr, leafidx);
     thash_h(params, root, buffer, pub_seed, addr);
+
+    #ifdef _MSC_VER
+    _freea(buffer);
+    #endif
 }
 
 
@@ -107,8 +118,13 @@ void gen_leaf_wots(const xmss_params *params, uint8_t *leaf,
                    const uint8_t *sk_seed, const uint8_t *pub_seed,
                    uint32_t ltree_addr[8], uint32_t ots_addr[8])
 {
+    #ifdef _MSC_VER
+    uint8_t *seed = (uint8_t *)_malloca(params->n);
+    uint8_t *pk = (uint8_t *)_malloca(params->wots_sig_bytes);
+    #else
     uint8_t seed[params->n];
     uint8_t pk[params->wots_sig_bytes];
+    #endif
     #ifdef FORWARD_SECURE
     unsigned int i;
 
@@ -122,6 +138,11 @@ void gen_leaf_wots(const xmss_params *params, uint8_t *leaf,
     wots_pkgen(params, pk, seed, pub_seed, ots_addr);
 
     l_tree(params, leaf, pk, pub_seed, ltree_addr);
+    
+    #ifdef _MSC_VER
+    _freea(seed);
+    _freea(pk);
+    #endif
 }
 
 /**
@@ -172,9 +193,16 @@ int xmssmt_core_verify(const xmss_params *params,
 {
     const uint8_t *pub_root = pk;
     const uint8_t *pub_seed = pk + params->n;
+
+    #ifdef _MSC_VER
+    uint8_t wots_pk = (uint8_t *)_malloca(params->wots_sig_bytes);
+    uint8_t root = (uint8_t *)_malloca(params->n);
+    uint8_t leaf = (uint8_t *)_malloca(params->n);
+    #else
     uint8_t wots_pk[params->wots_sig_bytes];
     uint8_t leaf[params->n];
     uint8_t root[params->n];
+    #endif
     uint8_t *mhash = root;
     unsigned long long idx = 0;
     unsigned int i;
