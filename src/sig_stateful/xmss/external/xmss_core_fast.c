@@ -1229,24 +1229,35 @@ int xmssmt_core_sign(const xmss_params *params,
     uint8_t *sk = secret_key->secret_key + XMSS_OID_LEN;
 
     #ifdef FORWARD_SECURE
-    const uint8_t *pub_root = sk + params->index_bytes + (1 + params->d)*params->n;
-    uint8_t *next_seeds = sk + params->index_bytes + (3 + params->d)*params->n;
+        const uint8_t *pub_root = sk + params->index_bytes + (1 + params->d)*params->n;
+        uint8_t *next_seeds = sk + params->index_bytes + (3 + params->d)*params->n;
     #else
-    const uint8_t *pub_root = sk + params->index_bytes + 2*params->n;
+        const uint8_t *pub_root = sk + params->index_bytes + 2*params->n;
     #endif
     uint64_t idx_tree;
     uint32_t idx_leaf;
     uint64_t i, j;
-    int needswap_upto = -1;
+    int needswap_upto = -1, ret = 0;
     unsigned int updates;
+    
+    #ifndef _MSC_VER
+        uint8_t sk_seed[params->n];
+        uint8_t sk_prf[params->n];
+        uint8_t pub_seed[params->n];
+        // Init working params
+        uint8_t R[params->n];
+        uint8_t msg_h[params->n];
+        uint8_t ots_seed[params->n];
+    #else 
+        uint8_t *sk_seed = (uint8_t *)_malloca(params->n);
+        uint8_t *sk_prf = (uint8_t *)_malloca(params->n);
+        uint8_t *pub_seed = (uint8_t *)_malloca(params->n);
+        // Init working params
+        uint8_t *R = (uint8_t *)_malloca(params->n);
+        uint8_t *msg_h = (uint8_t *)_malloca(params->n);
+        uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    #endif
 
-    uint8_t sk_seed[params->n];
-    uint8_t sk_prf[params->n];
-    uint8_t pub_seed[params->n];
-    // Init working params
-    uint8_t R[params->n];
-    uint8_t msg_h[params->n];
-    uint8_t ots_seed[params->n];
     uint32_t addr[8] = {0};
     uint32_t ots_addr[8] = {0};
     uint8_t idx_bytes_32[32];
@@ -1275,7 +1286,8 @@ int xmssmt_core_sign(const xmss_params *params,
     /* ========= CHECKING AGAINST MAX =========== */
     // Check if we can still sign with this sk, return -2 if not: */
     if (idx >= max) {
-        return -2;
+        ret = -2;
+        goto cleanup;
     }
 
     memcpy(sk_seed, sk+params->index_bytes, params->n);
@@ -1506,5 +1518,14 @@ int xmssmt_core_sign(const xmss_params *params,
 
     secret_key->release_key(secret_key);
 
-    return 0;
+cleanup:
+    #ifdef _MSC_VER
+        _freea(sk_seed);
+        _freea(sk_prf);
+        _freea(pub_seed);
+        _freea(R);
+        _freea(msg_h);
+        _freea(ots_seed);
+    #endif
+    return ret;
 }
