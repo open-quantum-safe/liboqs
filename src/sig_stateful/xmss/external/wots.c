@@ -1,5 +1,8 @@
 #include <stdint.h>
 #include <string.h>
+#ifdef _MSC_VER
+#include <malloc.h>
+#endif
 
 #include "utils.h"
 #include "hash.h"
@@ -79,7 +82,11 @@ static void wots_checksum(const xmss_params *params,
                           int *csum_base_w, const int *msg_base_w)
 {
     int csum = 0;
+    #ifdef _MSC_VER
+    unsigned char *csum_bytes = (unsigned char *)_malloca((params->wots_len2 * params->wots_log_w + 7) / 8 * sizeof(unsigned char));
+    #else
     unsigned char csum_bytes[(params->wots_len2 * params->wots_log_w + 7) / 8];
+    #endif
     unsigned int i;
 
     /* Compute checksum. */
@@ -135,7 +142,11 @@ void wots_sign(const xmss_params *params,
                const unsigned char *seed, const unsigned char *pub_seed,
                uint32_t addr[8])
 {
+    #ifdef _MSC_VER
+    int *lengths = (int *)_alloca(params->wots_len * sizeof(int));
+    #else
     int lengths[params->wots_len];
+    #endif
     uint32_t i;
 
     chain_lengths(params, lengths, msg);
@@ -148,6 +159,10 @@ void wots_sign(const xmss_params *params,
         gen_chain(params, sig + i*params->n, sig + i*params->n,
                   0, lengths[i], pub_seed, addr);
     }
+
+    #ifdef _MSC_VER
+    _freea(lengths);
+    #endif
 }
 
 /**
@@ -158,8 +173,12 @@ void wots_sign(const xmss_params *params,
 void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
                       const unsigned char *sig, const unsigned char *msg,
                       const unsigned char *pub_seed, uint32_t addr[8])
-{
+{   
+    #ifdef _MSC_VER
+    int *lengths = (int *)_alloca(params->wots_len * sizeof(int));
+    #else
     int lengths[params->wots_len];
+    #endif
     memset(lengths, 0, params->wots_len * sizeof(int));
     uint32_t i;
 
@@ -170,4 +189,8 @@ void wots_pk_from_sig(const xmss_params *params, unsigned char *pk,
         gen_chain(params, pk + i*params->n, sig + i*params->n,
                   lengths[i], params->wots_w - 1 - lengths[i], pub_seed, addr);
     }
+
+    #ifdef _MSC_VER
+    _freea(lengths);
+    #endif
 }

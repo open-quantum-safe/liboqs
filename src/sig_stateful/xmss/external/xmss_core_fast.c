@@ -4,7 +4,6 @@
 #include <stdio.h>
 #ifdef _MSC_VER
 #include <malloc.h>
-#include <alloca.h>
 #endif
 
 #include <oqs/rand.h>
@@ -840,7 +839,11 @@ int xmss_core_sign(const xmss_params *params,
     uint16_t i = 0;
 
     bds_state state;
+    #ifdef _MSC_VER
+    treehash_inst *treehash = (treehash_inst *)_malloca(sizeof(treehash_inst) * (params->tree_height - params->bds_k));
+    #else
     treehash_inst treehash[params->tree_height - params->bds_k];
+    #endif
     state.treehash = treehash;
     
     // Lock the secret key object until all our read / write operations on it are complete.
@@ -860,11 +863,17 @@ int xmss_core_sign(const xmss_params *params,
     xmss_deserialize_state(params, &state, sk);
 
     // Extract remaining SK
+    #ifdef _MSC_VER
+    uint8_t *sk_seed = (uint8_t *)_malloca(params->n);
+    uint8_t *sk_prf = (uint8_t *)_malloca(params->n);
+    uint8_t *pub_seed = (uint8_t *)_malloca(params->n);
+    #else
     uint8_t sk_seed[params->n];
-    memcpy(sk_seed, sk + params->index_bytes, params->n);
     uint8_t sk_prf[params->n];
-    memcpy(sk_prf, sk + params->index_bytes + params->n, params->n);
     uint8_t pub_seed[params->n];
+    #endif
+    memcpy(sk_seed, sk + params->index_bytes, params->n);
+    memcpy(sk_prf, sk + params->index_bytes + params->n, params->n);
     memcpy(pub_seed, sk + params->index_bytes + 3*params->n, params->n);
 
     // index as 32 bytes string
@@ -890,9 +899,15 @@ int xmss_core_sign(const xmss_params *params,
 
 
     // Init working params
+    #ifdef _MSC_VER
+    uint8_t *R = (uint8_t *)_malloca(params->n);
+    uint8_t *msg_h = (uint8_t *)_malloca(params->n);
+    uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    #else
     uint8_t R[params->n];
     uint8_t msg_h[params->n];
     uint8_t ots_seed[params->n];
+    #endif
     uint32_t ots_addr[8] = {0};
 
     // ---------------------------------
@@ -978,6 +993,15 @@ int xmss_core_sign(const xmss_params *params,
 
     secret_key->release_key(secret_key);
 
+    #ifdef _MSC_VER
+    _freea(sk_seed);
+    _freea(sk_prf);
+    _freea(pub_seed);
+    _freea(R);
+    _freea(msg_h);
+    _freea(ots_seed);
+    _freea(treehash);
+    #endif
     return 0;
 }
 
