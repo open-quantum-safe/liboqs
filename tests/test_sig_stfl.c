@@ -76,6 +76,16 @@ OQS_STATUS sk_file_write(const OQS_SECRET_KEY *sk) {
 	return OQS_SUCCESS;
 }
 
+/**
+ * @brief Tests the signature generation and verification functions for the
+ * given stateful signature algorithm. Depending on the mode of operation,
+ * the keys are either generated (and saved to a file) or read from a file.
+ * 
+ * @param[in] method_name The name of the stateful signature algorithm.
+ * @param[in] mode The mode of operation (reading, saving, nothing).
+ * @param[in] filestem The filestem to use for the key files.
+ * @return OQS_STATUS - OQS_SUCCESS on success, or OQS_ERROR on failure.
+ */
 static OQS_STATUS sig_stfl_test_correctness(const char *method_name, char mode, char *filestem) {
 
 	OQS_SIG_STFL *sig = NULL;
@@ -398,7 +408,7 @@ int main(int argc, char **argv) {
 	pthread_join(thread, NULL);
 	rc = td.rc;
 #else
-	rc = sig_stfl_test_correctness(alg_name);
+	rc = sig_stfl_test_correctness(alg_name, mode_of_operation, filestem);
 #endif
 	if (rc != OQS_SUCCESS) {
 		return EXIT_FAILURE;
