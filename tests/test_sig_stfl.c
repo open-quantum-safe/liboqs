@@ -80,7 +80,7 @@ OQS_STATUS sk_file_write(const OQS_SECRET_KEY *sk) {
  * @brief Tests the signature generation and verification functions for the
  * given stateful signature algorithm. Depending on the mode of operation,
  * the keys are either generated (and saved to a file) or read from a file.
- * 
+ *
  * @param[in] method_name The name of the stateful signature algorithm.
  * @param[in] mode The mode of operation (reading, saving, nothing).
  * @param[in] filestem The filestem to use for the key files.
