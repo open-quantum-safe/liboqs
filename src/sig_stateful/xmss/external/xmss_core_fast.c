@@ -367,17 +367,17 @@ static void treehash_update(const xmss_params *params,
     set_ots_addr(ots_addr, treehash->next_idx);
 
     #ifdef _MSC_VER 
-        uint8_t *nodebuffer - (uint8_t *)_malloca(2 * params->n);
+        uint8_t *nodebuffer = (uint8_t *)_malloca(2 * params->n);
     #else
         uint8_t nodebuffer[2 * params->n];
     #endif
     unsigned int nodeheight = 0;
     #ifdef FORWARD_SECURE
-    #ifdef _MSC_VER 
-        uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
-    #else
-        uint8_t ots_seed[params->n];
-    #endif
+        #ifdef _MSC_VER 
+            uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+        #else
+            uint8_t ots_seed[params->n];
+        #endif
     //sk_seed is not needed here suppress warning
     (void) sk_seed;
 
@@ -407,6 +407,12 @@ static void treehash_update(const xmss_params *params,
         state->stackoffset++;
         treehash->next_idx++;
     }
+
+    #ifdef FORWARD_SECURE
+        #ifdef _MSC_VER 
+            _freea(ots_seed);
+        #endif
+    #endif
 }
 
 /**
@@ -539,8 +545,10 @@ static char bds_state_update(const xmss_params *params,
     }
     state->next_leaf++;
 
-    #ifdef _MSC_VER
-    _freea(ots_seed);
+    #ifdef FORWARD_SECURE
+        #ifdef _MSC_VER
+        _freea(ots_seed);
+        #endif
     #endif
     return 0;
 }
@@ -571,11 +579,11 @@ static void bds_round(const xmss_params *params,
     uint32_t node_addr[8] = {0};
 
     #ifdef FORWARD_SECURE
-    #ifdef _MSC_VER
-    uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
-    #else
-    uint8_t ots_seed[params->n];
-    #endif
+        #ifdef _MSC_VER
+        uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+        #else
+        uint8_t ots_seed[params->n];
+        #endif
     #endif
 
     // only copy layer and tree address parts
@@ -648,6 +656,12 @@ static void bds_round(const xmss_params *params,
             }
         }
     }
+
+    #ifdef FORWARD_SECURE
+        #ifdef _MSC_VER
+        _freea(ots_seed);
+        #endif
+    #endif
 }
 
 /**
@@ -683,9 +697,14 @@ unsigned long long xmss_xmssmt_core_sk_bytes(const xmss_params *params)
 
 int xmss_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsigned long long amount) {
     unsigned long long i, j = 0;
-    
+    int ret = 0;
+
     bds_state state;
+    #ifdef _MSC_VER
+    treehash_inst *treehash = (treehash_inst *)_malloca((params->tree_height - params->bds_k) * sizeof(treehash_inst));
+    #else
     treehash_inst treehash[params->tree_height - params->bds_k];
+    #endif
     state.treehash = treehash;
 
     // Extract remaining SK
@@ -712,7 +731,8 @@ int xmss_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsigne
     // Extract the max_sigs
     unsigned long long max = bytes_to_ull(sk + params->sk_bytes - params->bytes_for_max, params->bytes_for_max);
     if (idx >= max) {
-        return -2;
+        ret = -2;
+        goto cleanup;
     }
 
     // Update SK
@@ -757,6 +777,8 @@ int xmss_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsigne
         xmss_serialize_state(params, sk, &state);
         idx++;
     }    
+
+cleanup:
     #ifdef _MSC_VER
     _freea(sk_seed);
     _freea(sk_prf);
@@ -765,7 +787,7 @@ int xmss_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsigne
     _freea(tmp_sig);
     _freea(tmp_msg);
     #endif
-    return 0;
+    return ret;
 }
 
 /*
@@ -779,11 +801,19 @@ int xmss_core_keypair(const xmss_params *params,
     uint32_t addr[8] = {0};
 
     #ifdef FORWARD_SECURE
-    uint8_t ots_seed[params->n];
+        #ifdef _MSC_VER
+        uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+        #else
+        uint8_t ots_seed[params->n];
+        #endif
     #endif
 
     bds_state state;
+    #ifdef _MSC_VER
+    treehash_inst *treehash = (treehash_inst *)_malloca((params->tree_height - params->bds_k) * sizeof(treehash_inst));
+    #else
     treehash_inst treehash[params->tree_height - params->bds_k];
+    #endif
     state.treehash = treehash;
 
     xmss_deserialize_state(params, &state, sk);
@@ -817,6 +847,12 @@ int xmss_core_keypair(const xmss_params *params,
     /* Write the BDS state into sk. */
     xmss_serialize_state(params, sk, &state);
 
+    #ifdef FORWARD_SECURE
+        #ifdef _MSC_VER
+        _freea(ots_seed);
+        #endif
+    #endif
+
     return 0;
 }
 
@@ -833,10 +869,11 @@ int xmss_core_sign(const xmss_params *params,
                    const uint8_t *m, unsigned long long mlen)
 {
     uint8_t *sk = secret_key->secret_key + XMSS_OID_LEN;
-
+    
     const uint8_t *pub_root = sk + params->index_bytes + 2*params->n;
 
     uint16_t i = 0;
+    int ret = 0;
 
     bds_state state;
     #ifdef _MSC_VER
@@ -846,6 +883,27 @@ int xmss_core_sign(const xmss_params *params,
     #endif
     state.treehash = treehash;
     
+    // Extract remaining SK
+    #ifdef _MSC_VER
+    uint8_t *sk_seed = (uint8_t *)_malloca(params->n);
+    uint8_t *sk_prf = (uint8_t *)_malloca(params->n);
+    uint8_t *pub_seed = (uint8_t *)_malloca(params->n);
+
+    // Initialize working parameters
+    uint8_t *R = (uint8_t *)_malloca(params->n);
+    uint8_t *msg_h = (uint8_t *)_malloca(params->n);
+    uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    #else
+    uint8_t sk_seed[params->n];
+    uint8_t sk_prf[params->n];
+    uint8_t pub_seed[params->n];
+
+    // Initialize working parameters
+    uint8_t R[params->n];
+    uint8_t msg_h[params->n];
+    uint8_t ots_seed[params->n];
+    #endif
+
     // Lock the secret key object until all our read / write operations on it are complete.
     secret_key->lock_key(secret_key);
 
@@ -857,21 +915,13 @@ int xmss_core_sign(const xmss_params *params,
     unsigned long long max = bytes_to_ull(sk + params->sk_bytes - params->bytes_for_max, params->bytes_for_max);
 
     if (idx >= max) {
-        return -2;
+        ret = -2;
+        goto cleanup;
     }
+
     /* Load the BDS state from sk. */
     xmss_deserialize_state(params, &state, sk);
 
-    // Extract remaining SK
-    #ifdef _MSC_VER
-    uint8_t *sk_seed = (uint8_t *)_malloca(params->n);
-    uint8_t *sk_prf = (uint8_t *)_malloca(params->n);
-    uint8_t *pub_seed = (uint8_t *)_malloca(params->n);
-    #else
-    uint8_t sk_seed[params->n];
-    uint8_t sk_prf[params->n];
-    uint8_t pub_seed[params->n];
-    #endif
     memcpy(sk_seed, sk + params->index_bytes, params->n);
     memcpy(sk_prf, sk + params->index_bytes + params->n, params->n);
     memcpy(pub_seed, sk + params->index_bytes + 3*params->n, params->n);
@@ -897,17 +947,6 @@ int xmss_core_sign(const xmss_params *params,
 
     /** =============================================================================== */
 
-
-    // Init working params
-    #ifdef _MSC_VER
-    uint8_t *R = (uint8_t *)_malloca(params->n);
-    uint8_t *msg_h = (uint8_t *)_malloca(params->n);
-    uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
-    #else
-    uint8_t R[params->n];
-    uint8_t msg_h[params->n];
-    uint8_t ots_seed[params->n];
-    #endif
     uint32_t ots_addr[8] = {0};
 
     // ---------------------------------
@@ -993,6 +1032,7 @@ int xmss_core_sign(const xmss_params *params,
 
     secret_key->release_key(secret_key);
 
+cleanup:
     #ifdef _MSC_VER
     _freea(sk_seed);
     _freea(sk_prf);
@@ -1002,7 +1042,7 @@ int xmss_core_sign(const xmss_params *params,
     _freea(ots_seed);
     _freea(treehash);
     #endif
-    return 0;
+    return ret;
 }
 
 
@@ -1019,30 +1059,44 @@ int xmssmt_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsig
     uint32_t idx_leaf;
     uint64_t i, j;
     int needswap_upto = -1;
+    int ret = 0;
     unsigned int updates;
-    uint8_t ots_seed[params->n];
     uint32_t addr[8] = {0};
     uint32_t ots_addr[8] = {0};
-    uint8_t tmp_sig[params->wots_sig_bytes], tmp_msg[params->n];
+
+    #ifdef _MSC_VER
+    uint8_t *tmp_sig = (uint8_t *)_malloca(params->wots_sig_bytes);
+    uint8_t *tmp_msg = (uint8_t *)_malloca(params->n);
+    uint8_t *ots_seed = (uint8_t *)_malloca(params->n);
+    bds_state *states = (bds_state *)_malloca((2*params->d - 1) * sizeof(bds_state));
+    treehash_inst *treehash = (treehash_inst *)_malloca(((2*params->d - 1) * (params->tree_height - params->bds_k)) * sizeof(treehash_inst));
+    uint8_t *sk_seed = (uint8_t *)_malloca(params->n);
+    uint8_t *sk_prf = (uint8_t *)_malloca(params->n);
+    uint8_t *pub_seed = (uint8_t *)_malloca(params->n);
+    #else
+    uint8_t ots_seed[params->n];
+    uint8_t tmp_msg[params->n];
+    uint8_t tmp_sig[params->wots_sig_bytes];
+    uint8_t sk_seed[params->n], sk_prf[params->n], pub_seed[params->n];
+    bds_state states[2*params->d - 1];
+    treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
+    #endif
+
     OQS_randombytes(tmp_msg, params->n);
     uint8_t *wots_sigs;
 
-    bds_state states[2*params->d - 1];
-    treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
     for (i = 0; i < 2*params->d - 1; i++) {
         states[i].treehash = treehash + i * (params->tree_height - params->bds_k);
     }
-
-    // Extract remaining SK
-    uint8_t sk_seed[params->n], sk_prf[params->n], pub_seed[params->n];
-    
+     
     /* Check if we can still sign with this sk, return -2 if not: */
     // Extract index
     unsigned long long idx = bytes_to_ull(sk, params->index_bytes);
     // Extract the max_sigs
     unsigned long long max = bytes_to_ull(sk + params->sk_bytes - params->bytes_for_max, params->bytes_for_max);
     if (idx >= max) {
-        return -2;
+        ret = -2;
+        goto cleanup;
     }
 
     // Update SK
@@ -1137,12 +1191,20 @@ int xmssmt_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsig
                 #ifdef FORWARD_SECURE
                 // if this is a left node, we need to store it for BDS
                 if ((((idx >> ((i+1) * params->tree_height)) + 1) & ((1 << params->tree_height)-1)) % 2 == 0){
+                    #ifdef _MSC_VER
+                    uint8_t *tmp_wots_leaf = (uint8_t *) _malloca(params->n);
+                    #else
                     uint8_t tmp_wots_leaf[params->n];
+                    #endif
                     uint32_t ltree_addr[8] = {0};
                     memcpy(ltree_addr, ots_addr, sizeof ltree_addr);
                     set_type(ltree_addr, 1);
                     gen_leaf_wots(params, tmp_wots_leaf, ots_seed, pub_seed, ltree_addr, ots_addr);
                     memcpy(states[i+1].left_leaf, tmp_wots_leaf, sizeof  tmp_wots_leaf);
+
+                    #ifdef _MSC_VER
+                    _freea(tmp_wots_leaf);
+                    #endif
                 }
 
                 // move forward next seeds for all tree hash instances
@@ -1186,7 +1248,18 @@ int xmssmt_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsig
         xmssmt_serialize_state(params, sk, states);
         idx++;
     }    
-    return 0;
+cleanup:
+    #ifdef _MSC_VER
+    _freea(tmp_sig);
+    _freea(tmp_msg);
+    _freea(ots_seed);
+    _freea(states);
+    _freea(treehash);
+    _freea(sk_seed);
+    _freea(sk_prf);
+    _freea(pub_seed);
+    #endif
+    return ret;
 }
 
 
@@ -1197,15 +1270,24 @@ int xmssmt_core_increment_authpath(const xmss_params *params, uint8_t *sk, unsig
  */
 int xmssmt_core_keypair(const xmss_params *params,
                         uint8_t *pk, uint8_t *sk)
-{
+{   
+    #ifdef _MSC_VER
+    uint8_t *ots_seed = (uint8_t *) _malloca(params->n);
+    #else
     uint8_t ots_seed[params->n];
+    #endif
 
     uint32_t addr[8] = {0};
     unsigned int i;
     uint8_t *wots_sigs;
 
-    bds_state states[2*params->d - 1];
-    treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
+    #ifdef _MSC_VER
+        bds_state *states = (bds_state *)_malloca((2*params->d - 1) * sizeof(bds_state));
+        treehash_inst *treehash = (treehash_inst *)_malloca(((2*params->d - 1) * (params->tree_height - params->bds_k)) * sizeof(treehash_inst));
+    #else 
+        bds_state states[2*params->d - 1];
+        treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
+    #endif
     for (i = 0; i < 2*params->d - 1; i++) {
         states[i].treehash = treehash + i * (params->tree_height - params->bds_k);
     }
@@ -1263,7 +1345,7 @@ int xmssmt_core_keypair(const xmss_params *params,
         wots_sign(params, wots_sigs + i*params->wots_sig_bytes, pk, ots_seed, pk+params->n, addr);
 
         #ifdef _MSC_VER
-            uint8_t *tmp = (uint8_t *)_malloca(params->n);
+            uint8_t *tmp_wots_leaf = (uint8_t *)_malloca(params->n);
         #else
             uint8_t tmp_wots_leaf[params->n];
         #endif
@@ -1303,6 +1385,11 @@ int xmssmt_core_keypair(const xmss_params *params,
 
     xmssmt_serialize_state(params, sk, states);
 
+    #ifdef _MSC_VER
+        _freea(treehash);
+        _freea(states);
+        _freea(ots_seed);
+    #endif
     return 0;
 }
 
@@ -1345,6 +1432,7 @@ int xmssmt_core_sign(const xmss_params *params,
         uint8_t sk_seed[params->n];
         uint8_t sk_prf[params->n];
         uint8_t pub_seed[params->n];
+        
         // Init working params
         uint8_t R[params->n];
         uint8_t msg_h[params->n];
@@ -1356,10 +1444,15 @@ int xmssmt_core_sign(const xmss_params *params,
     uint8_t idx_bytes_32[32];
 
     uint8_t *wots_sigs = 0; 
-
-    bds_state states[2*params->d - 1];
+    
+    #ifdef _MSC_VER
+        bds_state *states = (bds_state *)_malloca((2*params->d - 1) * sizeof(bds_state));
+        treehash_inst *treehash = (treehash_inst *)_malloca(((2*params->d - 1) * (params->tree_height - params->bds_k)) * sizeof(treehash_inst));
+    #else
+        bds_state states[2*params->d - 1];
+        treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
+    #endif
     memset(states, 0, sizeof(states));
-    treehash_inst treehash[(2*params->d - 1) * (params->tree_height - params->bds_k)];
     for (i = 0; i < 2*params->d - 1; i++) {
         states[i].treehash = treehash + i * (params->tree_height - params->bds_k);
     }
@@ -1559,12 +1652,17 @@ int xmssmt_core_sign(const xmss_params *params,
             #ifdef FORWARD_SECURE
             // if this is a left node, we need to store it for BDS
             if ((((idx >> ((i+1) * params->tree_height)) + 1) & ((1 << params->tree_height)-1)) % 2 == 0){
-                uint8_t tmp_wots_leaf[params->n];
+                #ifdef _MSC_VER
+                    uint8_t *tmp_wots_leaf = (uint8_t *) _malloca(params->n);
+                #else
+                    uint8_t tmp_wots_leaf[params->n];
+                #endif
                 uint32_t ltree_addr[8] = {0};
                 memcpy(ltree_addr, ots_addr, sizeof ltree_addr);
                 set_type(ltree_addr, 1);
                 gen_leaf_wots(params, tmp_wots_leaf, ots_seed, pub_seed, ltree_addr, ots_addr);
                 memcpy(states[i+1].left_leaf, tmp_wots_leaf, sizeof  tmp_wots_leaf);
+                
             }
 
             // move forward next seeds for all tree hash instances
@@ -1613,6 +1711,8 @@ int xmssmt_core_sign(const xmss_params *params,
 
 cleanup:
     #ifdef _MSC_VER
+        _freea(treehash);
+        _freea(states);
         _freea(sk_seed);
         _freea(sk_prf);
         _freea(pub_seed);
