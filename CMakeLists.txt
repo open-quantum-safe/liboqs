@@ -36,6 +36,11 @@ set(OQS_VERSION_TEXT "0.7.3-dev")
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# heuristic check to see whether we're running on a RaspberryPi
+if(EXISTS "/opt/vc/include/bcm_host.h")
+add_definitions( -DUSE_RASPBERRY_PI )
+endif()
+
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|amd64|AMD64")
     set(ARCH "x86_64")
     set(ARCH_X86_64 ON)
