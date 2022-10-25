@@ -104,10 +104,9 @@ static void keccak_inc_reset(uint64_t *s) {
  **************************************************/
 static void keccak_inc_absorb(uint64_t *s, uint32_t r, const uint8_t *m,
                               size_t mlen) {
-	uint64_t c;
+	uint64_t c = r - s[25];
 
-	if (s[25] && mlen + s[25] >= r) {
-		c = r - s[25];
+	if (s[25] && mlen >= c) {
 		(*Keccak_AddBytes_ptr)(s, m, (unsigned int)s[25], (unsigned int)c);
 		(*Keccak_Permute_ptr)(s);
 		mlen -= c;
