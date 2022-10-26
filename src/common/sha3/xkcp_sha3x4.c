@@ -70,10 +70,9 @@ static void keccak_x4_inc_reset(uint64_t *s) {
 
 static void keccak_x4_inc_absorb(uint64_t *s, uint32_t r,
                                  const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
-	uint64_t c;
+	uint64_t c = r - s[100];
 
-	if (s[100] && inlen + s[100] >= r) {
-		c = r - s[100];
+	if (s[100] && inlen >= c) {
 		(*Keccak_X4_AddBytes_ptr)(s, 0, in0, (unsigned int)s[100], (unsigned int)c);
 		(*Keccak_X4_AddBytes_ptr)(s, 1, in1, (unsigned int)s[100], (unsigned int)c);
 		(*Keccak_X4_AddBytes_ptr)(s, 2, in2, (unsigned int)s[100], (unsigned int)c);
