@@ -56,29 +56,23 @@ void oqs_sha2_sha384_inc_blocks_c(sha384ctx *state, const uint8_t *in, size_t in
 void oqs_sha2_sha384_inc_finalize_c(uint8_t *out, sha384ctx *state, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha384_inc_ctx_release_c(sha384ctx *state);
 
-//void oqs_sha2_sha512(uint8_t *output, const uint8_t *input, size_t inplen);
-
-
 void oqs_sha2_sha512_inc_init_c(sha512ctx *state);
 void oqs_sha2_sha512_inc_ctx_clone_c(sha512ctx *dest, const sha512ctx *src);
 void oqs_sha2_sha512_inc_blocks_c(sha512ctx *state, const uint8_t *in, size_t inblocks);
 void oqs_sha2_sha512_inc_finalize_c(uint8_t *out, sha512ctx *state, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha512_inc_ctx_release_c(sha512ctx *state);
 
+// ARMv8 Crypto Extension  functions
+void oqs_sha2_sha224_inc_blocks_armv8(sha224ctx *state, const uint8_t *in, size_t inblocks);
+void oqs_sha2_sha224_armv8(uint8_t *out, const uint8_t *in, size_t inlen);
+void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_t inblocks);
+void oqs_sha2_sha256_armv8(uint8_t *out, const uint8_t *in, size_t inlen);
 
-// Native instruction functions
-
-void oqs_sha2_sha224_inc_blocks_ni(sha224ctx *state, const uint8_t *in, size_t inblocks);
-void oqs_sha2_sha224_ni(uint8_t *out, const uint8_t *in, size_t inlen);
-void oqs_sha2_sha256_inc_blocks_ni(sha256ctx *state, const uint8_t *in, size_t inblocks);
-void oqs_sha2_sha256_ni(uint8_t *out, const uint8_t *in, size_t inlen);
-
-//void oqs_sha2_sha384(uint8_t *output, const uint8_t *input, size_t inplen);
-void oqs_sha2_sha384_inc_init_ni(sha384ctx *state);
-void oqs_sha2_sha384_inc_ctx_clone_ni(sha384ctx *dest, const sha384ctx *src);
-void oqs_sha2_sha384_inc_blocks_ni(sha384ctx *state, const uint8_t *in, size_t inblocks);
-void oqs_sha2_sha384_inc_finalize_ni(uint8_t *out, sha384ctx *state, const uint8_t *in, size_t inlen);
-void oqs_sha2_sha384_inc_ctx_release_ni(sha384ctx *state);
+void oqs_sha2_sha384_inc_init_armv8(sha384ctx *state);
+void oqs_sha2_sha384_inc_ctx_clone_armv8(sha384ctx *dest, const sha384ctx *src);
+void oqs_sha2_sha384_inc_blocks_armv8(sha384ctx *state, const uint8_t *in, size_t inblocks);
+void oqs_sha2_sha384_inc_finalize_armv8(uint8_t *out, sha384ctx *state, const uint8_t *in, size_t inlen);
+void oqs_sha2_sha384_inc_ctx_release_armv8(sha384ctx *state);
 
 void oqs_sha2_sha224_c(uint8_t *out, const uint8_t *in, size_t inlen);
 void oqs_sha2_sha256_c(uint8_t *out, const uint8_t *in, size_t inlen);

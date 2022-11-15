@@ -28,13 +28,13 @@
         } \
     } while(0)
 #elif defined(OQS_USE_AES_INSTRUCTIONS)
-#define  C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     stmt_ni
 #elif defined(OQS_USE_ARM_AES_INSTRUCTIONS)
 #define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     stmt_arm
 #else
-#define  C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     stmt_c
 #endif
 

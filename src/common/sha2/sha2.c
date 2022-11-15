@@ -33,7 +33,7 @@ void OQS_SHA2_sha224_inc_ctx_clone(OQS_SHA2_sha224_ctx *dest, const OQS_SHA2_sha
 void OQS_SHA2_sha224_inc_blocks(OQS_SHA2_sha224_ctx *state, const uint8_t *in, size_t inblocks) {
 	C_OR_ARM(
 	    oqs_sha2_sha224_inc_blocks_c((sha224ctx *) state, in, inblocks),
-	    oqs_sha2_sha224_inc_blocks_ni((sha224ctx *) state, in, inblocks)
+	    oqs_sha2_sha224_inc_blocks_armv8((sha224ctx *) state, in, inblocks)
 	);
 }
 
@@ -56,7 +56,7 @@ void OQS_SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_sha
 void OQS_SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inblocks) {
 	C_OR_ARM(
 	    oqs_sha2_sha256_inc_blocks_c((sha256ctx *) state, in, inblocks),
-	    oqs_sha2_sha256_inc_blocks_ni((sha256ctx *) state, in, inblocks)
+	    oqs_sha2_sha256_inc_blocks_armv8((sha256ctx *) state, in, inblocks)
 	);
 }
 
@@ -111,14 +111,14 @@ void OQS_SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state) {
 void OQS_SHA2_sha224(uint8_t *out, const uint8_t *in, size_t inlen) {
 	C_OR_ARM (
 	    oqs_sha2_sha224_c(out, in, inlen),
-	    oqs_sha2_sha224_ni(out, in, inlen)
+	    oqs_sha2_sha224_armv8(out, in, inlen)
 	);
 }
 
 void OQS_SHA2_sha256(uint8_t *out, const uint8_t *in, size_t inlen) {
 	C_OR_ARM (
 	    oqs_sha2_sha256_c(out, in, inlen),
-	    oqs_sha2_sha256_ni(out, in, inlen)
+	    oqs_sha2_sha256_armv8(out, in, inlen)
 	);
 }
 
