@@ -7,19 +7,19 @@
 #include "sha2_local.h"
 
 #if defined(OQS_DIST_ARM64_V8_BUILD)
-#define C_OR_NI(stmt_c, stmt_ni) \
+#define C_OR_ARM(stmt_c, stmt_arm) \
     do { \
         if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_SHA2)) {  \
-            stmt_ni; \
+            stmt_arm; \
         } else { \
             stmt_c; \
         } \
     } while(0)
 #elif defined(OQS_USE_ARM_SHA2_INSTRUCTIONS)
-#define C_OR_NI(stmt_c, stmt_ni) \
-    stmt_ni
+#define C_OR_ARM(stmt_c, stmt_arm) \
+    stmt_arm
 #else
-#define C_OR_NI(stmt_c, stmt_ni) \
+#define C_OR_ARM(stmt_c, stmt_arm) \
     stmt_c
 #endif
 void OQS_SHA2_sha224_inc_init(OQS_SHA2_sha224_ctx *state) {
@@ -31,9 +31,9 @@ void OQS_SHA2_sha224_inc_ctx_clone(OQS_SHA2_sha224_ctx *dest, const OQS_SHA2_sha
 }
 
 void OQS_SHA2_sha224_inc_blocks(OQS_SHA2_sha224_ctx *state, const uint8_t *in, size_t inblocks) {
-	C_OR_NI(
+	C_OR_ARM(
 	    oqs_sha2_sha224_inc_blocks_c((sha224ctx *) state, in, inblocks),
-	    oqs_sha2_sha224_inc_blocks_ni((sha224ctx *) state, in, inblocks)
+	    oqs_sha2_sha224_inc_blocks_armv8((sha224ctx *) state, in, inblocks)
 	);
 }
 
@@ -54,9 +54,9 @@ void OQS_SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_sha
 }
 
 void OQS_SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inblocks) {
-	C_OR_NI(
+	C_OR_ARM(
 	    oqs_sha2_sha256_inc_blocks_c((sha256ctx *) state, in, inblocks),
-	    oqs_sha2_sha256_inc_blocks_ni((sha256ctx *) state, in, inblocks)
+	    oqs_sha2_sha256_inc_blocks_armv8((sha256ctx *) state, in, inblocks)
 	);
 }
 
@@ -109,16 +109,16 @@ void OQS_SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state) {
 }
 
 void OQS_SHA2_sha224(uint8_t *out, const uint8_t *in, size_t inlen) {
-	C_OR_NI (
+	C_OR_ARM (
 	    oqs_sha2_sha224_c(out, in, inlen),
-	    oqs_sha2_sha224_ni(out, in, inlen)
+	    oqs_sha2_sha224_armv8(out, in, inlen)
 	);
 }
 
 void OQS_SHA2_sha256(uint8_t *out, const uint8_t *in, size_t inlen) {
-	C_OR_NI (
+	C_OR_ARM (
 	    oqs_sha2_sha256_c(out, in, inlen),
-	    oqs_sha2_sha256_ni(out, in, inlen)
+	    oqs_sha2_sha256_armv8(out, in, inlen)
 	);
 }
 

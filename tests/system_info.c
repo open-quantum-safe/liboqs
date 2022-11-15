@@ -47,21 +47,49 @@ static void print_platform_info(void) {
 #endif
 
 #if defined(OQS_DIST_X86_64_BUILD)
-#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
-    if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) { \
-        stmt_ni; \
-    } else { \
-        stmt_c; \
-    }
+#define AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+   do { \
+      if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) { \
+          stmt_ni; \
+      } else { \
+          stmt_c; \
+      } \
+   } while(0)
+#elif defined(OQS_DIST_ARM64_V8_BUILD)
+#define AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+    do { \
+        if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_AES)) {  \
+            stmt_arm; \
+        } else { \
+            stmt_c; \
+        } \
+    } while(0)
 #elif defined(OQS_USE_AES_INSTRUCTIONS)
-#define  C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
-    stmt_ni;
+#define  AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+    stmt_ni
 #elif defined(OQS_USE_ARM_AES_INSTRUCTIONS)
-#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
-    stmt_arm;
+#define AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+    stmt_arm
 #else
-#define  C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
-    stmt_c;
+#define  AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+    stmt_c
+#endif
+
+#if defined(OQS_DIST_ARM64_V8_BUILD)
+#define SHA2_C_OR_ARM(stmt_c, stmt_arm) \
+    do { \
+        if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_SHA2)) {  \
+            stmt_arm; \
+        } else { \
+            stmt_c; \
+        } \
+    } while(0)
+#elif defined(OQS_USE_ARM_SHA2_INSTRUCTIONS)
+#define SHA2_C_OR_ARM(stmt_c, stmt_arm) \
+    stmt_arm
+#else
+#define SHA2_C_OR_ARM(stmt_c, stmt_arm) \
+    stmt_c
 #endif
 
 /* Display all active CPU extensions: */
@@ -203,18 +231,19 @@ static void print_oqs_configuration(void) {
 #if defined(OQS_USE_AES_OPENSSL)
 	printf("AES:              OpenSSL\n");
 #else
-	C_OR_NI_OR_ARM(
+	AES_C_OR_NI_OR_ARM(
 	    printf("AES:              C\n"),
 	    printf("AES:              NI\n"),
 	    printf("AES:              C and ARM CRYPTO extensions\n")
-	)
+	);
 #endif
 #if defined(OQS_USE_SHA2_OPENSSL)
 	printf("SHA-2:            OpenSSL\n");
-#elif defined(OQS_USE_ARM_SHA2_INSTRUCTIONS)
-	printf("SHA-2:            C and ARM CRYPTO extensions\n");
 #else
-	printf("SHA-2:            C\n");
+	SHA2_C_OR_ARM(
+	    printf("SHA-2:            C\n"),
+	    printf("SHA-2:            C and ARM CRYPTO extensions\n")
+	);
 #endif
 #if defined(OQS_USE_SHA3_OPENSSL)
 	printf("SHA-3:            OpenSSL\n");
