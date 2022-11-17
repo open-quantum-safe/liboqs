@@ -8,8 +8,8 @@
 
 #include <oqs/oqs.h>
 
-#if defined(USE_RASPBERRY_PI)
-#define _RASPBERRY_PI
+#if defined(OQS_USE_RASPBERRY_PI)
+#define _OQS_RASPBERRY_PI
 #endif
 #if defined(OQS_SPEED_USE_ARM_PMU)
 #define SPEED_USE_ARM_PMU

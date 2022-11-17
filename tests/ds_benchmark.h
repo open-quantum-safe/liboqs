@@ -81,7 +81,7 @@ PRINT_TIMER_FOOTER
  *  - run when the computer is idle (e.g., shut down all other applications, disable network access if possible, ...)
  */
 
-/* On Raspberry Pi, you need to additionally define the macro _RASPBERRY_PI since
+/* On Raspberry Pi, you need to additionally define the macro _OQS_RASPBERRY_PI since
  * the high-precision cycle count register is not available to user-space programs.
  */
 
@@ -128,7 +128,7 @@ static uint64_t _bench_rdtsc(void) {
 	__asm__ volatile(".byte 0x0f, 0x31"
 	                 : "=A"(x));
 	return x;
-#elif defined(__arm__) && !defined(_RASPBERRY_PI)
+#elif defined(__arm__) && !defined(_OQS_RASPBERRY_PI)
 	/* Use the ARM performance counters. */
 	unsigned int value;
 	/* Read CCNT Register */
@@ -154,7 +154,7 @@ static uint64_t _bench_rdtsc(void) {
 #endif
 }
 
-#if defined(__arm__) && !defined(_RASPBERRY_PI)
+#if defined(__arm__) && !defined(_OQS_RASPBERRY_PI)
 static void _bench_init_perfcounters(int32_t do_reset, int32_t enable_divider) {
 	/* In general enable all counters (including cycle counter) */
 	int32_t value = 1;
@@ -205,7 +205,7 @@ static void _bench_init_perfcounters(void) {
     double _bench_cycles_x, _bench_cycles_mean, _bench_cycles_delta, _bench_cycles_M2, _bench_cycles_stdev; \
     double _bench_time_x, _bench_time_mean, _bench_time_delta, _bench_time_M2, _bench_time_stdev;
 
-#if defined(__arm__) && !defined(_RASPBERRY_PI)
+#if defined(__arm__) && !defined(_OQS_RASPBERRY_PI)
 #define INITIALIZE_TIMER            \
     _bench_init_perfcounters(1, 0); \
     _bench_iterations = 0;          \

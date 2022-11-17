@@ -16,5 +16,5 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 # Unconditionally set for this platform
-add_definitions( -DUSE_RASPBERRY_PI )
+add_definitions( -DOQS_USE_RASPBERRY_PI )
 

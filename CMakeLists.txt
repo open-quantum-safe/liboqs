@@ -38,7 +38,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # heuristic check to see whether we're running on a RaspberryPi
 if(EXISTS "/opt/vc/include/bcm_host.h")
-add_definitions( -DUSE_RASPBERRY_PI )
+	add_definitions( -DOQS_USE_RASPBERRY_PI )
 endif()
 
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|amd64|AMD64")
