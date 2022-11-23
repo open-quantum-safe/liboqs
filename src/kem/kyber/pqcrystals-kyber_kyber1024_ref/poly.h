@@ -6,7 +6,7 @@
 
 /*
  * Elements of R_q = Z_q[X]/(X^n + 1). Represents polynomial
- * coeffs[0] + X*coeffs[1] + X^2*xoeffs[2] + ... + X^{n-1}*coeffs[n-1]
+ * coeffs[0] + X*coeffs[1] + X^2*coeffs[2] + ... + X^{n-1}*coeffs[n-1]
  */
 typedef struct{
   int16_t coeffs[KYBER_N];
