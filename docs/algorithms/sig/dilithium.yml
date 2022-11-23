@@ -15,7 +15,7 @@ website: https://pq-crystals.org/dilithium/
 nist-round: 3
 spec-version: 3.1
 primary-upstream:
-  source: https://github.com/pq-crystals/dilithium/commit/61b51a71701b8ae9f546a1e5d220e1950ed20d06
+  source: https://github.com/pq-crystals/dilithium/commit/3e9b9f1412f6c7435dbeb4e10692ea58f181ee51
     with copy_from_upstream patches
   spdx-license-identifier: CC0-1.0
 optimized-upstreams:

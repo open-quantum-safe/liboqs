@@ -13,7 +13,7 @@ upstreams:
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
     git_branch: master
-    git_commit: 8e00ec73035147d18b27d06048dff322f8de1f29
+    git_commit: 1ee0baa2100a545ac852edea2e4441b8f742814d
     kem_meta_path: '{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
     patches: [pqcrystals-kyber-yml.patch, pqcrystals-kyber-ref-shake-aes.patch, pqcrystals-kyber-avx2-shake-aes.patch]
@@ -21,7 +21,7 @@ upstreams:
     name: pqcrystals-dilithium
     git_url: https://github.com/pq-crystals/dilithium.git
     git_branch: master
-    git_commit: 61b51a71701b8ae9f546a1e5d220e1950ed20d06
+    git_commit: 3e9b9f1412f6c7435dbeb4e10692ea58f181ee51
     sig_meta_path: '{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     patches: [pqcrystals-dilithium-yml.patch, pqcrystals-dilithium-ref-shake-aes.patch, pqcrystals-dilithium-avx2-shake-aes.patch]
