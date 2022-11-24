@@ -303,7 +303,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
 
                 # TODO: PQClean and liboqs pretty-naming conventions for the
                 # following algorithms are out of sync.
-                if sig['name'] == 'sphincs' or sig['name'] == 'rainbow':
+                if sig['name'] == 'sphincs':
                     oqs_scheme_yaml['name'] = rhs_if_not_equal(oqs_scheme_yaml['name'], scheme['pretty_name_full'], "scheme pretty name")
                 else:
                     oqs_scheme_yaml['name'] = rhs_if_not_equal(oqs_scheme_yaml['name'], upstream_yaml['name'], "scheme pretty name")

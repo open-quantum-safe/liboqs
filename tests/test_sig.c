@@ -215,29 +215,16 @@ int main(int argc, char **argv) {
 	OQS_STATUS rc;
 #if OQS_USE_PTHREADS_IN_TESTS
 #define MAX_LEN_SIG_NAME_ 64
-	// don't run Rainbow III and V in threads because of large stack usage
-	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"Rainbow-III", "Rainbow-V"};
-	int test_in_thread = 1;
-	for (size_t i = 0 ; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
-		if (strstr(alg_name, no_thread_sig_patterns[i]) != NULL) {
-			test_in_thread = 0;
-			break;
-		}
+	pthread_t thread;
+	struct thread_data td;
+	td.alg_name = alg_name;
+	int trc = pthread_create(&thread, NULL, test_wrapper, &td);
+	if (trc) {
+		fprintf(stderr, "ERROR: Creating pthread\n");
+		return EXIT_FAILURE;
 	}
-	if (test_in_thread) {
-		pthread_t thread;
-		struct thread_data td;
-		td.alg_name = alg_name;
-		int trc = pthread_create(&thread, NULL, test_wrapper, &td);
-		if (trc) {
-			fprintf(stderr, "ERROR: Creating pthread\n");
-			return EXIT_FAILURE;
-		}
-		pthread_join(thread, NULL);
-		rc = td.rc;
-	} else {
-		rc = sig_test_correctness(alg_name);
-	}
+	pthread_join(thread, NULL);
+	rc = td.rc;
 #else
 	rc = sig_test_correctness(alg_name);
 #endif

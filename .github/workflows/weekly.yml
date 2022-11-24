@@ -16,12 +16,12 @@ jobs:
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-            SKIP_ALGS: 'SPHINCS\+-SHA*,Rainbow-V-Compressed,Classic-McEliece-6(.)*'
+            SKIP_ALGS: 'SPHINCS\+-SHA*,Classic-McEliece-6(.)*'
           - name: extensions
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
-            SKIP_ALGS: 'SPHINCS\+-SHA*,Rainbow-V-Compressed,Classic-McEliece-6(.)*'
+            SKIP_ALGS: 'SPHINCS\+-SHA*,Classic-McEliece-6(.)*'
     container:
       image: ${{ matrix.container }}
     steps:
