@@ -13,7 +13,6 @@
 /src/kem/ntru @jschanck
 /src/oqsconfig.h.cmake @xvzcf
 /src/sig/dilithium @bhess
-/src/sig/picnic @christianpaquin
 /CONTRIBUTORS @dstebila
 /LICENSE.txt @dstebila
 /README.md @dstebila

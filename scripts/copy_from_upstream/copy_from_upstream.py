@@ -19,7 +19,7 @@ import update_upstream_alg_docs
 # kats of all algs
 kats = {}
 
-non_upstream_lengths = {}
+non_upstream_kems = 0
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbosity", type=int)
@@ -38,13 +38,11 @@ if 'LIBOQS_DIR' not in os.environ:
     print("Must set environment variable LIBOQS_DIR")
     exit(1)
 
-# pass this function the list of non-upstream algs to count
-# kemsig either 'kem' or 'sig'
-# scours the documentation for non-upstream algorithms
-# returns the number of documented algorithms
-def count_non_upstream_algs(kemsig, alglist):
+# scours the documentation for non-upstream KEMs
+# returns the number of documented ones
+def count_non_upstream_kems(alglist):
     counted=0
-    docs_dir = os.path.join(os.environ['LIBOQS_DIR'], 'docs', 'algorithms', kemsig)
+    docs_dir = os.path.join(os.environ['LIBOQS_DIR'], 'docs', 'algorithms', 'kem')
     for alg in alglist:
        with open(os.path.join(docs_dir, alg+".yml"), mode='r', encoding='utf-8') as f:
            algyml = yaml.safe_load(f.read())
@@ -96,7 +94,7 @@ def replacer(filename, instructions, delimiter):
         preamble = contents[:contents.find(identifier_start)]
         postamble = contents[contents.find(identifier_end):]
         contents = preamble + identifier_start + jinja2.Template(template).render(
-            {'instructions': instructions, 'non_upstream_lengths': non_upstream_lengths}) + postamble
+            {'instructions': instructions, 'non_upstream_kems': non_upstream_kems}) + postamble
     file_put_contents(os.path.join(os.environ['LIBOQS_DIR'], filename), contents)
 
 def load_instructions():
@@ -695,8 +693,7 @@ def verify_from_upstream():
     if (differ > 0):
         exit(1)
 
-non_upstream_lengths['kem'] = count_non_upstream_algs('kem', ['bike', 'frodokem'])
-non_upstream_lengths['sig'] = count_non_upstream_algs('sig', ['picnic'])
+non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem'])
 
 if args.operation == "copy":
     copy_from_upstream()
