@@ -618,7 +618,7 @@ def copy_from_upstream():
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
-    # Not in love with using sub process to call a python script, but this is the easiest solution for 
+    # Not in love with using sub process to call a python script, but this is the easiest solution for
     # automatically calling this script in its current state.
     shell(["python3",  "../update_docs_from_yaml.py", "--liboqs-root", "../../"]) 
 

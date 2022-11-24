@@ -114,7 +114,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 upstream_base_url = ui['git_url'][:-len(".git")]
                 # upstream is special: We will take the upstream git commit information 
                 # (possibly with added patch comment) as it is what drove the update
-                
+
                 # Need to check if yml is of old format. If so, update to new format
                 if 'primary-upstream' not in oqs_yaml:
                     print("Updating format of {}. Please double check ordering of yaml file".format(scheme['pretty_name_full']))
@@ -168,7 +168,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                 oqs_scheme_yaml['length-ciphertext'] = rhs_if_not_equal(oqs_scheme_yaml['length-ciphertext'], upstream_yaml['length-ciphertext'], "length-ciphertext")
                 oqs_scheme_yaml['length-secret-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-secret-key'], upstream_yaml['length-secret-key'], "legnth-secret-key")
                 oqs_scheme_yaml['length-shared-secret'] = rhs_if_not_equal(oqs_scheme_yaml['length-shared-secret'], upstream_yaml['length-shared-secret'], "length-shared-secret")
-                
+
                 _upstream_yaml = upstream_yaml
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
                     upstream_yaml = _upstream_yaml
@@ -178,7 +178,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
                         opt_upstream_root = ouis[upstream_name]['upstream_root']
                         upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
                         upstream_yaml = load_yaml(upstream_meta_path)
-                        
+
                     for upstream_impl in upstream_yaml['implementations']:
                         if impl['upstream-id'] == upstream_impl['name']:
                             break
@@ -260,7 +260,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 upstream_base_url = ui['git_url'][:-len(".git")]
                 # upstream is special: We will take the upstream git commit information 
                 # (possibly with added patch comment) as it is what drove the update
-                
+
                 # Need to check if yml is of old format. If so, update to new format
                 if 'primary-upstream' not in oqs_yaml:
                     print("Updating format of {}. Please double check ordering of yaml file".format(scheme['pretty_name_full']))
@@ -313,7 +313,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                 oqs_scheme_yaml['length-public-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-public-key'], upstream_yaml['length-public-key'], "length-public-key")
                 oqs_scheme_yaml['length-secret-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-secret-key'], upstream_yaml['length-secret-key'], "legnth-secret-key")
                 oqs_scheme_yaml['length-signature'] = rhs_if_not_equal(oqs_scheme_yaml['length-signature'], upstream_yaml['length-signature'], "length-signature")
-                
+
                 _upstream_yaml = upstream_yaml
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
                     upstream_yaml = _upstream_yaml
@@ -323,7 +323,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                         opt_upstream_root = ouis[upstream_name]['upstream_root']
                         upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
                         upstream_yaml = load_yaml(upstream_meta_path)
-                        
+
                     for upstream_impl in upstream_yaml['implementations']:
                         try:
                             x = impl['upstream-id']
