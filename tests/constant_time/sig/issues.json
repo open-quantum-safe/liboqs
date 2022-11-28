@@ -43,17 +43,5 @@
   "SPHINCS+-SHAKE256-256f-robust": ["sphincs"],
   "SPHINCS+-SHAKE256-256f-simple": ["sphincs"],
   "SPHINCS+-SHAKE256-256s-robust": ["sphincs"],
-  "SPHINCS+-SHAKE256-256s-simple": ["sphincs"],
-  "picnic3_L1": [],
-  "picnic3_L3": [],
-  "picnic3_L5": [],
-  "picnic_L1_FS": [],
-  "picnic_L1_UR": [],
-  "picnic_L1_full": [],
-  "picnic_L3_FS": [],
-  "picnic_L3_UR": [],
-  "picnic_L3_full": [],
-  "picnic_L5_FS": [],
-  "picnic_L5_UR": [],
-  "picnic_L5_full": []
+  "SPHINCS+-SHAKE256-256s-simple": ["sphincs"]
 }

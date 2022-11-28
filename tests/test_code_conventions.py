@@ -54,7 +54,6 @@ def test_spdx():
 def test_free():
     c_files = []
     for path, _, files in os.walk('src'):
-        if os.path.join('picnic','external') in path: continue
         c_files += [os.path.join(path,f) for f in files if f[-2:] == '.c']
     okay = True
     for fn in c_files:
