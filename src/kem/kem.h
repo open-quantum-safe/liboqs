@@ -86,22 +86,6 @@ extern "C" {
 #define OQS_KEM_alg_ntru_hrss701 "NTRU-HRSS-701"
 /** Algorithm identifier for NTRU-HRSS-1373 KEM. */
 #define OQS_KEM_alg_ntru_hrss1373 "NTRU-HRSS-1373"
-/** Algorithm identifier for ntrulpr653 KEM. */
-#define OQS_KEM_alg_ntruprime_ntrulpr653 "ntrulpr653"
-/** Algorithm identifier for ntrulpr761 KEM. */
-#define OQS_KEM_alg_ntruprime_ntrulpr761 "ntrulpr761"
-/** Algorithm identifier for ntrulpr857 KEM. */
-#define OQS_KEM_alg_ntruprime_ntrulpr857 "ntrulpr857"
-/** Algorithm identifier for ntrulpr1277 KEM. */
-#define OQS_KEM_alg_ntruprime_ntrulpr1277 "ntrulpr1277"
-/** Algorithm identifier for sntrup653 KEM. */
-#define OQS_KEM_alg_ntruprime_sntrup653 "sntrup653"
-/** Algorithm identifier for sntrup761 KEM. */
-#define OQS_KEM_alg_ntruprime_sntrup761 "sntrup761"
-/** Algorithm identifier for sntrup857 KEM. */
-#define OQS_KEM_alg_ntruprime_sntrup857 "sntrup857"
-/** Algorithm identifier for sntrup1277 KEM. */
-#define OQS_KEM_alg_ntruprime_sntrup1277 "sntrup1277"
 /** Algorithm identifier for LightSaber-KEM KEM. */
 #define OQS_KEM_alg_saber_lightsaber "LightSaber-KEM"
 /** Algorithm identifier for Saber-KEM KEM. */
@@ -124,7 +108,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 44
+#define OQS_KEM_algs_length 36
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -308,9 +292,6 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_NTRU
 #include <oqs/kem_ntru.h>
 #endif /* OQS_ENABLE_KEM_NTRU */
-#ifdef OQS_ENABLE_KEM_NTRUPRIME
-#include <oqs/kem_ntruprime.h>
-#endif /* OQS_ENABLE_KEM_NTRUPRIME */
 #ifdef OQS_ENABLE_KEM_SABER
 #include <oqs/kem_saber.h>
 #endif /* OQS_ENABLE_KEM_SABER */

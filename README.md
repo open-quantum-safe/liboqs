@@ -45,7 +45,6 @@ Details on each supported algorithm can be found in the [docs/algorithms](https:
 - **HQC**: HQC-128, HQC-192, HQC-256†
 - **Kyber**: Kyber512, Kyber512-90s, Kyber768, Kyber768-90s, Kyber1024, Kyber1024-90s
 - **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-821, NTRU-HPS-4096-1229, NTRU-HRSS-701, NTRU-HRSS-1373
-- **NTRU-Prime**: ntrulpr653, ntrulpr761, ntrulpr857, ntrulpr1277, sntrup653, sntrup761, sntrup857, sntrup1277
 - **SABER**: LightSaber-KEM, Saber-KEM, FireSaber-KEM
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_END -->
 
