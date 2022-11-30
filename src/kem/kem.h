@@ -86,12 +86,6 @@ extern "C" {
 #define OQS_KEM_alg_ntru_hrss701 "NTRU-HRSS-701"
 /** Algorithm identifier for NTRU-HRSS-1373 KEM. */
 #define OQS_KEM_alg_ntru_hrss1373 "NTRU-HRSS-1373"
-/** Algorithm identifier for LightSaber-KEM KEM. */
-#define OQS_KEM_alg_saber_lightsaber "LightSaber-KEM"
-/** Algorithm identifier for Saber-KEM KEM. */
-#define OQS_KEM_alg_saber_saber "Saber-KEM"
-/** Algorithm identifier for FireSaber-KEM KEM. */
-#define OQS_KEM_alg_saber_firesaber "FireSaber-KEM"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
@@ -108,7 +102,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 36
+#define OQS_KEM_algs_length 33
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -292,9 +286,6 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_NTRU
 #include <oqs/kem_ntru.h>
 #endif /* OQS_ENABLE_KEM_NTRU */
-#ifdef OQS_ENABLE_KEM_SABER
-#include <oqs/kem_saber.h>
-#endif /* OQS_ENABLE_KEM_SABER */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 #ifdef OQS_ENABLE_KEM_FRODOKEM
 #include <oqs/kem_frodokem.h>

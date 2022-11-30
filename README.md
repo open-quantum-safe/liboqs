@@ -45,7 +45,6 @@ Details on each supported algorithm can be found in the [docs/algorithms](https:
 - **HQC**: HQC-128, HQC-192, HQC-256†
 - **Kyber**: Kyber512, Kyber512-90s, Kyber768, Kyber768-90s, Kyber1024, Kyber1024-90s
 - **NTRU**: NTRU-HPS-2048-509, NTRU-HPS-2048-677, NTRU-HPS-4096-821, NTRU-HPS-4096-1229, NTRU-HRSS-701, NTRU-HRSS-1373
-- **SABER**: LightSaber-KEM, Saber-KEM, FireSaber-KEM
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_END -->
 
 #### Signature schemes
@@ -167,7 +166,6 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/kem/classic_mceliece/pqclean_*`: public domain
 - `src/kem/kyber/pqclean_*`: public domain
 - `src/kem/ntru/pqclean_*`: public domain
-- `src/kem/saber/pqclean_*`: public domain
 - `src/sig/dilithium/pqclean_*`: public domain
 - `src/sig/sphincs/pqclean_*`: CC0 (public domain)
 

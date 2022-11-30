@@ -1,0 +1,318 @@
+diff --git a/crypto_kem/kyber1024/aarch64/__asm_NTT.S b/crypto_kem/kyber1024/aarch64/__asm_NTT.S
+index 7f376ec..bf693c5 100644
+--- a/crypto_kem/kyber1024/aarch64/__asm_NTT.S
++++ b/crypto_kem/kyber1024/aarch64/__asm_NTT.S
+@@ -4,7 +4,7 @@
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_ntt_SIMD_top
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_ntt_SIMD_top
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER1024_AARCH64_asm_ntt_SIMD_top, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_ntt_SIMD_top:
+@@ -173,7 +173,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_ntt_SIMD_top:
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_ntt_SIMD_bot
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_ntt_SIMD_bot
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER1024_AARCH64_asm_ntt_SIMD_bot, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_ntt_SIMD_bot:
+diff --git a/crypto_kem/kyber1024/aarch64/__asm_base_mul.S b/crypto_kem/kyber1024/aarch64/__asm_base_mul.S
+index 94ba36b..3eed305 100644
+--- a/crypto_kem/kyber1024/aarch64/__asm_base_mul.S
++++ b/crypto_kem/kyber1024/aarch64/__asm_base_mul.S
+@@ -6,7 +6,7 @@
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+   .type PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended:
+@@ -73,7 +73,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended:
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul:
+@@ -228,7 +228,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul:
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul_montgomery
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul_montgomery
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul_montgomery, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul_montgomery:
+diff --git a/crypto_kem/kyber1024/aarch64/__asm_iNTT.S b/crypto_kem/kyber1024/aarch64/__asm_iNTT.S
+index 5701058..f7e83ab 100644
+--- a/crypto_kem/kyber1024/aarch64/__asm_iNTT.S
++++ b/crypto_kem/kyber1024/aarch64/__asm_iNTT.S
+@@ -4,7 +4,7 @@
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_bot
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_bot
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_bot, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_bot:
+@@ -90,7 +90,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_bot:
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_top
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_top
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_top, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_top:
+diff --git a/crypto_kem/kyber1024/aarch64/__asm_poly.S b/crypto_kem/kyber1024/aarch64/__asm_poly.S
+index 0be0163..34a38bb 100644
+--- a/crypto_kem/kyber1024/aarch64/__asm_poly.S
++++ b/crypto_kem/kyber1024/aarch64/__asm_poly.S
+@@ -4,7 +4,7 @@
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_add_reduce
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_add_reduce
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER1024_AARCH64_asm_add_reduce, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_add_reduce:
+@@ -68,7 +68,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_add_reduce:
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_sub_reduce
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_sub_reduce
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER1024_AARCH64_asm_sub_reduce, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_sub_reduce:
+@@ -132,7 +132,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_sub_reduce:
+ .align 2
+ .global PQCLEAN_KYBER1024_AARCH64_asm_add_add_reduce
+ .global _PQCLEAN_KYBER1024_AARCH64_asm_add_add_reduce
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER1024_AARCH64_asm_add_add_reduce, %function
+ #endif
+ PQCLEAN_KYBER1024_AARCH64_asm_add_add_reduce:
+diff --git a/crypto_kem/kyber512/aarch64/__asm_NTT.S b/crypto_kem/kyber512/aarch64/__asm_NTT.S
+index 1abbca1..ada533e 100644
+--- a/crypto_kem/kyber512/aarch64/__asm_NTT.S
++++ b/crypto_kem/kyber512/aarch64/__asm_NTT.S
+@@ -4,7 +4,7 @@
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_top
+ .global _PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_top
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_top, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_top:
+@@ -173,7 +173,7 @@ _PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_top:
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_bot
+ .global _PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_bot
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_bot, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_bot:
+diff --git a/crypto_kem/kyber512/aarch64/__asm_base_mul.S b/crypto_kem/kyber512/aarch64/__asm_base_mul.S
+index 185ac20..a3d39f1 100644
+--- a/crypto_kem/kyber512/aarch64/__asm_base_mul.S
++++ b/crypto_kem/kyber512/aarch64/__asm_base_mul.S
+@@ -6,7 +6,7 @@
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended
+ .global _PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+   .type PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended:
+@@ -73,7 +73,7 @@ _PQCLEAN_KYBER512_AARCH64_asm_point_mul_extended:
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul
+ .global _PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul:
+@@ -228,7 +228,7 @@ _PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul:
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul_montgomery
+ .global _PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul_montgomery
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul_montgomery, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_asymmetric_mul_montgomery:
+diff --git a/crypto_kem/kyber512/aarch64/__asm_iNTT.S b/crypto_kem/kyber512/aarch64/__asm_iNTT.S
+index c83694c..4a135e7 100644
+--- a/crypto_kem/kyber512/aarch64/__asm_iNTT.S
++++ b/crypto_kem/kyber512/aarch64/__asm_iNTT.S
+@@ -4,7 +4,7 @@
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_intt_SIMD_bot
+ .global _PQCLEAN_KYBER512_AARCH64_asm_intt_SIMD_bot
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER512_AARCH64_asm_intt_SIMD_bot, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_intt_SIMD_bot:
+@@ -90,7 +90,7 @@ _PQCLEAN_KYBER512_AARCH64_asm_intt_SIMD_bot:
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_intt_SIMD_top
+ .global _PQCLEAN_KYBER512_AARCH64_asm_intt_SIMD_top
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER512_AARCH64_asm_intt_SIMD_top, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_intt_SIMD_top:
+diff --git a/crypto_kem/kyber512/aarch64/__asm_poly.S b/crypto_kem/kyber512/aarch64/__asm_poly.S
+index 1be60ad..fa77b95 100644
+--- a/crypto_kem/kyber512/aarch64/__asm_poly.S
++++ b/crypto_kem/kyber512/aarch64/__asm_poly.S
+@@ -4,7 +4,7 @@
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_add_reduce
+ .global _PQCLEAN_KYBER512_AARCH64_asm_add_reduce
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER512_AARCH64_asm_add_reduce, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_add_reduce:
+@@ -68,7 +68,7 @@ _PQCLEAN_KYBER512_AARCH64_asm_add_reduce:
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_sub_reduce
+ .global _PQCLEAN_KYBER512_AARCH64_asm_sub_reduce
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER512_AARCH64_asm_sub_reduce, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_sub_reduce:
+@@ -132,7 +132,7 @@ _PQCLEAN_KYBER512_AARCH64_asm_sub_reduce:
+ .align 2
+ .global PQCLEAN_KYBER512_AARCH64_asm_add_add_reduce
+ .global _PQCLEAN_KYBER512_AARCH64_asm_add_add_reduce
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER512_AARCH64_asm_add_add_reduce, %function
+ #endif
+ PQCLEAN_KYBER512_AARCH64_asm_add_add_reduce:
+diff --git a/crypto_kem/kyber768/aarch64/__asm_NTT.S b/crypto_kem/kyber768/aarch64/__asm_NTT.S
+index 19aa03c..bb2253e 100644
+--- a/crypto_kem/kyber768/aarch64/__asm_NTT.S
++++ b/crypto_kem/kyber768/aarch64/__asm_NTT.S
+@@ -4,7 +4,7 @@
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_ntt_SIMD_top
+ .global _PQCLEAN_KYBER768_AARCH64_asm_ntt_SIMD_top
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER768_AARCH64_asm_ntt_SIMD_top, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_ntt_SIMD_top:
+@@ -173,7 +173,7 @@ _PQCLEAN_KYBER768_AARCH64_asm_ntt_SIMD_top:
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_ntt_SIMD_bot
+ .global _PQCLEAN_KYBER768_AARCH64_asm_ntt_SIMD_bot
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER768_AARCH64_asm_ntt_SIMD_bot, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_ntt_SIMD_bot:
+diff --git a/crypto_kem/kyber768/aarch64/__asm_base_mul.S b/crypto_kem/kyber768/aarch64/__asm_base_mul.S
+index 1e9fb26..2bbb228 100644
+--- a/crypto_kem/kyber768/aarch64/__asm_base_mul.S
++++ b/crypto_kem/kyber768/aarch64/__asm_base_mul.S
+@@ -6,7 +6,7 @@
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_point_mul_extended
+ .global _PQCLEAN_KYBER768_AARCH64_asm_point_mul_extended
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+   .type PQCLEAN_KYBER768_AARCH64_asm_point_mul_extended, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_point_mul_extended:
+@@ -73,7 +73,7 @@ _PQCLEAN_KYBER768_AARCH64_asm_point_mul_extended:
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul
+ .global _PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul:
+@@ -228,7 +228,7 @@ _PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul:
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul_montgomery
+ .global _PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul_montgomery
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul_montgomery, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_asymmetric_mul_montgomery:
+diff --git a/crypto_kem/kyber768/aarch64/__asm_iNTT.S b/crypto_kem/kyber768/aarch64/__asm_iNTT.S
+index e6fcc40..cce9aa7 100644
+--- a/crypto_kem/kyber768/aarch64/__asm_iNTT.S
++++ b/crypto_kem/kyber768/aarch64/__asm_iNTT.S
+@@ -4,7 +4,7 @@
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_intt_SIMD_bot
+ .global _PQCLEAN_KYBER768_AARCH64_asm_intt_SIMD_bot
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER768_AARCH64_asm_intt_SIMD_bot, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_intt_SIMD_bot:
+@@ -90,7 +90,7 @@ _PQCLEAN_KYBER768_AARCH64_asm_intt_SIMD_bot:
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_intt_SIMD_top
+ .global _PQCLEAN_KYBER768_AARCH64_asm_intt_SIMD_top
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER768_AARCH64_asm_intt_SIMD_top, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_intt_SIMD_top:
+diff --git a/crypto_kem/kyber768/aarch64/__asm_poly.S b/crypto_kem/kyber768/aarch64/__asm_poly.S
+index 0063959..9d7816c 100644
+--- a/crypto_kem/kyber768/aarch64/__asm_poly.S
++++ b/crypto_kem/kyber768/aarch64/__asm_poly.S
+@@ -4,7 +4,7 @@
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_add_reduce
+ .global _PQCLEAN_KYBER768_AARCH64_asm_add_reduce
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER768_AARCH64_asm_add_reduce, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_add_reduce:
+@@ -68,7 +68,7 @@ _PQCLEAN_KYBER768_AARCH64_asm_add_reduce:
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_sub_reduce
+ .global _PQCLEAN_KYBER768_AARCH64_asm_sub_reduce
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER768_AARCH64_asm_sub_reduce, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_sub_reduce:
+@@ -132,7 +132,7 @@ _PQCLEAN_KYBER768_AARCH64_asm_sub_reduce:
+ .align 2
+ .global PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce
+ .global _PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce
+-#ifndef __clang__
++#if !defined(__clang__) && !defined(old_gas_syntax)
+ .type PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce, %function
+ #endif
+ PQCLEAN_KYBER768_AARCH64_asm_add_add_reduce:
