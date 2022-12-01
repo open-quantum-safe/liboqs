@@ -11,7 +11,6 @@
   "Classic-McEliece-6960119f": ["mceliece-sk_gen", "mceliece-6960119f"],
   "Classic-McEliece-8192128": ["mceliece-sk_gen", "mceliece-8192128"],
   "Classic-McEliece-8192128f": ["mceliece-sk_gen", "mceliece-8192128f"],
-  "FireSaber-KEM": [],
   "FrodoKEM-1344-AES": [],
   "FrodoKEM-1344-SHAKE": [],
   "FrodoKEM-640-AES": [],
@@ -27,10 +26,8 @@
   "Kyber512-90s": ["kyber-90s"],
   "Kyber768": ["kyber"],
   "Kyber768-90s": ["kyber-90s"],
-  "LightSaber-KEM": [],
   "NTRU-HPS-2048-509": [],
   "NTRU-HPS-2048-677": [],
   "NTRU-HPS-4096-821": [],
-  "NTRU-HRSS-701": [],
-  "Saber-KEM": []
+  "NTRU-HRSS-701": []
 }

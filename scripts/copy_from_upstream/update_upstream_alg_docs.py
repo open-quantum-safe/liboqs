@@ -157,7 +157,7 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
 
                 # TODO: PQClean and liboqs pretty-naming conventions for the
                 # following algorithms are out of sync.
-                if kem['name'] == 'classic_mceliece' or kem['name'] == 'hqc' or kem['name'] == 'ntru' or kem['name'] == 'saber':
+                if kem['name'] == 'classic_mceliece' or kem['name'] == 'hqc' or kem['name'] == 'ntru':
                     oqs_scheme_yaml['name'] = rhs_if_not_equal(oqs_scheme_yaml['name'], scheme['pretty_name_full'], "scheme pretty name")
                 else:
                     oqs_scheme_yaml['name'] = rhs_if_not_equal(oqs_scheme_yaml['name'], upstream_yaml['name'], "scheme pretty name")
