@@ -12,7 +12,7 @@ def test_kem_leak(kem_name):
     if sys.platform != "linux" or os.system("grep ubuntu /etc/os-release") != 0 or os.system("uname -a | grep x86_64") != 0: pytest.skip('Leak testing not supported on this platform')
     if kem_name == "Classic-McEliece-8192128": pytest.skip("Classic-McEliece-8192128 known to fail memory leak testing")
     helpers.run_subprocess(
-        ["valgrind", "-s", "--error-exitcode=1", "--leak-check=full", "--show-leak-kinds=all", helpers.path_to_executable('test_kem'), kem_name],
+        ["valgrind", "-s", "--error-exitcode=1", "--leak-check=full", "--show-leak-kinds=all", "--vex-guest-max-insns=25", helpers.path_to_executable('test_kem'), kem_name],
     )
 
 @helpers.filtered_test
