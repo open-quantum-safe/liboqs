@@ -1,0 +1,11 @@
+#ifndef PQCLEAN_SNTRUP1277_AVX2_CRYPTO_CORE_WFORCESNTRUP1277_H
+#define PQCLEAN_SNTRUP1277_AVX2_CRYPTO_CORE_WFORCESNTRUP1277_H
+
+#include <stdint.h>
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_core_wforcesntrup1277_OUTPUTBYTES 1277
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_core_wforcesntrup1277_INPUTBYTES 1277
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_core_wforcesntrup1277_KEYBYTES 0
+#define PQCLEAN_SNTRUP1277_AVX2_crypto_core_wforcesntrup1277_CONSTBYTES 0
+
+int PQCLEAN_SNTRUP1277_AVX2_crypto_core_wforcesntrup1277(unsigned char *out, const unsigned char *in);
+#endif

@@ -150,6 +150,43 @@ kems:
         scheme: hrss1373
         pqclean_scheme: ntruhrss1373
         pretty_name_full: NTRU-HRSS-1373
+  -
+    name: ntruprime
+    default_implementation: clean
+    upstream_location: pqclean
+    schemes:
+      -
+        scheme: ntrulpr653
+        pqclean_scheme: ntrulpr653
+        pretty_name_full: ntrulpr653
+      -
+        scheme: ntrulpr761
+        pqclean_scheme: ntrulpr761
+        pretty_name_full: ntrulpr761
+      -
+        scheme: ntrulpr857
+        pqclean_scheme: ntrulpr857
+        pretty_name_full: ntrulpr857
+      -
+        scheme: ntrulpr1277
+        pqclean_scheme: ntrulpr1277
+        pretty_name_full: ntrulpr1277
+      -
+        scheme: sntrup653
+        pqclean_scheme: sntrup653
+        pretty_name_full: sntrup653
+      -
+        scheme: sntrup761
+        pqclean_scheme: sntrup761
+        pretty_name_full: sntrup761
+      -
+        scheme: sntrup857
+        pqclean_scheme: sntrup857
+        pretty_name_full: sntrup857
+      -
+        scheme: sntrup1277
+        pqclean_scheme: sntrup1277
+        pretty_name_full: sntrup1277 
 sigs:
   -
     name: dilithium

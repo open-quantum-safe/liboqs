@@ -1,0 +1,11 @@
+#ifndef PQCLEAN_NTRULPR1277_CLEAN_CRYPTO_CORE_MULTSNTRUP1277_H
+#define PQCLEAN_NTRULPR1277_CLEAN_CRYPTO_CORE_MULTSNTRUP1277_H
+
+#include <stdint.h>
+#define PQCLEAN_NTRULPR1277_CLEAN_crypto_core_multsntrup1277_OUTPUTBYTES 2554
+#define PQCLEAN_NTRULPR1277_CLEAN_crypto_core_multsntrup1277_INPUTBYTES 2554
+#define PQCLEAN_NTRULPR1277_CLEAN_crypto_core_multsntrup1277_KEYBYTES 1277
+#define PQCLEAN_NTRULPR1277_CLEAN_crypto_core_multsntrup1277_CONSTBYTES 0
+
+int PQCLEAN_NTRULPR1277_CLEAN_crypto_core_multsntrup1277(unsigned char *outbytes, const unsigned char *inbytes, const unsigned char *kbytes);
+#endif

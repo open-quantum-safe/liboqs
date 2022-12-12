@@ -122,6 +122,23 @@
 #cmakedefine OQS_ENABLE_KEM_ntru_hrss701 1
 #cmakedefine OQS_ENABLE_KEM_ntru_hrss701_avx2 1
 #cmakedefine OQS_ENABLE_KEM_ntru_hrss1373 1
+#cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_ntrulpr653 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_ntrulpr653_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_ntrulpr761 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_ntrulpr761_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_ntrulpr857 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_ntrulpr857_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_ntrulpr1277 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_ntrulpr1277_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup653 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup653_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup857 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup857_avx2 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup1277 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup1277_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1

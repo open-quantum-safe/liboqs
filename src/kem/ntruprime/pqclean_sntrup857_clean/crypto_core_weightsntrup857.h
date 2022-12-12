@@ -1,0 +1,11 @@
+#ifndef PQCLEAN_SNTRUP857_CLEAN_CRYPTO_CORE_WEIGHTSNTRUP857_H
+#define PQCLEAN_SNTRUP857_CLEAN_CRYPTO_CORE_WEIGHTSNTRUP857_H
+
+#include <stdint.h>
+#define PQCLEAN_SNTRUP857_CLEAN_crypto_core_weightsntrup857_OUTPUTBYTES 2
+#define PQCLEAN_SNTRUP857_CLEAN_crypto_core_weightsntrup857_INPUTBYTES 857
+#define PQCLEAN_SNTRUP857_CLEAN_crypto_core_weightsntrup857_KEYBYTES 0
+#define PQCLEAN_SNTRUP857_CLEAN_crypto_core_weightsntrup857_CONSTBYTES 0
+
+int PQCLEAN_SNTRUP857_CLEAN_crypto_core_weightsntrup857(unsigned char *outbytes, const unsigned char *inbytes);
+#endif

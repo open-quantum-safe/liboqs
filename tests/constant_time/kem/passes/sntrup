@@ -1,0 +1,7 @@
+{
+  Rejection sampling on non-invertible g
+  Memcheck:Cond
+  src:kem.c:149 # fun:PQCLEAN_SNTRUP*_CLEAN_crypto_kem_keypair
+  fun:OQS_KEM_ntruprime_sntrup*_keypair
+  fun:OQS_KEM_keypair
+}
