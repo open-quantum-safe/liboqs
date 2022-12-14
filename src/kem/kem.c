@@ -234,7 +234,7 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-	///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_END
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_END
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_frodokem_640_aes)) {
 #ifdef OQS_ENABLE_KEM_frodokem_640_aes
 		return 1;
