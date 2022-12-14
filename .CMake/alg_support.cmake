@@ -248,6 +248,13 @@ endif()
 endif()
 
 cmake_dependent_option(OQS_ENABLE_KEM_ntru_hrss1373 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
+option(OQS_ENABLE_KEM_NTRUPRIME "Enable ntruprime algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_ntrulpr653 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_ntrulpr653_avx2 "" ON "OQS_ENABLE_KEM_ntruprime_ntrulpr653" OFF)
+endif()
+endif()
 
 cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup761 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
