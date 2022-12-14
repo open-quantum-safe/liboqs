@@ -33,7 +33,7 @@ jobs:
           cd build && \
           cmake .. --warn-uninitialized \
                    -GNinja \
-                   -DOQS_MINIMAL_BUILD="OQS_ENABLE_KEM_$KEM_NAME;OQS_ENABLE_SIG_$SIG_NAME" \
+                   -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
                    > config.log 2>&1 && \
           cat config.log && \
           cmake -LA .. && \
