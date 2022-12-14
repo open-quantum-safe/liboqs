@@ -42,7 +42,7 @@ static OQS_STATUS example_stack(void) {
 #ifndef OQS_ENABLE_KEM_frodokem_640_aes // if FrodoKEM-640-AES was not enabled at compile-time
 	printf("[example_stack] OQS_KEM_frodokem_640_aes was not enabled at "
 	       "compile-time.\n");
-	return OQS_ERROR;
+	return OQS_SUCCESS; // nothing done successfully ;-)
 #else
 	uint8_t public_key[OQS_KEM_frodokem_640_aes_length_public_key];
 	uint8_t secret_key[OQS_KEM_frodokem_640_aes_length_secret_key];
@@ -104,7 +104,7 @@ static OQS_STATUS example_heap(void) {
 	if (kem == NULL) {
 		printf("[example_heap]  OQS_KEM_frodokem_640_aes was not enabled at "
 		       "compile-time.\n");
-		return OQS_ERROR;
+		return OQS_SUCCESS;
 	}
 
 	public_key = malloc(kem->length_public_key);

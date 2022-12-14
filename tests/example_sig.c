@@ -77,7 +77,7 @@ static OQS_STATUS example_stack(void) {
 #else
 
 	printf("[example_stack] OQS_SIG_dilithium_2 was not enabled at compile-time.\n");
-	return OQS_ERROR;
+	return OQS_SUCCESS;
 
 #endif
 }
@@ -91,6 +91,8 @@ static OQS_STATUS example_stack(void) {
  * must check that the OQS_SIG object returned is not NULL.
  */
 static OQS_STATUS example_heap(void) {
+
+#ifdef OQS_ENABLE_SIG_dilithium_2
 
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -142,6 +144,12 @@ static OQS_STATUS example_heap(void) {
 	printf("[example_heap]  OQS_SIG_dilithium_2 operations completed.\n");
 	cleanup_heap(public_key, secret_key, message, signature, sig);
 	return OQS_SUCCESS; // success
+#else
+
+	printf("[example_heap] OQS_SIG_dilithium_2 was not enabled at compile-time.\n");
+	return OQS_SUCCESS;
+
+#endif
 }
 
 int main(void) {

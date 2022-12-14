@@ -2,6 +2,48 @@
 
 include(CMakeDependentOption)
 
+# Switch off all algs except for those passed in the alglist
+function(filter_algs alglist)
+  # Set every OQS_ENABLE_* variable =OFF unless one of the following conditions holds:
+  #  1. the switch for one of the requested minimal build algorithm's family, e.g OQS_ENABLE_KEM_KYBER
+  #  2. the switch for one of the requested algorithms, e.g. OQS_ENABLE_KEM_kyber_768.
+  #  3. the switch for platform-specific ("_aesni" or "_avx2") implementation of
+  #     one of the requested algorithms, e.g. OQS_ENABLE_KEM_kyber_768_avx2.
+
+  get_cmake_property(_vars VARIABLES)
+  foreach (_var ${_vars})
+      if(_var MATCHES "^OQS_ENABLE_..._" AND NOT _var MATCHES "_AVAILABLE$")
+          set(${_var} OFF PARENT_SCOPE)
+          # Case 1, family name
+	  foreach (_alg ${ARGV0})
+             string(TOUPPER ${_alg} upalg)
+	     if("OQS_ENABLE_${upalg}i" MATCHES "^${_var}")
+                 set(${_var} ON PARENT_SCOPE)
+             endif()
+          endforeach()
+          # Case 2, exact match
+	  foreach (_alg ${ARGV0})
+	     if(${_var}X STREQUAL "OQS_ENABLE_${_alg}X")
+                 set(${_var} ON PARENT_SCOPE)
+             endif()
+          endforeach()
+          # Case 3, platform specific
+          string(REPLACE "_aesni" "" _var_base ${_var})
+          string(REPLACE "_avx2" "" _var_base ${_var_base})
+          string(REPLACE "_avx" "" _var_base ${_var_base})
+          string(REPLACE "_aarch64" "" _var_base ${_var_base})
+	  foreach (_alg ${ARGV0})
+            if(${_var}_AVAILABLE)
+              if(${_var_base}X STREQUAL ${_alg}X)
+                  set(${_var} ON PARENT_SCOPE)
+              endif()
+            endif()
+          endforeach()
+      endif()
+  endforeach()
+  message(STATUS "Algorithms filtered for ${ARGV0}")
+endfunction()
+
 if(DEFINED OQS_KEM_DEFAULT)
     message(WARNING "OQS_KEM_DEFAULT not longer supported")
 endif()
@@ -482,42 +524,18 @@ if((OQS_MINIMAL_BUILD STREQUAL "ON"))
    message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
 endif()
 
-if(NOT ((OQS_MINIMAL_BUILD STREQUAL "") OR (OQS_MINIMAL_BUILD STREQUAL "OFF")))
-  # Set every OQS_ENABLE_* variable =OFF unless it one of the following.
-  #  1. the switch for one of the requested minimal build algorithm's family, e.g OQS_ENABLE_KEM_KYBER
-  #  2. the switch for one of the requested algorithms, e.g. OQS_ENABLE_KEM_kyber_768.
-  #  3. the switch for platform-specific ("_aesni" or "_avx2") implementation of
-  #     one of the requested algorithms, e.g. OQS_ENABLE_KEM_kyber_768_avx2.
-
-  get_cmake_property(_vars VARIABLES)
-  foreach (_var ${_vars})
-      if(_var MATCHES "^OQS_ENABLE_..._" AND NOT _var MATCHES "_AVAILABLE$")
-          set(${_var} OFF)
-          # Case 1, family name
-          foreach (_alg ${OQS_MINIMAL_BUILD})
-             string(TOUPPER ${_alg} upalg)
-             if(${upalg} MATCHES "^${_var}")
-                 set(${_var} ON)
-             endif()
-          endforeach()
-          # Case 2, exact match
-          foreach (_alg ${OQS_MINIMAL_BUILD})
-             if(${_var}X STREQUAL ${_alg}X)
-                 set(${_var} ON)
-             endif()
-          endforeach()
-          # Case 3, platform specific
-          string(REPLACE "_aesni" "" _var_base ${_var})
-          string(REPLACE "_avx2" "" _var_base ${_var_base})
-          string(REPLACE "_avx" "" _var_base ${_var_base})
-          string(REPLACE "_aarch64" "" _var_base ${_var_base})
-          foreach (_alg ${OQS_MINIMAL_BUILD})
-            if(${_var}_AVAILABLE)
-              if(${_var_base}X STREQUAL ${_alg}X)
-                  set(${_var} ON)
-              endif()
-            endif()
-          endforeach()
-      endif()
-  endforeach()
+if(NOT DEFINED OQS_ALGS_ENABLED)
+	set(OQS_ALGS_ENABLED "STD")
 endif()
+
+if(NOT ((OQS_MINIMAL_BUILD STREQUAL "") OR (OQS_MINIMAL_BUILD STREQUAL "OFF")))
+	filter_algs("${OQS_MINIMAL_BUILD}")
+elseif (${OQS_ALGS_ENABLED} STREQUAL "STD")
+	filter_algs("KEM_kyber512;KEM_kyber768;KEM_kyber1024;SIG_dilithium_2;SIG_dilithium_3;SIG_dilithium_5;SIG_falcon_512;SIG_falcon_1024;SIG_sphincs_sha256_128f_simple;SIG_sphincs_sha256_128s_simple;SIG_sphincs_sha256_192f_simple;SIG_sphincs_sha256_192s_simple;SIG_sphincs_sha256_256f_simple;SIG_sphincs_sha256_256s_simple;SIG_sphincs_shake256_128f_simple;SIG_sphincs_shake256_128s_simple;SIG_sphincs_shake256_192f_simple;SIG_sphincs_shake256_192s_simple;SIG_sphincs_shake256_256f_simple;SIG_sphincs_shake256_256s_simple")
+elseif(${OQS_ALGS_ENABLED} STREQUAL "NIST_R4")
+	filter_algs("KEM_classic_mceliece_348864;KEM_classic_mceliece_348864f;KEM_classic_mceliece_460896;KEM_classic_mceliece_460896f;KEM_classic_mceliece_6688128;KEM_classic_mceliece_6688128f;KEM_classic_mceliece_6960119;KEM_classic_mceliece_6960119f;KEM_classic_mceliece_8192128;KEM_classic_mceliece_8192128f;KEM_hqc_128;KEM_hqc_192;KEM_hqc_256;KEM_bike_l1;KEM_bike_l3")
+else()
+	message(STATUS "Alg enablement unchanged")
+endif()
+
+
