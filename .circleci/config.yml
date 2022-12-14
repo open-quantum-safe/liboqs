@@ -70,7 +70,7 @@ jobs:
             mkdir build && cd build && source ~/.bashrc && \
             cmake .. --warn-uninitialized \
                      -GNinja << parameters.CMAKE_ARGS >> \
-                     -DOQS_MINIMAL_BUILD="OQS_ENABLE_KEM_<< parameters.KEM_NAME >>;OQS_ENABLE_SIG_<< parameters.SIG_NAME >>" \
+                     -DOQS_MINIMAL_BUILD="KEM_<< parameters.KEM_NAME >>;SIG_<< parameters.SIG_NAME >>" \
                      > config.log 2>&1 && \
             cat config.log && \
             cmake -LA .. && ! (grep "uninitialized variable" config.log)
@@ -383,7 +383,7 @@ workflows:
       - macOS:
           <<: *require_buildcheck
           name: macOS-noopenssl
-          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
+          CMAKE_ARGS: -DOQS_ALGS_ENABLED=All -DOQS_USE_OPENSSL=OFF
       - macOS:
           <<: *require_buildcheck
           name: macOS-shared
