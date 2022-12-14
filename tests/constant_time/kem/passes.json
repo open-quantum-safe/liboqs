@@ -30,11 +30,5 @@
   "NTRU-HPS-2048-677": [],
   "NTRU-HPS-4096-821": [],
   "NTRU-HRSS-701": [],
-  "ntrulpr653": [],
-  "ntrulpr761": [],
-  "ntrulpr857": [],
-  "sntrup653": ["sntrup"],
-  "sntrup761": ["sntrup"],
-  "sntrup857": ["sntrup"],
-  "sntrup1277": ["sntrup"]
+  "sntrup761": ["sntrup"]
 }
