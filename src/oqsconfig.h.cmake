@@ -111,18 +111,6 @@
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_90s 1
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_90s_avx2 1
 
-#cmakedefine OQS_ENABLE_KEM_NTRU 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hps2048509 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hps2048509_avx2 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hps2048677 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hps2048677_avx2 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hps4096821 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hps4096821_avx2 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hps40961229 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hrss701 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hrss701_avx2 1
-#cmakedefine OQS_ENABLE_KEM_ntru_hrss1373 1
-
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2_avx2 1
