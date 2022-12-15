@@ -12,7 +12,7 @@ function(filter_algs alglist)
 
   get_cmake_property(_vars VARIABLES)
   foreach (_var ${_vars})
-      if(_var MATCHES "^OQS_ENABLE_..._" AND NOT _var MATCHES "_AVAILABLE$")
+      if(_var MATCHES "^OQS_ENABLE_..._" AND NOT _var MATCHES "_AVAILABLE$" AND ${_var})
           set(${_var} OFF PARENT_SCOPE)
           # Case 1, family name
 	  foreach (_alg ${ARGV0})
