@@ -31,7 +31,6 @@ environment:
       OQS_ALGS_ENABLED: All
     - BUILD_SHARED: ON
       COMPILER: msvc2019
-      OQS_ALGS_ENABLED: STD
       #    Disabled until https://github.com/open-quantum-safe/liboqs/issues/1218#issuecomment-1170067669 resolved
       #    - BUILD_SHARED: OFF
       #      COMPILER: msys2
