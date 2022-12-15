@@ -121,35 +121,6 @@ kems:
         scheme: "1024_90s"
         pqclean_scheme: kyber1024-90s
         pretty_name_full: Kyber1024-90s
-  -
-    name: ntru
-    default_implementation: clean
-    upstream_location: pqclean
-    schemes:
-      -
-        scheme: hps2048509
-        pqclean_scheme: ntruhps2048509
-        pretty_name_full: NTRU-HPS-2048-509
-      -
-        scheme: hps2048677
-        pqclean_scheme: ntruhps2048677
-        pretty_name_full: NTRU-HPS-2048-677
-      -
-        scheme: hps4096821
-        pqclean_scheme: ntruhps4096821
-        pretty_name_full: NTRU-HPS-4096-821
-      -
-        scheme: hps40961229
-        pqclean_scheme: ntruhps40961229
-        pretty_name_full: NTRU-HPS-4096-1229
-      -
-        scheme: hrss701
-        pqclean_scheme: ntruhrss701
-        pretty_name_full: NTRU-HRSS-701
-      -
-        scheme: hrss1373
-        pqclean_scheme: ntruhrss1373
-        pretty_name_full: NTRU-HRSS-1373
 sigs:
   -
     name: dilithium

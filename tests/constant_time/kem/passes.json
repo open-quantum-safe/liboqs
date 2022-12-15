@@ -25,9 +25,5 @@
   "Kyber512": ["kyber"],
   "Kyber512-90s": ["kyber-90s"],
   "Kyber768": ["kyber"],
-  "Kyber768-90s": ["kyber-90s"],
-  "NTRU-HPS-2048-509": [],
-  "NTRU-HPS-2048-677": [],
-  "NTRU-HPS-4096-821": [],
-  "NTRU-HRSS-701": []
+  "Kyber768-90s": ["kyber-90s"]
 }
