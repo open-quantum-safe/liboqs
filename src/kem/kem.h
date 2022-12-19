@@ -74,18 +74,6 @@ extern "C" {
 #define OQS_KEM_alg_kyber_768_90s "Kyber768-90s"
 /** Algorithm identifier for Kyber1024-90s KEM. */
 #define OQS_KEM_alg_kyber_1024_90s "Kyber1024-90s"
-/** Algorithm identifier for NTRU-HPS-2048-509 KEM. */
-#define OQS_KEM_alg_ntru_hps2048509 "NTRU-HPS-2048-509"
-/** Algorithm identifier for NTRU-HPS-2048-677 KEM. */
-#define OQS_KEM_alg_ntru_hps2048677 "NTRU-HPS-2048-677"
-/** Algorithm identifier for NTRU-HPS-4096-821 KEM. */
-#define OQS_KEM_alg_ntru_hps4096821 "NTRU-HPS-4096-821"
-/** Algorithm identifier for NTRU-HPS-4096-1229 KEM. */
-#define OQS_KEM_alg_ntru_hps40961229 "NTRU-HPS-4096-1229"
-/** Algorithm identifier for NTRU-HRSS-701 KEM. */
-#define OQS_KEM_alg_ntru_hrss701 "NTRU-HRSS-701"
-/** Algorithm identifier for NTRU-HRSS-1373 KEM. */
-#define OQS_KEM_alg_ntru_hrss1373 "NTRU-HRSS-1373"
 /** Algorithm identifier for sntrup761 KEM. */
 #define OQS_KEM_alg_ntruprime_sntrup761 "sntrup761"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
@@ -104,7 +92,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 34
+#define OQS_KEM_algs_length 28
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -285,9 +273,6 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_KYBER
 #include <oqs/kem_kyber.h>
 #endif /* OQS_ENABLE_KEM_KYBER */
-#ifdef OQS_ENABLE_KEM_NTRU
-#include <oqs/kem_ntru.h>
-#endif /* OQS_ENABLE_KEM_NTRU */
 #ifdef OQS_ENABLE_KEM_NTRUPRIME
 #include <oqs/kem_ntruprime.h>
 #endif /* OQS_ENABLE_KEM_NTRUPRIME */
