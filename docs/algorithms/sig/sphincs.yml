@@ -31,6 +31,7 @@ primary-upstream:
   - https://github.com/sphincs/sphincsplus
 parameter-sets:
 - name: SPHINCS+-Haraka-128f-robust
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_128f_robust
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -58,6 +59,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-128f-simple
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_128f_simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -85,6 +87,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-128s-robust
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_128s_robust
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -112,6 +115,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-128s-simple
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_128s_simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -139,6 +143,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-192f-robust
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_192f_robust
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -166,6 +171,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-192f-simple
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_192f_simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -193,6 +199,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-192s-robust
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_192s_robust
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -220,6 +227,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-192s-simple
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_192s_simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -247,6 +255,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-256f-robust
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_256f_robust
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -274,6 +283,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-256f-simple
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_256f_simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -301,6 +311,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-256s-robust
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_256s_robust
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -328,6 +339,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-256s-simple
+  oqs_alg: OQS_SIG_alg_sphincs_haraka_256s_simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -355,6 +367,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-128f-robust
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_128f_robust
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -382,6 +395,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-128f-simple
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_128f_simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -409,6 +423,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-128s-robust
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_128s_robust
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -436,6 +451,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-128s-simple
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_128s_simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -463,6 +479,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-192f-robust
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_192f_robust
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -490,6 +507,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-192f-simple
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_192f_simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -517,6 +535,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-192s-robust
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_192s_robust
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -544,6 +563,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-192s-simple
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_192s_simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -571,6 +591,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-256f-robust
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_256f_robust
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -598,6 +619,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-256f-simple
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_256f_simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -625,6 +647,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-256s-robust
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_256s_robust
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -652,6 +675,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHA256-256s-simple
+  oqs_alg: OQS_SIG_alg_sphincs_sha256_256s_simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -679,6 +703,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-128f-robust
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_128f_robust
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -706,6 +731,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-128f-simple
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_128f_simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -733,6 +759,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-128s-robust
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_128s_robust
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -760,6 +787,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-128s-simple
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_128s_simple
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 32
@@ -787,6 +815,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-192f-robust
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_192f_robust
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -814,6 +843,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-192f-simple
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_192f_simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -841,6 +871,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-192s-robust
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_192s_robust
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -868,6 +899,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-192s-simple
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_192s_simple
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 48
@@ -895,6 +927,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-256f-robust
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_256f_robust
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -922,6 +955,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-256f-simple
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_256f_simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -949,6 +983,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-256s-robust
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_256s_robust
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64
@@ -976,6 +1011,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-SHAKE256-256s-simple
+  oqs_alg: OQS_SIG_alg_sphincs_shake256_256s_simple
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 64

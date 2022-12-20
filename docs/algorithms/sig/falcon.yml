@@ -24,6 +24,7 @@ primary-upstream:
   - supercop-20201018
 parameter-sets:
 - name: Falcon-512
+  oqs_alg: OQS_SIG_alg_falcon_512
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 897
@@ -54,6 +55,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: Falcon-1024
+  oqs_alg: OQS_SIG_alg_falcon_1024
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 1793

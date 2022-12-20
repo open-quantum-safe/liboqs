@@ -22,6 +22,7 @@ primary-upstream:
   spdx-license-identifier: MIT
 parameter-sets:
 - name: FrodoKEM-640-AES
+  oqs_alg: OQS_KEM_alg_frodokem_640_aes
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 9616
@@ -56,6 +57,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: FrodoKEM-640-SHAKE
+  oqs_alg: OQS_KEM_alg_frodokem_640_shake
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 9616
@@ -90,6 +92,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: FrodoKEM-976-AES
+  oqs_alg: OQS_KEM_alg_frodokem_976_aes
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 15632
@@ -124,6 +127,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: FrodoKEM-976-SHAKE
+  oqs_alg: OQS_KEM_alg_frodokem_976_shake
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 15632
@@ -158,6 +162,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: FrodoKEM-1344-AES
+  oqs_alg: OQS_KEM_alg_frodokem_1344_aes
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 21520
@@ -192,6 +197,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: FrodoKEM-1344-SHAKE
+  oqs_alg: OQS_KEM_alg_frodokem_1344_aes
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 21520

@@ -29,6 +29,7 @@ upstream-ancestors:
 - https://bikesuite.org/files/v4.1/Reference_Implementation.2020.10.20.2.zip
 parameter-sets:
 - name: BIKE-L1
+  oqs_alg: OQS_KEM_alg_bike_l1
   claimed-nist-level: 1
   claimed-security: IND-CPA
   length-public-key: 1541
@@ -64,6 +65,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: BIKE-L3
+  oqs_alg: OQS_KEM_alg_bike_l3
   claimed-nist-level: 3
   claimed-security: IND-CPA
   length-ciphertext: 3115

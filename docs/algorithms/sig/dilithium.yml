@@ -25,6 +25,7 @@ optimized-upstreams:
     spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: Dilithium2
+  oqs_alg: OQS_SIG_alg_dilithium_2
   claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 1312
@@ -36,7 +37,6 @@ parameter-sets:
     upstream-id: ref
     supported-platforms: all
     common-crypto:
-    - AES: pqcrystals
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
@@ -52,7 +52,6 @@ parameter-sets:
       - avx2
       - popcnt
     common-crypto:
-    - AES: pqcrystals
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
@@ -70,6 +69,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Dilithium3
+  oqs_alg: OQS_SIG_alg_dilithium_3
   claimed-nist-level: 3
   claimed-security: EUF-CMA
   length-public-key: 1952
@@ -81,7 +81,6 @@ parameter-sets:
     upstream-id: ref
     supported-platforms: all
     common-crypto:
-    - AES: pqcrystals
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
@@ -97,7 +96,6 @@ parameter-sets:
       - avx2
       - popcnt
     common-crypto:
-    - AES: pqcrystals
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
@@ -115,6 +113,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Dilithium5
+  oqs_alg: OQS_SIG_alg_dilithium_5
   claimed-nist-level: 5
   claimed-security: EUF-CMA
   length-public-key: 2592
@@ -126,7 +125,6 @@ parameter-sets:
     upstream-id: ref
     supported-platforms: all
     common-crypto:
-    - AES: pqcrystals
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
@@ -142,7 +140,6 @@ parameter-sets:
       - avx2
       - popcnt
     common-crypto:
-    - AES: pqcrystals
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
@@ -160,6 +157,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Dilithium2-AES
+  oqs_alg: OQS_SIG_alg_dilithium_2_aes
   claimed-security: EUF-CMA
   claimed-nist-level: 2
   length-public-key: 1312
@@ -171,8 +169,7 @@ parameter-sets:
     upstream-id: ref
     supported-platforms: all
     common-crypto:
-    - AES: pqcrystals
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -190,12 +187,12 @@ parameter-sets:
       - sse2
       - ssse3
     common-crypto:
-    - AES: pqcrystals
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: Dilithium3-AES
+  oqs_alg: OQS_SIG_alg_dilithium_3_aes
   claimed-security: EUF-CMA
   claimed-nist-level: 3
   length-public-key: 1952
@@ -207,8 +204,7 @@ parameter-sets:
     upstream-id: ref
     supported-platforms: all
     common-crypto:
-    - AES: pqcrystals
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -226,12 +222,12 @@ parameter-sets:
       - sse2
       - ssse3
     common-crypto:
-    - AES: pqcrystals
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: Dilithium5-AES
+  oqs_alg: OQS_SIG_alg_dilithium_5_aes
   claimed-security: EUF-CMA
   claimed-nist-level: 5
   length-public-key: 2592
@@ -243,8 +239,7 @@ parameter-sets:
     upstream-id: ref
     supported-platforms: all
     common-crypto:
-    - AES: pqcrystals
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -262,8 +257,7 @@ parameter-sets:
       - sse2
       - ssse3
     common-crypto:
-    - AES: pqcrystals
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false

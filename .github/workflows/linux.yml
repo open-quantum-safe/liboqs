@@ -15,6 +15,8 @@ jobs:
         run: python3 -m pytest --verbose tests/test_code_conventions.py
       - name: Check that doxygen can parse the documentation
         run: mkdir -p build/docs && doxygen docs/.Doxyfile
+      - name: Validate CBOM
+        run: .cbom/validate_cbom.sh
 
   buildcheck:
     name: Check that code passes a basic build before starting heavier tests

@@ -22,6 +22,7 @@ upstream-ancestors:
 - submission 2020-10-01 at https://pqc-hqc.org/implementation.html
 parameter-sets:
 - name: HQC-128
+  oqs_alg: OQS_KEM_alg_hqc_128
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 2249
@@ -55,6 +56,7 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
 - name: HQC-192
+  oqs_alg: OQS_KEM_alg_hqc_192
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-ciphertext: 9026
@@ -88,6 +90,7 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
 - name: HQC-256
+  oqs_alg: OQS_KEM_alg_hqc_256
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-ciphertext: 14469
