@@ -1,0 +1,57 @@
+name: NTRU-Prime
+type: kem
+principal-submitters:
+- Daniel J. Bernstein
+- Billy Bob Brumley
+- Ming-Shing Chen
+- Chitchanok Chuengsatiansup
+- Tanja Lange
+- Adrian Marotzke
+- Bo-Yuan Peng
+- Nicola Tuveri
+- Christine van Vredendaal
+- Bo-Yin Yang
+crypto-assumption: NTRU
+website: https://ntruprime.cr.yp.to
+nist-round: 3
+spec-version: supercop-20200826
+upstream-ancestors:
+- https://github.com/jschanck/package-pqclean/tree/4d9f08c3/ntruprime
+- supercop-20210604
+parameter-sets:
+- name: sntrup761
+  claimed-nist-level: 2
+  claimed-security: IND-CCA2
+  length-ciphertext: 1039
+  length-public-key: 1158
+  length-secret-key: 1763
+  length-shared-secret: 32
+  implementations-switch-on-runtime-cpu-features: true
+  implementations:
+  - upstream-id: clean
+    supported-platforms: all
+    common-crypto:
+    - AES: liboqs
+    - SHA2: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
+  - upstream-id: avx2
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx2
+    common-crypto:
+    - AES: liboqs
+    - SHA2: liboqs
+    no-secret-dependent-branching-claimed: false
+    no-secret-dependent-branching-checked-by-valgrind: true
+    large-stack-usage: false
+    upstream: primary-upstream
+primary-upstream:
+  spdx-license-identifier: Public domain
+  source: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6

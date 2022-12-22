@@ -111,6 +111,10 @@
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_90s 1
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_90s_avx2 1
 
+#cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 1
+
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2_avx2 1

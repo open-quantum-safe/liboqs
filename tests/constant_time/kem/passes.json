@@ -25,5 +25,6 @@
   "Kyber512": ["kyber"],
   "Kyber512-90s": ["kyber-90s"],
   "Kyber768": ["kyber"],
-  "Kyber768-90s": ["kyber-90s"]
+  "Kyber768-90s": ["kyber-90s"],
+  "sntrup761": ["sntrup"]
 }

@@ -121,6 +121,15 @@ kems:
         scheme: "1024_90s"
         pqclean_scheme: kyber1024-90s
         pretty_name_full: Kyber1024-90s
+  -
+    name: ntruprime
+    default_implementation: clean
+    upstream_location: pqclean
+    schemes:
+      -
+        scheme: sntrup761
+        pqclean_scheme: sntrup761
+        pretty_name_full: sntrup761
 sigs:
   -
     name: dilithium

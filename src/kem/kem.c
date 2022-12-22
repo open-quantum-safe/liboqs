@@ -36,6 +36,7 @@ OQS_API const char *OQS_KEM_alg_identifier(size_t i) {
 		OQS_KEM_alg_kyber_512_90s,
 		OQS_KEM_alg_kyber_768_90s,
 		OQS_KEM_alg_kyber_1024_90s,
+		OQS_KEM_alg_ntruprime_sntrup761,
 		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 		OQS_KEM_alg_frodokem_640_aes,
 		OQS_KEM_alg_frodokem_640_shake,
@@ -181,6 +182,12 @@ OQS_API int OQS_KEM_alg_is_enabled(const char *method_name) {
 #endif
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_kyber_1024_90s)) {
 #ifdef OQS_ENABLE_KEM_kyber_1024_90s
+		return 1;
+#else
+		return 0;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntruprime_sntrup761)) {
+#ifdef OQS_ENABLE_KEM_ntruprime_sntrup761
 		return 1;
 #else
 		return 0;
@@ -356,6 +363,12 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name) {
 	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_kyber_1024_90s)) {
 #ifdef OQS_ENABLE_KEM_kyber_1024_90s
 		return OQS_KEM_kyber_1024_90s_new();
+#else
+		return NULL;
+#endif
+	} else if (0 == strcasecmp(method_name, OQS_KEM_alg_ntruprime_sntrup761)) {
+#ifdef OQS_ENABLE_KEM_ntruprime_sntrup761
+		return OQS_KEM_ntruprime_sntrup761_new();
 #else
 		return NULL;
 #endif

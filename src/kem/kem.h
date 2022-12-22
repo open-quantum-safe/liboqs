@@ -74,6 +74,8 @@ extern "C" {
 #define OQS_KEM_alg_kyber_768_90s "Kyber768-90s"
 /** Algorithm identifier for Kyber1024-90s KEM. */
 #define OQS_KEM_alg_kyber_1024_90s "Kyber1024-90s"
+/** Algorithm identifier for sntrup761 KEM. */
+#define OQS_KEM_alg_ntruprime_sntrup761 "sntrup761"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 /** Algorithm identifier for FrodoKEM-640-AES KEM. */
 #define OQS_KEM_alg_frodokem_640_aes "FrodoKEM-640-AES"
@@ -90,7 +92,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-KEM
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_KEM_algs_length 27
+#define OQS_KEM_algs_length 28
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -271,6 +273,9 @@ OQS_API void OQS_KEM_free(OQS_KEM *kem);
 #ifdef OQS_ENABLE_KEM_KYBER
 #include <oqs/kem_kyber.h>
 #endif /* OQS_ENABLE_KEM_KYBER */
+#ifdef OQS_ENABLE_KEM_NTRUPRIME
+#include <oqs/kem_ntruprime.h>
+#endif /* OQS_ENABLE_KEM_NTRUPRIME */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 #ifdef OQS_ENABLE_KEM_FRODOKEM
 #include <oqs/kem_frodokem.h>
