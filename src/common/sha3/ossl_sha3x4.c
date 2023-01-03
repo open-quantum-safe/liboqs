@@ -122,6 +122,10 @@ void OQS_SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	EVP_MD_CTX_reset(s->mdctx1);
 	EVP_MD_CTX_reset(s->mdctx2);
 	EVP_MD_CTX_reset(s->mdctx3);
+	EVP_DigestInit_ex(s->mdctx0, EVP_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx1, EVP_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx2, EVP_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx3, EVP_shake128(), NULL);
 	s->n_out = 0;
 }
 
@@ -236,6 +240,10 @@ void OQS_SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	EVP_MD_CTX_reset(s->mdctx1);
 	EVP_MD_CTX_reset(s->mdctx2);
 	EVP_MD_CTX_reset(s->mdctx3);
+	EVP_DigestInit_ex(s->mdctx0, EVP_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx1, EVP_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx2, EVP_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx3, EVP_shake256(), NULL);
 	s->n_out = 0;
 }
 
