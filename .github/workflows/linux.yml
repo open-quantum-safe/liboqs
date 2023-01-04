@@ -53,6 +53,10 @@ jobs:
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py
+          - name: alpine-openssl-all
+            container: openquantumsafe/ci-alpine-amd64:latest
+            CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON
+            PYTEST_ARGS: --ignore=tests/test_alg_info.py
           - name: alpine-noopenssl
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
