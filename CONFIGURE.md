@@ -1,3 +1,6 @@
+Options for configuring liboqs builds
+=====================================
+
 The following options can be passed to CMake before the build file generation process to customize the way liboqs is built. The syntax for doing so is: `cmake .. [ARGS] [-D<OPTION_NAME>=<OPTION_VALUE>]...`, where `<OPTON_NAME>` is:
 
 - [BUILD_SHARED_LIBS](#BUILD_SHARED_LIBS)
