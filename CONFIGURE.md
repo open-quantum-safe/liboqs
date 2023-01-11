@@ -7,10 +7,10 @@ The following options can be passed to CMake before the build file generation pr
 - [CMAKE_INSTALL_PREFIX](#CMAKE_INSTALL_PREFIX)
 - [OQS_ALGS_ENABLED](#OQS_ALGS_ENABLED)
 - [OQS_BUILD_ONLY_LIB](#OQS_BUILD_ONLY_LIB)
-- [OQS_ENABLE_KEM_\<ALG\>/OQS_ENABLE_SIG_\<ALG\>](#OQS_ENABLE_KEM_\<ALG\>/OQS_ENABLE_SIG_\<ALG\>)
+- [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG)
 - [OQS_MINIMAL_BUILD](#OQS_MINIMAL_BUILD)
 - [OQS_DIST_BUILD](#OQS_DIST_BUILD)
-- [OQS_USE_\<CPU_FEATURE\>_INSTRUCTIONS](OQS_USE_\<CPU_FEATURE\>_INSTRUCTIONS)
+- [OQS_USE_CPUFEATURE_INSTRUCTIONS](OQS_USE_CPUFEATURE_INSTRUCTIONS)
 - [OQS_USE_OPENSSL](#OQS_USE_OPENSSL)
 - [OQS_OPT_TARGET](#OQS_OPT_TARGET)
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
@@ -37,9 +37,11 @@ See the [CMake documentation](https://cmake.org/cmake/help/latest/variable/CMAKE
 
 Selects algorithm set enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "All" (or any other value) selecting all algorithms integrated into liboqs. If the parameter is not given "STD" is set by default.
 
-## OQS_ENABLE_KEM_\<ALG\>/OQS_ENABLE_SIG_\<ALG\>
+## OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG
 
-This can be set to `ON` or `OFF`, and is `ON` by default. When `OFF`, `<ALG>` and its code are excluded from the build process. When `ON`, made available are additional options whereby individual variants of `<ALG>` can be excluded from the build process. 
+Note: `ALG` in `OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG` should be replaced with the specific algorithm name as demonstrated below.
+
+This can be set to `ON` or `OFF`, and is `ON` by default. When `OFF`, `ALG` and its code are excluded from the build process. When `ON`, made available are additional options whereby individual variants of `ALG` can be excluded from the build process. 
 
 For example: if `OQS_ENABLE_KEM_BIKE` is set to `ON`, the options `OQS_ENABLE_KEM_bike1_l1_cpa`, `OQS_ENABLE_KEM_bike1_l1_fo`, `OQS_ENABLE_KEM_bike1_l3_cpa`, `OQS_ENABLE_KEM_bike1_l3_fo` are made available (and are set to be `ON` by default). 
 
@@ -65,7 +67,9 @@ When built for distribution, the library will run on any CPU of the target archi
 
 When built for use on a single machine, the library will only include the best available code for the target micro-architecture (see [OQS_OPT_TARGET](#OQS_OPT_TARGET)).
 
-## OQS_USE_\<CPU_FEATURE\>_INSTRUCTIONS
+## OQS_USE_CPUFEATURE_INSTRUCTIONS
+
+Note: `CPUFEATURE` in `OQS_USE_CPUFEATURE_INSTRUCTIONS` should be replaced with the specific CPU feature as noted below.
 
 These can be set to `ON` or `OFF` and take an effect if liboqs is built for use on a single machine. By default, the CPU features are automatically determined and set to `ON` or `OFF` based on the CPU features available on the build system. The default values can be overridden by providing CMake build options. The available options on x86-64 are: `OQS_USE_ADX_INSTRUCTIONS`, `OQS_USE_AES_INSTRUCTIONS`, `OQS_USE_AVX_INSTRUCTIONS`, `OQS_USE_AVX2_INSTRUCTIONS`, `OQS_USE_AVX512_INSTRUCTIONS`, `OQS_USE_BMI1_INSTRUCTIONS`, `OQS_USE_BMI2_INSTRUCTIONS`, `OQS_USE_PCLMULQDQ_INSTRUCTIONS`, `OQS_USE_VPCLMULQDQ_INSTRUCTIONS`, `OQS_USE_POPCNT_INSTRUCTIONS`, `OQS_USE_SSE_INSTRUCTIONS`, `OQS_USE_SSE2_INSTRUCTIONS` and `OQS_USE_SSE3_INSTRUCTIONS`. The available options on ARM64v8 are `OQS_USE_ARM_AES_INSTRUCTIONS`, `OQS_USE_ARM_SHA2_INSTRUCTIONS`, `OQS_USE_ARM_SHA3_INSTRUCTIONS` and `OQS_USE_ARM_NEON_INSTRUCTIONS`.
 
@@ -104,4 +108,6 @@ This has effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE_BU
 
 ## OQS_ENABLE_TEST_CONSTANT_TIME
 
-This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.  See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more information on usage.
+This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.  
+
+See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more information on usage.
