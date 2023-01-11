@@ -44,6 +44,7 @@ Details on each supported algorithm can be found in the [docs/algorithms](https:
 - **FrodoKEM**: FrodoKEM-640-AES, FrodoKEM-640-SHAKE, FrodoKEM-976-AES, FrodoKEM-976-SHAKE, FrodoKEM-1344-AES, FrodoKEM-1344-SHAKE
 - **HQC**: HQC-128, HQC-192, HQC-256†
 - **Kyber**: Kyber512, Kyber512-90s, Kyber768, Kyber768-90s, Kyber1024, Kyber1024-90s
+- **NTRU-Prime**: sntrup761
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_END -->
 
 #### Signature schemes

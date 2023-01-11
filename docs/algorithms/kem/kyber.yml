@@ -84,8 +84,7 @@ parameter-sets:
     upstream-id: ref
     supported-platforms: all
     common-crypto:
-    - AES: pqcrystals-kyber_common_ref
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -104,8 +103,7 @@ parameter-sets:
       - sse2
       - ssse3
     common-crypto:
-    - AES: pqcrystals-kyber_common_aes
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -167,8 +165,7 @@ parameter-sets:
     upstream-id: ref
     supported-platforms: all
     common-crypto:
-    - AES: pqcrystals-kyber_common_ref
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -187,8 +184,7 @@ parameter-sets:
       - sse2
       - ssse3
     common-crypto:
-    - AES: pqcrystals-kyber_common_aes
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -250,8 +246,7 @@ parameter-sets:
     upstream-id: ref
     supported-platforms: all
     common-crypto:
-    - AES: pqcrystals-kyber_common_ref
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
@@ -270,8 +265,7 @@ parameter-sets:
       - sse2
       - ssse3
     common-crypto:
-    - AES: pqcrystals-kyber_common_aes
-    - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
