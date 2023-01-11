@@ -18,6 +18,14 @@ def anchorstring(str):
         i=i+1
     return doxyref
 
+def reformat_anchors(s):
+   if "](#" in s:
+      i = s.index("](#") + 3
+      j = s[i:].index(")") + i
+      return s[0:i] + anchorstring(s[i:j]) + s[j:]
+   else: 
+      return s
+
 if len(sys.argv) != 3 or not Path(sys.argv[1]).is_file():
    print("Expecting original and new file location. Exiting.")
    exit(1)
@@ -41,6 +49,8 @@ with open(sys.argv[2], "w") as outfile:
             ll = possibleanchor
         else: # create anchor markup just in case...
             possibleanchor=line.strip()+" {#"+anchorstring(line.strip())+"}\n"
+            if ll is not None:
+               ll = reformat_anchors(ll)
         # write last line
         if ll is not None: outfile.write(ll)
         ll = nl
