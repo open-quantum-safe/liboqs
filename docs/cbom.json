@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:13e7bb2f-4c68-48ab-be69-f47183eab679",
+  "serialNumber": "urn:uuid:ca241562-5e2e-41a7-bbe7-d5f594dadeff",
   "version": 1,
   "metadata": {
-    "timestamp": "2022-12-20T16:19:21.045727",
+    "timestamp": "2023-01-11T13:07:10.132035",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@a7e1b8a32f482f3b93b7d08d686d62942e5674df",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@a365530a2baf065c2865f1ef272c962a5c87d5a1",
       "name": "liboqs",
-      "version": "a7e1b8a32f482f3b93b7d08d686d62942e5674df"
+      "version": "a365530a2baf065c2865f1ef272c962a5c87d5a1"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@a7e1b8a32f482f3b93b7d08d686d62942e5674df",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@a365530a2baf065c2865f1ef272c962a5c87d5a1",
       "name": "liboqs",
-      "version": "a7e1b8a32f482f3b93b7d08d686d62942e5674df"
+      "version": "a365530a2baf065c2865f1ef272c962a5c87d5a1"
     },
     {
       "type": "crypto-asset",
@@ -1121,7 +1121,47 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.7.4.4:generic",
+      "bom-ref": "alg:sntrup761:generic",
+      "name": "NTRU-Prime",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "sntrup761",
+          "primitive": "kem",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "implementationPlatform": "generic"
+        },
+        "nistQuantumSecurityLevel": 2
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:sntrup761:x86_64",
+      "name": "NTRU-Prime",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "variant": "sntrup761",
+          "primitive": "kem",
+          "implementationLevel": "softwarePlainRam",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "implementationPlatform": "x86_64"
+        },
+        "nistQuantumSecurityLevel": 2
+      }
+    },
+    {
+      "type": "crypto-asset",
+      "bom-ref": "alg:Dilithium2:generic",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1136,13 +1176,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 2,
-        "oid": "1.3.6.1.4.1.2.267.7.4.4"
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.7.4.4:x86_64",
+      "bom-ref": "alg:Dilithium2:x86_64",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1157,13 +1196,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 2,
-        "oid": "1.3.6.1.4.1.2.267.7.4.4"
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.7.4.4:armv8-a",
+      "bom-ref": "alg:Dilithium2:armv8-a",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1178,13 +1216,12 @@
           ],
           "implementationPlatform": "armv8-a"
         },
-        "nistQuantumSecurityLevel": 2,
-        "oid": "1.3.6.1.4.1.2.267.7.4.4"
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.7.6.5:generic",
+      "bom-ref": "alg:Dilithium3:generic",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1199,13 +1236,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.6.1.4.1.2.267.7.6.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.7.6.5:x86_64",
+      "bom-ref": "alg:Dilithium3:x86_64",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1220,13 +1256,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.6.1.4.1.2.267.7.6.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.7.6.5:armv8-a",
+      "bom-ref": "alg:Dilithium3:armv8-a",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1241,13 +1276,12 @@
           ],
           "implementationPlatform": "armv8-a"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.6.1.4.1.2.267.7.6.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.7.8.7:generic",
+      "bom-ref": "alg:Dilithium5:generic",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1262,13 +1296,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.6.1.4.1.2.267.7.8.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.7.8.7:x86_64",
+      "bom-ref": "alg:Dilithium5:x86_64",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1283,13 +1316,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.6.1.4.1.2.267.7.8.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.7.8.7:armv8-a",
+      "bom-ref": "alg:Dilithium5:armv8-a",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1304,13 +1336,12 @@
           ],
           "implementationPlatform": "armv8-a"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.6.1.4.1.2.267.7.8.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.11.4.4:generic",
+      "bom-ref": "alg:Dilithium2-AES:generic",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1325,13 +1356,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 2,
-        "oid": "1.3.6.1.4.1.2.267.11.4.4"
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.11.4.4:x86_64",
+      "bom-ref": "alg:Dilithium2-AES:x86_64",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1346,13 +1376,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 2,
-        "oid": "1.3.6.1.4.1.2.267.11.4.4"
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.11.6.5:generic",
+      "bom-ref": "alg:Dilithium3-AES:generic",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1367,13 +1396,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.6.1.4.1.2.267.11.6.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.11.6.5:x86_64",
+      "bom-ref": "alg:Dilithium3-AES:x86_64",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1388,13 +1416,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.6.1.4.1.2.267.11.6.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.11.8.7:generic",
+      "bom-ref": "alg:Dilithium5-AES:generic",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1409,13 +1436,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.6.1.4.1.2.267.11.8.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.6.1.4.1.2.267.11.8.7:x86_64",
+      "bom-ref": "alg:Dilithium5-AES:x86_64",
       "name": "CRYSTALS-Dilithium",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1430,13 +1456,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.6.1.4.1.2.267.11.8.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.3.1:generic",
+      "bom-ref": "alg:Falcon-512:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1451,13 +1476,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.3.1"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.3.1:x86_64",
+      "bom-ref": "alg:Falcon-512:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1472,13 +1496,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.3.1"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.3.4:generic",
+      "bom-ref": "alg:Falcon-1024:generic",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1493,13 +1516,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.3.4"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.3.4:x86_64",
+      "bom-ref": "alg:Falcon-1024:x86_64",
       "name": "Falcon",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1514,13 +1536,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.3.4"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.1.1:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-128f-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1535,13 +1556,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.1.1"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.1.1:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-128f-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1556,13 +1576,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.1.1"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.1.4:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1577,13 +1596,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.1.4"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.1.4:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-128f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1598,13 +1616,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.1.4"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.1.7:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-128s-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1619,13 +1636,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.1.7"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.1.7:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-128s-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1640,13 +1656,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.1.7"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.1.10:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-128s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1661,13 +1676,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.1.10"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.1.10:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-128s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1682,13 +1696,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.1.10"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.2.1:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-192f-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1703,13 +1716,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.2.1"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.2.1:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-192f-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1724,13 +1736,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.2.1"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.2.3:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-192f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1745,13 +1756,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.2.3"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.2.3:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-192f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1766,13 +1776,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.2.3"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.2.5:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-192s-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1787,13 +1796,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.2.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.2.5:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-192s-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1808,13 +1816,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.2.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.2.7:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-192s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1829,13 +1836,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.2.7"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.2.7:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-192s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1850,13 +1856,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.2.7"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.3.1:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-256f-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1871,13 +1876,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.3.1"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.3.1:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-256f-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1892,13 +1896,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.3.1"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.3.3:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-256f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1913,13 +1916,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.3.3"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.3.3:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-256f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1934,13 +1936,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.3.3"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.3.5:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-256s-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1955,13 +1956,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.3.5"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.3.5:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-256s-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1976,13 +1976,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.3.5"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.3.7:generic",
+      "bom-ref": "alg:SPHINCS+-Haraka-256s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -1997,13 +1996,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.3.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.3.7:x86_64",
+      "bom-ref": "alg:SPHINCS+-Haraka-256s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2018,13 +2016,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.3.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.4.1:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-128f-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2039,13 +2036,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.4.1"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.4.1:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-128f-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2060,13 +2056,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.4.1"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.4.4:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2081,13 +2076,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.4.4"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.4.4:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-128f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2102,13 +2096,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.4.4"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.4.7:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-128s-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2123,13 +2116,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.4.7"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.4.7:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-128s-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2144,13 +2136,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.4.7"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.4.10:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-128s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2165,13 +2156,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.4.10"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.4.10:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-128s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2186,13 +2176,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.4.10"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.5.1:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-192f-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2207,13 +2196,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.5.1"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.5.1:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-192f-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2228,13 +2216,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.5.1"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.5.3:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-192f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2249,13 +2236,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.5.3"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.5.3:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-192f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2270,13 +2256,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.5.3"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.5.5:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-192s-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2291,13 +2276,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.5.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.5.5:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-192s-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2312,13 +2296,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.5.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.5.7:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-192s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2333,13 +2316,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.5.7"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.5.7:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-192s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2354,13 +2336,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.5.7"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.6.1:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-256f-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2375,13 +2356,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.6.1"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.6.1:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-256f-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2396,13 +2376,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.6.1"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.6.3:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-256f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2417,13 +2396,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.6.3"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.6.3:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-256f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2438,13 +2416,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.6.3"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.6.5:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-256s-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2459,13 +2436,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.6.5"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.6.5:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-256s-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2480,13 +2456,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.6.5"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.6.7:generic",
+      "bom-ref": "alg:SPHINCS+-SHA256-256s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2501,13 +2476,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.6.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.6.7:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHA256-256s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2522,13 +2496,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.6.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.7.1:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-128f-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2543,13 +2516,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.7.1"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.7.1:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-128f-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2564,13 +2536,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.7.1"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.7.4:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2585,13 +2556,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.7.4"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.7.4:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-128f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2606,13 +2576,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.7.4"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.7.7:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-128s-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2627,13 +2596,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.7.7"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.7.7:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-128s-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2648,13 +2616,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.7.7"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.7.10:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-128s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2669,13 +2636,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.7.10"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.7.10:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-128s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2690,13 +2656,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 1,
-        "oid": "1.3.9999.6.7.10"
+        "nistQuantumSecurityLevel": 1
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.8.1:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-192f-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2711,13 +2676,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.8.1"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.8.1:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-192f-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2732,13 +2696,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.8.1"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.8.3:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-192f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2753,13 +2716,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.8.3"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.8.3:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-192f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2774,13 +2736,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.8.3"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.8.5:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-192s-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2795,13 +2756,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.8.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.8.5:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-192s-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2816,13 +2776,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.8.5"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.8.7:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-192s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2837,13 +2796,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.8.7"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.8.7:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-192s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2858,13 +2816,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3,
-        "oid": "1.3.9999.6.8.7"
+        "nistQuantumSecurityLevel": 3
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.9.1:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-256f-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2879,13 +2836,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.9.1"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.9.1:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-256f-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2900,13 +2856,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.9.1"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.9.3:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-256f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2921,13 +2876,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.9.3"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.9.3:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-256f-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2942,13 +2896,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.9.3"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.9.5:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-256s-robust:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2963,13 +2916,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.9.5"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.9.5:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-256s-robust:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -2984,13 +2936,12 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.9.5"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.9.7:generic",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-256s-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3005,13 +2956,12 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.9.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "oid:1.3.9999.6.9.7:x86_64",
+      "bom-ref": "alg:SPHINCS+-SHAKE256-256s-simple:x86_64",
       "name": "SPHINCS+",
       "cryptoProperties": {
         "assetType": "algorithm",
@@ -3026,8 +2976,7 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5,
-        "oid": "1.3.9999.6.9.7"
+        "nistQuantumSecurityLevel": 5
       }
     },
     {
@@ -3059,7 +3008,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@a7e1b8a32f482f3b93b7d08d686d62942e5674df",
+      "ref": "pkg:github/open-quantum-safe/liboqs@a365530a2baf065c2865f1ef272c962a5c87d5a1",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -3116,97 +3065,99 @@
         "alg:Kyber1024:armv8-a",
         "alg:Kyber1024-90s:generic",
         "alg:Kyber1024-90s:x86_64",
-        "oid:1.3.6.1.4.1.2.267.7.4.4:generic",
-        "oid:1.3.6.1.4.1.2.267.7.4.4:x86_64",
-        "oid:1.3.6.1.4.1.2.267.7.4.4:armv8-a",
-        "oid:1.3.6.1.4.1.2.267.7.6.5:generic",
-        "oid:1.3.6.1.4.1.2.267.7.6.5:x86_64",
-        "oid:1.3.6.1.4.1.2.267.7.6.5:armv8-a",
-        "oid:1.3.6.1.4.1.2.267.7.8.7:generic",
-        "oid:1.3.6.1.4.1.2.267.7.8.7:x86_64",
-        "oid:1.3.6.1.4.1.2.267.7.8.7:armv8-a",
-        "oid:1.3.6.1.4.1.2.267.11.4.4:generic",
-        "oid:1.3.6.1.4.1.2.267.11.4.4:x86_64",
-        "oid:1.3.6.1.4.1.2.267.11.6.5:generic",
-        "oid:1.3.6.1.4.1.2.267.11.6.5:x86_64",
-        "oid:1.3.6.1.4.1.2.267.11.8.7:generic",
-        "oid:1.3.6.1.4.1.2.267.11.8.7:x86_64",
-        "oid:1.3.9999.3.1:generic",
-        "oid:1.3.9999.3.1:x86_64",
-        "oid:1.3.9999.3.4:generic",
-        "oid:1.3.9999.3.4:x86_64",
-        "oid:1.3.9999.6.1.1:generic",
-        "oid:1.3.9999.6.1.1:x86_64",
-        "oid:1.3.9999.6.1.4:generic",
-        "oid:1.3.9999.6.1.4:x86_64",
-        "oid:1.3.9999.6.1.7:generic",
-        "oid:1.3.9999.6.1.7:x86_64",
-        "oid:1.3.9999.6.1.10:generic",
-        "oid:1.3.9999.6.1.10:x86_64",
-        "oid:1.3.9999.6.2.1:generic",
-        "oid:1.3.9999.6.2.1:x86_64",
-        "oid:1.3.9999.6.2.3:generic",
-        "oid:1.3.9999.6.2.3:x86_64",
-        "oid:1.3.9999.6.2.5:generic",
-        "oid:1.3.9999.6.2.5:x86_64",
-        "oid:1.3.9999.6.2.7:generic",
-        "oid:1.3.9999.6.2.7:x86_64",
-        "oid:1.3.9999.6.3.1:generic",
-        "oid:1.3.9999.6.3.1:x86_64",
-        "oid:1.3.9999.6.3.3:generic",
-        "oid:1.3.9999.6.3.3:x86_64",
-        "oid:1.3.9999.6.3.5:generic",
-        "oid:1.3.9999.6.3.5:x86_64",
-        "oid:1.3.9999.6.3.7:generic",
-        "oid:1.3.9999.6.3.7:x86_64",
-        "oid:1.3.9999.6.4.1:generic",
-        "oid:1.3.9999.6.4.1:x86_64",
-        "oid:1.3.9999.6.4.4:generic",
-        "oid:1.3.9999.6.4.4:x86_64",
-        "oid:1.3.9999.6.4.7:generic",
-        "oid:1.3.9999.6.4.7:x86_64",
-        "oid:1.3.9999.6.4.10:generic",
-        "oid:1.3.9999.6.4.10:x86_64",
-        "oid:1.3.9999.6.5.1:generic",
-        "oid:1.3.9999.6.5.1:x86_64",
-        "oid:1.3.9999.6.5.3:generic",
-        "oid:1.3.9999.6.5.3:x86_64",
-        "oid:1.3.9999.6.5.5:generic",
-        "oid:1.3.9999.6.5.5:x86_64",
-        "oid:1.3.9999.6.5.7:generic",
-        "oid:1.3.9999.6.5.7:x86_64",
-        "oid:1.3.9999.6.6.1:generic",
-        "oid:1.3.9999.6.6.1:x86_64",
-        "oid:1.3.9999.6.6.3:generic",
-        "oid:1.3.9999.6.6.3:x86_64",
-        "oid:1.3.9999.6.6.5:generic",
-        "oid:1.3.9999.6.6.5:x86_64",
-        "oid:1.3.9999.6.6.7:generic",
-        "oid:1.3.9999.6.6.7:x86_64",
-        "oid:1.3.9999.6.7.1:generic",
-        "oid:1.3.9999.6.7.1:x86_64",
-        "oid:1.3.9999.6.7.4:generic",
-        "oid:1.3.9999.6.7.4:x86_64",
-        "oid:1.3.9999.6.7.7:generic",
-        "oid:1.3.9999.6.7.7:x86_64",
-        "oid:1.3.9999.6.7.10:generic",
-        "oid:1.3.9999.6.7.10:x86_64",
-        "oid:1.3.9999.6.8.1:generic",
-        "oid:1.3.9999.6.8.1:x86_64",
-        "oid:1.3.9999.6.8.3:generic",
-        "oid:1.3.9999.6.8.3:x86_64",
-        "oid:1.3.9999.6.8.5:generic",
-        "oid:1.3.9999.6.8.5:x86_64",
-        "oid:1.3.9999.6.8.7:generic",
-        "oid:1.3.9999.6.8.7:x86_64",
-        "oid:1.3.9999.6.9.1:generic",
-        "oid:1.3.9999.6.9.1:x86_64",
-        "oid:1.3.9999.6.9.3:generic",
-        "oid:1.3.9999.6.9.3:x86_64",
-        "oid:1.3.9999.6.9.5:generic",
-        "oid:1.3.9999.6.9.5:x86_64",
-        "oid:1.3.9999.6.9.7:generic",
-        "oid:1.3.9999.6.9.7:x86_64"
+        "alg:sntrup761:generic",
+        "alg:sntrup761:x86_64",
+        "alg:Dilithium2:generic",
+        "alg:Dilithium2:x86_64",
+        "alg:Dilithium2:armv8-a",
+        "alg:Dilithium3:generic",
+        "alg:Dilithium3:x86_64",
+        "alg:Dilithium3:armv8-a",
+        "alg:Dilithium5:generic",
+        "alg:Dilithium5:x86_64",
+        "alg:Dilithium5:armv8-a",
+        "alg:Dilithium2-AES:generic",
+        "alg:Dilithium2-AES:x86_64",
+        "alg:Dilithium3-AES:generic",
+        "alg:Dilithium3-AES:x86_64",
+        "alg:Dilithium5-AES:generic",
+        "alg:Dilithium5-AES:x86_64",
+        "alg:Falcon-512:generic",
+        "alg:Falcon-512:x86_64",
+        "alg:Falcon-1024:generic",
+        "alg:Falcon-1024:x86_64",
+        "alg:SPHINCS+-Haraka-128f-robust:generic",
+        "alg:SPHINCS+-Haraka-128f-robust:x86_64",
+        "alg:SPHINCS+-Haraka-128f-simple:generic",
+        "alg:SPHINCS+-Haraka-128f-simple:x86_64",
+        "alg:SPHINCS+-Haraka-128s-robust:generic",
+        "alg:SPHINCS+-Haraka-128s-robust:x86_64",
+        "alg:SPHINCS+-Haraka-128s-simple:generic",
+        "alg:SPHINCS+-Haraka-128s-simple:x86_64",
+        "alg:SPHINCS+-Haraka-192f-robust:generic",
+        "alg:SPHINCS+-Haraka-192f-robust:x86_64",
+        "alg:SPHINCS+-Haraka-192f-simple:generic",
+        "alg:SPHINCS+-Haraka-192f-simple:x86_64",
+        "alg:SPHINCS+-Haraka-192s-robust:generic",
+        "alg:SPHINCS+-Haraka-192s-robust:x86_64",
+        "alg:SPHINCS+-Haraka-192s-simple:generic",
+        "alg:SPHINCS+-Haraka-192s-simple:x86_64",
+        "alg:SPHINCS+-Haraka-256f-robust:generic",
+        "alg:SPHINCS+-Haraka-256f-robust:x86_64",
+        "alg:SPHINCS+-Haraka-256f-simple:generic",
+        "alg:SPHINCS+-Haraka-256f-simple:x86_64",
+        "alg:SPHINCS+-Haraka-256s-robust:generic",
+        "alg:SPHINCS+-Haraka-256s-robust:x86_64",
+        "alg:SPHINCS+-Haraka-256s-simple:generic",
+        "alg:SPHINCS+-Haraka-256s-simple:x86_64",
+        "alg:SPHINCS+-SHA256-128f-robust:generic",
+        "alg:SPHINCS+-SHA256-128f-robust:x86_64",
+        "alg:SPHINCS+-SHA256-128f-simple:generic",
+        "alg:SPHINCS+-SHA256-128f-simple:x86_64",
+        "alg:SPHINCS+-SHA256-128s-robust:generic",
+        "alg:SPHINCS+-SHA256-128s-robust:x86_64",
+        "alg:SPHINCS+-SHA256-128s-simple:generic",
+        "alg:SPHINCS+-SHA256-128s-simple:x86_64",
+        "alg:SPHINCS+-SHA256-192f-robust:generic",
+        "alg:SPHINCS+-SHA256-192f-robust:x86_64",
+        "alg:SPHINCS+-SHA256-192f-simple:generic",
+        "alg:SPHINCS+-SHA256-192f-simple:x86_64",
+        "alg:SPHINCS+-SHA256-192s-robust:generic",
+        "alg:SPHINCS+-SHA256-192s-robust:x86_64",
+        "alg:SPHINCS+-SHA256-192s-simple:generic",
+        "alg:SPHINCS+-SHA256-192s-simple:x86_64",
+        "alg:SPHINCS+-SHA256-256f-robust:generic",
+        "alg:SPHINCS+-SHA256-256f-robust:x86_64",
+        "alg:SPHINCS+-SHA256-256f-simple:generic",
+        "alg:SPHINCS+-SHA256-256f-simple:x86_64",
+        "alg:SPHINCS+-SHA256-256s-robust:generic",
+        "alg:SPHINCS+-SHA256-256s-robust:x86_64",
+        "alg:SPHINCS+-SHA256-256s-simple:generic",
+        "alg:SPHINCS+-SHA256-256s-simple:x86_64",
+        "alg:SPHINCS+-SHAKE256-128f-robust:generic",
+        "alg:SPHINCS+-SHAKE256-128f-robust:x86_64",
+        "alg:SPHINCS+-SHAKE256-128f-simple:generic",
+        "alg:SPHINCS+-SHAKE256-128f-simple:x86_64",
+        "alg:SPHINCS+-SHAKE256-128s-robust:generic",
+        "alg:SPHINCS+-SHAKE256-128s-robust:x86_64",
+        "alg:SPHINCS+-SHAKE256-128s-simple:generic",
+        "alg:SPHINCS+-SHAKE256-128s-simple:x86_64",
+        "alg:SPHINCS+-SHAKE256-192f-robust:generic",
+        "alg:SPHINCS+-SHAKE256-192f-robust:x86_64",
+        "alg:SPHINCS+-SHAKE256-192f-simple:generic",
+        "alg:SPHINCS+-SHAKE256-192f-simple:x86_64",
+        "alg:SPHINCS+-SHAKE256-192s-robust:generic",
+        "alg:SPHINCS+-SHAKE256-192s-robust:x86_64",
+        "alg:SPHINCS+-SHAKE256-192s-simple:generic",
+        "alg:SPHINCS+-SHAKE256-192s-simple:x86_64",
+        "alg:SPHINCS+-SHAKE256-256f-robust:generic",
+        "alg:SPHINCS+-SHAKE256-256f-robust:x86_64",
+        "alg:SPHINCS+-SHAKE256-256f-simple:generic",
+        "alg:SPHINCS+-SHAKE256-256f-simple:x86_64",
+        "alg:SPHINCS+-SHAKE256-256s-robust:generic",
+        "alg:SPHINCS+-SHAKE256-256s-robust:x86_64",
+        "alg:SPHINCS+-SHAKE256-256s-simple:generic",
+        "alg:SPHINCS+-SHAKE256-256s-simple:x86_64"
       ],
       "dependencyType": "implements"
     },
@@ -3628,469 +3579,483 @@
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.6.1.4.1.2.267.7.4.4:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.7.4.4:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.7.4.4:armv8-a",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.7.6.5:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.7.6.5:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.7.6.5:armv8-a",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.7.8.7:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.7.8.7:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.7.8.7:armv8-a",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.11.4.4:generic",
+      "ref": "alg:sntrup761:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.6.1.4.1.2.267.11.4.4:x86_64",
+      "ref": "alg:sntrup761:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.6.1.4.1.2.267.11.6.5:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.11.6.5:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.11.8.7:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.6.1.4.1.2.267.11.8.7:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "oid:1.3.9999.3.1:generic",
+      "ref": "alg:Dilithium2:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.3.1:x86_64",
+      "ref": "alg:Dilithium2:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.3.4:generic",
+      "ref": "alg:Dilithium2:armv8-a",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.3.4:x86_64",
+      "ref": "alg:Dilithium3:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.1.1:generic",
+      "ref": "alg:Dilithium3:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:Dilithium3:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:Dilithium5:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:Dilithium5:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:Dilithium5:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:Dilithium2-AES:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.1.1:x86_64",
+      "ref": "alg:Dilithium2-AES:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.1.4:generic",
+      "ref": "alg:Dilithium3-AES:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.1.4:x86_64",
+      "ref": "alg:Dilithium3-AES:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.1.7:generic",
+      "ref": "alg:Dilithium5-AES:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.1.7:x86_64",
+      "ref": "alg:Dilithium5-AES:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.1.10:generic",
+      "ref": "alg:Falcon-512:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:Falcon-512:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:Falcon-1024:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:Falcon-1024:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:SPHINCS+-Haraka-128f-robust:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.1.10:x86_64",
+      "ref": "alg:SPHINCS+-Haraka-128f-robust:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.2.1:generic",
+      "ref": "alg:SPHINCS+-Haraka-128f-simple:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.2.1:x86_64",
+      "ref": "alg:SPHINCS+-Haraka-128f-simple:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.2.3:generic",
+      "ref": "alg:SPHINCS+-Haraka-128s-robust:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.2.3:x86_64",
+      "ref": "alg:SPHINCS+-Haraka-128s-robust:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.2.5:generic",
+      "ref": "alg:SPHINCS+-Haraka-128s-simple:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.2.5:x86_64",
+      "ref": "alg:SPHINCS+-Haraka-128s-simple:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.2.7:generic",
+      "ref": "alg:SPHINCS+-Haraka-192f-robust:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.2.7:x86_64",
+      "ref": "alg:SPHINCS+-Haraka-192f-robust:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.3.1:generic",
+      "ref": "alg:SPHINCS+-Haraka-192f-simple:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.3.1:x86_64",
+      "ref": "alg:SPHINCS+-Haraka-192f-simple:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.3.3:generic",
+      "ref": "alg:SPHINCS+-Haraka-192s-robust:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.3.3:x86_64",
+      "ref": "alg:SPHINCS+-Haraka-192s-robust:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.3.5:generic",
+      "ref": "alg:SPHINCS+-Haraka-192s-simple:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.3.5:x86_64",
+      "ref": "alg:SPHINCS+-Haraka-192s-simple:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.3.7:generic",
+      "ref": "alg:SPHINCS+-Haraka-256f-robust:generic",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.3.7:x86_64",
+      "ref": "alg:SPHINCS+-Haraka-256f-robust:x86_64",
       "dependsOn": [
         "alg:aes"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.7.1:generic",
+      "ref": "alg:SPHINCS+-Haraka-256f-simple:generic",
+      "dependsOn": [
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:SPHINCS+-Haraka-256f-simple:x86_64",
+      "dependsOn": [
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:SPHINCS+-Haraka-256s-robust:generic",
+      "dependsOn": [
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:SPHINCS+-Haraka-256s-robust:x86_64",
+      "dependsOn": [
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:SPHINCS+-Haraka-256s-simple:generic",
+      "dependsOn": [
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:SPHINCS+-Haraka-256s-simple:x86_64",
+      "dependsOn": [
+        "alg:aes"
+      ],
+      "dependencyType": "uses"
+    },
+    {
+      "ref": "alg:SPHINCS+-SHAKE256-128f-robust:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.7.1:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-128f-robust:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.7.4:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-128f-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.7.4:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-128f-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.7.7:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-128s-robust:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.7.7:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-128s-robust:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.7.10:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-128s-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.7.10:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-128s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.8.1:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-192f-robust:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.8.1:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-192f-robust:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.8.3:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-192f-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.8.3:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-192f-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.8.5:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-192s-robust:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.8.5:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-192s-robust:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.8.7:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-192s-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.8.7:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-192s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.9.1:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-256f-robust:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.9.1:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-256f-robust:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.9.3:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-256f-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.9.3:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-256f-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.9.5:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-256s-robust:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.9.5:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-256s-robust:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.9.7:generic",
+      "ref": "alg:SPHINCS+-SHAKE256-256s-simple:generic",
       "dependsOn": [
         "alg:sha3"
       ],
       "dependencyType": "uses"
     },
     {
-      "ref": "oid:1.3.9999.6.9.7:x86_64",
+      "ref": "alg:SPHINCS+-SHAKE256-256s-simple:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],

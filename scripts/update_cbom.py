@@ -3,7 +3,7 @@
 # This script generates a Cryptography Bill of Material (CBOM)
 # according to https://github.com/IBM/CBOM/blob/main/bom-1.4-cbom-1.0.schema.json
 
-# apt-get install npm python3-wget python3-git
+# apt-get install npm python3-git
 
 import argparse
 import glob
@@ -14,10 +14,8 @@ import git
 import uuid
 from datetime import datetime
 import copy
-import wget
 
 cbom_json_file = "cbom.json"
-url_generate_yml = "https://raw.githubusercontent.com/open-quantum-safe/openssl/OQS-OpenSSL_1_1_1-stable/oqs-template/generate.yml"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--liboqs-root", default=".")
@@ -34,20 +32,6 @@ def file_get_contents(filename, encoding=None):
 
 def out_write(out, str):
     out.write(str)
-
-# Maps oqs_method -> oid from generate.yml
-def get_oid_map():
-    wget.download(url_generate_yml)
-    ossl_generate_config = file_get_contents(os.path.join('.', 'generate.yml'), encoding='utf-8')
-    ossl_generate_config = yaml.safe_load(ossl_generate_config)
-    oid_map = {}
-    for sig in ossl_generate_config['sigs']:
-        for variant in sig['variants']:
-            if 'oid' in variant:
-                oid_map.update({variant['oqs_meth'] : variant['oid']})
-    return oid_map
-
-oid_map = get_oid_map()
 
 kem_yamls = []
 sig_yamls = []
@@ -89,10 +73,7 @@ def add_cbom_component(out, kem_yaml, parameter_set):
 
     component = {}
     component['type'] = "crypto-asset"
-    if parameter_set['oqs_alg'] in oid_map.keys():
-        component['bom-ref'] = "oid:" + oid_map[parameter_set['oqs_alg']]
-    else:
-        component['bom-ref'] = "alg:" + parameter_set['name']
+    component['bom-ref'] = "alg:" + parameter_set['name']
 
     component['name'] = kem_yaml['name']
 
@@ -109,8 +90,6 @@ def add_cbom_component(out, kem_yaml, parameter_set):
     cryptoProperties['assetType'] = "algorithm"
     cryptoProperties['algorithmProperties'] = algorithmProperties
     cryptoProperties['nistQuantumSecurityLevel'] = parameter_set['claimed-nist-level']
-    if parameter_set['oqs_alg'] in oid_map.keys():
-        cryptoProperties['oid'] = oid_map[parameter_set['oqs_alg']]
 
     component['cryptoProperties'] = cryptoProperties
 
@@ -213,5 +192,5 @@ cbom['metadata'] = metadata
 cbom['components'] = cbom_components + [common_crypto_component_aes, common_crypto_component_sha3]
 cbom['dependencies'] = dependencies
 
-with open(os.path.join(args.liboqs_root, '.cbom', cbom_json_file), mode='w', encoding='utf-8') as out_md:
+with open(os.path.join(args.liboqs_root, 'docs', cbom_json_file), mode='w', encoding='utf-8') as out_md:
     out_md.write(json.dumps(cbom, indent=2))

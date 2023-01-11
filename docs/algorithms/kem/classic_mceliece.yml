@@ -22,7 +22,6 @@ upstream-ancestors:
 - SUPERCOP-20191221 "vec" and "avx" implementations
 parameter-sets:
 - name: Classic-McEliece-348864
-  oqs_alg: OQS_KEM_alg_classic_mceliece_348864
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 261120
@@ -57,7 +56,6 @@ parameter-sets:
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-348864f
-  oqs_alg: OQS_KEM_alg_classic_mceliece_348864f
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 261120
@@ -93,7 +91,6 @@ parameter-sets:
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-460896
-  oqs_alg: OQS_KEM_alg_classic_mceliece_460896
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 524160
@@ -128,7 +125,6 @@ parameter-sets:
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-460896f
-  oqs_alg: OQS_KEM_alg_classic_mceliece_460896f
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 524160
@@ -164,7 +160,6 @@ parameter-sets:
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-6688128
-  oqs_alg: OQS_KEM_alg_classic_mceliece_6688128
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1044992
@@ -199,7 +194,6 @@ parameter-sets:
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-6688128f
-  oqs_alg: OQS_KEM_alg_classic_mceliece_6688128f
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1044992
@@ -235,7 +229,6 @@ parameter-sets:
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-6960119
-  oqs_alg: OQS_KEM_alg_classic_mceliece_6960119
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1047319
@@ -270,7 +263,6 @@ parameter-sets:
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-6960119f
-  oqs_alg: OQS_KEM_alg_classic_mceliece_6960119f
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1047319
@@ -306,7 +298,6 @@ parameter-sets:
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-8192128
-  oqs_alg: OQS_KEM_alg_classic_mceliece_8192128
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1357824
@@ -341,7 +332,6 @@ parameter-sets:
     large-stack-usage: true
     upstream: primary-upstream
 - name: Classic-McEliece-8192128f
-  oqs_alg: OQS_KEM_alg_classic_mceliece_8192128f
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1357824

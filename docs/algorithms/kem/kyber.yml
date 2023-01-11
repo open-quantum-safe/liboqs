@@ -27,7 +27,6 @@ optimized-upstreams:
     spdx-license-identifier: CC0-1.0
 parameter-sets:
 - name: Kyber512
-  oqs_alg: OQS_KEM_alg_kyber_512
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 800
@@ -73,7 +72,6 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Kyber512-90s
-  oqs_alg: OQS_KEM_alg_kyber_512_90s
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 800
@@ -110,7 +108,6 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: Kyber768
-  oqs_alg: OQS_KEM_alg_kyber_768
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 1184
@@ -156,7 +153,6 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Kyber768-90s
-  oqs_alg: OQS_KEM_alg_kyber_512_90s
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 1184
@@ -193,7 +189,6 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: Kyber1024
-  oqs_alg: OQS_KEM_alg_kyber_1024
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1568
@@ -239,7 +234,6 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
 - name: Kyber1024-90s
-  oqs_alg: OQS_KEM_alg_kyber_1024_90s
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1568

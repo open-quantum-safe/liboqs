@@ -618,7 +618,8 @@ def copy_from_upstream():
 
     # Not in love with using sub process to call a python script, but this is the easiest solution for
     # automatically calling this script in its current state.
-    shell(["python3",  "../update_docs_from_yaml.py", "--liboqs-root", "../../"]) 
+    shell(["python3", os.environ['LIBOQS_DIR'] + "/scripts/update_docs_from_yaml.py", "--liboqs-root", os.environ['LIBOQS_DIR']]) 
+    shell(["python3", os.environ['LIBOQS_DIR'] + "/scripts/update_cbom.py", "--liboqs-root", os.environ['LIBOQS_DIR']])
 
 def verify_from_upstream():
     instructions = load_instructions()
