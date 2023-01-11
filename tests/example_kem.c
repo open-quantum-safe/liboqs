@@ -29,55 +29,55 @@ void cleanup_heap(uint8_t *secret_key, uint8_t *shared_secret_e,
  * statically on the stack, calling a specific algorithm's functions
  * directly.
  *
- * The macros OQS_KEM_kyber_768_length_* and the functions
- * OQS_KEM_kyber_768_* are only defined if the algorithm
- * Kyber-768 was enabled at compile-time which must be
- * checked using the OQS_ENABLE_KEM_kyber_768 macro.
+ * The macros OQS_KEM_frodokem_640_aes_length_* and the functions
+ * OQS_KEM_frodokem_640_aes_* are only defined if the algorithm
+ * FrodoKEM-640-AES was enabled at compile-time which must be
+ * checked using the OQS_ENABLE_KEM_frodokem_640_aes macro.
  *
  * <oqs/oqsconfig.h>, which is included in <oqs/oqs.h>, contains macros
  * indicating which algorithms were enabled when this instance of liboqs
  * was compiled.
  */
 static OQS_STATUS example_stack(void) {
-#ifndef OQS_ENABLE_KEM_kyber_768 // if Kyber-768 was not enabled at compile-time
-	printf("[example_stack] OQS_KEM_kyber_768 was not enabled at "
+#ifndef OQS_ENABLE_KEM_frodokem_640_aes // if FrodoKEM-640-AES was not enabled at compile-time
+	printf("[example_stack] OQS_KEM_frodokem_640_aes was not enabled at "
 	       "compile-time.\n");
-	return OQS_SUCCESS; // nothing done successfully ;-)
+	return OQS_ERROR;
 #else
-	uint8_t public_key[OQS_KEM_kyber_768_length_public_key];
-	uint8_t secret_key[OQS_KEM_kyber_768_length_secret_key];
-	uint8_t ciphertext[OQS_KEM_kyber_768_length_ciphertext];
-	uint8_t shared_secret_e[OQS_KEM_kyber_768_length_shared_secret];
-	uint8_t shared_secret_d[OQS_KEM_kyber_768_length_shared_secret];
+	uint8_t public_key[OQS_KEM_frodokem_640_aes_length_public_key];
+	uint8_t secret_key[OQS_KEM_frodokem_640_aes_length_secret_key];
+	uint8_t ciphertext[OQS_KEM_frodokem_640_aes_length_ciphertext];
+	uint8_t shared_secret_e[OQS_KEM_frodokem_640_aes_length_shared_secret];
+	uint8_t shared_secret_d[OQS_KEM_frodokem_640_aes_length_shared_secret];
 
-	OQS_STATUS rc = OQS_KEM_kyber_768_keypair(public_key, secret_key);
+	OQS_STATUS rc = OQS_KEM_frodokem_640_aes_keypair(public_key, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_kyber_768_keypair failed!\n");
-		cleanup_stack(secret_key, OQS_KEM_kyber_768_length_secret_key,
+		fprintf(stderr, "ERROR: OQS_KEM_frodokem_640_aes_keypair failed!\n");
+		cleanup_stack(secret_key, OQS_KEM_frodokem_640_aes_length_secret_key,
 		              shared_secret_e, shared_secret_d,
-		              OQS_KEM_kyber_768_length_shared_secret);
+		              OQS_KEM_frodokem_640_aes_length_shared_secret);
 
 		return OQS_ERROR;
 	}
-	rc = OQS_KEM_kyber_768_encaps(ciphertext, shared_secret_e, public_key);
+	rc = OQS_KEM_frodokem_640_aes_encaps(ciphertext, shared_secret_e, public_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_kyber_768_encaps failed!\n");
-		cleanup_stack(secret_key, OQS_KEM_kyber_768_length_secret_key,
+		fprintf(stderr, "ERROR: OQS_KEM_frodokem_640_aes_encaps failed!\n");
+		cleanup_stack(secret_key, OQS_KEM_frodokem_640_aes_length_secret_key,
 		              shared_secret_e, shared_secret_d,
-		              OQS_KEM_kyber_768_length_shared_secret);
+		              OQS_KEM_frodokem_640_aes_length_shared_secret);
 
 		return OQS_ERROR;
 	}
-	rc = OQS_KEM_kyber_768_decaps(shared_secret_d, ciphertext, secret_key);
+	rc = OQS_KEM_frodokem_640_aes_decaps(shared_secret_d, ciphertext, secret_key);
 	if (rc != OQS_SUCCESS) {
-		fprintf(stderr, "ERROR: OQS_KEM_kyber_768_decaps failed!\n");
-		cleanup_stack(secret_key, OQS_KEM_kyber_768_length_secret_key,
+		fprintf(stderr, "ERROR: OQS_KEM_frodokem_640_aes_decaps failed!\n");
+		cleanup_stack(secret_key, OQS_KEM_frodokem_640_aes_length_secret_key,
 		              shared_secret_e, shared_secret_d,
-		              OQS_KEM_kyber_768_length_shared_secret);
+		              OQS_KEM_frodokem_640_aes_length_shared_secret);
 
 		return OQS_ERROR;
 	}
-	printf("[example_stack] OQS_KEM_kyber_768 operations completed.\n");
+	printf("[example_stack] OQS_KEM_frodokem_640_aes operations completed.\n");
 
 	return OQS_SUCCESS; // success!
 #endif
@@ -100,11 +100,11 @@ static OQS_STATUS example_heap(void) {
 	uint8_t *shared_secret_e = NULL;
 	uint8_t *shared_secret_d = NULL;
 
-	kem = OQS_KEM_new(OQS_KEM_alg_kyber_768);
+	kem = OQS_KEM_new(OQS_KEM_alg_frodokem_640_aes);
 	if (kem == NULL) {
-		printf("[example_heap]  OQS_KEM_kyber_768 was not enabled at "
+		printf("[example_heap]  OQS_KEM_frodokem_640_aes was not enabled at "
 		       "compile-time.\n");
-		return OQS_SUCCESS;
+		return OQS_ERROR;
 	}
 
 	public_key = malloc(kem->length_public_key);
@@ -146,7 +146,7 @@ static OQS_STATUS example_heap(void) {
 		return OQS_ERROR;
 	}
 
-	printf("[example_heap]  OQS_KEM_kyber_768 operations completed.\n");
+	printf("[example_heap]  OQS_KEM_frodokem_640_aes operations completed.\n");
 	cleanup_heap(secret_key, shared_secret_e, shared_secret_d, public_key,
 	             ciphertext, kem);
 
