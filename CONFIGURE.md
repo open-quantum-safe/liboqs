@@ -44,6 +44,10 @@ For example: if `OQS_ENABLE_KEM_BIKE` is set to `ON`, the options `OQS_ENABLE_KE
 
 For a full list of such options and their default values, consult [.CMake/alg_support.cmake](https://github.com/open-quantum-safe/liboqs/blob/master/.CMake/alg_support.cmake).
 
+## OQS_ALGS_ENABLED
+
+Selects algorithm set enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "All" (or any other value) selecting all algorithms integrated into liboqs. If the parameter is not given "All" is set by default. Parameter setting "STD" minimizes library size but may require re-running code generator scripts in projects integrating `liboqs`, e.g., [oqs-openssl111](https://github.com/open-quantum-safe/openssl) or [oqs-openssh](https://github.com/open-quantum-safe/openssh).
+
 ## OQS_BUILD_ONLY_LIB
 
 Can be `ON` or `OFF`. When `ON`, only liboqs is built, and all the targets: `run_tests`, `gen_docs`, and `prettyprint` are excluded from the build system.

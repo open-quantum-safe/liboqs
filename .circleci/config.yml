@@ -383,7 +383,7 @@ workflows:
       - macOS:
           <<: *require_buildcheck
           name: macOS-noopenssl
-          CMAKE_ARGS: -DOQS_ALGS_ENABLED=All -DOQS_USE_OPENSSL=OFF
+          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
       - macOS:
           <<: *require_buildcheck
           name: macOS-shared

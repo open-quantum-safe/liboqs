@@ -63,6 +63,10 @@ jobs:
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
             PYTEST_ARGS: --ignore=tests/test_alg_info.py
+          - name: focal-std-openssl
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DOQS_ALGS_ENABLED=STD
+            PYTEST_ARGS: --ignore=tests/test_leaks.py
           # disabled until #1067 lands
           # - name: address-sanitizer
           #   container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
