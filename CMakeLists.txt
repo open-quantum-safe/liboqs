@@ -187,7 +187,7 @@ if(NOT ${OQS_BUILD_ONLY_LIB})
         set(DOXYFILE ${PROJECT_SOURCE_DIR}/docs/.Doxyfile)
         add_custom_target(
             gen_docs
-            COMMAND ${PROJECT_SOURCE_DIR}/scripts/run_doxygen.sh ${DOXYGEN_EXECUTABLE} ${DOXYFILE}
+            COMMAND ${PROJECT_SOURCE_DIR}/scripts/run_doxygen.sh ${DOXYGEN_EXECUTABLE} ${DOXYFILE} ${PROJECT_BINARY_DIR}
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
             COMMENT "Generate API documentation with Doxygen."
             USES_TERMINAL)
