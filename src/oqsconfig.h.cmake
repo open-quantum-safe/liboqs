@@ -61,6 +61,13 @@
 #cmakedefine OQS_ENABLE_KEM_frodokem_976_shake 1
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_aes 1
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_shake 1
+#cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 1
+
+#cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
+#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 1
 
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
 
@@ -110,10 +117,6 @@
 #cmakedefine OQS_ENABLE_KEM_kyber_768_90s_avx2 1
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_90s 1
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_90s_avx2 1
-
-#cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
-#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
-#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1
