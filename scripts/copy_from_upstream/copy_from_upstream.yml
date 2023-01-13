@@ -3,7 +3,7 @@ upstreams:
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
-    git_commit: 4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+    git_commit: 33bceb17eb06a40fbdc72251f533734e8d869615
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'

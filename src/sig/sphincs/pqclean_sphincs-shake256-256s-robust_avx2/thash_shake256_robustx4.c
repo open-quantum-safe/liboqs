@@ -1,9 +1,9 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "thashx4.h"
 #include "address.h"
 #include "params.h"
+#include "thashx4.h"
 
 #include "fips202x4.h"
 

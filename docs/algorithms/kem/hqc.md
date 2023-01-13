@@ -6,15 +6,11 @@
 - **Authors' website**: https://pqc-hqc.org/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+  - **Source**: https://github.com/PQClean/PQClean/commit/33bceb17eb06a40fbdc72251f533734e8d869615
   - **Implementation license (SPDX-Identifier)**: Public domain
 , which takes it from:
   - https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc, which takes it from:
   - submission 2020-10-01 at https://pqc-hqc.org/implementation.html
-
-## Security advisory
-
-The implementation is [known to *not* provide constant time execution properties](https://github.com/open-quantum-safe/liboqs/issues/995).
 
 ## Parameter set summary
 

@@ -6,7 +6,7 @@
 - **Authors' website**: https://classic.mceliece.org
 - **Specification version**: SUPERCOP-20191221.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+  - **Source**: https://github.com/PQClean/PQClean/commit/33bceb17eb06a40fbdc72251f533734e8d869615
   - **Implementation license (SPDX-Identifier)**: Public domain
 , which takes it from:
   - SUPERCOP-20191221 "vec" and "avx" implementations
@@ -108,8 +108,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
-*Note: This algorithm is known to fail memory leak testing on x86_64.*
 
 ## Classic-McEliece-8192128f implementation characteristics
 
