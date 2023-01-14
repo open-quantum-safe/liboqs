@@ -36,6 +36,8 @@ More information on OQS can be found [here](https://openquantumsafe.org/) and in
 
 Details on each supported algorithm can be found in the [docs/algorithms](https://github.com/open-quantum-safe/liboqs/tree/main/docs/algorithms) folder.
 
+The list below indicates all algorithms supported by liboqs, but not all those algorithms have been selected for standardization by NIST, specifically Kyber (excluding the "-90s" variants), Dilithium (excluding the "-AES" variants), Falcon, and SPHINCS+ (excluding the "robust" variants). Activating only those standardized algorithms for use in `liboqs` can be facilitated by setting the [OQS_ALGS_ENABLED](CONFIGURE.md#oqs_algs_enabled) build configuration variable to `STD`. By default `liboqs` is built supporting all, incl. experimental, PQ algorithms listed below.
+
 #### Key encapsulation mechanisms
 
 <!--- OQS_TEMPLATE_FRAGMENT_LIST_KEXS_START -->

@@ -35,7 +35,7 @@ jobs:
           cd build && \
           cmake .. --warn-uninitialized \
                    -GNinja \
-                   -DOQS_MINIMAL_BUILD="OQS_ENABLE_KEM_$KEM_NAME;OQS_ENABLE_SIG_$SIG_NAME" \
+                   -DOQS_MINIMAL_BUILD="KEM_$KEM_NAME;SIG_$SIG_NAME" \
                    > config.log 2>&1 && \
           cat config.log && \
           cmake -LA .. && \
@@ -63,6 +63,10 @@ jobs:
             container: openquantumsafe/ci-alpine-amd64:latest
             CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
             PYTEST_ARGS: --ignore=tests/test_alg_info.py
+          - name: focal-std-openssl
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DOQS_ALGS_ENABLED=STD
+            PYTEST_ARGS: --ignore=tests/test_leaks.py
           # disabled until #1067 lands
           # - name: address-sanitizer
           #   container: openquantumsafe/ci-ubuntu-focal-x86_64:latest

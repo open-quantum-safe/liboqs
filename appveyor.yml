@@ -14,16 +14,21 @@ environment:
   matrix:
     - BUILD_SHARED: ON
       COMPILER: cygwin
+      OQS_ALGS_ENABLED: All
     - BUILD_SHARED: OFF
       COMPILER: cygwin
+      OQS_ALGS_ENABLED: STD
     - BUILD_SHARED: ON
       OQS_USE_OPENSSL: ON
       COMPILER: cygwin
+      OQS_ALGS_ENABLED: NIST_R4
     - BUILD_SHARED: OFF
       COMPILER: msvc2019
+      OQS_ALGS_ENABLED: NIST_R4
     - BUILD_SHARED: OFF
       COMPILER: msvc2019
       OQS_USE_OPENSSL: ON
+      OQS_ALGS_ENABLED: All
     - BUILD_SHARED: ON
       COMPILER: msvc2019
       #    Disabled until https://github.com/open-quantum-safe/liboqs/issues/1218#issuecomment-1170067669 resolved

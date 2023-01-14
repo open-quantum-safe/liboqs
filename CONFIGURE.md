@@ -6,6 +6,7 @@ The following options can be passed to CMake before the build file generation pr
 - [BUILD_SHARED_LIBS](#BUILD_SHARED_LIBS)
 - [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE)
 - [CMAKE_INSTALL_PREFIX](#CMAKE_INSTALL_PREFIX)
+- [OQS_ALGS_ENABLED](#OQS_ALGS_ENABLED)
 - [OQS_BUILD_ONLY_LIB](#OQS_BUILD_ONLY_LIB)
 - [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG)
 - [OQS_MINIMAL_BUILD](#OQS_MINIMAL_BUILD)
@@ -43,13 +44,17 @@ For example: if `OQS_ENABLE_KEM_BIKE` is set to `ON`, the options `OQS_ENABLE_KE
 
 For a full list of such options and their default values, consult [.CMake/alg_support.cmake](https://github.com/open-quantum-safe/liboqs/blob/master/.CMake/alg_support.cmake).
 
+## OQS_ALGS_ENABLED
+
+Selects algorithm set enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "All" (or any other value) selecting all algorithms integrated into liboqs. If the parameter is not given "All" is set by default. Parameter setting "STD" minimizes library size but may require re-running code generator scripts in projects integrating `liboqs`, e.g., [oqs-openssl111](https://github.com/open-quantum-safe/openssl) or [oqs-openssh](https://github.com/open-quantum-safe/openssh).
+
 ## OQS_BUILD_ONLY_LIB
 
 Can be `ON` or `OFF`. When `ON`, only liboqs is built, and all the targets: `run_tests`, `gen_docs`, and `prettyprint` are excluded from the build system.
 
 ## OQS_MINIMAL_BUILD
 
-If set, this defines a semicolon deliminated list of algorithms to be contained in a minimal build of `liboqs`: Only algorithms explicitly set here are included in a build: For example running `cmake -DOQS_MINIMAL_BUILD="OQS_ENABLE_KEM_kyber_768;OQS_ENABLE_SIG_dilithium_3" ..` will build a minimum-size `liboqs` library only containing support for Kyber768 and Dilithium3.
+If set, this defines a semicolon deliminated list of algorithms to be contained in a minimal build of `liboqs`: Only algorithms explicitly set here are included in a build: For example running `cmake -DOQS_MINIMAL_BUILD="KEM_kyber_768;SIG_dilithium_3" ..` will build a minimum-size `liboqs` library only containing support for Kyber768 and Dilithium3.
 
 The full list of identifiers that can set are listed [here for KEM algorithms](https://github.com/open-quantum-safe/liboqs/blob/main/src/kem/kem.h#L34) and [here for Signature algorithms](https://github.com/open-quantum-safe/liboqs/blob/f3caccff9e6225e7c50ca27f5ee6e58b7bc74188/src/sig/sig.h#L34). Default setting is empty, thus including all [supported algorithms](https://github.com/open-quantum-safe/liboqs#supported-algorithms) in the build.
 
