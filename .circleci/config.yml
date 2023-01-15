@@ -356,7 +356,7 @@ workflows:
           name: ubuntu-focal-shared-noopenssl
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DOQS_DIST_BUILD=ON -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
+          CMAKE_ARGS: -DCMAKE_C_COMPILER=gcc-7 -DOQS_DIST_BUILD=OFF -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
           PYTEST_ARGS: --ignore=tests/test_namespace.py --ignore=tests/test_leaks.py --numprocesses=auto
       - linux_oqs:
           <<: *require_buildcheck
@@ -375,7 +375,6 @@ workflows:
           <<: *require_buildcheck
           name: arm64
           PYTEST_ARGS: --numprocesses=auto --maxprocesses=10
-          CMAKE_ARGS: -DOQS_DIST_BUILD=ON
       - macOS:
           <<: *require_buildcheck
           name: macOS-gcc11
@@ -387,7 +386,7 @@ workflows:
       - macOS:
           <<: *require_buildcheck
           name: macOS-shared
-          CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=ON -DOQS_ENABLE_KEM_CLASSIC_MCELIECE=OFF
+          CMAKE_ARGS: -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF -DOQS_ENABLE_KEM_CLASSIC_MCELIECE=OFF
 
   commit-to-main:
     when:
