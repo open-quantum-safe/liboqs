@@ -375,6 +375,7 @@ workflows:
           <<: *require_buildcheck
           name: arm64
           PYTEST_ARGS: --numprocesses=auto --maxprocesses=10
+          CMAKE_ARGS:
       - macOS:
           <<: *require_buildcheck
           name: macOS-gcc11

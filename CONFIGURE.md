@@ -34,7 +34,7 @@ Can be set to the following values:
 
 - `Release`: This compiles code at the `O3` optimization level, and sets other compiler flags that reduce the size of the binary.
 
-** Default**: `Release`.
+**Default**: `Release`.
 
 ## CMAKE_INSTALL_PREFIX
 
@@ -50,19 +50,19 @@ For example: if `OQS_ENABLE_KEM_BIKE` is set to `ON`, the options `OQS_ENABLE_KE
 
 For a full list of such options and their default values, consult [.CMake/alg_support.cmake](https://github.com/open-quantum-safe/liboqs/blob/master/.CMake/alg_support.cmake).
 
-** Default**: Unset.
+**Default**: Unset.
 
 ## OQS_ALGS_ENABLED
 
 Selects algorithm set enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "All" (or any other value) selecting all algorithms integrated into liboqs. Parameter setting "STD" minimizes library size but may require re-running code generator scripts in projects integrating `liboqs`, e.g., [oqs-openssl111](https://github.com/open-quantum-safe/openssl) or [oqs-openssh](https://github.com/open-quantum-safe/openssh).
 
-** Default**: `All`.
+**Default**: `All`.
 
 ## OQS_BUILD_ONLY_LIB
 
 Can be `ON` or `OFF`. When `ON`, only liboqs is built, and all the targets: `run_tests`, `gen_docs`, and `prettyprint` are excluded from the build system.
 
-** Default**: `OFF`.
+**Default**: `OFF`.
 
 ## OQS_MINIMAL_BUILD
 
@@ -70,7 +70,7 @@ If set, this defines a semicolon deliminated list of algorithms to be contained 
 
 The full list of identifiers that can set are listed [here for KEM algorithms](https://github.com/open-quantum-safe/liboqs/blob/main/src/kem/kem.h#L34) and [here for Signature algorithms](https://github.com/open-quantum-safe/liboqs/blob/f3caccff9e6225e7c50ca27f5ee6e58b7bc74188/src/sig/sig.h#L34). Default setting is empty, thus including all [supported algorithms](https://github.com/open-quantum-safe/liboqs#supported-algorithms) in the build.
 
-** Default**: Unset.
+**Default**: Unset.
 
 ## OQS_DIST_BUILD
 
@@ -82,7 +82,7 @@ When built for distribution, the library will run on any CPU of the target archi
 
 When built for use on a single machine, the library will only include the best available code for the target micro-architecture (see [OQS_OPT_TARGET](#OQS_OPT_TARGET)).
 
-** Default**: `ON`.
+**Default**: `ON`.
 
 ## OQS_USE_CPUFEATURE_INSTRUCTIONS
 
@@ -90,7 +90,7 @@ Note: `CPUFEATURE` in `OQS_USE_CPUFEATURE_INSTRUCTIONS` should be replaced with 
 
 These can be set to `ON` or `OFF` and take an effect if liboqs is built for use on a single machine. By default, the CPU features are automatically determined and set to `ON` or `OFF` based on the CPU features available on the build system. The default values can be overridden by providing CMake build options. The available options on x86-64 are: `OQS_USE_ADX_INSTRUCTIONS`, `OQS_USE_AES_INSTRUCTIONS`, `OQS_USE_AVX_INSTRUCTIONS`, `OQS_USE_AVX2_INSTRUCTIONS`, `OQS_USE_AVX512_INSTRUCTIONS`, `OQS_USE_BMI1_INSTRUCTIONS`, `OQS_USE_BMI2_INSTRUCTIONS`, `OQS_USE_PCLMULQDQ_INSTRUCTIONS`, `OQS_USE_VPCLMULQDQ_INSTRUCTIONS`, `OQS_USE_POPCNT_INSTRUCTIONS`, `OQS_USE_SSE_INSTRUCTIONS`, `OQS_USE_SSE2_INSTRUCTIONS` and `OQS_USE_SSE3_INSTRUCTIONS`. The available options on ARM64v8 are `OQS_USE_ARM_AES_INSTRUCTIONS`, `OQS_USE_ARM_SHA2_INSTRUCTIONS`, `OQS_USE_ARM_SHA3_INSTRUCTIONS` and `OQS_USE_ARM_NEON_INSTRUCTIONS`.
 
-** Default**: Options valid on the build machine.
+**Default**: Options valid on the build machine.
 
 ## OQS_USE_OPENSSL
 
@@ -98,7 +98,7 @@ This can be set to `ON` or `OFF`. When `ON`, the additional options `OQS_USE_AES
 
 When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the minimum version of OpenSSL required by liboqs (which happens to be 1.1.1). The `OPENSSL_ROOT_DIR` option can be set to aid CMake in its search.
 
-** Default**: `ON`.
+**Default**: `ON`.
 
 ## OQS_OPT_TARGET
 
@@ -106,7 +106,7 @@ An optimization target. Only has an effect if the compiler is GCC or Clang and `
   - `auto`: Use `-march=native` or `-mcpu=native` (if the compiler supports it).
   - `generic`: Use `-march=x86-64` on x86-64, or `-mcpu=cortex-a5` on ARM32v7, or `-mcpu=cortex-a53` on ARM64v8.
 
-** Default**: `auto`.
+**Default**: `auto`.
 
 ## OQS_SPEED_USE_ARM_PMU
 
@@ -116,7 +116,7 @@ In order to use this option, user mode access to the PMU must be enabled via a k
 
 Note that this option is not known to work on Apple M1 chips.
 
-** Default**: `OFF`.
+**Default**: `OFF`.
 
 ## USE_SANITIZER
 
@@ -129,7 +129,7 @@ This has effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE_BU
 - `Thread`: This enables Clang's `ThreadSanitizer`
 - `Leak`: This enables Clang's `LeakSanitizer`
 
-** Default**: Unset.
+**Default**: Unset.
 
 ## OQS_ENABLE_TEST_CONSTANT_TIME
 
@@ -137,4 +137,4 @@ This is used in conjunction with `tests/test_constant_time.py` to use Valgrind t
 
 See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more information on usage.
 
-** Default**: `OFF`.
+**Default**: `OFF`.
