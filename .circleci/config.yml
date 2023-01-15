@@ -150,6 +150,7 @@ jobs:
       CMAKE_ARGS:
         description: "Arguments to pass to CMake."
         type: string
+        default: ''
       PYTEST_ARGS:
         description: "Arguments to pass to pytest."
         type: string
@@ -375,7 +376,6 @@ workflows:
           <<: *require_buildcheck
           name: arm64
           PYTEST_ARGS: --numprocesses=auto --maxprocesses=10
-          CMAKE_ARGS:
       - macOS:
           <<: *require_buildcheck
           name: macOS-gcc11
