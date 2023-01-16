@@ -61,9 +61,6 @@
 #cmakedefine OQS_ENABLE_KEM_frodokem_976_shake 1
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_aes 1
 #cmakedefine OQS_ENABLE_KEM_frodokem_1344_shake 1
-#cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
-#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
-#cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 1
 
 #cmakedefine OQS_ENABLE_KEM_NTRUPRIME 1
 #cmakedefine OQS_ENABLE_KEM_ntruprime_sntrup761 1
