@@ -253,7 +253,7 @@ def load_instructions():
                             family['common_deps_usedby'][cdep_name] = [{'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']}]
                         else:
                             family['common_deps_usedby'][cdep_name].append({'scheme_c': scheme['scheme_c'], 'impl_name': impl['name']})
-    
+
     for family in instructions['sigs']:
         family['type'] = 'sig'
         family['pqclean_type'] = 'sign'
@@ -694,7 +694,7 @@ def verify_from_upstream():
     if (differ > 0):
         exit(1)
 
-non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem'])
+non_upstream_kems = count_non_upstream_kems(['bike', 'frodokem', 'ntruprime'])
 
 if args.operation == "copy":
     copy_from_upstream()

@@ -3,7 +3,7 @@ upstreams:
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
     git_branch: master
-    git_commit: 4c9e5a3aa715cc8d1d0e377e4e6e682ebd7602d6
+    git_commit: 33bceb17eb06a40fbdc72251f533734e8d869615
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
@@ -121,15 +121,6 @@ kems:
         scheme: "1024_90s"
         pqclean_scheme: kyber1024-90s
         pretty_name_full: Kyber1024-90s
-  -
-    name: ntruprime
-    default_implementation: clean
-    upstream_location: pqclean
-    schemes:
-      -
-        scheme: sntrup761
-        pqclean_scheme: sntrup761
-        pretty_name_full: sntrup761
 sigs:
   -
     name: dilithium

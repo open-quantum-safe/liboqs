@@ -20,6 +20,44 @@ static void expand_and_sum(__m256i *dst, const uint64_t *src);
 static void hadamard(__m256i *src, __m256i *dst);
 static uint32_t find_peaks(__m256i *transform);
 
+static uint16_t extract_epi16(__m256i v, int pos) {
+    switch (pos) {
+    case 0:
+        return _mm256_extract_epi16(v, 0);
+    case 1:
+        return _mm256_extract_epi16(v, 1);
+    case 2:
+        return _mm256_extract_epi16(v, 2);
+    case 3:
+        return _mm256_extract_epi16(v, 3);
+    case 4:
+        return _mm256_extract_epi16(v, 4);
+    case 5:
+        return _mm256_extract_epi16(v, 5);
+    case 6:
+        return _mm256_extract_epi16(v, 6);
+    case 7:
+        return _mm256_extract_epi16(v, 7);
+    case 8:
+        return _mm256_extract_epi16(v, 8);
+    case 9:
+        return _mm256_extract_epi16(v, 9);
+    case 10:
+        return _mm256_extract_epi16(v, 10);
+    case 11:
+        return _mm256_extract_epi16(v, 11);
+    case 12:
+        return _mm256_extract_epi16(v, 12);
+    case 13:
+        return _mm256_extract_epi16(v, 13);
+    case 14:
+        return _mm256_extract_epi16(v, 14);
+    case 15:
+        return _mm256_extract_epi16(v, 15);
+    }
+    return 0;
+}
+
 
 
 /**
@@ -231,7 +269,7 @@ inline void hadamard(__m256i *src, __m256i *dst) {
 inline uint32_t find_peaks(__m256i *transform) {
     // a whole lot of vector variables
     __m256i bitmap, abs_rows[8], bound, active_row, max_abs_rows;
-    __m256i tmp = _mm256_setzero_si256();
+    __m256i tmp;
     __m256i vect_mask;
     __m256i res;
     int32_t lower;
@@ -333,7 +371,7 @@ inline uint32_t find_peaks(__m256i *transform) {
     result = 0;
     for (size_t i = 0; i < 16; i++) {
         mask = ~(uint32_t) ((-(int64_t)(i ^ message % 16)) >> 63);
-        result |= mask & ((uint16_t *)&tmp)[i];
+        result |= mask & extract_epi16(tmp, i);
     }
     message |= (0x8000 & ~result) >> 8;
     return message;

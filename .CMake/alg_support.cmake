@@ -89,6 +89,14 @@ cmake_dependent_option(OQS_ENABLE_KEM_frodokem_976_shake "" ON "OQS_ENABLE_KEM_F
 cmake_dependent_option(OQS_ENABLE_KEM_frodokem_1344_aes "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_frodokem_1344_shake "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)
 
+option(OQS_ENABLE_KEM_NTRUPRIME "Enable ntruprime algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup761 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 "" ON "OQS_ENABLE_KEM_ntruprime_sntrup761" OFF)
+endif()
+endif()
+
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_START
 option(OQS_ENABLE_KEM_CLASSIC_MCELIECE "Enable classic_mceliece algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_348864 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
@@ -258,14 +266,6 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AES_INSTRUCTIONS AND OQS_USE_AVX2_INSTRUCTI
 endif()
 endif()
 
-option(OQS_ENABLE_KEM_NTRUPRIME "Enable ntruprime algorithm family" ON)
-
-cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup761 "" ON "OQS_ENABLE_KEM_NTRUPRIME" OFF)
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_KEM_ntruprime_sntrup761_avx2 "" ON "OQS_ENABLE_KEM_ntruprime_sntrup761" OFF)
-endif()
-endif()
 
 option(OQS_ENABLE_SIG_DILITHIUM "Enable dilithium algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_dilithium_2 "" ON "OQS_ENABLE_SIG_DILITHIUM" OFF)
