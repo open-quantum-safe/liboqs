@@ -10,9 +10,10 @@
   - **Source**: https://github.com/PQClean/PQClean/commit/33bceb17eb06a40fbdc72251f533734e8d869615 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
-## Test limitation
 
-This algorithm is not tested under Windows.
+## Advisories
+
+- This algorithm is not tested under Windows.
 
 ## Parameter set summary
 

@@ -12,9 +12,9 @@
   - https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc, which takes it from:
   - submission 2020-10-01 at https://pqc-hqc.org/implementation.html
 
-## Security advisory
+## Advisories
 
-The implementation is [known to *not* provide constant time execution properties](https://github.com/open-quantum-safe/liboqs/issues/995).
+- The implementations for all parameter sets DO NOT provide constant time execution properties. See: https://github.com/open-quantum-safe/liboqs/issues/995.
 
 ## Parameter set summary
 

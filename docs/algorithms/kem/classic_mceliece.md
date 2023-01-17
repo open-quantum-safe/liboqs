@@ -11,6 +11,10 @@
 , which takes it from:
   - SUPERCOP-20191221 "vec" and "avx" implementations
 
+## Advisories
+
+- The implementation of the Classic-McEliece-8192128 parameter set is known to fail memory leak testing on x86-64.
+
 ## Parameter set summary
 
 |       Parameter set       | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
@@ -108,8 +112,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 | [Primary Source](#primary-source) | avx                      | x86\_64                     | Linux,Darwin                    | AVX2,POPCNT             | False                              | True                                           | True                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
-*Note: This algorithm is known to fail memory leak testing on x86_64.*
 
 ## Classic-McEliece-8192128f implementation characteristics
 

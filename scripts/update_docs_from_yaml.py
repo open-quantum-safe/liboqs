@@ -59,6 +59,10 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         else:
             out_md.write('\n')
 
+        if 'advisories' in kem_yaml:
+            out_md.write('\n## Advisories\n\n')
+            for advisory in kem_yaml['advisories']:
+                out_md.write('- {}\n'.format(advisory))
 
         out_md.write('\n## Parameter set summary\n\n')
         table = [['Parameter set',
@@ -179,6 +183,10 @@ for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
         else:
             out_md.write('\n')
 
+        if 'advisories' in sig_yaml:
+            out_md.write('\n## Advisories\n\n')
+            for advisory in sig_yaml['advisories']:
+                out_md.write('- {}\n'.format(advisory))
 
         out_md.write('\n## Parameter set summary\n\n')
         table = [['Parameter set',
