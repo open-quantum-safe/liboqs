@@ -29,6 +29,8 @@ primary-upstream:
   spdx-license-identifier: CC0-1.0
   upstream-ancestors:
   - https://github.com/sphincs/sphincsplus
+advisories:
+- This algorithm is not tested under Windows.
 parameter-sets:
 - name: SPHINCS+-Haraka-128f-robust
   claimed-nist-level: 1

@@ -20,6 +20,9 @@ nist-round: 3
 spec-version: SUPERCOP-20191221
 upstream-ancestors:
 - SUPERCOP-20191221 "vec" and "avx" implementations
+advisories:
+- The implementation of the Classic-McEliece-8192128 parameter set is known to fail
+  memory leak testing on x86-64.
 parameter-sets:
 - name: Classic-McEliece-348864
   claimed-nist-level: 1
