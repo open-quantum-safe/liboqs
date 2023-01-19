@@ -67,11 +67,14 @@ jobs:
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
             CMAKE_ARGS: -DOQS_ALGS_ENABLED=STD
             PYTEST_ARGS: --ignore=tests/test_leaks.py
-          # disabled until #1067 lands
-          # - name: address-sanitizer
-          #   container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          #   CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
-          #   PYTEST_ARGS: --ignore=tests/test_portability.py --numprocesses=auto --maxprocesses=10
+          - name: jammy-nistr4-openssl3
+            container: openquantumsafe/ci-ubuntu-jammy:latest
+            CMAKE_ARGS: -DOQS_ALGS_ENABLED=NIST_R4
+            PYTEST_ARGS: --ignore=tests/test_leaks.py
+          - name: address-sanitizer
+            container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
+            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-9 -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address
+            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --numprocesses=auto --maxprocesses=10
     container:
       image: ${{ matrix.container }}
     steps:
