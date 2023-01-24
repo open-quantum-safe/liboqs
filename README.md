@@ -84,7 +84,7 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
 		brew install cmake ninja openssl@1.1 wget doxygen graphviz astyle valgrind
-		pip3 install pytest pytest-xdist pyyaml
+		pip3 install pytest pytest-xdist pyyaml setuptools==58.2.0
 
 	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL version 1.1.1 or higher.
 
