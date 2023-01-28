@@ -16,8 +16,38 @@
 #define AVX512_INTERNAL
 #include "x86_64_intrinsic.h"
 
+// If R_BITS >= 32768 then adding two elements of the permutation map can
+// exceed the size of uin16_t type. Therefore, in this case we have to work
+// with uint32_t type and use appropriate AVX512 instructions to compute the
+// permutation map. Otherwise, uint16_t suffices, which allows us to work with
+// this type and have a more efficient implementation (a single AVX512 register
+// can hold sixteen 32-bit elements or thirty-two 16-bit elements).
+#if(R_BITS < 32768)
+
+#  define MAP_WORDS_IN_ZMM WORDS_IN_ZMM
+
+#  define map_word_t       uint16_t
+#  define mmask_t          __mmask32
+#  define SET1(x)          SET1_I16(x)
+#  define ADD(x, y)        ADD_I16(x, y)
+#  define CMPM(x, y, z)    CMPM_U16(x, y, z)
+#  define MSUB(x, y, z, w) MSUB_I16(x, y, z, w)
+
+#else
+
+#  define MAP_WORDS_IN_ZMM DWORDS_IN_ZMM
+
+#  define map_word_t       uint32_t
+#  define mmask_t          __mmask16
+#  define SET1(x)          SET1_I32(x)
+#  define ADD(x, y)        ADD_I32(x, y)
+#  define CMPM(x, y, z)    CMPM_U32(x, y, z)
+#  define MSUB(x, y, z, w) MSUB_I32(x, y, z, w)
+
+#endif
+
 #define NUM_ZMMS    (2)
-#define NUM_OF_VALS (NUM_ZMMS * WORDS_IN_ZMM)
+#define NUM_OF_VALS (NUM_ZMMS * MAP_WORDS_IN_ZMM)
 
 // clang-3.9 doesn't recognize these two macros
 #if !defined(_MM_CMPINT_EQ)
@@ -28,10 +58,10 @@
 #  define _MM_CMPINT_NLT (5)
 #endif
 
-_INLINE_ void generate_map(OUT uint16_t *map, IN const size_t l_param)
+_INLINE_ void generate_map(OUT map_word_t *map, IN const map_word_t l_param)
 {
-  __m512i   vmap[NUM_ZMMS], vr, inc;
-  __mmask32 mask[NUM_ZMMS];
+  __m512i vmap[NUM_ZMMS], vr, inc;
+  mmask_t mask[NUM_ZMMS];
 
   // The permutation map is generated in the following way:
   //   1. for i = 0 to map size:
@@ -52,21 +82,21 @@ _INLINE_ void generate_map(OUT uint16_t *map, IN const size_t l_param)
 
   // Set the increment vector such that by adding it to vmap vectors
   // we will obtain the next NUM_OF_VALS elements of the map.
-  inc = SET1_I16((l_param * NUM_OF_VALS) % R_BITS);
-  vr  = SET1_I16(R_BITS);
+  inc = SET1((l_param * NUM_OF_VALS) % R_BITS);
+  vr  = SET1(R_BITS);
 
   // Load the first NUM_OF_VALS elements in the vmap vectors
   for(size_t i = 0; i < NUM_ZMMS; i++) {
-    vmap[i] = LOAD(&map[i * WORDS_IN_ZMM]);
+    vmap[i] = LOAD(&map[i * MAP_WORDS_IN_ZMM]);
   }
 
-  for(size_t i = NUM_ZMMS; i < (R_PADDED / WORDS_IN_ZMM); i += NUM_ZMMS) {
+  for(size_t i = NUM_ZMMS; i < (R_PADDED / MAP_WORDS_IN_ZMM); i += NUM_ZMMS) {
     for(size_t j = 0; j < NUM_ZMMS; j++) {
-      vmap[j] = ADD_I16(vmap[j], inc);
-      mask[j] = CMPM_U16(vmap[j], vr, _MM_CMPINT_NLT);
-      vmap[j] = MSUB_I16(vmap[j], mask[j], vmap[j], vr);
+      vmap[j] = ADD(vmap[j], inc);
+      mask[j] = CMPM(vmap[j], vr, _MM_CMPINT_NLT);
+      vmap[j] = MSUB(vmap[j], mask[j], vmap[j], vr);
 
-      STORE(&map[(i + j) * WORDS_IN_ZMM], vmap[j]);
+      STORE(&map[(i + j) * MAP_WORDS_IN_ZMM], vmap[j]);
     }
   }
 }
@@ -108,9 +138,9 @@ _INLINE_ void bin_to_bytes(OUT uint8_t *bytes_buf, IN const pad_r_t *bin_buf)
 // Input argument l_param is defined as the value (2^-k) % r.
 void k_sqr_avx512(OUT pad_r_t *c, IN const pad_r_t *a, IN const size_t l_param)
 {
-  ALIGN(ALIGN_BYTES) uint16_t map[R_PADDED];
-  ALIGN(ALIGN_BYTES) uint8_t  a_bytes[R_PADDED];
-  ALIGN(ALIGN_BYTES) uint8_t  c_bytes[R_PADDED] = {0};
+  ALIGN(ALIGN_BYTES) map_word_t map[R_PADDED];
+  ALIGN(ALIGN_BYTES) uint8_t    a_bytes[R_PADDED];
+  ALIGN(ALIGN_BYTES) uint8_t    c_bytes[R_PADDED] = {0};
 
   // Generate the permutation map defined by pi1 and l_param.
   generate_map(map, l_param);

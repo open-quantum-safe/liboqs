@@ -83,28 +83,3 @@ void secure_set_bits_avx512(OUT pad_r_t *   r,
   }
 }
 
-int is_new_avx512(IN const idx_t *wlist, IN const size_t ctr)
-{
-  bike_static_assert((sizeof(idx_t) == sizeof(uint32_t)), idx_t_is_not_uint32_t);
-
-  REG_T idx_ctr = SET1_I32(wlist[ctr]);
-
-  for(size_t i = 0; i < ctr; i += REG_DWORDS) {
-    // Comparisons are done with SIMD instructions with each SIMD register
-    // containing REG_DWORDS elements. We compare registers element-wise:
-    // idx_ctr = {8 repetitions of wlist[ctr]}, with
-    // idx_cur = {8 consecutive elements from wlist}.
-    // In the last iteration we consider wlist elements only up to ctr.
-
-    REG_T idx_cur = LOAD(&wlist[i]);
-
-    uint16_t mask  = (ctr < (i + REG_DWORDS)) ? MASK(ctr - i) : 0xffff;
-    uint16_t check = MCMPMEQ_I32(mask, idx_ctr, idx_cur);
-
-    if(check != 0) {
-      return 0;
-    }
-  }
-
-  return 1;
-}

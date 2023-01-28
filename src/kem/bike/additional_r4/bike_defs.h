@@ -18,19 +18,8 @@
 #  define LEVEL 1
 #endif
 
-#if(LEVEL == 3)
-#  define R_BITS 24659
-#  define D      103
-#  define T      199
-
-#  define THRESHOLD_COEFF0 15.2588
-#  define THRESHOLD_COEFF1 0.005265
-#  define THRESHOLD_MIN    52
-
-// The gf2m code is optimized to a block in this case:
-#  define BLOCK_BITS 32768
-#elif(LEVEL == 1)
-// 64-bits of post-quantum security parameters (BIKE paper):
+#if(LEVEL == 1)
+// 64-bits of post-quantum security parameters (BIKE spec):
 #  define R_BITS 12323
 #  define D      71
 #  define T      134
@@ -39,8 +28,41 @@
 #  define THRESHOLD_COEFF1 0.0069722
 #  define THRESHOLD_MIN    36
 
+// When generating an error vector we can't use rejection sampling because of
+// constant-time requirements so we generate always the maximum number
+// of indices and then use only the first T valid indices, as explained in:
+// https://github.com/awslabs/bike-kem/blob/master/BIKE_Rejection_Sampling.pdf
+#  define MAX_RAND_INDICES_T 271
+
 // The gf2x code is optimized to a block in this case:
-#  define BLOCK_BITS       (16384)
+#  define BLOCK_BITS 16384
+
+#elif(LEVEL == 3)
+#  define R_BITS 24659
+#  define D      103
+#  define T      199
+
+#  define THRESHOLD_COEFF0 15.2588
+#  define THRESHOLD_COEFF1 0.005265
+#  define THRESHOLD_MIN    52
+
+#  define MAX_RAND_INDICES_T 373
+
+// The gf2m code is optimized to a block in this case:
+#  define BLOCK_BITS 32768
+
+#elif (LEVEL == 5)
+#  define R_BITS 40973
+#  define D      137
+#  define T      264
+
+#  define THRESHOLD_COEFF0 17.8785
+#  define THRESHOLD_COEFF1 0.00402312
+#  define THRESHOLD_MIN    69
+
+#  define MAX_RAND_INDICES_T 605
+
+#  define BLOCK_BITS 65536
 #else
 #  error "Bad level, choose one of 1/3/5"
 #endif
@@ -87,5 +109,3 @@
 #define DELTA  3
 #define SLICES (LOG2_MSB(D) + 1)
 
-// GF2X inversion can only handle R < 32768
-bike_static_assert((R_BITS < 32768), r_too_large_for_inversion);

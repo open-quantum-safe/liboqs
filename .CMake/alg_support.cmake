@@ -80,6 +80,7 @@ set(OQS_ENABLE_KEM_BIKE OFF)
 endif()
 cmake_dependent_option(OQS_ENABLE_KEM_bike_l1 "" ON "OQS_ENABLE_KEM_BIKE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_bike_l3 "" ON "OQS_ENABLE_KEM_BIKE" OFF)
+cmake_dependent_option(OQS_ENABLE_KEM_bike_l5 "" ON "OQS_ENABLE_KEM_BIKE" OFF)
 
 option(OQS_ENABLE_KEM_FRODOKEM "Enable Frodo algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_KEM_frodokem_640_aes "" ON "OQS_ENABLE_KEM_FRODOKEM" OFF)

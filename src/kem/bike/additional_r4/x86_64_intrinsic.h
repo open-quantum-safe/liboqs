@@ -74,13 +74,16 @@
 #  define ADD_I8(a, b)     _mm256_add_epi8(a, b)
 #  define SUB_I8(a, b)     _mm256_sub_epi8(a, b)
 #  define ADD_I16(a, b)    _mm256_add_epi16(a, b)
+#  define ADD_I32(a, b)    _mm256_add_epi32(a, b)
 #  define SUB_I16(a, b)    _mm256_sub_epi16(a, b)
+#  define SUB_I32(a, b)    _mm256_sub_epi32(a, b)
 #  define ADD_I64(a, b)    _mm256_add_epi64(a, b)
 #  define SRLI_I16(a, imm) _mm256_srli_epi16(a, imm)
 #  define SLLI_I32(a, imm) _mm256_slli_epi32(a, imm)
 #  define SLLV_I32(a, b)   _mm256_sllv_epi32(a, b)
 
 #  define CMPGT_I16(a, b) _mm256_cmpgt_epi16(a, b)
+#  define CMPGT_I32(a, b) _mm256_cmpgt_epi32(a, b)
 #  define CMPEQ_I16(a, b) _mm256_cmpeq_epi16(a, b)
 #  define CMPEQ_I32(a, b) _mm256_cmpeq_epi32(a, b)
 #  define CMPEQ_I64(a, b) _mm256_cmpeq_epi64(a, b)
@@ -92,21 +95,27 @@
 
 #  define MOVEMASK(a) _mm256_movemask_epi8(a)
 
+#  define MSTORE32(mem, mask, reg) _mm256_maskstore_epi32((int*)(mem), (mask), (reg))
+
 #elif defined(AVX512_INTERNAL)
 
-#  define MSTORE(mem, mask, reg) _mm512_mask_store_epi64((mem), (mask), (reg))
+#  define MSTORE64(mem, mask, reg) _mm512_mask_storeu_epi64((mem), (mask), (reg))
+#  define MSTORE32(mem, mask, reg) _mm512_mask_storeu_epi32((mem), (mask), (reg))
 
 #  define SET1_I8(a)         _mm512_set1_epi8(a)
+#  define SET1_I16(a)        _mm512_set1_epi16(a)
 #  define SET1_I32(a)        _mm512_set1_epi32(a)
 #  define SET1_I64(a)        _mm512_set1_epi64(a)
 #  define SET1MZ_I8(mask, a) _mm512_maskz_set1_epi8(mask, a)
-#  define SET1_I16(a)        _mm512_set1_epi16(a)
+#  define SET_I32(...)       _mm512_set_epi32(__VA_ARGS__)
 #  define SET_I64(...)       _mm512_set_epi64(__VA_ARGS__)
 #  define SET_ZERO           _mm512_setzero_si512()
 
 #  define ADD_I16(a, b)             _mm512_add_epi16(a, b)
+#  define ADD_I32(a, b)             _mm512_add_epi32(a, b)
 #  define ADD_I64(a, b)             _mm512_add_epi64(a, b)
 #  define MSUB_I16(src, k, a, b)    _mm512_mask_sub_epi16(src, k, a, b)
+#  define MSUB_I32(src, k, a, b)    _mm512_mask_sub_epi32(src, k, a, b)
 #  define SRLI_I16(a, imm)          _mm512_srli_epi16(a, imm)
 #  define SRLV_I64(a, cnt)          _mm512_srlv_epi64(a, cnt)
 #  define SLLV_I64(a, cnt)          _mm512_sllv_epi64(a, cnt)
@@ -116,6 +125,7 @@
 
 #  define CMPM_U8(a, b, cmp_op)  _mm512_cmp_epu8_mask(a, b, cmp_op)
 #  define CMPM_U16(a, b, cmp_op) _mm512_cmp_epu16_mask(a, b, cmp_op)
+#  define CMPM_U32(a, b, cmp_op) _mm512_cmp_epu32_mask(a, b, cmp_op)
 #  define CMPMEQ_I64(a, b)       _mm512_cmp_epi64_mask(a, b, _MM_CMPINT_EQ)
 #  define MCMPMEQ_I32(mask, a, b) \
     _mm512_mask_cmp_epi32_mask(mask, a, b, _MM_CMPINT_EQ)
