@@ -37,7 +37,6 @@ extern "C" {
 #define OQS_KEM_alg_bike_l3 "BIKE-L3"
 /** Algorithm identifier for BIKE-L5 KEM (Round-4). */
 #define OQS_KEM_alg_bike_l5 "BIKE-L5"
-#define KOSTA 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_START
 /** Algorithm identifier for Classic-McEliece-348864 KEM. */
 #define OQS_KEM_alg_classic_mceliece_348864 "Classic-McEliece-348864"
