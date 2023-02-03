@@ -175,7 +175,7 @@ jobs:
                            -c "cd /root/project && \
                                uname -a && \
                                mkdir build && cd build && source ~/.bashrc && \
-                               cmake -GNinja $CMAKE_ARGS .. && cmake -LA .. && ninja && \
+                               cmake -GNinja -DOQS_STRICT_WARNINGS=ON $CMAKE_ARGS .. && cmake -LA .. && ninja && \
                                cd .. && mkdir -p tmp && \
                                python3 -m pytest --verbose \
                                                  --ignore=tests/test_code_conventions.py \
@@ -364,7 +364,7 @@ workflows:
           name: ubuntu-focal-clang15
           context: openquantumsafe
           CONTAINER: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-          CMAKE_ARGS: -DCMAKE_C_COMPILER=clang-15 -DOQS_OPT_TARGET=skylake
+          CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang-15 -DOQS_OPT_TARGET=skylake
       - linux_oqs:
           <<: *require_buildcheck
           name: ubuntu-bionic-i386
@@ -383,7 +383,7 @@ workflows:
       - macOS:
           <<: *require_buildcheck
           name: macOS-noopenssl
-          CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
+          CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF
       - macOS:
           <<: *require_buildcheck
           name: macOS-shared
