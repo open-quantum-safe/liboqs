@@ -14,7 +14,7 @@ struct magic_value {
     uint8_t val[MAGIC_VALUE_BYTES];
 };
 
-/*OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
+OQS_STATUS lock_sk_key(OQS_SECRET_KEY *sk) {
     return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
@@ -23,7 +23,7 @@ OQS_STATUS release_sk_key(OQS_SECRET_KEY *sk) {
 }
 static OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
     return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
-}*/
+}
 
 static OQS_STATUS sig_stfl_test_correctness(void) {
 
@@ -54,9 +54,9 @@ static OQS_STATUS sig_stfl_test_correctness(void) {
         fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
         goto error;
     }
-    secret_key->lock_key = NULL;
-    secret_key->release_key = NULL;
-    secret_key->save_secret_key = NULL;
+    secret_key->lock_key = lock_sk_key;
+    secret_key->release_key = release_sk_key;
+    secret_key->save_secret_key = do_nothing_save;
 
     public_key = malloc(MAGIC_VALUE_BYTES + sig->length_public_key + MAGIC_VALUE_BYTES);
     if (public_key == NULL) {
