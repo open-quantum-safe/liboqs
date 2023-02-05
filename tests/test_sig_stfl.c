@@ -54,9 +54,9 @@ static OQS_STATUS sig_stfl_test_correctness(void) {
         fprintf(stderr, "ERROR: OQS_SECRET_KEY_new failed\n");
         goto error;
     }
-    secret_key->lock_key = lock_sk_key;
-    secret_key->release_key = release_sk_key;
-    secret_key->save_secret_key = do_nothing_save;
+    secret_key->lock_key = &lock_sk_key;
+    secret_key->release_key = &release_sk_key;
+    secret_key->save_secret_key = &do_nothing_save;
 
     public_key = malloc(MAGIC_VALUE_BYTES + sig->length_public_key + MAGIC_VALUE_BYTES);
     if (public_key == NULL) {
