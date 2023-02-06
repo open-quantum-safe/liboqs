@@ -16,7 +16,11 @@
 #define OUT
 
 #define ALIGN(n)        __attribute__((aligned(n)))
+#if defined(__GNUC__) || defined(__clang__)
 #define BIKE_UNUSED_ATT __attribute__((unused))
+#else
+#define BIKE_UNUSED_ATT
+#endif
 
 #define _INLINE_ static inline
 

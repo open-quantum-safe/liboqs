@@ -6,6 +6,7 @@
  */
 
 #include "decode.h"
+#include "defs.h"
 #include "gf2x.h"
 #include "sampling.h"
 #include "sha.h"
@@ -238,8 +239,8 @@ int decaps(OUT unsigned char *     ss,
   bike_memcpy(&l_ct, ct, sizeof(l_ct));
   bike_memcpy(&l_sk, sk, sizeof(l_sk));
 
-  // Decode and check if success.
-  volatile uint32_t success_cond = (decode(&e, &l_ct, &l_sk) == SUCCESS);
+  // Decode.
+  BIKE_UNUSED_ATT uint32_t tmp = decode(&e, &l_ct, &l_sk);
 
   // Copy the error vector in the padded struct.
   e_prime.val[0].val = e.val[0];
@@ -250,6 +251,7 @@ int decaps(OUT unsigned char *     ss,
   // Check if H(m') is equal to (e0', e1')
   // (in constant-time)
   GUARD(function_h(&e_tmp, &m_prime, &l_sk.pk));
+  uint32_t success_cond;
   success_cond = secure_cmp(PE0_RAW(&e_prime), PE0_RAW(&e_tmp), R_BYTES);
   success_cond &= secure_cmp(PE1_RAW(&e_prime), PE1_RAW(&e_tmp), R_BYTES);
 
