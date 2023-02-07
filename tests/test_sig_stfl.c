@@ -9,7 +9,7 @@
 
 #define MESSAGE_LEN 50
 
-#define MAGIC_VALUE_BYTES 31
+#define MAGIC_VALUE_BYTES 32
 struct magic_value {
     uint8_t val[MAGIC_VALUE_BYTES];
 };
