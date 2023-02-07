@@ -25,6 +25,7 @@ option(OQS_DIST_BUILD "Build distributable library with optimized code for sever
 option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
 set(OQS_MINIMAL_BUILD "" CACHE STRING "Only build specifically listed algorithms.")
 option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsupported architecture." OFF)
+option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 
 set(OQS_OPT_TARGET auto CACHE STRING "The target microarchitecture for optimization.")
 

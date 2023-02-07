@@ -17,6 +17,7 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
 - [USE_SANITIZER](#USE_SANITIZER)
 - [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
+- [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
 
 ## BUILD_SHARED_LIBS
 
@@ -138,3 +139,11 @@ This is used in conjunction with `tests/test_constant_time.py` to use Valgrind t
 See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more information on usage.
 
 **Default**: `OFF`.
+
+## OQS_STRICT_WARNINGS
+
+Can be `ON` or `OFF`. When `ON`, all compiler warnings are enabled and treated as errors. This setting is recommended to be enabled prior to submission of a Pull Request as CI runs with this setting active. When `OFF`, significantly fewer compiler warnings are enabled such as to avoid undue build errors triggered by (future) compiler warning features/unknown at development time of this library.
+
+**Default**: `OFF`.
+
+

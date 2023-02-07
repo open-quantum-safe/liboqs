@@ -12,6 +12,10 @@
 # If OQS_OPT_TARGET=generic we target a generic CPU.
 # Otherwise we target the specified CPU.
 
+# Pedantic checks (-Wall, ...) are not enabled by default for Release
+# builds such as to avoid future build errors introduced by currently
+# unknown compiler warnings
+
 include(CheckCCompilerFlag)
 check_c_compiler_flag("-Wa,--noexecstack" CC_SUPPORTS_WA_NOEXECSTACK)
 
@@ -82,11 +86,13 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
 endif()
 
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
+  if(${OQS_STRICT_WARNINGS})
     add_compile_options(-Werror)
     add_compile_options(-Wall)
     add_compile_options(-Wextra)
     add_compile_options(-Wpedantic)
     add_compile_options(-Wno-unused-command-line-argument)
+  endif()
     if(CC_SUPPORTS_WA_NOEXECSTACK)
         add_compile_options("-Wa,--noexecstack")
     endif()
@@ -134,6 +140,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     endif()
 
 elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+  if(${OQS_STRICT_WARNINGS})
     add_compile_options(-Werror)
     add_compile_options(-Wall)
     add_compile_options(-Wextra)
@@ -143,6 +150,7 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
     add_compile_options(-Wformat=2)
     add_compile_options(-Wfloat-equal)
     add_compile_options(-Wwrite-strings)
+  endif()
     if (NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         if(CC_SUPPORTS_WA_NOEXECSTACK)
             add_compile_options("-Wa,--noexecstack")

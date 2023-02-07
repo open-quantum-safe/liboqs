@@ -53,23 +53,23 @@ jobs:
         include:
           - name: alpine
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py
           - name: alpine-openssl-all
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON
             PYTEST_ARGS: --ignore=tests/test_alg_info.py
           - name: alpine-noopenssl
             container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF
             PYTEST_ARGS: --ignore=tests/test_alg_info.py
           - name: focal-std-openssl
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_ALGS_ENABLED=STD
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD
             PYTEST_ARGS: --ignore=tests/test_leaks.py
           - name: jammy-nistr4-openssl3
             container: openquantumsafe/ci-ubuntu-jammy:latest
-            CMAKE_ARGS: -DOQS_ALGS_ENABLED=NIST_R4
+            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_R4
             PYTEST_ARGS: --ignore=tests/test_leaks.py
           - name: address-sanitizer
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
