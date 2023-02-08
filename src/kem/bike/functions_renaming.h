@@ -49,9 +49,9 @@
 
 #define aes_ctr_prf RENAME_FUNC_NAME(aes_ctr_prf)
 #define sample_uniform_r_bits_with_fixed_prf_context RENAME_FUNC_NAME(sample_uniform_r_bits_with_fixed_prf_context)
-#define init_aes_ctr_prf_state RENAME_FUNC_NAME(init_aes_ctr_prf_state)
-#define generate_sparse_rep RENAME_FUNC_NAME(generate_sparse_rep)
-#define parallel_hash RENAME_FUNC_NAME(parallel_hash)
+#define init_prf_state RENAME_FUNC_NAME(init_prf_state)
+#define clean_prf_state RENAME_FUNC_NAME(clean_prf_state)
+#define get_prf_output RENAME_FUNC_NAME(get_prf_output)
 #define decode RENAME_FUNC_NAME(decode)
 #define print_BE RENAME_FUNC_NAME(print_BE)
 #define print_LE RENAME_FUNC_NAME(print_LE)
@@ -123,15 +123,14 @@
 
 #define get_seeds RENAME_FUNC_NAME(get_seeds)
 #define sample_uniform_r_bits RENAME_FUNC_NAME(sample_uniform_r_bits)
-#define generate_sparse_rep RENAME_FUNC_NAME(generate_sparse_rep)
+#define sample_indices_fisher_yates RENAME_FUNC_NAME(sample_indices_fisher_yates)
+#define generate_sparse_rep_for_sk RENAME_FUNC_NAME(generate_sparse_rep_for_sk)
 #define generate_error_vector RENAME_FUNC_NAME(generate_error_vector)
+#define generate_secret_key RENAME_FUNC_NAME(generate_secret_key)
 
 #define secure_set_bits_port RENAME_FUNC_NAME(secure_set_bits_port)
-#define is_new_port RENAME_FUNC_NAME(is_new_port)
 #define secure_set_bits_avx2 RENAME_FUNC_NAME(secure_set_bits_avx2)
 #define secure_set_bits_avx512 RENAME_FUNC_NAME(secure_set_bits_avx512)
-#define is_new_avx2 RENAME_FUNC_NAME(is_new_avx2)
-#define is_new_avx512 RENAME_FUNC_NAME(is_new_avx512)
 #define sampling_ctx_init RENAME_FUNC_NAME(sampling_ctx_init)
 
 

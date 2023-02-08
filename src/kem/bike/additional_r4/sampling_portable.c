@@ -47,14 +47,3 @@ void secure_set_bits_port(OUT pad_r_t *   r,
     a64[i] = val;
   }
 }
-
-int is_new_port(IN const idx_t *wlist, IN const size_t ctr)
-{
-  for(size_t i = 0; i < ctr; i++) {
-    if(wlist[i] == wlist[ctr]) {
-      return 0;
-    }
-  }
-
-  return 1;
-}

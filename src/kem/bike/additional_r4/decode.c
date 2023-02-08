@@ -50,13 +50,7 @@
 #    error "Level can only be 1/3"
 #  endif
 #elif defined(BGF_DECODER)
-#  if(LEVEL == 1)
-#    define MAX_IT 5
-#  elif(LEVEL == 3)
-#    define MAX_IT 5
-#  else
-#    error "Level can only be 1/3"
-#  endif
+#  define MAX_IT 5
 #endif
 
 ret_t compute_syndrome(OUT syndrome_t *syndrome,

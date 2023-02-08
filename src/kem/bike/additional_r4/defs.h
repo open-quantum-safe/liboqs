@@ -16,7 +16,11 @@
 #define OUT
 
 #define ALIGN(n)        __attribute__((aligned(n)))
+#if defined(__GNUC__) || defined(__clang__)
 #define BIKE_UNUSED_ATT __attribute__((unused))
+#else
+#define BIKE_UNUSED_ATT
+#endif
 
 #define _INLINE_ static inline
 
@@ -30,7 +34,7 @@
 #endif
 
 // Divide by the divider and round up to next integer
-#define DIVIDE_AND_CEIL(x, divider) (((x) + (divider)) / (divider))
+#define DIVIDE_AND_CEIL(x, divider) (((x) + (divider) - 1) / (divider))
 
 // Bit manipulations
 // Linux Assemblies, except for Ubuntu, cannot understand what ULL mean.
@@ -49,6 +53,9 @@
 
 #define WORDS_IN_YMM (BYTES_IN_YMM / sizeof(uint16_t))
 #define WORDS_IN_ZMM (BYTES_IN_ZMM / sizeof(uint16_t))
+
+#define DWORDS_IN_YMM (BYTES_IN_YMM / sizeof(uint32_t))
+#define DWORDS_IN_ZMM (BYTES_IN_ZMM / sizeof(uint32_t))
 
 #define QWORDS_IN_XMM (BYTES_IN_XMM / sizeof(uint64_t))
 #define QWORDS_IN_YMM (BYTES_IN_YMM / sizeof(uint64_t))

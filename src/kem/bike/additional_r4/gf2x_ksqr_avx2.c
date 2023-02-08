@@ -16,10 +16,38 @@
 #define AVX2_INTERNAL
 #include "x86_64_intrinsic.h"
 
-#define NUM_YMMS    (2)
-#define NUM_OF_VALS (NUM_YMMS * WORDS_IN_YMM)
+// If R_BITS >= 32768 then adding two elements of the permutation map can
+// exceed the size of uin16_t type. Therefore, in this case we have to work
+// with uint32_t type and use appropriate AVX2 instructions to compute the
+// permutation map. Otherwise, uint16_t suffices, which allows us to work with
+// this type and have a more efficient implementation (a single AVX2 register
+// can hold eight 32-bit elements or sixteen 16-bit elements).
+#if(R_BITS < 32768)
 
-_INLINE_ void generate_map(OUT uint16_t *map, IN const uint16_t l_param)
+#  define MAP_WORDS_IN_YMM WORDS_IN_YMM
+
+#  define map_word_t  uint16_t
+#  define SET1(x)     SET1_I16(x)
+#  define SUB(x, y)   SUB_I16(x, y)
+#  define ADD(x, y)   ADD_I16(x, y)
+#  define CMPGT(x, y) CMPGT_I16(x, y)
+
+#else
+
+#  define MAP_WORDS_IN_YMM DWORDS_IN_YMM
+
+#  define map_word_t  uint32_t
+#  define SET1(x)     SET1_I32(x)
+#  define SUB(x, y)   SUB_I32(x, y)
+#  define ADD(x, y)   ADD_I32(x, y)
+#  define CMPGT(x, y) CMPGT_I32(x, y)
+
+#endif
+
+#define NUM_YMMS    (2)
+#define NUM_OF_VALS (NUM_YMMS * MAP_WORDS_IN_YMM)
+
+_INLINE_ void generate_map(OUT map_word_t *map, IN const map_word_t l_param)
 {
   __m256i vmap[NUM_YMMS], vtmp[NUM_YMMS], vr, inc, zero;
 
@@ -40,7 +68,7 @@ _INLINE_ void generate_map(OUT uint16_t *map, IN const uint16_t l_param)
     map[i] = (i * l_param) % R_BITS;
   }
 
-  vr   = SET1_I16(R_BITS);
+  vr   = SET1(R_BITS);
   zero = SET_ZERO;
 
   // Set the increment vector such that adding it to vmap vectors
@@ -57,21 +85,21 @@ _INLINE_ void generate_map(OUT uint16_t *map, IN const uint16_t l_param)
   //   3.   map[i] = map[i - 1] + (l_param - r)
   //   4.   if map[i] < 0:
   //   5.     map[i] = map[i] + r
-  inc = SET1_I16((l_param * NUM_OF_VALS) % R_BITS);
-  inc = SUB_I16(inc, vr);
+  inc = SET1((l_param * NUM_OF_VALS) % R_BITS);
+  inc = SUB(inc, vr);
 
   // Load the first NUM_OF_VALS elements in the vmap vectors
   for(size_t i = 0; i < NUM_YMMS; i++) {
-    vmap[i] = LOAD(&map[i * WORDS_IN_YMM]);
+    vmap[i] = LOAD(&map[i * MAP_WORDS_IN_YMM]);
   }
 
-  for(size_t i = NUM_YMMS; i < (R_PADDED / WORDS_IN_YMM); i += NUM_YMMS) {
+  for(size_t i = NUM_YMMS; i < (R_PADDED / MAP_WORDS_IN_YMM); i += NUM_YMMS) {
     for(size_t j = 0; j < NUM_YMMS; j++) {
-      vmap[j] = ADD_I16(vmap[j], inc);
-      vtmp[j] = CMPGT_I16(zero, vmap[j]);
-      vmap[j] = ADD_I16(vmap[j], vtmp[j] & vr);
+      vmap[j] = ADD(vmap[j], inc);
+      vtmp[j] = CMPGT(zero, vmap[j]);
+      vmap[j] = ADD(vmap[j], vtmp[j] & vr);
 
-      STORE(&map[(i + j) * WORDS_IN_YMM], vmap[j]);
+      STORE(&map[(i + j) * MAP_WORDS_IN_YMM], vmap[j]);
     }
   }
 }
@@ -161,9 +189,9 @@ _INLINE_ void bin_to_bytes(OUT uint8_t *bytes_buf, IN const pad_r_t *bin_buf)
 // Input argument l_param is defined as the value (2^-k) % r.
 void k_sqr_avx2(OUT pad_r_t *c, IN const pad_r_t *a, IN const size_t l_param)
 {
-  ALIGN(ALIGN_BYTES) uint16_t map[R_PADDED];
-  ALIGN(ALIGN_BYTES) uint8_t  a_bytes[R_PADDED];
-  ALIGN(ALIGN_BYTES) uint8_t  c_bytes[R_PADDED] = {0};
+  ALIGN(ALIGN_BYTES) map_word_t map[R_PADDED];
+  ALIGN(ALIGN_BYTES) uint8_t    a_bytes[R_PADDED];
+  ALIGN(ALIGN_BYTES) uint8_t    c_bytes[R_PADDED] = {0};
 
   // Generate the permutation map defined by pi1 and l_param.
   generate_map(map, l_param);

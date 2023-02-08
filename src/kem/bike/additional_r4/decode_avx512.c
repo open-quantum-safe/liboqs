@@ -41,7 +41,7 @@ rotate512_big(OUT syndrome_t *out, IN const syndrome_t *in, size_t zmm_num)
 
     for(size_t i = 0; i < (R_ZMM + idx); i++) {
       const __m512i a = LOAD(&out->qw[8 * (i + idx)]);
-      MSTORE(&out->qw[8 * i], mask, a);
+      MSTORE64(&out->qw[8 * i], mask, a);
     }
   }
 }
