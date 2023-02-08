@@ -8,7 +8,7 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQClean/PQClean/commit/33bceb17eb06a40fbdc72251f533734e8d869615
   - **Implementation license (SPDX-Identifier)**: Public domain
-, which takes it from:
+- **Ancestors of primary source**:
   - https://github.com/jschanck/package-pqclean/tree/29f79e72/hqc, which takes it from:
   - submission 2020-10-01 at https://pqc-hqc.org/implementation.html
 

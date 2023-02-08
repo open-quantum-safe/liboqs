@@ -8,7 +8,7 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQClean/PQClean/commit/33bceb17eb06a40fbdc72251f533734e8d869615
   - **Implementation license (SPDX-Identifier)**: Public domain
-, which takes it from:
+- **Ancestors of primary source**:
   - SUPERCOP-20191221 "vec" and "avx" implementations
 
 ## Advisories

@@ -8,7 +8,7 @@
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/awslabs/bike-kem
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
-, which takes it from:
+- **Ancestors of primary source**:
   - https://bikesuite.org/files/v4.1/Reference_Implementation.2020.10.20.2.zip
 
 ## Parameter set summary
