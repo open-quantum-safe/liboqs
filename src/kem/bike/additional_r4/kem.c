@@ -129,7 +129,7 @@ _INLINE_ ret_t reencrypt(OUT m_t *m, IN const pad_e_t *e, IN const ct_t *l_ct)
 ////////////////////////////////////////////////////////////////////////////////
 // The three APIs below (keypair, encapsulate, decapsulate) are defined by NIST:
 ////////////////////////////////////////////////////////////////////////////////
-int keypair(OUT unsigned char *pk, OUT unsigned char *sk)
+OQS_API int keypair(OUT unsigned char *pk, OUT unsigned char *sk)
 {
   DEFER_CLEANUP(aligned_sk_t l_sk = {0}, sk_cleanup);
 
@@ -179,9 +179,9 @@ int keypair(OUT unsigned char *pk, OUT unsigned char *sk)
 // Encapsulate - pk is the public key,
 //               ct is a key encapsulation message (ciphertext),
 //               ss is the shared secret.
-int encaps(OUT unsigned char *     ct,
-           OUT unsigned char *     ss,
-           IN const unsigned char *pk)
+OQS_API int encaps(OUT unsigned char *     ct,
+                   OUT unsigned char *     ss,
+                   IN const unsigned char *pk)
 {
   // Public values (they do not require cleanup on exit).
   pk_t l_pk;
@@ -220,9 +220,9 @@ int encaps(OUT unsigned char *     ct,
 // Decapsulate - ct is a key encapsulation message (ciphertext),
 //               sk is the private key,
 //               ss is the shared secret
-int decaps(OUT unsigned char *     ss,
-           IN const unsigned char *ct,
-           IN const unsigned char *sk)
+OQS_API int decaps(OUT unsigned char *     ss,
+                   IN const unsigned char *ct,
+                   IN const unsigned char *sk)
 {
   // Public values, does not require a cleanup on exit
   ct_t l_ct;
