@@ -1,5 +1,3 @@
-#include "inner.h"
-#include <assert.h>
 /*
  * PRNG and interface to the system RNG.
  *
@@ -31,22 +29,10 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
+#include <assert.h>
 
+#include "inner.h"
 
-/*
- * Include relevant system header files. For Win32, this will also need
- * linking with advapi32.dll, which we trigger with an appropriate #pragma.
- */
-
-/* see inner.h */
-int
-PQCLEAN_FALCON1024_CLEAN_get_seed(void *seed, size_t len) {
-    (void)seed;
-    if (len == 0) {
-        return 1;
-    }
-    return 0;
-}
 
 /* see inner.h */
 void
@@ -60,6 +46,9 @@ PQCLEAN_FALCON1024_CLEAN_prng_init(prng *p, inner_shake256_context *src) {
     uint64_t th, tl;
     int i;
 
+    uint32_t *d32 = (uint32_t *) p->state.d;
+    uint64_t *d64 = (uint64_t *) p->state.d;
+
     inner_shake256_extract(src, tmp, 56);
     for (i = 0; i < 14; i ++) {
         uint32_t w;
@@ -68,11 +57,11 @@ PQCLEAN_FALCON1024_CLEAN_prng_init(prng *p, inner_shake256_context *src) {
             | ((uint32_t)tmp[(i << 2) + 1] << 8)
             | ((uint32_t)tmp[(i << 2) + 2] << 16)
             | ((uint32_t)tmp[(i << 2) + 3] << 24);
-        *(uint32_t *)(p->state.d + (i << 2)) = w;
+        d32[i] = w;
     }
-    tl = *(uint32_t *)(p->state.d + 48);
-    th = *(uint32_t *)(p->state.d + 52);
-    *(uint64_t *)(p->state.d + 48) = tl + (th << 32);
+    tl = d32[48 / sizeof(uint32_t)];
+    th = d32[52 / sizeof(uint32_t)];
+    d64[48 / sizeof(uint64_t)] = tl + (th << 32);
     PQCLEAN_FALCON1024_CLEAN_prng_refill(p);
 }
 

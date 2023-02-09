@@ -1,16 +1,16 @@
-#include "api.h"
-#include "inner.h"
-#include "randombytes.h"
-#include <stddef.h>
-#include <string.h>
 /*
  * Wrapper for implementing the PQClean API.
  */
 
+#include <stddef.h>
+#include <string.h>
 
+#include "api.h"
+#include "inner.h"
 
 #define NONCELEN   40
-#define SEEDLEN    48
+
+#include "randombytes.h"
 
 /*
  * Encoding formats (nnnn = log of degree, 9 for Falcon-512, 10 for Falcon-1024)
@@ -41,7 +41,8 @@
 
 /* see api.h */
 int
-PQCLEAN_FALCON512_AVX2_crypto_sign_keypair(unsigned char *pk, unsigned char *sk) {
+PQCLEAN_FALCON512_AVX2_crypto_sign_keypair(
+    uint8_t *pk, uint8_t *sk) {
     union {
         uint8_t b[FALCON_KEYGEN_TEMP_9];
         uint64_t dummy_u64;
@@ -49,7 +50,7 @@ PQCLEAN_FALCON512_AVX2_crypto_sign_keypair(unsigned char *pk, unsigned char *sk)
     } tmp;
     int8_t f[512], g[512], F[512];
     uint16_t h[512];
-    unsigned char seed[SEEDLEN];
+    unsigned char seed[48];
     inner_shake256_context rng;
     size_t u, v;
 
@@ -134,7 +135,7 @@ do_sign(uint8_t *nonce, uint8_t *sigbuf, size_t *sigbuflen,
         int16_t sig[512];
         uint16_t hm[512];
     } r;
-    unsigned char seed[SEEDLEN];
+    unsigned char seed[48];
     inner_shake256_context sc;
     size_t u, v;
 
@@ -195,6 +196,7 @@ do_sign(uint8_t *nonce, uint8_t *sigbuf, size_t *sigbuflen,
     inner_shake256_init(&sc);
     inner_shake256_inject(&sc, seed, sizeof seed);
     inner_shake256_flip(&sc);
+
 
     /*
      * Compute and return the signature. This loops until a signature
@@ -278,11 +280,11 @@ PQCLEAN_FALCON512_AVX2_crypto_sign_signature(
     const uint8_t *m, size_t mlen, const uint8_t *sk) {
     /*
      * The PQCLEAN_FALCON512_AVX2_CRYPTO_BYTES constant is used for
-     * the signed message object (as produced by PQCLEAN_FALCON512_AVX2_crypto_sign())
+     * the signed message object (as produced by crypto_sign())
      * and includes a two-byte length value, so we take care here
      * to only generate signatures that are two bytes shorter than
-     * the maximum. This is done to ensure that PQCLEAN_FALCON512_AVX2_crypto_sign()
-     * and PQCLEAN_FALCON512_AVX2_crypto_sign_signature() produce the exact same signature
+     * the maximum. This is done to ensure that crypto_sign()
+     * and crypto_sign_signature() produce the exact same signature
      * value, if used on the same message, with the same private key,
      * and using the same output from randombytes() (this is for
      * reproducibility of tests).
