@@ -50,9 +50,8 @@ for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'al
                 out_md.write('  - **{}**:<a name="{}"></a>\n'.format(opt_upstream, opt_upstream))
                 out_md.write('      - **Source**: {}\n'.format(kem_yaml['optimized-upstreams'][opt_upstream]['source']))
                 out_md.write('      - **Implementation license (SPDX-Identifier)**: {}\n'.format(kem_yaml['optimized-upstreams'][opt_upstream]['spdx-license-identifier']))
-
         if 'upstream-ancestors' in kem_yaml:
-            out_md.write(', which takes it from:\n')
+            out_md.write('- **Ancestors of primary source**:\n')
             for url in kem_yaml['upstream-ancestors'][:-1]:
                 out_md.write('  - {}, which takes it from:\n'.format(url))
             out_md.write('  - {}\n'.format(kem_yaml['upstream-ancestors'][-1]))
