@@ -1,5 +1,3 @@
-#include "inner.h"
-
 /*
  * Falcon key pair generation.
  *
@@ -31,6 +29,7 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
+#include "inner.h"
 
 #define MKN(logn)   ((size_t)1 << (logn))
 
@@ -2208,6 +2207,7 @@ get_rng_u64(inner_shake256_context *rng) {
            | ((uint64_t)tmp[7] << 56);
 }
 
+
 /*
  * Table below incarnates a discrete Gaussian distribution:
  *    D(x) = exp(-(x^2)/(2*sigma^2))
@@ -2283,8 +2283,8 @@ mkgauss(RNG_CONTEXT *rng, unsigned logn) {
         v = 0;
         r = get_rng_u64(rng);
         r &= ~((uint64_t)1 << 63);
-        for (k = 1; k < (uint32_t)((sizeof gauss_1024_12289)
-                                   / (sizeof gauss_1024_12289[0])); k ++) {
+        for (k = 1; k < (sizeof gauss_1024_12289)
+                / (sizeof gauss_1024_12289[0]); k ++) {
             uint32_t t;
 
             t = (uint32_t)((r - gauss_1024_12289[k]) >> 63) ^ 1;
@@ -2656,15 +2656,8 @@ make_fg(uint32_t *data, const int8_t *f, const int8_t *g,
         return;
     }
 
-    if (depth == 0) {
-        return;
-    }
-    if (depth == 1) {
-        make_fg_step(data, logn, 0, 0, out_ntt);
-        return;
-    }
     make_fg_step(data, logn, 0, 0, 1);
-    for (d = 1; d + 1 < depth; d ++) {
+    for (d = 1; (d + 1) < depth; d ++) {
         make_fg_step(data, logn - d, d, 1, 1);
     }
     make_fg_step(data, logn - depth + 1, depth - 1, 1, out_ntt);
@@ -3044,9 +3037,10 @@ solve_NTRU_intermediate(unsigned logn_top,
      * computed so that average maximum length will fall in the
      * middle or the upper half of these top 10 words.
      */
-    rlen = slen;
-    if (rlen > 10) {
+    if (slen > 10) {
         rlen = 10;
+    } else {
+        rlen = slen;
     }
     poly_big_to_fp(rt3, ft + slen - rlen, rlen, slen, logn);
     poly_big_to_fp(rt4, gt + slen - rlen, rlen, slen, logn);
@@ -3121,9 +3115,10 @@ solve_NTRU_intermediate(unsigned logn_top,
          * Convert current F and G into floating-point. We apply
          * scaling if the current length is more than 10 words.
          */
-        rlen = FGlen;
-        if (rlen > 10) {
+        if (FGlen > 10) {
             rlen = 10;
+        } else {
+            rlen = FGlen;
         }
         scale_FG = 31 * (int)(FGlen - rlen);
         poly_big_to_fp(rt1, Ft + FGlen - rlen, rlen, llen, logn);

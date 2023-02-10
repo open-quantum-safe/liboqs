@@ -1,6 +1,5 @@
-#ifndef PQCLEAN_FALCON1024_AVX2_INNER_H
-#define PQCLEAN_FALCON1024_AVX2_INNER_H
-
+#ifndef FALCON_INNER_H__
+#define FALCON_INNER_H__
 
 /*
  * Internal functions for Falcon. This is not the API intended to be
@@ -73,11 +72,20 @@
  *    proper, or integer-based emulation is used, the set_fpu_cw()
  *    function does nothing, so it can be called systematically.
  */
-#include "fips202.h"
-#include "fpr.h"
+
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
+
+/*
+ * This implementation uses AVX2 and optionally FMA intrinsics.
+ */
+#include <immintrin.h>
+#define FMADD(a, b, c)   _mm256_add_pd(_mm256_mul_pd(a, b), c)
+#define FMSUB(a, b, c)   _mm256_sub_pd(_mm256_mul_pd(a, b), c)
+
+
 
 /*
  * Some computations with floating-point elements, in particular
@@ -112,6 +120,7 @@ set_fpu_cw(unsigned x) {
  */
 
 
+#include "fips202.h"
 
 #define inner_shake256_context                shake256incctx
 #define inner_shake256_init(sc)               shake256_inc_init(sc)
@@ -417,9 +426,8 @@ int PQCLEAN_FALCON1024_AVX2_verify_recover(uint16_t *h,
  *   fpr fpr_q                 12289
  *   fpr fpr_inverse_of_q      1/12289
  *   fpr fpr_inv_2sqrsigma0    1/(2*(1.8205^2))
- *   fpr fpr_inv_sigma         1/(1.55*sqrt(12289))
- *   fpr fpr_sigma_min_9       1.291500756233514568549480827642
- *   fpr fpr_sigma_min_10      1.311734375905083682667395805765
+ *   fpr fpr_inv_sigma[]       1/sigma (indexed by logn, 1 to 10)
+ *   fpr fpr_sigma_min[]       1/sigma_min (indexed by logn, 1 to 10)
  *   fpr fpr_log2              log(2)
  *   fpr fpr_inv_log2          1/log(2)
  *   fpr fpr_bnorm_max         16822.4121
@@ -434,6 +442,7 @@ int PQCLEAN_FALCON1024_AVX2_verify_recover(uint16_t *h,
  *   fpr fpr_mtwo63m1          -(2^63-1)
  *   fpr fpr_ptwo63            2^63
  */
+#include "fpr.h"
 
 /* ==================================================================== */
 /*
