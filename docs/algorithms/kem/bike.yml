@@ -20,13 +20,13 @@ principal-submitters:
 - Gilles Zémor
 crypto-assumption: QC-MDPC (Quasi-Cyclic Moderate Density Parity-Check)
 website: http://bikesuite.org/
-nist-round: 3
-spec-version: 4.1
+nist-round: 4
+spec-version: 5.1
 primary-upstream: 
   source: https://github.com/awslabs/bike-kem
   spdx-license-identifier: Apache-2.0
 upstream-ancestors:
-- https://bikesuite.org/files/v4.1/Reference_Implementation.2020.10.20.2.zip
+- https://bikesuite.org/files/v5.0/Reference_Implementation.2022.10.04.1.zip
 parameter-sets:
 - name: BIKE-L1
   claimed-nist-level: 1
