@@ -18,18 +18,18 @@
 #include "system_info.c"
 
 static void fullcycle(OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key, uint8_t *signature, size_t signature_len, uint8_t *message, size_t message_len) {
-    if (OQS_SIG_keypair(sig, public_key, secret_key) != OQS_SUCCESS) {
-        printf("keygen error. Exiting.\n");
-        exit(-1);
-    }
-    if (OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key) != OQS_SUCCESS) {
-        printf("sign error. Exiting.\n");
-        exit(-1);
-    }
-    if (OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key) != OQS_SUCCESS) {
-        printf("verify error. Exiting.\n");
-        exit(-1);
-    }
+	if (OQS_SIG_keypair(sig, public_key, secret_key) != OQS_SUCCESS) {
+		printf("keygen error. Exiting.\n");
+		exit(-1);
+	}
+	if (OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key) != OQS_SUCCESS) {
+		printf("sign error. Exiting.\n");
+		exit(-1);
+	}
+	if (OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key) != OQS_SUCCESS) {
+		printf("verify error. Exiting.\n");
+		exit(-1);
+	}
 }
 
 static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, bool printInfo) {
