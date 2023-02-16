@@ -22,11 +22,11 @@ static void fullcycletest(OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key
 		printf("Error creating KEM key. Exiting.\n");
 		exit(-1);
 	}
-        if (OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key) != OQS_SUCCESS) {
+	if (OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key) != OQS_SUCCESS) {
 		printf("Error during KEM encaps. Exiting.\n");
 		exit(-1);
 	}
-        if (OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key) != OQS_SUCCESS) {
+	if (OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key) != OQS_SUCCESS) {
 		printf("Error during KEM decaps. Exiting.\n");
 		exit(-1);
 	}
@@ -64,8 +64,7 @@ static OQS_STATUS kem_speed_wrapper(const char *method_name, uint64_t duration, 
 		TIME_OPERATION_SECONDS(OQS_KEM_keypair(kem, public_key, secret_key), "keygen", duration)
 		TIME_OPERATION_SECONDS(OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key), "encaps", duration)
 		TIME_OPERATION_SECONDS(OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key), "decaps", duration)
-	}
-	else {
+	} else {
 		TIME_OPERATION_SECONDS(fullcycletest(kem, public_key, secret_key, ciphertext, shared_secret_e, shared_secret_d), "fullcycletest", duration)
 	}
 

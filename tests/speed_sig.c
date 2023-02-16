@@ -65,8 +65,7 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 		TIME_OPERATION_SECONDS(OQS_SIG_keypair(sig, public_key, secret_key), "keypair", duration)
 		TIME_OPERATION_SECONDS(OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key), "sign", duration)
 		TIME_OPERATION_SECONDS(OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key), "verify", duration)
-	}
-	else {
+	} else {
 		TIME_OPERATION_SECONDS(fullcycle(sig, public_key, secret_key, signature, signature_len, message, message_len), "fullcycle", duration)
 	}
 
