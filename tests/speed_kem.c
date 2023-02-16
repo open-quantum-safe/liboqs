@@ -17,7 +17,23 @@
 #include "ds_benchmark.h"
 #include "system_info.c"
 
-static OQS_STATUS kem_speed_wrapper(const char *method_name, uint64_t duration, bool printInfo) {
+static void fullcycletest(OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key, uint8_t *ciphertext, uint8_t *shared_secret_e, uint8_t *shared_secret_d) {
+	if (OQS_KEM_keypair(kem, public_key, secret_key) != OQS_SUCCESS) {
+		printf("Error creating KEM key. Exiting.\n");
+		exit(-1);
+	}
+        if (OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key) != OQS_SUCCESS) {
+		printf("Error during KEM encaps. Exiting.\n");
+		exit(-1);
+	}
+        if (OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key) != OQS_SUCCESS) {
+		printf("Error during KEM decaps. Exiting.\n");
+		exit(-1);
+	}
+
+}
+
+static OQS_STATUS kem_speed_wrapper(const char *method_name, uint64_t duration, bool printInfo, bool doFullCycle) {
 
 	OQS_KEM *kem = NULL;
 	uint8_t *public_key = NULL;
@@ -44,9 +60,14 @@ static OQS_STATUS kem_speed_wrapper(const char *method_name, uint64_t duration, 
 	}
 
 	printf("%-36s | %10s | %14s | %15s | %10s | %25s | %10s\n", kem->method_name, "", "", "", "", "", "");
-	TIME_OPERATION_SECONDS(OQS_KEM_keypair(kem, public_key, secret_key), "keygen", duration)
-	TIME_OPERATION_SECONDS(OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key), "encaps", duration)
-	TIME_OPERATION_SECONDS(OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key), "decaps", duration)
+	if (!doFullCycle) {
+		TIME_OPERATION_SECONDS(OQS_KEM_keypair(kem, public_key, secret_key), "keygen", duration)
+		TIME_OPERATION_SECONDS(OQS_KEM_encaps(kem, ciphertext, shared_secret_e, public_key), "encaps", duration)
+		TIME_OPERATION_SECONDS(OQS_KEM_decaps(kem, shared_secret_d, ciphertext, secret_key), "decaps", duration)
+	}
+	else {
+		TIME_OPERATION_SECONDS(fullcycletest(kem, public_key, secret_key, ciphertext, shared_secret_e, shared_secret_d), "fullcycletest", duration)
+	}
 
 	if (printInfo) {
 		printf("public key bytes: %zu, ciphertext bytes: %zu, secret key bytes: %zu, shared secret key bytes: %zu, NIST level: %d, IND-CCA: %s\n", kem->length_public_key, kem->length_ciphertext, kem->length_secret_key, kem->length_shared_secret, kem->claimed_nist_level, kem->ind_cca ? "Y" : "N");
@@ -92,6 +113,7 @@ int main(int argc, char **argv) {
 	bool printUsage = false;
 	uint64_t duration = 3;
 	bool printKemInfo = false;
+	bool doFullCycle = false;
 
 	OQS_KEM *single_kem = NULL;
 
@@ -119,6 +141,9 @@ int main(int argc, char **argv) {
 		} else if ((strcmp(argv[i], "--info") == 0) || (strcmp(argv[i], "-i") == 0)) {
 			printKemInfo = true;
 			continue;
+		} else if ((strcmp(argv[i], "--fullcycle") == 0) || (strcmp(argv[i], "-f") == 0)) {
+			doFullCycle = true;
+			continue;
 		} else {
 			single_kem = OQS_KEM_new(argv[i]);
 			if (single_kem == NULL) {
@@ -139,6 +164,8 @@ int main(int argc, char **argv) {
 		fprintf(stderr, " -h                Print usage\n");
 		fprintf(stderr, "--info\n");
 		fprintf(stderr, " -i                Print info (sizes, security level) about each KEM\n");
+		fprintf(stderr, "--fullcycle\n");
+		fprintf(stderr, " -f                Do full keygen-encaps-decaps cycle for each KEM\n");
 		fprintf(stderr, "\n");
 		fprintf(stderr, "<alg>              Only run the specified KEM method; must be one of the algorithms output by --algs\n");
 		return EXIT_FAILURE;
@@ -151,13 +178,13 @@ int main(int argc, char **argv) {
 
 	PRINT_TIMER_HEADER
 	if (single_kem != NULL) {
-		rc = kem_speed_wrapper(single_kem->method_name, duration, printKemInfo);
+		rc = kem_speed_wrapper(single_kem->method_name, duration, printKemInfo, doFullCycle);
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
 		}
 	} else {
 		for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
-			rc = kem_speed_wrapper(OQS_KEM_alg_identifier(i), duration, printKemInfo);
+			rc = kem_speed_wrapper(OQS_KEM_alg_identifier(i), duration, printKemInfo, doFullCycle);
 			if (rc != OQS_SUCCESS) {
 				ret = EXIT_FAILURE;
 			}
