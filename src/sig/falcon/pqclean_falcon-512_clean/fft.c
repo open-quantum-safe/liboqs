@@ -1,3 +1,5 @@
+#include "inner.h"
+
 /*
  * FFT code.
  *
@@ -29,7 +31,6 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
-#include "inner.h"
 
 /*
  * Rules for complex number macros:
