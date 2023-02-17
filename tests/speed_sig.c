@@ -185,6 +185,8 @@ int main(int argc, char **argv) {
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
 		}
+		OQS_SIG_free(single_sig);
+
 	} else {
 		for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
 			rc = sig_speed_wrapper(OQS_SIG_alg_identifier(i), duration, printSigInfo, doFullCycle);

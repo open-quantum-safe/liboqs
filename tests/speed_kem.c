@@ -181,6 +181,7 @@ int main(int argc, char **argv) {
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
 		}
+		OQS_KEM_free(single_kem);
 	} else {
 		for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
 			rc = kem_speed_wrapper(OQS_KEM_alg_identifier(i), duration, printKemInfo, doFullCycle);
