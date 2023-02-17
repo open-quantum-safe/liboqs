@@ -17,7 +17,22 @@
 #include "ds_benchmark.h"
 #include "system_info.c"
 
-static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, bool printInfo) {
+static void fullcycle(OQS_SIG *sig, uint8_t *public_key, uint8_t *secret_key, uint8_t *signature, size_t signature_len, uint8_t *message, size_t message_len) {
+	if (OQS_SIG_keypair(sig, public_key, secret_key) != OQS_SUCCESS) {
+		printf("keygen error. Exiting.\n");
+		exit(-1);
+	}
+	if (OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key) != OQS_SUCCESS) {
+		printf("sign error. Exiting.\n");
+		exit(-1);
+	}
+	if (OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key) != OQS_SUCCESS) {
+		printf("verify error. Exiting.\n");
+		exit(-1);
+	}
+}
+
+static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, bool printInfo, bool doFullCycle) {
 
 	OQS_SIG *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -46,9 +61,14 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 	OQS_randombytes(message, message_len);
 
 	printf("%-36s | %10s | %14s | %15s | %10s | %25s | %10s\n", sig->method_name, "", "", "", "", "", "");
-	TIME_OPERATION_SECONDS(OQS_SIG_keypair(sig, public_key, secret_key), "keypair", duration)
-	TIME_OPERATION_SECONDS(OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key), "sign", duration)
-	TIME_OPERATION_SECONDS(OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key), "verify", duration)
+	if (!doFullCycle) {
+		TIME_OPERATION_SECONDS(OQS_SIG_keypair(sig, public_key, secret_key), "keypair", duration)
+		TIME_OPERATION_SECONDS(OQS_SIG_sign(sig, signature, &signature_len, message, message_len, secret_key), "sign", duration)
+		TIME_OPERATION_SECONDS(OQS_SIG_verify(sig, message, message_len, signature, signature_len, public_key), "verify", duration)
+	} else {
+		TIME_OPERATION_SECONDS(fullcycle(sig, public_key, secret_key, signature, signature_len, message, message_len), "fullcycle", duration)
+	}
+
 
 	if (printInfo) {
 		printf("public key bytes: %zu, secret key bytes: %zu, signature bytes: %zu\n", sig->length_public_key, sig->length_secret_key, sig->length_signature);
@@ -96,6 +116,7 @@ int main(int argc, char **argv) {
 	bool printUsage = false;
 	uint64_t duration = 3;
 	bool printSigInfo = false;
+	bool doFullCycle = false;
 
 	OQS_SIG *single_sig = NULL;
 
@@ -123,6 +144,9 @@ int main(int argc, char **argv) {
 		} else if ((strcmp(argv[i], "--info") == 0) || (strcmp(argv[i], "-i") == 0)) {
 			printSigInfo = true;
 			continue;
+		} else if ((strcmp(argv[i], "--fullcycle") == 0) || (strcmp(argv[i], "-f") == 0)) {
+			doFullCycle = true;
+			continue;
 		} else {
 			single_sig = OQS_SIG_new(argv[i]);
 			if (single_sig == NULL) {
@@ -143,6 +167,8 @@ int main(int argc, char **argv) {
 		fprintf(stderr, " -h                Print usage\n");
 		fprintf(stderr, "--info\n");
 		fprintf(stderr, " -i                Print info (sizes, security level) about each SIG\n");
+		fprintf(stderr, "--fullcycle\n");
+		fprintf(stderr, " -f                Test full keygen-sign-verify cycle of each SIG\n");
 		fprintf(stderr, "\n");
 		fprintf(stderr, "<alg>              Only run the specified SIG method; must be one of the algorithms output by --algs\n");
 		return EXIT_FAILURE;
@@ -155,13 +181,15 @@ int main(int argc, char **argv) {
 
 	PRINT_TIMER_HEADER
 	if (single_sig != NULL) {
-		rc = sig_speed_wrapper(single_sig->method_name, duration, printSigInfo);
+		rc = sig_speed_wrapper(single_sig->method_name, duration, printSigInfo, doFullCycle);
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
 		}
+		OQS_SIG_free(single_sig);
+
 	} else {
 		for (size_t i = 0; i < OQS_SIG_algs_length; i++) {
-			rc = sig_speed_wrapper(OQS_SIG_alg_identifier(i), duration, printSigInfo);
+			rc = sig_speed_wrapper(OQS_SIG_alg_identifier(i), duration, printSigInfo, doFullCycle);
 			if (rc != OQS_SUCCESS) {
 				ret = EXIT_FAILURE;
 			}
