@@ -1,3 +1,5 @@
+#include "inner.h"
+
 /*
  * Falcon signature generation.
  *
@@ -29,7 +31,6 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
-#include "inner.h"
 
 /* =================================================================== */
 
@@ -153,7 +154,7 @@ ffLDL_fft(fpr *tree, const fpr *g00,
  * sigma / sqrt(x).
  */
 static void
-ffLDL_binary_normalize(fpr *tree, unsigned orig_logn, unsigned logn) {
+ffLDL_binary_normalize(fpr *tree, unsigned logn) {
     /*
      * TODO: make an iterative version.
      */
@@ -166,11 +167,11 @@ ffLDL_binary_normalize(fpr *tree, unsigned orig_logn, unsigned logn) {
          * the value mandated by the specification: this
          * saves a division both here and in the sampler.
          */
-        tree[0] = fpr_mul(fpr_sqrt(tree[0]), fpr_inv_sigma[orig_logn]);
+        tree[0] = fpr_mul(fpr_sqrt(tree[0]), fpr_inv_sigma);
     } else {
-        ffLDL_binary_normalize(tree + n, orig_logn, logn - 1);
+        ffLDL_binary_normalize(tree + n, logn - 1);
         ffLDL_binary_normalize(tree + n + ffLDL_treesize(logn - 1),
-                               orig_logn, logn - 1);
+                               logn - 1);
     }
 }
 
@@ -266,7 +267,7 @@ PQCLEAN_FALCON1024_AVX2_expand_privkey(fpr *expanded_key,
     PQCLEAN_FALCON1024_AVX2_poly_neg(rF, logn);
 
     /*
-     * The Gram matrix is G = B·B*. Formulas are:
+     * The Gram matrix is G = B x B*. Formulas are:
      *   g00 = b00*adj(b00) + b01*adj(b01)
      *   g01 = b00*adj(b10) + b01*adj(b11)
      *   g10 = b10*adj(b00) + b11*adj(b01)
@@ -306,7 +307,7 @@ PQCLEAN_FALCON1024_AVX2_expand_privkey(fpr *expanded_key,
     /*
      * Normalize tree.
      */
-    ffLDL_binary_normalize(tree, logn, logn);
+    ffLDL_binary_normalize(tree, logn);
 }
 
 typedef int (*samplerZ)(void *ctx, fpr mu, fpr sigma);
@@ -321,7 +322,7 @@ static void
 ffSampling_fft_dyntree(samplerZ samp, void *samp_ctx,
                        fpr *t0, fpr *t1,
                        fpr *g00, fpr *g01, fpr *g11,
-                       unsigned orig_logn, unsigned logn, fpr *tmp) {
+                       unsigned logn, fpr *tmp) {
     size_t n, hn;
     fpr *z0, *z1;
 
@@ -334,7 +335,7 @@ ffSampling_fft_dyntree(samplerZ samp, void *samp_ctx,
         fpr leaf;
 
         leaf = g00[0];
-        leaf = fpr_mul(fpr_sqrt(leaf), fpr_inv_sigma[orig_logn]);
+        leaf = fpr_mul(fpr_sqrt(leaf), fpr_inv_sigma);
         t0[0] = fpr_of(samp(samp_ctx, t0[0], leaf));
         t1[0] = fpr_of(samp(samp_ctx, t1[0], leaf));
         return;
@@ -377,7 +378,7 @@ ffSampling_fft_dyntree(samplerZ samp, void *samp_ctx,
     z1 = tmp + n;
     PQCLEAN_FALCON1024_AVX2_poly_split_fft(z1, z1 + hn, t1, logn);
     ffSampling_fft_dyntree(samp, samp_ctx, z1, z1 + hn,
-                           g11, g11 + hn, g01 + hn, orig_logn, logn - 1, z1 + n);
+                           g11, g11 + hn, g01 + hn, logn - 1, z1 + n);
     PQCLEAN_FALCON1024_AVX2_poly_merge_fft(tmp + (n << 1), z1, z1 + hn, logn);
 
     /*
@@ -400,7 +401,7 @@ ffSampling_fft_dyntree(samplerZ samp, void *samp_ctx,
     z0 = tmp;
     PQCLEAN_FALCON1024_AVX2_poly_split_fft(z0, z0 + hn, t0, logn);
     ffSampling_fft_dyntree(samp, samp_ctx, z0, z0 + hn,
-                           g00, g00 + hn, g01, orig_logn, logn - 1, z0 + n);
+                           g00, g00 + hn, g01, logn - 1, z0 + n);
     PQCLEAN_FALCON1024_AVX2_poly_merge_fft(t0, z0, z0 + hn, logn);
 }
 
@@ -780,7 +781,7 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
     PQCLEAN_FALCON1024_AVX2_poly_neg(b11, logn);
 
     /*
-     * Compute the Gram matrix G = B·B*. Formulas are:
+     * Compute the Gram matrix G = B x B*. Formulas are:
      *   g00 = b00*adj(b00) + b01*adj(b01)
      *   g01 = b00*adj(b10) + b01*adj(b11)
      *   g10 = b10*adj(b00) + b11*adj(b01)
@@ -864,7 +865,7 @@ do_sign_dyn(samplerZ samp, void *samp_ctx, int16_t *s2,
      * Apply sampling; result is written over (t0,t1).
      */
     ffSampling_fft_dyntree(samp, samp_ctx,
-                           t0, t1, g00, g01, g11, logn, logn, t1 + n);
+                           t0, t1, g00, g01, g11, logn, t1 + n);
 
     /*
      * We arrange the layout back to:
@@ -1005,7 +1006,7 @@ PQCLEAN_FALCON1024_AVX2_gaussian0_sampler(prng *p) {
      * values. We need both a "greater than" and an "equal"
      * comparisons.
      */
-    xhi = _mm256_broadcastw_epi16(_mm_cvtsi32_si128((int)hi));
+    xhi = _mm256_broadcastw_epi16(_mm_cvtsi32_si128((int32_t)hi));
     rhi = _mm256_loadu_si256(&rhi15.ymm[0]);
     gthi = _mm256_cmpgt_epi16(rhi, xhi);
     eqhi = _mm256_cmpeq_epi16(rhi, xhi);
@@ -1139,8 +1140,8 @@ BerExp(prng *p, fpr x, fpr ccs) {
 int
 PQCLEAN_FALCON1024_AVX2_sampler(void *ctx, fpr mu, fpr isigma) {
     sampler_context *spc;
-    int s;
-    fpr r, dss, ccs;
+    int s, z0, z, b;
+    fpr r, dss, ccs, x;
 
     spc = ctx;
 
@@ -1165,9 +1166,6 @@ PQCLEAN_FALCON1024_AVX2_sampler(void *ctx, fpr mu, fpr isigma) {
      * We now need to sample on center r.
      */
     for (;;) {
-        int z0, z, b;
-        fpr x;
-
         /*
          * Sample z for a Gaussian distribution. Then get a
          * random bit b to turn the sampling into a bimodal
@@ -1247,7 +1245,11 @@ PQCLEAN_FALCON1024_AVX2_sign_tree(int16_t *sig, inner_shake256_context *rng,
          * Normal sampling. We use a fast PRNG seeded from our
          * SHAKE context ('rng').
          */
-        spc.sigma_min = fpr_sigma_min[logn];
+        if (logn == 10) {
+            spc.sigma_min = fpr_sigma_min_10;
+        } else {
+            spc.sigma_min = fpr_sigma_min_9;
+        }
         PQCLEAN_FALCON1024_AVX2_prng_init(&spc.p, rng);
         samp = PQCLEAN_FALCON1024_AVX2_sampler;
         samp_ctx = &spc;
@@ -1290,7 +1292,11 @@ PQCLEAN_FALCON1024_AVX2_sign_dyn(int16_t *sig, inner_shake256_context *rng,
          * Normal sampling. We use a fast PRNG seeded from our
          * SHAKE context ('rng').
          */
-        spc.sigma_min = fpr_sigma_min[logn];
+        if (logn == 10) {
+            spc.sigma_min = fpr_sigma_min_10;
+        } else {
+            spc.sigma_min = fpr_sigma_min_9;
+        }
         PQCLEAN_FALCON1024_AVX2_prng_init(&spc.p, rng);
         samp = PQCLEAN_FALCON1024_AVX2_sampler;
         samp_ctx = &spc;

@@ -11,7 +11,7 @@
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 - **Optimized Implementation sources**: https://github.com/pq-crystals/kyber/commit/1ee0baa2100a545ac852edea2e4441b8f742814d with copy_from_upstream patches
   - **pqclean-aarch64**:<a name="pqclean-aarch64"></a>
-      - **Source**: https://github.com/PQClean/PQClean/commit/96dfee95cc56207d1ec5e3a2df306d6614ad7c6c with copy_from_upstream patches
+      - **Source**: https://github.com/PQClean/PQClean/commit/33bceb17eb06a40fbdc72251f533734e8d869615 with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
