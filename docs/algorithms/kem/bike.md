@@ -4,12 +4,12 @@
 - **Main cryptographic assumption**: QC-MDPC (Quasi-Cyclic Moderate Density Parity-Check).
 - **Principal submitters**: Nicolas Aragon, Paulo Barreto, Slim Bettaieb, Loic Bidoux, Olivier Blazy, Jean-Christophe Deneuville, Phillipe Gaborit, Santosh Gosh, Shay Gueron, Tim Güneysu, Carlos Aguilar Melchor, Rafael Misoczki, Edoardo Persichetti, Nicolas Sendrier, Jean-Pierre Tillich, Valentin Vasseur, Gilles Zémor.
 - **Authors' website**: http://bikesuite.org/
-- **Specification version**: 4.1.
+- **Specification version**: 5.1.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/awslabs/bike-kem
   - **Implementation license (SPDX-Identifier)**: Apache-2.0
 - **Ancestors of primary source**:
-  - https://bikesuite.org/files/v4.1/Reference_Implementation.2020.10.20.2.zip
+  - https://bikesuite.org/files/v5.0/Reference_Implementation.2022.10.04.1.zip
 
 ## Parameter set summary
 
