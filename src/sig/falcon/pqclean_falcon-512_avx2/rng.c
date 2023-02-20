@@ -1,5 +1,3 @@
-#include "inner.h"
-#include <assert.h>
 /*
  * PRNG and interface to the system RNG.
  *
@@ -31,22 +29,10 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
+#include <assert.h>
 
+#include "inner.h"
 
-/*
- * Include relevant system header files. For Win32, this will also need
- * linking with advapi32.dll, which we trigger with an appropriate #pragma.
- */
-
-/* see inner.h */
-int
-PQCLEAN_FALCON512_AVX2_get_seed(void *seed, size_t len) {
-    (void)seed;
-    if (len == 0) {
-        return 1;
-    }
-    return 0;
-}
 
 /* see inner.h */
 void
@@ -103,17 +89,17 @@ PQCLEAN_FALCON512_AVX2_prng_refill(prng *p) {
      */
     for (u = 0; u < 4; u ++) {
         state[u] = init[u] =
-                       _mm256_broadcastd_epi32(_mm_cvtsi32_si128((int32_t)CW[u]));
+                       _mm256_broadcastd_epi32(_mm_cvtsi32_si128((int)CW[u]));
     }
     for (u = 0; u < 10; u ++) {
         state[u + 4] = init[u + 4] =
-                           _mm256_broadcastd_epi32(_mm_cvtsi32_si128((int32_t)sw[u]));
+                           _mm256_broadcastd_epi32(_mm_cvtsi32_si128((int)sw[u]));
     }
     state[14] = init[14] = _mm256_xor_si256(
-                               _mm256_broadcastd_epi32(_mm_cvtsi32_si128((int32_t)sw[10])),
+                               _mm256_broadcastd_epi32(_mm_cvtsi32_si128((int)sw[10])),
                                _mm256_loadu_si256((__m256i *)&t.w[0]));
     state[15] = init[15] = _mm256_xor_si256(
-                               _mm256_broadcastd_epi32(_mm_cvtsi32_si128((int32_t)sw[11])),
+                               _mm256_broadcastd_epi32(_mm_cvtsi32_si128((int)sw[11])),
                                _mm256_loadu_si256((__m256i *)&t.w[8]));
 
     /*

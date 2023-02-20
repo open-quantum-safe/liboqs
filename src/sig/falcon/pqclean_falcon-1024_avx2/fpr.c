@@ -1,5 +1,3 @@
-#include "inner.h"
-
 /*
  * Floating-point operations.
  *
@@ -34,6 +32,7 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
+#include "inner.h"
 
 
 const fpr fpr_gm_tab[] = {
@@ -1076,3 +1075,4 @@ const fpr fpr_p2_tab[] = {
     { 0.00390625000 },
     { 0.00195312500 }
 };
+
