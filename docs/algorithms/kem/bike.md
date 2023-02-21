@@ -11,6 +11,10 @@
 - **Ancestors of primary source**:
   - https://bikesuite.org/files/v5.0/Reference_Implementation.2022.10.04.1.zip
 
+## Advisories
+
+- The implementations for all parameter sets DO NOT provide constant time execution properties.
+
 ## Parameter set summary
 
 |  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |

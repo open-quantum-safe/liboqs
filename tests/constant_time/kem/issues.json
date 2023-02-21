@@ -1,6 +1,7 @@
 {
   "BIKE-L1": ["bike_has_no_timing_protections"],
   "BIKE-L3": ["bike_has_no_timing_protections"],
+  "BIKE-L5": ["bike_has_no_timing_protections"],
   "Classic-McEliece-348864": [],
   "Classic-McEliece-348864f": [],
   "Classic-McEliece-460896": [],

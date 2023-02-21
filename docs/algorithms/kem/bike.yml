@@ -27,6 +27,9 @@ primary-upstream:
   spdx-license-identifier: Apache-2.0
 upstream-ancestors:
 - https://bikesuite.org/files/v5.0/Reference_Implementation.2022.10.04.1.zip
+advisories:
+- 'The implementations for all parameter sets DO NOT provide constant time execution
+  properties.'
 parameter-sets:
 - name: BIKE-L1
   claimed-nist-level: 1
