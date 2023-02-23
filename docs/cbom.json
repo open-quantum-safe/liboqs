@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:1fa1d9e9-2c4f-4cd3-862a-5fc19d2a2e85",
+  "serialNumber": "urn:uuid:4a640cdd-5ee1-4816-b261-d0fa309e1f46",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-01-27T20:04:30.910014",
+    "timestamp": "2023-02-23T15:52:26.923884",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@bc628c813c5a80a465ebdeb31155861e32dc6514",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@49164467b6456a217b09c5d1a6c830abb64fc1a6",
       "name": "liboqs",
-      "version": "bc628c813c5a80a465ebdeb31155861e32dc6514"
+      "version": "49164467b6456a217b09c5d1a6c830abb64fc1a6"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@bc628c813c5a80a465ebdeb31155861e32dc6514",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@49164467b6456a217b09c5d1a6c830abb64fc1a6",
       "name": "liboqs",
-      "version": "bc628c813c5a80a465ebdeb31155861e32dc6514"
+      "version": "49164467b6456a217b09c5d1a6c830abb64fc1a6"
     },
     {
       "type": "crypto-asset",
@@ -3028,7 +3028,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@bc628c813c5a80a465ebdeb31155861e32dc6514",
+      "ref": "pkg:github/open-quantum-safe/liboqs@49164467b6456a217b09c5d1a6c830abb64fc1a6",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",

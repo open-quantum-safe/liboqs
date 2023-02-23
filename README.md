@@ -167,7 +167,9 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/common/rand/rand_nist.c`: See file
 - `src/kem/bike/additional`: Apache License v2.0
 - `src/kem/classic_mceliece/pqclean_*`: public domain
+- `src/kem/kyber/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/kem/kyber/pqclean_*`: public domain
+- `src/sig/dilithium/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/sig/dilithium/pqclean_*`: public domain
 - `src/sig/sphincs/pqclean_*`: CC0 (public domain)
 
