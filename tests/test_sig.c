@@ -142,12 +142,18 @@ err:
 	ret = OQS_ERROR;
 
 cleanup:
-	if (sig != NULL) {
+	if (secret_key) {
 		OQS_MEM_secure_free(secret_key - sizeof(magic_t), sig->length_secret_key + 2 * sizeof(magic_t));
 	}
-	OQS_MEM_insecure_free(public_key - sizeof(magic_t));
-	OQS_MEM_insecure_free(message - sizeof(magic_t));
-	OQS_MEM_insecure_free(signature - sizeof(magic_t));
+	if (public_key) {
+		OQS_MEM_insecure_free(public_key - sizeof(magic_t));
+	}
+	if (message) {
+		OQS_MEM_insecure_free(message - sizeof(magic_t));
+	}
+	if (signature) {
+		OQS_MEM_insecure_free(signature - sizeof(magic_t));
+	}
 	OQS_SIG_free(sig);
 
 	return ret;
