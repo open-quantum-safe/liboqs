@@ -90,11 +90,7 @@ _INLINE_ ret_t generate_sparse_rep_for_sk(OUT pad_r_t *r,
 {
   idx_t wlist_temp[D] = {0};
 
-#if defined(UNIFORM_SAMPLING)
-  GUARD(generate_indices_mod_z(wlist_temp, D, R_BITS, prf_state));
-#else
   GUARD(sample_indices_fisher_yates(wlist_temp, D, R_BITS, prf_state));
-#endif
 
   bike_memcpy(wlist, wlist_temp, D * sizeof(idx_t));
   ctx->secure_set_bits(r, 0, wlist, D);

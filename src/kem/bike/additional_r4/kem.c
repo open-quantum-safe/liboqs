@@ -240,7 +240,7 @@ OQS_API int decaps(OUT unsigned char *     ss,
   bike_memcpy(&l_sk, sk, sizeof(l_sk));
 
   // Decode.
-  BIKE_UNUSED_ATT uint32_t tmp = decode(&e, &l_ct, &l_sk);
+  decode(&e, &l_ct, &l_sk);
 
   // Copy the error vector in the padded struct.
   e_prime.val[0].val = e.val[0];

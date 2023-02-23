@@ -62,6 +62,7 @@
 #define sha_mb RENAME_FUNC_NAME(sha_mb)
 #define split_e RENAME_FUNC_NAME(split_e)
 #define compute_syndrome RENAME_FUNC_NAME(compute_syndrome)
+#define recompute_syndrome RENAME_FUNC_NAME(recompute_syndrome)
 #define bike_errno RENAME_FUNC_NAME(bike_errno)
 #define cyclic_product RENAME_FUNC_NAME(cyclic_product)
 #define ossl_add RENAME_FUNC_NAME(ossl_add)

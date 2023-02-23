@@ -9,4 +9,4 @@
 
 #include "types.h"
 
-ret_t decode(OUT e_t *e, IN const ct_t *ct, IN const sk_t *sk);
+void decode(OUT e_t *e, IN const ct_t *ct, IN const sk_t *sk);
