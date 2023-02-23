@@ -19,10 +19,9 @@ nist-round: 3
 spec-version: v1.2
 primary-upstream:
   source: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b
-  spdx-license-identifier: CC0-1.0
+  spdx-license-identifier: MIT
   upstream-ancestors:
-  - https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon
-  - supercop-20201018
+    - https://www.falcon-sign.info
 parameter-sets:
 - name: Falcon-512
   claimed-nist-level: 1
