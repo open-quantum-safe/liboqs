@@ -19,7 +19,7 @@ spec-version: NIST Round 3 submission
 primary-upstream:
   source: https://github.com/pq-crystals/kyber/commit/518de2414a85052bb91349bcbcc347f391292d5b
     with copy_from_upstream patches
-  spdx-license-identifier: CC0-1.0
+  spdx-license-identifier: CC0-1.0 or Apache-2.0
 optimized-upstreams:
   pqclean-aarch64:
     source: https://github.com/PQClean/PQClean/commit/33bceb17eb06a40fbdc72251f533734e8d869615
