@@ -31,7 +31,7 @@ jobs:
           git config --global user.email "ci@openquantumsafe.org" && \
           export LIBOQS_DIR=`pwd` && \
           cd scripts/copy_from_upstream && \
-          pip3 install -r requirements.txt && \
+          ! pip3 install -r requirements.txt 2>&1 | grep ERROR && \
           python3 copy_from_upstream.py verify
 
   buildcheck:
