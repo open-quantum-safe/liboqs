@@ -5,10 +5,10 @@
 - **Principal submitters**: Thomas Prest.
 - **Auxiliary submitters**: Pierre-Alain Fouque, Jeffrey Hoffstein, Paul Kirchner, Vadim Lyubashevsky, Thomas Pornin, Thomas Prest, Thomas Ricosset, Gregor Seiler, William Whyte, Zhenfei Zhang.
 - **Authors' website**: https://falcon-sign.info
-- **Specification version**: v1.2.
+- **Specification version**: 20211101.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b
-  - **Implementation license (SPDX-Identifier)**: CC0-1.0
+  - **Implementation license (SPDX-Identifier)**: MIT
 
 
 ## Parameter set summary
