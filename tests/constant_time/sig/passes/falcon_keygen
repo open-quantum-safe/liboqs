@@ -8,13 +8,13 @@
 {
    Rejection sampling for small (f,g) coefficients
    Memcheck:Cond
-   src:keygen.c:4151 # fun:PQCLEAN_FALCON*_*_keygen
+   src:keygen.c:4155 # fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
 }
 {
    Rejection sampling for small (f,g) coefficients
    Memcheck:Cond
-   src:keygen.c:4152 # fun:PQCLEAN_FALCON*_*_keygen
+   src:keygen.c:4156 # fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
 }
 {
@@ -26,26 +26,46 @@
 {
    Rejection sampling for small (f,g) norm
    Memcheck:Cond
-   src:keygen.c:4171 # fun:PQCLEAN_FALCON*_*_keygen
+   src:keygen.c:4176 # fun:PQCLEAN_FALCON*_*_keygen
+   fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+   Rejection sampling for small (f,g) norm
+   Memcheck:Cond
+   src:keygen.c:4177 # fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
 }
 {
    Rejection sampling for orthogonalized vector norm
    Memcheck:Cond
-   src:keygen.c:4199 # fun:PQCLEAN_FALCON*_*_keygen
+   src:keygen.c:4203 # fun:PQCLEAN_FALCON*_*_keygen
+   fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+   Rejection sampling for orthogonalized vector norm
+   Memcheck:Cond
+   src:keygen.c:4204 # fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
 }
 {
    Rejection sampling for invertible f
    Memcheck:Cond
-   src:vrfy.c:694 # fun:PQCLEAN_FALCON*_*_compute_public
+   src:vrfy.c:693 # fun:PQCLEAN_FALCON*_*_compute_public
    fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
 }
 {
    Rejection sampling for basis completion (zint_bezout)
    Memcheck:Cond
-   src:keygen.c:2713 # fun:solve_NTRU_deepest
+   src:keygen.c:2715 # fun:solve_NTRU_deepest
+   fun:solve_NTRU
+   fun:PQCLEAN_FALCON*_*_keygen
+   fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+   Rejection sampling for basis completion (zint_bezout)
+   Memcheck:Cond
+   src:keygen.c:2716 # fun:solve_NTRU_deepest
    fun:solve_NTRU
    fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
@@ -53,7 +73,15 @@
 {
    Rejection sampling for basis completion (zint_mul_small Fp)
    Memcheck:Cond
-   src:keygen.c:2725 # fun:solve_NTRU_deepest
+   src:keygen.c:2727 # fun:solve_NTRU_deepest
+   fun:solve_NTRU
+   fun:PQCLEAN_FALCON*_*_keygen
+   fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+   Rejection sampling for basis completion (zint_mul_small Fp)
+   Memcheck:Cond
+   src:keygen.c:2728 # fun:solve_NTRU_deepest
    fun:solve_NTRU
    fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
@@ -61,7 +89,7 @@
 {
    Rejection sampling for basis completion (zint_mul_small Gp)
    Memcheck:Cond
-   src:keygen.c:2726 # fun:solve_NTRU_deepest
+   src:keygen.c:2729 # fun:solve_NTRU_deepest
    fun:solve_NTRU
    fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
@@ -69,7 +97,7 @@
 {
    Keygen is restarted on floating point exception
    Memcheck:Cond
-   src:keygen.c:3195 # fun:solve_NTRU_intermediate
+   src:keygen.c:3199 # fun:solve_NTRU_intermediate
    fun:solve_NTRU
    fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
@@ -77,7 +105,7 @@
 {
    Keygen is restarted on floating point exception
    Memcheck:Cond
-   src:keygen.c:3196 # fun:solve_NTRU_intermediate
+   src:keygen.c:3200 # fun:solve_NTRU_intermediate
    fun:solve_NTRU
    fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
@@ -85,7 +113,23 @@
 {
    Keygen is restarted on floating point exception
    Memcheck:Cond
-   src:keygen.c:3623 # fun:solve_NTRU_binary_depth1
+   src:keygen.c:3201 # fun:solve_NTRU_intermediate
+   fun:solve_NTRU
+   fun:PQCLEAN_FALCON*_*_keygen
+   fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+   Keygen is restarted on floating point exception
+   Memcheck:Cond
+   src:keygen.c:3627 # fun:solve_NTRU_binary_depth1
+   fun:solve_NTRU
+   fun:PQCLEAN_FALCON*_*_keygen
+   fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+   Keygen is restarted on floating point exception
+   Memcheck:Cond
+   src:keygen.c:3628 # fun:solve_NTRU_binary_depth1
    fun:solve_NTRU
    fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
@@ -93,7 +137,7 @@
 {
    Keygen is restarted if (F,G) cannot be packed to small integers
    Memcheck:Cond
-   src:keygen.c:2066 # fun:poly_big_to_small
+   src:keygen.c:2065 # fun:poly_big_to_small
    fun:solve_NTRU
    fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
@@ -101,7 +145,14 @@
 {
    Keygen is restarted if f*G - g*F != 12289 mod a small prime
    Memcheck:Cond
-   src:keygen.c:4023 # fun:solve_NTRU
+   src:keygen.c:4027 # fun:solve_NTRU
+   fun:PQCLEAN_FALCON*_*_keygen
+   fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+   Keygen is restarted if f*G - g*F != 12289 mod a small prime
+   Memcheck:Cond
+   src:keygen.c:4028 # fun:solve_NTRU
    fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
 }

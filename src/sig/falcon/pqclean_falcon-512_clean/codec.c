@@ -1,5 +1,3 @@
-#include "inner.h"
-
 /*
  * Encoding/decoding of keys and signatures.
  *
@@ -31,6 +29,7 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
+#include "inner.h"
 
 /* see inner.h */
 size_t
@@ -444,11 +443,27 @@ PQCLEAN_FALCON512_CLEAN_comp_decode(
                 return 0;
             }
         }
-        x[u] = (int16_t) m;
+
+        /*
+         * "-0" is forbidden.
+         */
+        if (s && m == 0) {
+            return 0;
+        }
         if (s) {
-            x[u] = (int16_t) - x[u];
+            x[u] = (int16_t) - m;
+        } else {
+            x[u] = (int16_t)m;
         }
     }
+
+    /*
+     * Unused bits in the last byte must be zero.
+     */
+    if ((acc & ((1u << acc_len) - 1u)) != 0) {
+        return 0;
+    }
+
     return v;
 }
 

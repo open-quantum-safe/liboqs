@@ -8,6 +8,7 @@ auxiliary-submitters:
 - Paul Kirchner
 - Vadim Lyubashevsky
 - Thomas Pornin
+- Thomas Prest
 - Thomas Ricosset
 - Gregor Seiler
 - William Whyte
@@ -15,20 +16,19 @@ auxiliary-submitters:
 crypto-assumption: hardness of NTRU lattice problems
 website: https://falcon-sign.info
 nist-round: 3
-spec-version: v1.2
+spec-version: 20211101
 primary-upstream:
-  source: https://github.com/PQClean/PQClean/commit/33bceb17eb06a40fbdc72251f533734e8d869615
-  spdx-license-identifier: CC0-1.0
+  source: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b
+  spdx-license-identifier: MIT
   upstream-ancestors:
-  - https://github.com/jschanck/package-pqclean/tree/cea1fa5a/falcon
-  - supercop-20201018
+  - https://www.falcon-sign.info
 parameter-sets:
 - name: Falcon-512
   claimed-nist-level: 1
   claimed-security: EUF-CMA
   length-public-key: 897
   length-secret-key: 1281
-  length-signature: 690
+  length-signature: 666
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -43,9 +43,6 @@ parameter-sets:
     upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
-      operating_systems:
-      - Linux
-      - Darwin
       required_flags:
       - avx2
     common-crypto:
@@ -58,7 +55,7 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 1793
   length-secret-key: 2305
-  length-signature: 1330
+  length-signature: 1280
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -73,9 +70,6 @@ parameter-sets:
     upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
-      operating_systems:
-      - Linux
-      - Darwin
       required_flags:
       - avx2
     common-crypto:

@@ -1,6 +1,5 @@
-#ifndef PQCLEAN_FALCON512_CLEAN_INNER_H
-#define PQCLEAN_FALCON512_CLEAN_INNER_H
-
+#ifndef FALCON_INNER_H__
+#define FALCON_INNER_H__
 
 /*
  * Internal functions for Falcon. This is not the API intended to be
@@ -73,12 +72,11 @@
  *    proper, or integer-based emulation is used, the set_fpu_cw()
  *    function does nothing, so it can be called systematically.
  */
-#include "fips202.h"
-#include "fpr.h"
+
+
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-
 
 
 
@@ -99,8 +97,13 @@
  * targets other than 32-bit x86, or when the native 'double' type is
  * not used, the set_fpu_cw() function does nothing at all.
  */
-#define set_fpu_cw PQCLEAN_FALCON512_CLEAN_set_fpu_cw
-unsigned set_fpu_cw(unsigned x);
+static inline unsigned
+set_fpu_cw(unsigned x) {
+    return x;
+}
+
+
+
 
 /* ==================================================================== */
 /*
@@ -111,6 +114,7 @@ unsigned set_fpu_cw(unsigned x);
  */
 
 
+#include "fips202.h"
 
 #define inner_shake256_context                shake256incctx
 #define inner_shake256_init(sc)               shake256_inc_init(sc)
@@ -416,9 +420,8 @@ int PQCLEAN_FALCON512_CLEAN_verify_recover(uint16_t *h,
  *   fpr fpr_q                 12289
  *   fpr fpr_inverse_of_q      1/12289
  *   fpr fpr_inv_2sqrsigma0    1/(2*(1.8205^2))
- *   fpr fpr_inv_sigma         1/(1.55*sqrt(12289))
- *   fpr fpr_sigma_min_9       1.291500756233514568549480827642
- *   fpr fpr_sigma_min_10      1.311734375905083682667395805765
+ *   fpr fpr_inv_sigma[]       1/sigma (indexed by logn, 1 to 10)
+ *   fpr fpr_sigma_min[]       1/sigma_min (indexed by logn, 1 to 10)
  *   fpr fpr_log2              log(2)
  *   fpr fpr_inv_log2          1/log(2)
  *   fpr fpr_bnorm_max         16822.4121
@@ -433,6 +436,7 @@ int PQCLEAN_FALCON512_CLEAN_verify_recover(uint16_t *h,
  *   fpr fpr_mtwo63m1          -(2^63-1)
  *   fpr fpr_ptwo63            2^63
  */
+#include "fpr.h"
 
 /* ==================================================================== */
 /*
@@ -491,14 +495,46 @@ void PQCLEAN_FALCON512_CLEAN_prng_get_bytes(prng *p, void *dst, size_t len);
 /*
  * Get a 64-bit random value from a PRNG.
  */
-#define prng_get_u64 PQCLEAN_FALCON512_CLEAN_prng_get_u64
-uint64_t prng_get_u64(prng *p);
+static inline uint64_t
+prng_get_u64(prng *p) {
+    size_t u;
+
+    /*
+     * If there are less than 9 bytes in the buffer, we refill it.
+     * This means that we may drop the last few bytes, but this allows
+     * for faster extraction code. Also, it means that we never leave
+     * an empty buffer.
+     */
+    u = p->ptr;
+    if (u >= (sizeof p->buf.d) - 9) {
+        PQCLEAN_FALCON512_CLEAN_prng_refill(p);
+        u = 0;
+    }
+    p->ptr = u + 8;
+
+    return (uint64_t)p->buf.d[u + 0]
+           | ((uint64_t)p->buf.d[u + 1] << 8)
+           | ((uint64_t)p->buf.d[u + 2] << 16)
+           | ((uint64_t)p->buf.d[u + 3] << 24)
+           | ((uint64_t)p->buf.d[u + 4] << 32)
+           | ((uint64_t)p->buf.d[u + 5] << 40)
+           | ((uint64_t)p->buf.d[u + 6] << 48)
+           | ((uint64_t)p->buf.d[u + 7] << 56);
+}
 
 /*
  * Get an 8-bit random value from a PRNG.
  */
-#define prng_get_u8 PQCLEAN_FALCON512_CLEAN_prng_get_u8
-unsigned prng_get_u8(prng *p);
+static inline unsigned
+prng_get_u8(prng *p) {
+    unsigned v;
+
+    v = p->buf.d[p->ptr ++];
+    if (p->ptr == sizeof p->buf.d) {
+        PQCLEAN_FALCON512_CLEAN_prng_refill(p);
+    }
+    return v;
+}
 
 /* ==================================================================== */
 /*

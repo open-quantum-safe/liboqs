@@ -1,5 +1,3 @@
-#include "inner.h"
-
 /*
  * Falcon signature verification.
  *
@@ -31,6 +29,7 @@
  * @author   Thomas Pornin <thomas.pornin@nccgroup.com>
  */
 
+#include "inner.h"
 
 /* ===================================================================== */
 /*
