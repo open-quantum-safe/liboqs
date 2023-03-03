@@ -616,10 +616,11 @@ def copy_from_upstream():
 
     update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'])
 
-    # Not in love with using sub process to call a python script, but this is the easiest solution for
-    # automatically calling this script in its current state.
-    shell(["python3", os.environ['LIBOQS_DIR'] + "/scripts/update_docs_from_yaml.py", "--liboqs-root", os.environ['LIBOQS_DIR']]) 
-    shell(["python3", os.environ['LIBOQS_DIR'] + "/scripts/update_cbom.py", "--liboqs-root", os.environ['LIBOQS_DIR']])
+    sys.path.insert(1, os.path.join(os.environ['LIBOQS_DIR'], 'scripts'))
+    import update_docs_from_yaml
+    import update_cbom
+    update_docs_from_yaml.do_it(os.environ['LIBOQS_DIR'])
+    update_cbom.update_cbom_if_algs_not_changed(os.environ['LIBOQS_DIR'], "git")
 
 def verify_from_upstream():
     instructions = load_instructions()
