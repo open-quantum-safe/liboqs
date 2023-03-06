@@ -17,10 +17,6 @@ import copy
 
 cbom_json_file = "cbom.json"
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--liboqs-root", default=".")
-parser.add_argument("--liboqs-version", default="git")
-args = parser.parse_args()
 
 def load_yaml(filename, encoding='utf-8'):
     with open(filename, mode='r', encoding=encoding) as fh:
@@ -130,67 +126,97 @@ def add_cbom_component(out, kem_yaml, parameter_set):
                             component_cpy['bom-ref'] : dep
                         })
 
+def build_cbom(liboqs_root, liboqs_version):
+    ## Add KEM components
+    for kem_yaml_path in sorted(glob.glob(os.path.join(liboqs_root, 'docs', 'algorithms', 'kem', '*.yml'))):
+        kem_yaml = load_yaml(kem_yaml_path)
+        kem_yamls.append(kem_yaml)
+        kem_name = os.path.splitext(os.path.basename(kem_yaml_path))[0]
+        name = kem_yaml['name']
+        for parameter_set in kem_yaml['parameter-sets']:
+            add_cbom_component(None, kem_yaml, parameter_set)
 
+    ## Add Sig components
+    for sig_yaml_path in sorted(glob.glob(os.path.join(liboqs_root, 'docs', 'algorithms', 'sig', '*.yml'))):
+        sig_yaml = load_yaml(sig_yaml_path)
+        sig_yamls.append(sig_yaml)
+        sig_name = os.path.splitext(os.path.basename(sig_yaml_path))[0]
+        for parameter_set in sig_yaml['parameter-sets']:
+            add_cbom_component(None, sig_yaml, parameter_set)
 
-## Add KEM components
-for kem_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'kem', '*.yml'))):
-    kem_yaml = load_yaml(kem_yaml_path)
-    kem_yamls.append(kem_yaml)
-    kem_name = os.path.splitext(os.path.basename(kem_yaml_path))[0]
-    name = kem_yaml['name']
-    for parameter_set in kem_yaml['parameter-sets']:
-        add_cbom_component(None, kem_yaml, parameter_set)
+    ## liboqs component
+    liboqs_component = {}
+    version = liboqs_version
+    if version == "git":
+        repo = git.Repo(search_parent_directories=True, odbt=git.GitDB)
+        version = repo.head.object.hexsha
+    liboqs_component['type'] = "library"
+    liboqs_component['bom-ref'] = "pkg:github/open-quantum-safe/liboqs@" + version
+    liboqs_component['name'] = "liboqs"
+    liboqs_component['version'] = version
 
-## Add Sig components
-for sig_yaml_path in sorted(glob.glob(os.path.join(args.liboqs_root, 'docs', 'algorithms', 'sig', '*.yml'))):
-    sig_yaml = load_yaml(sig_yaml_path)
-    sig_yamls.append(sig_yaml)
-    sig_name = os.path.splitext(os.path.basename(sig_yaml_path))[0]
-    for parameter_set in sig_yaml['parameter-sets']:
-        add_cbom_component(None, sig_yaml, parameter_set)
+    cbom_components.insert(0, liboqs_component)
 
-## liboqs component
-liboqs_component = {}
-version = args.liboqs_version
-if version == "git":
-    repo = git.Repo(search_parent_directories=True)
-    version = repo.head.object.hexsha
-liboqs_component['type'] = "library"
-liboqs_component['bom-ref'] = "pkg:github/open-quantum-safe/liboqs@" + version
-liboqs_component['name'] = "liboqs"
-liboqs_component['version'] = version
+    metadata = {}
+    metadata['timestamp'] = datetime.now().isoformat()
+    metadata['component'] = liboqs_component
 
-cbom_components.insert(0, liboqs_component)
+    ## Dependencies
 
-metadata = {}
-metadata['timestamp'] = datetime.now().isoformat()
-metadata['component'] = liboqs_component
-
-## Dependencies
-
-dependencies = []
-dependencies.append({
-    "ref": liboqs_component['bom-ref'],
-    "dependsOn": bom_algs_bomrefs,
-    "dependencyType": "implements"
-})
-for usedep in bom_algs_use_dependencies.keys():
+    dependencies = []
     dependencies.append({
-        "ref": usedep,
-        "dependsOn": bom_algs_use_dependencies[usedep],
-        "dependencyType": "uses"
+        "ref": liboqs_component['bom-ref'],
+        "dependsOn": bom_algs_bomrefs,
+        "dependencyType": "implements"
     })
+    for usedep in bom_algs_use_dependencies.keys():
+        dependencies.append({
+            "ref": usedep,
+            "dependsOn": bom_algs_use_dependencies[usedep],
+            "dependencyType": "uses"
+        })
 
 
-## CBOM
-cbom = {}
-cbom['bomFormat'] = "CBOM"
-cbom['specVersion'] = "1.4-cbom-1.0"
-cbom['serialNumber'] = "urn:uuid:" + str(uuid.uuid4())
-cbom['version'] = 1
-cbom['metadata'] = metadata
-cbom['components'] = cbom_components + [common_crypto_component_aes, common_crypto_component_sha3]
-cbom['dependencies'] = dependencies
+    ## CBOM
+    cbom = {}
+    cbom['bomFormat'] = "CBOM"
+    cbom['specVersion'] = "1.4-cbom-1.0"
+    cbom['serialNumber'] = "urn:uuid:" + str(uuid.uuid4())
+    cbom['version'] = 1
+    cbom['metadata'] = metadata
+    cbom['components'] = cbom_components + [common_crypto_component_aes, common_crypto_component_sha3]
+    cbom['dependencies'] = dependencies
+    return cbom
+    
 
-with open(os.path.join(args.liboqs_root, 'docs', cbom_json_file), mode='w', encoding='utf-8') as out_md:
-    out_md.write(json.dumps(cbom, indent=2))
+def algorithms_changed(cbom, cbom_path):
+    if os.path.isfile(cbom_path):
+        with open(cbom_path, mode='r', encoding='utf-8') as c:
+            existing_cbom = json.load(c)
+            existing_cbom['serialNumber'] = cbom['serialNumber']
+            existing_cbom['metadata']['timestamp'] = cbom['metadata']['timestamp']
+            existing_cbom['metadata']['component']['bom-ref'] = cbom['metadata']['component']['bom-ref']
+            existing_cbom['metadata']['component']['version'] = cbom['metadata']['component']['version']
+            existing_cbom['components'][0]['bom-ref'] = cbom['components'][0]['bom-ref']
+            existing_cbom['components'][0]['version'] = cbom['components'][0]['version']
+            existing_cbom['dependencies'][0]['ref'] = cbom['dependencies'][0]['ref']
+            update_cbom = existing_cbom != cbom
+            c.close()
+            return update_cbom
+    else:
+        return True
+
+def update_cbom_if_algs_not_changed(liboqs_root, liboqs_version):
+    cbom_path = os.path.join(liboqs_root, 'docs', cbom_json_file)
+    cbom = build_cbom(liboqs_root, liboqs_version)
+    if algorithms_changed(cbom, cbom_path):
+        with open(cbom_path, mode='w', encoding='utf-8') as out_md:
+            out_md.write(json.dumps(cbom, indent=2))
+            out_md.close()
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--liboqs-root", default=".")
+    parser.add_argument("--liboqs-version", default="git")
+    args = parser.parse_args()
+    update_cbom_if_algs_not_changed(args.liboqs_root, args.liboqs_version)
