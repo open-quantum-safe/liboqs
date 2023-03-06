@@ -1,8 +1,8 @@
 name: Weekly constant time tests
 
 on:
-  schedule:
-  - cron: "5 0 * * 0"
+  pull_request:
+  merge_group:
 
 jobs:
 
@@ -12,9 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: extensions
+          - name: generic
             container: openquantumsafe/ci-ubuntu-focal-x86_64:latest
-            CMAKE_ARGS: -DOQS_OPT_TARGET=haswell -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
+            CMAKE_ARGS: -DOQS_OPT_TARGET=generic -DCMAKE_BUILD_TYPE=Debug -DOQS_ENABLE_TEST_CONSTANT_TIME=ON
             PYTEST_ARGS: --numprocesses=auto -k 'test_constant_time'
             SKIP_ALGS: 'SPHINCS\+-SHA*,Classic-McEliece-6(.)*'
     container:
