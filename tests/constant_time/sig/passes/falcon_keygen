@@ -26,6 +26,12 @@
 {
    Rejection sampling for small (f,g) norm
    Memcheck:Cond
+   src:keygen.c:4175 # fun:PQCLEAN_FALCON*_*_keygen
+   fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+   Rejection sampling for small (f,g) norm
+   Memcheck:Cond
    src:keygen.c:4176 # fun:PQCLEAN_FALCON*_*_keygen
    fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
 }
