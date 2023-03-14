@@ -93,11 +93,26 @@ _INLINE_ uint8_t get_threshold(IN const syndrome_t *s)
 {
   bike_static_assert(sizeof(*s) >= sizeof(r_t), syndrome_is_large_enough);
 
-  const uint32_t syndrome_weight = r_bits_vector_weight((const r_t *)s->qw);
+  const uint64_t syndrome_weight = r_bits_vector_weight((const r_t *)s->qw);
 
-  // The equations below are defined in BIKE's specification p. 16, Section 5.2
-  uint32_t       thr  = THRESHOLD_COEFF0 + (THRESHOLD_COEFF1 * syndrome_weight);
-  const uint32_t mask = secure_l32_mask(thr, THRESHOLD_MIN);
+  // The threshold coefficients are defined in the spec as floating point values.
+  // Since we want to avoid floating point operations for constant-timeness,
+  // we use integer arithmetic to compute the threshold.
+  // For example, in the case of Level-1 parameters, instead of having:
+  //   T0 = 13.530 and T1 = 0.0069722,
+  // we multipy the values by 10^8 and work with integers:
+  //   T0' = 1353000000 and T1' = 697220.
+  // Then, instead of computing the threshold by:
+  //   T0 + T1*S,
+  // we compute:
+  //   (T0' + T1'*S)/10^8,
+  // where S is the syndrome weight.
+  // All relatively modern compilers transform the division by 10^8 to
+  // a multiplication and a right shift (both constant-time instructions).
+  uint64_t thr  = THRESHOLD_COEFF0 + (THRESHOLD_COEFF1 * syndrome_weight);
+  thr /= THRESHOLD_DIV_CONST;
+
+  const uint32_t mask = secure_l32_mask((uint32_t)thr, THRESHOLD_MIN);
   thr = (u32_barrier(mask) & thr) | (u32_barrier(~mask) & THRESHOLD_MIN);
 
   DMSG("    Threshold: %d\n", thr);

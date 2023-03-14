@@ -16,9 +16,3 @@
     fun:_mm256_srli_epi64
     fun:OQS_KEM_bike_*_rotate256_small
 }
-{
-    Compute the decoding threshold
-    Memcheck:Cond
-    fun:OQS_KEM_bike_*_get_threshold
-    fun:OQS_KEM_bike_*_decode
-}
