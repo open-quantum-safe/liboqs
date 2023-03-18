@@ -13,9 +13,9 @@ OQS_SIG *OQS_SIG_sphincs_haraka_256f_simple_new(void) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_sphincs_haraka_256f_simple;
-	sig->alg_version = "https://github.com/sphincs/sphincsplus/commit/77755c94d0bc744478044d6efbb888dc13156441";
+	sig->alg_version = "https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637";
 
-	sig->claimed_nist_level = 5;
+	sig->claimed_nist_level = 2;
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_sphincs_haraka_256f_simple_length_public_key;

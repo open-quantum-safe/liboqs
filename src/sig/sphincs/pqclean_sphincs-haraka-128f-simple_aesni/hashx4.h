@@ -1,16 +1,17 @@
-#ifndef PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_HASHX4_H
-#define PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_HASHX4_H
+#ifndef SPX_HASHX4_H
+#define SPX_HASHX4_H
 
 #include <stdint.h>
 
-#include "hash_state.h"
+#include "context.h"
+#include "params.h"
 
-void PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_prf_addrx4(unsigned char *out0,
-        unsigned char *out1,
-        unsigned char *out2,
-        unsigned char *out3,
-        const unsigned char *key,
-        const uint32_t addrx4[4 * 8],
-        const hash_state *state_seeded);
+#define prf_addrx4 SPX_NAMESPACE(prf_addrx4)
+void prf_addrx4(unsigned char *out0,
+                unsigned char *out1,
+                unsigned char *out2,
+                unsigned char *out3,
+                const spx_ctx *ctx,
+                const uint32_t addrx4[4 * 8]);
 
 #endif

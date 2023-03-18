@@ -5,6 +5,7 @@ principal-submitters:
 auxiliary-submitters:
 - Jean-Philippe Aumasson
 - Daniel J. Bernstein,
+- Ward Beullens
 - Christoph Dobraunig
 - Maria Eichlseder
 - Scott Fluhrer
@@ -18,14 +19,14 @@ auxiliary-submitters:
 - Christian Rechberger
 - Joost Rijneveld
 - Peter Schwabe
+- Bas Westerbaan
 crypto-assumption: hash-based signatures
 website: https://sphincs.org/
 nist-round: 3
 spec-version: NIST Round 3 submission
 spdx-license-identifier: CC0-1.0
 primary-upstream:
-  source: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b
-    with copy_from_upstream patches
+  source: https://github.com/PQClean/PQClean/commit/c1b19a865de329e87e9b3e9152362fcb709da8ab
   spdx-license-identifier: CC0-1.0
   upstream-ancestors:
   - https://github.com/sphincs/sphincsplus
@@ -141,7 +142,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-192f-robust
-  claimed-nist-level: 3
+  claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 48
   length-secret-key: 96
@@ -168,7 +169,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-192f-simple
-  claimed-nist-level: 3
+  claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 48
   length-secret-key: 96
@@ -195,7 +196,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-192s-robust
-  claimed-nist-level: 3
+  claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 48
   length-secret-key: 96
@@ -222,7 +223,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-192s-simple
-  claimed-nist-level: 3
+  claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 48
   length-secret-key: 96
@@ -249,7 +250,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-256f-robust
-  claimed-nist-level: 5
+  claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 64
   length-secret-key: 128
@@ -276,7 +277,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-256f-simple
-  claimed-nist-level: 5
+  claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 64
   length-secret-key: 128
@@ -303,7 +304,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-256s-robust
-  claimed-nist-level: 5
+  claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 64
   length-secret-key: 128
@@ -330,7 +331,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: false
 - name: SPHINCS+-Haraka-256s-simple
-  claimed-nist-level: 5
+  claimed-nist-level: 2
   claimed-security: EUF-CMA
   length-public-key: 64
   length-secret-key: 128

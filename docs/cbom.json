@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:ac72fb7e-1016-4cd9-925b-72df28c22f74",
+  "serialNumber": "urn:uuid:46ad14ba-31d7-42ad-83c8-08c1755261c7",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-03-06T16:07:06.998705",
+    "timestamp": "2023-03-18T11:09:37.700416",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f49e57f71cf550b7ba7ed3ec94cb4f99e41a6d8c",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@d61d81c526da8bb62e363f5a75191689572151cb",
       "name": "liboqs",
-      "version": "f49e57f71cf550b7ba7ed3ec94cb4f99e41a6d8c"
+      "version": "d61d81c526da8bb62e363f5a75191689572151cb"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@f49e57f71cf550b7ba7ed3ec94cb4f99e41a6d8c",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@d61d81c526da8bb62e363f5a75191689572151cb",
       "name": "liboqs",
-      "version": "f49e57f71cf550b7ba7ed3ec94cb4f99e41a6d8c"
+      "version": "d61d81c526da8bb62e363f5a75191689572151cb"
     },
     {
       "type": "crypto-asset",
@@ -1736,7 +1736,7 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1756,7 +1756,7 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1776,7 +1776,7 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1796,7 +1796,7 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1816,7 +1816,7 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1836,7 +1836,7 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1856,7 +1856,7 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 3
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1876,7 +1876,7 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 3
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1896,7 +1896,7 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1916,7 +1916,7 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1936,7 +1936,7 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1956,7 +1956,7 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1976,7 +1976,7 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -1996,7 +1996,7 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -2016,7 +2016,7 @@
           ],
           "implementationPlatform": "generic"
         },
-        "nistQuantumSecurityLevel": 5
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -2036,7 +2036,7 @@
           ],
           "implementationPlatform": "x86_64"
         },
-        "nistQuantumSecurityLevel": 5
+        "nistQuantumSecurityLevel": 2
       }
     },
     {
@@ -3028,7 +3028,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@f49e57f71cf550b7ba7ed3ec94cb4f99e41a6d8c",
+      "ref": "pkg:github/open-quantum-safe/liboqs@d61d81c526da8bb62e363f5a75191689572151cb",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
