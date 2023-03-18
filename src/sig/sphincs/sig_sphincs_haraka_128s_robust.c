@@ -13,7 +13,7 @@ OQS_SIG *OQS_SIG_sphincs_haraka_128s_robust_new(void) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_sphincs_haraka_128s_robust;
-	sig->alg_version = "https://github.com/sphincs/sphincsplus/commit/77755c94d0bc744478044d6efbb888dc13156441";
+	sig->alg_version = "https://github.com/sphincs/sphincsplus/commit/ed15dd78658f63288c7492c00260d86154b84637";
 
 	sig->claimed_nist_level = 1;
 	sig->euf_cma = true;

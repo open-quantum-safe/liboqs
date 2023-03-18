@@ -1,28 +1,13 @@
-#ifndef PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_THASH_H
-#define PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_THASH_H
+#ifndef SPX_THASH_H
+#define SPX_THASH_H
 
-#include "hash_state.h"
+#include "context.h"
+#include "params.h"
 
 #include <stdint.h>
 
-void PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_thash_1(
-    unsigned char *out, const unsigned char *in,
-    const unsigned char *pub_seed, uint32_t addr[8],
-    const hash_state *hash_state_seeded);
-
-void PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_thash_2(
-    unsigned char *out, const unsigned char *in,
-    const unsigned char *pub_seed, uint32_t addr[8],
-    const hash_state *hash_state_seeded);
-
-void PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_thash_WOTS_LEN(
-    unsigned char *out, const unsigned char *in,
-    const unsigned char *pub_seed, uint32_t addr[8],
-    const hash_state *hash_state_seeded);
-
-void PQCLEAN_SPHINCSHARAKA128FSIMPLE_AESNI_thash_FORS_TREES(
-    unsigned char *out, const unsigned char *in,
-    const unsigned char *pub_seed, uint32_t addr[8],
-    const hash_state *hash_state_seeded);
+#define thash SPX_NAMESPACE(thash)
+void thash(unsigned char *out, const unsigned char *in, unsigned int inblocks,
+           const spx_ctx *ctx, uint32_t addr[8]);
 
 #endif

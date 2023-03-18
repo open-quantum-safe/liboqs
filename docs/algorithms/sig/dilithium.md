@@ -11,7 +11,7 @@
   - **Implementation license (SPDX-Identifier)**: CC0-1.0 or Apache-2.0
 - **Optimized Implementation sources**: https://github.com/pq-crystals/dilithium/commit/3e9b9f1412f6c7435dbeb4e10692ea58f181ee51 with copy_from_upstream patches
   - **pqclean-aarch64**:<a name="pqclean-aarch64"></a>
-      - **Source**: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b with copy_from_upstream patches
+      - **Source**: https://github.com/PQClean/PQClean/commit/c1b19a865de329e87e9b3e9152362fcb709da8ab with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 

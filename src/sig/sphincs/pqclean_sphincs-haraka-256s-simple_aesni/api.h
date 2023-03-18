@@ -4,15 +4,13 @@
 #include <stddef.h>
 #include <stdint.h>
 
-
-
-#define PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_CRYPTO_ALGNAME "SPHINCS+"
+#define PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_CRYPTO_ALGNAME "SPHINCS+-haraka-256s-simple"
 
 #define PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_CRYPTO_SECRETKEYBYTES 128
 #define PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_CRYPTO_PUBLICKEYBYTES 64
-#define PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_CRYPTO_BYTES 29792
-#define PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_CRYPTO_SEEDBYTES 96
+#define PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_CRYPTO_BYTES          29792
 
+#define PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_CRYPTO_SEEDBYTES      96
 
 /*
  * Returns the length of a secret key, in bytes
@@ -39,43 +37,41 @@ size_t PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_seedbytes(void);
  * Format sk: [SK_SEED || SK_PRF || PUB_SEED || root]
  * Format pk: [root || PUB_SEED]
  */
-int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_seed_keypair(
-    uint8_t *pk, uint8_t *sk, const uint8_t *seed);
+int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_seed_keypair(uint8_t *pk, uint8_t *sk,
+        const uint8_t *seed);
 
 /*
  * Generates a SPHINCS+ key pair.
  * Format sk: [SK_SEED || SK_PRF || PUB_SEED || root]
  * Format pk: [root || PUB_SEED]
  */
-int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_keypair(
-    uint8_t *pk, uint8_t *sk);
+int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_keypair(uint8_t *pk, uint8_t *sk);
 
 /**
  * Returns an array containing a detached signature.
  */
-int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_signature(
-    uint8_t *sig, size_t *siglen,
-    const uint8_t *m, size_t mlen, const uint8_t *sk);
+int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_signature(uint8_t *sig, size_t *siglen,
+        const uint8_t *m, size_t mlen,
+        const uint8_t *sk);
 
 /**
  * Verifies a detached signature and message under a given public key.
  */
-int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_verify(
-    const uint8_t *sig, size_t siglen,
-    const uint8_t *m, size_t mlen, const uint8_t *pk);
+int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_verify(const uint8_t *sig, size_t siglen,
+        const uint8_t *m, size_t mlen,
+        const uint8_t *pk);
 
 /**
  * Returns an array containing the signature followed by the message.
  */
-int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign(
-    uint8_t *sm, size_t *smlen,
-    const uint8_t *m, size_t mlen, const uint8_t *sk);
+int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign(uint8_t *sm, size_t *smlen,
+        const uint8_t *m, size_t mlen,
+        const uint8_t *sk);
 
 /**
  * Verifies a given signature-message pair under a given public key.
  */
-int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_open(
-    uint8_t *m, size_t *mlen,
-    const uint8_t *sm, size_t smlen, const uint8_t *pk);
-
+int PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_crypto_sign_open(uint8_t *m, size_t *mlen,
+        const uint8_t *sm, size_t smlen,
+        const uint8_t *pk);
 #endif

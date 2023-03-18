@@ -8,10 +8,12 @@ Plain C implementation of the Haraka256 and Haraka512 permutations.
 #include <string.h>
 
 #include "haraka.h"
+#include "harakax4.h"
+#include "utils.h"
 
 #define HARAKAS_RATE 32
 
-#define u64 uint64_t
+#define u64 unsigned long
 #define u128 __m128i
 
 #define LOAD(src) _mm_loadu_si128((u128 *)(src))
@@ -20,7 +22,7 @@ Plain C implementation of the Haraka256 and Haraka512 permutations.
 #define XOR128(a, b) _mm_xor_si128(a, b)
 
 #define AES2(s0, s1, rci) \
-    (s0) = _mm_aesenc_si128(s0, *(rci)); \
+    s0 = _mm_aesenc_si128(s0, *(rci)); \
     (s1) = _mm_aesenc_si128(s1, *((rci) + 1)); \
     (s0) = _mm_aesenc_si128(s0, *((rci) + 2)); \
     (s1) = _mm_aesenc_si128(s1, *((rci) + 3));
@@ -32,7 +34,7 @@ Plain C implementation of the Haraka256 and Haraka512 permutations.
     AES2((s3)[0], (s3)[1], rci);
 
 #define AES4(s0, s1, s2, s3, rci) \
-    (s0) = _mm_aesenc_si128(s0, *(rci)); \
+    s0 = _mm_aesenc_si128(s0, *(rci)); \
     (s1) = _mm_aesenc_si128(s1, *((rci) + 1)); \
     (s2) = _mm_aesenc_si128(s2, *((rci) + 2)); \
     (s3) = _mm_aesenc_si128(s3, *((rci) + 3)); \
@@ -68,17 +70,17 @@ Plain C implementation of the Haraka256 and Haraka512 permutations.
     _mm_storeu_si128((u128 *)((out) + 16), \
                      _mm_castpd_si128(_mm_shuffle_pd(_mm_castsi128_pd(s2), _mm_castsi128_pd(s3), 0)));
 
-static void load_haraka_constants(u128 rc[40]) {
-    rc[ 0] = _mm_set_epi32((int)0x0684704c, (int)0xe620c00a, (int)0xb2c5fef0, (int)0x75817b9d);
-    rc[ 1] = _mm_set_epi32((int)0x8b66b4e1, (int)0x88f3a06b, (int)0x640f6ba4, (int)0x2f08f717);
-    rc[ 2] = _mm_set_epi32((int)0x3402de2d, (int)0x53f28498, (int)0xcf029d60, (int)0x9f029114);
-    rc[ 3] = _mm_set_epi32((int)0x0ed6eae6, (int)0x2e7b4f08, (int)0xbbf3bcaf, (int)0xfd5b4f79);
-    rc[ 4] = _mm_set_epi32((int)0xcbcfb0cb, (int)0x4872448b, (int)0x79eecd1c, (int)0xbe397044);
-    rc[ 5] = _mm_set_epi32((int)0x7eeacdee, (int)0x6e9032b7, (int)0x8d5335ed, (int)0x2b8a057b);
-    rc[ 6] = _mm_set_epi32((int)0x67c28f43, (int)0x5e2e7cd0, (int)0xe2412761, (int)0xda4fef1b);
-    rc[ 7] = _mm_set_epi32((int)0x2924d9b0, (int)0xafcacc07, (int)0x675ffde2, (int)0x1fc70b3b);
-    rc[ 8] = _mm_set_epi32((int)0xab4d63f1, (int)0xe6867fe9, (int)0xecdb8fca, (int)0xb9d465ee);
-    rc[ 9] = _mm_set_epi32((int)0x1c30bf84, (int)0xd4b7cd64, (int)0x5b2a404f, (int)0xad037e33);
+static void load_haraka_constants(u128 *rc) {
+    rc[0]  = _mm_set_epi32((int)0x0684704c, (int)0xe620c00a, (int)0xb2c5fef0, (int)0x75817b9d);
+    rc[1]  = _mm_set_epi32((int)0x8b66b4e1, (int)0x88f3a06b, (int)0x640f6ba4, (int)0x2f08f717);
+    rc[2]  = _mm_set_epi32((int)0x3402de2d, (int)0x53f28498, (int)0xcf029d60, (int)0x9f029114);
+    rc[3]  = _mm_set_epi32((int)0x0ed6eae6, (int)0x2e7b4f08, (int)0xbbf3bcaf, (int)0xfd5b4f79);
+    rc[4]  = _mm_set_epi32((int)0xcbcfb0cb, (int)0x4872448b, (int)0x79eecd1c, (int)0xbe397044);
+    rc[5]  = _mm_set_epi32((int)0x7eeacdee, (int)0x6e9032b7, (int)0x8d5335ed, (int)0x2b8a057b);
+    rc[6]  = _mm_set_epi32((int)0x67c28f43, (int)0x5e2e7cd0, (int)0xe2412761, (int)0xda4fef1b);
+    rc[7]  = _mm_set_epi32((int)0x2924d9b0, (int)0xafcacc07, (int)0x675ffde2, (int)0x1fc70b3b);
+    rc[8]  = _mm_set_epi32((int)0xab4d63f1, (int)0xe6867fe9, (int)0xecdb8fca, (int)0xb9d465ee);
+    rc[9]  = _mm_set_epi32((int)0x1c30bf84, (int)0xd4b7cd64, (int)0x5b2a404f, (int)0xad037e33);
     rc[10] = _mm_set_epi32((int)0xb2cc0bb9, (int)0x941723bf, (int)0x69028b2e, (int)0x8df69800);
     rc[11] = _mm_set_epi32((int)0xfa0478a6, (int)0xde6f5572, (int)0x4aaa9ec8, (int)0x5c9d2d8a);
     rc[12] = _mm_set_epi32((int)0xdfb49f2b, (int)0x6b772a12, (int)0x0efa4f2e, (int)0x29129fd4);
@@ -111,77 +113,65 @@ static void load_haraka_constants(u128 rc[40]) {
     rc[39] = _mm_set_epi32((int)0x756acc03, (int)0x02288288, (int)0x4ad6bdfd, (int)0xe9c59da1);
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_tweak_constants(
-    harakactx *state,
-    const unsigned char *pk_seed, const unsigned char *sk_seed,
-    unsigned long long seed_length) {
+void tweak_constants(spx_ctx *ctx) {
     int i;
     unsigned char buf[40 * 16];
 
     /* Use the standard constants to generate tweaked ones. */
-    load_haraka_constants(state->rc);
-
-    /* Constants for sk.seed */
-    if (sk_seed != NULL) {
-        PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S(buf, 40 * 16, sk_seed, seed_length, state);
-        /* Tweak constants with the pub_seed */
-        for (i = 0; i < 40; i++) {
-            state->rc_sseed[i] = LOAD(buf + i * 16);
-        }
-    }
+    load_haraka_constants(ctx->rc);
 
     /* Constants for pk.seed */
-    PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S(buf, 40 * 16, pk_seed, seed_length, state);
+    haraka_S(buf, 40 * 16, ctx->pub_seed, SPX_N, ctx);
 
     /* Tweak constants with the pub_seed */
     for (i = 0; i < 40; i++) {
-        state->rc[i] = LOAD(buf + i * 16);
+        ctx->rc[i] = LOAD(buf + i * 16);
     }
 }
 
-static void haraka_S_absorb(unsigned char *s,
+static void haraka_S_absorb(unsigned char *s, unsigned int r,
                             const unsigned char *m, unsigned long long mlen,
-                            unsigned char p,
-                            const harakactx *state) {
+                            unsigned char p, const spx_ctx *ctx) {
     unsigned long long i;
-    unsigned char t[HARAKAS_RATE];
+    PQCLEAN_VLA(unsigned char, t, r);
 
-    while (mlen >= HARAKAS_RATE) {
+    while (mlen >= r) {
         // XOR block to state
         STORE(s, XOR128(LOAD(s), LOAD(m)));
         STORE(s + 16, XOR128(LOAD(s + 16), LOAD(m + 16)));
-        PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm(s, s, state);
-        mlen -= HARAKAS_RATE;
-        m += HARAKAS_RATE;
+        haraka512_perm(s, s, ctx);
+        mlen -= r;
+        m += r;
     }
 
-    for (i = 0; i < HARAKAS_RATE; ++i) {
+    for (i = 0; i < r; ++i) {
         t[i] = 0;
     }
     for (i = 0; i < mlen; ++i) {
         t[i] = m[i];
     }
     t[i] = p;
-    t[HARAKAS_RATE - 1] |= 128;
+    t[r - 1] |= 128;
     STORE(s, XOR128(LOAD(s), LOAD(t)));
     STORE(s + 16, XOR128(LOAD(s + 16), LOAD(t + 16)));
 }
 
 static void haraka_S_absorb4x(unsigned char *s,
+                              unsigned int r,
                               const unsigned char *m0,
                               const unsigned char *m1,
                               const unsigned char *m2,
                               const unsigned char *m3,
                               unsigned long long int mlen,
                               unsigned char p,
-                              const harakactx *state) {
+                              const spx_ctx *ctx) {
     unsigned long long i;
-    unsigned char t0[HARAKAS_RATE];
-    unsigned char t1[HARAKAS_RATE];
-    unsigned char t2[HARAKAS_RATE];
-    unsigned char t3[HARAKAS_RATE];
+    PQCLEAN_VLA(unsigned char, t0, r);
+    PQCLEAN_VLA(unsigned char, t1, r);
+    PQCLEAN_VLA(unsigned char, t2, r);
+    PQCLEAN_VLA(unsigned char, t3, r);
 
-    while (mlen >= HARAKAS_RATE) {
+    while (mlen >= r) {
         // XOR block to state
         STORE(s, XOR128(LOAD(s), LOAD(m0)));
         STORE(s + 16, XOR128(LOAD(s + 16), LOAD(m0 + 16)));
@@ -192,15 +182,15 @@ static void haraka_S_absorb4x(unsigned char *s,
         STORE(s + 192, XOR128(LOAD(s + 192), LOAD(m3)));
         STORE(s + 208, XOR128(LOAD(s + 208), LOAD(m3 + 16)));
 
-        PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm_x4(s, s, state);
-        mlen -= HARAKAS_RATE;
-        m0 += HARAKAS_RATE;
-        m1 += HARAKAS_RATE;
-        m2 += HARAKAS_RATE;
-        m3 += HARAKAS_RATE;
+        haraka512_perm_x4(s, s, ctx);
+        mlen -= r;
+        m0 += r;
+        m1 += r;
+        m2 += r;
+        m3 += r;
     }
 
-    for (i = 0; i < HARAKAS_RATE; ++i) {
+    for (i = 0; i < r; ++i) {
         t0[i] = 0;
         t1[i] = 0;
         t2[i] = 0;
@@ -218,10 +208,10 @@ static void haraka_S_absorb4x(unsigned char *s,
     t2[i] = p;
     t3[i] = p;
 
-    t0[HARAKAS_RATE - 1] |= 128;
-    t1[HARAKAS_RATE - 1] |= 128;
-    t2[HARAKAS_RATE - 1] |= 128;
-    t3[HARAKAS_RATE - 1] |= 128;
+    t0[r - 1] |= 128;
+    t1[r - 1] |= 128;
+    t2[r - 1] |= 128;
+    t3[r - 1] |= 128;
 
     STORE(s, XOR128(LOAD(s), LOAD(t0)));
     STORE(s + 16, XOR128(LOAD(s + 16), LOAD(t0 + 16)));
@@ -234,9 +224,10 @@ static void haraka_S_absorb4x(unsigned char *s,
 }
 
 static void haraka_S_squeezeblocks(unsigned char *h, unsigned long long nblocks,
-                                   unsigned char *s, unsigned int r, const harakactx *state) {
+                                   unsigned char *s, unsigned int r,
+                                   const spx_ctx *ctx) {
     while (nblocks > 0) {
-        PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm(s, s, state);
+        haraka512_perm(s, s, ctx);
         STORE(h, LOAD(s));
         STORE(h + 16, LOAD(s + 16));
         h += r;
@@ -251,9 +242,9 @@ static void haraka_S_squeezeblocks4x(unsigned char *h0,
                                      unsigned long long nblocks,
                                      unsigned char *s,
                                      unsigned int r,
-                                     const harakactx *state) {
+                                     const spx_ctx *ctx) {
     while (nblocks > 0) {
-        PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm_x4(s, s, state);
+        haraka512_perm_x4(s, s, ctx);
         STORE(h0, LOAD(s));
         STORE(h0 + 16, LOAD(s + 16));
         STORE(h1, LOAD(s + 64));
@@ -270,7 +261,7 @@ static void haraka_S_squeezeblocks4x(unsigned char *h0,
     }
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S_inc_init(uint8_t *s_inc) {
+void haraka_S_inc_init(uint8_t *s_inc) {
     size_t i;
 
     for (i = 0; i < 64; i++) {
@@ -279,7 +270,8 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S_inc_init(uint8_t *s_inc) {
     s_inc[64] = 0;
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S_inc_absorb(uint8_t *s_inc, const uint8_t *m, size_t mlen, const harakactx *state) {
+void haraka_S_inc_absorb(uint8_t *s_inc, const uint8_t *m, size_t mlen,
+                         const spx_ctx *ctx) {
     size_t i;
 
     /* Recall that s_inc[64] is the non-absorbed bytes xored into the state */
@@ -293,16 +285,16 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S_inc_absorb(uint8_t *s_inc, c
         m += HARAKAS_RATE - s_inc[64];
         s_inc[64] = 0;
 
-        PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm(s_inc, s_inc, state);
+        haraka512_perm(s_inc, s_inc, ctx);
     }
 
     for (i = 0; i < mlen; i++) {
         s_inc[s_inc[64] + i] ^= m[i];
     }
-    s_inc[64] = (uint8_t)(s_inc[64] + mlen);
+    s_inc[64] += (uint8_t)mlen;
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S_inc_finalize(uint8_t *s_inc) {
+void haraka_S_inc_finalize(uint8_t *s_inc) {
     /* After haraka_S_inc_absorb, we are guaranteed that s_inc[64] < HARAKAS_RATE,
        so we can always use one more byte for p in the current state. */
     s_inc[s_inc[64]] ^= 0x1F;
@@ -310,22 +302,23 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S_inc_finalize(uint8_t *s_inc)
     s_inc[64] = 0;
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S_inc_squeeze(uint8_t *out, size_t outlen, uint8_t *s_inc, const harakactx *state) {
+void haraka_S_inc_squeeze(uint8_t *out, size_t outlen, uint8_t *s_inc,
+                          const spx_ctx *ctx) {
     size_t i;
 
     /* First consume any bytes we still have sitting around */
     for (i = 0; i < outlen && i < s_inc[64]; i++) {
         /* There are s_inc[64] bytes left, so r - s_inc[64] is the first
            available byte. We consume from there, i.e., up to r. */
-        out[i] = (uint8_t)s_inc[(HARAKAS_RATE - s_inc[64] + (uint8_t)i)];
+        out[i] = (uint8_t)s_inc[(HARAKAS_RATE - s_inc[64] + i)];
     }
     out += i;
     outlen -= i;
-    s_inc[64] = (uint8_t)(s_inc[64] - i);
+    s_inc[64] -= (uint8_t)i;
 
     /* Then squeeze the remaining necessary blocks */
     while (outlen > 0) {
-        PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm(s_inc, s_inc, state);
+        haraka512_perm(s_inc, s_inc, ctx);
 
         for (i = 0; i < outlen && i < HARAKAS_RATE; i++) {
             out[i] = s_inc[i];
@@ -336,8 +329,9 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S_inc_squeeze(uint8_t *out, si
     }
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S(unsigned char *out, unsigned long long outlen,
-        const unsigned char *in, unsigned long long inlen, const harakactx *state) {
+void haraka_S(unsigned char *out, unsigned long long outlen,
+              const unsigned char *in, unsigned long long inlen,
+              const spx_ctx *ctx) {
     unsigned long long i;
     unsigned char s[64];
     unsigned char d[32];
@@ -345,30 +339,30 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_S(unsigned char *out, unsigned
     for (i = 0; i < 64; i++) {
         s[i] = 0;
     }
-    haraka_S_absorb(s, in, inlen, 0x1F, state);
+    haraka_S_absorb(s, HARAKAS_RATE, in, inlen, 0x1F, ctx);
 
-    haraka_S_squeezeblocks(out, outlen / HARAKAS_RATE, s, HARAKAS_RATE, state);
+    haraka_S_squeezeblocks(out, outlen / HARAKAS_RATE, s, HARAKAS_RATE, ctx);
     out += (outlen / HARAKAS_RATE) * HARAKAS_RATE;
 
     if (outlen % HARAKAS_RATE) {
-        haraka_S_squeezeblocks(d, 1, s, HARAKAS_RATE, state);
+        haraka_S_squeezeblocks(d, 1, s, HARAKAS_RATE, ctx);
         for (i = 0; i < outlen % HARAKAS_RATE; i++) {
             out[i] = d[i];
         }
     }
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_Sx4(unsigned char *out0,
-        unsigned char *out1,
-        unsigned char *out2,
-        unsigned char *out3,
-        unsigned long long outlen,
-        const unsigned char *in0,
-        const unsigned char *in1,
-        const unsigned char *in2,
-        const unsigned char *in3,
-        unsigned long long inlen,
-        const harakactx *state) {
+void haraka_Sx4(unsigned char *out0,
+                unsigned char *out1,
+                unsigned char *out2,
+                unsigned char *out3,
+                unsigned long long outlen,
+                const unsigned char *in0,
+                const unsigned char *in1,
+                const unsigned char *in2,
+                const unsigned char *in3,
+                unsigned long long inlen,
+                const spx_ctx *ctx) {
     unsigned long long i;
     unsigned char s[64 * 4];
     unsigned char d0[32];
@@ -379,16 +373,17 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_Sx4(unsigned char *out0,
     for (i = 0; i < 64 * 4; i++) {
         s[i] = 0;
     }
-    haraka_S_absorb4x(s, in0, in1, in2, in3, inlen, 0x1F, state);
+    haraka_S_absorb4x(s, HARAKAS_RATE, in0, in1, in2, in3, inlen, 0x1F, ctx);
 
-    haraka_S_squeezeblocks4x(out0, out1, out2, out3, outlen / HARAKAS_RATE, s, HARAKAS_RATE, state);
+    haraka_S_squeezeblocks4x(out0, out1, out2, out3, outlen / HARAKAS_RATE, s,
+                             HARAKAS_RATE, ctx);
     out0 += (outlen / HARAKAS_RATE) * HARAKAS_RATE;
     out1 += (outlen / HARAKAS_RATE) * HARAKAS_RATE;
     out2 += (outlen / HARAKAS_RATE) * HARAKAS_RATE;
     out3 += (outlen / HARAKAS_RATE) * HARAKAS_RATE;
 
     if (outlen % HARAKAS_RATE) {
-        haraka_S_squeezeblocks4x(d0, d1, d2, d3, 1, s, HARAKAS_RATE, state);
+        haraka_S_squeezeblocks4x(d0, d1, d2, d3, 1, s, HARAKAS_RATE, ctx);
         for (i = 0; i < outlen % HARAKAS_RATE; i++) {
             out0[i] = d0[i];
             out1[i] = d1[i];
@@ -398,7 +393,8 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka_Sx4(unsigned char *out0,
     }
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm(unsigned char *out, const unsigned char *in, const harakactx *state) {
+void haraka512_perm(unsigned char *out, const unsigned char *in,
+                    const spx_ctx *ctx) {
     u128 s[4], tmp;
 
     s[0] = LOAD(in);
@@ -406,19 +402,19 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm(unsigned char *out, co
     s[2] = LOAD(in + 32);
     s[3] = LOAD(in + 48);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc);
     MIX4(s[0], s[1], s[2], s[3]);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc + 8);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc + 8);
     MIX4(s[0], s[1], s[2], s[3]);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc + 16);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc + 16);
     MIX4(s[0], s[1], s[2], s[3]);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc + 24);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc + 24);
     MIX4(s[0], s[1], s[2], s[3]);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc + 32);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc + 32);
     MIX4(s[0], s[1], s[2], s[3]);
 
     STORE(out, s[0]);
@@ -427,7 +423,8 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm(unsigned char *out, co
     STORE(out + 48, s[3]);
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm_x4(unsigned char *out, const unsigned char *in, const harakactx *state) {
+void haraka512_perm_x4(unsigned char *out, const unsigned char *in,
+                       const spx_ctx *ctx) {
     u128 s[4][4], tmp;
 
     s[0][0] = LOAD(in);
@@ -447,31 +444,31 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm_x4(unsigned char *out,
     s[3][2] = LOAD(in + 224);
     s[3][3] = LOAD(in + 240);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
     MIX4(s[3][0], s[3][1], s[3][2], s[3][3]);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc + 8);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc + 8);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
     MIX4(s[3][0], s[3][1], s[3][2], s[3][3]);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc + 16);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc + 16);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
     MIX4(s[3][0], s[3][1], s[3][2], s[3][3]);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc + 24);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc + 24);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
     MIX4(s[3][0], s[3][1], s[3][2], s[3][3]);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc + 32);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc + 32);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
@@ -495,7 +492,8 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512_perm_x4(unsigned char *out,
     STORE(out + 240, s[3][3]);
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512(unsigned char *out, const unsigned char *in, const harakactx *state) {
+void haraka512(unsigned char *out, const unsigned char *in,
+               const spx_ctx *ctx) {
     u128 s[4], tmp;
 
     s[0] = LOAD(in);
@@ -503,19 +501,19 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512(unsigned char *out, const u
     s[2] = LOAD(in + 32);
     s[3] = LOAD(in + 48);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc);
     MIX4(s[0], s[1], s[2], s[3]);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc + 8);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc + 8);
     MIX4(s[0], s[1], s[2], s[3]);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc + 16);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc + 16);
     MIX4(s[0], s[1], s[2], s[3]);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc + 24);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc + 24);
     MIX4(s[0], s[1], s[2], s[3]);
 
-    AES4(s[0], s[1], s[2], s[3], state->rc + 32);
+    AES4(s[0], s[1], s[2], s[3], ctx->rc + 32);
     MIX4(s[0], s[1], s[2], s[3]);
 
     s[0] = XOR128(s[0], LOAD(in));
@@ -527,7 +525,8 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512(unsigned char *out, const u
     TRUNCSTORE(out, s[0], s[1], s[2], s[3]);
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512x4(unsigned char *out, const unsigned char *in, const harakactx *state) {
+void haraka512x4(unsigned char *out, const unsigned char *in,
+                 const spx_ctx *ctx) {
     u128 s[4][4], tmp;
 
     s[0][0] = LOAD(in);
@@ -547,31 +546,31 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512x4(unsigned char *out, const
     s[3][2] = LOAD(in + 224);
     s[3][3] = LOAD(in + 240);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
     MIX4(s[3][0], s[3][1], s[3][2], s[3][3]);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc + 8);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc + 8);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
     MIX4(s[3][0], s[3][1], s[3][2], s[3][3]);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc + 16);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc + 16);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
     MIX4(s[3][0], s[3][1], s[3][2], s[3][3]);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc + 24);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc + 24);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
     MIX4(s[3][0], s[3][1], s[3][2], s[3][3]);
 
-    AES4_4x(s[0], s[1], s[2], s[3], state->rc + 32);
+    AES4_4x(s[0], s[1], s[2], s[3], ctx->rc + 32);
     MIX4(s[0][0], s[0][1], s[0][2], s[0][3]);
     MIX4(s[1][0], s[1][1], s[1][2], s[1][3]);
     MIX4(s[2][0], s[2][1], s[2][2], s[2][3]);
@@ -600,25 +599,26 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka512x4(unsigned char *out, const
     TRUNCSTORE((out + 96), s[3][0], s[3][1], s[3][2], s[3][3]);
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256(unsigned char *out, const unsigned char *in, const harakactx *state) {
+void haraka256(unsigned char *out, const unsigned char *in,
+               const spx_ctx *ctx) {
     u128 s[2], tmp;
 
     s[0] = LOAD(in);
     s[1] = LOAD(in + 16);
 
-    AES2(s[0], s[1], state->rc);
+    AES2(s[0], s[1], ctx->rc);
     MIX2(s[0], s[1]);
 
-    AES2(s[0], s[1], state->rc + 4);
+    AES2(s[0], s[1], ctx->rc + 4);
     MIX2(s[0], s[1]);
 
-    AES2(s[0], s[1], state->rc + 8);
+    AES2(s[0], s[1], ctx->rc + 8);
     MIX2(s[0], s[1]);
 
-    AES2(s[0], s[1], state->rc + 12);
+    AES2(s[0], s[1], ctx->rc + 12);
     MIX2(s[0], s[1]);
 
-    AES2(s[0], s[1], state->rc + 16);
+    AES2(s[0], s[1], ctx->rc + 16);
     MIX2(s[0], s[1]);
 
     s[0] = XOR128(s[0], LOAD(in));
@@ -628,7 +628,8 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256(unsigned char *out, const u
     STORE(out + 16, s[1]);
 }
 
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256x4(unsigned char *out, const unsigned char *in, const harakactx *state) {
+void haraka256x4(unsigned char *out, const unsigned char *in,
+                 const spx_ctx *ctx) {
     u128 s[4][2], tmp;
 
     s[0][0] = LOAD(in);
@@ -641,7 +642,7 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256x4(unsigned char *out, const
     s[3][1] = LOAD(in + 112);
 
     // Round 1
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc);
+    AES2_4x(s[0], s[1], s[2], s[3], ctx->rc);
 
     MIX2(s[0][0], s[0][1]);
     MIX2(s[1][0], s[1][1]);
@@ -649,7 +650,7 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256x4(unsigned char *out, const
     MIX2(s[3][0], s[3][1]);
 
     // Round 2
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc + 4);
+    AES2_4x(s[0], s[1], s[2], s[3], ctx->rc + 4);
 
     MIX2(s[0][0], s[0][1]);
     MIX2(s[1][0], s[1][1]);
@@ -657,7 +658,7 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256x4(unsigned char *out, const
     MIX2(s[3][0], s[3][1]);
 
     // Round 3
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc + 8);
+    AES2_4x(s[0], s[1], s[2], s[3], ctx->rc + 8);
 
     MIX2(s[0][0], s[0][1]);
     MIX2(s[1][0], s[1][1]);
@@ -665,7 +666,7 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256x4(unsigned char *out, const
     MIX2(s[3][0], s[3][1]);
 
     // Round 4
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc + 12);
+    AES2_4x(s[0], s[1], s[2], s[3], ctx->rc + 12);
 
     MIX2(s[0][0], s[0][1]);
     MIX2(s[1][0], s[1][1]);
@@ -673,7 +674,7 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256x4(unsigned char *out, const
     MIX2(s[3][0], s[3][1]);
 
     // Round 5
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc + 16);
+    AES2_4x(s[0], s[1], s[2], s[3], ctx->rc + 16);
 
     MIX2(s[0][0], s[0][1]);
     MIX2(s[1][0], s[1][1]);
@@ -689,106 +690,6 @@ void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256x4(unsigned char *out, const
     s[2][1] = _mm_xor_si128(s[2][1], LOAD(in + 80));
     s[3][0] = _mm_xor_si128(s[3][0], LOAD(in + 96));
     s[3][1] = _mm_xor_si128(s[3][1], LOAD(in + 112));
-
-    STORE(out, s[0][0]);
-    STORE(out + 16, s[0][1]);
-    STORE(out + 32, s[1][0]);
-    STORE(out + 48, s[1][1]);
-    STORE(out + 64, s[2][0]);
-    STORE(out + 80, s[2][1]);
-    STORE(out + 96, s[3][0]);
-    STORE(out + 112, s[3][1]);
-}
-
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256_sk(unsigned char *out, const unsigned char *in, const harakactx *state) {
-    u128 s[2], tmp;
-
-    s[0] = LOAD(in);
-    s[1] = LOAD(in + 16);
-
-    AES2(s[0], s[1], state->rc_sseed);
-    MIX2(s[0], s[1]);
-
-    AES2(s[0], s[1], state->rc_sseed + 4);
-    MIX2(s[0], s[1]);
-
-    AES2(s[0], s[1], state->rc_sseed + 8);
-    MIX2(s[0], s[1]);
-
-    AES2(s[0], s[1], state->rc_sseed + 12);
-    MIX2(s[0], s[1]);
-
-    AES2(s[0], s[1], state->rc_sseed + 16);
-    MIX2(s[0], s[1]);
-
-    s[0] = XOR128(s[0], LOAD(in));
-    s[1] = XOR128(s[1], LOAD(in + 16));
-
-    STORE(out, s[0]);
-    STORE(out + 16, s[1]);
-}
-
-void PQCLEAN_SPHINCSHARAKA256SSIMPLE_AESNI_haraka256_skx4(unsigned char *out, const unsigned char *in, const harakactx *state) {
-    u128 s[4][2], tmp;
-
-    s[0][0] = LOAD(in);
-    s[0][1] = LOAD(in + 16);
-    s[1][0] = LOAD(in + 32);
-    s[1][1] = LOAD(in + 48);
-    s[2][0] = LOAD(in + 64);
-    s[2][1] = LOAD(in + 80);
-    s[3][0] = LOAD(in + 96);
-    s[3][1] = LOAD(in + 112);
-
-    // Round 1
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc_sseed);
-
-    MIX2(s[0][0], s[0][1]);
-    MIX2(s[1][0], s[1][1]);
-    MIX2(s[2][0], s[2][1]);
-    MIX2(s[3][0], s[3][1]);
-
-    // Round 2
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc_sseed + 4);
-
-    MIX2(s[0][0], s[0][1]);
-    MIX2(s[1][0], s[1][1]);
-    MIX2(s[2][0], s[2][1]);
-    MIX2(s[3][0], s[3][1]);
-
-    // Round 3
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc_sseed + 8);
-
-    MIX2(s[0][0], s[0][1]);
-    MIX2(s[1][0], s[1][1]);
-    MIX2(s[2][0], s[2][1]);
-    MIX2(s[3][0], s[3][1]);
-
-    // Round 4
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc_sseed + 12);
-
-    MIX2(s[0][0], s[0][1]);
-    MIX2(s[1][0], s[1][1]);
-    MIX2(s[2][0], s[2][1]);
-    MIX2(s[3][0], s[3][1]);
-
-    // Round 5
-    AES2_4x(s[0], s[1], s[2], s[3], state->rc_sseed + 16);
-
-    MIX2(s[0][0], s[0][1]);
-    MIX2(s[1][0], s[1][1]);
-    MIX2(s[2][0], s[2][1]);
-    MIX2(s[3][0], s[3][1]);
-
-    // Feed Forward
-    s[0][0] = XOR128(s[0][0], LOAD(in));
-    s[0][1] = XOR128(s[0][1], LOAD(in + 16));
-    s[1][0] = XOR128(s[1][0], LOAD(in + 32));
-    s[1][1] = XOR128(s[1][1], LOAD(in + 48));
-    s[2][0] = XOR128(s[2][0], LOAD(in + 64));
-    s[2][1] = XOR128(s[2][1], LOAD(in + 80));
-    s[3][0] = XOR128(s[3][0], LOAD(in + 96));
-    s[3][1] = XOR128(s[3][1], LOAD(in + 112));
 
     STORE(out, s[0][0]);
     STORE(out + 16, s[0][1]);

@@ -3,11 +3,11 @@
 - **Algorithm type**: Digital signature scheme.
 - **Main cryptographic assumption**: hash-based signatures.
 - **Principal submitters**: Andreas Hülsing.
-- **Auxiliary submitters**: Jean-Philippe Aumasson, Daniel J. Bernstein,, Christoph Dobraunig, Maria Eichlseder, Scott Fluhrer, Stefan-Lukas Gazdag, Panos Kampanakis, Stefan Kölbl, Tanja Lange, Martin M. Lauridsen, Florian Mendel, Ruben Niederhagen, Christian Rechberger, Joost Rijneveld, Peter Schwabe.
+- **Auxiliary submitters**: Jean-Philippe Aumasson, Daniel J. Bernstein,, Ward Beullens, Christoph Dobraunig, Maria Eichlseder, Scott Fluhrer, Stefan-Lukas Gazdag, Panos Kampanakis, Stefan Kölbl, Tanja Lange, Martin M. Lauridsen, Florian Mendel, Ruben Niederhagen, Christian Rechberger, Joost Rijneveld, Peter Schwabe, Bas Westerbaan.
 - **Authors' website**: https://sphincs.org/
 - **Specification version**: NIST Round 3 submission.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b with copy_from_upstream patches
+  - **Source**: https://github.com/PQClean/PQClean/commit/c1b19a865de329e87e9b3e9152362fcb709da8ab
   - **Implementation license (SPDX-Identifier)**: CC0-1.0
 
 
@@ -23,14 +23,14 @@
 |  SPHINCS+-Haraka-128f-simple  | EUF-CMA          |                    1 |                        32 |                        64 |                    17088 |
 |  SPHINCS+-Haraka-128s-robust  | EUF-CMA          |                    1 |                        32 |                        64 |                     7856 |
 |  SPHINCS+-Haraka-128s-simple  | EUF-CMA          |                    1 |                        32 |                        64 |                     7856 |
-|  SPHINCS+-Haraka-192f-robust  | EUF-CMA          |                    3 |                        48 |                        96 |                    35664 |
-|  SPHINCS+-Haraka-192f-simple  | EUF-CMA          |                    3 |                        48 |                        96 |                    35664 |
-|  SPHINCS+-Haraka-192s-robust  | EUF-CMA          |                    3 |                        48 |                        96 |                    16224 |
-|  SPHINCS+-Haraka-192s-simple  | EUF-CMA          |                    3 |                        48 |                        96 |                    16224 |
-|  SPHINCS+-Haraka-256f-robust  | EUF-CMA          |                    5 |                        64 |                       128 |                    49856 |
-|  SPHINCS+-Haraka-256f-simple  | EUF-CMA          |                    5 |                        64 |                       128 |                    49856 |
-|  SPHINCS+-Haraka-256s-robust  | EUF-CMA          |                    5 |                        64 |                       128 |                    29792 |
-|  SPHINCS+-Haraka-256s-simple  | EUF-CMA          |                    5 |                        64 |                       128 |                    29792 |
+|  SPHINCS+-Haraka-192f-robust  | EUF-CMA          |                    2 |                        48 |                        96 |                    35664 |
+|  SPHINCS+-Haraka-192f-simple  | EUF-CMA          |                    2 |                        48 |                        96 |                    35664 |
+|  SPHINCS+-Haraka-192s-robust  | EUF-CMA          |                    2 |                        48 |                        96 |                    16224 |
+|  SPHINCS+-Haraka-192s-simple  | EUF-CMA          |                    2 |                        48 |                        96 |                    16224 |
+|  SPHINCS+-Haraka-256f-robust  | EUF-CMA          |                    2 |                        64 |                       128 |                    49856 |
+|  SPHINCS+-Haraka-256f-simple  | EUF-CMA          |                    2 |                        64 |                       128 |                    49856 |
+|  SPHINCS+-Haraka-256s-robust  | EUF-CMA          |                    2 |                        64 |                       128 |                    29792 |
+|  SPHINCS+-Haraka-256s-simple  | EUF-CMA          |                    2 |                        64 |                       128 |                    29792 |
 |  SPHINCS+-SHA256-128f-robust  | EUF-CMA          |                    1 |                        32 |                        64 |                    17088 |
 |  SPHINCS+-SHA256-128f-simple  | EUF-CMA          |                    1 |                        32 |                        64 |                    17088 |
 |  SPHINCS+-SHA256-128s-robust  | EUF-CMA          |                    1 |                        32 |                        64 |                     7856 |

@@ -1,41 +1,25 @@
-#ifndef PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_WOTS_H
-#define PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_WOTS_H
+#ifndef SPX_WOTS_H
+#define SPX_WOTS_H
 
-#include "hash_state.h"
-#include "params.h"
 #include <stdint.h>
 
-/**
- * WOTS key generation. Takes a 32 byte seed for the private key, expands it to
- * a full WOTS private key and computes the corresponding public key.
- * It requires the seed pub_seed (used to generate bitmasks and hash keys)
- * and the address of this WOTS key pair.
- *
- * Writes the computed public key to 'pk'.
- */
-void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_wots_gen_pk(
-    unsigned char *pk, const unsigned char *sk_seed,
-    const unsigned char *pub_seed, uint32_t addr[8],
-    const hash_state *hash_state_seeded);
-
-/**
- * Takes a n-byte message and the 32-byte seed for the private key to compute a
- * signature that is placed at 'sig'.
- */
-void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_wots_sign(
-    unsigned char *sig, const unsigned char *msg,
-    const unsigned char *sk_seed, const unsigned char *pub_seed,
-    uint32_t addr[8], const hash_state *hash_state_seeded);
+#include "context.h"
+#include "params.h"
 
 /**
  * Takes a WOTS signature and an n-byte message, computes a WOTS public key.
  *
  * Writes the computed public key to 'pk'.
  */
-void PQCLEAN_SPHINCSHARAKA192SROBUST_CLEAN_wots_pk_from_sig(
-    unsigned char *pk,
-    const unsigned char *sig, const unsigned char *msg,
-    const unsigned char *pub_seed, uint32_t addr[8],
-    const hash_state *hash_state_seeded);
+#define wots_pk_from_sig SPX_NAMESPACE(wots_pk_from_sig)
+void wots_pk_from_sig(unsigned char *pk,
+                      const unsigned char *sig, const unsigned char *msg,
+                      const spx_ctx *ctx, uint32_t addr[8]);
+
+/*
+ * Compute the chain lengths needed for a given message hash
+ */
+#define chain_lengths SPX_NAMESPACE(chain_lengths)
+void chain_lengths(unsigned int *lengths, const unsigned char *msg);
 
 #endif
