@@ -182,79 +182,9 @@ sigs:
     upstream_location: pqclean
     schemes:
       -
-        scheme: haraka_128f_robust
-        pqclean_scheme: sphincs-haraka-128f-robust
-        pretty_name_full: SPHINCS+-Haraka-128f-robust
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_128f_simple
-        pqclean_scheme: sphincs-haraka-128f-simple
-        pretty_name_full: SPHINCS+-Haraka-128f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_128s_robust
-        pqclean_scheme: sphincs-haraka-128s-robust
-        pretty_name_full: SPHINCS+-Haraka-128s-robust
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_128s_simple
-        pqclean_scheme: sphincs-haraka-128s-simple
-        pretty_name_full: SPHINCS+-Haraka-128s-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_192f_robust
-        pqclean_scheme: sphincs-haraka-192f-robust
-        pretty_name_full: SPHINCS+-Haraka-192f-robust
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_192f_simple
-        pqclean_scheme: sphincs-haraka-192f-simple
-        pretty_name_full: SPHINCS+-Haraka-192f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_192s_robust
-        pqclean_scheme: sphincs-haraka-192s-robust
-        pretty_name_full: SPHINCS+-Haraka-192s-robust
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_192s_simple
-        pqclean_scheme: sphincs-haraka-192s-simple
-        pretty_name_full: SPHINCS+-Haraka-192s-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_256f_robust
-        pqclean_scheme: sphincs-haraka-256f-robust
-        pretty_name_full: SPHINCS+-Haraka-256f-robust
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_256f_simple
-        pqclean_scheme: sphincs-haraka-256f-simple
-        pretty_name_full: SPHINCS+-Haraka-256f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_256s_robust
-        pqclean_scheme: sphincs-haraka-256s-robust
-        pretty_name_full: SPHINCS+-Haraka-256s-robust
-        signed_msg_order: sig_then_msg
-      -
-        scheme: haraka_256s_simple
-        pqclean_scheme: sphincs-haraka-256s-simple
-        pretty_name_full: SPHINCS+-Haraka-256s-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: sha256_128f_robust
-        pqclean_scheme: sphincs-sha2-128f-robust
-        pretty_name_full: SPHINCS+-SHA256-128f-robust
-        signed_msg_order: sig_then_msg
-      -
         scheme: sha256_128f_simple
         pqclean_scheme: sphincs-sha2-128f-simple
         pretty_name_full: SPHINCS+-SHA256-128f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: sha256_128s_robust
-        pqclean_scheme: sphincs-sha2-128s-robust
-        pretty_name_full: SPHINCS+-SHA256-128s-robust
         signed_msg_order: sig_then_msg
       -
         scheme: sha256_128s_simple
@@ -262,19 +192,9 @@ sigs:
         pretty_name_full: SPHINCS+-SHA256-128s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: sha256_192f_robust
-        pqclean_scheme: sphincs-sha2-192f-robust
-        pretty_name_full: SPHINCS+-SHA256-192f-robust
-        signed_msg_order: sig_then_msg
-      -
         scheme: sha256_192f_simple
         pqclean_scheme: sphincs-sha2-192f-simple
         pretty_name_full: SPHINCS+-SHA256-192f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: sha256_192s_robust
-        pqclean_scheme: sphincs-sha2-192s-robust
-        pretty_name_full: SPHINCS+-SHA256-192s-robust
         signed_msg_order: sig_then_msg
       -
         scheme: sha256_192s_simple
@@ -282,19 +202,9 @@ sigs:
         pretty_name_full: SPHINCS+-SHA256-192s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: sha256_256f_robust
-        pqclean_scheme: sphincs-sha2-256f-robust
-        pretty_name_full: SPHINCS+-SHA256-256f-robust
-        signed_msg_order: sig_then_msg
-      -
         scheme: sha256_256f_simple
         pqclean_scheme: sphincs-sha2-256f-simple
         pretty_name_full: SPHINCS+-SHA256-256f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: sha256_256s_robust
-        pqclean_scheme: sphincs-sha2-256s-robust
-        pretty_name_full: SPHINCS+-SHA256-256s-robust
         signed_msg_order: sig_then_msg
       -
         scheme: sha256_256s_simple
@@ -302,19 +212,9 @@ sigs:
         pretty_name_full: SPHINCS+-SHA256-256s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: shake256_128f_robust
-        pqclean_scheme: sphincs-shake-128f-robust
-        pretty_name_full: SPHINCS+-SHAKE256-128f-robust
-        signed_msg_order: sig_then_msg
-      -
         scheme: shake256_128f_simple
         pqclean_scheme: sphincs-shake-128f-simple
         pretty_name_full: SPHINCS+-SHAKE256-128f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: shake256_128s_robust
-        pqclean_scheme: sphincs-shake-128s-robust
-        pretty_name_full: SPHINCS+-SHAKE256-128s-robust
         signed_msg_order: sig_then_msg
       -
         scheme: shake256_128s_simple
@@ -322,19 +222,9 @@ sigs:
         pretty_name_full: SPHINCS+-SHAKE256-128s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: shake256_192f_robust
-        pqclean_scheme: sphincs-shake-192f-robust
-        pretty_name_full: SPHINCS+-SHAKE256-192f-robust
-        signed_msg_order: sig_then_msg
-      -
         scheme: shake256_192f_simple
         pqclean_scheme: sphincs-shake-192f-simple
         pretty_name_full: SPHINCS+-SHAKE256-192f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: shake256_192s_robust
-        pqclean_scheme: sphincs-shake-192s-robust
-        pretty_name_full: SPHINCS+-SHAKE256-192s-robust
         signed_msg_order: sig_then_msg
       -
         scheme: shake256_192s_simple
@@ -342,19 +232,9 @@ sigs:
         pretty_name_full: SPHINCS+-SHAKE256-192s-simple
         signed_msg_order: sig_then_msg
       -
-        scheme: shake256_256f_robust
-        pqclean_scheme: sphincs-shake-256f-robust
-        pretty_name_full: SPHINCS+-SHAKE256-256f-robust
-        signed_msg_order: sig_then_msg
-      -
         scheme: shake256_256f_simple
         pqclean_scheme: sphincs-shake-256f-simple
         pretty_name_full: SPHINCS+-SHAKE256-256f-simple
-        signed_msg_order: sig_then_msg
-      -
-        scheme: shake256_256s_robust
-        pqclean_scheme: sphincs-shake-256s-robust
-        pretty_name_full: SPHINCS+-SHAKE256-256s-robust
         signed_msg_order: sig_then_msg
       -
         scheme: shake256_256s_simple
