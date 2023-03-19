@@ -540,6 +540,9 @@ def process_families(instructions, basedir, with_kat, with_generator):
                             if req['architecture'] == 'ARM64_V8' and 'asimd' in req['required_flags']:
                                 req['required_flags'].remove('asimd')
                                 req['required_flags'].append('arm_neon')
+                            if req['architecture'] == 'ARM64_V8' and 'sha3' in req['required_flags']:
+                                req['required_flags'].remove('sha3')
+                                req['required_flags'].append('arm_sha3')
                             impl['required_flags'] = req['required_flags']
                             family['all_required_flags'].update(req['required_flags'])
                     except KeyError as ke:
