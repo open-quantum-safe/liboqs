@@ -12,7 +12,7 @@ if({% for used_by in common_deps_usedby[common_dep['name']] -%}OQS_ENABLE_SIG_{{
     add_library({{ family }}_{{ common_dep['name'] }} OBJECT {% for source_file in common_dep['sources_addl']|sort -%}{{ upstream_location }}_{{ common_dep['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%})
     target_include_directories({{ family }}_{{ common_dep['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ upstream_location }}_{{ common_dep['name'] }})
         {%- if common_dep['required_flags'] %}
-    target_compile_options({{ family }}_{{ common_dep['name'] }} PRIVATE {%- for flag in common_dep['required_flags'] %}{%- if flag != 'arm_neon' %} -m{%- if flag == 'bmi1' -%} bmi {%- elif flag == 'sse4_1' -%} sse4.1  {%- elif flag == 'pclmulqdq' -%} pclmul {%- else -%}{{ flag }}{%- endif -%}{%- endif -%}{%- endfor -%})
+    target_compile_options({{ family }}_{{ common_dep['name'] }} PRIVATE {%- for flag in common_dep['required_flags'] %}{%- if flag == 'arm_sha3' %} -msha {%- else -%}{%- if flag != 'arm_neon' %} -m{%- if flag == 'bmi1' -%} bmi {%- elif flag == 'sse4_1' -%} sse4.1  {%- elif flag == 'pclmulqdq' -%} pclmul {%- else -%}{{ flag }}{%- endif -%}{%- endif -%}{%- endif -%}{%- endfor -%})
         {%- endif %}
         {%- if common_dep['compile_opts'] %}
     target_compile_options({{ family }}_{{ common_dep['name'] }} PUBLIC {{ common_dep['compile_opts'] }})
@@ -41,7 +41,7 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }})
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${CMAKE_CURRENT_LIST_DIR}/{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }})
     target_include_directories({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE ${PROJECT_SOURCE_DIR}/src/common/pqclean_shims)
         {%- if impl['name'] != scheme['default_implementation'] and impl['required_flags'] %}
-    target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {%- for flag in impl['required_flags'] %}{%- if flag != 'arm_neon' %} -m{%- if flag == 'bmi1' -%} bmi {%- elif flag == 'sse4_1' -%} sse4.1  {%- elif flag == 'pclmulqdq' -%} pclmul {%- else -%}{{ flag }}{%- endif -%}{%- endif -%}{%- endfor -%})
+    target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {%- for flag in impl['required_flags'] %}{%- if flag == 'arm_sha3' %} -msha {%- else -%}{%- if flag != 'arm_neon' %} -m{%- if flag == 'bmi1' -%} bmi {%- elif flag == 'sse4_1' -%} sse4.1  {%- elif flag == 'pclmulqdq' -%} pclmul {%- else -%}{{ flag }}{%- endif -%}{%- endif -%}{%- endif -%}{%- endfor -%})
         {%- endif %}
         {%- if impl['compile_opts'] %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
