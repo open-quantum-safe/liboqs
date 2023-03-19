@@ -58,7 +58,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_192s_robust_keypair(uint8_t *public_
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_sphincs_shake256_192s_robust_aarch64)
 #if defined(OQS_DIST_BUILD)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_SHA3)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_SHA3)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE192SROBUST_AARCH64_crypto_sign_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
@@ -84,7 +84,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_192s_robust_sign(uint8_t *signature,
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_sphincs_shake256_192s_robust_aarch64)
 #if defined(OQS_DIST_BUILD)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_SHA3)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_SHA3)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE192SROBUST_AARCH64_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
@@ -110,7 +110,7 @@ OQS_API OQS_STATUS OQS_SIG_sphincs_shake256_192s_robust_verify(const uint8_t *me
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_SIG_sphincs_shake256_192s_robust_aarch64)
 #if defined(OQS_DIST_BUILD)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_SHA3)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_SHA3)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCLEAN_SPHINCSSHAKE192SROBUST_AARCH64_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
