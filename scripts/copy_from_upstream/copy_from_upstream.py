@@ -287,7 +287,10 @@ def load_instructions():
             metadata = {}
             if not 'metadata' in scheme:
                 metadata = yaml.safe_load(file_get_contents(scheme['sig_meta_paths']['default']))
-                imps_to_remove = []
+                if family['family'] == "sphincs":
+                   imps_to_remove = ["avx2"]
+                else:
+                   imps_to_remove = []
                 upstream = upstreams[scheme['upstream_location']]
                 for imp in metadata['implementations']:
                     if 'ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], imp['name']) in upstream['ignore']:
