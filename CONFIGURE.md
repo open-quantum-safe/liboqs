@@ -95,7 +95,16 @@ These can be set to `ON` or `OFF` and take an effect if liboqs is built for use 
 
 ## OQS_USE_OPENSSL
 
-This can be set to `ON` or `OFF`. When `ON`, the additional options `OQS_USE_AES_OPENSSL`, `OQS_USE_SHA2_OPENSSL`, and `OQS_USE_SHA3_OPENSSL` are made available to control whether liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations. By default, `OQS_USE_AES_OPENSSL` is `ON` (on x86-64 only if `OQS_DIST_BUILD` and `OQS_USE_AES_INSTRUCTIONS` are not set), `OQS_USE_SHA2_OPENSSL` is `ON` while `OQS_USE_SHA3_OPENSSL` is `OFF`.
+In order to save size and limit the mount of different cryptographic code bases, it is possible to use OpenSSL as a crypto code provider by setting this configuration option.
+
+This can be set to `ON` or `OFF`. When `ON`, the additional options `OQS_USE_AES_OPENSSL`, `OQS_USE_SHA2_OPENSSL`, and `OQS_USE_SHA3_OPENSSL` are made available to control whether liboqs uses OpenSSL's AES, SHA-2, and SHA-3 implementations.
+
+By default,
+- `OQS_USE_AES_OPENSSL` is `ON` (on x86-64 only if `OQS_DIST_BUILD` and `OQS_USE_AES_INSTRUCTIONS` are not set)
+- `OQS_USE_SHA2_OPENSSL` is `ON`
+- `OQS_USE_SHA3_OPENSSL` is `OFF`.
+
+These default choices have been made in order to optimize the default performance of all algorithms. Changing them implies performance penalties.
 
 When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the minimum version of OpenSSL required by liboqs (which happens to be 1.1.1). The `OPENSSL_ROOT_DIR` option can be set to aid CMake in its search.
 
