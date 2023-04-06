@@ -1,0 +1,7 @@
+This code attempts to be a usable implementation of the LMS Hash Based
+Signature Scheme from RFC 8554.
+
+See read.me for documentation how to use it.
+
+This is the ACVP branch - designed to be (optionally) compatible with the
+public ACVP server

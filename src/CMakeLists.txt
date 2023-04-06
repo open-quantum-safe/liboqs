@@ -67,6 +67,10 @@ if(OQS_ENABLE_SIG_STFL_XMSS)
     add_subdirectory(sig_stateful/xmss)
     set(SIG_STFL_OBJS ${SIG_STFL_OBJS} $<TARGET_OBJECTS:xmss>)
 endif()
+if(OQS_ENABLE_SIG_STFL_LMS)
+    add_subdirectory(sig_stateful/lms)
+    set(SIG_STFL_OBJS ${SIG_STFL_OBJS} $<TARGET_OBJECTS:lms>)
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 add_library(oqs kem/kem.c

@@ -1,0 +1,597 @@
+This code attempts to be a usable implementation of of the LMS Hash Based
+Signature Scheme from RFC 8554.
+
+This is a signature scheme (that is, someone with the private key can sign
+messages, someone with the public key can verify sigantures, but cannot
+generate signatures) that is based on a hash function (that is, the only
+cryptographical assumption is that hash function is secure; in this case,
+that you can't find preimages or second preimages).  This particular
+scheme is stateful (that is, the signer keeps state that must be updated
+for each signature); there are stateless schemes, but they have much larger
+signatures.
+
+Here's how to use it: general workflow for the signer:
+
+Step 1: generate a public/private keypair.
+  This is the hss_generate_private_key function; you give it the parameter
+  set you're interested in (see below for guidelines as to what's
+  appropriate here), a function to get randomness, a function to write
+  out the private key, a buffer to hold the public key, and the optional
+  aux data.
+
+The below step can be repeated as needed (e.g. because of a program reload):
+
+Step 2: load the private key into memory
+  This is the hss_load_working_key function; you give the private key,
+  a budget of the amount of memory to use, and optionally the aux data
+  generated during the hss_generate_private_key.  This memory budget is
+  used as a guide for some space/time trade-offs; we'll never fail because
+  you haven't authorized enough memory (if you haven't, we'll reduce the
+  amount of memory as much as possible, hence passing a 0 will minimize the
+  amount of memory, which is appropriate if you'll use the private keys only
+  a handful of times).  It turns out minimal space doesn't generate
+  signatures that slowly; if you have memory to burn, you could allow it to
+  allocate 100k and it would sign faster; if we allow enough space so that we
+  can place the entire bottom level LMS tree in memory, the speed up is
+  significant in nonthreaded mode (in threaded mode, we generate the
+  signature at the same time, and so we don't save as much wallclock time).
+  The aux data is optional (the load process will work if you don't provide
+  it); it'll be faster if you do (if you don't provide this, this'll
+  take at least as long as the original key generation).  Also, the aux data
+  is integrity checked (and so if it was modified, this'll ignore it).
+
+     If you just generated a key, and want to sign a message, you'll need to
+     load the private key (even if you're not interested in saving the private
+     key between reloads).  If this is what you're doing, I suggest you have a
+     moderate (e.g. 1k) array that you use to hold the aux data; without that,
+     the load process would need to redo almost all the computations that were
+     done when initially generating the private key.
+
+Once you've expanded the key, you can use it to, say, actually sign messages.
+Here are the steps you an do (and you don't need to reload the key after
+every message you've signed):
+
+Step 3: actually generate the signatures
+  This is the hss_generate_signature function; you give it the working key,
+  a function to update the private key, and the message to sign, and it
+  generates the signature.
+
+Step 3a: reserve N signatures
+  This is the hss_reserve_signature function; this allows you to advance
+  the 'current counter' in private RAM by N (and so the update_private_key
+  function won't need to be called for the next N signature generations).
+  Of course, if the application exits without using all those N signatures,
+  those will still be considered used.
+  There are actually two variants of this; you could either has that N
+  signatures be reserved now (hss_reserve_signature), alternatively, you
+  can give a standing order that when we run out, we reserve extra
+  signatures (hss_set_autoreserve).  The former works well if you have
+  some idle time periodically (and so this write-to-disk process mostly
+  happens when youre not busy); the latter works better if you don't have
+  idle time (and want to reduce the number of writes to disk).
+
+
+The workflow for the verifier is easy: you pass the message, the public key
+and the signature to hss_validate_signature; that returns 1 if the signature
+validates, 0 if it doesn't.  We provide APIs both to sign/validate the
+signature in one shot (hss_generate_signature/hss_validate_signature), and
+also init/update/finalize routines in case we have the message in multiple
+pieces (see hss_sign_inc, hss_validate_inc for the details of those APIs).
+
+The makefile generates three .a files; hss_lib.a, which includes the above
+routines; hss_lib_threaded.a, which is the same, but with threading enabled
+(and so -lpthread is required to link), and hss_verify.a, which just includes
+the verification logic (nonthreaded; threading speeds up verification only
+somewhat; if you want a threaded verification code, it should be fairly
+obvious how to make it yourself).
+
+
+
+Now, the practical problems that a (stateful) hash based signature has are:
+- Statefulness; each signature effectively has a nonce, which must not be
+  used to sign two different messages.  If we use a private key over reboots,
+  that means that we need to track the state in longterm storage somehow.
+- Size of the signature; depending on the parameter set, the signatures might
+  be several k long
+- There's an upper bound on the number of signatures that can be generated
+  with a specific public key.
+This package tries to address all of them, as follows:
+
+Statefulness; we do several things to mitigate this issue:
+  - Everytime we need to update the state (either during initial key
+    generation, signature generation or reservation (see below)), we have
+    the application provide a function that is supposed to write the new
+    state to secure storage; the signature is not released to the application
+    (actually, not even generated) unless that function claims success.
+  - There's quite a lot of state involved with this package.  However, instead
+    of writing all that to secure storage, what we do is write a summary.
+    On a program reload, we read ("load") that summary back into memory,
+    reconstruct the full state, and continue on.  Because this summary is
+    short, this makes it easier to store, and we have less to worry about
+    partial updates (say, if we crashed in the middle of an update).
+  - If writing the state to secure storage is expensive, what we can do is
+    "reserve" a number of signatures; that will update the state on secure
+    storage; however, if we reserve N signatures, that means that for the
+    next N signature operations, we won't have to actually perform the
+    update.  Hence, we can move much of the work to time where we would have
+    been idle.
+Signature size; we can't actually do anything about the signature format
+(that's fixed in the draft), however what we can do is try to make selecting
+a parameter set with a short signature reasonable:
+  - Efficiency; we try to make it efficient; efficiency allows you to use
+    more aggressive parameter sets (chiefly, ones with W=8, and relatively few
+    Merkle levels), which makes the signature shorter.
+  - We support multithreading; that is, during the key generation and key
+    reload procedures, we can use multiple threads to speed things up.
+    Speeding these up allows up to use considerably larger trees (and hence
+    fewer of them).
+  - We support 'auxiliary data' for the top level Merkle tree.  Our model is
+    that you don't mind spending quite a bit of time during key gemeration (as
+    that is a rate event); you are far more sensitive to the operation
+    operations (such as the key reload, which you might do whenever you
+    restart the program).  What the aux data allows you program to do is
+    generate the top level Merkle tree once (and store some intermediate
+    nodes); this means that we can practically use a very large top level
+    Merkle tree, without costing much (other than ken gen time).  In fact,
+    if you're happy with 1-30 million signatures maximum, you could go with
+    a single level Merkle tree, which yields relatively short (<2k) signatures
+  - After the initial key gen and load, we compute everything incrementally.
+    That means that, just because we have a level 20 tree, we never have to
+    sit down and compute 2**20 operations at once; we spread that work over
+    the time we spent generating the signatures from the previous tree.
+Upper bound on signatures; again, we're stuck with the upper limit on any
+parameter set; however we try to make it reasonable to select a parameter set
+with a large number of signatures.  We gave most of the efficiency features
+above; we give a table below listing various parameter sets that are
+reasonably efficient, and have large upper signature bounds.  For example,
+if 1 billion signatures are enough, then a 20/10 parameter set might be
+reasonable.
+
+
+
+
+Now, here is another listing of the features of this package (in a
+feature-centric order, rather than a problem-centric one:
+
+- It tries to deal with state management.  It does not assume that the
+  signing computer will be running without a reboot for the entire time that
+  the private key is valid, and it does not assume that we're able to do a
+  large scale update of secret state to disk (which would cause problems if we
+  rebooted in the middle of an update).  It addresses this by dividing the
+  private key into three parts:
+  - A short section which is meant to be saved in secure storage (and this is
+    the part which is referred to as the 'private key'; this includes the
+    number of signatures generated so far.  It's currently 48 bytes long
+    (with the part that needs to be actually updated only 8 bytes), we assume
+    that it is updated atomically.  These 48 bytes consist of an 8 byte count
+    of the number of sigantures generated so far, 8 bytes of a compressed
+    version of the parameter set, and 32 bytes of 'seed' (a random value that
+    is used to derive every secret)
+  - A longer section (the "working key") that resides in memory; we assume
+    that this is private, but need not be saved into long term (nonvolatile)
+    storage.  This section include the Merkle tree contents (actually, a
+    subsection, as below we implement a time/memory trade-off), the next
+    Merkle tree contents (incremental computation), I values, signatures for
+    internal public keys; for most parameter sets, this easily fits into
+    10-30k (time/memory trade-offs will allow it to be larger to give better
+    signing performannce).  For example, a level 20/10 tree (maximum of 2**30
+    signatures), we can use as little as 16kbytes of ephemeral state (and the
+    time isn't all that bad after the working key has been regenerated).
+
+The idea by the above split is that we keep the short permament key somewhere
+safe (and which would survive a restart should we need to); at any time (for
+example, after a restart), we can regenerate the longer section, which we
+would keep in memory.  We use the version of memory to actually generate the
+signatures (and update the short section as needed).  If we restart, we
+regenerate the large working section, and carry on.  In addition, by using
+reservations (see below), we don't actually need to update the secure storage
+every time.
+
+By keeping the short section short, that means that we don't have to worry
+about partial updates (which we would if that the private part was a
+multikilobyte explicit tree); we can also use limited private space (e.g. HSM).
+
+We also have an optional third section to the private key:
+
+  - Auxiliary data; this is an optional section that contains the node values
+    of parts of the top level Merkle tree; this is generated at keygen time,
+    and is read-only thereafter; the point of this is to speed up the process
+    of loading the private key into memory.  This aux data is (usually)
+    persistent, but need not be secret.
+     - For a level 20 top level tree, 10916 bytes of aux data allows us to
+       regen the top level tree in circa a second.  That means that, for a
+       20/10 level tree, generating the private key is expensive (3 minutes
+       on my test machine, a 3.3GHz Xeon), but restarts after that can be done
+       in a second or two.
+     - We also authenticate the auxiliary data; that means that an adversary
+       who can corrupt the auxiliary data can increase the time it takes for
+       us to load the working key; however they don't get any other advantage.
+     - I did say that the auxiliary data is usually persistent.  However, if
+       we can't store it permamently, it still can be used to speed up the
+       initial program load (that is, immediately after the private key
+       generation); we'd use a moderate (several k) temp array to both
+       the key generation and first reload; if we need to do a reload
+       afterwards, we would not pass the aux array (as we wouldn't save it).
+       This'll speed up the initial load process (as it wouldn't have to redo
+       most of the computations that the key generation did); it won't speed
+       up the later reloads, however at least we got some benefit from it.
+
+- We include a function that takes the short section, and recreate the working
+  portion, we refer to this as 'loading the private key into memory'.  This is
+  meant to be called on a reload, and (assuming that you use the aux data) can
+  be significantly faster than generating the key in the first place.
+
+- We incrementally compute the next trees (so we don't hit a bump when we
+  generate the 1025th signature)
+
+- Time/memory trade-offs available (so we don't need so much memory for the
+  loaded private key)
+   - The 'load the private key' function (hss_load_private_key) takes a
+     parameter while means "try to limit the memory used to X bytes"; this
+     allows some flexibility in designing the trade-off (although less than I
+     expected when I first designed the API; the 'use as little memory as
+     possible' option isn't that slow, and the 'd*mn-the-memory-
+     full-speed-ahead' mode doesn't use that much memory (unless the bottom
+     level Merkle tree is huge).  Yes, there's a delta, but not a big one.
+
+- For any function that can update the private key, we have the application
+  (the program that is using the package to sign messages) pass a function
+  ("update_private_key") and a context pointer.  If this is non-NULL, then
+  when we update the private key, we call this function, what this function is
+  expected to do is write the private key into secure storage (and pass
+  nonzero on success); if you pass a NULL function pointer, then we assume
+  that passed context pointer is actually the pointer to the private key.
+
+- Explicit implementation of the reservation primitive.  Right now, we have
+  an API that states "make sure that we have N signatures reserved (so that
+  we won't have to update the private key for the next N signature operations).
+
+- We can also perform operations in parallel (pthread's); do get this, you
+  use the hss_lib_thread.a library (and include -lpthread on the link); if
+  you use the hss_lib.a library, then everything is done in the main thread.
+  Using multiple threads speeds up the key generation and key loading process
+  significantly (15x in my experience, assuming you have enough CPU cores);
+  we also can use it during the signing and verification process, however the
+  speed up there is less radical (perhaps 2x).
+
+- I believe the code is fully compliant C99 (that is, it should work on any
+  C99 implementation that can handle the program/data size; even silly ones
+  with 13 bit chars and 26 bit int's and things like that); in fact, the
+  private keys should be portable to different architectures.  I haven't
+  tested out either of these claims, though.
+
+
+I've included a simple program (demo.c) that uses the above facility to
+sign files, and verify them.  I've also included a test harness (test_hss) to
+do regression testing of HSS; however I would rather advise you not to look
+at how those regression tests use the library as best practice; they are
+designed to push the library's corner cases, and so sometimes do things that
+real applications really ought not do.
+
+
+General notes:
+
+- Advice about parameter sets: while this supports all the HSS parameter sets
+  currently allowed in draft-mcgrew-hash-sigs-08, some work better than others
+  The general recommendation is to use a few large trees (that is, with lots
+  of levels), rather than using a number of levels of smaller trees; this
+  package tries to make large trees not that costly (and reducing the number
+  of trees certainly cuts down on the signature size).  If you have a
+  reasonable amount of auxiliary data available (and ideally, multithreading),
+  then making the top level tree H=20 (or even H=25) is doable; the main cost
+  is the time to do the initial key generation (which in most cases is a rare
+  event).  On my test machine (a 3.3GHz Xeon), I can generate a key with a
+  H=20 tree on top (with W=8) in 3 minutes (multithreaded); loading that key
+  into memory (with 10k of aux data, with a single H=10 tree below it) takes
+  1-2 seconds.  An H=25 tree on top took 1.5 hours; loading that key into
+  memory (with 1Meg of aux data) took a second.  Increasing the lower tree to
+  H=15 makes loading take 6 seconds (without affecting the key generation
+  time).  Those parameter sets give reasonable speed, with 3.3-3.7k
+  signatures, and allow 1 billion to 1 trillion signatures per private key
+  (which I expect should be sufficient for most uses; at 1000 signatures per
+  second, that's enough to last you between 10 days (top H=20, bottom H=10)
+  to 3 decades (top H=25, bottom H=15).
+      Here's a table that goes through a list of various parameter sets.
+  They all have W=8 (which minimizes signature sizes, while increasing time),
+  and were measured on my test platform (with threading enabled; times would
+  be considerably larger without threading).  These are here to give a
+  guideline as to what's possible; for the computational time, your mileage
+  may vary, depending on the computing resources you have.  The machine I
+  have does not have the SHA-256 extensions; you could possibly do
+  significantly better.
+
+    ParmSet  KeyGenTime  KeyLoadTime   AuxSize   SigSize   KeyLifetime
+     15         6 sec       3 sec         100      1616     30 seconds
+     20         3 min       1 sec       10916      1776     16 minutes
+     25      1.5 hour      18 sec       21860      1936     9 hours
+    15/10       6 sec       1 sec         356      3172     9 hours
+    15/15       6 sec      10 sec         356      3332     12 days
+    20/10       3 min       2 sec       10916      3332     12 days
+    20/15       3 min      10 sec        2724      3492     1 year
+    25/10    1.5 hour       7 sec       87396      3492     1 year
+    25/10    1.5 hour       1 sec      349540      3492     1 year
+    25/15    1.5 hour      13 sec       87396      3652     34 years
+
+  ParmSet: this is the height of the Merkle tree(s); parameter sets listed as
+      a single integer consists of a single Merkle tree of that height;
+      parameter sets that consist of two trees are listed as x/y, with
+      x being the height of the top level Merkle tree, and y being the
+      bottom level.
+  KeyGenTime: the measured key generation time; this is the operation that is
+     done once per private key.
+  KeyLoadTime: the measured key load time (assuming the auxsize of the
+     specified amount); this is the operation that is done on program reload
+     to continue using an existing private key.
+  AuxSize: the size of the aux data that was used to test load time, the value
+     listed for AuxSize is in bytes.  You can use smaller sizes, however that
+     would increase the key load time (as can be seen by the two different
+     KeyLoadTimes given for ParmSet 25/10)
+  SigSize: the size of a signature (in bytes)
+  KeyLifetime: the lifetime of a key, assuming we generated 1000 signatures
+     per second.  In practice, we're not likely to get anywhere close to
+     1000 signatures per second sustained; if you have a more appropriate
+     figure for your scenario, this column is pretty easy to recompute.
+
+  As for signature generation or verification times, those are moderately
+  insensitive to the above parameter settings (except for the Winternitz
+  setting, and the number of Merkle trees for verification). Tests on the same
+  machine (without multithreading) gave approximately 4msec to sign a short
+  message, 2.6msec to verify (for this test, we gave the working key lots of
+  memory; if you skimp on that, the parameter sets with the larger bottom
+  trees slow down somewhat more than the ones with less; we also used a two
+  level ParmSet; a single level would approximately halve the verification
+  time).  All times can be significantly improved (by maybe a factor of 8) by
+  using a parameter set with W=4; however that also about doubles the
+  signature size.  In addition, we allow you to adjust the amount of
+  threading on a per-call basis (byte the hss_extra_info parameter);
+  I suspect that typically you'll run with the defaults.
+
+- Portability of the private keys: I believe that the private keys are
+  portable to different CPU architectures (that is, picking up a private
+  key on one CPU and moving it to another will work)
+  However, I don't currently promise that private keys generated by this
+  version of the package will work on future versions; we reserve the right
+  to make changes that break current created private keys.  Eventually, we'll
+  need to preserve this (possibly by including a version flag in the private
+  key); however, I don't believe that this package is mature enough yet.
+  After all, essentially everything involved with signing (with the sole
+  exception of the bottom C signature randomizer) must be derived in the exact
+  same way from the top level seed; once we start doing versioning, that means
+  we must forever support that way of deriving internal values from the secret
+  seed.
+
+- Same thing with the API; eventually, we'll need to stabilize the API;
+  however, I don't believe we're there yet (although with the extra_info
+  structure, we may be getting close; any new parameter where most
+  applications are happy with a reasonable default can be placed into the
+  extra_info structure); I don't want to lock us in to what we have right now.
+
+- This package will allow at most 18446744073709551615 signatures per private
+  key (that's 2**64-1), even if the parameter set would allow more.  If you
+  think you need more signatures than that, well, dude, what are you smoking?
+
+- The API has an optional struct hss_extra_info* parameter; this is to allow
+  you to convey information that typically is not needed (but on occasion,
+  might be).  You can always pass a NULL pointer (in which the package uses
+  reasonable defaults); the current parameters that are exchanged:
+  - num_threads; this allows the application to tell this packet about the
+      number of concurrent threads that it is allowed to use; 1 means not to
+      use threading at all; 2-16 means that many threads, and 0 means the
+      default.
+  - last_signature; if the signature generation routine detects that it has
+      just signed the last signature it is allowed to, it'll set this flag.
+      Hence, if the application cares about that, then it can pass an
+      extra info structure, and on return, test this flag.
+  - error_code: if some operation fails, the field is set to a value that
+      indicates why it failed (similar to errno, except not a global).
+      Hence, if the application cares about that, then it can pass an extra
+      info structure, and on failure return, test this flag.
+
+  Just a word of warning; if you do pass in an hss_extra_info structure,
+  the fields must be initialized, passing in a structure containing random
+  stack garbage is begging Murphy to perform his magic.  You can do this
+  by either:
+      struct hss_extra_info info = { 0 };
+  or
+      struct hss_extra_info info;
+      hss_init_extra_info( &info );
+
+Future ideas; I'm not against future ideas, but this package is getting
+sufficiently complex that I'm not likely to do anything that adds even more
+complexity unless someone has a real need.  If you do have a real need (for
+one of the below ideas, or something else), plesae tell me; otherwise, I'm
+likely not to implement it:
+
+- Extend multithreading to generate the higher level Merkle signatures when we
+  step to the next lower level Merkle tree.  We do multithreading for most of
+  the expensive operations, but not this one; when we need to generate a
+  nonbottom signature, that's done by the main thread (while none of the other
+  threads are doing anything).  It's about half the cost of creating an OTS
+  public key, but it's still not free.  We do this only rarely (once every
+  1024 signatures of the bottom level tree is of height 10), however it does
+  increase the worse-case time (which can be significant for some
+  applications).  One issue is that we can't sign the NEXT tree until we've
+  completed building all of the subtrees; if one of the tasks is finiahing
+  that up, well, we might be stuck.
+
+- Perhaps we can have support for SIMD hash implementations (e.g. AVX) that
+  can, in parallel, compute N independent hashes.  I suspect that it wouldn't
+  be that difficult to add it to the Winternitz routines (which is where the
+  bulk of the time is spent anyways).  However, it would appear that Intel's
+  SHA-256 instructions would be faster than AVX (and doesn't add any
+  complexity; recent versions of OpenSSL already include it); hence this would
+  be of interest only for CPUs with AVX but not SHA-256-NI; currently, that's
+  common, but I expect that'd change over time; it's not clear that this
+  amount of code would be warrented for a short term fix.  On the other hand,
+  if we can get support for a GPU, well, that'd be a really big win (albeit
+  at a significantly higher complexity cost)
+
+- Q: restarting at some points (say, at the start of a Merkle tree) is
+  cheaper than restarting in the middle, or near the end.  Should we do an
+  auto-reserve if we're getting close to the end (so that, if we do restart,
+  that's cheaper)?  One the other hand, with parallel processing on the load
+  function, loading anywhere is already fairly cheap.
+
+- We might want to explicitly support a block-type interface (with read/writes)
+  to handle the aux data, rather than insist that it fits into a contiguous
+  memory segment; this may make it easier for an implementation to use a
+  significant sized aux data.  My major complaints about this is "yet more
+  code complexity?  Don't we have enough?" and "yet another nonobvious API to
+  document".  On the other hand, except for H=25, we never really need more
+  than 10k or so of aux data; would this (code and documentation) complexity
+  actually be worth it?
+
+- The hss_load_private_key takes the 'memory budget' as a parameter, which
+  allows the user to select the time/memory trade-off.  It might be considered
+  sporting to give the user some context as to what the trade-offs actually
+  are; perhaps a way of generating a table of memory-size vs. hash compression
+  operations (or OTS public key generations) expected per signature; it
+  depends on the parameter set, and so we can't just publish a table (although
+  a table for typical parameter sets on a typical compiler might not be that
+  hideous).
+
+- Should we make this package valid C++ as well?  One issue is the malloc's
+  (which aren't casted), we could insert the "extern "C" {" markers (to say
+  these functions use the C ABI), are there other issues?
+
+  - As for going the other way (making this valid C89), well the biggest issue
+    there is the 64 bit int's we use (sequence_t); we do declare automatics
+    after executable statements, but those wouldn't be hard to move.  Yes,
+    we could program around the 64 bit int's, however I don't see the point
+    unless someone really needs this.
+
+- The logic to distribute updates to the upper level trees (which does the
+  work when we're close to the end of the current bottom level tree, when the
+  bottom level tree runs out of BUILDING_TREEs to update) rather assumes that
+  an upper level OTS is about the same cost as a bottom level OTS.  This is
+  actually true if we use the same OTS parameter set (Winternitz parameter)
+  everywhere; however if the upper levels use a costlier one (e.g. the bottom
+  level tree uses W=4, the upper level trees use W=8), it's less true.  It
+  might make sense to try to potentially split up the work of updating the
+  upper level tree into more signature operations; at least, in this case
+  (and it'd be an ideal way to add even more complexity into this package).
+  Of course, we'd have to ask: how common are these mixed-winternitz settings
+  anyways?
+
+- Another thing that I could see being useful in some scenarios is providing
+  a way to safely share the same private key between multiple signers.
+  Here are two ways to do this:
+  1. There'd be a master holder of the private key (which would hold the real
+     private key); a secondary signer would ask for the permission to sign N
+     signatures; the master would pass it a 'subkey' that would give it
+     permission to sign using sequence numbers X and X+N-1 (where X is the
+     current private key value), and the master would increment its copy of X
+     by N.  The client would load the subkey and we're good to go.  It's not
+     clear how the master would advance its working key by N; a first cut may
+     be that the master does a fresh hss_generate_working_key; there are more
+     efficient ways to do it, but there are lots of corner cases that would
+     require testing to make sure we've covered everything.  The subkey we
+     send to the client would be the private key plus one parameter (the
+     allowed maximum); we might want to modify our private key format to
+     include this maximum if we're serious about this (so that the secondary
+     signer could run the standard HSS code).  There are likely a number of
+     gotcha's involved; however less than the below idea.
+  2. We'd also have a master holder, but instead of giving the entire secret
+     key to the secondary signer (and tell him "please only use sequence
+     numbers from X to X+N-1"), we instead gave him an entire subtree (without
+     giving him enough information to sign outside that subtree). Note that we
+     can construct a subtree of size 2**n, for any n (given a tree-based
+     method to derive OTS keys; that would help with side channel resistance);
+     it need not be an entire Merkle tree; such a method would waste up to
+     2**n - 1 sequence numbers of the main tree (as it assumes that the
+     initial sequence number we give to the secondary server is a multiple of
+     2**n), unless the master tried something tricky and remember those
+     weren't used yet).  This approach would not prevent an attacker who
+     obtains that subkey from signing anything he wants for as many times as
+     he wants; we assume that valid signers will not repeat sequence numbers,
+     but an attacker might not feel so constrained.  It would allow us, given
+     such a breach, to figure out who leaked their subkey; would that be
+     considered enough of an advantage to make up for the extra complexity?
+     For this to be a reasonable alternative, we'd need a facility to log who
+     we gave what (otherwise, what's the point?)
+
+- Should we worry about implementations that don't support malloc?  Or, have
+  a 'secure_malloc' that reserves memory that is never paged out (and we'd
+  prefer placing our keying data there)?  The candidates for doing a secure
+  malloc would be the hss_working_key and the merkle_level (because they
+  both contain seeds); no other malloc'ed data structure contain any
+  secret data.  On the other hand, there doesn't appear to be a great deal
+  of point in doing a secure malloc unless we know that the automatic
+  data is also secure (or we move all keying data out of automatic data;
+  could be problematic).
+
+- Should the verifier cache previous successful verifications (at least, the
+  top level trees)?  I personally don't think it's worth the bother (or the
+  complexity).
+
+- We could design a signature format that's somewhat shorter; (although the
+  proof may need fiddling in some cases):
+  - Not having the intermediate root hashes in the signature
+  - A C randomizer of 32 bytes is overkill (with 16 bytes, we still make the
+    'guess C, generate a collision based on that' attack as difficult as a
+    second preimage attack)
+  - We don't really need explicit intermediate C randomizers for the message
+    hashing (as an attacker can't select that message value in advance)
+  - We could have the lower level I values a determanistic function of the top
+    level I (rather than expressing them in the signature)
+  - We don't need to express the parameter types for the top level signature
+    in the signatures
+  - We can omit L from the signature, and shorten q
+  These ideas would (for a 2 level parm set) reduce the siganture size by
+  about 112 bytes (we could drop 3 bytes from the public key; probably not
+  worth doing).  Should we have an API for this alternative format?
+  With a bit of cleverness, we can support both (all signatures would be in a
+  form that's compatible with the short format; we'd be able to express them
+  in either format as required).  On the other hand, with the current format,
+  a 15/10 W=8 parm set has a pk+signature length of 3184 bytes total (pk is
+  60 bytes, sig is 3124 bytes); this would reduce this total to 3072 bytes.
+  Is a <4% space reduction really worth the effort?  This idea gave more
+  impressive savings back when we have 64 byte I values...
+
+- Some of our internal functions have fairly generic names (e.g.
+  get/put_bigendian).  We should go through, and give them names that are less
+  likely to conflict with other functions we're linked with.  This is one
+  place where C++ namespaces would be nice...
+
+- Some of the computation for a signing operation could be precomputed; we
+  could implement an API that says "call this during idle time, and your
+  next siggen will be cheaper".  I personally wouldn't expect a lot of call
+  (pun intended!) for this sort of thing (and, in any case, we can't
+  precompute the OTS signature of the message, hence there are limits to how
+  much benefit we can give).  And, maxing out the memory allowed in a working
+  key gives most of the same benefit...
+
+- We have starting building some regression tests; we should do more
+
+- We support incremental signing; there is a potential security problem.  If
+  the caller plays games, he can cause bad things to happen; a) if he modifies
+  the signature between init and final, he could trick us into reusing an OTS
+  signature index, and b) if he copies the context, he could trick us in using
+  the same index to sign two different messages.  The first would be fairly
+  easy to block (generate a MAC of the parts of the signature we care about,
+  and store that in the ctx); the second is harder.  The only thing I can
+  think of to block it would be to have the working_key track those signature
+  indicies it has issued incremental signatures for, and are still pending
+  (this would block the first attack as well).  That would likely require
+  dynamic memory allocation (unless we put a tight cap on the maximum number
+  of contexts that could be pending). My question is: should we go to that
+  extent?  After all, we already need to trust the application already (as we
+  allow them to sign anything they want, using the API).
+
+- Should we have better protection against the application accidentally
+  passing in an uninitialized/freed buffer as a hss_working_key, or a
+  hss_*_inc context structure?  Right now, the value we use to say 'this is a
+  good structure' is 0 (hss_error_none), which is far too likely a value to
+  be seen in an uninitialized buffer.  Should we also include a magic value
+  as well, for some simple validity checking?  Something like that certainly
+  wouldn't be fool-proof; however it might catch some simple mistakes.
+
+- Right now, we pass the update_private_key to every hss_generate_signature
+  operation.  Would it make more sense to pass it instead when we
+  hss_load_private_key, and just store it in the working_key?  Would it
+  make sense to use the same context for read_private_key and
+  update_private_key?
+
+- Right now, hss_extra_info has a last_signature flag.  Would it be more
+  useful to have a 'signatures_remaining' count instead (and when it hits
+  0, that'd mean we just wrote the last signature)?

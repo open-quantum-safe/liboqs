@@ -1,0 +1,674 @@
+These are some notes about the internal programming style of the HSS
+subsystem.  These are of no interest to someone who just wants to use LMS
+signatures; they might give some insight to someone spelunking through the
+sources.
+
+- General philosophy
+  This subsystem implements the HSS siganture scheme, which is a moderately
+  complex data structure, involving multiple Merkle trees.  To make things
+  even more fun, we implement restarting, that is, loading a private key
+  into memory, even if that private key has already generated some signatures
+  (and constructing the Merkle tree structures to reflect those signatures),
+  and multithreading (that is, we can spread many of the computations over
+  multiple processors).
+  Now, there is a rather annoying amount of complexity within the package;
+  we strive to isolate that from the user.  When the user creates a private
+  key, he has to tell us the parameter set (we can't make that up ourselves);
+  however, after that, he just loads the keys, and signs messages, without
+  worrying about the internal structure of the trees.  The parts that we
+  do leave to the user (such as the functions to load/store the private key)
+  are there in attempt to make it easier to use the system securely.
+
+- Merkle trees, subtrees
+  The core of this system is the signer, and the working key.  To sign
+  a message, we generate the OTS signature for that message, and generate
+  the authentication path to the root; this authentication path are the
+  nodes adjacent to the actual path from the OTS public key to the Merkle
+  tree root; hence when we generate the signature, we need to have those
+  internal node values computed.  We could compute them on the fly, but
+  that's be expensive.  We could store the entire Merkle tree in memory
+  and retrieve them that way, but that'd take too much memory (for H-25,
+  that's 2Gigabytes) [1].  Instead, what we do is implement a Merkle tree
+  walk, which recomputes a few OTS public keys (and Merkle internal nodes)
+  per signature, and ensures that we have the data needed for the
+  authentication path when we need them.  The algorithm we actually use for
+  this is inspired by the paper "Fractal Merkle Tree Representation and
+  Traversal", by Jakobsson et al.  Now, we don't do the exact algorithm
+  found in the paper (Algorithm 3); we go for "constant OTS pubkey
+  computation", and not "constant hash evaluations" (the algorithm in the
+  paper assumes that generating a leaf node takes one hash; it's more
+  like a few thousand).  In addition, we need to deal with the complexity
+  of dealing with multiple trees at once, their algorithm considers only
+  one.  If you do go through the paper, their $Exist_i$ tree is our
+  ACTIVE_TREE, and their $Desire_i$ tree is our BUILDING_TREE (and they
+  don't have a NEXT_TREE).  This algorithm allows a time/memory trade-off,
+  and even if we don't give it much memory, it's still decently efficient.
+  This algorithm is based on a "subtree"; a subtree is a triangular subsection
+  of the tree that consists of nodes from level A to level A+h-1 of the tree
+  which are rooted by a specific level A node; 'h is the height of the
+  subtree.  If the Merkle tree is level H, then we divide up the tree into H/h
+  (rounded up) levels, and deal with the subtrees at each levels (if h doesn't
+  divide H cleanly, then the top level subtree will be shorter).  For each
+  such level, we track an ACTIVE_TREE, a BUILDING_TREE and a NEXT_TREE
+  (exceptions: the top-most subtree doesn't get a BUILDING_TREE, and the
+  subtrees for the top level Merkle tree don't get NEXT_TREE's; they wouldn't
+  be used).
+  The ACTIVE_TREE lives on the current authentication path (that is, on the
+  path from the current (actually, next-to-be-used) leaf node to the Merkle
+  tree root.  The ACTIVE_TREE is always fully populated (that is, it contains
+  the correct value for all the internal nodes within the subtree), and so we
+  can read the authentication path by looking at the nodes within the
+  ACTIVE_TREE.
+  The BUILDING_TREE is the subtree to the immediate right of the ACTIVE_TREE,
+  within the same Merkle tree.  That is, the root of the BUILDING_TREE is the
+  node next to the root of the ACTIVE_TREE.  As we generate signatures from
+  the ACTIVE_TREE, we also incrementally compute nodes in the BUILDING tree.
+  If the root of the two subtrees are height L from the leaf nodes, then we
+  generate 2**L signatures from the current ACTIVE_TREE, and we need 2**L
+  OTS pubkey generations to fully build the BUILDING tree; hence for each
+  signature generated, we compute one OTS pubkey (and do the other work
+  involved with constructing the tree); when we complete the ACTIVE_TREE,
+  the BUILDING_TREE is all constructed, and ready to become the new active.
+  We need to do this update 1 time for each building tree in the bottom
+  merkle tree; there are H/h-1 (rounded up) such levels (the topmost
+  subtree doesn't get a building tree, as there's no subtree adjacent
+  to it), and so the building subtrees involve H/h-1 OTS pubkey gens.
+  The NEXT_TREE is the first subtree that's in the next Merkle tree.  Except
+  for the topmost Merkle level, when we exhaust one Merkle tree, we're
+  expected to roll over to the next.  The NEXT_TREE is there so that when
+  we do, we'll have a fresh set of ACTIVE_TREEs are ready to go.  If the
+  height of the Merkle tree is H, then the current Merkle tree can sign
+  2**H signatures, and it takes 2**H OTS pubkey gens to construct the
+  next Merkle tree, hence we do one OTS pubkey gen for the next tree
+  per signature (in addition to the building tree pubkey gens listed
+  above).
+  Also, cryptographically, all levels of the HSS hierarchy are the same, but
+  from an implementation standpoint, they're not.  Almost all the work
+  computing the next authentication path is done with the bottom level Merkle
+  tree, and so if the user allows us extra memory, we'll devote all that
+  memory to expanding the bottom subtrees (which reduces the number of OTS
+  pubkey computations per signature; by increasing h, we decrease H/h).  For
+  Merkle trees other than the bottommost, we always use the subtree height
+  that gives us the minimal memory (which isn't always the smallest subtrees)
+  [2].  Because we hardly ever need to update the subtrees there, any extra
+  memory we use would be wasted.
+  Another difference between the bottom-most Merkle tree and higher trees
+  is the update strategy.  For the bottom-most Merkle tree, we perform the
+  needed OTS pubkey gens as a part of the signature call (as that's the only
+  time we have to perform any operations).  However, for higher level trees,
+  we don't gen those OTS pubkeys when we generate the signature (as that
+  would cause that signature to be unexpectedly expensive); instead we
+  spread the OTS pubkey gens over a number of previous signature operations.
+  Also, we deliberately do those when the bottom-most tree is doing fewer
+  operations than expected (e.g. one of its ACTIVE_TREEs is on the right
+  side, and so there's no need for us to update the BUILDING_TREE), and so
+  the caller doesn't see any unexpected expense at all.
+  When we load a private key in memory, the bulk of the work is initializing
+  the subtrees to be what we'd expect them to hold, based on what the current
+  count is.  Actually, we advance the building and next trees to be slightly
+  in advance of what they'd be if we incremented them manually (that turns
+  out to be somewhat simpler).
+
+  [1] Actually for the bottom level Merkle tree, if the user allows us enough
+  memory, we will explicitly represent the entire Merkle tree in memory; we
+  just have it implement one huge subtree, that is, H=h.  However, we don't
+  mandate that the user allow us that much memory, if he allows us less,
+  we'll go with a more compact (and slower) representation.
+  [2] Except in those cases where the immediately below Merkle tree won't
+  give us enough updates, which can happen only in rather obscure parameter
+  sets, e.g. 25/5.
+
+- Aux data; what is it, really?
+
+  When we first generate the public key, we must compute the entire Merkle
+  tree contents for the top level Merkle tree (in order to compute the public
+  key).  When we load the private key into memory, we must compute the
+  authentication path for active Merkle trees (which includes the top level
+  one); this involves computing the entire Merkle tree contents.  Obviously,
+  there is a lot of repeated computation going on; our answer to that it
+  auxiliary data.  When we generate the Merkle tree the first time (when we
+  generate the public key), we save some of the contents of this tree; when we
+  load the key into memory, we use these saved contents (rather than
+  recomputing those nodes); this significantly decreases the amount of
+  recomputation we need.  We actually save the values at the bottom of the
+  subtrees; that means that those bottom nodes for the subtrees we've saved
+  are free; we recompute the internal nodes for those subtrees ourselves (but
+  that's comparatively cheap).  The higher level subtrees cost us the least
+  amount of disk space (there are fewer of them), and they save us the most
+  computation time, and so those get priority.  We know (given the current
+  allocation algorithm) what subtree heights would be (and hence where their
+  bottom levels would be; based on the amount of aux data we're allowed, we'll
+  save as many bottom levels as can fit.
+  Also, we protect the aux data with an HMAC (and if that doesn't validate on
+  reload, we ignore it); this means that an attacker can't cause us to
+  generate invalide signatures by message with the aux data; they can make
+  key reloading take more time.
+
+- Extra info, what's up with that?
+  There are some information that the application may want to specify, but
+  most applications really don't care.  Some examples are "how many threads
+  should I use", or "have we just signed the last signature?" or "why did
+  that call just fail?".  Instead how having independant parameters for each
+  one (and having to modify the API every time we think of another one), we
+  bundled them all into a structure (struct hss_extra_info), and allow the
+  application to set it, pass in a pointer to it, and on return, check the
+  results.  Of course, if the application is OK with the defaults, it can
+  just pass in a NULL.  Currently, we have three things that can be passed:
+  - Number of threads that we can use
+  - Whether we just used up the last signature
+  - Most recent failure reason (hss_error_code, you'll see that there are
+    a lot of possible reaosns)
+  In the future, we'll likely to add support for partial trees, and possibly
+  other things we haven't thought of yet; one nice thing is that we can add
+  something here to add an obscure (== "not of interest to most applications")
+  parameter without modifying the API to existing applications.
+
+- Data structures; this is a review of some of the structures used within
+  this subsystem, and what they really mean
+  private key
+      This is what the raw private key looks like.  It's not a formal C
+      structure; instead, it is a byte array, currently 48 bytes long,
+      split up into:
+      - 8 bytes of count; this is the state that gets updated with every
+        signature, and consists of a bigendian count of the number of
+        signatures so far.  By convention, a setting of 0xffffffffffffffff
+        means 'we're used up all our signatures'
+      - 8 bytes of parameter set, in a compressed format.  This is here so
+        that the application needn't tell us what the parmaeter set when
+        loading a key (and can't get it wrong)
+      - 32 bytes of random seed; this is where all the security comes from.
+        It is 32 bytes (256 bits) so Grover's algorthm can't recover it.
+      This is a flat set of bytes, because we hand it to read_private_key
+      and update_private_key routines, which are expected to read/write
+      them to long term storage.
+      Random musing: should we have included a version parameter (so we
+      could change the format without breaking things???)
+  struct hss_working_key
+      This structure holds all the current state of a loaded private key.
+      It contains a copy of the private key (so we can write it out as
+      required; we have the entire thing in memory, in case the write
+      routine isn't able to do a partial update), the current and reserve
+      counts (the reserve count is what we've last written to the private
+      key; we use it to implement the 'reserve' functionality), the
+      current signed public keys that we place into the signature,
+      and all the levels that make up this hierarchy.
+      One nonobvious member of this structure is 'stack'.  Some of the
+      subtrees (the nonbottom building and next subtrees) require a
+      stack to hold intermediate hash values (as we compute them one
+      OTS pubkey at a time).  On the other hand, other subtrees (the
+      active ones) have no such need; so, to save a bit of space, we
+      consolidate all the stacks into one contiguous region (and have
+      each subtree point into the part of the region that's theirs).
+      And, when we swap the active subtree with a building/next, we move
+      the stack pointer from the old building/next subtree to the new
+      (as the new active one doesn't need it).
+  struct merkle_level
+      Actually, this is not a Merkle tree (even though the code typically
+      names variables of this type 'tree').  Instead, it stands for a
+      specific tree level within the HSS hierarchy, and all the trees
+      that might live at that level.  It contains the parameter set
+      that is used for this level, how the trees are implemented (subtree
+      sizes), and also two different trees at this level; the one the active
+      path is going through, and the next tree that will be used at this
+      level (once the current tree all the signatures it is allowed).  This
+      structure has pointers to the various subtrees that hold the known node
+      values for the two trees.
+  struct subtree
+      This contains the node values for a particular subtree.  The
+      height of this subtree is implicit (we use values in the merkle_level
+      to recompute it), it does contain the location of the subtree within
+      the larger tree.  There are three different flavors of subtrees,
+      active, building and next; we tell which one this is based on
+      the pointer from the merkle_level.  For building and next subtrees,
+      the subtree may not be complete; the current_index value tells
+      us where in the building process we are.  For nonbottom subtrees,
+      this building process involves a stack (to combine nodes that
+      are lower than the bottom of this subtree); the stack member is
+      a pointer to a region dedicated for this rebuild for this subtree.
+      The actual node values are in the array nodes[] (and the structure
+      will be malloc'ed large enough to hold all the nodes); the root
+      of the subtree will be at location 0.
+  struct thread_collection
+      This is the abstract structure that stands for a collection of threads.
+      Its contents are specific to the actual threading implementation (the
+      trivial implementation doesn't actually bother defining it, as it never
+      allocates an object of this type).  It holds information about the
+      threads, any necessary locks, and the tasks that have been asked for.
+      In addition, any such pointer to a (struct thread_collection) may be
+      NULL; this is never considered an error condition, rather it is an
+      indication that we're running in single-threaded mode (either because
+      that's how we're linked, or because we got an error spawning the
+      thread).
+  struct expanded_aux_data
+      This is an array of pointers to the various node values that occur
+      at various sublevels within the aux data; for any level that isn't
+      stored in the aux data, the pointer will be NULL.  This will always
+      point into an application provided buffer, hence we don't need to
+      worry about memory allocation.
+      This is used in two slightly different ways: if we're building the
+      aux data (during key generation time), this will point to where the
+      aux data should go (that is, into the application-provided buffer).
+      If we're loading the aux data (during key load time), this will point
+      into where in the buffer the various levels actually are (and if the
+      buffer doesn't validate (wrong length or bad HMAC), we NULL out all
+      the pointers (and so the generation code treats it as if we had no
+      aux data).
+
+- Types
+  We try to use types in a stereotypical way; we do this not so much to allow
+  the compiler to do type checking (as most of the types of flavors of int,
+  which the compiler will allow to mix-and-match freely), intead, it's
+  intended as a hint to the maintainer what this variable is supposed to be.
+  Of course, it counts as a hint only if the reader actually knows what we use
+  which types for :-)
+  sequence_t
+     This is the internal sequence number across an entire HSS tree structure.
+     That is, it's used to represent the total number of signatures that an
+     HSS private key has signed so far.  This is a 64 bit type, as we allow
+     parameter sets that can sign more than 2**32 signatures.
+  merkle_index_t
+     This is the 'index' within a single Merkle tree; however we do give it
+     four distinct meanings:
+     - This is the count of the number of signatures generated with a single
+       Merkle tree so far
+     - The 'address' of a Merkle node that we use when computing its hash;
+       that is, the four bytes we include in the hash.  In the draft, the
+       variable 'r' is this type.
+     - The offset of a node from the left side of the Merkle tree.  In the
+       draft, the variable 'q' in the OTS signatures is this type, however we
+       use it for internal nodes within the Merkle tree as well.
+     - The offset of a node from the left side of the subtree it is in.  This
+       is different from the previous definition if the subtree we're in isn't
+       the leftmost.  Obviously, this meaning is never referenced in the draft
+       (as the draft never discusses subtrees).
+     If we were doing a rewrite, we'd probably give different typedef's for
+     the distinct meanings.
+  size_t
+     This is the size of an object (buffer, signature, whatever).  Two notes:
+     - If we know that the size cannot be greater than 65535 (e.g. the size
+       of a hash), we sometimes use 'unsigned' instead
+     - In a couple of places, we want the size, however we want to allow
+       negative values as well.  In those places, we use the type
+       'signed long' (and, yes, I know that 'signed' is redundant; I want
+       to emphesize the signedness).
+  bool
+     We use a bool in two different ways; the first is the obvious (a value
+     which is true or false); the other is a success value (did the operation
+     work or not?); we use the convention "true == it worked",
+     "false == it failed".  It might make sense to use the opposite convention
+     (0 means it worked, nonzero means it failed; the exact nonzero value
+     might give an indication as to why it failed); however to me, having
+     0 meaning success is sufficiently nonintuitive that I just can't do it;
+     we have added another way to communicating the failure reason to the
+     application, in case it cares.
+  param_set_t
+     This is either an LM or an OTS parameter set (32 bits).
+  aux_level_t
+     This is the 32 bit flag that goes in front of the auxilary data; bits
+     within this flag indicate which Merkle tree levels we actual have
+     auxilary data for (and whether we have any aux data at all).  If the
+     msbit of the initial byte of the aux data (which corresponds to bit 31
+     of the aux_level_t) is clear, then we assume we have no aux data (even
+     if the aux data consists of only that one byte; that means for any
+     real aux_level_t, bit 31 will be set.
+   hss_error_code
+     This is the code that stands for an error reason; for some structures,
+     we also use this as a 'is-this-structure-usable' flag (with something
+     other than "no error" (hss_error_none) meaning 'if someone tries to
+     use this structure, report this error'.
+     We've divided the various error codes into ranges, to stand for the
+     general types of errors (essentially, who we think was at fault):
+     - hss_range_normal_failures; these are the types of errors you get
+           when running the package normally (signature validation failure,
+           private key expired)
+     - hss_range_bad_parameters; these are the types of errors caused by
+           the application misusing the package (unsupported parameter set,
+           passed buffer not big enough, etc)
+     - hss_range_processing_error; these are errors caused by something in
+           the environment (rng failure, nvread/write failure, malloc
+           failure)
+     - hss_range_my_problem; these are errors caused by something internal
+           to this package; currently, they're all dubbed hss_error_internal,
+           and are caused by either something scribbling over our memory
+           or a bug somewhere
+   struct seed_derive
+     This is the structure we use to derive keys in a potentially side
+     channel resistant manner.  There are two different versions of this
+     structure (with the same API, controlled by #define's) that map
+     the current seed, I value, q value (Merkle tree node index) and
+     j value (Winternitz digit index) into unpredictable values for the
+     LM-OTS private values (and the C values and the child tree I, seed
+     values).  We make this into a structure because, when we're doing
+     a tree based derivation method (SECRET_METHOD==1), adjacent values
+     usually share most of the nodes of the tree, and this structure is
+     a convienent place to store those shared values (allowing us to
+     avoid recomputation).
+     This structure is used as follows:
+     - hss_seed_derive_init to set the I, seed values
+     - hss_seed_derive_set_q to set the q value (and if you call this again
+       to set it to a different q value, this tries to reuse as many nodes
+       as possible to minimize computation
+     - hss_seed_derive_set_j to set the initial j value.
+     - hss_seed_derive to get the next seed value.  If increment_j is set,
+       this also sets up the structure for the next j value, and in a way
+       that minimized the number of hashes done.
+     - hss_seed_derive_done when we're done (to zeroize any internal state
+       information).
+    The programmer can modify the SECRET_METHOD/SECRET_MAX settings to
+    change the efficiency/side channel resistance mix; however any
+    such change modifies the mapping between seeds and private LM-OTS
+    values (that is, your private keys no longer work).
+
+- Side channel resistance and key derivation.
+  We are inherently resistant to timing and cache-based side channel attacks
+  (as those behaviors are uncorrelated to any secret information).  However,
+  when we come to DPA-style attacks, we do try to have some protection.  To
+  perform a DPA attack, the attacker would need to see us use the same secret
+  value in a number of distinct hashes (which would allow them to build up
+  the statistics).  To prevent this from being a problem, we can be configured
+  so that no secure is ever used for more than a limited number of hashes
+  (and so the attacker cannot get enough information to reconstruct any
+  secret).  This is controlled by the SECRET_METHOD and SECRET_MAX #defines
+  found in hss_derive.h.  SECRET_METHOD==0 means that we don't worry that much
+  (and we use the LM-OTS key generation procedure found in Appendix A).
+  SECRET_METHOD==2 means that we use the same procedure that ACVP expects to
+  translate seed values to the random values used. It's a variation of the
+  SECRET_METHOD==0 method, and isn't designed to be side-channel resistant.
+  SECRET_METHOD==1 means that the number of times we use any secret is
+  bounded to a maximum of 2**SECRET_MAX times.  In this method, we derive
+  keys using a tree-based process, with each node having up to 2**SECRET_MAX
+  children.  Decreasing SECRET_MAX takes a bit more time (as the tree becomes
+  deeper), however even SECERET_MAX==1 (smallest allowed value) isn't that
+  expensive.
+
+- Threading architecture
+  We support doing operations on multiple threads, however we'd rather not
+  have the majority of the code know whether we're actually doing threading
+  or not.  The compromise we came up with is the hss_thread.h API; this
+  compromise is not perfect (at least half of the complexity within
+  hss_generate.c is logic to try to work with multiple threads efficiently),
+  however it's better than embedding conditional pthread calls throughout
+  the code.  This hss_thread API allows us to issue "tasks"; these tasks may
+  be run by the main thread or may be run in a spawned thread; the only
+  guarantee is that, by the time hss_thread_done returns, all the tasks have
+  completed.  Now, we provide two different implementations of this API; a
+  trivial one (hss_thread_single.c), which doesn't try to spawn any threads,
+  and one that assumes the POSIX pthread API (hss_thread_pthread.c), which
+  makes calls to the pthread library to do this.  You're expected to link
+  either one or the other when compiling the subsystem (and the Makefile we
+  provide generates two libraries, hss_lib.a and hss_lib_thread.a, which does
+  that for you).  We do this, rather than attempting some internal switch,
+  because hss_thread_pthread.c makes direct calls to pthread (hence, would be
+  a link error if the OS didn't provide some implementation of those).  Also,
+  if you're interesting in supporting some other threading library (such as
+  the one defined in C11), that shouldn't be that hard to add; we really use
+  only the basics of what a threading library ought to provide.
+  Also, as for avoiding race conditions (always a good idea), we have the
+  convention that, when a task is writing the result, and the area it's
+  writing to is malloc'ed or automatic region that might be shared by
+  other threads, that task must call hss_thread_before_write(col) before the
+  write (and hss_thread_after_write(col) afterwards); this makes sure that the
+  thread is the only one to write into that region.  We do this even if two
+  threads aren't actually updating the exact same bytes; because we're not
+  careful to make sure our fields are aligned with the natural word size
+  of the CPU (whatever that is), then what an update of one field might
+  end up doing is a read/modify/write of a larger word, which might end
+  up overlapping the target of another thread (which might be doing a
+  read/modify/write of the same larger word simultaneously).  This is a rather
+  unlikely event, however the race condition it would cause if it did happen
+  would be *really* hard to track down.  Now, hss_thread_before_write does a
+  lock, which means that no other thread can write into the common region
+  until we release the lock, hence the time any thread holds the lock ought to
+  be short; the current code abides by that.
+  Now, we allow the application to specify the number of threads; if we're
+  using the pthread library, that's the number of child threads we'll
+  attempt to spawn (we don't count the parent thread, however while child
+  threads are active, the parent thread doesn't do much).   Of course, it
+  is subject to a sane maximum.  If the number of threads is specified as
+  1, we'll fall back to single-threaded mode.  If it specifies 0, it gets
+  a supposedly-reasonable default (DEFAULT_THREAD).  On the other hand, if
+  we're linked with the nonthreaded library, this doesn't do anything (we're
+  always in single-threaded mode).
+  The obvious question is: how is the application supposed to know how
+  many threads are appropriate?  I don't have a great answer to that.
+  The number of threads you want are dependent on the number of cores
+  you have on the system (spawning more than that just gives the OS a
+  bit of a workout without speeding anything; after all, all the threads
+  are CPU-bound), and how much of the system resources you want to devote to
+  this task.  The pthread virtualization doesn't give us a hint on the first
+  one; the second one is something the application might have a clue about.
+  Also, while the key generation and loading can take advantage of as many
+  threads as they can get, the signature generation and verification logic
+  can't.  The signature generation logic is limited by the number of subtree
+  levels in the bottom merkle tree (plus one); the signature verification
+  logic is limited to the number of merkle levels.
+
+- Use of malloc
+  If you go through the code, you'll see an occasional call to malloc.  In
+  allocate_working_key (hss_alloc.c), we use malloc to build the working key
+  structure, and we'll fail (return 0) on a malloc failure.  The working key
+  structure will contain everything we need to generate signatures (so we
+  never *have* to do a malloc later).  Now, we will try to perform malloc's
+  elsewhere, however they are always strictly optional; we'll never fail
+  because malloc objected.  Instead, the code will step to a "plan B" on a
+  failure, which will do the exact same job (but slower; if it wasn't slower,
+  it wouldn't be plan B).
+  The testing code (and demo.c) does use malloc, and will fail if the
+  malloc fails; these tools can be expected to run only when we have plenty
+  of memory, hence we feel we don't need a plan B there.
+
+- Use of Variable Length Arrays
+  Now, we used to use VLAs (a C99 language feature) at places.  However,
+  someone's compiler couldn't handle them (even though they implemented the
+  rest of the C99 features we used), and so we went and reworked the code to
+  remove them.  In any case, removing the VLAs might make this code a bit more
+  small-end-device friendly (as those small devices tend not to have huge
+  stacks).
+
+- Zeroization
+  Whenever we're done with a value whose leakage might allow someone to
+  generate a forgery, we zeroize it (hss_zeroize) before we release the
+  memory.  Now, it turns out that most of the values we compute wouldn't
+  actually allow a forgery; the ones that do are: the seeds, the OTS private
+  keys and the OTS previous winternitz chain values.  We also zeroize the
+  aux data HMAC values (those wouldn't allow a forgery; they would allow
+  someone to cause us to misbehave by modifying the aux data).
+
+- Use of globals
+  There are no globals (other than the optional debugging flag hss_verbose).
+  All memory is either a buffer provided by the calling application,
+  dynamically allocated (malloc), or automatic (stack).  Globals are evil,
+  reentrancy is good.  The regression code does have globals (for things like
+  coordinating with the randomness generator; no normal program has any need
+  for that); the regression code isn't intended for use for other programs...
+
+- Use of floating point
+  Crypto code hardly ever uses floating point.  However, we're an exception;
+  in the hss_generate.c function, we do actually do some float point
+  computations; we do this to figure out a reasonable way to split the
+  building task between threads (and for this task, the imprecision inherent
+  in floating point is not a problem; if two ways of splitting the task are
+  so close in cost that the rounding error actually makes a difference, it
+  doesn't really matter which way we go).  Now, we include a macro
+  (DO_FLOATING_POINT) which disables the use of floating point; a platform
+  that does not support floating point can set it to 0, and that code is
+  commented out.  Now, if you use threading, you really want DO_FLOATING_POINT
+  If you don't, it doesn't matter for performance, and actually, turing it off
+  comments out quite a bit of code that you doesn't actually buy you anything;
+  it doesn't matter how we divide tasks between threads if the same thread
+  will end up performing them all anyways...
+  We also use floating point in the regression code; to figure out when to
+  update the displayed % completed.
+
+- Debugging
+  Good luck...
+
+- Regression tests
+  This package includes the test_hss executable, which is meant to be a set
+  of regression tests for this package.  It ought to be run early and often
+  (with "test_hss all" being a good default), if not in -full mode, it's
+  relatively quick.
+
+  The usage is:
+      test_hss [-f] [-q] [-full] test_1 test_2 test_3
+  Without any parameters, it gives a usage message (and the list of the
+  supported tests)
+  The parameters are:
+  -f     Normally, this test suite stops at the first failure; with this flag
+         it keeps on going
+  -q     Normally, some of the longer tests some minimal progress messages
+         (percent complete); with this flag, it just lists the test being run
+         and a pass/fail message (and possibly a failure reason).
+  -full  Normally, each test takes no more than 15 seconds to run (to
+         encourage you to run it early and often).  With this flag, we allow
+         the tests to run much longer; warning, it'll take several hours to
+         run the full test suite in -full mode.  I'm also not convinced that
+         -full mode gives you that much better coverage, on the other hand,
+         it really has found problems that the short tests haven't, and so it
+         should be run occasionally
+  all    This is a shorthand to specify every test the test suite knows about.
+         On my test machine, 'test_hss all' currently takes about 70 seconds.
+
+  Now, there are things that the regression tests currently don't test:
+  - Do we assume malloc gives us an initiallized buffer?
+  - Do we handle malloc failures as designed?
+  - How about thread spawn failures?  We're supposed to handle those
+    transparently
+  - Do we have any memory leaks?
+  - We're supposed to be able to limit the number of times we hash any
+    specific secret; do we actually abide by that?
+  Testing those would require more infrastructure than we have right now.
+  Also, it might not be that bad of an idea to run a code-coverage tool to
+  check out how much of the code the regression tests actually tests.
+
+- Files; this is a listing of the files that make up this subsystem, and a
+  brief description of what's in them.  Note that for many .c files, we have a
+  .h file with the prototypes; we list those together.
+
+  common_defs.h		This is a central spot to put definitions of general
+			interest of the entire subsystem
+  demo.c		This is an example program that uses this subsystem; it
+			implements a simple file signer.  Note: because it
+			doesn't get that great of randomness (due to the need
+			to restrict ourselves to standard C), it probably
+			shouldn't be used as is.  It does try to use
+			/dev/urandom; that's of help only on OS's that
+			actually implement /dev/urandom
+  endian.[ch]		Routines to read/write values in bigendian format
+  hash.[ch]		Routines to implement the hashing API, as used by the
+			rest of the subsystem.  This currently only implements
+			SHA-256, it'll support other hashes once LMS does.
+			Note that there really are three separate APIs to do
+			hashing (hash this entire string, hash this string
+			using this context variable as a temp, do on-line
+			hashing); those are all used at various times.
+  hss.c			This used to be where all the code lived; however, we
+			have since migrated the vast majority of the routines
+			to more appropriate source files (so we don't have a
+			huge .c file).  Now, it just has a handful of routines
+			that don't have a better home.
+  hss.h			This is the public include file for the entire
+			subsystem; this is the file that we expect an
+			application that uses this subsystem to include.
+  hss_alloc.c		This is the routine whose job it is to allocate a
+			working key (struct hss_working_key).  Note that it
+			doesn't actually put anything in there, it just
+			allocates the memory (and initializes some
+			key-independent fields).
+  hss_aux.[ch]		These are the routines that handle auxiliary data (that
+			is, data that holds part of the top level Merkle tree,
+			and is used to speed up the key load process)
+  hss_common.c		These are routines that are of interest to both an
+			implementation that generates signatures, and one that
+			only does signature verification.
+  hss_common.h		These are the prototypes for the above routines; we
+			list it separately to emphesize that this may be
+			included by an application.
+  hss_compute.[ch]	These are routines that do some common computation;
+			these are shared between multiple source files.
+  hss_derive.[ch]	This is the structure that does key derivation.  It
+			allows a trade-off between efficiency, and side channel
+			resistance.
+  hss_generate.c	This is the routine that takes an allocated working key
+			(hss_alloc.c), and loads a private key into it.  Sound
+			simple?  Well, if you go through this, you'll find out
+			that it isn't.
+  hss_internal.h	These are the prototypes and structures that are common
+			to this subsystem, but shouldn't be used outside of it.
+  hss_keygen.c		This is the routine that generates a public/private
+			keypair.
+  hss_param.c		These are routines that deal with parameter sets.
+  hss_reserve.[ch]	These are routines that deal with reservations, and
+			updating the sequence number in a private key.
+  hss_sign.c		This is the routine that generates an HSS signature.
+  hss_sign_inc.c	This is the routine that generates an HSS signature,
+                        in an incremental fashion.
+  hss_sign_inc.h        This is the public include file for the incremental
+                        signature routines.  It's in its own file because it
+                        needs to pull in some internal files (e.g. hash.h)'
+                        that we generally don't need to hand to people
+  hss_thread.h		This is the internal prototype for our internal
+			threading abstraction.  We have two implementations of
+			the abstraction, we expect to link with one of the two.
+  hss_thread_pthread.c	This is the implementation of the threading API that
+			links with the POSIX pthread library, and uses that to
+			to multithreading.
+  hss_thread_single.c	This is the implementation of the threading API that
+			assumes that we don't have any threading support at all
+			(and so the main thread does all the work).
+  hss_verify.c		This is the routine that verifies an HSS signature.  It
+			is in its own file so thar someone who wants to only
+			verify signatures doesn't need to pull in the signing
+			logic.
+  hss_verify.h		This is the public API for the verifier.
+  hss_verify_inc.c	This is the routine that verifies an HSS signature in
+			an incremental fashion; that is, you can hand it
+			pieces of the message in succession (so we don't need
+			to assume the entire message fits in memory).  It
+			is in its own file so thar someone who wants to only
+			verify signatures doesn't need to pull in the signing
+			logic.  This API is somewhat less efficient that the
+                        hss_verify.c logic if you're multithreaded (we can't
+                        paralleize the check of the bottom signature with
+                        the upper ones), however it's not a huge delta.
+  hss_verify_inc.h	This is the public API for the incremental verifier.
+			It's in its own file because it needs to pull in some
+			internal files (e.g. hash.h) that we generally don't
+			need to hand to people
+  hss_zeroize.[ch]	This is a routine to clear out memory; it is used to
+			make sure we don't accidently leak any secrets by
+			free()ing them, or having them go out of scope.
+  lm_common.[ch]	These are routines that support the (single level) LMS
+			routines that are of interest to both an implementation
+			that generates signatures, and one that only does
+			signature verification.
+  lm_ots.h		Prototype for the OTS signature routines.
+  lm_ots_common.[ch]	These are routines that support the OTS routines that
+			are of interest to both an implementation that
+			generates signatures, and one that only does
+			signature verification.
+  lm_ots_sign.c		Routines that generate OTS public keys, and OTS
+			signatures
+  lm_ots_verify.c	Routine that computes the public key given an OTS
+			signature and a message.
+  lm_verify.[ch]	Routine that verifies an LMS signature
+  sha256.c		Pure C implementation of SHA-256; it is included if
+			USE_OPENSSL is 0.  This is provided in case you don't
+			have OpenSSL available.
+  sha256.h		Routine that computes the SHA-256 hash.  This is the
+			same interface that OpenSSL presents.  We also
+			include a #define (USE_OPENSSL); if 1, these are
+			direct calls to OpenSSL; if 0, we use our own
+			implementation (in case you don't have OpenSSL
+			handy).  If OpenSSL is available, use that - it has
+			an assembly language SHA-256 implementation, and that
+			performs better.
+   test_hss.c           This is the main driver code for the regression tests.
+                        It doesn't actually implement any tests itself;
+                        instead, it deals with handling the test run
+   test_hss.h           This has the prototypes for all the actual tests
+   test_*.c             These are the actual tests.
+
+And, one final note: I would claim to be a competent C programmer, however my
+skills at generating makefiles are laughable.  I would ask that you keep the
+taunting about my lack of ability there to reasonable bounds.
