@@ -266,12 +266,15 @@ int main(int argc, char **argv) {
 	size_t output_len = 64;
 	char *single_alg = NULL;
 
+	OQS_init();
 	for (int i = 1; i < argc; i++) {
 		if (strcmp(argv[i], "--algs") == 0) {
 			rc = printAlgs();
 			if (rc == OQS_SUCCESS) {
+				OQS_destroy();
 				return EXIT_SUCCESS;
 			} else {
+				OQS_destroy();
 				return EXIT_FAILURE;
 			}
 		}
@@ -322,6 +325,7 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "-h                 Print usage\n");
 		fprintf(stderr, "\n");
 		fprintf(stderr, "<alg>              Only run the specified algorithm. Must be one of the algorithms output by --algs\n");
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 
@@ -434,5 +438,6 @@ int main(int argc, char **argv) {
 	}
 	PRINT_TIMER_FOOTER
 
+	OQS_destroy();
 	return ret;
 }

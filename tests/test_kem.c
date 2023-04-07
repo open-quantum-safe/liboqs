@@ -211,6 +211,7 @@ void *test_wrapper(void *arg) {
 #endif
 
 int main(int argc, char **argv) {
+	OQS_init();
 
 	printf("Testing KEM algorithms using liboqs version %s\n", OQS_version());
 
@@ -224,6 +225,7 @@ int main(int argc, char **argv) {
 			fprintf(stderr, "%s", OQS_KEM_alg_identifier(i));
 		}
 		fprintf(stderr, "\n");
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 
@@ -232,6 +234,7 @@ int main(int argc, char **argv) {
 	char *alg_name = argv[1];
 	if (!OQS_KEM_alg_is_enabled(alg_name)) {
 		printf("KEM algorithm %s not enabled!\n", alg_name);
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 
@@ -260,6 +263,7 @@ int main(int argc, char **argv) {
 		int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 		if (trc) {
 			fprintf(stderr, "ERROR: Creating pthread\n");
+			OQS_destroy();
 			return EXIT_FAILURE;
 		}
 		pthread_join(thread, NULL);
@@ -271,7 +275,9 @@ int main(int argc, char **argv) {
 	rc = kem_test_correctness(alg_name);
 #endif
 	if (rc != OQS_SUCCESS) {
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
+	OQS_destroy();
 	return EXIT_SUCCESS;
 }

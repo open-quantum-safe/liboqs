@@ -120,14 +120,17 @@ int main(int argc, char **argv) {
 
 	OQS_SIG *single_sig = NULL;
 
+	OQS_init();
 	OQS_randombytes_switch_algorithm(OQS_RAND_alg_openssl);
 
 	for (int i = 1; i < argc; i++) {
 		if (strcmp(argv[i], "--algs") == 0) {
 			rc = printAlgs();
 			if (rc == OQS_SUCCESS) {
+				OQS_destroy();
 				return EXIT_SUCCESS;
 			} else {
+				OQS_destroy();
 				return EXIT_FAILURE;
 			}
 		} else if ((strcmp(argv[i], "--duration") == 0) || (strcmp(argv[i], "-d") == 0)) {
@@ -171,6 +174,7 @@ int main(int argc, char **argv) {
 		fprintf(stderr, " -f                Test full keygen-sign-verify cycle of each SIG\n");
 		fprintf(stderr, "\n");
 		fprintf(stderr, "<alg>              Only run the specified SIG method; must be one of the algorithms output by --algs\n");
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 
@@ -196,6 +200,7 @@ int main(int argc, char **argv) {
 		}
 	}
 	PRINT_TIMER_FOOTER
+	OQS_destroy();
 
 	return ret;
 }

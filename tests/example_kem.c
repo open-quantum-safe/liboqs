@@ -154,9 +154,12 @@ static OQS_STATUS example_heap(void) {
 }
 
 int main(void) {
+	OQS_init();
 	if (example_stack() == OQS_SUCCESS && example_heap() == OQS_SUCCESS) {
+		OQS_destroy();
 		return EXIT_SUCCESS;
 	} else {
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 }

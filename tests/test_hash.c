@@ -210,6 +210,7 @@ static int do_arbitrary_hash(void (*hash)(uint8_t *, const uint8_t *, size_t), s
 }
 
 int main(int argc, char **argv) {
+	OQS_init();
 	if (argc != 2) {
 		fprintf(stderr, "Usage: test_hash algname\n");
 		fprintf(stderr, "  algname: sha256, sha384, sha512, sha256inc, sha384inc, sha512inc\n");
@@ -235,6 +236,7 @@ int main(int argc, char **argv) {
 		return do_arbitrary_hash(&OQS_SHA2_sha512, 64);
 	} else {
 		fprintf(stderr, "ERROR: Test not implemented\n");
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 }

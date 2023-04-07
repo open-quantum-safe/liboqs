@@ -1043,6 +1043,7 @@ int shake_256_x4_kat_test(void) {
 int main(UNUSED int argc, UNUSED char **argv) {
 	int ret = EXIT_SUCCESS;
 
+	OQS_init();
 	print_system_info();
 
 	if (sha3_256_kat_test() == EXIT_SUCCESS) {
@@ -1086,6 +1087,7 @@ int main(UNUSED int argc, UNUSED char **argv) {
 		printf("Failure! failed four-way parallel shake-256 known answer tests \n");
 		ret = EXIT_FAILURE;
 	}
+	OQS_destroy();
 
 
 	return ret;

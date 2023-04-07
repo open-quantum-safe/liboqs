@@ -163,6 +163,7 @@ cleanup:
 }
 
 int main(int argc, char **argv) {
+	OQS_init();
 
 	if (argc != 3) {
 		fprintf(stderr, "Usage: test_sig algname operation (0,1,2)\n");
@@ -174,6 +175,7 @@ int main(int argc, char **argv) {
 			fprintf(stderr, "%s", OQS_SIG_alg_identifier(i));
 		}
 		fprintf(stderr, "\n");
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 
@@ -182,6 +184,7 @@ int main(int argc, char **argv) {
 	char *alg_name = argv[1];
 	if (!OQS_SIG_alg_is_enabled(alg_name)) {
 		printf("Signature algorithm %s not enabled!\n", alg_name);
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 
@@ -193,7 +196,9 @@ int main(int argc, char **argv) {
 	OQS_STATUS rc = sig_test_correctness(alg_name, (unsigned int)atoi(argv[2]));
 
 	if (rc != OQS_SUCCESS) {
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
+	OQS_destroy();
 	return EXIT_SUCCESS;
 }
