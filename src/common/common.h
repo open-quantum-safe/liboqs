@@ -138,10 +138,15 @@ typedef enum {
 OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext);
 
 /**
- * This currently only sets the values in the OQS_CPU_EXTENSIONS,
- * and so has effect only when OQS_DIST_BUILD is set.
+ * This currently sets the values in the OQS_CPU_EXTENSIONS
+ * and prefetches the OpenSSL obejcts if necessary.
  */
 OQS_API void OQS_init(void);
+
+/**
+ * This function frees prefetched OpenSSL objects
+ */
+OQS_API void OQS_destroy(void);
 
 /**
  * Return library version string.

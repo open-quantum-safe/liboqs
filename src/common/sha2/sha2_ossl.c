@@ -12,36 +12,7 @@
 #include "sha2.h"
 
 #include <openssl/evp.h>
-
-EVP_MD *_sha256() {
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-	static EVP_MD *ptr;
-	ptr = ptr ? ptr : EVP_MD_fetch(NULL, "SHA256", NULL);
-	return ptr;
-#else
-	return EVP_sha256();
-#endif
-}
-
-EVP_MD *_sha384() {
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-	static EVP_MD *ptr;
-	ptr = ptr ? ptr : EVP_MD_fetch(NULL, "SHA384", NULL);
-	return ptr;
-#else
-	return EVP_sha384();
-#endif
-}
-
-EVP_MD *_sha512() {
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-	static EVP_MD *ptr;
-	ptr = ptr ? ptr : EVP_MD_fetch(NULL, "SHA512", NULL);
-	return ptr;
-#else
-	return EVP_sha512();
-#endif
-}
+#include "../ossl_helpers.h"
 
 static void do_hash(uint8_t *output, const uint8_t *input, size_t inplen, const EVP_MD *md) {
 	EVP_MD_CTX *mdctx;
@@ -55,19 +26,19 @@ static void do_hash(uint8_t *output, const uint8_t *input, size_t inplen, const 
 
 void OQS_SHA2_sha256(uint8_t *output, const uint8_t *input, size_t inplen) {
 	const EVP_MD *md;
-	md = _sha256();
+	md = oqs_sha256();
 	do_hash(output, input, inplen, md);
 }
 
 void OQS_SHA2_sha384(uint8_t *output, const uint8_t *input, size_t inplen) {
 	const EVP_MD *md;
-	md = _sha384();
+	md = oqs_sha384();
 	do_hash(output, input, inplen, md);
 }
 
 void OQS_SHA2_sha512(uint8_t *output, const uint8_t *input, size_t inplen) {
 	const EVP_MD *md;
-	md = _sha512();
+	md = oqs_sha512();
 	do_hash(output, input, inplen, md);
 }
 
@@ -76,7 +47,7 @@ void OQS_SHA2_sha512(uint8_t *output, const uint8_t *input, size_t inplen) {
 void OQS_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
-	md = _sha256();
+	md = oqs_sha256();
 	OQS_EXIT_IF_NULLPTR(md);
 	mdctx = EVP_MD_CTX_new();
 	EVP_DigestInit_ex(mdctx, md, NULL);
@@ -108,7 +79,7 @@ void OQS_SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_sha
 void OQS_SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
-	md = _sha384();
+	md = oqs_sha384();
 	OQS_EXIT_IF_NULLPTR(md);
 	mdctx = EVP_MD_CTX_new();
 	EVP_DigestInit_ex(mdctx, md, NULL);
@@ -140,7 +111,7 @@ void OQS_SHA2_sha384_inc_ctx_clone(OQS_SHA2_sha384_ctx *dest, const OQS_SHA2_sha
 void OQS_SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
-	md = _sha512();
+	md = oqs_sha512();
 	OQS_EXIT_IF_NULLPTR(md);
 	mdctx = EVP_MD_CTX_new();
 	EVP_DigestInit_ex(mdctx, md, NULL);

@@ -12,57 +12,8 @@
 #include "sha3.h"
 
 #include <openssl/evp.h>
+#include "../ossl_helpers.h"
 #include <string.h>
-
-EVP_MD *_sha3_256() {
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-	static EVP_MD *ptr;
-	ptr = ptr ? ptr : EVP_MD_fetch(NULL, "SHA3-256", NULL);
-	return ptr;
-#else
-	return EVP_sha3_256();
-#endif
-}
-
-EVP_MD *_sha3_384() {
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-	static EVP_MD *ptr;
-	ptr = ptr ? ptr : EVP_MD_fetch(NULL, "SHA3-384", NULL);
-	return ptr;
-#else
-	return EVP_sha3_384();
-#endif
-}
-
-EVP_MD *_sha3_512() {
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-	static EVP_MD *ptr;
-	ptr = ptr ? ptr : EVP_MD_fetch(NULL, "SHA3-512", NULL);
-	return ptr;
-#else
-	return EVP_sha3_512();
-#endif
-}
-
-static EVP_MD *_shake128() {
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-	static EVP_MD *ptr;
-	ptr = ptr ? ptr : EVP_MD_fetch(NULL, "SHAKE128", NULL);
-	return ptr;
-#else
-	return EVP_shake128();
-#endif
-}
-
-static EVP_MD *_shake256() {
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
-	static EVP_MD *ptr;
-	ptr = ptr ? ptr : EVP_MD_fetch(NULL, "SHAKE256", NULL);
-	return ptr;
-#else
-	return EVP_shake256();
-#endif
-}
 
 static void do_hash(uint8_t *output, const uint8_t *input, size_t inplen, const EVP_MD *md) {
 	EVP_MD_CTX *mdctx;
@@ -85,7 +36,7 @@ static void do_xof(uint8_t *output, size_t outlen, const uint8_t *input, size_t 
 /* SHA3-256 */
 
 void OQS_SHA3_sha3_256(uint8_t *output, const uint8_t *input, size_t inplen) {
-	do_hash(output, input, inplen, _sha3_256());
+	do_hash(output, input, inplen, oqs_sha3_256());
 }
 
 /* SHA3-256 incremental */
@@ -93,7 +44,7 @@ void OQS_SHA3_sha3_256(uint8_t *output, const uint8_t *input, size_t inplen) {
 void OQS_SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
 	state->ctx = EVP_MD_CTX_new();
 	EVP_MD_CTX *s = (EVP_MD_CTX *)state->ctx;
-	EVP_DigestInit_ex(s, _sha3_256(), NULL);
+	EVP_DigestInit_ex(s, oqs_sha3_256(), NULL);
 }
 
 void OQS_SHA3_sha3_256_inc_absorb(OQS_SHA3_sha3_256_inc_ctx *state, const uint8_t *input, size_t inplen) {
@@ -115,19 +66,19 @@ void OQS_SHA3_sha3_256_inc_ctx_clone(OQS_SHA3_sha3_256_inc_ctx *dest, const OQS_
 void OQS_SHA3_sha3_256_inc_ctx_reset(OQS_SHA3_sha3_256_inc_ctx *state) {
 	EVP_MD_CTX *s = state->ctx;
 	EVP_MD_CTX_reset(s);
-	EVP_DigestInit_ex(s, _sha3_256(), NULL);
+	EVP_DigestInit_ex(s, oqs_sha3_256(), NULL);
 }
 
 /* SHA3-384 */
 
 void OQS_SHA3_sha3_384(uint8_t *output, const uint8_t *input, size_t inplen) {
-	do_hash(output, input, inplen, _sha3_384());
+	do_hash(output, input, inplen, oqs_sha3_384());
 }
 
 /* SHA3-384 incremental */
 void OQS_SHA3_sha3_384_inc_init(OQS_SHA3_sha3_384_inc_ctx *state) {
 	state->ctx = EVP_MD_CTX_new();
-	EVP_DigestInit_ex((EVP_MD_CTX *)state->ctx, _sha3_384(), NULL);
+	EVP_DigestInit_ex((EVP_MD_CTX *)state->ctx, oqs_sha3_384(), NULL);
 }
 
 void OQS_SHA3_sha3_384_inc_absorb(OQS_SHA3_sha3_384_inc_ctx *state, const uint8_t *input, size_t inplen) {
@@ -149,20 +100,20 @@ void OQS_SHA3_sha3_384_inc_ctx_clone(OQS_SHA3_sha3_384_inc_ctx *dest, const OQS_
 void OQS_SHA3_sha3_384_inc_ctx_reset(OQS_SHA3_sha3_384_inc_ctx *state) {
 	EVP_MD_CTX *s = state->ctx;
 	EVP_MD_CTX_reset(s);
-	EVP_DigestInit_ex(s, _sha3_384(), NULL);
+	EVP_DigestInit_ex(s, oqs_sha3_384(), NULL);
 }
 
 /* SHA3-512 */
 
 void OQS_SHA3_sha3_512(uint8_t *output, const uint8_t *input, size_t inplen) {
-	do_hash(output, input, inplen, _sha3_512());
+	do_hash(output, input, inplen, oqs_sha3_512());
 }
 
 /* SHA3-512 incremental */
 
 void OQS_SHA3_sha3_512_inc_init(OQS_SHA3_sha3_512_inc_ctx *state) {
 	state->ctx = EVP_MD_CTX_new();
-	EVP_DigestInit_ex((EVP_MD_CTX *)state->ctx, _sha3_512(), NULL);
+	EVP_DigestInit_ex((EVP_MD_CTX *)state->ctx, oqs_sha3_512(), NULL);
 }
 
 void OQS_SHA3_sha3_512_inc_absorb(OQS_SHA3_sha3_512_inc_ctx *state, const uint8_t *input, size_t inplen) {
@@ -184,13 +135,13 @@ void OQS_SHA3_sha3_512_inc_ctx_clone(OQS_SHA3_sha3_512_inc_ctx *dest, const OQS_
 void OQS_SHA3_sha3_512_inc_ctx_reset(OQS_SHA3_sha3_512_inc_ctx *state) {
 	EVP_MD_CTX *s = state->ctx;
 	EVP_MD_CTX_reset(s);
-	EVP_DigestInit_ex(s, _sha3_512(), NULL);
+	EVP_DigestInit_ex(s, oqs_sha3_512(), NULL);
 }
 
 /* SHAKE-128 */
 
 void OQS_SHA3_shake128(uint8_t *output, size_t outlen, const uint8_t *input, size_t inplen) {
-	do_xof(output, outlen, input, inplen, _shake128());
+	do_xof(output, outlen, input, inplen, oqs_shake128());
 }
 
 /* SHAKE-128 incremental
@@ -221,7 +172,7 @@ void OQS_SHA3_shake128_inc_init(OQS_SHA3_shake128_inc_ctx *state) {
 	intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)state->ctx;
 	s->mdctx = EVP_MD_CTX_new();
 	s->n_out = 0;
-	EVP_DigestInit_ex(s->mdctx, _shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx, oqs_shake128(), NULL);
 }
 
 void OQS_SHA3_shake128_inc_absorb(OQS_SHA3_shake128_inc_ctx *state, const uint8_t *input, size_t inplen) {
@@ -238,7 +189,7 @@ void OQS_SHA3_shake128_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shak
 	EVP_MD_CTX *clone;
 
 	clone = EVP_MD_CTX_new();
-	EVP_DigestInit_ex(clone, _shake128(), NULL);
+	EVP_DigestInit_ex(clone, oqs_shake128(), NULL);
 	EVP_MD_CTX_copy_ex(clone, s->mdctx);
 	if (s->n_out == 0) {
 		EVP_DigestFinalXOF(clone, output, outlen);
@@ -272,14 +223,14 @@ void OQS_SHA3_shake128_inc_ctx_clone(OQS_SHA3_shake128_inc_ctx *dest, const OQS_
 void OQS_SHA3_shake128_inc_ctx_reset(OQS_SHA3_shake128_inc_ctx *state) {
 	intrn_shake128_inc_ctx *s = (intrn_shake128_inc_ctx *)state->ctx;
 	EVP_MD_CTX_reset(s->mdctx);
-	EVP_DigestInit_ex(s->mdctx, _shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx, oqs_shake128(), NULL);
 	s->n_out = 0;
 }
 
 /* SHAKE-256 */
 
 void OQS_SHA3_shake256(uint8_t *output, size_t outlen, const uint8_t *input, size_t inplen) {
-	do_xof(output, outlen, input, inplen, _shake256());
+	do_xof(output, outlen, input, inplen, oqs_shake256());
 }
 
 /* SHAKE-256 incremental
@@ -298,7 +249,7 @@ void OQS_SHA3_shake256_inc_init(OQS_SHA3_shake256_inc_ctx *state) {
 	intrn_shake256_inc_ctx *s = (intrn_shake256_inc_ctx *)state->ctx;
 	s->mdctx = EVP_MD_CTX_new();
 	s->n_out = 0;
-	EVP_DigestInit_ex(s->mdctx, _shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx, oqs_shake256(), NULL);
 }
 
 void OQS_SHA3_shake256_inc_absorb(OQS_SHA3_shake256_inc_ctx *state, const uint8_t *input, size_t inplen) {
@@ -315,7 +266,7 @@ void OQS_SHA3_shake256_inc_squeeze(uint8_t *output, size_t outlen, OQS_SHA3_shak
 	EVP_MD_CTX *clone;
 
 	clone = EVP_MD_CTX_new();
-	EVP_DigestInit_ex(clone, _shake256(), NULL);
+	EVP_DigestInit_ex(clone, oqs_shake256(), NULL);
 	EVP_MD_CTX_copy_ex(clone, s->mdctx);
 	if (s->n_out == 0) {
 		EVP_DigestFinalXOF(clone, output, outlen);
@@ -349,7 +300,7 @@ void OQS_SHA3_shake256_inc_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_
 void OQS_SHA3_shake256_inc_ctx_reset(OQS_SHA3_shake256_inc_ctx *state) {
 	intrn_shake256_inc_ctx *s = (intrn_shake256_inc_ctx *)state->ctx;
 	EVP_MD_CTX_reset(s->mdctx);
-	EVP_DigestInit_ex(s->mdctx, _shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx, oqs_shake256(), NULL);
 	s->n_out = 0;
 }
 
