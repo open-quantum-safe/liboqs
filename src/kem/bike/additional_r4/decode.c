@@ -89,6 +89,16 @@ void recompute_syndrome(OUT syndrome_t *syndrome,
   compute_syndrome(syndrome, &tmp_c0, h0, ctx);
 }
 
+#define MUL64HIGH(c, a, b)                           \
+  do {                                               \
+    uint64_t a_lo, a_hi, b_lo, b_hi;                 \
+    a_lo = a & 0xffffffff;                           \
+    b_lo = b & 0xffffffff;                           \
+    a_hi = a >> 32;                                  \
+    b_hi = b >> 32;                                  \
+    c = a_hi*b_hi + ((a_hi*b_lo + a_lo*b_hi) >> 32); \
+  } while(0)
+
 _INLINE_ uint8_t get_threshold(IN const syndrome_t *s)
 {
   bike_static_assert(sizeof(*s) >= sizeof(r_t), syndrome_is_large_enough);
@@ -106,11 +116,13 @@ _INLINE_ uint8_t get_threshold(IN const syndrome_t *s)
   //   T0 + T1*S,
   // we compute:
   //   (T0' + T1'*S)/10^8,
-  // where S is the syndrome weight.
-  // All relatively modern compilers transform the division by 10^8 to
-  // a multiplication and a right shift (both constant-time instructions).
+  // where S is the syndrome weight. Additionally, instead of dividing by 10^8,
+  // we compute the result by a multiplication and a right shift (both
+  // constant-time operations), as described in:
+  //   https://dl.acm.org/doi/pdf/10.1145/178243.178249
   uint64_t thr  = THRESHOLD_COEFF0 + (THRESHOLD_COEFF1 * syndrome_weight);
-  thr /= THRESHOLD_DIV_CONST;
+  MUL64HIGH(thr, thr, THRESHOLD_MUL_CONST);
+  thr >>= THRESHOLD_SHR_CONST;
 
   const uint32_t mask = secure_l32_mask((uint32_t)thr, THRESHOLD_MIN);
   thr = (u32_barrier(mask) & thr) | (u32_barrier(~mask) & THRESHOLD_MIN);
