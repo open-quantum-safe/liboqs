@@ -33,3 +33,6 @@ cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSSMT_SHA256_8_H40 "" ON "OQS_ENABLE
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSSMT_SHA256_3_H60 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSSMT_SHA256_6_H60 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSSMT_SHA256_12_H60 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+
+option(OQS_ENABLE_SIG_STFL_LMS "Enable LMS algorithm family" ON)
+option(OQS_ENABLE_SIG_STFL_HSS "Enable Multi level LMS algorithm" ON)

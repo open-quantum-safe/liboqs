@@ -67,43 +67,30 @@ extern "C" {
 #define OQS_SIG_STFL_algs_length 41
 
 /* Defined LM parameter sets */
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1 "5/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2 "5/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4 "5/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8 "5/8"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1 "LMS-SHA256-H5_W1" //"5/1"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2 "LMS-SHA256-H5_W2" //"5/2"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4 "LMS-SHA256-H5_W4" //"5/4"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h5_w8 "LMS-SHA256-H5_W8" //"5/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1 "10/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w2 "10/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4 "10/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8 "10/8"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1 "LMS-SHA256-H10_W1" //"10/1"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w2 "LMS-SHA256-H10_W2" //"10/2"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4 "LMS-SHA256-H10_W4" //"10/4"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8 "LMS-SHA256-H10_W8" //"10/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1 "15/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w2 "15/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w4 "15/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8 "15/8"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1 "LMS-SHA256-H15_W1" //"15/1"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w2 "LMS-SHA256-H15_W2" //"15/2"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w4 "LMS-SHA256-H15_W4" //"15/4"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8 "LMS-SHA256-H15_W8" //"15/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w1 "20/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w2 "20/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w4 "20/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8 "20/8"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w1 "LMS-SHA256-H20_W1" //"20/1"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w2 "LMS-SHA256-H20_W2" //"20/2"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w4 "LMS-SHA256-H20_W4" //"20/4"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8 "LMS-SHA256-H20_W8" //"20/8"
 
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w1 "25/1"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w2 "25/2"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w4 "25/4"
-#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w8 "25/8"
-
-/* LM registry */
-#define OQS_SIG_STFL_alg_lm_sha256_n32_h5  "LM-SHA256_N32_H5"  //0x00000005
-#define OQS_SIG_STFL_alg_lm_sha256_n32_h10 "LM-SHA256_N32_H10" //0x00000006
-#define OQS_SIG_STFL_alg_lm_sha256_n32_h15 "LM-SHA256_N32_H15" //0x00000007
-#define OQS_SIG_STFL_alg_lm_sha256_n32_h20 "LM-SHA256_N32_H20" //0x00000008
-#define OQS_SIG_STFL_alg_lm_sha256_n32_h25 "LM-SHA256_N32_H25" //0x00000009
-
-/* LM-OTS registry */
-#define OQS_SIG_STFL_alg_lmots_sha256_n32_w1 "LMOTS-SHA256_N32_W1" //0x00000001
-#define OQS_SIG_STFL_alg_lmots_sha256_n32_w2 "LMOTS-SHA256_N32_W2" //0x00000002
-#define OQS_SIG_STFL_alg_lmots_sha256_n32_w3 "LMOTS-SHA256_N32_W4" //0x00000003
-#define OQS_SIG_STFL_alg_lmots_sha256_n32_w4 "LMOTS-SHA256_N32_W8" //0x00000004
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w1 "LMS-SHA256-H25_W1" //"25/1"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w2 "LMS-SHA256-H25_W2" //"25/2"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w4 "LMS-SHA256-H25_W4" //"25/4"
+#define OQS_SIG_STFL_alg_lms_sha256_n32_h25_w8 "LMS-SHA256-H25_W8" //"25/8"
 
 /* Defined LM parameter sets */
 /* Algorithm identifier for LMS-SHA256_N32_H5 */
@@ -129,10 +116,10 @@ extern "C" {
 #define OQS_SIG_STFL_alg_lmots_sha256_n32_w2 "LMOTS-SHA256_N32_W2" //0x00000002
 
 /* Algorithm identifier for LMOTS-SHA256_N32_W4 */
-#define OQS_SIG_STFL_alg_lmots_sha256_n32_w3 "LMOTS-SHA256_N32_W4" //0x00000003
+#define OQS_SIG_STFL_alg_lmots_sha256_n32_w4 "LMOTS-SHA256_N32_W4" //0x00000003
 
 /* Algorithm identifier for LMOTS-SHA256_N32_W8 */
-#define OQS_SIG_STFL_alg_lmots_sha256_n32_w4 "LMOTS-SHA256_N32_W8" //0x00000004
+#define OQS_SIG_STFL_alg_lmots_sha256_n32_w8 "LMOTS-SHA256_N32_W8" //0x00000004
 
 /**
  * Returns identifiers for available signature schemes in liboqs.  Used with OQS_SIG_STFL_new.
@@ -391,7 +378,8 @@ OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig);
 #include <oqs/sig_stfl_xmss_xmssmt.h>
 #endif // OQS_ENABLE_SIG_STFL_XMSS
 
-#if defined(OQS_ENABLE_SIG_STFL_LMS) ||  defined(OQS_ENABLE_SIG_STFL_HSS)
-//#include
+//#if defined(OQS_ENABLE_SIG_STFL_LMS) ||  defined(OQS_ENABLE_SIG_STFL_HSS)
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+#include  <oqs/sig_stfl_lms.h>
 #endif //OQS_ENABLE_SIG_STFL_LMS | OQS_ENABLE_SIG_STFL_HSS
 #endif /* OQS_SIG_STATEFUL_H */

@@ -23,7 +23,9 @@ set(SRCS
          external/lm_ots_sign.c
          external/lm_ots_verify.c
          external/lm_verify.c
-         external/sha256.c)
+         external/sha256.c
+         sig_stfl_lms.c
+         sig_stfl_lms_functions.c)
 
 add_library(lms OBJECT ${SRCS})
 target_include_directories(lms PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/external)

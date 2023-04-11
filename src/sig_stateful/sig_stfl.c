@@ -200,131 +200,51 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
+#ifdef OQS_ENABLE_SIG_STFL_LMS
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w2)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w4)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w1)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w2)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w4)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h10_w8)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w1)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w2)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w4)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h15_w8)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h20_w1)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h20_w2)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h20_w4)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h20_w8)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h25_w1)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h25_w2)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h25_w4)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
-#endif
     } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h25_w8)) {
-#ifdef OQS_ENABLE_SIG_STFL_LMS
         return 1;
-#else
-        return 0;
 #endif
-    } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_hss_sha256)) {
 #ifdef OQS_ENABLE_SIG_STFL_HSS
+    } else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_hss_sha256)) {
         return 1;
-#else
-        return 0;
 #endif
 	}
 	// EDIT-WHEN ADDING MORE XMSS/XMSS^MT ALGS
@@ -459,6 +379,11 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 #else
 		return NULL;
 #endif
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+	}  else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
+	    return OQS_SIG_STFL_alg_lms_sha256_h5_w1_new();
+
+#endif
 	} else {
 		return NULL;
 	}
@@ -466,7 +391,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 
 
 OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
-	if (sig == NULL || sig->keypair(public_key, secret_key) != 0) {
+	if (sig == NULL || sig->keypair == NULL || sig->keypair(public_key, secret_key) != 0) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
@@ -474,7 +399,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
-	if (sig == NULL || sig->sign(signature, signature_len, message, message_len, secret_key) != 0) {
+	if (sig == NULL || sig->sign == NULL || sig->sign(signature, signature_len, message, message_len, secret_key) != 0) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
@@ -482,7 +407,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-	if (sig == NULL || sig->verify(message, message_len, signature, signature_len, public_key) != 0) {
+	if (sig == NULL || sig->verify == NULL || sig->verify(message, message_len, signature, signature_len, public_key) != 0) {
 		return OQS_ERROR;
 	} else {
 		return OQS_SUCCESS;
@@ -629,8 +554,14 @@ OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name) {
 		return OQS_SECRET_KEY_XMSSMT_SHA256_12_H60_new();
 #else
 		return NULL;
+
 #endif
-	} else {
+#ifdef OQS_ENABLE_SIG_STFL_LMS
+	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1)) {
+	    return OQS_SECRET_KEY_LMS_SHA256_H5_W1_new();
+#endif
+     }
+     else {
 		return NULL;
 	}
 }
