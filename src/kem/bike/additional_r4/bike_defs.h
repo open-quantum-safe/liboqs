@@ -24,9 +24,11 @@
 #  define D      71
 #  define T      134
 
-#  define THRESHOLD_COEFF0 13.530
-#  define THRESHOLD_COEFF1 0.0069722
-#  define THRESHOLD_MIN    36
+#  define THRESHOLD_COEFF0 1353000000ULL
+#  define THRESHOLD_COEFF1 697220ULL
+#  define THRESHOLD_MUL_CONST 12379400392853802749ULL
+#  define THRESHOLD_SHR_CONST 26
+#  define THRESHOLD_MIN 36
 
 // When generating an error vector we can't use rejection sampling because of
 // constant-time requirements so we generate always the maximum number
@@ -42,9 +44,11 @@
 #  define D      103
 #  define T      199
 
-#  define THRESHOLD_COEFF0 15.2588
-#  define THRESHOLD_COEFF1 0.005265
-#  define THRESHOLD_MIN    52
+#  define THRESHOLD_COEFF0 1525880000ULL
+#  define THRESHOLD_COEFF1 526500ULL
+#  define THRESHOLD_MUL_CONST 12379400392853802749ULL
+#  define THRESHOLD_SHR_CONST 26
+#  define THRESHOLD_MIN 52
 
 #  define MAX_RAND_INDICES_T 373
 
@@ -56,9 +60,11 @@
 #  define D      137
 #  define T      264
 
-#  define THRESHOLD_COEFF0 17.8785
-#  define THRESHOLD_COEFF1 0.00402312
-#  define THRESHOLD_MIN    69
+#  define THRESHOLD_COEFF0 1787850000ULL
+#  define THRESHOLD_COEFF1 402312ULL
+#  define THRESHOLD_MUL_CONST 12379400392853802749ULL
+#  define THRESHOLD_SHR_CONST 26
+#  define THRESHOLD_MIN 69
 
 #  define MAX_RAND_INDICES_T 605
 

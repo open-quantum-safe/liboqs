@@ -1,6 +1,7 @@
 {
-  "BIKE-L1": [],
-  "BIKE-L3": [],
+  "BIKE-L1": ["bike"],
+  "BIKE-L3": ["bike"],
+  "BIKE-L5": ["bike"],
   "Classic-McEliece-348864": ["mceliece-sk_gen", "mceliece-348864"],
   "Classic-McEliece-348864f": ["mceliece-sk_gen", "mceliece-348864f"],
   "Classic-McEliece-460896": ["mceliece-sk_gen", "mceliece-460896"],

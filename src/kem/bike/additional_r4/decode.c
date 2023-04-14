@@ -53,10 +53,10 @@
 #  define MAX_IT 5
 #endif
 
-ret_t compute_syndrome(OUT syndrome_t *syndrome,
-                       IN const pad_r_t *c0,
-                       IN const pad_r_t *h0,
-                       IN const decode_ctx *ctx)
+void compute_syndrome(OUT syndrome_t *syndrome,
+                      IN const pad_r_t *c0,
+                      IN const pad_r_t *h0,
+                      IN const decode_ctx *ctx)
 {
   DEFER_CLEANUP(pad_r_t pad_s, pad_r_cleanup);
 
@@ -64,16 +64,14 @@ ret_t compute_syndrome(OUT syndrome_t *syndrome,
 
   bike_memcpy((uint8_t *)syndrome->qw, pad_s.val.raw, R_BYTES);
   ctx->dup(syndrome);
-
-  return SUCCESS;
 }
 
-_INLINE_ ret_t recompute_syndrome(OUT syndrome_t *syndrome,
-                                  IN const pad_r_t *c0,
-                                  IN const pad_r_t *h0,
-                                  IN const pad_r_t *pk,
-                                  IN const e_t *e,
-                                  IN const decode_ctx *ctx)
+void recompute_syndrome(OUT syndrome_t *syndrome,
+                        IN const pad_r_t *c0,
+                        IN const pad_r_t *h0,
+                        IN const pad_r_t *pk,
+                        IN const e_t *e,
+                        IN const decode_ctx *ctx)
 {
   DEFER_CLEANUP(pad_r_t tmp_c0, pad_r_cleanup);
   DEFER_CLEANUP(pad_r_t e0 = {0}, pad_r_cleanup);
@@ -88,20 +86,45 @@ _INLINE_ ret_t recompute_syndrome(OUT syndrome_t *syndrome,
   gf2x_mod_add(&tmp_c0, &tmp_c0, &e0);
 
   // Recompute the syndrome using the updated ciphertext
-  GUARD(compute_syndrome(syndrome, &tmp_c0, h0, ctx));
-
-  return SUCCESS;
+  compute_syndrome(syndrome, &tmp_c0, h0, ctx);
 }
+
+#define MUL64HIGH(c, a, b)                           \
+  do {                                               \
+    uint64_t a_lo, a_hi, b_lo, b_hi;                 \
+    a_lo = a & 0xffffffff;                           \
+    b_lo = b & 0xffffffff;                           \
+    a_hi = a >> 32;                                  \
+    b_hi = b >> 32;                                  \
+    c = a_hi*b_hi + ((a_hi*b_lo + a_lo*b_hi) >> 32); \
+  } while(0)
 
 _INLINE_ uint8_t get_threshold(IN const syndrome_t *s)
 {
   bike_static_assert(sizeof(*s) >= sizeof(r_t), syndrome_is_large_enough);
 
-  const uint32_t syndrome_weight = r_bits_vector_weight((const r_t *)s->qw);
+  const uint64_t syndrome_weight = r_bits_vector_weight((const r_t *)s->qw);
 
-  // The equations below are defined in BIKE's specification p. 16, Section 5.2
-  uint32_t       thr  = THRESHOLD_COEFF0 + (THRESHOLD_COEFF1 * syndrome_weight);
-  const uint32_t mask = secure_l32_mask(thr, THRESHOLD_MIN);
+  // The threshold coefficients are defined in the spec as floating point values.
+  // Since we want to avoid floating point operations for constant-timeness,
+  // we use integer arithmetic to compute the threshold.
+  // For example, in the case of Level-1 parameters, instead of having:
+  //   T0 = 13.530 and T1 = 0.0069722,
+  // we multipy the values by 10^8 and work with integers:
+  //   T0' = 1353000000 and T1' = 697220.
+  // Then, instead of computing the threshold by:
+  //   T0 + T1*S,
+  // we compute:
+  //   (T0' + T1'*S)/10^8,
+  // where S is the syndrome weight. Additionally, instead of dividing by 10^8,
+  // we compute the result by a multiplication and a right shift (both
+  // constant-time operations), as described in:
+  //   https://dl.acm.org/doi/pdf/10.1145/178243.178249
+  uint64_t thr  = THRESHOLD_COEFF0 + (THRESHOLD_COEFF1 * syndrome_weight);
+  MUL64HIGH(thr, thr, THRESHOLD_MUL_CONST);
+  thr >>= THRESHOLD_SHR_CONST;
+
+  const uint32_t mask = secure_l32_mask((uint32_t)thr, THRESHOLD_MIN);
   thr = (u32_barrier(mask) & thr) | (u32_barrier(~mask) & THRESHOLD_MIN);
 
   DMSG("    Threshold: %d\n", thr);
@@ -210,7 +233,7 @@ _INLINE_ void find_err2(OUT e_t *e,
   }
 }
 
-ret_t decode(OUT e_t *e, IN const ct_t *ct, IN const sk_t *sk)
+void decode(OUT e_t *e, IN const ct_t *ct, IN const sk_t *sk)
 {
   // Initialize the decode methods struct
   decode_ctx ctx;
@@ -230,7 +253,7 @@ ret_t decode(OUT e_t *e, IN const ct_t *ct, IN const sk_t *sk)
 
   DEFER_CLEANUP(syndrome_t s = {0}, syndrome_cleanup);
   DMSG("  Computing s.\n");
-  GUARD(compute_syndrome(&s, &c0, &h0, &ctx));
+  compute_syndrome(&s, &c0, &h0, &ctx);
   ctx.dup(&s);
 
   // Reset (init) the error because it is xored in the find_err functions.
@@ -245,7 +268,7 @@ ret_t decode(OUT e_t *e, IN const ct_t *ct, IN const sk_t *sk)
     DMSG("    Weight of syndrome: %lu\n", r_bits_vector_weight((r_t *)s.qw));
 
     find_err1(e, &black_e, &gray_e, &s, sk->wlist, threshold, &ctx);
-    GUARD(recompute_syndrome(&s, &c0, &h0, &pk, e, &ctx));
+    recompute_syndrome(&s, &c0, &h0, &pk, e, &ctx);
 #if defined(BGF_DECODER)
     if(iter >= 1) {
       continue;
@@ -256,19 +279,13 @@ ret_t decode(OUT e_t *e, IN const ct_t *ct, IN const sk_t *sk)
     DMSG("    Weight of syndrome: %lu\n", r_bits_vector_weight((r_t *)s.qw));
 
     find_err2(e, &black_e, &s, sk->wlist, ((D + 1) / 2) + 1, &ctx);
-    GUARD(recompute_syndrome(&s, &c0, &h0, &pk, e, &ctx));
+    recompute_syndrome(&s, &c0, &h0, &pk, e, &ctx);
 
     DMSG("    Weight of e: %lu\n",
          r_bits_vector_weight(&e->val[0]) + r_bits_vector_weight(&e->val[1]));
     DMSG("    Weight of syndrome: %lu\n", r_bits_vector_weight((r_t *)s.qw));
 
     find_err2(e, &gray_e, &s, sk->wlist, ((D + 1) / 2) + 1, &ctx);
-    GUARD(recompute_syndrome(&s, &c0, &h0, &pk, e, &ctx));
+    recompute_syndrome(&s, &c0, &h0, &pk, e, &ctx);
   }
-
-  if(r_bits_vector_weight((r_t *)s.qw) > 0) {
-    BIKE_ERROR(E_DECODING_FAILURE);
-  }
-
-  return SUCCESS;
 }
