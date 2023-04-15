@@ -3,31 +3,45 @@
 #include <string.h>
 #include "sig_stfl_lms.h"
 #include "external/config.h"
-
-
+#include "external/hss.h"
+#include "external/hss_verify_inc.h"
+#include <stdio.h>
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
    if (secret_key == NULL || message == NULL || signature == NULL) {
        return OQS_ERROR;
    }
 
-   LMS_UNUSED(signature_length);
-   LMS_UNUSED(message_len);
+   if (oqs_sig_stfl_lms_sign(secret_key, signature,
+           (unsigned long long *)signature_length,
+           message, (unsigned long long) message_len) !=0) {
+       return OQS_ERROR;
+   }
+ return OQS_SUCCESS;
 
-// return OQS_SUCCESS;
-   return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-   if (message == NULL || signature == NULL || public_key == NULL) {
-       return OQS_ERROR;
-   }
+    if (message == NULL || signature == NULL || public_key == NULL) {
+        return OQS_ERROR;
+    }
 
-     LMS_UNUSED(signature_len);
-     LMS_UNUSED(message_len);
+    LMS_UNUSED(signature_len);
+    LMS_UNUSED(message_len);
 
-// return OQS_SUCCESS;
-    return OQS_ERROR;
+    if (oqs_sig_stfl_lms_verify(message, message_len,
+            signature, signature_len,
+            public_key) !=0 ) {
+        return OQS_ERROR;
+    }
+    //     if (oqs_sig_stfl_lms_verify(secret_key, signature,
+    //             (unsigned long long *)signature_length,
+    //             message, (unsigned long long) message_len) !=0) {
+    //         return OQS_ERROR;
+    //     }
+
+    return OQS_SUCCESS;
+    //    return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_hss_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
@@ -107,17 +121,200 @@ OQS_SECRET_KEY *OQS_SIG_STFL_alg_hss_derive_subkey(OQS_SECRET_KEY *master_key, c
  * identify the parameter set to be used
  */
 
+bool LMS_randombytes(void *buffer, size_t length);
+bool LMS_randombytes(void *buffer, size_t length)
+{
+    OQS_randombytes((uint8_t *)buffer, length);
+    return true;
+}
+
+/*
+ * This saves the private key to secure storage; in this case, a file on the
+ * filesystem.  The context pointer we use here is the filename
+ */
+/*static*/ bool oqs_update_private_key( unsigned char *private_key,
+                               size_t len_private_key, void *filename) {
+    FILE *f = fopen( filename, "r+" );
+    if (!f) {
+        /* Open failed, possibly because the file didn't exist */
+        f = fopen( filename, "w" );
+        if (!f) {
+            /* Unable to open file */
+            return false;
+        }
+    }
+    if (1 != fwrite( private_key, len_private_key, 1, f )) {
+        /* Write failed */
+        fclose(f);
+        return false;
+    }
+    if (0 != fclose(f)) {
+        /* Close failed (possibly because pending write failed) */
+        return false;
+    }
+
+    /* Everything succeeded */
+    return true;
+}
+
 int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid)
 {
     int ret = -1;
-    LMS_UNUSED(sk);
-    LMS_UNUSED(oid);
-    LMS_UNUSED(pk);
+    bool b_ret;
+    int parse_err = 0;
+    unsigned levels = 1;
+
+    unsigned char public_key[60];// = NULL;
+    size_t len_public_key = 60;
+    unsigned char aux_data[10000];
+    size_t len_aux_data = 10000;
+
+     param_set_t lm_type[1];
+     param_set_t lm_ots_type[1];
+
+     if (!pk || !sk || !oid) return -1;
+
+    switch (oid)
+    {
+    case 1:
+        lm_type[0] = LMS_SHA256_N32_H5;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W1;
+        break;
+    case 2:
+        lm_type[0] = LMS_SHA256_N32_H5;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+        break;
+    case 3:
+        lm_type[0] = LMS_SHA256_N32_H5;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+        break;
+    case 4:
+        lm_type[0] = LMS_SHA256_N32_H5;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+        break;
+    case 5:
+        lm_type[0] = LMS_SHA256_N32_H10;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W1;
+        break;
+    case 6:
+        lm_type[0] = LMS_SHA256_N32_H10;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+        break;
+    case 7:
+        lm_type[0] = LMS_SHA256_N32_H10;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+        break;
+    case 8:
+        lm_type[0] = LMS_SHA256_N32_H10;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+        break;
+    case 9:
+        lm_type[0] = LMS_SHA256_N32_H15;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W1;
+        break;
+    case 10:
+        lm_type[0] = LMS_SHA256_N32_H15;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+        break;
+    case 11:
+        lm_type[0] = LMS_SHA256_N32_H15;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+        break;
+    case 12:
+        lm_type[0] = LMS_SHA256_N32_H15;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+        break;
+    case 13:
+        lm_type[0] = LMS_SHA256_N32_H20;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W1;
+        break;
+    case 14:
+        lm_type[0] = LMS_SHA256_N32_H20;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+        break;
+    case 15:
+        lm_type[0] = LMS_SHA256_N32_H20;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+        break;
+    case 16:
+        lm_type[0] = LMS_SHA256_N32_H20;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+        break;
+    case 17:
+        lm_type[0] = LMS_SHA256_N32_H25;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W1;
+        break;
+    case 18:
+        lm_type[0] = LMS_SHA256_N32_H25;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W2;
+        break;
+    case 19:
+        lm_type[0] = LMS_SHA256_N32_H25;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W4;
+        break;
+    case 20:
+        lm_type[0] = LMS_SHA256_N32_H25;
+        lm_ots_type[0] = LMOTS_SHA256_N32_W8;
+        break;
+    default:
+        lm_type[0] = 0;
+        lm_ots_type[0] = 0;
+        parse_err = 1;
+        break;
+    }
+
+    if (parse_err) return -1;
+
+
+    /*
+     * This creates a private key (and the correspond public key, and optionally
+     * the aux data for that key)
+     * Parameters:
+     * generate_random - the function to be called to generate randomness.  This
+     *       is assumed to be a pointer to a cryptographically secure rng,
+     *       otherwise all security is lost.  This function is expected to fill
+     *       output with 'length' uniformly distributed bits, and return 1 on
+     *       success, 0 if something went wrong
+     * levels - the number of levels for the key pair (2-8)
+     * lm_type - an array of the LM registry entries for the various levels;
+     *      entry 0 is the topmost
+     * lm_ots_type - an array of the LM-OTS registry entries for the various
+     *      levels; again, entry 0 is the topmost
+     * update_private_key, context - the function that is called when the
+     *      private key is generated; it is expected to store it to secure NVRAM
+     *      If this is NULL, then the context pointer is reinterpretted to mean
+     *      where in RAM the private key is expected to be placed
+     * public_key - where to store the public key
+     * len_public_key - length of the above buffer; see hss_get_public_key_len
+     *      if you need a hint.
+     * aux_data - where to store the optional aux data.  This is not required, but
+     *      if provided, can be used to speed up the hss_generate_working_key
+     *      process;
+     * len_aux_data - the length of the above buffer.  This is not fixed length;
+     *      the function will run different time/memory trade-offs based on the
+     *      length provided
+     *
+     * This returns true on success, false on failure
+     */
+    b_ret = hss_generate_private_key(
+            LMS_randombytes,
+            levels,
+            lm_type,
+            lm_ots_type,
+            NULL, //File handler function?
+            (void*)sk->secret_key,
+            public_key, len_public_key,
+            aux_data, len_aux_data,
+            NULL);
+    if (b_ret)
+        memcpy(pk, public_key, len_public_key);
 
     // Set lms param set
     // gen key pair
-    // store key pair
+    // store key pair, file handler
+    // Store aux data in  oqs key struc, new struct to combine aux data and length
 
+     ret = 0;
     return ret;
 }
 
@@ -125,26 +322,99 @@ int oqs_sig_stfl_lms_sign(OQS_SECRET_KEY *sk,
               uint8_t *sm, unsigned long long *smlen,
               const uint8_t *m, unsigned long long mlen)
 {
-    LMS_UNUSED(sk);
-    LMS_UNUSED(sm);
-    LMS_UNUSED(smlen);
-    LMS_UNUSED(m);
-    LMS_UNUSED(mlen);
+    size_t sig_len;
+    bool status;
+    unsigned char *sig = NULL;
+    struct hss_working_key *w = NULL;
+    struct hss_sign_inc ctx;
+    w = hss_load_private_key(NULL, sk->secret_key,
+                             0,
+                             NULL,
+                             0,
+                             0);
+    if (!w) {
+        printf( "Error loading private key\n" );
+        hss_free_working_key(w);
+        return 0;
+    }
 
-    return -1;
+    /* Now, go through the file list, and generate the signatures for each */
+
+    /* Look up the signature length */
+
+    sig_len = hss_get_signature_len_from_working_key(w);
+    if (sig_len == 0) {
+        printf( "Error getting signature len\n" );
+        hss_free_working_key(w);
+        return 0;
+    }
+
+    sig = malloc(sig_len);
+    if (!sig) {
+        printf( "Error during malloc\n" );
+        hss_free_working_key(w);
+    }
+
+    (void)hss_sign_init(
+         &ctx,                 /* Incremental signing context */
+         w,                    /* Working key */
+         NULL,                 /* Routine to update the */
+         sk->secret_key,       /* private key */
+         sig, sig_len,         /* Where to place the signature */
+         0);
+
+    (void)hss_sign_update(
+        &ctx,           /* Incremental signing context */
+        m,         /* Next piece of the message */
+        mlen);             /* Length of this piece */
+
+    status = hss_sign_finalize(
+         &ctx,               /* Incremental signing context */
+         w,                  /* Working key */
+         sig,                /* Signature */
+         0);
+
+    if (!status) {
+        hss_free_working_key(w);
+        free(sig);
+        return -1;
+    }
+
+    *smlen = sig_len;
+    memcpy(sm, sig, sig_len);
+
+    return 0;
 }
 
-int oqs_sig_stfl_lms_verify(uint8_t *m, unsigned long long *mlen,
-                   const uint8_t *sm, unsigned long long smlen,
+int oqs_sig_stfl_lms_verify(const uint8_t *m, size_t mlen,
+                   const uint8_t *sm, size_t smlen,
                    const uint8_t *pk)
 {
-    LMS_UNUSED(m);
-    LMS_UNUSED(mlen);
-    LMS_UNUSED(sm);
-    LMS_UNUSED(smlen);
-    LMS_UNUSED(pk);
+    struct hss_validate_inc ctx;
+    (void)hss_validate_signature_init(
+            &ctx,               /* Incremental validate context */
+            (const unsigned char *)pk,                /* Public key */
+            (const unsigned char *)sm,
+            (size_t)smlen,       /* Signature */
+            0);                 /* Use the defaults for extra info */
 
-    return -1;
+    (void)hss_validate_signature_update(
+            &ctx,           /* Incremental validate context */
+            (const void*) m,         /* Next piece of the message */
+            (size_t)mlen);             /* Length of this piece */
+
+    bool status = hss_validate_signature_finalize(
+            &ctx,               /* Incremental validate context */
+            (const unsigned char *)sm,                /* Signature */
+            0);                 /* Use the defaults for extra info */
+
+    if (status) {
+        /* Signature verified */
+        return 0;
+    } else {
+        /* signature NOT verified */
+        return -1;
+    }
 }
 
 int oqs_sig_stfl_hss_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid)

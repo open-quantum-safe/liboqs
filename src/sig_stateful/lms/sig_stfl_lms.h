@@ -4,7 +4,8 @@
 #define OQS_SIG_STFL_LMS_LMSMT_H
 
 #include <oqs/oqs.h>
-
+#include "external/hss.h"
+#include "external/hss_sign_inc.h"
 #define LMS_OID_LEN 4
 
 //#ifdef OQS_ENABLE_SIG_STFL_LMS
@@ -214,6 +215,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h25_w8_keypair(uint8_t *public_ke
 // ----------------------------------- WRAPPER FUNCTIONS ------------------------------------------------
 int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid);
 
+int oqs_sig_stfl_lms_sign(OQS_SECRET_KEY *sk, uint8_t *sm, unsigned long long *smlen,
+                          const uint8_t *m, unsigned long long mlen);
+
+int oqs_sig_stfl_lms_verify(const uint8_t *m, size_t mlen, const uint8_t *sm, size_t smlen,
+                           const uint8_t *pk);
 
 // ---------------------------- FUNCTIONS INDEPENDENT OF VARIANT -----------------------------------------
 
@@ -229,5 +235,57 @@ unsigned long long OQS_SECRET_KEY_lms_sigs_total(const OQS_SECRET_KEY *secret_ke
 OQS_SECRET_KEY *OQS_SIG_STFL_alg_lms_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs);
 
 // --------------------------------------------------------------------------------------------------------
+
+
+/**
+ * @brief OQS_LMS_KEY object for HSS key pair
+ */
+typedef struct OQS_LMS_KEY_DATA oqs_lms_key_data;
+
+typedef struct OQS_LMS_KEY_DATA {
+
+    /* Tree levels. */
+    unsigned levels;
+
+    /* Array, 8 levels max, of LMS types */
+    param_set_t lm_type[8];
+
+    /* Array, 8 levels max, of LM OTS types */
+    param_set_t lm_ots_type[8];
+
+    /* LMS public key */
+    unsigned char public_key[60];
+
+    /* internal nodes info of the Merkle tree */
+    unsigned char *aux_data;
+
+    /* Length of aux data */
+    size_t len_aux_data;
+
+    /* User defined data that may be used for the SAFETY functions */
+    void *data;
+
+} oqs_lms_key_data;
+
+
+typedef struct OQS_LMS_SIG_DATA oqs_lms_sig_data;
+
+typedef struct OQS_LMS_SIG_DATA {
+
+
+    /* message buffer */
+    unsigned char *message;
+
+    /* Length of msg buffer */
+    size_t len_msg_buf;
+
+    /* signature buffer */
+    unsigned char *signature;
+
+    /* Length of sig buffer */
+    size_t len_sig_buf;
+
+} oqs_lms_sig_data;
+
 //#endif //OQS_ENABLE_SIG_STFL_LMS
 #endif /* OQS_SIG_STFL_LMS_H */
