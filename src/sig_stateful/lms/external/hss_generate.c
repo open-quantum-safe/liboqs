@@ -317,6 +317,7 @@ bool hss_generate_working_key(
         unsigned index = count & tree->max_index;
         count >>= tree->level;
         tree->current_index = index;
+        if (i == 0) break; // This is a single level tree
     }
 
     /* Initialize the I values */
@@ -563,7 +564,9 @@ bool hss_generate_working_key(
             }
 
 //            bot_level_subtree -= h_subtree;
+            if (j == 0) break; //This is a single level tree
          }
+        if (i == 0) break; //This is a single level tree
     }
 
 #if DO_FLOATING_POINT
