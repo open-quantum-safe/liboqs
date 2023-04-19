@@ -3,21 +3,29 @@
 #include <string.h>
 #include "sig_stfl_lms.h"
 #include "external/config.h"
-#include "external/hss.h"
 #include "external/hss_verify_inc.h"
+#include "external/hss_sign_inc.h"
+#include "external/hss.h"
+#include "sig_stfl_lms_wrap.h"
 #include <stdio.h>
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
-   if (secret_key == NULL || message == NULL || signature == NULL) {
-       return OQS_ERROR;
-   }
+    if (secret_key == NULL || message == NULL || signature == NULL) {
+        return OQS_ERROR;
+    }
 
-   if (oqs_sig_stfl_lms_sign(secret_key, signature,
-           (unsigned long long *)signature_length,
-           message, (unsigned long long) message_len) !=0) {
-       return OQS_ERROR;
-   }
- return OQS_SUCCESS;
+    /* Make sure we have a way to update the private key */
+    if (!secret_key->save_secret_key) {
+        return OQS_ERROR;
+    }
+    if (oqs_sig_stfl_lms_sign(secret_key, signature,
+            (unsigned long long *)signature_length,
+            message, (unsigned long long) message_len) !=0) {
+        return OQS_ERROR;
+    }
+
+    /* Update private key */
+    return(secret_key->save_secret_key(secret_key));
 
 }
 
@@ -26,44 +34,33 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t me
         return OQS_ERROR;
     }
 
-    LMS_UNUSED(signature_len);
-    LMS_UNUSED(message_len);
-
     if (oqs_sig_stfl_lms_verify(message, message_len,
             signature, signature_len,
             public_key) !=0 ) {
         return OQS_ERROR;
     }
-    //     if (oqs_sig_stfl_lms_verify(secret_key, signature,
-    //             (unsigned long long *)signature_length,
-    //             message, (unsigned long long) message_len) !=0) {
-    //         return OQS_ERROR;
-    //     }
 
     return OQS_SUCCESS;
-    //    return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_hss_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SECRET_KEY *secret_key) {
-   if (secret_key == NULL || message == NULL || signature == NULL) {
+   if (secret_key == NULL || message == NULL || signature == NULL
+                          || signature_length == NULL || message_len == 0) {
        return OQS_ERROR;
    }
 
-    LMS_UNUSED(signature_length);
-    LMS_UNUSED(message_len);
-
-
+// Currently Unsupported
 // return OQS_SUCCESS;
     return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_hss_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
-   if (message == NULL || signature == NULL || public_key == NULL) {
+   if (message == NULL || signature == NULL || public_key == NULL ||
+           signature_len == 0 || message_len == 0 ) {
        return OQS_ERROR;
    }
-    LMS_UNUSED(signature_len);
-    LMS_UNUSED(message_len);
 
+// Currently Unsupported
 // return OQS_SUCCESS;
     return OQS_ERROR;
 }
@@ -72,8 +69,6 @@ unsigned long long OQS_SECRET_KEY_lms_sigs_left(const OQS_SECRET_KEY *secret_key
    if (secret_key == NULL) {
        return -1;
    }
-
-   LMS_UNUSED(secret_key);
 
    return 0;
 }
@@ -121,39 +116,9 @@ OQS_SECRET_KEY *OQS_SIG_STFL_alg_hss_derive_subkey(OQS_SECRET_KEY *master_key, c
  * identify the parameter set to be used
  */
 
-bool LMS_randombytes(void *buffer, size_t length);
 bool LMS_randombytes(void *buffer, size_t length)
 {
     OQS_randombytes((uint8_t *)buffer, length);
-    return true;
-}
-
-/*
- * This saves the private key to secure storage; in this case, a file on the
- * filesystem.  The context pointer we use here is the filename
- */
-/*static*/ bool oqs_update_private_key( unsigned char *private_key,
-                               size_t len_private_key, void *filename) {
-    FILE *f = fopen( filename, "r+" );
-    if (!f) {
-        /* Open failed, possibly because the file didn't exist */
-        f = fopen( filename, "w" );
-        if (!f) {
-            /* Unable to open file */
-            return false;
-        }
-    }
-    if (1 != fwrite( private_key, len_private_key, 1, f )) {
-        /* Write failed */
-        fclose(f);
-        return false;
-    }
-    if (0 != fclose(f)) {
-        /* Close failed (possibly because pending write failed) */
-        return false;
-    }
-
-    /* Everything succeeded */
     return true;
 }
 
@@ -164,16 +129,19 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid
     int parse_err = 0;
     unsigned levels = 1;
 
-    unsigned char public_key[60];// = NULL;
+    unsigned char public_key[60];
     size_t len_public_key = 60;
-    unsigned char aux_data[10000];
-    size_t len_aux_data = 10000;
+    unsigned char *aux_data = NULL;
+    size_t max_aux_data = 10916;
+    int aux_len;
+    oqs_lms_key_data *oqs_data = NULL;
 
      param_set_t lm_type[1];
      param_set_t lm_ots_type[1];
 
      if (!pk || !sk || !oid) return -1;
 
+     /* Set lms param set */
     switch (oid)
     {
     case 1:
@@ -265,6 +233,20 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid
 
     if (parse_err) return -1;
 
+    /* gen key pair */
+
+    aux_len = (int)hss_get_aux_data_len( max_aux_data, levels,
+            lm_type, lm_ots_type);
+    printf( "aux_len = %d\n", aux_len );
+
+    if (aux_len) {
+        aux_data = malloc(aux_len);
+        if (aux_data){
+            memset(aux_data, 0, aux_len);
+        } else {
+            aux_len = 0;
+        }
+    }
 
     /*
      * This creates a private key (and the correspond public key, and optionally
@@ -304,17 +286,27 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid
             NULL, //File handler function?
             (void*)sk->secret_key,
             public_key, len_public_key,
-            aux_data, len_aux_data,
+            aux_data, aux_len,
             NULL);
     if (b_ret)
         memcpy(pk, public_key, len_public_key);
 
-    // Set lms param set
-    // gen key pair
-    // store key pair, file handler
-    // Store aux data in  oqs key struc, new struct to combine aux data and length
+    oqs_data = malloc(sizeof(oqs_lms_key_data));
+    if (oqs_data) {
+        memset(oqs_data, 0, sizeof(oqs_lms_key_data));
+        oqs_data->levels = levels;
+        oqs_data->lm_type[0] = lm_type[0];
+        oqs_data->lm_ots_type[0] = lm_ots_type[0];
+        oqs_data->data = (void*)aux_data;
+        oqs_data->len_aux_data = aux_len;
+        sk->data = oqs_data;
+    }
 
-     ret = 0;
+    /* store key pair, file handler */
+    if (sk->save_secret_key) {
+        (void)sk->save_secret_key(sk);
+    }
+    ret = 0;
     return ret;
 }
 
@@ -451,3 +443,4 @@ int oqs_sig_stfl_hss_verify(uint8_t *m, unsigned long long *mlen,
 
     return -1;
 }
+

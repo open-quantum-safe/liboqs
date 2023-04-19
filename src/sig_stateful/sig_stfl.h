@@ -197,6 +197,13 @@ typedef struct OQS_SECRET_KEY {
 	 */
 	OQS_STATUS (*release_key)(OQS_SECRET_KEY *sk);
 
+    /**
+     * Secret Key data / parse data if present
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return void pointer to stored data
+     */
+	OQS_STATUS (*get_key_data)(OQS_SECRET_KEY *sk, uint8_t **data, size_t *data_len);
 } OQS_SECRET_KEY;
 
 /**

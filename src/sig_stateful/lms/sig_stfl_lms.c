@@ -3,9 +3,44 @@
 #include <string.h>
 #include <oqs/oqs.h>
 #include "./external/config.h"
+#include "sig_stfl_lms_wrap.h"
 #include "sig_stfl_lms.h"
 
+static OQS_STATUS OQS_SIG_STFL_alg_lms_aux_data(OQS_SECRET_KEY *secret_key, uint8_t **aux_data, size_t *aux_len) {
+    size_t aux_data_len = 0;
+    uint8_t *buffer = NULL;
+    unsigned char *lms_aux_data = NULL;
 
+    if (secret_key == NULL || aux_data == NULL || aux_len == NULL) {
+        return OQS_ERROR;
+    }
+    *aux_len = 0;
+    *aux_data = NULL;
+
+    if (secret_key->data) {
+        aux_data_len = ((oqs_lms_key_data*)secret_key->data)->len_aux_data;
+        if (aux_data_len == 0) {
+            goto done;
+        }
+        lms_aux_data = ((oqs_lms_key_data*)secret_key->data)->aux_data;
+        if(!lms_aux_data) {
+            goto done;
+        }
+
+        buffer = malloc(aux_data_len);
+        if (!buffer) {
+            goto done;
+        }
+
+        memset(buffer, 0, aux_data_len);
+        memcpy(buffer, lms_aux_data, aux_data_len);
+
+        *aux_len = aux_data_len;
+        *aux_data = (void*)buffer;
+    }
+done:
+    return OQS_SUCCESS;
+}
 
 // ======================== LMS-SHA256 H5/W1 ======================== //
 
@@ -15,7 +50,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h5_w1_keypair(uint8_t *public_key
     }
 
     uint32_t oid = 0x00000001;
-    LMS_UNUSED(oid);
     if (oqs_sig_stfl_lms_keypair(public_key, secret_key, oid) != 0) {
         return OQS_ERROR;
     }
@@ -59,6 +93,7 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void) {
     // Assign the sigs_left and sigs_max functions
     sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
     sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));

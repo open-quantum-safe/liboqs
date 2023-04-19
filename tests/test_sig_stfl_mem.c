@@ -42,6 +42,8 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 	OQS_SIG_STFL *sig = NULL;
 	uint8_t *public_key = NULL;
 	OQS_SECRET_KEY *secret_key = NULL;
+    uint8_t *secret_key_data = NULL;
+    size_t aux_data_len = 0;
 	uint8_t *message = NULL;
 	size_t message_len = 100;
 	uint8_t *signature = NULL;
@@ -82,6 +84,17 @@ static OQS_STATUS sig_test_correctness(const char *method_name, SIG_OPS op) {
 		if (oqs_fstore("sk", method_name, secret_key->secret_key, secret_key->length_secret_key) != OQS_SUCCESS) {
 			goto err;
 		}
+
+		if(secret_key->get_key_data) {
+		    rc = secret_key->get_key_data(secret_key, &secret_key_data, &aux_data_len);
+		    if (rc == OQS_SUCCESS && aux_data_len != 0) {
+		        if (oqs_fstore("aux", method_name, secret_key_data, aux_data_len) != OQS_SUCCESS) {
+		            goto err;
+		        }
+		        free(secret_key_data);
+		    }
+		}
+
 		ret = OQS_SUCCESS;
 		goto cleanup;
 

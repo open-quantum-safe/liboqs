@@ -14,7 +14,7 @@ set(SRCS
          external/hss_reserve.c
          external/hss_sign.c
          external/hss_sign_inc.c
-         external/hss_thread_single.c
+         external/hss_thread_pthread.c
          external/hss_verify.c
          external/hss_verify_inc.c
          external/hss_zeroize.c
