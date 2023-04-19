@@ -26,7 +26,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
 
     /* Update private key */
     return(secret_key->save_secret_key(secret_key));
-
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
@@ -237,7 +236,6 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid
 
     aux_len = (int)hss_get_aux_data_len( max_aux_data, levels,
             lm_type, lm_ots_type);
-    printf( "aux_len = %d\n", aux_len );
 
     if (aux_len) {
         aux_data = malloc(aux_len);

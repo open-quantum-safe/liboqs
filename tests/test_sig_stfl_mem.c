@@ -34,6 +34,14 @@ OQS_STATUS release_sk_key(OQS_SECRET_KEY *sk) {
 }
 
 OQS_STATUS do_nothing_save(const OQS_SECRET_KEY *sk) {
+
+    if (sk && sk->method_name) {
+        if (oqs_fstore("sk", sk->method_name, sk->secret_key, sk->length_secret_key) == OQS_SUCCESS) {
+            return OQS_SUCCESS;
+        } else {
+            return OQS_ERROR;
+        }
+    }
 	return sk != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 

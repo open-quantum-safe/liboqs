@@ -158,44 +158,47 @@ typedef struct OQS_SECRET_KEY OQS_SECRET_KEY;
 
 typedef struct OQS_SECRET_KEY {
 
-	/* The (maximum) length, in bytes, of secret keys for this signature scheme. */
-	size_t length_secret_key;
+    /* The secret key stored in memory as an array of bytes*/
+    char *method_name;
 
-	/* The secret key stored in memory as an array of bytes*/
-	uint8_t *secret_key;
+    /* The (maximum) length, in bytes, of secret keys for this signature scheme. */
+    size_t length_secret_key;
 
-	/* User defined data that may be used for the SAFETY functions */
-	void *data;
+    /* The secret key stored in memory as an array of bytes*/
+    uint8_t *secret_key;
 
-	/* Function that returns the total number of signatures for the secret key */
-	unsigned long long (*sigs_total)(const OQS_SECRET_KEY *secret_key);
+    /* User defined data that may be used for the SAFETY functions */
+    void *data;
 
-	/* Function that returns the number of signatures left for the secret key */
-	unsigned long long (*sigs_left)(const OQS_SECRET_KEY *secret_key);
+    /* Function that returns the total number of signatures for the secret key */
+    unsigned long long (*sigs_total)(const OQS_SECRET_KEY *secret_key);
 
-	/**
-	 * Secret Key Locking Function
-	 *
-	 * @param[in] sk The secret key represented as OQS_SECRET_KEY object
-	 * @return OQS_SUCCESS or OQS_ERROR
-	 */
-	OQS_STATUS (*lock_key)(OQS_SECRET_KEY *sk);
+    /* Function that returns the number of signatures left for the secret key */
+    unsigned long long (*sigs_left)(const OQS_SECRET_KEY *secret_key);
 
-	/**
-	 * Secret Key Saving Function
-	 *
-	 * @param[in] sk The secret key represented as OQS_SECRET_KEY object
-	 * @return OQS_SUCCESS or OQS_ERROR
-	 */
-	OQS_STATUS (*save_secret_key)(const OQS_SECRET_KEY *sk);
+    /**
+     * Secret Key Locking Function
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return OQS_SUCCESS or OQS_ERROR
+     */
+    OQS_STATUS (*lock_key)(OQS_SECRET_KEY *sk);
 
-	/**
-	 * Secret Key Unlocking / Releasing Function
-	 *
-	 * @param[in] sk The secret key represented as OQS_SECRET_KEY object
-	 * @return OQS_SUCCESS or OQS_ERROR
-	 */
-	OQS_STATUS (*release_key)(OQS_SECRET_KEY *sk);
+    /**
+     * Secret Key Saving Function
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return OQS_SUCCESS or OQS_ERROR
+     */
+    OQS_STATUS (*save_secret_key)(const OQS_SECRET_KEY *sk);
+
+    /**
+     * Secret Key Unlocking / Releasing Function
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return OQS_SUCCESS or OQS_ERROR
+     */
+    OQS_STATUS (*release_key)(OQS_SECRET_KEY *sk);
 
     /**
      * Secret Key data / parse data if present
@@ -203,7 +206,7 @@ typedef struct OQS_SECRET_KEY {
      * @param[in] sk The secret key represented as OQS_SECRET_KEY object
      * @return void pointer to stored data
      */
-	OQS_STATUS (*get_key_data)(OQS_SECRET_KEY *sk, uint8_t **data, size_t *data_len);
+    OQS_STATUS (*get_key_data)(OQS_SECRET_KEY *sk, uint8_t **data, size_t *data_len);
 } OQS_SECRET_KEY;
 
 /**

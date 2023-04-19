@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 #include <string.h>
+#include <stdio.h>
 #include <oqs/oqs.h>
 #include "./external/config.h"
 #include "sig_stfl_lms_wrap.h"
@@ -81,12 +82,27 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_sha256_h5_w1_new(void) {
 
 OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void) {
 
+    char name[] = OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1;
+    char *method_name = NULL;
+
+
     // Initialize the secret key in the heap with adequate memory
     OQS_SECRET_KEY *sk = malloc(sizeof(OQS_SECRET_KEY));
     if (sk == NULL) {
         return NULL;
     }
     memset(sk, 0, sizeof(OQS_SECRET_KEY));
+
+    /* set method name */
+    method_name = malloc(sizeof(name));
+    if (method_name == NULL) {
+        OQS_SECRET_KEY_free(sk);
+        sk = NULL;
+        return NULL;
+    }
+    memset(method_name, 0, sizeof(name));
+    snprintf(method_name, sizeof(name), "%s", name);
+    sk->method_name = method_name;
 
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h5_w1_length_sk;
 
