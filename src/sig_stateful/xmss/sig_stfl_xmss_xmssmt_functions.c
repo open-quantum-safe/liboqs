@@ -13,9 +13,11 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sign(uint8_t *signature, size_t *signat
 		return OQS_ERROR;
 	}
 
-	if (xmss_sign(secret_key, signature, (unsigned long long *)signature_length, message, (unsigned long long)message_len) != 0) {
+	unsigned long long sig_len = 0;
+	if (xmss_sign(secret_key, signature, &sig_len, message, (unsigned long long)message_len) != 0) {
 		return OQS_ERROR;
 	}
+	*signature_length = (size_t)sig_len;
 	return OQS_SUCCESS;
 }
 
