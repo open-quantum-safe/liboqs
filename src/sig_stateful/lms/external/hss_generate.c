@@ -109,7 +109,7 @@ static void hash_subtree( unsigned char *dest,
     for (; num_level > 1; num_level--) {
         unsigned i;
         merkle_index_t this_level_node_index = node_index << (num_level-1);
-        for (i = 0; i < (1<<(num_level-1)); i++) {
+        for (i = 0; i < ((unsigned)1<<(num_level-1)); i++) {
             hss_combine_internal_nodes(
                         &hashes[ hash_size * i ],
                         &hashes[ hash_size * (2*i) ],
@@ -312,12 +312,11 @@ bool hss_generate_working_key(
     /* Initialize the current count for each level (from the bottom-up) */
     sequence_t i;
     sequence_t count = current_count;
-    for (i = w->levels - 1; i >= 0 ; i--) {
-        struct merkle_level *tree = w->tree[i];
+    for (i = w->levels; i >= 1 ; i--) {
+        struct merkle_level *tree = w->tree[i-1];
         unsigned index = count & tree->max_index;
         count >>= tree->level;
         tree->current_index = index;
-        if (i == 0) break; // This is a single level tree
     }
 
     /* Initialize the I values */
@@ -378,8 +377,8 @@ bool hss_generate_working_key(
 
     /* Step through the levels, and for each Merkle tree, compile a list of */
     /* the orders to initialize the bottoms of the subtrees that we'll need */
-    for (i = w->levels - 1; i >= 0 ; i--) {
-        struct merkle_level *tree = w->tree[i];
+    for (i = w->levels; i >= 1 ; i--) {
+        struct merkle_level *tree = w->tree[i-1];
         unsigned hash_size = tree->hash_size;
             /* The current count within this tree */
         merkle_index_t tree_count = tree->current_index;
@@ -501,7 +500,7 @@ bool hss_generate_working_key(
             }
 
             /* And the NEXT_TREE (which is always left-aligned) */
-            if (i > 0) {
+            if ((i-1) > 0) {
                 struct subtree *next = tree->subtree[j][NEXT_TREE];
                 next->left_leaf = 0;
                 merkle_index_t leaf_size =
@@ -512,7 +511,7 @@ bool hss_generate_working_key(
                 /* update process will miss the very first update before we */
                 /* need to sign.  To account for that, potetially generate */
                 /* one more node than what our current count would suggest */
-                if (i != w->levels - 1) {
+                if ((i-1) != w->levels - 1) {
                     next_index++;
                 }
 

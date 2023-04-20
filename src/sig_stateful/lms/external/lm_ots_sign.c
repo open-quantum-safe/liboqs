@@ -55,7 +55,7 @@ bool lm_ots_generate_public_key(
         hss_seed_derive( buf + ITER_PREV, seed, i < p-1 );
         put_bigendian( buf + ITER_K, i, 2 );
         /* We'll place j in the buffer below */
-        for (j=0; j < (1<<w) - 1; j++) {
+        for (j=0; j < (unsigned)(1<<w) - 1; j++) {
             buf[ITER_J] = j;
 
             hss_hash_ctx( buf + ITER_PREV, h, &ctx, buf, ITER_LEN(n) );

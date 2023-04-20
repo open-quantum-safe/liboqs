@@ -182,7 +182,7 @@ bool hss_generate_private_key(
 
             /* If going to a higher levels would mean that we wouldn't */
             /* effectively use all the cores we have, use this level */
-        if ((1<<level) < 4*num_cores) {
+        if (((unsigned)1<<level) < 4*num_cores) {
                 /* We'll write into a temp area; malloc the space */
             size_t temp_buffer_size = (size_t)size_hash << level;
             temp_buffer = malloc(temp_buffer_size);

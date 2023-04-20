@@ -593,12 +593,12 @@ bool hss_generate_signature(
     unsigned merkle_levels_below = 0;
     int switch_merkle = w->levels;
     struct merkle_level *tree;
-    for (i = w->levels-1; i>=0; i--, merkle_levels_below += tree->level) {
-        tree = w->tree[i];
+    for (i = w->levels; i>=1; i--, merkle_levels_below += tree->level) {
+        tree = w->tree[i-1];
 
         if (0 == (cur_count & (((sequence_t)1 << (merkle_levels_below + tree->level))-1))) {
             /* We exhausted this tree */
-            if (i == 0) {
+            if ((i-1) == 0) {
                 /* We've run out of signatures; we've already caught this */
                 /* above; just make *sure* we've marked the key as */
                 /* unusable, and give up */
@@ -607,7 +607,7 @@ bool hss_generate_signature(
             }
 
             /* Remember we'll need to switch to the NEXT_TREE */
-            switch_merkle = i;
+            switch_merkle = i-1;
             continue;
         }
 
@@ -639,23 +639,23 @@ done_advancing:
     /* Check if we used up any Merkle trees; if we have, switch to the */
     /* NEXT_TREE (which we've built in our spare time) */
     for (i = switch_merkle; i < w->levels; i++) {
-        struct merkle_level *tree = w->tree[i];
+        struct merkle_level *tree_l = w->tree[i];
         struct merkle_level *parent = w->tree[i-1];
         unsigned j;
 
         /* Rearrange the subtrees */
         for (j=0; j<tree->sublevels; j++) {
             /* Make the NEXT_TREE active; replace it with the current active */
-            struct subtree *active = tree->subtree[j][NEXT_TREE];
-            struct subtree *next = tree->subtree[j][ACTIVE_TREE];
+            struct subtree *active = tree_l->subtree[j][NEXT_TREE];
+            struct subtree *next = tree_l->subtree[j][ACTIVE_TREE];
             unsigned char *stack = active->stack;  /* Stack stays with */
                                                  /* next tree */
 
             active->left_leaf = 0;
             next->current_index = 0;
             next->left_leaf = 0;
-            tree->subtree[j][ACTIVE_TREE] = active;
-            tree->subtree[j][NEXT_TREE] = next;
+            tree_l->subtree[j][ACTIVE_TREE] = active;
+            tree_l->subtree[j][NEXT_TREE] = next;
             active->stack = NULL;
             next->stack = stack;
             if (j > 0) {
@@ -669,8 +669,8 @@ done_advancing:
         }
 
         /* Copy in the value of seed, I we'll use for the new tree */
-        memcpy( tree->seed, tree->seed_next, SEED_LEN );
-        memcpy( tree->I, tree->I_next, I_LEN );
+        memcpy( tree_l->seed, tree->seed_next, SEED_LEN );
+        memcpy( tree_l->I, tree->I_next, I_LEN );
 
         /* Compute the new next I, which is derived from either the parent's */
         /* I or the parent's I_next value */
@@ -687,11 +687,11 @@ done_advancing:
                                        parent->lm_ots_type);
          }
 
-         tree->current_index = 0;  /* We're starting this from scratch */
+        tree_l->current_index = 0;  /* We're starting this from scratch */
 
          /* Generate the signature of the new level */
          if (!hss_create_signed_public_key( w->signed_pk[i], w->siglen[i-1],
-                                        tree, parent, w )) {
+                                            tree_l, parent, w )) {
             info->error_code = hss_error_internal;
             goto failed;
         }

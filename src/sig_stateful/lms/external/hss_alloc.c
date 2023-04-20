@@ -163,7 +163,7 @@ struct hss_working_key *allocate_working_key(
     /* Assign the memory target to a *signed* variable; signed so that it */
     /* can take on negative values meaningfully (to account for cases where */
     /* we are "overbudget") */
-    signed long mem_target;
+    unsigned long mem_target;
     if (memory_target > LONG_MAX) {
         mem_target = LONG_MAX;
     } else {
@@ -327,8 +327,8 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
         found_plenty_memory,      /* We found something that fits within */
                                   /* out budget */
     } search_status = nothing_yet;
-    signed long best_mem = 0;
-    signed long best_levels = 0;
+    unsigned long best_mem = 0;
+    unsigned long best_levels = 0;
     unsigned best_j = 0;
     size_t best_stack_used = 0;
     unsigned j;
@@ -361,7 +361,7 @@ signed long initial_mem_target = mem_target; /* DEBUG HACK */
             /* This is a signed type so that the comparison works as */
             /* expected if mem_target is negative */
         size_t stack_used;
-        signed long mem = compute_level_memory_usage(i, j,
+        unsigned long mem = compute_level_memory_usage(i, j,
                        level_height[i], hash_size[i], &subtree_levels[i],
                        &stack_used );
             /* # of sublevels this would have */

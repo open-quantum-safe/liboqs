@@ -295,7 +295,7 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid
         oqs_data->levels = levels;
         oqs_data->lm_type[0] = lm_type[0];
         oqs_data->lm_ots_type[0] = lm_ots_type[0];
-        oqs_data->data = (void*)aux_data;
+        oqs_data->aux_data = (void*)aux_data;
         oqs_data->len_aux_data = aux_len;
         sk->data = oqs_data;
     }
@@ -372,6 +372,7 @@ int oqs_sig_stfl_lms_sign(OQS_SECRET_KEY *sk,
 
     *smlen = sig_len;
     memcpy(sm, sig, sig_len);
+    free(sig);
 
     return 0;
 }
