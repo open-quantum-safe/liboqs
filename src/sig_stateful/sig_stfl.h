@@ -159,7 +159,7 @@ typedef struct OQS_SECRET_KEY OQS_SECRET_KEY;
 typedef struct OQS_SECRET_KEY {
 
     /* The secret key stored in memory as an array of bytes*/
-    char *method_name;
+    const char *method_name;
 
     /* The (maximum) length, in bytes, of secret keys for this signature scheme. */
     size_t length_secret_key;
