@@ -19,8 +19,8 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signatu
         return OQS_ERROR;
     }
     if (oqs_sig_stfl_lms_sign(secret_key, signature,
-            (unsigned long long *)signature_length,
-            message, (unsigned long long) message_len) !=0) {
+            signature_length,
+            message, message_len) !=0) {
         return OQS_ERROR;
     }
 
@@ -143,83 +143,83 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid
      /* Set lms param set */
     switch (oid)
     {
-    case 1:
+    case 0x1:
         lm_type[0] = LMS_SHA256_N32_H5;
         lm_ots_type[0] = LMOTS_SHA256_N32_W1;
         break;
-    case 2:
+    case 0x2:
         lm_type[0] = LMS_SHA256_N32_H5;
         lm_ots_type[0] = LMOTS_SHA256_N32_W2;
         break;
-    case 3:
+    case 0x3:
         lm_type[0] = LMS_SHA256_N32_H5;
         lm_ots_type[0] = LMOTS_SHA256_N32_W4;
         break;
-    case 4:
+    case 0x4:
         lm_type[0] = LMS_SHA256_N32_H5;
         lm_ots_type[0] = LMOTS_SHA256_N32_W8;
         break;
-    case 5:
+    case 0x5:
         lm_type[0] = LMS_SHA256_N32_H10;
         lm_ots_type[0] = LMOTS_SHA256_N32_W1;
         break;
-    case 6:
+    case 0x6:
         lm_type[0] = LMS_SHA256_N32_H10;
         lm_ots_type[0] = LMOTS_SHA256_N32_W2;
         break;
-    case 7:
+    case 0x7:
         lm_type[0] = LMS_SHA256_N32_H10;
         lm_ots_type[0] = LMOTS_SHA256_N32_W4;
         break;
-    case 8:
+    case 0x8:
         lm_type[0] = LMS_SHA256_N32_H10;
         lm_ots_type[0] = LMOTS_SHA256_N32_W8;
         break;
-    case 9:
+    case 0x9:
         lm_type[0] = LMS_SHA256_N32_H15;
         lm_ots_type[0] = LMOTS_SHA256_N32_W1;
         break;
-    case 10:
+    case 0xa:
         lm_type[0] = LMS_SHA256_N32_H15;
         lm_ots_type[0] = LMOTS_SHA256_N32_W2;
         break;
-    case 11:
+    case 0xb:
         lm_type[0] = LMS_SHA256_N32_H15;
         lm_ots_type[0] = LMOTS_SHA256_N32_W4;
         break;
-    case 12:
+    case 0xc:
         lm_type[0] = LMS_SHA256_N32_H15;
         lm_ots_type[0] = LMOTS_SHA256_N32_W8;
         break;
-    case 13:
+    case 0xd:
         lm_type[0] = LMS_SHA256_N32_H20;
         lm_ots_type[0] = LMOTS_SHA256_N32_W1;
         break;
-    case 14:
+    case 0xe:
         lm_type[0] = LMS_SHA256_N32_H20;
         lm_ots_type[0] = LMOTS_SHA256_N32_W2;
         break;
-    case 15:
+    case 0xf:
         lm_type[0] = LMS_SHA256_N32_H20;
         lm_ots_type[0] = LMOTS_SHA256_N32_W4;
         break;
-    case 16:
+    case 0x10:
         lm_type[0] = LMS_SHA256_N32_H20;
         lm_ots_type[0] = LMOTS_SHA256_N32_W8;
         break;
-    case 17:
+    case 0x11:
         lm_type[0] = LMS_SHA256_N32_H25;
         lm_ots_type[0] = LMOTS_SHA256_N32_W1;
         break;
-    case 18:
+    case 0x12:
         lm_type[0] = LMS_SHA256_N32_H25;
         lm_ots_type[0] = LMOTS_SHA256_N32_W2;
         break;
-    case 19:
+    case 0x13:
         lm_type[0] = LMS_SHA256_N32_H25;
         lm_ots_type[0] = LMOTS_SHA256_N32_W4;
         break;
-    case 20:
+    case 0x14:
         lm_type[0] = LMS_SHA256_N32_H25;
         lm_ots_type[0] = LMOTS_SHA256_N32_W8;
         break;
@@ -309,8 +309,8 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid
 }
 
 int oqs_sig_stfl_lms_sign(OQS_SECRET_KEY *sk,
-              uint8_t *sm, unsigned long long *smlen,
-              const uint8_t *m, unsigned long long mlen)
+              uint8_t *sm, size_t *smlen,
+              const uint8_t *m, size_t mlen)
 {
     size_t sig_len;
     bool status;
@@ -418,8 +418,8 @@ int oqs_sig_stfl_hss_keypair(uint8_t *pk, OQS_SECRET_KEY *sk, const uint32_t oid
 }
 
 int oqs_sig_stfl_hss_sign(OQS_SECRET_KEY *sk,
-        uint8_t *sm, unsigned long long *smlen,
-        const uint8_t *m, unsigned long long mlen)
+        uint8_t *sm, size_t *smlen,
+        const uint8_t *m, size_t mlen)
 {
     LMS_UNUSED(sk);
     LMS_UNUSED(sm);
@@ -430,8 +430,8 @@ int oqs_sig_stfl_hss_sign(OQS_SECRET_KEY *sk,
     return -1;
 }
 
-int oqs_sig_stfl_hss_verify(uint8_t *m, unsigned long long *mlen,
-                     const uint8_t *sm, unsigned long long smlen,
+int oqs_sig_stfl_hss_verify(uint8_t *m, size_t *mlen,
+                     const uint8_t *sm, size_t smlen,
                      const uint8_t *pk)
 {
     LMS_UNUSED(m);

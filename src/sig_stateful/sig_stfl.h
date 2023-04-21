@@ -158,6 +158,9 @@ typedef struct OQS_SECRET_KEY OQS_SECRET_KEY;
 
 typedef struct OQS_SECRET_KEY {
 
+    /** A local ordinal representing the LMS parameter of the signature scheme. */
+    uint32_t oid;
+
     /* The secret key stored in memory as an array of bytes*/
     const char *method_name;
 
@@ -232,6 +235,9 @@ OQS_API void OQS_SECRET_KEY_free(OQS_SECRET_KEY *sk);
  * Stateful signature scheme object
  */
 typedef struct OQS_SIG_STFL {
+
+    /** A local ordinal representing the LMS parameter of the signature scheme. */
+    uint32_t oid;
 
 	/** Printable string representing the name of the signature scheme. */
 	const char *method_name;

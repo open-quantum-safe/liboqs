@@ -120,11 +120,100 @@ cleanup:
     return rc;
 }
 
+static OQS_STATUS sig_stfl_lms_test_correctness(void) {
+
+    OQS_SIG_STFL *sig = NULL;
+    uint8_t *public_key = NULL;
+    OQS_SECRET_KEY *secret_key = NULL;
+
+    uint8_t message[MESSAGE_LEN] = {0};
+
+    uint8_t *signature = NULL;
+    size_t signature_len = 0;
+
+    OQS_STATUS rc;
+
+    const char *alg_name = OQS_SIG_STFL_alg_lms_sha256_n32_h5_w1;
+
+    sig = OQS_SIG_STFL_new(alg_name);
+    if (sig == NULL) {
+        fprintf(stderr, "ERROR: LMS OQS_SIG_STFL_new failed\n");
+        goto error;
+    }
+
+    secret_key = OQS_SECRET_KEY_new(alg_name);
+    if (secret_key == NULL) {
+        fprintf(stderr, "ERROR: LMS OQS_SECRET_KEY_new failed\n");
+        goto error;
+    }
+    secret_key->lock_key = &lock_sk_key;
+    secret_key->release_key = &release_sk_key;
+    secret_key->save_secret_key = &do_nothing_save;
+
+    public_key = malloc(sig->length_public_key);
+    if (public_key == NULL) {
+        fprintf(stderr, "ERROR: LMS malloc failed!\n");
+        goto error;
+    }
+
+    signature = malloc(sig->length_signature);
+    if (signature == NULL) {
+        fprintf(stderr, "ERROR: LMS malloc failed!\n");
+        goto error;
+    }
+
+    rc = OQS_SIG_STFL_keypair(sig, public_key, secret_key);
+    if (rc != OQS_SUCCESS) {
+        fprintf(stderr, "ERROR: LMS OQS_SIG_STFL_keypair failed\n");
+        goto error;
+    }
+
+    OQS_randombytes(message, MESSAGE_LEN);
+
+    rc = OQS_SIG_STFL_sign(sig, signature, &signature_len, message, MESSAGE_LEN, secret_key);
+    if (rc != OQS_SUCCESS) {
+        fprintf(stderr, "ERROR: OQS_SIG_STFL_sign failed\n");
+        goto error;
+    }
+
+    rc = OQS_SIG_STFL_verify(sig, message, MESSAGE_LEN, signature, signature_len, public_key);
+    if (rc != OQS_SUCCESS) {
+        fprintf(stderr, "ERROR: Signature verification error.\n");
+        goto error;
+    }
+
+    printf("SUCCESS!\n");
+    rc = OQS_SUCCESS;
+    goto cleanup;
+
+error:
+    rc = OQS_ERROR;
+
+cleanup:
+    if (public_key) {
+        free(public_key);
+    }
+    if (signature) {
+        free(signature);
+    }
+    if (sig) {
+        OQS_SIG_STFL_free(sig);
+    }
+    if(secret_key) {
+        OQS_SECRET_KEY_free(secret_key);
+    }
+
+    return rc;
+}
+
 int main(void) {
     OQS_STATUS rc = sig_stfl_test_correctness();
     if (rc != OQS_SUCCESS) {
         return EXIT_FAILURE;
     }
+    rc = sig_stfl_lms_test_correctness();
+    if (rc != OQS_SUCCESS) {
+        return EXIT_FAILURE;
+    }
     return EXIT_SUCCESS;
 }
-
