@@ -653,5 +653,10 @@ OQS_API OQS_SECRET_KEY *OQS_SECRET_KEY_new(const char *method_name) {
 OQS_API void OQS_SECRET_KEY_free(OQS_SECRET_KEY *sk) {
     if (sk == NULL) return;
 	OQS_MEM_secure_free(sk->secret_key, sk->length_secret_key);
+
+	/* Call object specif free */
+	if (sk->free_key_data) {
+	    sk->free_key_data(sk);
+	}
 	OQS_MEM_secure_free(sk, sizeof(sk));
 }

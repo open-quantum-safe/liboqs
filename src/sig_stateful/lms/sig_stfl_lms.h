@@ -188,7 +188,6 @@ unsigned long long OQS_SECRET_KEY_lms_sigs_left(const OQS_SECRET_KEY *secret_key
 
 unsigned long long OQS_SECRET_KEY_lms_sigs_total(const OQS_SECRET_KEY *secret_key);
 
-
 OQS_SECRET_KEY *OQS_SIG_STFL_alg_lms_derive_subkey(OQS_SECRET_KEY *master_key, const unsigned long long number_of_sigs);
 
 // --------------------------------------------------------------------------------------------------------

@@ -43,6 +43,23 @@ done:
     return OQS_SUCCESS;
 }
 
+
+static void OQS_SIG_STFL_alg_lms_set_aux_data(OQS_SECRET_KEY *sk, void *data) {
+    sk->data = data;
+}
+
+static void OQS_SIG_STFL_alg_lms_free_aux_data(OQS_SECRET_KEY *sk) {
+    if (!sk || !sk->data) {
+        return;
+    }
+    oqs_lms_key_data *key_data = NULL;
+    key_data = (oqs_lms_key_data*)sk->data;
+    OQS_MEM_secure_free(key_data->aux_data, key_data->len_aux_data);
+    key_data->aux_data = NULL;
+    key_data->len_aux_data = 0;
+    sk->data = NULL;
+}
+
 // ======================== LMS-SHA256 H5/W1 ======================== //
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_hx_wx_keypair(uint8_t *public_key, OQS_SECRET_KEY *secret_key) {
@@ -98,9 +115,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W1_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h5_w1_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -148,9 +167,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W2_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h5_w2_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -198,9 +219,12 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W4_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h5_w4_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
+
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -248,9 +272,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H5_W8_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h5_w8_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -298,9 +324,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W1_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h10_w1_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -348,9 +376,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W2_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h10_w2_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -398,9 +428,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W4_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h10_w4_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -448,9 +480,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H10_W8_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h10_w8_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -498,9 +532,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W1_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h15_w1_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -548,9 +584,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W2_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h15_w2_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -598,9 +636,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W4_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h15_w4_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -648,9 +688,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H15_W8_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h15_w8_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -698,9 +740,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W1_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h20_w1_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -748,9 +792,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W2_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h20_w2_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -798,9 +844,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W4_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h20_w4_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -848,9 +896,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H20_W8_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h20_w8_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -898,9 +948,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H25_W1_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h25_w1_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -948,9 +1000,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H25_W2_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h25_w2_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -998,9 +1052,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H25_W4_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h25_w4_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));
@@ -1048,9 +1104,11 @@ OQS_SECRET_KEY *OQS_SECRET_KEY_LMS_SHA256_H25_W8_new(void) {
     sk->length_secret_key = OQS_SIG_STFL_alg_lms_sha256_h25_w8_length_sk;
 
     // Assign the sigs_left and sigs_max functions
-    sk->sigs_left = OQS_SECRET_KEY_lms_sigs_left;
-    sk->sigs_total = OQS_SECRET_KEY_lms_sigs_total;
-    sk->get_key_data = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->sigs_left     = OQS_SECRET_KEY_lms_sigs_left;
+    sk->sigs_total    = OQS_SECRET_KEY_lms_sigs_total;
+    sk->get_key_data  = OQS_SIG_STFL_alg_lms_aux_data;
+    sk->free_key_data = OQS_SIG_STFL_alg_lms_free_aux_data;
+    sk->set_key_data  = OQS_SIG_STFL_alg_lms_set_aux_data;
 
     // Initialize the key with length_secret_key amount of bytes.
     sk->secret_key = (uint8_t *)malloc(sk->length_secret_key * sizeof(uint8_t));

@@ -204,12 +204,30 @@ typedef struct OQS_SECRET_KEY {
     OQS_STATUS (*release_key)(OQS_SECRET_KEY *sk);
 
     /**
-     * Secret Key data / parse data if present
+     * Set secret Key data
      *
      * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @param[in] data void pointer to stored data
+     * @return none
+     */
+    void (*set_key_data)(OQS_SECRET_KEY *sk, void *data);
+
+    /**
+     * Get secret Key data pointer if present
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return OQS_SUCCESS or OQS_ERROR
      * @return void pointer to stored data
+     * @return data length
      */
     OQS_STATUS (*get_key_data)(OQS_SECRET_KEY *sk, uint8_t **data, size_t *data_len);
+
+    /**
+     * Secret Key free internal data
+     *
+     * @param[in] sk The secret key represented as OQS_SECRET_KEY object
+     * @return none
+     */
+    void (*free_key_data)(OQS_SECRET_KEY *sk);
 } OQS_SECRET_KEY;
 
 /**
