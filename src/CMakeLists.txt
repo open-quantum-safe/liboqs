@@ -91,10 +91,26 @@ write_basic_package_version_file(
   COMPATIBILITY AnyNewerVersion
 )
 
+if(OQS_USE_OPENSSL)
+    set(_oqs_pkgconfig_requires_private openssl)
+endif()
+
+# generate pkg-config file
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/liboqs.pc.in
+  ${CMAKE_CURRENT_BINARY_DIR}/liboqs.pc
+  @ONLY
+)
+
 install(FILES
           "${CMAKE_CURRENT_BINARY_DIR}/liboqsConfig.cmake"
           "${CMAKE_CURRENT_BINARY_DIR}/liboqsConfigVersion.cmake"
         DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/liboqs"
+)
+
+install(FILES
+          "${CMAKE_CURRENT_BINARY_DIR}/liboqs.pc"
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
 
 install(TARGETS oqs
