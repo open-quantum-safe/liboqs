@@ -119,6 +119,7 @@ static void speed_aes256(void) {
 int main(int argc, char **argv) {
 	bool bench = false;
 
+	OQS_init();
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0) {
@@ -129,8 +130,10 @@ int main(int argc, char **argv) {
 				printf("  --bench, -b\n");
 				printf("    Run benchmarks\n");
 				if ((strcmp(argv[i], "-h") == 0) || (strcmp(argv[i], "-help") == 0) || (strcmp(argv[i], "--help") == 0)) {
+					OQS_destroy();
 					return EXIT_SUCCESS;
 				} else {
+					OQS_destroy();
 					return EXIT_FAILURE;
 				}
 			}
@@ -141,13 +144,16 @@ int main(int argc, char **argv) {
 
 	printf("=== test_aes correctness ===\n");
 	if (test_aes128_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 
 	if (test_aes256_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 	if (test_aes256ctr_correctness() != EXIT_SUCCESS) {
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 	printf("Tests passed.\n\n");
@@ -159,6 +165,7 @@ int main(int argc, char **argv) {
 		speed_aes256();
 		PRINT_TIMER_FOOTER
 	}
+	OQS_destroy();
 
 	return EXIT_SUCCESS;
 }

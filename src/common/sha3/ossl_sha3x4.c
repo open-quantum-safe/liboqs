@@ -8,6 +8,7 @@
 #include "sha3x4.h"
 
 #include <openssl/evp.h>
+#include "../ossl_helpers.h"
 
 #include <string.h>
 
@@ -39,10 +40,10 @@ void OQS_SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	s->mdctx1 = EVP_MD_CTX_new();
 	s->mdctx2 = EVP_MD_CTX_new();
 	s->mdctx3 = EVP_MD_CTX_new();
-	EVP_DigestInit_ex(s->mdctx0, EVP_shake128(), NULL);
-	EVP_DigestInit_ex(s->mdctx1, EVP_shake128(), NULL);
-	EVP_DigestInit_ex(s->mdctx2, EVP_shake128(), NULL);
-	EVP_DigestInit_ex(s->mdctx3, EVP_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx0, oqs_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx1, oqs_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx2, oqs_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx3, oqs_shake128(), NULL);
 	s->n_out = 0;
 }
 
@@ -63,7 +64,7 @@ void OQS_SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out
 	EVP_MD_CTX *clone;
 
 	clone = EVP_MD_CTX_new();
-	EVP_DigestInit_ex(clone, EVP_shake128(), NULL);
+	EVP_DigestInit_ex(clone, oqs_shake128(), NULL);
 	if (s->n_out == 0) {
 		EVP_MD_CTX_copy_ex(clone, s->mdctx0);
 		EVP_DigestFinalXOF(clone, out0, outlen);
@@ -122,10 +123,10 @@ void OQS_SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	EVP_MD_CTX_reset(s->mdctx1);
 	EVP_MD_CTX_reset(s->mdctx2);
 	EVP_MD_CTX_reset(s->mdctx3);
-	EVP_DigestInit_ex(s->mdctx0, EVP_shake128(), NULL);
-	EVP_DigestInit_ex(s->mdctx1, EVP_shake128(), NULL);
-	EVP_DigestInit_ex(s->mdctx2, EVP_shake128(), NULL);
-	EVP_DigestInit_ex(s->mdctx3, EVP_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx0, oqs_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx1, oqs_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx2, oqs_shake128(), NULL);
+	EVP_DigestInit_ex(s->mdctx3, oqs_shake128(), NULL);
 	s->n_out = 0;
 }
 
@@ -157,10 +158,10 @@ void OQS_SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	s->mdctx1 = EVP_MD_CTX_new();
 	s->mdctx2 = EVP_MD_CTX_new();
 	s->mdctx3 = EVP_MD_CTX_new();
-	EVP_DigestInit_ex(s->mdctx0, EVP_shake256(), NULL);
-	EVP_DigestInit_ex(s->mdctx1, EVP_shake256(), NULL);
-	EVP_DigestInit_ex(s->mdctx2, EVP_shake256(), NULL);
-	EVP_DigestInit_ex(s->mdctx3, EVP_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx0, oqs_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx1, oqs_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx2, oqs_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx3, oqs_shake256(), NULL);
 	s->n_out = 0;
 }
 
@@ -181,7 +182,7 @@ void OQS_SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out
 	EVP_MD_CTX *clone;
 
 	clone = EVP_MD_CTX_new();
-	EVP_DigestInit_ex(clone, EVP_shake256(), NULL);
+	EVP_DigestInit_ex(clone, oqs_shake256(), NULL);
 	if (s->n_out == 0) {
 		EVP_MD_CTX_copy_ex(clone, s->mdctx0);
 		EVP_DigestFinalXOF(clone, out0, outlen);
@@ -240,10 +241,10 @@ void OQS_SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	EVP_MD_CTX_reset(s->mdctx1);
 	EVP_MD_CTX_reset(s->mdctx2);
 	EVP_MD_CTX_reset(s->mdctx3);
-	EVP_DigestInit_ex(s->mdctx0, EVP_shake256(), NULL);
-	EVP_DigestInit_ex(s->mdctx1, EVP_shake256(), NULL);
-	EVP_DigestInit_ex(s->mdctx2, EVP_shake256(), NULL);
-	EVP_DigestInit_ex(s->mdctx3, EVP_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx0, oqs_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx1, oqs_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx2, oqs_shake256(), NULL);
+	EVP_DigestInit_ex(s->mdctx3, oqs_shake256(), NULL);
 	s->n_out = 0;
 }
 

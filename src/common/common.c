@@ -21,6 +21,11 @@
 #include <windows.h>
 #endif
 
+#if defined(OQS_USE_OPENSSL)
+#include <openssl/evp.h>
+#include "ossl_helpers.h"
+#endif
+
 /* Identifying the CPU is expensive so we cache the results in cpu_ext_data */
 #if defined(OQS_DIST_BUILD)
 static unsigned int cpu_ext_data[OQS_CPU_EXT_COUNT] = {0};
@@ -198,11 +203,21 @@ OQS_API void OQS_init(void) {
 #if defined(OQS_DIST_BUILD)
 	OQS_CPU_has_extension(OQS_CPU_EXT_INIT);
 #endif
+#if defined(OQS_USE_OPENSSL)
+	oqs_fetch_ossl_objects();
+#endif
 	return;
 }
 
 OQS_API const char *OQS_version(void) {
 	return OQS_VERSION_TEXT;
+}
+
+OQS_API void OQS_destroy(void) {
+#if defined(OQS_USE_OPENSSL)
+	oqs_free_ossl_objects();
+#endif
+	return;
 }
 
 OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {

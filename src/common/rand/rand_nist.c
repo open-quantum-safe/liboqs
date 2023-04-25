@@ -24,6 +24,7 @@ You are solely responsible for determining the appropriateness of using and dist
 #include <openssl/conf.h>
 #include <openssl/evp.h>
 #include <openssl/err.h>
+#include "../ossl_helpers.h"
 #else
 #include <oqs/aes.h>
 #endif
@@ -66,7 +67,7 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 		handleErrors();
 	}
 
-	if (1 != EVP_EncryptInit_ex(ctx, EVP_aes_256_ecb(), NULL, key, NULL)) {
+	if (1 != EVP_EncryptInit_ex(ctx, oqs_aes_256_ecb(), NULL, key, NULL)) {
 		handleErrors();
 	}
 

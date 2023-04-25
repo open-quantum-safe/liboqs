@@ -15,8 +15,11 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
     add_compile_options(-Wconversion)
 endif()
 
+set(OSSL_HELPERS "")
+
 if(${OQS_USE_AES_OPENSSL})
     set(AES_IMPL aes/aes_ossl.c)
+    set(OSSL_HELPERS ossl_helpers.c)
 else()
    set(AES_IMPL aes/aes.c aes/aes_c.c)
    if (OQS_DIST_X86_64_BUILD OR OQS_USE_AES_INSTRUCTIONS)
@@ -41,6 +44,7 @@ endif()
 
 if(${OQS_USE_SHA2_OPENSSL})
     set(SHA2_IMPL sha2/sha2_ossl.c)
+    set(OSSL_HELPERS ossl_helpers.c)
 else()
     set(SHA2_IMPL sha2/sha2.c sha2/sha2_c.c)
     if (OQS_DIST_ARM64_V8_BUILD)
@@ -57,6 +61,7 @@ endif()
 
 if(${OQS_USE_SHA3_OPENSSL})
     set(SHA3_IMPL sha3/ossl_sha3.c sha3/ossl_sha3x4.c)
+    set(OSSL_HELPERS ossl_helpers.c)
 else() # using XKCP
     add_subdirectory(sha3/xkcp_low)
     set(SHA3_IMPL sha3/xkcp_sha3.c sha3/xkcp_sha3x4.c)
@@ -65,6 +70,7 @@ endif()
 add_library(common OBJECT ${AES_IMPL}
                           ${SHA2_IMPL}
                           ${SHA3_IMPL}
+                          ${OSSL_HELPERS}
                           common.c
                           pqclean_shims/nistseedexpander.c
                           pqclean_shims/fips202.c

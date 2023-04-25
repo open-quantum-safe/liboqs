@@ -8,6 +8,7 @@
 #include "aes.h"
 
 #include <openssl/evp.h>
+#include "../ossl_helpers.h"
 
 struct key_schedule {
 	int for_ECB;
@@ -34,7 +35,7 @@ void OQS_AES128_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	ks->for_ECB = 1;
 	ks->ctx = EVP_CIPHER_CTX_new();
 	OQS_EXIT_IF_NULLPTR(ks->ctx);
-	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, EVP_aes_128_ecb(), NULL, key, NULL));
+	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, oqs_aes_128_ecb(), NULL, key, NULL));
 	EVP_CIPHER_CTX_set_padding(ks->ctx, 0);
 }
 
@@ -73,7 +74,7 @@ void OQS_AES256_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	ks->for_ECB = 1;
 	ks->ctx = EVP_CIPHER_CTX_new();
 	OQS_EXIT_IF_NULLPTR(ks->ctx);
-	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, EVP_aes_256_ecb(), NULL, key, NULL));
+	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, oqs_aes_256_ecb(), NULL, key, NULL));
 	EVP_CIPHER_CTX_set_padding(ks->ctx, 0);
 }
 
@@ -100,7 +101,7 @@ void OQS_AES256_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *schedule) {
 	} else {
 		exit(EXIT_FAILURE);
 	}
-	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, EVP_aes_256_ctr(), NULL, ks->key, ks->iv));
+	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, oqs_aes_256_ctr(), NULL, ks->key, ks->iv));
 }
 
 void OQS_AES256_CTR_inc_ivu64(uint64_t iv, void *schedule) {
@@ -108,7 +109,7 @@ void OQS_AES256_CTR_inc_ivu64(uint64_t iv, void *schedule) {
 	struct key_schedule *ks = (struct key_schedule *) schedule;
 	br_enc64be(ks->iv, iv);
 	memset(&ks->iv[8], 0, 8);
-	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, EVP_aes_256_ctr(), NULL, ks->key, ks->iv));
+	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ks->ctx, oqs_aes_256_ctr(), NULL, ks->key, ks->iv));
 }
 
 void OQS_AES256_free_schedule(void *schedule) {
@@ -144,7 +145,7 @@ void OQS_AES256_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const void *
 		exit(EXIT_FAILURE);
 	}
 	const struct key_schedule *ks = (const struct key_schedule *) schedule;
-	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ctr_ctx, EVP_aes_256_ctr(), NULL, ks->key, iv_ctr));
+	OQS_OPENSSL_GUARD(EVP_EncryptInit_ex(ctr_ctx, oqs_aes_256_ctr(), NULL, ks->key, iv_ctr));
 
 	SIZE_T_TO_INT_OR_EXIT(out_len, out_len_input_int)
 	memset(out, 0, (size_t)out_len_input_int);

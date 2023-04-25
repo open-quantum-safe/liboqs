@@ -15,6 +15,7 @@
 
 int main(void) {
 
+	OQS_init();
 	// iterate through KEMs and print info
 	printf("KEMs:\n");
 	for (size_t i = 0; i < OQS_KEM_algs_length; i++) {
@@ -53,5 +54,6 @@ int main(void) {
 		printf("    length-signature: %zu\n", sig->length_signature);
 		OQS_SIG_free(sig);
 	}
+	OQS_destroy();
 }
 

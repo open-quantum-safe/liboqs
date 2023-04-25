@@ -139,6 +139,7 @@ cleanup:
 
 int main(int argc, char **argv) {
 
+	OQS_init();
 	if (argc != 2) {
 		fprintf(stderr, "Usage: kat_kem algname\n");
 		fprintf(stderr, "  algname: ");
@@ -151,13 +152,16 @@ int main(int argc, char **argv) {
 		fprintf(stderr, "\n");
 		printf("\n");
 		print_system_info();
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
 
 	char *alg_name = argv[1];
 	OQS_STATUS rc = kem_kat(alg_name);
 	if (rc != OQS_SUCCESS) {
+		OQS_destroy();
 		return EXIT_FAILURE;
 	}
+	OQS_destroy();
 	return EXIT_SUCCESS;
 }
