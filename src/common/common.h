@@ -139,7 +139,7 @@ OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext);
 
 /**
  * This currently sets the values in the OQS_CPU_EXTENSIONS
- * and prefetches the OpenSSL obejcts if necessary.
+ * and prefetches the OpenSSL objects if necessary.
  */
 OQS_API void OQS_init(void);
 
