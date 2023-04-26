@@ -19,6 +19,11 @@
 include(CheckCCompilerFlag)
 check_c_compiler_flag("-Wa,--noexecstack" CC_SUPPORTS_WA_NOEXECSTACK)
 
+# This sets the equivalent of -Werror for supported compilers
+# it can be overriden with --compile-no-warnings-as-errors
+# https://cmake.org/cmake/help/latest/prop_tgt/COMPILE_WARNING_AS_ERROR.html
+set(CMAKE_COMPILE_WARNING_AS_ERROR ${OQS_STRICT_WARNINGS})
+
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.18")
     include(CheckLinkerFlag)
     check_linker_flag(C "-Wl,-z,noexecstack" LD_SUPPORTS_WL_Z_NOEXECSTACK)
@@ -87,7 +92,6 @@ endif()
 
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
   if(${OQS_STRICT_WARNINGS})
-    add_compile_options(-Werror)
     add_compile_options(-Wall)
     add_compile_options(-Wextra)
     add_compile_options(-Wpedantic)
@@ -141,7 +145,6 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang")
 
 elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
   if(${OQS_STRICT_WARNINGS})
-    add_compile_options(-Werror)
     add_compile_options(-Wall)
     add_compile_options(-Wextra)
     add_compile_options(-Wpedantic)
