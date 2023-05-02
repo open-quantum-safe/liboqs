@@ -67,7 +67,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_point_mul_extended:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 
 .align 2
@@ -222,7 +222,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 
 .align 2
@@ -396,7 +396,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_asymmetric_mul_montgomery:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 
 

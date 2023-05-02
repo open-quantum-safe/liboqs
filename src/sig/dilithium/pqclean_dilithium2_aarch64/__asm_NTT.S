@@ -180,7 +180,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_ntt_SIMD_top:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM2_AARCH64_asm_ntt_SIMD_bot
@@ -257,7 +257,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_ntt_SIMD_bot:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 
 

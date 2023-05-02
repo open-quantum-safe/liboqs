@@ -76,7 +76,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_10_to_32:
     sub x7, x7, #1
     cbnz x7, _10_to_32_loop
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_reduce
@@ -172,7 +172,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_reduce:
     st1 { v6.4S}, [x0], #16
     st1 { v7.4S}, [x0], #16
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_caddq
@@ -268,7 +268,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_caddq:
     st1 { v6.4S}, [x0], #16
     st1 { v7.4S}, [x0], #16
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_freeze
@@ -400,7 +400,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_freeze:
     st1 { v6.4S}, [x0], #16
     st1 { v7.4S}, [x0], #16
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_power2round
@@ -549,7 +549,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_power2round:
     st1 {v30.4S}, [x1], #16
     st1 {v31.4S}, [x1], #16
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_add
@@ -601,7 +601,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_add:
     st1 {v18.4S}, [x0], #16
     st1 {v19.4S}, [x0], #16
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_sub
@@ -653,7 +653,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_sub:
     st1 {v18.4S}, [x0], #16
     st1 {v19.4S}, [x0], #16
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_shiftl
@@ -723,7 +723,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_shiftl:
     st1 {v22.4S}, [x0], #16
     st1 {v23.4S}, [x0], #16
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM2_AARCH64_asm_poly_pointwise_montgomery
@@ -844,7 +844,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_poly_pointwise_montgomery:
 
     pop_all
 
-    br lr
+    ret
 
 
 .align 2
@@ -1198,7 +1198,7 @@ _PQCLEAN_DILITHIUM2_AARCH64_asm_polyvecl_pointwise_acc_montgomery:
 
     pop_all
 
-    br lr
+    ret
 
 
 

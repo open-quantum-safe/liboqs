@@ -167,7 +167,7 @@ _PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_top:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 
 .align 2
@@ -297,7 +297,7 @@ _PQCLEAN_KYBER512_AARCH64_asm_ntt_SIMD_bot:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 
 

@@ -85,7 +85,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_bot:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_top
@@ -335,7 +335,7 @@ _PQCLEAN_KYBER1024_AARCH64_asm_intt_SIMD_top:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 
 

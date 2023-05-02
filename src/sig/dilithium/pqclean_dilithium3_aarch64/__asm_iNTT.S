@@ -409,7 +409,7 @@ _PQCLEAN_DILITHIUM3_AARCH64_asm_intt_SIMD_top:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 .align 2
 .global PQCLEAN_DILITHIUM3_AARCH64_asm_intt_SIMD_bot
@@ -500,7 +500,7 @@ _PQCLEAN_DILITHIUM3_AARCH64_asm_intt_SIMD_bot:
     .unreq    counter
     pop_all
 
-    br lr
+    ret
 
 
 
