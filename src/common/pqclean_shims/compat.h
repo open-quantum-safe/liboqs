@@ -22,10 +22,10 @@
 
 #if defined(__GNUC__) && !defined(__clang__)
 
-#if ((__GNUC__ << 16) + __GNUC_MINOR__ >= ((7) << 16) + (1)) // at least GCC 7.1
+#if ((__GNUC__ << 16) + __GNUC_MINOR__ < ((7) << 16) + (1)) // at least GCC 7.1
 /* Versions of the GCC pre-7.1 don't have __m256*_u types */
 UNALIGNED_VECTOR_POLYFILL_GCC
-#  endif // GCC >= 7.1
+#  endif // GCC < 7.1
 
 #elif defined(__GNUC__) && defined(__clang__)
 
