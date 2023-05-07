@@ -127,9 +127,11 @@ static void set_available_cpu_extensions(void) {
 	if (hwcaps & HWCAP_SHA2) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
 	}
+#ifdef HWCAP_SHA3
 	if (hwcaps & HWCAP_SHA3) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_SHA3] = 1;
 	}
+#endif
 }
 #else
 #include <sys/auxv.h>
@@ -144,9 +146,11 @@ static void set_available_cpu_extensions(void) {
 	if (hwcaps & HWCAP_SHA2) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_SHA2] = 1;
 	}
+#ifdef HWCAP_SHA3
 	if (hwcaps & HWCAP_SHA3) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_SHA3] = 1;
 	}
+#endif
 	if (hwcaps & HWCAP_ASIMD) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
 	}
