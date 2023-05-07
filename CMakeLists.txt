@@ -141,7 +141,8 @@ set(PUBLIC_HEADERS ${PROJECT_SOURCE_DIR}/src/oqs.h
                    ${PROJECT_SOURCE_DIR}/src/common/sha3/sha3.h
                    ${PROJECT_SOURCE_DIR}/src/common/sha3/sha3x4.h
                    ${PROJECT_SOURCE_DIR}/src/kem/kem.h
-                   ${PROJECT_SOURCE_DIR}/src/sig/sig.h)
+                   ${PROJECT_SOURCE_DIR}/src/sig/sig.h
+                   ${PROJECT_SOURCE_DIR}/src/sig_stfl/sig_stfl.h)
 
 if(${OQS_ENABLE_KEM_BIKE})
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/kem/bike/kem_bike.h)
@@ -170,6 +171,9 @@ if(OQS_ENABLE_SIG_FALCON)
 endif()
 if(OQS_ENABLE_SIG_SPHINCS)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/sphincs/sig_sphincs.h)
+endif()
+if(OQS_ENABLE_SIG_STFL_XMSS)
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig_stfl/xmss/sig_stfl_xmss.h)
 endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_HEADERS_END
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_BINARY_DIR}/include/oqs)
