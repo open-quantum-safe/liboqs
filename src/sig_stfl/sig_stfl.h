@@ -315,7 +315,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
  * Query number of remaining signatures
  *
  * @param[in] sig The OQS_SIG_STFL object representing the signature scheme.
- * @param[out] remain The number of remaining signatures
  * @param[in] secret_key The secret key represented as a byte string.
  * @return OQS_SUCCESS or OQS_ERROR
  */
@@ -334,8 +333,6 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned lon
 /**
  * Frees an OQS_SIG_STFL object that was constructed by OQS_SIG_STFL_new.
  *
- * @param[in] sig The OQS_SIG_STFL object to free.
- */
 OQS_API void OQS_SIG_STFL_free(OQS_SIG_STFL *sig);
 
 /**
