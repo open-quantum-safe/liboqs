@@ -384,6 +384,9 @@ endif()
 
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 
+option(OQS_ENABLE_SIG_STFL_XMSS "Enable XMSS algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)
+
 if((OQS_MINIMAL_BUILD STREQUAL "ON"))
    message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
 endif()

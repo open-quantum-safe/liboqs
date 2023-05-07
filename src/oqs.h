@@ -21,5 +21,6 @@
 #include <oqs/rand.h>
 #include <oqs/kem.h>
 #include <oqs/sig.h>
+#include <oqs/sig_stfl.h>
 
 #endif // OQS_H
