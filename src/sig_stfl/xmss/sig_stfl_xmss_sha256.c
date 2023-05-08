@@ -6,6 +6,12 @@
 #include <oqs/oqs.h>
 #include "sig_stfl_xmss.h"
 
+#if defined(__GNUC__) || defined(__clang__)
+#define XMSS_UNUSED_ATT __attribute__((unused))
+#else
+#define XMSS_UNUSED_ATT
+#endif
+
 // ======================== XMSS10-SHA256 ======================== //
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
@@ -21,6 +27,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
 	sig->euf_cma = true;
 
 	sig->length_public_key = OQS_SIG_STFL_alg_xmss_sha256_h10_length_pk;
+	sig->length_secret_key = OQS_SIG_STFL_alg_xmss_sha256_h10_length_sk;
 	sig->length_signature = OQS_SIG_STFL_alg_xmss_sha256_h10_length_signature;
 
 	sig->keypair = OQS_SIG_STFL_alg_xmss_sha256_h10_keypair;
@@ -30,14 +37,14 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
 	return sig;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_keypair(uint8_t *public_key, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_keypair(XMSS_UNUSED_ATT uint8_t *public_key, XMSS_UNUSED_ATT uint8_t *secret_key) {
 	return OQS_ERROR;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, uint8_t *secret_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sign(XMSS_UNUSED_ATT uint8_t *signature, XMSS_UNUSED_ATT size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT uint8_t *secret_key) {
 	return OQS_ERROR;
 }
 
-OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_verify(XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT const uint8_t *signature, XMSS_UNUSED_ATT size_t signature_len, XMSS_UNUSED_ATT const uint8_t *public_key) {
 	return OQS_ERROR;
 }
