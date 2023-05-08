@@ -54,6 +54,25 @@ int main(void) {
 		printf("    length-signature: %zu\n", sig->length_signature);
 		OQS_SIG_free(sig);
 	}
+
+	// iterate through stateful signature schemes and print info
+	printf("SIG_STFLs:\n");
+	for (size_t i = 0; i < OQS_SIG_STFL_algs_length; i++) {
+		const char *sig_name = OQS_SIG_STFL_alg_identifier(i);
+		printf("  %s:\n", sig_name);
+		OQS_SIG_STFL *sig = OQS_SIG_STFL_new(sig_name);
+		if (sig == NULL) {
+			printf("    isnull: true\n");
+			continue;
+		}
+		printf("    isnull: false\n");
+		printf("    claimed-security: %s\n", sig->euf_cma ? "EUF-CMA" : "none");
+		printf("    length-public-key: %zu\n", sig->length_public_key);
+		printf("    length-secret-key: %zu\n", sig->length_secret_key);
+		printf("    length-signature: %zu\n", sig->length_signature);
+		OQS_SIG_STFL_free(sig);
+	}
+
 	OQS_destroy();
 }
 
