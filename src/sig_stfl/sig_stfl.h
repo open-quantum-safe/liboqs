@@ -78,6 +78,8 @@ typedef struct OQS_SIG_STFL {
 
 	/** The (maximum) length, in bytes, of public keys for this signature scheme. */
 	size_t length_public_key;
+	/** The (maximum) length, in bytes, of secret keys for this signature scheme. */
+	size_t length_secret_key;
 	/** The (maximum) length, in bytes, of signatures for this signature scheme. */
 	size_t length_signature;
 
