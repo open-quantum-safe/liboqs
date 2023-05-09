@@ -28,6 +28,14 @@ def test_sig(sig_name):
         [helpers.path_to_executable('test_sig'), sig_name],
     )
 
+@helpers.filtered_test
+@pytest.mark.parametrize('sig_stfl_name', helpers.available_sig_stfls_by_name())
+def test_sig_stfl(sig_stfl_name):
+    if not(helpers.is_sig_stfl_enabled_by_name(sig_stfl_name)): pytest.skip('Not enabled')
+    helpers.run_subprocess(
+        [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
+    )
+
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
