@@ -71,6 +71,12 @@ We realize some parties may want to deploy quantum-safe cryptography prior to th
 
 **WE DO NOT CURRENTLY RECOMMEND RELYING ON THIS LIBRARY IN A PRODUCTION ENVIRONMENT OR TO PROTECT ANY SENSITIVE DATA.** This library is meant to help with research and prototyping.  While we make a best-effort approach to avoid security bugs, this library has not received the level of auditing and analysis that would be necessary to rely on it for high security use.
 
+#### Platform limitations
+
+In order to optimize support effort,
+- not all algorithms are equally well supported on all platforms. In case of questions, it is first advised to review the [documentation files for each algorithm](docs/algorithms).
+- not all compilers are equally well supported. For example, at least v7.1.0 of the GNU compiler is required.
+
 ## Quickstart
 
 ### Linux/macOS
