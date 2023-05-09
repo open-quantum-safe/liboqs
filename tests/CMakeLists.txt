@@ -99,6 +99,14 @@ target_link_libraries(test_sig_mem PRIVATE ${API_TEST_DEPS})
 add_executable(speed_sig speed_sig.c)
 target_link_libraries(speed_sig PRIVATE ${API_TEST_DEPS})
 
+# SIG_STFL API tests
+add_executable(test_sig_stfl test_sig_stfl.c)
+if((CMAKE_C_COMPILER_ID MATCHES "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "GNU"))
+    target_link_libraries(test_sig_stfl PRIVATE ${API_TEST_DEPS} Threads::Threads)
+else ()
+    target_link_libraries(test_sig_stfl PRIVATE ${API_TEST_DEPS})
+endif()
+
 add_executable(dump_alg_info dump_alg_info.c)
 target_link_libraries(dump_alg_info PRIVATE ${API_TEST_DEPS})
 
