@@ -7,7 +7,7 @@
 
 #define XMSS_OID_LEN 4
 
-#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h10
 
 #define OQS_SIG_STFL_alg_xmss_sha256_h10_length_signature 2500
 #define OQS_SIG_STFL_alg_xmss_sha256_h10_length_pk 64 + XMSS_OID_LEN
