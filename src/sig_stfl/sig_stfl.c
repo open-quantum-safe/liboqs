@@ -36,7 +36,7 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 	if (0) {
 
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h10)) {
-#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h10
 		return 1;
 #else
 		return 0;
@@ -53,7 +53,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 	if (0) {
 
 	} else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_xmss_sha256_h10)) {
-#ifdef OQS_ENABLE_SIG_STFL_XMSS_SHA256_H10
+#ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h10
 		return OQS_SIG_STFL_alg_xmss_sha256_h10_new();
 #else
 		return NULL;
