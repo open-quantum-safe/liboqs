@@ -41,7 +41,7 @@ void OQS_SHA2_sha512(uint8_t *output, const uint8_t *input, size_t inplen) {
 	do_hash(output, input, inplen, md);
 }
 
-#define SHA2_BLOCK_SIZE 64
+#define SHA256_BLOCK_SIZE 64
 
 void OQS_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 	EVP_MD_CTX *mdctx;
@@ -54,7 +54,7 @@ void OQS_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 }
 
 void OQS_SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inblocks) {
-	EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, inblocks * SHA2_BLOCK_SIZE);
+	EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, inblocks * SHA256_BLOCK_SIZE);
 }
 
 void OQS_SHA2_sha256_inc_finalize(uint8_t *out, OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inlen) {
@@ -75,6 +75,8 @@ void OQS_SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_sha
 	EVP_MD_CTX_copy_ex((EVP_MD_CTX *) dest->ctx, (EVP_MD_CTX *) src->ctx);
 }
 
+#define SHA384_BLOCK_SIZE 128
+
 void OQS_SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
@@ -86,7 +88,7 @@ void OQS_SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
 }
 
 void OQS_SHA2_sha384_inc_blocks(OQS_SHA2_sha384_ctx *state, const uint8_t *in, size_t inblocks) {
-	EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, inblocks * SHA2_BLOCK_SIZE);
+	EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, inblocks * SHA384_BLOCK_SIZE);
 }
 
 void OQS_SHA2_sha384_inc_finalize(uint8_t *out, OQS_SHA2_sha384_ctx *state, const uint8_t *in, size_t inlen) {
@@ -107,6 +109,8 @@ void OQS_SHA2_sha384_inc_ctx_clone(OQS_SHA2_sha384_ctx *dest, const OQS_SHA2_sha
 	EVP_MD_CTX_copy_ex((EVP_MD_CTX *) dest->ctx, (EVP_MD_CTX *) src->ctx);
 }
 
+#define SHA512_BLOCK_SIZE 128
+
 void OQS_SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
@@ -118,7 +122,7 @@ void OQS_SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state) {
 }
 
 void OQS_SHA2_sha512_inc_blocks(OQS_SHA2_sha512_ctx *state, const uint8_t *in, size_t inblocks) {
-	EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, inblocks * SHA2_BLOCK_SIZE);
+	EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, inblocks * SHA512_BLOCK_SIZE);
 }
 
 void OQS_SHA2_sha512_inc_finalize(uint8_t *out, OQS_SHA2_sha512_ctx *state, const uint8_t *in, size_t inlen) {
