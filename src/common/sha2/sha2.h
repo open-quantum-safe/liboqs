@@ -59,8 +59,8 @@ void OQS_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state);
  * \brief Duplicate state for the SHA-256 incremental hashing API.
  *
  * \warning dest must be allocated by the caller. Caller is responsible
- * for releasing dest by calling either OQS_SHA3_sha3_256_inc_finalize or
- * OQS_SHA3_sha3_256_inc_ctx_release.
+ * for releasing dest by calling either OQS_SHA2_sha256_inc_finalize or
+ * OQS_SHA2_sha256_inc_ctx_release.
  *
  * \param dest The function state to copy into; must be initialized
  * \param src The function state to copy; must be initialized
@@ -74,7 +74,7 @@ void OQS_SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_sha
  *
  * \param state The state to update
  * \param in Message input byte array
- * \param inblocks The number of blocks of message bytes to process
+ * \param inblocks The number of 64-byte blocks of message bytes to process
  */
 void OQS_SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inblocks);
 
@@ -133,8 +133,8 @@ void OQS_SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state);
  * \brief Duplicate state for the SHA-384 incremental hashing API.
  *
  * \warning dest must be allocated by the caller. Caller is responsible
- * for releasing dest by calling either OQS_SHA3_sha3_384_inc_finalize or
- * OQS_SHA3_sha3_384_inc_ctx_release.
+ * for releasing dest by calling either OQS_SHA2_sha384_inc_finalize or
+ * OQS_SHA2_sha384_inc_ctx_release.
  *
  * \param dest The function state to copy into; must be initialized
  * \param src The function state to copy; must be initialized
@@ -148,7 +148,7 @@ void OQS_SHA2_sha384_inc_ctx_clone(OQS_SHA2_sha384_ctx *dest, const OQS_SHA2_sha
  *
  * \param state The state to update
  * \param in Message input byte array
- * \param inblocks The number of blocks of message bytes to process
+ * \param inblocks The number of 128-byte blocks of message bytes to process
  */
 void OQS_SHA2_sha384_inc_blocks(OQS_SHA2_sha384_ctx *state, const uint8_t *in, size_t inblocks);
 
@@ -207,8 +207,8 @@ void OQS_SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state);
  * \brief Duplicate state for the SHA-512 incremental hashing API.
  *
  * \warning dest must be allocated by the caller. Caller is responsible
- * for releasing dest by calling either OQS_SHA3_sha3_512_inc_finalize or
- * OQS_SHA3_sha3_512_inc_ctx_release.
+ * for releasing dest by calling either OQS_SHA2_sha512_inc_finalize or
+ * OQS_SHA2_sha512_inc_ctx_release.
  *
  * \param dest The function state to copy into; must be initialized
  * \param src The function state to copy; must be initialized
@@ -222,7 +222,7 @@ void OQS_SHA2_sha512_inc_ctx_clone(OQS_SHA2_sha512_ctx *dest, const OQS_SHA2_sha
  *
  * \param state The state to update
  * \param in Message input byte array
- * \param inblocks The number of blocks of message bytes to process
+ * \param inblocks The number of 128-byte blocks of message bytes to process
  */
 void OQS_SHA2_sha512_inc_blocks(OQS_SHA2_sha512_ctx *state, const uint8_t *in, size_t inblocks);
 

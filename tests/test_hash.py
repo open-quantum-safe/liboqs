@@ -20,7 +20,7 @@ def test_sha3():
     )
 
 @helpers.filtered_test
-@pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
+@pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890', '1234567890123456789012345678901678901567890andthensometohavemorethan64bytes', '1234567890123456789012345678901678901567890andlotsmoretexttosurelyandwithoutdoubtgobeyondthe128bytesrequiredtotriggerallincrementalblocklogiccases'])
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_sha256(msg):
     output = helpers.run_subprocess(
@@ -35,7 +35,7 @@ def test_sha256(msg):
     assert(output.rstrip() == hashlib.sha256(msg.encode()).hexdigest())
 
 @helpers.filtered_test
-@pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
+@pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890', '1234567890123456789012345678901678901567890andthensometohavemorethan64bytes', '1234567890123456789012345678901678901567890andlotsmoretexttosurelyandwithoutdoubtgobeyondthe128bytesrequiredtotriggerallincrementalblocklogiccases'])
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_sha384(msg):
     output = helpers.run_subprocess(
@@ -50,7 +50,7 @@ def test_sha384(msg):
     assert(output.rstrip() == hashlib.sha384(msg.encode()).hexdigest())
 
 @helpers.filtered_test
-@pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890'])
+@pytest.mark.parametrize('msg', ['', 'a', 'abc', '1234567890123456789012345678901678901567890', '1234567890123456789012345678901678901567890andthensometohavemorethan64bytes', '1234567890123456789012345678901678901567890andlotsmoretexttosurelyandwithoutdoubtgobeyondthe128bytesrequiredtotriggerallincrementalblocklogiccases'])
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_sha512(msg):
     output = helpers.run_subprocess(
