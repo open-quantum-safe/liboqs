@@ -93,7 +93,7 @@ void OQS_SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
 }
 
 void OQS_SHA2_sha384_inc_blocks(OQS_SHA2_sha384_ctx *state, const uint8_t *in, size_t inblocks) {
-	OQS_OPENSSL_GUARD(EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, inblocks * 2* SHA2_BLOCK_SIZE));
+	OQS_OPENSSL_GUARD(EVP_DigestUpdate((EVP_MD_CTX *) state->ctx, in, inblocks * 2 * SHA2_BLOCK_SIZE));
 }
 
 void OQS_SHA2_sha384_inc_finalize(uint8_t *out, OQS_SHA2_sha384_ctx *state, const uint8_t *in, size_t inlen) {
