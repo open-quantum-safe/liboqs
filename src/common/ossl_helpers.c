@@ -13,35 +13,59 @@ static EVP_CIPHER *aes128_ecb_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
 
 void oqs_fetch_ossl_objects(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+#ifdef OQS_USE_SHA2_OPENSSL
 	sha256_ptr = EVP_MD_fetch(NULL, "SHA256", NULL);
+	OQS_EXIT_IF_NULLPTR(sha256_ptr);
 	sha384_ptr = EVP_MD_fetch(NULL, "SHA384", NULL);
+	OQS_EXIT_IF_NULLPTR(sha384_ptr);
 	sha512_ptr = EVP_MD_fetch(NULL, "SHA512", NULL);
-	sha3_256_ptr = EVP_MD_fetch(NULL, "SHA3-256", NULL);
-	sha3_384_ptr = EVP_MD_fetch(NULL, "SHA3-384", NULL);
-	sha3_512_ptr = EVP_MD_fetch(NULL, "SHA3-512", NULL);
-	shake128_ptr = EVP_MD_fetch(NULL, "SHAKE128", NULL);
-	shake256_ptr = EVP_MD_fetch(NULL, "SHAKE256", NULL);
+	OQS_EXIT_IF_NULLPTR(sha512_ptr);
+#endif /* OQS_USE_SHA2_OPENSSL */
 
+#ifdef OQS_USE_SHA3_OPENSSL
+	sha3_256_ptr = EVP_MD_fetch(NULL, "SHA3-256", NULL);
+	OQS_EXIT_IF_NULLPTR(sha3_256_ptr);
+	sha3_384_ptr = EVP_MD_fetch(NULL, "SHA3-384", NULL);
+	OQS_EXIT_IF_NULLPTR(sha3_384_ptr);
+	sha3_512_ptr = EVP_MD_fetch(NULL, "SHA3-512", NULL);
+	OQS_EXIT_IF_NULLPTR(sha3_512_ptr);
+	shake128_ptr = EVP_MD_fetch(NULL, "SHAKE128", NULL);
+	OQS_EXIT_IF_NULLPTR(shake128_ptr);
+	shake256_ptr = EVP_MD_fetch(NULL, "SHAKE256", NULL);
+	OQS_EXIT_IF_NULLPTR(shake256_ptr);
+#endif /* OQS_USE_SHA3_OPENSSL */
+
+#ifdef OQS_USE_AES_OPENSSL
 	aes128_ecb_ptr = EVP_CIPHER_fetch(NULL, "AES-128-ECB", NULL);
+	OQS_EXIT_IF_NULLPTR(aes128_ecb_ptr);
 	aes256_ecb_ptr = EVP_CIPHER_fetch(NULL, "AES-256-ECB", NULL);
+	OQS_EXIT_IF_NULLPTR(aes256_ecb_ptr);
 	aes256_ctr_ptr = EVP_CIPHER_fetch(NULL, "AES-256-CTR", NULL);
+	OQS_EXIT_IF_NULLPTR(aes256_ctr_ptr);
+#endif /* OQS_USE_AES_OPENSSL */
 #endif
 }
 
 void oqs_free_ossl_objects(void) {
 #if OPENSSL_VERSION_NUMBER >= 0x30000000L
+#ifdef OQS_USE_SHA2_OPENSSL
 	EVP_MD_free(sha256_ptr);
 	EVP_MD_free(sha384_ptr);
 	EVP_MD_free(sha512_ptr);
+#endif
+#ifdef OQS_USE_SHA3_OPENSSL
 	EVP_MD_free(sha3_256_ptr);
 	EVP_MD_free(sha3_384_ptr);
 	EVP_MD_free(sha3_512_ptr);
 	EVP_MD_free(shake128_ptr);
 	EVP_MD_free(shake256_ptr);
+#endif
 
+#ifdef OQS_USE_AES_OPENSSL
 	EVP_CIPHER_free(aes128_ecb_ptr);
 	EVP_CIPHER_free(aes256_ecb_ptr);
 	EVP_CIPHER_free(aes256_ctr_ptr);
+#endif /* OQS_USE_AES_OPENSSL */
 #endif
 }
 
