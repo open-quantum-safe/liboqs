@@ -24,10 +24,10 @@ extern "C" {
  * Macro for terminating the program if x is
  * a null pointer.
  */
-#define OQS_EXIT_IF_NULLPTR(x)    \
+#define OQS_EXIT_IF_NULLPTR(x, loc)    \
     do {                          \
         if ( (x) == (void*)0 ) {  \
-            fprintf(stderr, "Unexpected NULL returned from OpenSSL API. Exiting.\n"); \
+            fprintf(stderr, "Unexpected NULL returned from %s API. Exiting.\n", loc); \
             exit(EXIT_FAILURE); \
         }  \
     } while (0)
