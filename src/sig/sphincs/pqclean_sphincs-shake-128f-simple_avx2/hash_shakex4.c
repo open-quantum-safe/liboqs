@@ -7,7 +7,7 @@
 #include "fips202x4.h"
 #include "params.h"
 
-extern void KeccakP1600times4_PermuteAll_24rounds(__m256i *s);
+extern void KeccakP1600times4_PermuteAll_24rounds_avx2(__m256i *s);
 
 /*
  * 4-way parallel version of prf_addr; takes 4x as much input and output
@@ -53,7 +53,7 @@ void prf_addrx4(unsigned char *out0,
         state[i] = _mm256_set1_epi64x(0);
     }
 
-    KeccakP1600times4_PermuteAll_24rounds(&state[0]);
+    KeccakP1600times4_PermuteAll_24rounds_avx2(&state[0]);
 
     for (int i = 0; i < SPX_N / 8; i++) {
         ((int64_t *)out0)[i] = _mm256_extract_epi64(state[i], 0);

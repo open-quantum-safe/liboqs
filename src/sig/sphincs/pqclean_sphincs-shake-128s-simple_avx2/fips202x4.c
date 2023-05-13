@@ -27,8 +27,8 @@ static void store64(uint8_t *x, uint64_t u) {
 }
 
 /* Use implementation from the Keccak Code Package */
-extern void KeccakP1600times4_PermuteAll_24rounds(__m256i *s);
-#define KeccakF1600_StatePermute4x KeccakP1600times4_PermuteAll_24rounds
+extern void KeccakP1600times4_PermuteAll_24rounds_avx2(__m256i *s);
+#define KeccakF1600_StatePermute4x KeccakP1600times4_PermuteAll_24rounds_avx2
 
 static void keccak_absorb4x(__m256i *s,
                             unsigned int r,
