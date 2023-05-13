@@ -17,7 +17,7 @@ function(filter_algs alglist)
           # Case 1, family name
 	  foreach (_alg ${ARGV0})
              string(TOUPPER ${_alg} upalg)
-	     if("OQS_ENABLE_${upalg}i" MATCHES "^${_var}")
+	     if("OQS_ENABLE_${upalg}" MATCHES "^${_var}")
                  set(${_var} ON PARENT_SCOPE)
              endif()
           endforeach()
@@ -65,12 +65,6 @@ cmake_dependent_option(OQS_USE_SHA2_OPENSSL "" ON "OQS_USE_OPENSSL" OFF)
 # Disable OpenSSL's SHA3 by default. The implementation is not complete
 # enough to support our incremental API.
 cmake_dependent_option(OQS_USE_SHA3_OPENSSL "" OFF "OQS_USE_OPENSSL" OFF)
-
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
-    cmake_dependent_option(OQS_ENABLE_SHA3_xkcp_low_avx2 "" ON "NOT OQS_USE_SHA3_OPENSSL AND NOT OQS_ENABLE_SIG_SPHINCS" OFF)
-endif()
-endif()
 
 # BIKE is not supported on Windows, 32-bit ARM, S390X (big endian) and PPC64 (big endian)
 cmake_dependent_option(OQS_ENABLE_KEM_BIKE "Enable BIKE algorithm family" ON "NOT WIN32; NOT ARCH_ARM32v7; NOT ARCH_X86; NOT ARCH_S390X; NOT ARCH_PPC64" OFF)
@@ -421,6 +415,13 @@ elseif(${OQS_ALGS_ENABLED} STREQUAL "NIST_R4")
 	filter_algs("KEM_classic_mceliece_348864;KEM_classic_mceliece_348864f;KEM_classic_mceliece_460896;KEM_classic_mceliece_460896f;KEM_classic_mceliece_6688128;KEM_classic_mceliece_6688128f;KEM_classic_mceliece_6960119;KEM_classic_mceliece_6960119f;KEM_classic_mceliece_8192128;KEM_classic_mceliece_8192128f;KEM_hqc_128;KEM_hqc_192;KEM_hqc_256;KEM_bike_l1;KEM_bike_l3")
 else()
 	message(STATUS "Alg enablement unchanged")
+endif()
+
+# Set XKCP (Keccak) required for Sphincs AVX2 code even if OpenSSL3 SHA3 is used:
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
+    cmake_dependent_option(OQS_ENABLE_SHA3_xkcp_low_avx2 "" ON "NOT OQS_USE_SHA3_OPENSSL AND NOT OQS_ENABLE_SIG_SPHINCS" OFF)
+endif()
 endif()
 
 
