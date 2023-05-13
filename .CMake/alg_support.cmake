@@ -68,7 +68,7 @@ cmake_dependent_option(OQS_USE_SHA3_OPENSSL "" OFF "OQS_USE_OPENSSL" OFF)
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
 if(OQS_DIST_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
-    cmake_dependent_option(OQS_ENABLE_SHA3_xkcp_low_avx2 "" ON "NOT OQS_USE_SHA3_OPENSSL" OFF)
+    cmake_dependent_option(OQS_ENABLE_SHA3_xkcp_low_avx2 "" ON "NOT OQS_USE_SHA3_OPENSSL AND NOT OQS_ENABLE_SIG_SPHINCS" OFF)
 endif()
 endif()
 

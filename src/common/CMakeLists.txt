@@ -56,6 +56,9 @@ else()
 endif()
 
 if(${OQS_USE_SHA3_OPENSSL})
+  if (${OQS_ENABLE_SHA3_xkcp_low_avx2})
+    add_subdirectory(sha3/xkcp_low)
+  endif()
     set(SHA3_IMPL sha3/ossl_sha3.c sha3/ossl_sha3x4.c)
 else() # using XKCP
     add_subdirectory(sha3/xkcp_low)
@@ -110,7 +113,7 @@ if(CMAKE_HAVE_MEMSET_S)
     target_compile_definitions(common PRIVATE OQS_HAVE_MEMSET_S)
 endif()
 
-if(NOT ${OQS_USE_SHA3_OPENSSL}) # using XKCP
+if(${OQS_ENABLE_SHA3_xkcp_low_avx2}) # using XKCP
     set(_COMMON_OBJS ${_COMMON_OBJS} ${XKCP_LOW_OBJS})
 endif()
 
