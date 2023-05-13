@@ -1,23 +1,23 @@
 {
   "bomFormat": "CBOM",
   "specVersion": "1.4-cbom-1.0",
-  "serialNumber": "urn:uuid:46ad14ba-31d7-42ad-83c8-08c1755261c7",
+  "serialNumber": "urn:uuid:a70e2f0c-beb7-4874-9d2c-fcb10e29846d",
   "version": 1,
   "metadata": {
-    "timestamp": "2023-03-18T11:09:37.700416",
+    "timestamp": "2023-05-13T11:17:43.245511",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@d61d81c526da8bb62e363f5a75191689572151cb",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@8ce5b252ab4d38ef77efc92944711099a51731a1",
       "name": "liboqs",
-      "version": "d61d81c526da8bb62e363f5a75191689572151cb"
+      "version": "8ce5b252ab4d38ef77efc92944711099a51731a1"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@d61d81c526da8bb62e363f5a75191689572151cb",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@8ce5b252ab4d38ef77efc92944711099a51731a1",
       "name": "liboqs",
-      "version": "d61d81c526da8bb62e363f5a75191689572151cb"
+      "version": "8ce5b252ab4d38ef77efc92944711099a51731a1"
     },
     {
       "type": "crypto-asset",
@@ -1561,526 +1561,6 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-128f-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-128f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-128f-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-128f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-128f-simple:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-128f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-128f-simple:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-128f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-128s-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-128s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-128s-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-128s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-128s-simple:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-128s-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-128s-simple:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-128s-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-192f-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-192f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-192f-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-192f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-192f-simple:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-192f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-192f-simple:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-192f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-192s-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-192s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-192s-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-192s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-192s-simple:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-192s-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-192s-simple:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-192s-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-256f-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-256f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-256f-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-256f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-256f-simple:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-256f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-256f-simple:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-256f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-256s-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-256s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-256s-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-256s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-256s-simple:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-256s-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-Haraka-256s-simple:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-Haraka-256s-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 2
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-128f-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-128f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-128f-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-128f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
       "bom-ref": "alg:SPHINCS+-SHA256-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
@@ -2107,46 +1587,6 @@
         "assetType": "algorithm",
         "algorithmProperties": {
           "variant": "SPHINCS+-SHA256-128f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-128s-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-128s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-128s-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-128s-robust",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2201,46 +1641,6 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-192f-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-192f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-192f-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-192f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
-      }
-    },
-    {
-      "type": "crypto-asset",
       "bom-ref": "alg:SPHINCS+-SHA256-192f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
@@ -2267,46 +1667,6 @@
         "assetType": "algorithm",
         "algorithmProperties": {
           "variant": "SPHINCS+-SHA256-192f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-192s-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-192s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-192s-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-192s-robust",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2361,46 +1721,6 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-256f-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-256f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-256f-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-256f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
-      }
-    },
-    {
-      "type": "crypto-asset",
       "bom-ref": "alg:SPHINCS+-SHA256-256f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
@@ -2427,46 +1747,6 @@
         "assetType": "algorithm",
         "algorithmProperties": {
           "variant": "SPHINCS+-SHA256-256f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-256s-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-256s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHA256-256s-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHA256-256s-robust",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2521,46 +1801,6 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-128f-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-128f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-128f-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-128f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE256-128f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
@@ -2587,46 +1827,6 @@
         "assetType": "algorithm",
         "algorithmProperties": {
           "variant": "SPHINCS+-SHAKE256-128f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-128s-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-128s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 1
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-128s-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-128s-robust",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2681,46 +1881,6 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-192f-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-192f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-192f-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-192f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
-      }
-    },
-    {
-      "type": "crypto-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE256-192f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
@@ -2747,46 +1907,6 @@
         "assetType": "algorithm",
         "algorithmProperties": {
           "variant": "SPHINCS+-SHAKE256-192f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 3
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-192s-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-192s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 3
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-192s-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-192s-robust",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -2841,46 +1961,6 @@
     },
     {
       "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-256f-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-256f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-256f-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-256f-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
-      }
-    },
-    {
-      "type": "crypto-asset",
       "bom-ref": "alg:SPHINCS+-SHAKE256-256f-simple:generic",
       "name": "SPHINCS+",
       "cryptoProperties": {
@@ -2907,46 +1987,6 @@
         "assetType": "algorithm",
         "algorithmProperties": {
           "variant": "SPHINCS+-SHAKE256-256f-simple",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "x86_64"
-        },
-        "nistQuantumSecurityLevel": 5
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-256s-robust:generic",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-256s-robust",
-          "primitive": "signature",
-          "implementationLevel": "softwarePlainRam",
-          "cryptoFunctions": [
-            "keygen",
-            "sign",
-            "verify"
-          ],
-          "implementationPlatform": "generic"
-        },
-        "nistQuantumSecurityLevel": 5
-      }
-    },
-    {
-      "type": "crypto-asset",
-      "bom-ref": "alg:SPHINCS+-SHAKE256-256s-robust:x86_64",
-      "name": "SPHINCS+",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "variant": "SPHINCS+-SHAKE256-256s-robust",
           "primitive": "signature",
           "implementationLevel": "softwarePlainRam",
           "cryptoFunctions": [
@@ -3028,7 +2068,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@d61d81c526da8bb62e363f5a75191689572151cb",
+      "ref": "pkg:github/open-quantum-safe/liboqs@8ce5b252ab4d38ef77efc92944711099a51731a1",
       "dependsOn": [
         "alg:BIKE-L1:x86_64",
         "alg:BIKE-L3:x86_64",
@@ -3107,76 +2147,28 @@
         "alg:Falcon-512:x86_64",
         "alg:Falcon-1024:generic",
         "alg:Falcon-1024:x86_64",
-        "alg:SPHINCS+-Haraka-128f-robust:generic",
-        "alg:SPHINCS+-Haraka-128f-robust:x86_64",
-        "alg:SPHINCS+-Haraka-128f-simple:generic",
-        "alg:SPHINCS+-Haraka-128f-simple:x86_64",
-        "alg:SPHINCS+-Haraka-128s-robust:generic",
-        "alg:SPHINCS+-Haraka-128s-robust:x86_64",
-        "alg:SPHINCS+-Haraka-128s-simple:generic",
-        "alg:SPHINCS+-Haraka-128s-simple:x86_64",
-        "alg:SPHINCS+-Haraka-192f-robust:generic",
-        "alg:SPHINCS+-Haraka-192f-robust:x86_64",
-        "alg:SPHINCS+-Haraka-192f-simple:generic",
-        "alg:SPHINCS+-Haraka-192f-simple:x86_64",
-        "alg:SPHINCS+-Haraka-192s-robust:generic",
-        "alg:SPHINCS+-Haraka-192s-robust:x86_64",
-        "alg:SPHINCS+-Haraka-192s-simple:generic",
-        "alg:SPHINCS+-Haraka-192s-simple:x86_64",
-        "alg:SPHINCS+-Haraka-256f-robust:generic",
-        "alg:SPHINCS+-Haraka-256f-robust:x86_64",
-        "alg:SPHINCS+-Haraka-256f-simple:generic",
-        "alg:SPHINCS+-Haraka-256f-simple:x86_64",
-        "alg:SPHINCS+-Haraka-256s-robust:generic",
-        "alg:SPHINCS+-Haraka-256s-robust:x86_64",
-        "alg:SPHINCS+-Haraka-256s-simple:generic",
-        "alg:SPHINCS+-Haraka-256s-simple:x86_64",
-        "alg:SPHINCS+-SHA256-128f-robust:generic",
-        "alg:SPHINCS+-SHA256-128f-robust:x86_64",
         "alg:SPHINCS+-SHA256-128f-simple:generic",
         "alg:SPHINCS+-SHA256-128f-simple:x86_64",
-        "alg:SPHINCS+-SHA256-128s-robust:generic",
-        "alg:SPHINCS+-SHA256-128s-robust:x86_64",
         "alg:SPHINCS+-SHA256-128s-simple:generic",
         "alg:SPHINCS+-SHA256-128s-simple:x86_64",
-        "alg:SPHINCS+-SHA256-192f-robust:generic",
-        "alg:SPHINCS+-SHA256-192f-robust:x86_64",
         "alg:SPHINCS+-SHA256-192f-simple:generic",
         "alg:SPHINCS+-SHA256-192f-simple:x86_64",
-        "alg:SPHINCS+-SHA256-192s-robust:generic",
-        "alg:SPHINCS+-SHA256-192s-robust:x86_64",
         "alg:SPHINCS+-SHA256-192s-simple:generic",
         "alg:SPHINCS+-SHA256-192s-simple:x86_64",
-        "alg:SPHINCS+-SHA256-256f-robust:generic",
-        "alg:SPHINCS+-SHA256-256f-robust:x86_64",
         "alg:SPHINCS+-SHA256-256f-simple:generic",
         "alg:SPHINCS+-SHA256-256f-simple:x86_64",
-        "alg:SPHINCS+-SHA256-256s-robust:generic",
-        "alg:SPHINCS+-SHA256-256s-robust:x86_64",
         "alg:SPHINCS+-SHA256-256s-simple:generic",
         "alg:SPHINCS+-SHA256-256s-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-128f-robust:generic",
-        "alg:SPHINCS+-SHAKE256-128f-robust:x86_64",
         "alg:SPHINCS+-SHAKE256-128f-simple:generic",
         "alg:SPHINCS+-SHAKE256-128f-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-128s-robust:generic",
-        "alg:SPHINCS+-SHAKE256-128s-robust:x86_64",
         "alg:SPHINCS+-SHAKE256-128s-simple:generic",
         "alg:SPHINCS+-SHAKE256-128s-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-192f-robust:generic",
-        "alg:SPHINCS+-SHAKE256-192f-robust:x86_64",
         "alg:SPHINCS+-SHAKE256-192f-simple:generic",
         "alg:SPHINCS+-SHAKE256-192f-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-192s-robust:generic",
-        "alg:SPHINCS+-SHAKE256-192s-robust:x86_64",
         "alg:SPHINCS+-SHAKE256-192s-simple:generic",
         "alg:SPHINCS+-SHAKE256-192s-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-256f-robust:generic",
-        "alg:SPHINCS+-SHAKE256-256f-robust:x86_64",
         "alg:SPHINCS+-SHAKE256-256f-simple:generic",
         "alg:SPHINCS+-SHAKE256-256f-simple:x86_64",
-        "alg:SPHINCS+-SHAKE256-256s-robust:generic",
-        "alg:SPHINCS+-SHAKE256-256s-robust:x86_64",
         "alg:SPHINCS+-SHAKE256-256s-simple:generic",
         "alg:SPHINCS+-SHAKE256-256s-simple:x86_64"
       ],
@@ -3754,188 +2746,6 @@
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-Haraka-128f-robust:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-128f-robust:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-128f-simple:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-128f-simple:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-128s-robust:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-128s-robust:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-128s-simple:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-128s-simple:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-192f-robust:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-192f-robust:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-192f-simple:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-192f-simple:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-192s-robust:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-192s-robust:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-192s-simple:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-192s-simple:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-256f-robust:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-256f-robust:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-256f-simple:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-256f-simple:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-256s-robust:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-256s-robust:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-256s-simple:generic",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-Haraka-256s-simple:x86_64",
-      "dependsOn": [
-        "alg:aes"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-128f-robust:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-128f-robust:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
       "ref": "alg:SPHINCS+-SHAKE256-128f-simple:generic",
       "dependsOn": [
         "alg:sha3"
@@ -3944,20 +2754,6 @@
     },
     {
       "ref": "alg:SPHINCS+-SHAKE256-128f-simple:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-128s-robust:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-128s-robust:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
@@ -3978,20 +2774,6 @@
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-192f-robust:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-192f-robust:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
       "ref": "alg:SPHINCS+-SHAKE256-192f-simple:generic",
       "dependsOn": [
         "alg:sha3"
@@ -4000,20 +2782,6 @@
     },
     {
       "ref": "alg:SPHINCS+-SHAKE256-192f-simple:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-192s-robust:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-192s-robust:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],
@@ -4034,20 +2802,6 @@
       "dependencyType": "uses"
     },
     {
-      "ref": "alg:SPHINCS+-SHAKE256-256f-robust:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-256f-robust:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
       "ref": "alg:SPHINCS+-SHAKE256-256f-simple:generic",
       "dependsOn": [
         "alg:sha3"
@@ -4056,20 +2810,6 @@
     },
     {
       "ref": "alg:SPHINCS+-SHAKE256-256f-simple:x86_64",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-256s-robust:generic",
-      "dependsOn": [
-        "alg:sha3"
-      ],
-      "dependencyType": "uses"
-    },
-    {
-      "ref": "alg:SPHINCS+-SHAKE256-256s-robust:x86_64",
       "dependsOn": [
         "alg:sha3"
       ],

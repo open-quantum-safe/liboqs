@@ -3,11 +3,15 @@
 #ifndef FIPS202X4_H
 #define FIPS202X4_H
 
-#include <immintrin.h>
-#include <oqs/sha3x4.h>
 #include <oqs/oqsconfig.h>
 
-#ifdef OQS_DIST_X86_64_BUILD
+#ifdef ARCH_X86_64
+#include <immintrin.h>
+#endif
+
+#include <oqs/sha3x4.h>
+
+#if defined(OQS_DIST_X86_64_BUILD) && defined(OQS_ENABLE_SHA3_xkcp_low_avx2)
 #define KeccakP1600times4_PermuteAll_24rounds KeccakP1600times4_PermuteAll_24rounds_avx2
 #endif
 
