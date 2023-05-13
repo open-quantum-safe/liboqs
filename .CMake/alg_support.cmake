@@ -419,12 +419,15 @@ endif()
 
 # Set XKCP (Keccak) required for Sphincs AVX2 code even if OpenSSL3 SHA3 is used:
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-  if(OQS_DIST_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
-    if (${OQS_ENABLE_SIG_SPHINCS} OR NOT ${OQS_USE_SHA3_OPENSSL})
+  if (${OQS_ENABLE_SIG_SPHINCS} OR NOT ${OQS_USE_SHA3_OPENSSL})
+    set(OQS_ENABLE_SHA3_xkcp_low ON)
+    if(OQS_DIST_X86_64_BUILD OR OQS_USE_AVX2_INSTRUCTIONS)
         set(OQS_ENABLE_SHA3_xkcp_low_avx2 ON)
     else()
         set(OQS_ENABLE_SHA3_xkcp_low_avx2 OFF)
     endif()
+  else()
+    set(OQS_ENABLE_SHA3_xkcp_low OFF)
   endif()
 endif()
 

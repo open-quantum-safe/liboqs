@@ -290,9 +290,7 @@ def load_instructions():
                 imps_to_remove = []
                 upstream = upstreams[scheme['upstream_location']]
                 for imp in metadata['implementations']:
-                    print("Checking to ignore %s_%s_%s in %s" % (upstream['name'], scheme['pqclean_scheme'], imp['name'], upstream))
                     if 'ignore' in upstream and "{}_{}_{}".format(upstream['name'], scheme['pqclean_scheme'], imp['name']) in upstream['ignore']:
-                        print("Removing %s" % (imp['name']))
                         imps_to_remove.append(imp['name'])
                     else:
                         imp['upstream'] = upstream
