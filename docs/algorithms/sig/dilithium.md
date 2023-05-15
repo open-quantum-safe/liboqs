@@ -22,9 +22,6 @@
 |   Dilithium2    | EUF-CMA          |                    2 |                      1312 |                      2528 |                     2420 |
 |   Dilithium3    | EUF-CMA          |                    3 |                      1952 |                      4000 |                     3293 |
 |   Dilithium5    | EUF-CMA          |                    5 |                      2592 |                      4864 |                     4595 |
-| Dilithium2-AES  | EUF-CMA          |                    2 |                      1312 |                      2528 |                     2420 |
-| Dilithium3-AES  | EUF-CMA          |                    3 |                      1952 |                      4000 |                     3293 |
-| Dilithium5-AES  | EUF-CMA          |                    5 |                      2592 |                      4864 |                     4595 |
 
 ## Dilithium2 implementation characteristics
 
@@ -55,33 +52,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |  [Primary Source](#primary-source)  | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
 |  [Primary Source](#primary-source)  | avx2                     | x86\_64                     | Darwin,Linux                    | AVX2,POPCNT             | True                               | True                                           | False                |
 | [pqclean-aarch64](#pqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
-## Dilithium2-AES implementation characteristics
-
-|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used      | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:---------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                       | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AES,AVX2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
-## Dilithium3-AES implementation characteristics
-
-|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used      | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:---------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                       | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AES,AVX2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
-## Dilithium5-AES implementation characteristics
-
-|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used      | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:---------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                       | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Darwin,Linux                    | AES,AVX2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
