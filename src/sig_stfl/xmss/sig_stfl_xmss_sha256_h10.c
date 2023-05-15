@@ -59,9 +59,9 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sign(uint8_t *signature, siz
 		return OQS_ERROR;
 	}
 
-    if (oqs_sig_stfl_xmss_xmss_sign(secret_key, signature, signature_len, message, message_len)) {
-        return OQS_ERROR;
-    }
+	if (oqs_sig_stfl_xmss_xmss_sign(secret_key, signature, signature_len, message, message_len)) {
+		return OQS_ERROR;
+	}
 
 	return OQS_SUCCESS;
 }
@@ -73,8 +73,8 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_verify(XMSS_UNUSED_ATT const
 	}
 
 	if (oqs_sig_stfl_xmss_xmss_sign_open(message, message_len, signature, signature_len, public_key)) {
-        return OQS_ERROR;
-    }
+		return OQS_ERROR;
+	}
 
 	return OQS_SUCCESS;
 }
