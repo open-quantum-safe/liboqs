@@ -6,13 +6,15 @@
 #include <oqs/oqs.h>
 #include "sig_stfl_xmss.h"
 
+#include "external/xmss.h"
+
 #if defined(__GNUC__) || defined(__clang__)
 #define XMSS_UNUSED_ATT __attribute__((unused))
 #else
 #define XMSS_UNUSED_ATT
 #endif
 
-// ======================== XMSS10-SHA256 ======================== //
+// ======================== XMSS-SHA2_10_256 ======================== //
 
 OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
 
@@ -38,20 +40,41 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void) {
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_keypair(XMSS_UNUSED_ATT uint8_t *public_key, XMSS_UNUSED_ATT uint8_t *secret_key) {
+
+	if (public_key == NULL || secret_key == NULL) {
+		return OQS_ERROR;
+	}
+
+	const uint32_t xmss_sha256_h10_oid = 0x00000001;
+	if (oqs_sig_stfl_xmss_xmss_keypair(public_key, secret_key, xmss_sha256_h10_oid)) {
+		return OQS_ERROR;
+	}
+
 	return OQS_SUCCESS;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_sign(uint8_t *signature, size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, XMSS_UNUSED_ATT uint8_t *secret_key) {
-	memset(signature, 0, OQS_SIG_STFL_alg_xmss_sha256_h10_length_signature);
-	*signature_len = OQS_SIG_STFL_alg_xmss_sha256_h10_length_signature;
+
+	if (signature == NULL || signature_len == NULL || message == NULL || secret_key == NULL) {
+		return OQS_ERROR;
+	}
+
+    if (oqs_sig_stfl_xmss_xmss_sign(secret_key, signature, signature_len, message, message_len)) {
+        return OQS_ERROR;
+    }
+
 	return OQS_SUCCESS;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_verify(XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len, const uint8_t *signature, size_t signature_len, XMSS_UNUSED_ATT const uint8_t *public_key) {
-	for (size_t i = 0; i < OQS_SIG_STFL_alg_xmss_sha256_h10_length_signature; i++) {
-		if (signature[i] != 0) {
-			return OQS_ERROR;
-		}
+
+	if (message == NULL || signature == NULL || public_key == NULL) {
+		return OQS_ERROR;
 	}
+
+	if (oqs_sig_stfl_xmss_xmss_sign_open(message, message_len, signature, signature_len, public_key)) {
+        return OQS_ERROR;
+    }
+
 	return OQS_SUCCESS;
 }
