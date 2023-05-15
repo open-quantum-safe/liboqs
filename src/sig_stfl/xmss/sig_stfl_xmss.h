@@ -10,8 +10,8 @@
 #ifdef OQS_ENABLE_SIG_STFL_xmss_sha256_h10
 
 #define OQS_SIG_STFL_alg_xmss_sha256_h10_length_signature 2500
-#define OQS_SIG_STFL_alg_xmss_sha256_h10_length_pk 64 + XMSS_OID_LEN
-#define OQS_SIG_STFL_alg_xmss_sha256_h10_length_sk 2047 + XMSS_OID_LEN
+#define OQS_SIG_STFL_alg_xmss_sha256_h10_length_pk (64 + XMSS_OID_LEN)
+#define OQS_SIG_STFL_alg_xmss_sha256_h10_length_sk (132 + XMSS_OID_LEN)
 
 OQS_API OQS_SIG_STFL *OQS_SIG_STFL_alg_xmss_sha256_h10_new(void);
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sha256_h10_keypair(uint8_t *public_key, uint8_t *secret_key);
