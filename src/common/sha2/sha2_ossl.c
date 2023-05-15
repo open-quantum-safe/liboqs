@@ -46,7 +46,7 @@ void OQS_SHA2_sha512(uint8_t *output, const uint8_t *input, size_t inplen) {
 	do_hash(output, input, inplen, md);
 }
 
-#define SHA256_BLOCK_SIZE 64
+#define SHA2_BLOCK_SIZE 64
 
 void OQS_SHA2_sha256_inc_init(OQS_SHA2_sha256_ctx *state) {
 	EVP_MD_CTX *mdctx;
@@ -83,8 +83,6 @@ void OQS_SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_sha
 	OQS_OPENSSL_GUARD(EVP_MD_CTX_copy_ex((EVP_MD_CTX *) dest->ctx, (EVP_MD_CTX *) src->ctx));
 }
 
-#define SHA384_BLOCK_SIZE 128
-
 void OQS_SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
 	EVP_MD_CTX *mdctx;
 	const EVP_MD *md = NULL;
@@ -119,8 +117,6 @@ void OQS_SHA2_sha384_inc_ctx_clone(OQS_SHA2_sha384_ctx *dest, const OQS_SHA2_sha
 	OQS_SHA2_sha384_inc_init(dest);
 	OQS_OPENSSL_GUARD(EVP_MD_CTX_copy_ex((EVP_MD_CTX *) dest->ctx, (EVP_MD_CTX *) src->ctx));
 }
-
-#define SHA512_BLOCK_SIZE 128
 
 void OQS_SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state) {
 	EVP_MD_CTX *mdctx;
