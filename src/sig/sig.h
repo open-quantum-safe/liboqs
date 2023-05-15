@@ -38,12 +38,6 @@ extern "C" {
 #define OQS_SIG_alg_dilithium_3 "Dilithium3"
 /** Algorithm identifier for Dilithium5 */
 #define OQS_SIG_alg_dilithium_5 "Dilithium5"
-/** Algorithm identifier for Dilithium2-AES */
-#define OQS_SIG_alg_dilithium_2_aes "Dilithium2-AES"
-/** Algorithm identifier for Dilithium3-AES */
-#define OQS_SIG_alg_dilithium_3_aes "Dilithium3-AES"
-/** Algorithm identifier for Dilithium5-AES */
-#define OQS_SIG_alg_dilithium_5_aes "Dilithium5-AES"
 /** Algorithm identifier for Falcon-512 */
 #define OQS_SIG_alg_falcon_512 "Falcon-512"
 /** Algorithm identifier for Falcon-1024 */
@@ -76,7 +70,7 @@ extern "C" {
 // EDIT-WHEN-ADDING-SIG
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 20
+#define OQS_SIG_algs_length 17
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**

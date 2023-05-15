@@ -20,11 +20,8 @@
 |  Parameter set  | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |
 |:---------------:|:-----------------|---------------------:|--------------------------:|--------------------------:|--------------------------:|-----------------------------:|
 |    Kyber512     | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |
-|  Kyber512-90s   | IND-CCA2         |                    1 |                       800 |                      1632 |                       768 |                           32 |
 |    Kyber768     | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |
-|  Kyber768-90s   | IND-CCA2         |                    3 |                      1184 |                      2400 |                      1088 |                           32 |
 |    Kyber1024    | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |
-|  Kyber1024-90s  | IND-CCA2         |                    5 |                      1568 |                      3168 |                      1568 |                           32 |
 
 ## Kyber512 implementation characteristics
 
@@ -38,15 +35,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
  ‡For an explanation of what this denotes, consult the [Explanation of Terms](#explanation-of-terms) section at the end of this file.
 
-## Kyber512-90s implementation characteristics
-
-|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used           | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:--------------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                            | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AES,AVX2,BMI2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
 ## Kyber768 implementation characteristics
 
 |        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
@@ -57,15 +45,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
-## Kyber768-90s implementation characteristics
-
-|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used           | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:--------------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                            | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AES,AVX2,BMI2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
 ## Kyber1024 implementation characteristics
 
 |        Implementation source        | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
@@ -73,15 +52,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |  [Primary Source](#primary-source)  | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
 |  [Primary Source](#primary-source)  | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
 | [pqclean-aarch64](#pqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
-
-Are implementations chosen based on runtime CPU feature detection? **Yes**.
-
-## Kyber1024-90s implementation characteristics
-
-|       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used           | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
-|:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:--------------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
-| [Primary Source](#primary-source) | ref                      | All                         | All                             | None                            | True                               | True                                           | False                |
-| [Primary Source](#primary-source) | avx2                     | x86\_64                     | Linux,Darwin                    | AES,AVX2,BMI2,POPCNT,SSE2,SSSE3 | True                               | True                                           | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 

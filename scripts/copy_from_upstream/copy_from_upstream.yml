@@ -8,7 +8,8 @@ upstreams:
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
     sig_scheme_path: 'crypto_sign/{pqclean_scheme}'
-    patches: [pqclean-kyber-armneon-shake.patch, pqclean-kyber-arm-macos-gcc-fix.patch, pqclean-dilithium-arm-randomized-signing.patch]
+    patches: [pqclean-sphincs.patch, pqclean-kyber-armneon-shake.patch, pqclean-kyber-arm-macos-gcc-fix.patch, pqclean-dilithium-arm-randomized-signing.patch]
+    ignore: pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256s-simple_aarch64, pqclean_sphincs-shake-256f-simple_aarch64, pqclean_sphincs-shake-192s-simple_aarch64, pqclean_sphincs-shake-192f-simple_aarch64, pqclean_sphincs-shake-128s-simple_aarch64, pqclean_sphincs-shake-128f-simple_aarch64
   -
     name: pqcrystals-kyber
     git_url: https://github.com/pq-crystals/kyber.git
@@ -109,18 +110,6 @@ kems:
         scheme: "1024"
         pqclean_scheme: kyber1024
         pretty_name_full: Kyber1024
-      -
-        scheme: "512_90s"
-        pqclean_scheme: kyber512-90s
-        pretty_name_full: Kyber512-90s
-      -
-        scheme: "768_90s"
-        pqclean_scheme: kyber768-90s
-        pretty_name_full: Kyber768-90s
-      -
-        scheme: "1024_90s"
-        pqclean_scheme: kyber1024-90s
-        pretty_name_full: Kyber1024-90s
 sigs:
   -
     name: dilithium
@@ -145,21 +134,6 @@ sigs:
         scheme: "5"
         pqclean_scheme: dilithium5
         pretty_name_full: Dilithium5
-        signed_msg_order: sig_then_msg
-      -
-        scheme: "2_aes"
-        pqclean_scheme: dilithium2aes
-        pretty_name_full: Dilithium2-AES
-        signed_msg_order: sig_then_msg
-      -
-        scheme: "3_aes"
-        pqclean_scheme: dilithium3aes
-        pretty_name_full: Dilithium3-AES
-        signed_msg_order: sig_then_msg
-      -
-        scheme: "5_aes"
-        pqclean_scheme: dilithium5aes
-        pretty_name_full: Dilithium5-AES
         signed_msg_order: sig_then_msg
   -
     name: falcon

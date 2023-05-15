@@ -109,12 +109,6 @@
 #cmakedefine OQS_ENABLE_KEM_kyber_1024 1
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_avx2 1
 #cmakedefine OQS_ENABLE_KEM_kyber_1024_aarch64 1
-#cmakedefine OQS_ENABLE_KEM_kyber_512_90s 1
-#cmakedefine OQS_ENABLE_KEM_kyber_512_90s_avx2 1
-#cmakedefine OQS_ENABLE_KEM_kyber_768_90s 1
-#cmakedefine OQS_ENABLE_KEM_kyber_768_90s_avx2 1
-#cmakedefine OQS_ENABLE_KEM_kyber_1024_90s 1
-#cmakedefine OQS_ENABLE_KEM_kyber_1024_90s_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_DILITHIUM 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_2 1
@@ -126,12 +120,6 @@
 #cmakedefine OQS_ENABLE_SIG_dilithium_5 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_5_avx2 1
 #cmakedefine OQS_ENABLE_SIG_dilithium_5_aarch64 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_2_aes 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_2_aes_avx2 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_3_aes 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_3_aes_avx2 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_5_aes 1
-#cmakedefine OQS_ENABLE_SIG_dilithium_5_aes_avx2 1
 
 #cmakedefine OQS_ENABLE_SIG_FALCON 1
 #cmakedefine OQS_ENABLE_SIG_falcon_512 1
@@ -154,20 +142,14 @@
 #cmakedefine OQS_ENABLE_SIG_sphincs_sha256_256s_simple_avx2 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128f_simple 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128f_simple_avx2 1
-#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128f_simple_aarch64 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128s_simple 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128s_simple_avx2 1
-#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_128s_simple_aarch64 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192f_simple 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192f_simple_avx2 1
-#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192f_simple_aarch64 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192s_simple 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192s_simple_avx2 1
-#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_192s_simple_aarch64 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256f_simple 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256f_simple_avx2 1
-#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256f_simple_aarch64 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256s_simple 1
 #cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256s_simple_avx2 1
-#cmakedefine OQS_ENABLE_SIG_sphincs_shake256_256s_simple_aarch64 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
