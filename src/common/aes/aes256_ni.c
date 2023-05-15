@@ -77,7 +77,7 @@ static inline void aes256ni_setkey_encrypt(const unsigned char *key, __m128i rke
 
 void oqs_aes256_load_schedule_ni(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(sizeof(aes256ctx));
-	OQS_EXIT_IF_NULLPTR(*_schedule);
+	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	assert(*_schedule != NULL);
 	__m128i *schedule = ((aes256ctx *) *_schedule)->sk_exp;
 	aes256ni_setkey_encrypt(key, schedule);

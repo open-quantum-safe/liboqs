@@ -644,7 +644,7 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 
 void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(sizeof(aes128ctx));
-	OQS_EXIT_IF_NULLPTR(*_schedule);
+	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	aes128ctx *ctx = (aes128ctx *) *_schedule;
 	uint64_t skey[22];
 	br_aes_ct64_keysched(skey, key, 16);
@@ -653,7 +653,7 @@ void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 
 void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
 	*_schedule = malloc(sizeof(aes256ctx));
-	OQS_EXIT_IF_NULLPTR(*_schedule);
+	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	aes256ctx *ctx = (aes256ctx *) *_schedule;
 	uint64_t skey[30];
 	br_aes_ct64_keysched(skey, key, 32);
@@ -705,7 +705,7 @@ void oqs_aes256_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 }
 
 void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
-	OQS_EXIT_IF_NULLPTR(schedule);
+	OQS_EXIT_IF_NULLPTR(schedule, "AES");
 	aes256ctx *ctx = (aes256ctx *) schedule;
 	ctx->iv[7] = (unsigned char)(iv >> 56);
 	ctx->iv[6] = (unsigned char)(iv >> 48);

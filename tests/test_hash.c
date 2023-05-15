@@ -117,9 +117,9 @@ static int do_sha384(void) {
 	OQS_SHA2_sha384_ctx state2;
 	OQS_SHA2_sha384_inc_ctx_clone(&state2, &state);
 	// hash with first state
-	if (msg_len > 64) {
+	if (msg_len > 128) {
 		OQS_SHA2_sha384_inc_blocks(&state, msg, 1);
-		OQS_SHA2_sha384_inc_finalize(output_inc, &state, &msg[64], msg_len - 64);
+		OQS_SHA2_sha384_inc_finalize(output_inc, &state, &msg[128], msg_len - 128);
 	} else {
 		OQS_SHA2_sha384_inc_finalize(output_inc, &state, msg, msg_len);
 	}
@@ -129,9 +129,9 @@ static int do_sha384(void) {
 		return -2;
 	}
 	// hash with second state
-	if (msg_len > 64) {
+	if (msg_len > 128) {
 		OQS_SHA2_sha384_inc_blocks(&state2, msg, 1);
-		OQS_SHA2_sha384_inc_finalize(output_inc, &state2, &msg[64], msg_len - 64);
+		OQS_SHA2_sha384_inc_finalize(output_inc, &state2, &msg[128], msg_len - 128);
 	} else {
 		OQS_SHA2_sha384_inc_finalize(output_inc, &state2, msg, msg_len);
 	}
@@ -164,9 +164,9 @@ static int do_sha512(void) {
 	OQS_SHA2_sha512_ctx state2;
 	OQS_SHA2_sha512_inc_ctx_clone(&state2, &state);
 	// hash with first state
-	if (msg_len > 64) {
+	if (msg_len > 128) {
 		OQS_SHA2_sha512_inc_blocks(&state, msg, 1);
-		OQS_SHA2_sha512_inc_finalize(output_inc, &state, &msg[64], msg_len - 64);
+		OQS_SHA2_sha512_inc_finalize(output_inc, &state, &msg[128], msg_len - 128);
 	} else {
 		OQS_SHA2_sha512_inc_finalize(output_inc, &state, msg, msg_len);
 	}
@@ -176,9 +176,9 @@ static int do_sha512(void) {
 		return -2;
 	}
 	// hash with second state
-	if (msg_len > 64) {
+	if (msg_len > 128) {
 		OQS_SHA2_sha512_inc_blocks(&state2, msg, 1);
-		OQS_SHA2_sha512_inc_finalize(output_inc, &state2, &msg[64], msg_len - 64);
+		OQS_SHA2_sha512_inc_finalize(output_inc, &state2, &msg[128], msg_len - 128);
 	} else {
 		OQS_SHA2_sha512_inc_finalize(output_inc, &state2, msg, msg_len);
 	}
