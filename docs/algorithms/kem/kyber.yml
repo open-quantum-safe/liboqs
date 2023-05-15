@@ -22,7 +22,7 @@ primary-upstream:
   spdx-license-identifier: CC0-1.0 or Apache-2.0
 optimized-upstreams:
   pqclean-aarch64:
-    source: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b
+    source: https://github.com/PQClean/PQClean/commit/d36d06981f06197044b07926ba3152c81ad2d848
       with copy_from_upstream patches
     spdx-license-identifier: CC0-1.0
 parameter-sets:

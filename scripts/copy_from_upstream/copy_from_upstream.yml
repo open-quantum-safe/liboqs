@@ -2,8 +2,8 @@ upstreams:
   -
     name: pqclean
     git_url: https://github.com/PQClean/PQClean.git
-    git_branch: master
-    git_commit: 245c95cd1ec326f8f38e26cb17a28832701ba17b
+    git_branch: update-mceliece
+    git_commit: d36d06981f06197044b07926ba3152c81ad2d848
     kem_meta_path: 'crypto_kem/{pqclean_scheme}/META.yml'
     sig_meta_path: 'crypto_sign/{pqclean_scheme}/META.yml'
     kem_scheme_path: 'crypto_kem/{pqclean_scheme}'
@@ -28,7 +28,7 @@ upstreams:
 kems:
   -
     name: classic_mceliece
-    default_implementation: vec
+    default_implementation: clean
     upstream_location: pqclean
     schemes:
       -

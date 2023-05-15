@@ -8,7 +8,6 @@ auxiliary-submitters:
 - Paul Kirchner
 - Vadim Lyubashevsky
 - Thomas Pornin
-- Thomas Prest
 - Thomas Ricosset
 - Gregor Seiler
 - William Whyte
@@ -18,7 +17,7 @@ website: https://falcon-sign.info
 nist-round: 3
 spec-version: 20211101
 primary-upstream:
-  source: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b
+  source: https://github.com/PQClean/PQClean/commit/d36d06981f06197044b07926ba3152c81ad2d848
   spdx-license-identifier: MIT
   upstream-ancestors:
   - https://www.falcon-sign.info
@@ -28,7 +27,7 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 897
   length-secret-key: 1281
-  length-signature: 666
+  length-signature: 690
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -43,6 +42,9 @@ parameter-sets:
     upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
       required_flags:
       - avx2
     common-crypto:
@@ -55,7 +57,7 @@ parameter-sets:
   claimed-security: EUF-CMA
   length-public-key: 1793
   length-secret-key: 2305
-  length-signature: 1280
+  length-signature: 1330
   implementations-switch-on-runtime-cpu-features: true
   implementations:
   - upstream: primary-upstream
@@ -70,6 +72,9 @@ parameter-sets:
     upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
       required_flags:
       - avx2
     common-crypto:

@@ -17,9 +17,9 @@ crypto-assumption: Niederreiter's dual version of McEliece's public key encrypti
   using binary Goppa codes
 website: https://classic.mceliece.org
 nist-round: 3
-spec-version: SUPERCOP-20191221
+spec-version: SUPERCOP-20221025
 upstream-ancestors:
-- SUPERCOP-20191221 "vec" and "avx" implementations
+- SUPERCOP-20221025 "clean" and "avx2" implementations
 advisories:
 - The implementation of the Classic-McEliece-8192128 parameter set is known to fail
   memory leak testing on x86-64.
@@ -28,12 +28,12 @@ parameter-sets:
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 261120
-  length-ciphertext: 128
-  length-secret-key: 6452
+  length-ciphertext: 96
+  length-secret-key: 6492
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -42,7 +42,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -62,12 +62,12 @@ parameter-sets:
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 261120
-  length-ciphertext: 128
-  length-secret-key: 6452
+  length-ciphertext: 96
+  length-secret-key: 6492
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -76,7 +76,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -97,12 +97,12 @@ parameter-sets:
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 524160
-  length-ciphertext: 188
-  length-secret-key: 13568
+  length-ciphertext: 156
+  length-secret-key: 13608
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -111,7 +111,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -131,12 +131,12 @@ parameter-sets:
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-public-key: 524160
-  length-ciphertext: 188
-  length-secret-key: 13568
+  length-ciphertext: 156
+  length-secret-key: 13608
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -145,7 +145,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -153,8 +153,8 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
-      - bmi1
       - popcnt
+      - bmi1
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
@@ -166,12 +166,12 @@ parameter-sets:
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1044992
-  length-ciphertext: 240
-  length-secret-key: 13892
+  length-ciphertext: 208
+  length-secret-key: 13932
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -180,7 +180,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -200,12 +200,12 @@ parameter-sets:
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1044992
-  length-ciphertext: 240
-  length-secret-key: 13892
+  length-ciphertext: 208
+  length-secret-key: 13932
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -214,7 +214,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -222,8 +222,8 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
-      - bmi1
       - popcnt
+      - bmi1
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
@@ -235,12 +235,12 @@ parameter-sets:
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1047319
-  length-ciphertext: 226
-  length-secret-key: 13908
+  length-ciphertext: 194
+  length-secret-key: 13948
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -249,7 +249,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -269,12 +269,12 @@ parameter-sets:
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1047319
-  length-ciphertext: 226
-  length-secret-key: 13908
+  length-ciphertext: 194
+  length-secret-key: 13948
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -283,7 +283,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -291,8 +291,8 @@ parameter-sets:
       - Darwin
       required_flags:
       - avx2
-      - bmi1
       - popcnt
+      - bmi1
     common-crypto:
     - AES: liboqs
     - SHA3: liboqs
@@ -304,12 +304,12 @@ parameter-sets:
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1357824
-  length-ciphertext: 240
-  length-secret-key: 14080
+  length-ciphertext: 208
+  length-secret-key: 14120
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -318,7 +318,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -338,12 +338,12 @@ parameter-sets:
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-public-key: 1357824
-  length-ciphertext: 240
-  length-secret-key: 14080
+  length-ciphertext: 208
+  length-secret-key: 14120
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
-  - upstream-id: vec
+  - upstream-id: clean
     supported-platforms: all
     common-crypto:
     - AES: liboqs
@@ -352,7 +352,7 @@ parameter-sets:
     no-secret-dependent-branching-checked-by-valgrind: true
     large-stack-usage: true
     upstream: primary-upstream
-  - upstream-id: avx
+  - upstream-id: avx2
     supported-platforms:
     - architecture: x86_64
       operating_systems:
@@ -372,4 +372,4 @@ parameter-sets:
 auxiliary-submitters: []
 primary-upstream:
   spdx-license-identifier: Public domain
-  source: https://github.com/PQClean/PQClean/commit/245c95cd1ec326f8f38e26cb17a28832701ba17b
+  source: https://github.com/PQClean/PQClean/commit/d36d06981f06197044b07926ba3152c81ad2d848
