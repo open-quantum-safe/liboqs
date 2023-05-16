@@ -22,10 +22,7 @@
   "HQC-192": ["hqc"],
   "HQC-256": ["hqc"],
   "Kyber1024": ["kyber"],
-  "Kyber1024-90s": ["kyber-90s"],
   "Kyber512": ["kyber"],
-  "Kyber512-90s": ["kyber-90s"],
   "Kyber768": ["kyber"],
-  "Kyber768-90s": ["kyber-90s"],
   "sntrup761": ["sntrup"]
 }
